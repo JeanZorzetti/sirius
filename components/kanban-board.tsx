@@ -18,11 +18,12 @@ import {
   useSortable,
 } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent } from '@/components/ui/card'
 import { updateDealStage } from '@/app/dashboard/actions'
 import { EditDealDialog } from '@/components/deals/edit-deal-dialog'
-import { MessageCircle } from 'lucide-react'
+import { MessageCircle, gripVertical } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { cn } from '@/lib/utils'
 
 type Deal = {
   id: string
@@ -61,34 +62,44 @@ function DealCard({ deal, onClick }: { deal: Deal, onClick?: () => void }) {
   }
 
   return (
-    <Card
+    <div
       onClick={onClick}
-      className="cursor-grab active:cursor-grabbing hover:border-primary/50 transition-colors group relative"
+      className="group relative flex flex-col gap-3 rounded-xl border border-white/5 bg-[#121217] p-4 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-indigo-500/30 hover:shadow-[0_8px_20px_-8px_rgba(99,102,241,0.2)] cursor-grab active:cursor-grabbing"
     >
-      <CardHeader className="p-4 pb-2">
-        <CardTitle className="text-sm font-medium">{deal.title}</CardTitle>
-      </CardHeader>
-      <CardContent className="p-4 pt-0">
-        <div className="flex items-center justify-between">
-          <div className="text-sm text-muted-foreground">
-            {deal.value ? `R$ ${Number(deal.value).toFixed(2)}` : 'Sem valor'}
-          </div>
+      <div className="flex items-start justify-between gap-2">
+        <span className="text-sm font-medium text-zinc-200 line-clamp-2 leading-relaxed">
+          {deal.title}
+        </span>
+      </div>
 
-          {deal.contact?.phone && (
-            <Button
-              size="icon"
-              variant="ghost"
-              className="h-6 w-6 text-green-600 hover:text-green-700 hover:bg-green-100 dark:hover:bg-green-900/30"
-              onClick={handleWhatsApp}
-              title={`Conversar com ${deal.contact.name}`}
-            >
-              <MessageCircle className="h-4 w-4" />
-            </Button>
-          )}
+      <div className="flex items-center justify-between mt-1">
+        <div className="flex flex-col">
+          <span className="text-[10px] uppercase tracking-wider text-zinc-500 font-semibold">Valor</span>
+          <span className="text-sm font-mono font-bold text-indigo-400">
+            {deal.value ? `R$ ${Number(deal.value).toFixed(2)}` : '-'}
+          </span>
         </div>
-        {deal.contact && <div className="text-xs text-muted-foreground mt-1 truncate">{deal.contact.name}</div>}
-      </CardContent>
-    </Card>
+
+        {deal.contact?.phone && (
+          <Button
+            size="icon"
+            variant="ghost"
+            className="h-7 w-7 rounded-full bg-green-500/10 text-green-500 hover:bg-green-500/20 hover:text-green-400 transition-colors"
+            onClick={handleWhatsApp}
+            title={`Conversar com ${deal.contact.name}`}
+          >
+            <MessageCircle className="h-4 w-4" />
+          </Button>
+        )}
+      </div>
+
+      {deal.contact && (
+        <div className="pt-3 border-t border-white/5 flex items-center gap-2">
+          <div className="w-1.5 h-1.5 rounded-full bg-zinc-700" />
+          <div className="text-xs text-zinc-400 truncate max-w-[150px]">{deal.contact.name}</div>
+        </div>
+      )}
+    </div>
   )
 }
 
@@ -99,7 +110,7 @@ function SortableDealCard({ deal, onClick }: { deal: Deal, onClick?: () => void 
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,
-    opacity: isDragging ? 0.3 : 1,
+    opacity: isDragging ? 0.3 : 1, // Dim when dragging original
   }
 
   return (
@@ -115,34 +126,50 @@ function KanbanColumn({ stage, onDealClick }: { stage: Stage, onDealClick: (deal
     data: { type: 'Stage', stage }
   })
 
+  const totalValue = stage.deals.reduce((acc, deal) => acc + (deal.value ? Number(deal.value) : 0), 0)
+
   return (
-    <div ref={setNodeRef} className="w-[300px] flex-none flex flex-col gap-4">
-      <div className="flex justify-between items-center rounded-md border bg-muted/40 p-3 shadow-sm select-none">
-        <span className="font-semibold">{stage.name}</span>
-        <span className="text-xs text-muted-foreground bg-muted px-2 py-1 rounded-full border">
-          {stage.deals.length}
-        </span>
+    <div ref={setNodeRef} className="w-[320px] flex-none flex flex-col h-full">
+      {/* Column Header */}
+      <div className="flex flex-col gap-1 px-1 mb-4">
+        <div className="flex items-center justify-between">
+          <h3 className="text-xs font-bold uppercase tracking-widest text-zinc-400">
+            {stage.name}
+          </h3>
+          <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-zinc-800 px-1.5 text-[10px] font-medium text-zinc-400">
+            {stage.deals.length}
+          </span>
+        </div>
+        <div className="h-1 w-full rounded-full bg-zinc-900 overflow-hidden mt-2">
+          <div className="h-full bg-indigo-500/20 w-full" />
+        </div>
+        <div className="mt-1 text-xs font-mono text-zinc-500">
+          Total: <span className="text-indigo-400/80">R$ {totalValue.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</span>
+        </div>
       </div>
 
-      <SortableContext
-        items={stage.deals.map((deal) => deal.id)}
-        strategy={verticalListSortingStrategy}
-      >
-        <div className="flex flex-col gap-2 min-h-[150px] p-1 rounded-md bg-muted/10 border border-dashed border-transparent hover:border-muted-foreground/20 transition-colors">
-          {stage.deals.map((deal) => (
-            <SortableDealCard
-              key={deal.id}
-              deal={deal}
-              onClick={() => onDealClick(deal)}
-            />
-          ))}
-          {stage.deals.length === 0 && (
-            <div className="h-full w-full flex items-center justify-center text-xs text-muted-foreground opacity-50 py-4">
-              Arraste items aqui
-            </div>
-          )}
-        </div>
-      </SortableContext>
+      {/* Column Body (Glass) */}
+      <div className="flex-1 rounded-2xl bg-white/[0.02] p-3 border border-white/5">
+        <SortableContext
+          items={stage.deals.map((deal) => deal.id)}
+          strategy={verticalListSortingStrategy}
+        >
+          <div className="flex flex-col gap-3 min-h-[150px]">
+            {stage.deals.map((deal) => (
+              <SortableDealCard
+                key={deal.id}
+                deal={deal}
+                onClick={() => onDealClick(deal)}
+              />
+            ))}
+            {stage.deals.length === 0 && (
+              <div className="flex h-32 flex-col items-center justify-center rounded-lg border border-dashed border-white/5 bg-white/[0.01] p-4 text-center">
+                <div className="text-xs text-zinc-500">Nenhum negócio nesta etapa</div>
+              </div>
+            )}
+          </div>
+        </SortableContext>
+      </div>
     </div>
   )
 }
@@ -152,16 +179,9 @@ export function KanbanBoard({ stages: initialStages, contacts }: KanbanBoardProp
   const [activeDeal, setActiveDeal] = useState<Deal | null>(null)
   const [editingDeal, setEditingDeal] = useState<Deal | null>(null)
 
-  // Update local state when editingDeal changes (if needed, or just let revalidation handle it)
-  // For now, relies on revalidation updating the 'initialStages' prop, but since this is client state, 
-  // 'initialStages' might not trigger re-render if key doesn't change.
-  // Ideally we should update local state on successful edit, OR key the component on 'stages'.
-  // But let's stick to simple dialog first. If we edit, page revalidates = prop updates? 
-  // Next.js client components inside server components update if server re-renders.
   useEffect(() => {
     setStages(initialStages)
   }, [initialStages])
-
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -249,7 +269,7 @@ export function KanbanBoard({ stages: initialStages, contacts }: KanbanBoardProp
       onDragStart={handleDragStart}
       onDragEnd={handleDragEnd}
     >
-      <div className="flex h-full gap-4 overflow-x-auto pb-4">
+      <div className="flex h-full gap-6 overflow-x-auto pb-4 px-2 snap-x">
         {stages.map((stage) => (
           <KanbanColumn
             key={stage.id}
@@ -261,7 +281,7 @@ export function KanbanBoard({ stages: initialStages, contacts }: KanbanBoardProp
 
       <DragOverlay>
         {activeDeal ? (
-          <div className="rotate-3 shadow-2xl">
+          <div className="rotate-2 scale-105 shadow-2xl shadow-indigo-500/20 cursor-grabbing">
             <DealCard deal={activeDeal} />
           </div>
         ) : null}

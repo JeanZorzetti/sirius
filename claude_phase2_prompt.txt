@@ -1,0 +1,46 @@
+ROLE: Senior Frontend Designer (Dark Mode Specialist).
+
+OBJECTIVE:
+Execute "Phase 2: Kanban" of our UX Roadmap.
+Refactor `components/kanban-board.tsx` to MATCH the premium design language of `FeatureGateModal` and the recently updated `globals.css`.
+
+CONTEXT:
+We just updated the app to a "Midnight Indigo" theme. The Sidebar is a floating glass panel.
+Now the Kanban Board looks too "default/flat". It needs depth and better spacing.
+
+TASKS:
+Refactor `components/kanban-board.tsx` with these specific design requirements:
+
+1. **Columns (The Containers):**
+   - Remove standard borders.
+   - Use a subtle glass background: `bg-white/[0.02]`.
+   - Add a "Header" for the column that feels like a distinct section (uppercase tracking, small text).
+   - Show the Total Value of deals in the column header (calculated on the fly if needed, or just deal count if value is complex, but value is preferred).
+   - Rounded Top Corners (`rounded-t-2xl`).
+
+2. **Deal Cards (The Jewels):**
+   - **Background:** `bg-[#121217]` (Slightly lighter than main bg) or `bg-zinc-900`.
+   - **Border:** `border border-white/5` (Subtle 1px).
+   - **Hover Effect:**
+     - Translate Y: `group-hover:-translate-y-1` (Lift).
+     - Shadow: `hover:shadow-xl hover:shadow-indigo-500/10`.
+     - Border Glow: `hover:border-indigo-500/30`.
+   - **Typography:**
+     - Title: `text-zinc-200 font-medium`.
+     - Value: `font-mono text-indigo-400 font-bold`.
+   - **Tags/Contact:**
+     - Use a "Pill" design for the contact name or tag.
+
+3. **Layout:**
+   - Ensure horizontal scrolling works smoothly (hide scrollbars if possible, `scrollbar-none`).
+   - Add breathing room (gap-6) between columns.
+
+INPUT FILES PROVIDED BELOW.
+RETURN THE UPDATED CODE FOR `components/kanban-board.tsx`.
+
+=== app/globals.css (REFERENCE - NEW THEME) ===
+@import "tailwindcss";
+... [I will provide the file content] ...
+
+=== components/kanban-board.tsx (CURRENT) ===
+... [I will provide the file content] ...
