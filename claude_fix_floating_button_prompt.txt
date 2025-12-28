@@ -1,3 +1,26 @@
+CRITICAL VISUAL BUG REPORT:
+O botão de "Fazer Upgrade" (branco) está renderizando FORA do modal `DialogContent`.
+Na captura de tela, ele aparece flutuando em cima da UI de fundo (Kanban), desalinhado do modal.
+
+Isso é um erro grave de CSS/Layout.
+
+Prováveis causas:
+1. O uso de `DialogFooter` dentro de um container com `shrink-0` pode estar conflitando com estilos do `shadcn/ui`.
+2. O botão pode estar sofrendo de algum "hoisting" ou posicionamento absoluto não intencional.
+3. A estrutura Flexbox (Header/Body/Footer fixo) pode estar mal implementada.
+
+TAREFA:
+Reescreva o componente `FeatureGateModal` para garantir que:
+1. O botão ESTEJA DENTRO do modal.
+2. O layout continue "Fixed Header/Footer + Scrollable Body".
+3. Simplifique a estrutura se necessário. Remova `DialogFooter` se ele estiver causando o problema e use uma `div` normal com flexbox.
+4. GARANTA que `DialogContent` tenha `position: relative` ou similar para conter elementos absolutos filhos.
+
+Analise o código atual fornecido abaixo e corrija o defeito.
+
+ARQUIVO ATUAL:
+components/dashboard/billing/feature-gate-modal.tsx
+'''tsx
 'use client'
 
 import { Rocket, CheckCircle2, Sparkles, Zap, TrendingUp, Crown } from 'lucide-react'
@@ -6,6 +29,7 @@ import {
     Dialog,
     DialogContent,
     DialogDescription,
+    DialogFooter,
     DialogHeader,
     DialogTitle,
 } from '@/components/ui/dialog'
@@ -27,7 +51,7 @@ export function FeatureGateModal({
     return (
         <Dialog open={isOpen} onOpenChange={onClose}>
             <DialogContent className="sm:max-w-[440px] p-0 max-h-[90vh] flex flex-col border-0 shadow-2xl bg-zinc-950 text-white ring-1 ring-white/10 gap-0">
-
+                
                 {/* Header Section - FIXED (shrink-0) */}
                 <div className="relative pt-6 pb-5 px-5 bg-gradient-to-br from-indigo-950 via-zinc-900 to-zinc-950 overflow-hidden text-center shrink-0">
                     {/* Background Effects */}
@@ -86,9 +110,9 @@ export function FeatureGateModal({
                 </div>
 
                 {/* Footer - FIXED (shrink-0) */}
-                <div className="p-5 pt-4 bg-zinc-950 shrink-0 border-t border-white/5">
-                    <div className="flex flex-col gap-3">
-                        <Button asChild size="lg" className="w-full h-11 relative overflow-hidden group bg-white text-zinc-950 hover:bg-zinc-200 hover:text-zinc-950 border-0 shadow-lg shadow-indigo-500/10">
+                <div className="p-5 pt-2 bg-zinc-950 shrink-0">
+                    <DialogFooter className="flex-col gap-2 sm:gap-0">
+                        <Button asChild size="lg" className="w-full h-10 relative overflow-hidden group bg-white text-zinc-950 hover:bg-zinc-200 hover:text-zinc-950 border-0 shadow-lg shadow-indigo-500/10">
                             <Link href="/dashboard/billing" className="flex items-center justify-center gap-2">
                                 <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/50 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
                                 <Rocket className="w-4 h-4 relative z-10" />
@@ -98,9 +122,12 @@ export function FeatureGateModal({
                         <Button variant="ghost" className="w-full h-8 text-[11px] text-zinc-500 hover:text-zinc-300 hover:bg-transparent uppercase tracking-wider font-medium" onClick={onClose}>
                             Continuar no plano Gratuito
                         </Button>
-                    </div>
+                    </DialogFooter>
                 </div>
             </DialogContent>
         </Dialog>
     )
 }
+'''
+
+RETORNE APENAS O CÓDIGO FINAL CORRIGIDO.
