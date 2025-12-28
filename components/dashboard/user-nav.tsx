@@ -52,6 +52,13 @@ export function UserNav({ user }: { user: any }) {
               Configurações
             </Link>
           </DropdownMenuItem>
+          {(user as any).role === 'ADMIN' && (
+            <DropdownMenuItem asChild>
+              <Link href="/admin" className="w-full cursor-pointer font-bold text-red-500 focus:text-red-500">
+                Admin Panel
+              </Link>
+            </DropdownMenuItem>
+          )}
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <DropdownMenuItem onClick={() => logoutAction()}>

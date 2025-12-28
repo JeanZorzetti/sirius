@@ -1,0 +1,59 @@
+import { getSession } from "@/lib/auth"
+import { prisma } from "@/lib/prisma"
+import { redirect } from "next/navigation"
+import Link from "next/link"
+import { ShieldAlert, Users, LayoutDashboard, ArrowLeft, Building2 } from "lucide-react"
+
+export default async function AdminLayout({
+    children,
+}: {
+    children: React.ReactNode
+}) {
+    const session = await getSession()
+    if (!session || !session.user?.email) {
+        redirect("/login")
+    }
+
+    // Double-check role in DB (Critical for security)
+    const user = await prisma.user.findUnique({
+        where: { email: session.user.email },
+    })
+
+    // @ts-ignore - Prisma types might not update immediately in IDE
+    if (!user || user.role !== "ADMIN") {
+        redirect("/dashboard")
+    }
+
+    return (
+        <div className="flex min-h-screen flex-col bg-zinc-950 text-white">
+            {/* Admin Header */}
+            <header className="sticky top-0 z-50 flex h-16 items-center border-b border-red-900/30 bg-zinc-950/80 px-6 backdrop-blur-xl">
+                <div className="flex items-center gap-2 font-bold text-red-500">
+                    <ShieldAlert className="h-6 w-6" />
+                    <span>SIRIUS ADMIN</span>
+                </div>
+                <nav className="ml-8 flex items-center gap-6">
+                    <Link href="/admin" className="text-sm font-medium text-zinc-400 hover:text-white transition-colors">
+                        Overview
+                    </Link>
+                    <Link href="/admin/users" className="text-sm font-medium text-zinc-400 hover:text-white transition-colors">
+                        Users
+                    </Link>
+                </nav>
+                <div className="ml-auto">
+                    <Link href="/dashboard" className="flex items-center gap-2 text-xs font-medium text-zinc-500 hover:text-white transition-colors">
+                        <ArrowLeft className="h-4 w-4" />
+                        Back to App
+                    </Link>
+                </div>
+            </header>
+
+            {/* Admin Content */}
+            <main className="flex-1 p-6">
+                <div className="mx-auto max-w-7xl">
+                    {children}
+                </div>
+            </main>
+        </div>
+    )
+}

@@ -2,6 +2,7 @@ import { Sidebar } from '@/components/dashboard/sidebar'
 import { UserNav } from '@/components/dashboard/user-nav'
 import { ModeToggle } from '@/components/ui/mode-toggle'
 import { getSession } from '@/lib/auth'
+import { prisma } from '@/lib/prisma'
 
 export default async function DashboardLayout({
   children,
@@ -9,7 +10,21 @@ export default async function DashboardLayout({
   children: React.ReactNode
 }) {
   const session = await getSession()
-  const user = session?.user || { name: 'User', email: 'user@example.com' }
+  let user = session?.user
+
+  if (session?.user?.email) {
+    const dbUser = await prisma.user.findUnique({
+      where: { email: session.user.email }
+    })
+    if (dbUser) {
+      user = dbUser
+    }
+  }
+
+  if (!user) {
+    // Fallback or redirect if strict
+    user = { name: 'User', email: 'user@example.com' }
+  }
 
   return (
     <div className="flex h-screen overflow-hidden">
