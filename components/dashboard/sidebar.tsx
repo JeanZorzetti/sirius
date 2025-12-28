@@ -53,7 +53,7 @@ export function Sidebar() {
             </div>
 
             <div className="flex flex-col">
-              <span className="text-sm font-bold bg-gradient-to-r from-zinc-900 to-zinc-600 dark:from-white dark:to-zinc-400 bg-clip-text text-transparent">SIRIUS</span>
+              <span className="text-sm font-bold bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-white dark:to-zinc-400 bg-clip-text text-transparent">SIRIUS</span>
               <span className="text-[10px] text-muted-foreground tracking-wider">CRM</span>
             </div>
           </Link>
@@ -73,15 +73,15 @@ export function Sidebar() {
                   className={cn(
                     'group flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-all duration-300 relative overflow-hidden',
                     isActive
-                      ? 'text-white'
-                      : 'text-zinc-500 hover:text-zinc-200 hover:bg-white/5'
+                      ? 'text-indigo-600 dark:text-white bg-indigo-50 dark:bg-transparent'
+                      : 'text-zinc-600 dark:text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-200 hover:bg-black/5 dark:hover:bg-white/5'
                   )}
                 >
                   {isActive && (
                     <div className="absolute inset-0 bg-indigo-500/10 border-l-2 border-indigo-500" />
                   )}
 
-                  <Icon className={cn("h-4 w-4 z-10 transition-colors", isActive ? "text-indigo-400" : "text-zinc-500 group-hover:text-zinc-300")} />
+                  <Icon className={cn("h-4 w-4 z-10 transition-colors", isActive ? "text-indigo-600 dark:text-indigo-400" : "text-zinc-500 group-hover:text-zinc-700 dark:group-hover:text-zinc-300")} />
                   <span className="z-10">{item.title}</span>
 
                   {isActive && (

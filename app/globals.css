@@ -167,7 +167,7 @@
 
   /* Texture Pattern for Light Mode */
   body:not(.dark) {
-    background-image: radial-gradient(#e4e4e7 1px, transparent 1px);
+    background-image: radial-gradient(#d4d4d8 1px, transparent 1px);
     background-size: 24px 24px;
   }
 

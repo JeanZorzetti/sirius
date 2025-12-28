@@ -137,10 +137,10 @@ function KanbanColumn({ stage, onDealClick }: { stage: Stage, onDealClick: (deal
       {/* Column Header */}
       <div className="flex flex-col gap-1 px-1 mb-4">
         <div className="flex items-center justify-between">
-          <h3 className="text-xs font-bold uppercase tracking-widest text-zinc-400">
+          <h3 className="text-xs font-bold uppercase tracking-widest text-zinc-600 dark:text-zinc-400">
             {stage.name}
           </h3>
-          <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-zinc-800 px-1.5 text-[10px] font-medium text-zinc-400">
+          <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-zinc-200 dark:bg-zinc-800 px-1.5 text-[10px] font-medium text-zinc-600 dark:text-zinc-400">
             {stage.deals.length}
           </span>
         </div>
