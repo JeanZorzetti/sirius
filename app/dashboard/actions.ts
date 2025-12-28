@@ -53,11 +53,25 @@ export async function createDeal(formData: FormData) {
       return { success: false, error: 'Usuário ou Organização não encontrados' }
     }
 
+    // LIMIT CHECK (FREEMIUM)
+    // If Plan is FREE (or null), limit to 10 deals.
+    const isPro = user.organization.plan === 'PRO'
+
+    if (!isPro) {
+      const dealCount = await prisma.deal.count({
+        where: { organizationId: user.organizationId }
+      })
+
+      if (dealCount >= 10) {
+        return { success: false, error: 'Limite de 10 negócios no plano Gratuito. Faça upgrade para continuar!' }
+      }
+    }
+
     // Create deal
     await prisma.deal.create({
       data: {
         title,
-        value, // Decimal handling is automatic in create? No, needs string or number
+        value,
         stageId,
         contactId: contactId || null,
         userId: user.id,
