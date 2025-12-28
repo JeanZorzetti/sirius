@@ -37,16 +37,31 @@ export function Sidebar() {
   const pathname = usePathname()
 
   return (
-    <div className="w-64 h-screen border-r bg-background">
-      <div className="flex h-full flex-col gap-2">
-        <div className="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
-          <Link href="/dashboard" className="flex items-center gap-2 font-semibold">
-            <span className="bg-primary text-primary-foreground text-xs font-bold px-1 py-0.5 rounded">SIRIUS</span>
-            <span className="text-xl">CRM</span>
+    <div className="w-64 h-screen border-r border-white/5 bg-zinc-950/50 backdrop-blur-xl relative z-50">
+      {/* Background Glow */}
+      <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
+        <div className="absolute top-[-100px] left-[-100px] w-64 h-64 bg-indigo-500/10 blur-[100px] rounded-full" />
+      </div>
+
+      <div className="flex h-full flex-col gap-2 relative z-10">
+        {/* Header / Logo */}
+        <div className="flex h-16 items-center px-6 border-b border-white/5">
+          <Link href="/dashboard" className="flex items-center gap-3 group">
+            {/* Logo Icon */}
+            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-500/20 to-purple-500/20 flex items-center justify-center ring-1 ring-white/10 group-hover:scale-105 transition-transform duration-300">
+              <div className="w-4 h-4 rounded-full bg-indigo-400 shadow-[0_0_10px_rgba(99,102,241,0.5)]" />
+            </div>
+
+            <div className="flex flex-col">
+              <span className="text-sm font-bold bg-gradient-to-r from-white to-zinc-400 bg-clip-text text-transparent">SIRIUS</span>
+              <span className="text-[10px] text-zinc-500 tracking-wider">CRM</span>
+            </div>
           </Link>
         </div>
-        <div className="flex-1">
-          <nav className="grid items-start px-2 text-sm font-medium lg:px-4">
+
+        {/* Navigation */}
+        <div className="flex-1 py-4">
+          <nav className="grid items-start px-3 gap-1">
             {navItems.map((item) => {
               const Icon = item.icon
               const isActive = pathname === item.href
@@ -56,17 +71,29 @@ export function Sidebar() {
                   key={item.href}
                   href={item.href}
                   className={cn(
-                    'flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary',
-                    isActive && 'bg-muted text-primary'
+                    'group flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-all duration-300 relative overflow-hidden',
+                    isActive
+                      ? 'text-white'
+                      : 'text-zinc-500 hover:text-zinc-200 hover:bg-white/5'
                   )}
                 >
-                  <Icon className="h-4 w-4" />
-                  {item.title}
+                  {isActive && (
+                    <div className="absolute inset-0 bg-indigo-500/10 border-l-2 border-indigo-500" />
+                  )}
+
+                  <Icon className={cn("h-4 w-4 z-10 transition-colors", isActive ? "text-indigo-400" : "text-zinc-500 group-hover:text-zinc-300")} />
+                  <span className="z-10">{item.title}</span>
+
+                  {isActive && (
+                    <div className="absolute right-0 top-0 h-full w-4 bg-gradient-to-l from-indigo-500/20 to-transparent" />
+                  )}
                 </Link>
               )
             })}
           </nav>
         </div>
+
+        {/* User / Footer Area could go here */}
       </div>
     </div>
   )
