@@ -1,0 +1,89 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Organization {
+  id        String   @id @default(uuid())
+  name      String
+  slug      String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  users     User[]
+  contacts  Contact[]
+  deals     Deal[]
+  stages    PipelineStage[]
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  name      String?
+  password  String   // Password hash
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id])
+
+  deals     Deal[]   // Deals managed by this user
+}
+
+model Contact {
+  id        String   @id @default(uuid())
+  name      String
+  email     String?
+  phone     String?
+  company   String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id])
+
+  deals     Deal[]
+}
+
+model PipelineStage {
+  id        String   @id @default(uuid())
+  name      String   // "Prospecção", "Qualificação", etc.
+  order     Int      // To sort the Kanban columns (1, 2, 3...)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id])
+
+  deals     Deal[]
+}
+
+model Deal {
+  id          String   @id @default(uuid())
+  title       String   // "Venda Software X"
+  value       Decimal? @db.Decimal(10, 2)
+  closeDate   DateTime? 
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id])
+  
+  // Relations
+  stageId     String
+  stage       PipelineStage @relation(fields: [stageId], references: [id])
+
+  contactId   String?
+  contact     Contact?      @relation(fields: [contactId], references: [id])
+
+  userId      String
+  user        User          @relation(fields: [userId], references: [id])
+}
+
