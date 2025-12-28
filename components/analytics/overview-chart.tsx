@@ -43,7 +43,7 @@ export function OverviewChart({ data }: OverviewChartProps) {
 
   return (
     <ResponsiveContainer width="100%" height={400}>
-      <BarChart data={data} margin={{ top: 20, right: 0, bottom: 0, left: -20 }}>
+      <BarChart data={data} margin={{ top: 20, right: 0, bottom: 0, left: 0 }}>
         <defs>
           <linearGradient id="barGradient" x1="0" y1="0" x2="0" y2="1">
             <stop offset="0%" stopColor="#6366f1" stopOpacity={1} />
@@ -51,7 +51,7 @@ export function OverviewChart({ data }: OverviewChartProps) {
           </linearGradient>
         </defs>
 
-        <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(255,255,255,0.05)" />
+        <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(255,255,255,0.1)" />
 
         <XAxis
           dataKey="name"
@@ -59,7 +59,7 @@ export function OverviewChart({ data }: OverviewChartProps) {
           fontSize={12}
           tickLine={false}
           axisLine={false}
-          tick={{ fill: '#a1a1aa' }}
+          tick={{ fill: '#71717a' }}
           dy={10}
         />
 
@@ -69,8 +69,8 @@ export function OverviewChart({ data }: OverviewChartProps) {
           tickLine={false}
           axisLine={false}
           tickFormatter={(value: any) => `R$${value / 1000}k`}
-          tick={{ fill: '#a1a1aa' }}
-          dx={-10}
+          tick={{ fill: '#71717a' }}
+          width={40}
         />
 
         <Tooltip cursor={{ fill: 'rgba(255,255,255,0.02)' }} content={<CustomTooltip />} />
