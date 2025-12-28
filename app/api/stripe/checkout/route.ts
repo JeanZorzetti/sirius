@@ -6,7 +6,8 @@ export async function POST(req: Request) {
     try {
         const session = await getSession();
         if (!session || !session.organizationId) {
-            return new NextResponse("Unauthorized", { status: 401 });
+            console.error("STRIPE_CHECKOUT_AUTH_ERROR: Session invalid or missing organizationId", session);
+            return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
         }
 
         // Dynamic URL based on environment (fallback to localhost if not set)
