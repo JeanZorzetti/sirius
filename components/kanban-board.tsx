@@ -64,10 +64,14 @@ function DealCard({ deal, onClick }: { deal: Deal, onClick?: () => void }) {
   return (
     <div
       onClick={onClick}
-      className="group relative flex flex-col gap-3 rounded-xl border border-white/5 bg-[#121217] p-4 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-indigo-500/30 hover:shadow-[0_8px_20px_-8px_rgba(99,102,241,0.2)] cursor-grab active:cursor-grabbing"
+      className={cn(
+        "group relative flex flex-col gap-3 rounded-xl border p-4 shadow-sm transition-all duration-300 cursor-grab active:cursor-grabbing",
+        "bg-card border-border hover:border-indigo-500/30",
+        "hover:-translate-y-1 hover:shadow-[0_8px_20px_-8px_rgba(99,102,241,0.2)] dark:bg-[#121217] dark:border-white/5"
+      )}
     >
       <div className="flex items-start justify-between gap-2">
-        <span className="text-sm font-medium text-zinc-200 line-clamp-2 leading-relaxed">
+        <span className="text-sm font-medium text-foreground line-clamp-2 leading-relaxed dark:text-zinc-200">
           {deal.title}
         </span>
       </div>
@@ -94,9 +98,9 @@ function DealCard({ deal, onClick }: { deal: Deal, onClick?: () => void }) {
       </div>
 
       {deal.contact && (
-        <div className="pt-3 border-t border-white/5 flex items-center gap-2">
-          <div className="w-1.5 h-1.5 rounded-full bg-zinc-700" />
-          <div className="text-xs text-zinc-400 truncate max-w-[150px]">{deal.contact.name}</div>
+        <div className="pt-3 border-t border-border/50 flex items-center gap-2">
+          <div className="w-1.5 h-1.5 rounded-full bg-zinc-400 dark:bg-zinc-700" />
+          <div className="text-xs text-muted-foreground truncate max-w-[150px]">{deal.contact.name}</div>
         </div>
       )}
     </div>

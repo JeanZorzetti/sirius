@@ -1,0 +1,27 @@
+ROLE: Senior UI/UX Designer (Design Systems & Theming).
+
+OBJECTIVE:
+Refactor the CRM's **Light Mode** to be "Premium Slate & Gray" (comparable to Linear/Vercel Light Mode), and fix hardcoded Dark colors in components.
+The current Light Mode is broken because components use hardcoded values like `bg-[#121217]`.
+
+TASKS:
+1.  **Global Theme (`app/globals.css`):**
+    *   **Light Palette:** Use `zinc-50` for background, `white` for cards, `zinc-200` for borders, `zinc-900` for text.
+    *   **Dark Palette:** **KEEP EXISTING HIGH CONTRAST DARK MODE**. Do NOT change `.dark` values (unless minor tweaks).
+    *   **CSS Class:** Create a new utility class `.glass-panel` that adapts: `bg-white/50` (Light) vs `bg-white/5` (Dark).
+
+2.  **Component Refactor:**
+    *   **`components/kanban-board.tsx`:** replace `bg-[#121217]` with `bg-card`. Replace `text-zinc-200` with `text-card-foreground`.
+    *   **`components/dashboard/sidebar.tsx`:** replace `bg-zinc-950/50` with `bg-sidebar`.
+
+INPUT FILES PROVIDED BELOW.
+RETURN UPDATED CODE FOR ALL 3 FILES.
+
+=== app/globals.css (CURRENT) ===
+... [I will provide content] ...
+
+=== components/kanban-board.tsx (CURRENT) ===
+... [I will provide content] ...
+
+=== components/dashboard/sidebar.tsx (CURRENT) ===
+... [I will provide content] ...

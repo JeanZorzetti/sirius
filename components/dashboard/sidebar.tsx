@@ -37,10 +37,10 @@ export function Sidebar() {
   const pathname = usePathname()
 
   return (
-    <div className="w-64 h-screen border-r border-white/5 bg-zinc-950/50 backdrop-blur-xl relative z-50">
+    <div className="w-64 h-screen border-r border-border bg-sidebar/80 backdrop-blur-xl relative z-50">
       {/* Background Glow */}
       <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
-        <div className="absolute top-[-100px] left-[-100px] w-64 h-64 bg-indigo-500/10 blur-[100px] rounded-full" />
+        <div className="absolute top-[-100px] left-[-100px] w-64 h-64 bg-indigo-500/5 blur-[100px] rounded-full" />
       </div>
 
       <div className="flex h-full flex-col gap-2 relative z-10">
@@ -53,8 +53,8 @@ export function Sidebar() {
             </div>
 
             <div className="flex flex-col">
-              <span className="text-sm font-bold bg-gradient-to-r from-white to-zinc-400 bg-clip-text text-transparent">SIRIUS</span>
-              <span className="text-[10px] text-zinc-500 tracking-wider">CRM</span>
+              <span className="text-sm font-bold bg-gradient-to-r from-zinc-900 to-zinc-600 dark:from-white dark:to-zinc-400 bg-clip-text text-transparent">SIRIUS</span>
+              <span className="text-[10px] text-muted-foreground tracking-wider">CRM</span>
             </div>
           </Link>
         </div>
