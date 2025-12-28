@@ -24,7 +24,7 @@ export async function POST(req: Request) {
                             name: "Sirius CRM Pro",
                             description: "Acesso ilimitado e recursos premium para sua empresa.",
                         },
-                        unit_amount: 9700, // R$ 97,00
+                        unit_amount: 4900, // R$ 49,00
                         recurring: {
                             interval: "month",
                         },
