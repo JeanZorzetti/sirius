@@ -64,45 +64,60 @@ export default async function AnalyticsPage() {
       </p>
 
       {/* KPI Cards Grid */}
-      <div className="grid gap-4 md:grid-cols-3">
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Valor Total</CardTitle>
-            <DollarSign className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">
-              ${totalValue.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+      <div className="grid gap-6 md:grid-cols-3">
+        <Card className="bg-white/[0.02] border-white/5 backdrop-blur-xl hover:bg-white/[0.04] transition-colors overflow-hidden relative group">
+          <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+            <DollarSign className="h-24 w-24 text-indigo-500 transform rotate-12 translate-x-4 -translate-y-4" />
+          </div>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 relative z-10">
+            <CardTitle className="text-sm font-medium text-zinc-400">Valor Total</CardTitle>
+            <div className="h-8 w-8 rounded-lg bg-indigo-500/10 flex items-center justify-center text-indigo-400 ring-1 ring-white/5 shadow-[0_0_10px_rgba(99,102,241,0.2)]">
+              <DollarSign className="h-4 w-4" />
             </div>
-            <p className="text-xs text-muted-foreground">
+          </CardHeader>
+          <CardContent className="relative z-10">
+            <div className="text-2xl font-bold text-white font-mono">
+              {totalValue.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
+            </div>
+            <p className="text-xs text-zinc-500 mt-1">
               Em todas as etapas do pipeline
             </p>
           </CardContent>
         </Card>
 
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total de Negócios</CardTitle>
-            <Package className="h-4 w-4 text-muted-foreground" />
+        <Card className="bg-white/[0.02] border-white/5 backdrop-blur-xl hover:bg-white/[0.04] transition-colors overflow-hidden relative group">
+          <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+            <Package className="h-24 w-24 text-purple-500 transform -rotate-12 translate-x-4 -translate-y-4" />
+          </div>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 relative z-10">
+            <CardTitle className="text-sm font-medium text-zinc-400">Total de Negócios</CardTitle>
+            <div className="h-8 w-8 rounded-lg bg-purple-500/10 flex items-center justify-center text-purple-400 ring-1 ring-white/5 shadow-[0_0_10px_rgba(168,85,247,0.2)]">
+              <Package className="h-4 w-4" />
+            </div>
           </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{dealCount}</div>
-            <p className="text-xs text-muted-foreground">
+          <CardContent className="relative z-10">
+            <div className="text-2xl font-bold text-white">{dealCount}</div>
+            <p className="text-xs text-zinc-500 mt-1">
               Negócios ativos no pipeline
             </p>
           </CardContent>
         </Card>
 
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Ticket Médio</CardTitle>
-            <TrendingUp className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">
-              ${avgTicket.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+        <Card className="bg-white/[0.02] border-white/5 backdrop-blur-xl hover:bg-white/[0.04] transition-colors overflow-hidden relative group">
+          <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+            <TrendingUp className="h-24 w-24 text-emerald-500 transform rotate-12 translate-x-4 -translate-y-4" />
+          </div>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 relative z-10">
+            <CardTitle className="text-sm font-medium text-zinc-400">Ticket Médio</CardTitle>
+            <div className="h-8 w-8 rounded-lg bg-emerald-500/10 flex items-center justify-center text-emerald-400 ring-1 ring-white/5 shadow-[0_0_10px_rgba(16,185,129,0.2)]">
+              <TrendingUp className="h-4 w-4" />
             </div>
-            <p className="text-xs text-muted-foreground">
+          </CardHeader>
+          <CardContent className="relative z-10">
+            <div className="text-2xl font-bold text-white font-mono">
+              {avgTicket.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
+            </div>
+            <p className="text-xs text-zinc-500 mt-1">
               Valor médio dos negócios
             </p>
           </CardContent>
@@ -110,11 +125,11 @@ export default async function AnalyticsPage() {
       </div>
 
       {/* Chart Section */}
-      <Card>
+      <Card className="bg-zinc-900/50 border-white/5 backdrop-blur-sm">
         <CardHeader>
-          <CardTitle>Negócios por Etapa</CardTitle>
+          <CardTitle className="text-lg font-semibold text-white">Negócios por Etapa</CardTitle>
         </CardHeader>
-        <CardContent>
+        <CardContent className="pl-0">
           <OverviewChart data={chartData} />
         </CardContent>
       </Card>
