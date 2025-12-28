@@ -3,6 +3,8 @@ import { PrismaClient } from "@prisma/client"
 import { DataTable } from "@/components/contacts/data-table"
 import { columns } from "@/components/contacts/columns"
 import { CreateContactDialog } from "@/components/contacts/create-contact-dialog"
+import { EmptyState } from "@/components/ui/empty-state"
+import { Users } from "lucide-react"
 
 const prisma = new PrismaClient()
 
@@ -36,9 +38,19 @@ export default async function ContactsPage() {
                     <CreateContactDialog />
                 </div>
             </div>
-            <div className="hidden h-full flex-1 flex-col space-y-8 md:flex">
-                <DataTable columns={columns} data={contacts} />
-            </div>
+
+            {contacts.length === 0 ? (
+                <EmptyState
+                    icon={Users}
+                    title="Nenhum contato encontrado"
+                    description="Comece adicionando clientes, leads ou parceiros para organizar seu relacionamento."
+                    action={<CreateContactDialog />}
+                />
+            ) : (
+                <div className="hidden h-full flex-1 flex-col space-y-8 md:flex">
+                    <DataTable columns={columns} data={contacts} />
+                </div>
+            )}
         </div>
     )
 }

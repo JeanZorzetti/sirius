@@ -2,6 +2,8 @@ import { PrismaClient } from "@prisma/client"
 import { Metadata } from "next"
 import { KanbanBoard } from "@/components/kanban-board"
 import { CreateDealDialog } from "@/components/deals/create-deal-dialog"
+import { EmptyState } from "@/components/ui/empty-state"
+import { DollarSign } from "lucide-react"
 
 const prisma = new PrismaClient()
 
@@ -48,6 +50,8 @@ export default async function DashboardPage() {
         }))
     }))
 
+    const hasDeals = stages.flatMap(stage => stage.deals).length > 0
+
     return (
         <div className="flex-1 space-y-4 p-8 pt-6">
             <div className="flex items-center justify-between space-y-2">
@@ -56,7 +60,17 @@ export default async function DashboardPage() {
                     <CreateDealDialog stages={stages} contacts={contacts} />
                 </div>
             </div>
-            <KanbanBoard stages={stages} contacts={contacts} />
+
+            {hasDeals ? (
+                <KanbanBoard stages={stages} contacts={contacts} />
+            ) : (
+                <EmptyState
+                    icon={DollarSign}
+                    title="Seu pipeline está vazio"
+                    description="Crie seu primeiro negócio para começar a visualizar seu funil de vendas."
+                    action={<CreateDealDialog stages={stages} contacts={contacts} />}
+                />
+            )}
         </div>
     )
 }
