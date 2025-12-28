@@ -21,7 +21,7 @@ import { CSS } from '@dnd-kit/utilities'
 import { Card, CardContent } from '@/components/ui/card'
 import { updateDealStage } from '@/app/dashboard/actions'
 import { EditDealDialog } from '@/components/deals/edit-deal-dialog'
-import { MessageCircle, gripVertical } from 'lucide-react'
+import { MessageCircle, GripVertical } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 
@@ -163,8 +163,19 @@ function KanbanColumn({ stage, onDealClick }: { stage: Stage, onDealClick: (deal
               />
             ))}
             {stage.deals.length === 0 && (
-              <div className="flex h-32 flex-col items-center justify-center rounded-lg border border-dashed border-white/5 bg-white/[0.01] p-4 text-center">
-                <div className="text-xs text-zinc-500">Nenhum negócio nesta etapa</div>
+              <div className="flex h-40 flex-col items-center justify-center rounded-xl border-2 border-dashed border-white/5 bg-white/[0.01] p-4 text-center gap-3 transition-colors hover:bg-white/[0.02]">
+                <div className="rounded-full bg-zinc-900/50 p-3 ring-1 ring-white/10">
+                  <div className="w-5 h-5 opacity-20 bg-zinc-400 mask-icon" /> {/* Placeholder for icon if needed, or just pure CSS shapes */}
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-zinc-600 opacity-50">
+                    <path d="M19 11V9C19 5.13401 15.866 2 12 2C8.13401 2 5 5.13401 5 9V11" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                    <path d="M5 11C5 11 5 14.5455 5 16C5 19.866 8.13401 23 12 23C15.866 23 19 19.866 19 16C19 14.5455 19 11 19 11" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                    <path d="M12 11V15" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                  </svg>
+                </div>
+                <div className="flex flex-col gap-0.5">
+                  <span className="text-xs font-medium text-zinc-500">Vazio</span>
+                  <span className="text-[10px] text-zinc-600">Arraste um card para cá</span>
+                </div>
               </div>
             )}
           </div>
