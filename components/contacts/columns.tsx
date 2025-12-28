@@ -23,7 +23,7 @@ export const columns: ColumnDef<Contact>[] = [
                     <div className="h-8 w-8 rounded-full bg-gradient-to-br from-indigo-500/20 to-purple-500/20 ring-1 ring-white/10 flex items-center justify-center text-xs font-bold text-indigo-300">
                         {initials}
                     </div>
-                    <span className="font-medium text-zinc-200">{name}</span>
+                    <span className="font-medium text-zinc-900 dark:text-zinc-100">{name}</span>
                 </div>
             )
         }
@@ -33,7 +33,7 @@ export const columns: ColumnDef<Contact>[] = [
         header: 'Email',
         cell: ({ row }) => {
             const email = row.getValue('email') as string | null
-            return <span className="text-zinc-500">{email || '-'}</span>
+            return <span className="text-zinc-600 dark:text-zinc-500">{email || '-'}</span>
         },
     },
     {
@@ -45,7 +45,7 @@ export const columns: ColumnDef<Contact>[] = [
 
             return (
                 <div className="flex items-center gap-3 group/phone">
-                    <span className="text-zinc-400 font-mono text-xs">{phone}</span>
+                    <span className="text-zinc-600 dark:text-zinc-400 font-mono text-xs">{phone}</span>
                     <Button
                         size="icon"
                         variant="ghost"
@@ -70,8 +70,8 @@ export const columns: ColumnDef<Contact>[] = [
             if (!company) return <span className="text-zinc-600">-</span>
 
             return (
-                <div className="inline-flex items-center px-2 py-1 rounded-md bg-zinc-800/50 border border-white/5">
-                    <span className="text-xs font-medium text-zinc-400">{company}</span>
+                <div className="inline-flex items-center px-2 py-1 rounded-md bg-zinc-100 dark:bg-zinc-800/50 border border-zinc-200 dark:border-white/5">
+                    <span className="text-xs font-medium text-zinc-700 dark:text-zinc-400">{company}</span>
                 </div>
             )
         },

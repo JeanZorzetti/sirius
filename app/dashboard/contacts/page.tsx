@@ -33,8 +33,10 @@ export default async function ContactsPage() {
     return (
         <div className="flex-1 space-y-4 p-8 pt-6">
             <div className="flex items-center justify-between space-y-2">
-                <h2 className="text-2xl font-bold tracking-tight text-white mb-1">CONTATOS</h2>
-                <p className="text-sm text-zinc-500">Gerencie sua base de clientes e leads.</p>
+                <div className="flex flex-col gap-1">
+                    <h2 className="text-2xl font-bold tracking-tight text-zinc-900 dark:text-white">CONTATOS</h2>
+                    <p className="text-sm text-zinc-500">Gerencie sua base de clientes e leads.</p>
+                </div>
                 <div className="flex items-center space-x-2">
                     <CreateContactDialog />
                 </div>
