@@ -40,7 +40,7 @@ export default function BillingPage() {
                         <CardDescription>Para empresas que querem escalar.</CardDescription>
                     </CardHeader>
                     <CardContent className="flex-1">
-                        <div className="text-3xl font-bold">R$ 97<span className="text-sm font-normal text-muted-foreground">/mês</span></div>
+                        <div className="text-3xl font-bold">R$ 49<span className="text-sm font-normal text-muted-foreground">/mês</span></div>
                         <ul className="mt-4 space-y-2 text-sm text-muted-foreground">
                             <li className="flex items-center gap-2"><Check className="h-4 w-4 text-primary" /> Negócios Ilimitados</li>
                             <li className="flex items-center gap-2"><Check className="h-4 w-4 text-primary" /> Contatos Ilimitados</li>
