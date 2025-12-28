@@ -8,7 +8,7 @@ import { DollarSign } from "lucide-react"
 const prisma = new PrismaClient()
 
 export const metadata: Metadata = {
-    title: "Dashboard - CRM",
+    title: "Pipelines - CRM",
 }
 
 // Force dynamic rendering so we always get fresh data
@@ -58,7 +58,7 @@ export default async function DashboardPage() {
     return (
         <div className="flex-1 space-y-4 p-8 pt-6">
             <div className="flex items-center justify-between space-y-2">
-                <h2 className="text-3xl font-bold tracking-tight">Dashboard</h2>
+                <h2 className="text-3xl font-bold tracking-tight">Pipeline</h2>
                 <div className="flex items-center space-x-2">
                     <CreateDealDialog
                         stages={stages}

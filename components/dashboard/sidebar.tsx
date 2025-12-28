@@ -7,7 +7,7 @@ import { Home, Users, Settings, BarChart3, CreditCard } from 'lucide-react'
 
 const navItems = [
   {
-    title: 'Dashboard',
+    title: 'Pipelines',
     href: '/dashboard',
     icon: Home,
   },
@@ -17,7 +17,7 @@ const navItems = [
     icon: Users,
   },
   {
-    title: 'Analytics',
+    title: 'Dashboard',
     href: '/dashboard/analytics',
     icon: BarChart3,
   },
