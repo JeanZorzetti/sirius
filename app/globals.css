@@ -140,11 +140,11 @@
   }
 
   .dark body {
-    /* More visible dot pattern: 2px dots, 0.08 opacity, 20px spacing */
-    background-image: radial-gradient(circle at 1px 1px, rgba(255, 255, 255, 0.08) 2px, transparent 0);
-    background-size: 20px 20px;
-    background-color: oklch(0.05 0 0);
-    /* Ensure base color matches variable */
+    /* High visibility: Indigo dots on slightly lighter background */
+    background-image: radial-gradient(circle at 1px 1px, rgba(99, 102, 241, 0.15) 2px, transparent 0);
+    background-size: 24px 24px;
+    background-color: oklch(0.10 0 0);
+    /* Lighter Zinc (was 0.05) */
   }
 }
 
