@@ -1,5 +1,8 @@
 'use client'
 
+import Link from "next/link"
+
+
 import {
   Avatar,
   AvatarFallback,
@@ -39,11 +42,15 @@ export function UserNav({ user }: { user: any }) {
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          <DropdownMenuItem>
-            Perfil
+          <DropdownMenuItem asChild>
+            <Link href="/dashboard/settings" className="w-full cursor-pointer">
+              Perfil
+            </Link>
           </DropdownMenuItem>
-          <DropdownMenuItem>
-            Configurações
+          <DropdownMenuItem asChild>
+            <Link href="/dashboard/settings" className="w-full cursor-pointer">
+              Configurações
+            </Link>
           </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
