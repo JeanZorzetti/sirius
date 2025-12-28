@@ -51,14 +51,21 @@ export default async function DashboardPage() {
         }))
     }))
 
-    const hasDeals = stages.flatMap(stage => stage.deals).length > 0
+    const dealCount = stages.flatMap(stage => stage.deals).length
+    const hasDeals = dealCount > 0
+    const isPro = user.organization.plan === 'PRO'
 
     return (
         <div className="flex-1 space-y-4 p-8 pt-6">
             <div className="flex items-center justify-between space-y-2">
                 <h2 className="text-3xl font-bold tracking-tight">Dashboard</h2>
                 <div className="flex items-center space-x-2">
-                    <CreateDealDialog stages={stages} contacts={contacts} />
+                    <CreateDealDialog
+                        stages={stages}
+                        contacts={contacts}
+                        dealCount={dealCount}
+                        isPro={isPro}
+                    />
                 </div>
             </div>
 
@@ -69,7 +76,12 @@ export default async function DashboardPage() {
                     icon={DollarSign}
                     title="Seu pipeline está vazio"
                     description="Crie seu primeiro negócio para começar a visualizar seu funil de vendas."
-                    action={<CreateDealDialog stages={stages} contacts={contacts} />}
+                    action={<CreateDealDialog
+                        stages={stages}
+                        contacts={contacts}
+                        dealCount={dealCount}
+                        isPro={isPro}
+                    />}
                 />
             )}
         </div>
