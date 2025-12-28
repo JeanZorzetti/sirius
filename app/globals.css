@@ -140,8 +140,9 @@
   }
 
   .dark body {
-    background-image: radial-gradient(circle at 1px 1px, rgba(255, 255, 255, 0.03) 1px, transparent 0);
-    background-size: 24px 24px;
+    /* More visible dot pattern: 2px dots, 0.08 opacity, 20px spacing */
+    background-image: radial-gradient(circle at 1px 1px, rgba(255, 255, 255, 0.08) 2px, transparent 0);
+    background-size: 20px 20px;
     background-color: oklch(0.05 0 0);
     /* Ensure base color matches variable */
   }
