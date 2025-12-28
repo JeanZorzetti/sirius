@@ -1,0 +1,39 @@
+ROLE: Senior UI Designer (Data Visualization & Tables).
+
+OBJECTIVE:
+Refactor `/dashboard/contacts` to match the "Deep Slate Premium" theme of the app.
+Current table is generic (`ui/table`).
+We need a **"Glass Panel Data Grid"**.
+
+CONTEXT:
+Theme: Deep Slate (`oklch(0.17...)`), Indigo Accents (`oklch(0.64 0.22 41)`), Glass Borders (`white/10`).
+Files: `app/dashboard/contacts/page.tsx`, `components/contacts/data-table.tsx`, `components/contacts/columns.tsx`.
+
+TASKS:
+
+1. **Refactor `components/contacts/data-table.tsx`:**
+   - Remove standard border/rounded-md.
+   - Use a **Glass Card** container: `bg-white/[0.02] border border-white/5 rounded-2xl backdrop-blur-xl`.
+   - Headers should be uppercase, tracking-wider, text-zinc-500, font-semibold.
+   - Rows should have a subtle hover effect (`hover:bg-white/[0.02]`) and transition.
+
+2. **Refactor `components/contacts/columns.tsx`:**
+   - **Name Column:** Add a generated "Avatar" circle (Gradient Indigo/Purple) with the first letter of the name.
+   - **Phone Column:** Style the WhatsApp button as a "Jewel" (like the Deal Card action).
+   - **Company Column:** Use a pill/badge design (`bg-zinc-800/50 text-zinc-300`).
+   - Typography: Use `font-medium text-zinc-200` for primary data.
+
+3. **Enhance `app/dashboard/contacts/page.tsx`:**
+   - Ensure the visible container uses the full height and proper spacing.
+
+INPUT FILES PROVIDED BELOW.
+RETURN UPDATED CODE FOR ALL 3 FILES.
+
+=== components/contacts/data-table.tsx (CURRENT) ===
+... [I will provide content] ...
+
+=== components/contacts/columns.tsx (CURRENT) ===
+... [I will provide content] ...
+
+=== app/dashboard/contacts/page.tsx (CURRENT) ===
+... [I will provide content] ...
