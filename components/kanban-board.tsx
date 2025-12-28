@@ -21,12 +21,18 @@ import { CSS } from '@dnd-kit/utilities'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { updateDealStage } from '@/app/dashboard/actions'
 import { EditDealDialog } from '@/components/deals/edit-deal-dialog'
+import { MessageCircle } from 'lucide-react'
+import { Button } from '@/components/ui/button'
 
 type Deal = {
   id: string
   title: string
   value: any
   stageId: string
+  contact?: {
+    name: string
+    phone?: string | null
+  } | null
 }
 
 type Stage = {
@@ -47,18 +53,40 @@ type KanbanBoardProps = {
 }
 
 function DealCard({ deal, onClick }: { deal: Deal, onClick?: () => void }) {
+  const handleWhatsApp = (e: React.MouseEvent) => {
+    e.stopPropagation() // Prevent card click
+    if (!deal.contact?.phone) return
+    const phone = deal.contact.phone.replace(/\D/g, '')
+    window.open(`https://wa.me/${phone}`, '_blank')
+  }
+
   return (
     <Card
       onClick={onClick}
-      className="cursor-grab active:cursor-grabbing hover:border-primary/50 transition-colors"
+      className="cursor-grab active:cursor-grabbing hover:border-primary/50 transition-colors group relative"
     >
       <CardHeader className="p-4 pb-2">
         <CardTitle className="text-sm font-medium">{deal.title}</CardTitle>
       </CardHeader>
       <CardContent className="p-4 pt-0">
-        <div className="text-sm text-muted-foreground">
-          {deal.value ? `R$ ${Number(deal.value).toFixed(2)}` : 'Sem valor'}
+        <div className="flex items-center justify-between">
+          <div className="text-sm text-muted-foreground">
+            {deal.value ? `R$ ${Number(deal.value).toFixed(2)}` : 'Sem valor'}
+          </div>
+
+          {deal.contact?.phone && (
+            <Button
+              size="icon"
+              variant="ghost"
+              className="h-6 w-6 text-green-600 hover:text-green-700 hover:bg-green-100 dark:hover:bg-green-900/30"
+              onClick={handleWhatsApp}
+              title={`Conversar com ${deal.contact.name}`}
+            >
+              <MessageCircle className="h-4 w-4" />
+            </Button>
+          )}
         </div>
+        {deal.contact && <div className="text-xs text-muted-foreground mt-1 truncate">{deal.contact.name}</div>}
       </CardContent>
     </Card>
   )

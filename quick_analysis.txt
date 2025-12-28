@@ -1,0 +1,13 @@
+Analise criticamente:
+Produto: Sirius CRM (SaaS B2B).
+Stack: Next.js + Shadcn UI.
+Preço: R$ 49,00/mês FIXO para até 5 usuários.
+Concorrentes: 
+- Bigin (Zoho): R$ 50,00 POR usuário.
+- Agendor: R$ 56,00 POR usuário.
+- RD Station CRM: Free (até 4 users) ou R$ 50/user.
+
+Pergunta:
+1. O preço fixo de R$49 (vs por usuário) é uma vantagem competitiva real ou irrelevante?
+2. O que é mais importante para pequenas empresas: Preço ou Integração WhatsApp?
+3. Dê uma nota de 0 a 10 para a chance de sobrevivência desse SaaS.

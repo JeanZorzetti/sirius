@@ -29,7 +29,8 @@ export default async function DashboardPage() {
         },
         include: {
             deals: {
-                where: { organizationId: user.organizationId } // redundant but safe
+                where: { organizationId: user.organizationId },
+                include: { contact: true }
             },
         },
         orderBy: {
