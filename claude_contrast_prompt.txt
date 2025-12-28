@@ -1,0 +1,28 @@
+ROLE: Senior UI/UX Designer (Accessibility & Design Systems).
+
+OBJECTIVE:
+Refactor the CRM's global color palette (`globals.css`) to solve "Low Contrast" and "Too Dark" issues.
+The user finds the current "Midnight/Deep Slate" theme too dark and hard to read.
+We need a **"High Contrast Dark Mode"** (similar to Linear High Contrast or VS Code High Contrast).
+
+REQUIREMENTS:
+1. **Backgrounds:**
+   - Brighten the base background significantly. Instead of Black (`oklch(0.05)`), use a rich Dark Gray/Slate (`oklch(0.18)` or similar).
+   - Ensure Cards/Panels are distinctly lighter or have a clear border.
+
+2. **Contrast & Legibility (Critical):**
+   - **Text:** Primary text must be bright White (`oklch(0.99)`). Secondary text must be readable Silver (`oklch(0.70)`), never dark gray.
+   - **Borders:** Borders must be visible. Increase opacity from `10%` to `15-20%`.
+   - **Active States:** Active items must have a strong background contrast, not just a subtle glow.
+
+3. **Visual Hierarchy:**
+   - Use color to separate sections (Sidebar vs Main Content vs Cards).
+   - The "Dot Pattern" should still be visible but subtle.
+
+INPUT FILE:
+=== app/globals.css (CURRENT) ===
+@import "tailwindcss";
+... [I will provide content] ...
+
+OUTPUT:
+Return the FULLY REFACTORED `app/globals.css` file.
