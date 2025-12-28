@@ -58,9 +58,15 @@ export async function registerAction(prevState: any, formData: FormData) {
         // We only store essential info in session
         await login({ id: newUser.id, email: newUser.email, name: newUser.name, organizationId: newUser.organizationId })
 
-    } catch (error) {
-        console.error('Registration error:', error)
-        return { error: 'Erro ao criar conta. Tente novamente.' }
+    } catch (error: any) {
+        console.error('SERVER REGISTRATION ERROR:', JSON.stringify(error, null, 2))
+
+        // Check for Prisma specific errors
+        if (error.code === 'P2002') {
+            return { error: 'Este e-mail ou nome da empresa já está em uso.' }
+        }
+
+        return { error: `Erro interno: ${error.message || 'Falha desconhecida'}` }
     }
 
     redirect('/dashboard')
