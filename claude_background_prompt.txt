@@ -1,0 +1,21 @@
+ROLE: Senior UI Designer (Dark Mode Specialist).
+
+OBJECTIVE:
+Improve the CRM processing background.
+The current `bg-zinc-950` is clean but flat.
+We want a "Subtle Technical Grid" or "Dot Matrix" background to give it that "High-End SaaS" feel (like Vercel, Linear, Volta).
+
+CONTEXT:
+Current Theme: Dark Mode (Zinc 950 base, Indigo accents).
+File: `app/globals.css`.
+
+TASK:
+Provide the CSS code to add a subtle SVG background pattern to the `body` or `:root`.
+- It must be **very subtle** (opacity 0.03 or similar).
+- It should blend perfectly with `oklch(0.05 0 0)` (Zinc 950).
+- Suggest a "Dot Pattern" or "Grid Pattern" using `background-image: radial-gradient(...)` or `url("data:image/svg+xml...")`.
+
+INPUT FILES:
+=== app/globals.css (CURRENT) ===
+@import "tailwindcss";
+... [I will provide the content] ...
