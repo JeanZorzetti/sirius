@@ -27,24 +27,24 @@ export function FeatureGateModal({
 }: FeatureGateModalProps) {
     return (
         <Dialog open={isOpen} onOpenChange={onClose}>
-            <DialogContent className="sm:max-w-[480px] p-0 overflow-hidden border-0 shadow-2xl bg-zinc-950 text-white ring-1 ring-white/10">
+            <DialogContent className="sm:max-w-[480px] p-0 max-h-[90vh] overflow-y-auto border-0 shadow-2xl bg-zinc-950 text-white ring-1 ring-white/10 scrollbar-none">
 
                 {/* Header Section with Gradient & Icon */}
-                <div className="relative pt-10 pb-8 px-6 bg-gradient-to-br from-indigo-950 via-zinc-900 to-zinc-950 overflow-hidden text-center">
+                <div className="relative pt-8 pb-6 px-6 bg-gradient-to-br from-indigo-950 via-zinc-900 to-zinc-950 overflow-hidden text-center shrink-0">
                     {/* Background Effects */}
                     <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500" />
                     <div className="absolute top-[-50px] right-[-50px] w-32 h-32 bg-purple-500/20 blur-[60px] rounded-full pointing-events-none" />
                     <div className="absolute bottom-[-30px] left-[-30px] w-40 h-40 bg-indigo-500/10 blur-[50px] rounded-full pointing-events-none" />
 
                     <div className="relative z-10 flex flex-col items-center">
-                        <div className="w-16 h-16 bg-gradient-to-br from-indigo-500/20 to-purple-500/20 rounded-2xl flex items-center justify-center mb-6 ring-1 ring-white/10 shadow-[0_0_30px_-5px_rgba(99,102,241,0.3)] backdrop-blur-sm animate-pulse">
-                            <Crown className="w-8 h-8 text-indigo-400" />
+                        <div className="w-14 h-14 bg-gradient-to-br from-indigo-500/20 to-purple-500/20 rounded-2xl flex items-center justify-center mb-4 ring-1 ring-white/10 shadow-[0_0_30px_-5px_rgba(99,102,241,0.3)] backdrop-blur-sm animate-pulse">
+                            <Crown className="w-7 h-7 text-indigo-400" />
                         </div>
                         <DialogHeader>
-                            <DialogTitle className="text-2xl font-bold text-center mb-3 bg-gradient-to-r from-white via-indigo-100 to-indigo-300 bg-clip-text text-transparent">
+                            <DialogTitle className="text-xl font-bold text-center mb-2 bg-gradient-to-r from-white via-indigo-100 to-indigo-300 bg-clip-text text-transparent">
                                 {title}
                             </DialogTitle>
-                            <DialogDescription className="text-center text-zinc-400 text-base max-w-sm mx-auto leading-relaxed">
+                            <DialogDescription className="text-center text-zinc-400 text-sm max-w-sm mx-auto leading-relaxed">
                                 {description}
                             </DialogDescription>
                         </DialogHeader>
@@ -52,48 +52,48 @@ export function FeatureGateModal({
                 </div>
 
                 {/* Features List */}
-                <div className="px-8 py-6 space-y-4 bg-zinc-950">
-                    <div className="space-y-3">
-                        <div className="flex items-center gap-4 p-3 rounded-xl bg-white/5 border border-white/5 hover:bg-white/10 transition-colors group">
-                            <div className="p-2 rounded-lg bg-green-500/10 text-green-400 group-hover:scale-110 transition-transform">
-                                <Zap className="w-5 h-5 shrink-0" />
+                <div className="px-6 py-5 space-y-4 bg-zinc-950">
+                    <div className="space-y-2.5">
+                        <div className="flex items-center gap-3 p-2.5 rounded-xl bg-white/5 border border-white/5 hover:bg-white/10 transition-colors group">
+                            <div className="p-1.5 rounded-lg bg-green-500/10 text-green-400 group-hover:scale-110 transition-transform">
+                                <Zap className="w-4 h-4 shrink-0" />
                             </div>
                             <div className="flex flex-col">
                                 <span className="text-sm font-semibold text-zinc-200">Negócios Ilimitados</span>
-                                <span className="text-xs text-zinc-500">Crie quantos deals sua empresa precisar</span>
+                                <span className="text-[11px] text-zinc-500">Crie quantos deals sua empresa precisar</span>
                             </div>
                         </div>
 
-                        <div className="flex items-center gap-4 p-3 rounded-xl bg-white/5 border border-white/5 hover:bg-white/10 transition-colors group">
-                            <div className="p-2 rounded-lg bg-blue-500/10 text-blue-400 group-hover:scale-110 transition-transform">
-                                <TrendingUp className="w-5 h-5 shrink-0" />
+                        <div className="flex items-center gap-3 p-2.5 rounded-xl bg-white/5 border border-white/5 hover:bg-white/10 transition-colors group">
+                            <div className="p-1.5 rounded-lg bg-blue-500/10 text-blue-400 group-hover:scale-110 transition-transform">
+                                <TrendingUp className="w-4 h-4 shrink-0" />
                             </div>
                             <div className="flex flex-col">
                                 <span className="text-sm font-semibold text-zinc-200">Contatos Ilimitados</span>
-                                <span className="text-xs text-zinc-500">Gerencie sua base sem restrições</span>
+                                <span className="text-[11px] text-zinc-500">Gerencie sua base sem restrições</span>
                             </div>
                         </div>
 
-                        <div className="flex items-center gap-4 p-3 rounded-xl bg-white/5 border border-white/5 hover:bg-white/10 transition-colors group">
-                            <div className="p-2 rounded-lg bg-purple-500/10 text-purple-400 group-hover:scale-110 transition-transform">
-                                <Sparkles className="w-5 h-5 shrink-0" />
+                        <div className="flex items-center gap-3 p-2.5 rounded-xl bg-white/5 border border-white/5 hover:bg-white/10 transition-colors group">
+                            <div className="p-1.5 rounded-lg bg-purple-500/10 text-purple-400 group-hover:scale-110 transition-transform">
+                                <Sparkles className="w-4 h-4 shrink-0" />
                             </div>
                             <div className="flex flex-col">
                                 <span className="text-sm font-semibold text-zinc-200">Analytics Avançado</span>
-                                <span className="text-xs text-zinc-500">Insights inteligentes para vender mais</span>
+                                <span className="text-[11px] text-zinc-500">Insights inteligentes para vender mais</span>
                             </div>
                         </div>
                     </div>
 
-                    <DialogFooter className="flex-col gap-3 sm:gap-0 mt-8">
-                        <Button asChild size="lg" className="w-full h-12 relative overflow-hidden group bg-white text-zinc-950 hover:bg-zinc-200 hover:text-zinc-950 border-0">
+                    <DialogFooter className="flex-col gap-2 sm:gap-0 mt-6 pb-2">
+                        <Button asChild size="lg" className="w-full h-11 relative overflow-hidden group bg-white text-zinc-950 hover:bg-zinc-200 hover:text-zinc-950 border-0">
                             <Link href="/dashboard/billing" className="flex items-center justify-center gap-2">
                                 <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/50 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
-                                <Rocket className="w-5 h-5 relative z-10" />
-                                <span className="font-bold text-base relative z-10">Fazer Upgrade (R$ 49/mês)</span>
+                                <Rocket className="w-4 h-4 relative z-10" />
+                                <span className="font-bold text-sm relative z-10">Fazer Upgrade (R$ 49/mês)</span>
                             </Link>
                         </Button>
-                        <Button variant="ghost" className="w-full text-zinc-500 hover:text-zinc-300 hover:bg-transparent" onClick={onClose}>
+                        <Button variant="ghost" className="w-full h-9 text-xs text-zinc-500 hover:text-zinc-300 hover:bg-transparent" onClick={onClose}>
                             Continuar no plano Gratuito
                         </Button>
                     </DialogFooter>
