@@ -5,7 +5,7 @@ import { getSession } from "@/lib/auth";
 export async function POST(req: Request) {
     try {
         const session = await getSession();
-        if (!session || !session.organizationId) {
+        if (!session || !session.user || !session.user.organizationId) {
             console.error("STRIPE_CHECKOUT_AUTH_ERROR: Session invalid or missing organizationId", session);
             return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
         }
@@ -34,8 +34,8 @@ export async function POST(req: Request) {
                 },
             ],
             metadata: {
-                organizationId: session.organizationId,
-                userId: session.userId
+                organizationId: session.user.organizationId,
+                userId: session.user.id
             },
             return_url: `${appUrl}/dashboard/billing?session_id={CHECKOUT_SESSION_ID}`,
         });
