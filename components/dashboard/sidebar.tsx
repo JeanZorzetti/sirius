@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 import { cn } from '@/lib/utils'
 import { Home, Users, Settings, BarChart3, CreditCard } from 'lucide-react'
@@ -48,8 +49,8 @@ export function Sidebar() {
         <div className="flex h-16 items-center px-6 border-b border-white/5">
           <Link href="/dashboard" className="flex items-center gap-3 group">
             {/* Logo Icon */}
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-500/20 to-purple-500/20 flex items-center justify-center ring-1 ring-white/10 group-hover:scale-105 transition-transform duration-300">
-              <div className="w-4 h-4 rounded-full bg-indigo-400 shadow-[0_0_10px_rgba(99,102,241,0.5)]" />
+            <div className="relative w-8 h-8 group-hover:scale-105 transition-transform duration-300">
+              <Image src="/logo.png" alt="Sirius Logo" fill className="object-contain" />
             </div>
 
             <div className="flex flex-col">

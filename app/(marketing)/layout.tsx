@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import Image from 'next/image'
 import { Button } from '@/components/ui/button'
 import { MobileNav } from '@/components/marketing/mobile-nav'
 
@@ -14,7 +15,10 @@ export default function MarketingLayout({
         <div className="container mx-auto flex h-16 items-center justify-between px-4">
           <div className="flex items-center gap-4 md:gap-8">
             <Link href="/" className="text-xl font-bold flex items-center gap-2">
-              <span className="bg-primary text-primary-foreground text-xs font-bold px-1 py-0.5 rounded">SIRIUS</span>
+              <div className="relative w-8 h-8">
+                <Image src="/logo.png" alt="Sirius Logo" fill className="object-contain" />
+              </div>
+              <span className="font-bold tracking-tight">Sirius CRM</span>
             </Link>
             <div className="hidden md:flex items-center gap-6">
               <Link
