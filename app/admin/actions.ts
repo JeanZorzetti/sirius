@@ -1,0 +1,67 @@
+'use server'
+
+import { prisma } from "@/lib/prisma"
+import { getSession } from "@/lib/auth"
+import { revalidatePath } from "next/cache"
+
+async function checkAdmin() {
+    const session = await getSession()
+    if (!session || !session.user || !session.user.email) {
+        throw new Error("Unauthorized")
+    }
+
+    const user = await prisma.user.findUnique({
+        where: { email: session.user.email },
+    })
+
+    if (!user || user.role !== "ADMIN") {
+        throw new Error("Forbidden")
+    }
+
+    return user
+}
+
+export async function updateOrganizationPlan(orgId: string, plan: "FREE" | "PRO") {
+    await checkAdmin()
+
+    await prisma.organization.update({
+        where: { id: orgId },
+        data: { plan },
+    })
+
+    revalidatePath("/admin/organizations")
+    return { success: true }
+}
+
+export async function deleteOrganization(orgId: string) {
+    await checkAdmin()
+
+    // Cascade delete is handled by Prisma schema if configured, 
+    // but usually better to be explicit or use onDelete: Cascade in schema.
+    // Assuming schema handles relations or we might fail if not cleared.
+    // For now, let's try direct deletion.
+
+    // Note: If you have strict Foreign Keys without Cascade, this will throw.
+    // In a real prod env, we should delete related records first.
+
+    // Let's safe delete: Delete users, deals, contacts first? 
+    // Or just trust the schema has cascades? 
+    // Looking at schema from previous context, relations don't explicitly show onDelete: Cascade in the view I saw.
+    // Let's try to delete. If it fails, I'll update to delete related data.
+
+    try {
+        await prisma.contact.deleteMany({ where: { organizationId: orgId } })
+        await prisma.deal.deleteMany({ where: { organizationId: orgId } })
+        await prisma.pipelineStage.deleteMany({ where: { organizationId: orgId } })
+        await prisma.user.deleteMany({ where: { organizationId: orgId } })
+        await prisma.organization.delete({
+            where: { id: orgId },
+        })
+    } catch (e) {
+        console.error("Failed to delete organization", e)
+        throw new Error("Failed to delete organization")
+    }
+
+    revalidatePath("/admin/organizations")
+    return { success: true }
+}

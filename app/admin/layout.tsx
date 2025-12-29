@@ -39,6 +39,9 @@ export default async function AdminLayout({
                     <Link href="/admin/users" className="text-sm font-medium text-zinc-400 hover:text-white transition-colors">
                         Users
                     </Link>
+                    <Link href="/admin/organizations" className="text-sm font-medium text-zinc-400 hover:text-white transition-colors">
+                        Organizations
+                    </Link>
                 </nav>
                 <div className="ml-auto">
                     <Link href="/dashboard" className="flex items-center gap-2 text-xs font-medium text-zinc-500 hover:text-white transition-colors">
