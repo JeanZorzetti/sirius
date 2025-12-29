@@ -42,11 +42,17 @@ model User {
   deals     Deal[]   // Deals managed by this user
   
   role      Role     @default(USER)
+  orgRole   OrgRole  @default(OWNER) // Defaulting to OWNER for now so existing users don't lose access. Ideally MEMBER.
 }
 
 enum Role {
   USER
   ADMIN
+}
+
+enum OrgRole {
+  OWNER
+  MEMBER
 }
 
 model Contact {

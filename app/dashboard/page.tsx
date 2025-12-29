@@ -23,13 +23,18 @@ export default async function DashboardPage() {
         return <div>Usuário não pertence a uma organização.</div>
     }
 
+    const isMember = user.orgRole === 'MEMBER'
+
     const rawStages = await prisma.pipelineStage.findMany({
         where: {
             organizationId: user.organizationId
         },
         include: {
             deals: {
-                where: { organizationId: user.organizationId },
+                where: {
+                    organizationId: user.organizationId,
+                    ...(isMember ? { userId: user.id } : {})
+                },
                 include: { contact: true }
             },
         },
@@ -58,7 +63,18 @@ export default async function DashboardPage() {
     return (
         <div className="flex-1 space-y-4 p-8 pt-6">
             <div className="flex items-center justify-between space-y-2">
-                <h2 className="text-3xl font-bold tracking-tight">Pipeline</h2>
+                <div className="flex items-center gap-3">
+                    <h2 className="text-3xl font-bold tracking-tight">Pipeline</h2>
+                    {isMember ? (
+                        <span className="px-2 py-1 rounded-full bg-zinc-800 text-xs font-medium text-zinc-400 border border-zinc-700">
+                            👤 Meus Negócios
+                        </span>
+                    ) : (
+                        <span className="px-2 py-1 rounded-full bg-indigo-500/10 text-xs font-medium text-indigo-400 border border-indigo-500/20">
+                            🏢 Visão Global
+                        </span>
+                    )}
+                </div>
                 <div className="flex items-center space-x-2">
                     <CreateDealDialog
                         stages={stages}

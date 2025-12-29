@@ -15,7 +15,32 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: 'Sirius CRM | ROI Labs',
-  description: 'O CRM inteligente para quem quer brilhar nas vendas.',
+  description: 'Transforme leads em receita recorrente com o CRM mais intuitivo do mercado. Pipeline visual, contatos inteligentes e métricas que brilham.',
+  keywords: ['CRM', 'Vendas', 'Pipeline', 'Gestão de Clientes', 'SaaS', 'Sirius', 'ROI Labs'],
+  authors: [{ name: 'ROI Labs', url: 'https://roilabs.com.br' }],
+  creator: 'Jean Zorzetti',
+  publisher: 'ROI Labs',
+  metadataBase: new URL('https://sirius.roilabs.com.br'),
+  openGraph: {
+    title: 'Sirius CRM | Brilhe nas Vendas',
+    description: 'O CRM inteligente para times de alta performance. Organizaçāo, Cadência e Fechamento.',
+    url: 'https://sirius.roilabs.com.br',
+    siteName: 'Sirius CRM',
+    locale: 'pt_BR',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Sirius CRM',
+    description: 'Transforme leads em receita recorrente.',
+    creator: '@roilabs',
+  },
+  icons: {
+    icon: '/favicon.ico',
+    shortcut: '/favicon.ico',
+    apple: '/apple-icon.png',
+  },
+  manifest: '/manifest.json',
 };
 
 import { ThemeProvider } from "@/components/theme-provider"
