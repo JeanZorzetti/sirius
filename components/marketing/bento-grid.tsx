@@ -1,6 +1,6 @@
 import { Card } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { BarChart3, Users, Zap, LayoutKanban, ArrowUpRight } from "lucide-react"
+import { BarChart3, Users, Zap, Kanban, ArrowUpRight } from "lucide-react"
 
 export function BentoGrid() {
     return (
@@ -17,7 +17,7 @@ export function BentoGrid() {
                     <div className="md:col-span-2 md:row-span-2 group relative overflow-hidden rounded-3xl border border-white/10 bg-white/[0.02] backdrop-blur-xl hover:bg-white/[0.04] transition-colors p-8 flex flex-col">
                         <div className="flex items-center justify-between mb-4">
                             <div className="p-3 rounded-xl bg-indigo-500/10 text-indigo-400 w-fit">
-                                <LayoutKanban className="h-6 w-6" />
+                                <Kanban className="h-6 w-6" />
                             </div>
                             <Badge variant="outline" className="border-indigo-500/30 text-indigo-400">Core</Badge>
                         </div>
