@@ -10,6 +10,7 @@ import {
 import { Badge } from '@/components/ui/badge'
 import { format } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
+import { UserActions } from './user-actions'
 
 export const dynamic = 'force-dynamic'
 
@@ -39,6 +40,7 @@ export default async function AdminUsersPage() {
                             <TableHead className="text-zinc-400">Role</TableHead>
                             <TableHead className="text-zinc-400">Plan</TableHead>
                             <TableHead className="text-zinc-400">Created At</TableHead>
+                            <TableHead className="text-zinc-400 text-right">Actions</TableHead>
                         </TableRow>
                     </TableHeader>
                     <TableBody>
@@ -63,6 +65,9 @@ export default async function AdminUsersPage() {
                                 </TableCell>
                                 <TableCell className="text-zinc-500">
                                     {format(user.createdAt, "dd MMM yyyy", { locale: ptBR })}
+                                </TableCell>
+                                <TableCell className="text-right">
+                                    <UserActions userId={user.id} userName={user.name || 'User'} />
                                 </TableCell>
                             </TableRow>
                         ))}

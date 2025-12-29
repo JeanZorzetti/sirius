@@ -1,8 +1,9 @@
 'use server'
 
 import { prisma } from "@/lib/prisma"
-import { getSession } from "@/lib/auth"
+import { getSession, login } from "@/lib/auth"
 import { revalidatePath } from "next/cache"
+import { redirect } from "next/navigation"
 
 async function checkAdmin() {
     const session = await getSession()
@@ -64,4 +65,22 @@ export async function deleteOrganization(orgId: string) {
 
     revalidatePath("/admin/organizations")
     return { success: true }
+}
+
+export async function impersonateUser(userId: string) {
+    await checkAdmin()
+
+    const targetUser = await prisma.user.findUnique({
+        where: { id: userId },
+    })
+
+    if (!targetUser) {
+        throw new Error("User not found")
+    }
+
+    // Set cookie as if we were this user
+    await login(targetUser)
+
+    // Redirect to their dashboard
+    redirect("/dashboard")
 }
