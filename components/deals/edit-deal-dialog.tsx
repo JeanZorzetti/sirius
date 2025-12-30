@@ -231,8 +231,6 @@ export function EditDealDialog({ deal: initialDeal, open, onOpenChange, stages, 
                                         </div>
                                     </div>
 
-                                    {/* Additional fields coming soon: Tags, Date */}
-
                                     <div className="pt-4 flex justify-between border-t border-zinc-100 dark:border-zinc-800">
                                         <Button type="button" variant="ghost" onClick={handleDelete} className="text-red-500 hover:text-red-600 hover:bg-red-50">
                                             Excluir Negócio

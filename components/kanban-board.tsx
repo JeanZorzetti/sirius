@@ -24,6 +24,7 @@ import { CSS } from '@dnd-kit/utilities'
 import { Card, CardContent } from '@/components/ui/card'
 import { updateDealStage } from '@/app/dashboard/actions'
 import { updateStageOrder, deleteStage, updateStage, createStage } from '@/app/dashboard/pipeline/actions'
+import { reorderDeals } from '@/app/dashboard/deals/actions'
 import { EditDealDialog } from '@/components/deals/edit-deal-dialog'
 import { MessageCircle, GripVertical, MoreHorizontal, Pencil, Trash2, Plus } from 'lucide-react'
 import { Button } from '@/components/ui/button'
@@ -444,41 +445,57 @@ export function KanbanBoard({ stages: initialStages, contacts }: KanbanBoardProp
     }
 
     // --- DEAL REORDERING ---
-    // Note: Cross-column moves usually handled in DragOver, so here we mostly check 
-    // persistence or intra-column final position.
-
-    // We already moved it visually in handleDragOver if it was cross-column.
-    // If it was same-column, we need to use arrayMove here.
-
     const activeStage = stages.find(s => s.deals.some(d => d.id === activeId))
     const overStage = stages.find(s => s.deals.some(d => d.id === overId)) || stages.find(s => s.id === overId)
 
-    if (activeStage) {
-      // Find current position in the (potentially already modified) stages state
-      const currentStageIndex = stages.findIndex(s => s.id === activeStage.id)
-      const dealIndex = stages[currentStageIndex].deals.findIndex(d => d.id === activeId)
+    if (!activeStage || !overStage) return
 
-      // At drag end, ensure we save the state.
-      // If we want accurate intra-column index saving, we need to persist "order" field on deals too.
-      // For now, user only asked for "Permitir alterar a posição que os cards se encontram nas colunas".
-      // This usually implies persisting index.
-      // My deal model has `order` field now.
+    // Check if it's a cross-column move or intra-column reorder
+    const isSameColumn = activeStage.id === overStage.id
 
-      // TODO: Implement `reorderDeals` server action if we want to persist intra-column order.
-      // For MVP 2.0, I will just persist the Stage Change.
-      // If sorting changed, we need a reorder action.
+    if (isSameColumn) {
+      // Intra-column reordering
+      const stageIndex = stages.findIndex(s => s.id === activeStage.id)
+      const oldDealIndex = stages[stageIndex].deals.findIndex(d => d.id === activeId)
+      const newDealIndex = stages[stageIndex].deals.findIndex(d => d.id === overId)
 
-      // Only update Stage ID if changed (DragOver does visual, but we need to confirm save)
-      if (activeStage) {
-        // Check if stage changed
-        // logic is bit complex because DragOver already mutated state for cross-column...
-        // Let's assume DragOver did the job for cross-column.
-      }
+      if (oldDealIndex === newDealIndex) return // No change
 
-      // Simply call updateDealStage to be safe on final drop location
+      // Update state optimistically
+      setStages(prev => {
+        const newStages = [...prev]
+        newStages[stageIndex] = {
+          ...newStages[stageIndex],
+          deals: arrayMove(newStages[stageIndex].deals, oldDealIndex, newDealIndex)
+        }
+        return newStages
+      })
+
+      // Persist to database
+      const reorderedDeals = arrayMove(
+        stages[stageIndex].deals,
+        oldDealIndex,
+        newDealIndex
+      ).map((deal, index) => ({
+        id: deal.id,
+        order: index
+      }))
+
+      await reorderDeals(activeStage.id, reorderedDeals)
+    } else {
+      // Cross-column move - update the stage
+      // The visual update was already done in handleDragOver
       const finalStage = stages.find(s => s.deals.some(d => d.id === activeId))
       if (finalStage) {
         await updateDealStage(activeId as string, finalStage.id)
+
+        // Also update the order within the new column
+        const finalStageIndex = stages.findIndex(s => s.id === finalStage.id)
+        const reorderedDeals = stages[finalStageIndex].deals.map((deal, index) => ({
+          id: deal.id,
+          order: index
+        }))
+        await reorderDeals(finalStage.id, reorderedDeals)
       }
     }
   }

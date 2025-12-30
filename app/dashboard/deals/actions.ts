@@ -179,3 +179,29 @@ export async function deleteNote(noteId: string) {
     revalidatePath("/dashboard")
     return { success: true }
 }
+
+export async function reorderDeals(stageId: string, dealOrders: { id: string, order: number }[]) {
+    const user = await checkPermission()
+
+    // Verify that the stage belongs to the user's organization
+    const stage = await prisma.pipelineStage.findUnique({
+        where: { id: stageId }
+    })
+
+    if (!stage || stage.organizationId !== user.organizationId) {
+        throw new Error("Unauthorized")
+    }
+
+    // Update each deal's order
+    await prisma.$transaction(
+        dealOrders.map(({ id, order }) =>
+            prisma.deal.update({
+                where: { id },
+                data: { order }
+            })
+        )
+    )
+
+    revalidatePath("/dashboard")
+    return { success: true }
+}

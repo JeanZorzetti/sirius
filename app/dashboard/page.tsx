@@ -35,7 +35,11 @@ export default async function DashboardPage() {
                     organizationId: user.organizationId,
                     ...(isMember ? { userId: user.id } : {})
                 },
-                include: { contact: true }
+                include: { contact: true },
+                orderBy: [
+                    { order: 'asc' },
+                    { createdAt: 'desc' }
+                ]
             },
         },
         orderBy: {
