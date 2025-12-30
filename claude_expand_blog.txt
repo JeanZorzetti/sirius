@@ -1,0 +1,34 @@
+You are a Senior Content Marketing Manager & SEO Specialist.
+Your task is to rewrite the file `lib/blog-data.ts` to replace the 3 placeholder blog posts with **REAL, high-quality, long-form content**.
+
+**General Requirements:**
+1.  **Format**: Keep the exact same TypeScript structure (`export const blogPosts = [...]`).
+2.  **Length**: Each article's `content` HTML string must represent an article of **at least 1500 words**.
+    *   *Note*: Since you are writing code, the string will be very long. Use template literals (backticks).
+3.  **SEO Structure**:
+    *   Use proper `<h2 className="text-2xl font-bold mt-8 mb-4">` and `<h3 className="text-xl font-bold mt-6 mb-3">` tags.
+    *   Use bullet points `<ul>` and `<li>`.
+    *   Use `<strong>` for key phrases.
+4.  **Internal Linking**:
+    *   Naturally link to internal pages like `<a href="/dashboard" className="text-primary hover:underline">Dashboard</a>`, `<a href="/pricing">Planos</a>`, etc.
+5.  **Tone**: Professional, authoritative, but accessible (like the RD Station or Rock Content blogs).
+6.  **Call to Action (CTA)**:
+    *   End **every** article with a compelling CTA box/section inviting the user to try Sirius CRM for free.
+
+**Specific Article Guidelines:**
+
+1.  **Slug**: `como-organizar-pipeline-vendas`
+    *   **New Title**: "Como organizar seu Pipeline de Vendas: O Guia Definitivo para 2025"
+    *   **Focus**: Funnel stages (Prospecting -> Qualification -> Proposal -> Negotiation -> Closing), why you shouldn't have too many stages, cleaning the pipe, using Kanban. Mention "Sirius CRM" features like Drag & Drop.
+
+2.  **Slug**: `crm-simples-vs-complexo`
+    *   **New Title**: "CRM Simples vs. Complexo: Por que a burocracia custa milhões"
+    *   **Focus**: The hidden cost of implementation time. Why SMBs don't need Salesforce. The value of "WhatsApp-first" CRMs.
+    *   **Comparison**: Show how Sirius allows starting in minutes vs months.
+
+3.  **Slug**: `poder-do-follow-up`
+    *   **New Title**: "A Ciência do Follow-up: Como vender 80% mais sem ser chato"
+    *   **Focus**: Statistics (80% sales after 5th contact). Cadence of contact. Using WhatsApp vs Email. How to use CRM "Tasks" to never forget a lead.
+
+**Output**:
+Provide the **FULL** content of `lib/blog-data.ts`. Do not truncate.

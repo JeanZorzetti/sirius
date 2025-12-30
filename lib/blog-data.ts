@@ -257,7 +257,9 @@ export const blogPosts = [
       </div>
     `,
     date: '2025-12-28',
-    category: 'Vendas'
+    category: 'Vendas',
+    image: '/images/blog/pipeline-vendas.jpg',
+    author: 'Sirius Team'
   },
   {
     slug: 'crm-simples-vs-complexo',
@@ -564,7 +566,9 @@ export const blogPosts = [
       </div>
     `,
     date: '2025-12-27',
-    category: 'Gestão'
+    category: 'Gestão',
+    image: '/images/blog/crm-simples-complexo.jpg',
+    author: 'Sirius Team'
   },
   {
     slug: 'poder-do-follow-up',
@@ -999,6 +1003,8 @@ export const blogPosts = [
       </div>
     `,
     date: '2025-12-25',
-    category: 'Dicas'
+    category: 'Dicas',
+    image: '/images/blog/follow-up.jpg',
+    author: 'Sirius Team'
   }
 ]

@@ -1,0 +1,16 @@
+The user wants a "Gap Analysis" between Frontend and Backend.
+Task: Scan the project for features that exist in the Frontend (UI) but are missing Backend (DB/Server Actions) implementation.
+
+Focus areas:
+1.  **Mock Data**: Look for hardcoded arrays/objects in components that should be dynamic.
+2.  **TODOs**: Scan for `@TODO` or `TODO` comments related to "implement backend" or "connect to API".
+3.  **Missing Actions**: UI buttons (onClick) that log "not implemented" or do nothing.
+4.  **Drag & Drop**: Check if the Kanban drag & drop persists to the DB (it usually requires a specific endpoint).
+
+If you find missing features:
+1.  **Implement them**. Create the server action, update the schema if needed (unlikely), and wire it up.
+2.  **Verify**.
+3.  **Commit and Push** at the end with a message like `feat: implement missing backend features detected in scan`.
+
+Start by scanning `app/dashboard` and `components/` for these patterns.
+If everything is perfect, report that.

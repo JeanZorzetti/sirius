@@ -1,0 +1,30 @@
+The user wants to add a "Quick Add Contact" feature to the Edit Deal Dialog.
+
+1.  **Modify `app/dashboard/contacts/actions.ts`**:
+    -   Secure the `createContact` action. Currently, it uses `prisma.user.findFirst`, which is insecure/wrong. Change it to use `getSession` from `@/lib/auth`.
+    -   Require the user to have an `organizationId`.
+    -   Update the return type to include the created contact object: `{ success: true, contact: serializedContact }`.
+    -   Keep the `revalidatePath` call.
+
+2.  **Modify `components/deals/edit-deal-dialog.tsx`**:
+    -   Import `createContact` from `@/app/dashboard/contacts/actions`.
+    -   Import `Popover`, `PopoverContent`, `PopoverTrigger` from `@/components/ui/popover`.
+    -   Add state `localContacts` initialized with the `contacts` prop.
+    -   Add state `selectedContactId` initialized with `initialDeal.contactId || 'no_contact'`.
+    -   Change the Contact `Select` component to be **controlled**:
+        -   `value={selectedContactId}`
+        -   `onValueChange={setSelectedContactId}`
+    -   Add a "Quick Add" button (Square with `Plus` icon) next to the Select trigger.
+    -   Wrap the button in a `Popover`.
+    -   Inside the Popover, create a small form (Name, Email, Phone, Company) and a "Salvar" button.
+    -   Implement `handleQuickAddContact`:
+        -   Call `createContact` server action.
+        -   If success:
+            -   Add the new contact to `localContacts`.
+            -   Set `selectedContactId` to the new contact's ID.
+            -   Close the Popover.
+            -   Show success toast/alert.
+
+3.  **Ensure no existing functionality is broken**. The dialog must still update deals correctly.
+
+Implement these changes.

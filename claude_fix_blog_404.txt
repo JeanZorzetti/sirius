@@ -1,0 +1,10 @@
+The user is reporting **404 Errors** on the 3 blog posts we just expanded.
+
+**Root Cause Analysis:**
+We updated `lib/blog-data.ts` locally with the full article content, but we **did not commit and push** these changes to the remote repository. The production site is still serving the old version (or missing the slug data).
+
+**Your Task:**
+1.  Verify the status of `lib/blog-data.ts` (should be modified).
+2.  Commit the changes with the message: `feat(content): expand blog articles for SEO`.
+3.  **Push** the changes to `origin main`.
+4.  Confirm to the user that the changes are live and the 404s should resolve after the next deployment builds.

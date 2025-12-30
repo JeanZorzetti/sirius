@@ -1,0 +1,50 @@
+The build is failing because the `popover` component is missing.
+The file `components/deals/edit-deal-dialog.tsx` imports from `@/components/ui/popover`, but this file does not exist.
+Also, the dependency `@radix-ui/react-popover` is missing from `package.json`.
+
+Please fix this by running the following command to install the component and its dependency:
+
+```bash
+npx shadcn@latest add popover
+```
+
+If the command prompts for confirmation, allow it (but usually in this environment we try to use flags like `-y` or `yes` piped if needed, though `shadcn` often works directly).
+
+If `shadcn` CLI fails or hangs, you must manually:
+1.  Install the dependency: `npm install @radix-ui/react-popover`
+2.  Create the file `components/ui/popover.tsx` with the standard shadcn implementation.
+
+Standard `popover.tsx` content for reference (if needed for manual creation):
+```tsx
+"use client"
+
+import * as React from "react"
+import * as PopoverPrimitive from "@radix-ui/react-popover"
+
+import { cn } from "@/lib/utils"
+
+const Popover = PopoverPrimitive.Root
+
+const PopoverTrigger = PopoverPrimitive.Trigger
+
+const PopoverContent = React.forwardRef<
+  React.ElementRef<typeof PopoverPrimitive.Content>,
+  React.ComponentPropsWithoutRef<typeof PopoverPrimitive.Content>
+>(({ className, align = "center", sideOffset = 4, ...props }, ref) => (
+  <PopoverPrimitive.Portal>
+    <PopoverPrimitive.Content
+      ref={ref}
+      align={align}
+      sideOffset={sideOffset}
+      className={cn(
+        "z-50 w-72 rounded-md border bg-popover p-4 text-popover-foreground shadow-md outline-none data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2",
+        className
+      )}
+      {...props}
+    />
+  </PopoverPrimitive.Portal>
+))
+PopoverContent.displayName = PopoverPrimitive.Content.displayName
+
+export { Popover, PopoverTrigger, PopoverContent }
+```

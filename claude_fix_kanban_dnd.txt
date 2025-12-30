@@ -1,0 +1,22 @@
+The user is reporting that drag and drop stage changes are not persisting to the database.
+I have analyzed components/kanban-board.tsx and found the logic error in `handleDragEnd`.
+
+The problem is:
+1. `handleDragOver` updates the `stages` state optimistically, moving the deal to the new stage memory.
+2. In `handleDragEnd`, we calculate `activeStage` by finding which stage currently contains the deal. Because of step 1, this returns the NEW stage.
+3. We define `isSameColumn = activeStage.id === overStage.id`. This evaluates to TRUE even for cross-column moves, because `activeStage` is already the new stage.
+4. Consequently, we enter the "Same Column" block, which only calls `reorderDeals` but NEVER calls `updateDealStage`.
+5. The deal's `stageId` is never updated in the database.
+
+Fix Instructions:
+1. Modify `handleDragEnd` in `components/kanban-board.tsx`.
+2. Move `setActiveDeal(null)` and `setActiveStage(null)` to the VERY END of the function, so we can access `activeDeal` during the logic.
+3. Change the logic to detect `isSameColumn`. instead of resolving `activeStage` from `stages`, use `activeDeal?.stageId` (which holds the original stage ID from DragStart) and compare it with `overStage.id`.
+   - `const originalStageId = activeDeal?.stageId`
+   - `const isSameColumn = originalStageId === overStage.id`
+4. If `!isSameColumn`, ensure we call `updateDealStage(activeId, overStage.id)` AND then `reorderDeals` for the new column.
+   - Note: The existing "Else" block (lines 485+) already has the correct logic (updateDealStage + reorderDeals). We just need to ensure we enter it.
+5. Ensure `activeDeal` is not null when we use it (it shouldn't be, as it's cleared at end).
+6. Verify imports: `updateDealStage` and `reorderDeals` must be imported.
+
+Apply this fix carefully.
