@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { Plus } from 'lucide-react'
+import { Plus, MessageCircle } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { FeatureGateModal } from '@/components/dashboard/billing/feature-gate-modal'
 import {
@@ -32,6 +32,7 @@ type Stage = {
 type Contact = {
     id: string
     name: string
+    phone?: string | null
 }
 
 
@@ -49,6 +50,7 @@ export function CreateDealDialog({
     const [open, setOpen] = useState(false)
     const [showUpgradeModal, setShowUpgradeModal] = useState(false)
     const [loading, setLoading] = useState(false)
+    const [selectedContactId, setSelectedContactId] = useState<string>('')
 
     const handleOpenChange = (newOpen: boolean) => {
         if (newOpen) {
@@ -141,8 +143,8 @@ export function CreateDealDialog({
                                 <Label htmlFor="contactId" className="text-right">
                                     Contato
                                 </Label>
-                                <div className="col-span-3">
-                                    <Select name="contactId">
+                                <div className="col-span-3 flex gap-2">
+                                    <Select name="contactId" onValueChange={setSelectedContactId}>
                                         <SelectTrigger>
                                             <SelectValue placeholder="Selecione um contato" />
                                         </SelectTrigger>
@@ -154,6 +156,24 @@ export function CreateDealDialog({
                                             ))}
                                         </SelectContent>
                                     </Select>
+                                    {(() => {
+                                        const selectedContact = contacts.find(c => c.id === selectedContactId)
+                                        return selectedContact?.phone ? (
+                                            <Button
+                                                type="button"
+                                                variant="outline"
+                                                size="icon"
+                                                className="shrink-0 text-green-600 border-green-200 hover:bg-green-50 hover:text-green-700 dark:border-green-900/50 dark:text-green-400 dark:hover:bg-green-900/20"
+                                                onClick={() => {
+                                                    const phone = selectedContact.phone?.replace(/\D/g, '')
+                                                    if (phone) window.open(`https://wa.me/${phone}`, '_blank')
+                                                }}
+                                                title="Conversar no WhatsApp"
+                                            >
+                                                <MessageCircle className="w-4 h-4" />
+                                            </Button>
+                                        ) : null
+                                    })()}
                                 </div>
                             </div>
                             <div className="grid grid-cols-4 items-center gap-4">
