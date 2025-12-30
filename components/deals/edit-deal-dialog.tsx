@@ -54,14 +54,34 @@ export function EditDealDialog({ deal: initialDeal, open, onOpenChange, stages, 
 
     // Fetch full details when dialog opens
     useEffect(() => {
+        let cancelled = false
+
         if (open && initialDeal?.id) {
             setFetchingDetails(true)
             getDealDetails(initialDeal.id)
-                .then(setFullDeal) // Assuming action returns the deal with relations
-                .catch(console.error)
-                .finally(() => setFetchingDetails(false))
+                .then((data) => {
+                    if (!cancelled) {
+                        setFullDeal(data)
+                    }
+                })
+                .catch((err) => {
+                    if (!cancelled) {
+                        console.error("Failed to fetch deal details:", err)
+                        alert("Deal não encontrado ou você não tem permissão para acessá-lo.")
+                        onOpenChange(false)
+                    }
+                })
+                .finally(() => {
+                    if (!cancelled) {
+                        setFetchingDetails(false)
+                    }
+                })
         } else {
             setFullDeal(null)
+        }
+
+        return () => {
+            cancelled = true
         }
     }, [open, initialDeal])
 
@@ -101,11 +121,16 @@ export function EditDealDialog({ deal: initialDeal, open, onOpenChange, stages, 
     const handleAddNote = () => {
         if (!newNote.trim() || !initialDeal) return
         startTransition(async () => {
-            await addNote(initialDeal.id, newNote)
-            setNewNote("")
-            // Refresh details
-            const fresh = await getDealDetails(initialDeal.id)
-            setFullDeal(fresh)
+            try {
+                await addNote(initialDeal.id, newNote)
+                setNewNote("")
+                // Refresh details
+                const fresh = await getDealDetails(initialDeal.id)
+                setFullDeal(fresh)
+            } catch (err) {
+                console.error("Failed to add note:", err)
+                alert("Erro ao adicionar observação. O deal pode não existir mais.")
+            }
         })
     }
 
@@ -242,9 +267,14 @@ export function EditDealDialog({ deal: initialDeal, open, onOpenChange, stages, 
                                         fullDeal?.notes?.map((note: any) => (
                                             <NoteItem key={note.id} note={note} onDelete={async () => {
                                                 if (confirm("Excluir nota?")) {
-                                                    await deleteNote(note.id)
-                                                    const fresh = await getDealDetails(initialDeal.id)
-                                                    setFullDeal(fresh)
+                                                    try {
+                                                        await deleteNote(note.id)
+                                                        const fresh = await getDealDetails(initialDeal.id)
+                                                        setFullDeal(fresh)
+                                                    } catch (err) {
+                                                        console.error("Failed to delete note:", err)
+                                                        alert("Erro ao excluir nota. O deal pode não existir mais.")
+                                                    }
                                                 }
                                             }} />
                                         ))

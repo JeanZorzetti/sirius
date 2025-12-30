@@ -21,6 +21,12 @@ async function checkPermission() {
 export async function getDealDetails(dealId: string) {
     const user = await checkPermission()
 
+    // Validate dealId format
+    if (!dealId || typeof dealId !== 'string' || dealId.trim() === '') {
+        console.error("Invalid dealId provided:", dealId)
+        throw new Error("Deal not found")
+    }
+
     const deal = await prisma.deal.findUnique({
         where: { id: dealId },
         include: {
@@ -39,7 +45,22 @@ export async function getDealDetails(dealId: string) {
         }
     })
 
-    if (!deal || deal.organizationId !== user.organizationId) {
+    if (!deal) {
+        console.error("Deal not found in database:", {
+            dealId,
+            userId: user.id,
+            userOrg: user.organizationId
+        })
+        throw new Error("Deal not found")
+    }
+
+    if (deal.organizationId !== user.organizationId) {
+        console.error("Deal organization mismatch:", {
+            dealId,
+            userId: user.id,
+            userOrg: user.organizationId,
+            dealOrg: deal.organizationId
+        })
         throw new Error("Deal not found")
     }
 
