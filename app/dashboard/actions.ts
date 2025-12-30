@@ -2,13 +2,26 @@
 
 import { PrismaClient } from '@prisma/client'
 import { revalidatePath } from 'next/cache'
+import { getSession } from "@/lib/auth"
 
 const prisma = new PrismaClient()
 
+async function getAuthenticatedUser() {
+  const session = await getSession()
+  if (!session || !session.user || !session.user.email) {
+    throw new Error("Unauthorized")
+  }
+  const user = await prisma.user.findUnique({
+    where: { email: session.user.email },
+    include: { organization: true }
+  })
+  if (!user) throw new Error("User not found")
+  return user
+}
+
 export async function updateDealStage(dealId: string, stageId: string) {
   try {
-    const user = await prisma.user.findFirst()
-    if (!user) return { success: false, error: 'User not found' }
+    const user = await getAuthenticatedUser()
 
     // Security: Ensure deal belongs to user's org
     const deal = await prisma.deal.findUnique({ where: { id: dealId } })
@@ -44,13 +57,10 @@ export async function createDeal(formData: FormData) {
     // stageId declared above at line 28
     const contactId = formData.get('contactId') as string || null
 
-    // MVP: Get first user with org
-    const user = await prisma.user.findFirst({
-      include: { organization: true }
-    })
+    const user = await getAuthenticatedUser()
 
-    if (!user || !user.organizationId) {
-      return { success: false, error: 'Usuário ou Organização não encontrados' }
+    if (!user.organizationId) {
+      return { success: false, error: 'Usuário não pertence a uma organização' }
     }
 
     // LIMIT CHECK (FREEMIUM)
@@ -101,8 +111,7 @@ export async function updateDeal(formData: FormData) {
       return { success: false, error: 'Missing required fields' }
     }
 
-    const user = await prisma.user.findFirst()
-    if (!user) return { success: false, error: 'User not found' }
+    const user = await getAuthenticatedUser()
 
     // Security check
     const existingDeal = await prisma.deal.findUnique({ where: { id: dealId } })
@@ -135,8 +144,7 @@ export async function updateDeal(formData: FormData) {
 }
 export async function deleteDeal(dealId: string) {
   try {
-    const user = await prisma.user.findFirst()
-    if (!user) return { success: false, error: 'User not found' }
+    const user = await getAuthenticatedUser()
 
     // Security check
     const existingDeal = await prisma.deal.findUnique({ where: { id: dealId } })

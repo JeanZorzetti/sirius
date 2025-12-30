@@ -51,7 +51,19 @@ export async function getDealDetails(dealId: string) {
         throw new Error("Access denied")
     }
 
-    return deal
+    // Force serialization to simple types to prevent Next.js boundaries errors
+    return {
+        ...deal,
+        value: deal.value ? Number(deal.value) : null,
+        closeDate: deal.closeDate ? deal.closeDate.toISOString() : null,
+        dueDate: deal.dueDate ? deal.dueDate.toISOString() : null,
+        createdAt: deal.createdAt.toISOString(),
+        updatedAt: deal.updatedAt.toISOString(),
+        stage: { ...deal.stage, createdAt: deal.stage.createdAt.toISOString(), updatedAt: deal.stage.updatedAt.toISOString() },
+        contact: deal.contact ? { ...deal.contact, createdAt: deal.contact.createdAt.toISOString(), updatedAt: deal.contact.updatedAt.toISOString() } : null,
+        notes: deal.notes.map(n => ({ ...n, createdAt: n.createdAt.toISOString() })),
+        activities: deal.activities.map(a => ({ ...a, createdAt: a.createdAt.toISOString() }))
+    }
 }
 
 export async function addNote(dealId: string, content: string) {
