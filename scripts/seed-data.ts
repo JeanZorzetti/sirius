@@ -25,17 +25,30 @@ async function main() {
 const stagesList = ['Prospecção', 'Qualificação', 'Proposta', 'Fechamento']
 
 async function seed() {
-    const user = await prisma.user.findUnique({ where: { email: 'admin@crm.com' } })
+    const user = await prisma.user.findUnique({
+        where: { email: 'admin@crm.com' },
+        include: { organization: true }
+    })
     if (!user) throw new Error("User admin not found")
+    if (!user.organizationId) throw new Error("User has no organization")
 
     for (let i = 0; i < stagesList.length; i++) {
         const name = stagesList[i]
-        const existing = await prisma.pipelineStage.findFirst({ where: { name } })
+        const existing = await prisma.pipelineStage.findFirst({
+            where: {
+                name,
+                organizationId: user.organizationId
+            }
+        })
         let stageId = existing?.id
 
         if (!existing) {
             const created = await prisma.pipelineStage.create({
-                data: { name, order: i + 1 }
+                data: {
+                    name,
+                    order: i + 1,
+                    organizationId: user.organizationId
+                }
             })
             stageId = created.id
             console.log(`Created stage: ${name}`)
@@ -50,7 +63,8 @@ async function seed() {
                     title: 'Venda de Licença Enterprise',
                     value: 5000.00,
                     stageId: stageId!,
-                    userId: user.id
+                    userId: user.id,
+                    organizationId: user.organizationId
                 }
             })
             console.log("Created sample deal")

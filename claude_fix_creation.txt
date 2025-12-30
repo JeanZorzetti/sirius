@@ -1,0 +1,19 @@
+You are the Lead Developer. I am the CTO.
+
+The user is reporting that Deals are being created with the wrong Organization ID in the database, causing "Organization Mismatch" errors when they try to view them.
+
+Current State:
+- `createDeal` in `app/dashboard/actions.ts` uses `user.organizationId`.
+- Error logs show User Org is `34...` but Deal Org is `a2...`.
+- If the user just created the deal via UI, how did it get `a2...`?
+
+Tasks:
+1.  **Add Logging to `createDeal`**: Log the `user.email`, `user.id`, and `user.organizationId` *before* creating the deal. This is crucial to prove what the server sees at creation time.
+2.  **Scan for Hardcoded IDs**: Check if there are any default values or hardcoded UUIDs in `schema.prisma` or other `actions.ts` files that might override the user's org.
+3.  **Fix/Guard**: Ensure `createDeal` throws or fails if `organizationId` is missing (it already checks, but double check logic).
+4.  **Database check (optional)**: If you can, check if there are multiple users with the same email in the DB? (Prisma schema says email is unique, so unlikely).
+
+Execute the changes to `app/dashboard/actions.ts` to add this verbose logging.
+If you see any obvious bug in `createDeal` (like using a form field for ordId instead of session), fix it immediately.
+
+Use `claude --dangerously-skip-permissions` to confirm and apply.
