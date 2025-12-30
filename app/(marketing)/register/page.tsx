@@ -1,60 +1,78 @@
 'use client'
 
-import { useActionState } from 'react'
 import Link from 'next/link'
-import { registerAction } from '@/app/auth/actions'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
+import { registerAction } from "@/app/auth/actions"
+import { SubmitButton } from "@/components/submit-button"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card"
+import { prisma } from "@/lib/prisma"
 
-const initialState = {
-    error: '',
-}
+export default async function RegisterPage({
+    searchParams,
+}: {
+    searchParams: { invite?: string }
+}) {
+    const inviteToken = searchParams.invite
+    let inviteData = null
 
-export default function RegisterPage() {
-    const [state, action, pending] = useActionState(registerAction, initialState)
+    if (inviteToken) {
+        inviteData = await prisma.invite.findUnique({
+            where: { token: inviteToken },
+            include: { organization: true }
+        })
+    }
 
     return (
-        <div className="flex min-h-screen items-center justify-center px-4 py-12 sm:px-6 lg:px-8 bg-muted/30">
-            <Card className="w-full max-w-md">
+        <div className="flex min-h-screen items-center justify-center p-4 bg-zinc-950">
+            <Card className="w-full max-w-md bg-zinc-900 border-zinc-800 text-zinc-100">
                 <CardHeader className="space-y-1">
-                    <CardTitle className="text-2xl font-bold">Crie sua conta</CardTitle>
-                    <CardDescription>
-                        Comece a usar o CRM da ROI Labs gratuitamente.
+                    <CardTitle className="text-2xl font-bold">
+                        {inviteData ? `Junte-se a ${inviteData.organization.name}` : "Crie sua conta"}
+                    </CardTitle>
+                    <CardDescription className="text-zinc-400">
+                        {inviteData ? "Crie sua conta para acessar o time." : "Comece a usar o Sirius CRM gratuitamente."}
                     </CardDescription>
                 </CardHeader>
-                <form action={action}>
+                <form action={registerAction}>
                     <CardContent className="space-y-4">
+                        {inviteData && (
+                            <input type="hidden" name="inviteToken" value={inviteToken} />
+                        )}
+
                         <div className="space-y-2">
-                            <Label htmlFor="name">Nome Completo</Label>
-                            <Input id="name" name="name" placeholder="Jean L." required />
+                            <Label htmlFor="name">Seu Nome</Label>
+                            <Input id="name" name="name" placeholder="João da Silva" required className="bg-zinc-800 border-zinc-700 text-white" />
                         </div>
                         <div className="space-y-2">
-                            <Label htmlFor="company">Nome da Empresa</Label>
-                            <Input id="company" name="company" placeholder="Sua Empresa" required />
+                            <Label htmlFor="email">E-mail</Label>
+                            <Input
+                                id="email"
+                                name="email"
+                                type="email"
+                                placeholder="joao@empresa.com"
+                                required
+                                defaultValue={inviteData?.email || ""}
+                                className="bg-zinc-800 border-zinc-700 text-white"
+                            />
                         </div>
-                        <div className="space-y-2">
-                            <Label htmlFor="email">Email</Label>
-                            <Input id="email" name="email" type="email" placeholder="m@example.com" required />
-                        </div>
+
+                        {!inviteData && (
+                            <div className="space-y-2">
+                                <Label htmlFor="company">Nome da Empresa</Label>
+                                <Input id="company" name="company" placeholder="Minha Empresa Ltda" required className="bg-zinc-800 border-zinc-700 text-white" />
+                            </div>
+                        )}
+
                         <div className="space-y-2">
                             <Label htmlFor="password">Senha</Label>
-                            <Input id="password" name="password" type="password" required />
+                            <Input id="password" name="password" type="password" required className="bg-zinc-800 border-zinc-700 text-white" />
                         </div>
-                        {state?.error && (
-                            <div className="text-sm text-red-500 font-medium">{state.error}</div>
-                        )}
                     </CardContent>
                     <CardFooter className="flex flex-col gap-4">
-                        <Button className="w-full" type="submit" disabled={pending}>
-                            {pending ? 'Criando conta...' : 'Criar Conta'}
-                        </Button>
-                        <div className="text-center text-sm text-muted-foreground">
-                            Já tem uma conta?{' '}
-                            <Link href="/login" className="text-primary hover:underline">
-                                Entrar
-                            </Link>
+                        <SubmitButton text={inviteData ? "Entrar na Equipe" : "Criar Conta"} className="w-full bg-indigo-600 hover:bg-indigo-700 text-white" />
+                        <div className="text-center text-sm text-zinc-400">
+                            Já tem uma conta? <Link href="/login" className="text-indigo-400 hover:text-indigo-300">Entrar</Link>
                         </div>
                     </CardFooter>
                 </form>

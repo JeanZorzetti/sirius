@@ -94,6 +94,8 @@ export async function updateDeal(formData: FormData) {
     const valueStr = formData.get('value') as string
     const stageId = formData.get('stageId') as string
     const contactId = formData.get('contactId') as string || null
+    const closeDateStr = formData.get('closeDate') as string
+    const dueDateStr = formData.get('dueDate') as string
 
     if (!dealId || !title || !stageId) {
       return { success: false, error: 'Missing required fields' }
@@ -109,6 +111,8 @@ export async function updateDeal(formData: FormData) {
     }
 
     const value = valueStr ? parseFloat(valueStr) : null
+    const closeDate = closeDateStr ? new Date(closeDateStr) : null
+    const dueDate = dueDateStr ? new Date(dueDateStr) : null
 
     await prisma.deal.update({
       where: { id: dealId },
@@ -116,7 +120,9 @@ export async function updateDeal(formData: FormData) {
         title,
         value,
         stageId,
-        contactId
+        contactId,
+        closeDate,
+        dueDate
       }
     })
 

@@ -26,6 +26,8 @@ model Organization {
   contacts  Contact[]
   deals     Deal[]
   pipelineStages    PipelineStage[]
+  invites   Invite[]
+  tags      Tag[]
 }
 
 model User {
@@ -40,6 +42,8 @@ model User {
   organization   Organization @relation(fields: [organizationId], references: [id])
 
   deals     Deal[]   // Deals managed by this user
+  notes     Note[]
+  activities Activity[]
   
   role      Role     @default(USER)
   orgRole   OrgRole  @default(OWNER) // Defaulting to OWNER for now so existing users don't lose access. Ideally MEMBER.
@@ -88,6 +92,8 @@ model Deal {
   title       String   // "Venda Software X"
   value       Decimal? @db.Decimal(10, 2)
   closeDate   DateTime? 
+  dueDate     DateTime? // [NEW] Agenda/Follow-up
+  order       Int?      // [NEW] Manual sorting in column
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
   
@@ -103,5 +109,61 @@ model Deal {
 
   userId      String
   user        User          @relation(fields: [userId], references: [id])
+
+  // Deal 2.0
+  notes       Note[]
+  tags        Tag[]
+  activities  Activity[]
 }
 
+model Invite {
+  id        String   @id @default(uuid())
+  email     String
+  token     String   @unique
+  role      OrgRole  @default(MEMBER)
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id])
+
+  @@unique([email, organizationId])
+}
+
+// [NEW] Deal 2.0 Features
+
+model Note {
+  id        String   @id @default(uuid())
+  content   String
+  createdAt DateTime @default(now())
+  
+  dealId    String
+  deal      Deal     @relation(fields: [dealId], references: [id], onDelete: Cascade)
+  
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+}
+
+model Tag {
+  id      String @id @default(uuid())
+  name    String
+  color   String // hex or preset name
+  
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id])
+  
+  deals   Deal[] // Many-to-Many
+}
+
+model Activity {
+  id        String   @id @default(uuid())
+  type      String   // "STAGE_CHANGE", "NOTE_ADDED", "VALUE_CHANGE"
+  description String
+  createdAt DateTime @default(now())
+  
+  dealId    String
+  deal      Deal     @relation(fields: [dealId], references: [id], onDelete: Cascade)
+  
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+}

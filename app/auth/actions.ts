@@ -12,8 +12,9 @@ export async function registerAction(prevState: any, formData: FormData) {
     const email = formData.get('email') as string
     const password = formData.get('password') as string
     const companyName = formData.get('company') as string
+    const inviteToken = formData.get('inviteToken') as string
 
-    if (!name || !email || !password || !companyName) {
+    if (!name || !email || !password) {
         return { error: 'Preencha todos os campos.' }
     }
 
@@ -27,45 +28,72 @@ export async function registerAction(prevState: any, formData: FormData) {
     }
 
     try {
-        // 2. Create Org and User in transaction
-        const slug = companyName.toLowerCase().replace(/[^a-z0-9]/g, '-') + '-' + Math.floor(Math.random() * 1000)
+        let organizationId = ""
+        let orgRole: "OWNER" | "MEMBER" = "OWNER" // Default new org = OWNER
 
-        // We do this sequentially or ideally in a transaction
-        // Prisma transaction
-        const newUser = await prisma.$transaction(async (tx) => {
-            const org = await tx.organization.create({
+        // A. JOINING EXISTING ORG via INVITE
+        if (inviteToken) {
+            const invite = await prisma.invite.findUnique({
+                where: { token: inviteToken },
+                include: { organization: true }
+            })
+
+            if (!invite) {
+                return { error: 'Convite inválido ou expirado.' }
+            }
+
+            if (invite.expiresAt < new Date()) {
+                return { error: 'Convite expirado.' }
+            }
+
+            // Verify email matches (optional safety, sometimes user uses diff email)
+            // Let's allow different email, but user should know.
+
+            organizationId = invite.organizationId
+            orgRole = "MEMBER"
+        }
+        // B. CREATING NEW ORG
+        else {
+            if (!companyName) return { error: 'Nome da empresa é obrigatório.' }
+
+            const slug = companyName.toLowerCase().replace(/[^a-z0-9]/g, '-') + '-' + Math.floor(Math.random() * 1000)
+
+            const org = await prisma.organization.create({
                 data: {
                     name: companyName,
                     slug: slug
                 }
             })
+            organizationId = org.id
+        }
 
-            const hashedPassword = await hash(password, 10)
+        const hashedPassword = await hash(password, 10)
 
-            const user = await tx.user.create({
-                data: {
-                    email,
-                    name,
-                    password: hashedPassword,
-                    organizationId: org.id
-                }
-            })
-
-            return user
+        // Create User
+        // Note: We removed the transaction for simplicity in branching logic, 
+        // but in prod we should wrap the create in transaction if strict consistency needed.
+        const newUser = await prisma.user.create({
+            data: {
+                email,
+                name,
+                password: hashedPassword,
+                organizationId: organizationId,
+                orgRole: orgRole
+            }
         })
 
+        // If invite used, delete it
+        if (inviteToken) {
+            await prisma.invite.delete({
+                where: { token: inviteToken }
+            })
+        }
+
         // 3. Create Session
-        // We only store essential info in session
         await login({ id: newUser.id, email: newUser.email, name: newUser.name, organizationId: newUser.organizationId })
 
     } catch (error: any) {
         console.error('SERVER REGISTRATION ERROR:', JSON.stringify(error, null, 2))
-
-        // Check for Prisma specific errors
-        if (error.code === 'P2002') {
-            return { error: 'Este e-mail ou nome da empresa já está em uso.' }
-        }
-
         return { error: `Erro interno: ${error.message || 'Falha desconhecida'}` }
     }
 
