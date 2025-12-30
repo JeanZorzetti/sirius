@@ -43,10 +43,16 @@ export default async function DashboardPage() {
         },
     })
 
-    const contacts = await prisma.contact.findMany({
+    const rawContacts = await prisma.contact.findMany({
         where: { organizationId: user.organizationId },
         orderBy: { name: 'asc' }
     })
+
+    const contacts = rawContacts.map(c => ({
+        ...c,
+        createdAt: c.createdAt.toISOString(),
+        updatedAt: c.updatedAt.toISOString()
+    }))
 
     const stages = rawStages.map(stage => ({
         ...stage,
