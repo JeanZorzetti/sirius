@@ -68,6 +68,7 @@ type Stage = {
 type Contact = {
   id: string
   name: string
+  phone?: string | null
 }
 
 type KanbanBoardProps = {

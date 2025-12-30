@@ -28,7 +28,7 @@ import {
 import { updateDeal, deleteDeal } from '@/app/dashboard/actions'
 import { getDealDetails, addNote, deleteNote } from '@/app/dashboard/deals/actions'
 import { createContact } from '@/app/dashboard/contacts/actions'
-import { Loader2, MessageSquare, History, Tag, Calendar, Send, Trash2, Plus } from 'lucide-react'
+import { Loader2, MessageSquare, History, Tag, Calendar, Send, Trash2, Plus, MessageCircle } from 'lucide-react'
 import { format } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
 import { ScrollArea } from "@/components/ui/scroll-area"
@@ -48,7 +48,7 @@ interface EditDealDialogProps {
     open: boolean
     onOpenChange: (open: boolean) => void
     stages: { id: string, name: string }[]
-    contacts: { id: string, name: string }[]
+    contacts: { id: string, name: string, phone?: string | null }[]
 }
 
 export function EditDealDialog({ deal: initialDeal, open, onOpenChange, stages, contacts }: EditDealDialogProps) {
@@ -324,6 +324,24 @@ export function EditDealDialog({ deal: initialDeal, open, onOpenChange, stages, 
                                                         </form>
                                                     </PopoverContent>
                                                 </Popover>
+                                                {(() => {
+                                                    const selectedContact = localContacts.find(c => c.id === selectedContactId)
+                                                    return selectedContact?.phone ? (
+                                                        <Button
+                                                            type="button"
+                                                            variant="outline"
+                                                            size="icon"
+                                                            className="shrink-0 text-green-600 border-green-200 hover:bg-green-50 hover:text-green-700 dark:border-green-900/50 dark:text-green-400 dark:hover:bg-green-900/20"
+                                                            onClick={() => {
+                                                                const phone = selectedContact.phone?.replace(/\D/g, '')
+                                                                if (phone) window.open(`https://wa.me/${phone}`, '_blank')
+                                                            }}
+                                                            title="Conversar no WhatsApp"
+                                                        >
+                                                            <MessageCircle className="w-4 h-4" />
+                                                        </Button>
+                                                    ) : null
+                                                })()}
                                             </div>
                                         </div>
                                     </div>
