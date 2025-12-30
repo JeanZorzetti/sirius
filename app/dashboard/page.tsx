@@ -97,19 +97,13 @@ export default async function DashboardPage() {
                 </div>
             </div>
 
-            {hasDeals ? (
+            {stages.length > 0 ? (
                 <KanbanBoard stages={stages} contacts={contacts} />
             ) : (
                 <EmptyState
                     icon={DollarSign}
-                    title="Seu pipeline está vazio"
-                    description="Crie seu primeiro negócio para começar a visualizar seu funil de vendas."
-                    action={<CreateDealDialog
-                        stages={stages}
-                        contacts={contacts}
-                        dealCount={dealCount}
-                        isPro={isPro}
-                    />}
+                    title="Nenhuma etapa encontrada"
+                    description="Configure as etapas do seu funil de vendas para começar."
                 />
             )}
         </div>
