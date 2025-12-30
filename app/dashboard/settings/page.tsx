@@ -1,7 +1,8 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { prisma } from '@/lib/prisma'
 import { ProfileForm } from '@/components/settings/profile-form'
-import { User, Settings } from 'lucide-react'
+import { User, Users } from 'lucide-react'
+import Link from 'next/link'
 
 export default async function SettingsPage() {
     const user = await prisma.user.findFirst({
@@ -34,6 +35,20 @@ export default async function SettingsPage() {
                         <ProfileForm initialData={{ name: user.name || '', email: user.email }} />
                     </CardContent>
                 </Card>
+
+                <Link href="/dashboard/settings/team">
+                    <Card className="bg-white dark:bg-white/[0.02] border-zinc-200 dark:border-white/5 backdrop-blur-xl shadow-sm hover:bg-zinc-50 dark:hover:bg-white/[0.04] transition-colors cursor-pointer">
+                        <CardHeader className="flex flex-row items-center gap-4 relative overflow-hidden">
+                            <div className="h-10 w-10 rounded-lg bg-emerald-500/10 flex items-center justify-center text-emerald-500 ring-1 ring-white/5 shadow-[0_0_10px_rgba(16,185,129,0.2)]">
+                                <Users className="h-5 w-5" />
+                            </div>
+                            <div className="flex flex-col gap-1">
+                                <CardTitle className="text-base font-semibold text-zinc-900 dark:text-zinc-100">Time</CardTitle>
+                                <CardDescription className="text-zinc-500 text-xs">Gerencie membros e convites</CardDescription>
+                            </div>
+                        </CardHeader>
+                    </Card>
+                </Link>
             </div>
         </div>
     )
