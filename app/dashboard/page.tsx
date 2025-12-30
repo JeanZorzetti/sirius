@@ -50,9 +50,15 @@ export default async function DashboardPage() {
 
     const stages = rawStages.map(stage => ({
         ...stage,
+        createdAt: stage.createdAt.toISOString(),
+        updatedAt: stage.updatedAt.toISOString(),
         deals: stage.deals.map(deal => ({
             ...deal,
-            value: deal.value ? Number(deal.value) : null
+            value: deal.value ? Number(deal.value) : null,
+            closeDate: deal.closeDate ? deal.closeDate.toISOString() : null,
+            dueDate: deal.dueDate ? deal.dueDate.toISOString() : null,
+            createdAt: deal.createdAt.toISOString(),
+            updatedAt: deal.updatedAt.toISOString(),
         }))
     }))
 
