@@ -357,7 +357,8 @@ export function KanbanBoard({ stages: initialStages, contacts }: KanbanBoardProp
       const deal = stages
         .flatMap((stage) => stage.deals)
         .find((d) => d.id === active.id)
-      setActiveDeal(deal || null)
+      // Create a shallow copy to preserve the original stageId
+      setActiveDeal(deal ? { ...deal } : null)
       return
     }
   }
@@ -396,19 +397,29 @@ export function KanbanBoard({ stages: initialStages, contacts }: KanbanBoardProp
     }
 
     // If moving between columns, we need to move the item in `stages` state specifically for the visual
-    // This is "Portal" logic. 
+    // This is "Portal" logic using immutable patterns to prevent state mutation side-effects
     setStages((prev) => {
       const activeIndex = activeStage.deals.findIndex(d => d.id === activeId)
-      const overIndex = isOverDeal ? overStage!.deals.findIndex(d => d.id === overId) : overStage!.deals.length + 1
+      const overIndex = isOverDeal ? overStage!.deals.findIndex(d => d.id === overId) : overStage!.deals.length
 
-      let newStages = [...prev]
+      const newStages = [...prev]
       const sourceStageIndex = newStages.findIndex(s => s.id === activeStage.id)
       const targetStageIndex = newStages.findIndex(s => s.id === overStage!.id)
 
-      const [movedDeal] = newStages[sourceStageIndex].deals.splice(activeIndex, 1)
-      movedDeal.stageId = overStage!.id // Update stage ID locally
+      // Clone the source and target stage objects and their deals arrays
+      const sourceStage = { ...newStages[sourceStageIndex], deals: [...newStages[sourceStageIndex].deals] }
+      const targetStage = { ...newStages[targetStageIndex], deals: [...newStages[targetStageIndex].deals] }
 
-      newStages[targetStageIndex].deals.splice(overIndex, 0, movedDeal)
+      // Remove deal from source and clone it with updated stageId
+      const [movedDeal] = sourceStage.deals.splice(activeIndex, 1)
+      const updatedDeal = { ...movedDeal, stageId: overStage!.id }
+
+      // Insert into target
+      targetStage.deals.splice(overIndex, 0, updatedDeal)
+
+      // Update stages array with cloned stages
+      newStages[sourceStageIndex] = sourceStage
+      newStages[targetStageIndex] = targetStage
 
       return newStages
     })
