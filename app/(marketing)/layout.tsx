@@ -68,21 +68,21 @@ export default function MarketingLayout({
               <h3 className="text-sm font-medium">Produto</h3>
               <Link href="/features" className="text-sm text-muted-foreground hover:text-foreground">Funcionalidades</Link>
               <Link href="/pricing" className="text-sm text-muted-foreground hover:text-foreground">Preços</Link>
-              <Link href="/changelog" className="text-sm text-muted-foreground hover:text-foreground">Atualizações</Link>
+              <Link href="/dashboard" className="text-sm text-muted-foreground hover:text-foreground">Dashboard</Link>
             </div>
 
             <div className="flex flex-col gap-4">
               <h3 className="text-sm font-medium">Recursos</h3>
               <Link href="/blog" className="text-sm text-muted-foreground hover:text-foreground">Blog</Link>
-              <Link href="/help" className="text-sm text-muted-foreground hover:text-foreground">Central de Ajuda</Link>
-              <Link href="/community" className="text-sm text-muted-foreground hover:text-foreground">Comunidade</Link>
+              <Link href="/dashboard/analytics" className="text-sm text-muted-foreground hover:text-foreground">Analytics</Link>
+              <Link href="/dashboard/contacts" className="text-sm text-muted-foreground hover:text-foreground">Contatos</Link>
             </div>
 
             <div className="flex flex-col gap-4">
               <h3 className="text-sm font-medium">Empresa</h3>
-              <Link href="/about" className="text-sm text-muted-foreground hover:text-foreground">Sobre</Link>
-              <Link href="/terms" className="text-sm text-muted-foreground hover:text-foreground">Termos</Link>
-              <Link href="/privacy" className="text-sm text-muted-foreground hover:text-foreground">Privacidade</Link>
+              <Link href="https://roilabs.com.br" className="text-sm text-muted-foreground hover:text-foreground" target="_blank">ROI Labs</Link>
+              <Link href="/register" className="text-sm text-muted-foreground hover:text-foreground">Criar Conta</Link>
+              <Link href="/login" className="text-sm text-muted-foreground hover:text-foreground">Login</Link>
             </div>
           </div>
           <div className="mt-12 border-t pt-8 text-center text-sm text-muted-foreground">
