@@ -20,9 +20,15 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/components/ui/select'
+import {
+    Popover,
+    PopoverContent,
+    PopoverTrigger,
+} from '@/components/ui/popover'
 import { updateDeal, deleteDeal } from '@/app/dashboard/actions'
-import { getDealDetails, addNote, deleteNote } from '@/app/dashboard/deals/actions' // Assuming these exist
-import { Loader2, MessageSquare, History, Tag, Calendar, Send, Trash2 } from 'lucide-react'
+import { getDealDetails, addNote, deleteNote } from '@/app/dashboard/deals/actions'
+import { createContact } from '@/app/dashboard/contacts/actions'
+import { Loader2, MessageSquare, History, Tag, Calendar, Send, Trash2, Plus } from 'lucide-react'
 import { format } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
 import { ScrollArea } from "@/components/ui/scroll-area"
@@ -51,6 +57,10 @@ export function EditDealDialog({ deal: initialDeal, open, onOpenChange, stages, 
     const [fetchingDetails, setFetchingDetails] = useState(false)
     const [newNote, setNewNote] = useState("")
     const [isPending, startTransition] = useTransition()
+    const [localContacts, setLocalContacts] = useState(contacts)
+    const [selectedContactId, setSelectedContactId] = useState(initialDeal?.contactId || 'no_contact')
+    const [quickAddOpen, setQuickAddOpen] = useState(false)
+    const [quickAddLoading, setQuickAddLoading] = useState(false)
 
     // Fetch full details when dialog opens
     useEffect(() => {
@@ -85,6 +95,38 @@ export function EditDealDialog({ deal: initialDeal, open, onOpenChange, stages, 
         }
     }, [open, initialDeal])
 
+    // Sync local state with props
+    useEffect(() => {
+        setLocalContacts(contacts)
+    }, [contacts])
+
+    useEffect(() => {
+        setSelectedContactId(initialDeal?.contactId || 'no_contact')
+    }, [initialDeal?.contactId])
+
+    async function handleQuickAddContact(event: React.FormEvent<HTMLFormElement>) {
+        event.preventDefault()
+        setQuickAddLoading(true)
+
+        const formData = new FormData(event.currentTarget)
+        const result = await createContact(formData)
+
+        setQuickAddLoading(false)
+
+        if (result.success && result.contact) {
+            // Add to local contacts list
+            setLocalContacts(prev => [...prev, result.contact!])
+            // Select the new contact
+            setSelectedContactId(result.contact.id)
+            // Close popover
+            setQuickAddOpen(false)
+            // Reset form
+            event.currentTarget.reset()
+        } else {
+            alert(result.error || 'Erro ao criar contato')
+        }
+    }
+
     async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault()
         if (!initialDeal) return
@@ -92,6 +134,9 @@ export function EditDealDialog({ deal: initialDeal, open, onOpenChange, stages, 
         setLoading(true)
         const formData = new FormData(event.currentTarget)
         formData.append('dealId', initialDeal.id)
+
+        // Override contactId with the controlled selected value
+        formData.set('contactId', selectedContactId === 'no_contact' ? '' : selectedContactId)
 
         const result = await updateDeal(formData)
         setLoading(false)
@@ -196,17 +241,90 @@ export function EditDealDialog({ deal: initialDeal, open, onOpenChange, stages, 
                                         </div>
                                         <div className="space-y-2">
                                             <Label>Contato</Label>
-                                            <Select name="contactId" defaultValue={initialDeal.contactId || 'no_contact'}>
-                                                <SelectTrigger className="bg-zinc-50 dark:bg-zinc-900/50">
-                                                    <SelectValue placeholder="Sem contato" />
-                                                </SelectTrigger>
-                                                <SelectContent>
-                                                    <SelectItem value="no_contact">Sem contato</SelectItem>
-                                                    {contacts.map((contact) => (
-                                                        <SelectItem key={contact.id} value={contact.id}>{contact.name}</SelectItem>
-                                                    ))}
-                                                </SelectContent>
-                                            </Select>
+                                            <div className="flex gap-2">
+                                                <Select
+                                                    name="contactId"
+                                                    value={selectedContactId}
+                                                    onValueChange={setSelectedContactId}
+                                                >
+                                                    <SelectTrigger className="bg-zinc-50 dark:bg-zinc-900/50">
+                                                        <SelectValue placeholder="Sem contato" />
+                                                    </SelectTrigger>
+                                                    <SelectContent>
+                                                        <SelectItem value="no_contact">Sem contato</SelectItem>
+                                                        {localContacts.map((contact) => (
+                                                            <SelectItem key={contact.id} value={contact.id}>{contact.name}</SelectItem>
+                                                        ))}
+                                                    </SelectContent>
+                                                </Select>
+                                                <Popover open={quickAddOpen} onOpenChange={setQuickAddOpen}>
+                                                    <PopoverTrigger asChild>
+                                                        <Button
+                                                            type="button"
+                                                            variant="outline"
+                                                            size="icon"
+                                                            className="shrink-0 bg-zinc-50 dark:bg-zinc-900/50"
+                                                        >
+                                                            <Plus className="w-4 h-4" />
+                                                        </Button>
+                                                    </PopoverTrigger>
+                                                    <PopoverContent className="w-80">
+                                                        <form onSubmit={handleQuickAddContact} className="space-y-4">
+                                                            <div className="space-y-2">
+                                                                <h4 className="font-medium text-sm">Adicionar Contato</h4>
+                                                                <p className="text-xs text-zinc-500">Crie um novo contato rapidamente</p>
+                                                            </div>
+                                                            <div className="space-y-3">
+                                                                <div>
+                                                                    <Label htmlFor="quick-name" className="text-xs">Nome *</Label>
+                                                                    <Input
+                                                                        id="quick-name"
+                                                                        name="name"
+                                                                        placeholder="João Silva"
+                                                                        required
+                                                                        className="h-8 text-sm"
+                                                                    />
+                                                                </div>
+                                                                <div>
+                                                                    <Label htmlFor="quick-email" className="text-xs">Email</Label>
+                                                                    <Input
+                                                                        id="quick-email"
+                                                                        name="email"
+                                                                        type="email"
+                                                                        placeholder="joao@empresa.com"
+                                                                        className="h-8 text-sm"
+                                                                    />
+                                                                </div>
+                                                                <div>
+                                                                    <Label htmlFor="quick-phone" className="text-xs">Telefone</Label>
+                                                                    <Input
+                                                                        id="quick-phone"
+                                                                        name="phone"
+                                                                        placeholder="(11) 99999-9999"
+                                                                        className="h-8 text-sm"
+                                                                    />
+                                                                </div>
+                                                                <div>
+                                                                    <Label htmlFor="quick-company" className="text-xs">Empresa</Label>
+                                                                    <Input
+                                                                        id="quick-company"
+                                                                        name="company"
+                                                                        placeholder="Empresa LTDA"
+                                                                        className="h-8 text-sm"
+                                                                    />
+                                                                </div>
+                                                            </div>
+                                                            <Button
+                                                                type="submit"
+                                                                disabled={quickAddLoading}
+                                                                className="w-full h-8 text-sm bg-indigo-600 hover:bg-indigo-700"
+                                                            >
+                                                                {quickAddLoading ? 'Salvando...' : 'Salvar Contato'}
+                                                            </Button>
+                                                        </form>
+                                                    </PopoverContent>
+                                                </Popover>
+                                            </div>
                                         </div>
                                     </div>
 

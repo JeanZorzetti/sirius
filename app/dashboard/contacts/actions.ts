@@ -2,12 +2,19 @@
 
 import { PrismaClient } from '@prisma/client'
 import { revalidatePath } from 'next/cache'
+import { getSession } from '@/lib/auth'
 
 const prisma = new PrismaClient()
 
 export async function createContact(formData: FormData) {
     try {
-        const user = await prisma.user.findFirst({
+        const session = await getSession()
+        if (!session || !session.user || !session.user.email) {
+            return { success: false, error: 'Unauthorized' }
+        }
+
+        const user = await prisma.user.findUnique({
+            where: { email: session.user.email },
             include: { organization: true }
         })
 
@@ -20,18 +27,36 @@ export async function createContact(formData: FormData) {
         const phone = formData.get('phone') as string
         const company = formData.get('company') as string
 
-        await prisma.contact.create({
+        if (!name) {
+            return { success: false, error: 'Nome é obrigatório' }
+        }
+
+        const contact = await prisma.contact.create({
             data: {
                 name,
-                email,
-                phone,
-                company,
+                email: email || null,
+                phone: phone || null,
+                company: company || null,
                 organizationId: user.organizationId
             }
         })
 
         revalidatePath('/dashboard/contacts')
-        return { success: true }
+        revalidatePath('/dashboard')
+
+        // Return the created contact for immediate use
+        return {
+            success: true,
+            contact: {
+                id: contact.id,
+                name: contact.name,
+                email: contact.email,
+                phone: contact.phone,
+                company: contact.company,
+                createdAt: contact.createdAt.toISOString(),
+                updatedAt: contact.updatedAt.toISOString()
+            }
+        }
     } catch (error) {
         console.error('Failed to create contact:', error)
         return { success: false, error: 'Failed to create contact' }
