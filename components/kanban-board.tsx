@@ -416,10 +416,12 @@ export function KanbanBoard({ stages: initialStages, contacts }: KanbanBoardProp
 
   const handleDragEnd = async (event: DragEndEvent) => {
     const { active, over } = event
-    setActiveDeal(null)
-    setActiveStage(null)
 
-    if (!over) return
+    if (!over) {
+      setActiveDeal(null)
+      setActiveStage(null)
+      return
+    }
 
     const activeId = active.id
     const overId = over.id
@@ -427,7 +429,11 @@ export function KanbanBoard({ stages: initialStages, contacts }: KanbanBoardProp
 
     // --- COLUMN REORDERING ---
     if (type === 'Stage') {
-      if (activeId === overId) return
+      if (activeId === overId) {
+        setActiveDeal(null)
+        setActiveStage(null)
+        return
+      }
 
       const oldIndex = stages.findIndex(s => s.id === activeId)
       const newIndex = stages.findIndex(s => s.id === overId)
@@ -441,25 +447,37 @@ export function KanbanBoard({ stages: initialStages, contacts }: KanbanBoardProp
         order: index
       }))
       await updateStageOrder(reorderedStages)
+
+      setActiveDeal(null)
+      setActiveStage(null)
       return
     }
 
     // --- DEAL REORDERING ---
-    const activeStage = stages.find(s => s.deals.some(d => d.id === activeId))
+    // Use activeDeal's original stageId (from before drag started) to detect cross-column moves
+    const originalStageId = activeDeal?.stageId
     const overStage = stages.find(s => s.deals.some(d => d.id === overId)) || stages.find(s => s.id === overId)
 
-    if (!activeStage || !overStage) return
+    if (!originalStageId || !overStage) {
+      setActiveDeal(null)
+      setActiveStage(null)
+      return
+    }
 
     // Check if it's a cross-column move or intra-column reorder
-    const isSameColumn = activeStage.id === overStage.id
+    const isSameColumn = originalStageId === overStage.id
 
     if (isSameColumn) {
       // Intra-column reordering
-      const stageIndex = stages.findIndex(s => s.id === activeStage.id)
+      const stageIndex = stages.findIndex(s => s.id === overStage.id)
       const oldDealIndex = stages[stageIndex].deals.findIndex(d => d.id === activeId)
       const newDealIndex = stages[stageIndex].deals.findIndex(d => d.id === overId)
 
-      if (oldDealIndex === newDealIndex) return // No change
+      if (oldDealIndex === newDealIndex) {
+        setActiveDeal(null)
+        setActiveStage(null)
+        return // No change
+      }
 
       // Update state optimistically
       setStages(prev => {
@@ -481,7 +499,7 @@ export function KanbanBoard({ stages: initialStages, contacts }: KanbanBoardProp
         order: index
       }))
 
-      await reorderDeals(activeStage.id, reorderedDeals)
+      await reorderDeals(overStage.id, reorderedDeals)
     } else {
       // Cross-column move - update the stage
       // The visual update was already done in handleDragOver
@@ -498,6 +516,10 @@ export function KanbanBoard({ stages: initialStages, contacts }: KanbanBoardProp
         await reorderDeals(finalStage.id, reorderedDeals)
       }
     }
+
+    // Clear active items at the very end
+    setActiveDeal(null)
+    setActiveStage(null)
   }
 
   return (
