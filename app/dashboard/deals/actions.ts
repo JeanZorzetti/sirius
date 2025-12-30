@@ -131,3 +131,18 @@ export async function updateDealValue(dealId: string, value: number) {
 
     revalidatePath("/dashboard")
 }
+
+export async function deleteNote(noteId: string) {
+    const user = await checkPermission()
+
+    const note = await prisma.note.findUnique({ where: { id: noteId } })
+    if (!note) throw new Error("Note not found")
+
+    if (note.userId !== user.id) {
+        throw new Error("Unauthorized: Can only delete own notes")
+    }
+
+    await prisma.note.delete({ where: { id: noteId } })
+    revalidatePath("/dashboard")
+    return { success: true }
+}

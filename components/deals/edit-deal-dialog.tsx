@@ -21,8 +21,8 @@ import {
     SelectValue,
 } from '@/components/ui/select'
 import { updateDeal, deleteDeal } from '@/app/dashboard/actions'
-import { getDealDetails, addNote } from '@/app/dashboard/deals/actions' // Assuming these exist
-import { Loader2, MessageSquare, History, Tag, Calendar, Send } from 'lucide-react'
+import { getDealDetails, addNote, deleteNote } from '@/app/dashboard/deals/actions' // Assuming these exist
+import { Loader2, MessageSquare, History, Tag, Calendar, Send, Trash2 } from 'lucide-react'
 import { format } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
 import { ScrollArea } from "@/components/ui/scroll-area"
@@ -240,19 +240,13 @@ export function EditDealDialog({ deal: initialDeal, open, onOpenChange, stages, 
                                         <div className="text-center py-8 text-zinc-400 text-sm">Nenhuma observação ainda.</div>
                                     ) : (
                                         fullDeal?.notes?.map((note: any) => (
-                                            <div key={note.id} className="group relative pl-4 border-l-2 border-zinc-200 dark:border-zinc-800 pb-4 last:pb-0">
-                                                <div className="absolute -left-[5px] top-0 w-2.5 h-2.5 rounded-full bg-zinc-300 dark:bg-zinc-700 ring-4 ring-white dark:ring-zinc-950" />
-                                                <div className="flex flex-col gap-1">
-                                                    <div className="flex items-center gap-2 text-xs text-zinc-500">
-                                                        <span className="font-semibold text-zinc-700 dark:text-zinc-300">{note.user?.name || 'Usuário'}</span>
-                                                        <span>•</span>
-                                                        <span>{format(new Date(note.createdAt), "dd MMM HH:mm", { locale: ptBR })}</span>
-                                                    </div>
-                                                    <p className="text-sm text-zinc-800 dark:text-zinc-200 bg-zinc-50 dark:bg-zinc-900 p-3 rounded-lg border border-zinc-100 dark:border-zinc-800">
-                                                        {note.content}
-                                                    </p>
-                                                </div>
-                                            </div>
+                                            <NoteItem key={note.id} note={note} onDelete={async () => {
+                                                if (confirm("Excluir nota?")) {
+                                                    await deleteNote(note.id)
+                                                    const fresh = await getDealDetails(initialDeal.id)
+                                                    setFullDeal(fresh)
+                                                }
+                                            }} />
                                         ))
                                     )}
                                 </div>
@@ -266,22 +260,7 @@ export function EditDealDialog({ deal: initialDeal, open, onOpenChange, stages, 
                                         <div className="text-center py-8 text-zinc-400 text-sm">Nenhuma atividade registrada.</div>
                                     ) : (
                                         fullDeal?.activities?.map((activity: any) => (
-                                            <div key={activity.id} className="flex gap-4">
-                                                <div className="flex flex-col items-center">
-                                                    <div className="w-2 h-2 rounded-full bg-indigo-500 mt-2" />
-                                                    <div className="w-px h-full bg-zinc-200 dark:bg-zinc-800 my-1" />
-                                                </div>
-                                                <div className="pb-6">
-                                                    <p className="text-sm text-zinc-900 dark:text-zinc-100 font-medium">
-                                                        {activity.description}
-                                                    </p>
-                                                    <div className="flex items-center gap-2 mt-1 text-xs text-zinc-500">
-                                                        <span>{activity.user?.name}</span>
-                                                        <span>•</span>
-                                                        <span>{format(new Date(activity.createdAt), "dd MMM 'às' HH:mm", { locale: ptBR })}</span>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                            <ActivityItem key={activity.id} activity={activity} />
                                         ))
                                     )}
                                 </div>
@@ -291,5 +270,83 @@ export function EditDealDialog({ deal: initialDeal, open, onOpenChange, stages, 
                 </Tabs>
             </DialogContent>
         </Dialog>
+    )
+}
+
+function getInitials(name: string) {
+    return name
+        .split(' ')
+        .map((n) => n[0])
+        .slice(0, 2)
+        .join('')
+        .toUpperCase()
+}
+
+function NoteItem({ note, onDelete }: { note: any, onDelete: () => void }) {
+    return (
+        <div className="flex gap-3 group">
+            <div className="h-8 w-8 rounded-full bg-indigo-100 dark:bg-indigo-900/50 text-indigo-600 dark:text-indigo-400 flex items-center justify-center text-xs font-bold shrink-0">
+                {getInitials(note.user?.name || 'User')}
+            </div>
+            <div className="flex-1 space-y-1">
+                <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                        <span className="text-sm font-medium text-zinc-900 dark:text-zinc-100">{note.user?.name || 'Usuário'}</span>
+                        <span className="text-xs text-zinc-500">{format(new Date(note.createdAt), "dd MMM 'às' HH:mm", { locale: ptBR })}</span>
+                    </div>
+                    <Button variant="ghost" size="icon" className="h-6 w-6 opacity-0 group-hover:opacity-100 text-zinc-400 hover:text-red-500" onClick={onDelete}>
+                        <Trash2 className="w-3 h-3" />
+                    </Button>
+                </div>
+                <div className="bg-zinc-50 dark:bg-zinc-800/50 p-3 rounded-tr-lg rounded-br-lg rounded-bl-lg text-sm text-zinc-700 dark:text-zinc-300 border border-zinc-100 dark:border-zinc-800/50">
+                    {note.content}
+                </div>
+            </div>
+        </div>
+    )
+}
+
+import { ArrowRight, DollarSign, Sparkles, CheckCircle2 } from 'lucide-react'
+
+function ActivityItem({ activity }: { activity: any }) {
+    const getIcon = (type: string) => {
+        switch (type) {
+            case 'STAGE_CHANGE': return <ArrowRight className="w-3 h-3" />
+            case 'VALUE_CHANGE': return <DollarSign className="w-3 h-3" />
+            case 'NOTE_ADDED': return <MessageSquare className="w-3 h-3" />
+            case 'CREATE': return <Sparkles className="w-3 h-3" />
+            default: return <CheckCircle2 className="w-3 h-3" />
+        }
+    }
+
+    const getBgColor = (type: string) => {
+        switch (type) {
+            case 'STAGE_CHANGE': return 'bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400'
+            case 'VALUE_CHANGE': return 'bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400'
+            case 'NOTE_ADDED': return 'bg-yellow-100 text-yellow-600 dark:bg-yellow-900/30 dark:text-yellow-400'
+            default: return 'bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400'
+        }
+    }
+
+    return (
+        <div className="flex gap-4 relative">
+            {/* Timeline Line */}
+            <div className="absolute left-[15px] top-8 bottom-[-24px] w-px bg-zinc-100 dark:bg-zinc-800 last:hidden" />
+
+            <div className={`h-8 w-8 rounded-full flex items-center justify-center shrink-0 z-10 ${getBgColor(activity.type)}`}>
+                {getIcon(activity.type)}
+            </div>
+
+            <div className="pt-1.5 pb-2">
+                <p className="text-sm text-zinc-900 dark:text-zinc-100">
+                    {activity.description}
+                </p>
+                <div className="flex items-center gap-2 mt-1 text-xs text-zinc-500">
+                    <span>{activity.user?.name || 'Sistema'}</span>
+                    <span>•</span>
+                    <span className="capitalize">{format(new Date(activity.createdAt), "dd MMM, HH:mm", { locale: ptBR })}</span>
+                </div>
+            </div>
+        </div>
     )
 }
