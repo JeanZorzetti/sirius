@@ -6,7 +6,7 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Users, Trash2 } from "lucide-react"
 import { InviteDialog } from "./invite-dialog"
-import { revokeInvite, removeMember } from "./actions"
+import { RemoveMemberButton, RevokeInviteButton } from "./team-actions"
 import { format } from "date-fns"
 import { ptBR } from "date-fns/locale"
 
@@ -82,11 +82,7 @@ export default async function TeamSettingsPage() {
                                         </TableCell>
                                         <TableCell className="text-right">
                                             {isOwner && member.id !== currentUser.id && (
-                                                <form action={removeMember.bind(null, member.id)}>
-                                                    <Button variant="ghost" size="icon" className="h-8 w-8 text-red-500 hover:text-red-700 hover:bg-red-50">
-                                                        <Trash2 className="h-4 w-4" />
-                                                    </Button>
-                                                </form>
+                                                <RemoveMemberButton userId={member.id} />
                                             )}
                                         </TableCell>
                                     </TableRow>
@@ -126,11 +122,7 @@ export default async function TeamSettingsPage() {
                                             </TableCell>
                                             <TableCell className="text-right">
                                                 {isOwner && (
-                                                    <form action={revokeInvite.bind(null, invite.id)}>
-                                                        <Button variant="ghost" size="sm" className="text-red-500 hover:text-red-700">
-                                                            Revogar
-                                                        </Button>
-                                                    </form>
+                                                    <RevokeInviteButton inviteId={invite.id} />
                                                 )}
                                             </TableCell>
                                         </TableRow>
