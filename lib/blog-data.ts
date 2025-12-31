@@ -1302,50 +1302,73 @@ export const blogPosts = [
 
       <h2>Métricas de Follow-up: O Que Medir</h2>
 
-      <p>
-        Você não melhora o que não mede. Acompanhe essas métricas de follow-up:
-      </p>
+      <div class="callout-insight">
+        <p><strong>💡 Você não melhora o que não mede</strong></p>
+        <p style="margin-top: 1rem; color: #78350f;">Acompanhe essas 5 métricas essenciais de follow-up:</p>
+      </div>
 
-      <table>
-        <thead>
-          <tr>
-            <th>Métrica</th>
-            <th>Como Calcular</th>
-            <th>Meta Ideal</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><strong>Response Rate por Canal</strong></td>
-            <td>(Respostas ÷ Mensagens Enviadas) × 100</td>
-            <td>WhatsApp: 60-70%<br>Email: 25-35%</td>
-          </tr>
-          <tr>
-            <td><strong>Tempo Médio para Resposta</strong></td>
-            <td>Média de horas entre follow-up e reply</td>
-            <td>&lt; 24 horas</td>
-          </tr>
-          <tr>
-            <td><strong>Follow-ups Até Conversão</strong></td>
-            <td>Número médio de toques até fechar</td>
-            <td>5-8 toques</td>
-          </tr>
-          <tr>
-            <td><strong>Taxa de Breakup Email</strong></td>
-            <td>(Respostas ao breakup ÷ Breakups enviados) × 100</td>
-            <td>40-50%</td>
-          </tr>
-          <tr>
-            <td><strong>Deals Perdidos por Falta de Follow-up</strong></td>
-            <td>Deals que esfriaram sem nenhum toque por 30+ dias</td>
-            <td>0% (inexcusável)</td>
-          </tr>
-        </tbody>
-      </table>
+      <div class="callout-data">
+        <p><strong>📊 Dashboard de Métricas de Follow-up</strong></p>
+        <div style="display: grid; gap: 1.5rem; margin: 2rem 0;">
 
-      <p>
-        O <a href="/dashboard/analytics">dashboard do Sirius</a> rastreia automaticamente essas métricas. Você vê quais vendedores têm melhor response rate, quantos toques em média cada um faz antes de fechar, e recebe alertas de deals sem follow-up.
-      </p>
+          <div style="background: white; border-left: 6px solid #10b981; padding: 1.5rem; border-radius: 0.75rem; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
+            <p style="font-size: 0.875rem; font-weight: 700; color: #10b981; text-transform: uppercase; margin-bottom: 0.75rem;">1. Response Rate por Canal</p>
+            <p style="margin: 0.5rem 0; color: #64748b; font-size: 0.95rem;"><strong>Como Calcular:</strong> (Respostas ÷ Mensagens Enviadas) × 100</p>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1rem; padding-top: 1rem; border-top: 1px solid #e2e8f0;">
+              <div style="text-align: center; background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%); padding: 1rem; border-radius: 0.5rem;">
+                <p style="font-size: 0.75rem; color: #065f46; margin-bottom: 0.25rem;">WhatsApp</p>
+                <p style="font-size: 1.75rem; font-weight: 800; color: #10b981; margin: 0;">60-70%</p>
+              </div>
+              <div style="text-align: center; background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%); padding: 1rem; border-radius: 0.5rem;">
+                <p style="font-size: 0.75rem; color: #1e3a8a; margin-bottom: 0.25rem;">Email</p>
+                <p style="font-size: 1.75rem; font-weight: 800; color: #2563eb; margin: 0;">25-35%</p>
+              </div>
+            </div>
+          </div>
+
+          <div style="background: white; border-left: 6px solid #3b82f6; padding: 1.5rem; border-radius: 0.75rem; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
+            <p style="font-size: 0.875rem; font-weight: 700; color: #2563eb; text-transform: uppercase; margin-bottom: 0.75rem;">2. Tempo Médio para Resposta</p>
+            <p style="margin: 0.5rem 0; color: #64748b; font-size: 0.95rem;"><strong>Como Calcular:</strong> Média de horas entre follow-up e reply</p>
+            <div style="text-align: center; background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%); padding: 1.5rem; border-radius: 0.5rem; margin-top: 1rem;">
+              <p style="font-size: 2.5rem; font-weight: 800; color: #2563eb; margin: 0;">&lt; 24h</p>
+              <p style="font-size: 0.875rem; color: #1e40af; margin-top: 0.5rem;">Meta Ideal</p>
+            </div>
+          </div>
+
+          <div style="background: white; border-left: 6px solid #8b5cf6; padding: 1.5rem; border-radius: 0.75rem; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
+            <p style="font-size: 0.875rem; font-weight: 700; color: #7c3aed; text-transform: uppercase; margin-bottom: 0.75rem;">3. Follow-ups Até Conversão</p>
+            <p style="margin: 0.5rem 0; color: #64748b; font-size: 0.95rem;"><strong>Como Calcular:</strong> Número médio de toques até fechar</p>
+            <div style="text-align: center; background: linear-gradient(135deg, #f3e8ff 0%, #e9d5ff 100%); padding: 1.5rem; border-radius: 0.5rem; margin-top: 1rem;">
+              <p style="font-size: 2.5rem; font-weight: 800; color: #7c3aed; margin: 0;">5-8 toques</p>
+              <p style="font-size: 0.875rem; color: #6b21a8; margin-top: 0.5rem;">Meta Ideal</p>
+            </div>
+          </div>
+
+          <div style="background: white; border-left: 6px solid #f59e0b; padding: 1.5rem; border-radius: 0.75rem; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
+            <p style="font-size: 0.875rem; font-weight: 700; color: #d97706; text-transform: uppercase; margin-bottom: 0.75rem;">4. Taxa de Breakup Email</p>
+            <p style="margin: 0.5rem 0; color: #64748b; font-size: 0.95rem;"><strong>Como Calcular:</strong> (Respostas ao breakup ÷ Breakups enviados) × 100</p>
+            <div style="text-align: center; background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); padding: 1.5rem; border-radius: 0.5rem; margin-top: 1rem;">
+              <p style="font-size: 2.5rem; font-weight: 800; color: #d97706; margin: 0;">40-50%</p>
+              <p style="font-size: 0.875rem; color: #92400e; margin-top: 0.5rem;">Meta Ideal</p>
+            </div>
+          </div>
+
+          <div style="background: white; border-left: 6px solid #dc2626; padding: 1.5rem; border-radius: 0.75rem; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
+            <p style="font-size: 0.875rem; font-weight: 700; color: #dc2626; text-transform: uppercase; margin-bottom: 0.75rem;">5. Deals Perdidos por Falta de Follow-up</p>
+            <p style="margin: 0.5rem 0; color: #64748b; font-size: 0.95rem;"><strong>Como Calcular:</strong> Deals que esfriaram sem nenhum toque por 30+ dias</p>
+            <div style="text-align: center; background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%); padding: 1.5rem; border-radius: 0.5rem; margin-top: 1rem;">
+              <p style="font-size: 2.5rem; font-weight: 800; color: #dc2626; margin: 0;">0%</p>
+              <p style="font-size: 0.875rem; color: #991b1b; margin-top: 0.5rem; font-weight: 700;">INEXCUSÁVEL</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="callout-success">
+        <p><strong>✅ Rastreamento Automático</strong></p>
+        <p>O <a href="/dashboard/analytics">dashboard do Sirius</a> rastreia automaticamente essas métricas. Você vê quais vendedores têm melhor response rate, quantos toques em média cada um faz antes de fechar, e recebe alertas de deals sem follow-up.</p>
+      </div>
 
       <h2>Conclusão: Follow-up é Sistema, Não Talento</h2>
 
