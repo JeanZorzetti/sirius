@@ -65,6 +65,22 @@ export async function registerAction(prevState: any, formData: FormData) {
                 }
             })
             organizationId = org.id
+
+            // Create default pipeline stages for new organization
+            const defaultStages = [
+                { name: 'Lead', order: 0 },
+                { name: 'Prospecção', order: 1 },
+                { name: 'Qualificação', order: 2 },
+                { name: 'Proposta', order: 3 },
+                { name: 'Fechamento', order: 4 }
+            ]
+
+            await prisma.pipelineStage.createMany({
+                data: defaultStages.map(stage => ({
+                    ...stage,
+                    organizationId: org.id
+                }))
+            })
         }
 
         const hashedPassword = await hash(password, 10)
