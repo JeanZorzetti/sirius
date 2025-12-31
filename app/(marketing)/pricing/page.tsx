@@ -10,6 +10,7 @@ import {
     CardHeader,
     CardTitle,
 } from '@/components/ui/card'
+import { PricingPageTracker } from '@/components/analytics/pricing-page-tracker'
 
 const tiers = [
     {
@@ -115,6 +116,7 @@ export default function PricingPage() {
 
     return (
         <>
+            <PricingPageTracker />
             <Script
                 id="breadcrumb-schema"
                 type="application/ld+json"

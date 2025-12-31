@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { Plus, MessageCircle, UserPlus } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { FeatureGateModal } from '@/components/dashboard/billing/feature-gate-modal'
+import { trackDealCreated, trackContactCreated } from '@/lib/analytics'
 import {
     Dialog,
     DialogContent,
@@ -93,6 +94,9 @@ export function CreateDealDialog({
             setShowNewContact(false)
             setNewContactName('')
             setNewContactPhone('')
+
+            // Track contact creation event
+            trackContactCreated(newContact.id)
         }
     }
 
@@ -110,6 +114,17 @@ export function CreateDealDialog({
         setLoading(false)
 
         if (result.success) {
+            // Track deal creation event
+            const value = formData.get('value')
+            const stageId = formData.get('stageId')
+            const stage = stages.find(s => s.id === stageId)
+
+            trackDealCreated(
+                value ? parseFloat(value.toString()) : undefined,
+                stage?.name,
+                result.dealId
+            )
+
             setOpen(false)
             // Toast success?
         } else {

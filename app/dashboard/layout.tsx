@@ -3,6 +3,8 @@ import { MobileNav } from '@/components/dashboard/mobile-nav'
 import { UserNav } from '@/components/dashboard/user-nav'
 import { ModeToggle } from '@/components/ui/mode-toggle'
 import { PWAInstallPrompt } from '@/components/pwa-install-prompt'
+import { SignUpTracker } from '@/components/analytics/signup-tracker'
+import { LoginTracker } from '@/components/analytics/login-tracker'
 import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 
@@ -55,6 +57,10 @@ export default async function DashboardLayout({
 
       {/* PWA Install Prompt */}
       <PWAInstallPrompt />
+
+      {/* Analytics Trackers */}
+      <SignUpTracker />
+      <LoginTracker />
     </div>
   )
 }

@@ -78,7 +78,7 @@ export async function createDeal(formData: FormData) {
     }
 
     // Create deal
-    await prisma.deal.create({
+    const deal = await prisma.deal.create({
       data: {
         title,
         value,
@@ -90,7 +90,7 @@ export async function createDeal(formData: FormData) {
     })
 
     revalidatePath('/dashboard')
-    return { success: true }
+    return { success: true, dealId: deal.id }
   } catch (error) {
     console.error('Failed to create deal:', error)
     return { success: false, error: 'Failed to create deal' }

@@ -113,7 +113,8 @@ export async function registerAction(prevState: any, formData: FormData) {
         return { error: `Erro interno: ${error.message || 'Falha desconhecida'}` }
     }
 
-    redirect('/dashboard')
+    // Redirect to dashboard with new_user flag for analytics tracking
+    redirect('/dashboard?new_user=true')
 }
 
 export async function loginAction(prevState: any, formData: FormData) {
@@ -141,7 +142,8 @@ export async function loginAction(prevState: any, formData: FormData) {
 
     await login({ id: user.id, email: user.email, name: user.name, organizationId: user.organizationId })
 
-    redirect('/dashboard')
+    // Redirect to dashboard with login flag for analytics tracking
+    redirect('/dashboard?login=true')
 }
 
 export async function logoutAction() {
