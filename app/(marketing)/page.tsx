@@ -4,6 +4,62 @@ import { Logos } from "@/components/marketing/logos"
 import Script from "next/script"
 
 export default function LandingPage() {
+  const productSchema = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    "name": "Sirius CRM",
+    "description": "CRM intuitivo para gestão de vendas brasileiras com pipeline Kanban visual, gestão de contatos, WhatsApp integrado e métricas em tempo real.",
+    "brand": {
+      "@type": "Brand",
+      "name": "ROI Labs"
+    },
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "BRL",
+      "availability": "https://schema.org/InStock",
+      "url": "https://sirius.roilabs.com.br/register",
+      "priceValidUntil": "2026-12-31"
+    },
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "5.0",
+      "reviewCount": "12",
+      "bestRating": "5",
+      "worstRating": "1"
+    },
+    "review": [
+      {
+        "@type": "Review",
+        "author": {
+          "@type": "Person",
+          "name": "Carlos Silva"
+        },
+        "reviewRating": {
+          "@type": "Rating",
+          "ratingValue": "5",
+          "bestRating": "5"
+        },
+        "reviewBody": "Finalmente um CRM que não complica. Em 10 minutos já estava usando e fechando negócios mais rápido."
+      },
+      {
+        "@type": "Review",
+        "author": {
+          "@type": "Person",
+          "name": "Mariana Souza"
+        },
+        "reviewRating": {
+          "@type": "Rating",
+          "ratingValue": "5",
+          "bestRating": "5"
+        },
+        "reviewBody": "O botão de WhatsApp com 1 clique economiza horas por semana. Meu time adora!"
+      }
+    ],
+    "image": "https://sirius.roilabs.com.br/og-image.png",
+    "url": "https://sirius.roilabs.com.br"
+  };
+
   const faqSchema = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
@@ -53,6 +109,13 @@ export default function LandingPage() {
 
   return (
     <>
+      {/* Product Schema with Reviews */}
+      <Script
+        id="product-schema"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }}
+      />
+
       {/* FAQ Schema for SEO */}
       <Script
         id="faq-schema"

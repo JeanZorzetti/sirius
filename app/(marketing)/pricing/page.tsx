@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import Script from 'next/script'
 import { Check } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import {
@@ -61,8 +62,70 @@ const tiers = [
 ]
 
 export default function PricingPage() {
+    const breadcrumbSchema = {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+            {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Home",
+                "item": "https://sirius.roilabs.com.br"
+            },
+            {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "Preços",
+                "item": "https://sirius.roilabs.com.br/pricing"
+            }
+        ]
+    };
+
+    const offersSchema = {
+        "@context": "https://schema.org",
+        "@type": "ItemList",
+        "name": "Planos Sirius CRM",
+        "itemListElement": [
+            {
+                "@type": "Offer",
+                "name": "Plano Solopreneur",
+                "price": "0",
+                "priceCurrency": "BRL",
+                "availability": "https://schema.org/InStock",
+                "description": "Para quem está começando e precisa organizar a casa. 1 usuário, até 50 negócios ativos."
+            },
+            {
+                "@type": "Offer",
+                "name": "Plano Growth",
+                "price": "49",
+                "priceCurrency": "BRL",
+                "availability": "https://schema.org/InStock",
+                "description": "Para times em crescimento. Até 5 usuários, negócios ilimitados, analytics avançado."
+            },
+            {
+                "@type": "Offer",
+                "name": "Plano Enterprise",
+                "price": "0",
+                "priceCurrency": "BRL",
+                "availability": "https://schema.org/InStock",
+                "description": "Solução personalizada para grandes operações. Usuários ilimitados, SLA garantido, onboarding dedicado."
+            }
+        ]
+    };
+
     return (
-        <div className="relative isolate bg-background px-6 py-24 sm:py-32 lg:px-8">
+        <>
+            <Script
+                id="breadcrumb-schema"
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+            />
+            <Script
+                id="offers-schema"
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(offersSchema) }}
+            />
+            <div className="relative isolate bg-background px-6 py-24 sm:py-32 lg:px-8">
             <div className="mx-auto max-w-4xl text-center">
                 <h2 className="text-base font-semibold leading-7 text-primary">Preços Simples</h2>
                 <p className="mt-2 text-4xl font-bold tracking-tight sm:text-5xl">
@@ -108,5 +171,6 @@ export default function PricingPage() {
                 ))}
             </div>
         </div>
+        </>
     )
 }

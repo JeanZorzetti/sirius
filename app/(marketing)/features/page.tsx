@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import Script from 'next/script'
 import { Button } from '@/components/ui/button'
 import { Kanban, BarChart3, Users, Zap, Shield, Smartphone } from 'lucide-react'
 
@@ -36,8 +37,72 @@ const features = [
 ]
 
 export default function FeaturesPage() {
+    const howToSchema = {
+        "@context": "https://schema.org",
+        "@type": "HowTo",
+        "name": "Como usar o Sirius CRM para aumentar suas vendas",
+        "description": "Guia completo de como usar o Sirius CRM para gerenciar seu pipeline de vendas, contatos e fechar mais negócios.",
+        "step": [
+            {
+                "@type": "HowToStep",
+                "name": "Configure seu Pipeline Kanban",
+                "text": "Crie as etapas do seu funil de vendas. Arraste e solte cards entre colunas para avançar negociações. Personalize conforme seu processo comercial.",
+                "image": "https://sirius.roilabs.com.br/og-image.png"
+            },
+            {
+                "@type": "HowToStep",
+                "name": "Adicione seus Contatos",
+                "text": "Cadastre seus leads e clientes com telefone, email e informações relevantes. Mantenha histórico de todas as interações.",
+                "image": "https://sirius.roilabs.com.br/og-image.png"
+            },
+            {
+                "@type": "HowToStep",
+                "name": "Use WhatsApp com 1 Clique",
+                "text": "Clique no botão verde em cada card para abrir conversa direto no WhatsApp. Sem copiar telefone, sem trocar de app.",
+                "image": "https://sirius.roilabs.com.br/og-image.png"
+            },
+            {
+                "@type": "HowToStep",
+                "name": "Acompanhe Métricas em Tempo Real",
+                "text": "Acesse o dashboard de Analytics para ver taxa de conversão, ticket médio, previsão de fechamento e identificar gargalos.",
+                "image": "https://sirius.roilabs.com.br/og-image.png"
+            }
+        ],
+        "totalTime": "PT15M"
+    };
+
+    const breadcrumbSchema = {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+            {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Home",
+                "item": "https://sirius.roilabs.com.br"
+            },
+            {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "Funcionalidades",
+                "item": "https://sirius.roilabs.com.br/features"
+            }
+        ]
+    };
+
     return (
-        <div className="bg-background py-24 sm:py-32">
+        <>
+            <Script
+                id="howto-schema"
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(howToSchema) }}
+            />
+            <Script
+                id="breadcrumb-schema"
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+            />
+            <div className="bg-background py-24 sm:py-32">
             <div className="mx-auto max-w-7xl px-6 lg:px-8">
                 <div className="mx-auto max-w-2xl lg:text-center">
                     <h2 className="text-base font-semibold leading-7 text-primary">Tudo o que você precisa</h2>
@@ -72,5 +137,6 @@ export default function FeaturesPage() {
                 </div>
             </div>
         </div>
+        </>
     )
 }
