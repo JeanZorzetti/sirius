@@ -22,6 +22,11 @@ export default function LandingPage() {
       "priceValidUntil": "2026-12-31",
       "shippingDetails": {
         "@type": "OfferShippingDetails",
+        "shippingRate": {
+          "@type": "MonetaryAmount",
+          "value": "0",
+          "currency": "BRL"
+        },
         "shippingDestination": {
           "@type": "DefinedRegion",
           "addressCountry": "BR"
