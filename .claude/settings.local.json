@@ -4,7 +4,9 @@
       "Bash(git add:*)",
       "Bash(git commit -m \"$\\(cat <<''EOF''\nstyle\\(blog\\): enhance typography, spacing and table design\n\n- Increase paragraph spacing with better line height for readability\n- Style list markers in blue with larger size and improved spacing\n- Redesign tables with blue borders, gradient headers and hover effects\n- Align BANT framework with color-coded initial letters\n- Maintain bold text in blue color scheme throughout\n\n🤖 Generated with [Claude Code]\\(https://claude.com/claude-code\\)\n\nCo-Authored-By: Claude Sonnet 4.5 <noreply@anthropic.com>\nEOF\n\\)\")",
       "Bash(git push:*)",
-      "Bash(npm run build:*)"
+      "Bash(npm run build:*)",
+      "Bash(git commit -m \"$\\(cat <<''EOF''\nstyle\\(blog\\): enhance readability and BANT framework styling\n\n- Increase paragraph spacing from mb-8 to mb-10 for better readability\n- Improve line height from 1.8 to 2.0 for enhanced reading experience\n- Style ordered list markers \\(1., 2., 3.\\) in blue with larger size and bold\n- Add increased spacing between ordered list items \\(space-y-4\\)\n- Change BANT framework letter colors from blue to green \\(#16a34a\\)\n- Clean up legacy claude prompt files from repository\n\n🤖 Generated with [Claude Code]\\(https://claude.com/claude-code\\)\n\nCo-Authored-By: Claude Sonnet 4.5 <noreply@anthropic.com>\nEOF\n\\)\")",
+      "Bash(git commit -m \"$\\(cat <<''EOF''\nfix\\(blog\\): apply blue styling to ordered list markers\n\n- Use [&_ol>li::marker] selector to properly target ordered list markers\n- Ensure numbered lists \\(1., 2., 3.\\) display in blue with larger size\n- Maintain bold font-weight for better visibility\n- Fix Tailwind CSS specificity issues with prose markers\n\n🤖 Generated with [Claude Code]\\(https://claude.com/claude-code\\)\n\nCo-Authored-By: Claude Sonnet 4.5 <noreply@anthropic.com>\nEOF\n\\)\")"
     ]
   }
 }
