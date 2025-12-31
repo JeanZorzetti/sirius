@@ -1,0 +1,28 @@
+The user feels previous instructions were too restrictive. They are giving you **FULL CREATIVE FREEDOM** to make the blog post page look **World-Class**.
+
+**The User's specific hint:** "Is it missing UI components in the text? Make a stylized sidebar summary."
+
+**Your Mission:**
+Redesign `app/(marketing)/blog/[slug]/page.tsx` to be a visual masterpiece.
+
+**Mandatory Features:**
+1.  **Sticky Sidebar Table of Contents (TOC):**
+    *   On Desktop (lg+), the layout must be 2 columns.
+    *   Left/Center: The Article Content.
+    *   Right: A beautiful, sticky Sidebar showing the Summary/TOC (headings).
+    *   The TOC should highlight active sections if possible, or at least look very premium (border-l, muted text, hover effects).
+    *   **Technical Challenge:** You typically need to parse the `post.content` to extract H2/H3 for the TOC. Since it's a string, you might need a simple regex extraction in the component or a dedicated function.
+
+2.  **"UI Components" Feel in Text:**
+    *   The user thinks the text looks too "plain".
+    *   Update `lib/blog-data.ts` (or just the CSS in `page.tsx`) to make `blockquote`, `pre`, or specific `div`s look like **rich UI components** (e.g., "Pro Tip" boxes, "Warning" alerts, "Key Takeaway" cards).
+    *   You have permission to edit the Content HTML in `blog-data.ts` again to add these "component-like" structures (e.g., `<div class="callout-tip">...</div>`) and style them in `page.tsx` (using `[&_.callout-tip]:...` selectors).
+
+3.  **Layout & Typography:**
+    *   Use your expert judgment. If you think the previous `70ch` constraint was boring, change it. Make it look like a top-tier SaaS blog (Linear, Stripe, Vercel).
+
+**Files to touch:**
+- `app/(marketing)/blog/[slug]/page.tsx` (Layout, TOC logic)
+- `lib/blog-data.ts` (Add "UI hooks" or richer HTML structures)
+
+**Go wild. Impress the user.** (But keep it functioning/buildable).

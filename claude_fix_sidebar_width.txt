@@ -1,0 +1,24 @@
+The user points out two remaining issues:
+1.  "The sidebar (summary) should float following the scroll" (it might be failing to stick).
+2.  "The width is still too narrow".
+
+**Your Task:**
+Fix these CSS issues in `app/(marketing)/blog/[slug]/page.tsx` and `components/blog/table-of-contents.tsx`.
+
+**1. Fix Width (Crucial):**
+In `app/(marketing)/blog/[slug]/page.tsx`, there is a container limiting the width:
+`<div className="container mx-auto max-w-3xl py-8 lg:py-16 px-6">`
+*   **Action:** Change `max-w-3xl` to **`max-w-[1600px]`** (or `max-w-7xl`). The 2-column layout (Content + Sidebar) needs way more space than 3xl (768px). This `3xl` constraint is strangling your new layout.
+
+**2. Fix Sticky Sidebar:**
+In `components/blog/table-of-contents.tsx`:
+*   The `nav` uses `sticky top-24`.
+*   **Action:** Add **`self-start`** to the className (`sticky top-24 self-start ...`).
+    *   *Why?* In a CSS Grid, default alignment acts like `stretch`, making the sidebar as tall as the main content. If the element is as tall as its container, `sticky` has nowhere to scroll. `self-start` makes it take only its natural height, allowing it to "float" down the track.
+
+**Files to touch:**
+- `app/(marketing)/blog/[slug]/page.tsx` (Increase Container Max Width)
+- `components/blog/table-of-contents.tsx` (Add `self-start` to Nav)
+
+**Implementation Detail:**
+Double check that `page.tsx` doesn't have any `overflow-hidden` on parent elements (like the `<article className="relative">`), which would break sticky. (Looking at it, `article` has `relative`, but verify).

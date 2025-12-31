@@ -1,0 +1,27 @@
+The user is unhappy with the previous "70ch" width constraint. It looks "too narrow (thin)" and the typography feels "generic like Word".
+
+**Your Task:**
+Fix the layout and typography in `app/(marketing)/blog/[slug]/page.tsx` to be wider, richer, and less generic.
+
+**Specific Changes:**
+
+1.  **Layout (Widening):**
+    *   **REMOVE** the `<div className="max-w-[70ch]">` wrapper around the content.
+    *   Let the content fill the `1fr` column of the grid naturally.
+    *   (The `grid lg:grid-cols-[1fr_320px]` will inherently limit it, which is perfect).
+
+2.  **Typography (De-Word-ifying):**
+    *   **Font:** Switch `prose-slate` to `prose-zinc` (or gray) for a neutral, premium tone.
+    *   **Headings:** Add `font-heading` (if exists) or just ensure they are `text-foreground` and maybe `tracking-tight`.
+    *   **Spacing:** reducing `leading-[1.8]` to `leading-loose` or `leading-relaxed` (standard Tailwind classes are often better balanced). Let's try `leading-relaxed` (1.625) with `text-lg` (1.125rem) or `text-xl` (1.25rem). Let's stick to `text-lg` (18px) to avoid it looking "cartoonishly big".
+    *   **First Paragraph Drop Cap:** Add `prose-p:first-of-type:first-letter:text-5xl prose-p:first-of-type:first-letter:font-bold prose-p:first-of-type:first-letter:mr-3 prose-p:first-of-type:first-letter:float-left` to give it a magazine feel. (Note: apply this carefully via `[&>p:first-of-type::first-letter]`).
+
+3.  **UI Components (Verify):**
+    *   Make sure the `[&_.callout-tip]:...` styles are actually working.
+    *   Maybe add `bg-white dark:bg-zinc-900 border shadow-sm rounded-xl p-8` to the *Main Content Column* itself? This would create a "Card" look for the article, separating it from the background. **YES, DO THIS.**
+    *   This "Card" look (white paper on gray background) instantly removes the "plain text on infinite background" feeling.
+
+**Action:**
+1.  Wrap the main content in a `<Card>` or nice `div` with background.
+2.  Remove the `70ch` constraint.
+3.  Enhance the typography.
