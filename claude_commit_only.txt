@@ -1,9 +1,0 @@
-The file `app/(marketing)/blog/[slug]/page.tsx` has been modified with CSS refinements (Spacing, Blue Bold, Tables) but these changes are NOT committed yet.
-
-**Your Task:**
-1.  **Verify** the changes are present (they are).
-2.  **Run `npm run build`** to ensure everything is safe.
-3.  **Git Add, Commit, and Push** the changes to `main`.
-    *   Commit message: `style(blog): refine typography, spacing, tables and colors`
-
-Do not exit without pushing.

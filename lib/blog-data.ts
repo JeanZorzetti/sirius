@@ -82,19 +82,19 @@ export const blogPosts = [
         </p>
         <div style="display: flex; flex-direction: column; gap: 0.75rem; margin: 1.5rem 0;">
           <div style="display: flex; align-items: flex-start;">
-            <strong style="color: #2563eb; font-size: 1.125rem; min-width: 1.5rem; margin-right: 0.5rem;">B</strong>
+            <strong style="color: #16a34a; font-size: 1.125rem; min-width: 1.5rem; margin-right: 0.5rem;">B</strong>
             <span style="flex: 1;">udget: "Você já reservou orçamento para isso?"</span>
           </div>
           <div style="display: flex; align-items: flex-start;">
-            <strong style="color: #2563eb; font-size: 1.125rem; min-width: 1.5rem; margin-right: 0.5rem;">A</strong>
+            <strong style="color: #16a34a; font-size: 1.125rem; min-width: 1.5rem; margin-right: 0.5rem;">A</strong>
             <span style="flex: 1;">uthority: "Quem mais precisa aprovar esta decisão?"</span>
           </div>
           <div style="display: flex; align-items: flex-start;">
-            <strong style="color: #2563eb; font-size: 1.125rem; min-width: 1.5rem; margin-right: 0.5rem;">N</strong>
+            <strong style="color: #16a34a; font-size: 1.125rem; min-width: 1.5rem; margin-right: 0.5rem;">N</strong>
             <span style="flex: 1;">eed: "O que acontece se você não resolver isso nos próximos 90 dias?"</span>
           </div>
           <div style="display: flex; align-items: flex-start;">
-            <strong style="color: #2563eb; font-size: 1.125rem; min-width: 1.5rem; margin-right: 0.5rem;">T</strong>
+            <strong style="color: #16a34a; font-size: 1.125rem; min-width: 1.5rem; margin-right: 0.5rem;">T</strong>
             <span style="flex: 1;">imeline: "Quando você precisa ter isso implementado?"</span>
           </div>
         </div>

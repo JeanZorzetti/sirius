@@ -1,9 +1,0 @@
-The previous attempt to improve `app/dashboard/analytics/page.tsx` was interrupted.
-
-1.  **Verify** that `app/dashboard/analytics/page.tsx` has the new features:
-    *   **Forecast** ("Previsão de Fechamento") calculation and Card.
-    *   **Conversion Rate** ("Taxa de Conversão") calculation and Card.
-    *   **Stages** fetching logic (`prisma.pipelineStage.findMany`).
-2.  If the code is correct, **Commit and Push** the changes immediately.
-    *   Commit message: `feat(analytics): add conversion rate and forecast metrics`
-3.  If the code is incomplete (e.g. missing imports or closing braces), **fix it** and then push.

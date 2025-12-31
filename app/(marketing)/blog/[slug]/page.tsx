@@ -197,12 +197,14 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                   prose-headings:font-bold prose-headings:tracking-tight prose-headings:text-foreground
                   prose-h2:text-3xl prose-h2:mt-12 prose-h2:mb-6 prose-h2:border-b prose-h2:pb-4
                   prose-h3:text-2xl prose-h3:mt-8 prose-h3:mb-4
-                  !prose-p:mb-8 prose-p:text-zinc-700 dark:prose-p:text-zinc-300 prose-p:leading-[1.8]
+                  !prose-p:mb-10 prose-p:text-zinc-700 dark:prose-p:text-zinc-300 prose-p:leading-[2]
                   prose-a:text-primary prose-a:no-underline hover:prose-a:underline prose-a:font-medium
                   !prose-strong:text-blue-600 dark:!prose-strong:text-blue-400 prose-strong:font-bold
                   prose-ul:my-8 prose-ul:space-y-3 prose-li:text-zinc-700 dark:prose-li:text-zinc-300
                   !prose-li:marker:text-blue-600 !prose-li:marker:text-xl prose-li:marker:font-bold prose-li:pl-2
-                  prose-ol:my-8 prose-ol:space-y-3 prose-ol:text-zinc-700 dark:prose-ol:text-zinc-300
+                  prose-ol:my-8 prose-ol:space-y-4
+                  !prose-ol:marker:text-blue-600 dark:!prose-ol:marker:text-blue-400 !prose-ol:marker:text-xl !prose-ol:marker:font-bold
+                  prose-ol>li:text-zinc-700 dark:prose-ol>li:text-zinc-300 prose-ol>li:pl-3
                   prose-blockquote:text-xl prose-blockquote:font-medium prose-blockquote:text-primary
                   prose-blockquote:border-l-4 prose-blockquote:border-primary prose-blockquote:bg-primary/5
                   prose-blockquote:pl-6 prose-blockquote:py-6 prose-blockquote:rounded-r-2xl prose-blockquote:not-italic
