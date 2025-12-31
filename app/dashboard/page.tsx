@@ -4,6 +4,7 @@ import { KanbanBoard } from "@/components/kanban-board"
 import { CreateDealDialog } from "@/components/deals/create-deal-dialog"
 import { EmptyState } from "@/components/ui/empty-state"
 import { DollarSign } from "lucide-react"
+import { getSession } from "@/lib/auth"
 
 const prisma = new PrismaClient()
 
@@ -15,7 +16,14 @@ export const metadata: Metadata = {
 export const dynamic = 'force-dynamic'
 
 export default async function DashboardPage() {
-    const user = await prisma.user.findFirst({
+    // CRITICAL FIX: Get authenticated user from session
+    const session = await getSession()
+    if (!session || !session.user || !session.user.email) {
+        return <div>Não autorizado. Faça login novamente.</div>
+    }
+
+    const user = await prisma.user.findUnique({
+        where: { email: session.user.email },
         include: { organization: true }
     })
 

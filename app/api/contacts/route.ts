@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
+import { getSession } from '@/lib/auth'
 
 export async function POST(request: Request) {
     try {
@@ -13,8 +14,17 @@ export async function POST(request: Request) {
             )
         }
 
-        // For MVP, get first user's organization
-        const user = await prisma.user.findFirst({
+        // CRITICAL FIX: Get authenticated user from session
+        const session = await getSession()
+        if (!session || !session.user || !session.user.email) {
+            return NextResponse.json(
+                { error: 'Não autorizado' },
+                { status: 401 }
+            )
+        }
+
+        const user = await prisma.user.findUnique({
+            where: { email: session.user.email },
             select: { organizationId: true }
         })
 

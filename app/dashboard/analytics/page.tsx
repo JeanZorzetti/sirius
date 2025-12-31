@@ -2,9 +2,17 @@ import { prisma } from '@/lib/prisma';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { OverviewChart } from '@/components/analytics/overview-chart';
 import { DollarSign, TrendingUp, Package, Target, CalendarClock } from 'lucide-react';
+import { getSession } from '@/lib/auth';
 
 export default async function AnalyticsPage() {
-  const user = await prisma.user.findFirst({
+  // CRITICAL FIX: Get authenticated user from session
+  const session = await getSession();
+  if (!session || !session.user || !session.user.email) {
+    return <div>Não autorizado. Faça login novamente.</div>;
+  }
+
+  const user = await prisma.user.findUnique({
+    where: { email: session.user.email },
     include: { organization: true }
   })
 

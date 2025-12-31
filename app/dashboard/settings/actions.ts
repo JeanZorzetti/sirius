@@ -2,11 +2,19 @@
 
 import { prisma } from '@/lib/prisma'
 import { revalidatePath } from 'next/cache'
+import { getSession } from '@/lib/auth'
 
 export async function updateProfile(formData: FormData) {
     try {
-        // MVP: Get first user. In prod: await getServerSession...
-        const user = await prisma.user.findFirst()
+        // CRITICAL FIX: Get authenticated user from session
+        const session = await getSession()
+        if (!session || !session.user || !session.user.email) {
+            return { success: false, error: 'Não autorizado' }
+        }
+
+        const user = await prisma.user.findUnique({
+            where: { email: session.user.email }
+        })
         if (!user) {
             return { success: false, error: 'Usuário não encontrado' }
         }

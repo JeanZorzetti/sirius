@@ -3,9 +3,17 @@ import { prisma } from '@/lib/prisma'
 import { ProfileForm } from '@/components/settings/profile-form'
 import { User, Users } from 'lucide-react'
 import Link from 'next/link'
+import { getSession } from '@/lib/auth'
 
 export default async function SettingsPage() {
-    const user = await prisma.user.findFirst({
+    // CRITICAL FIX: Get authenticated user from session
+    const session = await getSession()
+    if (!session || !session.user || !session.user.email) {
+        return <div>Não autorizado. Faça login novamente.</div>
+    }
+
+    const user = await prisma.user.findUnique({
+        where: { email: session.user.email },
         include: { organization: true }
     })
 

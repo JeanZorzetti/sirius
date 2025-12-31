@@ -5,6 +5,7 @@ import { columns } from "@/components/contacts/columns"
 import { CreateContactDialog } from "@/components/contacts/create-contact-dialog"
 import { EmptyState } from "@/components/ui/empty-state"
 import { Users } from "lucide-react"
+import { getSession } from "@/lib/auth"
 
 const prisma = new PrismaClient()
 
@@ -15,7 +16,14 @@ export const metadata: Metadata = {
 export const dynamic = 'force-dynamic'
 
 export default async function ContactsPage() {
-    const user = await prisma.user.findFirst({
+    // CRITICAL FIX: Get authenticated user from session
+    const session = await getSession()
+    if (!session || !session.user || !session.user.email) {
+        return <div>Não autorizado. Faça login novamente.</div>
+    }
+
+    const user = await prisma.user.findUnique({
+        where: { email: session.user.email },
         include: { organization: true }
     })
 
