@@ -118,3 +118,14 @@ export function trackButtonClick(buttonName: string, location?: string) {
     location,
   })
 }
+
+/**
+ * Track pricing page view
+ * Specific event for pricing page visits (important conversion signal)
+ */
+export function trackViewPricingPage() {
+  trackEvent('view_pricing_page', {
+    page_path: '/pricing',
+    page_title: 'Pricing - Sirius CRM',
+  })
+}
