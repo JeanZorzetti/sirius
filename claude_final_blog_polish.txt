@@ -1,0 +1,17 @@
+You are tasked with finalizing the visual refinement of the blog post layout in `app/(marketing)/blog/[slug]/page.tsx`.
+
+**Objectives:**
+1.  **Paragraph Spacing:** Increase spacing significantly. Use `!prose-p:mb-10` to force the change if necessary.
+2.  **Blue Bold Text:** All bold text (`<strong>`) MUST be Blue. Use `!prose-strong:text-blue-600` (and `dark:!prose-strong:text-blue-400`).
+3.  **Blue List Markers:** List bullets/numbers must be Blue (`!prose-li:marker:text-blue-600`).
+4.  **Table Styling:** The "Deal Rotting" table needs to look professional. Ensure it has borders, header background, and padding.
+    *   Classes: `!prose-table:border`, `!prose-thead:bg-zinc-50`, `!prose-th:p-4`, `!prose-td:p-4`.
+5.  **BANT Alignment:** Ensure the "BANT" text (inside the callout components) highlights the initial letters correctly (which should be handled by the Bold=Blue rule).
+
+**Action Plan:**
+1.  **Edit** `app/(marketing)/blog/[slug]/page.tsx` to apply these classes. Override `prose-zinc` defaults where needed using `!important` (`!`).
+2.  **Verify** the build: `npm run build`.
+3.  **Deploy**: Run `git add . && git commit -m "style(blog): final visual polish (blue bold, spacing, tables)" && git push origin main`.
+
+**Context:**
+The user found previous changes insufficient ("Não mudou nada"). Make sure these changes are aggressive enough to be visible.

@@ -1,0 +1,7 @@
+The file `app/(marketing)/blog/[slug]/page.tsx` already has the correct styles applied (Spacing `mb-10`, Blue Bold, Table borders).
+
+**Your ONLY Task:**
+Execute the following command to deploy the changes:
+`npm run build && git add . && git commit -m "style(blog): final visual polish (blue bold, spacing, tables)" && git push origin main`
+
+Do not ask for clarification. Just run the command.
