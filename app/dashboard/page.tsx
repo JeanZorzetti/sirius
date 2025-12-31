@@ -77,10 +77,10 @@ export default async function DashboardPage() {
     const isPro = user.organization.plan === 'PRO'
 
     return (
-        <div className="flex-1 space-y-4 p-8 pt-6">
-            <div className="flex items-center justify-between space-y-2">
-                <div className="flex items-center gap-3">
-                    <h2 className="text-3xl font-bold tracking-tight">Pipeline</h2>
+        <div className="flex-1 space-y-4">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-3">
+                    <h2 className="text-2xl sm:text-3xl font-bold tracking-tight">Pipeline</h2>
                     {isMember ? (
                         <span className="px-2 py-1 rounded-full bg-zinc-800 text-xs font-medium text-zinc-400 border border-zinc-700">
                             👤 Meus Negócios
@@ -91,7 +91,7 @@ export default async function DashboardPage() {
                         </span>
                     )}
                 </div>
-                <div className="flex items-center space-x-2">
+                <div className="flex items-center space-x-2 w-full sm:w-auto">
                     <CreateDealDialog
                         stages={stages}
                         contacts={contacts}

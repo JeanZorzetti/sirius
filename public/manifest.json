@@ -1,21 +1,60 @@
 {
   "name": "Sirius CRM",
   "short_name": "Sirius",
-  "description": "O CRM inteligente para quem quer brilhar nas vendas.",
+  "description": "O CRM inteligente para quem quer brilhar nas vendas. Pipeline Kanban, WhatsApp integrado e Analytics em tempo real.",
   "start_url": "/dashboard",
   "display": "standalone",
+  "orientation": "portrait-primary",
   "background_color": "#09090b",
-  "theme_color": "#09090b",
+  "theme_color": "#6366f1",
+  "categories": ["business", "productivity"],
   "icons": [
     {
       "src": "/icon.png",
       "sizes": "32x32",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
     },
     {
       "src": "/apple-icon.png",
       "sizes": "180x180",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Pipeline",
+      "short_name": "Pipeline",
+      "description": "Ver pipeline de vendas",
+      "url": "/dashboard",
+      "icons": [{ "src": "/icon.png", "sizes": "96x96" }]
+    },
+    {
+      "name": "Contatos",
+      "short_name": "Contatos",
+      "description": "Gerenciar contatos",
+      "url": "/dashboard/contacts",
+      "icons": [{ "src": "/icon.png", "sizes": "96x96" }]
+    },
+    {
+      "name": "Analytics",
+      "short_name": "Analytics",
+      "description": "Ver métricas",
+      "url": "/dashboard/analytics",
+      "icons": [{ "src": "/icon.png", "sizes": "96x96" }]
     }
   ]
 }

@@ -1,6 +1,8 @@
 import { Sidebar } from '@/components/dashboard/sidebar'
+import { MobileNav } from '@/components/dashboard/mobile-nav'
 import { UserNav } from '@/components/dashboard/user-nav'
 import { ModeToggle } from '@/components/ui/mode-toggle'
+import { PWAInstallPrompt } from '@/components/pwa-install-prompt'
 import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 
@@ -36,10 +38,9 @@ export default async function DashboardLayout({
       {/* Main content area */}
       <div className="flex flex-1 flex-col overflow-hidden">
         {/* Header */}
-        <header className="flex h-14 items-center gap-4 border-b bg-background px-4 lg:h-[60px] lg:px-6">
-          <div className="flex-1">
-            {/* Mobile menu button could go here */}
-          </div>
+        <header className="flex h-14 items-center gap-4 border-b bg-background px-4 lg:h-15 lg:px-6">
+          <MobileNav />
+          <div className="flex-1" />
           <div className="flex items-center gap-2">
             <ModeToggle />
             <UserNav user={user} />
@@ -51,6 +52,9 @@ export default async function DashboardLayout({
           {children}
         </main>
       </div>
+
+      {/* PWA Install Prompt */}
+      <PWAInstallPrompt />
     </div>
   )
 }

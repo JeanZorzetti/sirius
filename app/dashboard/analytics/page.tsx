@@ -92,16 +92,16 @@ export default async function AnalyticsPage() {
   const chartData = Object.values(stageData);
 
   return (
-    <div className="flex-1 space-y-4 p-8 pt-6">
-      <div className="flex items-center justify-between space-y-2">
-        <h2 className="text-3xl font-bold tracking-tight">Dashboard</h2>
+    <div className="flex-1 space-y-4">
+      <div className="flex items-center justify-between">
+        <h2 className="text-2xl sm:text-3xl font-bold tracking-tight">Dashboard</h2>
       </div>
-      <p className="text-muted-foreground">
+      <p className="text-sm sm:text-base text-muted-foreground">
         Visão geral da performance do seu pipeline de vendas
       </p>
 
       {/* KPI Cards Grid */}
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+      <div className="grid gap-4 sm:gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
         <Card className="bg-white dark:bg-white/[0.02] border-zinc-200 dark:border-white/5 backdrop-blur-xl hover:bg-zinc-50 dark:hover:bg-white/[0.04] transition-colors overflow-hidden relative group shadow-sm">
           <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
             <DollarSign className="h-24 w-24 text-indigo-500 transform rotate-12 translate-x-4 -translate-y-4" />

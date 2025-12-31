@@ -184,7 +184,7 @@ function KanbanColumn({ stage, onDealClick, isOverlay, onRename, onDelete }: {
     <div
       ref={setNodeRef}
       style={style}
-      className={cn("w-[320px] flex-none flex flex-col h-full", isOverlay && "rotate-2 scale-105 opacity-90")}
+      className={cn("w-70 sm:w-80 flex-none flex flex-col h-full", isOverlay && "rotate-2 scale-105 opacity-90")}
     >
       {/* Column Header */}
       <div
@@ -339,7 +339,9 @@ export function KanbanBoard({ stages: initialStages, contacts }: KanbanBoardProp
   const sensors = useSensors(
     useSensor(PointerSensor, {
       activationConstraint: {
-        distance: 8,
+        distance: 10, // Increase for better touch detection on mobile
+        delay: 150, // Add delay to prevent accidental drags
+        tolerance: 5,
       },
     })
   )
