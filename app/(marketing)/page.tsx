@@ -1,11 +1,67 @@
 import { Hero } from "@/components/marketing/hero"
 import { BentoGrid } from "@/components/marketing/bento-grid"
 import { Logos } from "@/components/marketing/logos"
+import Script from "next/script"
 
 export default function LandingPage() {
+  const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "O que é o Sirius CRM?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Sirius CRM é um sistema de gestão de vendas intuitivo e moderno, feito especialmente para vendas brasileiras. Com pipeline visual Kanban, gestão de contatos, WhatsApp integrado e métricas em tempo real, você transforma leads em receita recorrente sem burocracia."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Como funciona o WhatsApp com 1 clique?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Cada card de negócio no Sirius possui um botão verde que abre a conversa do WhatsApp diretamente com o contato. Não precisa copiar telefone, trocar de app ou perder tempo - é só clicar e começar a conversar."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "O Sirius CRM é gratuito?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Sim! O Sirius oferece um plano gratuito com funcionalidades essenciais para começar. Para times que precisam de recursos avançados, oferecemos planos Pro com mais usuários, relatórios avançados e suporte prioritário."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Quantos negócios posso ter no plano gratuito?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No plano gratuito você pode gerenciar até 20 negócios ativos simultaneamente. Para times com volume maior de vendas, o plano Pro oferece negócios ilimitados."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Como o Sirius me ajuda a identificar gargalos?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "O dashboard de Analytics do Sirius mostra qual vendedor trava em qual etapa do funil, taxa de conversão por fase e onde você está perdendo negócios. Visualize padrões, identifique problemas e otimize seu processo de vendas baseado em dados reais."
+        }
+      }
+    ]
+  };
+
   return (
-    // Force dark mode aesthetic for the landing page
-    <div className="min-h-screen bg-zinc-950 text-white selection:bg-indigo-500/30">
+    <>
+      {/* FAQ Schema for SEO */}
+      <Script
+        id="faq-schema"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+      />
+
+      {/* Force dark mode aesthetic for the landing page */}
+      <div className="min-h-screen bg-zinc-950 text-white selection:bg-indigo-500/30">
 
       {/* Background Noise/Gradient Wrapper */}
       <div className="fixed inset-0 z-0 pointer-events-none">
@@ -32,5 +88,6 @@ export default function LandingPage() {
         </section>
       </div>
     </div>
+    </>
   )
 }
