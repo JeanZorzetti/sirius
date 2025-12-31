@@ -51,6 +51,8 @@ export const metadata: Metadata = {
 
 import { ThemeProvider } from "@/components/theme-provider"
 import { TawkToChat } from "@/components/tawk-to-chat"
+import { GoogleTagManager, GoogleTagManagerNoScript } from "@/components/google-tag-manager"
+import { analyticsConfig } from "@/lib/analytics-config"
 import { SpeedInsights } from "@vercel/speed-insights/next"
 import { Analytics } from "@vercel/analytics/next"
 
@@ -140,7 +142,17 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {/* Google Analytics */}
+        {/* Google Tag Manager (noscript) - Must be right after opening body tag */}
+        {analyticsConfig.gtm.enabled && (
+          <GoogleTagManagerNoScript gtmId={analyticsConfig.gtm.id} />
+        )}
+
+        {/* Google Tag Manager */}
+        {analyticsConfig.gtm.enabled && (
+          <GoogleTagManager gtmId={analyticsConfig.gtm.id} />
+        )}
+
+        {/* Google Analytics - Can be managed via GTM or keep standalone */}
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-WJE82VNKX8"
           strategy="afterInteractive"
