@@ -6,6 +6,7 @@ import { Badge } from '@/components/ui/badge'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { ShareButtons } from '@/components/blog/share-buttons'
+import { TableOfContents } from '@/components/blog/table-of-contents'
 import { Metadata } from 'next'
 import { ChevronLeft, ChevronRight, Calendar, Clock, User } from 'lucide-react'
 
@@ -186,28 +187,58 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
             </div>
           </header>
 
-          {/* Article Content */}
-          <div className="max-w-[70ch] mx-auto">
-            <div
-              className="prose prose-slate dark:prose-invert max-w-none
-                text-[1.125rem] leading-[1.8]
-                prose-headings:font-bold prose-headings:tracking-tight
-                prose-headings:text-slate-900 dark:prose-headings:text-white
-                prose-h2:text-3xl prose-h2:mt-12 prose-h2:mb-6 prose-h2:border-b prose-h2:pb-4
-                prose-h3:text-2xl prose-h3:mt-8 prose-h3:mb-4
-                prose-p:text-slate-800 dark:prose-p:text-slate-200 prose-p:leading-[1.8] prose-p:mb-8
-                prose-a:text-primary prose-a:no-underline hover:prose-a:underline prose-a:font-medium
-                prose-strong:text-slate-900 dark:prose-strong:text-white prose-strong:font-bold
-                prose-ul:my-6 prose-li:my-2 prose-li:text-slate-800 dark:prose-li:text-slate-200
-                prose-ol:my-6 prose-ol:text-slate-800 dark:prose-ol:text-slate-200
-                prose-blockquote:text-xl prose-blockquote:font-medium prose-blockquote:text-primary
-                prose-blockquote:border-l-4 prose-blockquote:border-primary prose-blockquote:bg-primary/5
-                prose-blockquote:pl-6 prose-blockquote:py-6 prose-blockquote:rounded-r-2xl prose-blockquote:not-italic
-                prose-code:text-primary prose-code:bg-muted prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:text-sm
-                prose-img:rounded-xl prose-img:shadow-lg prose-img:my-10
-                prose-table:text-slate-800 dark:prose-table:text-slate-200"
-              dangerouslySetInnerHTML={{ __html: post.content }}
-            />
+          {/* Article Content - 2 Column Layout */}
+          <div className="grid lg:grid-cols-[1fr_320px] lg:gap-12 xl:gap-16">
+            {/* Main Content Column */}
+            <div className="max-w-[70ch]">
+              <div
+                className="prose prose-slate dark:prose-invert max-w-none
+                  text-[1.125rem] leading-[1.8]
+                  prose-headings:font-bold prose-headings:tracking-tight
+                  prose-headings:text-slate-900 dark:prose-headings:text-white
+                  prose-h2:text-3xl prose-h2:mt-12 prose-h2:mb-6 prose-h2:border-b prose-h2:pb-4
+                  prose-h3:text-2xl prose-h3:mt-8 prose-h3:mb-4
+                  prose-p:text-slate-800 dark:prose-p:text-slate-200 prose-p:leading-[1.8] prose-p:mb-8
+                  prose-a:text-primary prose-a:no-underline hover:prose-a:underline prose-a:font-medium
+                  prose-strong:text-slate-900 dark:prose-strong:text-white prose-strong:font-bold
+                  prose-ul:my-6 prose-li:my-2 prose-li:text-slate-800 dark:prose-li:text-slate-200
+                  prose-ol:my-6 prose-ol:text-slate-800 dark:prose-ol:text-slate-200
+                  prose-blockquote:text-xl prose-blockquote:font-medium prose-blockquote:text-primary
+                  prose-blockquote:border-l-4 prose-blockquote:border-primary prose-blockquote:bg-primary/5
+                  prose-blockquote:pl-6 prose-blockquote:py-6 prose-blockquote:rounded-r-2xl prose-blockquote:not-italic
+                  prose-code:text-primary prose-code:bg-muted prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:text-sm
+                  prose-img:rounded-xl prose-img:shadow-lg prose-img:my-10
+                  prose-table:text-slate-800 dark:prose-table:text-slate-200
+                  [&_.callout-tip]:bg-blue-50 dark:[&_.callout-tip]:bg-blue-950/30
+                  [&_.callout-tip]:border-l-4 [&_.callout-tip]:border-blue-500
+                  [&_.callout-tip]:p-6 [&_.callout-tip]:rounded-r-xl [&_.callout-tip]:my-8
+                  [&_.callout-tip]:shadow-sm
+                  [&_.callout-tip_strong]:text-blue-700 dark:[&_.callout-tip_strong]:text-blue-400
+                  [&_.callout-tip_strong]:flex [&_.callout-tip_strong]:items-center [&_.callout-tip_strong]:gap-2
+                  [&_.callout-tip_strong]:text-sm [&_.callout-tip_strong]:uppercase [&_.callout-tip_strong]:tracking-wide
+                  [&_.callout-tip_strong]:mb-2
+                  [&_.callout-warning]:bg-amber-50 dark:[&_.callout-warning]:bg-amber-950/30
+                  [&_.callout-warning]:border-l-4 [&_.callout-warning]:border-amber-500
+                  [&_.callout-warning]:p-6 [&_.callout-warning]:rounded-r-xl [&_.callout-warning]:my-8
+                  [&_.callout-warning]:shadow-sm
+                  [&_.callout-warning_strong]:text-amber-700 dark:[&_.callout-warning_strong]:text-amber-400
+                  [&_.callout-warning_strong]:flex [&_.callout-warning_strong]:items-center [&_.callout-warning_strong]:gap-2
+                  [&_.callout-warning_strong]:text-sm [&_.callout-warning_strong]:uppercase [&_.callout-warning_strong]:tracking-wide
+                  [&_.callout-warning_strong]:mb-2
+                  [&_.callout-key]:bg-green-50 dark:[&_.callout-key]:bg-green-950/30
+                  [&_.callout-key]:border-l-4 [&_.callout-key]:border-green-500
+                  [&_.callout-key]:p-6 [&_.callout-key]:rounded-r-xl [&_.callout-key]:my-8
+                  [&_.callout-key]:shadow-sm
+                  [&_.callout-key_strong]:text-green-700 dark:[&_.callout-key_strong]:text-green-400
+                  [&_.callout-key_strong]:flex [&_.callout-key_strong]:items-center [&_.callout-key_strong]:gap-2
+                  [&_.callout-key_strong]:text-sm [&_.callout-key_strong]:uppercase [&_.callout-key_strong]:tracking-wide
+                  [&_.callout-key_strong]:mb-2"
+                dangerouslySetInnerHTML={{ __html: post.content }}
+              />
+            </div>
+
+            {/* Sidebar Column - Table of Contents */}
+            <TableOfContents content={post.content} />
           </div>
 
           {/* Related Posts Section */}

@@ -57,9 +57,14 @@ export const blogPosts = [
         É o momento em que o lead entra no radar. Ele demonstrou interesse real: baixou um material, pediu orçamento, foi abordado pelo SDR e respondeu, preencheu um formulário. O objetivo aqui é <strong>qualificar rapidamente</strong>: esse lead tem fit com meu produto? Tem budget? Tem autoridade para comprar?
       </p>
 
-      <p>
-        <strong>Ação chave:</strong> Primeiro contato em até 5 minutos (leads que respondem em 5 min têm 21x mais chance de conversão). WhatsApp, ligação ou email de apresentação.
-      </p>
+      <div class="callout-tip">
+        <p>
+          <strong>💡 Pro Tip: A Regra dos 5 Minutos</strong>
+        </p>
+        <p>
+          Leads que recebem o primeiro contato em até 5 minutos têm 21x mais chance de conversão. Configure notificações push no seu CRM para receber alertas instantâneos de novos leads. WhatsApp, ligação ou email — escolha o canal que o lead preferiu, mas aja RÁPIDO.
+        </p>
+      </div>
 
       <p>
         <strong>Critério de saída:</strong> Lead respondeu e demonstrou interesse em conversar. Se não respondeu após 5 tentativas em 2 semanas, move para "Perdido - Sem resposta".
@@ -70,6 +75,21 @@ export const blogPosts = [
       <p>
         Aqui você confirma o interesse real e a viabilidade do negócio. Aplicamos frameworks como BANT (Budget, Authority, Need, Timeline) ou GPCT (Goals, Plans, Challenges, Timeline). O lead passa para essa etapa quando <strong>agendou uma reunião</strong> ou <strong>respondeu demonstrando intenção clara de compra</strong>.
       </p>
+
+      <div class="callout-key">
+        <p>
+          <strong>🎯 Framework BANT: Suas 4 Perguntas Essenciais</strong>
+        </p>
+        <p>
+          <strong>B</strong>udget: "Você já reservou orçamento para isso?" <br/>
+          <strong>A</strong>uthority: "Quem mais precisa aprovar esta decisão?" <br/>
+          <strong>N</strong>eed: "O que acontece se você não resolver isso nos próximos 90 dias?" <br/>
+          <strong>T</strong>imeline: "Quando você precisa ter isso implementado?"
+        </p>
+        <p>
+          Se o lead não tem respostas claras para pelo menos 3 dessas 4 perguntas, ele não está qualificado. Não envie proposta ainda.
+        </p>
+      </div>
 
       <blockquote>
         <p>
@@ -181,9 +201,14 @@ export const blogPosts = [
 
       <h2>Pipeline Hygiene: A Disciplina que Separa Vencedores de Perdedores</h2>
 
-      <p>
-        Aqui está uma verdade inconveniente: 40% dos deals no seu pipeline neste momento já morreram. Os leads não vão comprar. Eles só ainda não te contaram.
-      </p>
+      <div class="callout-warning">
+        <p>
+          <strong>⚠️ Alerta: Pipeline Inflado é Pior que Pipeline Vazio</strong>
+        </p>
+        <p>
+          40% dos deals no seu pipeline neste momento já morreram. Os leads não vão comprar. Eles só ainda não te contaram. Pipeline inflado cria uma falsa sensação de controle enquanto você perde timing com oportunidades reais. Se você não consegue lembrar da última interação com um deal, ele já morreu.
+        </p>
+      </div>
 
       <p>
         Pipeline hygiene (higiene de pipeline) é a prática de <strong>limpar regularmente seu pipeline de oportunidades mortas</strong>. É desconfortável, porque reduz seus números. Mas é essencial, porque números inflados te impedem de tomar decisões corretas.
