@@ -289,28 +289,19 @@ export const blogPosts = [
         Deal rotting (apodrecimento de negócios) acontece quando oportunidades ficam paradas em uma etapa por tempo demais, sem ação real acontecendo. É diferente de um deal morto — um deal podre ainda tem sinais vitais, mas está se deteriorando lentamente.
       </p>
 
-      <div class="callout-data">
-        <p><strong>📈 Dados da Salesforce: 4.5 Milhões de Deals Analisados</strong></p>
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem; margin: 1.5rem 0;">
-          <div style="text-align: center;">
-            <p style="font-size: 2.5rem; font-weight: 800; color: #0ea5e9; margin: 0; line-height: 1;">102</p>
-            <p style="margin: 0.5rem 0 0 0; color: #0369a1; font-weight: 600;">dias em média para fechar</p>
-          </div>
-          <div style="text-align: center;">
-            <p style="font-size: 2.5rem; font-weight: 800; color: #ef4444; margin: 0; line-height: 1;">-67%</p>
-            <p style="margin: 0.5rem 0 0 0; color: #991b1b; font-weight: 600;">chance se >30 dias parado</p>
-          </div>
-          <div style="text-align: center;">
-            <p style="font-size: 2.5rem; font-weight: 800; color: #f59e0b; margin: 0; line-height: 1;">-0.8%</p>
-            <p style="margin: 0.5rem 0 0 0; color: #92400e; font-weight: 600;">por dia extra de inatividade</p>
-          </div>
-        </div>
-      </div>
+      <p>
+        Um estudo da Salesforce analisou <strong>4.5 milhões</strong> de deals e descobriu que:
+      </p>
 
-      <div style="margin-top: 4rem;">
-        <p>
-          <strong>Como identificar deal rotting no seu pipeline:</strong>
-        </p>
+      <ul>
+        <li>Deals que fecham levam em média <strong>102 dias</strong> desde o primeiro contato</li>
+        <li>Deals que ficam mais de <strong>30 dias</strong> em uma única etapa têm <strong>67%</strong> menos chance de fechar</li>
+        <li>Cada dia extra de inatividade reduz a probabilidade de fechamento em <strong>0.8%</strong></li>
+      </ul>
+
+      <p>
+        <strong>Como identificar deal rotting no seu pipeline:</strong>
+      </p>
 
         <table>
         <thead>
@@ -350,27 +341,14 @@ export const blogPosts = [
       </table>
       </div>
 
-      <div class="callout-strategies">
-        <p><strong>💪 4 Estratégias para Prevenir Deal Rotting</strong></p>
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem; margin: 1.5rem 0;">
-          <div style="background: linear-gradient(135deg, #f0fdfa 0%, #ccfbf1 100%); border-left: 4px solid #14b8a6; padding: 1.25rem; border-radius: 0.75rem;">
-            <p style="margin: 0; font-weight: 700; color: #0f766e; font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.05em;">📅 Next Step Obrigatório</p>
-            <p style="margin: 0.5rem 0 0 0; color: #134e4a; font-size: 0.95rem;">Nunca termine sem definir próximo passo com data/hora. "Te ligo semana que vem" ≠ próximo passo</p>
-          </div>
-          <div style="background: linear-gradient(135deg, #f0fdfa 0%, #ccfbf1 100%); border-left: 4px solid #14b8a6; padding: 1.25rem; border-radius: 0.75rem;">
-            <p style="margin: 0; font-weight: 700; color: #0f766e; font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.05em;">🤝 Champion Interno</p>
-            <p style="margin: 0.5rem 0 0 0; color: #134e4a; font-size: 0.95rem;">Identifique advogado interno. Deals sem champion têm <strong>3x</strong> mais chance de apodrecer</p>
-          </div>
-          <div style="background: linear-gradient(135deg, #f0fdfa 0%, #ccfbf1 100%); border-left: 4px solid #14b8a6; padding: 1.25rem; border-radius: 0.75rem;">
-            <p style="margin: 0; font-weight: 700; color: #0f766e; font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.05em;">⚡ Create Urgency</p>
-            <p style="margin: 0.5rem 0 0 0; color: #134e4a; font-size: 0.95rem;">Promoções com deadline, bônus, demonstração do custo de não-ação</p>
-          </div>
-          <div style="background: linear-gradient(135deg, #f0fdfa 0%, #ccfbf1 100%); border-left: 4px solid #14b8a6; padding: 1.25rem; border-radius: 0.75rem;">
-            <p style="margin: 0; font-weight: 700; color: #0f766e; font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.05em;">🔔 Automação de Alertas</p>
-            <p style="margin: 0.5rem 0 0 0; color: #134e4a; font-size: 0.95rem;">Configure CRM para avisar quando deal fica X dias sem movimento</p>
-          </div>
-        </div>
-      </div>
+      <p><strong>Estratégias para prevenir Deal Rotting:</strong></p>
+
+      <ol>
+        <li><strong>Next Step Obrigatório:</strong> Nunca termine sem definir próximo passo com data/hora. "Te ligo semana que vem" ≠ próximo passo</li>
+        <li><strong>Champion Interno:</strong> Identifique advogado interno. Deals sem champion têm <strong>3x</strong> mais chance de apodrecer</li>
+        <li><strong>Create Urgency:</strong> Promoções com deadline, bônus, demonstração do custo de não-ação</li>
+        <li><strong>Automação de Alertas:</strong> Configure CRM para avisar quando deal fica X dias sem movimento</li>
+      </ol>
 
       <blockquote>
         <p>
