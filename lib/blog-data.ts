@@ -5,7 +5,7 @@ export const blogPosts = [
     excerpt: 'Descubra as melhores práticas para manter seu funil de vendas sempre fluindo e fechar mais negócios.',
     content: `
       <p>
-        Um pipeline de vendas bem organizado é a diferença entre uma equipe que vende consistentemente e uma que vive de "lampejos de sorte". Em 2025, com o mercado cada vez mais competitivo e ciclos de venda mais complexos, ter visibilidade total sobre suas oportunidades deixou de ser um luxo para se tornar uma questão de sobrevivência.
+        Um pipeline de vendas bem organizado é a diferença entre uma equipe que vende consistentemente e uma que vive de "lampejos de sorte". Em <strong>2025</strong>, com o mercado cada vez mais competitivo e ciclos de venda mais complexos, ter visibilidade total sobre suas oportunidades deixou de ser um luxo para se tornar uma questão de sobrevivência.
       </p>
 
       <p>
@@ -22,20 +22,35 @@ export const blogPosts = [
         Pense no pipeline como um raio-X em tempo real da sua operação comercial. Ele responde perguntas críticas que mantêm gestores acordados à noite:
       </p>
 
-      <ul>
-        <li>Quantos negócios estão em negociação neste momento?</li>
-        <li>Qual é o valor total que pode fechar este mês?</li>
-        <li>Onde estão os gargalos? (Muitos deals parados na mesma etapa?)</li>
-        <li>Qual vendedor está mais próximo de bater a meta?</li>
-        <li>Existem oportunidades sendo esquecidas há semanas?</li>
-        <li>Por que estamos perdendo deals na etapa de proposta?</li>
-      </ul>
+      <div class="callout-questions">
+        <p><strong>🔍 6 Perguntas que Todo Gestor Comercial Precisa Responder</strong></p>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem; margin: 1.5rem 0;">
+          <div style="background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); border-left: 4px solid #2563eb; padding: 1.25rem; border-radius: 0.75rem; box-shadow: 0 2px 8px rgba(37, 99, 235, 0.1);">
+            <p style="margin: 0; font-weight: 600; color: #1e40af;">💼 Quantos negócios estão em negociação neste momento?</p>
+          </div>
+          <div style="background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); border-left: 4px solid #2563eb; padding: 1.25rem; border-radius: 0.75rem; box-shadow: 0 2px 8px rgba(37, 99, 235, 0.1);">
+            <p style="margin: 0; font-weight: 600; color: #1e40af;">💰 Qual é o valor total que pode fechar este mês?</p>
+          </div>
+          <div style="background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); border-left: 4px solid #2563eb; padding: 1.25rem; border-radius: 0.75rem; box-shadow: 0 2px 8px rgba(37, 99, 235, 0.1);">
+            <p style="margin: 0; font-weight: 600; color: #1e40af;">🚧 Onde estão os gargalos?</p>
+          </div>
+          <div style="background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); border-left: 4px solid #2563eb; padding: 1.25rem; border-radius: 0.75rem; box-shadow: 0 2px 8px rgba(37, 99, 235, 0.1);">
+            <p style="margin: 0; font-weight: 600; color: #1e40af;">🎯 Qual vendedor está mais próximo da meta?</p>
+          </div>
+          <div style="background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); border-left: 4px solid #2563eb; padding: 1.25rem; border-radius: 0.75rem; box-shadow: 0 2px 8px rgba(37, 99, 235, 0.1);">
+            <p style="margin: 0; font-weight: 600; color: #1e40af;">⏰ Existem oportunidades esquecidas há semanas?</p>
+          </div>
+          <div style="background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); border-left: 4px solid #2563eb; padding: 1.25rem; border-radius: 0.75rem; box-shadow: 0 2px 8px rgba(37, 99, 235, 0.1);">
+            <p style="margin: 0; font-weight: 600; color: #1e40af;">❌ Por que perdemos deals na proposta?</p>
+          </div>
+        </div>
+      </div>
 
-      <blockquote>
-        <p>
-          Empresas com pipelines bem gerenciados vendem 28% a mais do que aquelas que trabalham "no feeling", segundo pesquisa da Harvard Business Review de 2024.
-        </p>
-      </blockquote>
+      <div class="callout-stat">
+        <p><strong>📊 Impacto Comprovado</strong></p>
+        <p style="font-size: 3rem; font-weight: 800; color: #2563eb; margin: 1rem 0; line-height: 1;">+28%</p>
+        <p>Empresas com pipelines bem gerenciados vendem <strong>28% a mais</strong> do que aquelas que trabalham "no feeling", segundo pesquisa da Harvard Business Review de <strong>2024</strong>.</p>
+      </div>
 
       <p>
         Mas aqui está o problema: a maioria das empresas <strong>tem</strong> um pipeline. O que elas não têm é um pipeline <strong>organizado</strong>. E um pipeline desorganizado é pior do que não ter nenhum — porque cria uma falsa sensação de controle enquanto os deals apodrecem silenciosamente.
@@ -44,12 +59,13 @@ export const blogPosts = [
       <h2>As 5 Etapas Essenciais de um Pipeline Eficiente</h2>
 
       <p>
-        A maioria dos erros de pipeline acontece logo na estruturação. Empresas criam 10, 12, 15 etapas pensando que "quanto mais controle, melhor". Na prática, isso gera burocracia, paralisia de análise e vendedores que não sabem em qual etapa colocar um lead.
+        A maioria dos erros de pipeline acontece logo na estruturação. Empresas criam <strong>10</strong>, <strong>12</strong>, <strong>15</strong> etapas pensando que "quanto mais controle, melhor". Na prática, isso gera burocracia, paralisia de análise e vendedores que não sabem em qual etapa colocar um lead.
       </p>
 
-      <p>
-        Aqui está a estrutura que funciona para 80% dos negócios B2B e B2C, validada por centenas de implementações:
-      </p>
+      <div class="callout-success">
+        <p><strong>✅ Estrutura Validada</strong></p>
+        <p>A estrutura a seguir funciona para <strong>80%</strong> dos negócios B2B e B2C, validada por centenas de implementações:</p>
+      </div>
 
       <h3>1. Prospecção</h3>
 
