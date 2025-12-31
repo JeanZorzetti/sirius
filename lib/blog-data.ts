@@ -542,37 +542,17 @@ export const blogPosts = [
         A indústria de CRM vendeu uma mentira muito bem embalada: "Se você quer crescer, precisa de um CRM enterprise". E o que é um CRM enterprise? Basicamente:
       </p>
 
-      <div class="callout-problems">
-        <p><strong>❌ 5 Sinais de um CRM "Enterprise" Desnecessário</strong></p>
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem; margin: 1.5rem 0;">
-          <div style="background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%); border-left: 4px solid #ef4444; padding: 1.25rem; border-radius: 0.75rem;">
-            <p style="margin: 0; font-weight: 700; color: #dc2626; font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.05em;">📦 Feature Bloat</p>
-            <p style="margin: 0.5rem 0 0 0; color: #7f1d1d; font-size: 0.95rem;"><strong>300+ features</strong> que você nunca vai usar</p>
-          </div>
-          <div style="background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%); border-left: 4px solid #ef4444; padding: 1.25rem; border-radius: 0.75rem;">
-            <p style="margin: 0; font-weight: 700; color: #dc2626; font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.05em;">⚙️ Customização Infinita</p>
-            <p style="margin: 0.5rem 0 0 0; color: #7f1d1d; font-size: 0.95rem;">Que vira um <strong>pesadelo de manutenção</strong></p>
-          </div>
-          <div style="background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%); border-left: 4px solid #ef4444; padding: 1.25rem; border-radius: 0.75rem;">
-            <p style="margin: 0; font-weight: 700; color: #dc2626; font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.05em;">🔌 Integrações Demais</p>
-            <p style="margin: 0.5rem 0 0 0; color: #7f1d1d; font-size: 0.95rem;"><strong>5000 ferramentas</strong> (das quais você usa 3)</p>
-          </div>
-          <div style="background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%); border-left: 4px solid #ef4444; padding: 1.25rem; border-radius: 0.75rem;">
-            <p style="margin: 0; font-weight: 700; color: #dc2626; font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.05em;">📊 Dashboards Complexos</p>
-            <p style="margin: 0.5rem 0 0 0; color: #7f1d1d; font-size: 0.95rem;">Exigem um <strong>diploma em analytics</strong> para entender</p>
-          </div>
-          <div style="background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%); border-left: 4px solid #ef4444; padding: 1.25rem; border-radius: 0.75rem;">
-            <p style="margin: 0; font-weight: 700; color: #dc2626; font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.05em;">🎓 Treinamento Eterno</p>
-            <p style="margin: 0.5rem 0 0 0; color: #7f1d1d; font-size: 0.95rem;">Precisa de <strong>40 horas</strong> antes do primeiro login</p>
-          </div>
-        </div>
-      </div>
+      <ul>
+        <li>300+ features que você nunca vai usar</li>
+        <li>Customização infinita (que vira um pesadelo de manutenção)</li>
+        <li>Integrações com 5000 ferramentas (das quais você usa 3)</li>
+        <li>Dashboards que exigem um diploma em analytics para entender</li>
+        <li>Precisa de 40 horas de treinamento antes do primeiro login</li>
+      </ul>
 
-      <blockquote>
-        <p>
-          Resultado? Você tem uma Ferrari para ir ao mercado. Mas não é só desperdício de dinheiro — é custo de oportunidade. Enquanto sua equipe luta contra campos obrigatórios sem sentido, o concorrente com um CRM simples está fechando negócios.
-        </p>
-      </blockquote>
+      <p>
+        Resultado? Você tem uma Ferrari para ir ao mercado. Mas não é só desperdício de dinheiro — é <strong>custo de oportunidade</strong>. Enquanto sua equipe luta contra campos obrigatórios sem sentido e fluxos de aprovação bizantinos, o concorrente com um CRM simples está fechando negócios.
+      </p>
 
       <h2>O Custo Real de um CRM Complexo</h2>
 
@@ -629,11 +609,9 @@ export const blogPosts = [
         </tbody>
       </table>
 
-      <div class="callout-stat">
-        <p><strong>💸 Custo Real da Complexidade</strong></p>
-        <p style="font-size: 3rem; font-weight: 800; color: #dc2626; margin: 1rem 0; line-height: 1;">R$ 181 mil</p>
-        <p>Desperdiçados no <strong>primeiro ano</strong>. E isso sem contar o custo de oportunidade dos deals que você perdeu porque seu vendedor estava preenchendo 47 campos obrigatórios em vez de ligar para o cliente.</p>
-      </div>
+      <p>
+        <strong>R$ 181 mil reais desperdiçados no primeiro ano.</strong> E isso sem contar o custo de oportunidade dos deals que você perdeu porque seu vendedor estava preenchendo 47 campos obrigatórios em vez de ligar para o cliente.
+      </p>
 
       <blockquote>
         <p>
@@ -683,28 +661,16 @@ export const blogPosts = [
         Psicólogos provaram que quanto mais opções você tem, mais difícil fica decidir — e pior é a decisão. Em CRMs enterprise, seus vendedores enfrentam o paradoxo da escolha o dia inteiro:
       </p>
 
-      <div class="callout-questions">
-        <p><strong>🤔 4 Perguntas que Paralisam Seus Vendedores</strong></p>
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem; margin: 1.5rem 0;">
-          <div style="background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); border-left: 4px solid #2563eb; padding: 1.25rem; border-radius: 0.75rem; box-shadow: 0 2px 8px rgba(37, 99, 235, 0.1);">
-            <p style="margin: 0; font-weight: 600; color: #1e40af;">🏷️ Devo criar um "Lead", "Prospect", "Opportunity" ou "Deal"? (Qual a diferença mesmo?)</p>
-          </div>
-          <div style="background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); border-left: 4px solid #2563eb; padding: 1.25rem; border-radius: 0.75rem; box-shadow: 0 2px 8px rgba(37, 99, 235, 0.1);">
-            <p style="margin: 0; font-weight: 600; color: #1e40af;">📅 Essa tarefa vai no módulo de Tasks, Activities, Events ou To-dos?</p>
-          </div>
-          <div style="background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); border-left: 4px solid #2563eb; padding: 1.25rem; border-radius: 0.75rem; box-shadow: 0 2px 8px rgba(37, 99, 235, 0.1);">
-            <p style="margin: 0; font-weight: 600; color: #1e40af;">📝 Preciso preencher todos esses 30 campos ou posso pular alguns?</p>
-          </div>
-          <div style="background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); border-left: 4px solid #2563eb; padding: 1.25rem; border-radius: 0.75rem; box-shadow: 0 2px 8px rgba(37, 99, 235, 0.1);">
-            <p style="margin: 0; font-weight: 600; color: #1e40af;">🔍 Onde eu vejo de novo aquele relatório que o admin criou?</p>
-          </div>
-        </div>
-      </div>
+      <ul>
+        <li>Devo criar um "Lead", "Prospect", "Opportunity" ou "Deal"? (Qual a diferença mesmo?)</li>
+        <li>Essa tarefa vai no módulo de Tasks, Activities, Events ou To-dos?</li>
+        <li>Preciso preencher todos esses 30 campos ou posso pular alguns?</li>
+        <li>Onde eu vejo de novo aquele relatório que o admin criou?</li>
+      </ul>
 
-      <div class="callout-warning">
-        <p><strong>⚠️ Resultado da Paralisia</strong></p>
-        <p>Vendedores odeiam o CRM. Adotam planilhas paralelas. Seus dados ficam desatualizados. E você pagou <strong>R$7.500/mês</strong> para ter uma planilha cara.</p>
-      </div>
+      <p>
+        Resultado: paralisia. Vendedores odeiam o CRM. Adotam planilhas paralelas. Seus dados ficam desatualizados. E você pagou R$7.500/mês para ter uma planilha cara.
+      </p>
 
       <h2>A Falácia do "Mas e quando crescermos?"</h2>
 
@@ -760,11 +726,9 @@ export const blogPosts = [
         <li>Volta pro CRM pra registrar a interação</li>
       </ol>
 
-      <div class="callout-brain">
-        <p><strong>⚡ Friction Mata Vendas</strong></p>
-        <p style="font-size: 2.5rem; font-weight: 800; color: #7c3aed; margin: 1rem 0; line-height: 1;">9 passos vs 1 clique</p>
-        <p>CRMs tradicionais exigem <strong>9 passos</strong> para enviar uma mensagem no WhatsApp. Com CRMs nativos brasileiros: <strong>1 clique</strong>. Isso se chama friction. E friction mata vendas.</p>
-      </div>
+      <p>
+        <strong>9 passos</strong> vs <strong>1 clique</strong>. Isso se chama friction. E friction mata vendas.
+      </p>
 
       <h2>Case Real: Migração que Economizou R$ 53k/ano</h2>
 
@@ -772,34 +736,34 @@ export const blogPosts = [
         Uma empresa de consultoria B2B com 8 vendedores estava usando HubSpot Sales Hub Professional (R$ 400/usuário/mês = R$ 3.200/mês).
       </p>
 
-      <div class="callout-problems">
-        <p><strong>❌ Problemas com HubSpot</strong></p>
-        <ul style="margin: 1rem 0; padding-left: 1.5rem;">
-          <li style="margin-bottom: 0.5rem;">Vendedores reclamavam que era "complicado demais"</li>
-          <li style="margin-bottom: 0.5rem;">Taxa de atualização do pipeline: <strong>40%</strong> (ruim)</li>
-          <li style="margin-bottom: 0.5rem;">Ninguém usava os relatórios avançados que justificavam o plano Pro</li>
-          <li style="margin-bottom: 0.5rem;">Integrações com WhatsApp via Zapier custando mais <strong>R$ 300/mês</strong></li>
-          <li style="margin-bottom: 0.5rem;">1 pessoa gastava <strong>6h/mês</strong> fazendo "manutenção" do CRM</li>
-        </ul>
-      </div>
+      <p>
+        Problemas que enfrentavam:
+      </p>
 
-      <div class="callout-success">
-        <p><strong>✅ Resultados com Sirius (R$ 49/usuário/mês = R$ 392/mês)</strong></p>
-        <ul style="margin: 1rem 0; padding-left: 1.5rem;">
-          <li style="margin-bottom: 0.5rem;">Migração em <strong>1 dia</strong> (exportar CSV, importar no novo)</li>
-          <li style="margin-bottom: 0.5rem;"><strong>Zero treinamento</strong> necessário (interface intuitiva)</li>
-          <li style="margin-bottom: 0.5rem;">Taxa de atualização do pipeline subiu para <strong>85%</strong></li>
-          <li style="margin-bottom: 0.5rem;">WhatsApp nativo (eliminaram Zapier)</li>
-          <li style="margin-bottom: 0.5rem;">Economia: R$ 3.200 - R$ 392 = <strong>R$ 2.808/mês = R$ 33.696/ano</strong></li>
-          <li style="margin-bottom: 0.5rem;">Tempo de manutenção: <strong>0 horas</strong> (eliminou custo de R$ 19.200/ano)</li>
-        </ul>
-      </div>
+      <ul>
+        <li>Vendedores reclamavam que era "complicado demais"</li>
+        <li>Taxa de atualização do pipeline: 40% (ruim)</li>
+        <li>Ninguém usava os relatórios avançados que justificavam o plano Pro</li>
+        <li>Integrações com WhatsApp via Zapier custando mais R$ 300/mês</li>
+        <li>1 pessoa gastava 6h/mês fazendo "manutenção" do CRM</li>
+      </ul>
 
-      <div class="callout-stat">
-        <p><strong>💰 Economia Total</strong></p>
-        <p style="font-size: 3rem; font-weight: 800; color: #10b981; margin: 1rem 0; line-height: 1;">R$ 52.896</p>
-        <p>No <strong>primeiro ano</strong>. E o mais importante: vendedores felizes, dados confiáveis, processo fluido.</p>
-      </div>
+      <p>
+        Migraram para o Sirius (R$ 49/usuário/mês = R$ 392/mês):
+      </p>
+
+      <ul>
+        <li>Migração em 1 dia (exportar CSV, importar no novo)</li>
+        <li>Zero treinamento necessário (interface intuitiva)</li>
+        <li>Taxa de atualização do pipeline subiu para 85%</li>
+        <li>WhatsApp nativo (eliminaram Zapier)</li>
+        <li>Economia: R$ 3.200 - R$ 392 = R$ 2.808/mês = <strong>R$ 33.696/ano</strong></li>
+        <li>Tempo de manutenção: 0 horas (eliminou custo de R$ 19.200/ano em tempo de gestão)</li>
+      </ul>
+
+      <p>
+        <strong>Economia total: R$ 52.896 no primeiro ano.</strong> E o mais importante: vendedores felizes, dados confiáveis, processo fluido.
+      </p>
 
       <h2>Quando um CRM Complexo REALMENTE faz sentido</h2>
 
@@ -885,53 +849,46 @@ export const blogPosts = [
 
       <h2>Checklist: Você Precisa de um CRM Simples Se...</h2>
 
-      <div class="callout-success">
-        <p><strong>✅ Faça o Auto-Diagnóstico</strong></p>
-        <ul style="margin: 1rem 0; padding-left: 1.5rem;">
-          <li style="margin-bottom: 0.75rem;">☑️ Sua equipe de vendas tem menos de <strong>30 pessoas</strong></li>
-          <li style="margin-bottom: 0.75rem;">☑️ Você quer começar a usar <strong>HOJE</strong>, não em 3 meses</li>
-          <li style="margin-bottom: 0.75rem;">☑️ Seu orçamento de CRM é menos de <strong>R$ 5.000/mês</strong></li>
-          <li style="margin-bottom: 0.75rem;">☑️ Você não tem (e não quer ter) um admin de CRM dedicado</li>
-          <li style="margin-bottom: 0.75rem;">☑️ <strong>90%</strong> da sua comunicação comercial é WhatsApp</li>
-          <li style="margin-bottom: 0.75rem;">☑️ Você valoriza simplicidade e velocidade acima de "flexibilidade infinita"</li>
-          <li style="margin-bottom: 0.75rem;">☑️ Seu time já reclamou que o CRM atual é "muito complicado"</li>
-          <li style="margin-bottom: 0.75rem;">☑️ Você não usa <strong>80%</strong> das features do CRM que paga hoje</li>
-        </ul>
-      </div>
+      <ul>
+        <li>Sua equipe de vendas tem menos de 30 pessoas</li>
+        <li>Você quer começar a usar HOJE, não em 3 meses</li>
+        <li>Seu orçamento de CRM é menos de R$ 5.000/mês</li>
+        <li>Você não tem (e não quer ter) um admin de CRM dedicado</li>
+        <li>90% da sua comunicação comercial é WhatsApp</li>
+        <li>Você valoriza simplicidade e velocidade acima de "flexibilidade infinita"</li>
+        <li>Seu time já reclamou que o CRM atual é "muito complicado"</li>
+        <li>Você não usa 80% das features do CRM que paga hoje</li>
+      </ul>
 
-      <div class="callout-warning">
-        <p><strong>⚠️ Veredicto</strong></p>
-        <p>Se você marcou <strong>4 ou mais</strong>, você está desperdiçando dinheiro e produtividade com um CRM complexo.</p>
-      </div>
+      <p>
+        Se você marcou 4 ou mais, você está desperdiçando dinheiro e produtividade com um CRM complexo.
+      </p>
 
       <h2>Conclusão: Menos é Mais (e Mais Barato)</h2>
 
-      <blockquote>
-        <p>
-          A indústria de CRM criou uma corrida armamentista de features que não beneficia você — beneficia eles. Quanto mais complexo o produto, mais eles justificam preços premium, lock-in de consultoria e certificações caras.
-        </p>
-      </blockquote>
+      <p>
+        A indústria de CRM criou uma corrida armamentista de features que não beneficia você — beneficia eles. Quanto mais complexo o produto, mais eles justificam preços premium, lock-in de consultoria e certificações caras.
+      </p>
 
       <p>
         Mas você não está no negócio de usar CRM. Você está no negócio de <strong>vender</strong>. E vender requer velocidade, clareza e execução — não dashboards com 47 gráficos que ninguém entende.
       </p>
 
-      <div class="callout-insight">
-        <p><strong>💡 Faça o Teste Definitivo</strong></p>
-        <ol style="margin: 1rem 0; padding-left: 1.5rem;">
-          <li style="margin-bottom: 0.75rem;"><strong>Liste as 5 coisas</strong> que você realmente precisa de um CRM</li>
-          <li style="margin-bottom: 0.75rem;"><strong>Veja se seu CRM atual</strong> oferece isso de forma simples</li>
-          <li style="margin-bottom: 0.75rem;"><strong>Se a resposta é não</strong>, você está pagando por complexidade desnecessária</li>
-        </ol>
-      </div>
+      <p>
+        Faça o teste:
+      </p>
 
-      <div class="callout-stat">
-        <p><strong>🚀 Simplifique Agora</strong></p>
-        <p style="font-size: 2rem; font-weight: 800; color: #2563eb; margin: 1rem 0; line-height: 1;">5 minutos</p>
-        <p><a href="/register">Experimente o Sirius gratuitamente</a> e veja como um CRM pode ser simples, poderoso e — pasmem — agradável de usar. Pipeline visual em 5 minutos, WhatsApp nativo, zero burocracia.</p>
-      </div>
+      <ol>
+        <li>Liste as 5 coisas que você realmente precisa de um CRM</li>
+        <li>Veja se seu CRM atual oferece isso de forma simples</li>
+        <li>Se a resposta é não, você está pagando por complexidade desnecessária</li>
+      </ol>
 
-      <p style="text-align: center; font-size: 1.25rem; font-weight: 600; margin-top: 3rem;">
+      <p>
+        <a href="/register">Experimente o Sirius gratuitamente</a> e veja como um CRM pode ser simples, poderoso e — pasmem — agradável de usar. Pipeline visual em 5 minutos, WhatsApp nativo, zero burocracia.
+      </p>
+
+      <p>
         Às vezes, menos realmente é mais. 🎯
       </p>
     `,
