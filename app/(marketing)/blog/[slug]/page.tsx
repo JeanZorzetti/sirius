@@ -189,26 +189,28 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
 
           {/* Article Content - 2 Column Layout */}
           <div className="grid lg:grid-cols-[1fr_320px] lg:gap-12 xl:gap-16">
-            {/* Main Content Column */}
-            <div className="max-w-[70ch]">
+            {/* Main Content Column - Card Wrapper */}
+            <article className="bg-white dark:bg-zinc-900 border border-border/50 shadow-lg rounded-2xl p-8 md:p-12">
               <div
-                className="prose prose-slate dark:prose-invert max-w-none
-                  text-[1.125rem] leading-[1.8]
-                  prose-headings:font-bold prose-headings:tracking-tight
-                  prose-headings:text-slate-900 dark:prose-headings:text-white
+                className="prose prose-zinc dark:prose-invert max-w-none
+                  text-lg leading-relaxed
+                  prose-headings:font-bold prose-headings:tracking-tight prose-headings:text-foreground
                   prose-h2:text-3xl prose-h2:mt-12 prose-h2:mb-6 prose-h2:border-b prose-h2:pb-4
                   prose-h3:text-2xl prose-h3:mt-8 prose-h3:mb-4
-                  prose-p:text-slate-800 dark:prose-p:text-slate-200 prose-p:leading-[1.8] prose-p:mb-8
+                  prose-p:text-zinc-700 dark:prose-p:text-zinc-300 prose-p:leading-relaxed prose-p:mb-6
                   prose-a:text-primary prose-a:no-underline hover:prose-a:underline prose-a:font-medium
-                  prose-strong:text-slate-900 dark:prose-strong:text-white prose-strong:font-bold
-                  prose-ul:my-6 prose-li:my-2 prose-li:text-slate-800 dark:prose-li:text-slate-200
-                  prose-ol:my-6 prose-ol:text-slate-800 dark:prose-ol:text-slate-200
+                  prose-strong:text-zinc-900 dark:prose-strong:text-zinc-100 prose-strong:font-bold
+                  prose-ul:my-6 prose-li:my-2 prose-li:text-zinc-700 dark:prose-li:text-zinc-300
+                  prose-ol:my-6 prose-ol:text-zinc-700 dark:prose-ol:text-zinc-300
                   prose-blockquote:text-xl prose-blockquote:font-medium prose-blockquote:text-primary
                   prose-blockquote:border-l-4 prose-blockquote:border-primary prose-blockquote:bg-primary/5
                   prose-blockquote:pl-6 prose-blockquote:py-6 prose-blockquote:rounded-r-2xl prose-blockquote:not-italic
                   prose-code:text-primary prose-code:bg-muted prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:text-sm
                   prose-img:rounded-xl prose-img:shadow-lg prose-img:my-10
-                  prose-table:text-slate-800 dark:prose-table:text-slate-200
+                  prose-table:text-zinc-700 dark:prose-table:text-zinc-300
+                  [&>p:first-of-type]:first-letter:text-6xl [&>p:first-of-type]:first-letter:font-bold
+                  [&>p:first-of-type]:first-letter:text-primary [&>p:first-of-type]:first-letter:mr-2
+                  [&>p:first-of-type]:first-letter:float-left [&>p:first-of-type]:first-letter:leading-none
                   [&_.callout-tip]:bg-blue-50 dark:[&_.callout-tip]:bg-blue-950/30
                   [&_.callout-tip]:border-l-4 [&_.callout-tip]:border-blue-500
                   [&_.callout-tip]:p-6 [&_.callout-tip]:rounded-r-xl [&_.callout-tip]:my-8
@@ -235,7 +237,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                   [&_.callout-key_strong]:mb-2"
                 dangerouslySetInnerHTML={{ __html: post.content }}
               />
-            </div>
+            </article>
 
             {/* Sidebar Column - Table of Contents */}
             <TableOfContents content={post.content} />
