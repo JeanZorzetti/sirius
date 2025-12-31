@@ -213,4 +213,15 @@
     animation: fade-in-up 0.6s ease-out forwards;
     opacity: 0;
   }
+
+  /* Blog ordered list marker styling */
+  .prose ol > li::marker {
+    color: #2563eb !important;
+    font-size: 1.25rem !important;
+    font-weight: 700 !important;
+  }
+
+  .dark .prose ol > li::marker {
+    color: #60a5fa !important;
+  }
 }
