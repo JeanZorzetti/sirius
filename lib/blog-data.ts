@@ -437,12 +437,13 @@ export const blogPosts = [
       <h3>5. Pipeline Coverage</h3>
 
       <p>
-        Quantas vezes sua meta mensal você tem em pipeline? Regra geral: você precisa de 3-4x sua meta em pipeline saudável para fechar confortavelmente. Se sua meta é R$100k/mês, precisa de R$300-400k em pipeline.
+        Quantas vezes sua meta mensal você tem em pipeline? Regra geral: você precisa de <strong>3-4x</strong> sua meta em pipeline saudável para fechar confortavelmente. Se sua meta é R$100k/mês, precisa de R$300-400k em pipeline.
       </p>
 
-      <p>
-        O <a href="/dashboard/analytics">painel de analytics do Sirius</a> calcula automaticamente essas métricas. Você vê em tempo real quantos deals estão em cada etapa, qual o valor total, qual sua taxa de conversão, e recebe alertas proativos sobre deals que estão apodrecendo.
-      </p>
+      <div class="callout-tip">
+        <p><strong>💡 Analytics em Tempo Real</strong></p>
+        <p>O <a href="/dashboard/analytics">painel de analytics do Sirius</a> calcula automaticamente essas métricas. Você vê em tempo real quantos deals estão em cada etapa, qual o valor total, qual sua taxa de conversão, e recebe alertas proativos sobre deals que estão apodrecendo.</p>
+      </div>
 
       <h2>Planilhas vs CRM: Por que é hora de evoluir</h2>
 
@@ -450,14 +451,35 @@ export const blogPosts = [
         Eu sei. Você ama sua planilha. Ela é familiar, flexível, "funciona bem há anos". Mas vamos ser honestos:
       </p>
 
-      <ul>
-        <li>Você perde 2-3 horas por semana atualizando células manualmente</li>
-        <li>Não tem visão Kanban (só linhas e colunas infinitas)</li>
-        <li>Não tem alertas automáticos de deals apodrecendo</li>
-        <li>Não integra com WhatsApp ou email</li>
-        <li>Cada vendedor tem "sua versão" da planilha (dados inconsistentes)</li>
-        <li>Não funciona bem no celular (e 60% das decisões de vendas acontecem fora do escritório)</li>
-      </ul>
+      <div class="callout-problems">
+        <p><strong>❌ 6 Problemas Fatais das Planilhas para Vendas</strong></p>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem; margin: 1.5rem 0;">
+          <div style="background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%); border-left: 4px solid #ef4444; padding: 1.25rem; border-radius: 0.75rem;">
+            <p style="margin: 0; font-weight: 700; color: #dc2626; font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.05em;">⏱️ Perda de Tempo</p>
+            <p style="margin: 0.5rem 0 0 0; color: #7f1d1d; font-size: 0.95rem;">Você perde <strong>2-3 horas por semana</strong> atualizando células manualmente</p>
+          </div>
+          <div style="background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%); border-left: 4px solid #ef4444; padding: 1.25rem; border-radius: 0.75rem;">
+            <p style="margin: 0; font-weight: 700; color: #dc2626; font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.05em;">👁️ Zero Visibilidade</p>
+            <p style="margin: 0.5rem 0 0 0; color: #7f1d1d; font-size: 0.95rem;">Não tem visão Kanban (só linhas e colunas infinitas)</p>
+          </div>
+          <div style="background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%); border-left: 4px solid #ef4444; padding: 1.25rem; border-radius: 0.75rem;">
+            <p style="margin: 0; font-weight: 700; color: #dc2626; font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.05em;">🔔 Sem Alertas</p>
+            <p style="margin: 0.5rem 0 0 0; color: #7f1d1d; font-size: 0.95rem;">Não tem alertas automáticos de deals apodrecendo</p>
+          </div>
+          <div style="background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%); border-left: 4px solid #ef4444; padding: 1.25rem; border-radius: 0.75rem;">
+            <p style="margin: 0; font-weight: 700; color: #dc2626; font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.05em;">🔌 Zero Integração</p>
+            <p style="margin: 0.5rem 0 0 0; color: #7f1d1d; font-size: 0.95rem;">Não integra com WhatsApp ou email</p>
+          </div>
+          <div style="background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%); border-left: 4px solid #ef4444; padding: 1.25rem; border-radius: 0.75rem;">
+            <p style="margin: 0; font-weight: 700; color: #dc2626; font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.05em;">🔀 Dados Caóticos</p>
+            <p style="margin: 0.5rem 0 0 0; color: #7f1d1d; font-size: 0.95rem;">Cada vendedor tem "sua versão" da planilha (dados inconsistentes)</p>
+          </div>
+          <div style="background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%); border-left: 4px solid #ef4444; padding: 1.25rem; border-radius: 0.75rem;">
+            <p style="margin: 0; font-weight: 700; color: #dc2626; font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.05em;">📱 Mobile Horrível</p>
+            <p style="margin: 0.5rem 0 0 0; color: #7f1d1d; font-size: 0.95rem;">Não funciona bem no celular (e <strong>60%</strong> das decisões acontecem fora do escritório)</p>
+          </div>
+        </div>
+      </div>
 
       <p>
         Planilhas não escalam. Você precisa de um CRM com Kanban visual, automações inteligentes e integrações nativas. <a href="/pricing">Experimente o Sirius gratuitamente</a> — em 5 minutos você cria seu pipeline completo e já começa a arrastar deals. Sem burocracia, sem treinamento de 40 horas, sem consultoria cara.
@@ -465,27 +487,34 @@ export const blogPosts = [
 
       <h2>Conclusão: Pipeline é Processo, não Ferramenta</h2>
 
+      <blockquote>
+        <p>
+          Um CRM caro não vai salvar um processo ruim. Mas um processo excelente com uma ferramenta medíocre também não escala.
+        </p>
+      </blockquote>
+
       <p>
-        Um CRM caro não vai salvar um processo ruim. Mas um processo excelente com uma ferramenta medíocre também não escala. Você precisa de ambos: disciplina de gestão (pipeline hygiene semanal, métricas certas, follow-up estruturado) e ferramenta moderna (Kanban visual, automações, mobile-first).
+        Você precisa de ambos: <strong>disciplina de gestão</strong> (pipeline hygiene semanal, métricas certas, follow-up estruturado) e <strong>ferramenta moderna</strong> (Kanban visual, automações, mobile-first).
       </p>
 
-      <p>
-        Comece hoje:
-      </p>
+      <div class="callout-success">
+        <p><strong>✅ Checklist: Comece Hoje</strong></p>
+        <ol style="margin: 1rem 0; padding-left: 1.5rem;">
+          <li style="margin-bottom: 0.75rem;"><strong>Defina suas 5 etapas</strong> (não mais que isso)</li>
+          <li style="margin-bottom: 0.75rem;"><strong>Faça uma limpeza brutal</strong> no pipeline atual (archive tudo que está morto há mais de 14 dias)</li>
+          <li style="margin-bottom: 0.75rem;"><strong>Configure alertas</strong> de deal rotting</li>
+          <li style="margin-bottom: 0.75rem;"><strong>Estabeleça ritual semanal</strong> de pipeline review</li>
+          <li style="margin-bottom: 0.75rem;"><strong>Meça conversion rate</strong> por etapa e identifique o gargalo</li>
+        </ol>
+      </div>
 
-      <ol>
-        <li>Defina suas 5 etapas (não mais que isso)</li>
-        <li>Faça uma limpeza brutal no pipeline atual (archive tudo que está morto há mais de 14 dias)</li>
-        <li>Configure alertas de deal rotting</li>
-        <li>Estabeleça ritual semanal de pipeline review</li>
-        <li>Meça conversion rate por etapa e identifique o gargalo</li>
-      </ol>
+      <div class="callout-stat">
+        <p><strong>🚀 Pronto para Começar?</strong></p>
+        <p style="font-size: 2rem; font-weight: 800; color: #2563eb; margin: 1rem 0; line-height: 1;">5 minutos</p>
+        <p>É tudo que você precisa para ter seu pipeline funcionando no Sirius. <a href="/register">Crie sua conta gratuita</a> agora: Kanban nativo, WhatsApp integrado, zero burocracia.</p>
+      </div>
 
-      <p>
-        E se você quiser pular a parte chata de configuração e começar a vender já, <a href="/register">crie sua conta gratuita no Sirius</a>. Pipeline pronto em 5 minutos, Kanban nativo, WhatsApp integrado, zero burocracia.
-      </p>
-
-      <p>
+      <p style="text-align: center; font-size: 1.25rem; font-weight: 600; margin-top: 3rem;">
         Boas vendas! 🚀
       </p>
     `,
