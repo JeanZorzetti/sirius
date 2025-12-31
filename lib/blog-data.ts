@@ -609,9 +609,11 @@ export const blogPosts = [
         </tbody>
       </table>
 
-      <p>
-        <strong>R$ 181 mil reais desperdiçados no primeiro ano.</strong> E isso sem contar o custo de oportunidade dos deals que você perdeu porque seu vendedor estava preenchendo 47 campos obrigatórios em vez de ligar para o cliente.
-      </p>
+      <div class="callout-stat">
+        <p><strong>💸 Custo de Oportunidade</strong></p>
+        <p style="font-size: 3rem; font-weight: 800; color: #dc2626; margin: 1rem 0; line-height: 1;">R$ 181 mil</p>
+        <p>Desperdiçados no primeiro ano. E isso sem contar o custo de oportunidade dos deals que você perdeu porque seu vendedor estava preenchendo 47 campos obrigatórios em vez de ligar para o cliente.</p>
+      </div>
 
       <blockquote>
         <p>
@@ -629,16 +631,36 @@ export const blogPosts = [
         Olhe para o menu de um CRM enterprise como Salesforce ou HubSpot. Você tem:
       </p>
 
-      <ul>
-        <li>Sales Cloud</li>
-        <li>Service Cloud</li>
-        <li>Marketing Cloud</li>
-        <li>Commerce Cloud</li>
-        <li>Experience Cloud</li>
-        <li>Analytics Cloud</li>
-        <li>Integration Cloud</li>
-        <li>AppExchange com 7000+ apps (que na verdade são mais 7000 coisas para dar errado)</li>
-      </ul>
+      <div class="callout-problems">
+        <p><strong>☁️ Menu Infinito do CRM Enterprise</strong></p>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem; margin: 1.5rem 0;">
+          <div style="background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%); border-left: 4px solid #ef4444; padding: 1.25rem; border-radius: 0.75rem;">
+            <p style="margin: 0; font-weight: 700; color: #dc2626; font-size: 1rem;">Sales Cloud</p>
+          </div>
+          <div style="background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%); border-left: 4px solid #ef4444; padding: 1.25rem; border-radius: 0.75rem;">
+            <p style="margin: 0; font-weight: 700; color: #dc2626; font-size: 1rem;">Service Cloud</p>
+          </div>
+          <div style="background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%); border-left: 4px solid #ef4444; padding: 1.25rem; border-radius: 0.75rem;">
+            <p style="margin: 0; font-weight: 700; color: #dc2626; font-size: 1rem;">Marketing Cloud</p>
+          </div>
+          <div style="background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%); border-left: 4px solid #ef4444; padding: 1.25rem; border-radius: 0.75rem;">
+            <p style="margin: 0; font-weight: 700; color: #dc2626; font-size: 1rem;">Commerce Cloud</p>
+          </div>
+          <div style="background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%); border-left: 4px solid #ef4444; padding: 1.25rem; border-radius: 0.75rem;">
+            <p style="margin: 0; font-weight: 700; color: #dc2626; font-size: 1rem;">Experience Cloud</p>
+          </div>
+          <div style="background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%); border-left: 4px solid #ef4444; padding: 1.25rem; border-radius: 0.75rem;">
+            <p style="margin: 0; font-weight: 700; color: #dc2626; font-size: 1rem;">Analytics Cloud</p>
+          </div>
+          <div style="background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%); border-left: 4px solid #ef4444; padding: 1.25rem; border-radius: 0.75rem;">
+            <p style="margin: 0; font-weight: 700; color: #dc2626; font-size: 1rem;">Integration Cloud</p>
+          </div>
+          <div style="background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%); border-left: 4px solid #ef4444; padding: 1.25rem; border-radius: 0.75rem;">
+            <p style="margin: 0; font-weight: 700; color: #dc2626; font-size: 1rem;">AppExchange: 7.000+ apps</p>
+            <p style="margin: 0.5rem 0 0 0; color: #7f1d1d; font-size: 0.875rem;">(na verdade mais 7000 coisas para dar errado)</p>
+          </div>
+        </div>
+      </div>
 
       <p>
         Para uma PME que só quer:
@@ -714,21 +736,36 @@ export const blogPosts = [
         Compare com a experiência em CRMs tradicionais:
       </p>
 
-      <ol>
-        <li>Abre o CRM</li>
-        <li>Procura o contato</li>
-        <li>Copia o telefone</li>
-        <li>Minimiza o CRM</li>
-        <li>Abre o WhatsApp Web</li>
-        <li>Cola o número</li>
-        <li>Encontra o contato</li>
-        <li>Envia a mensagem</li>
-        <li>Volta pro CRM pra registrar a interação</li>
-      </ol>
-
-      <p>
-        <strong>9 passos</strong> vs <strong>1 clique</strong>. Isso se chama friction. E friction mata vendas.
-      </p>
+      <div class="callout-brain">
+        <p><strong>🤯 Fricção que Mata Vendas</strong></p>
+        <div style="display: grid; grid-template-columns: 1fr auto 1fr; gap: 2rem; align-items: center; margin: 2rem 0;">
+          <div>
+            <p style="font-size: 0.875rem; font-weight: 700; color: #7c3aed; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 1rem;">CRM Traditional</p>
+            <ol style="margin: 0; padding-left: 1.5rem; color: #581c87;">
+              <li style="margin-bottom: 0.5rem;">Abre o CRM</li>
+              <li style="margin-bottom: 0.5rem;">Procura o contato</li>
+              <li style="margin-bottom: 0.5rem;">Copia o telefone</li>
+              <li style="margin-bottom: 0.5rem;">Minimiza o CRM</li>
+              <li style="margin-bottom: 0.5rem;">Abre o WhatsApp Web</li>
+              <li style="margin-bottom: 0.5rem;">Cola o número</li>
+              <li style="margin-bottom: 0.5rem;">Encontra o contato</li>
+              <li style="margin-bottom: 0.5rem;">Envia a mensagem</li>
+              <li style="margin-bottom: 0.5rem;">Volta pro CRM pra registrar</li>
+            </ol>
+            <p style="font-size: 2rem; font-weight: 800; color: #7c3aed; margin-top: 1rem;">9 passos</p>
+          </div>
+          <div style="font-size: 3rem; font-weight: 800; color: #a78bfa;">VS</div>
+          <div>
+            <p style="font-size: 0.875rem; font-weight: 700; color: #10b981; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 1rem;">Sirius (WhatsApp Nativo)</p>
+            <div style="background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%); border-left: 6px solid #10b981; padding: 2rem; border-radius: 1rem; text-align: center;">
+              <p style="font-size: 1.25rem; font-weight: 700; color: #065f46; margin: 0;">Clica no botão verde no card do deal</p>
+              <p style="font-size: 0.875rem; color: #047857; margin-top: 0.5rem;">Pronto! WhatsApp abre automaticamente</p>
+            </div>
+            <p style="font-size: 2rem; font-weight: 800; color: #10b981; margin-top: 1rem;">1 clique</p>
+          </div>
+        </div>
+        <p style="text-align: center; font-size: 1.25rem; font-weight: 700; color: #7c3aed; margin-top: 1.5rem;">Friction mata vendas. Simplicidade fecha deals.</p>
+      </div>
 
       <h2>Case Real: Migração que Economizou R$ 53k/ano</h2>
 
@@ -815,31 +852,34 @@ export const blogPosts = [
 
       <h2>A Mudança de Paradigma: Self-Service vs Consultoria</h2>
 
-      <p>
-        CRMs tradicionais seguem o modelo de software dos anos 2000:
-      </p>
-
-      <ol>
-        <li>Você compra o software</li>
-        <li>Contrata consultoria de implementação (que custa 2-3x o valor do software)</li>
-        <li>Passa 3-6 meses "configurando"</li>
-        <li>Treina a equipe por semanas</li>
-        <li>Finalmente começa a usar</li>
-        <li>Qualquer mudança precisa de mais consultoria</li>
-      </ol>
-
-      <p>
-        CRMs modernos seguem o modelo SaaS real:
-      </p>
-
-      <ol>
-        <li>Você se cadastra</li>
-        <li>Começa a usar em 5 minutos</li>
-      </ol>
-
-      <p>
-        Pronto. É literalmente isso.
-      </p>
+      <div class="callout-warning">
+        <p><strong>⚠️ Modelo Tradicional vs Modelo Moderno</strong></p>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin: 2rem 0;">
+          <div>
+            <p style="font-size: 0.875rem; font-weight: 700; color: #d97706; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">🐌 CRMs Tradicionais (Anos 2000)</p>
+            <ol style="margin: 0; padding-left: 1.5rem; color: #92400e;">
+              <li style="margin-bottom: 0.75rem;">Você compra o software</li>
+              <li style="margin-bottom: 0.75rem;"><strong>Contrata consultoria de implementação</strong> (que custa 2-3x o valor do software)</li>
+              <li style="margin-bottom: 0.75rem;">Passa <strong>3-6 meses "configurando"</strong></li>
+              <li style="margin-bottom: 0.75rem;">Treina a equipe por <strong>semanas</strong></li>
+              <li style="margin-bottom: 0.75rem;">Finalmente começa a usar</li>
+              <li style="margin-bottom: 0.75rem;">Qualquer mudança precisa de <strong>mais consultoria</strong></li>
+            </ol>
+            <p style="font-size: 1.5rem; font-weight: 800; color: #d97706; margin-top: 1.5rem; text-align: center;">6+ meses 😰</p>
+          </div>
+          <div>
+            <p style="font-size: 0.875rem; font-weight: 700; color: #10b981; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">⚡ CRMs Modernos (SaaS Real)</p>
+            <div style="background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%); border: 2px solid #10b981; padding: 2rem; border-radius: 1rem; min-height: 200px; display: flex; flex-direction: column; justify-content: center;">
+              <ol style="margin: 0; padding-left: 1.5rem; color: #065f46; font-size: 1.125rem; font-weight: 600;">
+                <li style="margin-bottom: 1rem;">Você se cadastra</li>
+                <li style="margin-bottom: 1rem;">Começa a usar em 5 minutos</li>
+              </ol>
+              <p style="margin: 1rem 0 0 0; font-size: 0.875rem; color: #047857; text-align: center; font-style: italic;">Pronto. É literalmente isso.</p>
+            </div>
+            <p style="font-size: 1.5rem; font-weight: 800; color: #10b981; margin-top: 1.5rem; text-align: center;">5 minutos ⚡</p>
+          </div>
+        </div>
+      </div>
 
       <blockquote>
         <p>
