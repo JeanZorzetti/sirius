@@ -117,7 +117,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
         {/* Premium Header Background */}
         <div className="absolute top-0 left-0 right-0 h-96 bg-gradient-to-b from-primary/5 via-primary/3 to-transparent -z-10" />
 
-        <div className="container mx-auto max-w-3xl py-8 lg:py-16 px-6">
+        <div className="container mx-auto max-w-7xl py-8 lg:py-16 px-6">
           {/* Breadcrumb Navigation */}
           <nav className="flex items-center gap-2 text-sm text-muted-foreground mb-8" aria-label="Breadcrumb">
             <Link href="/" className="hover:text-foreground transition-colors">
