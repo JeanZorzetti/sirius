@@ -80,12 +80,24 @@ export const blogPosts = [
         <p>
           <strong>🎯 Framework BANT: Suas 4 Perguntas Essenciais</strong>
         </p>
-        <p>
-          <strong>B</strong>udget: "Você já reservou orçamento para isso?" <br/>
-          <strong>A</strong>uthority: "Quem mais precisa aprovar esta decisão?" <br/>
-          <strong>N</strong>eed: "O que acontece se você não resolver isso nos próximos 90 dias?" <br/>
-          <strong>T</strong>imeline: "Quando você precisa ter isso implementado?"
-        </p>
+        <div style="display: flex; flex-direction: column; gap: 0.75rem; margin: 1.5rem 0;">
+          <div style="display: flex; align-items: flex-start;">
+            <strong style="color: #2563eb; font-size: 1.125rem; min-width: 1.5rem; margin-right: 0.5rem;">B</strong>
+            <span style="flex: 1;">udget: "Você já reservou orçamento para isso?"</span>
+          </div>
+          <div style="display: flex; align-items: flex-start;">
+            <strong style="color: #2563eb; font-size: 1.125rem; min-width: 1.5rem; margin-right: 0.5rem;">A</strong>
+            <span style="flex: 1;">uthority: "Quem mais precisa aprovar esta decisão?"</span>
+          </div>
+          <div style="display: flex; align-items: flex-start;">
+            <strong style="color: #2563eb; font-size: 1.125rem; min-width: 1.5rem; margin-right: 0.5rem;">N</strong>
+            <span style="flex: 1;">eed: "O que acontece se você não resolver isso nos próximos 90 dias?"</span>
+          </div>
+          <div style="display: flex; align-items: flex-start;">
+            <strong style="color: #2563eb; font-size: 1.125rem; min-width: 1.5rem; margin-right: 0.5rem;">T</strong>
+            <span style="flex: 1;">imeline: "Quando você precisa ter isso implementado?"</span>
+          </div>
+        </div>
         <p>
           Se o lead não tem respostas claras para pelo menos 3 dessas 4 perguntas, ele não está qualificado. Não envie proposta ainda.
         </p>

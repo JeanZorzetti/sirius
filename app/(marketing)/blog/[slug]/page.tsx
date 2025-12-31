@@ -197,23 +197,24 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                   prose-headings:font-bold prose-headings:tracking-tight prose-headings:text-foreground
                   prose-h2:text-3xl prose-h2:mt-12 prose-h2:mb-6 prose-h2:border-b prose-h2:pb-4
                   prose-h3:text-2xl prose-h3:mt-8 prose-h3:mb-4
-                  !prose-p:mb-10 prose-p:text-zinc-700 dark:prose-p:text-zinc-300 prose-p:leading-relaxed
+                  !prose-p:mb-8 prose-p:text-zinc-700 dark:prose-p:text-zinc-300 prose-p:leading-[1.8]
                   prose-a:text-primary prose-a:no-underline hover:prose-a:underline prose-a:font-medium
                   !prose-strong:text-blue-600 dark:!prose-strong:text-blue-400 prose-strong:font-bold
-                  prose-ul:my-6 prose-li:my-2 prose-li:text-zinc-700 dark:prose-li:text-zinc-300
-                  !prose-li:marker:text-blue-600 prose-li:marker:font-bold
-                  prose-ol:my-6 prose-ol:text-zinc-700 dark:prose-ol:text-zinc-300
+                  prose-ul:my-8 prose-ul:space-y-3 prose-li:text-zinc-700 dark:prose-li:text-zinc-300
+                  !prose-li:marker:text-blue-600 !prose-li:marker:text-xl prose-li:marker:font-bold prose-li:pl-2
+                  prose-ol:my-8 prose-ol:space-y-3 prose-ol:text-zinc-700 dark:prose-ol:text-zinc-300
                   prose-blockquote:text-xl prose-blockquote:font-medium prose-blockquote:text-primary
                   prose-blockquote:border-l-4 prose-blockquote:border-primary prose-blockquote:bg-primary/5
                   prose-blockquote:pl-6 prose-blockquote:py-6 prose-blockquote:rounded-r-2xl prose-blockquote:not-italic
                   prose-code:text-primary prose-code:bg-muted prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:text-sm
                   prose-img:rounded-xl prose-img:shadow-lg prose-img:my-10
-                  prose-table:text-zinc-700 dark:prose-table:text-zinc-300
-                  !prose-table:border !prose-table:border-zinc-200 dark:!prose-table:border-zinc-800 !prose-table:shadow-sm
-                  !prose-thead:bg-zinc-50 dark:!prose-thead:bg-zinc-900
-                  !prose-th:text-zinc-900 dark:!prose-th:text-zinc-100 !prose-th:p-4 !prose-th:uppercase !prose-th:text-sm !prose-th:tracking-wide
-                  !prose-td:p-4
-                  !prose-tr:border-b !prose-tr:border-zinc-100 dark:!prose-tr:border-zinc-800
+                  prose-table:text-zinc-700 dark:prose-table:text-zinc-300 prose-table:my-10
+                  !prose-table:border-2 !prose-table:border-blue-200 dark:!prose-table:border-blue-800 !prose-table:shadow-lg !prose-table:rounded-xl !prose-table:overflow-hidden
+                  !prose-thead:bg-gradient-to-r !prose-thead:from-blue-50 !prose-thead:to-blue-100 dark:!prose-thead:from-blue-950 dark:!prose-thead:to-blue-900
+                  !prose-th:text-blue-900 dark:!prose-th:text-blue-100 !prose-th:p-5 !prose-th:font-bold !prose-th:text-base !prose-th:tracking-wide !prose-th:border-b-2 !prose-th:border-blue-300
+                  !prose-td:p-5 !prose-td:border-b !prose-td:border-blue-100 dark:!prose-td:border-blue-900
+                  !prose-tr:transition-colors hover:!prose-tr:bg-blue-50/50 dark:hover:!prose-tr:bg-blue-950/30
+                  prose-tbody:prose-tr:last:!prose-tr:border-b-0
                   [&>p:first-of-type]:first-letter:text-6xl [&>p:first-of-type]:first-letter:font-bold
                   [&>p:first-of-type]:first-letter:text-primary [&>p:first-of-type]:first-letter:mr-2
                   [&>p:first-of-type]:first-letter:float-left [&>p:first-of-type]:first-letter:leading-none
