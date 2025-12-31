@@ -60,36 +60,71 @@ export default function RootLayout({
 }>) {
   const schemaOrg = {
     "@context": "https://schema.org",
-    "@type": "SoftwareApplication",
-    "name": "Sirius CRM",
-    "applicationCategory": "BusinessApplication",
-    "operatingSystem": "Web",
-    "offers": {
-      "@type": "Offer",
-      "price": "0",
-      "priceCurrency": "BRL"
-    },
-    "aggregateRating": {
-      "@type": "AggregateRating",
-      "ratingValue": "5",
-      "ratingCount": "1"
-    },
-    "provider": {
-      "@type": "Organization",
-      "name": "ROI Labs",
-      "url": "https://roilabs.com.br"
-    },
-    "description": "CRM intuitivo para gestão de vendas com pipeline visual, contatos inteligentes e métricas em tempo real.",
-    "featureList": [
-      "Pipeline Kanban Visual",
-      "Gestão de Contatos",
-      "WhatsApp Integrado",
-      "Métricas e Analytics",
-      "Multi-usuário",
-      "Temas Claro/Escuro"
-    ],
-    "screenshot": "https://sirius.roilabs.com.br/og-image.png",
-    "url": "https://sirius.roilabs.com.br"
+    "@graph": [
+      {
+        "@type": "WebSite",
+        "@id": "https://sirius.roilabs.com.br/#website",
+        "url": "https://sirius.roilabs.com.br",
+        "name": "Sirius CRM",
+        "description": "CRM intuitivo para gestão de vendas com pipeline visual, contatos inteligentes e métricas em tempo real.",
+        "publisher": {
+          "@id": "https://sirius.roilabs.com.br/#organization"
+        },
+        "inLanguage": "pt-BR"
+      },
+      {
+        "@type": "Organization",
+        "@id": "https://sirius.roilabs.com.br/#organization",
+        "name": "ROI Labs",
+        "url": "https://roilabs.com.br",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://sirius.roilabs.com.br/logo.png"
+        },
+        "contactPoint": {
+          "@type": "ContactPoint",
+          "contactType": "customer support",
+          "availableLanguage": "Portuguese"
+        },
+        "sameAs": [
+          "https://twitter.com/roilabs"
+        ]
+      },
+      {
+        "@type": "SoftwareApplication",
+        "name": "Sirius CRM",
+        "applicationCategory": "BusinessApplication",
+        "operatingSystem": "Web",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "BRL",
+          "availability": "https://schema.org/InStock"
+        },
+        "aggregateRating": {
+          "@type": "AggregateRating",
+          "ratingValue": "5.0",
+          "ratingCount": "1",
+          "bestRating": "5",
+          "worstRating": "1"
+        },
+        "provider": {
+          "@id": "https://sirius.roilabs.com.br/#organization"
+        },
+        "description": "CRM intuitivo para gestão de vendas brasileiras. Pipeline Kanban visual, gestão de contatos, WhatsApp integrado e métricas em tempo real.",
+        "featureList": [
+          "Pipeline Kanban Visual",
+          "Gestão de Contatos",
+          "WhatsApp com 1 Clique",
+          "Métricas e Analytics em Tempo Real",
+          "Gestão Multi-usuário",
+          "Temas Claro e Escuro"
+        ],
+        "screenshot": "https://sirius.roilabs.com.br/og-image.png",
+        "url": "https://sirius.roilabs.com.br",
+        "softwareVersion": "1.0"
+      }
+    ]
   };
 
   return (
