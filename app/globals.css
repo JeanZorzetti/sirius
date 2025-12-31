@@ -287,4 +287,58 @@
   .dark .prose .callout-success strong {
     color: #4ade80 !important;
   }
+
+  /* Blog callout-problems (red cards grid) */
+  .prose .callout-problems {
+    background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+    border: 2px solid #fecaca;
+    border-radius: 1rem;
+    padding: 2rem;
+    margin: 2.5rem 0;
+    box-shadow: 0 4px 16px rgba(239, 68, 68, 0.1);
+  }
+
+  .dark .prose .callout-problems {
+    background: linear-gradient(135deg, rgba(127, 29, 29, 0.15) 0%, rgba(185, 28, 28, 0.05) 100%);
+    border-color: rgba(248, 113, 113, 0.3);
+  }
+
+  /* Blog callout-brain (purple stat) */
+  .prose .callout-brain {
+    background: linear-gradient(135deg, #faf5ff 0%, #f3e8ff 100%);
+    border-left: 6px solid #7c3aed;
+    border-radius: 1rem;
+    padding: 2rem;
+    margin: 2.5rem 0;
+    text-align: center;
+    box-shadow: 0 4px 16px rgba(124, 58, 237, 0.12);
+  }
+
+  .dark .prose .callout-brain {
+    background: linear-gradient(135deg, rgba(124, 58, 237, 0.15) 0%, rgba(109, 40, 217, 0.05) 100%);
+    border-color: #a78bfa;
+  }
+
+  /* Blog callout-insight (amber box) */
+  .prose .callout-insight {
+    background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+    border-left: 4px solid #f59e0b;
+    padding: 1.5rem;
+    border-radius: 0.75rem;
+    margin: 2rem 0;
+    box-shadow: 0 2px 8px rgba(245, 158, 11, 0.1);
+  }
+
+  .dark .prose .callout-insight {
+    background: linear-gradient(135deg, rgba(245, 158, 11, 0.15) 0%, rgba(217, 119, 6, 0.05) 100%);
+    border-color: #fbbf24;
+  }
+
+  .prose .callout-insight strong {
+    color: #d97706 !important;
+  }
+
+  .dark .prose .callout-insight strong {
+    color: #fbbf24 !important;
+  }
 }

@@ -164,30 +164,43 @@ export const blogPosts = [
         A etapa final. O cliente aceitou a proposta, assinou o contrato ou efetuou o pagamento. Em CRMs modernos como o <a href="/dashboard">Sirius</a>, você pode ter uma etapa "Ganho" e outra "Perdido" para manter histórico e aprender com as perdas.
       </p>
 
-      <p>
-        <strong>Análise pós-venda:</strong> Revisar os deals perdidos é tão importante quanto comemorar as vitórias. Por que perdemos? Foi preço? Timing? Produto não tinha uma feature crítica? Concorrência ofereceu algo melhor? Essas respostas moldam sua estratégia de produto e vendas.
-      </p>
+      <div class="callout-insight">
+        <p><strong>💡 Análise Pós-Venda: O Aprendizado que Ninguém Faz</strong></p>
+        <p>Revisar os deals perdidos é tão importante quanto comemorar as vitórias. Por que perdemos? Foi preço? Timing? Produto não tinha uma feature crítica? Concorrência ofereceu algo melhor? Essas respostas moldam sua estratégia de produto e vendas.</p>
+      </div>
 
       <h2>Por que você NÃO deve ter muitas etapas</h2>
 
       <p>
-        Já vi empresas com 12 etapas no pipeline. "Primeiro contato", "Segunda ligação", "Terceiro email", "Aguardando retorno", "Proposta enviada", "Proposta revisada", "Aguardando aprovação jurídico", "Aguardando aprovação financeiro"... e por aí vai.
+        Já vi empresas com <strong>12</strong> etapas no pipeline. "Primeiro contato", "Segunda ligação", "Terceiro email", "Aguardando retorno", "Proposta enviada", "Proposta revisada", "Aguardando aprovação jurídico", "Aguardando aprovação financeiro"... e por aí vai.
       </p>
 
-      <p>
-        Isso não é organização. É teatro de produtividade.
-      </p>
+      <div class="callout-warning">
+        <p><strong>⚠️ Alerta: Teatro de Produtividade</strong></p>
+        <p>Isso não é organização. É <strong>teatro de produtividade</strong>.</p>
+      </div>
 
-      <p>
-        O problema de ter muitas etapas:
-      </p>
-
-      <ul>
-        <li><strong>Paralisia de decisão:</strong> Vendedores perdem 15-20 minutos por dia apenas decidindo "em qual etapa esse deal se encaixa agora?"</li>
-        <li><strong>Falsa sensação de progresso:</strong> Mover um card de "Etapa 3" para "Etapa 4" parece produtivo, mas não significa que você está mais perto de fechar.</li>
-        <li><strong>Análise impossível:</strong> Com 12 etapas, você não consegue identificar onde estão os reais gargalos. Muito ruído, pouco sinal.</li>
-        <li><strong>Inconsistência entre vendedores:</strong> Cada um interpreta as micro-etapas de forma diferente, tornando os dados inúteis.</li>
-      </ul>
+      <div class="callout-problems">
+        <p><strong>❌ 4 Problemas Fatais de Ter Muitas Etapas</strong></p>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1rem; margin: 1.5rem 0;">
+          <div style="background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%); border-left: 4px solid #ef4444; padding: 1.25rem; border-radius: 0.75rem;">
+            <p style="margin: 0; font-weight: 700; color: #dc2626; font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.05em;">⏱️ Paralisia de Decisão</p>
+            <p style="margin: 0.5rem 0 0 0; color: #7f1d1d; font-size: 0.95rem;">Vendedores perdem <strong>15-20 min/dia</strong> decidindo "em qual etapa esse deal se encaixa?"</p>
+          </div>
+          <div style="background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%); border-left: 4px solid #ef4444; padding: 1.25rem; border-radius: 0.75rem;">
+            <p style="margin: 0; font-weight: 700; color: #dc2626; font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.05em;">🎭 Falsa Sensação de Progresso</p>
+            <p style="margin: 0.5rem 0 0 0; color: #7f1d1d; font-size: 0.95rem;">Mover de "Etapa 3" para "Etapa 4" parece produtivo, mas não aproxima do fechamento</p>
+          </div>
+          <div style="background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%); border-left: 4px solid #ef4444; padding: 1.25rem; border-radius: 0.75rem;">
+            <p style="margin: 0; font-weight: 700; color: #dc2626; font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.05em;">📊 Análise Impossível</p>
+            <p style="margin: 0.5rem 0 0 0; color: #7f1d1d; font-size: 0.95rem;">Com <strong>12 etapas</strong>, você não identifica os reais gargalos. Muito ruído, pouco sinal.</p>
+          </div>
+          <div style="background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%); border-left: 4px solid #ef4444; padding: 1.25rem; border-radius: 0.75rem;">
+            <p style="margin: 0; font-weight: 700; color: #dc2626; font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.05em;">🔀 Inconsistência Total</p>
+            <p style="margin: 0.5rem 0 0 0; color: #7f1d1d; font-size: 0.95rem;">Cada vendedor interpreta as micro-etapas diferente, tornando os dados inúteis</p>
+          </div>
+        </div>
+      </div>
 
       <blockquote>
         <p>
@@ -198,12 +211,14 @@ export const blogPosts = [
       <h2>Kanban: A Metodologia Visual que Mudou Tudo</h2>
 
       <p>
-        O Kanban nasceu na Toyota nos anos 1940 para otimizar a produção de carros. Hoje, é a forma mais eficiente de visualizar pipelines de vendas. E há uma razão neurológica para isso funcionar tão bem.
+        O Kanban nasceu na Toyota nos anos <strong>1940</strong> para otimizar a produção de carros. Hoje, é a forma mais eficiente de visualizar pipelines de vendas. E há uma razão neurológica para isso funcionar tão bem.
       </p>
 
-      <p>
-        Nosso cérebro processa informações visuais 60.000x mais rápido do que texto. Quando você olha para um quadro Kanban, você <strong>vê instantaneamente</strong>:
-      </p>
+      <div class="callout-brain">
+        <p><strong>🧠 Ciência Cerebral</strong></p>
+        <p style="font-size: 2.5rem; font-weight: 800; color: #7c3aed; margin: 1rem 0; line-height: 1;">60.000x</p>
+        <p>Nosso cérebro processa informações visuais <strong>60.000x mais rápido</strong> do que texto. Quando você olha para um quadro Kanban, você <strong>vê instantaneamente</strong>:</p>
+      </div>
 
       <ul>
         <li>Quais etapas estão congestionadas (muitos cards na mesma coluna)</li>
