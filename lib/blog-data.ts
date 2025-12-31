@@ -307,11 +307,12 @@ export const blogPosts = [
         </div>
       </div>
 
-      <p>
-        <strong>Como identificar deal rotting no seu pipeline:</strong>
-      </p>
+      <div style="margin-top: 4rem;">
+        <p>
+          <strong>Como identificar deal rotting no seu pipeline:</strong>
+        </p>
 
-      <table>
+        <table>
         <thead>
           <tr>
             <th>Etapa</th>
@@ -347,6 +348,7 @@ export const blogPosts = [
           </tr>
         </tbody>
       </table>
+      </div>
 
       <div class="callout-strategies">
         <p><strong>💪 4 Estratégias para Prevenir Deal Rotting</strong></p>
