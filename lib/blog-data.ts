@@ -942,21 +942,38 @@ export const blogPosts = [
     title: 'A Ciência do Follow-up: Como vender 80% mais sem ser chato',
     excerpt: 'Estatísticas mostram que 80% das vendas acontecem após o 5º contato. Você está persistindo o suficiente?',
     content: `
-      <p>
-        Vou começar com uma estatística brutal que vai mudar sua forma de vender: <strong>80% das vendas acontecem entre o 5º e 12º contato</strong>. Mas 44% dos vendedores desistem após o primeiro "não" ou silêncio.
-      </p>
+      <div class="callout-data">
+        <p><strong>📊 A Estatística que Muda Tudo</strong></p>
+        <div style="display: grid; grid-template-columns: 1fr auto 1fr; gap: 2rem; align-items: center; margin: 2rem 0;">
+          <div style="text-align: center; background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%); padding: 2rem; border-radius: 1rem; border: 2px solid #10b981;">
+            <p style="font-size: 0.875rem; font-weight: 700; color: #065f46; text-transform: uppercase; margin-bottom: 0.5rem;">Quando as Vendas Acontecem</p>
+            <p style="font-size: 3.5rem; font-weight: 900; color: #10b981; margin: 0.5rem 0; line-height: 1;">80%</p>
+            <p style="margin: 0; color: #047857; font-weight: 600;">das vendas acontecem entre o <strong>5º e 12º contato</strong></p>
+          </div>
+          <div style="font-size: 2rem; font-weight: 800; color: #dc2626;">VS</div>
+          <div style="text-align: center; background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%); padding: 2rem; border-radius: 1rem; border: 2px solid #dc2626;">
+            <p style="font-size: 0.875rem; font-weight: 700; color: #7f1d1d; text-transform: uppercase; margin-bottom: 0.5rem;">Quando Vendedores Desistem</p>
+            <p style="font-size: 3.5rem; font-weight: 900; color: #dc2626; margin: 0.5rem 0; line-height: 1;">44%</p>
+            <p style="margin: 0; color: #991b1b; font-weight: 600;">desistem após o <strong>1º "não"</strong> ou silêncio</p>
+          </div>
+        </div>
+        <p style="text-align: center; font-size: 1.5rem; font-weight: 700; color: #2563eb; margin-top: 2rem; padding: 1.5rem; background: rgba(37, 99, 235, 0.05); border-radius: 0.75rem;">
+          A maioria dos vendedores desiste exatamente quando o jogo está começando.
+        </p>
+      </div>
 
-      <p>
-        Isso significa que <strong>a maioria dos vendedores desiste exatamente quando o jogo está começando</strong>.
-      </p>
-
-      <p>
-        Mas tem um porém: ninguém gosta de vendedor chato. Aquele que liga 5 vezes no mesmo dia, manda "Bom dia! Viu meu email?" todo santo dia, ou pior — usa o clássico "só passando aqui pra dar um alô".
-      </p>
-
-      <p>
-        Este artigo é sobre como fazer follow-up estruturado, científico e respeitoso que <strong>aumenta conversão sem queimar sua reputação</strong>.
-      </p>
+      <div class="callout-warning">
+        <p><strong>⚠️ O Dilema do Follow-up</strong></p>
+        <p>Mas tem um porém: <strong>ninguém gosta de vendedor chato</strong>. Aquele que:</p>
+        <ul style="margin: 1rem 0; padding-left: 1.5rem; color: #92400e;">
+          <li style="margin-bottom: 0.5rem;">Liga 5 vezes no mesmo dia</li>
+          <li style="margin-bottom: 0.5rem;">Manda "Bom dia! Viu meu email?" todo santo dia</li>
+          <li style="margin-bottom: 0.5rem;">Usa o clássico "só passando aqui pra dar um alô"</li>
+        </ul>
+        <p style="margin-top: 1.5rem; padding-top: 1.5rem; border-top: 2px solid #fbbf24; font-weight: 600; color: #78350f;">
+          Este artigo é sobre como fazer <strong>follow-up estruturado, científico e respeitoso</strong> que aumenta conversão sem queimar sua reputação.
+        </p>
+      </div>
 
       <h2>A Psicologia por Trás do "Vou Pensar"</h2>
 
