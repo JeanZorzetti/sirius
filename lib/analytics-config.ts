@@ -6,8 +6,8 @@
 export const analyticsConfig = {
   // Google Tag Manager
   gtm: {
-    id: process.env.NEXT_PUBLIC_GTM_ID || '',
-    enabled: process.env.NEXT_PUBLIC_GTM_ID !== undefined,
+    id: 'GTM-5F6LM72D',
+    enabled: true,
   },
 
   // Google Analytics (GA4)
