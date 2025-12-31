@@ -58,8 +58,49 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const schemaOrg = {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Sirius CRM",
+    "applicationCategory": "BusinessApplication",
+    "operatingSystem": "Web",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "BRL"
+    },
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "5",
+      "ratingCount": "1"
+    },
+    "provider": {
+      "@type": "Organization",
+      "name": "ROI Labs",
+      "url": "https://roilabs.com.br"
+    },
+    "description": "CRM intuitivo para gestão de vendas com pipeline visual, contatos inteligentes e métricas em tempo real.",
+    "featureList": [
+      "Pipeline Kanban Visual",
+      "Gestão de Contatos",
+      "WhatsApp Integrado",
+      "Métricas e Analytics",
+      "Multi-usuário",
+      "Temas Claro/Escuro"
+    ],
+    "screenshot": "https://sirius.roilabs.com.br/og-image.png",
+    "url": "https://sirius.roilabs.com.br"
+  };
+
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="pt-BR" suppressHydrationWarning>
+      <head>
+        {/* Schema.org JSON-LD */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaOrg) }}
+        />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
