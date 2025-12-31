@@ -303,42 +303,90 @@ export const blogPosts = [
         <strong>Como identificar deal rotting no seu pipeline:</strong>
       </p>
 
-        <table>
-        <thead>
-          <tr>
-            <th>Etapa</th>
-            <th>Tempo Saudável</th>
-            <th>Zona de Perigo</th>
-            <th>Ação Necessária</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Prospecção</td>
-            <td>1-3 dias</td>
-            <td>&gt;7 dias</td>
-            <td>Archive ou mova para Nurturing</td>
-          </tr>
-          <tr>
-            <td>Qualificação</td>
-            <td>3-7 dias</td>
-            <td>&gt;14 dias</td>
-            <td>Reunião de requalificação ou archive</td>
-          </tr>
-          <tr>
-            <td>Proposta</td>
-            <td>5-10 dias</td>
-            <td>&gt;21 dias</td>
-            <td>Follow-up estruturado ou renegocie termos</td>
-          </tr>
-          <tr>
-            <td>Negociação</td>
-            <td>7-14 dias</td>
-            <td>&gt;30 dias</td>
-            <td>Escale para gerente ou revise fit do produto</td>
-          </tr>
-        </tbody>
-      </table>
+      <div style="display: grid; gap: 1.5rem; margin: 2rem 0;">
+        <!-- Card 1: Prospecção -->
+        <div style="background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%); border: 2px solid #bae6fd; border-radius: 1rem; padding: 1.5rem; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.1);">
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.25rem; align-items: start;">
+            <div>
+              <p style="margin: 0; font-weight: 800; color: #1e40af; font-size: 1.125rem; text-transform: uppercase; letter-spacing: 0.05em;">🔍 Prospecção</p>
+            </div>
+            <div>
+              <p style="margin: 0; font-size: 0.875rem; color: #075985; text-transform: uppercase; font-weight: 600; margin-bottom: 0.25rem;">✅ Tempo Saudável</p>
+              <p style="margin: 0; font-weight: 700; color: #0c4a6e; font-size: 1.125rem;">1-3 dias</p>
+            </div>
+            <div>
+              <p style="margin: 0; font-size: 0.875rem; color: #b91c1c; text-transform: uppercase; font-weight: 600; margin-bottom: 0.25rem;">⚠️ Zona de Perigo</p>
+              <p style="margin: 0; font-weight: 700; color: #991b1b; font-size: 1.125rem;">&gt;7 dias</p>
+            </div>
+            <div>
+              <p style="margin: 0; font-size: 0.875rem; color: #075985; text-transform: uppercase; font-weight: 600; margin-bottom: 0.25rem;">🎯 Ação Necessária</p>
+              <p style="margin: 0; color: #0c4a6e; font-weight: 500;">Archive ou mova para Nurturing</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 2: Qualificação -->
+        <div style="background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%); border: 2px solid #bbf7d0; border-radius: 1rem; padding: 1.5rem; box-shadow: 0 4px 12px rgba(34, 197, 94, 0.1);">
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.25rem; align-items: start;">
+            <div>
+              <p style="margin: 0; font-weight: 800; color: #15803d; font-size: 1.125rem; text-transform: uppercase; letter-spacing: 0.05em;">✅ Qualificação</p>
+            </div>
+            <div>
+              <p style="margin: 0; font-size: 0.875rem; color: #065f46; text-transform: uppercase; font-weight: 600; margin-bottom: 0.25rem;">✅ Tempo Saudável</p>
+              <p style="margin: 0; font-weight: 700; color: #064e3b; font-size: 1.125rem;">3-7 dias</p>
+            </div>
+            <div>
+              <p style="margin: 0; font-size: 0.875rem; color: #b91c1c; text-transform: uppercase; font-weight: 600; margin-bottom: 0.25rem;">⚠️ Zona de Perigo</p>
+              <p style="margin: 0; font-weight: 700; color: #991b1b; font-size: 1.125rem;">&gt;14 dias</p>
+            </div>
+            <div>
+              <p style="margin: 0; font-size: 0.875rem; color: #065f46; text-transform: uppercase; font-weight: 600; margin-bottom: 0.25rem;">🎯 Ação Necessária</p>
+              <p style="margin: 0; color: #064e3b; font-weight: 500;">Reunião de requalificação ou archive</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 3: Proposta -->
+        <div style="background: linear-gradient(135deg, #faf5ff 0%, #f3e8ff 100%); border: 2px solid #e9d5ff; border-radius: 1rem; padding: 1.5rem; box-shadow: 0 4px 12px rgba(124, 58, 237, 0.1);">
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.25rem; align-items: start;">
+            <div>
+              <p style="margin: 0; font-weight: 800; color: #6b21a8; font-size: 1.125rem; text-transform: uppercase; letter-spacing: 0.05em;">📄 Proposta</p>
+            </div>
+            <div>
+              <p style="margin: 0; font-size: 0.875rem; color: #581c87; text-transform: uppercase; font-weight: 600; margin-bottom: 0.25rem;">✅ Tempo Saudável</p>
+              <p style="margin: 0; font-weight: 700; color: #4c1d95; font-size: 1.125rem;">5-10 dias</p>
+            </div>
+            <div>
+              <p style="margin: 0; font-size: 0.875rem; color: #b91c1c; text-transform: uppercase; font-weight: 600; margin-bottom: 0.25rem;">⚠️ Zona de Perigo</p>
+              <p style="margin: 0; font-weight: 700; color: #991b1b; font-size: 1.125rem;">&gt;21 dias</p>
+            </div>
+            <div>
+              <p style="margin: 0; font-size: 0.875rem; color: #581c87; text-transform: uppercase; font-weight: 600; margin-bottom: 0.25rem;">🎯 Ação Necessária</p>
+              <p style="margin: 0; color: #4c1d95; font-weight: 500;">Follow-up estruturado ou renegocie termos</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 4: Negociação -->
+        <div style="background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%); border: 2px solid #fde68a; border-radius: 1rem; padding: 1.5rem; box-shadow: 0 4px 12px rgba(245, 158, 11, 0.1);">
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.25rem; align-items: start;">
+            <div>
+              <p style="margin: 0; font-weight: 800; color: #b45309; font-size: 1.125rem; text-transform: uppercase; letter-spacing: 0.05em;">💼 Negociação</p>
+            </div>
+            <div>
+              <p style="margin: 0; font-size: 0.875rem; color: #92400e; text-transform: uppercase; font-weight: 600; margin-bottom: 0.25rem;">✅ Tempo Saudável</p>
+              <p style="margin: 0; font-weight: 700; color: #78350f; font-size: 1.125rem;">7-14 dias</p>
+            </div>
+            <div>
+              <p style="margin: 0; font-size: 0.875rem; color: #b91c1c; text-transform: uppercase; font-weight: 600; margin-bottom: 0.25rem;">⚠️ Zona de Perigo</p>
+              <p style="margin: 0; font-weight: 700; color: #991b1b; font-size: 1.125rem;">&gt;30 dias</p>
+            </div>
+            <div>
+              <p style="margin: 0; font-size: 0.875rem; color: #92400e; text-transform: uppercase; font-weight: 600; margin-bottom: 0.25rem;">🎯 Ação Necessária</p>
+              <p style="margin: 0; color: #78350f; font-weight: 500;">Escale para gerente ou revise fit do produto</p>
+            </div>
+          </div>
+        </div>
       </div>
 
       <p><strong>Estratégias para prevenir Deal Rotting:</strong></p>
