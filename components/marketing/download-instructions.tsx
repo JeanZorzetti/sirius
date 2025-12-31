@@ -6,6 +6,7 @@ import { Card } from '@/components/ui/card'
 import { Download, Share, MoreVertical, Smartphone, Monitor, Check } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
+import { QRCodeSVG } from 'qrcode.react'
 
 export function DownloadInstructions() {
   const [deviceType, setDeviceType] = useState<'ios' | 'android' | 'desktop'>('desktop')
@@ -229,14 +230,24 @@ export function DownloadInstructions() {
                 Ou escaneie o QR Code com seu celular
               </p>
               <div className="flex justify-center">
-                <div className="bg-white p-4 rounded-2xl">
-                  <div className="w-48 h-48 bg-zinc-200 rounded-lg flex items-center justify-center">
-                    <p className="text-zinc-600 text-xs text-center px-4">
-                      QR Code para<br />sirius.roilabs.com.br
-                    </p>
-                  </div>
+                <div className="bg-white p-6 rounded-2xl shadow-2xl">
+                  <QRCodeSVG
+                    value="https://sirius.roilabs.com.br/download"
+                    size={192}
+                    level="H"
+                    includeMargin={false}
+                    imageSettings={{
+                      src: "/logo.png",
+                      height: 32,
+                      width: 32,
+                      excavate: true,
+                    }}
+                  />
                 </div>
               </div>
+              <p className="text-zinc-500 text-xs text-center mt-3">
+                Aponte a câmera do celular para o QR Code
+              </p>
             </div>
           </div>
         )}
