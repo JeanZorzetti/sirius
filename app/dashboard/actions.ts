@@ -67,6 +67,8 @@ export async function updateDealStage(dealId: string, stageId: string) {
           oldStage: oldStageName,
           newStage: newStage.name,
           dealUrl: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard?deal=${dealId}`,
+          organizationId: user.organizationId,
+          userId: deal.user.id
         })
       )
     }
@@ -146,6 +148,8 @@ export async function createDeal(formData: FormData) {
           dealStage: deal.stage.name,
           contactName: deal.contact?.name || 'Sem contato',
           dealUrl: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard?deal=${deal.id}`,
+          organizationId: user.organizationId,
+          userId: user.id
         })
       )
 
@@ -157,6 +161,8 @@ export async function createDeal(formData: FormData) {
             userName: user.name,
             currentDeals: newDealCount,
             maxDeals: 10,
+            organizationId: user.organizationId,
+            userId: user.id
           })
         )
       }

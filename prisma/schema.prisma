@@ -28,6 +28,8 @@ model Organization {
   pipelineStages    PipelineStage[]
   invites   Invite[]
   tags      Tag[]
+  emailAutomationSettings EmailAutomationSetting[]
+  emailLogs EmailLog[]
 }
 
 model User {
@@ -44,7 +46,8 @@ model User {
   deals     Deal[]   // Deals managed by this user
   notes     Note[]
   activities Activity[]
-  
+  emailLogs EmailLog[]
+
   role      Role     @default(USER)
   orgRole   OrgRole  @default(OWNER) // Defaulting to OWNER for now so existing users don't lose access. Ideally MEMBER.
 }
@@ -160,10 +163,76 @@ model Activity {
   type      String   // "STAGE_CHANGE", "NOTE_ADDED", "VALUE_CHANGE"
   description String
   createdAt DateTime @default(now())
-  
+
   dealId    String
   deal      Deal     @relation(fields: [dealId], references: [id], onDelete: Cascade)
-  
+
   userId    String
   user      User     @relation(fields: [userId], references: [id])
+}
+
+// Email Automation Models
+
+enum EmailAutomationType {
+  WELCOME_EMAIL
+  DEAL_CREATED
+  DEAL_STAGE_CHANGED
+  UPGRADE_NUDGE
+}
+
+model EmailAutomationSetting {
+  id        String   @id @default(uuid())
+  type      EmailAutomationType
+  enabled   Boolean  @default(true)
+
+  // Customization (nullable = usa template default)
+  customSubject String?
+  customBody    String? @db.Text
+
+  // Advanced config
+  sendDelayMinutes Int @default(0) // 0 = immediate, 60 = 1h, 1440 = 24h
+  triggerConditions Json? // Regras de negócio customizadas
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@unique([organizationId, type])
+}
+
+enum EmailStatus {
+  SENT
+  DELIVERED
+  OPENED
+  CLICKED
+  BOUNCED
+  FAILED
+}
+
+model EmailLog {
+  id        String   @id @default(uuid())
+  type      EmailAutomationType
+  to        String
+  subject   String
+  status    EmailStatus @default(SENT)
+
+  // Tracking timestamps
+  sentAt      DateTime @default(now())
+  deliveredAt DateTime?
+  openedAt    DateTime?
+  clickedAt   DateTime?
+
+  // Error handling
+  errorMessage String? @db.Text
+
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  userId    String?
+  user      User? @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([organizationId, sentAt])
+  @@index([status])
 }

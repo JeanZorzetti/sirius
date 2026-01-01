@@ -286,6 +286,88 @@
 
 ---
 
+#### Task 3.4: Página de Gerenciamento de Automações de Email
+
+- [ ] Criar `app/dashboard/email-automations/page.tsx`
+- [ ] Dashboard com automações pré-configuradas:
+  - Welcome Email (onboarding)
+  - Deal Created Notification
+  - Deal Stage Changed
+  - Upgrade Nudge (limite de deals)
+- [ ] Toggle para ativar/desativar cada automação
+- [ ] Seção de personalização para cada template:
+  - Editor de assunto do email
+  - Editor de conteúdo (React Email visual ou markdown)
+  - Preview do email em tempo real
+  - Variáveis disponíveis ({{userName}}, {{dealTitle}}, etc.)
+- [ ] Configurações avançadas:
+  - Delay de envio (imediato, 1h, 24h, customizado)
+  - Condições de trigger (regras de negócio)
+  - Limites de envio (proteção anti-spam)
+- [ ] Histórico de emails enviados:
+  - Lista de últimos 50 emails
+  - Status (sent, delivered, opened, clicked, bounced)
+  - Taxa de abertura e cliques
+- [ ] Criar server actions em `app/dashboard/email-automations/actions.ts`:
+  - `getEmailAutomationSettings()`
+  - `toggleAutomation(automationId, enabled)`
+  - `updateAutomationTemplate(automationId, subject, body)`
+  - `updateAutomationConfig(automationId, config)`
+  - `getEmailHistory(limit = 50)`
+- [ ] Criar modelo Prisma `EmailAutomationSetting`:
+  - `id`, `organizationId`, `automationType`, `enabled`
+  - `customSubject`, `customBody` (nullable - usa default se null)
+  - `sendDelay` (em minutos)
+  - `triggerConditions` (JSON)
+- [ ] Criar modelo Prisma `EmailLog`:
+  - `id`, `organizationId`, `userId`, `type`, `to`, `subject`
+  - `status` (enum: SENT, DELIVERED, OPENED, CLICKED, BOUNCED)
+  - `sentAt`, `deliveredAt`, `openedAt`, `clickedAt`
+  - `errorMessage` (nullable)
+- [ ] Migration para novos modelos
+- [ ] Atualizar `lib/email-automations.ts` para:
+  - Verificar se automação está habilitada antes de enviar
+  - Usar templates customizados se existirem
+  - Registrar envios em `EmailLog`
+  - Respeitar delay configurado
+- [ ] UI Components:
+  - `components/email-automations/automation-card.tsx` (card com toggle)
+  - `components/email-automations/template-editor.tsx` (editor visual)
+  - `components/email-automations/email-preview.tsx` (preview ao vivo)
+  - `components/email-automations/email-history-table.tsx` (histórico)
+  - `components/email-automations/variable-helper.tsx` (lista de variáveis)
+- [ ] Feature gate: Analytics de email (aberturas, cliques) apenas para PRO
+- [ ] Documentar variáveis disponíveis por tipo de email
+
+**Arquivos a criar:**
+- `app/dashboard/email-automations/page.tsx`
+- `app/dashboard/email-automations/actions.ts`
+- `components/email-automations/automation-card.tsx`
+- `components/email-automations/template-editor.tsx`
+- `components/email-automations/email-preview.tsx`
+- `components/email-automations/email-history-table.tsx`
+- `components/email-automations/variable-helper.tsx`
+- `prisma/migrations/XXX_add_email_automation_settings/migration.sql`
+
+**Arquivos a modificar:**
+- `prisma/schema.prisma` (adicionar EmailAutomationSetting e EmailLog)
+- `lib/email-automations.ts` (integrar com settings e logs)
+- `app/dashboard/layout.tsx` (adicionar link no sidebar)
+
+**Checklist de validação:**
+- [ ] Usuário consegue ativar/desativar automações
+- [ ] Personalização de templates funciona
+- [ ] Preview mostra template com dados de exemplo
+- [ ] Variáveis são substituídas corretamente
+- [ ] Histórico mostra emails enviados
+- [ ] Analytics de abertura/clique funcionam (PRO only)
+- [ ] Delay de envio é respeitado
+- [ ] Logs são registrados corretamente
+
+**Tempo estimado:** 8 horas
+
+---
+
 ## 📅 SEMANA 2: Múltiplos Pipelines
 
 ### 🟢 Dia 6-7 - Database & Backend

@@ -3,6 +3,69 @@ import { WelcomeEmail } from '../emails/templates/welcome'
 import { DealCreatedEmail } from '../emails/templates/deal-created'
 import { DealStageChangedEmail } from '../emails/templates/deal-stage-changed'
 import { UpgradeNudgeEmail } from '../emails/templates/upgrade-nudge'
+import { PrismaClient, EmailAutomationType, EmailStatus } from '@prisma/client'
+
+const prisma = new PrismaClient()
+
+/**
+ * Verifica se a automação está habilitada e retorna as configurações
+ */
+async function getAutomationSettings(organizationId: string, type: EmailAutomationType) {
+  const setting = await prisma.emailAutomationSetting.findUnique({
+    where: {
+      organizationId_type: {
+        organizationId,
+        type
+      }
+    }
+  })
+
+  return setting
+}
+
+/**
+ * Registra o envio de email no log
+ */
+async function logEmailSent({
+  organizationId,
+  userId,
+  type,
+  to,
+  subject,
+  status = 'SENT' as EmailStatus,
+  errorMessage = null
+}: {
+  organizationId: string
+  userId?: string
+  type: EmailAutomationType
+  to: string
+  subject: string
+  status?: EmailStatus
+  errorMessage?: string | null
+}) {
+  await prisma.emailLog.create({
+    data: {
+      organizationId,
+      userId: userId || null,
+      type,
+      to,
+      subject,
+      status,
+      errorMessage
+    }
+  })
+}
+
+/**
+ * Substitui variáveis no template customizado
+ */
+function replaceVariables(template: string, variables: Record<string, string>): string {
+  let result = template
+  Object.entries(variables).forEach(([key, value]) => {
+    result = result.replace(new RegExp(`{{${key}}}`, 'g'), value)
+  })
+  return result
+}
 
 /**
  * Envia email de boas-vindas após registro
@@ -11,20 +74,69 @@ export async function sendWelcomeEmail({
   to,
   userName,
   organizationName,
+  organizationId,
+  userId
 }: {
   to: string
   userName: string
   organizationName: string
+  organizationId: string
+  userId?: string
 }) {
-  return await sendEmail({
-    to,
-    subject: `Bem-vindo ao Sirius CRM, ${userName}!`,
-    react: WelcomeEmail({
-      userName,
-      organizationName,
-      dashboardUrl: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard`,
-    }),
-  })
+  const settings = await getAutomationSettings(organizationId, 'WELCOME_EMAIL')
+
+  // Se a automação estiver desabilitada, não envia
+  if (!settings || !settings.enabled) {
+    console.log('[EMAIL] Welcome email automation is disabled')
+    return { success: false, error: 'Automation disabled' }
+  }
+
+  // Delay se configurado
+  if (settings.sendDelayMinutes > 0) {
+    // TODO: Implementar queue system para delays
+    console.log(`[EMAIL] Would delay send by ${settings.sendDelayMinutes} minutes`)
+  }
+
+  const defaultSubject = `Bem-vindo ao Sirius CRM, ${userName}!`
+  const subject = settings.customSubject
+    ? replaceVariables(settings.customSubject, { userName, organizationName })
+    : defaultSubject
+
+  try {
+    const result = await sendEmail({
+      to,
+      subject,
+      react: WelcomeEmail({
+        userName,
+        organizationName,
+        dashboardUrl: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard`,
+      }),
+    })
+
+    // Log do envio
+    await logEmailSent({
+      organizationId,
+      userId,
+      type: 'WELCOME_EMAIL',
+      to,
+      subject,
+      status: result.success ? 'SENT' : 'FAILED',
+      errorMessage: result.success ? null : (result.error as string || 'Unknown error')
+    })
+
+    return result
+  } catch (error: any) {
+    await logEmailSent({
+      organizationId,
+      userId,
+      type: 'WELCOME_EMAIL',
+      to,
+      subject,
+      status: 'FAILED',
+      errorMessage: error.message
+    })
+    throw error
+  }
 }
 
 /**
@@ -38,6 +150,8 @@ export async function sendDealCreatedEmail({
   dealStage,
   contactName,
   dealUrl,
+  organizationId,
+  userId
 }: {
   to: string
   userName: string
@@ -46,19 +160,73 @@ export async function sendDealCreatedEmail({
   dealStage: string
   contactName: string
   dealUrl: string
+  organizationId: string
+  userId?: string
 }) {
-  return await sendEmail({
-    to,
-    subject: `Novo negócio criado: ${dealTitle}`,
-    react: DealCreatedEmail({
-      userName,
-      dealTitle,
-      dealValue,
-      dealStage,
-      contactName,
-      dealUrl,
-    }),
-  })
+  const settings = await getAutomationSettings(organizationId, 'DEAL_CREATED')
+
+  if (!settings || !settings.enabled) {
+    console.log('[EMAIL] Deal created email automation is disabled')
+    return { success: false, error: 'Automation disabled' }
+  }
+
+  if (settings.sendDelayMinutes > 0) {
+    console.log(`[EMAIL] Would delay send by ${settings.sendDelayMinutes} minutes`)
+  }
+
+  const formattedValue = new Intl.NumberFormat('pt-BR', {
+    style: 'currency',
+    currency: 'BRL'
+  }).format(dealValue)
+
+  const defaultSubject = `Novo negócio criado: ${dealTitle}`
+  const subject = settings.customSubject
+    ? replaceVariables(settings.customSubject, {
+        userName,
+        dealTitle,
+        dealValue: formattedValue,
+        dealStage,
+        contactName
+      })
+    : defaultSubject
+
+  try {
+    const result = await sendEmail({
+      to,
+      subject,
+      react: DealCreatedEmail({
+        userName,
+        dealTitle,
+        dealValue,
+        dealStage,
+        contactName,
+        dealUrl,
+      }),
+    })
+
+    await logEmailSent({
+      organizationId,
+      userId,
+      type: 'DEAL_CREATED',
+      to,
+      subject,
+      status: result.success ? 'SENT' : 'FAILED',
+      errorMessage: result.success ? null : (result.error as string || 'Unknown error')
+    })
+
+    return result
+  } catch (error: any) {
+    await logEmailSent({
+      organizationId,
+      userId,
+      type: 'DEAL_CREATED',
+      to,
+      subject,
+      status: 'FAILED',
+      errorMessage: error.message
+    })
+    throw error
+  }
 }
 
 /**
@@ -72,6 +240,8 @@ export async function sendDealStageChangedEmail({
   oldStage,
   newStage,
   dealUrl,
+  organizationId,
+  userId
 }: {
   to: string
   assigneeName: string
@@ -80,19 +250,73 @@ export async function sendDealStageChangedEmail({
   oldStage: string
   newStage: string
   dealUrl: string
+  organizationId: string
+  userId?: string
 }) {
-  return await sendEmail({
-    to,
-    subject: `${dealTitle} mudou para ${newStage}`,
-    react: DealStageChangedEmail({
-      assigneeName,
-      dealTitle,
-      dealValue,
-      oldStage,
-      newStage,
-      dealUrl,
-    }),
-  })
+  const settings = await getAutomationSettings(organizationId, 'DEAL_STAGE_CHANGED')
+
+  if (!settings || !settings.enabled) {
+    console.log('[EMAIL] Deal stage changed email automation is disabled')
+    return { success: false, error: 'Automation disabled' }
+  }
+
+  if (settings.sendDelayMinutes > 0) {
+    console.log(`[EMAIL] Would delay send by ${settings.sendDelayMinutes} minutes`)
+  }
+
+  const formattedValue = new Intl.NumberFormat('pt-BR', {
+    style: 'currency',
+    currency: 'BRL'
+  }).format(dealValue)
+
+  const defaultSubject = `${dealTitle} mudou para ${newStage}`
+  const subject = settings.customSubject
+    ? replaceVariables(settings.customSubject, {
+        assigneeName,
+        dealTitle,
+        dealValue: formattedValue,
+        oldStage,
+        newStage
+      })
+    : defaultSubject
+
+  try {
+    const result = await sendEmail({
+      to,
+      subject,
+      react: DealStageChangedEmail({
+        assigneeName,
+        dealTitle,
+        dealValue,
+        oldStage,
+        newStage,
+        dealUrl,
+      }),
+    })
+
+    await logEmailSent({
+      organizationId,
+      userId,
+      type: 'DEAL_STAGE_CHANGED',
+      to,
+      subject,
+      status: result.success ? 'SENT' : 'FAILED',
+      errorMessage: result.success ? null : (result.error as string || 'Unknown error')
+    })
+
+    return result
+  } catch (error: any) {
+    await logEmailSent({
+      organizationId,
+      userId,
+      type: 'DEAL_STAGE_CHANGED',
+      to,
+      subject,
+      status: 'FAILED',
+      errorMessage: error.message
+    })
+    throw error
+  }
 }
 
 /**
@@ -103,22 +327,71 @@ export async function sendUpgradeNudgeEmail({
   userName,
   currentDeals,
   maxDeals = 10,
+  organizationId,
+  userId
 }: {
   to: string
   userName: string
   currentDeals: number
   maxDeals?: number
+  organizationId: string
+  userId?: string
 }) {
-  return await sendEmail({
-    to,
-    subject: `Você está perto do limite de negócios! 📊`,
-    react: UpgradeNudgeEmail({
-      userName,
-      currentDeals,
-      maxDeals,
-      upgradeUrl: `${process.env.NEXT_PUBLIC_APP_URL}/billing`,
-    }),
-  })
+  const settings = await getAutomationSettings(organizationId, 'UPGRADE_NUDGE')
+
+  if (!settings || !settings.enabled) {
+    console.log('[EMAIL] Upgrade nudge email automation is disabled')
+    return { success: false, error: 'Automation disabled' }
+  }
+
+  if (settings.sendDelayMinutes > 0) {
+    console.log(`[EMAIL] Would delay send by ${settings.sendDelayMinutes} minutes`)
+  }
+
+  const defaultSubject = `Você está perto do limite de negócios! 📊`
+  const subject = settings.customSubject
+    ? replaceVariables(settings.customSubject, {
+        userName,
+        currentDeals: currentDeals.toString(),
+        maxDeals: maxDeals.toString()
+      })
+    : defaultSubject
+
+  try {
+    const result = await sendEmail({
+      to,
+      subject,
+      react: UpgradeNudgeEmail({
+        userName,
+        currentDeals,
+        maxDeals,
+        upgradeUrl: `${process.env.NEXT_PUBLIC_APP_URL}/billing`,
+      }),
+    })
+
+    await logEmailSent({
+      organizationId,
+      userId,
+      type: 'UPGRADE_NUDGE',
+      to,
+      subject,
+      status: result.success ? 'SENT' : 'FAILED',
+      errorMessage: result.success ? null : (result.error as string || 'Unknown error')
+    })
+
+    return result
+  } catch (error: any) {
+    await logEmailSent({
+      organizationId,
+      userId,
+      type: 'UPGRADE_NUDGE',
+      to,
+      subject,
+      status: 'FAILED',
+      errorMessage: error.message
+    })
+    throw error
+  }
 }
 
 /**

@@ -130,6 +130,8 @@ export async function registerAction(prevState: any, formData: FormData) {
                         to: email,
                         userName: name,
                         organizationName: org.name,
+                        organizationId: organizationId,
+                        userId: newUser.id
                     })
                 )
             }
