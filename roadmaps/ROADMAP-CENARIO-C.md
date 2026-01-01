@@ -13,17 +13,17 @@
 
 **Prioridade:** P0 (Bloqueador para produção)
 
-#### Task 1.1: Configurar Sentry
-- [ ] Criar conta Sentry (sentry.io)
-- [ ] Instalar dependências: `@sentry/nextjs`
-- [ ] Configurar `sentry.client.config.ts`
-- [ ] Configurar `sentry.server.config.ts`
-- [ ] Configurar `sentry.edge.config.ts`
-- [ ] Adicionar DSN em `.env.local`
-- [ ] Testar captura de erros
-- [ ] Configurar Source Maps upload
-- [ ] Adicionar Performance Monitoring
-- [ ] Configurar Session Replay (opcional mas recomendado)
+#### Task 1.1: Configurar Sentry ✅
+- [x] Criar conta Sentry (sentry.io)
+- [x] Instalar dependências: `@sentry/nextjs`
+- [x] Configurar `sentry.client.config.ts`
+- [x] Configurar `sentry.server.config.ts`
+- [x] Configurar `sentry.edge.config.ts`
+- [x] Adicionar DSN em `.env.local`
+- [x] Testar captura de erros
+- [x] Configurar Source Maps upload
+- [x] Adicionar Performance Monitoring
+- [x] Configurar Session Replay (opcional mas recomendado)
 
 **Arquivos a criar:**
 - `sentry.client.config.ts`
@@ -32,25 +32,26 @@
 - `next.config.ts` (atualizar com Sentry webpack plugin)
 
 **Checklist de validação:**
-- [ ] Erro de teste aparece no dashboard Sentry
-- [ ] Stack traces são legíveis
-- [ ] Source maps funcionando
-- [ ] Breadcrumbs capturados corretamente
+- [x] Erro de teste aparece no dashboard Sentry
+- [x] Stack traces são legíveis
+- [x] Source maps funcionando
+- [x] Breadcrumbs capturados corretamente
 
 **Tempo estimado:** 4 horas
 
 ---
 
-#### Task 1.2: Structured Logging
-- [ ] Instalar `pino` e `pino-pretty`
-- [ ] Criar `lib/logger.ts`
-- [ ] Adicionar níveis de log (debug, info, warn, error)
-- [ ] Configurar formatação para desenvolvimento vs produção
-- [ ] Substituir `console.log` por logger em arquivos críticos:
+#### Task 1.2: Structured Logging ✅
+
+- [x] Instalar `pino` e `pino-pretty`
+- [x] Criar `lib/logger.ts`
+- [x] Adicionar níveis de log (debug, info, warn, error)
+- [x] Configurar formatação para desenvolvimento vs produção
+- [x] Substituir `console.log` por logger em arquivos críticos:
   - `app/auth/actions.ts`
   - `app/api/stripe/**`
   - `app/dashboard/actions.ts`
-- [ ] Adicionar correlation IDs para rastreamento
+- [x] Adicionar correlation IDs para rastreamento
 
 **Arquivos a criar:**
 - `lib/logger.ts`
@@ -62,25 +63,26 @@
 - `app/dashboard/actions.ts`
 
 **Checklist de validação:**
-- [ ] Logs estruturados aparecem no console
-- [ ] JSON formatado em produção
-- [ ] Pretty print em desenvolvimento
-- [ ] Correlation IDs funcionando
+- [x] Logs estruturados aparecem no console
+- [x] JSON formatado em produção
+- [x] Pretty print em desenvolvimento
+- [x] Correlation IDs funcionando
 
 **Tempo estimado:** 2 horas
 
 ---
 
-#### Task 1.3: Remover Secrets Hardcoded (SEGURANÇA)
-- [ ] Auditar todos os secrets no código
-- [ ] Remover valores default de:
+#### Task 1.3: Remover Secrets Hardcoded (SEGURANÇA) ✅
+
+- [x] Auditar todos os secrets no código
+- [x] Remover valores default de:
   - `SESSION_SECRET`
   - `NEXTAUTH_SECRET`
   - `STRIPE_SECRET_KEY`
-- [ ] Criar `.env.example` documentando variáveis obrigatórias
-- [ ] Adicionar validação de env vars em `lib/env.ts`
-- [ ] Fazer build falhar se secrets críticos estiverem faltando
-- [ ] Atualizar README com instruções de setup
+- [x] Criar `.env.example` documentando variáveis obrigatórias
+- [x] Adicionar validação de env vars em `lib/env.ts`
+- [x] Fazer build falhar se secrets críticos estiverem faltando
+- [x] Atualizar README com instruções de setup
 
 **Arquivos a criar:**
 - `lib/env.ts` (validação de environment variables)
@@ -92,30 +94,31 @@
 - `README.md` (documentar setup)
 
 **Checklist de validação:**
-- [ ] Build falha sem variáveis críticas
-- [ ] Mensagens de erro são claras
-- [ ] `.env.example` está completo
-- [ ] Documentação atualizada
+- [x] Build falha sem variáveis críticas
+- [x] Mensagens de erro são claras
+- [x] `.env.example` está completo
+- [x] Documentação atualizada
 
 **Tempo estimado:** 2 horas
 
 ---
 
-### 🟡 Dia 2-3 - Testes Críticos de Segurança
+### 🟡 Dia 2-3 - Testes Críticos de Segurança ✅
 
 **Prioridade:** P0 (Previne bugs críticos)
 
-#### Task 2.1: Setup de Testes
-- [ ] Instalar dependências de teste:
+#### Task 2.1: Setup de Testes ✅
+
+- [x] Instalar dependências de teste:
   - `vitest` (test runner)
   - `@testing-library/react`
   - `@testing-library/jest-dom`
   - `@testing-library/user-event`
   - `msw` (Mock Service Worker para API mocking)
-- [ ] Configurar `vitest.config.ts`
-- [ ] Configurar `setup-tests.ts`
-- [ ] Criar helpers de teste em `__tests__/helpers/`
-- [ ] Configurar coverage reporter
+- [x] Configurar `vitest.config.ts`
+- [x] Configurar `setup-tests.ts`
+- [x] Criar helpers de teste em `__tests__/helpers/`
+- [x] Configurar coverage reporter
 
 **Arquivos a criar:**
 - `vitest.config.ts`
@@ -127,19 +130,20 @@
 
 ---
 
-#### Task 2.2: Testes de Autenticação
-- [ ] Testar `registerAction`:
+#### Task 2.2: Testes de Autenticação ✅
+
+- [x] Testar `registerAction`:
   - Criação de organização nova
   - Criação de usuário via convite
   - Validação de email duplicado
   - Validação de senha fraca
   - Hash de senha correto
-- [ ] Testar `loginAction`:
+- [x] Testar `loginAction`:
   - Login com credenciais válidas
   - Login com senha incorreta
   - Login com email inexistente
   - Criação de sessão JWT
-- [ ] Testar `getSession`:
+- [x] Testar `getSession`:
   - Validação de token válido
   - Rejeição de token expirado
   - Rejeição de token inválido
@@ -150,44 +154,46 @@
 - `__tests__/auth/session.test.ts`
 
 **Checklist de validação:**
-- [ ] 100% coverage nas funções de auth
-- [ ] Edge cases cobertos
-- [ ] Testes passam localmente
+- [x] 100% coverage nas funções de auth
+- [x] Edge cases cobertos
+- [x] Testes passam localmente
 - [ ] Testes rodam em CI (setup depois)
 
 **Tempo estimado:** 5 horas
 
 ---
 
-#### Task 2.3: Testes de Isolamento Multi-tenant
-- [ ] Testar isolamento de deals:
+#### Task 2.3: Testes de Isolamento Multi-tenant ✅
+
+- [x] Testar isolamento de deals:
   - Org A não pode ver deals de Org B
   - Org A não pode editar deals de Org B
   - Org A não pode deletar deals de Org B
-- [ ] Testar isolamento de contatos
-- [ ] Testar isolamento de pipeline stages
-- [ ] Testar permissões OWNER vs MEMBER
+- [x] Testar isolamento de contatos
+- [x] Testar isolamento de pipeline stages
+- [x] Testar permissões OWNER vs MEMBER
 
 **Arquivos a criar:**
 - `__tests__/security/data-isolation.test.ts`
 - `__tests__/security/permissions.test.ts`
 
 **Checklist de validação:**
-- [ ] Todos os cenários de vazamento de dados testados
-- [ ] Testes com múltiplas organizações simultâneas
-- [ ] Validação de roles OWNER/MEMBER
+- [x] Todos os cenários de vazamento de dados testados
+- [x] Testes com múltiplas organizações simultâneas
+- [x] Validação de roles OWNER/MEMBER
 
 **Tempo estimado:** 4 horas
 
 ---
 
-#### Task 2.4: Testes de Pagamentos (Stripe)
-- [ ] Mock do Stripe SDK
-- [ ] Testar criação de checkout session
-- [ ] Testar webhook de pagamento bem-sucedido
-- [ ] Testar webhook de falha de pagamento
-- [ ] Testar upgrade de plano
-- [ ] Testar metadata de organização
+#### Task 2.4: Testes de Pagamentos (Stripe) ✅
+
+- [x] Mock do Stripe SDK
+- [x] Testar criação de checkout session
+- [x] Testar webhook de pagamento bem-sucedido
+- [x] Testar webhook de falha de pagamento
+- [x] Testar upgrade de plano
+- [x] Testar metadata de organização
 
 **Arquivos a criar:**
 - `__tests__/payments/checkout.test.ts`
