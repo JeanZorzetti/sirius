@@ -10,7 +10,11 @@
       "Bash(git commit -m \"$\\(cat <<''EOF''\nfix\\(blog\\): use important modifier for ordered list marker styling\n\n- Apply !important modifier to force blue color on numbered list markers\n- Use canonical Tailwind syntax \\(text-blue-600! instead of !text-blue-600\\)\n- Ensure markers display with larger size and bold font weight\n- Override default prose styling with higher specificity\n\n🤖 Generated with [Claude Code]\\(https://claude.com/claude-code\\)\n\nCo-Authored-By: Claude Sonnet 4.5 <noreply@anthropic.com>\nEOF\n\\)\")",
       "Bash(git commit:*)",
       "Bash(npx tsx:*)",
-      "Bash(npm install:*)"
+      "Bash(npm install:*)",
+      "Bash(npm test:*)",
+      "Bash(npx tsc:*)",
+      "Bash(cat:*)",
+      "Bash(npx vitest:*)"
     ]
   }
 }
