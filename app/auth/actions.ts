@@ -4,17 +4,22 @@ import { PrismaClient } from '@prisma/client'
 import { hash, compare } from 'bcryptjs'
 import { login, logout } from '@/lib/auth'
 import { redirect } from 'next/navigation'
+import logger, { generateCorrelationId } from '@/lib/logger'
 
 const prisma = new PrismaClient()
 
 export async function registerAction(prevState: any, formData: FormData) {
+    const correlationId = generateCorrelationId()
     const name = formData.get('name') as string
     const email = formData.get('email') as string
     const password = formData.get('password') as string
     const companyName = formData.get('company') as string
     const inviteToken = formData.get('inviteToken') as string
 
+    logger.info({ correlationId, email, hasInvite: !!inviteToken }, 'Registration attempt')
+
     if (!name || !email || !password) {
+        logger.warn({ correlationId, email }, 'Registration failed: missing fields')
         return { error: 'Preencha todos os campos.' }
     }
 
@@ -24,6 +29,7 @@ export async function registerAction(prevState: any, formData: FormData) {
     })
 
     if (existingUser) {
+        logger.warn({ correlationId, email }, 'Registration failed: email already exists')
         return { error: 'Email já cadastrado.' }
     }
 
@@ -108,8 +114,10 @@ export async function registerAction(prevState: any, formData: FormData) {
         // 3. Create Session
         await login({ id: newUser.id, email: newUser.email, name: newUser.name, organizationId: newUser.organizationId })
 
+        logger.info({ correlationId, email, organizationId, userId: newUser.id }, 'Registration successful')
+
     } catch (error: any) {
-        console.error('SERVER REGISTRATION ERROR:', JSON.stringify(error, null, 2))
+        logger.error({ correlationId, email, err: error }, 'Registration error')
         return { error: `Erro interno: ${error.message || 'Falha desconhecida'}` }
     }
 
@@ -118,10 +126,14 @@ export async function registerAction(prevState: any, formData: FormData) {
 }
 
 export async function loginAction(prevState: any, formData: FormData) {
+    const correlationId = generateCorrelationId()
     const email = formData.get('email') as string
     const password = formData.get('password') as string
 
+    logger.info({ correlationId, email }, 'Login attempt')
+
     if (!email || !password) {
+        logger.warn({ correlationId, email }, 'Login failed: missing fields')
         return { error: 'Preencha todos os campos.' }
     }
 
@@ -131,16 +143,20 @@ export async function loginAction(prevState: any, formData: FormData) {
     })
 
     if (!user) {
+        logger.warn({ correlationId, email }, 'Login failed: user not found')
         return { error: 'Credenciais inválidas.' }
     }
 
     const isValid = await compare(password, user.password)
 
     if (!isValid) {
+        logger.warn({ correlationId, email, userId: user.id }, 'Login failed: invalid password')
         return { error: 'Credenciais inválidas.' }
     }
 
     await login({ id: user.id, email: user.email, name: user.name, organizationId: user.organizationId })
+
+    logger.info({ correlationId, email, userId: user.id, organizationId: user.organizationId }, 'Login successful')
 
     // Redirect to dashboard with login flag for analytics tracking
     redirect('/dashboard?login=true')
