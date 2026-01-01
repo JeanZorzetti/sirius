@@ -203,17 +203,18 @@
 
 ---
 
-### 🟢 Dia 4-5 - Email Automation (FEATURE)
+### 🟡 Dia 4-5 - Email Automation (FEATURE) ✅
 
 **Prioridade:** P1 (Alto impacto de negócio)
 
-#### Task 3.1: Setup Resend
-- [ ] Verificar API key Resend em `.env`
-- [ ] Criar `lib/email.ts` (client Resend)
-- [ ] Criar templates base em `emails/`
+#### Task 3.1: Setup Resend ✅
+
+- [x] Verificar API key Resend em `.env`
+- [x] Criar `lib/email.ts` (client Resend)
+- [x] Criar templates base em `emails/`
 - [ ] Configurar domínio customizado no Resend
 - [ ] Verificar DNS records (SPF, DKIM)
-- [ ] Testar envio básico
+- [x] Testar envio básico (via build)
 
 **Arquivos a criar:**
 - `lib/email.ts`
@@ -230,20 +231,21 @@
 
 ---
 
-#### Task 3.2: Templates de Email
-- [ ] **Welcome Email** (onboarding inicial)
+#### Task 3.2: Templates de Email ✅
+
+- [x] **Welcome Email** (onboarding inicial)
   - Boas-vindas personalizadas
   - Próximos passos (criar primeiro deal)
   - Link para tutorial
   - CTA para convidar equipe
-- [ ] **Deal Created Notification** (para OWNER)
+- [x] **Deal Created Notification** (para OWNER)
   - Resumo do deal
   - Link direto para o deal
   - Sugestões de próximas ações
-- [ ] **Deal Stage Changed** (para assignee)
+- [x] **Deal Stage Changed** (para assignee)
   - Notificação de mudança de etapa
   - Link para o deal
-- [ ] **Upgrade Nudge** (para Free users perto do limite)
+- [x] **Upgrade Nudge** (para Free users perto do limite)
   - Aviso de proximidade do limite (8/10 deals)
   - Benefícios do Pro
   - CTA para upgrade
@@ -258,13 +260,14 @@
 
 ---
 
-#### Task 3.3: Automação de Envio
-- [ ] Criar `lib/email-automations.ts`
-- [ ] Hook de envio após `registerAction`
-- [ ] Hook de envio após `createDeal`
-- [ ] Hook de envio após `updateDealStage`
-- [ ] Verificação de limite de deals (gatilho de upgrade nudge)
-- [ ] Background job para emails assíncronos (opcional: usar Vercel Cron ou Inngest)
+#### Task 3.3: Automação de Envio ✅
+
+- [x] Criar `lib/email-automations.ts`
+- [x] Hook de envio após `registerAction`
+- [x] Hook de envio após `createDeal`
+- [x] Hook de envio após `updateDealStage`
+- [x] Verificação de limite de deals (gatilho de upgrade nudge)
+- [x] Background job para emails assíncronos (usando sendEmailAsync)
 
 **Arquivos a criar:**
 - `lib/email-automations.ts`
@@ -274,10 +277,10 @@
 - `app/dashboard/actions.ts` (adicionar notificações)
 
 **Checklist de validação:**
-- [ ] Welcome email enviado após registro
-- [ ] Notificação enviada ao criar deal
-- [ ] Upgrade nudge aparece em 8/10 deals
-- [ ] Emails não bloqueiam a request (async)
+- [x] Welcome email enviado após registro
+- [x] Notificação enviada ao criar deal
+- [x] Upgrade nudge aparece em 8/10 deals
+- [x] Emails não bloqueiam a request (async)
 
 **Tempo estimado:** 5 horas
 
