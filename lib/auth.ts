@@ -2,7 +2,15 @@ import { SignJWT, jwtVerify } from 'jose'
 import { cookies } from 'next/headers'
 import { NextRequest, NextResponse } from 'next/server'
 
-const secretKey = process.env.SESSION_SECRET || 'super-secret-key-change-me'
+// SECURITY: No default fallback - will fail fast if SESSION_SECRET is missing
+if (!process.env.SESSION_SECRET) {
+    throw new Error(
+        'SESSION_SECRET environment variable is required. ' +
+        'Generate a secure random string with: openssl rand -base64 32'
+    )
+}
+
+const secretKey = process.env.SESSION_SECRET
 const key = new TextEncoder().encode(secretKey)
 
 export async function encrypt(payload: any) {
