@@ -10,7 +10,9 @@ O código do Sirius agora envia os seguintes eventos via `dataLayer.push()`:
 2. **`login`** - Usuário fez login
 3. **`create_deal`** - Novo deal criado
 4. **`create_contact`** - Novo contato criado
-5. **`page_view`** (pricing) - Visualização da página de preços
+5. **`view_pricing_page`** - Visualização da página de preços
+6. **`view_billing_page`** - Visualização da página de billing (alta intenção de compra)
+7. **`purchase`** - Compra concluída via Stripe (assinatura Pro - R$ 49,00)
 
 ## 🚀 Configuração Rápida (5 minutos)
 
@@ -72,9 +74,25 @@ Agora vamos criar acionadores para cada evento customizado.
 #### 3.5 - Trigger: View Pricing Page
 
 1. **Triggers** → **Novo**
-2. **Nome:** `Custom Event - Page View`
+2. **Nome:** `Custom Event - View Pricing Page`
 3. **Tipo:** Custom Event
-4. **Nome do evento:** `page_view`
+4. **Nome do evento:** `view_pricing_page`
+5. **Salvar**
+
+#### 3.6 - Trigger: View Billing Page
+
+1. **Triggers** → **Novo**
+2. **Nome:** `Custom Event - View Billing Page`
+3. **Tipo:** Custom Event
+4. **Nome do evento:** `view_billing_page`
+5. **Salvar**
+
+#### 3.7 - Trigger: Purchase (Stripe)
+
+1. **Triggers** → **Novo**
+2. **Nome:** `Custom Event - Purchase`
+3. **Tipo:** Custom Event
+4. **Nome do evento:** `purchase`
 5. **Salvar**
 
 ### Passo 4: Criar Tags GA4 Event para cada conversão
@@ -144,8 +162,38 @@ Agora vamos criar tags que enviam esses eventos pro Google Analytics.
    - Configuration Tag: `GA4 - Configuration`
    - Event Name: `view_pricing_page`
 4. **Acionamento:**
-   - Selecione: `Custom Event - Page View`
+   - Selecione: `Custom Event - View Pricing Page`
 5. **Salvar**
+
+#### 4.6 - Tag: Billing Page View
+
+1. **Tags** → **Nova**
+2. **Nome:** `GA4 - Event - View Billing`
+3. **Configuração da tag:**
+   - Tipo: **Google Analytics: GA4 Event**
+   - Configuration Tag: `GA4 - Configuration`
+   - Event Name: `view_billing_page`
+4. **Acionamento:**
+   - Selecione: `Custom Event - View Billing Page`
+5. **Salvar**
+
+#### 4.7 - Tag: Purchase Event (MAIS IMPORTANTE! 💰)
+
+1. **Tags** → **Nova**
+2. **Nome:** `GA4 - Event - Purchase`
+3. **Configuração da tag:**
+   - Tipo: **Google Analytics: GA4 Event**
+   - Configuration Tag: `GA4 - Configuration`
+   - Event Name: `purchase`
+4. **Parâmetros do Evento** (clique em "Add Parameter"):
+   - `value` → `{{Event - value}}`
+   - `currency` → `{{Event - currency}}`
+   - `transaction_id` → `{{Event - transaction_id}}`
+5. **Acionamento:**
+   - Selecione: `Custom Event - Purchase`
+6. **Salvar**
+
+> **IMPORTANTE:** O evento `purchase` é reconhecido automaticamente pelo Google Analytics como uma conversão de receita. Certifique-se de configurá-lo corretamente!
 
 ### Passo 5: Criar Variáveis da Data Layer (opcional mas recomendado)
 
@@ -163,6 +211,7 @@ Repita para:
 - `Event - deal_id` → `deal_id`
 - `Event - contact_id` → `contact_id`
 - `Event - method` → `method`
+- `Event - transaction_id` → `transaction_id`
 
 ### Passo 6: Testar (Preview Mode)
 
@@ -171,22 +220,25 @@ Repita para:
 3. **Teste cada evento:**
    - Crie uma conta → Deve disparar `sign_up`
    - Faça login → Deve disparar `login`
-   - Vá para `/pricing` → Deve disparar `page_view`
+   - Vá para `/pricing` → Deve disparar `view_pricing_page`
+   - Vá para `/dashboard/billing` → Deve disparar `view_billing_page`
    - Crie um deal → Deve disparar `create_deal`
    - Crie um contato → Deve disparar `create_contact`
+   - Complete um checkout Stripe → Deve disparar `purchase` 💰
 
 4. **Verificar no GTM Preview:**
    - No painel de debug, você verá cada evento sendo disparado
-   - Clique no evento para ver os parâmetros (value, deal_stage, etc.)
+   - Clique no evento para ver os parâmetros (value, deal_stage, transaction_id, etc.)
    - Confirme que a tag GA4 correspondente foi acionada
+   - **IMPORTANTE:** Para `purchase`, verifique se os parâmetros `value: 49`, `currency: BRL` e `transaction_id` estão presentes
 
 ### Passo 7: Publicar
 
 Se tudo estiver funcionando:
 
 1. Clique em **"Submit"** (Enviar)
-2. **Nome da versão:** `v2 - Eventos de Conversão`
-3. **Descrição:** `Rastreamento de cadastro, login, criação de deals e contatos`
+2. **Nome da versão:** `v3 - Eventos de Conversão + Purchase`
+3. **Descrição:** `Rastreamento completo: cadastro, login, deals, contatos, pricing, billing e compras Stripe`
 4. Clique em **"Publish"** (Publicar)
 
 ## 📈 Verificar no Google Analytics
@@ -201,6 +253,8 @@ Após publicar e aguardar alguns minutos:
    - `create_deal`
    - `create_contact`
    - `view_pricing_page`
+   - `view_billing_page`
+   - `purchase` 💰
 
 ## 🎯 Criar Conversões no GA4
 
@@ -208,12 +262,22 @@ Para usar esses eventos em campanhas de marketing:
 
 1. No GA4, vá em **Admin** → **Events**
 2. Marque os eventos como **Conversões**:
-   - ✅ `sign_up` (Principal conversão!)
-   - ✅ `create_deal`
-   - `login` (opcional)
-   - `create_contact` (opcional)
+   - ✅ `sign_up` (Conversão principal - topo do funil)
+   - ✅ `purchase` (Conversão de receita - MAIS IMPORTANTE! 💰)
+   - ✅ `create_deal` (Micro-conversão - ativação do produto)
+   - ✅ `view_billing_page` (Alta intenção de compra)
+   - `view_pricing_page` (opcional - intenção de compra)
+   - `login` (opcional - engajamento)
+   - `create_contact` (opcional - uso da plataforma)
 
-Agora você pode usar essas conversões no Google Ads!
+**Prioridade das Conversões:**
+
+1. 💰 **`purchase`** - Receita real (R$ 49/mês)
+2. 🎯 **`sign_up`** - Novo usuário
+3. 📊 **`view_billing_page`** - Pronto para comprar
+4. 💼 **`create_deal`** - Usuário ativo
+
+Agora você pode usar essas conversões no Google Ads e medir ROI real!
 
 ## 🔧 Estrutura do Código (Referência)
 
@@ -249,11 +313,26 @@ window.dataLayer.push({
   contact_id: 'contact-abc'
 })
 
-// View Pricing
+// View Pricing Page
 window.dataLayer.push({
-  event: 'page_view',
+  event: 'view_pricing_page',
   page_path: '/pricing',
   page_title: 'Pricing - Sirius CRM'
+})
+
+// View Billing Page (alta intenção)
+window.dataLayer.push({
+  event: 'view_billing_page',
+  page_path: '/dashboard/billing',
+  page_title: 'Billing - Sirius CRM'
+})
+
+// Purchase (Stripe Checkout Success) 💰
+window.dataLayer.push({
+  event: 'purchase',
+  value: 49.00,
+  currency: 'BRL',
+  transaction_id: 'cs_test_abc123...' // Stripe session ID
 })
 ```
 
