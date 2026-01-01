@@ -7,7 +7,12 @@ const prisma = new PrismaClient();
 
 export async function POST(req: Request) {
     const body = await req.text();
-    const signature = req.headers.get("Stripe-Signature") as string;
+    const headersList = await headers();
+    const signature = headersList.get("stripe-signature");
+
+    if (!signature) {
+        return new NextResponse("No signature provided", { status: 400 });
+    }
 
     let event;
 
@@ -18,6 +23,7 @@ export async function POST(req: Request) {
             process.env.STRIPE_WEBHOOK_SECRET!
         );
     } catch (error: any) {
+        console.error('[STRIPE WEBHOOK] Signature verification failed:', error.message);
         return new NextResponse(`Webhook Error: ${error.message}`, { status: 400 });
     }
 
