@@ -9,7 +9,8 @@
       "Bash(git commit -m \"$\\(cat <<''EOF''\nfix\\(blog\\): apply blue styling to ordered list markers\n\n- Use [&_ol>li::marker] selector to properly target ordered list markers\n- Ensure numbered lists \\(1., 2., 3.\\) display in blue with larger size\n- Maintain bold font-weight for better visibility\n- Fix Tailwind CSS specificity issues with prose markers\n\n🤖 Generated with [Claude Code]\\(https://claude.com/claude-code\\)\n\nCo-Authored-By: Claude Sonnet 4.5 <noreply@anthropic.com>\nEOF\n\\)\")",
       "Bash(git commit -m \"$\\(cat <<''EOF''\nfix\\(blog\\): use important modifier for ordered list marker styling\n\n- Apply !important modifier to force blue color on numbered list markers\n- Use canonical Tailwind syntax \\(text-blue-600! instead of !text-blue-600\\)\n- Ensure markers display with larger size and bold font weight\n- Override default prose styling with higher specificity\n\n🤖 Generated with [Claude Code]\\(https://claude.com/claude-code\\)\n\nCo-Authored-By: Claude Sonnet 4.5 <noreply@anthropic.com>\nEOF\n\\)\")",
       "Bash(git commit:*)",
-      "Bash(npx tsx:*)"
+      "Bash(npx tsx:*)",
+      "Bash(npm install:*)"
     ]
   }
 }
