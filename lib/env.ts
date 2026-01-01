@@ -77,7 +77,7 @@ export function validateEnv(): EnvConfig {
   if (process.env.NODE_ENV === 'production') {
     for (const [key, insecureValues] of Object.entries(INSECURE_DEFAULTS)) {
       const value = process.env[key]
-      if (value && insecureValues.includes(value as any)) {
+      if (value && (insecureValues as readonly string[]).includes(value)) {
         errors.push(
           `Insecure default value detected for ${key}. ` +
           `Please set a secure value in production. ` +
@@ -96,7 +96,7 @@ export function validateEnv(): EnvConfig {
     )
   }
 
-  return process.env as EnvConfig
+  return process.env as unknown as EnvConfig
 }
 
 /**

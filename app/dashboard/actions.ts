@@ -3,6 +3,7 @@
 import { PrismaClient } from '@prisma/client'
 import { revalidatePath } from 'next/cache'
 import { getSession } from "@/lib/auth"
+import { sendDealCreatedEmail, sendDealStageChangedEmail, sendUpgradeNudgeEmail, sendEmailAsync, shouldSendUpgradeNudge } from '@/lib/email-automations'
 
 const prisma = new PrismaClient()
 
@@ -24,15 +25,51 @@ export async function updateDealStage(dealId: string, stageId: string) {
     const user = await getAuthenticatedUser()
 
     // Security: Ensure deal belongs to user's org
-    const deal = await prisma.deal.findUnique({ where: { id: dealId } })
+    const deal = await prisma.deal.findUnique({
+      where: { id: dealId },
+      include: {
+        stage: true,
+        contact: true,
+        user: true
+      }
+    })
     if (!deal || deal.organizationId !== user.organizationId) {
       return { success: false, error: 'Unauthorized' }
     }
 
+    // Get old stage name before update
+    const oldStageName = deal.stage.name
+
+    // Get new stage
+    const newStage = await prisma.pipelineStage.findUnique({
+      where: { id: stageId }
+    })
+
+    if (!newStage) {
+      return { success: false, error: 'Invalid stage' }
+    }
+
+    // Update deal
     await prisma.deal.update({
       where: { id: dealId },
       data: { stageId: stageId },
     })
+
+    // Send email notification (async, non-blocking)
+    // Only if stage actually changed
+    if (oldStageName !== newStage.name && deal.user.name) {
+      sendEmailAsync(
+        sendDealStageChangedEmail({
+          to: deal.user.email,
+          assigneeName: deal.user.name,
+          dealTitle: deal.title,
+          dealValue: Number(deal.value || 0),
+          oldStage: oldStageName,
+          newStage: newStage.name,
+          dealUrl: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard?deal=${dealId}`,
+        })
+      )
+    }
 
     revalidatePath('/dashboard')
 
@@ -87,7 +124,43 @@ export async function createDeal(formData: FormData) {
         userId: user.id,
         organizationId: user.organizationId,
       },
+      include: {
+        stage: true,
+        contact: true
+      }
     })
+
+    // Get updated deal count after creation
+    const newDealCount = await prisma.deal.count({
+      where: { organizationId: user.organizationId }
+    })
+
+    // Send deal created email (async, non-blocking)
+    if (user.name) {
+      sendEmailAsync(
+        sendDealCreatedEmail({
+          to: user.email,
+          userName: user.name,
+          dealTitle: deal.title,
+          dealValue: Number(deal.value || 0),
+          dealStage: deal.stage.name,
+          contactName: deal.contact?.name || 'Sem contato',
+          dealUrl: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard?deal=${deal.id}`,
+        })
+      )
+
+      // Check if should send upgrade nudge (at 8/10 deals for FREE tier)
+      if (shouldSendUpgradeNudge(newDealCount, 10, user.organization.plan || 'FREE')) {
+        sendEmailAsync(
+          sendUpgradeNudgeEmail({
+            to: user.email,
+            userName: user.name,
+            currentDeals: newDealCount,
+            maxDeals: 10,
+          })
+        )
+      }
+    }
 
     revalidatePath('/dashboard')
     return { success: true, dealId: deal.id }

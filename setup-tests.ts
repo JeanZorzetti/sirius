@@ -10,7 +10,13 @@ process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY = 'pk_test_test'
 process.env.STRIPE_SECRET_KEY = 'sk_test_test'
 process.env.STRIPE_WEBHOOK_SECRET = 'whsec_test'
 process.env.NEXT_PUBLIC_APP_URL = 'http://localhost:3000'
-process.env.NODE_ENV = 'test'
+
+// Set NODE_ENV using defineProperty to handle read-only property
+Object.defineProperty(process.env, 'NODE_ENV', {
+  value: 'test',
+  writable: true,
+  configurable: true,
+})
 
 // Mock Next.js router
 vi.mock('next/navigation', () => ({

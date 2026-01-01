@@ -5,6 +5,7 @@ import { hash, compare } from 'bcryptjs'
 import { login, logout } from '@/lib/auth'
 import { redirect } from 'next/navigation'
 import logger, { generateCorrelationId } from '@/lib/logger'
+import { sendWelcomeEmail, sendEmailAsync } from '@/lib/email-automations'
 
 const prisma = new PrismaClient()
 
@@ -115,6 +116,24 @@ export async function registerAction(prevState: any, formData: FormData) {
         await login({ id: newUser.id, email: newUser.email, name: newUser.name, organizationId: newUser.organizationId })
 
         logger.info({ correlationId, email, organizationId, userId: newUser.id }, 'Registration successful')
+
+        // 4. Send welcome email (async, non-blocking)
+        // Only send for new organizations (OWNER role)
+        if (orgRole === 'OWNER') {
+            const org = await prisma.organization.findUnique({
+                where: { id: organizationId }
+            })
+
+            if (org) {
+                sendEmailAsync(
+                    sendWelcomeEmail({
+                        to: email,
+                        userName: name,
+                        organizationName: org.name,
+                    })
+                )
+            }
+        }
 
     } catch (error: any) {
         logger.error({ correlationId, email, err: error }, 'Registration error')
