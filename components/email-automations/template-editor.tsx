@@ -104,7 +104,7 @@ export function TemplateEditor({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+      <DialogContent className="max-w-7xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             Editor de Template
@@ -127,8 +127,8 @@ export function TemplateEditor({
           </TabsList>
 
           <TabsContent value="edit" className="space-y-4 mt-4">
-            <div className="grid grid-cols-3 gap-4">
-              <div className="col-span-2 space-y-4">
+            <div className="grid grid-cols-4 gap-6">
+              <div className="col-span-3 space-y-4">
                 <div className="space-y-2">
                   <Label htmlFor="subject">Assunto do Email</Label>
                   <Input
@@ -146,7 +146,7 @@ export function TemplateEditor({
                     value={body}
                     onChange={(e) => setBody(e.target.value)}
                     placeholder="Digite o corpo do email..."
-                    rows={15}
+                    rows={20}
                     className="font-mono text-sm"
                   />
                   <p className="text-xs text-muted-foreground">
@@ -180,14 +180,14 @@ export function TemplateEditor({
           </TabsContent>
 
           <TabsContent value="preview" className="space-y-4 mt-4">
-            <div className="border rounded-lg p-6 bg-white">
-              <div className="space-y-4">
-                <div className="border-b pb-3">
-                  <p className="text-xs text-muted-foreground mb-1">Assunto:</p>
-                  <p className="font-semibold">{getPreviewContent(subject)}</p>
+            <div className="border rounded-lg p-8 bg-white min-h-[500px]">
+              <div className="space-y-6">
+                <div className="border-b pb-4">
+                  <p className="text-xs text-muted-foreground mb-2">Assunto:</p>
+                  <p className="font-semibold text-lg">{getPreviewContent(subject)}</p>
                 </div>
-                <div className="prose prose-sm max-w-none">
-                  <div className="whitespace-pre-wrap">
+                <div className="prose prose-base max-w-none">
+                  <div className="whitespace-pre-wrap text-base leading-relaxed">
                     {getPreviewContent(body)}
                   </div>
                 </div>
