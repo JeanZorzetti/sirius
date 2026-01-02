@@ -512,16 +512,20 @@
 
 ---
 
-#### Task 5.4: Feature Gate Pro
-- [ ] Limitar Free users a 1 pipeline
-- [ ] Modal de upgrade ao tentar criar segundo pipeline
-- [ ] Badge "PRO" na UI de múltiplos pipelines
-- [ ] Atualizar pricing page destacando feature
+#### Task 5.4: Feature Gate Pro ✅
+
+- [x] Limitar Free users a 1 pipeline ✅
+- [x] Redirecionamento para billing ao tentar criar segundo pipeline ✅
+- [x] Badge "PRO" na UI de múltiplos pipelines ✅
+- [x] Badge "PRO" no botão de criar pipeline para usuários FREE ✅
+- [x] Mensagem de erro personalizada com código UPGRADE_REQUIRED ✅
+- [ ] Atualizar pricing page destacando feature (opcional para MVP)
 
 **Arquivos a modificar:**
-- `app/dashboard/pipelines/actions.ts` (validação)
-- `components/pipelines/create-pipeline-dialog.tsx` (gate)
-- `app/(marketing)/pricing/page.tsx` (destacar)
+
+- `app/dashboard/pipelines/actions.ts` (validação) ✅
+- `app/dashboard/pipelines/pipeline-management-client.tsx` (gate) ✅
+- `app/dashboard/pipelines/page.tsx` (badge PRO) ✅
 
 **Tempo estimado:** 2 horas
 

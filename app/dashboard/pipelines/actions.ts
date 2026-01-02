@@ -58,6 +58,20 @@ export async function createPipeline(name: string) {
             where: { organizationId: user.organizationId }
         })
 
+        // Get user's organization plan
+        const organization = await prisma.organization.findUnique({
+            where: { id: user.organizationId }
+        })
+
+        // Feature Gate: FREE users can only have 1 pipeline
+        if (organization?.plan !== 'PRO' && existingPipelines >= 1) {
+            return {
+                success: false,
+                error: 'UPGRADE_REQUIRED',
+                message: 'Múltiplos pipelines é uma funcionalidade PRO. Faça upgrade para desbloquear!'
+            }
+        }
+
         const isDefault = existingPipelines === 0
 
         const pipeline = await prisma.pipeline.create({

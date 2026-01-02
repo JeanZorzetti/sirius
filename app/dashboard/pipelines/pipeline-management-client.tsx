@@ -56,9 +56,10 @@ type Pipeline = {
 
 type PipelineManagementClientProps = {
   pipelines: Pipeline[]
+  isPro: boolean
 }
 
-export function PipelineManagementClient({ pipelines: initialPipelines }: PipelineManagementClientProps) {
+export function PipelineManagementClient({ pipelines: initialPipelines, isPro }: PipelineManagementClientProps) {
   const router = useRouter()
   const [pipelines] = useState<Pipeline[]>(initialPipelines)
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false)
@@ -84,7 +85,15 @@ export function PipelineManagementClient({ pipelines: initialPipelines }: Pipeli
       setPipelineName('')
       router.refresh()
     } else {
-      toast.error(result.error || 'Erro ao criar pipeline')
+      // Check if it's an upgrade required error
+      if (result.error === 'UPGRADE_REQUIRED') {
+        toast.error(result.message || 'Funcionalidade PRO')
+        setIsCreateDialogOpen(false)
+        // Redirect to billing page
+        router.push('/dashboard/billing')
+      } else {
+        toast.error(result.error || 'Erro ao criar pipeline')
+      }
     }
   }
 
@@ -159,6 +168,11 @@ export function PipelineManagementClient({ pipelines: initialPipelines }: Pipeli
         <Button onClick={() => setIsCreateDialogOpen(true)}>
           <Plus className="h-4 w-4 mr-2" />
           Novo Pipeline
+          {!isPro && pipelines.length >= 1 && (
+            <Badge variant="secondary" className="ml-2 bg-gradient-to-r from-indigo-500 to-purple-500 text-white border-0">
+              PRO
+            </Badge>
+          )}
         </Button>
       </div>
 

@@ -2,6 +2,7 @@ import { getSession } from "@/lib/auth"
 import { prisma } from "@/lib/prisma"
 import { redirect } from "next/navigation"
 import { PipelineManagementClient } from "./pipeline-management-client"
+import { Badge } from "@/components/ui/badge"
 
 export default async function PipelinesPage() {
   const session = await getSession()
@@ -34,16 +35,25 @@ export default async function PipelinesPage() {
     ]
   })
 
+  const isPro = user.organization.plan === 'PRO'
+
   return (
     <div className="p-8">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold">Gerenciar Pipelines</h1>
-        <p className="text-muted-foreground mt-2">
-          Crie e gerencie múltiplos pipelines para organizar seus negócios
-        </p>
+      <div className="mb-8 flex items-start justify-between">
+        <div>
+          <h1 className="text-3xl font-bold">Gerenciar Pipelines</h1>
+          <p className="text-muted-foreground mt-2">
+            Crie e gerencie múltiplos pipelines para organizar seus negócios
+          </p>
+        </div>
+        {!isPro && pipelines.length >= 1 && (
+          <Badge variant="outline" className="bg-gradient-to-r from-indigo-500 to-purple-500 text-white border-0">
+            <span className="mr-1">⭐</span> Múltiplos Pipelines é PRO
+          </Badge>
+        )}
       </div>
 
-      <PipelineManagementClient pipelines={pipelines} />
+      <PipelineManagementClient pipelines={pipelines} isPro={isPro} />
     </div>
   )
 }
