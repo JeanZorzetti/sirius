@@ -116,12 +116,22 @@ export async function createDeal(formData: FormData) {
       }
     }
 
+    // Get stage to obtain pipelineId
+    const stage = await prisma.pipelineStage.findUnique({
+      where: { id: stageId }
+    })
+
+    if (!stage || stage.organizationId !== user.organizationId) {
+      return { success: false, error: 'Invalid stage' }
+    }
+
     // Create deal
     const deal = await prisma.deal.create({
       data: {
         title,
         value,
         stageId,
+        pipelineId: stage.pipelineId,
         contactId: contactId || null,
         userId: user.id,
         organizationId: user.organizationId,

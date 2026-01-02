@@ -39,9 +39,24 @@ export async function createStage(name: string) {
     const user = await checkPermission()
     if (!name) return { success: false, error: "Nome obrigatório" }
 
-    // Find max order
+    // Get default pipeline
+    const defaultPipeline = await prisma.pipeline.findFirst({
+        where: {
+            organizationId: user.organizationId,
+            isDefault: true
+        }
+    })
+
+    if (!defaultPipeline) {
+        return { success: false, error: "Pipeline padrão não encontrado" }
+    }
+
+    // Find max order for this pipeline
     const maxOrder = await prisma.pipelineStage.findFirst({
-        where: { organizationId: user.organizationId },
+        where: {
+            organizationId: user.organizationId,
+            pipelineId: defaultPipeline.id
+        },
         orderBy: { order: 'desc' }
     })
 
@@ -51,7 +66,8 @@ export async function createStage(name: string) {
         data: {
             name,
             order: newOrder,
-            organizationId: user.organizationId
+            organizationId: user.organizationId,
+            pipelineId: defaultPipeline.id
         }
     })
 

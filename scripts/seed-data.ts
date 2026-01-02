@@ -43,11 +43,24 @@ async function seed() {
         let stageId = existing?.id
 
         if (!existing) {
+            // Get default pipeline
+            const defaultPipeline = await prisma.pipeline.findFirst({
+                where: {
+                    organizationId: user.organizationId,
+                    isDefault: true
+                }
+            })
+
+            if (!defaultPipeline) {
+                throw new Error("No default pipeline found")
+            }
+
             const created = await prisma.pipelineStage.create({
                 data: {
                     name,
                     order: i + 1,
-                    organizationId: user.organizationId
+                    organizationId: user.organizationId,
+                    pipelineId: defaultPipeline.id
                 }
             })
             stageId = created.id
@@ -57,12 +70,13 @@ async function seed() {
         }
 
         // Create a sample deal in the first stage
-        if (i === 0) {
+        if (i === 0 && existing) {
             await prisma.deal.create({
                 data: {
                     title: 'Venda de Licença Enterprise',
                     value: 5000.00,
                     stageId: stageId!,
+                    pipelineId: existing.pipelineId,
                     userId: user.id,
                     organizationId: user.organizationId
                 }

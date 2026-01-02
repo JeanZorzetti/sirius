@@ -25,6 +25,7 @@ model Organization {
   users     User[]
   contacts  Contact[]
   deals     Deal[]
+  pipelines Pipeline[]
   pipelineStages    PipelineStage[]
   invites   Invite[]
   tags      Tag[]
@@ -77,6 +78,22 @@ model Contact {
   deals     Deal[]
 }
 
+model Pipeline {
+  id        String   @id @default(uuid())
+  name      String
+  isDefault Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  stages PipelineStage[]
+  deals  Deal[]
+
+  @@index([organizationId, isDefault])
+}
+
 model PipelineStage {
   id        String   @id @default(uuid())
   name      String   // "Prospecção", "Qualificação", etc.
@@ -87,7 +104,12 @@ model PipelineStage {
   organizationId String
   organization   Organization @relation(fields: [organizationId], references: [id])
 
+  pipelineId String
+  pipeline   Pipeline @relation(fields: [pipelineId], references: [id], onDelete: Cascade)
+
   deals     Deal[]
+
+  @@index([pipelineId, order])
 }
 
 model Deal {
@@ -102,8 +124,11 @@ model Deal {
   
   organizationId String
   organization   Organization @relation(fields: [organizationId], references: [id])
-  
+
   // Relations
+  pipelineId  String
+  pipeline    Pipeline      @relation(fields: [pipelineId], references: [id])
+
   stageId     String
   stage       PipelineStage @relation(fields: [stageId], references: [id])
 

@@ -73,7 +73,16 @@ export async function registerAction(prevState: any, formData: FormData) {
             })
             organizationId = org.id
 
-            // Create default pipeline stages for new organization
+            // Create default pipeline for new organization
+            const defaultPipeline = await prisma.pipeline.create({
+                data: {
+                    name: 'Pipeline Principal',
+                    isDefault: true,
+                    organizationId: org.id
+                }
+            })
+
+            // Create default pipeline stages
             const defaultStages = [
                 { name: 'Lead', order: 0 },
                 { name: 'Prospecção', order: 1 },
@@ -85,7 +94,8 @@ export async function registerAction(prevState: any, formData: FormData) {
             await prisma.pipelineStage.createMany({
                 data: defaultStages.map(stage => ({
                     ...stage,
-                    organizationId: org.id
+                    organizationId: org.id,
+                    pipelineId: defaultPipeline.id
                 }))
             })
         }
