@@ -519,7 +519,7 @@
 - [x] Badge "PRO" na UI de múltiplos pipelines ✅
 - [x] Badge "PRO" no botão de criar pipeline para usuários FREE ✅
 - [x] Mensagem de erro personalizada com código UPGRADE_REQUIRED ✅
-- [ ] Atualizar pricing page destacando feature (opcional para MVP)
+- [x] Atualizar pricing page destacando feature (opcional para MVP) ✅
 
 **Arquivos a modificar:**
 
