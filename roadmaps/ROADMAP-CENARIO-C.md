@@ -378,26 +378,35 @@
 
 **Prioridade:** P1 (Feature Premium)
 
-#### Task 4.1: Schema de Múltiplos Pipelines
-- [ ] Analisar schema atual de `PipelineStage`
-- [ ] Criar modelo `Pipeline`:
+#### Task 4.1: Schema de Múltiplos Pipelines ✅
+
+- [x] Analisar schema atual de `PipelineStage`
+- [x] Criar modelo `Pipeline`:
   - `id`, `name`, `organizationId`, `isDefault`, `createdAt`
-- [ ] Adicionar `pipelineId` em `PipelineStage`
-- [ ] Adicionar `pipelineId` em `Deal` (opcional: inferir via stage)
-- [ ] Criar migration
-- [ ] Seed de dados default (converter pipeline atual)
+- [x] Adicionar `pipelineId` em `PipelineStage`
+- [x] Adicionar `pipelineId` em `Deal` (opcional: inferir via stage)
+- [x] Criar migration
+- [x] Seed de dados default (converter pipeline atual)
 
 **Arquivos a modificar:**
-- `prisma/schema.prisma`
+
+- `prisma/schema.prisma` ✅
 
 **Arquivos a criar:**
-- `prisma/migrations/XXX_add_multiple_pipelines/migration.sql`
-- `prisma/seed-pipelines.ts` (script de migração de dados)
+
+- `prisma/migrations/20260102124347_add_multiple_pipelines/migration.sql` ✅
+- `app/auth/actions.ts` (criação de pipeline default no registro) ✅
+- `app/dashboard/actions.ts` (atualizado createDeal) ✅
+- `app/dashboard/pipeline/actions.ts` (atualizado createStage) ✅
+- `prisma/seed.ts` (atualizado) ✅
+- `scripts/seed-data.ts` (atualizado) ✅
 
 **Checklist de validação:**
-- [ ] Migration roda sem erros
-- [ ] Dados existentes migrados corretamente
-- [ ] Relações funcionando (cascade delete, etc.)
+
+- [x] Migration roda sem erros
+- [x] Dados existentes migrados corretamente
+- [x] Relações funcionando (cascade delete, etc.)
+- [x] Build do projeto passa sem erros TypeScript
 
 **Tempo estimado:** 4 horas
 
