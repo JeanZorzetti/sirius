@@ -180,22 +180,60 @@ export function TemplateEditor({
           </TabsContent>
 
           <TabsContent value="preview" className="space-y-4 mt-4">
-            <div className="border rounded-lg p-8 bg-white min-h-[500px]">
-              <div className="space-y-6">
-                <div className="border-b pb-4">
-                  <p className="text-xs text-muted-foreground mb-2">Assunto:</p>
-                  <p className="font-semibold text-lg">{getPreviewContent(subject)}</p>
+            {/* Email Preview Container - Simula um cliente de email */}
+            <div className="border-2 rounded-xl overflow-hidden bg-gradient-to-b from-gray-50 to-white shadow-lg">
+              {/* Email Header - Simula barra de email */}
+              <div className="bg-gradient-to-r from-indigo-600 to-purple-600 p-4 text-white">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center">
+                    <span className="text-lg font-bold">S</span>
+                  </div>
+                  <div className="flex-1">
+                    <p className="font-semibold">Sirius CRM</p>
+                    <p className="text-xs text-white/80">noreply@sirius.roilabs.com.br</p>
+                  </div>
                 </div>
-                <div className="prose prose-base max-w-none">
-                  <div className="whitespace-pre-wrap text-base leading-relaxed">
-                    {getPreviewContent(body)}
+              </div>
+
+              {/* Email Subject */}
+              <div className="bg-white border-b px-6 py-4">
+                <div className="flex items-center gap-2 mb-1">
+                  <span className="text-xs font-medium text-gray-500">Assunto:</span>
+                </div>
+                <h2 className="text-xl font-bold text-gray-900">{getPreviewContent(subject)}</h2>
+              </div>
+
+              {/* Email Body */}
+              <div className="bg-white p-8 min-h-[400px]">
+                <div className="max-w-2xl mx-auto">
+                  <div className="prose prose-base max-w-none">
+                    <div className="whitespace-pre-wrap text-base leading-relaxed text-gray-700" style={{ fontFamily: 'system-ui, -apple-system, sans-serif' }}>
+                      {getPreviewContent(body)}
+                    </div>
+                  </div>
+
+                  {/* Email Footer */}
+                  <div className="mt-12 pt-8 border-t border-gray-200">
+                    <div className="text-center space-y-2">
+                      <p className="text-sm text-gray-600 font-semibold">Sirius CRM</p>
+                      <p className="text-xs text-gray-500">Gerencie seus negócios de forma inteligente</p>
+                      <div className="flex items-center justify-center gap-4 mt-4">
+                        <a href="#" className="text-xs text-indigo-600 hover:underline">Dashboard</a>
+                        <span className="text-gray-300">•</span>
+                        <a href="#" className="text-xs text-indigo-600 hover:underline">Suporte</a>
+                        <span className="text-gray-300">•</span>
+                        <a href="#" className="text-xs text-indigo-600 hover:underline">Configurações</a>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-            <p className="text-xs text-muted-foreground text-center">
-              Preview com dados de exemplo. As variáveis serão substituídas com dados reais ao enviar.
-            </p>
+
+            <div className="flex items-center justify-center gap-2 text-xs text-muted-foreground">
+              <Eye className="h-3 w-3" />
+              <p>Preview com dados de exemplo. As variáveis serão substituídas com dados reais ao enviar.</p>
+            </div>
           </TabsContent>
         </Tabs>
 
