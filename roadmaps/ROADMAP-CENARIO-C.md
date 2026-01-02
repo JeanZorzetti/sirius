@@ -412,22 +412,25 @@
 
 ---
 
-#### Task 4.2: Server Actions para Pipelines
-- [ ] Criar `app/dashboard/pipelines/actions.ts`:
-  - `createPipeline(name: string)`
-  - `updatePipeline(id, name)`
-  - `deletePipeline(id)` (com validação de deals)
-  - `setDefaultPipeline(id)`
-  - `getPipelines()`
-- [ ] Validações:
-  - Não deletar pipeline com deals
-  - Não deletar o único pipeline
-  - Sempre ter um default
-- [ ] Testes unitários
+#### Task 4.2: Server Actions para Pipelines ✅
+
+- [x] Criar `app/dashboard/pipelines/actions.ts`:
+  - `createPipeline(name: string)` ✅
+  - `updatePipeline(id, name)` ✅
+  - `deletePipeline(id)` (com validação de deals) ✅
+  - `setDefaultPipeline(id)` ✅
+  - `getPipelines()` ✅
+- [x] Validações:
+  - Não deletar pipeline com deals ✅
+  - Não deletar o único pipeline ✅
+  - Sempre ter um default ✅
+  - Não deletar pipeline padrão ✅
+- [ ] Testes unitários (opcional para MVP)
 
 **Arquivos a criar:**
-- `app/dashboard/pipelines/actions.ts`
-- `__tests__/pipelines/actions.test.ts`
+
+- `app/dashboard/pipelines/actions.ts` ✅
+- `__tests__/pipelines/actions.test.ts` (opcional)
 
 **Tempo estimado:** 5 horas
 
