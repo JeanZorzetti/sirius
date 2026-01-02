@@ -1,9 +1,6 @@
 import { PrismaClient } from "@prisma/client"
 import { Metadata } from "next"
-import { KanbanBoard } from "@/components/kanban-board"
-import { CreateDealDialog } from "@/components/deals/create-deal-dialog"
-import { EmptyState } from "@/components/ui/empty-state"
-import { DollarSign } from "lucide-react"
+import { DashboardWithPipelineSelector } from "@/components/dashboard-with-pipeline-selector"
 import { getSession } from "@/lib/auth"
 
 const prisma = new PrismaClient()
@@ -33,11 +30,29 @@ export default async function DashboardPage() {
 
     const isMember = user.orgRole === 'MEMBER'
 
+    // Fetch all pipelines for the selector
+    const rawPipelines = await prisma.pipeline.findMany({
+        where: { organizationId: user.organizationId },
+        include: {
+            _count: {
+                select: {
+                    stages: true,
+                    deals: true
+                }
+            }
+        },
+        orderBy: [
+            { isDefault: 'desc' },
+            { createdAt: 'asc' }
+        ]
+    })
+
     const rawStages = await prisma.pipelineStage.findMany({
         where: {
             organizationId: user.organizationId
         },
         include: {
+            pipeline: true,
             deals: {
                 where: {
                     organizationId: user.organizationId,
@@ -66,10 +81,17 @@ export default async function DashboardPage() {
         updatedAt: c.updatedAt.toISOString()
     }))
 
+    const pipelines = rawPipelines.map(p => ({
+        ...p,
+        createdAt: p.createdAt.toISOString(),
+        updatedAt: p.updatedAt.toISOString()
+    }))
+
     const stages = rawStages.map(stage => ({
         ...stage,
         createdAt: stage.createdAt.toISOString(),
         updatedAt: stage.updatedAt.toISOString(),
+        pipelineId: stage.pipelineId,
         deals: stage.deals.map(deal => ({
             ...deal,
             value: deal.value ? Number(deal.value) : null,
@@ -81,43 +103,16 @@ export default async function DashboardPage() {
     }))
 
     const dealCount = stages.flatMap(stage => stage.deals).length
-    const hasDeals = dealCount > 0
     const isPro = user.organization.plan === 'PRO'
 
     return (
-        <div className="flex-1 space-y-4">
-            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-                <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-3">
-                    <h2 className="text-2xl sm:text-3xl font-bold tracking-tight">Pipeline</h2>
-                    {isMember ? (
-                        <span className="px-2 py-1 rounded-full bg-zinc-800 text-xs font-medium text-zinc-400 border border-zinc-700">
-                            👤 Meus Negócios
-                        </span>
-                    ) : (
-                        <span className="px-2 py-1 rounded-full bg-indigo-500/10 text-xs font-medium text-indigo-400 border border-indigo-500/20">
-                            🏢 Visão Global
-                        </span>
-                    )}
-                </div>
-                <div className="flex items-center space-x-2 w-full sm:w-auto">
-                    <CreateDealDialog
-                        stages={stages}
-                        contacts={contacts}
-                        dealCount={dealCount}
-                        isPro={isPro}
-                    />
-                </div>
-            </div>
-
-            {stages.length > 0 ? (
-                <KanbanBoard stages={stages} contacts={contacts} />
-            ) : (
-                <EmptyState
-                    icon={DollarSign}
-                    title="Nenhuma etapa encontrada"
-                    description="Configure as etapas do seu funil de vendas para começar."
-                />
-            )}
-        </div>
+        <DashboardWithPipelineSelector
+            pipelines={pipelines}
+            allStages={stages}
+            contacts={contacts}
+            dealCount={dealCount}
+            isPro={isPro}
+            isMember={isMember}
+        />
     )
 }

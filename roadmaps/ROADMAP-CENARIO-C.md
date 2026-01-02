@@ -494,16 +494,19 @@
 
 ---
 
-#### Task 5.3: Integrar no Kanban Board
-- [ ] Adicionar pipeline selector no header do Kanban
-- [ ] Filtrar stages por pipeline ativo
-- [ ] Filtrar deals por pipeline ativo
-- [ ] Atualizar analytics para considerar pipeline
-- [ ] Adicionar "Move to Pipeline" no menu de deal
+#### Task 5.3: Integrar no Kanban Board ✅
+
+- [x] Adicionar pipeline selector no header do Kanban ✅
+- [x] Filtrar stages por pipeline ativo ✅
+- [x] Filtrar deals por pipeline ativo ✅
+- [x] Atualizar deal count para considerar pipeline ✅
+- [x] Persistência de seleção de pipeline no localStorage ✅
+- [ ] Adicionar "Move to Pipeline" no menu de deal (opcional para MVP)
 
 **Arquivos a modificar:**
-- `components/kanban-board.tsx`
-- `app/dashboard/page.tsx`
+
+- `app/dashboard/page.tsx` ✅
+- `components/dashboard-with-pipeline-selector.tsx` (novo) ✅
 
 **Tempo estimado:** 4 horas
 
