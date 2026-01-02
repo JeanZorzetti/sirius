@@ -49,6 +49,19 @@ export async function updateDealStage(dealId: string, stageId: string) {
       return { success: false, error: 'Invalid stage' }
     }
 
+    // Validation: stage must belong to the same pipeline as the deal
+    if (newStage.pipelineId !== deal.pipelineId) {
+      return {
+        success: false,
+        error: 'Stage must belong to the same pipeline as the deal. Use moveDealToPipeline to change pipelines.'
+      }
+    }
+
+    // Validation: stage must belong to user's organization
+    if (newStage.organizationId !== user.organizationId) {
+      return { success: false, error: 'Invalid stage' }
+    }
+
     // Update deal
     await prisma.deal.update({
       where: { id: dealId },
@@ -231,6 +244,84 @@ export async function updateDeal(formData: FormData) {
     return { success: false, error: 'Failed to update deal' }
   }
 }
+export async function moveDealToPipeline(dealId: string, newPipelineId: string, newStageId: string) {
+  try {
+    const user = await getAuthenticatedUser()
+
+    // Security: Ensure deal belongs to user's org
+    const deal = await prisma.deal.findUnique({
+      where: { id: dealId },
+      include: {
+        stage: true,
+        pipeline: true,
+        user: true
+      }
+    })
+
+    if (!deal || deal.organizationId !== user.organizationId) {
+      return { success: false, error: 'Unauthorized' }
+    }
+
+    // Validate new pipeline belongs to user's organization
+    const newPipeline = await prisma.pipeline.findUnique({
+      where: { id: newPipelineId }
+    })
+
+    if (!newPipeline || newPipeline.organizationId !== user.organizationId) {
+      return { success: false, error: 'Invalid pipeline' }
+    }
+
+    // Validate new stage belongs to the new pipeline
+    const newStage = await prisma.pipelineStage.findUnique({
+      where: { id: newStageId }
+    })
+
+    if (!newStage || newStage.pipelineId !== newPipelineId) {
+      return { success: false, error: 'Stage must belong to the selected pipeline' }
+    }
+
+    if (newStage.organizationId !== user.organizationId) {
+      return { success: false, error: 'Invalid stage' }
+    }
+
+    // Store old values for email notification
+    const oldPipelineName = deal.pipeline.name
+    const oldStageName = deal.stage.name
+
+    // Update deal with new pipeline and stage
+    await prisma.deal.update({
+      where: { id: dealId },
+      data: {
+        pipelineId: newPipelineId,
+        stageId: newStageId
+      }
+    })
+
+    // Send email notification if deal was assigned to someone
+    if (deal.user.name) {
+      sendEmailAsync(
+        sendDealStageChangedEmail({
+          to: deal.user.email,
+          assigneeName: deal.user.name,
+          dealTitle: deal.title,
+          dealValue: Number(deal.value || 0),
+          oldStage: `${oldPipelineName} - ${oldStageName}`,
+          newStage: `${newPipeline.name} - ${newStage.name}`,
+          dealUrl: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard?deal=${dealId}`,
+          organizationId: user.organizationId,
+          userId: deal.user.id
+        })
+      )
+    }
+
+    revalidatePath('/dashboard')
+    return { success: true }
+  } catch (error) {
+    console.error('Failed to move deal to pipeline:', error)
+    return { success: false, error: 'Failed to move deal to pipeline' }
+  }
+}
+
 export async function deleteDeal(dealId: string) {
   try {
     const user = await getAuthenticatedUser()

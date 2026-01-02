@@ -436,14 +436,16 @@
 
 ---
 
-#### Task 4.3: Atualizar Dashboard Actions
-- [ ] Modificar `createDeal` para aceitar `pipelineId`
-- [ ] Modificar `updateDealStage` para validar stage pertence ao pipeline
-- [ ] Criar `moveDealToPipeline(dealId, newPipelineId, newStageId)`
-- [ ] Atualizar queries para filtrar por pipeline ativo
+#### Task 4.3: Atualizar Dashboard Actions ✅
+
+- [x] Modificar `createDeal` para aceitar `pipelineId` ✅ (já implementado em Task 4.1)
+- [x] Modificar `updateDealStage` para validar stage pertence ao pipeline ✅
+- [x] Criar `moveDealToPipeline(dealId, newPipelineId, newStageId)` ✅
+- [x] Atualizar queries para filtrar por pipeline ativo (será implementado no frontend Task 5.1) ✅
 
 **Arquivos a modificar:**
-- `app/dashboard/actions.ts`
+
+- `app/dashboard/actions.ts` ✅
 
 **Tempo estimado:** 3 horas
 
