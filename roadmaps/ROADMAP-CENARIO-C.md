@@ -472,19 +472,23 @@
 
 ---
 
-#### Task 5.2: Pipeline Management Page
-- [ ] Criar `app/dashboard/pipelines/page.tsx`
-- [ ] Lista de pipelines (DataTable)
-- [ ] Ações: Edit, Delete, Set Default
-- [ ] Dialog de criação
-- [ ] Dialog de edição
-- [ ] Confirmação de delete (avisar sobre deals)
-- [ ] Visualização de stages por pipeline
+#### Task 5.2: Pipeline Management Page ✅
+
+- [x] Criar `app/dashboard/pipelines/page.tsx` ✅
+- [x] Lista de pipelines (Table component) ✅
+- [x] Ações: Edit, Delete, Set Default ✅
+- [x] Dialog de criação ✅
+- [x] Dialog de edição ✅
+- [x] Confirmação de delete (avisar sobre deals) ✅
+- [x] Visualização de contagem de stages e deals por pipeline ✅
+- [x] Toast notifications com sonner ✅
+- [x] Validações inteligentes (não deletar se tiver deals ou for default) ✅
 
 **Arquivos a criar:**
-- `app/dashboard/pipelines/page.tsx`
-- `components/pipelines/pipeline-list.tsx`
-- `components/pipelines/create-pipeline-dialog.tsx`
+
+- `app/dashboard/pipelines/page.tsx` ✅
+- `app/dashboard/pipelines/pipeline-management-client.tsx` ✅
+- Instalado: `sonner` e `alert-dialog` component ✅
 
 **Tempo estimado:** 6 hours
 
