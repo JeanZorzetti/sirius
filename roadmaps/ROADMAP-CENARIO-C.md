@@ -453,17 +453,20 @@
 
 ### 🟢 Dia 8-10 - Frontend UI
 
-#### Task 5.1: Pipeline Selector Component
-- [ ] Criar `components/pipelines/pipeline-selector.tsx`
-- [ ] Dropdown com lista de pipelines
-- [ ] Indicador visual do pipeline ativo
-- [ ] Badge "Default" no pipeline padrão
-- [ ] Ação rápida "Create Pipeline"
-- [ ] Persistir seleção no localStorage
-- [ ] Atualizar KPIs ao trocar pipeline
+#### Task 5.1: Pipeline Selector Component ✅
+
+- [x] Criar `components/pipelines/pipeline-selector.tsx` ✅
+- [x] Dropdown com lista de pipelines ✅
+- [x] Indicador visual do pipeline ativo (bolinha azul) ✅
+- [x] Badge "Default" no pipeline padrão ✅
+- [x] Ação rápida "Gerenciar Pipelines" ✅
+- [x] Persistir seleção no localStorage ✅
+- [x] Callback onPipelineChange para atualizar KPIs ✅
+- [x] Contador de deals por pipeline ✅
 
 **Arquivos a criar:**
-- `components/pipelines/pipeline-selector.tsx`
+
+- `components/pipelines/pipeline-selector.tsx` ✅
 
 **Tempo estimado:** 4 horas
 
