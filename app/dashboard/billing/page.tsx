@@ -26,7 +26,7 @@ export default function BillingPage() {
                         <ul className="mt-4 space-y-2 text-sm text-muted-foreground">
                             <li className="flex items-center gap-2"><Check className="h-4 w-4 text-green-500" /> Até 10 Negócios (Deals)</li>
                             <li className="flex items-center gap-2"><Check className="h-4 w-4 text-green-500" /> Até 50 Contatos</li>
-                            <li className="flex items-center gap-2"><Check className="h-4 w-4 text-green-500" /> Kanban Básico</li>
+                            <li className="flex items-center gap-2"><Check className="h-4 w-4 text-green-500" /> 1 Pipeline Kanban</li>
                         </ul>
                     </CardContent>
                     <CardFooter>
@@ -46,6 +46,7 @@ export default function BillingPage() {
                     <CardContent className="flex-1">
                         <div className="text-3xl font-bold">R$ 49<span className="text-sm font-normal text-muted-foreground">/mês</span></div>
                         <ul className="mt-4 space-y-2 text-sm text-muted-foreground">
+                            <li className="flex items-center gap-2"><Check className="h-4 w-4 text-primary" /> ✨ Múltiplos Pipelines</li>
                             <li className="flex items-center gap-2"><Check className="h-4 w-4 text-primary" /> Negócios Ilimitados</li>
                             <li className="flex items-center gap-2"><Check className="h-4 w-4 text-primary" /> Contatos Ilimitados</li>
                             <li className="flex items-center gap-2"><Check className="h-4 w-4 text-primary" /> Analytics Avançado</li>
