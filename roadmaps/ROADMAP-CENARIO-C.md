@@ -537,18 +537,20 @@
 
 **Prioridade:** P1 (Previne regressões)
 
-#### Task 6.1: Setup Playwright
-- [ ] Instalar `@playwright/test`
-- [ ] Configurar `playwright.config.ts`
-- [ ] Setup de databases de teste
-- [ ] Criar fixtures para auth
-- [ ] Criar page objects base
-- [ ] Configurar CI para rodar E2E
+#### Task 6.1: Setup Playwright ✅
+- [x] Instalar `@playwright/test` ✅
+- [x] Configurar `playwright.config.ts` ✅
+- [ ] Setup de databases de teste (pendente - usar DB dev por enquanto)
+- [x] Criar fixtures para auth ✅
+- [x] Criar page objects base ✅
+- [ ] Configurar CI para rodar E2E (pendente)
 
 **Arquivos a criar:**
-- `playwright.config.ts`
-- `e2e/fixtures/auth.ts`
-- `e2e/page-objects/base-page.ts`
+- `playwright.config.ts` ✅
+- `e2e/fixtures/auth.ts` ✅
+- `e2e/page-objects/base-page.ts` ✅
+- `e2e/README.md` ✅
+- `e2e/example.spec.ts` ✅
 
 **Tempo estimado:** 4 horas
 
