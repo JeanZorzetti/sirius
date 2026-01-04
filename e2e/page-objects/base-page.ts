@@ -75,13 +75,6 @@ export class BasePage {
   }
 
   /**
-   * Wait for selector
-   */
-  async waitForSelector(selector: string, options?: { state?: 'attached' | 'detached' | 'visible' | 'hidden' }) {
-    await this.page.waitForSelector(selector, options)
-  }
-
-  /**
    * Wait for URL to match
    */
   async waitForURL(url: string | RegExp) {

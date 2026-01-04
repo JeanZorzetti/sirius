@@ -93,7 +93,8 @@ export class RegisterPage extends BasePage {
    * Get "Já tem conta? Fazer login" link
    */
   getLoginLink() {
-    return this.page.getByRole('link', { name: /login|entrar|sign in/i })
+    // Use .last() to get the link in the form footer, not the navigation
+    return this.page.getByRole('link', { name: /login|entrar|sign in/i }).last()
   }
 
   /**

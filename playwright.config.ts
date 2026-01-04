@@ -72,12 +72,10 @@ export default defineConfig({
   ],
 
   /* Run your local dev server before starting the tests */
-  // Note: webServer is commented out due to Turbopack issues
-  // Start the dev server manually with: npm run dev
-  // webServer: {
-  //   command: 'npm run dev',
-  //   url: 'http://localhost:3000',
-  //   reuseExistingServer: !process.env.CI,
-  //   timeout: 120 * 1000,
-  // },
+  webServer: {
+    command: 'npm run build && npm run start',
+    url: 'http://localhost:3000',
+    reuseExistingServer: !process.env.CI,
+    timeout: 300 * 1000, // 5 minutes for build + start
+  },
 })
