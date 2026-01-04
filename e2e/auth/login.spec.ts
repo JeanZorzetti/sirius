@@ -30,11 +30,14 @@ test.describe('User Login', () => {
     return userData
   }
 
-  test('should successfully login with valid credentials', async ({ page }) => {
+  test('should successfully login with valid credentials', async ({ page, context }) => {
     // First, create a user
     const userData = await createTestUser(page)
 
-    // Logout (navigate to login)
+    // Clear cookies to logout
+    await context.clearCookies()
+
+    // Navigate to login
     await page.goto('/login')
 
     const loginPage = new LoginPage(page)
@@ -71,9 +74,12 @@ test.describe('User Login', () => {
     }
   })
 
-  test('should show error for wrong password', async ({ page }) => {
+  test('should show error for wrong password', async ({ page, context }) => {
     // First, create a user
     const userData = await createTestUser(page)
+
+    // Clear cookies to logout
+    await context.clearCookies()
 
     // Navigate to login
     await page.goto('/login')
@@ -120,9 +126,13 @@ test.describe('User Login', () => {
     await expect(page).toHaveURL(/\/register/)
   })
 
-  test('should persist session after page reload', async ({ page }) => {
+  test('should persist session after page reload', async ({ page, context }) => {
     // Create and login user
     const userData = await createTestUser(page)
+
+    // Clear cookies to logout
+    await context.clearCookies()
+
     await page.goto('/login')
 
     const loginPage = new LoginPage(page)
@@ -141,9 +151,13 @@ test.describe('User Login', () => {
     expect(await dashboardPage.isKanbanBoardVisible()).toBeTruthy()
   })
 
-  test('should logout successfully', async ({ page }) => {
+  test('should logout successfully', async ({ page, context }) => {
     // Create and login user
     const userData = await createTestUser(page)
+
+    // Clear cookies to logout
+    await context.clearCookies()
+
     await page.goto('/login')
 
     const loginPage = new LoginPage(page)

@@ -35,7 +35,7 @@ test.describe('User Registration', () => {
     expect(await dashboardPage.isKanbanBoardVisible()).toBeTruthy()
   })
 
-  test('should show error for duplicate email', async ({ page }) => {
+  test('should show error for duplicate email', async ({ page, context }) => {
     const registerPage = new RegisterPage(page)
 
     // First, register a user
@@ -58,6 +58,9 @@ test.describe('User Registration', () => {
 
     // Wait for redirect to dashboard
     await page.waitForURL(/\/dashboard/)
+
+    // Clear cookies to logout
+    await context.clearCookies()
 
     // Now try to register again with the same email
     await registerPage.goto()

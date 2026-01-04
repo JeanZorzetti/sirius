@@ -103,8 +103,11 @@ test.describe('Protected Routes', () => {
         // Should be able to access the route
         expect(page.url()).toContain(route)
 
-        // Should not redirect to login
-        expect(page.url()).not.toContain('/login')
+        // If not already on login, should not redirect to login
+        // (this check doesn't make sense for /login and /register routes themselves)
+        if (route !== '/login' && route !== '/register') {
+          expect(page.url()).not.toContain('/login')
+        }
       })
     })
   })
