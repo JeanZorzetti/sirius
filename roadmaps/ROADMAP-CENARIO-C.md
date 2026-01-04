@@ -576,6 +576,23 @@
 
 ---
 
+#### Task 6.2.1: Google OAuth Login ✅
+- [x] Adicionar botão "Continue with Google" nas páginas de login e registro
+- [x] Configurar Google OAuth provider no NextAuth
+- [x] Estilizar botão com logo do Google
+- [x] Testar fluxo de login com Google
+- [x] Atualizar teste E2E para verificar visibilidade do botão
+
+**Arquivos modificados:**
+- `app/(marketing)/login/page.tsx` - Adicionado botão Google OAuth
+- `app/(marketing)/register/register-form.tsx` - Adicionado botão Google OAuth
+- `app/api/auth/[...nextauth]/route.ts` - Configurado GoogleProvider
+- `.env.example` - Adicionadas variáveis GOOGLE_CLIENT_ID e GOOGLE_CLIENT_SECRET
+
+**Tempo estimado:** 2 horas
+
+---
+
 #### Task 6.3: Testes de Pipeline & Deals E2E
 - [ ] Teste: Criar deal no pipeline
 - [ ] Teste: Arrastar deal entre stages
