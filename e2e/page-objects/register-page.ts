@@ -39,10 +39,11 @@ export class RegisterPage extends BasePage {
   }
 
   /**
-   * Fill organization name field
+   * Fill organization/company name field
    */
   async fillOrganizationName(organizationName: string) {
-    await this.page.fill('input[name="organizationName"]', organizationName)
+    // The field is actually named "company" in the form
+    await this.page.fill('input[name="company"]', organizationName)
   }
 
   /**

@@ -41,7 +41,7 @@ test.describe('Protected Routes', () => {
       await page.fill('input[name="name"]', `Test User ${timestamp}`)
       await page.fill('input[name="email"]', `test-${timestamp}@example.com`)
       await page.fill('input[name="password"]', 'SecurePassword123!')
-      await page.fill('input[name="organizationName"]', `Test Org ${timestamp}`)
+      await page.fill('input[name="company"]', `Test Org ${timestamp}`)
       await page.click('button[type="submit"]')
 
       // Wait for redirect to dashboard
@@ -67,7 +67,7 @@ test.describe('Protected Routes', () => {
       await page.fill('input[name="name"]', `Regular User ${timestamp}`)
       await page.fill('input[name="email"]', `regular-${timestamp}@example.com`)
       await page.fill('input[name="password"]', 'SecurePassword123!')
-      await page.fill('input[name="organizationName"]', `Regular Org ${timestamp}`)
+      await page.fill('input[name="company"]', `Regular Org ${timestamp}`)
       await page.click('button[type="submit"]')
 
       await page.waitForURL(/\/dashboard/)
@@ -118,7 +118,7 @@ test.describe('Protected Routes', () => {
       await page.fill('input[name="name"]', `Session Test User ${timestamp}`)
       await page.fill('input[name="email"]', `session-test-${timestamp}@example.com`)
       await page.fill('input[name="password"]', 'SecurePassword123!')
-      await page.fill('input[name="organizationName"]', `Session Test Org ${timestamp}`)
+      await page.fill('input[name="company"]', `Session Test Org ${timestamp}`)
       await page.click('button[type="submit"]')
 
       await page.waitForURL(/\/dashboard/)
