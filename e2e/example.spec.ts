@@ -15,11 +15,16 @@ test.describe('Playwright Setup Validation', () => {
   test('should load pricing page', async ({ page }) => {
     await page.goto('/pricing')
 
-    // Check that pricing tiers are visible
-    await expect(page.getByText(/Plano Free/i)).toBeVisible()
-    await expect(page.getByText(/Sirius Pro/i)).toBeVisible()
+    // Check that pricing tiers are visible (using first() to avoid strict mode violations)
+    await expect(page.getByText(/Solopreneur/i).first()).toBeVisible()
+    await expect(page.getByText(/Growth/i).first()).toBeVisible()
+    await expect(page.getByText(/Enterprise/i).first()).toBeVisible()
 
     // Check that multiple pipelines feature is mentioned
     await expect(page.getByText(/Múltiplos Pipelines/i)).toBeVisible()
+
+    // Check that pricing is displayed
+    await expect(page.getByText(/Grátis/i).first()).toBeVisible()
+    await expect(page.getByText(/R\$ 49/i).first()).toBeVisible()
   })
 })
