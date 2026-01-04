@@ -51,11 +51,30 @@ export class LoginPage extends BasePage {
    * Get error message (if any)
    */
   async getErrorMessage() {
-    // Wait for error message to appear
-    const errorLocator = this.page.locator('[role="alert"], .text-red-500, .text-destructive')
+    // Wait a bit for error message to appear
+    await this.page.waitForTimeout(1000)
 
-    if (await errorLocator.count() > 0) {
-      return await errorLocator.first().textContent()
+    // Try multiple selectors for error messages
+    const errorSelectors = [
+      '[role="alert"]',
+      '.text-red-500',
+      '.text-destructive',
+      '.error-message',
+      'p:has-text("inválid")',
+      'p:has-text("incorret")',
+      'p:has-text("erro")',
+      'div:has-text("inválid")',
+      'div:has-text("incorret")',
+    ]
+
+    for (const selector of errorSelectors) {
+      const errorLocator = this.page.locator(selector)
+      if (await errorLocator.count() > 0) {
+        const text = await errorLocator.first().textContent()
+        if (text && text.trim().length > 0) {
+          return text
+        }
+      }
     }
 
     return null
