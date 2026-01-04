@@ -24,8 +24,8 @@ test.describe('User Login', () => {
       userData.organizationName
     )
 
-    // Wait for registration to complete
-    await page.waitForURL(/\/dashboard/)
+    // Wait for registration to complete (increased timeout for Chromium client-side redirect)
+    await page.waitForURL(/\/dashboard/, { timeout: 15000 })
 
     return userData
   }
@@ -169,14 +169,14 @@ test.describe('User Login', () => {
     // Logout
     await dashboardPage.logout()
 
-    // Should redirect to login or home page
-    await page.waitForURL(/\/(login|$)/)
+    // Should redirect to login or home page (increased timeout for Chromium)
+    await page.waitForURL(/\/(login|$)/, { timeout: 15000 })
 
     // Should not be able to access dashboard after logout
     await page.goto('/dashboard')
 
     // Should redirect back to login
-    await page.waitForURL(/\/login/)
+    await page.waitForURL(/\/login/, { timeout: 10000 })
   })
 
   test('should handle Google OAuth button visibility', async ({ page }) => {

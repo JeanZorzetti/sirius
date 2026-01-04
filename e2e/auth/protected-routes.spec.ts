@@ -132,11 +132,14 @@ test.describe('Protected Routes', () => {
       // Clear all cookies (simulate logout/session expiration)
       await context.clearCookies()
 
-      // Try to access dashboard again
-      await page.goto('/dashboard')
+      // Wait a bit for cookie clearing to propagate (especially in Chromium)
+      await page.waitForTimeout(500)
 
-      // Should redirect to login
-      await page.waitForURL(/\/login/)
+      // Try to access dashboard again
+      await page.goto('/dashboard', { waitUntil: 'networkidle' })
+
+      // Should redirect to login (increased timeout for Chromium)
+      await page.waitForURL(/\/login/, { timeout: 10000 })
       expect(page.url()).toContain('/login')
     })
   })

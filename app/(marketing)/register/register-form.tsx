@@ -1,7 +1,8 @@
 'use client'
 
 import Link from 'next/link'
-import { useState } from 'react'
+import { useState, useTransition } from 'react'
+import { useRouter } from 'next/navigation'
 import { signIn } from 'next-auth/react'
 import { registerAction } from "@/app/auth/actions"
 import { SubmitButton } from "@/components/submit-button"
@@ -12,16 +13,25 @@ import { CardContent, CardFooter } from "@/components/ui/card"
 
 export function RegisterForm({ inviteData, inviteToken }: { inviteData: any, inviteToken?: string }) {
     const [error, setError] = useState<string | null>(null)
+    const [isPending, startTransition] = useTransition()
+    const router = useRouter()
 
-    const handleSubmit = async (formData: FormData) => {
-        const result = await registerAction(null, formData)
-        if (result?.error) {
-            setError(result.error)
-        }
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault()
+        const formData = new FormData(e.currentTarget)
+        startTransition(async () => {
+            const result = await registerAction(null, formData)
+            if (result?.error) {
+                setError(result.error)
+            } else {
+                // Redirect on success
+                router.push('/dashboard?new_user=true')
+            }
+        })
     }
 
     return (
-        <form action={handleSubmit}>
+        <form onSubmit={handleSubmit}>
             <CardContent className="space-y-4">
                 {error && (
                     <div className="p-3 text-sm text-red-500 bg-red-500/10 border border-red-500/20 rounded-md">
@@ -63,7 +73,9 @@ export function RegisterForm({ inviteData, inviteToken }: { inviteData: any, inv
                 </div>
             </CardContent>
             <CardFooter className="flex flex-col gap-4">
-                <SubmitButton text={inviteData ? "Entrar na Equipe" : "Criar Conta Grátis"} className="w-full bg-indigo-600 hover:bg-indigo-700 text-white" />
+                <Button type="submit" disabled={isPending} className="w-full bg-indigo-600 hover:bg-indigo-700 text-white">
+                    {isPending ? 'Criando conta...' : (inviteData ? "Entrar na Equipe" : "Criar Conta Grátis")}
+                </Button>
 
                 {!inviteData && (
                     <>

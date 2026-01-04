@@ -2,6 +2,7 @@
 
 import { useState, useTransition } from 'react'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { signIn } from 'next-auth/react'
 import { loginAction } from '@/app/auth/actions'
 import { Button } from '@/components/ui/button'
@@ -12,12 +13,18 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 export default function LoginPage() {
     const [error, setError] = useState<string>('')
     const [isPending, startTransition] = useTransition()
+    const router = useRouter()
 
-    const handleSubmit = async (formData: FormData) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault()
+        const formData = new FormData(e.currentTarget)
         startTransition(async () => {
             const result = await loginAction(null, formData)
             if (result?.error) {
                 setError(result.error)
+            } else {
+                // Redirect on success
+                router.push('/dashboard?login=true')
             }
         })
     }
@@ -31,7 +38,7 @@ export default function LoginPage() {
                         Bem-vindo de volta ao ROI Labs CRM.
                     </CardDescription>
                 </CardHeader>
-                <form action={handleSubmit}>
+                <form onSubmit={handleSubmit}>
                     <CardContent className="space-y-4">
                         <div className="space-y-2">
                             <Label htmlFor="email">Email</Label>
