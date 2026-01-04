@@ -556,19 +556,21 @@
 
 ---
 
-#### Task 6.2: Testes de Autenticação E2E
-- [ ] Teste: Registro completo de novo usuário
-- [ ] Teste: Login com credenciais válidas
-- [ ] Teste: Tentativa de login com senha errada
-- [ ] Teste: Logout
-- [ ] Teste: Registro via convite
-- [ ] Teste: Proteção de rotas autenticadas
+#### Task 6.2: Testes de Autenticação E2E ✅
+- [x] Teste: Registro completo de novo usuário ✅
+- [x] Teste: Login com credenciais válidas ✅
+- [x] Teste: Tentativa de login com senha errada ✅
+- [x] Teste: Logout ✅
+- [ ] Teste: Registro via convite (não implementado no sistema)
+- [x] Teste: Proteção de rotas autenticadas ✅
 
-**Arquivos a criar:**
-- `e2e/auth/register.spec.ts`
-- `e2e/auth/login.spec.ts`
-- `e2e/page-objects/login-page.ts`
-- `e2e/page-objects/register-page.ts`
+**Arquivos criados:**
+- `e2e/auth/register.spec.ts` ✅ (5 testes)
+- `e2e/auth/login.spec.ts` ✅ (8 testes)
+- `e2e/auth/protected-routes.spec.ts` ✅ (testes de rotas protegidas)
+- `e2e/page-objects/login-page.ts` ✅
+- `e2e/page-objects/register-page.ts` ✅
+- `e2e/page-objects/dashboard-page.ts` ✅
 
 **Tempo estimado:** 6 horas
 
