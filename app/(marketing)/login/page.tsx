@@ -1,6 +1,6 @@
 'use client'
 
-import { useActionState } from 'react'
+import { useState, useTransition } from 'react'
 import Link from 'next/link'
 import { signIn } from 'next-auth/react'
 import { loginAction } from '@/app/auth/actions'
@@ -9,12 +9,18 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 
-const initialState = {
-    error: '',
-}
-
 export default function LoginPage() {
-    const [state, action, pending] = useActionState(loginAction, initialState)
+    const [error, setError] = useState<string>('')
+    const [isPending, startTransition] = useTransition()
+
+    const handleSubmit = async (formData: FormData) => {
+        startTransition(async () => {
+            const result = await loginAction(null, formData)
+            if (result?.error) {
+                setError(result.error)
+            }
+        })
+    }
 
     return (
         <div className="flex min-h-screen items-center justify-center px-4 py-12 sm:px-6 lg:px-8 bg-muted/30">
@@ -25,7 +31,7 @@ export default function LoginPage() {
                         Bem-vindo de volta ao ROI Labs CRM.
                     </CardDescription>
                 </CardHeader>
-                <form action={action}>
+                <form action={handleSubmit}>
                     <CardContent className="space-y-4">
                         <div className="space-y-2">
                             <Label htmlFor="email">Email</Label>
@@ -35,13 +41,13 @@ export default function LoginPage() {
                             <Label htmlFor="password">Senha</Label>
                             <Input id="password" name="password" type="password" required />
                         </div>
-                        {state?.error && (
-                            <div className="text-sm text-red-500 font-medium">{state.error}</div>
+                        {error && (
+                            <div className="text-sm text-red-500 font-medium">{error}</div>
                         )}
                     </CardContent>
                     <CardFooter className="flex flex-col gap-4">
-                        <Button className="w-full" type="submit" disabled={pending}>
-                            {pending ? 'Entrando...' : 'Entrar'}
+                        <Button className="w-full" type="submit" disabled={isPending}>
+                            {isPending ? 'Entrando...' : 'Entrar'}
                         </Button>
 
                         <div className="relative">

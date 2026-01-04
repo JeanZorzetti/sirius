@@ -28,8 +28,8 @@ export class DashboardPage extends BasePage {
    * Get user menu button (avatar/profile dropdown)
    */
   getUserMenuButton() {
-    // Common selectors for user menu
-    return this.page.locator('button[aria-label*="menu"], button[aria-label*="perfil"], [data-testid="user-menu"]').first()
+    // The user menu is a button with a rounded avatar inside
+    return this.page.locator('button.rounded-full, button:has(div[class*="avatar"]), [data-testid="user-menu"]').first()
   }
 
   /**

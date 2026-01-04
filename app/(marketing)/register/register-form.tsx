@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { useActionState } from 'react'
+import { useState } from 'react'
 import { signIn } from 'next-auth/react'
 import { registerAction } from "@/app/auth/actions"
 import { SubmitButton } from "@/components/submit-button"
@@ -11,14 +11,21 @@ import { Label } from "@/components/ui/label"
 import { CardContent, CardFooter } from "@/components/ui/card"
 
 export function RegisterForm({ inviteData, inviteToken }: { inviteData: any, inviteToken?: string }) {
-    const [state, action] = useActionState(registerAction, null)
+    const [error, setError] = useState<string | null>(null)
+
+    const handleSubmit = async (formData: FormData) => {
+        const result = await registerAction(null, formData)
+        if (result?.error) {
+            setError(result.error)
+        }
+    }
 
     return (
-        <form action={action}>
+        <form action={handleSubmit}>
             <CardContent className="space-y-4">
-                {state?.error && (
+                {error && (
                     <div className="p-3 text-sm text-red-500 bg-red-500/10 border border-red-500/20 rounded-md">
-                        {state.error}
+                        {error}
                     </div>
                 )}
 
