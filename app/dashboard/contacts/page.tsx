@@ -22,15 +22,19 @@ export default async function ContactsPage() {
         return <div>Não autorizado. Faça login novamente.</div>
     }
 
+    // Optimized query: Only select organizationId since that's all we need
     const user = await prisma.user.findUnique({
         where: { email: session.user.email },
-        include: { organization: true }
+        select: {
+            organizationId: true
+        }
     })
 
     if (!user || !user.organizationId) {
         return <div>Usuário não pertence a uma organização.</div>
     }
 
+    // Query all contacts for this organization (DataTable handles pagination on client)
     const contacts = await prisma.contact.findMany({
         where: { organizationId: user.organizationId },
         orderBy: {

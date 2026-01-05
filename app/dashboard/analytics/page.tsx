@@ -11,22 +11,33 @@ export default async function AnalyticsPage() {
     return <div>Não autorizado. Faça login novamente.</div>;
   }
 
+  // Optimized query: Only select organizationId since that's all we need
   const user = await prisma.user.findUnique({
     where: { email: session.user.email },
-    include: { organization: true }
+    select: {
+      organizationId: true
+    }
   })
 
   if (!user || !user.organizationId) {
     return <div>Usuário não pertence a uma organização.</div>
   }
 
-  // Fetch all deals and stages from Prisma
+  // Optimized query: Only select stage.name to reduce payload
   const deals = await prisma.deal.findMany({
     where: {
       organizationId: user.organizationId
     },
-    include: {
-      stage: true,
+    select: {
+      id: true,
+      stageId: true,
+      value: true,
+      closeDate: true,
+      stage: {
+        select: {
+          name: true
+        }
+      }
     },
   });
 

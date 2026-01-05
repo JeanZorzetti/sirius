@@ -19,9 +19,19 @@ export default async function DashboardPage() {
         return <div>Não autorizado. Faça login novamente.</div>
     }
 
+    // Optimized query: Only select necessary user fields to reduce payload
     const user = await prisma.user.findUnique({
         where: { email: session.user.email },
-        include: { organization: true }
+        select: {
+            id: true,
+            organizationId: true,
+            orgRole: true,
+            organization: {
+                select: {
+                    plan: true
+                }
+            }
+        }
     })
 
     if (!user || !user.organizationId) {
@@ -47,6 +57,7 @@ export default async function DashboardPage() {
         ]
     })
 
+    // Optimized query: Use select on contact to only fetch required fields
     const rawStages = await prisma.pipelineStage.findMany({
         where: {
             organizationId: user.organizationId
@@ -58,7 +69,16 @@ export default async function DashboardPage() {
                     organizationId: user.organizationId,
                     ...(isMember ? { userId: user.id } : {})
                 },
-                include: { contact: true },
+                include: {
+                    contact: {
+                        select: {
+                            id: true,
+                            name: true,
+                            email: true,
+                            phone: true
+                        }
+                    }
+                },
                 orderBy: [
                     { order: 'asc' },
                     { createdAt: 'desc' }
