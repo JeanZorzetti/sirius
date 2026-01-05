@@ -31,6 +31,11 @@ model Organization {
   tags      Tag[]
   emailAutomationSettings EmailAutomationSetting[]
   emailLogs EmailLog[]
+
+  // Analytics relations
+  dealSnapshots    DealSnapshot[]
+  userActivities   UserActivity[]
+  revenueSnapshots RevenueSnapshot[]
 }
 
 model User {
@@ -48,6 +53,7 @@ model User {
   notes     Note[]
   activities Activity[]
   emailLogs EmailLog[]
+  userActivities UserActivity[] // Analytics tracking
 
   role      Role     @default(USER)
   orgRole   OrgRole  @default(OWNER) // Defaulting to OWNER for now so existing users don't lose access. Ideally MEMBER.
@@ -260,4 +266,113 @@ model EmailLog {
 
   @@index([organizationId, sentAt])
   @@index([status])
+}
+
+// Analytics & Data Warehouse Models
+
+model DealSnapshot {
+  id        String   @id @default(uuid())
+  date      DateTime // Data do snapshot (sem hora, apenas dia)
+
+  // Métricas agregadas
+  totalDeals      Int // Total de deals ativos neste dia
+  totalValue      Decimal @db.Decimal(12, 2) // Valor total do pipeline
+  avgDealValue    Decimal @db.Decimal(12, 2) // Ticket médio
+
+  // Breakdown por stage
+  dealsByStage    Json // { "stageId": { count: X, value: Y } }
+
+  // Breakdown por pipeline
+  dealsByPipeline Json // { "pipelineId": { count: X, value: Y } }
+
+  // Conversão
+  dealsCreated    Int @default(0) // Deals criados neste dia
+  dealsClosed     Int @default(0) // Deals fechados neste dia
+  dealsLost       Int @default(0) // Deals perdidos neste dia
+
+  createdAt DateTime @default(now())
+
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@unique([organizationId, date])
+  @@index([organizationId, date])
+}
+
+enum UserActivityType {
+  LOGIN
+  LOGOUT
+  DEAL_CREATED
+  DEAL_UPDATED
+  DEAL_DELETED
+  DEAL_STAGE_CHANGED
+  CONTACT_CREATED
+  CONTACT_UPDATED
+  CONTACT_DELETED
+  PIPELINE_CREATED
+  PIPELINE_DELETED
+  EMAIL_SENT
+  PAGE_VIEW
+  FEATURE_USED
+}
+
+model UserActivity {
+  id        String   @id @default(uuid())
+  type      UserActivityType
+
+  // Contexto do evento
+  metadata  Json? // Dados adicionais flexíveis
+
+  // IP e User Agent para analytics
+  ipAddress String?
+  userAgent String? @db.Text
+
+  createdAt DateTime @default(now())
+
+  userId    String?
+  user      User? @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@index([organizationId, createdAt])
+  @@index([userId, createdAt])
+  @@index([type, createdAt])
+}
+
+model RevenueSnapshot {
+  id        String   @id @default(uuid())
+  date      DateTime // Data do snapshot (último dia do mês)
+  month     Int      // 1-12
+  year      Int      // 2024, 2025, etc.
+
+  // Métricas de receita
+  mrr       Decimal @db.Decimal(12, 2) // Monthly Recurring Revenue
+  arr       Decimal @db.Decimal(12, 2) // Annual Recurring Revenue (MRR * 12)
+
+  // Breakdown de clientes
+  totalOrganizations    Int // Total de organizações ativas
+  freeOrganizations     Int // Orgs no plano FREE
+  proOrganizations      Int // Orgs no plano PRO
+
+  // Churn
+  churnedOrganizations  Int @default(0) // Orgs que cancelaram neste mês
+  newOrganizations      Int @default(0) // Novas orgs neste mês
+
+  // LTV e CAC (quando integrar ads)
+  avgLtv    Decimal? @db.Decimal(12, 2) // Lifetime Value médio
+  avgCac    Decimal? @db.Decimal(12, 2) // Customer Acquisition Cost
+
+  // Forecast
+  forecastNext30d  Decimal? @db.Decimal(12, 2) // Receita prevista próximos 30 dias
+  forecastNext60d  Decimal? @db.Decimal(12, 2)
+  forecastNext90d  Decimal? @db.Decimal(12, 2)
+
+  createdAt DateTime @default(now())
+
+  organizationId String? // null = snapshot global de toda a plataforma
+  organization   Organization? @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@unique([organizationId, year, month])
+  @@index([year, month])
 }
