@@ -752,22 +752,69 @@
 
 #### Task 7.3: Dashboard de Analytics (Dual Implementation)
 
-**7.3.1: Admin Analytics Dashboard (Plataforma)**
-- [ ] Criar `app/admin/analytics/page.tsx`
-- [ ] Cards de KPIs da Plataforma:
-  - MRR/ARR atual e histórico
-  - Total de organizações (Free vs PRO)
-  - Churn Rate mensal
-  - LTV médio
-  - CAC médio (foundation)
-  - LTV/CAC Ratio
-- [ ] Gráficos da Plataforma:
-  - MRR trend (últimos 6 meses) - Line chart
-  - Forecast de receita 30/60/90 dias - Area chart
-  - Distribuição Free vs PRO - Pie chart
-  - New signups por mês - Bar chart
-- [ ] Tabela de Revenue Snapshots históricos
-- [ ] Feature gate: ADMIN only (role-based)
+**7.3.1: Admin Analytics Dashboard (Plataforma)** ✅
+
+- [x] Criar `app/admin/analytics/page.tsx` ✅
+- [x] Cards de KPIs da Plataforma: ✅
+  - MRR/ARR atual e histórico ✅
+  - Total de organizações (Free vs PRO) ✅
+  - Churn Rate mensal ✅
+  - LTV médio ✅
+  - CAC médio (foundation) ✅
+  - LTV/CAC Ratio ✅
+- [x] Gráficos da Plataforma: ✅
+  - MRR trend (últimos 6 meses) - Area chart ✅
+  - Forecast de receita 30/60/90 dias - Area chart ✅
+  - Distribuição Free vs PRO - Pie chart ✅
+  - New signups por mês - Bar chart ✅
+- [x] Tabela de Revenue Snapshots históricos ✅
+- [x] Feature gate: ADMIN only (role-based) ✅
+
+**Arquivos criados (7.3.1):**
+
+- `app/admin/analytics/page.tsx` ✅ (Server component com ADMIN gate)
+- `app/admin/analytics/client.tsx` ✅ (Client component)
+- `app/admin/analytics/actions.ts` ✅ (4 server actions)
+- `components/analytics/platform-kpi-card.tsx` ✅ (KPI card com variants)
+- `components/analytics/revenue-trend-chart.tsx` ✅ (3 chart components)
+- `components/analytics/forecast-chart.tsx` ✅ (Forecast com growth metrics)
+
+**Arquivos modificados (7.3.1):**
+
+- `app/admin/layout.tsx` ✅ (adicionado link "Analytics" no header)
+
+**Funcionalidades implementadas (7.3.1):**
+
+**8 KPI Cards:**
+- MRR - Monthly Recurring Revenue
+- ARR - Annual Recurring Revenue (MRR × 12)
+- Churn Rate - Taxa de cancelamento mensal
+- LTV - Lifetime Value médio dos clientes
+- CAC - Customer Acquisition Cost médio
+- LTV/CAC Ratio - Índice de saúde do negócio
+- Total Organizations - Total de organizações na plataforma
+- PRO Organizations - Organizações no plano PRO
+
+**4 Gráficos Interativos (Recharts):**
+- Revenue Trend Chart - Area chart com evolução de MRR (últimos 6 meses)
+- Forecast Chart - Area chart com previsões 30/60/90 dias + growth %
+- Organization Distribution - Pie chart FREE vs PRO
+- New Signups Chart - Bar chart com novas organizações por mês
+
+**Tabela Histórica:**
+- Revenue Snapshots dos últimos 6 meses
+- Colunas: Mês, MRR, ARR, Total Orgs, PRO Orgs, New Orgs, Churn
+
+**Feature Gate ADMIN:**
+- Usuários não-ADMIN veem página de acesso negado em vermelho
+- Apenas usuários com role=ADMIN acessam os analytics da plataforma
+- Validação server-side em todos os server actions
+
+**Server Actions:**
+- getPlatformKPIs() - Busca KPIs calculados do mês atual
+- getRevenueSnapshots() - Busca últimos N snapshots globais
+- getLatestForecast() - Busca snapshot mais recente com forecasts
+- getPlatformStats() - Estatísticas gerais (orgs, users, deals, conversion)
 
 **7.3.2: Organization Analytics Dashboard (PRO Users)** ✅
 
