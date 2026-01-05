@@ -4,7 +4,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 import { cn } from '@/lib/utils'
-import { Home, Users, Settings, BarChart3, CreditCard, Mail } from 'lucide-react'
+import { Home, Users, Settings, BarChart3, CreditCard, Mail, LineChart } from 'lucide-react'
 
 const navItems = [
   {
@@ -21,6 +21,12 @@ const navItems = [
     title: 'Dashboard',
     href: '/dashboard/analytics',
     icon: BarChart3,
+  },
+  {
+    title: 'Analytics PRO',
+    href: '/dashboard/analytics-pro',
+    icon: LineChart,
+    badge: 'PRO',
   },
   {
     title: 'Automações Email',
@@ -88,7 +94,13 @@ export function Sidebar() {
                   )}
 
                   <Icon className={cn("h-4 w-4 z-10 transition-colors", isActive ? "text-indigo-600 dark:text-indigo-400" : "text-zinc-500 group-hover:text-zinc-700 dark:group-hover:text-zinc-300")} />
-                  <span className="z-10">{item.title}</span>
+                  <span className="z-10 flex-1">{item.title}</span>
+
+                  {item.badge && (
+                    <span className="z-10 rounded bg-indigo-100 px-1.5 py-0.5 text-[10px] font-semibold uppercase text-indigo-600 dark:bg-indigo-500/20 dark:text-indigo-400">
+                      {item.badge}
+                    </span>
+                  )}
 
                   {isActive && (
                     <div className="absolute right-0 top-0 h-full w-4 bg-gradient-to-l from-indigo-500/20 to-transparent" />

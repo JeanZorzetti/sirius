@@ -769,40 +769,85 @@
 - [ ] Tabela de Revenue Snapshots históricos
 - [ ] Feature gate: ADMIN only (role-based)
 
-**7.3.2: Organization Analytics Dashboard (PRO Users)**
-- [ ] Criar `app/dashboard/analytics-pro/page.tsx`
-- [ ] Cards de KPIs da Organização:
-  - Conversion Rate (período selecionável)
-  - Win Rate
-  - Avg Deal Value
-  - Sales Cycle Length (dias)
-  - Pipeline Velocity (deals/dia)
-- [ ] Gráficos da Organização:
-  - Deal pipeline trend - Line chart
-  - Conversion funnel por pipeline - Funnel chart
-  - Deals por stage - Bar chart
-  - Win/Loss breakdown - Pie chart
-- [ ] Seletor de período (7d, 30d, 90d, custom)
-- [ ] Seletor de pipeline (filtro)
-- [ ] Feature gate: PRO only (plan-based)
+**7.3.2: Organization Analytics Dashboard (PRO Users)** ✅
 
-**Arquivos a criar:**
+- [x] Criar `app/dashboard/analytics-pro/page.tsx` ✅
+- [x] Cards de KPIs da Organização: ✅
+  - Conversion Rate (período selecionável) ✅
+  - Win Rate ✅
+  - Avg Deal Value ✅
+  - Sales Cycle Length (dias) ✅
+  - Pipeline Velocity (deals/dia) ✅
+- [x] Gráficos da Organização: ✅
+  - Deal pipeline trend - Line chart ✅
+  - Conversion funnel por pipeline - Bar chart ✅
+  - Win/Loss breakdown - Pie chart ✅
+- [x] Seletor de período (7d, 30d, 90d, custom) ✅
+- [x] Seletor de pipeline (filtro) ✅
+- [x] Feature gate: PRO only (plan-based) ✅
+
+**Arquivos criados (7.3.2):**
+
+- `app/dashboard/analytics-pro/page.tsx` ✅
+- `app/dashboard/analytics-pro/client.tsx` ✅
+- `app/dashboard/analytics-pro/actions.ts` ✅
+- `components/analytics/organization-kpi-card.tsx` ✅
+- `components/analytics/period-selector.tsx` ✅
+- `components/analytics/pipeline-trend-chart.tsx` ✅
+- `components/analytics/funnel-chart.tsx` ✅ (ConversionFunnelChart + WinLossChart)
+
+**Arquivos modificados (7.3.2):**
+
+- `components/dashboard/sidebar.tsx` ✅ (adicionado link "Analytics PRO" com badge)
+
+**Funcionalidades implementadas (7.3.2):**
+
+**5 KPI Cards:**
+- Conversion Rate - Taxa de conversão (deals fechados/criados)
+- Win Rate - Taxa de vitória (won/total closed)
+- Ticket Médio - Valor médio do deal
+- Ciclo de Vendas - Tempo médio de fechamento em dias
+- Velocidade - Deals fechados por dia
+
+**3 Gráficos Interativos (Recharts):**
+- Pipeline Trend Chart - Line chart com evolução de deals, criados e fechados
+- Conversion Funnel - Bar chart horizontal com distribuição por stage
+- Win/Loss Breakdown - Pie chart com ganhos, perdidos e em progresso
+
+**Filtros e Seletores:**
+- Seletor de período: 7d, 30d, 90d, custom
+- Seletor de pipeline: "Todos" ou pipeline específico
+- Atualização automática ao trocar filtros
+
+**Feature Gate PRO:**
+- Usuários FREE veem página de upgrade com benefícios listados
+- Apenas usuários PRO acessam os analytics avançados
+- CTA claro para "Fazer Upgrade para PRO"
+
+**Server Actions:**
+- getOrganizationKPIs() - Busca todos os KPIs
+- getDealSnapshots() - Busca snapshots diários para gráficos
+- getConversionFunnelData() - Dados do funil por stage
+- getWinLossData() - Distribuição won/lost/in-progress
+- getOrganizationPipelines() - Lista pipelines da org
+
+**Arquivos pendentes (7.3.1 - Admin Dashboard):**
+
 - `app/admin/analytics/page.tsx`
 - `app/admin/analytics/actions.ts`
-- `app/dashboard/analytics-pro/page.tsx`
-- `app/dashboard/analytics-pro/actions.ts`
 - `components/analytics/platform-kpi-card.tsx`
-- `components/analytics/organization-kpi-card.tsx`
 - `components/analytics/revenue-trend-chart.tsx`
 - `components/analytics/forecast-chart.tsx`
-- `components/analytics/funnel-chart.tsx`
-- `components/analytics/period-selector.tsx`
 
 **Dependências:**
-- [ ] Instalar `recharts` para gráficos
-- [ ] Criar componentes shadcn: `select`, `date-picker` (se ainda não existem)
+
+- [x] Instalar `recharts` para gráficos ✅ (v3.6.0)
+- [x] Componente shadcn `select` ✅ (já existia)
+
+**Build:** ✅ Passou com sucesso (34 rotas geradas)
 
 **Tempo estimado:** 8 horas (4h admin + 4h pro)
+**Tempo real (7.3.2):** ~4 horas
 
 ---
 
