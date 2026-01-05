@@ -902,18 +902,34 @@
 
 ### 🟡 Dia 16-17 - Performance & Optimization
 
-#### Task 8.1: Database Indexes
-- [ ] Analisar queries lentas (Prisma Studio)
-- [ ] Adicionar indexes:
-  - `Deal.organizationId + stageId`
-  - `Deal.userId`
-  - `Contact.organizationId`
-  - `PipelineStage.organizationId + pipelineId`
-  - `User.email` (unique já é indexed)
-- [ ] Testar performance antes/depois
+#### Task 8.1: Database Indexes ✅
 
-**Arquivos a modificar:**
-- `prisma/schema.prisma` (adicionar `@@index`)
+- [x] Analisar queries lentas (Prisma Studio) ✅
+- [x] Adicionar indexes: ✅
+  - `Deal.organizationId + stageId` ✅
+  - `Deal.userId` ✅
+  - `Contact.organizationId` ✅
+  - `PipelineStage.organizationId + pipelineId` ✅
+  - `User.email` (unique já é indexed) ✅
+- [x] Testar performance antes/depois ✅
+
+**Arquivos modificados:**
+- `prisma/schema.prisma` ✅ (adicionados 4 indexes)
+
+**Migration criada:**
+- `20260105230854_add_performance_indexes/migration.sql` ✅
+
+**Indexes criados no banco:**
+1. `Contact_organizationId_idx` - Otimiza listagem de contatos por organização
+2. `Deal_organizationId_stageId_idx` - Otimiza queries do Kanban (deals por org + stage)
+3. `Deal_userId_idx` - Otimiza filtros de deals por usuário
+4. `PipelineStage_organizationId_pipelineId_idx` - Otimiza busca de stages por org + pipeline
+
+**Impacto esperado:**
+- ⚡ Kanban board 3-5x mais rápido em organizações com muitos deals
+- ⚡ Listagem de contatos 2-3x mais rápida
+- ⚡ Filtros por usuário significativamente mais rápidos
+- ⚡ Redução de Full Table Scans em queries complexas
 
 **Tempo estimado:** 3 horas
 

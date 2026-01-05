@@ -82,6 +82,9 @@ model Contact {
   organization   Organization @relation(fields: [organizationId], references: [id])
 
   deals     Deal[]
+
+  // Performance indexes
+  @@index([organizationId])
 }
 
 model Pipeline {
@@ -115,7 +118,9 @@ model PipelineStage {
 
   deals     Deal[]
 
+  // Performance indexes
   @@index([pipelineId, order])
+  @@index([organizationId, pipelineId])
 }
 
 model Deal {
@@ -148,6 +153,10 @@ model Deal {
   notes       Note[]
   tags        Tag[]
   activities  Activity[]
+
+  // Performance indexes
+  @@index([organizationId, stageId])
+  @@index([userId])
 }
 
 model Invite {
