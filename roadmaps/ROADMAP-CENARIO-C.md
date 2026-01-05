@@ -658,8 +658,9 @@
 - `lib/analytics-jobs.ts` ✅
 - `app/api/cron/daily-snapshot/route.ts` ✅
 - `app/api/cron/monthly-revenue/route.ts` ✅ (extra)
-- `vercel.json` (configuração de cron jobs) ✅
+- `vercel.json` (~~criado~~ removido - cron jobs precisam configuração manual) ✅
 - `.env.example` (documentado CRON_SECRET) ✅
+- `scripts/cleanup-test-orgs.ts` ✅ (cleanup de 334 test organizations)
 
 **Funcionalidades implementadas:**
 - DealSnapshot: métricas agregadas por dia, breakdown por stage/pipeline
@@ -668,6 +669,14 @@
 - Jobs de agregação: daily snapshot para todas orgs, monthly revenue
 - Cron endpoints protegidos com CRON_SECRET
 - Schedule automático: diário à meia-noite, mensal no último dia
+
+**Nota sobre Cron Jobs:**
+
+- `vercel.json` foi removido devido ao limite do plano Vercel (2 cron jobs apenas)
+- Cron jobs devem ser configurados manualmente no Vercel Dashboard:
+  1. `/api/cron/daily-snapshot` → Schedule: `0 0 * * *` (diário à meia-noite)
+  2. `/api/cron/monthly-revenue` → Schedule: `0 0 28-31 * *` (último dia do mês)
+- Ambos endpoints requerem header `Authorization: Bearer {CRON_SECRET}` ou query param `?token={CRON_SECRET}`
 
 **Tempo estimado:** 6 horas
 
