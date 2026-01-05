@@ -72,21 +72,26 @@ export default function MarketingLayout({
             </div>
 
             <div className="flex flex-col gap-4">
-              <h3 className="text-sm font-medium">Recursos</h3>
-              <Link href="/blog" className="text-sm text-muted-foreground hover:text-foreground">Blog</Link>
-              <Link href="/dashboard/analytics" className="text-sm text-muted-foreground hover:text-foreground">Analytics</Link>
-              <Link href="/dashboard/contacts" className="text-sm text-muted-foreground hover:text-foreground">Contatos</Link>
+              <h3 className="text-sm font-medium">Empresa</h3>
+              <Link href="/about" className="text-sm text-muted-foreground hover:text-foreground">Sobre</Link>
+              <Link href="/changelog" className="text-sm text-muted-foreground hover:text-foreground">Novidades</Link>
+              <Link href="https://roilabs.com.br" className="text-sm text-muted-foreground hover:text-foreground" target="_blank" rel="noopener noreferrer">ROI Labs</Link>
             </div>
 
             <div className="flex flex-col gap-4">
-              <h3 className="text-sm font-medium">Empresa</h3>
-              <Link href="https://roilabs.com.br" className="text-sm text-muted-foreground hover:text-foreground" target="_blank">ROI Labs</Link>
-              <Link href="/register" className="text-sm text-muted-foreground hover:text-foreground">Criar Conta</Link>
-              <Link href="/login" className="text-sm text-muted-foreground hover:text-foreground">Login</Link>
+              <h3 className="text-sm font-medium">Suporte</h3>
+              <Link href="/help" className="text-sm text-muted-foreground hover:text-foreground">Ajuda</Link>
+              <Link href="/community" className="text-sm text-muted-foreground hover:text-foreground">Comunidade</Link>
+              <Link href="/blog" className="text-sm text-muted-foreground hover:text-foreground">Blog</Link>
             </div>
           </div>
           <div className="mt-12 border-t pt-8 text-center text-sm text-muted-foreground">
-            © {new Date().getFullYear()} Sirius CRM (ROI Labs). Todos os direitos reservados.
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6">
+              <Link href="/privacy" className="hover:text-foreground transition-colors">Privacidade</Link>
+              <Link href="/terms" className="hover:text-foreground transition-colors">Termos de Uso</Link>
+              <span className="hidden sm:inline">•</span>
+              <span>© {new Date().getFullYear()} Sirius CRM (ROI Labs). Todos os direitos reservados.</span>
+            </div>
           </div>
         </div>
       </footer>
