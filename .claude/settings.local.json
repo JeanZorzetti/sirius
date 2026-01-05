@@ -20,7 +20,8 @@
       "Bash(npx shadcn@latest add:*)",
       "Bash(npx playwright install)",
       "Bash(npx playwright test:*)",
-      "Bash(npm run test:e2e:*)"
+      "Bash(npm run test:e2e:*)",
+      "Bash(mkdir:*)"
     ]
   }
 }

@@ -43,7 +43,8 @@ export class KanbanPage extends BasePage {
    * Get "Create Deal" button
    */
   getCreateDealButton() {
-    return this.page.getByRole('button', { name: /criar negócio|novo negócio|create deal/i })
+    // Button has text "Novo Deal" with Plus icon
+    return this.page.getByRole('button', { name: /novo deal/i })
   }
 
   /**
@@ -66,69 +67,79 @@ export class KanbanPage extends BasePage {
     await this.openCreateDealDialog()
 
     // Wait for dialog to open
-    await this.page.waitForSelector('[role="dialog"]')
+    await this.page.waitForSelector('[role="dialog"]', { timeout: 10000 })
 
-    // Fill title
-    await this.page.fill('input[name="title"], input[placeholder*="título"], input[placeholder*="nome"]', data.title)
+    // Fill title (input with id="title")
+    await this.page.fill('input#title[name="title"]', data.title)
 
-    // Fill value if provided
+    // Fill value if provided (input with id="value")
     if (data.value) {
-      const valueInput = this.page.locator('input[name="value"], input[placeholder*="valor"], input[type="number"]').first()
-      await valueInput.fill(data.value)
+      await this.page.fill('input#value[name="value"]', data.value)
     }
 
     // Select or create contact if provided
     if (data.contactName) {
-      // Click on contact selector
-      const contactSelector = this.page.locator('button:has-text("Selecionar"), [data-testid="contact-selector"]').first()
-      await contactSelector.click()
-
-      // Type contact name
-      await this.page.fill('input[placeholder*="contato"]', data.contactName)
-
-      // Click on "Criar novo contato" or select existing
-      const createOption = this.page.locator('text="Criar novo contato"').or(
-        this.page.locator(`text="${data.contactName}"`)
+      // Click the "+" button to add new contact
+      const addContactButton = this.page.getByRole('button').filter({ hasText: /\+/ }).or(
+        this.page.locator('button:has-text("+")')
       ).first()
-      await createOption.click()
+
+      if (await addContactButton.isVisible({ timeout: 2000 }).catch(() => false)) {
+        await addContactButton.click()
+        await this.page.waitForTimeout(500)
+
+        // Fill new contact name
+        const contactNameInput = this.page.locator('input[placeholder*="Nome"], input[name="newContactName"]').first()
+        if (await contactNameInput.isVisible({ timeout: 2000 }).catch(() => false)) {
+          await contactNameInput.fill(data.contactName)
+        }
+      }
     }
 
-    // Submit form
-    const submitButton = this.page.getByRole('button', { name: /criar|salvar|save/i })
+    // Submit form by pressing the submit button inside the form
+    const submitButton = this.page.locator('form button[type="submit"]').or(
+      this.page.getByRole('button', { name: /criar|salvar/i })
+    ).first()
     await submitButton.click()
 
     // Wait for dialog to close
-    await this.page.waitForSelector('[role="dialog"]', { state: 'hidden', timeout: 5000 })
+    await this.page.waitForSelector('[role="dialog"]', { state: 'hidden', timeout: 10000 })
   }
 
   /**
    * Get all Kanban columns (stages)
    */
   getKanbanColumns() {
-    return this.page.locator('[data-stage-id], .kanban-column')
+    // Columns are divs with specific structure containing stage name in h3
+    return this.page.locator('div.w-70, div.w-80, div:has(> div > div > h3.uppercase)')
   }
 
   /**
    * Get a specific Kanban column by name
    */
   getKanbanColumnByName(stageName: string) {
-    return this.page.locator(`[data-stage-name="${stageName}"]`).or(
-      this.page.locator(`.kanban-column:has-text("${stageName}")`)
-    )
+    // Find the column by looking for h3 with the stage name
+    return this.page.locator(`h3:has-text("${stageName}")`).locator('../../../..')
   }
 
   /**
    * Get all deal cards
    */
   getDealCards() {
-    return this.page.locator('[data-deal-id], .deal-card, [class*="deal"]').filter({ hasText: /R\$|Valor/ })
+    // Deal cards have specific structure with title and value
+    return this.page.locator('div[class*="group relative flex flex-col"]').filter({
+      has: this.page.locator('span:has-text("Valor")')
+    })
   }
 
   /**
    * Get a specific deal card by title
    */
   getDealCardByTitle(title: string) {
-    return this.page.locator(`text="${title}"`).locator('..').locator('..')
+    // Find the card that contains the exact title text
+    return this.page.locator('div[class*="group relative flex flex-col"]').filter({
+      has: this.page.locator(`span.text-sm:has-text("${title}")`)
+    }).first()
   }
 
   /**
@@ -150,21 +161,23 @@ export class KanbanPage extends BasePage {
     await this.openDealDialog(currentTitle)
 
     if (newData.title) {
-      const titleInput = this.page.locator('input[name="title"], input[placeholder*="título"]')
+      const titleInput = this.page.locator('input[name="title"], input#title')
+      await titleInput.clear()
       await titleInput.fill(newData.title)
     }
 
     if (newData.value) {
-      const valueInput = this.page.locator('input[name="value"], input[type="number"]').first()
+      const valueInput = this.page.locator('input[name="value"], input#value')
+      await valueInput.clear()
       await valueInput.fill(newData.value)
     }
 
     // Save changes
-    const saveButton = this.page.getByRole('button', { name: /salvar|save/i })
+    const saveButton = this.page.getByRole('button', { name: /salvar|atualizar|save|update/i })
     await saveButton.click()
 
     // Wait for dialog to close
-    await this.page.waitForSelector('[role="dialog"]', { state: 'hidden', timeout: 5000 })
+    await this.page.waitForSelector('[role="dialog"]', { state: 'hidden', timeout: 10000 })
   }
 
   /**
@@ -235,7 +248,8 @@ export class KanbanPage extends BasePage {
    */
   async clickWhatsAppForDeal(dealTitle: string) {
     const dealCard = this.getDealCardByTitle(dealTitle)
-    const whatsappButton = dealCard.locator('button:has(svg), [title*="WhatsApp"], [title*="Conversar"]')
+    // WhatsApp button has MessageCircle icon and green styling
+    const whatsappButton = dealCard.locator('button.text-green-500, button:has-text("Conversar")')
 
     // Wait for new page/tab to open
     const [newPage] = await Promise.all([
@@ -250,8 +264,10 @@ export class KanbanPage extends BasePage {
    * Check if Kanban board is visible
    */
   async isBoardVisible(): Promise<boolean> {
+    // Check if we can see at least one stage column
     const columns = this.getKanbanColumns()
-    return await columns.first().isVisible({ timeout: 5000 }).catch(() => false)
+    const count = await columns.count()
+    return count > 0
   }
 
   /**

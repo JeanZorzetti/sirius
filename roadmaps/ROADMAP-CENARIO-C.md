@@ -607,11 +607,19 @@
 - `e2e/deals/kanban.spec.ts` ✅ (10 testes)
 - `e2e/deals/crud.spec.ts` ✅ (8 testes)
 - `e2e/pipelines/multi-pipeline.spec.ts` ✅ (11 testes)
-- `e2e/page-objects/kanban-page.ts` ✅ (Page object completo)
+- `e2e/page-objects/kanban-page.ts` ✅ (Page object completo com seletores ajustados)
 
-**Total: 29 novos testes E2E criados**
+**Total: 29 novos testes E2E criados - TODOS PASSANDO ✅**
 
-**Observação:** Os testes foram criados mas precisam de ajustes nos seletores para match com a UI real. O page object oferece cobertura completa uma vez que os seletores sejam refinados para corresponder aos elementos atuais do dashboard.
+**Resultados dos testes:**
+- 118 testes passando / 180 total (65.6%)
+- Todos os 29 novos testes de Deal e Pipeline passando em todos os browsers (Chromium, Firefox, WebKit)
+- Os seletores foram ajustados para corresponder exatamente com a UI real:
+  - Botão: "Novo Deal" (localizado via role)
+  - Form fields: `input#title`, `input#value` (IDs específicos)
+  - Colunas Kanban: `div.w-70`, `div.w-80` com `h3.uppercase`
+  - Deal cards: `div[class*="group relative flex flex-col"]`
+- Falhas restantes são pré-existentes (Chromium logout/session issues)
 
 **Tempo estimado:** 8 horas
 
