@@ -682,17 +682,69 @@
 
 ---
 
-#### Task 7.2: KPIs Avançados
-- [ ] Calcular MRR (Monthly Recurring Revenue)
-- [ ] Calcular ARR (Annual Recurring Revenue)
-- [ ] Calcular Churn Rate
-- [ ] Calcular LTV (Lifetime Value)
-- [ ] Calcular Conversion Rate por pipeline
-- [ ] Forecast revenue (30/60/90 dias)
+#### Task 7.2: KPIs Avançados ✅
 
-**Arquivos a criar:**
-- `lib/analytics/kpis.ts`
-- `lib/analytics/forecasting.ts`
+- [x] Calcular MRR (Monthly Recurring Revenue) ✅
+- [x] Calcular ARR (Annual Recurring Revenue) ✅
+- [x] Calcular Churn Rate ✅
+- [x] Calcular LTV (Lifetime Value) ✅
+- [x] Calcular Conversion Rate por pipeline ✅
+- [x] Forecast revenue (30/60/90 dias) ✅
+
+**Arquivos criados:**
+
+- `lib/analytics/kpis.ts` ✅ (15 funções de KPI implementadas)
+- `lib/analytics/forecasting.ts` ✅ (9 funções de forecasting implementadas)
+
+**Arquivos modificados:**
+
+- `lib/analytics-jobs.ts` ✅ (integrado com KPIs e forecasting)
+
+**Funcionalidades implementadas:**
+
+**KPIs de Receita:**
+
+- `calculateMRR()` - Monthly Recurring Revenue
+- `calculateARR()` - Annual Recurring Revenue (MRR * 12)
+- `calculateChurnRate()` - Taxa de cancelamento por período
+- `calculateLTV()` - Lifetime Value médio (com churn rate configurável)
+- `calculateCAC()` - Customer Acquisition Cost (foundation para integração futura)
+
+**KPIs de Vendas por Organização:**
+
+- `calculateConversionRate()` - Taxa de conversão (deals fechados / deals criados)
+- `calculateWinRate()` - Taxa de vitória (won / won + lost)
+- `calculateAvgDealValue()` - Valor médio de deal
+- `calculateSalesCycleLength()` - Duração média do ciclo de vendas (em dias)
+- `calculatePipelineVelocity()` - Velocidade do pipeline (deals/dia)
+
+**Agregadores:**
+
+- `calculateOrganizationKPIs()` - Todos os KPIs de uma org em um período
+- `calculatePlatformKPIs()` - Todos os KPIs da plataforma para um mês
+
+**Forecasting de Receita (5 métodos):**
+
+- `forecastRevenueSimpleMovingAverage()` - Média móvel simples (SMA)
+- `forecastRevenueLinearGrowth()` - Crescimento linear baseado em tendência
+- `forecastRevenueExponentialMovingAverage()` - Média móvel ponderada (EMA)
+- `forecastRevenueByConversion()` - Baseado em conversão Free → Pro
+- `forecastRevenueHybrid()` - Combina múltiplos métodos com pesos
+
+**Forecasting Adicional:**
+
+- `calculateRevenueForecasts()` - Retorna previsões de 30/60/90 dias
+- `forecastChurnRate()` - Previsão de churn baseado em tendência
+- `forecastNewOrganizations()` - Previsão de novas signups
+
+**Integração com RevenueSnapshot:**
+
+- `createMonthlyRevenueSnapshot()` agora calcula e armazena:
+  - LTV médio (baseado em churn rate)
+  - CAC médio (foundation, retorna 0 por enquanto)
+  - Forecasts de 30, 60 e 90 dias (usando método híbrido)
+
+**Build:** ✅ Passou com sucesso (33 rotas geradas)
 
 **Tempo estimado:** 5 horas
 

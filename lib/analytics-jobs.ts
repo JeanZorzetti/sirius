@@ -7,6 +7,8 @@
 
 import { prisma } from '@/lib/prisma'
 import { Decimal } from '@prisma/client/runtime/library'
+import { calculateLTV, calculateCAC, calculateChurnRate } from '@/lib/analytics/kpis'
+import { calculateRevenueForecasts } from '@/lib/analytics/forecasting'
 
 /**
  * Cria snapshot diário de todos os deals de uma organização
@@ -190,6 +192,17 @@ export async function createMonthlyRevenueSnapshot(year: number, month: number) 
       return createdAt >= startOfMonth && createdAt <= endOfMonth
     }).length
 
+    // Calcular churn rate do período
+    const churnRate = await calculateChurnRate(startOfMonth, endOfMonth)
+    const monthlyChurnRateDecimal = churnRate / 100 // Converter para decimal
+
+    // Calcular métricas avançadas (KPIs)
+    const [ltv, cac, forecasts] = await Promise.all([
+      calculateLTV(monthlyChurnRateDecimal || 0.05), // 5% default se churn for 0
+      calculateCAC(month, year),
+      calculateRevenueForecasts(),
+    ])
+
     // Criar snapshot global
     const globalSnapshot = await prisma.revenueSnapshot.upsert({
       where: {
@@ -209,7 +222,12 @@ export async function createMonthlyRevenueSnapshot(year: number, month: number) 
         proOrganizations: proOrgs,
         freeOrganizations: freeOrgs,
         newOrganizations: newOrgs,
-        churnedOrganizations: 0, // TODO: implementar tracking de churn
+        churnedOrganizations: 0, // TODO: implementar tracking real de churn
+        avgLtv: ltv > 0 ? new Decimal(ltv) : null,
+        avgCac: cac > 0 ? new Decimal(cac) : null,
+        forecastNext30d: forecasts.forecastNext30d > 0 ? new Decimal(forecasts.forecastNext30d) : null,
+        forecastNext60d: forecasts.forecastNext60d > 0 ? new Decimal(forecasts.forecastNext60d) : null,
+        forecastNext90d: forecasts.forecastNext90d > 0 ? new Decimal(forecasts.forecastNext90d) : null,
       },
       update: {
         mrr: new Decimal(mrr),
@@ -218,6 +236,11 @@ export async function createMonthlyRevenueSnapshot(year: number, month: number) 
         proOrganizations: proOrgs,
         freeOrganizations: freeOrgs,
         newOrganizations: newOrgs,
+        avgLtv: ltv > 0 ? new Decimal(ltv) : null,
+        avgCac: cac > 0 ? new Decimal(cac) : null,
+        forecastNext30d: forecasts.forecastNext30d > 0 ? new Decimal(forecasts.forecastNext30d) : null,
+        forecastNext60d: forecasts.forecastNext60d > 0 ? new Decimal(forecasts.forecastNext60d) : null,
+        forecastNext90d: forecasts.forecastNext90d > 0 ? new Decimal(forecasts.forecastNext90d) : null,
       },
     })
 
