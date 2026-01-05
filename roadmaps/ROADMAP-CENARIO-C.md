@@ -750,25 +750,59 @@
 
 ---
 
-#### Task 7.3: Dashboard de Analytics
+#### Task 7.3: Dashboard de Analytics (Dual Implementation)
+
+**7.3.1: Admin Analytics Dashboard (Plataforma)**
+- [ ] Criar `app/admin/analytics/page.tsx`
+- [ ] Cards de KPIs da Plataforma:
+  - MRR/ARR atual e histórico
+  - Total de organizações (Free vs PRO)
+  - Churn Rate mensal
+  - LTV médio
+  - CAC médio (foundation)
+  - LTV/CAC Ratio
+- [ ] Gráficos da Plataforma:
+  - MRR trend (últimos 6 meses) - Line chart
+  - Forecast de receita 30/60/90 dias - Area chart
+  - Distribuição Free vs PRO - Pie chart
+  - New signups por mês - Bar chart
+- [ ] Tabela de Revenue Snapshots históricos
+- [ ] Feature gate: ADMIN only (role-based)
+
+**7.3.2: Organization Analytics Dashboard (PRO Users)**
 - [ ] Criar `app/dashboard/analytics-pro/page.tsx`
-- [ ] Cards de KPIs:
-  - MRR/ARR
-  - Churn
-  - LTV
-  - CAC (quando integrar ads)
-- [ ] Gráficos:
-  - Revenue trend (Recharts)
-  - Deal velocity
-  - Conversion funnel
-- [ ] Feature gate: PRO only
+- [ ] Cards de KPIs da Organização:
+  - Conversion Rate (período selecionável)
+  - Win Rate
+  - Avg Deal Value
+  - Sales Cycle Length (dias)
+  - Pipeline Velocity (deals/dia)
+- [ ] Gráficos da Organização:
+  - Deal pipeline trend - Line chart
+  - Conversion funnel por pipeline - Funnel chart
+  - Deals por stage - Bar chart
+  - Win/Loss breakdown - Pie chart
+- [ ] Seletor de período (7d, 30d, 90d, custom)
+- [ ] Seletor de pipeline (filtro)
+- [ ] Feature gate: PRO only (plan-based)
 
 **Arquivos a criar:**
+- `app/admin/analytics/page.tsx`
+- `app/admin/analytics/actions.ts`
 - `app/dashboard/analytics-pro/page.tsx`
-- `components/analytics/revenue-chart.tsx`
+- `app/dashboard/analytics-pro/actions.ts`
+- `components/analytics/platform-kpi-card.tsx`
+- `components/analytics/organization-kpi-card.tsx`
+- `components/analytics/revenue-trend-chart.tsx`
+- `components/analytics/forecast-chart.tsx`
 - `components/analytics/funnel-chart.tsx`
+- `components/analytics/period-selector.tsx`
 
-**Tempo estimado:** 5 horas
+**Dependências:**
+- [ ] Instalar `recharts` para gráficos
+- [ ] Criar componentes shadcn: `select`, `date-picker` (se ainda não existem)
+
+**Tempo estimado:** 8 horas (4h admin + 4h pro)
 
 ---
 
