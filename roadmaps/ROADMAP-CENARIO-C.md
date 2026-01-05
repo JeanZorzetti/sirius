@@ -643,19 +643,31 @@
 
 **Prioridade:** P2 (Preparação para futuro)
 
-#### Task 7.1: Data Warehouse Schema
-- [ ] Criar `prisma/analytics-schema.prisma` (opcional: separate DB)
-- [ ] Modelos:
-  - `DealSnapshot` (histórico diário de deals)
-  - `UserActivity` (eventos de uso)
-  - `RevenueSnapshot` (MRR, ARR tracking)
-- [ ] Criar jobs de agregação
-- [ ] Configurar Vercel Cron (ou alternativa)
+#### Task 7.1: Data Warehouse Schema ✅
+- [x] Criar modelos de analytics no schema principal ✅
+- [x] Modelos:
+  - `DealSnapshot` (histórico diário de deals) ✅
+  - `UserActivity` (eventos de uso) ✅
+  - `RevenueSnapshot` (MRR, ARR tracking) ✅
+- [x] Criar jobs de agregação ✅
+- [x] Configurar Vercel Cron ✅
 
-**Arquivos a criar:**
-- `prisma/analytics-schema.prisma`
-- `lib/analytics-jobs.ts`
-- `app/api/cron/daily-snapshot/route.ts`
+**Arquivos criados:**
+- `prisma/schema.prisma` (atualizado com 3 novos modelos) ✅
+- `prisma/migrations/20260105182116_add_analytics_models/migration.sql` ✅
+- `lib/analytics-jobs.ts` ✅
+- `app/api/cron/daily-snapshot/route.ts` ✅
+- `app/api/cron/monthly-revenue/route.ts` ✅ (extra)
+- `vercel.json` (configuração de cron jobs) ✅
+- `.env.example` (documentado CRON_SECRET) ✅
+
+**Funcionalidades implementadas:**
+- DealSnapshot: métricas agregadas por dia, breakdown por stage/pipeline
+- UserActivity: tracking de 15 tipos de eventos com metadata flexível
+- RevenueSnapshot: MRR, ARR, churn, LTV, CAC (foundation), forecast
+- Jobs de agregação: daily snapshot para todas orgs, monthly revenue
+- Cron endpoints protegidos com CRON_SECRET
+- Schedule automático: diário à meia-noite, mensal no último dia
 
 **Tempo estimado:** 6 horas
 
