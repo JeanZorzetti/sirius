@@ -196,7 +196,7 @@ export function PipelineManagementClient({ pipelines: initialPipelines, isPro }:
               </TableRow>
             ) : (
               pipelines.map((pipeline) => (
-                <TableRow key={pipeline.id}>
+                <TableRow key={pipeline.id} data-pipeline-id={pipeline.id}>
                   <TableCell className="font-medium">
                     <div className="flex items-center gap-2">
                       {pipeline.name}

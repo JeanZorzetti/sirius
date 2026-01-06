@@ -15,12 +15,16 @@ export class LoginPage extends BasePage {
    */
   async goto() {
     await this.page.goto('/login')
+    // Wait for page to be fully loaded (especially important for WebKit)
+    await this.page.waitForLoadState('networkidle')
   }
 
   /**
    * Fill email field
    */
   async fillEmail(email: string) {
+    // Wait for input to be visible and ready (especially important for WebKit)
+    await this.page.waitForSelector('input[name="email"]', { state: 'visible' })
     await this.page.fill('input[name="email"]', email)
   }
 
@@ -28,6 +32,8 @@ export class LoginPage extends BasePage {
    * Fill password field
    */
   async fillPassword(password: string) {
+    // Wait for input to be visible and ready (especially important for WebKit)
+    await this.page.waitForSelector('input[name="password"]', { state: 'visible' })
     await this.page.fill('input[name="password"]', password)
   }
 

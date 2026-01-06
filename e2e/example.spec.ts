@@ -7,8 +7,8 @@ test.describe('Playwright Setup Validation', () => {
     // Check that the page loads
     await expect(page).toHaveTitle(/Sirius/i)
 
-    // Check that main navigation is present
-    const loginButton = page.getByRole('link', { name: /login/i })
+    // Check that main navigation is present (button text is "Entrar" in Portuguese)
+    const loginButton = page.getByRole('link', { name: /entrar/i })
     await expect(loginButton).toBeVisible()
   })
 

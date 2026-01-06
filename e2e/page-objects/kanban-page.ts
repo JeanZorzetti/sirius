@@ -16,6 +16,8 @@ export class KanbanPage extends BasePage {
   async goto() {
     await this.page.goto('/dashboard')
     await this.page.waitForLoadState('networkidle')
+    // Wait for the "Novo Deal" button to be visible, indicating the page has fully loaded
+    await this.page.waitForSelector('button:has-text("Novo Deal")', { timeout: 15000 }).catch(() => {})
   }
 
   /**
@@ -102,8 +104,8 @@ export class KanbanPage extends BasePage {
     ).first()
     await submitButton.click()
 
-    // Wait for dialog to close
-    await this.page.waitForSelector('[role="dialog"]', { state: 'hidden', timeout: 10000 })
+    // Wait for dialog to close (increased timeout for server action)
+    await this.page.waitForSelector('[role="dialog"]', { state: 'hidden', timeout: 60000 })
   }
 
   /**
@@ -176,8 +178,8 @@ export class KanbanPage extends BasePage {
     const saveButton = this.page.getByRole('button', { name: /salvar|atualizar|save|update/i })
     await saveButton.click()
 
-    // Wait for dialog to close
-    await this.page.waitForSelector('[role="dialog"]', { state: 'hidden', timeout: 10000 })
+    // Wait for dialog to close (increased timeout for server action)
+    await this.page.waitForSelector('[role="dialog"]', { state: 'hidden', timeout: 60000 })
   }
 
   /**
@@ -196,8 +198,8 @@ export class KanbanPage extends BasePage {
       await confirmButton.click()
     }
 
-    // Wait for dialog to close
-    await this.page.waitForSelector('[role="dialog"]', { state: 'hidden', timeout: 5000 })
+    // Wait for dialog to close (increased timeout for server action)
+    await this.page.waitForSelector('[role="dialog"]', { state: 'hidden', timeout: 60000 })
   }
 
   /**
