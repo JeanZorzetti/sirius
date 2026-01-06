@@ -16,7 +16,14 @@ export default function MarketingLayout({
           <div className="flex items-center gap-4 md:gap-8">
             <Link href="/" className="text-xl font-bold flex items-center gap-2">
               <div className="relative w-8 h-8">
-                <Image src="/logo.png" alt="Sirius Logo" fill className="object-contain" />
+                <Image
+                  src="/logo.png"
+                  alt="Sirius Logo"
+                  fill
+                  className="object-contain"
+                  priority
+                  sizes="32px"
+                />
               </div>
               <span className="font-bold tracking-tight">Sirius CRM</span>
             </Link>

@@ -61,7 +61,14 @@ export function Sidebar() {
           <Link href="/dashboard" className="flex items-center gap-3 group">
             {/* Logo Icon */}
             <div className="relative w-8 h-8 group-hover:scale-105 transition-transform duration-300">
-              <Image src="/logo.png" alt="Sirius Logo" fill className="object-contain" />
+              <Image
+                src="/logo.png"
+                alt="Sirius Logo"
+                fill
+                className="object-contain"
+                priority
+                sizes="32px"
+              />
             </div>
 
             <div className="flex flex-col">

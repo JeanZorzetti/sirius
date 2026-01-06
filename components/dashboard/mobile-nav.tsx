@@ -77,7 +77,13 @@ export function MobileNav() {
           <div className="flex h-16 items-center justify-between px-6 border-b border-border">
             <Link href="/dashboard" className="flex items-center gap-3" onClick={() => setIsOpen(false)}>
               <div className="relative w-8 h-8">
-                <Image src="/logo.png" alt="Sirius Logo" fill className="object-contain" />
+                <Image
+                  src="/logo.png"
+                  alt="Sirius Logo"
+                  fill
+                  className="object-contain"
+                  sizes="32px"
+                />
               </div>
               <div className="flex flex-col">
                 <span className="text-sm font-bold bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-white dark:to-zinc-400 bg-clip-text text-transparent">SIRIUS</span>
