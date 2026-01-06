@@ -1,4 +1,4 @@
-import { Page, Locator } from '@playwright/test'
+import { Page } from '@playwright/test'
 import { BasePage } from './base-page'
 
 /**
@@ -17,7 +17,9 @@ export class KanbanPage extends BasePage {
     await this.page.goto('/dashboard')
     await this.page.waitForLoadState('networkidle')
     // Wait for the "Novo Deal" button to be visible, indicating the page has fully loaded
-    await this.page.waitForSelector('button:has-text("Novo Deal")', { timeout: 15000 }).catch(() => {})
+    await this.page.waitForSelector('button:has-text("Novo Deal")', { timeout: 15000, state: 'visible' })
+    // Also wait for at least one stage heading to confirm board loaded
+    await this.page.waitForSelector('h3.uppercase', { timeout: 10000, state: 'visible' })
   }
 
   /**
@@ -112,8 +114,9 @@ export class KanbanPage extends BasePage {
    * Get all Kanban columns (stages)
    */
   getKanbanColumns() {
-    // Columns are divs with specific structure containing stage name in h3
-    return this.page.locator('div.w-70, div.w-80, div:has(> div > div > h3.uppercase)')
+    // Find columns by looking for stage headings (h3 with uppercase text)
+    // Then get their parent containers
+    return this.page.locator('h3.uppercase').locator('xpath=ancestor::div[contains(@class, "flex-none")]')
   }
 
   /**
@@ -266,10 +269,10 @@ export class KanbanPage extends BasePage {
    * Check if Kanban board is visible
    */
   async isBoardVisible(): Promise<boolean> {
-    // Check if we can see at least one stage column
-    const columns = this.getKanbanColumns()
-    const count = await columns.count()
-    return count > 0
+    // Check if we can see at least one stage heading and the "Novo Deal" button
+    const hasStages = await this.page.locator('h3.uppercase').count() > 0
+    const hasButton = await this.page.locator('button:has-text("Novo Deal")').isVisible().catch(() => false)
+    return hasStages && hasButton
   }
 
   /**

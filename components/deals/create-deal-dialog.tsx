@@ -105,36 +105,41 @@ export function CreateDealDialog({
         setLoading(true)
 
         const formData = new FormData(event.currentTarget)
-        // Add default user (admin) or handle in server. For MVP we'll pick the first user or pass it.
-        // For now, let's hardcode userId in action or pass it if auth works.
-        // Auth works (NextAuth). Action can use getServerSession.
 
-        const result = await createDeal(formData)
+        try {
+            const result = await createDeal(formData)
 
-        setLoading(false)
+            if (result.success) {
+                // Track deal creation event
+                const value = formData.get('value')
+                const stageId = formData.get('stageId')
+                const stage = stages.find(s => s.id === stageId)
 
-        if (result.success) {
-            // Track deal creation event
-            const value = formData.get('value')
-            const stageId = formData.get('stageId')
-            const stage = stages.find(s => s.id === stageId)
+                trackDealCreated(
+                    value ? parseFloat(value.toString()) : undefined,
+                    stage?.name,
+                    result.dealId
+                )
 
-            trackDealCreated(
-                value ? parseFloat(value.toString()) : undefined,
-                stage?.name,
-                result.dealId
-            )
+                // Wait a bit for revalidatePath to complete before closing dialog
+                await new Promise(resolve => setTimeout(resolve, 100))
 
-            setOpen(false)
-            // Toast success?
-        } else {
-            // Might catch server-side limit here too
-            if (result.error?.includes('10 negócios')) {
                 setOpen(false)
-                setShowUpgradeModal(true)
+                // Toast success?
             } else {
-                alert("Failed to create deal")
+                // Might catch server-side limit here too
+                if (result.error?.includes('10 negócios')) {
+                    setOpen(false)
+                    setShowUpgradeModal(true)
+                } else {
+                    alert("Failed to create deal")
+                }
             }
+        } catch (error) {
+            console.error('Error creating deal:', error)
+            alert("Erro ao criar negócio")
+        } finally {
+            setLoading(false)
         }
     }
 

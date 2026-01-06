@@ -1244,13 +1244,23 @@
 
 ### 🟡 Dia 20 - Final Testing & Deploy
 
-#### Task 10.1: Smoke Tests
-- [ ] Rodar todos os testes (unit + E2E)
-- [ ] Verificar coverage (target: 70%+)
-- [ ] Fix flaky tests
+#### Task 10.1: Smoke Tests ⚠️
+
+- [x] Rodar todos os testes (unit + E2E) ✅
+- [x] Verificar coverage (target: 70%+) ⚠️ **Pass Rate: 63.3%**
+- [ ] Fix flaky tests (66 failures identificados)
 - [ ] Validar CI pipeline
 
 **Tempo estimado:** 3 horas
+**Status:** Testes rodados, análise completa em [docs/TEST-STATUS.md](../docs/TEST-STATUS.md)
+**Resultado:** 114/180 passed (63.3%), principais issues identificados e documentados
+
+**Próximos passos:**
+
+1. Fix dialog timeout issue (1h) → +22% pass rate
+2. Fix homepage login link (30min)
+3. Fix pipeline list display (1h)
+4. Investigar WebKit login timeouts (1-2h)
 
 ---
 

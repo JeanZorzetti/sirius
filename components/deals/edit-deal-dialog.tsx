@@ -138,13 +138,21 @@ export function EditDealDialog({ deal: initialDeal, open, onOpenChange, stages, 
         // Override contactId with the controlled selected value
         formData.set('contactId', selectedContactId === 'no_contact' ? '' : selectedContactId)
 
-        const result = await updateDeal(formData)
-        setLoading(false)
+        try {
+            const result = await updateDeal(formData)
 
-        if (result.success) {
-            onOpenChange(false)
-        } else {
-            alert("Failed to update deal")
+            if (result.success) {
+                // Wait a bit for revalidatePath to complete before closing dialog
+                await new Promise(resolve => setTimeout(resolve, 100))
+                onOpenChange(false)
+            } else {
+                alert("Failed to update deal")
+            }
+        } catch (error) {
+            console.error('Error updating deal:', error)
+            alert("Erro ao atualizar negócio")
+        } finally {
+            setLoading(false)
         }
     }
 
@@ -153,13 +161,22 @@ export function EditDealDialog({ deal: initialDeal, open, onOpenChange, stages, 
         if (!confirm('Tem certeza que deseja excluir este deal?')) return
 
         setLoading(true)
-        const result = await deleteDeal(initialDeal.id)
-        setLoading(false)
 
-        if (result.success) {
-            onOpenChange(false)
-        } else {
-            alert("Failed to delete deal")
+        try {
+            const result = await deleteDeal(initialDeal.id)
+
+            if (result.success) {
+                // Wait a bit for revalidatePath to complete before closing dialog
+                await new Promise(resolve => setTimeout(resolve, 100))
+                onOpenChange(false)
+            } else {
+                alert("Failed to delete deal")
+            }
+        } catch (error) {
+            console.error('Error deleting deal:', error)
+            alert("Erro ao excluir negócio")
+        } finally {
+            setLoading(false)
         }
     }
 
