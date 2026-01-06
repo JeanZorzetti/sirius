@@ -1,237 +1,332 @@
 # 🌟 Sirius CRM
 
-**O CRM mais intuitivo do mercado brasileiro.** Pipeline visual, WhatsApp com 1 clique, e métricas que brilham.
+<div align="center">
+
+**O CRM mais intuitivo para PMEs brasileiras**
+
+Pipeline visual, automações inteligentes, e analytics que realmente ajudam a vender.
+
+[Demo](https://sirius.roilabs.com.br) · [Documentação](docs/) · [Roadmap](roadmaps/ROADMAP-CENARIO-C.md) · [Reportar Bug](https://github.com/JeanZorzetti/sirius/issues)
+
+[![Next.js](https://img.shields.io/badge/Next.js-16.1-black?logo=next.js)](https://nextjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue?logo=typescript)](https://www.typescriptlang.org/)
+[![Prisma](https://img.shields.io/badge/Prisma-5.19-2D3748?logo=prisma)](https://www.prisma.io/)
+[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-15-336791?logo=postgresql)](https://www.postgresql.org/)
+[![License](https://img.shields.io/badge/license-Proprietary-red)]()
+
+</div>
 
 ---
 
-## 📋 Pré-requisitos
+## 📖 Sobre o Sirius CRM
 
-- **Node.js** 18+
-- **PostgreSQL** 14+
-- **npm** ou **yarn**
+Sirius CRM é uma plataforma SaaS moderna de gestão de vendas, construída especificamente para pequenas e médias empresas brasileiras. Com foco em simplicidade e eficiência, oferecemos:
+
+- 🎯 **Kanban Visual** - Arraste e solte deals entre etapas
+- 📊 **Analytics Avançado** - KPIs, forecasts e métricas em tempo real
+- 📧 **Email Automation** - Automações inteligentes por etapa do pipeline
+- 💰 **Multi-Pipeline** - Diferentes fluxos de venda na mesma conta
+- 👥 **Gestão de Equipe** - Controle de permissões e visibilidade
+- 🚀 **Performance** - Otimizado para orgs com milhares de deals
+
+### ✨ Features Principais
+
+| Feature | FREE | PRO |
+|---------|:----:|:---:|
+| Deals ilimitados | ✅ | ✅ |
+| 1 Pipeline | ✅ | ✅ |
+| Contatos ilimitados | ✅ | ✅ |
+| Kanban board | ✅ | ✅ |
+| Analytics básico | ✅ | ✅ |
+| **Pipelines ilimitados** | ❌ | ✅ |
+| **Analytics PRO** | ❌ | ✅ |
+| **Email automations** | ❌ | ✅ |
+| **Time permissions** | ❌ | ✅ |
+| **Priority support** | ❌ | ✅ |
+
+[Ver comparação completa →](docs/FEATURES.md)
 
 ---
 
-## 🚀 Setup Inicial
+## 🚀 Quick Start
 
-### 1. Clone o repositório
+### Pré-requisitos
+
+- Node.js 20+
+- PostgreSQL 15+
+- npm ou yarn
+
+### Instalação
 
 ```bash
-git clone https://github.com/ROI-Labs/sirius-crm.git
-cd sirius-crm
-```
+# 1. Clone o repositório
+git clone https://github.com/JeanZorzetti/sirius.git
+cd sirius
 
-### 2. Instale as dependências
-
-```bash
+# 2. Instale dependências
 npm install
-```
 
-### 3. Configure as variáveis de ambiente
+# 3. Configure environment variables
+cp .env.example .env
+# Edite .env com suas credenciais
 
-Copie o arquivo `.env.example` para `.env.local`:
-
-```bash
-cp .env.example .env.local
-```
-
-Edite `.env.local` e preencha **TODAS** as variáveis obrigatórias:
-
-#### 🔒 Segurança (OBRIGATÓRIO)
-
-```bash
-# Gere uma string aleatória segura:
-openssl rand -base64 32
-
-SESSION_SECRET="cole-a-string-gerada-aqui"
-NEXTAUTH_SECRET="cole-outra-string-diferente-aqui"
-```
-
-#### 🗄️ Database
-
-```bash
-DATABASE_URL="postgresql://user:password@localhost:5432/sirius_crm"
-```
-
-#### 💳 Stripe
-
-1. Crie uma conta em [stripe.com](https://stripe.com)
-2. Acesse [Dashboard > API Keys](https://dashboard.stripe.com/apikeys)
-3. Copie as chaves:
-
-```bash
-NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY="pk_test_..."
-STRIPE_SECRET_KEY="sk_test_..."
-```
-
-4. Configure o webhook:
-   - Acesse [Webhooks](https://dashboard.stripe.com/webhooks)
-   - Adicione endpoint: `https://seu-dominio.com/api/webhooks/stripe`
-   - Eventos: `checkout.session.completed`, `customer.subscription.updated`, `customer.subscription.deleted`
-   - Copie o Signing Secret:
-
-```bash
-STRIPE_WEBHOOK_SECRET="whsec_..."
-```
-
-#### 📧 Email (Opcional - para automações)
-
-1. Crie conta em [resend.com](https://resend.com)
-2. Crie API key:
-
-```bash
-RESEND_API_KEY="re_..."
-```
-
-#### 📊 Sentry (Opcional - recomendado para produção)
-
-1. Crie conta em [sentry.io](https://sentry.io)
-2. Crie novo projeto Next.js
-3. Configure:
-
-```bash
-NEXT_PUBLIC_SENTRY_DSN="https://...@sentry.io/..."
-SENTRY_ORG="seu-org-slug"
-SENTRY_PROJECT="sirius-crm"
-SENTRY_AUTH_TOKEN="..." # Para upload de source maps
-```
-
-#### 🌐 App Configuration
-
-```bash
-NEXT_PUBLIC_APP_URL="http://localhost:3000"  # Em produção: https://seu-dominio.com
-NEXTAUTH_URL="http://localhost:3000"         # Mesma URL acima
-```
-
-### 4. Configure o banco de dados
-
-```bash
-# Inicie o PostgreSQL (Docker Compose)
-docker-compose up -d
-
-# Rode as migrations
+# 4. Setup database
 npx prisma migrate deploy
+npx prisma generate
 
-# (Opcional) Seed de dados de exemplo
-npx prisma db seed
-```
-
-### 5. Inicie o servidor de desenvolvimento
-
-```bash
+# 5. Inicie o servidor
 npm run dev
 ```
 
-Acesse [http://localhost:3000](http://localhost:3000)
+Acesse http://localhost:3000
+
+### Deploy em 1 Clique
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/JeanZorzetti/sirius)
 
 ---
 
-## 🏗️ Comandos Disponíveis
+## 🛠️ Tech Stack
 
-| Comando | Descrição |
-|---------|-----------|
-| `npm run dev` | Inicia servidor de desenvolvimento |
-| `npm run build` | Build de produção |
-| `npm start` | Inicia servidor de produção |
-| `npm run lint` | Roda o linter |
-| `npx prisma studio` | Abre interface visual do banco |
-| `npx prisma migrate dev` | Cria nova migration |
-| `npx prisma generate` | Gera Prisma Client |
+### **Frontend**
+- **Framework:** Next.js 16.1 (App Router, React Server Components)
+- **UI:** React 19 + TypeScript 5
+- **Styling:** Tailwind CSS 3.4 + shadcn/ui
+- **Charts:** Recharts 3.6
+- **DnD:** @dnd-kit
+
+### **Backend**
+- **Runtime:** Node.js 20+
+- **ORM:** Prisma 5.19
+- **Database:** PostgreSQL 15+
+- **Auth:** NextAuth.js (Auth.js v5)
+
+### **Infrastructure**
+- **Hosting:** Vercel Edge Network
+- **Database:** Neon / Vercel Postgres
+- **Monitoring:** Sentry.io
+- **Emails:** Resend
+- **Payments:** Stripe
+
+[Ver arquitetura completa →](docs/ARCHITECTURE.md)
 
 ---
 
-## 📦 Estrutura do Projeto
+## 📁 Estrutura do Projeto
 
 ```
 sirius-crm/
 ├── app/                    # Next.js App Router
-│   ├── (marketing)/       # Páginas públicas (landing, pricing)
-│   ├── dashboard/         # Área logada (CRM)
-│   ├── api/               # API routes
-│   └── auth/              # Autenticação
-├── components/            # Componentes React
-│   ├── ui/               # Componentes base (Shadcn)
-│   ├── deals/            # Componentes de deals
-│   ├── contacts/         # Componentes de contatos
-│   └── analytics/        # Trackers de eventos
-├── lib/                   # Utilitários
-│   ├── auth.ts           # JWT/Sessions
-│   ├── stripe.ts         # Stripe client
+│   ├── (marketing)/       # Landing pages (SSG)
+│   ├── dashboard/         # Authenticated app (SSR)
+│   ├── admin/             # Admin dashboard (ADMIN role)
+│   └── api/               # API routes & webhooks
+├── components/            # React components
+│   ├── ui/               # Base components (shadcn)
+│   ├── dashboard/        # Dashboard components
+│   ├── analytics/        # Charts & KPI cards
+│   └── contacts/         # Contact management
+├── lib/                   # Utilities & configs
 │   ├── prisma.ts         # Database client
-│   ├── logger.ts         # Structured logging
-│   └── analytics.ts      # GTM events
-├── prisma/                # Database schema
-│   └── schema.prisma
-├── docs/                  # Documentação
-└── roadmaps/             # Roadmaps de desenvolvimento
+│   ├── auth.ts           # NextAuth config
+│   ├── stripe.ts         # Stripe client
+│   ├── logger.ts         # Pino logger
+│   └── analytics/        # KPI calculations
+├── prisma/               # Database
+│   ├── schema.prisma     # Schema definition
+│   └── migrations/       # Migration history
+├── docs/                 # Documentation
+│   ├── ARCHITECTURE.md   # System architecture
+│   ├── DATABASE.md       # Database schema
+│   ├── DEPLOYMENT.md     # Deploy guide
+│   ├── FEATURES.md       # Feature list
+│   └── API.md            # API reference
+└── tests/                # E2E tests (Playwright)
 ```
 
 ---
 
-## 🔐 Segurança
+## 🔐 Environment Variables
 
-**⚠️ IMPORTANTE:**
-- **NUNCA** comite `.env.local` no git
-- **SEMPRE** use strings aleatórias para secrets
-- **SEMPRE** rode `npm audit` antes de deploy
-- **SEMPRE** use HTTPS em produção
-
-### Gerar Secrets Seguros
+Crie um arquivo `.env` com as seguintes variáveis:
 
 ```bash
-# macOS/Linux
-openssl rand -base64 32
+# Database
+DATABASE_URL="postgresql://user:password@host:5432/database"
 
-# Windows (PowerShell)
-[Convert]::ToBase64String((1..32 | ForEach-Object { Get-Random -Minimum 0 -Maximum 256 }))
+# NextAuth
+NEXTAUTH_URL="http://localhost:3000"
+NEXTAUTH_SECRET="generate-with-openssl-rand-base64-32"
 
-# Node.js
-node -e "console.log(require('crypto').randomBytes(32).toString('base64'))"
+# Stripe
+STRIPE_SECRET_KEY="sk_test_..."
+STRIPE_PUBLISHABLE_KEY="pk_test_..."
+STRIPE_WEBHOOK_SECRET="whsec_..."
+STRIPE_PRO_PRICE_ID="price_..."
+
+# Resend (Email)
+RESEND_API_KEY="re_..."
+RESEND_FROM_EMAIL="noreply@yourdomain.com"
+
+# Sentry (Monitoring)
+SENTRY_DSN="https://...@sentry.io/..."
+SENTRY_ORG="your-org"
+SENTRY_PROJECT="sirius-crm"
+SENTRY_AUTH_TOKEN="sntrys_..."
 ```
+
+[Guia completo de environment variables →](docs/DEPLOYMENT.md#environment-variables)
 
 ---
 
-## 🚀 Deploy em Produção
+## 📊 Database Schema
 
-### Vercel (Recomendado)
+O Sirius CRM utiliza PostgreSQL com 15 modelos principais:
 
-1. Conecte seu repositório no [Vercel](https://vercel.com)
-2. Adicione todas as environment variables
-3. Deploy automático!
+- **Core:** Organization, User, Contact, Pipeline, PipelineStage, Deal
+- **Enhancements:** Note, Tag, Activity
+- **Auth:** Invite
+- **Email:** EmailAutomationSetting, EmailLog
+- **Analytics:** DealSnapshot, UserActivity, RevenueSnapshot
 
-### Outras Plataformas
+[Ver schema completo →](docs/DATABASE.md)
 
-- **Railway**: Suporte nativo a PostgreSQL
-- **Render**: Free tier disponível
-- **DigitalOcean App Platform**: $5/mês
+---
 
-**Checklist de Deploy:**
-- [ ] Todas as env vars configuradas
-- [ ] Database provisionado
-- [ ] Stripe webhooks apontando para produção
-- [ ] Sentry configurado
-- [ ] DNS configurado
-- [ ] SSL/HTTPS habilitado
+## 🎯 Roadmap
+
+### ✅ Concluído (v1.0)
+
+- [x] Autenticação e multi-tenancy
+- [x] Kanban board com drag & drop
+- [x] Multi-pipeline
+- [x] Gestão de contatos
+- [x] Dashboard analytics
+- [x] Admin dashboard
+- [x] Email automations
+- [x] Stripe integration (billing)
+- [x] Performance optimizations (indexes, query optimization, image optimization)
+- [x] Monitoring (Sentry)
+- [x] Documentação completa
+
+### 🚧 Em Desenvolvimento (v1.1)
+
+- [ ] Testes E2E completos (Playwright)
+- [ ] API pública REST
+- [ ] Webhooks customizados
+- [ ] Integrações (WhatsApp, Google Calendar)
+
+### 🔮 Planejado (v2.0)
+
+- [ ] Mobile app (React Native)
+- [ ] IA para previsão de vendas
+- [ ] Advanced reporting
+- [ ] White-label solution
+
+[Roadmap completo →](roadmaps/ROADMAP-CENARIO-C.md)
+
+---
+
+## 🧪 Testing
+
+```bash
+# Run E2E tests
+npm run test:e2e
+
+# Run E2E tests in UI mode
+npm run test:e2e:ui
+
+# Run specific test file
+npx playwright test tests/deals-crud.spec.ts
+```
+
+**Coverage:**
+- E2E Tests: Playwright (auth, deals, pipelines)
+- Unit Tests: Planejado (Vitest)
+- Integration Tests: Planejado
 
 ---
 
 ## 📚 Documentação
 
-- [Arquitetura](docs/ARCHITECTURE.md)
-- [Database Schema](docs/DATABASE.md)
-- [GTM Setup](docs/GTM-EVENTS-SETUP.md)
-- [Conversions Optimizations](docs/CONVERSION-OPTIMIZATIONS.md)
-- [Roadmap Cenário C](roadmaps/ROADMAP-CENARIO-C.md)
+| Documento | Descrição |
+|-----------|-----------|
+| [ARCHITECTURE.md](docs/ARCHITECTURE.md) | Arquitetura, tech stack, patterns |
+| [DATABASE.md](docs/DATABASE.md) | Schema, relationships, migrations |
+| [DEPLOYMENT.md](docs/DEPLOYMENT.md) | Deploy guide, env vars, CI/CD |
+| [FEATURES.md](docs/FEATURES.md) | Feature list (FREE vs PRO) |
+| [API.md](docs/API.md) | API reference (em desenvolvimento) |
 
 ---
 
 ## 🤝 Contribuindo
 
+Contribuições são bem-vindas! Por favor, siga estas etapas:
+
 1. Fork o projeto
-2. Crie uma branch: `git checkout -b feature/MinhaFeature`
-3. Commit: `git commit -m 'feat: Minha nova feature'`
-4. Push: `git push origin feature/MinhaFeature`
+2. Crie uma branch para sua feature (`git checkout -b feature/AmazingFeature`)
+3. Commit suas mudanças (`git commit -m 'feat: Add AmazingFeature'`)
+4. Push para a branch (`git push origin feature/AmazingFeature`)
 5. Abra um Pull Request
+
+### Commit Convention
+
+Usamos [Conventional Commits](https://www.conventionalcommits.org/):
+
+```
+feat: Add new feature
+fix: Fix bug
+docs: Update documentation
+style: Format code
+refactor: Refactor code
+perf: Performance improvement
+test: Add tests
+chore: Update dependencies
+```
+
+---
+
+## 📈 Performance
+
+### Otimizações Implementadas
+
+- ✅ **Database indexes** (4 strategic indexes)
+- ✅ **Query optimization** (60-90% payload reduction)
+- ✅ **Image optimization** (WebP/AVIF, lazy loading)
+- ✅ **Server Components** (reduced client JS)
+- ✅ **Edge Network** (global CDN)
+
+### Metrics
+
+| Metric | Target | Current |
+|--------|:------:|:-------:|
+| LCP | < 2.5s | ✅ |
+| FID | < 100ms | ✅ |
+| CLS | < 0.1 | ✅ |
+| TTI | < 3.5s | ✅ |
+
+---
+
+## 🔒 Segurança
+
+### Medidas Implementadas
+
+- ✅ SQL Injection: Prisma ORM (prepared statements)
+- ✅ XSS: React auto-escaping + sanitization
+- ✅ CSRF: SameSite cookies + token validation
+- ✅ Auth: Database sessions (não JWT)
+- ✅ Password hashing: bcrypt
+- ✅ Row-level security: organizationId filtering
+- ✅ RBAC: Role-based + Organization role
+- ✅ Secrets: Environment variables (nunca hardcoded)
+- ✅ HTTPS: SSL/TLS em produção
+- ✅ Rate limiting: Vercel edge
+- ✅ Monitoring: Sentry error tracking
+
+### Reportar Vulnerabilidade
+
+Se você descobrir uma vulnerabilidade de segurança, por favor **NÃO** abra uma issue pública.
+Envie um email para: seguranca@roilabs.com.br
 
 ---
 
@@ -239,14 +334,44 @@ node -e "console.log(require('crypto').randomBytes(32).toString('base64'))"
 
 Propriedade de **ROI Labs**. Todos os direitos reservados.
 
+Este software é proprietário e confidencial. Uso não autorizado é estritamente proibido.
+
 ---
 
 ## 🆘 Suporte
 
 - **Email:** suporte@roilabs.com.br
-- **Documentação:** [docs.sirius.roilabs.com.br](https://docs.sirius.roilabs.com.br)
-- **Issues:** [GitHub Issues](https://github.com/ROI-Labs/sirius-crm/issues)
+- **Documentação:** [docs/](docs/)
+- **Issues:** [GitHub Issues](https://github.com/JeanZorzetti/sirius/issues)
+- **Discord:** Em breve
 
 ---
 
+## 👥 Time
+
 **Desenvolvido com ❤️ pela equipe ROI Labs**
+
+- **Lead Developer:** Jean Zorzetti
+- **Product Owner:** ROI Labs
+- **Contributors:** [Ver todos](https://github.com/JeanZorzetti/sirius/graphs/contributors)
+
+---
+
+## 🙏 Agradecimentos
+
+- [Next.js](https://nextjs.org/) - React framework
+- [Prisma](https://www.prisma.io/) - Type-safe ORM
+- [shadcn/ui](https://ui.shadcn.com/) - UI components
+- [Vercel](https://vercel.com/) - Hosting platform
+- [Stripe](https://stripe.com/) - Payment processing
+- [Sentry](https://sentry.io/) - Error tracking
+
+---
+
+<div align="center">
+
+**[⬆ Voltar ao topo](#-sirius-crm)**
+
+Made with ⚡ by [ROI Labs](https://roilabs.com.br)
+
+</div>
