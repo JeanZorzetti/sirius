@@ -49,9 +49,23 @@ interface EditDealDialogProps {
     onOpenChange: (open: boolean) => void
     stages: { id: string, name: string }[]
     contacts: { id: string, name: string, phone?: string | null }[]
+    onOptimisticUpdate?: (dealId: string, updates: any) => void
+    onOptimisticDelete?: (dealId: string) => void
+    onRollback?: (tempId: string) => void
+    onSuccess?: () => void
 }
 
-export function EditDealDialog({ deal: initialDeal, open, onOpenChange, stages, contacts }: EditDealDialogProps) {
+export function EditDealDialog({
+    deal: initialDeal,
+    open,
+    onOpenChange,
+    stages,
+    contacts,
+    onOptimisticUpdate,
+    onOptimisticDelete,
+    onRollback,
+    onSuccess
+}: EditDealDialogProps) {
     const [loading, setLoading] = useState(false)
     const [fullDeal, setFullDeal] = useState<any>(null)
     const [fetchingDetails, setFetchingDetails] = useState(false)
@@ -138,21 +152,51 @@ export function EditDealDialog({ deal: initialDeal, open, onOpenChange, stages, 
         // Override contactId with the controlled selected value
         formData.set('contactId', selectedContactId === 'no_contact' ? '' : selectedContactId)
 
+        // Extract updates for optimistic UI
+        const updates = {
+            title: formData.get('title') as string,
+            value: formData.get('value') ? parseFloat(formData.get('value') as string) : null,
+            stageId: formData.get('stageId') as string,
+            contactId: selectedContactId === 'no_contact' ? null : selectedContactId,
+            closeDate: formData.get('closeDate') as string || null,
+            dueDate: formData.get('dueDate') as string || null,
+        }
+
+        // Apply optimistic update
+        if (onOptimisticUpdate) {
+            onOptimisticUpdate(initialDeal.id, updates)
+        }
+
+        // Close dialog immediately
+        onOpenChange(false)
+        setLoading(false)
+
+        // Submit to server in background
         try {
             const result = await updateDeal(formData)
 
             if (result.success) {
-                // Wait a bit for revalidatePath to complete before closing dialog
-                await new Promise(resolve => setTimeout(resolve, 100))
-                onOpenChange(false)
+                // Sync with server
+                if (onSuccess) {
+                    onSuccess()
+                }
             } else {
-                alert("Failed to update deal")
+                // Rollback not really applicable for updates - just show error
+                alert("Erro ao atualizar negócio: " + (result.error || 'Erro desconhecido'))
+
+                // Sync to get correct data
+                if (onSuccess) {
+                    onSuccess()
+                }
             }
         } catch (error) {
             console.error('Error updating deal:', error)
             alert("Erro ao atualizar negócio")
-        } finally {
-            setLoading(false)
+
+            // Sync to get correct data
+            if (onSuccess) {
+                onSuccess()
+            }
         }
     }
 
@@ -160,23 +204,41 @@ export function EditDealDialog({ deal: initialDeal, open, onOpenChange, stages, 
         if (!initialDeal) return
         if (!confirm('Tem certeza que deseja excluir este deal?')) return
 
-        setLoading(true)
+        const dealId = initialDeal.id
 
+        // Apply optimistic delete
+        if (onOptimisticDelete) {
+            onOptimisticDelete(dealId)
+        }
+
+        // Close dialog immediately
+        onOpenChange(false)
+
+        // Delete on server in background
         try {
-            const result = await deleteDeal(initialDeal.id)
+            const result = await deleteDeal(dealId)
 
             if (result.success) {
-                // Wait a bit for revalidatePath to complete before closing dialog
-                await new Promise(resolve => setTimeout(resolve, 100))
-                onOpenChange(false)
+                // Sync with server
+                if (onSuccess) {
+                    onSuccess()
+                }
             } else {
-                alert("Failed to delete deal")
+                alert("Erro ao excluir negócio: " + (result.error || 'Erro desconhecido'))
+
+                // Sync to restore deal
+                if (onSuccess) {
+                    onSuccess()
+                }
             }
         } catch (error) {
             console.error('Error deleting deal:', error)
             alert("Erro ao excluir negócio")
-        } finally {
-            setLoading(false)
+
+            // Sync to restore deal
+            if (onSuccess) {
+                onSuccess()
+            }
         }
     }
 

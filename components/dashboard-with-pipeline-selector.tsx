@@ -1,6 +1,7 @@
 'use client'
 
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useCallback } from 'react'
+import { useRouter } from 'next/navigation'
 import { KanbanBoard } from '@/components/kanban-board'
 import { PipelineSelector } from '@/components/pipelines/pipeline-selector'
 import { CreateDealDialog } from '@/components/deals/create-deal-dialog'
@@ -44,12 +45,17 @@ type DashboardWithPipelineSelectorProps = {
 
 export function DashboardWithPipelineSelector({
   pipelines,
-  allStages,
+  allStages: initialStages,
   contacts,
   dealCount,
   isPro,
   isMember
 }: DashboardWithPipelineSelectorProps) {
+  const router = useRouter()
+
+  // Local state for optimistic updates
+  const [localStages, setLocalStages] = useState<Stage[]>(initialStages)
+
   const [selectedPipelineId, setSelectedPipelineId] = useState<string>(() => {
     // Try to get from localStorage first
     if (typeof window !== 'undefined') {
@@ -65,8 +71,8 @@ export function DashboardWithPipelineSelector({
 
   // Filter stages and deals by selected pipeline
   const filteredStages = useMemo(() => {
-    return allStages.filter(stage => stage.pipelineId === selectedPipelineId)
-  }, [allStages, selectedPipelineId])
+    return localStages.filter(stage => stage.pipelineId === selectedPipelineId)
+  }, [localStages, selectedPipelineId])
 
   const filteredDealCount = useMemo(() => {
     return filteredStages.flatMap(stage => stage.deals).length
@@ -77,6 +83,50 @@ export function DashboardWithPipelineSelector({
   const handlePipelineChange = (pipelineId: string) => {
     setSelectedPipelineId(pipelineId)
   }
+
+  // Optimistic UI callbacks
+  const addDealOptimistic = useCallback((tempDeal: any) => {
+    setLocalStages(prevStages =>
+      prevStages.map(stage =>
+        stage.id === tempDeal.stageId
+          ? { ...stage, deals: [...stage.deals, tempDeal] }
+          : stage
+      )
+    )
+  }, [])
+
+  const updateDealOptimistic = useCallback((dealId: string, updates: any) => {
+    setLocalStages(prevStages =>
+      prevStages.map(stage => ({
+        ...stage,
+        deals: stage.deals.map(deal =>
+          deal.id === dealId ? { ...deal, ...updates } : deal
+        )
+      }))
+    )
+  }, [])
+
+  const deleteDealOptimistic = useCallback((dealId: string) => {
+    setLocalStages(prevStages =>
+      prevStages.map(stage => ({
+        ...stage,
+        deals: stage.deals.filter(deal => deal.id !== dealId)
+      }))
+    )
+  }, [])
+
+  const rollbackDeal = useCallback((tempId: string) => {
+    setLocalStages(prevStages =>
+      prevStages.map(stage => ({
+        ...stage,
+        deals: stage.deals.filter(deal => deal.id !== tempId)
+      }))
+    )
+  }, [])
+
+  const syncWithServer = useCallback(() => {
+    router.refresh()
+  }, [router])
 
   return (
     <div className="flex-1 space-y-4">
@@ -103,12 +153,22 @@ export function DashboardWithPipelineSelector({
             contacts={contacts}
             dealCount={filteredDealCount}
             isPro={isPro}
+            onOptimisticAdd={addDealOptimistic}
+            onRollback={rollbackDeal}
+            onSuccess={syncWithServer}
           />
         </div>
       </div>
 
       {filteredStages.length > 0 ? (
-        <KanbanBoard stages={filteredStages} contacts={contacts} />
+        <KanbanBoard
+          stages={filteredStages}
+          contacts={contacts}
+          onOptimisticUpdate={updateDealOptimistic}
+          onOptimisticDelete={deleteDealOptimistic}
+          onRollback={rollbackDeal}
+          onSuccess={syncWithServer}
+        />
       ) : (
         <EmptyState
           icon={DollarSign}

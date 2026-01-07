@@ -41,12 +41,18 @@ export function CreateDealDialog({
     stages,
     contacts: initialContacts,
     dealCount = 0,
-    isPro = false
+    isPro = false,
+    onOptimisticAdd,
+    onRollback,
+    onSuccess
 }: {
     stages: Stage[],
     contacts: Contact[],
     dealCount?: number,
-    isPro?: boolean
+    isPro?: boolean,
+    onOptimisticAdd?: (deal: any) => void,
+    onRollback?: (tempId: string) => void,
+    onSuccess?: () => void
 }) {
     const [open, setOpen] = useState(false)
     const [showUpgradeModal, setShowUpgradeModal] = useState(false)
@@ -106,40 +112,73 @@ export function CreateDealDialog({
 
         const formData = new FormData(event.currentTarget)
 
+        // Create temporary deal for optimistic UI
+        const tempId = `temp-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`
+        const title = formData.get('title') as string
+        const value = formData.get('value') as string
+        const stageId = formData.get('stageId') as string
+        const contactId = formData.get('contactId') as string
+
+        const tempDeal = {
+            id: tempId,
+            title,
+            value: value ? parseFloat(value) : null,
+            stageId,
+            contactId: contactId || null,
+            contact: contactId ? contacts.find(c => c.id === contactId) : null,
+            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString(),
+            isOptimistic: true // Flag to identify temporary deals
+        }
+
+        // Add deal optimistically
+        if (onOptimisticAdd) {
+            onOptimisticAdd(tempDeal)
+        }
+
+        // Close dialog immediately for instant feedback
+        setOpen(false)
+        setLoading(false)
+
+        // Now submit to server in background
         try {
             const result = await createDeal(formData)
 
             if (result.success) {
                 // Track deal creation event
-                const value = formData.get('value')
-                const stageId = formData.get('stageId')
                 const stage = stages.find(s => s.id === stageId)
-
                 trackDealCreated(
-                    value ? parseFloat(value.toString()) : undefined,
+                    value ? parseFloat(value) : undefined,
                     stage?.name,
                     result.dealId
                 )
 
-                // Wait a bit for revalidatePath to complete before closing dialog
-                await new Promise(resolve => setTimeout(resolve, 100))
-
-                setOpen(false)
-                // Toast success?
+                // Sync with server to get real deal data
+                if (onSuccess) {
+                    onSuccess()
+                }
             } else {
-                // Might catch server-side limit here too
+                // Rollback optimistic update
+                if (onRollback) {
+                    onRollback(tempId)
+                }
+
+                // Handle specific errors
                 if (result.error?.includes('10 negócios')) {
-                    setOpen(false)
                     setShowUpgradeModal(true)
                 } else {
-                    alert("Failed to create deal")
+                    alert("Erro ao criar negócio: " + (result.error || 'Erro desconhecido'))
                 }
             }
         } catch (error) {
             console.error('Error creating deal:', error)
+
+            // Rollback on error
+            if (onRollback) {
+                onRollback(tempId)
+            }
+
             alert("Erro ao criar negócio")
-        } finally {
-            setLoading(false)
         }
     }
 

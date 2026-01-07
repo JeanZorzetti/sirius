@@ -74,6 +74,10 @@ type Contact = {
 type KanbanBoardProps = {
   stages: Stage[]
   contacts: Contact[]
+  onOptimisticUpdate?: (dealId: string, updates: any) => void
+  onOptimisticDelete?: (dealId: string) => void
+  onRollback?: (tempId: string) => void
+  onSuccess?: () => void
 }
 
 function DealCard({ deal, onClick }: { deal: Deal, onClick?: () => void }) {
@@ -275,7 +279,14 @@ function KanbanColumn({ stage, onDealClick, isOverlay, onRename, onDelete }: {
   )
 }
 
-export function KanbanBoard({ stages: initialStages, contacts }: KanbanBoardProps) {
+export function KanbanBoard({
+  stages: initialStages,
+  contacts,
+  onOptimisticUpdate,
+  onOptimisticDelete,
+  onRollback,
+  onSuccess
+}: KanbanBoardProps) {
   const [stages, setStages] = useState(initialStages)
   const [activeDeal, setActiveDeal] = useState<Deal | null>(null)
   const [activeStage, setActiveStage] = useState<Stage | null>(null) // For Column Drag
@@ -599,6 +610,10 @@ export function KanbanBoard({ stages: initialStages, contacts }: KanbanBoardProp
         onOpenChange={(open) => !open && setEditingDeal(null)}
         stages={stages}
         contacts={contacts}
+        onOptimisticUpdate={onOptimisticUpdate}
+        onOptimisticDelete={onOptimisticDelete}
+        onRollback={onRollback}
+        onSuccess={onSuccess}
       />
 
       <Dialog open={isNewStageOpen} onOpenChange={setIsNewStageOpen}>
