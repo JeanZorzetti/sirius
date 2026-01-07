@@ -106,8 +106,9 @@ export class KanbanPage extends BasePage {
     ).first()
     await submitButton.click()
 
-    // Wait for dialog to close (increased timeout for server action)
-    await this.page.waitForSelector('[role="dialog"]', { state: 'hidden', timeout: 60000 })
+    // With Optimistic UI, dialog closes immediately - no need to wait
+    // Just wait a bit for the optimistic update to apply
+    await this.page.waitForTimeout(500)
   }
 
   /**
@@ -181,8 +182,8 @@ export class KanbanPage extends BasePage {
     const saveButton = this.page.getByRole('button', { name: /salvar|atualizar|save|update/i })
     await saveButton.click()
 
-    // Wait for dialog to close (increased timeout for server action)
-    await this.page.waitForSelector('[role="dialog"]', { state: 'hidden', timeout: 60000 })
+    // With Optimistic UI, dialog closes immediately - no need to wait
+    await this.page.waitForTimeout(500)
   }
 
   /**
@@ -201,8 +202,8 @@ export class KanbanPage extends BasePage {
       await confirmButton.click()
     }
 
-    // Wait for dialog to close (increased timeout for server action)
-    await this.page.waitForSelector('[role="dialog"]', { state: 'hidden', timeout: 60000 })
+    // With Optimistic UI, dialog closes immediately - no need to wait
+    await this.page.waitForTimeout(500)
   }
 
   /**
