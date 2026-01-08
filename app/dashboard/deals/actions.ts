@@ -3,6 +3,8 @@
 import { getSession } from "@/lib/auth"
 import { prisma } from "@/lib/prisma"
 import { revalidatePath } from "next/cache"
+import { dispatchWebhookAsync } from "@/lib/webhooks/dispatcher"
+import { WEBHOOK_EVENTS } from "@/lib/webhooks/events"
 
 async function checkPermission() {
     const session = await getSession()
@@ -109,6 +111,21 @@ export async function addNote(dealId: string, content: string) {
             userId: user.id
         }
     })
+
+    // Dispatch webhook (async, non-blocking)
+    if (user.organizationId) {
+        dispatchWebhookAsync(user.organizationId, WEBHOOK_EVENTS.DEAL_NOTE_ADDED, {
+            note: {
+                id: note.id,
+                content: note.content,
+                dealId: note.dealId
+            },
+            user: {
+                id: user.id,
+                name: user.name
+            }
+        })
+    }
 
     revalidatePath("/dashboard")
     return note

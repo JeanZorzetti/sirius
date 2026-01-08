@@ -3,6 +3,8 @@
 import { PrismaClient } from '@prisma/client'
 import { revalidatePath } from 'next/cache'
 import { getSession } from '@/lib/auth'
+import { dispatchWebhookAsync } from '@/lib/webhooks/dispatcher'
+import { WEBHOOK_EVENTS } from '@/lib/webhooks/events'
 
 const prisma = new PrismaClient()
 
@@ -38,6 +40,17 @@ export async function createContact(formData: FormData) {
                 phone: phone || null,
                 company: company || null,
                 organizationId: user.organizationId
+            }
+        })
+
+        // Dispatch webhook (async, non-blocking)
+        dispatchWebhookAsync(user.organizationId, WEBHOOK_EVENTS.CONTACT_CREATED, {
+            contact: {
+                id: contact.id,
+                name: contact.name,
+                email: contact.email,
+                phone: contact.phone,
+                company: contact.company
             }
         })
 

@@ -4,6 +4,8 @@ import { PrismaClient } from '@prisma/client'
 import { revalidatePath } from 'next/cache'
 import { getSession } from "@/lib/auth"
 import { sendDealCreatedEmail, sendDealStageChangedEmail, sendUpgradeNudgeEmail, sendEmailAsync, shouldSendUpgradeNudge } from '@/lib/email-automations'
+import { dispatchWebhookAsync } from '@/lib/webhooks/dispatcher'
+import { WEBHOOK_EVENTS } from '@/lib/webhooks/events'
 
 const prisma = new PrismaClient()
 
@@ -66,6 +68,17 @@ export async function updateDealStage(dealId: string, stageId: string) {
     await prisma.deal.update({
       where: { id: dealId },
       data: { stageId: stageId },
+    })
+
+    // Dispatch webhook (async, non-blocking)
+    dispatchWebhookAsync(user.organizationId, WEBHOOK_EVENTS.DEAL_STAGE_CHANGED, {
+      deal: {
+        id: deal.id,
+        title: deal.title,
+        value: Number(deal.value || 0)
+      },
+      oldStage: { name: oldStageName },
+      newStage: { id: newStage.id, name: newStage.name }
     })
 
     // Send email notification (async, non-blocking)
@@ -155,6 +168,23 @@ export async function createDeal(formData: FormData) {
       }
     })
 
+    // Dispatch webhook (async, non-blocking)
+    dispatchWebhookAsync(user.organizationId, WEBHOOK_EVENTS.DEAL_CREATED, {
+      deal: {
+        id: deal.id,
+        title: deal.title,
+        value: Number(deal.value || 0),
+        stage: {
+          id: deal.stage.id,
+          name: deal.stage.name
+        },
+        contact: deal.contact ? {
+          id: deal.contact.id,
+          name: deal.contact.name
+        } : null
+      }
+    })
+
     // Get updated deal count after creation
     const newDealCount = await prisma.deal.count({
       where: { organizationId: user.organizationId }
@@ -225,7 +255,7 @@ export async function updateDeal(formData: FormData) {
     const closeDate = closeDateStr ? new Date(closeDateStr) : null
     const dueDate = dueDateStr ? new Date(dueDateStr) : null
 
-    await prisma.deal.update({
+    const updatedDeal = await prisma.deal.update({
       where: { id: dealId },
       data: {
         title,
@@ -234,6 +264,22 @@ export async function updateDeal(formData: FormData) {
         contactId,
         closeDate,
         dueDate
+      },
+      include: {
+        stage: true
+      }
+    })
+
+    // Dispatch webhook (async, non-blocking)
+    dispatchWebhookAsync(user.organizationId, WEBHOOK_EVENTS.DEAL_UPDATED, {
+      deal: {
+        id: updatedDeal.id,
+        title: updatedDeal.title,
+        value: Number(updatedDeal.value || 0),
+        stage: {
+          id: updatedDeal.stage.id,
+          name: updatedDeal.stage.name
+        }
       }
     })
 
@@ -327,13 +373,26 @@ export async function deleteDeal(dealId: string) {
     const user = await getAuthenticatedUser()
 
     // Security check
-    const existingDeal = await prisma.deal.findUnique({ where: { id: dealId } })
+    const existingDeal = await prisma.deal.findUnique({
+      where: { id: dealId },
+      include: { stage: true }
+    })
     if (!existingDeal || existingDeal.organizationId !== user.organizationId) {
       return { success: false, error: 'Unauthorized' }
     }
 
+    // Delete deal
     await prisma.deal.delete({
       where: { id: dealId },
+    })
+
+    // Dispatch webhook (async, non-blocking)
+    dispatchWebhookAsync(user.organizationId, WEBHOOK_EVENTS.DEAL_DELETED, {
+      deal: {
+        id: existingDeal.id,
+        title: existingDeal.title,
+        value: Number(existingDeal.value || 0)
+      }
     })
 
     revalidatePath('/dashboard')

@@ -2,6 +2,8 @@ import { headers } from "next/headers";
 import { NextResponse } from "next/server";
 import { stripe } from "@/lib/stripe";
 import { PrismaClient } from "@prisma/client";
+import { dispatchWebhookAsync } from "@/lib/webhooks/dispatcher";
+import { WEBHOOK_EVENTS } from "@/lib/webhooks/events";
 
 const prisma = new PrismaClient();
 
@@ -36,7 +38,7 @@ export async function POST(req: Request) {
             return new NextResponse("Org ID missing in metadata", { status: 400 });
         }
 
-        await prisma.organization.update({
+        const org = await prisma.organization.update({
             where: {
                 id: session.metadata.organizationId
             },
@@ -47,6 +49,19 @@ export async function POST(req: Request) {
             }
         })
         console.log(`[STRIPE] Organization ${session.metadata.organizationId} upgraded to PRO.`);
+
+        // Dispatch webhook (async, non-blocking)
+        dispatchWebhookAsync(org.id, WEBHOOK_EVENTS.ORGANIZATION_UPGRADED, {
+            organization: {
+                id: org.id,
+                name: org.name,
+                plan: 'PRO'
+            },
+            subscription: {
+                id: subscription.id,
+                status: subscription.status
+            }
+        });
     }
 
     return new NextResponse(null, { status: 200 });
