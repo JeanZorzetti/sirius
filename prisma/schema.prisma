@@ -36,6 +36,11 @@ model Organization {
   dealSnapshots    DealSnapshot[]
   userActivities   UserActivity[]
   revenueSnapshots RevenueSnapshot[]
+
+  // API & Webhooks
+  apiKeys      ApiKey[]
+  webhooks     Webhook[]
+  webhookLogs  WebhookLog[]
 }
 
 model User {
@@ -384,4 +389,71 @@ model RevenueSnapshot {
 
   @@unique([organizationId, year, month])
   @@index([year, month])
+}
+
+// Public API Models
+
+model ApiKey {
+  id        String   @id @default(uuid())
+  name      String   // User-friendly name like "Production Key"
+  keyHash   String   @unique // bcrypt hash of the API key
+  keyPrefix String   // First 12 chars for identification (e.g., "sk_live_1234")
+  lastUsed  DateTime?
+  expiresAt DateTime?
+  requestCount Int @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@index([organizationId])
+  @@index([keyPrefix])
+}
+
+model Webhook {
+  id             String   @id @default(uuid())
+  svixAppId      String   // Svix application ID
+  svixEndpointId String   // Svix endpoint ID
+  url            String   // Webhook URL
+  description    String?
+  enabled        Boolean @default(true)
+  events         Json     // ["deal.created", "contact.created"]
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  logs           WebhookLog[]
+
+  @@index([organizationId])
+  @@index([svixAppId])
+}
+
+enum WebhookStatus {
+  SUCCESS
+  FAILED
+  PENDING
+  RETRYING
+}
+
+model WebhookLog {
+  id            String   @id @default(uuid())
+  eventType     String   // "deal.created", "deal.updated"
+  payload       Json     // Event payload sent
+  status        WebhookStatus @default(PENDING)
+  statusCode    Int?     // HTTP response code
+  errorMessage  String? @db.Text
+  attempts      Int @default(0)
+  svixMessageId String?  // Svix message ID for tracking
+  sentAt        DateTime @default(now())
+
+  webhookId      String
+  webhook        Webhook @relation(fields: [webhookId], references: [id], onDelete: Cascade)
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@index([webhookId, sentAt])
+  @@index([organizationId, eventType, sentAt])
+  @@index([status])
 }
