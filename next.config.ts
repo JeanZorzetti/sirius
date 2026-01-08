@@ -44,7 +44,7 @@ const nextConfig: NextConfig = {
             key: 'Content-Security-Policy',
             value: [
               "default-src 'self'",
-              "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://js.sentry-cdn.com https://vercel.live https://www.clarity.ms https://scripts.clarity.ms https://embed.tawk.to https://www.mercadopago.com https://sdk.mercadopago.com",
+              "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://js.sentry-cdn.com https://vercel.live https://www.clarity.ms https://scripts.clarity.ms https://embed.tawk.to https://www.mercadopago.com https://sdk.mercadopago.com https://cdn.jsdelivr.net",
               "style-src 'self' 'unsafe-inline' https://embed.tawk.to https://www.mercadopago.com https://sdk.mercadopago.com",
               "img-src 'self' data: https: blob:",
               "font-src 'self' data: https://embed.tawk.to https://www.mercadopago.com https://sdk.mercadopago.com",
