@@ -1345,9 +1345,14 @@
 ## 🚀 PRÓXIMOS PASSOS (Pós-Roadmap)
 
 ### Semana 5-6: API Pública
-- [x] REST API com autenticação (Fase 1-2 ✅)
+- [x] REST API com autenticação (Fases 1-3 ✅)
+  - [x] API Keys + Bearer token auth
+  - [x] Rate limiting (FREE: 60 req/min, PRO: 300 req/min)
+  - [x] Deals API (CRUD completo)
+  - [x] Contacts API (CRUD completo)
+  - [x] Pipelines API (GET, POST com PRO)
+  - [x] Analytics API (Overview + PRO)
 - [ ] Webhooks outbound (Fase 4 - Em progresso)
-- [x] Rate limiting (Fase 2 ✅)
 - [ ] Documentação Swagger (Fase 5 - Pendente)
 
 ### Semana 7-8: Integrações

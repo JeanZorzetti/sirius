@@ -57,6 +57,22 @@ export const updatePipelineSchema = z.object({
 })
 
 /**
+ * Webhook validators
+ */
+export const createWebhookSchema = z.object({
+  url: z.string().url('Invalid webhook URL'),
+  description: z.string().max(255).optional(),
+  events: z.array(z.string()).min(1, 'At least one event is required')
+})
+
+export const updateWebhookSchema = z.object({
+  url: z.string().url('Invalid webhook URL').optional(),
+  description: z.string().max(255).optional(),
+  events: z.array(z.string()).min(1, 'At least one event is required').optional(),
+  enabled: z.boolean().optional()
+})
+
+/**
  * Generic UUID validator
  */
 export const uuidSchema = z.string().uuid('Invalid ID format')
