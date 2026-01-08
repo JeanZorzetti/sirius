@@ -103,11 +103,9 @@ export async function validateRequest<T>(
     return {
       success: false,
       errors: [{
-        code: 'invalid_type',
+        code: z.ZodIssueCode.custom,
         path: [],
-        message: 'Invalid JSON in request body',
-        expected: 'object',
-        received: 'unknown'
+        message: 'Invalid JSON in request body'
       }]
     }
   }

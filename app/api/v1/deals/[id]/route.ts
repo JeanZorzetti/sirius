@@ -11,12 +11,13 @@ import logger from '@/lib/logger'
  */
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   return withApiMiddleware(request, async (req, context) => {
+    const paramsData = await params
     try {
       // Validate ID format
-      const idValidation = uuidSchema.safeParse(params.id)
+      const idValidation = uuidSchema.safeParse(paramsData.id)
       if (!idValidation.success) {
         return NextResponse.json(
           apiResponse(
@@ -33,7 +34,7 @@ export async function GET(
 
       const deal = await prisma.deal.findFirst({
         where: {
-          id: params.id,
+          id: paramsData.id,
           organizationId: context.organizationId
         },
         include: {
@@ -174,12 +175,13 @@ export async function GET(
  */
 export async function PATCH(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   return withApiMiddleware(request, async (req, context) => {
+    const paramsData = await params
     try {
       // Validate ID format
-      const idValidation = uuidSchema.safeParse(params.id)
+      const idValidation = uuidSchema.safeParse(paramsData.id)
       if (!idValidation.success) {
         return NextResponse.json(
           apiResponse(
@@ -217,7 +219,7 @@ export async function PATCH(
       // Verify deal exists and belongs to organization
       const existingDeal = await prisma.deal.findFirst({
         where: {
-          id: params.id,
+          id: paramsData.id,
           organizationId: context.organizationId
         }
       })
@@ -286,7 +288,7 @@ export async function PATCH(
 
       // Update deal
       const deal = await prisma.deal.update({
-        where: { id: params.id },
+        where: { id: paramsData.id },
         data: {
           ...(data.title && { title: data.title }),
           ...(data.value !== undefined && { value: data.value }),
@@ -385,12 +387,13 @@ export async function PATCH(
  */
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   return withApiMiddleware(request, async (req, context) => {
+    const paramsData = await params
     try {
       // Validate ID format
-      const idValidation = uuidSchema.safeParse(params.id)
+      const idValidation = uuidSchema.safeParse(paramsData.id)
       if (!idValidation.success) {
         return NextResponse.json(
           apiResponse(
@@ -408,7 +411,7 @@ export async function DELETE(
       // Verify deal exists and belongs to organization
       const deal = await prisma.deal.findFirst({
         where: {
-          id: params.id,
+          id: paramsData.id,
           organizationId: context.organizationId
         }
       })
@@ -429,13 +432,13 @@ export async function DELETE(
 
       // Delete deal (cascade deletes notes and activities)
       await prisma.deal.delete({
-        where: { id: params.id }
+        where: { id: paramsData.id }
       })
 
       logger.info({
         requestId: context.requestId,
         organizationId: context.organizationId,
-        dealId: params.id
+        dealId: paramsData.id
       }, 'Deal deleted via API')
 
       return NextResponse.json(

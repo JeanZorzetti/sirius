@@ -12,9 +12,10 @@ import logger from '@/lib/logger'
  */
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const paramsData = await params
     const session = await getSession()
 
     if (!session || !session.user || !session.user.email) {
@@ -38,7 +39,7 @@ export async function GET(
 
     const webhook = await prisma.webhook.findFirst({
       where: {
-        id: params.id,
+        id: paramsData.id,
         organizationId: user.organizationId
       },
       include: {
@@ -88,9 +89,10 @@ export async function GET(
  */
 export async function PATCH(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const paramsData = await params
     const session = await getSession()
 
     if (!session || !session.user || !session.user.email) {
@@ -115,7 +117,7 @@ export async function PATCH(
     // Find webhook
     const webhook = await prisma.webhook.findFirst({
       where: {
-        id: params.id,
+        id: paramsData.id,
         organizationId: user.organizationId
       }
     })
@@ -178,7 +180,7 @@ export async function PATCH(
 
     // Update in database
     const updated = await prisma.webhook.update({
-      where: { id: params.id },
+      where: { id: paramsData.id },
       data: {
         ...(data.url && { url: data.url }),
         ...(data.description !== undefined && { description: data.description }),
@@ -217,9 +219,10 @@ export async function PATCH(
  */
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const paramsData = await params
     const session = await getSession()
 
     if (!session || !session.user || !session.user.email) {
@@ -244,7 +247,7 @@ export async function DELETE(
     // Find webhook
     const webhook = await prisma.webhook.findFirst({
       where: {
-        id: params.id,
+        id: paramsData.id,
         organizationId: user.organizationId
       }
     })
@@ -261,12 +264,12 @@ export async function DELETE(
 
     // Delete from database (cascade deletes logs)
     await prisma.webhook.delete({
-      where: { id: params.id }
+      where: { id: paramsData.id }
     })
 
     logger.info({
       organizationId: user.organizationId,
-      webhookId: params.id
+      webhookId: paramsData.id
     }, 'Webhook deleted')
 
     return NextResponse.json({

@@ -10,12 +10,13 @@ import logger from '@/lib/logger'
  */
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   return withApiMiddleware(request, async (req, context) => {
+    const paramsData = await params
     try {
       // Validate ID format
-      const idValidation = uuidSchema.safeParse(params.id)
+      const idValidation = uuidSchema.safeParse(paramsData.id)
       if (!idValidation.success) {
         return NextResponse.json(
           apiResponse(
@@ -32,7 +33,7 @@ export async function GET(
 
       const pipeline = await prisma.pipeline.findFirst({
         where: {
-          id: params.id,
+          id: paramsData.id,
           organizationId: context.organizationId
         },
         include: {

@@ -114,11 +114,12 @@ export async function updateSvixEndpoint(
   if (!svix) return false
 
   try {
-    await svix.endpoint.update(svixAppId, svixEndpointId, {
-      ...(url && { url }),
-      ...(events && events.length > 0 && { filterTypes: events }),
-      ...(description && { description })
-    })
+    const updateData: any = {}
+    if (url) updateData.url = url
+    if (events && events.length > 0) updateData.filterTypes = events
+    if (description !== undefined) updateData.description = description
+
+    await svix.endpoint.update(svixAppId, svixEndpointId, updateData)
 
     logger.info({
       svixAppId,

@@ -10,9 +10,10 @@ import logger from '@/lib/logger'
  */
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const paramsData = await params
     const session = await getSession()
 
     if (!session || !session.user || !session.user.email) {
@@ -37,7 +38,7 @@ export async function GET(
     // Verify webhook belongs to organization
     const webhook = await prisma.webhook.findFirst({
       where: {
-        id: params.id,
+        id: paramsData.id,
         organizationId: user.organizationId
       }
     })
@@ -54,12 +55,12 @@ export async function GET(
 
     // Get total count
     const total = await prisma.webhookLog.count({
-      where: { webhookId: params.id }
+      where: { webhookId: paramsData.id }
     })
 
     // Get logs
     const logs = await prisma.webhookLog.findMany({
-      where: { webhookId: params.id },
+      where: { webhookId: paramsData.id },
       orderBy: { sentAt: 'desc' },
       skip: offset,
       take: limit,

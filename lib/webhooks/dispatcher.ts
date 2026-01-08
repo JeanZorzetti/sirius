@@ -38,8 +38,7 @@ export async function dispatchWebhook<T = any>(
         organizationId,
         enabled: true,
         events: {
-          path: '$',
-          array_contains: event
+          array_contains: [event]
         }
       }
     })
@@ -81,7 +80,7 @@ export async function dispatchWebhook<T = any>(
             webhookId: webhook.id,
             organizationId,
             eventType: event,
-            payload,
+            payload: payload as any,
             status: 'PENDING',
             svixMessageId: result.messageId,
             attempts: 1

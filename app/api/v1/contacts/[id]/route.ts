@@ -11,12 +11,13 @@ import logger from '@/lib/logger'
  */
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   return withApiMiddleware(request, async (req, context) => {
+    const paramsData = await params
     try {
       // Validate ID format
-      const idValidation = uuidSchema.safeParse(params.id)
+      const idValidation = uuidSchema.safeParse(paramsData.id)
       if (!idValidation.success) {
         return NextResponse.json(
           apiResponse(
@@ -33,7 +34,7 @@ export async function GET(
 
       const contact = await prisma.contact.findFirst({
         where: {
-          id: params.id,
+          id: paramsData.id,
           organizationId: context.organizationId
         },
         include: {
@@ -131,12 +132,13 @@ export async function GET(
  */
 export async function PATCH(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   return withApiMiddleware(request, async (req, context) => {
+    const paramsData = await params
     try {
       // Validate ID format
-      const idValidation = uuidSchema.safeParse(params.id)
+      const idValidation = uuidSchema.safeParse(paramsData.id)
       if (!idValidation.success) {
         return NextResponse.json(
           apiResponse(
@@ -174,7 +176,7 @@ export async function PATCH(
       // Verify contact exists and belongs to organization
       const existingContact = await prisma.contact.findFirst({
         where: {
-          id: params.id,
+          id: paramsData.id,
           organizationId: context.organizationId
         }
       })
@@ -199,7 +201,7 @@ export async function PATCH(
           where: {
             organizationId: context.organizationId,
             email: data.email,
-            id: { not: params.id }
+            id: { not: paramsData.id }
           }
         })
 
@@ -220,7 +222,7 @@ export async function PATCH(
 
       // Update contact
       const contact = await prisma.contact.update({
-        where: { id: params.id },
+        where: { id: paramsData.id },
         data: {
           ...(data.name && { name: data.name }),
           ...(data.email !== undefined && { email: data.email }),
@@ -277,12 +279,13 @@ export async function PATCH(
  */
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   return withApiMiddleware(request, async (req, context) => {
+    const paramsData = await params
     try {
       // Validate ID format
-      const idValidation = uuidSchema.safeParse(params.id)
+      const idValidation = uuidSchema.safeParse(paramsData.id)
       if (!idValidation.success) {
         return NextResponse.json(
           apiResponse(
@@ -300,7 +303,7 @@ export async function DELETE(
       // Verify contact exists and belongs to organization
       const contact = await prisma.contact.findFirst({
         where: {
-          id: params.id,
+          id: paramsData.id,
           organizationId: context.organizationId
         },
         include: {
@@ -341,13 +344,13 @@ export async function DELETE(
 
       // Delete contact
       await prisma.contact.delete({
-        where: { id: params.id }
+        where: { id: paramsData.id }
       })
 
       logger.info({
         requestId: context.requestId,
         organizationId: context.organizationId,
-        contactId: params.id
+        contactId: paramsData.id
       }, 'Contact deleted via API')
 
       return NextResponse.json(

@@ -10,7 +10,7 @@ import logger from '@/lib/logger'
  */
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const session = await getSession()
@@ -34,7 +34,7 @@ export async function DELETE(
       )
     }
 
-    const apiKeyId = params.id
+    const { id: apiKeyId } = await params
 
     // Verify API key belongs to user's organization
     const apiKey = await prisma.apiKey.findUnique({

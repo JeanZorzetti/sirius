@@ -24,13 +24,13 @@ export async function GET(request: NextRequest) {
         const snapshots = await prisma.dealSnapshot.findMany({
           where: {
             organizationId: ctx.organizationId,
-            snapshotDate: {
+            date: {
               gte: startDate
             }
           },
-          orderBy: { snapshotDate: 'asc' },
+          orderBy: { date: 'asc' },
           select: {
-            snapshotDate: true,
+            date: true,
             totalDeals: true,
             totalValue: true,
             dealsByStage: true
@@ -51,8 +51,10 @@ export async function GET(request: NextRequest) {
             year: true,
             month: true,
             mrr: true,
-            totalRevenue: true,
-            activeSubscriptions: true
+            arr: true,
+            totalOrganizations: true,
+            freeOrganizations: true,
+            proOrganizations: true
           }
         })
 
@@ -109,7 +111,7 @@ export async function GET(request: NextRequest) {
 
         // Format snapshots
         const formattedSnapshots = snapshots.map(snapshot => ({
-          date: snapshot.snapshotDate.toISOString().split('T')[0],
+          date: snapshot.date.toISOString().split('T')[0],
           totalDeals: snapshot.totalDeals,
           totalValue: formatDecimal(snapshot.totalValue) || 0,
           dealsByStage: snapshot.dealsByStage
@@ -119,8 +121,10 @@ export async function GET(request: NextRequest) {
         const formattedRevenue = revenueSnapshots.reverse().map(snapshot => ({
           period: `${snapshot.year}-${String(snapshot.month).padStart(2, '0')}`,
           mrr: formatDecimal(snapshot.mrr) || 0,
-          totalRevenue: formatDecimal(snapshot.totalRevenue) || 0,
-          activeSubscriptions: snapshot.activeSubscriptions
+          arr: formatDecimal(snapshot.arr) || 0,
+          totalOrganizations: snapshot.totalOrganizations,
+          freeOrganizations: snapshot.freeOrganizations,
+          proOrganizations: snapshot.proOrganizations
         }))
 
         // Format activities
