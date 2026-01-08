@@ -1372,10 +1372,191 @@
 **Status:** API Pública 100% completa e testada! 🎉
 
 ### Semana 7-8: Integrações
-- Zapier
-- Google Calendar
-- Slack notifications
-- WhatsApp API oficial
+
+#### Phase 0: Foundation ✅ (Concluído: 2026-01-08)
+- [x] Criar modelos de integração no Prisma schema
+  - [x] IntegrationLog (tracking de atividades)
+  - [x] WhatsAppMessage (histórico de mensagens)
+  - [x] CalendarEvent (eventos do Google Calendar)
+  - [x] 5 novos enums (IntegrationType, IntegrationStatus, MessageDirection, WhatsAppMessageStatus, SyncStatus)
+- [x] Adicionar campos de integração ao modelo Organization
+  - [x] N8N (n8nEnabled, n8nBaseUrl, n8nApiKey, n8nWebhookUrl)
+  - [x] Evolution API (evolutionEnabled, evolutionBaseUrl, evolutionApiKey, evolutionInstance)
+  - [x] Google Calendar (googleCalendarEnabled, googleCalendarRefreshToken, googleCalendarEmail)
+- [x] Criar sistema de criptografia AES-256-GCM
+  - [x] lib/encryption.ts (encrypt, decrypt, isEncryptionKeyValid)
+  - [x] Armazenamento seguro de API keys e OAuth tokens
+- [x] Criar rate limiters usando Upstash Redis
+  - [x] lib/integrations/rate-limiter.ts
+  - [x] N8N: 100 requests/hora
+  - [x] WhatsApp: 50 requests/hora
+  - [x] Google Calendar: 200 requests/hora
+- [x] Atualizar .env.example com variáveis de integração
+- [x] Criar e aplicar migration no banco de dados
+
+**Arquivos criados (Phase 0):**
+- prisma/migrations/20260108221108_add_integrations_foundation/migration.sql
+- lib/encryption.ts
+- lib/integrations/rate-limiter.ts
+
+**Tempo total:** ~3 horas
+
+---
+
+#### Phase 1: N8N Integration ✅ (Concluído: 2026-01-08)
+- [x] Criar N8NClient com wrapper completo da API
+  - [x] listWorkflows(), getWorkflow(), activateWorkflow()
+  - [x] executeWorkflow(), testConnection()
+  - [x] Descriptografia automática de API keys
+- [x] Criar página de configuração N8N
+  - [x] app/dashboard/settings/integrations/page.tsx (overview)
+  - [x] app/dashboard/settings/integrations/n8n/page.tsx
+  - [x] Formulário com teste de conexão
+  - [x] Instruções de configuração
+- [x] Criar API routes para N8N
+  - [x] POST /api/integrations/n8n/settings (salvar config)
+  - [x] POST /api/integrations/n8n/test (testar conexão)
+- [x] Integrar N8N no webhook dispatcher
+  - [x] Modificar lib/webhooks/dispatcher.ts
+  - [x] Enviar eventos do CRM para N8N automaticamente
+  - [x] Rate limiting e activity logging
+- [x] Feature gate: N8N disponível apenas para plano PRO
+- [x] Adicionar link "Integrações" no settings
+
+**Arquivos criados (Phase 1):**
+- lib/integrations/n8n-client.ts
+- app/dashboard/settings/integrations/page.tsx
+- app/dashboard/settings/integrations/n8n/page.tsx
+- components/integrations/n8n-settings-form.tsx
+- app/api/integrations/n8n/settings/route.ts
+- app/api/integrations/n8n/test/route.ts
+
+**Arquivos modificados (Phase 1):**
+- lib/webhooks/dispatcher.ts (integração com N8N)
+- app/dashboard/settings/page.tsx (link integrações)
+
+**Tempo total:** ~5 horas
+
+---
+
+#### Phase 2: WhatsApp/Evolution API Integration ✅ (Concluído: 2026-01-08)
+- [x] Criar EvolutionClient com API completa do WhatsApp
+  - [x] sendTextMessage(), sendMediaMessage()
+  - [x] getInstanceInfo(), testConnection()
+  - [x] Suporte a imagem, vídeo, documento, áudio
+- [x] Utilitários de formatação de números BR
+  - [x] formatWhatsAppNumber() - "+55 11 98765-4321" → "5511987654321@s.whatsapp.net"
+  - [x] parseWhatsAppJid() - "5511987654321@s.whatsapp.net" → "+55 11 98765-4321"
+- [x] Criar página de configuração WhatsApp
+  - [x] app/dashboard/settings/integrations/whatsapp/page.tsx
+  - [x] Formulário com teste de conexão Evolution API
+  - [x] Instruções de configuração do webhook
+- [x] Criar API routes para WhatsApp
+  - [x] POST /api/integrations/whatsapp/settings (salvar config)
+  - [x] POST /api/integrations/whatsapp/test (testar conexão)
+- [x] Criar webhook receiver Evolution API
+  - [x] POST /api/webhooks/evolution
+  - [x] Processar mensagens entrantes (messages.upsert)
+  - [x] Atualizar status de mensagens (messages.update)
+  - [x] Auto-criar contatos a partir de mensagens recebidas
+  - [x] Auto-criar deals para novos contatos
+  - [x] Criar nota no deal com mensagem recebida
+- [x] Criar biblioteca de automações WhatsApp
+  - [x] sendWhatsAppMessage() - Envio manual
+  - [x] sendStageChangeMessage() - Automação em mudança de stage
+  - [x] sendWelcomeMessage() - Mensagem de boas-vindas
+  - [x] sendDealWonMessage() - Mensagem de parabéns
+  - [x] sendFollowUpReminder() - Lembretes de follow-up
+  - [x] getDealWhatsAppMessages() - Histórico de mensagens
+- [x] Rastreamento de status de mensagens
+  - [x] PENDING → SENT → DELIVERED → READ
+  - [x] Timestamps de entrega e leitura
+- [x] Feature gate: WhatsApp disponível apenas para plano PRO
+
+**Arquivos criados (Phase 2):**
+- lib/integrations/evolution-client.ts
+- app/dashboard/settings/integrations/whatsapp/page.tsx
+- components/integrations/whatsapp-settings-form.tsx
+- app/api/integrations/whatsapp/settings/route.ts
+- app/api/integrations/whatsapp/test/route.ts
+- app/api/webhooks/evolution/route.ts
+- lib/integrations/whatsapp-automations.ts
+
+**Funcionalidades implementadas:**
+- ✅ Envio de mensagens WhatsApp manuais e automatizadas
+- ✅ Recebimento de mensagens via webhook
+- ✅ Auto-criação de contatos e deals
+- ✅ Rastreamento de status (enviado, entregue, lido)
+- ✅ 5 automações pré-configuradas
+- ✅ Rate limiting: 50 mensagens/hora por organização
+- ✅ Logging completo de atividades
+
+**Tempo total:** ~6 horas
+
+---
+
+#### Phase 3: Google Calendar Integration ⏸️ (Pendente)
+- [ ] Instalar googleapis npm package
+- [ ] Criar Google Calendar OAuth 2.0 flow
+  - [ ] Endpoints de autenticação e callback
+  - [ ] Armazenamento seguro de refresh tokens
+- [ ] Criar GoogleCalendarClient
+  - [ ] createCalendarEvent()
+  - [ ] updateCalendarEvent()
+  - [ ] deleteCalendarEvent()
+  - [ ] listEvents()
+  - [ ] syncEvents() (bidirectional)
+- [ ] Criar página de configuração Google Calendar
+  - [ ] Fluxo de autorização OAuth
+  - [ ] Gestão de conexão
+- [ ] Criar automações de calendário
+  - [ ] Criar evento ao fechar deal (won)
+  - [ ] Criar lembretes de follow-up
+  - [ ] Sincronizar reuniões → criar deals
+- [ ] Criar cron job de sincronização
+  - [ ] POST /api/cron/sync-calendar
+  - [ ] Sincronização bidirecional automática
+- [ ] Criar documentação de setup
+  - [ ] docs/GOOGLE_CALENDAR_SETUP.md
+  - [ ] Configurar Google Cloud Project
+  - [ ] Habilitar Google Calendar API
+
+**Tempo estimado:** 8-10 horas
+
+---
+
+#### Phase 4: Polish & Monitoring ⏸️ (Pendente)
+- [ ] Dashboard de integrações
+  - [ ] Visão geral de todas as integrações
+  - [ ] Status de conexão
+  - [ ] Métricas de uso
+- [ ] Sistema de retry para falhas
+  - [ ] lib/integrations/retry-handler.ts
+  - [ ] 3 tentativas: 5min, 30min, 2h
+  - [ ] Exponential backoff
+- [ ] Sistema de alertas
+  - [ ] lib/integrations/alerting.ts
+  - [ ] Email para falhas críticas
+  - [ ] Notificações no dashboard
+- [ ] Logs centralizados
+  - [ ] GET /api/integrations/logs
+  - [ ] Filtros por tipo e status
+  - [ ] Export de logs
+
+**Tempo estimado:** 4 horas
+
+---
+
+**Status atual:** Phase 0 ✅, Phase 1 (N8N) ✅, Phase 2 (WhatsApp) ✅
+**Progresso:** 66% concluído (2/3 integrações principais)
+**Próximo passo:** Phase 3 - Google Calendar Integration
+
+---
+
+#### Outras Integrações (Futuro)
+- [ ] Zapier (via webhook system já existente)
+- [ ] Slack notifications
+- [ ] Make.com (Integromat)
 
 ### Semana 9-12: Mobile
 - PWA offline-first
