@@ -1495,6 +1495,84 @@
 
 ---
 
+#### Fixes & Improvements ✅ (Concluído: 2026-01-08)
+
+Após a implementação das Phases 0-2, foram identificados e corrigidos diversos problemas durante o deploy e testes em produção:
+
+**Build Errors:**
+- [x] Fix: Missing `use-toast` hook causing build failures
+  - Criado hooks/use-toast.ts com integração sonner
+  - Resolveu erros em n8n-settings-form e whatsapp-settings-form
+- [x] Fix: Incorrect logger imports (named import vs default export)
+  - Corrigidos 8 arquivos: n8n-client, evolution-client, whatsapp-automations, API routes
+  - Mudado de `import { logger }` para `import logger`
+- [x] Fix: TypeScript error em evolution-client testConnection
+  - Corrigido type checking com cast para `any` permitindo múltiplos formatos
+
+**Production Errors:**
+- [x] Fix: 500 Internal Server Error em N8N settings
+  - Causa: Variável INTEGRATION_ENCRYPTION_KEY não configurada no Vercel
+  - Solução: Gerada chave AES-256 (openssl rand -hex 32) e adicionada ao .env e Vercel
+- [x] Fix: 404 Not Found para Google Calendar
+  - Causa: Next.js prefetch automático tentando acessar rota inexistente
+  - Solução: Adicionado flag `comingSoon: true`, desabilitado prefetch, adicionado badge "EM BREVE"
+- [x] Fix: 400 Bad Request em WhatsApp/Evolution API test connection
+  - Causa: Estrutura de resposta aninhada não sendo parseada corretamente
+  - Problema: API retorna `[{ instance: { instanceName: "..." } }]` mas código procurava `[{ instanceName: "..." }]`
+  - Solução: Atualizado .find() para buscar em `i.instance?.instanceName || i.instanceName`
+
+**Evolution API Connection Test Improvements:**
+- [x] Implementado método de fallback (connectionState endpoint)
+- [x] Suporte para diferentes versões da API (v1, v2)
+- [x] Suporte para múltiplos formatos de resposta (array, objeto, nested)
+- [x] Mensagens de erro melhoradas listando instâncias disponíveis
+- [x] Logging estruturado com context (instanceName, baseUrl, availableInstances)
+- [x] Documentação baseada na API oficial da Evolution
+
+**Commits relacionados:**
+1. `2b1a181` - fix: correct logger imports and add missing toast hook
+2. `d1cc0f1` - fix: disable prefetch for Google Calendar integration (Phase 3 pending)
+3. `24f8a35` - feat: improve Evolution API connection test with fallback methods
+4. `80fdefe` - fix: resolve TypeScript error in evolution-client testConnection
+5. `556e21e` - feat: show available instances when test connection fails
+6. `15e50b9` - fix: correct Evolution API fetchInstances response structure parsing
+
+**Arquivos criados:**
+- hooks/use-toast.ts
+
+**Arquivos corrigidos:**
+- lib/integrations/n8n-client.ts
+- lib/integrations/evolution-client.ts
+- lib/integrations/whatsapp-automations.ts
+- app/api/integrations/n8n/settings/route.ts
+- app/api/integrations/n8n/test/route.ts
+- app/api/integrations/whatsapp/settings/route.ts
+- app/api/integrations/whatsapp/test/route.ts
+- app/api/webhooks/evolution/route.ts
+- app/dashboard/settings/integrations/page.tsx
+- .env (adicionada INTEGRATION_ENCRYPTION_KEY)
+
+**Variáveis de ambiente adicionadas:**
+```bash
+# Integration Encryption Key (AES-256-GCM)
+INTEGRATION_ENCRYPTION_KEY="0e25152eff34902cf02899b045c5bb07301921f055767888f8672793f369044f"
+```
+
+**Referências consultadas:**
+- [Evolution API Documentation](https://doc.evolution-api.com/v1/api-reference/instance-controller/fetch-instances)
+- [Evolution API GitHub](https://github.com/EvolutionAPI/evolution-api)
+- [Evolution API v2.0 Postman Collection](https://www.postman.com/agenciadgcode/evolution-api/documentation/gqr041s/evolution-api-v2-0)
+
+**Status após correções:**
+- ✅ Build passa sem erros no Vercel
+- ✅ N8N integration funcionando (após adicionar INTEGRATION_ENCRYPTION_KEY no Vercel)
+- ✅ WhatsApp/Evolution API funcionando (com estrutura de resposta corrigida)
+- ⏸️ Google Calendar marcado como "EM BREVE" (Phase 3 pendente)
+
+**Tempo total de debugging e fixes:** ~4 horas
+
+---
+
 #### Phase 3: Google Calendar Integration ⏸️ (Pendente)
 - [ ] Instalar googleapis npm package
 - [ ] Criar Google Calendar OAuth 2.0 flow
