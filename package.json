@@ -34,6 +34,7 @@
     "@radix-ui/react-tabs": "^1.1.13",
     "@radix-ui/react-tooltip": "^1.2.8",
     "@react-email/components": "^1.0.3",
+    "@scalar/nextjs-api-reference": "^0.9.9",
     "@sentry/nextjs": "^10.32.1",
     "@stripe/react-stripe-js": "^5.4.1",
     "@stripe/stripe-js": "^8.6.0",
