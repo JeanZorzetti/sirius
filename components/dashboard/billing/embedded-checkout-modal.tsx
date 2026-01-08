@@ -17,7 +17,8 @@ export function EmbeddedCheckoutModal() {
             })
 
             if (!response.ok) {
-                throw new Error('Erro ao criar checkout')
+                const errorData = await response.json()
+                throw new Error(errorData.error || 'Erro ao criar checkout')
             }
 
             const data = await response.json()
@@ -27,7 +28,8 @@ export function EmbeddedCheckoutModal() {
 
         } catch (error) {
             console.error('Erro ao criar checkout:', error)
-            alert('Não foi possível criar o checkout. Tente novamente.')
+            const message = error instanceof Error ? error.message : 'Não foi possível criar o checkout. Tente novamente.'
+            alert(message)
             setIsLoading(false)
         }
     }

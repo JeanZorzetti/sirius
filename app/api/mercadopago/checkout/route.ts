@@ -77,11 +77,15 @@ export async function POST() {
   } catch (error) {
     logger.error({
       error,
-      message: error instanceof Error ? error.message : 'Unknown error'
+      message: error instanceof Error ? error.message : 'Unknown error',
+      stack: error instanceof Error ? error.stack : undefined
     }, 'Error creating checkout preference')
 
     return NextResponse.json(
-      { error: 'Erro ao criar preferência de checkout' },
+      {
+        error: 'Erro ao criar preferência de checkout',
+        details: error instanceof Error ? error.message : 'Unknown error'
+      },
       { status: 500 }
     )
   }
