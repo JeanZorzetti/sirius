@@ -2,6 +2,7 @@ import { sendWebhookMessage } from './svix-client'
 import { WebhookEvent, createWebhookPayload } from './events'
 import { prisma } from '../prisma'
 import logger from '../logger'
+import { logN8NActivity, checkN8NRateLimit } from '../integrations/n8n-client'
 
 /**
  * Dispatch webhook to all registered endpoints for an organization
@@ -15,7 +16,12 @@ export async function dispatchWebhook<T = any>(
     // Get organization
     const org = await prisma.organization.findUnique({
       where: { id: organizationId },
-      select: { name: true, plan: true }
+      select: {
+        name: true,
+        plan: true,
+        n8nEnabled: true,
+        n8nWebhookUrl: true
+      }
     })
 
     if (!org) {
@@ -64,6 +70,67 @@ export async function dispatchWebhook<T = any>(
       event,
       payload
     )
+
+    // Send to N8N if configured (independent of Svix)
+    if (org.n8nEnabled && org.n8nWebhookUrl) {
+      try {
+        // Check rate limit
+        const rateLimitResult = await checkN8NRateLimit(organizationId)
+
+        if (rateLimitResult) {
+          const n8nResponse = await fetch(org.n8nWebhookUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+          })
+
+          if (n8nResponse.ok) {
+            logger.info({
+              organizationId,
+              event,
+              url: org.n8nWebhookUrl
+            }, 'N8N webhook sent successfully')
+
+            await logN8NActivity(
+              organizationId,
+              `webhook:${event}`,
+              'SUCCESS',
+              { event, url: org.n8nWebhookUrl },
+              { status: n8nResponse.status, sent: true }
+            )
+          } else {
+            const errorText = await n8nResponse.text()
+            throw new Error(`N8N responded with ${n8nResponse.status}: ${errorText}`)
+          }
+        } else {
+          logger.warn({ organizationId }, 'N8N rate limit exceeded, skipping webhook')
+          await logN8NActivity(
+            organizationId,
+            `webhook:${event}`,
+            'FAILED',
+            { event, url: org.n8nWebhookUrl },
+            null,
+            'Rate limit exceeded'
+          )
+        }
+      } catch (n8nError: any) {
+        logger.error({
+          organizationId,
+          event,
+          error: n8nError,
+          url: org.n8nWebhookUrl
+        }, 'Failed to send N8N webhook')
+
+        await logN8NActivity(
+          organizationId,
+          `webhook:${event}`,
+          'FAILED',
+          { event, url: org.n8nWebhookUrl },
+          null,
+          n8nError.message
+        )
+      }
+    }
 
     if (result.success) {
       logger.info({

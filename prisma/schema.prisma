@@ -42,6 +42,25 @@ model Organization {
   apiKeys      ApiKey[]
   webhooks     Webhook[]
   webhookLogs  WebhookLog[]
+
+  // Integrations
+  n8nEnabled          Boolean  @default(false)
+  n8nBaseUrl          String?
+  n8nApiKey           String?  // Encrypted with AES-256-GCM
+  n8nWebhookUrl       String?
+
+  evolutionEnabled    Boolean  @default(false)
+  evolutionBaseUrl    String?
+  evolutionApiKey     String?  // Encrypted
+  evolutionInstance   String?
+
+  googleCalendarEnabled       Boolean  @default(false)
+  googleCalendarRefreshToken  String?  @db.Text // Encrypted
+  googleCalendarEmail         String?
+
+  integrationLogs    IntegrationLog[]
+  whatsappMessages   WhatsAppMessage[]
+  calendarEvents     CalendarEvent[]
 }
 
 model User {
@@ -87,7 +106,8 @@ model Contact {
   organizationId String
   organization   Organization @relation(fields: [organizationId], references: [id])
 
-  deals     Deal[]
+  deals            Deal[]
+  whatsappMessages WhatsAppMessage[]
 
   // Performance indexes
   @@index([organizationId])
@@ -159,6 +179,10 @@ model Deal {
   notes       Note[]
   tags        Tag[]
   activities  Activity[]
+
+  // Integrations
+  whatsappMessages WhatsAppMessage[]
+  calendarEvents   CalendarEvent[]
 
   // Performance indexes
   @@index([organizationId, stageId])
@@ -457,4 +481,127 @@ model WebhookLog {
   @@index([webhookId, sentAt])
   @@index([organizationId, eventType, sentAt])
   @@index([status])
+}
+
+// Integration Models
+
+enum IntegrationType {
+  N8N
+  WHATSAPP
+  GOOGLE_CALENDAR
+}
+
+enum IntegrationStatus {
+  PENDING
+  SUCCESS
+  FAILED
+  RETRYING
+}
+
+enum MessageDirection {
+  INBOUND
+  OUTBOUND
+}
+
+enum WhatsAppMessageStatus {
+  PENDING
+  SENT
+  DELIVERED
+  READ
+  FAILED
+}
+
+enum SyncStatus {
+  PENDING
+  SYNCED
+  FAILED
+}
+
+model IntegrationLog {
+  id            String   @id @default(uuid())
+  type          IntegrationType
+  action        String   // "webhook:deal.created", "api:listWorkflows", "send_message"
+  status        IntegrationStatus @default(PENDING)
+
+  // Request/Response data
+  request       Json?
+  response      Json?
+  errorMessage  String?  @db.Text
+
+  // Retry tracking
+  attemptCount  Int      @default(1)
+
+  createdAt     DateTime @default(now())
+
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@index([organizationId, type, createdAt])
+  @@index([status, createdAt])
+}
+
+model WhatsAppMessage {
+  id              String   @id @default(uuid())
+
+  // WhatsApp identifiers
+  remoteJid       String   // "5511987654321@s.whatsapp.net"
+  messageId       String?  // Evolution API message ID
+
+  // Message content
+  text            String   @db.Text
+  direction       MessageDirection
+  status          WhatsAppMessageStatus @default(PENDING)
+
+  // Media (optional)
+  mediaUrl        String?
+  mediaType       String?  // "image", "video", "document", "audio"
+
+  // Relations
+  dealId          String?
+  deal            Deal?    @relation(fields: [dealId], references: [id], onDelete: SetNull)
+
+  contactId       String?
+  contact         Contact? @relation(fields: [contactId], references: [id], onDelete: SetNull)
+
+  // Timestamps
+  sentAt          DateTime @default(now())
+  deliveredAt     DateTime?
+  readAt          DateTime?
+
+  organizationId  String
+  organization    Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@index([organizationId, sentAt])
+  @@index([dealId])
+  @@index([contactId])
+  @@index([remoteJid])
+}
+
+model CalendarEvent {
+  id              String   @id @default(uuid())
+
+  // Google Calendar identifier
+  googleEventId   String?  @unique
+
+  // Event details
+  title           String
+  description     String?  @db.Text
+  startTime       DateTime
+  endTime         DateTime
+  location        String?
+
+  // Sync tracking
+  syncStatus      SyncStatus @default(PENDING)
+  lastSyncAt      DateTime?
+
+  // Relations
+  dealId          String?
+  deal            Deal?    @relation(fields: [dealId], references: [id], onDelete: SetNull)
+
+  organizationId  String
+  organization    Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@index([organizationId, startTime])
+  @@index([dealId])
+  @@index([googleEventId])
 }
