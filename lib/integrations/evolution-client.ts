@@ -145,22 +145,90 @@ export class EvolutionClient {
   }
 
   /**
+   * Get connection state of an instance
+   * Alternative endpoint for testing connectivity
+   */
+  async getConnectionState(): Promise<{ state: string }> {
+    return this.request<{ state: string }>(
+      `/instance/connectionState/${this.instanceName}`
+    )
+  }
+
+  /**
    * Test connection to Evolution API instance
+   *
+   * Tries multiple methods to validate the connection:
+   * 1. fetchInstances endpoint (v2 format)
+   * 2. connectionState endpoint (alternative)
    */
   async testConnection(): Promise<{ success: boolean; error?: string }> {
     try {
-      const info = await this.getInstanceInfo()
+      // Try fetchInstances first (primary method)
+      try {
+        const info = await this.getInstanceInfo()
 
-      if (info.instance && info.instance.status) {
-        return { success: true }
-      } else {
-        return { success: false, error: 'Instance not found or inactive' }
+        // Check if response has the expected structure
+        if (info && typeof info === 'object') {
+          // Evolution API v2 returns array of instances
+          if (Array.isArray(info)) {
+            const instance = info.find((i: any) => i.instanceName === this.instanceName)
+            if (instance) {
+              return { success: true }
+            }
+            return { success: false, error: 'Instância não encontrada no servidor' }
+          }
+
+          // Evolution API v1 returns single instance object
+          if (info.instance) {
+            return { success: true }
+          }
+
+          // Direct instance object (some versions)
+          if (info.instanceName) {
+            return { success: true }
+          }
+        }
+      } catch (fetchError: any) {
+        logger.warn({
+          error: fetchError,
+          instanceName: this.instanceName
+        }, 'fetchInstances failed, trying connectionState')
+
+        // Try alternative endpoint
+        try {
+          const state = await this.getConnectionState()
+          if (state && state.state) {
+            return { success: true }
+          }
+        } catch (stateError: any) {
+          logger.error({
+            fetchError,
+            stateError,
+            instanceName: this.instanceName
+          }, 'Both connection test methods failed')
+
+          return {
+            success: false,
+            error: `Falha ao conectar: ${fetchError.message || 'Verifique URL, API Key e nome da instância'}`
+          }
+        }
       }
-    } catch (error: any) {
-      logger.error({ error }, 'Evolution API connection test failed')
+
       return {
         success: false,
-        error: error.message || 'Connection failed'
+        error: 'Instância não encontrada ou resposta inválida'
+      }
+
+    } catch (error: any) {
+      logger.error({
+        error,
+        instanceName: this.instanceName,
+        baseUrl: this.baseUrl
+      }, 'Evolution API connection test failed')
+
+      return {
+        success: false,
+        error: error.message || 'Erro ao conectar com Evolution API'
       }
     }
   }
