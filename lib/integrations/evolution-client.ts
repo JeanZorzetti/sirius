@@ -169,22 +169,25 @@ export class EvolutionClient {
 
         // Check if response has the expected structure
         if (info && typeof info === 'object') {
+          // Cast to any for flexible response format checking
+          const response = info as any
+
           // Evolution API v2 returns array of instances
-          if (Array.isArray(info)) {
-            const instance = info.find((i: any) => i.instanceName === this.instanceName)
+          if (Array.isArray(response)) {
+            const instance = response.find((i: any) => i.instanceName === this.instanceName)
             if (instance) {
               return { success: true }
             }
             return { success: false, error: 'Instância não encontrada no servidor' }
           }
 
-          // Evolution API v1 returns single instance object
-          if (info.instance) {
+          // Evolution API v1 returns single instance object with nested instance property
+          if (response.instance) {
             return { success: true }
           }
 
-          // Direct instance object (some versions)
-          if (info.instanceName) {
+          // Direct instance object (some API versions return instance data directly)
+          if (response.instanceName) {
             return { success: true }
           }
         }
