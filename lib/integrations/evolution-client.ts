@@ -172,12 +172,15 @@ export class EvolutionClient {
           // Cast to any for flexible response format checking
           const response = info as any
 
-          // Evolution API v2 returns array of instances with nested structure
-          // Response format: [{ instance: { instanceName: "...", ... } }]
+          // Evolution API returns array with different possible structures:
+          // v1: [{ instance: { instanceName: "..." } }]
+          // v2: [{ instanceName: "..." }]
+          // latest: [{ name: "..." }] ← Most common format
           if (Array.isArray(response)) {
             const instance = response.find((i: any) =>
               i.instance?.instanceName === this.instanceName ||
-              i.instanceName === this.instanceName
+              i.instanceName === this.instanceName ||
+              i.name === this.instanceName
             )
             if (instance) {
               return { success: true }
