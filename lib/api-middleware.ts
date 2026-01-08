@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { validateApiKey } from './api-keys'
 import logger, { generateCorrelationId } from './logger'
 import { prisma } from './prisma'
+import { checkRateLimit } from './rate-limit'
 
 export interface ApiContext {
   organizationId: string
@@ -155,17 +156,81 @@ export async function withApiAuth(
 }
 
 /**
- * Rate Limiting Middleware (placeholder for Phase 2)
- * Will be implemented with Upstash Redis
+ * Rate Limiting Middleware
+ * Enforces rate limits based on organization plan (FREE vs PRO)
  */
 export async function withRateLimit(
   request: NextRequest,
   context: ApiContext,
   handler: (req: NextRequest, ctx: ApiContext) => Promise<Response>
 ): Promise<Response> {
-  // TODO: Implement in Phase 2 with Upstash Redis
-  // For now, just pass through to handler
-  return await handler(request, context)
+  try {
+    // Check rate limit
+    const rateLimit = await checkRateLimit(context.organizationId, context.plan)
+
+    // Add rate limit headers to response
+    const rateLimitHeaders = {
+      'X-RateLimit-Limit': rateLimit.limit.toString(),
+      'X-RateLimit-Remaining': rateLimit.remaining.toString(),
+      'X-RateLimit-Reset': rateLimit.reset.toString()
+    }
+
+    // If rate limit exceeded, return 429
+    if (!rateLimit.success) {
+      const retryAfter = Math.ceil((rateLimit.reset - Date.now()) / 1000)
+
+      logger.warn({
+        requestId: context.requestId,
+        organizationId: context.organizationId,
+        plan: context.plan,
+        limit: rateLimit.limit,
+        remaining: rateLimit.remaining
+      }, 'Rate limit exceeded')
+
+      return NextResponse.json(
+        apiResponse(
+          context.requestId,
+          undefined,
+          {
+            code: 'RATE_LIMIT_EXCEEDED',
+            message: `Rate limit exceeded. Limit: ${rateLimit.limit} requests per minute. Try again in ${retryAfter} seconds.`,
+            details: {
+              limit: rateLimit.limit,
+              remaining: rateLimit.remaining,
+              reset: rateLimit.reset,
+              retryAfter
+            }
+          }
+        ),
+        {
+          status: 429,
+          headers: {
+            ...rateLimitHeaders,
+            'Retry-After': retryAfter.toString()
+          }
+        }
+      )
+    }
+
+    // Execute handler
+    const response = await handler(request, context)
+
+    // Add rate limit headers to successful response
+    Object.entries(rateLimitHeaders).forEach(([key, value]) => {
+      response.headers.set(key, value)
+    })
+
+    return response
+  } catch (error) {
+    logger.error({
+      requestId: context.requestId,
+      organizationId: context.organizationId,
+      error
+    }, 'Rate limiting error')
+
+    // On error, allow the request (fail open)
+    return await handler(request, context)
+  }
 }
 
 /**
