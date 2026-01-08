@@ -172,16 +172,20 @@ export class EvolutionClient {
           // Cast to any for flexible response format checking
           const response = info as any
 
-          // Evolution API v2 returns array of instances
+          // Evolution API v2 returns array of instances with nested structure
+          // Response format: [{ instance: { instanceName: "...", ... } }]
           if (Array.isArray(response)) {
-            const instance = response.find((i: any) => i.instanceName === this.instanceName)
+            const instance = response.find((i: any) =>
+              i.instance?.instanceName === this.instanceName ||
+              i.instanceName === this.instanceName
+            )
             if (instance) {
               return { success: true }
             }
 
             // List available instances to help user
             const availableInstances = response
-              .map((i: any) => i.instanceName || i.name || 'unknown')
+              .map((i: any) => i.instance?.instanceName || i.instanceName || i.name || 'unknown')
               .filter(Boolean)
               .join(', ')
 
@@ -191,7 +195,8 @@ export class EvolutionClient {
 
             logger.warn({
               instanceName: this.instanceName,
-              availableInstances: response.map((i: any) => i.instanceName || i.name)
+              availableInstances: response.map((i: any) => i.instance?.instanceName || i.instanceName || i.name),
+              responseStructure: response[0] // Log first item to see structure
             }, 'Instance not found in server response')
 
             return { success: false, error: errorMsg }
