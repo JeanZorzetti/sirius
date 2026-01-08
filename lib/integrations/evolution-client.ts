@@ -178,7 +178,23 @@ export class EvolutionClient {
             if (instance) {
               return { success: true }
             }
-            return { success: false, error: 'Instância não encontrada no servidor' }
+
+            // List available instances to help user
+            const availableInstances = response
+              .map((i: any) => i.instanceName || i.name || 'unknown')
+              .filter(Boolean)
+              .join(', ')
+
+            const errorMsg = availableInstances
+              ? `Instância "${this.instanceName}" não encontrada. Disponíveis: ${availableInstances}`
+              : `Instância "${this.instanceName}" não encontrada no servidor`
+
+            logger.warn({
+              instanceName: this.instanceName,
+              availableInstances: response.map((i: any) => i.instanceName || i.name)
+            }, 'Instance not found in server response')
+
+            return { success: false, error: errorMsg }
           }
 
           // Evolution API v1 returns single instance object with nested instance property
