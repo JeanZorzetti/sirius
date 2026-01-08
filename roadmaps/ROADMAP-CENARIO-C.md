@@ -1345,10 +1345,10 @@
 ## 🚀 PRÓXIMOS PASSOS (Pós-Roadmap)
 
 ### Semana 5-6: API Pública
-- REST API com autenticação
-- Webhooks outbound
-- Rate limiting
-- Documentação Swagger
+- [x] REST API com autenticação (Fase 1-2 ✅)
+- [ ] Webhooks outbound (Fase 4 - Em progresso)
+- [x] Rate limiting (Fase 2 ✅)
+- [ ] Documentação Swagger (Fase 5 - Pendente)
 
 ### Semana 7-8: Integrações
 - Zapier
