@@ -1,7 +1,7 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { prisma } from '@/lib/prisma'
 import { ProfileForm } from '@/components/settings/profile-form'
-import { User, Users } from 'lucide-react'
+import { User, Users, Key, Webhook } from 'lucide-react'
 import Link from 'next/link'
 import { getSession } from '@/lib/auth'
 
@@ -53,6 +53,37 @@ export default async function SettingsPage() {
                             <div className="flex flex-col gap-1">
                                 <CardTitle className="text-base font-semibold text-zinc-900 dark:text-zinc-100">Time</CardTitle>
                                 <CardDescription className="text-zinc-500 text-xs">Gerencie membros e convites</CardDescription>
+                            </div>
+                        </CardHeader>
+                    </Card>
+                </Link>
+
+                <Link href="/dashboard/settings/api">
+                    <Card className="bg-white dark:bg-white/[0.02] border-zinc-200 dark:border-white/5 backdrop-blur-xl shadow-sm hover:bg-zinc-50 dark:hover:bg-white/[0.04] transition-colors cursor-pointer">
+                        <CardHeader className="flex flex-row items-center gap-4 relative overflow-hidden">
+                            <div className="h-10 w-10 rounded-lg bg-purple-500/10 flex items-center justify-center text-purple-500 ring-1 ring-white/5 shadow-[0_0_10px_rgba(168,85,247,0.2)]">
+                                <Key className="h-5 w-5" />
+                            </div>
+                            <div className="flex flex-col gap-1">
+                                <CardTitle className="text-base font-semibold text-zinc-900 dark:text-zinc-100">API Keys</CardTitle>
+                                <CardDescription className="text-zinc-500 text-xs">Gerencie chaves de API para integrações</CardDescription>
+                            </div>
+                        </CardHeader>
+                    </Card>
+                </Link>
+
+                <Link href="/dashboard/settings/webhooks">
+                    <Card className="bg-white dark:bg-white/[0.02] border-zinc-200 dark:border-white/5 backdrop-blur-xl shadow-sm hover:bg-zinc-50 dark:hover:bg-white/[0.04] transition-colors cursor-pointer">
+                        <CardHeader className="flex flex-row items-center gap-4 relative overflow-hidden">
+                            <div className="h-10 w-10 rounded-lg bg-blue-500/10 flex items-center justify-center text-blue-500 ring-1 ring-white/5 shadow-[0_0_10px_rgba(59,130,246,0.2)]">
+                                <Webhook className="h-5 w-5" />
+                            </div>
+                            <div className="flex flex-col gap-1">
+                                <CardTitle className="text-base font-semibold text-zinc-900 dark:text-zinc-100 flex items-center gap-2">
+                                    Webhooks
+                                    <span className="text-[10px] font-semibold px-1.5 py-0.5 rounded bg-purple-500/10 text-purple-600 dark:text-purple-400 ring-1 ring-purple-500/20">PRO</span>
+                                </CardTitle>
+                                <CardDescription className="text-zinc-500 text-xs">Configure webhooks para receber eventos</CardDescription>
                             </div>
                         </CardHeader>
                     </Card>
