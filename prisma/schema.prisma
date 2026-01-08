@@ -17,10 +17,11 @@ model Organization {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  // Stripe & Billing
-  stripeCustomerId     String?
-  stripeSubscriptionId String?
-  plan                 String @default("FREE") // FREE, PRO
+  // Mercado Pago & Billing
+  mercadoPagoCustomerId     String? // Customer ID no Mercado Pago
+  mercadoPagoSubscriptionId String? // Subscription ID (assinatura)
+  mercadoPagoPreferenceId   String? // Preference ID para checkout
+  plan                      String @default("FREE") // FREE, PRO
 
   users     User[]
   contacts  Contact[]
