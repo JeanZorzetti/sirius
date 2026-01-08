@@ -52,6 +52,7 @@ export const metadata: Metadata = {
 import { ThemeProvider } from "@/components/theme-provider"
 import { TawkToChat } from "@/components/tawk-to-chat"
 import { GoogleTagManager, GoogleTagManagerNoScript } from "@/components/google-tag-manager"
+import { MicrosoftClarity } from "@/components/microsoft-clarity"
 import { analyticsConfig } from "@/lib/analytics-config"
 import { SpeedInsights } from "@vercel/speed-insights/next"
 import { Analytics } from "@vercel/analytics/next"
@@ -167,18 +168,8 @@ export default function RootLayout({
           `}
         </Script>
 
-        {/* Microsoft Clarity */}
-        {analyticsConfig.clarity.enabled && (
-          <Script id="microsoft-clarity" strategy="afterInteractive">
-            {`
-              (function(c,l,a,r,i,t,y){
-                c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-                t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
-                y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-              })(window, document, "clarity", "script", "${analyticsConfig.clarity.id}");
-            `}
-          </Script>
-        )}
+        {/* Microsoft Clarity - With error handling */}
+        <MicrosoftClarity />
 
         <ThemeProvider
           attribute="class"

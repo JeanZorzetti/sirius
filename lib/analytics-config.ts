@@ -19,7 +19,7 @@ export const analyticsConfig = {
   // Microsoft Clarity
   clarity: {
     id: 'uu4q5pnnji',
-    enabled: false, // Disabled due to 400 errors - reconfigure in Clarity dashboard
+    enabled: true, // Re-enabled with proper error handling
   },
 
   // Tawk.to Live Chat
