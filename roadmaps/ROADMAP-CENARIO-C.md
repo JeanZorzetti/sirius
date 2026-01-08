@@ -1352,8 +1352,15 @@
   - [x] Contacts API (CRUD completo)
   - [x] Pipelines API (GET, POST com PRO)
   - [x] Analytics API (Overview + PRO)
-- [ ] Webhooks outbound (Fase 4 - Em progresso)
-- [ ] Documentação Swagger (Fase 5 - Pendente)
+- [x] Webhooks outbound (Fase 4 ✅)
+  - [x] Svix integration + webhook system
+  - [x] Webhook management API endpoints
+  - [x] Webhook dispatches integrados nos actions
+  - [x] Webhook management UI (PRO feature)
+- [x] Documentação API (Fase 5 ✅)
+  - [x] OpenAPI 3.1.0 specification completa
+  - [x] Scalar UI interactive documentation
+  - [x] Acessível em /api/docs
 
 ### Semana 7-8: Integrações
 - Zapier

@@ -21,7 +21,8 @@
       "Bash(npx playwright install)",
       "Bash(npx playwright test:*)",
       "Bash(npm run test:e2e:*)",
-      "Bash(mkdir:*)"
+      "Bash(mkdir:*)",
+      "Bash(grep:*)"
     ]
   }
 }
