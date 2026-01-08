@@ -86,6 +86,17 @@ export function WhatsAppSettingsForm({ organizationId, initialData }: WhatsAppSe
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
+
+        // Validate API Key when enabling for the first time
+        if (enabled && !initialData.baseUrl && !apiKey) {
+            toast({
+                title: 'Erro',
+                description: 'API Key é obrigatória ao ativar a integração pela primeira vez.',
+                variant: 'destructive'
+            })
+            return
+        }
+
         setIsLoading(true)
 
         try {

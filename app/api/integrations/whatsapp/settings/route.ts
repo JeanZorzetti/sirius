@@ -38,11 +38,31 @@ export async function POST(request: Request) {
         }
 
         // Validar campos obrigatórios quando ativado
-        if (enabled && (!baseUrl || !apiKey || !instanceName)) {
-            return NextResponse.json(
-                { error: 'URL Base, API Key e Nome da Instância são obrigatórios quando WhatsApp está ativado' },
-                { status: 400 }
-            )
+        if (enabled) {
+            // Check if this is a first-time setup (no existing config)
+            const existingApiKey = user.organization.evolutionApiKey
+
+            if (!baseUrl) {
+                return NextResponse.json(
+                    { error: 'URL Base é obrigatória quando WhatsApp está ativado' },
+                    { status: 400 }
+                )
+            }
+
+            if (!instanceName) {
+                return NextResponse.json(
+                    { error: 'Nome da Instância é obrigatório quando WhatsApp está ativado' },
+                    { status: 400 }
+                )
+            }
+
+            // API Key is required only if not previously configured
+            if (!existingApiKey && !apiKey) {
+                return NextResponse.json(
+                    { error: 'API Key é obrigatória ao configurar a integração pela primeira vez' },
+                    { status: 400 }
+                )
+            }
         }
 
         // Validar formato da URL
@@ -66,7 +86,16 @@ export async function POST(request: Request) {
 
         // Criptografar e atualizar API key apenas se fornecida
         if (apiKey) {
-            updateData.evolutionApiKey = encrypt(apiKey)
+            try {
+                updateData.evolutionApiKey = encrypt(apiKey)
+                logger.info({ organizationId }, 'API Key encrypted successfully')
+            } catch (encryptError) {
+                logger.error({ error: encryptError, organizationId }, 'Failed to encrypt API Key')
+                return NextResponse.json(
+                    { error: 'Erro ao criptografar API Key. Verifique a variável INTEGRATION_ENCRYPTION_KEY.' },
+                    { status: 500 }
+                )
+            }
         }
 
         // Atualizar organização
@@ -80,7 +109,8 @@ export async function POST(request: Request) {
             organizationId,
             enabled,
             baseUrl,
-            instanceName
+            instanceName,
+            apiKeyUpdated: !!apiKey
         }, 'WhatsApp settings updated')
 
         return NextResponse.json({ success: true })
