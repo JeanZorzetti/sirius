@@ -13,7 +13,7 @@
 import { prisma } from '@/lib/prisma'
 import { decrypt } from '@/lib/encryption'
 import { whatsappRateLimit } from './rate-limiter'
-import { logger } from '@/lib/logger'
+import logger from '@/lib/logger'
 
 // Evolution API Types
 export interface EvolutionInstanceInfo {

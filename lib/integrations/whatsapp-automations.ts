@@ -15,7 +15,7 @@ import {
     logWhatsAppActivity,
     checkWhatsAppRateLimit
 } from './evolution-client'
-import { logger } from '@/lib/logger'
+import logger from '@/lib/logger'
 
 interface SendWhatsAppMessageParams {
     organizationId: string

@@ -13,7 +13,7 @@
 import { prisma } from '@/lib/prisma'
 import { decrypt } from '@/lib/encryption'
 import { n8nRateLimit } from './rate-limiter'
-import { logger } from '@/lib/logger'
+import logger from '@/lib/logger'
 
 // N8N API Types
 export interface N8NWorkflow {

@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server'
 import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { encrypt } from '@/lib/encryption'
-import { logger } from '@/lib/logger'
+import logger from '@/lib/logger'
 
 export async function POST(request: Request) {
     try {
