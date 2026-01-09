@@ -50,12 +50,12 @@ export function FunnelTemplateDownload() {
 
     // Cores da paleta Sirius (apenas tons de azul)
     const colors = {
-      primary: [37, 99, 235],       // #2563eb - Azul principal Sirius
-      primaryLight: [239, 246, 255], // #eff6ff - Azul claro
-      primaryDark: [30, 64, 175],    // #1e40af - Azul escuro
-      text: [30, 41, 59],            // #1e293b - Texto escuro
-      textLight: [71, 85, 105],      // #475569 - Texto claro
-      border: [226, 232, 240]        // #e2e8f0 - Borda
+      primary: [37, 99, 235] as [number, number, number],       // #2563eb - Azul principal Sirius
+      primaryLight: [239, 246, 255] as [number, number, number], // #eff6ff - Azul claro
+      primaryDark: [30, 64, 175] as [number, number, number],    // #1e40af - Azul escuro
+      text: [30, 41, 59] as [number, number, number],            // #1e293b - Texto escuro
+      textLight: [71, 85, 105] as [number, number, number],      // #475569 - Texto claro
+      border: [226, 232, 240] as [number, number, number]        // #e2e8f0 - Borda
     }
 
     // Funcao auxiliar para adicionar texto centralizado
