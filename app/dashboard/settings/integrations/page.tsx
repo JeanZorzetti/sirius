@@ -72,8 +72,7 @@ export default async function IntegrationsPage() {
             enabled: user.organization.googleCalendarEnabled,
             configured: !!user.organization.googleCalendarEmail,
             href: '/dashboard/settings/integrations/google-calendar',
-            requiresPro: false, // Google Calendar pode ser FREE
-            comingSoon: true // Phase 3 - Em breve
+            requiresPro: false // Google Calendar pode ser FREE
         }
     ]
 
@@ -126,9 +125,8 @@ export default async function IntegrationsPage() {
                     return (
                         <Link
                             key={integration.id}
-                            href={isLocked || integration.comingSoon ? '#' : integration.href}
-                            className={isLocked || integration.comingSoon ? 'cursor-not-allowed opacity-60' : ''}
-                            prefetch={integration.comingSoon ? false : undefined}
+                            href={isLocked ? '#' : integration.href}
+                            className={isLocked ? 'cursor-not-allowed opacity-60' : ''}
                         >
                             <Card className="bg-white dark:bg-white/[0.02] border-zinc-200 dark:border-white/5 backdrop-blur-xl shadow-sm hover:bg-zinc-50 dark:hover:bg-white/[0.04] transition-colors">
                                 <CardHeader className="flex flex-row items-center gap-4 relative overflow-hidden">
@@ -143,11 +141,6 @@ export default async function IntegrationsPage() {
                                             {integration.requiresPro && (
                                                 <span className="text-[10px] font-semibold px-1.5 py-0.5 rounded bg-purple-500/10 text-purple-600 dark:text-purple-400 ring-1 ring-purple-500/20">
                                                     PRO
-                                                </span>
-                                            )}
-                                            {integration.comingSoon && (
-                                                <span className="text-[10px] font-semibold px-1.5 py-0.5 rounded bg-yellow-500/10 text-yellow-600 dark:text-yellow-400 ring-1 ring-yellow-500/20">
-                                                    EM BREVE
                                                 </span>
                                             )}
                                             {integration.configured && (
