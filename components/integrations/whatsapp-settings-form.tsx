@@ -175,13 +175,17 @@ export function WhatsAppSettingsForm({ organizationId, initialData }: WhatsAppSe
 
             <div className="space-y-2">
                 <Label htmlFor="apiKey" className="text-sm font-medium">
-                    API Key *
+                    API Key * {initialData.baseUrl && (
+                        <span className="text-xs font-normal text-green-600 dark:text-green-400 ml-2">
+                            ✓ Configurada
+                        </span>
+                    )}
                 </Label>
                 <div className="relative">
                     <Input
                         id="apiKey"
                         type={showApiKey ? 'text' : 'password'}
-                        placeholder="Digite sua API Key da Evolution API"
+                        placeholder={initialData.baseUrl ? "••••••••••••••••" : "Digite sua API Key da Evolution API"}
                         value={apiKey}
                         onChange={(e) => setApiKey(e.target.value)}
                         required={!initialData.baseUrl} // Required only if not previously configured
@@ -195,11 +199,18 @@ export function WhatsAppSettingsForm({ organizationId, initialData }: WhatsAppSe
                         {showApiKey ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                     </button>
                 </div>
-                <p className="text-xs text-zinc-500">
-                    {initialData.baseUrl
-                        ? 'Deixe em branco para manter a API Key atual'
-                        : 'API Key global da Evolution API (do arquivo .env)'}
-                </p>
+                {initialData.baseUrl ? (
+                    <div className="flex items-start gap-2 text-xs">
+                        <CheckCircle2 className="h-3 w-3 text-green-600 dark:text-green-400 mt-0.5 flex-shrink-0" />
+                        <p className="text-green-600 dark:text-green-400">
+                            API Key já configurada e criptografada. Deixe em branco para manter a atual, ou digite uma nova para substituir.
+                        </p>
+                    </div>
+                ) : (
+                    <p className="text-xs text-zinc-500">
+                        API Key global da Evolution API (do arquivo .env)
+                    </p>
+                )}
             </div>
 
             <div className="space-y-2">
