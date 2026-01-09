@@ -1726,6 +1726,44 @@ INTEGRATION_ENCRYPTION_KEY="0e25152eff34902cf02899b045c5bb07301921f055767888f867
 
 ---
 
+## 🚀 Próximos Passos: Melhorias PWA
+
+### 1. Screenshots Reais ⏸️ (Pendente)
+
+- [ ] Capturar screenshots reais do dashboard
+- [ ] Desktop screenshot (1280x720) - Dashboard com métricas
+- [ ] Mobile screenshot (750x1334) - Lista de contatos/deals
+- [ ] Substituir placeholders em public/
+
+**Como fazer:** Ver instruções em `docs/PWA_SCREENSHOTS.md`
+
+### 2. Integração de Notificações ⏸️ (Pendente)
+
+- [ ] Enviar notificação ao criar novo deal
+- [ ] Enviar notificação ao ganhar deal (toda organização)
+- [ ] Enviar notificação em nova mensagem WhatsApp
+- [ ] Enviar notificação antes de eventos do calendário
+- [ ] Adicionar configuração de preferências de notificação
+
+### 3. Testes PWA ⏸️ (Pendente)
+
+- [ ] Testar instalação em Android (Chrome)
+- [ ] Testar instalação em iOS (Safari)
+- [ ] Testar instalação em Desktop (Chrome/Edge)
+- [ ] Validar funcionamento offline
+- [ ] Testar push notifications em todos dispositivos
+- [ ] Testar app shortcuts no Android
+
+### 4. Métricas e Analytics PWA ⏸️ (Pendente)
+
+- [ ] Rastrear instalações PWA (beforeinstallprompt)
+- [ ] Rastrear taxa de conversão do prompt
+- [ ] Monitorar uso de push notifications
+- [ ] Monitorar sincronização offline (sucesso/falha)
+- [ ] Dashboard de métricas PWA
+
+---
+
 ## 📝 NOTAS IMPORTANTES
 
 ### Priorização Flexível

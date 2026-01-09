@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import logger from '@/lib/logger'
 import { parseWhatsAppJid } from '@/lib/integrations/evolution-client'
+import { sendWhatsAppMessageNotification } from '@/lib/push-notifications'
 
 /**
  * Webhook receiver para Evolution API
@@ -117,6 +118,22 @@ async function handleIncomingMessage(organizationId: string, data: any) {
                     sentAt: new Date(message.messageTimestamp * 1000)
                 }
             })
+
+            // Send push notification to all users in the organization
+            const users = await prisma.user.findMany({
+                where: { organizationId },
+                select: { id: true }
+            })
+
+            for (const user of users) {
+                sendWhatsAppMessageNotification(
+                    user.id,
+                    contact.name || senderName,
+                    messageText || 'Nova mensagem'
+                ).catch(error => {
+                    logger.error({ error, userId: user.id }, 'Failed to send WhatsApp notification')
+                })
+            }
 
             // Auto-criar deal se não houver deal ativo para este contato
             const existingDeal = await prisma.deal.findFirst({

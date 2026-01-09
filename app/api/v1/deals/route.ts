@@ -4,6 +4,7 @@ import { prisma } from '@/lib/prisma'
 import { getPaginationParams, getPaginationMeta, paginatedResponse, getSortParams, getFilters, formatDecimal, formatDate } from '@/lib/api-helpers'
 import { validateRequest, createDealSchema } from '@/lib/api-validators'
 import logger from '@/lib/logger'
+import { sendNewDealNotification } from '@/lib/push-notifications'
 
 /**
  * GET /api/v1/deals
@@ -304,6 +305,15 @@ export async function POST(request: NextRequest) {
         organizationId: context.organizationId,
         dealId: deal.id
       }, 'Deal created via API')
+
+      // Send push notification to the assigned user
+      sendNewDealNotification(
+        deal.userId,
+        deal.title,
+        deal.value ? deal.value.toNumber() : undefined
+      ).catch(error => {
+        logger.error({ error, dealId: deal.id }, 'Failed to send new deal notification')
+      })
 
       return NextResponse.json(
         apiResponse(context.requestId, formattedDeal),

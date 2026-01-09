@@ -4,6 +4,7 @@ import { prisma } from '@/lib/prisma'
 import { formatDecimal, formatDate } from '@/lib/api-helpers'
 import { validateRequest, updateDealSchema, uuidSchema } from '@/lib/api-validators'
 import logger from '@/lib/logger'
+import { sendDealWonNotification } from '@/lib/push-notifications'
 
 /**
  * GET /api/v1/deals/[id]
@@ -333,6 +334,21 @@ export async function PATCH(
           }
         }
       })
+
+      // Check if stage changed to a "won" stage and send notification
+      if (data.stageId && data.stageId !== existingDeal.stageId) {
+        const stageName = deal.stage.name.toLowerCase()
+        if (stageName.includes('ganho') || stageName.includes('won') || stageName.includes('fechado')) {
+          // Send notification to entire organization
+          sendDealWonNotification(
+            context.organizationId,
+            deal.title,
+            deal.value ? deal.value.toNumber() : undefined
+          ).catch(error => {
+            logger.error({ error, dealId: deal.id }, 'Failed to send deal won notification')
+          })
+        }
+      }
 
       // Format response
       const formattedDeal = {
