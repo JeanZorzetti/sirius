@@ -68,3 +68,45 @@ self.addEventListener('notificationclick', function (event) {
 self.addEventListener('notificationclose', function (event) {
   console.log('[Service Worker] Notification closed:', event)
 })
+
+// Background Sync - Process offline actions when connection is restored
+self.addEventListener('sync', function (event) {
+  console.log('[Service Worker] Background sync triggered:', event.tag)
+
+  if (event.tag === 'sync-offline-actions') {
+    event.waitUntil(
+      fetch('/api/sync/process', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+      })
+        .then((response) => {
+          console.log('[Service Worker] Sync completed:', response.status)
+          return response.json()
+        })
+        .then((data) => {
+          console.log('[Service Worker] Sync result:', data)
+
+          // Show notification if there were synced actions
+          if (data.success > 0) {
+            return self.registration.showNotification('Sincronização Concluída', {
+              body: `${data.success} ação(ões) foram sincronizadas com sucesso`,
+              icon: '/icon-192x192.png',
+              badge: '/icon-72x72.png',
+              tag: 'sync-complete',
+            })
+          }
+        })
+        .catch((error) => {
+          console.error('[Service Worker] Sync failed:', error)
+
+          // Show error notification
+          return self.registration.showNotification('Erro na Sincronização', {
+            body: 'Não foi possível sincronizar suas ações. Tente novamente.',
+            icon: '/icon-192x192.png',
+            badge: '/icon-72x72.png',
+            tag: 'sync-error',
+          })
+        })
+    )
+  }
+})

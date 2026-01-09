@@ -81,6 +81,7 @@ import { ThemeProvider } from "@/components/theme-provider"
 import { TawkToChat } from "@/components/tawk-to-chat"
 import { PWAInstallPrompt } from "@/components/pwa-install-prompt"
 import { PushNotificationManager } from "@/components/push-notification-manager"
+import { OfflineStatus } from "@/components/offline-status"
 import { GoogleTagManager, GoogleTagManagerNoScript } from "@/components/google-tag-manager"
 import { MicrosoftClarity } from "@/components/microsoft-clarity"
 import { analyticsConfig } from "@/lib/analytics-config"
@@ -214,6 +215,8 @@ export default function RootLayout({
           <PWAInstallPrompt />
           {/* Push Notifications Manager */}
           <PushNotificationManager />
+          {/* Offline Status & Sync Queue */}
+          <OfflineStatus />
         </ThemeProvider>
         <Analytics />
         <SpeedInsights />
