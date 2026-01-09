@@ -1,60 +1,105 @@
 {
-  "name": "Sirius CRM",
-  "short_name": "Sirius",
-  "description": "O CRM inteligente para quem quer brilhar nas vendas. Pipeline Kanban, WhatsApp integrado e Analytics em tempo real.",
+  "name": "Sirius CRM - Gestão de Vendas Inteligente",
+  "short_name": "Sirius CRM",
+  "description": "CRM completo para gestão de vendas, contatos, pipelines e integrações",
   "start_url": "/dashboard",
   "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#2563eb",
   "orientation": "portrait-primary",
-  "background_color": "#09090b",
-  "theme_color": "#6366f1",
-  "categories": ["business", "productivity"],
   "icons": [
     {
-      "src": "/icon.png",
-      "sizes": "32x32",
+      "src": "/icon-72x72.png",
+      "sizes": "72x72",
       "type": "image/png",
-      "purpose": "any"
+      "purpose": "maskable any"
     },
     {
-      "src": "/icon.png",
+      "src": "/icon-96x96.png",
+      "sizes": "96x96",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icon-128x128.png",
+      "sizes": "128x128",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icon-144x144.png",
+      "sizes": "144x144",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icon-152x152.png",
+      "sizes": "152x152",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icon-192x192.png",
       "sizes": "192x192",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "maskable any"
     },
     {
-      "src": "/apple-icon.png",
-      "sizes": "180x180",
+      "src": "/icon-384x384.png",
+      "sizes": "384x384",
       "type": "image/png",
-      "purpose": "any"
+      "purpose": "maskable any"
     },
     {
-      "src": "/icon.png",
+      "src": "/icon-512x512.png",
       "sizes": "512x512",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "maskable any"
     }
   ],
+  "categories": ["business", "productivity"],
   "shortcuts": [
     {
-      "name": "Pipeline",
-      "short_name": "Pipeline",
-      "description": "Ver pipeline de vendas",
+      "name": "Dashboard",
+      "short_name": "Dashboard",
+      "description": "Acessar dashboard principal",
       "url": "/dashboard",
-      "icons": [{ "src": "/icon.png", "sizes": "96x96" }]
+      "icons": [{ "src": "/icon-192x192.png", "sizes": "192x192" }]
     },
     {
       "name": "Contatos",
       "short_name": "Contatos",
-      "description": "Gerenciar contatos",
+      "description": "Ver lista de contatos",
       "url": "/dashboard/contacts",
-      "icons": [{ "src": "/icon.png", "sizes": "96x96" }]
+      "icons": [{ "src": "/icon-192x192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Pipelines",
+      "short_name": "Pipelines",
+      "description": "Gerenciar pipelines de vendas",
+      "url": "/dashboard/pipelines",
+      "icons": [{ "src": "/icon-192x192.png", "sizes": "192x192" }]
     },
     {
       "name": "Analytics",
       "short_name": "Analytics",
-      "description": "Ver métricas",
+      "description": "Ver analytics e métricas",
       "url": "/dashboard/analytics",
-      "icons": [{ "src": "/icon.png", "sizes": "96x96" }]
+      "icons": [{ "src": "/icon-192x192.png", "sizes": "192x192" }]
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/screenshot-wide.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "form_factor": "wide"
+    },
+    {
+      "src": "/screenshot-mobile.png",
+      "sizes": "750x1334",
+      "type": "image/png",
+      "form_factor": "narrow"
     }
   ]
 }

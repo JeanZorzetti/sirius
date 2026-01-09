@@ -21,6 +21,15 @@ export const metadata: Metadata = {
   creator: 'Jean Zorzetti',
   publisher: 'ROI Labs',
   metadataBase: new URL('https://sirius.roilabs.com.br'),
+  applicationName: 'Sirius CRM',
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: 'default',
+    title: 'Sirius CRM',
+  },
+  formatDetection: {
+    telephone: false,
+  },
   verification: {
     // google: 'YOUR_GOOGLE_VERIFICATION_CODE', // Já tem via Google Analytics
     // other: {
@@ -51,6 +60,7 @@ export const metadata: Metadata = {
 
 import { ThemeProvider } from "@/components/theme-provider"
 import { TawkToChat } from "@/components/tawk-to-chat"
+import { PWAInstallPrompt } from "@/components/pwa-install-prompt"
 import { GoogleTagManager, GoogleTagManagerNoScript } from "@/components/google-tag-manager"
 import { MicrosoftClarity } from "@/components/microsoft-clarity"
 import { analyticsConfig } from "@/lib/analytics-config"
@@ -180,6 +190,8 @@ export default function RootLayout({
           {children}
           {/* Tawk.to Live Chat - Only on marketing pages */}
           <TawkToChat />
+          {/* PWA Install Prompt */}
+          <PWAInstallPrompt />
         </ThemeProvider>
         <Analytics />
         <SpeedInsights />

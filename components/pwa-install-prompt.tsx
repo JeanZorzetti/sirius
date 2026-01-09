@@ -1,9 +1,8 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useEffect, useState } from 'react'
+import { X, Download } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { Download, X } from 'lucide-react'
-import { cn } from '@/lib/utils'
 
 interface BeforeInstallPromptEvent extends Event {
   prompt: () => Promise<void>
@@ -16,88 +15,105 @@ export function PWAInstallPrompt() {
 
   useEffect(() => {
     const handler = (e: Event) => {
+      // Prevent the mini-infobar from appearing on mobile
       e.preventDefault()
+      // Stash the event so it can be triggered later
       setDeferredPrompt(e as BeforeInstallPromptEvent)
-
-      // Show prompt only if user hasn't dismissed it before
-      const dismissed = localStorage.getItem('pwa-prompt-dismissed')
-      if (!dismissed) {
+      // Show the install prompt after 30 seconds
+      setTimeout(() => {
         setShowPrompt(true)
-      }
+      }, 30000) // 30 seconds delay
     }
 
     window.addEventListener('beforeinstallprompt', handler)
 
-    return () => {
-      window.removeEventListener('beforeinstallprompt', handler)
+    // Check if app is already installed
+    if (window.matchMedia('(display-mode: standalone)').matches) {
+      setShowPrompt(false)
     }
+
+    return () => window.removeEventListener('beforeinstallprompt', handler)
   }, [])
 
-  const handleInstall = async () => {
+  const handleInstallClick = async () => {
     if (!deferredPrompt) return
 
-    deferredPrompt.prompt()
+    // Show the install prompt
+    await deferredPrompt.prompt()
+
+    // Wait for the user to respond to the prompt
     const { outcome } = await deferredPrompt.userChoice
 
     if (outcome === 'accepted') {
-      console.log('PWA installed')
+      console.log('User accepted the install prompt')
+    } else {
+      console.log('User dismissed the install prompt')
     }
 
+    // Clear the deferred prompt
     setDeferredPrompt(null)
     setShowPrompt(false)
   }
 
   const handleDismiss = () => {
     setShowPrompt(false)
-    localStorage.setItem('pwa-prompt-dismissed', 'true')
+    // Don't show again for this session
+    if (typeof window !== 'undefined') {
+      sessionStorage.setItem('pwa-prompt-dismissed', 'true')
+    }
   }
 
-  if (!showPrompt || !deferredPrompt) return null
+  // Don't show if already dismissed in this session or if not in browser
+  if (typeof window === 'undefined') {
+    return null
+  }
+
+  if (sessionStorage.getItem('pwa-prompt-dismissed')) {
+    return null
+  }
+
+  if (!showPrompt || !deferredPrompt) {
+    return null
+  }
 
   return (
-    <div className={cn(
-      "fixed bottom-4 left-4 right-4 sm:left-auto sm:right-4 sm:w-96 z-50",
-      "bg-gradient-to-br from-indigo-500 to-purple-600 text-white rounded-2xl shadow-2xl",
-      "border border-white/20 backdrop-blur-xl p-4",
-      "animate-in slide-in-from-bottom-5 duration-500"
-    )}>
-      <button
-        onClick={handleDismiss}
-        className="absolute top-2 right-2 p-1 rounded-full hover:bg-white/20 transition-colors"
-      >
-        <X className="h-4 w-4" />
-      </button>
-
-      <div className="flex items-start gap-4">
-        <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-white/20 flex items-center justify-center backdrop-blur-sm">
-          <Download className="h-6 w-6" />
-        </div>
-
-        <div className="flex-1 space-y-3">
-          <div>
-            <h3 className="font-bold text-lg">Instalar Sirius CRM</h3>
-            <p className="text-sm text-white/90 mt-1">
-              Adicione à tela inicial para acesso rápido e experiência offline
+    <div className="fixed bottom-4 left-4 right-4 md:left-auto md:right-4 md:max-w-sm z-50 animate-in slide-in-from-bottom-5">
+      <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-lg shadow-lg p-4">
+        <div className="flex items-start gap-3">
+          <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-blue-500/10 flex items-center justify-center">
+            <Download className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+          </div>
+          <div className="flex-1 min-w-0">
+            <h3 className="text-sm font-semibold text-zinc-900 dark:text-white">
+              Instalar Sirius CRM
+            </h3>
+            <p className="text-xs text-zinc-600 dark:text-zinc-400 mt-1">
+              Adicione à tela inicial para acesso rápido e offline
             </p>
+            <div className="flex gap-2 mt-3">
+              <Button
+                onClick={handleInstallClick}
+                size="sm"
+                className="text-xs"
+              >
+                Instalar
+              </Button>
+              <Button
+                onClick={handleDismiss}
+                variant="ghost"
+                size="sm"
+                className="text-xs"
+              >
+                Agora não
+              </Button>
+            </div>
           </div>
-
-          <div className="flex gap-2">
-            <Button
-              onClick={handleInstall}
-              size="sm"
-              className="bg-white text-indigo-600 hover:bg-white/90 font-medium"
-            >
-              Instalar
-            </Button>
-            <Button
-              onClick={handleDismiss}
-              size="sm"
-              variant="ghost"
-              className="text-white hover:bg-white/10"
-            >
-              Agora não
-            </Button>
-          </div>
+          <button
+            onClick={handleDismiss}
+            className="flex-shrink-0 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300"
+          >
+            <X className="w-4 h-4" />
+          </button>
         </div>
       </div>
     </div>
