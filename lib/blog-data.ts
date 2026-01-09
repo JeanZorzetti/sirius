@@ -183,21 +183,21 @@ export const blogPosts = [
       <div class="callout-problems">
         <p><strong>❌ 4 Problemas Fatais de Ter Muitas Etapas</strong></p>
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1rem; margin: 1.5rem 0;">
-          <div style="background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%); border-left: 4px solid #ef4444; padding: 1.25rem; border-radius: 0.75rem;">
-            <p style="margin: 0; font-weight: 700; color: #dc2626; font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.05em;">⏱️ Paralisia de Decisão</p>
-            <p style="margin: 0.5rem 0 0 0; color: #7f1d1d; font-size: 0.95rem;">Vendedores perdem <strong>15-20 min/dia</strong> decidindo "em qual etapa esse deal se encaixa?"</p>
+          <div style="background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%); border-left: 4px solid #3b82f6; padding: 1.25rem; border-radius: 0.75rem;">
+            <p style="margin: 0; font-weight: 700; color: #2563eb; font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.05em;">⏱️ Paralisia de Decisão</p>
+            <p style="margin: 0.5rem 0 0 0; color: #1e3a8a; font-size: 0.95rem;">Vendedores perdem <strong>15-20 min/dia</strong> decidindo "em qual etapa esse deal se encaixa?"</p>
           </div>
-          <div style="background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%); border-left: 4px solid #ef4444; padding: 1.25rem; border-radius: 0.75rem;">
-            <p style="margin: 0; font-weight: 700; color: #dc2626; font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.05em;">🎭 Falsa Sensação de Progresso</p>
-            <p style="margin: 0.5rem 0 0 0; color: #7f1d1d; font-size: 0.95rem;">Mover de "Etapa 3" para "Etapa 4" parece produtivo, mas não aproxima do fechamento</p>
+          <div style="background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%); border-left: 4px solid #3b82f6; padding: 1.25rem; border-radius: 0.75rem;">
+            <p style="margin: 0; font-weight: 700; color: #2563eb; font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.05em;">🎭 Falsa Sensação de Progresso</p>
+            <p style="margin: 0.5rem 0 0 0; color: #1e3a8a; font-size: 0.95rem;">Mover de "Etapa 3" para "Etapa 4" parece produtivo, mas não aproxima do fechamento</p>
           </div>
-          <div style="background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%); border-left: 4px solid #ef4444; padding: 1.25rem; border-radius: 0.75rem;">
-            <p style="margin: 0; font-weight: 700; color: #dc2626; font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.05em;">📊 Análise Impossível</p>
-            <p style="margin: 0.5rem 0 0 0; color: #7f1d1d; font-size: 0.95rem;">Com <strong>12 etapas</strong>, você não identifica os reais gargalos. Muito ruído, pouco sinal.</p>
+          <div style="background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%); border-left: 4px solid #3b82f6; padding: 1.25rem; border-radius: 0.75rem;">
+            <p style="margin: 0; font-weight: 700; color: #2563eb; font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.05em;">📊 Análise Impossível</p>
+            <p style="margin: 0.5rem 0 0 0; color: #1e3a8a; font-size: 0.95rem;">Com <strong>12 etapas</strong>, você não identifica os reais gargalos. Muito ruído, pouco sinal.</p>
           </div>
-          <div style="background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%); border-left: 4px solid #ef4444; padding: 1.25rem; border-radius: 0.75rem;">
-            <p style="margin: 0; font-weight: 700; color: #dc2626; font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.05em;">🔀 Inconsistência Total</p>
-            <p style="margin: 0.5rem 0 0 0; color: #7f1d1d; font-size: 0.95rem;">Cada vendedor interpreta as micro-etapas diferente, tornando os dados inúteis</p>
+          <div style="background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%); border-left: 4px solid #3b82f6; padding: 1.25rem; border-radius: 0.75rem;">
+            <p style="margin: 0; font-weight: 700; color: #2563eb; font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.05em;">🔀 Inconsistência Total</p>
+            <p style="margin: 0.5rem 0 0 0; color: #1e3a8a; font-size: 0.95rem;">Cada vendedor interpreta as micro-etapas diferente, tornando os dados inúteis</p>
           </div>
         </div>
       </div>
@@ -216,7 +216,7 @@ export const blogPosts = [
 
       <div class="callout-brain">
         <p><strong>🧠 Ciência Cerebral</strong></p>
-        <p style="font-size: 2.5rem; font-weight: 800; color: #7c3aed; margin: 1rem 0; line-height: 1;">60.000x</p>
+        <p style="font-size: 2.5rem; font-weight: 800; color: #2563eb; margin: 1rem 0; line-height: 1;">60.000x</p>
         <p>Nosso cérebro processa informações visuais <strong>60.000x mais rápido</strong> do que texto. Quando você olha para um quadro Kanban, você <strong>vê instantaneamente</strong>:</p>
       </div>
 
@@ -305,85 +305,85 @@ export const blogPosts = [
 
       <div style="display: grid; gap: 1.5rem; margin: 2rem 0;">
         <!-- Card 1: Prospecção -->
-        <div style="background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%); border: 2px solid #bae6fd; border-radius: 1rem; padding: 1.5rem; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.1);">
+        <div style="background: linear-gradient(135deg, #f0f9ff 0%, #dbeafe 100%); border: 2px solid #93c5fd; border-radius: 1rem; padding: 1.5rem; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.1);">
           <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.25rem; align-items: start;">
             <div>
               <p style="margin: 0; font-weight: 800; color: #1e40af; font-size: 1.125rem; text-transform: uppercase; letter-spacing: 0.05em;">🔍 Prospecção</p>
             </div>
             <div>
-              <p style="margin: 0; font-size: 0.875rem; color: #075985; text-transform: uppercase; font-weight: 600; margin-bottom: 0.25rem;">✅ Tempo Saudável</p>
+              <p style="margin: 0; font-size: 0.875rem; color: #1e40af; text-transform: uppercase; font-weight: 600; margin-bottom: 0.25rem;">✅ Tempo Saudável</p>
               <p style="margin: 0; font-weight: 700; color: #0c4a6e; font-size: 1.125rem;">1-3 dias</p>
             </div>
             <div>
-              <p style="margin: 0; font-size: 0.875rem; color: #b91c1c; text-transform: uppercase; font-weight: 600; margin-bottom: 0.25rem;">⚠️ Zona de Perigo</p>
-              <p style="margin: 0; font-weight: 700; color: #991b1b; font-size: 1.125rem;">&gt;7 dias</p>
+              <p style="margin: 0; font-size: 0.875rem; color: #1e40af; text-transform: uppercase; font-weight: 600; margin-bottom: 0.25rem;">⚠️ Zona de Perigo</p>
+              <p style="margin: 0; font-weight: 700; color: #1e40af; font-size: 1.125rem;">&gt;7 dias</p>
             </div>
             <div>
-              <p style="margin: 0; font-size: 0.875rem; color: #075985; text-transform: uppercase; font-weight: 600; margin-bottom: 0.25rem;">🎯 Ação Necessária</p>
+              <p style="margin: 0; font-size: 0.875rem; color: #1e40af; text-transform: uppercase; font-weight: 600; margin-bottom: 0.25rem;">🎯 Ação Necessária</p>
               <p style="margin: 0; color: #0c4a6e; font-weight: 500;">Archive ou mova para Nurturing</p>
             </div>
           </div>
         </div>
 
         <!-- Card 2: Qualificação -->
-        <div style="background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%); border: 2px solid #bbf7d0; border-radius: 1rem; padding: 1.5rem; box-shadow: 0 4px 12px rgba(34, 197, 94, 0.1);">
+        <div style="background: linear-gradient(135deg, #f0f9ff 0%, #dbeafe 100%); border: 2px solid #bfdbfe; border-radius: 1rem; padding: 1.5rem; box-shadow: 0 4px 12px rgba(34, 197, 94, 0.1);">
           <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.25rem; align-items: start;">
             <div>
-              <p style="margin: 0; font-weight: 800; color: #15803d; font-size: 1.125rem; text-transform: uppercase; letter-spacing: 0.05em;">✅ Qualificação</p>
+              <p style="margin: 0; font-weight: 800; color: #1e40af; font-size: 1.125rem; text-transform: uppercase; letter-spacing: 0.05em;">✅ Qualificação</p>
             </div>
             <div>
-              <p style="margin: 0; font-size: 0.875rem; color: #065f46; text-transform: uppercase; font-weight: 600; margin-bottom: 0.25rem;">✅ Tempo Saudável</p>
-              <p style="margin: 0; font-weight: 700; color: #064e3b; font-size: 1.125rem;">3-7 dias</p>
+              <p style="margin: 0; font-size: 0.875rem; color: #1e40af; text-transform: uppercase; font-weight: 600; margin-bottom: 0.25rem;">✅ Tempo Saudável</p>
+              <p style="margin: 0; font-weight: 700; color: #1e40af; font-size: 1.125rem;">3-7 dias</p>
             </div>
             <div>
-              <p style="margin: 0; font-size: 0.875rem; color: #b91c1c; text-transform: uppercase; font-weight: 600; margin-bottom: 0.25rem;">⚠️ Zona de Perigo</p>
-              <p style="margin: 0; font-weight: 700; color: #991b1b; font-size: 1.125rem;">&gt;14 dias</p>
+              <p style="margin: 0; font-size: 0.875rem; color: #1e40af; text-transform: uppercase; font-weight: 600; margin-bottom: 0.25rem;">⚠️ Zona de Perigo</p>
+              <p style="margin: 0; font-weight: 700; color: #1e40af; font-size: 1.125rem;">&gt;14 dias</p>
             </div>
             <div>
-              <p style="margin: 0; font-size: 0.875rem; color: #065f46; text-transform: uppercase; font-weight: 600; margin-bottom: 0.25rem;">🎯 Ação Necessária</p>
-              <p style="margin: 0; color: #064e3b; font-weight: 500;">Reunião de requalificação ou archive</p>
+              <p style="margin: 0; font-size: 0.875rem; color: #1e40af; text-transform: uppercase; font-weight: 600; margin-bottom: 0.25rem;">🎯 Ação Necessária</p>
+              <p style="margin: 0; color: #1e40af; font-weight: 500;">Reunião de requalificação ou archive</p>
             </div>
           </div>
         </div>
 
         <!-- Card 3: Proposta -->
-        <div style="background: linear-gradient(135deg, #faf5ff 0%, #f3e8ff 100%); border: 2px solid #e9d5ff; border-radius: 1rem; padding: 1.5rem; box-shadow: 0 4px 12px rgba(124, 58, 237, 0.1);">
+        <div style="background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); border: 2px solid #bfdbfe; border-radius: 1rem; padding: 1.5rem; box-shadow: 0 4px 12px rgba(124, 58, 237, 0.1);">
           <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.25rem; align-items: start;">
             <div>
-              <p style="margin: 0; font-weight: 800; color: #6b21a8; font-size: 1.125rem; text-transform: uppercase; letter-spacing: 0.05em;">📄 Proposta</p>
+              <p style="margin: 0; font-weight: 800; color: #1e40af; font-size: 1.125rem; text-transform: uppercase; letter-spacing: 0.05em;">📄 Proposta</p>
             </div>
             <div>
-              <p style="margin: 0; font-size: 0.875rem; color: #581c87; text-transform: uppercase; font-weight: 600; margin-bottom: 0.25rem;">✅ Tempo Saudável</p>
+              <p style="margin: 0; font-size: 0.875rem; color: #1e40af; text-transform: uppercase; font-weight: 600; margin-bottom: 0.25rem;">✅ Tempo Saudável</p>
               <p style="margin: 0; font-weight: 700; color: #4c1d95; font-size: 1.125rem;">5-10 dias</p>
             </div>
             <div>
-              <p style="margin: 0; font-size: 0.875rem; color: #b91c1c; text-transform: uppercase; font-weight: 600; margin-bottom: 0.25rem;">⚠️ Zona de Perigo</p>
-              <p style="margin: 0; font-weight: 700; color: #991b1b; font-size: 1.125rem;">&gt;21 dias</p>
+              <p style="margin: 0; font-size: 0.875rem; color: #1e40af; text-transform: uppercase; font-weight: 600; margin-bottom: 0.25rem;">⚠️ Zona de Perigo</p>
+              <p style="margin: 0; font-weight: 700; color: #1e40af; font-size: 1.125rem;">&gt;21 dias</p>
             </div>
             <div>
-              <p style="margin: 0; font-size: 0.875rem; color: #581c87; text-transform: uppercase; font-weight: 600; margin-bottom: 0.25rem;">🎯 Ação Necessária</p>
+              <p style="margin: 0; font-size: 0.875rem; color: #1e40af; text-transform: uppercase; font-weight: 600; margin-bottom: 0.25rem;">🎯 Ação Necessária</p>
               <p style="margin: 0; color: #4c1d95; font-weight: 500;">Follow-up estruturado ou renegocie termos</p>
             </div>
           </div>
         </div>
 
         <!-- Card 4: Negociação -->
-        <div style="background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%); border: 2px solid #fde68a; border-radius: 1rem; padding: 1.5rem; box-shadow: 0 4px 12px rgba(245, 158, 11, 0.1);">
+        <div style="background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); border: 2px solid #bfdbfe; border-radius: 1rem; padding: 1.5rem; box-shadow: 0 4px 12px rgba(245, 158, 11, 0.1);">
           <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.25rem; align-items: start;">
             <div>
               <p style="margin: 0; font-weight: 800; color: #b45309; font-size: 1.125rem; text-transform: uppercase; letter-spacing: 0.05em;">💼 Negociação</p>
             </div>
             <div>
-              <p style="margin: 0; font-size: 0.875rem; color: #92400e; text-transform: uppercase; font-weight: 600; margin-bottom: 0.25rem;">✅ Tempo Saudável</p>
-              <p style="margin: 0; font-weight: 700; color: #78350f; font-size: 1.125rem;">7-14 dias</p>
+              <p style="margin: 0; font-size: 0.875rem; color: #1e40af; text-transform: uppercase; font-weight: 600; margin-bottom: 0.25rem;">✅ Tempo Saudável</p>
+              <p style="margin: 0; font-weight: 700; color: #1e3a8a; font-size: 1.125rem;">7-14 dias</p>
             </div>
             <div>
-              <p style="margin: 0; font-size: 0.875rem; color: #b91c1c; text-transform: uppercase; font-weight: 600; margin-bottom: 0.25rem;">⚠️ Zona de Perigo</p>
-              <p style="margin: 0; font-weight: 700; color: #991b1b; font-size: 1.125rem;">&gt;30 dias</p>
+              <p style="margin: 0; font-size: 0.875rem; color: #1e40af; text-transform: uppercase; font-weight: 600; margin-bottom: 0.25rem;">⚠️ Zona de Perigo</p>
+              <p style="margin: 0; font-weight: 700; color: #1e40af; font-size: 1.125rem;">&gt;30 dias</p>
             </div>
             <div>
-              <p style="margin: 0; font-size: 0.875rem; color: #92400e; text-transform: uppercase; font-weight: 600; margin-bottom: 0.25rem;">🎯 Ação Necessária</p>
-              <p style="margin: 0; color: #78350f; font-weight: 500;">Escale para gerente ou revise fit do produto</p>
+              <p style="margin: 0; font-size: 0.875rem; color: #1e40af; text-transform: uppercase; font-weight: 600; margin-bottom: 0.25rem;">🎯 Ação Necessária</p>
+              <p style="margin: 0; color: #1e3a8a; font-weight: 500;">Escale para gerente ou revise fit do produto</p>
             </div>
           </div>
         </div>
@@ -454,29 +454,29 @@ export const blogPosts = [
       <div class="callout-problems">
         <p><strong>❌ 6 Problemas Fatais das Planilhas para Vendas</strong></p>
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem; margin: 1.5rem 0;">
-          <div style="background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%); border-left: 4px solid #ef4444; padding: 1.25rem; border-radius: 0.75rem;">
-            <p style="margin: 0; font-weight: 700; color: #dc2626; font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.05em;">⏱️ Perda de Tempo</p>
-            <p style="margin: 0.5rem 0 0 0; color: #7f1d1d; font-size: 0.95rem;">Você perde <strong>2-3 horas por semana</strong> atualizando células manualmente</p>
+          <div style="background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%); border-left: 4px solid #3b82f6; padding: 1.25rem; border-radius: 0.75rem;">
+            <p style="margin: 0; font-weight: 700; color: #2563eb; font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.05em;">⏱️ Perda de Tempo</p>
+            <p style="margin: 0.5rem 0 0 0; color: #1e3a8a; font-size: 0.95rem;">Você perde <strong>2-3 horas por semana</strong> atualizando células manualmente</p>
           </div>
-          <div style="background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%); border-left: 4px solid #ef4444; padding: 1.25rem; border-radius: 0.75rem;">
-            <p style="margin: 0; font-weight: 700; color: #dc2626; font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.05em;">👁️ Zero Visibilidade</p>
-            <p style="margin: 0.5rem 0 0 0; color: #7f1d1d; font-size: 0.95rem;">Não tem visão Kanban (só linhas e colunas infinitas)</p>
+          <div style="background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%); border-left: 4px solid #3b82f6; padding: 1.25rem; border-radius: 0.75rem;">
+            <p style="margin: 0; font-weight: 700; color: #2563eb; font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.05em;">👁️ Zero Visibilidade</p>
+            <p style="margin: 0.5rem 0 0 0; color: #1e3a8a; font-size: 0.95rem;">Não tem visão Kanban (só linhas e colunas infinitas)</p>
           </div>
-          <div style="background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%); border-left: 4px solid #ef4444; padding: 1.25rem; border-radius: 0.75rem;">
-            <p style="margin: 0; font-weight: 700; color: #dc2626; font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.05em;">🔔 Sem Alertas</p>
-            <p style="margin: 0.5rem 0 0 0; color: #7f1d1d; font-size: 0.95rem;">Não tem alertas automáticos de deals apodrecendo</p>
+          <div style="background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%); border-left: 4px solid #3b82f6; padding: 1.25rem; border-radius: 0.75rem;">
+            <p style="margin: 0; font-weight: 700; color: #2563eb; font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.05em;">🔔 Sem Alertas</p>
+            <p style="margin: 0.5rem 0 0 0; color: #1e3a8a; font-size: 0.95rem;">Não tem alertas automáticos de deals apodrecendo</p>
           </div>
-          <div style="background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%); border-left: 4px solid #ef4444; padding: 1.25rem; border-radius: 0.75rem;">
-            <p style="margin: 0; font-weight: 700; color: #dc2626; font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.05em;">🔌 Zero Integração</p>
-            <p style="margin: 0.5rem 0 0 0; color: #7f1d1d; font-size: 0.95rem;">Não integra com WhatsApp ou email</p>
+          <div style="background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%); border-left: 4px solid #3b82f6; padding: 1.25rem; border-radius: 0.75rem;">
+            <p style="margin: 0; font-weight: 700; color: #2563eb; font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.05em;">🔌 Zero Integração</p>
+            <p style="margin: 0.5rem 0 0 0; color: #1e3a8a; font-size: 0.95rem;">Não integra com WhatsApp ou email</p>
           </div>
-          <div style="background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%); border-left: 4px solid #ef4444; padding: 1.25rem; border-radius: 0.75rem;">
-            <p style="margin: 0; font-weight: 700; color: #dc2626; font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.05em;">🔀 Dados Caóticos</p>
-            <p style="margin: 0.5rem 0 0 0; color: #7f1d1d; font-size: 0.95rem;">Cada vendedor tem "sua versão" da planilha (dados inconsistentes)</p>
+          <div style="background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%); border-left: 4px solid #3b82f6; padding: 1.25rem; border-radius: 0.75rem;">
+            <p style="margin: 0; font-weight: 700; color: #2563eb; font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.05em;">🔀 Dados Caóticos</p>
+            <p style="margin: 0.5rem 0 0 0; color: #1e3a8a; font-size: 0.95rem;">Cada vendedor tem "sua versão" da planilha (dados inconsistentes)</p>
           </div>
-          <div style="background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%); border-left: 4px solid #ef4444; padding: 1.25rem; border-radius: 0.75rem;">
-            <p style="margin: 0; font-weight: 700; color: #dc2626; font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.05em;">📱 Mobile Horrível</p>
-            <p style="margin: 0.5rem 0 0 0; color: #7f1d1d; font-size: 0.95rem;">Não funciona bem no celular (e <strong>60%</strong> das decisões acontecem fora do escritório)</p>
+          <div style="background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%); border-left: 4px solid #3b82f6; padding: 1.25rem; border-radius: 0.75rem;">
+            <p style="margin: 0; font-weight: 700; color: #2563eb; font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.05em;">📱 Mobile Horrível</p>
+            <p style="margin: 0.5rem 0 0 0; color: #1e3a8a; font-size: 0.95rem;">Não funciona bem no celular (e <strong>60%</strong> das decisões acontecem fora do escritório)</p>
           </div>
         </div>
       </div>
@@ -611,7 +611,7 @@ export const blogPosts = [
 
       <div class="callout-stat">
         <p><strong>💸 Custo de Oportunidade</strong></p>
-        <p style="font-size: 3rem; font-weight: 800; color: #dc2626; margin: 1rem 0; line-height: 1;">R$ 181 mil</p>
+        <p style="font-size: 3rem; font-weight: 800; color: #2563eb; margin: 1rem 0; line-height: 1;">R$ 181 mil</p>
         <p>Desperdiçados no primeiro ano. E isso sem contar o custo de oportunidade dos deals que você perdeu porque seu vendedor estava preenchendo 47 campos obrigatórios em vez de ligar para o cliente.</p>
       </div>
 
@@ -634,30 +634,30 @@ export const blogPosts = [
       <div class="callout-problems">
         <p><strong>☁️ Menu Infinito do CRM Enterprise</strong></p>
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem; margin: 1.5rem 0;">
-          <div style="background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%); border-left: 4px solid #ef4444; padding: 1.25rem; border-radius: 0.75rem;">
-            <p style="margin: 0; font-weight: 700; color: #dc2626; font-size: 1rem;">Sales Cloud</p>
+          <div style="background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%); border-left: 4px solid #3b82f6; padding: 1.25rem; border-radius: 0.75rem;">
+            <p style="margin: 0; font-weight: 700; color: #2563eb; font-size: 1rem;">Sales Cloud</p>
           </div>
-          <div style="background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%); border-left: 4px solid #ef4444; padding: 1.25rem; border-radius: 0.75rem;">
-            <p style="margin: 0; font-weight: 700; color: #dc2626; font-size: 1rem;">Service Cloud</p>
+          <div style="background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%); border-left: 4px solid #3b82f6; padding: 1.25rem; border-radius: 0.75rem;">
+            <p style="margin: 0; font-weight: 700; color: #2563eb; font-size: 1rem;">Service Cloud</p>
           </div>
-          <div style="background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%); border-left: 4px solid #ef4444; padding: 1.25rem; border-radius: 0.75rem;">
-            <p style="margin: 0; font-weight: 700; color: #dc2626; font-size: 1rem;">Marketing Cloud</p>
+          <div style="background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%); border-left: 4px solid #3b82f6; padding: 1.25rem; border-radius: 0.75rem;">
+            <p style="margin: 0; font-weight: 700; color: #2563eb; font-size: 1rem;">Marketing Cloud</p>
           </div>
-          <div style="background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%); border-left: 4px solid #ef4444; padding: 1.25rem; border-radius: 0.75rem;">
-            <p style="margin: 0; font-weight: 700; color: #dc2626; font-size: 1rem;">Commerce Cloud</p>
+          <div style="background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%); border-left: 4px solid #3b82f6; padding: 1.25rem; border-radius: 0.75rem;">
+            <p style="margin: 0; font-weight: 700; color: #2563eb; font-size: 1rem;">Commerce Cloud</p>
           </div>
-          <div style="background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%); border-left: 4px solid #ef4444; padding: 1.25rem; border-radius: 0.75rem;">
-            <p style="margin: 0; font-weight: 700; color: #dc2626; font-size: 1rem;">Experience Cloud</p>
+          <div style="background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%); border-left: 4px solid #3b82f6; padding: 1.25rem; border-radius: 0.75rem;">
+            <p style="margin: 0; font-weight: 700; color: #2563eb; font-size: 1rem;">Experience Cloud</p>
           </div>
-          <div style="background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%); border-left: 4px solid #ef4444; padding: 1.25rem; border-radius: 0.75rem;">
-            <p style="margin: 0; font-weight: 700; color: #dc2626; font-size: 1rem;">Analytics Cloud</p>
+          <div style="background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%); border-left: 4px solid #3b82f6; padding: 1.25rem; border-radius: 0.75rem;">
+            <p style="margin: 0; font-weight: 700; color: #2563eb; font-size: 1rem;">Analytics Cloud</p>
           </div>
-          <div style="background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%); border-left: 4px solid #ef4444; padding: 1.25rem; border-radius: 0.75rem;">
-            <p style="margin: 0; font-weight: 700; color: #dc2626; font-size: 1rem;">Integration Cloud</p>
+          <div style="background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%); border-left: 4px solid #3b82f6; padding: 1.25rem; border-radius: 0.75rem;">
+            <p style="margin: 0; font-weight: 700; color: #2563eb; font-size: 1rem;">Integration Cloud</p>
           </div>
-          <div style="background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%); border-left: 4px solid #ef4444; padding: 1.25rem; border-radius: 0.75rem;">
-            <p style="margin: 0; font-weight: 700; color: #dc2626; font-size: 1rem;">AppExchange: 7.000+ apps</p>
-            <p style="margin: 0.5rem 0 0 0; color: #7f1d1d; font-size: 0.875rem;">(na verdade mais 7000 coisas para dar errado)</p>
+          <div style="background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%); border-left: 4px solid #3b82f6; padding: 1.25rem; border-radius: 0.75rem;">
+            <p style="margin: 0; font-weight: 700; color: #2563eb; font-size: 1rem;">AppExchange: 7.000+ apps</p>
+            <p style="margin: 0.5rem 0 0 0; color: #1e3a8a; font-size: 0.875rem;">(na verdade mais 7000 coisas para dar errado)</p>
           </div>
         </div>
       </div>
@@ -740,8 +740,8 @@ export const blogPosts = [
         <p><strong>🤯 Fricção que Mata Vendas</strong></p>
         <div style="display: grid; grid-template-columns: 1fr auto 1fr; gap: 2rem; align-items: center; margin: 2rem 0;">
           <div>
-            <p style="font-size: 0.875rem; font-weight: 700; color: #7c3aed; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 1rem;">CRM Traditional</p>
-            <ol style="margin: 0; padding-left: 1.5rem; color: #581c87;">
+            <p style="font-size: 0.875rem; font-weight: 700; color: #2563eb; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 1rem;">CRM Traditional</p>
+            <ol style="margin: 0; padding-left: 1.5rem; color: #1e40af;">
               <li style="margin-bottom: 0.5rem;">Abre o CRM</li>
               <li style="margin-bottom: 0.5rem;">Procura o contato</li>
               <li style="margin-bottom: 0.5rem;">Copia o telefone</li>
@@ -752,19 +752,19 @@ export const blogPosts = [
               <li style="margin-bottom: 0.5rem;">Envia a mensagem</li>
               <li style="margin-bottom: 0.5rem;">Volta pro CRM pra registrar</li>
             </ol>
-            <p style="font-size: 2rem; font-weight: 800; color: #7c3aed; margin-top: 1rem;">9 passos</p>
+            <p style="font-size: 2rem; font-weight: 800; color: #2563eb; margin-top: 1rem;">9 passos</p>
           </div>
           <div style="font-size: 3rem; font-weight: 800; color: #a78bfa;">VS</div>
           <div>
-            <p style="font-size: 0.875rem; font-weight: 700; color: #10b981; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 1rem;">Sirius (WhatsApp Nativo)</p>
-            <div style="background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%); border-left: 6px solid #10b981; padding: 2rem; border-radius: 1rem; text-align: center;">
-              <p style="font-size: 1.25rem; font-weight: 700; color: #065f46; margin: 0;">Clica no botão verde no card do deal</p>
+            <p style="font-size: 0.875rem; font-weight: 700; color: #3b82f6; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 1rem;">Sirius (WhatsApp Nativo)</p>
+            <div style="background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%); border-left: 6px solid #3b82f6; padding: 2rem; border-radius: 1rem; text-align: center;">
+              <p style="font-size: 1.25rem; font-weight: 700; color: #1e40af; margin: 0;">Clica no botão verde no card do deal</p>
               <p style="font-size: 0.875rem; color: #047857; margin-top: 0.5rem;">Pronto! WhatsApp abre automaticamente</p>
             </div>
-            <p style="font-size: 2rem; font-weight: 800; color: #10b981; margin-top: 1rem;">1 clique</p>
+            <p style="font-size: 2rem; font-weight: 800; color: #3b82f6; margin-top: 1rem;">1 clique</p>
           </div>
         </div>
-        <p style="text-align: center; font-size: 1.25rem; font-weight: 700; color: #7c3aed; margin-top: 1.5rem;">Friction mata vendas. Simplicidade fecha deals.</p>
+        <p style="text-align: center; font-size: 1.25rem; font-weight: 700; color: #2563eb; margin-top: 1.5rem;">Friction mata vendas. Simplicidade fecha deals.</p>
       </div>
 
       <h2>Case Real: Migração que Economizou R$ 53k/ano</h2>
@@ -856,8 +856,8 @@ export const blogPosts = [
         <p><strong>⚠️ Modelo Tradicional vs Modelo Moderno</strong></p>
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin: 2rem 0;">
           <div>
-            <p style="font-size: 0.875rem; font-weight: 700; color: #d97706; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">🐌 CRMs Tradicionais (Anos 2000)</p>
-            <ol style="margin: 0; padding-left: 1.5rem; color: #92400e;">
+            <p style="font-size: 0.875rem; font-weight: 700; color: #2563eb; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">🐌 CRMs Tradicionais (Anos 2000)</p>
+            <ol style="margin: 0; padding-left: 1.5rem; color: #1e40af;">
               <li style="margin-bottom: 0.75rem;">Você compra o software</li>
               <li style="margin-bottom: 0.75rem;"><strong>Contrata consultoria de implementação</strong> (que custa 2-3x o valor do software)</li>
               <li style="margin-bottom: 0.75rem;">Passa <strong>3-6 meses "configurando"</strong></li>
@@ -865,18 +865,18 @@ export const blogPosts = [
               <li style="margin-bottom: 0.75rem;">Finalmente começa a usar</li>
               <li style="margin-bottom: 0.75rem;">Qualquer mudança precisa de <strong>mais consultoria</strong></li>
             </ol>
-            <p style="font-size: 1.5rem; font-weight: 800; color: #d97706; margin-top: 1.5rem; text-align: center;">6+ meses 😰</p>
+            <p style="font-size: 1.5rem; font-weight: 800; color: #2563eb; margin-top: 1.5rem; text-align: center;">6+ meses 😰</p>
           </div>
           <div>
-            <p style="font-size: 0.875rem; font-weight: 700; color: #10b981; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">⚡ CRMs Modernos (SaaS Real)</p>
-            <div style="background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%); border: 2px solid #10b981; padding: 2rem; border-radius: 1rem; min-height: 200px; display: flex; flex-direction: column; justify-content: center;">
-              <ol style="margin: 0; padding-left: 1.5rem; color: #065f46; font-size: 1.125rem; font-weight: 600;">
+            <p style="font-size: 0.875rem; font-weight: 700; color: #3b82f6; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">⚡ CRMs Modernos (SaaS Real)</p>
+            <div style="background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%); border: 2px solid #3b82f6; padding: 2rem; border-radius: 1rem; min-height: 200px; display: flex; flex-direction: column; justify-content: center;">
+              <ol style="margin: 0; padding-left: 1.5rem; color: #1e40af; font-size: 1.125rem; font-weight: 600;">
                 <li style="margin-bottom: 1rem;">Você se cadastra</li>
                 <li style="margin-bottom: 1rem;">Começa a usar em 5 minutos</li>
               </ol>
               <p style="margin: 1rem 0 0 0; font-size: 0.875rem; color: #047857; text-align: center; font-style: italic;">Pronto. É literalmente isso.</p>
             </div>
-            <p style="font-size: 1.5rem; font-weight: 800; color: #10b981; margin-top: 1.5rem; text-align: center;">5 minutos ⚡</p>
+            <p style="font-size: 1.5rem; font-weight: 800; color: #3b82f6; margin-top: 1.5rem; text-align: center;">5 minutos ⚡</p>
           </div>
         </div>
       </div>
@@ -945,16 +945,16 @@ export const blogPosts = [
       <div class="callout-data">
         <p><strong>📊 A Estatística que Muda Tudo</strong></p>
         <div style="display: grid; grid-template-columns: 1fr auto 1fr; gap: 2rem; align-items: center; margin: 2rem 0;">
-          <div style="text-align: center; background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%); padding: 2rem; border-radius: 1rem; border: 2px solid #10b981;">
-            <p style="font-size: 0.875rem; font-weight: 700; color: #065f46; text-transform: uppercase; margin-bottom: 0.5rem;">Quando as Vendas Acontecem</p>
-            <p style="font-size: 3.5rem; font-weight: 900; color: #10b981; margin: 0.5rem 0; line-height: 1;">80%</p>
+          <div style="text-align: center; background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%); padding: 2rem; border-radius: 1rem; border: 2px solid #3b82f6;">
+            <p style="font-size: 0.875rem; font-weight: 700; color: #1e40af; text-transform: uppercase; margin-bottom: 0.5rem;">Quando as Vendas Acontecem</p>
+            <p style="font-size: 3.5rem; font-weight: 900; color: #3b82f6; margin: 0.5rem 0; line-height: 1;">80%</p>
             <p style="margin: 0; color: #047857; font-weight: 600;">das vendas acontecem entre o <strong>5º e 12º contato</strong></p>
           </div>
-          <div style="font-size: 2rem; font-weight: 800; color: #dc2626;">VS</div>
-          <div style="text-align: center; background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%); padding: 2rem; border-radius: 1rem; border: 2px solid #dc2626;">
-            <p style="font-size: 0.875rem; font-weight: 700; color: #7f1d1d; text-transform: uppercase; margin-bottom: 0.5rem;">Quando Vendedores Desistem</p>
-            <p style="font-size: 3.5rem; font-weight: 900; color: #dc2626; margin: 0.5rem 0; line-height: 1;">44%</p>
-            <p style="margin: 0; color: #991b1b; font-weight: 600;">desistem após o <strong>1º "não"</strong> ou silêncio</p>
+          <div style="font-size: 2rem; font-weight: 800; color: #2563eb;">VS</div>
+          <div style="text-align: center; background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%); padding: 2rem; border-radius: 1rem; border: 2px solid #2563eb;">
+            <p style="font-size: 0.875rem; font-weight: 700; color: #1e3a8a; text-transform: uppercase; margin-bottom: 0.5rem;">Quando Vendedores Desistem</p>
+            <p style="font-size: 3.5rem; font-weight: 900; color: #2563eb; margin: 0.5rem 0; line-height: 1;">44%</p>
+            <p style="margin: 0; color: #1e40af; font-weight: 600;">desistem após o <strong>1º "não"</strong> ou silêncio</p>
           </div>
         </div>
         <p style="text-align: center; font-size: 1.5rem; font-weight: 700; color: #2563eb; margin-top: 2rem; padding: 1.5rem; background: rgba(37, 99, 235, 0.05); border-radius: 0.75rem;">
@@ -965,12 +965,12 @@ export const blogPosts = [
       <div class="callout-warning">
         <p><strong>⚠️ O Dilema do Follow-up</strong></p>
         <p>Mas tem um porém: <strong>ninguém gosta de vendedor chato</strong>. Aquele que:</p>
-        <ul style="margin: 1rem 0; padding-left: 1.5rem; color: #92400e;">
+        <ul style="margin: 1rem 0; padding-left: 1.5rem; color: #1e40af;">
           <li style="margin-bottom: 0.5rem;">Liga 5 vezes no mesmo dia</li>
           <li style="margin-bottom: 0.5rem;">Manda "Bom dia! Viu meu email?" todo santo dia</li>
           <li style="margin-bottom: 0.5rem;">Usa o clássico "só passando aqui pra dar um alô"</li>
         </ul>
-        <p style="margin-top: 1.5rem; padding-top: 1.5rem; border-top: 2px solid #fbbf24; font-weight: 600; color: #78350f;">
+        <p style="margin-top: 1.5rem; padding-top: 1.5rem; border-top: 2px solid #60a5fa; font-weight: 600; color: #1e3a8a;">
           Este artigo é sobre como fazer <strong>follow-up estruturado, científico e respeitoso</strong> que aumenta conversão sem queimar sua reputação.
         </p>
       </div>
@@ -1304,20 +1304,20 @@ export const blogPosts = [
 
       <div class="callout-insight">
         <p><strong>💡 Você não melhora o que não mede</strong></p>
-        <p style="margin-top: 1rem; color: #78350f;">Acompanhe essas 5 métricas essenciais de follow-up:</p>
+        <p style="margin-top: 1rem; color: #1e3a8a;">Acompanhe essas 5 métricas essenciais de follow-up:</p>
       </div>
 
       <div class="callout-data">
         <p><strong>📊 Dashboard de Métricas de Follow-up</strong></p>
         <div style="display: grid; gap: 1.5rem; margin: 2rem 0;">
 
-          <div style="background: white; border-left: 6px solid #10b981; padding: 1.5rem; border-radius: 0.75rem; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
-            <p style="font-size: 0.875rem; font-weight: 700; color: #10b981; text-transform: uppercase; margin-bottom: 0.75rem;">1. Response Rate por Canal</p>
+          <div style="background: white; border-left: 6px solid #3b82f6; padding: 1.5rem; border-radius: 0.75rem; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
+            <p style="font-size: 0.875rem; font-weight: 700; color: #3b82f6; text-transform: uppercase; margin-bottom: 0.75rem;">1. Response Rate por Canal</p>
             <p style="margin: 0.5rem 0; color: #64748b; font-size: 0.95rem;"><strong>Como Calcular:</strong> (Respostas ÷ Mensagens Enviadas) × 100</p>
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1rem; padding-top: 1rem; border-top: 1px solid #e2e8f0;">
-              <div style="text-align: center; background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%); padding: 1rem; border-radius: 0.5rem;">
-                <p style="font-size: 0.75rem; color: #065f46; margin-bottom: 0.25rem;">WhatsApp</p>
-                <p style="font-size: 1.75rem; font-weight: 800; color: #10b981; margin: 0;">60-70%</p>
+              <div style="text-align: center; background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%); padding: 1rem; border-radius: 0.5rem;">
+                <p style="font-size: 0.75rem; color: #1e40af; margin-bottom: 0.25rem;">WhatsApp</p>
+                <p style="font-size: 1.75rem; font-weight: 800; color: #3b82f6; margin: 0;">60-70%</p>
               </div>
               <div style="text-align: center; background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%); padding: 1rem; border-radius: 0.5rem;">
                 <p style="font-size: 0.75rem; color: #1e3a8a; margin-bottom: 0.25rem;">Email</p>
@@ -1335,30 +1335,30 @@ export const blogPosts = [
             </div>
           </div>
 
-          <div style="background: white; border-left: 6px solid #8b5cf6; padding: 1.5rem; border-radius: 0.75rem; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
-            <p style="font-size: 0.875rem; font-weight: 700; color: #7c3aed; text-transform: uppercase; margin-bottom: 0.75rem;">3. Follow-ups Até Conversão</p>
+          <div style="background: white; border-left: 6px solid #3b82f6; padding: 1.5rem; border-radius: 0.75rem; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
+            <p style="font-size: 0.875rem; font-weight: 700; color: #2563eb; text-transform: uppercase; margin-bottom: 0.75rem;">3. Follow-ups Até Conversão</p>
             <p style="margin: 0.5rem 0; color: #64748b; font-size: 0.95rem;"><strong>Como Calcular:</strong> Número médio de toques até fechar</p>
-            <div style="text-align: center; background: linear-gradient(135deg, #f3e8ff 0%, #e9d5ff 100%); padding: 1.5rem; border-radius: 0.5rem; margin-top: 1rem;">
-              <p style="font-size: 2.5rem; font-weight: 800; color: #7c3aed; margin: 0;">5-8 toques</p>
-              <p style="font-size: 0.875rem; color: #6b21a8; margin-top: 0.5rem;">Meta Ideal</p>
+            <div style="text-align: center; background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%); padding: 1.5rem; border-radius: 0.5rem; margin-top: 1rem;">
+              <p style="font-size: 2.5rem; font-weight: 800; color: #2563eb; margin: 0;">5-8 toques</p>
+              <p style="font-size: 0.875rem; color: #1e40af; margin-top: 0.5rem;">Meta Ideal</p>
             </div>
           </div>
 
-          <div style="background: white; border-left: 6px solid #f59e0b; padding: 1.5rem; border-radius: 0.75rem; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
-            <p style="font-size: 0.875rem; font-weight: 700; color: #d97706; text-transform: uppercase; margin-bottom: 0.75rem;">4. Taxa de Breakup Email</p>
+          <div style="background: white; border-left: 6px solid #3b82f6; padding: 1.5rem; border-radius: 0.75rem; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
+            <p style="font-size: 0.875rem; font-weight: 700; color: #2563eb; text-transform: uppercase; margin-bottom: 0.75rem;">4. Taxa de Breakup Email</p>
             <p style="margin: 0.5rem 0; color: #64748b; font-size: 0.95rem;"><strong>Como Calcular:</strong> (Respostas ao breakup ÷ Breakups enviados) × 100</p>
-            <div style="text-align: center; background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); padding: 1.5rem; border-radius: 0.5rem; margin-top: 1rem;">
-              <p style="font-size: 2.5rem; font-weight: 800; color: #d97706; margin: 0;">40-50%</p>
-              <p style="font-size: 0.875rem; color: #92400e; margin-top: 0.5rem;">Meta Ideal</p>
+            <div style="text-align: center; background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%); padding: 1.5rem; border-radius: 0.5rem; margin-top: 1rem;">
+              <p style="font-size: 2.5rem; font-weight: 800; color: #2563eb; margin: 0;">40-50%</p>
+              <p style="font-size: 0.875rem; color: #1e40af; margin-top: 0.5rem;">Meta Ideal</p>
             </div>
           </div>
 
-          <div style="background: white; border-left: 6px solid #dc2626; padding: 1.5rem; border-radius: 0.75rem; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
-            <p style="font-size: 0.875rem; font-weight: 700; color: #dc2626; text-transform: uppercase; margin-bottom: 0.75rem;">5. Deals Perdidos por Falta de Follow-up</p>
+          <div style="background: white; border-left: 6px solid #2563eb; padding: 1.5rem; border-radius: 0.75rem; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
+            <p style="font-size: 0.875rem; font-weight: 700; color: #2563eb; text-transform: uppercase; margin-bottom: 0.75rem;">5. Deals Perdidos por Falta de Follow-up</p>
             <p style="margin: 0.5rem 0; color: #64748b; font-size: 0.95rem;"><strong>Como Calcular:</strong> Deals que esfriaram sem nenhum toque por 30+ dias</p>
-            <div style="text-align: center; background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%); padding: 1.5rem; border-radius: 0.5rem; margin-top: 1rem;">
-              <p style="font-size: 2.5rem; font-weight: 800; color: #dc2626; margin: 0;">0%</p>
-              <p style="font-size: 0.875rem; color: #991b1b; margin-top: 0.5rem; font-weight: 700;">INEXCUSÁVEL</p>
+            <div style="text-align: center; background: linear-gradient(135deg, #bfdbfe 0%, #93c5fd 100%); padding: 1.5rem; border-radius: 0.5rem; margin-top: 1rem;">
+              <p style="font-size: 2.5rem; font-weight: 800; color: #2563eb; margin: 0;">0%</p>
+              <p style="font-size: 0.875rem; color: #1e40af; margin-top: 0.5rem; font-weight: 700;">INEXCUSÁVEL</p>
             </div>
           </div>
 
@@ -2081,17 +2081,17 @@ export const blogPosts = [
 
           <!-- Card 2 -->
           <a href="/blog/crm-completo-iniciantes" style="text-decoration: none;">
-            <div style="background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%); border: 2px solid #86efac; border-radius: 1rem; padding: 1.5rem; transition: transform 0.2s, box-shadow 0.2s; height: 100%;">
-              <div style="background: #10b981; width: 3rem; height: 3rem; border-radius: 0.75rem; display: flex; align-items: center; justify-content: center; margin-bottom: 1rem; font-size: 1.5rem;">
+            <div style="background: linear-gradient(135deg, #f0f9ff 0%, #dbeafe 100%); border: 2px solid #93c5fd; border-radius: 1rem; padding: 1.5rem; transition: transform 0.2s, box-shadow 0.2s; height: 100%;">
+              <div style="background: #3b82f6; width: 3rem; height: 3rem; border-radius: 0.75rem; display: flex; align-items: center; justify-content: center; margin-bottom: 1rem; font-size: 1.5rem;">
                 🎯
               </div>
-              <h3 style="font-size: 1.125rem; font-weight: 700; color: #065f46; margin-bottom: 0.75rem; line-height: 1.4;">
+              <h3 style="font-size: 1.125rem; font-weight: 700; color: #1e40af; margin-bottom: 0.75rem; line-height: 1.4;">
                 CRM para Iniciantes: Guia Completo
               </h3>
               <p style="color: #475569; font-size: 0.9375rem; margin: 0; line-height: 1.6;">
                 Tudo que você precisa saber para escolher e implementar um CRM que realmente funciona.
               </p>
-              <div style="margin-top: 1rem; color: #059669; font-weight: 600; font-size: 0.875rem;">
+              <div style="margin-top: 1rem; color: #2563eb; font-weight: 600; font-size: 0.875rem;">
                 Ler artigo →
               </div>
             </div>
@@ -2099,17 +2099,17 @@ export const blogPosts = [
 
           <!-- Card 3 -->
           <a href="/blog/follow-up-vendas-guia-completo" style="text-decoration: none;">
-            <div style="background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); border: 2px solid #fcd34d; border-radius: 1rem; padding: 1.5rem; transition: transform 0.2s, box-shadow 0.2s; height: 100%;">
-              <div style="background: #f59e0b; width: 3rem; height: 3rem; border-radius: 0.75rem; display: flex; align-items: center; justify-content: center; margin-bottom: 1rem; font-size: 1.5rem;">
+            <div style="background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%); border: 2px solid #93c5fd; border-radius: 1rem; padding: 1.5rem; transition: transform 0.2s, box-shadow 0.2s; height: 100%;">
+              <div style="background: #3b82f6; width: 3rem; height: 3rem; border-radius: 0.75rem; display: flex; align-items: center; justify-content: center; margin-bottom: 1rem; font-size: 1.5rem;">
                 💬
               </div>
-              <h3 style="font-size: 1.125rem; font-weight: 700; color: #92400e; margin-bottom: 0.75rem; line-height: 1.4;">
+              <h3 style="font-size: 1.125rem; font-weight: 700; color: #1e40af; margin-bottom: 0.75rem; line-height: 1.4;">
                 Follow-up de Vendas: Guia Definitivo
               </h3>
               <p style="color: #475569; font-size: 0.9375rem; margin: 0; line-height: 1.6;">
                 As estratégias e frameworks para nunca mais perder um lead por falta de acompanhamento.
               </p>
-              <div style="margin-top: 1rem; color: #d97706; font-weight: 600; font-size: 0.875rem;">
+              <div style="margin-top: 1rem; color: #2563eb; font-weight: 600; font-size: 0.875rem;">
                 Ler artigo →
               </div>
             </div>
