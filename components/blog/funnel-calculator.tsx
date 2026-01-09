@@ -13,8 +13,8 @@ export function FunnelCalculator() {
   const [proposals, setProposals] = useState<number>(20)
   const [sales, setSales] = useState<number>(5)
 
-  const calculateConversion = (from: number, to: number) => {
-    if (from === 0) return 0
+  const calculateConversion = (from: number, to: number): string => {
+    if (from === 0) return '0.0'
     return ((to / from) * 100).toFixed(1)
   }
 
