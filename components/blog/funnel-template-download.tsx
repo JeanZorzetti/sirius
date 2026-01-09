@@ -7,6 +7,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Download, CheckCircle2, FileText } from 'lucide-react'
 import { toast } from 'sonner'
+import jsPDF from 'jspdf'
 
 export function FunnelTemplateDownload() {
   const [email, setEmail] = useState('')
@@ -28,22 +29,11 @@ export function FunnelTemplateDownload() {
       // Simula envio de email (implementar backend real depois)
       await new Promise(resolve => setTimeout(resolve, 1500))
 
-      // Gera o conteúdo do template
-      const templateContent = generateTemplateContent()
-
-      // Cria o arquivo para download
-      const blob = new Blob([templateContent], { type: 'text/plain' })
-      const url = window.URL.createObjectURL(blob)
-      const a = document.createElement('a')
-      a.href = url
-      a.download = 'template-funil-vendas-sirius.txt'
-      document.body.appendChild(a)
-      a.click()
-      document.body.removeChild(a)
-      window.URL.revokeObjectURL(url)
+      // Gera o PDF
+      generatePDF()
 
       setDownloadComplete(true)
-      toast.success('Template enviado para seu email!')
+      toast.success('Template baixado com sucesso!')
 
     } catch (error) {
       toast.error('Erro ao fazer download. Tente novamente.')
@@ -52,266 +42,178 @@ export function FunnelTemplateDownload() {
     }
   }
 
-  const generateTemplateContent = () => {
-    return `
-═══════════════════════════════════════════════════════════════════
-   TEMPLATE: CHECKLIST DE IMPLEMENTAÇÃO DE FUNIL DE VENDAS
-   Sirius CRM - https://sirius.roilabs.com.br
-═══════════════════════════════════════════════════════════════════
+  const generatePDF = () => {
+    const doc = new jsPDF()
+    const pageWidth = doc.internal.pageSize.getWidth()
+    let yPos = 20
 
-Nome: ${name}
-Email: ${email}
-Data: ${new Date().toLocaleDateString('pt-BR')}
+    // Função auxiliar para adicionar texto centralizado
+    const addCenteredText = (text: string, y: number, fontSize: number = 12, isBold = false) => {
+      doc.setFontSize(fontSize)
+      doc.setFont('helvetica', isBold ? 'bold' : 'normal')
+      const textWidth = doc.getTextWidth(text)
+      doc.text(text, (pageWidth - textWidth) / 2, y)
+    }
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    // Função auxiliar para adicionar checkbox
+    const addCheckbox = (text: string, y: number, indent = 0) => {
+      doc.setFontSize(10)
+      doc.setFont('helvetica', 'normal')
+      doc.rect(10 + indent, y - 3, 3, 3) // checkbox
+      doc.text(text, 15 + indent, y)
+    }
 
-📋 FASE 1: PLANEJAMENTO ESTRATÉGICO (Semana 1)
+    // Cabeçalho
+    doc.setFillColor(37, 99, 235) // Azul Sirius
+    doc.rect(0, 0, pageWidth, 35, 'F')
 
-□ Mapear jornada do cliente atual
-  ├─ Identificar pontos de contato
-  ├─ Documentar objeções comuns
-  └─ Estimar tempo médio por etapa
+    doc.setTextColor(255, 255, 255)
+    addCenteredText('TEMPLATE: CHECKLIST DE IMPLEMENTAÇÃO', 15, 16, true)
+    addCenteredText('DE FUNIL DE VENDAS', 23, 16, true)
+    doc.setFontSize(10)
+    addCenteredText('Sirius CRM - https://sirius.roilabs.com.br', 30, 10)
 
-□ Definir etapas do funil (sugestão: 5-7 etapas)
-  Exemplo:
-  1. Atração (Visitantes)
-  2. Interesse (Leads)
-  3. Consideração (Qualificados)
-  4. Intenção (Proposta)
-  5. Compra (Fechamento)
+    // Informações do usuário
+    doc.setTextColor(0, 0, 0)
+    yPos = 45
+    doc.setFontSize(10)
+    doc.setFont('helvetica', 'normal')
+    doc.text(`Nome: ${name}`, 10, yPos)
+    yPos += 6
+    doc.text(`Email: ${email}`, 10, yPos)
+    yPos += 6
+    doc.text(`Data: ${new Date().toLocaleDateString('pt-BR')}`, 10, yPos)
+    yPos += 12
 
-□ Estabelecer critérios claros de passagem entre etapas
-  Para cada etapa, defina:
-  ├─ O que precisa acontecer para ENTRAR
-  ├─ O que precisa acontecer para AVANÇAR
-  └─ Quando marcar como PERDIDO
+    // Linha divisória
+    doc.setDrawColor(226, 232, 240)
+    doc.line(10, yPos, pageWidth - 10, yPos)
+    yPos += 10
 
-□ Definir metas de conversão por etapa
-  Benchmarks sugeridos:
-  ├─ Atração → Interesse: 10-15%
-  ├─ Interesse → Consideração: 40-50%
-  ├─ Consideração → Intenção: 50-60%
-  └─ Intenção → Compra: 25-35%
+    // FASE 1
+    doc.setFillColor(239, 246, 255)
+    doc.rect(10, yPos - 5, pageWidth - 20, 8, 'F')
+    doc.setFontSize(12)
+    doc.setFont('helvetica', 'bold')
+    doc.setTextColor(30, 64, 175)
+    doc.text('📋 FASE 1: PLANEJAMENTO ESTRATÉGICO (Semana 1)', 12, yPos)
+    yPos += 10
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    doc.setTextColor(0, 0, 0)
+    doc.setFont('helvetica', 'normal')
+    addCheckbox('Mapear jornada do cliente atual', yPos)
+    yPos += 6
+    addCheckbox('Definir etapas do funil (5-7 etapas)', yPos)
+    yPos += 6
+    addCheckbox('Estabelecer critérios de passagem entre etapas', yPos)
+    yPos += 6
+    addCheckbox('Definir metas de conversão por etapa', yPos)
+    yPos += 6
+    addCheckbox('Escolher e configurar CRM', yPos)
+    yPos += 12
 
-🛠️ FASE 2: IMPLEMENTAÇÃO TÉCNICA (Semana 2)
+    // FASE 2
+    doc.setFillColor(239, 246, 255)
+    doc.rect(10, yPos - 5, pageWidth - 20, 8, 'F')
+    doc.setFont('helvetica', 'bold')
+    doc.setTextColor(30, 64, 175)
+    doc.text('⚙️ FASE 2: IMPLEMENTAÇÃO TÉCNICA (Semana 2)', 12, yPos)
+    yPos += 10
 
-□ Escolher e configurar CRM
-  Opções:
-  ├─ Sirius CRM (recomendado) - sirius.roilabs.com.br
-  ├─ HubSpot
-  └─ Pipedrive
+    doc.setTextColor(0, 0, 0)
+    doc.setFont('helvetica', 'normal')
+    addCheckbox('Criar campos customizados no CRM', yPos)
+    yPos += 6
+    addCheckbox('Configurar automações de etapa', yPos)
+    yPos += 6
+    addCheckbox('Integrar canais de comunicação (WhatsApp, Email)', yPos)
+    yPos += 6
+    addCheckbox('Configurar alertas de inatividade', yPos)
+    yPos += 6
+    addCheckbox('Criar templates de mensagens', yPos)
+    yPos += 12
 
-□ Criar as etapas no CRM
-  ├─ Adicionar etapas personalizadas
-  ├─ Configurar cores/ícones
-  └─ Testar drag & drop
+    // FASE 3
+    doc.setFillColor(239, 246, 255)
+    doc.rect(10, yPos - 5, pageWidth - 20, 8, 'F')
+    doc.setFont('helvetica', 'bold')
+    doc.setTextColor(30, 64, 175)
+    doc.text('👥 FASE 3: TREINAMENTO DA EQUIPE (Semana 3)', 12, yPos)
+    yPos += 10
 
-□ Configurar campos personalizados
-  Campos essenciais:
-  ├─ Origem do lead
-  ├─ Data de primeiro contato
-  ├─ Próxima ação agendada
-  ├─ Motivo de perda (se aplicável)
-  └─ Probabilidade de fechamento (%)
+    doc.setTextColor(0, 0, 0)
+    doc.setFont('helvetica', 'normal')
+    addCheckbox('Treinar equipe no uso do CRM', yPos)
+    yPos += 6
+    addCheckbox('Criar manual de operação do funil', yPos)
+    yPos += 6
+    addCheckbox('Definir playbooks por etapa', yPos)
+    yPos += 6
+    addCheckbox('Estabelecer rituais de revisão', yPos)
+    yPos += 12
 
-□ Integrar ferramentas externas
-  ├─ Email marketing
-  ├─ WhatsApp Business
-  ├─ Calendário (Google/Outlook)
-  └─ Landing pages
+    // Nova página para FASE 4 e 5
+    doc.addPage()
+    yPos = 20
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    // FASE 4
+    doc.setFillColor(239, 246, 255)
+    doc.rect(10, yPos - 5, pageWidth - 20, 8, 'F')
+    doc.setFont('helvetica', 'bold')
+    doc.setTextColor(30, 64, 175)
+    doc.text('🚀 FASE 4: LANÇAMENTO E TESTE (Semana 4)', 12, yPos)
+    yPos += 10
 
-🤖 FASE 3: AUTOMAÇÕES (Semana 3)
+    doc.setTextColor(0, 0, 0)
+    doc.setFont('helvetica', 'normal')
+    addCheckbox('Migrar leads existentes para o funil', yPos)
+    yPos += 6
+    addCheckbox('Testar fluxo completo com leads piloto', yPos)
+    yPos += 6
+    addCheckbox('Ajustar critérios com base nos testes', yPos)
+    yPos += 6
+    addCheckbox('Configurar dashboard de métricas', yPos)
+    yPos += 6
+    addCheckbox('Validar automações e alertas', yPos)
+    yPos += 12
 
-□ Configurar automação de captura de leads
-  ├─ Formulário do site → CRM
-  ├─ Landing page → CRM
-  └─ Chat/WhatsApp → CRM
+    // FASE 5
+    doc.setFillColor(239, 246, 255)
+    doc.rect(10, yPos - 5, pageWidth - 20, 8, 'F')
+    doc.setFont('helvetica', 'bold')
+    doc.setTextColor(30, 64, 175)
+    doc.text('📊 FASE 5: OTIMIZAÇÃO CONTÍNUA (Mensal)', 12, yPos)
+    yPos += 10
 
-□ Criar sequências de follow-up automático
-  Sequência sugerida:
-  ├─ Dia 0: Email de boas-vindas
-  ├─ Dia 2: Email com conteúdo educativo
-  ├─ Dia 5: Ligação do vendedor
-  ├─ Dia 7: Email com prova social (cases)
-  └─ Dia 10: Oferta personalizada
+    doc.setTextColor(0, 0, 0)
+    doc.setFont('helvetica', 'normal')
+    addCheckbox('Revisar taxas de conversão por etapa', yPos)
+    yPos += 6
+    addCheckbox('Identificar e corrigir gargalos', yPos)
+    yPos += 6
+    addCheckbox('Testar variações de abordagem', yPos)
+    yPos += 6
+    addCheckbox('Atualizar benchmarks internos', yPos)
+    yPos += 6
+    addCheckbox('Treinar time com base em dados', yPos)
+    yPos += 15
 
-□ Configurar notificações da equipe
-  ├─ Novo lead entrou no funil
-  ├─ Lead sem atividade há 5 dias
-  ├─ Lead mudou de etapa
-  └─ Deal próximo de fechar
+    // Rodapé
+    doc.setDrawColor(226, 232, 240)
+    doc.line(10, yPos, pageWidth - 10, yPos)
+    yPos += 8
+    doc.setFontSize(9)
+    doc.setTextColor(100, 100, 100)
+    addCenteredText('💡 Dica: Revise este checklist semanalmente nas primeiras 4 semanas', yPos, 9)
+    yPos += 5
+    addCenteredText('e mensalmente depois. Cada negócio é único - adapte conforme necessário!', yPos, 9)
+    yPos += 10
+    addCenteredText('🚀 Comece gratuitamente: https://sirius.roilabs.com.br/register', yPos, 9)
 
-□ Automatizar tarefas recorrentes
-  ├─ Envio de propostas
-  ├─ Agendamento de demos
-  └─ Follow-up pós-reunião
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-👥 FASE 4: TREINAMENTO DA EQUIPE (Semana 3-4)
-
-□ Realizar workshop de CRM
-  Conteúdo:
-  ├─ Login e navegação
-  ├─ Como adicionar um lead
-  ├─ Como mover entre etapas
-  ├─ Como registrar atividades
-  └─ Como gerar relatórios
-
-□ Criar playbook de vendas
-  Incluir:
-  ├─ Scripts por etapa
-  ├─ Perguntas de qualificação (BANT)
-  ├─ Respostas para objeções comuns
-  └─ Quando envolver o gerente
-
-□ Definir SLA (acordo de nível de serviço)
-  Exemplos:
-  ├─ Primeiro contato: máx 5 minutos
-  ├─ Resposta a lead: máx 1 hora
-  ├─ Follow-up após reunião: máx 24 horas
-  └─ Atualização do CRM: diariamente
-
-□ Estabelecer ritual de review semanal
-  Agenda:
-  ├─ Segunda, 9h: Review de pipeline
-  ├─ Analisar conversão por etapa
-  ├─ Identificar deals travados
-  └─ Celebrar vitórias
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-📊 FASE 5: MONITORAMENTO E OTIMIZAÇÃO (Contínuo)
-
-□ Acompanhar métricas semanais
-  KPIs obrigatórios:
-  ├─ Taxa de conversão geral
-  ├─ Taxa de conversão por etapa
-  ├─ Tempo médio no funil
-  ├─ Velocidade do funil
-  ├─ Ticket médio
-  └─ Taxa de churn
-
-□ Identificar gargalos
-  Perguntas:
-  ├─ Qual etapa tem maior "fuga"?
-  ├─ Onde os deals ficam travados?
-  ├─ Qual vendedor tem melhor conversão?
-  └─ Quais fontes de lead convertem mais?
-
-□ Realizar testes A/B
-  Testar:
-  ├─ Diferentes abordagens de email
-  ├─ Horários de contato
-  ├─ Scripts de qualificação
-  └─ Argumentos de venda
-
-□ Limpar o pipeline regularmente
-  Frequência: Semanalmente
-  ├─ Remover leads inativos (>30 dias)
-  ├─ Reclassificar leads mal qualificados
-  └─ Arquivar deals perdidos
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-🎯 CHECKLIST DE MANUTENÇÃO DIÁRIA
-
-□ MANHÃ (15 min)
-  ├─ Revisar novos leads do dia anterior
-  ├─ Checar tarefas agendadas para hoje
-  └─ Atualizar deals que avançaram
-
-□ TARDE (10 min)
-  ├─ Registrar todas as atividades do dia
-  ├─ Agendar follow-ups necessários
-  └─ Mover deals para próxima etapa
-
-□ FIM DO DIA (5 min)
-  ├─ Verificar leads sem resposta
-  └─ Preparar agenda do dia seguinte
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-❌ 7 ERROS FATAIS A EVITAR
-
-1. ❌ Funil muito complexo (>7 etapas)
-   ✅ Mantenha simples: 5 etapas são suficientes
-
-2. ❌ Não atualizar o CRM diariamente
-   ✅ Torne obrigatório: sem CRM atualizado, sem comissão
-
-3. ❌ Ignorar leads "frios"
-   ✅ Configure automação de nutrição
-
-4. ❌ Pular etapas do funil
-   ✅ Respeite a jornada do comprador
-
-5. ❌ Não acompanhar métricas
-   ✅ Dashboard semanal obrigatório
-
-6. ❌ Funil desalinhado com marketing
-   ✅ Crie SLA entre times
-
-7. ❌ Critérios subjetivos de passagem
-   ✅ Defina regras claras e objetivas
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-📚 RECURSOS ADICIONAIS
-
-🔗 Artigos Recomendados:
-   • Como Organizar Seu Pipeline: sirius.roilabs.com.br/blog/como-organizar-pipeline-vendas
-   • O Poder do Follow-up: sirius.roilabs.com.br/blog/poder-do-follow-up
-   • CRM Simples vs Complexo: sirius.roilabs.com.br/blog/crm-simples-vs-complexo
-
-🎓 Teste Grátis do Sirius CRM:
-   https://sirius.roilabs.com.br/register
-
-   Recursos inclusos:
-   ├─ Funil visual drag & drop
-   ├─ Automação de follow-up
-   ├─ Integração WhatsApp
-   ├─ Dashboard de métricas
-   └─ Suporte via chat
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-📝 NOTAS PESSOAIS
-
-Anotações e insights:
-
-_____________________________________________________________________
-
-_____________________________________________________________________
-
-_____________________________________________________________________
-
-_____________________________________________________________________
-
-_____________________________________________________________________
-
-_____________________________________________________________________
-
-
-═══════════════════════════════════════════════════════════════════
-© 2026 Sirius CRM | Transformando leads em clientes desde 2025
-═══════════════════════════════════════════════════════════════════
-    `.trim()
+    // Salvar PDF
+    doc.save('checklist-funil-vendas-sirius.pdf')
   }
 
-  if (downloadComplete) {
-    return (
-      <Card className="my-8 border-2 border-green-500/30 bg-green-50 dark:bg-green-950/20">
-        <CardContent className="pt-8 text-center">
-          <CheckCircle2 className="h-16 w-16 text-green-500 mx-auto mb-4" />
-          <h3 className="text-2xl font-bold text-green-700 dark:text-green-400 mb-2">
-            Template Enviado com Sucesso!
-          </h3>
-          <p className="text-green-600 dark:text-green-500 mb-4">
             O download começou automaticamente. Verifique também seu email em {email}
           </p>
           <Button

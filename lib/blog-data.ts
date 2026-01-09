@@ -1464,19 +1464,19 @@ export const blogPosts = [
         </thead>
         <tbody>
           <tr style="background: #f8fafc;">
-            <td style="padding: 1rem; border: 1px solid #e2e8f0;"><strong>Funil de Vendas</strong></td>
-            <td style="padding: 1rem; border: 1px solid #e2e8f0;">Volume agregado de leads em cada etapa</td>
-            <td style="padding: 1rem; border: 1px solid #e2e8f0;">Análise estratégica, identificação de gargalos</td>
+            <td style="padding: 1rem; border: 1px solid #e2e8f0; color: #1e293b;"><strong>Funil de Vendas</strong></td>
+            <td style="padding: 1rem; border: 1px solid #e2e8f0; color: #475569;">Volume agregado de leads em cada etapa</td>
+            <td style="padding: 1rem; border: 1px solid #e2e8f0; color: #475569;">Análise estratégica, identificação de gargalos</td>
           </tr>
-          <tr>
-            <td style="padding: 1rem; border: 1px solid #e2e8f0;"><strong>Pipeline de Vendas</strong></td>
-            <td style="padding: 1rem; border: 1px solid #e2e8f0;">Deals individuais e seu progresso</td>
-            <td style="padding: 1rem; border: 1px solid #e2e8f0;">Gestão operacional dia a dia</td>
+          <tr style="background: #ffffff;">
+            <td style="padding: 1rem; border: 1px solid #e2e8f0; color: #1e293b;"><strong>Pipeline de Vendas</strong></td>
+            <td style="padding: 1rem; border: 1px solid #e2e8f0; color: #475569;">Deals individuais e seu progresso</td>
+            <td style="padding: 1rem; border: 1px solid #e2e8f0; color: #475569;">Gestão operacional dia a dia</td>
           </tr>
           <tr style="background: #f8fafc;">
-            <td style="padding: 1rem; border: 1px solid #e2e8f0;"><strong>Jornada do Cliente</strong></td>
-            <td style="padding: 1rem; border: 1px solid #e2e8f0;">Experiência e emoções do comprador</td>
-            <td style="padding: 1rem; border: 1px solid #e2e8f0;">Design de experiência, UX/CX</td>
+            <td style="padding: 1rem; border: 1px solid #e2e8f0; color: #1e293b;"><strong>Jornada do Cliente</strong></td>
+            <td style="padding: 1rem; border: 1px solid #e2e8f0; color: #475569;">Experiência e emoções do comprador</td>
+            <td style="padding: 1rem; border: 1px solid #e2e8f0; color: #475569;">Design de experiência, UX/CX</td>
           </tr>
         </tbody>
       </table>
@@ -1738,24 +1738,24 @@ export const blogPosts = [
         </thead>
         <tbody>
           <tr style="background: #f8fafc;">
-            <td style="padding: 1rem; border: 1px solid #e2e8f0;">Visitante → Lead (&lt;2%)</td>
-            <td style="padding: 1rem; border: 1px solid #e2e8f0;"><strong>Oferta fraca</strong></td>
-            <td style="padding: 1rem; border: 1px solid #e2e8f0;">Crie lead magnet irresistível (calculadora, auditoria gratuita)</td>
+            <td style="padding: 1rem; border: 1px solid #e2e8f0; color: #475569;">Visitante → Lead (&lt;2%)</td>
+            <td style="padding: 1rem; border: 1px solid #e2e8f0; color: #1e293b;"><strong>Oferta fraca</strong></td>
+            <td style="padding: 1rem; border: 1px solid #e2e8f0; color: #475569;">Crie lead magnet irresistível (calculadora, auditoria gratuita)</td>
           </tr>
-          <tr>
-            <td style="padding: 1rem; border: 1px solid #e2e8f0;">Lead → SQL (&lt;20%)</td>
-            <td style="padding: 1rem; border: 1px solid #e2e8f0;"><strong>Qualificação ruim</strong></td>
-            <td style="padding: 1rem; border: 1px solid #e2e8f0;">Melhore ICP targeting, adicione campo "empresa" no form</td>
+          <tr style="background: #ffffff;">
+            <td style="padding: 1rem; border: 1px solid #e2e8f0; color: #475569;">Lead → SQL (&lt;20%)</td>
+            <td style="padding: 1rem; border: 1px solid #e2e8f0; color: #1e293b;"><strong>Qualificação ruim</strong></td>
+            <td style="padding: 1rem; border: 1px solid #e2e8f0; color: #475569;">Melhore ICP targeting, adicione campo "empresa" no form</td>
           </tr>
           <tr style="background: #f8fafc;">
-            <td style="padding: 1rem; border: 1px solid #e2e8f0;">SQL → Proposta (&lt;40%)</td>
-            <td style="padding: 1rem; border: 1px solid #e2e8f0;"><strong>Discovery fraco</strong></td>
-            <td style="padding: 1rem; border: 1px solid #e2e8f0;">Treine time em SPIN Selling, melhore qualificação</td>
+            <td style="padding: 1rem; border: 1px solid #e2e8f0; color: #475569;">SQL → Proposta (&lt;40%)</td>
+            <td style="padding: 1rem; border: 1px solid #e2e8f0; color: #1e293b;"><strong>Discovery fraco</strong></td>
+            <td style="padding: 1rem; border: 1px solid #e2e8f0; color: #475569;">Treine time em SPIN Selling, melhore qualificação</td>
           </tr>
-          <tr>
-            <td style="padding: 1rem; border: 1px solid #e2e8f0;">Proposta → Fechamento (&lt;25%)</td>
-            <td style="padding: 1rem; border: 1px solid #e2e8f0;"><strong>Proposta/preço/objeções</strong></td>
-            <td style="padding: 1rem; border: 1px solid #e2e8f0;">Revise estrutura de proposta, adicione social proof, teste garantias</td>
+          <tr style="background: #ffffff;">
+            <td style="padding: 1rem; border: 1px solid #e2e8f0; color: #475569;">Proposta → Fechamento (&lt;25%)</td>
+            <td style="padding: 1rem; border: 1px solid #e2e8f0; color: #1e293b;"><strong>Proposta/preço/objeções</strong></td>
+            <td style="padding: 1rem; border: 1px solid #e2e8f0; color: #475569;">Revise estrutura de proposta, adicione social proof, teste garantias</td>
           </tr>
         </tbody>
       </table>
@@ -2052,14 +2052,69 @@ export const blogPosts = [
 
       <hr style="margin: 3rem 0; border: 0; border-top: 2px solid #e2e8f0;" />
 
-      <div style="background: #f8fafc; padding: 2rem; border-radius: 1rem; margin-top: 3rem;">
-        <p style="font-weight: 700; color: #1e40af; font-size: 1.125rem; margin-bottom: 1rem;">📚 Continue Aprendendo</p>
-        <p style="color: #475569; margin-bottom: 1rem;">Leia também:</p>
-        <ul style="margin: 0; padding-left: 1.5rem; color: #475569; line-height: 1.8;">
-          <li><a href="/blog/como-organizar-pipeline-vendas">Como Organizar Seu Pipeline de Vendas: Guia Definitivo</a></li>
-          <li><a href="/blog/crm-completo-iniciantes">CRM para Iniciantes: Guia Completo 2025</a></li>
-          <li><a href="/blog/follow-up-vendas-guia-completo">Follow-up de Vendas: O Guia Definitivo para Não Perder Nenhum Lead</a></li>
-        </ul>
+      <div style="margin-top: 3rem;">
+        <h2 style="font-size: 1.875rem; font-weight: 800; color: #1e293b; margin-bottom: 0.5rem; text-align: center;">
+          📚 Continue Aprendendo
+        </h2>
+        <p style="text-align: center; color: #64748b; margin-bottom: 2rem; font-size: 1.125rem;">
+          Apronfunde seus conhecimentos com nossos guias completos
+        </p>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem;">
+          <!-- Card 1 -->
+          <a href="/blog/como-organizar-pipeline-vendas" style="text-decoration: none;">
+            <div style="background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); border: 2px solid #93c5fd; border-radius: 1rem; padding: 1.5rem; transition: transform 0.2s, box-shadow 0.2s; height: 100%;">
+              <div style="background: #2563eb; width: 3rem; height: 3rem; border-radius: 0.75rem; display: flex; align-items: center; justify-content: center; margin-bottom: 1rem; font-size: 1.5rem;">
+                📊
+              </div>
+              <h3 style="font-size: 1.125rem; font-weight: 700; color: #1e40af; margin-bottom: 0.75rem; line-height: 1.4;">
+                Como Organizar Seu Pipeline de Vendas
+              </h3>
+              <p style="color: #475569; font-size: 0.9375rem; margin: 0; line-height: 1.6;">
+                O guia definitivo para manter seu funil sempre fluindo e fechar mais negócios consistentemente.
+              </p>
+              <div style="margin-top: 1rem; color: #2563eb; font-weight: 600; font-size: 0.875rem;">
+                Ler artigo →
+              </div>
+            </div>
+          </a>
+
+          <!-- Card 2 -->
+          <a href="/blog/crm-completo-iniciantes" style="text-decoration: none;">
+            <div style="background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%); border: 2px solid #86efac; border-radius: 1rem; padding: 1.5rem; transition: transform 0.2s, box-shadow 0.2s; height: 100%;">
+              <div style="background: #10b981; width: 3rem; height: 3rem; border-radius: 0.75rem; display: flex; align-items: center; justify-content: center; margin-bottom: 1rem; font-size: 1.5rem;">
+                🎯
+              </div>
+              <h3 style="font-size: 1.125rem; font-weight: 700; color: #065f46; margin-bottom: 0.75rem; line-height: 1.4;">
+                CRM para Iniciantes: Guia Completo
+              </h3>
+              <p style="color: #475569; font-size: 0.9375rem; margin: 0; line-height: 1.6;">
+                Tudo que você precisa saber para escolher e implementar um CRM que realmente funciona.
+              </p>
+              <div style="margin-top: 1rem; color: #059669; font-weight: 600; font-size: 0.875rem;">
+                Ler artigo →
+              </div>
+            </div>
+          </a>
+
+          <!-- Card 3 -->
+          <a href="/blog/follow-up-vendas-guia-completo" style="text-decoration: none;">
+            <div style="background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); border: 2px solid #fcd34d; border-radius: 1rem; padding: 1.5rem; transition: transform 0.2s, box-shadow 0.2s; height: 100%;">
+              <div style="background: #f59e0b; width: 3rem; height: 3rem; border-radius: 0.75rem; display: flex; align-items: center; justify-content: center; margin-bottom: 1rem; font-size: 1.5rem;">
+                💬
+              </div>
+              <h3 style="font-size: 1.125rem; font-weight: 700; color: #92400e; margin-bottom: 0.75rem; line-height: 1.4;">
+                Follow-up de Vendas: Guia Definitivo
+              </h3>
+              <p style="color: #475569; font-size: 0.9375rem; margin: 0; line-height: 1.6;">
+                As estratégias e frameworks para nunca mais perder um lead por falta de acompanhamento.
+              </p>
+              <div style="margin-top: 1rem; color: #d97706; font-weight: 600; font-size: 0.875rem;">
+                Ler artigo →
+              </div>
+            </div>
+          </a>
+        </div>
       </div>
     `,
     date: '2026-01-09',
