@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Bell, BellOff, X } from 'lucide-react'
+import { trackPushPermission } from '@/lib/pwa-analytics'
 
 export function PushNotificationManager() {
   const [permission, setPermission] = useState<NotificationPermission>('default')
@@ -62,6 +63,9 @@ export function PushNotificationManager() {
       // Request permission
       const permissionResult = await Notification.requestPermission()
       setPermission(permissionResult)
+
+      // Track permission result
+      trackPushPermission(permissionResult === 'granted')
 
       if (permissionResult !== 'granted') {
         alert('Você precisa permitir notificações para continuar')
@@ -274,6 +278,9 @@ export function PushNotificationSettings() {
     try {
       const permissionResult = await Notification.requestPermission()
       setPermission(permissionResult)
+
+      // Track permission result
+      trackPushPermission(permissionResult === 'granted')
 
       if (permissionResult !== 'granted') {
         alert('Você precisa permitir notificações para continuar')

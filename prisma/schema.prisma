@@ -62,6 +62,7 @@ model Organization {
   whatsappMessages   WhatsAppMessage[]
   calendarEvents     CalendarEvent[]
   pushSubscriptions  PushSubscription[]
+  pwaMetrics         PWAMetric[]
 }
 
 model User {
@@ -81,6 +82,7 @@ model User {
   emailLogs EmailLog[]
   userActivities UserActivity[] // Analytics tracking
   pushSubscriptions PushSubscription[]
+  pwaMetrics PWAMetric[]
 
   role      Role     @default(USER)
   orgRole   OrgRole  @default(OWNER) // Defaulting to OWNER for now so existing users don't lose access. Ideally MEMBER.
@@ -639,4 +641,43 @@ model PushSubscription {
   @@index([userId])
   @@index([organizationId])
   @@index([endpoint])
+}
+
+model PWAMetric {
+  id        String   @id @default(uuid())
+  
+  // Event type
+  type      PWAMetricType
+  
+  // User and device info
+  userId    String?
+  user      User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  
+  userAgent String?  @db.Text
+  deviceType String? // "desktop", "mobile", "tablet"
+  
+  // Event data (JSON for flexibility)
+  data      Json?
+  
+  // Timestamps
+  createdAt DateTime @default(now())
+  
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  
+  @@index([organizationId, type])
+  @@index([organizationId, createdAt])
+  @@index([userId])
+}
+
+enum PWAMetricType {
+  INSTALL_PROMPT_SHOWN    // beforeinstallprompt event
+  INSTALL_PROMPT_ACCEPTED // User clicked "Install"
+  INSTALL_PROMPT_DISMISSED // User clicked "Not now"
+  APP_INSTALLED           // appinstalled event
+  PUSH_PERMISSION_GRANTED // User granted push permission
+  PUSH_PERMISSION_DENIED  // User denied push permission
+  OFFLINE_SYNC_SUCCESS    // Offline queue synced successfully
+  OFFLINE_SYNC_FAILURE    // Offline queue sync failed
+  SERVICE_WORKER_UPDATED  // SW updated
 }

@@ -4,6 +4,8 @@
  * and syncs them when connection is restored
  */
 
+import { trackOfflineSync } from './pwa-analytics'
+
 interface QueuedAction {
   id: string
   type: 'CREATE_DEAL' | 'CREATE_CONTACT' | 'UPDATE_DEAL' | 'SEND_MESSAGE'
@@ -242,6 +244,14 @@ export async function processOfflineQueue(): Promise<{
       await updateActionStatus(action.id, 'failed', error.message)
       failed++
     }
+  }
+
+  // Track sync results
+  if (success > 0) {
+    trackOfflineSync(true, { actionssynced: success })
+  }
+  if (failed > 0) {
+    trackOfflineSync(false, { actionsFailed: failed })
   }
 
   return { success, failed }

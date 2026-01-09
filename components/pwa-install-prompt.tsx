@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import { X, Download } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { trackPWAEvent, trackInstallPromptAction, setupPWAAnalytics } from '@/lib/pwa-analytics'
 
 interface BeforeInstallPromptEvent extends Event {
   prompt: () => Promise<void>
@@ -14,11 +15,18 @@ export function PWAInstallPrompt() {
   const [showPrompt, setShowPrompt] = useState(false)
 
   useEffect(() => {
+    // Setup PWA analytics tracking
+    const cleanup = setupPWAAnalytics()
+
     const handler = (e: Event) => {
       // Prevent the mini-infobar from appearing on mobile
       e.preventDefault()
       // Stash the event so it can be triggered later
       setDeferredPrompt(e as BeforeInstallPromptEvent)
+
+      // Track that prompt was shown
+      trackPWAEvent('INSTALL_PROMPT_SHOWN')
+
       // Show the install prompt after 30 seconds
       setTimeout(() => {
         setShowPrompt(true)
@@ -32,7 +40,10 @@ export function PWAInstallPrompt() {
       setShowPrompt(false)
     }
 
-    return () => window.removeEventListener('beforeinstallprompt', handler)
+    return () => {
+      window.removeEventListener('beforeinstallprompt', handler)
+      cleanup()
+    }
   }, [])
 
   const handleInstallClick = async () => {
@@ -43,6 +54,9 @@ export function PWAInstallPrompt() {
 
     // Wait for the user to respond to the prompt
     const { outcome } = await deferredPrompt.userChoice
+
+    // Track user action
+    trackInstallPromptAction(outcome === 'accepted')
 
     if (outcome === 'accepted') {
       console.log('User accepted the install prompt')
@@ -56,6 +70,9 @@ export function PWAInstallPrompt() {
   }
 
   const handleDismiss = () => {
+    // Track that user dismissed the prompt
+    trackInstallPromptAction(false)
+
     setShowPrompt(false)
     // Don't show again for this session
     if (typeof window !== 'undefined') {
