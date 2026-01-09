@@ -1658,9 +1658,10 @@ INTEGRATION_ENCRYPTION_KEY="0e25152eff34902cf02899b045c5bb07301921f055767888f867
   - [x] Disabled em desenvolvimento
 - [x] **Web App Manifest** (public/manifest.json)
   - [x] Nome completo e curto
-  - [x] 8 tamanhos de ícone (72px-512px)
-  - [x] 4 shortcuts (Dashboard, Contatos, Pipelines, Analytics)
+  - [x] 10 tamanhos de ícone (72px-512px) com maskable variants
+  - [x] 4 shortcuts (Novo Deal, Contatos, Pipelines, Analytics)
   - [x] Display standalone + theme colors
+  - [x] Screenshots (desktop 1280x720, mobile 750x1334)
 - [x] **Add to Home Screen** (components/pwa-install-prompt.tsx)
   - [x] Banner inteligente após 30s
   - [x] Detecta se já está instalado
@@ -1674,16 +1675,54 @@ INTEGRATION_ENCRYPTION_KEY="0e25152eff34902cf02899b045c5bb07301921f055767888f867
   - [x] Touch-friendly components
   - [x] Viewport meta tags
 
-#### Não Implementado (Opcional)
+#### Funcionalidades Avançadas PWA
 
-- [ ] **Push notifications** - Web Push API (futuro)
+- [x] **Ícones PWA** (scripts/generate-pwa-icons.js)
+  - [x] Gerados automaticamente usando pwa-asset-generator
+  - [x] 8 tamanhos padrão (72x72 a 512x512)
+  - [x] Maskable icons para Android
+  - [x] Apple touch icons e favicon
+- [x] **Push Notifications** (lib/push-notifications.ts)
+  - [x] Web Push API com VAPID keys
+  - [x] PushSubscription model no Prisma
+  - [x] API endpoints: /api/push/subscribe, /api/push/unsubscribe, /api/push/test
+  - [x] PushNotificationManager component com permission prompt
+  - [x] Helper functions para notificações (deals, contatos, WhatsApp, calendar)
+  - [x] Retry automático para subscriptions inválidas
+
+- [x] **Background Sync** (lib/offline-queue.ts)
+  - [x] Offline queue manager usando IndexedDB
+  - [x] Service worker sync event listener
+  - [x] OfflineStatus component com visualização da fila
+  - [x] API endpoint: /api/sync/process
+  - [x] Sync automático quando conexão é restaurada
+  - [x] Suporte para CREATE_DEAL, CREATE_CONTACT, UPDATE_DEAL, SEND_MESSAGE
+
+- [x] **Screenshots PWA** (docs/PWA_SCREENSHOTS.md)
+  - [x] Placeholders gerados automaticamente com sharp
+  - [x] Documentação completa de como capturar screenshots reais
+  - [x] Desktop (1280x720) e Mobile (750x1334)
+  - [x] Configurados no manifest.json
+
+#### Não Implementado
+
 - [ ] **App Store listing** - Não aplicável para PWA (instala direto do navegador)
-- [ ] **Background Sync** - Sincronização offline (futuro)
-- [ ] **Ícones PWA** - Precisam ser gerados (referenciados no manifest)
 
-**Tempo real:** ~3 horas
-**Commit:** `0289527` - feat: implement Progressive Web App (PWA) support
-**Dependências:** next-pwa@5.6.0 (203 packages)
+**Tempo real:** ~8 horas (PWA + Push + Background Sync + Ícones + Screenshots)
+
+**Commits:**
+
+- `0289527` - feat: implement Progressive Web App (PWA) support
+- `a37c062` - feat: implement Web Push Notifications system
+- `ba17918` - docs: add VAPID keys to .env.example
+- `732ab29` - feat: implement Background Sync for offline actions
+- `c8c5e55` - feat: add PWA screenshots and enhanced app shortcuts
+
+**Dependências:**
+
+- next-pwa@5.6.0 (203 packages)
+- web-push@3.6.7 (8 packages)
+- @types/web-push@3.6.3
 
 ---
 
