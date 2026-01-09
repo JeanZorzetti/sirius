@@ -51,9 +51,28 @@ export const metadata: Metadata = {
     creator: '@roilabs',
   },
   icons: {
-    icon: '/favicon.ico',
+    icon: [
+      { url: '/favicon-196.png', sizes: '196x196', type: 'image/png' },
+      { url: '/favicon.ico' },
+    ],
     shortcut: '/favicon.ico',
-    apple: '/apple-icon.png',
+    apple: [
+      { url: '/apple-icon-180.png', sizes: '180x180', type: 'image/png' },
+    ],
+    other: [
+      {
+        rel: 'icon',
+        type: 'image/png',
+        sizes: '192x192',
+        url: '/icon-192x192.png',
+      },
+      {
+        rel: 'icon',
+        type: 'image/png',
+        sizes: '512x512',
+        url: '/icon-512x512.png',
+      },
+    ],
   },
   manifest: '/manifest.json',
 };
@@ -61,6 +80,7 @@ export const metadata: Metadata = {
 import { ThemeProvider } from "@/components/theme-provider"
 import { TawkToChat } from "@/components/tawk-to-chat"
 import { PWAInstallPrompt } from "@/components/pwa-install-prompt"
+import { PushNotificationManager } from "@/components/push-notification-manager"
 import { GoogleTagManager, GoogleTagManagerNoScript } from "@/components/google-tag-manager"
 import { MicrosoftClarity } from "@/components/microsoft-clarity"
 import { analyticsConfig } from "@/lib/analytics-config"
@@ -192,6 +212,8 @@ export default function RootLayout({
           <TawkToChat />
           {/* PWA Install Prompt */}
           <PWAInstallPrompt />
+          {/* Push Notifications Manager */}
+          <PushNotificationManager />
         </ThemeProvider>
         <Analytics />
         <SpeedInsights />

@@ -61,6 +61,7 @@ model Organization {
   integrationLogs    IntegrationLog[]
   whatsappMessages   WhatsAppMessage[]
   calendarEvents     CalendarEvent[]
+  pushSubscriptions  PushSubscription[]
 }
 
 model User {
@@ -79,6 +80,7 @@ model User {
   activities Activity[]
   emailLogs EmailLog[]
   userActivities UserActivity[] // Analytics tracking
+  pushSubscriptions PushSubscription[]
 
   role      Role     @default(USER)
   orgRole   OrgRole  @default(OWNER) // Defaulting to OWNER for now so existing users don't lose access. Ideally MEMBER.
@@ -604,4 +606,37 @@ model CalendarEvent {
   @@index([organizationId, startTime])
   @@index([dealId])
   @@index([googleEventId])
+}
+
+
+model PushSubscription {
+  id        String   @id @default(uuid())
+  
+  // Web Push subscription details
+  endpoint  String   @unique
+  p256dh    String   // Public key
+  auth      String   // Auth secret
+  
+  // User agent and device info (optional)
+  userAgent String?  @db.Text
+  deviceType String? // "desktop", "mobile", "tablet"
+  
+  // Status
+  active    Boolean  @default(true)
+  
+  // Timestamps
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  lastUsedAt DateTime?
+  
+  // Relations
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  
+  @@index([userId])
+  @@index([organizationId])
+  @@index([endpoint])
 }
