@@ -48,3 +48,35 @@ export async function sendEmail({
     return { success: false, error }
   }
 }
+
+/**
+ * Send HTML email helper with error handling
+ */
+export async function sendHtmlEmail({
+  to,
+  subject,
+  html,
+}: {
+  to: string | string[]
+  subject: string
+  html: string
+}) {
+  try {
+    const { data, error } = await resend.emails.send({
+      from: emailConfig.from,
+      to,
+      subject,
+      html,
+    })
+
+    if (error) {
+      console.error('Failed to send email:', error)
+      return { success: false, error }
+    }
+
+    return { success: true, data }
+  } catch (error) {
+    console.error('Email sending error:', error)
+    return { success: false, error }
+  }
+}
