@@ -45,9 +45,20 @@ export function FunnelTemplateDownload() {
   const generatePDF = () => {
     const doc = new jsPDF()
     const pageWidth = doc.internal.pageSize.getWidth()
+    const pageHeight = doc.internal.pageSize.getHeight()
     let yPos = 20
 
-    // Função auxiliar para adicionar texto centralizado
+    // Cores da paleta Sirius (apenas tons de azul)
+    const colors = {
+      primary: [37, 99, 235],       // #2563eb - Azul principal Sirius
+      primaryLight: [239, 246, 255], // #eff6ff - Azul claro
+      primaryDark: [30, 64, 175],    // #1e40af - Azul escuro
+      text: [30, 41, 59],            // #1e293b - Texto escuro
+      textLight: [71, 85, 105],      // #475569 - Texto claro
+      border: [226, 232, 240]        // #e2e8f0 - Borda
+    }
+
+    // Funcao auxiliar para adicionar texto centralizado
     const addCenteredText = (text: string, y: number, fontSize: number = 12, isBold = false) => {
       doc.setFontSize(fontSize)
       doc.setFont('helvetica', isBold ? 'bold' : 'normal')
@@ -55,78 +66,108 @@ export function FunnelTemplateDownload() {
       doc.text(text, (pageWidth - textWidth) / 2, y)
     }
 
-    // Função auxiliar para adicionar checkbox
+    // Funcao auxiliar para adicionar checkbox
     const addCheckbox = (text: string, y: number, indent = 0) => {
       doc.setFontSize(10)
       doc.setFont('helvetica', 'normal')
+      doc.setDrawColor(...colors.primary)
+      doc.setLineWidth(0.5)
       doc.rect(10 + indent, y - 3, 3, 3) // checkbox
+      doc.setTextColor(...colors.text)
       doc.text(text, 15 + indent, y)
     }
 
-    // Cabeçalho
-    doc.setFillColor(37, 99, 235) // Azul Sirius
-    doc.rect(0, 0, pageWidth, 35, 'F')
+    // Funcao para adicionar rodape em todas as paginas
+    const addFooter = (pageNum: number) => {
+      const footerY = pageHeight - 15
+      doc.setFillColor(...colors.primary)
+      doc.rect(0, footerY - 5, pageWidth, 20, 'F')
+
+      doc.setTextColor(255, 255, 255)
+      doc.setFontSize(8)
+      doc.setFont('helvetica', 'normal')
+
+      // Texto esquerda
+      doc.text('Sirius CRM', 10, footerY)
+
+      // Texto centro
+      const centerText = 'https://sirius.roilabs.com.br/register'
+      const centerWidth = doc.getTextWidth(centerText)
+      doc.text(centerText, (pageWidth - centerWidth) / 2, footerY)
+
+      // Numero da pagina direita
+      doc.text(`Pagina ${pageNum}`, pageWidth - 25, footerY)
+    }
+
+    // ===== PAGINA 1 =====
+
+    // Cabecalho
+    doc.setFillColor(...colors.primary)
+    doc.rect(0, 0, pageWidth, 40, 'F')
 
     doc.setTextColor(255, 255, 255)
-    addCenteredText('TEMPLATE: CHECKLIST DE IMPLEMENTAÇÃO', 15, 16, true)
-    addCenteredText('DE FUNIL DE VENDAS', 23, 16, true)
-    doc.setFontSize(10)
-    addCenteredText('Sirius CRM - https://sirius.roilabs.com.br', 30, 10)
-
-    // Informações do usuário
-    doc.setTextColor(0, 0, 0)
-    yPos = 45
-    doc.setFontSize(10)
+    doc.setFont('helvetica', 'bold')
+    addCenteredText('CHECKLIST DE IMPLEMENTACAO', 18, 16, true)
+    addCenteredText('DE FUNIL DE VENDAS', 28, 16, true)
+    doc.setFontSize(9)
     doc.setFont('helvetica', 'normal')
-    doc.text(`Nome: ${name}`, 10, yPos)
-    yPos += 6
-    doc.text(`Email: ${email}`, 10, yPos)
-    yPos += 6
-    doc.text(`Data: ${new Date().toLocaleDateString('pt-BR')}`, 10, yPos)
-    yPos += 12
+    addCenteredText('Sirius CRM', 35, 9)
 
-    // Linha divisória
-    doc.setDrawColor(226, 232, 240)
-    doc.line(10, yPos, pageWidth - 10, yPos)
+    // Informacoes do usuario
+    yPos = 52
+    doc.setFillColor(...colors.primaryLight)
+    doc.rect(10, yPos - 5, pageWidth - 20, 18, 'F')
+
+    doc.setTextColor(...colors.text)
+    doc.setFontSize(9)
+    doc.setFont('helvetica', 'bold')
+    doc.text('DADOS DO USUARIO:', 12, yPos)
+    doc.setFont('helvetica', 'normal')
+    yPos += 5
+    doc.text(`Nome: ${name}`, 12, yPos)
+    yPos += 5
+    doc.text(`Email: ${email}`, 12, yPos)
+    yPos += 5
+    doc.text(`Data: ${new Date().toLocaleDateString('pt-BR')}`, 12, yPos)
     yPos += 10
 
     // FASE 1
-    doc.setFillColor(239, 246, 255)
-    doc.rect(10, yPos - 5, pageWidth - 20, 8, 'F')
-    doc.setFontSize(12)
+    doc.setFillColor(...colors.primaryLight)
+    doc.rect(10, yPos - 2, pageWidth - 20, 8, 'F')
+    doc.setFontSize(11)
     doc.setFont('helvetica', 'bold')
-    doc.setTextColor(30, 64, 175)
-    doc.text('📋 FASE 1: PLANEJAMENTO ESTRATÉGICO (Semana 1)', 12, yPos)
-    yPos += 10
+    doc.setTextColor(...colors.primaryDark)
+    doc.text('FASE 1: PLANEJAMENTO ESTRATEGICO (Semana 1)', 12, yPos + 3)
+    yPos += 11
 
-    doc.setTextColor(0, 0, 0)
+    doc.setTextColor(...colors.text)
     doc.setFont('helvetica', 'normal')
     addCheckbox('Mapear jornada do cliente atual', yPos)
     yPos += 6
     addCheckbox('Definir etapas do funil (5-7 etapas)', yPos)
     yPos += 6
-    addCheckbox('Estabelecer critérios de passagem entre etapas', yPos)
+    addCheckbox('Estabelecer criterios de passagem entre etapas', yPos)
     yPos += 6
-    addCheckbox('Definir metas de conversão por etapa', yPos)
+    addCheckbox('Definir metas de conversao por etapa', yPos)
     yPos += 6
     addCheckbox('Escolher e configurar CRM', yPos)
     yPos += 12
 
     // FASE 2
-    doc.setFillColor(239, 246, 255)
-    doc.rect(10, yPos - 5, pageWidth - 20, 8, 'F')
+    doc.setFillColor(...colors.primaryLight)
+    doc.rect(10, yPos - 2, pageWidth - 20, 8, 'F')
     doc.setFont('helvetica', 'bold')
-    doc.setTextColor(30, 64, 175)
-    doc.text('⚙️ FASE 2: IMPLEMENTAÇÃO TÉCNICA (Semana 2)', 12, yPos)
-    yPos += 10
+    doc.setTextColor(...colors.primaryDark)
+    doc.text('FASE 2: IMPLEMENTACAO TECNICA (Semana 2)', 12, yPos + 3)
+    yPos += 11
 
-    doc.setTextColor(0, 0, 0)
+    doc.setTextColor(...colors.text)
     doc.setFont('helvetica', 'normal')
     addCheckbox('Criar campos customizados no CRM', yPos)
     yPos += 6
-    addCheckbox('Configurar automações de etapa', yPos)
+    addCheckbox('Configurar automacoes de etapa', yPos)
     yPos += 6
-    addCheckbox('Integrar canais de comunicação (WhatsApp, Email)', yPos)
+    addCheckbox('Integrar canais de comunicacao (WhatsApp, Email)', yPos)
     yPos += 6
     addCheckbox('Configurar alertas de inatividade', yPos)
     yPos += 6
@@ -134,81 +175,97 @@ export function FunnelTemplateDownload() {
     yPos += 12
 
     // FASE 3
-    doc.setFillColor(239, 246, 255)
-    doc.rect(10, yPos - 5, pageWidth - 20, 8, 'F')
+    doc.setFillColor(...colors.primaryLight)
+    doc.rect(10, yPos - 2, pageWidth - 20, 8, 'F')
     doc.setFont('helvetica', 'bold')
-    doc.setTextColor(30, 64, 175)
-    doc.text('👥 FASE 3: TREINAMENTO DA EQUIPE (Semana 3)', 12, yPos)
-    yPos += 10
+    doc.setTextColor(...colors.primaryDark)
+    doc.text('FASE 3: TREINAMENTO DA EQUIPE (Semana 3)', 12, yPos + 3)
+    yPos += 11
 
-    doc.setTextColor(0, 0, 0)
+    doc.setTextColor(...colors.text)
     doc.setFont('helvetica', 'normal')
     addCheckbox('Treinar equipe no uso do CRM', yPos)
     yPos += 6
-    addCheckbox('Criar manual de operação do funil', yPos)
+    addCheckbox('Criar manual de operacao do funil', yPos)
     yPos += 6
     addCheckbox('Definir playbooks por etapa', yPos)
     yPos += 6
-    addCheckbox('Estabelecer rituais de revisão', yPos)
+    addCheckbox('Estabelecer rituais de revisao', yPos)
     yPos += 12
 
-    // Nova página para FASE 4 e 5
+    // Rodape pagina 1
+    addFooter(1)
+
+    // ===== PAGINA 2 =====
     doc.addPage()
-    yPos = 20
+    yPos = 25
 
     // FASE 4
-    doc.setFillColor(239, 246, 255)
-    doc.rect(10, yPos - 5, pageWidth - 20, 8, 'F')
+    doc.setFillColor(...colors.primaryLight)
+    doc.rect(10, yPos - 2, pageWidth - 20, 8, 'F')
     doc.setFont('helvetica', 'bold')
-    doc.setTextColor(30, 64, 175)
-    doc.text('🚀 FASE 4: LANÇAMENTO E TESTE (Semana 4)', 12, yPos)
-    yPos += 10
+    doc.setTextColor(...colors.primaryDark)
+    doc.text('FASE 4: LANCAMENTO E TESTE (Semana 4)', 12, yPos + 3)
+    yPos += 11
 
-    doc.setTextColor(0, 0, 0)
+    doc.setTextColor(...colors.text)
     doc.setFont('helvetica', 'normal')
     addCheckbox('Migrar leads existentes para o funil', yPos)
     yPos += 6
     addCheckbox('Testar fluxo completo com leads piloto', yPos)
     yPos += 6
-    addCheckbox('Ajustar critérios com base nos testes', yPos)
+    addCheckbox('Ajustar criterios com base nos testes', yPos)
     yPos += 6
-    addCheckbox('Configurar dashboard de métricas', yPos)
+    addCheckbox('Configurar dashboard de metricas', yPos)
     yPos += 6
-    addCheckbox('Validar automações e alertas', yPos)
+    addCheckbox('Validar automacoes e alertas', yPos)
     yPos += 12
 
     // FASE 5
-    doc.setFillColor(239, 246, 255)
-    doc.rect(10, yPos - 5, pageWidth - 20, 8, 'F')
+    doc.setFillColor(...colors.primaryLight)
+    doc.rect(10, yPos - 2, pageWidth - 20, 8, 'F')
     doc.setFont('helvetica', 'bold')
-    doc.setTextColor(30, 64, 175)
-    doc.text('📊 FASE 5: OTIMIZAÇÃO CONTÍNUA (Mensal)', 12, yPos)
-    yPos += 10
+    doc.setTextColor(...colors.primaryDark)
+    doc.text('FASE 5: OTIMIZACAO CONTINUA (Mensal)', 12, yPos + 3)
+    yPos += 11
 
-    doc.setTextColor(0, 0, 0)
+    doc.setTextColor(...colors.text)
     doc.setFont('helvetica', 'normal')
-    addCheckbox('Revisar taxas de conversão por etapa', yPos)
+    addCheckbox('Revisar taxas de conversao por etapa', yPos)
     yPos += 6
     addCheckbox('Identificar e corrigir gargalos', yPos)
     yPos += 6
-    addCheckbox('Testar variações de abordagem', yPos)
+    addCheckbox('Testar variacoes de abordagem', yPos)
     yPos += 6
     addCheckbox('Atualizar benchmarks internos', yPos)
     yPos += 6
     addCheckbox('Treinar time com base em dados', yPos)
-    yPos += 15
+    yPos += 20
 
-    // Rodapé
-    doc.setDrawColor(226, 232, 240)
-    doc.line(10, yPos, pageWidth - 10, yPos)
-    yPos += 8
+    // Box de dica
+    doc.setFillColor(...colors.primaryLight)
+    doc.setDrawColor(...colors.primary)
+    doc.setLineWidth(0.5)
+    doc.rect(10, yPos, pageWidth - 20, 35, 'FD')
+
+    yPos += 7
+    doc.setFontSize(10)
+    doc.setFont('helvetica', 'bold')
+    doc.setTextColor(...colors.primaryDark)
+    doc.text('DICA IMPORTANTE:', 15, yPos)
+
+    yPos += 6
     doc.setFontSize(9)
-    doc.setTextColor(100, 100, 100)
-    addCenteredText('💡 Dica: Revise este checklist semanalmente nas primeiras 4 semanas', yPos, 9)
-    yPos += 5
-    addCenteredText('e mensalmente depois. Cada negócio é único - adapte conforme necessário!', yPos, 9)
-    yPos += 10
-    addCenteredText('🚀 Comece gratuitamente: https://sirius.roilabs.com.br/register', yPos, 9)
+    doc.setFont('helvetica', 'normal')
+    doc.setTextColor(...colors.text)
+    const lines = doc.splitTextToSize(
+      'Revise este checklist semanalmente nas primeiras 4 semanas e mensalmente depois. Cada negocio e unico - adapte conforme necessario! Use o Sirius CRM para automatizar todo esse processo e aumentar suas taxas de conversao.',
+      pageWidth - 30
+    )
+    doc.text(lines, 15, yPos)
+
+    // Rodape pagina 2
+    addFooter(2)
 
     // Salvar PDF
     doc.save('checklist-funil-vendas-sirius.pdf')
