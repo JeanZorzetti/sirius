@@ -214,7 +214,16 @@ export function FunnelTemplateDownload() {
     doc.save('checklist-funil-vendas-sirius.pdf')
   }
 
-            O download começou automaticamente. Verifique também seu email em {email}
+  if (downloadComplete) {
+    return (
+      <Card className="my-8 border-2 border-green-500/30 bg-green-50 dark:bg-green-950/20">
+        <CardContent className="pt-8 text-center">
+          <CheckCircle2 className="h-16 w-16 text-green-500 mx-auto mb-4" />
+          <h3 className="text-2xl font-bold text-green-700 dark:text-green-400 mb-2">
+            Template Baixado com Sucesso!
+          </h3>
+          <p className="text-green-600 dark:text-green-500 mb-4">
+            O PDF foi baixado automaticamente. Verifique sua pasta de downloads!
           </p>
           <Button
             variant="outline"
