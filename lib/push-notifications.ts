@@ -61,6 +61,39 @@ export async function sendNotificationToOrganization(
 }
 
 /**
+ * Send push notification to all users in organization with preference filtering
+ */
+export async function sendNotificationToOrganizationWithPreference(
+  organizationId: string,
+  payload: PushNotificationPayload,
+  preferenceField: 'newDealEnabled' | 'dealWonEnabled' | 'whatsappMessageEnabled' | 'calendarReminderEnabled'
+): Promise<{ success: boolean; sent: number; failed: number }> {
+  // Get subscriptions with user preferences
+  const subscriptions = await prisma.pushSubscription.findMany({
+    where: {
+      organizationId,
+      active: true,
+    },
+    include: {
+      user: {
+        include: {
+          notificationPreference: true,
+        },
+      },
+    },
+  })
+
+  // Filter by preference
+  const filteredSubscriptions = subscriptions.filter((sub) => {
+    const preference = sub.user.notificationPreference
+    if (!preference) return true // If no preferences set, send by default
+    return preference[preferenceField] === true
+  })
+
+  return sendNotificationToSubscriptions(filteredSubscriptions, payload)
+}
+
+/**
  * Send push notification to list of subscriptions
  */
 async function sendNotificationToSubscriptions(
@@ -250,6 +283,15 @@ export async function sendNewDealNotification(
   dealTitle: string,
   dealValue?: number
 ): Promise<void> {
+  // Check user preferences
+  const preferences = await prisma.notificationPreference.findUnique({
+    where: { userId },
+  })
+
+  if (preferences && !preferences.newDealEnabled) {
+    return // User disabled this notification
+  }
+
   await sendNotificationToUser(userId, {
     title: '🎉 Novo Deal Criado!',
     body: `${dealTitle}${dealValue ? ` - R$ ${dealValue.toLocaleString('pt-BR')}` : ''}`,
@@ -263,12 +305,12 @@ export async function sendDealWonNotification(
   dealTitle: string,
   dealValue?: number
 ): Promise<void> {
-  await sendNotificationToOrganization(organizationId, {
+  await sendNotificationToOrganizationWithPreference(organizationId, {
     title: '🏆 Deal Ganho!',
     body: `${dealTitle}${dealValue ? ` - R$ ${dealValue.toLocaleString('pt-BR')}` : ''}`,
     tag: 'deal-won',
     url: '/dashboard',
-  })
+  }, 'dealWonEnabled')
 }
 
 export async function sendNewContactNotification(
@@ -288,6 +330,15 @@ export async function sendWhatsAppMessageNotification(
   contactName: string,
   messagePreview: string
 ): Promise<void> {
+  // Check user preferences
+  const preferences = await prisma.notificationPreference.findUnique({
+    where: { userId },
+  })
+
+  if (preferences && !preferences.whatsappMessageEnabled) {
+    return // User disabled this notification
+  }
+
   await sendNotificationToUser(userId, {
     title: `💬 ${contactName}`,
     body: messagePreview,
@@ -301,6 +352,15 @@ export async function sendCalendarEventNotification(
   eventTitle: string,
   startTime: Date
 ): Promise<void> {
+  // Check user preferences
+  const preferences = await prisma.notificationPreference.findUnique({
+    where: { userId },
+  })
+
+  if (preferences && !preferences.calendarReminderEnabled) {
+    return // User disabled this notification
+  }
+
   await sendNotificationToUser(userId, {
     title: '📅 Evento em Breve',
     body: `${eventTitle} começa às ${startTime.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}`,

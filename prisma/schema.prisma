@@ -83,6 +83,7 @@ model User {
   userActivities UserActivity[] // Analytics tracking
   pushSubscriptions PushSubscription[]
   pwaMetrics PWAMetric[]
+  notificationPreference NotificationPreference?
 
   role      Role     @default(USER)
   orgRole   OrgRole  @default(OWNER) // Defaulting to OWNER for now so existing users don't lose access. Ideally MEMBER.
@@ -680,4 +681,22 @@ enum PWAMetricType {
   OFFLINE_SYNC_SUCCESS    // Offline queue synced successfully
   OFFLINE_SYNC_FAILURE    // Offline queue sync failed
   SERVICE_WORKER_UPDATED  // SW updated
+}
+
+model NotificationPreference {
+  id        String   @id @default(uuid())
+  
+  // Notification types
+  newDealEnabled          Boolean @default(true)
+  dealWonEnabled          Boolean @default(true)
+  whatsappMessageEnabled  Boolean @default(true)
+  calendarReminderEnabled Boolean @default(true)
+  
+  // Timestamps
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  // Relations
+  userId    String   @unique
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }

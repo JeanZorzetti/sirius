@@ -2,7 +2,7 @@ import { getSession } from "@/lib/auth"
 import { prisma } from "@/lib/prisma"
 import { redirect } from "next/navigation"
 import Link from "next/link"
-import { ShieldAlert, Users, LayoutDashboard, ArrowLeft, Building2, LineChart } from "lucide-react"
+import { ShieldAlert, Users, LayoutDashboard, ArrowLeft, Building2, LineChart, Smartphone } from "lucide-react"
 
 export default async function AdminLayout({
     children,
@@ -44,6 +44,9 @@ export default async function AdminLayout({
                     </Link>
                     <Link href="/admin/analytics" className="text-sm font-medium text-zinc-400 hover:text-white transition-colors">
                         Analytics
+                    </Link>
+                    <Link href="/admin/pwa-metrics" className="text-sm font-medium text-zinc-400 hover:text-white transition-colors">
+                        PWA Metrics
                     </Link>
                 </nav>
                 <div className="ml-auto">
