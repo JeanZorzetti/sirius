@@ -1737,15 +1737,24 @@ INTEGRATION_ENCRYPTION_KEY="0e25152eff34902cf02899b045c5bb07301921f055767888f867
 
 **Como fazer:** Ver instruções em `docs/PWA_SCREENSHOTS.md`
 
-### 2. Integração de Notificações ⏸️ (Pendente)
+### 2. Integração de Notificações ✅ (Concluído - 2026-01-09)
 
-- [ ] Enviar notificação ao criar novo deal
-- [ ] Enviar notificação ao ganhar deal (toda organização)
-- [ ] Enviar notificação em nova mensagem WhatsApp
-- [ ] Enviar notificação antes de eventos do calendário
-- [ ] Adicionar configuração de preferências de notificação
+- [x] Enviar notificação ao criar novo deal (ao usuário responsável)
+- [x] Enviar notificação ao ganhar deal (toda organização)
+- [x] Enviar notificação em nova mensagem WhatsApp (todos usuários)
+- [x] Enviar notificação antes de eventos do calendário (cron horário)
+- [ ] Adicionar configuração de preferências de notificação (futuro)
 
-### 3. Testes PWA ⏸️ (Pendente)
+**Integração:**
+
+- POST /api/v1/deals - Notificação de novo deal
+- PATCH /api/v1/deals/[id] - Notificação de deal ganho (detecção de mudança de stage)
+- POST /api/webhooks/evolution - Notificação de mensagem WhatsApp
+- GET /api/cron/calendar-reminders - Lembretes 24h antes dos eventos
+
+**Commit:** `12e4cca` - feat: integrate push notifications into system events
+
+### 3. Testes PWA ⏸️ (Pendente - Requer dispositivos físicos)
 
 - [ ] Testar instalação em Android (Chrome)
 - [ ] Testar instalação em iOS (Safari)
@@ -1754,13 +1763,28 @@ INTEGRATION_ENCRYPTION_KEY="0e25152eff34902cf02899b045c5bb07301921f055767888f867
 - [ ] Testar push notifications em todos dispositivos
 - [ ] Testar app shortcuts no Android
 
-### 4. Métricas e Analytics PWA ⏸️ (Pendente)
+### 4. Métricas e Analytics PWA ✅ (Concluído - 2026-01-09)
 
-- [ ] Rastrear instalações PWA (beforeinstallprompt)
-- [ ] Rastrear taxa de conversão do prompt
-- [ ] Monitorar uso de push notifications
-- [ ] Monitorar sincronização offline (sucesso/falha)
-- [ ] Dashboard de métricas PWA
+- [x] Rastrear instalações PWA (beforeinstallprompt, appinstalled)
+- [x] Rastrear taxa de conversão do prompt (accepted/dismissed)
+- [x] Monitorar uso de push notifications (granted/denied)
+- [x] Monitorar sincronização offline (sucesso/falha)
+- [x] API de métricas com agregações e conversion rates
+- [ ] Dashboard visual de métricas PWA (futuro)
+
+**Métricas rastreadas (9 tipos):**
+
+- INSTALL_PROMPT_SHOWN, INSTALL_PROMPT_ACCEPTED, INSTALL_PROMPT_DISMISSED
+- APP_INSTALLED, SERVICE_WORKER_UPDATED
+- PUSH_PERMISSION_GRANTED, PUSH_PERMISSION_DENIED
+- OFFLINE_SYNC_SUCCESS, OFFLINE_SYNC_FAILURE
+
+**API Endpoints:**
+
+- POST /api/pwa/metrics - Registrar evento
+- GET /api/pwa/metrics?days=30 - Obter estatísticas
+
+**Commit:** `b77c9f3` - feat: implement PWA metrics and analytics system
 
 ---
 
