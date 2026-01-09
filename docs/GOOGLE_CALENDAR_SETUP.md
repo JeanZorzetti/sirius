@@ -1,95 +1,95 @@
-# 📅 Google Calendar Integration - Setup Guide
+# 📅 Integração Google Calendar - Guia de Configuração
 
-## Overview
+## Visão Geral
 
-This guide will help you set up the Google Calendar integration for your CRM system. The integration allows automatic event creation when deals are won, follow-up reminders, and bidirectional synchronization of calendar events.
+Este guia irá ajudá-lo a configurar a integração do Google Calendar para o seu sistema CRM. A integração permite criação automática de eventos quando negócios são fechados, lembretes de follow-up e sincronização bidirecional de eventos do calendário.
 
-## Prerequisites
+## Pré-requisitos
 
-- Google Cloud account
-- Admin access to your CRM deployment
-- Ability to set environment variables in your hosting platform
+- Conta Google Cloud
+- Acesso administrativo ao seu CRM
+- Capacidade de definir variáveis de ambiente na sua plataforma de hospedagem
 
-## Step 1: Create Google Cloud Project
+## Passo 1: Criar Projeto no Google Cloud
 
-1. Go to [Google Cloud Console](https://console.cloud.google.com/)
-2. Create a new project or select an existing one
-3. Note down your project ID for later
+1. Acesse o [Console do Google Cloud](https://console.cloud.google.com/)
+2. Crie um novo projeto ou selecione um existente
+3. Anote o ID do projeto para uso posterior
 
-## Step 2: Enable Google Calendar API
+## Passo 2: Habilitar a API do Google Calendar
 
-1. In the Cloud Console, navigate to **APIs & Services** → **Library**
-2. Search for "Google Calendar API"
-3. Click on it and press **ENABLE**
-4. Wait for the API to be enabled (may take a minute)
+1. No Console Cloud, navegue até **APIs e Serviços** → **Biblioteca**
+2. Pesquise por "Google Calendar API"
+3. Clique nela e pressione **ATIVAR**
+4. Aguarde a API ser habilitada (pode levar um minuto)
 
-## Step 3: Create OAuth 2.0 Credentials
+## Passo 3: Criar Credenciais OAuth 2.0
 
-1. Go to **APIs & Services** → **Credentials**
-2. Click **+ CREATE CREDENTIALS** → **OAuth client ID**
-3. If prompted, configure the OAuth consent screen first:
-   - Select **External** user type (or Internal if using Google Workspace)
-   - Fill in required fields:
-     - App name: "Your CRM Name"
-     - User support email: your-email@domain.com
-     - Developer contact email: your-email@domain.com
-   - Add scopes:
+1. Vá para **APIs e Serviços** → **Credenciais**
+2. Clique em **+ CRIAR CREDENCIAIS** → **ID do cliente OAuth**
+3. Se solicitado, configure primeiro a tela de consentimento OAuth:
+   - Selecione tipo de usuário **Externo** (ou Interno se usar Google Workspace)
+   - Preencha os campos obrigatórios:
+     - Nome do app: "Nome do seu CRM"
+     - E-mail de suporte ao usuário: seu-email@dominio.com
+     - E-mail de contato do desenvolvedor: seu-email@dominio.com
+   - Adicione escopos:
      - `https://www.googleapis.com/auth/calendar`
      - `https://www.googleapis.com/auth/calendar.events`
-   - Add test users (your email addresses that will test the integration)
-   - Save and continue
-4. Back in Credentials page, click **+ CREATE CREDENTIALS** → **OAuth client ID** again
-5. Select **Web application**
+   - Adicione usuários de teste (seus endereços de e-mail que testarão a integração)
+   - Salvar e continuar
+4. De volta à página Credenciais, clique em **+ CRIAR CREDENCIAIS** → **ID do cliente OAuth** novamente
+5. Selecione **Aplicativo da Web**
 6. Configure:
-   - **Name:** "CRM Google Calendar Integration"
-   - **Authorized redirect URIs:** Add your callback URL:
-     - Production: `https://your-domain.com/api/integrations/google-calendar/callback`
-     - Local dev: `http://localhost:3000/api/integrations/google-calendar/callback`
-7. Click **CREATE**
-8. Copy the **Client ID** and **Client Secret** shown in the popup
+   - **Nome:** "Integração CRM Google Calendar"
+   - **URIs de redirecionamento autorizados:** Adicione sua URL de callback:
+     - Produção: `https://seu-dominio.com/api/integrations/google-calendar/callback`
+     - Desenvolvimento local: `http://localhost:3000/api/integrations/google-calendar/callback`
+7. Clique em **CRIAR**
+8. Copie o **ID do cliente** e o **Código secreto do cliente** mostrados no popup
 
-## Step 4: Configure Environment Variables
+## Passo 4: Configurar Variáveis de Ambiente
 
-Add the following environment variables to your `.env` file:
+Adicione as seguintes variáveis de ambiente ao seu arquivo `.env`:
 
 ```bash
-# Google Calendar OAuth
-GOOGLE_CALENDAR_CLIENT_ID="YOUR_CLIENT_ID.apps.googleusercontent.com"
-GOOGLE_CALENDAR_CLIENT_SECRET="YOUR_CLIENT_SECRET"
-GOOGLE_CALENDAR_REDIRECT_URI="https://your-domain.com/api/integrations/google-calendar/callback"
+# OAuth Google Calendar
+GOOGLE_CALENDAR_CLIENT_ID="SEU_CLIENT_ID.apps.googleusercontent.com"
+GOOGLE_CALENDAR_CLIENT_SECRET="SEU_CLIENT_SECRET"
+GOOGLE_CALENDAR_REDIRECT_URI="https://seu-dominio.com/api/integrations/google-calendar/callback"
 
-# Integration Encryption Key (if not already set)
-INTEGRATION_ENCRYPTION_KEY="generate-with-openssl-rand-hex-32"
+# Chave de Criptografia de Integração (se ainda não estiver definida)
+INTEGRATION_ENCRYPTION_KEY="gere-com-openssl-rand-hex-32"
 ```
 
-**Generate encryption key:**
+**Gerar chave de criptografia:**
 ```bash
 openssl rand -hex 32
 ```
 
-## Step 5: Deploy to Production
+## Passo 5: Fazer Deploy em Produção
 
-1. Add environment variables to your hosting platform (Vercel, Railway, etc.)
-2. Redeploy your application
-3. Verify all variables are set correctly
+1. Adicione as variáveis de ambiente à sua plataforma de hospedagem (Vercel, Railway, etc.)
+2. Faça o redeploy da sua aplicação
+3. Verifique se todas as variáveis estão configuradas corretamente
 
-## Step 6: Test the Integration
+## Passo 6: Testar a Integração
 
-1. Log in to your CRM as an admin user
-2. Navigate to **Settings** → **Integrations** → **Google Calendar**
-3. Click **"Conectar com Google"**
-4. You'll be redirected to Google's consent screen
-5. Grant access to your Google Calendar
-6. You should be redirected back to the settings page with a success message
-7. Your connected email should be displayed
+1. Faça login no seu CRM como usuário administrador
+2. Navegue até **Configurações** → **Integrações** → **Google Calendar**
+3. Clique em **"Conectar com Google"**
+4. Você será redirecionado para a tela de consentimento do Google
+5. Conceda acesso ao seu Google Calendar
+6. Você deve ser redirecionado de volta para a página de configurações com uma mensagem de sucesso
+7. Seu e-mail conectado deve ser exibido
 
-## Step 7: Configure Cron Job (Optional but Recommended)
+## Passo 7: Configurar Cron Job (Opcional mas Recomendado)
 
-Set up a cron job to sync events every 4 hours:
+Configure um cron job para sincronizar eventos a cada 4 horas:
 
-**For Vercel (using Vercel Cron):**
+**Para Vercel (usando Vercel Cron):**
 
-Add to `vercel.json`:
+Adicione ao `vercel.json`:
 ```json
 {
   "crons": [
@@ -101,109 +101,109 @@ Add to `vercel.json`:
 }
 ```
 
-**For other platforms:**
+**Para outras plataformas:**
 
-Use a service like [cron-job.org](https://cron-job.org) or [EasyCron](https://www.easycron.com):
+Use um serviço como [cron-job.org](https://cron-job.org) ou [EasyCron](https://www.easycron.com):
 
-- URL: `https://your-domain.com/api/cron/sync-google-calendar`
-- Schedule: Every 4 hours (`0 */4 * * *`)
-- Method: GET
-- Headers:
-  - `Authorization: Bearer YOUR_CRON_SECRET`
+- URL: `https://seu-dominio.com/api/cron/sync-google-calendar`
+- Agendamento: A cada 4 horas (`0 */4 * * *`)
+- Método: GET
+- Cabeçalhos:
+  - `Authorization: Bearer SEU_CRON_SECRET`
 
-Make sure to set `CRON_SECRET` in your environment variables.
+Certifique-se de definir `CRON_SECRET` nas suas variáveis de ambiente.
 
-## Features
+## Funcionalidades
 
-Once configured, the integration provides:
+Uma vez configurada, a integração fornece:
 
-### ✅ Automatic Event Creation
-- When a deal is marked as "Won", a calendar event is automatically created for the next business day
-- Event includes deal details, customer information, and reminders
+### ✅ Criação Automática de Eventos
+- Quando um negócio é marcado como "Ganho", um evento no calendário é criado automaticamente para o próximo dia útil
+- O evento inclui detalhes do negócio, informações do cliente e lembretes
 
-### ✅ Follow-up Reminders
-- Create calendar reminders for specific deals
-- Customizable reminder dates and notes
-- Email and popup notifications
+### ✅ Lembretes de Follow-up
+- Crie lembretes de calendário para negócios específicos
+- Datas de lembrete personalizáveis e notas
+- Notificações por e-mail e popup
 
-### ✅ Bidirectional Sync
-- Events created in Google Calendar are synced to the CRM
-- View all your events in one place
-- Link calendar events to deals manually
+### ✅ Sincronização Bidirecional
+- Eventos criados no Google Calendar são sincronizados para o CRM
+- Visualize todos os seus eventos em um só lugar
+- Vincule eventos do calendário aos negócios manualmente
 
-### ✅ Event Management
-- Create, update, and delete events from the CRM
-- All changes sync to Google Calendar
-- Track event status (confirmed, pending, cancelled)
+### ✅ Gerenciamento de Eventos
+- Crie, atualize e exclua eventos do CRM
+- Todas as alterações sincronizam com o Google Calendar
+- Rastreie o status dos eventos (confirmado, pendente, cancelado)
 
-## Troubleshooting
+## Solução de Problemas
 
-### Error: "access_denied"
-**Cause:** User denied access during OAuth flow
-**Solution:** Try connecting again and grant the required permissions
+### Erro: "access_denied"
+**Causa:** Usuário negou acesso durante o fluxo OAuth
+**Solução:** Tente conectar novamente e conceda as permissões necessárias
 
-### Error: "connection_failed"
-**Cause:** Invalid credentials or API not enabled
-**Solutions:**
-- Verify `GOOGLE_CALENDAR_CLIENT_ID` and `GOOGLE_CALENDAR_CLIENT_SECRET`
-- Ensure Google Calendar API is enabled in Cloud Console
-- Check redirect URI matches exactly
+### Erro: "connection_failed"
+**Causa:** Credenciais inválidas ou API não habilitada
+**Soluções:**
+- Verifique `GOOGLE_CALENDAR_CLIENT_ID` e `GOOGLE_CALENDAR_CLIENT_SECRET`
+- Certifique-se de que a API do Google Calendar está habilitada no Console Cloud
+- Verifique se o URI de redirecionamento corresponde exatamente
 
-### Error: "No refresh token received"
-**Cause:** Google didn't return a refresh token
-**Solutions:**
-- Disconnect and reconnect (OAuth flow forces consent screen)
-- Check if you're using the same Google account
-- Revoke access in Google Account settings and try again
+### Erro: "No refresh token received"
+**Causa:** Google não retornou um refresh token
+**Soluções:**
+- Desconecte e reconecte (fluxo OAuth força tela de consentimento)
+- Verifique se está usando a mesma conta Google
+- Revogue o acesso nas configurações da Conta Google e tente novamente
 
-### Events not syncing
-**Cause:** Cron job not configured or failing
-**Solutions:**
-- Check cron job logs in your hosting platform
-- Verify `CRON_SECRET` is set correctly
-- Test manually: `curl -H "Authorization: Bearer YOUR_CRON_SECRET" https://your-domain.com/api/cron/sync-google-calendar`
+### Eventos não sincronizando
+**Causa:** Cron job não configurado ou falhando
+**Soluções:**
+- Verifique os logs do cron job na sua plataforma de hospedagem
+- Verifique se `CRON_SECRET` está definido corretamente
+- Teste manualmente: `curl -H "Authorization: Bearer SEU_CRON_SECRET" https://seu-dominio.com/api/cron/sync-google-calendar`
 
-## Security Best Practices
+## Melhores Práticas de Segurança
 
-1. **Keep secrets secure**
-   - Never commit `.env` files to git
-   - Use environment variables in production
-   - Rotate credentials periodically
+1. **Mantenha os segredos seguros**
+   - Nunca faça commit de arquivos `.env` no git
+   - Use variáveis de ambiente em produção
+   - Rotacione credenciais periodicamente
 
-2. **OAuth Token Storage**
-   - Refresh tokens are encrypted using AES-256-GCM
-   - Stored in database with encryption at rest
-   - Never exposed in API responses
+2. **Armazenamento de Tokens OAuth**
+   - Refresh tokens são criptografados usando AES-256-GCM
+   - Armazenados no banco de dados com criptografia em repouso
+   - Nunca expostos em respostas da API
 
-3. **Access Control**
-   - Only organization owners can connect/disconnect
-   - Each organization has isolated calendar access
-   - Users can only see events from their organization
+3. **Controle de Acesso**
+   - Apenas proprietários da organização podem conectar/desconectar
+   - Cada organização tem acesso isolado ao calendário
+   - Usuários só podem ver eventos da sua organização
 
-## API Endpoints
+## Endpoints da API
 
-For reference, here are the integration endpoints:
+Para referência, aqui estão os endpoints da integração:
 
-- **OAuth Initiation:** `GET /api/integrations/google-calendar/auth`
-- **OAuth Callback:** `GET /api/integrations/google-calendar/callback`
-- **Disconnect:** `POST /api/integrations/google-calendar/settings`
-- **Sync Cron:** `GET /api/cron/sync-google-calendar`
+- **Início OAuth:** `GET /api/integrations/google-calendar/auth`
+- **Callback OAuth:** `GET /api/integrations/google-calendar/callback`
+- **Desconectar:** `POST /api/integrations/google-calendar/settings`
+- **Cron de Sincronização:** `GET /api/cron/sync-google-calendar`
 
-## Support
+## Suporte
 
-For issues or questions:
+Para problemas ou perguntas:
 
-1. Check the logs in your hosting platform
-2. Review Google Cloud Console audit logs
-3. Check IntegrationLog table in database for activity
-4. Contact support with error details
+1. Verifique os logs na sua plataforma de hospedagem
+2. Revise os logs de auditoria do Console do Google Cloud
+3. Verifique a tabela IntegrationLog no banco de dados para atividade
+4. Entre em contato com o suporte com detalhes do erro
 
 ## Changelog
 
-### Version 1.0.0 (2026-01-08)
-- Initial Google Calendar integration
-- OAuth 2.0 authentication
-- Automatic event creation for won deals
-- Follow-up reminder creation
-- Bidirectional event sync
-- Cron job for automatic syncing
+### Versão 1.0.0 (2026-01-09)
+- Integração inicial do Google Calendar
+- Autenticação OAuth 2.0
+- Criação automática de eventos para negócios ganhos
+- Criação de lembretes de follow-up
+- Sincronização bidirecional de eventos
+- Cron job para sincronização automática
