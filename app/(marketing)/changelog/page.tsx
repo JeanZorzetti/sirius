@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import Script from 'next/script'
 import { Badge } from '@/components/ui/badge'
-import { GitBranch, Sparkles, Bug, Zap, Shield, Users } from 'lucide-react'
+import { GitBranch, Sparkles, Bug, Zap, Shield, Users, Smartphone, Bell } from 'lucide-react'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
@@ -15,6 +15,43 @@ export const metadata: Metadata = {
 }
 
 const changelog = [
+  {
+    version: 'v1.4.0',
+    date: '2026-01-09',
+    type: 'major',
+    items: [
+      {
+        type: 'feature',
+        icon: Smartphone,
+        title: 'Progressive Web App (PWA)',
+        description: 'Instale o Sirius como aplicativo nativo no seu celular ou desktop com suporte offline completo.',
+      },
+      {
+        type: 'feature',
+        icon: Bell,
+        title: 'Web Push Notifications',
+        description: 'Receba notificações em tempo real sobre novos deals, mensagens WhatsApp e lembretes de calendário.',
+      },
+      {
+        type: 'feature',
+        icon: Zap,
+        title: 'Background Sync Offline',
+        description: 'Crie deals e contatos mesmo sem internet - tudo será sincronizado automaticamente quando voltar online.',
+      },
+      {
+        type: 'feature',
+        icon: Bell,
+        title: 'Preferências de Notificação',
+        description: 'Controle granular de quais notificações você deseja receber: deals, WhatsApp, calendário e muito mais.',
+      },
+      {
+        type: 'feature',
+        icon: Sparkles,
+        title: 'Dashboard de Métricas PWA',
+        description: 'Admin pode monitorar taxa de instalação, conversão de push notifications e uso offline no /admin/pwa-metrics.',
+      },
+    ],
+  },
   {
     version: 'v1.3.0',
     date: '2026-01-05',
@@ -360,21 +397,21 @@ export default function ChangelogPage() {
               </p>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 <div className="p-6 border rounded-lg text-left">
-                  <h3 className="font-semibold text-foreground mb-2">API Pública</h3>
+                  <h3 className="font-semibold text-foreground mb-2">Integrações N8N</h3>
                   <p className="text-sm text-muted-foreground">
-                    REST API completa com webhooks para integrações customizadas.
+                    Automação avançada de workflows com webhooks bidirecionais.
                   </p>
                 </div>
                 <div className="p-6 border rounded-lg text-left">
-                  <h3 className="font-semibold text-foreground mb-2">Integrações</h3>
+                  <h3 className="font-semibold text-foreground mb-2">WhatsApp Evolution</h3>
                   <p className="text-sm text-muted-foreground">
-                    Zapier, Google Calendar, Slack e WhatsApp API oficial.
+                    Integração completa: enviar, receber e automatizar mensagens.
                   </p>
                 </div>
                 <div className="p-6 border rounded-lg text-left">
-                  <h3 className="font-semibold text-foreground mb-2">Mobile App</h3>
+                  <h3 className="font-semibold text-foreground mb-2">Google Calendar Sync</h3>
                   <p className="text-sm text-muted-foreground">
-                    PWA offline-first com push notifications para iOS e Android.
+                    Sincronização bidirecional de eventos e lembretes automáticos.
                   </p>
                 </div>
                 <div className="p-6 border rounded-lg text-left">
