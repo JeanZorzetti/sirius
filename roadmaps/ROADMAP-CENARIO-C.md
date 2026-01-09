@@ -1646,11 +1646,44 @@ INTEGRATION_ENCRYPTION_KEY="0e25152eff34902cf02899b045c5bb07301921f055767888f867
 - [ ] Slack notifications
 - [ ] Make.com (Integromat)
 
-### Semana 9-12: Mobile
-- PWA offline-first
-- Push notifications
-- Mobile-optimized UI
-- App Store listing
+### Semana 9-12: Mobile ✅ (Concluído - 2026-01-09)
+
+#### Progressive Web App (PWA)
+
+- [x] **PWA offline-first** - Service Worker com Workbox
+  - [x] Cache de fontes (Google Fonts + locais)
+  - [x] Cache de imagens (StaleWhileRevalidate, 24h)
+  - [x] Cache de JS/CSS (StaleWhileRevalidate, 24h)
+  - [x] Cache de APIs GET (NetworkFirst, 5min, fallback 10s)
+  - [x] Disabled em desenvolvimento
+- [x] **Web App Manifest** (public/manifest.json)
+  - [x] Nome completo e curto
+  - [x] 8 tamanhos de ícone (72px-512px)
+  - [x] 4 shortcuts (Dashboard, Contatos, Pipelines, Analytics)
+  - [x] Display standalone + theme colors
+- [x] **Add to Home Screen** (components/pwa-install-prompt.tsx)
+  - [x] Banner inteligente após 30s
+  - [x] Detecta se já está instalado
+  - [x] Session-based dismissal
+  - [x] Design responsivo
+- [x] **PWA Metadata** (app/layout.tsx)
+  - [x] applicationName, appleWebApp config
+  - [x] SSR-safe (typeof window checks)
+- [x] **Mobile-optimized UI** - Já estava responsivo
+  - [x] Breakpoints configurados (640-3840px)
+  - [x] Touch-friendly components
+  - [x] Viewport meta tags
+
+#### Não Implementado (Opcional)
+
+- [ ] **Push notifications** - Web Push API (futuro)
+- [ ] **App Store listing** - Não aplicável para PWA (instala direto do navegador)
+- [ ] **Background Sync** - Sincronização offline (futuro)
+- [ ] **Ícones PWA** - Precisam ser gerados (referenciados no manifest)
+
+**Tempo real:** ~3 horas
+**Commit:** `0289527` - feat: implement Progressive Web App (PWA) support
+**Dependências:** next-pwa@5.6.0 (203 packages)
 
 ---
 
