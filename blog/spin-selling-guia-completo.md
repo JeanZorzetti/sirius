@@ -7,13 +7,13 @@ date: "2026-01-10"
 updated: "2026-01-10"
 category: "Vendas"
 tags: ["SPIN Selling", "Vendas B2B", "Discovery", "Metodologia de Vendas", "Vendas Consultivas", "CRM"]
-featured_image: "/images/blog/spin-selling-hero.jpg"
+featured_image: "/images/blog/spin-selling-hero.svg"
 reading_time: "25 min"
 seo_keywords: "spin selling, metodologia spin, perguntas spin selling, discovery vendas, vendas consultivas, vendas b2b, crm vendas"
 ---
 
 <!-- HERO IMAGE -->
-![Diagrama SPIN Selling mostrando as 4 etapas: Situação, Problema, Implicação e Necessidade de Solução](/images/blog/spin-selling-hero.jpg)
+![Diagrama SPIN Selling mostrando as 4 etapas: Situação, Problema, Implicação e Necessidade de Solução](/images/blog/spin-selling-hero.svg)
 *Alt text: Infográfico SPIN Selling metodologia - 4 etapas de perguntas para vendas consultivas B2B - Situação Problema Implicação Necessidade*
 
 <!-- AUDIO PLAYER COMPONENT -->
@@ -87,7 +87,7 @@ Se você está lendo isto, provavelmente seu time de vendas enfrenta um destes p
 Segundo pesquisa da [Miller Heiman Group Brasil](https://millerheimangroup.com.br/desbloqueie-o-segredo-do-spin-selling-para-fechar-negocios-em-vendas-b2b/), empresas com discovery fraco deixam de **fechar 20% das oportunidades viáveis**. Se sua empresa gera 100 SQLs/mês com ticket médio de R$ 5.000, isso representa **R$ 1,2 milhão/ano** em receita perdida.
 
 <!-- IMAGE: Calculadora de custo -->
-![Calculadora mostrando R$ 1,2 milhão de receita perdida por ano devido a discovery fraco](/images/blog/spin-selling-custo-discovery-fraco.png)
+![Calculadora mostrando R$ 1,2 milhão de receita perdida por ano devido a discovery fraco](/images/blog/spin-selling-custo-discovery-fraco.svg)
 *Alt text: Cálculo ROI SPIN Selling - R$ 1,2 milhão receita perdida anualmente com discovery fraco vendas B2B*
 
 **A boa notícia?** SPIN Selling pode reverter isso.
@@ -99,7 +99,7 @@ Segundo pesquisa da [Miller Heiman Group Brasil](https://millerheimangroup.com.b
 A metodologia SPIN Selling foi validada em **35.000 ligações de vendas** em **20 países** ao longo de **12 anos de pesquisa** pela [Huthwaite Research Group](https://escolaexchange.com.br/vendas/spin-selling-e-neil-rackham-sobre-o-que-e-a-tecnica-de-vendas/).
 
 <!-- IMAGE: Estatísticas SPIN -->
-![Infográfico com estatísticas SPIN Selling: 35.000 calls analisadas, 20 países, 12 anos de pesquisa](/images/blog/spin-selling-estatisticas.png)
+![Infográfico com estatísticas SPIN Selling: 35.000 calls analisadas, 20 países, 12 anos de pesquisa](/images/blog/spin-selling-estatisticas.svg)
 *Alt text: SPIN Selling estatísticas pesquisa Huthwaite - 35000 ligações vendas 20 países 12 anos Neil Rackham*
 
 ### Resultados Mensuráveis:
@@ -135,7 +135,7 @@ A metodologia SPIN Selling foi validada em **35.000 ligações de vendas** em **
 **SPIN Selling** é uma metodologia de vendas consultivas criada por **Neil Rackham** em 1988, baseada na análise de milhares de interações de vendas complexas.
 
 <!-- IMAGE: Diagrama conceitual SPIN -->
-![Diagrama explicando SPIN Selling: 4 quadrantes com Situação, Problema, Implicação, Necessidade de Solução](/images/blog/spin-selling-conceito-diagrama.png)
+![Diagrama explicando SPIN Selling: 4 quadrantes com Situação, Problema, Implicação, Necessidade de Solução](/images/blog/spin-selling-conceito-diagrama.svg)
 *Alt text: O que é SPIN Selling - metodologia vendas consultivas Neil Rackham 4 tipos perguntas B2B*
 
 ### Definição Técnica:
@@ -165,7 +165,7 @@ A metodologia SPIN Selling foi validada em **35.000 ligações de vendas** em **
 Antes de mergulhar no SPIN, entenda onde ele se encaixa no ecossistema de vendas:
 
 <!-- IMAGE: Tabela comparativa visual -->
-![Tabela comparativa SPIN vs BANT vs GPCT vs Challenger - quando usar cada metodologia de vendas](/images/blog/spin-vs-bant-gpct-challenger.png)
+![Tabela comparativa SPIN vs BANT vs GPCT vs Challenger - quando usar cada metodologia de vendas](/images/blog/spin-vs-bant-gpct-challenger.svg)
 *Alt text: Comparação metodologias vendas B2B - SPIN Selling vs BANT GPCT Challenger quando usar*
 
 ### Tabela Comparativa:
@@ -207,7 +207,7 @@ Antes de mergulhar no SPIN, entenda onde ele se encaixa no ecossistema de vendas
 Vamos mergulhar na metodologia usando exemplos reais de venda de CRM (como a Sirius):
 
 <!-- IMAGE: Fluxograma 4 etapas -->
-![Fluxograma interativo das 4 etapas SPIN Selling com tempo sugerido para cada fase](/images/blog/spin-4-etapas-fluxograma.png)
+![Fluxograma interativo das 4 etapas SPIN Selling com tempo sugerido para cada fase](/images/blog/spin-4-etapas-fluxograma.svg)
 *Alt text: 4 etapas SPIN Selling passo a passo - Situação Problema Implicação Necessidade tempo duração*
 
 ---
@@ -217,7 +217,7 @@ Vamos mergulhar na metodologia usando exemplos reais de venda de CRM (como a Sir
 **Objetivo:** Coletar fatos e entender o contexto atual do cliente.
 
 <!-- IMAGE: Ícone + exemplo visual -->
-![Exemplo de perguntas de Situação SPIN Selling aplicadas em discovery de CRM](/images/blog/spin-perguntas-situacao-exemplo.png)
+![Exemplo de perguntas de Situação SPIN Selling aplicadas em discovery de CRM](/images/blog/spin-perguntas-situacao-exemplo.svg)
 *Alt text: Perguntas de Situação SPIN Selling exemplos práticos CRM discovery vendas B2B*
 
 #### ⚠️ Cuidado:
@@ -268,7 +268,7 @@ Vamos mergulhar na metodologia usando exemplos reais de venda de CRM (como a Sir
 **Objetivo:** Identificar dificuldades, frustrações e insatisfações específicas.
 
 <!-- IMAGE: Problem Chain visual -->
-![Diagrama Problem Chain - técnica de exploração profunda de problemas em 3 camadas](/images/blog/spin-problem-chain-tecnica.png)
+![Diagrama Problem Chain - técnica de exploração profunda de problemas em 3 camadas](/images/blog/spin-problem-chain-tecnica.svg)
 *Alt text: Problem Chain SPIN Selling - explorar problema 3 camadas técnica discovery vendas*
 
 #### 🎯 Regra de Ouro:
@@ -339,7 +339,7 @@ Não pare no primeiro problema. Vá mais fundo:
 **Objetivo:** Amplificar o custo do problema e criar urgência para mudança.
 
 <!-- IMAGE: Calculadora de implicação -->
-![Template de cálculo de implicação: Frequência x Impacto x Tempo = Custo Total do Problema](/images/blog/spin-calculo-implicacao-formula.png)
+![Template de cálculo de implicação: Frequência x Impacto x Tempo = Custo Total do Problema](/images/blog/spin-calculo-implicacao-formula.svg)
 *Alt text: Cálculo implicação SPIN Selling fórmula - Frequência Impacto Tempo custo problema vendas*
 
 #### 🔥 Esta É a Etapa Mais Poderosa do SPIN
@@ -401,7 +401,7 @@ Use esta fórmula para transformar problemas em números:
 **Objetivo:** Fazer o cliente articular a solução que ELE precisa (não você empurrar).
 
 <!-- IMAGE: Vision Building -->
-![Técnica Vision Building - fazer cliente co-criar solução ideal SPIN Selling](/images/blog/spin-vision-building-tecnica.png)
+![Técnica Vision Building - fazer cliente co-criar solução ideal SPIN Selling](/images/blog/spin-vision-building-tecnica.svg)
 *Alt text: Vision Building SPIN Selling - cliente co-criar solução perguntas necessidade vendas consultivas*
 
 #### 🎯 Mudança de Foco:
@@ -463,7 +463,7 @@ Faça o cliente CO-CRIAR a solução com você:
 Agora que você conhece as 4 etapas, veja como orquestrar um **Discovery Meeting perfeito** usando SPIN:
 
 <!-- IMAGE: Timeline 45 minutos -->
-![Timeline discovery meeting 45 minutos com SPIN Selling - alocação de tempo por etapa](/images/blog/spin-discovery-timeline-45min.png)
+![Timeline discovery meeting 45 minutos com SPIN Selling - alocação de tempo por etapa](/images/blog/spin-discovery-timeline-45min.svg)
 *Alt text: Discovery meeting SPIN Selling timeline 45 minutos - distribuição tempo Situação Problema Implicação Necessidade*
 
 ---
@@ -639,7 +639,7 @@ Use esta checklist para garantir qualidade:
 Use estas perguntas como base e adapte ao seu contexto:
 
 <!-- IMAGE: Banco de perguntas visual -->
-![Banco de perguntas SPIN Selling categorizado por setor: B2B SaaS, E-commerce, Consultoria, Imobiliário](/images/blog/spin-100-perguntas-por-setor.png)
+![Banco de perguntas SPIN Selling categorizado por setor: B2B SaaS, E-commerce, Consultoria, Imobiliário](/images/blog/spin-100-perguntas-por-setor.svg)
 *Alt text: 100 perguntas SPIN Selling prontas por setor - B2B SaaS E-commerce Consultoria Imobiliário exemplos*
 
 ---
@@ -817,7 +817,7 @@ Use estas perguntas como base e adapte ao seu contexto:
 Uma das aplicações mais poderosas do SPIN é **antecipar objeções**. Use esta matriz como guia:
 
 <!-- IMAGE: Matriz de objeções completa -->
-![Matriz completa Objeções vs Argumentos SPIN Selling - 10 objeções comuns com diagnóstico e resposta](/images/blog/spin-matriz-objecoes-completa.png)
+![Matriz completa Objeções vs Argumentos SPIN Selling - 10 objeções comuns com diagnóstico e resposta](/images/blog/spin-matriz-objecoes-completa.svg)
 *Alt text: Matriz objeções vendas SPIN Selling - como responder está caro preciso pensar já temos solução*
 
 ### **📊 Tabela: Objeção → Origem → Argumento SPIN**
@@ -875,7 +875,7 @@ Uma das aplicações mais poderosas do SPIN é **antecipar objeções**. Use est
 Mesmo conhecendo a metodologia, muitos vendedores cometem estes erros:
 
 <!-- IMAGE: Infográfico 7 erros -->
-![Infográfico 7 erros fatais ao aplicar SPIN Selling - o que NÃO fazer em discovery](/images/blog/spin-7-erros-fatais-infografico.png)
+![Infográfico 7 erros fatais ao aplicar SPIN Selling - o que NÃO fazer em discovery](/images/blog/spin-7-erros-fatais-infografico.svg)
 *Alt text: 7 erros SPIN Selling evitar - interrogatório sem rapport excesso situação não quantificar problema*
 
 ---
@@ -1104,7 +1104,7 @@ Aplique SPIN Selling imediatamente com estes materiais:
 Veja exemplos reais de empresas que transformaram vendas com SPIN:
 
 <!-- IMAGE: Cases overview -->
-![3 casos de sucesso SPIN Selling: Growth Machine, IBM, Cliente Sirius CRM - resultados mensuráveis](/images/blog/spin-cases-sucesso-overview.png)
+![3 casos de sucesso SPIN Selling: Growth Machine, IBM, Cliente Sirius CRM - resultados mensuráveis](/images/blog/spin-cases-sucesso-overview.svg)
 *Alt text: Cases sucesso SPIN Selling Brasil - Growth Machine IBM Sirius CRM resultados conversão vendas B2B*
 
 ---
@@ -1210,7 +1210,7 @@ Veja exemplos reais de empresas que transformaram vendas com SPIN:
 A Sirius CRM foi desenhada para **potencializar** metodologias consultivas como SPIN Selling:
 
 <!-- IMAGE: Sirius CRM + SPIN -->
-![Interface Sirius CRM mostrando template SPIN Selling integrado com campos customizados](/images/blog/sirius-crm-spin-integration.png)
+![Interface Sirius CRM mostrando template SPIN Selling integrado com campos customizados](/images/blog/sirius-crm-spin-integration.svg)
 *Alt text: Sirius CRM integração SPIN Selling template discovery campos customizados automação vendas B2B*
 
 ---
@@ -1597,7 +1597,7 @@ Precisa de ajuda para implementar SPIN na sua equipe?
 Se você chegou até aqui, parabéns! Você agora tem **todo o conhecimento** necessário para transformar seu processo de vendas com SPIN Selling.
 
 <!-- IMAGE: CTA Final -->
-![CTA final - Comece a aplicar SPIN Selling hoje com recursos gratuitos Sirius CRM](/images/blog/spin-cta-final.png)
+![CTA final - Comece a aplicar SPIN Selling hoje com recursos gratuitos Sirius CRM](/images/blog/spin-cta-final.svg)
 *Alt text: Comece SPIN Selling hoje CTA - recursos gratuitos template checklist calculadora ROI Sirius CRM*
 
 ### **📊 Recapitulando os Benefícios:**
