@@ -4093,4 +4093,4 @@ Se este guia foi útil para você, compartilhe com sua rede e ajude outros profi
     image: '/images/blog/spin-selling-hero-v2.svg',
     author: 'Equipe Sirius CRM'
   }
-]]
+]
