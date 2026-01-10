@@ -1,0 +1,84 @@
+
+<svg width="1200" height="900" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="900" fill="#fef2f2"/>
+
+  <text x="600" y="60" font-family="Arial, sans-serif" font-size="42" font-weight="bold" fill="#dc2626" text-anchor="middle">
+    7 Erros Fatais ao Aplicar SPIN
+  </text>
+
+  <g transform="translate(100, 120)">
+    <circle cx="40" cy="40" r="35" fill="#ef4444"/>
+    <text x="40" y="52" font-family="Arial, sans-serif" font-size="28" font-weight="bold" fill="white" text-anchor="middle">1</text>
+    <text x="100" y="50" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="#991b1b">
+      Interrogatório sem Rapport
+    </text>
+  </g>
+
+  <g transform="translate(100, 230)">
+    <circle cx="40" cy="40" r="35" fill="#ef4444"/>
+    <text x="40" y="52" font-family="Arial, sans-serif" font-size="28" font-weight="bold" fill="white" text-anchor="middle">2</text>
+    <text x="100" y="50" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="#991b1b">
+      Excesso de Perguntas de Situação
+    </text>
+  </g>
+
+  <g transform="translate(100, 340)">
+    <circle cx="40" cy="40" r="35" fill="#ef4444"/>
+    <text x="40" y="52" font-family="Arial, sans-serif" font-size="28" font-weight="bold" fill="white" text-anchor="middle">3</text>
+    <text x="100" y="50" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="#991b1b">
+      Parar no Primeiro Problema
+    </text>
+  </g>
+
+  <g transform="translate(100, 450)">
+    <circle cx="40" cy="40" r="35" fill="#ef4444"/>
+    <text x="40" y="52" font-family="Arial, sans-serif" font-size="28" font-weight="bold" fill="white" text-anchor="middle">4</text>
+    <text x="100" y="50" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="#991b1b">
+      Não Quantificar o Problema
+    </text>
+  </g>
+
+  <g transform="translate(100, 560)">
+    <circle cx="40" cy="40" r="35" fill="#ef4444"/>
+    <text x="40" y="52" font-family="Arial, sans-serif" font-size="28" font-weight="bold" fill="white" text-anchor="middle">5</text>
+    <text x="100" y="50" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="#991b1b">
+      Fazer SPIN como Checklist Rígido
+    </text>
+  </g>
+
+  <g transform="translate(100, 670)">
+    <circle cx="40" cy="40" r="35" fill="#ef4444"/>
+    <text x="40" y="52" font-family="Arial, sans-serif" font-size="28" font-weight="bold" fill="white" text-anchor="middle">6</text>
+    <text x="100" y="50" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="#991b1b">
+      Implicação Muito Cedo ou Muito Tarde
+    </text>
+  </g>
+
+  <g transform="translate(100, 780)">
+    <circle cx="40" cy="40" r="35" fill="#ef4444"/>
+    <text x="40" y="52" font-family="Arial, sans-serif" font-size="28" font-weight="bold" fill="white" text-anchor="middle">7</text>
+    <text x="100" y="50" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="#991b1b">
+      Pular Perguntas de Necessidade
+    </text>
+  </g>
+
+  <rect x="650" y="300" width="480" height="400" fill="white" rx="15" stroke="#dc2626" stroke-width="4"/>
+  <text x="890" y="360" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="#991b1b" text-anchor="middle">
+    ⚠️ Evite esses erros!
+  </text>
+  <text x="890" y="420" font-family="Arial, sans-serif" font-size="18" fill="#7f1d1d" text-anchor="middle">
+    • Pratique com gravações
+  </text>
+  <text x="890" y="460" font-family="Arial, sans-serif" font-size="18" fill="#7f1d1d" text-anchor="middle">
+    • Peça feedback do gestor
+  </text>
+  <text x="890" y="500" font-family="Arial, sans-serif" font-size="18" fill="#7f1d1d" text-anchor="middle">
+    • Use checklist pós-call
+  </text>
+  <text x="890" y="540" font-family="Arial, sans-serif" font-size="18" fill="#7f1d1d" text-anchor="middle">
+    • Role-play semanal
+  </text>
+  <text x="890" y="620" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#10b981" text-anchor="middle">
+    ✅ Masterclass em 4-6 semanas
+  </text>
+</svg>

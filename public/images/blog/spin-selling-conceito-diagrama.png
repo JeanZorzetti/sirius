@@ -1,0 +1,113 @@
+
+<svg width="1000" height="700" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1000" height="700" fill="#f8fafc"/>
+
+  <text x="500" y="50" font-family="Arial, sans-serif" font-size="36" font-weight="bold" fill="#1e293b" text-anchor="middle">
+    Como Funciona o SPIN Selling
+  </text>
+
+  <!-- 4 Quadrantes -->
+  <!-- Situação (Top Left) -->
+  <g>
+    <rect x="50" y="100" width="420" height="250" fill="#dbeafe" rx="12" stroke="#3b82f6" stroke-width="3"/>
+    <text x="260" y="140" font-family="Arial, sans-serif" font-size="28" font-weight="bold" fill="#1e40af" text-anchor="middle">
+      1. SITUAÇÃO
+    </text>
+    <text x="260" y="180" font-family="Arial, sans-serif" font-size="16" fill="#1e40af" text-anchor="middle">
+      Entenda o contexto atual
+    </text>
+    <text x="80" y="220" font-family="Arial, sans-serif" font-size="14" fill="#334155">
+      • Qual CRM vocês usam?
+    </text>
+    <text x="80" y="250" font-family="Arial, sans-serif" font-size="14" fill="#334155">
+      • Quantos vendedores no time?
+    </text>
+    <text x="80" y="280" font-family="Arial, sans-serif" font-size="14" fill="#334155">
+      • Como funciona o processo hoje?
+    </text>
+    <text x="80" y="320" font-family="Arial, sans-serif" font-size="13" fill="#64748b" font-style="italic">
+      Meta: 3-5 perguntas (5-10 min)
+    </text>
+  </g>
+
+  <!-- Problema (Top Right) -->
+  <g>
+    <rect x="530" y="100" width="420" height="250" fill="#fee2e2" rx="12" stroke="#ef4444" stroke-width="3"/>
+    <text x="740" y="140" font-family="Arial, sans-serif" font-size="28" font-weight="bold" fill="#991b1b" text-anchor="middle">
+      2. PROBLEMA
+    </text>
+    <text x="740" y="180" font-family="Arial, sans-serif" font-size="16" fill="#991b1b" text-anchor="middle">
+      Identifique dificuldades/dores
+    </text>
+    <text x="560" y="220" font-family="Arial, sans-serif" font-size="14" fill="#334155">
+      • O que não funciona bem?
+    </text>
+    <text x="560" y="250" font-family="Arial, sans-serif" font-size="14" fill="#334155">
+      • Quais as maiores dificuldades?
+    </text>
+    <text x="560" y="280" font-family="Arial, sans-serif" font-size="14" fill="#334155">
+      • Com que frequência isso ocorre?
+    </text>
+    <text x="560" y="320" font-family="Arial, sans-serif" font-size="13" fill="#64748b" font-style="italic">
+      Meta: 6-10 perguntas (15-20 min)
+    </text>
+  </g>
+
+  <!-- Implicação (Bottom Left) -->
+  <g>
+    <rect x="50" y="400" width="420" height="250" fill="#fef3c7" rx="12" stroke="#f59e0b" stroke-width="3"/>
+    <text x="260" y="440" font-family="Arial, sans-serif" font-size="28" font-weight="bold" fill="#78350f" text-anchor="middle">
+      3. IMPLICAÇÃO
+    </text>
+    <text x="260" y="480" font-family="Arial, sans-serif" font-size="16" fill="#78350f" text-anchor="middle">
+      Explore consequências e custos
+    </text>
+    <text x="80" y="520" font-family="Arial, sans-serif" font-size="14" fill="#334155">
+      • Qual o impacto na receita?
+    </text>
+    <text x="80" y="550" font-family="Arial, sans-serif" font-size="14" fill="#334155">
+      • Como afeta a produtividade?
+    </text>
+    <text x="80" y="580" font-family="Arial, sans-serif" font-size="14" fill="#334155">
+      • O que acontece se não resolver?
+    </text>
+    <text x="80" y="620" font-family="Arial, sans-serif" font-size="13" fill="#64748b" font-style="italic">
+      Meta: 4-6 perguntas (10-15 min)
+    </text>
+  </g>
+
+  <!-- Necessidade (Bottom Right) -->
+  <g>
+    <rect x="530" y="400" width="420" height="250" fill="#d1fae5" rx="12" stroke="#10b981" stroke-width="3"/>
+    <text x="740" y="440" font-family="Arial, sans-serif" font-size="28" font-weight="bold" fill="#064e3b" text-anchor="middle">
+      4. NECESSIDADE
+    </text>
+    <text x="740" y="480" font-family="Arial, sans-serif" font-size="16" fill="#064e3b" text-anchor="middle">
+      Cliente articula a solução
+    </text>
+    <text x="560" y="520" font-family="Arial, sans-serif" font-size="14" fill="#334155">
+      • Se tivesse X, como mudaria?
+    </text>
+    <text x="560" y="550" font-family="Arial, sans-serif" font-size="14" fill="#334155">
+      • O que seria ideal para você?
+    </text>
+    <text x="560" y="580" font-family="Arial, sans-serif" font-size="14" fill="#334155">
+      • Quanto isso vale para seu time?
+    </text>
+    <text x="560" y="620" font-family="Arial, sans-serif" font-size="13" fill="#64748b" font-style="italic">
+      Meta: 3-5 perguntas (8-12 min)
+    </text>
+  </g>
+
+  <!-- Arrows -->
+  <path d="M 470 225 L 530 225" stroke="#334155" stroke-width="3" fill="none" marker-end="url(#arrowhead)"/>
+  <path d="M 260 350 L 260 400" stroke="#334155" stroke-width="3" fill="none" marker-end="url(#arrowhead)"/>
+  <path d="M 740 350 L 740 400" stroke="#334155" stroke-width="3" fill="none" marker-end="url(#arrowhead)"/>
+  <path d="M 470 525 L 530 525" stroke="#334155" stroke-width="3" fill="none" marker-end="url(#arrowhead)"/>
+
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <polygon points="0 0, 10 3, 0 6" fill="#334155" />
+    </marker>
+  </defs>
+</svg>

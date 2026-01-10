@@ -1,0 +1,127 @@
+
+<svg width="1200" height="800" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="grad3" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#f0f9ff;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#e0f2fe;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+
+  <rect width="1200" height="800" fill="url(#grad3)"/>
+
+  <text x="600" y="60" font-family="Arial, sans-serif" font-size="40" font-weight="bold" fill="#1e40af" text-anchor="middle">
+    Fluxograma SPIN Selling (45 minutos)
+  </text>
+
+  <!-- Etapa 1: Situação -->
+  <g>
+    <rect x="100" y="130" width="280" height="140" fill="#3b82f6" rx="12" stroke="#1e40af" stroke-width="3"/>
+    <text x="240" y="170" font-family="Arial, sans-serif" font-size="28" font-weight="bold" fill="white" text-anchor="middle">
+      1. SITUAÇÃO
+    </text>
+    <text x="240" y="205" font-family="Arial, sans-serif" font-size="16" fill="#dbeafe" text-anchor="middle">
+      Contexto & Background
+    </text>
+    <text x="240" y="240" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="white" text-anchor="middle">
+      ⏱ 5-10 minutos
+    </text>
+  </g>
+
+  <path d="M 380 200 L 450 200" stroke="#1e40af" stroke-width="4" fill="none" marker-end="url(#arrow3)"/>
+
+  <!-- Etapa 2: Problema -->
+  <g>
+    <rect x="450" y="130" width="280" height="140" fill="#ef4444" rx="12" stroke="#991b1b" stroke-width="3"/>
+    <text x="590" y="170" font-family="Arial, sans-serif" font-size="28" font-weight="bold" fill="white" text-anchor="middle">
+      2. PROBLEMA
+    </text>
+    <text x="590" y="205" font-family="Arial, sans-serif" font-size="16" fill="#fee2e2" text-anchor="middle">
+      Dificuldades & Dores
+    </text>
+    <text x="590" y="240" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="white" text-anchor="middle">
+      ⏱ 15-20 minutos
+    </text>
+  </g>
+
+  <path d="M 730 200 L 800 200" stroke="#991b1b" stroke-width="4" fill="none" marker-end="url(#arrow3)"/>
+
+  <!-- Etapa 3: Implicação -->
+  <g>
+    <rect x="800" y="130" width="280" height="140" fill="#f59e0b" rx="12" stroke="#78350f" stroke-width="3"/>
+    <text x="940" y="170" font-family="Arial, sans-serif" font-size="28" font-weight="bold" fill="white" text-anchor="middle">
+      3. IMPLICAÇÃO
+    </text>
+    <text x="940" y="205" font-family="Arial, sans-serif" font-size="16" fill="#fef3c7" text-anchor="middle">
+      Consequências & Custos
+    </text>
+    <text x="940" y="240" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="white" text-anchor="middle">
+      ⏱ 10-15 minutos
+    </text>
+  </g>
+
+  <path d="M 940 270 L 940 340" stroke="#78350f" stroke-width="4" fill="none" marker-end="url(#arrow3)"/>
+
+  <!-- Etapa 4: Necessidade -->
+  <g>
+    <rect x="800" y="340" width="280" height="140" fill="#10b981" rx="12" stroke="#064e3b" stroke-width="3"/>
+    <text x="940" y="380" font-family="Arial, sans-serif" font-size="28" font-weight="bold" fill="white" text-anchor="middle">
+      4. NECESSIDADE
+    </text>
+    <text x="940" y="415" font-family="Arial, sans-serif" font-size="16" fill="#d1fae5" text-anchor="middle">
+      Solução Ideal
+    </text>
+    <text x="940" y="450" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="white" text-anchor="middle">
+      ⏱ 8-12 minutos
+    </text>
+  </g>
+
+  <!-- Decision Boxes -->
+  <g>
+    <rect x="100" y="340" width="280" height="140" fill="#ffffff" rx="12" stroke="#64748b" stroke-width="2" stroke-dasharray="5,5"/>
+    <text x="240" y="380" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#334155" text-anchor="middle">
+      Checkpoint 1:
+    </text>
+    <text x="240" y="410" font-family="Arial, sans-serif" font-size="16" fill="#64748b" text-anchor="middle">
+      Cliente reconhece
+    </text>
+    <text x="240" y="435" font-family="Arial, sans-serif" font-size="16" fill="#64748b" text-anchor="middle">
+      o problema?
+    </text>
+  </g>
+
+  <g>
+    <rect x="450" y="340" width="280" height="140" fill="#ffffff" rx="12" stroke="#64748b" stroke-width="2" stroke-dasharray="5,5"/>
+    <text x="590" y="380" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#334155" text-anchor="middle">
+      Checkpoint 2:
+    </text>
+    <text x="590" y="410" font-family="Arial, sans-serif" font-size="16" fill="#64748b" text-anchor="middle">
+      Cliente entende
+    </text>
+    <text x="590" y="435" font-family="Arial, sans-serif" font-size="16" fill="#64748b" text-anchor="middle">
+      o custo/urgência?
+    </text>
+  </g>
+
+  <!-- Result -->
+  <g>
+    <rect x="300" y="550" width="600" height="180" fill="#10b981" rx="15" stroke="#064e3b" stroke-width="4"/>
+    <text x="600" y="600" font-family="Arial, sans-serif" font-size="32" font-weight="bold" fill="white" text-anchor="middle">
+      ✅ RESULTADO
+    </text>
+    <text x="600" y="640" font-family="Arial, sans-serif" font-size="20" fill="#d1fae5" text-anchor="middle">
+      Cliente articula necessidade de solução
+    </text>
+    <text x="600" y="675" font-family="Arial, sans-serif" font-size="20" fill="#d1fae5" text-anchor="middle">
+      e está pronto para ouvir proposta
+    </text>
+    <text x="600" y="710" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="white" text-anchor="middle">
+      Próximo passo: Apresentação/Demo personalizada
+    </text>
+  </g>
+
+  <defs>
+    <marker id="arrow3" markerWidth="12" markerHeight="12" refX="10" refY="4" orient="auto">
+      <polygon points="0 0, 12 4, 0 8" fill="#1e40af" />
+    </marker>
+  </defs>
+</svg>

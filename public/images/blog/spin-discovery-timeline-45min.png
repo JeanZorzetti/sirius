@@ -1,0 +1,66 @@
+
+<svg width="1200" height="400" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="400" fill="#f1f5f9"/>
+
+  <text x="600" y="40" font-family="Arial, sans-serif" font-size="32" font-weight="bold" fill="#1e293b" text-anchor="middle">
+    Timeline Discovery Meeting - 45 minutos
+  </text>
+
+  <!-- Timeline Bar -->
+  <rect x="100" y="100" width="1000" height="80" fill="white" rx="8" stroke="#cbd5e1" stroke-width="2"/>
+
+  <!-- Situação -->
+  <rect x="100" y="100" width="200" height="80" fill="#3b82f6" rx="8"/>
+  <text x="200" y="135" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="white" text-anchor="middle">
+    SITUAÇÃO
+  </text>
+  <text x="200" y="160" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="white" text-anchor="middle">
+    5-10 min
+  </text>
+
+  <!-- Problema -->
+  <rect x="300" y="100" width="400" height="80" fill="#ef4444"/>
+  <text x="500" y="135" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="white" text-anchor="middle">
+    PROBLEMA
+  </text>
+  <text x="500" y="160" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="white" text-anchor="middle">
+    15-20 min
+  </text>
+
+  <!-- Implicação -->
+  <rect x="700" y="100" width="250" height="80" fill="#f59e0b"/>
+  <text x="825" y="135" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="white" text-anchor="middle">
+    IMPLICAÇÃO
+  </text>
+  <text x="825" y="160" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="white" text-anchor="middle">
+    10-15 min
+  </text>
+
+  <!-- Necessidade -->
+  <rect x="950" y="100" width="150" height="80" fill="#10b981" rx="8"/>
+  <text x="1025" y="130" font-family="Arial, sans-serif" font-size="15" font-weight="bold" fill="white" text-anchor="middle">
+    NECESSIDADE
+  </text>
+  <text x="1025" y="160" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="white" text-anchor="middle">
+    8-12 min
+  </text>
+
+  <!-- Time markers -->
+  <text x="100" y="220" font-family="Arial, sans-serif" font-size="14" fill="#64748b">0 min</text>
+  <text x="300" y="220" font-family="Arial, sans-serif" font-size="14" fill="#64748b">10 min</text>
+  <text x="500" y="220" font-family="Arial, sans-serif" font-size="14" fill="#64748b">20 min</text>
+  <text x="700" y="220" font-family="Arial, sans-serif" font-size="14" fill="#64748b">30 min</text>
+  <text x="950" y="220" font-family="Arial, sans-serif" font-size="14" fill="#64748b">40 min</text>
+  <text x="1060" y="220" font-family="Arial, sans-serif" font-size="14" fill="#64748b">45 min</text>
+
+  <!-- Legend -->
+  <g transform="translate(100, 280)">
+    <text x="0" y="20" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#1e293b">
+      💡 Dica: Invista mais tempo em PROBLEMA (explorar dores) do que em SITUAÇÃO (dados superficiais)
+    </text>
+  </g>
+
+  <text x="600" y="360" font-family="Arial, sans-serif" font-size="16" fill="#64748b" text-anchor="middle">
+    ⚠️ Evite ultrapassar 50 minutos - mantenha o ritmo e foco
+  </text>
+</svg>

@@ -1,0 +1,31 @@
+
+<svg width="800" height="500" xmlns="http://www.w3.org/2000/svg">
+  <rect width="800" height="500" fill="#fef2f2"/>
+
+  <text x="400" y="60" font-family="Arial, sans-serif" font-size="32" font-weight="bold" fill="#991b1b" text-anchor="middle">
+    Custo de um Discovery Fraco
+  </text>
+
+  <!-- Calculator Display -->
+  <rect x="150" y="120" width="500" height="280" fill="white" rx="15" stroke="#dc2626" stroke-width="3"/>
+
+  <!-- Calculation -->
+  <text x="400" y="170" font-family="Arial, sans-serif" font-size="20" fill="#7f1d1d" text-anchor="middle">
+    100 SQLs/mês × 20% perdidos × R$ 5.000 × 12 meses
+  </text>
+
+  <line x1="200" y1="190" x2="600" y2="190" stroke="#dc2626" stroke-width="2"/>
+
+  <!-- Result -->
+  <text x="400" y="280" font-family="Arial, sans-serif" font-size="56" font-weight="bold" fill="#dc2626" text-anchor="middle">
+    R$ 1.200.000
+  </text>
+
+  <text x="400" y="330" font-family="Arial, sans-serif" font-size="24" fill="#991b1b" text-anchor="middle">
+    perdidos por ano
+  </text>
+
+  <text x="400" y="460" font-family="Arial, sans-serif" font-size="18" fill="#7f1d1d" text-anchor="middle">
+    Fonte: Análise Sirius CRM baseada em dados de 500+ empresas B2B
+  </text>
+</svg>

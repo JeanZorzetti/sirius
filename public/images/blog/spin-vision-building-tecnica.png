@@ -1,0 +1,66 @@
+
+<svg width="1000" height="700" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="grad4" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#d1fae5;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#a7f3d0;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+
+  <rect width="1000" height="700" fill="url(#grad4)"/>
+
+  <text x="500" y="60" font-family="Arial, sans-serif" font-size="38" font-weight="bold" fill="#064e3b" text-anchor="middle">
+    Vision Building Technique
+  </text>
+
+  <text x="500" y="100" font-family="Arial, sans-serif" font-size="20" fill="#065f46" text-anchor="middle">
+    Fazer o cliente co-criar a solução ideal
+  </text>
+
+  <!-- Question 1 -->
+  <g transform="translate(100, 150)">
+    <rect width="800" height="120" fill="white" rx="10" stroke="#10b981" stroke-width="3"/>
+    <text x="30" y="40" font-family="Arial, sans-serif" font-size="22" font-weight="bold" fill="#10b981">❓</text>
+    <text x="80" y="40" font-family="Arial, sans-serif" font-size="20" fill="#1e293b">
+      "Se você tivesse uma varinha mágica e pudesse criar
+    </text>
+    <text x="80" y="70" font-family="Arial, sans-serif" font-size="20" fill="#1e293b">
+      o CRM perfeito, como ele seria?"
+    </text>
+    <text x="80" y="100" font-family="Arial, sans-serif" font-size="15" fill="#10b981" font-style="italic">
+      → Cliente descreve solução ideal
+    </text>
+  </g>
+
+  <!-- Question 2 -->
+  <g transform="translate(100, 300)">
+    <rect width="800" height="120" fill="white" rx="10" stroke="#10b981" stroke-width="3"/>
+    <text x="30" y="40" font-family="Arial, sans-serif" font-size="22" font-weight="bold" fill="#10b981">❓</text>
+    <text x="80" y="40" font-family="Arial, sans-serif" font-size="20" fill="#1e293b">
+      "O que você poderia fazer com isso que não
+    </text>
+    <text x="80" y="70" font-family="Arial, sans-serif" font-size="20" fill="#1e293b">
+      consegue fazer hoje?"
+    </text>
+    <text x="80" y="100" font-family="Arial, sans-serif" font-size="15" fill="#10b981" font-style="italic">
+      → Cliente visualiza benefícios concretos
+    </text>
+  </g>
+
+  <!-- Question 3 -->
+  <g transform="translate(100, 450)">
+    <rect width="800" height="120" fill="white" rx="10" stroke="#10b981" stroke-width="3"/>
+    <text x="30" y="40" font-family="Arial, sans-serif" font-size="22" font-weight="bold" fill="#10b981">❓</text>
+    <text x="80" y="40" font-family="Arial, sans-serif" font-size="20" fill="#1e293b">
+      "Quanto isso valeria para você e seu time?"
+    </text>
+    <text x="80" y="80" font-family="Arial, sans-serif" font-size="15" fill="#10b981" font-style="italic">
+      → Cliente quantifica valor da solução
+    </text>
+  </g>
+
+  <rect x="200" y="610" width="600" height="60" fill="#10b981" rx="8"/>
+  <text x="500" y="648" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="white" text-anchor="middle">
+    ✅ Resultado: Cliente "compra" antes de você vender
+  </text>
+</svg>

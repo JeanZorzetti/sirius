@@ -1,0 +1,104 @@
+
+<svg width="1200" height="800" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="800" fill="#f0f9ff"/>
+
+  <text x="600" y="60" font-family="Arial, sans-serif" font-size="40" font-weight="bold" fill="#1e40af" text-anchor="middle">
+    Banco de Perguntas SPIN por Setor
+  </text>
+
+  <!-- B2B SaaS -->
+  <g transform="translate(50, 120)">
+    <rect width="540" height="280" fill="white" rx="12" stroke="#3b82f6" stroke-width="3"/>
+    <rect width="540" height="60" fill="#3b82f6" rx="12"/>
+    <text x="270" y="40" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="white" text-anchor="middle">
+      💻 B2B SaaS / CRM
+    </text>
+    <text x="30" y="100" font-family="Arial, sans-serif" font-size="16" fill="#334155">
+      S: Qual stack de vendas usam hoje?
+    </text>
+    <text x="30" y="135" font-family="Arial, sans-serif" font-size="16" fill="#334155">
+      P: Dados se perdem entre ferramentas?
+    </text>
+    <text x="30" y="170" font-family="Arial, sans-serif" font-size="16" fill="#334155">
+      I: Impacto na previsibilidade de receita?
+    </text>
+    <text x="30" y="205" font-family="Arial, sans-serif" font-size="16" fill="#334155">
+      N: Como seria visibilidade 360°?
+    </text>
+    <text x="270" y="250" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#2563eb" text-anchor="middle">
+      25 perguntas disponíveis
+    </text>
+  </g>
+
+  <!-- E-commerce -->
+  <g transform="translate(610, 120)">
+    <rect width="540" height="280" fill="white" rx="12" stroke="#10b981" stroke-width="3"/>
+    <rect width="540" height="60" fill="#10b981" rx="12"/>
+    <text x="270" y="40" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="white" text-anchor="middle">
+      🛒 E-commerce
+    </text>
+    <text x="30" y="100" font-family="Arial, sans-serif" font-size="16" fill="#334155">
+      S: Quantos canais de venda ativos?
+    </text>
+    <text x="30" y="135" font-family="Arial, sans-serif" font-size="16" fill="#334155">
+      P: Taxa de abandono de carrinho?
+    </text>
+    <text x="30" y="170" font-family="Arial, sans-serif" font-size="16" fill="#334155">
+      I: Receita perdida por mês?
+    </text>
+    <text x="30" y="205" font-family="Arial, sans-serif" font-size="16" fill="#334155">
+      N: Como seria checkout ideal?
+    </text>
+    <text x="270" y="250" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#10b981" text-anchor="middle">
+      20 perguntas disponíveis
+    </text>
+  </g>
+
+  <!-- Consultoria -->
+  <g transform="translate(50, 440)">
+    <rect width="540" height="280" fill="white" rx="12" stroke="#f59e0b" stroke-width="3"/>
+    <rect width="540" height="60" fill="#f59e0b" rx="12"/>
+    <text x="270" y="40" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="white" text-anchor="middle">
+      📊 Consultoria
+    </text>
+    <text x="30" y="100" font-family="Arial, sans-serif" font-size="16" fill="#334155">
+      S: Método de gestão de projetos?
+    </text>
+    <text x="30" y="135" font-family="Arial, sans-serif" font-size="16" fill="#334155">
+      P: Clientes reclamam de atrasos?
+    </text>
+    <text x="30" y="170" font-family="Arial, sans-serif" font-size="16" fill="#334155">
+      I: Impacto na renovação de contratos?
+    </text>
+    <text x="30" y="205" font-family="Arial, sans-serif" font-size="16" fill="#334155">
+      N: Como seria previsibilidade total?
+    </text>
+    <text x="270" y="250" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#f59e0b" text-anchor="middle">
+      30 perguntas disponíveis
+    </text>
+  </g>
+
+  <!-- Imobiliário -->
+  <g transform="translate(610, 440)">
+    <rect width="540" height="280" fill="white" rx="12" stroke="#8b5cf6" stroke-width="3"/>
+    <rect width="540" height="60" fill="#8b5cf6" rx="12"/>
+    <text x="270" y="40" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="white" text-anchor="middle">
+      🏢 Imobiliário
+    </text>
+    <text x="30" y="100" font-family="Arial, sans-serif" font-size="16" fill="#334155">
+      S: Quantos corretores na equipe?
+    </text>
+    <text x="30" y="135" font-family="Arial, sans-serif" font-size="16" fill="#334155">
+      P: Leads se perdem sem follow-up?
+    </text>
+    <text x="30" y="170" font-family="Arial, sans-serif" font-size="16" fill="#334155">
+      I: Vendas perdidas por desorganização?
+    </text>
+    <text x="30" y="205" font-family="Arial, sans-serif" font-size="16" fill="#334155">
+      N: Como seria gestão centralizada?
+    </text>
+    <text x="270" y="250" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#8b5cf6" text-anchor="middle">
+      25 perguntas disponíveis
+    </text>
+  </g>
+</svg>

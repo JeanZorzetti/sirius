@@ -1,0 +1,39 @@
+
+<svg width="900" height="600" xmlns="http://www.w3.org/2000/svg">
+  <rect width="900" height="600" fill="#fef3c7"/>
+
+  <text x="450" y="60" font-family="Arial, sans-serif" font-size="34" font-weight="bold" fill="#78350f" text-anchor="middle">
+    Fórmula de Cálculo da Implicação
+  </text>
+
+  <g transform="translate(150, 150)">
+    <rect width="600" height="300" fill="white" rx="12" stroke="#f59e0b" stroke-width="4"/>
+
+    <text x="300" y="60" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="#92400e" text-anchor="middle">
+      Frequência × Impacto × Tempo = Custo Total
+    </text>
+
+    <line x1="50" y1="90" x2="550" y2="90" stroke="#f59e0b" stroke-width="2"/>
+
+    <text x="50" y="130" font-family="Arial, sans-serif" font-size="18" fill="#78350f">
+      • <tspan font-weight="bold">Frequência:</tspan> "Quantas vezes por semana/mês?"
+    </text>
+
+    <text x="50" y="170" font-family="Arial, sans-serif" font-size="18" fill="#78350f">
+      • <tspan font-weight="bold">Impacto:</tspan> "Quanto tempo perde por ocorrência?"
+    </text>
+
+    <text x="50" y="210" font-family="Arial, sans-serif" font-size="18" fill="#78350f">
+      • <tspan font-weight="bold">Tempo:</tspan> "Há quanto tempo isso acontece?"
+    </text>
+
+    <rect x="50" y="230" width="500" height="50" fill="#fed7aa" rx="6"/>
+    <text x="300" y="262" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#9a3412" text-anchor="middle">
+      Exemplo: 3x/sem × 2h × 52sem = 312 horas/ano perdidas
+    </text>
+  </g>
+
+  <text x="450" y="520" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#78350f" text-anchor="middle">
+    💡 Sempre quantifique o problema em termos de tempo e dinheiro
+  </text>
+</svg>

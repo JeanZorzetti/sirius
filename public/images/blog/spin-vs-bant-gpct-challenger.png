@@ -1,0 +1,110 @@
+
+<svg width="1200" height="700" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="700" fill="#ffffff"/>
+
+  <text x="600" y="50" font-family="Arial, sans-serif" font-size="36" font-weight="bold" fill="#1e293b" text-anchor="middle">
+    Comparativo: SPIN vs Outras Metodologias
+  </text>
+
+  <!-- Header Row -->
+  <rect x="50" y="100" width="250" height="60" fill="#1e40af" />
+  <rect x="300" y="100" width="225" height="60" fill="#3b82f6" />
+  <rect x="525" y="100" width="225" height="60" fill="#3b82f6" />
+  <rect x="750" y="100" width="225" height="60" fill="#3b82f6" />
+  <rect x="975" y="100" width="175" height="60" fill="#3b82f6" />
+
+  <text x="175" y="140" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="white" text-anchor="middle">Critério</text>
+  <text x="412" y="140" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="white" text-anchor="middle">SPIN</text>
+  <text x="637" y="140" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="white" text-anchor="middle">BANT</text>
+  <text x="862" y="140" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="white" text-anchor="middle">GPCT</text>
+  <text x="1062" y="140" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="white" text-anchor="middle">Challenger</text>
+
+  <!-- Row 1: Foco -->
+  <rect x="50" y="160" width="250" height="80" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="1"/>
+  <rect x="300" y="160" width="225" height="80" fill="white" stroke="#cbd5e1" stroke-width="1"/>
+  <rect x="525" y="160" width="225" height="80" fill="white" stroke="#cbd5e1" stroke-width="1"/>
+  <rect x="750" y="160" width="225" height="80" fill="white" stroke="#cbd5e1" stroke-width="1"/>
+  <rect x="975" y="160" width="175" height="80" fill="white" stroke="#cbd5e1" stroke-width="1"/>
+
+  <text x="175" y="205" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#334155" text-anchor="middle">Foco</text>
+  <text x="412" y="195" font-family="Arial, sans-serif" font-size="14" fill="#334155" text-anchor="middle">Discovery</text>
+  <text x="412" y="215" font-family="Arial, sans-serif" font-size="14" fill="#334155" text-anchor="middle">profundo</text>
+  <text x="637" y="195" font-family="Arial, sans-serif" font-size="14" fill="#334155" text-anchor="middle">Qualificação</text>
+  <text x="637" y="215" font-family="Arial, sans-serif" font-size="14" fill="#334155" text-anchor="middle">rápida</text>
+  <text x="862" y="195" font-family="Arial, sans-serif" font-size="14" fill="#334155" text-anchor="middle">Goals +</text>
+  <text x="862" y="215" font-family="Arial, sans-serif" font-size="14" fill="#334155" text-anchor="middle">Timeline</text>
+  <text x="1062" y="195" font-family="Arial, sans-serif" font-size="14" fill="#334155" text-anchor="middle">Ensinar</text>
+  <text x="1062" y="215" font-family="Arial, sans-serif" font-size="14" fill="#334155" text-anchor="middle">cliente</text>
+
+  <!-- Row 2: Duração -->
+  <rect x="50" y="240" width="250" height="80" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="1"/>
+  <rect x="300" y="240" width="225" height="80" fill="white" stroke="#cbd5e1" stroke-width="1"/>
+  <rect x="525" y="240" width="225" height="80" fill="white" stroke="#cbd5e1" stroke-width="1"/>
+  <rect x="750" y="240" width="225" height="80" fill="white" stroke="#cbd5e1" stroke-width="1"/>
+  <rect x="975" y="240" width="175" height="80" fill="white" stroke="#cbd5e1" stroke-width="1"/>
+
+  <text x="175" y="285" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#334155" text-anchor="middle">Duração</text>
+  <text x="412" y="285" font-family="Arial, sans-serif" font-size="16" fill="#334155" text-anchor="middle">40-50 min</text>
+  <text x="637" y="285" font-family="Arial, sans-serif" font-size="16" fill="#334155" text-anchor="middle">10-15 min</text>
+  <text x="862" y="285" font-family="Arial, sans-serif" font-size="16" fill="#334155" text-anchor="middle">20-30 min</text>
+  <text x="1062" y="285" font-family="Arial, sans-serif" font-size="16" fill="#334155" text-anchor="middle">30-40 min</text>
+
+  <!-- Row 3: Quando Usar -->
+  <rect x="50" y="320" width="250" height="100" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="1"/>
+  <rect x="300" y="320" width="225" height="100" fill="white" stroke="#cbd5e1" stroke-width="1"/>
+  <rect x="525" y="320" width="225" height="100" fill="white" stroke="#cbd5e1" stroke-width="1"/>
+  <rect x="750" y="320" width="225" height="100" fill="white" stroke="#cbd5e1" stroke-width="1"/>
+  <rect x="975" y="320" width="175" height="100" fill="white" stroke="#cbd5e1" stroke-width="1"/>
+
+  <text x="175" y="350" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#334155" text-anchor="middle">Quando</text>
+  <text x="175" y="375" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#334155" text-anchor="middle">Usar</text>
+
+  <text x="412" y="350" font-family="Arial, sans-serif" font-size="13" fill="#334155" text-anchor="middle">Deals</text>
+  <text x="412" y="370" font-family="Arial, sans-serif" font-size="13" fill="#334155" text-anchor="middle">complexos</text>
+  <text x="412" y="390" font-family="Arial, sans-serif" font-size="13" fill="#334155" text-anchor="middle">com múltiplos</text>
+  <text x="412" y="410" font-family="Arial, sans-serif" font-size="13" fill="#334155" text-anchor="middle">stakeholders</text>
+
+  <text x="637" y="350" font-family="Arial, sans-serif" font-size="13" fill="#334155" text-anchor="middle">Lead scoring</text>
+  <text x="637" y="370" font-family="Arial, sans-serif" font-size="13" fill="#334155" text-anchor="middle">inicial e</text>
+  <text x="637" y="390" font-family="Arial, sans-serif" font-size="13" fill="#334155" text-anchor="middle">triagem de</text>
+  <text x="637" y="410" font-family="Arial, sans-serif" font-size="13" fill="#334155" text-anchor="middle">oportunidades</text>
+
+  <text x="862" y="360" font-family="Arial, sans-serif" font-size="13" fill="#334155" text-anchor="middle">Vendas com</text>
+  <text x="862" y="380" font-family="Arial, sans-serif" font-size="13" fill="#334155" text-anchor="middle">timelines</text>
+  <text x="862" y="400" font-family="Arial, sans-serif" font-size="13" fill="#334155" text-anchor="middle">definidos</text>
+
+  <text x="1062" y="360" font-family="Arial, sans-serif" font-size="13" fill="#334155" text-anchor="middle">Cliente não</text>
+  <text x="1062" y="380" font-family="Arial, sans-serif" font-size="13" fill="#334155" text-anchor="middle">sabe que</text>
+  <text x="1062" y="400" font-family="Arial, sans-serif" font-size="13" fill="#334155" text-anchor="middle">tem problema</text>
+
+  <!-- Row 4: Taxa de Sucesso -->
+  <rect x="50" y="420" width="250" height="80" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="1"/>
+  <rect x="300" y="420" width="225" height="80" fill="#d1fae5" stroke="#cbd5e1" stroke-width="1"/>
+  <rect x="525" y="420" width="225" height="80" fill="white" stroke="#cbd5e1" stroke-width="1"/>
+  <rect x="750" y="420" width="225" height="80" fill="white" stroke="#cbd5e1" stroke-width="1"/>
+  <rect x="975" y="420" width="175" height="80" fill="white" stroke="#cbd5e1" stroke-width="1"/>
+
+  <text x="175" y="450" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#334155" text-anchor="middle">Taxa de</text>
+  <text x="175" y="475" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#334155" text-anchor="middle">Sucesso</text>
+
+  <text x="412" y="450" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="#10b981" text-anchor="middle">+53%</text>
+  <text x="412" y="475" font-family="Arial, sans-serif" font-size="13" fill="#064e3b" text-anchor="middle">conversão</text>
+
+  <text x="637" y="450" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="#334155" text-anchor="middle">+20%</text>
+  <text x="637" y="475" font-family="Arial, sans-serif" font-size="13" fill="#64748b" text-anchor="middle">qualificação</text>
+
+  <text x="862" y="450" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="#334155" text-anchor="middle">+35%</text>
+  <text x="862" y="475" font-family="Arial, sans-serif" font-size="13" fill="#64748b" text-anchor="middle">conversão</text>
+
+  <text x="1062" y="450" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="#334155" text-anchor="middle">+38%</text>
+  <text x="1062" y="475" font-family="Arial, sans-serif" font-size="13" fill="#64748b" text-anchor="middle">conversão</text>
+
+  <!-- Footer -->
+  <text x="600" y="560" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="#10b981" text-anchor="middle">
+    ✅ Recomendação: Use BANT para qualificar + SPIN para discovery
+  </text>
+
+  <text x="600" y="650" font-family="Arial, sans-serif" font-size="14" fill="#64748b" text-anchor="middle">
+    Fonte: Análise comparativa baseada em estudos de Miller Heiman Group, Gartner e CEB (agora Gartner)
+  </text>
+</svg>

@@ -1,0 +1,33 @@
+
+<svg width="900" height="600" xmlns="http://www.w3.org/2000/svg">
+  <rect width="900" height="600" fill="#dbeafe"/>
+
+  <text x="450" y="50" font-family="Arial, sans-serif" font-size="32" font-weight="bold" fill="#1e40af" text-anchor="middle">
+    Perguntas de Situação - Exemplo CRM
+  </text>
+
+  <g transform="translate(50, 120)">
+    <rect width="800" height="100" fill="white" rx="8" stroke="#3b82f6" stroke-width="2"/>
+    <text x="30" y="35" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="#2563eb">1.</text>
+    <text x="70" y="35" font-family="Arial, sans-serif" font-size="18" fill="#1e293b">Qual CRM vocês usam atualmente?</text>
+    <text x="70" y="65" font-family="Arial, sans-serif" font-size="15" fill="#64748b" font-style="italic">✅ Entende ferramenta atual</text>
+  </g>
+
+  <g transform="translate(50, 240)">
+    <rect width="800" height="100" fill="white" rx="8" stroke="#3b82f6" stroke-width="2"/>
+    <text x="30" y="35" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="#2563eb">2.</text>
+    <text x="70" y="35" font-family="Arial, sans-serif" font-size="18" fill="#1e293b">Quantos vendedores têm no time comercial?</text>
+    <text x="70" y="65" font-family="Arial, sans-serif" font-size="15" fill="#64748b" font-style="italic">✅ Dimensiona operação</text>
+  </g>
+
+  <g transform="translate(50, 360)">
+    <rect width="800" height="100" fill="white" rx="8" stroke="#3b82f6" stroke-width="2"/>
+    <text x="30" y="35" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="#2563eb">3.</text>
+    <text x="70" y="35" font-family="Arial, sans-serif" font-size="18" fill="#1e293b">Como funciona o processo de vendas hoje?</text>
+    <text x="70" y="65" font-family="Arial, sans-serif" font-size="15" fill="#64748b" font-style="italic">✅ Mapeia workflow atual</text>
+  </g>
+
+  <text x="450" y="550" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#1e40af" text-anchor="middle">
+    ⏱ Meta: 3-5 perguntas em 5-10 minutos
+  </text>
+</svg>

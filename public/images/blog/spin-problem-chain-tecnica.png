@@ -1,0 +1,57 @@
+
+<svg width="1000" height="700" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1000" height="700" fill="#fff7ed"/>
+
+  <text x="500" y="50" font-family="Arial, sans-serif" font-size="36" font-weight="bold" fill="#9a3412" text-anchor="middle">
+    Problem Chain - 3 Camadas
+  </text>
+
+  <!-- Layer 1: Surface -->
+  <g>
+    <ellipse cx="500" cy="200" rx="200" ry="80" fill="#fed7aa" stroke="#f97316" stroke-width="3"/>
+    <text x="500" y="190" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#9a3412" text-anchor="middle">
+      CAMADA 1: Superficial
+    </text>
+    <text x="500" y="215" font-family="Arial, sans-serif" font-size="16" fill="#7c2d12" text-anchor="middle">
+      "A equipe não usa o CRM"
+    </text>
+  </g>
+
+  <path d="M 500 280 L 500 320" stroke="#f97316" stroke-width="4" marker-end="url(#arrow4)"/>
+
+  <!-- Layer 2: Root Cause -->
+  <g>
+    <ellipse cx="500" cy="400" rx="250" ry="80" fill="#fdba74" stroke="#ea580c" stroke-width="3"/>
+    <text x="500" y="380" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#9a3412" text-anchor="middle">
+      CAMADA 2: Causa Raiz
+    </text>
+    <text x="500" y="405" font-family="Arial, sans-serif" font-size="16" fill="#7c2d12" text-anchor="middle">
+      "É complicado demais, trava,"
+    </text>
+    <text x="500" y="425" font-family="Arial, sans-serif" font-size="16" fill="#7c2d12" text-anchor="middle">
+      perde dados"
+    </text>
+  </g>
+
+  <path d="M 500 480 L 500 520" stroke="#ea580c" stroke-width="4" marker-end="url(#arrow4)"/>
+
+  <!-- Layer 3: Business Impact -->
+  <g>
+    <ellipse cx="500" cy="600" rx="300" ry="80" fill="#fb923c" stroke="#c2410c" stroke-width="3"/>
+    <text x="500" y="580" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#9a3412" text-anchor="middle">
+      CAMADA 3: Impacto no Negócio
+    </text>
+    <text x="500" y="605" font-family="Arial, sans-serif" font-size="16" fill="#7c2d12" text-anchor="middle">
+      "Eu perco visibilidade do pipeline e não consigo"
+    </text>
+    <text x="500" y="625" font-family="Arial, sans-serif" font-size="16" fill="#7c2d12" text-anchor="middle">
+      fazer forecast pro board"
+    </text>
+  </g>
+
+  <defs>
+    <marker id="arrow4" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <polygon points="0 0, 10 3, 0 6" fill="#f97316" />
+    </marker>
+  </defs>
+</svg>
