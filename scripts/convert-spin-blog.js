@@ -121,8 +121,8 @@ htmlContent = htmlContent.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
 // Convert italic
 htmlContent = htmlContent.replace(/\*(.+?)\*/g, '<em>$1</em>');
 
-// Convert links
-htmlContent = htmlContent.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>');
+// Convert links with modern styling
+htmlContent = htmlContent.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener" style="color: #2563eb; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 2px; transition: all 0.2s;" onmouseover="this.style.color=\'#1e40af\'; this.style.textDecorationThickness=\'2px\'" onmouseout="this.style.color=\'#2563eb\'; this.style.textDecorationThickness=\'1px\'">$1</a>');
 
 // Convert images with alt text
 htmlContent = htmlContent.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img src="$2" alt="$1" style="max-width: 100%; height: auto; margin: 2rem 0; border-radius: 0.5rem;" />');
