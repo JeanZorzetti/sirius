@@ -2125,6 +2125,8 @@ export const blogPosts: BlogPost[] = [
     author: 'Sirius Team'
   },
   {
+,
+  {
     slug: 'spin-selling-guia-completo',
     title: 'SPIN Selling: A Metodologia de Vendas que Aumenta Conversão em 53% [Guia Completo 2026]',
     excerpt: `Descubra como SPIN Selling aumenta conversão em vendas complexas B2B. Guia completo com 100+ perguntas práticas, matriz de objeções e casos reais. Template gratuito para download.`,
@@ -3128,7 +3130,12 @@ a Sirius resolve especificamente [Problema 1], [Problema 2] e [Problema 3]..."
 
 <h3><strong>❌ Erro #1: Interrogatório sem Rapport</strong></h3>
 
-<ErrorBox number="1" title="Interrogatório sem Rapport">
+<div style="background: #fef2f2; border-left: 4px solid #ef4444; padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0; box-shadow: 0 2px 4px rgba(239, 68, 68, 0.1);">
+    <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem;">
+      <span style="background: #ef4444; color: white; width: 2rem; height: 2rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.875rem;">❌</span>
+      <h4 style="font-size: 1.125rem; font-weight: 700; color: #991b1b; margin: 0;">Erro #1: Interrogatório sem Rapport</h4>
+    </div>
+    <div style="color: #7f1d1d;">
   <strong>O Problema:</strong> Começar com perguntas agressivas sem criar conexão humana.
 
 <strong>Exemplo Ruim:</strong>
@@ -3138,13 +3145,19 @@ a Sirius resolve especificamente [Problema 1], [Problema 2] e [Problema 3]..."
   "Antes de entrarmos em detalhes, deixa eu entender um pouco do contexto de vocês. Vi no LinkedIn que vocês cresceram bastante no último ano — parabéns! Como foi gerenciar esse crescimento do time comercial?"
 
 <strong>💊 Solução:</strong> Sempre comece com <strong>contextualização + elogio genuíno</strong> antes das perguntas.
-</ErrorBox>
+</div>
+  </div>
 
 <hr style="margin: 3rem 0; border: none; border-top: 1px solid #e5e7eb;" />
 
 <h3><strong>❌ Erro #2: Excesso de Perguntas de Situação</strong></h3>
 
-<ErrorBox number="2" title="Excesso de Perguntas de Situação">
+<div style="background: #fef2f2; border-left: 4px solid #ef4444; padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0; box-shadow: 0 2px 4px rgba(239, 68, 68, 0.1);">
+    <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem;">
+      <span style="background: #ef4444; color: white; width: 2rem; height: 2rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.875rem;">❌</span>
+      <h4 style="font-size: 1.125rem; font-weight: 700; color: #991b1b; margin: 0;">Erro #2: Excesso de Perguntas de Situação</h4>
+    </div>
+    <div style="color: #7f1d1d;">
   <strong>O Problema:</strong> Passar 30 minutos coletando dados que você poderia ter pesquisado no LinkedIn.
 
 <strong>Regra de Ouro:</strong> Use no máximo <strong>3-5 perguntas de situação</strong>. O resto você pesquisa antes.
@@ -3157,13 +3170,19 @@ a Sirius resolve especificamente [Problema 1], [Problema 2] e [Problema 3]..."
   - [ ] Vagas abertas (indica crescimento e dores)
 
 <strong>💊 Solução:</strong> Faça a lição de casa. Use situação apenas para confirmar/atualizar dados.
-</ErrorBox>
+</div>
+  </div>
 
 <hr style="margin: 3rem 0; border: none; border-top: 1px solid #e5e7eb;" />
 
 <h3><strong>❌ Erro #3: Parar no Primeiro Problema</strong></h3>
 
-<ErrorBox number="3" title="Parar no Primeiro Problema">
+<div style="background: #fef2f2; border-left: 4px solid #ef4444; padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0; box-shadow: 0 2px 4px rgba(239, 68, 68, 0.1);">
+    <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem;">
+      <span style="background: #ef4444; color: white; width: 2rem; height: 2rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.875rem;">❌</span>
+      <h4 style="font-size: 1.125rem; font-weight: 700; color: #991b1b; margin: 0;">Erro #3: Parar no Primeiro Problema</h4>
+    </div>
+    <div style="color: #7f1d1d;">
   <strong>O Problema:</strong> Identificar um problema superficial e partir para apresentação.
 
 <strong>Comparação Lado a Lado:</strong>
@@ -3180,13 +3199,19 @@ a Sirius resolve especificamente [Problema 1], [Problema 2] e [Problema 3]..."
   | | C: "Não consigo fazer forecast pro board." |</p>
 
 <strong>💊 Solução:</strong> Sempre faça <strong>pelo menos 3 camadas</strong> de perguntas sobre cada problema.
-</ErrorBox>
+</div>
+  </div>
 
 <hr style="margin: 3rem 0; border: none; border-top: 1px solid #e5e7eb;" />
 
 <h3><strong>❌ Erro #4: Não Quantificar o Problema</strong></h3>
 
-<ErrorBox number="4" title="Não Quantificar o Problema">
+<div style="background: #fef2f2; border-left: 4px solid #ef4444; padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0; box-shadow: 0 2px 4px rgba(239, 68, 68, 0.1);">
+    <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem;">
+      <span style="background: #ef4444; color: white; width: 2rem; height: 2rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.875rem;">❌</span>
+      <h4 style="font-size: 1.125rem; font-weight: 700; color: #991b1b; margin: 0;">Erro #4: Não Quantificar o Problema</h4>
+    </div>
+    <div style="color: #7f1d1d;">
   <strong>O Problema:</strong> Deixar o problema no nível abstrato ("é ruim", "é chato").
 
 <strong>Exemplo Ruim:</strong>
@@ -3202,13 +3227,19 @@ a Sirius resolve especificamente [Problema 1], [Problema 2] e [Problema 3]..."
   Vendedor: "Então estamos falando de R$ 15-20k/mês, ou seja, R$ 240k/ano perdidos. Correto?"
 
 <strong>💊 Solução:</strong> <strong>Sempre quantifique</strong> usando frequência × impacto × tempo.
-</ErrorBox>
+</div>
+  </div>
 
 <hr style="margin: 3rem 0; border: none; border-top: 1px solid #e5e7eb;" />
 
 <h3><strong>❌ Erro #5: Fazer SPIN como Checklist</strong></h3>
 
-<ErrorBox number="5" title="Fazer SPIN como Checklist">
+<div style="background: #fef2f2; border-left: 4px solid #ef4444; padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0; box-shadow: 0 2px 4px rgba(239, 68, 68, 0.1);">
+    <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem;">
+      <span style="background: #ef4444; color: white; width: 2rem; height: 2rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.875rem;">❌</span>
+      <h4 style="font-size: 1.125rem; font-weight: 700; color: #991b1b; margin: 0;">Erro #5: Fazer SPIN como Checklist</h4>
+    </div>
+    <div style="color: #7f1d1d;">
   <strong>O Problema:</strong> Seguir rigidamente S→P→I→N sem adaptar ao fluxo da conversa.
 
 <strong>Como Deve Ser:</strong> SPIN é um <strong>framework, não script</strong>. A conversa deve fluir naturalmente.
@@ -3229,13 +3260,19 @@ a Sirius resolve especificamente [Problema 1], [Problema 2] e [Problema 3]..."
   </code></pre>
 
 <strong>💊 Solução:</strong> Use SPIN como <strong>mapa mental</strong>, não roteiro rígido.
-</ErrorBox>
+</div>
+  </div>
 
 <hr style="margin: 3rem 0; border: none; border-top: 1px solid #e5e7eb;" />
 
 <h3><strong>❌ Erro #6: Implicação Muito Cedo ou Muito Tarde</strong></h3>
 
-<ErrorBox number="6" title="Timing Errado de Implicação">
+<div style="background: #fef2f2; border-left: 4px solid #ef4444; padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0; box-shadow: 0 2px 4px rgba(239, 68, 68, 0.1);">
+    <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem;">
+      <span style="background: #ef4444; color: white; width: 2rem; height: 2rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.875rem;">❌</span>
+      <h4 style="font-size: 1.125rem; font-weight: 700; color: #991b1b; margin: 0;">Erro #6: Timing Errado de Implicação</h4>
+    </div>
+    <div style="color: #7f1d1d;">
   <strong>O Problema:</strong> Ir direto para implicações antes de entender o problema (parece forçado) OU explorar problema infinitamente sem criar urgência.
 
 <strong>Timing Correto:</strong>
@@ -3256,13 +3293,19 @@ a Sirius resolve especificamente [Problema 1], [Problema 2] e [Problema 3]..."
   | | V: "Como isso afeta a produtividade?" [I - AGORA sim] |</p>
 
 <strong>💊 Solução:</strong> Explore <strong>pelo menos 2 problemas concretos</strong> antes de ir para implicação.
-</ErrorBox>
+</div>
+  </div>
 
 <hr style="margin: 3rem 0; border: none; border-top: 1px solid #e5e7eb;" />
 
 <h3><strong>❌ Erro #7: Não Fazer o Cliente Articular a Solução</strong></h3>
 
-<ErrorBox number="7" title="Pular Perguntas de Necessidade">
+<div style="background: #fef2f2; border-left: 4px solid #ef4444; padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0; box-shadow: 0 2px 4px rgba(239, 68, 68, 0.1);">
+    <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem;">
+      <span style="background: #ef4444; color: white; width: 2rem; height: 2rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.875rem;">❌</span>
+      <h4 style="font-size: 1.125rem; font-weight: 700; color: #991b1b; margin: 0;">Erro #7: Pular Perguntas de Necessidade</h4>
+    </div>
+    <div style="color: #7f1d1d;">
   <strong>O Problema:</strong> Pular para demo/pitch sem fazer perguntas de Necessidade.
 
 <strong>Consequência:</strong> Você "empurra" solução. Cliente resiste.
@@ -3276,7 +3319,8 @@ a Sirius resolve especificamente [Problema 1], [Problema 2] e [Problema 3]..."
   | <strong>Vendedor</strong> está vendendo | <strong>Cliente</strong> está comprando |</p>
 
 <strong>💊 Solução:</strong> <strong>Sempre</strong> faça 3-5 perguntas de Necessidade antes de apresentar.
-</ErrorBox>
+</div>
+  </div>
 
 <hr style="margin: 3rem 0; border: none; border-top: 1px solid #e5e7eb;" />
 

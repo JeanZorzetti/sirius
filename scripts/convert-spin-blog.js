@@ -181,6 +181,20 @@ htmlContent = htmlContent.replace(
   `<div style="background: #d1fae5; border-left: 4px solid #10b981; padding: 1.5rem; border-radius: 0.5rem; margin: 2rem 0; color: #064e3b;">$1</div>`
 );
 
+// ErrorBox
+htmlContent = htmlContent.replace(
+  /<ErrorBox[\s\S]*?number="([^"]*)"[\s\S]*?title="([^"]*)"[\s\S]*?>([\s\S]*?)<\/ErrorBox>/g,
+  (match, number, title, content) => {
+    return `<div style="background: #fef2f2; border-left: 4px solid #ef4444; padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0; box-shadow: 0 2px 4px rgba(239, 68, 68, 0.1);">
+    <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem;">
+      <span style="background: #ef4444; color: white; width: 2rem; height: 2rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.875rem;">❌</span>
+      <h4 style="font-size: 1.125rem; font-weight: 700; color: #991b1b; margin: 0;">Erro #${number}: ${title}</h4>
+    </div>
+    <div style="color: #7f1d1d;">${content}</div>
+  </div>`;
+  }
+);
+
 // ShareButtons
 htmlContent = htmlContent.replace(
   /<ShareButtons>([\s\S]*?)<\/ShareButtons>/g,
