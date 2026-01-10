@@ -2130,7 +2130,6 @@ export const blogPosts: BlogPost[] = [
     excerpt: `Descubra como SPIN Selling aumenta conversão em vendas complexas B2B. Guia completo com 100+ perguntas práticas, matriz de objeções e casos reais. Template gratuito para download.`,
     content: `
 <img src="/images/blog/spin-selling-hero.svg" alt="Diagrama SPIN Selling mostrando as 4 etapas: Situação, Problema, Implicação e Necessidade de Solução" style="max-width: 100%; height: auto; margin: 2rem 0; border-radius: 0.5rem; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);" />
-<em>Alt text: Infográfico SPIN Selling metodologia - 4 etapas de perguntas para vendas consultivas B2B - Situação Problema Implicação Necessidade</em>
 
 <div style="background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%); border-left: 4px solid #0284c7; padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
     <p style="font-size: 1.125rem; font-weight: 600; color: #0c4a6e; margin-bottom: 0.5rem;">🎧 Ouvir este artigo (15 min) | Ideal para ouvir no trânsito</p>
