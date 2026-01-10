@@ -2148,19 +2148,19 @@ export const blogPosts: BlogPost[] = [
     <div style="font-size: 2rem; margin-bottom: 1rem;">📋</div>
     <h3 style="font-size: 1.125rem; font-weight: 700; color: #1e293b; margin-bottom: 0.5rem;">Checklist SPIN com 100+ Perguntas</h3>
     <p style="color: #64748b; font-size: 0.875rem; margin-bottom: 1rem;">Categorizado por etapa e setor (PDF + Excel editável)</p>
-    <a href="/downloads/checklist-spin-100-perguntas.zip" style="display: inline-block; background: #2563eb; color: white; padding: 0.5rem 1rem; border-radius: 0.375rem; text-decoration: none; font-weight: 600;">Baixar Checklist</a>
+    <a href="/downloads/spin-selling/checklist-spin-100-perguntas.csv" style="display: inline-block; background: #2563eb; color: white; padding: 0.5rem 1rem; border-radius: 0.375rem; text-decoration: none; font-weight: 600;">Baixar Checklist</a>
   </div>
   <div style="background: white; border: 1px solid #e5e7eb; padding: 1.5rem; border-radius: 0.75rem; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
     <div style="font-size: 2rem; margin-bottom: 1rem;">🎯</div>
     <h3 style="font-size: 1.125rem; font-weight: 700; color: #1e293b; margin-bottom: 0.5rem;">Matriz de Objeções vs Argumentos</h3>
     <p style="color: #64748b; font-size: 0.875rem; margin-bottom: 1rem;">Formato A4 para imprimir e colar na parede da equipe</p>
-    <a href="/downloads/matriz-objecoes-spin.pdf" style="display: inline-block; background: #2563eb; color: white; padding: 0.5rem 1rem; border-radius: 0.375rem; text-decoration: none; font-weight: 600;">Baixar Matriz</a>
+    <a href="/downloads/spin-selling/matriz-objecoes-argumentos.html" style="display: inline-block; background: #2563eb; color: white; padding: 0.5rem 1rem; border-radius: 0.375rem; text-decoration: none; font-weight: 600;">Baixar Matriz</a>
   </div>
   <div style="background: white; border: 1px solid #e5e7eb; padding: 1.5rem; border-radius: 0.75rem; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
     <div style="font-size: 2rem; margin-bottom: 1rem;">📝</div>
     <h3 style="font-size: 1.125rem; font-weight: 700; color: #1e293b; margin-bottom: 0.5rem;">Template Discovery Meeting</h3>
     <p style="color: #64748b; font-size: 0.875rem; margin-bottom: 1rem;">Roteiro completo de 45 minutos para reuniões de qualificação</p>
-    <a href="/downloads/template-discovery-spin.docx" style="display: inline-block; background: #2563eb; color: white; padding: 0.5rem 1rem; border-radius: 0.375rem; text-decoration: none; font-weight: 600;">Baixar Template</a>
+    <a href="/downloads/spin-selling/template-discovery-meeting-45min.html" style="display: inline-block; background: #2563eb; color: white; padding: 0.5rem 1rem; border-radius: 0.375rem; text-decoration: none; font-weight: 600;">Baixar Template</a>
   </div>
   <Resource
     icon="🧮"
@@ -2814,7 +2814,7 @@ a Sirius resolve especificamente [Problema 1], [Problema 2] e [Problema 3]..."
   - [ ] Defini <strong>próximos passos</strong> claros e com data?
 </div>
 
-<strong>Link para Template:</strong> <DownloadButton url="/downloads/template-discovery-spin.docx" text="Baixe o Template de Discovery Completo (PDF editável)" />
+<strong>Link para Template:</strong> <DownloadButton url="/downloads/spin-selling/template-discovery-meeting-45min.html" text="Baixe o Template de Discovery Completo (PDF editável)" />
 
 <hr style="margin: 3rem 0; border: none; border-top: 1px solid #e5e7eb;" />
 
@@ -2988,7 +2988,7 @@ a Sirius resolve especificamente [Problema 1], [Problema 2] e [Problema 3]..."
   title="📥 Baixe a lista completa de 250+ perguntas SPIN"
   description="Categorizada por setor e segmento (PDF + Excel editável)"
   buttonText="Baixar Lista Completa"
-  buttonUrl="/downloads/250-perguntas-spin-completas.zip"
+  buttonUrl="/downloads/spin-selling/checklist-spin-100-perguntas.csv"
   highlight="primary"
 />
 
@@ -3067,7 +3067,7 @@ a Sirius resolve especificamente [Problema 1], [Problema 2] e [Problema 3]..."
   title="🖨️ Baixe a Matriz Completa em A4"
   description="Formato para imprimir e colar na parede da equipe de vendas"
   buttonText="Baixar Matriz A4"
-  buttonUrl="/downloads/matriz-objecoes-spin-a4.pdf"
+  buttonUrl="/downloads/spin-selling/matriz-objecoes-argumentos.html"
   highlight="secondary"
 />
 
@@ -3368,7 +3368,7 @@ a Sirius resolve especificamente [Problema 1], [Problema 2] e [Problema 3]..."
       "Adaptações para: SaaS, E-commerce, Consultoria, Imobiliário, Saúde, Educação",
       "Perguntas específicas para: CRM, ERP, Marketing Automation, Telefonia"
     ]}
-    downloadUrl="/downloads/checklist-spin-100-perguntas.zip"
+    downloadUrl="/downloads/spin-selling/checklist-spin-100-perguntas.csv"
     image="/images/resources/checklist-spin-preview.png"
   />
 
@@ -3382,7 +3382,7 @@ a Sirius resolve especificamente [Problema 1], [Problema 2] e [Problema 3]..."
       "Argumentos prontos em formato de pergunta",
       "Design visual para imprimir e colar na parede"
     ]}
-    downloadUrl="/downloads/matriz-objecoes-spin-a4.pdf"
+    downloadUrl="/downloads/spin-selling/matriz-objecoes-argumentos.html"
     image="/images/resources/matriz-objecoes-preview.png"
   />
 
@@ -3397,7 +3397,7 @@ a Sirius resolve especificamente [Problema 1], [Problema 2] e [Problema 3]..."
       "Checklist de qualificação (BANT + SPIN)",
       "Próximos passos pré-formatados"
     ]}
-    downloadUrl="/downloads/template-discovery-spin.docx"
+    downloadUrl="/downloads/spin-selling/template-discovery-meeting-45min.html"
     image="/images/resources/template-discovery-preview.png"
   />
 
@@ -3411,7 +3411,7 @@ a Sirius resolve especificamente [Problema 1], [Problema 2] e [Problema 3]..."
       "Próximos passos propostos",
       "CTA claro para agendamento"
     ]}
-    downloadUrl="/downloads/script-email-follow-up-spin.txt"
+    downloadUrl="/downloads/spin-selling/script-email-follow-up-spin.txt"
     image="/images/resources/email-script-preview.png"
   />
 
@@ -3693,9 +3693,9 @@ a Sirius resolve especificamente [Problema 1], [Problema 2] e [Problema 3]..."
 <h3><strong>🎁 Recursos Gratuitos (Relembre)</strong></h3>
 
 <ResourceBoxCompact>
-  - ✅ <a href="/downloads/checklist-spin-100-perguntas.zip" target="_blank" rel="noopener" style="color: #2563eb; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 2px; transition: all 0.2s;" onmouseover="this.style.color='#1e40af'; this.style.textDecorationThickness='2px'" onmouseout="this.style.color='#2563eb'; this.style.textDecorationThickness='1px'">Checklist SPIN 100+ Perguntas</a>
-  - ✅ <a href="/downloads/matriz-objecoes-spin-a4.pdf" target="_blank" rel="noopener" style="color: #2563eb; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 2px; transition: all 0.2s;" onmouseover="this.style.color='#1e40af'; this.style.textDecorationThickness='2px'" onmouseout="this.style.color='#2563eb'; this.style.textDecorationThickness='1px'">Matriz Objeções A4</a>
-  - ✅ <a href="/downloads/template-discovery-spin.docx" target="_blank" rel="noopener" style="color: #2563eb; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 2px; transition: all 0.2s;" onmouseover="this.style.color='#1e40af'; this.style.textDecorationThickness='2px'" onmouseout="this.style.color='#2563eb'; this.style.textDecorationThickness='1px'">Template Discovery</a>
+  - ✅ <a href="/downloads/spin-selling/checklist-spin-100-perguntas.csv" target="_blank" rel="noopener" style="color: #2563eb; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 2px; transition: all 0.2s;" onmouseover="this.style.color='#1e40af'; this.style.textDecorationThickness='2px'" onmouseout="this.style.color='#2563eb'; this.style.textDecorationThickness='1px'">Checklist SPIN 100+ Perguntas</a>
+  - ✅ <a href="/downloads/spin-selling/matriz-objecoes-argumentos.html" target="_blank" rel="noopener" style="color: #2563eb; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 2px; transition: all 0.2s;" onmouseover="this.style.color='#1e40af'; this.style.textDecorationThickness='2px'" onmouseout="this.style.color='#2563eb'; this.style.textDecorationThickness='1px'">Matriz Objeções A4</a>
+  - ✅ <a href="/downloads/spin-selling/template-discovery-meeting-45min.html" target="_blank" rel="noopener" style="color: #2563eb; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 2px; transition: all 0.2s;" onmouseover="this.style.color='#1e40af'; this.style.textDecorationThickness='2px'" onmouseout="this.style.color='#2563eb'; this.style.textDecorationThickness='1px'">Template Discovery</a>
   - ✅ <a href="/calculadora-roi-spin" target="_blank" rel="noopener" style="color: #2563eb; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 2px; transition: all 0.2s;" onmouseover="this.style.color='#1e40af'; this.style.textDecorationThickness='2px'" onmouseout="this.style.color='#2563eb'; this.style.textDecorationThickness='1px'">Calculadora ROI SPIN</a>
   - ✅ <a href="https://sirius.roilabs.com.br/register?trial=spin-selling" target="_blank" rel="noopener" style="color: #2563eb; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 2px; transition: all 0.2s;" onmouseover="this.style.color='#1e40af'; this.style.textDecorationThickness='2px'" onmouseout="this.style.color='#2563eb'; this.style.textDecorationThickness='1px'">Trial Sirius CRM 14 dias</a>
 </ResourceBoxCompact>
@@ -3959,7 +3959,7 @@ a Sirius resolve especificamente [Problema 1], [Problema 2] e [Problema 3]..."
   4. <strong>Necessidade (5 min):</strong> Faça o cliente descrever solução ideal
 
 <strong>Próximo Passo:</strong>
-  <a href="/downloads/kit-spin-completo.zip" target="_blank" rel="noopener" style="color: #2563eb; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 2px; transition: all 0.2s;" onmouseover="this.style.color='#1e40af'; this.style.textDecorationThickness='2px'" onmouseout="this.style.color='#2563eb'; this.style.textDecorationThickness='1px'">Baixe o Kit SPIN Completo</a> e aplique na próxima discovery.
+  <a href="/downloads/spin-selling/kit-spin-completo.html" target="_blank" rel="noopener" style="color: #2563eb; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 2px; transition: all 0.2s;" onmouseover="this.style.color='#1e40af'; this.style.textDecorationThickness='2px'" onmouseout="this.style.color='#2563eb'; this.style.textDecorationThickness='1px'">Baixe o Kit SPIN Completo</a> e aplique na próxima discovery.
 </SummaryBox>
 
 <hr style="margin: 3rem 0; border: none; border-top: 1px solid #e5e7eb;" />
@@ -4008,7 +4008,7 @@ a Sirius resolve especificamente [Problema 1], [Problema 2] e [Problema 3]..."
 <h3><strong>🎯 Seu Plano de Ação (Hoje):</strong></h3>
 
 <FinalCTASteps>
-  1. <strong><a href="/downloads/kit-spin-completo.zip" target="_blank" rel="noopener" style="color: #2563eb; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 2px; transition: all 0.2s;" onmouseover="this.style.color='#1e40af'; this.style.textDecorationThickness='2px'" onmouseout="this.style.color='#2563eb'; this.style.textDecorationThickness='1px'">Baixe o Kit SPIN Completo</a></strong> (5 min)
+  1. <strong><a href="/downloads/spin-selling/kit-spin-completo.html" target="_blank" rel="noopener" style="color: #2563eb; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 2px; transition: all 0.2s;" onmouseover="this.style.color='#1e40af'; this.style.textDecorationThickness='2px'" onmouseout="this.style.color='#2563eb'; this.style.textDecorationThickness='1px'">Baixe o Kit SPIN Completo</a></strong> (5 min)
   2. <strong>Crie seu banco de 40 perguntas</strong> (30 min)
   3. <strong>Faça 1 role-play</strong> com colega (30 min)
   4. <strong>Aplique na próxima discovery</strong> (essa semana)
@@ -4062,7 +4062,7 @@ Se este guia foi útil para você, compartilhe com sua rede e ajude outros profi
 
 <p>Agora é com você. Aplique SPIN Selling e veja sua conversão crescer.</p>
 
-<strong><a href="/downloads/kit-spin-completo.zip" target="_blank" rel="noopener" style="color: #2563eb; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 2px; transition: all 0.2s;" onmouseover="this.style.color='#1e40af'; this.style.textDecorationThickness='2px'" onmouseout="this.style.color='#2563eb'; this.style.textDecorationThickness='1px'">🚀 Comece Agora: Baixe o Kit SPIN Completo</a></strong>
+<strong><a href="/downloads/spin-selling/kit-spin-completo.html" target="_blank" rel="noopener" style="color: #2563eb; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 2px; transition: all 0.2s;" onmouseover="this.style.color='#1e40af'; this.style.textDecorationThickness='2px'" onmouseout="this.style.color='#2563eb'; this.style.textDecorationThickness='1px'">🚀 Comece Agora: Baixe o Kit SPIN Completo</a></strong>
 
 <hr style="margin: 3rem 0; border: none; border-top: 1px solid #e5e7eb;" />
 

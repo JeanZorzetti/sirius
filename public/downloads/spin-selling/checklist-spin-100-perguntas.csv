@@ -1,0 +1,97 @@
+Etapa,Categoria,Setor,Pergunta,Objetivo,Quando Usar
+S - Situação,Processo Atual,B2B SaaS,"Qual ferramenta vocês usam hoje para gerenciar vendas?",Entender stack tecnológico atual,Início da discovery
+S - Situação,Processo Atual,B2B SaaS,"Quantas pessoas da equipe usam essa ferramenta diariamente?",Dimensionar escala de uso,Após entender ferramenta atual
+S - Situação,Processo Atual,B2B SaaS,"Como funciona o processo de onboarding de novos vendedores?",Mapear processo de treinamento,Ao discutir equipe
+S - Situação,Estrutura,B2B SaaS,"Qual é a estrutura da sua equipe comercial? (SDR/Closers/CS)",Entender organização comercial,Início - contexto geral
+S - Situação,Estrutura,B2B SaaS,"Quantos deals cada vendedor fecha por mês em média?",Estabelecer baseline de performance,Após mapear estrutura
+S - Situação,Métricas,B2B SaaS,"Qual seu ticket médio atual?",Quantificar tamanho de venda,Entender modelo de negócio
+S - Situação,Métricas,B2B SaaS,"Qual sua taxa de conversão atual de lead para cliente?",Estabelecer benchmark de conversão,Ao discutir funil
+S - Situação,Métricas,B2B SaaS,"Quanto tempo leva seu ciclo de vendas em média?",Dimensionar complexidade da venda,Mapear processo comercial
+S - Situação,Processo Atual,E-commerce,"Qual plataforma você usa para seu e-commerce?",Entender infraestrutura técnica,Início da conversa
+S - Situação,Processo Atual,E-commerce,"Quantos pedidos você processa por mês?",Dimensionar volume de operação,Após entender plataforma
+S - Situação,Processo Atual,E-commerce,"Como você gerencia seu estoque hoje?",Mapear gestão de inventário,Ao discutir operação
+S - Situação,Métricas,E-commerce,"Qual seu ticket médio por pedido?",Quantificar valor transacional,Entender modelo de receita
+S - Situação,Métricas,E-commerce,"Qual sua taxa de abandono de carrinho?",Identificar perdas no funil,Ao mapear conversão
+S - Situação,Métricas,E-commerce,"Quanto você gasta em aquisição por cliente (CAC)?",Entender custo de aquisição,Discussão de marketing/vendas
+S - Situação,Estrutura,E-commerce,"Quantas pessoas cuidam do atendimento ao cliente?",Dimensionar operação de CS,Mapear equipe
+S - Situação,Estrutura,E-commerce,"Quem cuida das estratégias de marketing digital?",Entender responsabilidades,Ao discutir crescimento
+S - Situação,Processo Atual,Consultoria,"Como você captura leads atualmente?",Mapear geração de demanda,Início - entender origem clientes
+S - Situação,Processo Atual,Consultoria,"Quantos projetos você está tocando simultaneamente agora?",Dimensionar capacidade atual,Entender carga de trabalho
+S - Situação,Processo Atual,Consultoria,"Como você gerencia o tempo dedicado a cada cliente?",Mapear gestão de tempo,Ao discutir projetos
+S - Situação,Métricas,Consultoria,"Qual seu valor médio por projeto?",Quantificar ticket,Entender modelo de precificação
+S - Situação,Métricas,Consultoria,"Quantos clientes novos você fecha por trimestre?",Estabelecer baseline de aquisição,Mapear crescimento
+S - Situação,Métricas,Consultoria,"Qual seu percentual de recorrência (clientes que voltam)?",Entender retenção,Ao discutir relacionamento cliente
+S - Situação,Estrutura,Consultoria,"Você trabalha sozinho ou tem uma equipe?",Dimensionar operação,Início - contexto geral
+S - Situação,Estrutura,Consultoria,"Como você divide seu tempo entre prospecção e entrega?",Mapear alocação de recursos,Entender gestão de tempo
+P - Problema,Dor Operacional,B2B SaaS,"Qual o maior desafio que sua equipe enfrenta para bater meta?",Identificar obstáculo principal,Após mapear situação
+P - Problema,Dor Operacional,B2B SaaS,"O que impede seus vendedores de serem mais produtivos?",Revelar gargalos de produtividade,Ao discutir performance
+P - Problema,Dor Operacional,B2B SaaS,"Quais informações seus vendedores perdem durante o processo?",Identificar falhas no processo,Mapear perdas de dados
+P - Problema,Dor Técnica,B2B SaaS,"Quanto tempo sua equipe gasta em tarefas administrativas?",Quantificar desperdício de tempo,Ao discutir rotina
+P - Problema,Dor Técnica,B2B SaaS,"Suas ferramentas atuais se comunicam entre si?",Identificar problemas de integração,Ao mapear stack
+P - Problema,Dor Técnica,B2B SaaS,"Quantas vezes por semana sua equipe reclama da ferramenta?",Medir insatisfação com solução atual,Avaliar dor técnica
+P - Problema,Dor Financeira,B2B SaaS,"Quantos deals você perde por mês por falta de follow-up?",Quantificar perda financeira,Ao identificar falhas
+P - Problema,Dor Financeira,B2B SaaS,"Quanto você deixa de faturar por vendedor que não bate meta?",Calcular custo de underperformance,Ao discutir resultados
+P - Problema,Dor Operacional,E-commerce,"Quantos pedidos são cancelados por problemas no checkout?",Identificar fricção no funil,Ao mapear conversão
+P - Problema,Dor Operacional,E-commerce,"Quanto tempo você perde atualizando estoque manualmente?",Quantificar ineficiência operacional,Ao discutir gestão
+P - Problema,Dor Técnica,E-commerce,"Sua plataforma trava em momentos de pico de acesso?",Identificar problemas de infraestrutura,Avaliar capacidade técnica
+P - Problema,Dor Técnica,E-commerce,"Quantas reclamações você recebe sobre tempo de carregamento?",Medir impacto da performance,Ao discutir experiência usuário
+P - Problema,Dor Financeira,E-commerce,"Quanto você perde em vendas por cada hora de site fora do ar?",Quantificar custo de downtime,Ao identificar problemas técnicos
+P - Problema,Dor Financeira,E-commerce,"Qual percentual de devoluções você tem por problemas evitáveis?",Calcular perda por falhas operacionais,Mapear custos ocultos
+P - Problema,Dor Operacional,Consultoria,"Quantas horas por semana você gasta em propostas que não fecham?",Quantificar desperdício de tempo,Ao discutir prospecção
+P - Problema,Dor Operacional,Consultoria,"Você já perdeu cliente por não conseguir acompanhar demanda?",Identificar problema de capacidade,Mapear crescimento
+P - Problema,Dor Técnica,Consultoria,"Quanto tempo você perde organizando informações de clientes?",Medir ineficiência administrativa,Ao discutir gestão
+P - Problema,Dor Técnica,Consultoria,"Você já deixou passar algum deadline por desorganização?",Identificar falhas de gestão,Avaliar riscos operacionais
+P - Problema,Dor Financeira,Consultoria,"Quanto você perde em horas não faturáveis por mês?",Quantificar perda de receita,Ao mapear tempo
+P - Problema,Dor Financeira,Consultoria,"Quantos clientes você perdeu por falta de profissionalização?",Calcular custo de imagem,Avaliar impacto reputacional
+I - Implicação,Impacto Financeiro,B2B SaaS,"Se você continuar perdendo X deals por mês, quanto isso representa em 1 ano?",Amplificar custo anual,Após quantificar problema
+I - Implicação,Impacto Financeiro,B2B SaaS,"Quanto você investe em cada vendedor (salário + comissão + ferramentas)?",Calcular ROI de vendedor,Ao discutir produtividade
+I - Implicação,Impacto Financeiro,B2B SaaS,"Se cada vendedor vendesse 20% a mais, quanto seria o impacto no faturamento?",Projetar ganho potencial,Criar urgência financeira
+I - Implicação,Impacto Operacional,B2B SaaS,"O que acontece quando você perde um vendedor chave?",Identificar risco operacional,Avaliar dependência de pessoas
+I - Implicação,Impacto Operacional,B2B SaaS,"Como a desorganização atual afeta o moral da equipe?",Revelar custo intangível,Ao discutir cultura
+I - Implicação,Impacto Estratégico,B2B SaaS,"Quanto crescimento você está deixando na mesa por essas limitações?",Quantificar oportunidade perdida,Criar senso de urgência
+I - Implicação,Impacto Estratégico,B2B SaaS,"Como isso afeta sua competitividade no mercado?",Posicionar contra concorrência,Discussão estratégica
+I - Implicação,Impacto Reputacional,B2B SaaS,"O que seus vendedores falam sobre a empresa para candidatos?",Revelar impacto em employer branding,Ao discutir retenção
+I - Implicação,Impacto Financeiro,E-commerce,"Se você reduzisse abandono de carrinho em 10%, quanto faturaria a mais?",Calcular ganho potencial,Após identificar taxa atual
+I - Implicação,Impacto Financeiro,E-commerce,"Quanto você perde por cada ponto percentual de conversão?",Quantificar valor de otimização,Criar urgência financeira
+I - Implicação,Impacto Operacional,E-commerce,"Como esses problemas afetam sua capacidade de escalar?",Revelar limitação de crescimento,Discussão estratégica
+I - Implicação,Impacto Operacional,E-commerce,"O que acontece na Black Friday quando o tráfego multiplica por 10?",Identificar risco de pico,Avaliar preparação
+I - Implicação,Impacto Estratégico,E-commerce,"Como a experiência ruim afeta sua taxa de recompra?",Quantificar impacto em LTV,Ao discutir retenção
+I - Implicação,Impacto Reputacional,E-commerce,"Quantas avaliações negativas você recebe por problemas técnicos?",Medir dano reputacional,Avaliar risco de marca
+I - Implicação,Impacto Financeiro,Consultoria,"Quanto você deixa de faturar por não conseguir atender demanda?",Quantificar oportunidade perdida,Após mapear capacidade
+I - Implicação,Impacto Financeiro,Consultoria,"Se você profissionalizasse, quanto poderia cobrar a mais?",Calcular ganho de percepção de valor,Criar aspiração
+I - Implicação,Impacto Operacional,Consultoria,"Como a desorganização afeta sua qualidade de vida?",Revelar custo pessoal,Ao discutir rotina
+I - Implicação,Impacto Operacional,Consultoria,"O que acontece se você ficar doente e não puder trabalhar?",Identificar risco de continuidade,Avaliar dependência
+I - Implicação,Impacto Estratégico,Consultoria,"Como isso limita os projetos que você pode aceitar?",Quantificar restrição de crescimento,Discussão de expansão
+I - Implicação,Impacto Reputacional,Consultoria,"O que clientes falam de você quando você perde prazo?",Medir dano à reputação,Avaliar risco de indicações
+N - Necessidade,Visão Ideal,B2B SaaS,"Como seria o dia perfeito do seu vendedor top performer?",Co-criar solução ideal,Após estabelecer urgência
+N - Necessidade,Visão Ideal,B2B SaaS,"Se você tivesse uma varinha mágica, como seria seu processo de vendas?",Revelar necessidades latentes,Criar aspiração
+N - Necessidade,Critérios,B2B SaaS,"O que é mais importante: facilidade de uso ou funcionalidades avançadas?",Priorizar atributos,Qualificar fit
+N - Necessidade,Critérios,B2B SaaS,"Qual seria um ROI aceitável para investir em uma nova solução?",Estabelecer expectativa financeira,Ao discutir investimento
+N - Necessidade,Impacto Desejado,B2B SaaS,"Quanto sua equipe precisaria vender a mais para valer a pena mudar?",Quantificar ganho mínimo,Criar âncora de valor
+N - Necessidade,Impacto Desejado,B2B SaaS,"Como você mediria o sucesso nos primeiros 90 dias?",Definir critérios de sucesso,Alinhar expectativas
+N - Necessidade,Capacidades,B2B SaaS,"Quais integrações são indispensáveis para vocês?",Mapear requisitos técnicos,Qualificar viabilidade
+N - Necessidade,Capacidades,B2B SaaS,"Que relatórios você precisa ver diariamente?",Entender necessidades de BI,Ao discutir gestão
+N - Necessidade,Visão Ideal,E-commerce,"Como seria a experiência de compra perfeita no seu site?",Co-criar solução,Após criar urgência
+N - Necessidade,Visão Ideal,E-commerce,"Se você pudesse melhorar uma coisa no seu checkout, o que seria?",Priorizar dor principal,Identificar quick win
+N - Necessidade,Critérios,E-commerce,"Velocidade de carregamento ou design bonito - o que importa mais?",Priorizar atributos,Qualificar prioridades
+N - Necessidade,Critérios,E-commerce,"Qual seria uma taxa de conversão que faria você celebrar?",Estabelecer objetivo,Criar âncora de sucesso
+N - Necessidade,Impacto Desejado,E-commerce,"Quanto você quer faturar a mais nos próximos 6 meses?",Quantificar meta,Alinhar ambição
+N - Necessidade,Impacto Desejado,E-commerce,"Como você quer que clientes descrevam a experiência de compra?",Definir experiência alvo,Ao discutir branding
+N - Necessidade,Capacidades,E-commerce,"Que funcionalidades você vê nos concorrentes e inveja?",Mapear gap competitivo,Identificar referências
+N - Necessidade,Capacidades,E-commerce,"Você precisa de omnichannel ou foco em um canal?",Entender estratégia de canais,Qualificar complexidade
+N - Necessidade,Visão Ideal,Consultoria,"Como seria sua rotina ideal de trabalho?",Co-criar solução de estilo de vida,Após estabelecer dor
+N - Necessidade,Visão Ideal,Consultoria,"Quantos clientes você quer atender simultaneamente no cenário ideal?",Definir escala desejada,Ao discutir crescimento
+N - Necessidade,Critérios,Consultoria,"Crescimento rápido ou sustentável - o que você prefere?",Priorizar estratégia,Qualificar perfil
+N - Necessidade,Critérios,Consultoria,"Você quer delegar ou manter controle total?",Entender disposição para escalar,Avaliar mindset
+N - Necessidade,Impacto Desejado,Consultoria,"Quanto você quer faturar daqui 12 meses?",Quantificar ambição,Criar meta clara
+N - Necessidade,Impacto Desejado,Consultoria,"Como você quer ser reconhecido no mercado daqui 2 anos?",Definir posicionamento alvo,Ao discutir branding
+N - Necessidade,Capacidades,Consultoria,"Você precisa de automação ou apenas organização?",Mapear nível de sofisticação,Qualificar solução
+N - Necessidade,Capacidades,Consultoria,"Quanto tempo por semana você pode dedicar a implementar mudanças?",Avaliar viabilidade de implementação,Ao propor solução
+S - Situação,Processo Atual,Geral,"Descreva seu dia típico de trabalho",Entender rotina completa,Início amplo
+S - Situação,Processo Atual,Geral,"Qual foi a última mudança significativa que você fez no negócio?",Avaliar abertura a mudanças,Qualificar perfil de mudança
+P - Problema,Dor Emocional,Geral,"O que mais te frustra no dia a dia?",Revelar dor emocional,Após mapear situação
+P - Problema,Dor Emocional,Geral,"O que te tira o sono à noite?",Identificar preocupação principal,Aprofundar conexão
+I - Implicação,Impacto Pessoal,Geral,"Como isso afeta sua vida pessoal?",Humanizar impacto,Criar conexão emocional
+I - Implicação,Impacto Temporal,Geral,"Há quanto tempo você convive com esse problema?",Estabelecer cronologia da dor,Criar urgência histórica
+N - Necessidade,Timing,Geral,"Se você pudesse resolver isso, quando seria o momento ideal?",Qualificar timing,Avaliar urgência
+N - Necessidade,Apoio,Geral,"Quem mais precisa estar envolvido nessa decisão?",Mapear stakeholders,Qualificar autoridade

@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Template Discovery Meeting 45 Minutos SPIN Selling - Sirius CRM</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: #f8fafc;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            border-bottom: 4px solid #2563eb;
+            padding-bottom: 20px;
+        }
+
+        .header h1 {
+            font-size: 32px;
+            color: #1e293b;
+            margin-bottom: 10px;
+        }
+
+        .header .subtitle {
+            font-size: 18px;
+            color: #64748b;
+            margin-bottom: 15px;
+        }
+
+        .timeline {
+            background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            border-left: 4px solid #2563eb;
+        }
+
+        .timeline h2 {
+            color: #1e40af;
+            font-size: 20px;
+            margin-bottom: 15px;
+        }
+
+        .timeline-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .timeline-time {
+            background: #2563eb;
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 14px;
+            min-width: 80px;
+            text-align: center;
+        }
+
+        .timeline-label {
+            margin-left: 15px;
+            color: #1e40af;
+            font-weight: 600;
+        }
+
+        .section {
+            margin-bottom: 35px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .section-header {
+            padding: 20px;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .section-header.rapport {
+            background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+        }
+
+        .section-header.situacao {
+            background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%);
+        }
+
+        .section-header.problema {
+            background: linear-gradient(135deg, #f87171 0%, #ef4444 100%);
+        }
+
+        .section-header.implicacao {
+            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+        }
+
+        .section-header.necessidade {
+            background: linear-gradient(135deg, #34d399 0%, #10b981 100%);
+        }
+
+        .section-header.fechamento {
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+        }
+
+        .section-icon {
+            font-size: 32px;
+        }
+
+        .section-title {
+            flex: 1;
+        }
+
+        .section-title h2 {
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+
+        .section-title .time {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .section-content {
+            padding: 25px;
+        }
+
+        .objective {
+            background: #fef3c7;
+            border-left: 4px solid #f59e0b;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+        }
+
+        .objective h3 {
+            color: #92400e;
+            font-size: 14px;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+        }
+
+        .objective p {
+            color: #78350f;
+            font-size: 15px;
+        }
+
+        .questions {
+            margin-bottom: 20px;
+        }
+
+        .questions h3 {
+            color: #1e293b;
+            font-size: 16px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .question {
+            background: #f8fafc;
+            padding: 12px;
+            margin-bottom: 8px;
+            border-radius: 6px;
+            border-left: 3px solid #cbd5e1;
+        }
+
+        .question::before {
+            content: "❓";
+            margin-right: 8px;
+        }
+
+        .tips {
+            background: #d1fae5;
+            border-left: 4px solid #10b981;
+            padding: 15px;
+            border-radius: 4px;
+            margin-top: 15px;
+        }
+
+        .tips h3 {
+            color: #065f46;
+            font-size: 14px;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+
+        .tips ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .tips li {
+            color: #064e3b;
+            margin-bottom: 6px;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .tips li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #10b981;
+            font-weight: bold;
+        }
+
+        .warning {
+            background: #fee2e2;
+            border-left: 4px solid #ef4444;
+            padding: 15px;
+            border-radius: 4px;
+            margin-top: 15px;
+        }
+
+        .warning h3 {
+            color: #991b1b;
+            font-size: 14px;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+
+        .warning ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .warning li {
+            color: #7f1d1d;
+            margin-bottom: 6px;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .warning li::before {
+            content: "✗";
+            position: absolute;
+            left: 0;
+            color: #ef4444;
+            font-weight: bold;
+        }
+
+        .checklist {
+            background: #f1f5f9;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 30px;
+        }
+
+        .checklist h2 {
+            color: #1e293b;
+            font-size: 20px;
+            margin-bottom: 15px;
+        }
+
+        .checklist-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 12px;
+            padding: 10px;
+            background: white;
+            border-radius: 6px;
+        }
+
+        .checklist-checkbox {
+            width: 20px;
+            height: 20px;
+            border: 2px solid #2563eb;
+            border-radius: 4px;
+            margin-right: 12px;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .footer {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 2px solid #e2e8f0;
+            text-align: center;
+            color: #64748b;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #2563eb;
+            margin-bottom: 10px;
+        }
+
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+            .container {
+                box-shadow: none;
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎯 Template Discovery Meeting SPIN Selling</h1>
+            <div class="subtitle">Roteiro Completo de 45 Minutos para Qualificação B2B</div>
+        </div>
+
+        <div class="timeline">
+            <h2>⏱️ Timeline Sugerida (45 minutos)</h2>
+            <div class="timeline-item">
+                <div class="timeline-time">0-5 min</div>
+                <div class="timeline-label">Rapport & Abertura</div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-time">5-15 min</div>
+                <div class="timeline-label">Situação (10 min)</div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-time">15-25 min</div>
+                <div class="timeline-label">Problema (10 min)</div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-time">25-35 min</div>
+                <div class="timeline-label">Implicação (10 min)</div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-time">35-42 min</div>
+                <div class="timeline-label">Necessidade (7 min)</div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-time">42-45 min</div>
+                <div class="timeline-label">Próximos Passos (3 min)</div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-header rapport">
+                <div class="section-icon">🤝</div>
+                <div class="section-title">
+                    <h2>Rapport & Abertura</h2>
+                    <div class="time">Duração: 5 minutos (0-5 min)</div>
+                </div>
+            </div>
+            <div class="section-content">
+                <div class="objective">
+                    <h3>🎯 Objetivo</h3>
+                    <p>Criar conexão genuína, estabelecer confiança e alinhar expectativas da conversa.</p>
+                </div>
+
+                <div class="questions">
+                    <h3>💬 Script de Abertura</h3>
+                    <div class="question">"[Nome], obrigado por separar esse tempo! Antes de começar, conte um pouco sobre você - como chegou até [empresa]?"</div>
+                    <div class="question">"O objetivo dos próximos 45 minutos é eu entender profundamente seus desafios e ver se faz sentido conversarmos mais. Pode ser?"</div>
+                    <div class="question">"Para aproveitar bem o tempo, vou fazer algumas perguntas sobre [tema]. Tudo certo?"</div>
+                </div>
+
+                <div class="tips">
+                    <h3>✅ Dicas de Rapport</h3>
+                    <ul>
+                        <li>Pesquise o LinkedIn antes - mencione algo específico</li>
+                        <li>Use o nome da pessoa 2-3 vezes nos primeiros minutos</li>
+                        <li>Espelhe o tom e velocidade de fala do prospect</li>
+                        <li>Seja genuinamente curioso - não finja interesse</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-header situacao">
+                <div class="section-icon">📊</div>
+                <div class="section-title">
+                    <h2>S - Situação</h2>
+                    <div class="time">Duração: 10 minutos (5-15 min)</div>
+                </div>
+            </div>
+            <div class="section-content">
+                <div class="objective">
+                    <h3>🎯 Objetivo</h3>
+                    <p>Mapear contexto atual: processos, ferramentas, estrutura, métricas. Estabelecer baseline para comparação.</p>
+                </div>
+
+                <div class="questions">
+                    <h3>❓ Perguntas de Situação (escolha 4-6)</h3>
+                    <div class="question">"Qual ferramenta você usa hoje para [processo]?"</div>
+                    <div class="question">"Como está estruturada sua equipe comercial?"</div>
+                    <div class="question">"Quantos deals vocês fecham por mês em média?"</div>
+                    <div class="question">"Qual seu ticket médio atual?"</div>
+                    <div class="question">"Como funciona seu processo de [onboarding/qualificação/fechamento] hoje?"</div>
+                    <div class="question">"Quem é responsável por [processo específico] na equipe?"</div>
+                </div>
+
+                <div class="tips">
+                    <h3>✅ Boas Práticas</h3>
+                    <ul>
+                        <li>Máximo 6 perguntas de Situação - vá direto ao ponto</li>
+                        <li>Anote TODOS os números mencionados (vai usar depois)</li>
+                        <li>Observe o que o prospect fala com entusiasmo vs. frustração</li>
+                        <li>Confirme entendimento: "Deixa eu ver se entendi..."</li>
+                    </ul>
+                </div>
+
+                <div class="warning">
+                    <h3>⚠️ Evite</h3>
+                    <ul>
+                        <li>Fazer interrogatório - intercale com comentários</li>
+                        <li>Perguntar coisas óbvias que você podia pesquisar antes</li>
+                        <li>Ficar mais de 10 minutos nesta etapa</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-header problema">
+                <div class="section-icon">❗</div>
+                <div class="section-title">
+                    <h2>P - Problema</h2>
+                    <div class="time">Duração: 10 minutos (15-25 min)</div>
+                </div>
+            </div>
+            <div class="section-content">
+                <div class="objective">
+                    <h3>🎯 Objetivo</h3>
+                    <p>Fazer o prospect RECONHECER e VERBALIZAR as dores, dificuldades e insatisfações com a situação atual.</p>
+                </div>
+
+                <div class="questions">
+                    <h3>❓ Perguntas de Problema (escolha 5-7)</h3>
+                    <div class="question">"Qual o maior desafio que sua equipe enfrenta para bater meta?"</div>
+                    <div class="question">"O que impede seus vendedores de serem mais produtivos?"</div>
+                    <div class="question">"Quais informações vocês perdem durante o processo?"</div>
+                    <div class="question">"Quanto tempo sua equipe gasta em tarefas administrativas?"</div>
+                    <div class="question">"Suas ferramentas atuais se comunicam entre si?"</div>
+                    <div class="question">"Quantas vezes por semana sua equipe reclama de [X]?"</div>
+                    <div class="question">"O que te frustra no processo atual?"</div>
+                </div>
+
+                <div class="tips">
+                    <h3>✅ Técnicas de Problema</h3>
+                    <ul>
+                        <li>Use técnica "Problem Chain": explore cada problema em 3 camadas</li>
+                        <li>Quando prospect mencionar problema, aprofunde: "Como assim? Me conta mais..."</li>
+                        <li>Anote frases textuais do prospect (vai usar no pitch depois)</li>
+                        <li>Se prospect disser "está tudo ótimo", questione: "O que te trouxe para essa conversa então?"</li>
+                    </ul>
+                </div>
+
+                <div class="warning">
+                    <h3>⚠️ Evite</h3>
+                    <ul>
+                        <li>Oferecer soluções agora (guarde para depois!)</li>
+                        <li>Aceitar "está tudo bem" - sempre há algo a melhorar</li>
+                        <li>Passar para Implicação sem ter pelo menos 3 problemas claros</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-header implicacao">
+                <div class="section-icon">⚠️</div>
+                <div class="section-title">
+                    <h2>I - Implicação</h2>
+                    <div class="time">Duração: 10 minutos (25-35 min)</div>
+                </div>
+            </div>
+            <div class="section-content">
+                <div class="objective">
+                    <h3>🎯 Objetivo</h3>
+                    <p>AMPLIFICAR a dor fazendo o prospect CALCULAR o custo real (financeiro, operacional, temporal) do problema.</p>
+                </div>
+
+                <div class="questions">
+                    <h3>❓ Perguntas de Implicação (escolha 5-6)</h3>
+                    <div class="question">"Se você continuar perdendo [X] por mês, quanto isso representa em 1 ano?"</div>
+                    <div class="question">"Quanto você investe em cada vendedor (salário + comissão + ferramentas)?"</div>
+                    <div class="question">"Se cada vendedor vendesse 20% a mais, quanto seria o impacto no faturamento?"</div>
+                    <div class="question">"Como essa desorganização afeta o moral da equipe?"</div>
+                    <div class="question">"Quanto crescimento você está deixando na mesa por essas limitações?"</div>
+                    <div class="question">"O que acontece quando você perde um vendedor chave?"</div>
+                </div>
+
+                <div class="tips">
+                    <h3>✅ Fórmula de Implicação</h3>
+                    <ul>
+                        <li><strong>Frequência x Impacto x Tempo = Custo Total</strong></li>
+                        <li>Exemplo: "3 deals perdidos/mês x R$ 10k/deal x 12 meses = R$ 360k/ano"</li>
+                        <li>Faça o prospect FALAR o número, não você</li>
+                        <li>Silencie após perguntar - deixe ele processar</li>
+                        <li>Anote TODOS os cálculos (vai usar no fechamento)</li>
+                    </ul>
+                </div>
+
+                <div class="warning">
+                    <h3>⚠️ Erro Fatal</h3>
+                    <ul>
+                        <li>Pular esta etapa - é a mais importante!</li>
+                        <li>Você calcular no lugar do prospect</li>
+                        <li>Não ter pelo menos 2 impactos quantificados</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-header necessidade">
+                <div class="section-icon">✅</div>
+                <div class="section-title">
+                    <h2>N - Necessidade de Solução</h2>
+                    <div class="time">Duração: 7 minutos (35-42 min)</div>
+                </div>
+            </div>
+            <div class="section-content">
+                <div class="objective">
+                    <h3>🎯 Objetivo</h3>
+                    <p>Fazer o prospect CO-CRIAR a solução ideal e VERBALIZAR o valor de resolver. Ele vende para si mesmo.</p>
+                </div>
+
+                <div class="questions">
+                    <h3>❓ Perguntas de Necessidade (escolha 4-5)</h3>
+                    <div class="question">"Como seria o dia perfeito do seu vendedor top performer?"</div>
+                    <div class="question">"Se você tivesse uma varinha mágica, como seria seu processo de vendas?"</div>
+                    <div class="question">"O que é mais importante: facilidade de uso ou funcionalidades avançadas?"</div>
+                    <div class="question">"Quanto sua equipe precisaria vender a mais para valer a pena mudar?"</div>
+                    <div class="question">"Como você mediria o sucesso nos primeiros 90 dias?"</div>
+                    <div class="question">"Quais integrações são indispensáveis para vocês?"</div>
+                </div>
+
+                <div class="tips">
+                    <h3>✅ Técnica Vision Building</h3>
+                    <ul>
+                        <li>Deixe o prospect DESENHAR a solução ideal primeiro</li>
+                        <li>Anote os critérios de sucesso dele (vai usar no pitch)</li>
+                        <li>Pergunte: "Se resolver isso, quanto impacto teria?"</li>
+                        <li>Teste fit: "De 0 a 10, quanto resolver isso é prioridade agora?"</li>
+                    </ul>
+                </div>
+
+                <div class="warning">
+                    <h3>⚠️ Evite</h3>
+                    <ul>
+                        <li>Apresentar produto agora (ainda não!)</li>
+                        <li>Induzir respostas ("Você precisa de X, certo?")</li>
+                        <li>Prometer recursos que você não tem</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-header fechamento">
+                <div class="section-icon">🎯</div>
+                <div class="section-title">
+                    <h2>Fechamento & Próximos Passos</h2>
+                    <div class="time">Duração: 3 minutos (42-45 min)</div>
+                </div>
+            </div>
+            <div class="section-content">
+                <div class="objective">
+                    <h3>🎯 Objetivo</h3>
+                    <p>Recapitular descobertas, confirmar fit e agendar próxima etapa com COMPROMISSO claro.</p>
+                </div>
+
+                <div class="questions">
+                    <h3>💬 Script de Fechamento</h3>
+                    <div class="question">"[Nome], deixa eu recapitular o que entendi: Hoje você [situação], está enfrentando [3 problemas], e isso custa [impacto quantificado] por ano. Correto?"</div>
+                    <div class="question">"Você mencionou que idealmente quer [necessidade]. Se eu mostrar como podemos te ajudar a chegar lá, quando você quer ver resultados?"</div>
+                    <div class="question">"Faz sentido agendar uma segunda call onde eu trago uma proposta focada em [dor principal]? Que tal [dia/hora]?"</div>
+                </div>
+
+                <div class="tips">
+                    <h3>✅ Checklist de Qualificação</h3>
+                    <ul>
+                        <li>✓ Tem pelo menos 3 problemas claros mapeados?</li>
+                        <li>✓ Calculou custo do problema (R$/ano)?</li>
+                        <li>✓ Prospect verbalizou necessidade de solução?</li>
+                        <li>✓ Mapeou stakeholders da decisão?</li>
+                        <li>✓ Entendeu processo de compra e timing?</li>
+                        <li>✓ Próxima etapa agendada com compromisso claro?</li>
+                    </ul>
+                </div>
+
+                <div class="warning">
+                    <h3>⚠️ Red Flags - Desqualificar Se</h3>
+                    <ul>
+                        <li>Prospect não admite ter problemas relevantes</li>
+                        <li>Não consegue quantificar nenhum impacto</li>
+                        <li>Não tem autoridade nem acesso ao decisor</li>
+                        <li>Timeline é "algum dia" sem urgência</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="checklist">
+            <h2>✅ Checklist Pós-Discovery (Preencher Imediatamente)</h2>
+            <div class="checklist-item">
+                <div class="checklist-checkbox"></div>
+                <div><strong>Situação mapeada:</strong> Ferramentas atuais, estrutura, métricas baseline documentadas</div>
+            </div>
+            <div class="checklist-item">
+                <div class="checklist-checkbox"></div>
+                <div><strong>Problemas identificados:</strong> Mínimo 3 dores verbalizadas pelo prospect</div>
+            </div>
+            <div class="checklist-item">
+                <div class="checklist-checkbox"></div>
+                <div><strong>Implicações quantificadas:</strong> Custo anual calculado: R$ _______</div>
+            </div>
+            <div class="checklist-item">
+                <div class="checklist-checkbox"></div>
+                <div><strong>Necessidades priorizadas:</strong> Top 3 critérios de sucesso definidos</div>
+            </div>
+            <div class="checklist-item">
+                <div class="checklist-checkbox"></div>
+                <div><strong>Stakeholders mapeados:</strong> Decisor: _______ | Influenciadores: _______</div>
+            </div>
+            <div class="checklist-item">
+                <div class="checklist-checkbox"></div>
+                <div><strong>Budget validado:</strong> Tem budget? ☐ Sim ☐ Não ☐ Precisa criar</div>
+            </div>
+            <div class="checklist-item">
+                <div class="checklist-checkbox"></div>
+                <div><strong>Timeline confirmado:</strong> Quer implementar quando? _______</div>
+            </div>
+            <div class="checklist-item">
+                <div class="checklist-checkbox"></div>
+                <div><strong>Próximos passos:</strong> Agendado para _______ às _______</div>
+            </div>
+            <div class="checklist-item">
+                <div class="checklist-checkbox"></div>
+                <div><strong>Score de qualificação:</strong> ☐ Quente (fechar em 30d) ☐ Morno (60-90d) ☐ Frio (nurture)</div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div class="logo">Sirius CRM</div>
+            <p>Template desenvolvido pelo time Sirius CRM</p>
+            <p style="margin-top: 10px;">📧 conteudo@sirius.roilabs.com.br | 🌐 sirius.roilabs.com.br</p>
+            <p style="margin-top: 15px; font-size: 14px; font-style: italic; font-weight: 600;">
+                💡 Dica: Imprima este template e use durante suas calls de discovery
+            </p>
+        </div>
+    </div>
+</body>
+</html>

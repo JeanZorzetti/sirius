@@ -1,0 +1,216 @@
+═══════════════════════════════════════════════════════════════════
+   SCRIPTS DE EMAIL FOLLOW-UP SPIN SELLING - SIRIUS CRM
+═══════════════════════════════════════════════════════════════════
+
+📧 EMAIL 1 - FOLLOW-UP IMEDIATO (ENVIAR 1 HORA APÓS DISCOVERY)
+═══════════════════════════════════════════════════════════════════
+
+Assunto: [Nome], recapitulando nossa conversa de hoje
+
+Olá [Nome],
+
+Obrigado pelos 45 minutos de hoje! Foi ótimo entender mais sobre [empresa] e os desafios que vocês enfrentam.
+
+Deixa eu recapitular o que entendi:
+
+✅ SITUAÇÃO ATUAL:
+   • Vocês usam [ferramenta atual]
+   • Equipe de [X] vendedores
+   • Ticket médio de R$ [valor]
+   • Ciclo de vendas de [X] dias
+
+❌ PRINCIPAIS DESAFIOS:
+   1. [Problema 1 - usar palavras exatas do prospect]
+   2. [Problema 2 - usar palavras exatas do prospect]
+   3. [Problema 3 - usar palavras exatas do prospect]
+
+💰 IMPACTO QUANTIFICADO:
+   • Custo atual: R$ [valor] por [mês/ano]
+   • Oportunidade perdida: [X] deals/mês
+
+🎯 SOLUÇÃO IDEAL (nas suas palavras):
+   • [Necessidade 1 mencionada pelo prospect]
+   • [Necessidade 2 mencionada pelo prospect]
+
+PRÓXIMO PASSO:
+Como combinamos, vou preparar uma proposta focada em [dor principal]
+e te mostro na [dia/hora agendado].
+
+Alguma coisa que eu não entendi ou esqueci?
+
+Abraço,
+[Seu Nome]
+
+P.S.: Anexei o checklist de perguntas SPIN que mencionei. Pode ser
+útil para suas reuniões internas.
+
+═══════════════════════════════════════════════════════════════════
+📧 EMAIL 2 - LEMBRETE PRÉ-REUNIÃO (ENVIAR 1 DIA ANTES DA PROPOSTA)
+═══════════════════════════════════════════════════════════════════
+
+Assunto: Amanhã às [hora] - Proposta para [empresa]
+
+[Nome],
+
+Confirmando nossa reunião de amanhã às [hora] para apresentar a
+proposta focada em resolver [dor principal].
+
+Vou mostrar especificamente como podemos te ajudar a:
+
+1. Eliminar [problema 1] que custa R$ [valor]/mês
+2. Reduzir [problema 2] em pelo menos 50%
+3. Implementar [solução desejada] em menos de 30 dias
+
+A call vai durar 30 minutos. Alguém mais da equipe vai participar?
+
+Nos vemos amanhã!
+
+[Seu Nome]
+
+═══════════════════════════════════════════════════════════════════
+📧 EMAIL 3 - FOLLOW-UP PÓS-PROPOSTA SEM RESPOSTA (ENVIAR APÓS 3 DIAS)
+═══════════════════════════════════════════════════════════════════
+
+Assunto: Re: Proposta [empresa] - alguma dúvida?
+
+[Nome],
+
+Faz 3 dias desde nossa última conversa e queria checar se você teve
+chance de revisar a proposta.
+
+Rápido recap do que conversamos:
+
+💡 PROBLEMA: Você está perdendo R$ [valor]/ano com [problema principal]
+
+✅ SOLUÇÃO: Nossa proposta resolve isso implementando [solução]
+   que vai [benefício principal]
+
+📊 ROI: Payback em [X] meses
+
+Tem alguma dúvida? Algo que não ficou claro?
+
+Ou você precisa de mais informações para tomar a decisão?
+
+Pode me chamar!
+
+[Seu Nome]
+
+P.S.: Se não for prioridade agora, sem problema. Quando faz sentido
+retomarmos?
+
+═══════════════════════════════════════════════════════════════════
+📧 EMAIL 4 - VENCENDO OBJEÇÃO "PRECISO PENSAR" (ENVIAR IMEDIATAMENTE)
+═══════════════════════════════════════════════════════════════════
+
+Assunto: Re: Preciso analisar
+
+[Nome],
+
+Entendo perfeitamente a necessidade de analisar.
+
+Só para ter certeza que estamos alinhados - tem algo específico que
+você precisa validar internamente?
+
+Eu pergunto porque você mencionou que:
+
+• Está perdendo R$ [valor] por mês com [problema]
+• Precisa resolver [dor] para bater meta de Q[X]
+• A solução ideal seria [necessidade mencionada]
+
+Se não resolver agora, isso significa mais [X] semanas perdendo
+R$ [valor/semana]...
+
+Vale a pena esperar?
+
+O que precisa acontecer para você decidir essa semana?
+
+[Seu Nome]
+
+═══════════════════════════════════════════════════════════════════
+📧 EMAIL 5 - REATIVAR LEAD FRIO (ENVIAR APÓS 30-60 DIAS)
+═══════════════════════════════════════════════════════════════════
+
+Assunto: [Nome], como está a situação de [problema]?
+
+Oi [Nome],
+
+Faz uns [X] meses desde nossa última conversa sobre [problema principal].
+
+Na época você mencionou que estava perdendo R$ [valor] com isso...
+
+Resolveubr/>
+Se sim, parabéns! Adoraria saber o que implementaram.
+
+Se não, significa que você já perdeu R$ [valor acumulado em X meses].
+
+Faz sentido conversarmos 15 minutos para ver se ainda faz sentido
+te ajudar com isso?
+
+[Seu Nome]
+
+P.S.: Se mudou de prioridade, sem problema. Só me avisa para eu
+remover você da minha lista.
+
+═══════════════════════════════════════════════════════════════════
+📧 EMAIL 6 - BREAK-UP EMAIL (ÚLTIMO RECURSO APÓS 5+ TENTATIVAS)
+═══════════════════════════════════════════════════════════════════
+
+Assunto: Última tentativa
+
+[Nome],
+
+Tentei te contatar várias vezes nas últimas semanas mas sem sucesso.
+
+Vou assumir que:
+
+a) Você resolveu o problema de [X] internamente (parabéns!)
+b) Não é prioridade agora
+c) Não faz sentido para vocês
+
+Sem problema em qualquer caso.
+
+Só me confirma se posso te remover da minha lista de follow-up?
+
+Se mudar de ideia, meu contato continua o mesmo.
+
+Sucesso aí!
+
+[Seu Nome]
+
+P.S.: Geralmente esse email é o que mais gera resposta. Se você
+ainda está interessado, é só me avisar.
+
+═══════════════════════════════════════════════════════════════════
+💡 DICAS DE FOLLOW-UP SPIN SELLING
+═══════════════════════════════════════════════════════════════════
+
+1. ✅ SEMPRE use as palavras EXATAS que o prospect usou para
+      descrever problemas
+
+2. ✅ SEMPRE quantifique o custo (R$/tempo) em todo email
+
+3. ✅ SEMPRE referencie algo específico que ele disse na discovery
+
+4. ✅ SEMPRE tenha um call-to-action claro (pergunta que exige
+      resposta)
+
+5. ❌ NUNCA fale de features - fale dos PROBLEMAS que resolve
+
+6. ❌ NUNCA mande email genérico - personalize com dados da discovery
+
+7. ❌ NUNCA pressione - crie urgência com custo de esperar
+
+8. ⏰ TIMING IDEAL:
+      • Email 1: 1 hora pós-discovery
+      • Email 2: 1 dia antes da proposta
+      • Email 3: 3 dias pós-proposta
+      • Email 4: Imediato após objeção
+      • Email 5: 30-60 dias lead frio
+      • Email 6: Após 5+ tentativas
+
+═══════════════════════════════════════════════════════════════════
+
+📧 Desenvolvido por Sirius CRM
+🌐 sirius.roilabs.com.br | conteudo@sirius.roilabs.com.br
+
+═══════════════════════════════════════════════════════════════════
