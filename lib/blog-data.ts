@@ -4047,13 +4047,13 @@ a Sirius resolve especificamente [Problema 1], [Problema 2] e [Problema 3]..."
 
 <h2>📣 Compartilhe Este Guia</h2>
 
-<p>Ajude outros vendedores a venderem melhor:</p>
+<strong>Ajude outros vendedores a venderem melhor:</strong>
+Se este guia foi útil para você, compartilhe com sua rede e ajude outros profissionais de vendas a aumentarem suas conversões.
 
 <div style="display: flex; gap: 1rem; margin: 2rem 0;">
-  - 🔗 <a href="https://linkedin.com/share?url=https://sirius.roilabs.com.br/blog/spin-selling-guia-completo" target="_blank" rel="noopener">Compartilhar no LinkedIn</a>
-  - 🐦 <a href="https://twitter.com/intent/tweet?url=https://sirius.roilabs.com.br/blog/spin-selling-guia-completo" target="_blank" rel="noopener">Compartilhar no Twitter</a>
-  - 💬 <a href="https://wa.me/?text=SPIN%20Selling%20Guia%20Completo%20https://sirius.roilabs.com.br/blog/spin-selling-guia-completo" target="_blank" rel="noopener">Compartilhar no WhatsApp</a>
-  - 📧 <a href="mailto:?subject=SPIN%20Selling%20Guia%20Completo&body=https://sirius.roilabs.com.br/blog/spin-selling-guia-completo" target="_blank" rel="noopener">Enviar por Email</a>
+  - 🔗 <a href="https://linkedin.com/share?url=https://sirius.roilabs.com.br/blog/spin-selling-guia-completo&title=SPIN%20Selling%20Guia%20Completo%202026" target="_blank" rel="noopener">Compartilhar no LinkedIn</a>
+  - 💬 <a href="https://wa.me/?text=Guia%20completo%20de%20SPIN%20Selling%20com%20100+%20perguntas%20pr%C3%A1ticas%20e%20templates%20gratuitos%20%F0%9F%8E%AF%20https://sirius.roilabs.com.br/blog/spin-selling-guia-completo" target="_blank" rel="noopener">Compartilhar no WhatsApp</a>
+  - 📸 <a href="https://www.instagram.com/" target="_blank" rel="noopener">Compartilhar no Instagram</a>
 </div>
 
 <hr style="margin: 3rem 0; border: none; border-top: 1px solid #e5e7eb;" />

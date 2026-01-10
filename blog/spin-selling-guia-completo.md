@@ -1633,13 +1633,13 @@ Não espere o "momento perfeito". Comece hoje, erre, aprenda, refine. Em 90 dias
 
 ## 📣 Compartilhe Este Guia
 
-Ajude outros vendedores a venderem melhor:
+**Ajude outros vendedores a venderem melhor:**
+Se este guia foi útil para você, compartilhe com sua rede e ajude outros profissionais de vendas a aumentarem suas conversões.
 
 <ShareButtons>
-  - 🔗 [Compartilhar no LinkedIn](https://linkedin.com/share?url=https://sirius.roilabs.com.br/blog/spin-selling-guia-completo)
-  - 🐦 [Compartilhar no Twitter](https://twitter.com/intent/tweet?url=https://sirius.roilabs.com.br/blog/spin-selling-guia-completo)
-  - 💬 [Compartilhar no WhatsApp](https://wa.me/?text=SPIN%20Selling%20Guia%20Completo%20https://sirius.roilabs.com.br/blog/spin-selling-guia-completo)
-  - 📧 [Enviar por Email](mailto:?subject=SPIN%20Selling%20Guia%20Completo&body=https://sirius.roilabs.com.br/blog/spin-selling-guia-completo)
+  - 🔗 [Compartilhar no LinkedIn](https://linkedin.com/share?url=https://sirius.roilabs.com.br/blog/spin-selling-guia-completo&title=SPIN%20Selling%20Guia%20Completo%202026)
+  - 💬 [Compartilhar no WhatsApp](https://wa.me/?text=Guia%20completo%20de%20SPIN%20Selling%20com%20100+%20perguntas%20pr%C3%A1ticas%20e%20templates%20gratuitos%20%F0%9F%8E%AF%20https://sirius.roilabs.com.br/blog/spin-selling-guia-completo)
+  - 📸 [Compartilhar no Instagram](https://www.instagram.com/)
 </ShareButtons>
 
 ---
