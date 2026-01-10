@@ -1,13 +1,15 @@
-
 <svg width="1200" height="800" xmlns="http://www.w3.org/2000/svg">
   <defs>
-    <linearGradient id="grad3" x1="0%" y1="0%" x2="0%" y2="100%">
+    <linearGradient id="etapas-grad3" x1="0%" y1="0%" x2="0%" y2="100%">
       <stop offset="0%" style="stop-color:#f0f9ff;stop-opacity:1" />
       <stop offset="100%" style="stop-color:#e0f2fe;stop-opacity:1" />
     </linearGradient>
+    <marker id="etapas-arrow3" markerWidth="12" markerHeight="12" refX="10" refY="4" orient="auto">
+      <polygon points="0 0, 12 4, 0 8" fill="#1e40af" />
+    </marker>
   </defs>
 
-  <rect width="1200" height="800" fill="url(#grad3)"/>
+  <rect width="1200" height="800" fill="url(#etapas-grad3)"/>
 
   <text x="600" y="60" font-family="Arial, sans-serif" font-size="40" font-weight="bold" fill="#1e40af" text-anchor="middle">
     Fluxograma SPIN Selling (45 minutos)
@@ -20,14 +22,14 @@
       1. SITUAÇÃO
     </text>
     <text x="240" y="205" font-family="Arial, sans-serif" font-size="16" fill="#dbeafe" text-anchor="middle">
-      Contexto & Background
+      Contexto &amp; Background
     </text>
     <text x="240" y="240" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="white" text-anchor="middle">
       ⏱ 5-10 minutos
     </text>
   </g>
 
-  <path d="M 380 200 L 450 200" stroke="#1e40af" stroke-width="4" fill="none" marker-end="url(#arrow3)"/>
+  <path d="M 380 200 L 450 200" stroke="#1e40af" stroke-width="4" fill="none" marker-end="url(#etapas-arrow3)"/>
 
   <!-- Etapa 2: Problema -->
   <g>
@@ -36,14 +38,14 @@
       2. PROBLEMA
     </text>
     <text x="590" y="205" font-family="Arial, sans-serif" font-size="16" fill="#fee2e2" text-anchor="middle">
-      Dificuldades & Dores
+      Dificuldades &amp; Dores
     </text>
     <text x="590" y="240" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="white" text-anchor="middle">
       ⏱ 15-20 minutos
     </text>
   </g>
 
-  <path d="M 730 200 L 800 200" stroke="#991b1b" stroke-width="4" fill="none" marker-end="url(#arrow3)"/>
+  <path d="M 730 200 L 800 200" stroke="#991b1b" stroke-width="4" fill="none" marker-end="url(#etapas-arrow3)"/>
 
   <!-- Etapa 3: Implicação -->
   <g>
@@ -52,14 +54,14 @@
       3. IMPLICAÇÃO
     </text>
     <text x="940" y="205" font-family="Arial, sans-serif" font-size="16" fill="#fef3c7" text-anchor="middle">
-      Consequências & Custos
+      Consequências &amp; Custos
     </text>
     <text x="940" y="240" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="white" text-anchor="middle">
       ⏱ 10-15 minutos
     </text>
   </g>
 
-  <path d="M 940 270 L 940 340" stroke="#78350f" stroke-width="4" fill="none" marker-end="url(#arrow3)"/>
+  <path d="M 940 270 L 940 340" stroke="#78350f" stroke-width="4" fill="none" marker-end="url(#etapas-arrow3)"/>
 
   <!-- Etapa 4: Necessidade -->
   <g>
@@ -118,10 +120,4 @@
       Próximo passo: Apresentação/Demo personalizada
     </text>
   </g>
-
-  <defs>
-    <marker id="arrow3" markerWidth="12" markerHeight="12" refX="10" refY="4" orient="auto">
-      <polygon points="0 0, 12 4, 0 8" fill="#1e40af" />
-    </marker>
-  </defs>
 </svg>
