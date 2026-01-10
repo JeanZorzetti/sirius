@@ -2886,32 +2886,32 @@ a Sirius resolve especificamente [Problema 1], [Problema 2] e [Problema 3]..."
 
 <AccordionSection title="40 perguntas (Situação + Problema + Implicação + Necessidade)">
   <strong>Situação (S):</strong>
-  41. Qual o volume de pedidos por mês?
-  42. Como vocês gerenciam o pós-venda e recompra?
-  43. Quantos canais de venda vocês operam?
-  44. Como é feito o controle de estoque integrado?
-  45. Qual o ticket médio de compra?
+  41. Qual o volume de pedidos por mês?<br/>
+  42. Como vocês gerenciam o pós-venda e recompra?<br/>
+  43. Quantos canais de venda vocês operam?<br/>
+  44. Como é feito o controle de estoque integrado?<br/>
+  45. Qual o ticket médio de compra?<br/>
 
 <strong>Problema (P):</strong>
-  46. Clientes reclamam de comunicação inconsistente?
-  47. Com que frequência há problemas de estoque?
-  48. Vocês perdem oportunidades de cross-sell/upsell?
-  49. Há dificuldade em unificar dados de múltiplos canais?
-  50. A retenção de clientes é um problema?
+  46. Clientes reclamam de comunicação inconsistente?<br/>
+  47. Com que frequência há problemas de estoque?<br/>
+  48. Vocês perdem oportunidades de cross-sell/upsell?<br/>
+  49. Há dificuldade em unificar dados de múltiplos canais?<br/>
+  50. A retenção de clientes é um problema?<br/>
 
 <strong>Implicação (I):</strong>
-  51. Qual o custo de perder um cliente para concorrentes?
-  52. Como a falta de personalização afeta as vendas?
-  53. Se vocês não melhorarem a experiência, qual o impacto no LTV?
-  54. Qual o prejuízo de rupturas de estoque por mês?
-  55. Como a desorganização afeta a imagem da marca?
+  51. Qual o custo de perder um cliente para concorrentes?<br/>
+  52. Como a falta de personalização afeta as vendas?<br/>
+  53. Se vocês não melhorarem a experiência, qual o impacto no LTV?<br/>
+  54. Qual o prejuízo de rupturas de estoque por mês?<br/>
+  55. Como a desorganização afeta a imagem da marca?<br/>
 
 <strong>Necessidade (N):</strong>
-  56. Como seria ter visão 360° de cada cliente?
-  57. Qual o impacto de aumentar recompra em 20%?
-  58. O que mudaria com automação de pós-venda?
-  59. Como seria prever demanda com precisão?
-  60. Qual seria o ganho de reduzir CAC em 30%?
+  56. Como seria ter visão 360° de cada cliente?<br/>
+  57. Qual o impacto de aumentar recompra em 20%?<br/>
+  58. O que mudaria com automação de pós-venda?<br/>
+  59. Como seria prever demanda com precisão?<br/>
+  60. Qual seria o ganho de reduzir CAC em 30%?<br/>
 </AccordionSection>
 
 <hr style="margin: 3rem 0; border: none; border-top: 1px solid #e5e7eb;" />
@@ -2920,32 +2920,32 @@ a Sirius resolve especificamente [Problema 1], [Problema 2] e [Problema 3]..."
 
 <AccordionSection title="40 perguntas (Situação + Problema + Implicação + Necessidade)">
   <strong>Situação (S):</strong>
-  61. Como vocês captam novos clientes hoje?
-  62. Qual o tamanho médio de projeto?
-  63. Como é feito o controle de horas e entregáveis?
-  64. Quantos projetos simultâneos vocês gerenciam?
-  65. Como funciona o pricing (fixo, hora, valor)?
+  61. Como vocês captam novos clientes hoje?<br/>
+  62. Qual o tamanho médio de projeto?<br/>
+  63. Como é feito o controle de horas e entregáveis?<br/>
+  64. Quantos projetos simultâneos vocês gerenciam?<br/>
+  65. Como funciona o pricing (fixo, hora, valor)?<br/>
 
 <strong>Problema (P):</strong>
-  66. Vocês perdem oportunidades por proposta lenta?
-  67. Há dificuldade em estimar escopo/horas?
-  68. Clientes reclamam de falta de comunicação?
-  69. Existem projetos que dão prejuízo? Por quê?
-  70. A inadimplência é um problema recorrente?
+  66. Vocês perdem oportunidades por proposta lenta?<br/>
+  67. Há dificuldade em estimar escopo/horas?<br/>
+  68. Clientes reclamam de falta de comunicação?<br/>
+  69. Existem projetos que dão prejuízo? Por quê?<br/>
+  70. A inadimplência é um problema recorrente?<br/>
 
 <strong>Implicação (I):</strong>
-  71. Qual o custo de uma proposta perdida por demora?
-  72. Se projetos continuarem no prejuízo, qual o impacto?
-  73. Como a falta de controle afeta a lucratividade?
-  74. Qual o custo de refazer trabalho por falha de comunicação?
-  75. Se a inadimplência continuar, qual o risco financeiro?
+  71. Qual o custo de uma proposta perdida por demora?<br/>
+  72. Se projetos continuarem no prejuízo, qual o impacto?<br/>
+  73. Como a falta de controle afeta a lucratividade?<br/>
+  74. Qual o custo de refazer trabalho por falha de comunicação?<br/>
+  75. Se a inadimplência continuar, qual o risco financeiro?<br/>
 
 <strong>Necessidade (N):</strong>
-  76. Como seria ter propostas automatizadas e rápidas?
-  77. Qual o impacto de aumentar margem de projetos em 15%?
-  78. O que mudaria com rastreamento real-time de horas?
-  79. Como seria prever receita recorrente com precisão?
-  80. Qual seria o ganho de reduzir inadimplência pela metade?
+  76. Como seria ter propostas automatizadas e rápidas?<br/>
+  77. Qual o impacto de aumentar margem de projetos em 15%?<br/>
+  78. O que mudaria com rastreamento real-time de horas?<br/>
+  79. Como seria prever receita recorrente com precisão?<br/>
+  80. Qual seria o ganho de reduzir inadimplência pela metade?<br/>
 </AccordionSection>
 
 <hr style="margin: 3rem 0; border: none; border-top: 1px solid #e5e7eb;" />
@@ -2954,32 +2954,32 @@ a Sirius resolve especificamente [Problema 1], [Problema 2] e [Problema 3]..."
 
 <AccordionSection title="20 perguntas (Situação + Problema + Implicação + Necessidade)">
   <strong>Situação (S):</strong>
-  81. Quantos imóveis vocês têm em carteira?
-  82. Como é feita a distribuição de leads entre corretores?
-  83. Qual o ciclo médio de venda de um imóvel?
-  84. Como vocês acompanham visitas e follow-ups?
-  85. Quantos corretores trabalham com vocês?
+  81. Quantos imóveis vocês têm em carteira?<br/>
+  82. Como é feita a distribuição de leads entre corretores?<br/>
+  83. Qual o ciclo médio de venda de um imóvel?<br/>
+  84. Como vocês acompanham visitas e follow-ups?<br/>
+  85. Quantos corretores trabalham com vocês?<br/>
 
 <strong>Problema (P):</strong>
-  86. Clientes reclamam de falta de retorno rápido?
-  87. Com que frequência leads são perdidos entre corretores?
-  88. Há dificuldade em matchmaking (cliente x imóvel)?
-  89. Existem informações desatualizadas de imóveis?
-  90. A documentação é um gargalo frequente?
+  86. Clientes reclamam de falta de retorno rápido?<br/>
+  87. Com que frequência leads são perdidos entre corretores?<br/>
+  88. Há dificuldade em matchmaking (cliente x imóvel)?<br/>
+  89. Existem informações desatualizadas de imóveis?<br/>
+  90. A documentação é um gargalo frequente?<br/>
 
 <strong>Implicação (I):</strong>
-  91. Qual o custo de um lead perdido (comissão)?
-  92. Se a reputação piorar, qual o impacto no volume de leads?
-  93. Quanto dinheiro é perdido por imóveis parados?
-  94. Qual o prejuízo de atrasos na documentação?
-  95. Como a desorganização afeta captação de novos imóveis?
+  91. Qual o custo de um lead perdido (comissão)?<br/>
+  92. Se a reputação piorar, qual o impacto no volume de leads?<br/>
+  93. Quanto dinheiro é perdido por imóveis parados?<br/>
+  94. Qual o prejuízo de atrasos na documentação?<br/>
+  95. Como a desorganização afeta captação de novos imóveis?<br/>
 
 <strong>Necessidade (N):</strong>
-  96. Como seria ter matchmaking automático cliente-imóvel?
-  97. Qual o impacto de reduzir tempo de venda em 30 dias?
-  98. O que mudaria com follow-up automático via WhatsApp?
-  99. Como seria centralizar toda documentação em um lugar?
-  100. Qual seria o ganho de aumentar conversão de visita em 20%?
+  96. Como seria ter matchmaking automático cliente-imóvel?<br/>
+  97. Qual o impacto de reduzir tempo de venda em 30 dias?<br/>
+  98. O que mudaria com follow-up automático via WhatsApp?<br/>
+  99. Como seria centralizar toda documentação em um lugar?<br/>
+  100. Qual seria o ganho de aumentar conversão de visita em 20%?<br/>
 </AccordionSection>
 
 <hr style="margin: 3rem 0; border: none; border-top: 1px solid #e5e7eb;" />
