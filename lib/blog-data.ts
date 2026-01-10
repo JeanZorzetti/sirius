@@ -2829,55 +2829,55 @@ a Sirius resolve especificamente [Problema 1], [Problema 2] e [Problema 3]..."
 <h3><strong>🏢 B2B SaaS / CRM</strong></h3>
 
 <AccordionSection title="Perguntas de Situação (10 perguntas)">
-  1. Quantos usuários precisariam de acesso ao CRM?
-  2. Quais integrações são críticas para vocês? (email, telefonia, BI)
-  3. Qual é o volume médio de deals por mês?
-  4. Como funciona o processo de passagem de SDR para Closer?
-  5. Vocês têm múltiplos pipelines ou apenas um?
-  6. Como é feita a distribuição de leads entre vendedores?
-  7. Qual a meta individual de cada vendedor?
-  8. Com que frequência vocês fazem forecast de receita?
-  9. Quem usa os dados do CRM além da equipe comercial?
-  10. Qual o tamanho médio do ticket hoje?
+  1. Quantos usuários precisariam de acesso ao CRM?<br/>
+  2. Quais integrações são críticas para vocês? (email, telefonia, BI)<br/>
+  3. Qual é o volume médio de deals por mês?<br/>
+  4. Como funciona o processo de passagem de SDR para Closer?<br/>
+  5. Vocês têm múltiplos pipelines ou apenas um?<br/>
+  6. Como é feita a distribuição de leads entre vendedores?<br/>
+  7. Qual a meta individual de cada vendedor?<br/>
+  8. Com que frequência vocês fazem forecast de receita?<br/>
+  9. Quem usa os dados do CRM além da equipe comercial?<br/>
+  10. Qual o tamanho médio do ticket hoje?<br/>
 </AccordionSection>
 
 <AccordionSection title="Perguntas de Problema (10 perguntas)">
-  11. Qual o principal gargalo no processo de vendas?
-  12. Com que frequência oportunidades são perdidas por falta de follow-up?
-  13. Você sente que tem visibilidade real do que está acontecendo?
-  14. Quanto tempo por semana você gasta cobrando atualizações?
-  15. Existem informações duplicadas ou conflitantes no CRM?
-  16. Os vendedores reclamam da ferramenta atual? Por quê?
-  17. Com que frequência vocês perdem deals para concorrentes mais rápidos?
-  18. Existe atrito entre marketing e vendas sobre qualidade dos leads?
-  19. Vocês conseguem rastrear ROI de campanhas até o fechamento?
-  20. Há problemas de adoção com a ferramenta atual?
+  11. Qual o principal gargalo no processo de vendas?<br/>
+  12. Com que frequência oportunidades são perdidas por falta de follow-up?<br/>
+  13. Você sente que tem visibilidade real do que está acontecendo?<br/>
+  14. Quanto tempo por semana você gasta cobrando atualizações?<br/>
+  15. Existem informações duplicadas ou conflitantes no CRM?<br/>
+  16. Os vendedores reclamam da ferramenta atual? Por quê?<br/>
+  17. Com que frequência vocês perdem deals para concorrentes mais rápidos?<br/>
+  18. Existe atrito entre marketing e vendas sobre qualidade dos leads?<br/>
+  19. Vocês conseguem rastrear ROI de campanhas até o fechamento?<br/>
+  20. Há problemas de adoção com a ferramenta atual?<br/>
 </AccordionSection>
 
 <AccordionSection title="Perguntas de Implicação (10 perguntas)">
-  21. Se esse problema continuar, qual o impacto na meta anual?
-  22. Qual o custo de um vendedor improdutivo por 3 meses?
-  23. Como a falta de dados confiáveis afeta suas decisões?
-  24. Se vocês continuarem perdendo deals por lentidão, qual o impacto competitivo?
-  25. Qual o risco de turnover se a equipe continuar frustrada com ferramentas ruins?
-  26. Como a falta de previsibilidade afeta o planejamento da empresa?
-  27. Se vocês não conseguirem escalar vendas, como isso impacta os planos de crescimento?
-  28. Quanto dinheiro está sendo desperdiçado em oportunidades mal gerenciadas?
-  29. Qual o impacto de não ter insights para tomar decisões estratégicas?
-  30. Como isso afeta a credibilidade do time comercial com o board?
+  21. Se esse problema continuar, qual o impacto na meta anual?<br/>
+  22. Qual o custo de um vendedor improdutivo por 3 meses?<br/>
+  23. Como a falta de dados confiáveis afeta suas decisões?<br/>
+  24. Se vocês continuarem perdendo deals por lentidão, qual o impacto competitivo?<br/>
+  25. Qual o risco de turnover se a equipe continuar frustrada com ferramentas ruins?<br/>
+  26. Como a falta de previsibilidade afeta o planejamento da empresa?<br/>
+  27. Se vocês não conseguirem escalar vendas, como isso impacta os planos de crescimento?<br/>
+  28. Quanto dinheiro está sendo desperdiçado em oportunidades mal gerenciadas?<br/>
+  29. Qual o impacto de não ter insights para tomar decisões estratégicas?<br/>
+  30. Como isso afeta a credibilidade do time comercial com o board?<br/>
 </AccordionSection>
 
 <AccordionSection title="Perguntas de Necessidade (10 perguntas)">
-  31. Se vocês tivessem total visibilidade do pipeline, como isso mudaria sua rotina?
-  32. Qual seria o impacto de reduzir o ciclo de vendas em 30%?
-  33. Como seria se cada vendedor atualizasse o CRM naturalmente?
-  34. O que seria diferente se vocês tivessem forecast preciso?
-  35. Como você mediria o sucesso de um novo CRM em 6 meses?
-  36. Quão importante é resolver isso nos próximos 90 dias?
-  37. Além de resolver X, que outras capacidades seriam diferenciais?
-  38. Como você imagina o processo de vendas ideal daqui a 1 ano?
-  39. Se vocês pudessem eliminar UMA dor do time, qual seria?
-  40. Que tipo de insights você gostaria de ter que não tem hoje?
+  31. Se vocês tivessem total visibilidade do pipeline, como isso mudaria sua rotina?<br/>
+  32. Qual seria o impacto de reduzir o ciclo de vendas em 30%?<br/>
+  33. Como seria se cada vendedor atualizasse o CRM naturalmente?<br/>
+  34. O que seria diferente se vocês tivessem forecast preciso?<br/>
+  35. Como você mediria o sucesso de um novo CRM em 6 meses?<br/>
+  36. Quão importante é resolver isso nos próximos 90 dias?<br/>
+  37. Além de resolver X, que outras capacidades seriam diferenciais?<br/>
+  38. Como você imagina o processo de vendas ideal daqui a 1 ano?<br/>
+  39. Se vocês pudessem eliminar UMA dor do time, qual seria?<br/>
+  40. Que tipo de insights você gostaria de ter que não tem hoje?<br/>
 </AccordionSection>
 
 <hr style="margin: 3rem 0; border: none; border-top: 1px solid #e5e7eb;" />
