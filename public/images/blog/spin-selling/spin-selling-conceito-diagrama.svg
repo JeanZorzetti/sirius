@@ -100,13 +100,13 @@
   </g>
 
   <!-- Arrows -->
-  <path d="M 470 225 L 530 225" stroke="#334155" stroke-width="3" fill="none" marker-end="url(#arrowhead)"/>
-  <path d="M 260 350 L 260 400" stroke="#334155" stroke-width="3" fill="none" marker-end="url(#arrowhead)"/>
-  <path d="M 740 350 L 740 400" stroke="#334155" stroke-width="3" fill="none" marker-end="url(#arrowhead)"/>
-  <path d="M 470 525 L 530 525" stroke="#334155" stroke-width="3" fill="none" marker-end="url(#arrowhead)"/>
+  <path d="M 470 225 L 530 225" stroke="#334155" stroke-width="3" fill="none" marker-end="url(#conceito-arrowhead)"/>
+  <path d="M 260 350 L 260 400" stroke="#334155" stroke-width="3" fill="none" marker-end="url(#conceito-arrowhead)"/>
+  <path d="M 740 350 L 740 400" stroke="#334155" stroke-width="3" fill="none" marker-end="url(#conceito-arrowhead)"/>
+  <path d="M 470 525 L 530 525" stroke="#334155" stroke-width="3" fill="none" marker-end="url(#conceito-arrowhead)"/>
 
   <defs>
-    <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+    <marker id="conceito-arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
       <polygon points="0 0, 10 3, 0 6" fill="#334155" />
     </marker>
   </defs>

@@ -17,7 +17,7 @@
     </text>
   </g>
 
-  <path d="M 500 280 L 500 320" stroke="#f97316" stroke-width="4" marker-end="url(#arrow4)"/>
+  <path d="M 500 280 L 500 320" stroke="#f97316" stroke-width="4" marker-end="url(#problem-arrow4)"/>
 
   <!-- Layer 2: Root Cause -->
   <g>
@@ -33,7 +33,7 @@
     </text>
   </g>
 
-  <path d="M 500 480 L 500 520" stroke="#ea580c" stroke-width="4" marker-end="url(#arrow4)"/>
+  <path d="M 500 480 L 500 520" stroke="#ea580c" stroke-width="4" marker-end="url(#problem-arrow4)"/>
 
   <!-- Layer 3: Business Impact -->
   <g>
@@ -50,7 +50,7 @@
   </g>
 
   <defs>
-    <marker id="arrow4" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+    <marker id="problem-arrow4" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
       <polygon points="0 0, 10 3, 0 6" fill="#f97316" />
     </marker>
   </defs>
