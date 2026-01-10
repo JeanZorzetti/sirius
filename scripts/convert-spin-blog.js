@@ -29,8 +29,8 @@ const contentWithoutFrontmatter = markdownContent.replace(frontmatterRegex, '').
 // Convert markdown to HTML
 let htmlContent = contentWithoutFrontmatter;
 
-// Convert markdown tables to styled HTML tables
-htmlContent = htmlContent.replace(/(\|.+\|[\r\n]+\|[-:\s|]+\|[\r\n]+(?:\|.+\|[\r\n]*)+)/gm, (match) => {
+// Convert markdown tables to styled HTML tables (including indented tables)
+htmlContent = htmlContent.replace(/(\s*\|.+\|[\r\n]+\s*\|[-:\s|]+\|[\r\n]+(?:\s*\|.+\|[\r\n]*)+)/gm, (match) => {
   const lines = match.trim().split('\n');
   const headers = lines[0].split('|').filter(h => h.trim());
   const rows = lines.slice(2).map(row => row.split('|').filter(cell => cell.trim()));

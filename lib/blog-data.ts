@@ -2214,7 +2214,6 @@ export const blogPosts: BlogPost[] = [
 <em>Alt text: SPIN Selling estatísticas pesquisa Huthwaite - 35000 ligações vendas 20 países 12 anos Neil Rackham</em>
 
 <h3>Resultados Mensuráveis:</h3>
-
 <div style="overflow-x: auto; margin: 2rem 0; border-radius: 0.75rem; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);">
   <table style="width: 100%; border-collapse: collapse; background: white; font-size: 0.9375rem;">
     <thead>
@@ -2305,7 +2304,6 @@ export const blogPosts: BlogPost[] = [
 <em>Alt text: Comparação metodologias vendas B2B - SPIN Selling vs BANT GPCT Challenger quando usar</em>
 
 <h3>Tabela Comparativa:</h3>
-
 <div style="overflow-x: auto; margin: 2rem 0; border-radius: 0.75rem; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);">
   <table style="width: 100%; border-collapse: collapse; background: white; font-size: 0.9375rem;">
     <thead>
@@ -2555,7 +2553,6 @@ Cada problema identificado deve ser <strong>específico</strong> e <strong>mensu
 </FormulaBox>
 
 <strong>Exemplo Real (Discovery Sirius CRM):</strong>
-
 <div style="overflow-x: auto; margin: 2rem 0; border-radius: 0.75rem; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);">
   <table style="width: 100%; border-collapse: collapse; background: white; font-size: 0.9375rem;">
     <thead>
@@ -3019,7 +3016,6 @@ a Sirius resolve especificamente [Problema 1], [Problema 2] e [Problema 3]..."
 <em>Alt text: Matriz objeções vendas SPIN Selling - como responder está caro preciso pensar já temos solução</em>
 
 <h3><strong>📊 Tabela: Objeção → Origem → Argumento SPIN</strong></h3>
-
 <div style="overflow-x: auto; margin: 2rem 0; border-radius: 0.75rem; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);">
   <table style="width: 100%; border-collapse: collapse; background: white; font-size: 0.9375rem;">
     <thead>
@@ -3184,19 +3180,45 @@ a Sirius resolve especificamente [Problema 1], [Problema 2] e [Problema 3]..."
   <strong>O Problema:</strong> Identificar um problema superficial e partir para apresentação.
 
 <strong>Comparação Lado a Lado:</strong>
-
-<p>| Conversa Ruim ❌ | Conversa Correta ✅ (Problem Chain) |
-  |------------------|-------------------------------------|
-  | V: "Qual o problema no CRM?" | V: "Qual o problema no CRM?" |
-  | C: "A equipe não usa." | C: "A equipe não usa." |
-  | V: "Entendi! Nosso CRM tem adoção alta..." | V: "Por que você acha que isso acontece?" |
-  | | C: "É complicado demais." |
-  | | V: "E o que acontece quando eles não usam?" |
-  | | C: "Eu perco visibilidade do pipeline." |
-  | | V: "Qual o impacto disso no dia a dia?" |
-  | | C: "Não consigo fazer forecast pro board." |</p>
-
-<strong>💊 Solução:</strong> Sempre faça <strong>pelo menos 3 camadas</strong> de perguntas sobre cada problema.
+<div style="overflow-x: auto; margin: 2rem 0; border-radius: 0.75rem; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);">
+  <table style="width: 100%; border-collapse: collapse; background: white; font-size: 0.9375rem;">
+    <thead>
+      <tr style="background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);">
+        <th style="padding: 1rem; text-align: left; color: white; font-weight: 600; border-bottom: 2px solid #1e40af;">Conversa Ruim ❌</th>
+        <th style="padding: 1rem; text-align: left; color: white; font-weight: 600; border-bottom: 2px solid #1e40af;">Conversa Correta ✅ (Problem Chain)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr style="background: #f8fafc; transition: background 0.2s;" onmouseover="this.style.background='#e0f2fe'" onmouseout="this.style.background='#f8fafc'">
+        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;">V: "Qual o problema no CRM?"</td>
+        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;">V: "Qual o problema no CRM?"</td>
+      </tr>
+      <tr style="background: #ffffff; transition: background 0.2s;" onmouseover="this.style.background='#e0f2fe'" onmouseout="this.style.background='#ffffff'">
+        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;">C: "A equipe não usa."</td>
+        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;">C: "A equipe não usa."</td>
+      </tr>
+      <tr style="background: #f8fafc; transition: background 0.2s;" onmouseover="this.style.background='#e0f2fe'" onmouseout="this.style.background='#f8fafc'">
+        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;">V: "Entendi! Nosso CRM tem adoção alta..."</td>
+        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;">V: "Por que você acha que isso acontece?"</td>
+      </tr>
+      <tr style="background: #ffffff; transition: background 0.2s;" onmouseover="this.style.background='#e0f2fe'" onmouseout="this.style.background='#ffffff'">
+        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;">C: "É complicado demais."</td>
+      </tr>
+      <tr style="background: #f8fafc; transition: background 0.2s;" onmouseover="this.style.background='#e0f2fe'" onmouseout="this.style.background='#f8fafc'">
+        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;">V: "E o que acontece quando eles não usam?"</td>
+      </tr>
+      <tr style="background: #ffffff; transition: background 0.2s;" onmouseover="this.style.background='#e0f2fe'" onmouseout="this.style.background='#ffffff'">
+        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;">C: "Eu perco visibilidade do pipeline."</td>
+      </tr>
+      <tr style="background: #f8fafc; transition: background 0.2s;" onmouseover="this.style.background='#e0f2fe'" onmouseout="this.style.background='#f8fafc'">
+        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;">V: "Qual o impacto disso no dia a dia?"</td>
+      </tr>
+      <tr style="background: #ffffff; transition: background 0.2s;" onmouseover="this.style.background='#e0f2fe'" onmouseout="this.style.background='#ffffff'">
+        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;">C: "Não consigo fazer forecast pro board."</td>
+      </tr>
+    </tbody>
+  </table>
+</div>  <strong>💊 Solução:</strong> Sempre faça <strong>pelo menos 3 camadas</strong> de perguntas sobre cada problema.
 </div>
   </div>
 
@@ -3279,18 +3301,42 @@ a Sirius resolve especificamente [Problema 1], [Problema 2] e [Problema 3]..."
   3. <strong>Repita</strong> para próximo problema
 
 <strong>Comparação:</strong>
-
-<p>| Timing Ruim (Cedo Demais) ❌ | Timing Correto ✅ |
-  |------------------------------|-------------------|
-  | V: "Vocês usam CRM?" | V: "Vocês usam CRM?" |
-  | C: "Sim, mas a equipe não gosta." | C: "Sim, mas a equipe não gosta." |
-  | V: "E se perderem toda equipe?" [Absurdo!] | V: "O que especificamente eles não gostam?" [P] |
-  | | C: "É lento, trava, perde dados." |
-  | | V: "Com que frequência?" [P] |
-  | | C: "Toda semana tem reclamação." |
-  | | V: "Como isso afeta a produtividade?" [I - AGORA sim] |</p>
-
-<strong>💊 Solução:</strong> Explore <strong>pelo menos 2 problemas concretos</strong> antes de ir para implicação.
+<div style="overflow-x: auto; margin: 2rem 0; border-radius: 0.75rem; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);">
+  <table style="width: 100%; border-collapse: collapse; background: white; font-size: 0.9375rem;">
+    <thead>
+      <tr style="background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);">
+        <th style="padding: 1rem; text-align: left; color: white; font-weight: 600; border-bottom: 2px solid #1e40af;">Timing Ruim (Cedo Demais) ❌</th>
+        <th style="padding: 1rem; text-align: left; color: white; font-weight: 600; border-bottom: 2px solid #1e40af;">Timing Correto ✅</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr style="background: #f8fafc; transition: background 0.2s;" onmouseover="this.style.background='#e0f2fe'" onmouseout="this.style.background='#f8fafc'">
+        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;">V: "Vocês usam CRM?"</td>
+        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;">V: "Vocês usam CRM?"</td>
+      </tr>
+      <tr style="background: #ffffff; transition: background 0.2s;" onmouseover="this.style.background='#e0f2fe'" onmouseout="this.style.background='#ffffff'">
+        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;">C: "Sim, mas a equipe não gosta."</td>
+        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;">C: "Sim, mas a equipe não gosta."</td>
+      </tr>
+      <tr style="background: #f8fafc; transition: background 0.2s;" onmouseover="this.style.background='#e0f2fe'" onmouseout="this.style.background='#f8fafc'">
+        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;">V: "E se perderem toda equipe?" [Absurdo!]</td>
+        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;">V: "O que especificamente eles não gostam?" [P]</td>
+      </tr>
+      <tr style="background: #ffffff; transition: background 0.2s;" onmouseover="this.style.background='#e0f2fe'" onmouseout="this.style.background='#ffffff'">
+        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;">C: "É lento, trava, perde dados."</td>
+      </tr>
+      <tr style="background: #f8fafc; transition: background 0.2s;" onmouseover="this.style.background='#e0f2fe'" onmouseout="this.style.background='#f8fafc'">
+        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;">V: "Com que frequência?" [P]</td>
+      </tr>
+      <tr style="background: #ffffff; transition: background 0.2s;" onmouseover="this.style.background='#e0f2fe'" onmouseout="this.style.background='#ffffff'">
+        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;">C: "Toda semana tem reclamação."</td>
+      </tr>
+      <tr style="background: #f8fafc; transition: background 0.2s;" onmouseover="this.style.background='#e0f2fe'" onmouseout="this.style.background='#f8fafc'">
+        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;">V: "Como isso afeta a produtividade?" [I - AGORA sim]</td>
+      </tr>
+    </tbody>
+  </table>
+</div>  <strong>💊 Solução:</strong> Explore <strong>pelo menos 2 problemas concretos</strong> antes de ir para implicação.
 </div>
   </div>
 
@@ -3309,14 +3355,30 @@ a Sirius resolve especificamente [Problema 1], [Problema 2] e [Problema 3]..."
 <strong>Consequência:</strong> Você "empurra" solução. Cliente resiste.
 
 <strong>Comparação:</strong>
-
-<p>| Sem Necessidade ❌ | Com Necessidade ✅ |
-  |--------------------|---------------------|
-  | <strong>Vendedor:</strong> "Nosso CRM resolve isso!" | <strong>Vendedor:</strong> "Se você tivesse X, como mudaria?" |
-  | <strong>Cliente:</strong> "Hm, talvez..." (desconfiado) | <strong>Cliente:</strong> "Seria incrível! Eu poderia fazer Y e Z!" |
-  | <strong>Vendedor</strong> está vendendo | <strong>Cliente</strong> está comprando |</p>
-
-<strong>💊 Solução:</strong> <strong>Sempre</strong> faça 3-5 perguntas de Necessidade antes de apresentar.
+<div style="overflow-x: auto; margin: 2rem 0; border-radius: 0.75rem; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);">
+  <table style="width: 100%; border-collapse: collapse; background: white; font-size: 0.9375rem;">
+    <thead>
+      <tr style="background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);">
+        <th style="padding: 1rem; text-align: left; color: white; font-weight: 600; border-bottom: 2px solid #1e40af;">Sem Necessidade ❌</th>
+        <th style="padding: 1rem; text-align: left; color: white; font-weight: 600; border-bottom: 2px solid #1e40af;">Com Necessidade ✅</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr style="background: #f8fafc; transition: background 0.2s;" onmouseover="this.style.background='#e0f2fe'" onmouseout="this.style.background='#f8fafc'">
+        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;"><strong>Vendedor:</strong> "Nosso CRM resolve isso!"</td>
+        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;"><strong>Vendedor:</strong> "Se você tivesse X, como mudaria?"</td>
+      </tr>
+      <tr style="background: #ffffff; transition: background 0.2s;" onmouseover="this.style.background='#e0f2fe'" onmouseout="this.style.background='#ffffff'">
+        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;"><strong>Cliente:</strong> "Hm, talvez..." (desconfiado)</td>
+        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;"><strong>Cliente:</strong> "Seria incrível! Eu poderia fazer Y e Z!"</td>
+      </tr>
+      <tr style="background: #f8fafc; transition: background 0.2s;" onmouseover="this.style.background='#e0f2fe'" onmouseout="this.style.background='#f8fafc'">
+        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;"><strong>Vendedor</strong> está vendendo</td>
+        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;"><strong>Cliente</strong> está comprando</td>
+      </tr>
+    </tbody>
+  </table>
+</div>  <strong>💊 Solução:</strong> <strong>Sempre</strong> faça 3-5 perguntas de Necessidade antes de apresentar.
 </div>
   </div>
 
@@ -3719,15 +3781,44 @@ a Sirius resolve especificamente [Problema 1], [Problema 2] e [Problema 3]..."
   </FAQ>
 
 <FAQ question="Qual a diferença entre SPIN e BANT?">
-    | Critério | SPIN Selling | BANT |
-    |----------|--------------|------|
-    | <strong>Foco</strong> | Discovery profundo de dores | Qualificação rápida |
-    | <strong>Quando Usar</strong> | Durante discovery meeting | Lead scoring inicial |
-    | <strong>Duração</strong> | 40-50 min | 10-15 min |
-    | <strong>Objetivo</strong> | Criar valor percebido | Filtrar leads viáveis |
-    | <strong>Resultado</strong> | Cliente articula necessidade | Vendedor decide se qualifica |
-
-<strong>Melhor Abordagem:</strong> Use <strong>BANT primeiro</strong> (qualificação) → depois <strong>SPIN</strong> (discovery).
+<div style="overflow-x: auto; margin: 2rem 0; border-radius: 0.75rem; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);">
+  <table style="width: 100%; border-collapse: collapse; background: white; font-size: 0.9375rem;">
+    <thead>
+      <tr style="background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);">
+        <th style="padding: 1rem; text-align: left; color: white; font-weight: 600; border-bottom: 2px solid #1e40af;">Critério</th>
+        <th style="padding: 1rem; text-align: left; color: white; font-weight: 600; border-bottom: 2px solid #1e40af;">SPIN Selling</th>
+        <th style="padding: 1rem; text-align: left; color: white; font-weight: 600; border-bottom: 2px solid #1e40af;">BANT</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr style="background: #f8fafc; transition: background 0.2s;" onmouseover="this.style.background='#e0f2fe'" onmouseout="this.style.background='#f8fafc'">
+        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;"><strong>Foco</strong></td>
+        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;">Discovery profundo de dores</td>
+        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;">Qualificação rápida</td>
+      </tr>
+      <tr style="background: #ffffff; transition: background 0.2s;" onmouseover="this.style.background='#e0f2fe'" onmouseout="this.style.background='#ffffff'">
+        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;"><strong>Quando Usar</strong></td>
+        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;">Durante discovery meeting</td>
+        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;">Lead scoring inicial</td>
+      </tr>
+      <tr style="background: #f8fafc; transition: background 0.2s;" onmouseover="this.style.background='#e0f2fe'" onmouseout="this.style.background='#f8fafc'">
+        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;"><strong>Duração</strong></td>
+        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;">40-50 min</td>
+        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;">10-15 min</td>
+      </tr>
+      <tr style="background: #ffffff; transition: background 0.2s;" onmouseover="this.style.background='#e0f2fe'" onmouseout="this.style.background='#ffffff'">
+        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;"><strong>Objetivo</strong></td>
+        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;">Criar valor percebido</td>
+        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;">Filtrar leads viáveis</td>
+      </tr>
+      <tr style="background: #f8fafc; transition: background 0.2s;" onmouseover="this.style.background='#e0f2fe'" onmouseout="this.style.background='#f8fafc'">
+        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;"><strong>Resultado</strong></td>
+        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;">Cliente articula necessidade</td>
+        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;">Vendedor decide se qualifica</td>
+      </tr>
+    </tbody>
+  </table>
+</div>    <strong>Melhor Abordagem:</strong> Use <strong>BANT primeiro</strong> (qualificação) → depois <strong>SPIN</strong> (discovery).
 
 <p>Fonte: <a href="https://escolaexchange.com.br/vendas/bant-e-spin-selling/" target="_blank" rel="noopener">BANT vs SPIN - Escola Exchange</a>
   </FAQ></p>
@@ -3745,18 +3836,46 @@ a Sirius resolve especificamente [Problema 1], [Problema 2] e [Problema 3]..."
 
 <FAQ question="Como medir ROI do treinamento SPIN?">
     <strong>Resposta:</strong> Acompanhe estas métricas (antes vs depois):
-
-<p>| Métrica | Como Medir |
-    |---------|-----------|
-    | <strong>Taxa Conversão SQL→Proposta</strong> | CRM |
-    | <strong>Duração Média Discovery</strong> | Gravações |
-    | <strong>Problemas Identificados/Discovery</strong> | Template SPIN |
-    | <strong>% Deals com ROI Calculado</strong> | CRM (campo custom) |
-    | <strong>Objeção "Está Caro"</strong> | CRM (motivo de perda) |
-    | <strong>Ciclo de Vendas Médio</strong> | CRM |
-    | <strong>Ticket Médio</strong> | CRM |</p>
-
-<strong>Meta Realista:</strong> +15-20% conversão em 3 meses.
+<div style="overflow-x: auto; margin: 2rem 0; border-radius: 0.75rem; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);">
+  <table style="width: 100%; border-collapse: collapse; background: white; font-size: 0.9375rem;">
+    <thead>
+      <tr style="background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);">
+        <th style="padding: 1rem; text-align: left; color: white; font-weight: 600; border-bottom: 2px solid #1e40af;">Métrica</th>
+        <th style="padding: 1rem; text-align: left; color: white; font-weight: 600; border-bottom: 2px solid #1e40af;">Como Medir</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr style="background: #f8fafc; transition: background 0.2s;" onmouseover="this.style.background='#e0f2fe'" onmouseout="this.style.background='#f8fafc'">
+        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;"><strong>Taxa Conversão SQL→Proposta</strong></td>
+        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;">CRM</td>
+      </tr>
+      <tr style="background: #ffffff; transition: background 0.2s;" onmouseover="this.style.background='#e0f2fe'" onmouseout="this.style.background='#ffffff'">
+        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;"><strong>Duração Média Discovery</strong></td>
+        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;">Gravações</td>
+      </tr>
+      <tr style="background: #f8fafc; transition: background 0.2s;" onmouseover="this.style.background='#e0f2fe'" onmouseout="this.style.background='#f8fafc'">
+        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;"><strong>Problemas Identificados/Discovery</strong></td>
+        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;">Template SPIN</td>
+      </tr>
+      <tr style="background: #ffffff; transition: background 0.2s;" onmouseover="this.style.background='#e0f2fe'" onmouseout="this.style.background='#ffffff'">
+        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;"><strong>% Deals com ROI Calculado</strong></td>
+        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;">CRM (campo custom)</td>
+      </tr>
+      <tr style="background: #f8fafc; transition: background 0.2s;" onmouseover="this.style.background='#e0f2fe'" onmouseout="this.style.background='#f8fafc'">
+        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;"><strong>Objeção "Está Caro"</strong></td>
+        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;">CRM (motivo de perda)</td>
+      </tr>
+      <tr style="background: #ffffff; transition: background 0.2s;" onmouseover="this.style.background='#e0f2fe'" onmouseout="this.style.background='#ffffff'">
+        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;"><strong>Ciclo de Vendas Médio</strong></td>
+        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;">CRM</td>
+      </tr>
+      <tr style="background: #f8fafc; transition: background 0.2s;" onmouseover="this.style.background='#e0f2fe'" onmouseout="this.style.background='#f8fafc'">
+        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;"><strong>Ticket Médio</strong></td>
+        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;">CRM</td>
+      </tr>
+    </tbody>
+  </table>
+</div>    <strong>Meta Realista:</strong> +15-20% conversão em 3 meses.
   </FAQ>
 
 <FAQ question="SPIN funciona para vendas consultivas de serviços?">
@@ -3772,13 +3891,30 @@ a Sirius resolve especificamente [Problema 1], [Problema 2] e [Problema 3]..."
   </FAQ>
 
 <FAQ question="Quanto tempo deve durar um discovery SPIN?">
-    | Complexidade | Duração Ideal |
-    |--------------|---------------|
-    | <strong>Simples</strong> (SaaS low-touch) | 30-40 min |
-    | <strong>Média</strong> (CRM, ERP mid-market) | 40-50 min |
-    | <strong>Alta</strong> (Enterprise, múltiplos decisores) | 50-60 min |
-
-<strong>Regra de Ouro:</strong> Se terminou em <30 min, você <strong>não explorou o suficiente</strong>.
+<div style="overflow-x: auto; margin: 2rem 0; border-radius: 0.75rem; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);">
+  <table style="width: 100%; border-collapse: collapse; background: white; font-size: 0.9375rem;">
+    <thead>
+      <tr style="background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);">
+        <th style="padding: 1rem; text-align: left; color: white; font-weight: 600; border-bottom: 2px solid #1e40af;">Complexidade</th>
+        <th style="padding: 1rem; text-align: left; color: white; font-weight: 600; border-bottom: 2px solid #1e40af;">Duração Ideal</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr style="background: #f8fafc; transition: background 0.2s;" onmouseover="this.style.background='#e0f2fe'" onmouseout="this.style.background='#f8fafc'">
+        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;"><strong>Simples</strong> (SaaS low-touch)</td>
+        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;">30-40 min</td>
+      </tr>
+      <tr style="background: #ffffff; transition: background 0.2s;" onmouseover="this.style.background='#e0f2fe'" onmouseout="this.style.background='#ffffff'">
+        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;"><strong>Média</strong> (CRM, ERP mid-market)</td>
+        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;">40-50 min</td>
+      </tr>
+      <tr style="background: #f8fafc; transition: background 0.2s;" onmouseover="this.style.background='#e0f2fe'" onmouseout="this.style.background='#f8fafc'">
+        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;"><strong>Alta</strong> (Enterprise, múltiplos decisores)</td>
+        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;">50-60 min</td>
+      </tr>
+    </tbody>
+  </table>
+</div>    <strong>Regra de Ouro:</strong> Se terminou em <30 min, você <strong>não explorou o suficiente</strong>.
   </FAQ>
 </FAQAccordion>
 
