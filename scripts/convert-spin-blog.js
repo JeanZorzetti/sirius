@@ -29,6 +29,50 @@ const contentWithoutFrontmatter = markdownContent.replace(frontmatterRegex, '').
 // Convert markdown to HTML
 let htmlContent = contentWithoutFrontmatter;
 
+// Convert markdown tables to styled HTML tables
+htmlContent = htmlContent.replace(/(\|.+\|[\r\n]+\|[-:\s|]+\|[\r\n]+(?:\|.+\|[\r\n]*)+)/gm, (match) => {
+  const lines = match.trim().split('\n');
+  const headers = lines[0].split('|').filter(h => h.trim());
+  const rows = lines.slice(2).map(row => row.split('|').filter(cell => cell.trim()));
+
+  let tableHTML = `
+<div style="overflow-x: auto; margin: 2rem 0; border-radius: 0.75rem; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);">
+  <table style="width: 100%; border-collapse: collapse; background: white; font-size: 0.9375rem;">
+    <thead>
+      <tr style="background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);">`;
+
+  headers.forEach(header => {
+    tableHTML += `
+        <th style="padding: 1rem; text-align: left; color: white; font-weight: 600; border-bottom: 2px solid #1e40af;">${header.trim()}</th>`;
+  });
+
+  tableHTML += `
+      </tr>
+    </thead>
+    <tbody>`;
+
+  rows.forEach((row, idx) => {
+    const bgColor = idx % 2 === 0 ? '#f8fafc' : '#ffffff';
+    tableHTML += `
+      <tr style="background: ${bgColor}; transition: background 0.2s;" onmouseover="this.style.background='#e0f2fe'" onmouseout="this.style.background='${bgColor}'">`;
+
+    row.forEach(cell => {
+      tableHTML += `
+        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;">${cell.trim()}</td>`;
+    });
+
+    tableHTML += `
+      </tr>`;
+  });
+
+  tableHTML += `
+    </tbody>
+  </table>
+</div>`;
+
+  return tableHTML;
+});
+
 // Convert headers
 htmlContent = htmlContent.replace(/^### (.+)$/gm, '<h3>$1</h3>');
 htmlContent = htmlContent.replace(/^## (.+)$/gm, '<h2>$1</h2>');

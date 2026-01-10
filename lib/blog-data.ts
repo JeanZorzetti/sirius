@@ -2123,6 +2123,7 @@ export const blogPosts = [
     author: 'Sirius Team'
   }
 ,
+,
   {
     slug: 'spin-selling-guia-completo',
     title: 'SPIN Selling: A Metodologia de Vendas que Aumenta Conversão em 53% [Guia Completo 2026]',
@@ -2214,14 +2215,44 @@ export const blogPosts = [
 
 <h3>Resultados Mensuráveis:</h3>
 
-<p>| Métrica | Antes do SPIN | Depois do SPIN | Fonte |
-|---------|--------------|----------------|-------|
-| <strong>Taxa de Fechamento</strong> | Baseline | <strong>+17%</strong> | Huthwaite Research |
-| <strong>Chances de Fechar Vendas Complexas</strong> | Baseline | <strong>+53%</strong> | <a href="https://www.millerheimangroup.com.br/aumente-a-taxa-de-conversao-em-vendas-b2b-com-o-metodo-spin-selling/" target="_blank" rel="noopener">Miller Heiman Group</a> |
-| <strong>Taxa de Conversão Geral</strong> | Baseline | <strong>+20%</strong> | <a href="https://www.crmthink.com.br/o-que-e-spin-selling/" target="_blank" rel="noopener">CRM Think</a> |
-| <strong>Duração do Ciclo de Vendas</strong> | 60-90 dias | <strong>45-60 dias</strong> | <a href="https://receitaprevisivel.com/blog/perguntas-spin-selling/" target="_blank" rel="noopener">Receita Previsível</a> |</p>
-
-<strong>Empresas que aplicaram SPIN Selling:</strong>
+<div style="overflow-x: auto; margin: 2rem 0; border-radius: 0.75rem; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);">
+  <table style="width: 100%; border-collapse: collapse; background: white; font-size: 0.9375rem;">
+    <thead>
+      <tr style="background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);">
+        <th style="padding: 1rem; text-align: left; color: white; font-weight: 600; border-bottom: 2px solid #1e40af;">Métrica</th>
+        <th style="padding: 1rem; text-align: left; color: white; font-weight: 600; border-bottom: 2px solid #1e40af;">Antes do SPIN</th>
+        <th style="padding: 1rem; text-align: left; color: white; font-weight: 600; border-bottom: 2px solid #1e40af;">Depois do SPIN</th>
+        <th style="padding: 1rem; text-align: left; color: white; font-weight: 600; border-bottom: 2px solid #1e40af;">Fonte</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr style="background: #f8fafc; transition: background 0.2s;" onmouseover="this.style.background='#e0f2fe'" onmouseout="this.style.background='#f8fafc'">
+        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;"><strong>Taxa de Fechamento</strong></td>
+        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;">Baseline</td>
+        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;"><strong>+17%</strong></td>
+        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;">Huthwaite Research</td>
+      </tr>
+      <tr style="background: #ffffff; transition: background 0.2s;" onmouseover="this.style.background='#e0f2fe'" onmouseout="this.style.background='#ffffff'">
+        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;"><strong>Chances de Fechar Vendas Complexas</strong></td>
+        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;">Baseline</td>
+        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;"><strong>+53%</strong></td>
+        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;"><a href="https://www.millerheimangroup.com.br/aumente-a-taxa-de-conversao-em-vendas-b2b-com-o-metodo-spin-selling/" target="_blank" rel="noopener">Miller Heiman Group</a></td>
+      </tr>
+      <tr style="background: #f8fafc; transition: background 0.2s;" onmouseover="this.style.background='#e0f2fe'" onmouseout="this.style.background='#f8fafc'">
+        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;"><strong>Taxa de Conversão Geral</strong></td>
+        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;">Baseline</td>
+        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;"><strong>+20%</strong></td>
+        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;"><a href="https://www.crmthink.com.br/o-que-e-spin-selling/" target="_blank" rel="noopener">CRM Think</a></td>
+      </tr>
+      <tr style="background: #ffffff; transition: background 0.2s;" onmouseover="this.style.background='#e0f2fe'" onmouseout="this.style.background='#ffffff'">
+        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;"><strong>Duração do Ciclo de Vendas</strong></td>
+        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;">60-90 dias</td>
+        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;"><strong>45-60 dias</strong></td>
+        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;"><a href="https://receitaprevisivel.com/blog/perguntas-spin-selling/" target="_blank" rel="noopener">Receita Previsível</a></td>
+      </tr>
+    </tbody>
+  </table>
+</div><strong>Empresas que aplicaram SPIN Selling:</strong>
 <ul><li>IBM</li>
 <li>Xerox</li>
 <li>Kodak</li>
@@ -2275,16 +2306,63 @@ export const blogPosts = [
 
 <h3>Tabela Comparativa:</h3>
 
-<p>| Critério | SPIN Selling | BANT | GPCT | Challenger |
-|----------|--------------|------|------|-----------|
-| <strong>Foco Principal</strong> | Discovery profundo | Qualificação rápida | Jornada do cliente | Ensinar e tensionar |
-| <strong>Duração Típica</strong> | 30-45 min | 10-15 min | 20-30 min | 45-60 min |
-| <strong>Ideal Para</strong> | B2B complexo | Transacional | Consultivo | Enterprise |
-| <strong>Quando Usar</strong> | Discovery meeting | Lead scoring | Qualificação inicial | Pitch executivo |
-| <strong>Taxa de Sucesso</strong> | 53% maior | Baseline | 35% maior | 40% maior |
-| <strong>Complexidade</strong> | Alta | Baixa | Média | Alta |</p>
-
-<strong>Fonte:</strong> <a href="https://salesgrowth.com.br/frameworks-bant-spin-nes-gpct/" target="_blank" rel="noopener">Frameworks BANT, SPIN, GPCT - Sales Growth</a>
+<div style="overflow-x: auto; margin: 2rem 0; border-radius: 0.75rem; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);">
+  <table style="width: 100%; border-collapse: collapse; background: white; font-size: 0.9375rem;">
+    <thead>
+      <tr style="background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);">
+        <th style="padding: 1rem; text-align: left; color: white; font-weight: 600; border-bottom: 2px solid #1e40af;">Critério</th>
+        <th style="padding: 1rem; text-align: left; color: white; font-weight: 600; border-bottom: 2px solid #1e40af;">SPIN Selling</th>
+        <th style="padding: 1rem; text-align: left; color: white; font-weight: 600; border-bottom: 2px solid #1e40af;">BANT</th>
+        <th style="padding: 1rem; text-align: left; color: white; font-weight: 600; border-bottom: 2px solid #1e40af;">GPCT</th>
+        <th style="padding: 1rem; text-align: left; color: white; font-weight: 600; border-bottom: 2px solid #1e40af;">Challenger</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr style="background: #f8fafc; transition: background 0.2s;" onmouseover="this.style.background='#e0f2fe'" onmouseout="this.style.background='#f8fafc'">
+        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;"><strong>Foco Principal</strong></td>
+        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;">Discovery profundo</td>
+        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;">Qualificação rápida</td>
+        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;">Jornada do cliente</td>
+        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;">Ensinar e tensionar</td>
+      </tr>
+      <tr style="background: #ffffff; transition: background 0.2s;" onmouseover="this.style.background='#e0f2fe'" onmouseout="this.style.background='#ffffff'">
+        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;"><strong>Duração Típica</strong></td>
+        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;">30-45 min</td>
+        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;">10-15 min</td>
+        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;">20-30 min</td>
+        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;">45-60 min</td>
+      </tr>
+      <tr style="background: #f8fafc; transition: background 0.2s;" onmouseover="this.style.background='#e0f2fe'" onmouseout="this.style.background='#f8fafc'">
+        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;"><strong>Ideal Para</strong></td>
+        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;">B2B complexo</td>
+        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;">Transacional</td>
+        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;">Consultivo</td>
+        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;">Enterprise</td>
+      </tr>
+      <tr style="background: #ffffff; transition: background 0.2s;" onmouseover="this.style.background='#e0f2fe'" onmouseout="this.style.background='#ffffff'">
+        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;"><strong>Quando Usar</strong></td>
+        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;">Discovery meeting</td>
+        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;">Lead scoring</td>
+        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;">Qualificação inicial</td>
+        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;">Pitch executivo</td>
+      </tr>
+      <tr style="background: #f8fafc; transition: background 0.2s;" onmouseover="this.style.background='#e0f2fe'" onmouseout="this.style.background='#f8fafc'">
+        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;"><strong>Taxa de Sucesso</strong></td>
+        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;">53% maior</td>
+        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;">Baseline</td>
+        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;">35% maior</td>
+        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;">40% maior</td>
+      </tr>
+      <tr style="background: #ffffff; transition: background 0.2s;" onmouseover="this.style.background='#e0f2fe'" onmouseout="this.style.background='#ffffff'">
+        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;"><strong>Complexidade</strong></td>
+        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;">Alta</td>
+        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;">Baixa</td>
+        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;">Média</td>
+        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;">Alta</td>
+      </tr>
+    </tbody>
+  </table>
+</div><strong>Fonte:</strong> <a href="https://salesgrowth.com.br/frameworks-bant-spin-nes-gpct/" target="_blank" rel="noopener">Frameworks BANT, SPIN, GPCT - Sales Growth</a>
 
 <h3>Quando NÃO Usar SPIN Selling:</h3>
 
@@ -2478,14 +2556,46 @@ Cada problema identificado deve ser <strong>específico</strong> e <strong>mensu
 
 <strong>Exemplo Real (Discovery Sirius CRM):</strong>
 
-<p>| Problema | Frequência | Impacto/Vez | Tempo | Custo Anual |
-|----------|-----------|-------------|-------|-------------|
-| Vendedor esquece follow-up | 5x/semana | R$ 3.000 (deal perdido) | 52 semanas | <strong>R$ 780.000</strong> |
-| Gerente em reunião de cobrança | 4h/semana | R$ 500/h (custo/hora) | 52 semanas | <strong>R$ 104.000</strong> |
-| Lead perdido entre MKT e Vendas | 10/mês | R$ 2.000 (oportunidade) | 12 meses | <strong>R$ 240.000</strong> |
-| <strong>TOTAL DESPERDIÇADO/ANO</strong> | | | | <strong>R$ 1.124.000</strong> |</p>
-
-<blockquote style="background: #f8fafc; border-left: 4px solid #2563eb; padding: 1.5rem; margin: 2rem 0; border-radius: 0.5rem;">
+<div style="overflow-x: auto; margin: 2rem 0; border-radius: 0.75rem; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);">
+  <table style="width: 100%; border-collapse: collapse; background: white; font-size: 0.9375rem;">
+    <thead>
+      <tr style="background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);">
+        <th style="padding: 1rem; text-align: left; color: white; font-weight: 600; border-bottom: 2px solid #1e40af;">Problema</th>
+        <th style="padding: 1rem; text-align: left; color: white; font-weight: 600; border-bottom: 2px solid #1e40af;">Frequência</th>
+        <th style="padding: 1rem; text-align: left; color: white; font-weight: 600; border-bottom: 2px solid #1e40af;">Impacto/Vez</th>
+        <th style="padding: 1rem; text-align: left; color: white; font-weight: 600; border-bottom: 2px solid #1e40af;">Tempo</th>
+        <th style="padding: 1rem; text-align: left; color: white; font-weight: 600; border-bottom: 2px solid #1e40af;">Custo Anual</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr style="background: #f8fafc; transition: background 0.2s;" onmouseover="this.style.background='#e0f2fe'" onmouseout="this.style.background='#f8fafc'">
+        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;">Vendedor esquece follow-up</td>
+        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;">5x/semana</td>
+        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;">R$ 3.000 (deal perdido)</td>
+        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;">52 semanas</td>
+        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;"><strong>R$ 780.000</strong></td>
+      </tr>
+      <tr style="background: #ffffff; transition: background 0.2s;" onmouseover="this.style.background='#e0f2fe'" onmouseout="this.style.background='#ffffff'">
+        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;">Gerente em reunião de cobrança</td>
+        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;">4h/semana</td>
+        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;">R$ 500/h (custo/hora)</td>
+        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;">52 semanas</td>
+        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;"><strong>R$ 104.000</strong></td>
+      </tr>
+      <tr style="background: #f8fafc; transition: background 0.2s;" onmouseover="this.style.background='#e0f2fe'" onmouseout="this.style.background='#f8fafc'">
+        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;">Lead perdido entre MKT e Vendas</td>
+        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;">10/mês</td>
+        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;">R$ 2.000 (oportunidade)</td>
+        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;">12 meses</td>
+        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;"><strong>R$ 240.000</strong></td>
+      </tr>
+      <tr style="background: #ffffff; transition: background 0.2s;" onmouseover="this.style.background='#e0f2fe'" onmouseout="this.style.background='#ffffff'">
+        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;"><strong>TOTAL DESPERDIÇADO/ANO</strong></td>
+        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;"><strong>R$ 1.124.000</strong></td>
+      </tr>
+    </tbody>
+  </table>
+</div><blockquote style="background: #f8fafc; border-left: 4px solid #2563eb; padding: 1.5rem; margin: 2rem 0; border-radius: 0.5rem;">
     <p style="font-style: italic; color: #334155; font-size: 1.125rem; line-height: 1.7;">
   A pergunta de implicação mais poderosa que uso: 'E se nada mudar nos próximos 12 meses?' — isso força o cliente a visualizar o custo total da inércia.
 </p>
@@ -2910,20 +3020,69 @@ a Sirius resolve especificamente [Problema 1], [Problema 2] e [Problema 3]..."
 
 <h3><strong>📊 Tabela: Objeção → Origem → Argumento SPIN</strong></h3>
 
-<p>| Objeção Comum | Origem (Etapa SPIN Faltou) | Argumento/Pergunta de Resposta |
-|---------------|----------------------------|--------------------------------|
-| <strong>"Está caro"</strong> | Implicação fraca | "Comparado ao custo de [Problema X] que você mencionou (R$ Y/mês), como você vê o investimento?" |
-| <strong>"Preciso pensar"</strong> | Necessidade não articulada | "Claro. Para eu te ajudar, o que especificamente você precisa avaliar? Posso trazer alguma informação adicional?" |
-| <strong>"Já temos uma solução"</strong> | Problema não explorado | "Entendo. O que te faria considerar uma alternativa? Existe algo que a solução atual não resolve?" |
-| <strong>"Vou conversar com o time"</strong> | Múltiplos decisores não mapeados | "Faz sentido. Quem mais precisa aprovar? Posso participar dessa conversa para esclarecer dúvidas técnicas?" |
-| <strong>"Não é prioridade agora"</strong> | Implicação (urgência) fraca | "Entendo. Ajuda eu entender: o que precisa acontecer para isso se tornar prioridade? Qual o risco de esperar?" |
-| <strong>"Seu concorrente X é mais barato"</strong> | Valor percebido baixo | "Faz sentido comparar preços. Mas baseado nos problemas que você mencionou [X, Y, Z], qual ferramenta resolve esses 3?" |
-| <strong>"Não tenho budget agora"</strong> | ROI não demonstrado | "Entendo a questão orçamentária. Se conseguirmos provar ROI em 90 dias de [Valor X], faria sentido realocar budget?" |
-| <strong>"Não temos tempo para implementar"</strong> | Problema não urgente o suficiente | "Quanto tempo por semana vocês gastam hoje com [Problema Y]? Se conseguirmos economizar isso, vale o investimento inicial?" |
-| <strong>"Preciso de aprovação do CFO"</strong> | Business case não construído | "Ótimo. Posso ajudar a preparar o business case? Vamos documentar o custo do problema (R$ X) vs investimento (R$ Y)." |
-| <strong>"Vou esperar o próximo trimestre"</strong> | Custo de espera não explorado | "Entendo. Nesse trimestre de espera, quantas oportunidades vocês estimam que podem perder? Qual o custo disso?" |</p>
-
-<CTABox
+<div style="overflow-x: auto; margin: 2rem 0; border-radius: 0.75rem; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);">
+  <table style="width: 100%; border-collapse: collapse; background: white; font-size: 0.9375rem;">
+    <thead>
+      <tr style="background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);">
+        <th style="padding: 1rem; text-align: left; color: white; font-weight: 600; border-bottom: 2px solid #1e40af;">Objeção Comum</th>
+        <th style="padding: 1rem; text-align: left; color: white; font-weight: 600; border-bottom: 2px solid #1e40af;">Origem (Etapa SPIN Faltou)</th>
+        <th style="padding: 1rem; text-align: left; color: white; font-weight: 600; border-bottom: 2px solid #1e40af;">Argumento/Pergunta de Resposta</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr style="background: #f8fafc; transition: background 0.2s;" onmouseover="this.style.background='#e0f2fe'" onmouseout="this.style.background='#f8fafc'">
+        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;"><strong>"Está caro"</strong></td>
+        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;">Implicação fraca</td>
+        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;">"Comparado ao custo de [Problema X] que você mencionou (R$ Y/mês), como você vê o investimento?"</td>
+      </tr>
+      <tr style="background: #ffffff; transition: background 0.2s;" onmouseover="this.style.background='#e0f2fe'" onmouseout="this.style.background='#ffffff'">
+        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;"><strong>"Preciso pensar"</strong></td>
+        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;">Necessidade não articulada</td>
+        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;">"Claro. Para eu te ajudar, o que especificamente você precisa avaliar? Posso trazer alguma informação adicional?"</td>
+      </tr>
+      <tr style="background: #f8fafc; transition: background 0.2s;" onmouseover="this.style.background='#e0f2fe'" onmouseout="this.style.background='#f8fafc'">
+        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;"><strong>"Já temos uma solução"</strong></td>
+        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;">Problema não explorado</td>
+        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;">"Entendo. O que te faria considerar uma alternativa? Existe algo que a solução atual não resolve?"</td>
+      </tr>
+      <tr style="background: #ffffff; transition: background 0.2s;" onmouseover="this.style.background='#e0f2fe'" onmouseout="this.style.background='#ffffff'">
+        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;"><strong>"Vou conversar com o time"</strong></td>
+        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;">Múltiplos decisores não mapeados</td>
+        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;">"Faz sentido. Quem mais precisa aprovar? Posso participar dessa conversa para esclarecer dúvidas técnicas?"</td>
+      </tr>
+      <tr style="background: #f8fafc; transition: background 0.2s;" onmouseover="this.style.background='#e0f2fe'" onmouseout="this.style.background='#f8fafc'">
+        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;"><strong>"Não é prioridade agora"</strong></td>
+        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;">Implicação (urgência) fraca</td>
+        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;">"Entendo. Ajuda eu entender: o que precisa acontecer para isso se tornar prioridade? Qual o risco de esperar?"</td>
+      </tr>
+      <tr style="background: #ffffff; transition: background 0.2s;" onmouseover="this.style.background='#e0f2fe'" onmouseout="this.style.background='#ffffff'">
+        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;"><strong>"Seu concorrente X é mais barato"</strong></td>
+        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;">Valor percebido baixo</td>
+        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;">"Faz sentido comparar preços. Mas baseado nos problemas que você mencionou [X, Y, Z], qual ferramenta resolve esses 3?"</td>
+      </tr>
+      <tr style="background: #f8fafc; transition: background 0.2s;" onmouseover="this.style.background='#e0f2fe'" onmouseout="this.style.background='#f8fafc'">
+        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;"><strong>"Não tenho budget agora"</strong></td>
+        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;">ROI não demonstrado</td>
+        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;">"Entendo a questão orçamentária. Se conseguirmos provar ROI em 90 dias de [Valor X], faria sentido realocar budget?"</td>
+      </tr>
+      <tr style="background: #ffffff; transition: background 0.2s;" onmouseover="this.style.background='#e0f2fe'" onmouseout="this.style.background='#ffffff'">
+        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;"><strong>"Não temos tempo para implementar"</strong></td>
+        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;">Problema não urgente o suficiente</td>
+        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;">"Quanto tempo por semana vocês gastam hoje com [Problema Y]? Se conseguirmos economizar isso, vale o investimento inicial?"</td>
+      </tr>
+      <tr style="background: #f8fafc; transition: background 0.2s;" onmouseover="this.style.background='#e0f2fe'" onmouseout="this.style.background='#f8fafc'">
+        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;"><strong>"Preciso de aprovação do CFO"</strong></td>
+        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;">Business case não construído</td>
+        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;">"Ótimo. Posso ajudar a preparar o business case? Vamos documentar o custo do problema (R$ X) vs investimento (R$ Y)."</td>
+      </tr>
+      <tr style="background: #ffffff; transition: background 0.2s;" onmouseover="this.style.background='#e0f2fe'" onmouseout="this.style.background='#ffffff'">
+        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;"><strong>"Vou esperar o próximo trimestre"</strong></td>
+        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;">Custo de espera não explorado</td>
+        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;">"Entendo. Nesse trimestre de espera, quantas oportunidades vocês estimam que podem perder? Qual o custo disso?"</td>
+      </tr>
+    </tbody>
+  </table>
+</div><CTABox
   title="🖨️ Baixe a Matriz Completa em A4"
   description="Formato para imprimir e colar na parede da equipe de vendas"
   buttonText="Baixar Matriz A4"
