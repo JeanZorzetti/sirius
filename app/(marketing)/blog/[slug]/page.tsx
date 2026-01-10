@@ -19,7 +19,7 @@ interface BlogPostPageProps {
 
 export async function generateMetadata({ params }: BlogPostPageProps): Promise<Metadata> {
   const { slug } = await params
-  const post = blogPosts.find((p) => p.slug === slug)
+  const post = blogPosts.find((p) => p?.slug === slug)
   if (!post) return { title: 'Post não encontrado' }
 
   const url = `https://sirius.roilabs.com.br/blog/${slug}`
@@ -64,7 +64,7 @@ export function generateStaticParams() {
 
 export default async function BlogPostPage({ params }: BlogPostPageProps) {
   const { slug } = await params
-  const post = blogPosts.find((p) => p.slug === slug)
+  const post = blogPosts.find((p) => p?.slug === slug)
 
   if (!post) {
     notFound()
@@ -72,7 +72,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
 
   // Get related posts (exclude current post, get 2 random posts)
   const relatedPosts = blogPosts
-    .filter((p) => p.slug !== slug)
+    .filter((p) => p?.slug !== slug)
     .slice(0, 2)
 
   const url = `https://sirius.roilabs.com.br/blog/${slug}`
