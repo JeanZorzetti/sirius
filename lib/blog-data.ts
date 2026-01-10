@@ -3536,116 +3536,118 @@ a Sirius resolve especificamente [Problema 1], [Problema 2] e [Problema 3]..."
 
 <hr style="margin: 3rem 0; border: none; border-top: 1px solid #e5e7eb;" />
 
-<h2>🚀 Integração: SPIN Selling + Sirius CRM</h2>
+<h2>🔮 Roadmap: Sirius CRM + SPIN Selling (Em Desenvolvimento)</h2>
 
-<p>A Sirius CRM foi desenhada para <strong>potencializar</strong> metodologias consultivas como SPIN Selling:</p>
+<div style="background: #fef3c7; border-left: 4px solid #f59e0b; padding: 1.5rem; border-radius: 0.5rem; margin: 2rem 0; color: #78350f;">
+  <strong>💡 Funcionalidades em Desenvolvimento:</strong> As features abaixo estão no nosso roadmap de produto para 2026. Estamos construindo o Sirius CRM para se tornar a melhor plataforma para vendas consultivas com SPIN Selling. Quer participar do Beta? <a href="https://sirius.roilabs.com.br/contato?ref=spin-beta" target="_blank" rel="noopener" style="color: #78350f; text-decoration: underline;">Entre em contato</a>.
+</div>
 
-<img src="/images/blog/spin-selling/sirius-crm-spin-integration.svg" alt="Interface Sirius CRM mostrando template SPIN Selling integrado com campos customizados" style="max-width: 100%; height: auto; margin: 2rem 0; border-radius: 0.5rem; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);" />
+<p>Nossa visão é transformar o Sirius CRM na plataforma ideal para <strong>potencializar</strong> metodologias consultivas como SPIN Selling:</p>
+
+<img src="/images/blog/spin-selling/sirius-crm-spin-integration.svg" alt="Conceito de interface Sirius CRM com template SPIN Selling integrado (em desenvolvimento)" style="max-width: 100%; height: auto; margin: 2rem 0; border-radius: 0.5rem; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);" />
 
 <hr style="margin: 3rem 0; border: none; border-top: 1px solid #e5e7eb;" />
 
-<h3><strong>🔗 Como a Sirius Facilita SPIN:</strong></h3>
+<h3><strong>🔗 Como o Sirius Facilitará SPIN (Roadmap 2026):</strong></h3>
 
 <FeatureGrid>
   <Feature
     number="1"
-    title="Template de Discovery Integrado"
+    title="Template de Discovery Integrado 🚧"
     icon="📋"
     description="Acesse durante a call um checklist dinâmico de perguntas SPIN"
   >
-    <strong>No Sirius CRM:</strong>
+    <strong>Como Funcionará:</strong>
     - Abra o deal<br/>
     - Clique em "Discovery Meeting"<br/>
     - Checklist S, P, I, N aparece com perguntas sugeridas<br/>
     - Você preenche em tempo real<br/>
     - Sistema calcula ROI automaticamente baseado nas respostas<br/>
 
-<strong><a href="https://sirius.roilabs.com.br/features/discovery-templates" target="_blank" rel="noopener" style="color: #2563eb; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 2px; transition: all 0.2s;" onmouseover="this.style.color='#1e40af'; this.style.textDecorationThickness='2px'" onmouseout="this.style.color='#2563eb'; this.style.textDecorationThickness='1px'">Ver Feature: Discovery Templates →</a></strong>
+<strong style="color: #f59e0b;">⏳ Status: Em Desenvolvimento | Previsão: Q2 2026</strong>
   </Feature>
 
 <Feature
     number="2"
-    title="Campos Customizados para SPIN"
+    title="Campos Customizados para SPIN 🚧"
     icon="⚙️"
     description="Configure campos específicos para capturar insights"
   >
-    <strong>Exemplo de Campos:</strong>
+    <strong>Exemplo de Campos Planejados:</strong>
     - <strong>[S] Contexto Atual:</strong> Dropdown (Planilhas, CRM Legado, Sem Ferramenta)<br/>
     - <strong>[P] Problemas Identificados:</strong> Textarea (até 3 problemas)<br/>
     - <strong>[I] Custo Mensal do Problema:</strong> Number (R$)<br/>
     - <strong>[N] Benefícios Esperados:</strong> Checkboxes (Visibilidade, Velocidade, Automação)<br/>
 
-<strong>Como Configurar:</strong>
-    [Dashboard Sirius] → Configurações → Campos Customizados → Criar Seção "SPIN Discovery"<br/>
+<strong>Configuração Futura:</strong>
+    Dashboard Sirius → Configurações → Campos Customizados → Criar Seção "SPIN Discovery"<br/>
 
-<strong><a href="https://sirius.roilabs.com.br/features/custom-fields" target="_blank" rel="noopener" style="color: #2563eb; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 2px; transition: all 0.2s;" onmouseover="this.style.color='#1e40af'; this.style.textDecorationThickness='2px'" onmouseout="this.style.color='#2563eb'; this.style.textDecorationThickness='1px'">Ver Feature: Custom Fields →</a></strong>
+<strong style="color: #f59e0b;">⏳ Status: Em Desenvolvimento | Previsão: Q1 2026</strong>
   </Feature>
 
 <Feature
     number="3"
-    title="Automação de Follow-up Pós-Discovery"
+    title="Automação de Follow-up Pós-Discovery 🚧"
     icon="✉️"
     description="Sistema envia automaticamente resumo + ROI calculado"
   >
-    Após preencher o discovery, o Sirius envia automaticamente:
+    Após preencher o discovery, o Sirius enviará automaticamente:
 
 <p>1. <strong>Email para o Lead</strong> com resumo dos problemas + ROI calculado
     2. <strong>Notificação para o Gestor</strong> se oportunidade > R$ 50k
     3. <strong>Task automática</strong> para agendar demo em 48h</p>
 
-<strong><a href="https://sirius.roilabs.com.br/features/email-automation" target="_blank" rel="noopener" style="color: #2563eb; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 2px; transition: all 0.2s;" onmouseover="this.style.color='#1e40af'; this.style.textDecorationThickness='2px'" onmouseout="this.style.color='#2563eb'; this.style.textDecorationThickness='1px'">Ver Feature: Email Automation →</a></strong>
+<strong style="color: #f59e0b;">⏳ Status: Planejado | Previsão: Q2 2026</strong>
   </Feature>
 
 <Feature
     number="4"
-    title="Dashboard de Qualidade de Discovery"
+    title="Dashboard de Qualidade de Discovery 🚧"
     icon="📊"
     description="Acompanhe a saúde dos discoveries do time"
   >
-    <strong>Métricas Exibidas:</strong><br/>
+    <strong>Métricas Planejadas:</strong><br/>
     - % discoveries com 3+ problemas identificados<br/>
     - % discoveries com ROI calculado<br/>
     - % discoveries com próximos passos definidos<br/>
     - Duração média de discovery por vendedor<br/>
     - Taxa de conversão Discovery → Demo por vendedor<br/>
 
-<strong><a href="https://sirius.roilabs.com.br/dashboard/analytics" target="_blank" rel="noopener" style="color: #2563eb; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 2px; transition: all 0.2s;" onmouseover="this.style.color='#1e40af'; this.style.textDecorationThickness='2px'" onmouseout="this.style.color='#2563eb'; this.style.textDecorationThickness='1px'">Ver Feature: Sales Analytics →</a></strong>
+<strong style="color: #f59e0b;">⏳ Status: Planejado | Previsão: Q3 2026</strong>
   </Feature>
 
 <Feature
     number="5"
-    title="Biblioteca de Objeções + Respostas"
+    title="Biblioteca de Objeções + Respostas 🚧"
     icon="🛡️"
     description="Centralize aprendizados do time em tempo real"
   >
-    <strong>Como Funciona:</strong><br/>
+    <strong>Como Funcionará:</strong><br/>
     1. Vendedor recebe objeção nova<br/>
     2. Registra no Sirius: Objeção + Contexto + Como Resolveu<br/>
     3. Biblioteca cresce organicamente<br/>
     4. Todos acessam via busca: "objeção: está caro"<br/>
 
-<strong><a href="https://sirius.roilabs.com.br/features/sales-playbook" target="_blank" rel="noopener" style="color: #2563eb; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 2px; transition: all 0.2s;" onmouseover="this.style.color='#1e40af'; this.style.textDecorationThickness='2px'" onmouseout="this.style.color='#2563eb'; this.style.textDecorationThickness='1px'">Ver Feature: Sales Playbook →</a></strong>
+<strong style="color: #f59e0b;">⏳ Status: Planejado | Previsão: Q2 2026</strong>
   </Feature>
 </FeatureGrid>
 
 <hr style="margin: 3rem 0; border: none; border-top: 1px solid #e5e7eb;" />
 
-<h3><strong>🎁 Bônus: Trial Gratuito Sirius CRM (14 dias)</strong></h3>
+<h3><strong>🎁 Participe do Beta: SPIN Features</strong></h3>
 
-<p>Teste todas as features SPIN-friendly sem compromisso:</p>
-
-<TrialCTA
-  title="Experimente SPIN Selling + Sirius CRM"
-  benefits={[
-    "✅ Acesso completo por 14 dias",
-    "✅ Sem precisar cartão de crédito",
-    "✅ Onboarding com especialista em vendas consultivas",
-    "✅ Templates SPIN pré-configurados",
-    "✅ Suporte prioritário via WhatsApp"
-  ]}
-  buttonText="🚀 Comece seu Trial Grátis"
-  buttonUrl="https://sirius.roilabs.com.br/register?trial=spin-selling"
-/>
+<div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 2rem; border-radius: 0.75rem; margin: 2rem 0;">
+  <h4 style="color: white; margin-bottom: 1rem;">💎 Seja um dos Primeiros a Testar</h4>
+  <p style="margin-bottom: 1.5rem;">Estamos selecionando empresas para testar as funcionalidades SPIN antes do lançamento oficial. Participantes do Beta terão:</p>
+  <ul style="margin-bottom: 1.5rem;">
+    <li>✅ Acesso antecipado às features (Q1 2026)</li>
+    <li>✅ Consultoria gratuita de implementação SPIN</li>
+    <li>✅ Desconto de 30% na assinatura por 1 ano</li>
+    <li>✅ Influência direta no desenvolvimento do produto</li>
+    <li>✅ Suporte prioritário via WhatsApp</li>
+  </ul>
+  <a href="https://sirius.roilabs.com.br/contato?ref=spin-beta" target="_blank" rel="noopener" style="display: inline-block; background: white; color: #667eea; padding: 1rem 2rem; border-radius: 0.5rem; text-decoration: none; font-weight: 700; transition: all 0.2s;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 16px rgba(0,0,0,0.2)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'">📝 Candidatar ao Beta Program</a>
+</div>
 
 <hr style="margin: 3rem 0; border: none; border-top: 1px solid #e5e7eb;" />
 
