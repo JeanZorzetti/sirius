@@ -17,14 +17,9 @@ interface BlogPostPageProps {
   }>
 }
 
-// Type guard to filter out undefined posts
-function isValidPost(post: any): post is NonNullable<typeof post> & { slug: string } {
-  return post != null && typeof post.slug === 'string'
-}
-
 export async function generateMetadata({ params }: BlogPostPageProps): Promise<Metadata> {
   const { slug } = await params
-  const post = blogPosts.find((p) => p?.slug === slug)
+  const post = blogPosts.find((p) => p.slug === slug)
   if (!post) return { title: 'Post não encontrado' }
 
   const url = `https://sirius.roilabs.com.br/blog/${slug}`
@@ -62,16 +57,14 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
 }
 
 export function generateStaticParams() {
-  return blogPosts
-    .filter(isValidPost)
-    .map((post) => ({
-      slug: post.slug,
-    }))
+  return blogPosts.map((post) => ({
+    slug: post.slug,
+  }))
 }
 
 export default async function BlogPostPage({ params }: BlogPostPageProps) {
   const { slug } = await params
-  const post = blogPosts.find((p) => p?.slug === slug)
+  const post = blogPosts.find((p) => p.slug === slug)
 
   if (!post) {
     notFound()
@@ -79,7 +72,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
 
   // Get related posts (exclude current post, get 2 random posts)
   const relatedPosts = blogPosts
-    .filter((p) => isValidPost(p) && p.slug !== slug)
+    .filter((p) => p.slug !== slug)
     .slice(0, 2)
 
   const url = `https://sirius.roilabs.com.br/blog/${slug}`

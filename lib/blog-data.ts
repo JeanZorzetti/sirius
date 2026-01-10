@@ -1,4 +1,6 @@
-export const blogPosts = [
+import { BlogPost } from './blog-types'
+
+export const blogPosts: BlogPost[] = [
   {
     slug: 'como-organizar-pipeline-vendas',
     title: 'Como organizar seu Pipeline de Vendas: O Guia Definitivo para 2025',
