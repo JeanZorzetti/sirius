@@ -3,6 +3,11 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Button } from '@/components/ui/button'
 import { blogPosts } from '@/lib/blog-data'
 
+// Type guard to filter out undefined posts
+function isValidPost(post: any): post is NonNullable<typeof post> & { slug: string } {
+  return post != null && typeof post.slug === 'string'
+}
+
 export default function BlogPage() {
     return (
         <div className="container mx-auto py-24 sm:py-32">
@@ -13,7 +18,7 @@ export default function BlogPage() {
                 </p>
             </div>
             <div className="mx-auto mt-16 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-20 lg:mx-0 lg:max-w-none lg:grid-cols-3">
-                {blogPosts.filter((post) => post && post.slug).map((post) => (
+                {blogPosts.filter(isValidPost).map((post) => (
                     <Card key={post.slug} className="flex flex-col">
                         <CardHeader>
                             <div className="text-sm text-primary font-medium mb-2">{post.category}</div>

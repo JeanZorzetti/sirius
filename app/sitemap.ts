@@ -1,6 +1,11 @@
 import { MetadataRoute } from 'next'
 import { blogPosts } from '@/lib/blog-data'
 
+// Type guard to filter out undefined posts
+function isValidPost(post: any): post is NonNullable<typeof post> & { slug: string; date: string } {
+    return post != null && typeof post.slug === 'string' && typeof post.date === 'string'
+}
+
 export default function sitemap(): MetadataRoute.Sitemap {
     const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://sirius.roilabs.com.br'
 
@@ -27,7 +32,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
     // Dynamic blog posts
     const posts = blogPosts
-        .filter((post) => post && post.slug)
+        .filter(isValidPost)
         .map((post) => ({
             url: `${baseUrl}/blog/${post.slug}`,
             lastModified: new Date(post.date),
