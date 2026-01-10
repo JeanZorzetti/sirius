@@ -3076,10 +3076,10 @@ a Sirius resolve especificamente [Problema 1], [Problema 2] e [Problema 3]..."
 <h3><strong>🎯 Como Usar a Matriz:</strong></h3>
 
 <StepList>
-  1. <strong>Durante o Discovery:</strong> Marque quais etapas (S, P, I, N) você cobriu
-  2. <strong>Ao receber objeção:</strong> Identifique qual etapa faltou
-  3. <strong>Responda com pergunta SPIN</strong> ao invés de argumento direto
-  4. <strong>Volte ao Discovery</strong> se necessário
+  1. <strong>Durante o Discovery:</strong> Marque quais etapas (S, P, I, N) você cobriu<br/>
+  2. <strong>Ao receber objeção:</strong> Identifique qual etapa faltou<br/>
+  3. <strong>Responda com pergunta SPIN</strong> ao invés de argumento direto<br/>
+  4. <strong>Volte ao Discovery</strong> se necessário<br/>
 </StepList>
 
 <strong>Exemplo Real:</strong>
@@ -3137,11 +3137,11 @@ a Sirius resolve especificamente [Problema 1], [Problema 2] e [Problema 3]..."
 <strong>Regra de Ouro:</strong> Use no máximo <strong>3-5 perguntas de situação</strong>. O resto você pesquisa antes.
 
 <strong>Checklist de Pesquisa Prévia:</strong>
-  - [ ] LinkedIn da empresa (tamanho, setor, crescimento)
-  - [ ] LinkedIn do contato (cargo, tempo na empresa, posts recentes)
-  - [ ] Site da empresa (produtos, clientes, cases)
-  - [ ] Notícias recentes (Google News)
-  - [ ] Vagas abertas (indica crescimento e dores)
+  - [ ] LinkedIn da empresa (tamanho, setor, crescimento)<br/>
+  - [ ] LinkedIn do contato (cargo, tempo na empresa, posts recentes)<br/>
+  - [ ] Site da empresa (produtos, clientes, cases)<br/>
+  - [ ] Notícias recentes (Google News)<br/>
+  - [ ] Vagas abertas (indica crescimento e dores)<br/>
 
 <strong>💊 Solução:</strong> Faça a lição de casa. Use situação apenas para confirmar/atualizar dados.
 </div>
@@ -3554,11 +3554,11 @@ a Sirius resolve especificamente [Problema 1], [Problema 2] e [Problema 3]..."
     description="Acesse durante a call um checklist dinâmico de perguntas SPIN"
   >
     <strong>No Sirius CRM:</strong>
-    - Abra o deal
-    - Clique em "Discovery Meeting"
-    - Checklist S, P, I, N aparece com perguntas sugeridas
-    - Você preenche em tempo real
-    - Sistema calcula ROI automaticamente baseado nas respostas
+    - Abra o deal<br/>
+    - Clique em "Discovery Meeting"<br/>
+    - Checklist S, P, I, N aparece com perguntas sugeridas<br/>
+    - Você preenche em tempo real<br/>
+    - Sistema calcula ROI automaticamente baseado nas respostas<br/>
 
 <strong><a href="https://sirius.roilabs.com.br/features/discovery-templates" target="_blank" rel="noopener" style="color: #2563eb; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 2px; transition: all 0.2s;" onmouseover="this.style.color='#1e40af'; this.style.textDecorationThickness='2px'" onmouseout="this.style.color='#2563eb'; this.style.textDecorationThickness='1px'">Ver Feature: Discovery Templates →</a></strong>
   </Feature>
@@ -3570,13 +3570,13 @@ a Sirius resolve especificamente [Problema 1], [Problema 2] e [Problema 3]..."
     description="Configure campos específicos para capturar insights"
   >
     <strong>Exemplo de Campos:</strong>
-    - <strong>[S] Contexto Atual:</strong> Dropdown (Planilhas, CRM Legado, Sem Ferramenta)
-    - <strong>[P] Problemas Identificados:</strong> Textarea (até 3 problemas)
-    - <strong>[I] Custo Mensal do Problema:</strong> Number (R$)
-    - <strong>[N] Benefícios Esperados:</strong> Checkboxes (Visibilidade, Velocidade, Automação)
+    - <strong>[S] Contexto Atual:</strong> Dropdown (Planilhas, CRM Legado, Sem Ferramenta)<br/>
+    - <strong>[P] Problemas Identificados:</strong> Textarea (até 3 problemas)<br/>
+    - <strong>[I] Custo Mensal do Problema:</strong> Number (R$)<br/>
+    - <strong>[N] Benefícios Esperados:</strong> Checkboxes (Visibilidade, Velocidade, Automação)<br/>
 
 <strong>Como Configurar:</strong>
-    [Dashboard Sirius] → Configurações → Campos Customizados → Criar Seção "SPIN Discovery"
+    [Dashboard Sirius] → Configurações → Campos Customizados → Criar Seção "SPIN Discovery"<br/>
 
 <strong><a href="https://sirius.roilabs.com.br/features/custom-fields" target="_blank" rel="noopener" style="color: #2563eb; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 2px; transition: all 0.2s;" onmouseover="this.style.color='#1e40af'; this.style.textDecorationThickness='2px'" onmouseout="this.style.color='#2563eb'; this.style.textDecorationThickness='1px'">Ver Feature: Custom Fields →</a></strong>
   </Feature>
@@ -3602,12 +3602,12 @@ a Sirius resolve especificamente [Problema 1], [Problema 2] e [Problema 3]..."
     icon="📊"
     description="Acompanhe a saúde dos discoveries do time"
   >
-    <strong>Métricas Exibidas:</strong>
-    - % discoveries com 3+ problemas identificados
-    - % discoveries com ROI calculado
-    - % discoveries com próximos passos definidos
-    - Duração média de discovery por vendedor
-    - Taxa de conversão Discovery → Demo por vendedor
+    <strong>Métricas Exibidas:</strong><br/>
+    - % discoveries com 3+ problemas identificados<br/>
+    - % discoveries com ROI calculado<br/>
+    - % discoveries com próximos passos definidos<br/>
+    - Duração média de discovery por vendedor<br/>
+    - Taxa de conversão Discovery → Demo por vendedor<br/>
 
 <strong><a href="https://sirius.roilabs.com.br/dashboard/analytics" target="_blank" rel="noopener" style="color: #2563eb; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 2px; transition: all 0.2s;" onmouseover="this.style.color='#1e40af'; this.style.textDecorationThickness='2px'" onmouseout="this.style.color='#2563eb'; this.style.textDecorationThickness='1px'">Ver Feature: Sales Analytics →</a></strong>
   </Feature>
@@ -3618,11 +3618,11 @@ a Sirius resolve especificamente [Problema 1], [Problema 2] e [Problema 3]..."
     icon="🛡️"
     description="Centralize aprendizados do time em tempo real"
   >
-    <strong>Como Funciona:</strong>
-    1. Vendedor recebe objeção nova
-    2. Registra no Sirius: Objeção + Contexto + Como Resolveu
-    3. Biblioteca cresce organicamente
-    4. Todos acessam via busca: "objeção: está caro"
+    <strong>Como Funciona:</strong><br/>
+    1. Vendedor recebe objeção nova<br/>
+    2. Registra no Sirius: Objeção + Contexto + Como Resolveu<br/>
+    3. Biblioteca cresce organicamente<br/>
+    4. Todos acessam via busca: "objeção: está caro"<br/>
 
 <strong><a href="https://sirius.roilabs.com.br/features/sales-playbook" target="_blank" rel="noopener" style="color: #2563eb; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 2px; transition: all 0.2s;" onmouseover="this.style.color='#1e40af'; this.style.textDecorationThickness='2px'" onmouseout="this.style.color='#2563eb'; this.style.textDecorationThickness='1px'">Ver Feature: Sales Playbook →</a></strong>
   </Feature>
@@ -3656,35 +3656,35 @@ a Sirius resolve especificamente [Problema 1], [Problema 2] e [Problema 3]..."
 <ActionPlan>
   <Week number="1" title="Fundamentos">
     <strong>Segunda:</strong>
-    - [ ] Leia este artigo completo
-    - [ ] Baixe todos os templates (link no topo)
-    - [ ] Assista <a href="https://receitaprevisivel.com/blog/perguntas-spin-selling/" target="_blank" rel="noopener" style="color: #2563eb; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 2px; transition: all 0.2s;" onmouseover="this.style.color='#1e40af'; this.style.textDecorationThickness='2px'" onmouseout="this.style.color='#2563eb'; this.style.textDecorationThickness='1px'">Vídeo SPIN - Receita Previsível</a>
+    - [ ] Leia este artigo completo<br/>
+    - [ ] Baixe todos os templates (link no topo)<br/>
+    - [ ] Assista <a href="https://receitaprevisivel.com/blog/perguntas-spin-selling/" target="_blank" rel="noopener" style="color: #2563eb; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 2px; transition: all 0.2s;" onmouseover="this.style.color='#1e40af'; this.style.textDecorationThickness='2px'" onmouseout="this.style.color='#2563eb'; this.style.textDecorationThickness='1px'">Vídeo SPIN - Receita Previsível</a><br/>
 
 <strong>Terça:</strong>
-    - [ ] Crie seu banco de 40 perguntas SPIN
-    - [ ] Adapte para seu ICP específico
-    - [ ] Compartilhe com equipe para feedback
+    - [ ] Crie seu banco de 40 perguntas SPIN<br/>
+    - [ ] Adapte para seu ICP específico<br/>
+    - [ ] Compartilhe com equipe para feedback<br/>
 
 <strong>Quarta:</strong>
-    - [ ] Role-play com colega (30 min)
-    - [ ] Grave e revise
-    - [ ] Ajuste perguntas baseado no feedback
+    - [ ] Role-play com colega (30 min)<br/>
+    - [ ] Grave e revise<br/>
+    - [ ] Ajuste perguntas baseado no feedback<br/>
 
 <strong>Quinta:</strong>
-    - [ ] Aplique SPIN em 1 discovery real
-    - [ ] Grave a call
-    - [ ] Preencha template de análise
+    - [ ] Aplique SPIN em 1 discovery real<br/>
+    - [ ] Grave a call<br/>
+    - [ ] Preencha template de análise<br/>
 
 <strong>Sexta:</strong>
-    - [ ] Revise gravação
-    - [ ] Identifique 3 melhorias
-    - [ ] Agende 1-on-1 com gestor para feedback
+    - [ ] Revise gravação<br/>
+    - [ ] Identifique 3 melhorias<br/>
+    - [ ] Agende 1-on-1 com gestor para feedback<br/>
   </Week>
 
 <Week number="2-4" title="Prática Deliberada">
-    - <strong>Meta:</strong> 2 discoveries SPIN por semana
-    - <strong>Revisão:</strong> 30 min/semana com gestor
-    - <strong>Refinamento:</strong> Ajustar perguntas baseado em feedbacks
+    - <strong>Meta:</strong> 2 discoveries SPIN por semana<br/>
+    - <strong>Revisão:</strong> 30 min/semana com gestor<br/>
+    - <strong>Refinamento:</strong> Ajustar perguntas baseado em feedbacks<br/>
   </Week>
 </ActionPlan>
 
@@ -3693,11 +3693,11 @@ a Sirius resolve especificamente [Problema 1], [Problema 2] e [Problema 3]..."
 <h3><strong>🎁 Recursos Gratuitos (Relembre)</strong></h3>
 
 <ResourceBoxCompact>
-  - ✅ <a href="/downloads/spin-selling/checklist-spin-100-perguntas.csv" target="_blank" rel="noopener" style="color: #2563eb; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 2px; transition: all 0.2s;" onmouseover="this.style.color='#1e40af'; this.style.textDecorationThickness='2px'" onmouseout="this.style.color='#2563eb'; this.style.textDecorationThickness='1px'">Checklist SPIN 100+ Perguntas</a>
-  - ✅ <a href="/downloads/spin-selling/matriz-objecoes-argumentos.html" target="_blank" rel="noopener" style="color: #2563eb; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 2px; transition: all 0.2s;" onmouseover="this.style.color='#1e40af'; this.style.textDecorationThickness='2px'" onmouseout="this.style.color='#2563eb'; this.style.textDecorationThickness='1px'">Matriz Objeções A4</a>
-  - ✅ <a href="/downloads/spin-selling/template-discovery-meeting-45min.html" target="_blank" rel="noopener" style="color: #2563eb; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 2px; transition: all 0.2s;" onmouseover="this.style.color='#1e40af'; this.style.textDecorationThickness='2px'" onmouseout="this.style.color='#2563eb'; this.style.textDecorationThickness='1px'">Template Discovery</a>
-  - ✅ <a href="/calculadora-roi-spin" target="_blank" rel="noopener" style="color: #2563eb; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 2px; transition: all 0.2s;" onmouseover="this.style.color='#1e40af'; this.style.textDecorationThickness='2px'" onmouseout="this.style.color='#2563eb'; this.style.textDecorationThickness='1px'">Calculadora ROI SPIN</a>
-  - ✅ <a href="https://sirius.roilabs.com.br/register?trial=spin-selling" target="_blank" rel="noopener" style="color: #2563eb; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 2px; transition: all 0.2s;" onmouseover="this.style.color='#1e40af'; this.style.textDecorationThickness='2px'" onmouseout="this.style.color='#2563eb'; this.style.textDecorationThickness='1px'">Trial Sirius CRM 14 dias</a>
+  - ✅ <a href="/downloads/spin-selling/checklist-spin-100-perguntas.csv" target="_blank" rel="noopener" style="color: #2563eb; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 2px; transition: all 0.2s;" onmouseover="this.style.color='#1e40af'; this.style.textDecorationThickness='2px'" onmouseout="this.style.color='#2563eb'; this.style.textDecorationThickness='1px'">Checklist SPIN 100+ Perguntas</a><br/>
+  - ✅ <a href="/downloads/spin-selling/matriz-objecoes-argumentos.html" target="_blank" rel="noopener" style="color: #2563eb; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 2px; transition: all 0.2s;" onmouseover="this.style.color='#1e40af'; this.style.textDecorationThickness='2px'" onmouseout="this.style.color='#2563eb'; this.style.textDecorationThickness='1px'">Matriz Objeções A4</a><br/>
+  - ✅ <a href="/downloads/spin-selling/template-discovery-meeting-45min.html" target="_blank" rel="noopener" style="color: #2563eb; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 2px; transition: all 0.2s;" onmouseover="this.style.color='#1e40af'; this.style.textDecorationThickness='2px'" onmouseout="this.style.color='#2563eb'; this.style.textDecorationThickness='1px'">Template Discovery</a><br/>
+  - ✅ <a href="/calculadora-roi-spin" target="_blank" rel="noopener" style="color: #2563eb; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 2px; transition: all 0.2s;" onmouseover="this.style.color='#1e40af'; this.style.textDecorationThickness='2px'" onmouseout="this.style.color='#2563eb'; this.style.textDecorationThickness='1px'">Calculadora ROI SPIN</a><br/>
+  - ✅ <a href="https://sirius.roilabs.com.br/register?trial=spin-selling" target="_blank" rel="noopener" style="color: #2563eb; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 2px; transition: all 0.2s;" onmouseover="this.style.color='#1e40af'; this.style.textDecorationThickness='2px'" onmouseout="this.style.color='#2563eb'; this.style.textDecorationThickness='1px'">Trial Sirius CRM 14 dias</a><br/>
 </ResourceBoxCompact>
 
 <hr style="margin: 3rem 0; border: none; border-top: 1px solid #e5e7eb;" />
@@ -3711,38 +3711,38 @@ a Sirius resolve especificamente [Problema 1], [Problema 2] e [Problema 3]..."
 
 <FAQ question="Quanto tempo leva para dominar SPIN?">
     <strong>Resposta:</strong>
-    - <strong>Nível Básico:</strong> 2-4 semanas (com prática diária)
-    - <strong>Nível Intermediário:</strong> 2-3 meses (10-15 discoveries)
-    - <strong>Nível Avançado:</strong> 6-12 meses (50+ discoveries + feedback constante)
+    - <strong>Nível Básico:</strong> 2-4 semanas (com prática diária)<br/>
+    - <strong>Nível Intermediário:</strong> 2-3 meses (10-15 discoveries)<br/>
+    - <strong>Nível Avançado:</strong> 6-12 meses (50+ discoveries + feedback constante)<br/>
 
 <strong>Dica:</strong> A curva de aprendizado acelera com <strong>gravações + feedback</strong>.
   </FAQ>
 
 <FAQ question="Como convencer minha equipe a adotar SPIN?">
     <strong>Resposta:</strong>
-    1. <strong>Mostre dados:</strong> 17% aumento conversão, 53% mais chances (estudos Huthwaite)
-    2. <strong>Piloto:</strong> Comece com 1-2 vendedores top performers
-    3. <strong>Resultados:</strong> Compartilhe wins da primeira semana
-    4. <strong>Gamificação:</strong> Crie competição saudável
+    1. <strong>Mostre dados:</strong> 17% aumento conversão, 53% mais chances (estudos Huthwaite)<br/>
+    2. <strong>Piloto:</strong> Comece com 1-2 vendedores top performers<br/>
+    3. <strong>Resultados:</strong> Compartilhe wins da primeira semana<br/>
+    4. <strong>Gamificação:</strong> Crie competição saudável<br/>
 
 <strong>Insight:</strong> Vendedores experientes resistem mais. Foque em provar ROI rápido.
   </FAQ>
 
 <FAQ question="SPIN funciona em vendas remotas (Zoom, Meet)?">
     <strong>Resposta:</strong> <strong>Sim</strong>, inclusive é mais fácil! Benefícios:
-    - ✅ Você pode ter o template aberto durante a call
-    - ✅ Gravação automática para revisão
-    - ✅ Cliente não vê você anotando (menos distração)
-    - ✅ Compartilhamento de tela para mostrar ROI calculado
+    - ✅ Você pode ter o template aberto durante a call<br/>
+    - ✅ Gravação automática para revisão<br/>
+    - ✅ Cliente não vê você anotando (menos distração)<br/>
+    - ✅ Compartilhamento de tela para mostrar ROI calculado<br/>
 
 <strong>Dica:</strong> Use 2 monitores (1 para Zoom, 1 para template).
   </FAQ>
 
 <FAQ question="E se o cliente reclamar de 'muitas perguntas'?">
     <strong>Resposta:</strong> Isso indica que você:
-    - ❌ Não criou rapport inicial
-    - ❌ Fez muitas perguntas de Situação (deveria pesquisar antes)
-    - ❌ Não explicou o propósito do discovery
+    - ❌ Não criou rapport inicial<br/>
+    - ❌ Fez muitas perguntas de Situação (deveria pesquisar antes)<br/>
+    - ❌ Não explicou o propósito do discovery<br/>
 
 <strong>Script de Ajuste:</strong>
     > "Entendo. O motivo de estar fazendo essas perguntas é garantir que, se eu mostrar alguma coisa, seja exatamente o que resolve seus desafios. Posso fazer mais 2-3 perguntas rápidas?"
@@ -3794,10 +3794,10 @@ a Sirius resolve especificamente [Problema 1], [Problema 2] e [Problema 3]..."
 <FAQ question="Posso combinar SPIN com outras metodologias?">
     <strong>Resposta:</strong> <strong>Sim!</strong> SPIN é altamente complementar:
 
-<p>- <strong>SPIN + BANT:</strong> BANT qualifica, SPIN aprofunda
-    - <strong>SPIN + GPCT:</strong> GPCT mapeia jornada, SPIN explora dores
-    - <strong>SPIN + Challenger:</strong> SPIN descobre dores, Challenger ensina novas perspectivas
-    - <strong>SPIN + Sandler:</strong> Sandler qualifica dor, SPIN quantifica</p>
+<p>- <strong>SPIN + BANT:</strong> BANT qualifica, SPIN aprofunda<br/>
+    - <strong>SPIN + GPCT:</strong> GPCT mapeia jornada, SPIN explora dores<br/>
+    - <strong>SPIN + Challenger:</strong> SPIN descobre dores, Challenger ensina novas perspectivas<br/>
+    - <strong>SPIN + Sandler:</strong> Sandler qualifica dor, SPIN quantifica</p><br/>
 
 <strong>Fonte:</strong> <a href="https://salesgrowth.com.br/frameworks-bant-spin-nes-gpct/" target="_blank" rel="noopener" style="color: #2563eb; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 2px; transition: all 0.2s;" onmouseover="this.style.color='#1e40af'; this.style.textDecorationThickness='2px'" onmouseout="this.style.color='#2563eb'; this.style.textDecorationThickness='1px'">Frameworks de Vendas - Sales Growth</a>
   </FAQ>
@@ -3850,10 +3850,10 @@ a Sirius resolve especificamente [Problema 1], [Problema 2] e [Problema 3]..."
     <strong>Resposta:</strong> <strong>Perfeitamente!</strong> Na verdade, SPIN foi criado para consultoria.
 
 <strong>Adaptações para Serviços:</strong>
-    - <strong>Situação:</strong> Foque em projetos anteriores, aprendizados, expectativas
-    - <strong>Problema:</strong> Explore gargalos em execução, comunicação, timing
-    - <strong>Implicação:</strong> Quantifique custo de atrasos, retrabalho, escopo mal definido
-    - <strong>Necessidade:</strong> Explore expectativas de parceria, não só entrega
+    - <strong>Situação:</strong> Foque em projetos anteriores, aprendizados, expectativas<br/>
+    - <strong>Problema:</strong> Explore gargalos em execução, comunicação, timing<br/>
+    - <strong>Implicação:</strong> Quantifique custo de atrasos, retrabalho, escopo mal definido<br/>
+    - <strong>Necessidade:</strong> Explore expectativas de parceria, não só entrega<br/>
 
 <strong>Exemplo:</strong> Consultoria de RH explorando "Qual o custo de uma contratação errada?"
   </FAQ>
@@ -3909,10 +3909,10 @@ a Sirius resolve especificamente [Problema 1], [Problema 2] e [Problema 3]..."
 <h3><strong>💬 Suporte e Comunidade</strong></h3>
 
 <ContactLinks>
-  - <strong>WhatsApp:</strong> <a href="https://wa.me/5511999999999?text=Olá!%20Quero%20saber%20mais%20sobre%20SPIN%20Selling" target="_blank" rel="noopener" style="color: #2563eb; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 2px; transition: all 0.2s;" onmouseover="this.style.color='#1e40af'; this.style.textDecorationThickness='2px'" onmouseout="this.style.color='#2563eb'; this.style.textDecorationThickness='1px'">+55 11 99999-9999</a>
-  - <strong>Email:</strong> vendas@sirius.roilabs.com.br
-  - <strong>LinkedIn:</strong> <a href="https://linkedin.com/company/sirius-crm" target="_blank" rel="noopener" style="color: #2563eb; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 2px; transition: all 0.2s;" onmouseover="this.style.color='#1e40af'; this.style.textDecorationThickness='2px'" onmouseout="this.style.color='#2563eb'; this.style.textDecorationThickness='1px'">Sirius CRM</a>
-  - <strong>Comunidade:</strong> <a href="link-telegram" target="_blank" rel="noopener" style="color: #2563eb; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 2px; transition: all 0.2s;" onmouseover="this.style.color='#1e40af'; this.style.textDecorationThickness='2px'" onmouseout="this.style.color='#2563eb'; this.style.textDecorationThickness='1px'">Grupo SPIN Selling Brasil (Telegram)</a>
+  - <strong>WhatsApp:</strong> <a href="https://wa.me/5511999999999?text=Olá!%20Quero%20saber%20mais%20sobre%20SPIN%20Selling" target="_blank" rel="noopener" style="color: #2563eb; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 2px; transition: all 0.2s;" onmouseover="this.style.color='#1e40af'; this.style.textDecorationThickness='2px'" onmouseout="this.style.color='#2563eb'; this.style.textDecorationThickness='1px'">+55 11 99999-9999</a><br/>
+  - <strong>Email:</strong> vendas@sirius.roilabs.com.br<br/>
+  - <strong>LinkedIn:</strong> <a href="https://linkedin.com/company/sirius-crm" target="_blank" rel="noopener" style="color: #2563eb; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 2px; transition: all 0.2s;" onmouseover="this.style.color='#1e40af'; this.style.textDecorationThickness='2px'" onmouseout="this.style.color='#2563eb'; this.style.textDecorationThickness='1px'">Sirius CRM</a><br/>
+  - <strong>Comunidade:</strong> <a href="link-telegram" target="_blank" rel="noopener" style="color: #2563eb; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 2px; transition: all 0.2s;" onmouseover="this.style.color='#1e40af'; this.style.textDecorationThickness='2px'" onmouseout="this.style.color='#2563eb'; this.style.textDecorationThickness='1px'">Grupo SPIN Selling Brasil (Telegram)</a><br/>
 </ContactLinks>
 
 <hr style="margin: 3rem 0; border: none; border-top: 1px solid #e5e7eb;" />
@@ -3943,20 +3943,20 @@ a Sirius resolve especificamente [Problema 1], [Problema 2] e [Problema 3]..."
   Metodologia de vendas consultivas criada por Neil Rackham baseada em 35.000 calls de vendas. Usa 4 tipos de perguntas: Situação, Problema, Implicação e Necessidade de Solução.
 
 <strong>Por Que Funciona?</strong>
-  - +17% taxa de fechamento (Huthwaite Research)
-  - +53% chances em vendas complexas (Miller Heiman Group)
-  - Cliente articula suas próprias necessidades (menos resistência)
+  - +17% taxa de fechamento (Huthwaite Research)<br/>
+  - +53% chances em vendas complexas (Miller Heiman Group)<br/>
+  - Cliente articula suas próprias necessidades (menos resistência)<br/>
 
 <strong>Quando Usar?</strong>
-  - Vendas B2B complexas (ticket > R$ 5k, ciclo > 30 dias)
-  - Múltiplos decisores
-  - Soluções customizáveis
+  - Vendas B2B complexas (ticket > R$ 5k, ciclo > 30 dias)<br/>
+  - Múltiplos decisores<br/>
+  - Soluções customizáveis<br/>
 
 <strong>Como Aplicar?</strong>
-  1. <strong>Situação (5-10 min):</strong> Entenda contexto (pesquise antes!)
-  2. <strong>Problema (15 min):</strong> Identifique 2-3 dores específicas
-  3. <strong>Implicação (10 min):</strong> Quantifique custo do problema em R$
-  4. <strong>Necessidade (5 min):</strong> Faça o cliente descrever solução ideal
+  1. <strong>Situação (5-10 min):</strong> Entenda contexto (pesquise antes!)<br/>
+  2. <strong>Problema (15 min):</strong> Identifique 2-3 dores específicas<br/>
+  3. <strong>Implicação (10 min):</strong> Quantifique custo do problema em R$<br/>
+  4. <strong>Necessidade (5 min):</strong> Faça o cliente descrever solução ideal<br/>
 
 <strong>Próximo Passo:</strong>
   <a href="/downloads/spin-selling/kit-spin-completo.html" target="_blank" rel="noopener" style="color: #2563eb; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 2px; transition: all 0.2s;" onmouseover="this.style.color='#1e40af'; this.style.textDecorationThickness='2px'" onmouseout="this.style.color='#2563eb'; this.style.textDecorationThickness='1px'">Baixe o Kit SPIN Completo</a> e aplique na próxima discovery.
@@ -3969,22 +3969,22 @@ a Sirius resolve especificamente [Problema 1], [Problema 2] e [Problema 3]..."
 <h3><strong>📚 Artigos Relacionados no Blog Sirius:</strong></h3>
 
 <RelatedArticles>
-  - <a href="https://sirius.roilabs.com.br/blog/funil-de-vendas-guia-completo" target="_blank" rel="noopener" style="color: #2563eb; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 2px; transition: all 0.2s;" onmouseover="this.style.color='#1e40af'; this.style.textDecorationThickness='2px'" onmouseout="this.style.color='#2563eb'; this.style.textDecorationThickness='1px'">Funil de Vendas: Guia Completo 2026</a> ← <strong>Artigo Origem</strong>
-  - <a href="https://sirius.roilabs.com.br/blog/pipeline-vendas-guia" target="_blank" rel="noopener" style="color: #2563eb; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 2px; transition: all 0.2s;" onmouseover="this.style.color='#1e40af'; this.style.textDecorationThickness='2px'" onmouseout="this.style.color='#2563eb'; this.style.textDecorationThickness='1px'">Pipeline de Vendas: Como Criar em 7 Passos</a>
-  - <a href="https://sirius.roilabs.com.br/blog/metricas-vendas-kpis" target="_blank" rel="noopener" style="color: #2563eb; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 2px; transition: all 0.2s;" onmouseover="this.style.color='#1e40af'; this.style.textDecorationThickness='2px'" onmouseout="this.style.color='#2563eb'; this.style.textDecorationThickness='1px'">Métricas de Vendas: 15 KPIs Essenciais</a>
-  - <a href="https://sirius.roilabs.com.br/blog/discovery-meeting-template" target="_blank" rel="noopener" style="color: #2563eb; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 2px; transition: all 0.2s;" onmouseover="this.style.color='#1e40af'; this.style.textDecorationThickness='2px'" onmouseout="this.style.color='#2563eb'; this.style.textDecorationThickness='1px'">Discovery Meeting: Template e Checklist</a>
-  - <a href="https://sirius.roilabs.com.br/blog/objecoes-vendas" target="_blank" rel="noopener" style="color: #2563eb; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 2px; transition: all 0.2s;" onmouseover="this.style.color='#1e40af'; this.style.textDecorationThickness='2px'" onmouseout="this.style.color='#2563eb'; this.style.textDecorationThickness='1px'">Objeções em Vendas: Como Responder</a>
-  - <a href="https://sirius.roilabs.com.br/blog/crm-vendas-consultivas" target="_blank" rel="noopener" style="color: #2563eb; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 2px; transition: all 0.2s;" onmouseover="this.style.color='#1e40af'; this.style.textDecorationThickness='2px'" onmouseout="this.style.color='#2563eb'; this.style.textDecorationThickness='1px'">CRM para Vendas Consultivas</a>
+  - <a href="https://sirius.roilabs.com.br/blog/funil-de-vendas-guia-completo" target="_blank" rel="noopener" style="color: #2563eb; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 2px; transition: all 0.2s;" onmouseover="this.style.color='#1e40af'; this.style.textDecorationThickness='2px'" onmouseout="this.style.color='#2563eb'; this.style.textDecorationThickness='1px'">Funil de Vendas: Guia Completo 2026</a> ← <strong>Artigo Origem</strong><br/>
+  - <a href="https://sirius.roilabs.com.br/blog/pipeline-vendas-guia" target="_blank" rel="noopener" style="color: #2563eb; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 2px; transition: all 0.2s;" onmouseover="this.style.color='#1e40af'; this.style.textDecorationThickness='2px'" onmouseout="this.style.color='#2563eb'; this.style.textDecorationThickness='1px'">Pipeline de Vendas: Como Criar em 7 Passos</a><br/>
+  - <a href="https://sirius.roilabs.com.br/blog/metricas-vendas-kpis" target="_blank" rel="noopener" style="color: #2563eb; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 2px; transition: all 0.2s;" onmouseover="this.style.color='#1e40af'; this.style.textDecorationThickness='2px'" onmouseout="this.style.color='#2563eb'; this.style.textDecorationThickness='1px'">Métricas de Vendas: 15 KPIs Essenciais</a><br/>
+  - <a href="https://sirius.roilabs.com.br/blog/discovery-meeting-template" target="_blank" rel="noopener" style="color: #2563eb; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 2px; transition: all 0.2s;" onmouseover="this.style.color='#1e40af'; this.style.textDecorationThickness='2px'" onmouseout="this.style.color='#2563eb'; this.style.textDecorationThickness='1px'">Discovery Meeting: Template e Checklist</a><br/>
+  - <a href="https://sirius.roilabs.com.br/blog/objecoes-vendas" target="_blank" rel="noopener" style="color: #2563eb; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 2px; transition: all 0.2s;" onmouseover="this.style.color='#1e40af'; this.style.textDecorationThickness='2px'" onmouseout="this.style.color='#2563eb'; this.style.textDecorationThickness='1px'">Objeções em Vendas: Como Responder</a><br/>
+  - <a href="https://sirius.roilabs.com.br/blog/crm-vendas-consultivas" target="_blank" rel="noopener" style="color: #2563eb; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 2px; transition: all 0.2s;" onmouseover="this.style.color='#1e40af'; this.style.textDecorationThickness='2px'" onmouseout="this.style.color='#2563eb'; this.style.textDecorationThickness='1px'">CRM para Vendas Consultivas</a><br/>
 </RelatedArticles>
 
 <h3><strong>🛠️ Features Sirius CRM:</strong></h3>
 
 <FeatureLinks>
-  - <a href="https://sirius.roilabs.com.br/features/discovery-templates" target="_blank" rel="noopener" style="color: #2563eb; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 2px; transition: all 0.2s;" onmouseover="this.style.color='#1e40af'; this.style.textDecorationThickness='2px'" onmouseout="this.style.color='#2563eb'; this.style.textDecorationThickness='1px'">Discovery Templates</a>
-  - <a href="https://sirius.roilabs.com.br/features/custom-fields" target="_blank" rel="noopener" style="color: #2563eb; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 2px; transition: all 0.2s;" onmouseover="this.style.color='#1e40af'; this.style.textDecorationThickness='2px'" onmouseout="this.style.color='#2563eb'; this.style.textDecorationThickness='1px'">Custom Fields</a>
-  - <a href="https://sirius.roilabs.com.br/features/email-automation" target="_blank" rel="noopener" style="color: #2563eb; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 2px; transition: all 0.2s;" onmouseover="this.style.color='#1e40af'; this.style.textDecorationThickness='2px'" onmouseout="this.style.color='#2563eb'; this.style.textDecorationThickness='1px'">Email Automation</a>
-  - <a href="https://sirius.roilabs.com.br/dashboard/analytics" target="_blank" rel="noopener" style="color: #2563eb; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 2px; transition: all 0.2s;" onmouseover="this.style.color='#1e40af'; this.style.textDecorationThickness='2px'" onmouseout="this.style.color='#2563eb'; this.style.textDecorationThickness='1px'">Sales Analytics</a>
-  - <a href="https://sirius.roilabs.com.br/features/sales-playbook" target="_blank" rel="noopener" style="color: #2563eb; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 2px; transition: all 0.2s;" onmouseover="this.style.color='#1e40af'; this.style.textDecorationThickness='2px'" onmouseout="this.style.color='#2563eb'; this.style.textDecorationThickness='1px'">Sales Playbook</a>
+  - <a href="https://sirius.roilabs.com.br/features/discovery-templates" target="_blank" rel="noopener" style="color: #2563eb; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 2px; transition: all 0.2s;" onmouseover="this.style.color='#1e40af'; this.style.textDecorationThickness='2px'" onmouseout="this.style.color='#2563eb'; this.style.textDecorationThickness='1px'">Discovery Templates</a><br/>
+  - <a href="https://sirius.roilabs.com.br/features/custom-fields" target="_blank" rel="noopener" style="color: #2563eb; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 2px; transition: all 0.2s;" onmouseover="this.style.color='#1e40af'; this.style.textDecorationThickness='2px'" onmouseout="this.style.color='#2563eb'; this.style.textDecorationThickness='1px'">Custom Fields</a><br/>
+  - <a href="https://sirius.roilabs.com.br/features/email-automation" target="_blank" rel="noopener" style="color: #2563eb; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 2px; transition: all 0.2s;" onmouseover="this.style.color='#1e40af'; this.style.textDecorationThickness='2px'" onmouseout="this.style.color='#2563eb'; this.style.textDecorationThickness='1px'">Email Automation</a><br/>
+  - <a href="https://sirius.roilabs.com.br/dashboard/analytics" target="_blank" rel="noopener" style="color: #2563eb; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 2px; transition: all 0.2s;" onmouseover="this.style.color='#1e40af'; this.style.textDecorationThickness='2px'" onmouseout="this.style.color='#2563eb'; this.style.textDecorationThickness='1px'">Sales Analytics</a><br/>
+  - <a href="https://sirius.roilabs.com.br/features/sales-playbook" target="_blank" rel="noopener" style="color: #2563eb; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 2px; transition: all 0.2s;" onmouseover="this.style.color='#1e40af'; this.style.textDecorationThickness='2px'" onmouseout="this.style.color='#2563eb'; this.style.textDecorationThickness='1px'">Sales Playbook</a><br/>
 </FeatureLinks>
 
 <hr style="margin: 3rem 0; border: none; border-top: 1px solid #e5e7eb;" />
@@ -3998,21 +3998,21 @@ a Sirius resolve especificamente [Problema 1], [Problema 2] e [Problema 3]..."
 <h3><strong>📊 Recapitulando os Benefícios:</strong></h3>
 
 <BenefitsList>
-  ✅ <strong>+17% taxa de fechamento</strong> (comprovado cientificamente)
-  ✅ <strong>+53% chances</strong> em vendas complexas
-  ✅ <strong>-30% ciclo de vendas</strong> (mais velocidade)
-  ✅ <strong>-70% objeções "está caro"</strong> (ROI bem construído)
-  ✅ <strong>Relacionamentos duradouros</strong> (abordagem consultiva)
+  ✅ <strong>+17% taxa de fechamento</strong> (comprovado cientificamente)<br/>
+  ✅ <strong>+53% chances</strong> em vendas complexas<br/>
+  ✅ <strong>-30% ciclo de vendas</strong> (mais velocidade)<br/>
+  ✅ <strong>-70% objeções "está caro"</strong> (ROI bem construído)<br/>
+  ✅ <strong>Relacionamentos duradouros</strong> (abordagem consultiva)<br/>
 </BenefitsList>
 
 <h3><strong>🎯 Seu Plano de Ação (Hoje):</strong></h3>
 
 <FinalCTASteps>
-  1. <strong><a href="/downloads/spin-selling/kit-spin-completo.html" target="_blank" rel="noopener" style="color: #2563eb; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 2px; transition: all 0.2s;" onmouseover="this.style.color='#1e40af'; this.style.textDecorationThickness='2px'" onmouseout="this.style.color='#2563eb'; this.style.textDecorationThickness='1px'">Baixe o Kit SPIN Completo</a></strong> (5 min)
-  2. <strong>Crie seu banco de 40 perguntas</strong> (30 min)
-  3. <strong>Faça 1 role-play</strong> com colega (30 min)
-  4. <strong>Aplique na próxima discovery</strong> (essa semana)
-  5. <strong><a href="https://sirius.roilabs.com.br/register?trial=spin-selling" target="_blank" rel="noopener" style="color: #2563eb; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 2px; transition: all 0.2s;" onmouseover="this.style.color='#1e40af'; this.style.textDecorationThickness='2px'" onmouseout="this.style.color='#2563eb'; this.style.textDecorationThickness='1px'">Teste Sirius CRM 14 dias grátis</a></strong> (opcional)
+  1. <strong><a href="/downloads/spin-selling/kit-spin-completo.html" target="_blank" rel="noopener" style="color: #2563eb; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 2px; transition: all 0.2s;" onmouseover="this.style.color='#1e40af'; this.style.textDecorationThickness='2px'" onmouseout="this.style.color='#2563eb'; this.style.textDecorationThickness='1px'">Baixe o Kit SPIN Completo</a></strong> (5 min)<br/>
+  2. <strong>Crie seu banco de 40 perguntas</strong> (30 min)<br/>
+  3. <strong>Faça 1 role-play</strong> com colega (30 min)<br/>
+  4. <strong>Aplique na próxima discovery</strong> (essa semana)<br/>
+  5. <strong><a href="https://sirius.roilabs.com.br/register?trial=spin-selling" target="_blank" rel="noopener" style="color: #2563eb; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 2px; transition: all 0.2s;" onmouseover="this.style.color='#1e40af'; this.style.textDecorationThickness='2px'" onmouseout="this.style.color='#2563eb'; this.style.textDecorationThickness='1px'">Teste Sirius CRM 14 dias grátis</a></strong> (opcional)<br/>
 </FinalCTASteps>
 
 <h3><strong>💪 Você Está Pronto</strong></h3>
