@@ -26,12 +26,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
     }))
 
     // Dynamic blog posts
-    const posts = blogPosts.map((post) => ({
-        url: `${baseUrl}/blog/${post?.slug}`,
-        lastModified: new Date(post?.date || new Date()),
-        changeFrequency: 'weekly' as const,
-        priority: 0.7,
-    }))
+    const posts = blogPosts
+        .filter((post) => post && post.slug)
+        .map((post) => ({
+            url: `${baseUrl}/blog/${post.slug}`,
+            lastModified: new Date(post.date),
+            changeFrequency: 'weekly' as const,
+            priority: 0.7,
+        }))
 
     return [...routes, ...posts]
 }

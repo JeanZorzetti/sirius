@@ -57,9 +57,11 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
 }
 
 export function generateStaticParams() {
-  return blogPosts.map((post) => ({
-    slug: post?.slug || '',
-  }))
+  return blogPosts
+    .filter((post) => post && post.slug)
+    .map((post) => ({
+      slug: post.slug,
+    }))
 }
 
 export default async function BlogPostPage({ params }: BlogPostPageProps) {
@@ -72,7 +74,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
 
   // Get related posts (exclude current post, get 2 random posts)
   const relatedPosts = blogPosts
-    .filter((p) => p?.slug !== slug)
+    .filter((p) => p && p.slug && p.slug !== slug)
     .slice(0, 2)
 
   const url = `https://sirius.roilabs.com.br/blog/${slug}`
@@ -207,27 +209,27 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
               <div className="grid gap-6 md:grid-cols-2">
                 {relatedPosts.map((relatedPost) => (
                   <Card
-                    key={relatedPost?.slug}
+                    key={relatedPost.slug}
                     className="group hover:shadow-xl transition-all duration-300 hover:border-primary/50 bg-card/50 backdrop-blur-sm"
                   >
                     <CardHeader className="space-y-3">
                       <Badge variant="secondary" className="w-fit">
-                        {relatedPost?.category}
+                        {relatedPost.category}
                       </Badge>
                       <CardTitle className="text-xl leading-tight">
                         <Link
-                          href={`/blog/${relatedPost?.slug}`}
+                          href={`/blog/${relatedPost.slug}`}
                           className="hover:text-primary transition-colors group-hover:text-primary"
                         >
-                          {relatedPost?.title}
+                          {relatedPost.title}
                         </Link>
                       </CardTitle>
                       <CardDescription className="line-clamp-2 text-base">
-                        {relatedPost?.excerpt}
+                        {relatedPost.excerpt}
                       </CardDescription>
                     </CardHeader>
                     <CardContent>
-                      <Link href={`/blog/${relatedPost?.slug}`}>
+                      <Link href={`/blog/${relatedPost.slug}`}>
                         <Button
                           variant="ghost"
                           className="w-full justify-start pl-0 group-hover:text-primary group-hover:translate-x-1 transition-all"
