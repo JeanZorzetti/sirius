@@ -2129,7 +2129,7 @@ export const blogPosts: BlogPost[] = [
     title: 'SPIN Selling: A Metodologia de Vendas que Aumenta Conversão em 53% [Guia Completo 2026]',
     excerpt: `Descubra como SPIN Selling aumenta conversão em vendas complexas B2B. Guia completo com 100+ perguntas práticas, matriz de objeções e casos reais. Template gratuito para download.`,
     content: `
-!<a href="/images/blog/spin-selling-hero.jpg" target="_blank" rel="noopener" style="color: #2563eb; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 2px; transition: all 0.2s;" onmouseover="this.style.color='#1e40af'; this.style.textDecorationThickness='2px'" onmouseout="this.style.color='#2563eb'; this.style.textDecorationThickness='1px'">Diagrama SPIN Selling mostrando as 4 etapas: Situação, Problema, Implicação e Necessidade de Solução</a>
+<img src="/images/blog/spin-selling-hero.jpg" alt="Diagrama SPIN Selling mostrando as 4 etapas: Situação, Problema, Implicação e Necessidade de Solução" style="max-width: 100%; height: auto; margin: 2rem 0; border-radius: 0.5rem; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);" />
 <em>Alt text: Infográfico SPIN Selling metodologia - 4 etapas de perguntas para vendas consultivas B2B - Situação Problema Implicação Necessidade</em>
 
 <div style="background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%); border-left: 4px solid #0284c7; padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
@@ -2199,7 +2199,7 @@ export const blogPosts: BlogPost[] = [
 
 <p>Segundo pesquisa da <a href="https://millerheimangroup.com.br/desbloqueie-o-segredo-do-spin-selling-para-fechar-negocios-em-vendas-b2b/" target="_blank" rel="noopener" style="color: #2563eb; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 2px; transition: all 0.2s;" onmouseover="this.style.color='#1e40af'; this.style.textDecorationThickness='2px'" onmouseout="this.style.color='#2563eb'; this.style.textDecorationThickness='1px'">Miller Heiman Group Brasil</a>, empresas com discovery fraco deixam de <strong>fechar 20% das oportunidades viáveis</strong>. Se sua empresa gera 100 SQLs/mês com ticket médio de R$ 5.000, isso representa <strong>R$ 1,2 milhão/ano</strong> em receita perdida.</p>
 
-!<a href="/images/blog/spin-selling-custo-discovery-fraco.png" target="_blank" rel="noopener" style="color: #2563eb; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 2px; transition: all 0.2s;" onmouseover="this.style.color='#1e40af'; this.style.textDecorationThickness='2px'" onmouseout="this.style.color='#2563eb'; this.style.textDecorationThickness='1px'">Calculadora mostrando R$ 1,2 milhão de receita perdida por ano devido a discovery fraco</a>
+<img src="/images/blog/spin-selling-custo-discovery-fraco.png" alt="Calculadora mostrando R$ 1,2 milhão de receita perdida por ano devido a discovery fraco" style="max-width: 100%; height: auto; margin: 2rem 0; border-radius: 0.5rem; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);" />
 <em>Alt text: Cálculo ROI SPIN Selling - R$ 1,2 milhão receita perdida anualmente com discovery fraco vendas B2B</em>
 
 <strong>A boa notícia?</strong> SPIN Selling pode reverter isso.
@@ -2210,7 +2210,7 @@ export const blogPosts: BlogPost[] = [
 
 <p>A metodologia SPIN Selling foi validada em <strong>35.000 ligações de vendas</strong> em <strong>20 países</strong> ao longo de <strong>12 anos de pesquisa</strong> pela <a href="https://escolaexchange.com.br/vendas/spin-selling-e-neil-rackham-sobre-o-que-e-a-tecnica-de-vendas/" target="_blank" rel="noopener" style="color: #2563eb; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 2px; transition: all 0.2s;" onmouseover="this.style.color='#1e40af'; this.style.textDecorationThickness='2px'" onmouseout="this.style.color='#2563eb'; this.style.textDecorationThickness='1px'">Huthwaite Research Group</a>.</p>
 
-!<a href="/images/blog/spin-selling-estatisticas.png" target="_blank" rel="noopener" style="color: #2563eb; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 2px; transition: all 0.2s;" onmouseover="this.style.color='#1e40af'; this.style.textDecorationThickness='2px'" onmouseout="this.style.color='#2563eb'; this.style.textDecorationThickness='1px'">Infográfico com estatísticas SPIN Selling: 35.000 calls analisadas, 20 países, 12 anos de pesquisa</a>
+<img src="/images/blog/spin-selling-estatisticas.png" alt="Infográfico com estatísticas SPIN Selling: 35.000 calls analisadas, 20 países, 12 anos de pesquisa" style="max-width: 100%; height: auto; margin: 2rem 0; border-radius: 0.5rem; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);" />
 <em>Alt text: SPIN Selling estatísticas pesquisa Huthwaite - 35000 ligações vendas 20 países 12 anos Neil Rackham</em>
 
 <h3>Resultados Mensuráveis:</h3>
@@ -2271,7 +2271,7 @@ export const blogPosts: BlogPost[] = [
 
 <strong>SPIN Selling</strong> é uma metodologia de vendas consultivas criada por <strong>Neil Rackham</strong> em 1988, baseada na análise de milhares de interações de vendas complexas.
 
-!<a href="/images/blog/spin-selling-conceito-diagrama.png" target="_blank" rel="noopener" style="color: #2563eb; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 2px; transition: all 0.2s;" onmouseover="this.style.color='#1e40af'; this.style.textDecorationThickness='2px'" onmouseout="this.style.color='#2563eb'; this.style.textDecorationThickness='1px'">Diagrama explicando SPIN Selling: 4 quadrantes com Situação, Problema, Implicação, Necessidade de Solução</a>
+<img src="/images/blog/spin-selling-conceito-diagrama.png" alt="Diagrama explicando SPIN Selling: 4 quadrantes com Situação, Problema, Implicação, Necessidade de Solução" style="max-width: 100%; height: auto; margin: 2rem 0; border-radius: 0.5rem; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);" />
 <em>Alt text: O que é SPIN Selling - metodologia vendas consultivas Neil Rackham 4 tipos perguntas B2B</em>
 
 <h3>Definição Técnica:</h3>
@@ -2300,7 +2300,7 @@ export const blogPosts: BlogPost[] = [
 
 <p>Antes de mergulhar no SPIN, entenda onde ele se encaixa no ecossistema de vendas:</p>
 
-!<a href="/images/blog/spin-vs-bant-gpct-challenger.png" target="_blank" rel="noopener" style="color: #2563eb; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 2px; transition: all 0.2s;" onmouseover="this.style.color='#1e40af'; this.style.textDecorationThickness='2px'" onmouseout="this.style.color='#2563eb'; this.style.textDecorationThickness='1px'">Tabela comparativa SPIN vs BANT vs GPCT vs Challenger - quando usar cada metodologia de vendas</a>
+<img src="/images/blog/spin-vs-bant-gpct-challenger.png" alt="Tabela comparativa SPIN vs BANT vs GPCT vs Challenger - quando usar cada metodologia de vendas" style="max-width: 100%; height: auto; margin: 2rem 0; border-radius: 0.5rem; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);" />
 <em>Alt text: Comparação metodologias vendas B2B - SPIN Selling vs BANT GPCT Challenger quando usar</em>
 
 <h3>Tabela Comparativa:</h3>
@@ -2387,7 +2387,7 @@ export const blogPosts: BlogPost[] = [
 
 <p>Vamos mergulhar na metodologia usando exemplos reais de venda de CRM (como a Sirius):</p>
 
-!<a href="/images/blog/spin-4-etapas-fluxograma.png" target="_blank" rel="noopener" style="color: #2563eb; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 2px; transition: all 0.2s;" onmouseover="this.style.color='#1e40af'; this.style.textDecorationThickness='2px'" onmouseout="this.style.color='#2563eb'; this.style.textDecorationThickness='1px'">Fluxograma interativo das 4 etapas SPIN Selling com tempo sugerido para cada fase</a>
+<img src="/images/blog/spin-4-etapas-fluxograma.png" alt="Fluxograma interativo das 4 etapas SPIN Selling com tempo sugerido para cada fase" style="max-width: 100%; height: auto; margin: 2rem 0; border-radius: 0.5rem; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);" />
 <em>Alt text: 4 etapas SPIN Selling passo a passo - Situação Problema Implicação Necessidade tempo duração</em>
 
 <hr style="margin: 3rem 0; border: none; border-top: 1px solid #e5e7eb;" />
@@ -2396,7 +2396,7 @@ export const blogPosts: BlogPost[] = [
 
 <strong>Objetivo:</strong> Coletar fatos e entender o contexto atual do cliente.
 
-!<a href="/images/blog/spin-perguntas-situacao-exemplo.png" target="_blank" rel="noopener" style="color: #2563eb; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 2px; transition: all 0.2s;" onmouseover="this.style.color='#1e40af'; this.style.textDecorationThickness='2px'" onmouseout="this.style.color='#2563eb'; this.style.textDecorationThickness='1px'">Exemplo de perguntas de Situação SPIN Selling aplicadas em discovery de CRM</a>
+<img src="/images/blog/spin-perguntas-situacao-exemplo.png" alt="Exemplo de perguntas de Situação SPIN Selling aplicadas em discovery de CRM" style="max-width: 100%; height: auto; margin: 2rem 0; border-radius: 0.5rem; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);" />
 <em>Alt text: Perguntas de Situação SPIN Selling exemplos práticos CRM discovery vendas B2B</em>
 
 <p>#### ⚠️ Cuidado:
@@ -2445,7 +2445,7 @@ export const blogPosts: BlogPost[] = [
 
 <strong>Objetivo:</strong> Identificar dificuldades, frustrações e insatisfações específicas.
 
-!<a href="/images/blog/spin-problem-chain-tecnica.png" target="_blank" rel="noopener" style="color: #2563eb; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 2px; transition: all 0.2s;" onmouseover="this.style.color='#1e40af'; this.style.textDecorationThickness='2px'" onmouseout="this.style.color='#2563eb'; this.style.textDecorationThickness='1px'">Diagrama Problem Chain - técnica de exploração profunda de problemas em 3 camadas</a>
+<img src="/images/blog/spin-problem-chain-tecnica.png" alt="Diagrama Problem Chain - técnica de exploração profunda de problemas em 3 camadas" style="max-width: 100%; height: auto; margin: 2rem 0; border-radius: 0.5rem; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);" />
 <em>Alt text: Problem Chain SPIN Selling - explorar problema 3 camadas técnica discovery vendas</em>
 
 <p>#### 🎯 Regra de Ouro:
@@ -2515,7 +2515,7 @@ Cada problema identificado deve ser <strong>específico</strong> e <strong>mensu
 
 <strong>Objetivo:</strong> Amplificar o custo do problema e criar urgência para mudança.
 
-!<a href="/images/blog/spin-calculo-implicacao-formula.png" target="_blank" rel="noopener" style="color: #2563eb; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 2px; transition: all 0.2s;" onmouseover="this.style.color='#1e40af'; this.style.textDecorationThickness='2px'" onmouseout="this.style.color='#2563eb'; this.style.textDecorationThickness='1px'">Template de cálculo de implicação: Frequência x Impacto x Tempo = Custo Total do Problema</a>
+<img src="/images/blog/spin-calculo-implicacao-formula.png" alt="Template de cálculo de implicação: Frequência x Impacto x Tempo = Custo Total do Problema" style="max-width: 100%; height: auto; margin: 2rem 0; border-radius: 0.5rem; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);" />
 <em>Alt text: Cálculo implicação SPIN Selling fórmula - Frequência Impacto Tempo custo problema vendas</em>
 
 <p>#### 🔥 Esta É a Etapa Mais Poderosa do SPIN</p>
@@ -2605,7 +2605,7 @@ Cada problema identificado deve ser <strong>específico</strong> e <strong>mensu
 
 <strong>Objetivo:</strong> Fazer o cliente articular a solução que ELE precisa (não você empurrar).
 
-!<a href="/images/blog/spin-vision-building-tecnica.png" target="_blank" rel="noopener" style="color: #2563eb; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 2px; transition: all 0.2s;" onmouseover="this.style.color='#1e40af'; this.style.textDecorationThickness='2px'" onmouseout="this.style.color='#2563eb'; this.style.textDecorationThickness='1px'">Técnica Vision Building - fazer cliente co-criar solução ideal SPIN Selling</a>
+<img src="/images/blog/spin-vision-building-tecnica.png" alt="Técnica Vision Building - fazer cliente co-criar solução ideal SPIN Selling" style="max-width: 100%; height: auto; margin: 2rem 0; border-radius: 0.5rem; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);" />
 <em>Alt text: Vision Building SPIN Selling - cliente co-criar solução perguntas necessidade vendas consultivas</em>
 
 <p>#### 🎯 Mudança de Foco:
@@ -2666,7 +2666,7 @@ Até agora você explorou problemas. Agora você desloca o foco para <strong>val
 
 <p>Agora que você conhece as 4 etapas, veja como orquestrar um <strong>Discovery Meeting perfeito</strong> usando SPIN:</p>
 
-!<a href="/images/blog/spin-discovery-timeline-45min.png" target="_blank" rel="noopener" style="color: #2563eb; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 2px; transition: all 0.2s;" onmouseover="this.style.color='#1e40af'; this.style.textDecorationThickness='2px'" onmouseout="this.style.color='#2563eb'; this.style.textDecorationThickness='1px'">Timeline discovery meeting 45 minutos com SPIN Selling - alocação de tempo por etapa</a>
+<img src="/images/blog/spin-discovery-timeline-45min.png" alt="Timeline discovery meeting 45 minutos com SPIN Selling - alocação de tempo por etapa" style="max-width: 100%; height: auto; margin: 2rem 0; border-radius: 0.5rem; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);" />
 <em>Alt text: Discovery meeting SPIN Selling timeline 45 minutos - distribuição tempo Situação Problema Implicação Necessidade</em>
 
 <hr style="margin: 3rem 0; border: none; border-top: 1px solid #e5e7eb;" />
@@ -2835,7 +2835,7 @@ a Sirius resolve especificamente [Problema 1], [Problema 2] e [Problema 3]..."
 
 <p>Use estas perguntas como base e adapte ao seu contexto:</p>
 
-!<a href="/images/blog/spin-100-perguntas-por-setor.png" target="_blank" rel="noopener" style="color: #2563eb; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 2px; transition: all 0.2s;" onmouseover="this.style.color='#1e40af'; this.style.textDecorationThickness='2px'" onmouseout="this.style.color='#2563eb'; this.style.textDecorationThickness='1px'">Banco de perguntas SPIN Selling categorizado por setor: B2B SaaS, E-commerce, Consultoria, Imobiliário</a>
+<img src="/images/blog/spin-100-perguntas-por-setor.png" alt="Banco de perguntas SPIN Selling categorizado por setor: B2B SaaS, E-commerce, Consultoria, Imobiliário" style="max-width: 100%; height: auto; margin: 2rem 0; border-radius: 0.5rem; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);" />
 <em>Alt text: 100 perguntas SPIN Selling prontas por setor - B2B SaaS E-commerce Consultoria Imobiliário exemplos</em>
 
 <hr style="margin: 3rem 0; border: none; border-top: 1px solid #e5e7eb;" />
@@ -3012,7 +3012,7 @@ a Sirius resolve especificamente [Problema 1], [Problema 2] e [Problema 3]..."
 
 <p>Uma das aplicações mais poderosas do SPIN é <strong>antecipar objeções</strong>. Use esta matriz como guia:</p>
 
-!<a href="/images/blog/spin-matriz-objecoes-completa.png" target="_blank" rel="noopener" style="color: #2563eb; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 2px; transition: all 0.2s;" onmouseover="this.style.color='#1e40af'; this.style.textDecorationThickness='2px'" onmouseout="this.style.color='#2563eb'; this.style.textDecorationThickness='1px'">Matriz completa Objeções vs Argumentos SPIN Selling - 10 objeções comuns com diagnóstico e resposta</a>
+<img src="/images/blog/spin-matriz-objecoes-completa.png" alt="Matriz completa Objeções vs Argumentos SPIN Selling - 10 objeções comuns com diagnóstico e resposta" style="max-width: 100%; height: auto; margin: 2rem 0; border-radius: 0.5rem; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);" />
 <em>Alt text: Matriz objeções vendas SPIN Selling - como responder está caro preciso pensar já temos solução</em>
 
 <h3><strong>📊 Tabela: Objeção → Origem → Argumento SPIN</strong></h3>
@@ -3117,7 +3117,7 @@ a Sirius resolve especificamente [Problema 1], [Problema 2] e [Problema 3]..."
 
 <p>Mesmo conhecendo a metodologia, muitos vendedores cometem estes erros:</p>
 
-!<a href="/images/blog/spin-7-erros-fatais-infografico.png" target="_blank" rel="noopener" style="color: #2563eb; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 2px; transition: all 0.2s;" onmouseover="this.style.color='#1e40af'; this.style.textDecorationThickness='2px'" onmouseout="this.style.color='#2563eb'; this.style.textDecorationThickness='1px'">Infográfico 7 erros fatais ao aplicar SPIN Selling - o que NÃO fazer em discovery</a>
+<img src="/images/blog/spin-7-erros-fatais-infografico.png" alt="Infográfico 7 erros fatais ao aplicar SPIN Selling - o que NÃO fazer em discovery" style="max-width: 100%; height: auto; margin: 2rem 0; border-radius: 0.5rem; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);" />
 <em>Alt text: 7 erros SPIN Selling evitar - interrogatório sem rapport excesso situação não quantificar problema</em>
 
 <hr style="margin: 3rem 0; border: none; border-top: 1px solid #e5e7eb;" />
@@ -3452,7 +3452,7 @@ a Sirius resolve especificamente [Problema 1], [Problema 2] e [Problema 3]..."
 
 <p>Veja exemplos reais de empresas que transformaram vendas com SPIN:</p>
 
-!<a href="/images/blog/spin-cases-sucesso-overview.png" target="_blank" rel="noopener" style="color: #2563eb; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 2px; transition: all 0.2s;" onmouseover="this.style.color='#1e40af'; this.style.textDecorationThickness='2px'" onmouseout="this.style.color='#2563eb'; this.style.textDecorationThickness='1px'">3 casos de sucesso SPIN Selling: Growth Machine, IBM, Cliente Sirius CRM - resultados mensuráveis</a>
+<img src="/images/blog/spin-cases-sucesso-overview.png" alt="3 casos de sucesso SPIN Selling: Growth Machine, IBM, Cliente Sirius CRM - resultados mensuráveis" style="max-width: 100%; height: auto; margin: 2rem 0; border-radius: 0.5rem; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);" />
 <em>Alt text: Cases sucesso SPIN Selling Brasil - Growth Machine IBM Sirius CRM resultados conversão vendas B2B</em>
 
 <hr style="margin: 3rem 0; border: none; border-top: 1px solid #e5e7eb;" />
@@ -3557,7 +3557,7 @@ a Sirius resolve especificamente [Problema 1], [Problema 2] e [Problema 3]..."
 
 <p>A Sirius CRM foi desenhada para <strong>potencializar</strong> metodologias consultivas como SPIN Selling:</p>
 
-!<a href="/images/blog/sirius-crm-spin-integration.png" target="_blank" rel="noopener" style="color: #2563eb; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 2px; transition: all 0.2s;" onmouseover="this.style.color='#1e40af'; this.style.textDecorationThickness='2px'" onmouseout="this.style.color='#2563eb'; this.style.textDecorationThickness='1px'">Interface Sirius CRM mostrando template SPIN Selling integrado com campos customizados</a>
+<img src="/images/blog/sirius-crm-spin-integration.png" alt="Interface Sirius CRM mostrando template SPIN Selling integrado com campos customizados" style="max-width: 100%; height: auto; margin: 2rem 0; border-radius: 0.5rem; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);" />
 <em>Alt text: Sirius CRM integração SPIN Selling template discovery campos customizados automação vendas B2B</em>
 
 <hr style="margin: 3rem 0; border: none; border-top: 1px solid #e5e7eb;" />
@@ -4011,7 +4011,7 @@ a Sirius resolve especificamente [Problema 1], [Problema 2] e [Problema 3]..."
 
 <p>Se você chegou até aqui, parabéns! Você agora tem <strong>todo o conhecimento</strong> necessário para transformar seu processo de vendas com SPIN Selling.</p>
 
-!<a href="/images/blog/spin-cta-final.png" target="_blank" rel="noopener" style="color: #2563eb; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 2px; transition: all 0.2s;" onmouseover="this.style.color='#1e40af'; this.style.textDecorationThickness='2px'" onmouseout="this.style.color='#2563eb'; this.style.textDecorationThickness='1px'">CTA final - Comece a aplicar SPIN Selling hoje com recursos gratuitos Sirius CRM</a>
+<img src="/images/blog/spin-cta-final.png" alt="CTA final - Comece a aplicar SPIN Selling hoje com recursos gratuitos Sirius CRM" style="max-width: 100%; height: auto; margin: 2rem 0; border-radius: 0.5rem; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);" />
 <em>Alt text: Comece SPIN Selling hoje CTA - recursos gratuitos template checklist calculadora ROI Sirius CRM</em>
 
 <h3><strong>📊 Recapitulando os Benefícios:</strong></h3>
