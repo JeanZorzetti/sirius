@@ -1,34 +1,34 @@
 <svg width="1200" height="630" xmlns="http://www.w3.org/2000/svg">
   <defs>
     <!-- Gradientes modernos -->
-    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+    <linearGradient id="hero-bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
       <stop offset="0%" style="stop-color:#1e40af;stop-opacity:1" />
       <stop offset="50%" style="stop-color:#2563eb;stop-opacity:1" />
       <stop offset="100%" style="stop-color:#3b82f6;stop-opacity:1" />
     </linearGradient>
 
-    <linearGradient id="sGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+    <linearGradient id="hero-sGrad" x1="0%" y1="0%" x2="100%" y2="100%">
       <stop offset="0%" style="stop-color:#60a5fa;stop-opacity:1" />
       <stop offset="100%" style="stop-color:#3b82f6;stop-opacity:1" />
     </linearGradient>
 
-    <linearGradient id="pGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+    <linearGradient id="hero-pGrad" x1="0%" y1="0%" x2="100%" y2="100%">
       <stop offset="0%" style="stop-color:#f87171;stop-opacity:1" />
       <stop offset="100%" style="stop-color:#ef4444;stop-opacity:1" />
     </linearGradient>
 
-    <linearGradient id="iGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+    <linearGradient id="hero-iGrad" x1="0%" y1="0%" x2="100%" y2="100%">
       <stop offset="0%" style="stop-color:#fbbf24;stop-opacity:1" />
       <stop offset="100%" style="stop-color:#f59e0b;stop-opacity:1" />
     </linearGradient>
 
-    <linearGradient id="nGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+    <linearGradient id="hero-nGrad" x1="0%" y1="0%" x2="100%" y2="100%">
       <stop offset="0%" style="stop-color:#34d399;stop-opacity:1" />
       <stop offset="100%" style="stop-color:#10b981;stop-opacity:1" />
     </linearGradient>
 
     <!-- Filtro de sombra suave -->
-    <filter id="shadow" x="-50%" y="-50%" width="200%" height="200%">
+    <filter id="hero-shadow" x="-50%" y="-50%" width="200%" height="200%">
       <feGaussianBlur in="SourceAlpha" stdDeviation="8"/>
       <feOffset dx="0" dy="4" result="offsetblur"/>
       <feComponentTransfer>
@@ -41,13 +41,13 @@
     </filter>
 
     <!-- Seta -->
-    <marker id="arrowWhite" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+    <marker id="hero-arrowWhite" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
       <path d="M0,0 L0,6 L9,3 z" fill="white"/>
     </marker>
   </defs>
 
   <!-- Background com gradiente -->
-  <rect width="1200" height="630" fill="url(#bgGrad)"/>
+  <rect width="1200" height="630" fill="url(#hero-bgGrad)"/>
 
   <!-- Elementos decorativos de fundo -->
   <circle cx="100" cy="100" r="120" fill="white" opacity="0.03"/>
@@ -78,7 +78,7 @@
     <line x1="-140" y1="0" x2="-60" y2="0" stroke="white" stroke-width="3" opacity="0.3"/>
 
     <!-- Círculo central SPIN -->
-    <circle cx="0" cy="0" r="55" fill="#1e293b" opacity="0.8" filter="url(#shadow)"/>
+    <circle cx="0" cy="0" r="55" fill="#1e293b" opacity="0.8" filter="url(#hero-shadow)"/>
     <circle cx="0" cy="0" r="53" fill="white" opacity="0.1"/>
     <text x="0" y="8" font-family="Arial, sans-serif" font-size="36" font-weight="900" fill="white" text-anchor="middle">
       SPIN
@@ -88,8 +88,8 @@
     </text>
 
     <!-- S - Situação (Topo) -->
-    <g transform="translate(0, -180)" filter="url(#shadow)">
-      <circle cx="0" cy="0" r="85" fill="url(#sGrad)"/>
+    <g transform="translate(0, -180)" filter="url(#hero-shadow)">
+      <circle cx="0" cy="0" r="85" fill="url(#hero-sGrad)"/>
       <circle cx="0" cy="0" r="83" fill="white" opacity="0.1"/>
 
       <!-- Ícone -->
@@ -108,8 +108,8 @@
     </g>
 
     <!-- P - Problema (Direita) -->
-    <g transform="translate(180, 0)" filter="url(#shadow)">
-      <circle cx="0" cy="0" r="85" fill="url(#pGrad)"/>
+    <g transform="translate(180, 0)" filter="url(#hero-shadow)">
+      <circle cx="0" cy="0" r="85" fill="url(#hero-pGrad)"/>
       <circle cx="0" cy="0" r="83" fill="white" opacity="0.1"/>
 
       <!-- Ícone -->
@@ -128,8 +128,8 @@
     </g>
 
     <!-- I - Implicação (Baixo) -->
-    <g transform="translate(0, 180)" filter="url(#shadow)">
-      <circle cx="0" cy="0" r="85" fill="url(#iGrad)"/>
+    <g transform="translate(0, 180)" filter="url(#hero-shadow)">
+      <circle cx="0" cy="0" r="85" fill="url(#hero-iGrad)"/>
       <circle cx="0" cy="0" r="83" fill="white" opacity="0.1"/>
 
       <!-- Ícone -->
@@ -148,8 +148,8 @@
     </g>
 
     <!-- N - Necessidade (Esquerda) -->
-    <g transform="translate(-180, 0)" filter="url(#shadow)">
-      <circle cx="0" cy="0" r="85" fill="url(#nGrad)"/>
+    <g transform="translate(-180, 0)" filter="url(#hero-shadow)">
+      <circle cx="0" cy="0" r="85" fill="url(#hero-nGrad)"/>
       <circle cx="0" cy="0" r="83" fill="white" opacity="0.1"/>
 
       <!-- Ícone -->
@@ -169,10 +169,10 @@
 
     <!-- Setas direcionais com animação visual -->
     <g opacity="0.6">
-      <path d="M 0,-55 L 0,-95" stroke="white" stroke-width="2" marker-end="url(#arrowWhite)"/>
-      <path d="M 55,0 L 95,0" stroke="white" stroke-width="2" marker-end="url(#arrowWhite)"/>
-      <path d="M 0,55 L 0,95" stroke="white" stroke-width="2" marker-end="url(#arrowWhite)"/>
-      <path d="M -55,0 L -95,0" stroke="white" stroke-width="2" marker-end="url(#arrowWhite)"/>
+      <path d="M 0,-55 L 0,-95" stroke="white" stroke-width="2" marker-end="url(#hero-arrowWhite)"/>
+      <path d="M 55,0 L 95,0" stroke="white" stroke-width="2" marker-end="url(#hero-arrowWhite)"/>
+      <path d="M 0,55 L 0,95" stroke="white" stroke-width="2" marker-end="url(#hero-arrowWhite)"/>
+      <path d="M -55,0 L -95,0" stroke="white" stroke-width="2" marker-end="url(#hero-arrowWhite)"/>
     </g>
 
   </g>
