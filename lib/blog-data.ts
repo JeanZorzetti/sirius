@@ -2123,9 +2123,7 @@ export const blogPosts: BlogPost[] = [
     category: 'Guias',
     image: '/images/blog/funil-vendas.jpg',
     author: 'Sirius Team'
-  }
-,
-,
+  },
   {
     slug: 'spin-selling-guia-completo',
     title: 'SPIN Selling: A Metodologia de Vendas que Aumenta Conversão em 53% [Guia Completo 2026]',
