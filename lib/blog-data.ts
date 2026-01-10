@@ -3122,8 +3122,6 @@ a Sirius resolve especificamente [Problema 1], [Problema 2] e [Problema 3]..."
 
 <hr style="margin: 3rem 0; border: none; border-top: 1px solid #e5e7eb;" />
 
-<h3><strong>❌ Erro #1: Interrogatório sem Rapport</strong></h3>
-
 <div style="background: #fef2f2; border-left: 4px solid #ef4444; padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0; box-shadow: 0 2px 4px rgba(239, 68, 68, 0.1);">
     <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem;">
       <span style="background: #ef4444; color: white; width: 2rem; height: 2rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.875rem;">❌</span>
@@ -3143,8 +3141,6 @@ a Sirius resolve especificamente [Problema 1], [Problema 2] e [Problema 3]..."
   </div>
 
 <hr style="margin: 3rem 0; border: none; border-top: 1px solid #e5e7eb;" />
-
-<h3><strong>❌ Erro #2: Excesso de Perguntas de Situação</strong></h3>
 
 <div style="background: #fef2f2; border-left: 4px solid #ef4444; padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0; box-shadow: 0 2px 4px rgba(239, 68, 68, 0.1);">
     <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem;">
@@ -3168,8 +3164,6 @@ a Sirius resolve especificamente [Problema 1], [Problema 2] e [Problema 3]..."
   </div>
 
 <hr style="margin: 3rem 0; border: none; border-top: 1px solid #e5e7eb;" />
-
-<h3><strong>❌ Erro #3: Parar no Primeiro Problema</strong></h3>
 
 <div style="background: #fef2f2; border-left: 4px solid #ef4444; padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0; box-shadow: 0 2px 4px rgba(239, 68, 68, 0.1);">
     <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem;">
@@ -3224,8 +3218,6 @@ a Sirius resolve especificamente [Problema 1], [Problema 2] e [Problema 3]..."
 
 <hr style="margin: 3rem 0; border: none; border-top: 1px solid #e5e7eb;" />
 
-<h3><strong>❌ Erro #4: Não Quantificar o Problema</strong></h3>
-
 <div style="background: #fef2f2; border-left: 4px solid #ef4444; padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0; box-shadow: 0 2px 4px rgba(239, 68, 68, 0.1);">
     <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem;">
       <span style="background: #ef4444; color: white; width: 2rem; height: 2rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.875rem;">❌</span>
@@ -3251,8 +3243,6 @@ a Sirius resolve especificamente [Problema 1], [Problema 2] e [Problema 3]..."
   </div>
 
 <hr style="margin: 3rem 0; border: none; border-top: 1px solid #e5e7eb;" />
-
-<h3><strong>❌ Erro #5: Fazer SPIN como Checklist</strong></h3>
 
 <div style="background: #fef2f2; border-left: 4px solid #ef4444; padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0; box-shadow: 0 2px 4px rgba(239, 68, 68, 0.1);">
     <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem;">
@@ -3284,8 +3274,6 @@ a Sirius resolve especificamente [Problema 1], [Problema 2] e [Problema 3]..."
   </div>
 
 <hr style="margin: 3rem 0; border: none; border-top: 1px solid #e5e7eb;" />
-
-<h3><strong>❌ Erro #6: Implicação Muito Cedo ou Muito Tarde</strong></h3>
 
 <div style="background: #fef2f2; border-left: 4px solid #ef4444; padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0; box-shadow: 0 2px 4px rgba(239, 68, 68, 0.1);">
     <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem;">
@@ -3341,8 +3329,6 @@ a Sirius resolve especificamente [Problema 1], [Problema 2] e [Problema 3]..."
   </div>
 
 <hr style="margin: 3rem 0; border: none; border-top: 1px solid #e5e7eb;" />
-
-<h3><strong>❌ Erro #7: Não Fazer o Cliente Articular a Solução</strong></h3>
 
 <div style="background: #fef2f2; border-left: 4px solid #ef4444; padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0; box-shadow: 0 2px 4px rgba(239, 68, 68, 0.1);">
     <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem;">

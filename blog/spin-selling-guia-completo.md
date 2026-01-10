@@ -880,8 +880,6 @@ Mesmo conhecendo a metodologia, muitos vendedores cometem estes erros:
 
 ---
 
-### **❌ Erro #1: Interrogatório sem Rapport**
-
 <ErrorBox number="1" title="Interrogatório sem Rapport">
   **O Problema:** Começar com perguntas agressivas sem criar conexão humana.
 
@@ -895,8 +893,6 @@ Mesmo conhecendo a metodologia, muitos vendedores cometem estes erros:
 </ErrorBox>
 
 ---
-
-### **❌ Erro #2: Excesso de Perguntas de Situação**
 
 <ErrorBox number="2" title="Excesso de Perguntas de Situação">
   **O Problema:** Passar 30 minutos coletando dados que você poderia ter pesquisado no LinkedIn.
@@ -914,8 +910,6 @@ Mesmo conhecendo a metodologia, muitos vendedores cometem estes erros:
 </ErrorBox>
 
 ---
-
-### **❌ Erro #3: Parar no Primeiro Problema**
 
 <ErrorBox number="3" title="Parar no Primeiro Problema">
   **O Problema:** Identificar um problema superficial e partir para apresentação.
@@ -938,8 +932,6 @@ Mesmo conhecendo a metodologia, muitos vendedores cometem estes erros:
 
 ---
 
-### **❌ Erro #4: Não Quantificar o Problema**
-
 <ErrorBox number="4" title="Não Quantificar o Problema">
   **O Problema:** Deixar o problema no nível abstrato ("é ruim", "é chato").
 
@@ -959,8 +951,6 @@ Mesmo conhecendo a metodologia, muitos vendedores cometem estes erros:
 </ErrorBox>
 
 ---
-
-### **❌ Erro #5: Fazer SPIN como Checklist**
 
 <ErrorBox number="5" title="Fazer SPIN como Checklist">
   **O Problema:** Seguir rigidamente S→P→I→N sem adaptar ao fluxo da conversa.
@@ -988,8 +978,6 @@ Mesmo conhecendo a metodologia, muitos vendedores cometem estes erros:
 
 ---
 
-### **❌ Erro #6: Implicação Muito Cedo ou Muito Tarde**
-
 <ErrorBox number="6" title="Timing Errado de Implicação">
   **O Problema:** Ir direto para implicações antes de entender o problema (parece forçado) OU explorar problema infinitamente sem criar urgência.
 
@@ -1014,8 +1002,6 @@ Mesmo conhecendo a metodologia, muitos vendedores cometem estes erros:
 </ErrorBox>
 
 ---
-
-### **❌ Erro #7: Não Fazer o Cliente Articular a Solução**
 
 <ErrorBox number="7" title="Pular Perguntas de Necessidade">
   **O Problema:** Pular para demo/pitch sem fazer perguntas de Necessidade.
