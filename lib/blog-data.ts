@@ -3995,8 +3995,6 @@ a Sirius resolve especificamente [Problema 1], [Problema 2] e [Problema 3]..."
 
 <p>Se você chegou até aqui, parabéns! Você agora tem <strong>todo o conhecimento</strong> necessário para transformar seu processo de vendas com SPIN Selling.</p>
 
-<img src="/images/blog/spin-selling/spin-cta-final.svg" alt="CTA final - Comece a aplicar SPIN Selling hoje com recursos gratuitos Sirius CRM" style="max-width: 100%; height: auto; margin: 2rem 0; border-radius: 0.5rem; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);" />
-
 <h3><strong>📊 Recapitulando os Benefícios:</strong></h3>
 
 <BenefitsList>
