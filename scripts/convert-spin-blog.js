@@ -229,8 +229,7 @@ const escapedContent = htmlContent
   .replace(/`/g, '\\`')
   .replace(/\$\{/g, '\\${');
 
-const output = `,
-  {
+const output = `  {
     slug: '${blogPost.slug}',
     title: '${blogPost.title.replace(/'/g, "\\'")}',
     excerpt: \`${blogPost.excerpt.replace(/`/g, '\\`')}\`,

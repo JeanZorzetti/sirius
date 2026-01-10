@@ -2125,8 +2125,6 @@ export const blogPosts: BlogPost[] = [
     author: 'Sirius Team'
   },
   {
-,
-  {
     slug: 'spin-selling-guia-completo',
     title: 'SPIN Selling: A Metodologia de Vendas que Aumenta Conversão em 53% [Guia Completo 2026]',
     excerpt: `Descubra como SPIN Selling aumenta conversão em vendas complexas B2B. Guia completo com 100+ perguntas práticas, matriz de objeções e casos reais. Template gratuito para download.`,
