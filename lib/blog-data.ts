@@ -3451,21 +3451,21 @@ a Sirius resolve especificamente [Problema 1], [Problema 2] e [Problema 3]..."
   source="https://www.agendor.com.br/blog/vendedores-famosos/"
 >
   <strong>Desafio:</strong>
-  - Ciclo de vendas de 90 dias (muito longo)
-  - Taxa de conversão SQL→Proposta de 28%
-  - Objeção "está caro" em 45% dos deals
+  - Ciclo de vendas de 90 dias (muito longo)<br/>
+  - Taxa de conversão SQL→Proposta de 28%<br/>
+  - Objeção "está caro" em 45% dos deals<br/>
 
 <strong>Solução SPIN:</strong>
-  1. <strong>Treinamento de 30 dias</strong> com toda equipe comercial
-  2. <strong>Reestruturação do discovery</strong> de 20 min → 45 min
-  3. <strong>Foco em Implicação:</strong> Quantificar custo de processos manuais
-  4. <strong>Template padronizado</strong> com 4 etapas SPIN
+  1. <strong>Treinamento de 30 dias</strong> com toda equipe comercial<br/>
+  2. <strong>Reestruturação do discovery</strong> de 20 min → 45 min<br/>
+  3. <strong>Foco em Implicação:</strong> Quantificar custo de processos manuais<br/>
+  4. <strong>Template padronizado</strong> com 4 etapas SPIN<br/>
 
 <strong>Resultados (6 meses):</strong>
-  - ✅ Ciclo de vendas: 90 → <strong>55 dias</strong> (-39%)
-  - ✅ Taxa conversão: 28% → <strong>46%</strong> (+64%)
-  - ✅ Objeção "caro": 45% → <strong>12%</strong> (-73%)
-  - ✅ Ticket médio: R$ 15k → <strong>R$ 22k</strong> (+47%)
+  - ✅ Ciclo de vendas: 90 → <strong>55 dias</strong> (-39%)<br/>
+  - ✅ Taxa conversão: 28% → <strong>46%</strong> (+64%)<br/>
+  - ✅ Objeção "caro": 45% → <strong>12%</strong> (-73%)<br/>
+  - ✅ Ticket médio: R$ 15k → <strong>R$ 22k</strong> (+47%)<br/>
 
 <strong>Depoimento:</strong>
   > "SPIN transformou nossa abordagem. Deixamos de 'apresentar features' para 'resolver problemas reais'. O cliente chega na proposta já convencido porque ele mesmo articulou a necessidade."
@@ -3485,20 +3485,20 @@ a Sirius resolve especificamente [Problema 1], [Problema 2] e [Problema 3]..."
   source="https://meetime.com.br/blog/vendas/livro-spin-selling/"
 >
   <strong>Desafio:</strong>
-  - Vendas enterprise complexas (6-12 meses)
-  - Múltiplos decisores (C-level, TI, Procurement)
-  - Commoditização de soluções
+  - Vendas enterprise complexas (6-12 meses)<br/>
+  - Múltiplos decisores (C-level, TI, Procurement)<br/>
+  - Commoditização de soluções<br/>
 
 <strong>Solução SPIN:</strong>
-  1. Treinamento obrigatório para <strong>100% do time de vendas</strong>
-  2. Foco em <strong>Implicação de negócio</strong> (não técnicas)
-  3. Discovery com <strong>C-level</strong> (não só TI)
-  4. ROI quantificado em <strong>todo</strong> pitch
+  1. Treinamento obrigatório para <strong>100% do time de vendas</strong><br/>
+  2. Foco em <strong>Implicação de negócio</strong> (não técnicas)<br/>
+  3. Discovery com <strong>C-level</strong> (não só TI)<br/>
+  4. ROI quantificado em <strong>todo</strong> pitch<br/>
 
 <strong>Resultados (Estudo Huthwaite):</strong>
-  - ✅ <strong>17% aumento</strong> na taxa de fechamento
-  - ✅ <strong>53% mais chances</strong> de fechar vendas complexas
-  - ✅ <strong>30% redução</strong> no ciclo de vendas médio
+  - ✅ <strong>17% aumento</strong> na taxa de fechamento<br/>
+  - ✅ <strong>53% mais chances</strong> de fechar vendas complexas<br/>
+  - ✅ <strong>30% redução</strong> no ciclo de vendas médio<br/>
 </CaseStudy>
 
 <hr style="margin: 3rem 0; border: none; border-top: 1px solid #e5e7eb;" />
@@ -3513,21 +3513,21 @@ a Sirius resolve especificamente [Problema 1], [Problema 2] e [Problema 3]..."
   source="https://sirius.roilabs.com.br/cases/consultoria-sp"
 >
   <strong>Desafio:</strong>
-  - Conversão SQL→Proposta de 32%
-  - 60% dos deals perdidos para "não decisão" (cliente some)
-  - Discovery superficial (15 min em média)
+  - Conversão SQL→Proposta de 32%<br/>
+  - 60% dos deals perdidos para "não decisão" (cliente some)<br/>
+  - Discovery superficial (15 min em média)<br/>
 
 <strong>Solução SPIN com Sirius CRM:</strong>
-  1. Implementou <strong>Template Discovery SPIN</strong> no Sirius
-  2. Cada vendedor passou a preencher S, P, I, N durante a call
-  3. Sistema calculava <strong>ROI automaticamente</strong>
-  4. Email de follow-up <strong>auto-gerado</strong> com resumo + ROI
+  1. Implementou <strong>Template Discovery SPIN</strong> no Sirius<br/>
+  2. Cada vendedor passou a preencher S, P, I, N durante a call<br/>
+  3. Sistema calculava <strong>ROI automaticamente</strong><br/>
+  4. Email de follow-up <strong>auto-gerado</strong> com resumo + ROI<br/>
 
 <strong>Resultados (4 meses):</strong>
-  - ✅ Conversão: 32% → <strong>51%</strong> (+59%)
-  - ✅ "Não decisão": 60% → <strong>22%</strong> (-63%)
-  - ✅ Duração discovery: 15 min → <strong>42 min</strong> (+180%)
-  - ✅ Receita adicional: <strong>R$ 340k/trimestre</strong>
+  - ✅ Conversão: 32% → <strong>51%</strong> (+59%)<br/>
+  - ✅ "Não decisão": 60% → <strong>22%</strong> (-63%)<br/>
+  - ✅ Duração discovery: 15 min → <strong>42 min</strong> (+180%)<br/>
+  - ✅ Receita adicional: <strong>R$ 340k/trimestre</strong><br/>
 
 <strong>Depoimento:</strong>
   > "O SPIN Selling integrado no Sirius CRM mudou o jogo. Antes o vendedor terminava a call e esquecia metade do que foi dito. Agora tudo fica registrado, com ROI calculado. O cliente recebe um email profissional 5 minutos depois. Nossa taxa de follow-up subiu de 40% para 95%."
