@@ -8,6 +8,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { ShareButtons } from '@/components/blog/share-buttons'
 import { TableOfContents } from '@/components/blog/table-of-contents'
 import { BlogContentWrapper } from '@/components/blog/blog-content-wrapper'
+import { generateFAQSchema, spinSellingFAQs } from '@/lib/faq-schema'
 import { Metadata } from 'next'
 import { ChevronLeft, ChevronRight, Calendar, Clock, User } from 'lucide-react'
 
@@ -106,13 +107,26 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
     },
   }
 
+  // FAQ Schema for SPIN Selling post (for Featured Snippets)
+  const faqSchema = slug === 'spin-selling-guia-completo'
+    ? generateFAQSchema(spinSellingFAQs, url)
+    : null
+
   return (
     <>
-      {/* JSON-LD Schema */}
+      {/* JSON-LD Schema - BlogPosting */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
+
+      {/* JSON-LD Schema - FAQPage (if available) */}
+      {faqSchema && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+        />
+      )}
 
       <article className="relative">
         {/* Premium Header Background */}
