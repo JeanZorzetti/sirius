@@ -15,7 +15,7 @@ export function ShareButtons({ title, url }: ShareButtonsProps) {
 
   // Check if Web Share API is available (runs only on client)
   useEffect(() => {
-    if (typeof window !== 'undefined' && navigator.share) {
+    if (typeof window !== 'undefined' && typeof navigator.share !== 'undefined') {
       setCanShare(true)
     }
   }, [])
