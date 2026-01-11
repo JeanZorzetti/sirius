@@ -143,14 +143,14 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
           </Button>
 
           {/* Article Header */}
-          <header className="space-y-6 mb-12">
-            <Badge variant="secondary" className="text-sm font-medium px-3 py-1">{post.category}</Badge>
+          <header className="space-y-4 sm:space-y-6 mb-8 sm:mb-12">
+            <Badge variant="secondary" className="text-xs sm:text-sm font-medium px-2 sm:px-3 py-1">{post.category}</Badge>
 
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight leading-tight text-foreground">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight leading-tight text-foreground">
               {post.title}
             </h1>
 
-            <p className="text-xl text-muted-foreground leading-relaxed">
+            <p className="text-lg sm:text-xl text-muted-foreground leading-relaxed">
               {post.excerpt}
             </p>
 
@@ -191,7 +191,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
           {/* Article Content - 2 Column Layout */}
           <div className="grid lg:grid-cols-[1fr_320px] lg:gap-12 xl:gap-16">
             {/* Main Content Column - Card Wrapper */}
-            <article className="bg-white dark:bg-zinc-900 border border-border/50 shadow-lg rounded-2xl p-8 md:p-12">
+            <article className="bg-white dark:bg-zinc-900 border border-border/50 shadow-lg rounded-2xl p-4 sm:p-6 md:p-8 lg:p-12 overflow-hidden">
               <BlogContentWrapper content={post.content} slug={slug} />
             </article>
 

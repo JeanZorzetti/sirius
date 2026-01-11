@@ -38,10 +38,10 @@ export function BlogContentWrapper({ content, slug }: BlogContentWrapperProps) {
     <div
       ref={contentRef}
       className="prose prose-zinc dark:prose-invert max-w-none
-        text-lg leading-relaxed
+        text-base sm:text-lg leading-relaxed
         prose-headings:font-bold prose-headings:tracking-tight prose-headings:text-foreground
-        prose-h2:text-3xl prose-h2:mt-12 prose-h2:mb-6 prose-h2:border-b prose-h2:pb-4
-        prose-h3:text-2xl prose-h3:mt-8 prose-h3:mb-4
+        prose-h2:text-2xl sm:prose-h2:text-3xl prose-h2:mt-8 sm:prose-h2:mt-12 prose-h2:mb-4 sm:prose-h2:mb-6 prose-h2:border-b prose-h2:pb-3 sm:prose-h2:pb-4
+        prose-h3:text-xl sm:prose-h3:text-2xl prose-h3:mt-6 sm:prose-h3:mt-8 prose-h3:mb-3 sm:prose-h3:mb-4
         !prose-p:mb-10 prose-p:text-zinc-700 dark:prose-p:text-zinc-300 prose-p:leading-[2]
         prose-a:text-primary prose-a:no-underline hover:prose-a:underline prose-a:font-medium
         !prose-strong:text-blue-600 dark:!prose-strong:text-blue-400 prose-strong:font-bold
