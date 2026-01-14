@@ -32,7 +32,7 @@ export class AgiBrain {
   constructor(config: BrainConfig) {
     this.config = config;
     this.conversationHistory = [];
-    
+
     // System prompt especializado em vendas (adaptado do Python)
     this.systemPrompt = `Você é Sirius, uma AGI especializada em Vendas, CRM e Estratégias Comerciais.
 
@@ -142,11 +142,16 @@ Você é a melhor especialista em vendas do mundo. Seja objetiva, estratégica e
     }));
 
     try {
+      // Add timeout to prevent hanging
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 50000); // 50 second timeout
+
       const response = await fetch(`${this.config.ollamaHost}/api/chat`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
+        signal: controller.signal,
         body: JSON.stringify({
           model: this.config.model,
           messages,
@@ -157,6 +162,8 @@ Você é a melhor especialista em vendas do mundo. Seja objetiva, estratégica e
           },
         }),
       });
+
+      clearTimeout(timeoutId);
 
       if (!response.ok) {
         throw new Error(`Ollama API error: ${response.statusText}`);
@@ -182,6 +189,11 @@ Você é a melhor especialista em vendas do mundo. Seja objetiva, estratégica e
       };
     } catch (error) {
       console.error('Error communicating with Ollama:', error);
+
+      if (error instanceof Error && error.name === 'AbortError') {
+        throw new Error('AGI está demorando muito para responder. Por favor, tente novamente com uma pergunta mais simples ou contate o suporte.');
+      }
+
       throw new Error(`Failed to get response from AGI: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
   }
@@ -302,8 +314,8 @@ Você é a melhor especialista em vendas do mundo. Seja objetiva, estratégica e
       const models = data.models || [];
       const modelNames = models.map((m: any) => m.name);
 
-      return modelNames.includes(this.config.model) || 
-             modelNames.includes(`${this.config.model}:latest`);
+      return modelNames.includes(this.config.model) ||
+        modelNames.includes(`${this.config.model}:latest`);
     } catch {
       return false;
     }
