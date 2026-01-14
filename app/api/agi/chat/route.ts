@@ -183,49 +183,45 @@ export async function POST(req: NextRequest) {
             });
         }
 
-        // 8. Non-streaming response
-        const response = await brain.think(message, enhancedContext);
+        // 8. Non-streaming response using multi-provider
+        const { callLLM } = await import('@/lib/agi/providers');
+
+        const llmMessages = [
+            { role: 'system', content: 'Você é Sirius, especialista em vendas e CRM. Seja breve e precisa.' },
+            { role: 'user', content: message },
+        ];
+
+        const response = await callLLM(llmMessages, plan);
 
         // 9. Record usage
         await recordUsage(
             user.organizationId,
             user.id,
-            agiResponse.tokensUsed,
+            response.tokensUsed,
             plan
         );
 
         // 10. Save conversation
         const conversationMessages: any[] = [
             { role: 'user', content: message, timestamp: new Date().toISOString() },
-            { role: 'assistant', content: agiResponse.content, timestamp: new Date().toISOString() },
+            { role: 'assistant', content: response.content, timestamp: new Date().toISOString() },
         ];
 
-        // Determine contextType and contextId for the new saveConversation signature
-        const contextType = context?.type;
-        const contextId = context?.dealId || context?.pipelineId; // Assuming contextId can be either dealId or pipelineId
+        await saveConversation({
+            organizationId: user.organizationId,
+            userId: user.id,
+            messages: conversationMessages,
+            context: context?.type,
+            dealId: context?.dealId,
+            pipelineId: context?.pipelineId,
+            tokensUsed: response.tokensUsed,
+        });
 
-        await saveConversation(
-            userId,
-            user.organizationId,
-            conversationMessages,
-            contextType,
-            contextId
-        );
-
-        // 11. Track usage (This seems to be a new step, assuming it's distinct from recordUsage)
-        // If trackUsage is meant to replace recordUsage, then recordUsage above should be removed.
-        // For now, assuming it's an additional tracking mechanism.
-        // Note: The original code had `recordUsage` and then `saveConversation` with `tokensUsed`.
-        // The new snippet has `recordUsage`, then `saveConversation` (without tokensUsed in args), then `trackUsage`.
-        // This implies `trackUsage` might be the new way to record tokens, or an additional one.
-        // Sticking to the provided snippet's structure.
-        // await trackUsage(user.organizationId, userId, agiResponse.tokensUsed); // Assuming trackUsage is defined elsewhere
-
-        // 12. Return response
+        // 11. Return response
         return NextResponse.json({
-            message: agiResponse.content,
-            provider: agiResponse.provider,
-            model: agiResponse.model,
+            message: response.content,
+            provider: response.provider,
+            model: response.model,
         });
     } catch (error) {
         console.error('AGI Chat Error:', error);
