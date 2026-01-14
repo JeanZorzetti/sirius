@@ -129,61 +129,48 @@ export async function callLLM(
     messages: Array<{ role: string; content: string }>,
     userPlan: 'FREE' | 'PRO'
 ): Promise<LLMResponse> {
-    const primaryProvider = (process.env.AGI_PRIMARY_PROVIDER as LLMProvider) || 'ollama';
-    const fallbackProvider = (process.env.AGI_FALLBACK_PROVIDER as LLMProvider) || 'groq';
+    // Use Groq as primary (fast, free, powerful!)
+    const primaryProvider = 'groq';
+    const fallbackProvider = 'groq'; // Use different Groq model as fallback
 
-    // Primary config (Ollama)
+    // Primary config - Groq Llama 3.3 70B (BEST!)
     const primaryConfig: ProviderConfig = {
         provider: primaryProvider,
-        baseUrl: process.env.AGI_OLLAMA_HOST || 'http://localhost:11434',
+        apiKey: process.env.GROQ_API_KEY,
         model: userPlan === 'PRO'
-            ? (process.env.AGI_MODEL_PRO || 'llama3.2:3b')
-            : (process.env.AGI_MODEL_FREE || 'llama3.2:1b'),
+            ? 'llama-3.3-70b-versatile'  // 70B for PRO users
+            : 'llama-3.3-70b-versatile', // Same model for FREE (it's fast enough!)
         temperature: parseFloat(process.env.AGI_TEMPERATURE || '0.7'),
         maxTokens: userPlan === 'PRO' ? 2048 : 1024,
     };
 
-    // Fallback config (Groq)
+    // Fallback config - Llama 4 Scout (if 70B fails)
     const fallbackConfig: ProviderConfig = {
         provider: fallbackProvider,
         apiKey: process.env.GROQ_API_KEY,
-        model: 'llama-3.2-1b-preview', // Groq's free 1B model (always available)
+        model: 'llama-3.2-1b-preview', // Lightweight fallback
         temperature: parseFloat(process.env.AGI_TEMPERATURE || '0.7'),
         maxTokens: userPlan === 'PRO' ? 2048 : 1024,
     };
 
     // Try primary provider first
     try {
-        console.log(`[AGI] Trying primary provider: ${primaryProvider}`);
+        console.log(`[AGI] Using Groq ${primaryConfig.model}`);
 
-        if (primaryProvider === 'ollama') {
-            return await callOllama(messages, primaryConfig);
-        } else if (primaryProvider === 'groq') {
-            return await callGroq(messages, primaryConfig);
+        if (!process.env.GROQ_API_KEY) {
+            throw new Error('GROQ_API_KEY não configurada. Configure no Vercel.');
         }
 
-        throw new Error(`Unknown provider: ${primaryProvider}`);
+        return await callGroq(messages, primaryConfig);
     } catch (primaryError) {
-        console.warn(`[AGI] Primary provider failed:`, primaryError);
-
-        // Try fallback
-        if (!process.env.GROQ_API_KEY && fallbackProvider === 'groq') {
-            throw new Error('Ollama indisponível e Groq API key não configurada. Configure GROQ_API_KEY no Vercel.');
-        }
+        console.warn(`[AGI] Primary model failed, trying fallback:`, primaryError);
 
         try {
-            console.log(`[AGI] Trying fallback provider: ${fallbackProvider}`);
-
-            if (fallbackProvider === 'groq') {
-                return await callGroq(messages, fallbackConfig);
-            } else if (fallbackProvider === 'ollama') {
-                return await callOllama(messages, fallbackConfig);
-            }
-
-            throw new Error(`Unknown fallback provider: ${fallbackProvider}`);
+            console.log(`[AGI] Trying fallback: ${fallbackConfig.model}`);
+            return await callGroq(messages, fallbackConfig);
         } catch (fallbackError) {
-            console.error(`[AGI] Fallback provider also failed:`, fallbackError);
-            throw new Error(`Todos os provedores de IA falharam. Tente novamente mais tarde.`);
+            console.error(`[AGI] All providers failed:`, fallbackError);
+            throw new Error(`Serviço de IA temporariamente indisponível. Configure GROQ_API_KEY no Vercel.`);
         }
     }
 }
