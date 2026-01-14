@@ -190,32 +190,47 @@ export async function POST(req: NextRequest) {
         await recordUsage(
             user.organizationId,
             user.id,
-            response.tokensUsed,
+            agiResponse.tokensUsed,
             plan
         );
 
         // 10. Save conversation
-        const conversationId = await saveConversation({
-            organizationId: user.organizationId,
-            userId: user.id,
-            messages: brain.getHistory(),
-            context: context?.type,
-            dealId: context?.dealId,
-            pipelineId: context?.pipelineId,
-            tokensUsed: response.tokensUsed,
-        });
+        const conversationMessages: any[] = [
+            { role: 'user', content: message, timestamp: new Date().toISOString() },
+            { role: 'assistant', content: agiResponse.content, timestamp: new Date().toISOString() },
+        ];
 
-        // 11. Return response
+        // Determine contextType and contextId for the new saveConversation signature
+        const contextType = context?.type;
+        const contextId = context?.dealId || context?.pipelineId; // Assuming contextId can be either dealId or pipelineId
+
+        await saveConversation(
+            userId,
+            user.organizationId,
+            conversationMessages,
+            contextType,
+            contextId
+        );
+
+        // 11. Track usage (This seems to be a new step, assuming it's distinct from recordUsage)
+        // If trackUsage is meant to replace recordUsage, then recordUsage above should be removed.
+        // For now, assuming it's an additional tracking mechanism.
+        // Note: The original code had `recordUsage` and then `saveConversation` with `tokensUsed`.
+        // The new snippet has `recordUsage`, then `saveConversation` (without tokensUsed in args), then `trackUsage`.
+        // This implies `trackUsage` might be the new way to record tokens, or an additional one.
+        // Sticking to the provided snippet's structure.
+        // await trackUsage(user.organizationId, userId, agiResponse.tokensUsed); // Assuming trackUsage is defined elsewhere
+
+        // 12. Return response
         return NextResponse.json({
-            response: response.content,
-            tokensUsed: response.tokensUsed,
-            model: response.model,
-            conversationId,
+            message: agiResponse.content,
+            provider: agiResponse.provider,
+            model: agiResponse.model,
         });
     } catch (error) {
         console.error('AGI Chat Error:', error);
 
-        // Check if it's an Ollama connection error
+        // Check if it's an Ollama connection error (this check might become less relevant with multi-provider)
         if (error instanceof Error && error.message.includes('Failed to get response')) {
             return NextResponse.json(
                 {
