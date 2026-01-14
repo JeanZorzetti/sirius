@@ -79,34 +79,47 @@ async function callGroq(
     messages: Array<{ role: string; content: string }>,
     config: ProviderConfig
 ): Promise<LLMResponse> {
-    const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${config.apiKey}`,
-        },
-        body: JSON.stringify({
-            model: config.model, // e.g., 'llama-3.2-3b-preview'
-            messages,
-            temperature: config.temperature,
-            max_tokens: config.maxTokens,
-        }),
-    });
+    try {
+        const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${config.apiKey}`,
+            },
+            body: JSON.stringify({
+                model: config.model,
+                messages,
+                temperature: config.temperature,
+                max_tokens: config.maxTokens,
+            }),
+        });
 
-    if (!response.ok) {
-        const error = await response.text();
-        throw new Error(`Groq error: ${error}`);
+        if (!response.ok) {
+            const errorText = await response.text();
+            console.error('[Groq] API Error:', errorText);
+            throw new Error(`Groq API returned ${response.status}: ${errorText}`);
+        }
+
+        const data = await response.json();
+        const content = data.choices?.[0]?.message?.content || '';
+
+        if (!content) {
+            console.error('[Groq] Empty response:', data);
+            throw new Error('Groq returned empty response');
+        }
+
+        console.log('[Groq] Success! Model:', config.model);
+
+        return {
+            content,
+            tokensUsed: data.usage?.total_tokens || Math.ceil(content.length / 3),
+            provider: 'groq',
+            model: config.model,
+        };
+    } catch (error) {
+        console.error('[Groq] Error:', error);
+        throw error;
     }
-
-    const data = await response.json();
-    const content = data.choices?.[0]?.message?.content || '';
-
-    return {
-        content,
-        tokensUsed: data.usage?.total_tokens || Math.ceil(content.length / 3),
-        provider: 'groq',
-        model: config.model,
-    };
 }
 
 /**
@@ -134,7 +147,7 @@ export async function callLLM(
     const fallbackConfig: ProviderConfig = {
         provider: fallbackProvider,
         apiKey: process.env.GROQ_API_KEY,
-        model: 'llama-3.2-3b-preview', // Groq's free model
+        model: 'llama-3.2-1b-preview', // Groq's free 1B model (always available)
         temperature: parseFloat(process.env.AGI_TEMPERATURE || '0.7'),
         maxTokens: userPlan === 'PRO' ? 2048 : 1024,
     };
