@@ -95,7 +95,7 @@ export function AgiChatSidebar({ dealId, pipelineId, context }: AgiChatSidebarPr
 
             const assistantMessage: Message = {
                 role: 'assistant',
-                content: data.response,
+                content: data.message, // Changed from data.response to data.message
                 timestamp: new Date().toISOString(),
             };
 
@@ -180,10 +180,10 @@ export function AgiChatSidebar({ dealId, pipelineId, context }: AgiChatSidebarPr
                             <div className="h-1.5 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
                                 <div
                                     className={`h-full rounded-full transition-all ${(usage.remaining / usage.monthlyLimit) > 0.5
-                                            ? 'bg-green-500'
-                                            : (usage.remaining / usage.monthlyLimit) > 0.2
-                                                ? 'bg-yellow-500'
-                                                : 'bg-red-500'
+                                        ? 'bg-green-500'
+                                        : (usage.remaining / usage.monthlyLimit) > 0.2
+                                            ? 'bg-yellow-500'
+                                            : 'bg-red-500'
                                         }`}
                                     style={{
                                         width: `${(usage.remaining / usage.monthlyLimit) * 100}%`,
@@ -234,8 +234,8 @@ export function AgiChatSidebar({ dealId, pipelineId, context }: AgiChatSidebarPr
                             >
                                 <div
                                     className={`max-w-[85%] rounded-2xl px-4 py-3 ${msg.role === 'user'
-                                            ? 'bg-gradient-to-r from-purple-600 to-blue-600 text-white'
-                                            : 'bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white'
+                                        ? 'bg-gradient-to-r from-purple-600 to-blue-600 text-white'
+                                        : 'bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white'
                                         }`}
                                 >
                                     <p className="text-sm whitespace-pre-wrap">{msg.content}</p>
