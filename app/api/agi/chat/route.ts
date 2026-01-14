@@ -217,21 +217,41 @@ export async function POST(req: NextRequest) {
             });
         }
 
-        // 8. Non-streaming response using multi-provider
-        const { callLLM } = await import('@/lib/agi/providers');
+        // 8. Initialize AGI Brain with conversational memory
+        const brain = createAgiBrain(plan);
 
-        // Build enhanced message with context
-        let enhancedMessage = message;
-        if (Object.keys(enhancedContext).length > 0) {
-            enhancedMessage = `CONTEXTO DO CRM:\n${JSON.stringify(enhancedContext, null, 2)}\n\nPERGUNTA DO USUÁRIO:\n${message}`;
+        // 9. Check if we should execute specialized skills
+        const lowercaseMessage = message.toLowerCase();
+
+        // Auto-run BANT analysis if user has deals and asks about them
+        if (enhancedContext.userDeals && (
+            lowercaseMessage.includes('analise') ||
+            lowercaseMessage.includes('qualific') ||
+            lowercaseMessage.includes('bant')
+        )) {
+            const { qualificarBANT } = await import('@/lib/agi/skills');
+
+            // Run BANT for each deal
+            const dealAnalysis = enhancedContext.userDeals.deals.map((deal: any) => {
+                const bant = qualificarBANT(
+                    deal.contactCompany,
+                    parseFloat(deal.value) || 0,
+                    deal.contactName || '',
+                    30 // Default 30 days timeline
+                );
+                return {
+                    deal: deal.title,
+                    score: bant.score,
+                    qualificado: bant.qualificado,
+                    criterios: bant.criterios,
+                };
+            });
+
+            enhancedContext.bantAnalysis = dealAnalysis;
         }
 
-        const llmMessages = [
-            { role: 'system', content: 'Você é Sirius, especialista em vendas e CRM. Analise os dados do CRM fornecidos e responda de forma precisa e acionável.' },
-            { role: 'user', content: enhancedMessage },
-        ];
-
-        const response = await callLLM(llmMessages, plan);
+        // 10. Get AI response with full context and conversational memory
+        const response = await brain.think(message, enhancedContext);
 
         // 9. Record usage
         await recordUsage(

@@ -61,7 +61,7 @@ Você é a melhor consultora de vendas. Seja breve e precisa.`;
   }
 
   /**
-   * Main thinking method - sends prompt to Ollama and returns response
+   * Main thinking method - sends prompt to LLM and returns response
    */
   async think(
     prompt: string,
@@ -80,66 +80,33 @@ Você é a melhor consultora de vendas. Seja breve e precisa.`;
       timestamp: new Date().toISOString(),
     });
 
-    // Prepare request to Ollama
-    const messages = this.conversationHistory.map(msg => ({
-      role: msg.role,
-      content: msg.content,
-    }));
-
+    // Use Groq provider instead of Ollama
     try {
-      // Add timeout to prevent hanging with optimized connection
-      const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 50000); // 50 second timeout
+      const { callLLM } = await import('./providers');
 
-      // Optimize fetch with keep-alive for connection reuse
-      const response = await fetch(`${this.config.ollamaHost}/api/chat`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Connection': 'keep-alive',
-          'Keep-Alive': 'timeout=60, max=100',
-        },
-        signal: controller.signal,
-        // @ts-ignore - Node.js specific options
-        keepalive: true,
-        body: JSON.stringify({
-          model: this.config.model,
-          messages,
-          stream: false,
-          options: {
-            temperature: this.config.temperature,
-            num_predict: this.config.maxTokens,
-            num_ctx: 2048, // Reduce context window to prevent OOM
-          },
-        }),
-      });
+      // Send conversation history to maintain context
+      const messages = this.conversationHistory.map(msg => ({
+        role: msg.role,
+        content: msg.content,
+      }));
 
-      clearTimeout(timeoutId);
-
-      if (!response.ok) {
-        throw new Error(`Ollama API error: ${response.statusText}`);
-      }
-
-      const data = await response.json();
-      const assistantMessage = data.message.content;
+      const plan = this.config.model.includes('70b') ? 'PRO' : 'FREE';
+      const response = await callLLM(messages, plan);
 
       // Add assistant response to history
       this.conversationHistory.push({
         role: 'assistant',
-        content: assistantMessage,
+        content: response.content,
         timestamp: new Date().toISOString(),
       });
 
-      // Estimate tokens used (Ollama doesn't provide exact count)
-      const tokensUsed = this.estimateTokens(enhancedPrompt + assistantMessage);
-
       return {
-        content: assistantMessage,
-        tokensUsed,
-        model: this.config.model,
+        content: response.content,
+        tokensUsed: response.tokensUsed,
+        model: response.model,
       };
     } catch (error) {
-      console.error('Error communicating with Ollama:', error);
+      console.error('Error communicating with LLM:', error);
 
       if (error instanceof Error && error.name === 'AbortError') {
         throw new Error('AGI está demorando muito para responder. Por favor, tente novamente com uma pergunta mais simples ou contate o suporte.');
