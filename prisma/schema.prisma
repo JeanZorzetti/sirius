@@ -63,6 +63,12 @@ model Organization {
   calendarEvents     CalendarEvent[]
   pushSubscriptions  PushSubscription[]
   pwaMetrics         PWAMetric[]
+  
+  // AGI Sirius relations
+  agiConversations   AgiConversation[]
+  agiInsights        AgiInsight[]
+  agiUsage           AgiUsage[]
+  agiSkillExecutions AgiSkillExecution[]
 }
 
 model User {
@@ -84,6 +90,12 @@ model User {
   pushSubscriptions PushSubscription[]
   pwaMetrics PWAMetric[]
   notificationPreference NotificationPreference?
+  
+  // AGI Sirius relations
+  agiConversations   AgiConversation[]
+  agiInsights        AgiInsight[]
+  agiUsage           AgiUsage[]
+  agiSkillExecutions AgiSkillExecution[]
 
   role      Role     @default(USER)
   orgRole   OrgRole  @default(OWNER) // Defaulting to OWNER for now so existing users don't lose access. Ideally MEMBER.
@@ -681,6 +693,159 @@ enum PWAMetricType {
   OFFLINE_SYNC_SUCCESS    // Offline queue synced successfully
   OFFLINE_SYNC_FAILURE    // Offline queue sync failed
   SERVICE_WORKER_UPDATED  // SW updated
+}
+
+}
+
+// AGI Sirius Models
+
+model AgiConversation {
+  id             String   @id @default(uuid())
+  
+  // Context
+  dealId         String?  // Conversa sobre deal específico
+  pipelineId     String?  // Conversa sobre pipeline/funil
+  context        String?  // "deal", "pipeline", "general", "script_generation"
+  
+  // Messages (array de mensagens)
+  messages       Json     // [{ role: "user"/"assistant", content: "...", timestamp: "..." }]
+  
+  // Summary for retrieval
+  summary        String?  @db.Text
+  
+  // Token tracking
+  tokensUsed     Int      @default(0)
+  
+  // Timestamps
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  
+  // Relations
+  userId         String
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  
+  // Soft relations (no FK to allow flexibility)
+  // dealId references Deal.id
+  // pipelineId references Pipeline.id
+  
+  @@index([organizationId, userId])
+  @@index([dealId])
+  @@index([pipelineId])
+  @@index([createdAt])
+}
+
+enum AgiInsightType {
+  QUALIFICATION_BANT    // Qualificação BANT
+  QUALIFICATION_MEDDIC  // Qualificação MEDDIC
+  NEXT_STEP_SUGGESTION  // Sugestão de próximo passo
+  OBJECTION_HANDLING    // Como lidar com objeção
+  SCRIPT_GENERATED      // Script de vendas gerado
+  PIPELINE_ANALYSIS     // Análise de funil
+  DEAL_RISK_ASSESSMENT  // Avaliação de risco do deal
+}
+
+model AgiInsight {
+  id             String   @id @default(uuid())
+  
+  // Type and content
+  type           AgiInsightType
+  title          String   // "Lead bem qualificado (BANT: 100/100)"
+  content        String   @db.Text // JSON ou texto formatado
+  
+  // Confidence score (0-1)
+  confidence     Decimal  @db.Decimal(3, 2) // 0.00 to 1.00
+  
+  // Status
+  applied        Boolean  @default(false)  // User aplicou a sugestão?
+  dismissed      Boolean  @default(false)  // User descartou?
+  
+  // Context
+  dealId         String?
+  pipelineId     String?
+  
+  // Metadata (estruturado)
+  metadata       Json?    // { bant_score: 100, criteria: {...}, recommendations: [...] }
+  
+  // Timestamps
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  
+  // Relations
+  userId         String
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  
+  @@index([organizationId, type])
+  @@index([dealId])
+  @@index([pipelineId])
+  @@index([createdAt])
+}
+
+model AgiUsage {
+  id             String   @id @default(uuid())
+  
+  // Usage tracking
+  date           DateTime // Data (sem hora, agrupado por dia)
+  tokensUsed     Int      // Tokens gastos neste dia
+  requestCount   Int      @default(0) // Número de requests
+  
+  // Plan at the time
+  plan           String   // FREE ou PRO (snapshot do plano no momento)
+  
+  // Monthly tracking
+  year           Int
+  month          Int      // 1-12
+  
+  // Relations
+  userId         String
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  
+  @@unique([organizationId, userId, date])
+  @@index([organizationId, year, month])
+  @@index([userId, year, month])
+}
+
+model AgiSkillExecution {
+  id             String   @id @default(uuid())
+  
+  // Skill info
+  skillName      String   // "qualificacao_bant", "analise_funil", etc.
+  
+  // Input/Output
+  input          Json     // Parâmetros de entrada
+  output         Json?    // Resultado
+  
+  // Performance
+  executionTime  Int?     // Milissegundos
+  success        Boolean
+  errorMessage   String?  @db.Text
+  
+  // Context
+  dealId         String?
+  conversationId String?  // Referência à AgiConversation.id
+  
+  // Timestamps
+  createdAt      DateTime @default(now())
+  
+  // Relations
+  userId         String
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  
+  @@index([organizationId, skillName])
+  @@index([userId])
+  @@index([success])
+  @@index([createdAt])
 }
 
 model NotificationPreference {
