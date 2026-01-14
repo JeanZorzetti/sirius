@@ -695,8 +695,6 @@ enum PWAMetricType {
   SERVICE_WORKER_UPDATED  // SW updated
 }
 
-}
-
 // AGI Sirius Models
 
 model AgiConversation {
