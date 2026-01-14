@@ -243,59 +243,63 @@ export async function POST(req: NextRequest) {
                 headers: {
                     'Content-Type': 'text/event-stream',
                     'Cache-Control': 'no-cache',
-                    // 8. Non-streaming response with Brain and conversational memory
-                    const response = await brain.think(message, enhancedContext);
+                    Connection: 'keep-alive',
+                },
+            });
+        }
 
-                    // 9. Record usage
-                    await recordUsage(
-                        user.organizationId,
-                        user.id,
-                        response.tokensUsed,
-                        plan
-                    );
+        // 8. Non-streaming response with Brain and conversational memory
+        const response = await brain.think(message, enhancedContext);
 
-                    // 10. Save conversation
-                    const conversationMessages: any[] = [
-                        { role: 'user', content: message, timestamp: new Date().toISOString() },
-                        { role: 'assistant', content: response.content, timestamp: new Date().toISOString() },
-                    ];
+        // 9. Record usage
+        await recordUsage(
+            user.organizationId,
+            user.id,
+            response.tokensUsed,
+            plan
+        );
 
-                    await saveConversation({
-                        organizationId: user.organizationId,
-                        userId: user.id,
-                        messages: conversationMessages,
-                        context: context?.type,
-                        dealId: context?.dealId,
-                        pipelineId: context?.pipelineId,
-                        tokensUsed: response.tokensUsed,
-                    });
+        // 10. Save conversation
+        const conversationMessages: any[] = [
+            { role: 'user', content: message, timestamp: new Date().toISOString() },
+            { role: 'assistant', content: response.content, timestamp: new Date().toISOString() },
+        ];
 
-                    // 11. Return response
-                    return NextResponse.json({
-                        message: response.content,
-                        provider: response.provider,
-                        model: response.model,
-                    });
-                } catch(error) {
-                    console.error('AGI Chat Error:', error);
+        await saveConversation({
+            organizationId: user.organizationId,
+            userId: user.id,
+            messages: conversationMessages,
+            context: context?.type,
+            dealId: context?.dealId,
+            pipelineId: context?.pipelineId,
+            tokensUsed: response.tokensUsed,
+        });
 
-                    // Check if it's an Ollama connection error (this check might become less relevant with multi-provider)
-                    if (error instanceof Error && error.message.includes('Failed to get response')) {
-                        return NextResponse.json(
-                            {
-                                error: 'Não foi possível conectar ao servidor de IA. Verifique se o Ollama está rodando.',
-                                details: error.message,
-                            },
-                            { status: 503 }
-                        );
-                    }
+        // 11. Return response
+        return NextResponse.json({
+            message: response.content,
+            model: response.model,
+        });
+    } catch (error) {
+        console.error('AGI Chat Error:', error);
 
-                    return NextResponse.json(
-                        {
-                            error: 'Erro ao processar mensagem',
-                            details: error instanceof Error ? error.message : 'Erro desconhecido',
-                        },
-                        { status: 500 }
-                    );
-                }
-            }
+        // Check if it's an Ollama connection error (this check might become less relevant with multi-provider)
+        if (error instanceof Error && error.message.includes('Failed to get response')) {
+            return NextResponse.json(
+                {
+                    error: 'Não foi possível conectar ao servidor de IA. Verifique se o Ollama está rodando.',
+                    details: error.message,
+                },
+                { status: 503 }
+            );
+        }
+
+        return NextResponse.json(
+            {
+                error: 'Erro ao processar mensagem',
+                details: error instanceof Error ? error.message : 'Erro desconhecido',
+            },
+            { status: 500 }
+        );
+    }
+}
