@@ -30,7 +30,7 @@ export async function POST(req: NextRequest) {
     try {
         // 1. Authentication
         const session = await getSession();
-        if (!session?.user?.id) {
+        if (!session?.user) {
             return NextResponse.json(
                 { error: 'Não autenticado' },
                 { status: 401 }
@@ -38,8 +38,9 @@ export async function POST(req: NextRequest) {
         }
 
         // 2. Get user and organization
+        const userId = session.user.id;
         const user = await prisma.user.findUnique({
-            where: { id: session.user.id },
+            where: { id: userId },
             include: { organization: true },
         });
 

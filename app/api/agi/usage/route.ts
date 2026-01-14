@@ -16,12 +16,13 @@ export const runtime = 'nodejs';
 export async function GET(req: NextRequest) {
     try {
         const session = await getSession();
-        if (!session?.user?.id) {
+        if (!session?.user) {
             return NextResponse.json({ error: 'Não autenticado' }, { status: 401 });
         }
 
+        const userId = session.user.id;
         const user = await prisma.user.findUnique({
-            where: { id: session.user.id },
+            where: { id: userId },
             include: { organization: true },
         });
 
