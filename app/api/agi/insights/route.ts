@@ -8,8 +8,7 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server';
-import { getServerSession } from 'next-auth';
-import { authOptions } from '@/lib/auth';
+import { getSession } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
 import { getDealInsights, getRecentInsights, markInsightAsApplied, dismissInsight } from '@/lib/agi/insights';
 
@@ -17,13 +16,13 @@ export const runtime = 'nodejs';
 
 export async function GET(req: NextRequest) {
     try {
-        const session = await getServerSession(authOptions);
-        if (!session?.user?.email) {
+        const session = await getSession();
+        if (!session?.user?.id) {
             return NextResponse.json({ error: 'Não autenticado' }, { status: 401 });
         }
 
         const user = await prisma.user.findUnique({
-            where: { email: session.user.email },
+            where: { id: session.user.id },
         });
 
         if (!user) {
@@ -56,8 +55,8 @@ export async function GET(req: NextRequest) {
 
 export async function PATCH(req: NextRequest) {
     try {
-        const session = await getServerSession(authOptions);
-        if (!session?.user?.email) {
+        const session = await getSession();
+        if (!session?.user?.id) {
             return NextResponse.json({ error: 'Não autenticado' }, { status: 401 });
         }
 

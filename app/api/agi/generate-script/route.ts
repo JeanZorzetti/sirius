@@ -6,8 +6,7 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server';
-import { getServerSession } from 'next-auth';
-import { authOptions } from '@/lib/auth';
+import { getSession } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
 import { createAgiBrain } from '@/lib/agi/brain';
 import { canUseAGI, recordUsage } from '@/lib/agi/usage';
@@ -33,13 +32,13 @@ interface GenerateScriptRequest {
 export async function POST(req: NextRequest) {
     try {
         // 1. Authentication
-        const session = await getServerSession(authOptions);
-        if (!session?.user?.email) {
+        const session = await getSession();
+        if (!session?.user?.id) {
             return NextResponse.json({ error: 'Não autenticado' }, { status: 401 });
         }
 
         const user = await prisma.user.findUnique({
-            where: { email: session.user.email },
+            where: { id: session.user.id },
             include: { organization: true },
         });
 
