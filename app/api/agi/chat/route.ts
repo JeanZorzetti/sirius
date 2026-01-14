@@ -168,8 +168,39 @@ export async function POST(req: NextRequest) {
             }
         }
 
-        // 6. Create AGI brain instance
+
+        // 6. Initialize AGI Brain with conversational memory (used for both streaming and non-streaming)
         const brain = createAgiBrain(plan, modelOption);
+
+        // 6.5. Check if we should execute specialized skills
+        const lowercaseMessage = message.toLowerCase();
+
+        // Auto-run BANT analysis if user has deals and asks about them
+        if (enhancedContext.userDeals && (
+            lowercaseMessage.includes('analise') ||
+            lowercaseMessage.includes('qualific') ||
+            lowercaseMessage.includes('bant')
+        )) {
+            const { qualificarBANT } = await import('@/lib/agi/skills');
+
+            // Run BANT for each deal
+            const dealAnalysis = enhancedContext.userDeals.deals.map((deal: any) => {
+                const bant = qualificarBANT(
+                    deal.contactCompany,
+                    parseFloat(deal.value) || 0,
+                    deal.contactName || '',
+                    30 // Default 30 days timeline
+                );
+                return {
+                    deal: deal.title,
+                    score: bant.score,
+                    qualificado: bant.qualificado,
+                    criterios: bant.criterios,
+                };
+            });
+
+            enhancedContext.bantAnalysis = dealAnalysis;
+        }
 
         // 7. Check if streaming is requested
         if (stream) {
@@ -212,97 +243,59 @@ export async function POST(req: NextRequest) {
                 headers: {
                     'Content-Type': 'text/event-stream',
                     'Cache-Control': 'no-cache',
-                    Connection: 'keep-alive',
-                },
-            });
-        }
+                    // 8. Non-streaming response with Brain and conversational memory
+                    const response = await brain.think(message, enhancedContext);
 
-        // 8. Initialize AGI Brain with conversational memory
-        const brain = createAgiBrain(plan);
+                    // 9. Record usage
+                    await recordUsage(
+                        user.organizationId,
+                        user.id,
+                        response.tokensUsed,
+                        plan
+                    );
 
-        // 9. Check if we should execute specialized skills
-        const lowercaseMessage = message.toLowerCase();
+                    // 10. Save conversation
+                    const conversationMessages: any[] = [
+                        { role: 'user', content: message, timestamp: new Date().toISOString() },
+                        { role: 'assistant', content: response.content, timestamp: new Date().toISOString() },
+                    ];
 
-        // Auto-run BANT analysis if user has deals and asks about them
-        if (enhancedContext.userDeals && (
-            lowercaseMessage.includes('analise') ||
-            lowercaseMessage.includes('qualific') ||
-            lowercaseMessage.includes('bant')
-        )) {
-            const { qualificarBANT } = await import('@/lib/agi/skills');
+                    await saveConversation({
+                        organizationId: user.organizationId,
+                        userId: user.id,
+                        messages: conversationMessages,
+                        context: context?.type,
+                        dealId: context?.dealId,
+                        pipelineId: context?.pipelineId,
+                        tokensUsed: response.tokensUsed,
+                    });
 
-            // Run BANT for each deal
-            const dealAnalysis = enhancedContext.userDeals.deals.map((deal: any) => {
-                const bant = qualificarBANT(
-                    deal.contactCompany,
-                    parseFloat(deal.value) || 0,
-                    deal.contactName || '',
-                    30 // Default 30 days timeline
-                );
-                return {
-                    deal: deal.title,
-                    score: bant.score,
-                    qualificado: bant.qualificado,
-                    criterios: bant.criterios,
-                };
-            });
+                    // 11. Return response
+                    return NextResponse.json({
+                        message: response.content,
+                        provider: response.provider,
+                        model: response.model,
+                    });
+                } catch(error) {
+                    console.error('AGI Chat Error:', error);
 
-            enhancedContext.bantAnalysis = dealAnalysis;
-        }
+                    // Check if it's an Ollama connection error (this check might become less relevant with multi-provider)
+                    if (error instanceof Error && error.message.includes('Failed to get response')) {
+                        return NextResponse.json(
+                            {
+                                error: 'Não foi possível conectar ao servidor de IA. Verifique se o Ollama está rodando.',
+                                details: error.message,
+                            },
+                            { status: 503 }
+                        );
+                    }
 
-        // 10. Get AI response with full context and conversational memory
-        const response = await brain.think(message, enhancedContext);
-
-        // 9. Record usage
-        await recordUsage(
-            user.organizationId,
-            user.id,
-            response.tokensUsed,
-            plan
-        );
-
-        // 10. Save conversation
-        const conversationMessages: any[] = [
-            { role: 'user', content: message, timestamp: new Date().toISOString() },
-            { role: 'assistant', content: response.content, timestamp: new Date().toISOString() },
-        ];
-
-        await saveConversation({
-            organizationId: user.organizationId,
-            userId: user.id,
-            messages: conversationMessages,
-            context: context?.type,
-            dealId: context?.dealId,
-            pipelineId: context?.pipelineId,
-            tokensUsed: response.tokensUsed,
-        });
-
-        // 11. Return response
-        return NextResponse.json({
-            message: response.content,
-            provider: response.provider,
-            model: response.model,
-        });
-    } catch (error) {
-        console.error('AGI Chat Error:', error);
-
-        // Check if it's an Ollama connection error (this check might become less relevant with multi-provider)
-        if (error instanceof Error && error.message.includes('Failed to get response')) {
-            return NextResponse.json(
-                {
-                    error: 'Não foi possível conectar ao servidor de IA. Verifique se o Ollama está rodando.',
-                    details: error.message,
-                },
-                { status: 503 }
-            );
-        }
-
-        return NextResponse.json(
-            {
-                error: 'Erro ao processar mensagem',
-                details: error instanceof Error ? error.message : 'Erro desconhecido',
-            },
-            { status: 500 }
-        );
-    }
-}
+                    return NextResponse.json(
+                        {
+                            error: 'Erro ao processar mensagem',
+                            details: error instanceof Error ? error.message : 'Erro desconhecido',
+                        },
+                        { status: 500 }
+                    );
+                }
+            }
