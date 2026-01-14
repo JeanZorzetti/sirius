@@ -134,6 +134,40 @@ export async function POST(req: NextRequest) {
             }
         }
 
+        // 5.5. If no specific context, load user's deals automatically (for general queries)
+        if (!context?.dealId && !context?.pipelineId) {
+            const userDeals = await prisma.deal.findMany({
+                where: {
+                    organizationId: user.organizationId,
+                },
+                include: {
+                    contact: true,
+                    stage: true,
+                    pipeline: true,
+                },
+                orderBy: {
+                    createdAt: 'desc',
+                },
+                take: 20, // Limit to 20 most recent deals
+            });
+
+            if (userDeals.length > 0) {
+                enhancedContext.userDeals = {
+                    total: userDeals.length,
+                    deals: userDeals.map(d => ({
+                        id: d.id,
+                        title: d.title,
+                        value: d.value?.toString(),
+                        stage: d.stage.name,
+                        pipeline: d.pipeline.name,
+                        contactName: d.contact?.name,
+                        contactCompany: d.contact?.company,
+                        createdAt: d.createdAt.toISOString(),
+                    })),
+                };
+            }
+        }
+
         // 6. Create AGI brain instance
         const brain = createAgiBrain(plan, modelOption);
 
@@ -186,9 +220,15 @@ export async function POST(req: NextRequest) {
         // 8. Non-streaming response using multi-provider
         const { callLLM } = await import('@/lib/agi/providers');
 
+        // Build enhanced message with context
+        let enhancedMessage = message;
+        if (Object.keys(enhancedContext).length > 0) {
+            enhancedMessage = `CONTEXTO DO CRM:\n${JSON.stringify(enhancedContext, null, 2)}\n\nPERGUNTA DO USUÁRIO:\n${message}`;
+        }
+
         const llmMessages = [
-            { role: 'system', content: 'Você é Sirius, especialista em vendas e CRM. Seja breve e precisa.' },
-            { role: 'user', content: message },
+            { role: 'system', content: 'Você é Sirius, especialista em vendas e CRM. Analise os dados do CRM fornecidos e responda de forma precisa e acionável.' },
+            { role: 'user', content: enhancedMessage },
         ];
 
         const response = await callLLM(llmMessages, plan);
