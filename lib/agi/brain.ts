@@ -142,16 +142,21 @@ Você é a melhor especialista em vendas do mundo. Seja objetiva, estratégica e
     }));
 
     try {
-      // Add timeout to prevent hanging
+      // Add timeout to prevent hanging with optimized connection
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 50000); // 50 second timeout
 
+      // Optimize fetch with keep-alive for connection reuse
       const response = await fetch(`${this.config.ollamaHost}/api/chat`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Connection': 'keep-alive',
+          'Keep-Alive': 'timeout=60, max=100',
         },
         signal: controller.signal,
+        // @ts-ignore - Node.js specific options
+        keepalive: true,
         body: JSON.stringify({
           model: this.config.model,
           messages,
