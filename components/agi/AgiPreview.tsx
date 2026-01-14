@@ -70,7 +70,7 @@ export function AgiPreview() {
                     </div>
                     <div>
                         <h3 className="text-2xl font-bold text-white">AGI Sirius</h3>
-                        <p className="text-purple-100 text-sm">Especialista em Vendas B2B • Powered by Llama 3.3 70B</p>
+                        <p className="text-purple-100 text-sm">Especialista em Vendas B2B</p>
                     </div>
                 </div>
             </div>
@@ -123,8 +123,8 @@ export function AgiPreview() {
                             >
                                 <div
                                     className={`max-w-[80%] rounded-2xl px-5 py-3 ${msg.role === 'user'
-                                            ? 'bg-gradient-to-r from-purple-600 to-blue-600 text-white'
-                                            : 'bg-white dark:bg-gray-800 text-gray-900 dark:text-white shadow-lg border border-gray-200 dark:border-gray-700'
+                                        ? 'bg-gradient-to-r from-purple-600 to-blue-600 text-white'
+                                        : 'bg-white dark:bg-gray-800 text-gray-900 dark:text-white shadow-lg border border-gray-200 dark:border-gray-700'
                                         }`}
                                 >
                                     <p className="text-sm whitespace-pre-wrap leading-relaxed">{msg.content}</p>
