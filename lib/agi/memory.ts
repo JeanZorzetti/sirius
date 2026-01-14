@@ -85,7 +85,7 @@ export async function getConversation(conversationId: string): Promise<{
     if (!conversation) return null;
 
     return {
-        messages: conversation.messages as Message[],
+        messages: conversation.messages as unknown as Message[],
         tokensUsed: conversation.tokensUsed,
     };
 }
