@@ -32,6 +32,8 @@ import { Loader2, MessageSquare, History, Tag, Calendar, Send, Trash2, Plus, Mes
 import { format } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
 import { ScrollArea } from "@/components/ui/scroll-area"
+import { DealInsightsPanel, ScriptGenerator } from '@/components/agi'
+import { Wand2 } from 'lucide-react'
 
 type SimpleDeal = {
     id: string
@@ -75,6 +77,7 @@ export function EditDealDialog({
     const [selectedContactId, setSelectedContactId] = useState(initialDeal?.contactId || 'no_contact')
     const [quickAddOpen, setQuickAddOpen] = useState(false)
     const [quickAddLoading, setQuickAddLoading] = useState(false)
+    const [showScriptGenerator, setShowScriptGenerator] = useState(false)
 
     // Fetch full details when dialog opens
     useEffect(() => {
@@ -285,6 +288,10 @@ export function EditDealDialog({
                             <TabsTrigger value="timeline" className="data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:border-b-2 data-[state=active]:border-indigo-500 rounded-none px-0 pb-3 font-normal text-zinc-500 data-[state=active]:text-indigo-500">
                                 <History className="w-4 h-4 mr-2" />
                                 Histórico
+                            </TabsTrigger>
+                            <TabsTrigger value="agi" className="data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:border-b-2 data-[state=active]:border-purple-500 rounded-none px-0 pb-3 font-normal text-zinc-500 data-[state=active]:text-purple-500">
+                                <Wand2 className="w-4 h-4 mr-2" />
+                                AGI Insights
                             </TabsTrigger>
                         </TabsList>
                     </div>
@@ -508,10 +515,35 @@ export function EditDealDialog({
                                     )}
                                 </div>
                             </TabsContent>
+
+                            <TabsContent value="agi" className="mt-0 space-y-4">
+                                {/* Script Generator Button */}
+                                <div className="flex justify-end">
+                                    <Button
+                                        onClick={() => setShowScriptGenerator(true)}
+                                        className="bg-gradient-to-r from-purple-600 to-blue-600 text-white hover:shadow-lg transition-all"
+                                    >
+                                        <Wand2 className="w-4 h-4 mr-2" />
+                                        Gerar Script de Vendas
+                                    </Button>
+                                </div>
+
+                                {/* Deal Insights Panel */}
+                                {initialDeal?.id && (
+                                    <DealInsightsPanel dealId={initialDeal.id} />
+                                )}
+                            </TabsContent>
                         </div>
                     </ScrollArea>
                 </Tabs>
             </DialogContent>
+
+            {/* Script Generator Modal */}
+            <ScriptGenerator
+                isOpen={showScriptGenerator}
+                onClose={() => setShowScriptGenerator(false)}
+                dealId={initialDeal?.id}
+            />
         </Dialog>
     )
 }
