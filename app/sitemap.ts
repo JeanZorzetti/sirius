@@ -1,5 +1,6 @@
 import { MetadataRoute } from 'next'
 import { blogPosts } from '@/lib/blog-data'
+import { helpArticles } from '@/lib/help-articles'
 
 export default function sitemap(): MetadataRoute.Sitemap {
     const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://sirius.roilabs.com.br'
@@ -33,5 +34,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
             priority: 0.7,
         }))
 
-    return [...routes, ...posts]
+    // Help articles (23 artigos)
+    const helpArticlePages = helpArticles.map((article) => ({
+        url: `${baseUrl}/help/${article.categorySlug}/${article.slug}`,
+        lastModified: new Date(article.lastUpdated),
+        changeFrequency: 'monthly' as const,
+        priority: 0.7,
+    }))
+
+    return [...routes, ...posts, ...helpArticlePages]
 }

@@ -1,19 +1,25 @@
 import Link from 'next/link'
 import Script from 'next/script'
 import { Button } from '@/components/ui/button'
+import { Badge } from '@/components/ui/badge'
+import { Input } from '@/components/ui/input'
 import {
   BookOpen,
   MessageCircle,
   Mail,
-  FileText,
-  Play,
   HelpCircle,
+  Search,
   Zap,
   Users,
   BarChart3,
-  Kanban
+  Kanban,
+  Settings,
+  ChevronRight,
+  ExternalLink,
+  Clock,
 } from 'lucide-react'
 import type { Metadata } from 'next'
+import { getAllCategories } from '@/lib/help-articles'
 
 export const metadata: Metadata = {
   title: 'Central de Ajuda | Sirius CRM',
@@ -25,70 +31,160 @@ export const metadata: Metadata = {
   },
 }
 
+const categories = [
+  {
+    icon: Zap,
+    title: "Primeiros Passos",
+    description: "Setup inicial e conceitos básicos do Sirius CRM",
+    slug: "primeiros-passos",
+  },
+  {
+    icon: Kanban,
+    title: "Pipeline e Negócios",
+    description: "Kanban, stages, múltiplos pipelines e gestão de deals",
+    slug: "pipeline-negocios",
+  },
+  {
+    icon: Users,
+    title: "Contatos",
+    description: "Gestão de contatos e importação de dados",
+    slug: "contatos",
+  },
+  {
+    icon: Zap,
+    title: "Automações",
+    description: "Email automations e workflows inteligentes",
+    slug: "automacoes",
+  },
+  {
+    icon: BarChart3,
+    title: "Analytics e Relatórios",
+    description: "Métricas, forecasting e exportação de dados",
+    slug: "analytics",
+  },
+  {
+    icon: Settings,
+    title: "Integrações",
+    description: "WhatsApp, Google Calendar, N8N e API",
+    slug: "integracoes",
+  },
+  {
+    icon: Users,
+    title: "Equipe e Configurações",
+    description: "Permissões, perfil e notificações",
+    slug: "equipe",
+  },
+  {
+    icon: HelpCircle,
+    title: "Planos e Billing",
+    description: "FREE vs PRO, assinatura e pagamentos",
+    slug: "planos",
+  },
+]
+
+const articlesByCategory = {
+  "primeiros-passos": [
+    { title: "Como criar seu primeiro negócio", slug: "criar-primeiro-negocio" },
+    { title: "Atalhos de teclado do Sirius CRM", slug: "atalhos-teclado" },
+    { title: "Melhores práticas de gestão de vendas", slug: "melhores-praticas-vendas" },
+    { title: "Troubleshooting: problemas comuns", slug: "troubleshooting" },
+  ],
+  "pipeline-negocios": [
+    { title: "Entendendo o Pipeline Kanban", slug: "entendendo-pipeline-kanban" },
+    { title: "Criando múltiplos pipelines", slug: "multiplos-pipelines" },
+    { title: "Usando filtros e busca avançada", slug: "filtros-busca" },
+    { title: "Marcando deals como perdidos", slug: "deals-perdidos" },
+    { title: "Personalizando etapas do pipeline", slug: "personalizar-etapas" },
+    { title: "Adicionando tags e custom fields", slug: "tags-custom-fields" },
+  ],
+  "contatos": [
+    { title: "Como cadastrar e gerenciar contatos", slug: "cadastrar-contatos" },
+    { title: "Importando contatos via CSV", slug: "importar-contatos-csv" },
+  ],
+  "automacoes": [
+    { title: "Configurando automações de email", slug: "automacoes-email" },
+  ],
+  "analytics": [
+    { title: "Entendendo o Analytics básico", slug: "analytics-basico" },
+    { title: "Analytics PRO: Forecasting de vendas", slug: "forecasting-vendas" },
+    { title: "Exportando dados para análise", slug: "exportar-dados" },
+  ],
+  "integracoes": [
+    { title: "Integração com WhatsApp", slug: "integracao-whatsapp" },
+    { title: "Sincronizando com Google Calendar", slug: "google-calendar" },
+    { title: "Usando a API do Sirius CRM", slug: "usando-api" },
+    { title: "Integrando com N8N", slug: "integracao-n8n" },
+  ],
+  "equipe": [
+    { title: "Gerenciando permissões de equipe", slug: "permissoes-equipe" },
+    { title: "Configurando notificações", slug: "configurar-notificacoes" },
+    { title: "Configurando seu perfil", slug: "configurar-perfil" },
+  ],
+  "planos": [
+    { title: "Diferenças entre FREE e PRO", slug: "free-vs-pro" },
+    { title: "Gerenciando assinatura e pagamentos", slug: "gerenciar-assinatura" },
+  ],
+}
+
+const popularArticles = [
+  {
+    title: "Como criar seu primeiro negócio",
+    category: "Primeiros Passos",
+    categorySlug: "primeiros-passos",
+    slug: "criar-primeiro-negocio",
+  },
+  {
+    title: "Entendendo o Pipeline Kanban",
+    category: "Pipeline e Negócios",
+    categorySlug: "pipeline-negocios",
+    slug: "entendendo-pipeline-kanban",
+  },
+  {
+    title: "Integração com WhatsApp",
+    category: "Integrações",
+    categorySlug: "integracoes",
+    slug: "integracao-whatsapp",
+  },
+  {
+    title: "Diferenças entre FREE e PRO",
+    category: "Planos",
+    categorySlug: "planos",
+    slug: "free-vs-pro",
+  },
+  {
+    title: "Configurando automações de email",
+    category: "Automações",
+    categorySlug: "automacoes",
+    slug: "automacoes-email",
+  },
+  {
+    title: "Entendendo o Analytics básico",
+    category: "Analytics",
+    categorySlug: "analytics",
+    slug: "analytics-basico",
+  },
+]
+
 const faqItems = [
   {
     question: 'Como criar meu primeiro negócio?',
     answer: 'Após fazer login, clique no botão "Novo Deal" no dashboard. Preencha o título, valor e selecione um contato. O negócio será criado na primeira etapa do seu pipeline.',
-    icon: Kanban,
   },
   {
     question: 'Como funciona o Pipeline Kanban?',
     answer: 'O pipeline é dividido em etapas (colunas). Arraste os cards de negócios entre as colunas para indicar progresso. Personalize as etapas em Configurações > Pipelines.',
-    icon: Kanban,
-  },
-  {
-    question: 'Como adicionar contatos?',
-    answer: 'Vá em Contatos > Novo Contato. Preencha nome, email e telefone. Você também pode criar contatos diretamente ao criar um negócio.',
-    icon: Users,
-  },
-  {
-    question: 'Como usar o WhatsApp integrado?',
-    answer: 'Clique no botão verde (ícone do WhatsApp) em qualquer card de negócio que tenha um contato com telefone cadastrado. O WhatsApp Web abrirá automaticamente.',
-    icon: MessageCircle,
   },
   {
     question: 'Qual a diferença entre Plano Free e Pro?',
-    answer: 'O Plano Free permite até 10 negócios ativos e 1 pipeline. O Pro remove limites, adiciona múltiplos pipelines, analytics avançado e automações de email.',
-    icon: Zap,
+    answer: 'O Plano Free permite até 1 pipeline e 1 usuário. O Pro remove limites, adiciona múltiplos pipelines, analytics avançado, automações de email e gestão de equipe.',
   },
   {
-    question: 'Como interpretar o dashboard de Analytics?',
-    answer: 'O Analytics mostra taxa de conversão (% de negócios fechados), ticket médio (valor médio dos deals) e previsão de fechamento (receita esperada para o mês).',
-    icon: BarChart3,
+    question: 'Como adicionar membros à equipe?',
+    answer: 'Vá em Configurações > Membros da Equipe. Clique em "Convidar Membro", insira o email e defina a permissão (Owner, Admin ou Member).',
   },
   {
     question: 'Meus dados estão seguros?',
     answer: 'Sim. Usamos criptografia de ponta a ponta, isolamento multi-tenant e backups diários. Seus dados nunca são compartilhados com outras organizações.',
-    icon: HelpCircle,
-  },
-  {
-    question: 'Como convidar minha equipe?',
-    answer: 'Vá em Configurações > Membros da Equipe. Clique em "Convidar Membro", insira o email e defina a permissão (Owner ou Member).',
-    icon: Users,
-  },
-]
-
-const supportChannels = [
-  {
-    title: 'Email',
-    description: 'Envie suas dúvidas para nosso time de suporte',
-    icon: Mail,
-    action: 'Enviar Email',
-    href: 'mailto:suporte@roilabs.com.br',
-  },
-  {
-    title: 'Blog & Tutoriais',
-    description: 'Artigos e guias para dominar o Sirius CRM',
-    icon: BookOpen,
-    action: 'Ver Blog',
-    href: '/blog',
-  },
-  {
-    title: 'Documentação',
-    description: 'Guias técnicos e referências completas',
-    icon: FileText,
-    action: 'Acessar Docs',
-    href: '/features',
   },
 ]
 
@@ -106,25 +202,6 @@ export default function HelpPage() {
     }))
   }
 
-  const breadcrumbSchema = {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    "itemListElement": [
-      {
-        "@type": "ListItem",
-        "position": 1,
-        "name": "Home",
-        "item": "https://sirius.roilabs.com.br"
-      },
-      {
-        "@type": "ListItem",
-        "position": 2,
-        "name": "Ajuda",
-        "item": "https://sirius.roilabs.com.br/help"
-      }
-    ]
-  }
-
   return (
     <>
       <Script
@@ -132,118 +209,209 @@ export default function HelpPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
       />
-      <Script
-        id="breadcrumb-schema"
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
-      />
 
-      <div className="bg-background">
+      <div className="min-h-screen bg-background">
         {/* Hero Section */}
-        <section className="py-20 sm:py-32">
-          <div className="mx-auto max-w-7xl px-6 lg:px-8">
-            <div className="mx-auto max-w-2xl text-center">
-              <h1 className="text-4xl font-bold tracking-tight text-foreground sm:text-6xl">
-                Como podemos ajudar?
-              </h1>
-              <p className="mt-6 text-lg leading-8 text-muted-foreground">
-                Encontre respostas rápidas para suas dúvidas ou entre em contato com nosso time de suporte.
-              </p>
+        <section className="pt-32 pb-16 px-4 bg-gradient-to-b from-primary/5 to-transparent">
+          <div className="container mx-auto max-w-4xl text-center">
+            <Badge variant="secondary" className="mb-4">
+              <HelpCircle className="w-3 h-3 mr-1" />
+              Central de Ajuda
+            </Badge>
+            <h1 className="text-4xl md:text-5xl font-bold mb-4">
+              Como podemos{" "}
+              <span className="bg-gradient-to-r from-primary to-purple-600 text-transparent bg-clip-text">
+                ajudar?
+              </span>
+            </h1>
+            <p className="text-lg text-muted-foreground mb-8">
+              Encontre respostas, tutoriais e guias para aproveitar o máximo do Sirius CRM.
+            </p>
+
+            {/* Search */}
+            <div className="max-w-xl mx-auto">
+              <div className="relative">
+                <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+                <Input
+                  placeholder="Buscar na central de ajuda..."
+                  className="pl-12 h-14 text-lg"
+                />
+              </div>
             </div>
           </div>
         </section>
 
-        {/* Support Channels */}
-        <section className="py-16 bg-muted/50">
-          <div className="mx-auto max-w-7xl px-6 lg:px-8">
-            <h2 className="text-3xl font-bold tracking-tight text-foreground text-center mb-12">
-              Canais de Suporte
-            </h2>
-            <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
-              {supportChannels.map((channel) => (
-                <div key={channel.title} className="flex flex-col items-center text-center p-6 bg-background border rounded-lg">
-                  <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary mb-4">
-                    <channel.icon className="h-6 w-6 text-primary-foreground" />
+        {/* Quick Links */}
+        <section className="py-8 px-4">
+          <div className="container mx-auto max-w-6xl">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-2xl mx-auto">
+              <Link href="#faq">
+                <div className="flex items-center gap-4 p-4 bg-card border border-border rounded-xl hover:border-primary/50 transition-colors">
+                  <div className="w-12 h-12 rounded-lg bg-green-500/10 flex items-center justify-center">
+                    <MessageCircle className="w-6 h-6 text-green-500" />
                   </div>
-                  <h3 className="text-xl font-semibold mb-2">{channel.title}</h3>
-                  <p className="text-muted-foreground mb-4 flex-1">{channel.description}</p>
-                  <Button asChild variant="outline" className="w-full">
-                    <Link href={channel.href}>{channel.action}</Link>
-                  </Button>
+                  <div>
+                    <h3 className="font-semibold">Perguntas Frequentes</h3>
+                    <p className="text-sm text-muted-foreground">Respostas rápidas</p>
+                  </div>
                 </div>
+              </Link>
+
+              <a href="mailto:suporte@roilabs.com.br">
+                <div className="flex items-center gap-4 p-4 bg-card border border-border rounded-xl hover:border-primary/50 transition-colors">
+                  <div className="w-12 h-12 rounded-lg bg-purple-500/10 flex items-center justify-center">
+                    <Mail className="w-6 h-6 text-purple-500" />
+                  </div>
+                  <div>
+                    <h3 className="font-semibold">Falar com Suporte</h3>
+                    <p className="text-sm text-muted-foreground">Atendimento humano</p>
+                  </div>
+                </div>
+              </a>
+            </div>
+          </div>
+        </section>
+
+        {/* Popular Articles */}
+        <section className="py-12 px-4 bg-muted/30">
+          <div className="container mx-auto max-w-6xl">
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-2xl font-bold">Artigos Populares</h2>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {popularArticles.map((article, index) => (
+                <Link key={index} href={`/help/${article.categorySlug}/${article.slug}`}>
+                  <div className="flex items-center gap-3 p-4 bg-card border border-border rounded-xl hover:border-primary/50 transition-colors">
+                    <BookOpen className="w-5 h-5 text-muted-foreground flex-shrink-0" />
+                    <div className="min-w-0">
+                      <h3 className="font-medium text-sm truncate">{article.title}</h3>
+                      <span className="text-xs text-muted-foreground">{article.category}</span>
+                    </div>
+                  </div>
+                </Link>
               ))}
             </div>
           </div>
         </section>
 
-        {/* FAQ Section */}
-        <section className="py-16">
-          <div className="mx-auto max-w-4xl px-6 lg:px-8">
-            <h2 className="text-3xl font-bold tracking-tight text-foreground text-center mb-12">
-              Perguntas Frequentes
+        {/* Articles by Category */}
+        <section className="py-12 px-4">
+          <div className="container mx-auto max-w-6xl">
+            <h2 className="text-2xl font-bold mb-8 text-center">
+              Guias Completos por Categoria
             </h2>
-            <div className="space-y-6">
-              {faqItems.map((item, index) => (
-                <div key={index} className="border rounded-lg p-6 bg-card hover:shadow-md transition-shadow">
-                  <div className="flex gap-4">
-                    <div className="flex-shrink-0">
-                      <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10">
-                        <item.icon className="h-5 w-5 text-primary" />
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+              {categories.map((category, catIndex) => {
+                const categoryArticles = articlesByCategory[category.slug as keyof typeof articlesByCategory] || [];
+                return (
+                  <div
+                    key={catIndex}
+                    className="bg-card border border-border rounded-xl p-6"
+                  >
+                    <div className="flex items-center gap-3 mb-4">
+                      <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
+                        <category.icon className="w-5 h-5 text-primary" />
+                      </div>
+                      <div>
+                        <h3 className="font-semibold">{category.title}</h3>
+                        <p className="text-xs text-muted-foreground">
+                          {categoryArticles.length} artigos disponíveis
+                        </p>
                       </div>
                     </div>
-                    <div className="flex-1">
-                      <h3 className="text-lg font-semibold text-foreground mb-2">
-                        {item.question}
-                      </h3>
-                      <p className="text-muted-foreground leading-7">
-                        {item.answer}
-                      </p>
+                    <div className="space-y-2">
+                      {categoryArticles.map((article, artIndex) => (
+                        <Link
+                          key={artIndex}
+                          href={`/help/${category.slug}/${article.slug}`}
+                        >
+                          <div className="flex items-center gap-2 p-2 rounded-lg hover:bg-muted/50 transition-colors group">
+                            <ChevronRight className="w-4 h-4 text-muted-foreground group-hover:text-primary transition-colors flex-shrink-0" />
+                            <span className="text-sm group-hover:text-primary transition-colors">
+                              {article.title}
+                            </span>
+                          </div>
+                        </Link>
+                      ))}
                     </div>
                   </div>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+
+        {/* FAQ */}
+        <section id="faq" className="py-12 px-4 bg-muted/30">
+          <div className="container mx-auto max-w-3xl">
+            <h2 className="text-2xl font-bold mb-6 text-center">
+              Perguntas Frequentes
+            </h2>
+            <div className="space-y-4">
+              {faqItems.map((faq, index) => (
+                <div
+                  key={index}
+                  className="bg-card border border-border rounded-xl p-5"
+                >
+                  <h3 className="font-semibold mb-2">{faq.question}</h3>
+                  <p className="text-sm text-muted-foreground">{faq.answer}</p>
                 </div>
               ))}
             </div>
           </div>
         </section>
 
-        {/* Video Tutorial CTA */}
-        <section className="py-16 bg-muted/50">
-          <div className="mx-auto max-w-7xl px-6 lg:px-8">
-            <div className="mx-auto max-w-2xl text-center">
-              <div className="flex justify-center mb-6">
-                <div className="flex h-16 w-16 items-center justify-center rounded-full bg-primary">
-                  <Play className="h-8 w-8 text-primary-foreground" />
+        {/* Contact Support */}
+        <section className="py-16 px-4">
+          <div className="container mx-auto max-w-4xl">
+            <div className="bg-card border border-border rounded-2xl p-8 md:p-12">
+              <div className="text-center mb-8">
+                <h2 className="text-2xl md:text-3xl font-bold mb-3">
+                  Não encontrou o que procura?
+                </h2>
+                <p className="text-muted-foreground">
+                  Nossa equipe de suporte está pronta para ajudar você.
+                </p>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div className="text-center p-4">
+                  <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-3">
+                    <Mail className="w-6 h-6 text-primary" />
+                  </div>
+                  <h3 className="font-semibold mb-1">Email</h3>
+                  <p className="text-sm text-muted-foreground">
+                    suporte@roilabs.com.br
+                  </p>
+                </div>
+
+                <div className="text-center p-4">
+                  <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-3">
+                    <MessageCircle className="w-6 h-6 text-primary" />
+                  </div>
+                  <h3 className="font-semibold mb-1">Chat</h3>
+                  <p className="text-sm text-muted-foreground">
+                    Disponível no dashboard
+                  </p>
+                </div>
+
+                <div className="text-center p-4">
+                  <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-3">
+                    <Clock className="w-6 h-6 text-primary" />
+                  </div>
+                  <h3 className="font-semibold mb-1">Horário</h3>
+                  <p className="text-sm text-muted-foreground">
+                    Seg-Sex, 08h-18h
+                  </p>
                 </div>
               </div>
-              <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl mb-4">
-                Prefere aprender assistindo?
-              </h2>
-              <p className="text-lg leading-8 text-muted-foreground mb-8">
-                Acesse nosso blog com tutoriais em vídeo e guias passo a passo para dominar o Sirius CRM.
-              </p>
-              <Button asChild size="lg">
-                <Link href="/blog">Ver Tutoriais</Link>
-              </Button>
-            </div>
-          </div>
-        </section>
 
-        {/* Still Need Help CTA */}
-        <section className="py-16">
-          <div className="mx-auto max-w-7xl px-6 lg:px-8">
-            <div className="mx-auto max-w-2xl text-center bg-primary/5 border border-primary/20 rounded-2xl p-12">
-              <h2 className="text-2xl font-bold tracking-tight text-foreground mb-4">
-                Ainda precisa de ajuda?
-              </h2>
-              <p className="text-muted-foreground mb-6">
-                Nossa equipe está pronta para responder suas dúvidas e ajudar você a aproveitar ao máximo o Sirius CRM.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Button asChild size="lg">
-                  <Link href="mailto:suporte@roilabs.com.br">Falar com Suporte</Link>
-                </Button>
-                <Button asChild variant="outline" size="lg">
-                  <Link href="/register">Começar Grátis</Link>
+              <div className="text-center mt-8">
+                <Button size="lg" asChild>
+                  <a href="mailto:suporte@roilabs.com.br">
+                    Enviar Email para Suporte
+                    <ExternalLink className="w-4 h-4 ml-2" />
+                  </a>
                 </Button>
               </div>
             </div>
