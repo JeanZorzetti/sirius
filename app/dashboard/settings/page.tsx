@@ -1,7 +1,7 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { prisma } from '@/lib/prisma'
 import { ProfileForm } from '@/components/settings/profile-form'
-import { User, Users, Key, Webhook, Zap, Bell } from 'lucide-react'
+import { User, Users, Key, Webhook, Zap, Bell, BookOpen } from 'lucide-react'
 import Link from 'next/link'
 import { getSession } from '@/lib/auth'
 
@@ -115,6 +115,20 @@ export default async function SettingsPage() {
                                     <span className="text-[10px] font-semibold px-1.5 py-0.5 rounded bg-purple-500/10 text-purple-600 dark:text-purple-400 ring-1 ring-purple-500/20">PRO</span>
                                 </CardTitle>
                                 <CardDescription className="text-zinc-500 text-xs">N8N, WhatsApp e Google Calendar</CardDescription>
+                            </div>
+                        </CardHeader>
+                    </Card>
+                </Link>
+
+                <Link href="/help" target="_blank" rel="noopener noreferrer">
+                    <Card className="bg-white dark:bg-white/[0.02] border-zinc-200 dark:border-white/5 backdrop-blur-xl shadow-sm hover:bg-zinc-50 dark:hover:bg-white/[0.04] transition-colors cursor-pointer">
+                        <CardHeader className="flex flex-row items-center gap-4 relative overflow-hidden">
+                            <div className="h-10 w-10 rounded-lg bg-green-500/10 flex items-center justify-center text-green-500 ring-1 ring-white/5 shadow-[0_0_10px_rgba(34,197,94,0.2)]">
+                                <BookOpen className="h-5 w-5" />
+                            </div>
+                            <div className="flex flex-col gap-1">
+                                <CardTitle className="text-base font-semibold text-zinc-900 dark:text-zinc-100">Ajuda e Suporte</CardTitle>
+                                <CardDescription className="text-zinc-500 text-xs">Central de ajuda, tutoriais e guias completos</CardDescription>
                             </div>
                         </CardHeader>
                     </Card>
