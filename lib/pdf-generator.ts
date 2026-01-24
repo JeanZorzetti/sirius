@@ -250,7 +250,7 @@ export function generateCustomReportPDF(config: {
   }
 
   const pdfBuffer = Buffer.from(doc.output("arraybuffer"));
-  return pdfBuffer;
+  return pdfBuffer as Buffer;
 }
 
 /**
@@ -421,5 +421,5 @@ export function generateProposalPDF(proposal: {
   );
 
   const pdfBuffer = Buffer.from(doc.output("arraybuffer"));
-  return pdfBuffer;
+  return pdfBuffer as Buffer;
 }
