@@ -139,7 +139,7 @@ export function generateTablePDF<T extends Record<string, any>>(
 
   // Converter para buffer
   const pdfBuffer = Buffer.from(doc.output("arraybuffer"));
-  return pdfBuffer;
+  return pdfBuffer as Buffer;
 }
 
 /**
