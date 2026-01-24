@@ -848,18 +848,31 @@ model AgiSkillExecution {
 
 model NotificationPreference {
   id        String   @id @default(uuid())
-  
+
   // Notification types
   newDealEnabled          Boolean @default(true)
   dealWonEnabled          Boolean @default(true)
   whatsappMessageEnabled  Boolean @default(true)
   calendarReminderEnabled Boolean @default(true)
-  
+
   // Timestamps
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  
+
   // Relations
   userId    String   @unique
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+// Password Reset Token
+model PasswordResetToken {
+  id        String   @id @default(uuid())
+  token     String   @unique
+  email     String
+  expiresAt DateTime
+  used      Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@index([token])
+  @@index([email])
 }
