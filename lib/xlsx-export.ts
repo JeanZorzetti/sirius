@@ -104,11 +104,9 @@ export function exportMultipleSheets(
 export function formatContactsForExport(contacts: any[]) {
   return contacts.map((contact) => ({
     Nome: contact.name,
-    Email: contact.email,
+    Email: contact.email || "-",
     Telefone: contact.phone || "-",
-    Empresa: contact.company?.name || "-",
-    Cargo: contact.position || "-",
-    Status: contact.status || "Ativo",
+    Empresa: contact.company || "-",
     "Data de Criação": contact.createdAt
       ? new Date(contact.createdAt).toLocaleDateString("pt-BR")
       : "-",
@@ -119,48 +117,30 @@ export function formatContactsForExport(contacts: any[]) {
 }
 
 /**
- * Formatar dados de empresas para exportação
- */
-export function formatCompaniesForExport(companies: any[]) {
-  return companies.map((company) => ({
-    Nome: company.name,
-    CNPJ: company.cnpj || "-",
-    Telefone: company.phone || "-",
-    Email: company.email || "-",
-    Website: company.website || "-",
-    Cidade: company.city || "-",
-    Estado: company.state || "-",
-    "Número de Contatos": company._count?.contacts || 0,
-    "Número de Deals": company._count?.deals || 0,
-    "Data de Criação": company.createdAt
-      ? new Date(company.createdAt).toLocaleDateString("pt-BR")
-      : "-",
-  }));
-}
-
-/**
  * Formatar dados de deals para exportação
  */
 export function formatDealsForExport(deals: any[]) {
   return deals.map((deal) => ({
     Título: deal.title,
-    Empresa: deal.company?.name || "-",
+    Pipeline: deal.pipeline?.name || "-",
+    Estágio: deal.stage?.name || "-",
     Contato: deal.contact?.name || "-",
+    "Empresa do Contato": deal.contact?.company || "-",
     Valor: deal.value
       ? `R$ ${Number(deal.value).toLocaleString("pt-BR", {
           minimumFractionDigits: 2,
         })}`
       : "-",
-    Estágio: deal.stage || "-",
-    Status: deal.status || "-",
-    Probabilidade: deal.probability ? `${deal.probability}%` : "-",
-    "Data de Fechamento Prevista": deal.expectedCloseDate
-      ? new Date(deal.expectedCloseDate).toLocaleDateString("pt-BR")
+    "Data de Fechamento": deal.closeDate
+      ? new Date(deal.closeDate).toLocaleDateString("pt-BR")
+      : "-",
+    "Data de Follow-up": deal.dueDate
+      ? new Date(deal.dueDate).toLocaleDateString("pt-BR")
       : "-",
     "Data de Criação": deal.createdAt
       ? new Date(deal.createdAt).toLocaleDateString("pt-BR")
       : "-",
-    Responsável: deal.owner?.name || "-",
+    Responsável: deal.user?.name || "-",
   }));
 }
 

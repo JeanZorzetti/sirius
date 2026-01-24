@@ -24,7 +24,12 @@ export async function GET(request: NextRequest) {
         userId: session.user.id,
       },
       include: {
-        company: {
+        pipeline: {
+          select: {
+            name: true,
+          },
+        },
+        stage: {
           select: {
             name: true,
           },
@@ -32,9 +37,10 @@ export async function GET(request: NextRequest) {
         contact: {
           select: {
             name: true,
+            company: true,
           },
         },
-        owner: {
+        user: {
           select: {
             name: true,
           },
