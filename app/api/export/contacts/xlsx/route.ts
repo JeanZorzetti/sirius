@@ -17,17 +17,10 @@ export async function GET(request: NextRequest) {
       userId: session.user.id,
     });
 
-    // Buscar contatos do usuário
+    // Buscar contatos da organização
     const contacts = await prisma.contact.findMany({
       where: {
-        userId: session.user.id,
-      },
-      include: {
-        company: {
-          select: {
-            name: true,
-          },
-        },
+        organizationId: session.user.organizationId,
       },
       orderBy: {
         createdAt: "desc",
