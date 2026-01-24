@@ -64,7 +64,7 @@ export async function GET(request: NextRequest) {
     });
 
     // Retornar arquivo
-    return new NextResponse(buffer, {
+    return new NextResponse(buffer as Buffer, {
       headers: {
         "Content-Type": "application/pdf",
         "Content-Disposition": `attachment; filename="oportunidades-${new Date().toISOString().split("T")[0]}.pdf"`,
