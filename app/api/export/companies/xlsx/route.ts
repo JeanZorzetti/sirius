@@ -1,12 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
-import { auth } from "@/lib/auth";
+import { getSession } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { exportToXLSX, formatCompaniesForExport } from "@/lib/xlsx-export";
-import { logger } from "@/lib/logger";
+import logger from "@/lib/logger";
 
 export async function GET(request: NextRequest) {
   try {
-    const session = await auth();
+    const session = await getSession();
 
     if (!session?.user) {
       return NextResponse.json({ error: "Não autorizado" }, { status: 401 });
