@@ -9,7 +9,7 @@ const contactSchema = z.object({
   phone: z.string().optional(),
   company: z.string().optional(),
   subject: z.enum(["sales", "support", "partnership", "feedback", "other"], {
-    required_error: "Selecione um assunto",
+    message: "Selecione um assunto",
   }),
   message: z.string().min(10, "Mensagem deve ter pelo menos 10 caracteres"),
 });
