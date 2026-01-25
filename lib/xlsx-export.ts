@@ -10,8 +10,6 @@ export interface XLSXExportOptions {
   fileName?: string;
   /** Largura automática das colunas */
   autoWidth?: boolean;
-  /** Estilos customizados para cabeçalho */
-  headerStyle?: XLSX.CellStyle;
 }
 
 /**
