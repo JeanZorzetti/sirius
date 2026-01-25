@@ -41,7 +41,7 @@ export async function GET(request: NextRequest) {
     });
 
     // Retornar arquivo
-    return new NextResponse(buffer as Buffer, {
+    return new NextResponse(new Uint8Array(buffer), {
       headers: {
         "Content-Type": "application/pdf",
         "Content-Disposition": `attachment; filename="contatos-${new Date().toISOString().split("T")[0]}.pdf"`,
