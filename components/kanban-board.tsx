@@ -81,7 +81,19 @@ type KanbanBoardProps = {
   onSuccess?: () => void
 }
 
-function DealCard({ deal, onClick, dragHandleProps }: { deal: Deal, onClick?: () => void, dragHandleProps?: any }) {
+function DealCard({
+  deal,
+  onClick,
+  dragHandleRef,
+  dragHandleListeners,
+  dragHandleAttributes
+}: {
+  deal: Deal
+  onClick?: () => void
+  dragHandleRef?: any
+  dragHandleListeners?: any
+  dragHandleAttributes?: any
+}) {
   const handleWhatsApp = (e: React.MouseEvent) => {
     e.stopPropagation() // Prevent card click
     if (!deal.contact?.phone) return
@@ -100,7 +112,9 @@ function DealCard({ deal, onClick, dragHandleProps }: { deal: Deal, onClick?: ()
     >
       {/* Drag Handle - 6 pontinhos */}
       <div
-        {...dragHandleProps}
+        ref={dragHandleRef}
+        {...dragHandleListeners}
+        {...dragHandleAttributes}
         className="flex-shrink-0 flex items-center cursor-grab active:cursor-grabbing opacity-0 group-hover:opacity-100 transition-opacity touch-none select-none"
         title="Arrastar card"
       >
@@ -171,19 +185,20 @@ function SortableDealCard({ deal, onClick }: { deal: Deal, onClick?: () => void 
     opacity: isDragging ? 0.3 : 1, // Dim when dragging original
   }
 
-  // BEST PRACTICE: Create drag handle props with activator ref + listeners + attributes
-  const dragHandleProps = {
-    ref: setActivatorNodeRef, // This is the key to proper drag handle behavior
-    ...listeners,
-    ...attributes,
-  }
-
+  // CRITICAL FIX: Pass ref separately, NOT via spread
+  // Refs don't work when passed inside an object with {...spread}
   return (
     <div
       ref={setNodeRef}
       style={style}
     >
-      <DealCard deal={deal} onClick={onClick} dragHandleProps={dragHandleProps} />
+      <DealCard
+        deal={deal}
+        onClick={onClick}
+        dragHandleRef={setActivatorNodeRef}
+        dragHandleListeners={listeners}
+        dragHandleAttributes={attributes}
+      />
     </div>
   )
 }
