@@ -70,6 +70,9 @@ model Organization {
   agiInsights        AgiInsight[]
   agiUsage           AgiUsage[]
   agiSkillExecutions AgiSkillExecution[]
+
+  // Onboarding
+  onboardingProgress OnboardingProgress[]
 }
 
 model User {
@@ -98,6 +101,9 @@ model User {
   agiInsights        AgiInsight[]
   agiUsage           AgiUsage[]
   agiSkillExecutions AgiSkillExecution[]
+
+  // Onboarding
+  onboarding         OnboardingProgress?
 
   role      Role     @default(USER)
   orgRole   OrgRole  @default(OWNER) // Defaulting to OWNER for now so existing users don't lose access. Ideally MEMBER.
@@ -921,4 +927,45 @@ model PasswordResetToken {
 
   @@index([token])
   @@index([email])
+}
+
+// Onboarding Progress
+enum OnboardingStatus {
+  IN_PROGRESS
+  COMPLETED
+  SKIPPED
+}
+
+model OnboardingProgress {
+  id             String   @id @default(uuid())
+
+  // Progress tracking
+  currentStep    Int      @default(0)          // 0-5 (current step index)
+  completedSteps String[] @default([])         // Array of completed step IDs
+
+  // Status
+  status         OnboardingStatus @default(IN_PROGRESS)
+  completedAt    DateTime?
+  skippedAt      DateTime?
+
+  // Step-specific data (JSON)
+  stepData       Json?    // { step1: {...}, step2: {...} }
+
+  // Gamification
+  badges         String[] @default([])         // Earned badges: ["first_contact", "pipeline_master", etc.]
+  totalPoints    Int      @default(0)          // Gamification points
+
+  // Timestamps
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  // Relations
+  userId         String   @unique
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@index([organizationId])
+  @@index([status])
 }
