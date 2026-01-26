@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useMemo } from 'react'
 import {
   DndContext,
   DragEndEvent,
@@ -365,14 +365,21 @@ export function KanbanBoard({
     setStages(initialStages.sort((a, b) => a.order - b.order))
   }, [initialStages])
 
-  // Filter deals based on search
-  const filteredStages = stages.map(stage => ({
-    ...stage,
-    deals: stage.deals.filter(deal =>
-      deal.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      deal.contact?.name.toLowerCase().includes(searchQuery.toLowerCase())
-    )
-  }))
+  // Filter deals based on search - CRITICAL: Use useMemo to maintain object references for dnd-kit
+  const filteredStages = useMemo(() => {
+    if (!searchQuery) {
+      return stages // NO filter: return original stages to maintain references
+    }
+
+    const query = searchQuery.toLowerCase()
+    return stages.map(stage => ({
+      ...stage,
+      deals: stage.deals.filter(deal =>
+        deal.title.toLowerCase().includes(query) ||
+        deal.contact?.name.toLowerCase().includes(query)
+      )
+    }))
+  }, [stages, searchQuery])
 
   // Handlers for Stage CRUD
   const handleRenameStage = async (id: string, name: string) => {
