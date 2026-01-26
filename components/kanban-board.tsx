@@ -104,9 +104,9 @@ function DealCard({
   return (
     <div
       className={cn(
-        "group relative flex gap-3 rounded-xl border p-4 shadow-sm transition-all duration-300 select-none",
+        "group relative flex gap-3 rounded-xl border p-4 shadow-sm select-none",
         "bg-card border-border hover:border-indigo-500/30",
-        "hover:-translate-y-1 hover:shadow-[0_8px_20px_-8px_rgba(99,102,241,0.2)] dark:bg-[#121217] dark:border-white/5"
+        "dark:bg-[#121217] dark:border-white/5"
       )}
     >
       {/* Drag Handle - 6 pontinhos */}
@@ -122,7 +122,7 @@ function DealCard({
       </div>
 
       {/* Card Content */}
-      <div className="flex-1 flex flex-col gap-3 min-w-0 pointer-events-auto">
+      <div className="flex-1 flex flex-col gap-3 min-w-0">
         <div className="flex items-start justify-between gap-2">
           <span
             className="text-sm font-medium text-foreground line-clamp-2 leading-relaxed dark:text-zinc-200"
@@ -422,7 +422,8 @@ export function KanbanBoard({
     const type = active.data.current?.type
 
     // Add dragging class to body to prevent text selection globally
-    document.body.classList.add('dragging')
+    // TEMPORARIAMENTE DESATIVADO PARA TESTE
+    // document.body.classList.add('dragging')
 
     if (type === 'Stage') {
       const stage = stages.find(s => s.id === active.id)
@@ -506,7 +507,8 @@ export function KanbanBoard({
     const { active, over } = event
 
     // Remove dragging class from body
-    document.body.classList.remove('dragging')
+    // TEMPORARIAMENTE DESATIVADO PARA TESTE
+    // document.body.classList.remove('dragging')
 
     if (!over) {
       setActiveDeal(null)
@@ -613,7 +615,8 @@ export function KanbanBoard({
     setActiveStage(null)
 
     // Ensure dragging class is removed (safety check)
-    document.body.classList.remove('dragging')
+    // TEMPORARIAMENTE DESATIVADO PARA TESTE
+    // document.body.classList.remove('dragging')
   }
 
   return (
