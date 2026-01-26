@@ -87,6 +87,7 @@ import { MicrosoftClarity } from "@/components/microsoft-clarity"
 import { analyticsConfig } from "@/lib/analytics-config"
 import { SpeedInsights } from "@vercel/speed-insights/next"
 import { Analytics } from "@vercel/analytics/next"
+import { Toaster } from "@/components/ui/sonner"
 
 export default function RootLayout({
   children,
@@ -217,6 +218,8 @@ export default function RootLayout({
           <PushNotificationManager />
           {/* Offline Status & Sync Queue */}
           <OfflineStatus />
+          {/* Toast Notifications */}
+          <Toaster />
         </ThemeProvider>
         <Analytics />
         <SpeedInsights />
