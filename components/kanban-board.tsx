@@ -174,31 +174,36 @@ function SortableDealCard({ deal, onClick }: { deal: Deal, onClick?: () => void 
     attributes,
     listeners,
     setNodeRef,
-    setActivatorNodeRef, // CRITICAL: Ref for custom drag handle
+    setActivatorNodeRef,
     transform,
     transition,
     isDragging
-  } = useSortable({ id: deal.id, data: { type: 'Deal', deal } })
+  } = useSortable({
+    id: deal.id,
+    data: { type: 'Deal', deal }
+  })
 
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,
-    opacity: isDragging ? 0.3 : 1, // Dim when dragging original
+    opacity: isDragging ? 0.3 : 1,
   }
 
-  // CRITICAL FIX: Pass ref separately, NOT via spread
-  // Refs don't work when passed inside an object with {...spread}
+  // TESTE: Aplicar listeners no wrapper inteiro para verificar se o básico funciona
+  // Se isso funcionar, significa que o problema é especificamente com setActivatorNodeRef
   return (
     <div
       ref={setNodeRef}
       style={style}
+      {...attributes}
+      {...listeners}
     >
       <DealCard
         deal={deal}
         onClick={onClick}
-        dragHandleRef={setActivatorNodeRef}
-        dragHandleListeners={listeners}
-        dragHandleAttributes={attributes}
+        dragHandleRef={undefined}
+        dragHandleListeners={undefined}
+        dragHandleAttributes={undefined}
       />
     </div>
   )
