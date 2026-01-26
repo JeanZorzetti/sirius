@@ -169,15 +169,7 @@ function DealCard({
 }
 
 function SortableDealCard({ deal, onClick }: { deal: Deal, onClick?: () => void }) {
-  const {
-    attributes,
-    listeners,
-    setNodeRef,
-    setActivatorNodeRef,
-    transform,
-    transition,
-    isDragging
-  } = useSortable({
+  const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
     id: deal.id,
     data: { type: 'Deal', deal }
   })
@@ -185,21 +177,20 @@ function SortableDealCard({ deal, onClick }: { deal: Deal, onClick?: () => void 
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,
-    opacity: isDragging ? 0.3 : 1,
+    opacity: isDragging ? 0.5 : 1,
   }
 
-  // TESTE: Aplicar listeners no wrapper inteiro para verificar se o básico funciona
-  // Se isso funcionar, significa que o problema é especificamente com setActivatorNodeRef
   return (
     <div
       ref={setNodeRef}
       style={style}
       {...attributes}
       {...listeners}
+      className="cursor-grab active:cursor-grabbing"
+      onClick={onClick}
     >
       <DealCard
         deal={deal}
-        onClick={onClick}
         dragHandleRef={undefined}
         dragHandleListeners={undefined}
         dragHandleAttributes={undefined}
