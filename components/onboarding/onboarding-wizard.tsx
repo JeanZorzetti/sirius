@@ -58,6 +58,7 @@ export function OnboardingWizard({ onComplete, onSkip }: OnboardingWizardProps) 
 
   const [showConfetti, setShowConfetti] = useState(false);
   const [newBadgeEarned, setNewBadgeEarned] = useState<string | null>(null);
+  const [isNavigating, setIsNavigating] = useState(false);
 
   const currentStepIndex = onboarding?.currentStep ?? 0;
   const currentStep = steps[currentStepIndex];
@@ -89,26 +90,71 @@ export function OnboardingWizard({ onComplete, onSkip }: OnboardingWizardProps) 
     onSkip?.();
   };
 
+  // Auto-complete steps when conditions are met
+  useEffect(() => {
+    if (!data || !currentStep || isLoading) return;
+
+    const checkAndCompleteStep = async () => {
+      // Se o step já está completo, não fazer nada
+      if (isStepCompleted(currentStep.id)) return;
+
+      // Welcome step completa automaticamente ao aparecer (após 500ms)
+      if (currentStep.id === "welcome" && currentStepIndex === 0) {
+        // Não completar automaticamente, deixar usuário clicar "Começar"
+        return;
+      }
+
+      // Auto-complete outros steps se já existem dados
+      // Isso permite que o wizard avance mesmo se o usuário recarregar a página
+      const shouldAutoComplete = false; // Desabilitado por enquanto
+
+      if (shouldAutoComplete) {
+        await completeStep(currentStep.id);
+      }
+    };
+
+    checkAndCompleteStep();
+  }, [currentStep, data, isLoading, currentStepIndex, isStepCompleted, completeStep]);
+
   // Navigate to relevant page based on step
-  const handleStepAction = () => {
+  const handleStepAction = async () => {
+    if (!currentStep) return;
+
+    // Se o step já está completo, apenas avançar para o próximo
+    if (isStepCompleted(currentStep.id)) {
+      const nextIndex = Math.min(currentStepIndex + 1, steps.length - 1);
+      await goToStep(nextIndex);
+      return;
+    }
+
+    setIsNavigating(true);
+
     switch (currentStep?.id) {
       case "welcome":
-        handleCompleteStep();
+        await handleCompleteStep();
+        setIsNavigating(false);
         break;
       case "organization":
+        // Marcar como completo e depois navegar
+        await handleCompleteStep();
         router.push("/dashboard/settings?tab=organization");
+        // Não resetar isNavigating aqui pois vai navegar
         break;
       case "pipeline":
+        await handleCompleteStep();
         router.push("/dashboard?showPipelineSettings=true");
         break;
       case "first_contact":
+        await handleCompleteStep();
         router.push("/dashboard/contacts?showNewContact=true");
         break;
       case "first_deal":
+        await handleCompleteStep();
         router.push("/dashboard?showNewDeal=true");
         break;
       default:
-        handleCompleteStep();
+        await handleCompleteStep();
+        setIsNavigating(false);
     }
   };
 
@@ -125,7 +171,7 @@ export function OnboardingWizard({ onComplete, onSkip }: OnboardingWizardProps) 
     );
   }
 
-  if (isComplete || isSkipped) {
+  if (isComplete || isSkipped || isNavigating) {
     return null;
   }
 
@@ -370,7 +416,7 @@ export function OnboardingWizard({ onComplete, onSkip }: OnboardingWizardProps) 
             </span>
           </div>
 
-          <Button onClick={handleStepAction}>
+          <Button onClick={handleStepAction} disabled={isNavigating}>
             {currentStep?.id === "welcome" ? (
               <>
                 Começar
@@ -383,7 +429,7 @@ export function OnboardingWizard({ onComplete, onSkip }: OnboardingWizardProps) 
               </>
             ) : (
               <>
-                {isStepCompleted(currentStep?.id ?? "") ? "Próximo" : "Configurar"}
+                {isStepCompleted(currentStep?.id ?? "") ? "Próximo" : "Ir para Configuração"}
                 <ChevronRight className="w-4 h-4 ml-2" />
               </>
             )}
