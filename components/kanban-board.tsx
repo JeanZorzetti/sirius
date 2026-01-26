@@ -215,19 +215,19 @@ function KanbanColumn({ stage, onDealClick, isOverlay, onRename, onDelete }: {
   onRename?: (id: string, name: string) => void,
   onDelete?: (id: string) => void
 }) {
-  const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
-    id: stage.id,
-    data: { type: 'Stage', stage }
-  })
+  // TESTE: DESATIVAR useSortable do column para testar se nested sortable é o problema
+  // const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
+  //   id: stage.id,
+  //   data: { type: 'Stage', stage }
+  // })
 
-  // Also act as droppable for deals (the sortable ref handles this too if setup right, but nested sortables are tricky)
-  // Actually standard dnd-kit practice: Sortable item also accepts drops if we don't block it.
+  // const style = {
+  //   transform: CSS.Transform.toString(transform),
+  //   transition,
+  //   opacity: isDragging ? 0.5 : 1,
+  // }
 
-  const style = {
-    transform: CSS.Transform.toString(transform),
-    transition,
-    opacity: isDragging ? 0.5 : 1,
-  }
+  const style = {}
 
   const totalValue = stage.deals.reduce((acc, deal) => acc + (deal.value ? Number(deal.value) : 0), 0)
 
@@ -243,15 +243,15 @@ function KanbanColumn({ stage, onDealClick, isOverlay, onRename, onDelete }: {
 
   return (
     <div
-      ref={setNodeRef}
+      // ref={setNodeRef}
       style={style}
       className={cn("w-70 sm:w-80 flex-none flex flex-col h-full", isOverlay && "rotate-2 scale-105 opacity-90")}
     >
       {/* Column Header */}
       <div
         className="flex flex-col gap-1 px-1 mb-4 select-none"
-        {...attributes}
-        {...listeners} // Drag handle is the whole header area
+        // {...attributes}
+        // {...listeners} // Drag handle is the whole header area
       >
         <div className="flex items-center justify-between group/header">
           {isEditing ? (
@@ -425,11 +425,12 @@ export function KanbanBoard({
     // TEMPORARIAMENTE DESATIVADO PARA TESTE
     // document.body.classList.add('dragging')
 
-    if (type === 'Stage') {
-      const stage = stages.find(s => s.id === active.id)
-      setActiveStage(stage || null)
-      return
-    }
+    // TESTE: Comentar Stage dragging
+    // if (type === 'Stage') {
+    //   const stage = stages.find(s => s.id === active.id)
+    //   setActiveStage(stage || null)
+    //   return
+    // }
 
     if (type === 'Deal') {
       const deal = stages
@@ -520,31 +521,31 @@ export function KanbanBoard({
     const overId = over.id
     const type = active.data.current?.type
 
-    // --- COLUMN REORDERING ---
-    if (type === 'Stage') {
-      if (activeId === overId) {
-        setActiveDeal(null)
-        setActiveStage(null)
-        return
-      }
+    // --- COLUMN REORDERING --- TESTE: DESATIVADO
+    // if (type === 'Stage') {
+    //   if (activeId === overId) {
+    //     setActiveDeal(null)
+    //     setActiveStage(null)
+    //     return
+    //   }
 
-      const oldIndex = stages.findIndex(s => s.id === activeId)
-      const newIndex = stages.findIndex(s => s.id === overId)
+    //   const oldIndex = stages.findIndex(s => s.id === activeId)
+    //   const newIndex = stages.findIndex(s => s.id === overId)
 
-      const newStages = arrayMove(stages, oldIndex, newIndex)
-      setStages(newStages) // Optimistic
+    //   const newStages = arrayMove(stages, oldIndex, newIndex)
+    //   setStages(newStages) // Optimistic
 
-      // Prepare for server
-      const reorderedStages = newStages.map((s, index) => ({
-        id: s.id,
-        order: index
-      }))
-      await updateStageOrder(reorderedStages)
+    //   // Prepare for server
+    //   const reorderedStages = newStages.map((s, index) => ({
+    //     id: s.id,
+    //     order: index
+    //   }))
+    //   await updateStageOrder(reorderedStages)
 
-      setActiveDeal(null)
-      setActiveStage(null)
-      return
-    }
+    //   setActiveDeal(null)
+    //   setActiveStage(null)
+    //   return
+    // }
 
     // --- DEAL REORDERING ---
     // Use activeDeal's original stageId (from before drag started) to detect cross-column moves
@@ -648,7 +649,8 @@ export function KanbanBoard({
           ref={scrollContainerRef}
           className="flex h-full gap-6 overflow-x-auto pb-4 px-2 snap-x scrollbar-thin scrollbar-thumb-zinc-700 scrollbar-track-transparent"
         >
-          <SortableContext items={stages.map(s => s.id)} strategy={horizontalListSortingStrategy}>
+          {/* TESTE: Comentar SortableContext das stages para isolar nested sortable problem */}
+          {/* <SortableContext items={stages.map(s => s.id)} strategy={horizontalListSortingStrategy}> */}
             {filteredStages.map((stage) => (
               <KanbanColumn
                 key={stage.id}
@@ -658,7 +660,7 @@ export function KanbanBoard({
                 onDelete={handleDeleteStage}
               />
             ))}
-          </SortableContext>
+          {/* </SortableContext> */}
           <div className="w-10 shrink-0" /> {/* Padding end */}
         </div>
       </div>
