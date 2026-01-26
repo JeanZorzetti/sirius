@@ -164,19 +164,6 @@ function SortableDealCard({ deal, onClick }: { deal: Deal, onClick?: () => void 
     opacity: isDragging ? 0.3 : 1, // Dim when dragging original
   }
 
-  // Enhanced listeners to prevent text selection
-  const enhancedListeners = {
-    ...listeners,
-    onMouseDown: (e: React.MouseEvent) => {
-      // Prevent text selection during drag
-      e.preventDefault()
-      listeners?.onMouseDown?.(e as any)
-    },
-    onPointerDown: (e: React.PointerEvent) => {
-      listeners?.onPointerDown?.(e as any)
-    }
-  }
-
   // Pass listeners only to the drag handle, not the whole card
   return (
     <div
@@ -185,7 +172,7 @@ function SortableDealCard({ deal, onClick }: { deal: Deal, onClick?: () => void 
       {...attributes}
       onDragStart={(e) => e.preventDefault()} // Prevent native drag
     >
-      <DealCard deal={deal} onClick={onClick} dragHandleProps={enhancedListeners} />
+      <DealCard deal={deal} onClick={onClick} dragHandleProps={listeners} />
     </div>
   )
 }
