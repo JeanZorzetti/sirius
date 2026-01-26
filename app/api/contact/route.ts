@@ -37,12 +37,12 @@ export async function POST(request: NextRequest) {
 
     const { name, email, phone, company, subject, message } = result.data;
 
-    logger.info("Contact form submission", {
+    logger.info({
       email,
       subject,
       hasPhone: !!phone,
       hasCompany: !!company,
-    });
+    }, "Contact form submission");
 
     // Generate HTML email content
     const htmlContent = `
@@ -117,10 +117,10 @@ export async function POST(request: NextRequest) {
     });
 
     if (!emailResult.success) {
-      logger.error("Failed to send contact email", {
+      logger.error({
         email,
         error: emailResult.error,
-      });
+      }, "Failed to send contact email");
       return NextResponse.json(
         { error: "Erro ao enviar mensagem. Tente novamente." },
         { status: 500 }
@@ -178,17 +178,17 @@ export async function POST(request: NextRequest) {
       subject: "Recebemos sua mensagem - Sirius CRM",
       html: confirmationHtml,
     }).catch((err) => {
-      logger.warn("Failed to send confirmation email to user", { email, error: err });
+      logger.warn({ email, error: err }, "Failed to send confirmation email to user");
     });
 
-    logger.info("Contact form submitted successfully", { email, subject });
+    logger.info({ email, subject }, "Contact form submitted successfully");
 
     return NextResponse.json({
       success: true,
       message: "Mensagem enviada com sucesso!",
     });
   } catch (error: any) {
-    logger.error("Contact form error", { error: error.message });
+    logger.error({ error: error.message }, "Contact form error");
     return NextResponse.json(
       { error: "Erro interno. Tente novamente mais tarde." },
       { status: 500 }
