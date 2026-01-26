@@ -4,6 +4,7 @@ import { DataTable } from "@/components/contacts/data-table"
 import { columns } from "@/components/contacts/columns"
 import { CreateContactDialog } from "@/components/contacts/create-contact-dialog"
 import { EmptyState } from "@/components/ui/empty-state"
+import { ExportButtons } from "@/components/ui/export-buttons"
 import { Users } from "lucide-react"
 import { getSession } from "@/lib/auth"
 
@@ -50,6 +51,7 @@ export default async function ContactsPage() {
                     <p className="text-sm text-zinc-500">Gerencie sua base de clientes e leads.</p>
                 </div>
                 <div className="flex items-center space-x-2 w-full sm:w-auto">
+                    {contacts.length > 0 && <ExportButtons resourceType="contacts" />}
                     <CreateContactDialog />
                 </div>
             </div>

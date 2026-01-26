@@ -6,6 +6,7 @@ import { KanbanBoard } from '@/components/kanban-board'
 import { PipelineSelector } from '@/components/pipelines/pipeline-selector'
 import { CreateDealDialog } from '@/components/deals/create-deal-dialog'
 import { EmptyState } from '@/components/ui/empty-state'
+import { ExportButtons } from '@/components/ui/export-buttons'
 import { DollarSign } from 'lucide-react'
 
 type Pipeline = {
@@ -148,6 +149,7 @@ export function DashboardWithPipelineSelector({
             pipelines={pipelines}
             onPipelineChange={handlePipelineChange}
           />
+          {hasDeals && <ExportButtons resourceType="deals" />}
           <CreateDealDialog
             stages={filteredStages}
             contacts={contacts}
