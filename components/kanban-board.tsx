@@ -318,6 +318,7 @@ export function KanbanBoard({
     // Optimistic
     setStages(prev => prev.map(s => s.id === id ? { ...s, name } : s))
     await updateStage(id, name)
+    onSuccess?.()
   }
 
   const handleDeleteStage = async (id: string) => {
@@ -325,6 +326,7 @@ export function KanbanBoard({
     const result = await deleteStage(id)
     if (result.success) {
       setStages(prev => prev.filter(s => s.id !== id))
+      onSuccess?.()
     } else {
       alert(result.error || "Erro ao excluir etapa")
     }
@@ -338,10 +340,8 @@ export function KanbanBoard({
     if (result.success) {
       setIsNewStageOpen(false)
       setNewStageName("")
-      // Need refresh. Ideally I should return the stage from action, but since server actions revalidatePath...
-      // Actually, since this is a prop-driven component from page.tsx (server component), 
-      // revalidatePath will trigger a refresh of the page props! 
-      // So `initialStages` will update.
+      // Trigger router.refresh() via callback para recarregar props do servidor
+      onSuccess?.()
     } else {
       alert('Erro ao criar etapa')
     }
