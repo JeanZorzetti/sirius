@@ -29,6 +29,7 @@ import { EditDealDialog } from '@/components/deals/edit-deal-dialog'
 import { MessageCircle, GripVertical, MoreHorizontal, Pencil, Trash2, Plus } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
+import { useDragScroll } from '@/hooks/useDragScroll'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -80,7 +81,7 @@ type KanbanBoardProps = {
   onSuccess?: () => void
 }
 
-function DealCard({ deal, onClick }: { deal: Deal, onClick?: () => void }) {
+function DealCard({ deal, onClick, dragHandleProps }: { deal: Deal, onClick?: () => void, dragHandleProps?: any }) {
   const handleWhatsApp = (e: React.MouseEvent) => {
     e.stopPropagation() // Prevent card click
     if (!deal.contact?.phone) return
@@ -92,44 +93,56 @@ function DealCard({ deal, onClick }: { deal: Deal, onClick?: () => void }) {
     <div
       onClick={onClick}
       className={cn(
-        "group relative flex flex-col gap-3 rounded-xl border p-4 shadow-sm transition-all duration-300 cursor-grab active:cursor-grabbing",
+        "group relative flex gap-3 rounded-xl border p-4 shadow-sm transition-all duration-300",
         "bg-card border-border hover:border-indigo-500/30",
         "hover:-translate-y-1 hover:shadow-[0_8px_20px_-8px_rgba(99,102,241,0.2)] dark:bg-[#121217] dark:border-white/5"
       )}
     >
-      <div className="flex items-start justify-between gap-2">
-        <span className="text-sm font-medium text-foreground line-clamp-2 leading-relaxed dark:text-zinc-200">
-          {deal.title}
-        </span>
+      {/* Drag Handle - 6 pontinhos */}
+      <div
+        {...dragHandleProps}
+        className="flex-shrink-0 flex items-center cursor-grab active:cursor-grabbing opacity-0 group-hover:opacity-100 transition-opacity touch-none"
+        title="Arrastar card"
+      >
+        <GripVertical className="h-5 w-5 text-zinc-400 hover:text-indigo-500 transition-colors" />
       </div>
 
-      <div className="flex items-center justify-between mt-1">
-        <div className="flex flex-col">
-          <span className="text-[10px] uppercase tracking-wider text-zinc-500 font-semibold">Valor</span>
-          <span className="text-sm font-mono font-bold text-indigo-400">
-            {deal.value ? `R$ ${Number(deal.value).toFixed(2)}` : '-'}
+      {/* Card Content */}
+      <div className="flex-1 flex flex-col gap-3 min-w-0">
+        <div className="flex items-start justify-between gap-2">
+          <span className="text-sm font-medium text-foreground line-clamp-2 leading-relaxed dark:text-zinc-200">
+            {deal.title}
           </span>
         </div>
 
-        {deal.contact?.phone && (
-          <Button
-            size="icon"
-            variant="ghost"
-            className="h-7 w-7 rounded-full bg-green-500/10 text-green-500 hover:bg-green-500/20 hover:text-green-400 transition-colors"
-            onClick={handleWhatsApp}
-            title={`Conversar com ${deal.contact.name}`}
-          >
-            <MessageCircle className="h-4 w-4" />
-          </Button>
+        <div className="flex items-center justify-between mt-1">
+          <div className="flex flex-col">
+            <span className="text-[10px] uppercase tracking-wider text-zinc-500 font-semibold">Valor</span>
+            <span className="text-sm font-mono font-bold text-indigo-400">
+              {deal.value ? `R$ ${Number(deal.value).toFixed(2)}` : '-'}
+            </span>
+          </div>
+
+          {deal.contact?.phone && (
+            <Button
+              size="icon"
+              variant="ghost"
+              className="h-7 w-7 rounded-full bg-green-500/10 text-green-500 hover:bg-green-500/20 hover:text-green-400 transition-colors"
+              onClick={handleWhatsApp}
+              title={`Conversar com ${deal.contact.name}`}
+            >
+              <MessageCircle className="h-4 w-4" />
+            </Button>
+          )}
+        </div>
+
+        {deal.contact && (
+          <div className="pt-3 border-t border-border/50 flex items-center gap-2">
+            <div className="w-1.5 h-1.5 rounded-full bg-zinc-400 dark:bg-zinc-700" />
+            <div className="text-xs text-muted-foreground truncate max-w-[150px]">{deal.contact.name}</div>
+          </div>
         )}
       </div>
-
-      {deal.contact && (
-        <div className="pt-3 border-t border-border/50 flex items-center gap-2">
-          <div className="w-1.5 h-1.5 rounded-full bg-zinc-400 dark:bg-zinc-700" />
-          <div className="text-xs text-muted-foreground truncate max-w-[150px]">{deal.contact.name}</div>
-        </div>
-      )}
     </div>
   )
 }
@@ -144,9 +157,10 @@ function SortableDealCard({ deal, onClick }: { deal: Deal, onClick?: () => void 
     opacity: isDragging ? 0.3 : 1, // Dim when dragging original
   }
 
+  // Pass listeners only to the drag handle, not the whole card
   return (
-    <div ref={setNodeRef} style={style} {...attributes} {...listeners}>
-      <DealCard deal={deal} onClick={onClick} />
+    <div ref={setNodeRef} style={style} {...attributes}>
+      <DealCard deal={deal} onClick={onClick} dragHandleProps={listeners} />
     </div>
   )
 }
@@ -242,8 +256,8 @@ function KanbanColumn({ stage, onDealClick, isOverlay, onRename, onDelete }: {
         </div>
       </div>
 
-      {/* Column Body (Glass) */}
-      <div className="flex-1 rounded-2xl bg-white/[0.02] p-3 border border-white/5">
+      {/* Column Body (Glassmorphism Enhanced) */}
+      <div className="flex-1 rounded-2xl bg-gradient-to-b from-white/[0.07] to-white/[0.02] backdrop-blur-xl p-3 border border-white/10 shadow-[0_8px_32px_0_rgba(0,0,0,0.08)] dark:shadow-[0_8px_32px_0_rgba(0,0,0,0.3)]">
         <SortableContext
           items={stage.deals.map((deal) => deal.id)}
           strategy={verticalListSortingStrategy}
@@ -298,6 +312,9 @@ export function KanbanBoard({
 
   // Filters
   const [searchQuery, setSearchQuery] = useState("")
+
+  // Drag to scroll functionality
+  const scrollContainerRef = useDragScroll<HTMLDivElement>()
 
   useEffect(() => {
     // Sort local input stages carefully if needed, but assuming server sends ordered
@@ -572,7 +589,10 @@ export function KanbanBoard({
           </Button>
         </div>
 
-        <div className="flex h-full gap-6 overflow-x-auto pb-4 px-2 snap-x">
+        <div
+          ref={scrollContainerRef}
+          className="flex h-full gap-6 overflow-x-auto pb-4 px-2 snap-x scrollbar-thin scrollbar-thumb-zinc-700 scrollbar-track-transparent"
+        >
           <SortableContext items={stages.map(s => s.id)} strategy={horizontalListSortingStrategy}>
             {filteredStages.map((stage) => (
               <KanbanColumn
