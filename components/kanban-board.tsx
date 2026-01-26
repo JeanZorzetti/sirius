@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import {
   DndContext,
   DragEndEvent,
@@ -103,7 +103,6 @@ function DealCard({
 
   return (
     <div
-      onClick={onClick}
       className={cn(
         "group relative flex gap-3 rounded-xl border p-4 shadow-sm transition-all duration-300 select-none",
         "bg-card border-border hover:border-indigo-500/30",
@@ -357,8 +356,9 @@ export function KanbanBoard({
   // Filters
   const [searchQuery, setSearchQuery] = useState("")
 
-  // Drag to scroll functionality
-  const scrollContainerRef = useDragScroll<HTMLDivElement>()
+  // Drag to scroll functionality - TEMPORARIAMENTE DESATIVADO PARA TESTE
+  // const scrollContainerRef = useDragScroll<HTMLDivElement>()
+  const scrollContainerRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     // Sort local input stages carefully if needed, but assuming server sends ordered
