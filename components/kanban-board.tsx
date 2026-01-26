@@ -645,7 +645,7 @@ export function KanbanBoard({
 
         <div
           ref={scrollContainerRef}
-          className="flex h-full gap-6 overflow-x-auto pb-4 px-2 snap-x scrollbar-thin scrollbar-thumb-zinc-700 scrollbar-track-transparent"
+          className="flex h-full gap-6 pb-4 px-2"
         >
           {/* TESTE: Comentar SortableContext das stages para isolar nested sortable problem */}
           {/* <SortableContext items={stages.map(s => s.id)} strategy={horizontalListSortingStrategy}> */}
