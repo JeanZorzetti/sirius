@@ -217,7 +217,7 @@ function SortableDealCard({ deal }: { deal: Deal }) {
 
         <div className="flex items-center gap-2 text-xs">
           <span className="font-bold text-indigo-600 dark:text-indigo-400">
-            {formatCurrency(Number(deal.value))}
+            {deal.value ? `R$ ${Number(deal.value).toFixed(2)}` : '-'}
           </span>
           {deal.contact?.phone && (
             <button
