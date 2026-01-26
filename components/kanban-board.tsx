@@ -115,6 +115,7 @@ function DealCard({
         ref={dragHandleRef}
         {...dragHandleListeners}
         {...dragHandleAttributes}
+        data-drag-handle="true"
         className="flex-shrink-0 flex items-center cursor-grab active:cursor-grabbing opacity-0 group-hover:opacity-100 transition-opacity touch-none select-none"
         title="Arrastar card"
       >

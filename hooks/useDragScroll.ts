@@ -15,6 +15,18 @@ export function useDragScroll<T extends HTMLElement>() {
     const handleMouseDown = (e: MouseEvent) => {
       // Only start drag if not clicking on interactive elements or drag handles
       const target = e.target as HTMLElement
+
+      // CRITICAL: Check for drag handle FIRST - must not interfere with dnd-kit
+      if (
+        target.closest('[data-drag-handle="true"]') ||
+        target.hasAttribute('data-drag-handle') ||
+        target.closest('[data-dnd-kit-drag-handle]') ||
+        target.closest('.cursor-grab')
+      ) {
+        return // Let dnd-kit handle this
+      }
+
+      // Check other interactive elements
       if (
         target.tagName === 'BUTTON' ||
         target.tagName === 'INPUT' ||
@@ -22,9 +34,7 @@ export function useDragScroll<T extends HTMLElement>() {
         target.closest('input') ||
         target.closest('[role="button"]') ||
         target.closest('a') ||
-        target.closest('[data-dnd-kit-drag-handle]') ||
-        target.closest('.cursor-grab') || // Skip drag handles
-        (target as any).draggable === true // Skip draggable elements
+        (target as any).draggable === true
       ) {
         return
       }
