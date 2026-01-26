@@ -8,6 +8,7 @@ import { CreateDealDialog } from '@/components/deals/create-deal-dialog'
 import { EmptyState } from '@/components/ui/empty-state'
 import { ExportButtons } from '@/components/ui/export-buttons'
 import { OnboardingWizard } from '@/components/onboarding/onboarding-wizard'
+import { ContinueOnboardingButton } from '@/components/onboarding/continue-onboarding-button'
 import { useOnboarding } from '@/hooks/useOnboarding'
 import { DollarSign } from 'lucide-react'
 
@@ -141,6 +142,9 @@ export function DashboardWithPipelineSelector({
           onSkip={() => router.refresh()}
         />
       )}
+
+      {/* Continue Onboarding Button - aparece quando onboarding está incompleto mas não sendo exibido */}
+      <ContinueOnboardingButton />
 
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-3">
