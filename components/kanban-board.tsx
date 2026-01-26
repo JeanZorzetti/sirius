@@ -168,7 +168,7 @@ function DealCard({
   )
 }
 
-function SortableDealCard({ deal, onClick }: { deal: Deal, onClick?: () => void }) {
+function SortableDealCard({ deal }: { deal: Deal }) {
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
     id: deal.id,
     data: { type: 'Deal', deal }
@@ -180,21 +180,65 @@ function SortableDealCard({ deal, onClick }: { deal: Deal, onClick?: () => void 
     opacity: isDragging ? 0.5 : 1,
   }
 
+  const handleWhatsApp = (e: React.MouseEvent) => {
+    e.stopPropagation()
+    if (!deal.contact?.phone) return
+    const phone = deal.contact.phone.replace(/\D/g, '')
+    window.open(`https://wa.me/${phone}`, '_blank')
+  }
+
   return (
     <div
       ref={setNodeRef}
       style={style}
       {...attributes}
       {...listeners}
-      className="cursor-grab active:cursor-grabbing"
-      onClick={onClick}
+      className={cn(
+        "group relative flex gap-3 rounded-xl border p-4 shadow-sm select-none cursor-grab active:cursor-grabbing",
+        "bg-card border-border hover:border-indigo-500/30",
+        "dark:bg-[#121217] dark:border-white/5"
+      )}
     >
-      <DealCard
-        deal={deal}
-        dragHandleRef={undefined}
-        dragHandleListeners={undefined}
-        dragHandleAttributes={undefined}
-      />
+      {/* Drag Handle - 6 pontinhos */}
+      <div
+        className="flex-shrink-0 flex items-center opacity-0 group-hover:opacity-100 transition-opacity"
+        title="Arrastar card"
+      >
+        <GripVertical className="h-5 w-5 text-zinc-400 hover:text-indigo-500 transition-colors pointer-events-none" />
+      </div>
+
+      {/* Card Content */}
+      <div className="flex-1 flex flex-col gap-3 min-w-0">
+        <div className="flex items-start justify-between gap-2">
+          <span className="text-sm font-medium text-foreground line-clamp-2 leading-relaxed dark:text-zinc-200">
+            {deal.title}
+          </span>
+        </div>
+
+        <div className="flex items-center gap-2 text-xs">
+          <span className="font-bold text-indigo-600 dark:text-indigo-400">
+            {formatCurrency(Number(deal.value))}
+          </span>
+          {deal.contact?.phone && (
+            <button
+              onClick={handleWhatsApp}
+              className="ml-auto p-1.5 rounded-md hover:bg-green-500/10 text-green-600 dark:text-green-500 transition-colors"
+              title="Abrir WhatsApp"
+            >
+              <Phone className="w-3.5 h-3.5" />
+            </button>
+          )}
+        </div>
+
+        {deal.contact && (
+          <div className="pt-3 border-t border-border/50 flex items-center gap-2">
+            <div className="w-1.5 h-1.5 rounded-full bg-zinc-400 dark:bg-zinc-700" />
+            <div className="text-xs text-muted-foreground truncate max-w-[150px]">
+              {deal.contact.name}
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   )
 }
@@ -301,7 +345,7 @@ function KanbanColumn({ stage, onDealClick, isOverlay, onRename, onDelete }: {
               <SortableDealCard
                 key={deal.id}
                 deal={deal}
-                onClick={() => onDealClick?.(deal)}
+                // onClick={() => onDealClick?.(deal)}
               />
             ))}
             {stage.deals.length === 0 && !isOverlay && (
@@ -440,67 +484,6 @@ export function KanbanBoard({
     }
   }
 
-  const handleDragOver = (event: DragOverEvent) => {
-    const { active, over } = event
-    if (!over) return
-
-    const activeId = active.id
-    const overId = over.id
-
-    const isActiveDeal = active.data.current?.type === 'Deal'
-    const isOverDeal = over.data.current?.type === 'Deal'
-    const isOverStage = over.data.current?.type === 'Stage'
-
-    // Dealing with Deal Dragging over other Columns/Deals for sorting previews
-    if (!isActiveDeal) return
-
-    // Find the containers
-    const activeStage = stages.find(s => s.deals.some(d => d.id === activeId))
-
-    let overStage: Stage | undefined
-    if (isOverDeal) {
-      overStage = stages.find(s => s.deals.some(d => d.id === overId))
-    } else if (isOverStage) {
-      overStage = stages.find(s => s.id === overId)
-    }
-
-    if (!activeStage || !overStage || activeStage === overStage) {
-      return
-      // Intra-column reordering handled by SortableContext automatically? 
-      // Actually DndKit Sortable requires mutating the items array for visual updates during drag
-      // if we want smooth sorting... 
-      // But implementing full optimistic sorting logic inside dragOver is complex.
-      // Let's rely on standard logic for now and see.
-    }
-
-    // If moving between columns, we need to move the item in `stages` state specifically for the visual
-    // This is "Portal" logic using immutable patterns to prevent state mutation side-effects
-    setStages((prev) => {
-      const activeIndex = activeStage.deals.findIndex(d => d.id === activeId)
-      const overIndex = isOverDeal ? overStage!.deals.findIndex(d => d.id === overId) : overStage!.deals.length
-
-      const newStages = [...prev]
-      const sourceStageIndex = newStages.findIndex(s => s.id === activeStage.id)
-      const targetStageIndex = newStages.findIndex(s => s.id === overStage!.id)
-
-      // Clone the source and target stage objects and their deals arrays
-      const sourceStage = { ...newStages[sourceStageIndex], deals: [...newStages[sourceStageIndex].deals] }
-      const targetStage = { ...newStages[targetStageIndex], deals: [...newStages[targetStageIndex].deals] }
-
-      // Remove deal from source and clone it with updated stageId
-      const [movedDeal] = sourceStage.deals.splice(activeIndex, 1)
-      const updatedDeal = { ...movedDeal, stageId: overStage!.id }
-
-      // Insert into target
-      targetStage.deals.splice(overIndex, 0, updatedDeal)
-
-      // Update stages array with cloned stages
-      newStages[sourceStageIndex] = sourceStage
-      newStages[targetStageIndex] = targetStage
-
-      return newStages
-    })
-  }
 
   const handleDragEnd = async (event: DragEndEvent) => {
     const { active, over } = event
@@ -544,7 +527,6 @@ export function KanbanBoard({
       sensors={sensors}
       collisionDetection={closestCorners}
       onDragStart={handleDragStart}
-      onDragOver={handleDragOver}
       onDragEnd={handleDragEnd}
     >
       <div className="flex flex-col h-full gap-4">
