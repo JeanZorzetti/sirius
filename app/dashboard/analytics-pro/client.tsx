@@ -161,21 +161,22 @@ export function AnalyticsProClient({ pipelines }: AnalyticsProClientProps) {
           )}
 
           <div className="flex items-center gap-2">
-          <Filter className="h-4 w-4 text-muted-foreground" />
-          <Select value={selectedPipeline} onValueChange={setSelectedPipeline}>
-            <SelectTrigger className="w-[200px]">
-              <SelectValue placeholder="Todos os pipelines" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">Todos os pipelines</SelectItem>
-              {pipelines.map((pipeline) => (
-                <SelectItem key={pipeline.id} value={pipeline.id}>
-                  {pipeline.name}
-                  {pipeline.isDefault && ' (Padrão)'}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+            <Filter className="h-4 w-4 text-muted-foreground" />
+            <Select value={selectedPipeline} onValueChange={setSelectedPipeline}>
+              <SelectTrigger className="w-[200px]">
+                <SelectValue placeholder="Todos os pipelines" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">Todos os pipelines</SelectItem>
+                {pipelines.map((pipeline) => (
+                  <SelectItem key={pipeline.id} value={pipeline.id}>
+                    {pipeline.name}
+                    {pipeline.isDefault && ' (Padrão)'}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
         </div>
       </div>
 
