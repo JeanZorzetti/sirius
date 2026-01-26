@@ -178,8 +178,8 @@ const changelog = [
       {
         type: 'feature',
         icon: Sparkles,
-        title: 'Stripe Integration',
-        description: 'Integração completa com Stripe para pagamentos recorrentes e upgrade PRO.',
+        title: 'Mercado Pago Integration',
+        description: 'Integração completa com Mercado Pago para pagamentos recorrentes e upgrade PRO.',
       },
       {
         type: 'feature',

@@ -88,7 +88,7 @@ export default function PrivacyPage() {
                     <strong className="text-foreground">Dados de CRM:</strong> Contatos, negócios, pipelines e outras informações que você insere no sistema.
                   </p>
                   <p className="text-base leading-7">
-                    <strong className="text-foreground">Informações de Pagamento:</strong> Processadas exclusivamente pelo Stripe. Não armazenamos dados de cartão de crédito.
+                    <strong className="text-foreground">Informações de Pagamento:</strong> Processadas exclusivamente pelo Mercado Pago. Não armazenamos dados de cartão de crédito.
                   </p>
                 </div>
               </div>
@@ -186,7 +186,7 @@ export default function PrivacyPage() {
                     Compartilhamos dados apenas com:
                   </p>
                   <ul className="list-disc list-inside space-y-2 text-base leading-7">
-                    <li><strong className="text-foreground">Stripe:</strong> Para processamento de pagamentos (PCI-DSS compliant).</li>
+                    <li><strong className="text-foreground">Mercado Pago:</strong> Para processamento de pagamentos (PCI-DSS compliant).</li>
                     <li><strong className="text-foreground">Resend:</strong> Para envio de emails transacionais e marketing.</li>
                     <li><strong className="text-foreground">Vercel:</strong> Hospedagem da aplicação (SOC 2 Type II certified).</li>
                     <li><strong className="text-foreground">Sentry:</strong> Monitoramento de erros (dados anonimizados).</li>

@@ -152,13 +152,16 @@ export default function TermsPage() {
                     <strong className="text-foreground">Plano Free:</strong> Até 10 negócios ativos, 1 pipeline, funcionalidades básicas. Gratuito permanentemente.
                   </p>
                   <p className="text-base leading-7">
-                    <strong className="text-foreground">Plano PRO:</strong> R$ 97/mês. Negócios ilimitados, múltiplos pipelines, automações e analytics avançado.
+                    <strong className="text-foreground">Plano PRO:</strong> R$ 49/mês. Negócios ilimitados, múltiplos pipelines, automações e analytics avançado.
                   </p>
                   <p className="text-base leading-7">
-                    <strong className="text-foreground">Faturamento:</strong> Cobranças recorrentes mensais processadas via Stripe. Você será cobrado na data de assinatura a cada mês.
+                    <strong className="text-foreground">Faturamento:</strong> Cobranças recorrentes mensais processadas via Mercado Pago. Você será cobrado na data de assinatura a cada mês.
                   </p>
                   <p className="text-base leading-7">
                     <strong className="text-foreground">Cancelamento:</strong> Você pode cancelar a qualquer momento. Não há reembolso proporcional para cancelamentos no meio do ciclo.
+                  </p>
+                  <p className="text-base leading-7">
+                    <strong className="text-foreground">Garantia de 7 Dias:</strong> Para novos assinantes do Plano PRO, oferecemos garantia incondicional de 7 dias. Se não ficar satisfeito, entre em contato em até 7 dias após a compra e reembolsaremos 100% do valor pago, sem perguntas.
                   </p>
                   <p className="text-base leading-7">
                     <strong className="text-foreground">Aumento de Preço:</strong> Podemos alterar preços com aviso prévio de 30 dias por email.

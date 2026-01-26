@@ -52,7 +52,7 @@ export async function createCheckoutPreference(
       id: `plan_${plan.toLowerCase()}`,
       title: `Plano ${plan} - ${organizationName}`,
       quantity: 1,
-      unit_price: plan === 'PRO' ? 29.90 : 0, // R$ 29,90/mês para PRO
+      unit_price: plan === 'PRO' ? 49.00 : 0, // R$ 49,00/mês para PRO
       currency_id: 'BRL'
     }
 
@@ -65,7 +65,7 @@ export async function createCheckoutPreference(
         items: [item],
         payer,
         back_urls: {
-          success: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard/billing?status=success`,
+          success: `${process.env.NEXT_PUBLIC_APP_URL}/checkout/sucesso`,
           failure: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard/billing?status=failure`,
           pending: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard/billing?status=pending`
         },
@@ -205,7 +205,7 @@ export function getPaymentTypeText(type: PaymentType): string {
  */
 export const PLAN_PRICES = {
   FREE: 0,
-  PRO: 29.90
+  PRO: 49.00
 } as const
 
 /**

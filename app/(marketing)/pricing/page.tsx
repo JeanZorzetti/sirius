@@ -175,12 +175,20 @@ export default function PricingPage() {
                                 ))}
                             </ul>
                         </CardContent>
-                        <CardFooter>
+                        <CardFooter className="flex flex-col gap-3">
                             <Button asChild className="w-full" variant={tier.featured ? 'default' : 'outline'}>
                                 <Link href={tier.href} aria-describedby={tier.id}>
                                     {tier.name === 'Enterprise' ? 'Falar com Vendas' : 'Começar Agora'}
                                 </Link>
                             </Button>
+                            {tier.featured && (
+                                <div className="flex items-center justify-center gap-2 text-xs text-green-600 dark:text-green-400">
+                                    <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fillRule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                                    </svg>
+                                    <span className="font-medium">Garantia de 7 dias - 100% do seu dinheiro de volta</span>
+                                </div>
+                            )}
                         </CardFooter>
                     </Card>
                 ))}
@@ -240,6 +248,12 @@ export default function PricingPage() {
                         <h4 className="font-semibold mb-2 text-primary">Posso cancelar quando quiser?</h4>
                         <p className="text-sm text-muted-foreground">
                             Sim, sem multas ou taxas. Cancele a qualquer momento e mantenha acesso até o fim do período pago.
+                        </p>
+                    </div>
+                    <div>
+                        <h4 className="font-semibold mb-2 text-primary">Como funciona a garantia de 7 dias?</h4>
+                        <p className="text-sm text-muted-foreground">
+                            Teste o plano Growth sem risco! Se não gostar nos primeiros 7 dias, devolvemos 100% do seu dinheiro, sem perguntas.
                         </p>
                     </div>
                     <div>

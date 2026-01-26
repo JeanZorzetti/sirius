@@ -3,6 +3,8 @@ import { prisma } from '@/lib/prisma'
 import { getPayment } from '@/lib/mercadopago'
 import logger from '@/lib/logger'
 import { dispatchWebhookAsync, WEBHOOK_EVENTS } from '@/lib/webhooks'
+import { sendEmail } from '@/lib/email'
+import { PaymentConfirmationEmail } from '@/emails/templates/payment-confirmation'
 import crypto from 'crypto'
 
 /**
@@ -109,9 +111,17 @@ export async function POST(request: NextRequest) {
         return NextResponse.json({ received: true }, { status: 200 })
       }
 
-      // Buscar organização
+      // Buscar organização e owner
       const organization = await prisma.organization.findUnique({
-        where: { id: organizationId }
+        where: { id: organizationId },
+        include: {
+          users: {
+            where: {
+              orgRole: 'OWNER'
+            },
+            take: 1
+          }
+        }
       })
 
       if (!organization) {
@@ -150,6 +160,40 @@ export async function POST(request: NextRequest) {
           oldPlan: organization.plan,
           newPlan: 'PRO'
         }, 'Organization upgraded to PRO')
+
+        // Enviar email de confirmação de pagamento
+        const owner = organization.users[0]
+        if (owner) {
+          const nextBillingDate = new Date()
+          nextBillingDate.setMonth(nextBillingDate.getMonth() + 1)
+
+          try {
+            await sendEmail({
+              to: owner.email,
+              subject: '🎉 Pagamento Confirmado - Bem-vindo ao Sirius Pro!',
+              react: PaymentConfirmationEmail({
+                userName: owner.name || 'Usuário',
+                organizationName: organization.name,
+                paymentId: paymentId.toString(),
+                paymentType: payment.payment_type_id || 'Não informado',
+                amount: payment.transaction_amount || 49.00,
+                nextBillingDate: nextBillingDate.toLocaleDateString('pt-BR')
+              })
+            })
+
+            logger.info({
+              organizationId,
+              userEmail: owner.email,
+              paymentId
+            }, 'Payment confirmation email sent')
+          } catch (emailError) {
+            logger.error({
+              organizationId,
+              userEmail: owner.email,
+              error: emailError
+            }, 'Failed to send payment confirmation email')
+          }
+        }
 
         // Disparar webhook de upgrade
         dispatchWebhookAsync(organizationId, WEBHOOK_EVENTS.ORGANIZATION_UPGRADED, {
