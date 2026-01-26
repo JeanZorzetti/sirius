@@ -505,117 +505,38 @@ export function KanbanBoard({
   const handleDragEnd = async (event: DragEndEvent) => {
     const { active, over } = event
 
-    // Remove dragging class from body
-    // TEMPORARIAMENTE DESATIVADO PARA TESTE
-    // document.body.classList.remove('dragging')
+    setActiveDeal(null)
 
-    if (!over) {
-      setActiveDeal(null)
-      setActiveStage(null)
-      return
-    }
+    if (!over || active.id === over.id) return
 
-    const activeId = active.id
-    const overId = over.id
-    const type = active.data.current?.type
+    // Find which stage has the active deal
+    const activeStageIndex = stages.findIndex(s => s.deals.some(d => d.id === active.id))
+    const overStageIndex = stages.findIndex(s => s.deals.some(d => d.id === over.id))
 
-    // --- COLUMN REORDERING --- TESTE: DESATIVADO
-    // if (type === 'Stage') {
-    //   if (activeId === overId) {
-    //     setActiveDeal(null)
-    //     setActiveStage(null)
-    //     return
-    //   }
+    if (activeStageIndex === -1) return
 
-    //   const oldIndex = stages.findIndex(s => s.id === activeId)
-    //   const newIndex = stages.findIndex(s => s.id === overId)
+    // Same column reorder
+    if (activeStageIndex === overStageIndex) {
+      const oldIndex = stages[activeStageIndex].deals.findIndex(d => d.id === active.id)
+      const newIndex = stages[activeStageIndex].deals.findIndex(d => d.id === over.id)
 
-    //   const newStages = arrayMove(stages, oldIndex, newIndex)
-    //   setStages(newStages) // Optimistic
-
-    //   // Prepare for server
-    //   const reorderedStages = newStages.map((s, index) => ({
-    //     id: s.id,
-    //     order: index
-    //   }))
-    //   await updateStageOrder(reorderedStages)
-
-    //   setActiveDeal(null)
-    //   setActiveStage(null)
-    //   return
-    // }
-
-    // --- DEAL REORDERING ---
-    // Use activeDeal's original stageId (from before drag started) to detect cross-column moves
-    const originalStageId = activeDeal?.stageId
-    const overStage = stages.find(s => s.deals.some(d => d.id === overId)) || stages.find(s => s.id === overId)
-
-    if (!originalStageId || !overStage) {
-      setActiveDeal(null)
-      setActiveStage(null)
-      return
-    }
-
-    // Check if it's a cross-column move or intra-column reorder
-    const isSameColumn = originalStageId === overStage.id
-
-    if (isSameColumn) {
-      // Intra-column reordering
-      const stageIndex = stages.findIndex(s => s.id === overStage.id)
-      const oldDealIndex = stages[stageIndex].deals.findIndex(d => d.id === activeId)
-      const newDealIndex = stages[stageIndex].deals.findIndex(d => d.id === overId)
-
-      if (oldDealIndex === newDealIndex) {
-        setActiveDeal(null)
-        setActiveStage(null)
-        return // No change
-      }
-
-      // Update state optimistically
       setStages(prev => {
         const newStages = [...prev]
-        newStages[stageIndex] = {
-          ...newStages[stageIndex],
-          deals: arrayMove(newStages[stageIndex].deals, oldDealIndex, newDealIndex)
+        newStages[activeStageIndex] = {
+          ...newStages[activeStageIndex],
+          deals: arrayMove(newStages[activeStageIndex].deals, oldIndex, newIndex)
         }
         return newStages
       })
 
-      // Persist to database
       const reorderedDeals = arrayMove(
-        stages[stageIndex].deals,
-        oldDealIndex,
-        newDealIndex
-      ).map((deal, index) => ({
-        id: deal.id,
-        order: index
-      }))
+        stages[activeStageIndex].deals,
+        oldIndex,
+        newIndex
+      ).map((deal, index) => ({ id: deal.id, order: index }))
 
-      await reorderDeals(overStage.id, reorderedDeals)
-    } else {
-      // Cross-column move - update the stage
-      // The visual update was already done in handleDragOver
-      const finalStage = stages.find(s => s.deals.some(d => d.id === activeId))
-      if (finalStage) {
-        await updateDealStage(activeId as string, finalStage.id)
-
-        // Also update the order within the new column
-        const finalStageIndex = stages.findIndex(s => s.id === finalStage.id)
-        const reorderedDeals = stages[finalStageIndex].deals.map((deal, index) => ({
-          id: deal.id,
-          order: index
-        }))
-        await reorderDeals(finalStage.id, reorderedDeals)
-      }
+      await reorderDeals(stages[activeStageIndex].id, reorderedDeals)
     }
-
-    // Clear active items at the very end
-    setActiveDeal(null)
-    setActiveStage(null)
-
-    // Ensure dragging class is removed (safety check)
-    // TEMPORARIAMENTE DESATIVADO PARA TESTE
-    // document.body.classList.remove('dragging')
   }
 
   return (
