@@ -155,8 +155,15 @@ function DealCard({ deal, onClick, dragHandleProps }: { deal: Deal, onClick?: ()
 }
 
 function SortableDealCard({ deal, onClick }: { deal: Deal, onClick?: () => void }) {
-  const { attributes, listeners, setNodeRef, transform, transition, isDragging } =
-    useSortable({ id: deal.id, data: { type: 'Deal', deal } })
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    setActivatorNodeRef, // CRITICAL: Ref for custom drag handle
+    transform,
+    transition,
+    isDragging
+  } = useSortable({ id: deal.id, data: { type: 'Deal', deal } })
 
   const style = {
     transform: CSS.Transform.toString(transform),
@@ -164,15 +171,19 @@ function SortableDealCard({ deal, onClick }: { deal: Deal, onClick?: () => void 
     opacity: isDragging ? 0.3 : 1, // Dim when dragging original
   }
 
-  // Pass listeners only to the drag handle, not the whole card
+  // BEST PRACTICE: Create drag handle props with activator ref + listeners + attributes
+  const dragHandleProps = {
+    ref: setActivatorNodeRef, // This is the key to proper drag handle behavior
+    ...listeners,
+    ...attributes,
+  }
+
   return (
     <div
       ref={setNodeRef}
       style={style}
-      {...attributes}
-      onDragStart={(e) => e.preventDefault()} // Prevent native drag
     >
-      <DealCard deal={deal} onClick={onClick} dragHandleProps={listeners} />
+      <DealCard deal={deal} onClick={onClick} dragHandleProps={dragHandleProps} />
     </div>
   )
 }
