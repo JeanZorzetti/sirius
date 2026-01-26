@@ -93,7 +93,7 @@ function DealCard({ deal, onClick, dragHandleProps }: { deal: Deal, onClick?: ()
     <div
       onClick={onClick}
       className={cn(
-        "group relative flex gap-3 rounded-xl border p-4 shadow-sm transition-all duration-300",
+        "group relative flex gap-3 rounded-xl border p-4 shadow-sm transition-all duration-300 select-none",
         "bg-card border-border hover:border-indigo-500/30",
         "hover:-translate-y-1 hover:shadow-[0_8px_20px_-8px_rgba(99,102,241,0.2)] dark:bg-[#121217] dark:border-white/5"
       )}
@@ -101,24 +101,29 @@ function DealCard({ deal, onClick, dragHandleProps }: { deal: Deal, onClick?: ()
       {/* Drag Handle - 6 pontinhos */}
       <div
         {...dragHandleProps}
-        className="flex-shrink-0 flex items-center cursor-grab active:cursor-grabbing opacity-0 group-hover:opacity-100 transition-opacity touch-none"
+        className="flex-shrink-0 flex items-center cursor-grab active:cursor-grabbing opacity-0 group-hover:opacity-100 transition-opacity touch-none select-none"
         title="Arrastar card"
       >
-        <GripVertical className="h-5 w-5 text-zinc-400 hover:text-indigo-500 transition-colors" />
+        <GripVertical className="h-5 w-5 text-zinc-400 hover:text-indigo-500 transition-colors pointer-events-none" />
       </div>
 
       {/* Card Content */}
-      <div className="flex-1 flex flex-col gap-3 min-w-0">
+      <div className="flex-1 flex flex-col gap-3 min-w-0 pointer-events-auto">
         <div className="flex items-start justify-between gap-2">
-          <span className="text-sm font-medium text-foreground line-clamp-2 leading-relaxed dark:text-zinc-200">
+          <span
+            className="text-sm font-medium text-foreground line-clamp-2 leading-relaxed dark:text-zinc-200"
+            draggable={false}
+          >
             {deal.title}
           </span>
         </div>
 
         <div className="flex items-center justify-between mt-1">
           <div className="flex flex-col">
-            <span className="text-[10px] uppercase tracking-wider text-zinc-500 font-semibold">Valor</span>
-            <span className="text-sm font-mono font-bold text-indigo-400">
+            <span className="text-[10px] uppercase tracking-wider text-zinc-500 font-semibold" draggable={false}>
+              Valor
+            </span>
+            <span className="text-sm font-mono font-bold text-indigo-400" draggable={false}>
               {deal.value ? `R$ ${Number(deal.value).toFixed(2)}` : '-'}
             </span>
           </div>
@@ -127,7 +132,7 @@ function DealCard({ deal, onClick, dragHandleProps }: { deal: Deal, onClick?: ()
             <Button
               size="icon"
               variant="ghost"
-              className="h-7 w-7 rounded-full bg-green-500/10 text-green-500 hover:bg-green-500/20 hover:text-green-400 transition-colors"
+              className="h-7 w-7 rounded-full bg-green-500/10 text-green-500 hover:bg-green-500/20 hover:text-green-400 transition-colors pointer-events-auto"
               onClick={handleWhatsApp}
               title={`Conversar com ${deal.contact.name}`}
             >
@@ -139,7 +144,9 @@ function DealCard({ deal, onClick, dragHandleProps }: { deal: Deal, onClick?: ()
         {deal.contact && (
           <div className="pt-3 border-t border-border/50 flex items-center gap-2">
             <div className="w-1.5 h-1.5 rounded-full bg-zinc-400 dark:bg-zinc-700" />
-            <div className="text-xs text-muted-foreground truncate max-w-[150px]">{deal.contact.name}</div>
+            <div className="text-xs text-muted-foreground truncate max-w-[150px]" draggable={false}>
+              {deal.contact.name}
+            </div>
           </div>
         )}
       </div>
@@ -157,10 +164,28 @@ function SortableDealCard({ deal, onClick }: { deal: Deal, onClick?: () => void 
     opacity: isDragging ? 0.3 : 1, // Dim when dragging original
   }
 
+  // Enhanced listeners to prevent text selection
+  const enhancedListeners = {
+    ...listeners,
+    onMouseDown: (e: React.MouseEvent) => {
+      // Prevent text selection during drag
+      e.preventDefault()
+      listeners?.onMouseDown?.(e as any)
+    },
+    onPointerDown: (e: React.PointerEvent) => {
+      listeners?.onPointerDown?.(e as any)
+    }
+  }
+
   // Pass listeners only to the drag handle, not the whole card
   return (
-    <div ref={setNodeRef} style={style} {...attributes}>
-      <DealCard deal={deal} onClick={onClick} dragHandleProps={listeners} />
+    <div
+      ref={setNodeRef}
+      style={style}
+      {...attributes}
+      onDragStart={(e) => e.preventDefault()} // Prevent native drag
+    >
+      <DealCard deal={deal} onClick={onClick} dragHandleProps={enhancedListeners} />
     </div>
   )
 }
@@ -367,8 +392,7 @@ export function KanbanBoard({
   const sensors = useSensors(
     useSensor(PointerSensor, {
       activationConstraint: {
-        distance: 10, // Increase for better touch detection on mobile
-        delay: 150, // Add delay to prevent accidental drags
+        distance: 8, // Pixels to move before drag starts
         tolerance: 5,
       },
     })
@@ -377,6 +401,9 @@ export function KanbanBoard({
   const handleDragStart = (event: DragStartEvent) => {
     const { active } = event
     const type = active.data.current?.type
+
+    // Add dragging class to body to prevent text selection globally
+    document.body.classList.add('dragging')
 
     if (type === 'Stage') {
       const stage = stages.find(s => s.id === active.id)
@@ -458,6 +485,9 @@ export function KanbanBoard({
 
   const handleDragEnd = async (event: DragEndEvent) => {
     const { active, over } = event
+
+    // Remove dragging class from body
+    document.body.classList.remove('dragging')
 
     if (!over) {
       setActiveDeal(null)
@@ -562,6 +592,9 @@ export function KanbanBoard({
     // Clear active items at the very end
     setActiveDeal(null)
     setActiveStage(null)
+
+    // Ensure dragging class is removed (safety check)
+    document.body.classList.remove('dragging')
   }
 
   return (

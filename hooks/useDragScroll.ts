@@ -13,7 +13,7 @@ export function useDragScroll<T extends HTMLElement>() {
     if (!element) return
 
     const handleMouseDown = (e: MouseEvent) => {
-      // Only start drag if not clicking on interactive elements
+      // Only start drag if not clicking on interactive elements or drag handles
       const target = e.target as HTMLElement
       if (
         target.tagName === 'BUTTON' ||
@@ -21,10 +21,16 @@ export function useDragScroll<T extends HTMLElement>() {
         target.closest('button') ||
         target.closest('input') ||
         target.closest('[role="button"]') ||
-        target.closest('a')
+        target.closest('a') ||
+        target.closest('[data-dnd-kit-drag-handle]') ||
+        target.closest('.cursor-grab') || // Skip drag handles
+        (target as any).draggable === true // Skip draggable elements
       ) {
         return
       }
+
+      // Prevent text selection during scroll drag
+      e.preventDefault()
 
       isDragging.current = true
       startX.current = e.pageX - element.offsetLeft

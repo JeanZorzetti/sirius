@@ -485,3 +485,35 @@
     border-color: rgba(94, 234, 212, 0.3);
   }
 }
+/* Drag and Drop improvements - Prevent text selection during drag */
+[data-dnd-kit-drag-handle] {
+  cursor: grab;
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  touch-action: none;
+}
+
+[data-dnd-kit-drag-handle]:active {
+  cursor: grabbing;
+}
+
+/* Prevent text selection on draggable items */
+[draggable="true"] {
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+
+/* Better drag overlay */
+body.dragging {
+  cursor: grabbing !important;
+  user-select: none !important;
+}
+
+body.dragging * {
+  cursor: grabbing !important;
+  user-select: none !important;
+}
