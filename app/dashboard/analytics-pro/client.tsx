@@ -8,6 +8,7 @@ import {
   Clock,
   Zap,
   Filter,
+  RefreshCw,
 } from 'lucide-react'
 import { OrganizationKPICard } from '@/components/analytics/organization-kpi-card'
 import {
@@ -27,6 +28,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
+import { Button } from '@/components/ui/button'
 import {
   getOrganizationKPIs,
   getDealSnapshots,
@@ -46,6 +48,7 @@ export function AnalyticsProClient({ pipelines }: AnalyticsProClientProps) {
   const [period, setPeriod] = useState<PeriodOption>('30d')
   const [selectedPipeline, setSelectedPipeline] = useState<string>('all')
   const [loading, setLoading] = useState(true)
+  const [backfilling, setBackfilling] = useState(false)
 
   const [kpis, setKpis] = useState<any>(null)
   const [snapshots, setSnapshots] = useState<any[]>([])
@@ -91,6 +94,42 @@ export function AnalyticsProClient({ pipelines }: AnalyticsProClientProps) {
     fetchData()
   }, [period, selectedPipeline])
 
+  // Popular dados históricos
+  const handleBackfill = async () => {
+    if (!confirm('Popular dados históricos dos últimos 90 dias? Isso pode levar alguns minutos.')) {
+      return
+    }
+
+    setBackfilling(true)
+    try {
+      const response = await fetch('/api/analytics/backfill-snapshots', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ days: 90 }),
+      })
+
+      const result = await response.json()
+
+      if (result.success) {
+        alert(`✅ Sucesso! ${result.stats.successful} snapshots criados.`)
+        // Recarregar dados
+        const { startDate, endDate } = getPeriodDates(period)
+        const pipelineId = selectedPipeline === 'all' ? undefined : selectedPipeline
+        const snapshotsResult = await getDealSnapshots(startDate, endDate, pipelineId)
+        if (snapshotsResult.success) {
+          setSnapshots(snapshotsResult.data || [])
+        }
+      } else {
+        alert(`❌ Erro: ${result.error}`)
+      }
+    } catch (error) {
+      console.error('Backfill error:', error)
+      alert('❌ Erro ao popular dados históricos')
+    } finally {
+      setBackfilling(false)
+    }
+  }
+
   return (
     <div className="space-y-6">
       {/* Header */}
@@ -107,7 +146,21 @@ export function AnalyticsProClient({ pipelines }: AnalyticsProClientProps) {
       <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
         <PeriodSelector value={period} onChange={setPeriod} />
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 flex-wrap">
+          {/* Botão para popular dados históricos (se não houver snapshots) */}
+          {snapshots.length === 0 && !loading && (
+            <Button
+              onClick={handleBackfill}
+              disabled={backfilling}
+              variant="outline"
+              size="sm"
+            >
+              <RefreshCw className={`h-4 w-4 mr-2 ${backfilling ? 'animate-spin' : ''}`} />
+              {backfilling ? 'Populando...' : 'Popular Dados Históricos'}
+            </Button>
+          )}
+
+          <div className="flex items-center gap-2">
           <Filter className="h-4 w-4 text-muted-foreground" />
           <Select value={selectedPipeline} onValueChange={setSelectedPipeline}>
             <SelectTrigger className="w-[200px]">

@@ -7,6 +7,8 @@ import { PipelineSelector } from '@/components/pipelines/pipeline-selector'
 import { CreateDealDialog } from '@/components/deals/create-deal-dialog'
 import { EmptyState } from '@/components/ui/empty-state'
 import { ExportButtons } from '@/components/ui/export-buttons'
+import { OnboardingWizard } from '@/components/onboarding/onboarding-wizard'
+import { useOnboarding } from '@/hooks/useOnboarding'
 import { DollarSign } from 'lucide-react'
 
 type Pipeline = {
@@ -53,6 +55,7 @@ export function DashboardWithPipelineSelector({
   isMember
 }: DashboardWithPipelineSelectorProps) {
   const router = useRouter()
+  const { shouldShowOnboarding } = useOnboarding()
 
   // Local state for optimistic updates
   const [localStages, setLocalStages] = useState<Stage[]>(initialStages)
@@ -131,6 +134,14 @@ export function DashboardWithPipelineSelector({
 
   return (
     <div className="flex-1 space-y-4">
+      {/* Onboarding Wizard - aparece automaticamente para novos usuários */}
+      {shouldShowOnboarding && (
+        <OnboardingWizard
+          onComplete={() => router.refresh()}
+          onSkip={() => router.refresh()}
+        />
+      )}
+
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-3">
           <h2 className="text-2xl sm:text-3xl font-bold tracking-tight">Pipeline</h2>
