@@ -21,6 +21,7 @@ const ICON_MAP = {
 }
 
 // Gerar todas as páginas estaticamente no build (SSG)
+// Força rebuild: 2025-01-27
 export async function generateStaticParams() {
   const slugs = getAllNicheSlugs()
   return slugs.map(slug => ({ slug }))
