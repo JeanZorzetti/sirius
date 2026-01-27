@@ -194,7 +194,7 @@ function SortableDealCard({ deal }: { deal: Deal }) {
       {...attributes}
       {...listeners}
       className={cn(
-        "group relative flex gap-3 rounded-xl border p-4 shadow-sm select-none cursor-grab active:cursor-grabbing",
+        "group relative flex gap-3 rounded-xl border p-4 shadow-sm select-none touch-none cursor-grab active:cursor-grabbing",
         "bg-card border-border hover:border-indigo-500/30",
         "dark:bg-[#121217] dark:border-white/5"
       )}
@@ -458,8 +458,7 @@ export function KanbanBoard({
   const sensors = useSensors(
     useSensor(PointerSensor, {
       activationConstraint: {
-        distance: 8, // Pixels to move before drag starts
-        tolerance: 5,
+        distance: 3, // Pixels to move before drag starts (reduced for better responsiveness)
       },
     })
   )
