@@ -69,7 +69,7 @@ export function WelcomeModal({ open, onClose, userName }: WelcomeModalProps) {
 
   return (
     <Dialog open={open} onOpenChange={(open) => !open && !isLoading && onClose()}>
-      <DialogContent className="max-w-5xl" onPointerDownOutside={(e) => isLoading && e.preventDefault()}>
+      <DialogContent className="w-[55vw] sm:max-w-[55vw] max-w-[55vw]!" onPointerDownOutside={(e) => isLoading && e.preventDefault()}>
         <DialogHeader>
           <DialogTitle className="text-2xl sm:text-3xl font-bold text-center">
             Bem-vindo ao Sirius CRM{userName ? `, ${userName}` : ''}! 🎉
