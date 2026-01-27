@@ -5,11 +5,13 @@ import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Sparkles, ArrowRight, X } from 'lucide-react'
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 import { cn } from '@/lib/utils'
 
 export function ContinueOnboardingButton() {
   const { stats, isComplete, isSkipped, shouldShowOnboarding, onboarding, maximizeWizard } = useOnboarding()
   const [isDismissed, setIsDismissed] = useState(false)
+  const router = useRouter()
 
   // Não mostrar se:
   // - Onboarding já está completo
@@ -32,13 +34,12 @@ export function ContinueOnboardingButton() {
   const hasStarted = completedCount > 0
 
   const handleContinue = () => {
-    // Maximizar o wizard (remover minimização)
+    // Maximizar o wizard (remover minimização do localStorage)
     maximizeWizard()
 
-    // Scroll suave para o topo onde o wizard está
-    setTimeout(() => {
-      window.scrollTo({ top: 0, behavior: 'smooth' })
-    }, 100)
+    // Hard reload para sincronizar estado entre componentes
+    // Sem isso, o wizard não aparece porque cada hook tem seu próprio estado local
+    window.location.href = '/dashboard#onboarding'
   }
 
   const handleDismiss = () => {

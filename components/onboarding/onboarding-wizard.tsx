@@ -64,6 +64,15 @@ export function OnboardingWizard({ onComplete, onSkip }: OnboardingWizardProps) 
   const currentStepIndex = onboarding?.currentStep ?? 0;
   const currentStep = steps[currentStepIndex];
 
+  // Auto-scroll to top when wizard appears via #onboarding hash
+  useEffect(() => {
+    if (typeof window !== 'undefined' && window.location.hash === '#onboarding') {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      // Remove hash from URL
+      window.history.replaceState(null, '', window.location.pathname + window.location.search);
+    }
+  }, []);
+
   // Handle step completion with celebration
   const handleCompleteStep = async () => {
     if (!currentStep) return;
