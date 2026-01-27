@@ -3,7 +3,6 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useOnboarding } from "@/hooks/useOnboarding";
-import { useStepCompletionDetection } from "@/hooks/useStepCompletionDetection";
 import {
   Card,
   CardContent,
@@ -66,26 +65,6 @@ export function OnboardingWizard({ onComplete, onSkip }: OnboardingWizardProps) 
   const currentStepIndex = onboarding?.currentStep ?? 0;
   const currentStep = steps[currentStepIndex];
 
-  // ✅ POLLING AUTOMÁTICO - Detecta quando usuário completa ação
-  useStepCompletionDetection({
-    stepId: currentStep?.id || '',
-    enabled: !!currentStep && !isStepCompleted(currentStep.id) && !isNavigating,
-    onComplete: (result) => {
-      console.log('[Wizard] Step auto-completed via polling:', result);
-
-      // Mostrar badge se ganhou
-      if (result.newBadges.length > 0) {
-        setNewBadgeEarned(result.newBadges[0]);
-        setTimeout(() => setNewBadgeEarned(null), 3000);
-      }
-
-      // Recarregar dados do onboarding para atualizar UI
-      setTimeout(() => {
-        window.location.reload();
-      }, 2000);
-    },
-  });
-
   // Carregar estado de minimização do localStorage (padrão Orion)
   useEffect(() => {
     const minimized = localStorage.getItem('sirius-onboarding-minimized');
@@ -127,16 +106,6 @@ export function OnboardingWizard({ onComplete, onSkip }: OnboardingWizardProps) 
     setIsMinimized(true);
   };
 
-  // Limpeza: Remover parâmetro ?onboarding=true da URL se existir
-  useEffect(() => {
-    const urlParams = new URLSearchParams(window.location.search);
-    if (urlParams.has('onboarding')) {
-      urlParams.delete('onboarding');
-      const newUrl = window.location.pathname + (urlParams.toString() ? '?' + urlParams.toString() : '');
-      window.history.replaceState({}, '', newUrl);
-    }
-  }, []);
-
   // Navigate to relevant page based on step
   const handleStepAction = async () => {
     if (!currentStep) return;
@@ -156,19 +125,19 @@ export function OnboardingWizard({ onComplete, onSkip }: OnboardingWizardProps) 
         setIsNavigating(false);
         break;
       case "organization":
-        // Navegar para settings - polling detectará quando salvar
+        // Navegar para settings - Prisma Extension detecta quando salvar
         router.push("/dashboard/settings?tab=general");
         break;
       case "pipeline":
-        // Navegar para dashboard - polling detectará quando criar pipeline
+        // Navegar para pipelines - Prisma Extension detecta quando criar
         router.push("/dashboard/pipelines");
         break;
       case "first_contact":
-        // Navegar para contatos - polling detectará quando criar contato
+        // Navegar para contatos - Prisma Extension detecta quando criar
         router.push("/dashboard/contacts");
         break;
       case "first_deal":
-        // Navegar para dashboard - polling detectará quando criar deal
+        // Navegar para dashboard - Prisma Extension detecta quando criar
         router.push("/dashboard");
         break;
       default:
