@@ -17,7 +17,7 @@ interface CalculadoraROIProps {
 export function CalculadoraROI({
   onCTAClick,
   ctaText = "Pare de perder esse dinheiro agora",
-  ctaHref = "/cadastro"
+  ctaHref = "/vendas-automaticas"
 }: CalculadoraROIProps) {
   const [volumeLeads, setVolumeLeads] = useState<number>(100)
   const [ticketMedio, setTicketMedio] = useState<number>(500)

@@ -36,8 +36,8 @@ export default function CalculadoraROIPage() {
 
         {/* Calculadora */}
         <CalculadoraROI
-          ctaText="Organizar minhas vendas agora"
-          ctaHref="/register"
+          ctaText="Ver Como Organizar por R$ 49/mês"
+          ctaHref="/vendas-automaticas"
         />
 
         {/* Social Proof / Trust Section */}
