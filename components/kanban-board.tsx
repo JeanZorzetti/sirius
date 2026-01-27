@@ -276,9 +276,14 @@ function KanbanColumn({ stage, onDealClick, isOverlay, onRename, onDelete }: {
     setIsEditing(false)
   }
 
+  const { setNodeRef } = useDroppable({
+    id: stage.id,
+    data: { type: 'Stage', stage }
+  })
+
   return (
     <div
-      // ref={setNodeRef}
+      ref={setNodeRef}
       style={style}
       className={cn("w-70 sm:w-80 flex-none flex flex-col h-full", isOverlay && "rotate-2 scale-105 opacity-90")}
     >
@@ -492,33 +497,107 @@ export function KanbanBoard({
 
     if (!over || active.id === over.id) return
 
-    // Find which stage has the active deal
+    // Verify if we're over a stage directly (empty column drop)
+    const isOverStage = active.data.current?.type === 'Stage' || over.data.current?.type === 'Stage'
+    
+    // Find active stage (source)
     const activeStageIndex = stages.findIndex(s => s.deals.some(d => d.id === active.id))
-    const overStageIndex = stages.findIndex(s => s.deals.some(d => d.id === over.id))
+    
+    // Find over stage (destination)
+    let overStageIndex = -1
+    if (over.data.current?.type === 'Stage') {
+      overStageIndex = stages.findIndex(s => s.id === over.id)
+    } else {
+      overStageIndex = stages.findIndex(s => s.deals.some(d => d.id === over.id))
+    }
 
-    if (activeStageIndex === -1) return
+    if (activeStageIndex === -1 || overStageIndex === -1) return
+
+    const activeStage = stages[activeStageIndex]
+    const overStage = stages[overStageIndex]
 
     // Same column reorder
     if (activeStageIndex === overStageIndex) {
-      const oldIndex = stages[activeStageIndex].deals.findIndex(d => d.id === active.id)
-      const newIndex = stages[activeStageIndex].deals.findIndex(d => d.id === over.id)
+      const oldIndex = activeStage.deals.findIndex(d => d.id === active.id)
+      const newIndex = activeStage.deals.findIndex(d => d.id === over.id)
+
+      if (oldIndex !== newIndex) {
+        setStages(prev => {
+          const newStages = [...prev]
+          newStages[activeStageIndex] = {
+            ...newStages[activeStageIndex],
+            deals: arrayMove(newStages[activeStageIndex].deals, oldIndex, newIndex)
+          }
+          return newStages
+        })
+
+        const reorderedDeals = arrayMove(
+          activeStage.deals,
+          oldIndex,
+          newIndex
+        ).map((deal, index) => ({ id: deal.id, order: index }))
+
+        await reorderDeals(activeStage.id, reorderedDeals)
+      }
+    } else {
+      // Moving to different column
+      const activeDealIndex = activeStage.deals.findIndex(d => d.id === active.id)
+      const activeDeal = activeStage.deals[activeDealIndex]
+
+      let newIndex: number
+      if (over.data.current?.type === 'Stage') {
+        // Dropped on a stage container -> append to end
+        newIndex = overStage.deals.length
+      } else {
+        // Dropped relative to another deal
+        const isBelowOverItem =
+          over &&
+          active.rect.current.translated &&
+          active.rect.current.translated.top > over.rect.top + over.rect.height;
+
+        const modifier = isBelowOverItem ? 1 : 0;
+        
+        // If undefined, default to length (shouldn't happen if found overStage via deal)
+        const overDealIndex = overStage.deals.findIndex(d => d.id === over.id)
+        newIndex = overDealIndex >= 0 ? overDealIndex + modifier : overStage.deals.length + 1
+      }
 
       setStages(prev => {
         const newStages = [...prev]
-        newStages[activeStageIndex] = {
-          ...newStages[activeStageIndex],
-          deals: arrayMove(newStages[activeStageIndex].deals, oldIndex, newIndex)
-        }
+        
+        // Remove from old
+        const sourceStage = { ...newStages[activeStageIndex] }
+        sourceStage.deals = [...sourceStage.deals]
+        sourceStage.deals.splice(activeDealIndex, 1)
+        
+        // Add to new
+        const destStage = { ...newStages[overStageIndex] }
+        destStage.deals = [...destStage.deals]
+        
+        // Update deal stageId locally
+        const updatedDeal = { ...activeDeal, stageId: destStage.id }
+        
+        // Insert at new index
+        destStage.deals.splice(newIndex, 0, updatedDeal)
+        
+        newStages[activeStageIndex] = sourceStage
+        newStages[overStageIndex] = destStage
+        
         return newStages
       })
 
-      const reorderedDeals = arrayMove(
-        stages[activeStageIndex].deals,
-        oldIndex,
-        newIndex
-      ).map((deal, index) => ({ id: deal.id, order: index }))
-
-      await reorderDeals(stages[activeStageIndex].id, reorderedDeals)
+      // Backend updates
+      // 1. Update Stage
+      await updateDealStage(activeDeal.id, overStage.id)
+      
+      // 2. Update Order in new stage
+      // Recalculate orders based on the NEW state we just created locally
+      // We need to reconstruct the array as we did in setStages to get accurate order
+      const newDealsForOrdering = [...overStage.deals]
+      newDealsForOrdering.splice(newIndex, 0, activeDeal) 
+      const reorderedDeals = newDealsForOrdering.map((deal, index) => ({ id: deal.id, order: index }))
+      
+      await reorderDeals(overStage.id, reorderedDeals)
     }
   }
 
