@@ -201,6 +201,21 @@ export function useOnboarding() {
     [data]
   );
 
+  // Minimize/Maximize wizard
+  const minimizeWizard = useCallback(() => {
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('onboarding-wizard-minimized', 'true')
+      setIsWizardMinimized(true)
+    }
+  }, [])
+
+  const maximizeWizard = useCallback(() => {
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem('onboarding-wizard-minimized')
+      setIsWizardMinimized(false)
+    }
+  }, [])
+
   // Get earned badges with details
   const earnedBadges = data
     ? data.onboarding.badges
@@ -216,9 +231,17 @@ export function useOnboarding() {
   // Check if onboarding is complete or skipped
   const isComplete = data?.onboarding.status === "COMPLETED";
   const isSkipped = data?.onboarding.status === "SKIPPED";
+
+  // Check localStorage for temporary dismiss
+  const [isWizardMinimized, setIsWizardMinimized] = useState(() => {
+    if (typeof window === 'undefined') return false
+    return localStorage.getItem('onboarding-wizard-minimized') === 'true'
+  })
+
   const shouldShowOnboarding =
     data?.onboarding.status === "IN_PROGRESS" &&
-    data.onboarding.completedSteps.length < data.stats.totalSteps;
+    data.onboarding.completedSteps.length < data.stats.totalSteps &&
+    !isWizardMinimized;
 
   // Initial fetch
   useEffect(() => {
@@ -239,6 +262,7 @@ export function useOnboarding() {
     isComplete,
     isSkipped,
     shouldShowOnboarding,
+    isWizardMinimized,
     currentStep,
     earnedBadges,
 
@@ -248,6 +272,8 @@ export function useOnboarding() {
     completeStep,
     goToStep,
     skipOnboarding,
+    minimizeWizard,
+    maximizeWizard,
     isStepCompleted,
     hasBadge,
   };

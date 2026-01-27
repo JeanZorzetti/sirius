@@ -8,7 +8,7 @@ import { useState } from 'react'
 import { cn } from '@/lib/utils'
 
 export function ContinueOnboardingButton() {
-  const { stats, isComplete, isSkipped, shouldShowOnboarding, onboarding } = useOnboarding()
+  const { stats, isComplete, isSkipped, shouldShowOnboarding, onboarding, maximizeWizard } = useOnboarding()
   const [isDismissed, setIsDismissed] = useState(false)
 
   // Não mostrar se:
@@ -32,11 +32,13 @@ export function ContinueOnboardingButton() {
   const hasStarted = completedCount > 0
 
   const handleContinue = () => {
-    // Scroll suave para o topo onde o wizard está
-    window.scrollTo({ top: 0, behavior: 'smooth' })
+    // Maximizar o wizard (remover minimização)
+    maximizeWizard()
 
-    // Recarregar para forçar o wizard aparecer
-    window.location.reload()
+    // Scroll suave para o topo onde o wizard está
+    setTimeout(() => {
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+    }, 100)
   }
 
   const handleDismiss = () => {

@@ -53,6 +53,7 @@ export function OnboardingWizard({ onComplete, onSkip }: OnboardingWizardProps) 
     completeStep,
     goToStep,
     skipOnboarding,
+    minimizeWizard,
     isStepCompleted,
   } = useOnboarding();
 
@@ -88,6 +89,11 @@ export function OnboardingWizard({ onComplete, onSkip }: OnboardingWizardProps) 
   const handleSkip = async () => {
     await skipOnboarding();
     onSkip?.();
+  };
+
+  // Handle minimize (fechar temporariamente)
+  const handleMinimize = () => {
+    minimizeWizard();
   };
 
   // Auto-complete steps when conditions are met
@@ -215,7 +221,8 @@ export function OnboardingWizard({ onComplete, onSkip }: OnboardingWizardProps) 
             variant="ghost"
             size="icon"
             className="absolute right-4 top-4"
-            onClick={handleSkip}
+            onClick={handleMinimize}
+            title="Minimizar (pode continuar depois)"
           >
             <X className="w-4 h-4" />
           </Button>
