@@ -3,6 +3,7 @@ import { Metadata } from "next"
 import { DashboardWithPipelineSelector } from "@/components/dashboard-with-pipeline-selector"
 import { OnboardingWrapper } from "@/components/onboarding/onboarding-wrapper"
 import { getSession } from "@/lib/auth"
+import { getOrganizationPlanLimits } from "@/lib/plan-limits"
 
 const prisma = new PrismaClient()
 
@@ -135,6 +136,9 @@ export default async function DashboardPage() {
     const dealCount = stages.flatMap(stage => stage.deals).length
     const isPro = user.organization.plan === 'PRO'
 
+    // Get plan limits and usage
+    const planLimits = await getOrganizationPlanLimits(user.organizationId)
+
     return (
         <OnboardingWrapper
             userId={user.id}
@@ -148,6 +152,7 @@ export default async function DashboardPage() {
                 dealCount={dealCount}
                 isPro={isPro}
                 isMember={isMember}
+                planLimits={planLimits}
             />
         </OnboardingWrapper>
     )

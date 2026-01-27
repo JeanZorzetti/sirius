@@ -77,7 +77,7 @@ export default function VendasAutomaticasPage() {
                 className="h-14 px-8 text-lg font-bold bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 shadow-xl shadow-orange-500/30 transition-all hover:scale-105 active:scale-95"
               >
                 <Link href="/register">
-                  Começar Teste Grátis
+                  Começar Grátis (Sem Limite de Tempo)
                   <ArrowRight className="ml-2 w-5 h-5" />
                 </Link>
               </Button>
@@ -417,14 +417,19 @@ export default function VendasAutomaticasPage() {
               </div>
 
               <CardHeader className="text-center pb-8 pt-8">
-                <CardTitle className="text-3xl mb-2">Plano Self-Service</CardTitle>
+                <CardTitle className="text-3xl mb-2">Plano PRO</CardTitle>
+                <div className="px-6 py-2 mb-4 rounded-lg bg-blue-50 dark:bg-blue-950/20 border border-blue-200 dark:border-blue-900">
+                  <p className="text-sm font-semibold text-blue-700 dark:text-blue-400">
+                    ✨ Comece Grátis: 50 contatos + 3 pipelines sem limite de tempo
+                  </p>
+                </div>
                 <div className="space-y-2">
                   <div className="flex items-baseline justify-center gap-2">
                     <span className="text-5xl font-black text-blue-600 dark:text-blue-500">R$ 49</span>
                     <span className="text-xl text-zinc-600 dark:text-zinc-400">/mês</span>
                   </div>
                   <p className="text-sm text-zinc-600 dark:text-zinc-400">
-                    Sem setup. Sem treinamento. Sem contrato.
+                    Quando precisar de mais • Sem setup • Sem contrato
                   </p>
                 </div>
               </CardHeader>

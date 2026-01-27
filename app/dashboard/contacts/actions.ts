@@ -5,6 +5,7 @@ import { revalidatePath } from 'next/cache'
 import { getSession } from '@/lib/auth'
 import { dispatchWebhookAsync } from '@/lib/webhooks/dispatcher'
 import { WEBHOOK_EVENTS } from '@/lib/webhooks/events'
+import { canCreateContact } from '@/lib/plan-limits'
 
 const prisma = new PrismaClient()
 
@@ -31,6 +32,18 @@ export async function createContact(formData: FormData) {
 
         if (!name) {
             return { success: false, error: 'Nome é obrigatório' }
+        }
+
+        // Check plan limits before creating
+        const limitCheck = await canCreateContact(user.organizationId)
+        if (!limitCheck.allowed) {
+            return {
+                success: false,
+                error: limitCheck.reason,
+                code: 'PLAN_LIMIT_REACHED',
+                current: limitCheck.current,
+                limit: limitCheck.limit,
+            }
         }
 
         const contact = await prisma.contact.create({

@@ -7,6 +7,7 @@ import { PipelineSelector } from '@/components/pipelines/pipeline-selector'
 import { CreateDealDialog } from '@/components/deals/create-deal-dialog'
 import { EmptyState } from '@/components/ui/empty-state'
 import { ExportButtons } from '@/components/ui/export-buttons'
+import { UsageLimitsBanner } from '@/components/plan/usage-limits-banner'
 import { DollarSign } from 'lucide-react'
 
 type Pipeline = {
@@ -35,6 +36,26 @@ type Contact = {
   phone?: string | null
 }
 
+type PlanLimits = {
+  plan: 'FREE' | 'PRO'
+  limits: {
+    maxContacts: number
+    maxPipelines: number
+    maxDeals: number
+  }
+  usage: {
+    contacts: number
+    pipelines: number
+    deals: number
+  }
+  contactsUsagePercent: number
+  pipelinesUsagePercent: number
+  hasReachedContactLimit: boolean
+  hasReachedPipelineLimit: boolean
+  isApproachingContactLimit: boolean
+  isApproachingPipelineLimit: boolean
+}
+
 type DashboardWithPipelineSelectorProps = {
   pipelines: Pipeline[]
   allStages: Stage[]
@@ -42,6 +63,7 @@ type DashboardWithPipelineSelectorProps = {
   dealCount: number
   isPro: boolean
   isMember: boolean
+  planLimits: PlanLimits
 }
 
 export function DashboardWithPipelineSelector({
@@ -50,7 +72,8 @@ export function DashboardWithPipelineSelector({
   contacts,
   dealCount,
   isPro,
-  isMember
+  isMember,
+  planLimits
 }: DashboardWithPipelineSelectorProps) {
   const router = useRouter()
 
@@ -161,6 +184,19 @@ export function DashboardWithPipelineSelector({
           />
         </div>
       </div>
+
+      {/* Usage Limits Banner */}
+      <UsageLimitsBanner
+        plan={planLimits.plan}
+        usage={planLimits.usage}
+        limits={planLimits.limits}
+        contactsUsagePercent={planLimits.contactsUsagePercent}
+        pipelinesUsagePercent={planLimits.pipelinesUsagePercent}
+        hasReachedContactLimit={planLimits.hasReachedContactLimit}
+        hasReachedPipelineLimit={planLimits.hasReachedPipelineLimit}
+        isApproachingContactLimit={planLimits.isApproachingContactLimit}
+        isApproachingPipelineLimit={planLimits.isApproachingPipelineLimit}
+      />
 
       {filteredStages.length > 0 ? (
         <KanbanBoard

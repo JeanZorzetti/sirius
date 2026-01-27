@@ -3,6 +3,7 @@
 import { getSession } from "@/lib/auth"
 import { prisma } from "@/lib/prisma"
 import { revalidatePath } from "next/cache"
+import { canCreatePipeline } from "@/lib/plan-limits"
 
 async function checkPermission() {
     const session = await getSession()
@@ -53,24 +54,22 @@ export async function createPipeline(name: string) {
             return { success: false, error: 'Nome do pipeline é obrigatório' }
         }
 
+        // Check plan limits before creating
+        const limitCheck = await canCreatePipeline(user.organizationId)
+        if (!limitCheck.allowed) {
+            return {
+                success: false,
+                error: limitCheck.reason,
+                code: 'PLAN_LIMIT_REACHED',
+                current: limitCheck.current,
+                limit: limitCheck.limit,
+            }
+        }
+
         // Check if this is the first pipeline (should be default)
         const existingPipelines = await prisma.pipeline.count({
             where: { organizationId: user.organizationId }
         })
-
-        // Get user's organization plan
-        const organization = await prisma.organization.findUnique({
-            where: { id: user.organizationId }
-        })
-
-        // Feature Gate: FREE users can only have 1 pipeline
-        if (organization?.plan !== 'PRO' && existingPipelines >= 1) {
-            return {
-                success: false,
-                error: 'UPGRADE_REQUIRED',
-                message: 'Múltiplos pipelines é uma funcionalidade PRO. Faça upgrade para desbloquear!'
-            }
-        }
 
         const isDefault = existingPipelines === 0
 
