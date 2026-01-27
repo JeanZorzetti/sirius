@@ -15,6 +15,7 @@ import {
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { createContact } from '@/app/dashboard/contacts/actions'
+import { analytics } from '@/lib/posthog'
 
 export function CreateContactDialog() {
     const [open, setOpen] = useState(false)
@@ -33,6 +34,13 @@ export function CreateContactDialog() {
         if (result.success) {
             setOpen(false)
         } else {
+            // Rastrear quando limite é atingido
+            if ('code' in result && result.code === 'PLAN_LIMIT_REACHED') {
+                analytics.limitReached({
+                    limit_type: 'contacts',
+                    current_count: result.current || 0
+                })
+            }
             alert("Falha ao criar contato")
         }
     }

@@ -14,6 +14,7 @@ import {
   DialogFooter,
 } from '@/components/ui/dialog'
 import { AlertCircle, Sparkles, ArrowRight, TrendingUp } from 'lucide-react'
+import { analytics } from '@/lib/posthog'
 
 interface UsageLimitsBannerProps {
   plan: 'FREE' | 'PRO'
@@ -167,7 +168,10 @@ export function UsageLimitsBanner({
               {/* CTA */}
               <div className="flex flex-col sm:flex-row gap-3 pt-2">
                 <Button
-                  onClick={() => setShowUpgradeModal(true)}
+                  onClick={() => {
+                    analytics.upgradeClicked({ source: 'usage_limits_banner' })
+                    setShowUpgradeModal(true)
+                  }}
                   className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700"
                 >
                   <Sparkles className="mr-2 w-4 h-4" />
@@ -244,7 +248,10 @@ export function UsageLimitsBanner({
               asChild
               className="w-full sm:w-auto bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700"
             >
-              <Link href="/dashboard/billing">
+              <Link
+                href="/dashboard/billing"
+                onClick={() => analytics.upgradeClicked({ source: 'upgrade_modal' })}
+              >
                 Fazer Upgrade Agora
                 <ArrowRight className="ml-2 w-4 h-4" />
               </Link>

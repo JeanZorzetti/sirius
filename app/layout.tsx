@@ -88,6 +88,7 @@ import { analyticsConfig } from "@/lib/analytics-config"
 import { SpeedInsights } from "@vercel/speed-insights/next"
 import { Analytics } from "@vercel/analytics/next"
 import { Toaster } from "@/components/ui/sonner"
+import { PostHogProvider } from "./providers"
 
 export default function RootLayout({
   children,
@@ -203,24 +204,26 @@ export default function RootLayout({
         {/* Microsoft Clarity - With error handling */}
         <MicrosoftClarity />
 
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          {children}
-          {/* Tawk.to Live Chat - Only on marketing pages */}
-          <TawkToChat />
-          {/* PWA Install Prompt */}
-          <PWAInstallPrompt />
-          {/* Push Notifications Manager */}
-          <PushNotificationManager />
-          {/* Offline Status & Sync Queue */}
-          <OfflineStatus />
-          {/* Toast Notifications */}
-          <Toaster />
-        </ThemeProvider>
+        <PostHogProvider>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            {children}
+            {/* Tawk.to Live Chat - Only on marketing pages */}
+            <TawkToChat />
+            {/* PWA Install Prompt */}
+            <PWAInstallPrompt />
+            {/* Push Notifications Manager */}
+            <PushNotificationManager />
+            {/* Offline Status & Sync Queue */}
+            <OfflineStatus />
+            {/* Toast Notifications */}
+            <Toaster />
+          </ThemeProvider>
+        </PostHogProvider>
         <Analytics />
         <SpeedInsights />
       </body>

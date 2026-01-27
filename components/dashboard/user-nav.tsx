@@ -19,6 +19,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Button } from "@/components/ui/button"
 import { logoutAction } from "@/app/auth/actions"
+import { analytics } from "@/lib/posthog"
 
 export function UserNav({ user }: { user: any }) {
   return (
@@ -61,7 +62,10 @@ export function UserNav({ user }: { user: any }) {
           )}
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
-        <DropdownMenuItem onClick={() => logoutAction()}>
+        <DropdownMenuItem onClick={() => {
+          analytics.reset()
+          logoutAction()
+        }}>
           Sair
         </DropdownMenuItem>
       </DropdownMenuContent>

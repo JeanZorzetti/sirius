@@ -5,6 +5,7 @@ import { ModeToggle } from '@/components/ui/mode-toggle'
 import { PWAInstallPrompt } from '@/components/pwa-install-prompt'
 import { SignUpTracker } from '@/components/analytics/signup-tracker'
 import { LoginTracker } from '@/components/analytics/login-tracker'
+import { PostHogUserIdentifier } from '@/components/analytics/posthog-user-identifier'
 import { AgiChatSidebar } from '@/components/agi'
 import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
@@ -62,6 +63,7 @@ export default async function DashboardLayout({
       {/* Analytics Trackers */}
       <SignUpTracker />
       <LoginTracker />
+      <PostHogUserIdentifier />
 
       {/* AGI Chat Sidebar - Global AI Assistant */}
       <AgiChatSidebar />

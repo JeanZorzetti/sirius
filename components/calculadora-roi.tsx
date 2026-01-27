@@ -7,6 +7,7 @@ import { Label } from '@/components/ui/label'
 import { Button } from '@/components/ui/button'
 import { Slider } from '@/components/ui/slider'
 import { TrendingDown, TrendingUp, AlertCircle, ArrowRight } from 'lucide-react'
+import { analytics } from '@/lib/posthog'
 
 interface CalculadoraROIProps {
   onCTAClick?: () => void
@@ -59,6 +60,14 @@ export function CalculadoraROI({
   }
 
   const handleCTAClick = () => {
+    // Rastrear evento da calculadora
+    analytics.calculatorCompleted({
+      potential_loss: resultados.perdaMensal,
+      leads_per_month: volumeLeads,
+      conversion_rate: taxaConversao,
+      niche: typeof window !== 'undefined' ? window.location.pathname.split('/').pop() : undefined
+    })
+
     if (onCTAClick) {
       onCTAClick()
     } else if (ctaHref) {

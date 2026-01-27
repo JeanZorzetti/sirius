@@ -11,6 +11,7 @@ import {
     CardTitle,
 } from '@/components/ui/card'
 import { PricingPageTracker } from '@/components/analytics/pricing-page-tracker'
+import { TrackedSignupButton } from '@/components/analytics/tracked-signup-button'
 
 const tiers = [
     {
@@ -279,11 +280,15 @@ export default function PricingPage() {
                         Fale com nosso time de vendas e tire todas as suas dúvidas
                     </p>
                     <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                        <Button asChild size="lg" variant="default">
-                            <Link href="/register">
-                                Começar Grátis
-                            </Link>
-                        </Button>
+                        <TrackedSignupButton
+                            href="/register"
+                            source="pricing_page_cta"
+                            plan="free"
+                            size="lg"
+                            variant="default"
+                        >
+                            Começar Grátis
+                        </TrackedSignupButton>
                         <Button asChild size="lg" variant="outline">
                             <a href="https://wa.me/5511999999999" target="_blank" rel="noopener noreferrer">
                                 Falar com Vendas

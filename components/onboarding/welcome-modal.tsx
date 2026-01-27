@@ -1,12 +1,13 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Sparkles, FileUp, Zap, Loader2 } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
+import { analytics } from '@/lib/posthog'
 
 interface WelcomeModalProps {
   open: boolean
@@ -21,12 +22,22 @@ export function WelcomeModal({ open, onClose, userName }: WelcomeModalProps) {
   const [isLoading, setIsLoading] = useState(false)
   const [selectedChoice, setSelectedChoice] = useState<OnboardingChoice>(null)
 
+  // Rastrear início do onboarding quando modal abre
+  useEffect(() => {
+    if (open) {
+      analytics.onboardingStart()
+    }
+  }, [open])
+
   const handleChoice = async (choice: OnboardingChoice) => {
     setSelectedChoice(choice)
     setIsLoading(true)
 
     try {
       if (choice === 'demo') {
+        // Rastrear modo demo selecionado
+        analytics.demoModeSelected()
+
         // Load demo data
         const response = await fetch('/api/onboarding/seed-demo', {
           method: 'POST',
@@ -42,6 +53,9 @@ export function WelcomeModal({ open, onClose, userName }: WelcomeModalProps) {
           description: `${data.data.deals} negociações e ${data.data.contacts} contatos criados.`
         })
 
+        // Rastrear conclusão do onboarding
+        analytics.onboardingCompleted({ demo_mode: true })
+
         // Close modal and redirect to dashboard with tour
         onClose()
         router.push('/dashboard?tour=true')
@@ -50,9 +64,16 @@ export function WelcomeModal({ open, onClose, userName }: WelcomeModalProps) {
         toast.info('Em breve!', {
           description: 'A importação de dados estará disponível em breve.'
         })
+
+        // Rastrear conclusão do onboarding
+        analytics.onboardingCompleted({ demo_mode: false })
+
         onClose()
         router.push('/dashboard')
       } else if (choice === 'scratch') {
+        // Rastrear conclusão do onboarding
+        analytics.onboardingCompleted({ demo_mode: false })
+
         // Start from scratch
         onClose()
         router.push('/dashboard')
