@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect, useRef, useMemo } from 'react'
+import { createPortal } from 'react-dom'
 import {
   DragDropContext,
   Droppable,
@@ -95,22 +96,28 @@ function DealCard({
     window.open(`https://wa.me/${phone}`, '_blank')
   }
 
-  return (
+  // Remove transition during drag for instant movement (no elastic/lag feeling)
+  const style: React.CSSProperties = {
+    ...provided.draggableProps.style,
+    cursor: snapshot.isDragging ? 'grabbing' : 'grab',
+  }
+
+  const cardContent = (
     <div
       ref={provided.innerRef}
       {...provided.draggableProps}
       {...provided.dragHandleProps}
       onClick={onClick}
+      style={style}
       className={cn(
-        "group relative flex gap-3 rounded-xl border p-4 shadow-sm select-none cursor-grab active:cursor-grabbing",
+        "group relative flex gap-3 rounded-xl border p-4 shadow-sm select-none",
         "bg-card border-border hover:border-indigo-500/30",
         "dark:bg-[#121217] dark:border-white/5",
-        snapshot.isDragging && "shadow-2xl shadow-indigo-500/20 z-5 opacity-90"
+        snapshot.isDragging && "shadow-2xl shadow-indigo-500/40 z-[9999] ring-2 ring-indigo-500 rotate-2 scale-105"
       )}
-      style={provided.draggableProps.style}
     >
       {/* Drag Handle */}
-      <div className="flex-shrink-0 flex items-center opacity-0 group-hover:opacity-100 transition-opacity">
+      <div className="shrink-0 flex items-center opacity-0 group-hover:opacity-100 transition-opacity">
         <GripVertical className="h-5 w-5 text-zinc-400 hover:text-indigo-500 transition-colors pointer-events-none" />
       </div>
 
@@ -156,6 +163,14 @@ function DealCard({
       </div>
     </div>
   )
+
+  // PORTAL SOLUTION: Render card directly in body when dragging
+  // This escapes the backdrop-blur stacking context that breaks positioning
+  if (snapshot.isDragging && typeof document !== 'undefined') {
+    return createPortal(cardContent, document.body)
+  }
+
+  return cardContent
 }
 
 function KanbanColumn({
