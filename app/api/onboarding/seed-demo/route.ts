@@ -1,28 +1,39 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { getServerSession } from 'next-auth'
-import { authOptions } from '@/lib/auth'
+import { getSession } from '@/lib/auth'
 import { seedDemoData } from '@/lib/seed-demo-data'
+import { PrismaClient } from '@prisma/client'
+
+const prisma = new PrismaClient()
 
 export async function POST(request: NextRequest) {
   try {
-    const session = await getServerSession(authOptions)
+    const session = await getSession()
 
-    if (!session?.user?.id) {
+    if (!session || !session.user || !session.user.email) {
       return NextResponse.json(
         { error: 'Unauthorized' },
         { status: 401 }
       )
     }
 
-    const userId = session.user.id
-    const organizationId = session.user.organizationId
+    // Fetch user from database to get id and organizationId
+    const user = await prisma.user.findUnique({
+      where: { email: session.user.email },
+      select: {
+        id: true,
+        organizationId: true
+      }
+    })
 
-    if (!organizationId) {
+    if (!user || !user.organizationId) {
       return NextResponse.json(
         { error: 'Organization not found' },
         { status: 400 }
       )
     }
+
+    const userId = user.id
+    const organizationId = user.organizationId
 
     // Seed demo data
     const result = await seedDemoData(userId, organizationId)
