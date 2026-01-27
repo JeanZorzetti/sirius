@@ -105,7 +105,7 @@ function DealCard({
         "group relative flex gap-3 rounded-xl border p-4 shadow-sm select-none cursor-grab active:cursor-grabbing",
         "bg-card border-border hover:border-indigo-500/30",
         "dark:bg-[#121217] dark:border-white/5",
-        snapshot.isDragging && "shadow-2xl shadow-indigo-500/20 z-25 opacity-90"
+        snapshot.isDragging && "shadow-2xl shadow-indigo-500/20 z-5 opacity-90"
       )}
       style={provided.draggableProps.style}
     >
