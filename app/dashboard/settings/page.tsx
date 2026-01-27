@@ -18,15 +18,6 @@ export default async function SettingsPage() {
 
     if (!user) return <div>Usuário não encontrado.</div>
 
-    // Fetch onboarding progress
-    const onboardingProgress = await prisma.onboardingProgress.findUnique({
-        where: { userId: user.id },
-        select: {
-            completedSteps: true,
-            currentStep: true,
-        }
-    })
-
     return (
         <SettingsLayout organizationName={user.organization?.name}>
             <Suspense fallback={<SettingsSkeleton />}>
@@ -39,7 +30,6 @@ export default async function SettingsPage() {
                             plan: user.organization.plan,
                         } : null,
                     }}
-                    onboardingProgress={onboardingProgress || undefined}
                 />
             </Suspense>
         </SettingsLayout>

@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useMemo } from 'react'
-import { Search, Settings, User, Users, Bell, Key, Webhook, Zap, BookOpen, Sparkles } from 'lucide-react'
+import { Search, Settings, User, Users, Bell, Key, Webhook, Zap, BookOpen } from 'lucide-react'
 import { Input } from '@/components/ui/input'
 import { cn } from '@/lib/utils'
 import Link from 'next/link'
@@ -23,13 +23,6 @@ const tabs: SettingsTab[] = [
     icon: Settings,
     href: '/dashboard/settings',
     description: 'Perfil e configurações da conta',
-  },
-  {
-    id: 'onboarding',
-    label: 'Primeiros Passos',
-    icon: Sparkles,
-    href: '/dashboard/settings#onboarding',
-    description: 'Tour interativo e configuração inicial',
   },
   {
     id: 'team',

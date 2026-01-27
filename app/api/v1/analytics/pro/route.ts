@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { withApiMiddleware, apiResponse, withProPlan } from '@/lib/api-middleware'
-import { prisma, prismaRaw } from '@/lib/prisma'
+import { prisma } from '@/lib/prisma'
 import { formatDecimal } from '@/lib/api-helpers'
 import logger from '@/lib/logger'
 
@@ -59,8 +59,7 @@ export async function GET(request: NextRequest) {
         })
 
         // Get user activities summary
-        // Use prismaRaw para evitar conflito de tipos com extensions
-        const activities = await prismaRaw.userActivity.groupBy({
+        const activities = await prisma.userActivity.groupBy({
           by: ['type'],
           where: {
             organizationId: ctx.organizationId,

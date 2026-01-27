@@ -1,8 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { withApiMiddleware, apiResponse, withProPlan } from '@/lib/api-middleware'
-import { prisma, prismaRaw } from '@/lib/prisma'
+import { prisma } from '@/lib/prisma'
 import { validateRequest, createPipelineSchema } from '@/lib/api-validators'
-import { checkAndCompleteStep } from '@/lib/onboarding-service'
 import logger from '@/lib/logger'
 
 /**
@@ -142,8 +141,7 @@ export async function POST(request: NextRequest) {
         }
 
         // Create pipeline with stages in a transaction
-        // Use prismaRaw para evitar conflito de tipos com extensions
-        const pipeline = await prismaRaw.$transaction(async (tx) => {
+        const pipeline = await prisma.$transaction(async (tx) => {
           // Create pipeline
           const newPipeline = await tx.pipeline.create({
             data: {
@@ -184,11 +182,6 @@ export async function POST(request: NextRequest) {
         if (!pipeline) {
           throw new Error('Failed to create pipeline')
         }
-
-        // ✅ Marcar step de onboarding como completo (chamada manual pois usamos prismaRaw)
-        await checkAndCompleteStep(prismaRaw, ctx.organizationId, 'pipeline').catch(err => {
-          console.error('[Pipeline API] Error completing onboarding step:', err)
-        })
 
         // Format response
         const formattedPipeline = {

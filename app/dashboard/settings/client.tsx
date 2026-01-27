@@ -4,11 +4,9 @@ import { useState } from 'react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { ProfileForm } from '@/components/settings/profile-form'
-import { ResetOnboardingButton } from '@/components/settings/reset-onboarding'
 import { QuickActions } from '@/components/settings/quick-actions'
-import { OnboardingProgress } from '@/components/settings/onboarding-progress'
 import { ViewModeToggle, ViewMode } from '@/components/settings/view-mode-toggle'
-import { User, Users, Key, Webhook, Zap, Bell, BookOpen, Sparkles, ChevronRight } from 'lucide-react'
+import { User, Users, Key, Webhook, Zap, Bell, BookOpen, ChevronRight } from 'lucide-react'
 import Link from 'next/link'
 import { cn } from '@/lib/utils'
 import { toast } from 'sonner'
@@ -22,13 +20,9 @@ interface SettingsClientProps {
       plan: string
     } | null
   }
-  onboardingProgress?: {
-    completedSteps: string[]
-    currentStep: number
-  }
 }
 
-export function SettingsClient({ user, onboardingProgress }: SettingsClientProps) {
+export function SettingsClient({ user }: SettingsClientProps) {
   const [viewMode, setViewMode] = useState<ViewMode>('expanded')
 
   const handleExportData = () => {
@@ -105,42 +99,6 @@ export function SettingsClient({ user, onboardingProgress }: SettingsClientProps
                 <ProfileForm initialData={{ name: user.name || '', email: user.email }} />
               </CardContent>
             )}
-          </Card>
-        </div>
-
-        {/* SEÇÃO: PRIMEIROS PASSOS */}
-        <div className="space-y-3">
-          <h3 className="text-xs font-semibold text-zinc-400 uppercase tracking-wider">
-            Primeiros Passos
-          </h3>
-          <Card className="bg-gradient-to-br from-indigo-500/5 via-purple-500/5 to-pink-500/5 border-indigo-200 dark:border-indigo-500/20 backdrop-blur-xl shadow-sm">
-            <CardHeader className={cn(
-              'flex flex-row items-center gap-4 relative overflow-hidden',
-              isCompact ? 'pb-3' : 'pb-4'
-            )}>
-              <div className="h-10 w-10 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white ring-1 ring-white/5 shadow-[0_0_15px_rgba(99,102,241,0.3)]">
-                <Sparkles className="h-5 w-5" />
-              </div>
-              <div className="flex flex-col gap-1 flex-1">
-                <CardTitle className="text-base font-semibold text-zinc-900 dark:text-zinc-100">
-                  Onboarding Interativo
-                </CardTitle>
-                {!isCompact && (
-                  <CardDescription className="text-zinc-500 text-xs">
-                    Refazer o tour guiado de 5 etapas
-                  </CardDescription>
-                )}
-              </div>
-            </CardHeader>
-            <CardContent className={cn('space-y-4', isCompact && 'pt-0')}>
-              {!isCompact && onboardingProgress && (
-                <OnboardingProgress
-                  completedSteps={onboardingProgress.completedSteps}
-                  totalSteps={5}
-                />
-              )}
-              <ResetOnboardingButton />
-            </CardContent>
           </Card>
         </div>
 
