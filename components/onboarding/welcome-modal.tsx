@@ -79,10 +79,10 @@ export function WelcomeModal({ open, onClose, userName }: WelcomeModalProps) {
           </DialogDescription>
         </DialogHeader>
 
-        <div className="grid gap-6 py-8 sm:grid-cols-3">
+        <div className="grid gap-4 py-6 sm:grid-cols-3">
           {/* Option 1: Demo Data (Magic!) */}
           <Card
-            className={`relative p-8 cursor-pointer transition-all hover:shadow-lg hover:scale-[1.02] border-2 ${
+            className={`relative p-6 cursor-pointer transition-all hover:shadow-lg hover:scale-[1.02] border-2 ${
               selectedChoice === 'demo'
                 ? 'border-indigo-500 bg-indigo-50 dark:bg-indigo-950/20'
                 : 'border-zinc-200 dark:border-zinc-800 hover:border-indigo-300'
@@ -94,29 +94,29 @@ export function WelcomeModal({ open, onClose, userName }: WelcomeModalProps) {
               Recomendado ✨
             </div>
 
-            <div className="space-y-5 pt-2">
-              <div className="w-16 h-16 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-500 flex items-center justify-center mx-auto">
-                <Sparkles className="w-8 h-8 text-white" />
+            <div className="space-y-4 pt-2">
+              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-500 flex items-center justify-center mx-auto">
+                <Sparkles className="w-6 h-6 text-white" />
               </div>
 
-              <div className="text-center space-y-3">
-                <h3 className="font-bold text-xl">Ver Demonstração</h3>
-                <p className="text-base text-muted-foreground">
+              <div className="text-center space-y-2">
+                <h3 className="font-bold text-lg">Ver Demonstração</h3>
+                <p className="text-sm text-muted-foreground">
                   Explore o CRM com dados fictícios prontos. Veja tudo funcionando em segundos!
                 </p>
               </div>
 
-              <div className="pt-3 space-y-2 text-sm text-muted-foreground">
-                <div className="flex items-center gap-3">
-                  <div className="w-1.5 h-1.5 rounded-full bg-green-500" />
+              <div className="pt-2 space-y-1 text-xs text-muted-foreground">
+                <div className="flex items-center gap-2">
+                  <div className="w-1 h-1 rounded-full bg-green-500" />
                   <span>5 leads prontos</span>
                 </div>
-                <div className="flex items-center gap-3">
-                  <div className="w-1.5 h-1.5 rounded-full bg-green-500" />
+                <div className="flex items-center gap-2">
+                  <div className="w-1 h-1 rounded-full bg-green-500" />
                   <span>Pipeline organizado</span>
                 </div>
-                <div className="flex items-center gap-3">
-                  <div className="w-1.5 h-1.5 rounded-full bg-green-500" />
+                <div className="flex items-center gap-2">
+                  <div className="w-1 h-1 rounded-full bg-green-500" />
                   <span>Tour guiado incluído</span>
                 </div>
               </div>
@@ -139,36 +139,36 @@ export function WelcomeModal({ open, onClose, userName }: WelcomeModalProps) {
 
           {/* Option 2: Import Data */}
           <Card
-            className={`p-8 cursor-pointer transition-all hover:shadow-lg hover:scale-[1.02] border-2 ${
+            className={`p-6 cursor-pointer transition-all hover:shadow-lg hover:scale-[1.02] border-2 ${
               selectedChoice === 'import'
                 ? 'border-blue-500 bg-blue-50 dark:bg-blue-950/20'
                 : 'border-zinc-200 dark:border-zinc-800 hover:border-blue-300'
             }`}
             onClick={() => !isLoading && handleChoice('import')}
           >
-            <div className="space-y-5">
-              <div className="w-16 h-16 rounded-xl bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center mx-auto">
-                <FileUp className="w-8 h-8 text-blue-600 dark:text-blue-400" />
+            <div className="space-y-4">
+              <div className="w-12 h-12 rounded-xl bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center mx-auto">
+                <FileUp className="w-6 h-6 text-blue-600 dark:text-blue-400" />
               </div>
 
-              <div className="text-center space-y-3">
-                <h3 className="font-bold text-xl">Importar Dados</h3>
-                <p className="text-base text-muted-foreground">
+              <div className="text-center space-y-2">
+                <h3 className="font-bold text-lg">Importar Dados</h3>
+                <p className="text-sm text-muted-foreground">
                   Traga seus contatos do Excel ou CSV. Rápido e fácil.
                 </p>
               </div>
 
-              <div className="pt-3 space-y-2 text-sm text-muted-foreground">
-                <div className="flex items-center gap-3">
-                  <div className="w-1.5 h-1.5 rounded-full bg-blue-500" />
+              <div className="pt-2 space-y-1 text-xs text-muted-foreground">
+                <div className="flex items-center gap-2">
+                  <div className="w-1 h-1 rounded-full bg-blue-500" />
                   <span>Excel/CSV aceitos</span>
                 </div>
-                <div className="flex items-center gap-3">
-                  <div className="w-1.5 h-1.5 rounded-full bg-blue-500" />
+                <div className="flex items-center gap-2">
+                  <div className="w-1 h-1 rounded-full bg-blue-500" />
                   <span>Google Contacts</span>
                 </div>
-                <div className="flex items-center gap-3">
-                  <div className="w-1.5 h-1.5 rounded-full bg-zinc-400" />
+                <div className="flex items-center gap-2">
+                  <div className="w-1 h-1 rounded-full bg-zinc-400" />
                   <span className="italic">Em breve</span>
                 </div>
               </div>
@@ -192,36 +192,36 @@ export function WelcomeModal({ open, onClose, userName }: WelcomeModalProps) {
 
           {/* Option 3: Start from Scratch */}
           <Card
-            className={`p-8 cursor-pointer transition-all hover:shadow-lg hover:scale-[1.02] border-2 ${
+            className={`p-6 cursor-pointer transition-all hover:shadow-lg hover:scale-[1.02] border-2 ${
               selectedChoice === 'scratch'
                 ? 'border-green-500 bg-green-50 dark:bg-green-950/20'
                 : 'border-zinc-200 dark:border-zinc-800 hover:border-green-300'
             }`}
             onClick={() => !isLoading && handleChoice('scratch')}
           >
-            <div className="space-y-5">
-              <div className="w-16 h-16 rounded-xl bg-green-100 dark:bg-green-900/30 flex items-center justify-center mx-auto">
-                <Zap className="w-8 h-8 text-green-600 dark:text-green-400" />
+            <div className="space-y-4">
+              <div className="w-12 h-12 rounded-xl bg-green-100 dark:bg-green-900/30 flex items-center justify-center mx-auto">
+                <Zap className="w-6 h-6 text-green-600 dark:text-green-400" />
               </div>
 
-              <div className="text-center space-y-3">
-                <h3 className="font-bold text-xl">Começar do Zero</h3>
-                <p className="text-base text-muted-foreground">
+              <div className="text-center space-y-2">
+                <h3 className="font-bold text-lg">Começar do Zero</h3>
+                <p className="text-sm text-muted-foreground">
                   Configure tudo do seu jeito. Total liberdade desde o início.
                 </p>
               </div>
 
-              <div className="pt-3 space-y-2 text-sm text-muted-foreground">
-                <div className="flex items-center gap-3">
-                  <div className="w-1.5 h-1.5 rounded-full bg-green-500" />
+              <div className="pt-2 space-y-1 text-xs text-muted-foreground">
+                <div className="flex items-center gap-2">
+                  <div className="w-1 h-1 rounded-full bg-green-500" />
                   <span>CRM limpo</span>
                 </div>
-                <div className="flex items-center gap-3">
-                  <div className="w-1.5 h-1.5 rounded-full bg-green-500" />
+                <div className="flex items-center gap-2">
+                  <div className="w-1 h-1 rounded-full bg-green-500" />
                   <span>Personalize tudo</span>
                 </div>
-                <div className="flex items-center gap-3">
-                  <div className="w-1.5 h-1.5 rounded-full bg-green-500" />
+                <div className="flex items-center gap-2">
+                  <div className="w-1 h-1 rounded-full bg-green-500" />
                   <span>Seu ritmo</span>
                 </div>
               </div>
@@ -244,7 +244,7 @@ export function WelcomeModal({ open, onClose, userName }: WelcomeModalProps) {
           </Card>
         </div>
 
-        <div className="text-center text-sm text-muted-foreground pt-4 border-t">
+        <div className="text-center text-xs text-muted-foreground pt-2 border-t">
           <p>💡 Dica: Escolha a demonstração para ver o poder do Sirius em ação!</p>
         </div>
       </DialogContent>
