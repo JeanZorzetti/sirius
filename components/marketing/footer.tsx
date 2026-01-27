@@ -99,6 +99,22 @@ export function Footer() {
                   Calc. para Agências
                 </Link>
               </li>
+              <li>
+                <Link
+                  href="/ferramentas/calculadora-roi-consultores"
+                  className="text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  Calc. para Consultores
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/ferramentas/calculadora-roi-representantes"
+                  className="text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  Calc. para Representantes
+                </Link>
+              </li>
             </ul>
           </div>
 

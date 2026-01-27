@@ -50,6 +50,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
         '/ferramentas/calculadora-roi-corretores',
         '/ferramentas/calculadora-roi-energia-solar',
         '/ferramentas/calculadora-roi-agencias',
+        '/ferramentas/calculadora-roi-consultores',
+        '/ferramentas/calculadora-roi-representantes',
     ].map((route) => ({
         url: `${baseUrl}${route}`,
         lastModified: new Date(),
