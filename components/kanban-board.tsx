@@ -2,34 +2,22 @@
 
 import { useState, useEffect, useRef, useMemo } from 'react'
 import {
-  DndContext,
-  DragEndEvent,
-  DragOverlay,
-  DragStartEvent,
-  PointerSensor,
-  closestCorners,
-  useDroppable,
-  useSensor,
-  useSensors,
-  DragOverEvent
-} from '@dnd-kit/core'
-import {
-  SortableContext,
-  verticalListSortingStrategy,
-  horizontalListSortingStrategy,
-  useSortable,
-  arrayMove
-} from '@dnd-kit/sortable'
-import { CSS } from '@dnd-kit/utilities'
+  DragDropContext,
+  Droppable,
+  Draggable,
+  DropResult,
+  DraggableProvided,
+  DroppableProvided,
+  DraggableStateSnapshot
+} from '@hello-pangea/dnd'
 import { Card, CardContent } from '@/components/ui/card'
 import { updateDealStage } from '@/app/dashboard/actions'
 import { updateStageOrder, deleteStage, updateStage, createStage } from '@/app/dashboard/pipeline/actions'
 import { reorderDeals } from '@/app/dashboard/deals/actions'
 import { EditDealDialog } from '@/components/deals/edit-deal-dialog'
-import { MessageCircle, GripVertical, MoreHorizontal, Pencil, Trash2, Plus, Phone } from 'lucide-react'
+import { MessageCircle, GripVertical, MoreHorizontal, Pencil, Trash2, Plus } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
-import { useDragScroll } from '@/hooks/useDragScroll'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -81,105 +69,25 @@ type KanbanBoardProps = {
   onSuccess?: () => void
 }
 
-function DealCard({
-  deal,
-  onClick,
-  dragHandleRef,
-  dragHandleListeners,
-  dragHandleAttributes
-}: {
-  deal: Deal
-  onClick?: () => void
-  dragHandleRef?: any
-  dragHandleListeners?: any
-  dragHandleAttributes?: any
-}) {
-  const handleWhatsApp = (e: React.MouseEvent) => {
-    e.stopPropagation() // Prevent card click
-    if (!deal.contact?.phone) return
-    const phone = deal.contact.phone.replace(/\D/g, '')
-    window.open(`https://wa.me/${phone}`, '_blank')
-  }
-
-  return (
-    <div
-      className={cn(
-        "group relative flex gap-3 rounded-xl border p-4 shadow-sm select-none",
-        "bg-card border-border hover:border-indigo-500/30",
-        "dark:bg-[#121217] dark:border-white/5"
-      )}
-    >
-      {/* Drag Handle - 6 pontinhos */}
-      <div
-        ref={dragHandleRef}
-        {...dragHandleListeners}
-        {...dragHandleAttributes}
-        data-drag-handle="true"
-        className="flex-shrink-0 flex items-center cursor-grab active:cursor-grabbing opacity-0 group-hover:opacity-100 transition-opacity touch-none select-none"
-        title="Arrastar card"
-      >
-        <GripVertical className="h-5 w-5 text-zinc-400 hover:text-indigo-500 transition-colors pointer-events-none" />
-      </div>
-
-      {/* Card Content */}
-      <div className="flex-1 flex flex-col gap-3 min-w-0">
-        <div className="flex items-start justify-between gap-2">
-          <span
-            className="text-sm font-medium text-foreground line-clamp-2 leading-relaxed dark:text-zinc-200"
-            draggable={false}
-          >
-            {deal.title}
-          </span>
-        </div>
-
-        <div className="flex items-center justify-between mt-1">
-          <div className="flex flex-col">
-            <span className="text-[10px] uppercase tracking-wider text-zinc-500 font-semibold" draggable={false}>
-              Valor
-            </span>
-            <span className="text-sm font-mono font-bold text-indigo-400" draggable={false}>
-              {deal.value ? `R$ ${Number(deal.value).toFixed(2)}` : '-'}
-            </span>
-          </div>
-
-          {deal.contact?.phone && (
-            <Button
-              size="icon"
-              variant="ghost"
-              className="h-7 w-7 rounded-full bg-green-500/10 text-green-500 hover:bg-green-500/20 hover:text-green-400 transition-colors pointer-events-auto"
-              onClick={handleWhatsApp}
-              title={`Conversar com ${deal.contact.name}`}
-            >
-              <MessageCircle className="h-4 w-4" />
-            </Button>
-          )}
-        </div>
-
-        {deal.contact && (
-          <div className="pt-3 border-t border-border/50 flex items-center gap-2">
-            <div className="w-1.5 h-1.5 rounded-full bg-zinc-400 dark:bg-zinc-700" />
-            <div className="text-xs text-muted-foreground truncate max-w-[150px]" draggable={false}>
-              {deal.contact.name}
-            </div>
-          </div>
-        )}
-      </div>
-    </div>
-  )
+// Reorder helper
+function reorder<T>(list: T[], startIndex: number, endIndex: number): T[] {
+  const result = Array.from(list)
+  const [removed] = result.splice(startIndex, 1)
+  result.splice(endIndex, 0, removed)
+  return result
 }
 
-function SortableDealCard({ deal }: { deal: Deal }) {
-  const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
-    id: deal.id,
-    data: { type: 'Deal', deal }
-  })
-
-  const style = {
-    transform: CSS.Transform.toString(transform),
-    transition,
-    opacity: isDragging ? 0.5 : 1,
-  }
-
+function DealCard({
+  deal,
+  provided,
+  snapshot,
+  onClick
+}: {
+  deal: Deal
+  provided: DraggableProvided
+  snapshot: DraggableStateSnapshot
+  onClick?: () => void
+}) {
   const handleWhatsApp = (e: React.MouseEvent) => {
     e.stopPropagation()
     if (!deal.contact?.phone) return
@@ -189,21 +97,22 @@ function SortableDealCard({ deal }: { deal: Deal }) {
 
   return (
     <div
-      ref={setNodeRef}
-      style={style}
-      {...attributes}
-      {...listeners}
+      ref={provided.innerRef}
+      {...provided.draggableProps}
+      {...provided.dragHandleProps}
+      onClick={onClick}
       className={cn(
-        "group relative flex gap-3 rounded-xl border p-4 shadow-sm select-none touch-none cursor-grab active:cursor-grabbing",
+        "group relative flex gap-3 rounded-xl border p-4 shadow-sm select-none cursor-grab active:cursor-grabbing",
         "bg-card border-border hover:border-indigo-500/30",
-        "dark:bg-[#121217] dark:border-white/5"
+        "dark:bg-[#121217] dark:border-white/5",
+        snapshot.isDragging && "rotate-2 scale-105 shadow-2xl shadow-indigo-500/20 z-50"
       )}
+      style={{
+        ...provided.draggableProps.style,
+      }}
     >
-      {/* Drag Handle - 6 pontinhos */}
-      <div
-        className="flex-shrink-0 flex items-center opacity-0 group-hover:opacity-100 transition-opacity"
-        title="Arrastar card"
-      >
+      {/* Drag Handle */}
+      <div className="flex-shrink-0 flex items-center opacity-0 group-hover:opacity-100 transition-opacity">
         <GripVertical className="h-5 w-5 text-zinc-400 hover:text-indigo-500 transition-colors pointer-events-none" />
       </div>
 
@@ -215,18 +124,26 @@ function SortableDealCard({ deal }: { deal: Deal }) {
           </span>
         </div>
 
-        <div className="flex items-center gap-2 text-xs">
-          <span className="font-bold text-indigo-600 dark:text-indigo-400">
-            {deal.value ? `R$ ${Number(deal.value).toFixed(2)}` : '-'}
-          </span>
+        <div className="flex items-center justify-between mt-1">
+          <div className="flex flex-col">
+            <span className="text-[10px] uppercase tracking-wider text-zinc-500 font-semibold">
+              Valor
+            </span>
+            <span className="text-sm font-mono font-bold text-indigo-400">
+              {deal.value ? `R$ ${Number(deal.value).toFixed(2)}` : '-'}
+            </span>
+          </div>
+
           {deal.contact?.phone && (
-            <button
+            <Button
+              size="icon"
+              variant="ghost"
+              className="h-7 w-7 rounded-full bg-green-500/10 text-green-500 hover:bg-green-500/20 hover:text-green-400 transition-colors"
               onClick={handleWhatsApp}
-              className="ml-auto p-1.5 rounded-md hover:bg-green-500/10 text-green-600 dark:text-green-500 transition-colors"
-              title="Abrir WhatsApp"
+              title={`Conversar com ${deal.contact.name}`}
             >
-              <Phone className="w-3.5 h-3.5" />
-            </button>
+              <MessageCircle className="h-4 w-4" />
+            </Button>
           )}
         </div>
 
@@ -243,30 +160,19 @@ function SortableDealCard({ deal }: { deal: Deal }) {
   )
 }
 
-function KanbanColumn({ stage, onDealClick, isOverlay, onRename, onDelete }: {
-  stage: Stage,
-  onDealClick?: (deal: Deal) => void,
-  isOverlay?: boolean,
-  onRename?: (id: string, name: string) => void,
+function KanbanColumn({
+  stage,
+  onDealClick,
+  onRename,
+  onDelete
+}: {
+  stage: Stage
+  onDealClick?: (deal: Deal) => void
+  onRename?: (id: string, name: string) => void
   onDelete?: (id: string) => void
 }) {
-  // TESTE: DESATIVAR useSortable do column para testar se nested sortable é o problema
-  // const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
-  //   id: stage.id,
-  //   data: { type: 'Stage', stage }
-  // })
-
-  // const style = {
-  //   transform: CSS.Transform.toString(transform),
-  //   transition,
-  //   opacity: isDragging ? 0.5 : 1,
-  // }
-
-  const style = {}
-
   const totalValue = stage.deals.reduce((acc, deal) => acc + (deal.value ? Number(deal.value) : 0), 0)
 
-  // Edit State
   const [isEditing, setIsEditing] = useState(false)
   const [newName, setNewName] = useState(stage.name)
 
@@ -276,23 +182,10 @@ function KanbanColumn({ stage, onDealClick, isOverlay, onRename, onDelete }: {
     setIsEditing(false)
   }
 
-  const { setNodeRef } = useDroppable({
-    id: stage.id,
-    data: { type: 'Stage', stage }
-  })
-
   return (
-    <div
-      ref={setNodeRef}
-      style={style}
-      className={cn("w-70 sm:w-80 flex-none flex flex-col h-full", isOverlay && "rotate-2 scale-105 opacity-90")}
-    >
+    <div className="w-70 sm:w-80 flex-none flex flex-col h-full">
       {/* Column Header */}
-      <div
-        className="flex flex-col gap-1 px-1 mb-4 select-none"
-        // {...attributes}
-        // {...listeners} // Drag handle is the whole header area
-      >
+      <div className="flex flex-col gap-1 px-1 mb-4 select-none">
         <div className="flex items-center justify-between group/header">
           {isEditing ? (
             <form onSubmit={handleRenameSubmit} className="flex-1 mr-2">
@@ -339,39 +232,50 @@ function KanbanColumn({ stage, onDealClick, isOverlay, onRename, onDelete }: {
         </div>
       </div>
 
-      {/* Column Body (Glassmorphism Enhanced) */}
-      <div className="flex-1 rounded-2xl bg-gradient-to-b from-white/[0.07] to-white/[0.02] backdrop-blur-xl p-3 border border-white/10 shadow-[0_8px_32px_0_rgba(0,0,0,0.08)] dark:shadow-[0_8px_32px_0_rgba(0,0,0,0.3)]">
-        <SortableContext
-          items={stage.deals.map((deal) => deal.id)}
-          strategy={verticalListSortingStrategy}
-        >
-          <div className="flex flex-col gap-3 min-h-[150px]">
-            {stage.deals.map((deal) => (
-              <SortableDealCard
-                key={deal.id}
-                deal={deal}
-                // onClick={() => onDealClick?.(deal)}
-              />
-            ))}
-            {stage.deals.length === 0 && !isOverlay && (
-              <div className="flex h-40 flex-col items-center justify-center rounded-xl border-2 border-dashed border-white/5 bg-white/[0.01] p-4 text-center gap-3 transition-colors hover:bg-white/[0.02]">
-                <div className="rounded-full bg-zinc-900/50 p-3 ring-1 ring-white/10">
-                  <div className="w-5 h-5 opacity-20 bg-zinc-400 mask-icon" />
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-zinc-600 opacity-50">
-                    <path d="M19 11V9C19 5.13401 15.866 2 12 2C8.13401 2 5 5.13401 5 9V11" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-                    <path d="M5 11C5 11 5 14.5455 5 16C5 19.866 8.13401 23 12 23C15.866 23 19 19.866 19 16C19 14.5455 19 11 19 11" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-                    <path d="M12 11V15" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-                  </svg>
-                </div>
-                <div className="flex flex-col gap-0.5">
-                  <span className="text-xs font-medium text-zinc-500">Vazio</span>
-                  <span className="text-[10px] text-zinc-600">Arraste um card para cá</span>
-                </div>
-              </div>
+      {/* Column Body - Droppable Area */}
+      <Droppable droppableId={stage.id} type="DEAL">
+        {(provided: DroppableProvided, snapshot) => (
+          <div
+            ref={provided.innerRef}
+            {...provided.droppableProps}
+            className={cn(
+              "flex-1 rounded-2xl bg-gradient-to-b from-white/[0.07] to-white/[0.02] backdrop-blur-xl p-3 border border-white/10 shadow-[0_8px_32px_0_rgba(0,0,0,0.08)] dark:shadow-[0_8px_32px_0_rgba(0,0,0,0.3)]",
+              snapshot.isDraggingOver && "border-indigo-500/30 bg-indigo-500/5"
             )}
+          >
+            <div className="flex flex-col gap-3 min-h-[150px]">
+              {stage.deals.map((deal, index) => (
+                <Draggable key={deal.id} draggableId={deal.id} index={index}>
+                  {(provided, snapshot) => (
+                    <DealCard
+                      deal={deal}
+                      provided={provided}
+                      snapshot={snapshot}
+                      onClick={() => onDealClick?.(deal)}
+                    />
+                  )}
+                </Draggable>
+              ))}
+              {provided.placeholder}
+              {stage.deals.length === 0 && (
+                <div className="flex h-40 flex-col items-center justify-center rounded-xl border-2 border-dashed border-white/5 bg-white/[0.01] p-4 text-center gap-3 transition-colors hover:bg-white/[0.02]">
+                  <div className="rounded-full bg-zinc-900/50 p-3 ring-1 ring-white/10">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-zinc-600 opacity-50">
+                      <path d="M19 11V9C19 5.13401 15.866 2 12 2C8.13401 2 5 5.13401 5 9V11" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                      <path d="M5 11C5 11 5 14.5455 5 16C5 19.866 8.13401 23 12 23C15.866 23 19 19.866 19 16C19 14.5455 19 11 19 11" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                      <path d="M12 11V15" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                    </svg>
+                  </div>
+                  <div className="flex flex-col gap-0.5">
+                    <span className="text-xs font-medium text-zinc-500">Vazio</span>
+                    <span className="text-[10px] text-zinc-600">Arraste um card para cá</span>
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
-        </SortableContext>
-      </div>
+        )}
+      </Droppable>
     </div>
   )
 }
@@ -385,8 +289,6 @@ export function KanbanBoard({
   onSuccess
 }: KanbanBoardProps) {
   const [stages, setStages] = useState(initialStages)
-  const [activeDeal, setActiveDeal] = useState<Deal | null>(null)
-  const [activeStage, setActiveStage] = useState<Stage | null>(null) // For Column Drag
   const [editingDeal, setEditingDeal] = useState<Deal | null>(null)
 
   // New Stage Dialog
@@ -396,19 +298,16 @@ export function KanbanBoard({
   // Filters
   const [searchQuery, setSearchQuery] = useState("")
 
-  // Drag to scroll functionality - TEMPORARIAMENTE DESATIVADO PARA TESTE
-  // const scrollContainerRef = useDragScroll<HTMLDivElement>()
   const scrollContainerRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    // Sort local input stages carefully if needed, but assuming server sends ordered
     setStages(initialStages.sort((a, b) => a.order - b.order))
   }, [initialStages])
 
-  // Filter deals based on search - CRITICAL: Use useMemo to maintain object references for dnd-kit
+  // Filter deals based on search
   const filteredStages = useMemo(() => {
     if (!searchQuery) {
-      return stages // NO filter: return original stages to maintain references
+      return stages
     }
 
     const query = searchQuery.toLowerCase()
@@ -423,7 +322,6 @@ export function KanbanBoard({
 
   // Handlers for Stage CRUD
   const handleRenameStage = async (id: string, name: string) => {
-    // Optimistic
     setStages(prev => prev.map(s => s.id === id ? { ...s, name } : s))
     await updateStage(id, name)
     onSuccess?.()
@@ -448,165 +346,89 @@ export function KanbanBoard({
     if (result.success) {
       setIsNewStageOpen(false)
       setNewStageName("")
-      // Trigger router.refresh() via callback para recarregar props do servidor
       onSuccess?.()
     } else {
       alert('Erro ao criar etapa')
     }
   }
 
-  const sensors = useSensors(
-    useSensor(PointerSensor, {
-      activationConstraint: {
-        distance: 3, // Pixels to move before drag starts (reduced for better responsiveness)
-      },
-    })
-  )
+  const handleDragEnd = async (result: DropResult) => {
+    const { destination, source, draggableId } = result
 
-  const handleDragStart = (event: DragStartEvent) => {
-    const { active } = event
-    const type = active.data.current?.type
+    // Dropped outside
+    if (!destination) return
 
-    // Add dragging class to body to prevent text selection globally
-    // TEMPORARIAMENTE DESATIVADO PARA TESTE
-    // document.body.classList.add('dragging')
-
-    // TESTE: Comentar Stage dragging
-    // if (type === 'Stage') {
-    //   const stage = stages.find(s => s.id === active.id)
-    //   setActiveStage(stage || null)
-    //   return
-    // }
-
-    if (type === 'Deal') {
-      const deal = stages
-        .flatMap((stage) => stage.deals)
-        .find((d) => d.id === active.id)
-      // Create a shallow copy to preserve the original stageId
-      setActiveDeal(deal ? { ...deal } : null)
+    // No movement
+    if (
+      destination.droppableId === source.droppableId &&
+      destination.index === source.index
+    ) {
       return
     }
-  }
 
+    const sourceStageIndex = stages.findIndex(s => s.id === source.droppableId)
+    const destStageIndex = stages.findIndex(s => s.id === destination.droppableId)
 
-  const handleDragEnd = async (event: DragEndEvent) => {
-    const { active, over } = event
+    if (sourceStageIndex === -1 || destStageIndex === -1) return
 
-    setActiveDeal(null)
-
-    if (!over || active.id === over.id) return
-
-    // Verify if we're over a stage directly (empty column drop)
-    const isOverStage = active.data.current?.type === 'Stage' || over.data.current?.type === 'Stage'
-    
-    // Find active stage (source)
-    const activeStageIndex = stages.findIndex(s => s.deals.some(d => d.id === active.id))
-    
-    // Find over stage (destination)
-    let overStageIndex = -1
-    if (over.data.current?.type === 'Stage') {
-      overStageIndex = stages.findIndex(s => s.id === over.id)
-    } else {
-      overStageIndex = stages.findIndex(s => s.deals.some(d => d.id === over.id))
-    }
-
-    if (activeStageIndex === -1 || overStageIndex === -1) return
-
-    const activeStage = stages[activeStageIndex]
-    const overStage = stages[overStageIndex]
+    const sourceStage = stages[sourceStageIndex]
+    const destStage = stages[destStageIndex]
 
     // Same column reorder
-    if (activeStageIndex === overStageIndex) {
-      const oldIndex = activeStage.deals.findIndex(d => d.id === active.id)
-      const newIndex = activeStage.deals.findIndex(d => d.id === over.id)
-
-      if (oldIndex !== newIndex) {
-        setStages(prev => {
-          const newStages = [...prev]
-          newStages[activeStageIndex] = {
-            ...newStages[activeStageIndex],
-            deals: arrayMove(newStages[activeStageIndex].deals, oldIndex, newIndex)
-          }
-          return newStages
-        })
-
-        const reorderedDeals = arrayMove(
-          activeStage.deals,
-          oldIndex,
-          newIndex
-        ).map((deal, index) => ({ id: deal.id, order: index }))
-
-        await reorderDeals(activeStage.id, reorderedDeals)
-      }
-    } else {
-      // Moving to different column
-      const activeDealIndex = activeStage.deals.findIndex(d => d.id === active.id)
-      const activeDeal = activeStage.deals[activeDealIndex]
-
-      let newIndex: number
-      if (over.data.current?.type === 'Stage') {
-        // Dropped on a stage container -> append to end
-        newIndex = overStage.deals.length
-      } else {
-        // Dropped relative to another deal
-        const isBelowOverItem =
-          over &&
-          active.rect.current.translated &&
-          active.rect.current.translated.top > over.rect.top + over.rect.height;
-
-        const modifier = isBelowOverItem ? 1 : 0;
-        
-        // If undefined, default to length (shouldn't happen if found overStage via deal)
-        const overDealIndex = overStage.deals.findIndex(d => d.id === over.id)
-        newIndex = overDealIndex >= 0 ? overDealIndex + modifier : overStage.deals.length + 1
-      }
+    if (source.droppableId === destination.droppableId) {
+      const newDeals = reorder(sourceStage.deals, source.index, destination.index)
 
       setStages(prev => {
         const newStages = [...prev]
-        
-        // Remove from old
-        const sourceStage = { ...newStages[activeStageIndex] }
-        sourceStage.deals = [...sourceStage.deals]
-        sourceStage.deals.splice(activeDealIndex, 1)
-        
-        // Add to new
-        const destStage = { ...newStages[overStageIndex] }
-        destStage.deals = [...destStage.deals]
-        
-        // Update deal stageId locally
-        const updatedDeal = { ...activeDeal, stageId: destStage.id }
-        
-        // Insert at new index
-        destStage.deals.splice(newIndex, 0, updatedDeal)
-        
-        newStages[activeStageIndex] = sourceStage
-        newStages[overStageIndex] = destStage
-        
+        newStages[sourceStageIndex] = {
+          ...sourceStage,
+          deals: newDeals
+        }
         return newStages
       })
 
-      // Backend updates
-      // 1. Update Stage
-      await updateDealStage(activeDeal.id, overStage.id)
-      
-      // 2. Update Order in new stage
-      // Recalculate orders based on the NEW state we just created locally
-      // We need to reconstruct the array as we did in setStages to get accurate order
-      const newDealsForOrdering = [...overStage.deals]
-      newDealsForOrdering.splice(newIndex, 0, activeDeal) 
-      const reorderedDeals = newDealsForOrdering.map((deal, index) => ({ id: deal.id, order: index }))
-      
-      await reorderDeals(overStage.id, reorderedDeals)
+      // Persist to backend
+      const reorderedDeals = newDeals.map((deal, index) => ({ id: deal.id, order: index }))
+      await reorderDeals(sourceStage.id, reorderedDeals)
+
+    } else {
+      // Moving to different column
+      const sourceDeal = sourceStage.deals[source.index]
+
+      // Remove from source
+      const newSourceDeals = [...sourceStage.deals]
+      newSourceDeals.splice(source.index, 1)
+
+      // Add to destination
+      const newDestDeals = [...destStage.deals]
+      const updatedDeal = { ...sourceDeal, stageId: destStage.id }
+      newDestDeals.splice(destination.index, 0, updatedDeal)
+
+      setStages(prev => {
+        const newStages = [...prev]
+        newStages[sourceStageIndex] = {
+          ...sourceStage,
+          deals: newSourceDeals
+        }
+        newStages[destStageIndex] = {
+          ...destStage,
+          deals: newDestDeals
+        }
+        return newStages
+      })
+
+      // Persist to backend
+      // 1. Update deal's stage
+      await updateDealStage(sourceDeal.id, destStage.id)
+
+      // 2. Update order in destination stage
+      const reorderedDeals = newDestDeals.map((deal, index) => ({ id: deal.id, order: index }))
+      await reorderDeals(destStage.id, reorderedDeals)
     }
   }
 
   return (
-    <DndContext
-      sensors={sensors}
-      collisionDetection={closestCorners}
-      onDragStart={handleDragStart}
-      onDragEnd={handleDragEnd}
-    >
+    <DragDropContext onDragEnd={handleDragEnd}>
       <div className="flex flex-col h-full gap-4">
         {/* Pipeline Header / Toolbar */}
         <div className="flex items-center justify-between px-2">
@@ -626,39 +448,20 @@ export function KanbanBoard({
 
         <div
           ref={scrollContainerRef}
-          className="flex h-full gap-6 pb-4 px-2"
+          className="flex h-full gap-6 pb-4 px-2 overflow-x-auto"
         >
-          {/* TESTE: Comentar SortableContext das stages para isolar nested sortable problem */}
-          {/* <SortableContext items={stages.map(s => s.id)} strategy={horizontalListSortingStrategy}> */}
-            {filteredStages.map((stage) => (
-              <KanbanColumn
-                key={stage.id}
-                stage={stage}
-                onDealClick={(deal) => setEditingDeal(deal)}
-                onRename={handleRenameStage}
-                onDelete={handleDeleteStage}
-              />
-            ))}
-          {/* </SortableContext> */}
-          <div className="w-10 shrink-0" /> {/* Padding end */}
+          {filteredStages.map((stage) => (
+            <KanbanColumn
+              key={stage.id}
+              stage={stage}
+              onDealClick={(deal) => setEditingDeal(deal)}
+              onRename={handleRenameStage}
+              onDelete={handleDeleteStage}
+            />
+          ))}
+          <div className="w-10 shrink-0" />
         </div>
       </div>
-
-      <DragOverlay>
-        {activeDeal ? (
-          <div className="rotate-2 scale-105 shadow-2xl shadow-indigo-500/20 cursor-grabbing w-[300px]">
-            <DealCard deal={activeDeal} />
-          </div>
-        ) : activeStage ? (
-          <div className="h-full opacity-80">
-            <KanbanColumn
-              stage={activeStage}
-              isOverlay
-              onDealClick={() => { }}
-            />
-          </div>
-        ) : null}
-      </DragOverlay>
 
       <EditDealDialog
         deal={editingDeal}
@@ -690,6 +493,6 @@ export function KanbanBoard({
           </form>
         </DialogContent>
       </Dialog>
-    </DndContext>
+    </DragDropContext>
   )
 }
