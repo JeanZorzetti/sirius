@@ -85,9 +85,9 @@ export function PipelineManagementClient({ pipelines: initialPipelines, isPro }:
       setPipelineName('')
       router.refresh()
     } else {
-      // Check if it's an upgrade required error
-      if (result.error === 'UPGRADE_REQUIRED') {
-        toast.error(result.message || 'Funcionalidade PRO')
+      // Check if it's a plan limit error
+      if ('code' in result && result.code === 'PLAN_LIMIT_REACHED') {
+        toast.error(result.error || 'Limite do plano atingido')
         setIsCreateDialogOpen(false)
         // Redirect to billing page
         router.push('/dashboard/billing')
