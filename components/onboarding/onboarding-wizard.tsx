@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useOnboarding } from "@/hooks/useOnboarding";
+import { useStepCompletionDetection } from "@/hooks/useStepCompletionDetection";
 import {
   Card,
   CardContent,
@@ -65,6 +66,26 @@ export function OnboardingWizard({ onComplete, onSkip }: OnboardingWizardProps) 
   const currentStepIndex = onboarding?.currentStep ?? 0;
   const currentStep = steps[currentStepIndex];
 
+  // ✅ POLLING AUTOMÁTICO - Detecta quando usuário completa ação
+  useStepCompletionDetection({
+    stepId: currentStep?.id || '',
+    enabled: !!currentStep && !isStepCompleted(currentStep.id) && !isNavigating,
+    onComplete: (result) => {
+      console.log('[Wizard] Step auto-completed via polling:', result);
+
+      // Mostrar badge se ganhou
+      if (result.newBadges.length > 0) {
+        setNewBadgeEarned(result.newBadges[0]);
+        setTimeout(() => setNewBadgeEarned(null), 3000);
+      }
+
+      // Recarregar dados do onboarding para atualizar UI
+      setTimeout(() => {
+        window.location.reload();
+      }, 2000);
+    },
+  });
+
   // Carregar estado de minimização do localStorage (padrão Orion)
   useEffect(() => {
     const minimized = localStorage.getItem('sirius-onboarding-minimized');
@@ -106,37 +127,15 @@ export function OnboardingWizard({ onComplete, onSkip }: OnboardingWizardProps) 
     setIsMinimized(true);
   };
 
-  // Auto-complete steps when user returns from onboarding action
+  // Limpeza: Remover parâmetro ?onboarding=true da URL se existir
   useEffect(() => {
-    if (!data || !currentStep || isLoading) return;
-
-    const checkAndCompleteStep = async () => {
-      // Se o step já está completo, não fazer nada
-      if (isStepCompleted(currentStep.id)) return;
-
-      // Welcome step completa automaticamente ao aparecer (após 500ms)
-      if (currentStep.id === "welcome" && currentStepIndex === 0) {
-        // Não completar automaticamente, deixar usuário clicar "Começar"
-        return;
-      }
-
-      // Check if user returned from completing onboarding action
-      const urlParams = new URLSearchParams(window.location.search);
-      const isReturningFromOnboarding = urlParams.get('onboarding') === 'true';
-
-      if (isReturningFromOnboarding) {
-        // Remove the onboarding param from URL (clean URL)
-        urlParams.delete('onboarding');
-        const newUrl = window.location.pathname + (urlParams.toString() ? '?' + urlParams.toString() : '');
-        window.history.replaceState({}, '', newUrl);
-
-        // Mark current step as complete and advance
-        await completeStep(currentStep.id);
-      }
-    };
-
-    checkAndCompleteStep();
-  }, [currentStep, data, isLoading, currentStepIndex, isStepCompleted, completeStep]);
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.has('onboarding')) {
+      urlParams.delete('onboarding');
+      const newUrl = window.location.pathname + (urlParams.toString() ? '?' + urlParams.toString() : '');
+      window.history.replaceState({}, '', newUrl);
+    }
+  }, []);
 
   // Navigate to relevant page based on step
   const handleStepAction = async () => {
@@ -157,21 +156,20 @@ export function OnboardingWizard({ onComplete, onSkip }: OnboardingWizardProps) 
         setIsNavigating(false);
         break;
       case "organization":
-        // Navegar SEM marcar como completo ainda
-        // O wizard detectará automaticamente quando voltar
-        router.push("/dashboard/settings?tab=organization&onboarding=true");
+        // Navegar para settings - polling detectará quando salvar
+        router.push("/dashboard/settings?tab=general");
         break;
       case "pipeline":
-        // Navegar SEM marcar como completo ainda
-        router.push("/dashboard?showPipelineSettings=true&onboarding=true");
+        // Navegar para dashboard - polling detectará quando criar pipeline
+        router.push("/dashboard/pipelines");
         break;
       case "first_contact":
-        // Navegar SEM marcar como completo ainda
-        router.push("/dashboard/contacts?showNewContact=true&onboarding=true");
+        // Navegar para contatos - polling detectará quando criar contato
+        router.push("/dashboard/contacts");
         break;
       case "first_deal":
-        // Navegar SEM marcar como completo ainda
-        router.push("/dashboard?showNewDeal=true&onboarding=true");
+        // Navegar para dashboard - polling detectará quando criar deal
+        router.push("/dashboard");
         break;
       default:
         await handleCompleteStep();
