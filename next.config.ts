@@ -5,11 +5,6 @@ import { withSentryConfig } from "@sentry/nextjs";
 import withPWA from "next-pwa";
 
 const nextConfig: NextConfig = {
-  /* Enable instrumentation hook for PostHog */
-  experimental: {
-    instrumentationHook: true,
-  },
-
   /* Image Optimization */
   images: {
     formats: ['image/webp', 'image/avif'], // Modern formats for better compression
