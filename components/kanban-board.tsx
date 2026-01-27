@@ -102,6 +102,9 @@ function DealCard({
     cursor: snapshot.isDragging ? 'grabbing' : 'grab',
   }
 
+  // Check if deal is overdue
+  const isOverdue = deal.dueDate && new Date(deal.dueDate) < new Date()
+
   const cardContent = (
     <div
       ref={provided.innerRef}
@@ -109,11 +112,13 @@ function DealCard({
       {...provided.dragHandleProps}
       onClick={onClick}
       style={style}
+      data-tour={isOverdue ? "overdue-task" : "deal-card"}
       className={cn(
         "group relative flex gap-3 rounded-xl border p-4 shadow-sm select-none",
         "bg-card border-border hover:border-indigo-500/30",
         "dark:bg-[#121217] dark:border-white/5",
-        snapshot.isDragging && "shadow-2xl shadow-indigo-500/40 z-[9999] ring-2 ring-indigo-500 rotate-2 scale-105"
+        snapshot.isDragging && "shadow-2xl shadow-indigo-500/40 z-[9999] ring-2 ring-indigo-500 rotate-2 scale-105",
+        isOverdue && "border-red-500 border-2 bg-red-50 dark:bg-red-950/20"
       )}
     >
       {/* Drag Handle */}
@@ -461,6 +466,7 @@ export function KanbanBoard({
 
         <div
           ref={scrollContainerRef}
+          data-tour="pipeline"
           className="flex h-full gap-6 pb-4 px-2 overflow-x-auto"
         >
           {filteredStages.map((stage) => (

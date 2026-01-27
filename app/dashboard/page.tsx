@@ -1,6 +1,7 @@
 import { PrismaClient } from "@prisma/client"
 import { Metadata } from "next"
 import { DashboardWithPipelineSelector } from "@/components/dashboard-with-pipeline-selector"
+import { OnboardingWrapper } from "@/components/onboarding/onboarding-wrapper"
 import { getSession } from "@/lib/auth"
 
 const prisma = new PrismaClient()
@@ -24,11 +25,17 @@ export default async function DashboardPage() {
         where: { email: session.user.email },
         select: {
             id: true,
+            name: true,
             organizationId: true,
             orgRole: true,
             organization: {
                 select: {
                     plan: true
+                }
+            },
+            onboarding: {
+                select: {
+                    status: true
                 }
             }
         }
@@ -39,6 +46,9 @@ export default async function DashboardPage() {
     }
 
     const isMember = user.orgRole === 'MEMBER'
+
+    // Check if user should see onboarding (new user or not completed)
+    const shouldShowOnboarding = !user.onboarding || user.onboarding.status === 'IN_PROGRESS'
 
     // Fetch all pipelines for the selector
     const rawPipelines = await prisma.pipeline.findMany({
@@ -126,13 +136,19 @@ export default async function DashboardPage() {
     const isPro = user.organization.plan === 'PRO'
 
     return (
-        <DashboardWithPipelineSelector
-            pipelines={pipelines}
-            allStages={stages}
-            contacts={contacts}
-            dealCount={dealCount}
-            isPro={isPro}
-            isMember={isMember}
-        />
+        <OnboardingWrapper
+            userId={user.id}
+            userName={user.name || undefined}
+            shouldShowOnboarding={shouldShowOnboarding}
+        >
+            <DashboardWithPipelineSelector
+                pipelines={pipelines}
+                allStages={stages}
+                contacts={contacts}
+                dealCount={dealCount}
+                isPro={isPro}
+                isMember={isMember}
+            />
+        </OnboardingWrapper>
     )
 }
