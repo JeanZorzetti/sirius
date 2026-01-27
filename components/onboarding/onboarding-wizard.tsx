@@ -96,7 +96,7 @@ export function OnboardingWizard({ onComplete, onSkip }: OnboardingWizardProps) 
     minimizeWizard();
   };
 
-  // Auto-complete steps when conditions are met
+  // Auto-complete steps when user returns from onboarding action
   useEffect(() => {
     if (!data || !currentStep || isLoading) return;
 
@@ -110,11 +110,17 @@ export function OnboardingWizard({ onComplete, onSkip }: OnboardingWizardProps) 
         return;
       }
 
-      // Auto-complete outros steps se já existem dados
-      // Isso permite que o wizard avance mesmo se o usuário recarregar a página
-      const shouldAutoComplete = false; // Desabilitado por enquanto
+      // Check if user returned from completing onboarding action
+      const urlParams = new URLSearchParams(window.location.search);
+      const isReturningFromOnboarding = urlParams.get('onboarding') === 'true';
 
-      if (shouldAutoComplete) {
+      if (isReturningFromOnboarding) {
+        // Remove the onboarding param from URL (clean URL)
+        urlParams.delete('onboarding');
+        const newUrl = window.location.pathname + (urlParams.toString() ? '?' + urlParams.toString() : '');
+        window.history.replaceState({}, '', newUrl);
+
+        // Mark current step as complete and advance
         await completeStep(currentStep.id);
       }
     };
@@ -141,22 +147,21 @@ export function OnboardingWizard({ onComplete, onSkip }: OnboardingWizardProps) 
         setIsNavigating(false);
         break;
       case "organization":
-        // Marcar como completo e depois navegar
-        await handleCompleteStep();
-        router.push("/dashboard/settings?tab=organization");
-        // Não resetar isNavigating aqui pois vai navegar
+        // Navegar SEM marcar como completo ainda
+        // O wizard detectará automaticamente quando voltar
+        router.push("/dashboard/settings?tab=organization&onboarding=true");
         break;
       case "pipeline":
-        await handleCompleteStep();
-        router.push("/dashboard?showPipelineSettings=true");
+        // Navegar SEM marcar como completo ainda
+        router.push("/dashboard?showPipelineSettings=true&onboarding=true");
         break;
       case "first_contact":
-        await handleCompleteStep();
-        router.push("/dashboard/contacts?showNewContact=true");
+        // Navegar SEM marcar como completo ainda
+        router.push("/dashboard/contacts?showNewContact=true&onboarding=true");
         break;
       case "first_deal":
-        await handleCompleteStep();
-        router.push("/dashboard?showNewDeal=true");
+        // Navegar SEM marcar como completo ainda
+        router.push("/dashboard?showNewDeal=true&onboarding=true");
         break;
       default:
         await handleCompleteStep();

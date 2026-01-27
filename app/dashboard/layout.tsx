@@ -6,6 +6,7 @@ import { PWAInstallPrompt } from '@/components/pwa-install-prompt'
 import { SignUpTracker } from '@/components/analytics/signup-tracker'
 import { LoginTracker } from '@/components/analytics/login-tracker'
 import { AgiChatSidebar } from '@/components/agi'
+import { ReturnToTourButton } from '@/components/onboarding/return-to-tour-button'
 import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 
@@ -65,6 +66,9 @@ export default async function DashboardLayout({
 
       {/* AGI Chat Sidebar - Global AI Assistant */}
       <AgiChatSidebar />
+
+      {/* Return to Tour Button - Shows when user is in onboarding flow */}
+      <ReturnToTourButton />
     </div>
   )
 }
