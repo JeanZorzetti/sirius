@@ -2,6 +2,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { Button } from '@/components/ui/button'
 import { MobileNav } from '@/components/marketing/mobile-nav'
+import { Footer } from '@/components/marketing/footer'
 
 export default function MarketingLayout({
   children,
@@ -62,46 +63,8 @@ export default function MarketingLayout({
       {/* Main Content */}
       <main className="flex-1 pt-16">{children}</main>
 
-      {/* Footer */}
-      <footer className="border-t bg-background">
-        <div className="container mx-auto px-6 py-12 md:py-16">
-          <div className="grid grid-cols-2 gap-8 md:grid-cols-4">
-            <div className="flex flex-col gap-4">
-              <div className="text-lg font-bold">Sirius CRM</div>
-              <p className="text-sm text-muted-foreground">Brilhe nas vendas com a estrela do Grupo ROI Labs.</p>
-            </div>
-
-            <div className="flex flex-col gap-4">
-              <h3 className="text-sm font-medium">Produto</h3>
-              <Link href="/features" className="text-sm text-muted-foreground hover:text-foreground">Funcionalidades</Link>
-              <Link href="/pricing" className="text-sm text-muted-foreground hover:text-foreground">Preços</Link>
-              <Link href="/dashboard" className="text-sm text-muted-foreground hover:text-foreground">Dashboard</Link>
-            </div>
-
-            <div className="flex flex-col gap-4">
-              <h3 className="text-sm font-medium">Empresa</h3>
-              <Link href="/about" className="text-sm text-muted-foreground hover:text-foreground">Sobre</Link>
-              <Link href="/changelog" className="text-sm text-muted-foreground hover:text-foreground">Novidades</Link>
-              <Link href="https://roilabs.com.br" className="text-sm text-muted-foreground hover:text-foreground" target="_blank" rel="noopener noreferrer">ROI Labs</Link>
-            </div>
-
-            <div className="flex flex-col gap-4">
-              <h3 className="text-sm font-medium">Suporte</h3>
-              <Link href="/help" className="text-sm text-muted-foreground hover:text-foreground">Ajuda</Link>
-              <Link href="/community" className="text-sm text-muted-foreground hover:text-foreground">Comunidade</Link>
-              <Link href="/blog" className="text-sm text-muted-foreground hover:text-foreground">Blog</Link>
-            </div>
-          </div>
-          <div className="mt-12 border-t pt-8 text-center text-sm text-muted-foreground">
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6">
-              <Link href="/privacy" className="hover:text-foreground transition-colors">Privacidade</Link>
-              <Link href="/terms" className="hover:text-foreground transition-colors">Termos de Uso</Link>
-              <span className="hidden sm:inline">•</span>
-              <span>© {new Date().getFullYear()} Sirius CRM (ROI Labs). Todos os direitos reservados.</span>
-            </div>
-          </div>
-        </div>
-      </footer>
+      {/* Footer Dinâmico */}
+      <Footer />
     </div>
   )
 }
