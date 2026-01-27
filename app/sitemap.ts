@@ -1,6 +1,7 @@
 import { MetadataRoute } from 'next'
 import { blogPosts } from '@/lib/blog-data'
 import { helpArticles } from '@/lib/help-articles'
+import { NICHES } from '@/config/niche-data'
 
 export default function sitemap(): MetadataRoute.Sitemap {
     const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://sirius.roilabs.com.br'
@@ -19,11 +20,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
         '/terms',
         '/changelog',
         '/community',
+        '/vendas-automaticas',
     ].map((route) => ({
         url: `${baseUrl}${route}`,
         lastModified: new Date(),
         changeFrequency: 'monthly' as const,
-        priority: route === '' ? 1 : 0.8,
+        priority: route === '' ? 1 : route === '/vendas-automaticas' ? 0.9 : 0.8,
     }))
 
     // Dynamic blog posts
@@ -42,5 +44,32 @@ export default function sitemap(): MetadataRoute.Sitemap {
         priority: 0.7,
     }))
 
-    return [...routes, ...posts, ...helpArticlePages]
+    // Calculadoras segmentadas por nicho
+    const calculatorPages = [
+        '/ferramentas/calculadora-roi',
+        '/ferramentas/calculadora-roi-corretores',
+        '/ferramentas/calculadora-roi-energia-solar',
+        '/ferramentas/calculadora-roi-agencias',
+    ].map((route) => ({
+        url: `${baseUrl}${route}`,
+        lastModified: new Date(),
+        changeFrequency: 'monthly' as const,
+        priority: 0.8,
+    }))
+
+    // Páginas de soluções por nicho (geradas dinamicamente do niche-data.ts)
+    const nicheSolutionPages = NICHES.map((niche) => ({
+        url: `${baseUrl}/solucoes/${niche.slug}`,
+        lastModified: new Date(),
+        changeFrequency: 'weekly' as const,
+        priority: 0.9, // Alta prioridade - páginas de conversão principais
+    }))
+
+    return [
+        ...routes,
+        ...posts,
+        ...helpArticlePages,
+        ...calculatorPages,
+        ...nicheSolutionPages,
+    ]
 }
