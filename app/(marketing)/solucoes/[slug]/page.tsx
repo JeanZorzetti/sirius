@@ -28,8 +28,9 @@ export async function generateStaticParams() {
 }
 
 // Meta tags dinâmicas por nicho
-export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
-  const niche = getNicheBySlug(params.slug)
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const { slug } = await params
+  const niche = getNicheBySlug(slug)
 
   if (!niche) {
     return {
@@ -57,8 +58,9 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   }
 }
 
-export default function NicheSolutionPage({ params }: { params: { slug: string } }) {
-  const niche = getNicheBySlug(params.slug)
+export default async function NicheSolutionPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params
+  const niche = getNicheBySlug(slug)
 
   if (!niche) {
     notFound()
