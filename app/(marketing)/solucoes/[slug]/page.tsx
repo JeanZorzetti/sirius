@@ -70,32 +70,6 @@ export default async function NicheSolutionPage({ params }: { params: Promise<{ 
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-zinc-50 to-white dark:from-zinc-950 dark:to-zinc-900">
-      {/* Header com Logo */}
-      <header className="border-b bg-white/80 dark:bg-zinc-950/80 backdrop-blur-sm sticky top-0 z-40">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <a href="/" className="flex items-center gap-2">
-              <Icon className={`h-8 w-8 text-${niche.color.primary}-600`} />
-              <span className="text-xl font-bold">Sirius CRM</span>
-            </a>
-            <div className="flex items-center gap-4">
-              <a
-                href="/login"
-                className="text-sm font-medium text-muted-foreground hover:text-foreground"
-              >
-                Entrar
-              </a>
-              <a
-                href="/register"
-                className={`text-sm font-medium px-4 py-2 rounded-lg bg-gradient-to-r ${niche.color.gradient} text-white hover:opacity-90 transition-opacity`}
-              >
-                Começar Grátis
-              </a>
-            </div>
-          </div>
-        </div>
-      </header>
-
       {/* Hero Section */}
       <section className="container mx-auto px-4 py-12 md:py-20">
         <div className="max-w-4xl mx-auto text-center mb-12">
@@ -263,18 +237,6 @@ export default async function NicheSolutionPage({ params }: { params: Promise<{ 
           </p>
         </div>
       </section>
-
-      {/* Footer */}
-      <footer className="border-t py-8">
-        <div className="container mx-auto px-4 text-center text-sm text-muted-foreground">
-          <p>© 2025 Sirius CRM - ROI Labs. Todos os direitos reservados.</p>
-          <div className="flex justify-center gap-6 mt-4">
-            <a href="/politica-de-privacidade" className="hover:text-foreground">Privacidade</a>
-            <a href="/termos-de-uso" className="hover:text-foreground">Termos</a>
-            <a href="mailto:contato@roilabs.com.br" className="hover:text-foreground">Contato</a>
-          </div>
-        </div>
-      </footer>
     </div>
   )
 }
