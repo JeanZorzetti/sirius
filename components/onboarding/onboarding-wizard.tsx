@@ -53,23 +53,23 @@ export function OnboardingWizard({ onComplete, onSkip }: OnboardingWizardProps) 
     completeStep,
     goToStep,
     skipOnboarding,
-    minimizeWizard,
     isStepCompleted,
   } = useOnboarding();
 
   const [showConfetti, setShowConfetti] = useState(false);
   const [newBadgeEarned, setNewBadgeEarned] = useState<string | null>(null);
   const [isNavigating, setIsNavigating] = useState(false);
+  // Estado local para controlar minimização (como no Orion)
+  const [isMinimized, setIsMinimized] = useState(false);
 
   const currentStepIndex = onboarding?.currentStep ?? 0;
   const currentStep = steps[currentStepIndex];
 
-  // Auto-scroll to top when wizard appears via #onboarding hash
+  // Carregar estado de minimização do localStorage (padrão Orion)
   useEffect(() => {
-    if (typeof window !== 'undefined' && window.location.hash === '#onboarding') {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-      // Remove hash from URL
-      window.history.replaceState(null, '', window.location.pathname + window.location.search);
+    const minimized = localStorage.getItem('sirius-onboarding-minimized');
+    if (minimized === 'true') {
+      setIsMinimized(true);
     }
   }, []);
 
@@ -100,9 +100,10 @@ export function OnboardingWizard({ onComplete, onSkip }: OnboardingWizardProps) 
     onSkip?.();
   };
 
-  // Handle minimize (fechar temporariamente)
+  // Handle minimize (fechar temporariamente) - Padrão Orion
   const handleMinimize = () => {
-    minimizeWizard();
+    localStorage.setItem('sirius-onboarding-minimized', 'true');
+    setIsMinimized(true);
   };
 
   // Auto-complete steps when user returns from onboarding action
@@ -191,7 +192,7 @@ export function OnboardingWizard({ onComplete, onSkip }: OnboardingWizardProps) 
     );
   }
 
-  if (isComplete || isSkipped || isNavigating) {
+  if (isComplete || isSkipped || isNavigating || isMinimized) {
     return null;
   }
 

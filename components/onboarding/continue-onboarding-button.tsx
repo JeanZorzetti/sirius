@@ -9,9 +9,8 @@ import { useRouter } from 'next/navigation'
 import { cn } from '@/lib/utils'
 
 export function ContinueOnboardingButton() {
-  const { stats, isComplete, isSkipped, shouldShowOnboarding, onboarding, maximizeWizard } = useOnboarding()
+  const { stats, isComplete, isSkipped, shouldShowOnboarding, onboarding } = useOnboarding()
   const [isDismissed, setIsDismissed] = useState(false)
-  const router = useRouter()
 
   // Não mostrar se:
   // - Onboarding já está completo
@@ -34,12 +33,10 @@ export function ContinueOnboardingButton() {
   const hasStarted = completedCount > 0
 
   const handleContinue = () => {
-    // Maximizar o wizard (remover minimização do localStorage)
-    maximizeWizard()
-
-    // Hard reload para sincronizar estado entre componentes
-    // Sem isso, o wizard não aparece porque cada hook tem seu próprio estado local
-    window.location.href = '/dashboard#onboarding'
+    // Padrão Orion: remover flag de minimização e recarregar
+    // Isso força o wizard a aparecer novamente (mais simples e confiável)
+    localStorage.removeItem('sirius-onboarding-minimized')
+    window.location.reload()
   }
 
   const handleDismiss = () => {
