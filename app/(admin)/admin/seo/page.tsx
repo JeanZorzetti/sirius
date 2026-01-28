@@ -1,10 +1,11 @@
 import { Metadata } from 'next'
 import { Suspense } from 'react'
 import { getSEOMetrics } from '@/lib/google-search-console'
+import { generateForecast, combineDataForChart } from '@/lib/seo-forecasting'
 import { SEOMetricsChart } from '@/components/admin/seo-chart'
 import { DateRangePicker } from '@/components/admin/date-range-picker'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Search, MousePointer, Eye, TrendingUp, AlertCircle, Loader2 } from 'lucide-react'
+import { Search, MousePointer, Eye, TrendingUp, AlertCircle, Loader2, Sparkles, TrendingDown, Minus } from 'lucide-react'
 
 export const metadata: Metadata = {
   title: 'SEO Command Center - Admin',
@@ -63,6 +64,38 @@ async function SEOContent({ searchParams }: { searchParams: { from?: string; to?
     )
   }
 
+  // Generate ML forecast
+  const forecast = generateForecast(metrics.history, 30)
+  const chartData = combineDataForChart(metrics.history, forecast)
+
+  // Determine trend colors and icons
+  const trendConfig = {
+    Alta: {
+      color: 'text-green-700',
+      bgColor: 'bg-green-50',
+      borderColor: 'border-green-200',
+      icon: TrendingUp,
+      iconColor: 'text-green-600',
+    },
+    Baixa: {
+      color: 'text-red-700',
+      bgColor: 'bg-red-50',
+      borderColor: 'border-red-200',
+      icon: TrendingDown,
+      iconColor: 'text-red-600',
+    },
+    Estavel: {
+      color: 'text-slate-700',
+      bgColor: 'bg-slate-50',
+      borderColor: 'border-slate-200',
+      icon: Minus,
+      iconColor: 'text-slate-600',
+    },
+  }
+
+  const currentTrendConfig = trendConfig[forecast.trend]
+  const TrendIcon = currentTrendConfig.icon
+
   return (
     <>
       {/* Header with Date Picker */}
@@ -80,6 +113,64 @@ async function SEOContent({ searchParams }: { searchParams: { from?: string; to?
           />
         </Suspense>
       </div>
+
+      {/* AI Insight Card */}
+      <Card className={`${currentTrendConfig.borderColor} ${currentTrendConfig.bgColor} shadow-sm`}>
+        <CardHeader className="pb-3">
+          <div className="flex items-center gap-2">
+            <Sparkles className="h-5 w-5 text-purple-600" />
+            <CardTitle className="text-lg text-slate-900">Insight de IA - Previsao ML</CardTitle>
+          </div>
+        </CardHeader>
+        <CardContent>
+          <div className="grid gap-4 sm:grid-cols-3">
+            <div className="flex items-center gap-3">
+              <div className={`p-2 rounded-lg ${currentTrendConfig.bgColor}`}>
+                <TrendIcon className={`h-5 w-5 ${currentTrendConfig.iconColor}`} />
+              </div>
+              <div>
+                <p className="text-xs text-slate-500">Tendencia Projetada</p>
+                <p className={`text-lg font-bold ${currentTrendConfig.color}`}>
+                  {forecast.trend}
+                </p>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-3">
+              <div className="p-2 rounded-lg bg-blue-50">
+                <MousePointer className="h-5 w-5 text-blue-600" />
+              </div>
+              <div>
+                <p className="text-xs text-slate-500">Previsao 30 dias</p>
+                <p className="text-lg font-bold text-slate-900">
+                  {forecast.predictedTotal.toLocaleString('pt-BR')} cliques
+                </p>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-3">
+              <div className="p-2 rounded-lg bg-purple-50">
+                <TrendingUp className="h-5 w-5 text-purple-600" />
+              </div>
+              <div>
+                <p className="text-xs text-slate-500">Velocidade Diaria</p>
+                <p className="text-lg font-bold text-slate-900">
+                  {forecast.velocity > 0 ? '+' : ''}{forecast.velocity} cliques/dia
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div className="mt-3 pt-3 border-t border-slate-200">
+            <p className="text-xs text-slate-600">
+              <span className="font-medium">Confianca do modelo:</span> {forecast.confidence}%
+              <span className="ml-2 text-slate-500">
+                (Baseado em {metrics.history.length} dias de dados)
+              </span>
+            </p>
+          </div>
+        </CardContent>
+      </Card>
 
       {/* KPI Cards */}
       <div className="grid gap-4 md:grid-cols-3">
@@ -129,16 +220,16 @@ async function SEOContent({ searchParams }: { searchParams: { from?: string; to?
         </Card>
       </div>
 
-      {/* Chart */}
+      {/* Chart with Forecast */}
       <Card className="border-slate-200 bg-white shadow-sm">
         <CardHeader>
-          <CardTitle className="text-slate-900">Performance ao Longo do Tempo</CardTitle>
+          <CardTitle className="text-slate-900">Performance e Previsao</CardTitle>
           <CardDescription className="text-slate-500">
-            Cliques e impressoes diarios
+            Historico de cliques (linha solida) e projecao ML (linha pontilhada)
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <SEOMetricsChart data={metrics.history} />
+          <SEOMetricsChart data={chartData} showForecast={true} />
         </CardContent>
       </Card>
 
