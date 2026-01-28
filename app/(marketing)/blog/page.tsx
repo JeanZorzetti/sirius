@@ -2,13 +2,15 @@
 
 import Link from 'next/link'
 import Image from 'next/image'
-import { useEffect, useRef } from 'react'
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
+import { useState, useEffect, useRef } from 'react'
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
+import { Badge } from '@/components/ui/badge'
 import { blogPosts } from '@/lib/blog-data'
-import { ArrowRight, Clock, Tag } from 'lucide-react'
+import { ArrowRight, Clock, Tag, BookOpen } from 'lucide-react'
 
 export default function BlogPage() {
+    const [selectedCategory, setSelectedCategory] = useState('Todos')
     const cardsRef = useRef<(HTMLDivElement | null)[]>([])
 
     useEffect(() => {
@@ -34,131 +36,181 @@ export default function BlogPage() {
         return () => observer.disconnect()
     }, [])
 
-    // Bento Grid: Define variable sizes for cards (following pattern: large, medium, medium, medium, large, etc.)
-    const getCardSize = (index: number) => {
-        const pattern = index % 5
-        if (pattern === 0 || pattern === 4) return 'lg:col-span-2 lg:row-span-2' // Large cards
-        if (pattern === 1) return 'lg:col-span-1 lg:row-span-1' // Small card
-        return 'lg:col-span-1 lg:row-span-1' // Regular cards
-    }
+    // Extract unique categories
+    const categories = ['Todos', ...Array.from(new Set(blogPosts.map(post => post.category)))]
+
+    // Filter posts by category
+    const filteredPosts = selectedCategory === 'Todos'
+        ? blogPosts
+        : blogPosts.filter(post => post.category === selectedCategory)
+
+    // Featured post (first post)
+    const featuredPost = filteredPosts[0]
+    const recentPosts = filteredPosts.slice(1)
 
     return (
-        <div className="container mx-auto py-24 sm:py-32 px-4">
-            {/* Hero Section with Glassmorphism */}
-            <div className="mx-auto max-w-4xl text-center mb-20">
-                <div className="relative">
-                    {/* Decorative gradient blur */}
-                    <div className="absolute -top-20 left-1/2 -translate-x-1/2 w-150 h-150 bg-linear-to-r from-blue-500/20 via-purple-500/20 to-pink-500/20 rounded-full blur-3xl -z-10" />
+        <div className="min-h-screen">
+            {/* Hero Section */}
+            <section className="container mx-auto px-4 pt-24 sm:pt-32 pb-16">
+                <div className="mx-auto max-w-4xl text-center">
+                    <div className="relative">
+                        {/* Decorative gradient blur */}
+                        <div className="absolute -top-20 left-1/2 -translate-x-1/2 w-150 h-150 bg-linear-to-r from-blue-500/20 via-purple-500/20 to-pink-500/20 rounded-full blur-3xl -z-10" />
 
-                    <h1 className="text-5xl sm:text-6xl font-bold tracking-tight bg-linear-to-br from-foreground via-foreground/90 to-foreground/70 bg-clip-text text-transparent mb-6">
-                        Blog
-                    </h1>
-                    <p className="text-xl leading-8 text-muted-foreground max-w-2xl mx-auto">
-                        Dicas e estratégias para vender mais e melhor
-                    </p>
+                        <h1 className="text-5xl sm:text-6xl font-bold tracking-tight bg-linear-to-br from-foreground via-foreground/90 to-foreground/70 bg-clip-text text-transparent mb-6">
+                            Blog
+                        </h1>
+                        <p className="text-xl leading-8 text-muted-foreground max-w-2xl mx-auto">
+                            Dicas, estratégias e insights sobre vendas, CRM e gestão comercial
+                        </p>
+                    </div>
                 </div>
-            </div>
+            </section>
 
-            {/* Bento Grid Layout */}
-            <div className="mx-auto lg:max-w-none">
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-[minmax(280px,auto)]">
-                    {blogPosts.map((post, index) => (
-                        <div
-                            key={post.slug}
-                            ref={(el) => {
-                                cardsRef.current[index] = el
-                            }}
-                            className={`opacity-0 ${getCardSize(index)}`}
-                            style={{
-                                animationDelay: `${index * 100}ms`,
-                            }}
-                        >
-                            <Link href={`/blog/${post.slug}`} className="block h-full group">
-                                <Card
-                                    className={`
-                                        h-full flex flex-col relative overflow-hidden
-                                        border-border/50
-                                        bg-card
-                                        hover:shadow-2xl hover:shadow-primary/10
-                                        hover:-translate-y-2 hover:scale-[1.02]
-                                        transition-all duration-500 ease-out
-                                        rounded-3xl
-                                        ${
-                                            index % 5 === 0 || index % 5 === 4
-                                                ? 'p-8'
-                                                : 'p-6'
-                                        }
-                                    `}
-                                >
-                                    {/* Animated border gradient */}
-                                    <div className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-linear-to-r from-blue-500/20 via-purple-500/20 to-pink-500/20 blur-xl -z-10" />
+            {/* Categories Filter - Sticky */}
+            <section className="sticky top-0 z-40 bg-background/95 backdrop-blur-lg border-b border-border">
+                <div className="container mx-auto px-4 py-4">
+                    <div className="flex gap-2 overflow-x-auto scrollbar-hide">
+                        {categories.map((category) => (
+                            <Badge
+                                key={category}
+                                variant={selectedCategory === category ? 'default' : 'outline'}
+                                className={`cursor-pointer whitespace-nowrap transition-all duration-300 ${
+                                    selectedCategory === category
+                                        ? 'bg-primary text-primary-foreground'
+                                        : 'hover:bg-primary/10'
+                                }`}
+                                onClick={() => setSelectedCategory(category)}
+                            >
+                                {category}
+                            </Badge>
+                        ))}
+                    </div>
+                </div>
+            </section>
 
-                                    <CardHeader className="relative z-10 flex-none space-y-3 p-0 mb-4">
-                                        {/* Category Badge with micro-interaction */}
-                                        <div className="flex items-center gap-2">
-                                            <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-primary/10 text-primary text-xs font-medium backdrop-blur-sm border border-primary/20 group-hover:bg-primary/20 group-hover:scale-105 transition-all duration-300">
-                                                <Tag className="w-3 h-3" />
-                                                {post.category}
-                                            </div>
-                                            <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
-                                                <Clock className="w-3 h-3" />
-                                                {post.date}
-                                            </div>
-                                        </div>
+            {/* Featured Post */}
+            {featuredPost && (
+                <section className="container mx-auto px-4 py-16">
+                    <div className="mb-8">
+                        <h2 className="text-2xl font-semibold mb-2">Post em Destaque</h2>
+                        <div className="h-px bg-linear-to-r from-primary via-primary/50 to-transparent" />
+                    </div>
 
-                                        <CardTitle
-                                            className={`
-                                                ${
-                                                    index % 5 === 0 || index % 5 === 4
-                                                        ? 'text-3xl'
-                                                        : 'text-xl'
-                                                }
-                                                font-bold leading-tight
-                                                group-hover:text-primary
-                                                transition-colors duration-300
-                                            `}
-                                        >
-                                            {post.title}
-                                        </CardTitle>
-                                    </CardHeader>
+                    <Link href={`/blog/${featuredPost.slug}`} className="block group">
+                        <div className="grid lg:grid-cols-2 gap-8 items-center">
+                            {/* Image */}
+                            <div className="relative aspect-video rounded-2xl overflow-hidden">
+                                <Image
+                                    src={featuredPost.image}
+                                    alt={featuredPost.title}
+                                    fill
+                                    className="object-cover group-hover:scale-105 transition-transform duration-700"
+                                    sizes="(max-width: 1024px) 100vw, 50vw"
+                                    priority
+                                />
+                            </div>
 
-                                    <CardContent className="relative z-10 flex-1 p-0 space-y-4">
-                                        <p className="text-muted-foreground leading-relaxed line-clamp-3">
-                                            {post.excerpt}
-                                        </p>
+                            {/* Content */}
+                            <div className="space-y-4">
+                                <Badge className="bg-primary/10 text-primary hover:bg-primary/20">
+                                    <Tag className="w-3 h-3 mr-1.5" />
+                                    {featuredPost.category}
+                                </Badge>
 
-                                        {/* Featured post image - only show for first post */}
-                                        {index === 0 && (
-                                            <div className="relative w-full aspect-video rounded-2xl overflow-hidden">
-                                                <Image
-                                                    src={post.image}
-                                                    alt={post.title}
-                                                    fill
-                                                    className="object-cover group-hover:scale-105 transition-transform duration-500"
-                                                    sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                                                    priority
-                                                />
-                                            </div>
-                                        )}
-                                    </CardContent>
+                                <h2 className="text-3xl md:text-4xl font-bold leading-tight group-hover:text-primary transition-colors">
+                                    {featuredPost.title}
+                                </h2>
 
-                                    <CardFooter className="relative z-10 flex-none p-0 mt-6">
-                                        <Button
-                                            variant="ghost"
-                                            className="p-0 h-auto hover:bg-transparent hover:text-primary group/btn"
-                                        >
-                                            <span className="flex items-center gap-2 font-medium">
-                                                Ler artigo
-                                                <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform duration-300" />
-                                            </span>
-                                        </Button>
-                                    </CardFooter>
-                                </Card>
-                            </Link>
+                                <p className="text-lg text-muted-foreground leading-relaxed">
+                                    {featuredPost.excerpt}
+                                </p>
+
+                                <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                                    <span className="flex items-center gap-1.5">
+                                        <Clock className="w-4 h-4" />
+                                        {featuredPost.date}
+                                    </span>
+                                    <span>•</span>
+                                    <span className="flex items-center gap-1.5">
+                                        <BookOpen className="w-4 h-4" />
+                                        5 min de leitura
+                                    </span>
+                                </div>
+
+                                <Button className="group/btn">
+                                    Ler artigo completo
+                                    <ArrowRight className="ml-2 h-4 w-4 group-hover/btn:translate-x-1 transition-transform" />
+                                </Button>
+                            </div>
                         </div>
-                    ))}
-                </div>
-            </div>
+                    </Link>
+                </section>
+            )}
+
+            {/* Recent Posts Grid */}
+            {recentPosts.length > 0 && (
+                <section className="container mx-auto px-4 py-16">
+                    <div className="mb-12">
+                        <h2 className="text-2xl font-semibold mb-2">Artigos Recentes</h2>
+                        <div className="h-px bg-linear-to-r from-primary via-primary/50 to-transparent" />
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        {recentPosts.map((post, index) => (
+                            <div
+                                key={post.slug}
+                                ref={(el) => {
+                                    cardsRef.current[index] = el
+                                }}
+                                className="opacity-0"
+                                style={{
+                                    animationDelay: `${index * 100}ms`,
+                                }}
+                            >
+                                <Link href={`/blog/${post.slug}`} className="block h-full group">
+                                    <Card className="h-full flex flex-col relative overflow-hidden border-border/50 bg-card hover:shadow-2xl hover:shadow-primary/10 hover:-translate-y-2 transition-all duration-500 ease-out rounded-2xl p-6">
+                                        {/* Animated border gradient */}
+                                        <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-linear-to-r from-blue-500/20 via-purple-500/20 to-pink-500/20 blur-xl -z-10" />
+
+                                        <CardHeader className="relative z-10 flex-none space-y-3 p-0 mb-4">
+                                            <div className="flex items-center gap-2">
+                                                <Badge variant="secondary" className="text-xs">
+                                                    <Tag className="w-3 h-3 mr-1" />
+                                                    {post.category}
+                                                </Badge>
+                                            </div>
+
+                                            <CardTitle className="text-xl font-bold leading-tight group-hover:text-primary transition-colors duration-300">
+                                                {post.title}
+                                            </CardTitle>
+                                        </CardHeader>
+
+                                        <CardContent className="relative z-10 flex-1 p-0 mb-4">
+                                            <p className="text-muted-foreground leading-relaxed line-clamp-3">
+                                                {post.excerpt}
+                                            </p>
+                                        </CardContent>
+
+                                        <CardFooter className="relative z-10 flex-none p-0 flex items-center justify-between">
+                                            <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                                                <Clock className="w-3 h-3" />
+                                                <span>{post.date}</span>
+                                            </div>
+                                            <Button variant="ghost" size="sm" className="group/btn p-0 h-auto hover:bg-transparent hover:text-primary">
+                                                <span className="flex items-center gap-1">
+                                                    Ler
+                                                    <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform duration-300" />
+                                                </span>
+                                            </Button>
+                                        </CardFooter>
+                                    </Card>
+                                </Link>
+                            </div>
+                        ))}
+                    </div>
+                </section>
+            )}
         </div>
     )
 }
