@@ -10,7 +10,7 @@ import { prisma } from '@/lib/prisma'
  * Organizações de teste que devem ser ignoradas nas métricas
  */
 const TEST_ORGANIZATION_SLUGS = [
-  'teste-funll-977',
+  'teste-funil-977',
   'v-rtice-marketing-35',
   'zorzetti-979',
   'nux-digital-883',
