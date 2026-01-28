@@ -122,8 +122,8 @@ export const NICHES: NicheData[] = [
       }
     ],
     seo: {
-      title: 'CRM para Corretores de Imóveis | Organize suas Vendas e Aumente suas Comissões',
-      description: 'Sistema de gestão de vendas feito para corretores. Acompanhe interessados, organize visitas e nunca mais perca comissões por desorganização. Grátis para começar.',
+      title: 'CRM para Corretores de Imóveis 2026 | Automação de Vendas e Comissões',
+      description: 'Melhor CRM para corretores e imobiliárias em 2026. Automação de follow-up, gestão de visitas e controle de comissões. Pare de perder vendas por desorganização. Teste grátis.',
       keywords: [
         'crm para corretores',
         'crm imobiliário',
@@ -204,8 +204,8 @@ export const NICHES: NicheData[] = [
       }
     ],
     seo: {
-      title: 'CRM para Energia Solar | Aumente suas Vendas de Instalações Fotovoltaicas',
-      description: 'Sistema de gestão comercial para integradoras de energia solar. Organize propostas, acompanhe visitas técnicas e converta mais. Teste grátis.',
+      title: 'CRM para Energia Solar 2026 | Sistema de Gestão de Propostas Fotovoltaicas',
+      description: 'Melhor CRM para integradoras solares em 2026. Gestão completa de propostas, visitas técnicas e instalações. Converta mais projetos com automação inteligente. Teste grátis.',
       keywords: [
         'crm energia solar',
         'crm fotovoltaica',
@@ -286,8 +286,8 @@ export const NICHES: NicheData[] = [
       }
     ],
     seo: {
-      title: 'CRM para Agências de Marketing | Estruture seu Comercial e Venda Mais',
-      description: 'Sistema de gestão comercial para agências. Organize propostas, qualifique leads e escale suas vendas com processo previsível. Comece grátis.',
+      title: 'CRM para Agências de Marketing 2026 | Melhor Sistema de Vendas e Automação',
+      description: 'Top #1 CRM para agências digitais em 2026. Automação de propostas comerciais, qualificação de leads e métricas em tempo real. Escale suas vendas hoje. Teste grátis.',
       keywords: [
         'crm para agencias',
         'crm agencia marketing',
@@ -368,8 +368,8 @@ export const NICHES: NicheData[] = [
       }
     ],
     seo: {
-      title: 'CRM para Consultores Empresariais | Organize seus Projetos e Venda Mais',
-      description: 'Sistema de gestão para consultores. Acompanhe prospects, organize diagnósticos e feche mais projetos. Ideal para consultores solo e empresas. Teste grátis.',
+      title: 'CRM para Consultores 2026 | Gestão Automatizada de Projetos e Clientes',
+      description: 'Melhor CRM para consultores empresariais em 2026. Automação de follow-up, controle de projetos e propostas comerciais. Feche mais contratos com menos esforço. Grátis.',
       keywords: [
         'crm para consultores',
         'crm consultoria empresarial',
@@ -450,8 +450,8 @@ export const NICHES: NicheData[] = [
       }
     ],
     seo: {
-      title: 'CRM para Representantes Comerciais | Organize sua Carteira e Venda Mais',
-      description: 'Sistema de gestão para representantes. Organize clientes, acompanhe pedidos e nunca mais perca recompras. Acesse de qualquer lugar. Teste grátis.',
+      title: 'CRM para Representantes Comerciais 2026 | Automação de Vendas e Pedidos',
+      description: 'Melhor CRM para representantes em 2026. Automação de follow-up, gestão de carteira e lembretes de recompra. Aumente suas vendas 50% com inteligência. Grátis.',
       keywords: [
         'crm para representantes',
         'crm representante comercial',
