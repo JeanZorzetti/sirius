@@ -56,12 +56,9 @@ export function WelcomeModal({ open, onClose, userName }: WelcomeModalProps) {
         // Rastrear conclusão do onboarding
         analytics.onboardingCompleted({ demo_mode: true })
 
-        // Refresh to get updated data from server
-        router.refresh()
-
-        // Close modal and redirect to dashboard with tour
+        // Close modal and force full page reload to get fresh data
         onClose()
-        router.push('/dashboard?tour=true')
+        window.location.href = '/dashboard?tour=true'
       } else if (choice === 'import') {
         // Mark onboarding as completed
         await fetch('/api/onboarding/complete', {
@@ -78,9 +75,8 @@ export function WelcomeModal({ open, onClose, userName }: WelcomeModalProps) {
         // Rastrear conclusão do onboarding
         analytics.onboardingCompleted({ demo_mode: false })
 
-        router.refresh()
         onClose()
-        router.push('/dashboard')
+        window.location.href = '/dashboard'
       } else if (choice === 'scratch') {
         // Mark onboarding as completed
         await fetch('/api/onboarding/complete', {
@@ -93,9 +89,8 @@ export function WelcomeModal({ open, onClose, userName }: WelcomeModalProps) {
         analytics.onboardingCompleted({ demo_mode: false })
 
         // Start from scratch
-        router.refresh()
         onClose()
-        router.push('/dashboard')
+        window.location.href = '/dashboard'
       }
     } catch (error) {
       console.error('Error handling choice:', error)
