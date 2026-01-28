@@ -19,6 +19,7 @@ interface ChartDataPoint {
   impressions?: number
   predictedClicks?: number
   predictedImpressions?: number
+  predictedClicksFromEfficiency?: number
 }
 
 interface SEOChartProps {
@@ -110,10 +111,13 @@ export function SEOMetricsChart({ data, showForecast = false }: SEOChartProps) {
                 label = 'Impressoes (Real)'
                 break
               case 'predictedClicks':
-                label = 'Cliques (Previsao)'
+                label = 'Cliques (Previsao Direta)'
                 break
               case 'predictedImpressions':
                 label = 'Impressoes (Previsao)'
+                break
+              case 'predictedClicksFromEfficiency':
+                label = 'Cliques (via Eficiencia)'
                 break
               default:
                 label = String(name)
@@ -131,9 +135,11 @@ export function SEOMetricsChart({ data, showForecast = false }: SEOChartProps) {
               case 'impressions':
                 return 'Impressoes (Real)'
               case 'predictedClicks':
-                return 'Cliques (Previsao IA)'
+                return 'Cliques ML Direta'
               case 'predictedImpressions':
                 return 'Impressoes (Previsao IA)'
+              case 'predictedClicksFromEfficiency':
+                return 'Cliques via Eficiencia'
               default:
                 return value
             }
@@ -178,6 +184,17 @@ export function SEOMetricsChart({ data, showForecast = false }: SEOChartProps) {
               strokeDasharray="5 5"
               dot={false}
               activeDot={{ r: 4, fill: '#94a3b8' }}
+              connectNulls={false}
+            />
+            <Line
+              yAxisId="left"
+              type="monotone"
+              dataKey="predictedClicksFromEfficiency"
+              stroke="#f59e0b"
+              strokeWidth={2}
+              strokeDasharray="3 3"
+              dot={false}
+              activeDot={{ r: 4, fill: '#f59e0b' }}
               connectNulls={false}
             />
             <Line

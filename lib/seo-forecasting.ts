@@ -7,6 +7,7 @@ export interface ForecastDataPoint {
   date: string
   predictedClicks: number
   predictedImpressions: number
+  predictedClicksFromEfficiency: number
 }
 
 export interface ForecastResult {
@@ -22,6 +23,7 @@ export interface ForecastResult {
   predictedTotal: {
     clicks: number
     impressions: number
+    clicksFromEfficiency: number
   }
   confidence: {
     clicks: number
@@ -91,6 +93,7 @@ export function generateForecast(
       predictedTotal: {
         clicks: 0,
         impressions: 0,
+        clicksFromEfficiency: 0,
       },
       confidence: {
         clicks: 0,
@@ -133,38 +136,16 @@ export function generateForecast(
   const clicksConfidence = calculateRSquared(clicksPoints, clicksPredict)
   const impressionsConfidence = calculateRSquared(impressionsPoints, impressionsPredict)
 
-  // Get the last date from history
-  const lastDate = new Date(history[history.length - 1].date)
-  const startIndex = history.length
-
-  // Generate future data points
-  const futureData: ForecastDataPoint[] = []
-  let predictedClicksTotal = 0
-  let predictedImpressionsTotal = 0
-
-  for (let i = 0; i < daysToProject; i++) {
-    const futureDate = new Date(lastDate)
-    futureDate.setDate(futureDate.getDate() + i + 1)
-
-    const predictedClicks = Math.max(0, Math.round(clicksPredict(startIndex + i)))
-    const predictedImpressions = Math.max(0, Math.round(impressionsPredict(startIndex + i)))
-
-    predictedClicksTotal += predictedClicks
-    predictedImpressionsTotal += predictedImpressions
-
-    futureData.push({
-      date: futureDate.toISOString().split('T')[0],
-      predictedClicks,
-      predictedImpressions,
-    })
-  }
-
-  // Calculate Efficiency Ratio (Impressions per Click)
+  // Calculate Efficiency Ratio (Impressions per Click) - BEFORE futureData loop
   // Lower is better (means higher CTR)
   const efficiencyPoints: [number, number][] = history.map((item, index) => {
     const ratio = item.clicks > 0 ? item.impressions / item.clicks : item.impressions
     return [index, ratio]
   })
+
+  // Get the last date from history
+  const lastDate = new Date(history[history.length - 1].date)
+  const startIndex = history.length
 
   // Calculate current ratio (average of entire period)
   const totalClicks = history.reduce((sum, item) => sum + item.clicks, 0)
@@ -191,6 +172,36 @@ export function generateForecast(
   // Forecast efficiency ratio 30 days out
   const forecastNext30d = Math.max(0, Math.round(efficiencyPredict(startIndex + 29)))
 
+  // Generate future data points with BOTH prediction methods
+  const futureData: ForecastDataPoint[] = []
+  let predictedClicksTotal = 0
+  let predictedImpressionsTotal = 0
+  let predictedClicksFromEfficiencyTotal = 0
+
+  for (let i = 0; i < daysToProject; i++) {
+    const futureDate = new Date(lastDate)
+    futureDate.setDate(futureDate.getDate() + i + 1)
+
+    // Method 1: Direct linear regression on clicks
+    const predictedClicks = Math.max(0, Math.round(clicksPredict(startIndex + i)))
+
+    // Method 2: Predicted impressions divided by predicted efficiency ratio
+    const predictedImpressions = Math.max(0, Math.round(impressionsPredict(startIndex + i)))
+    const predictedEfficiencyRatio = Math.max(1, efficiencyPredict(startIndex + i))
+    const predictedClicksFromEfficiency = Math.max(0, Math.round(predictedImpressions / predictedEfficiencyRatio))
+
+    predictedClicksTotal += predictedClicks
+    predictedImpressionsTotal += predictedImpressions
+    predictedClicksFromEfficiencyTotal += predictedClicksFromEfficiency
+
+    futureData.push({
+      date: futureDate.toISOString().split('T')[0],
+      predictedClicks,
+      predictedImpressions,
+      predictedClicksFromEfficiency,
+    })
+  }
+
   return {
     trends: {
       clicks: clicksTrend,
@@ -204,6 +215,7 @@ export function generateForecast(
     predictedTotal: {
       clicks: predictedClicksTotal,
       impressions: predictedImpressionsTotal,
+      clicksFromEfficiency: predictedClicksFromEfficiencyTotal,
     },
     confidence: {
       clicks: clicksConfidence,
@@ -231,6 +243,7 @@ export function combineDataForChart(
   impressions?: number
   predictedClicks?: number
   predictedImpressions?: number
+  predictedClicksFromEfficiency?: number
 }> {
   // Format date from YYYY-MM-DD to DD/MM
   const formatDate = (dateStr: string): string => {
@@ -246,6 +259,7 @@ export function combineDataForChart(
     impressions: item.impressions,
     predictedClicks: undefined as number | undefined,
     predictedImpressions: undefined as number | undefined,
+    predictedClicksFromEfficiency: undefined as number | undefined,
   }))
 
   // Add the last historical point to forecast to connect the lines
@@ -254,6 +268,7 @@ export function combineDataForChart(
     // Set the predicted values on the last historical point to connect the lines
     lastHistorical.predictedClicks = lastHistorical.clicks
     lastHistorical.predictedImpressions = lastHistorical.impressions
+    lastHistorical.predictedClicksFromEfficiency = lastHistorical.clicks
   }
 
   // Forecast data
@@ -264,6 +279,7 @@ export function combineDataForChart(
     impressions: undefined as number | undefined,
     predictedClicks: item.predictedClicks,
     predictedImpressions: item.predictedImpressions,
+    predictedClicksFromEfficiency: item.predictedClicksFromEfficiency,
   }))
 
   return [...historicalData, ...forecastData]

@@ -153,7 +153,8 @@ async function SEOContent({ searchParams }: { searchParams: { from?: string; to?
                 </div>
               </div>
               <div className="space-y-1 text-xs text-slate-600">
-                <p><span className="font-medium">Previsao:</span> {forecast.predictedTotal.clicks.toLocaleString('pt-BR')} cliques</p>
+                <p><span className="font-medium">ML Direta:</span> {forecast.predictedTotal.clicks.toLocaleString('pt-BR')} cliques</p>
+                <p><span className="font-medium">Via Eficiencia:</span> <span className="text-amber-600 font-semibold">{forecast.predictedTotal.clicksFromEfficiency.toLocaleString('pt-BR')}</span> cliques</p>
                 <p><span className="font-medium">Velocidade:</span> {forecast.velocity.clicks > 0 ? '+' : ''}{forecast.velocity.clicks}/dia</p>
                 <p><span className="font-medium">Confianca:</span> {forecast.confidence.clicks}%</p>
               </div>
@@ -303,9 +304,9 @@ async function SEOContent({ searchParams }: { searchParams: { from?: string; to?
       {/* Chart with Forecast */}
       <Card className="border-slate-200 bg-white shadow-sm">
         <CardHeader>
-          <CardTitle className="text-slate-900">Performance e Previsao</CardTitle>
+          <CardTitle className="text-slate-900">Performance e Previsao Dupla</CardTitle>
           <CardDescription className="text-slate-500">
-            Historico de cliques (linha solida) e projecao ML (linha pontilhada)
+            Historico (solida), ML Direta (cinza pontilhada) e ML via Eficiencia (laranja pontilhada)
           </CardDescription>
         </CardHeader>
         <CardContent>
