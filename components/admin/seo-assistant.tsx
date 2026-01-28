@@ -14,7 +14,7 @@ import {
 } from '@/components/ui/sheet'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import ReactMarkdown from 'react-markdown'
-import { useChat } from 'ai/react'
+import { useChat } from '@ai-sdk/react'
 
 interface SeoAssistantProps {
   metrics: {
