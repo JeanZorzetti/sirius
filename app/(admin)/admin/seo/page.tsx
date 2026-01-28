@@ -5,7 +5,7 @@ import { generateForecast, combineDataForChart } from '@/lib/seo-forecasting'
 import { SEOMetricsChart } from '@/components/admin/seo-chart'
 import { DateRangePicker } from '@/components/admin/date-range-picker'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Search, MousePointer, Eye, TrendingUp, AlertCircle, Loader2, Sparkles, TrendingDown, Minus } from 'lucide-react'
+import { Search, MousePointer, Eye, TrendingUp, AlertCircle, Loader2, Sparkles, TrendingDown, Minus, Target } from 'lucide-react'
 
 export const metadata: Metadata = {
   title: 'SEO Command Center - Admin',
@@ -203,7 +203,7 @@ async function SEOContent({ searchParams }: { searchParams: { from?: string; to?
       </Card>
 
       {/* KPI Cards */}
-      <div className="grid gap-4 md:grid-cols-3">
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         <Card className="border-slate-200 bg-white shadow-sm">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium text-slate-600">Total de Cliques</CardTitle>
@@ -245,6 +245,56 @@ async function SEOContent({ searchParams }: { searchParams: { from?: string; to?
             </div>
             <p className="text-xs text-slate-500 mt-1">
               Taxa de cliques
+            </p>
+          </CardContent>
+        </Card>
+
+        <Card className={`border-2 shadow-sm ${
+          forecast.efficiency.trend === 'Melhorando'
+            ? 'border-green-200 bg-gradient-to-br from-green-50 to-emerald-50'
+            : forecast.efficiency.trend === 'Piorando'
+            ? 'border-red-200 bg-gradient-to-br from-red-50 to-orange-50'
+            : 'border-slate-200 bg-white'
+        }`}>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium text-slate-600">Custo de Visibilidade</CardTitle>
+            <Target className={`h-4 w-4 ${
+              forecast.efficiency.trend === 'Melhorando'
+                ? 'text-green-600'
+                : forecast.efficiency.trend === 'Piorando'
+                ? 'text-red-600'
+                : 'text-slate-600'
+            }`} />
+          </CardHeader>
+          <CardContent>
+            <div className={`text-2xl font-bold ${
+              forecast.efficiency.trend === 'Melhorando'
+                ? 'text-green-700'
+                : forecast.efficiency.trend === 'Piorando'
+                ? 'text-red-700'
+                : 'text-slate-900'
+            }`}>
+              {forecast.efficiency.currentRatio}
+            </div>
+            <p className={`text-xs mt-1 font-medium ${
+              forecast.efficiency.trend === 'Melhorando'
+                ? 'text-green-600'
+                : forecast.efficiency.trend === 'Piorando'
+                ? 'text-red-600'
+                : 'text-slate-500'
+            }`}>
+              {forecast.efficiency.trend === 'Melhorando' && (
+                <>▼ Eficiencia aumentando (CTR subindo)</>
+              )}
+              {forecast.efficiency.trend === 'Piorando' && (
+                <>▲ Alerta: Snippets menos atrativos</>
+              )}
+              {forecast.efficiency.trend === 'Estavel' && (
+                <>Impressoes p/ 1 clique (estavel)</>
+              )}
+            </p>
+            <p className="text-xs text-slate-500 mt-1">
+              Prev. 30d: {forecast.efficiency.forecastNext30d}
             </p>
           </CardContent>
         </Card>

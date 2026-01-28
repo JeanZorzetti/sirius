@@ -1,6 +1,7 @@
 import { linearRegression, linearRegressionLine } from 'simple-statistics'
 
 export type TrendDirection = 'Alta' | 'Baixa' | 'Estavel'
+export type EfficiencyTrend = 'Melhorando' | 'Piorando' | 'Estavel'
 
 export interface ForecastDataPoint {
   date: string
@@ -25,6 +26,11 @@ export interface ForecastResult {
   confidence: {
     clicks: number
     impressions: number
+  }
+  efficiency: {
+    currentRatio: number
+    trend: EfficiencyTrend
+    forecastNext30d: number
   }
 }
 
@@ -90,6 +96,11 @@ export function generateForecast(
         clicks: 0,
         impressions: 0,
       },
+      efficiency: {
+        currentRatio: 0,
+        trend: 'Estavel',
+        forecastNext30d: 0,
+      },
     }
   }
 
@@ -148,6 +159,38 @@ export function generateForecast(
     })
   }
 
+  // Calculate Efficiency Ratio (Impressions per Click)
+  // Lower is better (means higher CTR)
+  const efficiencyPoints: [number, number][] = history.map((item, index) => {
+    const ratio = item.clicks > 0 ? item.impressions / item.clicks : item.impressions
+    return [index, ratio]
+  })
+
+  // Calculate current ratio (average of entire period)
+  const totalClicks = history.reduce((sum, item) => sum + item.clicks, 0)
+  const totalImpressions = history.reduce((sum, item) => sum + item.impressions, 0)
+  const currentRatio = totalClicks > 0 ? Math.round(totalImpressions / totalClicks) : 0
+
+  // Linear regression on efficiency ratio to detect trend
+  const efficiencyRegression = linearRegression(efficiencyPoints)
+  const efficiencyPredict = linearRegressionLine(efficiencyRegression)
+  const efficiencySlope = efficiencyRegression.m
+
+  // Determine efficiency trend
+  // If slope is negative, ratio is decreasing (GOOD - getting more efficient)
+  // If slope is positive, ratio is increasing (BAD - getting less efficient)
+  let efficiencyTrend: EfficiencyTrend
+  if (efficiencySlope < -1) {
+    efficiencyTrend = 'Melhorando'
+  } else if (efficiencySlope > 1) {
+    efficiencyTrend = 'Piorando'
+  } else {
+    efficiencyTrend = 'Estavel'
+  }
+
+  // Forecast efficiency ratio 30 days out
+  const forecastNext30d = Math.max(0, Math.round(efficiencyPredict(startIndex + 29)))
+
   return {
     trends: {
       clicks: clicksTrend,
@@ -165,6 +208,11 @@ export function generateForecast(
     confidence: {
       clicks: clicksConfidence,
       impressions: impressionsConfidence,
+    },
+    efficiency: {
+      currentRatio,
+      trend: efficiencyTrend,
+      forecastNext30d,
     },
   }
 }
