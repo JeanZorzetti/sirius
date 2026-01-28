@@ -93,8 +93,14 @@ async function SEOContent({ searchParams }: { searchParams: { from?: string; to?
     },
   }
 
-  const currentTrendConfig = trendConfig[forecast.trend]
-  const TrendIcon = currentTrendConfig.icon
+  const clicksTrendConfig = trendConfig[forecast.trends.clicks]
+  const impressionsTrendConfig = trendConfig[forecast.trends.impressions]
+  const ClicksTrendIcon = clicksTrendConfig.icon
+  const ImpressionsTrendIcon = impressionsTrendConfig.icon
+
+  // Detect dangerous divergence: clicks up but impressions down
+  const hasDangerousDivergence =
+    forecast.trends.clicks === 'Alta' && forecast.trends.impressions === 'Baixa'
 
   return (
     <>
@@ -115,56 +121,80 @@ async function SEOContent({ searchParams }: { searchParams: { from?: string; to?
       </div>
 
       {/* AI Insight Card */}
-      <Card className={`${currentTrendConfig.borderColor} ${currentTrendConfig.bgColor} shadow-sm`}>
+      <Card className="border-purple-200 bg-gradient-to-br from-purple-50 to-blue-50 shadow-sm">
         <CardHeader className="pb-3">
-          <div className="flex items-center gap-2">
-            <Sparkles className="h-5 w-5 text-purple-600" />
-            <CardTitle className="text-lg text-slate-900">Insight de IA - Previsao ML</CardTitle>
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <Sparkles className="h-5 w-5 text-purple-600" />
+              <CardTitle className="text-lg text-slate-900">Insight de IA - Previsao ML (30 dias)</CardTitle>
+            </div>
+            {hasDangerousDivergence && (
+              <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-yellow-100 border border-yellow-300">
+                <AlertCircle className="h-4 w-4 text-yellow-700" />
+                <span className="text-xs font-medium text-yellow-800">Alerta: Visibilidade em Queda</span>
+              </div>
+            )}
           </div>
         </CardHeader>
         <CardContent>
-          <div className="grid gap-4 sm:grid-cols-3">
-            <div className="flex items-center gap-3">
-              <div className={`p-2 rounded-lg ${currentTrendConfig.bgColor}`}>
-                <TrendIcon className={`h-5 w-5 ${currentTrendConfig.iconColor}`} />
+          {/* Trends Section */}
+          <div className="grid gap-3 sm:grid-cols-2 mb-4">
+            {/* Clicks Trend */}
+            <div className={`p-4 rounded-lg border-2 ${clicksTrendConfig.borderColor} ${clicksTrendConfig.bgColor}`}>
+              <div className="flex items-center gap-3 mb-2">
+                <div className={`p-2 rounded-lg ${clicksTrendConfig.bgColor}`}>
+                  <ClicksTrendIcon className={`h-5 w-5 ${clicksTrendConfig.iconColor}`} />
+                </div>
+                <div>
+                  <p className="text-xs font-medium text-slate-600">Tendencia de Trafego (Cliques)</p>
+                  <p className={`text-xl font-bold ${clicksTrendConfig.color}`}>
+                    {forecast.trends.clicks} 🟢
+                  </p>
+                </div>
               </div>
-              <div>
-                <p className="text-xs text-slate-500">Tendencia Projetada</p>
-                <p className={`text-lg font-bold ${currentTrendConfig.color}`}>
-                  {forecast.trend}
-                </p>
-              </div>
-            </div>
-
-            <div className="flex items-center gap-3">
-              <div className="p-2 rounded-lg bg-blue-50">
-                <MousePointer className="h-5 w-5 text-blue-600" />
-              </div>
-              <div>
-                <p className="text-xs text-slate-500">Previsao 30 dias</p>
-                <p className="text-lg font-bold text-slate-900">
-                  {forecast.predictedTotal.toLocaleString('pt-BR')} cliques
-                </p>
+              <div className="space-y-1 text-xs text-slate-600">
+                <p><span className="font-medium">Previsao:</span> {forecast.predictedTotal.clicks.toLocaleString('pt-BR')} cliques</p>
+                <p><span className="font-medium">Velocidade:</span> {forecast.velocity.clicks > 0 ? '+' : ''}{forecast.velocity.clicks}/dia</p>
+                <p><span className="font-medium">Confianca:</span> {forecast.confidence.clicks}%</p>
               </div>
             </div>
 
-            <div className="flex items-center gap-3">
-              <div className="p-2 rounded-lg bg-purple-50">
-                <TrendingUp className="h-5 w-5 text-purple-600" />
+            {/* Impressions Trend */}
+            <div className={`p-4 rounded-lg border-2 ${impressionsTrendConfig.borderColor} ${impressionsTrendConfig.bgColor}`}>
+              <div className="flex items-center gap-3 mb-2">
+                <div className={`p-2 rounded-lg ${impressionsTrendConfig.bgColor}`}>
+                  <ImpressionsTrendIcon className={`h-5 w-5 ${impressionsTrendConfig.iconColor}`} />
+                </div>
+                <div>
+                  <p className="text-xs font-medium text-slate-600">Tendencia de Visibilidade (Impressoes)</p>
+                  <p className={`text-xl font-bold ${impressionsTrendConfig.color}`}>
+                    {forecast.trends.impressions} 🔵
+                  </p>
+                </div>
               </div>
-              <div>
-                <p className="text-xs text-slate-500">Velocidade Diaria</p>
-                <p className="text-lg font-bold text-slate-900">
-                  {forecast.velocity > 0 ? '+' : ''}{forecast.velocity} cliques/dia
-                </p>
+              <div className="space-y-1 text-xs text-slate-600">
+                <p><span className="font-medium">Previsao:</span> {forecast.predictedTotal.impressions.toLocaleString('pt-BR')} imp</p>
+                <p><span className="font-medium">Velocidade:</span> {forecast.velocity.impressions > 0 ? '+' : ''}{forecast.velocity.impressions}/dia</p>
+                <p><span className="font-medium">Confianca:</span> {forecast.confidence.impressions}%</p>
               </div>
             </div>
           </div>
 
-          <div className="mt-3 pt-3 border-t border-slate-200">
+          {/* Warning Message */}
+          {hasDangerousDivergence && (
+            <div className="p-3 rounded-lg bg-yellow-50 border border-yellow-200">
+              <p className="text-xs text-yellow-800">
+                <span className="font-bold">⚠️ Atencao:</span> O CTR esta segurando o trafego, mas a visibilidade esta caindo.
+                Isso pode indicar perda futura de cliques se nao houver acao imediata no SEO.
+              </p>
+            </div>
+          )}
+
+          {/* Model Info */}
+          <div className="mt-3 pt-3 border-t border-purple-200">
             <p className="text-xs text-slate-600">
-              <span className="font-medium">Confianca do modelo:</span> {forecast.confidence}%
-              <span className="ml-2 text-slate-500">
+              <span className="font-medium">Modelo:</span> Regressao Linear
+              <span className="ml-3 text-slate-500">
                 (Baseado em {metrics.history.length} dias de dados)
               </span>
             </p>

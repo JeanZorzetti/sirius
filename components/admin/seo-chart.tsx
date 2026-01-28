@@ -18,6 +18,7 @@ interface ChartDataPoint {
   clicks?: number
   impressions?: number
   predictedClicks?: number
+  predictedImpressions?: number
 }
 
 interface SEOChartProps {
@@ -103,13 +104,16 @@ export function SEOMetricsChart({ data, showForecast = false }: SEOChartProps) {
             let label: string
             switch (name) {
               case 'clicks':
-                label = 'Cliques'
+                label = 'Cliques (Real)'
                 break
               case 'impressions':
-                label = 'Impressoes'
+                label = 'Impressoes (Real)'
                 break
               case 'predictedClicks':
-                label = 'Previsao'
+                label = 'Cliques (Previsao)'
+                break
+              case 'predictedImpressions':
+                label = 'Impressoes (Previsao)'
                 break
               default:
                 label = String(name)
@@ -125,9 +129,11 @@ export function SEOMetricsChart({ data, showForecast = false }: SEOChartProps) {
               case 'clicks':
                 return 'Cliques (Real)'
               case 'impressions':
-                return 'Impressoes'
+                return 'Impressoes (Real)'
               case 'predictedClicks':
-                return 'Previsao (IA)'
+                return 'Cliques (Previsao IA)'
+              case 'predictedImpressions':
+                return 'Impressoes (Previsao IA)'
               default:
                 return value
             }
@@ -160,19 +166,32 @@ export function SEOMetricsChart({ data, showForecast = false }: SEOChartProps) {
           />
         )}
 
-        {/* Forecast line (dashed) */}
+        {/* Forecast lines (dashed) */}
         {showForecast && (
-          <Line
-            yAxisId="left"
-            type="monotone"
-            dataKey="predictedClicks"
-            stroke="#94a3b8"
-            strokeWidth={2}
-            strokeDasharray="5 5"
-            dot={false}
-            activeDot={{ r: 4, fill: '#94a3b8' }}
-            connectNulls={false}
-          />
+          <>
+            <Line
+              yAxisId="left"
+              type="monotone"
+              dataKey="predictedClicks"
+              stroke="#94a3b8"
+              strokeWidth={2}
+              strokeDasharray="5 5"
+              dot={false}
+              activeDot={{ r: 4, fill: '#94a3b8' }}
+              connectNulls={false}
+            />
+            <Line
+              yAxisId="right"
+              type="monotone"
+              dataKey="predictedImpressions"
+              stroke="#60a5fa"
+              strokeWidth={2}
+              strokeDasharray="5 5"
+              dot={false}
+              activeDot={{ r: 4, fill: '#60a5fa' }}
+              connectNulls={false}
+            />
+          </>
         )}
       </LineChart>
     </ResponsiveContainer>
