@@ -7,7 +7,7 @@
 
 import { NextRequest } from 'next/server';
 import { streamText, tool } from 'ai';
-import { openai } from '@ai-sdk/openai';
+import { groq } from '@ai-sdk/groq';
 import { z } from 'zod';
 import { tavily } from '@tavily/core';
 import { getSession } from '@/lib/auth';
@@ -192,7 +192,7 @@ IMPORTANTE: Você tem acesso aos dados REAIS do GSC acima. Use-os nas suas respo
 
     // 7. Stream response with tool calling
     const result = streamText({
-      model: openai('gpt-4o-mini'),
+      model: groq('llama-3.3-70b-versatile'),
       system: seoSystemPrompt,
       messages: [
         {

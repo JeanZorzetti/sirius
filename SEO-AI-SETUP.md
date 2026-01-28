@@ -7,7 +7,7 @@ Este guia explica como configurar o **SEO AI Assistant** com capacidades de pesq
 ## 📋 Pré-requisitos
 
 1. **Tavily API Key** (para web search)
-2. **OpenAI API Key** (para tool calling com GPT-4o-mini)
+2. **Groq API Key** (para tool calling com Llama 3.3 70B)
 
 ---
 
@@ -25,19 +25,19 @@ Este guia explica como configurar o **SEO AI Assistant** com capacidades de pesq
 - `search_depth: advanced`
 - 5 resultados por pesquisa
 
-### OpenAI API
+### Groq API
 
-1. Acesse: [https://platform.openai.com/api-keys](https://platform.openai.com/api-keys)
+1. Acesse: [https://console.groq.com/keys](https://console.groq.com/keys)
 2. Faça login ou crie uma conta
-3. Clique em "Create new secret key"
-4. Copie a key (formato: `sk-proj-XXXXXXXXXX`)
+3. Clique em "Create API Key"
+4. Copie a key (formato: `gsk_XXXXXXXXXX`)
 
-**Modelo usado**: `gpt-4o-mini` (mais barato, excelente para tool calling)
+**Modelo usado**: `llama-3.3-70b-versatile` (GRATUITO, excelente para tool calling)
 
 **Custo estimado**:
-- Input: $0.150 / 1M tokens
-- Output: $0.600 / 1M tokens
-- ~$0.01 por conversa típica com 1-2 web searches
+- **GRÁTIS** (rate limit: 30 req/min, 14400 tokens/min)
+- Performance comparável ao GPT-4o-mini
+- Sem custos por conversa
 
 ---
 
@@ -49,8 +49,8 @@ Adicione as seguintes linhas ao seu arquivo `.env`:
 # Tavily (Web Search for AI Agents)
 TAVILY_API_KEY="tvly-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
 
-# OpenAI (para tool calling no SEO Assistant)
-OPENAI_API_KEY="sk-proj-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+# Groq (LLM provider - usado no AGI + SEO Assistant)
+GROQ_API_KEY="gsk_XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
 ```
 
 **IMPORTANTE**: Nunca commite o arquivo `.env`! Ele já está no `.gitignore`.
@@ -69,7 +69,7 @@ Pacotes instalados:
 - `@tavily/core` - Tavily SDK
 - `zod` - Schema validation
 - `ai` - Vercel AI SDK
-- `@ai-sdk/openai` - OpenAI provider para AI SDK
+- `@ai-sdk/groq` - Groq provider para AI SDK
 
 ---
 
@@ -89,14 +89,14 @@ curl -X POST https://api.tavily.com/search \
 
 Resposta esperada: JSON com `results` array.
 
-### Testar OpenAI
+### Testar Groq
 
 ```bash
-curl https://api.openai.com/v1/models \
-  -H "Authorization: Bearer YOUR_OPENAI_KEY"
+curl https://api.groq.com/openai/v1/models \
+  -H "Authorization: Bearer YOUR_GROQ_KEY"
 ```
 
-Resposta esperada: Lista de modelos disponíveis.
+Resposta esperada: Lista de modelos disponíveis (incluindo llama-3.3-70b-versatile).
 
 ---
 
@@ -112,7 +112,7 @@ User Message
 [Auth + Usage Check]
     ↓
 Vercel AI SDK: streamText()
-    ├── Model: gpt-4o-mini
+    ├── Model: llama-3.3-70b-versatile (Groq)
     ├── System Prompt: SEO Specialist + GSC Context
     └── Tools: { searchWeb }
     ↓
@@ -216,14 +216,14 @@ Analisei os top 3 resultados:
 2. Acesse [tavily.com/dashboard](https://tavily.com/dashboard) e verifique usage
 3. Se atingiu limite gratuito, upgrade para paid
 
-### Erro: "OpenAI API error: 401"
+### Erro: "Groq API error: 401"
 
-**Causa**: API key inválida ou sem créditos.
+**Causa**: API key inválida.
 
 **Solução**:
-1. Verifique se `OPENAI_API_KEY` está correto
-2. Acesse [platform.openai.com/account/billing](https://platform.openai.com/account/billing)
-3. Adicione créditos ($5 mínimo recomendado)
+1. Verifique se `GROQ_API_KEY` está correto no `.env`
+2. Acesse [console.groq.com/keys](https://console.groq.com/keys)
+3. Verifique se a key não expirou (recriar se necessário)
 
 ### Tool não está sendo chamada
 
@@ -243,13 +243,13 @@ Analisei os top 3 resultados:
 - Limite Free: 1,000 searches/mês
 - Monitorar em: [tavily.com/dashboard](https://tavily.com/dashboard)
 
-### OpenAI
+### Groq
 
-- Custo médio por conversa: ~$0.01
-- 100 conversas com web search: ~$1.00
-- Monitorar em: [platform.openai.com/usage](https://platform.openai.com/usage)
+- **GRÁTIS** (rate limit: 30 req/min, 14400 tokens/min)
+- Sem custos por conversa
+- Monitorar em: [console.groq.com](https://console.groq.com)
 
-**Tip**: Configure um budget alert no OpenAI para $10/mês.
+**Vantagem**: Zero custo de LLM! Apenas Tavily (1000 searches grátis/mês).
 
 ---
 
@@ -274,18 +274,18 @@ O endpoint `/api/chat/seo` já usa:
 
 - [Tavily Docs](https://docs.tavily.com)
 - [Vercel AI SDK Docs](https://sdk.vercel.ai/docs)
-- [OpenAI Function Calling Guide](https://platform.openai.com/docs/guides/function-calling)
+- [Groq Tool Calling Guide](https://console.groq.com/docs/tool-use)
 
 ---
 
 ## ✅ Checklist de Setup
 
 - [ ] Tavily API key obtida e configurada
-- [ ] OpenAI API key obtida e configurada
+- [ ] Groq API key obtida e configurada
 - [ ] Dependências instaladas (`npm install`)
 - [ ] `.env` atualizado com ambas as keys
 - [ ] Testado endpoint `/api/chat/seo`
-- [ ] Budget alerts configurados
+- [ ] Rate limits verificados (Groq: 30 req/min)
 
 ---
 
