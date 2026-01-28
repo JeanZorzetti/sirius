@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getSession } from '@/lib/auth'
-import { seedDemoData } from '@/lib/seed-demo-data'
 import { PrismaClient } from '@prisma/client'
 
 const prisma = new PrismaClient()
@@ -16,7 +15,9 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Fetch user from database to get id and organizationId
+    const body = await request.json().catch(() => ({}))
+    const status = body.status === 'SKIPPED' ? 'SKIPPED' : 'COMPLETED'
+
     const user = await prisma.user.findUnique({
       where: { email: session.user.email },
       select: {
@@ -32,41 +33,29 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    const userId = user.id
-    const organizationId = user.organizationId
-
-    // Seed demo data
-    const result = await seedDemoData(userId, organizationId)
-
-    if (!result.success) {
-      return NextResponse.json(
-        { error: result.error || 'Failed to seed demo data' },
-        { status: 500 }
-      )
-    }
-
-    // Mark onboarding as completed
+    // Mark onboarding as completed/skipped
     await prisma.onboardingProgress.upsert({
-      where: { userId },
+      where: { userId: user.id },
       update: {
-        status: 'COMPLETED',
-        completedAt: new Date(),
+        status,
+        completedAt: status === 'COMPLETED' ? new Date() : undefined,
+        skippedAt: status === 'SKIPPED' ? new Date() : undefined,
       },
       create: {
-        userId,
-        organizationId,
-        status: 'COMPLETED',
-        completedAt: new Date(),
+        userId: user.id,
+        organizationId: user.organizationId,
+        status,
+        completedAt: status === 'COMPLETED' ? new Date() : undefined,
+        skippedAt: status === 'SKIPPED' ? new Date() : undefined,
       },
     })
 
     return NextResponse.json({
       success: true,
-      message: 'Demo data loaded successfully',
-      data: result.data
+      status
     })
   } catch (error) {
-    console.error('Error in seed-demo endpoint:', error)
+    console.error('Error completing onboarding:', error)
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

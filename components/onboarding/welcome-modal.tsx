@@ -56,10 +56,20 @@ export function WelcomeModal({ open, onClose, userName }: WelcomeModalProps) {
         // Rastrear conclusão do onboarding
         analytics.onboardingCompleted({ demo_mode: true })
 
+        // Refresh to get updated data from server
+        router.refresh()
+
         // Close modal and redirect to dashboard with tour
         onClose()
         router.push('/dashboard?tour=true')
       } else if (choice === 'import') {
+        // Mark onboarding as completed
+        await fetch('/api/onboarding/complete', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ status: 'COMPLETED' })
+        })
+
         // TODO: Implement import flow
         toast.info('Em breve!', {
           description: 'A importação de dados estará disponível em breve.'
@@ -68,13 +78,22 @@ export function WelcomeModal({ open, onClose, userName }: WelcomeModalProps) {
         // Rastrear conclusão do onboarding
         analytics.onboardingCompleted({ demo_mode: false })
 
+        router.refresh()
         onClose()
         router.push('/dashboard')
       } else if (choice === 'scratch') {
+        // Mark onboarding as completed
+        await fetch('/api/onboarding/complete', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ status: 'COMPLETED' })
+        })
+
         // Rastrear conclusão do onboarding
         analytics.onboardingCompleted({ demo_mode: false })
 
         // Start from scratch
+        router.refresh()
         onClose()
         router.push('/dashboard')
       }
