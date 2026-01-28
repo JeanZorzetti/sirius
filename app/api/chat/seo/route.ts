@@ -203,7 +203,7 @@ IMPORTANTE: Você tem acesso aos dados REAIS do GSC acima. Use-os nas suas respo
       tools: {
         searchWeb: tool({
           description: 'Pesquisa o Google para analisar concorrentes, verificar posições na SERP ou buscar volumes de busca atuais. Use isso quando precisar de dados externos que não estão no contexto do GSC.',
-          parameters: z.object({
+          inputSchema: z.object({
             query: z.string().describe('A query de busca otimizada para encontrar a informação necessária (ex: "site:competitor.com pricing" ou "top ranking crm imobiliario")'),
           }),
           execute: async ({ query }) => {
