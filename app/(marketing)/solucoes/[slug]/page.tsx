@@ -195,6 +195,70 @@ export default async function NicheSolutionPage({ params }: { params: Promise<{ 
         </div>
       </section>
 
+      {/* Recursos Gratuitos - only for corretores */}
+      {slug === 'corretores-de-imoveis' && (
+        <section className="container mx-auto px-4 py-20 bg-linear-to-br from-blue-50/50 to-indigo-50/50 dark:from-blue-950/20 dark:to-indigo-950/20">
+          <div className="max-w-4xl mx-auto">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl md:text-4xl font-bold mb-4">
+                Recursos Gratuitos para Corretores
+              </h2>
+              <p className="text-xl text-muted-foreground">
+                Ferramentas e guias práticos para organizar suas vendas
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-2 gap-6">
+              <a
+                href="/blog/planilha-controle-comissao-corretor"
+                className="group block p-6 bg-card rounded-2xl border border-border hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
+              >
+                <div className="flex items-start gap-4">
+                  <div className="p-3 rounded-xl bg-primary/10 group-hover:bg-primary/20 transition-colors">
+                    <TrendingUp className="h-6 w-6 text-primary" />
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="text-xl font-bold mb-2 group-hover:text-primary transition-colors">
+                      Planilha de Controle de Comissões
+                    </h3>
+                    <p className="text-muted-foreground mb-3">
+                      Descubra quanto você perde por mês com desorganização. Calculadora gratuita + guia completo.
+                    </p>
+                    <span className="text-primary font-medium inline-flex items-center gap-2">
+                      Acessar gratuitamente
+                      <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                    </span>
+                  </div>
+                </div>
+              </a>
+
+              <a
+                href="/ferramentas/calculadora-roi-corretores"
+                className="group block p-6 bg-card rounded-2xl border border-border hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
+              >
+                <div className="flex items-start gap-4">
+                  <div className="p-3 rounded-xl bg-emerald-500/10 group-hover:bg-emerald-500/20 transition-colors">
+                    <CheckCircle2 className="h-6 w-6 text-emerald-600 dark:text-emerald-400" />
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="text-xl font-bold mb-2 group-hover:text-primary transition-colors">
+                      Calculadora de ROI
+                    </h3>
+                    <p className="text-muted-foreground mb-3">
+                      Calcule quanto você pode ganhar com automação e organização de vendas.
+                    </p>
+                    <span className="text-primary font-medium inline-flex items-center gap-2">
+                      Calcular agora
+                      <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                    </span>
+                  </div>
+                </div>
+              </a>
+            </div>
+          </div>
+        </section>
+      )}
+
       {/* FAQ */}
       <section className="container mx-auto px-4 py-20">
         <div className="max-w-3xl mx-auto">

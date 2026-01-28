@@ -4074,5 +4074,15 @@ Se este guia foi útil para você, compartilhe com sua rede e ajude outros profi
     category: 'Vendas',
     image: '/images/blog/spin-selling.png',
     author: 'Equipe Sirius CRM'
+  },
+  {
+    slug: 'planilha-controle-comissao-corretor',
+    title: 'Planilha de Controle de Comissão para Corretores [2026]',
+    excerpt: 'Descubra quanto dinheiro você perde por mês com desorganização. Calculadora gratuita de comissões perdidas + guia completo para controlar vendas e comissões.',
+    content: '',
+    date: '2026-01-28',
+    category: 'Ferramentas',
+    image: '/images/blog/pipeline-vendas.png',
+    author: 'Equipe Sirius CRM'
   }
 ]
