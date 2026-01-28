@@ -75,9 +75,10 @@ export function SEOMetricsChart({ data }: SEOChartProps) {
             borderRadius: '8px',
           }}
           labelStyle={{ color: 'hsl(var(--popover-foreground))' }}
-          formatter={(value: number, name: string) => {
+          formatter={(value, name) => {
             const label = name === 'clicks' ? 'Cliques' : 'Impressões'
-            return [value.toLocaleString('pt-BR'), label]
+            const numValue = typeof value === 'number' ? value : 0
+            return [numValue.toLocaleString('pt-BR'), label]
           }}
           labelFormatter={(label) => `Data: ${label}`}
         />
