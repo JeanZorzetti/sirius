@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import Image from 'next/image'
 import { useEffect, useRef } from 'react'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
@@ -77,8 +78,7 @@ export default function BlogPage() {
                                     className={`
                                         h-full flex flex-col relative overflow-hidden
                                         border-border/50
-                                        bg-linear-to-br from-background/80 via-background/50 to-background/30
-                                        backdrop-blur-xl
+                                        bg-background/95
                                         hover:shadow-2xl hover:shadow-primary/10
                                         hover:-translate-y-2 hover:scale-[1.02]
                                         transition-all duration-500 ease-out
@@ -90,8 +90,20 @@ export default function BlogPage() {
                                         }
                                     `}
                                 >
-                                    {/* Glassmorphic overlay on hover */}
-                                    <div className="absolute inset-0 bg-linear-to-br from-primary/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-3xl" />
+                                    {/* Background Image with zoom effect */}
+                                    <div className="absolute inset-0 overflow-hidden rounded-3xl">
+                                        <Image
+                                            src={post.image}
+                                            alt={post.title}
+                                            fill
+                                            className="object-cover transition-transform duration-700 ease-out group-hover:scale-110"
+                                            sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                                        />
+                                        {/* Gradient overlay for text readability */}
+                                        <div className="absolute inset-0 bg-linear-to-t from-background via-background/80 to-background/40" />
+                                        {/* Additional glassmorphic overlay on hover */}
+                                        <div className="absolute inset-0 bg-linear-to-br from-primary/20 via-background/60 to-background/80 opacity-0 group-hover:opacity-100 transition-opacity duration-500 backdrop-blur-sm" />
+                                    </div>
 
                                     {/* Animated border gradient */}
                                     <div className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-linear-to-r from-blue-500/20 via-purple-500/20 to-pink-500/20 blur-xl -z-10" />
