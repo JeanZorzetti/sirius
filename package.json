@@ -64,6 +64,7 @@
     "react": "19.2.3",
     "react-dom": "19.2.3",
     "react-email": "^5.1.1",
+    "react-markdown": "^10.1.0",
     "recharts": "^3.7.0",
     "resend": "^6.6.0",
     "simple-statistics": "^7.8.8",

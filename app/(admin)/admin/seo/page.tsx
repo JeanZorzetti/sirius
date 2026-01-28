@@ -4,6 +4,7 @@ import { getSEOMetrics } from '@/lib/google-search-console'
 import { generateForecast, combineDataForChart } from '@/lib/seo-forecasting'
 import { SEOMetricsChart } from '@/components/admin/seo-chart'
 import { DateRangePicker } from '@/components/admin/date-range-picker'
+import { SeoAssistant } from '@/components/admin/seo-assistant'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Search, MousePointer, Eye, TrendingUp, AlertCircle, Loader2, Sparkles, TrendingDown, Minus, Target } from 'lucide-react'
 
@@ -104,7 +105,7 @@ async function SEOContent({ searchParams }: { searchParams: { from?: string; to?
 
   return (
     <>
-      {/* Header with Date Picker */}
+      {/* Header with Date Picker and AI Assistant */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
           <h1 className="text-3xl font-bold tracking-tight text-slate-900">SEO Command Center</h1>
@@ -112,12 +113,15 @@ async function SEOContent({ searchParams }: { searchParams: { from?: string; to?
             Dados do Google Search Console
           </p>
         </div>
-        <Suspense fallback={null}>
-          <DateRangePicker
-            currentStartDate={metrics.dateRange.startDate}
-            currentEndDate={metrics.dateRange.endDate}
-          />
-        </Suspense>
+        <div className="flex flex-col sm:flex-row gap-3">
+          <Suspense fallback={null}>
+            <DateRangePicker
+              currentStartDate={metrics.dateRange.startDate}
+              currentEndDate={metrics.dateRange.endDate}
+            />
+          </Suspense>
+          <SeoAssistant metrics={metrics} forecast={forecast} />
+        </div>
       </div>
 
       {/* AI Insight Card */}
