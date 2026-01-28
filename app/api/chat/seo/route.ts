@@ -1,14 +1,17 @@
 /**
- * SEO AI Assistant - Chat API Route
+ * SEO AI Assistant with Web Browsing - Chat API Route
  *
  * POST /api/chat/seo
- * Chat endpoint for conversing with SEO AI specialist with GSC + ML context
+ * Chat endpoint with tool calling (Tavily web search) for SEO analysis
  */
 
-import { NextRequest, NextResponse } from 'next/server';
+import { NextRequest } from 'next/server';
+import { streamText, tool } from 'ai';
+import { openai } from '@ai-sdk/openai';
+import { z } from 'zod';
+import { tavily } from '@tavily/core';
 import { getSession } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
-import { createAgiBrain } from '@/lib/agi/brain';
 import { canUseAGI, recordUsage } from '@/lib/agi/usage';
 
 export const runtime = 'nodejs';
@@ -65,8 +68,6 @@ interface SeoContext {
 interface ChatRequest {
   message: string;
   context?: SeoContext;
-  modelOption?: 'option1' | 'option2';
-  stream?: boolean;
 }
 
 export async function POST(req: NextRequest) {
@@ -74,10 +75,10 @@ export async function POST(req: NextRequest) {
     // 1. Authentication
     const session = await getSession();
     if (!session?.user) {
-      return NextResponse.json(
-        { error: 'Não autenticado' },
-        { status: 401 }
-      );
+      return new Response(JSON.stringify({ error: 'Não autenticado' }), {
+        status: 401,
+        headers: { 'Content-Type': 'application/json' },
+      });
     }
 
     // 2. Get user and organization
@@ -88,10 +89,10 @@ export async function POST(req: NextRequest) {
     });
 
     if (!user || !user.organization) {
-      return NextResponse.json(
-        { error: 'Usuário ou organização não encontrada' },
-        { status: 404 }
-      );
+      return new Response(JSON.stringify({ error: 'Usuário ou organização não encontrada' }), {
+        status: 404,
+        headers: { 'Content-Type': 'application/json' },
+      });
     }
 
     const plan = user.organization.plan as 'FREE' | 'PRO';
@@ -104,28 +105,31 @@ export async function POST(req: NextRequest) {
     );
 
     if (!usageCheck.allowed) {
-      return NextResponse.json(
-        { error: usageCheck.reason || 'Limite de uso atingido' },
-        { status: 429 }
+      return new Response(
+        JSON.stringify({ error: usageCheck.reason || 'Limite de uso atingido' }),
+        {
+          status: 429,
+          headers: { 'Content-Type': 'application/json' },
+        }
       );
     }
 
     // 4. Parse request
     const body: ChatRequest = await req.json();
-    const { message, context, modelOption, stream = false } = body;
+    const { message, context } = body;
 
     if (!message || message.trim().length === 0) {
-      return NextResponse.json(
-        { error: 'Mensagem não pode estar vazia' },
-        { status: 400 }
-      );
+      return new Response(JSON.stringify({ error: 'Mensagem não pode estar vazia' }), {
+        status: 400,
+        headers: { 'Content-Type': 'application/json' },
+      });
     }
 
-    // 5. Build SEO specialist system prompt
+    // 5. Build SEO specialist system prompt with context
     const seoSystemPrompt = `Você é o Head de SEO da Sirius CRM. Sua missão é analisar dados brutos do Google Search Console e dar conselhos táticos para aumentar tráfego orgânico sem gastar em ads.
 
-CONTEXTO ATUAL (Google Search Console):
 ${context ? `
+CONTEXTO ATUAL (Google Search Console):
 - Período: ${context.dateRange?.startDate} até ${context.dateRange?.endDate}
 - Total de Cliques: ${context.totals?.clicks?.toLocaleString('pt-BR')}
 - Total de Impressões: ${context.totals?.impressions?.toLocaleString('pt-BR')}
@@ -175,88 +179,94 @@ DIRETRIZES:
 
 6. Sempre sugira 2-3 ações específicas e mensuráveis.
 
-IMPORTANTE: Você tem acesso aos dados REAIS acima. Use-os nas suas respostas.`;
+7. **IMPORTANTE - Web Search**: Você tem acesso a uma ferramenta 'searchWeb'. Use quando:
+   - Usuário perguntar sobre concorrentes específicos
+   - Precisar verificar posições na SERP em tempo real
+   - Quiser analisar snippets/titles dos top 3 resultados
+   - Buscar volume de busca ou tendências atuais
 
-    // 6. Initialize AGI Brain with SEO system prompt
-    const brain = createAgiBrain(plan, modelOption);
+IMPORTANTE: Você tem acesso aos dados REAIS do GSC acima. Use-os nas suas respostas.`;
 
-    // Inject SEO system prompt (we'll override the default sales prompt)
-    brain['systemPrompt'] = seoSystemPrompt;
+    // 6. Initialize Tavily client
+    const tv = tavily({ apiKey: process.env.TAVILY_API_KEY! });
 
-    // 7. Prepare enhanced context with SEO data
-    const enhancedContext: Record<string, any> = {
-      seo: context,
-    };
+    // 7. Stream response with tool calling
+    const result = streamText({
+      model: openai('gpt-4o-mini'),
+      system: seoSystemPrompt,
+      messages: [
+        {
+          role: 'user',
+          content: message,
+        },
+      ],
+      tools: {
+        searchWeb: tool({
+          description: 'Pesquisa o Google para analisar concorrentes, verificar posições na SERP ou buscar volumes de busca atuais. Use isso quando precisar de dados externos que não estão no contexto do GSC.',
+          parameters: z.object({
+            query: z.string().describe('A query de busca otimizada para encontrar a informação necessária (ex: "site:competitor.com pricing" ou "top ranking crm imobiliario")'),
+          }),
+          execute: async ({ query }) => {
+            console.log('[Tavily] Searching:', query);
 
-    // 8. Check if streaming is requested
-    if (stream) {
-      const encoder = new TextEncoder();
-      const customReadable = new ReadableStream({
-        async start(controller) {
-          try {
-            let fullResponse = '';
+            try {
+              const searchResult = await tv.search(query, {
+                search_depth: 'advanced',
+                max_results: 5,
+                include_answer: true,
+                include_raw_content: false,
+              });
 
-            for await (const chunk of brain.thinkStream(message, enhancedContext)) {
-              fullResponse += chunk;
-              controller.enqueue(encoder.encode(`data: ${JSON.stringify({ chunk })}\n\n`));
+              // Format results for the AI
+              const formattedResults = {
+                answer: searchResult.answer,
+                results: searchResult.results.map((r: any) => ({
+                  title: r.title,
+                  url: r.url,
+                  snippet: r.content?.substring(0, 300) || '',
+                  score: r.score,
+                })),
+              };
+
+              console.log('[Tavily] Found:', formattedResults.results.length, 'results');
+
+              return formattedResults;
+            } catch (error) {
+              console.error('[Tavily] Error:', error);
+              return {
+                error: 'Não foi possível realizar a pesquisa web',
+                details: error instanceof Error ? error.message : 'Unknown error',
+              };
             }
-
-            // Record usage
-            const tokensUsed = brain['estimateTokens'](message + fullResponse);
-            await recordUsage(user.organizationId, user.id, tokensUsed, plan);
-
-            controller.enqueue(encoder.encode('data: [DONE]\n\n'));
-            controller.close();
-          } catch (error) {
-            controller.error(error);
-          }
-        },
-      });
-
-      return new Response(customReadable, {
-        headers: {
-          'Content-Type': 'text/event-stream',
-          'Cache-Control': 'no-cache',
-          Connection: 'keep-alive',
-        },
-      });
-    }
-
-    // 9. Non-streaming response
-    const response = await brain.think(message, enhancedContext);
-
-    // 10. Record usage
-    await recordUsage(
-      user.organizationId,
-      user.id,
-      response.tokensUsed,
-      plan
-    );
-
-    // 11. Return response
-    return NextResponse.json({
-      message: response.content,
-      model: response.model,
+          },
+        }),
+      },
+      maxSteps: 5, // Allow multiple tool calls
+      temperature: 0.7,
     });
+
+    // 8. Track token usage (approximation for now)
+    result.then(async (finalResult) => {
+      const estimatedTokens = Math.ceil((message.length + seoSystemPrompt.length) / 3);
+      await recordUsage(user.organizationId, user.id, estimatedTokens, plan);
+    }).catch((error) => {
+      console.error('Error recording usage:', error);
+    });
+
+    // 9. Return streaming response
+    return result.toDataStreamResponse();
   } catch (error) {
     console.error('SEO Chat Error:', error);
 
-    if (error instanceof Error && error.message.includes('Failed to get response')) {
-      return NextResponse.json(
-        {
-          error: 'Não foi possível conectar ao servidor de IA. Verifique se o Ollama está rodando.',
-          details: error.message,
-        },
-        { status: 503 }
-      );
-    }
-
-    return NextResponse.json(
-      {
+    return new Response(
+      JSON.stringify({
         error: 'Erro ao processar mensagem',
         details: error instanceof Error ? error.message : 'Erro desconhecido',
-      },
-      { status: 500 }
+      }),
+      {
+        status: 500,
+        headers: { 'Content-Type': 'application/json' },
+      }
     );
   }
 }

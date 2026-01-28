@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useRef, useEffect } from 'react'
-import { Send, Loader2, Sparkles, X, Bot } from 'lucide-react'
+import { Send, Loader2, Bot, Search } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
 import {
@@ -14,12 +14,7 @@ import {
 } from '@/components/ui/sheet'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import ReactMarkdown from 'react-markdown'
-
-interface Message {
-  role: 'user' | 'assistant'
-  content: string
-  timestamp: string
-}
+import { useChat } from 'ai/react'
 
 interface SeoAssistantProps {
   metrics: {
@@ -74,28 +69,30 @@ interface SeoAssistantProps {
 const STARTER_PROMPTS = [
   'Analise meus dados e sugira 3 ações prioritárias',
   'Por que minhas impressões subiram mas cliques caíram?',
+  'Pesquise na web quem está rankeando para "CRM" e compare comigo',
   'Quais keywords estão desperdiçando impressões?',
-  'Como melhorar meu CTR nos próximos 30 dias?',
 ]
 
 export function SeoAssistant({ metrics, forecast }: SeoAssistantProps) {
   const [isOpen, setIsOpen] = useState(false)
-  const [messages, setMessages] = useState<Message[]>([])
-  const [input, setInput] = useState('')
-  const [isLoading, setIsLoading] = useState(false)
   const messagesEndRef = useRef<HTMLDivElement>(null)
 
-  // Auto-scroll to bottom
-  useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
-  }, [messages])
-
-  // Auto-start with greeting when opened
-  useEffect(() => {
-    if (isOpen && messages.length === 0) {
-      const greeting: Message = {
+  const { messages, input, handleInputChange, handleSubmit, isLoading, append } = useChat({
+    api: '/api/chat/seo',
+    body: {
+      context: {
+        history: metrics.history,
+        keywords: metrics.keywords,
+        forecast,
+        totals: metrics.totals,
+        dateRange: metrics.dateRange,
+      },
+    },
+    initialMessages: [
+      {
+        id: 'welcome',
         role: 'assistant',
-        content: `👋 Olá! Sou o **SEO Specialist da Sirius CRM**.
+        content: `👋 Olá! Sou o **SEO Specialist da Sirius CRM** com **acesso à web em tempo real**.
 
 Analisei seus dados dos últimos ${metrics.history.length} dias:
 
@@ -108,76 +105,65 @@ Analisei seus dados dos últimos ${metrics.history.length} dias:
 - Tendência: ${forecast.trends.clicks} (${forecast.velocity.clicks > 0 ? '+' : ''}${forecast.velocity.clicks}/dia)
 - Forecast: ${forecast.predictedTotal.clicks.toLocaleString('pt-BR')} → ${forecast.predictedTotal.clicksFromEfficiency.toLocaleString('pt-BR')} cliques
 
-**Como posso ajudar?** Pergunte qualquer coisa sobre seus dados!`,
-        timestamp: new Date().toISOString(),
-      }
-      setMessages([greeting])
-    }
-  }, [isOpen])
+🌐 **Novo**: Posso pesquisar na web para analisar concorrentes e verificar a SERP!
 
-  const sendMessage = async (messageText?: string) => {
-    const textToSend = messageText || input
-    if (!textToSend.trim() || isLoading) return
+**Como posso ajudar?**`,
+      },
+    ],
+  })
 
-    const userMessage: Message = {
+  // Auto-scroll to bottom
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
+  }, [messages])
+
+  const sendStarterPrompt = (prompt: string) => {
+    append({
       role: 'user',
-      content: textToSend,
-      timestamp: new Date().toISOString(),
-    }
-
-    setMessages((prev) => [...prev, userMessage])
-    setInput('')
-    setIsLoading(true)
-
-    try {
-      const res = await fetch('/api/chat/seo', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
-        body: JSON.stringify({
-          message: textToSend,
-          context: {
-            history: metrics.history,
-            keywords: metrics.keywords,
-            forecast,
-            totals: metrics.totals,
-            dateRange: metrics.dateRange,
-          },
-        }),
-      })
-
-      if (!res.ok) {
-        const error = await res.json()
-        throw new Error(error.error || 'Erro ao enviar mensagem')
-      }
-
-      const data = await res.json()
-
-      const assistantMessage: Message = {
-        role: 'assistant',
-        content: data.message,
-        timestamp: new Date().toISOString(),
-      }
-
-      setMessages((prev) => [...prev, assistantMessage])
-    } catch (error) {
-      console.error('SEO Chat error:', error)
-      const errorMessage: Message = {
-        role: 'assistant',
-        content: `❌ ${error instanceof Error ? error.message : 'Erro desconhecido'}`,
-        timestamp: new Date().toISOString(),
-      }
-      setMessages((prev) => [...prev, errorMessage])
-    } finally {
-      setIsLoading(false)
-    }
+      content: prompt,
+    })
   }
 
-  const handleKeyPress = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
-      e.preventDefault()
-      sendMessage()
+  const renderToolInvocation = (toolInvocation: any) => {
+    if (toolInvocation.toolName === 'searchWeb') {
+      // Show search indicator
+      if ('result' in toolInvocation) {
+        const result = toolInvocation.result
+        return (
+          <div className="my-2 p-3 rounded-lg bg-blue-50 border border-blue-200">
+            <div className="flex items-center gap-2 text-blue-700 font-medium text-sm mb-2">
+              <Search className="h-4 w-4" />
+              Pesquisei na web: "{toolInvocation.args.query}"
+            </div>
+            {result.answer && (
+              <p className="text-xs text-blue-600 mb-2">{result.answer}</p>
+            )}
+            {result.results && result.results.length > 0 && (
+              <div className="space-y-1">
+                <p className="text-xs font-medium text-blue-700">Encontrei {result.results.length} resultados:</p>
+                {result.results.slice(0, 3).map((r: any, i: number) => (
+                  <div key={i} className="text-xs">
+                    <a href={r.url} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
+                      {r.title}
+                    </a>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        )
+      } else {
+        return (
+          <div className="my-2 p-3 rounded-lg bg-blue-50 border border-blue-200">
+            <div className="flex items-center gap-2 text-blue-700 text-sm">
+              <Loader2 className="h-4 w-4 animate-spin" />
+              Pesquisando na web: "{toolInvocation.args.query}"...
+            </div>
+          </div>
+        )
+      }
     }
+    return null
   }
 
   return (
@@ -197,10 +183,10 @@ Analisei seus dados dos últimos ${metrics.history.length} dias:
             <div className="p-2 rounded-lg bg-gradient-to-r from-purple-600 to-blue-600">
               <Bot className="h-5 w-5 text-white" />
             </div>
-            SEO AI Specialist
+            SEO AI Specialist + Web
           </SheetTitle>
           <SheetDescription>
-            Converse com uma IA que analisou seus dados do Google Search Console e previsões ML
+            IA com contexto GSC + ML + pesquisa web em tempo real via Tavily
           </SheetDescription>
         </SheetHeader>
 
@@ -208,9 +194,9 @@ Analisei seus dados dos últimos ${metrics.history.length} dias:
           {/* Messages Area */}
           <ScrollArea className="flex-1 pr-4">
             <div className="space-y-4">
-              {messages.map((message, index) => (
+              {messages.map((message) => (
                 <div
-                  key={index}
+                  key={message.id}
                   className={`flex ${
                     message.role === 'user' ? 'justify-end' : 'justify-start'
                   }`}
@@ -223,23 +209,23 @@ Analisei seus dados dos últimos ${metrics.history.length} dias:
                     }`}
                   >
                     {message.role === 'assistant' ? (
-                      <div className="prose prose-sm max-w-none prose-headings:text-slate-900 prose-p:text-slate-700 prose-strong:text-slate-900 prose-ul:text-slate-700">
-                        <ReactMarkdown>{message.content}</ReactMarkdown>
-                      </div>
+                      <>
+                        <div className="prose prose-sm max-w-none prose-headings:text-slate-900 prose-p:text-slate-700 prose-strong:text-slate-900 prose-ul:text-slate-700">
+                          <ReactMarkdown>{message.content}</ReactMarkdown>
+                        </div>
+                        {/* Show tool invocations */}
+                        {message.toolInvocations && message.toolInvocations.map((toolInvocation: any) => (
+                          <div key={toolInvocation.toolCallId}>
+                            {renderToolInvocation(toolInvocation)}
+                          </div>
+                        ))}
+                      </>
                     ) : (
                       <p className="text-sm whitespace-pre-wrap">{message.content}</p>
                     )}
                   </div>
                 </div>
               ))}
-
-              {isLoading && (
-                <div className="flex justify-start">
-                  <div className="bg-slate-100 rounded-lg px-4 py-3 border border-slate-200">
-                    <Loader2 className="h-5 w-5 animate-spin text-slate-600" />
-                  </div>
-                </div>
-              )}
 
               <div ref={messagesEndRef} />
             </div>
@@ -253,7 +239,7 @@ Analisei seus dados dos últimos ${metrics.history.length} dias:
                 {STARTER_PROMPTS.map((prompt, index) => (
                   <button
                     key={index}
-                    onClick={() => sendMessage(prompt)}
+                    onClick={() => sendStarterPrompt(prompt)}
                     disabled={isLoading}
                     className="text-left text-xs px-3 py-2 rounded-lg border border-slate-200 hover:bg-slate-50 hover:border-slate-300 transition-colors disabled:opacity-50"
                   >
@@ -265,18 +251,23 @@ Analisei seus dados dos últimos ${metrics.history.length} dias:
           )}
 
           {/* Input Area */}
-          <div className="border-t pt-4 space-y-2">
+          <form onSubmit={handleSubmit} className="border-t pt-4 space-y-2">
             <div className="flex gap-2">
               <Textarea
                 value={input}
-                onChange={(e) => setInput(e.target.value)}
-                onKeyDown={handleKeyPress}
+                onChange={handleInputChange}
                 placeholder="Pergunte qualquer coisa sobre seus dados..."
                 className="min-h-[60px] resize-none"
                 disabled={isLoading}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault()
+                    handleSubmit(e)
+                  }
+                }}
               />
               <Button
-                onClick={() => sendMessage()}
+                type="submit"
                 disabled={isLoading || !input.trim()}
                 size="icon"
                 className="h-[60px] w-[60px] bg-gradient-to-r from-purple-600 to-blue-600"
@@ -291,7 +282,7 @@ Analisei seus dados dos últimos ${metrics.history.length} dias:
             <p className="text-xs text-slate-500">
               Pressione Enter para enviar, Shift+Enter para nova linha
             </p>
-          </div>
+          </form>
         </div>
       </SheetContent>
     </Sheet>
