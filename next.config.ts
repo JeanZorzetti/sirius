@@ -51,7 +51,7 @@ const nextConfig: NextConfig = {
               "style-src 'self' 'unsafe-inline' https://www.mercadopago.com https://sdk.mercadopago.com",
               "img-src 'self' data: https: blob:",
               "font-src 'self' data: https://www.mercadopago.com https://sdk.mercadopago.com https://fonts.scalar.com",
-              "connect-src 'self' https://www.google-analytics.com https://*.sentry.io https://vitals.vercel-insights.com https://*.clarity.ms https://api.mercadopago.com https://cdn.jsdelivr.net https://*.posthog.com https://*.i.posthog.com",
+              "connect-src 'self' https://www.google-analytics.com https://*.sentry.io https://vitals.vercel-insights.com https://*.clarity.ms https://api.mercadopago.com https://cdn.jsdelivr.net https://*.posthog.com https://*.i.posthog.com https://*.pusher.com wss://*.pusher.com",
               "frame-src 'self' https://js.stripe.com https://hooks.stripe.com https://vercel.live https://www.mercadopago.com https://sdk.mercadopago.com",
               "base-uri 'self'",
               "form-action 'self'",
