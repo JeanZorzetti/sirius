@@ -47,11 +47,11 @@ const nextConfig: NextConfig = {
             key: 'Content-Security-Policy',
             value: [
               "default-src 'self'",
-              "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://js.sentry-cdn.com https://vercel.live https://www.clarity.ms https://scripts.clarity.ms https://embed.tawk.to https://www.mercadopago.com https://sdk.mercadopago.com https://cdn.jsdelivr.net https://us.i.posthog.com https://app.posthog.com",
+              "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://js.sentry-cdn.com https://vercel.live https://www.clarity.ms https://scripts.clarity.ms https://embed.tawk.to https://www.mercadopago.com https://sdk.mercadopago.com https://cdn.jsdelivr.net https://*.posthog.com https://*.i.posthog.com",
               "style-src 'self' 'unsafe-inline' https://embed.tawk.to https://www.mercadopago.com https://sdk.mercadopago.com",
               "img-src 'self' data: https: blob:",
               "font-src 'self' data: https://embed.tawk.to https://www.mercadopago.com https://sdk.mercadopago.com https://fonts.scalar.com",
-              "connect-src 'self' https://www.google-analytics.com https://*.sentry.io https://vitals.vercel-insights.com https://www.clarity.ms https://i.clarity.ms https://*.tawk.to wss://*.tawk.to https://api.mercadopago.com https://cdn.jsdelivr.net https://us.i.posthog.com https://app.posthog.com",
+              "connect-src 'self' https://www.google-analytics.com https://*.sentry.io https://vitals.vercel-insights.com https://www.clarity.ms https://i.clarity.ms https://*.tawk.to wss://*.tawk.to https://api.mercadopago.com https://cdn.jsdelivr.net https://*.posthog.com https://*.i.posthog.com",
               "frame-src 'self' https://js.stripe.com https://hooks.stripe.com https://vercel.live https://embed.tawk.to https://www.mercadopago.com https://sdk.mercadopago.com",
               "base-uri 'self'",
               "form-action 'self'",

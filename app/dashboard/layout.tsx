@@ -63,7 +63,7 @@ export default async function DashboardLayout({
       {/* Analytics Trackers */}
       <SignUpTracker />
       <LoginTracker />
-      <PostHogUserIdentifier />
+      <PostHogUserIdentifier user={user} />
 
       {/* AGI Chat Sidebar - Global AI Assistant */}
       <AgiChatSidebar />
