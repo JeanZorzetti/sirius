@@ -36,6 +36,15 @@ export interface SEOMetrics {
     ctr: number
     position: number
   }
+  dateRange: {
+    startDate: string
+    endDate: string
+  }
+}
+
+export interface SEOMetricsParams {
+  startDate?: string
+  endDate?: string
 }
 
 // Get authenticated Search Console client
@@ -70,13 +79,13 @@ function formatDate(date: Date): string {
   return date.toISOString().split('T')[0]
 }
 
-// Get date range
-function getDateRange(days: number) {
+// Get default date range (last 28 days)
+function getDefaultDateRange() {
   const endDate = new Date()
   endDate.setDate(endDate.getDate() - 1) // Yesterday (data delay)
 
   const startDate = new Date()
-  startDate.setDate(startDate.getDate() - days)
+  startDate.setDate(startDate.getDate() - 28)
 
   return {
     startDate: formatDate(startDate),
@@ -84,10 +93,26 @@ function getDateRange(days: number) {
   }
 }
 
-export async function getSEOMetrics(days = 28): Promise<SEOMetrics> {
+// Validate date string format YYYY-MM-DD
+function isValidDate(dateStr: string): boolean {
+  const regex = /^\d{4}-\d{2}-\d{2}$/
+  if (!regex.test(dateStr)) return false
+  const date = new Date(dateStr)
+  return !isNaN(date.getTime())
+}
+
+export async function getSEOMetrics(params?: SEOMetricsParams): Promise<SEOMetrics> {
   const searchConsole = await getSearchConsoleClient()
   const siteUrl = process.env.GOOGLE_SEARCH_CONSOLE_SITE_URL || 'https://sirius.roilabs.com.br/'
-  const { startDate, endDate } = getDateRange(days)
+
+  // Use provided dates or fall back to defaults
+  const defaultRange = getDefaultDateRange()
+  const startDate = params?.startDate && isValidDate(params.startDate)
+    ? params.startDate
+    : defaultRange.startDate
+  const endDate = params?.endDate && isValidDate(params.endDate)
+    ? params.endDate
+    : defaultRange.endDate
 
   // Execute all queries in parallel
   const [historyResponse, keywordsResponse, pagesResponse] = await Promise.all([
@@ -194,5 +219,9 @@ export async function getSEOMetrics(days = 28): Promise<SEOMetrics> {
     keywords,
     pages,
     totals,
+    dateRange: {
+      startDate,
+      endDate,
+    },
   }
 }

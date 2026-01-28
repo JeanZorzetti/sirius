@@ -2,7 +2,7 @@ import { getSession } from "@/lib/auth"
 import { prisma } from "@/lib/prisma"
 import { redirect } from "next/navigation"
 import Link from "next/link"
-import { ShieldAlert, Users, LayoutDashboard, ArrowLeft, Building2, LineChart, Smartphone, Search } from "lucide-react"
+import { ShieldAlert, ArrowLeft } from "lucide-react"
 
 export default async function AdminLayout({
     children,
@@ -25,37 +25,37 @@ export default async function AdminLayout({
     }
 
     return (
-        <div className="flex min-h-screen flex-col bg-zinc-950 text-white">
+        <div className="flex min-h-screen flex-col">
             {/* Admin Header */}
-            <header className="sticky top-0 z-50 flex h-16 items-center border-b border-red-900/30 bg-zinc-950/80 px-6 backdrop-blur-xl">
-                <div className="flex items-center gap-2 font-bold text-red-500">
+            <header className="sticky top-0 z-50 flex h-16 items-center border-b border-slate-200 bg-white px-6 shadow-sm">
+                <div className="flex items-center gap-2 font-bold text-red-600">
                     <ShieldAlert className="h-6 w-6" />
                     <span>SIRIUS ADMIN</span>
                 </div>
                 <nav className="ml-8 flex items-center gap-6">
-                    <Link href="/admin" className="text-sm font-medium text-zinc-400 hover:text-white transition-colors">
+                    <Link href="/admin" className="text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors">
                         Overview
                     </Link>
-                    <Link href="/admin/users" className="text-sm font-medium text-zinc-400 hover:text-white transition-colors">
+                    <Link href="/admin/users" className="text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors">
                         Users
                     </Link>
-                    <Link href="/admin/organizations" className="text-sm font-medium text-zinc-400 hover:text-white transition-colors">
+                    <Link href="/admin/organizations" className="text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors">
                         Organizations
                     </Link>
-                    <Link href="/admin/analytics" className="text-sm font-medium text-zinc-400 hover:text-white transition-colors">
+                    <Link href="/admin/analytics" className="text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors">
                         Analytics
                     </Link>
-                    <Link href="/admin/pwa-metrics" className="text-sm font-medium text-zinc-400 hover:text-white transition-colors">
+                    <Link href="/admin/pwa-metrics" className="text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors">
                         PWA Metrics
                     </Link>
-                    <Link href="/admin/seo" className="text-sm font-medium text-zinc-400 hover:text-white transition-colors">
+                    <Link href="/admin/seo" className="text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors">
                         SEO
                     </Link>
                 </nav>
                 <div className="ml-auto">
-                    <Link href="/dashboard" className="flex items-center gap-2 text-xs font-medium text-zinc-500 hover:text-white transition-colors">
+                    <Link href="/dashboard" className="flex items-center gap-2 text-xs font-medium text-slate-500 hover:text-slate-900 transition-colors">
                         <ArrowLeft className="h-4 w-4" />
-                        Back to App
+                        Voltar ao App
                     </Link>
                 </div>
             </header>
