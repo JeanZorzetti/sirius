@@ -6,6 +6,7 @@ import { FunnelChart } from '@/components/admin/funnel-chart'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { TrendingUp, DollarSign, Users, AlertCircle, Target, Zap } from 'lucide-react'
 import { RevenueSimulator } from '@/components/admin/revenue-simulator'
+import { ForceRefreshButton } from '@/components/admin/force-refresh-button'
 
 export const metadata: Metadata = {
   title: 'Ultimate Sales Funnel | Sirius Admin',
@@ -38,15 +39,18 @@ export default async function FunnelPage() {
   return (
     <div className="p-8 space-y-8">
       {/* Header */}
-      <div>
-        <h1 className="text-3xl font-bold mb-2">Ultimate Sales Funnel</h1>
-        <p className="text-gray-600 dark:text-gray-400">
-          Rastreamento completo: Impressão no Google até Pagamento
-        </p>
-        <p className="text-sm text-gray-500 mt-1">
-          Período: {new Date(metrics.dateRange.startDate).toLocaleDateString('pt-BR')} até{' '}
-          {new Date(metrics.dateRange.endDate).toLocaleDateString('pt-BR')}
-        </p>
+      <div className="flex items-start justify-between">
+        <div>
+          <h1 className="text-3xl font-bold mb-2">Ultimate Sales Funnel</h1>
+          <p className="text-gray-600 dark:text-gray-400">
+            Rastreamento completo: Impressão no Google até Pagamento
+          </p>
+          <p className="text-sm text-gray-500 mt-1">
+            Período: {new Date(metrics.dateRange.startDate).toLocaleDateString('pt-BR')} até{' '}
+            {new Date(metrics.dateRange.endDate).toLocaleDateString('pt-BR')}
+          </p>
+        </div>
+        <ForceRefreshButton />
       </div>
 
       {/* KPIs de Unit Economics */}

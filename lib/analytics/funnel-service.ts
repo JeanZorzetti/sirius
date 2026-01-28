@@ -6,6 +6,17 @@
 import { getSEOMetrics } from '@/lib/google-search-console'
 import { prisma } from '@/lib/prisma'
 
+/**
+ * Organizações de teste que devem ser ignoradas nas métricas
+ */
+const TEST_ORGANIZATION_SLUGS = [
+  'teste-funll-977',
+  'v-rtice-marketing-35',
+  'zorzetti-979',
+  'nux-digital-883',
+  'roi-labs-224',
+]
+
 export interface FunnelStage {
   name: string
   value: number
@@ -81,7 +92,7 @@ export async function getFunnelMetrics(
     // Top of Funnel: Google Search Console
     getSEOMetrics({ startDate, endDate }),
 
-    // Mid + Bottom Funnel: Database
+    // Mid + Bottom Funnel: Database (excluindo organizações de teste)
     prisma.$transaction([
       // Total de signups no período
       prisma.user.count({
@@ -89,6 +100,11 @@ export async function getFunnelMetrics(
           createdAt: {
             gte: start,
             lte: end,
+          },
+          organization: {
+            slug: {
+              notIn: TEST_ORGANIZATION_SLUGS,
+            },
           },
         },
       }),
@@ -101,6 +117,11 @@ export async function getFunnelMetrics(
             gte: start,
             lte: end,
           },
+          organization: {
+            slug: {
+              notIn: TEST_ORGANIZATION_SLUGS,
+            },
+          },
         },
       }),
 
@@ -108,6 +129,9 @@ export async function getFunnelMetrics(
       // Busca organizações e filtra por quantidade de contatos
       prisma.organization.findMany({
         where: {
+          slug: {
+            notIn: TEST_ORGANIZATION_SLUGS,
+          },
           users: {
             some: {
               createdAt: {
@@ -130,6 +154,9 @@ export async function getFunnelMetrics(
       // Count de organizações com plan !== 'FREE' criadas no período
       prisma.organization.count({
         where: {
+          slug: {
+            notIn: TEST_ORGANIZATION_SLUGS,
+          },
           plan: {
             not: 'FREE',
           },
