@@ -6,7 +6,7 @@
  */
 
 import { NextRequest } from 'next/server';
-import { streamText, tool } from 'ai';
+import { streamText, tool, stepCountIs, convertToModelMessages, UIMessage } from 'ai';
 import { groq } from '@ai-sdk/groq';
 import { z } from 'zod';
 import { tavily } from '@tavily/core';
@@ -66,7 +66,7 @@ interface SeoContext {
 }
 
 interface ChatRequest {
-  message: string;
+  messages: UIMessage[];
   context?: SeoContext;
 }
 
@@ -116,10 +116,10 @@ export async function POST(req: NextRequest) {
 
     // 4. Parse request
     const body: ChatRequest = await req.json();
-    const { message, context } = body;
+    const { messages, context } = body;
 
-    if (!message || message.trim().length === 0) {
-      return new Response(JSON.stringify({ error: 'Mensagem não pode estar vazia' }), {
+    if (!messages || messages.length === 0) {
+      return new Response(JSON.stringify({ error: 'Mensagens não podem estar vazias' }), {
         status: 400,
         headers: { 'Content-Type': 'application/json' },
       });
@@ -194,12 +194,7 @@ IMPORTANTE: Você tem acesso aos dados REAIS do GSC acima. Use-os nas suas respo
     const result = streamText({
       model: groq('llama-3.3-70b-versatile'),
       system: seoSystemPrompt,
-      messages: [
-        {
-          role: 'user',
-          content: message,
-        },
-      ],
+      messages: await convertToModelMessages(messages),
       tools: {
         searchWeb: tool({
           description: 'Pesquisa o Google para analisar concorrentes, verificar posições na SERP ou buscar volumes de busca atuais. Use isso quando precisar de dados externos que não estão no contexto do GSC.',
@@ -241,20 +236,21 @@ IMPORTANTE: Você tem acesso aos dados REAIS do GSC acima. Use-os nas suas respo
           },
         }),
       },
-      maxSteps: 5, // Allow multiple tool calls
+      stopWhen: stepCountIs(5), // Allow up to 5 multi-step tool calls
       temperature: 0.7,
-    });
-
-    // 8. Track token usage (approximation for now)
-    result.then(async (finalResult) => {
-      const estimatedTokens = Math.ceil((message.length + seoSystemPrompt.length) / 3);
-      await recordUsage(user.organizationId, user.id, estimatedTokens, plan);
-    }).catch((error) => {
-      console.error('Error recording usage:', error);
+      onFinish: async ({ usage }) => {
+        // 8. Track token usage
+        try {
+          const totalTokens = (usage.inputTokens || 0) + (usage.outputTokens || 0);
+          await recordUsage(user.organizationId, user.id, totalTokens, plan);
+        } catch (error) {
+          console.error('Error recording usage:', error);
+        }
+      },
     });
 
     // 9. Return streaming response
-    return result.toDataStreamResponse();
+    return result.toUIMessageStreamResponse();
   } catch (error) {
     console.error('SEO Chat Error:', error);
 
