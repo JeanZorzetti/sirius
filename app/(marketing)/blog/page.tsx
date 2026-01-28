@@ -61,7 +61,7 @@ export default function BlogPage() {
 
             {/* Bento Grid Layout */}
             <div className="mx-auto lg:max-w-none">
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-[280px]">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-[minmax(280px,auto)]">
                     {blogPosts.map((post, index) => (
                         <div
                             key={post.slug}
@@ -78,7 +78,7 @@ export default function BlogPage() {
                                     className={`
                                         h-full flex flex-col relative overflow-hidden
                                         border-border/50
-                                        bg-background/95
+                                        bg-card
                                         hover:shadow-2xl hover:shadow-primary/10
                                         hover:-translate-y-2 hover:scale-[1.02]
                                         transition-all duration-500 ease-out
@@ -90,22 +90,6 @@ export default function BlogPage() {
                                         }
                                     `}
                                 >
-                                    {/* Background Image with zoom effect */}
-                                    <div className="absolute inset-0 overflow-hidden rounded-3xl">
-                                        <Image
-                                            src={post.image}
-                                            alt={post.title}
-                                            fill
-                                            className="object-cover transition-transform duration-700 ease-out group-hover:scale-110"
-                                            sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                                            priority={index < 2}
-                                        />
-                                        {/* Gradient overlay for text readability */}
-                                        <div className="absolute inset-0 bg-linear-to-t from-background via-background/80 to-background/40" />
-                                        {/* Additional glassmorphic overlay on hover */}
-                                        <div className="absolute inset-0 bg-linear-to-br from-primary/20 via-background/60 to-background/80 opacity-0 group-hover:opacity-100 transition-opacity duration-500 backdrop-blur-sm" />
-                                    </div>
-
                                     {/* Animated border gradient */}
                                     <div className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-linear-to-r from-blue-500/20 via-purple-500/20 to-pink-500/20 blur-xl -z-10" />
 
@@ -138,10 +122,24 @@ export default function BlogPage() {
                                         </CardTitle>
                                     </CardHeader>
 
-                                    <CardContent className="relative z-10 flex-1 p-0">
+                                    <CardContent className="relative z-10 flex-1 p-0 space-y-4">
                                         <p className="text-muted-foreground leading-relaxed line-clamp-3">
                                             {post.excerpt}
                                         </p>
+
+                                        {/* Featured post image - only show for first post */}
+                                        {index === 0 && (
+                                            <div className="relative w-full aspect-video rounded-2xl overflow-hidden">
+                                                <Image
+                                                    src={post.image}
+                                                    alt={post.title}
+                                                    fill
+                                                    className="object-cover group-hover:scale-105 transition-transform duration-500"
+                                                    sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                                                    priority
+                                                />
+                                            </div>
+                                        )}
                                     </CardContent>
 
                                     <CardFooter className="relative z-10 flex-none p-0 mt-6">
