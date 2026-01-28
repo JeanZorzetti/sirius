@@ -522,7 +522,7 @@ export const blogPosts: BlogPost[] = [
     `,
     date: '2025-12-28',
     category: 'Vendas',
-    image: '/images/blog/pipeline-vendas.jpg',
+    image: '/images/blog/pipeline-vendas.png',
     author: 'Sirius Team'
   },
   {
@@ -936,7 +936,7 @@ export const blogPosts: BlogPost[] = [
     `,
     date: '2025-12-27',
     category: 'Gestão',
-    image: '/images/blog/crm-simples-complexo.jpg',
+    image: '/images/blog/crm-simples-complexo.png',
     author: 'Sirius Team'
   },
   {
@@ -1412,7 +1412,7 @@ export const blogPosts: BlogPost[] = [
     `,
     date: '2025-12-25',
     category: 'Dicas',
-    image: '/images/blog/follow-up.jpg',
+    image: '/images/blog/follow-up.png',
     author: 'Sirius Team'
   },
   {
@@ -2121,7 +2121,7 @@ export const blogPosts: BlogPost[] = [
     `,
     date: '2026-01-09',
     category: 'Guias',
-    image: '/images/blog/funil-vendas.jpg',
+    image: '/images/blog/funil-vendas.png',
     author: 'Sirius Team'
   },
   {
@@ -4072,7 +4072,7 @@ Se este guia foi útil para você, compartilhe com sua rede e ajude outros profi
 <strong>#SPINSelling #VendasB2B #VendasConsultivas #CRM #SiriusCRM</strong>`,
     date: '2026-01-10',
     category: 'Vendas',
-    image: '/images/blog/spin-selling/spin-selling-custo-discovery-fraco.svg',
+    image: '/images/blog/spin-selling.png',
     author: 'Equipe Sirius CRM'
   }
 ]

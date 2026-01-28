@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import Image from 'next/image'
 import { useEffect, useRef } from 'react'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
@@ -39,18 +40,6 @@ export default function BlogPage() {
         if (pattern === 0 || pattern === 4) return 'lg:col-span-2 lg:row-span-2' // Large cards
         if (pattern === 1) return 'lg:col-span-1 lg:row-span-1' // Small card
         return 'lg:col-span-1 lg:row-span-1' // Regular cards
-    }
-
-    // Generate unique gradient for each post
-    const getGradientColors = (index: number) => {
-        const gradients = [
-            'from-blue-500/80 via-indigo-500/80 to-purple-500/80',
-            'from-emerald-500/80 via-teal-500/80 to-cyan-500/80',
-            'from-orange-500/80 via-red-500/80 to-pink-500/80',
-            'from-violet-500/80 via-purple-500/80 to-fuchsia-500/80',
-            'from-amber-500/80 via-yellow-500/80 to-orange-500/80',
-        ]
-        return gradients[index % gradients.length]
     }
 
     return (
@@ -101,12 +90,15 @@ export default function BlogPage() {
                                         }
                                     `}
                                 >
-                                    {/* Background Gradient with zoom effect */}
+                                    {/* Background Image with zoom effect */}
                                     <div className="absolute inset-0 overflow-hidden rounded-3xl">
-                                        <div
-                                            className={`absolute inset-0 bg-linear-to-br ${getGradientColors(
-                                                index
-                                            )} transition-transform duration-700 ease-out group-hover:scale-110`}
+                                        <Image
+                                            src={post.image}
+                                            alt={post.title}
+                                            fill
+                                            className="object-cover transition-transform duration-700 ease-out group-hover:scale-110"
+                                            sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                                            priority={index < 2}
                                         />
                                         {/* Gradient overlay for text readability */}
                                         <div className="absolute inset-0 bg-linear-to-t from-background via-background/80 to-background/40" />
