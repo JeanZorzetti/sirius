@@ -78,7 +78,6 @@ export const metadata: Metadata = {
 };
 
 import { ThemeProvider } from "@/components/theme-provider"
-import { TawkToChat } from "@/components/tawk-to-chat"
 import { PWAInstallPrompt } from "@/components/pwa-install-prompt"
 import { PushNotificationManager } from "@/components/push-notification-manager"
 import { OfflineStatus } from "@/components/offline-status"
@@ -212,8 +211,6 @@ export default function RootLayout({
             disableTransitionOnChange
           >
             {children}
-            {/* Tawk.to Live Chat - Only on marketing pages */}
-            <TawkToChat />
             {/* PWA Install Prompt */}
             <PWAInstallPrompt />
             {/* Push Notifications Manager */}

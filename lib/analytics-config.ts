@@ -22,11 +22,11 @@ export const analyticsConfig = {
     enabled: true, // Re-enabled with proper error handling
   },
 
-  // Tawk.to Live Chat
+  // Tawk.to Live Chat (DISABLED)
   tawkTo: {
     propertyId: '69551ffa442844197c21ef8e',
     widgetId: '1jdq89qse',
-    enabled: true,
+    enabled: false,
   },
 } as const
 
