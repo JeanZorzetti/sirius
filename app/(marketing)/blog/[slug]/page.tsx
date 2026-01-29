@@ -9,6 +9,8 @@ import { ShareButtons } from '@/components/blog/share-buttons'
 import { TableOfContents } from '@/components/blog/table-of-contents'
 import { BlogContentWrapper } from '@/components/blog/blog-content-wrapper'
 import { generateFAQSchema, spinSellingFAQs } from '@/lib/faq-schema'
+import { generateArticleSchema, COMMON_WIKIDATA_ENTITIES, createGeoConfig } from '@/lib/geo/schema-generator'
+import { JsonLd } from '@/components/seo/json-ld'
 import { Metadata } from 'next'
 import { ChevronLeft, ChevronRight, Calendar, Clock, User } from 'lucide-react'
 
@@ -26,12 +28,25 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
   const url = `https://sirius.roilabs.com.br/blog/${slug}`
   const imageUrl = `https://sirius.roilabs.com.br${post.image || '/logo.png'}`
 
+  // AI-optimized description: Fatos diretos, dados concretos, sem clickbait
+  let aiOptimizedDescription = post.excerpt
+
+  // Descrições otimizadas para AI Answer Engines (fatos diretos)
+  if (slug === 'planilha-controle-comissao-corretor') {
+    aiOptimizedDescription = 'Planilha Excel gratuita para controle de comissões imobiliárias. Mercado 2026: comissão média 5-8% (usado) e 3-5% (lançamento). Valor médio apartamento SP: R$ 773.500. Taxa conversão CRM: 35% vs 10% sem organização. 4 abas: Controle Vendas, Dashboard, Calculadora ROI, Instruções.'
+  } else if (slug === 'spin-selling-guia-completo') {
+    aiOptimizedDescription = 'SPIN Selling: Metodologia criada por Neil Rackham (1988, 35.000 vendas analisadas). 4 tipos de perguntas: Situação, Problema, Implicação, Necessidade. Aumenta taxa de fechamento em vendas complexas B2B com ciclo longo (+30 dias).'
+  } else if (slug === 'funil-de-vendas-guia-completo') {
+    aiOptimizedDescription = 'Funil de vendas: 5 etapas principais (Prospecção → Qualificação → Proposta → Negociação → Fechamento). Taxa conversão típica: 20-30% topo para fundo. Tempo médio ciclo B2B: 30-90 dias. Pipeline visual Kanban aumenta conversão em 25%.'
+  }
+
   return {
     title: `${post.title} | Sirius Blog`,
-    description: post.excerpt,
+    description: aiOptimizedDescription,
+    keywords: post.category,
     openGraph: {
       title: post.title,
-      description: post.excerpt,
+      description: aiOptimizedDescription,
       url,
       siteName: 'Sirius CRM',
       images: [
@@ -50,7 +65,7 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
     twitter: {
       card: 'summary_large_image',
       title: post.title,
-      description: post.excerpt,
+      description: aiOptimizedDescription,
       images: [imageUrl],
       creator: '@roilabs',
     },
@@ -79,33 +94,73 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
   const url = `https://sirius.roilabs.com.br/blog/${slug}`
   const imageUrl = `https://sirius.roilabs.com.br${post.image || '/logo.png'}`
 
-  // JSON-LD Schema for SEO
-  const jsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'BlogPosting',
-    headline: post.title,
-    image: imageUrl,
-    datePublished: post.date,
-    dateModified: post.date,
-    author: {
-      '@type': 'Organization',
-      name: post.author || 'Sirius Team',
-      url: 'https://sirius.roilabs.com.br',
-    },
-    publisher: {
-      '@type': 'Organization',
-      name: 'Sirius CRM',
-      logo: {
-        '@type': 'ImageObject',
-        url: 'https://sirius.roilabs.com.br/logo.png',
+  // GEO-optimized JSON-LD Schema with Wikidata entity disambiguation
+  let geoConfig = createGeoConfig.crm()
+
+  // Configurações específicas por post para melhor desambiguação de entidades
+  if (slug === 'planilha-controle-comissao-corretor') {
+    geoConfig = createGeoConfig.realEstate({
+      citations: [
+        'https://www.ibresp.com.br/blogs/2024/qual-a-porcentagem-do-corretor-de-imoveis/',
+        'https://portas.com.br/noticias/precos-de-imoveis-devem-continuar-subindo-em-2026-apontam-especialistas/',
+      ],
+      author: {
+        name: post.author || 'ROI Labs',
+        sameAs: [
+          'https://www.linkedin.com/company/roi-labs',
+          'https://twitter.com/roilabs',
+        ],
+        jobTitle: 'Software Development',
+        worksFor: {
+          name: 'ROI Labs',
+          url: 'https://roilabs.com.br',
+        },
       },
-    },
-    description: post.excerpt,
-    mainEntityOfPage: {
-      '@type': 'WebPage',
-      '@id': url,
-    },
+    })
+  } else if (slug === 'spin-selling-guia-completo') {
+    geoConfig = {
+      mentions: [
+        COMMON_WIKIDATA_ENTITIES.SALES,
+        COMMON_WIKIDATA_ENTITIES.CRM,
+        COMMON_WIKIDATA_ENTITIES.BRAZIL,
+      ],
+      about: [
+        COMMON_WIKIDATA_ENTITIES.SALES,
+        COMMON_WIKIDATA_ENTITIES.CUSTOMER_RELATIONSHIP_MANAGEMENT,
+      ],
+      author: {
+        name: post.author || 'ROI Labs',
+        sameAs: [
+          'https://www.linkedin.com/company/roi-labs',
+          'https://twitter.com/roilabs',
+        ],
+        worksFor: {
+          name: 'ROI Labs',
+          url: 'https://roilabs.com.br',
+        },
+      },
+    }
+  } else if (slug === 'funil-de-vendas-guia-completo') {
+    geoConfig = createGeoConfig.sales({
+      author: {
+        name: post.author || 'ROI Labs',
+        sameAs: [
+          'https://www.linkedin.com/company/roi-labs',
+          'https://twitter.com/roilabs',
+        ],
+        worksFor: {
+          name: 'ROI Labs',
+          url: 'https://roilabs.com.br',
+        },
+      },
+    })
   }
+
+  const articleSchema = generateArticleSchema(post, {
+    ...geoConfig,
+    canonicalUrl: url,
+    imageUrl,
+  })
 
   // FAQ Schema for SPIN Selling post (for Featured Snippets)
   const faqSchema = slug === 'spin-selling-guia-completo'
@@ -114,19 +169,11 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
 
   return (
     <>
-      {/* JSON-LD Schema - BlogPosting */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
+      {/* GEO-optimized JSON-LD Schema with Wikidata entity disambiguation */}
+      <JsonLd data={articleSchema} />
 
-      {/* JSON-LD Schema - FAQPage (if available) */}
-      {faqSchema && (
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
-        />
-      )}
+      {/* FAQ Schema for Featured Snippets (if available) */}
+      {faqSchema && <JsonLd data={faqSchema} />}
 
       <article className="relative">
         {/* Premium Header Background */}

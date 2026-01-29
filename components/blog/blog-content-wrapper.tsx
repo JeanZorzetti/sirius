@@ -4,6 +4,7 @@ import { useEffect, useRef } from 'react'
 import { createRoot } from 'react-dom/client'
 import { FunnelCalculator } from './funnel-calculator'
 import { FunnelTemplateDownload } from './funnel-template-download'
+import { CalculadoraROI } from '@/components/calculadora-roi'
 
 interface BlogContentWrapperProps {
   content: string
@@ -30,6 +31,20 @@ export function BlogContentWrapper({ content, slug }: BlogContentWrapperProps) {
       if (templatePlaceholder && !templatePlaceholder.hasChildNodes()) {
         const root = createRoot(templatePlaceholder)
         root.render(<FunnelTemplateDownload />)
+      }
+    }
+
+    // For planilha-controle-comissao-corretor, inject ROI Calculator (Honey Trap)
+    if (slug === 'planilha-controle-comissao-corretor') {
+      const roiCalculatorPlaceholder = contentRef.current.querySelector('.roi-calculator-component')
+      if (roiCalculatorPlaceholder && !roiCalculatorPlaceholder.hasChildNodes()) {
+        const root = createRoot(roiCalculatorPlaceholder)
+        root.render(
+          <CalculadoraROI
+            ctaText="Pare de perder comissões - Teste o Sirius CRM Grátis"
+            ctaHref="/register"
+          />
+        )
       }
     }
   }, [slug])
