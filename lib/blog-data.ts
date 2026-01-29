@@ -4082,7 +4082,7 @@ Se este guia foi útil para você, compartilhe com sua rede e ajude outros profi
     content: '',
     date: '2026-01-28',
     category: 'Ferramentas',
-    image: '/images/blog/pipeline-vendas.png',
+    image: '/images/blog/planilha-controle-comissao.png',
     author: 'Equipe Sirius CRM'
   }
 ]
