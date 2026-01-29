@@ -39,12 +39,19 @@ export default function BlogPage() {
     // Extract unique categories
     const categories = ['Todos', ...Array.from(new Set(blogPosts.map(post => post.category)))]
 
+    // Sort posts by date (most recent first)
+    const sortedPosts = [...blogPosts].sort((a, b) => {
+        const dateA = new Date(a.date)
+        const dateB = new Date(b.date)
+        return dateB.getTime() - dateA.getTime()
+    })
+
     // Filter posts by category
     const filteredPosts = selectedCategory === 'Todos'
-        ? blogPosts
-        : blogPosts.filter(post => post.category === selectedCategory)
+        ? sortedPosts
+        : sortedPosts.filter(post => post.category === selectedCategory)
 
-    // Featured post (first post)
+    // Featured post (most recent post)
     const featuredPost = filteredPosts[0]
     const recentPosts = filteredPosts.slice(1)
 
