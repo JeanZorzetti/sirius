@@ -88,6 +88,7 @@ import { SpeedInsights } from "@vercel/speed-insights/next"
 import { Analytics } from "@vercel/analytics/next"
 import { Toaster } from "@/components/ui/sonner"
 import { PostHogProvider } from "./providers"
+import { AiTrafficMonitor } from "@/components/analytics/ai-traffic-monitor"
 
 export default function RootLayout({
   children,
@@ -204,6 +205,7 @@ export default function RootLayout({
         <MicrosoftClarity />
 
         <PostHogProvider>
+          <AiTrafficMonitor />
           <ThemeProvider
             attribute="class"
             defaultTheme="light"

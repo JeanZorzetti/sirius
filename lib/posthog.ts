@@ -1,4 +1,5 @@
 import posthog from 'posthog-js'
+import type { AiEngine } from './analytics/ai-tracker'
 
 // Helper para capturar eventos do PostHog de forma type-safe
 export const analytics = {
@@ -56,6 +57,31 @@ export const analytics = {
   upgradeClicked: (data?: { source?: string }) => {
     if (process.env.NODE_ENV === 'production') {
       posthog.capture('upgrade_clicked', data)
+    }
+  },
+
+  // AI Traffic Detection
+  aiTrafficDetected: (data: {
+    channel_type: 'ai_answer_engine'
+    ai_engine: AiEngine
+    referrer_url: string
+    landing_page: string
+    landing_url: string
+    detected_at: string
+    search_context?: Record<string, string>
+  }) => {
+    if (process.env.NODE_ENV === 'production') {
+      posthog.capture('ai_traffic_detected', data)
+    }
+  },
+
+  toolInteraction: (data: {
+    tool_type: string
+    action: string
+    metadata?: Record<string, any>
+  }) => {
+    if (process.env.NODE_ENV === 'production') {
+      posthog.capture('tool_interaction', data)
     }
   },
 
