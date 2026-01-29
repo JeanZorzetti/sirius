@@ -245,30 +245,46 @@ export default function PlanilhaControleComissaoPage() {
                 </ul>
               </div>
 
-              <Card className="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-950/30 dark:to-indigo-950/30 border-blue-200 dark:border-blue-800">
+              <Card className="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-950/30 dark:to-indigo-950/30 border-blue-200 dark:border-blue-800 shadow-xl">
                 <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <Download className="h-5 w-5" />
-                    Download Gratuito
+                  <CardTitle className="flex items-center gap-2 text-2xl">
+                    <Download className="h-6 w-6" />
+                    📥 Download Gratuito - Planilha Excel Completa
                   </CardTitle>
-                  <CardDescription>
-                    Modelo pronto no Google Sheets (pode copiar e adaptar)
+                  <CardDescription className="text-base">
+                    Planilha profissional com 4 abas: Controle de Vendas + Dashboard + Calculadora ROI + Instruções
                   </CardDescription>
                 </CardHeader>
-                <CardContent>
-                  <Button asChild size="lg" className="w-full">
+                <CardContent className="space-y-4">
+                  <div className="bg-white dark:bg-slate-900 rounded-lg p-4 border border-blue-200 dark:border-blue-800">
+                    <h4 className="font-semibold mb-2 flex items-center gap-2">
+                      <CheckCircle2 className="h-4 w-4 text-green-500" />
+                      O que você vai receber:
+                    </h4>
+                    <ul className="text-sm space-y-1.5 text-muted-foreground">
+                      <li>✓ Controle de vendas com cálculo automático de comissões</li>
+                      <li>✓ Dashboard com métricas e gráficos prontos</li>
+                      <li>✓ Calculadora de comissões perdidas interativa</li>
+                      <li>✓ Dados de exemplo realistas (mercado 2026)</li>
+                      <li>✓ Instruções passo a passo de uso</li>
+                      <li>✓ 100% compatível com Excel e Google Sheets</li>
+                    </ul>
+                  </div>
+
+                  <Button asChild size="lg" className="w-full h-14 text-lg shadow-lg hover:shadow-xl transition-shadow">
                     <a
-                      href="https://docs.google.com/spreadsheets/d/1example-planilha-corretor/edit"
-                      target="_blank"
-                      rel="noopener noreferrer"
+                      href="/api/download/planilha-comissao-corretor"
+                      download
                     >
-                      <Download className="mr-2 h-4 w-4" />
-                      Baixar Planilha Modelo
+                      <Download className="mr-2 h-5 w-5" />
+                      Baixar Planilha Excel Agora (Grátis)
                     </a>
                   </Button>
-                  <p className="text-xs text-muted-foreground mt-3 text-center">
-                    * Clique em "Arquivo → Fazer uma cópia" para editar
-                  </p>
+
+                  <div className="flex items-center gap-2 text-xs text-muted-foreground justify-center">
+                    <CheckCircle2 className="h-3 w-3 text-green-500" />
+                    <span>Arquivo .xlsx pronto para usar | Sem cadastro necessário</span>
+                  </div>
                 </CardContent>
               </Card>
             </section>
