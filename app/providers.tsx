@@ -26,45 +26,45 @@ function PostHogPageView() {
 
 export function PostHogProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
-    // Inicializar PostHog apenas no cliente e em produção
-    if (typeof window !== 'undefined' && process.env.NODE_ENV === 'production') {
-      const posthogKey = process.env.NEXT_PUBLIC_POSTHOG_KEY
-      const posthogHost = process.env.NEXT_PUBLIC_POSTHOG_HOST
+    if (typeof window === 'undefined') return
 
-      if (posthogKey && posthogHost && !posthog.__loaded) {
-        posthog.init(posthogKey, {
-          api_host: posthogHost,
-          loaded: (ph) => {
-            console.log('[PostHog] SDK initialized successfully')
+    // Debug: verificar variáveis de ambiente
+    const posthogKey = process.env.NEXT_PUBLIC_POSTHOG_KEY
+    const posthogHost = process.env.NEXT_PUBLIC_POSTHOG_HOST
 
-            // Disponibilizar globalmente para testes
-            if (typeof window !== 'undefined') {
-              ;(window as any).posthog = ph
-            }
-          },
-          capture_pageview: false, // Usamos PostHogPageView customizado
-          capture_pageleave: true,
-          persistence: 'localStorage+cookie',
-        })
-      } else if (!posthogKey || !posthogHost) {
-        console.warn('[PostHog] Missing NEXT_PUBLIC_POSTHOG_KEY or NEXT_PUBLIC_POSTHOG_HOST')
-      }
-    } else if (process.env.NODE_ENV === 'development') {
-      // Em desenvolvimento, criar mock para testes
-      if (typeof window !== 'undefined' && !(window as any).posthog) {
-        console.log('[PostHog] Development mode - creating mock SDK')
-        ;(window as any).posthog = {
-          __loaded: true,
-          capture: (event: string, properties?: any) => {
-            console.log('[PostHog Mock] Event:', event, properties)
-          },
-          identify: (userId: string, properties?: any) => {
-            console.log('[PostHog Mock] Identify:', userId, properties)
-          },
-          reset: () => {
-            console.log('[PostHog Mock] Reset')
-          },
-        }
+    console.log('[PostHog Debug] Environment:', process.env.NODE_ENV)
+    console.log('[PostHog Debug] Key present:', !!posthogKey)
+    console.log('[PostHog Debug] Host present:', !!posthogHost)
+    console.log('[PostHog Debug] Already loaded:', posthog.__loaded)
+
+    // Inicializar PostHog se tiver credenciais (produção ou dev)
+    if (posthogKey && posthogHost && !posthog.__loaded) {
+      console.log('[PostHog] Initializing with host:', posthogHost)
+
+      posthog.init(posthogKey, {
+        api_host: posthogHost,
+        loaded: (ph) => {
+          console.log('[PostHog] SDK initialized successfully')
+          ;(window as any).posthog = ph
+        },
+        capture_pageview: false,
+        capture_pageleave: true,
+        persistence: 'localStorage+cookie',
+      })
+    } else if (!posthogKey || !posthogHost) {
+      // Sem credenciais: criar mock para desenvolvimento
+      console.warn('[PostHog] No credentials - creating mock SDK')
+      ;(window as any).posthog = {
+        __loaded: true,
+        capture: (event: string, properties?: any) => {
+          console.log('[PostHog Mock] Event:', event, properties)
+        },
+        identify: (userId: string, properties?: any) => {
+          console.log('[PostHog Mock] Identify:', userId, properties)
+        },
+        reset: () => {
+          console.log('[PostHog Mock] Reset')
+        },
       }
     }
   }, [])
