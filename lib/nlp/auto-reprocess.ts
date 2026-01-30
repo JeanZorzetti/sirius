@@ -13,8 +13,9 @@ import { processBlogPost } from './blog-processor'
 
 /**
  * Calculate SHA-256 hash of content for change detection
+ * Note: Not a server action, just a utility function
  */
-export function calculateContentHash(content: string): string {
+function calculateContentHash(content: string): string {
   return createHash('sha256').update(content.trim()).digest('hex')
 }
 
