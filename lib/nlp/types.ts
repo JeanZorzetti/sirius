@@ -27,10 +27,10 @@ export const EntitySchema = z.object({
     .describe('Entity category'),
   wikidataId: z
     .string()
-    .optional()
+    .nullish()
     .describe('Wikidata Q-code if known (ex: "Q16635046")'),
-  description: z.string().optional().describe('Brief entity description'),
-  aliases: z.array(z.string()).optional().describe('Alternative names/synonyms'),
+  description: z.string().nullish().describe('Brief entity description'),
+  aliases: z.array(z.string()).nullish().describe('Alternative names/synonyms'),
   relevance: z
     .number()
     .min(0)
@@ -38,7 +38,7 @@ export const EntitySchema = z.object({
     .describe('How relevant is this entity to the content (0-1)'),
   context: z
     .string()
-    .optional()
+    .nullish()
     .describe('Sentence/paragraph where entity was mentioned'),
 })
 
@@ -76,7 +76,7 @@ export const RelationshipSchema = z.object({
     .max(1)
     .default(0.8)
     .describe('Confidence level of this relationship (0-1)'),
-  source: z.string().optional().describe('Context/sentence that implies this relationship'),
+  source: z.string().nullish().describe('Context/sentence that implies this relationship'),
 })
 
 export type ExtractedRelationship = z.infer<typeof RelationshipSchema>
@@ -91,7 +91,7 @@ export const ExtractionResultSchema = z.object({
     .describe('List of extracted relationships between entities'),
   summary: z
     .string()
-    .optional()
+    .nullish()
     .describe('Brief summary of main topics covered in the text'),
 })
 
