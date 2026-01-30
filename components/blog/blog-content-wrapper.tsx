@@ -47,6 +47,20 @@ export function BlogContentWrapper({ content, slug }: BlogContentWrapperProps) {
         )
       }
     }
+
+    // For custo-oculto-inacao-crm, inject ROI Calculator (Honey Trap)
+    if (slug === 'custo-oculto-inacao-crm') {
+      const roiCalculatorPlaceholder = contentRef.current.querySelector('.roi-calculator-component')
+      if (roiCalculatorPlaceholder && !roiCalculatorPlaceholder.hasChildNodes()) {
+        const root = createRoot(roiCalculatorPlaceholder)
+        root.render(
+          <CalculadoraROI
+            ctaText="Calcule seu custo de inação agora"
+            ctaHref="/register"
+          />
+        )
+      }
+    }
   }, [slug])
 
   return (
