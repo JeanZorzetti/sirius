@@ -77,6 +77,7 @@ export const metadata: Metadata = {
   manifest: '/manifest.json',
 };
 
+import { Suspense } from "react"
 import { ThemeProvider } from "@/components/theme-provider"
 import { PWAInstallPrompt } from "@/components/pwa-install-prompt"
 import { PushNotificationManager } from "@/components/push-notification-manager"
@@ -205,7 +206,9 @@ export default function RootLayout({
         <MicrosoftClarity />
 
         <PostHogProvider>
-          <AiTrafficMonitor />
+          <Suspense fallback={null}>
+            <AiTrafficMonitor />
+          </Suspense>
           <ThemeProvider
             attribute="class"
             defaultTheme="light"
