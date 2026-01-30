@@ -46,7 +46,7 @@ export const metadata: Metadata = {
     type: 'website',
     images: [
       {
-        url: 'https://sirius.roilabs.com.br/logo.png',
+        url: '/logo.png',
         width: 1200,
         height: 630,
         alt: 'Sirius CRM - O CRM inteligente para times de alta performance',
@@ -58,7 +58,7 @@ export const metadata: Metadata = {
     title: 'Sirius CRM',
     description: 'Transforme leads em receita recorrente.',
     creator: '@roilabs',
-    images: ['https://sirius.roilabs.com.br/logo.png'],
+    images: ['/logo.png'],
   },
   icons: {
     icon: [
