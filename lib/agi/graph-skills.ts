@@ -502,6 +502,6 @@ export async function executeGraphSkill(
 /**
  * Get all available graph skills
  */
-export function getAvailableGraphSkills(): GraphSkillDefinition[] {
+export async function getAvailableGraphSkills(): Promise<GraphSkillDefinition[]> {
   return Object.values(GRAPH_SKILLS)
 }
