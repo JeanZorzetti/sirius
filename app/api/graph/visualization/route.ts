@@ -25,7 +25,7 @@ interface D3Link {
   source: string
   target: string
   type: string
-  strength: number
+  confidence: number
   value: number // Link thickness
 }
 
@@ -74,24 +74,24 @@ async function getFullGraph(minStrength: number): Promise<NextResponse> {
   // Get top entities by connection count
   const entities = await prisma.entity.findMany({
     include: {
-      sourceRelationships: {
+      subjectRelationships: {
         where: {
-          strength: {
+          confidence: {
             gte: minStrength,
           },
         },
         include: {
-          targetEntity: true,
+          object: true,
         },
       },
-      targetRelationships: {
+      objectRelationships: {
         where: {
-          strength: {
+          confidence: {
             gte: minStrength,
           },
         },
         include: {
-          sourceEntity: true,
+          subject: true,
         },
       },
       contentEntities: {
@@ -112,7 +112,7 @@ async function getFullGraph(minStrength: number): Promise<NextResponse> {
   // Build nodes
   for (const entity of entities) {
     const connectionCount =
-      entity.sourceRelationships.length + entity.targetRelationships.length
+      entity.subjectRelationships.length + entity.objectRelationships.length
 
     nodeMap.set(entity.id, {
       id: entity.id,
@@ -128,15 +128,15 @@ async function getFullGraph(minStrength: number): Promise<NextResponse> {
 
   // Build links
   for (const entity of entities) {
-    for (const rel of entity.sourceRelationships) {
+    for (const rel of entity.subjectRelationships) {
       // Only add link if both nodes exist in our limited set
-      if (nodeMap.has(rel.targetEntityId)) {
+      if (nodeMap.has(rel.objectId)) {
         links.push({
           source: entity.id,
-          target: rel.targetEntityId,
-          type: rel.type,
-          strength: rel.strength,
-          value: Math.max(1, rel.strength * 5), // Thickness
+          target: rel.objectId,
+          type: rel.predicate,
+          confidence: rel.confidence,
+          value: Math.max(1, rel.confidence * 5), // Thickness
         })
       }
     }
@@ -184,14 +184,14 @@ async function getSubgraph(
     const entity = await prisma.entity.findUnique({
       where: { id },
       include: {
-        sourceRelationships: {
+        subjectRelationships: {
           where: {
-            strength: {
+            confidence: {
               gte: minStrength,
             },
           },
           include: {
-            targetEntity: {
+            object: {
               include: {
                 contentEntities: {
                   select: {
@@ -202,14 +202,14 @@ async function getSubgraph(
             },
           },
         },
-        targetRelationships: {
+        objectRelationships: {
           where: {
-            strength: {
+            confidence: {
               gte: minStrength,
             },
           },
           include: {
-            sourceEntity: {
+            subject: {
               include: {
                 contentEntities: {
                   select: {
@@ -233,7 +233,7 @@ async function getSubgraph(
     // Add current node
     if (!nodeMap.has(entity.id)) {
       const connectionCount =
-        entity.sourceRelationships.length + entity.targetRelationships.length
+        entity.subjectRelationships.length + entity.objectRelationships.length
 
       nodeMap.set(entity.id, {
         id: entity.id,
@@ -248,64 +248,64 @@ async function getSubgraph(
     }
 
     // Process relationships
-    for (const rel of entity.sourceRelationships) {
-      const targetEntity = rel.targetEntity
+    for (const rel of entity.subjectRelationships) {
+      const object = rel.object
 
       // Add target node
-      if (!nodeMap.has(targetEntity.id)) {
-        nodeMap.set(targetEntity.id, {
-          id: targetEntity.id,
-          name: targetEntity.name,
-          type: targetEntity.type,
-          group: getTypeGroup(targetEntity.type),
+      if (!nodeMap.has(object.id)) {
+        nodeMap.set(object.id, {
+          id: object.id,
+          name: object.name,
+          type: object.type,
+          group: getTypeGroup(object.type),
           size: Math.max(5, 10),
-          description: targetEntity.description || undefined,
-          wikidataId: targetEntity.wikidataId || undefined,
-          contentCount: targetEntity.contentEntities.length,
+          description: object.description || undefined,
+          wikidataId: object.wikidataId || undefined,
+          contentCount: object.contentEntities.length,
         })
       }
 
       // Add link
       links.push({
         source: entity.id,
-        target: targetEntity.id,
-        type: rel.type,
-        strength: rel.strength,
-        value: Math.max(1, rel.strength * 5),
+        target: object.id,
+        type: rel.predicate,
+        confidence: rel.confidence,
+        value: Math.max(1, rel.confidence * 5),
       })
 
       // Queue for next depth
-      if (!visitedNodes.has(targetEntity.id)) {
-        visitedNodes.add(targetEntity.id)
-        queue.push({ id: targetEntity.id, currentDepth: currentDepth + 1 })
+      if (!visitedNodes.has(object.id)) {
+        visitedNodes.add(object.id)
+        queue.push({ id: object.id, currentDepth: currentDepth + 1 })
       }
     }
 
     // Process reverse relationships
-    for (const rel of entity.targetRelationships) {
-      const sourceEntity = rel.sourceEntity
+    for (const rel of entity.objectRelationships) {
+      const subject = rel.subject
 
-      if (!nodeMap.has(sourceEntity.id)) {
-        nodeMap.set(sourceEntity.id, {
-          id: sourceEntity.id,
-          name: sourceEntity.name,
-          type: sourceEntity.type,
-          group: getTypeGroup(sourceEntity.type),
+      if (!nodeMap.has(subject.id)) {
+        nodeMap.set(subject.id, {
+          id: subject.id,
+          name: subject.name,
+          type: subject.type,
+          group: getTypeGroup(subject.type),
           size: Math.max(5, 10),
-          description: sourceEntity.description || undefined,
-          wikidataId: sourceEntity.wikidataId || undefined,
-          contentCount: sourceEntity.contentEntities.length,
+          description: subject.description || undefined,
+          wikidataId: subject.wikidataId || undefined,
+          contentCount: subject.contentEntities.length,
         })
       }
 
       // Don't add duplicate links
       const linkExists = links.some(
-        (l) => l.source === sourceEntity.id && l.target === entity.id
+        (l) => l.source === subject.id && l.target === entity.id
       )
 
-      if (!linkExists && !visitedNodes.has(sourceEntity.id)) {
-        visitedNodes.add(sourceEntity.id)
-        queue.push({ id: sourceEntity.id, currentDepth: currentDepth + 1 })
+      if (!linkExists && !visitedNodes.has(subject.id)) {
+        visitedNodes.add(subject.id)
+        queue.push({ id: subject.id, currentDepth: currentDepth + 1 })
       }
     }
   }

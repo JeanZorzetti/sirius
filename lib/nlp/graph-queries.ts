@@ -23,13 +23,13 @@ export interface EntityWithRelations {
   relations: {
     id: string
     type: string
-    targetEntity: {
+    object: {
       id: string
       name: string
       type: string
       description: string | null
     }
-    strength: number
+    confidence: number
   }[]
   relatedContent: {
     id: string
@@ -47,7 +47,7 @@ export interface PathNode {
   }
   relationship?: {
     type: string
-    strength: number
+    confidence: number
   }
 }
 
@@ -91,15 +91,15 @@ export async function findRelatedEntities(
   const directRelations = await prisma.relationship.findMany({
     where: {
       OR: [
-        { sourceEntityId: entityId },
-        { targetEntityId: entityId },
+        { subjectId: entityId },
+        { objectId: entityId },
       ],
-      strength: {
+      confidence: {
         gte: minStrength,
       },
     },
     include: {
-      sourceEntity: {
+      subject: {
         include: {
           contentEntities: {
             include: {
@@ -115,7 +115,7 @@ export async function findRelatedEntities(
           },
         },
       },
-      targetEntity: {
+      object: {
         include: {
           contentEntities: {
             include: {
@@ -133,7 +133,7 @@ export async function findRelatedEntities(
       },
     },
     orderBy: {
-      strength: 'desc',
+      confidence: 'desc',
     },
     take: 20,
   })
@@ -142,9 +142,9 @@ export async function findRelatedEntities(
   const entityMap = new Map<string, EntityWithRelations>()
 
   for (const rel of directRelations) {
-    const isSource = rel.sourceEntityId === entityId
-    const entity = isSource ? rel.targetEntity : rel.sourceEntity
-    const otherEntity = isSource ? rel.sourceEntity : rel.targetEntity
+    const isSource = rel.subjectId === entityId
+    const entity = isSource ? rel.object : rel.subject
+    const otherEntity = isSource ? rel.subject : rel.object
 
     if (!entityMap.has(entity.id)) {
       entityMap.set(entity.id, {
@@ -153,7 +153,7 @@ export async function findRelatedEntities(
         type: entity.type,
         description: entity.description,
         wikidataId: entity.wikidataId,
-        relevanceScore: rel.strength,
+        relevanceScore: rel.confidence,
         relations: [],
         relatedContent: entity.contentEntities
           .map((ce) => ce.blogPost)
@@ -170,14 +170,14 @@ export async function findRelatedEntities(
     const entityData = entityMap.get(entity.id)!
     entityData.relations.push({
       id: rel.id,
-      type: rel.type,
-      targetEntity: {
+      type: rel.predicate,
+      object: {
         id: otherEntity.id,
         name: otherEntity.name,
         type: otherEntity.type,
         description: otherEntity.description,
       },
-      strength: rel.strength,
+      confidence: rel.confidence,
     })
   }
 
@@ -188,26 +188,26 @@ export async function findRelatedEntities(
     const secondDegreeRelations = await prisma.relationship.findMany({
       where: {
         OR: [
-          { sourceEntityId: { in: firstDegreeIds } },
-          { targetEntityId: { in: firstDegreeIds } },
+          { subjectId: { in: firstDegreeIds } },
+          { objectId: { in: firstDegreeIds } },
         ],
-        strength: {
+        confidence: {
           gte: minStrength * 0.8, // Slightly lower threshold for 2nd degree
         },
       },
       include: {
-        sourceEntity: true,
-        targetEntity: true,
+        subject: true,
+        object: true,
       },
       orderBy: {
-        strength: 'desc',
+        confidence: 'desc',
       },
       take: 30,
     })
 
     // Add second-degree entities with reduced relevance
     for (const rel of secondDegreeRelations) {
-      const entities = [rel.sourceEntity, rel.targetEntity]
+      const entities = [rel.subject, rel.object]
       for (const entity of entities) {
         if (!entityMap.has(entity.id) && entity.id !== entityId) {
           entityMap.set(entity.id, {
@@ -216,7 +216,7 @@ export async function findRelatedEntities(
             type: entity.type,
             description: entity.description,
             wikidataId: entity.wikidataId,
-            relevanceScore: rel.strength * 0.7, // Discount for 2nd degree
+            relevanceScore: rel.confidence * 0.7, // Discount for 2nd degree
             relations: [],
             relatedContent: [],
           })
@@ -242,11 +242,11 @@ export async function findPathBetweenEntities(
   maxDepth: number = 4
 ): Promise<GraphPath | null> {
   // BFS implementation
-  const queue: { entityId: string; path: PathNode[]; strength: number }[] = [
+  const queue: { entityId: string; path: PathNode[]; confidence: number }[] = [
     {
       entityId: sourceId,
       path: [],
-      strength: 1.0,
+      confidence: 1.0,
     },
   ]
 
@@ -263,25 +263,25 @@ export async function findPathBetweenEntities(
     const relationships = await prisma.relationship.findMany({
       where: {
         OR: [
-          { sourceEntityId: current.entityId },
-          { targetEntityId: current.entityId },
+          { subjectId: current.entityId },
+          { objectId: current.entityId },
         ],
       },
       include: {
-        sourceEntity: true,
-        targetEntity: true,
+        subject: true,
+        object: true,
       },
     })
 
     for (const rel of relationships) {
       const nextEntityId =
-        rel.sourceEntityId === current.entityId
-          ? rel.targetEntityId
-          : rel.sourceEntityId
+        rel.subjectId === current.entityId
+          ? rel.objectId
+          : rel.subjectId
       const nextEntity =
-        rel.sourceEntityId === current.entityId
-          ? rel.targetEntity
-          : rel.sourceEntity
+        rel.subjectId === current.entityId
+          ? rel.object
+          : rel.subject
 
       if (visited.has(nextEntityId)) continue
 
@@ -294,13 +294,13 @@ export async function findPathBetweenEntities(
             type: nextEntity.type,
           },
           relationship: {
-            type: rel.type,
-            strength: rel.strength,
+            type: rel.predicate,
+            confidence: rel.confidence,
           },
         },
       ]
 
-      const newStrength = current.strength * rel.strength
+      const newStrength = current.strength * rel.confidence
 
       // Found target
       if (nextEntityId === targetId) {
@@ -315,7 +315,7 @@ export async function findPathBetweenEntities(
       queue.push({
         entityId: nextEntityId,
         path: newPath,
-        strength: newStrength,
+        confidence: newStrength,
       })
     }
   }
@@ -341,21 +341,21 @@ export async function searchEntitiesByContext(
       ],
     },
     include: {
-      sourceRelationships: {
+      subjectRelationships: {
         include: {
-          targetEntity: true,
+          object: true,
         },
         orderBy: {
-          strength: 'desc',
+          confidence: 'desc',
         },
         take: 5,
       },
-      targetRelationships: {
+      objectRelationships: {
         include: {
-          sourceEntity: true,
+          subject: true,
         },
         orderBy: {
-          strength: 'desc',
+          confidence: 'desc',
         },
         take: 5,
       },
@@ -383,27 +383,27 @@ export async function searchEntitiesByContext(
     wikidataId: entity.wikidataId,
     relevanceScore: 1.0, // Could implement TF-IDF scoring here
     relations: [
-      ...entity.sourceRelationships.map((rel) => ({
+      ...entity.subjectRelationships.map((rel) => ({
         id: rel.id,
-        type: rel.type,
-        targetEntity: {
-          id: rel.targetEntity.id,
-          name: rel.targetEntity.name,
-          type: rel.targetEntity.type,
-          description: rel.targetEntity.description,
+        type: rel.predicate,
+        object: {
+          id: rel.object.id,
+          name: rel.object.name,
+          type: rel.object.type,
+          description: rel.object.description,
         },
-        strength: rel.strength,
+        confidence: rel.confidence,
       })),
-      ...entity.targetRelationships.map((rel) => ({
+      ...entity.objectRelationships.map((rel) => ({
         id: rel.id,
-        type: rel.type,
-        targetEntity: {
-          id: rel.sourceEntity.id,
-          name: rel.sourceEntity.name,
-          type: rel.sourceEntity.type,
-          description: rel.sourceEntity.description,
+        type: rel.predicate,
+        object: {
+          id: rel.subject.id,
+          name: rel.subject.name,
+          type: rel.subject.type,
+          description: rel.subject.description,
         },
-        strength: rel.strength,
+        confidence: rel.confidence,
       })),
     ],
     relatedContent: entity.contentEntities

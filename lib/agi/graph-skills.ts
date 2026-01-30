@@ -92,9 +92,9 @@ export async function diagnosticarComGrafo(
     })),
     relatedConcepts: result.problemEntities.flatMap((pe) =>
       pe.relations.map((rel) => ({
-        name: rel.targetEntity.name,
-        type: rel.targetEntity.type,
-        relationship: rel.type,
+        name: rel.object.name,
+        type: rel.object.type,
+        relationship: rel.predicate,
       }))
     ),
   }
@@ -213,7 +213,7 @@ export async function explicarRelacionamento(
     relationship: string
     to: string
   }[]
-  strength: number
+  confidence: number
 }> {
   // Search for entities
   const [entities1, entities2] = await Promise.all([
@@ -225,7 +225,7 @@ export async function explicarRelacionamento(
     return {
       explanation: `Não foi possível encontrar "${concept1}" ou "${concept2}" no grafo de conhecimento.`,
       path: [],
-      strength: 0,
+      confidence: 0,
     }
   }
 
@@ -248,7 +248,7 @@ export async function explicarRelacionamento(
     return {
       explanation: `"${concept1}" e "${concept2}" não possuem relacionamentos diretos no grafo.`,
       path: [],
-      strength: 0,
+      confidence: 0,
     }
   }
 
@@ -256,10 +256,10 @@ export async function explicarRelacionamento(
   const commonEntity = related1.find((e) => e.id === commonIds[0])!
 
   const relation1 = entity1.relations.find(
-    (r) => r.targetEntity.id === commonEntity.id
+    (r) => r.object.id === commonEntity.id
   )
   const relation2 = entity2.relations.find(
-    (r) => r.targetEntity.id === commonEntity.id
+    (r) => r.object.id === commonEntity.id
   )
 
   const path = [
