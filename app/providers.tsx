@@ -38,19 +38,25 @@ export function PostHogProvider({ children }: { children: React.ReactNode }) {
     console.log('[PostHog Debug] Already loaded:', posthog.__loaded)
 
     // Inicializar PostHog se tiver credenciais (produção ou dev)
-    if (posthogKey && posthogHost && !posthog.__loaded) {
-      console.log('[PostHog] Initializing with host:', posthogHost)
+    if (posthogKey && posthogHost) {
+      if (!posthog.__loaded) {
+        console.log('[PostHog] Initializing with host:', posthogHost)
 
-      posthog.init(posthogKey, {
-        api_host: posthogHost,
-        loaded: (ph) => {
-          console.log('[PostHog] SDK initialized successfully')
-          ;(window as any).posthog = ph
-        },
-        capture_pageview: false,
-        capture_pageleave: true,
-        persistence: 'localStorage+cookie',
-      })
+        posthog.init(posthogKey, {
+          api_host: posthogHost,
+          loaded: (ph) => {
+            console.log('[PostHog] SDK initialized successfully')
+            ;(window as any).posthog = ph
+          },
+          capture_pageview: false,
+          capture_pageleave: true,
+          persistence: 'localStorage+cookie',
+        })
+      } else {
+        // SDK já carregado, apenas expor globalmente
+        console.log('[PostHog] Already loaded, exposing globally')
+        ;(window as any).posthog = posthog
+      }
     } else if (!posthogKey || !posthogHost) {
       // Sem credenciais: criar mock para desenvolvimento
       console.warn('[PostHog] No credentials - creating mock SDK')
