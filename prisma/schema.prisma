@@ -1027,6 +1027,7 @@ model EntityExtraction {
   contentId               String?   // ID of the content (if applicable)
   contentUrl              String?   // URL or path to content
   textSample              String?   // First 500 chars of processed text
+  contentHash             String?   // SHA-256 hash of content for change detection
   extractedEntities       Json      @default("[]") // Array of extracted entity data
   extractedRelationships  Json      @default("[]") // Array of extracted relationships
   modelUsed               String?   // LLM model identifier
@@ -1040,6 +1041,7 @@ model EntityExtraction {
 
   @@index([status])
   @@index([contentType])
+  @@index([contentId, contentHash]) // For change detection
 }
 
 // ContentEntity: Many-to-many relationship between content and entities

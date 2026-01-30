@@ -9,6 +9,7 @@
 
 import { PrismaClient } from '@prisma/client'
 import { extractEntities } from './extract-entities'
+import { calculateContentHash } from './auto-reprocess'
 import type {
   ExtractionRequest,
   ExtractionResponse,
@@ -45,12 +46,14 @@ export async function processContentNLP(
     } = request
 
     // Step 1: Create EntityExtraction record
+    const contentHash = calculateContentHash(text)
     const extraction = await prisma.entityExtraction.create({
       data: {
         contentType,
         contentId,
         contentUrl,
         textSample: text.slice(0, 500),
+        contentHash,
         status: 'processing',
         modelUsed: 'llama-3.3-70b-versatile',
       },
