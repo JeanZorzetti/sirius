@@ -26,7 +26,18 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
   if (!post) return { title: 'Post não encontrado' }
 
   const url = `https://sirius.roilabs.com.br/blog/${slug}`
-  const imageUrl = `https://sirius.roilabs.com.br${post.image || '/logo.png'}`
+
+  // Geração Dinâmica de OG Image para artigos com calculadora ROI
+  let imageUrl = `https://sirius.roilabs.com.br${post.image || '/logo.png'}`
+  if (slug === 'custo-oculto-inacao-crm') {
+    // Usa Satori para gerar imagem personalizada com valores default
+    const ogParams = new URLSearchParams({
+      roi: '94282',
+      title: 'O Custo Oculto da Inação no CRM',
+      scenario: 'realista',
+    })
+    imageUrl = `https://sirius.roilabs.com.br/api/og?${ogParams.toString()}`
+  }
 
   // AI-optimized description: Fatos diretos, dados concretos, sem clickbait
   let aiOptimizedDescription = post.excerpt
