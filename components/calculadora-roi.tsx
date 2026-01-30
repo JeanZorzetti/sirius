@@ -9,6 +9,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Badge } from '@/components/ui/badge'
 import { TrendingDown, TrendingUp, AlertTriangle, DollarSign, Clock, Users, Target, ArrowRight } from 'lucide-react'
 import { analytics } from '@/lib/posthog'
+import { sendCriticalEvent } from '@/lib/analytics/beacon'
 
 interface CalculadoraROIProps {
   onCTAClick?: () => void
@@ -185,14 +186,22 @@ export function CalculadoraROI({
   const handleCTAClick = () => {
     const resultado = resultados[selectedScenario as keyof typeof resultados]
 
-    analytics.calculatorCompleted({
+    const eventData = {
       potential_loss: resultado.ganhoMensal,
       leads_per_month: leadsPerMonth,
       conversion_rate: taxaConversaoAtual,
       num_vendedores: numVendedores,
       scenario: selectedScenario,
       niche: typeof window !== 'undefined' ? window.location.pathname.split('/').pop() : undefined
-    })
+    }
+
+    // Método 1: PostHog tradicional (pode ser cancelado se usuário sair rápido)
+    analytics.calculatorCompleted(eventData)
+
+    // Método 2: Beacon API (garantido, mesmo se usuário fechar aba)
+    // CRÍTICO: Este é o ponto final da jornada de descoberta - o usuário
+    // obtém o número e sai para refletir ou discutir com a equipe
+    sendCriticalEvent('calculator_completed', eventData)
 
     if (onCTAClick) {
       onCTAClick()

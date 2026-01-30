@@ -7,6 +7,7 @@ import { Badge } from '@/components/ui/badge'
 import { CheckCircle2, XCircle, Loader2, AlertTriangle } from 'lucide-react'
 import { analytics } from '@/lib/posthog'
 import { detectAiReferrer, storeAiDetection } from '@/lib/analytics/ai-tracker'
+import { sendCriticalEvent, sendAnalyticsBeacon } from '@/lib/analytics/beacon'
 
 interface TestResult {
   name: string
@@ -20,6 +21,7 @@ export default function TestAnalyticsPage() {
     { name: 'Tool Interaction Event', status: 'pending', message: 'Aguardando teste...' },
     { name: 'LocalStorage Persistence', status: 'pending', message: 'Aguardando teste...' },
     { name: 'PostHog Connection', status: 'pending', message: 'Aguardando teste...' },
+    { name: 'Beacon API (Critical Events)', status: 'pending', message: 'Aguardando teste...' },
   ])
 
   const [running, setRunning] = useState(false)
@@ -110,15 +112,46 @@ export default function TestAnalyticsPage() {
         const isLoaded = posthog.__loaded
 
         if (isLoaded) {
-          updateTestStatus(4, 'success', '✅ PostHog SDK carregado e inicializado')
+          updateTestStatus(3, 'success', '✅ PostHog SDK carregado e inicializado')
         } else {
-          updateTestStatus(4, 'error', '⚠️ PostHog SDK presente mas não inicializado')
+          updateTestStatus(3, 'error', '⚠️ PostHog SDK presente mas não inicializado')
         }
       } else {
         updateTestStatus(3, 'error', '❌ PostHog SDK não encontrado')
       }
     } catch (error) {
       updateTestStatus(3, 'error', `❌ Erro: ${error instanceof Error ? error.message : 'Unknown'}`)
+    }
+
+    await new Promise((resolve) => setTimeout(resolve, 500))
+
+    // TEST 5: Beacon API (Critical Events)
+    try {
+      // Verificar se Beacon API está disponível
+      const hasBeacon = typeof navigator !== 'undefined' && 'sendBeacon' in navigator
+
+      if (hasBeacon) {
+        // Enviar evento de teste via Beacon
+        const sent = await sendAnalyticsBeacon('/api/analytics/ingest', {
+          event: 'test_beacon_api',
+          properties: {
+            test: true,
+            timestamp: new Date().toISOString(),
+          },
+          timestamp: new Date().toISOString(),
+        })
+
+        if (sent) {
+          updateTestStatus(4, 'success', '✅ Beacon API disponível e funcional')
+        } else {
+          updateTestStatus(4, 'error', '⚠️ Beacon disponível mas falhou ao enviar')
+        }
+      } else {
+        // Fallback para fetch keepalive
+        updateTestStatus(4, 'success', '⚠️ Beacon indisponível, usando fetch keepalive')
+      }
+    } catch (error) {
+      updateTestStatus(4, 'error', `❌ Erro: ${error instanceof Error ? error.message : 'Unknown'}`)
     }
 
     setRunning(false)
