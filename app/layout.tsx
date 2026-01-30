@@ -32,9 +32,10 @@ export const metadata: Metadata = {
   },
   verification: {
     // google: 'YOUR_GOOGLE_VERIFICATION_CODE', // Já tem via Google Analytics
-    // other: {
-    //   'msvalidate.01': 'YOUR_BING_VERIFICATION_CODE', // Adicione quando criar conta Bing Webmaster
-    // },
+    other: {
+      'facebook-domain-verification': 'hmbqke6ds1lm1uyvzj714g7tm7ih9e',
+      // 'msvalidate.01': 'YOUR_BING_VERIFICATION_CODE', // Adicione quando criar conta Bing Webmaster
+    },
   },
   openGraph: {
     title: 'Sirius CRM | Brilhe nas Vendas',
