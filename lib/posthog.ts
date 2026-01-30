@@ -9,6 +9,8 @@ export const analytics = {
     potential_loss: number
     leads_per_month: number
     conversion_rate: number
+    num_vendedores?: number
+    scenario?: string
   }) => {
     if (process.env.NODE_ENV === 'production') {
       posthog.capture('calculator_completed', data)
