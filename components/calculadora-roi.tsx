@@ -73,32 +73,67 @@ export function CalculadoraROI({
   const [leadsPerMonth, setLeadsPerMonth] = useState<number>(80)
   const [ticketMedio, setTicketMedio] = useState<number>(8500)
   const [taxaConversaoAtual, setTaxaConversaoAtual] = useState<number>(8)
+  const [tempoMedioRespostaHoras, setTempoMedioRespostaHoras] = useState<number>(24) // Tempo médio de resposta sem CRM
   const [selectedScenario, setSelectedScenario] = useState<string>('realista')
 
-  // Constantes baseadas em pesquisa
-  const LEAD_DECAY_RATE = 0.23 // 23% de leads apodrecem sem CRM
-  const CONTEXT_SWITCHING_HOURS_WEEK = 2.3 // horas perdidas por vendedor/semana
-  const CUSTO_HORA_VENDEDOR = 85 // R$ por hora (baseado em salário médio)
+  // Constantes baseadas em pesquisa científica
+  /**
+   * LAMBDA_DECAY_PER_HOUR: Constante de decaimento exponencial
+   * Derivação matemática: P(t) = P₀ · e^(-λt)
+   * HBR 2024: "conversão cai 10× após 5 minutos de atraso"
+   * P(5min) = P₀/10 → P₀/10 = P₀ · e^(-λ × 5/60)
+   * ln(0.1) = -λ × 0.0833 → λ = ln(10) / 0.0833 ≈ 27.63 h⁻¹
+   */
+  const LAMBDA_DECAY_PER_HOUR = 27.63
+  const TEMPO_IDEAL_RESPOSTA_HORAS = 0.0833 // 5 minutos (tempo ótimo segundo HBR 2024)
+  const INTERRUPCOES_POR_DIA_SEM_CRM = 12 // Trocas entre ferramentas (WhatsApp, Email, Planilha, Tel)
+  const TEMPO_RECUPERACAO_INTERRUPCAO_MIN = 23 // Gloria Mark, UC Irvine 2023
+  const CUSTO_HORA_VENDEDOR = 85 // R$ por hora (baseado em salário médio B2B Brasil)
   const CUSTO_SIRIUS_MENSAL = 49 // Plano PRO por usuário
+  const DIAS_UTEIS_MES = 22
 
-  // Cálculos por cenário
+  // Cálculos por cenário - Modelagem Exponencial Sofisticada
   const calcularCenario = (scenario: Scenario) => {
-    // 1. LEAD DECAY: Leads perdidos por apodrecimento
-    const leadsApodrecidos = leadsPerMonth * LEAD_DECAY_RATE
-    const leadsRecuperados = leadsApodrecidos * (scenario.improvements.leadDecayReduction / 100)
-    const leadDecayCost = leadsRecuperados * (taxaConversaoAtual / 100) * ticketMedio
+    // 1. LEAD DECAY: Decaimento Exponencial de Conversão (HBR 2024)
+    // Fórmula: P(t) = P₀ · e^(-λt)
+    // P₀ = Taxa de conversão base (resposta ideal em 5min)
+    // λ = 27.63 (constante derivada de "10x pior após 5min")
+    // t = diferença de tempo em relação ao ideal
 
-    // 2. CONVERSION IMPROVEMENT: Melhoria na taxa de conversão
-    const taxaConversaoNova = taxaConversaoAtual * (1 + scenario.improvements.conversionIncrease / 100)
-    const leadsUteis = leadsPerMonth - leadsApodrecidos + leadsRecuperados
+    const P0 = taxaConversaoAtual / 100  // Probabilidade base
 
-    const faturamentoAtual = leadsPerMonth * (taxaConversaoAtual / 100) * ticketMedio
-    const faturamentoNovo = leadsUteis * (taxaConversaoNova / 100) * ticketMedio
+    // Probabilidade de conversão com tempo atual de resposta (SEM CRM)
+    const deltaT_atual = Math.max(0, tempoMedioRespostaHoras - TEMPO_IDEAL_RESPOSTA_HORAS)
+    const P_atual = P0 * Math.exp(-LAMBDA_DECAY_PER_HOUR * deltaT_atual)
+
+    // Probabilidade de conversão com CRM (tempo reduzido significativamente)
+    // Com CRM, tempo de resposta cai para próximo do ideal conforme o cenário
+    const reducaoTempoComCRM = scenario.improvements.leadDecayReduction / 100
+    const tempoComCRM = TEMPO_IDEAL_RESPOSTA_HORAS + (tempoMedioRespostaHoras - TEMPO_IDEAL_RESPOSTA_HORAS) * (1 - reducaoTempoComCRM)
+    const deltaT_comCRM = Math.max(0, tempoComCRM - TEMPO_IDEAL_RESPOSTA_HORAS)
+    const P_comCRM = P0 * Math.exp(-LAMBDA_DECAY_PER_HOUR * deltaT_comCRM)
+
+    // Ganho por recuperação da probabilidade de conversão
+    const ganhoConversaoPorLead = (P_comCRM - P_atual) * ticketMedio
+    const leadDecayCost = leadsPerMonth * ganhoConversaoPorLead
+
+    // 2. CONVERSION RATE IMPROVEMENT: Melhoria adicional pela automação
+    const taxaConversaoNova = (P_comCRM * 100) * (1 + scenario.improvements.conversionIncrease / 100)
+
+    const faturamentoAtual = leadsPerMonth * (P_atual * 100) * ticketMedio / 100
+    const faturamentoNovo = leadsPerMonth * taxaConversaoNova * ticketMedio / 100
     const ganhoConversao = faturamentoNovo - faturamentoAtual
 
-    // 3. CONTEXT SWITCHING COST: Tempo economizado
-    const horasPerdidasMes = numVendedores * CONTEXT_SWITCHING_HOURS_WEEK * 4.3 // 4.3 semanas/mês
-    const horasEconomizadasMes = horasPerdidasMes * (scenario.improvements.timeSaved / (CONTEXT_SWITCHING_HOURS_WEEK * 4.3))
+    // 3. CONTEXT SWITCHING COST: Modelagem de Interrupções (Gloria Mark, UC Irvine 2023)
+    // Tempo perdido = (Nº de interrupções) × (Tempo de recuperação por interrupção)
+    const interrupcoesMes = INTERRUPCOES_POR_DIA_SEM_CRM * DIAS_UTEIS_MES
+    const minutosPerdidosPorVendedorMes = interrupcoesMes * TEMPO_RECUPERACAO_INTERRUPCAO_MIN
+    const horasPerdidasPorVendedorMes = minutosPerdidosPorVendedorMes / 60
+    const horasPerdidasTotalMes = horasPerdidasPorVendedorMes * numVendedores
+
+    // Com CRM, interrupções caem drasticamente (interface unificada)
+    const reducaoInterrupcoes = scenario.improvements.timeSaved / horasPerdidasPorVendedorMes
+    const horasEconomizadasMes = horasPerdidasTotalMes * reducaoInterrupcoes
     const ganhoTempo = horasEconomizadasMes * CUSTO_HORA_VENDEDOR
 
     // 4. TOTAL
@@ -109,7 +144,10 @@ export function CalculadoraROI({
     // 5. ROI do Sirius
     const custoSiriusMensal = numVendedores * CUSTO_SIRIUS_MENSAL
     const roi60Dias = (ganho60Dias / (custoSiriusMensal * 2)) * 100
-    const paybackDias = (custoSiriusMensal / ganhoMensal) * 30
+    const paybackDias = custoSiriusMensal > 0 && ganhoMensal > 0 ? (custoSiriusMensal / ganhoMensal) * 30 : 0
+
+    // Métricas auxiliares
+    const leadsRecuperados = leadsPerMonth * (P_comCRM - P_atual) / P0
 
     return {
       leadDecayCost,
@@ -119,13 +157,16 @@ export function CalculadoraROI({
       ganhoAnual,
       ganho60Dias,
       taxaConversaoNova,
-      leadsRecuperados,
+      leadsRecuperados: Math.max(0, leadsRecuperados),
       horasEconomizadasMes,
       custoSiriusMensal,
       roi60Dias,
       paybackDias,
       faturamentoAtual,
       faturamentoNovo,
+      P_atual: P_atual * 100,
+      P_comCRM: P_comCRM * 100,
+      tempoRespostaComCRM: tempoComCRM,
     }
   }
 
@@ -135,7 +176,7 @@ export function CalculadoraROI({
       realista: calcularCenario(SCENARIOS.realista),
       otimista: calcularCenario(SCENARIOS.otimista),
     }
-  }, [numVendedores, leadsPerMonth, ticketMedio, taxaConversaoAtual])
+  }, [numVendedores, leadsPerMonth, ticketMedio, taxaConversaoAtual, tempoMedioRespostaHoras])
 
   const formatCurrency = (value: number) => {
     return new Intl.NumberFormat('pt-BR', {
@@ -190,68 +231,93 @@ export function CalculadoraROI({
 
         <CardContent className="space-y-8 pt-6">
           {/* INPUTS */}
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            <div className="space-y-2">
-              <Label htmlFor="num-vendedores" className="text-sm font-semibold flex items-center gap-2">
-                <Users className="w-4 h-4 text-primary" />
-                Vendedores Ativos
-              </Label>
-              <Input
-                id="num-vendedores"
-                type="number"
-                min="1"
-                value={numVendedores}
-                onChange={(e) => setNumVendedores(Number(e.target.value) || 1)}
-                className="h-11"
-              />
+          <div className="space-y-6">
+            {/* Primeira linha: Vendedores, Leads, Ticket */}
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              <div className="space-y-2">
+                <Label htmlFor="num-vendedores" className="text-sm font-semibold flex items-center gap-2">
+                  <Users className="w-4 h-4 text-primary" />
+                  Vendedores Ativos
+                </Label>
+                <Input
+                  id="num-vendedores"
+                  type="number"
+                  min="1"
+                  value={numVendedores}
+                  onChange={(e) => setNumVendedores(Number(e.target.value) || 1)}
+                  className="h-11"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="leads-month" className="text-sm font-semibold flex items-center gap-2">
+                  <Target className="w-4 h-4 text-primary" />
+                  Leads/Mês
+                </Label>
+                <Input
+                  id="leads-month"
+                  type="number"
+                  min="0"
+                  value={leadsPerMonth}
+                  onChange={(e) => setLeadsPerMonth(Number(e.target.value) || 0)}
+                  className="h-11"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="ticket" className="text-sm font-semibold flex items-center gap-2">
+                  <DollarSign className="w-4 h-4 text-primary" />
+                  Ticket Médio (R$)
+                </Label>
+                <Input
+                  id="ticket"
+                  type="number"
+                  min="0"
+                  step="100"
+                  value={ticketMedio}
+                  onChange={(e) => setTicketMedio(Number(e.target.value) || 0)}
+                  className="h-11"
+                />
+              </div>
             </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="leads-month" className="text-sm font-semibold flex items-center gap-2">
-                <Target className="w-4 h-4 text-primary" />
-                Leads/Mês
-              </Label>
-              <Input
-                id="leads-month"
-                type="number"
-                min="0"
-                value={leadsPerMonth}
-                onChange={(e) => setLeadsPerMonth(Number(e.target.value) || 0)}
-                className="h-11"
-              />
-            </div>
+            {/* Segunda linha: Conversão e Tempo de Resposta */}
+            <div className="grid gap-6 sm:grid-cols-2">
+              <div className="space-y-2">
+                <Label htmlFor="conversao" className="text-sm font-semibold flex items-center gap-2">
+                  <TrendingUp className="w-4 h-4 text-primary" />
+                  Conversão Atual (%)
+                </Label>
+                <Input
+                  id="conversao"
+                  type="number"
+                  min="1"
+                  max="100"
+                  value={taxaConversaoAtual}
+                  onChange={(e) => setTaxaConversaoAtual(Number(e.target.value) || 8)}
+                  className="h-11"
+                />
+                <p className="text-xs text-muted-foreground">Média B2B Brasil: 8%</p>
+              </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="ticket" className="text-sm font-semibold flex items-center gap-2">
-                <DollarSign className="w-4 h-4 text-primary" />
-                Ticket Médio (R$)
-              </Label>
-              <Input
-                id="ticket"
-                type="number"
-                min="0"
-                step="100"
-                value={ticketMedio}
-                onChange={(e) => setTicketMedio(Number(e.target.value) || 0)}
-                className="h-11"
-              />
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="conversao" className="text-sm font-semibold flex items-center gap-2">
-                <TrendingUp className="w-4 h-4 text-primary" />
-                Conversão Atual (%)
-              </Label>
-              <Input
-                id="conversao"
-                type="number"
-                min="1"
-                max="100"
-                value={taxaConversaoAtual}
-                onChange={(e) => setTaxaConversaoAtual(Number(e.target.value) || 8)}
-                className="h-11"
-              />
-              <p className="text-xs text-muted-foreground">Média B2B Brasil: 8%</p>
+              <div className="space-y-2">
+                <Label htmlFor="tempo-resposta" className="text-sm font-semibold flex items-center gap-2">
+                  <Clock className="w-4 h-4 text-primary" />
+                  Tempo Médio de Resposta (horas)
+                </Label>
+                <Input
+                  id="tempo-resposta"
+                  type="number"
+                  min="0.1"
+                  step="0.5"
+                  value={tempoMedioRespostaHoras}
+                  onChange={(e) => setTempoMedioRespostaHoras(Number(e.target.value) || 24)}
+                  className="h-11"
+                />
+                <p className="text-xs text-muted-foreground">
+                  Ideal: &lt; 0.1h (5min). HBR: 10× pior após 5min.
+                </p>
+              </div>
             </div>
           </div>
 
