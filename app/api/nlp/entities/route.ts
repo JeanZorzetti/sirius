@@ -1,0 +1,44 @@
+/**
+ * NLP Pipeline API - Entity Search Endpoint
+ *
+ * GET /api/nlp/entities?q=query&limit=10
+ * Searches for entities in the knowledge graph.
+ */
+
+import { NextRequest, NextResponse } from 'next/server'
+import { searchEntities } from '@/lib/nlp/pipeline'
+
+export const runtime = 'nodejs'
+
+export async function GET(request: NextRequest) {
+  try {
+    const { searchParams } = request.nextUrl
+    const query = searchParams.get('q') || ''
+    const limit = parseInt(searchParams.get('limit') || '10', 10)
+
+    if (!query.trim()) {
+      return NextResponse.json(
+        { error: 'Missing query parameter "q"' },
+        { status: 400 }
+      )
+    }
+
+    const entities = await searchEntities(query, limit)
+
+    return NextResponse.json({
+      query,
+      count: entities.length,
+      entities,
+    })
+  } catch (error) {
+    console.error('[API /nlp/entities] Error:', error)
+
+    return NextResponse.json(
+      {
+        error: 'Internal server error',
+        message: error instanceof Error ? error.message : 'Unknown error',
+      },
+      { status: 500 }
+    )
+  }
+}
