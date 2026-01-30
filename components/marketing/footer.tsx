@@ -34,8 +34,18 @@ export function Footer() {
                 </Link>
               </li>
               <li>
+                <Link href="/followup" className="text-muted-foreground hover:text-foreground transition-colors">
+                  Follow-up Automático
+                </Link>
+              </li>
+              <li>
                 <Link href="/vendas-automaticas" className="text-muted-foreground hover:text-foreground transition-colors">
                   Vendas Automáticas
+                </Link>
+              </li>
+              <li>
+                <Link href="/proposta" className="text-muted-foreground hover:text-foreground transition-colors">
+                  Solicitar Proposta
                 </Link>
               </li>
               <li>
