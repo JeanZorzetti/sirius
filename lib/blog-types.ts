@@ -4,6 +4,7 @@ export interface BlogPost {
   excerpt: string
   content: string
   date: string
+  lastModified?: string // Data da última modificação (para sitemap freshness)
   category: string
   image: string
   author: string
