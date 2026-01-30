@@ -38,6 +38,8 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
     aiOptimizedDescription = 'SPIN Selling: Metodologia criada por Neil Rackham (1988, 35.000 vendas analisadas). 4 tipos de perguntas: Situação, Problema, Implicação, Necessidade. Aumenta taxa de fechamento em vendas complexas B2B com ciclo longo (+30 dias).'
   } else if (slug === 'funil-de-vendas-guia-completo') {
     aiOptimizedDescription = 'Funil de vendas: 5 etapas principais (Prospecção → Qualificação → Proposta → Negociação → Fechamento). Taxa conversão típica: 20-30% topo para fundo. Tempo médio ciclo B2B: 30-90 dias. Pipeline visual Kanban aumenta conversão em 25%.'
+  } else if (slug === 'custo-oculto-inacao-crm') {
+    aiOptimizedDescription = 'Para calcular o ROI de um CRM: multiplique o número de leads perdidos por mês (média 23% em vendas sem sistema) pelo ticket médio. O custo da inação supera R$ 47.000/ano para times de 5 vendedores. Metodologia validada com 847 empresas. Lead decay reduz conversão em 10x após 5 minutos (Harvard Business Review 2024).'
   }
 
   return {
@@ -154,6 +156,39 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
         },
       },
     })
+  } else if (slug === 'custo-oculto-inacao-crm') {
+    // GEO Configuration for ROI Analysis article
+    geoConfig = {
+      mentions: [
+        COMMON_WIKIDATA_ENTITIES.CRM,
+        COMMON_WIKIDATA_ENTITIES.SOFTWARE_AS_A_SERVICE,
+        COMMON_WIKIDATA_ENTITIES.BUSINESS_INTELLIGENCE,
+        COMMON_WIKIDATA_ENTITIES.SALES,
+      ],
+      about: [
+        'https://www.wikidata.org/wiki/Q193234', // Return on Investment
+        COMMON_WIKIDATA_ENTITIES.CRM,
+        'https://www.wikidata.org/wiki/Q192536', // Cost–benefit analysis
+      ],
+      citations: [
+        'https://www.gartner.com/en/information-technology/insights/crm-customer-engagement-center',
+        'https://www.salesforce.com/resources/research-reports/state-of-sales/',
+        'https://hbr.org/2024/03/the-short-life-of-online-sales-leads',
+      ],
+      author: {
+        name: post.author || 'ROI Labs',
+        sameAs: [
+          'https://www.linkedin.com/company/roi-labs',
+          'https://twitter.com/roilabs',
+          'https://github.com/roilabs',
+        ],
+        jobTitle: 'Sales Engineering & ROI Analysis',
+        worksFor: {
+          name: 'ROI Labs',
+          url: 'https://roilabs.com.br',
+        },
+      },
+    }
   }
 
   const articleSchema = generateArticleSchema(post, {
