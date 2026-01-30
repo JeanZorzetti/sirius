@@ -199,12 +199,19 @@ export async function getBlogProcessingStats() {
   try {
     const totalPosts = blogPosts.length
 
-    const processedPosts = await prisma.entityExtraction.count({
+    // Count unique posts that have been processed (not total extractions)
+    const uniqueProcessedPosts = await prisma.entityExtraction.groupBy({
+      by: ['contentId'],
       where: {
         contentType: 'blog_post',
         status: 'completed',
+        contentId: {
+          not: null,
+        },
       },
     })
+
+    const processedPosts = uniqueProcessedPosts.length
 
     const totalEntitiesExtracted = await prisma.contentEntity.count({
       where: {
@@ -233,7 +240,7 @@ export async function getBlogProcessingStats() {
     return {
       totalPosts,
       processedPosts,
-      pendingPosts: totalPosts - processedPosts,
+      pendingPosts: Math.max(0, totalPosts - processedPosts),
       totalEntitiesExtracted,
       avgEntitiesPerPost:
         processedPosts > 0

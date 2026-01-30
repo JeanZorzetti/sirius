@@ -16,13 +16,7 @@ export async function GET(request: NextRequest) {
     const query = searchParams.get('q') || ''
     const limit = parseInt(searchParams.get('limit') || '10', 10)
 
-    if (!query.trim()) {
-      return NextResponse.json(
-        { error: 'Missing query parameter "q"' },
-        { status: 400 }
-      )
-    }
-
+    // Allow empty query to return all entities
     const entities = await searchEntities(query, limit)
 
     return NextResponse.json({

@@ -30,7 +30,7 @@ export function KnowledgeGraphQuickActions({
   } | null>(null)
 
   const handleProcessPending = async () => {
-    if (pendingPosts === 0) {
+    if (pendingPosts <= 0) {
       setResult({
         type: 'success',
         message: 'All blog posts already processed!',
