@@ -40,6 +40,84 @@ Guidelines:
 Output format: JSON object with "entities" and "relationships" arrays.`
 
 /**
+ * Valid entity types and relationship predicates
+ */
+const VALID_ENTITY_TYPES = new Set([
+  'methodology',
+  'technology',
+  'industry',
+  'persona',
+  'metric',
+  'process',
+  'tool',
+  'concept',
+  'geography',
+  'other',
+])
+
+const VALID_PREDICATES = new Set([
+  'uses',
+  'usedBy',
+  'usedIn',
+  'subclassOf',
+  'instanceOf',
+  'partOf',
+  'enables',
+  'solves',
+  'relatedTo',
+  'prerequisiteOf',
+  'practicedBy',
+  'requiresSkill',
+  'locatedIn',
+  'operatesIn',
+  'servesIndustry',
+  'popularIn',
+])
+
+/**
+ * Sanitize extraction data by mapping invalid types/predicates to fallbacks
+ */
+function sanitizeExtractionData(data: any): any {
+  const sanitized = { ...data }
+
+  // Sanitize entities
+  if (Array.isArray(sanitized.entities)) {
+    sanitized.entities = sanitized.entities.map((entity: any) => {
+      const sanitizedEntity = { ...entity }
+
+      // Map invalid entity types to 'other'
+      if (sanitizedEntity.type && !VALID_ENTITY_TYPES.has(sanitizedEntity.type)) {
+        console.warn(
+          `[NLP] Invalid entity type "${sanitizedEntity.type}" for "${sanitizedEntity.name}", mapping to "other"`
+        )
+        sanitizedEntity.type = 'other'
+      }
+
+      return sanitizedEntity
+    })
+  }
+
+  // Sanitize relationships
+  if (Array.isArray(sanitized.relationships)) {
+    sanitized.relationships = sanitized.relationships.map((rel: any) => {
+      const sanitizedRel = { ...rel }
+
+      // Map invalid predicates to 'relatedTo'
+      if (sanitizedRel.predicate && !VALID_PREDICATES.has(sanitizedRel.predicate)) {
+        console.warn(
+          `[NLP] Invalid predicate "${sanitizedRel.predicate}" in relationship "${sanitizedRel.subject} -> ${sanitizedRel.object}", mapping to "relatedTo"`
+        )
+        sanitizedRel.predicate = 'relatedTo'
+      }
+
+      return sanitizedRel
+    })
+  }
+
+  return sanitized
+}
+
+/**
  * Build user prompt for entity extraction
  */
 function buildExtractionPrompt(text: string): string {
@@ -105,7 +183,11 @@ export async function extractEntities(
 
     // Parse and validate JSON response
     const rawData = JSON.parse(responseText)
-    const validatedData = ExtractionResultSchema.parse(rawData)
+
+    // Sanitize data before validation (map invalid types/predicates to fallbacks)
+    const sanitizedData = sanitizeExtractionData(rawData)
+
+    const validatedData = ExtractionResultSchema.parse(sanitizedData)
 
     // Enrich entities with Wikidata IDs from our lookup table
     const enrichedEntities = validatedData.entities.map(enrichEntityWithWikidata)

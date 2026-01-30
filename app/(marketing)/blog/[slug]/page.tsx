@@ -13,6 +13,7 @@ import { generateArticleSchema, COMMON_WIKIDATA_ENTITIES, createGeoConfig } from
 import { JsonLd } from '@/components/seo/json-ld'
 import { Metadata } from 'next'
 import { ChevronLeft, ChevronRight, Calendar, Clock, User } from 'lucide-react'
+import { getRelatedPostsByEntities, processBlogPost } from '@/lib/nlp/blog-processor'
 
 interface BlogPostPageProps {
   params: Promise<{
@@ -99,10 +100,17 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
     notFound()
   }
 
-  // Get related posts (exclude current post, get 2 random posts)
-  const relatedPosts = blogPosts
-    .filter((p) => p.slug !== slug)
-    .slice(0, 2)
+  // Optional: Auto-process blog post in background (production only)
+  // This ensures all posts are eventually processed without manual intervention
+  if (process.env.NODE_ENV === 'production' && process.env.ENABLE_AUTO_NLP === 'true') {
+    processBlogPost(slug).catch((error) => {
+      console.error(`[Auto-NLP] Failed to process ${slug}:`, error)
+    })
+  }
+
+  // Get related posts using knowledge graph (semantic similarity)
+  // Falls back to random posts if knowledge graph not yet populated
+  const relatedPosts = await getRelatedPostsByEntities(slug, 2)
 
   const url = `https://sirius.roilabs.com.br/blog/${slug}`
   const imageUrl = `https://sirius.roilabs.com.br${post.image || '/logo.png'}`
