@@ -162,8 +162,8 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
       mentions: [
         COMMON_WIKIDATA_ENTITIES.CRM,
         COMMON_WIKIDATA_ENTITIES.SOFTWARE_AS_A_SERVICE,
-        COMMON_WIKIDATA_ENTITIES.BUSINESS_INTELLIGENCE,
         COMMON_WIKIDATA_ENTITIES.SALES,
+        COMMON_WIKIDATA_ENTITIES.CUSTOMER_RELATIONSHIP_MANAGEMENT,
       ],
       about: [
         'https://www.wikidata.org/wiki/Q193234', // Return on Investment
