@@ -13,6 +13,67 @@ const nextConfig: NextConfig = {
     minimumCacheTTL: 60 * 60 * 24 * 365, // Cache for 1 year (3600 * 24 * 365)
   },
 
+  /* SEO Redirects - Fix 404s from Ahrefs */
+  async redirects() {
+    return [
+      // Feature pages → Main features page
+      {
+        source: '/features/sales-playbook',
+        destination: '/features',
+        permanent: true,
+      },
+      {
+        source: '/features/discovery-templates',
+        destination: '/features',
+        permanent: true,
+      },
+      {
+        source: '/features/custom-fields',
+        destination: '/features',
+        permanent: true,
+      },
+      {
+        source: '/features/email-automation',
+        destination: '/features',
+        permanent: true,
+      },
+      // Blog posts → Main blog page
+      {
+        source: '/blog/discovery-meeting-template',
+        destination: '/blog',
+        permanent: true,
+      },
+      {
+        source: '/blog/crm-completo-iniciantes',
+        destination: '/blog',
+        permanent: true,
+      },
+      // Help pages → Main help page
+      {
+        source: '/help/primeiros-passos/entendendo-pipeline-kanban',
+        destination: '/help',
+        permanent: true,
+      },
+      {
+        source: '/help/primeiros-passos/cadastrar-contatos',
+        destination: '/help',
+        permanent: true,
+      },
+      // ROI Calculator variants
+      {
+        source: '/calculadora-roi-spin',
+        destination: '/ferramentas/calculadora-roi',
+        permanent: true,
+      },
+      // Contact page (PT → EN)
+      {
+        source: '/contato',
+        destination: '/contact',
+        permanent: true,
+      },
+    ]
+  },
+
   /* Security Headers */
   async headers() {
     return [
