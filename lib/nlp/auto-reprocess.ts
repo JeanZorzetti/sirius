@@ -7,17 +7,9 @@
 
 'use server'
 
-import { createHash } from 'crypto'
 import { prisma } from '@/lib/prisma'
 import { processBlogPost } from './blog-processor'
-
-/**
- * Calculate SHA-256 hash of content for change detection
- * Note: Not a server action, just a utility function
- */
-function calculateContentHash(content: string): string {
-  return createHash('sha256').update(content.trim()).digest('hex')
-}
+import { calculateContentHash } from './hash-utils'
 
 /**
  * Check if content has changed since last extraction

@@ -9,7 +9,7 @@
 
 import { PrismaClient } from '@prisma/client'
 import { extractEntities } from './extract-entities'
-import { calculateContentHash } from './auto-reprocess'
+import { calculateContentHash } from './hash-utils'
 import type {
   ExtractionRequest,
   ExtractionResponse,
