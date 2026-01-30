@@ -127,9 +127,8 @@ export async function handleReprocessWebhook(payload: ReprocessWebhookPayload) {
     })
 
     return {
-      success: true,
-      trigger,
       ...result,
+      trigger,
     }
   } catch (error) {
     console.error('[Reprocess Webhook] Error:', error)
