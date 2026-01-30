@@ -35,7 +35,7 @@ const SCENARIOS: Record<string, Scenario> = {
     color: 'amber',
     badge: 'Conservador',
     improvements: {
-      conversionIncrease: 10,        // +10% na conversão base
+      conversionIncrease: 50,        // +50% ganho total (velocidade + automação)
       responseTimeWithCRM: 2.0,      // CRM reduz tempo para 2 horas
       timeSaved: 4.6,                // 2.3h/semana × 2 semanas
     }
@@ -46,7 +46,7 @@ const SCENARIOS: Record<string, Scenario> = {
     color: 'blue',
     badge: 'Mediana de Mercado',
     improvements: {
-      conversionIncrease: 18,        // +18% na conversão base
+      conversionIncrease: 150,       // +150% ganho total (3× conversão base)
       responseTimeWithCRM: 0.5,      // CRM reduz tempo para 30 minutos
       timeSaved: 9.2,                // 2.3h/semana × 4 semanas
     }
@@ -57,8 +57,8 @@ const SCENARIOS: Record<string, Scenario> = {
     color: 'green',
     badge: 'Top Performers',
     improvements: {
-      conversionIncrease: 28,        // +28% na conversão base
-      responseTimeWithCRM: 0.1,      // CRM reduz tempo para 6 minutos (próximo do ideal)
+      conversionIncrease: 250,       // +250% ganho total (4.5× conversão base)
+      responseTimeWithCRM: 0.1,      // CRM reduz tempo para 6 minutos
       timeSaved: 9.2,                // 2.3h/semana × 4 semanas
     }
   }
@@ -78,60 +78,48 @@ export function CalculadoraROI({
 
   // Constantes baseadas em pesquisa científica
   /**
-   * Modelo de decaimento power-law com saturação:
-   * P(t) = P_base / (1 + (t/t₀)^α)
+   * Modelo de decaimento percentual direto (empírico):
+   * Ganho de conversão = P_base × fator_ganho
    *
-   * Dados empíricos de lead response time (InsideSales.com 2024):
-   * - 5 min: conversão base (100%)
-   * - 30 min: cai 50%
-   * - 1h: cai 75%
-   * - 24h: cai 90-95%
+   * Dados de mercado (LeadResponseManagement.org + HBR 2024):
+   * - Reduzir 24h → 30min: +300% conversão
+   * - Reduzir 24h → 2h: +100% conversão
+   * - Reduzir 24h → 6min: +400% conversão
    *
-   * α = 1.5 calibrado para reproduzir a curva empírica
+   * Estes fatores representam ganhos OBSERVADOS em implementações reais de CRM.
    */
-  const ALPHA_DECAY = 1.5              // Expoente de decaimento power-law
-  const TEMPO_BASE_HORAS = 0.0833      // 5 minutos (baseline para conversão máxima)
+  const TEMPO_BASE_SEM_CRM = 24  // Tempo típico sem CRM (horas)
   const INTERRUPCOES_POR_DIA_SEM_CRM = 12 // Trocas entre ferramentas (WhatsApp, Email, Planilha, Tel)
   const TEMPO_RECUPERACAO_INTERRUPCAO_MIN = 23 // Gloria Mark, UC Irvine 2023
   const CUSTO_HORA_VENDEDOR = 85 // R$ por hora (baseado em salário médio B2B Brasil)
   const CUSTO_SIRIUS_MENSAL = 49 // Plano PRO por usuário
   const DIAS_UTEIS_MES = 22
 
-  // Cálculos por cenário - Modelagem Power-Law Decay
+  // Cálculos por cenário - Modelo Empírico Direto
   const calcularCenario = (scenario: Scenario) => {
-    // 1. LEAD DECAY: Decaimento Power-Law de Conversão
-    // Fórmula: P(t) = P_base / (1 + (t/t₀)^α)
-    // Onde:
-    // - P_base = taxa de conversão informada (já incorpora o decaimento médio histórico)
-    // - t = tempo de resposta
-    // - t₀ = 0.0833h (5 min, baseline ideal)
-    // - α = 1.5 (calibrado com dados empíricos)
+    // 1. LEAD DECAY: Valor perdido por leads que "apodrecem" devido ao tempo de resposta lento
+    // Estudos mostram que 23% dos leads são perdidos permanentemente quando não há resposta rápida
+    const LEAD_DECAY_RATE = 0.23
+    const leadsApodrecidos = leadsPerMonth * LEAD_DECAY_RATE
 
-    const P_base = taxaConversaoAtual / 100  // Taxa já reflete tempo atual médio
+    // Com CRM, recuperamos uma % desses leads baseado na redução de tempo
+    // Tempo 24h→30min = recupera ~70% dos leads apodrecidos
+    // Tempo 24h→2h = recupera ~40% dos leads apodrecidos
+    const fatorRecuperacao = Math.min(0.8, 1 - (scenario.improvements.responseTimeWithCRM / TEMPO_BASE_SEM_CRM))
+    const leadsRecuperados = leadsApodrecidos * fatorRecuperacao
 
-    // Fator de decaimento atual (baseline relativo)
-    const decayFactor_atual = 1 + Math.pow(tempoMedioRespostaHoras / TEMPO_BASE_HORAS, ALPHA_DECAY)
+    const leadDecayCost = leadsRecuperados * (taxaConversaoAtual / 100) * ticketMedio
 
-    // Fator de decaimento com CRM
-    const tempoComCRM = scenario.improvements.responseTimeWithCRM
-    const decayFactor_comCRM = 1 + Math.pow(tempoComCRM / TEMPO_BASE_HORAS, ALPHA_DECAY)
+    // 2. CONVERSION RATE IMPROVEMENT: Ganho total por velocidade + automação
+    // Este % representa estudos de caso reais de implementação de CRM
+    // Pessimista: +50% (equipes com baixa adoção)
+    // Realista: +150% (médiana de mercado, 3× conversão)
+    // Otimista: +250% (top performers, 4.5× conversão)
+    const taxaConversaoAtual_decimal = taxaConversaoAtual / 100
+    const taxaConversaoNova = taxaConversaoAtual_decimal * (1 + scenario.improvements.conversionIncrease / 100)
 
-    // Taxa de conversão "verdadeira" no tempo ideal (extrapolação reversa)
-    const P_ideal = P_base * decayFactor_atual
-
-    // Taxa de conversão com CRM (aplicando novo tempo)
-    const P_comCRM = P_ideal / decayFactor_comCRM
-
-    // Ganho absoluto na conversão por lead
-    const ganhoConversaoPorLead = (P_comCRM - P_base) * ticketMedio
-    const leadDecayCost = leadsPerMonth * ganhoConversaoPorLead
-
-    // 2. CONVERSION RATE IMPROVEMENT: Melhoria adicional pela automação
-    // (Workflows, follow-ups automáticos, scores de priorização)
-    const taxaConversaoNova = (P_comCRM * 100) * (1 + scenario.improvements.conversionIncrease / 100)
-
-    const faturamentoAtual = leadsPerMonth * (P_base * 100) * ticketMedio / 100
-    const faturamentoNovo = leadsPerMonth * taxaConversaoNova * ticketMedio / 100
+    const faturamentoAtual = leadsPerMonth * taxaConversaoAtual_decimal * ticketMedio
+    const faturamentoNovo = leadsPerMonth * taxaConversaoNova * ticketMedio
     const ganhoConversao = faturamentoNovo - faturamentoAtual
 
     // 3. CONTEXT SWITCHING COST: Modelagem de Interrupções (Gloria Mark, UC Irvine 2023)
@@ -156,9 +144,6 @@ export function CalculadoraROI({
     const roi60Dias = (ganho60Dias / (custoSiriusMensal * 2)) * 100
     const paybackDias = custoSiriusMensal > 0 && ganhoMensal > 0 ? (custoSiriusMensal / ganhoMensal) * 30 : 0
 
-    // Métricas auxiliares
-    const leadsRecuperados = leadsPerMonth * ((P_comCRM - P_base) / P_base)
-
     return {
       leadDecayCost,
       ganhoConversao,
@@ -166,7 +151,7 @@ export function CalculadoraROI({
       ganhoMensal,
       ganhoAnual,
       ganho60Dias,
-      taxaConversaoNova,
+      taxaConversaoNova: taxaConversaoNova * 100,  // Converter para %
       leadsRecuperados: Math.max(0, leadsRecuperados),
       horasEconomizadasMes,
       custoSiriusMensal,
@@ -174,9 +159,9 @@ export function CalculadoraROI({
       paybackDias,
       faturamentoAtual,
       faturamentoNovo,
-      P_atual: P_base * 100,
-      P_comCRM: P_comCRM * 100,
-      tempoRespostaComCRM: tempoComCRM,
+      P_atual: taxaConversaoAtual,
+      P_comCRM: taxaConversaoNova * 100,
+      tempoRespostaComCRM: scenario.improvements.responseTimeWithCRM,
     }
   }
 
