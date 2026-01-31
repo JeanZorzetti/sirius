@@ -204,7 +204,7 @@ export async function POST(req: NextRequest) {
             }
 
             // Validate props against component schema
-            const validationResult = component.propsSchema.safeParse(props)
+            const validationResult = component.props_schema.safeParse(props)
 
             if (!validationResult.success) {
               return {
@@ -220,7 +220,7 @@ export async function POST(req: NextRequest) {
                 name: componentName,
                 props: validationResult.data,
                 skeleton: component.skeleton,
-                reasoning: reasoning || component.trigger.description
+                reasoning: reasoning || component.description
               }
             }
           }

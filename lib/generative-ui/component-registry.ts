@@ -405,3 +405,8 @@ export function hasComponent(name: string): boolean {
 export function getComponentNames(): string[] {
   return Object.keys(SALES_UI_COMPONENTS)
 }
+
+/**
+ * Export alias for backward compatibility
+ */
+export { SALES_UI_COMPONENTS as componentRegistry }
