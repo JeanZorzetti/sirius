@@ -311,13 +311,36 @@ export async function searchEntitiesByContext(
   query: string,
   limit: number = 10
 ): Promise<EntityWithRelations[]> {
+  // Extract meaningful keywords from query (filter stopwords and short words)
+  const stopwords = ['como', 'para', 'com', 'uma', 'que', 'por', 'mais', 'dos', 'das', 'nos', 'nas', 'o', 'a', 'de', 'do', 'da', 'em', 'no', 'na', 'os', 'as']
+  const keywords = query
+    .toLowerCase()
+    .split(/\s+/)
+    .filter((word) => word.length > 3 && !stopwords.includes(word))
+
+  // Build OR conditions for each keyword
+  type SearchCondition =
+    | { name: { contains: string; mode: 'insensitive' } }
+    | { description: { contains: string; mode: 'insensitive' } }
+    | { type: { contains: string; mode: 'insensitive' } }
+
+  const searchConditions: SearchCondition[] = keywords.flatMap((keyword) => [
+    { name: { contains: keyword, mode: 'insensitive' as const } },
+    { description: { contains: keyword, mode: 'insensitive' as const } },
+  ])
+
+  // If no keywords found, fallback to original query
+  if (searchConditions.length === 0) {
+    searchConditions.push(
+      { name: { contains: query, mode: 'insensitive' as const } },
+      { description: { contains: query, mode: 'insensitive' as const } },
+      { type: { contains: query, mode: 'insensitive' as const } }
+    )
+  }
+
   const entities = await prisma.entity.findMany({
     where: {
-      OR: [
-        { name: { contains: query, mode: 'insensitive' } },
-        { description: { contains: query, mode: 'insensitive' } },
-        { type: { contains: query, mode: 'insensitive' } },
-      ],
+      OR: searchConditions,
     },
     include: {
       subjectRelationships: {
@@ -348,14 +371,22 @@ export async function searchEntitiesByContext(
     take: limit,
   })
 
-  return entities.map((entity) => ({
-    id: entity.id,
-    name: entity.name,
-    type: entity.type,
-    description: entity.description,
-    wikidataId: entity.wikidataId,
-    relevanceScore: 1.0, // Could implement TF-IDF scoring here
-    relations: [
+  return entities.map((entity) => {
+    // Calculate relevance score based on keyword matches
+    const entityText = `${entity.name} ${entity.description || ''}`.toLowerCase()
+    const matchedKeywords = keywords.filter((kw) => entityText.includes(kw))
+    const relevanceScore = keywords.length > 0
+      ? matchedKeywords.length / keywords.length
+      : 1.0
+
+    return {
+      id: entity.id,
+      name: entity.name,
+      type: entity.type,
+      description: entity.description,
+      wikidataId: entity.wikidataId,
+      relevanceScore,
+      relations: [
       ...entity.subjectRelationships.map((rel) => ({
         id: rel.id,
         predicate: rel.predicate,
@@ -383,7 +414,8 @@ export async function searchEntitiesByContext(
       contentId: ce.contentId,
       contentType: ce.contentType,
     })),
-  }))
+  }
+  }).sort((a, b) => b.relevanceScore - a.relevanceScore) // Sort by relevance
 }
 
 // ============================================
