@@ -187,7 +187,7 @@ export async function POST(req: NextRequest) {
         props: z.record(z.string(), z.any()),
         reasoning: z.string().optional().describe('Why you chose this component and how it helps the conversation')
       }),
-      execute: async (input, options) => {
+      execute: async (input: any, options: any) => {
         const { componentName, props, reasoning } = input
         const component = componentRegistry[componentName]
 
@@ -219,7 +219,7 @@ export async function POST(req: NextRequest) {
       messages,
       temperature: 0.7,
       tools: {
-        render_ui_component: renderUIComponentTool as any
+        render_ui_component: renderUIComponentTool
       },
 
       onFinish: async ({ usage, finishReason }) => {
