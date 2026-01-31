@@ -7,7 +7,7 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server'
-import { streamText, tool } from 'ai'
+import { streamText } from 'ai'
 import { createGroq } from '@ai-sdk/groq'
 import { z } from 'zod'
 import { getSession } from '@/lib/auth'
@@ -168,8 +168,8 @@ export async function POST(req: NextRequest) {
     const modelName =
       plan === 'PRO' ? 'llama-3.3-70b-versatile' : 'llama-3.2-11b-text-preview'
 
-    // 9. Define render UI component tool
-    const renderUIComponentTool = tool({
+    // 9. Define render UI component tool (manual definition to avoid TypeScript issues)
+    const renderUIComponentTool: any = {
       description: 'Renders a UI component dynamically based on the conversation context. Use this when you want to show interactive visualizations, calculators, forms, or dashboards to enhance the sales conversation.',
       parameters: z.object({
         componentName: z.enum([
@@ -210,7 +210,7 @@ export async function POST(req: NextRequest) {
           reasoning: reasoning || component.description
         }
       }
-    })
+    }
 
     // 10. Stream response with render_ui_component tool
     const result = streamText({
