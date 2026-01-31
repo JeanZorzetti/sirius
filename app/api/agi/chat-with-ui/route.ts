@@ -262,63 +262,8 @@ export async function POST(req: NextRequest) {
       },
     })
 
-    // 11. Transform stream to include UI metadata and thinking states
-    const transformedStream = result.toDataStream({
-      getErrorMessage: (error) => {
-        if (error instanceof Error) {
-          return `Erro ao processar: ${error.message}`
-        }
-        return 'Erro desconhecido'
-      },
-
-      transform: async (chunk) => {
-        // Pass through different chunk types
-        if (chunk.type === 'text-delta') {
-          const textChunk: StreamChunk = {
-            type: 'text',
-            content: chunk.textDelta,
-          }
-          return JSON.stringify(textChunk) + '\n'
-        }
-
-        if (chunk.type === 'tool-call' && chunk.toolName === 'render_ui_component') {
-          // Tool is being called - show thinking state
-          const thinkingChunk: StreamChunk = {
-            type: 'thinking',
-            state: 'generating_ui',
-            message: 'Preparando componente visual...',
-          }
-          return JSON.stringify(thinkingChunk) + '\n'
-        }
-
-        if (chunk.type === 'tool-result' && chunk.toolName === 'render_ui_component') {
-          // Tool execution completed - send UI metadata
-          const toolResult = chunk.result as any
-
-          if (toolResult && toolResult.name) {
-            const uiChunk: StreamChunk = {
-              type: 'ui_component',
-              name: toolResult.name,
-              props: toolResult.props,
-              skeleton: toolResult.skeleton,
-              reasoning: toolResult.reasoning,
-            }
-            return JSON.stringify(uiChunk) + '\n'
-          }
-        }
-
-        // For other chunk types, return empty string (will be filtered)
-        return ''
-      },
-    })
-
-    return new Response(transformedStream, {
-      headers: {
-        'Content-Type': 'text/event-stream',
-        'Cache-Control': 'no-cache',
-        Connection: 'keep-alive',
-      },
-    })
+    // 11. Return streaming response
+    return result.toDataStreamResponse()
   } catch (error) {
     console.error('[chat-with-ui] Error:', error)
     return NextResponse.json(
