@@ -234,11 +234,17 @@ export async function POST(req: NextRequest) {
         // Update SPIN session if exists
         if (spinSession) {
           const history = await getConversationHistory(spinSession.sessionId)
-          const nextState = determineNextSPINState(history, spinSession.spinState || 'SITUATION')
+          const userMessage = messages[messages.length - 1]?.content || ''
+          const nextStateTransition = determineNextSPINState(
+            spinSession.spinState || 'Situation',
+            userMessage,
+            history,
+            spinSession.diagnosticMode || 'complete'
+          )
           const qualScore = calculateQualificationScore(history)
 
           await updateSession(spinSession.sessionId, {
-            spinState: nextState,
+            spinState: nextStateTransition.nextState,
             qualificationScore: qualScore,
           })
         }
