@@ -265,12 +265,12 @@ export async function explicarRelacionamento(
   const path = [
     {
       from: entity1.name,
-      relationship: relation1?.type || 'relacionado_a',
+      relationship: relation1?.predicate || 'relacionado_a',
       to: commonEntity.name,
     },
     {
       from: commonEntity.name,
-      relationship: relation2?.type || 'relacionado_a',
+      relationship: relation2?.predicate || 'relacionado_a',
       to: entity2.name,
     },
   ]
@@ -330,11 +330,11 @@ export async function gerarCaminhoAprendizado(
 
   // Group by type and relationship
   const prerequisites = relatedEntities.filter((e) =>
-    e.relations.some((r) => r.type === 'requires' || r.type === 'prerequisite_of')
+    e.relations.some((r) => r.predicate === 'requires' || r.predicate === 'prerequisite_of')
   )
 
   const advanced = relatedEntities.filter((e) =>
-    e.relations.some((r) => r.type === 'enables' || r.type === 'leads_to')
+    e.relations.some((r) => r.predicate === 'enables' || r.predicate === 'leads_to')
   )
 
   const related = relatedEntities.filter(
