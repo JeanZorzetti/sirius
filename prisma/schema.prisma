@@ -1112,7 +1112,7 @@ model ConversationMessage {
   createdAt DateTime @default(now())
 
   // Relations
-  session ConversationSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  session ConversationSession @relation(fields: [sessionId], references: [sessionId], onDelete: Cascade)
 
   @@index([sessionId])
   @@index([createdAt])
