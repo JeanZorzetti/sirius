@@ -187,7 +187,8 @@ export async function POST(req: NextRequest) {
         props: z.record(z.string(), z.any()),
         reasoning: z.string().optional().describe('Why you chose this component and how it helps the conversation')
       }),
-      execute: async ({ componentName, props, reasoning }, options) => {
+      execute: async (input, options) => {
+        const { componentName, props, reasoning } = input
         const component = componentRegistry[componentName]
 
         if (!component) {
