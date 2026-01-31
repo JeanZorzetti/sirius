@@ -241,7 +241,7 @@ export async function POST(req: NextRequest) {
             history,
             spinSession.diagnosticMode || 'complete'
           )
-          const qualScore = calculateQualificationScore(history)
+          const qualScore = calculateQualificationScore(spinSession, history)
 
           await updateSession(spinSession.sessionId, {
             spinState: nextStateTransition.nextState,
