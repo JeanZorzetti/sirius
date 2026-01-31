@@ -22,6 +22,7 @@ import {
   AlertCircle,
   ExternalLink,
   ArrowRight,
+  Eye,
 } from 'lucide-react'
 import { KnowledgeGraphActions } from './actions-client'
 
@@ -93,11 +94,19 @@ export default async function KnowledgeGraphPage() {
   return (
     <div className="space-y-8">
       {/* Header */}
-      <div>
-        <h1 className="text-3xl font-bold text-slate-900">Knowledge Graph</h1>
-        <p className="text-slate-600 mt-2">
-          Semantic entity extraction and relationship mapping via NLP pipeline
-        </p>
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-3xl font-bold text-slate-900">Knowledge Graph</h1>
+          <p className="text-slate-600 mt-2">
+            Semantic entity extraction and relationship mapping via NLP pipeline
+          </p>
+        </div>
+        <Link href="/admin/graph-viz">
+          <Button className="flex items-center gap-2">
+            <Eye className="h-4 w-4" />
+            Visualizar Grafo
+          </Button>
+        </Link>
       </div>
 
       {/* Actions */}
