@@ -11,12 +11,26 @@ import { prisma } from '@/lib/prisma';
 import { createAgiBrain } from '@/lib/agi/brain';
 import { canUseAGI, recordUsage } from '@/lib/agi/usage';
 import { saveConversation } from '@/lib/agi/memory';
+import {
+  getOrCreateSession,
+  updateSession,
+  saveMessage,
+  getConversationHistory,
+  determineNextSPINState,
+  calculateQualificationScore,
+} from '@/lib/agi/spin-engine';
+import {
+  getSandlerSystemPrompt,
+  detectPrematureClose,
+  UPFRONT_CONTRACTS,
+} from '@/lib/agi/sandler-prompts';
 
 export const runtime = 'nodejs'; // Required for streaming
 export const maxDuration = 60; // 60 seconds for LLM response
 
 interface ChatRequest {
     message: string;
+    sessionId?: string; // For SPIN/Sandler memory
     context?: {
         dealId?: string;
         pipelineId?: string;
@@ -69,7 +83,7 @@ export async function POST(req: NextRequest) {
 
         // 4. Parse request
         const body: ChatRequest = await req.json();
-        const { message, context, modelOption, stream = false } = body;
+        const { message, sessionId, context, modelOption, stream = false } = body;
 
         if (!message || message.trim().length === 0) {
             return NextResponse.json(
@@ -169,8 +183,70 @@ export async function POST(req: NextRequest) {
         }
 
 
-        // 6. Initialize AGI Brain with conversational memory (used for both streaming and non-streaming)
+        // 5.75. SPIN/Sandler Conversational Layer
+        const effectiveSessionId = sessionId || `user-${userId}-${Date.now()}`;
+        const spinSession = await getOrCreateSession(effectiveSessionId, userId);
+        const conversationHist = await getConversationHistory(effectiveSessionId, 20);
+
+        // Save user message
+        await saveMessage(effectiveSessionId, 'user', message);
+
+        // Check for premature closing attempts (Sandler Pattern Interrupt)
+        const deflectionResponse = detectPrematureClose(message);
+        if (deflectionResponse && spinSession.spinState !== 'NeedPayoff') {
+            // User is asking closing questions too early - deflect
+            await saveMessage(effectiveSessionId, 'assistant', deflectionResponse);
+
+            return NextResponse.json({
+                message: deflectionResponse,
+                model: 'sandler-deflection',
+                spinState: spinSession.spinState,
+                sessionId: effectiveSessionId,
+            });
+        }
+
+        // Determine next SPIN state based on user's response
+        const stateTransition = determineNextSPINState(
+            spinSession.spinState,
+            message,
+            conversationHist
+        );
+
+        // Update session with new state
+        if (stateTransition.toState !== spinSession.spinState) {
+            await updateSession(effectiveSessionId, {
+                spinState: stateTransition.toState,
+            });
+            spinSession.spinState = stateTransition.toState;
+        }
+
+        // Calculate qualification score
+        const qualScore = calculateQualificationScore(spinSession, conversationHist);
+        await updateSession(effectiveSessionId, {
+            qualificationScore: qualScore,
+        });
+
+        // Get Sandler-adapted system prompt
+        const sandlerSystemPrompt = getSandlerSystemPrompt(
+            spinSession.spinState,
+            spinSession.sandlerStage
+        );
+
+        // Add SPIN/Sandler context to enhanced context
+        enhancedContext.spinContext = {
+            state: spinSession.spinState,
+            sandlerStage: spinSession.sandlerStage,
+            qualificationScore: qualScore,
+            problems: spinSession.identifiedProblems,
+            goals: spinSession.identifiedGoals,
+            conversationHistory: conversationHist.slice(-10), // Last 10 messages
+        };
+
+        // 6. Initialize AGI Brain with conversational memory + SPIN prompts
         const brain = createAgiBrain(plan, modelOption);
+
+        // Inject Sandler system prompt into brain
+        brain.setSystemPrompt(sandlerSystemPrompt);
 
         // 6.5. Check if we should execute specialized skills
         const lowercaseMessage = message.toLowerCase();
@@ -251,6 +327,9 @@ export async function POST(req: NextRequest) {
         // 8. Non-streaming response with Brain and conversational memory
         const response = await brain.think(message, enhancedContext);
 
+        // Save assistant response to SPIN session
+        await saveMessage(effectiveSessionId, 'assistant', response.content);
+
         // 9. Record usage
         await recordUsage(
             user.organizationId,
@@ -275,10 +354,13 @@ export async function POST(req: NextRequest) {
             tokensUsed: response.tokensUsed,
         });
 
-        // 11. Return response
+        // 11. Return response with SPIN metadata
         return NextResponse.json({
             message: response.content,
             model: response.model,
+            spinState: spinSession.spinState,
+            sessionId: effectiveSessionId,
+            qualificationScore: qualScore,
         });
     } catch (error) {
         console.error('AGI Chat Error:', error);

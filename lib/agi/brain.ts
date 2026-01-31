@@ -61,6 +61,28 @@ Você é a melhor consultora de vendas. Seja breve e precisa.`;
   }
 
   /**
+   * Set a custom system prompt (e.g., for SPIN/Sandler)
+   * Replaces the existing system message in conversation history
+   */
+  setSystemPrompt(newSystemPrompt: string): void {
+    this.systemPrompt = newSystemPrompt;
+
+    // Replace system message in history if it exists
+    const systemMsgIndex = this.conversationHistory.findIndex(
+      (msg) => msg.role === 'system'
+    );
+
+    if (systemMsgIndex !== -1) {
+      this.conversationHistory[systemMsgIndex].content = newSystemPrompt;
+    } else {
+      this.conversationHistory.unshift({
+        role: 'system',
+        content: newSystemPrompt,
+      });
+    }
+  }
+
+  /**
    * Main thinking method - sends prompt to LLM and returns response
    */
   async think(

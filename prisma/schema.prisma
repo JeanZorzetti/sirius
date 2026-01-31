@@ -1061,3 +1061,59 @@ model ContentEntity {
   @@index([contentId])
   @@index([entityId])
 }
+
+// ============================================
+// CONVERSATIONAL AI - SPIN/Sandler Memory
+// ============================================
+
+// ConversationSession: Tracks long-term user conversations with SPIN state
+model ConversationSession {
+  id        String   @id @default(uuid())
+  userId    String?  // Optional: link to authenticated user
+  sessionId String   @unique // Client-provided session ID (e.g., from cookies)
+
+  // SPIN Selling State
+  spinState String   @default("Situation") // Situation, Problem, Implication, NeedPayoff
+
+  // Sandler Selling State
+  sandlerStage String @default("Bonding") // Bonding, UpfrontContract, PainDiscovery, Budget, Decision, Fulfillment
+
+  // Context tracking
+  identifiedProblems Json?    // Array of problems user mentioned
+  identifiedGoals    Json?    // Array of goals/needs user expressed
+  entityContext      Json?    // Entities extracted from conversation
+  qualificationScore Float    @default(0.0) // Lead qualification score (0-100)
+
+  // Metadata
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  lastMessageAt DateTime @default(now())
+
+  // Relations
+  messages ConversationMessage[]
+
+  @@index([userId])
+  @@index([sessionId])
+  @@index([lastMessageAt])
+}
+
+// ConversationMessage: Individual messages in a conversation
+model ConversationMessage {
+  id          String   @id @default(uuid())
+  sessionId   String
+  role        String   // user, assistant, system
+  content     String   @db.Text
+
+  // Metadata for analysis
+  spinIntent  String?  // Which SPIN question type this was
+  extractedEntities Json? // Entities detected in this message
+  sentiment   String?  // positive, neutral, negative
+
+  createdAt DateTime @default(now())
+
+  // Relations
+  session ConversationSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+
+  @@index([sessionId])
+  @@index([createdAt])
+}
