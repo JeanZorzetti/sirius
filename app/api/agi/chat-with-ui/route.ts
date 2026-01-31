@@ -224,13 +224,12 @@ export async function POST(req: NextRequest) {
 
       onFinish: async ({ usage, finishReason }) => {
         // Record usage
-        await recordUsage({
+        await recordUsage(
+          user.organizationId,
           userId,
-          organizationId: user.organizationId,
-          tokensUsed: usage.totalTokens,
-          plan,
-          endpoint: 'chat-with-ui',
-        })
+          usage.totalTokens,
+          plan
+        )
 
         // Update SPIN session if exists
         if (spinSession) {
