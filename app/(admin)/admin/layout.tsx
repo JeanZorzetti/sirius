@@ -57,6 +57,12 @@ export default async function AdminLayout({
                     <Link href="/admin/knowledge-graph" className="text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors">
                         Knowledge Graph
                     </Link>
+                    <Link href="/admin/graph-rag" className="text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors">
+                        Graph-RAG
+                    </Link>
+                    <Link href="/admin/auto-citation" className="text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors">
+                        Auto-Citation
+                    </Link>
                 </nav>
                 <div className="ml-auto">
                     <Link href="/dashboard" className="flex items-center gap-2 text-xs font-medium text-slate-500 hover:text-slate-900 transition-colors">
