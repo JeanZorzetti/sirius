@@ -178,7 +178,7 @@ export function GraphVisualization() {
             if (!event.active) simulation.alphaTarget(0)
             d.fx = null
             d.fy = null
-          })
+          }) as any
       )
       .on('click', (event, d) => {
         setSelectedNode(d)
