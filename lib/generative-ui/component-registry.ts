@@ -19,18 +19,7 @@ import {
   InsightCardPropsSchema,
   EmailPreviewPropsSchema,
 } from './schemas'
-
-// Lazy imports for code splitting (components will be implemented in Phase 2)
-// For now, we'll use placeholder components
-const PlaceholderComponent = ({ name }: { name: string }) => {
-  return (
-    <div className="p-6 border border-dashed border-gray-400 rounded-lg bg-gray-50">
-      <p className="text-gray-600">
-        Component <strong>{name}</strong> will be implemented in Phase 2
-      </p>
-    </div>
-  )
-}
+import { PlaceholderComponent } from '@/components/generative-ui/PlaceholderComponent'
 
 /**
  * Complete Sales UI Components Registry

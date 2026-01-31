@@ -8,7 +8,6 @@
 'use client'
 
 import { Loader2, Brain, Calculator, FileSearch, Calendar, Lightbulb, Sparkles } from 'lucide-react'
-import { motion } from 'framer-motion'
 import type { ThinkingState } from '@/lib/generative-ui/types'
 
 interface ThinkingIndicatorProps {
@@ -77,16 +76,11 @@ export function ThinkingIndicator({ state, message }: ThinkingIndicatorProps) {
   const displayMessage = message || config.defaultMessage
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 10 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -10 }}
-      className="flex items-center gap-2 text-sm text-muted-foreground py-2"
-    >
+    <div className="flex items-center gap-2 text-sm text-muted-foreground py-2 animate-in fade-in slide-in-from-bottom-2 duration-300">
       <Icon className={`h-4 w-4 ${config.color} animate-pulse`} />
       <span>{displayMessage}</span>
       <Loader2 className="h-3 w-3 animate-spin ml-1" />
-    </motion.div>
+    </div>
   )
 }
 
