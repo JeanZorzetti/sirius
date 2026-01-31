@@ -34,10 +34,8 @@ export interface GraphRAGContext {
     distance: number
   }[]
   relevantContent: {
-    id: string
-    title: string
-    slug: string
-    excerpt: string | null
+    contentId: string
+    contentType: string
     relevanceScore: number
     matchType: 'direct' | 'graph_expanded' | 'semantic'
   }[]
@@ -123,7 +121,7 @@ export async function retrieveWithGraphAugmentation(
       if (!expandedEntityMap.has(related.id)) {
         // Infer relationship type from first relation
         const relationshipType =
-          related.relations[0]?.type || 'related_to'
+          related.relations[0]?.predicate || 'related_to'
         const distance = graphDepth // Simplified - could calculate actual distance
 
         expandedEntityMap.set(related.id, {
@@ -152,21 +150,10 @@ export async function retrieveWithGraphAugmentation(
         in: allEntityIds,
       },
     },
-    include: {
-      blogPost: {
-        select: {
-          id: true,
-          title: true,
-          slug: true,
-          excerpt: true,
-        },
-      },
-      entity: {
-        select: {
-          id: true,
-          name: true,
-        },
-      },
+    select: {
+      contentId: true,
+      contentType: true,
+      entityId: true,
     },
   })
 
@@ -174,10 +161,8 @@ export async function retrieveWithGraphAugmentation(
   const contentMap = new Map<
     string,
     {
-      id: string
-      title: string
-      slug: string
-      excerpt: string | null
+      contentId: string
+      contentType: string
       matchingEntities: Set<string>
       directMatches: number
       expandedMatches: number
@@ -185,15 +170,11 @@ export async function retrieveWithGraphAugmentation(
   >()
 
   for (const ce of contentLinks) {
-    if (!ce.blogPost) continue
-
-    const contentId = ce.blogPost.id
+    const contentId = ce.contentId
     if (!contentMap.has(contentId)) {
       contentMap.set(contentId, {
-        id: ce.blogPost.id,
-        title: ce.blogPost.title,
-        slug: ce.blogPost.slug,
-        excerpt: ce.blogPost.excerpt,
+        contentId: ce.contentId,
+        contentType: ce.contentType,
         matchingEntities: new Set(),
         directMatches: 0,
         expandedMatches: 0,
@@ -201,10 +182,10 @@ export async function retrieveWithGraphAugmentation(
     }
 
     const content = contentMap.get(contentId)!
-    content.matchingEntities.add(ce.entity.id)
+    content.matchingEntities.add(ce.entityId)
 
     // Check if direct or expanded match
-    const isDirect = extractedEntities.some((e) => e.id === ce.entity.id)
+    const isDirect = extractedEntities.some((e) => e.id === ce.entityId)
     if (isDirect) {
       content.directMatches++
     } else {
@@ -232,10 +213,8 @@ export async function retrieveWithGraphAugmentation(
       }
 
       return {
-        id: content.id,
-        title: content.title,
-        slug: content.slug,
-        excerpt: content.excerpt,
+        contentId: content.contentId,
+        contentType: content.contentType,
         relevanceScore: score,
         matchType,
       }
@@ -317,7 +296,7 @@ export async function buildGraphAugmentedPrompt(
 
   // Add relevant content
   if (context.relevantContent.length > 0) {
-    enrichedPrompt += '**Artigos Relevantes:**\n'
+    enrichedPrompt += '**Conteúdo Relevante:**\n'
     for (const content of context.relevantContent) {
       const matchBadge =
         content.matchType === 'direct'
@@ -325,11 +304,7 @@ export async function buildGraphAugmentedPrompt(
           : content.matchType === 'graph_expanded'
             ? '[Via Grafo]'
             : '[Semântico]'
-      enrichedPrompt += `${matchBadge} ${content.title}\n`
-      if (content.excerpt) {
-        enrichedPrompt += `  ${content.excerpt.substring(0, 150)}...\n`
-      }
-      enrichedPrompt += `  URL: /blog/${content.slug}\n\n`
+      enrichedPrompt += `${matchBadge} ${content.contentType}: ${content.contentId}\n`
     }
   }
 
@@ -357,8 +332,8 @@ export async function queryGraphKnowledgeBase(
 ): Promise<{
   answer: string // LLM would generate this
   sources: {
-    title: string
-    url: string
+    contentId: string
+    contentType: string
     matchType: string
   }[]
   relatedConcepts: string[]
@@ -368,8 +343,8 @@ export async function queryGraphKnowledgeBase(
 
   // Extract sources
   const sources = ragResponse.context.relevantContent.map((c) => ({
-    title: c.title,
-    url: `/blog/${c.slug}`,
+    contentId: c.contentId,
+    contentType: c.contentType,
     matchType: c.matchType,
   }))
 

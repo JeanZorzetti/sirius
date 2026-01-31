@@ -32,10 +32,8 @@ export interface EntityWithRelations {
     confidence: number
   }[]
   relatedContent: {
-    id: string
-    title: string
-    slug: string
-    excerpt: string | null
+    contentId: string
+    contentType: string
   }[]
 }
 
@@ -59,9 +57,7 @@ export interface GraphPath {
 
 export interface ContentRecommendation {
   contentId: string
-  title: string
-  slug: string
-  excerpt: string | null
+  contentType: string
   relevanceScore: number
   matchingEntities: {
     name: string
@@ -102,15 +98,9 @@ export async function findRelatedEntities(
       subject: {
         include: {
           contentLinks: {
-            include: {
-              blogPost: {
-                select: {
-                  id: true,
-                  title: true,
-                  slug: true,
-                  excerpt: true,
-                },
-              },
+            select: {
+              contentId: true,
+              contentType: true,
             },
           },
         },
@@ -118,15 +108,9 @@ export async function findRelatedEntities(
       object: {
         include: {
           contentLinks: {
-            include: {
-              blogPost: {
-                select: {
-                  id: true,
-                  title: true,
-                  slug: true,
-                  excerpt: true,
-                },
-              },
+            select: {
+              contentId: true,
+              contentType: true,
             },
           },
         },
@@ -155,22 +139,17 @@ export async function findRelatedEntities(
         wikidataId: entity.wikidataId,
         relevanceScore: rel.confidence,
         relations: [],
-        relatedContent: entity.contentLinks
-          .map((ce) => ce.blogPost)
-          .filter((post): post is NonNullable<typeof post> => post !== null)
-          .map((post) => ({
-            id: post.id,
-            title: post.title,
-            slug: post.slug,
-            excerpt: post.excerpt,
-          })),
+        relatedContent: entity.contentLinks.map((ce) => ({
+          contentId: ce.contentId,
+          contentType: ce.contentType,
+        })),
       })
     }
 
     const entityData = entityMap.get(entity.id)!
     entityData.relations.push({
       id: rel.id,
-      type: rel.predicate,
+      predicate: rel.predicate,
       object: {
         id: otherEntity.id,
         name: otherEntity.name,
@@ -294,13 +273,13 @@ export async function findPathBetweenEntities(
             type: nextEntity.type,
           },
           relationship: {
-            type: rel.predicate,
+            predicate: rel.predicate,
             confidence: rel.confidence,
           },
         },
       ]
 
-      const newStrength = current.strength * rel.confidence
+      const newStrength = current.confidence * rel.confidence
 
       // Found target
       if (nextEntityId === targetId) {
@@ -360,15 +339,9 @@ export async function searchEntitiesByContext(
         take: 5,
       },
       contentLinks: {
-        include: {
-          blogPost: {
-            select: {
-              id: true,
-              title: true,
-              slug: true,
-              excerpt: true,
-            },
-          },
+        select: {
+          contentId: true,
+          contentType: true,
         },
       },
     },
@@ -385,7 +358,7 @@ export async function searchEntitiesByContext(
     relations: [
       ...entity.subjectRelationships.map((rel) => ({
         id: rel.id,
-        type: rel.predicate,
+        predicate: rel.predicate,
         object: {
           id: rel.object.id,
           name: rel.object.name,
@@ -396,7 +369,7 @@ export async function searchEntitiesByContext(
       })),
       ...entity.objectRelationships.map((rel) => ({
         id: rel.id,
-        type: rel.predicate,
+        predicate: rel.predicate,
         object: {
           id: rel.subject.id,
           name: rel.subject.name,
@@ -406,15 +379,10 @@ export async function searchEntitiesByContext(
         confidence: rel.confidence,
       })),
     ],
-    relatedContent: entity.contentLinks
-      .map((ce) => ce.blogPost)
-      .filter((post): post is NonNullable<typeof post> => post !== null)
-      .map((post) => ({
-        id: post.id,
-        title: post.title,
-        slug: post.slug,
-        excerpt: post.excerpt,
-      })),
+    relatedContent: entity.contentLinks.map((ce) => ({
+      contentId: ce.contentId,
+      contentType: ce.contentType,
+    })),
   }))
 }
 
@@ -431,41 +399,46 @@ export async function searchEntitiesByContext(
 export async function recommendRelatedContent(
   context: {
     entities?: string[] // Entity names mentioned in context
-    currentPostSlug?: string // Exclude current post
+    currentContentId?: string // Exclude current content
     userProblem?: string // Optional problem description
   },
   limit: number = 5
 ): Promise<ContentRecommendation[]> {
-  const { entities = [], currentPostSlug, userProblem } = context
+  const { entities = [], currentContentId, userProblem } = context
 
   if (entities.length === 0 && !userProblem) {
-    // No context provided, return most connected posts
-    const topPosts = await prisma.blogPost.findMany({
+    // No context provided, return most recent content with entities
+    const recentContent = await prisma.contentEntity.findMany({
       include: {
-        contentLinks: {
-          include: {
-            entity: true,
-          },
-        },
+        entity: true,
       },
-      take: limit,
+      take: limit * 2,
       orderBy: {
         createdAt: 'desc',
       },
     })
 
-    return topPosts.map((post) => ({
-      contentId: post.id,
-      title: post.title,
-      slug: post.slug,
-      excerpt: post.excerpt,
-      relevanceScore: 0.5,
-      matchingEntities: post.contentLinks.map((ce) => ({
+    // Group by contentId
+    const contentMap = new Map<string, { contentType: string; entities: { name: string; type: string }[] }>()
+    for (const ce of recentContent) {
+      if (!contentMap.has(ce.contentId)) {
+        contentMap.set(ce.contentId, { contentType: ce.contentType, entities: [] })
+      }
+      contentMap.get(ce.contentId)!.entities.push({
         name: ce.entity.name,
         type: ce.entity.type,
-      })),
-      reasoning: 'Conteúdo recente',
-    }))
+      })
+    }
+
+    return Array.from(contentMap.entries())
+      .slice(0, limit)
+      .map(([contentId, data]) => ({
+        contentId,
+        contentType: data.contentType,
+        relevanceScore: 0.5,
+        matchingEntities: data.entities,
+        reasoning: 'Conteúdo recente',
+      }))
   }
 
   // Find entities matching context
@@ -489,48 +462,57 @@ export async function recommendRelatedContent(
 
   const matchingEntityIds = matchingEntities.map((e) => e.id)
 
-  // Find blog posts with these entities
-  const posts = await prisma.blogPost.findMany({
+  // Find content with these entities
+  const contentEntities = await prisma.contentEntity.findMany({
     where: {
-      slug: currentPostSlug ? { not: currentPostSlug } : undefined,
-      contentLinks: {
-        some: {
-          entityId: {
-            in: matchingEntityIds,
-          },
-        },
+      contentId: currentContentId ? { not: currentContentId } : undefined,
+      entityId: {
+        in: matchingEntityIds,
       },
     },
     include: {
-      contentLinks: {
-        include: {
-          entity: true,
-        },
-      },
+      entity: true,
     },
   })
 
-  // Calculate relevance scores
-  const recommendations: ContentRecommendation[] = posts.map((post) => {
-    const postEntityIds = post.contentLinks.map((ce) => ce.entity.id)
-    const overlap = matchingEntityIds.filter((id) => postEntityIds.includes(id))
-    const relevanceScore = overlap.length / matchingEntityIds.length
+  // Group by contentId and calculate relevance
+  const contentMap = new Map<string, {
+    contentType: string
+    matchingEntityIds: Set<string>
+    entities: { name: string; type: string }[]
+  }>()
 
-    return {
-      contentId: post.id,
-      title: post.title,
-      slug: post.slug,
-      excerpt: post.excerpt,
-      relevanceScore,
-      matchingEntities: post.contentLinks
-        .filter((ce) => overlap.includes(ce.entity.id))
-        .map((ce) => ({
-          name: ce.entity.name,
-          type: ce.entity.type,
-        })),
-      reasoning: `${overlap.length} ${overlap.length === 1 ? 'conceito relacionado' : 'conceitos relacionados'}`,
+  for (const ce of contentEntities) {
+    if (!contentMap.has(ce.contentId)) {
+      contentMap.set(ce.contentId, {
+        contentType: ce.contentType,
+        matchingEntityIds: new Set(),
+        entities: [],
+      })
     }
-  })
+    const content = contentMap.get(ce.contentId)!
+    content.matchingEntityIds.add(ce.entityId)
+    content.entities.push({
+      name: ce.entity.name,
+      type: ce.entity.type,
+    })
+  }
+
+  // Calculate relevance scores
+  const recommendations: ContentRecommendation[] = Array.from(contentMap.entries()).map(
+    ([contentId, data]) => {
+      const overlapCount = data.matchingEntityIds.size
+      const relevanceScore = overlapCount / matchingEntityIds.length
+
+      return {
+        contentId,
+        contentType: data.contentType,
+        relevanceScore,
+        matchingEntities: data.entities,
+        reasoning: `${overlapCount} ${overlapCount === 1 ? 'conceito relacionado' : 'conceitos relacionados'}`,
+      }
+    }
+  )
 
   return recommendations
     .sort((a, b) => b.relevanceScore - a.relevanceScore)

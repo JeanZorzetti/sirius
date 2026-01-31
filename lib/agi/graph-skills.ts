@@ -5,7 +5,11 @@
  * Skills that leverage the knowledge graph for contextual understanding.
  */
 
-'use server'
+/**
+ * NOTE: This file intentionally does NOT use 'use server' directive
+ * because it exports the GRAPH_SKILLS object (non-async).
+ * Server actions call these functions from API routes.
+ */
 
 import {
   diagnoseWithGraph,
@@ -30,8 +34,8 @@ export interface GraphDiagnosisResult {
     description: string | null
     confidence: number
     evidence: {
-      title: string
-      url: string
+      contentId: string
+      contentType: string
     }[]
   }[]
   relatedConcepts: {
@@ -43,8 +47,8 @@ export interface GraphDiagnosisResult {
 
 export interface ContextualRecommendation {
   recommendations: {
-    title: string
-    url: string
+    contentId: string
+    contentType: string
     reason: string
     relevance: number
   }[]
@@ -86,8 +90,8 @@ export async function diagnosticarComGrafo(
       description: sol.entity.description,
       confidence: sol.path.totalStrength,
       evidence: sol.evidence.map((ev) => ({
-        title: ev.title,
-        url: `/blog/${ev.slug}`,
+        contentId: ev.contentId,
+        contentType: ev.contentType,
       })),
     })),
     relatedConcepts: result.problemEntities.flatMap((pe) =>
@@ -135,8 +139,8 @@ export async function recomendarConteudo(params: {
 
   return {
     recommendations: recommendations.map((rec) => ({
-      title: rec.title,
-      url: `/blog/${rec.slug}`,
+      contentId: rec.contentId,
+      contentType: rec.contentType,
       reason: rec.reasoning,
       relevance: rec.relevanceScore,
     })),
@@ -275,8 +279,8 @@ export async function explicarRelacionamento(
     },
   ]
 
-  const strength =
-    ((relation1?.strength || 0.5) + (relation2?.strength || 0.5)) / 2
+  const confidence =
+    ((relation1?.confidence || 0.5) + (relation2?.confidence || 0.5)) / 2
 
   const explanation = `"${entity1.name}" está relacionado a "${entity2.name}" através de "${commonEntity.name}". ` +
     `O caminho é: ${entity1.name} → ${commonEntity.name} → ${entity2.name}.`
@@ -284,7 +288,7 @@ export async function explicarRelacionamento(
   return {
     explanation,
     path,
-    strength,
+    confidence,
   }
 }
 
@@ -307,8 +311,8 @@ export async function gerarCaminhoAprendizado(
     topic: string
     type: string
     resources: {
-      title: string
-      url: string
+      contentId: string
+      contentType: string
     }[]
   }[]
   estimatedReadingTime: number
@@ -349,7 +353,7 @@ export async function gerarCaminhoAprendizado(
     step: number
     topic: string
     type: string
-    resources: { title: string; url: string }[]
+    resources: { contentId: string; contentType: string }[]
   }[] = []
 
   let step = 1
@@ -361,8 +365,8 @@ export async function gerarCaminhoAprendizado(
       topic: entity.name,
       type: entity.type,
       resources: entity.relatedContent.map((c) => ({
-        title: c.title,
-        url: `/blog/${c.slug}`,
+        contentId: c.contentId,
+        contentType: c.contentType,
       })),
     })
   }
@@ -373,8 +377,8 @@ export async function gerarCaminhoAprendizado(
     topic: mainEntity.name,
     type: mainEntity.type,
     resources: mainEntity.relatedContent.map((c) => ({
-      title: c.title,
-      url: `/blog/${c.slug}`,
+      contentId: c.contentId,
+      contentType: c.contentType,
     })),
   })
 
@@ -385,8 +389,8 @@ export async function gerarCaminhoAprendizado(
       topic: entity.name,
       type: entity.type,
       resources: entity.relatedContent.map((c) => ({
-        title: c.title,
-        url: `/blog/${c.slug}`,
+        contentId: c.contentId,
+        contentType: c.contentType,
       })),
     })
   }
@@ -398,8 +402,8 @@ export async function gerarCaminhoAprendizado(
       topic: entity.name,
       type: entity.type,
       resources: entity.relatedContent.map((c) => ({
-        title: c.title,
-        url: `/blog/${c.slug}`,
+        contentId: c.contentId,
+        contentType: c.contentType,
       })),
     })
   }

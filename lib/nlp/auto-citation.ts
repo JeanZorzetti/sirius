@@ -137,7 +137,7 @@ export async function enrichWithCitations(
   // Filter by relevance and exclusions
   const relevantRecommendations = recommendations
     .filter((rec) => rec.relevanceScore >= minRelevance)
-    .filter((rec) => !excludeSlugs.includes(rec.slug))
+    .filter((rec) => !excludeSlugs.includes(rec.contentId))
     .slice(0, maxCitations)
 
   if (relevantRecommendations.length === 0) {
@@ -155,9 +155,9 @@ export async function enrichWithCitations(
 
   // Build citations
   const citations: Citation[] = relevantRecommendations.map((rec) => ({
-    text: rec.matchingEntities[0]?.name || rec.title,
-    url: `/blog/${rec.slug}`,
-    title: rec.title,
+    text: rec.matchingEntities[0]?.name || rec.contentId,
+    url: `/content/${rec.contentType}/${rec.contentId}`,
+    title: rec.contentId,
     reason: rec.reasoning,
   }))
 
@@ -216,11 +216,11 @@ export async function getCitationSuggestions(
   context: {
     text?: string
     entities?: string[]
-    currentSlug?: string
+    currentContentId?: string
   },
   limit: number = 5
 ): Promise<Citation[]> {
-  const { text, entities, currentSlug } = context
+  const { text, entities, currentContentId } = context
 
   let entityList = entities || []
 
@@ -234,13 +234,13 @@ export async function getCitationSuggestions(
 
   const recommendations = await recommendRelatedContent({
     entities: entityList,
-    currentPostSlug: currentSlug,
+    currentContentId: currentContentId,
   })
 
   return recommendations.slice(0, limit).map((rec) => ({
-    text: rec.title,
-    url: `/blog/${rec.slug}`,
-    title: rec.title,
+    text: rec.contentId,
+    url: `/content/${rec.contentType}/${rec.contentId}`,
+    title: rec.contentId,
     reason: rec.reasoning,
   }))
 }
@@ -261,7 +261,7 @@ export async function enrichAgentResponse(params: {
   response: string
   userInput: string
   currentContext?: {
-    slug?: string
+    contentId?: string
     entities?: string[]
   }
   options?: {
@@ -295,7 +295,7 @@ export async function enrichAgentResponse(params: {
   // Get inline citations
   const enrichedResult = await enrichWithCitations(response, {
     maxCitations: maxInlineCitations,
-    excludeSlugs: currentContext.slug ? [currentContext.slug] : [],
+    excludeSlugs: currentContext.contentId ? [currentContext.contentId] : [],
   })
 
   let finalText = enrichedResult.enrichedText
@@ -305,7 +305,7 @@ export async function enrichAgentResponse(params: {
     const relatedSuggestions = await getCitationSuggestions(
       {
         entities: allEntities,
-        currentSlug: currentContext.slug,
+        currentContentId: currentContext.contentId,
       },
       maxRelatedLinks
     )
@@ -376,7 +376,7 @@ export async function formatEntityContextForAI(
     context += `**${entity.name}** (${entity.type}): ${entity.description}\n`
 
     if (entity.relatedContent.length > 0) {
-      context += `  → Artigos relacionados: ${entity.relatedContent.map((c) => c.title).join(', ')}\n`
+      context += `  → Conteúdo relacionado: ${entity.relatedContent.map((c) => `${c.contentType}:${c.contentId}`).join(', ')}\n`
     }
   }
 
