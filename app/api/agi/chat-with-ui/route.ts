@@ -227,7 +227,7 @@ export async function POST(req: NextRequest) {
         await recordUsage(
           user.organizationId,
           userId,
-          usage.totalTokens,
+          usage.totalTokens || 0,
           plan
         )
 
