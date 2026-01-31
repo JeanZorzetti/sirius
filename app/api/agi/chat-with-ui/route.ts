@@ -197,31 +197,22 @@ export async function POST(req: NextRequest) {
             const component = componentRegistry[componentName]
 
             if (!component) {
-              return {
-                success: false,
-                error: `Component ${componentName} not found in registry`
-              }
+              throw new Error(`Component ${componentName} not found in registry`)
             }
 
             // Validate props against component schema
             const validationResult = component.props_schema.safeParse(props)
 
             if (!validationResult.success) {
-              return {
-                success: false,
-                error: `Invalid props for ${componentName}: ${validationResult.error.message}`
-              }
+              throw new Error(`Invalid props for ${componentName}: ${validationResult.error.message}`)
             }
 
             // Return UI metadata for client-side rendering
             return {
-              success: true,
-              ui_metadata: {
-                name: componentName,
-                props: validationResult.data,
-                skeleton: component.skeleton,
-                reasoning: reasoning || component.description
-              }
+              name: componentName,
+              props: validationResult.data,
+              skeleton: component.skeleton,
+              reasoning: reasoning || component.description
             }
           }
         })
@@ -295,23 +286,15 @@ export async function POST(req: NextRequest) {
           // Tool execution completed - send UI metadata
           const toolResult = chunk.result as any
 
-          if (toolResult.success && toolResult.ui_metadata) {
+          if (toolResult && toolResult.name) {
             const uiChunk: StreamChunk = {
               type: 'ui_component',
-              name: toolResult.ui_metadata.name,
-              props: toolResult.ui_metadata.props,
-              skeleton: toolResult.ui_metadata.skeleton,
-              reasoning: toolResult.ui_metadata.reasoning,
+              name: toolResult.name,
+              props: toolResult.props,
+              skeleton: toolResult.skeleton,
+              reasoning: toolResult.reasoning,
             }
             return JSON.stringify(uiChunk) + '\n'
-          } else if (!toolResult.success) {
-            // Tool execution failed - send error
-            const errorChunk: StreamChunk = {
-              type: 'error',
-              message: toolResult.error || 'Erro ao renderizar componente',
-              recoverable: true,
-            }
-            return JSON.stringify(errorChunk) + '\n'
           }
         }
 
