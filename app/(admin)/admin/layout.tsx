@@ -63,6 +63,9 @@ export default async function AdminLayout({
                     <Link href="/admin/auto-citation" className="text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors">
                         Auto-Citation
                     </Link>
+                    <Link href="/admin/spin-chat" className="text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors">
+                        SPIN Chat
+                    </Link>
                 </nav>
                 <div className="ml-auto">
                     <Link href="/dashboard" className="flex items-center gap-2 text-xs font-medium text-slate-500 hover:text-slate-900 transition-colors">
