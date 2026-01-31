@@ -94,7 +94,7 @@ async function getFullGraph(minStrength: number): Promise<NextResponse> {
           subject: true,
         },
       },
-      contentEntities: {
+      contentLinks: {
         select: {
           id: true,
         },
@@ -122,7 +122,7 @@ async function getFullGraph(minStrength: number): Promise<NextResponse> {
       size: Math.max(5, Math.min(20, connectionCount * 2)),
       description: entity.description || undefined,
       wikidataId: entity.wikidataId || undefined,
-      contentCount: entity.contentEntities.length,
+      contentCount: entity.contentLinks.length,
     })
   }
 
@@ -193,7 +193,7 @@ async function getSubgraph(
           include: {
             object: {
               include: {
-                contentEntities: {
+                contentLinks: {
                   select: {
                     id: true,
                   },
@@ -211,7 +211,7 @@ async function getSubgraph(
           include: {
             subject: {
               include: {
-                contentEntities: {
+                contentLinks: {
                   select: {
                     id: true,
                   },
@@ -220,7 +220,7 @@ async function getSubgraph(
             },
           },
         },
-        contentEntities: {
+        contentLinks: {
           select: {
             id: true,
           },
@@ -243,7 +243,7 @@ async function getSubgraph(
         size: Math.max(5, Math.min(20, 10 + connectionCount * 2)),
         description: entity.description || undefined,
         wikidataId: entity.wikidataId || undefined,
-        contentCount: entity.contentEntities.length,
+        contentCount: entity.contentLinks.length,
       })
     }
 
@@ -261,7 +261,7 @@ async function getSubgraph(
           size: Math.max(5, 10),
           description: object.description || undefined,
           wikidataId: object.wikidataId || undefined,
-          contentCount: object.contentEntities.length,
+          contentCount: object.contentLinks.length,
         })
       }
 
@@ -294,7 +294,7 @@ async function getSubgraph(
           size: Math.max(5, 10),
           description: subject.description || undefined,
           wikidataId: subject.wikidataId || undefined,
-          contentCount: subject.contentEntities.length,
+          contentCount: subject.contentLinks.length,
         })
       }
 

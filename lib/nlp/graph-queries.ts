@@ -101,7 +101,7 @@ export async function findRelatedEntities(
     include: {
       subject: {
         include: {
-          contentEntities: {
+          contentLinks: {
             include: {
               blogPost: {
                 select: {
@@ -117,7 +117,7 @@ export async function findRelatedEntities(
       },
       object: {
         include: {
-          contentEntities: {
+          contentLinks: {
             include: {
               blogPost: {
                 select: {
@@ -155,7 +155,7 @@ export async function findRelatedEntities(
         wikidataId: entity.wikidataId,
         relevanceScore: rel.confidence,
         relations: [],
-        relatedContent: entity.contentEntities
+        relatedContent: entity.contentLinks
           .map((ce) => ce.blogPost)
           .filter((post): post is NonNullable<typeof post> => post !== null)
           .map((post) => ({
@@ -359,7 +359,7 @@ export async function searchEntitiesByContext(
         },
         take: 5,
       },
-      contentEntities: {
+      contentLinks: {
         include: {
           blogPost: {
             select: {
@@ -406,7 +406,7 @@ export async function searchEntitiesByContext(
         confidence: rel.confidence,
       })),
     ],
-    relatedContent: entity.contentEntities
+    relatedContent: entity.contentLinks
       .map((ce) => ce.blogPost)
       .filter((post): post is NonNullable<typeof post> => post !== null)
       .map((post) => ({
@@ -442,7 +442,7 @@ export async function recommendRelatedContent(
     // No context provided, return most connected posts
     const topPosts = await prisma.blogPost.findMany({
       include: {
-        contentEntities: {
+        contentLinks: {
           include: {
             entity: true,
           },
@@ -460,7 +460,7 @@ export async function recommendRelatedContent(
       slug: post.slug,
       excerpt: post.excerpt,
       relevanceScore: 0.5,
-      matchingEntities: post.contentEntities.map((ce) => ({
+      matchingEntities: post.contentLinks.map((ce) => ({
         name: ce.entity.name,
         type: ce.entity.type,
       })),
@@ -493,7 +493,7 @@ export async function recommendRelatedContent(
   const posts = await prisma.blogPost.findMany({
     where: {
       slug: currentPostSlug ? { not: currentPostSlug } : undefined,
-      contentEntities: {
+      contentLinks: {
         some: {
           entityId: {
             in: matchingEntityIds,
@@ -502,7 +502,7 @@ export async function recommendRelatedContent(
       },
     },
     include: {
-      contentEntities: {
+      contentLinks: {
         include: {
           entity: true,
         },
@@ -512,7 +512,7 @@ export async function recommendRelatedContent(
 
   // Calculate relevance scores
   const recommendations: ContentRecommendation[] = posts.map((post) => {
-    const postEntityIds = post.contentEntities.map((ce) => ce.entity.id)
+    const postEntityIds = post.contentLinks.map((ce) => ce.entity.id)
     const overlap = matchingEntityIds.filter((id) => postEntityIds.includes(id))
     const relevanceScore = overlap.length / matchingEntityIds.length
 
@@ -522,7 +522,7 @@ export async function recommendRelatedContent(
       slug: post.slug,
       excerpt: post.excerpt,
       relevanceScore,
-      matchingEntities: post.contentEntities
+      matchingEntities: post.contentLinks
         .filter((ce) => overlap.includes(ce.entity.id))
         .map((ce) => ({
           name: ce.entity.name,

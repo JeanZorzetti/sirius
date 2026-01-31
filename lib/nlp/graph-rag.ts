@@ -146,7 +146,7 @@ export async function retrieveWithGraphAugmentation(
     ...expandedEntities.map((e) => e.id),
   ]
 
-  const contentEntities = await prisma.contentEntity.findMany({
+  const contentLinks = await prisma.contentEntity.findMany({
     where: {
       entityId: {
         in: allEntityIds,
@@ -184,7 +184,7 @@ export async function retrieveWithGraphAugmentation(
     }
   >()
 
-  for (const ce of contentEntities) {
+  for (const ce of contentLinks) {
     if (!ce.blogPost) continue
 
     const contentId = ce.blogPost.id
