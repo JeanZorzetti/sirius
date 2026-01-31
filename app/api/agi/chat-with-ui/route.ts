@@ -21,8 +21,9 @@ import {
   calculateQualificationScore,
 } from '@/lib/agi/spin-engine'
 import { enhancePromptWithGenerativeUI } from '@/lib/agi/prompts/generative-ui-prompt'
-import { renderUIComponentTool } from '@/lib/agi/tools/render-ui-tool'
-import type { StreamChunk, ThinkingState } from '@/lib/generative-ui/types'
+import { validateComponentProps, getComponentDefinition, getComponentNames } from '@/lib/generative-ui/component-registry'
+import type { StreamChunk, ThinkingState, UIMetadata } from '@/lib/generative-ui/types'
+import { z } from 'zod'
 
 export const runtime = 'nodejs'
 export const maxDuration = 60
@@ -174,9 +175,35 @@ export async function POST(req: NextRequest) {
       messages,
       tools: {
         render_ui_component: tool({
-          description: renderUIComponentTool.description,
-          parameters: renderUIComponentTool.parameters,
-          execute: renderUIComponentTool.execute,
+          description: 'Render an interactive UI component to support the sales conversation',
+          parameters: z.object({
+            component_name: z.enum(getComponentNames() as [string, ...string[]]),
+            props: z.record(z.any()),
+            reasoning: z.string(),
+            position: z.enum(['before_text', 'after_text', 'replace_text']).default('after_text'),
+          }),
+          execute: async ({ component_name, props, reasoning, position }) => {
+            const componentDef = getComponentDefinition(component_name)
+            if (!componentDef) {
+              return { success: false, error: `Component "${component_name}" not found` }
+            }
+
+            const validation = validateComponentProps(component_name, props)
+            if (!validation.valid) {
+              return { success: false, error: validation.error }
+            }
+
+            const ui_metadata: UIMetadata = {
+              type: 'ui_component',
+              name: component_name,
+              props: validation.data,
+              reasoning,
+              position,
+              skeleton: componentDef.skeleton,
+            }
+
+            return { success: true, ui_metadata }
+          },
         }),
       },
       temperature: 0.7,
