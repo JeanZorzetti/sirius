@@ -88,7 +88,7 @@ function TextChunk({ content }: { content: string }) {
           p: ({ children }) => <p className="mb-2 last:mb-0">{children}</p>,
           ul: ({ children }) => <ul className="list-disc ml-4 mb-2">{children}</ul>,
           ol: ({ children }) => <ol className="list-decimal ml-4 mb-2">{children}</ol>,
-          code: ({ inline, children }) =>
+          code: ({ inline, children }: any) =>
             inline ? (
               <code className="bg-muted px-1 py-0.5 rounded text-sm">{children}</code>
             ) : (

@@ -200,7 +200,7 @@ export const InsightCardPropsSchema = z.object({
       z.object({
         label: z.string(),
         action: z.enum(['create_deal', 'schedule_demo', 'send_email', 'add_note']),
-        params: z.record(z.any()).optional(),
+        params: z.record(z.string(), z.any()).optional(),
       })
     )
     .optional()
@@ -217,7 +217,7 @@ export const EmailPreviewPropsSchema = z.object({
     subject: z.string().min(1).max(200),
     body: z.string().min(1).describe('HTML or Markdown content'),
     variables: z
-      .record(z.string())
+      .record(z.string(), z.string())
       .optional()
       .describe('Template variables (e.g., {contact_name: "João"})'),
   }),

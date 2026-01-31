@@ -22,7 +22,7 @@ const renderUIComponentParamsSchema = z.object({
     .describe('Name of the UI component to render from the registry'),
 
   props: z
-    .record(z.any())
+    .record(z.string(), z.any())
     .describe('Props to pass to the component, extracted from conversation context'),
 
   reasoning: z

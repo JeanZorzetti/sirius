@@ -263,7 +263,7 @@ export async function POST(req: NextRequest) {
     })
 
     // 11. Return streaming response
-    return result.toDataStreamResponse()
+    return result.toTextStreamResponse()
   } catch (error) {
     console.error('[chat-with-ui] Error:', error)
     return NextResponse.json(

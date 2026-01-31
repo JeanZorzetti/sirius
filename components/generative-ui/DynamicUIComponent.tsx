@@ -10,7 +10,7 @@
 
 'use client'
 
-import { Suspense, useState } from 'react'
+import React, { Suspense, useState } from 'react'
 import {
   SALES_UI_COMPONENTS,
   validateComponentProps,

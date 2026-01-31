@@ -250,7 +250,9 @@ export function ChatWithUIExample({
                 }`}
               >
                 {message.role === 'user' ? (
-                  <p className="text-sm">{message.chunks[0]?.content}</p>
+                  <p className="text-sm">
+                    {message.chunks[0]?.type === 'text' ? message.chunks[0].content : ''}
+                  </p>
                 ) : (
                   <MessageRenderer
                     chunks={message.chunks}
