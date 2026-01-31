@@ -168,54 +168,57 @@ export async function POST(req: NextRequest) {
     const modelName =
       plan === 'PRO' ? 'llama-3.3-70b-versatile' : 'llama-3.2-11b-text-preview'
 
-    // 9. Stream response with render_ui_component tool
+    // 9. Define render UI component tool
+    const renderUIComponentTool = tool({
+      description: 'Renders a UI component dynamically based on the conversation context. Use this when you want to show interactive visualizations, calculators, forms, or dashboards to enhance the sales conversation.',
+      parameters: z.object({
+        componentName: z.enum([
+          'ROICalculator',
+          'DealFormGenerator',
+          'PricingComparison',
+          'DemoScheduler',
+          'QualificationDashboard',
+          'ObjectionHandler',
+          'SPINQuestionGenerator',
+          'CompetitorComparison',
+          'ValuePropositionBuilder',
+          'NextStepsTimeline'
+        ]),
+        props: z.record(z.string(), z.any()),
+        reasoning: z.string().optional().describe('Why you chose this component and how it helps the conversation')
+      }),
+      execute: async ({ componentName, props, reasoning }) => {
+        const component = componentRegistry[componentName]
+
+        if (!component) {
+          throw new Error(`Component ${componentName} not found in registry`)
+        }
+
+        // Validate props against component schema
+        const validationResult = component.props_schema.safeParse(props)
+
+        if (!validationResult.success) {
+          throw new Error(`Invalid props for ${componentName}: ${validationResult.error.message}`)
+        }
+
+        // Return UI metadata for client-side rendering
+        return {
+          name: componentName,
+          props: validationResult.data,
+          skeleton: component.skeleton,
+          reasoning: reasoning || component.description
+        }
+      }
+    })
+
+    // 10. Stream response with render_ui_component tool
     const result = streamText({
       model: groq(modelName),
       system: fullSystemPrompt,
       messages,
       temperature: 0.7,
       tools: {
-        render_ui_component: tool({
-          description: 'Renders a UI component dynamically based on the conversation context. Use this when you want to show interactive visualizations, calculators, forms, or dashboards to enhance the sales conversation.',
-          parameters: z.object({
-            componentName: z.enum([
-              'ROICalculator',
-              'DealFormGenerator',
-              'PricingComparison',
-              'DemoScheduler',
-              'QualificationDashboard',
-              'ObjectionHandler',
-              'SPINQuestionGenerator',
-              'CompetitorComparison',
-              'ValuePropositionBuilder',
-              'NextStepsTimeline'
-            ]),
-            props: z.record(z.string(), z.any()),
-            reasoning: z.string().optional().describe('Why you chose this component and how it helps the conversation')
-          }),
-          execute: async ({ componentName, props, reasoning }) => {
-            const component = componentRegistry[componentName]
-
-            if (!component) {
-              throw new Error(`Component ${componentName} not found in registry`)
-            }
-
-            // Validate props against component schema
-            const validationResult = component.props_schema.safeParse(props)
-
-            if (!validationResult.success) {
-              throw new Error(`Invalid props for ${componentName}: ${validationResult.error.message}`)
-            }
-
-            // Return UI metadata for client-side rendering
-            return {
-              name: componentName,
-              props: validationResult.data,
-              skeleton: component.skeleton,
-              reasoning: reasoning || component.description
-            }
-          }
-        })
+        render_ui_component: renderUIComponentTool
       },
 
       onFinish: async ({ usage, finishReason }) => {
@@ -253,7 +256,7 @@ export async function POST(req: NextRequest) {
       },
     })
 
-    // 10. Transform stream to include UI metadata and thinking states
+    // 11. Transform stream to include UI metadata and thinking states
     const transformedStream = result.toDataStream({
       getErrorMessage: (error) => {
         if (error instanceof Error) {
