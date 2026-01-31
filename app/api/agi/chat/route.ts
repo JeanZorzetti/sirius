@@ -18,12 +18,19 @@ import {
   getConversationHistory,
   determineNextSPINState,
   calculateQualificationScore,
+  generateContextSummary,
+  detectRepeatedQuestions,
 } from '@/lib/agi/spin-engine';
 import {
   getSandlerSystemPrompt,
   detectPrematureClose,
   UPFRONT_CONTRACTS,
 } from '@/lib/agi/sandler-prompts';
+import {
+  getGuardrailsPrompt,
+  validateResponse,
+  detectHallucinations,
+} from '@/lib/agi/guardrails';
 
 export const runtime = 'nodejs'; // Required for streaming
 export const maxDuration = 60; // 60 seconds for LLM response
@@ -187,7 +194,7 @@ export async function POST(req: NextRequest) {
         // 5.75. SPIN/Sandler Conversational Layer
         const effectiveSessionId = sessionId || `user-${userId}-${Date.now()}`;
         const spinSession = await getOrCreateSession(effectiveSessionId, userId, diagnosticMode);
-        const conversationHist = await getConversationHistory(effectiveSessionId, 20);
+        const conversationHist = await getConversationHistory(effectiveSessionId, 50); // Aumentado para 50!
 
         // Save user message
         await saveMessage(effectiveSessionId, 'user', message);
@@ -229,11 +236,24 @@ export async function POST(req: NextRequest) {
         });
 
         // Get Sandler-adapted system prompt
-        const sandlerSystemPrompt = getSandlerSystemPrompt(
+        const baseSandlerPrompt = getSandlerSystemPrompt(
             spinSession.spinState,
             spinSession.sandlerStage,
             spinSession.diagnosticMode
         );
+
+        // Adicionar context summary para evitar loops
+        const contextSummary = generateContextSummary(spinSession, conversationHist);
+
+        // Adicionar guardrails técnicos
+        const guardrailsPrompt = getGuardrailsPrompt();
+
+        // Combinar tudo
+        const sandlerSystemPrompt = `${baseSandlerPrompt}
+
+${contextSummary}
+
+${guardrailsPrompt}`;
 
         // Add SPIN/Sandler context to enhanced context
         enhancedContext.spinContext = {
@@ -328,7 +348,56 @@ export async function POST(req: NextRequest) {
         }
 
         // 8. Non-streaming response with Brain and conversational memory
-        const response = await brain.think(message, enhancedContext);
+        let response = await brain.think(message, enhancedContext);
+
+        // 8.5. VALIDAÇÕES DE SEGURANÇA (Guardrails + Anti-Loop + Anti-Alucinação)
+        let retryCount = 0;
+        const maxRetries = 2;
+
+        while (retryCount < maxRetries) {
+            // Validar guardrails
+            const guardrailValidation = validateResponse(response.content);
+            if (!guardrailValidation.isValid) {
+                console.error('[GUARDRAIL VIOLATION]', guardrailValidation.violations);
+                // Tentar novamente com prompt reforçado
+                response = await brain.think(
+                    message,
+                    enhancedContext,
+                    `ATENÇÃO: Sua resposta anterior violou guardrails:\n${guardrailValidation.violations.join('\n')}\n\nTente novamente seguindo as regras técnicas.`
+                );
+                retryCount++;
+                continue;
+            }
+
+            // Detectar loops (perguntas repetidas)
+            const hasLoop = detectRepeatedQuestions(response.content, conversationHist);
+            if (hasLoop) {
+                console.warn('[ANTI-LOOP] Pergunta repetida detectada, regenerando...');
+                response = await brain.think(
+                    message,
+                    enhancedContext,
+                    'ATENÇÃO: Você está repetindo perguntas já feitas. AVANCE na conversa, não retroceda. Faça uma pergunta NOVA baseada no que já foi discutido.'
+                );
+                retryCount++;
+                continue;
+            }
+
+            // Detectar alucinações
+            const hallucinations = detectHallucinations(response.content, enhancedContext);
+            if (hallucinations.length > 0) {
+                console.error('[HALLUCINATION]', hallucinations);
+                response = await brain.think(
+                    message,
+                    enhancedContext,
+                    `ATENÇÃO: Você está presumindo dados não fornecidos:\n${hallucinations.join('\n')}\n\nSó mencione dados que estão EXPLICITAMENTE no contexto. Se não sabe, pergunte.`
+                );
+                retryCount++;
+                continue;
+            }
+
+            // Se passou em todas validações, sair do loop
+            break;
+        }
 
         // Save assistant response to SPIN session
         await saveMessage(effectiveSessionId, 'assistant', response.content);

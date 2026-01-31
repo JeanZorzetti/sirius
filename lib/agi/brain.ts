@@ -87,12 +87,18 @@ Você é a melhor consultora de vendas. Seja breve e precisa.`;
    */
   async think(
     prompt: string,
-    context?: Record<string, any>
+    context?: Record<string, any>,
+    retryPrompt?: string
   ): Promise<BrainResponse> {
     // Add context if provided
     let enhancedPrompt = prompt;
     if (context) {
       enhancedPrompt = `Contexto: ${JSON.stringify(context, null, 2)}\n\n${prompt}`;
+    }
+
+    // Se tem retry prompt (validação falhou), adicionar
+    if (retryPrompt) {
+      enhancedPrompt = `${retryPrompt}\n\n${enhancedPrompt}`;
     }
 
     // Add user message to history

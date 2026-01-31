@@ -391,3 +391,91 @@ export function calculateQualificationScore(
 
   return Math.min(100, Math.round(score))
 }
+
+// ============================================
+// ANTI-LOOP & CONTEXT RETENTION
+// ============================================
+
+/**
+ * Gera um resumo do contexto da conversa para evitar loops
+ */
+export function generateContextSummary(
+  session: ConversationContext,
+  conversationHistory: { role: string; content: string }[]
+): string {
+  const userMessages = conversationHistory.filter(m => m.role === 'user')
+  const assistantMessages = conversationHistory.filter(m => m.role === 'assistant')
+
+  const problems = session.identifiedProblems.length > 0
+    ? session.identifiedProblems.join(', ')
+    : 'nenhum problema identificado ainda'
+
+  const goals = session.identifiedGoals.length > 0
+    ? session.identifiedGoals.join(', ')
+    : 'nenhum objetivo identificado ainda'
+
+  return `
+📋 RESUMO DA CONVERSA ATÉ AGORA (Estágio: ${session.spinState}):
+
+IMPORTANTE: Você já teve ${userMessages.length} trocas com este lead. NÃO REPITA PERGUNTAS JÁ FEITAS.
+
+CONTEXTO JÁ DISCUTIDO:
+- Problemas identificados: ${problems}
+- Objetivos mencionados: ${goals}
+- Score de qualificação: ${session.qualificationScore}/100
+- Número de interações: ${conversationHistory.length} mensagens
+
+ÚLTIMAS 3 MENSAGENS DO LEAD:
+${userMessages.slice(-3).map((m, i) => `${i + 1}. ${m.content.substring(0, 150)}...`).join('\n')}
+
+⚠️ ANTI-LOOP: Não volte a perguntar sobre coisas que o lead já respondeu!
+Se você já perguntou sobre o processo atual, não pergunte novamente.
+Continue AVANÇANDO na conversa, não retroceda.
+`
+}
+
+/**
+ * Detecta se a resposta da IA contém perguntas já feitas antes
+ */
+export function detectRepeatedQuestions(
+  aiResponse: string,
+  conversationHistory: { role: string; content: string }[]
+): boolean {
+  const assistantMessages = conversationHistory.filter(m => m.role === 'assistant')
+
+  // Extrair perguntas do histórico (linhas que terminam com ?)
+  const previousQuestions = assistantMessages
+    .flatMap(m => m.content.split('\n'))
+    .filter(line => line.trim().endsWith('?'))
+    .map(q => q.toLowerCase().trim())
+
+  // Extrair perguntas da nova resposta
+  const newQuestions = aiResponse
+    .split('\n')
+    .filter(line => line.trim().endsWith('?'))
+    .map(q => q.toLowerCase().trim())
+
+  // Verificar similaridade (> 70% de palavras em comum)
+  for (const newQ of newQuestions) {
+    const newWords = new Set(newQ.split(/\s+/).filter(w => w.length > 3))
+
+    for (const prevQ of previousQuestions) {
+      const prevWords = new Set(prevQ.split(/\s+/).filter(w => w.length > 3))
+
+      // Calcular interseção
+      const intersection = new Set([...newWords].filter(w => prevWords.has(w)))
+      const similarity = intersection.size / Math.max(newWords.size, prevWords.size)
+
+      if (similarity > 0.7) {
+        console.warn('[ANTI-LOOP] Pergunta repetida detectada:', {
+          new: newQ.substring(0, 80),
+          previous: prevQ.substring(0, 80),
+          similarity
+        })
+        return true
+      }
+    }
+  }
+
+  return false
+}
