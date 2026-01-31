@@ -183,26 +183,26 @@ export async function POST(req: NextRequest) {
             position: z.enum(['before_text', 'after_text', 'replace_text']).default('after_text'),
           }),
           execute: async ({ component_name, props, reasoning, position }) => {
-            const componentDef = getComponentDefinition(component_name)
-            if (!componentDef) {
-              return { success: false, error: `Component "${component_name}" not found` }
-            }
+            try {
+              const componentDef = getComponentDefinition(component_name)
+              if (!componentDef) {
+                throw new Error(`Component "${component_name}" not found`)
+              }
 
-            const validation = validateComponentProps(component_name, props)
-            if (!validation.valid) {
-              return { success: false, error: validation.error }
-            }
+              const validation = validateComponentProps(component_name, props)
+              if (!validation.valid) {
+                throw new Error(validation.error || 'Invalid props')
+              }
 
-            const ui_metadata: UIMetadata = {
-              type: 'ui_component',
-              name: component_name,
-              props: validation.data,
-              reasoning,
-              position,
-              skeleton: componentDef.skeleton,
+              return {
+                component: component_name,
+                validatedProps: validation.data,
+                reasoning,
+                position,
+              }
+            } catch (error) {
+              throw new Error(error instanceof Error ? error.message : 'Unknown error')
             }
-
-            return { success: true, ui_metadata }
           },
         }),
       },
