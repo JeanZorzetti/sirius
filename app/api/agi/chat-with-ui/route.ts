@@ -7,8 +7,9 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server'
-import { streamText } from 'ai'
+import { streamText, tool } from 'ai'
 import { createGroq } from '@ai-sdk/groq'
+import { z } from 'zod'
 import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { canUseAGI, recordUsage } from '@/lib/agi/usage'
@@ -21,6 +22,7 @@ import {
   calculateQualificationScore,
 } from '@/lib/agi/spin-engine'
 import { enhancePromptWithGenerativeUI } from '@/lib/agi/prompts/generative-ui-prompt'
+import { componentRegistry } from '@/lib/generative-ui/component-registry'
 import type { StreamChunk, ThinkingState } from '@/lib/generative-ui/types'
 
 export const runtime = 'nodejs'
@@ -166,14 +168,64 @@ export async function POST(req: NextRequest) {
     const modelName =
       plan === 'PRO' ? 'llama-3.3-70b-versatile' : 'llama-3.2-11b-text-preview'
 
-    // 9. Stream response (Phase 1: Text-only, tools will be added in Phase 2)
+    // 9. Stream response with render_ui_component tool
     const result = streamText({
       model: groq(modelName),
       system: fullSystemPrompt,
       messages,
-      // TODO Phase 2: Add render_ui_component tool after testing locally
       temperature: 0.7,
-      maxTokens: plan === 'PRO' ? 2000 : 1000,
+      tools: {
+        render_ui_component: tool({
+          description: 'Renders a UI component dynamically based on the conversation context. Use this when you want to show interactive visualizations, calculators, forms, or dashboards to enhance the sales conversation.',
+          parameters: z.object({
+            componentName: z.enum([
+              'ROICalculator',
+              'DealFormGenerator',
+              'PricingComparison',
+              'DemoScheduler',
+              'QualificationDashboard',
+              'ObjectionHandler',
+              'SPINQuestionGenerator',
+              'CompetitorComparison',
+              'ValuePropositionBuilder',
+              'NextStepsTimeline'
+            ]),
+            props: z.record(z.string(), z.any()),
+            reasoning: z.string().optional().describe('Why you chose this component and how it helps the conversation')
+          }),
+          execute: async ({ componentName, props, reasoning }) => {
+            const component = componentRegistry[componentName]
+
+            if (!component) {
+              return {
+                success: false,
+                error: `Component ${componentName} not found in registry`
+              }
+            }
+
+            // Validate props against component schema
+            const validationResult = component.propsSchema.safeParse(props)
+
+            if (!validationResult.success) {
+              return {
+                success: false,
+                error: `Invalid props for ${componentName}: ${validationResult.error.message}`
+              }
+            }
+
+            // Return UI metadata for client-side rendering
+            return {
+              success: true,
+              ui_metadata: {
+                name: componentName,
+                props: validationResult.data,
+                skeleton: component.skeleton,
+                reasoning: reasoning || component.trigger.description
+              }
+            }
+          }
+        })
+      },
 
       onFinish: async ({ usage, finishReason }) => {
         // Record usage
