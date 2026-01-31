@@ -178,7 +178,7 @@ export async function POST(req: NextRequest) {
           description: 'Render an interactive UI component to support the sales conversation',
           parameters: z.object({
             component_name: z.enum(getComponentNames() as [string, ...string[]]),
-            props: z.record(z.any()),
+            props: z.record(z.string(), z.any()),
             reasoning: z.string(),
             position: z.enum(['before_text', 'after_text', 'replace_text']).default('after_text'),
           }),
