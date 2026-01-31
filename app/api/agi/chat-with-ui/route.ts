@@ -251,11 +251,11 @@ export async function POST(req: NextRequest) {
 
         // Save conversation
         if (sessionId) {
-          await saveMessage({
+          await saveMessage(
             sessionId,
-            role: 'user',
-            content: messages[messages.length - 1].content,
-          })
+            'user',
+            messages[messages.length - 1]?.content || ''
+          )
 
           // AI response will be saved when streaming completes
         }
