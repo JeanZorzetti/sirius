@@ -140,7 +140,7 @@ export async function POST(req: NextRequest) {
     // 6. Get or create SPIN session
     let spinSession = null
     if (sessionId) {
-      spinSession = await getOrCreateSession(sessionId, userId, user.organizationId)
+      spinSession = await getOrCreateSession(sessionId, userId)
     }
 
     // 7. Build enhanced system prompt with Generative UI capabilities
