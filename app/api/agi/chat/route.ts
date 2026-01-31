@@ -31,6 +31,7 @@ export const maxDuration = 60; // 60 seconds for LLM response
 interface ChatRequest {
     message: string;
     sessionId?: string; // For SPIN/Sandler memory
+    diagnosticMode?: 'express' | 'complete' | 'deep'; // Diagnostic depth
     context?: {
         dealId?: string;
         pipelineId?: string;
@@ -83,7 +84,7 @@ export async function POST(req: NextRequest) {
 
         // 4. Parse request
         const body: ChatRequest = await req.json();
-        const { message, sessionId, context, modelOption, stream = false } = body;
+        const { message, sessionId, diagnosticMode = 'complete', context, modelOption, stream = false } = body;
 
         if (!message || message.trim().length === 0) {
             return NextResponse.json(
@@ -185,7 +186,7 @@ export async function POST(req: NextRequest) {
 
         // 5.75. SPIN/Sandler Conversational Layer
         const effectiveSessionId = sessionId || `user-${userId}-${Date.now()}`;
-        const spinSession = await getOrCreateSession(effectiveSessionId, userId);
+        const spinSession = await getOrCreateSession(effectiveSessionId, userId, diagnosticMode);
         const conversationHist = await getConversationHistory(effectiveSessionId, 20);
 
         // Save user message
@@ -209,7 +210,8 @@ export async function POST(req: NextRequest) {
         const stateTransition = determineNextSPINState(
             spinSession.spinState,
             message,
-            conversationHist
+            conversationHist,
+            spinSession.diagnosticMode
         );
 
         // Update session with new state
@@ -229,7 +231,8 @@ export async function POST(req: NextRequest) {
         // Get Sandler-adapted system prompt
         const sandlerSystemPrompt = getSandlerSystemPrompt(
             spinSession.spinState,
-            spinSession.sandlerStage
+            spinSession.sandlerStage,
+            spinSession.diagnosticMode
         );
 
         // Add SPIN/Sandler context to enhanced context

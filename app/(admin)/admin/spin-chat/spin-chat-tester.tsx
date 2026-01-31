@@ -7,6 +7,7 @@ import { Input } from '@/components/ui/input'
 import { Badge } from '@/components/ui/badge'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Loader2, Send, RotateCcw, AlertTriangle, MessageSquare } from 'lucide-react'
+import { DiagnosticModeSelector, DiagnosticMode } from './diagnostic-mode-selector'
 
 type SPINState = 'Situation' | 'Problem' | 'Implication' | 'NeedPayoff'
 
@@ -27,6 +28,7 @@ interface ChatResponse {
 }
 
 export function SPINChatTester() {
+  const [diagnosticMode, setDiagnosticMode] = useState<DiagnosticMode | null>(null)
   const [messages, setMessages] = useState<Message[]>([])
   const [input, setInput] = useState('')
   const [sessionId, setSessionId] = useState<string>(() => `test-${Date.now()}`)
@@ -61,6 +63,7 @@ export function SPINChatTester() {
           body: JSON.stringify({
             message: userMessage,
             sessionId,
+            diagnosticMode,
           }),
         })
 
@@ -97,6 +100,12 @@ export function SPINChatTester() {
     setCurrentState('Situation')
     setQualScore(0)
     setError(null)
+    setDiagnosticMode(null) // Volta para tela de seleção
+  }
+
+  const handleSelectMode = (mode: DiagnosticMode) => {
+    setDiagnosticMode(mode)
+    setSessionId(`test-${mode}-${Date.now()}`)
   }
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
@@ -122,20 +131,37 @@ export function SPINChatTester() {
     return 'text-slate-600'
   }
 
+  // Se ainda não selecionou o modo, mostra selector
+  if (!diagnosticMode) {
+    return <DiagnosticModeSelector onSelectMode={handleSelectMode} />
+  }
+
+  // Mapeamento de nomes dos modos
+  const modeNames: Record<DiagnosticMode, string> = {
+    express: 'Express',
+    complete: 'Completo',
+    deep: 'Profundo',
+  }
+
   return (
     <div className="grid gap-6 md:grid-cols-3">
       {/* Chat Area - 2/3 width */}
       <Card className="md:col-span-2">
         <CardHeader>
           <CardTitle className="flex items-center justify-between">
-            <span>Conversa</span>
+            <div className="flex items-center gap-2">
+              <span>Conversa</span>
+              <Badge variant="outline" className="text-xs">
+                Modo {modeNames[diagnosticMode]}
+              </Badge>
+            </div>
             <Button variant="outline" size="sm" onClick={handleReset}>
               <RotateCcw className="h-4 w-4 mr-2" />
-              Nova Sessão
+              Trocar Modo
             </Button>
           </CardTitle>
           <CardDescription>
-            Teste perguntas como "Quanto custa?" ou "Preciso melhorar vendas"
+            Diagnóstico {modeNames[diagnosticMode].toLowerCase()} - responda naturalmente
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">

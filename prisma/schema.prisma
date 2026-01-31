@@ -1078,6 +1078,9 @@ model ConversationSession {
   // Sandler Selling State
   sandlerStage String @default("Bonding") // Bonding, UpfrontContract, PainDiscovery, Budget, Decision, Fulfillment
 
+  // Diagnostic Mode
+  diagnosticMode String @default("complete") // express, complete, deep
+
   // Context tracking
   identifiedProblems Json?    // Array of problems user mentioned
   identifiedGoals    Json?    // Array of goals/needs user expressed

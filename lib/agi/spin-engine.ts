@@ -26,10 +26,21 @@ export type SandlerStage =
   | 'Decision' // Decision-making process
   | 'Fulfillment' // Closing/delivery
 
+export type DiagnosticMode = 'express' | 'complete' | 'deep'
+
+export interface DiagnosticConfig {
+  mode: DiagnosticMode
+  targetQuestions: number // Número alvo de perguntas
+  minResponseLength: number // Tamanho mínimo de resposta para transição
+  scoreMultiplier: number // Multiplicador de score (express = 1.5, complete = 1.0, deep = 0.8)
+  toneStyle: 'casual' | 'balanced' | 'professional' // Estilo de tom
+}
+
 export interface ConversationContext {
   sessionId: string
   spinState: SPINState
   sandlerStage: SandlerStage
+  diagnosticMode: DiagnosticMode
   identifiedProblems: string[]
   identifiedGoals: string[]
   entityContext: Record<string, any>
@@ -44,6 +55,38 @@ export interface SPINTransition {
 }
 
 // ============================================
+// DIAGNOSTIC MODE CONFIGURATIONS
+// ============================================
+
+export function getDiagnosticConfig(mode: DiagnosticMode): DiagnosticConfig {
+  const configs: Record<DiagnosticMode, DiagnosticConfig> = {
+    express: {
+      mode: 'express',
+      targetQuestions: 6, // 5-7 perguntas
+      minResponseLength: 20, // Respostas curtas OK
+      scoreMultiplier: 1.5, // Scoring generoso
+      toneStyle: 'casual',
+    },
+    complete: {
+      mode: 'complete',
+      targetQuestions: 12, // 10-15 perguntas
+      minResponseLength: 40, // Respostas médias
+      scoreMultiplier: 1.0, // Scoring balanceado
+      toneStyle: 'balanced',
+    },
+    deep: {
+      mode: 'deep',
+      targetQuestions: 20, // 20+ perguntas
+      minResponseLength: 60, // Respostas detalhadas
+      scoreMultiplier: 0.8, // Scoring rigoroso
+      toneStyle: 'professional',
+    },
+  }
+
+  return configs[mode]
+}
+
+// ============================================
 // STATE MACHINE LOGIC
 // ============================================
 
@@ -53,63 +96,79 @@ export interface SPINTransition {
 export function determineNextSPINState(
   currentState: SPINState,
   userMessage: string,
-  conversationHistory: { role: string; content: string }[]
+  conversationHistory: { role: string; content: string }[],
+  diagnosticMode: DiagnosticMode = 'complete'
 ): SPINTransition {
   const lowerMessage = userMessage.toLowerCase()
+  const config = getDiagnosticConfig(diagnosticMode)
 
   switch (currentState) {
     case 'Situation':
       // Move to Problem if user described their situation
+      // Express mode: less strict
+      const situationMinLength = config.mode === 'express' ? 20 : config.mode === 'complete' ? 50 : 80
+
       if (
-        lowerMessage.length > 50 && // Substantial answer
-        (lowerMessage.includes('currently') ||
-          lowerMessage.includes('using') ||
-          lowerMessage.includes('have') ||
-          lowerMessage.includes('setup'))
+        lowerMessage.length > situationMinLength &&
+        (lowerMessage.includes('atualmente') ||
+          lowerMessage.includes('usando') ||
+          lowerMessage.includes('tenho') ||
+          lowerMessage.includes('trabalho') ||
+          lowerMessage.includes('faço') ||
+          lowerMessage.includes('sistema'))
       ) {
         return {
           fromState: 'Situation',
           toState: 'Problem',
           trigger: 'answered',
-          confidence: 0.8,
+          confidence: config.mode === 'express' ? 0.7 : 0.8,
         }
       }
       break
 
     case 'Problem':
       // Move to Implication if user acknowledged problems
+      const problemMinLength = config.mode === 'express' ? 15 : config.mode === 'complete' ? 30 : 50
+
       if (
-        lowerMessage.includes('problem') ||
-        lowerMessage.includes('issue') ||
-        lowerMessage.includes('difficult') ||
-        lowerMessage.includes('hard') ||
-        lowerMessage.includes('challenge') ||
-        lowerMessage.includes('frustrat')
+        lowerMessage.length > problemMinLength &&
+        (lowerMessage.includes('problema') ||
+          lowerMessage.includes('dificuldade') ||
+          lowerMessage.includes('difícil') ||
+          lowerMessage.includes('desafio') ||
+          lowerMessage.includes('frustr') ||
+          lowerMessage.includes('complicado') ||
+          lowerMessage.includes('ruim'))
       ) {
         return {
           fromState: 'Problem',
           toState: 'Implication',
           trigger: 'answered',
-          confidence: 0.9,
+          confidence: config.mode === 'express' ? 0.8 : 0.9,
         }
       }
       break
 
     case 'Implication':
       // Move to Need-Payoff if user expressed urgency/impact
+      const implicationMinLength = config.mode === 'express' ? 15 : config.mode === 'complete' ? 30 : 50
+
       if (
-        lowerMessage.includes('cost') ||
-        lowerMessage.includes('lose') ||
-        lowerMessage.includes('urgent') ||
-        lowerMessage.includes('critical') ||
-        lowerMessage.includes('impact') ||
-        lowerMessage.includes('affect')
+        lowerMessage.length > implicationMinLength &&
+        (lowerMessage.includes('custo') ||
+          lowerMessage.includes('perco') ||
+          lowerMessage.includes('perdi') ||
+          lowerMessage.includes('urgente') ||
+          lowerMessage.includes('crítico') ||
+          lowerMessage.includes('impacto') ||
+          lowerMessage.includes('afeta') ||
+          lowerMessage.includes('prejuízo'))
       ) {
         return {
           fromState: 'Implication',
           toState: 'NeedPayoff',
           trigger: 'answered',
-          confidence: 0.85,
+          confidence: config.mode === 'express' ? 0.75 : 0.85,
         }
       }
       break
@@ -195,7 +254,8 @@ export function generateSPINQuestion(
  */
 export async function getOrCreateSession(
   sessionId: string,
-  userId?: string
+  userId?: string,
+  diagnosticMode: DiagnosticMode = 'complete'
 ): Promise<ConversationContext> {
   let session = await prisma.conversationSession.findUnique({
     where: { sessionId },
@@ -208,6 +268,7 @@ export async function getOrCreateSession(
         userId,
         spinState: 'Situation',
         sandlerStage: 'Bonding',
+        diagnosticMode,
         identifiedProblems: [],
         identifiedGoals: [],
         entityContext: {},
@@ -220,6 +281,7 @@ export async function getOrCreateSession(
     sessionId: session.sessionId,
     spinState: session.spinState as SPINState,
     sandlerStage: session.sandlerStage as SandlerStage,
+    diagnosticMode: (session.diagnosticMode as DiagnosticMode) || 'complete',
     identifiedProblems: (session.identifiedProblems as string[]) || [],
     identifiedGoals: (session.identifiedGoals as string[]) || [],
     entityContext: (session.entityContext as Record<string, any>) || {},
@@ -299,6 +361,7 @@ export function calculateQualificationScore(
   context: ConversationContext,
   conversationHistory: { role: string; content: string }[]
 ): number {
+  const config = getDiagnosticConfig(context.diagnosticMode)
   let score = 0
 
   // Engagement (20 points)
@@ -323,5 +386,8 @@ export function calculateQualificationScore(
     Math.max(userMessages.length, 1)
   score += Math.min(20, (avgMessageLength / 50) * 5)
 
-  return Math.min(100, score)
+  // Apply mode multiplier
+  score = score * config.scoreMultiplier
+
+  return Math.min(100, Math.round(score))
 }
