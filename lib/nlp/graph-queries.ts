@@ -22,7 +22,7 @@ export interface EntityWithRelations {
   relevanceScore: number
   relations: {
     id: string
-    type: string
+    predicate: string
     object: {
       id: string
       name: string
@@ -46,7 +46,7 @@ export interface PathNode {
     type: string
   }
   relationship?: {
-    type: string
+    predicate: string
     confidence: number
   }
 }
