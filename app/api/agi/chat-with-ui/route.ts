@@ -7,7 +7,7 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server'
-import { streamText, tool } from 'ai'
+import { streamText } from 'ai'
 import { createGroq } from '@ai-sdk/groq'
 import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
@@ -21,9 +21,7 @@ import {
   calculateQualificationScore,
 } from '@/lib/agi/spin-engine'
 import { enhancePromptWithGenerativeUI } from '@/lib/agi/prompts/generative-ui-prompt'
-import { validateComponentProps, getComponentDefinition, getComponentNames } from '@/lib/generative-ui/component-registry'
-import type { StreamChunk, ThinkingState, UIMetadata } from '@/lib/generative-ui/types'
-import { z } from 'zod'
+import type { StreamChunk, ThinkingState } from '@/lib/generative-ui/types'
 
 export const runtime = 'nodejs'
 export const maxDuration = 60
@@ -168,44 +166,12 @@ export async function POST(req: NextRequest) {
     const modelName =
       plan === 'PRO' ? 'llama-3.3-70b-versatile' : 'llama-3.2-11b-text-preview'
 
-    // 9. Stream with UI tool support
+    // 9. Stream response (Phase 1: Text-only, tools will be added in Phase 2)
     const result = streamText({
       model: groq(modelName),
       system: fullSystemPrompt,
       messages,
-      tools: {
-        render_ui_component: tool({
-          description: 'Render an interactive UI component to support the sales conversation',
-          parameters: z.object({
-            component_name: z.enum(getComponentNames() as [string, ...string[]]),
-            props: z.record(z.string(), z.any()),
-            reasoning: z.string(),
-            position: z.enum(['before_text', 'after_text', 'replace_text']).default('after_text'),
-          }),
-          execute: async ({ component_name, props, reasoning, position }) => {
-            try {
-              const componentDef = getComponentDefinition(component_name)
-              if (!componentDef) {
-                throw new Error(`Component "${component_name}" not found`)
-              }
-
-              const validation = validateComponentProps(component_name, props)
-              if (!validation.valid) {
-                throw new Error(validation.error || 'Invalid props')
-              }
-
-              return {
-                component: component_name,
-                validatedProps: validation.data,
-                reasoning,
-                position,
-              }
-            } catch (error) {
-              throw new Error(error instanceof Error ? error.message : 'Unknown error')
-            }
-          },
-        }),
-      },
+      // TODO Phase 2: Add render_ui_component tool after testing locally
       temperature: 0.7,
       maxTokens: plan === 'PRO' ? 2000 : 1000,
 
