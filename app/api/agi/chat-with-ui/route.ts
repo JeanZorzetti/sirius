@@ -219,7 +219,7 @@ export async function POST(req: NextRequest) {
       messages,
       temperature: 0.7,
       tools: {
-        render_ui_component: renderUIComponentTool
+        render_ui_component: renderUIComponentTool as any
       },
 
       onFinish: async ({ usage, finishReason }) => {
