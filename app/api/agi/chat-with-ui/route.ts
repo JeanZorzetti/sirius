@@ -262,8 +262,91 @@ export async function POST(req: NextRequest) {
       },
     })
 
-    // 11. Return streaming response
-    return result.toTextStreamResponse()
+    // 11. Create custom NDJSON stream for frontend parsing
+    const encoder = new TextEncoder()
+
+    const transformStream = new TransformStream({
+      async transform(chunk, controller) {
+        // The streamText result provides different chunk types
+        // We need to transform them to our StreamChunk format
+
+        if (typeof chunk === 'string') {
+          // Text delta
+          const streamChunk: StreamChunk = {
+            type: 'text',
+            content: chunk
+          }
+          controller.enqueue(encoder.encode(JSON.stringify(streamChunk) + '\n'))
+        }
+      }
+    })
+
+    // Use toDataStream for full control and pipe through our transformer
+    const readableStream = new ReadableStream({
+      async start(controller) {
+        try {
+          // Collect text and tool results
+          let fullText = ''
+
+          for await (const part of result.fullStream) {
+            if (part.type === 'text-delta') {
+              fullText += part.text
+              const chunk: StreamChunk = { type: 'text', content: part.text }
+              controller.enqueue(encoder.encode(JSON.stringify(chunk) + '\n'))
+            } else if (part.type === 'tool-call') {
+              if (part.toolName === 'render_ui_component') {
+                // Send thinking state first
+                const thinkingChunk: StreamChunk = {
+                  type: 'thinking',
+                  state: 'generating_ui' as ThinkingState,
+                  message: 'Gerando componente...'
+                }
+                controller.enqueue(encoder.encode(JSON.stringify(thinkingChunk) + '\n'))
+              }
+            } else if (part.type === 'tool-result') {
+              if (part.toolName === 'render_ui_component' && part.output) {
+                // Send UI component metadata
+                const output = part.output as any
+                const uiChunk: StreamChunk = {
+                  type: 'ui_component',
+                  name: output.name,
+                  props: output.props,
+                  skeleton: output.skeleton,
+                  reasoning: output.reasoning
+                }
+                controller.enqueue(encoder.encode(JSON.stringify(uiChunk) + '\n'))
+              }
+            } else if (part.type === 'start') {
+              // Stream started - send initial thinking state
+              const thinkingChunk: StreamChunk = {
+                type: 'thinking',
+                state: 'thinking' as ThinkingState,
+                message: 'Processando...'
+              }
+              controller.enqueue(encoder.encode(JSON.stringify(thinkingChunk) + '\n'))
+            }
+          }
+
+          controller.close()
+        } catch (error) {
+          const errorChunk: StreamChunk = {
+            type: 'error',
+            message: error instanceof Error ? error.message : 'Erro no streaming',
+            recoverable: true
+          }
+          controller.enqueue(encoder.encode(JSON.stringify(errorChunk) + '\n'))
+          controller.close()
+        }
+      }
+    })
+
+    return new Response(readableStream, {
+      headers: {
+        'Content-Type': 'application/x-ndjson',
+        'Cache-Control': 'no-cache',
+        'Connection': 'keep-alive',
+      },
+    })
   } catch (error) {
     console.error('[chat-with-ui] Error:', error)
     return NextResponse.json(
