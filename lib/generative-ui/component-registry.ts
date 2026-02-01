@@ -20,6 +20,10 @@ import {
   EmailPreviewPropsSchema,
 } from './schemas'
 import { PlaceholderComponent } from '@/components/generative-ui/PlaceholderComponent'
+// Real component imports (Phase 2)
+import { ROICalculator } from '@/components/generative-ui/ROICalculator'
+import { DealFormGenerator } from '@/components/generative-ui/DealFormGenerator'
+import { DemoScheduler } from '@/components/generative-ui/DemoScheduler'
 
 /**
  * Complete Sales UI Components Registry
@@ -45,7 +49,7 @@ export const SALES_UI_COMPONENTS: ComponentRegistry = {
     required_context: ['currentCost', 'estimatedSavings'],
     optional_context: ['industry', 'teamSize', 'dealValue'],
     props_schema: ROICalculatorPropsSchema,
-    render: (props) => PlaceholderComponent({ name: 'ROICalculator', ...props }),
+    render: ROICalculator,
     skeleton: { height: 400, variant: 'calculator' },
     triggers_event: 'roi_calculated',
     example: {
@@ -77,7 +81,7 @@ export const SALES_UI_COMPONENTS: ComponentRegistry = {
     required_context: [],
     optional_context: ['contactName', 'contactEmail', 'dealValue', 'closeDate', 'conversationSummary'],
     props_schema: DealFormGeneratorPropsSchema,
-    render: (props) => PlaceholderComponent({ name: 'DealFormGenerator', ...props }),
+    render: DealFormGenerator,
     skeleton: { height: 500, variant: 'form' },
     triggers_event: 'deal_created',
     example: {
@@ -164,7 +168,7 @@ export const SALES_UI_COMPONENTS: ComponentRegistry = {
     required_context: [],
     optional_context: ['contactName', 'contactEmail', 'company', 'leadScore'],
     props_schema: DemoSchedulerPropsSchema,
-    render: (props) => PlaceholderComponent({ name: 'DemoScheduler', ...props }),
+    render: DemoScheduler,
     skeleton: { height: 700, variant: 'iframe' },
     triggers_event: 'demo_scheduled',
     example: {

@@ -1358,36 +1358,36 @@ AI (texto): "A diferença principal é o AGI Sirius (este assistente que tá fal
 
 ## 8. Roadmap de Implementação
 
-### 8.1 Fase 1: Fundação (Semana 1-2)
+### 8.1 Fase 1: Fundação (Semana 1-2) ✅ COMPLETA
 
 **Objetivo:** Criar infraestrutura básica de Generative UI.
 
 **Tarefas:**
 
 1. **Component Registry**
-   - [ ] Criar `/lib/generative-ui/component-registry.ts`
-   - [ ] Definir interface `ComponentDefinition`
-   - [ ] Implementar helpers (`validateComponentProps`, `getComponentsForAI`)
+   - [x] Criar `/lib/generative-ui/component-registry.ts`
+   - [x] Definir interface `ComponentDefinition`
+   - [x] Implementar helpers (`validateComponentProps`, `getComponentsForAI`)
 
 2. **Protocolo de Comunicação**
-   - [ ] Criar AI tool `render_ui_component` em `/lib/agi/tools/`
-   - [ ] Adicionar system prompt para Generative UI
-   - [ ] Implementar validação de props com Zod schemas
+   - [x] Criar AI tool `render_ui_component` em `/lib/agi/tools/`
+   - [x] Adicionar system prompt para Generative UI
+   - [x] Implementar validação de props com Zod schemas
 
 3. **Streaming Infrastructure**
-   - [ ] Criar endpoint `/api/agi/chat-with-ui/route.ts`
-   - [ ] Implementar stream transformer para UI metadata
-   - [ ] Adicionar tipos TypeScript para `StreamChunk`
+   - [x] Criar endpoint `/api/agi/chat-with-ui/route.ts`
+   - [x] Implementar stream transformer para UI metadata
+   - [x] Adicionar tipos TypeScript para `StreamChunk`
 
 4. **Frontend Renderer**
-   - [ ] Criar `DynamicUIComponent.tsx`
-   - [ ] Implementar `ComponentSkeleton.tsx` com variants
-   - [ ] Criar `MessageRenderer.tsx` para parsing de chunks
+   - [x] Criar `DynamicUIComponent.tsx`
+   - [x] Implementar `ComponentSkeleton.tsx` com variants
+   - [x] Criar `MessageRenderer.tsx` para parsing de chunks
 
 **Critérios de Sucesso:**
-- [ ] AI consegue invocar `render_ui_component` tool
-- [ ] Frontend renderiza componente placeholder com skeleton
-- [ ] Streaming funciona end-to-end (texto + UI metadata)
+- [x] AI consegue invocar `render_ui_component` tool
+- [x] Frontend renderiza componente placeholder com skeleton
+- [x] Streaming funciona end-to-end (texto + UI metadata)
 
 ---
 
