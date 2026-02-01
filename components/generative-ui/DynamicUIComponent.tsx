@@ -2,38 +2,75 @@
  * Dynamic UI Component Renderer
  *
  * Dynamically loads and renders AI-selected components with:
- * - Lazy loading for performance
- * - Props validation
- * - Error boundaries
- * - Interaction tracking
+ * - Lazy loading for performance (code splitting)
+ * - Props validation with Zod
+ * - Error boundaries with retry logic
+ * - Interaction tracking with PostHog
+ * - Smooth entrance animations
  */
 
 'use client'
 
-import React, { Suspense, useState } from 'react'
+import React, { Suspense, useState, useEffect, useRef } from 'react'
 import {
-  SALES_UI_COMPONENTS,
   validateComponentProps,
   getComponentDefinition,
 } from '@/lib/generative-ui/component-registry'
+import { getLazyComponent, preloadComponent } from '@/lib/generative-ui/lazy-components'
 import { ComponentSkeleton } from './ComponentSkeleton'
-import { Alert, AlertDescription } from '@/components/ui/alert'
-import { Button } from '@/components/ui/button'
-import { AlertCircle, RefreshCw } from 'lucide-react'
+import { GenUIErrorBoundary } from './GenUIErrorBoundary'
+import { AnimatedComponent } from './AnimatedComponent'
+import { useComponentAnalytics } from '@/hooks/useComponentAnalytics'
+import { AlertCircle } from 'lucide-react'
 import type { DynamicUIComponentProps, ComponentInteraction } from '@/lib/generative-ui/types'
 
 export function DynamicUIComponent({
   name,
   props,
   onInteraction,
-}: DynamicUIComponentProps) {
-  const [error, setError] = useState<string | null>(null)
+  sessionId,
+  conversationTurn,
+  spinState,
+  animate = true,
+}: DynamicUIComponentProps & {
+  sessionId?: string
+  conversationTurn?: number
+  spinState?: string
+  animate?: boolean
+}) {
   const [retryCount, setRetryCount] = useState(0)
+  const renderStartTime = useRef<number>(Date.now())
+  const hasTrackedRender = useRef(false)
 
-  // Get component definition
+  // Analytics tracking
+  const analytics = useComponentAnalytics({
+    component: name,
+    sessionId,
+    conversationTurn,
+    spinState,
+  })
+
+  // Get component definition for validation and skeleton
   const componentDef = getComponentDefinition(name)
 
-  if (!componentDef) {
+  // Get lazy-loaded component
+  const LazyComponent = getLazyComponent(name)
+
+  // Track render time
+  useEffect(() => {
+    if (!hasTrackedRender.current && LazyComponent) {
+      const renderTime = Date.now() - renderStartTime.current
+      analytics.trackRender({
+        render_time_ms: renderTime,
+        props_source: props?._source || 'conversation_extracted',
+        has_prefilled_data: Object.keys(props || {}).length > 0,
+      })
+      hasTrackedRender.current = true
+    }
+  }, [LazyComponent, analytics, props])
+
+  // Component not found
+  if (!componentDef || !LazyComponent) {
     return (
       <div className="p-4 border border-destructive/50 rounded-lg bg-destructive/10">
         <div className="flex items-start gap-3">
@@ -87,27 +124,36 @@ export function DynamicUIComponent({
       timestamp: new Date(),
     }
 
+    // Track with analytics hook
+    analytics.trackInteraction({
+      interaction_type: interactionType,
+      field,
+      value,
+      timestamp: new Date(),
+    })
+
     // Call parent callback
     onInteraction?.(interaction)
-
-    // Track analytics (optional - can be added later)
-    if (typeof window !== 'undefined' && (window as any).analytics) {
-      ;(window as any).analytics.track('genui_interaction', interaction)
-    }
   }
 
-  // Retry logic
-  const handleRetry = () => {
-    setError(null)
-    setRetryCount((prev) => prev + 1)
+  // Handle conversion events
+  const handleConversion = (event: string, dealValue?: number) => {
+    analytics.trackConversion({
+      event,
+      deal_value: dealValue,
+      time_to_conversion_ms: Date.now() - renderStartTime.current,
+      from_component: name,
+    })
   }
 
-  // Render component with error boundary
-  try {
-    const Component = componentDef.render
-
-    return (
-      <div className="genui-component my-4" data-component={name}>
+  // Render with error boundary, suspense, and optional animation
+  const content = (
+    <GenUIErrorBoundary
+      componentName={name}
+      onError={(error) => analytics.trackError(error)}
+      maxRetries={3}
+    >
+      <div className="genui-component my-4" data-component={name} data-testid={`genui-${name.toLowerCase()}`}>
         <Suspense
           fallback={
             <ComponentSkeleton
@@ -116,101 +162,55 @@ export function DynamicUIComponent({
             />
           }
         >
-          <Component
+          <LazyComponent
             {...validation.data}
             onInteraction={handleInteraction}
-            key={retryCount} // Force remount on retry
+            onConversion={handleConversion}
+            key={retryCount}
           />
         </Suspense>
       </div>
-    )
-  } catch (err) {
-    const errorMessage = err instanceof Error ? err.message : 'Erro desconhecido'
+    </GenUIErrorBoundary>
+  )
 
+  // Wrap with animation if enabled
+  if (animate) {
     return (
-      <div className="p-4 border border-destructive/50 rounded-lg bg-destructive/10">
-        <div className="flex items-start gap-3">
-          <AlertCircle className="h-5 w-5 text-destructive mt-0.5" />
-          <div className="flex-1">
-            <p className="font-medium text-destructive">Erro ao renderizar componente</p>
-            <p className="text-sm text-muted-foreground mt-1">{errorMessage}</p>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={handleRetry}
-              className="mt-3"
-            >
-              <RefreshCw className="h-4 w-4 mr-2" />
-              Tentar novamente
-            </Button>
-          </div>
-        </div>
-      </div>
+      <AnimatedComponent variant="slideUp" delay={0.1}>
+        {content}
+      </AnimatedComponent>
     )
   }
+
+  return content
 }
 
 /**
  * Wrapper with error boundary for production use
+ * Now uses the enhanced GenUIErrorBoundary
  */
-export function DynamicUIComponentWithErrorBoundary(props: DynamicUIComponentProps) {
+export function DynamicUIComponentWithErrorBoundary(
+  props: DynamicUIComponentProps & {
+    sessionId?: string
+    conversationTurn?: number
+    spinState?: string
+    animate?: boolean
+  }
+) {
   return (
-    <ErrorBoundary
-      fallback={(error, reset) => (
-        <div className="p-4 border border-destructive/50 rounded-lg bg-destructive/10">
-          <div className="flex items-start gap-3">
-            <AlertCircle className="h-5 w-5 text-destructive mt-0.5" />
-            <div className="flex-1">
-              <p className="font-medium text-destructive">
-                Erro inesperado ao renderizar componente
-              </p>
-              <p className="text-sm text-muted-foreground mt-1">
-                {error.message}
-              </p>
-              <Button variant="outline" size="sm" onClick={reset} className="mt-3">
-                <RefreshCw className="h-4 w-4 mr-2" />
-                Tentar novamente
-              </Button>
-            </div>
-          </div>
-        </div>
-      )}
-    >
+    <GenUIErrorBoundary componentName={props.name} maxRetries={3}>
       <DynamicUIComponent {...props} />
-    </ErrorBoundary>
+    </GenUIErrorBoundary>
   )
 }
 
 /**
- * Simple error boundary component
+ * Preload a component before it's needed
+ * Useful for improving perceived performance
  */
-class ErrorBoundary extends React.Component<
-  {
-    children: React.ReactNode
-    fallback: (error: Error, reset: () => void) => React.ReactNode
-  },
-  { hasError: boolean; error: Error | null }
-> {
-  constructor(props: any) {
-    super(props)
-    this.state = { hasError: false, error: null }
-  }
+export { preloadComponent } from '@/lib/generative-ui/lazy-components'
 
-  static getDerivedStateFromError(error: Error) {
-    return { hasError: true, error }
-  }
-
-  componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
-    console.error('[DynamicUIComponent] Error:', error, errorInfo)
-  }
-
-  render() {
-    if (this.state.hasError && this.state.error) {
-      return this.props.fallback(this.state.error, () =>
-        this.setState({ hasError: false, error: null })
-      )
-    }
-
-    return this.props.children
-  }
-}
+/**
+ * Re-export animation components for convenience
+ */
+export { AnimatedComponent, StaggeredContainer } from './AnimatedComponent'

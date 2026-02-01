@@ -49,6 +49,11 @@ export type SkeletonVariant =
   | 'email'
   | 'iframe'
   | 'text'
+  | 'chart'
+  | 'metrics'
+  | 'comparison'
+  | 'wizard'
+  | 'insight'
 
 /**
  * Component definition in the registry
