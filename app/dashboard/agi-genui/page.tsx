@@ -78,21 +78,20 @@ export default async function AgiGenUITestPage() {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-2xl font-bold">Fase 4</p>
+            <p className="text-2xl font-bold">Fase 5</p>
             <p className="text-xs text-muted-foreground">
-              Intelligence Layer ✅
+              Polish & Optimization
             </p>
           </CardContent>
         </Card>
       </div>
 
       {/* Alert de Teste */}
-      <Alert className="mb-6 border-green-500/50 bg-green-500/10">
-        <Sparkles className="h-4 w-4 text-green-500" />
+      <Alert className="mb-6 border-blue-500/50 bg-blue-500/10">
+        <Sparkles className="h-4 w-4 text-blue-500" />
         <AlertDescription>
-          <strong>Fase 3 Completa!</strong> - Todos os 10 componentes estão funcionais:
-          ROICalculator, DealFormGenerator, DemoScheduler, PricingComparison, QualificationDashboard,
-          CompetitorMatrix, ScriptPreview, InsightCard, OnboardingTimeline e EmailPreview.
+          <strong>Fase 5 em Progresso!</strong> - Otimizando performance e UX:
+          Lazy loading, animações Framer Motion, Error Boundaries com retry, e analytics integrado.
           <br />
           <br />
           <strong>Experimente perguntar:</strong>
@@ -165,7 +164,11 @@ export default async function AgiGenUITestPage() {
               <span className="text-green-600 font-medium">100%</span>
             </div>
             <div className="flex items-center justify-between">
-              <span>⏳ Fase 5: Polish & Optimization</span>
+              <span>🚧 Fase 5: Polish & Optimization</span>
+              <span className="text-blue-600 font-medium">60%</span>
+            </div>
+            <div className="flex items-center justify-between">
+              <span>⏳ Fase 6: Advanced Features</span>
               <span className="text-yellow-600 font-medium">Próxima</span>
             </div>
           </CardContent>
