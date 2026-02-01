@@ -78,9 +78,9 @@ export default async function AgiGenUITestPage() {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-2xl font-bold">Fase 2</p>
+            <p className="text-2xl font-bold">Fase 3</p>
             <p className="text-xs text-muted-foreground">
-              Componentes Core ✅
+              Todos Componentes ✅
             </p>
           </CardContent>
         </Card>
@@ -90,8 +90,9 @@ export default async function AgiGenUITestPage() {
       <Alert className="mb-6 border-green-500/50 bg-green-500/10">
         <Sparkles className="h-4 w-4 text-green-500" />
         <AlertDescription>
-          <strong>Fase 2 Completa!</strong> - Os 3 componentes core estão funcionais:
-          ROICalculator, DealFormGenerator e DemoScheduler.
+          <strong>Fase 3 Completa!</strong> - Todos os 10 componentes estão funcionais:
+          ROICalculator, DealFormGenerator, DemoScheduler, PricingComparison, QualificationDashboard,
+          CompetitorMatrix, ScriptPreview, InsightCard, OnboardingTimeline e EmailPreview.
           <br />
           <br />
           <strong>Experimente perguntar:</strong>
@@ -100,6 +101,8 @@ export default async function AgiGenUITestPage() {
             <li>"Quais são os planos disponíveis?"</li>
             <li>"Quero agendar uma demo"</li>
             <li>"Crie um deal para a empresa ABC"</li>
+            <li>"Compare o Sirius com o Pipedrive"</li>
+            <li>"Quanto tempo leva para implementar?"</li>
           </ul>
         </AlertDescription>
       </Alert>
@@ -150,20 +153,16 @@ export default async function AgiGenUITestPage() {
               <span className="text-green-600 font-medium">100%</span>
             </div>
             <div className="flex items-center justify-between">
-              <span>✅ Fase 2: ROICalculator</span>
+              <span>✅ Fase 2: Componentes Core</span>
               <span className="text-green-600 font-medium">100%</span>
             </div>
             <div className="flex items-center justify-between">
-              <span>✅ Fase 2: DealFormGenerator</span>
+              <span>✅ Fase 3: Componentes Secundários</span>
               <span className="text-green-600 font-medium">100%</span>
             </div>
             <div className="flex items-center justify-between">
-              <span>✅ Fase 2: DemoScheduler</span>
-              <span className="text-green-600 font-medium">100%</span>
-            </div>
-            <div className="flex items-center justify-between">
-              <span>⏳ Fase 3: Componentes Secundários</span>
-              <span className="text-yellow-600 font-medium">0%</span>
+              <span>⏳ Fase 4: Intelligence Layer</span>
+              <span className="text-yellow-600 font-medium">Próxima</span>
             </div>
           </CardContent>
         </Card>

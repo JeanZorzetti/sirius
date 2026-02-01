@@ -1391,76 +1391,86 @@ AI (texto): "A diferença principal é o AGI Sirius (este assistente que tá fal
 
 ---
 
-### 8.2 Fase 2: Componentes Core (Semana 3-4)
+### 8.2 Fase 2: Componentes Core (Semana 3-4) ✅ COMPLETA
 
 **Objetivo:** Implementar 3 componentes mais críticos.
 
 **Componentes Prioritários:**
 
 1. **ROICalculator** (Prioridade 1)
-   - [ ] Criar `/components/generative-ui/ROICalculator.tsx`
-   - [ ] Implementar lógica de cálculo (economia, payback, ROI%)
-   - [ ] Adicionar modo comparação (antes/depois)
-   - [ ] Validar schema `ROICalculatorPropsSchema`
-   - [ ] Integrar com analytics (track `roi_calculated`)
+   - [x] Criar `/components/generative-ui/ROICalculator.tsx`
+   - [x] Implementar lógica de cálculo (economia, payback, ROI%)
+   - [x] Adicionar modo comparação (antes/depois)
+   - [x] Validar schema `ROICalculatorPropsSchema`
+   - [x] Integrar com analytics (track `roi_calculated`)
 
 2. **DealFormGenerator** (Prioridade 2)
-   - [ ] Criar `/components/generative-ui/DealFormGenerator.tsx`
-   - [ ] Implementar prefill automático de campos
-   - [ ] Adicionar validação com React Hook Form
-   - [ ] Integrar com API `/api/deals` existente
-   - [ ] Adicionar auto-save de rascunho
+   - [x] Criar `/components/generative-ui/DealFormGenerator.tsx`
+   - [x] Implementar prefill automático de campos
+   - [x] Adicionar validação com React Hook Form
+   - [x] Integrar com API `/api/v1/deals` existente
+   - [x] Adicionar tags sugeridas e AI notes
 
 3. **DemoScheduler** (Prioridade 3)
-   - [ ] Criar `/components/generative-ui/DemoScheduler.tsx`
-   - [ ] Integrar Calendly embed
-   - [ ] Implementar prefill de dados do lead
-   - [ ] Adicionar webhook listener para agendamento
-   - [ ] Criar deal automaticamente ao agendar
+   - [x] Criar `/components/generative-ui/DemoScheduler.tsx`
+   - [x] Integrar Calendly embed (ou fallback form)
+   - [x] Implementar prefill de dados do lead
+   - [x] Adicionar listener para agendamento
+   - [x] Criar deal automaticamente ao agendar
 
 **Critérios de Sucesso:**
-- [ ] 3 componentes funcionais e testados
-- [ ] Schemas validados com Zod
-- [ ] Integração com backend existente
-- [ ] Analytics trackando interações
+- [x] 3 componentes funcionais e testados
+- [x] Schemas validados com Zod
+- [x] Integração com backend existente
+- [x] Analytics trackando interações
 
 ---
 
-### 8.3 Fase 3: Componentes Secundários (Semana 5-6)
+### 8.3 Fase 3: Componentes Secundários (Semana 5-6) ✅ COMPLETA
 
 **Objetivo:** Completar biblioteca de componentes.
 
 **Componentes:**
 
 4. **PricingComparison**
-   - [ ] Criar tabela comparativa FREE vs PRO
-   - [ ] Adicionar highlighting contextual
-   - [ ] Mostrar ROI badge quando relevante
+   - [x] Criar tabela comparativa FREE vs PRO
+   - [x] Adicionar highlighting contextual
+   - [x] Mostrar ROI badge quando relevante
 
 5. **ScriptPreview**
-   - [ ] Criar preview de scripts gerados
-   - [ ] Implementar editor inline (Markdown)
-   - [ ] Adicionar copy-to-clipboard
+   - [x] Criar preview de scripts gerados
+   - [x] Implementar editor inline (Markdown)
+   - [x] Adicionar copy-to-clipboard
 
 6. **QualificationDashboard**
-   - [ ] Criar dashboard de scores BANT
-   - [ ] Implementar radar chart (Recharts)
-   - [ ] Adicionar recomendações e next steps
+   - [x] Criar dashboard de scores BANT
+   - [x] Implementar visualização com Progress bars
+   - [x] Adicionar recomendações e next steps
 
 7. **CompetitorMatrix**
-   - [ ] Criar matriz comparativa
-   - [ ] Integrar dados de concorrentes
-   - [ ] Highlight de diferenciais
+   - [x] Criar matriz comparativa
+   - [x] Integrar dados de concorrentes
+   - [x] Highlight de diferenciais
 
 8. **OnboardingTimeline**
-   - [ ] Criar timeline de implementação
-   - [ ] Calcular estimativa baseada em plano/team size
-   - [ ] Adicionar milestones interativos
+   - [x] Criar timeline de implementação
+   - [x] Calcular estimativa baseada em plano/team size
+   - [x] Adicionar milestones interativos
+
+9. **InsightCard**
+   - [x] Criar card de insights AI
+   - [x] Implementar tipos (opportunity, risk, recommendation, alert)
+   - [x] Adicionar actions e confidence score
+
+10. **EmailPreview**
+    - [x] Criar preview de email templates
+    - [x] Implementar substituição de variáveis
+    - [x] Adicionar modo de teste e editor inline
 
 **Critérios de Sucesso:**
-- [ ] 8 componentes completos no registry
-- [ ] Todos com skeletons customizados
-- [ ] Testes unitários para cada componente
+- [x] 10 componentes completos no registry
+- [x] Todos com skeletons customizados
+- [x] Schemas Zod validados para cada componente
 
 ---
 

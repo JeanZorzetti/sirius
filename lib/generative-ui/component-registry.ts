@@ -24,6 +24,14 @@ import { PlaceholderComponent } from '@/components/generative-ui/PlaceholderComp
 import { ROICalculator } from '@/components/generative-ui/ROICalculator'
 import { DealFormGenerator } from '@/components/generative-ui/DealFormGenerator'
 import { DemoScheduler } from '@/components/generative-ui/DemoScheduler'
+// Real component imports (Phase 3)
+import { PricingComparison } from '@/components/generative-ui/PricingComparison'
+import { QualificationDashboard } from '@/components/generative-ui/QualificationDashboard'
+import { CompetitorMatrix } from '@/components/generative-ui/CompetitorMatrix'
+import { ScriptPreview } from '@/components/generative-ui/ScriptPreview'
+import { InsightCard } from '@/components/generative-ui/InsightCard'
+import { OnboardingTimeline } from '@/components/generative-ui/OnboardingTimeline'
+import { EmailPreview } from '@/components/generative-ui/EmailPreview'
 
 /**
  * Complete Sales UI Components Registry
@@ -111,7 +119,7 @@ export const SALES_UI_COMPONENTS: ComponentRegistry = {
     required_context: [],
     optional_context: ['userPlan', 'annualSavings', 'focusedFeatures'],
     props_schema: PricingComparisonPropsSchema,
-    render: (props) => PlaceholderComponent({ name: 'PricingComparison', ...props }),
+    render: PricingComparison,
     skeleton: { height: 600, variant: 'table' },
     example: {
       scenario: 'Lead pergunta sobre diferença entre planos FREE e PRO',
@@ -136,7 +144,7 @@ export const SALES_UI_COMPONENTS: ComponentRegistry = {
     required_context: ['scriptType', 'scriptContent'],
     optional_context: ['targetRole', 'painPoints', 'valuePropositions'],
     props_schema: ScriptPreviewPropsSchema,
-    render: (props) => PlaceholderComponent({ name: 'ScriptPreview', ...props }),
+    render: ScriptPreview,
     skeleton: { height: 350, variant: 'text' },
     triggers_event: 'script_copied',
     example: {
@@ -197,7 +205,7 @@ export const SALES_UI_COMPONENTS: ComponentRegistry = {
     required_context: ['bantScores', 'overallScore'],
     optional_context: ['industryBenchmark', 'dealSize'],
     props_schema: QualificationDashboardPropsSchema,
-    render: (props) => PlaceholderComponent({ name: 'QualificationDashboard', ...props }),
+    render: QualificationDashboard,
     skeleton: { height: 450, variant: 'dashboard' },
     example: {
       scenario: 'Lead completou diagnóstico e AI analisou fit',
@@ -230,7 +238,7 @@ export const SALES_UI_COMPONENTS: ComponentRegistry = {
     required_context: ['competitors'],
     optional_context: ['focusFeatures', 'userPainPoints'],
     props_schema: CompetitorMatrixPropsSchema,
-    render: (props) => PlaceholderComponent({ name: 'CompetitorMatrix', ...props }),
+    render: CompetitorMatrix,
     skeleton: { height: 500, variant: 'table' },
     example: {
       scenario: 'Lead está avaliando Pipedrive e quer comparar',
@@ -254,7 +262,7 @@ export const SALES_UI_COMPONENTS: ComponentRegistry = {
     required_context: ['plan'],
     optional_context: ['teamSize', 'hasIntegrations', 'industry'],
     props_schema: OnboardingTimelinePropsSchema,
-    render: (props) => PlaceholderComponent({ name: 'OnboardingTimeline', ...props }),
+    render: OnboardingTimeline,
     skeleton: { height: 400, variant: 'timeline' },
     example: {
       scenario: 'Lead preocupado com tempo de implementação',
@@ -279,7 +287,7 @@ export const SALES_UI_COMPONENTS: ComponentRegistry = {
     required_context: ['insightType', 'title', 'description'],
     optional_context: ['actions', 'dealId'],
     props_schema: InsightCardPropsSchema,
-    render: (props) => PlaceholderComponent({ name: 'InsightCard', ...props }),
+    render: InsightCard,
     skeleton: { height: 200, variant: 'card' },
     example: {
       scenario: 'AI identifica oportunidade de upsell',
@@ -311,7 +319,7 @@ export const SALES_UI_COMPONENTS: ComponentRegistry = {
     required_context: ['emailTemplate'],
     optional_context: ['recipientExample', 'variables'],
     props_schema: EmailPreviewPropsSchema,
-    render: (props) => PlaceholderComponent({ name: 'EmailPreview', ...props }),
+    render: EmailPreview,
     skeleton: { height: 500, variant: 'email' },
     example: {
       scenario: 'Usuário configurando email de boas-vindas',
