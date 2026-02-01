@@ -24,6 +24,7 @@ import {
 import { enhancePromptWithGenerativeUI } from '@/lib/agi/prompts/generative-ui-prompt'
 import { componentRegistry } from '@/lib/generative-ui/component-registry'
 import type { StreamChunk, ThinkingState } from '@/lib/generative-ui/types'
+import { analyzeConversation } from '@/lib/generative-ui/intelligence'
 
 export const runtime = 'nodejs'
 export const maxDuration = 60
@@ -144,7 +145,23 @@ export async function POST(req: NextRequest) {
       spinSession = await getOrCreateSession(sessionId, userId)
     }
 
-    // 7. Build enhanced system prompt with Generative UI capabilities
+    // 7. Run Intelligence Layer analysis
+    const spinState = spinSession?.spinState || 'Situation'
+    const leadScore = spinSession?.qualificationScore || 30
+
+    const intelligenceResult = analyzeConversation({
+      messages: messages.map(m => ({ role: m.role, content: m.content })),
+      spinState: spinState as any,
+      leadScore,
+      dealContext: enhancedContext.deal ? {
+        contactName: enhancedContext.deal.contact?.name,
+        contactEmail: enhancedContext.deal.contact?.email,
+        company: enhancedContext.deal.contact?.company,
+        value: enhancedContext.deal.value ? parseFloat(enhancedContext.deal.value) : undefined,
+      } : undefined,
+    })
+
+    // 8. Build enhanced system prompt with Generative UI capabilities
     const systemPrompt = enhancePromptWithGenerativeUI(BASE_SYSTEM_PROMPT)
 
     // Add context to system prompt if available
@@ -158,9 +175,31 @@ export async function POST(req: NextRequest) {
       ? `\n\nSPIN STATE: ${spinSession.spinState || 'SITUATION'}\nQualification Score: ${spinSession.qualificationScore || 0}/100`
       : ''
 
-    const fullSystemPrompt = systemPrompt + contextPrompt + spinPrompt
+    // Add Intelligence Layer insights
+    const intelligencePrompt = `
+## INTELLIGENCE ANALYSIS (use this to decide if you should render a UI component)
 
-    // 8. Configure LLM provider
+DETECTED INTENT: ${intelligenceResult.intent.primary} (confidence: ${Math.round(intelligenceResult.intent.confidence * 100)}%)
+${intelligenceResult.intent.secondary ? `Secondary: ${intelligenceResult.intent.secondary}` : ''}
+
+EXTRACTED ENTITIES:
+- Monetary values: ${intelligenceResult.entities.monetaryValues.map(v => `${v.raw} (${v.context})`).join(', ') || 'None'}
+- Competitors: ${intelligenceResult.entities.competitors.map(c => c.name).join(', ') || 'None'}
+- Pain points: ${intelligenceResult.entities.painPoints.slice(0, 3).join(', ') || 'None'}
+- Names: ${intelligenceResult.entities.names.join(', ') || 'None'}
+- Emails: ${intelligenceResult.entities.emails.join(', ') || 'None'}
+- Team size: ${intelligenceResult.entities.teamSizes || 'Unknown'}
+
+UI RECOMMENDATION: ${intelligenceResult.trigger.shouldRender ? `YES - Render ${intelligenceResult.trigger.recommendation?.component}` : 'NO'}
+${intelligenceResult.trigger.shouldRender && intelligenceResult.suggestedProps ? `Suggested props: ${JSON.stringify(intelligenceResult.suggestedProps)}` : ''}
+Reasoning: ${intelligenceResult.trigger.reasoning}
+
+IMPORTANT: Use the intelligence analysis above to inform your decision. If a component is recommended and you have the required data, use the render_ui_component tool.
+`
+
+    const fullSystemPrompt = systemPrompt + contextPrompt + spinPrompt + intelligencePrompt
+
+    // 9. Configure LLM provider
     const groq = createGroq({
       apiKey: process.env.GROQ_API_KEY!,
     })
@@ -168,7 +207,7 @@ export async function POST(req: NextRequest) {
     const modelName =
       plan === 'PRO' ? 'llama-3.3-70b-versatile' : 'llama-3.2-11b-text-preview'
 
-    // 9. Define render UI component tool (manual definition to avoid TypeScript issues)
+    // 10. Define render UI component tool (manual definition to avoid TypeScript issues)
     const renderUIComponentTool: any = {
       description: 'Renders a UI component dynamically based on the conversation context. Use this when you want to show interactive visualizations, calculators, forms, or dashboards to enhance the sales conversation.',
       parameters: z.object({
@@ -212,7 +251,7 @@ export async function POST(req: NextRequest) {
       }
     }
 
-    // 10. Stream response with render_ui_component tool
+    // 11. Stream response with render_ui_component tool
     const result = streamText({
       model: groq(modelName),
       system: fullSystemPrompt,
@@ -262,7 +301,7 @@ export async function POST(req: NextRequest) {
       },
     })
 
-    // 11. Create custom NDJSON stream for frontend parsing
+    // 12. Create custom NDJSON stream for frontend parsing
     const encoder = new TextEncoder()
 
     const transformStream = new TransformStream({

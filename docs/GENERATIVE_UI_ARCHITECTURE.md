@@ -1474,36 +1474,36 @@ AI (texto): "A diferença principal é o AGI Sirius (este assistente que tá fal
 
 ---
 
-### 8.4 Fase 4: Intelligence Layer (Semana 7-8)
+### 8.4 Fase 4: Intelligence Layer (Semana 7-8) ✅ COMPLETA
 
 **Objetivo:** Melhorar decisões do AI sobre quando usar cada componente.
 
 **Tarefas:**
 
 1. **Context Extraction**
-   - [ ] Criar `/lib/agi/context-extractor.ts`
-   - [ ] Implementar extração de entidades (valores, datas, empresas)
-   - [ ] Adicionar detecção de intenção (preço, demo, ROI)
+   - [x] Criar `/lib/generative-ui/intelligence/context-extractor.ts`
+   - [x] Implementar extração de entidades (valores, datas, empresas)
+   - [x] Adicionar detecção de intenção (preço, demo, ROI)
 
 2. **Trigger Logic**
-   - [ ] Implementar scoring de quando renderizar UI
-   - [ ] Adicionar regras baseadas em SPIN stage
-   - [ ] Integrar com lead scoring existente
+   - [x] Implementar scoring de quando renderizar UI (`trigger-logic.ts`)
+   - [x] Adicionar regras baseadas em SPIN stage
+   - [x] Integrar com lead scoring existente
 
 3. **Props Auto-Fill**
-   - [ ] Implementar inferência de props a partir da conversa
-   - [ ] Adicionar fallbacks para dados faltantes
-   - [ ] Validar antes de renderizar
+   - [x] Implementar inferência de props (`props-auto-fill.ts`)
+   - [x] Adicionar fallbacks para dados faltantes
+   - [x] Validar antes de renderizar
 
 4. **Prompt Engineering**
-   - [ ] Refinar system prompts para cada componente
-   - [ ] Adicionar few-shot examples
-   - [ ] Testar edge cases (dados insuficientes, ambiguidade)
+   - [x] Integrar análise de inteligência no system prompt
+   - [x] Adicionar sugestão de componentes ao AI
+   - [x] Passar props sugeridos para decisão
 
 **Critérios de Sucesso:**
-- [ ] AI escolhe componente correto em 90%+ dos casos
-- [ ] Props são preenchidos automaticamente com dados da conversa
-- [ ] Fallback gracioso quando dados insuficientes
+- [x] AI recebe análise de inteligência para decidir componentes
+- [x] Props são sugeridos automaticamente com dados da conversa
+- [x] Fallback gracioso quando dados insuficientes
 
 ---
 

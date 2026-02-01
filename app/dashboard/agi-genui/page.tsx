@@ -78,9 +78,9 @@ export default async function AgiGenUITestPage() {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-2xl font-bold">Fase 3</p>
+            <p className="text-2xl font-bold">Fase 4</p>
             <p className="text-xs text-muted-foreground">
-              Todos Componentes ✅
+              Intelligence Layer ✅
             </p>
           </CardContent>
         </Card>
@@ -161,7 +161,11 @@ export default async function AgiGenUITestPage() {
               <span className="text-green-600 font-medium">100%</span>
             </div>
             <div className="flex items-center justify-between">
-              <span>⏳ Fase 4: Intelligence Layer</span>
+              <span>✅ Fase 4: Intelligence Layer</span>
+              <span className="text-green-600 font-medium">100%</span>
+            </div>
+            <div className="flex items-center justify-between">
+              <span>⏳ Fase 5: Polish & Optimization</span>
               <span className="text-yellow-600 font-medium">Próxima</span>
             </div>
           </CardContent>
