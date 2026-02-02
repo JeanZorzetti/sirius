@@ -65,14 +65,53 @@ export function AccordionLayout({
         onAccordionChange?.(newValue)
     }
 
+    // Render different Accordion types to satisfy TypeScript
+    if (allowMultiple) {
+        return (
+            <Accordion
+                type="multiple"
+                value={openItems}
+                onValueChange={handleValueChange}
+                className={cn('w-full', className)}
+                data-layout-type="accordion"
+                data-component-count={normalizedLayout.components.length}
+            >
+                {normalizedLayout.components.map((component, idx) => (
+                    <AccordionItem
+                        key={component.id || `accordion-item-${idx}`}
+                        value={component.id || `item-${idx}`}
+                        data-component-id={component.id}
+                        data-component-name={component.name}
+                    >
+                        <AccordionTrigger className="text-left">
+                            {component.label || component.name}
+                        </AccordionTrigger>
+                        <AccordionContent>
+                            <ErrorBoundary
+                                componentId={component.id || `accordion-item-${idx}`}
+                                onError={onComponentError}
+                            >
+                                <DynamicUIComponent
+                                    name={component.name}
+                                    props={component.props}
+                                />
+                            </ErrorBoundary>
+                        </AccordionContent>
+                    </AccordionItem>
+                ))}
+            </Accordion>
+        )
+    }
+
     return (
         <Accordion
-            type={allowMultiple ? 'multiple' : 'single'}
-            value={allowMultiple ? openItems : openItems[0]}
-            onValueChange={handleValueChange as any}
+            type="single"
+            value={openItems[0] || ''}
+            onValueChange={(value) => handleValueChange(value)}
             className={cn('w-full', className)}
             data-layout-type="accordion"
             data-component-count={normalizedLayout.components.length}
+            collapsible
         >
             {normalizedLayout.components.map((component, idx) => (
                 <AccordionItem
