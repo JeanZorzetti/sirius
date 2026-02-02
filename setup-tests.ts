@@ -11,12 +11,7 @@ process.env.STRIPE_SECRET_KEY = 'sk_test_test'
 process.env.STRIPE_WEBHOOK_SECRET = 'whsec_test'
 process.env.NEXT_PUBLIC_APP_URL = 'http://localhost:3000'
 
-// Set NODE_ENV using defineProperty to handle read-only property
-Object.defineProperty(process.env, 'NODE_ENV', {
-  value: 'test',
-  writable: true,
-  configurable: true,
-})
+// NODE_ENV is set by Vitest automatically
 
 // Mock Next.js router
 vi.mock('next/navigation', () => ({

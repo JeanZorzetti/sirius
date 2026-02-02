@@ -10,6 +10,11 @@ import { FileText, Mail, Phone, Building2, Users, ArrowLeft } from 'lucide-react
 export const metadata: Metadata = {
   title: 'Solicitar Proposta Comercial | Sirius CRM',
   description: 'Solicite uma proposta comercial personalizada para sua empresa. Nossa equipe entrará em contato em até 24h para apresentar a melhor solução em CRM.',
+  openGraph: {
+    title: 'Solicitar Proposta Comercial | Sirius CRM',
+    description: 'Solicite uma proposta personalizada. Nossa equipe entrará em contato em até 24h.',
+    url: 'https://sirius.roilabs.com.br/proposta',
+  },
 }
 
 export default function PropostaPage() {

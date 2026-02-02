@@ -7,6 +7,11 @@ import { CheckCircle2, Clock, Bell, Target, TrendingUp, ArrowLeft, ArrowRight } 
 export const metadata: Metadata = {
   title: 'Sistema de Follow-up Inteligente | Sirius CRM',
   description: 'Nunca mais perca um follow-up. Sistema automático de lembretes e acompanhamento de leads com IA integrada.',
+  openGraph: {
+    title: 'Sistema de Follow-up Inteligente | Sirius CRM',
+    description: 'Nunca mais perca um follow-up. Sistema automático de lembretes e acompanhamento de leads com IA.',
+    url: 'https://sirius.roilabs.com.br/followup',
+  },
 }
 
 export default function FollowupPage() {
