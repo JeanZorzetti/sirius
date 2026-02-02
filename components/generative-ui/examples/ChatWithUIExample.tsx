@@ -210,9 +210,9 @@ export function ChatWithUIExample({
   }
 
   return (
-    <div className="flex flex-col h-full min-h-[600px] max-h-[85vh] border rounded-xl bg-card shadow-lg">
+    <div className="flex flex-col h-full min-h-[700px] max-h-[calc(100vh-200px)] border rounded-xl bg-card shadow-lg">
       {/* Header */}
-      <div className="p-6 border-b bg-gradient-to-r from-primary/5 via-primary/10 to-primary/5 backdrop-blur-sm">
+      <div className="p-4 border-b bg-gradient-to-r from-primary/5 via-primary/10 to-primary/5 backdrop-blur-sm">
         <div className="flex items-center gap-3">
           <div className="p-2 bg-primary/10 rounded-lg">
             <Sparkles className="h-5 w-5 text-primary" />
@@ -225,8 +225,8 @@ export function ChatWithUIExample({
       </div>
 
       {/* Messages */}
-      <ScrollArea className="flex-1 p-6" ref={scrollRef}>
-        <div className="space-y-6">
+      <ScrollArea className="flex-1 px-8 py-6" ref={scrollRef}>
+        <div className="space-y-8 max-w-5xl mx-auto">
           {messages.length === 0 && (
             <div className="text-center text-muted-foreground py-16 animate-fade-in">
               <div className="relative inline-block mb-6">
@@ -253,14 +253,16 @@ export function ChatWithUIExample({
               style={{ animationDelay: `${idx * 0.05}s` }}
             >
               <div
-                className={`max-w-[95%] rounded-xl p-4 shadow-sm transition-all hover:shadow-md ${
+                className={`${
+                  message.role === 'user' ? 'max-w-[75%]' : 'max-w-full'
+                } rounded-xl p-5 shadow-sm transition-all hover:shadow-md ${
                   message.role === 'user'
                     ? 'bg-gradient-to-br from-primary to-primary/90 text-primary-foreground'
                     : 'bg-muted/80 backdrop-blur-sm border border-border/50'
                 }`}
               >
                 {message.role === 'user' ? (
-                  <p className="text-sm leading-relaxed">
+                  <p className="text-base leading-relaxed">
                     {message.chunks[0]?.type === 'text' ? message.chunks[0].content : ''}
                   </p>
                 ) : (

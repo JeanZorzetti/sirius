@@ -82,21 +82,21 @@ function TextChunk({ content }: { content: string }) {
   }
 
   return (
-    <div className="prose prose-sm dark:prose-invert max-w-none">
+    <div className="prose prose-base dark:prose-invert max-w-none">
       <ReactMarkdown
         components={{
           // Customize markdown rendering
-          p: ({ children }) => <p className="mb-3 last:mb-0 leading-relaxed">{children}</p>,
-          ul: ({ children }) => <ul className="list-disc ml-5 mb-3 space-y-1">{children}</ul>,
-          ol: ({ children }) => <ol className="list-decimal ml-5 mb-3 space-y-1">{children}</ol>,
-          li: ({ children }) => <li className="leading-relaxed">{children}</li>,
+          p: ({ children }) => <p className="mb-4 last:mb-0 leading-relaxed text-base">{children}</p>,
+          ul: ({ children }) => <ul className="list-disc ml-6 mb-4 space-y-2">{children}</ul>,
+          ol: ({ children }) => <ol className="list-decimal ml-6 mb-4 space-y-2">{children}</ol>,
+          li: ({ children }) => <li className="leading-relaxed text-base">{children}</li>,
           code: ({ inline, children }: any) =>
             inline ? (
-              <code className="bg-primary/10 text-primary px-1.5 py-0.5 rounded text-sm font-mono border border-primary/20">
+              <code className="bg-primary/10 text-primary px-2 py-1 rounded text-sm font-mono border border-primary/20">
                 {children}
               </code>
             ) : (
-              <code className="block bg-muted p-3 rounded-lg text-sm overflow-x-auto font-mono border border-border">
+              <code className="block bg-muted p-4 rounded-lg text-sm overflow-x-auto font-mono border border-border">
                 {children}
               </code>
             ),
