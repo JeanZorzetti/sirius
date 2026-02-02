@@ -25,6 +25,7 @@ import { enhancePromptWithGenerativeUI } from '@/lib/agi/prompts/generative-ui-p
 import { componentRegistry } from '@/lib/generative-ui/component-registry'
 import type { StreamChunk, ThinkingState } from '@/lib/generative-ui/types'
 import { analyzeConversation } from '@/lib/generative-ui/intelligence'
+import { componentCacheStore, createCacheKey, hashContext } from '@/lib/generative-ui/cache-store'
 
 export const runtime = 'nodejs'
 export const maxDuration = 60
@@ -130,10 +131,10 @@ export async function POST(req: NextRequest) {
           pipeline: deal.pipeline.name,
           contact: deal.contact
             ? {
-                name: deal.contact.name,
-                company: deal.contact.company,
-                email: deal.contact.email,
-              }
+              name: deal.contact.name,
+              company: deal.contact.company,
+              email: deal.contact.email,
+            }
             : null,
         }
       }
@@ -228,6 +229,63 @@ IMPORTANT: Use the intelligence analysis above to inform your decision. If a com
       }),
       execute: async (input: any, options: any) => {
         const { componentName, props, reasoning } = input
+
+        // Build cache context (user context + component request)
+        const cacheContext = {
+          userId,
+          organizationId: user.organizationId,
+          componentName,
+          ...enhancedContext,
+        }
+        const contextHash = hashContext(cacheContext)
+        const propsStr = JSON.stringify(props)
+        const cacheKey = createCacheKey(contextHash, propsStr)
+
+        // Check cache first
+        const cached = componentCacheStore.get(cacheKey)
+        if (cached) {
+          console.log(`[CACHE HIT] ${componentName} from cache (hitCount: ${cached.hitCount})`)
+
+          // Track cache hit for analytics
+          const today = new Date()
+          today.setHours(0, 0, 0, 0) // Reset time to start of day
+
+          await prisma.agiUsage.upsert({
+            where: {
+              organizationId_userId_date: {
+                organizationId: user.organizationId,
+                userId,
+                date: today,
+              }
+            },
+            update: {
+              requestCount: { increment: 1 },
+            },
+            create: {
+              organizationId: user.organizationId,
+              userId,
+              date: today,
+              tokensUsed: 0, // Cache hit = no tokens
+              requestCount: 1,
+              plan,
+              year: today.getFullYear(),
+              month: today.getMonth() + 1,
+            },
+          }).catch((err: any) => {
+            console.error('Failed to log cache hit:', err)
+          })
+
+          return {
+            name: componentName,
+            props: cached.props,
+            skeleton: componentRegistry[componentName]?.skeleton,
+            reasoning: reasoning || cached.props.reasoning || componentRegistry[componentName]?.description,
+            fromCache: true,
+          }
+        }
+
+        console.log(`[CACHE MISS] ${componentName} - generating fresh`)
+
         const component = componentRegistry[componentName]
 
         if (!component) {
@@ -241,13 +299,26 @@ IMPORTANT: Use the intelligence analysis above to inform your decision. If a com
           throw new Error(`Invalid props for ${componentName}: ${validationResult.error.message}`)
         }
 
-        // Return UI metadata for client-side rendering
-        return {
+        const result = {
           name: componentName,
           props: validationResult.data,
           skeleton: component.skeleton,
-          reasoning: reasoning || component.description
+          reasoning: reasoning || component.description,
+          fromCache: false,
         }
+
+        // Cache the result
+        componentCacheStore.set(cacheKey, {
+          id: cacheKey,
+          componentName,
+          props: validationResult.data,
+          timestamp: Date.now(),
+          contextHash,
+        })
+
+        console.log(`[CACHED] ${componentName} stored for future use`)
+
+        return result
       }
     }
 
