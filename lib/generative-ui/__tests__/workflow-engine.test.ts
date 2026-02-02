@@ -6,6 +6,11 @@ describe('WorkflowEngine', () => {
     let mockWorkflow: WorkflowDefinition
 
     beforeEach(() => {
+        // Clear localStorage to prevent test contamination
+        if (typeof window !== 'undefined') {
+            localStorage.clear()
+        }
+
         engine = new WorkflowEngine()
 
         mockWorkflow = {
