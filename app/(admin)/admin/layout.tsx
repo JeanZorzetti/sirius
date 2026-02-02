@@ -57,6 +57,9 @@ export default async function AdminLayout({
                     <Link href="/admin/ab-testing" className="text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors">
                         A/B Testing
                     </Link>
+                    <Link href="/admin/generative-ui" className="text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors">
+                        GenUI Demo
+                    </Link>
                     <Link href="/admin/knowledge-graph" className="text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors">
                         Knowledge Graph
                     </Link>
