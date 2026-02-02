@@ -12,11 +12,13 @@ export const dynamic = 'force-dynamic'
 export default async function ExperimentDetailPage({
     params,
 }: {
-    params: { experimentId: string }
+    params: Promise<{ experimentId: string }>
 }) {
+    const { experimentId } = await params
+
     // Get experiment
     const experiment = await prisma.experiment.findUnique({
-        where: { id: params.experimentId },
+        where: { id: experimentId },
         include: {
             variants: true,
         },
@@ -27,7 +29,7 @@ export default async function ExperimentDetailPage({
     }
 
     // Calculate results
-    const results = await calculateResults(params.experimentId)
+    const results = await calculateResults(experimentId)
 
     return (
         <div className="space-y-8">
@@ -122,7 +124,7 @@ export default async function ExperimentDetailPage({
 
                 <div className="space-y-4">
                     {results.variants.map((variantResult) => {
-                        const variant = experiment.variants.find((v) => v.id === variantResult.variantId)
+                        const variant = experiment.variants.find((v: any) => v.id === variantResult.variantId)
                         const isWinner = results.winner === variantResult.variantId
                         const isControl = variantResult.variantName === 'control'
 
@@ -139,10 +141,10 @@ export default async function ExperimentDetailPage({
                             <Card
                                 key={variantResult.variantId}
                                 className={`bg-zinc-900 ${isWinner
-                                        ? 'border-green-500'
-                                        : isControl
-                                            ? 'border-blue-500'
-                                            : 'border-zinc-800'
+                                    ? 'border-green-500'
+                                    : isControl
+                                        ? 'border-blue-500'
+                                        : 'border-zinc-800'
                                     }`}
                             >
                                 <CardContent className="p-6">
@@ -177,10 +179,10 @@ export default async function ExperimentDetailPage({
                                                 )}
                                                 <span
                                                     className={`text-lg font-bold ${improvement > 0
-                                                            ? 'text-green-500'
-                                                            : improvement < 0
-                                                                ? 'text-red-500'
-                                                                : 'text-zinc-500'
+                                                        ? 'text-green-500'
+                                                        : improvement < 0
+                                                            ? 'text-red-500'
+                                                            : 'text-zinc-500'
                                                         }`}
                                                 >
                                                     {improvement > 0 ? '+' : ''}

@@ -8,10 +8,10 @@ import { getVariantForUser } from '@/lib/generative-ui/ab-testing'
  */
 export async function POST(
     request: NextRequest,
-    { params }: { params: { experimentId: string } }
+    { params }: { params: Promise<{ experimentId: string }> }
 ) {
     try {
-        const { experimentId } = params
+        const { experimentId } = await params
         const body = await request.json()
         const { userId } = body
 

@@ -8,10 +8,10 @@ import { calculateResults } from '@/lib/generative-ui/ab-testing'
  */
 export async function GET(
     request: NextRequest,
-    { params }: { params: { experimentId: string } }
+    { params }: { params: Promise<{ experimentId: string }> }
 ) {
     try {
-        const { experimentId } = params
+        const { experimentId } = await params
 
         const results = await calculateResults(experimentId)
 
