@@ -205,8 +205,8 @@ IMPORTANT: Use the intelligence analysis above to inform your decision. If a com
       apiKey: process.env.GROQ_API_KEY!,
     })
 
-    const modelName =
-      plan === 'PRO' ? 'llama-3.3-70b-versatile' : 'llama-3.2-11b-text-preview'
+    // Use Llama 3.3 70B for all users (best available model)
+    const modelName = 'llama-3.3-70b-versatile'
 
     // 10. Define render UI component tool (manual definition to avoid TypeScript issues)
     const renderUIComponentTool: any = {
