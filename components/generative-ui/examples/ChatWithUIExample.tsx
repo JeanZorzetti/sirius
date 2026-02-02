@@ -210,47 +210,57 @@ export function ChatWithUIExample({
   }
 
   return (
-    <div className="flex flex-col h-full max-h-[800px] border rounded-lg bg-card">
+    <div className="flex flex-col h-full min-h-[600px] max-h-[85vh] border rounded-xl bg-card shadow-lg">
       {/* Header */}
-      <div className="p-4 border-b bg-muted/50">
-        <div className="flex items-center gap-2">
-          <Sparkles className="h-5 w-5 text-primary" />
-          <h3 className="font-semibold">AGI Sirius - Chat com Generative UI</h3>
+      <div className="p-6 border-b bg-gradient-to-r from-primary/5 via-primary/10 to-primary/5 backdrop-blur-sm">
+        <div className="flex items-center gap-3">
+          <div className="p-2 bg-primary/10 rounded-lg">
+            <Sparkles className="h-5 w-5 text-primary" />
+          </div>
+          <div>
+            <h3 className="font-semibold text-lg">AGI Sirius</h3>
+            <p className="text-xs text-muted-foreground">Chat com Generative UI</p>
+          </div>
         </div>
-        <p className="text-sm text-muted-foreground mt-1">
-          Pergunte sobre vendas e veja componentes interativos
-        </p>
       </div>
 
       {/* Messages */}
-      <ScrollArea className="flex-1 p-4" ref={scrollRef}>
-        <div className="space-y-4">
+      <ScrollArea className="flex-1 p-6" ref={scrollRef}>
+        <div className="space-y-6">
           {messages.length === 0 && (
-            <div className="text-center text-muted-foreground py-12">
-              <Sparkles className="h-12 w-12 mx-auto mb-4 opacity-50" />
-              <p className="text-sm">
-                Comece uma conversa sobre vendas.
-                <br />O AI pode renderizar calculadoras, formulários e muito mais!
+            <div className="text-center text-muted-foreground py-16 animate-fade-in">
+              <div className="relative inline-block mb-6">
+                <div className="absolute inset-0 bg-primary/20 blur-2xl rounded-full" />
+                <Sparkles className="h-16 w-16 mx-auto opacity-70 relative animate-pulse" />
+              </div>
+              <h4 className="text-lg font-semibold text-foreground mb-2">
+                Comece uma conversa sobre vendas
+              </h4>
+              <p className="text-sm max-w-md mx-auto">
+                Pergunte sobre ROI, planos, demonstrações ou qualquer dúvida sobre vendas.
+                <br />
+                <span className="text-primary font-medium">O AI renderiza componentes interativos em tempo real!</span>
               </p>
             </div>
           )}
 
-          {messages.map((message) => (
+          {messages.map((message, idx) => (
             <div
               key={message.id}
-              className={`flex ${
+              className={`flex animate-fade-in-up ${
                 message.role === 'user' ? 'justify-end' : 'justify-start'
               }`}
+              style={{ animationDelay: `${idx * 0.05}s` }}
             >
               <div
-                className={`max-w-[85%] rounded-lg p-3 ${
+                className={`max-w-[95%] rounded-xl p-4 shadow-sm transition-all hover:shadow-md ${
                   message.role === 'user'
-                    ? 'bg-primary text-primary-foreground'
-                    : 'bg-muted'
+                    ? 'bg-gradient-to-br from-primary to-primary/90 text-primary-foreground'
+                    : 'bg-muted/80 backdrop-blur-sm border border-border/50'
                 }`}
               >
                 {message.role === 'user' ? (
-                  <p className="text-sm">
+                  <p className="text-sm leading-relaxed">
                     {message.chunks[0]?.type === 'text' ? message.chunks[0].content : ''}
                   </p>
                 ) : (
@@ -264,8 +274,8 @@ export function ChatWithUIExample({
           ))}
 
           {currentThinkingState && (
-            <div className="flex justify-start">
-              <div className="bg-muted rounded-lg p-3">
+            <div className="flex justify-start animate-fade-in">
+              <div className="bg-muted/80 backdrop-blur-sm border border-border/50 rounded-xl p-4 shadow-sm">
                 <ThinkingIndicator state={currentThinkingState as any} />
               </div>
             </div>
@@ -274,27 +284,52 @@ export function ChatWithUIExample({
       </ScrollArea>
 
       {/* Input */}
-      <div className="p-4 border-t">
-        <div className="flex gap-2">
-          <Input
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            onKeyPress={handleKeyPress}
-            placeholder="Digite sua mensagem..."
-            disabled={isLoading}
-            className="flex-1"
-          />
+      <div className="p-6 border-t bg-muted/20 backdrop-blur-sm">
+        <div className="flex gap-3">
+          <div className="flex-1 relative">
+            <Input
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              onKeyPress={handleKeyPress}
+              placeholder="Digite sua mensagem ou escolha um exemplo abaixo..."
+              disabled={isLoading}
+              className="pr-12 h-12 rounded-xl border-2 focus:border-primary transition-all"
+            />
+            {isLoading && (
+              <div className="absolute right-3 top-1/2 -translate-y-1/2">
+                <div className="h-5 w-5 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+              </div>
+            )}
+          </div>
           <Button
             onClick={handleSendMessage}
             disabled={isLoading || !input.trim()}
             size="icon"
+            className="h-12 w-12 rounded-xl shadow-md hover:shadow-lg transition-all"
           >
-            <Send className="h-4 w-4" />
+            <Send className="h-5 w-5" />
           </Button>
         </div>
-        <p className="text-xs text-muted-foreground mt-2">
-          Experimente: "Quanto eu economizo?", "Mostre os planos", "Quero agendar uma demo"
-        </p>
+
+        {/* Quick Action Chips */}
+        <div className="flex flex-wrap gap-2 mt-4">
+          {[
+            { icon: '💰', text: 'Calcular ROI', prompt: 'Quanto eu economizo com o Sirius? Gasto R$ 15 mil/mês' },
+            { icon: '📊', text: 'Ver Planos', prompt: 'Quais são os planos disponíveis?' },
+            { icon: '📅', text: 'Agendar Demo', prompt: 'Quero agendar uma demonstração' },
+            { icon: '🎯', text: 'Criar Deal', prompt: 'Crie um deal para a empresa ABC' },
+          ].map((item, idx) => (
+            <button
+              key={idx}
+              onClick={() => setInput(item.prompt)}
+              disabled={isLoading}
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-muted/60 hover:bg-muted border border-border/50 text-sm text-foreground transition-all hover:scale-105 hover:shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              <span>{item.icon}</span>
+              <span className="font-medium">{item.text}</span>
+            </button>
+          ))}
+        </div>
       </div>
     </div>
   )

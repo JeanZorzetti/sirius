@@ -28,13 +28,14 @@ export function MessageRenderer({ chunks, onInteraction }: MessageRendererProps)
   }
 
   return (
-    <div className="message-content space-y-3">
+    <div className="message-content space-y-4">
       {chunks.map((chunk, index) => (
-        <ChunkRenderer
-          key={index}
-          chunk={chunk}
-          onInteraction={onInteraction}
-        />
+        <div key={index} className="animate-fade-in-up" style={{ animationDelay: `${index * 0.1}s` }}>
+          <ChunkRenderer
+            chunk={chunk}
+            onInteraction={onInteraction}
+          />
+        </div>
       ))}
     </div>
   )
@@ -85,14 +86,17 @@ function TextChunk({ content }: { content: string }) {
       <ReactMarkdown
         components={{
           // Customize markdown rendering
-          p: ({ children }) => <p className="mb-2 last:mb-0">{children}</p>,
-          ul: ({ children }) => <ul className="list-disc ml-4 mb-2">{children}</ul>,
-          ol: ({ children }) => <ol className="list-decimal ml-4 mb-2">{children}</ol>,
+          p: ({ children }) => <p className="mb-3 last:mb-0 leading-relaxed">{children}</p>,
+          ul: ({ children }) => <ul className="list-disc ml-5 mb-3 space-y-1">{children}</ul>,
+          ol: ({ children }) => <ol className="list-decimal ml-5 mb-3 space-y-1">{children}</ol>,
+          li: ({ children }) => <li className="leading-relaxed">{children}</li>,
           code: ({ inline, children }: any) =>
             inline ? (
-              <code className="bg-muted px-1 py-0.5 rounded text-sm">{children}</code>
+              <code className="bg-primary/10 text-primary px-1.5 py-0.5 rounded text-sm font-mono border border-primary/20">
+                {children}
+              </code>
             ) : (
-              <code className="block bg-muted p-2 rounded text-sm overflow-x-auto">
+              <code className="block bg-muted p-3 rounded-lg text-sm overflow-x-auto font-mono border border-border">
                 {children}
               </code>
             ),
@@ -101,10 +105,14 @@ function TextChunk({ content }: { content: string }) {
               href={href}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-primary hover:underline"
+              className="text-primary hover:underline font-medium inline-flex items-center gap-1 transition-colors"
             >
               {children}
+              <span className="text-xs">↗</span>
             </a>
+          ),
+          strong: ({ children }) => (
+            <strong className="font-semibold text-foreground">{children}</strong>
           ),
         }}
       >
@@ -131,27 +139,35 @@ function UIComponentChunk({
   onInteraction?: (data: ComponentInteraction) => void
 }) {
   return (
-    <div className="ui-component-wrapper">
+    <div className="ui-component-wrapper my-4">
       {reasoning && (
-        <div className="text-xs text-muted-foreground mb-2 italic">
-          {reasoning}
+        <div className="flex items-center gap-2 text-xs text-muted-foreground mb-3 p-2 bg-muted/30 rounded-lg border border-border/50">
+          <span className="font-medium">💭</span>
+          <span className="italic">{reasoning}</span>
         </div>
       )}
-      <Suspense
-        fallback={
-          skeleton ? (
-            <ComponentSkeleton height={skeleton.height} variant={skeleton.variant} />
-          ) : (
-            <div className="h-64 w-full rounded-lg bg-muted animate-pulse" />
-          )
-        }
-      >
-        <DynamicUIComponentWithErrorBoundary
-          name={name}
-          props={props}
-          onInteraction={onInteraction}
-        />
-      </Suspense>
+      <div className="border-2 border-primary/20 rounded-xl p-1 bg-gradient-to-br from-primary/5 to-transparent">
+        <Suspense
+          fallback={
+            skeleton ? (
+              <ComponentSkeleton height={skeleton.height} variant={skeleton.variant} />
+            ) : (
+              <div className="h-64 w-full rounded-lg bg-muted/50 animate-pulse flex items-center justify-center">
+                <div className="text-center">
+                  <div className="h-8 w-8 border-2 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-2" />
+                  <p className="text-sm text-muted-foreground">Carregando componente...</p>
+                </div>
+              </div>
+            )
+          }
+        >
+          <DynamicUIComponentWithErrorBoundary
+            name={name}
+            props={props}
+            onInteraction={onInteraction}
+          />
+        </Suspense>
+      </div>
     </div>
   )
 }
@@ -169,16 +185,21 @@ function ThinkingChunk({ state, message }: { state: any; message?: string }) {
 function ErrorChunk({ message, recoverable }: { message: string; recoverable: boolean }) {
   return (
     <div
-      className={`p-3 rounded-lg border ${
+      className={`p-4 rounded-xl border-2 shadow-sm ${
         recoverable
-          ? 'bg-yellow-500/10 border-yellow-500/50 text-yellow-600'
-          : 'bg-destructive/10 border-destructive/50 text-destructive'
+          ? 'bg-yellow-500/10 border-yellow-500/40 text-yellow-700 dark:text-yellow-400'
+          : 'bg-destructive/10 border-destructive/40 text-destructive'
       }`}
     >
-      <p className="text-sm font-medium">
-        {recoverable ? 'Aviso' : 'Erro'}
-      </p>
-      <p className="text-sm mt-1">{message}</p>
+      <div className="flex items-start gap-3">
+        <span className="text-xl">{recoverable ? '⚠️' : '❌'}</span>
+        <div className="flex-1">
+          <p className="text-sm font-semibold mb-1">
+            {recoverable ? 'Aviso' : 'Erro'}
+          </p>
+          <p className="text-sm leading-relaxed">{message}</p>
+        </div>
+      </div>
     </div>
   )
 }
