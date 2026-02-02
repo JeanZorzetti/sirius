@@ -71,6 +71,9 @@ model Organization {
   agiUsage           AgiUsage[]
   agiSkillExecutions AgiSkillExecution[]
 
+  // A/B Testing
+  experiments        Experiment[]
+
   // Onboarding
   onboardingProgress OnboardingProgress[]
 }
@@ -1119,4 +1122,76 @@ model ConversationMessage {
 
   @@index([sessionId])
   @@index([createdAt])
+}
+
+// ============================================================================
+// A/B TESTING MODELS
+// ============================================================================
+
+// Experiment: A/B test configuration
+model Experiment {
+  id          String   @id @default(uuid())
+  name        String   @unique
+  description String?
+  status      String   @default("DRAFT") // DRAFT, RUNNING, PAUSED, COMPLETED
+  startDate   DateTime?
+  endDate     DateTime?
+  
+  // Relations
+  variants    ExperimentVariant[]
+  events      ExperimentEvent[]
+  
+  // Ownership
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  
+  // Audit
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  @@index([organizationId, status])
+  @@index([status])
+}
+
+// ExperimentVariant: Different versions to test
+model ExperimentVariant {
+  id             String @id @default(uuid())
+  experimentId   String
+  experiment     Experiment @relation(fields: [experimentId], references: [id], onDelete: Cascade)
+  
+  name           String  // "control", "variant_a", "variant_b"
+  componentName  String  // Component from registry (e.g., "ROICalculator")
+  props          Json    // Component props configuration
+  trafficWeight  Int     @default(50) // 0-100 (percentage of traffic)
+  
+  // Relations
+  events         ExperimentEvent[]
+  
+  @@unique([experimentId, name])
+  @@index([experimentId])
+}
+
+// ExperimentEvent: Tracked user interactions
+model ExperimentEvent {
+  id           String   @id @default(uuid())
+  experimentId String
+  experiment   Experiment @relation(fields: [experimentId], references: [id], onDelete: Cascade)
+  
+  variantId    String
+  variant      ExperimentVariant @relation(fields: [variantId], references: [id], onDelete: Cascade)
+  
+  // User tracking
+  userId       String?  // Optional: logged-in user
+  sessionId    String   // Consistent identifier (cookie/fingerprint)
+  
+  // Event data
+  eventType    String   // "impression", "interaction", "conversion"
+  metadata     Json?    // Additional event data
+  
+  // Timestamp
+  timestamp    DateTime @default(now())
+  
+  @@index([experimentId, variantId, eventType])
+  @@index([sessionId])
+  @@index([timestamp])
 }
