@@ -54,6 +54,9 @@ export default async function AdminLayout({
                     <Link href="/admin/funnel" className="text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors">
                         Funnel
                     </Link>
+                    <Link href="/admin/ab-testing" className="text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors">
+                        A/B Testing
+                    </Link>
                     <Link href="/admin/knowledge-graph" className="text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors">
                         Knowledge Graph
                     </Link>
