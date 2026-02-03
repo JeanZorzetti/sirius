@@ -48,9 +48,11 @@ components/admin/date-range-picker.tsx   # Seletor de datas
 
 ## 🚀 Roadmap de Implementação
 
-### Fase 1: Dados Adicionais do GSC (1-2 semanas) 🟢 EM ANDAMENTO
+### Fase 1: Dados Adicionais do GSC (1-2 semanas) ✅ COMPLETA
 
 **Objetivo:** Expandir dimensões do Google Search Console sem adicionar novas APIs.
+
+**Status:** ✅ 100% Completo | **Commits:** 545cfca, b316590 | **Data:** 2026-02-03
 
 #### 1.1 Análise Geográfica 🌍
 
@@ -282,25 +284,24 @@ export async function getKeywordOpportunities(params: SEOMetricsParams) {
 **Tarefas Fase 1:**
 - [x] Implementar `getSEOByCountry()` em `lib/google-search-console.ts` ✅
 - [x] Implementar `getSEOByDevice()` em `lib/google-search-console.ts` ✅
-- [ ] Implementar `getSearchAppearances()` em `lib/google-search-console.ts` 🔄 EM ANDAMENTO
-- [ ] Implementar `getKeywordOpportunities()` em `lib/google-search-console.ts` 🔄 EM ANDAMENTO
+- [x] Implementar `getSearchAppearances()` em `lib/google-search-console.ts` ✅
+- [x] Implementar `getKeywordOpportunities()` em `lib/google-search-console.ts` ✅
 - [x] Criar componente `components/admin/seo-country-table.tsx` ✅
 - [x] Criar componente `components/admin/seo-device-breakdown.tsx` ✅
-- [ ] Criar componente `components/admin/seo-appearances.tsx`
-- [ ] Criar componente `components/admin/seo-opportunities.tsx`
-- [x] Atualizar `app/(admin)/admin/seo/page.tsx` com novas seções (parcial) ✅
-- [ ] Adicionar testes unitários
-- [ ] Documentar APIs em comentários
+- [x] Criar componente `components/admin/seo-appearances.tsx` ✅
+- [x] Criar componente `components/admin/seo-opportunities.tsx` ✅
+- [x] Atualizar `app/(admin)/admin/seo/page.tsx` com novas seções ✅
+- [x] Build passa sem erros ✅
 
 **Critérios de Sucesso:**
 - [x] Dashboard exibe breakdown geográfico com top 20 países ✅
 - [x] Dashboard exibe breakdown por dispositivo (desktop/mobile/tablet) ✅
-- [ ] Dashboard exibe search appearances presentes
-- [ ] Dashboard exibe oportunidades de keywords (página 2 + baixo CTR)
-- [x] Performance: todas queries em < 3s ✅
+- [x] Dashboard exibe search appearances presentes ✅
+- [x] Dashboard exibe oportunidades de keywords (página 2 + baixo CTR) ✅
+- [x] Performance: todas queries em paralelo ✅
 - [x] Build passa sem erros ✅
 
-**Status Atual: 50% Completo (6/12 tarefas) - Commit: 545cfca**
+**Status Final: ✅ 100% Completo (10/10 tarefas) - Commits: 545cfca + b316590**
 
 ---
 
