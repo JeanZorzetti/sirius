@@ -42,6 +42,7 @@
     "@react-email/components": "^1.0.3",
     "@scalar/nextjs-api-reference": "^0.9.9",
     "@sentry/nextjs": "^10.36.0",
+    "@tailwindcss/typography": "^0.5.19",
     "@tanstack/react-table": "^8.21.3",
     "@tavily/core": "^0.7.1",
     "@types/d3": "^7.4.3",

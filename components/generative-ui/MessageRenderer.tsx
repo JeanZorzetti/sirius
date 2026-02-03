@@ -82,40 +82,8 @@ function TextChunk({ content }: { content: string }) {
   }
 
   return (
-    <div className="w-full" style={{ wordWrap: 'break-word', overflowWrap: 'break-word', whiteSpace: 'normal' }}>
-      <ReactMarkdown
-        components={{
-          // Customize markdown rendering
-          p: ({ children }) => <p className="mb-4 last:mb-0 leading-relaxed text-base" style={{ whiteSpace: 'normal' }}>{children}</p>,
-          ul: ({ children }) => <ul className="list-disc ml-6 mb-4 space-y-2">{children}</ul>,
-          ol: ({ children }) => <ol className="list-decimal ml-6 mb-4 space-y-2">{children}</ol>,
-          li: ({ children }) => <li className="leading-relaxed text-base">{children}</li>,
-          code: ({ inline, children }: any) =>
-            inline ? (
-              <code className="bg-primary/10 text-primary px-2 py-1 rounded text-sm font-mono border border-primary/20">
-                {children}
-              </code>
-            ) : (
-              <code className="block bg-muted p-4 rounded-lg text-sm overflow-x-auto font-mono border border-border">
-                {children}
-              </code>
-            ),
-          a: ({ href, children }) => (
-            <a
-              href={href}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-primary hover:underline font-medium inline-flex items-center gap-1 transition-colors"
-            >
-              {children}
-              <span className="text-xs">↗</span>
-            </a>
-          ),
-          strong: ({ children }) => (
-            <strong className="font-semibold text-foreground">{children}</strong>
-          ),
-        }}
-      >
+    <div className="prose prose-base dark:prose-invert max-w-none w-full">
+      <ReactMarkdown>
         {content}
       </ReactMarkdown>
     </div>
