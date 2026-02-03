@@ -404,6 +404,39 @@ IMPORTANT: Use the intelligence analysis above to inform your decision. If a com
         try {
           // Collect text and tool results
           let fullText = ''
+          let componentAlreadyRendered = false
+
+          // If intelligence layer recommends a component, render it automatically
+          // This bypasses Groq's problematic tool calling
+          if (intelligenceResult.trigger.shouldRender && intelligenceResult.trigger.recommendation) {
+            console.log('[AUTO-RENDER] Intelligence recommends:', intelligenceResult.trigger.recommendation.component)
+
+            try {
+              const component = intelligenceResult.trigger.recommendation.component as any
+              const suggestedProps = intelligenceResult.suggestedProps || {}
+
+              // Call the tool execute function directly
+              const toolResult = await renderUIComponentTool.execute({
+                componentName: component,
+                props: suggestedProps,
+                reasoning: intelligenceResult.trigger.reasoning
+              })
+
+              // Send UI component chunk
+              const uiChunk: StreamChunk = {
+                type: 'ui_component',
+                name: toolResult.name,
+                props: toolResult.props,
+                skeleton: toolResult.skeleton,
+                reasoning: toolResult.reasoning
+              }
+              controller.enqueue(encoder.encode(JSON.stringify(uiChunk) + '\n'))
+              componentAlreadyRendered = true
+              console.log('[AUTO-RENDER] Component rendered successfully')
+            } catch (error) {
+              console.error('[AUTO-RENDER] Failed:', error)
+            }
+          }
 
           for await (const part of result.fullStream) {
             if (part.type === 'text-delta') {
