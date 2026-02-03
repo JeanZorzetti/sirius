@@ -11,7 +11,7 @@
 'use client'
 
 import { Suspense } from 'react'
-import ReactMarkdown from 'react-markdown'
+// ReactMarkdown removido - usando texto simples com whitespace-pre-wrap
 import { DynamicUIComponentWithErrorBoundary } from './DynamicUIComponent'
 import { ThinkingIndicator } from './ThinkingIndicator'
 import { ComponentSkeleton } from './ComponentSkeleton'
@@ -82,10 +82,8 @@ function TextChunk({ content }: { content: string }) {
   }
 
   return (
-    <div className="prose prose-base dark:prose-invert max-w-none w-full">
-      <ReactMarkdown>
-        {content}
-      </ReactMarkdown>
+    <div className="text-sm whitespace-pre-wrap">
+      {content}
     </div>
   )
 }

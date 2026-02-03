@@ -21,6 +21,7 @@ import { MessageRenderer, parseMessageChunks } from '../MessageRenderer'
 import { ThinkingIndicator } from '../ThinkingIndicator'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
+import { ScrollArea } from '@/components/ui/scroll-area'
 import { Send, Sparkles } from 'lucide-react'
 import type { StreamChunk, ComponentInteraction } from '@/lib/generative-ui/types'
 
@@ -209,36 +210,27 @@ export function ChatWithUIExample({
   }
 
   return (
-    <div className="flex flex-col h-full min-h-[700px] max-h-[calc(100vh-200px)] border rounded-xl bg-card shadow-lg">
+    <div className="flex flex-col h-[600px] border rounded-lg bg-card">
       {/* Header */}
-      <div className="p-4 border-b bg-gradient-to-r from-primary/5 via-primary/10 to-primary/5 backdrop-blur-sm">
-        <div className="flex items-center gap-3">
-          <div className="p-2 bg-primary/10 rounded-lg">
-            <Sparkles className="h-5 w-5 text-primary" />
-          </div>
-          <div>
-            <h3 className="font-semibold text-lg">AGI Sirius</h3>
-            <p className="text-xs text-muted-foreground">Chat com Generative UI</p>
-          </div>
+      <div className="p-4 border-b">
+        <div className="flex items-center gap-2">
+          <Sparkles className="h-5 w-5 text-primary" />
+          <h3 className="font-semibold">AGI Sirius - Chat com Generative UI</h3>
         </div>
+        <p className="text-sm text-muted-foreground mt-1">
+          Pergunte sobre vendas e veja componentes interativos
+        </p>
       </div>
 
       {/* Messages */}
-      <div className="flex-1 overflow-y-auto overflow-x-hidden px-8 py-6" ref={scrollRef}>
-        <div className="space-y-8 w-full">
+      <ScrollArea ref={scrollRef} className="flex-1 px-4">
+        <div className="space-y-4 py-4">
           {messages.length === 0 && (
-            <div className="text-center text-muted-foreground py-16 animate-fade-in">
-              <div className="relative inline-block mb-6">
-                <div className="absolute inset-0 bg-primary/20 blur-2xl rounded-full" />
-                <Sparkles className="h-16 w-16 mx-auto opacity-70 relative animate-pulse" />
-              </div>
-              <h4 className="text-lg font-semibold text-foreground mb-2">
-                Comece uma conversa sobre vendas
-              </h4>
-              <p className="text-sm max-w-md mx-auto">
-                Pergunte sobre ROI, planos, demonstrações ou qualquer dúvida sobre vendas.
-                <br />
-                <span className="text-primary font-medium">O AI renderiza componentes interativos em tempo real!</span>
+            <div className="text-center text-muted-foreground py-12">
+              <Sparkles className="h-12 w-12 mx-auto mb-3 opacity-50" />
+              <p className="text-sm">Comece uma conversa sobre vendas</p>
+              <p className="text-xs mt-2">
+                O AI pode renderizar calculadoras, formulários e muito mais!
               </p>
             </div>
           )}
@@ -246,22 +238,17 @@ export function ChatWithUIExample({
           {messages.map((message, idx) => (
             <div
               key={message.id}
-              className={`animate-fade-in-up ${
-                message.role === 'user' ? 'flex justify-end' : 'block'
-              }`}
-              style={{ animationDelay: `${idx * 0.05}s` }}
+              className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
             >
               <div
-                className={`${
-                  message.role === 'user' ? 'max-w-[70%]' : 'w-full'
-                } rounded-xl p-5 shadow-sm transition-all hover:shadow-md ${
+                className={`max-w-[80%] rounded-lg px-4 py-3 ${
                   message.role === 'user'
-                    ? 'bg-gradient-to-br from-primary to-primary/90 text-primary-foreground'
-                    : 'bg-muted/80 backdrop-blur-sm border border-border/50'
+                    ? 'bg-primary text-primary-foreground'
+                    : 'bg-muted'
                 }`}
               >
                 {message.role === 'user' ? (
-                  <p className="text-base leading-relaxed">
+                  <p className="text-sm whitespace-pre-wrap">
                     {message.chunks[0]?.type === 'text' ? message.chunks[0].content : ''}
                   </p>
                 ) : (
@@ -275,59 +262,48 @@ export function ChatWithUIExample({
           ))}
 
           {currentThinkingState && (
-            <div className="flex justify-start animate-fade-in">
-              <div className="bg-muted/80 backdrop-blur-sm border border-border/50 rounded-xl p-4 shadow-sm">
+            <div className="flex justify-start">
+              <div className="bg-muted rounded-lg px-4 py-3">
                 <ThinkingIndicator state={currentThinkingState as any} />
               </div>
             </div>
           )}
         </div>
-      </div>
+      </ScrollArea>
 
       {/* Input */}
-      <div className="p-6 border-t bg-muted/20 backdrop-blur-sm">
-        <div className="flex gap-3">
-          <div className="flex-1 relative">
-            <Input
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              onKeyPress={handleKeyPress}
-              placeholder="Digite sua mensagem ou escolha um exemplo abaixo..."
-              disabled={isLoading}
-              className="pr-12 h-12 rounded-xl border-2 focus:border-primary transition-all"
-            />
-            {isLoading && (
-              <div className="absolute right-3 top-1/2 -translate-y-1/2">
-                <div className="h-5 w-5 border-2 border-primary border-t-transparent rounded-full animate-spin" />
-              </div>
+      <div className="p-4 border-t space-y-3">
+        <div className="flex gap-2">
+          <Input
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            onKeyPress={handleKeyPress}
+            placeholder="Digite sua mensagem..."
+            disabled={isLoading}
+          />
+          <Button onClick={handleSendMessage} disabled={isLoading || !input.trim()}>
+            {isLoading ? (
+              <div className="h-4 w-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+            ) : (
+              <Send className="h-4 w-4" />
             )}
-          </div>
-          <Button
-            onClick={handleSendMessage}
-            disabled={isLoading || !input.trim()}
-            size="icon"
-            className="h-12 w-12 rounded-xl shadow-md hover:shadow-lg transition-all"
-          >
-            <Send className="h-5 w-5" />
           </Button>
         </div>
 
         {/* Quick Action Chips */}
-        <div className="flex flex-wrap gap-2 mt-4">
+        <div className="flex flex-wrap gap-2">
           {[
-            { icon: '💰', text: 'Calcular ROI', prompt: 'Quanto eu economizo com o Sirius? Gasto R$ 15 mil/mês' },
-            { icon: '📊', text: 'Ver Planos', prompt: 'Quais são os planos disponíveis?' },
-            { icon: '📅', text: 'Agendar Demo', prompt: 'Quero agendar uma demonstração' },
-            { icon: '🎯', text: 'Criar Deal', prompt: 'Crie um deal para a empresa ABC' },
+            { text: 'Quanto eu economizo?', prompt: 'Quanto eu economizo com o Sirius? Gasto R$ 15 mil/mês' },
+            { text: 'Mostre os planos', prompt: 'Quais são os planos disponíveis?' },
+            { text: 'Agendar demo', prompt: 'Quero agendar uma demonstração' },
           ].map((item, idx) => (
             <button
               key={idx}
               onClick={() => setInput(item.prompt)}
               disabled={isLoading}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-muted/60 hover:bg-muted border border-border/50 text-sm text-foreground transition-all hover:scale-105 hover:shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
+              className="text-xs px-3 py-1 rounded-full bg-muted hover:bg-muted/80 text-muted-foreground transition-colors disabled:opacity-50"
             >
-              <span>{item.icon}</span>
-              <span className="font-medium">{item.text}</span>
+              {item.text}
             </button>
           ))}
         </div>
