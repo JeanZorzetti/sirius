@@ -423,8 +423,9 @@ IMPORTANT: Use the intelligence analysis above to inform your decision. If a com
               controller.enqueue(encoder.encode(JSON.stringify(chunk) + '\n'))
             } else if (part.type === 'tool-call') {
               console.log('[STREAM] Tool call detected:', part.toolName)
+              console.log('[STREAM] Tool call args type:', typeof part.input)
+              console.log('[STREAM] Tool call args:', JSON.stringify(part.input, null, 2))
               if (part.toolName === 'render_ui_component') {
-                console.log('[STREAM] Rendering UI component:', part.input)
                 // Send thinking state first
                 const thinkingChunk: StreamChunk = {
                   type: 'thinking',
@@ -434,6 +435,13 @@ IMPORTANT: Use the intelligence analysis above to inform your decision. If a com
                 controller.enqueue(encoder.encode(JSON.stringify(thinkingChunk) + '\n'))
               }
             } else if (part.type === 'tool-result') {
+              console.log('[STREAM] Tool result:', part.toolName)
+              if (part.output) {
+                console.log('[STREAM] Tool result content:', JSON.stringify(part.output, null, 2))
+              }
+              if ((part as any).error) {
+                console.error('[STREAM] Tool error:', (part as any).error)
+              }
               if (part.toolName === 'render_ui_component' && part.output) {
                 // Send UI component metadata
                 const output = part.output as any
