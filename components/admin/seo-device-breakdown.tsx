@@ -155,11 +155,13 @@ export function SEODeviceBreakdown({ devices }: SEODeviceBreakdownProps) {
 
           {/* Device Cards */}
           <div className="space-y-3">
-            {devices.map((device) => {
-              const config = DEVICE_CONFIG[device.device]
-              const Icon = config.icon
+            {devices
+              .filter((device) => device.device && DEVICE_CONFIG[device.device])
+              .map((device) => {
+                const config = DEVICE_CONFIG[device.device]
+                const Icon = config.icon
 
-              return (
+                return (
                 <div
                   key={device.device}
                   className={`p-4 rounded-lg border-2 ${config.borderColor} ${config.bgColor}`}
