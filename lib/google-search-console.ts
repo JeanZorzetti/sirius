@@ -47,6 +47,24 @@ export interface SEOMetricsParams {
   endDate?: string
 }
 
+export interface SEOCountryData {
+  country: string
+  countryName: string
+  clicks: number
+  impressions: number
+  ctr: number
+  position: number
+}
+
+export interface SEODeviceData {
+  device: 'desktop' | 'mobile' | 'tablet'
+  clicks: number
+  impressions: number
+  ctr: number
+  position: number
+  percentage: number
+}
+
 // Get authenticated Search Console client
 async function getSearchConsoleClient() {
   const clientEmail = process.env.GOOGLE_CLIENT_EMAIL
@@ -99,6 +117,34 @@ function isValidDate(dateStr: string): boolean {
   if (!regex.test(dateStr)) return false
   const date = new Date(dateStr)
   return !isNaN(date.getTime())
+}
+
+// Convert country code to country name
+function getCountryName(countryCode: string): string {
+  const countryNames: Record<string, string> = {
+    'bra': 'Brasil',
+    'usa': 'Estados Unidos',
+    'prt': 'Portugal',
+    'arg': 'Argentina',
+    'mex': 'México',
+    'chl': 'Chile',
+    'col': 'Colômbia',
+    'per': 'Peru',
+    'ury': 'Uruguai',
+    'esp': 'Espanha',
+    'gbr': 'Reino Unido',
+    'fra': 'França',
+    'deu': 'Alemanha',
+    'ita': 'Itália',
+    'can': 'Canadá',
+    'aus': 'Austrália',
+    'jpn': 'Japão',
+    'chn': 'China',
+    'ind': 'Índia',
+    'rus': 'Rússia',
+  }
+
+  return countryNames[countryCode.toLowerCase()] || countryCode.toUpperCase()
 }
 
 export async function getSEOMetrics(params?: SEOMetricsParams): Promise<SEOMetrics> {
@@ -224,4 +270,84 @@ export async function getSEOMetrics(params?: SEOMetricsParams): Promise<SEOMetri
       endDate,
     },
   }
+}
+
+/**
+ * Get SEO metrics breakdown by country
+ */
+export async function getSEOByCountry(params?: SEOMetricsParams): Promise<SEOCountryData[]> {
+  const searchConsole = await getSearchConsoleClient()
+  const siteUrl = process.env.GOOGLE_SEARCH_CONSOLE_SITE_URL || 'https://sirius.roilabs.com.br/'
+
+  const defaultRange = getDefaultDateRange()
+  const startDate = params?.startDate && isValidDate(params.startDate)
+    ? params.startDate
+    : defaultRange.startDate
+  const endDate = params?.endDate && isValidDate(params.endDate)
+    ? params.endDate
+    : defaultRange.endDate
+
+  const response = await searchConsole.searchanalytics.query({
+    siteUrl,
+    requestBody: {
+      startDate,
+      endDate,
+      dimensions: ['country'],
+      rowLimit: 20,
+    },
+  })
+
+  const countries: SEOCountryData[] = (response.data.rows || []).map((row) => ({
+    country: row.keys?.[0] || '',
+    countryName: getCountryName(row.keys?.[0] || ''),
+    clicks: row.clicks || 0,
+    impressions: row.impressions || 0,
+    ctr: (row.ctr || 0) * 100,
+    position: row.position || 0,
+  }))
+
+  return countries
+}
+
+/**
+ * Get SEO metrics breakdown by device
+ */
+export async function getSEOByDevice(params?: SEOMetricsParams): Promise<SEODeviceData[]> {
+  const searchConsole = await getSearchConsoleClient()
+  const siteUrl = process.env.GOOGLE_SEARCH_CONSOLE_SITE_URL || 'https://sirius.roilabs.com.br/'
+
+  const defaultRange = getDefaultDateRange()
+  const startDate = params?.startDate && isValidDate(params.startDate)
+    ? params.startDate
+    : defaultRange.startDate
+  const endDate = params?.endDate && isValidDate(params.endDate)
+    ? params.endDate
+    : defaultRange.endDate
+
+  const response = await searchConsole.searchanalytics.query({
+    siteUrl,
+    requestBody: {
+      startDate,
+      endDate,
+      dimensions: ['device'],
+      rowLimit: 10,
+    },
+  })
+
+  const devices: SEODeviceData[] = (response.data.rows || []).map((row) => ({
+    device: row.keys?.[0] as 'desktop' | 'mobile' | 'tablet',
+    clicks: row.clicks || 0,
+    impressions: row.impressions || 0,
+    ctr: (row.ctr || 0) * 100,
+    position: row.position || 0,
+    percentage: 0, // Will be calculated after
+  }))
+
+  // Calculate percentages
+  const totalClicks = devices.reduce((sum, d) => sum + d.clicks, 0)
+  devices.forEach((device) => {
+    device.percentage = totalClicks > 0 ? (device.clicks / totalClicks) * 100 : 0
+  })
+
+  return devices
 }

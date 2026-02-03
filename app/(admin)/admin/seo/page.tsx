@@ -1,10 +1,12 @@
 import { Metadata } from 'next'
 import { Suspense } from 'react'
-import { getSEOMetrics } from '@/lib/google-search-console'
+import { getSEOMetrics, getSEOByCountry, getSEOByDevice } from '@/lib/google-search-console'
 import { generateForecast, combineDataForChart } from '@/lib/seo-forecasting'
 import { SEOMetricsChart } from '@/components/admin/seo-chart'
 import { DateRangePicker } from '@/components/admin/date-range-picker'
 import { SeoAssistant } from '@/components/admin/seo-assistant'
+import { SEODeviceBreakdown } from '@/components/admin/seo-device-breakdown'
+import { SEOCountryTable } from '@/components/admin/seo-country-table'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Search, MousePointer, Eye, TrendingUp, AlertCircle, Loader2, Sparkles, TrendingDown, Minus, Target } from 'lucide-react'
 
@@ -28,13 +30,26 @@ function LoadingState() {
 
 async function SEOContent({ searchParams }: { searchParams: { from?: string; to?: string } }) {
   let metrics
+  let countries
+  let devices
   let error: string | null = null
 
   try {
-    metrics = await getSEOMetrics({
-      startDate: searchParams.from,
-      endDate: searchParams.to,
-    })
+    // Fetch all metrics in parallel
+    ;[metrics, countries, devices] = await Promise.all([
+      getSEOMetrics({
+        startDate: searchParams.from,
+        endDate: searchParams.to,
+      }),
+      getSEOByCountry({
+        startDate: searchParams.from,
+        endDate: searchParams.to,
+      }),
+      getSEOByDevice({
+        startDate: searchParams.from,
+        endDate: searchParams.to,
+      }),
+    ])
   } catch (e) {
     console.error('Error fetching SEO metrics:', e)
     error = e instanceof Error ? e.message : 'Failed to fetch SEO data'
@@ -317,6 +332,16 @@ async function SEOContent({ searchParams }: { searchParams: { from?: string; to?
           <SEOMetricsChart data={chartData} showForecast={true} />
         </CardContent>
       </Card>
+
+      {/* Device Breakdown */}
+      {devices && devices.length > 0 && (
+        <SEODeviceBreakdown devices={devices} />
+      )}
+
+      {/* Country Breakdown */}
+      {countries && countries.length > 0 && (
+        <SEOCountryTable countries={countries} />
+      )}
 
       {/* Tables Side by Side */}
       <div className="grid gap-6 lg:grid-cols-2">
