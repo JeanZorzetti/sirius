@@ -246,14 +246,14 @@ export function ChatWithUIExample({
           {messages.map((message, idx) => (
             <div
               key={message.id}
-              className={`flex animate-fade-in-up ${
-                message.role === 'user' ? 'justify-end' : 'justify-start'
+              className={`animate-fade-in-up ${
+                message.role === 'user' ? 'flex justify-end' : 'block'
               }`}
               style={{ animationDelay: `${idx * 0.05}s` }}
             >
               <div
                 className={`${
-                  message.role === 'user' ? 'max-w-[70%]' : 'flex-1 min-w-0'
+                  message.role === 'user' ? 'max-w-[70%]' : 'w-full'
                 } rounded-xl p-5 shadow-sm transition-all hover:shadow-md ${
                   message.role === 'user'
                     ? 'bg-gradient-to-br from-primary to-primary/90 text-primary-foreground'

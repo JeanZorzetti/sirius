@@ -82,11 +82,11 @@ function TextChunk({ content }: { content: string }) {
   }
 
   return (
-    <div className="prose prose-base dark:prose-invert max-w-none w-full break-words">
+    <div className="w-full" style={{ wordWrap: 'break-word', overflowWrap: 'break-word', whiteSpace: 'normal' }}>
       <ReactMarkdown
         components={{
           // Customize markdown rendering
-          p: ({ children }) => <p className="mb-4 last:mb-0 leading-relaxed text-base">{children}</p>,
+          p: ({ children }) => <p className="mb-4 last:mb-0 leading-relaxed text-base" style={{ whiteSpace: 'normal' }}>{children}</p>,
           ul: ({ children }) => <ul className="list-disc ml-6 mb-4 space-y-2">{children}</ul>,
           ol: ({ children }) => <ol className="list-decimal ml-6 mb-4 space-y-2">{children}</ol>,
           li: ({ children }) => <li className="leading-relaxed text-base">{children}</li>,
