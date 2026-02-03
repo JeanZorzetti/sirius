@@ -32,6 +32,12 @@ import { SEOTrendsChart } from '@/components/admin/seo-trends-chart'
 import { SEOTrendingKeywords } from '@/components/admin/seo-trending-keywords'
 import { SEOCoverageDashboard } from '@/components/admin/seo-coverage-dashboard'
 import { SEOIndexationErrors } from '@/components/admin/seo-indexation-errors'
+import { SEOAnomalyAlerts } from '@/components/admin/seo-anomaly-alerts'
+import {
+  detectAnomalies,
+  historyToTimeSeries,
+  type DetectAnomaliesResponse,
+} from '@/lib/ml/anomaly-detection'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Search, MousePointer, Eye, TrendingUp, AlertCircle, Loader2, Sparkles, TrendingDown, Minus, Target } from 'lucide-react'
 
@@ -67,6 +73,7 @@ async function SEOContent({ searchParams }: { searchParams: { from?: string; to?
   let inspectionResults: URLInspectionResult[] = []
   let inspectionErrors: InspectionError[] = []
   let coverageSummary: CoverageSummary | null = null
+  let anomalyResults: DetectAnomaliesResponse | null = null
   let error: string | null = null
 
   try {
@@ -138,6 +145,25 @@ async function SEOContent({ searchParams }: { searchParams: { from?: string; to?
       } catch (inspectionError) {
         console.error('Error inspecting URLs:', inspectionError)
         // Don't fail the whole page if URL inspection fails
+      }
+    }
+
+    // Anomaly Detection: Detect anomalies in clicks using ML
+    // This is done separately to not block the page if ML API is unavailable
+    if (metrics && metrics.history.length > 0) {
+      try {
+        const clicksData = historyToTimeSeries(metrics.history, 'clicks')
+
+        anomalyResults = await detectAnomalies({
+          data: clicksData,
+          metric_type: 'clicks',
+          window_size: 14,
+          z_threshold: 3.0,
+          method: 'combined',
+        })
+      } catch (anomalyError) {
+        console.error('Error detecting anomalies:', anomalyError)
+        // Gracefully degrade if ML API is not available
       }
     }
   } catch (e) {
@@ -422,6 +448,9 @@ async function SEOContent({ searchParams }: { searchParams: { from?: string; to?
           <SEOMetricsChart data={chartData} showForecast={true} />
         </CardContent>
       </Card>
+
+      {/* Anomaly Detection Alerts (ML) */}
+      <SEOAnomalyAlerts results={anomalyResults} />
 
       {/* Device Breakdown */}
       {devices && devices.length > 0 && (
