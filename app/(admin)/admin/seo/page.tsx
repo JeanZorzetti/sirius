@@ -10,6 +10,7 @@ import {
 import { generateForecast, combineDataForChart } from '@/lib/seo-forecasting'
 import { getCrUXMetricsBoth } from '@/lib/crux-report'
 import { getPageSpeedMetricsBatch } from '@/lib/pagespeed-insights'
+import { compareKeywords, getRelatedQueries, getTrendingSearches } from '@/lib/google-trends'
 import { SEOMetricsChart } from '@/components/admin/seo-chart'
 import { DateRangePicker } from '@/components/admin/date-range-picker'
 import { SeoAssistant } from '@/components/admin/seo-assistant'
@@ -19,6 +20,8 @@ import { SEOSearchAppearances } from '@/components/admin/seo-appearances'
 import { SEOKeywordOpportunities } from '@/components/admin/seo-opportunities'
 import { SEOWebVitals } from '@/components/admin/seo-web-vitals'
 import { SEOCriticalPages } from '@/components/admin/seo-critical-pages'
+import { SEOTrendsChart } from '@/components/admin/seo-trends-chart'
+import { SEOTrendingKeywords } from '@/components/admin/seo-trending-keywords'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Search, MousePointer, Eye, TrendingUp, AlertCircle, Loader2, Sparkles, TrendingDown, Minus, Target } from 'lucide-react'
 
@@ -48,14 +51,20 @@ async function SEOContent({ searchParams }: { searchParams: { from?: string; to?
   let opportunities
   let cruxData
   let pageSpeedPages
+  let trendsData
+  let relatedQueriesData
+  let trendingSearches
   let error: string | null = null
 
   try {
     // Get site URL for Core Web Vitals
     const siteUrl = process.env.GOOGLE_SEARCH_CONSOLE_SITE_URL || 'https://sirius.roilabs.com.br/'
 
+    // Keywords to track in Google Trends (customize based on your niche)
+    const trackingKeywords = ['crm', 'crm online', 'automação de vendas']
+
     // Fetch all metrics in parallel
-    ;[metrics, countries, devices, appearances, opportunities, cruxData, pageSpeedPages] = await Promise.all([
+    ;[metrics, countries, devices, appearances, opportunities, cruxData, pageSpeedPages, trendsData, relatedQueriesData, trendingSearches] = await Promise.all([
       getSEOMetrics({
         startDate: searchParams.from,
         endDate: searchParams.to,
@@ -87,6 +96,12 @@ async function SEOContent({ searchParams }: { searchParams: { from?: string; to?
         const topPages = metricsData.pages.slice(0, 5).map(p => p.page)
         return getPageSpeedMetricsBatch(topPages, 'mobile')
       }),
+      // Google Trends: Interest over time
+      compareKeywords(trackingKeywords, { geo: 'BR', timeRange: 'today 12-m' }),
+      // Google Trends: Related queries
+      Promise.all(trackingKeywords.map(kw => getRelatedQueries(kw, { geo: 'BR' }))),
+      // Google Trends: Trending searches
+      getTrendingSearches('BR'),
     ])
   } catch (e) {
     console.error('Error fetching SEO metrics:', e)
@@ -402,6 +417,19 @@ async function SEOContent({ searchParams }: { searchParams: { from?: string; to?
       {/* Critical Pages */}
       {pageSpeedPages && pageSpeedPages.length > 0 && (
         <SEOCriticalPages pages={pageSpeedPages} />
+      )}
+
+      {/* Google Trends Chart */}
+      {trendsData && trendsData.length > 0 && (
+        <SEOTrendsChart trendsData={trendsData} />
+      )}
+
+      {/* Trending Keywords & Related Queries */}
+      {relatedQueriesData && relatedQueriesData.length > 0 && (
+        <SEOTrendingKeywords
+          relatedQueries={relatedQueriesData.filter((r): r is import('@/lib/google-trends').RelatedQueriesData => !('error' in r))}
+          trendingSearches={trendingSearches && 'error' in trendingSearches ? null : trendingSearches}
+        />
       )}
 
       {/* Tables Side by Side */}
