@@ -212,9 +212,9 @@ IMPORTANT: Use the intelligence analysis above to inform your decision. If a com
       apiKey: process.env.GROQ_API_KEY!,
     })
 
-    // Use Llama 3 Groq 70B Tool-Use model (specialized for tool calling - 90.76% BFCL accuracy)
-    // Falls back to Llama 3.3 70B Versatile if tool-use model is not available
-    const modelName = 'llama3-groq-70b-8192-tool-use-preview'
+    // Use Llama 3.3 70B Versatile (official model with superior tool calling support)
+    // Replaces deprecated llama3-groq-70b-8192-tool-use-preview (deprecated Jan 6, 2025)
+    const modelName = 'llama-3.3-70b-versatile'
 
     // 10. Define render UI component tool (manual definition to avoid TypeScript issues)
     const renderUIComponentTool: any = {
@@ -332,93 +332,55 @@ IMPORTANT: Use the intelligence analysis above to inform your decision. If a com
     }
 
     // 11. Stream response with render_ui_component tool
-    let result;
-    try {
-      result = streamText({
-        model: groq(modelName),
-        system: fullSystemPrompt,
-        messages,
-        temperature: 0.7,
-        stopWhen: stepCountIs(5), // Allow up to 5 steps for tool calls (AI can call render_ui_component)
-        tools: {
-          render_ui_component: renderUIComponentTool
-        },
+    const result = streamText({
+      model: groq(modelName),
+      system: fullSystemPrompt,
+      messages,
+      temperature: 0.7,
+      stopWhen: stepCountIs(5), // Allow up to 5 steps for tool calls (AI can call render_ui_component)
+      tools: {
+        render_ui_component: renderUIComponentTool
+      },
 
-        onFinish: async ({ usage, finishReason }) => {
-          // Record usage
-          await recordUsage(
-            user.organizationId,
-            userId,
-            usage.totalTokens || 0,
-            plan
+      onFinish: async ({ usage, finishReason }) => {
+        // Record usage
+        await recordUsage(
+          user.organizationId,
+          userId,
+          usage.totalTokens || 0,
+          plan
+        )
+
+        // Update SPIN session if exists
+        if (spinSession) {
+          const history = await getConversationHistory(spinSession.sessionId)
+          const userMessage = messages[messages.length - 1]?.content || ''
+          const nextStateTransition = determineNextSPINState(
+            spinSession.spinState || 'Situation',
+            userMessage,
+            history,
+            spinSession.diagnosticMode || 'complete'
+          )
+          const qualScore = calculateQualificationScore(spinSession, history)
+
+          await updateSession(spinSession.sessionId, {
+            spinState: nextStateTransition.toState,
+            qualificationScore: qualScore,
+          })
+        }
+
+        // Save conversation
+        if (sessionId) {
+          await saveMessage(
+            sessionId,
+            'user',
+            messages[messages.length - 1]?.content || ''
           )
 
-          // Update SPIN session if exists
-          if (spinSession) {
-            const history = await getConversationHistory(spinSession.sessionId)
-            const userMessage = messages[messages.length - 1]?.content || ''
-            const nextStateTransition = determineNextSPINState(
-              spinSession.spinState || 'Situation',
-              userMessage,
-              history,
-              spinSession.diagnosticMode || 'complete'
-            )
-            const qualScore = calculateQualificationScore(spinSession, history)
-
-            await updateSession(spinSession.sessionId, {
-              spinState: nextStateTransition.toState,
-              qualificationScore: qualScore,
-            })
-          }
-
-          // Save conversation
-          if (sessionId) {
-            await saveMessage(
-              sessionId,
-              'user',
-              messages[messages.length - 1]?.content || ''
-            )
-
-            // AI response will be saved when streaming completes
-          }
-        },
-      })
-    } catch (modelError: any) {
-      // Fallback to Llama 3.3 70B Versatile if tool-use model fails
-      console.warn('[GROQ] Tool-use model failed, falling back to versatile model:', modelError.message)
-      const fallbackModel = 'llama-3.3-70b-versatile'
-      result = streamText({
-        model: groq(fallbackModel),
-        system: fullSystemPrompt,
-        messages,
-        temperature: 0.7,
-        stopWhen: stepCountIs(5),
-        tools: {
-          render_ui_component: renderUIComponentTool
-        },
-        onFinish: async ({ usage, finishReason }) => {
-          await recordUsage(user.organizationId, userId, usage.totalTokens || 0, plan)
-          if (spinSession) {
-            const history = await getConversationHistory(spinSession.sessionId)
-            const userMessage = messages[messages.length - 1]?.content || ''
-            const nextStateTransition = determineNextSPINState(
-              spinSession.spinState || 'Situation',
-              userMessage,
-              history,
-              spinSession.diagnosticMode || 'complete'
-            )
-            const qualScore = calculateQualificationScore(spinSession, history)
-            await updateSession(spinSession.sessionId, {
-              spinState: nextStateTransition.toState,
-              qualificationScore: qualScore,
-            })
-          }
-          if (sessionId) {
-            await saveMessage(sessionId, 'user', messages[messages.length - 1]?.content || '')
-          }
-        },
-      })
-    }
+          // AI response will be saved when streaming completes
+        }
+      },
+    })
 
     // 12. Create custom NDJSON stream for frontend parsing
     const encoder = new TextEncoder()

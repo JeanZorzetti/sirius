@@ -75,24 +75,29 @@ const TRIGGER_RULES: TriggerRule[] = [
   {
     component: 'ROICalculator',
     intents: ['roi_calculation', 'pricing_inquiry'],
-    spinStages: ['Implication', 'NeedPayoff'],
-    minLeadScore: 30,
-    requiredEntities: ['monetaryValues'],
-    baseScore: 60,
+    spinStages: ['Situation', 'Problem', 'Implication', 'NeedPayoff'], // Allow in any SPIN stage
+    minLeadScore: 20, // Lower threshold to allow showing calculator sooner
+    requiredEntities: [], // Don't require monetary values - can show calculator with defaults
+    baseScore: 70, // Higher base score since ROI is important
     bonuses: [
       {
         condition: (ctx) => ctx.entities.monetaryValues.some(v => v.context === 'cost'),
         points: 20,
-        description: 'Has cost data',
+        description: 'Has cost data for prefill',
+      },
+      {
+        condition: (ctx) => ctx.intent.primary === 'roi_calculation',
+        points: 25,
+        description: 'Direct ROI question',
       },
       {
         condition: (ctx) => ctx.spinState === 'Implication',
-        points: 15,
+        points: 10,
         description: 'In Implication stage',
       },
       {
         condition: (ctx) => ctx.leadScore >= 50,
-        points: 10,
+        points: 5,
         description: 'Lead score >= 50',
       },
     ],
