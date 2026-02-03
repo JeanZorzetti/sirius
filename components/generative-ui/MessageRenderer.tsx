@@ -28,9 +28,9 @@ export function MessageRenderer({ chunks, onInteraction }: MessageRendererProps)
   }
 
   return (
-    <div className="message-content space-y-4">
+    <div className="message-content space-y-4 w-full min-w-0">
       {chunks.map((chunk, index) => (
-        <div key={index} className="animate-fade-in-up" style={{ animationDelay: `${index * 0.1}s` }}>
+        <div key={index} className="animate-fade-in-up w-full" style={{ animationDelay: `${index * 0.1}s` }}>
           <ChunkRenderer
             chunk={chunk}
             onInteraction={onInteraction}
@@ -82,7 +82,7 @@ function TextChunk({ content }: { content: string }) {
   }
 
   return (
-    <div className="prose prose-base dark:prose-invert max-w-none">
+    <div className="prose prose-base dark:prose-invert max-w-none w-full break-words">
       <ReactMarkdown
         components={{
           // Customize markdown rendering

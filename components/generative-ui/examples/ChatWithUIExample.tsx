@@ -21,7 +21,6 @@ import { MessageRenderer, parseMessageChunks } from '../MessageRenderer'
 import { ThinkingIndicator } from '../ThinkingIndicator'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { ScrollArea } from '@/components/ui/scroll-area'
 import { Send, Sparkles } from 'lucide-react'
 import type { StreamChunk, ComponentInteraction } from '@/lib/generative-ui/types'
 
@@ -225,8 +224,8 @@ export function ChatWithUIExample({
       </div>
 
       {/* Messages */}
-      <ScrollArea className="flex-1 px-8 py-6" ref={scrollRef}>
-        <div className="space-y-8 max-w-5xl mx-auto">
+      <div className="flex-1 overflow-y-auto overflow-x-hidden px-8 py-6" ref={scrollRef}>
+        <div className="space-y-8 w-full">
           {messages.length === 0 && (
             <div className="text-center text-muted-foreground py-16 animate-fade-in">
               <div className="relative inline-block mb-6">
@@ -254,7 +253,7 @@ export function ChatWithUIExample({
             >
               <div
                 className={`${
-                  message.role === 'user' ? 'max-w-[75%]' : 'max-w-full'
+                  message.role === 'user' ? 'max-w-[70%]' : 'flex-1 min-w-0'
                 } rounded-xl p-5 shadow-sm transition-all hover:shadow-md ${
                   message.role === 'user'
                     ? 'bg-gradient-to-br from-primary to-primary/90 text-primary-foreground'
@@ -283,7 +282,7 @@ export function ChatWithUIExample({
             </div>
           )}
         </div>
-      </ScrollArea>
+      </div>
 
       {/* Input */}
       <div className="p-6 border-t bg-muted/20 backdrop-blur-sm">
