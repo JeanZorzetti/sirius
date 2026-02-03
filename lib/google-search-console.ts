@@ -65,6 +65,37 @@ export interface SEODeviceData {
   percentage: number
 }
 
+export interface SearchAppearanceData {
+  type: string
+  typeName: string
+  clicks: number
+  impressions: number
+  ctr: number
+  position: number
+  topQueries: Array<{
+    query: string
+    clicks: number
+    impressions: number
+  }>
+}
+
+export interface KeywordOpportunity {
+  query: string
+  page?: string
+  clicks: number
+  impressions: number
+  ctr: number
+  position: number
+  opportunityType: 'page_2' | 'low_ctr'
+  potentialClicks?: number
+}
+
+export interface KeywordOpportunitiesData {
+  page2Keywords: KeywordOpportunity[]
+  lowCTRKeywords: KeywordOpportunity[]
+  totalPotential: number
+}
+
 // Get authenticated Search Console client
 async function getSearchConsoleClient() {
   const clientEmail = process.env.GOOGLE_CLIENT_EMAIL
@@ -145,6 +176,24 @@ function getCountryName(countryCode: string): string {
   }
 
   return countryNames[countryCode.toLowerCase()] || countryCode.toUpperCase()
+}
+
+// Convert search appearance type to readable name
+function getSearchAppearanceName(type: string): string {
+  const appearanceNames: Record<string, string> = {
+    'AMP_BLUE_LINK': 'AMP (Links Azuis)',
+    'AMP_TOP_STORIES': 'AMP Top Stories',
+    'RICHCARD': 'Rich Cards',
+    'VIDEO': 'Vídeos',
+    'DISCOVERY': 'Google Discover',
+    'WEB_LIGHT_RESULT': 'Web Light',
+    'ANDROID_APP': 'App Android',
+    'RECIPE': 'Receitas',
+    'JOB_LISTING': 'Vagas de Emprego',
+    'SPECIAL_ANNOUNCEMENT': 'Anúncios Especiais',
+  }
+
+  return appearanceNames[type] || type
 }
 
 export async function getSEOMetrics(params?: SEOMetricsParams): Promise<SEOMetrics> {
@@ -350,4 +399,188 @@ export async function getSEOByDevice(params?: SEOMetricsParams): Promise<SEODevi
   })
 
   return devices
+}
+
+/**
+ * Get search appearances (rich results, AMP, video, etc.)
+ */
+export async function getSearchAppearances(
+  params?: SEOMetricsParams
+): Promise<SearchAppearanceData[]> {
+  const searchConsole = await getSearchConsoleClient()
+  const siteUrl = process.env.GOOGLE_SEARCH_CONSOLE_SITE_URL || 'https://sirius.roilabs.com.br/'
+
+  const defaultRange = getDefaultDateRange()
+  const startDate = params?.startDate && isValidDate(params.startDate)
+    ? params.startDate
+    : defaultRange.startDate
+  const endDate = params?.endDate && isValidDate(params.endDate)
+    ? params.endDate
+    : defaultRange.endDate
+
+  // First, get all search appearance types
+  const appearanceTypesResponse = await searchConsole.searchanalytics.query({
+    siteUrl,
+    requestBody: {
+      startDate,
+      endDate,
+      dimensions: ['searchAppearance'],
+      rowLimit: 50,
+    },
+  })
+
+  const appearances: SearchAppearanceData[] = []
+
+  // For each appearance type, get top queries
+  for (const row of appearanceTypesResponse.data.rows || []) {
+    const appearanceType = row.keys?.[0] || ''
+
+    // Get top 5 queries for this appearance type
+    const queriesResponse = await searchConsole.searchanalytics.query({
+      siteUrl,
+      requestBody: {
+        startDate,
+        endDate,
+        dimensions: ['query'],
+        dimensionFilterGroups: [
+          {
+            filters: [
+              {
+                dimension: 'searchAppearance',
+                operator: 'equals',
+                expression: appearanceType,
+              },
+            ],
+          },
+        ],
+        rowLimit: 5,
+      },
+    })
+
+    appearances.push({
+      type: appearanceType,
+      typeName: getSearchAppearanceName(appearanceType),
+      clicks: row.clicks || 0,
+      impressions: row.impressions || 0,
+      ctr: (row.ctr || 0) * 100,
+      position: row.position || 0,
+      topQueries: (queriesResponse.data.rows || []).map((queryRow) => ({
+        query: queryRow.keys?.[0] || '',
+        clicks: queryRow.clicks || 0,
+        impressions: queryRow.impressions || 0,
+      })),
+    })
+  }
+
+  // Sort by impressions (most visible first)
+  return appearances.sort((a, b) => b.impressions - a.impressions)
+}
+
+/**
+ * Get keyword opportunities (page 2 keywords and low CTR keywords)
+ */
+export async function getKeywordOpportunities(
+  params?: SEOMetricsParams
+): Promise<KeywordOpportunitiesData> {
+  const searchConsole = await getSearchConsoleClient()
+  const siteUrl = process.env.GOOGLE_SEARCH_CONSOLE_SITE_URL || 'https://sirius.roilabs.com.br/'
+
+  const defaultRange = getDefaultDateRange()
+  const startDate = params?.startDate && isValidDate(params.startDate)
+    ? params.startDate
+    : defaultRange.startDate
+  const endDate = params?.endDate && isValidDate(params.endDate)
+    ? params.endDate
+    : defaultRange.endDate
+
+  // Query 1: Keywords on page 2 (position 11-20) - Quick wins
+  const page2Response = await searchConsole.searchanalytics.query({
+    siteUrl,
+    requestBody: {
+      startDate,
+      endDate,
+      dimensions: ['query'],
+      rowLimit: 50,
+    },
+  })
+
+  // Filter for page 2 positions (11-20)
+  const page2Keywords: KeywordOpportunity[] = (page2Response.data.rows || [])
+    .filter((row) => {
+      const position = row.position || 0
+      return position > 10 && position <= 20
+    })
+    .map((row) => {
+      const currentPosition = row.position || 0
+      const currentCTR = (row.ctr || 0) * 100
+      const impressions = row.impressions || 0
+
+      // Estimate potential clicks if moved to position 5 (assume 5% CTR)
+      const potentialCTR = 5
+      const potentialClicks = Math.round((impressions * potentialCTR) / 100)
+
+      return {
+        query: row.keys?.[0] || '',
+        clicks: row.clicks || 0,
+        impressions,
+        ctr: currentCTR,
+        position: currentPosition,
+        opportunityType: 'page_2' as const,
+        potentialClicks,
+      }
+    })
+    .sort((a, b) => (b.potentialClicks || 0) - (a.potentialClicks || 0))
+    .slice(0, 20)
+
+  // Query 2: Keywords with high impressions but low CTR
+  const lowCTRResponse = await searchConsole.searchanalytics.query({
+    siteUrl,
+    requestBody: {
+      startDate,
+      endDate,
+      dimensions: ['query', 'page'],
+      rowLimit: 100,
+    },
+  })
+
+  // Filter for high impressions (>50) but low CTR (<2%)
+  const lowCTRKeywords: KeywordOpportunity[] = (lowCTRResponse.data.rows || [])
+    .filter((row) => {
+      const impressions = row.impressions || 0
+      const ctr = (row.ctr || 0) * 100
+      const position = row.position || 0
+      return impressions > 50 && ctr < 2 && position <= 10 // Only top 10 positions
+    })
+    .map((row) => {
+      const currentCTR = (row.ctr || 0) * 100
+      const impressions = row.impressions || 0
+
+      // Estimate potential clicks with improved CTR (3%)
+      const targetCTR = 3
+      const potentialClicks = Math.round((impressions * targetCTR) / 100)
+
+      return {
+        query: row.keys?.[0] || '',
+        page: row.keys?.[1],
+        clicks: row.clicks || 0,
+        impressions,
+        ctr: currentCTR,
+        position: row.position || 0,
+        opportunityType: 'low_ctr' as const,
+        potentialClicks,
+      }
+    })
+    .sort((a, b) => (b.potentialClicks || 0) - (a.potentialClicks || 0))
+    .slice(0, 20)
+
+  // Calculate total potential
+  const totalPotential =
+    page2Keywords.reduce((sum, k) => sum + (k.potentialClicks || 0), 0) +
+    lowCTRKeywords.reduce((sum, k) => sum + (k.potentialClicks || 0), 0)
+
+  return {
+    page2Keywords,
+    lowCTRKeywords,
+    totalPotential,
+  }
 }

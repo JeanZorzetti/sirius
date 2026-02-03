@@ -1,12 +1,20 @@
 import { Metadata } from 'next'
 import { Suspense } from 'react'
-import { getSEOMetrics, getSEOByCountry, getSEOByDevice } from '@/lib/google-search-console'
+import {
+  getSEOMetrics,
+  getSEOByCountry,
+  getSEOByDevice,
+  getSearchAppearances,
+  getKeywordOpportunities,
+} from '@/lib/google-search-console'
 import { generateForecast, combineDataForChart } from '@/lib/seo-forecasting'
 import { SEOMetricsChart } from '@/components/admin/seo-chart'
 import { DateRangePicker } from '@/components/admin/date-range-picker'
 import { SeoAssistant } from '@/components/admin/seo-assistant'
 import { SEODeviceBreakdown } from '@/components/admin/seo-device-breakdown'
 import { SEOCountryTable } from '@/components/admin/seo-country-table'
+import { SEOSearchAppearances } from '@/components/admin/seo-appearances'
+import { SEOKeywordOpportunities } from '@/components/admin/seo-opportunities'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Search, MousePointer, Eye, TrendingUp, AlertCircle, Loader2, Sparkles, TrendingDown, Minus, Target } from 'lucide-react'
 
@@ -32,11 +40,13 @@ async function SEOContent({ searchParams }: { searchParams: { from?: string; to?
   let metrics
   let countries
   let devices
+  let appearances
+  let opportunities
   let error: string | null = null
 
   try {
     // Fetch all metrics in parallel
-    ;[metrics, countries, devices] = await Promise.all([
+    ;[metrics, countries, devices, appearances, opportunities] = await Promise.all([
       getSEOMetrics({
         startDate: searchParams.from,
         endDate: searchParams.to,
@@ -46,6 +56,14 @@ async function SEOContent({ searchParams }: { searchParams: { from?: string; to?
         endDate: searchParams.to,
       }),
       getSEOByDevice({
+        startDate: searchParams.from,
+        endDate: searchParams.to,
+      }),
+      getSearchAppearances({
+        startDate: searchParams.from,
+        endDate: searchParams.to,
+      }),
+      getKeywordOpportunities({
         startDate: searchParams.from,
         endDate: searchParams.to,
       }),
@@ -341,6 +359,16 @@ async function SEOContent({ searchParams }: { searchParams: { from?: string; to?
       {/* Country Breakdown */}
       {countries && countries.length > 0 && (
         <SEOCountryTable countries={countries} />
+      )}
+
+      {/* Search Appearances */}
+      {appearances && (
+        <SEOSearchAppearances appearances={appearances} />
+      )}
+
+      {/* Keyword Opportunities */}
+      {opportunities && (
+        <SEOKeywordOpportunities opportunities={opportunities} />
       )}
 
       {/* Tables Side by Side */}

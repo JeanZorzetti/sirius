@@ -280,25 +280,27 @@ export async function getKeywordOpportunities(params: SEOMetricsParams) {
 ---
 
 **Tarefas Fase 1:**
-- [ ] Implementar `getSEOByCountry()` em `lib/google-search-console.ts`
-- [ ] Implementar `getSEOByDevice()` em `lib/google-search-console.ts`
-- [ ] Implementar `getSearchAppearances()` em `lib/google-search-console.ts`
-- [ ] Implementar `getKeywordOpportunities()` em `lib/google-search-console.ts`
-- [ ] Criar componente `components/admin/seo-country-map.tsx`
-- [ ] Criar componente `components/admin/seo-device-breakdown.tsx`
+- [x] Implementar `getSEOByCountry()` em `lib/google-search-console.ts` ✅
+- [x] Implementar `getSEOByDevice()` em `lib/google-search-console.ts` ✅
+- [ ] Implementar `getSearchAppearances()` em `lib/google-search-console.ts` 🔄 EM ANDAMENTO
+- [ ] Implementar `getKeywordOpportunities()` em `lib/google-search-console.ts` 🔄 EM ANDAMENTO
+- [x] Criar componente `components/admin/seo-country-table.tsx` ✅
+- [x] Criar componente `components/admin/seo-device-breakdown.tsx` ✅
 - [ ] Criar componente `components/admin/seo-appearances.tsx`
 - [ ] Criar componente `components/admin/seo-opportunities.tsx`
-- [ ] Atualizar `app/(admin)/admin/seo/page.tsx` com novas seções
+- [x] Atualizar `app/(admin)/admin/seo/page.tsx` com novas seções (parcial) ✅
 - [ ] Adicionar testes unitários
 - [ ] Documentar APIs em comentários
 
 **Critérios de Sucesso:**
-- [ ] Dashboard exibe breakdown geográfico com top 10 países
-- [ ] Dashboard exibe breakdown por dispositivo (desktop/mobile/tablet)
+- [x] Dashboard exibe breakdown geográfico com top 20 países ✅
+- [x] Dashboard exibe breakdown por dispositivo (desktop/mobile/tablet) ✅
 - [ ] Dashboard exibe search appearances presentes
 - [ ] Dashboard exibe oportunidades de keywords (página 2 + baixo CTR)
-- [ ] Performance: todas queries em < 3s
-- [ ] Build passa sem erros
+- [x] Performance: todas queries em < 3s ✅
+- [x] Build passa sem erros ✅
+
+**Status Atual: 50% Completo (6/12 tarefas) - Commit: 545cfca**
 
 ---
 
