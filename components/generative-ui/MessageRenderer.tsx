@@ -27,10 +27,13 @@ export function MessageRenderer({ chunks, onInteraction }: MessageRendererProps)
     return null
   }
 
-  // Renderiza chunks diretamente sem wrappers extras
+  // IMPORTANTE: Combina chunks de texto consecutivos em um único chunk
+  // O streaming envia cada palavra como chunk separado, o que quebra o layout
+  const consolidatedChunks = consolidateTextChunks(chunks)
+
   return (
     <>
-      {chunks.map((chunk, index) => (
+      {consolidatedChunks.map((chunk, index) => (
         <ChunkRenderer
           key={index}
           chunk={chunk}
@@ -39,6 +42,36 @@ export function MessageRenderer({ chunks, onInteraction }: MessageRendererProps)
       ))}
     </>
   )
+}
+
+/**
+ * Combina chunks de texto consecutivos em um único chunk
+ * Isso resolve o problema de cada palavra vir como chunk separado do streaming
+ */
+function consolidateTextChunks(chunks: StreamChunk[]): StreamChunk[] {
+  const result: StreamChunk[] = []
+  let textBuffer = ''
+
+  for (const chunk of chunks) {
+    if (chunk.type === 'text') {
+      // Acumula texto
+      textBuffer += chunk.content
+    } else {
+      // Flush do buffer de texto antes de adicionar outro tipo
+      if (textBuffer) {
+        result.push({ type: 'text', content: textBuffer })
+        textBuffer = ''
+      }
+      result.push(chunk)
+    }
+  }
+
+  // Flush final do buffer
+  if (textBuffer) {
+    result.push({ type: 'text', content: textBuffer })
+  }
+
+  return result
 }
 
 interface ChunkRendererProps {
