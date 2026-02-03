@@ -150,6 +150,9 @@ export async function POST(req: NextRequest) {
     const spinState = spinSession?.spinState || 'Situation'
     const leadScore = spinSession?.qualificationScore || 30
 
+    // Get last user message for debugging
+    const lastUserMsg = messages.filter(m => m.role === 'user').pop()?.content || ''
+
     const intelligenceResult = analyzeConversation({
       messages: messages.map(m => ({ role: m.role, content: m.content })),
       spinState: spinState as any,
@@ -162,11 +165,16 @@ export async function POST(req: NextRequest) {
       } : undefined,
     })
 
+    console.log('[INTELLIGENCE] User message:', lastUserMsg)
     console.log('[INTELLIGENCE] Analysis result:', {
       intent: intelligenceResult.intent.primary,
+      confidence: intelligenceResult.intent.confidence,
       shouldRender: intelligenceResult.trigger.shouldRender,
       component: intelligenceResult.trigger.recommendation?.component,
+      score: intelligenceResult.trigger.recommendation?.score,
       reasoning: intelligenceResult.trigger.reasoning,
+      spinState,
+      leadScore,
     })
 
     // 8. Build enhanced system prompt with Generative UI capabilities

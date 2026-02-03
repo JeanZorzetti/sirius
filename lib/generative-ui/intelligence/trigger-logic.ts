@@ -408,14 +408,14 @@ export function evaluateTriggers(context: TriggerContext): TriggerResult {
   // Determine if we should render
   const shouldRender =
     topCandidate.canRender &&
-    topCandidate.score >= 60 &&
+    topCandidate.score >= 50 && // Lowered from 60 to be more permissive
     context.turnsSinceLastComponent >= 2
 
   let reasoning = ''
   if (!shouldRender) {
     if (!topCandidate.canRender) {
       reasoning = `Missing required data: ${topCandidate.missingData.join(', ')}`
-    } else if (topCandidate.score < 60) {
+    } else if (topCandidate.score < 50) {
       reasoning = `Score too low (${topCandidate.score}/100) - not confident enough`
     } else if (context.turnsSinceLastComponent < 2) {
       reasoning = 'Too soon after last component - maintaining conversation flow'
