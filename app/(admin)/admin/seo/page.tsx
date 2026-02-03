@@ -11,6 +11,14 @@ import { generateForecast, combineDataForChart } from '@/lib/seo-forecasting'
 import { getCrUXMetricsBoth } from '@/lib/crux-report'
 import { getPageSpeedMetricsBatch } from '@/lib/pagespeed-insights'
 import { compareKeywords, getRelatedQueries, getTrendingSearches } from '@/lib/google-trends'
+import {
+  inspectURLsBatch,
+  extractErrors,
+  generateCoverageSummary,
+  type URLInspectionResult,
+  type InspectionError,
+  type CoverageSummary,
+} from '@/lib/url-inspection'
 import { SEOMetricsChart } from '@/components/admin/seo-chart'
 import { DateRangePicker } from '@/components/admin/date-range-picker'
 import { SeoAssistant } from '@/components/admin/seo-assistant'
@@ -22,6 +30,8 @@ import { SEOWebVitals } from '@/components/admin/seo-web-vitals'
 import { SEOCriticalPages } from '@/components/admin/seo-critical-pages'
 import { SEOTrendsChart } from '@/components/admin/seo-trends-chart'
 import { SEOTrendingKeywords } from '@/components/admin/seo-trending-keywords'
+import { SEOCoverageDashboard } from '@/components/admin/seo-coverage-dashboard'
+import { SEOIndexationErrors } from '@/components/admin/seo-indexation-errors'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Search, MousePointer, Eye, TrendingUp, AlertCircle, Loader2, Sparkles, TrendingDown, Minus, Target } from 'lucide-react'
 
@@ -54,6 +64,9 @@ async function SEOContent({ searchParams }: { searchParams: { from?: string; to?
   let trendsData
   let relatedQueriesData
   let trendingSearches
+  let inspectionResults: URLInspectionResult[] = []
+  let inspectionErrors: InspectionError[] = []
+  let coverageSummary: CoverageSummary | null = null
   let error: string | null = null
 
   try {
@@ -103,6 +116,30 @@ async function SEOContent({ searchParams }: { searchParams: { from?: string; to?
       // Google Trends: Trending searches
       getTrendingSearches('BR'),
     ])
+
+    // URL Inspection: Inspect top 10 pages (after getting metrics)
+    // This is done separately due to rate limiting concerns
+    if (metrics && metrics.pages.length > 0) {
+      try {
+        const topPages = metrics.pages.slice(0, 10).map(p => {
+          // Ensure full URL
+          const pageUrl = p.page.startsWith('http') ? p.page : `${siteUrl}${p.page}`
+          return pageUrl
+        })
+
+        // Inspect URLs with 2 second delay between each (rate limiting)
+        inspectionResults = await inspectURLsBatch(topPages, 2000)
+
+        // Extract errors and generate summary
+        if (inspectionResults.length > 0) {
+          inspectionErrors = extractErrors(inspectionResults)
+          coverageSummary = generateCoverageSummary(inspectionResults)
+        }
+      } catch (inspectionError) {
+        console.error('Error inspecting URLs:', inspectionError)
+        // Don't fail the whole page if URL inspection fails
+      }
+    }
   } catch (e) {
     console.error('Error fetching SEO metrics:', e)
     error = e instanceof Error ? e.message : 'Failed to fetch SEO data'
@@ -417,6 +454,14 @@ async function SEOContent({ searchParams }: { searchParams: { from?: string; to?
       {/* Critical Pages */}
       {pageSpeedPages && pageSpeedPages.length > 0 && (
         <SEOCriticalPages pages={pageSpeedPages} />
+      )}
+
+      {/* URL Inspection: Coverage Dashboard */}
+      <SEOCoverageDashboard summary={coverageSummary} />
+
+      {/* URL Inspection: Indexation Errors */}
+      {inspectionErrors.length > 0 && (
+        <SEOIndexationErrors errors={inspectionErrors} />
       )}
 
       {/* Google Trends Chart */}
