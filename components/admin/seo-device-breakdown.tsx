@@ -37,12 +37,20 @@ const DEVICE_CONFIG = {
 }
 
 export function SEODeviceBreakdown({ devices }: SEODeviceBreakdownProps) {
-  // Prepare data for pie chart
-  const chartData = devices.map((device) => ({
-    name: DEVICE_CONFIG[device.device].label,
-    value: device.clicks,
-    percentage: device.percentage,
-  }))
+  // Safety check
+  if (!devices || devices.length === 0) {
+    return null
+  }
+
+  // Prepare data for pie chart - filter out invalid devices
+  const chartData = devices
+    .filter((device) => device.device && DEVICE_CONFIG[device.device])
+    .map((device) => ({
+      name: DEVICE_CONFIG[device.device].label,
+      value: device.clicks,
+      percentage: device.percentage,
+      deviceType: device.device,
+    }))
 
   // Detect mobile issues (mobile CTR significantly lower than desktop)
   const desktopDevice = devices.find((d) => d.device === 'desktop')
