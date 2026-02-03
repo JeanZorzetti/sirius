@@ -224,7 +224,7 @@ export function ChatWithUIExample({
 
       {/* Messages */}
       <ScrollArea ref={scrollRef} className="flex-1 px-4">
-        <div className="space-y-4 py-4">
+        <div className="space-y-4 py-4 w-full" style={{ minWidth: 0 }}>
           {messages.length === 0 && (
             <div className="text-center text-muted-foreground py-12">
               <Sparkles className="h-12 w-12 mx-auto mb-3 opacity-50" />

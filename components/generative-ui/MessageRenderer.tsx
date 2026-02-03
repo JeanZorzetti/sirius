@@ -27,17 +27,17 @@ export function MessageRenderer({ chunks, onInteraction }: MessageRendererProps)
     return null
   }
 
+  // Renderiza chunks diretamente sem wrappers extras
   return (
-    <div className="message-content space-y-4 w-full min-w-0">
+    <>
       {chunks.map((chunk, index) => (
-        <div key={index} className="animate-fade-in-up w-full" style={{ animationDelay: `${index * 0.1}s` }}>
-          <ChunkRenderer
-            chunk={chunk}
-            onInteraction={onInteraction}
-          />
-        </div>
+        <ChunkRenderer
+          key={index}
+          chunk={chunk}
+          onInteraction={onInteraction}
+        />
       ))}
-    </div>
+    </>
   )
 }
 
@@ -82,9 +82,9 @@ function TextChunk({ content }: { content: string }) {
   }
 
   return (
-    <div className="text-sm whitespace-pre-wrap">
+    <p className="text-sm whitespace-pre-wrap break-words">
       {content}
-    </div>
+    </p>
   )
 }
 
