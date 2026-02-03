@@ -224,7 +224,7 @@ IMPORTANT: Use the intelligence analysis above to inform your decision. If a com
     // Replaces deprecated llama3-groq-70b-8192-tool-use-preview (deprecated Jan 6, 2025)
     const modelName = 'llama-3.3-70b-versatile'
 
-    // 10. Define render UI component tool (manual definition to avoid TypeScript issues)
+    // 10. Define render UI component tool (simplified schema for better Groq compatibility)
     const renderUIComponentTool: any = {
       description: 'Renders a UI component dynamically based on the conversation context. Use this when you want to show interactive visualizations, calculators, forms, or dashboards to enhance the sales conversation.',
       parameters: z.object({
@@ -239,8 +239,8 @@ IMPORTANT: Use the intelligence analysis above to inform your decision. If a com
           'CompetitorComparison',
           'ValuePropositionBuilder',
           'NextStepsTimeline'
-        ]),
-        props: z.record(z.string(), z.any()),
+        ]).describe('The name of the UI component to render'),
+        props: z.object({}).passthrough().describe('Component properties as a JSON object. Pass an empty object {} if no props are needed.'),
         reasoning: z.string().optional().describe('Why you chose this component and how it helps the conversation')
       }),
       execute: async (input: any, options: any) => {
