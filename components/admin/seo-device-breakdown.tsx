@@ -133,7 +133,14 @@ export function SEODeviceBreakdown({ devices }: SEODeviceBreakdownProps) {
                     return [`${value.toLocaleString('pt-BR')} cliques`, 'Total']
                   }}
                 />
-                <Legend />
+                <Legend
+                  formatter={(value: string) => {
+                    // Find the device by name
+                    const device = devices.find(d => DEVICE_CONFIG[d.device].label === value)
+                    if (!device) return value
+                    return `${value} (${device.percentage.toFixed(1)}%)`
+                  }}
+                />
               </PieChart>
             </ResponsiveContainer>
           </div>
