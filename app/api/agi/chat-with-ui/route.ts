@@ -224,27 +224,16 @@ IMPORTANT: Use the intelligence analysis above to inform your decision. If a com
     // Replaces deprecated llama3-groq-70b-8192-tool-use-preview (deprecated Jan 6, 2025)
     const modelName = 'llama-3.3-70b-versatile'
 
-    // 10. Define render UI component tool (simplified schema for better Groq compatibility)
+    // 10. Define render UI component tool with explicit type annotation for compatibility
     const renderUIComponentTool: any = {
       description: 'Renders a UI component dynamically based on the conversation context. Use this when you want to show interactive visualizations, calculators, forms, or dashboards to enhance the sales conversation.',
       parameters: z.object({
-        componentName: z.enum([
-          'ROICalculator',
-          'DealFormGenerator',
-          'PricingComparison',
-          'DemoScheduler',
-          'QualificationDashboard',
-          'ObjectionHandler',
-          'SPINQuestionGenerator',
-          'CompetitorComparison',
-          'ValuePropositionBuilder',
-          'NextStepsTimeline'
-        ]).describe('The name of the UI component to render'),
-        props: z.object({}).passthrough().describe('Component properties as a JSON object. Pass an empty object {} if no props are needed.'),
-        reasoning: z.string().optional().describe('Why you chose this component and how it helps the conversation')
+        componentName: z.string().describe('The name of the UI component to render. Must be one of: ROICalculator, DealFormGenerator, PricingComparison, DemoScheduler, QualificationDashboard'),
+        props: z.object({}).passthrough().describe('Component properties as a JSON object. Can be empty {}'),
+        reasoning: z.string().optional().describe('Why you chose this component')
       }),
-      execute: async (input: any, options: any) => {
-        const { componentName, props, reasoning } = input
+      execute: async (args: any) => {
+        const { componentName, props, reasoning } = args
         console.log(`[TOOL CALL] render_ui_component invoked:`, { componentName, reasoning })
 
         // Build cache context (user context + component request)
