@@ -126,7 +126,7 @@ export function SEODeviceBreakdown({ devices }: SEODeviceBreakdownProps) {
                   dataKey="value"
                 >
                   {chartData.map((entry, index) => {
-                    const deviceType = devices[index].device
+                    const deviceType = entry.deviceType
                     return (
                       <Cell
                         key={`cell-${index}`}
@@ -143,8 +143,8 @@ export function SEODeviceBreakdown({ devices }: SEODeviceBreakdownProps) {
                 />
                 <Legend
                   formatter={(value: string) => {
-                    // Find the device by name
-                    const device = devices.find(d => DEVICE_CONFIG[d.device].label === value)
+                    // Find the device by name - with safety check
+                    const device = devices.find(d => d.device && DEVICE_CONFIG[d.device] && DEVICE_CONFIG[d.device].label === value)
                     if (!device) return value
                     return `${value} (${device.percentage.toFixed(1)}%)`
                   }}
