@@ -124,7 +124,7 @@ Resposta da IA:
 "Ótima pergunta! Baseado no que você me disse (R$15 mil/mês no seu CRM atual + processos manuais), deixa eu calcular seu ROI:"
 
 [Chama render_ui_component:
-  component_name: "ROICalculator",
+  componentName: "ROICalculator",
   props: {
     scenario: {
       currentCost: 15000,
@@ -136,8 +136,7 @@ Resposta da IA:
     industry: "ortodontia",
     comparisonMode: true
   },
-  reasoning: "Usuário precisa ver economia concreta para superar objeção de preço",
-  position: "after_text"
+  reasoning: "Usuário precisa ver economia concreta para superar objeção de preço"
 ]
 
 "Como você pode ver acima ↑, você economizaria R$7 mil/mês. O investimento se paga em apenas 2 meses. Quer que eu explique como calculamos isso?"
@@ -164,7 +163,7 @@ Resposta da IA:
 "Perfeito! Vou abrir nosso calendário para você escolher um horário que funcione para você:"
 
 [Chama render_ui_component:
-  component_name: "DemoScheduler",
+  componentName: "DemoScheduler",
   props: {
     eventType: "demo_60min",
     prefill: {
@@ -174,8 +173,7 @@ Resposta da IA:
     },
     autoTriggerCRM: true
   },
-  reasoning: "Lead altamente qualificado pronto para agendar - tornar sem atrito",
-  position: "after_text"
+  reasoning: "Lead altamente qualificado pronto para agendar - tornar sem atrito"
 ]
 
 "Escolha o horário que funcionar melhor para você ↑. Assim que confirmar, te envio os detalhes da reunião e criaremos sua oportunidade no pipeline."
