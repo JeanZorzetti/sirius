@@ -21,7 +21,6 @@ import { MessageRenderer, parseMessageChunks } from '../MessageRenderer'
 import { ThinkingIndicator } from '../ThinkingIndicator'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { ScrollArea } from '@/components/ui/scroll-area'
 import { Send, Sparkles } from 'lucide-react'
 import type { StreamChunk, ComponentInteraction } from '@/lib/generative-ui/types'
 
@@ -222,9 +221,9 @@ export function ChatWithUIExample({
         </p>
       </div>
 
-      {/* Messages */}
-      <ScrollArea ref={scrollRef} className="flex-1 px-4">
-        <div className="space-y-4 py-4 w-full" style={{ minWidth: 0 }}>
+      {/* Messages - usando div simples com overflow-y-auto (igual AgiChatSidebar) */}
+      <div ref={scrollRef} className="flex-1 overflow-y-auto px-4">
+        <div className="space-y-4 py-4">
           {messages.length === 0 && (
             <div className="text-center text-muted-foreground py-12">
               <Sparkles className="h-12 w-12 mx-auto mb-3 opacity-50" />
@@ -235,13 +234,13 @@ export function ChatWithUIExample({
             </div>
           )}
 
-          {messages.map((message, idx) => (
+          {messages.map((message) => (
             <div
               key={message.id}
               className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
             >
               <div
-                className={`max-w-[80%] rounded-lg px-4 py-3 ${
+                className={`max-w-[85%] rounded-2xl px-4 py-3 ${
                   message.role === 'user'
                     ? 'bg-primary text-primary-foreground'
                     : 'bg-muted'
@@ -263,13 +262,13 @@ export function ChatWithUIExample({
 
           {currentThinkingState && (
             <div className="flex justify-start">
-              <div className="bg-muted rounded-lg px-4 py-3">
+              <div className="bg-muted rounded-2xl px-4 py-3">
                 <ThinkingIndicator state={currentThinkingState as any} />
               </div>
             </div>
           )}
         </div>
-      </ScrollArea>
+      </div>
 
       {/* Input */}
       <div className="p-4 border-t space-y-3">
