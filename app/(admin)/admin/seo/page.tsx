@@ -8,6 +8,8 @@ import {
   getKeywordOpportunities,
 } from '@/lib/google-search-console'
 import { generateForecast, combineDataForChart } from '@/lib/seo-forecasting'
+import { getCrUXMetricsBoth } from '@/lib/crux-report'
+import { getPageSpeedMetricsBatch } from '@/lib/pagespeed-insights'
 import { SEOMetricsChart } from '@/components/admin/seo-chart'
 import { DateRangePicker } from '@/components/admin/date-range-picker'
 import { SeoAssistant } from '@/components/admin/seo-assistant'
@@ -15,6 +17,8 @@ import { SEODeviceBreakdown } from '@/components/admin/seo-device-breakdown'
 import { SEOCountryTable } from '@/components/admin/seo-country-table'
 import { SEOSearchAppearances } from '@/components/admin/seo-appearances'
 import { SEOKeywordOpportunities } from '@/components/admin/seo-opportunities'
+import { SEOWebVitals } from '@/components/admin/seo-web-vitals'
+import { SEOCriticalPages } from '@/components/admin/seo-critical-pages'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Search, MousePointer, Eye, TrendingUp, AlertCircle, Loader2, Sparkles, TrendingDown, Minus, Target } from 'lucide-react'
 
@@ -42,11 +46,16 @@ async function SEOContent({ searchParams }: { searchParams: { from?: string; to?
   let devices
   let appearances
   let opportunities
+  let cruxData
+  let pageSpeedPages
   let error: string | null = null
 
   try {
+    // Get site URL for Core Web Vitals
+    const siteUrl = process.env.GOOGLE_SEARCH_CONSOLE_SITE_URL || 'https://sirius.roilabs.com.br/'
+
     // Fetch all metrics in parallel
-    ;[metrics, countries, devices, appearances, opportunities] = await Promise.all([
+    ;[metrics, countries, devices, appearances, opportunities, cruxData, pageSpeedPages] = await Promise.all([
       getSEOMetrics({
         startDate: searchParams.from,
         endDate: searchParams.to,
@@ -66,6 +75,17 @@ async function SEOContent({ searchParams }: { searchParams: { from?: string; to?
       getKeywordOpportunities({
         startDate: searchParams.from,
         endDate: searchParams.to,
+      }),
+      // Core Web Vitals: CrUX data (real users)
+      getCrUXMetricsBoth(siteUrl),
+      // PageSpeed Insights: Analyze top pages
+      getSEOMetrics({
+        startDate: searchParams.from,
+        endDate: searchParams.to,
+      }).then(async (metricsData) => {
+        // Get top 5 pages by clicks
+        const topPages = metricsData.pages.slice(0, 5).map(p => p.page)
+        return getPageSpeedMetricsBatch(topPages, 'mobile')
       }),
     ])
   } catch (e) {
@@ -369,6 +389,19 @@ async function SEOContent({ searchParams }: { searchParams: { from?: string; to?
       {/* Keyword Opportunities */}
       {opportunities && (
         <SEOKeywordOpportunities opportunities={opportunities} />
+      )}
+
+      {/* Core Web Vitals */}
+      {cruxData && (
+        <SEOWebVitals
+          mobile={cruxData.mobile}
+          desktop={cruxData.desktop}
+        />
+      )}
+
+      {/* Critical Pages */}
+      {pageSpeedPages && pageSpeedPages.length > 0 && (
+        <SEOCriticalPages pages={pageSpeedPages} />
       )}
 
       {/* Tables Side by Side */}
