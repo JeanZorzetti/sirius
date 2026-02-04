@@ -1066,21 +1066,61 @@ components/admin/seo-topic-clusters.tsx (350+ linhas - UI)
 
 ---
 
-#### Sprint 4: Content Decay (1 semana)
-**Objetivo:** Prever quando conteúdo vai decair
+#### ✅ Sprint 4: Content Decay - COMPLETO (2026-02-04)
+**Objetivo:** Prever quando conteúdo vai decair e gerar calendário de atualização
+
+**Abordagem:** Scoring heurístico baseado em múltiplos fatores (TypeScript nativo)
 
 **Tarefas:**
-- [ ] Implementar survival analysis model
-- [ ] Criar endpoint `/api/ml/predict-decay`
-- [ ] Calcular fatores de decay
-- [ ] Gerar calendário de refresh
-- [ ] Criar componente `SEOContentCalendar`
-- [ ] Adicionar priorização por impacto
+- [x] Implementar `lib/ml/content-decay.ts` (engine nativo)
+- [x] ~~Criar endpoint `/api/ml/predict-decay`~~ → Função nativa `predictContentDecay()`
+- [x] Calcular probabilidade de decay (0-100%)
+- [x] Identificar fatores de decay (freshness, performance_decline, competition, seasonality, ctr_drop)
+- [x] Estimar dias até decay e data recomendada de refresh
+- [x] Calcular impacto estimado (perda de tráfego e receita)
+- [x] Classificar por urgência (critical, high, medium, low)
+- [x] Criar componente `SEOContentCalendar`
+- [x] Tabs: Urgentes vs Calendário (90 dias)
+- [x] Integrar no dashboard `/admin/seo`
+- [x] Testar build
 
-**Métricas de Sucesso:**
-- [ ] Prever decay com 70%+ accuracy
-- [ ] Identificar páginas em risco
-- [ ] Gerar calendário de 90 dias
+**Arquivos:**
+```
+lib/ml/
+└── content-decay.ts (570+ linhas - engine)
+
+components/admin/
+└── seo-content-calendar.tsx (570+ linhas - UI)
+```
+
+**Fatores Analisados:**
+1. **Performance Decline** (40% peso): Posição caindo, tráfego caindo
+2. **CTR Drop** (20% peso): CTR caindo significativamente
+3. **Current Position Vulnerability** (20% peso): Posições 5-10 são mais vulneráveis
+4. **Freshness** (20% peso): Conteúdo estagnado sem mudanças recentes
+
+**Urgências:**
+- **Critical**: decay probability >70% + <30 dias
+- **High**: decay probability >50% + <60 dias
+- **Medium**: decay probability >30% + <90 dias
+- **Low**: demais casos
+
+**Como funciona:**
+```typescript
+// No server component (page.tsx)
+import { predictContentDecay } from '@/lib/ml/content-decay'
+
+// Analisa páginas e calcula decay
+const contentDecay = predictContentDecay(
+  metrics.pages,    // páginas com clicks, impressions, position
+  metrics.history   // histórico para calcular trends (opcional)
+)
+
+// Renderiza calendário
+<SEOContentCalendar results={contentDecay} />
+```
+
+**Deploy:** Funciona automaticamente no Vercel sem configuração adicional.
 
 ---
 

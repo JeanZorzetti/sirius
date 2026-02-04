@@ -35,6 +35,7 @@ import { SEOIndexationErrors } from '@/components/admin/seo-indexation-errors'
 import { SEOAnomalyAlerts } from '@/components/admin/seo-anomaly-alerts'
 import { SEORankingPredictions } from '@/components/admin/seo-ranking-predictions'
 import { SEOTopicClusters } from '@/components/admin/seo-topic-clusters'
+import { SEOContentCalendar } from '@/components/admin/seo-content-calendar'
 import {
   detectAllAnomalies,
   type DetectAnomaliesResponse,
@@ -47,6 +48,10 @@ import {
   clusterKeywords,
   type KeywordClusteringResponse,
 } from '@/lib/ml/keyword-clustering'
+import {
+  predictContentDecay,
+  type ContentDecayResponse,
+} from '@/lib/ml/content-decay'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Search, MousePointer, Eye, TrendingUp, AlertCircle, Loader2, Sparkles, TrendingDown, Minus, Target } from 'lucide-react'
 
@@ -85,6 +90,7 @@ async function SEOContent({ searchParams }: { searchParams: { from?: string; to?
   let anomalyResults: DetectAnomaliesResponse | null = null
   let rankingPredictions: RankingPredictionResponse | null = null
   let keywordClusters: KeywordClusteringResponse | null = null
+  let contentDecay: ContentDecayResponse | null = null
   let error: string | null = null
 
   try {
@@ -188,6 +194,15 @@ async function SEOContent({ searchParams }: { searchParams: { from?: string; to?
         keywordClusters = clusterKeywords(metrics.keywords, metrics.pages)
       } catch (clusterError) {
         console.error('Error clustering keywords:', clusterError)
+      }
+    }
+
+    // Content Decay: Predict when pages will decay and need refresh (TypeScript nativo)
+    if (metrics && metrics.pages.length > 0) {
+      try {
+        contentDecay = predictContentDecay(metrics.pages, metrics.history)
+      } catch (decayError) {
+        console.error('Error predicting content decay:', decayError)
       }
     }
   } catch (e) {
@@ -481,6 +496,9 @@ async function SEOContent({ searchParams }: { searchParams: { from?: string; to?
 
       {/* Topic Clusters (ML) */}
       <SEOTopicClusters results={keywordClusters} />
+
+      {/* Content Decay Calendar (ML) */}
+      <SEOContentCalendar results={contentDecay} />
 
       {/* Device Breakdown */}
       {devices && devices.length > 0 && (
