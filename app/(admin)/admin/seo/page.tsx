@@ -33,10 +33,15 @@ import { SEOTrendingKeywords } from '@/components/admin/seo-trending-keywords'
 import { SEOCoverageDashboard } from '@/components/admin/seo-coverage-dashboard'
 import { SEOIndexationErrors } from '@/components/admin/seo-indexation-errors'
 import { SEOAnomalyAlerts } from '@/components/admin/seo-anomaly-alerts'
+import { SEORankingPredictions } from '@/components/admin/seo-ranking-predictions'
 import {
   detectAllAnomalies,
   type DetectAnomaliesResponse,
 } from '@/lib/ml/anomaly-detection'
+import {
+  predictRankingOpportunities,
+  type RankingPredictionResponse,
+} from '@/lib/ml/ranking-prediction'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Search, MousePointer, Eye, TrendingUp, AlertCircle, Loader2, Sparkles, TrendingDown, Minus, Target } from 'lucide-react'
 
@@ -73,6 +78,7 @@ async function SEOContent({ searchParams }: { searchParams: { from?: string; to?
   let inspectionErrors: InspectionError[] = []
   let coverageSummary: CoverageSummary | null = null
   let anomalyResults: DetectAnomaliesResponse | null = null
+  let rankingPredictions: RankingPredictionResponse | null = null
   let error: string | null = null
 
   try {
@@ -158,6 +164,15 @@ async function SEOContent({ searchParams }: { searchParams: { from?: string; to?
         )
       } catch (anomalyError) {
         console.error('Error detecting anomalies:', anomalyError)
+      }
+    }
+
+    // Ranking Predictions: Predict opportunities for all keywords (TypeScript nativo)
+    if (metrics && metrics.keywords.length > 0) {
+      try {
+        rankingPredictions = predictRankingOpportunities(metrics.keywords)
+      } catch (rankingError) {
+        console.error('Error predicting rankings:', rankingError)
       }
     }
   } catch (e) {
@@ -445,6 +460,9 @@ async function SEOContent({ searchParams }: { searchParams: { from?: string; to?
 
       {/* Anomaly Detection Alerts (ML) */}
       <SEOAnomalyAlerts results={anomalyResults} />
+
+      {/* Ranking Predictions (ML) */}
+      <SEORankingPredictions results={rankingPredictions} />
 
       {/* Device Breakdown */}
       {devices && devices.length > 0 && (
