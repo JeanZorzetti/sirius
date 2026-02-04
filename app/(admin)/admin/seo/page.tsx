@@ -34,6 +34,7 @@ import { SEOCoverageDashboard } from '@/components/admin/seo-coverage-dashboard'
 import { SEOIndexationErrors } from '@/components/admin/seo-indexation-errors'
 import { SEOAnomalyAlerts } from '@/components/admin/seo-anomaly-alerts'
 import { SEORankingPredictions } from '@/components/admin/seo-ranking-predictions'
+import { SEOTopicClusters } from '@/components/admin/seo-topic-clusters'
 import {
   detectAllAnomalies,
   type DetectAnomaliesResponse,
@@ -42,6 +43,10 @@ import {
   predictRankingOpportunities,
   type RankingPredictionResponse,
 } from '@/lib/ml/ranking-prediction'
+import {
+  clusterKeywords,
+  type KeywordClusteringResponse,
+} from '@/lib/ml/keyword-clustering'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Search, MousePointer, Eye, TrendingUp, AlertCircle, Loader2, Sparkles, TrendingDown, Minus, Target } from 'lucide-react'
 
@@ -79,6 +84,7 @@ async function SEOContent({ searchParams }: { searchParams: { from?: string; to?
   let coverageSummary: CoverageSummary | null = null
   let anomalyResults: DetectAnomaliesResponse | null = null
   let rankingPredictions: RankingPredictionResponse | null = null
+  let keywordClusters: KeywordClusteringResponse | null = null
   let error: string | null = null
 
   try {
@@ -173,6 +179,15 @@ async function SEOContent({ searchParams }: { searchParams: { from?: string; to?
         rankingPredictions = predictRankingOpportunities(metrics.keywords)
       } catch (rankingError) {
         console.error('Error predicting rankings:', rankingError)
+      }
+    }
+
+    // Keyword Clustering: Group keywords by topic, detect cannibalization (TypeScript nativo)
+    if (metrics && metrics.keywords.length > 0 && metrics.pages.length > 0) {
+      try {
+        keywordClusters = clusterKeywords(metrics.keywords, metrics.pages)
+      } catch (clusterError) {
+        console.error('Error clustering keywords:', clusterError)
       }
     }
   } catch (e) {
@@ -463,6 +478,9 @@ async function SEOContent({ searchParams }: { searchParams: { from?: string; to?
 
       {/* Ranking Predictions (ML) */}
       <SEORankingPredictions results={rankingPredictions} />
+
+      {/* Topic Clusters (ML) */}
+      <SEOTopicClusters results={keywordClusters} />
 
       {/* Device Breakdown */}
       {devices && devices.length > 0 && (
