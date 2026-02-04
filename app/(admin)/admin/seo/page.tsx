@@ -34,8 +34,7 @@ import { SEOCoverageDashboard } from '@/components/admin/seo-coverage-dashboard'
 import { SEOIndexationErrors } from '@/components/admin/seo-indexation-errors'
 import { SEOAnomalyAlerts } from '@/components/admin/seo-anomaly-alerts'
 import {
-  detectAnomalies,
-  historyToTimeSeries,
+  detectAllAnomalies,
   type DetectAnomaliesResponse,
 } from '@/lib/ml/anomaly-detection'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
@@ -148,22 +147,17 @@ async function SEOContent({ searchParams }: { searchParams: { from?: string; to?
       }
     }
 
-    // Anomaly Detection: Detect anomalies in clicks using ML
-    // This is done separately to not block the page if ML API is unavailable
+    // Anomaly Detection: Detect anomalies in all metrics (TypeScript nativo)
+    // Analisa clicks, impressions, CTR, position + segmentação por país/dispositivo
     if (metrics && metrics.history.length > 0) {
       try {
-        const clicksData = historyToTimeSeries(metrics.history, 'clicks')
-
-        anomalyResults = await detectAnomalies({
-          data: clicksData,
-          metric_type: 'clicks',
-          window_size: 14,
-          z_threshold: 3.0,
-          method: 'combined',
-        })
+        anomalyResults = detectAllAnomalies(
+          metrics.history,
+          countries || undefined,
+          devices || undefined
+        )
       } catch (anomalyError) {
         console.error('Error detecting anomalies:', anomalyError)
-        // Gracefully degrade if ML API is not available
       }
     }
   } catch (e) {

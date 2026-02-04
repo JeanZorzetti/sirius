@@ -42,7 +42,7 @@ export function SEOAnomalyAlerts({ results, loading = false }: SEOAnomalyAlertsP
     )
   }
 
-  if (!results || !results.success) {
+  if (!results) {
     return (
       <Card className="border-slate-200 bg-white shadow-sm">
         <CardHeader>
@@ -51,15 +51,15 @@ export function SEOAnomalyAlerts({ results, loading = false }: SEOAnomalyAlertsP
             Alertas de Anomalias (ML)
           </CardTitle>
           <CardDescription className="text-slate-500">
-            Detecção de anomalias indisponível
+            Dados insuficientes para analise
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="p-8 text-center border-2 border-dashed border-slate-200 rounded-lg">
-            <Info className="h-12 w-12 text-slate-400 mx-auto mb-4" />
-            <p className="text-slate-700 font-medium mb-2">ML API não disponível</p>
+          <div className="p-6 text-center border-2 border-dashed border-slate-200 rounded-lg">
+            <Info className="h-10 w-10 text-slate-400 mx-auto mb-3" />
+            <p className="text-slate-700 font-medium mb-1">Dados insuficientes</p>
             <p className="text-sm text-slate-500">
-              Inicie a ML API para ver alertas de anomalias: <code className="bg-slate-100 px-2 py-1 rounded">cd ml-api && python api/main.py</code>
+              Necessario pelo menos 7 dias de dados historicos para detectar anomalias.
             </p>
           </div>
         </CardContent>
@@ -338,21 +338,25 @@ function AlertCard({ alert }: { alert: AnomalyAlert }) {
 
 function formatImpactKey(key: string): string {
   const names: Record<string, string> = {
-    clicks_lost: 'Cliques perdidos',
-    impressions_lost: 'Impressões perdidas',
-    potential_clicks_lost: 'Cliques potenciais perdidos',
-    estimated_revenue_impact: 'Impacto em receita',
-    positions_lost: 'Posições perdidas',
-    estimated_ctr_loss_percent: 'Perda de CTR estimada',
+    cliques_perdidos_dia: 'Cliques perdidos/dia',
+    cliques_perdidos_mes: 'Cliques perdidos/mes',
+    cliques_ganhos_dia: 'Cliques ganhos/dia',
+    impacto_receita_estimado: 'Impacto em receita',
+    impressoes_perdidas_dia: 'Impressoes perdidas/dia',
+    impressoes_desperdicadas: 'Impressoes desperdicadas',
+    cliques_potenciais_perdidos: 'Cliques potenciais perdidos',
+    posicoes_perdidas: 'Posicoes perdidas',
+    perda_ctr_estimada_pct: 'Perda de CTR estimada',
+    perda_ctr_pct: 'Perda de CTR',
   }
-  return names[key] || key
+  return names[key] || key.replace(/_/g, ' ')
 }
 
 function formatImpactValue(key: string, value: number): string {
-  if (key.includes('revenue')) {
+  if (key.includes('receita')) {
     return `R$ ${value.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`
   }
-  if (key.includes('percent')) {
+  if (key.includes('pct') || key.includes('percent')) {
     return `${value.toFixed(1)}%`
   }
   return value.toLocaleString('pt-BR', { maximumFractionDigits: 1 })
