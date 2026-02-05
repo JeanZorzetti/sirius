@@ -152,8 +152,6 @@ async function handleIncomingMessage(connection: any, data: any) {
                         organizationId,
                         name: senderName,
                         phone: phoneNumber,
-                        source: 'WHATSAPP',
-                        stage: 'LEAD',
                     }
                 })
 
