@@ -61,12 +61,13 @@ export function ChatInterface({
           icon={MessageSquare}
           title="Nenhuma conexão WhatsApp"
           description="Conecte seu WhatsApp para começar a atender seus clientes em tempo real."
-        >
-          <ConnectionManager
-            connections={connections}
-            maxInstances={maxInstances}
-          />
-        </EmptyState>
+          action={
+            <ConnectionManager
+              connections={connections}
+              maxInstances={maxInstances}
+            />
+          }
+        />
       </div>
     )
   }
