@@ -54,8 +54,24 @@ export default async function ChatPage() {
   console.log('  - PLAN_FEATURES[PRO].can_use_chat_interface:', PLAN_FEATURES.PRO.can_use_chat_interface)
 
   if (!canUseChat) {
+    // DEBUG: Mostrar informações diretamente na tela
+    const debugInfo = {
+      userId: user.id,
+      orgId: user.organizationId,
+      tierFromDB: user.organization.tier,
+      tierType: typeof user.organization.tier,
+      canUseChat,
+      expectedForPRO: PLAN_FEATURES.PRO.can_use_chat_interface,
+    }
+
     return (
-      <div className="flex-1 flex items-center justify-center p-8">
+      <div className="flex-1 flex flex-col items-center justify-center p-8 gap-4">
+        {/* DEBUG BOX - REMOVER DEPOIS */}
+        <div className="bg-yellow-100 border border-yellow-400 text-yellow-800 p-4 rounded-lg text-sm font-mono max-w-md">
+          <p className="font-bold mb-2">🔍 DEBUG INFO (remover depois):</p>
+          <pre className="whitespace-pre-wrap">{JSON.stringify(debugInfo, null, 2)}</pre>
+        </div>
+
         <EmptyState
           icon={MessageSquare}
           title="Chat Center disponível no plano PRO"
