@@ -12,9 +12,11 @@ import logger from '@/lib/logger'
 
 export async function POST(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params
+
     // 1. Authentication
     const session = await getSession()
     if (!session?.user) {
@@ -37,7 +39,7 @@ export async function POST(
     // 3. Get connection
     const connection = await prisma.whatsAppConnection.findFirst({
       where: {
-        id: params.id,
+        id,
         organizationId: user.organizationId,
       },
     })
@@ -71,8 +73,8 @@ export async function POST(
       message: 'Connection disconnected successfully',
       id: connection.id,
     })
-  } catch (error) {
-    logger.error({ error, connectionId: params.id }, 'Error disconnecting connection')
+  } catch (error: any) {
+    logger.error({ error }, 'Error disconnecting connection')
     return NextResponse.json(
       { error: 'Failed to disconnect connection' },
       { status: 500 }

@@ -11,9 +11,11 @@ import logger from '@/lib/logger'
 
 export async function GET(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params
+
     // 1. Authentication
     const session = await getSession()
     if (!session?.user) {
@@ -36,7 +38,7 @@ export async function GET(
     // 3. Verificar se o contato pertence à organização
     const contact = await prisma.contact.findFirst({
       where: {
-        id: params.id,
+        id,
         organizationId: user.organizationId,
       },
     })
@@ -54,7 +56,7 @@ export async function GET(
 
     const interactions = await prisma.interaction.findMany({
       where: {
-        contactId: params.id,
+        contactId: id,
         ...(type && { type }),
       },
       orderBy: {
@@ -71,8 +73,8 @@ export async function GET(
     })
 
     return NextResponse.json(interactions)
-  } catch (error) {
-    logger.error({ error, contactId: params.id }, 'Error fetching interactions')
+  } catch (error: any) {
+    logger.error({ error }, 'Error fetching interactions')
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

@@ -12,9 +12,11 @@ import logger from '@/lib/logger'
 
 export async function GET(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params
+
     // 1. Authentication
     const session = await getSession()
     if (!session?.user) {
@@ -37,7 +39,7 @@ export async function GET(
     // 3. Get connection
     const connection = await prisma.whatsAppConnection.findFirst({
       where: {
-        id: params.id,
+        id,
         organizationId: user.organizationId,
       },
     })
@@ -89,8 +91,8 @@ export async function GET(
       connectedAt: connection.connectedAt,
       evolutionState: evolutionState.state,
     })
-  } catch (error) {
-    logger.error({ error, connectionId: params.id }, 'Error fetching connection status')
+  } catch (error: any) {
+    logger.error({ error }, 'Error fetching connection status')
     return NextResponse.json(
       { error: 'Failed to retrieve connection status' },
       { status: 500 }
