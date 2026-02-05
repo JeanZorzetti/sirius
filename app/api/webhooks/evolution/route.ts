@@ -92,7 +92,7 @@ async function handleConnectionUpdate(connection: any, data: any) {
 
     logger.info({ instanceName: connection.instanceName, state }, 'Connection state updated')
 
-    let status = 'DISCONNECTED'
+    let status: 'DISCONNECTED' | 'CONNECTING' | 'CONNECTED' = 'DISCONNECTED'
     if (state === 'open') {
         status = 'CONNECTED'
     } else if (state === 'connecting') {
