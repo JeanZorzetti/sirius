@@ -6,17 +6,19 @@
 
 import logger from './logger'
 
-// Validar env vars
-if (!process.env.EVOLUTION_API_URL) {
-  throw new Error('EVOLUTION_API_URL environment variable is required')
+// Lazy validation - only validate when actually used (not during build)
+function getConfig() {
+  if (!process.env.EVOLUTION_API_URL) {
+    throw new Error('EVOLUTION_API_URL environment variable is required')
+  }
+  if (!process.env.EVOLUTION_API_KEY) {
+    throw new Error('EVOLUTION_API_KEY environment variable is required')
+  }
+  return {
+    url: process.env.EVOLUTION_API_URL,
+    key: process.env.EVOLUTION_API_KEY,
+  }
 }
-
-if (!process.env.EVOLUTION_API_KEY) {
-  throw new Error('EVOLUTION_API_KEY environment variable is required')
-}
-
-const EVOLUTION_API_URL = process.env.EVOLUTION_API_URL
-const EVOLUTION_API_KEY = process.env.EVOLUTION_API_KEY
 
 // ============================================
 // Types
@@ -386,12 +388,25 @@ class EvolutionAPIClient {
 }
 
 // ============================================
-// Singleton Instance
+// Singleton Instance (Lazy)
 // ============================================
 
-export const evolutionApi = new EvolutionAPIClient(
-  EVOLUTION_API_URL,
-  EVOLUTION_API_KEY
-)
+let _instance: EvolutionAPIClient | null = null
+
+function getEvolutionApiInstance(): EvolutionAPIClient {
+  if (!_instance) {
+    const config = getConfig()
+    _instance = new EvolutionAPIClient(config.url, config.key)
+  }
+  return _instance
+}
+
+export const evolutionApi = new Proxy({} as EvolutionAPIClient, {
+  get(target, prop) {
+    const instance = getEvolutionApiInstance()
+    const value = (instance as any)[prop]
+    return typeof value === 'function' ? value.bind(instance) : value
+  }
+})
 
 export default evolutionApi
