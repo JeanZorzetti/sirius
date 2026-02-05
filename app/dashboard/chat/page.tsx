@@ -1,7 +1,7 @@
 import { Metadata } from "next"
 import { getSession } from "@/lib/auth"
 import { prisma } from "@/lib/prisma"
-import { canUseFeature } from "@/lib/entitlements"
+import { canUseFeature, PLAN_FEATURES } from "@/lib/entitlements"
 import { ChatInterface } from "@/components/chat/chat-interface"
 import { EmptyState } from "@/components/ui/empty-state"
 import { MessageSquare } from "lucide-react"
@@ -42,7 +42,16 @@ export default async function ChatPage() {
   }
 
   // 3. Verificar entitlement
+  // DEBUG: Log para identificar problema
+  console.log('🔍 DEBUG Chat Access:')
+  console.log('  - User ID:', user.id)
+  console.log('  - Organization ID:', user.organizationId)
+  console.log('  - Tier from DB:', user.organization.tier)
+  console.log('  - Tier type:', typeof user.organization.tier)
+
   const canUseChat = canUseFeature(user.organization.tier, 'can_use_chat_interface')
+  console.log('  - canUseChat result:', canUseChat)
+  console.log('  - PLAN_FEATURES[PRO].can_use_chat_interface:', PLAN_FEATURES.PRO.can_use_chat_interface)
 
   if (!canUseChat) {
     return (
