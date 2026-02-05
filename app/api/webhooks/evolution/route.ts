@@ -1,44 +1,60 @@
 import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import logger from '@/lib/logger'
-import { parseWhatsAppJid } from '@/lib/integrations/evolution-client'
-import { sendWhatsAppMessageNotification } from '@/lib/push-notifications'
 
 /**
- * Webhook receiver para Evolution API
+ * Webhook receiver para Evolution API v2
  *
  * Recebe eventos:
- * - messages.upsert: Novas mensagens recebidas
- * - messages.update: Atualização de status de mensagens (entregue, lido)
+ * - QRCODE_UPDATED: QR Code atualizado
+ * - CONNECTION_UPDATE: Status de conexão mudou
+ * - MESSAGES_UPSERT: Novas mensagens recebidas
+ * - MESSAGES_UPDATE: Atualização de status de mensagens (entregue, lido)
  */
 export async function POST(request: Request) {
     try {
         const payload = await request.json()
-        const { event, data, instance } = payload
+        const { event, data, instance, apikey } = payload
 
         logger.info({ event, instance }, 'Evolution webhook received')
 
-        // Encontrar organização pela instância
-        const org = await prisma.organization.findFirst({
+        // Validar API key
+        if (apikey !== process.env.EVOLUTION_API_KEY) {
+            logger.warn({ receivedApikey: apikey }, 'Invalid Evolution API key')
+            return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+        }
+
+        // Encontrar conexão pela instância
+        const connection = await prisma.whatsAppConnection.findFirst({
             where: {
-                evolutionInstance: instance,
-                evolutionEnabled: true
-            }
+                instanceName: instance,
+            },
+            include: {
+                organization: true,
+            },
         })
 
-        if (!org) {
-            logger.warn({ instance }, 'Organization not found for Evolution instance')
+        if (!connection) {
+            logger.warn({ instance }, 'Connection not found for Evolution instance')
             return NextResponse.json({ error: 'Instance not found' }, { status: 404 })
         }
 
         // Processar diferentes tipos de eventos
         switch (event) {
-            case 'messages.upsert':
-                await handleIncomingMessage(org.id, data)
+            case 'QRCODE_UPDATED':
+                await handleQRCodeUpdate(connection, data)
                 break
 
-            case 'messages.update':
-                await handleMessageStatusUpdate(org.id, data)
+            case 'CONNECTION_UPDATE':
+                await handleConnectionUpdate(connection, data)
+                break
+
+            case 'MESSAGES_UPSERT':
+                await handleIncomingMessage(connection, data)
+                break
+
+            case 'MESSAGES_UPDATE':
+                await handleMessageStatusUpdate(connection, data)
                 break
 
             default:
@@ -57,14 +73,51 @@ export async function POST(request: Request) {
 }
 
 /**
+ * Handle QR Code update
+ */
+async function handleQRCodeUpdate(connection: any, data: any) {
+    logger.info({ instanceName: connection.instanceName }, 'QR Code updated')
+
+    await prisma.whatsAppConnection.update({
+        where: { id: connection.id },
+        data: { status: 'CONNECTING' },
+    })
+}
+
+/**
+ * Handle connection status update
+ */
+async function handleConnectionUpdate(connection: any, data: any) {
+    const state = data.state // 'open', 'connecting', 'close'
+
+    logger.info({ instanceName: connection.instanceName, state }, 'Connection state updated')
+
+    let status = 'DISCONNECTED'
+    if (state === 'open') {
+        status = 'CONNECTED'
+    } else if (state === 'connecting') {
+        status = 'CONNECTING'
+    }
+
+    await prisma.whatsAppConnection.update({
+        where: { id: connection.id },
+        data: {
+            status,
+            phoneNumber: data.statusReason?.phoneNumber || null,
+            connectedAt: status === 'CONNECTED' ? new Date() : null,
+        },
+    })
+}
+
+/**
  * Processa mensagem recebida
  * - Cria/atualiza contato
- * - Salva mensagem no banco
- * - Cria deal automaticamente se configurado
+ * - Salva interação no banco
  */
-async function handleIncomingMessage(organizationId: string, data: any) {
+async function handleIncomingMessage(connection: any, data: any) {
     try {
         const messages = data.messages || []
+        const organizationId = connection.organizationId
 
         for (const message of messages) {
             // Ignorar mensagens enviadas por nós
@@ -75,8 +128,8 @@ async function handleIncomingMessage(organizationId: string, data: any) {
             const remoteJid = message.key.remoteJid
             const messageId = message.key.id
             const messageText = extractMessageText(message)
-            const phoneNumber = parseWhatsAppJid(remoteJid)
-            const senderName = message.pushName || 'Desconhecido'
+            const phoneNumber = remoteJid.replace('@s.whatsapp.net', '')
+            const senderName = message.pushName || phoneNumber
 
             logger.info({
                 organizationId,
@@ -98,70 +151,53 @@ async function handleIncomingMessage(organizationId: string, data: any) {
                     data: {
                         organizationId,
                         name: senderName,
-                        phone: phoneNumber
+                        phone: phoneNumber,
+                        whatsappPhone: phoneNumber,
+                        source: 'WHATSAPP',
+                        stage: 'LEAD',
                     }
                 })
 
                 logger.info({ contactId: contact.id, phone: phoneNumber }, 'Created new contact from WhatsApp')
             }
 
-            // Salvar mensagem no banco
-            await prisma.whatsAppMessage.create({
+            // Salvar mensagem como interação
+            await prisma.interaction.create({
                 data: {
-                    organizationId,
                     contactId: contact.id,
-                    remoteJid,
-                    messageId,
-                    text: messageText,
-                    direction: 'INBOUND',
-                    status: 'DELIVERED',
-                    sentAt: new Date(message.messageTimestamp * 1000)
-                }
-            })
-
-            // Send push notification to all users in the organization
-            const users = await prisma.user.findMany({
-                where: { organizationId },
-                select: { id: true }
-            })
-
-            for (const user of users) {
-                sendWhatsAppMessageNotification(
-                    user.id,
-                    contact.name || senderName,
-                    messageText || 'Nova mensagem'
-                ).catch(error => {
-                    logger.error({ error, userId: user.id }, 'Failed to send WhatsApp notification')
-                })
-            }
-
-            // Auto-criar deal se não houver deal ativo para este contato
-            const existingDeal = await prisma.deal.findFirst({
-                where: {
                     organizationId,
-                    contactId: contact.id
-                },
-                orderBy: {
-                    createdAt: 'desc'
+                    userId: connection.userId,
+                    type: 'WHATSAPP',
+                    direction: 'INBOUND',
+                    content: messageText,
+                    metadata: {
+                        messageId,
+                        remoteJid,
+                        timestamp: message.messageTimestamp,
+                        pushName: message.pushName,
+                        instanceName: connection.instanceName,
+                    },
+                    occurredAt: new Date(message.messageTimestamp * 1000),
                 }
             })
 
-            // Criar novo deal apenas se não houver nenhum ou se o último está fechado
-            if (!existingDeal) {
-                await createDealFromWhatsApp(organizationId, contact.id, senderName, messageText)
-            }
+            logger.info({
+                contactId: contact.id,
+                messageId,
+            }, 'WhatsApp message saved as interaction')
         }
     } catch (error: any) {
-        logger.error({ error, organizationId }, 'Error handling incoming WhatsApp message')
+        logger.error({ error, organizationId: connection.organizationId }, 'Error handling incoming WhatsApp message')
     }
 }
 
 /**
  * Atualiza status de mensagem (entregue, lido)
  */
-async function handleMessageStatusUpdate(organizationId: string, data: any) {
+async function handleMessageStatusUpdate(connection: any, data: any) {
     try {
         const updates = data || []
+        const organizationId = connection.organizationId
 
         for (const update of updates) {
             const messageId = update.key?.id
@@ -169,110 +205,40 @@ async function handleMessageStatusUpdate(organizationId: string, data: any) {
 
             const status = update.update?.status
 
-            if (status === 'DELIVERY_ACK' || status === 'DELIVERED') {
-                // Mensagem entregue
-                await prisma.whatsAppMessage.updateMany({
+            // Atualizar metadata da interação com status de entrega
+            if (status === 'DELIVERY_ACK' || status === 'DELIVERED' || status === 'READ') {
+                const interactions = await prisma.interaction.findMany({
                     where: {
                         organizationId,
-                        messageId,
-                        direction: 'OUTBOUND'
+                        type: 'WHATSAPP',
+                        direction: 'OUTBOUND',
+                        metadata: {
+                            path: ['messageId'],
+                            equals: messageId,
+                        },
                     },
-                    data: {
-                        status: 'DELIVERED',
-                        deliveredAt: new Date()
-                    }
                 })
-            } else if (status === 'READ') {
-                // Mensagem lida
-                await prisma.whatsAppMessage.updateMany({
-                    where: {
-                        organizationId,
-                        messageId,
-                        direction: 'OUTBOUND'
-                    },
-                    data: {
-                        status: 'READ',
-                        readAt: new Date()
-                    }
-                })
-            }
-        }
-    } catch (error: any) {
-        logger.error({ error, organizationId }, 'Error handling message status update')
-    }
-}
 
-/**
- * Cria deal automaticamente a partir de mensagem do WhatsApp
- */
-async function createDealFromWhatsApp(
-    organizationId: string,
-    contactId: string,
-    contactName: string,
-    messageText: string
-) {
-    try {
-        // Buscar pipeline padrão
-        const defaultPipeline = await prisma.pipeline.findFirst({
-            where: {
-                organizationId,
-                isDefault: true
-            },
-            include: {
-                stages: {
-                    orderBy: {
-                        order: 'asc'
-                    }
+                for (const interaction of interactions) {
+                    const metadata = interaction.metadata as any
+                    await prisma.interaction.update({
+                        where: { id: interaction.id },
+                        data: {
+                            metadata: {
+                                ...metadata,
+                                deliveryStatus: status,
+                                deliveredAt: status === 'READ' || status === 'DELIVERED' ? new Date().toISOString() : metadata.deliveredAt,
+                                readAt: status === 'READ' ? new Date().toISOString() : metadata.readAt,
+                            },
+                        },
+                    })
                 }
-            }
-        })
 
-        if (!defaultPipeline || defaultPipeline.stages.length === 0) {
-            logger.warn({ organizationId }, 'No default pipeline found for WhatsApp auto-deal creation')
-            return
+                logger.info({ messageId, status }, 'Updated message status')
+            }
         }
-
-        const firstStage = defaultPipeline.stages[0]
-
-        // Buscar primeiro usuário da organização como responsável
-        const owner = await prisma.user.findFirst({
-            where: { organizationId }
-        })
-
-        if (!owner) {
-            logger.warn({ organizationId }, 'No user found for WhatsApp auto-deal creation')
-            return
-        }
-
-        // Criar deal
-        const deal = await prisma.deal.create({
-            data: {
-                title: `WhatsApp: ${contactName}`,
-                organizationId,
-                pipelineId: defaultPipeline.id,
-                stageId: firstStage.id,
-                contactId,
-                userId: owner.id
-            }
-        })
-
-        logger.info({
-            dealId: deal.id,
-            contactId,
-            organizationId
-        }, 'Auto-created deal from WhatsApp message')
-
-        // Criar nota com a mensagem recebida
-        await prisma.note.create({
-            data: {
-                dealId: deal.id,
-                userId: owner.id,
-                content: `Mensagem recebida via WhatsApp:\n\n${messageText}`
-            }
-        })
-
     } catch (error: any) {
-        logger.error({ error, organizationId, contactId }, 'Error creating deal from WhatsApp')
+        logger.error({ error, organizationId: connection.organizationId }, 'Error handling message status update')
     }
 }
 
