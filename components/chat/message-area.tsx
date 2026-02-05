@@ -126,7 +126,7 @@ export function MessageArea({ contact, connections, organizationId, userId }: Me
     })
   }
 
-  const getInitials = (name: string | null, phone: string) => {
+  const getInitials = (name: string | null, phone: string | null) => {
     if (name) {
       return name
         .split(' ')
@@ -135,7 +135,7 @@ export function MessageArea({ contact, connections, organizationId, userId }: Me
         .toUpperCase()
         .slice(0, 2)
     }
-    return phone.slice(-2)
+    return phone ? phone.slice(-2) : '??'
   }
 
   return (
