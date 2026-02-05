@@ -81,7 +81,7 @@ export async function POST(req: NextRequest) {
     }
 
     // 7. Formatar número de telefone para WhatsApp
-    const phone = contact.whatsappPhone || contact.phone
+    const phone = contact.phone
     const whatsappNumber = evolutionApi.formatPhoneNumber(phone)
 
     // 8. Enviar mensagem via Evolution API
