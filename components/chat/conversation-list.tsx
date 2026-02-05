@@ -36,11 +36,11 @@ export function ConversationList({
   const [searchQuery, setSearchQuery] = useState('')
 
   const filteredContacts = contacts.filter(contact => {
-    const name = contact.name || contact.phone
+    const name = contact.name || contact.phone || ''
     return name.toLowerCase().includes(searchQuery.toLowerCase())
   })
 
-  const getInitials = (name: string | null, phone: string) => {
+  const getInitials = (name: string | null, phone: string | null) => {
     if (name) {
       return name
         .split(' ')
@@ -49,7 +49,7 @@ export function ConversationList({
         .toUpperCase()
         .slice(0, 2)
     }
-    return phone.slice(-2)
+    return phone ? phone.slice(-2) : '??'
   }
 
   const formatTime = (date: Date) => {
