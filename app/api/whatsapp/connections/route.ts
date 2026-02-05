@@ -40,15 +40,6 @@ export async function GET() {
     const connections = await prisma.whatsAppConnection.findMany({
       where: { organizationId: user.organizationId },
       orderBy: { createdAt: 'desc' },
-      include: {
-        user: {
-          select: {
-            id: true,
-            name: true,
-            email: true,
-          },
-        },
-      },
     })
 
     return NextResponse.json(connections)
