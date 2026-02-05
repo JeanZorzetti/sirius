@@ -5,6 +5,8 @@ import logger from '@/lib/logger'
 import { dispatchWebhookAsync, WEBHOOK_EVENTS } from '@/lib/webhooks'
 import { sendEmail } from '@/lib/email'
 import { PaymentConfirmationEmail } from '@/emails/templates/payment-confirmation'
+import { getQuota } from '@/lib/entitlements'
+import { SubscriptionTier, AddonType } from '@prisma/client'
 import crypto from 'crypto'
 
 /**
@@ -48,6 +50,207 @@ function validateWebhookSignature(request: NextRequest, body: string): boolean {
   const expectedHash = hmac.digest('hex')
 
   return hash === expectedHash
+}
+
+/**
+ * Processa uma assinatura de plano (upgrade/nova assinatura)
+ */
+async function processSubscription(params: {
+  organizationId: string
+  paymentId: string
+  payment: any
+  metadata: any
+}) {
+  const { organizationId, paymentId, payment, metadata } = params
+
+  const tier = metadata.tier as SubscriptionTier
+  const isUpgrade = metadata.type === 'upgrade'
+  const previousTier = metadata.previous_tier as SubscriptionTier | undefined
+
+  // Buscar organização
+  const organization = await prisma.organization.findUnique({
+    where: { id: organizationId },
+    include: {
+      users: {
+        where: { orgRole: 'OWNER' },
+        take: 1,
+      },
+    },
+  })
+
+  if (!organization) {
+    throw new Error('Organization not found')
+  }
+
+  // Atualizar tier da organização
+  const updatedOrg = await prisma.organization.update({
+    where: { id: organizationId },
+    data: {
+      tier,
+      mercadoPagoCustomerId: payment.payer?.id?.toString(),
+      mercadoPagoSubscriptionId: paymentId.toString(),
+    },
+  })
+
+  logger.info({
+    organizationId,
+    previousTier: previousTier || organization.tier,
+    newTier: tier,
+    isUpgrade,
+  }, `Organization ${isUpgrade ? 'upgraded' : 'subscribed'} to ${tier}`)
+
+  // Inicializar créditos de scraping se aplicável
+  const scrapingMonthlyQuota = getQuota(tier, 'scraping_monthly_credits')
+
+  if (scrapingMonthlyQuota > 0) {
+    await prisma.scrapingCredit.upsert({
+      where: { organizationId },
+      create: {
+        organizationId,
+        balance: scrapingMonthlyQuota,
+        monthlyQuota: scrapingMonthlyQuota,
+        usedThisMonth: 0,
+        lastRefill: new Date(),
+      },
+      update: {
+        monthlyQuota: scrapingMonthlyQuota,
+        // Só atualiza balance se aumentou o quota
+        balance: {
+          increment: Math.max(0, scrapingMonthlyQuota - (organization.scrapingCredit?.monthlyQuota || 0)),
+        },
+      },
+    })
+  }
+
+  // Inicializar quota de IA se aplicável
+  const agiMonthlyLimit = getQuota(tier, 'agi_monthly_quota')
+
+  await prisma.agiQuota.upsert({
+    where: { organizationId },
+    create: {
+      organizationId,
+      monthlyLimit: agiMonthlyLimit,
+      usedThisMonth: 0,
+      lastReset: new Date(),
+    },
+    update: {
+      monthlyLimit: agiMonthlyLimit,
+    },
+  })
+
+  // Enviar email de confirmação
+  const owner = organization.users[0]
+  if (owner) {
+    const nextBillingDate = new Date()
+    nextBillingDate.setMonth(nextBillingDate.getMonth() + 1)
+
+    await sendEmail({
+      to: owner.email,
+      subject: `🎉 Pagamento Confirmado - Bem-vindo ao Sirius ${tier}!`,
+      react: PaymentConfirmationEmail({
+        userName: owner.name || 'Usuário',
+        organizationName: organization.name,
+        paymentId: paymentId.toString(),
+        paymentType: payment.payment_type_id || 'Não informado',
+        amount: payment.transaction_amount || 0,
+        nextBillingDate: nextBillingDate.toLocaleDateString('pt-BR'),
+      }),
+    })
+  }
+
+  // Disparar webhook
+  dispatchWebhookAsync(organizationId, WEBHOOK_EVENTS.ORGANIZATION_UPGRADED, {
+    organization: {
+      id: updatedOrg.id,
+      name: updatedOrg.name,
+      tier,
+    },
+    payment: {
+      id: paymentId.toString(),
+      status: payment.status,
+      type: payment.payment_type_id,
+      amount: payment.transaction_amount,
+    },
+  })
+
+  return { action: `${isUpgrade ? 'upgraded' : 'subscribed'}_to_${tier.toLowerCase()}` }
+}
+
+/**
+ * Processa uma compra de add-on
+ */
+async function processAddon(params: {
+  organizationId: string
+  paymentId: string
+  payment: any
+  metadata: any
+}) {
+  const { organizationId, paymentId, payment, metadata } = params
+
+  const addonType = metadata.addon_type as AddonType
+  const isRecurring = metadata.recurring === true
+
+  // Buscar organização
+  const organization = await prisma.organization.findUnique({
+    where: { id: organizationId },
+  })
+
+  if (!organization) {
+    throw new Error('Organization not found')
+  }
+
+  // Criar registro do add-on
+  const addon = await prisma.addon.create({
+    data: {
+      organizationId,
+      type: addonType,
+      name: addonType.replace(/_/g, ' '),
+      quantity: addonType === 'SCRAPING_100' ? 100 : addonType === 'SCRAPING_500' ? 500 : 1,
+      price: payment.transaction_amount || 0,
+      status: 'ACTIVE',
+      expiresAt: isRecurring
+        ? null // Não expira (assinatura)
+        : undefined, // Não expira (compra única)
+    },
+  })
+
+  logger.info({
+    organizationId,
+    addonType,
+    addonId: addon.id,
+    quantity: addon.quantity,
+  }, 'Add-on purchased')
+
+  // Processar créditos de scraping
+  if (addonType.startsWith('SCRAPING_')) {
+    await prisma.scrapingCredit.update({
+      where: { organizationId },
+      data: {
+        balance: { increment: addon.quantity },
+      },
+    })
+
+    logger.info({
+      organizationId,
+      creditsAdded: addon.quantity,
+    }, 'Scraping credits added from add-on')
+  }
+
+  // Processar instância extra de WhatsApp
+  if (addonType === 'WHATSAPP_EXTRA_INSTANCE') {
+    await prisma.organization.update({
+      where: { id: organizationId },
+      data: {
+        whatsappInstances: { increment: 1 },
+      },
+    })
+
+    logger.info({
+      organizationId,
+    }, 'WhatsApp instance added from add-on')
+  }
+
+  return { action: 'addon_purchased', addonType }
 }
 
 /**
@@ -140,80 +343,39 @@ export async function POST(request: NextRequest) {
         logger.info({
           organizationId,
           paymentId,
-          plan: 'PRO',
           paymentType: payment.payment_type_id,
-          amount: payment.transaction_amount
-        }, 'Payment approved - upgrading to PRO')
+          amount: payment.transaction_amount,
+          metadata: payment.metadata
+        }, 'Payment approved')
 
-        // Atualizar organização para PRO
-        const updatedOrg = await prisma.organization.update({
-          where: { id: organizationId },
-          data: {
-            plan: 'PRO',
-            mercadoPagoCustomerId: payment.payer?.id?.toString(),
-            mercadoPagoSubscriptionId: paymentId.toString()
-          }
-        })
+        // Verificar tipo de pagamento (metadata)
+        const metadata = payment.metadata || {}
+        const paymentType = metadata.type // 'subscription', 'upgrade', 'addon'
 
-        logger.info({
-          organizationId,
-          oldPlan: organization.plan,
-          newPlan: 'PRO'
-        }, 'Organization upgraded to PRO')
+        let result
 
-        // Enviar email de confirmação de pagamento
-        const owner = organization.users[0]
-        if (owner) {
-          const nextBillingDate = new Date()
-          nextBillingDate.setMonth(nextBillingDate.getMonth() + 1)
-
-          try {
-            await sendEmail({
-              to: owner.email,
-              subject: '🎉 Pagamento Confirmado - Bem-vindo ao Sirius Pro!',
-              react: PaymentConfirmationEmail({
-                userName: owner.name || 'Usuário',
-                organizationName: organization.name,
-                paymentId: paymentId.toString(),
-                paymentType: payment.payment_type_id || 'Não informado',
-                amount: payment.transaction_amount || 49.00,
-                nextBillingDate: nextBillingDate.toLocaleDateString('pt-BR')
-              })
-            })
-
-            logger.info({
-              organizationId,
-              userEmail: owner.email,
-              paymentId
-            }, 'Payment confirmation email sent')
-          } catch (emailError) {
-            logger.error({
-              organizationId,
-              userEmail: owner.email,
-              error: emailError
-            }, 'Failed to send payment confirmation email')
-          }
+        if (paymentType === 'addon') {
+          // Processar add-on
+          result = await processAddon({
+            organizationId,
+            paymentId: paymentId.toString(),
+            payment,
+            metadata,
+          })
+        } else {
+          // Processar assinatura (nova ou upgrade)
+          result = await processSubscription({
+            organizationId,
+            paymentId: paymentId.toString(),
+            payment,
+            metadata,
+          })
         }
-
-        // Disparar webhook de upgrade
-        dispatchWebhookAsync(organizationId, WEBHOOK_EVENTS.ORGANIZATION_UPGRADED, {
-          organization: {
-            id: updatedOrg.id,
-            name: updatedOrg.name,
-            plan: 'PRO'
-          },
-          payment: {
-            id: paymentId.toString(),
-            status: payment.status,
-            type: payment.payment_type_id,
-            amount: payment.transaction_amount
-          }
-        })
 
         return NextResponse.json({
           received: true,
           processed: true,
-          action: 'upgraded_to_pro'
+          ...result,
         })
       }
 
@@ -226,19 +388,20 @@ export async function POST(request: NextRequest) {
           statusDetail: payment.status_detail
         }, 'Payment rejected/cancelled/refunded')
 
-        // Se a organização estava em PRO, voltar para FREE
-        if (organization.plan === 'PRO') {
+        // Se a organização estava em plano pago, voltar para FREE
+        if (organization.tier !== 'FREE') {
           await prisma.organization.update({
             where: { id: organizationId },
             data: {
-              plan: 'FREE',
+              tier: 'FREE',
               mercadoPagoSubscriptionId: null
             }
           })
 
           logger.info({
             organizationId,
-            paymentId
+            paymentId,
+            previousTier: organization.tier
           }, 'Organization downgraded to FREE due to payment failure')
 
           // Disparar webhook de downgrade
@@ -246,7 +409,7 @@ export async function POST(request: NextRequest) {
             organization: {
               id: organization.id,
               name: organization.name,
-              plan: 'FREE'
+              tier: 'FREE'
             },
             reason: payment.status,
             payment: {

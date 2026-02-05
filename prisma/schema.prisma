@@ -21,7 +21,15 @@ model Organization {
   mercadoPagoCustomerId     String? // Customer ID no Mercado Pago
   mercadoPagoSubscriptionId String? // Subscription ID (assinatura)
   mercadoPagoPreferenceId   String? // Preference ID para checkout
-  plan                      String @default("FREE") // FREE, PRO
+  tier                      SubscriptionTier @default(FREE) // FREE, STARTER, PRO, BUSINESS
+  plan                      String @default("FREE") // Deprecated: use tier instead
+
+  // v2.0 Billing enhancements
+  customPricing            Decimal? @db.Decimal(10, 2) // Grandfathering price
+  customPricingExpiresAt   DateTime? // When grandfathering ends
+  grandfatheredDealLimit   Int? // FREE clients: custom deal limit (null = use tier limit)
+  grandfatheredAt          DateTime? // When grandfathering was applied
+  whatsappInstances        Int @default(1) // Base WhatsApp instances (PRO: 1, BUSINESS: 1)
 
   users     User[]
   contacts  Contact[]
@@ -76,6 +84,14 @@ model Organization {
 
   // Onboarding
   onboardingProgress OnboardingProgress[]
+
+  // v2.0 Features
+  scrapingCredit         ScrapingCredit?
+  scrapingJobs           ScrapingJob[]
+  addons                 Addon[]
+  whatsappConnections    WhatsAppConnection[]
+  agiQuota               AgiQuota?
+  leadDistributionRules  LeadDistributionRule[]
 }
 
 model User {
@@ -120,6 +136,13 @@ enum Role {
 enum OrgRole {
   OWNER
   MEMBER
+}
+
+enum SubscriptionTier {
+  FREE
+  STARTER
+  PRO
+  BUSINESS
 }
 
 model Contact {
@@ -181,9 +204,15 @@ model Deal {
   id          String   @id @default(uuid())
   title       String   // "Venda Software X"
   value       Decimal? @db.Decimal(10, 2)
-  closeDate   DateTime? 
+  closeDate   DateTime?
   dueDate     DateTime? // [NEW] Agenda/Follow-up
   order       Int?      // [NEW] Manual sorting in column
+
+  // v2.0: Soft Archive (FREE >50 deals)
+  archived         Boolean  @default(false)
+  archivedReason   String?  // "PLAN_LIMIT", "USER_ACTION"
+  archivedAt       DateTime?
+
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
   
@@ -971,6 +1000,171 @@ model OnboardingProgress {
 
   @@index([organizationId])
   @@index([status])
+}
+
+// ============================================================================
+// v2.0 MODULAR PLANS - FEATURES
+// ============================================================================
+
+// ScrapingCredit: Controle de créditos de prospecção
+model ScrapingCredit {
+  id             String       @id @default(uuid())
+  organizationId String       @unique
+  balance        Int          @default(0)
+  monthlyQuota   Int          @default(0) // 0 (STARTER/FREE), 50 (PRO/BUSINESS)
+  usedThisMonth  Int          @default(0)
+  lastRefill     DateTime     @default(now())
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@index([organizationId])
+}
+
+enum ScrapingProvider {
+  OUTSCRAPER
+  APIFY
+  CUSTOM
+}
+
+enum ScrapingSource {
+  GOOGLE_MAPS
+  LINKEDIN
+  CUSTOM
+}
+
+enum JobStatus {
+  PENDING
+  RUNNING
+  COMPLETED
+  FAILED
+  CANCELLED
+}
+
+// ScrapingJob: Jobs de prospecção automática
+model ScrapingJob {
+  id             String           @id @default(uuid())
+  organizationId String
+  userId         String
+  provider       ScrapingProvider
+  source         ScrapingSource
+  query          String           // "restaurantes em São Paulo"
+  filters        Json?            // { category: "restaurant", city: "SP" }
+  status         JobStatus        @default(PENDING)
+  creditsUsed    Int              @default(0)
+  resultsCount   Int              @default(0)
+  results        Json?            // Array de leads encontrados
+  error          String?          @db.Text
+  startedAt      DateTime?
+  completedAt    DateTime?
+  createdAt      DateTime         @default(now())
+
+  organization   Organization     @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@index([organizationId, status])
+  @@index([status])
+  @@index([createdAt])
+}
+
+enum AddonType {
+  SCRAPING_100
+  SCRAPING_500
+  WHATSAPP_EXTRA_INSTANCE
+}
+
+enum AddonStatus {
+  ACTIVE
+  EXPIRED
+  CONSUMED
+}
+
+// Addon: Add-ons comprados (créditos extras, instâncias WhatsApp)
+model Addon {
+  id             String       @id @default(uuid())
+  organizationId String
+  type           AddonType
+  name           String       // "Pacote 100 Leads", "WhatsApp Extra"
+  quantity       Int          // 100, 500, 1
+  price          Decimal      @db.Decimal(10, 2)
+  status         AddonStatus  @default(ACTIVE)
+  expiresAt      DateTime?    // null = não expira
+  purchasedAt    DateTime     @default(now())
+
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@index([organizationId])
+  @@index([status])
+}
+
+enum WhatsAppStatus {
+  DISCONNECTED
+  CONNECTING
+  CONNECTED
+  FAILED
+}
+
+// WhatsAppConnection: Conexões WhatsApp (Evolution API)
+model WhatsAppConnection {
+  id             String         @id @default(uuid())
+  organizationId String
+  userId         String         // Usuário responsável
+  instanceName   String         // Nome da instância no Evolution API
+  phoneNumber    String?        // Número conectado
+  qrCode         String?        @db.Text // QR Code para conexão
+  status         WhatsAppStatus @default(DISCONNECTED)
+  apiKey         String?        @db.Text // Evolution API key (encrypted)
+  webhookUrl     String?        // URL do webhook
+  connectedAt    DateTime?
+  lastSyncAt     DateTime?
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+
+  organization   Organization   @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@unique([organizationId, instanceName])
+  @@index([organizationId])
+  @@index([status])
+}
+
+// AgiQuota: Controle de quota de IA (FREE: 3/mês, PRO/BUSINESS: ilimitado)
+model AgiQuota {
+  id             String       @id @default(uuid())
+  organizationId String       @unique
+  monthlyLimit   Int          // -1 = ilimitado, 0 = sem acesso, 3 = FREE
+  usedThisMonth  Int          @default(0)
+  lastReset      DateTime     @default(now())
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@index([organizationId])
+}
+
+enum DistributionStrategy {
+  ROUND_ROBIN
+  LEAST_BUSY
+  WEIGHTED
+}
+
+// LeadDistributionRule: Regras de distribuição de leads (BUSINESS only)
+model LeadDistributionRule {
+  id             String               @id @default(uuid())
+  organizationId String
+  name           String               // "Distribuir leads Google Ads"
+  enabled        Boolean              @default(true)
+  strategy       DistributionStrategy @default(ROUND_ROBIN)
+  filters        Json                 // { source: "GOOGLE_ADS", tags: ["hot"] }
+  assignees      String[]             // Array de userIds
+  currentIndex   Int                  @default(0) // Para round-robin
+  createdAt      DateTime             @default(now())
+  updatedAt      DateTime             @updatedAt
+
+  organization   Organization         @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@index([organizationId])
+  @@index([enabled])
 }
 
 // ============================================================================
