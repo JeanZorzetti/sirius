@@ -5,21 +5,33 @@
  */
 
 import { NextResponse } from 'next/server'
-import { getServerSession } from 'next-auth'
-import { authOptions } from '@/lib/auth'
+import { getSession } from '@/lib/auth'
+import { prisma } from '@/lib/prisma'
 import { getOrganizationEntitlements } from '@/lib/feature-gates'
 
 export async function GET() {
   try {
-    const session = await getServerSession(authOptions)
-
-    if (!session?.user?.organizationId) {
+    // 1. Authentication
+    const session = await getSession()
+    if (!session?.user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
-    const entitlements = await getOrganizationEntitlements(
-      session.user.organizationId
-    )
+    // 2. Get user with organization
+    const user = await prisma.user.findUnique({
+      where: { id: session.user.id },
+      select: { organizationId: true },
+    })
+
+    if (!user?.organizationId) {
+      return NextResponse.json(
+        { error: 'Organization not found' },
+        { status: 404 }
+      )
+    }
+
+    // 3. Get entitlements
+    const entitlements = await getOrganizationEntitlements(user.organizationId)
 
     return NextResponse.json(entitlements)
   } catch (error) {
