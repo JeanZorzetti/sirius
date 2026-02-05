@@ -1,7 +1,7 @@
 import { Metadata } from "next"
 import { getSession } from "@/lib/auth"
 import { prisma } from "@/lib/prisma"
-import { canUseFeature, PLAN_FEATURES } from "@/lib/entitlements"
+import { canUseFeature } from "@/lib/entitlements"
 import { ChatInterface } from "@/components/chat/chat-interface"
 import { EmptyState } from "@/components/ui/empty-state"
 import { MessageSquare } from "lucide-react"
@@ -42,36 +42,11 @@ export default async function ChatPage() {
   }
 
   // 3. Verificar entitlement
-  // DEBUG: Log para identificar problema
-  console.log('🔍 DEBUG Chat Access:')
-  console.log('  - User ID:', user.id)
-  console.log('  - Organization ID:', user.organizationId)
-  console.log('  - Tier from DB:', user.organization.tier)
-  console.log('  - Tier type:', typeof user.organization.tier)
-
   const canUseChat = canUseFeature(user.organization.tier, 'can_use_chat_interface')
-  console.log('  - canUseChat result:', canUseChat)
-  console.log('  - PLAN_FEATURES[PRO].can_use_chat_interface:', PLAN_FEATURES.PRO.can_use_chat_interface)
 
   if (!canUseChat) {
-    // DEBUG: Mostrar informações diretamente na tela
-    const debugInfo = {
-      userId: user.id,
-      orgId: user.organizationId,
-      tierFromDB: user.organization.tier,
-      tierType: typeof user.organization.tier,
-      canUseChat,
-      expectedForPRO: PLAN_FEATURES.PRO.can_use_chat_interface,
-    }
-
     return (
-      <div className="flex-1 flex flex-col items-center justify-center p-8 gap-4">
-        {/* DEBUG BOX - REMOVER DEPOIS */}
-        <div className="bg-yellow-100 border border-yellow-400 text-yellow-800 p-4 rounded-lg text-sm font-mono max-w-md">
-          <p className="font-bold mb-2">🔍 DEBUG INFO (remover depois):</p>
-          <pre className="whitespace-pre-wrap">{JSON.stringify(debugInfo, null, 2)}</pre>
-        </div>
-
+      <div className="flex-1 flex items-center justify-center p-8">
         <EmptyState
           icon={MessageSquare}
           title="Chat Center disponível no plano PRO"

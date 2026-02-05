@@ -22,12 +22,16 @@ async function checkAdmin() {
     return user
 }
 
-export async function updateOrganizationPlan(orgId: string, plan: "FREE" | "PRO") {
+export async function updateOrganizationPlan(orgId: string, plan: "FREE" | "STARTER" | "PRO" | "BUSINESS") {
     await checkAdmin()
 
+    // FIX: Atualizar AMBOS os campos - 'tier' (novo) e 'plan' (legado)
     await prisma.organization.update({
         where: { id: orgId },
-        data: { plan },
+        data: {
+            tier: plan,  // Campo correto usado pelo sistema de entitlements
+            plan: plan,  // Campo legado (manter sincronizado para compatibilidade)
+        },
     })
 
     revalidatePath("/admin/organizations")
