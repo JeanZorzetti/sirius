@@ -161,30 +161,24 @@ async function handleIncomingMessage(connection: any, data: any) {
                 logger.info({ contactId: contact.id, phone: phoneNumber }, 'Created new contact from WhatsApp')
             }
 
-            // Salvar mensagem como interação
-            await prisma.interaction.create({
+            // Salvar mensagem no banco
+            await prisma.whatsAppMessage.create({
                 data: {
                     contactId: contact.id,
                     organizationId,
-                    userId: connection.userId,
-                    type: 'WHATSAPP',
+                    remoteJid,
+                    messageId,
+                    text: messageText,
                     direction: 'INBOUND',
-                    content: messageText,
-                    metadata: {
-                        messageId,
-                        remoteJid,
-                        timestamp: message.messageTimestamp,
-                        pushName: message.pushName,
-                        instanceName: connection.instanceName,
-                    },
-                    occurredAt: new Date(message.messageTimestamp * 1000),
+                    status: 'DELIVERED',
+                    sentAt: new Date(message.messageTimestamp * 1000),
                 }
             })
 
             logger.info({
                 contactId: contact.id,
                 messageId,
-            }, 'WhatsApp message saved as interaction')
+            }, 'WhatsApp message saved')
         }
     } catch (error: any) {
         logger.error({ error, organizationId: connection.organizationId }, 'Error handling incoming WhatsApp message')
@@ -205,36 +199,36 @@ async function handleMessageStatusUpdate(connection: any, data: any) {
 
             const status = update.update?.status
 
-            // Atualizar metadata da interação com status de entrega
-            if (status === 'DELIVERY_ACK' || status === 'DELIVERED' || status === 'READ') {
-                const interactions = await prisma.interaction.findMany({
+            // Atualizar status da mensagem
+            if (status === 'DELIVERY_ACK' || status === 'DELIVERED') {
+                await prisma.whatsAppMessage.updateMany({
                     where: {
                         organizationId,
-                        type: 'WHATSAPP',
+                        messageId,
                         direction: 'OUTBOUND',
-                        metadata: {
-                            path: ['messageId'],
-                            equals: messageId,
-                        },
+                    },
+                    data: {
+                        status: 'DELIVERED',
+                        deliveredAt: new Date(),
                     },
                 })
 
-                for (const interaction of interactions) {
-                    const metadata = interaction.metadata as any
-                    await prisma.interaction.update({
-                        where: { id: interaction.id },
-                        data: {
-                            metadata: {
-                                ...metadata,
-                                deliveryStatus: status,
-                                deliveredAt: status === 'READ' || status === 'DELIVERED' ? new Date().toISOString() : metadata.deliveredAt,
-                                readAt: status === 'READ' ? new Date().toISOString() : metadata.readAt,
-                            },
-                        },
-                    })
-                }
+                logger.info({ messageId, status: 'DELIVERED' }, 'Updated message status')
+            } else if (status === 'READ') {
+                await prisma.whatsAppMessage.updateMany({
+                    where: {
+                        organizationId,
+                        messageId,
+                        direction: 'OUTBOUND',
+                    },
+                    data: {
+                        status: 'READ',
+                        readAt: new Date(),
+                        deliveredAt: new Date(), // Se foi lido, foi entregue também
+                    },
+                })
 
-                logger.info({ messageId, status }, 'Updated message status')
+                logger.info({ messageId, status: 'READ' }, 'Updated message status')
             }
         }
     } catch (error: any) {

@@ -97,34 +97,30 @@ export async function POST(req: NextRequest) {
       messageId: evolutionResponse.key.id,
     }, 'WhatsApp message sent')
 
-    // 9. Salvar mensagem como interação
-    const interaction = await prisma.interaction.create({
+    // 9. Salvar mensagem no banco
+    const savedMessage = await prisma.whatsAppMessage.create({
       data: {
         contactId: contact.id,
         organizationId: user.organizationId,
-        userId: session.user.id,
-        type: 'WHATSAPP',
+        remoteJid: whatsappNumber,
+        messageId: evolutionResponse.key.id,
+        text: message,
         direction: 'OUTBOUND',
-        content: message,
-        metadata: {
-          messageId: evolutionResponse.key.id,
-          remoteJid: whatsappNumber,
-          instanceName: connection.instanceName,
-          timestamp: evolutionResponse.messageTimestamp,
-        },
-        occurredAt: new Date(),
+        status: 'SENT',
+        sentAt: new Date(),
       },
       select: {
         id: true,
-        type: true,
+        text: true,
         direction: true,
-        content: true,
-        occurredAt: true,
-        metadata: true,
+        sentAt: true,
+        deliveredAt: true,
+        readAt: true,
+        status: true,
       },
     })
 
-    return NextResponse.json(interaction)
+    return NextResponse.json(savedMessage)
   } catch (error) {
     logger.error({ error }, 'Error sending WhatsApp message')
     return NextResponse.json(

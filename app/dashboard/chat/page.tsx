@@ -67,29 +67,25 @@ export default async function ChatPage() {
     orderBy: { createdAt: 'desc' },
   })
 
-  // 5. Buscar contatos com última interação WhatsApp
+  // 5. Buscar contatos com mensagens WhatsApp
   const contacts = await prisma.contact.findMany({
     where: {
       organizationId: user.organizationId,
-      interactions: {
-        some: {
-          type: 'WHATSAPP'
-        }
+      whatsappMessages: {
+        some: {}
       }
     },
     include: {
-      interactions: {
-        where: { type: 'WHATSAPP' },
-        orderBy: { occurredAt: 'desc' },
+      whatsappMessages: {
+        orderBy: { sentAt: 'desc' },
         take: 1,
       },
       _count: {
         select: {
-          interactions: {
+          whatsappMessages: {
             where: {
-              type: 'WHATSAPP',
               direction: 'INBOUND',
-              // TODO: Add "unread" flag to interactions
+              // TODO: Add "unread" flag
             }
           }
         }

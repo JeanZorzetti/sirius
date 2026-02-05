@@ -28,12 +28,14 @@ interface Connection {
   phoneNumber: string | null
 }
 
-interface Interaction {
+interface WhatsAppMessage {
   id: string
-  content: string | null
+  text: string
   direction: string
-  occurredAt: Date
-  metadata?: any
+  sentAt: Date
+  deliveredAt: Date | null
+  readAt: Date | null
+  status: string
 }
 
 interface MessageAreaProps {
@@ -44,7 +46,7 @@ interface MessageAreaProps {
 }
 
 export function MessageArea({ contact, connections, organizationId, userId }: MessageAreaProps) {
-  const [messages, setMessages] = useState<Interaction[]>([])
+  const [messages, setMessages] = useState<WhatsAppMessage[]>([])
   const [messageText, setMessageText] = useState('')
   const [selectedConnection, setSelectedConnection] = useState(connections[0]?.id || '')
   const [isLoading, setIsLoading] = useState(false)
@@ -204,7 +206,7 @@ export function MessageArea({ contact, connections, organizationId, userId }: Me
                     )}
                   >
                     <p className="text-sm whitespace-pre-wrap break-words">
-                      {message.content}
+                      {message.text}
                     </p>
                     <p
                       className={cn(
@@ -212,10 +214,10 @@ export function MessageArea({ contact, connections, organizationId, userId }: Me
                         isOutbound ? 'text-green-100' : 'text-muted-foreground'
                       )}
                     >
-                      {formatTime(message.occurredAt)}
-                      {isOutbound && message.metadata?.deliveryStatus && (
+                      {formatTime(message.sentAt)}
+                      {isOutbound && message.status && (
                         <span className="ml-2">
-                          {message.metadata.deliveryStatus === 'READ' ? '✓✓' : '✓'}
+                          {message.status === 'READ' ? '✓✓' : message.status === 'DELIVERED' ? '✓✓' : '✓'}
                         </span>
                       )}
                     </p>

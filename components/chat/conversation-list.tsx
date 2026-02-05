@@ -12,14 +12,14 @@ interface Contact {
   name: string | null
   phone: string
   whatsappPhone: string | null
-  interactions: Array<{
+  whatsappMessages: Array<{
     id: string
-    content: string | null
+    text: string
     direction: string
-    occurredAt: Date
+    sentAt: Date
   }>
   _count: {
-    interactions: number
+    whatsappMessages: number
   }
 }
 
@@ -99,7 +99,7 @@ export function ConversationList({
         ) : (
           <div>
             {filteredContacts.map((contact) => {
-              const lastInteraction = contact.interactions[0]
+              const lastMessage = contact.whatsappMessages[0]
               const isSelected = selectedContact?.id === contact.id
               const unreadCount = 0 // TODO: Implementar contagem de não lidas
 
@@ -123,18 +123,18 @@ export function ConversationList({
                       <p className="font-medium text-sm truncate">
                         {contact.name || contact.phone}
                       </p>
-                      {lastInteraction && (
+                      {lastMessage && (
                         <span className="text-xs text-muted-foreground flex-shrink-0">
-                          {formatTime(lastInteraction.occurredAt)}
+                          {formatTime(lastMessage.sentAt)}
                         </span>
                       )}
                     </div>
 
                     <div className="flex items-center justify-between gap-2">
-                      {lastInteraction && (
+                      {lastMessage && (
                         <p className="text-xs text-muted-foreground truncate">
-                          {lastInteraction.direction === 'OUTBOUND' && 'Você: '}
-                          {lastInteraction.content || '[Mídia]'}
+                          {lastMessage.direction === 'OUTBOUND' && 'Você: '}
+                          {lastMessage.text || '[Mídia]'}
                         </p>
                       )}
                       {unreadCount > 0 && (

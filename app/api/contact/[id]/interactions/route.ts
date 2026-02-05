@@ -50,29 +50,29 @@ export async function GET(
       )
     }
 
-    // 4. Buscar interações (filtrar por tipo se especificado)
-    const searchParams = req.nextUrl.searchParams
-    const type = searchParams.get('type')
-
-    const interactions = await prisma.interaction.findMany({
+    // 4. Buscar mensagens WhatsApp do contato
+    const messages = await prisma.whatsAppMessage.findMany({
       where: {
         contactId: id,
-        ...(type && { type }),
+        organizationId: user.organizationId,
       },
       orderBy: {
-        occurredAt: 'asc',
+        sentAt: 'asc',
       },
       select: {
         id: true,
-        type: true,
+        text: true,
         direction: true,
-        content: true,
-        occurredAt: true,
-        metadata: true,
+        sentAt: true,
+        deliveredAt: true,
+        readAt: true,
+        status: true,
+        mediaUrl: true,
+        mediaType: true,
       },
     })
 
-    return NextResponse.json(interactions)
+    return NextResponse.json(messages)
   } catch (error: any) {
     logger.error({ error }, 'Error fetching interactions')
     return NextResponse.json(
