@@ -10,8 +10,7 @@ import { useState } from 'react'
 interface Contact {
   id: string
   name: string | null
-  phone: string
-  whatsappPhone: string | null
+  phone: string | null
   whatsappMessages: Array<{
     id: string
     text: string

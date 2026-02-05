@@ -20,16 +20,15 @@ interface Connection {
 interface Contact {
   id: string
   name: string | null
-  phone: string
-  whatsappPhone: string | null
-  interactions: Array<{
+  phone: string | null
+  whatsappMessages: Array<{
     id: string
-    content: string | null
+    text: string
     direction: string
-    occurredAt: Date
+    sentAt: Date
   }>
   _count: {
-    interactions: number
+    whatsappMessages: number
   }
 }
 

@@ -18,8 +18,7 @@ import {
 interface Contact {
   id: string
   name: string | null
-  phone: string
-  whatsappPhone: string | null
+  phone: string | null
 }
 
 interface Connection {
