@@ -178,15 +178,6 @@ export async function POST(req: NextRequest) {
         instanceName: `${user.organizationId}-${instanceName}`,
         status: 'CONNECTING',
       },
-      include: {
-        user: {
-          select: {
-            id: true,
-            name: true,
-            email: true,
-          },
-        },
-      },
     })
 
     return NextResponse.json(connection, { status: 201 })
