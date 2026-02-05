@@ -7,7 +7,7 @@ Guia completo para fazer deploy do Evolution API no Easypanel (Hostinger VPS).
 ## 📋 Pré-requisitos
 
 - ✅ VPS Hostinger com Easypanel instalado
-- ✅ Domínio ou subdomínio (ex: `api-whatsapp.siriuscrm.com`)
+- ✅ Domínio ou subdomínio (ex: `api-whatsapp.roilabs.com.br`)
 - ✅ Acesso SSH ao servidor (opcional, Easypanel tem interface web)
 
 ---
@@ -59,9 +59,9 @@ WhatsApp Web
    REDIS_PASSWORD=nM3vB7cX1zL9pK2wQ5tY8rE4uI6oP0aS
    REDIS_URL=redis://:nM3vB7cX1zL9pK2wQ5tY8rE4uI6oP0aS@redis:6379
 
-   SERVER_URL=https://api-whatsapp.siriuscrm.com
+   SERVER_URL=https://api-whatsapp.roilabs.com.br
    EVOLUTION_API_KEY=dF4gH0jLkM3nB7vC1xZ9pK2wQ5tY8rE6
-   WEBHOOK_URL=https://app.siriuscrm.com/api/webhooks/evolution
+   WEBHOOK_URL=https://app.roilabs.com.br/api/webhooks/evolution
    ```
 
 ---
@@ -94,7 +94,7 @@ WhatsApp Web
 
 5. **Configurar Domínio:**
    - Na aba "Domains"
-   - Adicionar: `api-whatsapp.siriuscrm.com`
+   - Adicionar: `api-whatsapp.roilabs.com.br`
    - Apontar para porta `8080` do serviço `evolution-api`
    - Habilitar SSL automático (Let's Encrypt)
 
@@ -137,7 +137,7 @@ docker compose logs -f evolution-api
 2. **Aguardar propagação:**
    ```bash
    # Testar DNS
-   nslookup api-whatsapp.siriuscrm.com
+   nslookup api-whatsapp.roilabs.com.br
    ```
 
 3. **Verificar SSL:**
@@ -151,7 +151,7 @@ docker compose logs -f evolution-api
 #### 4.1 Health Check
 
 ```bash
-curl https://api-whatsapp.siriuscrm.com/health
+curl https://api-whatsapp.roilabs.com.br/health
 ```
 
 **Resposta esperada:**
@@ -165,7 +165,7 @@ curl https://api-whatsapp.siriuscrm.com/health
 #### 4.2 Criar Primeira Instância
 
 ```bash
-curl -X POST https://api-whatsapp.siriuscrm.com/instance/create \
+curl -X POST https://api-whatsapp.roilabs.com.br/instance/create \
   -H "apikey: dF4gH0jLkM3nB7vC1xZ9pK2wQ5tY8rE6" \
   -H "Content-Type: application/json" \
   -d '{
@@ -186,7 +186,7 @@ curl -X POST https://api-whatsapp.siriuscrm.com/instance/create \
     "apikey": "..."
   },
   "webhook": {
-    "url": "https://app.siriuscrm.com/api/webhooks/evolution",
+    "url": "https://app.roilabs.com.br/api/webhooks/evolution",
     "events": ["messages.upsert", "connection.update", ...]
   }
 }
@@ -195,7 +195,7 @@ curl -X POST https://api-whatsapp.siriuscrm.com/instance/create \
 #### 4.3 Obter QR Code
 
 ```bash
-curl https://api-whatsapp.siriuscrm.com/instance/connect/sirius-test \
+curl https://api-whatsapp.roilabs.com.br/instance/connect/sirius-test \
   -H "apikey: dF4gH0jLkM3nB7vC1xZ9pK2wQ5tY8rE6"
 ```
 
@@ -217,7 +217,7 @@ curl https://api-whatsapp.siriuscrm.com/instance/connect/sirius-test \
 #### 4.5 Verificar Status
 
 ```bash
-curl https://api-whatsapp.siriuscrm.com/instance/connectionState/sirius-test \
+curl https://api-whatsapp.roilabs.com.br/instance/connectionState/sirius-test \
   -H "apikey: dF4gH0jLkM3nB7vC1xZ9pK2wQ5tY8rE6"
 ```
 
@@ -242,7 +242,7 @@ No Vercel (ou onde o Sirius CRM está hospedado):
 
 ```env
 # Evolution API
-EVOLUTION_API_URL=https://api-whatsapp.siriuscrm.com
+EVOLUTION_API_URL=https://api-whatsapp.roilabs.com.br
 EVOLUTION_API_KEY=dF4gH0jLkM3nB7vC1xZ9pK2wQ5tY8rE6
 ```
 
@@ -277,7 +277,7 @@ docker compose logs -f redis
 **Health Check Endpoint:**
 ```bash
 # Adicionar ao monitoramento (UptimeRobot, etc)
-https://api-whatsapp.siriuscrm.com/health
+https://api-whatsapp.roilabs.com.br/health
 ```
 
 **Database Stats:**
@@ -353,7 +353,7 @@ docker compose logs evolution-api
 
 **Diagnóstico:**
 ```bash
-curl https://api-whatsapp.siriuscrm.com/instance/connectionState/instance-name \
+curl https://api-whatsapp.roilabs.com.br/instance/connectionState/instance-name \
   -H "apikey: sua-key"
 ```
 
@@ -369,7 +369,7 @@ curl https://api-whatsapp.siriuscrm.com/instance/connectionState/instance-name \
 **Diagnóstico:**
 ```bash
 # Ver eventos configurados
-curl https://api-whatsapp.siriuscrm.com/webhook/find/instance-name \
+curl https://api-whatsapp.roilabs.com.br/webhook/find/instance-name \
   -H "apikey: sua-key"
 ```
 
