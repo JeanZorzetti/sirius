@@ -80,11 +80,18 @@ export async function POST(req: NextRequest) {
       )
     }
 
-    // 7. Formatar número de telefone para WhatsApp
-    const phone = contact.phone
-    const whatsappNumber = evolutionApi.formatPhoneNumber(phone)
+    // 7. Verificar se contato tem telefone
+    if (!contact.phone) {
+      return NextResponse.json(
+        { error: 'Contact has no phone number' },
+        { status: 400 }
+      )
+    }
 
-    // 8. Enviar mensagem via Evolution API
+    // 8. Formatar número de telefone para WhatsApp
+    const whatsappNumber = evolutionApi.formatPhoneNumber(contact.phone)
+
+    // 9. Enviar mensagem via Evolution API
     const evolutionResponse = await evolutionApi.sendTextMessage({
       instanceName: connection.instanceName,
       number: whatsappNumber,
