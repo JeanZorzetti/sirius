@@ -103,6 +103,16 @@ async function processSubscription(params: {
   const scrapingMonthlyQuota = getQuota(tier, 'scraping_monthly_credits')
 
   if (scrapingMonthlyQuota > 0) {
+    // Buscar scrapingCredit atual para calcular incremento
+    const currentCredit = await prisma.scrapingCredit.findUnique({
+      where: { organizationId },
+      select: { monthlyQuota: true },
+    })
+
+    const quotaIncrease = currentCredit
+      ? Math.max(0, scrapingMonthlyQuota - currentCredit.monthlyQuota)
+      : scrapingMonthlyQuota
+
     await prisma.scrapingCredit.upsert({
       where: { organizationId },
       create: {
@@ -114,9 +124,9 @@ async function processSubscription(params: {
       },
       update: {
         monthlyQuota: scrapingMonthlyQuota,
-        // Só atualiza balance se aumentou o quota
+        // Adiciona a diferença ao balance se o quota aumentou
         balance: {
-          increment: Math.max(0, scrapingMonthlyQuota - (organization.scrapingCredit?.monthlyQuota || 0)),
+          increment: quotaIncrease,
         },
       },
     })
