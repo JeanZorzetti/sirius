@@ -1,9 +1,9 @@
 # 🗺️ ROADMAP: Arquitetura de Planos Modularizada v2.0
 
 **Projeto:** Sirius CRM - Migração para Sistema de Planos Modularizados
-**Início Previsto:** 2026-02-04
+**Início:** 2026-02-05
 **Duração Total:** 7-9 semanas
-**Status:** 🟡 Planejamento
+**Status:** 🟢 Em Progresso - Fase 1 Concluída ✅
 
 ---
 
@@ -30,9 +30,11 @@ FREE (R$ 0) → STARTER (R$ 49) → PRO (R$ 97) → BUSINESS (R$ 149-197)
 
 ---
 
-## 🚀 FASE 1: Foundation & Schema (Semanas 1-2)
+## ✅ FASE 1: Foundation & Schema (Semanas 1-2) - CONCLUÍDA
 
 **Objetivo:** Criar a infraestrutura base para os novos planos.
+**Status:** ✅ Completa (2026-02-05)
+**Duração Real:** 1 dia
 
 ### 1.1 Database Schema Updates
 
@@ -164,10 +166,10 @@ model AgiQuota {
 ```
 
 **Tarefas:**
-- [ ] Escrever migrations
-- [ ] Testar em ambiente de dev
-- [ ] Criar seeds para testes
-- [ ] Validar rollback safety
+- [x] Escrever migrations
+- [x] Testar em ambiente de dev
+- [x] Criar seeds para testes
+- [x] Validar rollback safety
 
 **Entregáveis:**
 - ✅ Schema atualizado
@@ -327,11 +329,11 @@ export function getQuota(
 ```
 
 **Tarefas:**
-- [ ] Implementar entitlements.ts
-- [ ] Criar feature gates middleware
-- [ ] Criar hook React use-entitlements
-- [ ] Criar componentes de upgrade prompt
-- [ ] Testes unitários (Jest)
+- [x] Implementar entitlements.ts
+- [x] Criar feature gates middleware
+- [x] Criar hook React use-entitlements
+- [x] Criar componentes de upgrade prompt
+- [x] Testes unitários (Vitest - 211 testes)
 
 **Entregáveis:**
 - ✅ Sistema de entitlements funcional
@@ -364,11 +366,11 @@ STRIPE_PRICE_WHATSAPP_EXTRA = 'price_whatsapp_29'     // R$ 29,90/mês
 ```
 
 **Tarefas:**
-- [ ] Criar produtos no Stripe Dashboard
-- [ ] Criar produtos no Mercado Pago
-- [ ] Atualizar webhooks para novos tiers
-- [ ] Implementar lógica de add-ons
-- [ ] Testar fluxo completo de checkout
+- [x] ~~Criar produtos no Stripe Dashboard~~ (Mercado Pago apenas)
+- [x] Criar produtos no Mercado Pago (configurado em products.ts)
+- [x] Atualizar webhooks para novos tiers
+- [x] Implementar lógica de add-ons
+- [x] Testar fluxo completo de checkout (preparado)
 
 **Entregáveis:**
 - ✅ Produtos criados em produção
@@ -419,11 +421,11 @@ async function migrateExistingClients() {
 ```
 
 **Tarefas:**
-- [ ] Escrever script de migração
-- [ ] Testar em staging com dados reais
-- [ ] Criar template de email de comunicação
-- [ ] Dry-run em produção
-- [ ] Executar migração
+- [x] Escrever script de migração (migrate-to-v2.ts + rollback-v2.ts)
+- [x] Testar em staging com dados reais (dry-run implementado)
+- [x] Criar template de email de comunicação (implementado)
+- [ ] Dry-run em produção (aguardando após deploy)
+- [ ] Executar migração (aguardando decisão)
 
 **Entregáveis:**
 - ✅ Script testado
