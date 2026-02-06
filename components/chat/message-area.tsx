@@ -18,6 +18,7 @@ import { MessageSearch } from './message-search'
 import { QuickReplyPicker } from './quick-reply-picker'
 import { QuotedMessage } from './quoted-message'
 import { ContactSidebar } from './contact-sidebar'
+import { AgentAssignment } from './agent-assignment'
 
 interface Tag { id: string; name: string; color: string }
 interface Deal {
@@ -34,6 +35,18 @@ interface Note {
   createdAt: Date
   user: { name: string | null }
 }
+interface User {
+  id: string
+  name: string | null
+  email: string
+}
+interface ChatConversation {
+  id: string
+  assignedUserId: string | null
+  assignedUser: User | null
+  status: string
+  priority: string
+}
 interface Contact {
   id: string
   name: string | null
@@ -43,6 +56,7 @@ interface Contact {
   tags?: Tag[]
   deals?: Deal[]
   notes?: Note[]
+  chatConversation?: ChatConversation | null
   _count?: { whatsappMessages: number }
 }
 interface Connection { id: string; instanceName: string; phoneNumber: string | null }
@@ -362,6 +376,7 @@ export function MessageArea({ contact, connections, organizationId, userId, user
   const [replyingTo, setReplyingTo] = useState<WhatsAppMessage | null>(null)
   const [showSidebar, setShowSidebar] = useState(false)
   const [contactData, setContactData] = useState<Contact | null>(null)
+  const [users, setUsers] = useState<User[]>([])
   const endRef = useRef<HTMLDivElement>(null)
   const taRef = useRef<HTMLTextAreaElement>(null)
   const containerRef = useRef<HTMLDivElement>(null)
@@ -420,6 +435,22 @@ export function MessageArea({ contact, connections, organizationId, userId, user
 
   useEffect(() => { fetchMsgs(true) }, [contact.id, fetchMsgs])
   useEffect(() => { const i=setInterval(()=>fetchMsgs(),POLL); return ()=>clearInterval(i) }, [fetchMsgs])
+
+  // Buscar usuários da organização
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const res = await fetch('/api/whatsapp/users')
+        if (res.ok) {
+          const data = await res.json()
+          setUsers(data)
+        }
+      } catch (error) {
+        console.error('Error fetching users:', error)
+      }
+    }
+    fetchUsers()
+  }, [])
 
   // Marcar mensagens como lidas quando a conversa é aberta
   useEffect(() => {
@@ -572,6 +603,15 @@ export function MessageArea({ contact, connections, organizationId, userId, user
           </div>
         </div>
         <div className="flex items-center gap-2">
+          {/* Agent Assignment (Fase 3.1) */}
+          {users.length > 0 && (
+            <AgentAssignment
+              contactId={contact.id}
+              assignedUserId={contact.chatConversation?.assignedUserId || null}
+              users={users}
+              onAssignmentChange={onContactUpdate}
+            />
+          )}
           <Button
             variant="ghost"
             size="sm"

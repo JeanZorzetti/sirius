@@ -47,6 +47,17 @@ export async function GET() {
           take: 1,
         },
         tags: true, // Fase 1.2
+        chatConversation: { // Fase 3.1
+          include: {
+            assignedUser: {
+              select: {
+                id: true,
+                name: true,
+                email: true,
+              }
+            }
+          }
+        },
         _count: {
           select: {
             whatsappMessages: {

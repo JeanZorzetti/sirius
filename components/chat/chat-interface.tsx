@@ -333,6 +333,7 @@ export function ChatInterface({
                 contacts={contacts}
                 selectedContact={selectedContact}
                 onSelectContact={setSelectedContact}
+                currentUserId={userId}
               />
 
               {selectedContact ? (

@@ -17,11 +17,26 @@ import {
 } from 'lucide-react'
 import { useState } from 'react'
 import { UnreadBadge } from './unread-badge'
+import { ConversationFilters } from './conversation-filters'
 
 interface Tag {
   id: string
   name: string
   color: string
+}
+
+interface User {
+  id: string
+  name: string | null
+  email: string
+}
+
+interface ChatConversation {
+  id: string
+  assignedUserId: string | null
+  assignedUser: User | null
+  status: string
+  priority: string
 }
 
 interface Contact {
@@ -35,6 +50,7 @@ interface Contact {
     sentAt: Date
   }>
   tags?: Tag[]
+  chatConversation?: ChatConversation | null
   _count: {
     whatsappMessages: number
     unreadMessages?: number
@@ -45,6 +61,7 @@ interface ConversationListProps {
   contacts: Contact[]
   selectedContact: Contact | null
   onSelectContact: (contact: Contact) => void
+  currentUserId: string
 }
 
 // ── Helpers ──────────────────────────────────────────────────
@@ -117,12 +134,21 @@ function avatarColor(name: string) {
 
 // ── Component ───────────────────────────────────────────────
 
-export function ConversationList({ contacts, selectedContact, onSelectContact }: ConversationListProps) {
+export function ConversationList({ contacts, selectedContact, onSelectContact, currentUserId }: ConversationListProps) {
   const [query, setQuery] = useState('')
+  const [filter, setFilter] = useState<string>('all')
 
   const filtered = contacts.filter(c => {
+    // Search filter
     const q = query.toLowerCase()
-    return displayName(c).toLowerCase().includes(q) || (c.phone || '').includes(q)
+    const matchesSearch = displayName(c).toLowerCase().includes(q) || (c.phone || '').includes(q)
+    if (!matchesSearch) return false
+
+    // Agent filter
+    if (filter === 'all') return true
+    if (filter === 'my') return c.chatConversation?.assignedUserId === currentUserId
+    if (filter === 'unassigned') return !c.chatConversation?.assignedUserId
+    return c.chatConversation?.assignedUserId === filter
   })
 
   const initials = (c: Contact) => {
@@ -157,6 +183,14 @@ export function ConversationList({ contacts, selectedContact, onSelectContact }:
             className="pl-9 h-[34px] bg-[#f0f2f5] dark:bg-zinc-900 border-0 rounded-lg text-[13px] placeholder:text-[#8696a0] focus-visible:ring-1 focus-visible:ring-[#00a884]"
           />
         </div>
+      </div>
+
+      {/* Filters (Fase 3.1) */}
+      <div className="px-3 pb-2">
+        <ConversationFilters
+          currentUserId={currentUserId}
+          onFilterChange={setFilter}
+        />
       </div>
 
       {/* List */}
@@ -248,7 +282,20 @@ export function ConversationList({ contacts, selectedContact, onSelectContact }:
                         </>
                       )}
                     </div>
-                    <UnreadBadge count={unreadCount} />
+                    <div className="flex items-center gap-1 flex-shrink-0">
+                      {contact.chatConversation?.assignedUser && (
+                        <div
+                          className="w-5 h-5 rounded-full bg-[#00a884]/20 flex items-center justify-center"
+                          title={`Atribuído a ${contact.chatConversation.assignedUser.name || contact.chatConversation.assignedUser.email}`}
+                        >
+                          <span className="text-[9px] font-semibold text-[#00a884]">
+                            {contact.chatConversation.assignedUser.name?.charAt(0).toUpperCase() ||
+                             contact.chatConversation.assignedUser.email.charAt(0).toUpperCase()}
+                          </span>
+                        </div>
+                      )}
+                      <UnreadBadge count={unreadCount} />
+                    </div>
                   </div>
 
                   {/* Tags */}

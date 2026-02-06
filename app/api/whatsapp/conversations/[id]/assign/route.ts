@@ -1,0 +1,138 @@
+import { NextRequest, NextResponse } from 'next/server'
+import { getServerSession } from 'next-auth'
+import { authOptions } from '@/app/api/auth/[...nextauth]/route'
+import { prisma } from '@/lib/prisma'
+
+export async function POST(
+  req: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  try {
+    const session = await getServerSession(authOptions)
+    if (!session?.user?.email) {
+      return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
+    }
+
+    const user = await prisma.user.findUnique({
+      where: { email: session.user.email },
+      select: { id: true, organizationId: true },
+    })
+
+    if (!user) {
+      return NextResponse.json({ error: 'Usuário não encontrado' }, { status: 404 })
+    }
+
+    const { assignedUserId } = await req.json()
+    const { id: contactId } = await params
+
+    // Validate contact belongs to org
+    const contact = await prisma.contact.findFirst({
+      where: {
+        id: contactId,
+        organizationId: user.organizationId,
+      },
+    })
+
+    if (!contact) {
+      return NextResponse.json({ error: 'Contato não encontrado' }, { status: 404 })
+    }
+
+    // Validate assigned user (if provided)
+    if (assignedUserId) {
+      const assignedUser = await prisma.user.findFirst({
+        where: {
+          id: assignedUserId,
+          organizationId: user.organizationId,
+        },
+      })
+
+      if (!assignedUser) {
+        return NextResponse.json({ error: 'Agente não encontrado' }, { status: 404 })
+      }
+    }
+
+    // Get or create conversation
+    let conversation = await prisma.chatConversation.findUnique({
+      where: { contactId },
+    })
+
+    const now = new Date()
+
+    if (conversation) {
+      // Update existing
+      conversation = await prisma.chatConversation.update({
+        where: { id: conversation.id },
+        data: {
+          assignedUserId: assignedUserId || null,
+          updatedAt: now,
+        },
+        include: {
+          assignedUser: {
+            select: {
+              id: true,
+              name: true,
+              email: true,
+            },
+          },
+        },
+      })
+    } else {
+      // Create new
+      conversation = await prisma.chatConversation.create({
+        data: {
+          contactId,
+          organizationId: user.organizationId,
+          assignedUserId: assignedUserId || null,
+          status: 'OPEN',
+          priority: 'NORMAL',
+        },
+        include: {
+          assignedUser: {
+            select: {
+              id: true,
+              name: true,
+              email: true,
+            },
+          },
+        },
+      })
+    }
+
+    // Create system message for assignment change
+    const previousAssignment = await prisma.chatConversation.findUnique({
+      where: { contactId },
+      include: {
+        assignedUser: { select: { name: true, email: true } },
+      },
+    })
+
+    let systemMessage = ''
+    if (!assignedUserId) {
+      systemMessage = `Atribuição removida`
+    } else if (!previousAssignment?.assignedUserId) {
+      const newUser = await prisma.user.findUnique({
+        where: { id: assignedUserId },
+        select: { name: true, email: true },
+      })
+      systemMessage = `Conversa atribuída a ${newUser?.name || newUser?.email}`
+    } else {
+      const oldUser = previousAssignment.assignedUser
+      const newUser = await prisma.user.findUnique({
+        where: { id: assignedUserId },
+        select: { name: true, email: true },
+      })
+      systemMessage = `Conversa transferida de ${oldUser?.name || oldUser?.email} para ${newUser?.name || newUser?.email}`
+    }
+
+    return NextResponse.json({
+      ...conversation,
+      systemMessage,
+    })
+  } catch (error) {
+    console.error('Error assigning agent:', error)
+    return NextResponse.json(
+      { error: 'Erro ao atribuir agente' },
+      { status: 500 }
+    )
+  }
+}

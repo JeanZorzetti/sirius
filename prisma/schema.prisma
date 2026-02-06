@@ -95,6 +95,9 @@ model Organization {
 
   // Chat Center - Quick Replies (Fase 2.1)
   quickReplies           QuickReply[]
+
+  // Chat Center - Conversation Management (Fase 3.1)
+  chatConversations      ChatConversation[]
 }
 
 model User {
@@ -126,6 +129,9 @@ model User {
 
   // Onboarding
   onboarding         OnboardingProgress?
+
+  // Chat Center - Assigned conversations (Fase 3.1)
+  assignedConversations ChatConversation[]
 
   role      Role     @default(USER)
   orgRole   OrgRole  @default(OWNER) // Defaulting to OWNER for now so existing users don't lose access. Ideally MEMBER.
@@ -163,6 +169,7 @@ model Contact {
   deals            Deal[]
   whatsappMessages WhatsAppMessage[]
   tags             Tag[] // Many-to-Many (Fase 1.2)
+  chatConversation ChatConversation? // One-to-One (Fase 3.1)
 
   // Performance indexes
   @@index([organizationId])
@@ -1350,6 +1357,43 @@ model ConversationMessage {
 
   @@index([sessionId])
   @@index([createdAt])
+}
+
+// ============================================================================
+// CHAT CENTER - CONVERSATION MANAGEMENT (Fase 3.1)
+// ============================================================================
+
+enum ConversationStatus {
+  OPEN
+  PENDING
+  RESOLVED
+  CLOSED
+}
+
+enum ConversationPriority {
+  LOW
+  NORMAL
+  HIGH
+  URGENT
+}
+
+model ChatConversation {
+  id              String   @id @default(uuid())
+  contactId       String   @unique
+  contact         Contact  @relation(fields: [contactId], references: [id], onDelete: Cascade)
+  organizationId  String
+  organization    Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  assignedUserId  String?
+  assignedUser    User?    @relation(fields: [assignedUserId], references: [id], onDelete: SetNull)
+  status          ConversationStatus @default(OPEN)
+  priority        ConversationPriority @default(NORMAL)
+  lastMessageAt   DateTime?
+  resolvedAt      DateTime?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([organizationId, status])
+  @@index([assignedUserId])
 }
 
 // ============================================================================
