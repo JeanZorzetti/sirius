@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button'
 import {
   Send, Users, Loader2, Check, CheckCheck, Mic,
   Image as ImageIcon, Video, FileText, Download, Play, Pause,
-  File, Search, Reply, X,
+  File, Search, Reply, X, Info,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { toast } from 'sonner'
@@ -17,9 +17,34 @@ import { ConversationTags } from './conversation-tags'
 import { MessageSearch } from './message-search'
 import { QuickReplyPicker } from './quick-reply-picker'
 import { QuotedMessage } from './quoted-message'
+import { ContactSidebar } from './contact-sidebar'
 
 interface Tag { id: string; name: string; color: string }
-interface Contact { id: string; name: string | null; phone: string | null; tags?: Tag[] }
+interface Deal {
+  id: string
+  title: string
+  value: number | null
+  stage: { name: string }
+  pipeline: { name: string }
+  updatedAt: Date
+}
+interface Note {
+  id: string
+  content: string
+  createdAt: Date
+  user: { name: string | null }
+}
+interface Contact {
+  id: string
+  name: string | null
+  phone: string | null
+  email?: string | null
+  company?: string | null
+  tags?: Tag[]
+  deals?: Deal[]
+  notes?: Note[]
+  _count?: { whatsappMessages: number }
+}
 interface Connection { id: string; instanceName: string; phoneNumber: string | null }
 interface WhatsAppMessage {
   id: string; text: string; direction: string; sentAt: Date
@@ -335,6 +360,8 @@ export function MessageArea({ contact, connections, organizationId, userId, user
   const [showQuickReply, setShowQuickReply] = useState(false)
   const [quickReplyQuery, setQuickReplyQuery] = useState('')
   const [replyingTo, setReplyingTo] = useState<WhatsAppMessage | null>(null)
+  const [showSidebar, setShowSidebar] = useState(false)
+  const [contactData, setContactData] = useState<Contact | null>(null)
   const endRef = useRef<HTMLDivElement>(null)
   const taRef = useRef<HTMLTextAreaElement>(null)
   const containerRef = useRef<HTMLDivElement>(null)
@@ -371,6 +398,25 @@ export function MessageArea({ contact, connections, organizationId, userId, user
     } catch { if (show) toast.error('Erro ao carregar mensagens') }
     finally { setLoading(false) }
   }, [contact.id, scrollToBottom])
+
+  const fetchContactData = useCallback(async () => {
+    try {
+      const r = await fetch(`/api/contact/${contact.id}`)
+      if (r.ok) {
+        const data = await r.json()
+        setContactData(data)
+      }
+    } catch (error) {
+      console.error('Error fetching contact data:', error)
+    }
+  }, [contact.id])
+
+  const toggleSidebar = () => {
+    if (!showSidebar && !contactData) {
+      fetchContactData()
+    }
+    setShowSidebar(!showSidebar)
+  }
 
   useEffect(() => { fetchMsgs(true) }, [contact.id, fetchMsgs])
   useEffect(() => { const i=setInterval(()=>fetchMsgs(),POLL); return ()=>clearInterval(i) }, [fetchMsgs])
@@ -499,9 +545,11 @@ export function MessageArea({ contact, connections, organizationId, userId, user
   }
 
   return (
-    <div className="flex-1 flex flex-col min-w-0">
-      {/* Search bar (conditionally rendered) */}
-      {isSearchOpen && (
+    <div className="flex-1 flex min-w-0">
+      {/* Main message area */}
+      <div className="flex-1 flex flex-col min-w-0">
+        {/* Search bar (conditionally rendered) */}
+        {isSearchOpen && (
         <MessageSearch
           messages={messages.map(m => ({ id: m.id, text: m.text }))}
           onClose={() => setIsSearchOpen(false)}
@@ -524,6 +572,18 @@ export function MessageArea({ contact, connections, organizationId, userId, user
           </div>
         </div>
         <div className="flex items-center gap-2">
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={toggleSidebar}
+            className={cn(
+              'h-8 w-8 p-0',
+              showSidebar && 'bg-[#00a884]/10 text-[#00a884]'
+            )}
+            title="Informações do contato"
+          >
+            <Info className="h-4 w-4" />
+          </Button>
           <Button
             variant="ghost"
             size="sm"
@@ -792,6 +852,21 @@ export function MessageArea({ contact, connections, organizationId, userId, user
           )}
         </button>
       </div>
+      </div>
+
+      {/* Contact Sidebar */}
+      {showSidebar && contactData && contactData.tags && contactData.deals && contactData.notes && contactData._count && (
+        <ContactSidebar
+          contact={{
+            ...contactData,
+            tags: contactData.tags,
+            deals: contactData.deals,
+            notes: contactData.notes,
+            _count: contactData._count,
+          }}
+          onClose={() => setShowSidebar(false)}
+        />
+      )}
     </div>
   )
 }
