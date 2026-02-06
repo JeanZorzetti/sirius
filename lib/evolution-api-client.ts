@@ -317,24 +317,35 @@ export class EvolutionAPIClient {
 
   /**
    * Get all contacts
+   * Evolution API v2: POST /chat/findContacts/{instance}
    */
   async getContacts(instanceName: string): Promise<any[]> {
     return this.request<any[]>(
-      `/chat/findContacts/${instanceName}`
+      `/chat/findContacts/${instanceName}`,
+      {
+        method: 'POST',
+        body: JSON.stringify({ where: {} }),
+      }
     )
   }
 
   /**
    * Get all chats
+   * Evolution API v2: POST /chat/findChats/{instance}
    */
   async getChats(instanceName: string): Promise<any[]> {
     return this.request<any[]>(
-      `/chat/findChats/${instanceName}`
+      `/chat/findChats/${instanceName}`,
+      {
+        method: 'POST',
+        body: JSON.stringify({ where: {} }),
+      }
     )
   }
 
   /**
    * Get messages from a chat
+   * Evolution API v2: POST /chat/findMessages/{instance}
    */
   async getMessages(
     instanceName: string,
@@ -342,7 +353,18 @@ export class EvolutionAPIClient {
     limit: number = 50
   ): Promise<Message[]> {
     return this.request<Message[]>(
-      `/chat/findMessages/${instanceName}?remoteJid=${remoteJid}&limit=${limit}`
+      `/chat/findMessages/${instanceName}`,
+      {
+        method: 'POST',
+        body: JSON.stringify({
+          where: {
+            key: {
+              remoteJid,
+            },
+          },
+          limit,
+        }),
+      }
     )
   }
 
