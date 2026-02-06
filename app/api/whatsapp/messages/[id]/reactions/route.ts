@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { getServerSession } from 'next-auth'
-import { authOptions } from '@/lib/auth'
+import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 
 /**
@@ -12,7 +11,7 @@ export async function POST(
   context: { params: Promise<{ id: string }> }
 ) {
   try {
-    const session = await getServerSession(authOptions)
+    const session = await getSession()
     if (!session?.user?.id) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
@@ -24,13 +23,21 @@ export async function POST(
       return NextResponse.json({ error: 'Emoji is required' }, { status: 400 })
     }
 
+    // Get user's organization
+    const user = await prisma.user.findUnique({
+      where: { id: session.user.id },
+      select: { organizationId: true },
+    })
+
+    if (!user?.organizationId) {
+      return NextResponse.json({ error: 'Organization not found' }, { status: 404 })
+    }
+
     // Verify message exists and user has access
     const message = await prisma.whatsAppMessage.findFirst({
       where: {
         id: messageId,
-        organization: {
-          users: { some: { id: session.user.id } }
-        }
+        organizationId: user.organizationId,
       },
       include: {
         reactions: true
@@ -89,7 +96,7 @@ export async function GET(
   context: { params: Promise<{ id: string }> }
 ) {
   try {
-    const session = await getServerSession(authOptions)
+    const session = await getSession()
     if (!session?.user?.id) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
@@ -97,12 +104,19 @@ export async function GET(
     const { id: messageId } = await context.params
 
     // Verify message exists and user has access
+    const user = await prisma.user.findUnique({
+      where: { id: session.user.id },
+      select: { organizationId: true },
+    })
+
+    if (!user?.organizationId) {
+      return NextResponse.json({ error: 'Organization not found' }, { status: 404 })
+    }
+
     const message = await prisma.whatsAppMessage.findFirst({
       where: {
         id: messageId,
-        organization: {
-          users: { some: { id: session.user.id } }
-        }
+        organizationId: user.organizationId,
       }
     })
 
