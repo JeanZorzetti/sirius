@@ -65,10 +65,12 @@ export async function GET(
     )
 
     // 5. Map Evolution API state to our status
+    // Evolution API v2 retorna: { instance: { instanceName, state } }
+    const state = evolutionState?.instance?.state ?? evolutionState?.state
     let status = connection.status
-    if (evolutionState.state === 'open') {
+    if (state === 'open') {
       status = 'CONNECTED'
-    } else if (evolutionState.state === 'connecting' || evolutionState.state === 'close') {
+    } else if (state === 'connecting' || state === 'close') {
       status = 'CONNECTING'
     } else {
       status = 'DISCONNECTED'
@@ -97,7 +99,7 @@ export async function GET(
       status,
       phoneNumber: connection.phoneNumber,
       connectedAt: connection.connectedAt,
-      evolutionState: evolutionState.state,
+      evolutionState: state,
     })
   } catch (error: any) {
     logger.error({ error }, 'Error fetching connection status')
