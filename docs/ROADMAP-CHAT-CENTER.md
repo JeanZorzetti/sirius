@@ -688,7 +688,7 @@ async function sendMessage(text: string) {
 - Swipe (mobile): esquerda = arquivar, direita = fixar
 - Conversas fixadas ficam no topo (max 15)
 
-### 5.5 Acessibilidade
+### 5.5 Acessibilidade ✅
 - `aria-live="polite"` no container de mensagens
 - Navegacao por teclado completa
 - Focus visivel em todos os elementos interativos
