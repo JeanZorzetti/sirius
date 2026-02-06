@@ -163,7 +163,9 @@ export async function POST(req: NextRequest) {
       )
     }
 
-    const webhookUrl = `${process.env.NEXT_PUBLIC_APP_URL}/api/webhooks/evolution`
+    // Determinar URL base: usar env var ou derivar do header da requisição
+    const appUrl = process.env.NEXT_PUBLIC_APP_URL || `https://${req.headers.get('host')}`
+    const webhookUrl = `${appUrl}/api/webhooks/evolution`
 
     const evolutionInstance = await evolutionClient.createInstance({
       instanceName: `${user.organizationId}-${instanceName}`,

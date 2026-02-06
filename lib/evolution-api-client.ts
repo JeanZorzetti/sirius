@@ -149,25 +149,31 @@ export class EvolutionAPIClient {
    * Create a new WhatsApp instance
    */
   async createInstance(params: CreateInstanceParams): Promise<InstanceInfo> {
-    logger.info({ instanceName: params.instanceName }, 'Creating Evolution API instance')
+    logger.info({ instanceName: params.instanceName, webhookUrl: params.webhookUrl }, 'Creating Evolution API instance')
+
+    const payload: Record<string, any> = {
+      instanceName: params.instanceName,
+      qrcode: params.qrcode ?? true,
+      integration: params.integration ?? 'WHATSAPP-BAILEYS',
+    }
+
+    // Só incluir webhook se a URL for válida (evita "undefined/..." que causa 400)
+    if (params.webhookUrl) {
+      payload.webhook = params.webhookUrl
+      payload.webhook_by_events = false
+      payload.events = params.webhookEvents ?? [
+        'QRCODE_UPDATED',
+        'MESSAGES_UPSERT',
+        'MESSAGES_UPDATE',
+        'CONNECTION_UPDATE',
+        'CONTACTS_UPSERT',
+        'CHATS_UPSERT',
+      ]
+    }
 
     return this.request<InstanceInfo>('/instance/create', {
       method: 'POST',
-      body: JSON.stringify({
-        instanceName: params.instanceName,
-        qrcode: params.qrcode ?? true,
-        integration: params.integration ?? 'WHATSAPP-BAILEYS',
-        webhook: params.webhookUrl,
-        webhook_by_events: false,
-        events: params.webhookEvents ?? [
-          'QRCODE_UPDATED',
-          'MESSAGES_UPSERT',
-          'MESSAGES_UPDATE',
-          'CONNECTION_UPDATE',
-          'CONTACTS_UPSERT',
-          'CHATS_UPSERT',
-        ],
-      }),
+      body: JSON.stringify(payload),
     })
   }
 
