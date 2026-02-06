@@ -81,15 +81,34 @@ export async function POST(
       )
     }
 
-    // 6. Filter to individual chats (not groups, not status)
-    const individualChats = (chats || []).filter((chat: any) => {
-      const chatId = chat.id || chat.remoteJid || ''
-      return chatId.includes('@s.whatsapp.net') && !chatId.includes('@g.us')
+    // 6. Extrair remoteJid de cada chat
+    // Evolution API v2 retorna chats com id=null
+    // O remoteJid real está em lastMessage.key.remoteJid
+    const parsedChats = (chats || []).map((chat: any) => {
+      const remoteJid =
+        chat.id ||                                     // v1 format
+        chat.remoteJid ||                              // alternate field
+        chat.lastMessage?.key?.remoteJid ||            // v2 format - dentro do lastMessage
+        ''
+      const pushName =
+        chat.name ||
+        chat.pushName ||
+        chat.notify ||
+        chat.lastMessage?.pushName ||                  // v2 format
+        ''
+      return { ...chat, _remoteJid: remoteJid, _pushName: pushName }
+    })
+
+    // Filter to individual chats (not groups, not status, not LID)
+    const individualChats = parsedChats.filter((chat: any) => {
+      const jid = chat._remoteJid
+      return jid.includes('@s.whatsapp.net') && !jid.includes('@g.us') && !jid.includes('@lid')
     })
 
     logger.info({
       connectionId: connection.id,
       totalChats: chats?.length || 0,
+      parsedWithJid: parsedChats.filter((c: any) => c._remoteJid).length,
       individualChats: individualChats.length,
     }, 'Syncing chats from Evolution API')
 
@@ -97,16 +116,24 @@ export async function POST(
     let syncedMessages = 0
     let skippedExisting = 0
 
-    // 7. Processar até 50 conversas mais recentes
-    const chatsToSync = individualChats.slice(0, 50)
+    // 7. Deduplicate by remoteJid (same contact can appear multiple times)
+    const seenJids = new Set<string>()
+    const uniqueChats = individualChats.filter((chat: any) => {
+      if (seenJids.has(chat._remoteJid)) return false
+      seenJids.add(chat._remoteJid)
+      return true
+    })
+
+    // Processar até 50 conversas mais recentes
+    const chatsToSync = uniqueChats.slice(0, 50)
 
     for (const chat of chatsToSync) {
       try {
-        const remoteJid = chat.id || chat.remoteJid
+        const remoteJid = chat._remoteJid
         if (!remoteJid) continue
 
         const phoneNumber = normalizePhoneNumber(remoteJid.replace('@s.whatsapp.net', ''))
-        const contactName = chat.name || chat.pushName || chat.notify || phoneNumber
+        const contactName = chat._pushName || phoneNumber
 
         // Find or create contact
         let contact = await findContactByPhone(user.organizationId, phoneNumber)
@@ -131,19 +158,37 @@ export async function POST(
         // Fetch messages for this chat (até 30 mensagens por conversa)
         let chatMessages: any[] = []
         try {
-          chatMessages = await evolutionClient.getMessages(connection.instanceName, remoteJid, 30)
-        } catch (err) {
-          logger.debug({ remoteJid }, 'Failed to fetch messages for chat, skipping')
-          // Mesmo sem mensagens, o contato já foi criado - a conversa aparece
-          continue
+          const rawMessages = await evolutionClient.getMessages(connection.instanceName, remoteJid, 30)
+          chatMessages = Array.isArray(rawMessages) ? rawMessages : []
+        } catch (err: any) {
+          logger.debug({ remoteJid, error: err.message }, 'Failed to fetch messages for chat')
+          // Fallback: usar lastMessage do chat como única mensagem
+          if (chat.lastMessage) {
+            chatMessages = [chat.lastMessage]
+          }
         }
 
+        // Se não tem mensagens e nem lastMessage, pelo menos criar a conversa com lastMessage do chat
+        if (chatMessages.length === 0 && chat.lastMessage) {
+          chatMessages = [chat.lastMessage]
+        }
+
+        // Normalizar mensagens - Evolution API v2 pode ter formato diferente
+        // v2 findMessages retorna: { id, key: {}, message: {}, messageTimestamp, ... }
+        // v2 lastMessage retorna: { id, key: {}, message: {}, messageTimestamp, ... }
+        const normalizedMessages = chatMessages.map((msg: any) => ({
+          key: msg.key || {},
+          message: msg.message || {},
+          messageTimestamp: msg.messageTimestamp || 0,
+          pushName: msg.pushName || '',
+          messageType: msg.messageType || '',
+        }))
+
         // Ordenar por timestamp (mais antiga primeiro)
-        const sortedMessages = (chatMessages || []).sort((a: any, b: any) => {
-          const tsA = a.messageTimestamp || 0
-          const tsB = b.messageTimestamp || 0
-          return (typeof tsA === 'string' ? parseInt(tsA) : tsA) -
-            (typeof tsB === 'string' ? parseInt(tsB) : tsB)
+        const sortedMessages = normalizedMessages.sort((a: any, b: any) => {
+          const tsA = typeof a.messageTimestamp === 'string' ? parseInt(a.messageTimestamp) : (a.messageTimestamp || 0)
+          const tsB = typeof b.messageTimestamp === 'string' ? parseInt(b.messageTimestamp) : (b.messageTimestamp || 0)
+          return tsA - tsB
         })
 
         // Save messages
@@ -167,8 +212,10 @@ export async function POST(
           }
 
           const rawTimestamp = msg.messageTimestamp
-          const timestamp = rawTimestamp
-            ? new Date((typeof rawTimestamp === 'string' ? parseInt(rawTimestamp) : rawTimestamp) * 1000)
+          const ts = typeof rawTimestamp === 'string' ? parseInt(rawTimestamp) : rawTimestamp
+          // Se timestamp parece ser em segundos (< 2000000000), converter para ms
+          const timestamp = ts > 0
+            ? new Date(ts > 9999999999 ? ts : ts * 1000)
             : new Date()
 
           try {
@@ -195,8 +242,9 @@ export async function POST(
         if (sortedMessages.length > 0) {
           const lastMsg = sortedMessages[sortedMessages.length - 1]
           const lastTs = lastMsg.messageTimestamp
-          const lastDate = lastTs
-            ? new Date((typeof lastTs === 'string' ? parseInt(lastTs) : lastTs) * 1000)
+          const ts = typeof lastTs === 'string' ? parseInt(lastTs) : lastTs
+          const lastDate = ts > 0
+            ? new Date(ts > 9999999999 ? ts : ts * 1000)
             : new Date()
 
           await prisma.contact.update({
@@ -284,16 +332,29 @@ async function findContactByPhone(organizationId: string, phone: string) {
 
 function extractMessageText(message: any): string {
   const msg = message.message
-  if (!msg) return ''
+  if (!msg) {
+    // v2 format: messageType field at top level
+    if (message.messageType === 'conversation') return ''
+    return ''
+  }
+
+  // Text messages
   if (msg.conversation) return msg.conversation
   if (msg.extendedTextMessage?.text) return msg.extendedTextMessage.text
+
+  // Media messages
   if (msg.imageMessage) return msg.imageMessage.caption ? `[Imagem] ${msg.imageMessage.caption}` : '[Imagem]'
   if (msg.videoMessage) return msg.videoMessage.caption ? `[Vídeo] ${msg.videoMessage.caption}` : '[Vídeo]'
   if (msg.documentMessage) return msg.documentMessage.fileName ? `[Documento] ${msg.documentMessage.fileName}` : '[Documento]'
-  if (msg.audioMessage) return '[Áudio]'
+  if (msg.audioMessage || msg.pttMessage) return '[Áudio]'
   if (msg.stickerMessage) return '[Figurinha]'
-  if (msg.locationMessage) return '[Localização]'
+  if (msg.locationMessage || msg.liveLocationMessage) return '[Localização]'
   if (msg.contactMessage || msg.contactsArrayMessage) return '[Contato]'
-  if (msg.protocolMessage || msg.reactionMessage) return ''
+  if (msg.viewOnceMessage || msg.viewOnceMessageV2) return '[Visualização única]'
+  if (msg.pollCreationMessage || msg.pollCreationMessageV3) return '[Enquete]'
+
+  // System messages (skip)
+  if (msg.protocolMessage || msg.reactionMessage || msg.senderKeyDistributionMessage) return ''
+
   return '[Mensagem]'
 }

@@ -113,9 +113,9 @@ export async function GET() {
                             _allKeys: Object.keys(chat),
                             ...chat,
                         }))
-                        // Filtrar individuais
+                        // Filtrar individuais - v2 tem id=null, remoteJid está em lastMessage.key.remoteJid
                         const individual = chats.filter((c: any) => {
-                            const cid = c.id || c.remoteJid || ''
+                            const cid = c.id || c.remoteJid || c.lastMessage?.key?.remoteJid || ''
                             return cid.includes('@s.whatsapp.net')
                         })
                         evolutionTest.individualChatsCount = individual.length
