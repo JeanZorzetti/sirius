@@ -1,0 +1,52 @@
+import { NextRequest, NextResponse } from 'next/server'
+import { prisma } from '@/lib/prisma'
+import { getSession } from '@/lib/auth'
+
+export async function PUT(
+  request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  try {
+    const session = await getSession()
+    if (!session?.user?.id) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    }
+
+    const user = await prisma.user.findUnique({
+      where: { id: session.user.id },
+      select: { organizationId: true },
+    })
+
+    if (!user?.organizationId) {
+      return NextResponse.json({ error: 'User organization not found' }, { status: 404 })
+    }
+
+    const resolvedParams = await params
+    const contactId = resolvedParams.id
+
+    const { isArchived } = await request.json()
+
+    // Update or create conversation
+    const conversation = await prisma.chatConversation.upsert({
+      where: {
+        contactId,
+      },
+      create: {
+        contactId,
+        organizationId: user.organizationId,
+        isArchived,
+      },
+      update: {
+        isArchived,
+      },
+    })
+
+    return NextResponse.json(conversation)
+  } catch (error) {
+    console.error('Error archiving conversation:', error)
+    return NextResponse.json(
+      { error: 'Failed to archive conversation' },
+      { status: 500 }
+    )
+  }
+}

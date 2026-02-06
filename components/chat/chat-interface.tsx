@@ -426,6 +426,7 @@ export function ChatInterface({
                   selectedContact={selectedContact}
                   onSelectContact={setSelectedContact}
                   currentUserId={userId}
+                  onConversationUpdate={() => fetchConversations()}
                 />
               </div>
 

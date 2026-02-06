@@ -14,10 +14,14 @@ import {
   FileText,
   MapPin,
   Sticker,
+  Pin,
+  Archive,
 } from 'lucide-react'
 import { useState } from 'react'
 import { UnreadBadge } from './unread-badge'
 import { ConversationFilters } from './conversation-filters'
+import { Button } from '@/components/ui/button'
+import { toast } from 'sonner'
 
 interface Tag {
   id: string
@@ -37,6 +41,8 @@ interface ChatConversation {
   assignedUser: User | null
   status: string
   priority: string
+  isPinned?: boolean
+  isArchived?: boolean
 }
 
 interface Contact {
@@ -62,6 +68,7 @@ interface ConversationListProps {
   selectedContact: Contact | null
   onSelectContact: (contact: Contact) => void
   currentUserId: string
+  onConversationUpdate?: () => void
 }
 
 // ── Helpers ──────────────────────────────────────────────────
@@ -134,22 +141,71 @@ function avatarColor(name: string) {
 
 // ── Component ───────────────────────────────────────────────
 
-export function ConversationList({ contacts, selectedContact, onSelectContact, currentUserId }: ConversationListProps) {
+export function ConversationList({ contacts, selectedContact, onSelectContact, currentUserId, onConversationUpdate }: ConversationListProps) {
   const [query, setQuery] = useState('')
   const [filter, setFilter] = useState<string>('all')
 
-  const filtered = contacts.filter(c => {
-    // Search filter
-    const q = query.toLowerCase()
-    const matchesSearch = displayName(c).toLowerCase().includes(q) || (c.phone || '').includes(q)
-    if (!matchesSearch) return false
+  const handlePin = async (contactId: string, isPinned: boolean, e: React.MouseEvent) => {
+    e.stopPropagation()
+    try {
+      const res = await fetch(`/api/whatsapp/conversations/${contactId}/pin`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ isPinned: !isPinned }),
+      })
+      if (!res.ok) throw new Error()
+      toast.success(isPinned ? 'Conversa desafixada' : 'Conversa fixada')
+      onConversationUpdate?.()
+    } catch {
+      toast.error('Erro ao fixar conversa')
+    }
+  }
 
-    // Agent filter
-    if (filter === 'all') return true
-    if (filter === 'my') return c.chatConversation?.assignedUserId === currentUserId
-    if (filter === 'unassigned') return !c.chatConversation?.assignedUserId
-    return c.chatConversation?.assignedUserId === filter
-  })
+  const handleArchive = async (contactId: string, isArchived: boolean, e: React.MouseEvent) => {
+    e.stopPropagation()
+    try {
+      const res = await fetch(`/api/whatsapp/conversations/${contactId}/archive`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ isArchived: !isArchived }),
+      })
+      if (!res.ok) throw new Error()
+      toast.success(isArchived ? 'Conversa desarquivada' : 'Conversa arquivada')
+      onConversationUpdate?.()
+    } catch {
+      toast.error('Erro ao arquivar conversa')
+    }
+  }
+
+  const filtered = contacts
+    .filter(c => {
+      // Filter out archived conversations by default
+      if (c.chatConversation?.isArchived) return false
+
+      // Search filter
+      const q = query.toLowerCase()
+      const matchesSearch = displayName(c).toLowerCase().includes(q) || (c.phone || '').includes(q)
+      if (!matchesSearch) return false
+
+      // Agent filter
+      if (filter === 'all') return true
+      if (filter === 'my') return c.chatConversation?.assignedUserId === currentUserId
+      if (filter === 'unassigned') return !c.chatConversation?.assignedUserId
+      return c.chatConversation?.assignedUserId === filter
+    })
+    .sort((a, b) => {
+      // Sort: pinned first, then by last message time
+      const aPinned = a.chatConversation?.isPinned ?? false
+      const bPinned = b.chatConversation?.isPinned ?? false
+
+      if (aPinned && !bPinned) return -1
+      if (!aPinned && bPinned) return 1
+
+      // Both pinned or both not pinned - sort by last message
+      const aTime = a.whatsappMessages[0]?.sentAt ? new Date(a.whatsappMessages[0].sentAt).getTime() : 0
+      const bTime = b.whatsappMessages[0]?.sentAt ? new Date(b.whatsappMessages[0].sentAt).getTime() : 0
+      return bTime - aTime
+    })
 
   const initials = (c: Contact) => {
     if (c.name && !c.name.includes('@'))
@@ -211,19 +267,24 @@ export function ConversationList({ contacts, selectedContact, onSelectContact, c
             const preview = last ? cleanPreview(last.text) : null
             const unreadCount = contact._count.unreadMessages || 0
             const hasUnread = unreadCount > 0
+            const isPinned = contact.chatConversation?.isPinned ?? false
+            const isArchived = contact.chatConversation?.isArchived ?? false
 
             return (
-              <button
+              <div
                 key={contact.id}
-                onClick={() => onSelectContact(contact)}
-                className={cn(
-                  'w-full flex items-center gap-3 px-3 py-[10px] transition-colors duration-150 relative group',
-                  hasUnread && !selected && 'bg-[#f0f2f5]/50 dark:bg-[#202C33]/50',
-                  selected
-                    ? 'bg-[#f0f2f5] whatsapp-bubble-incoming'
-                    : 'hover:bg-[#f5f6f6] dark:hover:bg-[#202C33]/30'
-                )}
+                className="relative group"
               >
+                <button
+                  onClick={() => onSelectContact(contact)}
+                  className={cn(
+                    'w-full flex items-center gap-3 px-3 py-[10px] transition-colors duration-150 relative',
+                    hasUnread && !selected && 'bg-[#f0f2f5]/50 dark:bg-[#202C33]/50',
+                    selected
+                      ? 'bg-[#f0f2f5] whatsapp-bubble-incoming'
+                      : 'hover:bg-[#f5f6f6] dark:hover:bg-[#202C33]/30'
+                  )}
+                >
                 {/* Active bar */}
                 {selected && (
                   <div className="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-10 bg-[#00a884] rounded-r-full" />
@@ -322,6 +383,32 @@ export function ConversationList({ contacts, selectedContact, onSelectContact, c
                   )}
                 </div>
               </button>
+
+              {/* Quick actions - hover only */}
+              <div className="absolute right-2 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-1 bg-white dark:bg-zinc-800 rounded-md shadow-md p-1">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className={cn(
+                    'h-7 w-7 p-0 quick-action-btn',
+                    isPinned && 'text-[#00a884]'
+                  )}
+                  onClick={(e) => handlePin(contact.id, isPinned, e)}
+                  title={isPinned ? 'Desafixar conversa' : 'Fixar conversa'}
+                >
+                  <Pin className={cn('h-3.5 w-3.5', isPinned && 'fill-current')} />
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="h-7 w-7 p-0 quick-action-btn"
+                  onClick={(e) => handleArchive(contact.id, isArchived, e)}
+                  title="Arquivar conversa"
+                >
+                  <Archive className="h-3.5 w-3.5" />
+                </Button>
+              </div>
+            </div>
             )
           })
         )}

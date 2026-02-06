@@ -1410,6 +1410,8 @@ model ChatConversation {
   assignedUser    User?    @relation(fields: [assignedUserId], references: [id], onDelete: SetNull)
   status          ConversationStatus @default(OPEN)
   priority        ConversationPriority @default(NORMAL)
+  isPinned        Boolean  @default(false)
+  isArchived      Boolean  @default(false)
   lastMessageAt   DateTime?
   resolvedAt      DateTime?
   createdAt       DateTime @default(now())
@@ -1417,6 +1419,8 @@ model ChatConversation {
 
   @@index([organizationId, status])
   @@index([assignedUserId])
+  @@index([organizationId, isPinned])
+  @@index([organizationId, isArchived])
 }
 
 // ============================================================================
