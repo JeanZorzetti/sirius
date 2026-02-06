@@ -133,6 +133,9 @@ model User {
   // Chat Center - Assigned conversations (Fase 3.1)
   assignedConversations ChatConversation[]
 
+  // Chat Center - Message reactions (Fase 4.2)
+  messageReactions MessageReaction[]
+
   role      Role     @default(USER)
   orgRole   OrgRole  @default(OWNER) // Defaulting to OWNER for now so existing users don't lose access. Ideally MEMBER.
 }
@@ -649,11 +652,31 @@ model WhatsAppMessage {
   organizationId  String
   organization    Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
 
+  // Reactions (Fase 4.2)
+  reactions       MessageReaction[]
+
   @@index([organizationId, sentAt])
   @@index([dealId])
   @@index([contactId])
   @@index([remoteJid])
   @@index([contactId, isRead, direction])
+}
+
+// ============================================================================
+// CHAT CENTER - MESSAGE REACTIONS (Fase 4.2)
+// ============================================================================
+
+model MessageReaction {
+  id        String   @id @default(uuid())
+  emoji     String
+  messageId String
+  message   WhatsAppMessage @relation(fields: [messageId], references: [id], onDelete: Cascade)
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@unique([messageId, userId, emoji])
+  @@index([messageId])
 }
 
 // ============================================================================

@@ -20,6 +20,8 @@ import { QuotedMessage } from './quoted-message'
 import { ContactSidebar } from './contact-sidebar'
 import { AgentAssignment } from './agent-assignment'
 import { TypingIndicator } from './typing-indicator'
+import { ReactionBar } from './reaction-bar'
+import { ReactionChips } from './reaction-chips'
 
 interface Tag { id: string; name: string; color: string }
 interface Deal {
@@ -61,11 +63,17 @@ interface Contact {
   _count?: { whatsappMessages: number }
 }
 interface Connection { id: string; instanceName: string; phoneNumber: string | null }
+interface Reaction {
+  emoji: string
+  count: number
+  userReacted: boolean
+}
 interface WhatsAppMessage {
   id: string; text: string; direction: string; sentAt: Date
   deliveredAt: Date | null; readAt: Date | null; status: string
   mediaUrl: string | null; mediaType: string | null; messageId?: string
   replyToId?: string | null; replyToText?: string | null
+  reactions?: Reaction[]
 }
 interface MessageAreaProps {
   contact: Contact; connections: Connection[]
@@ -380,6 +388,7 @@ export function MessageArea({ contact, connections, organizationId, userId, user
   const [users, setUsers] = useState<User[]>([])
   const [isTyping, setIsTyping] = useState(false)
   const typingTimeoutRef = useRef<NodeJS.Timeout | null>(null)
+  const [showReactionBar, setShowReactionBar] = useState<string | null>(null)
   const endRef = useRef<HTMLDivElement>(null)
   const taRef = useRef<HTMLTextAreaElement>(null)
   const containerRef = useRef<HTMLDivElement>(null)
@@ -521,6 +530,24 @@ export function MessageArea({ contact, connections, organizationId, userId, user
     setQuickReplyQuery('')
     // Focus no textarea
     taRef.current?.focus()
+  }
+
+  const handleReaction = async (messageId: string, emoji: string) => {
+    try {
+      const r = await fetch(`/api/whatsapp/messages/${messageId}/reactions`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ emoji }),
+      })
+      if (!r.ok) throw new Error('Failed to react')
+
+      // Refresh messages to get updated reactions
+      fetchMsgs()
+      setShowReactionBar(null)
+    } catch (error) {
+      console.error('Error reacting:', error)
+      toast.error('Erro ao reagir à mensagem')
+    }
   }
 
   const send = async (e: React.FormEvent) => {
@@ -730,10 +757,12 @@ export function MessageArea({ contact, connections, organizationId, userId, user
                   {/* Bubble */}
                   <div
                     className={cn(
-                      'flex animate-in fade-in-0 slide-in-from-bottom-2 duration-200 group',
+                      'flex animate-in fade-in-0 slide-in-from-bottom-2 duration-200 group relative',
                       out ? 'justify-end' : 'justify-start',
                       isGroupedWithPrev ? 'mt-[2px]' : 'mt-2'
                     )}
+                    onMouseEnter={() => setShowReactionBar(msg.id)}
+                    onMouseLeave={() => setShowReactionBar(null)}
                   >
                     {/* Reply button (shows on hover) */}
                     {!out && (
@@ -812,6 +841,31 @@ export function MessageArea({ contact, connections, organizationId, userId, user
                         )}
                       </span>
                     </div>
+
+                    {/* Reaction bar (shows on hover) */}
+                    {showReactionBar === msg.id && (
+                      <div className={cn(
+                        'absolute -top-12 z-10 animate-in fade-in-0 slide-in-from-bottom-2 duration-150',
+                        out ? 'right-0' : 'left-0'
+                      )}>
+                        <ReactionBar
+                          onReact={(emoji) => handleReaction(msg.id, emoji)}
+                        />
+                      </div>
+                    )}
+
+                    {/* Reaction chips below bubble */}
+                    {msg.reactions && msg.reactions.length > 0 && (
+                      <div className={cn(
+                        'absolute -bottom-5',
+                        out ? 'right-0' : 'left-0'
+                      )}>
+                        <ReactionChips
+                          reactions={msg.reactions}
+                          onToggle={(emoji) => handleReaction(msg.id, emoji)}
+                        />
+                      </div>
+                    )}
                   </div>
                 </div>
               )

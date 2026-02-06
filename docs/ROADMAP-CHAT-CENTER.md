@@ -519,7 +519,7 @@ useEffect(() => {
 ## Fase 4 - Polish & Engagement (Semana 7+)
 > Foco: Detalhes que fazem a diferenca
 
-### 4.1 Typing Indicator
+### 4.1 Typing Indicator ✅
 | Atributo | Valor |
 |----------|-------|
 | Prioridade | Nice-to-have |

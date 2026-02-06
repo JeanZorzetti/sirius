@@ -50,7 +50,7 @@ export async function GET(
       )
     }
 
-    // 4. Buscar mensagens WhatsApp do contato
+    // 4. Buscar mensagens WhatsApp do contato com reações (Fase 4.2)
     const messages = await prisma.whatsAppMessage.findMany({
       where: {
         contactId: id,
@@ -72,10 +72,36 @@ export async function GET(
         mediaType: true,
         replyToId: true,
         replyToText: true,
+        reactions: {
+          include: {
+            user: { select: { id: true, name: true } }
+          }
+        }
       },
     })
 
-    return NextResponse.json(messages)
+    // Transform reactions to grouped format
+    const messagesWithReactions = messages.map(msg => ({
+      ...msg,
+      reactions: msg.reactions.reduce((acc, reaction) => {
+        const existing = acc.find(r => r.emoji === reaction.emoji)
+        if (existing) {
+          existing.count++
+          if (reaction.userId === session.user.id) {
+            existing.userReacted = true
+          }
+        } else {
+          acc.push({
+            emoji: reaction.emoji,
+            count: 1,
+            userReacted: reaction.userId === session.user.id
+          })
+        }
+        return acc
+      }, [] as { emoji: string; count: number; userReacted: boolean }[])
+    }))
+
+    return NextResponse.json(messagesWithReactions)
   } catch (error: any) {
     logger.error({ error }, 'Error fetching interactions')
     return NextResponse.json(
