@@ -1,8 +1,9 @@
 /**
  * API Route: /api/whatsapp/connections/[id]/sync
  *
- * Sincroniza conversas existentes do Evolution API para o banco local
- * Usado após conexão para importar mensagens recentes
+ * Sincroniza conversas existentes do Evolution API para o banco local.
+ * Importa histórico de conversas como no WhatsApp - ao conectar, todas
+ * as conversas recentes ficam disponíveis imediatamente.
  */
 
 import { NextRequest, NextResponse } from 'next/server'
@@ -68,22 +69,23 @@ export async function POST(
       )
     }
 
-    // 5. Fetch recent chats from Evolution API
+    // 5. Fetch ALL chats from Evolution API
     let chats: any[] = []
     try {
       chats = await evolutionClient.getChats(connection.instanceName)
     } catch (err: any) {
       logger.warn({ error: err.message, instanceName: connection.instanceName }, 'Failed to fetch chats from Evolution API')
       return NextResponse.json(
-        { error: 'Failed to fetch chats from Evolution API', details: err.message },
+        { error: 'Falha ao buscar conversas do WhatsApp', details: err.message },
         { status: 502 }
       )
     }
 
-    // 6. Filter to individual chats (not groups)
-    const individualChats = (chats || []).filter(
-      (chat: any) => !chat.id?.includes('@g.us') && chat.id?.includes('@s.whatsapp.net')
-    )
+    // 6. Filter to individual chats (not groups, not status)
+    const individualChats = (chats || []).filter((chat: any) => {
+      const chatId = chat.id || chat.remoteJid || ''
+      return chatId.includes('@s.whatsapp.net') && !chatId.includes('@g.us')
+    })
 
     logger.info({
       connectionId: connection.id,
@@ -93,13 +95,18 @@ export async function POST(
 
     let syncedContacts = 0
     let syncedMessages = 0
+    let skippedExisting = 0
 
-    // 7. For each chat, fetch recent messages and sync
-    for (const chat of individualChats.slice(0, 20)) { // Limit to 20 most recent chats
+    // 7. Processar até 50 conversas mais recentes
+    const chatsToSync = individualChats.slice(0, 50)
+
+    for (const chat of chatsToSync) {
       try {
-        const remoteJid = chat.id
+        const remoteJid = chat.id || chat.remoteJid
+        if (!remoteJid) continue
+
         const phoneNumber = normalizePhoneNumber(remoteJid.replace('@s.whatsapp.net', ''))
-        const contactName = chat.name || chat.pushName || phoneNumber
+        const contactName = chat.name || chat.pushName || chat.notify || phoneNumber
 
         // Find or create contact
         let contact = await findContactByPhone(user.organizationId, phoneNumber)
@@ -112,19 +119,35 @@ export async function POST(
             }
           })
           syncedContacts++
+          logger.info({ contactName, phone: phoneNumber }, 'Created contact from sync')
+        } else if (contactName !== phoneNumber && (!contact.name || contact.name === contact.phone)) {
+          // Atualizar nome se veio um nome real e o contato só tinha telefone
+          await prisma.contact.update({
+            where: { id: contact.id },
+            data: { name: contactName },
+          })
         }
 
-        // Fetch recent messages for this chat
-        let messages: any[] = []
+        // Fetch messages for this chat (até 30 mensagens por conversa)
+        let chatMessages: any[] = []
         try {
-          messages = await evolutionClient.getMessages(connection.instanceName, remoteJid, 10)
+          chatMessages = await evolutionClient.getMessages(connection.instanceName, remoteJid, 30)
         } catch (err) {
           logger.debug({ remoteJid }, 'Failed to fetch messages for chat, skipping')
+          // Mesmo sem mensagens, o contato já foi criado - a conversa aparece
           continue
         }
 
+        // Ordenar por timestamp (mais antiga primeiro)
+        const sortedMessages = (chatMessages || []).sort((a: any, b: any) => {
+          const tsA = a.messageTimestamp || 0
+          const tsB = b.messageTimestamp || 0
+          return (typeof tsA === 'string' ? parseInt(tsA) : tsA) -
+            (typeof tsB === 'string' ? parseInt(tsB) : tsB)
+        })
+
         // Save messages
-        for (const msg of (messages || []).slice(0, 10)) {
+        for (const msg of sortedMessages) {
           const messageId = msg.key?.id
           if (!messageId) continue
 
@@ -132,38 +155,57 @@ export async function POST(
           const existing = await prisma.whatsAppMessage.findFirst({
             where: { messageId, organizationId: user.organizationId }
           })
-          if (existing) continue
+          if (existing) {
+            skippedExisting++
+            continue
+          }
 
-          const messageText = extractMessageText(msg)
-          if (!messageText) continue
+          let messageText = extractMessageText(msg)
+          // Aceitar mídia sem caption
+          if (!messageText) {
+            messageText = '[Mensagem]'
+          }
 
           const rawTimestamp = msg.messageTimestamp
           const timestamp = rawTimestamp
             ? new Date((typeof rawTimestamp === 'string' ? parseInt(rawTimestamp) : rawTimestamp) * 1000)
             : new Date()
 
-          await prisma.whatsAppMessage.create({
-            data: {
-              contactId: contact.id,
-              organizationId: user.organizationId,
-              remoteJid,
-              messageId,
-              text: messageText,
-              direction: msg.key?.fromMe ? 'OUTBOUND' : 'INBOUND',
-              status: msg.key?.fromMe ? 'SENT' : 'DELIVERED',
-              sentAt: timestamp,
-            }
-          })
-          syncedMessages++
+          try {
+            await prisma.whatsAppMessage.create({
+              data: {
+                contactId: contact.id,
+                organizationId: user.organizationId,
+                remoteJid,
+                messageId,
+                text: messageText,
+                direction: msg.key?.fromMe ? 'OUTBOUND' : 'INBOUND',
+                status: msg.key?.fromMe ? 'SENT' : 'DELIVERED',
+                sentAt: timestamp,
+              }
+            })
+            syncedMessages++
+          } catch (createErr: any) {
+            // Pode falhar por unique constraint se houve race condition
+            logger.debug({ messageId, error: createErr.message }, 'Failed to create message (probably duplicate)')
+          }
         }
 
-        // Update contact timestamp
-        await prisma.contact.update({
-          where: { id: contact.id },
-          data: { updatedAt: new Date() }
-        })
+        // Update contact timestamp com a mensagem mais recente
+        if (sortedMessages.length > 0) {
+          const lastMsg = sortedMessages[sortedMessages.length - 1]
+          const lastTs = lastMsg.messageTimestamp
+          const lastDate = lastTs
+            ? new Date((typeof lastTs === 'string' ? parseInt(lastTs) : lastTs) * 1000)
+            : new Date()
+
+          await prisma.contact.update({
+            where: { id: contact.id },
+            data: { updatedAt: lastDate }
+          })
+        }
       } catch (err: any) {
-        logger.error({ error: err.message, chat: chat.id }, 'Error syncing chat')
+        logger.error({ error: err.message, chat: chat.id }, 'Error syncing individual chat')
         continue
       }
     }
@@ -178,15 +220,19 @@ export async function POST(
       connectionId: connection.id,
       syncedContacts,
       syncedMessages,
+      skippedExisting,
+      totalChatsProcessed: chatsToSync.length,
     }, 'Chat sync completed')
 
     return NextResponse.json({
       success: true,
       syncedContacts,
       syncedMessages,
+      skippedExisting,
+      totalChats: individualChats.length,
     })
   } catch (error: any) {
-    logger.error({ error }, 'Error syncing WhatsApp chats')
+    logger.error({ error: error.message, stack: error.stack }, 'Error syncing WhatsApp chats')
     return NextResponse.json(
       { error: 'Failed to sync chats' },
       { status: 500 }
@@ -222,6 +268,17 @@ async function findContactByPhone(organizationId: string, phone: string) {
       where: { organizationId, phone: '55' + phone }
     })
   }
+
+  // Busca parcial - últimos 8 dígitos
+  if (!contact) {
+    contact = await prisma.contact.findFirst({
+      where: {
+        organizationId,
+        phone: { contains: phone.slice(-8) },
+      }
+    })
+  }
+
   return contact
 }
 
@@ -230,9 +287,13 @@ function extractMessageText(message: any): string {
   if (!msg) return ''
   if (msg.conversation) return msg.conversation
   if (msg.extendedTextMessage?.text) return msg.extendedTextMessage.text
-  if (msg.imageMessage?.caption) return `[Imagem] ${msg.imageMessage.caption}`
-  if (msg.videoMessage?.caption) return `[Vídeo] ${msg.videoMessage.caption}`
-  if (msg.documentMessage?.fileName) return `[Documento] ${msg.documentMessage.fileName}`
+  if (msg.imageMessage) return msg.imageMessage.caption ? `[Imagem] ${msg.imageMessage.caption}` : '[Imagem]'
+  if (msg.videoMessage) return msg.videoMessage.caption ? `[Vídeo] ${msg.videoMessage.caption}` : '[Vídeo]'
+  if (msg.documentMessage) return msg.documentMessage.fileName ? `[Documento] ${msg.documentMessage.fileName}` : '[Documento]'
   if (msg.audioMessage) return '[Áudio]'
-  return ''
+  if (msg.stickerMessage) return '[Figurinha]'
+  if (msg.locationMessage) return '[Localização]'
+  if (msg.contactMessage || msg.contactsArrayMessage) return '[Contato]'
+  if (msg.protocolMessage || msg.reactionMessage) return ''
+  return '[Mensagem]'
 }

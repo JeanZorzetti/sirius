@@ -5,9 +5,10 @@ import { ConnectionManager } from './connection-manager'
 import { ConversationList } from './conversation-list'
 import { MessageArea } from './message-area'
 import { EmptyState } from '@/components/ui/empty-state'
-import { MessageSquare, RefreshCw } from 'lucide-react'
+import { MessageSquare, RefreshCw, Download, Loader2 } from 'lucide-react'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Button } from '@/components/ui/button'
+import { toast } from 'sonner'
 
 interface Connection {
   id: string
@@ -55,6 +56,7 @@ export function ChatInterface({
   const [contacts, setContacts] = useState<Contact[]>(initialContacts)
   const [connections, setConnections] = useState<Connection[]>(initialConnections)
   const [isRefreshing, setIsRefreshing] = useState(false)
+  const [isSyncing, setIsSyncing] = useState(false)
 
   // Filtrar apenas conexões conectadas
   const activeConnections = connections.filter(c => c.status === 'CONNECTED')
@@ -96,6 +98,56 @@ export function ChatInterface({
     }
   }, [])
 
+  // Importar conversas existentes do WhatsApp
+  const syncConversations = async () => {
+    if (activeConnections.length === 0) {
+      toast.error('Nenhuma conexão ativa para sincronizar')
+      return
+    }
+
+    setIsSyncing(true)
+    toast.info('Importando conversas do WhatsApp...')
+
+    let totalContacts = 0
+    let totalMessages = 0
+
+    try {
+      // Sync cada conexão ativa
+      for (const conn of activeConnections) {
+        try {
+          const res = await fetch(`/api/whatsapp/connections/${conn.id}/sync`, {
+            method: 'POST',
+          })
+
+          if (res.ok) {
+            const data = await res.json()
+            totalContacts += data.syncedContacts || 0
+            totalMessages += data.syncedMessages || 0
+          } else {
+            const errData = await res.json()
+            console.error('Sync error:', errData)
+          }
+        } catch (err) {
+          console.error('Sync request failed:', err)
+        }
+      }
+
+      if (totalMessages > 0 || totalContacts > 0) {
+        toast.success(`Importado: ${totalContacts} contatos, ${totalMessages} mensagens`)
+      } else {
+        toast.info('Nenhuma conversa nova encontrada para importar')
+      }
+
+      // Recarregar conversas
+      await fetchConversations(true)
+    } catch (error) {
+      toast.error('Erro ao importar conversas')
+      console.error('Sync error:', error)
+    } finally {
+      setIsSyncing(false)
+    }
+  }
+
   // Auto-polling a cada 5 segundos
   useEffect(() => {
     const interval = setInterval(() => {
@@ -128,7 +180,7 @@ export function ChatInterface({
   return (
     <div className="flex-1 flex flex-col">
       <Tabs value={activeTab} onValueChange={(v) => setActiveTab(v as any)} className="flex-1 flex flex-col">
-        <div className="border-b px-4">
+        <div className="border-b px-4 flex items-center justify-between">
           <TabsList className="grid w-full max-w-md grid-cols-2">
             <TabsTrigger value="chat">
               Conversas
@@ -145,6 +197,24 @@ export function ChatInterface({
               </span>
             </TabsTrigger>
           </TabsList>
+
+          {/* Botão de importar conversas */}
+          {activeConnections.length > 0 && (
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={syncConversations}
+              disabled={isSyncing}
+              className="ml-4 flex-shrink-0"
+            >
+              {isSyncing ? (
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              ) : (
+                <Download className="mr-2 h-4 w-4" />
+              )}
+              {isSyncing ? 'Importando...' : 'Importar Conversas'}
+            </Button>
+          )}
         </div>
 
         <TabsContent value="chat" className="flex-1 flex m-0">
@@ -162,17 +232,32 @@ export function ChatInterface({
                 <EmptyState
                   icon={MessageSquare}
                   title="Nenhuma conversa ainda"
-                  description="Quando alguém enviar uma mensagem para seu WhatsApp, ela aparecerá aqui automaticamente. Você também pode enviar a primeira mensagem."
+                  description="Clique em 'Importar Conversas' para trazer seu histórico do WhatsApp, ou aguarde novas mensagens."
                 />
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => fetchConversations(true)}
-                  disabled={isRefreshing}
-                >
-                  <RefreshCw className={`mr-2 h-4 w-4 ${isRefreshing ? 'animate-spin' : ''}`} />
-                  Atualizar
-                </Button>
+                <div className="flex items-center justify-center gap-3">
+                  <Button
+                    variant="default"
+                    size="sm"
+                    onClick={syncConversations}
+                    disabled={isSyncing}
+                  >
+                    {isSyncing ? (
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    ) : (
+                      <Download className="mr-2 h-4 w-4" />
+                    )}
+                    {isSyncing ? 'Importando...' : 'Importar Conversas do WhatsApp'}
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => fetchConversations(true)}
+                    disabled={isRefreshing}
+                  >
+                    <RefreshCw className={`mr-2 h-4 w-4 ${isRefreshing ? 'animate-spin' : ''}`} />
+                    Atualizar
+                  </Button>
+                </div>
               </div>
             </div>
           ) : (
