@@ -57,9 +57,10 @@ export interface QRCodeResponse {
 export interface ConnectionState {
   instance: {
     instanceName: string
-    status: InstanceStatus
+    state: InstanceStatus
+    status?: InstanceStatus
   }
-  state: InstanceStatus
+  state?: InstanceStatus
 }
 
 export interface SendTextMessageParams {
