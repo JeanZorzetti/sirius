@@ -16,6 +16,7 @@ import {
   Sticker,
 } from 'lucide-react'
 import { useState } from 'react'
+import { UnreadBadge } from './unread-badge'
 
 interface Contact {
   id: string
@@ -29,6 +30,7 @@ interface Contact {
   }>
   _count: {
     whatsappMessages: number
+    unreadMessages?: number
   }
 }
 
@@ -166,6 +168,8 @@ export function ConversationList({ contacts, selectedContact, onSelectContact }:
             const color = avatarColor(name)
             const media = last ? previewText(last.text) : null
             const preview = last ? cleanPreview(last.text) : null
+            const unreadCount = contact._count.unreadMessages || 0
+            const hasUnread = unreadCount > 0
 
             return (
               <button
@@ -173,6 +177,7 @@ export function ConversationList({ contacts, selectedContact, onSelectContact }:
                 onClick={() => onSelectContact(contact)}
                 className={cn(
                   'w-full flex items-center gap-3 px-3 py-[10px] transition-colors duration-150 relative group',
+                  hasUnread && !selected && 'bg-[#f0f2f5]/50',
                   selected
                     ? 'bg-[#f0f2f5] dark:bg-zinc-800'
                     : 'hover:bg-[#f5f6f6] dark:hover:bg-zinc-900/50'
@@ -202,7 +207,8 @@ export function ConversationList({ contacts, selectedContact, onSelectContact }:
                 <div className="flex-1 min-w-0 text-left border-b border-[#f0f2f5] dark:border-zinc-800 pb-[10px]">
                   <div className="flex items-center justify-between gap-2">
                     <p className={cn(
-                      'font-medium text-[15px] truncate text-[#111b21] dark:text-zinc-100',
+                      'text-[15px] truncate text-[#111b21] dark:text-zinc-100',
+                      hasUnread ? 'font-bold' : 'font-medium',
                       selected && 'text-[#111b21]'
                     )}>
                       {name}
@@ -210,26 +216,32 @@ export function ConversationList({ contacts, selectedContact, onSelectContact }:
                     {last && (
                       <span className={cn(
                         'text-[11px] flex-shrink-0 tabular-nums',
-                        'text-[#667781]'
+                        hasUnread ? 'text-[#25d366] font-semibold' : 'text-[#667781]'
                       )}>
                         {fmtTime(last.sentAt)}
                       </span>
                     )}
                   </div>
 
-                  <div className="flex items-center gap-1 mt-0.5">
-                    {last && (
-                      <>
-                        {last.direction === 'OUTBOUND' && (
-                          <CheckCheck className="h-[16px] w-[16px] flex-shrink-0 text-[#53bdeb]" />
-                        )}
-                        {media && <media.icon className="h-[14px] w-[14px] flex-shrink-0 text-[#667781]" />}
-                        <p className="text-[13px] text-[#667781] truncate leading-tight">
-                          {last.direction === 'OUTBOUND' && !media && 'Você: '}
-                          {preview || 'Mensagem'}
-                        </p>
-                      </>
-                    )}
+                  <div className="flex items-center justify-between gap-1 mt-0.5">
+                    <div className="flex items-center gap-1 min-w-0">
+                      {last && (
+                        <>
+                          {last.direction === 'OUTBOUND' && (
+                            <CheckCheck className="h-[16px] w-[16px] flex-shrink-0 text-[#53bdeb]" />
+                          )}
+                          {media && <media.icon className="h-[14px] w-[14px] flex-shrink-0 text-[#667781]" />}
+                          <p className={cn(
+                            'text-[13px] truncate leading-tight',
+                            hasUnread ? 'text-[#111b21] font-semibold' : 'text-[#667781]'
+                          )}>
+                            {last.direction === 'OUTBOUND' && !media && 'Você: '}
+                            {preview || 'Mensagem'}
+                          </p>
+                        </>
+                      )}
+                    </div>
+                    <UnreadBadge count={unreadCount} />
                   </div>
                 </div>
               </button>

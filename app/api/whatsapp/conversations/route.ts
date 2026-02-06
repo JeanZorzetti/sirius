@@ -61,7 +61,27 @@ export async function GET() {
       }
     })
 
-    return NextResponse.json(contacts)
+    // 4. Buscar contagem de mensagens não lidas para cada contato
+    const contactsWithUnread = await Promise.all(
+      contacts.map(async (contact) => {
+        const unreadCount = await prisma.whatsAppMessage.count({
+          where: {
+            contactId: contact.id,
+            direction: 'INBOUND',
+            isRead: false,
+          }
+        })
+        return {
+          ...contact,
+          _count: {
+            ...contact._count,
+            unreadMessages: unreadCount,
+          }
+        }
+      })
+    )
+
+    return NextResponse.json(contactsWithUnread)
   } catch (error: any) {
     logger.error({ error }, 'Error fetching WhatsApp conversations')
     return NextResponse.json(

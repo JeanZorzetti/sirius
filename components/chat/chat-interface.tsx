@@ -40,6 +40,7 @@ interface Contact {
   }>
   _count: {
     whatsappMessages: number
+    unreadMessages?: number
   }
 }
 
@@ -68,6 +69,7 @@ export function ChatInterface({
   const [isSyncing, setIsSyncing] = useState(false)
 
   const activeConnections = connections.filter(c => c.status === 'CONNECTED')
+  const totalUnread = contacts.reduce((sum, contact) => sum + (contact._count.unreadMessages || 0), 0)
 
   const fetchConversations = useCallback(async (showLoading = false) => {
     if (showLoading) setIsRefreshing(true)
@@ -153,6 +155,21 @@ export function ChatInterface({
     return () => clearInterval(interval)
   }, [fetchConversations, fetchConnections])
 
+  // Atualizar título do navegador com contagem de não-lidos
+  useEffect(() => {
+    const totalUnread = contacts.reduce((sum, contact) => sum + (contact._count.unreadMessages || 0), 0)
+
+    if (totalUnread > 0) {
+      document.title = `Chat Center (${totalUnread})`
+    } else {
+      document.title = 'Chat Center'
+    }
+
+    return () => {
+      document.title = 'Chat Center'
+    }
+  }, [contacts])
+
   // No connections at all
   if (connections.length === 0) {
     return (
@@ -189,14 +206,9 @@ export function ChatInterface({
           >
             <MessageCircle className="h-4 w-4" />
             Conversas
-            {contacts.length > 0 && (
-              <span className={cn(
-                'text-xs tabular-nums font-semibold px-1.5 py-0.5 rounded-full min-w-[20px] text-center',
-                activeView === 'chat'
-                  ? 'bg-primary/20 text-primary'
-                  : 'bg-zinc-200 dark:bg-zinc-700 text-muted-foreground'
-              )}>
-                {contacts.length}
+            {totalUnread > 0 && (
+              <span className="inline-flex items-center justify-center min-w-[20px] h-5 px-1.5 text-xs font-bold text-white bg-[#25d366] rounded-full tabular-nums">
+                {totalUnread > 99 ? '99+' : totalUnread}
               </span>
             )}
           </button>

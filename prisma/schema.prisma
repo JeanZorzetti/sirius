@@ -609,6 +609,9 @@ model WhatsAppMessage {
   direction       MessageDirection
   status          WhatsAppMessageStatus @default(PENDING)
 
+  // Read status (Fase 1.1)
+  isRead          Boolean  @default(false)
+
   // Media (optional)
   mediaUrl        String?
   mediaType       String?  // "image", "video", "document", "audio"
@@ -632,6 +635,7 @@ model WhatsAppMessage {
   @@index([dealId])
   @@index([contactId])
   @@index([remoteJid])
+  @@index([contactId, isRead, direction])
 }
 
 model CalendarEvent {

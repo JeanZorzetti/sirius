@@ -352,6 +352,22 @@ export function MessageArea({ contact, connections, organizationId, userId }: Me
   useEffect(() => { fetchMsgs(true) }, [contact.id, fetchMsgs])
   useEffect(() => { const i=setInterval(()=>fetchMsgs(),POLL); return ()=>clearInterval(i) }, [fetchMsgs])
 
+  // Marcar mensagens como lidas quando a conversa é aberta
+  useEffect(() => {
+    const markAsRead = async () => {
+      try {
+        await fetch('/api/whatsapp/messages/mark-read', {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ contactId: contact.id }),
+        })
+      } catch (error) {
+        console.error('Error marking messages as read:', error)
+      }
+    }
+    markAsRead()
+  }, [contact.id])
+
   // Auto-resize textarea
   useEffect(() => {
     if (taRef.current) {
