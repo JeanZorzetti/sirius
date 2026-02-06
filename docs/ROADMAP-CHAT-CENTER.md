@@ -440,7 +440,7 @@ PUT  /api/whatsapp/conversations/[id]/status      (abrir/resolver/fechar)
 
 ---
 
-### 3.2 Tempo Real via SSE (Substituir Polling)
+### 3.2 Tempo Real via SSE (Substituir Polling) ✅
 | Atributo | Valor |
 |----------|-------|
 | Prioridade | MUST-HAVE |

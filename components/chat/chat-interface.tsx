@@ -69,6 +69,7 @@ export function ChatInterface({
   const [connections, setConnections] = useState<Connection[]>(initialConnections)
   const [isRefreshing, setIsRefreshing] = useState(false)
   const [isSyncing, setIsSyncing] = useState(false)
+  const [connectionStatus, setConnectionStatus] = useState<'connected' | 'connecting' | 'disconnected'>('disconnected')
 
   const activeConnections = connections.filter(c => c.status === 'CONNECTED')
   const totalUnread = contacts.reduce((sum, contact) => sum + (contact._count.unreadMessages || 0), 0)
@@ -149,12 +150,83 @@ export function ChatInterface({
     }
   }
 
+  // SSE connection for real-time updates (Fase 3.2)
   useEffect(() => {
-    const interval = setInterval(() => {
-      fetchConversations()
-      fetchConnections()
-    }, POLL_INTERVAL)
-    return () => clearInterval(interval)
+    let eventSource: EventSource | null = null
+    let reconnectTimeout: NodeJS.Timeout | null = null
+
+    const connect = () => {
+      setConnectionStatus('connecting')
+      eventSource = new EventSource('/api/whatsapp/stream')
+
+      eventSource.onopen = () => {
+        console.log('[SSE] Connected to WhatsApp stream')
+        setConnectionStatus('connected')
+      }
+
+      eventSource.onmessage = (event) => {
+        try {
+          const data = JSON.parse(event.data)
+
+          switch (data.type) {
+            case 'connected':
+              console.log('[SSE] Connection established')
+              break
+
+            case 'conversation.updated':
+              // Refresh conversations when a message arrives
+              fetchConversations()
+              break
+
+            case 'message.new':
+              // Refresh conversations to show new message
+              fetchConversations()
+              break
+
+            case 'message.status':
+              // Optionally update message status in UI
+              break
+
+            case 'heartbeat':
+              // Keep-alive, no action needed
+              break
+
+            default:
+              console.log('[SSE] Unknown event type:', data.type)
+          }
+        } catch (error) {
+          console.error('[SSE] Error parsing message:', error)
+        }
+      }
+
+      eventSource.onerror = (error) => {
+        console.error('[SSE] Connection error:', error)
+        setConnectionStatus('disconnected')
+        eventSource?.close()
+
+        // Reconnect after 5 seconds
+        reconnectTimeout = setTimeout(() => {
+          console.log('[SSE] Reconnecting...')
+          connect()
+        }, 5000)
+      }
+    }
+
+    // Start connection
+    connect()
+
+    // Poll connections status separately (less frequently)
+    const connectionInterval = setInterval(fetchConnections, 10000) // 10s
+
+    return () => {
+      if (eventSource) {
+        eventSource.close()
+      }
+      if (reconnectTimeout) {
+        clearTimeout(reconnectTimeout)
+      }
+      clearInterval(connectionInterval)
+    }
   }, [fetchConversations, fetchConnections])
 
   // Atualizar título do navegador com contagem de não-lidos
@@ -243,6 +315,21 @@ export function ChatInterface({
 
         {/* Actions */}
         <div className="flex items-center gap-2">
+          {/* SSE Connection Status (Fase 3.2) */}
+          <div className="flex items-center gap-1.5 px-2 py-1 rounded-md bg-zinc-100 dark:bg-zinc-800">
+            <div className={cn(
+              'h-2 w-2 rounded-full transition-colors',
+              connectionStatus === 'connected' ? 'bg-emerald-500' :
+              connectionStatus === 'connecting' ? 'bg-amber-500 animate-pulse' :
+              'bg-red-500'
+            )} />
+            <span className="text-[10px] font-medium text-zinc-600 dark:text-zinc-400">
+              {connectionStatus === 'connected' ? 'Conectado' :
+               connectionStatus === 'connecting' ? 'Conectando...' :
+               'Desconectado'}
+            </span>
+          </div>
+
           {activeConnections.length > 0 && activeView === 'chat' && (
             <Button
               variant="ghost"

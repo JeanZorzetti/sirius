@@ -434,7 +434,14 @@ export function MessageArea({ contact, connections, organizationId, userId, user
   }
 
   useEffect(() => { fetchMsgs(true) }, [contact.id, fetchMsgs])
-  useEffect(() => { const i=setInterval(()=>fetchMsgs(),POLL); return ()=>clearInterval(i) }, [fetchMsgs])
+
+  // SSE subscription for real-time message updates (Fase 3.2)
+  // Note: SSE is handled at chat-interface level, this component will refresh via onContactUpdate
+  // But we keep a short polling as fallback
+  useEffect(() => {
+    const i = setInterval(() => fetchMsgs(), 30000) // 30s fallback polling (much less frequent)
+    return () => clearInterval(i)
+  }, [fetchMsgs])
 
   // Buscar usuários da organização
   useEffect(() => {

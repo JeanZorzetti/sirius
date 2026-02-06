@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import logger from '@/lib/logger'
+import { chatEvents } from '@/lib/chat-events'
 
 /**
  * Webhook receiver para Evolution API v2
@@ -384,6 +385,9 @@ async function handleIncomingMessage(connection: any, data: any) {
                     direction: isFromMe ? 'OUTBOUND' : 'INBOUND',
                 }, '✅ WhatsApp message saved successfully')
 
+                // Emit event for SSE (Fase 3.2)
+                chatEvents.emitNewMessage(organizationId, contact.id, savedMsg)
+
             } catch (msgError: any) {
                 logger.error({
                     error: msgError.message,
@@ -486,6 +490,8 @@ async function handleMessageStatusUpdate(connection: any, data: any) {
                         deliveredAt: new Date(),
                     },
                 })
+                // Emit event for SSE (Fase 3.2)
+                chatEvents.emitMessageStatus(organizationId, messageId, 'DELIVERED')
             } else if (status === 'READ' || status === 4) {
                 await prisma.whatsAppMessage.updateMany({
                     where: {
@@ -499,6 +505,8 @@ async function handleMessageStatusUpdate(connection: any, data: any) {
                         deliveredAt: new Date(),
                     },
                 })
+                // Emit event for SSE (Fase 3.2)
+                chatEvents.emitMessageStatus(organizationId, messageId, 'READ')
             }
         }
     } catch (error: any) {
