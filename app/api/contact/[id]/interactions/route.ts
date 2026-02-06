@@ -61,6 +61,7 @@ export async function GET(
       },
       select: {
         id: true,
+        messageId: true,
         text: true,
         direction: true,
         sentAt: true,

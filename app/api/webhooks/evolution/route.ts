@@ -218,9 +218,10 @@ async function handleConnectionUpdate(connection: any, data: any) {
 }
 
 /**
- * Processa mensagem recebida
+ * Processa mensagem recebida (INBOUND e OUTBOUND do telefone)
  * - Cria/atualiza contato
- * - Salva interação no banco
+ * - Salva interação no banco com mediaUrl/mediaType quando aplicável
+ * - Mensagens fromMe também são salvas para manter chat em tempo real
  */
 async function handleIncomingMessage(connection: any, data: any) {
     try {
@@ -258,11 +259,7 @@ async function handleIncomingMessage(connection: any, data: any) {
 
         for (const message of messages) {
             try {
-                // Ignorar mensagens enviadas por nós
-                if (message?.key?.fromMe) {
-                    logger.debug({ messageId: message.key.id }, 'Skipping fromMe message')
-                    continue
-                }
+                const isFromMe = !!message?.key?.fromMe
 
                 // Validar remoteJid
                 const remoteJid = message?.key?.remoteJid
@@ -277,6 +274,13 @@ async function handleIncomingMessage(connection: any, data: any) {
                     continue
                 }
 
+                // Ignorar mensagens de protocolo/sistema
+                const msg = message.message
+                if (msg?.protocolMessage || msg?.reactionMessage || msg?.senderKeyDistributionMessage) {
+                    logger.debug({ messageId: message.key?.id }, 'Skipping protocol/reaction message')
+                    continue
+                }
+
                 const isGroup = remoteJid.includes('@g.us')
                 const messageId = message.key?.id
 
@@ -284,16 +288,20 @@ async function handleIncomingMessage(connection: any, data: any) {
                 const phoneNumber = isGroup
                     ? remoteJid
                     : normalizePhoneNumber(remoteJid.replace('@s.whatsapp.net', ''))
+
+                // Para grupos: NÃO usar message.pushName (é o nome do remetente, não do grupo!)
+                // O nome do grupo será resolvido na próxima sync ou manualmente
                 const senderName = isGroup
-                    ? (message.pushName || `Grupo ${remoteJid.replace('@g.us', '')}`)
+                    ? `Grupo ${remoteJid.replace('@g.us', '')}`
                     : (message.pushName || message.verifiedBizName || phoneNumber)
 
-                // Extrair texto - agora aceita media sem caption também
+                // Extrair texto e mídia
                 let messageText = extractMessageText(message)
+                const mediaInfo = extractMediaInfo(message)
 
-                // Se não tem texto nenhum, atribuir texto genérico ao invés de ignorar
+                // Se não tem texto nenhum, atribuir texto genérico
                 if (!messageText) {
-                    messageText = '[Mensagem recebida]'
+                    messageText = isFromMe ? '[Mensagem enviada]' : '[Mensagem recebida]'
                 }
 
                 // Verificar se mensagem já existe (dedup)
@@ -313,8 +321,10 @@ async function handleIncomingMessage(connection: any, data: any) {
                     remoteJid,
                     messageId,
                     senderName,
+                    isFromMe,
+                    mediaType: mediaInfo?.type || null,
                     textPreview: messageText.substring(0, 50),
-                }, '📝 Saving incoming WhatsApp message')
+                }, '📝 Saving WhatsApp message')
 
                 // Buscar contato - para grupos buscar por JID, para individuais por telefone
                 let contact: any = null
@@ -340,12 +350,9 @@ async function handleIncomingMessage(connection: any, data: any) {
 
                 // Calcular timestamp da mensagem
                 const rawTimestamp = message.messageTimestamp
-                const messageTimestamp = rawTimestamp
-                    ? new Date(
-                        (typeof rawTimestamp === 'string'
-                            ? parseInt(rawTimestamp)
-                            : rawTimestamp) * 1000
-                    )
+                const ts = typeof rawTimestamp === 'string' ? parseInt(rawTimestamp) : (rawTimestamp || 0)
+                const messageTimestamp = ts > 0
+                    ? new Date(ts > 9999999999 ? ts : ts * 1000)
                     : new Date()
 
                 // Salvar mensagem no banco
@@ -356,8 +363,10 @@ async function handleIncomingMessage(connection: any, data: any) {
                         remoteJid,
                         messageId: messageId || `gen-${Date.now()}`,
                         text: messageText,
-                        direction: 'INBOUND',
-                        status: 'DELIVERED',
+                        direction: isFromMe ? 'OUTBOUND' : 'INBOUND',
+                        status: isFromMe ? 'SENT' : 'DELIVERED',
+                        mediaUrl: mediaInfo?.url || null,
+                        mediaType: mediaInfo?.type || null,
                         sentAt: messageTimestamp,
                     }
                 })
@@ -372,6 +381,7 @@ async function handleIncomingMessage(connection: any, data: any) {
                     savedMessageId: savedMsg.id,
                     contactId: contact.id,
                     messageId,
+                    direction: isFromMe ? 'OUTBOUND' : 'INBOUND',
                 }, '✅ WhatsApp message saved successfully')
 
             } catch (msgError: any) {
@@ -533,16 +543,22 @@ function extractMessageText(message: any): string {
     }
 
     // Mensagem com áudio
-    if (msg.audioMessage) return '[Áudio]'
+    if (msg.audioMessage || msg.pttMessage) return '[Áudio]'
 
     // Sticker
     if (msg.stickerMessage) return '[Figurinha]'
 
     // Localização
-    if (msg.locationMessage) return '[Localização]'
+    if (msg.locationMessage || msg.liveLocationMessage) return '[Localização]'
 
     // Contato
     if (msg.contactMessage || msg.contactsArrayMessage) return '[Contato]'
+
+    // Visualização única
+    if (msg.viewOnceMessage || msg.viewOnceMessageV2) return '[Visualização única]'
+
+    // Enquete
+    if (msg.pollCreationMessage || msg.pollCreationMessageV3) return '[Enquete]'
 
     // Reação
     if (msg.reactionMessage) return ''  // Reações não criam mensagem
@@ -550,6 +566,71 @@ function extractMessageText(message: any): string {
     // Mensagem de protocolo (sistema)
     if (msg.protocolMessage) return ''
 
+    // System key distribution
+    if (msg.senderKeyDistributionMessage) return ''
+
     // Qualquer outro tipo de mensagem
     return '[Mensagem]'
+}
+
+/**
+ * Extrai informações de mídia da mensagem
+ * Retorna { type, url, mimetype, fileName } ou null se não for mídia
+ */
+function extractMediaInfo(message: any): { type: string; url: string | null; mimetype: string | null; fileName: string | null } | null {
+    const msg = message.message
+    if (!msg) return null
+
+    // Imagem
+    if (msg.imageMessage) {
+        return {
+            type: 'image',
+            url: msg.imageMessage.url || msg.imageMessage.directPath || null,
+            mimetype: msg.imageMessage.mimetype || 'image/jpeg',
+            fileName: null,
+        }
+    }
+
+    // Vídeo
+    if (msg.videoMessage) {
+        return {
+            type: 'video',
+            url: msg.videoMessage.url || msg.videoMessage.directPath || null,
+            mimetype: msg.videoMessage.mimetype || 'video/mp4',
+            fileName: null,
+        }
+    }
+
+    // Documento
+    if (msg.documentMessage) {
+        return {
+            type: 'document',
+            url: msg.documentMessage.url || msg.documentMessage.directPath || null,
+            mimetype: msg.documentMessage.mimetype || 'application/octet-stream',
+            fileName: msg.documentMessage.fileName || null,
+        }
+    }
+
+    // Áudio
+    if (msg.audioMessage || msg.pttMessage) {
+        const audio = msg.audioMessage || msg.pttMessage
+        return {
+            type: 'audio',
+            url: audio.url || audio.directPath || null,
+            mimetype: audio.mimetype || 'audio/ogg',
+            fileName: null,
+        }
+    }
+
+    // Sticker
+    if (msg.stickerMessage) {
+        return {
+            type: 'sticker',
+            url: msg.stickerMessage.url || msg.stickerMessage.directPath || null,
+            mimetype: msg.stickerMessage.mimetype || 'image/webp',
+            fileName: null,
+        }
+    }
+
+    return null
 }

@@ -51,7 +51,7 @@ interface ChatInterfaceProps {
   maxInstances: number
 }
 
-const POLL_INTERVAL = 5000
+const POLL_INTERVAL = 3000 // 3s para tempo real
 
 export function ChatInterface({
   connections: initialConnections,

@@ -3,7 +3,11 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
-import { Send, Users, Loader2, Check, CheckCheck, Mic } from 'lucide-react'
+import {
+  Send, Users, Loader2, Check, CheckCheck, Mic,
+  Image as ImageIcon, Video, FileText, Download, Play, Pause,
+  File,
+} from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { toast } from 'sonner'
 import {
@@ -15,13 +19,14 @@ interface Connection { id: string; instanceName: string; phoneNumber: string | n
 interface WhatsAppMessage {
   id: string; text: string; direction: string; sentAt: Date
   deliveredAt: Date | null; readAt: Date | null; status: string
+  mediaUrl: string | null; mediaType: string | null; messageId?: string
 }
 interface MessageAreaProps {
   contact: Contact; connections: Connection[]
   organizationId: string; userId: string
 }
 
-const POLL = 3000
+const POLL = 2000 // 2s para tempo real
 
 // ── Helpers ──────────────────────────────────────────────────
 
@@ -47,7 +52,7 @@ function getSub(c: Contact): string {
 }
 
 const COLORS = ['bg-blue-500','bg-emerald-500','bg-violet-500','bg-amber-500','bg-rose-500','bg-cyan-500','bg-pink-500','bg-teal-500']
-function color(n: string) { let h=0; for(let i=0;i<n.length;i++) h=n.charCodeAt(i)+((h<<5)-h); return COLORS[Math.abs(h)%COLORS.length] }
+function colorHash(n: string) { let h=0; for(let i=0;i<n.length;i++) h=n.charCodeAt(i)+((h<<5)-h); return COLORS[Math.abs(h)%COLORS.length] }
 
 function fmtDate(d: Date): string {
   const now = new Date(), msg = new Date(d)
@@ -79,7 +84,6 @@ function getBubblePos(msgs: WhatsAppMessage[], i: number): BubblePos {
 }
 
 function bubbleRadius(pos: BubblePos, outbound: boolean): string {
-  // [top-left, top-right, bottom-right, bottom-left]
   if (outbound) {
     switch(pos) {
       case 'single': return 'rounded-[18px]'
@@ -97,6 +101,220 @@ function bubbleRadius(pos: BubblePos, outbound: boolean): string {
   }
 }
 
+// ── Media detection from text ──────────────────────────────
+
+function getMediaTypeFromText(text: string): string | null {
+  if (text.startsWith('[Imagem]')) return 'image'
+  if (text.startsWith('[Vídeo]')) return 'video'
+  if (text.startsWith('[Documento]')) return 'document'
+  if (text.startsWith('[Áudio]')) return 'audio'
+  if (text.startsWith('[Figurinha]')) return 'sticker'
+  return null
+}
+
+function getMediaCaption(text: string): string {
+  return text
+    .replace(/^\[Imagem\]\s*/, '')
+    .replace(/^\[Vídeo\]\s*/, '')
+    .replace(/^\[Documento\]\s*/, '')
+    .replace(/^\[Áudio\]\s*/, '')
+    .replace(/^\[Figurinha\]\s*/, '')
+    .replace(/^\[Localiza[^\]]*\]\s*/, '')
+    .replace(/^\[Contato\]\s*/, '')
+    .replace(/^\[Enquete\]\s*/, '')
+    .replace(/^\[Visualiza[^\]]*\]\s*/, '')
+    .replace(/^\[Mensagem[^\]]*\]\s*/, '')
+    .trim()
+}
+
+// ── Media Component ─────────────────────────────────────────
+
+function MediaBubble({ msg, outbound }: { msg: WhatsAppMessage; outbound: boolean }) {
+  const [mediaData, setMediaData] = useState<string | null>(msg.mediaUrl || null)
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState(false)
+
+  const mType = msg.mediaType || getMediaTypeFromText(msg.text)
+  const caption = getMediaCaption(msg.text)
+
+  const fetchMedia = useCallback(async () => {
+    if (mediaData?.startsWith('data:') || loading) return // already loaded base64
+    if (!msg.messageId) return
+    setLoading(true)
+    try {
+      const r = await fetch(`/api/whatsapp/media?messageId=${msg.messageId}`)
+      if (r.ok) {
+        const data = await r.json()
+        if (data.base64) {
+          setMediaData(data.base64)
+        }
+      } else {
+        setError(true)
+      }
+    } catch {
+      setError(true)
+    } finally {
+      setLoading(false)
+    }
+  }, [msg.messageId, mediaData, loading])
+
+  // Image
+  if (mType === 'image' || mType === 'sticker') {
+    return (
+      <div className="space-y-1">
+        {mediaData?.startsWith('data:') ? (
+          <img
+            src={mediaData}
+            alt="Imagem"
+            className="rounded-lg max-w-[280px] max-h-[300px] object-cover cursor-pointer hover:opacity-90 transition-opacity"
+            onClick={() => {
+              const w = window.open('')
+              if (w) { w.document.write(`<img src="${mediaData}" style="max-width:100%;max-height:100vh;object-fit:contain;margin:auto;display:block;background:#000;" />`); w.document.title = 'Imagem' }
+            }}
+          />
+        ) : (
+          <button
+            onClick={fetchMedia}
+            disabled={loading}
+            className={cn(
+              'flex items-center gap-2 rounded-lg px-4 py-6 w-[200px] justify-center transition-colors',
+              outbound ? 'bg-[#c4edc0] hover:bg-[#b8e6b4]' : 'bg-gray-100 hover:bg-gray-200'
+            )}
+          >
+            {loading ? (
+              <Loader2 className="h-5 w-5 animate-spin text-[#667781]" />
+            ) : error ? (
+              <span className="text-xs text-[#667781]">Imagem não disponível</span>
+            ) : (
+              <>
+                <ImageIcon className="h-5 w-5 text-[#667781]" />
+                <span className="text-xs text-[#667781]">Carregar imagem</span>
+              </>
+            )}
+          </button>
+        )}
+        {caption && (
+          <p className="text-[14.2px] leading-[1.46] text-[#111b21] dark:text-zinc-100">{caption}</p>
+        )}
+      </div>
+    )
+  }
+
+  // Video
+  if (mType === 'video') {
+    return (
+      <div className="space-y-1">
+        {mediaData?.startsWith('data:') ? (
+          <video
+            src={mediaData}
+            controls
+            className="rounded-lg max-w-[280px] max-h-[300px]"
+          />
+        ) : (
+          <button
+            onClick={fetchMedia}
+            disabled={loading}
+            className={cn(
+              'flex items-center gap-2 rounded-lg px-4 py-6 w-[200px] justify-center transition-colors',
+              outbound ? 'bg-[#c4edc0] hover:bg-[#b8e6b4]' : 'bg-gray-100 hover:bg-gray-200'
+            )}
+          >
+            {loading ? (
+              <Loader2 className="h-5 w-5 animate-spin text-[#667781]" />
+            ) : (
+              <>
+                <Video className="h-5 w-5 text-[#667781]" />
+                <span className="text-xs text-[#667781]">Carregar vídeo</span>
+              </>
+            )}
+          </button>
+        )}
+        {caption && (
+          <p className="text-[14.2px] leading-[1.46] text-[#111b21] dark:text-zinc-100">{caption}</p>
+        )}
+      </div>
+    )
+  }
+
+  // Audio
+  if (mType === 'audio') {
+    return (
+      <div className="space-y-1">
+        {mediaData?.startsWith('data:') ? (
+          <audio src={mediaData} controls className="max-w-[260px] h-[36px]" />
+        ) : (
+          <button
+            onClick={fetchMedia}
+            disabled={loading}
+            className={cn(
+              'flex items-center gap-2 rounded-lg px-3 py-3 min-w-[180px] justify-center transition-colors',
+              outbound ? 'bg-[#c4edc0] hover:bg-[#b8e6b4]' : 'bg-gray-100 hover:bg-gray-200'
+            )}
+          >
+            {loading ? (
+              <Loader2 className="h-4 w-4 animate-spin text-[#667781]" />
+            ) : (
+              <>
+                <Play className="h-4 w-4 text-[#00a884] fill-[#00a884]" />
+                <div className="flex-1 h-[4px] bg-[#8696a0]/30 rounded-full mx-1 min-w-[80px]">
+                  <div className="h-full w-0 bg-[#00a884] rounded-full" />
+                </div>
+                <span className="text-[10px] text-[#667781]">0:00</span>
+              </>
+            )}
+          </button>
+        )}
+      </div>
+    )
+  }
+
+  // Document
+  if (mType === 'document') {
+    const fileName = caption || 'Documento'
+    return (
+      <div className="space-y-1">
+        <div className={cn(
+          'flex items-center gap-3 rounded-lg px-3 py-2.5 min-w-[200px] max-w-[280px]',
+          outbound ? 'bg-[#c4edc0]' : 'bg-gray-100'
+        )}>
+          <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-[#00a884]/10 flex items-center justify-center">
+            <FileText className="h-5 w-5 text-[#00a884]" />
+          </div>
+          <div className="flex-1 min-w-0">
+            <p className="text-[13px] text-[#111b21] dark:text-zinc-100 font-medium truncate leading-tight">
+              {fileName}
+            </p>
+            <p className="text-[11px] text-[#667781] mt-0.5">Documento</p>
+          </div>
+          {mediaData?.startsWith('data:') ? (
+            <a
+              href={mediaData}
+              download={fileName}
+              className="flex-shrink-0 p-1.5 rounded-full hover:bg-black/5 transition-colors"
+            >
+              <Download className="h-4 w-4 text-[#667781]" />
+            </a>
+          ) : (
+            <button
+              onClick={fetchMedia}
+              disabled={loading}
+              className="flex-shrink-0 p-1.5 rounded-full hover:bg-black/5 transition-colors"
+            >
+              {loading ? (
+                <Loader2 className="h-4 w-4 animate-spin text-[#667781]" />
+              ) : (
+                <Download className="h-4 w-4 text-[#667781]" />
+              )}
+            </button>
+          )}
+        </div>
+      </div>
+    )
+  }
+
+  return null
+}
+
 // ── Component ───────────────────────────────────────────────
 
 export function MessageArea({ contact, connections, organizationId, userId }: MessageAreaProps) {
@@ -107,22 +325,31 @@ export function MessageArea({ contact, connections, organizationId, userId }: Me
   const [sending, setSending] = useState(false)
   const endRef = useRef<HTMLDivElement>(null)
   const taRef = useRef<HTMLTextAreaElement>(null)
-  const firstLoad = useRef(true)
+  const containerRef = useRef<HTMLDivElement>(null)
+  const prevMsgCount = useRef(0)
 
-  const scroll = () => endRef.current?.scrollIntoView({ behavior: 'smooth' })
+  const scrollToBottom = useCallback((behavior: ScrollBehavior = 'smooth') => {
+    endRef.current?.scrollIntoView({ behavior })
+  }, [])
 
   const fetchMsgs = useCallback(async (show=false) => {
     if (show) setLoading(true)
     try {
       const r = await fetch(`/api/contact/${contact.id}/interactions?type=WHATSAPP`)
       if (!r.ok) throw new Error()
-      const d = await r.json()
-      setMessages(prev => { if (d.length>prev.length) setTimeout(scroll,100); return d })
+      const d: WhatsAppMessage[] = await r.json()
+      setMessages(prev => {
+        // Só fazer scroll se há mensagens novas
+        if (d.length > prev.length) {
+          setTimeout(() => scrollToBottom(), 100)
+        }
+        return d
+      })
     } catch { if (show) toast.error('Erro ao carregar mensagens') }
     finally { setLoading(false) }
-  }, [contact.id])
+  }, [contact.id, scrollToBottom])
 
-  useEffect(() => { firstLoad.current=true; fetchMsgs(true) }, [contact.id, fetchMsgs])
+  useEffect(() => { fetchMsgs(true) }, [contact.id, fetchMsgs])
   useEffect(() => { const i=setInterval(()=>fetchMsgs(),POLL); return ()=>clearInterval(i) }, [fetchMsgs])
 
   // Auto-resize textarea
@@ -132,6 +359,14 @@ export function MessageArea({ contact, connections, organizationId, userId }: Me
       taRef.current.style.height = Math.min(taRef.current.scrollHeight, 120) + 'px'
     }
   }, [text])
+
+  // Scroll to bottom on first load
+  useEffect(() => {
+    if (messages.length > 0 && prevMsgCount.current === 0) {
+      setTimeout(() => scrollToBottom('instant'), 50)
+    }
+    prevMsgCount.current = messages.length
+  }, [messages.length, scrollToBottom])
 
   const send = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -146,7 +381,7 @@ export function MessageArea({ contact, connections, organizationId, userId }: Me
       const msg = await r.json()
       setMessages(prev=>[...prev,msg])
       setText('')
-      setTimeout(scroll,100)
+      setTimeout(() => scrollToBottom(), 100)
     } catch(err:any) { toast.error(err.message||'Erro ao enviar') }
     finally { setSending(false) }
   }
@@ -156,12 +391,31 @@ export function MessageArea({ contact, connections, organizationId, userId }: Me
   const name = getName(contact)
   const sub = getSub(contact)
   const isGrp = contact.phone?.includes('@g.us')??false
-  const clr = color(name)
+  const clr = colorHash(name)
 
   const initials = () => {
     if (contact.name && !contact.name.includes('@'))
       return contact.name.split(' ').filter(Boolean).map(w=>w[0]).join('').toUpperCase().slice(0,2)
     return '??'
+  }
+
+  // Check if message has media
+  const hasMedia = (msg: WhatsAppMessage): boolean => {
+    if (msg.mediaType) return true
+    return !!getMediaTypeFromText(msg.text)
+  }
+
+  // Get display text (remove media prefix for pure media messages)
+  const getDisplayText = (msg: WhatsAppMessage): string | null => {
+    const caption = getMediaCaption(msg.text)
+    // If the text is just a tag like [Imagem], [Áudio], etc., show nothing (media handles it)
+    if (!caption || caption === msg.text) {
+      // Check if it's a plain text message
+      const mType = msg.mediaType || getMediaTypeFromText(msg.text)
+      if (mType) return caption || null // media message - return caption or nothing
+      return msg.text // plain text
+    }
+    return null // caption is handled by MediaBubble
   }
 
   return (
@@ -197,6 +451,7 @@ export function MessageArea({ contact, connections, organizationId, userId }: Me
 
       {/* Messages area */}
       <div
+        ref={containerRef}
         className="flex-1 overflow-y-auto px-4 py-2 md:px-[12%]"
         style={{
           backgroundColor: '#efeae2',
@@ -238,6 +493,8 @@ export function MessageArea({ contact, connections, organizationId, userId }: Me
               const showDate = needsDateSep(msg, prev)
               const pos = getBubblePos(messages, i)
               const isGroupedWithPrev = pos === 'middle' || pos === 'last'
+              const media = hasMedia(msg)
+              const displayText = getDisplayText(msg)
 
               return (
                 <div key={msg.id}>
@@ -260,19 +517,37 @@ export function MessageArea({ contact, connections, organizationId, userId }: Me
                   >
                     <div
                       className={cn(
-                        'max-w-[65%] px-[9px] pt-[6px] pb-[7px] shadow-[0_1px_0.5px_rgba(11,20,26,0.13)] relative',
+                        'max-w-[65%] shadow-[0_1px_0.5px_rgba(11,20,26,0.13)] relative overflow-hidden',
+                        media ? 'p-[3px]' : 'px-[9px] pt-[6px] pb-[7px]',
                         bubbleRadius(pos, out),
                         out
                           ? 'bg-[#d9fdd3] dark:bg-emerald-900/60'
                           : 'bg-white dark:bg-zinc-800'
                       )}
                     >
-                      <p className="text-[14.2px] leading-[1.46] text-[#111b21] dark:text-zinc-100 whitespace-pre-wrap break-words">
-                        {msg.text}
-                        {/* Invisible spacer for timestamp */}
-                        <span className="inline-block w-[70px]" />
-                      </p>
-                      <span className="float-right flex items-center gap-1 -mt-4 ml-2 relative">
+                      {/* Media content */}
+                      {media && (
+                        <div className="mb-0.5">
+                          <MediaBubble msg={msg} outbound={out} />
+                        </div>
+                      )}
+
+                      {/* Text content */}
+                      {(!media || displayText) && (
+                        <div className={cn(media && 'px-[6px] pb-[4px] pt-[2px]')}>
+                          <p className="text-[14.2px] leading-[1.46] text-[#111b21] dark:text-zinc-100 whitespace-pre-wrap break-words">
+                            {media ? (displayText || '') : msg.text}
+                            {/* Invisible spacer for timestamp */}
+                            <span className="inline-block w-[70px]" />
+                          </p>
+                        </div>
+                      )}
+
+                      {/* Timestamp + status */}
+                      <span className={cn(
+                        'float-right flex items-center gap-1 ml-2 relative',
+                        media && !displayText ? 'px-[6px] pb-[4px] -mt-1' : '-mt-4',
+                      )}>
                         <span className="text-[10.5px] text-[#667781] leading-none tabular-nums">
                           {fmtTime(msg.sentAt)}
                         </span>

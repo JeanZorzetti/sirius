@@ -205,12 +205,24 @@ export async function POST(
           })
           syncedContacts++
           logger.info({ contactName, phone: phoneNumber, isGroup }, 'Created contact from sync')
-        } else if (contactName !== phoneNumber && (!contact.name || contact.name === contact.phone)) {
-          // Atualizar nome se veio um nome real e o contato só tinha telefone/JID
-          await prisma.contact.update({
-            where: { id: contact.id },
-            data: { name: contactName },
-          })
+        } else {
+          // Atualizar nome se:
+          // 1. Veio um nome real do findContacts
+          // 2. O contato ainda não tem nome, ou tem telefone/JID como nome
+          // 3. Para GRUPOS: sempre atualizar se o nome veio do findContacts
+          //    (pois o webhook pode ter gravado o nome do remetente erroneamente)
+          const shouldUpdateName = contactName && contactName !== phoneNumber && (
+            !contact.name ||
+            contact.name === contact.phone ||
+            (isGroup && contactsMap.has(remoteJid)) // grupo com nome do findContacts
+          )
+          if (shouldUpdateName) {
+            await prisma.contact.update({
+              where: { id: contact.id },
+              data: { name: contactName },
+            })
+            logger.info({ contactId: contact.id, oldName: contact.name, newName: contactName, isGroup }, 'Updated contact name from findContacts')
+          }
         }
 
         // Fetch messages for this chat (até 30 mensagens por conversa)
@@ -264,6 +276,7 @@ export async function POST(
           }
 
           let messageText = extractMessageText(msg)
+          const mediaInfo = extractMediaInfo(msg)
           // Aceitar mídia sem caption
           if (!messageText) {
             messageText = '[Mensagem]'
@@ -286,6 +299,8 @@ export async function POST(
                 text: messageText,
                 direction: msg.key?.fromMe ? 'OUTBOUND' : 'INBOUND',
                 status: msg.key?.fromMe ? 'SENT' : 'DELIVERED',
+                mediaUrl: mediaInfo?.url || null,
+                mediaType: mediaInfo?.type || null,
                 sentAt: timestamp,
               }
             })
@@ -388,6 +403,29 @@ async function findContactByPhone(organizationId: string, phone: string) {
   }
 
   return contact
+}
+
+function extractMediaInfo(message: any): { type: string; url: string | null } | null {
+  const msg = message.message
+  if (!msg) return null
+
+  if (msg.imageMessage) {
+    return { type: 'image', url: msg.imageMessage.url || msg.imageMessage.directPath || null }
+  }
+  if (msg.videoMessage) {
+    return { type: 'video', url: msg.videoMessage.url || msg.videoMessage.directPath || null }
+  }
+  if (msg.documentMessage) {
+    return { type: 'document', url: msg.documentMessage.url || msg.documentMessage.directPath || null }
+  }
+  if (msg.audioMessage || msg.pttMessage) {
+    const a = msg.audioMessage || msg.pttMessage
+    return { type: 'audio', url: a.url || a.directPath || null }
+  }
+  if (msg.stickerMessage) {
+    return { type: 'sticker', url: msg.stickerMessage.url || msg.stickerMessage.directPath || null }
+  }
+  return null
 }
 
 function extractMessageText(message: any): string {

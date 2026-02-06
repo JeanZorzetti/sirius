@@ -369,6 +369,32 @@ export class EvolutionAPIClient {
   }
 
   // ============================================
+  // Media
+  // ============================================
+
+  /**
+   * Get base64 media from a message
+   * Evolution API v2: POST /chat/getBase64FromMediaMessage/{instance}
+   */
+  async getBase64FromMediaMessage(
+    instanceName: string,
+    messageId: string,
+    convertToMp4: boolean = false
+  ): Promise<{ mediaType: string; fileName: string; mimetype: string; base64: string }> {
+    return this.request(`/chat/getBase64FromMediaMessage/${instanceName}`, {
+      method: 'POST',
+      body: JSON.stringify({
+        message: {
+          key: {
+            id: messageId,
+          },
+        },
+        convertToMp4,
+      }),
+    })
+  }
+
+  // ============================================
   // Utility
   // ============================================
 
