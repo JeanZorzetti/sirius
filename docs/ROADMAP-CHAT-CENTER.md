@@ -683,7 +683,7 @@ async function sendMessage(text: string) {
 }
 ```
 
-### 5.4 Acoes Rapidas na Lista de Conversas
+### 5.4 Acoes Rapidas na Lista de Conversas ✅
 - Hover mostra botoes: marcar como lido, fixar, arquivar
 - Swipe (mobile): esquerda = arquivar, direita = fixar
 - Conversas fixadas ficam no topo (max 15)

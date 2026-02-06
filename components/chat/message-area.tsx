@@ -709,6 +709,8 @@ export function MessageArea({ contact, connections, organizationId, userId, user
             variant="ghost"
             size="sm"
             onClick={toggleSidebar}
+            aria-label="Informações do contato"
+            aria-pressed={showSidebar}
             className={cn(
               'h-8 w-8 p-0',
               showSidebar && 'bg-[#00a884]/10 text-[#00a884]'
@@ -721,6 +723,8 @@ export function MessageArea({ contact, connections, organizationId, userId, user
             variant="ghost"
             size="sm"
             onClick={() => setIsSearchOpen(!isSearchOpen)}
+            aria-label="Buscar na conversa"
+            aria-pressed={isSearchOpen}
             className="h-8 w-8 p-0"
             title="Buscar na conversa"
           >
@@ -752,6 +756,9 @@ export function MessageArea({ contact, connections, organizationId, userId, user
       <div
         ref={containerRef}
         className="flex-1 overflow-y-auto px-4 py-2 md:px-[12%] whatsapp-bg-pattern"
+        role="log"
+        aria-live="polite"
+        aria-label="Mensagens da conversa"
       >
         {loading && messages.length === 0 ? (
           <div className="flex items-center justify-center h-full">
@@ -826,6 +833,8 @@ export function MessageArea({ contact, connections, organizationId, userId, user
                       ref={(el) => {
                         if (el) messageRefs.current.set(msg.id, el)
                       }}
+                      role="article"
+                      aria-label={`Mensagem ${out ? 'enviada' : 'recebida'} às ${fmtTime(msg.sentAt)}`}
                       className={cn(
                         'max-w-[65%] shadow-[0_1px_0.5px_rgba(11,20,26,0.13)] relative overflow-hidden transition-colors',
                         media ? 'p-[3px]' : 'px-[9px] pt-[6px] pb-[7px]',
@@ -980,6 +989,8 @@ export function MessageArea({ contact, connections, organizationId, userId, user
             onChange={e => setText(e.target.value)}
             disabled={sending}
             rows={1}
+            aria-label="Campo de mensagem"
+            aria-describedby="message-help-text"
             className={cn(
               'w-full resize-none rounded-lg border-0',
               'bg-white whatsapp-input px-3 py-[9px] text-[14px] leading-[1.46]',
@@ -994,14 +1005,19 @@ export function MessageArea({ contact, connections, organizationId, userId, user
               if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send(e) }
             }}
           />
+          <span id="message-help-text" className="sr-only">
+            Pressione Enter para enviar, Shift+Enter para nova linha
+          </span>
         </div>
         <button
           type="button"
           onClick={send}
           disabled={sending}
+          aria-label={text.trim() ? 'Enviar mensagem' : 'Gravar áudio'}
           className={cn(
             'h-[42px] w-[42px] rounded-full flex items-center justify-center flex-shrink-0',
             'transition-all duration-200 active:scale-90',
+            'focus-visible:ring-2 focus-visible:ring-[#00a884] focus-visible:ring-offset-2',
             text.trim()
               ? 'bg-[#00a884] hover:bg-[#008f72] text-white'
               : 'bg-transparent text-[#54656f] hover:text-[#3b4a54]'

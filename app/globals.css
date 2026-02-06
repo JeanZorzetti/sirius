@@ -750,6 +750,25 @@
       grid-template-columns: 340px 1fr;
     }
   }
+
+  /* Fase 5.5 - Accessibility utilities */
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+  }
+
+  /* Focus visible enhancements */
+  *:focus-visible {
+    outline: 2px solid #00a884;
+    outline-offset: 2px;
+  }
 }
 /* Drag and Drop improvements - TEMPORARIAMENTE DESATIVADO PARA TESTE */
 /* [data-dnd-kit-drag-handle] {

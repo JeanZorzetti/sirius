@@ -250,7 +250,11 @@ export function ConversationList({ contacts, selectedContact, onSelectContact, c
       </div>
 
       {/* List */}
-      <div className="flex-1 overflow-y-auto">
+      <div
+        className="flex-1 overflow-y-auto"
+        role="list"
+        aria-label="Lista de conversas"
+      >
         {filtered.length === 0 ? (
           <div className="flex flex-col items-center justify-center h-32 text-sm text-[#8696a0] gap-1">
             <Search className="h-5 w-5 opacity-40" />
@@ -277,8 +281,19 @@ export function ConversationList({ contacts, selectedContact, onSelectContact, c
               >
                 <button
                   onClick={() => onSelectContact(contact)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      e.preventDefault()
+                      onSelectContact(contact)
+                    }
+                  }}
+                  role="button"
+                  tabIndex={0}
+                  aria-label={`Conversa com ${name}${hasUnread ? `, ${unreadCount} mensagens não lidas` : ''}`}
+                  aria-current={selected ? 'true' : 'false'}
                   className={cn(
                     'w-full flex items-center gap-3 px-3 py-[10px] transition-colors duration-150 relative',
+                    'focus-visible:ring-2 focus-visible:ring-[#00a884] focus-visible:ring-inset focus-visible:outline-none',
                     hasUnread && !selected && 'bg-[#f0f2f5]/50 dark:bg-[#202C33]/50',
                     selected
                       ? 'bg-[#f0f2f5] whatsapp-bubble-incoming'
