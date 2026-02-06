@@ -7,7 +7,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
-import evolutionApi from '@/lib/evolution-api-client'
+import { getOrgEvolutionClient } from '@/lib/evolution-api-client'
 import logger from '@/lib/logger'
 
 /**
@@ -57,7 +57,10 @@ export async function DELETE(
 
     // 4. Delete from Evolution API (logout + delete instance)
     try {
-      await evolutionApi.deleteInstance(connection.instanceName)
+      const evolutionClient = await getOrgEvolutionClient(user.organizationId)
+      if (evolutionClient) {
+        await evolutionClient.deleteInstance(connection.instanceName)
+      }
     } catch (error) {
       // Log but continue - instance might already be deleted
       logger.warn({ error, instanceName: connection.instanceName }, 'Failed to delete Evolution API instance')

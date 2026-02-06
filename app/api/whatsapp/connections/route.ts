@@ -7,7 +7,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
-import evolutionApi from '@/lib/evolution-api-client'
+import { getOrgEvolutionClient } from '@/lib/evolution-api-client'
 import { canUseFeature } from '@/lib/entitlements'
 import logger from '@/lib/logger'
 
@@ -154,10 +154,18 @@ export async function POST(req: NextRequest) {
       )
     }
 
-    // 8. Criar instância no Evolution API
+    // 8. Obter cliente Evolution API da organização
+    const evolutionClient = await getOrgEvolutionClient(user.organizationId)
+    if (!evolutionClient) {
+      return NextResponse.json(
+        { error: 'Evolution API não está configurada. Acesse Configurações > Integrações > WhatsApp para configurar.' },
+        { status: 400 }
+      )
+    }
+
     const webhookUrl = `${process.env.NEXT_PUBLIC_APP_URL}/api/webhooks/evolution`
 
-    const evolutionInstance = await evolutionApi.createInstance({
+    const evolutionInstance = await evolutionClient.createInstance({
       instanceName: `${user.organizationId}-${instanceName}`,
       qrcode: true,
       integration: 'WHATSAPP-BAILEYS',

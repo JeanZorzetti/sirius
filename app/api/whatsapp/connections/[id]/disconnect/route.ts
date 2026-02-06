@@ -7,7 +7,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
-import evolutionApi from '@/lib/evolution-api-client'
+import { getOrgEvolutionClient } from '@/lib/evolution-api-client'
 import logger from '@/lib/logger'
 
 export async function POST(
@@ -52,7 +52,14 @@ export async function POST(
     }
 
     // 4. Logout from Evolution API
-    await evolutionApi.logoutInstance(connection.instanceName)
+    const evolutionClient = await getOrgEvolutionClient(user.organizationId)
+    if (!evolutionClient) {
+      return NextResponse.json(
+        { error: 'Evolution API não está configurada.' },
+        { status: 400 }
+      )
+    }
+    await evolutionClient.logoutInstance(connection.instanceName)
 
     // 5. Update status in database
     await prisma.whatsAppConnection.update({

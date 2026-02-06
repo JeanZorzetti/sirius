@@ -7,7 +7,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
-import evolutionApi from '@/lib/evolution-api-client'
+import { getOrgEvolutionClient } from '@/lib/evolution-api-client'
 import logger from '@/lib/logger'
 
 export async function GET(
@@ -59,8 +59,16 @@ export async function GET(
       )
     }
 
-    // 5. Get QR Code from Evolution API
-    const qrCodeData = await evolutionApi.getQRCode(connection.instanceName)
+    // 5. Get Evolution API client for the organization
+    const evolutionClient = await getOrgEvolutionClient(user.organizationId)
+    if (!evolutionClient) {
+      return NextResponse.json(
+        { error: 'Evolution API não está configurada.' },
+        { status: 400 }
+      )
+    }
+
+    const qrCodeData = await evolutionClient.getQRCode(connection.instanceName)
 
     logger.info({
       connectionId: connection.id,

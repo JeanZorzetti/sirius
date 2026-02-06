@@ -7,7 +7,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
-import evolutionApi from '@/lib/evolution-api-client'
+import { getOrgEvolutionClient } from '@/lib/evolution-api-client'
 import logger from '@/lib/logger'
 
 export async function GET(
@@ -51,8 +51,16 @@ export async function GET(
       )
     }
 
-    // 4. Get status from Evolution API
-    const evolutionState = await evolutionApi.getConnectionState(
+    // 4. Get Evolution API client for the organization
+    const evolutionClient = await getOrgEvolutionClient(user.organizationId)
+    if (!evolutionClient) {
+      return NextResponse.json(
+        { error: 'Evolution API não está configurada.' },
+        { status: 400 }
+      )
+    }
+
+    const evolutionState = await evolutionClient.getConnectionState(
       connection.instanceName
     )
 

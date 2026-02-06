@@ -5,6 +5,8 @@
  */
 
 import logger from './logger'
+import { decrypt } from './encryption'
+import { prisma } from './prisma'
 
 // Lazy validation - only validate when actually used (not during build)
 function getConfig() {
@@ -96,7 +98,7 @@ export interface Message {
 // Evolution API Client Class
 // ============================================
 
-class EvolutionAPIClient {
+export class EvolutionAPIClient {
   private baseURL: string
   private apiKey: string
 
@@ -388,7 +390,35 @@ class EvolutionAPIClient {
 }
 
 // ============================================
-// Singleton Instance (Lazy)
+// Create client from organization config
+// ============================================
+
+/**
+ * Create an EvolutionAPIClient using the organization's stored config.
+ * Returns null if Evolution API is not configured for the organization.
+ */
+export async function getOrgEvolutionClient(
+  organizationId: string
+): Promise<EvolutionAPIClient | null> {
+  const org = await prisma.organization.findUnique({
+    where: { id: organizationId },
+    select: {
+      evolutionEnabled: true,
+      evolutionBaseUrl: true,
+      evolutionApiKey: true,
+    },
+  })
+
+  if (!org?.evolutionEnabled || !org.evolutionBaseUrl || !org.evolutionApiKey) {
+    return null
+  }
+
+  const apiKey = decrypt(org.evolutionApiKey)
+  return new EvolutionAPIClient(org.evolutionBaseUrl, apiKey)
+}
+
+// ============================================
+// Singleton Instance (Lazy) - requires env vars
 // ============================================
 
 let _instance: EvolutionAPIClient | null = null

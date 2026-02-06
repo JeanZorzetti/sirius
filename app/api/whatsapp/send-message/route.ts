@@ -7,7 +7,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
-import evolutionApi from '@/lib/evolution-api-client'
+import { getOrgEvolutionClient } from '@/lib/evolution-api-client'
 import logger from '@/lib/logger'
 
 export async function POST(req: NextRequest) {
@@ -88,11 +88,19 @@ export async function POST(req: NextRequest) {
       )
     }
 
-    // 8. Formatar número de telefone para WhatsApp
-    const whatsappNumber = evolutionApi.formatPhoneNumber(contact.phone)
+    // 8. Obter cliente Evolution API da organização
+    const evolutionClient = await getOrgEvolutionClient(user.organizationId)
+    if (!evolutionClient) {
+      return NextResponse.json(
+        { error: 'Evolution API não está configurada.' },
+        { status: 400 }
+      )
+    }
 
-    // 9. Enviar mensagem via Evolution API
-    const evolutionResponse = await evolutionApi.sendTextMessage({
+    // 9. Formatar número de telefone e enviar mensagem via Evolution API
+    const whatsappNumber = evolutionClient.formatPhoneNumber(contact.phone)
+
+    const evolutionResponse = await evolutionClient.sendTextMessage({
       instanceName: connection.instanceName,
       number: whatsappNumber,
       text: message,
