@@ -401,13 +401,24 @@ export function MessageArea({ contact, connections, organizationId, userId, user
   const messageRefs = useRef<Map<string, HTMLDivElement>>(new Map())
 
   const scrollToBottom = useCallback((behavior: ScrollBehavior = 'smooth') => {
-    endRef.current?.scrollIntoView({ behavior })
+    const container = containerRef.current
+    if (container) {
+      if (behavior === 'instant') {
+        container.scrollTop = container.scrollHeight
+      } else {
+        container.scrollTo({ top: container.scrollHeight, behavior: 'smooth' })
+      }
+    }
   }, [])
 
   const scrollToMessage = useCallback((messageId: string) => {
     const element = messageRefs.current.get(messageId)
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth', block: 'center' })
+    const container = containerRef.current
+    if (element && container) {
+      const containerRect = container.getBoundingClientRect()
+      const elementRect = element.getBoundingClientRect()
+      const offset = elementRect.top - containerRect.top - containerRect.height / 2 + elementRect.height / 2
+      container.scrollTo({ top: container.scrollTop + offset, behavior: 'smooth' })
       setHighlightedMessageId(messageId)
       // Remover highlight após 2s
       setTimeout(() => setHighlightedMessageId(null), 2000)
