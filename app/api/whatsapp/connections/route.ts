@@ -189,14 +189,15 @@ export async function POST(req: NextRequest) {
     })
 
     return NextResponse.json(connection, { status: 201 })
-  } catch (error) {
-    logger.error({ error }, 'Error creating WhatsApp connection')
+  } catch (error: any) {
+    const errorMessage = error?.message || String(error)
+    logger.error({ error, errorMessage }, 'Error creating WhatsApp connection')
 
     // Tentar deletar instância do Evolution API se falhou criar no banco
     // (cleanup)
 
     return NextResponse.json(
-      { error: 'Failed to create WhatsApp connection' },
+      { error: 'Failed to create WhatsApp connection', details: errorMessage },
       { status: 500 }
     )
   }

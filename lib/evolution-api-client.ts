@@ -395,11 +395,14 @@ export class EvolutionAPIClient {
 
 /**
  * Create an EvolutionAPIClient using the organization's stored config.
- * Returns null if Evolution API is not configured for the organization.
+ * Falls back to EVOLUTION_API_URL / EVOLUTION_API_KEY env vars if the
+ * organization doesn't have its own credentials configured.
+ * Returns null only if neither source is available.
  */
 export async function getOrgEvolutionClient(
   organizationId: string
 ): Promise<EvolutionAPIClient | null> {
+  // 1. Tentar credenciais da organização (banco de dados)
   const org = await prisma.organization.findUnique({
     where: { id: organizationId },
     select: {
@@ -409,12 +412,28 @@ export async function getOrgEvolutionClient(
     },
   })
 
-  if (!org?.evolutionEnabled || !org.evolutionBaseUrl || !org.evolutionApiKey) {
-    return null
+  if (org?.evolutionEnabled && org.evolutionBaseUrl && org.evolutionApiKey) {
+    try {
+      const apiKey = decrypt(org.evolutionApiKey)
+      logger.info({ organizationId }, 'Using org-level Evolution API config')
+      return new EvolutionAPIClient(org.evolutionBaseUrl, apiKey)
+    } catch (err) {
+      logger.error({ error: err, organizationId }, 'Failed to decrypt org Evolution API key, falling back to env vars')
+    }
   }
 
-  const apiKey = decrypt(org.evolutionApiKey)
-  return new EvolutionAPIClient(org.evolutionBaseUrl, apiKey)
+  // 2. Fallback: variáveis de ambiente globais
+  if (process.env.EVOLUTION_API_URL && process.env.EVOLUTION_API_KEY) {
+    logger.info({ organizationId }, 'Using env var Evolution API config (fallback)')
+    return new EvolutionAPIClient(
+      process.env.EVOLUTION_API_URL,
+      process.env.EVOLUTION_API_KEY
+    )
+  }
+
+  // 3. Nenhuma configuração disponível
+  logger.warn({ organizationId }, 'No Evolution API configuration found (neither org nor env vars)')
+  return null
 }
 
 // ============================================
