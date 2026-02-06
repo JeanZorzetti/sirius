@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button'
 import {
   Send, Users, Loader2, Check, CheckCheck, Mic,
   Image as ImageIcon, Video, FileText, Download, Play, Pause,
-  File, Search,
+  File, Search, Reply, X,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { toast } from 'sonner'
@@ -16,6 +16,7 @@ import {
 import { ConversationTags } from './conversation-tags'
 import { MessageSearch } from './message-search'
 import { QuickReplyPicker } from './quick-reply-picker'
+import { QuotedMessage } from './quoted-message'
 
 interface Tag { id: string; name: string; color: string }
 interface Contact { id: string; name: string | null; phone: string | null; tags?: Tag[] }
@@ -24,6 +25,7 @@ interface WhatsAppMessage {
   id: string; text: string; direction: string; sentAt: Date
   deliveredAt: Date | null; readAt: Date | null; status: string
   mediaUrl: string | null; mediaType: string | null; messageId?: string
+  replyToId?: string | null; replyToText?: string | null
 }
 interface MessageAreaProps {
   contact: Contact; connections: Connection[]
@@ -332,6 +334,7 @@ export function MessageArea({ contact, connections, organizationId, userId, user
   const [highlightedMessageId, setHighlightedMessageId] = useState<string | null>(null)
   const [showQuickReply, setShowQuickReply] = useState(false)
   const [quickReplyQuery, setQuickReplyQuery] = useState('')
+  const [replyingTo, setReplyingTo] = useState<WhatsAppMessage | null>(null)
   const endRef = useRef<HTMLDivElement>(null)
   const taRef = useRef<HTMLTextAreaElement>(null)
   const containerRef = useRef<HTMLDivElement>(null)
@@ -438,14 +441,26 @@ export function MessageArea({ contact, connections, organizationId, userId, user
     if (!text.trim() || !conn) return
     setSending(true)
     try {
+      const payload: any = {
+        connectionId: conn,
+        contactId: contact.id,
+        message: text.trim(),
+      }
+
+      if (replyingTo) {
+        payload.replyToId = replyingTo.id
+      }
+
       const r = await fetch('/api/whatsapp/send-message', {
-        method:'POST', headers:{'Content-Type':'application/json'},
-        body: JSON.stringify({ connectionId:conn, contactId:contact.id, message:text.trim() }),
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body: JSON.stringify(payload),
       })
       if (!r.ok) { const d=await r.json(); throw new Error(d.error) }
       const msg = await r.json()
       setMessages(prev=>[...prev,msg])
       setText('')
+      setReplyingTo(null)
       setTimeout(() => scrollToBottom(), 100)
     } catch(err:any) { toast.error(err.message||'Erro ao enviar') }
     finally { setSending(false) }
@@ -601,11 +616,22 @@ export function MessageArea({ contact, connections, organizationId, userId, user
                   {/* Bubble */}
                   <div
                     className={cn(
-                      'flex animate-in fade-in-0 slide-in-from-bottom-2 duration-200',
+                      'flex animate-in fade-in-0 slide-in-from-bottom-2 duration-200 group',
                       out ? 'justify-end' : 'justify-start',
                       isGroupedWithPrev ? 'mt-[2px]' : 'mt-2'
                     )}
                   >
+                    {/* Reply button (shows on hover) */}
+                    {!out && (
+                      <button
+                        onClick={() => setReplyingTo(msg)}
+                        className="opacity-0 group-hover:opacity-100 transition-opacity mr-2 self-end mb-1 p-1.5 rounded-full hover:bg-black/5"
+                        title="Responder"
+                      >
+                        <Reply className="h-4 w-4 text-[#667781]" />
+                      </button>
+                    )}
+
                     <div
                       ref={(el) => {
                         if (el) messageRefs.current.set(msg.id, el)
@@ -621,6 +647,22 @@ export function MessageArea({ contact, connections, organizationId, userId, user
                             : 'bg-white dark:bg-zinc-800'
                       )}
                     >
+                      {/* Quoted message (if replying) */}
+                      {msg.replyToId && msg.replyToText && (
+                        <div className="mb-1">
+                          <QuotedMessage
+                            text={msg.replyToText}
+                            senderName={msg.direction === 'INBOUND' ? name : 'Você'}
+                            outbound={out}
+                            onClick={() => {
+                              if (msg.replyToId) {
+                                scrollToMessage(msg.replyToId)
+                              }
+                            }}
+                          />
+                        </div>
+                      )}
+
                       {/* Media content */}
                       {media && (
                         <div className="mb-0.5">
@@ -664,6 +706,28 @@ export function MessageArea({ contact, connections, organizationId, userId, user
           </div>
         )}
       </div>
+
+      {/* Reply preview bar */}
+      {replyingTo && (
+        <div className="px-4 py-2 bg-white dark:bg-zinc-900 border-t border-[#e9edef] flex items-center gap-2">
+          <Reply className="h-4 w-4 text-[#00a884] flex-shrink-0" />
+          <div className="flex-1 min-w-0">
+            <p className="text-[11px] font-semibold text-[#00a884] leading-tight">
+              Respondendo a {replyingTo.direction === 'INBOUND' ? name : 'Você'}
+            </p>
+            <p className="text-[12px] text-[#667781] truncate leading-tight">
+              {replyingTo.text}
+            </p>
+          </div>
+          <button
+            onClick={() => setReplyingTo(null)}
+            className="p-1 rounded-full hover:bg-black/5 transition-colors flex-shrink-0"
+            title="Cancelar resposta"
+          >
+            <X className="h-4 w-4 text-[#667781]" />
+          </button>
+        </div>
+      )}
 
       {/* Input area */}
       <div className="px-3 py-2 bg-[#f0f2f5] dark:bg-zinc-950 border-t border-[#e9edef] flex items-end gap-2">

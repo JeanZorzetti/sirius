@@ -617,6 +617,12 @@ model WhatsAppMessage {
   // Read status (Fase 1.1)
   isRead          Boolean  @default(false)
 
+  // Reply/Quote (Fase 2.2)
+  replyToId       String?
+  replyTo         WhatsAppMessage? @relation("MessageReplies", fields: [replyToId], references: [id], onDelete: SetNull)
+  replies         WhatsAppMessage[] @relation("MessageReplies")
+  replyToText     String?  @db.Text // Cache para performance de exibição
+
   // Media (optional)
   mediaUrl        String?
   mediaType       String?  // "image", "video", "document", "audio"

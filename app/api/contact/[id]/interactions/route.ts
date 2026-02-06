@@ -70,6 +70,8 @@ export async function GET(
         status: true,
         mediaUrl: true,
         mediaType: true,
+        replyToId: true,
+        replyToText: true,
       },
     })
 

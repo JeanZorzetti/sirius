@@ -33,7 +33,7 @@ export async function POST(req: NextRequest) {
 
     // 3. Parse request body
     const body = await req.json()
-    const { connectionId, contactId, message } = body
+    const { connectionId, contactId, message, replyToId } = body
 
     if (!connectionId || !contactId || !message) {
       return NextResponse.json(
@@ -97,13 +97,37 @@ export async function POST(req: NextRequest) {
       )
     }
 
-    // 9. Formatar número de telefone e enviar mensagem via Evolution API
+    // 9. Formatar número de telefone e preparar dados de citação (se houver)
     const whatsappNumber = evolutionClient.formatPhoneNumber(contact.phone)
 
+    let quotedMessage = null
+    let replyToText = null
+
+    if (replyToId) {
+      const originalMessage = await prisma.whatsAppMessage.findFirst({
+        where: {
+          id: replyToId,
+          organizationId: user.organizationId,
+        },
+      })
+
+      if (originalMessage && originalMessage.messageId) {
+        quotedMessage = {
+          key: {
+            remoteJid: whatsappNumber,
+            id: originalMessage.messageId,
+          },
+        }
+        replyToText = originalMessage.text
+      }
+    }
+
+    // 10. Enviar mensagem via Evolution API (com ou sem citação)
     const evolutionResponse = await evolutionClient.sendTextMessage({
       instanceName: connection.instanceName,
       number: whatsappNumber,
       text: message,
+      ...(quotedMessage && { quoted: quotedMessage }),
     })
 
     logger.info({
@@ -112,7 +136,7 @@ export async function POST(req: NextRequest) {
       messageId: evolutionResponse.key.id,
     }, 'WhatsApp message sent')
 
-    // 9. Salvar mensagem no banco
+    // 11. Salvar mensagem no banco (com referência à mensagem citada, se houver)
     const savedMessage = await prisma.whatsAppMessage.create({
       data: {
         contactId: contact.id,
@@ -123,6 +147,7 @@ export async function POST(req: NextRequest) {
         direction: 'OUTBOUND',
         status: 'SENT',
         sentAt: new Date(),
+        ...(replyToId && { replyToId, replyToText }),
       },
       select: {
         id: true,
@@ -132,6 +157,8 @@ export async function POST(req: NextRequest) {
         deliveredAt: true,
         readAt: true,
         status: true,
+        replyToId: true,
+        replyToText: true,
       },
     })
 
