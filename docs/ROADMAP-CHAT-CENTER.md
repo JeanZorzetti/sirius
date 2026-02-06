@@ -557,7 +557,7 @@ useEffect(() => {
 
 ---
 
-### 4.2 Reacoes com Emoji
+### 4.2 Reacoes com Emoji ✅
 | Atributo | Valor |
 |----------|-------|
 | Prioridade | Nice-to-have |
