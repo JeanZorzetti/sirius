@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button'
 import {
   Send, Users, Loader2, Check, CheckCheck, Mic,
   Image as ImageIcon, Video, FileText, Download, Play, Pause,
-  File, Search, Reply, X, Info,
+  File, Search, Reply, X, Info, ArrowLeft,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { toast } from 'sonner'
@@ -79,6 +79,7 @@ interface MessageAreaProps {
   contact: Contact; connections: Connection[]
   organizationId: string; userId: string; userName: string
   onContactUpdate?: () => void
+  onBack?: () => void
 }
 
 const POLL = 2000 // 2s para tempo real
@@ -372,7 +373,7 @@ function MediaBubble({ msg, outbound }: { msg: WhatsAppMessage; outbound: boolea
 
 // ── Component ───────────────────────────────────────────────
 
-export function MessageArea({ contact, connections, organizationId, userId, userName, onContactUpdate }: MessageAreaProps) {
+export function MessageArea({ contact, connections, organizationId, userId, userName, onContactUpdate, onBack }: MessageAreaProps) {
   const [messages, setMessages] = useState<WhatsAppMessage[]>([])
   const [optimisticMessages, addOptimisticMessage] = useOptimistic<WhatsAppMessage[], WhatsAppMessage>(
     messages,
@@ -668,6 +669,18 @@ export function MessageArea({ contact, connections, organizationId, userId, user
       {/* Header */}
       <div className="h-[60px] px-4 border-b flex items-center justify-between bg-[#f0f2f5] whatsapp-header flex-shrink-0">
         <div className="flex items-center gap-3">
+          {/* Mobile back button */}
+          {onBack && (
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={onBack}
+              className="h-8 w-8 p-0 md:hidden"
+              title="Voltar"
+            >
+              <ArrowLeft className="h-4 w-4" />
+            </Button>
+          )}
           <Avatar className="h-10 w-10">
             <AvatarFallback className={cn('text-xs font-semibold text-white', clr)}>
               {isGrp ? <Users className="h-4 w-4" /> : initials()}

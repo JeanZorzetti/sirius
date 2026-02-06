@@ -415,38 +415,51 @@ export function ChatInterface({
               </div>
             </div>
           ) : (
-            <div className="flex-1 flex overflow-hidden">
-              <ConversationList
-                contacts={contacts}
-                selectedContact={selectedContact}
-                onSelectContact={setSelectedContact}
-                currentUserId={userId}
-              />
-
-              {selectedContact ? (
-                <MessageArea
-                  contact={selectedContact}
-                  connections={activeConnections}
-                  organizationId={organizationId}
-                  userId={userId}
-                  userName={userName}
-                  onContactUpdate={() => fetchConversations()}
+            <div className="flex-1 flex overflow-hidden chat-layout">
+              {/* Mobile: hide conversation list when a contact is selected */}
+              <div className={cn(
+                'w-full md:w-[340px] lg:w-[340px] flex-shrink-0 border-r',
+                selectedContact ? 'hidden md:block' : 'block'
+              )}>
+                <ConversationList
+                  contacts={contacts}
+                  selectedContact={selectedContact}
+                  onSelectContact={setSelectedContact}
+                  currentUserId={userId}
                 />
-              ) : (
-                <div className="flex-1 flex items-center justify-center bg-[#efeae2] dark:bg-zinc-900">
-                  <div className="text-center space-y-3 max-w-xs">
-                    <div className="w-20 h-20 rounded-full bg-white/60 dark:bg-zinc-800/60 backdrop-blur flex items-center justify-center mx-auto">
-                      <MessageSquare className="h-9 w-9 text-muted-foreground/50" />
-                    </div>
-                    <div>
-                      <h3 className="font-medium text-muted-foreground">Sirius Chat</h3>
-                      <p className="text-xs text-muted-foreground/70 mt-1">
-                        Selecione uma conversa para ver as mensagens
-                      </p>
+              </div>
+
+              {/* Message area (hidden on mobile when no contact selected) */}
+              <div className={cn(
+                'flex-1 min-w-0',
+                !selectedContact ? 'hidden md:flex' : 'flex'
+              )}>
+                {selectedContact ? (
+                  <MessageArea
+                    contact={selectedContact}
+                    connections={activeConnections}
+                    organizationId={organizationId}
+                    userId={userId}
+                    userName={userName}
+                    onContactUpdate={() => fetchConversations()}
+                    onBack={() => setSelectedContact(null)}
+                  />
+                ) : (
+                  <div className="flex-1 flex items-center justify-center bg-[#efeae2] dark:bg-zinc-900">
+                    <div className="text-center space-y-3 max-w-xs">
+                      <div className="w-20 h-20 rounded-full bg-white/60 dark:bg-zinc-800/60 backdrop-blur flex items-center justify-center mx-auto">
+                        <MessageSquare className="h-9 w-9 text-muted-foreground/50" />
+                      </div>
+                      <div>
+                        <h3 className="font-medium text-muted-foreground">Sirius Chat</h3>
+                        <p className="text-xs text-muted-foreground/70 mt-1">
+                          Selecione uma conversa para ver as mensagens
+                        </p>
+                      </div>
                     </div>
                   </div>
-                </div>
-              )}
+                )}
+              </div>
             </div>
           )}
         </>

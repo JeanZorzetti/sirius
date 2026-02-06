@@ -646,7 +646,7 @@ import { Virtuoso } from 'react-virtuoso'
 - Hover em conversas: escala sutil 1.005x
 - Badge de nao-lido: pulse animation ao receber
 
-### 5.2 Optimistic Updates
+### 5.2 Optimistic Updates ✅
 ```tsx
 // Mensagem aparece instantaneamente como "enviando"
 const [optimistic, addOptimistic] = useOptimistic(messages, (state, newMsg) =>
