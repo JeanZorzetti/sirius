@@ -4,7 +4,7 @@ import { cn } from '@/lib/utils'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import { Badge } from '@/components/ui/badge'
 import { Input } from '@/components/ui/input'
-import { Search } from 'lucide-react'
+import { Search, Users } from 'lucide-react'
 import { useState } from 'react'
 
 interface Contact {
@@ -101,6 +101,7 @@ export function ConversationList({
               const lastMessage = contact.whatsappMessages[0]
               const isSelected = selectedContact?.id === contact.id
               const unreadCount = 0 // TODO: Implementar contagem de não lidas
+              const isGroup = contact.phone?.includes('@g.us') ?? false
 
               return (
                 <button
@@ -113,7 +114,7 @@ export function ConversationList({
                 >
                   <Avatar className="h-10 w-10 flex-shrink-0">
                     <AvatarFallback className="text-xs">
-                      {getInitials(contact.name, contact.phone)}
+                      {isGroup ? <Users className="h-4 w-4" /> : getInitials(contact.name, contact.phone)}
                     </AvatarFallback>
                   </Avatar>
 

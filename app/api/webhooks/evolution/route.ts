@@ -264,16 +264,29 @@ async function handleIncomingMessage(connection: any, data: any) {
                     continue
                 }
 
-                // Ignorar mensagens de grupo
+                // Validar remoteJid
                 const remoteJid = message?.key?.remoteJid
-                if (!remoteJid || remoteJid.includes('@g.us')) {
-                    logger.debug({ remoteJid }, 'Skipping group or invalid message')
+                if (!remoteJid) {
+                    logger.debug({ remoteJid }, 'Skipping message without remoteJid')
                     continue
                 }
 
+                // Ignorar status, newsletter, LID direto
+                if (remoteJid.includes('status@') || remoteJid.includes('@broadcast') || remoteJid.includes('@newsletter')) {
+                    logger.debug({ remoteJid }, 'Skipping status/broadcast/newsletter message')
+                    continue
+                }
+
+                const isGroup = remoteJid.includes('@g.us')
                 const messageId = message.key?.id
-                const phoneNumber = normalizePhoneNumber(remoteJid.replace('@s.whatsapp.net', ''))
-                const senderName = message.pushName || message.verifiedBizName || phoneNumber
+
+                // Para grupos: usar o JID completo; para individuais: normalizar telefone
+                const phoneNumber = isGroup
+                    ? remoteJid
+                    : normalizePhoneNumber(remoteJid.replace('@s.whatsapp.net', ''))
+                const senderName = isGroup
+                    ? (message.pushName || `Grupo ${remoteJid.replace('@g.us', '')}`)
+                    : (message.pushName || message.verifiedBizName || phoneNumber)
 
                 // Extrair texto - agora aceita media sem caption também
                 let messageText = extractMessageText(message)
@@ -303,19 +316,26 @@ async function handleIncomingMessage(connection: any, data: any) {
                     textPreview: messageText.substring(0, 50),
                 }, '📝 Saving incoming WhatsApp message')
 
-                // Buscar contato com normalização de telefone
-                let contact = await findContactByPhone(organizationId, phoneNumber)
+                // Buscar contato - para grupos buscar por JID, para individuais por telefone
+                let contact: any = null
+                if (isGroup) {
+                    contact = await prisma.contact.findFirst({
+                        where: { organizationId, phone: remoteJid }
+                    })
+                } else {
+                    contact = await findContactByPhone(organizationId, phoneNumber)
+                }
 
                 if (!contact) {
                     contact = await prisma.contact.create({
                         data: {
                             organizationId,
                             name: senderName,
-                            phone: phoneNumber,
+                            phone: isGroup ? remoteJid : phoneNumber,
                         }
                     })
 
-                    logger.info({ contactId: contact.id, phone: phoneNumber }, '👤 Created new contact from WhatsApp')
+                    logger.info({ contactId: contact.id, phone: phoneNumber, isGroup }, '👤 Created new contact from WhatsApp')
                 }
 
                 // Calcular timestamp da mensagem

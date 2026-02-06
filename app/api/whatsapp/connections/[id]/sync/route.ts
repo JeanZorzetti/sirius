@@ -96,20 +96,32 @@ export async function POST(
         chat.notify ||
         chat.lastMessage?.pushName ||                  // v2 format
         ''
-      return { ...chat, _remoteJid: remoteJid, _pushName: pushName }
+      const isGroup = remoteJid.includes('@g.us')
+      return { ...chat, _remoteJid: remoteJid, _pushName: pushName, _isGroup: isGroup }
     })
 
-    // Filter to individual chats (not groups, not status, not LID)
-    const individualChats = parsedChats.filter((chat: any) => {
+    // Filter: incluir conversas individuais (@s.whatsapp.net) E grupos (@g.us)
+    // Excluir: LID (contatos internos do WhatsApp), status, newsletter, sem JID
+    const validChats = parsedChats.filter((chat: any) => {
       const jid = chat._remoteJid
-      return jid.includes('@s.whatsapp.net') && !jid.includes('@g.us') && !jid.includes('@lid')
+      if (!jid) return false
+      if (jid.includes('@lid')) return false
+      if (jid.includes('@broadcast')) return false
+      if (jid.includes('status@')) return false
+      if (jid.includes('@newsletter')) return false
+      return jid.includes('@s.whatsapp.net') || jid.includes('@g.us')
     })
+
+    const individualCount = validChats.filter((c: any) => !c._isGroup).length
+    const groupCount = validChats.filter((c: any) => c._isGroup).length
 
     logger.info({
       connectionId: connection.id,
       totalChats: chats?.length || 0,
       parsedWithJid: parsedChats.filter((c: any) => c._remoteJid).length,
-      individualChats: individualChats.length,
+      validChats: validChats.length,
+      individuals: individualCount,
+      groups: groupCount,
     }, 'Syncing chats from Evolution API')
 
     let syncedContacts = 0
@@ -118,7 +130,7 @@ export async function POST(
 
     // 7. Deduplicate by remoteJid (same contact can appear multiple times)
     const seenJids = new Set<string>()
-    const uniqueChats = individualChats.filter((chat: any) => {
+    const uniqueChats = validChats.filter((chat: any) => {
       if (seenJids.has(chat._remoteJid)) return false
       seenJids.add(chat._remoteJid)
       return true
@@ -132,23 +144,42 @@ export async function POST(
         const remoteJid = chat._remoteJid
         if (!remoteJid) continue
 
-        const phoneNumber = normalizePhoneNumber(remoteJid.replace('@s.whatsapp.net', ''))
-        const contactName = chat._pushName || phoneNumber
+        const isGroup = chat._isGroup
+
+        // Para grupos: usar o group JID como identificador
+        // Para individuais: usar o phone number
+        const phoneNumber = isGroup
+          ? remoteJid // Para grupos, salvar o JID completo como "phone"
+          : normalizePhoneNumber(remoteJid.replace('@s.whatsapp.net', ''))
+
+        // Nome do contato/grupo
+        const contactName = isGroup
+          ? (chat._pushName || `Grupo ${remoteJid.replace('@g.us', '')}`)
+          : (chat._pushName || phoneNumber)
 
         // Find or create contact
-        let contact = await findContactByPhone(user.organizationId, phoneNumber)
+        let contact: any = null
+        if (isGroup) {
+          // Grupos: buscar por phone = remoteJid (JID completo)
+          contact = await prisma.contact.findFirst({
+            where: { organizationId: user.organizationId, phone: remoteJid }
+          })
+        } else {
+          contact = await findContactByPhone(user.organizationId, phoneNumber)
+        }
+
         if (!contact) {
           contact = await prisma.contact.create({
             data: {
               organizationId: user.organizationId,
               name: contactName,
-              phone: phoneNumber,
+              phone: isGroup ? remoteJid : phoneNumber,
             }
           })
           syncedContacts++
-          logger.info({ contactName, phone: phoneNumber }, 'Created contact from sync')
+          logger.info({ contactName, phone: phoneNumber, isGroup }, 'Created contact from sync')
         } else if (contactName !== phoneNumber && (!contact.name || contact.name === contact.phone)) {
-          // Atualizar nome se veio um nome real e o contato só tinha telefone
+          // Atualizar nome se veio um nome real e o contato só tinha telefone/JID
           await prisma.contact.update({
             where: { id: contact.id },
             data: { name: contactName },
@@ -277,7 +308,9 @@ export async function POST(
       syncedContacts,
       syncedMessages,
       skippedExisting,
-      totalChats: individualChats.length,
+      totalChats: validChats.length,
+      individuals: individualCount,
+      groups: groupCount,
     })
   } catch (error: any) {
     logger.error({ error: error.message, stack: error.stack }, 'Error syncing WhatsApp chats')
