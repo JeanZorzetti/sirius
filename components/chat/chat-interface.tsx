@@ -32,6 +32,7 @@ interface Contact {
   id: string
   name: string | null
   phone: string | null
+  profilePicUrl?: string | null
   whatsappMessages: Array<{
     id: string
     text: string
@@ -70,6 +71,7 @@ export function ChatInterface({
   const [isRefreshing, setIsRefreshing] = useState(false)
   const [isSyncing, setIsSyncing] = useState(false)
   const [connectionStatus, setConnectionStatus] = useState<'connected' | 'connecting' | 'disconnected'>('disconnected')
+  const [messageRefreshTrigger, setMessageRefreshTrigger] = useState(0)
 
   const activeConnections = connections.filter(c => c.status === 'CONNECTED')
   const totalUnread = contacts.reduce((sum, contact) => sum + (contact._count.unreadMessages || 0), 0)
@@ -176,15 +178,22 @@ export function ChatInterface({
             case 'conversation.updated':
               // Refresh conversations when a message arrives
               fetchConversations()
+              // Trigger message area refresh for current contact
+              if (data.contactId) {
+                setMessageRefreshTrigger(prev => prev + 1)
+              }
               break
 
             case 'message.new':
               // Refresh conversations to show new message
               fetchConversations()
+              // Trigger message area refresh for current contact
+              setMessageRefreshTrigger(prev => prev + 1)
               break
 
             case 'message.status':
-              // Optionally update message status in UI
+              // Refresh messages to update status indicators
+              setMessageRefreshTrigger(prev => prev + 1)
               break
 
             case 'heartbeat':
@@ -444,6 +453,7 @@ export function ChatInterface({
                     userName={userName}
                     onContactUpdate={() => fetchConversations()}
                     onBack={() => setSelectedContact(null)}
+                    refreshTrigger={messageRefreshTrigger}
                   />
                 ) : (
                   <div className="flex-1 flex items-center justify-center bg-[#efeae2] dark:bg-zinc-900">

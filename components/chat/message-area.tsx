@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect, useRef, useCallback, useOptimistic } from 'react'
-import { Avatar, AvatarFallback } from '@/components/ui/avatar'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import {
   Send, Users, Loader2, Check, CheckCheck, Mic,
@@ -56,6 +56,7 @@ interface Contact {
   phone: string | null
   email?: string | null
   company?: string | null
+  profilePicUrl?: string | null
   tags?: Tag[]
   deals?: Deal[]
   notes?: Note[]
@@ -80,6 +81,7 @@ interface MessageAreaProps {
   organizationId: string; userId: string; userName: string
   onContactUpdate?: () => void
   onBack?: () => void
+  refreshTrigger?: number
 }
 
 const POLL = 2000 // 2s para tempo real
@@ -202,7 +204,10 @@ function MediaBubble({ msg, outbound }: { msg: WhatsAppMessage; outbound: boolea
       if (r.ok) {
         const data = await r.json()
         if (data.base64) {
+          // API now returns full data URI: data:mimetype;base64,...
           setMediaData(data.base64)
+        } else {
+          setError(true)
         }
       } else {
         setError(true)
@@ -213,6 +218,13 @@ function MediaBubble({ msg, outbound }: { msg: WhatsAppMessage; outbound: boolea
       setLoading(false)
     }
   }, [msg.messageId, mediaData, loading])
+
+  // Auto-load images and stickers on mount (no manual click needed)
+  useEffect(() => {
+    if ((mType === 'image' || mType === 'sticker') && !mediaData?.startsWith('data:') && msg.messageId && !loading && !error) {
+      fetchMedia()
+    }
+  }, [mType, msg.messageId]) // eslint-disable-line react-hooks/exhaustive-deps
 
   // Image
   if (mType === 'image' || mType === 'sticker') {
@@ -228,26 +240,31 @@ function MediaBubble({ msg, outbound }: { msg: WhatsAppMessage; outbound: boolea
               if (w) { w.document.write(`<img src="${mediaData}" style="max-width:100%;max-height:100vh;object-fit:contain;margin:auto;display:block;background:#000;" />`); w.document.title = 'Imagem' }
             }}
           />
-        ) : (
+        ) : loading ? (
+          <div className={cn(
+            'flex items-center justify-center rounded-lg w-[200px] h-[140px] animate-pulse',
+            outbound ? 'bg-[#c4edc0]' : 'bg-gray-100'
+          )}>
+            <Loader2 className="h-6 w-6 animate-spin text-[#667781]" />
+          </div>
+        ) : error ? (
           <button
             onClick={fetchMedia}
-            disabled={loading}
             className={cn(
               'flex items-center gap-2 rounded-lg px-4 py-6 w-[200px] justify-center transition-colors',
               outbound ? 'bg-[#c4edc0] hover:bg-[#b8e6b4]' : 'bg-gray-100 hover:bg-gray-200'
             )}
           >
-            {loading ? (
-              <Loader2 className="h-5 w-5 animate-spin text-[#667781]" />
-            ) : error ? (
-              <span className="text-xs text-[#667781]">Imagem não disponível</span>
-            ) : (
-              <>
-                <ImageIcon className="h-5 w-5 text-[#667781]" />
-                <span className="text-xs text-[#667781]">Carregar imagem</span>
-              </>
-            )}
+            <ImageIcon className="h-5 w-5 text-[#667781]" />
+            <span className="text-xs text-[#667781]">Tentar novamente</span>
           </button>
+        ) : (
+          <div className={cn(
+            'flex items-center justify-center rounded-lg w-[200px] h-[140px]',
+            outbound ? 'bg-[#c4edc0]' : 'bg-gray-100'
+          )}>
+            <ImageIcon className="h-6 w-6 text-[#667781] opacity-50" />
+          </div>
         )}
         {caption && (
           <p className="text-[14.2px] leading-[1.46] text-[#111b21] dark:text-zinc-100">{caption}</p>
@@ -373,7 +390,7 @@ function MediaBubble({ msg, outbound }: { msg: WhatsAppMessage; outbound: boolea
 
 // ── Component ───────────────────────────────────────────────
 
-export function MessageArea({ contact, connections, organizationId, userId, userName, onContactUpdate, onBack }: MessageAreaProps) {
+export function MessageArea({ contact, connections, organizationId, userId, userName, onContactUpdate, onBack, refreshTrigger }: MessageAreaProps) {
   const [messages, setMessages] = useState<WhatsAppMessage[]>([])
   const [optimisticMessages, addOptimisticMessage] = useOptimistic<WhatsAppMessage[], WhatsAppMessage>(
     messages,
@@ -463,11 +480,16 @@ export function MessageArea({ contact, connections, organizationId, userId, user
 
   useEffect(() => { fetchMsgs(true) }, [contact.id, fetchMsgs])
 
-  // SSE subscription for real-time message updates (Fase 3.2)
-  // Note: SSE is handled at chat-interface level, this component will refresh via onContactUpdate
-  // But we keep a short polling as fallback
+  // Real-time: refresh messages when SSE triggers a refresh via parent
   useEffect(() => {
-    const i = setInterval(() => fetchMsgs(), 30000) // 30s fallback polling (much less frequent)
+    if (refreshTrigger && refreshTrigger > 0) {
+      fetchMsgs()
+    }
+  }, [refreshTrigger]) // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Fallback polling (60s) in case SSE misses events
+  useEffect(() => {
+    const i = setInterval(() => fetchMsgs(), 60000)
     return () => clearInterval(i)
   }, [fetchMsgs])
 
@@ -486,6 +508,20 @@ export function MessageArea({ contact, connections, organizationId, userId, user
     }
     fetchUsers()
   }, [])
+
+  // Fetch profile picture if not cached
+  const [profilePicUrl, setProfilePicUrl] = useState<string | null>(contact.profilePicUrl || null)
+  useEffect(() => {
+    setProfilePicUrl(contact.profilePicUrl || null)
+    if (!contact.profilePicUrl && contact.phone && !contact.phone.includes('@g.us')) {
+      fetch(`/api/whatsapp/profile-pic?contactId=${contact.id}`)
+        .then(r => r.json())
+        .then(data => {
+          if (data.profilePicUrl) setProfilePicUrl(data.profilePicUrl)
+        })
+        .catch(() => {})
+    }
+  }, [contact.id, contact.profilePicUrl, contact.phone])
 
   // Marcar mensagens como lidas quando a conversa é aberta
   useEffect(() => {
@@ -693,6 +729,9 @@ export function MessageArea({ contact, connections, organizationId, userId, user
             </Button>
           )}
           <Avatar className="h-10 w-10">
+            {(profilePicUrl || contact.profilePicUrl) && !isGrp && (
+              <AvatarImage src={profilePicUrl || contact.profilePicUrl || ''} alt={name} />
+            )}
             <AvatarFallback className={cn('text-xs font-semibold text-white', clr)}>
               {isGrp ? <Users className="h-4 w-4" /> : initials()}
             </AvatarFallback>

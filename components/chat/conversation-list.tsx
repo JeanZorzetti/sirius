@@ -1,7 +1,7 @@
 'use client'
 
 import { cn } from '@/lib/utils'
-import { Avatar, AvatarFallback } from '@/components/ui/avatar'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Input } from '@/components/ui/input'
 import {
   Search,
@@ -49,6 +49,7 @@ interface Contact {
   id: string
   name: string | null
   phone: string | null
+  profilePicUrl?: string | null
   whatsappMessages: Array<{
     id: string
     text: string
@@ -308,6 +309,9 @@ export function ConversationList({ contacts, selectedContact, onSelectContact, c
                 {/* Avatar */}
                 <div className="relative flex-shrink-0">
                   <Avatar className="h-[48px] w-[48px]">
+                    {contact.profilePicUrl && !group && (
+                      <AvatarImage src={contact.profilePicUrl} alt={name} />
+                    )}
                     <AvatarFallback className={cn('text-sm font-semibold text-white', color)}>
                       {group ? <Users className="h-5 w-5" /> : initials(contact)}
                     </AvatarFallback>

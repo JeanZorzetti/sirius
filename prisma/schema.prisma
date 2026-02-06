@@ -158,13 +158,14 @@ enum SubscriptionTier {
 }
 
 model Contact {
-  id        String   @id @default(uuid())
-  name      String
-  email     String?
-  phone     String?
-  company   String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id             String   @id @default(uuid())
+  name           String
+  email          String?
+  phone          String?
+  company        String?
+  profilePicUrl  String?  // WhatsApp profile picture URL
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
 
   organizationId String
   organization   Organization @relation(fields: [organizationId], references: [id])

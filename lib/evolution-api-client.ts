@@ -395,6 +395,29 @@ export class EvolutionAPIClient {
   }
 
   // ============================================
+  // Profile
+  // ============================================
+
+  /**
+   * Fetch profile picture URL for a WhatsApp contact
+   * Evolution API v2: POST /chat/fetchProfilePictureUrl/{instance}
+   */
+  async fetchProfilePictureUrl(
+    instanceName: string,
+    number: string
+  ): Promise<{ wuid: string; profilePictureUrl: string | null }> {
+    try {
+      return await this.request(`/chat/fetchProfilePictureUrl/${instanceName}`, {
+        method: 'POST',
+        body: JSON.stringify({ number }),
+      })
+    } catch (error) {
+      // Profile picture may not be available (privacy settings)
+      return { wuid: number, profilePictureUrl: null }
+    }
+  }
+
+  // ============================================
   // Utility
   // ============================================
 

@@ -66,7 +66,13 @@ export async function GET(req: NextRequest) {
       messageId,
     )
 
-    // Atualizar mediaUrl no banco com o base64 para cache
+    // Build proper data URI for frontend rendering
+    const mimeType = media.mimetype || 'application/octet-stream'
+    const dataUri = media.base64.startsWith('data:')
+      ? media.base64
+      : `data:${mimeType};base64,${media.base64}`
+
+    // Cache the full data URI in the database
     if (media.base64) {
       await prisma.whatsAppMessage.updateMany({
         where: {
@@ -74,13 +80,13 @@ export async function GET(req: NextRequest) {
           organizationId: user.organizationId,
         },
         data: {
-          mediaUrl: media.base64,
+          mediaUrl: dataUri,
         },
       })
     }
 
     return NextResponse.json({
-      base64: media.base64,
+      base64: dataUri,
       mimetype: media.mimetype,
       mediaType: media.mediaType,
       fileName: media.fileName,
