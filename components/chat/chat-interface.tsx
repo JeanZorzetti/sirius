@@ -5,10 +5,19 @@ import { ConnectionManager } from './connection-manager'
 import { ConversationList } from './conversation-list'
 import { MessageArea } from './message-area'
 import { EmptyState } from '@/components/ui/empty-state'
-import { MessageSquare, RefreshCw, Download, Loader2 } from 'lucide-react'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import {
+  MessageSquare,
+  RefreshCw,
+  Download,
+  Loader2,
+  Wifi,
+  WifiOff,
+  Settings2,
+  MessageCircle,
+} from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { toast } from 'sonner'
+import { cn } from '@/lib/utils'
 
 interface Connection {
   id: string
@@ -42,7 +51,7 @@ interface ChatInterfaceProps {
   maxInstances: number
 }
 
-const POLL_INTERVAL = 5000 // 5 seconds
+const POLL_INTERVAL = 5000
 
 export function ChatInterface({
   connections: initialConnections,
@@ -52,16 +61,14 @@ export function ChatInterface({
   maxInstances
 }: ChatInterfaceProps) {
   const [selectedContact, setSelectedContact] = useState<Contact | null>(null)
-  const [activeTab, setActiveTab] = useState<'chat' | 'connections'>('chat')
+  const [activeView, setActiveView] = useState<'chat' | 'connections'>('chat')
   const [contacts, setContacts] = useState<Contact[]>(initialContacts)
   const [connections, setConnections] = useState<Connection[]>(initialConnections)
   const [isRefreshing, setIsRefreshing] = useState(false)
   const [isSyncing, setIsSyncing] = useState(false)
 
-  // Filtrar apenas conexões conectadas
   const activeConnections = connections.filter(c => c.status === 'CONNECTED')
 
-  // Polling para novas conversas
   const fetchConversations = useCallback(async (showLoading = false) => {
     if (showLoading) setIsRefreshing(true)
     try {
@@ -69,13 +76,9 @@ export function ChatInterface({
       if (res.ok) {
         const data = await res.json()
         setContacts(data)
-
-        // Atualizar o contato selecionado se ele mudou
         if (selectedContact) {
           const updated = data.find((c: Contact) => c.id === selectedContact.id)
-          if (updated) {
-            setSelectedContact(updated)
-          }
+          if (updated) setSelectedContact(updated)
         }
       }
     } catch (error) {
@@ -85,7 +88,6 @@ export function ChatInterface({
     }
   }, [selectedContact])
 
-  // Polling para status de conexões
   const fetchConnections = useCallback(async () => {
     try {
       const res = await fetch('/api/whatsapp/connections')
@@ -98,7 +100,6 @@ export function ChatInterface({
     }
   }, [])
 
-  // Importar conversas existentes do WhatsApp
   const syncConversations = async () => {
     if (activeConnections.length === 0) {
       toast.error('Nenhuma conexão ativa para sincronizar')
@@ -112,13 +113,11 @@ export function ChatInterface({
     let totalMessages = 0
 
     try {
-      // Sync cada conexão ativa
       for (const conn of activeConnections) {
         try {
           const res = await fetch(`/api/whatsapp/connections/${conn.id}/sync`, {
             method: 'POST',
           })
-
           if (res.ok) {
             const data = await res.json()
             totalContacts += data.syncedContacts || 0
@@ -135,30 +134,26 @@ export function ChatInterface({
       if (totalMessages > 0 || totalContacts > 0) {
         toast.success(`Importado: ${totalContacts} contatos, ${totalMessages} mensagens`)
       } else {
-        toast.info('Nenhuma conversa nova encontrada para importar')
+        toast.info('Nenhuma conversa nova encontrada')
       }
 
-      // Recarregar conversas
       await fetchConversations(true)
     } catch (error) {
       toast.error('Erro ao importar conversas')
-      console.error('Sync error:', error)
     } finally {
       setIsSyncing(false)
     }
   }
 
-  // Auto-polling a cada 5 segundos
   useEffect(() => {
     const interval = setInterval(() => {
       fetchConversations()
       fetchConnections()
     }, POLL_INTERVAL)
-
     return () => clearInterval(interval)
   }, [fetchConversations, fetchConnections])
 
-  // Se não tiver nenhuma conexão, mostrar gerenciador
+  // No connections at all
   if (connections.length === 0) {
     return (
       <div className="flex-1 flex items-center justify-center p-8">
@@ -178,75 +173,133 @@ export function ChatInterface({
   }
 
   return (
-    <div className="flex-1 flex flex-col">
-      <Tabs value={activeTab} onValueChange={(v) => setActiveTab(v as any)} className="flex-1 flex flex-col">
-        <div className="border-b px-4 flex items-center justify-between">
-          <TabsList className="grid w-full max-w-md grid-cols-2">
-            <TabsTrigger value="chat">
-              Conversas
-              {contacts.length > 0 && (
-                <span className="ml-2 rounded-full bg-primary/10 px-2 py-0.5 text-xs font-medium text-primary">
-                  {contacts.length}
-                </span>
-              )}
-            </TabsTrigger>
-            <TabsTrigger value="connections">
-              Conexões
-              <span className="ml-2 rounded-full bg-green-500/10 px-2 py-0.5 text-xs font-medium text-green-600">
-                {activeConnections.length}/{connections.length}
+    <div className="flex-1 flex flex-col h-full">
+      {/* Top bar */}
+      <div className="h-12 border-b bg-white dark:bg-zinc-950 flex items-center justify-between px-4 flex-shrink-0">
+        <div className="flex items-center gap-1">
+          {/* Chat tab */}
+          <button
+            onClick={() => setActiveView('chat')}
+            className={cn(
+              'flex items-center gap-2 px-3 py-1.5 rounded-md text-sm font-medium transition-colors',
+              activeView === 'chat'
+                ? 'bg-primary/10 text-primary'
+                : 'text-muted-foreground hover:text-foreground hover:bg-zinc-100 dark:hover:bg-zinc-800'
+            )}
+          >
+            <MessageCircle className="h-4 w-4" />
+            Conversas
+            {contacts.length > 0 && (
+              <span className={cn(
+                'text-xs tabular-nums font-semibold px-1.5 py-0.5 rounded-full min-w-[20px] text-center',
+                activeView === 'chat'
+                  ? 'bg-primary/20 text-primary'
+                  : 'bg-zinc-200 dark:bg-zinc-700 text-muted-foreground'
+              )}>
+                {contacts.length}
               </span>
-            </TabsTrigger>
-          </TabsList>
+            )}
+          </button>
 
-          {/* Botão de importar conversas */}
-          {activeConnections.length > 0 && (
+          {/* Connections tab */}
+          <button
+            onClick={() => setActiveView('connections')}
+            className={cn(
+              'flex items-center gap-2 px-3 py-1.5 rounded-md text-sm font-medium transition-colors',
+              activeView === 'connections'
+                ? 'bg-primary/10 text-primary'
+                : 'text-muted-foreground hover:text-foreground hover:bg-zinc-100 dark:hover:bg-zinc-800'
+            )}
+          >
+            <Settings2 className="h-4 w-4" />
+            Conexões
+            <span className={cn(
+              'flex items-center gap-1 text-xs',
+              activeConnections.length > 0 ? 'text-emerald-600' : 'text-zinc-400'
+            )}>
+              {activeConnections.length > 0 ? (
+                <Wifi className="h-3 w-3" />
+              ) : (
+                <WifiOff className="h-3 w-3" />
+              )}
+              {activeConnections.length}/{connections.length}
+            </span>
+          </button>
+        </div>
+
+        {/* Actions */}
+        <div className="flex items-center gap-2">
+          {activeConnections.length > 0 && activeView === 'chat' && (
             <Button
-              variant="outline"
+              variant="ghost"
               size="sm"
               onClick={syncConversations}
               disabled={isSyncing}
-              className="ml-4 flex-shrink-0"
+              className="h-8 text-xs gap-1.5"
             >
               {isSyncing ? (
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                <Loader2 className="h-3.5 w-3.5 animate-spin" />
               ) : (
-                <Download className="mr-2 h-4 w-4" />
+                <Download className="h-3.5 w-3.5" />
               )}
-              {isSyncing ? 'Importando...' : 'Importar Conversas'}
+              {isSyncing ? 'Importando...' : 'Importar'}
             </Button>
           )}
         </div>
+      </div>
 
-        <TabsContent value="chat" className="flex-1 flex m-0">
+      {/* Content */}
+      {activeView === 'connections' ? (
+        <div className="flex-1 overflow-auto p-4">
+          <ConnectionManager
+            connections={connections}
+            maxInstances={maxInstances}
+          />
+        </div>
+      ) : (
+        <>
           {activeConnections.length === 0 ? (
             <div className="flex-1 flex items-center justify-center p-8">
               <EmptyState
-                icon={MessageSquare}
+                icon={WifiOff}
                 title="Nenhuma conexão ativa"
                 description="Conecte pelo menos um WhatsApp para começar a conversar."
+                action={
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setActiveView('connections')}
+                  >
+                    <Settings2 className="mr-2 h-4 w-4" />
+                    Gerenciar Conexões
+                  </Button>
+                }
               />
             </div>
           ) : contacts.length === 0 ? (
             <div className="flex-1 flex items-center justify-center p-8">
               <div className="text-center space-y-4">
-                <EmptyState
-                  icon={MessageSquare}
-                  title="Nenhuma conversa ainda"
-                  description="Clique em 'Importar Conversas' para trazer seu histórico do WhatsApp, ou aguarde novas mensagens."
-                />
+                <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto">
+                  <MessageSquare className="h-7 w-7 text-primary" />
+                </div>
+                <div>
+                  <h3 className="font-semibold text-lg">Nenhuma conversa ainda</h3>
+                  <p className="text-sm text-muted-foreground mt-1 max-w-sm">
+                    Importe suas conversas existentes do WhatsApp ou aguarde novas mensagens
+                  </p>
+                </div>
                 <div className="flex items-center justify-center gap-3">
                   <Button
-                    variant="default"
-                    size="sm"
                     onClick={syncConversations}
                     disabled={isSyncing}
+                    size="sm"
                   >
                     {isSyncing ? (
                       <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                     ) : (
                       <Download className="mr-2 h-4 w-4" />
                     )}
-                    {isSyncing ? 'Importando...' : 'Importar Conversas do WhatsApp'}
+                    {isSyncing ? 'Importando...' : 'Importar Conversas'}
                   </Button>
                   <Button
                     variant="outline"
@@ -254,7 +307,7 @@ export function ChatInterface({
                     onClick={() => fetchConversations(true)}
                     disabled={isRefreshing}
                   >
-                    <RefreshCw className={`mr-2 h-4 w-4 ${isRefreshing ? 'animate-spin' : ''}`} />
+                    <RefreshCw className={cn('mr-2 h-4 w-4', isRefreshing && 'animate-spin')} />
                     Atualizar
                   </Button>
                 </div>
@@ -262,14 +315,12 @@ export function ChatInterface({
             </div>
           ) : (
             <div className="flex-1 flex overflow-hidden">
-              {/* Lista de conversas */}
               <ConversationList
                 contacts={contacts}
                 selectedContact={selectedContact}
                 onSelectContact={setSelectedContact}
               />
 
-              {/* Área de mensagens */}
               {selectedContact ? (
                 <MessageArea
                   contact={selectedContact}
@@ -278,25 +329,24 @@ export function ChatInterface({
                   userId={userId}
                 />
               ) : (
-                <div className="flex-1 flex items-center justify-center p-8 bg-zinc-50 dark:bg-zinc-900">
-                  <EmptyState
-                    icon={MessageSquare}
-                    title="Selecione uma conversa"
-                    description="Escolha um contato da lista para ver as mensagens."
-                  />
+                <div className="flex-1 flex items-center justify-center bg-[#efeae2] dark:bg-zinc-900">
+                  <div className="text-center space-y-3 max-w-xs">
+                    <div className="w-20 h-20 rounded-full bg-white/60 dark:bg-zinc-800/60 backdrop-blur flex items-center justify-center mx-auto">
+                      <MessageSquare className="h-9 w-9 text-muted-foreground/50" />
+                    </div>
+                    <div>
+                      <h3 className="font-medium text-muted-foreground">Sirius Chat</h3>
+                      <p className="text-xs text-muted-foreground/70 mt-1">
+                        Selecione uma conversa para ver as mensagens
+                      </p>
+                    </div>
+                  </div>
                 </div>
               )}
             </div>
           )}
-        </TabsContent>
-
-        <TabsContent value="connections" className="flex-1 m-0 p-4">
-          <ConnectionManager
-            connections={connections}
-            maxInstances={maxInstances}
-          />
-        </TabsContent>
-      </Tabs>
+        </>
+      )}
     </div>
   )
 }
