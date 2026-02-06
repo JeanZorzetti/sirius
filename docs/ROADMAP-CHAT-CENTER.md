@@ -637,7 +637,7 @@ import { Virtuoso } from 'react-virtuoso'
 ## Fase 5 - UI/UX Premium (Semana 8+)
 > Foco: Micro-interacoes e polish visual de nivel Intercom
 
-### 5.1 Micro-Animacoes
+### 5.1 Micro-Animacoes ✅
 - Bolha entrada: `animate-in fade-in-0 slide-in-from-bottom-2 duration-200` (ja existe, refinar)
 - Scroll suave ao fundo com `scrollIntoView({ behavior: 'smooth' })`
 - Typing indicator bounce (CSS keyframes)

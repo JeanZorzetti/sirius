@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useRef, useCallback } from 'react'
+import { useState, useEffect, useRef, useCallback, useOptimistic } from 'react'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import {
@@ -374,6 +374,10 @@ function MediaBubble({ msg, outbound }: { msg: WhatsAppMessage; outbound: boolea
 
 export function MessageArea({ contact, connections, organizationId, userId, userName, onContactUpdate }: MessageAreaProps) {
   const [messages, setMessages] = useState<WhatsAppMessage[]>([])
+  const [optimisticMessages, addOptimisticMessage] = useOptimistic<WhatsAppMessage[], WhatsAppMessage>(
+    messages,
+    (state, newMessage) => [...state, newMessage]
+  )
   const [text, setText] = useState('')
   const [conn, setConn] = useState(connections[0]?.id||'')
   const [loading, setLoading] = useState(false)
@@ -553,16 +557,44 @@ export function MessageArea({ contact, connections, organizationId, userId, user
   const send = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!text.trim() || !conn) return
+
+    const messageText = text.trim()
+    const tempId = `temp-${Date.now()}-${Math.random().toString(36).substring(7)}`
+
+    // Create optimistic message
+    const optimisticMsg: WhatsAppMessage = {
+      id: tempId,
+      text: messageText,
+      direction: 'OUTBOUND',
+      sentAt: new Date(),
+      deliveredAt: null,
+      readAt: null,
+      status: 'SENDING',
+      mediaUrl: null,
+      mediaType: null,
+      messageId: undefined,
+      replyToId: replyingTo?.id || null,
+      replyToText: replyingTo?.text || null,
+      reactions: [],
+    }
+
+    // Add optimistic message instantly to UI
+    addOptimisticMessage(optimisticMsg)
+    setText('')
+    const replyingToMsg = replyingTo
+    setReplyingTo(null)
+    setTimeout(() => scrollToBottom(), 50)
+
     setSending(true)
     try {
       const payload: any = {
         connectionId: conn,
         contactId: contact.id,
-        message: text.trim(),
+        message: messageText,
       }
 
-      if (replyingTo) {
-        payload.replyToId = replyingTo.id
+      if (replyingToMsg) {
+        payload.replyToId = replyingToMsg.id
       }
 
       const r = await fetch('/api/whatsapp/send-message', {
@@ -570,13 +602,20 @@ export function MessageArea({ contact, connections, organizationId, userId, user
         headers:{'Content-Type':'application/json'},
         body: JSON.stringify(payload),
       })
-      if (!r.ok) { const d=await r.json(); throw new Error(d.error) }
-      const msg = await r.json()
-      setMessages(prev=>[...prev,msg])
-      setText('')
-      setReplyingTo(null)
+      if (!r.ok) {
+        const d=await r.json()
+        throw new Error(d.error)
+      }
+      const confirmedMsg = await r.json()
+
+      // Replace temp message with confirmed message
+      setMessages(prev => prev.map(m => m.id === tempId ? confirmedMsg : m))
       setTimeout(() => scrollToBottom(), 100)
-    } catch(err:any) { toast.error(err.message||'Erro ao enviar') }
+    } catch(err:any) {
+      // Remove optimistic message on error
+      setMessages(prev => prev.filter(m => m.id !== tempId))
+      toast.error(err.message||'Erro ao enviar')
+    }
     finally { setSending(false) }
   }
 
@@ -729,11 +768,11 @@ export function MessageArea({ contact, connections, organizationId, userId, user
           </div>
         ) : (
           <div className="py-2">
-            {messages.map((msg, i) => {
+            {optimisticMessages.map((msg, i) => {
               const out = msg.direction === 'OUTBOUND'
-              const prev = i>0 ? messages[i-1] : null
+              const prev = i>0 ? optimisticMessages[i-1] : null
               const showDate = needsDateSep(msg, prev)
-              const pos = getBubblePos(messages, i)
+              const pos = getBubblePos(optimisticMessages, i)
               const isGroupedWithPrev = pos === 'middle' || pos === 'last'
               const media = hasMedia(msg)
               const displayText = getDisplayText(msg)
@@ -752,7 +791,7 @@ export function MessageArea({ contact, connections, organizationId, userId, user
                   {/* Bubble */}
                   <div
                     className={cn(
-                      'flex animate-in fade-in-0 slide-in-from-bottom-2 duration-200 group relative',
+                      'flex message-bubble-animate group relative',
                       out ? 'justify-end' : 'justify-start',
                       isGroupedWithPrev ? 'mt-[2px]' : 'mt-2'
                     )}
@@ -828,11 +867,13 @@ export function MessageArea({ contact, connections, organizationId, userId, user
                           {fmtTime(msg.sentAt)}
                         </span>
                         {out && (
-                          msg.status === 'READ'
-                            ? <CheckCheck className="h-[16px] w-[16px] text-[#53bdeb]" />
-                            : msg.status === 'DELIVERED'
-                              ? <CheckCheck className="h-[16px] w-[16px] text-[#8696a0]" />
-                              : <Check className="h-[16px] w-[16px] text-[#8696a0]" />
+                          msg.status === 'SENDING'
+                            ? <Loader2 className="h-[14px] w-[14px] text-[#8696a0] animate-spin message-status-icon" />
+                            : msg.status === 'READ'
+                              ? <CheckCheck className="h-[16px] w-[16px] text-[#53bdeb] message-status-icon" />
+                              : msg.status === 'DELIVERED'
+                                ? <CheckCheck className="h-[16px] w-[16px] text-[#8696a0] message-status-icon" />
+                                : <Check className="h-[16px] w-[16px] text-[#8696a0] message-status-icon" />
                         )}
                       </span>
                     </div>
