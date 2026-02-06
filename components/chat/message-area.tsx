@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
@@ -44,6 +44,8 @@ interface MessageAreaProps {
   userId: string
 }
 
+const MESSAGE_POLL_INTERVAL = 3000 // 3 seconds
+
 export function MessageArea({ contact, connections, organizationId, userId }: MessageAreaProps) {
   const [messages, setMessages] = useState<WhatsAppMessage[]>([])
   const [messageText, setMessageText] = useState('')
@@ -51,31 +53,48 @@ export function MessageArea({ contact, connections, organizationId, userId }: Me
   const [isLoading, setIsLoading] = useState(false)
   const [isSending, setIsSending] = useState(false)
   const messagesEndRef = useRef<HTMLDivElement>(null)
+  const isFirstLoad = useRef(true)
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
   }
 
-  const fetchMessages = async () => {
-    setIsLoading(true)
+  const fetchMessages = useCallback(async (showLoading = false) => {
+    if (showLoading) setIsLoading(true)
     try {
       const res = await fetch(`/api/contact/${contact.id}/interactions?type=WHATSAPP`)
       if (!res.ok) throw new Error('Erro ao carregar mensagens')
 
       const data = await res.json()
-      setMessages(data)
-      setTimeout(scrollToBottom, 100)
+      setMessages(prev => {
+        // Só fazer scroll se tem novas mensagens
+        if (data.length > prev.length) {
+          setTimeout(scrollToBottom, 100)
+        }
+        return data
+      })
     } catch (error: any) {
       console.error('Erro ao carregar mensagens:', error)
-      toast.error('Erro ao carregar mensagens')
+      if (showLoading) toast.error('Erro ao carregar mensagens')
     } finally {
       setIsLoading(false)
     }
-  }
-
-  useEffect(() => {
-    fetchMessages()
   }, [contact.id])
+
+  // Carregar mensagens na primeira vez e ao mudar de contato
+  useEffect(() => {
+    isFirstLoad.current = true
+    fetchMessages(true)
+  }, [contact.id, fetchMessages])
+
+  // Auto-polling para novas mensagens
+  useEffect(() => {
+    const interval = setInterval(() => {
+      fetchMessages()
+    }, MESSAGE_POLL_INTERVAL)
+
+    return () => clearInterval(interval)
+  }, [fetchMessages])
 
   const handleSend = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -88,7 +107,6 @@ export function MessageArea({ contact, connections, organizationId, userId }: Me
 
     setIsSending(true)
     try {
-      // TODO: Criar endpoint para enviar mensagem
       const res = await fetch(`/api/whatsapp/send-message`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -161,7 +179,7 @@ export function MessageArea({ contact, connections, organizationId, userId }: Me
           <Button
             variant="ghost"
             size="sm"
-            onClick={fetchMessages}
+            onClick={() => fetchMessages(true)}
             disabled={isLoading}
           >
             <RefreshCw className={cn("h-4 w-4", isLoading && "animate-spin")} />
@@ -171,7 +189,7 @@ export function MessageArea({ contact, connections, organizationId, userId }: Me
 
       {/* Messages */}
       <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-zinc-50 dark:bg-zinc-900">
-        {isLoading ? (
+        {isLoading && messages.length === 0 ? (
           <div className="flex items-center justify-center h-full">
             <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
           </div>

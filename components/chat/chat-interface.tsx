@@ -1,12 +1,13 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { ConnectionManager } from './connection-manager'
 import { ConversationList } from './conversation-list'
 import { MessageArea } from './message-area'
 import { EmptyState } from '@/components/ui/empty-state'
-import { MessageSquare } from 'lucide-react'
+import { MessageSquare, RefreshCw } from 'lucide-react'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { Button } from '@/components/ui/button'
 
 interface Connection {
   id: string
@@ -40,18 +41,70 @@ interface ChatInterfaceProps {
   maxInstances: number
 }
 
+const POLL_INTERVAL = 5000 // 5 seconds
+
 export function ChatInterface({
-  connections,
-  contacts,
+  connections: initialConnections,
+  contacts: initialContacts,
   userId,
   organizationId,
   maxInstances
 }: ChatInterfaceProps) {
   const [selectedContact, setSelectedContact] = useState<Contact | null>(null)
   const [activeTab, setActiveTab] = useState<'chat' | 'connections'>('chat')
+  const [contacts, setContacts] = useState<Contact[]>(initialContacts)
+  const [connections, setConnections] = useState<Connection[]>(initialConnections)
+  const [isRefreshing, setIsRefreshing] = useState(false)
 
   // Filtrar apenas conexões conectadas
   const activeConnections = connections.filter(c => c.status === 'CONNECTED')
+
+  // Polling para novas conversas
+  const fetchConversations = useCallback(async (showLoading = false) => {
+    if (showLoading) setIsRefreshing(true)
+    try {
+      const res = await fetch('/api/whatsapp/conversations')
+      if (res.ok) {
+        const data = await res.json()
+        setContacts(data)
+
+        // Atualizar o contato selecionado se ele mudou
+        if (selectedContact) {
+          const updated = data.find((c: Contact) => c.id === selectedContact.id)
+          if (updated) {
+            setSelectedContact(updated)
+          }
+        }
+      }
+    } catch (error) {
+      console.error('Error fetching conversations:', error)
+    } finally {
+      setIsRefreshing(false)
+    }
+  }, [selectedContact])
+
+  // Polling para status de conexões
+  const fetchConnections = useCallback(async () => {
+    try {
+      const res = await fetch('/api/whatsapp/connections')
+      if (res.ok) {
+        const data = await res.json()
+        setConnections(data)
+      }
+    } catch (error) {
+      console.error('Error fetching connections:', error)
+    }
+  }, [])
+
+  // Auto-polling a cada 5 segundos
+  useEffect(() => {
+    const interval = setInterval(() => {
+      fetchConversations()
+      fetchConnections()
+    }, POLL_INTERVAL)
+
+    return () => clearInterval(interval)
+  }, [fetchConversations, fetchConnections])
 
   // Se não tiver nenhuma conexão, mostrar gerenciador
   if (connections.length === 0) {
@@ -105,11 +158,22 @@ export function ChatInterface({
             </div>
           ) : contacts.length === 0 ? (
             <div className="flex-1 flex items-center justify-center p-8">
-              <EmptyState
-                icon={MessageSquare}
-                title="Nenhuma conversa ainda"
-                description="Quando alguém enviar uma mensagem, ela aparecerá aqui."
-              />
+              <div className="text-center space-y-4">
+                <EmptyState
+                  icon={MessageSquare}
+                  title="Nenhuma conversa ainda"
+                  description="Quando alguém enviar uma mensagem para seu WhatsApp, ela aparecerá aqui automaticamente. Você também pode enviar a primeira mensagem."
+                />
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => fetchConversations(true)}
+                  disabled={isRefreshing}
+                >
+                  <RefreshCw className={`mr-2 h-4 w-4 ${isRefreshing ? 'animate-spin' : ''}`} />
+                  Atualizar
+                </Button>
+              </div>
             </div>
           ) : (
             <div className="flex-1 flex overflow-hidden">

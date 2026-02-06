@@ -55,7 +55,19 @@ export function QRCodeDialog({ connection, open, onOpenChange }: QRCodeDialogPro
       const data = await res.json()
 
       if (data.status === 'CONNECTED') {
-        toast.success('WhatsApp conectado com sucesso!')
+        toast.success('WhatsApp conectado com sucesso! Sincronizando conversas...')
+
+        // Trigger sync of existing conversations from Evolution API
+        try {
+          await fetch(`/api/whatsapp/connections/${connection.id}/sync`, {
+            method: 'POST',
+          })
+          toast.success('Conversas sincronizadas!')
+        } catch (syncError) {
+          console.error('Sync error:', syncError)
+          // Non-blocking - sync failure shouldn't prevent usage
+        }
+
         onOpenChange(false)
         router.refresh()
       } else if (data.status === 'DISCONNECTED') {

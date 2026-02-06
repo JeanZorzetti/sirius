@@ -1,0 +1,72 @@
+/**
+ * API Route: /api/whatsapp/conversations
+ *
+ * Lista conversas WhatsApp (contatos com mensagens)
+ * Usado pelo chat interface para polling de novas conversas
+ */
+
+import { NextResponse } from 'next/server'
+import { getSession } from '@/lib/auth'
+import { prisma } from '@/lib/prisma'
+import logger from '@/lib/logger'
+
+export const dynamic = 'force-dynamic'
+
+export async function GET() {
+  try {
+    // 1. Authentication
+    const session = await getSession()
+    if (!session?.user) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    }
+
+    // 2. Get user with organization
+    const user = await prisma.user.findUnique({
+      where: { id: session.user.id },
+      select: { organizationId: true },
+    })
+
+    if (!user?.organizationId) {
+      return NextResponse.json(
+        { error: 'Organization not found' },
+        { status: 404 }
+      )
+    }
+
+    // 3. Buscar contatos com mensagens WhatsApp
+    const contacts = await prisma.contact.findMany({
+      where: {
+        organizationId: user.organizationId,
+        whatsappMessages: {
+          some: {}
+        }
+      },
+      include: {
+        whatsappMessages: {
+          orderBy: { sentAt: 'desc' },
+          take: 1,
+        },
+        _count: {
+          select: {
+            whatsappMessages: {
+              where: {
+                direction: 'INBOUND',
+              }
+            }
+          }
+        }
+      },
+      orderBy: {
+        updatedAt: 'desc'
+      }
+    })
+
+    return NextResponse.json(contacts)
+  } catch (error: any) {
+    logger.error({ error }, 'Error fetching WhatsApp conversations')
+    return NextResponse.json(
+      { error: 'Internal server error' },
+      { status: 500 }
+    )
+  }
+}

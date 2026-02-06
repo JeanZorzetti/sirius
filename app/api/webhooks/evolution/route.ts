@@ -16,7 +16,10 @@ export async function POST(request: Request) {
         const payload = await request.json()
         const { event, data, instance, apikey } = payload
 
-        logger.info({ event, instance }, 'Evolution webhook received')
+        logger.info({ event, instance, dataKeys: data ? Object.keys(data) : [] }, 'Evolution webhook received')
+
+        // Log full payload for debugging (first 1000 chars)
+        logger.debug({ payload: JSON.stringify(payload).substring(0, 1000) }, 'Evolution webhook full payload')
 
         // Validar API key
         if (apikey !== process.env.EVOLUTION_API_KEY) {
@@ -39,8 +42,11 @@ export async function POST(request: Request) {
             return NextResponse.json({ error: 'Instance not found' }, { status: 404 })
         }
 
+        // Normalizar nome do evento (Evolution API v2 usa lowercase com ponto)
+        const normalizedEvent = event?.toUpperCase?.()?.replace(/\./g, '_') || event
+
         // Processar diferentes tipos de eventos
-        switch (event) {
+        switch (normalizedEvent) {
             case 'QRCODE_UPDATED':
                 await handleQRCodeUpdate(connection, data)
                 break
@@ -58,7 +64,7 @@ export async function POST(request: Request) {
                 break
 
             default:
-                logger.debug({ event }, 'Unhandled Evolution webhook event')
+                logger.debug({ event, normalizedEvent }, 'Unhandled Evolution webhook event')
         }
 
         return NextResponse.json({ success: true })
@@ -90,7 +96,7 @@ async function handleQRCodeUpdate(connection: any, data: any) {
 async function handleConnectionUpdate(connection: any, data: any) {
     const state = data.state // 'open', 'connecting', 'close'
 
-    logger.info({ instanceName: connection.instanceName, state }, 'Connection state updated')
+    logger.info({ instanceName: connection.instanceName, state, data: JSON.stringify(data).substring(0, 500) }, 'Connection state updated')
 
     let status: 'DISCONNECTED' | 'CONNECTING' | 'CONNECTED' = 'DISCONNECTED'
     if (state === 'open') {
@@ -99,12 +105,20 @@ async function handleConnectionUpdate(connection: any, data: any) {
         status = 'CONNECTING'
     }
 
+    // Evolution API v2 envia o número em vários formatos possíveis
+    const phoneNumber =
+        data.statusReason?.phoneNumber ||
+        data.instance?.owner?.split('@')?.[0] ||
+        data.ownerJid?.split('@')?.[0] ||
+        data.wuid?.split(':')?.[0] ||
+        connection.phoneNumber // manter o existente se não vier novo
+
     await prisma.whatsAppConnection.update({
         where: { id: connection.id },
         data: {
             status,
-            phoneNumber: data.statusReason?.phoneNumber || null,
-            connectedAt: status === 'CONNECTED' ? new Date() : null,
+            phoneNumber: phoneNumber || connection.phoneNumber,
+            connectedAt: status === 'CONNECTED' ? new Date() : connection.connectedAt,
         },
     })
 }
@@ -116,35 +130,66 @@ async function handleConnectionUpdate(connection: any, data: any) {
  */
 async function handleIncomingMessage(connection: any, data: any) {
     try {
-        const messages = data.messages || []
+        // Evolution API v2 envia 'data' como objeto direto da mensagem,
+        // não como { messages: [...] }. Suportamos ambos os formatos.
+        let messages: any[]
+        if (Array.isArray(data)) {
+            messages = data
+        } else if (data?.messages && Array.isArray(data.messages)) {
+            messages = data.messages
+        } else if (data?.key) {
+            // Evolution API v2: data É a mensagem diretamente
+            messages = [data]
+        } else {
+            logger.warn({ data: JSON.stringify(data).substring(0, 500) }, 'Unknown MESSAGES_UPSERT payload structure')
+            return
+        }
+
         const organizationId = connection.organizationId
 
         for (const message of messages) {
             // Ignorar mensagens enviadas por nós
-            if (message.key.fromMe) {
+            if (message.key?.fromMe) {
                 continue
             }
 
-            const remoteJid = message.key.remoteJid
+            // Ignorar mensagens de grupo
+            const remoteJid = message.key?.remoteJid
+            if (!remoteJid || remoteJid.includes('@g.us')) {
+                continue
+            }
+
             const messageId = message.key.id
             const messageText = extractMessageText(message)
-            const phoneNumber = remoteJid.replace('@s.whatsapp.net', '')
+            const phoneNumber = normalizePhoneNumber(remoteJid.replace('@s.whatsapp.net', ''))
             const senderName = message.pushName || phoneNumber
+
+            // Ignorar mensagens sem texto (notificações do sistema etc.)
+            if (!messageText) {
+                logger.debug({ messageId, remoteJid }, 'Skipping message without text content')
+                continue
+            }
+
+            // Verificar se mensagem já existe (dedup)
+            const existingMessage = await prisma.whatsAppMessage.findFirst({
+                where: { messageId, organizationId }
+            })
+
+            if (existingMessage) {
+                logger.debug({ messageId }, 'Message already exists, skipping')
+                continue
+            }
 
             logger.info({
                 organizationId,
                 remoteJid,
                 messageId,
-                senderName
+                senderName,
+                textPreview: messageText.substring(0, 50),
             }, 'Processing incoming WhatsApp message')
 
-            // Buscar ou criar contato
-            let contact = await prisma.contact.findFirst({
-                where: {
-                    organizationId,
-                    phone: phoneNumber
-                }
-            })
+            // Buscar contato com normalização de telefone
+            let contact = await findContactByPhone(organizationId, phoneNumber)
 
             if (!contact) {
                 contact = await prisma.contact.create({
@@ -158,6 +203,16 @@ async function handleIncomingMessage(connection: any, data: any) {
                 logger.info({ contactId: contact.id, phone: phoneNumber }, 'Created new contact from WhatsApp')
             }
 
+            // Calcular timestamp da mensagem
+            const rawTimestamp = message.messageTimestamp
+            const messageTimestamp = rawTimestamp
+              ? new Date(
+                  (typeof rawTimestamp === 'string'
+                    ? parseInt(rawTimestamp)
+                    : rawTimestamp) * 1000
+                )
+              : new Date()
+
             // Salvar mensagem no banco
             await prisma.whatsAppMessage.create({
                 data: {
@@ -168,8 +223,14 @@ async function handleIncomingMessage(connection: any, data: any) {
                     text: messageText,
                     direction: 'INBOUND',
                     status: 'DELIVERED',
-                    sentAt: new Date(message.messageTimestamp * 1000),
+                    sentAt: messageTimestamp,
                 }
+            })
+
+            // Atualizar updatedAt do contato (para ordenar conversas)
+            await prisma.contact.update({
+                where: { id: contact.id },
+                data: { updatedAt: new Date() }
             })
 
             logger.info({
@@ -178,8 +239,60 @@ async function handleIncomingMessage(connection: any, data: any) {
             }, 'WhatsApp message saved')
         }
     } catch (error: any) {
-        logger.error({ error, organizationId: connection.organizationId }, 'Error handling incoming WhatsApp message')
+        logger.error({ error: error.message, stack: error.stack, organizationId: connection.organizationId }, 'Error handling incoming WhatsApp message')
     }
+}
+
+/**
+ * Normaliza número de telefone para formato consistente
+ * Remove código do país e caracteres especiais
+ * Ex: "+5511999999999" -> "5511999999999"
+ * Ex: "11999999999" -> "5511999999999"
+ */
+function normalizePhoneNumber(phone: string): string {
+    // Remove tudo exceto números
+    let cleaned = phone.replace(/\D/g, '')
+
+    // Se tem 11 dígitos (DDD + número brasileiro), adicionar 55
+    if (cleaned.length === 11 && !cleaned.startsWith('55')) {
+        cleaned = '55' + cleaned
+    }
+
+    // Se tem 10 dígitos (DDD + número fixo brasileiro), adicionar 55
+    if (cleaned.length === 10 && !cleaned.startsWith('55')) {
+        cleaned = '55' + cleaned
+    }
+
+    return cleaned
+}
+
+/**
+ * Busca contato por telefone com vários formatos
+ */
+async function findContactByPhone(organizationId: string, phone: string) {
+    // Tentar busca exata primeiro
+    let contact = await prisma.contact.findFirst({
+        where: { organizationId, phone }
+    })
+
+    if (contact) return contact
+
+    // Tentar sem código do país
+    const withoutCountry = phone.startsWith('55') ? phone.substring(2) : phone
+    contact = await prisma.contact.findFirst({
+        where: { organizationId, phone: withoutCountry }
+    })
+
+    if (contact) return contact
+
+    // Tentar com código do país
+    if (!phone.startsWith('55')) {
+        contact = await prisma.contact.findFirst({
+            where: { organizationId, phone: '55' + phone }
+        })
+    }
+
+    return contact
 }
 
 /**
