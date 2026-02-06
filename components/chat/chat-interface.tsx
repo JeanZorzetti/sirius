@@ -339,6 +339,7 @@ export function ChatInterface({
                   connections={activeConnections}
                   organizationId={organizationId}
                   userId={userId}
+                  onContactUpdate={() => fetchConversations()}
                 />
               ) : (
                 <div className="flex-1 flex items-center justify-center bg-[#efeae2] dark:bg-zinc-900">

@@ -46,6 +46,7 @@ export async function GET() {
           orderBy: { sentAt: 'desc' },
           take: 1,
         },
+        tags: true, // Fase 1.2
         _count: {
           select: {
             whatsappMessages: {

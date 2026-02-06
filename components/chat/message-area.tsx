@@ -13,8 +13,10 @@ import { toast } from 'sonner'
 import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
 } from "@/components/ui/select"
+import { ConversationTags } from './conversation-tags'
 
-interface Contact { id: string; name: string | null; phone: string | null }
+interface Tag { id: string; name: string; color: string }
+interface Contact { id: string; name: string | null; phone: string | null; tags?: Tag[] }
 interface Connection { id: string; instanceName: string; phoneNumber: string | null }
 interface WhatsAppMessage {
   id: string; text: string; direction: string; sentAt: Date
@@ -24,6 +26,7 @@ interface WhatsAppMessage {
 interface MessageAreaProps {
   contact: Contact; connections: Connection[]
   organizationId: string; userId: string
+  onContactUpdate?: () => void
 }
 
 const POLL = 2000 // 2s para tempo real
@@ -317,7 +320,7 @@ function MediaBubble({ msg, outbound }: { msg: WhatsAppMessage; outbound: boolea
 
 // ── Component ───────────────────────────────────────────────
 
-export function MessageArea({ contact, connections, organizationId, userId }: MessageAreaProps) {
+export function MessageArea({ contact, connections, organizationId, userId, onContactUpdate }: MessageAreaProps) {
   const [messages, setMessages] = useState<WhatsAppMessage[]>([])
   const [text, setText] = useState('')
   const [conn, setConn] = useState(connections[0]?.id||'')
@@ -449,20 +452,27 @@ export function MessageArea({ contact, connections, organizationId, userId }: Me
             {sub && <p className="text-[12px] text-[#667781] leading-tight mt-0.5">{sub}</p>}
           </div>
         </div>
-        {connections.length > 1 && (
-          <Select value={conn} onValueChange={setConn}>
-            <SelectTrigger className="w-auto max-w-[180px] h-8 text-xs border-[#e9edef]">
-              <SelectValue placeholder="Conexão" />
-            </SelectTrigger>
-            <SelectContent>
-              {connections.map(c => (
-                <SelectItem key={c.id} value={c.id} className="text-xs">
-                  {c.phoneNumber || c.instanceName.split('-').pop()}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        )}
+        <div className="flex items-center gap-2">
+          <ConversationTags
+            contactId={contact.id}
+            contactTags={contact.tags || []}
+            onTagsUpdate={onContactUpdate}
+          />
+          {connections.length > 1 && (
+            <Select value={conn} onValueChange={setConn}>
+              <SelectTrigger className="w-auto max-w-[180px] h-8 text-xs border-[#e9edef]">
+                <SelectValue placeholder="Conexão" />
+              </SelectTrigger>
+              <SelectContent>
+                {connections.map(c => (
+                  <SelectItem key={c.id} value={c.id} className="text-xs">
+                    {c.phoneNumber || c.instanceName.split('-').pop()}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          )}
+        </div>
       </div>
 
       {/* Messages area */}

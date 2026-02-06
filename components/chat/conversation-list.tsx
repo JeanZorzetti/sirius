@@ -18,6 +18,12 @@ import {
 import { useState } from 'react'
 import { UnreadBadge } from './unread-badge'
 
+interface Tag {
+  id: string
+  name: string
+  color: string
+}
+
 interface Contact {
   id: string
   name: string | null
@@ -28,6 +34,7 @@ interface Contact {
     direction: string
     sentAt: Date
   }>
+  tags?: Tag[]
   _count: {
     whatsappMessages: number
     unreadMessages?: number
@@ -243,6 +250,29 @@ export function ConversationList({ contacts, selectedContact, onSelectContact }:
                     </div>
                     <UnreadBadge count={unreadCount} />
                   </div>
+
+                  {/* Tags */}
+                  {contact.tags && contact.tags.length > 0 && (
+                    <div className="flex flex-wrap gap-1 mt-1.5">
+                      {contact.tags.slice(0, 3).map(tag => (
+                        <span
+                          key={tag.id}
+                          className="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-medium"
+                          style={{
+                            backgroundColor: `${tag.color}20`,
+                            color: tag.color,
+                          }}
+                        >
+                          {tag.name}
+                        </span>
+                      ))}
+                      {contact.tags.length > 3 && (
+                        <span className="text-[10px] text-[#667781]">
+                          +{contact.tags.length - 3}
+                        </span>
+                      )}
+                    </div>
+                  )}
                 </div>
               </button>
             )

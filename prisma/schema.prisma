@@ -159,6 +159,7 @@ model Contact {
 
   deals            Deal[]
   whatsappMessages WhatsAppMessage[]
+  tags             Tag[] // Many-to-Many (Fase 1.2)
 
   // Performance indexes
   @@index([organizationId])
@@ -278,11 +279,12 @@ model Tag {
   id      String @id @default(uuid())
   name    String
   color   String // hex or preset name
-  
+
   organizationId String
   organization   Organization @relation(fields: [organizationId], references: [id])
-  
-  deals   Deal[] // Many-to-Many
+
+  deals    Deal[] // Many-to-Many
+  contacts Contact[] // Many-to-Many (Fase 1.2)
 }
 
 model Activity {
