@@ -19,6 +19,7 @@ import { QuickReplyPicker } from './quick-reply-picker'
 import { QuotedMessage } from './quoted-message'
 import { ContactSidebar } from './contact-sidebar'
 import { AgentAssignment } from './agent-assignment'
+import { TypingIndicator } from './typing-indicator'
 
 interface Tag { id: string; name: string; color: string }
 interface Deal {
@@ -377,6 +378,8 @@ export function MessageArea({ contact, connections, organizationId, userId, user
   const [showSidebar, setShowSidebar] = useState(false)
   const [contactData, setContactData] = useState<Contact | null>(null)
   const [users, setUsers] = useState<User[]>([])
+  const [isTyping, setIsTyping] = useState(false)
+  const typingTimeoutRef = useRef<NodeJS.Timeout | null>(null)
   const endRef = useRef<HTMLDivElement>(null)
   const taRef = useRef<HTMLTextAreaElement>(null)
   const containerRef = useRef<HTMLDivElement>(null)
@@ -606,7 +609,11 @@ export function MessageArea({ contact, connections, organizationId, userId, user
           </Avatar>
           <div>
             <p className="font-semibold text-[15px] text-[#111b21] dark:text-zinc-100 leading-tight">{name}</p>
-            {sub && <p className="text-[12px] text-[#667781] leading-tight mt-0.5">{sub}</p>}
+            {isTyping ? (
+              <TypingIndicator variant="inline" className="mt-0.5" />
+            ) : (
+              sub && <p className="text-[12px] text-[#667781] leading-tight mt-0.5">{sub}</p>
+            )}
           </div>
         </div>
         <div className="flex items-center gap-2">
@@ -809,6 +816,12 @@ export function MessageArea({ contact, connections, organizationId, userId, user
                 </div>
               )
             })}
+
+            {/* Typing indicator bubble */}
+            {isTyping && (
+              <TypingIndicator variant="bubble" className="mt-2" />
+            )}
+
             <div ref={endRef} />
           </div>
         )}

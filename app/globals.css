@@ -540,6 +540,27 @@
     background: linear-gradient(135deg, rgba(20, 184, 166, 0.1) 0%, rgba(15, 118, 110, 0.05) 100%);
     border-color: rgba(94, 234, 212, 0.3);
   }
+
+  /* Typing Indicator Animation (Fase 4.1) */
+  @keyframes typing-bounce {
+    0%, 60%, 100% {
+      transform: translateY(0);
+      opacity: 0.4;
+    }
+    30% {
+      transform: translateY(-4px);
+      opacity: 1;
+    }
+  }
+
+  .typing-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: #667781;
+    animation: typing-bounce 1.4s ease-in-out infinite;
+    display: inline-block;
+  }
 }
 /* Drag and Drop improvements - TEMPORARIAMENTE DESATIVADO PARA TESTE */
 /* [data-dnd-kit-drag-handle] {
