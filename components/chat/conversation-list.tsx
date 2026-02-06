@@ -227,7 +227,7 @@ export function ConversationList({ contacts, selectedContact, onSelectContact, c
   const isGroup = (c: Contact) => c.phone?.includes('@g.us') ?? false
 
   return (
-    <div className="w-[340px] border-r flex flex-col bg-white whatsapp-header">
+    <div className="w-full border-r flex flex-col bg-white whatsapp-header">
       {/* Search */}
       <div className="px-3 py-2.5">
         <div className="relative">
