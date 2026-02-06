@@ -157,18 +157,21 @@ export class EvolutionAPIClient {
       integration: params.integration ?? 'WHATSAPP-BAILEYS',
     }
 
-    // Só incluir webhook se a URL for válida (evita "undefined/..." que causa 400)
+    // Evolution API v2 espera webhook como objeto, não string
     if (params.webhookUrl) {
-      payload.webhook = params.webhookUrl
-      payload.webhook_by_events = false
-      payload.events = params.webhookEvents ?? [
-        'QRCODE_UPDATED',
-        'MESSAGES_UPSERT',
-        'MESSAGES_UPDATE',
-        'CONNECTION_UPDATE',
-        'CONTACTS_UPSERT',
-        'CHATS_UPSERT',
-      ]
+      payload.webhook = {
+        url: params.webhookUrl,
+        byEvents: false,
+        base64: false,
+        events: params.webhookEvents ?? [
+          'QRCODE_UPDATED',
+          'MESSAGES_UPSERT',
+          'MESSAGES_UPDATE',
+          'CONNECTION_UPDATE',
+          'CONTACTS_UPSERT',
+          'CHATS_UPSERT',
+        ],
+      }
     }
 
     return this.request<InstanceInfo>('/instance/create', {
