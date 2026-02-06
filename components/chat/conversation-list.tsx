@@ -171,7 +171,7 @@ export function ConversationList({ contacts, selectedContact, onSelectContact, c
   const isGroup = (c: Contact) => c.phone?.includes('@g.us') ?? false
 
   return (
-    <div className="w-[340px] border-r flex flex-col bg-white dark:bg-zinc-950">
+    <div className="w-[340px] border-r flex flex-col bg-white whatsapp-header">
       {/* Search */}
       <div className="px-3 py-2.5">
         <div className="relative">
@@ -180,7 +180,7 @@ export function ConversationList({ contacts, selectedContact, onSelectContact, c
             placeholder="Buscar ou iniciar conversa"
             value={query}
             onChange={e => setQuery(e.target.value)}
-            className="pl-9 h-[34px] bg-[#f0f2f5] dark:bg-zinc-900 border-0 rounded-lg text-[13px] placeholder:text-[#8696a0] focus-visible:ring-1 focus-visible:ring-[#00a884]"
+            className="pl-9 h-[34px] bg-[#f0f2f5] whatsapp-input border-0 rounded-lg text-[13px] placeholder:text-[#8696a0] focus-visible:ring-1 focus-visible:ring-[#00a884] whatsapp-text-primary"
           />
         </div>
       </div>
@@ -218,10 +218,10 @@ export function ConversationList({ contacts, selectedContact, onSelectContact, c
                 onClick={() => onSelectContact(contact)}
                 className={cn(
                   'w-full flex items-center gap-3 px-3 py-[10px] transition-colors duration-150 relative group',
-                  hasUnread && !selected && 'bg-[#f0f2f5]/50',
+                  hasUnread && !selected && 'bg-[#f0f2f5]/50 dark:bg-[#202C33]/50',
                   selected
-                    ? 'bg-[#f0f2f5] dark:bg-zinc-800'
-                    : 'hover:bg-[#f5f6f6] dark:hover:bg-zinc-900/50'
+                    ? 'bg-[#f0f2f5] whatsapp-bubble-incoming'
+                    : 'hover:bg-[#f5f6f6] dark:hover:bg-[#202C33]/30'
                 )}
               >
                 {/* Active bar */}

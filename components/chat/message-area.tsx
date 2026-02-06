@@ -627,7 +627,7 @@ export function MessageArea({ contact, connections, organizationId, userId, user
       )}
 
       {/* Header */}
-      <div className="h-[60px] px-4 border-b flex items-center justify-between bg-[#f0f2f5] dark:bg-zinc-950 flex-shrink-0">
+      <div className="h-[60px] px-4 border-b flex items-center justify-between bg-[#f0f2f5] whatsapp-header flex-shrink-0">
         <div className="flex items-center gap-3">
           <Avatar className="h-10 w-10">
             <AvatarFallback className={cn('text-xs font-semibold text-white', clr)}>
@@ -699,12 +699,7 @@ export function MessageArea({ contact, connections, organizationId, userId, user
       {/* Messages area */}
       <div
         ref={containerRef}
-        className="flex-1 overflow-y-auto px-4 py-2 md:px-[12%]"
-        style={{
-          backgroundColor: '#efeae2',
-          backgroundImage: 'radial-gradient(circle, #d1d7db 1px, transparent 1px)',
-          backgroundSize: '24px 24px',
-        }}
+        className="flex-1 overflow-y-auto px-4 py-2 md:px-[12%] whatsapp-bg-pattern"
       >
         {loading && messages.length === 0 ? (
           <div className="flex items-center justify-center h-full">
@@ -786,8 +781,8 @@ export function MessageArea({ contact, connections, organizationId, userId, user
                         highlightedMessageId === msg.id
                           ? 'ring-2 ring-[#f59e0b] bg-[#fef3c7]'
                           : out
-                            ? 'bg-[#d9fdd3] dark:bg-emerald-900/60'
-                            : 'bg-white dark:bg-zinc-800'
+                            ? 'bg-[#d9fdd3] whatsapp-bubble-outgoing'
+                            : 'bg-white whatsapp-bubble-incoming'
                       )}
                     >
                       {/* Quoted message (if replying) */}
@@ -883,7 +878,7 @@ export function MessageArea({ contact, connections, organizationId, userId, user
 
       {/* Reply preview bar */}
       {replyingTo && (
-        <div className="px-4 py-2 bg-white dark:bg-zinc-900 border-t border-[#e9edef] flex items-center gap-2">
+        <div className="px-4 py-2 bg-white whatsapp-header border-t border-[#e9edef] dark:border-zinc-700 flex items-center gap-2">
           <Reply className="h-4 w-4 text-[#00a884] flex-shrink-0" />
           <div className="flex-1 min-w-0">
             <p className="text-[11px] font-semibold text-[#00a884] leading-tight">
@@ -904,7 +899,7 @@ export function MessageArea({ contact, connections, organizationId, userId, user
       )}
 
       {/* Input area */}
-      <div className="px-3 py-2 bg-[#f0f2f5] dark:bg-zinc-950 border-t border-[#e9edef] flex items-end gap-2">
+      <div className="px-3 py-2 bg-[#f0f2f5] whatsapp-header border-t border-[#e9edef] dark:border-zinc-700 flex items-end gap-2">
         <div className="flex-1 relative">
           {/* Quick Reply Picker */}
           {showQuickReply && taRef.current && (
@@ -933,12 +928,13 @@ export function MessageArea({ contact, connections, organizationId, userId, user
             rows={1}
             className={cn(
               'w-full resize-none rounded-lg border-0',
-              'bg-white dark:bg-zinc-900 px-3 py-[9px] text-[14px] leading-[1.46]',
+              'bg-white whatsapp-input px-3 py-[9px] text-[14px] leading-[1.46]',
               'placeholder:text-[#8696a0]',
               'focus:outline-none focus:ring-1 focus:ring-[#00a884]/40',
               'disabled:opacity-50',
               'min-h-[42px] max-h-[120px]',
-              'shadow-[0_1px_1px_rgba(11,20,26,0.06)]'
+              'shadow-[0_1px_1px_rgba(11,20,26,0.06)]',
+              'whatsapp-text-primary'
             )}
             onKeyDown={e => {
               if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send(e) }

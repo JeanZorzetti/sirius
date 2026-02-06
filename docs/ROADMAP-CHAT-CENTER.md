@@ -586,7 +586,7 @@ model MessageReaction {
 
 ---
 
-### 4.3 Virtualizacao de Mensagens
+### 4.3 Virtualizacao de Mensagens ✅
 | Atributo | Valor |
 |----------|-------|
 | Prioridade | Nice-to-have |

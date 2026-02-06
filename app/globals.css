@@ -561,6 +561,42 @@
     animation: typing-bounce 1.4s ease-in-out infinite;
     display: inline-block;
   }
+
+  /* WhatsApp Dark Mode Colors (Fase 4.4) */
+  .dark .whatsapp-bg {
+    background-color: #12181C;
+  }
+
+  .dark .whatsapp-bubble-outgoing {
+    background-color: #005C4B !important;
+  }
+
+  .dark .whatsapp-bubble-incoming {
+    background-color: #202C33 !important;
+  }
+
+  .dark .whatsapp-header {
+    background-color: #1F2C34 !important;
+  }
+
+  .dark .whatsapp-input {
+    background-color: #1E2A30 !important;
+  }
+
+  .dark .whatsapp-text-primary {
+    color: #E9EDEF !important;
+  }
+
+  .dark .whatsapp-text-secondary {
+    color: #8696A0 !important;
+  }
+
+  /* WhatsApp dot pattern background for dark mode */
+  .dark .whatsapp-bg-pattern {
+    background-color: #12181C;
+    background-image: radial-gradient(circle, rgba(233, 237, 239, 0.05) 1px, transparent 1px);
+    background-size: 24px 24px;
+  }
 }
 /* Drag and Drop improvements - TEMPORARIAMENTE DESATIVADO PARA TESTE */
 /* [data-dnd-kit-drag-handle] {
