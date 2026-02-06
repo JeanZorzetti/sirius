@@ -614,7 +614,7 @@ import { Virtuoso } from 'react-virtuoso'
 
 ---
 
-### 4.4 Dark Mode Completo
+### 4.4 Dark Mode Completo ✅
 | Atributo | Valor |
 |----------|-------|
 | Prioridade | Nice-to-have |
