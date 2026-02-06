@@ -1,0 +1,124 @@
+import { NextResponse } from 'next/server'
+import { getSession } from '@/lib/auth'
+import { prisma } from '@/lib/prisma'
+
+export async function PUT(
+  request: Request,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  try {
+    const session = await getSession()
+    if (!session?.user) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    }
+
+    const user = await prisma.user.findUnique({
+      where: { id: session.user.id },
+      select: { organizationId: true },
+    })
+
+    if (!user) {
+      return NextResponse.json({ error: 'User not found' }, { status: 404 })
+    }
+
+    const { id } = await params
+    const body = await request.json()
+    const { shortcut, title, content, category } = body
+
+    // Verificar se o quick reply existe e pertence à organização
+    const existing = await prisma.quickReply.findUnique({
+      where: { id },
+    })
+
+    if (!existing || existing.organizationId !== user.organizationId) {
+      return NextResponse.json(
+        { error: 'Quick reply not found' },
+        { status: 404 }
+      )
+    }
+
+    // Se o shortcut mudou, verificar se o novo não existe
+    if (shortcut && shortcut !== existing.shortcut) {
+      const duplicate = await prisma.quickReply.findUnique({
+        where: {
+          organizationId_shortcut: {
+            organizationId: user.organizationId,
+            shortcut,
+          },
+        },
+      })
+
+      if (duplicate) {
+        return NextResponse.json(
+          { error: 'Shortcut already exists' },
+          { status: 409 }
+        )
+      }
+    }
+
+    const quickReply = await prisma.quickReply.update({
+      where: { id },
+      data: {
+        shortcut: shortcut || existing.shortcut,
+        title: title || existing.title,
+        content: content || existing.content,
+        category: category !== undefined ? category : existing.category,
+      },
+    })
+
+    return NextResponse.json(quickReply)
+  } catch (error) {
+    console.error('Error updating quick reply:', error)
+    return NextResponse.json(
+      { error: 'Failed to update quick reply' },
+      { status: 500 }
+    )
+  }
+}
+
+export async function DELETE(
+  request: Request,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  try {
+    const session = await getSession()
+    if (!session?.user) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    }
+
+    const user = await prisma.user.findUnique({
+      where: { id: session.user.id },
+      select: { organizationId: true },
+    })
+
+    if (!user) {
+      return NextResponse.json({ error: 'User not found' }, { status: 404 })
+    }
+
+    const { id } = await params
+
+    // Verificar se o quick reply existe e pertence à organização
+    const existing = await prisma.quickReply.findUnique({
+      where: { id },
+    })
+
+    if (!existing || existing.organizationId !== user.organizationId) {
+      return NextResponse.json(
+        { error: 'Quick reply not found' },
+        { status: 404 }
+      )
+    }
+
+    await prisma.quickReply.delete({
+      where: { id },
+    })
+
+    return NextResponse.json({ success: true })
+  } catch (error) {
+    console.error('Error deleting quick reply:', error)
+    return NextResponse.json(
+      { error: 'Failed to delete quick reply' },
+      { status: 500 }
+    )
+  }
+}

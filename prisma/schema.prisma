@@ -92,6 +92,9 @@ model Organization {
   whatsappConnections    WhatsAppConnection[]
   agiQuota               AgiQuota?
   leadDistributionRules  LeadDistributionRule[]
+
+  // Chat Center - Quick Replies (Fase 2.1)
+  quickReplies           QuickReply[]
 }
 
 model User {
@@ -638,6 +641,25 @@ model WhatsAppMessage {
   @@index([contactId])
   @@index([remoteJid])
   @@index([contactId, isRead, direction])
+}
+
+// ============================================================================
+// CHAT CENTER - QUICK REPLIES (Fase 2.1)
+// ============================================================================
+
+model QuickReply {
+  id             String   @id @default(uuid())
+  shortcut       String   // "/saudacao", "/followup"
+  title          String
+  content        String   @db.Text
+  category       String?  // "saudacao", "fechamento", "followup"
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  @@unique([organizationId, shortcut])
+  @@index([organizationId])
 }
 
 model CalendarEvent {

@@ -89,6 +89,50 @@ async function main() {
     })
     console.log('Created Deal')
 
+    // 6. Create Quick Replies (templates padrão)
+    const quickRepliesData = [
+        {
+            shortcut: '/saudacao',
+            title: 'Saudação Inicial',
+            content: 'Olá {contato.nome}! Tudo bem? Como posso te ajudar?',
+            category: 'saudacao',
+        },
+        {
+            shortcut: '/obrigado',
+            title: 'Agradecimento',
+            content: 'Obrigado pelo contato, {contato.nome}! Qualquer dúvida, estou à disposição.',
+            category: 'fechamento',
+        },
+        {
+            shortcut: '/followup',
+            title: 'Follow-up',
+            content: 'Oi {contato.nome}, passando para dar continuidade ao nosso assunto. Conseguiu analisar?',
+            category: 'followup',
+        },
+        {
+            shortcut: '/horario',
+            title: 'Horário de Atendimento',
+            content: 'Nosso horário de atendimento é de segunda a sexta, das 9h às 18h.',
+            category: 'saudacao',
+        },
+        {
+            shortcut: '/pix',
+            title: 'Dados PIX',
+            content: 'Segue nossos dados para pagamento via PIX:\n\nChave PIX: contato@empresa.com\nBeneficiário: Empresa LTDA\nCNPJ: 00.000.000/0001-00',
+            category: 'fechamento',
+        },
+    ]
+
+    for (const qr of quickRepliesData) {
+        await prisma.quickReply.create({
+            data: {
+                ...qr,
+                organizationId: org.id,
+            },
+        })
+    }
+    console.log('Created Quick Replies')
+
     console.log('Seeding finished.')
 }
 

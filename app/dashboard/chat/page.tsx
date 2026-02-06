@@ -27,6 +27,7 @@ export default async function ChatPage() {
     where: { id: session.user.id },
     select: {
       id: true,
+      name: true,
       organizationId: true,
       organization: {
         select: {
@@ -102,6 +103,7 @@ export default async function ChatPage() {
         connections={connections}
         contacts={contacts}
         userId={user.id}
+        userName={user.name || 'Usuário'}
         organizationId={user.organizationId}
         maxInstances={user.organization.whatsappInstances || 1}
       />

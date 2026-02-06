@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/select"
 import { ConversationTags } from './conversation-tags'
 import { MessageSearch } from './message-search'
+import { QuickReplyPicker } from './quick-reply-picker'
 
 interface Tag { id: string; name: string; color: string }
 interface Contact { id: string; name: string | null; phone: string | null; tags?: Tag[] }
@@ -26,7 +27,7 @@ interface WhatsAppMessage {
 }
 interface MessageAreaProps {
   contact: Contact; connections: Connection[]
-  organizationId: string; userId: string
+  organizationId: string; userId: string; userName: string
   onContactUpdate?: () => void
 }
 
@@ -321,7 +322,7 @@ function MediaBubble({ msg, outbound }: { msg: WhatsAppMessage; outbound: boolea
 
 // ── Component ───────────────────────────────────────────────
 
-export function MessageArea({ contact, connections, organizationId, userId, onContactUpdate }: MessageAreaProps) {
+export function MessageArea({ contact, connections, organizationId, userId, userName, onContactUpdate }: MessageAreaProps) {
   const [messages, setMessages] = useState<WhatsAppMessage[]>([])
   const [text, setText] = useState('')
   const [conn, setConn] = useState(connections[0]?.id||'')
@@ -329,6 +330,8 @@ export function MessageArea({ contact, connections, organizationId, userId, onCo
   const [sending, setSending] = useState(false)
   const [isSearchOpen, setIsSearchOpen] = useState(false)
   const [highlightedMessageId, setHighlightedMessageId] = useState<string | null>(null)
+  const [showQuickReply, setShowQuickReply] = useState(false)
+  const [quickReplyQuery, setQuickReplyQuery] = useState('')
   const endRef = useRef<HTMLDivElement>(null)
   const taRef = useRef<HTMLTextAreaElement>(null)
   const containerRef = useRef<HTMLDivElement>(null)
@@ -393,6 +396,24 @@ export function MessageArea({ contact, connections, organizationId, userId, onCo
     }
   }, [text])
 
+  // Quick Reply detection: "/" triggers autocomplete
+  useEffect(() => {
+    const lastChar = text[text.length - 1]
+    const words = text.split(/\s/)
+    const lastWord = words[words.length - 1]
+
+    if (lastWord.startsWith('/') && lastWord.length > 1) {
+      setShowQuickReply(true)
+      setQuickReplyQuery(lastWord.slice(1)) // Remove "/" prefix
+    } else if (lastWord === '/') {
+      setShowQuickReply(true)
+      setQuickReplyQuery('')
+    } else {
+      setShowQuickReply(false)
+      setQuickReplyQuery('')
+    }
+  }, [text])
+
   // Scroll to bottom on first load
   useEffect(() => {
     if (messages.length > 0 && prevMsgCount.current === 0) {
@@ -400,6 +421,17 @@ export function MessageArea({ contact, connections, organizationId, userId, onCo
     }
     prevMsgCount.current = messages.length
   }, [messages.length, scrollToBottom])
+
+  const handleQuickReplySelect = (content: string) => {
+    // Substituir o "/" + query pelo conteúdo da resposta rápida
+    const words = text.split(/\s/)
+    words[words.length - 1] = content
+    setText(words.join(' '))
+    setShowQuickReply(false)
+    setQuickReplyQuery('')
+    // Focus no textarea
+    taRef.current?.focus()
+  }
 
   const send = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -636,6 +668,24 @@ export function MessageArea({ contact, connections, organizationId, userId, onCo
       {/* Input area */}
       <div className="px-3 py-2 bg-[#f0f2f5] dark:bg-zinc-950 border-t border-[#e9edef] flex items-end gap-2">
         <div className="flex-1 relative">
+          {/* Quick Reply Picker */}
+          {showQuickReply && taRef.current && (
+            <QuickReplyPicker
+              query={quickReplyQuery}
+              onSelect={handleQuickReplySelect}
+              onClose={() => {
+                setShowQuickReply(false)
+                setQuickReplyQuery('')
+              }}
+              position={{
+                top: taRef.current.offsetHeight,
+                left: 0,
+              }}
+              contact={contact}
+              userName={userName}
+            />
+          )}
+
           <textarea
             ref={taRef}
             placeholder="Mensagem"

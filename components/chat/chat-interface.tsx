@@ -48,6 +48,7 @@ interface ChatInterfaceProps {
   connections: Connection[]
   contacts: Contact[]
   userId: string
+  userName: string
   organizationId: string
   maxInstances: number
 }
@@ -58,6 +59,7 @@ export function ChatInterface({
   connections: initialConnections,
   contacts: initialContacts,
   userId,
+  userName,
   organizationId,
   maxInstances
 }: ChatInterfaceProps) {
@@ -339,6 +341,7 @@ export function ChatInterface({
                   connections={activeConnections}
                   organizationId={organizationId}
                   userId={userId}
+                  userName={userName}
                   onContactUpdate={() => fetchConversations()}
                 />
               ) : (

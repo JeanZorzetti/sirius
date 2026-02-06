@@ -1,0 +1,98 @@
+import { NextResponse } from 'next/server'
+import { getSession } from '@/lib/auth'
+import { prisma } from '@/lib/prisma'
+
+export async function GET() {
+  try {
+    const session = await getSession()
+    if (!session?.user) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    }
+
+    const user = await prisma.user.findUnique({
+      where: { id: session.user.id },
+      select: { organizationId: true },
+    })
+
+    if (!user) {
+      return NextResponse.json({ error: 'User not found' }, { status: 404 })
+    }
+
+    const quickReplies = await prisma.quickReply.findMany({
+      where: { organizationId: user.organizationId },
+      orderBy: [{ category: 'asc' }, { shortcut: 'asc' }],
+    })
+
+    return NextResponse.json(quickReplies)
+  } catch (error) {
+    console.error('Error fetching quick replies:', error)
+    return NextResponse.json(
+      { error: 'Failed to fetch quick replies' },
+      { status: 500 }
+    )
+  }
+}
+
+export async function POST(request: Request) {
+  try {
+    const session = await getSession()
+    if (!session?.user) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    }
+
+    const user = await prisma.user.findUnique({
+      where: { id: session.user.id },
+      select: { organizationId: true },
+    })
+
+    if (!user) {
+      return NextResponse.json({ error: 'User not found' }, { status: 404 })
+    }
+
+    const body = await request.json()
+    const { shortcut, title, content, category } = body
+
+    // Validação
+    if (!shortcut || !title || !content) {
+      return NextResponse.json(
+        { error: 'Shortcut, title, and content are required' },
+        { status: 400 }
+      )
+    }
+
+    // Verificar se o shortcut já existe
+    const existing = await prisma.quickReply.findUnique({
+      where: {
+        organizationId_shortcut: {
+          organizationId: user.organizationId,
+          shortcut,
+        },
+      },
+    })
+
+    if (existing) {
+      return NextResponse.json(
+        { error: 'Shortcut already exists' },
+        { status: 409 }
+      )
+    }
+
+    const quickReply = await prisma.quickReply.create({
+      data: {
+        shortcut,
+        title,
+        content,
+        category: category || null,
+        organizationId: user.organizationId,
+      },
+    })
+
+    return NextResponse.json(quickReply, { status: 201 })
+  } catch (error) {
+    console.error('Error creating quick reply:', error)
+    return NextResponse.json(
+      { error: 'Failed to create quick reply' },
+      { status: 500 }
+    )
+  }
+}
