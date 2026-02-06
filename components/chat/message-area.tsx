@@ -3,258 +3,191 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
-import { Send, Users, Loader2, Check, CheckCheck, SmilePlus } from 'lucide-react'
+import { Send, Users, Loader2, Check, CheckCheck, Mic } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { toast } from 'sonner'
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
+  Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
 } from "@/components/ui/select"
 
-interface Contact {
-  id: string
-  name: string | null
-  phone: string | null
-}
-
-interface Connection {
-  id: string
-  instanceName: string
-  phoneNumber: string | null
-}
-
+interface Contact { id: string; name: string | null; phone: string | null }
+interface Connection { id: string; instanceName: string; phoneNumber: string | null }
 interface WhatsAppMessage {
-  id: string
-  text: string
-  direction: string
-  sentAt: Date
-  deliveredAt: Date | null
-  readAt: Date | null
-  status: string
+  id: string; text: string; direction: string; sentAt: Date
+  deliveredAt: Date | null; readAt: Date | null; status: string
 }
-
 interface MessageAreaProps {
-  contact: Contact
-  connections: Connection[]
-  organizationId: string
-  userId: string
+  contact: Contact; connections: Connection[]
+  organizationId: string; userId: string
 }
 
-const MESSAGE_POLL_INTERVAL = 3000
+const POLL = 3000
 
-function formatPhoneDisplay(phone: string | null): string {
-  if (!phone) return ''
-  if (phone.includes('@g.us') || phone.includes('@')) return ''
-  const cleaned = phone.replace(/\D/g, '')
-  if (cleaned.startsWith('55') && cleaned.length === 13) {
-    return `+55 (${cleaned.slice(2, 4)}) ${cleaned.slice(4, 9)}-${cleaned.slice(9)}`
-  }
-  if (cleaned.startsWith('55') && cleaned.length === 12) {
-    return `+55 (${cleaned.slice(2, 4)}) ${cleaned.slice(4, 8)}-${cleaned.slice(8)}`
-  }
-  if (cleaned.length === 11) {
-    return `(${cleaned.slice(0, 2)}) ${cleaned.slice(2, 7)}-${cleaned.slice(7)}`
-  }
-  return phone
+// ── Helpers ──────────────────────────────────────────────────
+
+function formatPhone(p: string | null): string {
+  if (!p || p.includes('@')) return ''
+  const d = p.replace(/\D/g, '')
+  if (d.startsWith('55') && d.length === 13)
+    return `+55 (${d.slice(2,4)}) ${d.slice(4,9)}-${d.slice(9)}`
+  if (d.startsWith('55') && d.length === 12)
+    return `+55 (${d.slice(2,4)}) ${d.slice(4,8)}-${d.slice(8)}`
+  if (d.length === 11) return `(${d.slice(0,2)}) ${d.slice(2,7)}-${d.slice(7)}`
+  return p
 }
 
-function getDisplayName(contact: Contact): string {
-  if (contact.name && !contact.name.includes('@g.us') && !contact.name.includes('@s.whatsapp.net')) {
-    return contact.name
-  }
-  const formatted = formatPhoneDisplay(contact.phone)
-  if (formatted) return formatted
-  if (contact.phone) {
-    return contact.phone.replace('@s.whatsapp.net', '').replace('@g.us', '')
-  }
-  return 'Sem nome'
+function getName(c: Contact): string {
+  if (c.name && !c.name.includes('@g.us') && !c.name.includes('@s.whatsapp.net')) return c.name
+  return formatPhone(c.phone) || c.phone?.replace(/@.+/,'') || 'Sem nome'
 }
 
-function getSubtitle(contact: Contact): string {
-  const isGroup = contact.phone?.includes('@g.us')
-  if (isGroup) return 'Grupo'
-  return formatPhoneDisplay(contact.phone) || ''
+function getSub(c: Contact): string {
+  if (c.phone?.includes('@g.us')) return 'Grupo'
+  return formatPhone(c.phone) || ''
 }
 
-const avatarColors = [
-  'bg-blue-500', 'bg-emerald-500', 'bg-violet-500', 'bg-amber-500',
-  'bg-rose-500', 'bg-cyan-500', 'bg-pink-500', 'bg-teal-500',
-]
+const COLORS = ['bg-blue-500','bg-emerald-500','bg-violet-500','bg-amber-500','bg-rose-500','bg-cyan-500','bg-pink-500','bg-teal-500']
+function color(n: string) { let h=0; for(let i=0;i<n.length;i++) h=n.charCodeAt(i)+((h<<5)-h); return COLORS[Math.abs(h)%COLORS.length] }
 
-function getAvatarColor(name: string): string {
-  let hash = 0
-  for (let i = 0; i < name.length; i++) {
-    hash = name.charCodeAt(i) + ((hash << 5) - hash)
-  }
-  return avatarColors[Math.abs(hash) % avatarColors.length]
+function fmtDate(d: Date): string {
+  const now = new Date(), msg = new Date(d)
+  const days = Math.floor((now.getTime()-msg.getTime())/86400000)
+  if (days===0) return 'Hoje'
+  if (days===1) return 'Ontem'
+  return msg.toLocaleDateString('pt-BR',{day:'2-digit',month:'long',year:'numeric'})
 }
 
-function formatMessageDate(date: Date): string {
-  const now = new Date()
-  const msgDate = new Date(date)
-  const diff = now.getTime() - msgDate.getTime()
-  const days = Math.floor(diff / (1000 * 60 * 60 * 24))
-
-  if (days === 0) return 'Hoje'
-  if (days === 1) return 'Ontem'
-  return msgDate.toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' })
-}
-
-function shouldShowDateSeparator(current: WhatsAppMessage, prev: WhatsAppMessage | null): boolean {
+function needsDateSep(cur: WhatsAppMessage, prev: WhatsAppMessage|null): boolean {
   if (!prev) return true
-  const currentDate = new Date(current.sentAt).toDateString()
-  const prevDate = new Date(prev.sentAt).toDateString()
-  return currentDate !== prevDate
+  return new Date(cur.sentAt).toDateString() !== new Date(prev.sentAt).toDateString()
 }
+
+// Grouped bubble border-radius (Messenger/iMessage pattern)
+type BubblePos = 'single' | 'first' | 'middle' | 'last'
+function getBubblePos(msgs: WhatsAppMessage[], i: number): BubblePos {
+  const cur = msgs[i]
+  const prev = i > 0 ? msgs[i-1] : null
+  const next = i < msgs.length-1 ? msgs[i+1] : null
+  const sameAsPrev = prev && prev.direction === cur.direction &&
+    new Date(cur.sentAt).getTime() - new Date(prev.sentAt).getTime() < 60000
+  const sameAsNext = next && next.direction === cur.direction &&
+    new Date(next.sentAt).getTime() - new Date(cur.sentAt).getTime() < 60000
+  if (sameAsPrev && sameAsNext) return 'middle'
+  if (sameAsPrev) return 'last'
+  if (sameAsNext) return 'first'
+  return 'single'
+}
+
+function bubbleRadius(pos: BubblePos, outbound: boolean): string {
+  // [top-left, top-right, bottom-right, bottom-left]
+  if (outbound) {
+    switch(pos) {
+      case 'single': return 'rounded-[18px]'
+      case 'first':  return 'rounded-tl-[18px] rounded-tr-[18px] rounded-br-[4px] rounded-bl-[18px]'
+      case 'middle': return 'rounded-tl-[18px] rounded-tr-[4px] rounded-br-[4px] rounded-bl-[18px]'
+      case 'last':   return 'rounded-tl-[18px] rounded-tr-[4px] rounded-br-[18px] rounded-bl-[18px]'
+    }
+  } else {
+    switch(pos) {
+      case 'single': return 'rounded-[18px]'
+      case 'first':  return 'rounded-tl-[18px] rounded-tr-[18px] rounded-br-[18px] rounded-bl-[4px]'
+      case 'middle': return 'rounded-tl-[4px] rounded-tr-[18px] rounded-br-[18px] rounded-bl-[4px]'
+      case 'last':   return 'rounded-tl-[4px] rounded-tr-[18px] rounded-br-[18px] rounded-bl-[18px]'
+    }
+  }
+}
+
+// ── Component ───────────────────────────────────────────────
 
 export function MessageArea({ contact, connections, organizationId, userId }: MessageAreaProps) {
   const [messages, setMessages] = useState<WhatsAppMessage[]>([])
-  const [messageText, setMessageText] = useState('')
-  const [selectedConnection, setSelectedConnection] = useState(connections[0]?.id || '')
-  const [isLoading, setIsLoading] = useState(false)
-  const [isSending, setIsSending] = useState(false)
-  const messagesEndRef = useRef<HTMLDivElement>(null)
-  const textareaRef = useRef<HTMLTextAreaElement>(null)
-  const isFirstLoad = useRef(true)
+  const [text, setText] = useState('')
+  const [conn, setConn] = useState(connections[0]?.id||'')
+  const [loading, setLoading] = useState(false)
+  const [sending, setSending] = useState(false)
+  const endRef = useRef<HTMLDivElement>(null)
+  const taRef = useRef<HTMLTextAreaElement>(null)
+  const firstLoad = useRef(true)
 
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
-  }
+  const scroll = () => endRef.current?.scrollIntoView({ behavior: 'smooth' })
 
-  const fetchMessages = useCallback(async (showLoading = false) => {
-    if (showLoading) setIsLoading(true)
+  const fetchMsgs = useCallback(async (show=false) => {
+    if (show) setLoading(true)
     try {
-      const res = await fetch(`/api/contact/${contact.id}/interactions?type=WHATSAPP`)
-      if (!res.ok) throw new Error('Erro ao carregar mensagens')
-
-      const data = await res.json()
-      setMessages(prev => {
-        if (data.length > prev.length) {
-          setTimeout(scrollToBottom, 100)
-        }
-        return data
-      })
-    } catch (error: any) {
-      console.error('Erro ao carregar mensagens:', error)
-      if (showLoading) toast.error('Erro ao carregar mensagens')
-    } finally {
-      setIsLoading(false)
-    }
+      const r = await fetch(`/api/contact/${contact.id}/interactions?type=WHATSAPP`)
+      if (!r.ok) throw new Error()
+      const d = await r.json()
+      setMessages(prev => { if (d.length>prev.length) setTimeout(scroll,100); return d })
+    } catch { if (show) toast.error('Erro ao carregar mensagens') }
+    finally { setLoading(false) }
   }, [contact.id])
 
-  useEffect(() => {
-    isFirstLoad.current = true
-    fetchMessages(true)
-  }, [contact.id, fetchMessages])
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      fetchMessages()
-    }, MESSAGE_POLL_INTERVAL)
-    return () => clearInterval(interval)
-  }, [fetchMessages])
+  useEffect(() => { firstLoad.current=true; fetchMsgs(true) }, [contact.id, fetchMsgs])
+  useEffect(() => { const i=setInterval(()=>fetchMsgs(),POLL); return ()=>clearInterval(i) }, [fetchMsgs])
 
   // Auto-resize textarea
   useEffect(() => {
-    if (textareaRef.current) {
-      textareaRef.current.style.height = 'auto'
-      textareaRef.current.style.height = Math.min(textareaRef.current.scrollHeight, 120) + 'px'
+    if (taRef.current) {
+      taRef.current.style.height = 'auto'
+      taRef.current.style.height = Math.min(taRef.current.scrollHeight, 120) + 'px'
     }
-  }, [messageText])
+  }, [text])
 
-  const handleSend = async (e: React.FormEvent) => {
+  const send = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (!messageText.trim()) return
-    if (!selectedConnection) {
-      toast.error('Selecione uma conexão WhatsApp')
-      return
-    }
-
-    setIsSending(true)
+    if (!text.trim() || !conn) return
+    setSending(true)
     try {
-      const res = await fetch(`/api/whatsapp/send-message`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          connectionId: selectedConnection,
-          contactId: contact.id,
-          message: messageText.trim(),
-        }),
+      const r = await fetch('/api/whatsapp/send-message', {
+        method:'POST', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({ connectionId:conn, contactId:contact.id, message:text.trim() }),
       })
-
-      if (!res.ok) {
-        const data = await res.json()
-        throw new Error(data.error || 'Erro ao enviar mensagem')
-      }
-
-      const newMessage = await res.json()
-      setMessages(prev => [...prev, newMessage])
-      setMessageText('')
-      setTimeout(scrollToBottom, 100)
-    } catch (error: any) {
-      toast.error(error.message || 'Erro ao enviar mensagem')
-    } finally {
-      setIsSending(false)
-    }
+      if (!r.ok) { const d=await r.json(); throw new Error(d.error) }
+      const msg = await r.json()
+      setMessages(prev=>[...prev,msg])
+      setText('')
+      setTimeout(scroll,100)
+    } catch(err:any) { toast.error(err.message||'Erro ao enviar') }
+    finally { setSending(false) }
   }
 
-  const formatTime = (date: Date) => {
-    return new Date(date).toLocaleTimeString('pt-BR', {
-      hour: '2-digit',
-      minute: '2-digit'
-    })
-  }
+  const fmtTime = (d: Date) => new Date(d).toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'})
 
-  const displayName = getDisplayName(contact)
-  const subtitle = getSubtitle(contact)
-  const isGroup = contact.phone?.includes('@g.us') ?? false
-  const avatarColor = getAvatarColor(displayName)
+  const name = getName(contact)
+  const sub = getSub(contact)
+  const isGrp = contact.phone?.includes('@g.us')??false
+  const clr = color(name)
 
-  const getInitials = () => {
-    if (contact.name && !contact.name.includes('@')) {
-      return contact.name
-        .split(' ')
-        .filter(n => n.length > 0)
-        .map(n => n[0])
-        .join('')
-        .toUpperCase()
-        .slice(0, 2)
-    }
+  const initials = () => {
+    if (contact.name && !contact.name.includes('@'))
+      return contact.name.split(' ').filter(Boolean).map(w=>w[0]).join('').toUpperCase().slice(0,2)
     return '??'
   }
 
   return (
-    <div className="flex-1 flex flex-col bg-[#efeae2] dark:bg-zinc-900">
+    <div className="flex-1 flex flex-col min-w-0">
       {/* Header */}
-      <div className="px-4 py-2.5 border-b flex items-center justify-between bg-white dark:bg-zinc-950 shadow-sm">
+      <div className="h-[60px] px-4 border-b flex items-center justify-between bg-[#f0f2f5] dark:bg-zinc-950 flex-shrink-0">
         <div className="flex items-center gap-3">
           <Avatar className="h-10 w-10">
-            <AvatarFallback className={cn('text-xs font-semibold text-white', avatarColor)}>
-              {isGroup ? <Users className="h-4 w-4" /> : getInitials()}
+            <AvatarFallback className={cn('text-xs font-semibold text-white', clr)}>
+              {isGrp ? <Users className="h-4 w-4" /> : initials()}
             </AvatarFallback>
           </Avatar>
           <div>
-            <p className="font-semibold text-sm leading-tight">{displayName}</p>
-            {subtitle && (
-              <p className="text-xs text-muted-foreground leading-tight mt-0.5">
-                {subtitle}
-              </p>
-            )}
+            <p className="font-semibold text-[15px] text-[#111b21] dark:text-zinc-100 leading-tight">{name}</p>
+            {sub && <p className="text-[12px] text-[#667781] leading-tight mt-0.5">{sub}</p>}
           </div>
         </div>
-
         {connections.length > 1 && (
-          <Select value={selectedConnection} onValueChange={setSelectedConnection}>
-            <SelectTrigger className="w-auto max-w-[200px] h-8 text-xs">
+          <Select value={conn} onValueChange={setConn}>
+            <SelectTrigger className="w-auto max-w-[180px] h-8 text-xs border-[#e9edef]">
               <SelectValue placeholder="Conexão" />
             </SelectTrigger>
             <SelectContent>
-              {connections.map((conn) => (
-                <SelectItem key={conn.id} value={conn.id} className="text-xs">
-                  {conn.phoneNumber || conn.instanceName.split('-').pop()}
+              {connections.map(c => (
+                <SelectItem key={c.id} value={c.id} className="text-xs">
+                  {c.phoneNumber || c.instanceName.split('-').pop()}
                 </SelectItem>
               ))}
             </SelectContent>
@@ -262,130 +195,149 @@ export function MessageArea({ contact, connections, organizationId, userId }: Me
         )}
       </div>
 
-      {/* Messages */}
-      <div className="flex-1 overflow-y-auto px-4 py-2 md:px-16">
-        {isLoading && messages.length === 0 ? (
+      {/* Messages area */}
+      <div
+        className="flex-1 overflow-y-auto px-4 py-2 md:px-[12%]"
+        style={{
+          backgroundColor: '#efeae2',
+          backgroundImage: 'radial-gradient(circle, #d1d7db 1px, transparent 1px)',
+          backgroundSize: '24px 24px',
+        }}
+      >
+        {loading && messages.length === 0 ? (
           <div className="flex items-center justify-center h-full">
-            <div className="bg-white dark:bg-zinc-800 rounded-lg px-4 py-3 shadow-sm">
-              <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
+            {/* Skeleton loading */}
+            <div className="w-full max-w-md space-y-3">
+              {[...Array(5)].map((_,i) => (
+                <div key={i} className={cn('flex', i%2===0?'justify-start':'justify-end')}>
+                  <div className={cn(
+                    'h-10 rounded-[18px] animate-pulse',
+                    i%2===0 ? 'bg-white/60 w-[55%]' : 'bg-[#d9fdd3]/60 w-[45%]'
+                  )} />
+                </div>
+              ))}
             </div>
           </div>
         ) : messages.length === 0 ? (
           <div className="flex items-center justify-center h-full">
-            <div className="bg-white/80 dark:bg-zinc-800/80 backdrop-blur rounded-xl px-6 py-4 text-center shadow-sm max-w-xs">
-              <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-3">
-                <Send className="h-5 w-5 text-primary" />
+            <div className="bg-white/80 dark:bg-zinc-800/80 backdrop-blur rounded-xl px-6 py-5 text-center shadow-[0_1px_3px_rgba(11,20,26,0.08)] max-w-[280px]">
+              <div className="w-14 h-14 rounded-full bg-[#00a884]/10 flex items-center justify-center mx-auto mb-3">
+                <Send className="h-6 w-6 text-[#00a884]" />
               </div>
-              <p className="text-sm font-medium">Nenhuma mensagem</p>
-              <p className="text-xs text-muted-foreground mt-1">
+              <p className="text-sm font-semibold text-[#111b21] dark:text-zinc-100">Nenhuma mensagem</p>
+              <p className="text-xs text-[#667781] mt-1">
                 Envie a primeira mensagem para iniciar a conversa
               </p>
             </div>
           </div>
         ) : (
-          <div className="space-y-1 py-2">
-            {messages.map((message, index) => {
-              const isOutbound = message.direction === 'OUTBOUND'
-              const prevMessage = index > 0 ? messages[index - 1] : null
-              const showDate = shouldShowDateSeparator(message, prevMessage)
+          <div className="py-2">
+            {messages.map((msg, i) => {
+              const out = msg.direction === 'OUTBOUND'
+              const prev = i>0 ? messages[i-1] : null
+              const showDate = needsDateSep(msg, prev)
+              const pos = getBubblePos(messages, i)
+              const isGroupedWithPrev = pos === 'middle' || pos === 'last'
 
               return (
-                <div key={message.id}>
-                  {/* Date separator */}
+                <div key={msg.id}>
+                  {/* Date separator - sticky */}
                   {showDate && (
-                    <div className="flex items-center justify-center my-3">
-                      <span className="bg-white/90 dark:bg-zinc-800/90 backdrop-blur text-xs text-muted-foreground px-3 py-1 rounded-md shadow-sm">
-                        {formatMessageDate(message.sentAt)}
+                    <div className="sticky top-0 z-10 flex justify-center py-2 my-1">
+                      <span className="bg-white/90 dark:bg-zinc-800/90 backdrop-blur text-[12.5px] text-[#54656f] px-3 py-1 rounded-lg shadow-[0_1px_1px_rgba(11,20,26,0.13)] font-medium select-none">
+                        {fmtDate(msg.sentAt)}
                       </span>
                     </div>
                   )}
 
-                  {/* Message bubble */}
-                  <div className={cn('flex mb-1', isOutbound ? 'justify-end' : 'justify-start')}>
+                  {/* Bubble */}
+                  <div
+                    className={cn(
+                      'flex animate-in fade-in-0 slide-in-from-bottom-2 duration-200',
+                      out ? 'justify-end' : 'justify-start',
+                      isGroupedWithPrev ? 'mt-[2px]' : 'mt-2'
+                    )}
+                  >
                     <div
                       className={cn(
-                        'max-w-[65%] rounded-lg px-3 py-1.5 shadow-sm relative',
-                        isOutbound
-                          ? 'bg-[#d9fdd3] dark:bg-emerald-900/60 text-zinc-900 dark:text-zinc-100'
-                          : 'bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100'
+                        'max-w-[65%] px-[9px] pt-[6px] pb-[7px] shadow-[0_1px_0.5px_rgba(11,20,26,0.13)] relative',
+                        bubbleRadius(pos, out),
+                        out
+                          ? 'bg-[#d9fdd3] dark:bg-emerald-900/60'
+                          : 'bg-white dark:bg-zinc-800'
                       )}
                     >
-                      <p className="text-[13.5px] leading-relaxed whitespace-pre-wrap break-words">
-                        {message.text}
+                      <p className="text-[14.2px] leading-[1.46] text-[#111b21] dark:text-zinc-100 whitespace-pre-wrap break-words">
+                        {msg.text}
+                        {/* Invisible spacer for timestamp */}
+                        <span className="inline-block w-[70px]" />
                       </p>
-                      <div className={cn(
-                        'flex items-center justify-end gap-1 -mb-0.5 mt-0.5',
-                      )}>
-                        <span className="text-[10.5px] text-zinc-500 dark:text-zinc-400 leading-none">
-                          {formatTime(message.sentAt)}
+                      <span className="float-right flex items-center gap-1 -mt-4 ml-2 relative">
+                        <span className="text-[10.5px] text-[#667781] leading-none tabular-nums">
+                          {fmtTime(msg.sentAt)}
                         </span>
-                        {isOutbound && (
-                          <span className="leading-none">
-                            {message.status === 'READ' ? (
-                              <CheckCheck className="h-3.5 w-3.5 text-blue-500" />
-                            ) : message.status === 'DELIVERED' ? (
-                              <CheckCheck className="h-3.5 w-3.5 text-zinc-400" />
-                            ) : (
-                              <Check className="h-3.5 w-3.5 text-zinc-400" />
-                            )}
-                          </span>
+                        {out && (
+                          msg.status === 'READ'
+                            ? <CheckCheck className="h-[16px] w-[16px] text-[#53bdeb]" />
+                            : msg.status === 'DELIVERED'
+                              ? <CheckCheck className="h-[16px] w-[16px] text-[#8696a0]" />
+                              : <Check className="h-[16px] w-[16px] text-[#8696a0]" />
                         )}
-                      </div>
+                      </span>
                     </div>
                   </div>
                 </div>
               )
             })}
-            <div ref={messagesEndRef} />
+            <div ref={endRef} />
           </div>
         )}
       </div>
 
-      {/* Input */}
-      <div className="px-3 py-2 bg-white dark:bg-zinc-950 border-t">
-        <form onSubmit={handleSend} className="flex items-end gap-2">
-          <div className="flex-1 relative">
-            <textarea
-              ref={textareaRef}
-              placeholder="Mensagem"
-              value={messageText}
-              onChange={(e) => setMessageText(e.target.value)}
-              disabled={isSending}
-              rows={1}
-              className={cn(
-                'w-full resize-none rounded-lg border border-zinc-200 dark:border-zinc-700',
-                'bg-white dark:bg-zinc-900 px-3 py-2 text-sm',
-                'placeholder:text-muted-foreground',
-                'focus:outline-none focus:ring-1 focus:ring-primary/40',
-                'disabled:opacity-50',
-                'min-h-[40px] max-h-[120px]'
-              )}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter' && !e.shiftKey) {
-                  e.preventDefault()
-                  handleSend(e)
-                }
-              }}
-            />
-          </div>
-          <Button
-            type="submit"
-            size="icon"
-            disabled={isSending || !messageText.trim()}
+      {/* Input area */}
+      <div className="px-3 py-2 bg-[#f0f2f5] dark:bg-zinc-950 border-t border-[#e9edef] flex items-end gap-2">
+        <div className="flex-1 relative">
+          <textarea
+            ref={taRef}
+            placeholder="Mensagem"
+            value={text}
+            onChange={e => setText(e.target.value)}
+            disabled={sending}
+            rows={1}
             className={cn(
-              'h-10 w-10 rounded-full flex-shrink-0 transition-all',
-              messageText.trim()
-                ? 'bg-primary hover:bg-primary/90'
-                : 'bg-zinc-200 dark:bg-zinc-700 hover:bg-zinc-300'
+              'w-full resize-none rounded-lg border-0',
+              'bg-white dark:bg-zinc-900 px-3 py-[9px] text-[14px] leading-[1.46]',
+              'placeholder:text-[#8696a0]',
+              'focus:outline-none focus:ring-1 focus:ring-[#00a884]/40',
+              'disabled:opacity-50',
+              'min-h-[42px] max-h-[120px]',
+              'shadow-[0_1px_1px_rgba(11,20,26,0.06)]'
             )}
-          >
-            {isSending ? (
-              <Loader2 className="h-4 w-4 animate-spin" />
-            ) : (
-              <Send className="h-4 w-4" />
-            )}
-          </Button>
-        </form>
+            onKeyDown={e => {
+              if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send(e) }
+            }}
+          />
+        </div>
+        <button
+          type="button"
+          onClick={send}
+          disabled={sending}
+          className={cn(
+            'h-[42px] w-[42px] rounded-full flex items-center justify-center flex-shrink-0',
+            'transition-all duration-200 active:scale-90',
+            text.trim()
+              ? 'bg-[#00a884] hover:bg-[#008f72] text-white'
+              : 'bg-transparent text-[#54656f] hover:text-[#3b4a54]'
+          )}
+        >
+          {sending ? (
+            <Loader2 className="h-5 w-5 animate-spin" />
+          ) : text.trim() ? (
+            <Send className="h-5 w-5" />
+          ) : (
+            <Mic className="h-5 w-5" />
+          )}
+        </button>
       </div>
     </div>
   )

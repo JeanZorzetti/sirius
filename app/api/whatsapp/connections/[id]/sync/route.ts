@@ -81,6 +81,25 @@ export async function POST(
       )
     }
 
+    // 5.1 Fetch contacts para obter nomes reais (especialmente de grupos)
+    // findContacts retorna { remoteJid, pushName, isGroup } para cada contato
+    let contactsMap = new Map<string, string>()
+    try {
+      const contacts = await evolutionClient.getContacts(connection.instanceName)
+      if (Array.isArray(contacts)) {
+        for (const c of contacts) {
+          const jid = c.remoteJid || c.id || ''
+          const name = c.pushName || c.name || c.notify || ''
+          if (jid && name) {
+            contactsMap.set(jid, name)
+          }
+        }
+        logger.info({ contactsLoaded: contactsMap.size }, 'Loaded contacts for name resolution')
+      }
+    } catch (err: any) {
+      logger.debug({ error: err.message }, 'Failed to fetch contacts for name resolution, continuing without')
+    }
+
     // 6. Extrair remoteJid de cada chat
     // Evolution API v2 retorna chats com id=null
     // O remoteJid real está em lastMessage.key.remoteJid
@@ -90,13 +109,21 @@ export async function POST(
         chat.remoteJid ||                              // alternate field
         chat.lastMessage?.key?.remoteJid ||            // v2 format - dentro do lastMessage
         ''
-      const pushName =
-        chat.name ||
-        chat.pushName ||
-        chat.notify ||
-        chat.lastMessage?.pushName ||                  // v2 format
-        ''
       const isGroup = remoteJid.includes('@g.us')
+
+      // Prioridade para nome:
+      // 1. findContacts (mais confiável, especialmente para grupos)
+      // 2. chat.name/pushName (campos do chat)
+      // 3. lastMessage.pushName (nome do REMETENTE, não do grupo - evitar para grupos)
+      let pushName = contactsMap.get(remoteJid) || ''
+      if (!pushName) {
+        pushName = chat.name || chat.pushName || chat.notify || ''
+      }
+      if (!pushName && !isGroup) {
+        // Para contatos individuais, pode usar lastMessage.pushName
+        pushName = chat.lastMessage?.pushName || ''
+      }
+
       return { ...chat, _remoteJid: remoteJid, _pushName: pushName, _isGroup: isGroup }
     })
 
