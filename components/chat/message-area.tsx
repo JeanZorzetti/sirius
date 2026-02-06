@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button'
 import {
   Send, Users, Loader2, Check, CheckCheck, Mic,
   Image as ImageIcon, Video, FileText, Download, Play, Pause,
-  File,
+  File, Search,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { toast } from 'sonner'
@@ -14,6 +14,7 @@ import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
 } from "@/components/ui/select"
 import { ConversationTags } from './conversation-tags'
+import { MessageSearch } from './message-search'
 
 interface Tag { id: string; name: string; color: string }
 interface Contact { id: string; name: string | null; phone: string | null; tags?: Tag[] }
@@ -326,13 +327,26 @@ export function MessageArea({ contact, connections, organizationId, userId, onCo
   const [conn, setConn] = useState(connections[0]?.id||'')
   const [loading, setLoading] = useState(false)
   const [sending, setSending] = useState(false)
+  const [isSearchOpen, setIsSearchOpen] = useState(false)
+  const [highlightedMessageId, setHighlightedMessageId] = useState<string | null>(null)
   const endRef = useRef<HTMLDivElement>(null)
   const taRef = useRef<HTMLTextAreaElement>(null)
   const containerRef = useRef<HTMLDivElement>(null)
   const prevMsgCount = useRef(0)
+  const messageRefs = useRef<Map<string, HTMLDivElement>>(new Map())
 
   const scrollToBottom = useCallback((behavior: ScrollBehavior = 'smooth') => {
     endRef.current?.scrollIntoView({ behavior })
+  }, [])
+
+  const scrollToMessage = useCallback((messageId: string) => {
+    const element = messageRefs.current.get(messageId)
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth', block: 'center' })
+      setHighlightedMessageId(messageId)
+      // Remover highlight após 2s
+      setTimeout(() => setHighlightedMessageId(null), 2000)
+    }
   }, [])
 
   const fetchMsgs = useCallback(async (show=false) => {
@@ -439,6 +453,16 @@ export function MessageArea({ contact, connections, organizationId, userId, onCo
 
   return (
     <div className="flex-1 flex flex-col min-w-0">
+      {/* Search bar (conditionally rendered) */}
+      {isSearchOpen && (
+        <MessageSearch
+          messages={messages.map(m => ({ id: m.id, text: m.text }))}
+          onClose={() => setIsSearchOpen(false)}
+          onNavigate={scrollToMessage}
+          containerRef={containerRef}
+        />
+      )}
+
       {/* Header */}
       <div className="h-[60px] px-4 border-b flex items-center justify-between bg-[#f0f2f5] dark:bg-zinc-950 flex-shrink-0">
         <div className="flex items-center gap-3">
@@ -453,6 +477,15 @@ export function MessageArea({ contact, connections, organizationId, userId, onCo
           </div>
         </div>
         <div className="flex items-center gap-2">
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => setIsSearchOpen(!isSearchOpen)}
+            className="h-8 w-8 p-0"
+            title="Buscar na conversa"
+          >
+            <Search className="h-4 w-4" />
+          </Button>
           <ConversationTags
             contactId={contact.id}
             contactTags={contact.tags || []}
@@ -542,13 +575,18 @@ export function MessageArea({ contact, connections, organizationId, userId, onCo
                     )}
                   >
                     <div
+                      ref={(el) => {
+                        if (el) messageRefs.current.set(msg.id, el)
+                      }}
                       className={cn(
-                        'max-w-[65%] shadow-[0_1px_0.5px_rgba(11,20,26,0.13)] relative overflow-hidden',
+                        'max-w-[65%] shadow-[0_1px_0.5px_rgba(11,20,26,0.13)] relative overflow-hidden transition-colors',
                         media ? 'p-[3px]' : 'px-[9px] pt-[6px] pb-[7px]',
                         bubbleRadius(pos, out),
-                        out
-                          ? 'bg-[#d9fdd3] dark:bg-emerald-900/60'
-                          : 'bg-white dark:bg-zinc-800'
+                        highlightedMessageId === msg.id
+                          ? 'ring-2 ring-[#f59e0b] bg-[#fef3c7]'
+                          : out
+                            ? 'bg-[#d9fdd3] dark:bg-emerald-900/60'
+                            : 'bg-white dark:bg-zinc-800'
                       )}
                     >
                       {/* Media content */}
