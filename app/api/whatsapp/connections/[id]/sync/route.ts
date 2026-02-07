@@ -113,11 +113,17 @@ export async function POST(
 
       // Prioridade para nome:
       // 1. findContacts (mais confiável, especialmente para grupos)
-      // 2. chat.name/pushName (campos do chat)
-      // 3. lastMessage.pushName (nome do REMETENTE, não do grupo - evitar para grupos)
+      // 2. chat.name (nome do chat/grupo)
+      // 3. chat.pushName (para individuais apenas - em grupos é o nome do remetente!)
+      // 4. lastMessage.pushName (para individuais apenas)
       let pushName = contactsMap.get(remoteJid) || ''
       if (!pushName) {
-        pushName = chat.name || chat.pushName || chat.notify || ''
+        if (isGroup) {
+          // Para grupos: usar APENAS chat.name (nunca pushName que é do remetente)
+          pushName = chat.name || ''
+        } else {
+          pushName = chat.name || chat.pushName || chat.notify || ''
+        }
       }
       if (!pushName && !isGroup) {
         // Para contatos individuais, pode usar lastMessage.pushName
@@ -211,10 +217,15 @@ export async function POST(
           // 2. O contato ainda não tem nome, ou tem telefone/JID como nome
           // 3. Para GRUPOS: sempre atualizar se o nome veio do findContacts
           //    (pois o webhook pode ter gravado o nome do remetente erroneamente)
+          // 4. Para GRUPOS: também atualizar se o nome atual não começa com "Grupo"
+          //    e temos um nome do findContacts (indica nome errado salvo anteriormente)
+          const hasRealGroupName = isGroup && contactsMap.has(remoteJid)
+          const groupHasWrongName = isGroup && contact.name && !contact.name.startsWith('Grupo ') && contactsMap.has(remoteJid)
           const shouldUpdateName = contactName && contactName !== phoneNumber && (
             !contact.name ||
             contact.name === contact.phone ||
-            (isGroup && contactsMap.has(remoteJid)) // grupo com nome do findContacts
+            hasRealGroupName || // grupo com nome do findContacts - sempre atualizar
+            groupHasWrongName // grupo com nome que parece ser de participante
           )
           if (shouldUpdateName) {
             await prisma.contact.update({

@@ -17,7 +17,7 @@ import {
   Pin,
   Archive,
 } from 'lucide-react'
-import { useState } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 import { UnreadBadge } from './unread-badge'
 import { ConversationFilters } from './conversation-filters'
 import { Button } from '@/components/ui/button'
@@ -145,6 +145,36 @@ function avatarColor(name: string) {
 export function ConversationList({ contacts, selectedContact, onSelectContact, currentUserId, onConversationUpdate }: ConversationListProps) {
   const [query, setQuery] = useState('')
   const [filter, setFilter] = useState<string>('all')
+  const [profilePics, setProfilePics] = useState<Record<string, string>>({})
+  const fetchedRef = useRef<Set<string>>(new Set())
+
+  // Fetch profile pictures for contacts that don't have one cached
+  const fetchProfilePic = useCallback(async (contactId: string) => {
+    if (fetchedRef.current.has(contactId)) return
+    fetchedRef.current.add(contactId)
+    try {
+      const res = await fetch(`/api/whatsapp/profile-pic?contactId=${contactId}`)
+      if (res.ok) {
+        const data = await res.json()
+        if (data.profilePicUrl) {
+          setProfilePics(prev => ({ ...prev, [contactId]: data.profilePicUrl }))
+        }
+      }
+    } catch {}
+  }, [])
+
+  useEffect(() => {
+    // Fetch profile pics for visible contacts without cached photos (non-groups only)
+    const toFetch = contacts.filter(c =>
+      !c.profilePicUrl &&
+      !c.phone?.includes('@g.us') &&
+      !fetchedRef.current.has(c.id)
+    )
+    // Stagger requests to avoid overwhelming the API
+    toFetch.slice(0, 10).forEach((c, i) => {
+      setTimeout(() => fetchProfilePic(c.id), i * 200)
+    })
+  }, [contacts, fetchProfilePic])
 
   const handlePin = async (contactId: string, isPinned: boolean, e: React.MouseEvent) => {
     e.stopPropagation()
@@ -309,8 +339,8 @@ export function ConversationList({ contacts, selectedContact, onSelectContact, c
                 {/* Avatar */}
                 <div className="relative flex-shrink-0">
                   <Avatar className="h-[48px] w-[48px]">
-                    {contact.profilePicUrl && !group && (
-                      <AvatarImage src={contact.profilePicUrl} alt={name} />
+                    {(contact.profilePicUrl || profilePics[contact.id]) && !group && (
+                      <AvatarImage src={contact.profilePicUrl || profilePics[contact.id]} alt={name} />
                     )}
                     <AvatarFallback className={cn('text-sm font-semibold text-white', color)}>
                       {group ? <Users className="h-5 w-5" /> : initials(contact)}

@@ -347,6 +347,19 @@ async function handleIncomingMessage(connection: any, data: any) {
                     })
 
                     logger.info({ contactId: contact.id, phone: phoneNumber, isGroup }, '👤 Created new contact from WhatsApp')
+                } else if (!isGroup && message.pushName && message.pushName !== phoneNumber) {
+                    // Para contatos individuais: atualizar nome se o contato não tem nome
+                    // ou se o nome atual é apenas o número de telefone
+                    const currentName = contact.name || ''
+                    const isPhoneName = !currentName || currentName === contact.phone || /^\d+$/.test(currentName.replace(/\D/g, ''))
+                    if (isPhoneName) {
+                        await prisma.contact.update({
+                            where: { id: contact.id },
+                            data: { name: message.pushName },
+                        })
+                        contact = { ...contact, name: message.pushName }
+                        logger.info({ contactId: contact.id, oldName: currentName, newName: message.pushName }, '👤 Updated contact name from pushName')
+                    }
                 }
 
                 // Calcular timestamp da mensagem
