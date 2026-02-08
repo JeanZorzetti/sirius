@@ -1,6 +1,7 @@
 import { PrismaClient } from "@prisma/client"
 import { Metadata } from "next"
 import { DashboardWithPipelineSelector } from "@/components/dashboard-with-pipeline-selector"
+import { DashboardTabs } from "@/components/dashboard/dashboard-tabs"
 import { OnboardingWrapper } from "@/components/onboarding/onboarding-wrapper"
 import { getSession } from "@/lib/auth"
 import { getOrganizationPlanLimits } from "@/lib/plan-limits"
@@ -145,15 +146,19 @@ export default async function DashboardPage() {
             userName={user.name || undefined}
             shouldShowOnboarding={shouldShowOnboarding}
         >
-            <DashboardWithPipelineSelector
-                pipelines={pipelines}
-                allStages={stages}
-                contacts={contacts}
-                dealCount={dealCount}
-                isPro={isPro}
-                isMember={isMember}
-                planLimits={planLimits}
-            />
+            <div className="h-full flex flex-col">
+                <div className="flex items-center justify-between mb-4">
+                    <h1 className="text-2xl font-bold">Dashboard</h1>
+                </div>
+                
+                <DashboardTabs
+                    pipelines={pipelines}
+                    stages={stages}
+                    userId={user.id}
+                    userName={user.name || ''}
+                    organizationId={user.organizationId}
+                />
+            </div>
         </OnboardingWrapper>
     )
 }

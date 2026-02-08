@@ -7,6 +7,7 @@ import { SignUpTracker } from '@/components/analytics/signup-tracker'
 import { LoginTracker } from '@/components/analytics/login-tracker'
 import { PostHogUserIdentifier } from '@/components/analytics/posthog-user-identifier'
 import { AgiChatSidebar } from '@/components/agi'
+import { ChatDrawer } from '@/components/chat/chat-drawer'
 import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 
@@ -29,7 +30,7 @@ export default async function DashboardLayout({
 
   if (!user) {
     // Fallback or redirect if strict
-    user = { name: 'User', email: 'user@example.com' }
+    user = { name: 'User', email: 'user@example.com', id: '', organizationId: '' }
   }
 
   return (
@@ -67,6 +68,13 @@ export default async function DashboardLayout({
 
       {/* AGI Chat Sidebar - Global AI Assistant */}
       <AgiChatSidebar />
+
+      {/* WhatsApp Chat Drawer - Floating Button */}
+      <ChatDrawer 
+        userId={user.id || ''}
+        userName={user.name || ''}
+        organizationId={(user as any).organizationId || ''}
+      />
     </div>
   )
 }
