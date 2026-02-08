@@ -20,11 +20,6 @@ export async function GET() {
         id: true,
         name: true,
         organizationId: true,
-        organization: {
-          select: {
-            maxInstances: true
-          }
-        }
       },
     })
 
@@ -107,7 +102,7 @@ export async function GET() {
       userId: user.id,
       userName: user.name,
       organizationId: user.organizationId,
-      maxInstances: user.organization?.maxInstances || 1
+      maxInstances: 1 // Default value
     })
 
   } catch (error: any) {
