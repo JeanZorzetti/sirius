@@ -165,7 +165,7 @@ export function ChatDrawer({ userId, userName, organizationId }: ChatDrawerProps
         side="right" 
         className={cn(
           "p-0 transition-all duration-300",
-          isExpanded ? "w-full sm:w-[900px]" : "w-full sm:w-[400px]"
+          isExpanded ? "w-full sm:w-[900px]" : "w-full sm:w-[500px]"
         )}
       >
         <div className="flex flex-col h-full">
@@ -194,6 +194,7 @@ export function ChatDrawer({ userId, userName, organizationId }: ChatDrawerProps
                   size="icon"
                   className="h-8 w-8 hidden sm:flex"
                   onClick={() => setIsExpanded(!isExpanded)}
+                  title={isExpanded ? "Reduzir" : "Expandir"}
                 >
                   {isExpanded ? (
                     <Minimize2 className="h-4 w-4" />
@@ -201,15 +202,7 @@ export function ChatDrawer({ userId, userName, organizationId }: ChatDrawerProps
                     <Maximize2 className="h-4 w-4" />
                   )}
                 </Button>
-                {/* Close button */}
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="h-8 w-8"
-                  onClick={() => setIsOpen(false)}
-                >
-                  <X className="h-4 w-4" />
-                </Button>
+                {/* O botão de fechar (X) já vem do SheetContent do shadcn */}
               </div>
             </div>
           </SheetHeader>
