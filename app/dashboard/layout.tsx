@@ -7,7 +7,7 @@ import { SignUpTracker } from '@/components/analytics/signup-tracker'
 import { LoginTracker } from '@/components/analytics/login-tracker'
 import { PostHogUserIdentifier } from '@/components/analytics/posthog-user-identifier'
 import { AgiChatSidebar } from '@/components/agi'
-import { ChatDrawer } from '@/components/chat/chat-drawer'
+import { ResizableDrawer } from '@/components/chat/resizable-drawer'
 import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 
@@ -69,8 +69,8 @@ export default async function DashboardLayout({
       {/* AGI Chat Sidebar - Global AI Assistant */}
       <AgiChatSidebar />
 
-      {/* WhatsApp Chat Drawer - Floating Button */}
-      <ChatDrawer 
+      {/* WhatsApp Chat Drawer - Floating Button with Resize */}
+      <ResizableDrawer 
         userId={user.id || ''}
         userName={user.name || ''}
         organizationId={(user as any).organizationId || ''}
