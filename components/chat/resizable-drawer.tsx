@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useCallback, useRef } from 'react'
+import { useState, useEffect, useCallback, useTransition } from 'react'
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
@@ -47,7 +47,7 @@ export function ResizableDrawer({ userId, userName, organizationId }: ResizableD
   const [contacts, setContacts] = useState<Contact[]>([])
   const [connections, setConnections] = useState<Connection[]>([])
   const [selectedContact, setSelectedContact] = useState<Contact | null>(null)
-  const [loading, setLoading] = useState(false)
+  // Loading é gerenciado pelo isPending do useTransition
   const [sseStatus, setSseStatus] = useState<'connected' | 'disconnected' | 'error'>('disconnected')
   
   // Resizable state
@@ -59,26 +59,30 @@ export function ResizableDrawer({ userId, userName, organizationId }: ResizableD
   const totalUnread = contacts.reduce((sum, contact) => sum + (contact._count.unreadMessages || 0), 0)
   const activeConnections = connections.filter(c => c.status === 'CONNECTED')
 
+  const [isPending, startTransition] = useTransition()
+
   const fetchData = useCallback(async () => {
-    try {
-      const [contactsRes, connectionsRes] = await Promise.all([
-        fetch('/api/whatsapp/conversations'),
-        fetch('/api/whatsapp/connections')
-      ])
+    startTransition(async () => {
+      try {
+        const [contactsRes, connectionsRes] = await Promise.all([
+          fetch('/api/whatsapp/conversations'),
+          fetch('/api/whatsapp/connections')
+        ])
 
-      if (contactsRes.ok) {
-        const contactsData = await contactsRes.json()
-        setContacts(contactsData)
-      }
+        if (contactsRes.ok) {
+          const contactsData = await contactsRes.json()
+          setContacts(contactsData)
+        }
 
-      if (connectionsRes.ok) {
-        const connectionsData = await connectionsRes.json()
-        setConnections(connectionsData)
+        if (connectionsRes.ok) {
+          const connectionsData = await connectionsRes.json()
+          setConnections(connectionsData)
+        }
+      } catch (error) {
+        console.error('Error fetching chat data:', error)
       }
-    } catch (error) {
-      console.error('Error fetching chat data:', error)
-    }
-  }, [])
+    })
+  }, [startTransition])
 
   // Fetch data when drawer opens
   useEffect(() => {
@@ -259,7 +263,7 @@ export function ResizableDrawer({ userId, userName, organizationId }: ResizableD
 
           {/* Chat Content */}
           <div className="flex-1 flex overflow-hidden">
-            {loading ? (
+            {isPending ? (
               <div className="flex-1 flex items-center justify-center">
                 <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-green-600" />
               </div>
