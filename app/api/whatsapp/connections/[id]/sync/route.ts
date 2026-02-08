@@ -101,25 +101,34 @@ export async function POST(
     }
 
     // 5.2 Fetch groups para obter nomes reais dos grupos
-    // fetchAllGroups retorna [{ id, subject, description, participants, ... }]
+    // fetchAllGroups retorna [{ id: "1203...@g.us", subject: "Nome do Grupo", description, ... }]
     let groupsMap = new Map<string, { subject: string; description?: string }>()
     try {
       const groups = await evolutionClient.getGroups(connection.instanceName)
+      logger.info({ 
+        groupsResponse: JSON.stringify(groups?.slice(0, 2)),
+        groupsCount: groups?.length 
+      }, 'Raw groups response from Evolution API')
+      
       if (Array.isArray(groups)) {
         for (const g of groups) {
           const jid = g.id || g.groupJid || ''
-          const subject = g.subject || g.name || ''
+          // O nome do grupo está no campo 'subject', não 'name'
+          const subject = g.subject || g.name || g.groupName || ''
           if (jid && subject) {
             groupsMap.set(jid, { 
               subject, 
               description: g.description 
             })
+            logger.debug({ jid, subject }, 'Added group to map')
+          } else {
+            logger.debug({ jid, subject, g }, 'Skipping group - missing jid or subject')
           }
         }
-        logger.info({ groupsLoaded: groupsMap.size }, 'Loaded groups for name resolution')
+        logger.info({ groupsLoaded: groupsMap.size, sample: Array.from(groupsMap.entries()).slice(0, 3) }, 'Loaded groups for name resolution')
       }
     } catch (err: any) {
-      logger.debug({ error: err.message }, 'Failed to fetch groups, continuing without')
+      logger.error({ error: err.message, stack: err.stack }, 'Failed to fetch groups')
     }
 
     // 6. Extrair remoteJid de cada chat
@@ -136,13 +145,19 @@ export async function POST(
       // Prioridade para nome:
       // 1. groupsMap (para grupos - mais confiável, vem do endpoint /group/fetchAllGroups)
       // 2. contactsMap (para contatos individuais)
-      // 3. chat.name (nome do chat)
+      // 3. chat.name/subject (nome do chat)
       let pushName = ''
       
       if (isGroup) {
-        // Para grupos: usar groupsMap primeiro, depois chat.name
+        // Para grupos: usar groupsMap primeiro, depois chat.name/subject
         const groupInfo = groupsMap.get(remoteJid)
-        pushName = groupInfo?.subject || chat.name || chat.subject || ''
+        pushName = groupInfo?.subject || chat.subject || chat.name || ''
+        
+        if (!pushName) {
+          logger.debug({ remoteJid, chatName: chat.name, chatSubject: chat.subject }, 'Group name not found in any source')
+        } else {
+          logger.debug({ remoteJid, pushName, source: groupInfo ? 'groupsMap' : 'chat' }, 'Resolved group name')
+        }
       } else {
         // Para contatos individuais
         pushName = contactsMap.get(remoteJid) || chat.name || chat.pushName || chat.notify || ''
@@ -236,26 +251,25 @@ export async function POST(
           logger.info({ contactName, phone: phoneNumber, isGroup }, 'Created contact from sync')
         } else {
           // Atualizar nome se:
-          // 1. Veio um nome real do findContacts
+          // 1. Veio um nome real do groupsMap (para grupos) ou contactsMap (para individuais)
           // 2. O contato ainda não tem nome, ou tem telefone/JID como nome
-          // 3. Para GRUPOS: sempre atualizar se o nome veio do findContacts
+          // 3. Para GRUPOS: sempre atualizar se o nome veio do groupsMap
           //    (pois o webhook pode ter gravado o nome do remetente erroneamente)
-          // 4. Para GRUPOS: também atualizar se o nome atual não começa com "Grupo"
-          //    e temos um nome do findContacts (indica nome errado salvo anteriormente)
-          const hasRealGroupName = isGroup && contactsMap.has(remoteJid)
-          const groupHasWrongName = isGroup && contact.name && !contact.name.startsWith('Grupo ') && contactsMap.has(remoteJid)
+          // 4. Para GRUPOS: também atualizar se o nome atual é genérico "Grupo X"
+          const hasRealGroupName = isGroup && groupsMap.has(remoteJid)
+          const groupHasGenericName = isGroup && contact.name && contact.name.startsWith('Grupo ')
           const shouldUpdateName = contactName && contactName !== phoneNumber && (
             !contact.name ||
             contact.name === contact.phone ||
-            hasRealGroupName || // grupo com nome do findContacts - sempre atualizar
-            groupHasWrongName // grupo com nome que parece ser de participante
+            groupHasGenericName || // grupo com nome genérico - atualizar para nome real
+            hasRealGroupName // grupo com nome do groupsMap - sempre atualizar
           )
           if (shouldUpdateName) {
             await prisma.contact.update({
               where: { id: contact.id },
               data: { name: contactName },
             })
-            logger.info({ contactId: contact.id, oldName: contact.name, newName: contactName, isGroup }, 'Updated contact name from findContacts')
+            logger.info({ contactId: contact.id, oldName: contact.name, newName: contactName, isGroup, source: hasRealGroupName ? 'groupsMap' : 'chat' }, 'Updated contact name from sync')
           }
         }
 
