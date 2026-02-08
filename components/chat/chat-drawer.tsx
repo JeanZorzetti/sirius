@@ -144,7 +144,7 @@ export function ChatDrawer({ userId, userName, organizationId }: ChatDrawerProps
           variant="outline"
           size="icon"
           className={cn(
-            "fixed bottom-6 right-6 h-14 w-14 rounded-full shadow-lg z-50",
+            "fixed bottom-6 left-6 h-14 w-14 rounded-full shadow-lg z-50",
             "bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700",
             "border-0 text-white transition-all duration-300 hover:scale-110",
             totalUnread > 0 && "animate-pulse"
