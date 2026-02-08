@@ -344,6 +344,34 @@ export class EvolutionAPIClient {
   }
 
   /**
+   * Get all groups
+   * Evolution API v2: GET /group/fetchAllGroups/{instance}
+   * Retorna todos os grupos com nome, descrição, participantes, etc.
+   */
+  async getGroups(instanceName: string): Promise<any[]> {
+    return this.request<any[]>(
+      `/group/fetchAllGroups/${instanceName}`,
+      {
+        method: 'GET',
+      }
+    )
+  }
+
+  /**
+   * Get group by JID
+   * Evolution API v2: POST /group/findGroupInfos/{instance}
+   */
+  async getGroupInfo(instanceName: string, groupJid: string): Promise<any> {
+    return this.request<any>(
+      `/group/findGroupInfos/${instanceName}`,
+      {
+        method: 'POST',
+        body: JSON.stringify({ groupJid }),
+      }
+    )
+  }
+
+  /**
    * Get messages from a chat
    * Evolution API v2: POST /chat/findMessages/{instance}
    */

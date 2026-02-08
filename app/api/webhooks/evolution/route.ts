@@ -84,6 +84,14 @@ export async function POST(request: Request) {
                 await handleMessageStatusUpdate(connection, data)
                 break
 
+            case 'CONTACTS_UPSERT':
+                await handleContactsUpsert(connection, data)
+                break
+
+            case 'CHATS_UPSERT':
+                await handleChatsUpsert(connection, data)
+                break
+
             default:
                 logger.info({ event, normalizedEvent }, '⚠️ Unhandled Evolution webhook event')
         }
@@ -666,4 +674,113 @@ function extractMediaInfo(message: any): { type: string; url: string | null; mim
     }
 
     return null
+}
+
+
+/**
+ * Handle CONTACTS_UPSERT - Atualiza cria contatos em tempo real
+ * Evolution API envia este evento quando novos contatos são descobertos
+ */
+async function handleContactsUpsert(connection: any, data: any) {
+    try {
+        const contacts = Array.isArray(data) ? data : [data]
+        const organizationId = connection.organizationId
+
+        logger.info({ count: contacts.length }, '👥 Processing CONTACTS_UPSERT')
+
+        for (const contact of contacts) {
+            try {
+                const remoteJid = contact.id || contact.remoteJid
+                if (!remoteJid) continue
+
+                // Ignorar LID, broadcast, etc
+                if (remoteJid.includes('@lid') || remoteJid.includes('@broadcast') || remoteJid.includes('status@')) {
+                    continue
+                }
+
+                const isGroup = remoteJid.includes('@g.us')
+                const name = contact.pushName || contact.name || contact.notify
+                
+                if (!name) continue
+
+                // Buscar contato existente
+                let existingContact: any = null
+                if (isGroup) {
+                    existingContact = await prisma.contact.findFirst({
+                        where: { organizationId, phone: remoteJid }
+                    })
+                } else {
+                    const phoneNumber = normalizePhoneNumber(remoteJid.replace('@s.whatsapp.net', ''))
+                    existingContact = await findContactByPhone(organizationId, phoneNumber)
+                }
+
+                if (existingContact) {
+                    // Atualizar nome se o contato existe mas tem nome genérico
+                    const hasGenericName = !existingContact.name || 
+                        existingContact.name.startsWith('Grupo ') || 
+                        existingContact.name === existingContact.phone ||
+                        /^\d+$/.test(existingContact.name.replace(/\D/g, ''))
+                    
+                    if (hasGenericName) {
+                        await prisma.contact.update({
+                            where: { id: existingContact.id },
+                            data: { name },
+                        })
+                        logger.info({ contactId: existingContact.id, newName: name }, '👤 Updated contact name from CONTACTS_UPSERT')
+                    }
+                }
+                // Nota: Não criamos novos contatos aqui - isso é feito no MESSAGES_UPSERT
+            } catch (err: any) {
+                logger.debug({ error: err.message }, 'Error processing individual contact')
+            }
+        }
+    } catch (error: any) {
+        logger.error({ error: error.message }, 'Error handling CONTACTS_UPSERT')
+    }
+}
+
+/**
+ * Handle CHATS_UPSERT - Atualiza chats em tempo real
+ * Evolution API envia este evento quando novos chats são descobertos
+ */
+async function handleChatsUpsert(connection: any, data: any) {
+    try {
+        const chats = Array.isArray(data) ? data : [data]
+        const organizationId = connection.organizationId
+
+        logger.info({ count: chats.length }, '💬 Processing CHATS_UPSERT')
+
+        for (const chat of chats) {
+            try {
+                const remoteJid = chat.id || chat.remoteJid
+                if (!remoteJid || !remoteJid.includes('@g.us')) continue // Só processar grupos
+
+                const groupName = chat.name || chat.subject
+                if (!groupName) continue
+
+                // Buscar contato existente (grupo)
+                const existingContact = await prisma.contact.findFirst({
+                    where: { organizationId, phone: remoteJid }
+                })
+
+                if (existingContact) {
+                    // Atualizar nome do grupo se necessário
+                    const hasGenericName = !existingContact.name || 
+                        existingContact.name.startsWith('Grupo ')
+                    
+                    if (hasGenericName) {
+                        await prisma.contact.update({
+                            where: { id: existingContact.id },
+                            data: { name: groupName },
+                        })
+                        logger.info({ contactId: existingContact.id, newName: groupName }, '👥 Updated group name from CHATS_UPSERT')
+                    }
+                }
+            } catch (err: any) {
+                logger.debug({ error: err.message }, 'Error processing individual chat')
+            }
+        }
+    } catch (error: any) {
+        logger.error({ error: error.message }, 'Error handling CHATS_UPSERT')
+    }
 }

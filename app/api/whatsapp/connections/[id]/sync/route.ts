@@ -81,8 +81,8 @@ export async function POST(
       )
     }
 
-    // 5.1 Fetch contacts para obter nomes reais (especialmente de grupos)
-    // findContacts retorna { remoteJid, pushName, isGroup } para cada contato
+    // 5.1 Fetch contacts para obter nomes reais
+    // findContacts retorna { remoteJid, pushName } para cada contato
     let contactsMap = new Map<string, string>()
     try {
       const contacts = await evolutionClient.getContacts(connection.instanceName)
@@ -100,6 +100,28 @@ export async function POST(
       logger.debug({ error: err.message }, 'Failed to fetch contacts for name resolution, continuing without')
     }
 
+    // 5.2 Fetch groups para obter nomes reais dos grupos
+    // fetchAllGroups retorna [{ id, subject, description, participants, ... }]
+    let groupsMap = new Map<string, { subject: string; description?: string }>()
+    try {
+      const groups = await evolutionClient.getGroups(connection.instanceName)
+      if (Array.isArray(groups)) {
+        for (const g of groups) {
+          const jid = g.id || g.groupJid || ''
+          const subject = g.subject || g.name || ''
+          if (jid && subject) {
+            groupsMap.set(jid, { 
+              subject, 
+              description: g.description 
+            })
+          }
+        }
+        logger.info({ groupsLoaded: groupsMap.size }, 'Loaded groups for name resolution')
+      }
+    } catch (err: any) {
+      logger.debug({ error: err.message }, 'Failed to fetch groups, continuing without')
+    }
+
     // 6. Extrair remoteJid de cada chat
     // Evolution API v2 retorna chats com id=null
     // O remoteJid real está em lastMessage.key.remoteJid
@@ -112,19 +134,20 @@ export async function POST(
       const isGroup = remoteJid.includes('@g.us')
 
       // Prioridade para nome:
-      // 1. findContacts (mais confiável, especialmente para grupos)
-      // 2. chat.name (nome do chat/grupo)
-      // 3. chat.pushName (para individuais apenas - em grupos é o nome do remetente!)
-      // 4. lastMessage.pushName (para individuais apenas)
-      let pushName = contactsMap.get(remoteJid) || ''
-      if (!pushName) {
-        if (isGroup) {
-          // Para grupos: usar APENAS chat.name (nunca pushName que é do remetente)
-          pushName = chat.name || ''
-        } else {
-          pushName = chat.name || chat.pushName || chat.notify || ''
-        }
+      // 1. groupsMap (para grupos - mais confiável, vem do endpoint /group/fetchAllGroups)
+      // 2. contactsMap (para contatos individuais)
+      // 3. chat.name (nome do chat)
+      let pushName = ''
+      
+      if (isGroup) {
+        // Para grupos: usar groupsMap primeiro, depois chat.name
+        const groupInfo = groupsMap.get(remoteJid)
+        pushName = groupInfo?.subject || chat.name || chat.subject || ''
+      } else {
+        // Para contatos individuais
+        pushName = contactsMap.get(remoteJid) || chat.name || chat.pushName || chat.notify || ''
       }
+      
       if (!pushName && !isGroup) {
         // Para contatos individuais, pode usar lastMessage.pushName
         pushName = chat.lastMessage?.pushName || ''
