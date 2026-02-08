@@ -290,10 +290,10 @@ async function handleIncomingMessage(connection: any, data: any) {
                     ? remoteJid
                     : normalizePhoneNumber(remoteJid.replace('@s.whatsapp.net', ''))
 
-                // Para grupos: NÃO usar message.pushName (é o nome do remetente, não do grupo!)
-                // O nome do grupo será resolvido na próxima sync ou manualmente
+                // Para grupos: o nome do grupo geralmente vem em message.pushName ou message.groupMetadata.subject
+                // Se não tiver nome, usar o nome genérico temporariamente (a sync vai atualizar)
                 const senderName = isGroup
-                    ? `Grupo ${remoteJid.replace('@g.us', '')}`
+                    ? (message.pushName || message.groupMetadata?.subject || `Grupo ${remoteJid.replace('@g.us', '')}`)
                     : (message.pushName || message.verifiedBizName || phoneNumber)
 
                 // Extrair texto e mídia
@@ -347,6 +347,17 @@ async function handleIncomingMessage(connection: any, data: any) {
                     })
 
                     logger.info({ contactId: contact.id, phone: phoneNumber, isGroup }, '👤 Created new contact from WhatsApp')
+                } else {
+                    // Atualizar nome se o contato existe mas tem um nome genérico e recebemos um nome real
+                    const hasGenericName = contact.name?.startsWith('Grupo ') || contact.name === phoneNumber || contact.name === remoteJid
+                    const hasRealName = senderName && !senderName.startsWith('Grupo ')
+                    if (isGroup && hasGenericName && hasRealName) {
+                        await prisma.contact.update({
+                            where: { id: contact.id },
+                            data: { name: senderName },
+                        })
+                        logger.info({ contactId: contact.id, oldName: contact.name, newName: senderName }, '👤 Updated group name')
+                    }
                 }
 
                 // Calcular timestamp da mensagem
