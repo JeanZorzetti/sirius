@@ -345,13 +345,15 @@ export class EvolutionAPIClient {
 
   /**
    * Get all groups
-   * Evolution API v2: GET /group/fetchAllGroups/{instance}
+   * Evolution API v2: GET /group/fetchAllGroups/{instance}?getParticipants=false
    * Retorna todos os grupos com subject (nome), descrição, participantes, etc.
    * Formato: [{ id: "1203...@g.us", subject: "Nome do Grupo", ... }]
+   * 
+   * NOTA: O parâmetro 'getParticipants' é obrigatório na query string!
    */
   async getGroups(instanceName: string): Promise<any[]> {
     const response = await this.request<any[]>(
-      `/group/fetchAllGroups/${instanceName}`,
+      `/group/fetchAllGroups/${instanceName}?getParticipants=false`,
       {
         method: 'GET',
       }
