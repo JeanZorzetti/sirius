@@ -347,16 +347,30 @@ async function handleIncomingMessage(connection: any, data: any) {
                     })
 
                     logger.info({ contactId: contact.id, phone: phoneNumber, isGroup }, '👤 Created new contact from WhatsApp')
-                } else {
-                    // Atualizar nome se o contato existe mas tem um nome genérico e recebemos um nome real
+                } else if (isGroup) {
+                    // Para grupos: atualizar nome se o contato tem um nome genérico e recebemos um nome real
                     const hasGenericName = contact.name?.startsWith('Grupo ') || contact.name === phoneNumber || contact.name === remoteJid
                     const hasRealName = senderName && !senderName.startsWith('Grupo ')
-                    if (isGroup && hasGenericName && hasRealName) {
+                    if (hasGenericName && hasRealName) {
                         await prisma.contact.update({
                             where: { id: contact.id },
                             data: { name: senderName },
                         })
+                        contact = { ...contact, name: senderName }
                         logger.info({ contactId: contact.id, oldName: contact.name, newName: senderName }, '👤 Updated group name')
+                    }
+                } else if (!isGroup && message.pushName && message.pushName !== phoneNumber) {
+                    // Para contatos individuais: atualizar nome se o contato não tem nome
+                    // ou se o nome atual é apenas o número de telefone
+                    const currentName = contact.name || ''
+                    const isPhoneName = !currentName || currentName === contact.phone || /^\d+$/.test(currentName.replace(/\D/g, ''))
+                    if (isPhoneName) {
+                        await prisma.contact.update({
+                            where: { id: contact.id },
+                            data: { name: message.pushName },
+                        })
+                        contact = { ...contact, name: message.pushName }
+                        logger.info({ contactId: contact.id, oldName: currentName, newName: message.pushName }, '👤 Updated contact name from pushName')
                     }
                 }
 
