@@ -729,7 +729,7 @@ export function MessageArea({ contact, connections, organizationId, userId, user
             </Button>
           )}
           <Avatar className="h-10 w-10">
-            {(profilePicUrl || contact.profilePicUrl) && !isGrp && (
+            {(profilePicUrl || contact.profilePicUrl) && (
               <AvatarImage src={profilePicUrl || contact.profilePicUrl || ''} alt={name} />
             )}
             <AvatarFallback className={cn('text-xs font-semibold text-white', clr)}>

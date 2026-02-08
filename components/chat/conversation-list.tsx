@@ -339,7 +339,7 @@ export function ConversationList({ contacts, selectedContact, onSelectContact, c
                 {/* Avatar */}
                 <div className="relative flex-shrink-0">
                   <Avatar className="h-[48px] w-[48px]">
-                    {(contact.profilePicUrl || profilePics[contact.id]) && !group && (
+                    {(contact.profilePicUrl || profilePics[contact.id]) && (
                       <AvatarImage src={contact.profilePicUrl || profilePics[contact.id]} alt={name} />
                     )}
                     <AvatarFallback className={cn('text-sm font-semibold text-white', color)}>

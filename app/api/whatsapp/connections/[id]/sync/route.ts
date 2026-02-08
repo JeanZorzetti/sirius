@@ -280,6 +280,27 @@ export async function POST(
           }
         }
 
+        // Buscar foto de perfil do grupo (apenas para grupos sem foto)
+        if (isGroup && !contact.profilePicUrl) {
+          try {
+            const profilePic = await evolutionClient.fetchProfilePictureUrl(
+              connection.instanceName,
+              remoteJid
+            )
+            if (profilePic?.profilePictureUrl) {
+              await prisma.contact.update({
+                where: { id: contact.id },
+                data: { profilePicUrl: profilePic.profilePictureUrl },
+              })
+              contact.profilePicUrl = profilePic.profilePictureUrl
+              logger.info({ contactId: contact.id, profilePicUrl: profilePic.profilePictureUrl }, 'Updated group profile picture')
+            }
+          } catch (err: any) {
+            // Grupo pode não ter foto de perfil - ignorar erro
+            logger.debug({ contactId: contact.id, error: err.message }, 'Failed to fetch group profile picture')
+          }
+        }
+
         // Fetch messages for this chat (até 30 mensagens por conversa)
         let chatMessages: any[] = []
         try {
