@@ -51,10 +51,10 @@ export function ResizableDrawer({ userId, userName, organizationId }: ResizableD
   const [sseStatus, setSseStatus] = useState<'connected' | 'disconnected' | 'error'>('disconnected')
   
   // Resizable state
-  const [width, setWidth] = useState(500)
+  const [width, setWidth] = useState(1200)
   const [isResizing, setIsResizing] = useState(false)
-  const minWidth = 400
-  const maxWidth = 1200
+  const minWidth = 600
+  const maxWidth = 1400
 
   const totalUnread = contacts.reduce((sum, contact) => sum + (contact._count.unreadMessages || 0), 0)
   const activeConnections = connections.filter(c => c.status === 'CONNECTED')
@@ -168,7 +168,7 @@ export function ResizableDrawer({ userId, userName, organizationId }: ResizableD
   }
 
   const toggleMaximize = () => {
-    setWidth(width >= 900 ? 500 : 900)
+    setWidth(width >= 1200 ? 800 : 1200)
   }
 
   return (
