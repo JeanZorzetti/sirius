@@ -103,18 +103,23 @@ export async function POST(
     // 5.2 Fetch groups para obter nomes reais dos grupos
     // fetchAllGroups retorna [{ id: "1203...@g.us", subject: "Nome do Grupo", description, ... }]
     let groupsMap = new Map<string, { subject: string; description?: string }>()
+    logger.info({ instanceName: connection.instanceName }, 'About to call getGroups')
     try {
       const groups = await evolutionClient.getGroups(connection.instanceName)
       logger.info({ 
+        instanceName: connection.instanceName,
+        groupsType: typeof groups,
+        isArray: Array.isArray(groups),
+        groupsLength: groups?.length,
         groupsResponse: JSON.stringify(groups?.slice(0, 2)),
-        groupsCount: groups?.length 
       }, 'Raw groups response from Evolution API')
       
-      if (Array.isArray(groups)) {
+      if (Array.isArray(groups) && groups.length > 0) {
         for (const g of groups) {
           const jid = g.id || g.groupJid || ''
           // O nome do grupo está no campo 'subject', não 'name'
           const subject = g.subject || g.name || g.groupName || ''
+          logger.debug({ jid, subject, allKeys: Object.keys(g) }, 'Processing group')
           if (jid && subject) {
             groupsMap.set(jid, { 
               subject, 
@@ -122,10 +127,12 @@ export async function POST(
             })
             logger.debug({ jid, subject }, 'Added group to map')
           } else {
-            logger.debug({ jid, subject, g }, 'Skipping group - missing jid or subject')
+            logger.debug({ jid, subject, g: JSON.stringify(g) }, 'Skipping group - missing jid or subject')
           }
         }
         logger.info({ groupsLoaded: groupsMap.size, sample: Array.from(groupsMap.entries()).slice(0, 3) }, 'Loaded groups for name resolution')
+      } else {
+        logger.warn({ groupsType: typeof groups, isArray: Array.isArray(groups) }, 'No groups returned or empty array')
       }
     } catch (err: any) {
       logger.error({ error: err.message, stack: err.stack }, 'Failed to fetch groups')
