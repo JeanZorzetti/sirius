@@ -26,7 +26,7 @@ interface StageWithDeals {
   id: string
   name: string
   order: number
-  color: string
+  color?: string
   pipelineId: string
   createdAt: string
   updatedAt: string
