@@ -7,51 +7,9 @@ import { ChatInterface } from '@/components/chat/chat-interface'
 import { toast } from 'sonner'
 import { MessageSquare, Layout } from 'lucide-react'
 
-interface DealWithContact {
-  id: string
-  title: string
-  value: number | null
-  closeDate: string | null
-  createdAt: string
-  updatedAt: string
-  contact: {
-    id: string
-    name: string | null
-    email: string | null
-    phone: string | null
-  } | null
-}
-
-interface StageWithDeals {
-  id: string
-  name: string
-  order: number
-  color?: string
-  pipelineId: string
-  createdAt: string
-  updatedAt: string
-  pipeline: {
-    id: string
-    name: string
-  }
-  deals: DealWithContact[]
-}
-
-interface Pipeline {
-  id: string
-  name: string
-  isDefault: boolean
-  createdAt: string
-  updatedAt: string
-  _count: {
-    stages: number
-    deals: number
-  }
-}
-
 interface DashboardTabsProps {
-  pipelines: Pipeline[]
-  stages: StageWithDeals[]
+  pipelines: any[]
+  stages: any[]
   userId: string
   userName: string
   organizationId: string
@@ -106,8 +64,8 @@ export function DashboardTabs({
 
       <TabsContent value="pipeline" className="flex-1 m-0 data-[state=inactive]:hidden">
         <KanbanBoard 
-          stages={stages} 
-          pipelines={pipelines}
+          stages={stages as any} 
+          contacts={[]}
         />
       </TabsContent>
 
