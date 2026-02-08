@@ -1,0 +1,91 @@
+import { NextResponse } from 'next/server'
+import { getSession } from '@/lib/auth'
+import { prisma } from '@/lib/prisma'
+import logger from '@/lib/logger'
+
+export const dynamic = 'force-dynamic'
+
+export async function GET() {
+  try {
+    const session = await getSession()
+    if (!session?.user) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    }
+
+    const user = await prisma.user.findUnique({
+      where: { id: session.user.id },
+      select: { organizationId: true },
+    })
+
+    if (!user?.organizationId) {
+      return NextResponse.json({ error: 'Organization not found' }, { status: 404 })
+    }
+
+    // Check environment variables
+    const envConfig = {
+      EVOLUTION_API_URL: process.env.EVOLUTION_API_URL ? 'Configured' : 'Missing',
+      EVOLUTION_API_KEY: process.env.EVOLUTION_API_KEY 
+        ? `Configured (${process.env.EVOLUTION_API_KEY.substring(0, 10)}...)` 
+        : 'Missing',
+    }
+
+    // Check connections
+    const connections = await prisma.whatsAppConnection.findMany({
+      where: { organizationId: user.organizationId },
+      select: {
+        id: true,
+        instanceName: true,
+        status: true,
+        phoneNumber: true,
+        createdAt: true,
+      },
+      orderBy: { createdAt: 'desc' },
+    })
+
+    // Check recent messages
+    const recentMessages = await prisma.whatsAppMessage.findMany({
+      where: { organizationId: user.organizationId },
+      orderBy: { sentAt: 'desc' },
+      take: 5,
+      select: {
+        id: true,
+        direction: true,
+        text: true,
+        sentAt: true,
+        contact: {
+          select: {
+            name: true,
+            phone: true,
+          }
+        }
+      }
+    })
+
+    // Check recent webhook logs (from logger)
+    logger.info({
+      organizationId: user.organizationId,
+      envConfig,
+      connectionsCount: connections.length,
+      recentMessagesCount: recentMessages.length,
+    }, 'WhatsApp diagnostic check')
+
+    return NextResponse.json({
+      success: true,
+      environment: envConfig,
+      connections,
+      recentMessages: recentMessages.map(m => ({
+        ...m,
+        text: m.text?.substring(0, 50) + '...',
+        sentAt: m.sentAt.toISOString(),
+      })),
+      timestamp: new Date().toISOString(),
+    })
+
+  } catch (error: any) {
+    logger.error({ error: error.message }, 'WhatsApp diagnostic error')
+    return NextResponse.json({
+      error: 'Internal server error',
+      details: error.message,
+    }, { status: 500 })
+  }
+}

@@ -49,6 +49,7 @@ export function ChatDrawer({ userId, userName, organizationId }: ChatDrawerProps
   const [connections, setConnections] = useState<Connection[]>([])
   const [selectedContact, setSelectedContact] = useState<Contact | null>(null)
   const [loading, setLoading] = useState(false)
+  const [sseStatus, setSseStatus] = useState<'connected' | 'disconnected' | 'error'>('disconnected')
 
   const totalUnread = contacts.reduce((sum, contact) => sum + (contact._count.unreadMessages || 0), 0)
   const activeConnections = connections.filter(c => c.status === 'CONNECTED')
@@ -85,20 +86,40 @@ export function ChatDrawer({ userId, userName, organizationId }: ChatDrawerProps
   useEffect(() => {
     if (!isOpen) return
 
+    console.log('[ChatDrawer] Connecting to SSE...')
     const eventSource = new EventSource('/api/whatsapp/stream')
+
+    eventSource.onopen = () => {
+      console.log('[ChatDrawer] SSE connected')
+      setSseStatus('connected')
+    }
 
     eventSource.onmessage = (event) => {
       try {
         const data = JSON.parse(event.data)
+        console.log('[ChatDrawer] SSE message:', data.type, data)
+        
         if (data.type === 'conversation.updated' || data.type === 'message.new') {
           fetchData()
+          // Show notification for new messages
+          if (data.type === 'message.new' && data.message?.direction === 'INBOUND') {
+            toast.info(`Nova mensagem de ${data.contact?.name || 'desconhecido'}`, {
+              description: data.message?.text?.substring(0, 50) + '...',
+            })
+          }
         }
       } catch (error) {
-        console.error('Error parsing SSE message:', error)
+        console.error('[ChatDrawer] Error parsing SSE message:', error)
       }
     }
 
+    eventSource.onerror = (error) => {
+      console.error('[ChatDrawer] SSE error:', error)
+      setSseStatus('error')
+    }
+
     return () => {
+      console.log('[ChatDrawer] Closing SSE connection')
       eventSource.close()
     }
   }, [isOpen, fetchData])
@@ -159,6 +180,12 @@ export function ChatDrawer({ userId, userName, organizationId }: ChatDrawerProps
                     ({activeConnections.length} conectado{activeConnections.length > 1 ? 's' : ''})
                   </span>
                 )}
+                {/* SSE Status Indicator */}
+                <span className={cn(
+                  "w-2 h-2 rounded-full ml-2",
+                  sseStatus === 'connected' ? "bg-green-500" : 
+                  sseStatus === 'error' ? "bg-red-500" : "bg-gray-300"
+                )} title={sseStatus === 'connected' ? 'Tempo real ativo' : 'Tempo real desconectado'} />
               </SheetTitle>
               <div className="flex items-center gap-2">
                 {/* Toggle expand/collapse */}
