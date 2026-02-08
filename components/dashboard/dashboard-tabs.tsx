@@ -5,7 +5,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { KanbanBoard } from '@/components/kanban-board'
 import { ChatInterface } from '@/components/chat/chat-interface'
 import { toast } from 'sonner'
-import { MessageSquare, LayoutKanban } from 'lucide-react'
+import { MessageSquare, Layout } from 'lucide-react'
 
 interface DealWithContact {
   id: string
@@ -95,7 +95,7 @@ export function DashboardTabs({
     <Tabs value={activeTab} onValueChange={setActiveTab} className="h-full flex flex-col">
       <TabsList className="grid w-[300px] grid-cols-2 mb-4">
         <TabsTrigger value="pipeline" className="flex items-center gap-2">
-          <LayoutKanban className="h-4 w-4" />
+          <Layout className="h-4 w-4" />
           Pipeline
         </TabsTrigger>
         <TabsTrigger value="chat" className="flex items-center gap-2">
