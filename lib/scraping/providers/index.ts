@@ -2,25 +2,28 @@
  * Scraping Providers Factory
  * 
  * Ordem de prioridade:
- * 1. Firecrawl (self-hosted no EasyPanel - gratuito, melhor qualidade)
- * 2. Hybrid Crawler (tenta scraping → fallback Places API)
- * 3. Google Places API (direta)
- * 4. CNPJ API (dados oficiais brasileiros)
+ * 1. Sirius Scraper (nosso servidor self-hosted - GRATUITO)
+ * 2. ScrapingBee (API paga com trial gratuito)
+ * 3. Google Places API (gratuito até $200/mês)
+ * 4. Hybrid Crawler (tenta scraping direto)
+ * 5. CNPJ API (dados oficiais brasileiros)
  */
 
 import { ScrapingProvider, ScrapingSearchParams, ScrapingSearchResult } from './base'
-import { firecrawlProvider } from './firecrawl-provider'
-import { hybridCrawlerProvider } from './hybrid-crawler'
+import { siriusScraperProvider } from './sirius-scraper-provider'
+import { scrapingBeeProvider } from './scrapingbee-provider'
 import { googlePlacesProvider } from './google-places'
+import { hybridCrawlerProvider } from './hybrid-crawler'
 import { cnpjApiProvider } from './cnpj-api'
 import logger from '@/lib/logger'
 
 // Lista de providers em ordem de prioridade
 const providers: ScrapingProvider[] = [
-  firecrawlProvider,        // Prioridade 1: Self-hosted (melhor)
-  hybridCrawlerProvider,    // Prioridade 2: Scraping/Places API
-  googlePlacesProvider,     // Prioridade 3: API direta
-  cnpjApiProvider,          // Prioridade 4: Sempre disponível
+  siriusScraperProvider,    // Prioridade 1: Nosso servidor (GRATUITO)
+  scrapingBeeProvider,      // Prioridade 2: API paga (trial gratuito)
+  googlePlacesProvider,     // Prioridade 3: API do Google
+  hybridCrawlerProvider,    // Prioridade 4: Scraping direto
+  cnpjApiProvider,          // Prioridade 5: Sempre disponível
 ]
 
 export function getAvailableProvider(): ScrapingProvider | null {
@@ -40,9 +43,6 @@ export function isAnyProviderConfigured(): boolean {
   return true
 }
 
-/**
- * Busca usando o melhor provider disponível
- */
 export async function searchLeads(params: ScrapingSearchParams): Promise<ScrapingSearchResult> {
   const provider = getAvailableProvider()
   
@@ -55,6 +55,5 @@ export async function searchLeads(params: ScrapingSearchParams): Promise<Scrapin
   return await provider.search(params)
 }
 
-// Re-exportar tipos e providers
 export * from './base'
-export { firecrawlProvider, hybridCrawlerProvider, googlePlacesProvider, cnpjApiProvider }
+export { siriusScraperProvider, scrapingBeeProvider, googlePlacesProvider, hybridCrawlerProvider, cnpjApiProvider }
