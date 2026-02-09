@@ -2,12 +2,14 @@
  * Scraping Providers Factory
  * 
  * Ordem de prioridade:
- * 1. Google Places (melhor qualidade, $200/mês grátis)
- * 2. CNPJ API (dados oficiais brasileiros, gratuito)
- * 3. OpenStreetMap (totalmente gratuito, dados limitados)
+ * 1. Crawler Próprio (SIRIUS_CRAWLER) - 100% gratuito, ético
+ * 2. Google Places (melhor qualidade, $200/mês grátis)
+ * 3. CNPJ API (dados oficiais brasileiros, gratuito)
+ * 4. OpenStreetMap (totalmente gratuito, dados limitados)
  */
 
 import { ScrapingProvider, ScrapingSearchParams, ScrapingSearchResult } from './base'
+import { crawlerProvider } from './crawler-provider'
 import { googlePlacesProvider } from './google-places'
 import { cnpjApiProvider } from './cnpj-api'
 import { openStreetMapProvider } from './openstreetmap'
@@ -15,9 +17,10 @@ import logger from '@/lib/logger'
 
 // Lista de providers em ordem de prioridade
 const providers: ScrapingProvider[] = [
-  googlePlacesProvider,
-  cnpjApiProvider,
-  openStreetMapProvider,
+  crawlerProvider,           // Nosso crawler próprio - sempre disponível
+  googlePlacesProvider,      // Requer API key
+  cnpjApiProvider,          // Sempre disponível
+  openStreetMapProvider,    // Sempre disponível
 ]
 
 /**
@@ -41,19 +44,21 @@ export function getConfiguredProviders(): ScrapingProvider[] {
 
 /**
  * Verifica se existe algum provider configurado
+ * (Sempre true pois o crawler próprio sempre está disponível)
  */
 export function isAnyProviderConfigured(): boolean {
-  return providers.some(p => p.isConfigured())
+  return true
 }
 
 /**
  * Busca usando o melhor provider disponível
+ * Por padrão usa nosso crawler próprio
  */
 export async function searchLeads(params: ScrapingSearchParams): Promise<ScrapingSearchResult> {
   const provider = getAvailableProvider()
   
   if (!provider) {
-    throw new Error('Nenhum provider de prospecção configurado. Configure GOOGLE_PLACES_API_KEY ou use CNPJ/OpenStreetMap (sempre disponível).')
+    throw new Error('Nenhum provider de prospecção disponível')
   }
 
   logger.info({ provider: provider.name, query: params.query }, 'Starting lead search')
@@ -70,12 +75,8 @@ export async function searchLeadsMultiProvider(
 ): Promise<ScrapingSearchResult> {
   const configured = getConfiguredProviders()
   
-  if (configured.length === 0) {
-    throw new Error('Nenhum provider configurado')
-  }
-
   const results = await Promise.allSettled(
-    configured.map(p => p.search(params))
+    configured.slice(0, 2).map(p => p.search(params)) // Limitar a 2 para não sobrecarregar
   )
 
   const allLeads: any[] = []
@@ -115,4 +116,4 @@ function removeDuplicates(leads: any[]): any[] {
 
 // Re-exportar tipos
 export * from './base'
-export { googlePlacesProvider, cnpjApiProvider, openStreetMapProvider }
+export { crawlerProvider, googlePlacesProvider, cnpjApiProvider, openStreetMapProvider }

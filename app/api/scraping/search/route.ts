@@ -5,6 +5,7 @@ import { searchLeads, isAnyProviderConfigured } from '@/lib/scraping/providers'
 import logger from '@/lib/logger'
 
 export const dynamic = 'force-dynamic'
+export const runtime = 'nodejs' // Necessário para Crawlee
 
 export async function POST(req: Request) {
   try {
