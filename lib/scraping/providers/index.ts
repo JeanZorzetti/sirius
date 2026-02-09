@@ -20,11 +20,37 @@ import logger from '@/lib/logger'
 // Lista de providers em ordem de prioridade
 const providers: ScrapingProvider[] = [
   siriusScraperProvider,    // Prioridade 1: Nosso servidor (GRATUITO)
-  scrapingBeeProvider,      // Prioridade 2: API paga (trial gratuito)
-  googlePlacesProvider,     // Prioridade 3: API do Google
+  googlePlacesProvider,     // Prioridade 2: API do Google (confiável)
+  scrapingBeeProvider,      // Prioridade 3: API paga (trial)
   hybridCrawlerProvider,    // Prioridade 4: Scraping direto
   cnpjApiProvider,          // Prioridade 5: Sempre disponível
 ]
+
+/**
+ * Busca com fallback automático
+ * Se o primeiro falhar, tenta o próximo
+ */
+export async function searchLeadsWithFallback(params: ScrapingSearchParams): Promise<ScrapingSearchResult> {
+  const errors: string[] = []
+  
+  for (const provider of providers) {
+    if (!provider.isConfigured()) continue
+    
+    try {
+      logger.info({ provider: provider.name }, 'Trying provider')
+      const result = await provider.search(params)
+      logger.info({ provider: provider.name, found: result.leads.length }, 'Provider succeeded')
+      return result
+    } catch (error: any) {
+      logger.warn({ provider: provider.name, error: error.message }, 'Provider failed')
+      errors.push(`${provider.name}: ${error.message}`)
+      continue // Tentar próximo
+    }
+  }
+  
+  // Nenhum funcionou
+  throw new Error(`Todos os providers falharam: ${errors.join('; ')}`)
+}
 
 export function getAvailableProvider(): ScrapingProvider | null {
   for (const provider of providers) {
@@ -43,16 +69,12 @@ export function isAnyProviderConfigured(): boolean {
   return true
 }
 
+/**
+ * Busca usando o melhor provider disponível
+ * Com fallback automático se o primeiro falhar
+ */
 export async function searchLeads(params: ScrapingSearchParams): Promise<ScrapingSearchResult> {
-  const provider = getAvailableProvider()
-  
-  if (!provider) {
-    throw new Error('Nenhum provider de prospecção disponível')
-  }
-
-  logger.info({ provider: provider.name, query: params.query }, 'Starting lead search')
-  
-  return await provider.search(params)
+  return await searchLeadsWithFallback(params)
 }
 
 export * from './base'
