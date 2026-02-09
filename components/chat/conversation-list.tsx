@@ -22,6 +22,7 @@ import { UnreadBadge } from './unread-badge'
 import { ConversationFilters } from './conversation-filters'
 import { Button } from '@/components/ui/button'
 import { toast } from 'sonner'
+import { motion, AnimatePresence } from 'framer-motion'
 
 interface Tag {
   id: string
@@ -138,6 +139,61 @@ function avatarColor(name: string) {
   let h = 0
   for (let i = 0; i < name.length; i++) h = name.charCodeAt(i) + ((h << 5) - h)
   return COLORS[Math.abs(h) % COLORS.length]
+}
+
+// Animation variants
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.03,
+      delayChildren: 0.05
+    }
+  }
+}
+
+const itemVariants = {
+  hidden: { 
+    opacity: 0, 
+    x: -20,
+    scale: 0.95
+  },
+  visible: { 
+    opacity: 1, 
+    x: 0,
+    scale: 1,
+    transition: {
+      type: "spring",
+      stiffness: 400,
+      damping: 25,
+      mass: 0.8
+    }
+  },
+  exit: {
+    opacity: 0,
+    x: -20,
+    scale: 0.95,
+    transition: { duration: 0.15 }
+  }
+}
+
+const pinnedIndicatorVariants = {
+  initial: { scale: 0, rotate: -180 },
+  animate: { 
+    scale: 1, 
+    rotate: 0,
+    transition: {
+      type: "spring",
+      stiffness: 500,
+      damping: 20
+    }
+  },
+  exit: { 
+    scale: 0, 
+    rotate: 180,
+    transition: { duration: 0.2 }
+  }
 }
 
 // ── Component ───────────────────────────────────────────────
@@ -267,7 +323,7 @@ export function ConversationList({ contacts, selectedContact, onSelectContact, c
             placeholder="Buscar ou iniciar conversa"
             value={query}
             onChange={e => setQuery(e.target.value)}
-            className="pl-9 h-[34px] bg-[#f0f2f5] whatsapp-input border-0 rounded-lg text-[13px] placeholder:text-[#8696a0] focus-visible:ring-1 focus-visible:ring-[#00a884] whatsapp-text-primary"
+            className="pl-9 h-[34px] bg-[#f0f2f5] whatsapp-input border-0 rounded-lg text-[13px] placeholder:text-[#8696a0] focus-visible:ring-1 focus-visible:ring-[#00a884] whatsapp-text-primary transition-all duration-200 focus-visible:scale-[1.02]"
           />
         </div>
       </div>
@@ -281,187 +337,285 @@ export function ConversationList({ contacts, selectedContact, onSelectContact, c
       </div>
 
       {/* List */}
-      <div
+      <motion.div
         className="flex-1 overflow-y-auto"
         role="list"
         aria-label="Lista de conversas"
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
       >
         {filtered.length === 0 ? (
-          <div className="flex flex-col items-center justify-center h-32 text-sm text-[#8696a0] gap-1">
+          <motion.div 
+            className="flex flex-col items-center justify-center h-32 text-sm text-[#8696a0] gap-1"
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.3 }}
+          >
             <Search className="h-5 w-5 opacity-40" />
             <span>Nenhuma conversa encontrada</span>
-          </div>
+          </motion.div>
         ) : (
-          filtered.map(contact => {
-            const last = contact.whatsappMessages[0]
-            const selected = selectedContact?.id === contact.id
-            const group = isGroup(contact)
-            const name = displayName(contact)
-            const color = avatarColor(name)
-            const media = last ? previewText(last.text) : null
-            const preview = last ? cleanPreview(last.text) : null
-            const unreadCount = contact._count.unreadMessages || 0
-            const hasUnread = unreadCount > 0
-            const isPinned = contact.chatConversation?.isPinned ?? false
-            const isArchived = contact.chatConversation?.isArchived ?? false
+          <AnimatePresence mode="popLayout">
+            {filtered.map((contact, index) => {
+              const last = contact.whatsappMessages[0]
+              const selected = selectedContact?.id === contact.id
+              const group = isGroup(contact)
+              const name = displayName(contact)
+              const color = avatarColor(name)
+              const media = last ? previewText(last.text) : null
+              const preview = last ? cleanPreview(last.text) : null
+              const unreadCount = contact._count.unreadMessages || 0
+              const hasUnread = unreadCount > 0
+              const isPinned = contact.chatConversation?.isPinned ?? false
+              const isArchived = contact.chatConversation?.isArchived ?? false
 
-            return (
-              <div
-                key={contact.id}
-                className="relative group"
-              >
-                <button
-                  onClick={() => onSelectContact(contact)}
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter' || e.key === ' ') {
-                      e.preventDefault()
-                      onSelectContact(contact)
-                    }
-                  }}
-                  role="button"
-                  tabIndex={0}
-                  aria-label={`Conversa com ${name}${hasUnread ? `, ${unreadCount} mensagens não lidas` : ''}`}
-                  aria-current={selected ? 'true' : 'false'}
-                  className={cn(
-                    'w-full flex items-center gap-3 px-3 py-[10px] transition-colors duration-150 relative',
-                    'focus-visible:ring-2 focus-visible:ring-[#00a884] focus-visible:ring-inset focus-visible:outline-none',
-                    hasUnread && !selected && 'bg-[#f0f2f5]/50 dark:bg-[#202C33]/50',
-                    selected
-                      ? 'bg-[#f0f2f5] whatsapp-bubble-incoming'
-                      : 'hover:bg-[#f5f6f6] dark:hover:bg-[#202C33]/30'
-                  )}
+              return (
+                <motion.div
+                  key={contact.id}
+                  className="relative group"
+                  variants={itemVariants}
+                  layout
+                  layoutId={contact.id}
+                  custom={index}
                 >
-                {/* Active bar */}
-                {selected && (
-                  <div className="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-10 bg-[#00a884] rounded-r-full" />
-                )}
-
-                {/* Avatar */}
-                <div className="relative flex-shrink-0">
-                  <Avatar className="h-[48px] w-[48px]">
-                    {(contact.profilePicUrl || profilePics[contact.id]) && (
-                      <AvatarImage src={contact.profilePicUrl || profilePics[contact.id]} alt={name} />
+                  <motion.button
+                    onClick={() => onSelectContact(contact)}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault()
+                        onSelectContact(contact)
+                      }
+                    }}
+                    role="button"
+                    tabIndex={0}
+                    aria-label={`Conversa com ${name}${hasUnread ? `, ${unreadCount} mensagens não lidas` : ''}`}
+                    aria-current={selected ? 'true' : 'false'}
+                    className={cn(
+                      'w-full flex items-center gap-3 px-3 py-[10px] transition-all duration-200 relative',
+                      'focus-visible:ring-2 focus-visible:ring-[#00a884] focus-visible:ring-inset focus-visible:outline-none',
+                      hasUnread && !selected && 'bg-[#f0f2f5]/50 dark:bg-[#202C33]/50',
+                      selected
+                        ? 'bg-[#f0f2f5] whatsapp-bubble-incoming'
+                        : 'hover:bg-[#f5f6f6] dark:hover:bg-[#202C33]/30'
                     )}
-                    <AvatarFallback className={cn('text-sm font-semibold text-white', color)}>
-                      {group ? <Users className="h-5 w-5" /> : initials(contact)}
-                    </AvatarFallback>
-                  </Avatar>
-                  {/* WhatsApp channel badge */}
-                  <div className="absolute -bottom-0.5 -right-0.5 w-[18px] h-[18px] rounded-full bg-[#25d366] border-2 border-white dark:border-zinc-950 flex items-center justify-center">
-                    <svg viewBox="0 0 24 24" className="w-[10px] h-[10px] text-white fill-current">
-                      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
-                    </svg>
-                  </div>
-                </div>
+                    whileHover={{ x: 2 }}
+                    whileTap={{ scale: 0.99 }}
+                  >
+                    {/* Active bar */}
+                    <AnimatePresence>
+                      {selected && (
+                        <motion.div 
+                          className="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-10 bg-[#00a884] rounded-r-full"
+                          initial={{ scaleY: 0, opacity: 0 }}
+                          animate={{ scaleY: 1, opacity: 1 }}
+                          exit={{ scaleY: 0, opacity: 0 }}
+                          transition={{ type: "spring", stiffness: 500, damping: 30 }}
+                        />
+                      )}
+                    </AnimatePresence>
 
-                {/* Content */}
-                <div className="flex-1 min-w-0 text-left border-b border-[#f0f2f5] dark:border-zinc-800 pb-[10px]">
-                  <div className="flex items-center justify-between gap-2">
-                    <p className={cn(
-                      'text-[15px] truncate text-[#111b21] dark:text-zinc-100',
-                      hasUnread ? 'font-bold' : 'font-medium',
-                      selected && 'text-[#111b21]'
-                    )}>
-                      {name}
-                    </p>
-                    {last && (
-                      <span className={cn(
-                        'text-[11px] flex-shrink-0 tabular-nums',
-                        hasUnread ? 'text-[#25d366] font-semibold' : 'text-[#667781]'
-                      )}>
-                        {fmtTime(last.sentAt)}
-                      </span>
-                    )}
-                  </div>
-
-                  <div className="flex items-center justify-between gap-1 mt-0.5">
-                    <div className="flex items-center gap-1 min-w-0">
-                      {last && (
-                        <>
-                          {last.direction === 'OUTBOUND' && (
-                            <CheckCheck className="h-[16px] w-[16px] flex-shrink-0 text-[#53bdeb]" />
+                    {/* Avatar */}
+                    <div className="relative flex-shrink-0">
+                      <motion.div
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                      >
+                        <Avatar className="h-[48px] w-[48px]">
+                          {(contact.profilePicUrl || profilePics[contact.id]) && (
+                            <AvatarImage src={contact.profilePicUrl || profilePics[contact.id]} alt={name} />
                           )}
-                          {media && <media.icon className="h-[14px] w-[14px] flex-shrink-0 text-[#667781]" />}
-                          <p className={cn(
-                            'text-[13px] truncate leading-tight',
-                            hasUnread ? 'text-[#111b21] font-semibold' : 'text-[#667781]'
-                          )}>
-                            {last.direction === 'OUTBOUND' && !media && 'Você: '}
-                            {preview || 'Mensagem'}
-                          </p>
-                        </>
-                      )}
+                          <AvatarFallback className={cn('text-sm font-semibold text-white', color)}>
+                            {group ? <Users className="h-5 w-5" /> : initials(contact)}
+                          </AvatarFallback>
+                        </Avatar>
+                      </motion.div>
+                      {/* WhatsApp channel badge */}
+                      <motion.div 
+                        className="absolute -bottom-0.5 -right-0.5 w-[18px] h-[18px] rounded-full bg-[#25d366] border-2 border-white dark:border-zinc-950 flex items-center justify-center"
+                        initial={{ scale: 0 }}
+                        animate={{ scale: 1 }}
+                        transition={{ delay: index * 0.03 + 0.2, type: "spring", stiffness: 500, damping: 20 }}
+                      >
+                        <svg viewBox="0 0 24 24" className="w-[10px] h-[10px] text-white fill-current">
+                          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+                        </svg>
+                      </motion.div>
+                      
+                      {/* Pinned indicator */}
+                      <AnimatePresence>
+                        {isPinned && (
+                          <motion.div
+                            className="absolute -top-0.5 -left-0.5 w-4 h-4 bg-[#00a884] rounded-full border-2 border-white dark:border-zinc-950 flex items-center justify-center"
+                            variants={pinnedIndicatorVariants}
+                            initial="initial"
+                            animate="animate"
+                            exit="exit"
+                          >
+                            <Pin className="w-2 h-2 text-white fill-white" />
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
                     </div>
-                    <div className="flex items-center gap-1 flex-shrink-0">
-                      {contact.chatConversation?.assignedUser && (
-                        <div
-                          className="w-5 h-5 rounded-full bg-[#00a884]/20 flex items-center justify-center"
-                          title={`Atribuído a ${contact.chatConversation.assignedUser.name || contact.chatConversation.assignedUser.email}`}
+
+                    {/* Content */}
+                    <div className="flex-1 min-w-0 text-left border-b border-[#f0f2f5] dark:border-zinc-800 pb-[10px]">
+                      <div className="flex items-center justify-between gap-2">
+                        <motion.p 
+                          className={cn(
+                            'text-[15px] truncate text-[#111b21] dark:text-zinc-100',
+                            hasUnread ? 'font-bold' : 'font-medium',
+                            selected && 'text-[#111b21]'
+                          )}
+                          layout
                         >
-                          <span className="text-[9px] font-semibold text-[#00a884]">
-                            {contact.chatConversation.assignedUser.name?.charAt(0).toUpperCase() ||
-                             contact.chatConversation.assignedUser.email.charAt(0).toUpperCase()}
-                          </span>
+                          {name}
+                        </motion.p>
+                        {last && (
+                          <motion.span 
+                            className={cn(
+                              'text-[11px] flex-shrink-0 tabular-nums',
+                              hasUnread ? 'text-[#25d366] font-semibold' : 'text-[#667781]'
+                            )}
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            transition={{ delay: index * 0.03 + 0.1 }}
+                          >
+                            {fmtTime(last.sentAt)}
+                          </motion.span>
+                        )}
+                      </div>
+
+                      <div className="flex items-center justify-between gap-1 mt-0.5">
+                        <div className="flex items-center gap-1 min-w-0">
+                          {last && (
+                            <>
+                              {last.direction === 'OUTBOUND' && (
+                                <motion.span
+                                  initial={{ opacity: 0, scale: 0 }}
+                                  animate={{ opacity: 1, scale: 1 }}
+                                  transition={{ delay: index * 0.03 + 0.15 }}
+                                >
+                                  <CheckCheck className="h-[16px] w-[16px] flex-shrink-0 text-[#53bdeb]" />
+                                </motion.span>
+                              )}
+                              {media && (
+                                <motion.span
+                                  initial={{ opacity: 0, scale: 0 }}
+                                  animate={{ opacity: 1, scale: 1 }}
+                                  transition={{ delay: index * 0.03 + 0.15 }}
+                                >
+                                  <media.icon className="h-[14px] w-[14px] flex-shrink-0 text-[#667781]" />
+                                </motion.span>
+                              )}
+                              <motion.p 
+                                className={cn(
+                                  'text-[13px] truncate leading-tight',
+                                  hasUnread ? 'text-[#111b21] font-semibold' : 'text-[#667781]'
+                                )}
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                transition={{ delay: index * 0.03 + 0.1 }}
+                              >
+                                {last.direction === 'OUTBOUND' && !media && 'Você: '}
+                                {preview || 'Mensagem'}
+                              </motion.p>
+                            </>
+                          )}
                         </div>
-                      )}
-                      <UnreadBadge count={unreadCount} />
-                    </div>
-                  </div>
+                        <div className="flex items-center gap-1 flex-shrink-0">
+                          <AnimatePresence mode="popLayout">
+                            {contact.chatConversation?.assignedUser && (
+                              <motion.div
+                                className="w-5 h-5 rounded-full bg-[#00a884]/20 flex items-center justify-center"
+                                title={`Atribuído a ${contact.chatConversation.assignedUser.name || contact.chatConversation.assignedUser.email}`}
+                                initial={{ scale: 0, opacity: 0 }}
+                                animate={{ scale: 1, opacity: 1 }}
+                                exit={{ scale: 0, opacity: 0 }}
+                                transition={{ type: "spring", stiffness: 500, damping: 25 }}
+                              >
+                                <span className="text-[9px] font-semibold text-[#00a884]">
+                                  {contact.chatConversation.assignedUser.name?.charAt(0).toUpperCase() ||
+                                   contact.chatConversation.assignedUser.email.charAt(0).toUpperCase()}
+                                </span>
+                              </motion.div>
+                            )}
+                          </AnimatePresence>
+                          <UnreadBadge count={unreadCount} />
+                        </div>
+                      </div>
 
-                  {/* Tags */}
-                  {contact.tags && contact.tags.length > 0 && (
-                    <div className="flex flex-wrap gap-1 mt-1.5">
-                      {contact.tags.slice(0, 3).map(tag => (
-                        <span
-                          key={tag.id}
-                          className="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-medium"
-                          style={{
-                            backgroundColor: `${tag.color}20`,
-                            color: tag.color,
-                          }}
-                        >
-                          {tag.name}
-                        </span>
-                      ))}
-                      {contact.tags.length > 3 && (
-                        <span className="text-[10px] text-[#667781]">
-                          +{contact.tags.length - 3}
-                        </span>
-                      )}
+                      {/* Tags */}
+                      <AnimatePresence>
+                        {contact.tags && contact.tags.length > 0 && (
+                          <motion.div 
+                            className="flex flex-wrap gap-1 mt-1.5"
+                            initial={{ opacity: 0, y: 5 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: -5 }}
+                            transition={{ delay: index * 0.03 + 0.2 }}
+                          >
+                            {contact.tags.slice(0, 3).map((tag, tagIndex) => (
+                              <motion.span
+                                key={tag.id}
+                                className="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-medium"
+                                style={{
+                                  backgroundColor: `${tag.color}20`,
+                                  color: tag.color,
+                                }}
+                                initial={{ opacity: 0, scale: 0.8 }}
+                                animate={{ opacity: 1, scale: 1 }}
+                                transition={{ delay: index * 0.03 + tagIndex * 0.05 + 0.2 }}
+                                whileHover={{ scale: 1.05 }}
+                              >
+                                {tag.name}
+                              </motion.span>
+                            ))}
+                            {contact.tags.length > 3 && (
+                              <span className="text-[10px] text-[#667781]">
+                                +{contact.tags.length - 3}
+                              </span>
+                            )}
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
                     </div>
-                  )}
-                </div>
-              </button>
+                  </motion.button>
 
-              {/* Quick actions - hover only */}
-              <div className="absolute right-2 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-1 bg-white dark:bg-zinc-800 rounded-md shadow-md p-1">
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className={cn(
-                    'h-7 w-7 p-0 quick-action-btn',
-                    isPinned && 'text-[#00a884]'
-                  )}
-                  onClick={(e) => handlePin(contact.id, isPinned, e)}
-                  title={isPinned ? 'Desafixar conversa' : 'Fixar conversa'}
-                >
-                  <Pin className={cn('h-3.5 w-3.5', isPinned && 'fill-current')} />
-                </Button>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="h-7 w-7 p-0 quick-action-btn"
-                  onClick={(e) => handleArchive(contact.id, isArchived, e)}
-                  title="Arquivar conversa"
-                >
-                  <Archive className="h-3.5 w-3.5" />
-                </Button>
-              </div>
-            </div>
-            )
-          })
+                  {/* Quick actions - hover only */}
+                  <motion.div 
+                    className="absolute right-2 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-all duration-200 flex items-center gap-1 bg-white dark:bg-zinc-800 rounded-md shadow-md p-1"
+                    initial={{ x: 10, opacity: 0 }}
+                    whileHover={{ scale: 1.02 }}
+                  >
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className={cn(
+                        'h-7 w-7 p-0 quick-action-btn transition-all duration-200',
+                        isPinned && 'text-[#00a884]'
+                      )}
+                      onClick={(e) => handlePin(contact.id, isPinned, e)}
+                      title={isPinned ? 'Desafixar conversa' : 'Fixar conversa'}
+                    >
+                      <Pin className={cn('h-3.5 w-3.5 transition-transform duration-200', isPinned && 'fill-current rotate-45')} />
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="h-7 w-7 p-0 quick-action-btn transition-all duration-200"
+                      onClick={(e) => handleArchive(contact.id, isArchived, e)}
+                      title="Arquivar conversa"
+                    >
+                      <Archive className="h-3.5 w-3.5" />
+                    </Button>
+                  </motion.div>
+                </motion.div>
+              )
+            })}
+          </AnimatePresence>
         )}
-      </div>
+      </motion.div>
     </div>
   )
 }

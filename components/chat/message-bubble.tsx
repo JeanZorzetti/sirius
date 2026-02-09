@@ -6,6 +6,7 @@ import { cn } from '@/lib/utils'
 import { QuotedMessage } from './quoted-message'
 import { ReactionBar } from './reaction-bar'
 import { ReactionChips } from './reaction-chips'
+import { motion, AnimatePresence } from 'framer-motion'
 
 interface Reaction {
   emoji: string
@@ -122,9 +123,63 @@ function getDisplayText(msg: WhatsAppMessage): string | null {
   return null
 }
 
+// Animation variants
+const bubbleVariants = {
+  initial: { 
+    opacity: 0, 
+    y: 20,
+    scale: 0.95,
+  },
+  animate: { 
+    opacity: 1, 
+    y: 0,
+    scale: 1,
+    transition: {
+      type: "spring",
+      stiffness: 350,
+      damping: 25,
+      mass: 0.8
+    }
+  },
+  exit: { 
+    opacity: 0, 
+    scale: 0.9,
+    transition: { duration: 0.15 }
+  }
+}
+
+const dateSeparatorVariants = {
+  initial: { opacity: 0, y: -10 },
+  animate: { 
+    opacity: 1, 
+    y: 0,
+    transition: { duration: 0.3, ease: "easeOut" }
+  }
+}
+
+const reactionBarVariants = {
+  initial: { opacity: 0, y: 10, scale: 0.8 },
+  animate: { 
+    opacity: 1, 
+    y: 0,
+    scale: 1,
+    transition: {
+      type: "spring",
+      stiffness: 400,
+      damping: 20
+    }
+  },
+  exit: { 
+    opacity: 0, 
+    y: 5,
+    scale: 0.9,
+    transition: { duration: 0.1 }
+  }
+}
+
 /**
- * Memoized Message Bubble Component (Fase 4.3)
- * Optimized for virtualization with react-virtuoso
+ * Memoized Message Bubble Component (Fase 5 - UI/UX Premium)
+ * Com micro-animações e polish visual
  */
 export const MessageBubble = memo(function MessageBubble({
   message: msg,
@@ -145,22 +200,37 @@ export const MessageBubble = memo(function MessageBubble({
   const isGroupedWithPrev = pos === 'middle' || pos === 'last'
   const media = hasMedia(msg)
   const displayText = getDisplayText(msg)
+  const isHighlighted = highlightedMessageId === msg.id
 
   return (
-    <div>
+    <motion.div
+      layout
+      initial="initial"
+      animate="animate"
+      exit="exit"
+    >
       {/* Date separator */}
-      {showDate && (
-        <div className="sticky top-0 z-10 flex justify-center py-2 my-1">
-          <span className="bg-white/90 dark:bg-zinc-800/90 backdrop-blur text-[12.5px] text-[#54656f] px-3 py-1 rounded-lg shadow-[0_1px_1px_rgba(11,20,26,0.13)] font-medium select-none">
-            {fmtDate(msg.sentAt)}
-          </span>
-        </div>
-      )}
+      <AnimatePresence>
+        {showDate && (
+          <motion.div 
+            className="sticky top-0 z-10 flex justify-center py-2 my-1"
+            variants={dateSeparatorVariants}
+            initial="initial"
+            animate="animate"
+            exit="exit"
+          >
+            <span className="bg-white/90 dark:bg-zinc-800/90 backdrop-blur text-[12.5px] text-[#54656f] px-3 py-1 rounded-lg shadow-[0_1px_1px_rgba(11,20,26,0.13)] font-medium select-none">
+              {fmtDate(msg.sentAt)}
+            </span>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Bubble */}
-      <div
+      <motion.div
+        variants={bubbleVariants}
         className={cn(
-          'flex animate-in fade-in-0 slide-in-from-bottom-2 duration-200 group relative',
+          'flex group relative',
           out ? 'justify-end' : 'justify-start',
           isGroupedWithPrev ? 'mt-[2px]' : 'mt-2'
         )}
@@ -168,32 +238,56 @@ export const MessageBubble = memo(function MessageBubble({
         onMouseLeave={onMouseLeave}
       >
         {/* Reply button */}
-        {!out && (
-          <button
-            onClick={onReply}
-            className="opacity-0 group-hover:opacity-100 transition-opacity mr-2 self-end mb-1 p-1.5 rounded-full hover:bg-black/5"
-            title="Responder"
-          >
-            <Reply className="h-4 w-4 text-[#667781]" />
-          </button>
-        )}
+        <AnimatePresence>
+          {!out && (
+            <motion.button
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 0 }}
+              whileHover={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={onReply}
+              className="opacity-0 group-hover:opacity-100 transition-all duration-200 mr-2 self-end mb-1 p-1.5 rounded-full hover:bg-black/5 dark:hover:bg-white/10 active:scale-95"
+              title="Responder"
+            >
+              <Reply className="h-4 w-4 text-[#667781]" />
+            </motion.button>
+          )}
+        </AnimatePresence>
 
-        <div
+        <motion.div
           ref={setMessageRef}
+          layout
+          animate={isHighlighted ? {
+            scale: [1, 1.02, 1],
+            boxShadow: [
+              '0 0 0 0 rgba(245, 158, 11, 0)',
+              '0 0 0 4px rgba(245, 158, 11, 0.3)',
+              '0 0 0 0 rgba(245, 158, 11, 0)'
+            ]
+          } : {}}
+          transition={{ duration: 0.6, ease: "easeInOut" }}
           className={cn(
-            'max-w-[65%] shadow-[0_1px_0.5px_rgba(11,20,26,0.13)] relative overflow-hidden transition-colors',
+            'max-w-[65%] shadow-[0_1px_0.5px_rgba(11,20,26,0.13)] relative overflow-hidden transition-all duration-200',
+            'hover:shadow-[0_2px_8px_rgba(11,20,26,0.15)]',
             media ? 'p-[3px]' : 'px-[9px] pt-[6px] pb-[7px]',
             bubbleRadius(pos, out),
-            highlightedMessageId === msg.id
+            isHighlighted
               ? 'ring-2 ring-[#f59e0b] bg-[#fef3c7]'
               : out
                 ? 'bg-[#d9fdd3] dark:bg-emerald-900/60'
                 : 'bg-white dark:bg-zinc-800'
           )}
+          whileHover={{ scale: 1.01 }}
+          whileTap={{ scale: 0.99 }}
         >
           {/* Quoted message */}
           {msg.replyToId && msg.replyToText && (
-            <div className="mb-1">
+            <motion.div 
+              className="mb-1"
+              initial={{ opacity: 0, x: out ? 10 : -10 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.1 }}
+            >
               <QuotedMessage
                 text={msg.replyToText}
                 senderName={msg.direction === 'INBOUND' ? contactName : 'Você'}
@@ -204,7 +298,7 @@ export const MessageBubble = memo(function MessageBubble({
                   }
                 }}
               />
-            </div>
+            </motion.div>
           )}
 
           {/* Text content */}
@@ -226,38 +320,62 @@ export const MessageBubble = memo(function MessageBubble({
               {fmtTime(msg.sentAt)}
             </span>
             {out && (
-              msg.status === 'READ'
-                ? <CheckCheck className="h-[16px] w-[16px] text-[#53bdeb]" />
-                : msg.status === 'DELIVERED'
-                  ? <CheckCheck className="h-[16px] w-[16px] text-[#8696a0]" />
-                  : <Check className="h-[16px] w-[16px] text-[#8696a0]" />
+              <motion.span
+                key={msg.status}
+                initial={{ scale: 0.5, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ type: "spring", stiffness: 500, damping: 25 }}
+              >
+                {msg.status === 'READ'
+                  ? <CheckCheck className="h-[16px] w-[16px] text-[#53bdeb]" />
+                  : msg.status === 'DELIVERED'
+                    ? <CheckCheck className="h-[16px] w-[16px] text-[#8696a0]" />
+                    : <Check className="h-[16px] w-[16px] text-[#8696a0]" />
+                }
+              </motion.span>
             )}
           </span>
-        </div>
+        </motion.div>
 
         {/* Reaction bar */}
-        {showReactionBar && (
-          <div className={cn(
-            'absolute -top-12 z-10 animate-in fade-in-0 slide-in-from-bottom-2 duration-150',
-            out ? 'right-0' : 'left-0'
-          )}>
-            <ReactionBar onReact={onReact} />
-          </div>
-        )}
+        <AnimatePresence>
+          {showReactionBar && (
+            <motion.div 
+              className={cn(
+                'absolute -top-12 z-20',
+                out ? 'right-0' : 'left-0'
+              )}
+              variants={reactionBarVariants}
+              initial="initial"
+              animate="animate"
+              exit="exit"
+            >
+              <ReactionBar onReact={onReact} />
+            </motion.div>
+          )}
+        </AnimatePresence>
 
         {/* Reaction chips */}
-        {msg.reactions && msg.reactions.length > 0 && (
-          <div className={cn(
-            'absolute -bottom-5',
-            out ? 'right-0' : 'left-0'
-          )}>
-            <ReactionChips
-              reactions={msg.reactions}
-              onToggle={onReact}
-            />
-          </div>
-        )}
-      </div>
-    </div>
+        <AnimatePresence>
+          {msg.reactions && msg.reactions.length > 0 && (
+            <motion.div 
+              className={cn(
+                'absolute -bottom-5',
+                out ? 'right-0' : 'left-0'
+              )}
+              initial={{ opacity: 0, scale: 0.5, y: 10 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.5, y: 5 }}
+              transition={{ type: "spring", stiffness: 400, damping: 20 }}
+            >
+              <ReactionChips
+                reactions={msg.reactions}
+                onToggle={onReact}
+              />
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </motion.div>
+    </motion.div>
   )
 })

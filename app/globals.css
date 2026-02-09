@@ -100,103 +100,105 @@
   --destructive-foreground: hsl(0, 0%, 100%);
   --destructive-foreground: oklch(1 0 0);
 
-  --border: hsl(0, 0%, 88%); /* Zinc 300 */
-  --border: oklch(0.88 0 0);
+  --border: hsl(0, 0%, 90%);
+  --border: oklch(0.90 0 0);
 
-  --input: hsl(0, 0%, 88%);
-  --input: oklch(0.88 0 0);
+  --input: hsl(0, 0%, 90%);
+  --input: oklch(0.90 0 0);
 
-  --ring: hsl(235, 50%, 40%);
-  --ring: oklch(0.40 0.18 265);
+  --ring: hsl(235, 70%, 68%);
+  --ring: oklch(0.68 0.22 265);
 
   /* Chart colors with fallbacks */
-  --chart-1: hsl(235, 50%, 40%);
-  --chart-1: oklch(0.40 0.18 265);
+  --chart-1: hsl(235, 70%, 68%);
+  --chart-1: oklch(0.68 0.22 265);
 
-  --chart-2: hsl(250, 60%, 50%);
-  --chart-2: oklch(0.50 0.20 300);
+  --chart-2: hsl(250, 60%, 75%);
+  --chart-2: oklch(0.75 0.15 300);
 
-  --chart-3: hsl(140, 50%, 45%);
-  --chart-3: oklch(0.45 0.15 180);
+  --chart-3: hsl(60, 60%, 80%);
+  --chart-3: oklch(0.80 0.15 70);
 
-  --chart-4: hsl(30, 60%, 55%);
-  --chart-4: oklch(0.55 0.18 40);
+  --chart-4: hsl(250, 75%, 65%);
+  --chart-4: oklch(0.65 0.25 300);
 
-  --chart-5: hsl(330, 55%, 45%);
-  --chart-5: oklch(0.45 0.18 330);
+  --chart-5: hsl(10, 70%, 70%);
+  --chart-5: oklch(0.70 0.20 20);
 
   /* Sidebar with fallbacks */
-  --sidebar: hsl(0, 0%, 100%);
-  --sidebar: oklch(1 0 0);
+  --sidebar: hsl(240, 12%, 18%);
+  --sidebar: oklch(0.18 0.01 260);
 
-  --sidebar-foreground: hsl(0, 0%, 7%);
-  --sidebar-foreground: oklch(0.08 0 0);
+  --sidebar-foreground: hsl(0, 0%, 99%);
+  --sidebar-foreground: oklch(0.99 0 0);
 
-  --sidebar-primary: hsl(235, 50%, 40%);
-  --sidebar-primary: oklch(0.40 0.18 265);
+  --sidebar-primary: hsl(235, 70%, 68%);
+  --sidebar-primary: oklch(0.68 0.22 265);
 
-  --sidebar-primary-foreground: hsl(0, 0%, 100%);
-  --sidebar-primary-foreground: oklch(1 0 0);
+  --sidebar-primary-foreground: hsl(0, 0%, 99%);
+  --sidebar-primary-foreground: oklch(0.99 0 0);
 
-  --sidebar-accent: hsl(240, 5%, 96%);
-  --sidebar-accent: oklch(0.96 0.01 260);
+  --sidebar-accent: hsl(240, 12%, 28%);
+  --sidebar-accent: oklch(0.28 0.02 260);
 
-  --sidebar-accent-foreground: hsl(0, 0%, 7%);
-  --sidebar-accent-foreground: oklch(0.08 0 0);
+  --sidebar-accent-foreground: hsl(0, 0%, 99%);
+  --sidebar-accent-foreground: oklch(0.99 0 0);
 
-  --sidebar-border: hsl(0, 0%, 88%);
-  --sidebar-border: oklch(0.88 0 0);
+  --sidebar-border: hsl(0, 0%, 100%, 0.18);
+  --sidebar-border: oklch(1 0 0 / 18%);
 
-  --sidebar-ring: hsl(235, 50%, 40%);
-  --sidebar-ring: oklch(0.40 0.18 265);
+  --sidebar-ring: hsl(235, 70%, 68%);
+  --sidebar-ring: oklch(0.68 0.22 265);
 }
 
 .dark {
-  /* HIGH CONTRAST DARK MODE (Deep Slate) */
-  /* HSL fallbacks for browsers without OKLCH support */
-  --background: hsl(240, 12%, 18%); /* #2a2d36 - Deep Slate */
-  --background: oklch(0.18 0.01 260);
+  /* DARK MODE - HIGH CONTRAST PREMIUM */
+  --radius: 0.75rem;
 
-  --foreground: hsl(0, 0%, 99%); /* Pure White */
+  /* HSL fallbacks */
+  --background: hsl(240, 12%, 8%);
+  --background: oklch(0.15 0.02 260);
+
+  --foreground: hsl(0, 0%, 99%);
   --foreground: oklch(0.99 0 0);
 
-  --card: hsl(240, 12%, 22%); /* Lighter Panel */
-  --card: oklch(0.22 0.01 260);
+  --card: hsl(240, 12%, 12%);
+  --card: oklch(0.20 0.02 260);
 
   --card-foreground: hsl(0, 0%, 99%);
   --card-foreground: oklch(0.99 0 0);
 
-  --popover: hsl(240, 12%, 22%);
-  --popover: oklch(0.22 0.01 260);
+  --popover: hsl(240, 12%, 10%);
+  --popover: oklch(0.18 0.02 260);
 
   --popover-foreground: hsl(0, 0%, 99%);
   --popover-foreground: oklch(0.99 0 0);
 
-  --primary: hsl(235, 70%, 68%); /* Brighter Indigo */
+  --primary: hsl(235, 70%, 68%);
   --primary: oklch(0.68 0.22 265);
 
   --primary-foreground: hsl(0, 0%, 99%);
   --primary-foreground: oklch(0.99 0 0);
 
-  --secondary: hsl(240, 12%, 28%);
-  --secondary: oklch(0.28 0.02 260);
+  --secondary: hsl(240, 12%, 20%);
+  --secondary: oklch(0.30 0.02 260);
 
   --secondary-foreground: hsl(0, 0%, 99%);
   --secondary-foreground: oklch(0.99 0 0);
 
-  --muted: hsl(240, 12%, 28%);
-  --muted: oklch(0.28 0.02 260);
+  --muted: hsl(240, 12%, 20%);
+  --muted: oklch(0.30 0.02 260);
 
-  --muted-foreground: hsl(0, 0%, 75%); /* WCAG AA High Contrast Silver */
-  --muted-foreground: oklch(0.75 0 0);
+  --muted-foreground: hsl(0, 0%, 70%);
+  --muted-foreground: oklch(0.70 0 0);
 
-  --accent: hsl(240, 12%, 28%);
-  --accent: oklch(0.28 0.02 260);
+  --accent: hsl(240, 12%, 25%);
+  --accent: oklch(0.35 0.02 260);
 
   --accent-foreground: hsl(0, 0%, 99%);
   --accent-foreground: oklch(0.99 0 0);
 
-  --destructive: hsl(0, 75%, 60%);
+  --destructive: hsl(0, 60%, 55%);
   --destructive: oklch(0.60 0.20 20);
 
   --destructive-foreground: hsl(0, 0%, 99%);
@@ -403,386 +405,233 @@
     color: #60a5fa !important;
   }
 
-  /* Blog callout-questions (cards grid) */
-  .prose .callout-questions {
-    background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
-    border: 2px solid #bae6fd;
-    border-radius: 1rem;
-    padding: 2rem;
-    margin: 2.5rem 0;
-    box-shadow: 0 4px 16px rgba(37, 99, 235, 0.08);
+  /* Fase 5: UI/UX Premium - Chat Center Micro-animations */
+  
+  /* Message bubble entrance animation */
+  @keyframes message-pop {
+    0% {
+      opacity: 0;
+      transform: scale(0.8) translateY(10px);
+    }
+    70% {
+      transform: scale(1.02) translateY(-2px);
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+    }
   }
 
-  .dark .prose .callout-questions {
-    background: linear-gradient(135deg, rgba(30, 64, 175, 0.1) 0%, rgba(37, 99, 235, 0.05) 100%);
-    border-color: rgba(96, 165, 250, 0.3);
+  .animate-message-pop {
+    animation: message-pop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
   }
 
-  /* Blog callout-stat (big number highlight) */
-  .prose .callout-stat {
-    background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
-    border-left: 6px solid #10b981;
-    border-radius: 1rem;
-    padding: 2rem;
-    margin: 2.5rem 0;
-    text-align: center;
-    box-shadow: 0 4px 16px rgba(16, 185, 129, 0.1);
+  /* Smooth list item stagger */
+  @keyframes list-item-enter {
+    0% {
+      opacity: 0;
+      transform: translateX(-20px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateX(0);
+    }
   }
 
-  .dark .prose .callout-stat {
-    background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(5, 150, 105, 0.05) 100%);
-    border-color: #10b981;
+  .animate-list-item {
+    animation: list-item-enter 0.25s cubic-bezier(0.4, 0, 0.2, 1) forwards;
   }
 
-  /* Blog callout-success */
-  .prose .callout-success {
-    background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
-    border-left: 4px solid #22c55e;
-    padding: 1.5rem;
-    border-radius: 0.75rem;
-    margin: 2rem 0;
-    box-shadow: 0 2px 8px rgba(34, 197, 94, 0.1);
+  /* Pulse ring for unread badges */
+  @keyframes pulse-ring {
+    0% {
+      transform: scale(1);
+      opacity: 0.8;
+    }
+    50% {
+      transform: scale(1.3);
+      opacity: 0;
+    }
+    100% {
+      transform: scale(1);
+      opacity: 0;
+    }
   }
 
-  .dark .prose .callout-success {
-    background: linear-gradient(135deg, rgba(34, 197, 94, 0.1) 0%, rgba(22, 163, 74, 0.05) 100%);
-    border-color: #22c55e;
+  .animate-pulse-ring {
+    position: relative;
   }
 
-  .prose .callout-success strong {
-    color: #16a34a !important;
+  .animate-pulse-ring::before {
+    content: '';
+    position: absolute;
+    inset: -4px;
+    border-radius: 50%;
+    background: currentColor;
+    opacity: 0.4;
+    animation: pulse-ring 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
   }
 
-  .dark .prose .callout-success strong {
-    color: #4ade80 !important;
-  }
-
-  /* Blog callout-problems (red cards grid) */
-  .prose .callout-problems {
-    background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
-    border: 2px solid #fecaca;
-    border-radius: 1rem;
-    padding: 2rem;
-    margin: 2.5rem 0;
-    box-shadow: 0 4px 16px rgba(239, 68, 68, 0.1);
-  }
-
-  .dark .prose .callout-problems {
-    background: linear-gradient(135deg, rgba(127, 29, 29, 0.15) 0%, rgba(185, 28, 28, 0.05) 100%);
-    border-color: rgba(248, 113, 113, 0.3);
-  }
-
-  /* Blog callout-brain (purple stat) */
-  .prose .callout-brain {
-    background: linear-gradient(135deg, #faf5ff 0%, #f3e8ff 100%);
-    border-left: 6px solid #7c3aed;
-    border-radius: 1rem;
-    padding: 2rem;
-    margin: 2.5rem 0;
-    text-align: center;
-    box-shadow: 0 4px 16px rgba(124, 58, 237, 0.12);
-  }
-
-  .dark .prose .callout-brain {
-    background: linear-gradient(135deg, rgba(124, 58, 237, 0.15) 0%, rgba(109, 40, 217, 0.05) 100%);
-    border-color: #a78bfa;
-  }
-
-  /* Blog callout-insight (amber box) */
-  .prose .callout-insight {
-    background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
-    border-left: 4px solid #f59e0b;
-    padding: 1.5rem;
-    border-radius: 0.75rem;
-    margin: 2rem 0;
-    box-shadow: 0 2px 8px rgba(245, 158, 11, 0.1);
-  }
-
-  .dark .prose .callout-insight {
-    background: linear-gradient(135deg, rgba(245, 158, 11, 0.15) 0%, rgba(217, 119, 6, 0.05) 100%);
-    border-color: #fbbf24;
-  }
-
-  .prose .callout-insight strong {
-    color: #d97706 !important;
-  }
-
-  .dark .prose .callout-insight strong {
-    color: #fbbf24 !important;
-  }
-
-  /* Blog callout-data (stats grid) */
-  .prose .callout-data {
-    background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
-    border: 2px solid #bae6fd;
-    border-radius: 1rem;
-    padding: 2rem;
-    margin: 3.5rem 0;
-    box-shadow: 0 4px 16px rgba(14, 165, 233, 0.1);
-  }
-
-  .dark .prose .callout-data {
-    background: linear-gradient(135deg, rgba(14, 165, 233, 0.1) 0%, rgba(3, 105, 161, 0.05) 100%);
-    border-color: rgba(125, 211, 252, 0.3);
-  }
-
-  /* Blog callout-strategies (teal cards) */
-  .prose .callout-strategies {
-    background: linear-gradient(135deg, #f0fdfa 0%, #ccfbf1 100%);
-    border: 2px solid #99f6e4;
-    border-radius: 1rem;
-    padding: 2rem;
-    margin: 3.5rem 0;
-    box-shadow: 0 4px 16px rgba(20, 184, 166, 0.1);
-  }
-
-  .dark .prose .callout-strategies {
-    background: linear-gradient(135deg, rgba(20, 184, 166, 0.1) 0%, rgba(15, 118, 110, 0.05) 100%);
-    border-color: rgba(94, 234, 212, 0.3);
-  }
-
-  /* Typing Indicator Animation (Fase 4.1) */
+  /* Typing indicator dots */
   @keyframes typing-bounce {
     0%, 60%, 100% {
       transform: translateY(0);
-      opacity: 0.4;
     }
     30% {
       transform: translateY(-4px);
-      opacity: 1;
     }
   }
 
   .typing-dot {
     width: 6px;
     height: 6px;
+    background: currentColor;
     border-radius: 50%;
-    background-color: #667781;
     animation: typing-bounce 1.4s ease-in-out infinite;
-    display: inline-block;
   }
 
-  /* WhatsApp Dark Mode Colors (Fase 4.4) */
-  .dark .whatsapp-bg {
-    background-color: #12181C;
+  .typing-dot:nth-child(2) {
+    animation-delay: 0.2s;
   }
 
-  .dark .whatsapp-bubble-outgoing {
-    background-color: #005C4B !important;
+  .typing-dot:nth-child(3) {
+    animation-delay: 0.4s;
   }
 
-  .dark .whatsapp-bubble-incoming {
-    background-color: #202C33 !important;
-  }
-
-  .dark .whatsapp-header {
-    background-color: #1F2C34 !important;
-  }
-
-  .dark .whatsapp-input {
-    background-color: #1E2A30 !important;
-  }
-
-  .dark .whatsapp-text-primary {
-    color: #E9EDEF !important;
-  }
-
-  .dark .whatsapp-text-secondary {
-    color: #8696A0 !important;
-  }
-
-  /* WhatsApp dot pattern background for dark mode */
-  .dark .whatsapp-bg-pattern {
-    background-color: #12181C;
-    background-image: radial-gradient(circle, rgba(233, 237, 239, 0.05) 1px, transparent 1px);
-    background-size: 24px 24px;
-  }
-
-  /* Fase 5.1 - Micro-Animacoes Premium */
-
-  /* Bolha de mensagem entrada suave */
-  @keyframes message-slide-in {
-    from {
-      opacity: 0;
-      transform: translateY(8px) scale(0.96);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0) scale(1);
-    }
-  }
-
-  .message-bubble-animate {
-    animation: message-slide-in 200ms cubic-bezier(0.4, 0, 0.2, 1);
-  }
-
-  /* Hover suave em conversas */
-  .conversation-item {
-    transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1);
-  }
-
-  .conversation-item:hover {
-    transform: scale(1.005);
-    background-color: rgba(0, 0, 0, 0.02);
-  }
-
-  .dark .conversation-item:hover {
-    background-color: rgba(255, 255, 255, 0.05);
-  }
-
-  /* Badge pulse animation ao receber nova mensagem */
-  @keyframes badge-pulse {
-    0%, 100% {
-      transform: scale(1);
-      opacity: 1;
+  /* Status checkmark animation */
+  @keyframes check-pop {
+    0% {
+      transform: scale(0);
     }
     50% {
-      transform: scale(1.1);
-      opacity: 0.8;
-    }
-  }
-
-  .badge-pulse {
-    animation: badge-pulse 1s ease-in-out 2;
-  }
-
-  /* Skeleton loader shimmer premium */
-  @keyframes skeleton-shimmer {
-    0% {
-      background-position: -1000px 0;
+      transform: scale(1.2);
     }
     100% {
-      background-position: 1000px 0;
+      transform: scale(1);
     }
   }
 
-  .skeleton-loader {
-    animation: skeleton-shimmer 2s infinite linear;
-    background: linear-gradient(
-      90deg,
-      rgba(0, 0, 0, 0.05) 0%,
-      rgba(0, 0, 0, 0.08) 50%,
-      rgba(0, 0, 0, 0.05) 100%
-    );
-    background-size: 1000px 100%;
+  .animate-check-pop {
+    animation: check-pop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
   }
 
-  .dark .skeleton-loader {
-    background: linear-gradient(
-      90deg,
-      rgba(255, 255, 255, 0.03) 0%,
-      rgba(255, 255, 255, 0.06) 50%,
-      rgba(255, 255, 255, 0.03) 100%
-    );
-    background-size: 1000px 100%;
+  /* Hover lift effect */
+  .hover-lift {
+    transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.2s ease;
   }
 
-  /* Send button morph animation */
-  .send-button {
-    transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1);
+  .hover-lift:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   }
 
-  .send-button:active {
-    transform: scale(0.95);
+  /* Active press effect */
+  .active-press {
+    transition: transform 0.1s ease;
   }
 
-  /* Scroll suave no chat */
-  .chat-scroll-container {
-    scroll-behavior: smooth;
+  .active-press:active {
+    transform: scale(0.97);
   }
 
-  /* Fade in suave para elementos */
-  @keyframes fade-in-smooth {
-    from {
+  /* Selection bar slide animation */
+  @keyframes selection-bar-slide {
+    0% {
+      transform: scaleY(0);
       opacity: 0;
     }
-    to {
+    100% {
+      transform: scaleY(1);
       opacity: 1;
     }
   }
 
-  .fade-in-smooth {
-    animation: fade-in-smooth 300ms ease-out;
+  .animate-selection-bar {
+    animation: selection-bar-slide 0.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
   }
 
-  /* Transicao suave de status da mensagem */
-  .message-status-icon {
-    transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1);
-  }
-
-  /* Hover scale em quick actions */
-  .quick-action-btn {
-    transition: transform 150ms cubic-bezier(0.4, 0, 0.2, 1);
-  }
-
-  .quick-action-btn:hover {
-    transform: scale(1.08);
-  }
-
-  .quick-action-btn:active {
-    transform: scale(0.96);
-  }
-
-  /* Fase 5.3 - Responsive 3-panel layout */
-  .chat-layout {
-    display: flex;
-    width: 100%;
-    height: 100%;
-  }
-
-  /* Mobile: single panel (conversation list OR message area) */
-  @media (max-width: 767px) {
-    .chat-layout {
-      flex-direction: column;
+  /* Reaction pop animation */
+  @keyframes reaction-pop {
+    0% {
+      transform: scale(0) rotate(-45deg);
+      opacity: 0;
+    }
+    60% {
+      transform: scale(1.2) rotate(5deg);
+    }
+    100% {
+      transform: scale(1) rotate(0);
+      opacity: 1;
     }
   }
 
-  /* Fase 5.5 - Accessibility utilities */
-  .sr-only {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    margin: -1px;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    white-space: nowrap;
-    border-width: 0;
+  .animate-reaction-pop {
+    animation: reaction-pop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
   }
 
-  /* Focus visible enhancements */
-  *:focus-visible {
-    outline: 2px solid #00a884;
-    outline-offset: 2px;
+  /* Connection status pulse */
+  @keyframes connection-pulse {
+    0%, 100% {
+      box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4);
+    }
+    50% {
+      box-shadow: 0 0 0 6px rgba(16, 185, 129, 0);
+    }
+  }
+
+  .animate-connection-pulse {
+    animation: connection-pulse 2s ease-in-out infinite;
+  }
+
+  /* Tab underline slide */
+  @keyframes tab-underline {
+    0% {
+      transform: scaleX(0);
+    }
+    100% {
+      transform: scaleX(1);
+    }
+  }
+
+  .animate-tab-underline {
+    animation: tab-underline 0.25s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    transform-origin: left;
+  }
+
+  /* Skeleton loading shimmer */
+  @keyframes skeleton-shimmer {
+    0% {
+      background-position: -200% 0;
+    }
+    100% {
+      background-position: 200% 0;
+    }
+  }
+
+  .animate-skeleton {
+    background: linear-gradient(
+      90deg,
+      hsl(var(--muted)) 0%,
+      hsl(var(--muted) / 0.5) 50%,
+      hsl(var(--muted)) 100%
+    );
+    background-size: 200% 100%;
+    animation: skeleton-shimmer 1.5s infinite;
+  }
+
+  /* Premium focus ring */
+  .focus-ring-premium {
+    transition: box-shadow 0.2s ease, outline 0.2s ease;
+  }
+
+  .focus-ring-premium:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 2px hsl(var(--background)), 0 0 0 4px hsl(var(--ring));
+  }
+
+  /* Smooth backdrop blur for modals */
+  .backdrop-blur-premium {
+    backdrop-filter: blur(8px) saturate(180%);
+    -webkit-backdrop-filter: blur(8px) saturate(180%);
   }
 }
-/* Drag and Drop improvements - TEMPORARIAMENTE DESATIVADO PARA TESTE */
-/* [data-dnd-kit-drag-handle] {
-  cursor: grab;
-  user-select: none;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  touch-action: none;
-}
-
-[data-dnd-kit-drag-handle]:active {
-  cursor: grabbing;
-}
-
-[draggable="true"] {
-  user-select: none;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-}
-
-body.dragging {
-  cursor: grabbing !important;
-  user-select: none !important;
-}
-
-body.dragging * {
-  cursor: grabbing !important;
-  user-select: none !important;
-} */
