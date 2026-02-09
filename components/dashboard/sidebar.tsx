@@ -4,7 +4,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 import { cn } from '@/lib/utils'
-import { Home, Users, Settings, BarChart3, CreditCard, Mail, LineChart } from 'lucide-react'
+import { Home, Users, Settings, BarChart3, CreditCard, Mail, LineChart, Search } from 'lucide-react'
 
 const navItems = [
   {
@@ -16,6 +16,11 @@ const navItems = [
     title: 'Contatos',
     href: '/dashboard/contacts',
     icon: Users,
+  },
+  {
+    title: 'Prospecção',
+    href: '/dashboard/prospecting',
+    icon: Search,
   },
   {
     title: 'Dashboard',
