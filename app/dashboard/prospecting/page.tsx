@@ -74,9 +74,16 @@ export default function ProspectingPage() {
             description: 'Compre mais créditos em Configurações > Add-ons',
           })
         } else if (res.status === 503) {
-          toast.error('Serviço de busca não configurado', {
-            description: 'Entre em contato com o suporte para ativar',
-          })
+          if (data.code === 'GOOGLE_PLACES_API_REQUIRED') {
+            toast.error('Google bloqueou temporariamente as buscas', {
+              description: 'Configure GOOGLE_PLACES_API_KEY para resultados ilimitados (gratuito até $200/mês). Entre em contato com o suporte.',
+              duration: 10000,
+            })
+          } else {
+            toast.error('Serviço de busca não configurado', {
+              description: 'Entre em contato com o suporte para ativar',
+            })
+          }
         } else {
           toast.error(data.error || 'Erro na busca')
         }

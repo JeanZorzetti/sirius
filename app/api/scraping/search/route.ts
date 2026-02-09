@@ -118,6 +118,19 @@ export async function POST(req: Request) {
 
   } catch (error: any) {
     logger.error({ error: error.message }, 'Scraping search error')
+    
+    // Erro especial: Google Places API necessária
+    if (error.message?.includes('GOOGLE_PLACES_API_REQUIRED')) {
+      return NextResponse.json(
+        { 
+          error: 'Serviço temporariamente indisponível',
+          code: 'GOOGLE_PLACES_API_REQUIRED',
+          message: 'O Google bloqueou temporariamente as buscas. Para melhores resultados, configure a Google Places API (gratuito até $200/mês). Entre em contato com o suporte.',
+        },
+        { status: 503 }
+      )
+    }
+    
     return NextResponse.json(
       { error: error.message || 'Internal server error' },
       { status: 500 }
