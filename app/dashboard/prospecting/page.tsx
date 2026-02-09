@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { Search, Loader2, Users, CreditCard } from 'lucide-react'
+import { Search, Loader2, Users, CreditCard, Server, ExternalLink } from 'lucide-react'
 import { toast } from 'sonner'
 
 interface ScrapingJob {
@@ -136,6 +136,33 @@ export default function ProspectingPage() {
           Créditos: {credits.balance}/{credits.monthlyQuota}
         </Badge>
       </div>
+
+      {/* Firecrawl Recommendation */}
+      <Card className="bg-gradient-to-r from-blue-50 to-indigo-50 border-blue-200 dark:from-blue-950/20 dark:to-indigo-950/20 dark:border-blue-800">
+        <CardContent className="p-4">
+          <div className="flex items-start gap-3">
+            <Server className="h-5 w-5 text-blue-600 mt-0.5" />
+            <div className="flex-1">
+              <p className="font-medium text-blue-900 dark:text-blue-100">
+                💡 Dica: Melhore seus resultados com Firecrawl
+              </p>
+              <p className="text-sm text-blue-700 dark:text-blue-300 mt-1">
+                Instale o Firecrawl no seu EasyPanel para buscas ilimitadas e de melhor qualidade. 
+                É gratuito e open source!
+              </p>
+              <a 
+                href="https://easypanel.io/docs/templates/firecrawl" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1 text-sm font-medium text-blue-600 hover:text-blue-800 mt-2"
+              >
+                Ver template no EasyPanel
+                <ExternalLink className="h-3 w-3" />
+              </a>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
 
       {/* Search Form */}
       <Card>

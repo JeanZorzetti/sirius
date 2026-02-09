@@ -2,12 +2,14 @@
  * Scraping Providers Factory
  * 
  * Ordem de prioridade:
- * 1. Hybrid Crawler (tenta scraping → fallback para Places API)
- * 2. Google Places API (se configurada)
- * 3. CNPJ API (dados oficiais brasileiros)
+ * 1. Firecrawl (self-hosted no EasyPanel - gratuito, melhor qualidade)
+ * 2. Hybrid Crawler (tenta scraping → fallback Places API)
+ * 3. Google Places API (direta)
+ * 4. CNPJ API (dados oficiais brasileiros)
  */
 
 import { ScrapingProvider, ScrapingSearchParams, ScrapingSearchResult } from './base'
+import { firecrawlProvider } from './firecrawl-provider'
 import { hybridCrawlerProvider } from './hybrid-crawler'
 import { googlePlacesProvider } from './google-places'
 import { cnpjApiProvider } from './cnpj-api'
@@ -15,9 +17,10 @@ import logger from '@/lib/logger'
 
 // Lista de providers em ordem de prioridade
 const providers: ScrapingProvider[] = [
-  hybridCrawlerProvider,    // Tenta scraping, depois API
-  googlePlacesProvider,     // API direta (se configurada)
-  cnpjApiProvider,          // Sempre disponível
+  firecrawlProvider,        // Prioridade 1: Self-hosted (melhor)
+  hybridCrawlerProvider,    // Prioridade 2: Scraping/Places API
+  googlePlacesProvider,     // Prioridade 3: API direta
+  cnpjApiProvider,          // Prioridade 4: Sempre disponível
 ]
 
 export function getAvailableProvider(): ScrapingProvider | null {
@@ -34,7 +37,7 @@ export function getConfiguredProviders(): ScrapingProvider[] {
 }
 
 export function isAnyProviderConfigured(): boolean {
-  return true // Sempre true, pelo menos o hybrid está disponível
+  return true
 }
 
 /**
@@ -54,4 +57,4 @@ export async function searchLeads(params: ScrapingSearchParams): Promise<Scrapin
 
 // Re-exportar tipos e providers
 export * from './base'
-export { hybridCrawlerProvider, googlePlacesProvider, cnpjApiProvider }
+export { firecrawlProvider, hybridCrawlerProvider, googlePlacesProvider, cnpjApiProvider }
