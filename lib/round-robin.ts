@@ -210,7 +210,7 @@ export async function getRoundRobinStats(organizationId: string) {
   // Mapear para usuários
   const users = await prisma.user.findMany({
     where: { id: { in: config.userIds } },
-    select: { id: true, name: true, email: true, profilePicUrl: true },
+    select: { id: true, name: true, email: true },
   })
 
   return {
