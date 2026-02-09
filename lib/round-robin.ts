@@ -113,21 +113,21 @@ export async function distributeLead(
     let eligibleUsers = config.userIds
 
     if (config.skipIfOffline) {
-      // Filtrar apenas usuários online (últimos 15 minutos)
-      const fifteenMinutesAgo = new Date(Date.now() - 15 * 60 * 1000)
+      // Filtrar apenas usuários ativos recentemente (últimas 24 horas)
+      const oneDayAgo = new Date(Date.now() - 24 * 60 * 60 * 1000)
       
-      const onlineUsers = await prisma.user.findMany({
+      const activeUsers = await prisma.user.findMany({
         where: {
           id: { in: config.userIds },
           organizationId,
-          lastActiveAt: { gte: fifteenMinutesAgo },
+          updatedAt: { gte: oneDayAgo },
         },
         select: { id: true },
       })
 
-      eligibleUsers = onlineUsers.map(u => u.id)
+      eligibleUsers = activeUsers.map(u => u.id)
 
-      // Se ninguém online, usar todos
+      // Se ninguém ativo, usar todos
       if (eligibleUsers.length === 0) {
         eligibleUsers = config.userIds
       }
