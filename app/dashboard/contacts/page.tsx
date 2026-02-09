@@ -3,6 +3,7 @@ import { PrismaClient } from "@prisma/client"
 import { DataTable } from "@/components/contacts/data-table"
 import { columns } from "@/components/contacts/columns"
 import { CreateContactDialog } from "@/components/contacts/create-contact-dialog"
+import { ImportContactsDialog } from "@/components/contacts/import-contacts-dialog"
 import { EmptyState } from "@/components/ui/empty-state"
 import { ExportButtons } from "@/components/ui/export-buttons"
 import { Users } from "lucide-react"
@@ -52,6 +53,7 @@ export default async function ContactsPage() {
                 </div>
                 <div className="flex items-center space-x-2 w-full sm:w-auto">
                     {contacts.length > 0 && <ExportButtons resourceType="contacts" />}
+                    <ImportContactsDialog />
                     <CreateContactDialog />
                 </div>
             </div>
