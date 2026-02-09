@@ -159,6 +159,7 @@ export async function distributeLead(
       await prisma.notification.create({
         data: {
           userId: assignedUserId,
+          organizationId,
           type: 'SYSTEM',
           title: 'Novo lead atribuído',
           message: 'Um novo lead foi atribuído a você via round-robin',
