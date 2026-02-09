@@ -26,10 +26,11 @@ export class SiriusScraperProvider implements ScrapingProvider {
 
   async search(params: ScrapingSearchParams): Promise<ScrapingSearchResult> {
     if (!SCRAPER_URL) {
+      logger.error({}, 'SIRIUS_SCRAPER_URL not configured')
       throw new Error('SIRIUS_SCRAPER_URL not configured')
     }
 
-    logger.info({ query: params.query, city: params.city }, 'Sirius scraper search started')
+    logger.info({ url: SCRAPER_URL, query: params.query, city: params.city }, 'Sirius scraper search started')
 
     try {
       const response = await fetch(`${SCRAPER_URL}/search`, {
@@ -40,6 +41,8 @@ export class SiriusScraperProvider implements ScrapingProvider {
           city: params.city,
           limit: params.limit || 10,
         }),
+        // Timeout de 60 segundos (Puppeteer demora)
+        signal: AbortSignal.timeout(60000),
       })
 
       if (!response.ok) {
@@ -71,7 +74,21 @@ export class SiriusScraperProvider implements ScrapingProvider {
       }
 
     } catch (error: any) {
-      logger.error({ error: error.message }, 'Sirius scraper error')
+      logger.error({ 
+        error: error.message, 
+        code: error.code,
+        cause: error.cause?.message,
+        scraperUrl: SCRAPER_URL,
+      }, 'Sirius scraper error')
+      
+      if (error.name === 'TimeoutError' || error.message?.includes('timeout')) {
+        throw new Error('Scraper timeout - o servidor demorou muito para responder. Tente novamente.')
+      }
+      
+      if (error.code === 'ECONNREFUSED' || error.message?.includes('fetch failed')) {
+        throw new Error(`Não foi possível conectar ao scraper em ${SCRAPER_URL}. Verifique se o serviço está rodando.`)
+      }
+      
       throw error
     }
   }

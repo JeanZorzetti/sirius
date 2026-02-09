@@ -74,7 +74,17 @@ export default function ProspectingPage() {
             description: 'Compre mais créditos em Configurações > Add-ons',
           })
         } else if (res.status === 503) {
-          if (data.code === 'GOOGLE_PLACES_API_REQUIRED') {
+          if (data.code === 'SCRAPER_NOT_CONFIGURED') {
+            toast.error('Servidor de scraping não configurado', {
+              description: 'Configure SIRIUS_SCRAPER_URL no Vercel apontando para seu servidor no EasyPanel.',
+              duration: 10000,
+            })
+          } else if (data.code === 'SCRAPER_CONNECTION_ERROR') {
+            toast.error('Não foi possível conectar ao scraper', {
+              description: data.message || 'Verifique se o serviço está rodando no EasyPanel.',
+              duration: 10000,
+            })
+          } else if (data.code === 'GOOGLE_PLACES_API_REQUIRED') {
             toast.error('Google bloqueou temporariamente as buscas', {
               description: 'Configure GOOGLE_PLACES_API_KEY para resultados ilimitados (gratuito até $200/mês). Entre em contato com o suporte.',
               duration: 10000,

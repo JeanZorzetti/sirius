@@ -117,7 +117,31 @@ export async function POST(req: Request) {
     })
 
   } catch (error: any) {
-    logger.error({ error: error.message }, 'Scraping search error')
+    logger.error({ error: error.message, stack: error.stack }, 'Scraping search error')
+    
+    // Erro: Scraper não configurado
+    if (error.message?.includes('SIRIUS_SCRAPER_URL not configured')) {
+      return NextResponse.json(
+        { 
+          error: 'Scraper não configurado',
+          code: 'SCRAPER_NOT_CONFIGURED',
+          message: 'O servidor de scraping não está configurado. Configure a variável SIRIUS_SCRAPER_URL no Vercel.',
+        },
+        { status: 503 }
+      )
+    }
+    
+    // Erro: Scraper não conecta
+    if (error.message?.includes('Não foi possível conectar ao scraper')) {
+      return NextResponse.json(
+        { 
+          error: 'Scraper indisponível',
+          code: 'SCRAPER_CONNECTION_ERROR',
+          message: error.message,
+        },
+        { status: 503 }
+      )
+    }
     
     // Erro especial: Google Places API necessária
     if (error.message?.includes('GOOGLE_PLACES_API_REQUIRED')) {
