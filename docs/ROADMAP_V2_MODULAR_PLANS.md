@@ -3,7 +3,7 @@
 **Projeto:** Sirius CRM - Migração para Sistema de Planos Modularizados
 **Início:** 2026-02-05
 **Duração Total:** 7-9 semanas
-**Status:** 🟢 Em Progresso - Fase 2 Concluída ✅
+**Status:** 🟢 Em Progresso - Fase 3 Concluída ✅
 
 ---
 
@@ -22,10 +22,10 @@ FREE (R$ 0) → STARTER (R$ 49) → PRO (R$ 97) → BUSINESS (R$ 149-197)
 ### Decisões Estratégicas Confirmadas
 
 ✅ **Implementação:** Faseada (4 fases)
-✅ **Prioridade #1:** Chat Center (WhatsApp integrado)
+✅ **Prioridade #1:** Chat Center (WhatsApp integrado) - CONCLUÍDO
 ✅ **Migração Clientes PRO:** Todos para BUSINESS (R$ 149)
 ✅ **Evolution API:** Self-hosted
-⚠️ **Scraping Provider:** A definir (ver recomendações abaixo)
+✅ **Scraping Provider:** Sirius Scraper (self-hosted) + Google Places API + Fallbacks
 ⚠️ **Clientes FREE >50 deals:** A definir (ver opções abaixo)
 
 ---
@@ -1022,33 +1022,93 @@ export function ConnectionManager() {
 
 ---
 
-## 🕵️ FASE 3: Scraping System + Add-ons (Semanas 6-7)
+## 🕵️ FASE 3: Scraping System + Add-ons (Semanas 6-7) ✅ CONCLUÍDA
 
 **Objetivo:** Implementar prospecção automática e marketplace de add-ons.
+**Status:** ✅ Completa (2026-02-09)
+**Duração Real:** 3 dias
 
-### 3.1 Escolha do Scraping Provider
+### 3.1 Arquitetura de Scraping Implementada
 
-**Opções Analisadas:**
+**✅ Sistema Multi-Provider com Fallback Automático:**
 
-| Provider | Prós | Contras | Custo |
-|----------|------|---------|-------|
-| **Apify** | - Ready-to-use actors<br>- Google Maps scraper nativo<br>- LinkedIn scraper<br>- Proxy incluído | - Custo por crédito<br>- Vendor lock-in | ~$0.15/100 leads |
-| **Bright Data** | - Melhor infra de proxy<br>- APIs robustas<br>- Compliance legal | - Caro<br>- Setup complexo | ~$500/mês mínimo |
-| **Custom (Puppeteer)** | - Controle total<br>- Custo fixo VPS<br>- Flexibilidade | - Manutenção constante<br>- Risco de bloqueio<br>- Infra própria | ~$50/mês VPS |
-| **Outscraper** | - Foco em Google Maps<br>- API simples<br>- Pay-as-you-go | - Limitado a Maps<br>- Sem LinkedIn | ~$0.10/100 leads |
+| Provider | Tipo | Status | Custo |
+|----------|------|--------|-------|
+| **Sirius Scraper** | Self-hosted (Puppeteer) | ✅ Implementado | Gratuito (VPS) |
+| **Google Places API** | API Oficial | ✅ Implementado | $200/mês grátis |
+| **ScrapingBee** | API Terceira | ✅ Implementado | Trial 200 req |
+| **Hybrid Crawler** | Scraping direto | ✅ Implementado | Gratuito |
+| **CNPJ API** | API Oficial BR | ✅ Implementado | Gratuito |
 
-**🎯 RECOMENDAÇÃO:**
+**🎯 Arquitetura Final:**
 
-**Abordagem Híbrida:**
-1. **Google Maps:** Outscraper API (mais barato, foco)
-2. **LinkedIn:** Apify Actor (quando necessário)
-3. **Fallback:** Custom scraper (Puppeteer) para casos específicos
+**Prioridade de Providers:**
+1. **Sirius Scraper** (self-hosted) - Prioridade 1
+   - Puppeteer + Chrome
+   - Docker container para EasyPanel
+   - Template 1-click disponível
+   - Anti-detection measures
+   
+2. **Google Places API** - Prioridade 2
+   - API oficial do Google
+   - $200 créditos mensais grátis
+   - Dados confiáveis, nunca bloqueia
+   
+3. **ScrapingBee** - Prioridade 3
+   - API paga com trial gratuito
+   - Proxy rotation integrado
+   
+4. **Hybrid Crawler** - Prioridade 4
+   - Cheerio + fetch (Vercel compatível)
+   - Fallback quando outros falham
+   
+5. **CNPJ API** - Prioridade 5
+   - Dados oficiais brasileiros
+   - Sempre disponível
 
-**Justificativa:**
-- Outscraper cobre 80% dos casos de uso (Google Maps)
-- Apify apenas para LinkedIn (uso menor)
-- Custo controlado (~R$ 100-200/mês para volume médio)
-- Escalável conforme demanda
+**Fallback Automático:**
+- Se provider 1 falhar → tenta provider 2
+- Se provider 2 falhar → tenta provider 3
+- Continua até encontrar um que funcione
+- Nunca fica sem opção
+
+**Arquivos Implementados:**
+- `scraping-server/` - Servidor Puppeteer self-hosted
+- `lib/scraping/providers/` - Sistema multi-provider
+- `lib/scraping/crawler/` - Crawler com Cheerio
+- `app/api/scraping/search/route.ts` - API de busca
+- `app/api/scraping/jobs/` - Gestão de jobs
+- `app/dashboard/prospecting/page.tsx` - UI de prospecção
+
+**Docker/EasyPanel:**
+```dockerfile
+# scraping-server/Dockerfile
+FROM node:20-slim
+RUN apt-get update && apt-get install -y chromium-dependencies
+WORKDIR /app
+COPY package.json ./
+RUN npm install
+COPY server.js ./
+EXPOSE 3000
+CMD ["npm", "start"]
+```
+
+**Instalação EasyPanel:**
+1. Create Service → Docker
+2. Source: Git Repository
+3. Repository: JeanZorzetti/sirius
+4. Build Path: `/scraping-server`
+5. Port: 3000
+
+**Variáveis de Ambiente:**
+```bash
+# Obrigatória para usar Sirius Scraper
+SIRIUS_SCRAPER_URL=https://siriusscraper.seudominio.com
+
+# Opcional (fallback)
+GOOGLE_PLACES_API_KEY=sua_chave
+SCRAPINGBEE_API_KEY=sua_key
+```
 
 ---
 
