@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
 import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
-import { searchGoogleMaps, isOutscraperConfigured } from '@/lib/scraping/outscraper-client'
+import { searchLeads, isAnyProviderConfigured } from '@/lib/scraping/providers'
 import logger from '@/lib/logger'
 
 export const dynamic = 'force-dynamic'
@@ -22,14 +22,17 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'Organization not found' }, { status: 404 })
     }
 
-    if (!isOutscraperConfigured()) {
+    if (!isAnyProviderConfigured()) {
       return NextResponse.json(
-        { error: 'Scraping service not configured' },
+        { 
+          error: 'Nenhum serviço de prospecção configurado',
+          message: 'Configure GOOGLE_PLACES_API_KEY no painel da Vercel ou entre em contato com o suporte.',
+        },
         { status: 503 }
       )
     }
 
-    const { query, limit = 50 } = await req.json()
+    const { query, city, state, category, limit = 50 } = await req.json()
 
     if (!query) {
       return NextResponse.json({ error: 'Query is required' }, { status: 400 })
@@ -42,127 +45,125 @@ export async function POST(req: Request) {
 
     const availableCredits = credits?.balance || 0
 
-    if (availableCredits < limit) {
+    if (availableCredits < 1) {
       return NextResponse.json(
         { 
-          error: 'Insufficient credits',
+          error: 'Créditos insuficientes',
           available: availableCredits,
-          required: limit,
+          message: 'Compre mais créditos em Configurações > Add-ons',
         },
         { status: 402 }
       )
     }
-    
+
     // Create job
     const job = await prisma.scrapingJob.create({
       data: {
         organizationId: user.organizationId,
         userId: user.id,
-        provider: 'OUTSCRAPER',
-        source: 'GOOGLE_MAPS',
+        provider: 'CUSTOM',
+        source: 'CUSTOM',
         query,
-        filters: { limit },
-        status: 'PENDING',
+        filters: { city, state, category, limit },
+        status: 'RUNNING',
+        startedAt: new Date(),
       },
     })
 
-    // Start search
-    const outscraperJob = await searchGoogleMaps({ query, limit })
+    // Execute search
+    const result = await searchLeads({
+      query,
+      city,
+      state,
+      category,
+      limit: Math.min(limit, availableCredits),
+    })
+
+    // Process leads - create contacts
+    const leads = await processLeads(result.leads, user.organizationId)
+
+    // Deduct credits
+    const creditsToDeduct = Math.min(leads.length, availableCredits)
+    if (creditsToDeduct > 0) {
+      await prisma.scrapingCredit.update({
+        where: { organizationId: user.organizationId },
+        data: {
+          balance: { decrement: creditsToDeduct },
+          usedThisMonth: { increment: creditsToDeduct },
+        },
+      })
+    }
 
     // Update job
     await prisma.scrapingJob.update({
       where: { id: job.id },
       data: {
-        status: outscraperJob.status === 'completed' ? 'COMPLETED' : 'RUNNING',
-        startedAt: new Date(),
+        status: 'COMPLETED',
+        resultsCount: leads.length,
+        creditsUsed: creditsToDeduct,
+        completedAt: new Date(),
+        results: leads,
       },
     })
 
-    // If completed immediately
-    if (outscraperJob.status === 'completed' && outscraperJob.results) {
-      const leads = await processLeads(
-        outscraperJob.results,
-        user.organizationId
-      )
-
-      // Deduct credits
-      await prisma.scrapingCredit.update({
-        where: { organizationId: user.organizationId },
-        data: {
-          balance: { decrement: leads.length },
-          usedThisMonth: { increment: leads.length },
-        },
-      })
-
-      await prisma.scrapingJob.update({
-        where: { id: job.id },
-        data: {
-          status: 'COMPLETED',
-          resultsCount: leads.length,
-          creditsUsed: leads.length,
-          completedAt: new Date(),
-        },
-      })
-
-      return NextResponse.json({
-        jobId: job.id,
-        status: 'COMPLETED',
-        leadsFound: leads.length,
-        leads,
-      })
-    }
-
     return NextResponse.json({
       jobId: job.id,
-      status: 'RUNNING',
-      message: 'Search started',
+      status: 'COMPLETED',
+      provider: result.provider,
+      leadsFound: leads.length,
+      creditsUsed: creditsToDeduct,
+      leads,
     })
 
   } catch (error: any) {
     logger.error({ error: error.message }, 'Scraping search error')
     return NextResponse.json(
-      { error: 'Internal server error' },
+      { error: error.message || 'Internal server error' },
       { status: 500 }
     )
   }
 }
 
-async function processLeads(results: any[], organizationId: string) {
-  const leads = []
+async function processLeads(leads: any[], organizationId: string) {
+  const created = []
 
-  for (const result of results) {
+  for (const lead of leads) {
     try {
-      if (!result.phone) continue
+      if (!lead.phone && !lead.email) continue
 
-      // Check duplicates
-      const existing = await prisma.contact.findFirst({
-        where: {
-          organizationId,
-          OR: [
-            { phone: result.phone },
-            { name: { equals: result.name, mode: 'insensitive' } },
-          ],
-        },
-      })
-
-      if (existing) continue
+      // Check duplicates by phone
+      if (lead.phone) {
+        const existing = await prisma.contact.findFirst({
+          where: {
+            organizationId,
+            phone: lead.phone,
+          },
+        })
+        if (existing) continue
+      }
 
       // Create contact
       const contact = await prisma.contact.create({
         data: {
           organizationId,
-          name: result.name,
-          phone: result.phone,
-          email: result.email,
-          company: result.name,
+          name: lead.name || 'Sem nome',
+          phone: lead.phone,
+          email: lead.email,
+          company: lead.name,
         },
       })
 
-      leads.push(contact)
+      created.push({
+        id: contact.id,
+        name: contact.name,
+        phone: contact.phone,
+        email: contact.email,
+        source: lead.source,
+      })
     } catch (error) {
-      logger.error({ error, result }, 'Error processing lead')
+      logger.error({ error, lead }, 'Error processing lead')
     }
   }
 
-  return leads
+  return created
 }
