@@ -1500,7 +1500,6 @@ model ExperimentEvent {
   @@index([timestamp])
 }
 
-
 // Round-Robin Lead Distribution (Business Feature)
 model RoundRobinConfig {
   id             String   @id @default(uuid())
@@ -1508,13 +1507,12 @@ model RoundRobinConfig {
   organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
   
   enabled        Boolean  @default(false)
-  userIds        String[] // IDs dos usuários na rotação
-  currentIndex   Int      @default(0) // Índice atual do round-robin
+  userIds        String[]
+  currentIndex   Int      @default(0)
   
-  // Configurações
-  assignToOwner  Boolean  @default(false) // Atribuir ao dono do contato
-  skipIfOffline  Boolean  @default(true)  // Pular usuários offline
-  notifyUsers    Boolean  @default(true)  // Notificar quando atribuir
+  assignToOwner  Boolean  @default(false)
+  skipIfOffline  Boolean  @default(true)
+  notifyUsers    Boolean  @default(true)
   
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
@@ -1522,7 +1520,7 @@ model RoundRobinConfig {
   @@index([organizationId])
 }
 
-// Registro de transações (pagamentos, upgrades, etc)
+// Transaction log for payments
 model Transaction {
   id              String   @id @default(uuid())
   
@@ -1531,14 +1529,12 @@ model Transaction {
   
   type            TransactionType
   amount          Decimal  @db.Decimal(10, 2)
-  currency        String   @default('BRL')
+  currency        String   @default("BRL")
   status          TransactionStatus @default(PENDING)
   
-  // Provedor de pagamento
-  provider        String   // 'MERCADO_PAGO', 'STRIPE', etc
+  provider        String
   providerPaymentId String?
   
-  // Metadados
   metadata        Json?
   
   createdAt       DateTime @default(now())
