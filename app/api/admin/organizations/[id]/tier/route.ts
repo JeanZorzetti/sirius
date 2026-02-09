@@ -56,10 +56,7 @@ export async function PUT(
       where: { id },
       data: { 
         tier,
-        // Reset trial if upgrading from FREE
-        trialEndsAt: tier !== SubscriptionTier.FREE && existingOrg.tier === SubscriptionTier.FREE
-          ? new Date(Date.now() + 14 * 24 * 60 * 60 * 1000) // 14 days trial
-          : existingOrg.trialEndsAt,
+        plan: tier, // Keep plan field synchronized for backward compatibility
       },
     })
 
