@@ -92,6 +92,10 @@ model Organization {
   whatsappConnections    WhatsAppConnection[]
   agiQuota               AgiQuota?
   leadDistributionRules  LeadDistributionRule[]
+  
+  // v2.0 Planos & Billing
+  roundRobinConfig       RoundRobinConfig?
+  transactions           Transaction[]
 
   // Chat Center - Quick Replies (Fase 2.1)
   quickReplies           QuickReply[]
@@ -1494,4 +1498,70 @@ model ExperimentEvent {
   @@index([experimentId, variantId, eventType])
   @@index([sessionId])
   @@index([timestamp])
+}
+
+
+// Round-Robin Lead Distribution (Business Feature)
+model RoundRobinConfig {
+  id             String   @id @default(uuid())
+  organizationId String   @unique
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  
+  enabled        Boolean  @default(false)
+  userIds        String[] // IDs dos usuários na rotação
+  currentIndex   Int      @default(0) // Índice atual do round-robin
+  
+  // Configurações
+  assignToOwner  Boolean  @default(false) // Atribuir ao dono do contato
+  skipIfOffline  Boolean  @default(true)  // Pular usuários offline
+  notifyUsers    Boolean  @default(true)  // Notificar quando atribuir
+  
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  
+  @@index([organizationId])
+}
+
+// Registro de transações (pagamentos, upgrades, etc)
+model Transaction {
+  id              String   @id @default(uuid())
+  
+  organizationId  String
+  organization    Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  
+  type            TransactionType
+  amount          Decimal  @db.Decimal(10, 2)
+  currency        String   @default('BRL')
+  status          TransactionStatus @default(PENDING)
+  
+  // Provedor de pagamento
+  provider        String   // 'MERCADO_PAGO', 'STRIPE', etc
+  providerPaymentId String?
+  
+  // Metadados
+  metadata        Json?
+  
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  
+  @@index([organizationId])
+  @@index([type])
+  @@index([status])
+  @@index([providerPaymentId])
+}
+
+enum TransactionType {
+  PLAN_UPGRADE
+  PLAN_DOWNGRADE
+  ADDON_PURCHASE
+  REFUND
+  CREDIT_ADJUSTMENT
+}
+
+enum TransactionStatus {
+  PENDING
+  COMPLETED
+  FAILED
+  REFUNDED
+  CANCELLED
 }
