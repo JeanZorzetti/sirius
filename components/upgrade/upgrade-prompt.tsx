@@ -12,9 +12,9 @@ import { Badge } from '@/components/ui/badge'
 import { Lock, Sparkles, TrendingUp } from 'lucide-react'
 import { SubscriptionTier } from '@prisma/client'
 import {
-  getPlanName,
-  getPlanPrice,
-  getPlanDifferences,
+  PLAN_NAMES,
+  PLAN_PRICING,
+  PLAN_DESCRIPTIONS,
 } from '@/lib/entitlements'
 import { useEntitlements } from '@/lib/hooks/use-entitlements'
 import Link from 'next/link'
@@ -32,9 +32,8 @@ export function UpgradePrompt({
 }: UpgradePromptProps) {
   const { tier: currentTier } = useEntitlements()
 
-  const requiredPlanName = getPlanName(requiredTier)
-  const requiredPrice = getPlanPrice(requiredTier)
-  const differences = getPlanDifferences(currentTier, requiredTier)
+  const requiredPlanName = PLAN_NAMES[requiredTier]
+  const requiredPrice = PLAN_PRICING[requiredTier]
 
   if (compact) {
     return (
@@ -84,25 +83,6 @@ export function UpgradePrompt({
       </CardHeader>
 
       <CardContent className="space-y-6">
-        {/* Benefícios */}
-        <div>
-          <h4 className="text-sm font-medium mb-3 flex items-center gap-2">
-            <Sparkles className="h-4 w-4 text-primary" />
-            O que você ganha com o upgrade:
-          </h4>
-          <ul className="space-y-2">
-            {differences.map((diff, index) => (
-              <li
-                key={index}
-                className="text-sm text-muted-foreground flex items-center gap-2"
-              >
-                <span className="h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
-                {diff}
-              </li>
-            ))}
-          </ul>
-        </div>
-
         {/* CTA */}
         <div className="flex items-center justify-between gap-4 rounded-lg bg-muted p-4">
           <div>

@@ -39,8 +39,8 @@ const navItems = [
     icon: Mail,
   },
   {
-    title: 'Planos',
-    href: '/dashboard/billing',
+    title: 'Planos e Preços',
+    href: '/dashboard/billing/plans',
     icon: CreditCard,
   },
   {
