@@ -116,6 +116,7 @@ model User {
   organization   Organization @relation(fields: [organizationId], references: [id])
 
   deals     Deal[]   // Deals managed by this user
+  assignedContacts Contact[] // Contacts assigned via round-robin
   notes     Note[]
   activities Activity[]
   emailLogs EmailLog[]
@@ -173,6 +174,10 @@ model Contact {
 
   organizationId String
   organization   Organization @relation(fields: [organizationId], references: [id])
+  
+  // Round-robin assignment
+  assignedToId   String?
+  assignedTo     User?    @relation(fields: [assignedToId], references: [id], onDelete: SetNull)
 
   deals            Deal[]
   whatsappMessages WhatsAppMessage[]
@@ -181,6 +186,7 @@ model Contact {
 
   // Performance indexes
   @@index([organizationId])
+  @@index([assignedToId])
 }
 
 model Pipeline {
