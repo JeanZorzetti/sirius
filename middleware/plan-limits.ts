@@ -23,7 +23,8 @@ const PROTECTED_ROUTES = [
 ]
 
 export async function planLimitsMiddleware(request: NextRequest) {
-  const { pathname, method } = request
+  const pathname = request.nextUrl.pathname
+  const method = request.method
 
   // Verificar se é uma rota protegida
   const protectedRoute = PROTECTED_ROUTES.find(
