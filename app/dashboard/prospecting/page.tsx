@@ -73,6 +73,10 @@ export default function ProspectingPage() {
           toast.error(`Créditos insuficientes. Disponível: ${data.available}`, {
             description: 'Compre mais créditos em Configurações > Add-ons',
           })
+        } else if (res.status === 503) {
+          toast.error('Serviço de busca não configurado', {
+            description: 'Entre em contato com o suporte para ativar',
+          })
         } else {
           toast.error(data.error || 'Erro na busca')
         }
