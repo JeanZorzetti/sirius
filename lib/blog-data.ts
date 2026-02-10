@@ -4296,8 +4296,8 @@ Se este guia foi útil para você, compartilhe com sua rede e ajude outros profi
 
       <div style="background: #1e293b; color: #f1f5f9; padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
         <p style="margin: 0 0 0.75rem; font-weight: 700; font-size: 1.05rem; color: #38bdf8;">⚡ TL;DR — Resposta Rápida</p>
-        <ul style="margin: 0; padding-left: 1.25rem; line-height: 2; color: #cbd5e1;">
-          <li><strong style="color: #f1f5f9;">CRM com IA</strong> usa machine learning para automatizar follow-up, prever fechamentos e priorizar leads automaticamente</li>
+        <ul style="margin: 0; padding-left: 1.25rem; line-height: 2; color: #ffffff;">
+          <li><strong>CRM com IA</strong> usa machine learning para automatizar follow-up, prever fechamentos e priorizar leads automaticamente</li>
           <li>Empresas com CRM + IA vendem <strong style="color: #38bdf8;">41% mais</strong> por vendedor vs. CRM tradicional (Salesforce State of Sales 2025)</li>
           <li>5 recursos essenciais: Lead Scoring, Previsão de Fechamento, Follow-up Contextual, Análise de Sentimento, Assistente Conversacional</li>
           <li>O Sirius CRM oferece IA nativa no plano gratuito — alertas de recompra, análise de churn e assistente SPIN</li>
@@ -4468,7 +4468,7 @@ Se este guia foi útil para você, compartilhe com sua rede e ajude outros profi
 
       <div style="background: #1e293b; color: #f1f5f9; padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
         <p style="margin: 0 0 0.75rem; font-weight: 700; font-size: 1.05rem; color: #fb923c;">⚡ TL;DR — Resposta Rápida</p>
-        <ul style="margin: 0; padding-left: 1.25rem; line-height: 2; color: #cbd5e1;">
+        <ul style="margin: 0; padding-left: 1.25rem; line-height: 2; color: #ffffff;">
           <li>Vendedores gastam <strong style="color: #fb923c;">apenas 34% do tempo vendendo</strong> — automação devolve as horas perdidas em tarefas repetitivas</li>
           <li>5 áreas prioritárias para automatizar: captura de leads, follow-up por estágio, recompra B2B, registro de atividades, relatórios</li>
           <li>Resultados esperados: <strong style="color: #fb923c;">+40% de produtividade</strong>, -60% de leads perdidos, +25% de conversão</li>
@@ -4615,7 +4615,7 @@ Se este guia foi útil para você, compartilhe com sua rede e ajude outros profi
 
       <div style="background: #1e293b; color: #f1f5f9; padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
         <p style="margin: 0 0 0.75rem; font-weight: 700; font-size: 1.05rem; color: #818cf8;">⚡ TL;DR — Resposta Rápida</p>
-        <ul style="margin: 0; padding-left: 1.25rem; line-height: 2; color: #cbd5e1;">
+        <ul style="margin: 0; padding-left: 1.25rem; line-height: 2; color: #ffffff;">
           <li>O <strong style="color: #818cf8;">melhor CRM em 2026</strong> combina: facilidade de uso, mobile-first, WhatsApp nativo, automação de follow-up e IA integrada</li>
           <li>7 critérios de avaliação: UX, mobile, WhatsApp, automação, analytics, personalização, preço transparente</li>
           <li><strong style="color: #818cf8;">70% dos projetos de CRM falham</strong> por falta de adoção da equipe — não por problema no software</li>
