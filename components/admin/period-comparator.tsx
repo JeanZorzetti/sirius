@@ -296,7 +296,7 @@ export function PeriodComparator({ historyData }: PeriodComparatorProps) {
                     border: '1px solid #e2e8f0',
                     borderRadius: '8px',
                   }}
-                  formatter={(value: number) => value.toLocaleString('pt-BR')}
+                  formatter={(value) => typeof value === 'number' ? value.toLocaleString('pt-BR') : value}
                 />
                 <Bar
                   yAxisId="left"
@@ -353,7 +353,7 @@ export function PeriodComparator({ historyData }: PeriodComparatorProps) {
                       border: '1px solid #e2e8f0',
                       borderRadius: '8px',
                     }}
-                    formatter={(value: number) => value.toLocaleString('pt-BR')}
+                    formatter={(value) => typeof value === 'number' ? value.toLocaleString('pt-BR') : value}
                   />
                   <Line
                     type="monotone"
