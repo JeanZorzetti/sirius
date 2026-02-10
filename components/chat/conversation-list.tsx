@@ -333,7 +333,7 @@ export function ConversationList({ contacts, selectedContact, onSelectContact, c
                 >
                 {/* Active bar */}
                 {selected && (
-                  <div className="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-10 bg-[#00a884] rounded-r-full animate-selection-bar" />
+                  <div className="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-10 bg-[#00a884] rounded-r-full" />
                 )}
 
                 {/* Avatar */}

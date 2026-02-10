@@ -281,7 +281,7 @@ export function ChatInterface({
           <button
             onClick={() => setActiveView('chat')}
             className={cn(
-              'relative flex items-center gap-2 px-3 py-1.5 rounded-md text-sm font-medium transition-colors',
+              'flex items-center gap-2 px-3 py-1.5 rounded-md text-sm font-medium transition-colors',
               activeView === 'chat'
                 ? 'bg-primary/10 text-primary'
                 : 'text-muted-foreground hover:text-foreground hover:bg-zinc-100 dark:hover:bg-zinc-800'
@@ -300,7 +300,7 @@ export function ChatInterface({
           <button
             onClick={() => setActiveView('connections')}
             className={cn(
-              'relative flex items-center gap-2 px-3 py-1.5 rounded-md text-sm font-medium transition-colors',
+              'flex items-center gap-2 px-3 py-1.5 rounded-md text-sm font-medium transition-colors',
               activeView === 'connections'
                 ? 'bg-primary/10 text-primary'
                 : 'text-muted-foreground hover:text-foreground hover:bg-zinc-100 dark:hover:bg-zinc-800'
@@ -328,7 +328,7 @@ export function ChatInterface({
           <div className="flex items-center gap-1.5 px-2 py-1 rounded-md bg-zinc-100 dark:bg-zinc-800">
             <div className={cn(
               'h-2 w-2 rounded-full transition-colors',
-              connectionStatus === 'connected' ? 'bg-emerald-500 animate-connection-pulse' :
+              connectionStatus === 'connected' ? 'bg-emerald-500' :
               connectionStatus === 'connecting' ? 'bg-amber-500 animate-pulse' :
               'bg-red-500'
             )} />

@@ -8,8 +8,12 @@ interface TypingIndicatorProps {
 }
 
 /**
- * Typing Indicator Component
+ * Typing Indicator Component (Fase 4.1)
+ *
  * Displays 3 animated dots to show when a contact is typing.
+ * Two variants:
+ * - 'bubble': Dots inside a WhatsApp-style bubble (default)
+ * - 'inline': Just the dots with text (for use in conversation list)
  */
 export function TypingIndicator({ className, variant = 'bubble' }: TypingIndicatorProps) {
   if (variant === 'inline') {
@@ -27,7 +31,7 @@ export function TypingIndicator({ className, variant = 'bubble' }: TypingIndicat
 
   // Bubble variant
   return (
-    <div className={cn('flex justify-start animate-fade-in', className)}>
+    <div className={cn('flex justify-start animate-in fade-in-0 slide-in-from-bottom-2 duration-200', className)}>
       <div className="bg-white dark:bg-zinc-800 rounded-[18px] px-4 py-3 shadow-[0_1px_0.5px_rgba(11,20,26,0.13)] flex items-center gap-1.5">
         <div className="typing-dot" />
         <div className="typing-dot" style={{ animationDelay: '0.15s' }} />

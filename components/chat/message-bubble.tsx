@@ -123,7 +123,7 @@ function getDisplayText(msg: WhatsAppMessage): string | null {
 }
 
 /**
- * Memoized Message Bubble Component
+ * Memoized Message Bubble Component (Fase 4.3)
  * Optimized for virtualization with react-virtuoso
  */
 export const MessageBubble = memo(function MessageBubble({
@@ -160,7 +160,7 @@ export const MessageBubble = memo(function MessageBubble({
       {/* Bubble */}
       <div
         className={cn(
-          'flex animate-message-pop group relative',
+          'flex animate-in fade-in-0 slide-in-from-bottom-2 duration-200 group relative',
           out ? 'justify-end' : 'justify-start',
           isGroupedWithPrev ? 'mt-[2px]' : 'mt-2'
         )}
@@ -238,7 +238,7 @@ export const MessageBubble = memo(function MessageBubble({
         {/* Reaction bar */}
         {showReactionBar && (
           <div className={cn(
-            'absolute -top-12 z-10 animate-reaction-pop',
+            'absolute -top-12 z-10 animate-in fade-in-0 slide-in-from-bottom-2 duration-150',
             out ? 'right-0' : 'left-0'
           )}>
             <ReactionBar onReact={onReact} />
