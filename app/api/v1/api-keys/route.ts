@@ -34,8 +34,8 @@ export async function GET(request: NextRequest) {
       )
     }
 
-    // Check PRO plan (API keys are PRO feature)
-    if (user.organization.plan !== 'PRO') {
+    // Check PRO or BUSINESS plan (API keys are PRO+ feature)
+    if (!['PRO', 'BUSINESS'].includes(user.organization.plan)) {
       return NextResponse.json(
         {
           error: 'API Keys são uma funcionalidade PRO. Faça upgrade em /dashboard/settings/billing'

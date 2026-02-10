@@ -33,8 +33,8 @@ export default async function WhatsAppIntegrationPage() {
         return <div>Usuário não encontrado.</div>
     }
 
-    // Require PRO plan
-    if (user.organization.plan !== 'PRO') {
+    // Require PRO or BUSINESS plan
+    if (!['PRO', 'BUSINESS'].includes(user.organization.plan)) {
         redirect('/dashboard/settings/integrations')
     }
 

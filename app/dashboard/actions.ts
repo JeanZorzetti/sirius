@@ -130,7 +130,7 @@ export async function createDeal(formData: FormData) {
 
     // LIMIT CHECK (FREEMIUM)
     // If Plan is FREE (or null), limit to 10 deals.
-    const isPro = user.organization.plan === 'PRO'
+    const isPro = ['PRO', 'BUSINESS'].includes(user.organization.plan)
 
     if (!isPro) {
       const dealCount = await prisma.deal.count({

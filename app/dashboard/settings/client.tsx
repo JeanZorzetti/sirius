@@ -57,6 +57,11 @@ export function SettingsClient({ user }: SettingsClientProps) {
                 PRO
               </Badge>
             )}
+            {user.organization?.plan === 'BUSINESS' && (
+              <Badge className="bg-gradient-to-r from-amber-500 to-orange-600 text-white border-0">
+                BUSINESS
+              </Badge>
+            )}
           </div>
           <p className="text-zinc-500 dark:text-zinc-400">
             Gerencie suas preferências e dados da conta

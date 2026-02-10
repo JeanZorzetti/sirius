@@ -21,8 +21,8 @@ export async function POST(request: Request) {
             return NextResponse.json({ error: 'Usuário não encontrado' }, { status: 404 })
         }
 
-        // Verificar plano PRO
-        if (user.organization.plan !== 'PRO') {
+        // Verificar plano PRO ou BUSINESS
+        if (!['PRO', 'BUSINESS'].includes(user.organization.plan)) {
             return NextResponse.json(
                 { error: 'Integração WhatsApp disponível apenas no plano PRO' },
                 { status: 403 }

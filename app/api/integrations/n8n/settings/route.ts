@@ -21,8 +21,8 @@ export async function POST(request: Request) {
             return NextResponse.json({ error: 'Usuário não encontrado' }, { status: 404 })
         }
 
-        // Check PRO plan requirement
-        if (user.organization.plan !== 'PRO') {
+        // Check PRO or BUSINESS plan requirement
+        if (!['PRO', 'BUSINESS'].includes(user.organization.plan)) {
             return NextResponse.json(
                 { error: 'Integração N8N disponível apenas no plano PRO' },
                 { status: 403 }

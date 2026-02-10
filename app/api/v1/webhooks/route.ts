@@ -36,8 +36,8 @@ export async function GET(request: NextRequest) {
       )
     }
 
-    // Check PRO plan
-    if (user.organization.plan !== 'PRO') {
+    // Check PRO or BUSINESS plan
+    if (!['PRO', 'BUSINESS'].includes(user.organization.plan)) {
       return NextResponse.json(
         {
           error: 'Webhooks são uma funcionalidade PRO. Faça upgrade em /dashboard/settings/billing'

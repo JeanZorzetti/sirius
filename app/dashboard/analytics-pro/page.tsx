@@ -24,8 +24,9 @@ export default async function AnalyticsProPage() {
     redirect('/login')
   }
 
-  // Feature gate: PRO only
-  if (user.organization.plan !== 'PRO') {
+  // Feature gate: PRO and BUSINESS
+  const allowedPlans = ['PRO', 'BUSINESS']
+  if (!allowedPlans.includes(user.organization.plan)) {
     return (
       <div className="container mx-auto max-w-4xl py-12">
         <div className="rounded-lg border border-yellow-200 bg-yellow-50 p-6 dark:border-yellow-900 dark:bg-yellow-950">

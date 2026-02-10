@@ -34,7 +34,7 @@ export default async function IntegrationsPage() {
         return <div>Usuário não encontrado.</div>
     }
 
-    const isPro = user.organization.plan === 'PRO'
+    const isPro = ['PRO', 'BUSINESS'].includes(user.organization.plan)
 
     // Get metrics from IntegrationLog
     const last24Hours = new Date(Date.now() - 24 * 60 * 60 * 1000)

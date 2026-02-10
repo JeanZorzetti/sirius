@@ -29,7 +29,7 @@ async function requireProPlan() {
     throw new Error('User or organization not found')
   }
 
-  if (user.organization.plan !== 'PRO') {
+  if (!['PRO', 'BUSINESS'].includes(user.organization.plan)) {
     throw new Error('UPGRADE_REQUIRED')
   }
 

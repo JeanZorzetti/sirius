@@ -194,7 +194,7 @@ export async function getEmailHistory(limit: number = 50) {
       success: true,
       logs,
       analytics,
-      isPro: user.organization.plan === 'PRO'
+      isPro: ['PRO', 'BUSINESS'].includes(user.organization.plan)
     }
   } catch (error) {
     console.error('Failed to get email history:', error)

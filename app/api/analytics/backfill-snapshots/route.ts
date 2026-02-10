@@ -44,8 +44,8 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Verificar se é plano PRO (opcional, pode permitir para todos)
-    if (user.organization.plan !== 'PRO') {
+    // Verificar se é plano PRO ou BUSINESS
+    if (!['PRO', 'BUSINESS'].includes(user.organization.plan)) {
       return NextResponse.json(
         { error: 'Analytics PRO requires PRO plan' },
         { status: 403 }
