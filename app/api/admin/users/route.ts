@@ -106,7 +106,6 @@ export async function POST(request: NextRequest) {
         password: hashedPassword,
         role: validatedData.role,
         organizationId: organizationId,
-        emailVerified: new Date(), // Auto-verify since admin is creating
       },
       include: {
         organization: true
