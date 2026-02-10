@@ -450,16 +450,21 @@ export const NICHES: NicheData[] = [
       }
     ],
     seo: {
-      title: 'CRM para Representantes Comerciais 2026 | Automação de Vendas e Pedidos',
-      description: 'Melhor CRM para representantes em 2026. Automação de follow-up, gestão de carteira e lembretes de recompra. Aumente suas vendas 50% com inteligência. Grátis.',
+      title: 'CRM para Representante Comercial 2026 | Sistema de Gestão de Carteira e Pedidos',
+      description: 'Melhor CRM para representantes comerciais em 2026. Substitua planilhas por automação inteligente: gestão de carteira, lembretes de recompra e histórico de pedidos. Aumente suas vendas 50%. Grátis.',
       keywords: [
-        'crm para representantes',
+        'crm para representante comercial',
         'crm representante comercial',
+        'crm para representantes de vendas',
+        'software para representante comercial',
         'gestão carteira clientes',
         'organizar vendas representante',
         'sistema representante comercial',
         'aumentar vendas representante',
-        'app representante'
+        'app crm representante',
+        'alternativa planilha representante comercial',
+        'crm automação representante',
+        'crm ia representante comercial'
       ]
     },
     color: {

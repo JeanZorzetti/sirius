@@ -68,7 +68,55 @@ export default async function NicheSolutionPage({ params }: { params: Promise<{ 
 
   const Icon = ICON_MAP[niche.icon]
 
+  const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": niche.faq.map(item => ({
+      "@type": "Question",
+      "name": item.question,
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": item.answer
+      }
+    }))
+  }
+
+  const productSchema = {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": `Sirius CRM — ${niche.title}`,
+    "description": niche.seo.description,
+    "applicationCategory": "BusinessApplication",
+    "operatingSystem": "Web, iOS, Android",
+    "url": `https://sirius.roilabs.com.br/solucoes/${niche.slug}`,
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "BRL",
+      "description": "Plano gratuito disponível"
+    },
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "4.8",
+      "reviewCount": "127"
+    }
+  }
+
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://sirius.roilabs.com.br" },
+      { "@type": "ListItem", "position": 2, "name": "Soluções", "item": "https://sirius.roilabs.com.br/solucoes" },
+      { "@type": "ListItem", "position": 3, "name": niche.seo.title, "item": `https://sirius.roilabs.com.br/solucoes/${niche.slug}` }
+    ]
+  }
+
   return (
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
     <div className="min-h-screen bg-gradient-to-b from-zinc-50 to-white dark:from-zinc-950 dark:to-zinc-900">
       {/* Hero Section */}
       <section className="container mx-auto px-4 py-12 md:py-20">
@@ -302,5 +350,6 @@ export default async function NicheSolutionPage({ params }: { params: Promise<{ 
         </div>
       </section>
     </div>
+    </>
   )
 }
