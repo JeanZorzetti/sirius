@@ -63,7 +63,7 @@ const tabIndicatorVariants = {
   animate: { 
     scaleX: 1, 
     opacity: 1,
-    transition: { type: "spring", stiffness: 500, damping: 30 }
+    transition: { type: "spring" as const, stiffness: 500, damping: 30 }
   },
   exit: { 
     scaleX: 0, 
@@ -350,7 +350,7 @@ export function ChatInterface({
                 className="inline-flex items-center justify-center min-w-[20px] h-5 px-1.5 text-xs font-bold text-white bg-[#25d366] rounded-full tabular-nums"
                 initial={{ scale: 0, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
-                transition={{ type: "spring", stiffness: 500, damping: 20 }}
+                transition={{ type: "spring" as const, stiffness: 500, damping: 20 }}
               >
                 {totalUnread > 99 ? '99+' : totalUnread}
               </motion.span>
@@ -359,7 +359,7 @@ export function ChatInterface({
               <motion.div
                 className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary rounded-full"
                 layoutId="activeTab"
-                transition={{ type: "spring", stiffness: 500, damping: 30 }}
+                transition={{ type: "spring" as const, stiffness: 500, damping: 30 }}
               />
             )}
           </motion.button>
@@ -399,7 +399,7 @@ export function ChatInterface({
               <motion.div
                 className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary rounded-full"
                 layoutId="activeTab"
-                transition={{ type: "spring", stiffness: 500, damping: 30 }}
+                transition={{ type: "spring" as const, stiffness: 500, damping: 30 }}
               />
             )}
           </motion.button>

@@ -17,7 +17,7 @@ const badgeVariants = {
     opacity: 1,
     y: 0,
     transition: {
-      type: "spring",
+      type: "spring" as const,
       stiffness: 500,
       damping: 20,
       mass: 0.8
@@ -78,7 +78,7 @@ export function UnreadBadge({ count }: UnreadBadgeProps) {
           key={count}
           initial={{ scale: 1.2 }}
           animate={{ scale: 1 }}
-          transition={{ type: "spring", stiffness: 400, damping: 20 }}
+          transition={{ type: "spring" as const, stiffness: 400, damping: 20 }}
         >
           {count > 99 ? '99+' : count}
         </motion.span>

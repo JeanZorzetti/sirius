@@ -135,7 +135,7 @@ const bubbleVariants = {
     y: 0,
     scale: 1,
     transition: {
-      type: "spring",
+      type: "spring" as const,
       stiffness: 350,
       damping: 25,
       mass: 0.8
@@ -164,7 +164,7 @@ const reactionBarVariants = {
     y: 0,
     scale: 1,
     transition: {
-      type: "spring",
+      type: "spring" as const,
       stiffness: 400,
       damping: 20
     }
@@ -324,7 +324,7 @@ export const MessageBubble = memo(function MessageBubble({
                 key={msg.status}
                 initial={{ scale: 0.5, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
-                transition={{ type: "spring", stiffness: 500, damping: 25 }}
+                transition={{ type: "spring" as const, stiffness: 500, damping: 25 }}
               >
                 {msg.status === 'READ'
                   ? <CheckCheck className="h-[16px] w-[16px] text-[#53bdeb]" />
@@ -366,7 +366,7 @@ export const MessageBubble = memo(function MessageBubble({
               initial={{ opacity: 0, scale: 0.5, y: 10 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.5, y: 5 }}
-              transition={{ type: "spring", stiffness: 400, damping: 20 }}
+              transition={{ type: "spring" as const, stiffness: 400, damping: 20 }}
             >
               <ReactionChips
                 reactions={msg.reactions}
