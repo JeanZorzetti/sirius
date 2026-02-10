@@ -1,0 +1,171 @@
+import { NextRequest, NextResponse } from 'next/server'
+import { prisma } from '@/lib/prisma'
+import { hash } from 'bcryptjs'
+import { getSession } from '@/lib/auth'
+import { z } from 'zod'
+
+const createUserSchema = z.object({
+  name: z.string().min(2, 'Nome deve ter pelo menos 2 caracteres'),
+  email: z.string().email('Email inválido'),
+  password: z.string().min(6, 'Senha deve ter pelo menos 6 caracteres'),
+  organizationId: z.string().optional(),
+  newOrganizationName: z.string().optional(),
+  tier: z.enum(['FREE', 'STARTER', 'PRO', 'BUSINESS']).default('FREE'),
+  role: z.enum(['USER', 'ADMIN']).default('USER'),
+})
+
+export async function POST(request: NextRequest) {
+  try {
+    // Check admin authentication
+    const session = await getSession()
+    if (!session?.user?.email) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    }
+
+    // Verify user is admin
+    const adminUser = await prisma.user.findUnique({
+      where: { email: session.user.email },
+      select: { role: true }
+    })
+
+    if (adminUser?.role !== 'ADMIN') {
+      return NextResponse.json({ error: 'Forbidden - Admin only' }, { status: 403 })
+    }
+
+    const body = await request.json()
+    
+    // Validate input
+    const validatedData = createUserSchema.parse(body)
+
+    // Check if email already exists
+    const existingUser = await prisma.user.findUnique({
+      where: { email: validatedData.email }
+    })
+
+    if (existingUser) {
+      return NextResponse.json(
+        { error: 'Email já cadastrado' },
+        { status: 400 }
+      )
+    }
+
+    // Hash password
+    const hashedPassword = await hash(validatedData.password, 12)
+
+    let organizationId = validatedData.organizationId
+
+    // Create new organization if specified
+    if (!organizationId && validatedData.newOrganizationName) {
+      const newOrg = await prisma.organization.create({
+        data: {
+          name: validatedData.newOrganizationName,
+          tier: validatedData.tier,
+          plan: validatedData.tier, // Keep in sync for compatibility
+        }
+      })
+      organizationId = newOrg.id
+    }
+
+    // If still no organization, create a default one
+    if (!organizationId) {
+      const defaultOrg = await prisma.organization.create({
+        data: {
+          name: `${validatedData.name}'s Organization`,
+          tier: validatedData.tier,
+          plan: validatedData.tier,
+        }
+      })
+      organizationId = defaultOrg.id
+    } else {
+      // Update existing organization tier if specified
+      await prisma.organization.update({
+        where: { id: organizationId },
+        data: {
+          tier: validatedData.tier,
+          plan: validatedData.tier,
+        }
+      })
+    }
+
+    // Create user
+    const user = await prisma.user.create({
+      data: {
+        name: validatedData.name,
+        email: validatedData.email,
+        password: hashedPassword,
+        role: validatedData.role,
+        organizationId: organizationId,
+        emailVerified: new Date(), // Auto-verify since admin is creating
+      },
+      include: {
+        organization: true
+      }
+    })
+
+    return NextResponse.json({
+      success: true,
+      user: {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+        organization: user.organization?.name,
+        tier: user.organization?.tier,
+      }
+    })
+
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      return NextResponse.json(
+        { error: 'Dados inválidos', details: error.errors },
+        { status: 400 }
+      )
+    }
+
+    console.error('Error creating user:', error)
+    return NextResponse.json(
+      { error: 'Erro ao criar usuário' },
+      { status: 500 }
+    )
+  }
+}
+
+// GET organizations for dropdown
+export async function GET() {
+  try {
+    const session = await getSession()
+    if (!session?.user?.email) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    }
+
+    const adminUser = await prisma.user.findUnique({
+      where: { email: session.user.email },
+      select: { role: true }
+    })
+
+    if (adminUser?.role !== 'ADMIN') {
+      return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
+    }
+
+    const organizations = await prisma.organization.findMany({
+      select: {
+        id: true,
+        name: true,
+        tier: true,
+        _count: {
+          select: { users: true }
+        }
+      },
+      orderBy: { name: 'asc' }
+    })
+
+    return NextResponse.json({ organizations })
+
+  } catch (error) {
+    console.error('Error fetching organizations:', error)
+    return NextResponse.json(
+      { error: 'Erro ao buscar organizações' },
+      { status: 500 }
+    )
+  }
+}

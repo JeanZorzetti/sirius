@@ -11,6 +11,7 @@ import { Badge } from '@/components/ui/badge'
 import { format } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
 import { UserActions } from './user-actions'
+import { CreateUserModal } from './create-user-modal'
 
 export const dynamic = 'force-dynamic'
 
@@ -26,9 +27,12 @@ export default async function AdminUsersPage() {
 
     return (
         <div className="space-y-6">
-            <div>
-                <h2 className="text-2xl font-bold tracking-tight">User Management</h2>
-                <p className="text-zinc-500">List of all registered users across organizations.</p>
+            <div className="flex justify-between items-start">
+                <div>
+                    <h2 className="text-2xl font-bold tracking-tight">User Management</h2>
+                    <p className="text-zinc-500">List of all registered users across organizations.</p>
+                </div>
+                <CreateUserModal />
             </div>
 
             <div className="rounded-xl border border-zinc-800 bg-zinc-900 overflow-hidden">
