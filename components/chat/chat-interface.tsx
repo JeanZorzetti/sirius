@@ -64,6 +64,8 @@ export function ChatInterface({
   organizationId,
   maxInstances
 }: ChatInterfaceProps) {
+  console.log("[CHAT_INTERFACE] [1] Montando componente...")
+  
   const [selectedContact, setSelectedContact] = useState<Contact | null>(null)
   const [activeView, setActiveView] = useState<'chat' | 'connections'>('chat')
   const [contacts, setContacts] = useState<Contact[]>(initialContacts)
@@ -73,13 +75,17 @@ export function ChatInterface({
   const [connectionStatus, setConnectionStatus] = useState<'connected' | 'connecting' | 'disconnected'>('disconnected')
   const [messageRefreshTrigger, setMessageRefreshTrigger] = useState(0)
 
+  console.log(`[CHAT_INTERFACE] [2] Estado inicial - contacts: ${initialContacts.length}, connections: ${initialConnections.length}`)
+
   const activeConnections = connections.filter(c => c.status === 'CONNECTED')
   const totalUnread = contacts.reduce((sum, contact) => sum + (contact._count.unreadMessages || 0), 0)
 
   const fetchConversations = useCallback(async (showLoading = false) => {
+    console.log("[CHAT_INTERFACE] [3] fetchConversations chamado")
     if (showLoading) setIsRefreshing(true)
     try {
       const res = await fetch('/api/whatsapp/conversations')
+      console.log(`[CHAT_INTERFACE] [4] fetchConversations res: ${res.status}`)
       if (res.ok) {
         const data = await res.json()
         setContacts(data)
@@ -89,13 +95,14 @@ export function ChatInterface({
         }
       }
     } catch (error) {
-      console.error('Error fetching conversations:', error)
+      console.error('[CHAT_INTERFACE] [ERRO] fetchConversations:', error)
     } finally {
       setIsRefreshing(false)
     }
   }, [selectedContact])
 
   const fetchConnections = useCallback(async () => {
+    console.log("[CHAT_INTERFACE] [5] fetchConnections chamado")
     try {
       const res = await fetch('/api/whatsapp/connections')
       if (res.ok) {
@@ -103,11 +110,12 @@ export function ChatInterface({
         setConnections(data)
       }
     } catch (error) {
-      console.error('Error fetching connections:', error)
+      console.error('[CHAT_INTERFACE] [ERRO] fetchConnections:', error)
     }
   }, [])
 
   const syncConversations = async () => {
+    console.log("[CHAT_INTERFACE] [6] syncConversations chamado")
     if (activeConnections.length === 0) {
       toast.error('Nenhuma conexão ativa para sincronizar')
       return
@@ -129,12 +137,9 @@ export function ChatInterface({
             const data = await res.json()
             totalContacts += data.syncedContacts || 0
             totalMessages += data.syncedMessages || 0
-          } else {
-            const errData = await res.json()
-            console.error('Sync error:', errData)
           }
         } catch (err) {
-          console.error('Sync request failed:', err)
+          console.error('[CHAT_INTERFACE] [ERRO] sync request failed:', err)
         }
       }
 
@@ -152,8 +157,9 @@ export function ChatInterface({
     }
   }
 
-  // SSE connection for real-time updates (Fase 3.2)
+  // SSE connection for real-time updates
   useEffect(() => {
+    console.log("[CHAT_INTERFACE] [7] useEffect SSE iniciando...")
     let eventSource: EventSource | null = null
     let reconnectTimeout: NodeJS.Timeout | null = null
 
@@ -162,99 +168,65 @@ export function ChatInterface({
       eventSource = new EventSource('/api/whatsapp/stream')
 
       eventSource.onopen = () => {
-        console.log('[SSE] Connected to WhatsApp stream')
+        console.log('[CHAT_INTERFACE] [8] SSE Connected')
         setConnectionStatus('connected')
       }
 
       eventSource.onmessage = (event) => {
         try {
           const data = JSON.parse(event.data)
+          console.log(`[CHAT_INTERFACE] [9] SSE message: ${data.type}`)
 
           switch (data.type) {
-            case 'connected':
-              console.log('[SSE] Connection established')
-              break
-
             case 'conversation.updated':
-              // Refresh conversations when a message arrives
-              fetchConversations()
-              // Trigger message area refresh for current contact
-              if (data.contactId) {
-                setMessageRefreshTrigger(prev => prev + 1)
-              }
-              break
-
             case 'message.new':
-              // Refresh conversations to show new message
               fetchConversations()
-              // Trigger message area refresh for current contact
               setMessageRefreshTrigger(prev => prev + 1)
               break
-
             case 'message.status':
-              // Refresh messages to update status indicators
               setMessageRefreshTrigger(prev => prev + 1)
               break
-
-            case 'heartbeat':
-              // Keep-alive, no action needed
-              break
-
-            default:
-              console.log('[SSE] Unknown event type:', data.type)
           }
         } catch (error) {
-          console.error('[SSE] Error parsing message:', error)
+          console.error('[CHAT_INTERFACE] [ERRO] SSE parse error:', error)
         }
       }
 
       eventSource.onerror = (error) => {
-        console.error('[SSE] Connection error:', error)
+        console.error('[CHAT_INTERFACE] [ERRO] SSE error:', error)
         setConnectionStatus('disconnected')
         eventSource?.close()
-
-        // Reconnect after 5 seconds
         reconnectTimeout = setTimeout(() => {
-          console.log('[SSE] Reconnecting...')
+          console.log('[CHAT_INTERFACE] [10] SSE Reconnecting...')
           connect()
         }, 5000)
       }
     }
 
-    // Start connection
     connect()
-
-    // Poll connections status separately (less frequently)
-    const connectionInterval = setInterval(fetchConnections, 10000) // 10s
+    const connectionInterval = setInterval(fetchConnections, 10000)
 
     return () => {
-      if (eventSource) {
-        eventSource.close()
-      }
-      if (reconnectTimeout) {
-        clearTimeout(reconnectTimeout)
-      }
+      console.log("[CHAT_INTERFACE] [11] useEffect cleanup")
+      if (eventSource) eventSource.close()
+      if (reconnectTimeout) clearTimeout(reconnectTimeout)
       clearInterval(connectionInterval)
     }
   }, [fetchConversations, fetchConnections])
 
-  // Atualizar título do navegador com contagem de não-lidos
+  // Update document title with unread count
   useEffect(() => {
+    console.log("[CHAT_INTERFACE] [12] Atualizando título")
     const totalUnread = contacts.reduce((sum, contact) => sum + (contact._count.unreadMessages || 0), 0)
-
-    if (totalUnread > 0) {
-      document.title = `Chat Center (${totalUnread})`
-    } else {
-      document.title = 'Chat Center'
-    }
-
-    return () => {
-      document.title = 'Chat Center'
-    }
+    document.title = totalUnread > 0 ? `Chat Center (${totalUnread})` : 'Chat Center'
+    return () => { document.title = 'Chat Center' }
   }, [contacts])
+
+  console.log("[CHAT_INTERFACE] [13] Renderizando UI...")
 
   // No connections at all
   if (connections.length === 0) {
+    console.log("[CHAT_INTERFACE] [14] Sem conexões, mostrando empty state")
     return (
       <div className="flex-1 flex items-center justify-center p-8">
         <EmptyState
@@ -272,12 +244,12 @@ export function ChatInterface({
     )
   }
 
+  console.log("[CHAT_INTERFACE] [15] Renderizando layout principal")
   return (
     <div className="flex-1 flex flex-col h-full">
       {/* Top bar */}
       <div className="h-12 border-b bg-white dark:bg-zinc-950 flex items-center justify-between px-4 flex-shrink-0">
         <div className="flex items-center gap-1">
-          {/* Chat tab */}
           <button
             onClick={() => setActiveView('chat')}
             className={cn(
@@ -296,7 +268,6 @@ export function ChatInterface({
             )}
           </button>
 
-          {/* Connections tab */}
           <button
             onClick={() => setActiveView('connections')}
             className={cn(
@@ -322,9 +293,7 @@ export function ChatInterface({
           </button>
         </div>
 
-        {/* Actions */}
         <div className="flex items-center gap-2">
-          {/* SSE Connection Status (Fase 3.2) */}
           <div className="flex items-center gap-1.5 px-2 py-1 rounded-md bg-zinc-100 dark:bg-zinc-800">
             <div className={cn(
               'h-2 w-2 rounded-full transition-colors',
@@ -425,7 +394,6 @@ export function ChatInterface({
             </div>
           ) : (
             <div className="flex-1 flex overflow-hidden chat-layout">
-              {/* Mobile: hide conversation list when a contact is selected */}
               <div className={cn(
                 'w-full md:w-[340px] lg:w-[340px] flex-shrink-0 border-r',
                 selectedContact ? 'hidden md:block' : 'block'
@@ -439,7 +407,6 @@ export function ChatInterface({
                 />
               </div>
 
-              {/* Message area (hidden on mobile when no contact selected) */}
               <div className={cn(
                 'flex-1 min-w-0',
                 !selectedContact ? 'hidden md:flex' : 'flex'
