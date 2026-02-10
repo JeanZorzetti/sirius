@@ -54,11 +54,21 @@ export async function POST(request: NextRequest) {
 
     let organizationId = validatedData.organizationId
 
+    // Helper to generate slug
+    const generateSlug = (name: string) => {
+      return name
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/^-+|-+$/g, '')
+        .substring(0, 50) + '-' + Date.now().toString(36)
+    }
+
     // Create new organization if specified
     if (!organizationId && validatedData.newOrganizationName) {
       const newOrg = await prisma.organization.create({
         data: {
           name: validatedData.newOrganizationName,
+          slug: generateSlug(validatedData.newOrganizationName),
           tier: validatedData.tier,
           plan: validatedData.tier, // Keep in sync for compatibility
         }
@@ -71,6 +81,7 @@ export async function POST(request: NextRequest) {
       const defaultOrg = await prisma.organization.create({
         data: {
           name: `${validatedData.name}'s Organization`,
+          slug: generateSlug(`${validatedData.name}'s Organization`),
           tier: validatedData.tier,
           plan: validatedData.tier,
         }
