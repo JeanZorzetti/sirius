@@ -153,7 +153,7 @@ const dateSeparatorVariants = {
   animate: { 
     opacity: 1, 
     y: 0,
-    transition: { duration: 0.3, ease: "easeOut" }
+    transition: { duration: 0.3, ease: "easeOut" as const }
   }
 }
 
@@ -265,7 +265,7 @@ export const MessageBubble = memo(function MessageBubble({
               '0 0 0 0 rgba(245, 158, 11, 0)'
             ]
           } : {}}
-          transition={{ duration: 0.6, ease: "easeInOut" }}
+          transition={{ duration: 0.6, ease: "easeInOut" as const }}
           className={cn(
             'max-w-[65%] shadow-[0_1px_0.5px_rgba(11,20,26,0.13)] relative overflow-hidden transition-all duration-200',
             'hover:shadow-[0_2px_8px_rgba(11,20,26,0.15)]',

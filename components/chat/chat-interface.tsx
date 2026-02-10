@@ -77,7 +77,7 @@ const contentVariants = {
   animate: { 
     opacity: 1, 
     x: 0,
-    transition: { duration: 0.3, ease: "easeOut" }
+    transition: { duration: 0.3, ease: [0.4, 0, 0.2, 1] as const }
   },
   exit: { 
     opacity: 0, 
@@ -309,7 +309,7 @@ export function ChatInterface({
         className="flex-1 flex items-center justify-center p-8"
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.4, ease: "easeOut" }}
+        transition={{ duration: 0.4, ease: "easeOut" as const }}
       >
         <EmptyState
           icon={MessageSquare}
@@ -517,7 +517,7 @@ export function ChatInterface({
                     animate={{ 
                       scale: [1, 1.05, 1],
                     }}
-                    transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                    transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" as const }}
                   >
                     <MessageSquare className="h-7 w-7 text-primary" />
                   </motion.div>
@@ -614,7 +614,7 @@ export function ChatInterface({
                             animate={{ 
                               y: [0, -5, 0],
                             }}
-                            transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                            transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" as const }}
                           >
                             <MessageSquare className="h-9 w-9 text-muted-foreground/50" />
                           </motion.div>
