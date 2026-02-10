@@ -33,6 +33,7 @@ import { SEOTrendingKeywords } from '@/components/admin/seo-trending-keywords'
 import { SEOCoverageDashboard } from '@/components/admin/seo-coverage-dashboard'
 import { SEOIndexationErrors } from '@/components/admin/seo-indexation-errors'
 import { SEOAnomalyAlerts } from '@/components/admin/seo-anomaly-alerts'
+import { PeriodComparator } from '@/components/admin/period-comparator'
 import { SEORankingPredictions } from '@/components/admin/seo-ranking-predictions'
 import { SEOTopicClusters } from '@/components/admin/seo-topic-clusters'
 import { SEOContentCalendar } from '@/components/admin/seo-content-calendar'
@@ -293,6 +294,9 @@ async function SEOContent({ searchParams }: { searchParams: { from?: string; to?
           <SeoAssistant metrics={metrics} forecast={forecast} />
         </div>
       </div>
+
+      {/* Period Comparator ML */}
+      <PeriodComparator historyData={metrics.history} />
 
       {/* AI Insight Card */}
       <Card className="border-purple-200 bg-gradient-to-br from-purple-50 to-blue-50 shadow-sm">
