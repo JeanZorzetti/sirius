@@ -375,8 +375,6 @@ export function ConversationList({ contacts, selectedContact, onSelectContact, c
                   key={contact.id}
                   className="relative group"
                   variants={itemVariants}
-                  layout
-                  layoutId={contact.id}
                   custom={index}
                 >
                   <motion.button
@@ -467,7 +465,6 @@ export function ConversationList({ contacts, selectedContact, onSelectContact, c
                             hasUnread ? 'font-bold' : 'font-medium',
                             selected && 'text-[#111b21]'
                           )}
-                          layout
                         >
                           {name}
                         </motion.p>

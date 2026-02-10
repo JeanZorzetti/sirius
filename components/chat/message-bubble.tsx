@@ -204,7 +204,6 @@ export const MessageBubble = memo(function MessageBubble({
 
   return (
     <motion.div
-      layout
       initial="initial"
       animate="animate"
       exit="exit"
@@ -256,7 +255,6 @@ export const MessageBubble = memo(function MessageBubble({
 
         <motion.div
           ref={setMessageRef}
-          layout
           animate={isHighlighted ? {
             scale: [1, 1.02, 1],
             boxShadow: [

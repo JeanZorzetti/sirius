@@ -358,7 +358,8 @@ export function ChatInterface({
             {activeView === 'chat' && (
               <motion.div
                 className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary rounded-full"
-                layoutId="activeTab"
+                initial={{ scaleX: 0 }}
+                animate={{ scaleX: 1 }}
                 transition={{ type: "spring" as const, stiffness: 500, damping: 30 }}
               />
             )}
@@ -398,7 +399,8 @@ export function ChatInterface({
             {activeView === 'connections' && (
               <motion.div
                 className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary rounded-full"
-                layoutId="activeTab"
+                initial={{ scaleX: 0 }}
+                animate={{ scaleX: 1 }}
                 transition={{ type: "spring" as const, stiffness: 500, damping: 30 }}
               />
             )}
