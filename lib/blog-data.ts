@@ -4294,7 +4294,7 @@ Se este guia foi útil para você, compartilhe com sua rede e ajude outros profi
         Neste guia completo, você vai entender exatamente o que um <strong>CRM com IA</strong> faz, como ele difere de um CRM comum, quais recursos de IA realmente impactam resultados, e como o Sirius CRM usa inteligência artificial para multiplicar as vendas dos seus usuários.
       </p>
 
-      <div style="background: #1e293b; color: #f1f5f9; padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
+      <div class="not-prose" style="background: #1e293b; padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
         <p style="margin: 0 0 0.75rem; font-weight: 700; font-size: 1.05rem; color: #38bdf8;">⚡ TL;DR — Resposta Rápida</p>
         <ul style="margin: 0; padding-left: 1.25rem; line-height: 2; color: #ffffff;">
           <li><strong>CRM com IA</strong> usa machine learning para automatizar follow-up, prever fechamentos e priorizar leads automaticamente</li>
@@ -4466,7 +4466,7 @@ Se este guia foi útil para você, compartilhe com sua rede e ajude outros profi
         Neste guia, você vai aprender <strong>o que automatizar</strong>, <strong>como configurar</strong>, e <strong>quais resultados esperar</strong> com CRM e automação de vendas em 2026.
       </p>
 
-      <div style="background: #1e293b; color: #f1f5f9; padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
+      <div class="not-prose" style="background: #1e293b; padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
         <p style="margin: 0 0 0.75rem; font-weight: 700; font-size: 1.05rem; color: #fb923c;">⚡ TL;DR — Resposta Rápida</p>
         <ul style="margin: 0; padding-left: 1.25rem; line-height: 2; color: #ffffff;">
           <li>Vendedores gastam <strong style="color: #fb923c;">apenas 34% do tempo vendendo</strong> — automação devolve as horas perdidas em tarefas repetitivas</li>
@@ -4613,7 +4613,7 @@ Se este guia foi útil para você, compartilhe com sua rede e ajude outros profi
         Neste guia, você vai encontrar os <strong>critérios essenciais para avaliar um CRM</strong>, as funcionalidades que não podem faltar em 2026, e como identificar qual sistema é o mais adequado para o seu negócio.
       </p>
 
-      <div style="background: #1e293b; color: #f1f5f9; padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
+      <div class="not-prose" style="background: #1e293b; padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
         <p style="margin: 0 0 0.75rem; font-weight: 700; font-size: 1.05rem; color: #818cf8;">⚡ TL;DR — Resposta Rápida</p>
         <ul style="margin: 0; padding-left: 1.25rem; line-height: 2; color: #ffffff;">
           <li>O <strong style="color: #818cf8;">melhor CRM em 2026</strong> combina: facilidade de uso, mobile-first, WhatsApp nativo, automação de follow-up e IA integrada</li>
