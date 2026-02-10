@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { Search, Loader2, Users, CreditCard, Server, ExternalLink } from 'lucide-react'
+import { Search, Loader2, Users, CreditCard } from 'lucide-react'
 import { toast } from 'sonner'
 
 interface ScrapingJob {
@@ -146,39 +146,6 @@ export default function ProspectingPage() {
           Créditos: {credits.balance}/{credits.monthlyQuota}
         </Badge>
       </div>
-
-      {/* Self-hosted Recommendation */}
-      <Card className="bg-gradient-to-r from-green-50 to-emerald-50 border-green-200 dark:from-green-950/20 dark:to-emerald-950/20 dark:border-green-800">
-        <CardContent className="p-4">
-          <div className="flex items-start gap-3">
-            <Server className="h-5 w-5 text-green-600 mt-0.5" />
-            <div className="flex-1">
-              <p className="font-medium text-green-900 dark:text-green-100">
-                💡 Dica: Instale seu próprio servidor de scraping
-              </p>
-              <p className="text-sm text-green-700 dark:text-green-300 mt-1">
-                Para resultados ilimitados e sem depender de APIs pagas, instale nosso servidor 
-                de scraping no seu EasyPanel. É gratuito e usa Puppeteer (Chrome).
-              </p>
-              <div className="flex gap-3 mt-2">
-                <a 
-                  href="https://github.com/JeanZorzetti/sirius/tree/main/scraping-server" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1 text-sm font-medium text-green-600 hover:text-green-800"
-                >
-                  Ver instruções
-                  <ExternalLink className="h-3 w-3" />
-                </a>
-                <span className="text-green-400">|</span>
-                <span className="text-sm text-green-600">
-                  Depois configure: <code className="bg-green-100 px-1 rounded">SIRIUS_SCRAPER_URL</code>
-                </span>
-              </div>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
 
       {/* Search Form */}
       <Card>
