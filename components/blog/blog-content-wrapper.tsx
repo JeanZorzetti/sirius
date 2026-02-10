@@ -5,6 +5,9 @@ import { createRoot } from 'react-dom/client'
 import { FunnelCalculator } from './funnel-calculator'
 import { FunnelTemplateDownload } from './funnel-template-download'
 import { CalculadoraROI } from '@/components/calculadora-roi'
+import { CRMIAQuiz } from './crm-ia-quiz'
+import { ROIAutomacaoCalc } from './roi-automacao-calc'
+import { CRMFinder } from './crm-finder'
 
 interface BlogContentWrapperProps {
   content: string
@@ -59,6 +62,33 @@ export function BlogContentWrapper({ content, slug }: BlogContentWrapperProps) {
             ctaHref="/register"
           />
         )
+      }
+    }
+
+    // For crm-ia-inteligencia-artificial-2026, inject CRM IA Quiz
+    if (slug === 'crm-ia-inteligencia-artificial-2026') {
+      const placeholder = contentRef.current.querySelector('.crm-ia-quiz-component')
+      if (placeholder && !placeholder.hasChildNodes()) {
+        const root = createRoot(placeholder)
+        root.render(<CRMIAQuiz />)
+      }
+    }
+
+    // For crm-automacao-vendas-guia-completo, inject ROI Automacao Calculator
+    if (slug === 'crm-automacao-vendas-guia-completo') {
+      const placeholder = contentRef.current.querySelector('.roi-automacao-component')
+      if (placeholder && !placeholder.hasChildNodes()) {
+        const root = createRoot(placeholder)
+        root.render(<ROIAutomacaoCalc />)
+      }
+    }
+
+    // For melhor-crm-2026-comparativo, inject CRM Finder
+    if (slug === 'melhor-crm-2026-comparativo') {
+      const placeholder = contentRef.current.querySelector('.crm-finder-component')
+      if (placeholder && !placeholder.hasChildNodes()) {
+        const root = createRoot(placeholder)
+        root.render(<CRMFinder />)
       }
     }
   }, [slug])
