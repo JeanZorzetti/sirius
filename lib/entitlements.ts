@@ -326,10 +326,13 @@ export const PLAN_FEATURES: Record<SubscriptionTier, {
 
 /**
  * Verifica se um tier pode usar uma feature específica
+ * Aceita tanto 'chat_interface' quanto 'can_use_chat_interface'
  */
 export function canUseFeature(tier: SubscriptionTier, feature: string): boolean {
   const features = PLAN_FEATURES[tier]
-  const key = `can_use_${feature}` as keyof typeof features
+  // Remove prefixo can_use_ se existir para evitar duplicação
+  const cleanFeature = feature.replace(/^can_use_/, '')
+  const key = `can_use_${cleanFeature}` as keyof typeof features
   const value = features[key]
   return typeof value === 'boolean' ? value : false
 }
