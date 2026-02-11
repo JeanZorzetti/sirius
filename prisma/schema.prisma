@@ -233,6 +233,10 @@ model Deal {
   dueDate   DateTime? // [NEW] Agenda/Follow-up
   order     Int? // [NEW] Manual sorting in column
 
+  // Deal Status (FASE 13 - Analytics)
+  status DealStatus @default(ACTIVE)
+  lostReason String? // Motivo da perda (ex: "preço", "timing", "concorrente")
+
   // v2.0: Soft Archive (FREE >50 deals)
   archived       Boolean   @default(false)
   archivedReason String? // "PLAN_LIMIT", "USER_ACTION"
@@ -1565,4 +1569,10 @@ enum TransactionStatus {
   FAILED
   REFUNDED
   CANCELLED
+}
+
+enum DealStatus {
+  ACTIVE    // Deal ativo no pipeline
+  WON       // Deal ganho/fechado
+  LOST      // Deal perdido
 }

@@ -57,6 +57,18 @@ export async function createDailyDealSnapshot(organizationId: string, date: Date
       },
     })
 
+    // FASE 13: Tracking de deals perdidos
+    const dealsLostToday = await prisma.deal.count({
+      where: {
+        organizationId,
+        status: 'LOST',
+        updatedAt: {
+          gte: startOfDay,
+          lte: endOfDay,
+        },
+      },
+    })
+
     // Calcular métricas agregadas
     const totalDeals = deals.length
     const totalValue = deals.reduce((sum, deal) => {
@@ -104,7 +116,7 @@ export async function createDailyDealSnapshot(organizationId: string, date: Date
         dealsByPipeline,
         dealsCreated: dealsCreatedToday,
         dealsClosed: dealsClosedToday,
-        dealsLost: 0, // TODO: implementar tracking de deals perdidos
+        dealsLost: dealsLostToday, // ✅ FASE 13: Implementado
       },
       update: {
         totalDeals,
@@ -114,6 +126,7 @@ export async function createDailyDealSnapshot(organizationId: string, date: Date
         dealsByPipeline,
         dealsCreated: dealsCreatedToday,
         dealsClosed: dealsClosedToday,
+        dealsLost: dealsLostToday, // ✅ FASE 13: Implementado
       },
     })
 
@@ -192,6 +205,23 @@ export async function createMonthlyRevenueSnapshot(year: number, month: number) 
       return createdAt >= startOfMonth && createdAt <= endOfMonth
     }).length
 
+    // FASE 13: Calcular churn (organizações que cancelaram assinatura neste mês)
+    const churnedOrgs = await prisma.transaction.count({
+      where: {
+        type: 'PLAN_DOWNGRADE',
+        status: 'COMPLETED',
+        createdAt: {
+          gte: startOfMonth,
+          lte: endOfMonth,
+        },
+        // Downgrade para FREE significa churn
+        metadata: {
+          path: ['newTier'],
+          equals: 'FREE',
+        },
+      },
+    })
+
     // Calcular churn rate do período
     const churnRate = await calculateChurnRate(startOfMonth, endOfMonth)
     const monthlyChurnRateDecimal = churnRate / 100 // Converter para decimal
@@ -222,7 +252,7 @@ export async function createMonthlyRevenueSnapshot(year: number, month: number) 
         proOrganizations: proOrgs,
         freeOrganizations: freeOrgs,
         newOrganizations: newOrgs,
-        churnedOrganizations: 0, // TODO: implementar tracking real de churn
+        churnedOrganizations: churnedOrgs, // ✅ FASE 13: Implementado
         avgLtv: ltv > 0 ? new Decimal(ltv) : null,
         avgCac: cac > 0 ? new Decimal(cac) : null,
         forecastNext30d: forecasts.forecastNext30d > 0 ? new Decimal(forecasts.forecastNext30d) : null,
@@ -236,6 +266,7 @@ export async function createMonthlyRevenueSnapshot(year: number, month: number) 
         proOrganizations: proOrgs,
         freeOrganizations: freeOrgs,
         newOrganizations: newOrgs,
+        churnedOrganizations: churnedOrgs, // ✅ FASE 13: Implementado
         avgLtv: ltv > 0 ? new Decimal(ltv) : null,
         avgCac: cac > 0 ? new Decimal(cac) : null,
         forecastNext30d: forecasts.forecastNext30d > 0 ? new Decimal(forecasts.forecastNext30d) : null,
