@@ -90,6 +90,7 @@ export const metadata: Metadata = {
 import { Suspense } from "react"
 import { ThemeProvider } from "@/components/theme-provider"
 import { PWAInstallPrompt } from "@/components/pwa-install-prompt"
+import { PWARegister } from "@/components/pwa-register"
 import { PushNotificationManager } from "@/components/push-notification-manager"
 import { OfflineStatus } from "@/components/offline-status"
 import { GoogleTagManager, GoogleTagManagerNoScript } from "@/components/google-tag-manager"
@@ -226,6 +227,8 @@ export default function RootLayout({
             disableTransitionOnChange
           >
             {children}
+            {/* PWA Service Worker Registration */}
+            <PWARegister />
             {/* PWA Install Prompt */}
             <PWAInstallPrompt />
             {/* Push Notifications Manager */}
