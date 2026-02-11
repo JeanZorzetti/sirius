@@ -43,10 +43,20 @@ export async function POST(req: Request) {
       }
     }
 
-    // Processar assinaturas (recorrência)
-    if (body.type === 'subscription' || body.type === 'preapproval') {
-      // TODO: Implementar lógica de recorrência
-      logger.info({ body }, 'Subscription webhook received')
+    // ✅ FASE 16: Processar assinaturas (recorrência)
+    if (body.type === 'subscription_preapproval' || body.type === 'preapproval') {
+      const preapprovalId = body.data?.id
+      if (preapprovalId) {
+        await processSubscriptionEvent(preapprovalId, body.action)
+      }
+    }
+
+    // Pagamento recorrente (renovação mensal)
+    if (body.type === 'subscription_authorized_payment') {
+      const paymentId = body.data?.id
+      if (paymentId) {
+        await processRecurringPayment(paymentId)
+      }
     }
 
     return NextResponse.json({ received: true })
@@ -222,6 +232,137 @@ async function processAddonPurchase(
   })
 
   logger.info({ organizationId, addonEnum, quantity }, 'Addon purchased successfully')
+}
+
+/**
+ * ✅ FASE 16: Processa eventos de assinatura (aprovação, cancelamento, pausa)
+ */
+async function processSubscriptionEvent(preapprovalId: string, action: string) {
+  logger.info({ preapprovalId, action }, '[MP:SUBSCRIPTION] Processing subscription event')
+
+  try {
+    // Buscar organização pelo subscription ID
+    const org = await prisma.organization.findFirst({
+      where: { mercadoPagoSubscriptionId: preapprovalId },
+      select: { id: true, tier: true },
+    })
+
+    if (!org) {
+      logger.warn({ preapprovalId }, '[MP:SUBSCRIPTION] Organization not found for subscription')
+      return
+    }
+
+    if (action === 'subscription_preapproval.cancelled' || action === 'cancelled') {
+      // Downgrade para FREE ao cancelar
+      await prisma.organization.update({
+        where: { id: org.id },
+        data: { tier: SubscriptionTier.FREE },
+      })
+
+      // Registrar downgrade como churn
+      await prisma.transaction.create({
+        data: {
+          organizationId: org.id,
+          type: 'PLAN_DOWNGRADE',
+          amount: 0,
+          currency: 'BRL',
+          status: 'COMPLETED',
+          provider: 'MERCADO_PAGO',
+          metadata: {
+            reason: 'subscription_cancelled',
+            previousTier: org.tier,
+            newTier: 'FREE',
+          },
+        },
+      })
+
+      logger.info({ organizationId: org.id }, '[MP:SUBSCRIPTION] Plan downgraded to FREE (cancelled)')
+    }
+
+    if (action === 'subscription_preapproval.paused' || action === 'paused') {
+      // Manter plano mas registrar pausa
+      logger.info({ organizationId: org.id }, '[MP:SUBSCRIPTION] Subscription paused')
+    }
+  } catch (err) {
+    logger.error({ err, preapprovalId }, '[MP:SUBSCRIPTION] Error processing subscription event')
+  }
+}
+
+/**
+ * ✅ FASE 16: Processa pagamento recorrente (renovação mensal)
+ * Renova o tier da organização e reseta créditos mensais
+ */
+async function processRecurringPayment(paymentId: string) {
+  logger.info({ paymentId }, '[MP:RECURRING] Processing recurring payment')
+
+  try {
+    const payment = await new Payment(mp).get({ id: paymentId })
+
+    if (payment.status !== 'approved') {
+      logger.info({ paymentId, status: payment.status }, '[MP:RECURRING] Payment not approved, skipping')
+      return
+    }
+
+    const externalReference = payment.external_reference
+    if (!externalReference) {
+      logger.warn({ paymentId }, '[MP:RECURRING] No external reference')
+      return
+    }
+
+    const [organizationId, tier] = externalReference.split('_')
+    if (!organizationId || !tier) return
+
+    const subscriptionTier = tier as SubscriptionTier
+
+    // Garantir que o tier continua ativo (renovação)
+    await prisma.organization.update({
+      where: { id: organizationId },
+      data: { tier: subscriptionTier },
+    })
+
+    // Resetar créditos mensais de scraping
+    const monthlyCredits = subscriptionTier === SubscriptionTier.STARTER ? 50
+      : subscriptionTier === SubscriptionTier.PRO ? 200 : 1000
+
+    await prisma.scrapingCredit.upsert({
+      where: { organizationId },
+      create: {
+        organizationId,
+        balance: monthlyCredits,
+        monthlyQuota: monthlyCredits,
+        usedThisMonth: 0,
+        lastRefill: new Date(),
+      },
+      update: {
+        balance: { increment: monthlyCredits },
+        monthlyQuota: monthlyCredits,
+        usedThisMonth: 0,
+        lastRefill: new Date(),
+      },
+    })
+
+    // Registrar renovação
+    await prisma.transaction.create({
+      data: {
+        organizationId,
+        type: 'PLAN_UPGRADE',
+        amount: payment.transaction_amount ?? 0,
+        currency: payment.currency_id ?? 'BRL',
+        status: 'COMPLETED',
+        provider: 'MERCADO_PAGO',
+        providerPaymentId: String(payment.id),
+        metadata: {
+          tier: subscriptionTier,
+          type: 'renewal',
+          paymentMethod: payment.payment_method_id,
+        },
+      },
+    })
+
+    logger.info({ organizationId, tier: subscriptionTier }, '[MP:RECURRING] Subscription renewed successfully')
+  } catch (err) {
+    logger.error({ err, paymentId }, '[MP:RECURRING] Error processing recurring payment')
+  }
 }
 
 function getAddonName(type: string): string {

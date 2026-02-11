@@ -1,25 +1,29 @@
+/**
+ * Email utility usando Resend.
+ * ✅ FASE 14: Lazy init para não quebrar build quando RESEND_API_KEY não está definida.
+ */
 import { Resend } from 'resend'
 
-if (!process.env.RESEND_API_KEY) {
-  throw new Error(
-    'RESEND_API_KEY environment variable is required. ' +
-    'Get your API key from: https://resend.com/api-keys'
-  )
+let _resend: Resend | null = null
+
+function getResend(): Resend {
+  if (!_resend) {
+    if (!process.env.RESEND_API_KEY) {
+      throw new Error(
+        'RESEND_API_KEY environment variable is required. ' +
+        'Get your API key from: https://resend.com/api-keys'
+      )
+    }
+    _resend = new Resend(process.env.RESEND_API_KEY)
+  }
+  return _resend
 }
 
-export const resend = new Resend(process.env.RESEND_API_KEY)
-
-/**
- * Email configuration
- */
 export const emailConfig = {
   from: 'Sirius CRM <noreply@sirius.roilabs.com.br>',
   replyTo: 'suporte@roilabs.com.br',
 } as const
 
-/**
- * Send email helper with error handling
- */
 export async function sendEmail({
   to,
   subject,
@@ -30,7 +34,7 @@ export async function sendEmail({
   react: React.ReactElement
 }) {
   try {
-    const { data, error } = await resend.emails.send({
+    const { data, error } = await getResend().emails.send({
       from: emailConfig.from,
       to,
       subject,
@@ -49,9 +53,6 @@ export async function sendEmail({
   }
 }
 
-/**
- * Send HTML email helper with error handling
- */
 export async function sendHtmlEmail({
   to,
   subject,
@@ -62,7 +63,7 @@ export async function sendHtmlEmail({
   html: string
 }) {
   try {
-    const { data, error } = await resend.emails.send({
+    const { data, error } = await getResend().emails.send({
       from: emailConfig.from,
       to,
       subject,

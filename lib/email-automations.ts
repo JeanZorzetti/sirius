@@ -4,9 +4,8 @@ import { WelcomeEmail } from '../emails/templates/welcome'
 import { DealCreatedEmail } from '../emails/templates/deal-created'
 import { DealStageChangedEmail } from '../emails/templates/deal-stage-changed'
 import { UpgradeNudgeEmail } from '../emails/templates/upgrade-nudge'
-import { PrismaClient, EmailAutomationType, EmailStatus } from '@prisma/client'
-
-const prisma = new PrismaClient()
+import { EmailAutomationType, EmailStatus } from '@prisma/client'
+import { prisma } from '@/lib/prisma'
 
 /**
  * Verifica se a automação está habilitada e retorna as configurações

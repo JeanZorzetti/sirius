@@ -8,6 +8,7 @@ import { Sparkles, FileUp, Zap, Loader2 } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
 import { analytics } from '@/lib/posthog'
+import { ImportContactsModal } from '@/components/onboarding/import-contacts-modal'
 
 interface WelcomeModalProps {
   open: boolean
@@ -21,6 +22,7 @@ export function WelcomeModal({ open, onClose, userName }: WelcomeModalProps) {
   const router = useRouter()
   const [isLoading, setIsLoading] = useState(false)
   const [selectedChoice, setSelectedChoice] = useState<OnboardingChoice>(null)
+  const [showImportModal, setShowImportModal] = useState(false)
 
   // Rastrear início do onboarding quando modal abre
   useEffect(() => {
@@ -60,23 +62,10 @@ export function WelcomeModal({ open, onClose, userName }: WelcomeModalProps) {
         onClose()
         window.location.href = '/dashboard?tour=true'
       } else if (choice === 'import') {
-        // Mark onboarding as completed
-        await fetch('/api/onboarding/complete', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ status: 'COMPLETED' })
-        })
-
-        // TODO: Implement import flow
-        toast.info('Em breve!', {
-          description: 'A importação de dados estará disponível em breve.'
-        })
-
-        // Rastrear conclusão do onboarding
+        // ✅ FASE 15: Abrir modal de import real
         analytics.onboardingCompleted({ demo_mode: false })
-
-        onClose()
-        window.location.href = '/dashboard'
+        setShowImportModal(true)
+        return // Não fechar o welcome modal ainda
       } else if (choice === 'scratch') {
         // Mark onboarding as completed
         await fetch('/api/onboarding/complete', {
@@ -103,6 +92,7 @@ export function WelcomeModal({ open, onClose, userName }: WelcomeModalProps) {
   }
 
   return (
+    <>
     <Dialog open={open} onOpenChange={(open) => !open && !isLoading && onClose()}>
       <DialogContent className="w-[55vw] sm:max-w-[55vw] max-w-[55vw]!" onPointerDownOutside={(e) => isLoading && e.preventDefault()}>
         <DialogHeader>
@@ -284,5 +274,16 @@ export function WelcomeModal({ open, onClose, userName }: WelcomeModalProps) {
         </div>
       </DialogContent>
     </Dialog>
+
+    {/* ✅ FASE 15: Modal de import de contatos */}
+    <ImportContactsModal
+      open={showImportModal}
+      onClose={() => { setShowImportModal(false); setIsLoading(false) }}
+      onSuccess={(count) => {
+        onClose()
+        window.location.href = '/dashboard'
+      }}
+    />
+    </>
   )
 }
