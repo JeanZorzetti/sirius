@@ -10,6 +10,11 @@ import { prisma } from '@/lib/prisma'
 import { MercadoPagoConfig, Payment } from 'mercadopago'
 import { SubscriptionTier } from '@prisma/client'
 import logger from '@/lib/logger'
+import { sendEmail } from '@/lib/email'
+import { PaymentConfirmationEmail } from '@/emails/templates/payment-confirmation'
+import { PaymentFailureEmail } from '@/emails/templates/payment-failure'
+
+const MAX_PAYMENT_ATTEMPTS = 3
 
 const mp = new MercadoPagoConfig({
   accessToken: process.env.MERCADO_PAGO_ACCESS_TOKEN!,
@@ -290,18 +295,14 @@ async function processSubscriptionEvent(preapprovalId: string, action: string) {
 
 /**
  * ✅ FASE 16: Processa pagamento recorrente (renovação mensal)
- * Renova o tier da organização e reseta créditos mensais
+ * - Aprovado: renova tier + reseta créditos + envia email de confirmação
+ * - Rejeitado: incrementa tentativas (máx 3) → cancela e faz downgrade
  */
 async function processRecurringPayment(paymentId: string) {
   logger.info({ paymentId }, '[MP:RECURRING] Processing recurring payment')
 
   try {
     const payment = await new Payment(mp).get({ id: paymentId })
-
-    if (payment.status !== 'approved') {
-      logger.info({ paymentId, status: payment.status }, '[MP:RECURRING] Payment not approved, skipping')
-      return
-    }
 
     const externalReference = payment.external_reference
     if (!externalReference) {
@@ -310,14 +311,29 @@ async function processRecurringPayment(paymentId: string) {
     }
 
     const [organizationId, tier] = externalReference.split('_')
-    if (!organizationId || !tier) return
+    if (!organizationId) return
 
-    const subscriptionTier = tier as SubscriptionTier
+    // Pagamento rejeitado → retry logic
+    if (payment.status === 'rejected' || payment.status === 'cancelled') {
+      await handleFailedRecurringPayment(organizationId, payment)
+      return
+    }
 
-    // Garantir que o tier continua ativo (renovação)
-    await prisma.organization.update({
+    if (payment.status !== 'approved') {
+      logger.info({ paymentId, status: payment.status }, '[MP:RECURRING] Payment pending, skipping')
+      return
+    }
+
+    const subscriptionTier = (tier || 'PRO') as SubscriptionTier
+
+    // Renovação aprovada: resetar contador de falhas
+    const org = await prisma.organization.update({
       where: { id: organizationId },
-      data: { tier: subscriptionTier },
+      data: {
+        tier: subscriptionTier,
+        failedPaymentAttempts: 0,
+      },
+      select: { id: true, name: true },
     })
 
     // Resetar créditos mensais de scraping
@@ -359,9 +375,120 @@ async function processRecurringPayment(paymentId: string) {
       },
     })
 
+    // Enviar email de confirmação de renovação
+    const owner = await prisma.user.findFirst({
+      where: { organizationId },
+      select: { email: true, name: true },
+      orderBy: { createdAt: 'asc' },
+    })
+
+    if (owner?.email) {
+      const nextBilling = new Date()
+      nextBilling.setMonth(nextBilling.getMonth() + 1)
+
+      await sendEmail({
+        to: owner.email,
+        subject: '✅ Renovação confirmada – Sirius CRM',
+        react: PaymentConfirmationEmail({
+          userName: owner.name || 'Cliente',
+          organizationName: org.name,
+          paymentId: String(payment.id),
+          paymentType: payment.payment_method_id || 'credit_card',
+          amount: parseFloat(String(payment.transaction_amount ?? 0)),
+          nextBillingDate: nextBilling.toLocaleDateString('pt-BR'),
+        }),
+      }).catch(err => logger.error({ err }, '[MP:RECURRING] Failed to send renewal email'))
+    }
+
     logger.info({ organizationId, tier: subscriptionTier }, '[MP:RECURRING] Subscription renewed successfully')
   } catch (err) {
     logger.error({ err, paymentId }, '[MP:RECURRING] Error processing recurring payment')
+  }
+}
+
+/**
+ * Trata falha de pagamento recorrente com retry logic.
+ * Após MAX_PAYMENT_ATTEMPTS falhas consecutivas, faz downgrade para FREE.
+ */
+async function handleFailedRecurringPayment(organizationId: string, payment: any) {
+  logger.info({ organizationId, paymentStatus: payment.status }, '[MP:RECURRING] Handling failed payment')
+
+  const org = await prisma.organization.findUnique({
+    where: { id: organizationId },
+    select: { id: true, name: true, tier: true, failedPaymentAttempts: true },
+  })
+
+  if (!org) return
+
+  const tierNames: Record<string, string> = {
+    STARTER: 'Starter',
+    PRO: 'Pro',
+    BUSINESS: 'Business',
+  }
+  const planName = tierNames[org.tier] || org.tier
+  const newAttempts = (org.failedPaymentAttempts || 0) + 1
+  const isFinal = newAttempts >= MAX_PAYMENT_ATTEMPTS
+
+  const billingUrl = `${process.env.NEXT_PUBLIC_APP_URL}/dashboard/settings/billing`
+
+  if (isFinal) {
+    // Downgrade para FREE após atingir o limite
+    await prisma.organization.update({
+      where: { id: org.id },
+      data: {
+        tier: SubscriptionTier.FREE,
+        failedPaymentAttempts: 0,
+      },
+    })
+
+    await prisma.transaction.create({
+      data: {
+        organizationId: org.id,
+        type: 'PLAN_DOWNGRADE',
+        amount: 0,
+        currency: 'BRL',
+        status: 'COMPLETED',
+        provider: 'MERCADO_PAGO',
+        metadata: {
+          reason: 'max_payment_failures',
+          previousTier: org.tier,
+          newTier: 'FREE',
+          attempts: newAttempts,
+        },
+      },
+    })
+
+    logger.warn({ organizationId: org.id, attempts: newAttempts }, '[MP:RECURRING] Downgraded to FREE after max failures')
+  } else {
+    await prisma.organization.update({
+      where: { id: org.id },
+      data: { failedPaymentAttempts: newAttempts },
+    })
+  }
+
+  // Enviar email de falha
+  const owner = await prisma.user.findFirst({
+    where: { organizationId: org.id },
+    select: { email: true, name: true },
+    orderBy: { createdAt: 'asc' },
+  })
+
+  if (owner?.email) {
+    await sendEmail({
+      to: owner.email,
+      subject: isFinal
+        ? `⚠️ Assinatura Sirius cancelada por falta de pagamento`
+        : `❌ Falha no pagamento (${newAttempts}/${MAX_PAYMENT_ATTEMPTS}) – Sirius CRM`,
+      react: PaymentFailureEmail({
+        userName: owner.name || 'Cliente',
+        organizationName: org.name,
+        planName,
+        attemptNumber: newAttempts,
+        maxAttempts: MAX_PAYMENT_ATTEMPTS,
+        updateCardUrl: billingUrl,
+        isFinal,
+      }),
+    }).catch(err => logger.error({ err }, '[MP:RECURRING] Failed to send failure email'))
   }
 }
 

@@ -30,6 +30,7 @@ model Organization {
   grandfatheredDealLimit Int? // FREE clients: custom deal limit (null = use tier limit)
   grandfatheredAt        DateTime? // When grandfathering was applied
   whatsappInstances      Int       @default(1) // Base WhatsApp instances (PRO: 1, BUSINESS: 1)
+  failedPaymentAttempts  Int       @default(0) // Retry logic: downgrade after 3 consecutive failures
 
   users                   User[]
   contacts                Contact[]

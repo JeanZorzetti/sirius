@@ -92,6 +92,7 @@ export function ImportContactsModal({ open, onClose, onSuccess }: ImportContacts
   const [preview, setPreview] = useState<ImportPreview | null>(null)
   const [isDragging, setIsDragging] = useState(false)
   const [importResult, setImportResult] = useState<{ imported: number; skipped: number } | null>(null)
+  const [progress, setProgress] = useState(0)
 
   const handleFile = async (file: File) => {
     if (!file.name.match(/\.(csv|xlsx|xls)$/i)) {
@@ -121,6 +122,15 @@ export function ImportContactsModal({ open, onClose, onSuccess }: ImportContacts
     if (!preview || preview.contacts.length === 0) return
 
     setStep('importing')
+    setProgress(0)
+
+    // Simular progresso enquanto aguarda resposta do servidor
+    const progressInterval = setInterval(() => {
+      setProgress(prev => {
+        if (prev >= 85) { clearInterval(progressInterval); return prev }
+        return prev + Math.random() * 15
+      })
+    }, 300)
 
     try {
       const response = await fetch('/api/onboarding/import-contacts', {
@@ -129,14 +139,22 @@ export function ImportContactsModal({ open, onClose, onSuccess }: ImportContacts
         body: JSON.stringify({ contacts: preview.contacts }),
       })
 
+      clearInterval(progressInterval)
+      setProgress(100)
+
       const data = await response.json()
 
       if (!response.ok) throw new Error(data.error || 'Erro ao importar')
+
+      // Pequeno delay para o usuário ver 100%
+      await new Promise(r => setTimeout(r, 400))
 
       setImportResult(data)
       setStep('done')
       onSuccess?.(data.imported)
     } catch (err: any) {
+      clearInterval(progressInterval)
+      setProgress(0)
       toast.error('Erro na importação', { description: err.message })
       setStep('preview')
     }
@@ -279,10 +297,18 @@ export function ImportContactsModal({ open, onClose, onSuccess }: ImportContacts
         )}
 
         {step === 'importing' && (
-          <div className="py-8 text-center space-y-3">
+          <div className="py-8 text-center space-y-4">
             <Loader2 className="h-10 w-10 mx-auto animate-spin text-primary" />
             <p className="font-medium">Importando contatos...</p>
-            <p className="text-sm text-muted-foreground">Aguarde alguns segundos</p>
+            <div className="space-y-1">
+              <div className="w-full bg-muted rounded-full h-2 overflow-hidden">
+                <div
+                  className="h-2 rounded-full bg-primary transition-all duration-300"
+                  style={{ width: `${Math.min(100, progress)}%` }}
+                />
+              </div>
+              <p className="text-xs text-muted-foreground">{Math.round(Math.min(100, progress))}%</p>
+            </div>
           </div>
         )}
 
