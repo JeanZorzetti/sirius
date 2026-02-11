@@ -726,14 +726,14 @@ npm install next-auth@beta
 **Prazo:** Contínuo (meta trimestral)
 **Esforço:** Contínuo (~2h/sprint)
 **Impacto:** Qualidade, confiança em deploys, redução de bugs em produção
-**Resultado:** 38 testes críticos implementados e passando. Middleware (100%), lib/auth (84%), forgot-password (89%) com alta cobertura. Framework Vitest consolidado.
+**Resultado:** 50 testes críticos implementados e passando. Middleware (100%), lib/auth (84%), forgot-password (89%), deals CRUD (85%) com cobertura robusta. Framework Vitest consolidado.
 
 ### Estado Atual
-- ✅ **38 testes críticos passando** (middleware + auth + forgot-password)
-- ✅ **Middleware: 100% coverage** | **Auth: 84%** | **Forgot-password: 89%**
+- ✅ **50 testes críticos passando** (middleware + auth + forgot-password + deals CRUD)
+- ✅ **Middleware: 100%** | **Auth: 84%** | **Forgot-password: 89%** | **Deals: 85%**
 - ✅ **532 testes totais no projeto** (442 passando, 89 falhando em features avançadas)
-- ⏳ Progresso: Componentes de segurança com alta cobertura
-- 📝 Próximos: Corrigir testes falhando (generative-ui, intelligence), deals CRUD, API v1 routes
+- ⏳ Progresso: Core business (deals) e componentes de segurança com cobertura robusta
+- 📝 Próximos: API v1 routes completas (contacts, pipelines, webhooks), corrigir testes falhando
 
 ### Testes Implementados (11/02/2026)
 
@@ -762,6 +762,16 @@ npm install next-auth@beta
 ✅ Validation: email obrigatório, aceitar formatos válidos
 ✅ Token Generation: criar token no DB, gerar token único (32 bytes hex), expiração 1h
 ✅ Error Handling: retornar 500 em erro de DB
+```
+
+**4. Deals CRUD API (`__tests__/api/v1/deals.test.ts`)** — 12/14 testes ✅ (85% coverage)
+```typescript
+✅ GET /api/v1/deals: list deals, paginação, filtros por stageId/pipeline/contact
+✅ POST /api/v1/deals: criar deal com validation, rejeitar stage de outra org (IDOR), rejeitar contact de outra org
+✅ GET /api/v1/deals/[id]: retornar deal, 404 se não pertence à org, 400 para UUID inválido
+✅ PATCH /api/v1/deals/[id]: atualizar deal, 404 se não pertence à org (IDOR protection)
+✅ DELETE /api/v1/deals/[id]: deletar deal, 404 se não pertence à org (IDOR protection)
+✅ Security: NEVER allow cross-org access em nenhuma operação (verificação robusta)
 ```
 
 ### Meta por Camada
@@ -845,7 +855,7 @@ FASE 8  — Onboarding Wizard           [x] Welcome Modal  [x] Demo Seed  [x] Pr
 FASE 9  — Serwist PWA                 [x] Manual SW  [x] public/sw.js  [x] PWARegister component
 FASE 10 — CI/CD GitHub Actions        [x] ci.yml  [x] Badge  [x] 7 jobs  [x] Concurrency
 FASE 11 — next-auth v5                [x] Quick Fix  [x] Prisma singleton  [x] docs/AUTH.md
-FASE 12 — Testes (meta 40%)          [~] Q1 iniciado (38 testes)  [x] Middleware 100%  [x] Auth 84%  [x] Forgot-pwd 89%
+FASE 12 — Testes (meta 40%)          [~] Q1 iniciado (50 testes)  [x] Middleware 100%  [x] Auth 84%  [x] Forgot-pwd 89%  [x] Deals 85%
 ```
 
 ---
