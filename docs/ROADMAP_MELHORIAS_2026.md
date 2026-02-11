@@ -13,7 +13,7 @@
 | ~~1~~ | ~~Imagens de Blog (55MB)~~ | ~~HOJE~~ | ~~30 min~~ | DONE 11/02 (-96.5%) |
 | ~~2~~ | ~~Rate Limiting nas APIs~~ | ~~HOJE~~ | ~~2h~~ | DONE 11/02 |
 | ~~3~~ | ~~Remover Console.logs Sensíveis~~ | ~~HOJE~~ | ~~1h~~ | DONE 11/02 |
-| 4 | Health Check Endpoint | Semana 1 | 30 min | Monitoramento |
+| ~~4~~ | ~~Health Check Endpoint~~ | ~~Semana 1~~ | ~~30 min~~ | DONE 11/02 |
 | 5 | Suspense Boundaries no Dashboard | Semana 1 | 3h | UX +20% |
 | 6 | Social Proof Dinâmico | Semana 1 | 1h | Confiança +15% |
 | 7 | Dynamic Imports (Bundle -150KB) | Semana 1 | 2h | Performance +20% |
@@ -186,10 +186,11 @@ export const logger = {
 
 ## Fase 4 — Health Check Endpoint
 
-**Status:** `[ ] Pendente`
+**Status:** `[x] CONCLUÍDO — 11/02/2026`
 **Prazo:** Semana 1
 **Esforço:** 30 minutos
 **Impacto:** Monitoramento proativo — detecta DB down antes que usuários reclamem
+**Resultado:** `GET /api/health` retorna status DB (connected/disconnected), latência em ms, timestamp e versão. Retorna 503 se DB estiver down.
 
 ### Problema
 Nenhum endpoint `/api/health` existe. Vercel pode ter o servidor up com o banco de dados completamente down. Sem forma de saber programaticamente.
@@ -748,7 +749,7 @@ npm run test:e2e:ui
 FASE 1  — Imagens de Blog             [x] Comprimidas  [x] Referências atualizadas
 FASE 2  — Rate Limiting               [x] lib/ratelimit.ts  [x] Auth routes  [x] AGI routes  [x] Public routes
 FASE 3  — Console.logs                [x] Dashboard  [x] API routes  [x] Components  [x] Lib files
-FASE 4  — Health Check                [ ] /api/health  [ ] Configurado no Vercel
+FASE 4  — Health Check                [x] /api/health  [ ] Configurado no Vercel
 FASE 5  — Suspense Dashboard          [ ] PipelineSection  [ ] AnalyticsSection  [ ] Skeletons
 FASE 6  — Social Proof                [ ] Hardcoded removido  [ ] Dado real ou texto honesto
 FASE 7  — Dynamic Imports             [ ] D3  [ ] jsPDF  [ ] xlsx  [ ] KanbanBoard
