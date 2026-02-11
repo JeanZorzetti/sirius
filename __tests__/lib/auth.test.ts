@@ -71,8 +71,10 @@ describe('lib/auth.ts', () => {
       const payload = { user: { id: '123' } }
       const jwt = await encrypt(payload)
 
-      // Tamper with JWT (change last character)
-      const tamperedJwt = jwt.slice(0, -1) + 'X'
+      // Tamper with JWT signature (change multiple characters in the signature part)
+      const parts = jwt.split('.')
+      const tamperedSignature = parts[2].slice(0, -5) + 'XXXXX'
+      const tamperedJwt = `${parts[0]}.${parts[1]}.${tamperedSignature}`
 
       await expect(decrypt(tamperedJwt)).rejects.toThrow()
     })

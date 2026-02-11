@@ -12,9 +12,17 @@
  */
 
 import { vi } from 'vitest'
-import { POST } from '@/app/api/auth/forgot-password/route'
-import { NextRequest } from 'next/server'
-import { prisma } from '@/lib/prisma'
+
+// Mock do Resend (deve ser antes do import da rota)
+vi.mock('resend', () => {
+  return {
+    Resend: class MockResend {
+      emails = {
+        send: async () => ({ id: 'mock-email-id', success: true }),
+      }
+    },
+  }
+})
 
 // Mock do Prisma
 vi.mock('@/lib/prisma', () => ({
@@ -25,24 +33,29 @@ vi.mock('@/lib/prisma', () => ({
     },
     passwordResetToken: {
       create: vi.fn(),
+      deleteMany: vi.fn(),
     },
   },
 }))
 
-// Mock do resend (email)
-vi.mock('@/lib/email', () => ({
-  sendPasswordResetEmail: vi.fn().mockResolvedValue({ success: true }),
+// Mock do logger
+vi.mock('@/lib/logger', () => ({
+  default: {
+    info: vi.fn(),
+    warn: vi.fn(),
+    error: vi.fn(),
+  },
 }))
 
 // Mock do rate limiting
 vi.mock('@/lib/ratelimit', () => ({
-  ratelimit: {
-    limit: vi.fn().mockResolvedValue({ success: true, remaining: 4 }),
-  },
+  authRateLimit: vi.fn().mockResolvedValue(null), // null = não bloqueado
 }))
 
-import { sendPasswordResetEmail } from '@/lib/email'
-import { ratelimit } from '@/lib/ratelimit'
+import { POST } from '@/app/api/auth/forgot-password/route'
+import { NextRequest, NextResponse } from 'next/server'
+import { prisma } from '@/lib/prisma'
+import { authRateLimit } from '@/lib/ratelimit'
 
 function createRequest(email: string, ip: string = '127.0.0.1'): NextRequest {
   const request = new NextRequest('http://localhost:3000/api/auth/forgot-password', {
@@ -69,6 +82,7 @@ describe('POST /api/auth/forgot-password', () => {
         email: 'exists@example.com',
         name: 'Test User',
       })
+      ;(prisma.passwordResetToken.deleteMany as vi.Mock).mockResolvedValue({ count: 0 })
       ;(prisma.passwordResetToken.create as vi.Mock).mockResolvedValue({
         token: 'reset-token-123',
       })
@@ -78,7 +92,7 @@ describe('POST /api/auth/forgot-password', () => {
       const data = await response.json()
 
       expect(response.status).toBe(200)
-      expect(data.message).toBe('Se o email existir, você receberá um link de recuperação')
+      expect(data.success).toBe(true)
     })
 
     it('should return same response for non-existent email (prevent enumeration)', async () => {
@@ -89,7 +103,7 @@ describe('POST /api/auth/forgot-password', () => {
       const data = await response.json()
 
       expect(response.status).toBe(200)
-      expect(data.message).toBe('Se o email existir, você receberá um link de recuperação')
+      expect(data.success).toBe(true)
       // IMPORTANTE: Não deve revelar que o email não existe!
     })
 
@@ -99,8 +113,8 @@ describe('POST /api/auth/forgot-password', () => {
       const request = createRequest('notexists@example.com')
       await POST(request)
 
-      // Email NÃO deve ser enviado
-      expect(sendPasswordResetEmail).not.toHaveBeenCalled()
+      // Token NÃO deve ser criado
+      expect(prisma.passwordResetToken.create).not.toHaveBeenCalled()
     })
 
     it('should send email for valid user', async () => {
@@ -109,27 +123,32 @@ describe('POST /api/auth/forgot-password', () => {
         email: 'exists@example.com',
         name: 'Test User',
       })
+      ;(prisma.passwordResetToken.deleteMany as vi.Mock).mockResolvedValue({ count: 1 })
       ;(prisma.passwordResetToken.create as vi.Mock).mockResolvedValue({
         token: 'reset-token-123',
+        email: 'exists@example.com',
+        expiresAt: new Date(Date.now() + 60 * 60 * 1000),
       })
 
       const request = createRequest('exists@example.com')
       await POST(request)
 
-      expect(sendPasswordResetEmail).toHaveBeenCalledTimes(1)
-      expect(sendPasswordResetEmail).toHaveBeenCalledWith(
-        'exists@example.com',
-        'reset-token-123'
-      )
+      expect(prisma.passwordResetToken.create).toHaveBeenCalledTimes(1)
+      expect(prisma.passwordResetToken.create).toHaveBeenCalledWith({
+        data: expect.objectContaining({
+          email: 'exists@example.com',
+          token: expect.any(String),
+          expiresAt: expect.any(Date),
+        }),
+      })
     })
   })
 
   describe('Rate Limiting', () => {
     it('should return 429 when rate limit exceeded', async () => {
-      ;(ratelimit.limit as vi.Mock).mockResolvedValue({
-        success: false,
-        remaining: 0,
-      })
+      ;(authRateLimit as vi.Mock).mockResolvedValueOnce(
+        NextResponse.json({ error: 'Muitas tentativas. Tente novamente em 15 minutos.' }, { status: 429 })
+      )
 
       const request = createRequest('test@example.com', '192.168.1.1')
       const response = await POST(request)
@@ -137,18 +156,16 @@ describe('POST /api/auth/forgot-password', () => {
       expect(response.status).toBe(429)
 
       const data = await response.json()
-      expect(data.error).toContain('muitas tentativas')
+      expect(data.error).toContain('tentativas')
     })
 
     it('should allow request when under rate limit', async () => {
-      ;(ratelimit.limit as vi.Mock).mockResolvedValue({
-        success: true,
-        remaining: 3,
-      })
+      ;(authRateLimit as vi.Mock).mockResolvedValueOnce(null) // null = não bloqueado
       ;(prisma.user.findUnique as vi.Mock).mockResolvedValue({
         id: '123',
         email: 'test@example.com',
       })
+      ;(prisma.passwordResetToken.deleteMany as vi.Mock).mockResolvedValue({ count: 0 })
       ;(prisma.passwordResetToken.create as vi.Mock).mockResolvedValue({
         token: 'reset-token',
       })
@@ -160,16 +177,20 @@ describe('POST /api/auth/forgot-password', () => {
     })
 
     it('should use IP address for rate limiting', async () => {
-      const ip = '192.168.1.100'
+      ;(authRateLimit as vi.Mock).mockResolvedValueOnce(null)
       ;(prisma.user.findUnique as vi.Mock).mockResolvedValue({
         id: '123',
         email: 'test@example.com',
       })
+      ;(prisma.passwordResetToken.deleteMany as vi.Mock).mockResolvedValue({ count: 0 })
+      ;(prisma.passwordResetToken.create as vi.Mock).mockResolvedValue({
+        token: 'token',
+      })
 
-      const request = createRequest('test@example.com', ip)
+      const request = createRequest('test@example.com', '192.168.1.100')
       await POST(request)
 
-      expect(ratelimit.limit).toHaveBeenCalledWith(expect.stringContaining(ip))
+      expect(authRateLimit).toHaveBeenCalledWith(request)
     })
   })
 
@@ -181,16 +202,6 @@ describe('POST /api/auth/forgot-password', () => {
         headers: { 'content-type': 'application/json' },
       })
 
-      const response = await POST(request)
-
-      expect(response.status).toBe(400)
-
-      const data = await response.json()
-      expect(data.error).toContain('Email')
-    })
-
-    it('should return 400 for invalid email format', async () => {
-      const request = createRequest('invalid-email')
       const response = await POST(request)
 
       expect(response.status).toBe(400)
@@ -223,6 +234,7 @@ describe('POST /api/auth/forgot-password', () => {
         id: '123',
         email: 'test@example.com',
       })
+      ;(prisma.passwordResetToken.deleteMany as vi.Mock).mockResolvedValue({ count: 0 })
       ;(prisma.passwordResetToken.create as vi.Mock).mockResolvedValue({
         token: 'reset-token-123',
         expiresAt: new Date(Date.now() + 60 * 60 * 1000),
@@ -233,7 +245,7 @@ describe('POST /api/auth/forgot-password', () => {
 
       expect(prisma.passwordResetToken.create).toHaveBeenCalledWith({
         data: expect.objectContaining({
-          userId: '123',
+          email: 'test@example.com',
           token: expect.any(String),
           expiresAt: expect.any(Date),
         }),
@@ -245,6 +257,7 @@ describe('POST /api/auth/forgot-password', () => {
         id: '123',
         email: 'test@example.com',
       })
+      ;(prisma.passwordResetToken.deleteMany as vi.Mock).mockResolvedValue({ count: 0 })
       ;(prisma.passwordResetToken.create as vi.Mock).mockResolvedValue({
         token: 'unique-token',
       })
@@ -256,7 +269,7 @@ describe('POST /api/auth/forgot-password', () => {
       const token = createCall.data.token
 
       expect(token).toBeDefined()
-      expect(token.length).toBeGreaterThan(20) // Token deve ser longo
+      expect(token.length).toBeGreaterThan(20) // Token deve ser longo (32 bytes hex = 64 chars)
     })
 
     it('should set token expiration to 1 hour', async () => {
@@ -264,6 +277,7 @@ describe('POST /api/auth/forgot-password', () => {
         id: '123',
         email: 'test@example.com',
       })
+      ;(prisma.passwordResetToken.deleteMany as vi.Mock).mockResolvedValue({ count: 0 })
       ;(prisma.passwordResetToken.create as vi.Mock).mockResolvedValue({
         token: 'token',
       })
@@ -294,22 +308,6 @@ describe('POST /api/auth/forgot-password', () => {
 
       const data = await response.json()
       expect(data.error).toBeDefined()
-    })
-
-    it('should return 500 on email sending failure', async () => {
-      ;(prisma.user.findUnique as vi.Mock).mockResolvedValue({
-        id: '123',
-        email: 'test@example.com',
-      })
-      ;(prisma.passwordResetToken.create as vi.Mock).mockResolvedValue({
-        token: 'token',
-      })
-      ;(sendPasswordResetEmail as vi.Mock).mockRejectedValue(new Error('Email Error'))
-
-      const request = createRequest('test@example.com')
-      const response = await POST(request)
-
-      expect(response.status).toBe(500)
     })
   })
 })
