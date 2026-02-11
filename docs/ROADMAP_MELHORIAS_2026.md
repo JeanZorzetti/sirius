@@ -14,7 +14,7 @@
 | ~~2~~ | ~~Rate Limiting nas APIs~~ | ~~HOJE~~ | ~~2h~~ | DONE 11/02 |
 | ~~3~~ | ~~Remover Console.logs Sensíveis~~ | ~~HOJE~~ | ~~1h~~ | DONE 11/02 |
 | ~~4~~ | ~~Health Check Endpoint~~ | ~~Semana 1~~ | ~~30 min~~ | DONE 11/02 |
-| 5 | Suspense Boundaries no Dashboard | Semana 1 | 3h | UX +20% |
+| ~~5~~ | ~~Suspense Boundaries no Dashboard~~ | ~~Semana 1~~ | ~~3h~~ | DONE 11/02 |
 | 6 | Social Proof Dinâmico | Semana 1 | 1h | Confiança +15% |
 | 7 | Dynamic Imports (Bundle -150KB) | Semana 1 | 2h | Performance +20% |
 | 8 | Onboarding Wizard (4 steps) | Semana 2-3 | 6h | Retention +40% |
@@ -243,10 +243,11 @@ export async function GET() {
 
 ## Fase 5 — Suspense Boundaries no Dashboard
 
-**Status:** `[ ] Pendente`
+**Status:** `[x] CONCLUÍDO — 11/02/2026`
 **Prazo:** Semana 1
 **Esforço:** 3 horas
 **Impacto:** Usuário vê conteúdo progressivamente, sem tela branca. UX +20%
+**Resultado:** Dashboard refatorado com Suspense. User fetch (rápido) → shell renderizado → skeleton animado → DashboardTabsWrapper carrega pipelines/stages em paralelo. Criados: `DashboardTabsSkeleton`, `DashboardTabsWrapper` (Server Component async).
 
 ### Problema
 `app/dashboard/page.tsx` carrega tudo em série:
@@ -750,7 +751,7 @@ FASE 1  — Imagens de Blog             [x] Comprimidas  [x] Referências atuali
 FASE 2  — Rate Limiting               [x] lib/ratelimit.ts  [x] Auth routes  [x] AGI routes  [x] Public routes
 FASE 3  — Console.logs                [x] Dashboard  [x] API routes  [x] Components  [x] Lib files
 FASE 4  — Health Check                [x] /api/health  [ ] Configurado no Vercel
-FASE 5  — Suspense Dashboard          [ ] PipelineSection  [ ] AnalyticsSection  [ ] Skeletons
+FASE 5  — Suspense Dashboard          [x] DashboardTabsWrapper  [x] DashboardTabsSkeleton  [x] Refatoração completa
 FASE 6  — Social Proof                [ ] Hardcoded removido  [ ] Dado real ou texto honesto
 FASE 7  — Dynamic Imports             [ ] D3  [ ] jsPDF  [ ] xlsx  [ ] KanbanBoard
 FASE 8  — Onboarding Wizard           [ ] Step 1  [ ] Step 2  [ ] Step 3  [ ] Step 4
