@@ -2,7 +2,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { prisma } from '@/lib/prisma'
 import { getSession } from '@/lib/auth'
 import Link from 'next/link'
-import { Workflow, MessageCircle, Calendar, ArrowLeft, CheckCircle2, XCircle, Activity, TrendingUp, AlertCircle } from 'lucide-react'
+import { Workflow, MessageCircle, Calendar, ArrowLeft, CheckCircle2, XCircle, Activity, TrendingUp, AlertCircle, BarChart3, Share2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 
@@ -24,7 +24,10 @@ export default async function IntegrationsPage() {
                     evolutionEnabled: true,
                     evolutionBaseUrl: true,
                     googleCalendarEnabled: true,
-                    googleCalendarEmail: true
+                    googleCalendarEmail: true,
+                    googleAdsCustomerId: true,
+                    facebookAdAccountId: true,
+                    adsIntegrationEnabled: true,
                 }
             }
         }
@@ -141,6 +144,34 @@ export default async function IntegrationsPage() {
             href: '/dashboard/settings/integrations/google-calendar',
             requiresPro: false,
             eventsLast7Days: calendarLogs
+        },
+        {
+            id: 'google-ads',
+            name: 'Google Ads',
+            description: 'Importe dados de campanhas e calcule seu CAC real',
+            icon: BarChart3,
+            iconColor: 'text-blue-500',
+            iconBg: 'bg-blue-500/10',
+            iconShadow: 'shadow-[0_0_10px_rgba(59,130,246,0.2)]',
+            enabled: user.organization.adsIntegrationEnabled && !!user.organization.googleAdsCustomerId,
+            configured: !!user.organization.googleAdsCustomerId,
+            href: '/dashboard/settings/integrations/google-ads',
+            requiresPro: true,
+            eventsLast7Days: 0
+        },
+        {
+            id: 'facebook-ads',
+            name: 'Meta Ads (Facebook)',
+            description: 'Conecte campanhas do Facebook/Instagram ao CRM',
+            icon: Share2,
+            iconColor: 'text-blue-600',
+            iconBg: 'bg-blue-600/10',
+            iconShadow: 'shadow-[0_0_10px_rgba(29,78,216,0.2)]',
+            enabled: user.organization.adsIntegrationEnabled && !!user.organization.facebookAdAccountId,
+            configured: !!user.organization.facebookAdAccountId,
+            href: '/dashboard/settings/integrations/facebook-ads',
+            requiresPro: true,
+            eventsLast7Days: 0
         }
     ]
 
@@ -385,6 +416,10 @@ export default async function IntegrationsPage() {
                             <p>
                                 <strong>Google Calendar:</strong> Sincronize eventos do calendário com deals.
                                 Crie eventos automaticamente quando fechar negócios.
+                            </p>
+                            <p>
+                                <strong>Google Ads / Meta Ads:</strong> Importe dados de campanhas diariamente.
+                                Calcule CAC real, LTV/CAC ratio e visualize ROI por campanha no dashboard de marketing.
                             </p>
                         </CardDescription>
                     </CardHeader>

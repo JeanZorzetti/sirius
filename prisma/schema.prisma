@@ -32,6 +32,14 @@ model Organization {
   whatsappInstances      Int       @default(1) // Base WhatsApp instances (PRO: 1, BUSINESS: 1)
   failedPaymentAttempts  Int       @default(0) // Retry logic: downgrade after 3 consecutive failures
 
+  // Fase 17 - Ads Integration (CAC Real)
+  googleAdsCustomerId    String?                // Google Ads Customer ID (ex: 123-456-7890)
+  googleAdsRefreshToken  String?   @db.Text     // OAuth2 Refresh Token (encrypted)
+  facebookAdAccountId    String?                // Facebook Ad Account ID (ex: act_123456789)
+  facebookAccessToken    String?   @db.Text     // Facebook Access Token (encrypted)
+  adsIntegrationEnabled  Boolean   @default(false)
+  adsLastSyncAt          DateTime?
+
   users                   User[]
   contacts                Contact[]
   deals                   Deal[]
@@ -73,6 +81,7 @@ model Organization {
   pushSubscriptions PushSubscription[]
   pwaMetrics        PWAMetric[]
   notifications     Notification[]
+  adsMetrics        AdsMetric[]
 
   // AGI Sirius relations
   agiConversations   AgiConversation[]
@@ -1576,4 +1585,37 @@ enum DealStatus {
   ACTIVE    // Deal ativo no pipeline
   WON       // Deal ganho/fechado
   LOST      // Deal perdido
+}
+
+// Fase 17: Métricas de Ads (Google Ads, Facebook Ads, manual)
+model AdsMetric {
+  id             String       @id @default(uuid())
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  source         String  // "google_ads" | "facebook_ads" | "manual"
+  date           DateTime
+
+  // Dados de campanha
+  campaignId     String?
+  campaignName   String?
+
+  // Métricas de gasto e resultado
+  spend          Decimal @db.Decimal(12, 2)
+  impressions    Int     @default(0)
+  clicks         Int     @default(0)
+  conversions    Int     @default(0) // Novos clientes/signups atribuídos
+
+  // Métricas derivadas (calculadas ao salvar)
+  cpc            Decimal @db.Decimal(10, 4) @default(0) // Cost per click
+  cpa            Decimal @db.Decimal(12, 2) @default(0) // Cost per acquisition (CAC por campanha)
+
+  notes          String?
+
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  @@unique([organizationId, source, date, campaignId])
+  @@index([organizationId, date])
+  @@index([organizationId, source])
 }

@@ -110,27 +110,30 @@ export async function calculateLTV(monthlyChurnRate: number = 0.05): Promise<num
  * @returns CAC médio em reais
  */
 export async function calculateCAC(month: number, year: number): Promise<number> {
-  // TODO: Integrar com plataformas de ads
-  // Por enquanto, retorna 0 ou um valor estimado
-
-  // Podemos estimar baseado em novas organizações criadas
   const startOfMonth = new Date(year, month - 1, 1)
   const endOfMonth = new Date(year, month, 0, 23, 59, 59)
 
-  const newOrganizations = await prisma.organization.count({
+  // Buscar gasto total em ads no mês (Google Ads + Facebook Ads + manual)
+  const adSpendResult = await prisma.adsMetric.aggregate({
+    where: { date: { gte: startOfMonth, lte: endOfMonth } },
+    _sum: { spend: true },
+  })
+
+  const totalSpend = parseFloat(String(adSpendResult._sum.spend ?? 0))
+
+  if (totalSpend === 0) return 0
+
+  // Novos clientes pagantes adquiridos no mês
+  const newPaidOrgs = await prisma.organization.count({
     where: {
-      createdAt: {
-        gte: startOfMonth,
-        lte: endOfMonth,
-      },
+      tier: { in: ['STARTER', 'PRO', 'BUSINESS'] },
+      createdAt: { gte: startOfMonth, lte: endOfMonth },
     },
   })
 
-  if (newOrganizations === 0) return 0
+  if (newPaidOrgs === 0) return totalSpend // CAC = gasto total se nenhum cliente novo
 
-  // Estimativa baseada em benchmark de SaaS B2B (R$ 300-500 por cliente)
-  // Retornar null para indicar que ainda não temos dados reais
-  return 0
+  return totalSpend / newPaidOrgs
 }
 
 /**

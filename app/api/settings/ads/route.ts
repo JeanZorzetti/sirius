@@ -1,0 +1,97 @@
+/**
+ * GET/PATCH /api/settings/ads
+ * ✅ FASE 17: Lê e salva credenciais de Ads da organização
+ */
+
+import { NextRequest, NextResponse } from 'next/server'
+import { prisma } from '@/lib/prisma'
+import { getSession } from '@/lib/auth'
+import logger from '@/lib/logger'
+
+export async function GET() {
+  try {
+    const session = await getSession()
+    if (!session?.user?.email) {
+      return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
+    }
+
+    const user = await prisma.user.findUnique({
+      where: { email: session.user.email },
+      select: {
+        organization: {
+          select: {
+            googleAdsCustomerId: true,
+            googleAdsRefreshToken: true,
+            facebookAdAccountId: true,
+            facebookAccessToken: true,
+            adsIntegrationEnabled: true,
+            adsLastSyncAt: true,
+          },
+        },
+      },
+    })
+
+    if (!user?.organization) {
+      return NextResponse.json({ error: 'Organização não encontrada' }, { status: 404 })
+    }
+
+    const org = user.organization
+    return NextResponse.json({
+      googleAdsCustomerId: org.googleAdsCustomerId,
+      // Retornar apenas indicador de se existe (nunca expor token)
+      googleAdsRefreshToken: org.googleAdsRefreshToken ? '••••••••' : null,
+      facebookAdAccountId: org.facebookAdAccountId,
+      facebookAccessToken: org.facebookAccessToken ? '••••••••' : null,
+      adsIntegrationEnabled: org.adsIntegrationEnabled,
+      adsLastSyncAt: org.adsLastSyncAt,
+    })
+  } catch (error) {
+    logger.error({ error }, '[SETTINGS:ADS] GET error')
+    return NextResponse.json({ error: 'Erro interno' }, { status: 500 })
+  }
+}
+
+export async function PATCH(request: NextRequest) {
+  try {
+    const session = await getSession()
+    if (!session?.user?.email) {
+      return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
+    }
+
+    const user = await prisma.user.findUnique({
+      where: { email: session.user.email },
+      select: { organizationId: true },
+    })
+
+    if (!user?.organizationId) {
+      return NextResponse.json({ error: 'Organização não encontrada' }, { status: 404 })
+    }
+
+    const body = await request.json()
+    const updateData: Record<string, any> = {}
+
+    // Campos permitidos
+    if ('googleAdsCustomerId' in body) updateData.googleAdsCustomerId = body.googleAdsCustomerId || null
+    if ('googleAdsRefreshToken' in body) updateData.googleAdsRefreshToken = body.googleAdsRefreshToken || null
+    if ('facebookAdAccountId' in body) updateData.facebookAdAccountId = body.facebookAdAccountId || null
+    if ('facebookAccessToken' in body) updateData.facebookAccessToken = body.facebookAccessToken || null
+    if ('adsIntegrationEnabled' in body) updateData.adsIntegrationEnabled = Boolean(body.adsIntegrationEnabled)
+
+    // Auto-ativar integração se qualquer credencial for fornecida
+    if (updateData.googleAdsCustomerId || updateData.facebookAdAccountId) {
+      updateData.adsIntegrationEnabled = true
+    }
+
+    await prisma.organization.update({
+      where: { id: user.organizationId },
+      data: updateData,
+    })
+
+    logger.info({ orgId: user.organizationId, fields: Object.keys(updateData) }, '[SETTINGS:ADS] Updated')
+
+    return NextResponse.json({ success: true })
+  } catch (error) {
+    logger.error({ error }, '[SETTINGS:ADS] PATCH error')
+    return NextResponse.json({ error: 'Erro interno' }, { status: 500 })
+  }
+}
