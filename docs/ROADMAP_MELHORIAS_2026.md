@@ -726,14 +726,14 @@ npm install next-auth@beta
 **Prazo:** Contínuo (meta trimestral)
 **Esforço:** Contínuo (~2h/sprint)
 **Impacto:** Qualidade, confiança em deploys, redução de bugs em produção
-**Resultado:** 50 testes críticos implementados e passando. Middleware (100%), lib/auth (84%), forgot-password (89%), deals CRUD (85%) com cobertura robusta. Framework Vitest consolidado.
+**Resultado:** 78 testes críticos implementados e passando. Middleware (100%), lib/auth (100%), forgot-password (100%), deals CRUD (85%), contacts CRUD (100%) com cobertura robusta. Framework Vitest consolidado.
 
 ### Estado Atual
-- ✅ **50 testes críticos passando** (middleware + auth + forgot-password + deals CRUD)
-- ✅ **Middleware: 100%** | **Auth: 84%** | **Forgot-password: 89%** | **Deals: 85%**
-- ✅ **532 testes totais no projeto** (442 passando, 89 falhando em features avançadas)
-- ⏳ Progresso: Core business (deals) e componentes de segurança com cobertura robusta
-- 📝 Próximos: API v1 routes completas (contacts, pipelines, webhooks), corrigir testes falhando
+- ✅ **78 testes críticos passando** (middleware + auth + forgot-password + deals + contacts CRUD)
+- ✅ **Middleware: 100%** | **Auth: 100%** | **Forgot-password: 100%** | **Deals: 85%** | **Contacts: 100%**
+- ✅ **560 testes totais no projeto** (470 passando, 90 falhando em features avançadas)
+- ⏳ Progresso: Core business (deals, contacts) e componentes de segurança com cobertura robusta
+- 📝 Próximos: API v1 routes completas (pipelines, stages, webhooks), corrigir testes falhando
 
 ### Testes Implementados (11/02/2026)
 
@@ -772,6 +772,16 @@ npm install next-auth@beta
 ✅ PATCH /api/v1/deals/[id]: atualizar deal, 404 se não pertence à org (IDOR protection)
 ✅ DELETE /api/v1/deals/[id]: deletar deal, 404 se não pertence à org (IDOR protection)
 ✅ Security: NEVER allow cross-org access em nenhuma operação (verificação robusta)
+```
+
+**5. Contacts CRUD API (`__tests__/api/v1/contacts.test.ts`)** — 28/28 testes ✅ (100% coverage)
+```typescript
+✅ GET /api/v1/contacts: list com paginação/sorting, filtrar por organizationId, incluir deals count
+✅ POST /api/v1/contacts: criar com validação, prevenir email duplicado na mesma org, permitir em orgs diferentes
+✅ GET /api/v1/contacts/[id]: retornar contact com deals associados, 404 para não-existente, 400 para UUID inválido, IDOR protection
+✅ PATCH /api/v1/contacts/[id]: atualizar contact, prevenir email conflict, 404 para outra org, validação UUID
+✅ DELETE /api/v1/contacts/[id]: deletar contact sem deals, impedir deleção se houver deals (409 conflict), IDOR protection
+✅ Security - IDOR: NEVER list/create/get/update/delete contacts de outras organizações (5 testes dedicados)
 ```
 
 ### Meta por Camada
@@ -855,7 +865,7 @@ FASE 8  — Onboarding Wizard           [x] Welcome Modal  [x] Demo Seed  [x] Pr
 FASE 9  — Serwist PWA                 [x] Manual SW  [x] public/sw.js  [x] PWARegister component
 FASE 10 — CI/CD GitHub Actions        [x] ci.yml  [x] Badge  [x] 7 jobs  [x] Concurrency
 FASE 11 — next-auth v5                [x] Quick Fix  [x] Prisma singleton  [x] docs/AUTH.md
-FASE 12 — Testes (meta 40%)          [~] Q1 iniciado (50 testes)  [x] Middleware 100%  [x] Auth 84%  [x] Forgot-pwd 89%  [x] Deals 85%
+FASE 12 — Testes (meta 40%)          [~] Q1 iniciado (78 testes)  [x] Middleware 100%  [x] Auth 100%  [x] Forgot-pwd 100%  [x] Deals 85%  [x] Contacts 100%
 ```
 
 ---
