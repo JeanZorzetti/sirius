@@ -4,7 +4,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 import { cn } from '@/lib/utils'
-import { Home, Users, Settings, BarChart3, CreditCard, Mail, LineChart, Search, RotateCw } from 'lucide-react'
+import { Home, Users, Settings, BarChart3, CreditCard, Mail, LineChart, Search, RotateCw, MessageSquare, TrendingDown, Zap, TrendingUp } from 'lucide-react'
 
 const navItems = [
   {
@@ -23,6 +23,11 @@ const navItems = [
     icon: Search,
   },
   {
+    title: 'Chat WhatsApp',
+    href: '/dashboard/chat',
+    icon: MessageSquare,
+  },
+  {
     title: 'Dashboard',
     href: '/dashboard/analytics',
     icon: BarChart3,
@@ -34,9 +39,24 @@ const navItems = [
     badge: 'PRO',
   },
   {
+    title: 'Neg. Perdidos',
+    href: '/dashboard/analytics/lost-deals',
+    icon: TrendingDown,
+  },
+  {
+    title: 'Campanhas & CAC',
+    href: '/dashboard/marketing/campaigns',
+    icon: TrendingUp,
+  },
+  {
     title: 'Automações Email',
     href: '/dashboard/email-automations',
     icon: Mail,
+  },
+  {
+    title: 'Automações Deals',
+    href: '/dashboard/automations',
+    icon: Zap,
   },
   {
     title: 'Planos e Preços',
@@ -89,11 +109,11 @@ export function Sidebar() {
         </div>
 
         {/* Navigation */}
-        <div className="flex-1 py-4">
+        <div className="flex-1 py-4 overflow-y-auto">
           <nav className="grid items-start px-3 gap-1">
             {navItems.map((item) => {
               const Icon = item.icon
-              const isActive = pathname === item.href
+              const isActive = pathname === item.href || (item.href !== '/dashboard' && pathname.startsWith(item.href))
 
               return (
                 <Link

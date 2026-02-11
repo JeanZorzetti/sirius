@@ -4,7 +4,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 import { cn } from '@/lib/utils'
-import { Home, Users, Settings, BarChart3, CreditCard, Menu, X, Search } from 'lucide-react'
+import { Home, Users, Settings, BarChart3, CreditCard, Menu, X, Search, LineChart, Mail, RotateCw, MessageSquare, TrendingDown, Zap, TrendingUp } from 'lucide-react'
 import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 
@@ -25,19 +25,55 @@ const navItems = [
     icon: Search,
   },
   {
+    title: 'Chat WhatsApp',
+    href: '/dashboard/chat',
+    icon: MessageSquare,
+  },
+  {
     title: 'Dashboard',
     href: '/dashboard/analytics',
     icon: BarChart3,
   },
   {
+    title: 'Analytics PRO',
+    href: '/dashboard/analytics-pro',
+    icon: LineChart,
+    badge: 'PRO',
+  },
+  {
+    title: 'Neg. Perdidos',
+    href: '/dashboard/analytics/lost-deals',
+    icon: TrendingDown,
+  },
+  {
+    title: 'Campanhas & CAC',
+    href: '/dashboard/marketing/campaigns',
+    icon: TrendingUp,
+  },
+  {
+    title: 'Automações Email',
+    href: '/dashboard/email-automations',
+    icon: Mail,
+  },
+  {
+    title: 'Automações Deals',
+    href: '/dashboard/automations',
+    icon: Zap,
+  },
+  {
     title: 'Planos',
-    href: '/dashboard/billing',
+    href: '/dashboard/billing/plans',
     icon: CreditCard,
   },
   {
     title: 'Configurações',
     href: '/dashboard/settings',
     icon: Settings,
+  },
+  {
+    title: 'Round-Robin',
+    href: '/dashboard/settings/round-robin',
+    icon: RotateCw,
   },
 ]
 
@@ -106,11 +142,11 @@ export function MobileNav() {
           </div>
 
           {/* Navigation */}
-          <div className="flex-1 py-4">
+          <div className="flex-1 py-4 overflow-y-auto">
             <nav className="grid items-start px-3 gap-1">
               {navItems.map((item) => {
                 const Icon = item.icon
-                const isActive = pathname === item.href
+                const isActive = pathname === item.href || (item.href !== '/dashboard' && pathname.startsWith(item.href))
 
                 return (
                   <Link
@@ -129,7 +165,13 @@ export function MobileNav() {
                     )}
 
                     <Icon className={cn("h-4 w-4 z-10 transition-colors", isActive ? "text-indigo-600 dark:text-indigo-400" : "text-zinc-500 group-hover:text-zinc-700 dark:group-hover:text-zinc-300")} />
-                    <span className="z-10">{item.title}</span>
+                    <span className="z-10 flex-1">{item.title}</span>
+
+                    {item.badge && (
+                      <span className="z-10 rounded bg-indigo-100 px-1.5 py-0.5 text-[10px] font-semibold uppercase text-indigo-600 dark:bg-indigo-500/20 dark:text-indigo-400">
+                        {item.badge}
+                      </span>
+                    )}
 
                     {isActive && (
                       <div className="absolute right-0 top-0 h-full w-4 bg-gradient-to-l from-indigo-500/20 to-transparent" />

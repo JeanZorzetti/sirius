@@ -911,12 +911,12 @@ export async function checkIn(contactId: string) {
 ## Checklist de Progresso
 
 ```
-FASE 13 — Analytics Completar     [x] genui mocks → queries reais  [x] dealsLost tracking  [x] churn tracking  [ ] Dashboard lost deals (futuro)
-FASE 14 — Email Marketing         [ ] Resend config  [ ] BullMQ queue  [ ] Templates React Email  [ ] Automações (3, 7, 14 dias)
-FASE 15 — Onboarding Import       [ ] Upload CSV/XLSX  [ ] Auto-detect colunas  [ ] Preview  [ ] Import assíncrono
-FASE 16 — Mercado Pago            [ ] payment.recurring  [ ] Retry logic (3x)  [ ] Email confirmação  [ ] Email falha
-FASE 17 — Ads Integration         [ ] Google Ads API  [ ] Facebook Ads API  [ ] CAC real  [ ] Dashboard ROI
-NEW     — Deal Automations        [ ] UI builder  [ ] Engine de execução  [ ] Triggers  [ ] Ações (email, WhatsApp, task)
+FASE 13 — Analytics Completar     [x] genui mocks → queries reais  [x] dealsLost tracking  [x] churn tracking  [x] Dashboard /dashboard/analytics/lost-deals
+FASE 14 — Email Marketing         [x] Resend config  [x] Vercel Cron (alt BullMQ)  [x] Templates React Email  [x] Follow-up 3/7/14 dias  [x] Newsletter semanal
+FASE 15 — Onboarding Import       [x] Upload CSV/XLSX  [x] Auto-detect colunas  [x] Preview 10 linhas  [x] Import com deduplicação  [x] Progress bar
+FASE 16 — Mercado Pago            [x] payment.recurring  [x] Retry logic (3x → FREE)  [x] Email confirmação  [x] Email falha  [x] failedPaymentAttempts
+FASE 17 — Ads Integration         [x] Google Ads API  [x] Facebook Ads API  [x] CAC real  [x] Dashboard /dashboard/marketing/campaigns  [x] Entrada manual
+NEW     — Deal Automations        [x] UI builder 3 passos  [x] Engine de execução  [x] Triggers CREATED/MOVED/WON/LOST  [x] Ações EMAIL/TASK/NOTIFY/TAG/WEBHOOK  [x] /dashboard/automations
 NEW     — Mobile App              [ ] Capacitor setup  [ ] Push notifications  [ ] OCR cartões  [ ] Check-ins  [ ] Offline mode
 ```
 
