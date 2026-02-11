@@ -1,11 +1,24 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import dynamic from 'next/dynamic'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { KanbanBoard } from '@/components/kanban-board'
 import { ChatInterface } from '@/components/chat/chat-interface'
 import { toast } from 'sonner'
-import { MessageSquare, Layout } from 'lucide-react'
+import { MessageSquare, Layout, Loader2 } from 'lucide-react'
+
+// Dynamic import do KanbanBoard (517 linhas, carrega apenas quando necessário)
+const KanbanBoard = dynamic(
+  () => import('@/components/kanban-board').then(m => ({ default: m.KanbanBoard })),
+  {
+    loading: () => (
+      <div className="flex items-center justify-center h-96">
+        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+      </div>
+    ),
+    ssr: false,
+  }
+)
 
 interface DashboardTabsProps {
   pipelines: any[]

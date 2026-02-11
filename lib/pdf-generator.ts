@@ -1,6 +1,3 @@
-import jsPDF from "jspdf";
-import autoTable from "jspdf-autotable";
-
 /**
  * Opções para geração de PDF
  */
@@ -20,15 +17,21 @@ export interface PDFGeneratorOptions {
 }
 
 /**
- * Gera PDF de tabela a partir de dados
+ * Gera PDF de tabela a partir de dados (com lazy loading de jsPDF)
  * @param data Array de objetos para gerar PDF
  * @param options Opções de geração
  * @returns Buffer do PDF
  */
-export function generateTablePDF<T extends Record<string, any>>(
+export async function generateTablePDF<T extends Record<string, any>>(
   data: T[],
   options: PDFGeneratorOptions = {}
-): Buffer {
+): Promise<Buffer> {
+  // Lazy load jsPDF apenas quando necessário (reduz bundle inicial)
+  const [{ default: jsPDF }, { default: autoTable }] = await Promise.all([
+    import("jspdf"),
+    import("jspdf-autotable")
+  ]);
+
   const {
     title = "Relatório",
     subtitle,
@@ -143,16 +146,19 @@ export function generateTablePDF<T extends Record<string, any>>(
 }
 
 /**
- * Gera PDF de relatório customizado
+ * Gera PDF de relatório customizado (com lazy loading de jsPDF)
  */
-export function generateCustomReportPDF(config: {
+export async function generateCustomReportPDF(config: {
   title: string;
   sections: Array<{
     title: string;
     content: string | string[];
   }>;
   options?: PDFGeneratorOptions;
-}): Buffer {
+}): Promise<Buffer> {
+  // Lazy load jsPDF
+  const { default: jsPDF } = await import("jspdf");
+
   const { title, sections, options = {} } = config;
   const {
     orientation = "portrait",
@@ -254,9 +260,9 @@ export function generateCustomReportPDF(config: {
 }
 
 /**
- * Gera PDF de proposta comercial
+ * Gera PDF de proposta comercial (com lazy loading de jsPDF)
  */
-export function generateProposalPDF(proposal: {
+export async function generateProposalPDF(proposal: {
   clientName: string;
   contactName: string;
   proposalNumber: string;
@@ -272,7 +278,13 @@ export function generateProposalPDF(proposal: {
   total: number;
   terms?: string[];
   notes?: string;
-}): Buffer {
+}): Promise<Buffer> {
+  // Lazy load jsPDF e autoTable
+  const [{ default: jsPDF }, { default: autoTable }] = await Promise.all([
+    import("jspdf"),
+    import("jspdf-autotable")
+  ]);
+
   const doc = new jsPDF({
     orientation: "portrait",
     unit: "mm",

@@ -1,5 +1,3 @@
-import * as XLSX from "xlsx";
-
 /**
  * Opções para exportação XLSX
  */
@@ -13,15 +11,18 @@ export interface XLSXExportOptions {
 }
 
 /**
- * Converte dados para XLSX e retorna um Buffer
+ * Converte dados para XLSX e retorna um Buffer (com lazy loading)
  * @param data Array de objetos para exportar
  * @param options Opções de exportação
  * @returns Buffer do arquivo XLSX
  */
-export function exportToXLSX<T extends Record<string, any>>(
+export async function exportToXLSX<T extends Record<string, any>>(
   data: T[],
   options: XLSXExportOptions = {}
-): Buffer {
+): Promise<Buffer> {
+  // Lazy load XLSX apenas quando necessário (reduz bundle inicial)
+  const XLSX = await import("xlsx");
+
   const {
     sheetName = "Planilha1",
     autoWidth = true,
@@ -57,15 +58,18 @@ export function exportToXLSX<T extends Record<string, any>>(
 }
 
 /**
- * Exportar múltiplas planilhas em um único arquivo
+ * Exportar múltiplas planilhas em um único arquivo (com lazy loading)
  * @param sheets Array de planilhas com nome e dados
  * @param options Opções de exportação
  * @returns Buffer do arquivo XLSX
  */
-export function exportMultipleSheets(
+export async function exportMultipleSheets(
   sheets: Array<{ name: string; data: Record<string, any>[] }>,
   options: Omit<XLSXExportOptions, "sheetName"> = {}
-): Buffer {
+): Promise<Buffer> {
+  // Lazy load XLSX
+  const XLSX = await import("xlsx");
+
   const { autoWidth = true } = options;
 
   const workbook = XLSX.utils.book_new();

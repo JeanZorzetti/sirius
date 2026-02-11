@@ -30,8 +30,8 @@ export async function GET(request: NextRequest) {
     // Formatar dados para exportação
     const formattedData = formatContactsForExport(contacts);
 
-    // Gerar XLSX
-    const buffer = exportToXLSX(formattedData, {
+    // Gerar XLSX (lazy loading de XLSX)
+    const buffer = await exportToXLSX(formattedData, {
       sheetName: "Contatos",
       autoWidth: true,
     });

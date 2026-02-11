@@ -31,8 +31,8 @@ export async function GET(request: NextRequest) {
     // Formatar dados para exportação
     const formattedData = formatContactsForExport(contacts);
 
-    // Gerar PDF
-    const buffer = generateTablePDF(formattedData, {
+    // Gerar PDF (lazy loading de jsPDF)
+    const buffer = await generateTablePDF(formattedData, {
       title: "Relatório de Contatos",
       subtitle: `Total de ${contacts.length} contatos`,
       orientation: "landscape",

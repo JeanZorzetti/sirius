@@ -53,8 +53,8 @@ export async function GET(request: NextRequest) {
     // Formatar dados para exportação
     const formattedData = formatDealsForExport(deals);
 
-    // Gerar XLSX
-    const buffer = exportToXLSX(formattedData, {
+    // Gerar XLSX (lazy loading de XLSX)
+    const buffer = await exportToXLSX(formattedData, {
       sheetName: "Oportunidades",
       autoWidth: true,
     });

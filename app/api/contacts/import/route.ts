@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
-import * as XLSX from 'xlsx'
 import Papa from 'papaparse'
 
 export const dynamic = 'force-dynamic'
@@ -81,6 +80,8 @@ export async function POST(request: NextRequest) {
       })
       rows = result.data as ContactRow[]
     } else if (file.name.endsWith('.xlsx') || file.name.endsWith('.xls')) {
+      // Lazy load XLSX apenas quando usuário faz upload de Excel
+      const XLSX = await import('xlsx')
       const workbook = XLSX.read(buffer, { type: 'buffer' })
       const sheetName = workbook.SheetNames[0]
       const worksheet = workbook.Sheets[sheetName]

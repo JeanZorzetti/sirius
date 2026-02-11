@@ -7,7 +7,6 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Download, CheckCircle2, FileText } from 'lucide-react'
 import { toast } from 'sonner'
-import jsPDF from 'jspdf'
 
 export function FunnelTemplateDownload() {
   const [email, setEmail] = useState('')
@@ -30,7 +29,7 @@ export function FunnelTemplateDownload() {
       await new Promise(resolve => setTimeout(resolve, 1500))
 
       // Gera o PDF
-      generatePDF()
+      await generatePDF()
 
       setDownloadComplete(true)
       toast.success('Template baixado com sucesso!')
@@ -42,7 +41,10 @@ export function FunnelTemplateDownload() {
     }
   }
 
-  const generatePDF = () => {
+  const generatePDF = async () => {
+    // Lazy load jsPDF apenas quando o usuário clicar no botão
+    const { default: jsPDF } = await import('jspdf')
+
     const doc = new jsPDF()
     const pageWidth = doc.internal.pageSize.getWidth()
     const pageHeight = doc.internal.pageSize.getHeight()

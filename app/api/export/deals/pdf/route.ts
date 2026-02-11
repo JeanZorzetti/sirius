@@ -54,8 +54,8 @@ export async function GET(request: NextRequest) {
     // Formatar dados para exportação
     const formattedData = formatDealsForExport(deals);
 
-    // Gerar PDF
-    const buffer = generateTablePDF(formattedData, {
+    // Gerar PDF (lazy loading de jsPDF)
+    const buffer = await generateTablePDF(formattedData, {
       title: "Relatório de Oportunidades",
       subtitle: `Total de ${deals.length} oportunidades`,
       orientation: "landscape",
