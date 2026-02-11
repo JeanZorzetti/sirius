@@ -726,17 +726,18 @@ npm install next-auth@beta
 **Prazo:** Contínuo (meta trimestral)
 **Esforço:** Contínuo (~2h/sprint)
 **Impacto:** Qualidade, confiança em deploys, redução de bugs em produção
-**Resultado:** 25 testes críticos implementados e passando. Middleware (11 testes) e lib/auth (14 testes) com 100% de coverage. Framework Vitest consolidado.
+**Resultado:** 38 testes críticos implementados e passando. Middleware (100%), lib/auth (84%), forgot-password (89%) com alta cobertura. Framework Vitest consolidado.
 
 ### Estado Atual
-- ✅ **25 testes críticos passando** (middleware + auth)
-- ✅ **100% coverage em componentes críticos de segurança**
-- ⏳ Cobertura geral estimada: ~8-10% (progresso em direção à meta Q1 de 25%)
-- 📝 Próximos: deals CRUD, API v1 routes, forgot-password route
+- ✅ **38 testes críticos passando** (middleware + auth + forgot-password)
+- ✅ **Middleware: 100% coverage** | **Auth: 84%** | **Forgot-password: 89%**
+- ✅ **532 testes totais no projeto** (442 passando, 89 falhando em features avançadas)
+- ⏳ Progresso: Componentes de segurança com alta cobertura
+- 📝 Próximos: Corrigir testes falhando (generative-ui, intelligence), deals CRUD, API v1 routes
 
 ### Testes Implementados (11/02/2026)
 
-**1. Middleware (`__tests__/middleware.test.ts`)** — 11/11 testes ✅
+**1. Middleware (`__tests__/middleware.test.ts`)** — 11/11 testes ✅ (100% coverage)
 ```typescript
 ✅ Protected Routes (/dashboard/*): redirect não autenticado, permitir autenticado, proteger rotas aninhadas
 ✅ Auth Routes (/login, /register): redirect autenticado para dashboard, permitir não autenticado
@@ -745,7 +746,7 @@ npm install next-auth@beta
 ✅ Session Auto-Refresh: renovar sessão automaticamente
 ```
 
-**2. Sistema de Auth (`__tests__/lib/auth.test.ts`)** — 14/14 testes ✅
+**2. Sistema de Auth (`__tests__/lib/auth.test.ts`)** — 14/14 testes ✅ (84% coverage)
 ```typescript
 ✅ encrypt() e decrypt(): JWT string format, roundtrip payload, erro em JWT inválido, erro em JWT adulterado
 ✅ getSession(): retornar sessão válida, null sem cookie, null com cookie inválido
@@ -754,8 +755,14 @@ npm install next-auth@beta
 ✅ Security: algoritmo HS256, httpOnly (previne XSS), sameSite=lax (previne CSRF)
 ```
 
-**3. API Routes (criados mas não executados ainda):**
-- `__tests__/api/forgot-password.test.ts` — Security (user enumeration), rate limiting, validation, token generation
+**3. Forgot Password API (`__tests__/api/forgot-password.test.ts`)** — 13/13 testes ✅ (89% coverage)
+```typescript
+✅ Security - User Enumeration: resposta idêntica para email válido/inválido, não enviar email para não-existente
+✅ Rate Limiting: 429 quando exceder limite, permitir quando abaixo, usar IP address
+✅ Validation: email obrigatório, aceitar formatos válidos
+✅ Token Generation: criar token no DB, gerar token único (32 bytes hex), expiração 1h
+✅ Error Handling: retornar 500 em erro de DB
+```
 
 ### Meta por Camada
 
@@ -838,7 +845,7 @@ FASE 8  — Onboarding Wizard           [x] Welcome Modal  [x] Demo Seed  [x] Pr
 FASE 9  — Serwist PWA                 [x] Manual SW  [x] public/sw.js  [x] PWARegister component
 FASE 10 — CI/CD GitHub Actions        [x] ci.yml  [x] Badge  [x] 7 jobs  [x] Concurrency
 FASE 11 — next-auth v5                [x] Quick Fix  [x] Prisma singleton  [x] docs/AUTH.md
-FASE 12 — Testes (meta 40%)          [~] Q1 iniciado (25 testes)  [x] Auth 100%  [x] Middleware 100%
+FASE 12 — Testes (meta 40%)          [~] Q1 iniciado (38 testes)  [x] Middleware 100%  [x] Auth 84%  [x] Forgot-pwd 89%
 ```
 
 ---
