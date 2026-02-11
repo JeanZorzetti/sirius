@@ -8,6 +8,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getSession } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
+import { agiRateLimit } from '@/lib/ratelimit';
 import { createAgiBrain } from '@/lib/agi/brain';
 import { canUseAGI, recordUsage } from '@/lib/agi/usage';
 import { saveConversation } from '@/lib/agi/memory';
@@ -50,6 +51,10 @@ interface ChatRequest {
 
 export async function POST(req: NextRequest) {
     try {
+        // 0. Rate limiting
+        const blocked = await agiRateLimit(req)
+        if (blocked) return blocked
+
         // 1. Authentication
         const session = await getSession();
         if (!session?.user) {

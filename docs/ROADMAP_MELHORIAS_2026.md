@@ -11,7 +11,7 @@
 | Fase | Tema | Prazo | Esforço | Impacto |
 |------|------|-------|---------|---------|
 | ~~1~~ | ~~Imagens de Blog (55MB)~~ | ~~HOJE~~ | ~~30 min~~ | DONE 11/02 (-96.5%) |
-| 2 | Rate Limiting nas APIs | HOJE | 2h | Segurança crítica |
+| ~~2~~ | ~~Rate Limiting nas APIs~~ | ~~HOJE~~ | ~~2h~~ | DONE 11/02 |
 | 3 | Remover Console.logs Sensíveis | HOJE | 1h | GDPR + Segurança |
 | 4 | Health Check Endpoint | Semana 1 | 30 min | Monitoramento |
 | 5 | Suspense Boundaries no Dashboard | Semana 1 | 3h | UX +20% |
@@ -69,10 +69,11 @@ custo-oculto-inacao-crm    7.5 MB  ← deveria ser ~80 KB
 
 ## Fase 2 — Rate Limiting nas APIs Críticas
 
-**Status:** `[ ] Pendente`
+**Status:** `[x] CONCLUÍDO — 11/02/2026`
 **Prazo:** HOJE
 **Esforço:** 2 horas
 **Impacto:** Previne brute-force, DDoS e flooding nas rotas de autenticação e AGI
+**Resultado:** `lib/ratelimit.ts` criado com fallback in-memory + Upstash Redis. Protegidas 5 rotas: forgot-password (5/15min), reset-password (5/15min), AGI chat (20/1h), contact (3/1h), lead capture (10/1h).
 
 ### Problema
 O projeto tem `@upstash/ratelimit` instalado, mas **nenhuma** das 122 rotas de API está usando. Rotas de alto risco sem proteção:

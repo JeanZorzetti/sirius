@@ -3,11 +3,15 @@ import { prisma } from '@/lib/prisma'
 import { Resend } from 'resend'
 import crypto from 'crypto'
 import logger from '@/lib/logger'
+import { authRateLimit } from '@/lib/ratelimit'
 
 const resend = new Resend(process.env.RESEND_API_KEY)
 
 export async function POST(request: NextRequest) {
   try {
+    const blocked = await authRateLimit(request)
+    if (blocked) return blocked
+
     const { email } = await request.json()
 
     if (!email || typeof email !== 'string') {

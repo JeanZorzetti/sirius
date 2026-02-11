@@ -1,8 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { captureLeadFromCalculator } from '@/lib/email-marketing'
+import { leadCaptureRateLimit } from '@/lib/ratelimit'
 
 export async function POST(request: NextRequest) {
   try {
+    const blocked = await leadCaptureRateLimit(request)
+    if (blocked) return blocked
+
     const body = await request.json()
 
     const { email, nome, empresa, volumeLeads, ticketMedio, perdaMensal, origem } = body

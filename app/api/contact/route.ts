@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { sendHtmlEmail } from "@/lib/email";
 import logger from "@/lib/logger";
+import { contactRateLimit } from "@/lib/ratelimit";
 
 const contactSchema = z.object({
   name: z.string().min(2, "Nome deve ter pelo menos 2 caracteres"),
@@ -24,6 +25,9 @@ const subjectLabels: Record<string, string> = {
 
 export async function POST(request: NextRequest) {
   try {
+    const blocked = await contactRateLimit(request);
+    if (blocked) return blocked;
+
     const body = await request.json();
 
     // Validate input

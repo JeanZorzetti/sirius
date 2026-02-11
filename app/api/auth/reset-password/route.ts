@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import bcrypt from 'bcryptjs'
 import logger from '@/lib/logger'
+import { authRateLimit } from '@/lib/ratelimit'
 
 // Password validation
 function validatePassword(password: string): { valid: boolean; error?: string } {
@@ -26,6 +27,9 @@ function validatePassword(password: string): { valid: boolean; error?: string } 
 
 export async function POST(request: NextRequest) {
   try {
+    const blocked = await authRateLimit(request)
+    if (blocked) return blocked
+
     const { token, password } = await request.json()
 
     if (!token || typeof token !== 'string') {
@@ -127,6 +131,9 @@ export async function POST(request: NextRequest) {
 // GET to validate token
 export async function GET(request: NextRequest) {
   try {
+    const blocked = await authRateLimit(request)
+    if (blocked) return blocked
+
     const { searchParams } = new URL(request.url)
     const token = searchParams.get('token')
 
