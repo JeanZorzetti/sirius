@@ -726,14 +726,14 @@ npm install next-auth@beta
 **Prazo:** Contínuo (meta trimestral)
 **Esforço:** Contínuo (~2h/sprint)
 **Impacto:** Qualidade, confiança em deploys, redução de bugs em produção
-**Resultado:** 96 testes críticos implementados e passando. Middleware (100%), lib/auth (100%), forgot-password (100%), deals CRUD (85%), contacts CRUD (100%), pipelines CRUD (100%) com cobertura robusta. Framework Vitest consolidado.
+**Resultado:** 121 testes críticos implementados e passando. Middleware (100%), lib/auth (100%), forgot-password (100%), deals CRUD (85%), contacts CRUD (100%), pipelines CRUD (100%), webhooks CRUD (100%) com cobertura robusta. Framework Vitest consolidado.
 
 ### Estado Atual
-- ✅ **96 testes críticos passando** (middleware + auth + forgot-password + deals + contacts + pipelines)
-- ✅ **Middleware: 100%** | **Auth: 100%** | **Forgot-password: 100%** | **Deals: 85%** | **Contacts: 100%** | **Pipelines: 100%**
-- ✅ **578 testes totais no projeto** (488 passando, 90 falhando em features avançadas)
-- ⏳ Progresso: Core business (deals, contacts, pipelines) e componentes de segurança com cobertura robusta
-- 📝 Próximos: API v1 routes completas (stages, webhooks, companies), corrigir testes falhando
+- ✅ **121 testes críticos passando** (middleware + auth + forgot-password + deals + contacts + pipelines + webhooks)
+- ✅ **Middleware: 100%** | **Auth: 100%** | **Forgot-password: 100%** | **Deals: 85%** | **Contacts: 100%** | **Pipelines: 100%** | **Webhooks: 100%**
+- ✅ **603 testes totais no projeto** (513 passando, 90 falhando em features avançadas)
+- ⏳ Progresso: Core business (deals, contacts, pipelines, webhooks/integrações) e componentes de segurança com cobertura robusta
+- 📝 Próximos: API v1 routes completas (api-keys, analytics), corrigir testes falhando
 
 ### Testes Implementados (11/02/2026)
 
@@ -791,6 +791,16 @@ npm install next-auth@beta
 ✅ GET /api/v1/pipelines/[id]: retornar pipeline com stages/deals count, 404 para não-existente, IDOR protection, validação UUID
 ✅ Security: PRO plan enforcement na criação (via withProPlan)
 ✅ Security - IDOR: NEVER list/create/get pipelines de outras organizações (3 testes dedicados)
+```
+
+**7. Webhooks CRUD API (`__tests__/api/v1/webhooks.test.ts`)** — 25/25 testes ✅ (100% coverage)
+```typescript
+✅ GET /api/v1/webhooks: list webhooks, PRO/BUSINESS plan required, filtrar por organizationId, incluir logs count
+✅ POST /api/v1/webhooks: criar webhook com Svix integration, PRO plan required, validar eventos, rejeitar eventos inválidos
+✅ GET /api/v1/webhooks/[id]: retornar webhook com secret (Svix), logs count, IDOR protection
+✅ PATCH /api/v1/webhooks/[id]: atualizar webhook + Svix sync, validar eventos, 500 se Svix falhar
+✅ DELETE /api/v1/webhooks/[id]: deletar webhook + Svix cleanup, IDOR protection
+✅ Security - IDOR: NEVER list/get/update/delete webhooks de outras organizações (4 testes dedicados)
 ```
 
 ### Meta por Camada
@@ -874,7 +884,7 @@ FASE 8  — Onboarding Wizard           [x] Welcome Modal  [x] Demo Seed  [x] Pr
 FASE 9  — Serwist PWA                 [x] Manual SW  [x] public/sw.js  [x] PWARegister component
 FASE 10 — CI/CD GitHub Actions        [x] ci.yml  [x] Badge  [x] 7 jobs  [x] Concurrency
 FASE 11 — next-auth v5                [x] Quick Fix  [x] Prisma singleton  [x] docs/AUTH.md
-FASE 12 — Testes (meta 40%)          [~] Q1 iniciado (96 testes)  [x] Middleware 100%  [x] Auth 100%  [x] Forgot-pwd 100%  [x] Deals 85%  [x] Contacts 100%  [x] Pipelines 100%
+FASE 12 — Testes (meta 40%)          [~] Q1 iniciado (121 testes)  [x] Middleware 100%  [x] Auth 100%  [x] Forgot-pwd 100%  [x] Deals 85%  [x] Contacts 100%  [x] Pipelines 100%  [x] Webhooks 100%
 ```
 
 ---
