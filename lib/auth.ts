@@ -1,3 +1,28 @@
+/**
+ * SISTEMA DE AUTENTICAÇÃO CUSTOMIZADO
+ * ====================================
+ *
+ * Sistema principal de gerenciamento de sessões do Sirius CRM.
+ * Usa JWT (via biblioteca 'jose') armazenado em cookie httpOnly.
+ *
+ * FEATURES:
+ * - JWT Session (24h expiration, auto-refresh no middleware)
+ * - Cookie httpOnly (previne XSS)
+ * - SameSite: lax (previne CSRF)
+ * - Usado em middleware, API routes e páginas
+ *
+ * COMPLEMENTA:
+ * - Next-Auth v4 (app/api/auth/[...nextauth]/route.ts) para OAuth social
+ * - Este sistema gerencia TODAS as sessões após login inicial
+ *
+ * FUNÇÕES:
+ * - encrypt/decrypt: Criptografia JWT
+ * - getSession: Pegar sessão atual (usado em 90% das rotas)
+ * - login: Criar sessão após autenticação
+ * - logout: Destruir sessão
+ * - updateSession: Refresh automático no middleware
+ */
+
 import { SignJWT, jwtVerify } from 'jose'
 import { cookies } from 'next/headers'
 import { NextRequest, NextResponse } from 'next/server'

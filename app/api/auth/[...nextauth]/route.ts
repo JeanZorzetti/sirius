@@ -1,10 +1,32 @@
+/**
+ * SISTEMA DE AUTENTICAÇÃO HÍBRIDO
+ * ================================
+ *
+ * Este projeto usa dois sistemas de auth em paralelo:
+ *
+ * 1. **Next-Auth v4** (ESTE ARQUIVO):
+ *    - OAuth Providers (Google)
+ *    - Credentials Provider (email/senha para compatibilidade)
+ *    - Apenas usado para autenticação inicial
+ *
+ * 2. **Sistema Customizado JWT** (lib/auth.ts):
+ *    - Gerenciamento de sessões (cookie 'session')
+ *    - Middleware de proteção de rotas
+ *    - Usado em 99% das páginas e API routes
+ *
+ * FLUXO:
+ * - User faz login via Google → Next-Auth autentica → Redireciona para /dashboard
+ * - Sistema customizado cria sessão JWT → Gerencia acesso dali em diante
+ *
+ * NOTA: Next-Auth usado minimamente. Considerar migração futura para Clerk
+ * ou consolidação completa no sistema customizado.
+ */
+
 import NextAuth, { NextAuthOptions } from "next-auth"
 import CredentialsProvider from "next-auth/providers/credentials"
 import GoogleProvider from "next-auth/providers/google"
-import { PrismaClient } from "@prisma/client"
+import { prisma } from "@/lib/prisma"
 import bcrypt from "bcryptjs"
-
-const prisma = new PrismaClient()
 
 export const authOptions: NextAuthOptions = {
     providers: [
