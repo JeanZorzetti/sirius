@@ -61,7 +61,6 @@ export const onboardingWorkflowDefinition: WorkflowDefinition = {
         },
     ],
     onComplete: async (data) => {
-        console.log('[OnboardingWorkflow] User onboarded:', data)
         // Mark onboarding as complete in backend
     },
 }

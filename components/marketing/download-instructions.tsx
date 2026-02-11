@@ -40,7 +40,6 @@ export function DownloadInstructions() {
           url: appUrl,
         })
       } catch (err) {
-        console.log('Error sharing:', err)
       }
     } else {
       copyLink()

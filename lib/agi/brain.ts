@@ -5,6 +5,8 @@
  * Manages LLM communication via Ollama for sales intelligence.
  */
 
+import logger from '@/lib/logger'
+
 export interface Message {
   role: 'system' | 'user' | 'assistant';
   content: string;
@@ -213,7 +215,7 @@ Você é a melhor consultora de vendas. Seja breve e precisa.`;
             }
           } catch (e) {
             // Skip invalid JSON lines
-            console.warn('Failed to parse chunk:', line);
+            logger.warn({ chunk: line }, 'Failed to parse chunk')
           }
         }
       }

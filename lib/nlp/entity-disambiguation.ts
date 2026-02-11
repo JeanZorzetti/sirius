@@ -9,6 +9,7 @@
 
 import { prisma } from '@/lib/prisma'
 import type { ExtractedEntity } from './types'
+import logger from '@/lib/logger'
 
 /**
  * Disambiguation strategy based on entity type and context
@@ -118,8 +119,9 @@ export async function findDisambiguatedEntity(
   }
 
   // Fallback: Return first match but log ambiguity
-  console.warn(
-    `[Disambiguation] Ambiguous entity "${name}" with ${entitiesByName.length} candidates. Using first match (type: ${entitiesByName[0].type})`
+  logger.warn(
+    { name, candidateCount: entitiesByName.length, firstMatchType: entitiesByName[0].type },
+    '[Disambiguation] Ambiguous entity, using first match'
   )
 
   return { id: entitiesByName[0].id, name: entitiesByName[0].name }
@@ -193,8 +195,9 @@ export async function resolveEntityAmbiguities(
         entity.description
       )
 
-      console.log(
-        `[Disambiguation] Resolved "${entity.name}" → "${canonicalName}"`
+      logger.info(
+        { originalName: entity.name, canonicalName },
+        '[Disambiguation] Resolved entity name'
       )
 
       resolved.push({

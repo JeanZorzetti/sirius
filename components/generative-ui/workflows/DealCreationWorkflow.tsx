@@ -90,11 +90,9 @@ export interface DealCreationWorkflowProps {
 export function DealCreationWorkflow({ onComplete, onCancel }: DealCreationWorkflowProps) {
     const workflow = useWorkflow('deal-creation', dealCreationWorkflowDefinition, {
         onComplete: async (data) => {
-            console.log('[DealCreationWorkflow] Completed with data:', data)
             await onComplete?.(data)
         },
         onStepChange: (step) => {
-            console.log('[DealCreationWorkflow] Step changed:', step.id)
         },
     })
 

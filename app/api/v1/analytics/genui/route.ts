@@ -7,6 +7,7 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server'
+import logger from '@/lib/logger'
 
 export interface ComponentMetrics {
     componentName: string
@@ -168,12 +169,12 @@ export async function POST(request: NextRequest) {
 
         // TODO: Store event in analytics database
         // For now, just log it
-        console.log('[GenUI Analytics]', {
+        logger.info({
             componentName,
             eventType,
             metadata,
             timestamp: new Date().toISOString(),
-        })
+        }, '[GenUI Analytics]')
 
         return NextResponse.json({ success: true }, { status: 201 })
     } catch (error) {

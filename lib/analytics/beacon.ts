@@ -48,7 +48,6 @@ export async function sendAnalyticsBeacon(
       const sent = navigator.sendBeacon(endpoint, blob)
 
       if (sent) {
-        console.debug('[Beacon] Event sent via sendBeacon:', data.event)
         return true
       } else {
         console.warn('[Beacon] sendBeacon failed, falling back to fetch')
@@ -66,7 +65,6 @@ export async function sendAnalyticsBeacon(
     })
 
     if (response.ok) {
-      console.debug('[Beacon] Event sent via fetch keepalive:', data.event)
       return true
     } else {
       console.error('[Beacon] Fetch failed:', response.status, response.statusText)
@@ -93,8 +91,6 @@ export function installBeaconExitHandler(getPendingEvents: () => BeaconPayload[]
     const pendingEvents = getPendingEvents()
 
     if (pendingEvents.length > 0) {
-      console.debug(`[Beacon] Sending ${pendingEvents.length} pending events on page unload`)
-
       pendingEvents.forEach((event) => {
         sendAnalyticsBeacon('/api/analytics/ingest', event)
       })
@@ -153,7 +149,6 @@ export class BeaconEventQueue {
       timestamp: new Date().toISOString(),
     })
 
-    console.debug(`[BeaconQueue] Event queued: ${event} (queue size: ${this.queue.length})`)
   }
 
   /**
@@ -161,8 +156,6 @@ export class BeaconEventQueue {
    */
   async flush(): Promise<void> {
     if (this.queue.length === 0) return
-
-    console.debug(`[BeaconQueue] Flushing ${this.queue.length} events`)
 
     const eventsToSend = [...this.queue]
     this.queue = [] // Limpa a fila imediatamente

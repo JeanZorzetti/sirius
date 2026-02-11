@@ -95,19 +95,16 @@ export function ResizableDrawer({ userId, userName, organizationId }: ResizableD
   useEffect(() => {
     if (!isOpen) return
 
-    console.log('[ResizableDrawer] Connecting to SSE...')
     const eventSource = new EventSource('/api/whatsapp/stream')
 
     eventSource.onopen = () => {
-      console.log('[ResizableDrawer] SSE connected')
       setSseStatus('connected')
     }
 
     eventSource.onmessage = (event) => {
       try {
         const data = JSON.parse(event.data)
-        console.log('[ResizableDrawer] SSE message:', data.type, data)
-        
+
         if (data.type === 'conversation.updated' || data.type === 'message.new') {
           fetchData()
           if (data.type === 'message.new' && data.message?.direction === 'INBOUND') {
@@ -127,7 +124,6 @@ export function ResizableDrawer({ userId, userName, organizationId }: ResizableD
     }
 
     return () => {
-      console.log('[ResizableDrawer] Closing SSE connection')
       eventSource.close()
     }
   }, [isOpen, fetchData])

@@ -7,6 +7,7 @@
 import { SubscriptionTier, AddonType } from '@prisma/client'
 import { MercadoPagoConfig, Preference } from 'mercadopago'
 import { getPlanConfig, getAddonConfig } from './products'
+import logger from '@/lib/logger'
 
 // Inicializar cliente do Mercado Pago
 const client = new MercadoPagoConfig({
@@ -241,9 +242,7 @@ export async function cancelSubscription(subscriptionId: string) {
   // e enviar email de cancelamento
 
   // TODO: Implementar cancelamento via API do Mercado Pago quando disponível
-  console.warn(
-    'Subscription cancellation via Mercado Pago API not yet implemented'
-  )
+  logger.warn('Subscription cancellation via Mercado Pago API not yet implemented')
 
   return {
     success: true,

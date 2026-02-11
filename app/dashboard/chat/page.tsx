@@ -16,19 +16,12 @@ export const metadata: Metadata = {
 export const dynamic = 'force-dynamic'
 
 export default async function ChatPage() {
-  console.log("[CHAT_PAGE] [1] Iniciando renderização...")
-  
-  // 1. Autenticação
   const session = await getSession()
-  console.log(`[CHAT_PAGE] [2] Sessão obtida: ${session?.user?.id || 'null'}`)
-  
+
   if (!session?.user) {
-    console.log("[CHAT_PAGE] [ERRO] Usuário não autenticado")
     return <div>Não autorizado. Faça login novamente.</div>
   }
 
-  // 2. Buscar usuário com organização
-  console.log("[CHAT_PAGE] [3] Buscando usuário no banco...")
   let user
   try {
     user = await prisma.user.findUnique({
@@ -45,24 +38,18 @@ export default async function ChatPage() {
         }
       }
     })
-    console.log(`[CHAT_PAGE] [4] Usuário encontrado: ${user?.id}, org: ${user?.organizationId}`)
   } catch (err: any) {
-    console.error("[CHAT_PAGE] [ERRO] Falha ao buscar usuário:", err.message)
+    console.error("[CHAT_PAGE] Falha ao buscar usuário:", err.message)
     return <div>Erro ao buscar usuário: {err.message}</div>
   }
 
   if (!user?.organizationId || !user.organization) {
-    console.log("[CHAT_PAGE] [ERRO] Usuário sem organização")
     return <div>Usuário não pertence a uma organização.</div>
   }
 
-  // 3. Verificar entitlement
-  console.log("[CHAT_PAGE] [5] Verificando entitlement...")
   const canUseChat = canUseFeature(user.organization.tier, 'can_use_chat_interface')
-  console.log(`[CHAT_PAGE] [6] Pode usar chat: ${canUseChat}, tier: ${user.organization.tier}`)
 
   if (!canUseChat) {
-    console.log("[CHAT_PAGE] [7] Usuário não tem permissão para usar chat")
     return (
       <div className="flex-1 flex items-center justify-center p-8">
         <EmptyState
@@ -79,22 +66,17 @@ export default async function ChatPage() {
     )
   }
 
-  // 4. Buscar conexões WhatsApp
-  console.log("[CHAT_PAGE] [8] Buscando conexões WhatsApp...")
   let connections
   try {
     connections = await prisma.whatsAppConnection.findMany({
       where: { organizationId: user.organizationId },
       orderBy: { createdAt: 'desc' },
     })
-    console.log(`[CHAT_PAGE] [9] Conexões encontradas: ${connections.length}`)
   } catch (err: any) {
-    console.error("[CHAT_PAGE] [ERRO] Falha ao buscar conexões:", err.message)
+    console.error("[CHAT_PAGE] Falha ao buscar conexões:", err.message)
     return <div>Erro ao buscar conexões: {err.message}</div>
   }
 
-  // 5. Buscar contatos com mensagens WhatsApp
-  console.log("[CHAT_PAGE] [10] Buscando contatos...")
   let contacts
   try {
     contacts = await prisma.contact.findMany({
@@ -123,13 +105,11 @@ export default async function ChatPage() {
         updatedAt: 'desc'
       }
     })
-    console.log(`[CHAT_PAGE] [11] Contatos encontrados: ${contacts.length}`)
   } catch (err: any) {
-    console.error("[CHAT_PAGE] [ERRO] Falha ao buscar contatos:", err.message)
+    console.error("[CHAT_PAGE] Falha ao buscar contatos:", err.message)
     return <div>Erro ao buscar contatos: {err.message}</div>
   }
 
-  console.log("[CHAT_PAGE] [12] Renderizando ChatInterface...")
   return (
     <div className="flex-1 flex flex-col h-[calc(100vh-4rem)]">
       <ChatInterface

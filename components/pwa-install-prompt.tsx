@@ -58,11 +58,8 @@ export function PWAInstallPrompt() {
     // Track user action
     trackInstallPromptAction(outcome === 'accepted')
 
-    if (outcome === 'accepted') {
-      console.log('User accepted the install prompt')
-    } else {
-      console.log('User dismissed the install prompt')
-    }
+
+
 
     // Clear the deferred prompt
     setDeferredPrompt(null)

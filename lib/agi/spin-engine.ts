@@ -11,6 +11,7 @@
  */
 
 import { prisma } from '@/lib/prisma'
+import logger from '@/lib/logger'
 
 // ============================================
 // TYPES
@@ -467,11 +468,10 @@ export function detectRepeatedQuestions(
       const similarity = intersection.size / Math.max(newWords.size, prevWords.size)
 
       if (similarity > 0.7) {
-        console.warn('[ANTI-LOOP] Pergunta repetida detectada:', {
-          new: newQ.substring(0, 80),
-          previous: prevQ.substring(0, 80),
-          similarity
-        })
+        logger.warn(
+          { newQuestion: newQ.substring(0, 80), previousQuestion: prevQ.substring(0, 80), similarity },
+          '[ANTI-LOOP] Repeated question detected'
+        )
         return true
       }
     }

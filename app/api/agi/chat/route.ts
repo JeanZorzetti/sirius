@@ -6,6 +6,7 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server';
+import logger from '@/lib/logger';
 import { getSession } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
 import { agiRateLimit } from '@/lib/ratelimit';
@@ -377,7 +378,7 @@ ${guardrailsPrompt}`;
             // Detectar loops (perguntas repetidas)
             const hasLoop = detectRepeatedQuestions(response.content, conversationHist);
             if (hasLoop) {
-                console.warn('[ANTI-LOOP] Pergunta repetida detectada, regenerando...');
+                logger.warn('[ANTI-LOOP] Pergunta repetida detectada, regenerando...');
                 response = await brain.think(
                     message,
                     enhancedContext,

@@ -27,6 +27,8 @@
 // Descomente quando instalar o Resend
 // import { Resend } from 'resend'
 
+import logger from '@/lib/logger'
+
 export interface LeadCalculadoraData {
   email: string
   nome?: string
@@ -92,7 +94,7 @@ async function sendWelcomeEmail(data: LeadCalculadoraData) {
   //   html: getWelcomeEmailTemplate(data, nicho)
   // })
 
-  console.log('Welcome email would be sent to:', data.email)
+  logger.info({ email: data.email }, 'Welcome email would be sent to:')
 }
 
 /**
@@ -123,7 +125,7 @@ async function notifyCommercialTeam(data: LeadCalculadoraData) {
     //   `
     // })
 
-    console.log('🔥 HOT LEAD notification would be sent:', data.email, `R$ ${data.perdaMensal}/mês`)
+    logger.info({ email: data.email, perdaMensal: data.perdaMensal }, 'HOT LEAD notification would be sent')
   }
 }
 
@@ -251,5 +253,5 @@ export async function setupDripCampaign(leadId: string) {
   // TODO: Implementar com ferramentas de automação
   // Opções: Resend + cron jobs, n8n, Make.com, etc.
 
-  console.log('Drip campaign would be set up for lead:', leadId)
+  logger.info({ leadId }, 'Drip campaign would be set up for lead')
 }

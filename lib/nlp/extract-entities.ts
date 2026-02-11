@@ -12,6 +12,7 @@ import {
   ExtractionResultSchema,
   enrichEntityWithWikidata,
 } from './types'
+import logger from '@/lib/logger'
 
 /**
  * Initialize Groq client
@@ -87,8 +88,9 @@ function sanitizeExtractionData(data: any): any {
 
       // Map invalid entity types to 'other'
       if (sanitizedEntity.type && !VALID_ENTITY_TYPES.has(sanitizedEntity.type)) {
-        console.warn(
-          `[NLP] Invalid entity type "${sanitizedEntity.type}" for "${sanitizedEntity.name}", mapping to "other"`
+        logger.warn(
+          { entityType: sanitizedEntity.type, entityName: sanitizedEntity.name },
+          '[NLP] Invalid entity type, mapping to "other"'
         )
         sanitizedEntity.type = 'other'
       }
@@ -104,8 +106,9 @@ function sanitizeExtractionData(data: any): any {
 
       // Map invalid predicates to 'relatedTo'
       if (sanitizedRel.predicate && !VALID_PREDICATES.has(sanitizedRel.predicate)) {
-        console.warn(
-          `[NLP] Invalid predicate "${sanitizedRel.predicate}" in relationship "${sanitizedRel.subject} -> ${sanitizedRel.object}", mapping to "relatedTo"`
+        logger.warn(
+          { predicate: sanitizedRel.predicate, subject: sanitizedRel.subject, object: sanitizedRel.object },
+          '[NLP] Invalid predicate, mapping to "relatedTo"'
         )
         sanitizedRel.predicate = 'relatedTo'
       }
@@ -200,8 +203,10 @@ export async function extractEntities(
     const processingTime = Date.now() - startTime
 
     // Log extraction stats
-    console.log(`[NLP] Extracted ${result.entities.length} entities and ${result.relationships.length} relationships in ${processingTime}ms`)
-    console.log(`[NLP] Tokens used: ${completion.usage?.total_tokens || 'unknown'}`)
+    logger.info(
+      { entities: result.entities.length, relationships: result.relationships.length, processingTimeMs: processingTime, tokensUsed: completion.usage?.total_tokens ?? null },
+      '[NLP] Extraction complete'
+    )
 
     return result
   } catch (error) {

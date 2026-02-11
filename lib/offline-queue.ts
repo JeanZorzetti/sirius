@@ -329,15 +329,13 @@ export function setupNetworkListeners(
   }
 
   const handleOnline = () => {
-    console.log('[OfflineQueue] Back online, processing queue...')
     processOfflineQueue().then((result) => {
-      console.log(`[OfflineQueue] Synced ${result.success} actions, ${result.failed} failed`)
+      void result
     })
     onOnline?.()
   }
 
   const handleOffline = () => {
-    console.log('[OfflineQueue] Gone offline')
     onOffline?.()
   }
 

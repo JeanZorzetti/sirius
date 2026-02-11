@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import logger from '@/lib/logger'
 import posthog from 'posthog-js'
 
 /**
@@ -37,19 +38,8 @@ export async function POST(request: NextRequest) {
         })
       } else {
         // Server-side: usar PostHog Node SDK se disponível
-        console.log('[Analytics Ingest] Event received (server-side):', {
-          event,
-          properties,
-          timestamp,
-        })
+        logger.info({ event, properties, timestamp }, '[Analytics Ingest] Event received (server-side)')
       }
-    } else {
-      // Development: apenas log
-      console.log('[Analytics Ingest] Event received (dev mode):', {
-        event,
-        properties,
-        timestamp,
-      })
     }
 
     return NextResponse.json({

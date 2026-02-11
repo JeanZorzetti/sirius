@@ -3,6 +3,8 @@
  * Supports multiple LLM providers with automatic fallback
  */
 
+import logger from '@/lib/logger'
+
 export type LLMProvider = 'ollama' | 'groq';
 
 export interface ProviderConfig {
@@ -108,7 +110,7 @@ async function callGroq(
             throw new Error('Groq returned empty response');
         }
 
-        console.log('[Groq] Success! Model:', config.model);
+        logger.info({ model: config.model }, '[Groq] Success')
 
         return {
             content,
@@ -155,7 +157,7 @@ export async function callLLM(
 
     // Try primary provider first
     try {
-        console.log(`[AGI] Using Groq ${primaryConfig.model}`);
+        logger.info({ model: primaryConfig.model }, '[AGI] Using Groq')
 
         if (!process.env.GROQ_API_KEY) {
             throw new Error('GROQ_API_KEY não configurada. Configure no Vercel.');
@@ -163,10 +165,10 @@ export async function callLLM(
 
         return await callGroq(messages, primaryConfig);
     } catch (primaryError) {
-        console.warn(`[AGI] Primary model failed, trying fallback:`, primaryError);
+        logger.warn({ err: primaryError }, '[AGI] Primary model failed, trying fallback')
 
         try {
-            console.log(`[AGI] Trying fallback: ${fallbackConfig.model}`);
+            logger.info({ model: fallbackConfig.model }, '[AGI] Trying fallback')
             return await callGroq(messages, fallbackConfig);
         } catch (fallbackError) {
             console.error(`[AGI] All providers failed:`, fallbackError);

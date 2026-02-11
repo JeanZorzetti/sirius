@@ -13,6 +13,7 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server'
+import logger from '@/lib/logger'
 import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { createDailyDealSnapshot } from '@/lib/analytics-jobs'
@@ -63,7 +64,7 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    console.log(`[BACKFILL] Starting backfill for org ${user.organization.id} (${days} days)`)
+    logger.info({ orgId: user.organization.id, days }, '[BACKFILL] Starting backfill')
 
     const results = []
     const today = new Date()
@@ -94,7 +95,7 @@ export async function POST(request: NextRequest) {
     const successful = results.filter(r => r.success).length
     const failed = results.filter(r => !r.success).length
 
-    console.log(`[BACKFILL] Completed: ${successful} successful, ${failed} failed`)
+    logger.info({ successful, failed }, '[BACKFILL] Completed')
 
     return NextResponse.json({
       success: true,

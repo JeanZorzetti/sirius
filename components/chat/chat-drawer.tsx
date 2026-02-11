@@ -86,19 +86,16 @@ export function ChatDrawer({ userId, userName, organizationId }: ChatDrawerProps
   useEffect(() => {
     if (!isOpen) return
 
-    console.log('[ChatDrawer] Connecting to SSE...')
     const eventSource = new EventSource('/api/whatsapp/stream')
 
     eventSource.onopen = () => {
-      console.log('[ChatDrawer] SSE connected')
       setSseStatus('connected')
     }
 
     eventSource.onmessage = (event) => {
       try {
         const data = JSON.parse(event.data)
-        console.log('[ChatDrawer] SSE message:', data.type, data)
-        
+
         if (data.type === 'conversation.updated' || data.type === 'message.new') {
           fetchData()
           // Show notification for new messages
@@ -119,7 +116,6 @@ export function ChatDrawer({ userId, userName, organizationId }: ChatDrawerProps
     }
 
     return () => {
-      console.log('[ChatDrawer] Closing SSE connection')
       eventSource.close()
     }
   }, [isOpen, fetchData])

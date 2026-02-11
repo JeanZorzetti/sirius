@@ -27,10 +27,7 @@ export function trackEvent(eventName: string, eventParams?: Record<string, any>)
     ...eventParams,
   })
 
-  // Debug in development
-  if (process.env.NODE_ENV === 'development') {
-    console.log('📊 Analytics Event:', eventName, eventParams)
-  }
+
 }
 
 /**

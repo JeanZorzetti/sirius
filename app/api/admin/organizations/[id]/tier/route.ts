@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server'
+import logger from '@/lib/logger'
 import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { SubscriptionTier } from '@prisma/client'
@@ -61,7 +62,7 @@ export async function PUT(
     })
 
     // Log the change for audit
-    console.log(`[ADMIN] Tier updated for organization ${id}: ${existingOrg.tier} -> ${tier} by ${session.user.email}`)
+    logger.info({ orgId: id, previousTier: existingOrg.tier, newTier: tier, adminEmail: session.user.email }, '[ADMIN] Tier updated for organization')
 
     return NextResponse.json({ 
       success: true, 

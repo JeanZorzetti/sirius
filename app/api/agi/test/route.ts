@@ -4,6 +4,7 @@
  */
 
 import { NextResponse } from 'next/server';
+import logger from '@/lib/logger';
 
 export const runtime = 'nodejs';
 
@@ -11,7 +12,7 @@ export async function GET() {
     try {
         const ollamaHost = process.env.AGI_OLLAMA_HOST || 'http://localhost:11434';
 
-        console.log('Testing Ollama connection to:', ollamaHost);
+        logger.info({ ollamaHost }, 'Testing Ollama connection');
 
         const response = await fetch(`${ollamaHost}/api/tags`, {
             method: 'GET',

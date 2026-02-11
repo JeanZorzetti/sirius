@@ -17,6 +17,7 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server'
+import logger from '@/lib/logger'
 import { createDailyDealSnapshotsForAllOrgs } from '@/lib/analytics-jobs'
 
 export const runtime = 'nodejs'
@@ -43,7 +44,7 @@ export async function GET(request: NextRequest) {
       )
     }
 
-    console.log('[CRON] Starting daily deal snapshot job...')
+    logger.info('[CRON] Starting daily deal snapshot job...')
     const startTime = Date.now()
 
     // Criar snapshots para todas as organizações
@@ -51,12 +52,12 @@ export async function GET(request: NextRequest) {
 
     const duration = Date.now() - startTime
 
-    console.log('[CRON] Daily snapshot job completed', {
+    logger.info({
       total: results.total,
       successful: results.successful,
       failed: results.failed,
       duration: `${duration}ms`,
-    })
+    }, '[CRON] Daily snapshot job completed')
 
     return NextResponse.json({
       success: true,

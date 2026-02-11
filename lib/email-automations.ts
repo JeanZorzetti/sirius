@@ -1,4 +1,5 @@
 import { sendEmail } from './email'
+import logger from '@/lib/logger'
 import { WelcomeEmail } from '../emails/templates/welcome'
 import { DealCreatedEmail } from '../emails/templates/deal-created'
 import { DealStageChangedEmail } from '../emails/templates/deal-stage-changed'
@@ -87,14 +88,14 @@ export async function sendWelcomeEmail({
 
   // Se a automação estiver desabilitada, não envia
   if (!settings || !settings.enabled) {
-    console.log('[EMAIL] Welcome email automation is disabled')
+    logger.info('[EMAIL] Welcome email automation is disabled')
     return { success: false, error: 'Automation disabled' }
   }
 
   // Delay se configurado
   if (settings.sendDelayMinutes > 0) {
     // TODO: Implementar queue system para delays
-    console.log(`[EMAIL] Would delay send by ${settings.sendDelayMinutes} minutes`)
+    logger.info({ delayMinutes: settings.sendDelayMinutes }, '[EMAIL] Would delay send')
   }
 
   const defaultSubject = `Bem-vindo ao Sirius CRM, ${userName}!`
@@ -166,12 +167,12 @@ export async function sendDealCreatedEmail({
   const settings = await getAutomationSettings(organizationId, 'DEAL_CREATED')
 
   if (!settings || !settings.enabled) {
-    console.log('[EMAIL] Deal created email automation is disabled')
+    logger.info('[EMAIL] Deal created email automation is disabled')
     return { success: false, error: 'Automation disabled' }
   }
 
   if (settings.sendDelayMinutes > 0) {
-    console.log(`[EMAIL] Would delay send by ${settings.sendDelayMinutes} minutes`)
+    logger.info({ delayMinutes: settings.sendDelayMinutes }, '[EMAIL] Would delay send')
   }
 
   const formattedValue = new Intl.NumberFormat('pt-BR', {
@@ -256,12 +257,12 @@ export async function sendDealStageChangedEmail({
   const settings = await getAutomationSettings(organizationId, 'DEAL_STAGE_CHANGED')
 
   if (!settings || !settings.enabled) {
-    console.log('[EMAIL] Deal stage changed email automation is disabled')
+    logger.info('[EMAIL] Deal stage changed email automation is disabled')
     return { success: false, error: 'Automation disabled' }
   }
 
   if (settings.sendDelayMinutes > 0) {
-    console.log(`[EMAIL] Would delay send by ${settings.sendDelayMinutes} minutes`)
+    logger.info({ delayMinutes: settings.sendDelayMinutes }, '[EMAIL] Would delay send')
   }
 
   const formattedValue = new Intl.NumberFormat('pt-BR', {
@@ -340,12 +341,12 @@ export async function sendUpgradeNudgeEmail({
   const settings = await getAutomationSettings(organizationId, 'UPGRADE_NUDGE')
 
   if (!settings || !settings.enabled) {
-    console.log('[EMAIL] Upgrade nudge email automation is disabled')
+    logger.info('[EMAIL] Upgrade nudge email automation is disabled')
     return { success: false, error: 'Automation disabled' }
   }
 
   if (settings.sendDelayMinutes > 0) {
-    console.log(`[EMAIL] Would delay send by ${settings.sendDelayMinutes} minutes`)
+    logger.info({ delayMinutes: settings.sendDelayMinutes }, '[EMAIL] Would delay send')
   }
 
   const defaultSubject = `Você está perto do limite de negócios! 📊`
@@ -418,7 +419,7 @@ export function sendEmailAsync(emailPromise: Promise<any>) {
   emailPromise
     .then((result) => {
       if (result.success) {
-        console.log('✅ Email sent successfully:', result.data?.id)
+        logger.info({ emailId: result.data?.id }, 'Email sent successfully')
       } else {
         console.error('❌ Failed to send email:', result.error)
       }

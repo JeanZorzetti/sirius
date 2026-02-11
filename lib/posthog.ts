@@ -25,8 +25,6 @@ export const analytics = {
   }) => {
     if (process.env.NODE_ENV === 'production') {
       getPostHog().capture('calculator_completed', data)
-    } else {
-      console.log('[Analytics] calculator_completed (dev):', data)
     }
   },
 

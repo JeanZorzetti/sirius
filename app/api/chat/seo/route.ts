@@ -6,6 +6,7 @@
  */
 
 import { NextRequest } from 'next/server';
+import logger from '@/lib/logger';
 import { streamText, tool, stepCountIs, convertToModelMessages, UIMessage } from 'ai';
 import { groq } from '@ai-sdk/groq';
 import { z } from 'zod';
@@ -202,7 +203,7 @@ IMPORTANTE: Você tem acesso aos dados REAIS do GSC acima. Use-os nas suas respo
             query: z.string().describe('A query de busca otimizada para encontrar a informação necessária (ex: "site:competitor.com pricing" ou "top ranking crm imobiliario")'),
           }),
           execute: async ({ query }) => {
-            console.log('[Tavily] Searching:', query);
+            logger.info({ query }, '[Tavily] Searching');
 
             try {
               const searchResult = await tv.search(query, {
@@ -223,7 +224,7 @@ IMPORTANTE: Você tem acesso aos dados REAIS do GSC acima. Use-os nas suas respo
                 })),
               };
 
-              console.log('[Tavily] Found:', formattedResults.results.length, 'results');
+              logger.info({ resultCount: formattedResults.results.length }, '[Tavily] Found results');
 
               return formattedResults;
             } catch (error) {

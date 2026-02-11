@@ -25,7 +25,6 @@ export function AiTrafficMonitor() {
     // Só executar no lado do cliente e em produção
     if (typeof window === 'undefined') return
     if (process.env.NODE_ENV !== 'production') {
-      console.log('[AiTrafficMonitor] Running in dev mode - events disabled')
       return
     }
 
@@ -59,7 +58,6 @@ export function AiTrafficMonitor() {
         ai_acquisition_date: aiData.detectedAt,
       })
 
-      console.log('[AiTrafficMonitor] AI traffic detected:', aiData.engine)
     }
   }, [pathname, searchParams])
 

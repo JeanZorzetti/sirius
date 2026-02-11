@@ -188,8 +188,6 @@ export function ChatWithUIExample({
   }
 
   const handleInteraction = (data: ComponentInteraction) => {
-    console.log('[ChatWithUI] Component interaction:', data)
-
     // Track analytics (example)
     if (typeof window !== 'undefined' && (window as any).analytics) {
       ;(window as any).analytics.track('genui_interaction', {

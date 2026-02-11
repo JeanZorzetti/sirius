@@ -10,6 +10,7 @@ import { processContentNLP, searchEntities, findRelatedEntities } from './pipeli
 import { blogPosts } from '@/lib/blog-data'
 import { BlogPost } from '@/lib/blog-types'
 import { prisma } from '@/lib/prisma'
+import logger from '@/lib/logger'
 
 /**
  * Process a single blog post through NLP pipeline
@@ -76,7 +77,7 @@ export async function processBlogPostsBatch(slugs?: string[]) {
   const results = []
 
   for (const post of postsToProcess) {
-    console.log(`📄 Processing: ${post.title}...`)
+    logger.info({ title: post.title }, 'Processing blog post')
     const result = await processBlogPost(post.slug)
     results.push(result)
 

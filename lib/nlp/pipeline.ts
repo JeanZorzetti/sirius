@@ -16,6 +16,7 @@ import type {
   ExtractedEntity,
   ExtractedRelationship,
 } from './types'
+import logger from '@/lib/logger'
 
 const prisma = new PrismaClient()
 
@@ -59,7 +60,7 @@ export async function processContentNLP(
       },
     })
 
-    console.log(`[NLP Pipeline] Started extraction ${extraction.id}`)
+    logger.info({ extractionId: extraction.id }, '[NLP Pipeline] Started extraction')
 
     try {
       // Step 2: Extract entities using LLM
@@ -72,8 +73,9 @@ export async function processContentNLP(
         temperature,
       })
 
-      console.log(
-        `[NLP Pipeline] Extracted ${result.entities.length} entities, ${result.relationships.length} relationships`
+      logger.info(
+        { entities: result.entities.length, relationships: result.relationships.length },
+        '[NLP Pipeline] Extracted entities and relationships'
       )
 
       // Step 3: Upsert entities to database
@@ -98,8 +100,9 @@ export async function processContentNLP(
             source: contentUrl || contentId,
           })
         } else {
-          console.warn(
-            `[NLP Pipeline] Skipping relationship ${rel.subject} -> ${rel.predicate} -> ${rel.object} (entities not found)`
+          logger.warn(
+            { subject: rel.subject, predicate: rel.predicate, object: rel.object },
+            '[NLP Pipeline] Skipping relationship - entities not found'
           )
         }
       }
@@ -135,8 +138,9 @@ export async function processContentNLP(
         },
       })
 
-      console.log(
-        `[NLP Pipeline] Completed extraction ${extraction.id} in ${processingTimeMs}ms`
+      logger.info(
+        { extractionId: extraction.id, processingTimeMs },
+        '[NLP Pipeline] Completed extraction'
       )
 
       return {

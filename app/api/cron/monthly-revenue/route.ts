@@ -17,6 +17,7 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server'
+import logger from '@/lib/logger'
 import { createMonthlyRevenueSnapshot } from '@/lib/analytics-jobs'
 
 export const runtime = 'nodejs'
@@ -40,7 +41,7 @@ export async function GET(request: NextRequest) {
       )
     }
 
-    console.log('[CRON] Starting monthly revenue snapshot job...')
+    logger.info('[CRON] Starting monthly revenue snapshot job...')
     const startTime = Date.now()
 
     // Usar mês/ano atual ou permitir override via query params
@@ -53,13 +54,13 @@ export async function GET(request: NextRequest) {
 
     const duration = Date.now() - startTime
 
-    console.log('[CRON] Monthly revenue snapshot job completed', {
+    logger.info({
       year,
       month,
       mrr: snapshot.mrr.toString(),
       arr: snapshot.arr.toString(),
       duration: `${duration}ms`,
-    })
+    }, '[CRON] Monthly revenue snapshot job completed')
 
     return NextResponse.json({
       success: true,

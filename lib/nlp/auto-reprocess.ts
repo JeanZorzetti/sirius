@@ -10,6 +10,7 @@
 import { prisma } from '@/lib/prisma'
 import { processBlogPost } from './blog-processor'
 import { calculateContentHash } from './hash-utils'
+import logger from '@/lib/logger'
 
 /**
  * Check if content has changed since last extraction
@@ -60,7 +61,7 @@ export async function processIfChanged(params: {
     const changed = await hasContentChanged(contentId, contentType, content)
 
     if (!changed) {
-      console.log(`[Auto-Reprocess] Content unchanged for ${contentType}:${contentId}, skipping`)
+      logger.info({ contentType, contentId }, '[Auto-Reprocess] Content unchanged, skipping')
       return {
         success: true,
         skipped: true,
@@ -69,7 +70,7 @@ export async function processIfChanged(params: {
     }
   }
 
-  console.log(`[Auto-Reprocess] Content changed for ${contentType}:${contentId}, reprocessing...`)
+  logger.info({ contentType, contentId }, '[Auto-Reprocess] Content changed, reprocessing')
 
   // Reprocess
   if (contentType === 'blog_post') {
@@ -115,8 +116,7 @@ export interface ReprocessWebhookPayload {
 export async function handleReprocessWebhook(payload: ReprocessWebhookPayload) {
   const { contentType, contentId, content, trigger } = payload
 
-  console.log(`[Reprocess Webhook] Triggered by: ${trigger}`)
-  console.log(`[Reprocess Webhook] Content: ${contentType}:${contentId}`)
+  logger.info({ trigger, contentType, contentId }, '[Reprocess Webhook] Triggered')
 
   try {
     const result = await processIfChanged({

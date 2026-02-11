@@ -64,8 +64,6 @@ export function ChatInterface({
   organizationId,
   maxInstances
 }: ChatInterfaceProps) {
-  console.log("[CHAT_INTERFACE] [1] Montando componente...")
-  
   const [selectedContact, setSelectedContact] = useState<Contact | null>(null)
   const [activeView, setActiveView] = useState<'chat' | 'connections'>('chat')
   const [contacts, setContacts] = useState<Contact[]>(initialContacts)
@@ -75,17 +73,13 @@ export function ChatInterface({
   const [connectionStatus, setConnectionStatus] = useState<'connected' | 'connecting' | 'disconnected'>('disconnected')
   const [messageRefreshTrigger, setMessageRefreshTrigger] = useState(0)
 
-  console.log(`[CHAT_INTERFACE] [2] Estado inicial - contacts: ${initialContacts.length}, connections: ${initialConnections.length}`)
-
   const activeConnections = connections.filter(c => c.status === 'CONNECTED')
   const totalUnread = contacts.reduce((sum, contact) => sum + (contact._count.unreadMessages || 0), 0)
 
   const fetchConversations = useCallback(async (showLoading = false) => {
-    console.log("[CHAT_INTERFACE] [3] fetchConversations chamado")
     if (showLoading) setIsRefreshing(true)
     try {
       const res = await fetch('/api/whatsapp/conversations')
-      console.log(`[CHAT_INTERFACE] [4] fetchConversations res: ${res.status}`)
       if (res.ok) {
         const data = await res.json()
         setContacts(data)
@@ -102,7 +96,6 @@ export function ChatInterface({
   }, [selectedContact])
 
   const fetchConnections = useCallback(async () => {
-    console.log("[CHAT_INTERFACE] [5] fetchConnections chamado")
     try {
       const res = await fetch('/api/whatsapp/connections')
       if (res.ok) {
@@ -115,7 +108,6 @@ export function ChatInterface({
   }, [])
 
   const syncConversations = async () => {
-    console.log("[CHAT_INTERFACE] [6] syncConversations chamado")
     if (activeConnections.length === 0) {
       toast.error('Nenhuma conexão ativa para sincronizar')
       return
@@ -159,7 +151,6 @@ export function ChatInterface({
 
   // SSE connection for real-time updates
   useEffect(() => {
-    console.log("[CHAT_INTERFACE] [7] useEffect SSE iniciando...")
     let eventSource: EventSource | null = null
     let reconnectTimeout: NodeJS.Timeout | null = null
 
@@ -168,14 +159,12 @@ export function ChatInterface({
       eventSource = new EventSource('/api/whatsapp/stream')
 
       eventSource.onopen = () => {
-        console.log('[CHAT_INTERFACE] [8] SSE Connected')
         setConnectionStatus('connected')
       }
 
       eventSource.onmessage = (event) => {
         try {
           const data = JSON.parse(event.data)
-          console.log(`[CHAT_INTERFACE] [9] SSE message: ${data.type}`)
 
           switch (data.type) {
             case 'conversation.updated':
@@ -197,7 +186,6 @@ export function ChatInterface({
         setConnectionStatus('disconnected')
         eventSource?.close()
         reconnectTimeout = setTimeout(() => {
-          console.log('[CHAT_INTERFACE] [10] SSE Reconnecting...')
           connect()
         }, 5000)
       }
@@ -207,7 +195,6 @@ export function ChatInterface({
     const connectionInterval = setInterval(fetchConnections, 10000)
 
     return () => {
-      console.log("[CHAT_INTERFACE] [11] useEffect cleanup")
       if (eventSource) eventSource.close()
       if (reconnectTimeout) clearTimeout(reconnectTimeout)
       clearInterval(connectionInterval)
@@ -216,17 +203,13 @@ export function ChatInterface({
 
   // Update document title with unread count
   useEffect(() => {
-    console.log("[CHAT_INTERFACE] [12] Atualizando título")
     const totalUnread = contacts.reduce((sum, contact) => sum + (contact._count.unreadMessages || 0), 0)
     document.title = totalUnread > 0 ? `Chat Center (${totalUnread})` : 'Chat Center'
     return () => { document.title = 'Chat Center' }
   }, [contacts])
 
-  console.log("[CHAT_INTERFACE] [13] Renderizando UI...")
-
   // No connections at all
   if (connections.length === 0) {
-    console.log("[CHAT_INTERFACE] [14] Sem conexões, mostrando empty state")
     return (
       <div className="flex-1 flex items-center justify-center p-8">
         <EmptyState
@@ -244,7 +227,6 @@ export function ChatInterface({
     )
   }
 
-  console.log("[CHAT_INTERFACE] [15] Renderizando layout principal")
   return (
     <div className="flex-1 flex flex-col h-full">
       {/* Top bar */}

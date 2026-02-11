@@ -7,6 +7,7 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server'
+import logger from '@/lib/logger'
 import { streamText, stepCountIs } from 'ai'
 import { createGroq } from '@ai-sdk/groq'
 import { z } from 'zod'
@@ -165,8 +166,8 @@ export async function POST(req: NextRequest) {
       } : undefined,
     })
 
-    console.log('[INTELLIGENCE] User message:', lastUserMsg)
-    console.log('[INTELLIGENCE] Analysis result:', {
+    logger.debug({ userMessage: lastUserMsg }, '[INTELLIGENCE] User message')
+    logger.debug({
       intent: intelligenceResult.intent.primary,
       confidence: intelligenceResult.intent.confidence,
       shouldRender: intelligenceResult.trigger.shouldRender,
@@ -175,7 +176,7 @@ export async function POST(req: NextRequest) {
       reasoning: intelligenceResult.trigger.reasoning,
       spinState,
       leadScore,
-    })
+    }, '[INTELLIGENCE] Analysis result')
 
     // 8. Build enhanced system prompt with Generative UI capabilities
     const systemPrompt = enhancePromptWithGenerativeUI(BASE_SYSTEM_PROMPT)
@@ -234,7 +235,7 @@ IMPORTANT: Use the intelligence analysis above to inform your decision. If a com
       }),
       execute: async (args: any) => {
         const { componentName, props, reasoning } = args
-        console.log(`[TOOL CALL] render_ui_component invoked:`, { componentName, reasoning })
+        logger.info({ componentName, reasoning }, '[TOOL CALL] render_ui_component invoked')
 
         // Build cache context (user context + component request)
         const cacheContext = {
@@ -250,7 +251,7 @@ IMPORTANT: Use the intelligence analysis above to inform your decision. If a com
         // Check cache first
         const cached = componentCacheStore.get(cacheKey)
         if (cached) {
-          console.log(`[CACHE HIT] ${componentName} from cache (hitCount: ${cached.hitCount})`)
+          logger.info({ componentName, hitCount: cached.hitCount }, '[CACHE HIT] Component served from cache')
 
           // Track cache hit for analytics
           const today = new Date()
@@ -290,7 +291,7 @@ IMPORTANT: Use the intelligence analysis above to inform your decision. If a com
           }
         }
 
-        console.log(`[CACHE MISS] ${componentName} - generating fresh`)
+        logger.info({ componentName }, '[CACHE MISS] Generating fresh component')
 
         const component = componentRegistry[componentName]
 
@@ -322,7 +323,7 @@ IMPORTANT: Use the intelligence analysis above to inform your decision. If a com
           contextHash,
         })
 
-        console.log(`[CACHED] ${componentName} stored for future use`)
+        logger.info({ componentName }, '[CACHED] Component stored for future use')
 
         return result
       }
@@ -409,7 +410,7 @@ IMPORTANT: Use the intelligence analysis above to inform your decision. If a com
           // If intelligence layer recommends a component, render it automatically
           // This bypasses Groq's problematic tool calling
           if (intelligenceResult.trigger.shouldRender && intelligenceResult.trigger.recommendation) {
-            console.log('[AUTO-RENDER] Intelligence recommends:', intelligenceResult.trigger.recommendation.component)
+            logger.info({ component: intelligenceResult.trigger.recommendation.component }, '[AUTO-RENDER] Intelligence recommends')
 
             try {
               const component = intelligenceResult.trigger.recommendation.component as any
@@ -432,7 +433,7 @@ IMPORTANT: Use the intelligence analysis above to inform your decision. If a com
               }
               controller.enqueue(encoder.encode(JSON.stringify(uiChunk) + '\n'))
               componentAlreadyRendered = true
-              console.log('[AUTO-RENDER] Component rendered successfully')
+              logger.info('[AUTO-RENDER] Component rendered successfully')
             } catch (error) {
               console.error('[AUTO-RENDER] Failed:', error)
             }
@@ -444,9 +445,8 @@ IMPORTANT: Use the intelligence analysis above to inform your decision. If a com
               const chunk: StreamChunk = { type: 'text', content: part.text }
               controller.enqueue(encoder.encode(JSON.stringify(chunk) + '\n'))
             } else if (part.type === 'tool-call') {
-              console.log('[STREAM] Tool call detected:', part.toolName)
-              console.log('[STREAM] Tool call args type:', typeof part.input)
-              console.log('[STREAM] Tool call args:', JSON.stringify(part.input, null, 2))
+              logger.info({ toolName: part.toolName }, '[STREAM] Tool call detected')
+              logger.debug({ argsType: typeof part.input, args: part.input }, '[STREAM] Tool call args')
               if (part.toolName === 'render_ui_component') {
                 // Send thinking state first
                 const thinkingChunk: StreamChunk = {
@@ -457,9 +457,9 @@ IMPORTANT: Use the intelligence analysis above to inform your decision. If a com
                 controller.enqueue(encoder.encode(JSON.stringify(thinkingChunk) + '\n'))
               }
             } else if (part.type === 'tool-result') {
-              console.log('[STREAM] Tool result:', part.toolName)
+              logger.info({ toolName: part.toolName }, '[STREAM] Tool result')
               if (part.output) {
-                console.log('[STREAM] Tool result content:', JSON.stringify(part.output, null, 2))
+                logger.debug({ output: part.output }, '[STREAM] Tool result content')
               }
               if ((part as any).error) {
                 console.error('[STREAM] Tool error:', (part as any).error)
