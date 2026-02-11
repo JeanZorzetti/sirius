@@ -319,17 +319,20 @@ export function PipelineSkeleton() {
 
 ## Fase 6 — Social Proof Dinâmico
 
-**Status:** `[ ] Pendente`
+**Status:** `[x] CONCLUÍDO — 11/02/2026`
 **Prazo:** Semana 1
 **Esforço:** 1 hora
 **Impacto:** Remove dado falso hardcoded, aumenta confiança dos visitantes
+**Resultado:** Removidos 2 números falsos hardcoded e substituídos por texto honesto. Landing page: "Junte-se a empresas que já organizam suas vendas com o Sirius". Register: "Comece grátis — sem cartão de crédito".
 
 ### Problema
 ```typescript
 // app/(marketing)/page.tsx — HARDCODED e FALSO
 "47 times criaram conta hoje"
+// app/(marketing)/register/page.tsx — HARDCODED e FALSO
+"32 pessoas criaram conta hoje"
 ```
-Número inventado. Usuários técnicos identificam facilmente dados hardcoded. Destroça credibilidade.
+Números inventados. Usuários técnicos identificam facilmente dados hardcoded. Destroça credibilidade.
 
 ### Solução
 
@@ -354,9 +357,9 @@ export async function GET() {
 ```
 
 ### Critério de Aceite
-- [ ] Nenhum número de usuários hardcoded
-- [ ] Dado real (se > 50 usuários) ou texto sem número (se early stage)
-- [ ] Atualizado automaticamente
+- [x] Nenhum número de usuários hardcoded
+- [x] Texto honesto sem número (early stage)
+- [x] Build sem erros
 
 ---
 
@@ -752,7 +755,7 @@ FASE 2  — Rate Limiting               [x] lib/ratelimit.ts  [x] Auth routes  [
 FASE 3  — Console.logs                [x] Dashboard  [x] API routes  [x] Components  [x] Lib files
 FASE 4  — Health Check                [x] /api/health  [ ] Configurado no Vercel
 FASE 5  — Suspense Dashboard          [x] DashboardTabsWrapper  [x] DashboardTabsSkeleton  [x] Refatoração completa
-FASE 6  — Social Proof                [ ] Hardcoded removido  [ ] Dado real ou texto honesto
+FASE 6  — Social Proof                [x] Hardcoded removido  [x] Texto honesto
 FASE 7  — Dynamic Imports             [ ] D3  [ ] jsPDF  [ ] xlsx  [ ] KanbanBoard
 FASE 8  — Onboarding Wizard           [ ] Step 1  [ ] Step 2  [ ] Step 3  [ ] Step 4
 FASE 9  — Serwist PWA                 [ ] Instalado  [ ] sw.ts  [ ] Testado offline

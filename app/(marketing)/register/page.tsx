@@ -96,7 +96,7 @@ export default async function RegisterPage({
                         {!inviteData && (
                             <div className="flex items-center gap-2 mb-2">
                                 <div className="h-2 w-2 rounded-full bg-green-500 animate-pulse" />
-                                <span className="text-xs font-medium text-green-400">32 pessoas criaram conta hoje</span>
+                                <span className="text-xs font-medium text-green-400">Comece grátis — sem cartão de crédito</span>
                             </div>
                         )}
                         <CardTitle className="text-2xl font-bold">

@@ -286,7 +286,7 @@ export default function LandingPage() {
               <div className="relative z-10">
                 <div className="inline-flex items-center gap-2 rounded-full border border-green-500/30 bg-green-500/10 px-3 py-1 text-sm text-green-400 mb-6">
                   <div className="h-2 w-2 rounded-full bg-green-500 animate-pulse" />
-                  <span className="font-medium">47 times criaram conta hoje</span>
+                  <span className="font-medium">Junte-se a empresas que já organizam suas vendas com o Sirius</span>
                 </div>
 
                 <h2 className="text-3xl font-bold text-white mb-4">Comece a vender mais hoje</h2>
