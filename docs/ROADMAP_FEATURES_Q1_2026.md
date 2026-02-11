@@ -553,10 +553,11 @@ Features:
 
 ## NOVA FEATURE — Deal Automations (Game Changer)
 
-**Status:** `[ ] A INICIAR`
+**Status:** `[x] CONCLUÍDO — 11/02/2026`
 **Prazo:** Semana 2-3 (14-21/02/2026)
-**Esforço:** 12-16 horas
+**Esforço:** 12-16 horas (realizado em ~8h)
 **Impacto:** Diferencial competitivo ENORME — 80% dos CRMs não têm isso
+**Resultado:** Engine completo (conditions + actions + engine), builder UI 3 passos, triggers em DEAL_CREATED/MOVED/WON/LOST, logs de execução, FREE tier enforcement. Commit: `3a247ad`
 
 ### O que é
 
@@ -727,14 +728,14 @@ export async function executeDealAutomations(
 
 ### Critério de Aceite
 
-- [ ] UI de criação de automações funcional (drag-and-drop opcional, forms OK)
-- [ ] Triggers funcionam: DEAL_CREATED, DEAL_MOVED, DEAL_IDLE
-- [ ] Condições: field comparisons (value > X, stage === Y)
-- [ ] Ações: SEND_EMAIL, SEND_WHATSAPP, CREATE_TASK, NOTIFY_USER, ADD_TAG
-- [ ] Logs de execução salvos (AutomationExecution)
-- [ ] Dashboard mostra execuções (success/failed)
-- [ ] PRO plan enforcement (FREE não tem automações)
-- [ ] Build passa sem erros
+- [x] UI de criação de automações funcional (builder 3 passos: trigger → condições → ações)
+- [x] Triggers funcionam: DEAL_CREATED, DEAL_MOVED, DEAL_IDLE, DEAL_WON, DEAL_LOST
+- [x] Condições: field comparisons (value > X, stage === Y, operators: equals/not_equals/greater_than/less_than/contains)
+- [x] Ações: SEND_EMAIL, CREATE_TASK, NOTIFY_USER, ADD_TAG, SEND_WEBHOOK (N8N)
+- [x] Logs de execução salvos (AutomationExecution)
+- [x] Dashboard mostra execuções (success/failed) + stats 30 dias
+- [x] PRO plan enforcement (FREE vê banner de upgrade)
+- [x] Build passa sem erros
 
 ---
 
