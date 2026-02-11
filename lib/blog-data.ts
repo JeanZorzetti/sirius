@@ -522,7 +522,7 @@ export const blogPosts: BlogPost[] = [
     `,
     date: '2025-12-28',
     category: 'Vendas',
-    image: '/images/blog/pipeline-vendas.png',
+    image: '/images/blog/pipeline-vendas.webp',
     author: 'Sirius Team'
   },
   {
@@ -936,7 +936,7 @@ export const blogPosts: BlogPost[] = [
     `,
     date: '2025-12-27',
     category: 'Gestão',
-    image: '/images/blog/crm-simples-complexo.png',
+    image: '/images/blog/crm-simples-complexo.webp',
     author: 'Sirius Team'
   },
   {
@@ -1412,7 +1412,7 @@ export const blogPosts: BlogPost[] = [
     `,
     date: '2025-12-25',
     category: 'Dicas',
-    image: '/images/blog/follow-up.png',
+    image: '/images/blog/follow-up.webp',
     author: 'Sirius Team'
   },
   {
@@ -2121,7 +2121,7 @@ export const blogPosts: BlogPost[] = [
     `,
     date: '2026-01-09',
     category: 'Guias',
-    image: '/images/blog/funil-vendas.png',
+    image: '/images/blog/funil-vendas.webp',
     author: 'Sirius Team'
   },
   {
@@ -4072,7 +4072,7 @@ Se este guia foi útil para você, compartilhe com sua rede e ajude outros profi
 <strong>#SPINSelling #VendasB2B #VendasConsultivas #CRM #SiriusCRM</strong>`,
     date: '2026-01-10',
     category: 'Vendas',
-    image: '/images/blog/spin-selling.png',
+    image: '/images/blog/spin-selling.webp',
     author: 'Equipe Sirius CRM'
   },
   {
@@ -4263,7 +4263,7 @@ Se este guia foi útil para você, compartilhe com sua rede e ajude outros profi
 `,
     date: '2026-01-30',
     category: 'ROI e Estratégia',
-    image: '/images/blog/custo-oculto-inacao-crm.png',
+    image: '/images/blog/custo-oculto-inacao-crm.webp',
     author: 'Equipe Sirius CRM'
   },
   {
@@ -4273,7 +4273,7 @@ Se este guia foi útil para você, compartilhe com sua rede e ajude outros profi
     content: '',
     date: '2026-01-28',
     category: 'Ferramentas',
-    image: '/images/blog/planilha-controle-comissao.png',
+    image: '/images/blog/planilha-controle-comissao.webp',
     author: 'Equipe Sirius CRM'
   },
   {
@@ -4283,7 +4283,7 @@ Se este guia foi útil para você, compartilhe com sua rede e ajude outros profi
     date: '2026-02-10',
     lastModified: '2026-02-10',
     category: 'Tecnologia e IA',
-    image: '/images/blog/crm-ia-inteligencia-artificial.png',
+    image: '/images/blog/crm-ia-inteligencia-artificial.webp',
     author: 'Equipe Sirius CRM',
     content: `
       <p>
