@@ -91,16 +91,9 @@ vi.mock('@/lib/api-helpers', () => ({
   formatDate: vi.fn((date) => date?.toISOString()),
 }))
 
-// Mock dos validators - retorna o body do request
+// Mock dos validators
 vi.mock('@/lib/api-validators', () => ({
-  validateRequest: async (req: any, _schema: any) => {
-    try {
-      const data = await req.json()
-      return { success: true, data }
-    } catch {
-      return { success: true, data: {} }
-    }
-  },
+  validateRequest: vi.fn().mockResolvedValue({ success: true, data: {} }),
   uuidSchema: {
     safeParse: (id: string) => ({
       success: /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id),
@@ -236,6 +229,10 @@ describe('Deals API - CRUD', () => {
         updatedAt: new Date(),
       }
 
+      ;(validateRequest as Mock).mockResolvedValueOnce({
+        success: true,
+        data: requestBody
+      })
       ;(prisma.pipelineStage.findFirst as Mock).mockResolvedValue(mockStage)
       ;(prisma.user.findFirst as Mock).mockResolvedValue(mockUser)
       ;(prisma.deal.create as Mock).mockResolvedValue(mockCreatedDeal)
@@ -396,6 +393,10 @@ describe('Deals API - CRUD', () => {
         updatedAt: new Date(),
       }
 
+      ;(validateRequest as Mock).mockResolvedValueOnce({
+        success: true,
+        data: requestBody
+      })
       ;(prisma.deal.findFirst as Mock).mockResolvedValue(mockDeal)
       ;(prisma.deal.update as Mock).mockResolvedValue(mockUpdatedDeal)
 
