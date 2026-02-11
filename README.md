@@ -8,6 +8,7 @@ Pipeline visual, automações inteligentes, e analytics que realmente ajudam a v
 
 [Demo](https://sirius.roilabs.com.br) · [Documentação](docs/) · [Roadmap](roadmaps/ROADMAP-CENARIO-C.md) · [Reportar Bug](https://github.com/JeanZorzetti/sirius/issues)
 
+[![CI](https://github.com/JeanZorzetti/sirius/actions/workflows/ci.yml/badge.svg)](https://github.com/JeanZorzetti/sirius/actions/workflows/ci.yml)
 [![Next.js](https://img.shields.io/badge/Next.js-16.1-black?logo=next.js)](https://nextjs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue?logo=typescript)](https://www.typescriptlang.org/)
 [![Prisma](https://img.shields.io/badge/Prisma-5.19-2D3748?logo=prisma)](https://www.prisma.io/)
