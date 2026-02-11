@@ -5,6 +5,7 @@ import { formatDecimal, formatDate } from '@/lib/api-helpers'
 import { validateRequest, updateDealSchema, uuidSchema } from '@/lib/api-validators'
 import logger from '@/lib/logger'
 import { sendDealWonNotification } from '@/lib/push-notifications'
+import { executeDealAutomations } from '@/lib/automations/engine'
 
 /**
  * GET /api/v1/deals/[id]
@@ -347,6 +348,31 @@ export async function PATCH(
           ).catch(error => {
             logger.error({ error, dealId: deal.id }, 'Failed to send deal won notification')
           })
+        }
+      }
+
+      // Fire-and-forget automation triggers
+      const automationContext = {
+        organizationId: deal.organizationId,
+        value: deal.value ? parseFloat(deal.value.toString()) : 0,
+        stageId: deal.stageId,
+        pipelineId: deal.pipelineId,
+        title: deal.title,
+        userId: deal.userId
+      }
+
+      // DEAL_MOVED: stageId changed
+      if (data.stageId && data.stageId !== existingDeal.stageId) {
+        executeDealAutomations(deal.id, 'DEAL_MOVED', automationContext).catch(() => {})
+
+        // Check if the new stage name indicates a WON deal
+        const stageName = deal.stage.name.toLowerCase()
+        if (stageName.includes('ganho') || stageName.includes('won') || stageName.includes('fechado')) {
+          executeDealAutomations(deal.id, 'DEAL_WON', automationContext).catch(() => {})
+        }
+        // Check if the new stage name indicates a LOST deal
+        if (stageName.includes('perdido') || stageName.includes('lost') || stageName.includes('cancelado')) {
+          executeDealAutomations(deal.id, 'DEAL_LOST', automationContext).catch(() => {})
         }
       }
 

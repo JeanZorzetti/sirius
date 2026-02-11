@@ -112,6 +112,9 @@ model Organization {
 
   // Chat Center - Conversation Management (Fase 3.1)
   chatConversations ChatConversation[]
+
+  // Deal Automations
+  dealAutomations DealAutomation[]
 }
 
 model User {
@@ -279,6 +282,9 @@ model Deal {
   // Integrations
   whatsappMessages WhatsAppMessage[]
   calendarEvents   CalendarEvent[]
+
+  // Deal Automations
+  automationExecutions AutomationExecution[]
 
   // Performance indexes
   @@index([organizationId, stageId])
@@ -1585,6 +1591,61 @@ enum DealStatus {
   ACTIVE    // Deal ativo no pipeline
   WON       // Deal ganho/fechado
   LOST      // Deal perdido
+}
+
+// ============================================================================
+// DEAL AUTOMATIONS
+// ============================================================================
+
+enum AutomationTrigger {
+  DEAL_CREATED
+  DEAL_MOVED
+  DEAL_WON
+  DEAL_LOST
+  DEAL_IDLE
+}
+
+enum ExecutionStatus {
+  SUCCESS
+  FAILED
+  SKIPPED
+}
+
+model DealAutomation {
+  id             String            @id @default(uuid())
+  organizationId String
+  organization   Organization      @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  name           String
+  description    String?
+  enabled        Boolean           @default(true)
+  triggerType    AutomationTrigger
+  triggerConfig  Json              @default("{}")
+  conditions     Json              @default("[]")
+  actions        Json              @default("[]")
+  executionCount Int               @default(0)
+  lastExecutedAt DateTime?
+  createdAt      DateTime          @default(now())
+  updatedAt      DateTime          @updatedAt
+  executions     AutomationExecution[]
+
+  @@index([organizationId, enabled])
+  @@index([organizationId, triggerType])
+}
+
+model AutomationExecution {
+  id           String           @id @default(uuid())
+  automationId String
+  automation   DealAutomation   @relation(fields: [automationId], references: [id], onDelete: Cascade)
+  dealId       String
+  deal         Deal             @relation(fields: [dealId], references: [id], onDelete: Cascade)
+  status       ExecutionStatus
+  actionsRun   Int              @default(0)
+  error        String?
+  metadata     Json?
+  executedAt   DateTime         @default(now())
+
+  @@index([automationId])
+  @@index([dealId])
 }
 
 // Fase 17: Métricas de Ads (Google Ads, Facebook Ads, manual)
