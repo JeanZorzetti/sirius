@@ -22,24 +22,24 @@ model Organization {
   mercadoPagoSubscriptionId String? // Subscription ID (assinatura)
   mercadoPagoPreferenceId   String? // Preference ID para checkout
   tier                      SubscriptionTier @default(FREE) // FREE, STARTER, PRO, BUSINESS
-  plan                      String @default("FREE") // Deprecated: use tier instead
+  plan                      String           @default("FREE") // Deprecated: use tier instead
 
   // v2.0 Billing enhancements
-  customPricing            Decimal? @db.Decimal(10, 2) // Grandfathering price
-  customPricingExpiresAt   DateTime? // When grandfathering ends
-  grandfatheredDealLimit   Int? // FREE clients: custom deal limit (null = use tier limit)
-  grandfatheredAt          DateTime? // When grandfathering was applied
-  whatsappInstances        Int @default(1) // Base WhatsApp instances (PRO: 1, BUSINESS: 1)
+  customPricing          Decimal?  @db.Decimal(10, 2) // Grandfathering price
+  customPricingExpiresAt DateTime? // When grandfathering ends
+  grandfatheredDealLimit Int? // FREE clients: custom deal limit (null = use tier limit)
+  grandfatheredAt        DateTime? // When grandfathering was applied
+  whatsappInstances      Int       @default(1) // Base WhatsApp instances (PRO: 1, BUSINESS: 1)
 
-  users     User[]
-  contacts  Contact[]
-  deals     Deal[]
-  pipelines Pipeline[]
-  pipelineStages    PipelineStage[]
-  invites   Invite[]
-  tags      Tag[]
+  users                   User[]
+  contacts                Contact[]
+  deals                   Deal[]
+  pipelines               Pipeline[]
+  pipelineStages          PipelineStage[]
+  invites                 Invite[]
+  tags                    Tag[]
   emailAutomationSettings EmailAutomationSetting[]
-  emailLogs EmailLog[]
+  emailLogs               EmailLog[]
 
   // Analytics relations
   dealSnapshots    DealSnapshot[]
@@ -47,31 +47,31 @@ model Organization {
   revenueSnapshots RevenueSnapshot[]
 
   // API & Webhooks
-  apiKeys      ApiKey[]
-  webhooks     Webhook[]
-  webhookLogs  WebhookLog[]
+  apiKeys     ApiKey[]
+  webhooks    Webhook[]
+  webhookLogs WebhookLog[]
 
   // Integrations
-  n8nEnabled          Boolean  @default(false)
-  n8nBaseUrl          String?
-  n8nApiKey           String?  // Encrypted with AES-256-GCM
-  n8nWebhookUrl       String?
+  n8nEnabled    Boolean @default(false)
+  n8nBaseUrl    String?
+  n8nApiKey     String? // Encrypted with AES-256-GCM
+  n8nWebhookUrl String?
 
-  evolutionEnabled    Boolean  @default(false)
-  evolutionBaseUrl    String?
-  evolutionApiKey     String?  // Encrypted
-  evolutionInstance   String?
+  evolutionEnabled  Boolean @default(false)
+  evolutionBaseUrl  String?
+  evolutionApiKey   String? // Encrypted
+  evolutionInstance String?
 
-  googleCalendarEnabled       Boolean  @default(false)
-  googleCalendarRefreshToken  String?  @db.Text // Encrypted
-  googleCalendarEmail         String?
+  googleCalendarEnabled      Boolean @default(false)
+  googleCalendarRefreshToken String? @db.Text // Encrypted
+  googleCalendarEmail        String?
 
-  integrationLogs    IntegrationLog[]
-  whatsappMessages   WhatsAppMessage[]
-  calendarEvents     CalendarEvent[]
-  pushSubscriptions  PushSubscription[]
-  pwaMetrics         PWAMetric[]
-  notifications      Notification[]
+  integrationLogs   IntegrationLog[]
+  whatsappMessages  WhatsAppMessage[]
+  calendarEvents    CalendarEvent[]
+  pushSubscriptions PushSubscription[]
+  pwaMetrics        PWAMetric[]
+  notifications     Notification[]
 
   // AGI Sirius relations
   agiConversations   AgiConversation[]
@@ -80,50 +80,50 @@ model Organization {
   agiSkillExecutions AgiSkillExecution[]
 
   // A/B Testing
-  experiments        Experiment[]
+  experiments Experiment[]
 
   // Onboarding
   onboardingProgress OnboardingProgress[]
 
   // v2.0 Features
-  scrapingCredit         ScrapingCredit?
-  scrapingJobs           ScrapingJob[]
-  addons                 Addon[]
-  whatsappConnections    WhatsAppConnection[]
-  agiQuota               AgiQuota?
-  leadDistributionRules  LeadDistributionRule[]
-  
+  scrapingCredit        ScrapingCredit?
+  scrapingJobs          ScrapingJob[]
+  addons                Addon[]
+  whatsappConnections   WhatsAppConnection[]
+  agiQuota              AgiQuota?
+  leadDistributionRules LeadDistributionRule[]
+
   // v2.0 Planos & Billing
-  roundRobinConfig       RoundRobinConfig?
-  transactions           Transaction[]
+  roundRobinConfig RoundRobinConfig?
+  transactions     Transaction[]
 
   // Chat Center - Quick Replies (Fase 2.1)
-  quickReplies           QuickReply[]
+  quickReplies QuickReply[]
 
   // Chat Center - Conversation Management (Fase 3.1)
-  chatConversations      ChatConversation[]
+  chatConversations ChatConversation[]
 }
 
 model User {
   id        String   @id @default(uuid())
   email     String   @unique
   name      String?
-  password  String   // Password hash
+  password  String // Password hash
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   organizationId String
   organization   Organization @relation(fields: [organizationId], references: [id])
 
-  deals     Deal[]   // Deals managed by this user
-  assignedContacts Contact[] // Contacts assigned via round-robin
-  notes     Note[]
-  activities Activity[]
-  emailLogs EmailLog[]
-  userActivities UserActivity[] // Analytics tracking
-  pushSubscriptions PushSubscription[]
-  pwaMetrics PWAMetric[]
-  notifications Notification[]
+  deals                  Deal[] // Deals managed by this user
+  assignedContacts       Contact[] // Contacts assigned via round-robin
+  notes                  Note[]
+  activities             Activity[]
+  emailLogs              EmailLog[]
+  userActivities         UserActivity[] // Analytics tracking
+  pushSubscriptions      PushSubscription[]
+  pwaMetrics             PWAMetric[]
+  notifications          Notification[]
   notificationPreference NotificationPreference?
 
   // AGI Sirius relations
@@ -133,7 +133,7 @@ model User {
   agiSkillExecutions AgiSkillExecution[]
 
   // Onboarding
-  onboarding         OnboardingProgress?
+  onboarding OnboardingProgress?
 
   // Chat Center - Assigned conversations (Fase 3.1)
   assignedConversations ChatConversation[]
@@ -141,8 +141,8 @@ model User {
   // Chat Center - Message reactions (Fase 4.2)
   messageReactions MessageReaction[]
 
-  role      Role     @default(USER)
-  orgRole   OrgRole  @default(OWNER) // Defaulting to OWNER for now so existing users don't lose access. Ideally MEMBER.
+  role    Role    @default(USER)
+  orgRole OrgRole @default(OWNER) // Defaulting to OWNER for now so existing users don't lose access. Ideally MEMBER.
 }
 
 enum Role {
@@ -163,21 +163,21 @@ enum SubscriptionTier {
 }
 
 model Contact {
-  id             String   @id @default(uuid())
-  name           String
-  email          String?
-  phone          String?
-  company        String?
-  profilePicUrl  String?  // WhatsApp profile picture URL
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
+  id            String   @id @default(uuid())
+  name          String
+  email         String?
+  phone         String?
+  company       String?
+  profilePicUrl String? // WhatsApp profile picture URL
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 
   organizationId String
   organization   Organization @relation(fields: [organizationId], references: [id])
-  
+
   // Round-robin assignment
-  assignedToId   String?
-  assignedTo     User?    @relation(fields: [assignedToId], references: [id], onDelete: SetNull)
+  assignedToId String?
+  assignedTo   User?   @relation(fields: [assignedToId], references: [id], onDelete: SetNull)
 
   deals            Deal[]
   whatsappMessages WhatsAppMessage[]
@@ -207,8 +207,8 @@ model Pipeline {
 
 model PipelineStage {
   id        String   @id @default(uuid())
-  name      String   // "Prospecção", "Qualificação", etc.
-  order     Int      // To sort the Kanban columns (1, 2, 3...)
+  name      String // "Prospecção", "Qualificação", etc.
+  order     Int // To sort the Kanban columns (1, 2, 3...)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -218,7 +218,7 @@ model PipelineStage {
   pipelineId String
   pipeline   Pipeline @relation(fields: [pipelineId], references: [id], onDelete: Cascade)
 
-  deals     Deal[]
+  deals Deal[]
 
   // Performance indexes
   @@index([pipelineId, order])
@@ -226,41 +226,41 @@ model PipelineStage {
 }
 
 model Deal {
-  id          String   @id @default(uuid())
-  title       String   // "Venda Software X"
-  value       Decimal? @db.Decimal(10, 2)
-  closeDate   DateTime?
-  dueDate     DateTime? // [NEW] Agenda/Follow-up
-  order       Int?      // [NEW] Manual sorting in column
+  id        String    @id @default(uuid())
+  title     String // "Venda Software X"
+  value     Decimal?  @db.Decimal(10, 2)
+  closeDate DateTime?
+  dueDate   DateTime? // [NEW] Agenda/Follow-up
+  order     Int? // [NEW] Manual sorting in column
 
   // v2.0: Soft Archive (FREE >50 deals)
-  archived         Boolean  @default(false)
-  archivedReason   String?  // "PLAN_LIMIT", "USER_ACTION"
-  archivedAt       DateTime?
+  archived       Boolean   @default(false)
+  archivedReason String? // "PLAN_LIMIT", "USER_ACTION"
+  archivedAt     DateTime?
 
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
   organizationId String
   organization   Organization @relation(fields: [organizationId], references: [id])
 
   // Relations
-  pipelineId  String
-  pipeline    Pipeline      @relation(fields: [pipelineId], references: [id])
+  pipelineId String
+  pipeline   Pipeline @relation(fields: [pipelineId], references: [id])
 
-  stageId     String
-  stage       PipelineStage @relation(fields: [stageId], references: [id])
+  stageId String
+  stage   PipelineStage @relation(fields: [stageId], references: [id])
 
-  contactId   String?
-  contact     Contact?      @relation(fields: [contactId], references: [id])
+  contactId String?
+  contact   Contact? @relation(fields: [contactId], references: [id])
 
-  userId      String
-  user        User          @relation(fields: [userId], references: [id])
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
 
   // Deal 2.0
-  notes       Note[]
-  tags        Tag[]
-  activities  Activity[]
+  notes      Note[]
+  tags       Tag[]
+  activities Activity[]
 
   // Integrations
   whatsappMessages WhatsAppMessage[]
@@ -291,18 +291,18 @@ model Note {
   id        String   @id @default(uuid())
   content   String
   createdAt DateTime @default(now())
-  
-  dealId    String
-  deal      Deal     @relation(fields: [dealId], references: [id], onDelete: Cascade)
-  
-  userId    String
-  user      User     @relation(fields: [userId], references: [id])
+
+  dealId String
+  deal   Deal   @relation(fields: [dealId], references: [id], onDelete: Cascade)
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
 }
 
 model Tag {
-  id      String @id @default(uuid())
-  name    String
-  color   String // hex or preset name
+  id    String @id @default(uuid())
+  name  String
+  color String // hex or preset name
 
   organizationId String
   organization   Organization @relation(fields: [organizationId], references: [id])
@@ -312,16 +312,16 @@ model Tag {
 }
 
 model Activity {
-  id        String   @id @default(uuid())
-  type      String   // "STAGE_CHANGE", "NOTE_ADDED", "VALUE_CHANGE"
+  id          String   @id @default(uuid())
+  type        String // "STAGE_CHANGE", "NOTE_ADDED", "VALUE_CHANGE"
   description String
-  createdAt DateTime @default(now())
+  createdAt   DateTime @default(now())
 
-  dealId    String
-  deal      Deal     @relation(fields: [dealId], references: [id], onDelete: Cascade)
+  dealId String
+  deal   Deal   @relation(fields: [dealId], references: [id], onDelete: Cascade)
 
-  userId    String
-  user      User     @relation(fields: [userId], references: [id])
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
 }
 
 // Email Automation Models
@@ -334,16 +334,16 @@ enum EmailAutomationType {
 }
 
 model EmailAutomationSetting {
-  id        String   @id @default(uuid())
-  type      EmailAutomationType
-  enabled   Boolean  @default(true)
+  id      String              @id @default(uuid())
+  type    EmailAutomationType
+  enabled Boolean             @default(true)
 
   // Customization (nullable = usa template default)
   customSubject String?
   customBody    String? @db.Text
 
   // Advanced config
-  sendDelayMinutes Int @default(0) // 0 = immediate, 60 = 1h, 1440 = 24h
+  sendDelayMinutes  Int   @default(0) // 0 = immediate, 60 = 1h, 1440 = 24h
   triggerConditions Json? // Regras de negócio customizadas
 
   createdAt DateTime @default(now())
@@ -365,14 +365,14 @@ enum EmailStatus {
 }
 
 model EmailLog {
-  id        String   @id @default(uuid())
-  type      EmailAutomationType
-  to        String
-  subject   String
-  status    EmailStatus @default(SENT)
+  id      String              @id @default(uuid())
+  type    EmailAutomationType
+  to      String
+  subject String
+  status  EmailStatus         @default(SENT)
 
   // Tracking timestamps
-  sentAt      DateTime @default(now())
+  sentAt      DateTime  @default(now())
   deliveredAt DateTime?
   openedAt    DateTime?
   clickedAt   DateTime?
@@ -383,8 +383,8 @@ model EmailLog {
   organizationId String
   organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
 
-  userId    String?
-  user      User? @relation(fields: [userId], references: [id], onDelete: SetNull)
+  userId String?
+  user   User?   @relation(fields: [userId], references: [id], onDelete: SetNull)
 
   @@index([organizationId, sentAt])
   @@index([status])
@@ -393,24 +393,24 @@ model EmailLog {
 // Analytics & Data Warehouse Models
 
 model DealSnapshot {
-  id        String   @id @default(uuid())
-  date      DateTime // Data do snapshot (sem hora, apenas dia)
+  id   String   @id @default(uuid())
+  date DateTime // Data do snapshot (sem hora, apenas dia)
 
   // Métricas agregadas
-  totalDeals      Int // Total de deals ativos neste dia
-  totalValue      Decimal @db.Decimal(12, 2) // Valor total do pipeline
-  avgDealValue    Decimal @db.Decimal(12, 2) // Ticket médio
+  totalDeals   Int // Total de deals ativos neste dia
+  totalValue   Decimal @db.Decimal(12, 2) // Valor total do pipeline
+  avgDealValue Decimal @db.Decimal(12, 2) // Ticket médio
 
   // Breakdown por stage
-  dealsByStage    Json // { "stageId": { count: X, value: Y } }
+  dealsByStage Json // { "stageId": { count: X, value: Y } }
 
   // Breakdown por pipeline
   dealsByPipeline Json // { "pipelineId": { count: X, value: Y } }
 
   // Conversão
-  dealsCreated    Int @default(0) // Deals criados neste dia
-  dealsClosed     Int @default(0) // Deals fechados neste dia
-  dealsLost       Int @default(0) // Deals perdidos neste dia
+  dealsCreated Int @default(0) // Deals criados neste dia
+  dealsClosed  Int @default(0) // Deals fechados neste dia
+  dealsLost    Int @default(0) // Deals perdidos neste dia
 
   createdAt DateTime @default(now())
 
@@ -439,11 +439,11 @@ enum UserActivityType {
 }
 
 model UserActivity {
-  id        String   @id @default(uuid())
-  type      UserActivityType
+  id   String           @id @default(uuid())
+  type UserActivityType
 
   // Contexto do evento
-  metadata  Json? // Dados adicionais flexíveis
+  metadata Json? // Dados adicionais flexíveis
 
   // IP e User Agent para analytics
   ipAddress String?
@@ -451,8 +451,8 @@ model UserActivity {
 
   createdAt DateTime @default(now())
 
-  userId    String?
-  user      User? @relation(fields: [userId], references: [id], onDelete: SetNull)
+  userId String?
+  user   User?   @relation(fields: [userId], references: [id], onDelete: SetNull)
 
   organizationId String
   organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
@@ -463,32 +463,32 @@ model UserActivity {
 }
 
 model RevenueSnapshot {
-  id        String   @id @default(uuid())
-  date      DateTime // Data do snapshot (último dia do mês)
-  month     Int      // 1-12
-  year      Int      // 2024, 2025, etc.
+  id    String   @id @default(uuid())
+  date  DateTime // Data do snapshot (último dia do mês)
+  month Int // 1-12
+  year  Int // 2024, 2025, etc.
 
   // Métricas de receita
-  mrr       Decimal @db.Decimal(12, 2) // Monthly Recurring Revenue
-  arr       Decimal @db.Decimal(12, 2) // Annual Recurring Revenue (MRR * 12)
+  mrr Decimal @db.Decimal(12, 2) // Monthly Recurring Revenue
+  arr Decimal @db.Decimal(12, 2) // Annual Recurring Revenue (MRR * 12)
 
   // Breakdown de clientes
-  totalOrganizations    Int // Total de organizações ativas
-  freeOrganizations     Int // Orgs no plano FREE
-  proOrganizations      Int // Orgs no plano PRO
+  totalOrganizations Int // Total de organizações ativas
+  freeOrganizations  Int // Orgs no plano FREE
+  proOrganizations   Int // Orgs no plano PRO
 
   // Churn
-  churnedOrganizations  Int @default(0) // Orgs que cancelaram neste mês
-  newOrganizations      Int @default(0) // Novas orgs neste mês
+  churnedOrganizations Int @default(0) // Orgs que cancelaram neste mês
+  newOrganizations     Int @default(0) // Novas orgs neste mês
 
   // LTV e CAC (quando integrar ads)
-  avgLtv    Decimal? @db.Decimal(12, 2) // Lifetime Value médio
-  avgCac    Decimal? @db.Decimal(12, 2) // Customer Acquisition Cost
+  avgLtv Decimal? @db.Decimal(12, 2) // Lifetime Value médio
+  avgCac Decimal? @db.Decimal(12, 2) // Customer Acquisition Cost
 
   // Forecast
-  forecastNext30d  Decimal? @db.Decimal(12, 2) // Receita prevista próximos 30 dias
-  forecastNext60d  Decimal? @db.Decimal(12, 2)
-  forecastNext90d  Decimal? @db.Decimal(12, 2)
+  forecastNext30d Decimal? @db.Decimal(12, 2) // Receita prevista próximos 30 dias
+  forecastNext60d Decimal? @db.Decimal(12, 2)
+  forecastNext90d Decimal? @db.Decimal(12, 2)
 
   createdAt DateTime @default(now())
 
@@ -502,15 +502,15 @@ model RevenueSnapshot {
 // Public API Models
 
 model ApiKey {
-  id        String   @id @default(uuid())
-  name      String   // User-friendly name like "Production Key"
-  keyHash   String   @unique // bcrypt hash of the API key
-  keyPrefix String   // First 12 chars for identification (e.g., "sk_live_1234")
-  lastUsed  DateTime?
-  expiresAt DateTime?
-  requestCount Int @default(0)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id           String    @id @default(uuid())
+  name         String // User-friendly name like "Production Key"
+  keyHash      String    @unique // bcrypt hash of the API key
+  keyPrefix    String // First 12 chars for identification (e.g., "sk_live_1234")
+  lastUsed     DateTime?
+  expiresAt    DateTime?
+  requestCount Int       @default(0)
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
 
   organizationId String
   organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
@@ -521,12 +521,12 @@ model ApiKey {
 
 model Webhook {
   id             String   @id @default(uuid())
-  svixAppId      String   // Svix application ID
-  svixEndpointId String   // Svix endpoint ID
-  url            String   // Webhook URL
+  svixAppId      String // Svix application ID
+  svixEndpointId String // Svix endpoint ID
+  url            String // Webhook URL
   description    String?
-  enabled        Boolean @default(true)
-  events         Json     // ["deal.created", "contact.created"]
+  enabled        Boolean  @default(true)
+  events         Json // ["deal.created", "contact.created"]
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
 
@@ -546,18 +546,18 @@ enum WebhookStatus {
 }
 
 model WebhookLog {
-  id            String   @id @default(uuid())
-  eventType     String   // "deal.created", "deal.updated"
-  payload       Json     // Event payload sent
+  id            String        @id @default(uuid())
+  eventType     String // "deal.created", "deal.updated"
+  payload       Json // Event payload sent
   status        WebhookStatus @default(PENDING)
-  statusCode    Int?     // HTTP response code
-  errorMessage  String? @db.Text
-  attempts      Int @default(0)
-  svixMessageId String?  // Svix message ID for tracking
-  sentAt        DateTime @default(now())
+  statusCode    Int? // HTTP response code
+  errorMessage  String?       @db.Text
+  attempts      Int           @default(0)
+  svixMessageId String? // Svix message ID for tracking
+  sentAt        DateTime      @default(now())
 
   webhookId      String
-  webhook        Webhook @relation(fields: [webhookId], references: [id], onDelete: Cascade)
+  webhook        Webhook      @relation(fields: [webhookId], references: [id], onDelete: Cascade)
   organizationId String
   organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
 
@@ -601,20 +601,20 @@ enum SyncStatus {
 }
 
 model IntegrationLog {
-  id            String   @id @default(uuid())
-  type          IntegrationType
-  action        String   // "webhook:deal.created", "api:listWorkflows", "send_message"
-  status        IntegrationStatus @default(PENDING)
+  id     String            @id @default(uuid())
+  type   IntegrationType
+  action String // "webhook:deal.created", "api:listWorkflows", "send_message"
+  status IntegrationStatus @default(PENDING)
 
   // Request/Response data
-  request       Json?
-  response      Json?
-  errorMessage  String?  @db.Text
+  request      Json?
+  response     Json?
+  errorMessage String? @db.Text
 
   // Retry tracking
-  attemptCount  Int      @default(1)
+  attemptCount Int @default(1)
 
-  createdAt     DateTime @default(now())
+  createdAt DateTime @default(now())
 
   organizationId String
   organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
@@ -624,47 +624,47 @@ model IntegrationLog {
 }
 
 model WhatsAppMessage {
-  id              String   @id @default(uuid())
+  id String @id @default(uuid())
 
   // WhatsApp identifiers
-  remoteJid       String   // "5511987654321@s.whatsapp.net"
-  messageId       String?  // Evolution API message ID
+  remoteJid String // "5511987654321@s.whatsapp.net"
+  messageId String? // Evolution API message ID
 
   // Message content
-  text            String   @db.Text
-  direction       MessageDirection
-  status          WhatsAppMessageStatus @default(PENDING)
+  text      String                @db.Text
+  direction MessageDirection
+  status    WhatsAppMessageStatus @default(PENDING)
 
   // Read status (Fase 1.1)
-  isRead          Boolean  @default(false)
+  isRead Boolean @default(false)
 
   // Reply/Quote (Fase 2.2)
-  replyToId       String?
-  replyTo         WhatsAppMessage? @relation("MessageReplies", fields: [replyToId], references: [id], onDelete: SetNull)
-  replies         WhatsAppMessage[] @relation("MessageReplies")
-  replyToText     String?  @db.Text // Cache para performance de exibição
+  replyToId   String?
+  replyTo     WhatsAppMessage?  @relation("MessageReplies", fields: [replyToId], references: [id], onDelete: SetNull)
+  replies     WhatsAppMessage[] @relation("MessageReplies")
+  replyToText String?           @db.Text // Cache para performance de exibição
 
   // Media (optional)
-  mediaUrl        String?
-  mediaType       String?  // "image", "video", "document", "audio"
+  mediaUrl  String?
+  mediaType String? // "image", "video", "document", "audio"
 
   // Relations
-  dealId          String?
-  deal            Deal?    @relation(fields: [dealId], references: [id], onDelete: SetNull)
+  dealId String?
+  deal   Deal?   @relation(fields: [dealId], references: [id], onDelete: SetNull)
 
-  contactId       String?
-  contact         Contact? @relation(fields: [contactId], references: [id], onDelete: SetNull)
+  contactId String?
+  contact   Contact? @relation(fields: [contactId], references: [id], onDelete: SetNull)
 
   // Timestamps
-  sentAt          DateTime @default(now())
-  deliveredAt     DateTime?
-  readAt          DateTime?
+  sentAt      DateTime  @default(now())
+  deliveredAt DateTime?
+  readAt      DateTime?
 
-  organizationId  String
-  organization    Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
 
   // Reactions (Fase 4.2)
-  reactions       MessageReaction[]
+  reactions MessageReaction[]
 
   @@index([organizationId, sentAt])
   @@index([dealId])
@@ -678,13 +678,13 @@ model WhatsAppMessage {
 // ============================================================================
 
 model MessageReaction {
-  id        String   @id @default(uuid())
+  id        String          @id @default(uuid())
   emoji     String
   messageId String
   message   WhatsAppMessage @relation(fields: [messageId], references: [id], onDelete: Cascade)
   userId    String
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  createdAt DateTime @default(now())
+  user      User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime        @default(now())
 
   @@unique([messageId, userId, emoji])
   @@index([messageId])
@@ -695,155 +695,154 @@ model MessageReaction {
 // ============================================================================
 
 model QuickReply {
-  id             String   @id @default(uuid())
-  shortcut       String   // "/saudacao", "/followup"
+  id             String       @id @default(uuid())
+  shortcut       String // "/saudacao", "/followup"
   title          String
-  content        String   @db.Text
-  category       String?  // "saudacao", "fechamento", "followup"
+  content        String       @db.Text
+  category       String? // "saudacao", "fechamento", "followup"
   organizationId String
   organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
 
   @@unique([organizationId, shortcut])
   @@index([organizationId])
 }
 
 model CalendarEvent {
-  id              String   @id @default(uuid())
+  id String @id @default(uuid())
 
   // Google Calendar identifier
-  googleEventId   String?  @unique
+  googleEventId String? @unique
 
   // Event details
-  title           String
-  description     String?  @db.Text
-  startTime       DateTime
-  endTime         DateTime
-  location        String?
+  title       String
+  description String?  @db.Text
+  startTime   DateTime
+  endTime     DateTime
+  location    String?
 
   // Sync tracking
-  syncStatus      SyncStatus @default(PENDING)
-  lastSyncAt      DateTime?
+  syncStatus SyncStatus @default(PENDING)
+  lastSyncAt DateTime?
 
   // Relations
-  dealId          String?
-  deal            Deal?    @relation(fields: [dealId], references: [id], onDelete: SetNull)
+  dealId String?
+  deal   Deal?   @relation(fields: [dealId], references: [id], onDelete: SetNull)
 
-  organizationId  String
-  organization    Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
 
   @@index([organizationId, startTime])
   @@index([dealId])
   @@index([googleEventId])
 }
 
-
 model PushSubscription {
-  id        String   @id @default(uuid())
-  
+  id String @id @default(uuid())
+
   // Web Push subscription details
-  endpoint  String   @unique
-  p256dh    String   // Public key
-  auth      String   // Auth secret
-  
+  endpoint String @unique
+  p256dh   String // Public key
+  auth     String // Auth secret
+
   // User agent and device info (optional)
-  userAgent String?  @db.Text
+  userAgent  String? @db.Text
   deviceType String? // "desktop", "mobile", "tablet"
-  
+
   // Status
-  active    Boolean  @default(true)
-  
+  active Boolean @default(true)
+
   // Timestamps
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
   lastUsedAt DateTime?
-  
+
   // Relations
-  userId    String
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
   organizationId String
   organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
-  
+
   @@index([userId])
   @@index([organizationId])
   @@index([endpoint])
 }
 
 model PWAMetric {
-  id        String   @id @default(uuid())
-  
+  id String @id @default(uuid())
+
   // Event type
-  type      PWAMetricType
-  
+  type PWAMetricType
+
   // User and device info
-  userId    String?
-  user      User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
-  
-  userAgent String?  @db.Text
+  userId String?
+  user   User?   @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  userAgent  String? @db.Text
   deviceType String? // "desktop", "mobile", "tablet"
-  
+
   // Event data (JSON for flexibility)
-  data      Json?
-  
+  data Json?
+
   // Timestamps
   createdAt DateTime @default(now())
-  
+
   organizationId String
   organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
-  
+
   @@index([organizationId, type])
   @@index([organizationId, createdAt])
   @@index([userId])
 }
 
 enum PWAMetricType {
-  INSTALL_PROMPT_SHOWN    // beforeinstallprompt event
+  INSTALL_PROMPT_SHOWN // beforeinstallprompt event
   INSTALL_PROMPT_ACCEPTED // User clicked "Install"
   INSTALL_PROMPT_DISMISSED // User clicked "Not now"
-  APP_INSTALLED           // appinstalled event
+  APP_INSTALLED // appinstalled event
   PUSH_PERMISSION_GRANTED // User granted push permission
-  PUSH_PERMISSION_DENIED  // User denied push permission
-  OFFLINE_SYNC_SUCCESS    // Offline queue synced successfully
-  OFFLINE_SYNC_FAILURE    // Offline queue sync failed
-  SERVICE_WORKER_UPDATED  // SW updated
+  PUSH_PERMISSION_DENIED // User denied push permission
+  OFFLINE_SYNC_SUCCESS // Offline queue synced successfully
+  OFFLINE_SYNC_FAILURE // Offline queue sync failed
+  SERVICE_WORKER_UPDATED // SW updated
 }
 
 // AGI Sirius Models
 
 model AgiConversation {
-  id             String   @id @default(uuid())
-  
+  id String @id @default(uuid())
+
   // Context
-  dealId         String?  // Conversa sobre deal específico
-  pipelineId     String?  // Conversa sobre pipeline/funil
-  context        String?  // "deal", "pipeline", "general", "script_generation"
-  
+  dealId     String? // Conversa sobre deal específico
+  pipelineId String? // Conversa sobre pipeline/funil
+  context    String? // "deal", "pipeline", "general", "script_generation"
+
   // Messages (array de mensagens)
-  messages       Json     // [{ role: "user"/"assistant", content: "...", timestamp: "..." }]
-  
+  messages Json // [{ role: "user"/"assistant", content: "...", timestamp: "..." }]
+
   // Summary for retrieval
-  summary        String?  @db.Text
-  
+  summary String? @db.Text
+
   // Token tracking
-  tokensUsed     Int      @default(0)
-  
+  tokensUsed Int @default(0)
+
   // Timestamps
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
-  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
   // Relations
-  userId         String
-  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
   organizationId String
   organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
-  
+
   // Soft relations (no FK to allow flexibility)
   // dealId references Deal.id
   // pipelineId references Pipeline.id
-  
+
   @@index([organizationId, userId])
   @@index([dealId])
   @@index([pipelineId])
@@ -851,48 +850,48 @@ model AgiConversation {
 }
 
 enum AgiInsightType {
-  QUALIFICATION_BANT    // Qualificação BANT
-  QUALIFICATION_MEDDIC  // Qualificação MEDDIC
-  NEXT_STEP_SUGGESTION  // Sugestão de próximo passo
-  OBJECTION_HANDLING    // Como lidar com objeção
-  SCRIPT_GENERATED      // Script de vendas gerado
-  PIPELINE_ANALYSIS     // Análise de funil
-  DEAL_RISK_ASSESSMENT  // Avaliação de risco do deal
+  QUALIFICATION_BANT // Qualificação BANT
+  QUALIFICATION_MEDDIC // Qualificação MEDDIC
+  NEXT_STEP_SUGGESTION // Sugestão de próximo passo
+  OBJECTION_HANDLING // Como lidar com objeção
+  SCRIPT_GENERATED // Script de vendas gerado
+  PIPELINE_ANALYSIS // Análise de funil
+  DEAL_RISK_ASSESSMENT // Avaliação de risco do deal
 }
 
 model AgiInsight {
-  id             String   @id @default(uuid())
-  
+  id String @id @default(uuid())
+
   // Type and content
-  type           AgiInsightType
-  title          String   // "Lead bem qualificado (BANT: 100/100)"
-  content        String   @db.Text // JSON ou texto formatado
-  
+  type    AgiInsightType
+  title   String // "Lead bem qualificado (BANT: 100/100)"
+  content String         @db.Text // JSON ou texto formatado
+
   // Confidence score (0-1)
-  confidence     Decimal  @db.Decimal(3, 2) // 0.00 to 1.00
-  
+  confidence Decimal @db.Decimal(3, 2) // 0.00 to 1.00
+
   // Status
-  applied        Boolean  @default(false)  // User aplicou a sugestão?
-  dismissed      Boolean  @default(false)  // User descartou?
-  
+  applied   Boolean @default(false) // User aplicou a sugestão?
+  dismissed Boolean @default(false) // User descartou?
+
   // Context
-  dealId         String?
-  pipelineId     String?
-  
+  dealId     String?
+  pipelineId String?
+
   // Metadata (estruturado)
-  metadata       Json?    // { bant_score: 100, criteria: {...}, recommendations: [...] }
-  
+  metadata Json? // { bant_score: 100, criteria: {...}, recommendations: [...] }
+
   // Timestamps
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
-  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
   // Relations
-  userId         String
-  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
   organizationId String
   organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
-  
+
   @@index([organizationId, type])
   @@index([dealId])
   @@index([pipelineId])
@@ -900,61 +899,61 @@ model AgiInsight {
 }
 
 model AgiUsage {
-  id             String   @id @default(uuid())
-  
+  id String @id @default(uuid())
+
   // Usage tracking
-  date           DateTime // Data (sem hora, agrupado por dia)
-  tokensUsed     Int      // Tokens gastos neste dia
-  requestCount   Int      @default(0) // Número de requests
-  
+  date         DateTime // Data (sem hora, agrupado por dia)
+  tokensUsed   Int // Tokens gastos neste dia
+  requestCount Int      @default(0) // Número de requests
+
   // Plan at the time
-  plan           String   // FREE ou PRO (snapshot do plano no momento)
-  
+  plan String // FREE ou PRO (snapshot do plano no momento)
+
   // Monthly tracking
-  year           Int
-  month          Int      // 1-12
-  
+  year  Int
+  month Int // 1-12
+
   // Relations
-  userId         String
-  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
   organizationId String
   organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
-  
+
   @@unique([organizationId, userId, date])
   @@index([organizationId, year, month])
   @@index([userId, year, month])
 }
 
 model AgiSkillExecution {
-  id             String   @id @default(uuid())
-  
+  id String @id @default(uuid())
+
   // Skill info
-  skillName      String   // "qualificacao_bant", "analise_funil", etc.
-  
+  skillName String // "qualificacao_bant", "analise_funil", etc.
+
   // Input/Output
-  input          Json     // Parâmetros de entrada
-  output         Json?    // Resultado
-  
+  input  Json // Parâmetros de entrada
+  output Json? // Resultado
+
   // Performance
-  executionTime  Int?     // Milissegundos
-  success        Boolean
-  errorMessage   String?  @db.Text
-  
+  executionTime Int? // Milissegundos
+  success       Boolean
+  errorMessage  String? @db.Text
+
   // Context
   dealId         String?
-  conversationId String?  // Referência à AgiConversation.id
-  
+  conversationId String? // Referência à AgiConversation.id
+
   // Timestamps
-  createdAt      DateTime @default(now())
-  
+  createdAt DateTime @default(now())
+
   // Relations
-  userId         String
-  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
   organizationId String
   organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
-  
+
   @@index([organizationId, skillName])
   @@index([userId])
   @@index([success])
@@ -973,29 +972,29 @@ enum NotificationType {
 }
 
 model Notification {
-  id        String   @id @default(uuid())
+  id String @id @default(uuid())
 
   // Notification content
-  type      NotificationType
-  title     String
-  message   String   @db.Text
+  type    NotificationType
+  title   String
+  message String           @db.Text
 
   // Status
-  read      Boolean  @default(false)
-  readAt    DateTime?
+  read   Boolean   @default(false)
+  readAt DateTime?
 
   // Action link (optional)
   actionUrl String?
 
   // Context metadata
-  metadata  Json?    // { dealId, contactId, etc. }
+  metadata Json? // { dealId, contactId, etc. }
 
   // Timestamps
   createdAt DateTime @default(now())
 
   // Relations
-  userId    String
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   organizationId String
   organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
@@ -1006,7 +1005,7 @@ model Notification {
 }
 
 model NotificationPreference {
-  id        String   @id @default(uuid())
+  id String @id @default(uuid())
 
   // Notification types
   newDealEnabled          Boolean @default(true)
@@ -1019,8 +1018,8 @@ model NotificationPreference {
   updatedAt DateTime @updatedAt
 
   // Relations
-  userId    String   @unique
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 // Password Reset Token
@@ -1044,31 +1043,31 @@ enum OnboardingStatus {
 }
 
 model OnboardingProgress {
-  id             String   @id @default(uuid())
+  id String @id @default(uuid())
 
   // Progress tracking
-  currentStep    Int      @default(0)          // 0-5 (current step index)
-  completedSteps String[] @default([])         // Array of completed step IDs
+  currentStep    Int      @default(0) // 0-5 (current step index)
+  completedSteps String[] @default([]) // Array of completed step IDs
 
   // Status
-  status         OnboardingStatus @default(IN_PROGRESS)
-  completedAt    DateTime?
-  skippedAt      DateTime?
+  status      OnboardingStatus @default(IN_PROGRESS)
+  completedAt DateTime?
+  skippedAt   DateTime?
 
   // Step-specific data (JSON)
-  stepData       Json?    // { step1: {...}, step2: {...} }
+  stepData Json? // { step1: {...}, step2: {...} }
 
   // Gamification
-  badges         String[] @default([])         // Earned badges: ["first_contact", "pipeline_master", etc.]
-  totalPoints    Int      @default(0)          // Gamification points
+  badges      String[] @default([]) // Earned badges: ["first_contact", "pipeline_master", etc.]
+  totalPoints Int      @default(0) // Gamification points
 
   // Timestamps
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   // Relations
-  userId         String   @unique
-  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   organizationId String
   organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
@@ -1083,16 +1082,16 @@ model OnboardingProgress {
 
 // ScrapingCredit: Controle de créditos de prospecção
 model ScrapingCredit {
-  id             String       @id @default(uuid())
-  organizationId String       @unique
-  balance        Int          @default(0)
-  monthlyQuota   Int          @default(0) // 0 (STARTER/FREE), 50 (PRO/BUSINESS)
-  usedThisMonth  Int          @default(0)
-  lastRefill     DateTime     @default(now())
-  createdAt      DateTime     @default(now())
-  updatedAt      DateTime     @updatedAt
+  id             String   @id @default(uuid())
+  organizationId String   @unique
+  balance        Int      @default(0)
+  monthlyQuota   Int      @default(0) // 0 (STARTER/FREE), 50 (PRO/BUSINESS)
+  usedThisMonth  Int      @default(0)
+  lastRefill     DateTime @default(now())
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
 
-  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
 
   @@index([organizationId])
 }
@@ -1124,18 +1123,18 @@ model ScrapingJob {
   userId         String
   provider       ScrapingProvider
   source         ScrapingSource
-  query          String           // "restaurantes em São Paulo"
-  filters        Json?            // { category: "restaurant", city: "SP" }
+  query          String // "restaurantes em São Paulo"
+  filters        Json? // { category: "restaurant", city: "SP" }
   status         JobStatus        @default(PENDING)
   creditsUsed    Int              @default(0)
   resultsCount   Int              @default(0)
-  results        Json?            // Array de leads encontrados
+  results        Json? // Array de leads encontrados
   error          String?          @db.Text
   startedAt      DateTime?
   completedAt    DateTime?
   createdAt      DateTime         @default(now())
 
-  organization   Organization     @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
 
   @@index([organizationId, status])
   @@index([status])
@@ -1156,17 +1155,17 @@ enum AddonStatus {
 
 // Addon: Add-ons comprados (créditos extras, instâncias WhatsApp)
 model Addon {
-  id             String       @id @default(uuid())
+  id             String      @id @default(uuid())
   organizationId String
   type           AddonType
-  name           String       // "Pacote 100 Leads", "WhatsApp Extra"
-  quantity       Int          // 100, 500, 1
-  price          Decimal      @db.Decimal(10, 2)
-  status         AddonStatus  @default(ACTIVE)
-  expiresAt      DateTime?    // null = não expira
-  purchasedAt    DateTime     @default(now())
+  name           String // "Pacote 100 Leads", "WhatsApp Extra"
+  quantity       Int // 100, 500, 1
+  price          Decimal     @db.Decimal(10, 2)
+  status         AddonStatus @default(ACTIVE)
+  expiresAt      DateTime? // null = não expira
+  purchasedAt    DateTime    @default(now())
 
-  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
 
   @@index([organizationId])
   @@index([status])
@@ -1183,19 +1182,19 @@ enum WhatsAppStatus {
 model WhatsAppConnection {
   id             String         @id @default(uuid())
   organizationId String
-  userId         String         // Usuário responsável
-  instanceName   String         // Nome da instância no Evolution API
-  phoneNumber    String?        // Número conectado
+  userId         String // Usuário responsável
+  instanceName   String // Nome da instância no Evolution API
+  phoneNumber    String? // Número conectado
   qrCode         String?        @db.Text // QR Code para conexão
   status         WhatsAppStatus @default(DISCONNECTED)
   apiKey         String?        @db.Text // Evolution API key (encrypted)
-  webhookUrl     String?        // URL do webhook
+  webhookUrl     String? // URL do webhook
   connectedAt    DateTime?
   lastSyncAt     DateTime?
   createdAt      DateTime       @default(now())
   updatedAt      DateTime       @updatedAt
 
-  organization   Organization   @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
 
   @@unique([organizationId, instanceName])
   @@index([organizationId])
@@ -1204,15 +1203,15 @@ model WhatsAppConnection {
 
 // AgiQuota: Controle de quota de IA (FREE: 3/mês, PRO/BUSINESS: ilimitado)
 model AgiQuota {
-  id             String       @id @default(uuid())
-  organizationId String       @unique
-  monthlyLimit   Int          // -1 = ilimitado, 0 = sem acesso, 3 = FREE
-  usedThisMonth  Int          @default(0)
-  lastReset      DateTime     @default(now())
-  createdAt      DateTime     @default(now())
-  updatedAt      DateTime     @updatedAt
+  id             String   @id @default(uuid())
+  organizationId String   @unique
+  monthlyLimit   Int // -1 = ilimitado, 0 = sem acesso, 3 = FREE
+  usedThisMonth  Int      @default(0)
+  lastReset      DateTime @default(now())
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
 
-  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
 
   @@index([organizationId])
 }
@@ -1227,16 +1226,16 @@ enum DistributionStrategy {
 model LeadDistributionRule {
   id             String               @id @default(uuid())
   organizationId String
-  name           String               // "Distribuir leads Google Ads"
+  name           String // "Distribuir leads Google Ads"
   enabled        Boolean              @default(true)
   strategy       DistributionStrategy @default(ROUND_ROBIN)
-  filters        Json                 // { source: "GOOGLE_ADS", tags: ["hot"] }
-  assignees      String[]             // Array de userIds
+  filters        Json // { source: "GOOGLE_ADS", tags: ["hot"] }
+  assignees      String[] // Array de userIds
   currentIndex   Int                  @default(0) // Para round-robin
   createdAt      DateTime             @default(now())
   updatedAt      DateTime             @updatedAt
 
-  organization   Organization         @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
 
   @@index([organizationId])
   @@index([enabled])
@@ -1249,10 +1248,10 @@ model LeadDistributionRule {
 // Entity: Represents a node in the knowledge graph
 model Entity {
   id          String   @id @default(uuid())
-  name        String   // Entity name (ex: "CRM", "SPIN Selling")
+  name        String // Entity name (ex: "CRM", "SPIN Selling")
   wikidataId  String?  @unique // Wikidata Q-code (ex: "Q16635046")
-  type        String   // Category: methodology, technology, industry, persona, etc.
-  description String?  // Entity description
+  type        String // Category: methodology, technology, industry, persona, etc.
+  description String? // Entity description
   aliases     String[] @default([]) // Alternative names/synonyms
   metadata    Json     @default("{}") // Flexible metadata storage
 
@@ -1260,8 +1259,8 @@ model Entity {
   updatedAt DateTime @updatedAt
 
   // Relations
-  subjectRelationships Relationship[] @relation("SubjectEntity")
-  objectRelationships  Relationship[] @relation("ObjectEntity")
+  subjectRelationships Relationship[]  @relation("SubjectEntity")
+  objectRelationships  Relationship[]  @relation("ObjectEntity")
   contentLinks         ContentEntity[]
 
   @@index([type])
@@ -1272,10 +1271,10 @@ model Entity {
 model Relationship {
   id         String   @id @default(uuid())
   subjectId  String
-  predicate  String   // uses, usedBy, subclassOf, instanceOf, etc.
+  predicate  String // uses, usedBy, subclassOf, instanceOf, etc.
   objectId   String
   confidence Float    @default(1.0) // 0-1, for AI-extracted relationships
-  source     String?  // URL or reference of content that originated this
+  source     String? // URL or reference of content that originated this
   lastSeen   DateTime @default(now()) // Freshness tracking
 
   createdAt DateTime @default(now())
@@ -1294,19 +1293,19 @@ model Relationship {
 
 // EntityExtraction: Tracks NLP pipeline executions
 model EntityExtraction {
-  id                      String    @id @default(uuid())
-  contentType             String    // blog_post, documentation, help_article, etc.
-  contentId               String?   // ID of the content (if applicable)
-  contentUrl              String?   // URL or path to content
-  textSample              String?   // First 500 chars of processed text
-  contentHash             String?   // SHA-256 hash of content for change detection
-  extractedEntities       Json      @default("[]") // Array of extracted entity data
-  extractedRelationships  Json      @default("[]") // Array of extracted relationships
-  modelUsed               String?   // LLM model identifier
-  tokensUsed              Int?
-  processingTimeMs        Int?
-  status                  String    @default("pending") // pending, processing, completed, failed
-  error                   String?
+  id                     String  @id @default(uuid())
+  contentType            String // blog_post, documentation, help_article, etc.
+  contentId              String? // ID of the content (if applicable)
+  contentUrl             String? // URL or path to content
+  textSample             String? // First 500 chars of processed text
+  contentHash            String? // SHA-256 hash of content for change detection
+  extractedEntities      Json    @default("[]") // Array of extracted entity data
+  extractedRelationships Json    @default("[]") // Array of extracted relationships
+  modelUsed              String? // LLM model identifier
+  tokensUsed             Int?
+  processingTimeMs       Int?
+  status                 String  @default("pending") // pending, processing, completed, failed
+  error                  String?
 
   createdAt   DateTime  @default(now())
   completedAt DateTime?
@@ -1319,8 +1318,8 @@ model EntityExtraction {
 // ContentEntity: Many-to-many relationship between content and entities
 model ContentEntity {
   id          String  @id @default(uuid())
-  contentType String  // blog_post, help_article, etc.
-  contentId   String  // Slug or ID of the content
+  contentType String // blog_post, help_article, etc.
+  contentId   String // Slug or ID of the content
   entityId    String
   relevance   Float   @default(1.0) // How relevant this entity is to the content
   context     String? // Sentence/paragraph where entity was found
@@ -1340,12 +1339,12 @@ model ContentEntity {
 
 // ConversationSession: Tracks long-term user conversations with SPIN state
 model ConversationSession {
-  id        String   @id @default(uuid())
-  userId    String?  // Optional: link to authenticated user
-  sessionId String   @unique // Client-provided session ID (e.g., from cookies)
+  id        String  @id @default(uuid())
+  userId    String? // Optional: link to authenticated user
+  sessionId String  @unique // Client-provided session ID (e.g., from cookies)
 
   // SPIN Selling State
-  spinState String   @default("Situation") // Situation, Problem, Implication, NeedPayoff
+  spinState String @default("Situation") // Situation, Problem, Implication, NeedPayoff
 
   // Sandler Selling State
   sandlerStage String @default("Bonding") // Bonding, UpfrontContract, PainDiscovery, Budget, Decision, Fulfillment
@@ -1354,14 +1353,14 @@ model ConversationSession {
   diagnosticMode String @default("complete") // express, complete, deep
 
   // Context tracking
-  identifiedProblems Json?    // Array of problems user mentioned
-  identifiedGoals    Json?    // Array of goals/needs user expressed
-  entityContext      Json?    // Entities extracted from conversation
-  qualificationScore Float    @default(0.0) // Lead qualification score (0-100)
+  identifiedProblems Json? // Array of problems user mentioned
+  identifiedGoals    Json? // Array of goals/needs user expressed
+  entityContext      Json? // Entities extracted from conversation
+  qualificationScore Float @default(0.0) // Lead qualification score (0-100)
 
   // Metadata
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
   lastMessageAt DateTime @default(now())
 
   // Relations
@@ -1374,15 +1373,15 @@ model ConversationSession {
 
 // ConversationMessage: Individual messages in a conversation
 model ConversationMessage {
-  id          String   @id @default(uuid())
-  sessionId   String
-  role        String   // user, assistant, system
-  content     String   @db.Text
+  id        String @id @default(uuid())
+  sessionId String
+  role      String // user, assistant, system
+  content   String @db.Text
 
   // Metadata for analysis
-  spinIntent  String?  // Which SPIN question type this was
+  spinIntent        String? // Which SPIN question type this was
   extractedEntities Json? // Entities detected in this message
-  sentiment   String?  // positive, neutral, negative
+  sentiment         String? // positive, neutral, negative
 
   createdAt DateTime @default(now())
 
@@ -1412,21 +1411,21 @@ enum ConversationPriority {
 }
 
 model ChatConversation {
-  id              String   @id @default(uuid())
-  contactId       String   @unique
-  contact         Contact  @relation(fields: [contactId], references: [id], onDelete: Cascade)
-  organizationId  String
-  organization    Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
-  assignedUserId  String?
-  assignedUser    User?    @relation(fields: [assignedUserId], references: [id], onDelete: SetNull)
-  status          ConversationStatus @default(OPEN)
-  priority        ConversationPriority @default(NORMAL)
-  isPinned        Boolean  @default(false)
-  isArchived      Boolean  @default(false)
-  lastMessageAt   DateTime?
-  resolvedAt      DateTime?
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
+  id             String               @id @default(uuid())
+  contactId      String               @unique
+  contact        Contact              @relation(fields: [contactId], references: [id], onDelete: Cascade)
+  organizationId String
+  organization   Organization         @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  assignedUserId String?
+  assignedUser   User?                @relation(fields: [assignedUserId], references: [id], onDelete: SetNull)
+  status         ConversationStatus   @default(OPEN)
+  priority       ConversationPriority @default(NORMAL)
+  isPinned       Boolean              @default(false)
+  isArchived     Boolean              @default(false)
+  lastMessageAt  DateTime?
+  resolvedAt     DateTime?
+  createdAt      DateTime             @default(now())
+  updatedAt      DateTime             @updatedAt
 
   @@index([organizationId, status])
   @@index([assignedUserId])
@@ -1440,67 +1439,67 @@ model ChatConversation {
 
 // Experiment: A/B test configuration
 model Experiment {
-  id          String   @id @default(uuid())
-  name        String   @unique
+  id          String    @id @default(uuid())
+  name        String    @unique
   description String?
-  status      String   @default("DRAFT") // DRAFT, RUNNING, PAUSED, COMPLETED
+  status      String    @default("DRAFT") // DRAFT, RUNNING, PAUSED, COMPLETED
   startDate   DateTime?
   endDate     DateTime?
-  
+
   // Relations
-  variants    ExperimentVariant[]
-  events      ExperimentEvent[]
-  
+  variants ExperimentVariant[]
+  events   ExperimentEvent[]
+
   // Ownership
   organizationId String
   organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
-  
+
   // Audit
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
   @@index([organizationId, status])
   @@index([status])
 }
 
 // ExperimentVariant: Different versions to test
 model ExperimentVariant {
-  id             String @id @default(uuid())
-  experimentId   String
-  experiment     Experiment @relation(fields: [experimentId], references: [id], onDelete: Cascade)
-  
-  name           String  // "control", "variant_a", "variant_b"
-  componentName  String  // Component from registry (e.g., "ROICalculator")
-  props          Json    // Component props configuration
-  trafficWeight  Int     @default(50) // 0-100 (percentage of traffic)
-  
+  id           String     @id @default(uuid())
+  experimentId String
+  experiment   Experiment @relation(fields: [experimentId], references: [id], onDelete: Cascade)
+
+  name          String // "control", "variant_a", "variant_b"
+  componentName String // Component from registry (e.g., "ROICalculator")
+  props         Json // Component props configuration
+  trafficWeight Int    @default(50) // 0-100 (percentage of traffic)
+
   // Relations
-  events         ExperimentEvent[]
-  
+  events ExperimentEvent[]
+
   @@unique([experimentId, name])
   @@index([experimentId])
 }
 
 // ExperimentEvent: Tracked user interactions
 model ExperimentEvent {
-  id           String   @id @default(uuid())
+  id           String     @id @default(uuid())
   experimentId String
   experiment   Experiment @relation(fields: [experimentId], references: [id], onDelete: Cascade)
-  
-  variantId    String
-  variant      ExperimentVariant @relation(fields: [variantId], references: [id], onDelete: Cascade)
-  
+
+  variantId String
+  variant   ExperimentVariant @relation(fields: [variantId], references: [id], onDelete: Cascade)
+
   // User tracking
-  userId       String?  // Optional: logged-in user
-  sessionId    String   // Consistent identifier (cookie/fingerprint)
-  
+  userId    String? // Optional: logged-in user
+  sessionId String // Consistent identifier (cookie/fingerprint)
+
   // Event data
-  eventType    String   // "impression", "interaction", "conversion"
-  metadata     Json?    // Additional event data
-  
+  eventType String // "impression", "interaction", "conversion"
+  metadata  Json? // Additional event data
+
   // Timestamp
-  timestamp    DateTime @default(now())
-  
+  timestamp DateTime @default(now())
+
   @@index([experimentId, variantId, eventType])
   @@index([sessionId])
   @@index([timestamp])
@@ -1508,44 +1507,44 @@ model ExperimentEvent {
 
 // Round-Robin Lead Distribution (Business Feature)
 model RoundRobinConfig {
-  id             String   @id @default(uuid())
-  organizationId String   @unique
+  id             String       @id @default(uuid())
+  organizationId String       @unique
   organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
-  
-  enabled        Boolean  @default(false)
-  userIds        String[]
-  currentIndex   Int      @default(0)
-  
-  assignToOwner  Boolean  @default(false)
-  skipIfOffline  Boolean  @default(true)
-  notifyUsers    Boolean  @default(true)
-  
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
-  
+
+  enabled      Boolean  @default(false)
+  userIds      String[]
+  currentIndex Int      @default(0)
+
+  assignToOwner Boolean @default(false)
+  skipIfOffline Boolean @default(true)
+  notifyUsers   Boolean @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
   @@index([organizationId])
 }
 
 // Transaction log for payments
 model Transaction {
-  id              String   @id @default(uuid())
-  
-  organizationId  String
-  organization    Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
-  
-  type            TransactionType
-  amount          Decimal  @db.Decimal(10, 2)
-  currency        String   @default("BRL")
-  status          TransactionStatus @default(PENDING)
-  
-  provider        String
+  id String @id @default(uuid())
+
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  type     TransactionType
+  amount   Decimal           @db.Decimal(10, 2)
+  currency String            @default("BRL")
+  status   TransactionStatus @default(PENDING)
+
+  provider          String
   providerPaymentId String?
-  
-  metadata        Json?
-  
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
-  
+
+  metadata Json?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
   @@index([organizationId])
   @@index([type])
   @@index([status])

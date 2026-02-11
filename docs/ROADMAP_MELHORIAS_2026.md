@@ -10,7 +10,7 @@
 
 | Fase | Tema | Prazo | Esforço | Impacto |
 |------|------|-------|---------|---------|
-| 1 | Imagens de Blog (55MB) | HOJE | 30 min | LCP -5s, SEO +30% |
+| ~~1~~ | ~~Imagens de Blog (55MB)~~ | ~~HOJE~~ | ~~30 min~~ | DONE 11/02 (-96.5%) |
 | 2 | Rate Limiting nas APIs | HOJE | 2h | Segurança crítica |
 | 3 | Remover Console.logs Sensíveis | HOJE | 1h | GDPR + Segurança |
 | 4 | Health Check Endpoint | Semana 1 | 30 min | Monitoramento |
@@ -27,10 +27,11 @@
 
 ## Fase 1 — Comprimir Imagens de Blog
 
-**Status:** `[ ] Pendente`
+**Status:** `[x] CONCLUÍDO — 11/02/2026`
 **Prazo:** HOJE
 **Esforço:** 30 minutos
 **Impacto:** LCP -5 a 8 segundos em mobile 4G, Google Core Web Vitals verde
+**Resultado:** 55.5 MB → 1.9 MB (redução de 96.5%). Commit: `5dbab8f`
 
 ### Problema
 7 imagens em `public/images/blog/` com 7-8MB cada (total ~55MB). Servidas como PNG puro, sem compressão, sem otimização. O `next/image` não processa imagens em `public/` automaticamente — elas são servidas estáticas.
@@ -742,7 +743,7 @@ npm run test:e2e:ui
 ## Checklist de Progresso
 
 ```
-FASE 1  — Imagens de Blog             [ ] Comprimidas  [ ] Referências atualizadas
+FASE 1  — Imagens de Blog             [x] Comprimidas  [x] Referências atualizadas
 FASE 2  — Rate Limiting               [ ] lib/ratelimit.ts  [ ] Auth routes  [ ] AGI routes
 FASE 3  — Console.logs                [ ] Dashboard  [ ] API routes  [ ] Components
 FASE 4  — Health Check                [ ] /api/health  [ ] Configurado no Vercel
