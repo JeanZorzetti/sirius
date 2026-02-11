@@ -135,9 +135,10 @@ Features:
 
 ## Fase 14 — Email Marketing Production-Ready
 
-**Status:** `[ ] A INICIAR`
-**Prazo:** Semana 1 (12-13/02/2026)
-**Esforço:** 6-8 horas
+**Status:** `[x] CONCLUÍDO — 11/02/2026`
+**Prazo:** Semana 1 (12-13/02/2026) — concluído adiantado
+**Esforço:** 6-8 horas (realizado em ~2h)
+**Resultado:** Resend ativado, lazy init, email-automations singleton corrigido, template follow-up criado, cron job diário implementado (3/7/14 dias). Commit: `27038c5`
 **Impacto:** Automação de vendas real, redução de 50% em deals perdidos por falta de follow-up
 
 ### Problema
@@ -259,9 +260,10 @@ export default function FollowUp3Days({ contactName, dealTitle }: { contactName:
 
 ## Fase 15 — Onboarding Import Flow
 
-**Status:** `[ ] A INICIAR`
-**Prazo:** Semana 1 (13/02/2026)
-**Esforço:** 4 horas
+**Status:** `[x] CONCLUÍDO — 11/02/2026`
+**Prazo:** Semana 1 (13/02/2026) — concluído adiantado
+**Esforço:** 4 horas (realizado em ~1.5h)
+**Resultado:** Modal drag-drop com preview de contatos, mapeamento automático de colunas, download de template CSV, deduplicação por email. Commit: `27038c5`
 **Impacto:** Redução de 70% no tempo de onboarding para usuários enterprise
 
 ### Problema
@@ -354,9 +356,10 @@ export async function POST(req: Request) {
 
 ## Fase 16 — Mercado Pago Recorrência Completa
 
-**Status:** `[ ] A INICIAR`
-**Prazo:** Semana 1 (13/02/2026)
-**Esforço:** 3 horas
+**Status:** `[x] CONCLUÍDO — 11/02/2026`
+**Prazo:** Semana 1 (13/02/2026) — concluído adiantado
+**Esforço:** 3 horas (realizado em ~1h)
+**Resultado:** processSubscriptionEvent() (cancelamento → FREE + Transaction churn), processRecurringPayment() (renovação → manter tier + resetar créditos). Commit: `27038c5`
 **Impacto:** 0 churn por falha de renovação, receita recorrente previsível
 
 ### Problema
