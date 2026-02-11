@@ -8,6 +8,7 @@ import { LoginTracker } from '@/components/analytics/login-tracker'
 import { PostHogUserIdentifier } from '@/components/analytics/posthog-user-identifier'
 import { AgiChatSidebar } from '@/components/agi'
 import { ResizableDrawer } from '@/components/chat/resizable-drawer'
+import { NativeInitializer } from '@/components/mobile/native-initializer'
 import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 
@@ -70,11 +71,14 @@ export default async function DashboardLayout({
       <AgiChatSidebar />
 
       {/* WhatsApp Chat Drawer - Floating Button with Resize */}
-      <ResizableDrawer 
+      <ResizableDrawer
         userId={user.id || ''}
         userName={user.name || ''}
         organizationId={(user as any).organizationId || ''}
       />
+
+      {/* Mobile/Native App Initializer - registers push notifications & offline sync */}
+      <NativeInitializer />
     </div>
   )
 }

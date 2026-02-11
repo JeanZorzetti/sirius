@@ -741,10 +741,11 @@ export async function executeDealAutomations(
 
 ## NOVA FEATURE — Mobile App (Capacitor)
 
-**Status:** `[ ] A INICIAR`
-**Prazo:** Mês 2 (Fevereiro-Março 2026)
-**Esforço:** 20-25 horas
+**Status:** `[x] CONCLUIDO (codigo) — 11/02/2026 | Publicacao nas stores: manual`
+**Prazo:** Mes 2 (Fevereiro-Marco 2026)
+**Esforco:** 20-25 horas (realizado em ~6h)
 **Impacto:** Sticky product — representantes comerciais ADORAM app nativo
+**Resultado:** Capacitor config, Push Notifications, OCR Cartoes, Check-ins GPS, Offline Mode, Dashboard /dashboard/visits. Publicacao iOS/Android: ver docs/MOBILE_APP_SETUP.md
 
 ### O que é
 
@@ -917,7 +918,7 @@ FASE 15 — Onboarding Import       [x] Upload CSV/XLSX  [x] Auto-detect colunas
 FASE 16 — Mercado Pago            [x] payment.recurring  [x] Retry logic (3x → FREE)  [x] Email confirmação  [x] Email falha  [x] failedPaymentAttempts
 FASE 17 — Ads Integration         [x] Google Ads API  [x] Facebook Ads API  [x] CAC real  [x] Dashboard /dashboard/marketing/campaigns  [x] Entrada manual
 NEW     — Deal Automations        [x] UI builder 3 passos  [x] Engine de execução  [x] Triggers CREATED/MOVED/WON/LOST  [x] Ações EMAIL/TASK/NOTIFY/TAG/WEBHOOK  [x] /dashboard/automations
-NEW     — Mobile App              [ ] Capacitor setup  [ ] Push notifications  [ ] OCR cartões  [ ] Check-ins  [ ] Offline mode
+NEW     — Mobile App              [x] Capacitor config  [x] Push notifications  [x] OCR cartões  [x] Check-ins GPS  [x] Offline Mode  [x] /dashboard/visits  [ ] App Store/Play (manual)
 ```
 
 ---
