@@ -14,6 +14,7 @@ import {
 import { getArticle, helpArticles } from "@/lib/help-articles";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { JsonLd } from "@/components/seo/json-ld";
 
 // Gera páginas estáticas para todos os artigos no build
 export async function generateStaticParams() {
@@ -43,6 +44,9 @@ export async function generateMetadata({
   return {
     title: `${article.title} - Central de Ajuda | Sirius CRM`,
     description: article.description,
+    alternates: {
+      canonical: `https://sirius.roilabs.com.br/help/${categoria}/${slug}`,
+    },
     openGraph: {
       title: `${article.title} - Central de Ajuda | Sirius CRM`,
       description: article.description,
@@ -63,8 +67,22 @@ export default async function ArticlePage({
     notFound();
   }
 
+  // BreadcrumbList JSON-LD for Google Rich Results
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://sirius.roilabs.com.br" },
+      { "@type": "ListItem", "position": 2, "name": "Ajuda", "item": "https://sirius.roilabs.com.br/help" },
+      { "@type": "ListItem", "position": 3, "name": article.category, "item": `https://sirius.roilabs.com.br/help#${article.categorySlug}` },
+      { "@type": "ListItem", "position": 4, "name": article.title, "item": `https://sirius.roilabs.com.br/help/${categoria}/${slug}` }
+    ]
+  }
+
   return (
-    <div className="min-h-screen bg-background">
+    <>
+      <JsonLd data={breadcrumbSchema} />
+      <div className="min-h-screen bg-background">
       <main className="pt-24 pb-16 px-4">
         <div className="container mx-auto max-w-4xl">
           {/* Breadcrumb */}
@@ -227,5 +245,6 @@ export default async function ArticlePage({
         </div>
       </main>
     </div>
+    </>
   );
 }

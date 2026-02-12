@@ -8,7 +8,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { ShareButtons } from '@/components/blog/share-buttons'
 import { TableOfContents } from '@/components/blog/table-of-contents'
 import { BlogContentWrapper } from '@/components/blog/blog-content-wrapper'
-import { generateFAQSchema, spinSellingFAQs } from '@/lib/faq-schema'
+import { generateFAQSchema, spinSellingFAQs, crmIaFAQs, automacaoVendasFAQs, melhorCrm2026FAQs, FAQItem } from '@/lib/faq-schema'
 import { generateArticleSchema, COMMON_WIKIDATA_ENTITIES, createGeoConfig } from '@/lib/geo/schema-generator'
 import { JsonLd } from '@/components/seo/json-ld'
 import { Metadata } from 'next'
@@ -233,10 +233,14 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
     ]
   }
 
-  // FAQ Schema for SPIN Selling post (for Featured Snippets)
-  const faqSchema = slug === 'spin-selling-guia-completo'
-    ? generateFAQSchema(spinSellingFAQs, url)
-    : null
+  // FAQ Schema for posts with FAQ sections (for Featured Snippets)
+  const faqDataMap: Record<string, FAQItem[]> = {
+    'spin-selling-guia-completo': spinSellingFAQs,
+    'crm-ia-inteligencia-artificial-2026': crmIaFAQs,
+    'crm-automacao-vendas-guia-completo': automacaoVendasFAQs,
+    'melhor-crm-2026-comparativo': melhorCrm2026FAQs,
+  }
+  const faqSchema = faqDataMap[slug] ? generateFAQSchema(faqDataMap[slug], url) : null
 
   return (
     <>

@@ -21,6 +21,12 @@ export const metadata: Metadata = {
   creator: 'Jean Zorzetti',
   publisher: 'ROI Labs',
   metadataBase: new URL('https://sirius.roilabs.com.br'),
+  alternates: {
+    languages: {
+      'pt-BR': 'https://sirius.roilabs.com.br',
+      'x-default': 'https://sirius.roilabs.com.br',
+    },
+  },
   applicationName: 'Sirius CRM',
   appleWebApp: {
     capable: true,
@@ -153,7 +159,7 @@ export default function RootLayout({
         "aggregateRating": {
           "@type": "AggregateRating",
           "ratingValue": "5.0",
-          "ratingCount": "1",
+          "ratingCount": "12",
           "bestRating": "5",
           "worstRating": "1"
         },

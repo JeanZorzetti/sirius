@@ -1,6 +1,18 @@
+import { Metadata } from 'next'
 import Link from 'next/link'
 import Script from 'next/script'
 import { Check } from 'lucide-react'
+
+export const metadata: Metadata = {
+  title: 'Preços e Planos | Sirius CRM — Plano Gratuito Disponível',
+  description: 'Sirius CRM Solopreneur grátis para sempre. Growth por R$49/mês com 5 usuários, automações e suporte prioritário. Sem cartão para começar.',
+  alternates: { canonical: 'https://sirius.roilabs.com.br/pricing' },
+  openGraph: {
+    title: 'Preços e Planos | Sirius CRM',
+    description: 'Plano gratuito + Growth R$49/mês. Pipeline visual, automações, WhatsApp integrado.',
+    url: 'https://sirius.roilabs.com.br/pricing',
+  },
+}
 import { Button } from '@/components/ui/button'
 import {
     Card,
@@ -83,6 +95,48 @@ export default function PricingPage() {
         ]
     };
 
+    const faqSchema = {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+            {
+                "@type": "Question",
+                "name": "Posso trocar de plano depois?",
+                "acceptedAnswer": { "@type": "Answer", "text": "Sim! Você pode fazer upgrade ou downgrade a qualquer momento. Ajustamos o valor proporcionalmente." }
+            },
+            {
+                "@type": "Question",
+                "name": "Como funciona o plano gratuito?",
+                "acceptedAnswer": { "@type": "Answer", "text": "100% funcional, sem prazo de expiração. Perfeito para validar o CRM antes de escalar seu time." }
+            },
+            {
+                "@type": "Question",
+                "name": "Preciso de cartão para começar?",
+                "acceptedAnswer": { "@type": "Answer", "text": "Não! O plano Solopreneur é gratuito para sempre. Só pedimos cartão quando você quiser fazer upgrade." }
+            },
+            {
+                "@type": "Question",
+                "name": "Posso cancelar quando quiser?",
+                "acceptedAnswer": { "@type": "Answer", "text": "Sim, sem multas ou taxas. Cancele a qualquer momento e mantenha acesso até o fim do período pago." }
+            },
+            {
+                "@type": "Question",
+                "name": "Como funciona a garantia de 7 dias?",
+                "acceptedAnswer": { "@type": "Answer", "text": "Teste o plano Growth sem risco! Se não gostar nos primeiros 7 dias, devolvemos 100% do seu dinheiro, sem perguntas." }
+            },
+            {
+                "@type": "Question",
+                "name": "Meus dados ficam seguros?",
+                "acceptedAnswer": { "@type": "Answer", "text": "Totalmente. Usamos criptografia de ponta a ponta e hospedamos em servidores certificados no Brasil." }
+            },
+            {
+                "@type": "Question",
+                "name": "Tem suporte em português?",
+                "acceptedAnswer": { "@type": "Answer", "text": "Sim! Todo o suporte é em português, com times brasileiros. Plano Growth tem prioridade." }
+            }
+        ]
+    };
+
     const offersSchema = {
         "@context": "https://schema.org",
         "@type": "ItemList",
@@ -122,6 +176,11 @@ export default function PricingPage() {
                 id="breadcrumb-schema"
                 type="application/ld+json"
                 dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+            />
+            <Script
+                id="faq-schema"
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
             />
             <Script
                 id="offers-schema"

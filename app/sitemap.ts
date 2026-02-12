@@ -25,6 +25,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
         '/terms',
         '/changelog',
         '/community',
+        '/contact',
+        '/download',
+        '/followup',
+        '/proposta',
         '/vendas-automaticas',
     ].map((route) => ({
         url: `${baseUrl}${route}`,

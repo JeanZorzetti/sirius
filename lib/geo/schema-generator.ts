@@ -111,7 +111,7 @@ export function generateArticleSchema(
     description: post.excerpt,
     image: imageUrl || post.image,
     datePublished: post.date,
-    dateModified: post.date,
+    dateModified: (post as any).lastModified || post.date,
     author: authorSchema,
     publisher: {
       '@type': 'Organization',
