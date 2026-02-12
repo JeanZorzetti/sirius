@@ -16,6 +16,11 @@ export const metadata: Metadata = {
     url: 'https://sirius.roilabs.com.br',
     images: [{ url: '/api/og/blog?title=Sirius%20CRM%20%E2%80%94%20O%20CRM%20Inteligente&category=CRM', width: 1200, height: 630 }],
   },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Sirius CRM | O CRM Inteligente para Vendedores Brasileiros',
+    description: 'Pipeline visual, automações e IA para fechar mais vendas. Grátis para começar.',
+  },
 }
 
 export default function LandingPage() {

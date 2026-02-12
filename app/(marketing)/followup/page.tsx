@@ -7,8 +7,9 @@ import { CheckCircle2, Clock, Bell, Target, TrendingUp, ArrowLeft, ArrowRight } 
 
 export const metadata: Metadata = {
   title: 'Sistema de Follow-up Inteligente | Sirius CRM',
-  description: 'Nunca mais perca um follow-up. Sistema automático de lembretes e acompanhamento de leads com IA integrada.',
+  description: 'Nunca mais perca um follow-up. Sistema automático de lembretes e acompanhamento de leads com IA integrada. Alertas inteligentes no timing certo para maximizar conversão.',
   keywords: ['follow-up', 'lembretes', 'automação vendas', 'alertas', 'crm'],
+  alternates: { canonical: 'https://sirius.roilabs.com.br/followup' },
   openGraph: {
     title: 'Sistema de Follow-up Inteligente | Sirius CRM',
     description: 'Nunca mais perca um follow-up. Sistema automático de lembretes e acompanhamento de leads com IA.',
@@ -19,6 +20,11 @@ export const metadata: Metadata = {
       height: 630,
       alt: 'Sirius CRM - CRM Inteligente para Vendedores Brasileiros',
     }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Sistema de Follow-up Inteligente | Sirius CRM',
+    description: 'Sistema automático de lembretes com IA. Alertas no timing certo para maximizar conversão.',
   },
 }
 
@@ -42,12 +48,32 @@ export default function FollowupPage() {
     ]
   }
 
+  const serviceSchema = {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "serviceType": "Follow-up Automation",
+    "provider": {
+      "@type": "Organization",
+      "name": "Sirius CRM"
+    },
+    "description": "Sistema automático de lembretes e acompanhamento de leads com IA integrada. Alertas inteligentes no timing certo para maximizar conversão.",
+    "areaServed": {
+      "@type": "Country",
+      "name": "Brasil"
+    }
+  }
+
   return (
     <>
       <Script
         id="breadcrumb-schema"
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
+      <Script
+        id="service-schema"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }}
       />
     <div className="min-h-screen bg-gradient-to-b from-background to-muted/20">
       <div className="container mx-auto max-w-6xl py-12 px-6">

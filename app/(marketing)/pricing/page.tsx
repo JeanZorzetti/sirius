@@ -12,6 +12,11 @@ export const metadata: Metadata = {
     description: 'Plano gratuito + Growth R$49/mês. Pipeline visual, automações, WhatsApp integrado.',
     url: 'https://sirius.roilabs.com.br/pricing',
   },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Preços e Planos | Sirius CRM',
+    description: 'Plano gratuito + Growth R$49/mês. Pipeline visual, automações, WhatsApp integrado.',
+  },
 }
 import { Button } from '@/components/ui/button'
 import {

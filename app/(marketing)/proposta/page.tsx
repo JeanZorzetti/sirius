@@ -12,6 +12,7 @@ export const metadata: Metadata = {
   title: 'Solicitar Proposta Comercial | Sirius CRM',
   description: 'Solicite uma proposta comercial personalizada para sua empresa. Nossa equipe entrará em contato em até 24h para apresentar a melhor solução em CRM.',
   keywords: ['proposta comercial', 'plano customizado', 'enterprise', 'vendas', 'sirius crm'],
+  alternates: { canonical: 'https://sirius.roilabs.com.br/proposta' },
   openGraph: {
     title: 'Solicitar Proposta Comercial | Sirius CRM',
     description: 'Solicite uma proposta personalizada. Nossa equipe entrará em contato em até 24h.',
@@ -22,6 +23,11 @@ export const metadata: Metadata = {
       height: 630,
       alt: 'Sirius CRM - CRM Inteligente para Vendedores Brasileiros',
     }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Solicitar Proposta Comercial | Sirius CRM',
+    description: 'Proposta personalizada para sua empresa. Resposta em até 24h.',
   },
 }
 
@@ -45,12 +51,38 @@ export default function PropostaPage() {
     ]
   }
 
+  const serviceSchema = {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "serviceType": "Commercial Proposal",
+    "provider": {
+      "@type": "Organization",
+      "name": "Sirius CRM",
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "contactType": "Sales",
+        "email": "vendas@sirius.roilabs.com.br",
+        "availableLanguage": "Portuguese"
+      }
+    },
+    "description": "Proposta comercial personalizada para empresas. Resposta em até 24 horas.",
+    "areaServed": {
+      "@type": "Country",
+      "name": "Brasil"
+    }
+  }
+
   return (
     <>
       <Script
         id="breadcrumb-schema"
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
+      <Script
+        id="service-schema"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }}
       />
     <div className="min-h-screen bg-gradient-to-b from-background to-muted/20">
       <div className="container mx-auto max-w-5xl py-12 px-6">

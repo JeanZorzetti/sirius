@@ -8,6 +8,16 @@ export const metadata: Metadata = {
   title: 'Funcionalidades | Sirius CRM — Pipeline, Automações, IA, WhatsApp',
   description: 'Conheça todas as funcionalidades do Sirius CRM: pipeline Kanban, automações de email e deals, integração WhatsApp, OCR de cartões, analytics PRO e muito mais.',
   alternates: { canonical: 'https://sirius.roilabs.com.br/features' },
+  openGraph: {
+    title: 'Funcionalidades | Sirius CRM',
+    description: 'Pipeline Kanban, automações, IA, WhatsApp integrado e muito mais.',
+    url: 'https://sirius.roilabs.com.br/features',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Funcionalidades | Sirius CRM',
+    description: 'Pipeline Kanban, automações, IA, WhatsApp integrado e muito mais.',
+  },
 }
 
 const features = [

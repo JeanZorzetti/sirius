@@ -4,12 +4,24 @@ import { DownloadInstructions } from '@/components/marketing/download-instructio
 
 export const metadata: Metadata = {
   title: 'Baixar Sirius CRM | App Mobile',
-  description: 'Baixe o Sirius CRM no seu celular. Acesso rápido ao seu pipeline de vendas, contatos e métricas em tempo real.',
+  description: 'Baixe o Sirius CRM no seu celular. Progressive Web App com suporte offline, sincronização automática e notificações push. Disponível para iOS e Android.',
   keywords: ['baixar sirius crm', 'app mobile', 'pwa', 'download', 'aplicativo'],
+  alternates: { canonical: 'https://sirius.roilabs.com.br/download' },
   openGraph: {
     title: 'Baixar Sirius CRM - App Mobile',
     description: 'Instale o Sirius CRM no seu celular para acesso rápido e offline.',
-    images: ['/og-image.png'],
+    url: 'https://sirius.roilabs.com.br/download',
+    images: [{
+      url: 'https://sirius.roilabs.com.br/og-image.png',
+      width: 1200,
+      height: 630,
+      alt: 'Sirius CRM - App Mobile',
+    }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Baixar Sirius CRM - App Mobile',
+    description: 'PWA com suporte offline, sincronização automática e notificações push.',
   },
 }
 
@@ -33,12 +45,31 @@ export default function DownloadPage() {
     ]
   }
 
+  const softwareAppSchema = {
+    "@context": "https://schema.org",
+    "@type": "MobileApplication",
+    "name": "Sirius CRM",
+    "applicationCategory": "BusinessApplication",
+    "operatingSystem": "iOS, Android, Web",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "BRL"
+    },
+    "description": "Progressive Web App para gestão de vendas com pipeline Kanban, WhatsApp integrado e suporte offline."
+  }
+
   return (
     <>
       <Script
         id="breadcrumb-schema"
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
+      <Script
+        id="software-app-schema"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(softwareAppSchema) }}
       />
     <div className="min-h-screen bg-gradient-to-br from-zinc-950 via-indigo-950 to-zinc-950 text-white">
       {/* Background Effects */}
