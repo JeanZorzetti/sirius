@@ -13,7 +13,12 @@ export const metadata: Metadata = {
     siteName: 'Sirius CRM',
     locale: 'pt_BR',
     type: 'website',
-  }
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Calculadora de ROI para Agências | Sirius CRM',
+    description: 'Calcule o impacto real de propostas perdidas e follow-ups esquecidos no faturamento da sua agência.',
+  },
 }
 
 export default function CalculadoraAgenciasPage() {

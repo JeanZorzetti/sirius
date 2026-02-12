@@ -44,6 +44,7 @@ export async function generateMetadata({
   return {
     title: `${article.title} - Central de Ajuda | Sirius CRM`,
     description: article.description,
+    keywords: [article.category, 'ajuda', 'tutorial', 'CRM', 'Sirius'],
     alternates: {
       canonical: `https://sirius.roilabs.com.br/help/${categoria}/${slug}`,
     },
@@ -51,6 +52,11 @@ export async function generateMetadata({
       title: `${article.title} - Central de Ajuda | Sirius CRM`,
       description: article.description,
       url: `https://sirius.roilabs.com.br/help/${categoria}/${slug}`,
+    },
+    twitter: {
+      card: 'summary',
+      title: `${article.title} - Central de Ajuda`,
+      description: article.description,
     },
   };
 }

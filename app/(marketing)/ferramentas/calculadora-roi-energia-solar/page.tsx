@@ -13,7 +13,12 @@ export const metadata: Metadata = {
     siteName: 'Sirius CRM',
     locale: 'pt_BR',
     type: 'website',
-  }
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Calculadora de ROI para Energia Solar | Sirius CRM',
+    description: 'Calcule quanto sua empresa de energia solar perde por desorganização em vendas.',
+  },
 }
 
 export default function CalculadoraEnergiaSolarPage() {

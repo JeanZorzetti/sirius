@@ -60,7 +60,7 @@ const tiers = [
     {
         name: 'Enterprise',
         id: 'tier-enterprise',
-        href: 'https://wa.me/5511999999999', // Link to WhatsApp for sales
+        href: '/contact', // Contact page for custom sales inquiries
         priceMonthly: 'Sob Consulta',
         description: 'Solução personalizada para grandes operações.',
         features: [
@@ -169,6 +169,35 @@ export default function PricingPage() {
         ]
     };
 
+    const softwareAppSchema = {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "Sirius CRM",
+        "applicationCategory": "BusinessApplication",
+        "operatingSystem": "Web, iOS, Android",
+        "offers": {
+            "@type": "AggregateOffer",
+            "priceCurrency": "BRL",
+            "lowPrice": "0",
+            "highPrice": "49",
+            "offerCount": "3"
+        },
+        "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "4.8",
+            "ratingCount": "12"
+        },
+        "description": "CRM visual com pipeline Kanban, automações de IA e integração WhatsApp nativa para vendedores brasileiros.",
+        "featureList": [
+            "Pipeline Kanban Visual",
+            "WhatsApp Integrado",
+            "Automações de IA",
+            "Analytics em Tempo Real",
+            "Mobile App (iOS/Android)"
+        ],
+        "screenshot": "https://sirius.roilabs.com.br/og-image.png"
+    };
+
     return (
         <>
             <PricingPageTracker />
@@ -186,6 +215,11 @@ export default function PricingPage() {
                 id="offers-schema"
                 type="application/ld+json"
                 dangerouslySetInnerHTML={{ __html: JSON.stringify(offersSchema) }}
+            />
+            <Script
+                id="software-app-schema"
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(softwareAppSchema) }}
             />
             <div className="relative isolate bg-background px-6 py-24 sm:py-32 lg:px-8">
             <div className="mx-auto max-w-4xl text-center">

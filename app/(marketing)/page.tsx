@@ -157,6 +157,28 @@ export default function LandingPage() {
     ]
   };
 
+  const localBusinessSchema = {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    "name": "ROI Labs - Sirius CRM",
+    "url": "https://sirius.roilabs.com.br",
+    "logo": "https://sirius.roilabs.com.br/logo.png",
+    "description": "CRM visual com pipeline Kanban e IA para vendedores brasileiros",
+    "areaServed": {
+      "@type": "Country",
+      "name": "Brasil"
+    },
+    "address": {
+      "@type": "PostalAddress",
+      "addressCountry": "BR"
+    },
+    "sameAs": [
+      "https://www.linkedin.com/company/roilabs",
+      "https://twitter.com/roilabs"
+    ],
+    "priceRange": "R$ 0 - R$ 49/mês"
+  };
+
   return (
     <>
       {/* Product Schema with Reviews */}
@@ -171,6 +193,13 @@ export default function LandingPage() {
         id="faq-schema"
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+      />
+
+      {/* LocalBusiness Schema for Local SEO */}
+      <Script
+        id="local-business-schema"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessSchema) }}
       />
 
       {/* Force dark mode aesthetic for the landing page */}

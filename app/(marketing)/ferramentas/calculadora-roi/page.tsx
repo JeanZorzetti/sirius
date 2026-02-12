@@ -10,6 +10,11 @@ export const metadata: Metadata = {
     description: 'Descubra quanto dinheiro você está perdendo por não ter um sistema organizado de vendas.',
     type: 'website',
   },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Calculadora de Vazamento de Vendas | Sirius CRM',
+    description: 'Descubra quanto dinheiro você está perdendo por não ter um sistema organizado de vendas.',
+  },
 }
 
 export default function CalculadoraROIPage() {

@@ -97,6 +97,35 @@ export default function FeaturesPage() {
         ]
     };
 
+    const softwareAppSchema = {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "Sirius CRM",
+        "applicationCategory": "BusinessApplication",
+        "operatingSystem": "Web, iOS, Android",
+        "offers": {
+            "@type": "AggregateOffer",
+            "priceCurrency": "BRL",
+            "lowPrice": "0",
+            "highPrice": "49",
+            "offerCount": "3"
+        },
+        "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "4.8",
+            "ratingCount": "12"
+        },
+        "description": "CRM visual com pipeline Kanban, automações de IA e integração WhatsApp nativa para vendedores brasileiros.",
+        "featureList": [
+            "Pipeline Kanban Visual",
+            "WhatsApp Integrado",
+            "Automações de IA",
+            "Analytics em Tempo Real",
+            "Mobile App (iOS/Android)"
+        ],
+        "screenshot": "https://sirius.roilabs.com.br/og-image.png"
+    };
+
     return (
         <>
             <Script
@@ -108,6 +137,11 @@ export default function FeaturesPage() {
                 id="breadcrumb-schema"
                 type="application/ld+json"
                 dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+            />
+            <Script
+                id="software-app-schema"
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(softwareAppSchema) }}
             />
             <div className="bg-background py-24 sm:py-32">
             <div className="mx-auto max-w-7xl px-6 lg:px-8">

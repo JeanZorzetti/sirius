@@ -13,7 +13,12 @@ export const metadata: Metadata = {
     siteName: 'Sirius CRM',
     locale: 'pt_BR',
     type: 'website',
-  }
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Calculadora de ROI para Corretores de Imóveis | Sirius CRM',
+    description: 'Descubra quanto você perde em vendas sem um CRM. Cálculo baseado em dados reais do mercado imobiliário.',
+  },
 }
 
 export default function CalculadoraCorretoresPage() {

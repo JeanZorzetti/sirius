@@ -13,7 +13,12 @@ export const metadata: Metadata = {
     siteName: 'Sirius CRM',
     locale: 'pt_BR',
     type: 'website',
-  }
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Calculadora de ROI para Representantes Comerciais | Sirius CRM',
+    description: 'Descubra quanto em comissões você está perdendo por desorganização nas suas vendas.',
+  },
 }
 
 export default function CalculadoraRepresentantesPage() {

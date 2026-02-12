@@ -13,7 +13,12 @@ export const metadata: Metadata = {
     siteName: 'Sirius CRM',
     locale: 'pt_BR',
     type: 'website',
-  }
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Calculadora de ROI para Consultores Empresariais | Sirius CRM',
+    description: 'Calcule o impacto real de projetos não acompanhados. Veja quanto um CRM pode aumentar seus honorários.',
+  },
 }
 
 export default function CalculadoraConsultoresPage() {
