@@ -8,4 +8,5 @@ export interface BlogPost {
   category: string
   image: string
   author: string
+  relatedSlugs?: string[] // Slugs de posts relacionados para internal linking (max 3)
 }

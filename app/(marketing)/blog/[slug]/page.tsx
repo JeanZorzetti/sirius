@@ -14,6 +14,7 @@ import { JsonLd } from '@/components/seo/json-ld'
 import { Metadata } from 'next'
 import { ChevronLeft, ChevronRight, Calendar, Clock, User } from 'lucide-react'
 import { getRelatedPostsByEntities, processBlogPost } from '@/lib/nlp/blog-processor'
+import { RelatedLinksBar } from '@/components/blog/related-links-bar'
 
 interface BlogPostPageProps {
   params: Promise<{
@@ -28,16 +29,18 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
 
   const url = `https://sirius.roilabs.com.br/blog/${slug}`
 
-  // Geração Dinâmica de OG Image para artigos com calculadora ROI
-  let imageUrl = `https://sirius.roilabs.com.br${post.image || '/logo.png'}`
+  // OG Image dinâmica para todos os posts (branded com título + categoria)
+  const ogParams = new URLSearchParams({ title: post.title, category: post.category })
+  let imageUrl = `https://sirius.roilabs.com.br/api/og/blog?${ogParams.toString()}`
+
+  // Override específico: post com calculadora ROI usa OG image customizada
   if (slug === 'custo-oculto-inacao-crm') {
-    // Usa Satori para gerar imagem personalizada com valores default
-    const ogParams = new URLSearchParams({
+    const roiParams = new URLSearchParams({
       roi: '94282',
       title: 'O Custo Oculto da Inação no CRM',
       scenario: 'realista',
     })
-    imageUrl = `https://sirius.roilabs.com.br/api/og?${ogParams.toString()}`
+    imageUrl = `https://sirius.roilabs.com.br/api/og?${roiParams.toString()}`
   }
 
   // AI-optimized description: Fatos diretos, dados concretos, sem clickbait
@@ -58,6 +61,9 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
     title: `${post.title} | Sirius Blog`,
     description: aiOptimizedDescription,
     keywords: post.category,
+    alternates: {
+      canonical: url,
+    },
     openGraph: {
       title: post.title,
       description: aiOptimizedDescription,
@@ -216,6 +222,17 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
     imageUrl,
   })
 
+  // BreadcrumbList JSON-LD for Google Rich Results
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://sirius.roilabs.com.br" },
+      { "@type": "ListItem", "position": 2, "name": "Blog", "item": "https://sirius.roilabs.com.br/blog" },
+      { "@type": "ListItem", "position": 3, "name": post.title, "item": url }
+    ]
+  }
+
   // FAQ Schema for SPIN Selling post (for Featured Snippets)
   const faqSchema = slug === 'spin-selling-guia-completo'
     ? generateFAQSchema(spinSellingFAQs, url)
@@ -225,6 +242,9 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
     <>
       {/* GEO-optimized JSON-LD Schema with Wikidata entity disambiguation */}
       <JsonLd data={articleSchema} />
+
+      {/* BreadcrumbList JSON-LD for Rich Results */}
+      <JsonLd data={breadcrumbSchema} />
 
       {/* FAQ Schema for Featured Snippets (if available) */}
       {faqSchema && <JsonLd data={faqSchema} />}
@@ -313,6 +333,9 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
             {/* Sidebar Column - Table of Contents */}
             <TableOfContents content={post.content} />
           </div>
+
+          {/* Internal Linking Bar */}
+          <RelatedLinksBar currentSlug={slug} relatedSlugs={post.relatedSlugs} />
 
           {/* Related Posts Section */}
           {relatedPosts.length > 0 && (

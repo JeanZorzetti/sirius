@@ -1,7 +1,14 @@
+import { Metadata } from 'next'
 import Link from 'next/link'
 import Script from 'next/script'
 import { Button } from '@/components/ui/button'
 import { Kanban, BarChart3, Users, Zap, Shield, Smartphone } from 'lucide-react'
+
+export const metadata: Metadata = {
+  title: 'Funcionalidades | Sirius CRM — Pipeline, Automações, IA, WhatsApp',
+  description: 'Conheça todas as funcionalidades do Sirius CRM: pipeline Kanban, automações de email e deals, integração WhatsApp, OCR de cartões, analytics PRO e muito mais.',
+  alternates: { canonical: 'https://sirius.roilabs.com.br/features' },
+}
 
 const features = [
     {

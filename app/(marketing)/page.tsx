@@ -1,9 +1,22 @@
+import { Metadata } from "next"
 import { Hero } from "@/components/marketing/hero"
 import { BentoGrid } from "@/components/marketing/bento-grid"
 import { Logos } from "@/components/marketing/logos"
 import { StickyCTA } from "@/components/marketing/sticky-cta"
 import { AgiPreview } from "@/components/agi/AgiPreview"
 import Script from "next/script"
+
+export const metadata: Metadata = {
+  title: 'Sirius CRM | O CRM Inteligente para Vendedores Brasileiros',
+  description: 'CRM gratuito com pipeline visual Kanban, automações de vendas, WhatsApp integrado e IA. Organize leads, acompanhe negócios e feche mais vendas.',
+  alternates: { canonical: 'https://sirius.roilabs.com.br' },
+  openGraph: {
+    title: 'Sirius CRM | O CRM Inteligente para Vendedores Brasileiros',
+    description: 'Pipeline visual, automações e IA para fechar mais vendas. Grátis para começar.',
+    url: 'https://sirius.roilabs.com.br',
+    images: [{ url: '/api/og/blog?title=Sirius%20CRM%20%E2%80%94%20O%20CRM%20Inteligente&category=CRM', width: 1200, height: 630 }],
+  },
+}
 
 export default function LandingPage() {
   const productSchema = {

@@ -523,7 +523,8 @@ export const blogPosts: BlogPost[] = [
     date: '2025-12-28',
     category: 'Vendas',
     image: '/images/blog/pipeline-vendas.webp',
-    author: 'Sirius Team'
+    author: 'Sirius Team',
+    relatedSlugs: ['funil-de-vendas-guia-completo', 'crm-automacao-vendas-guia-completo'],
   },
   {
     slug: 'crm-simples-vs-complexo',
@@ -937,7 +938,8 @@ export const blogPosts: BlogPost[] = [
     date: '2025-12-27',
     category: 'Gestão',
     image: '/images/blog/crm-simples-complexo.webp',
-    author: 'Sirius Team'
+    author: 'Sirius Team',
+    relatedSlugs: ['melhor-crm-2026-comparativo', 'crm-ia-inteligencia-artificial-2026'],
   },
   {
     slug: 'poder-do-follow-up',
@@ -1413,7 +1415,8 @@ export const blogPosts: BlogPost[] = [
     date: '2025-12-25',
     category: 'Dicas',
     image: '/images/blog/follow-up.webp',
-    author: 'Sirius Team'
+    author: 'Sirius Team',
+    relatedSlugs: ['crm-automacao-vendas-guia-completo', 'spin-selling-guia-completo'],
   },
   {
     slug: 'funil-de-vendas-guia-completo',
@@ -2122,7 +2125,8 @@ export const blogPosts: BlogPost[] = [
     date: '2026-01-09',
     category: 'Guias',
     image: '/images/blog/funil-vendas.webp',
-    author: 'Sirius Team'
+    author: 'Sirius Team',
+    relatedSlugs: ['como-organizar-pipeline-vendas', 'spin-selling-guia-completo'],
   },
   {
     slug: 'spin-selling-guia-completo',
@@ -4073,7 +4077,8 @@ Se este guia foi útil para você, compartilhe com sua rede e ajude outros profi
     date: '2026-01-10',
     category: 'Vendas',
     image: '/images/blog/spin-selling.webp',
-    author: 'Equipe Sirius CRM'
+    author: 'Equipe Sirius CRM',
+    relatedSlugs: ['poder-do-follow-up', 'funil-de-vendas-guia-completo'],
   },
   {
     slug: 'custo-oculto-inacao-crm',
@@ -4264,7 +4269,8 @@ Se este guia foi útil para você, compartilhe com sua rede e ajude outros profi
     date: '2026-01-30',
     category: 'ROI e Estratégia',
     image: '/images/blog/custo-oculto-inacao-crm.webp',
-    author: 'Equipe Sirius CRM'
+    author: 'Equipe Sirius CRM',
+    relatedSlugs: ['crm-simples-vs-complexo', 'melhor-crm-2026-comparativo'],
   },
   {
     slug: 'planilha-controle-comissao-corretor',
@@ -4274,7 +4280,8 @@ Se este guia foi útil para você, compartilhe com sua rede e ajude outros profi
     date: '2026-01-28',
     category: 'Ferramentas',
     image: '/images/blog/planilha-controle-comissao.webp',
-    author: 'Equipe Sirius CRM'
+    author: 'Equipe Sirius CRM',
+    relatedSlugs: ['custo-oculto-inacao-crm', 'como-organizar-pipeline-vendas'],
   },
   {
     slug: 'crm-ia-inteligencia-artificial-2026',
@@ -4285,6 +4292,7 @@ Se este guia foi útil para você, compartilhe com sua rede e ajude outros profi
     category: 'Tecnologia e IA',
     image: '/images/blog/crm-ia-inteligencia-artificial.webp',
     author: 'Equipe Sirius CRM',
+    relatedSlugs: ['crm-automacao-vendas-guia-completo', 'melhor-crm-2026-comparativo'],
     content: `
       <p>
         Em 2026, a Inteligência Artificial deixou de ser um diferencial para se tornar um requisito básico em qualquer CRM competitivo. Equipes de vendas que ainda usam CRMs tradicionais — sem IA — estão perdendo entre <strong>30% e 50% de oportunidades</strong> que poderiam ser capturadas automaticamente.
@@ -4457,6 +4465,7 @@ Se este guia foi útil para você, compartilhe com sua rede e ajude outros profi
     category: 'Automação',
     image: '/images/blog/crm-automacao-vendas.png',
     author: 'Equipe Sirius CRM',
+    relatedSlugs: ['poder-do-follow-up', 'crm-ia-inteligencia-artificial-2026'],
     content: `
       <p>
         Automação de vendas é o processo de usar tecnologia para executar tarefas repetitivas do ciclo comercial sem intervenção humana — desde o primeiro contato com o lead até o follow-up pós-venda. Quando integrada a um CRM, a automação se torna o motor que faz seu pipeline trabalhar por você, mesmo quando você está dormindo.
@@ -4604,6 +4613,7 @@ Se este guia foi útil para você, compartilhe com sua rede e ajude outros profi
     category: 'Comparativos',
     image: '/images/blog/melhor-crm-2026.png',
     author: 'Equipe Sirius CRM',
+    relatedSlugs: ['crm-simples-vs-complexo', 'crm-ia-inteligencia-artificial-2026'],
     content: `
       <p>
         Com dezenas de CRMs disponíveis no mercado, escolher o sistema certo para seu negócio em 2026 pode ser mais desafiador do que parece. Cada ferramenta tem seus pontos fortes — e as diferenças importam muito dependendo do seu segmento, tamanho de equipe e processo de vendas.
