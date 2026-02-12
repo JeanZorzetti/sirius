@@ -1,5 +1,6 @@
 import { Metadata } from 'next'
 import Link from 'next/link'
+import Script from 'next/script'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
@@ -10,15 +11,47 @@ import { FileText, Mail, Phone, Building2, Users, ArrowLeft } from 'lucide-react
 export const metadata: Metadata = {
   title: 'Solicitar Proposta Comercial | Sirius CRM',
   description: 'Solicite uma proposta comercial personalizada para sua empresa. Nossa equipe entrará em contato em até 24h para apresentar a melhor solução em CRM.',
+  keywords: ['proposta comercial', 'plano customizado', 'enterprise', 'vendas', 'sirius crm'],
   openGraph: {
     title: 'Solicitar Proposta Comercial | Sirius CRM',
     description: 'Solicite uma proposta personalizada. Nossa equipe entrará em contato em até 24h.',
     url: 'https://sirius.roilabs.com.br/proposta',
+    images: [{
+      url: 'https://sirius.roilabs.com.br/og-image.png',
+      width: 1200,
+      height: 630,
+      alt: 'Sirius CRM - CRM Inteligente para Vendedores Brasileiros',
+    }],
   },
 }
 
 export default function PropostaPage() {
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://sirius.roilabs.com.br"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Proposta",
+        "item": "https://sirius.roilabs.com.br/proposta"
+      }
+    ]
+  }
+
   return (
+    <>
+      <Script
+        id="breadcrumb-schema"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
     <div className="min-h-screen bg-gradient-to-b from-background to-muted/20">
       <div className="container mx-auto max-w-5xl py-12 px-6">
         {/* Back Button */}
@@ -180,5 +213,6 @@ export default function PropostaPage() {
         </div>
       </div>
     </div>
+    </>
   )
 }

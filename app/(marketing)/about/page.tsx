@@ -8,10 +8,17 @@ import type { Metadata } from 'next'
 export const metadata: Metadata = {
   title: 'Sobre Nós | Sirius CRM',
   description: 'Conheça a história do Sirius CRM, parte do Grupo ROI Labs. Nossa missão é simplificar vendas para empreendedores brasileiros com tecnologia acessível e eficiente.',
+  keywords: ['sirius crm', 'roi labs', 'crm brasil', 'sobre', 'empresa'],
   openGraph: {
     title: 'Sobre Nós | Sirius CRM',
     description: 'Conheça a história do Sirius CRM, parte do Grupo ROI Labs. Nossa missão é simplificar vendas para empreendedores brasileiros.',
     url: 'https://sirius.roilabs.com.br/about',
+    images: [{
+      url: 'https://sirius.roilabs.com.br/og-image.png',
+      width: 1200,
+      height: 630,
+      alt: 'Sirius CRM - CRM Inteligente para Vendedores Brasileiros',
+    }],
   },
 }
 
@@ -74,9 +81,9 @@ export default function AboutPage() {
           <div className="mx-auto max-w-7xl px-6 lg:px-8">
             <div className="mx-auto max-w-2xl lg:text-center">
               <h2 className="text-base font-semibold leading-7 text-primary">Sobre o Sirius CRM</h2>
-              <p className="mt-2 text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+              <h1 className="mt-2 text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
                 Brilhe nas vendas com a estrela do ROI Labs
-              </p>
+              </h1>
               <p className="mt-6 text-lg leading-8 text-muted-foreground">
                 Somos uma equipe apaixonada por simplificar a gestão de vendas para empreendedores brasileiros.
                 Acreditamos que tecnologia de qualidade deve ser acessível a todos.

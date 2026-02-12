@@ -230,9 +230,9 @@ export default function PricingPage() {
                     <span className="font-medium">Teste grátis por tempo ilimitado</span>
                 </div>
                 <h2 className="text-base font-semibold leading-7 text-primary">Preços Transparentes</h2>
-                <p className="mt-2 text-4xl font-bold tracking-tight sm:text-5xl">
+                <h1 className="mt-2 text-4xl font-bold tracking-tight sm:text-5xl">
                     Pague apenas quando escalar
-                </p>
+                </h1>
             </div>
             <p className="mx-auto mt-6 max-w-2xl text-center text-lg leading-8 text-muted-foreground">
                 Comece grátis hoje e faça upgrade quando seu time crescer. Sem surpresas, sem taxas escondidas.

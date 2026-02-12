@@ -7,10 +7,17 @@ import type { Metadata } from 'next'
 export const metadata: Metadata = {
   title: 'Changelog | Sirius CRM',
   description: 'Acompanhe todas as novidades, melhorias e correções do Sirius CRM. Fique por dentro das atualizações mais recentes da plataforma.',
+  keywords: ['atualizações', 'novidades', 'releases', 'versões', 'sirius crm'],
   openGraph: {
     title: 'Changelog | Sirius CRM',
     description: 'Acompanhe todas as novidades e atualizações do Sirius CRM.',
     url: 'https://sirius.roilabs.com.br/changelog',
+    images: [{
+      url: 'https://sirius.roilabs.com.br/og-image.png',
+      width: 1200,
+      height: 630,
+      alt: 'Sirius CRM - CRM Inteligente para Vendedores Brasileiros',
+    }],
   },
 }
 

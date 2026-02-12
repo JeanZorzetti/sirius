@@ -1,6 +1,7 @@
 import { Metadata } from 'next'
 import Link from 'next/link'
 import Image from 'next/image'
+import Script from 'next/script'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
@@ -27,11 +28,42 @@ export const metadata: Metadata = {
     title: 'Sirius CRM - Vendas Organizadas em 5 Minutos',
     description: 'CRM self-service sem implantação cara. R$ 49/mês, sem cartão para testar.',
     type: 'website',
+    images: [{
+      url: 'https://sirius.roilabs.com.br/og-image.png',
+      width: 1200,
+      height: 630,
+      alt: 'Sirius CRM - CRM Inteligente para Vendedores Brasileiros',
+    }],
   },
 }
 
 export default function VendasAutomaticasPage() {
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://sirius.roilabs.com.br"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Vendas Automáticas",
+        "item": "https://sirius.roilabs.com.br/vendas-automaticas"
+      }
+    ]
+  }
+
   return (
+    <>
+      <Script
+        id="breadcrumb-schema"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
     <div className="min-h-screen bg-gradient-to-b from-white via-blue-50/30 to-white dark:from-zinc-950 dark:via-blue-950/10 dark:to-zinc-950">
       {/* Hero Section */}
       <section className="relative overflow-hidden border-b border-zinc-200 dark:border-zinc-800">
@@ -705,5 +737,6 @@ export default function VendasAutomaticasPage() {
         </div>
       </section>
     </div>
+    </>
   )
 }

@@ -7,10 +7,17 @@ import type { Metadata } from 'next'
 export const metadata: Metadata = {
   title: 'Comunidade | Sirius CRM',
   description: 'Junte-se à comunidade Sirius CRM. Compartilhe experiências, aprenda com outros usuários e contribua para o desenvolvimento da plataforma.',
+  keywords: ['comunidade', 'forum', 'suporte', 'discussões', 'sirius crm'],
   openGraph: {
     title: 'Comunidade | Sirius CRM',
     description: 'Junte-se à comunidade Sirius CRM e conecte-se com outros profissionais de vendas.',
     url: 'https://sirius.roilabs.com.br/community',
+    images: [{
+      url: 'https://sirius.roilabs.com.br/og-image.png',
+      width: 1200,
+      height: 630,
+      alt: 'Sirius CRM - CRM Inteligente para Vendedores Brasileiros',
+    }],
   },
 }
 
