@@ -63,7 +63,7 @@
 - **Impacto:** Exclusão acidental de deals, pipelines, automations, team members
 - **Páginas:** kanban-board, pipelines, automations, team, webhooks
 
-### 14. [ ] Padronizar empty states em todas as listagens
+### 14. [x] Padronizar empty states em todas as listagens
 - **Impacto:** UX inconsistente
 - **Faltam:** deals, automations, webhooks, notifications
 
@@ -103,7 +103,7 @@
 | 11 | DONE | WhatsApp media upload |
 | 12 | DONE | Prospecção config check + banner |
 | 13 | DONE | Confirmation dialogs (10 actions, 7 pages) |
-| 14 | Pendente | Empty states |
+| 14 | DONE | Empty states (automations, webhooks, pipelines) |
 | 15 | Pendente | Dead code cleanup |
 | 16 | Pendente | Error messages i18n |
 | 17 | Pendente | Integrações teste |
