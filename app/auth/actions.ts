@@ -1,14 +1,12 @@
 'use server'
 
-import { PrismaClient } from '@prisma/client'
+import { prisma } from '@/lib/prisma'
 import { hash, compare } from 'bcryptjs'
 import { login, logout } from '@/lib/auth'
 import { redirect } from 'next/navigation'
 import { cookies } from 'next/headers'
 import logger, { generateCorrelationId } from '@/lib/logger'
 import { sendWelcomeEmail, sendEmailAsync } from '@/lib/email-automations'
-
-const prisma = new PrismaClient()
 
 function generateReferralCode(): string {
   return Math.random().toString(36).substring(2, 6) + Math.random().toString(36).substring(2, 6)

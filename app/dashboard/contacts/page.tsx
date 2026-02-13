@@ -1,5 +1,5 @@
 import { Metadata } from "next"
-import { PrismaClient } from "@prisma/client"
+import { prisma } from "@/lib/prisma"
 import { DataTable } from "@/components/contacts/data-table"
 import { columns } from "@/components/contacts/columns"
 import { CreateContactDialog } from "@/components/contacts/create-contact-dialog"
@@ -8,8 +8,6 @@ import { EmptyState } from "@/components/ui/empty-state"
 import { ExportButtons } from "@/components/ui/export-buttons"
 import { Users } from "lucide-react"
 import { getSession } from "@/lib/auth"
-
-const prisma = new PrismaClient()
 
 export const metadata: Metadata = {
     title: "Contatos - CRM",

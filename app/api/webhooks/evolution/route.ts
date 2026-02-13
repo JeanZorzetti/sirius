@@ -30,13 +30,11 @@ export async function POST(request: Request) {
         // Validar API key
         if (apikey !== process.env.EVOLUTION_API_KEY) {
             logger.warn({
-                receivedApikey: apikey,
-                expectedApikey: process.env.EVOLUTION_API_KEY,
-                fix: 'Update EVOLUTION_API_KEY in Vercel environment variables to match the key sent by Evolution API',
-            }, '❌ Invalid Evolution API key - WEBHOOKS WILL NOT WORK')
-            return NextResponse.json({ 
-                error: 'Unauthorized', 
-                details: 'API Key mismatch. Update EVOLUTION_API_KEY env var in Vercel to: ' + apikey?.substring(0, 20) + '...'
+                instance,
+                event,
+            }, '❌ Invalid Evolution API key')
+            return NextResponse.json({
+                error: 'Unauthorized',
             }, { status: 401 })
         }
 

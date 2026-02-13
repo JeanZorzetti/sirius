@@ -1,13 +1,11 @@
 'use server'
 
-import { PrismaClient } from '@prisma/client'
+import { prisma } from '@/lib/prisma'
 import { revalidatePath } from 'next/cache'
 import { getSession } from "@/lib/auth"
 import { sendDealCreatedEmail, sendDealStageChangedEmail, sendUpgradeNudgeEmail, sendEmailAsync, shouldSendUpgradeNudge } from '@/lib/email-automations'
 import { dispatchWebhookAsync } from '@/lib/webhooks/dispatcher'
 import { WEBHOOK_EVENTS } from '@/lib/webhooks/events'
-
-const prisma = new PrismaClient()
 
 async function getAuthenticatedUser() {
   const session = await getSession()

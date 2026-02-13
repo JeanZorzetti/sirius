@@ -7,7 +7,7 @@
 
 'use server'
 
-import { PrismaClient } from '@prisma/client'
+import { prisma } from '@/lib/prisma'
 import { extractEntities } from './extract-entities'
 import { calculateContentHash } from './hash-utils'
 import type {
@@ -17,8 +17,6 @@ import type {
   ExtractedRelationship,
 } from './types'
 import logger from '@/lib/logger'
-
-const prisma = new PrismaClient()
 
 /**
  * Process content through NLP pipeline

@@ -1,13 +1,11 @@
 'use server'
 
-import { PrismaClient } from '@prisma/client'
+import { prisma } from '@/lib/prisma'
 import { revalidatePath } from 'next/cache'
 import { getSession } from '@/lib/auth'
 import { dispatchWebhookAsync } from '@/lib/webhooks/dispatcher'
 import { WEBHOOK_EVENTS } from '@/lib/webhooks/events'
 import { canCreateContact } from '@/lib/plan-limits'
-
-const prisma = new PrismaClient()
 
 export async function createContact(formData: FormData) {
     try {
