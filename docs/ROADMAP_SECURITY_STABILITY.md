@@ -56,7 +56,7 @@
 ### 11. [x] Completar integração WhatsApp (upload mídia + templates)
 - **Impacto:** Feature incompleta para usuários
 
-### 12. [ ] Documentar/resolver dependência da Prospecção Google Maps
+### 12. [x] Documentar/resolver dependência da Prospecção Google Maps
 - **Impacto:** Feature aparece na UI mas não funciona sem `SIRIUS_SCRAPER_URL` + `GOOGLE_PLACES_API_KEY`
 
 ### 13. [ ] Adicionar confirmation dialogs para ações destrutivas
@@ -101,7 +101,7 @@
 | 9 | DONE | Rate limiting (22 routes) |
 | 10 | DONE | Mobile responsiveness (6 components) |
 | 11 | DONE | WhatsApp media upload |
-| 12 | Pendente | Prospecção docs |
+| 12 | DONE | Prospecção config check + banner |
 | 13 | Pendente | Confirmation dialogs |
 | 14 | Pendente | Empty states |
 | 15 | Pendente | Dead code cleanup |
