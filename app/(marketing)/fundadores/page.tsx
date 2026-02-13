@@ -1,189 +1,271 @@
 import { Metadata } from 'next'
-import Link from 'next/link'
 import { prisma } from '@/lib/prisma'
 import { Check, Star, Zap, Shield, Users, Clock } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { FounderCheckoutButton } from './founder-checkout-button'
 
 export const metadata: Metadata = {
-  title: 'Programa de Fundadores | Sirius CRM — R$29/mês para sempre',
-  description: 'Seja um dos 100 clientes fundadores do Sirius CRM. R$29/mês vitalício (vs R$49 regular). Plano PRO completo + badge exclusivo + acesso antecipado a novas features.',
+  title: 'Programa de Fundadores | Sirius CRM — 41% OFF vitalício',
+  description: 'Seja um dos fundadores do Sirius CRM. Starter R$29, Pro R$57 ou Business R$88/mês para sempre. 41% de desconto vitalício em qualquer plano.',
   alternates: { canonical: 'https://sirius.roilabs.com.br/fundadores' },
   openGraph: {
-    title: 'Programa de Fundadores | Sirius CRM — R$29/mês para sempre',
-    description: 'Seja um dos 100 fundadores. R$29/mês vitalício com todo o plano PRO incluso.',
+    title: 'Programa de Fundadores | Sirius CRM — 41% OFF vitalício',
+    description: 'Starter R$29, Pro R$57 ou Business R$88/mês para sempre. Vagas limitadas.',
     url: 'https://sirius.roilabs.com.br/fundadores',
-    images: [{
-      url: 'https://sirius.roilabs.com.br/og-image.png',
-      width: 1200,
-      height: 630,
-      alt: 'Sirius CRM — Programa de Fundadores',
-    }],
+    images: [{ url: 'https://sirius.roilabs.com.br/og-image.png', width: 1200, height: 630 }],
   },
 }
 
 export const dynamic = 'force-dynamic'
 
-const FOUNDER_LIMIT = 100
-const FOUNDER_PRICE = 29
-const REGULAR_PRICE = 49
-
-const FOUNDER_PERKS = [
-  { icon: Zap, text: 'Plano PRO completo por R$29/mês para sempre (40% off vitalício)' },
-  { icon: Star, text: 'Badge exclusivo "Fundador #N" no seu dashboard' },
-  { icon: Users, text: 'Acesso antecipado a todas as novas funcionalidades' },
-  { icon: Shield, text: 'Preço nunca aumenta — mesmo quando o PRO subir de preço' },
-  { icon: Clock, text: 'Canal direto com os fundadores da ROI Labs no WhatsApp' },
+const FOUNDER_TIERS = [
+  {
+    plan: 'FOUNDER_STARTER' as const,
+    name: 'Fundador Starter',
+    regularPrice: 49,
+    founderPrice: 29,
+    limit: 100,
+    highlight: false,
+    color: 'border-muted',
+    features: [
+      '500 Contatos',
+      '200 Negócios ativos',
+      '3 Pipelines Kanban',
+      'Até 3 usuários',
+      '1 instância WhatsApp',
+      '50 créditos de prospecção/mês',
+      'Suporte por e-mail',
+    ],
+  },
+  {
+    plan: 'FOUNDER_PRO' as const,
+    name: 'Fundador Pro',
+    regularPrice: 97,
+    founderPrice: 57,
+    limit: 50,
+    highlight: true,
+    color: 'border-primary ring-2 ring-primary/20 shadow-lg scale-105 z-10',
+    features: [
+      '2.000 Contatos',
+      '1.000 Negócios ativos',
+      '10 Pipelines Kanban',
+      'Até 10 usuários',
+      '1 instância WhatsApp',
+      '200 créditos de prospecção/mês',
+      'AGI Sirius (IA comercial)',
+      'Webhooks + API pública',
+      'Analytics avançado',
+      'Suporte prioritário',
+    ],
+  },
+  {
+    plan: 'FOUNDER_BUSINESS' as const,
+    name: 'Fundador Business',
+    regularPrice: 149,
+    founderPrice: 88,
+    limit: 25,
+    highlight: false,
+    color: 'border-muted',
+    features: [
+      'Contatos Ilimitados',
+      'Negócios Ilimitados',
+      '50 Pipelines Kanban',
+      'Até 50 usuários',
+      '5 instâncias WhatsApp',
+      '1.000 créditos de prospecção/mês',
+      'Round-Robin de leads',
+      'Relatórios personalizados',
+      'SSO & Audit Log',
+      'Domínio customizado',
+      'Gerente de conta dedicado',
+    ],
+  },
 ]
 
-const PRO_FEATURES = [
-  'Pipeline visual Kanban ilimitado',
-  'Contatos e negócios ilimitados',
-  'Automações de negócios (triggers + ações)',
-  'Integração WhatsApp via Evolution API',
-  'AGI Sirius — assistente comercial com IA',
-  'Relatórios e analytics avançados',
-  'Webhooks + integração N8N/Zapier',
-  'API pública completa',
-  'Suporte prioritário via WhatsApp',
-  'Importação CSV/Excel de contatos',
+const FOUNDER_PERKS = [
+  { icon: Star,   text: 'Badge exclusivo "Fundador #N" no dashboard' },
+  { icon: Shield, text: 'Preço nunca aumenta — garantido para sempre' },
+  { icon: Users,  text: 'Acesso antecipado a todas as novas funcionalidades' },
+  { icon: Clock,  text: 'Canal direto com os fundadores da ROI Labs no WhatsApp' },
+  { icon: Zap,    text: 'Prioridade máxima no roadmap e feature requests' },
 ]
 
 export default async function FundadoresPage() {
-  // Count current founders
-  const foundersCount = await prisma.organization.count({
-    where: { isFounder: true }
-  })
+  // Contar vagas preenchidas por tier
+  const [starterCount, proCount, businessCount, totalFounders] = await Promise.all([
+    prisma.organization.count({ where: { isFounder: true, tier: 'STARTER' } }),
+    prisma.organization.count({ where: { isFounder: true, tier: 'PRO' } }),
+    prisma.organization.count({ where: { isFounder: true, tier: 'BUSINESS' } }),
+    prisma.organization.count({ where: { isFounder: true } }),
+  ])
 
-  const spotsLeft = FOUNDER_LIMIT - foundersCount
-  const spotsUsed = foundersCount
-  const percentFilled = Math.round((spotsUsed / FOUNDER_LIMIT) * 100)
-  const isSoldOut = spotsLeft <= 0
+  const spotsByPlan: Record<string, number> = {
+    FOUNDER_STARTER: starterCount,
+    FOUNDER_PRO: proCount,
+    FOUNDER_BUSINESS: businessCount,
+  }
+
+  const anyPlanOpen = FOUNDER_TIERS.some(t => spotsByPlan[t.plan] < t.limit)
 
   return (
     <div className="min-h-screen bg-background">
       {/* Hero */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-primary/5 via-background to-primary/5 border-b">
-        <div className="max-w-4xl mx-auto px-4 py-16 text-center">
-          {/* Badge */}
+      <section className="relative overflow-hidden bg-gradient-to-br from-amber-50 via-background to-primary/5 border-b">
+        <div className="max-w-5xl mx-auto px-4 py-16 text-center">
           <div className="inline-flex items-center gap-2 bg-amber-100 text-amber-800 text-sm font-semibold px-4 py-1.5 rounded-full mb-6">
             <Star className="w-4 h-4 fill-amber-500 text-amber-500" />
             Programa de Fundadores — Vagas Limitadas
           </div>
 
           <h1 className="text-4xl sm:text-5xl font-bold tracking-tight mb-4">
-            Seja um dos{' '}
-            <span className="text-primary">{FOUNDER_LIMIT} Fundadores</span>
-            {' '}do Sirius CRM
+            Seja Fundador do Sirius CRM
           </h1>
 
-          <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-            Acesso ao <strong>Plano PRO completo</strong> por{' '}
-            <strong className="text-primary">R${FOUNDER_PRICE}/mês para sempre</strong>{' '}
-            — 40% de desconto vitalício em relação ao preço regular (R${REGULAR_PRICE}/mês).
+          <p className="text-xl text-muted-foreground mb-4 max-w-2xl mx-auto">
+            <strong className="text-foreground">41% de desconto vitalício</strong> em qualquer plano.
+            Seu preço nunca muda — mesmo quando os planos subirem.
           </p>
 
-          {/* Counter */}
-          <div className="bg-card border rounded-2xl p-6 max-w-md mx-auto mb-8 shadow-sm">
-            <div className="flex items-center justify-between mb-3">
-              <span className="text-sm font-medium text-muted-foreground">Vagas preenchidas</span>
-              <span className="text-sm font-bold">
-                {spotsUsed}/{FOUNDER_LIMIT}
-              </span>
-            </div>
-            <div className="w-full bg-muted rounded-full h-3 mb-3">
-              <div
-                className="bg-primary h-3 rounded-full transition-all"
-                style={{ width: `${Math.max(percentFilled, 3)}%` }}
-              />
-            </div>
-            <p className="text-center font-semibold">
-              {isSoldOut ? (
-                <span className="text-red-600">Todas as vagas preenchidas!</span>
-              ) : (
-                <span className="text-amber-600">
-                  Apenas <strong>{spotsLeft} vagas restantes</strong>
-                </span>
-              )}
-            </p>
-          </div>
-
-          {/* CTA */}
-          {!isSoldOut && (
-            <FounderCheckoutButton spotsLeft={spotsLeft} />
-          )}
-
-          {isSoldOut && (
-            <div className="space-y-4">
-              <p className="text-muted-foreground">O programa de fundadores está encerrado.</p>
-              <Button asChild size="lg">
-                <Link href="/pricing">Ver Planos Regulares</Link>
-              </Button>
-            </div>
-          )}
-
-          <p className="mt-4 text-sm text-muted-foreground">
-            Pagamento seguro via Mercado Pago · PIX, cartão ou boleto · Cancele a qualquer momento
+          <p className="text-sm text-muted-foreground">
+            {totalFounders} pessoas já garantiram seu desconto vitalício · Vagas esgotando rapidamente
           </p>
         </div>
       </section>
 
-      {/* What you get */}
-      <section className="max-w-4xl mx-auto px-4 py-16">
-        <h2 className="text-2xl font-bold text-center mb-10">O que você ganha como Fundador</h2>
+      {/* Tier cards */}
+      <section className="max-w-5xl mx-auto px-4 py-16">
+        <div className="grid md:grid-cols-3 gap-6 items-center">
+          {FOUNDER_TIERS.map((tier) => {
+            const filled = spotsByPlan[tier.plan]
+            const spotsLeft = tier.limit - filled
+            const isSoldOut = spotsLeft <= 0
+            const percentFilled = Math.round((filled / tier.limit) * 100)
+            const nextFounderNumber = totalFounders + 1
 
-        <div className="grid md:grid-cols-2 gap-6 mb-12">
-          {/* Perks */}
-          <div className="space-y-4">
-            <h3 className="font-semibold text-lg mb-4">Benefícios exclusivos do Fundador:</h3>
+            return (
+              <div
+                key={tier.plan}
+                className={`relative bg-card border rounded-2xl flex flex-col ${tier.color}`}
+              >
+                {tier.highlight && (
+                  <div className="absolute -top-4 left-1/2 -translate-x-1/2">
+                    <div className="rounded-full bg-gradient-to-r from-primary to-purple-600 px-4 py-1 text-xs font-bold text-white shadow-lg whitespace-nowrap">
+                      ⚡ Mais Popular
+                    </div>
+                  </div>
+                )}
+
+                <div className="p-6 flex flex-col flex-1">
+                  {/* Header */}
+                  <div className="mb-4">
+                    <h2 className="text-xl font-bold flex items-center gap-2">
+                      <Star className="w-5 h-5 text-amber-500 fill-amber-400" />
+                      {tier.name}
+                    </h2>
+                    <div className="mt-3 flex items-baseline gap-2">
+                      <span className="text-3xl font-bold text-primary">R${tier.founderPrice}</span>
+                      <span className="text-sm text-muted-foreground">/mês para sempre</span>
+                    </div>
+                    <div className="flex items-center gap-2 mt-1">
+                      <span className="text-sm line-through text-muted-foreground">R${tier.regularPrice}/mês</span>
+                      <span className="text-xs font-semibold text-green-600 bg-green-50 px-2 py-0.5 rounded-full">
+                        ~41% OFF vitalício
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Spots bar */}
+                  <div className="mb-4">
+                    <div className="flex justify-between text-xs text-muted-foreground mb-1">
+                      <span>Vagas preenchidas</span>
+                      <span className="font-semibold">{filled}/{tier.limit}</span>
+                    </div>
+                    <div className="w-full bg-muted rounded-full h-2">
+                      <div
+                        className={`h-2 rounded-full transition-all ${isSoldOut ? 'bg-red-400' : 'bg-primary'}`}
+                        style={{ width: `${Math.max(percentFilled, 2)}%` }}
+                      />
+                    </div>
+                    <p className={`text-xs mt-1 font-medium ${isSoldOut ? 'text-red-500' : 'text-amber-600'}`}>
+                      {isSoldOut ? 'Esgotado' : `${spotsLeft} vagas restantes`}
+                    </p>
+                  </div>
+
+                  {/* Features */}
+                  <ul className="space-y-2 mb-6 flex-1">
+                    {tier.features.map((f, i) => (
+                      <li key={i} className="flex items-center gap-2 text-sm">
+                        <Check className="w-4 h-4 text-green-500 shrink-0" />
+                        {f}
+                      </li>
+                    ))}
+                  </ul>
+
+                  {/* CTA */}
+                  {isSoldOut ? (
+                    <Button className="w-full" variant="outline" disabled>Esgotado</Button>
+                  ) : (
+                    <FounderCheckoutButton
+                      plan={tier.plan}
+                      price={tier.founderPrice}
+                      spotsLeft={spotsLeft}
+                      founderNumber={nextFounderNumber}
+                    />
+                  )}
+                </div>
+              </div>
+            )
+          })}
+        </div>
+
+        <p className="text-center text-sm text-muted-foreground mt-6">
+          Pagamento seguro via Mercado Pago · PIX, cartão (12x) ou boleto · Cancele a qualquer momento
+        </p>
+      </section>
+
+      {/* Perks */}
+      <section className="border-t bg-muted/30">
+        <div className="max-w-4xl mx-auto px-4 py-16">
+          <h2 className="text-2xl font-bold text-center mb-10">Benefícios exclusivos do Fundador</h2>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {FOUNDER_PERKS.map(({ icon: Icon, text }, i) => (
-              <div key={i} className="flex items-start gap-3">
-                <div className="w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center shrink-0 mt-0.5">
-                  <Icon className="w-4 h-4 text-primary" />
+              <div key={i} className="flex items-start gap-3 bg-card border rounded-lg p-4">
+                <div className="w-8 h-8 bg-amber-100 rounded-lg flex items-center justify-center shrink-0">
+                  <Icon className="w-4 h-4 text-amber-600" />
                 </div>
                 <p className="text-sm leading-relaxed">{text}</p>
               </div>
             ))}
           </div>
-
-          {/* PRO Features */}
-          <div className="bg-card border rounded-xl p-6">
-            <h3 className="font-semibold text-lg mb-4">Tudo do Plano PRO incluso:</h3>
-            <ul className="space-y-2">
-              {PRO_FEATURES.map((feature, i) => (
-                <li key={i} className="flex items-center gap-2 text-sm">
-                  <Check className="w-4 h-4 text-green-500 shrink-0" />
-                  {feature}
-                </li>
-              ))}
-            </ul>
-          </div>
         </div>
+      </section>
 
-        {/* Price comparison */}
-        <div className="bg-gradient-to-r from-primary/5 to-primary/10 border border-primary/20 rounded-2xl p-8 text-center">
-          <h3 className="text-xl font-bold mb-6">Comparação de Preço</h3>
-          <div className="grid grid-cols-2 gap-8 max-w-sm mx-auto">
-            <div className="text-center">
-              <p className="text-sm text-muted-foreground mb-1">Preço Regular</p>
-              <p className="text-3xl font-bold line-through text-muted-foreground">R${REGULAR_PRICE}</p>
-              <p className="text-sm text-muted-foreground">/mês</p>
-            </div>
-            <div className="text-center">
-              <p className="text-sm font-medium text-primary mb-1">Preço Fundador</p>
-              <p className="text-3xl font-bold text-primary">R${FOUNDER_PRICE}</p>
-              <p className="text-sm text-muted-foreground">/mês <strong>para sempre</strong></p>
-            </div>
-          </div>
-          <p className="mt-6 text-sm text-muted-foreground">
-            Economia de <strong>R${(REGULAR_PRICE - FOUNDER_PRICE) * 12}/ano</strong>.
-            Em 3 anos: <strong>R${(REGULAR_PRICE - FOUNDER_PRICE) * 36} economizados</strong>.
-          </p>
-          {!isSoldOut && (
-            <div className="mt-6">
-              <FounderCheckoutButton spotsLeft={spotsLeft} />
-            </div>
-          )}
+      {/* Price comparison table */}
+      <section className="max-w-4xl mx-auto px-4 py-16">
+        <h2 className="text-2xl font-bold text-center mb-10">Comparação de Preço</h2>
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm border-collapse">
+            <thead>
+              <tr className="border-b">
+                <th className="text-left py-3 px-4 font-semibold">Plano</th>
+                <th className="text-center py-3 px-4 font-semibold text-muted-foreground">Preço Regular</th>
+                <th className="text-center py-3 px-4 font-semibold text-primary">Preço Fundador</th>
+                <th className="text-center py-3 px-4 font-semibold text-green-600">Economia/ano</th>
+              </tr>
+            </thead>
+            <tbody>
+              {FOUNDER_TIERS.map((tier) => (
+                <tr key={tier.plan} className={`border-b ${tier.highlight ? 'bg-primary/5' : ''}`}>
+                  <td className="py-3 px-4 font-medium">{tier.name.replace('Fundador ', '')}</td>
+                  <td className="py-3 px-4 text-center text-muted-foreground line-through">R${tier.regularPrice}/mês</td>
+                  <td className="py-3 px-4 text-center font-bold text-primary">R${tier.founderPrice}/mês</td>
+                  <td className="py-3 px-4 text-center text-green-600 font-semibold">
+                    R${(tier.regularPrice - tier.founderPrice) * 12}/ano
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       </section>
 
@@ -191,27 +273,27 @@ export default async function FundadoresPage() {
       <section className="border-t bg-muted/30">
         <div className="max-w-2xl mx-auto px-4 py-16">
           <h2 className="text-2xl font-bold text-center mb-10">Perguntas Frequentes</h2>
-          <div className="space-y-6">
+          <div className="space-y-4">
             {[
               {
-                q: 'O preço de R$29/mês é realmente para sempre?',
-                a: 'Sim. Como Fundador, seu preço nunca muda — independente do quanto o plano PRO custe no futuro. Esse desconto é vitalício e está garantido contratualmente.'
+                q: 'O desconto é realmente para sempre?',
+                a: 'Sim. Como Fundador, seu preço nunca muda — independente do quanto o plano suba no futuro. O desconto vitalício é garantido contratualmente.'
               },
               {
-                q: 'Posso cancelar a qualquer momento?',
-                a: 'Sim. Não há fidelidade ou multa. Se cancelar, pode re-assinar, mas ao preço regular do momento (provavelmente mais caro).'
+                q: 'Posso mudar de plano fundador depois?',
+                a: 'Não é possível fazer downgrade após a compra, mas você pode fazer upgrade para um tier fundador superior enquanto ainda tiver vagas disponíveis.'
               },
               {
-                q: 'O que acontece depois das 100 vagas?',
-                a: 'O programa encerra e o preço volta para R$49/mês. Não haverá exceções após o encerramento.'
+                q: 'O que acontece quando as vagas esgotam?',
+                a: 'O programa encerra para aquele tier e o preço volta ao regular. Não haverá exceções após o encerramento.'
               },
               {
                 q: 'Tenho acesso imediato?',
-                a: 'Sim. Após o pagamento ser aprovado, sua conta é atualizada para PRO instantaneamente.'
+                a: 'Sim. Após o pagamento ser aprovado, sua conta é atualizada instantaneamente e você recebe o badge de Fundador.'
               },
               {
-                q: 'Posso pagar com PIX?',
-                a: 'Sim. Aceitamos PIX, cartão de crédito (até 12x) e boleto bancário via Mercado Pago.'
+                q: 'Posso cancelar quando quiser?',
+                a: 'Sim, sem multas ou fidelidade. Se cancelar e quiser retornar, o preço será o regular vigente naquele momento.'
               }
             ].map(({ q, a }, i) => (
               <div key={i} className="bg-card border rounded-lg p-5">
@@ -220,6 +302,15 @@ export default async function FundadoresPage() {
               </div>
             ))}
           </div>
+
+          {anyPlanOpen && (
+            <div className="mt-10 text-center">
+              <p className="text-muted-foreground mb-4">Ainda em dúvida? Vagas são limitadas.</p>
+              <Button asChild size="lg" variant="default">
+                <a href="/fundadores">Ver planos disponíveis</a>
+              </Button>
+            </div>
+          )}
         </div>
       </section>
     </div>

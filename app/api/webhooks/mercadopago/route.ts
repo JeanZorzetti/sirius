@@ -135,20 +135,21 @@ async function processApprovedPayment(payment: any) {
     return
   }
 
-  // Parse external_reference: "orgId_tier" ou "orgId_addon_type"
-  const parts = externalReference.split('_')
-  
-  if (parts.length < 2) {
+  // Parse external_reference: "orgId_PLAN" ou "orgId_ADDON_TYPE" ou "orgId_FOUNDER_TIER"
+  // Usar split no primeiro '_' apenas para preservar compostos como FOUNDER_STARTER, SCRAPING_100
+  const underscoreIdx = externalReference.indexOf('_')
+
+  if (underscoreIdx === -1) {
     logger.warn({ externalReference }, 'Invalid external reference format')
     return
   }
 
-  const organizationId = parts[0]
-  const tierOrAddon = parts[1]
+  const organizationId = externalReference.substring(0, underscoreIdx)
+  const tierOrAddon = externalReference.substring(underscoreIdx + 1)
 
-  // Programa de Fundadores
-  if (tierOrAddon === 'FOUNDER') {
-    await upgradeToFounder(organizationId, payment)
+  // Programa de Fundadores (FOUNDER_STARTER | FOUNDER_PRO | FOUNDER_BUSINESS)
+  if (tierOrAddon.startsWith('FOUNDER_')) {
+    await upgradeToFounder(organizationId, tierOrAddon, payment)
     return
   }
 
@@ -221,21 +222,33 @@ async function upgradePlan(
   logger.info({ organizationId, tier }, 'Plan upgraded successfully')
 }
 
-async function upgradeToFounder(organizationId: string, payment: any) {
-  logger.info({ organizationId }, '[MP:FOUNDER] Processing founder upgrade')
+const FOUNDER_TIER_MAP: Record<string, { tier: SubscriptionTier; price: number; scrapingQuota: number }> = {
+  FOUNDER_STARTER: { tier: SubscriptionTier.STARTER, price: 29.00, scrapingQuota: 50 },
+  FOUNDER_PRO:     { tier: SubscriptionTier.PRO,     price: 57.00, scrapingQuota: 200 },
+  FOUNDER_BUSINESS:{ tier: SubscriptionTier.BUSINESS, price: 88.00, scrapingQuota: 1000 },
+}
 
-  // Contar fundadores atuais para obter número sequencial
+async function upgradeToFounder(organizationId: string, founderPlan: string, payment: any) {
+  logger.info({ organizationId, founderPlan }, '[MP:FOUNDER] Processing founder upgrade')
+
+  const config = FOUNDER_TIER_MAP[founderPlan]
+  if (!config) {
+    logger.error({ founderPlan }, '[MP:FOUNDER] Unknown founder plan')
+    return
+  }
+
+  // Contar fundadores globais para número sequencial
   const foundersCount = await prisma.organization.count({ where: { isFounder: true } })
   const founderNumber = foundersCount + 1
 
   await prisma.organization.update({
     where: { id: organizationId },
     data: {
-      tier: SubscriptionTier.PRO,
+      tier: config.tier,
       isFounder: true,
       founderNumber,
       founderSince: new Date(),
-      customPricing: 29.00,
+      customPricing: config.price,
       failedPaymentAttempts: 0,
     },
   })
@@ -258,11 +271,12 @@ async function upgradeToFounder(organizationId: string, payment: any) {
     },
   })
 
-  // Inicializar créditos de scraping (mesmo que PRO)
+  // Inicializar créditos de scraping conforme o tier do fundador
+  const sq = config.scrapingQuota
   await prisma.scrapingCredit.upsert({
     where: { organizationId },
-    create: { organizationId, balance: 200, monthlyQuota: 200, usedThisMonth: 0, lastRefill: new Date() },
-    update: { balance: 200, monthlyQuota: 200, usedThisMonth: 0, lastRefill: new Date() },
+    create: { organizationId, balance: sq, monthlyQuota: sq, usedThisMonth: 0, lastRefill: new Date() },
+    update: { balance: sq, monthlyQuota: sq, usedThisMonth: 0, lastRefill: new Date() },
   })
 
   // Enviar email de boas-vindas ao fundador
@@ -278,15 +292,18 @@ async function upgradeToFounder(organizationId: string, payment: any) {
       select: { name: true },
     })
 
+    const tierLabel = config.tier === SubscriptionTier.STARTER ? 'Starter'
+      : config.tier === SubscriptionTier.PRO ? 'Pro' : 'Business'
+
     await sendEmail({
       to: owner.email,
-      subject: `🌟 Bem-vindo ao Programa de Fundadores! Você é o Fundador #${founderNumber}`,
+      subject: `🌟 Bem-vindo ao Programa de Fundadores! Você é o Fundador #${founderNumber} (${tierLabel})`,
       react: PaymentConfirmationEmail({
         userName: owner.name || 'Fundador',
         organizationName: org?.name || '',
         paymentId: String(payment.id),
         paymentType: payment.payment_method_id || 'credit_card',
-        amount: 29,
+        amount: config.price,
         nextBillingDate: (() => {
           const d = new Date()
           d.setMonth(d.getMonth() + 1)
@@ -296,7 +313,7 @@ async function upgradeToFounder(organizationId: string, payment: any) {
     }).catch(err => logger.error({ err }, '[MP:FOUNDER] Failed to send welcome email'))
   }
 
-  logger.info({ organizationId, founderNumber }, '[MP:FOUNDER] Organization upgraded to founder successfully')
+  logger.info({ organizationId, founderNumber, founderPlan, tier: config.tier }, '[MP:FOUNDER] Organization upgraded to founder successfully')
 }
 
 async function processAddonPurchase(

@@ -1,34 +1,37 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
-import { createCheckoutPreference } from '@/lib/mercadopago'
+import { createCheckoutPreference, CheckoutPlan } from '@/lib/mercadopago'
 import logger from '@/lib/logger'
+import { SubscriptionTier } from '@prisma/client'
 
-const FOUNDER_LIMIT = 100
+// Vagas por tier de fundador
+const FOUNDER_LIMITS: Record<string, { limit: number; tier: SubscriptionTier }> = {
+  FOUNDER_STARTER:  { limit: 100, tier: SubscriptionTier.STARTER },
+  FOUNDER_PRO:      { limit: 50,  tier: SubscriptionTier.PRO },
+  FOUNDER_BUSINESS: { limit: 25,  tier: SubscriptionTier.BUSINESS },
+}
 
 /**
  * POST /api/mercadopago/checkout
- * Cria preferência de checkout para upgrade PRO ou FOUNDER
- * Body: { plan?: 'PRO' | 'FOUNDER' }
+ * Cria preferência de checkout para planos pagos ou programa de fundadores
+ * Body: { plan: 'STARTER' | 'PRO' | 'BUSINESS' | 'FOUNDER_STARTER' | 'FOUNDER_PRO' | 'FOUNDER_BUSINESS' }
  */
 export async function POST(request: NextRequest) {
   try {
     const session = await getSession()
 
     if (!session || !session.user || !session.user.email) {
-      return NextResponse.json(
-        { error: 'Não autorizado' },
-        { status: 401 }
-      )
+      return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
     }
 
-    // Parse body — default to PRO
-    let plan: 'PRO' | 'FOUNDER' = 'PRO'
+    // Parse body
+    let plan: CheckoutPlan = 'STARTER'
     try {
       const body = await request.json()
-      if (body?.plan === 'FOUNDER') plan = 'FOUNDER'
+      if (body?.plan) plan = body.plan as CheckoutPlan
     } catch {
-      // No body is fine — defaults to PRO
+      // No body — default to STARTER
     }
 
     // Buscar usuário e organização
@@ -38,61 +41,58 @@ export async function POST(request: NextRequest) {
     })
 
     if (!user || !user.organization) {
-      return NextResponse.json(
-        { error: 'Usuário ou organização não encontrada' },
-        { status: 404 }
-      )
+      return NextResponse.json({ error: 'Usuário ou organização não encontrada' }, { status: 404 })
     }
 
-    // Verificar se já é PRO ou BUSINESS (e não está tentando virar fundador)
-    if (['PRO', 'BUSINESS'].includes(user.organization.tier) && plan !== 'FOUNDER') {
-      return NextResponse.json(
-        { error: 'Organização já está no plano PRO' },
-        { status: 400 }
-      )
+    const org = user.organization
+    const isFounderPlan = plan.startsWith('FOUNDER_')
+
+    // Já é fundador — não pode comprar novamente
+    if (org.isFounder) {
+      return NextResponse.json({ error: 'Organização já é fundadora do Sirius CRM' }, { status: 400 })
     }
 
-    // Se já é fundador, não deixar comprar novamente
-    if (user.organization.isFounder) {
-      return NextResponse.json(
-        { error: 'Organização já é fundadora do Sirius CRM' },
-        { status: 400 }
-      )
-    }
+    if (isFounderPlan) {
+      const founderConfig = FOUNDER_LIMITS[plan]
+      if (!founderConfig) {
+        return NextResponse.json({ error: 'Plano de fundador inválido' }, { status: 400 })
+      }
 
-    // Verificar vagas para programa de fundadores
-    if (plan === 'FOUNDER') {
-      const foundersCount = await prisma.organization.count({
-        where: { isFounder: true }
+      // Contar vagas preenchidas para este tier específico
+      const filledSpots = await prisma.organization.count({
+        where: { isFounder: true, tier: founderConfig.tier }
       })
-      if (foundersCount >= FOUNDER_LIMIT) {
+
+      if (filledSpots >= founderConfig.limit) {
         return NextResponse.json(
-          { error: 'Todas as vagas do programa de fundadores foram preenchidas.' },
+          { error: `Todas as vagas do Fundador ${plan.replace('FOUNDER_', '')} foram preenchidas.` },
           { status: 400 }
         )
+      }
+    } else {
+      // Plano regular — verificar se já está neste tier ou superior
+      const tierOrder = [SubscriptionTier.FREE, SubscriptionTier.STARTER, SubscriptionTier.PRO, SubscriptionTier.BUSINESS]
+      const currentIdx = tierOrder.indexOf(org.tier as SubscriptionTier)
+      const requestedIdx = tierOrder.indexOf(plan as SubscriptionTier)
+      if (requestedIdx !== -1 && currentIdx >= requestedIdx) {
+        return NextResponse.json({ error: 'Organização já está neste plano ou superior' }, { status: 400 })
       }
     }
 
     // Criar preferência de checkout
     const { preferenceId, initPoint, sandboxInitPoint } = await createCheckoutPreference(
-      user.organization.id,
-      user.organization.name,
+      org.id,
+      org.name,
       user.email,
       plan
     )
 
-    // Salvar preferenceId na organização
     await prisma.organization.update({
-      where: { id: user.organization.id },
+      where: { id: org.id },
       data: { mercadoPagoPreferenceId: preferenceId }
     })
 
-    logger.info({
-      organizationId: user.organization.id,
-      preferenceId,
-      userEmail: user.email,
-      plan
-    }, 'Checkout preference created')
+    logger.info({ organizationId: org.id, preferenceId, plan }, 'Checkout preference created')
 
     const checkoutUrl = process.env.NODE_ENV === 'production' ? initPoint : (sandboxInitPoint || initPoint)
 
@@ -105,10 +105,7 @@ export async function POST(request: NextRequest) {
     }, 'Error creating checkout preference')
 
     return NextResponse.json(
-      {
-        error: 'Erro ao criar preferência de checkout',
-        details: error instanceof Error ? error.message : 'Unknown error'
-      },
+      { error: 'Erro ao criar preferência de checkout', details: error instanceof Error ? error.message : 'Unknown error' },
       { status: 500 }
     )
   }

@@ -41,20 +41,36 @@ export interface Payer {
  * Criar preferência de pagamento para plano PRO
  * Suporta PIX, Cartão de Crédito e Boleto
  */
+export type CheckoutPlan =
+  | 'STARTER'
+  | 'PRO'
+  | 'BUSINESS'
+  | 'FOUNDER_STARTER'
+  | 'FOUNDER_PRO'
+  | 'FOUNDER_BUSINESS'
+
 export async function createCheckoutPreference(
   organizationId: string,
   organizationName: string,
   userEmail: string,
-  plan: 'PRO' | 'FOUNDER' = 'PRO'
+  plan: CheckoutPlan = 'STARTER'
 ) {
   try {
     const planPrices: Record<string, number> = {
-      PRO: 49.00,
-      FOUNDER: 29.00, // R$29/mês vitalício — Programa de Fundadores
+      STARTER: 49.00,
+      PRO: 97.00,
+      BUSINESS: 149.00,
+      FOUNDER_STARTER: 29.00, // R$29/mês vitalício (~41% off STARTER)
+      FOUNDER_PRO: 57.00,     // R$57/mês vitalício (~41% off PRO)
+      FOUNDER_BUSINESS: 88.00, // R$88/mês vitalício (~41% off BUSINESS)
     }
     const planTitles: Record<string, string> = {
-      PRO: `Plano PRO - ${organizationName}`,
-      FOUNDER: `Fundador Sirius CRM - ${organizationName} (R$29/mês vitalício)`,
+      STARTER: `Plano Starter - ${organizationName}`,
+      PRO: `Plano Pro - ${organizationName}`,
+      BUSINESS: `Plano Business - ${organizationName}`,
+      FOUNDER_STARTER: `Fundador Starter - ${organizationName} (R$29/mês vitalício)`,
+      FOUNDER_PRO: `Fundador Pro - ${organizationName} (R$57/mês vitalício)`,
+      FOUNDER_BUSINESS: `Fundador Business - ${organizationName} (R$88/mês vitalício)`,
     }
 
     const item: PreferenceItem = {
@@ -214,8 +230,12 @@ export function getPaymentTypeText(type: PaymentType): string {
  */
 export const PLAN_PRICES = {
   FREE: 0,
-  PRO: 49.00,
-  FOUNDER: 29.00
+  STARTER: 49.00,
+  PRO: 97.00,
+  BUSINESS: 149.00,
+  FOUNDER_STARTER: 29.00,
+  FOUNDER_PRO: 57.00,
+  FOUNDER_BUSINESS: 88.00,
 } as const
 
 /**

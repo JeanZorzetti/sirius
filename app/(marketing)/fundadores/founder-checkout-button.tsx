@@ -5,11 +5,22 @@ import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { Star } from 'lucide-react'
 
+type FounderPlan = 'FOUNDER_STARTER' | 'FOUNDER_PRO' | 'FOUNDER_BUSINESS'
+
 interface Props {
+  plan: FounderPlan
+  price: number
   spotsLeft: number
+  founderNumber: number
 }
 
-export function FounderCheckoutButton({ spotsLeft }: Props) {
+const PLAN_LABEL: Record<FounderPlan, string> = {
+  FOUNDER_STARTER: 'Starter',
+  FOUNDER_PRO: 'Pro',
+  FOUNDER_BUSINESS: 'Business',
+}
+
+export function FounderCheckoutButton({ plan, price, spotsLeft, founderNumber }: Props) {
   const [isLoading, setIsLoading] = useState(false)
   const router = useRouter()
 
@@ -20,12 +31,11 @@ export function FounderCheckoutButton({ spotsLeft }: Props) {
       const response = await fetch('/api/mercadopago/checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ plan: 'FOUNDER' })
+        body: JSON.stringify({ plan })
       })
 
       if (response.status === 401) {
-        // Not logged in — redirect to register with return URL
-        router.push('/register?redirect=/fundadores&plan=founder')
+        router.push(`/register?redirect=/fundadores&plan=${plan.toLowerCase()}`)
         return
       }
 
@@ -47,18 +57,20 @@ export function FounderCheckoutButton({ spotsLeft }: Props) {
   }
 
   return (
-    <div className="flex flex-col items-center gap-2">
+    <div className="flex flex-col items-center gap-2 w-full">
       <Button
-        size="lg"
-        className="text-base px-8 py-6 font-bold shadow-lg hover:shadow-xl transition-all"
+        className="w-full font-bold"
         onClick={handleCheckout}
         disabled={isLoading}
       >
-        <Star className="w-5 h-5 mr-2 fill-current" />
-        {isLoading ? 'Aguarde...' : `Quero ser Fundador #${100 - spotsLeft + 1} por R$29/mês`}
+        <Star className="w-4 h-4 mr-2 fill-current" />
+        {isLoading
+          ? 'Aguarde...'
+          : `Fundador ${PLAN_LABEL[plan]} #${founderNumber} — R$${price}/mês`
+        }
       </Button>
       <p className="text-xs text-muted-foreground">
-        Restam apenas <strong>{spotsLeft} vagas</strong>
+        Apenas <strong>{spotsLeft} vagas</strong> restantes
       </p>
     </div>
   )
