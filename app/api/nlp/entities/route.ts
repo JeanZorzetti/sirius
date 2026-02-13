@@ -6,11 +6,14 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server'
+import { requireAuth } from '@/lib/auth'
 import { searchEntities } from '@/lib/nlp/pipeline'
 
 export const runtime = 'nodejs'
 
 export async function GET(request: NextRequest) {
+  const auth = await requireAuth()
+  if (auth instanceof Response) return auth
   try {
     const { searchParams } = request.nextUrl
     const query = searchParams.get('q') || ''

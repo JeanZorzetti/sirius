@@ -6,6 +6,7 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server'
+import { requireAuth } from '@/lib/auth'
 import { enriquecerRespostaComCitacoes } from '@/lib/agi/graph-skills'
 import { z } from 'zod'
 
@@ -19,6 +20,8 @@ const EnrichRequestSchema = z.object({
 })
 
 export async function POST(request: NextRequest) {
+  const auth = await requireAuth()
+  if (auth instanceof Response) return auth
   try {
     const body = await request.json()
     const params = EnrichRequestSchema.parse(body)

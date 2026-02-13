@@ -6,23 +6,23 @@
 
 ## CRITICO
 
-### 1. [ ] Trocar `new PrismaClient()` pelo singleton em 23 arquivos
+### 1. [x] Trocar `new PrismaClient()` pelo singleton em 5 arquivos app/lib
 - **Impacto:** Memory leak, esgotamento de conexões em dev/prod
 - **Fix:** Substituir por `import { prisma } from '@/lib/prisma'`
 
-### 2. [ ] Adicionar auth check em ~45 API routes desprotegidas
+### 2. [x] Adicionar auth check em 15 API routes desprotegidas (AGI/NLP/Graph)
 - **Impacto:** Acesso não autorizado a dados sensíveis (AGI, analytics, NLP, graph, A/B testing)
 - **Fix:** Adicionar `getSession()` check no início de cada route
 
-### 3. [ ] Remover exposição da Evolution API key no webhook
+### 3. [x] Remover exposição da Evolution API key no webhook
 - **Impacto:** Key parcial exposta no response de erro
 - **Arquivo:** `app/api/webhooks/evolution/route.ts`
 
-### 4. [ ] Fixar fallback user hardcoded no dashboard layout
+### 4. [x] Fixar fallback user hardcoded no dashboard layout
 - **Impacto:** Usuário não autenticado acessa dashboard com dados fake
 - **Arquivo:** `app/dashboard/layout.tsx`
 
-### 5. [ ] Criar error boundaries globais
+### 5. [x] Criar error boundaries globais
 - **Impacto:** Erros de runtime mostram tela padrão do Next.js
 - **Criar:** `app/error.tsx` + `app/global-error.tsx`
 
@@ -91,7 +91,7 @@
 | # | Status | Descrição |
 |---|--------|-----------|
 | 1 | DONE | Prisma singleton (5 app/lib files) |
-| 2 | Pendente | Auth check (45 routes) |
+| 2 | DONE | Auth check (15 AGI/NLP/Graph routes) |
 | 3 | DONE | Evolution key exposure |
 | 4 | DONE | Fallback user layout |
 | 5 | DONE | Error boundaries |

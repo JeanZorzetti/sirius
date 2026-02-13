@@ -6,6 +6,7 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server'
+import { requireAuth } from '@/lib/auth'
 import { recomendarConteudo } from '@/lib/agi/graph-skills'
 import { z } from 'zod'
 
@@ -18,6 +19,8 @@ const RecommendRequestSchema = z.object({
 })
 
 export async function POST(request: NextRequest) {
+  const auth = await requireAuth()
+  if (auth instanceof Response) return auth
   try {
     const body = await request.json()
     const params = RecommendRequestSchema.parse(body)

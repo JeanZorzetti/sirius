@@ -63,6 +63,21 @@ export async function getSession() {
     }
 }
 
+/**
+ * Auth guard for API routes. Returns session or 401 Response.
+ * Usage:
+ *   const auth = await requireAuth()
+ *   if (auth instanceof Response) return auth
+ *   // auth.user is available
+ */
+export async function requireAuth() {
+    const session = await getSession()
+    if (!session?.user?.email) {
+        return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    }
+    return session
+}
+
 export async function login(userData: any) {
     // Create the session
     const expires = new Date(Date.now() + 24 * 60 * 60 * 1000) // 24 hours

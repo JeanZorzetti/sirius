@@ -6,6 +6,7 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server'
+import { requireAuth } from '@/lib/auth'
 import { processContentNLP } from '@/lib/nlp/pipeline'
 import type { ExtractionRequest } from '@/lib/nlp/types'
 
@@ -13,6 +14,8 @@ export const runtime = 'nodejs' // Cannot use Edge Runtime due to Prisma
 export const maxDuration = 60 // 60 seconds timeout for LLM processing
 
 export async function POST(request: NextRequest) {
+  const auth = await requireAuth()
+  if (auth instanceof Response) return auth
   try {
     const body = (await request.json()) as ExtractionRequest
 

@@ -6,11 +6,14 @@
  */
 
 import { NextResponse } from 'next/server'
+import { requireAuth } from '@/lib/auth'
 import { getGraphStats } from '@/lib/nlp/pipeline'
 
 export const runtime = 'nodejs'
 
 export async function GET() {
+  const auth = await requireAuth()
+  if (auth instanceof Response) return auth
   try {
     const stats = await getGraphStats()
 

@@ -4,11 +4,14 @@
  */
 
 import { NextResponse } from 'next/server';
+import { requireAuth } from '@/lib/auth';
 
 export const runtime = 'nodejs';
 export const maxDuration = 60;
 
 export async function GET() {
+    const auth = await requireAuth()
+    if (auth instanceof Response) return auth
     const diagnostics: any = {
         timestamp: new Date().toISOString(),
         tests: {},

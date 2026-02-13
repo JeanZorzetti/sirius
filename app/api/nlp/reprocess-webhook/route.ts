@@ -6,6 +6,7 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server'
+import { requireAuth } from '@/lib/auth'
 import {
   handleReprocessWebhook,
   type ReprocessWebhookPayload,
@@ -15,6 +16,8 @@ export const runtime = 'nodejs'
 export const maxDuration = 60
 
 export async function POST(request: NextRequest) {
+  const auth = await requireAuth()
+  if (auth instanceof Response) return auth
   try {
     const payload: ReprocessWebhookPayload = await request.json()
 

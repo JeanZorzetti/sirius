@@ -6,6 +6,7 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server'
+import { requireAuth } from '@/lib/auth'
 import { processBlogPostsBatch } from '@/lib/nlp/blog-processor'
 import { blogPosts } from '@/lib/blog-data'
 import { prisma } from '@/lib/prisma'
@@ -14,6 +15,8 @@ export const runtime = 'nodejs'
 export const maxDuration = 300 // 5 minutes for batch processing
 
 export async function POST(request: NextRequest) {
+  const auth = await requireAuth()
+  if (auth instanceof Response) return auth
   try {
     const body = await request.json()
     const { force = false, slugs } = body

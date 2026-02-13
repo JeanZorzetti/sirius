@@ -6,6 +6,7 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server'
+import { requireAuth } from '@/lib/auth'
 import { retrieveWithGraphAugmentation } from '@/lib/nlp/graph-rag'
 import { z } from 'zod'
 
@@ -20,6 +21,8 @@ const QuerySchema = z.object({
 })
 
 export async function POST(request: NextRequest) {
+  const auth = await requireAuth()
+  if (auth instanceof Response) return auth
   try {
     const body = await request.json()
     const params = QuerySchema.parse(body)

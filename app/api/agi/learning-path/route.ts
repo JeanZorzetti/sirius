@@ -6,11 +6,14 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server'
+import { requireAuth } from '@/lib/auth'
 import { gerarCaminhoAprendizado } from '@/lib/agi/graph-skills'
 
 export const runtime = 'nodejs'
 
 export async function GET(request: NextRequest) {
+  const auth = await requireAuth()
+  if (auth instanceof Response) return auth
   try {
     const { searchParams } = request.nextUrl
     const topic = searchParams.get('topic')
