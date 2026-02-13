@@ -2,6 +2,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { Button } from '@/components/ui/button'
 import { MobileNav } from '@/components/marketing/mobile-nav'
+import { NavDropdowns } from '@/components/marketing/nav-dropdowns'
 import { Footer } from '@/components/marketing/footer'
 
 export default function MarketingLayout({
@@ -35,6 +36,7 @@ export default function MarketingLayout({
               >
                 Funcionalidades
               </Link>
+              <NavDropdowns />
               <Link
                 href="/pricing"
                 className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
@@ -57,10 +59,11 @@ export default function MarketingLayout({
             </div>
           </div>
           <div className="flex items-center gap-4">
-            <Button variant="ghost" asChild>
+            <MobileNav />
+            <Button variant="ghost" asChild className="hidden md:inline-flex">
               <Link href="/login">Entrar</Link>
             </Button>
-            <Button asChild>
+            <Button asChild className="hidden md:inline-flex">
               <Link href="/register">Começar Grátis</Link>
             </Button>
           </div>
