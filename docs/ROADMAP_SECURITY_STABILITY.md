@@ -53,7 +53,7 @@
 - **Impacto:** Kanban, tabelas e charts quebram em tela pequena
 - **Prioridade:** Kanban > Analytics > Settings
 
-### 11. [ ] Completar integração WhatsApp (upload mídia + templates)
+### 11. [x] Completar integração WhatsApp (upload mídia + templates)
 - **Impacto:** Feature incompleta para usuários
 
 ### 12. [ ] Documentar/resolver dependência da Prospecção Google Maps
@@ -100,7 +100,7 @@
 | 8 | DONE | Loading states (12 pages) |
 | 9 | DONE | Rate limiting (22 routes) |
 | 10 | DONE | Mobile responsiveness (6 components) |
-| 11 | Pendente | WhatsApp completo |
+| 11 | DONE | WhatsApp media upload |
 | 12 | Pendente | Prospecção docs |
 | 13 | Pendente | Confirmation dialogs |
 | 14 | Pendente | Empty states |

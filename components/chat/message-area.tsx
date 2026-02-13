@@ -4,7 +4,7 @@ import { useState, useEffect, useRef, useCallback, useOptimistic } from 'react'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import {
-  Send, Users, Loader2, Check, CheckCheck, Mic,
+  Send, Users, Loader2, Check, CheckCheck, Mic, Paperclip,
   Image as ImageIcon, Video, FileText, Download, Play, Pause,
   File, Search, Reply, X, Info, ArrowLeft,
 } from 'lucide-react'
@@ -407,6 +407,9 @@ export function MessageArea({ contact, connections, organizationId, userId, user
   const [replyingTo, setReplyingTo] = useState<WhatsAppMessage | null>(null)
   const [showSidebar, setShowSidebar] = useState(false)
   const [contactData, setContactData] = useState<Contact | null>(null)
+  const [pendingFile, setPendingFile] = useState<File | null>(null)
+  const [pendingFilePreview, setPendingFilePreview] = useState<string | null>(null)
+  const fileInputRef = useRef<HTMLInputElement>(null)
   const [users, setUsers] = useState<User[]>([])
   const [isTyping, setIsTyping] = useState(false)
   const typingTimeoutRef = useRef<NodeJS.Timeout | null>(null)
@@ -665,6 +668,93 @@ export function MessageArea({ contact, connections, organizationId, userId, user
       toast.error(err.message||'Erro ao enviar')
     }
     finally { setSending(false) }
+  }
+
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+    if (file.size > 16 * 1024 * 1024) {
+      toast.error('Arquivo muito grande. Máximo 16MB.')
+      return
+    }
+    setPendingFile(file)
+    if (file.type.startsWith('image/')) {
+      const url = URL.createObjectURL(file)
+      setPendingFilePreview(url)
+    } else {
+      setPendingFilePreview(null)
+    }
+  }
+
+  const cancelFile = () => {
+    setPendingFile(null)
+    if (pendingFilePreview) {
+      URL.revokeObjectURL(pendingFilePreview)
+      setPendingFilePreview(null)
+    }
+    if (fileInputRef.current) fileInputRef.current.value = ''
+  }
+
+  const sendMedia = async () => {
+    if (!pendingFile || !conn) return
+    const tempId = `temp-media-${Date.now()}`
+    const mediaLabel = pendingFile.type.startsWith('image/') ? '[Imagem]'
+      : pendingFile.type.startsWith('video/') ? '[Vídeo]'
+      : pendingFile.type.startsWith('audio/') ? '[Áudio]'
+      : `[Documento] ${pendingFile.name}`
+
+    const caption = text.trim()
+    const messageText = caption ? `${mediaLabel} ${caption}` : mediaLabel
+
+    const optimisticMsg: WhatsAppMessage = {
+      id: tempId,
+      text: messageText,
+      direction: 'OUTBOUND',
+      sentAt: new Date(),
+      deliveredAt: null,
+      readAt: null,
+      status: 'SENDING',
+      mediaUrl: pendingFilePreview,
+      mediaType: pendingFile.type.startsWith('image/') ? 'image'
+        : pendingFile.type.startsWith('video/') ? 'video'
+        : pendingFile.type.startsWith('audio/') ? 'audio' : 'document',
+      messageId: undefined,
+      replyToId: null,
+      replyToText: null,
+      reactions: [],
+    }
+
+    addOptimisticMessage(optimisticMsg)
+    setText('')
+    const fileToSend = pendingFile
+    cancelFile()
+    setTimeout(() => scrollToBottom(), 50)
+
+    setSending(true)
+    try {
+      const formData = new FormData()
+      formData.append('file', fileToSend)
+      formData.append('connectionId', conn)
+      formData.append('contactId', contact.id)
+      if (caption) formData.append('caption', caption)
+
+      const r = await fetch('/api/whatsapp/send-media', {
+        method: 'POST',
+        body: formData,
+      })
+      if (!r.ok) {
+        const d = await r.json()
+        throw new Error(d.error)
+      }
+      const confirmedMsg = await r.json()
+      setMessages(prev => prev.map(m => m.id === tempId ? confirmedMsg : m))
+      setTimeout(() => scrollToBottom(), 100)
+    } catch (err: any) {
+      setMessages(prev => prev.filter(m => m.id !== tempId))
+      toast.error(err.message || 'Erro ao enviar mídia')
+    } finally {
+      setSending(false)
+    }
   }
 
   const fmtTime = (d: Date) => new Date(d).toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'})
@@ -1011,8 +1101,46 @@ export function MessageArea({ contact, connections, organizationId, userId, user
         </div>
       )}
 
+      {/* File preview bar */}
+      {pendingFile && (
+        <div className="px-3 py-2 bg-[#e2f7cb] dark:bg-emerald-900/30 border-t border-[#e9edef] dark:border-zinc-700 flex items-center gap-3">
+          {pendingFilePreview ? (
+            <img src={pendingFilePreview} alt="Preview" className="h-12 w-12 rounded object-cover" />
+          ) : (
+            <div className="h-12 w-12 rounded bg-white/50 dark:bg-white/10 flex items-center justify-center">
+              <FileText className="h-6 w-6 text-[#54656f]" />
+            </div>
+          )}
+          <div className="flex-1 min-w-0">
+            <p className="text-sm font-medium truncate text-[#111b21] dark:text-white">{pendingFile.name}</p>
+            <p className="text-xs text-[#667781]">{(pendingFile.size / 1024).toFixed(0)} KB</p>
+          </div>
+          <button onClick={cancelFile} className="p-1 rounded-full hover:bg-black/5" title="Cancelar">
+            <X className="h-4 w-4 text-[#667781]" />
+          </button>
+        </div>
+      )}
+
       {/* Input area */}
       <div className="px-3 py-2 bg-[#f0f2f5] whatsapp-header border-t border-[#e9edef] dark:border-zinc-700 flex items-end gap-2">
+        {/* Attachment button */}
+        <input
+          ref={fileInputRef}
+          type="file"
+          className="hidden"
+          accept="image/*,video/*,audio/*,.pdf,.doc,.docx,.xls,.xlsx,.txt"
+          onChange={handleFileSelect}
+        />
+        <button
+          type="button"
+          onClick={() => fileInputRef.current?.click()}
+          disabled={sending}
+          aria-label="Anexar arquivo"
+          className="h-[42px] w-[42px] rounded-full flex items-center justify-center flex-shrink-0 text-[#54656f] hover:text-[#3b4a54] hover:bg-black/5 transition-colors"
+        >
+          <Paperclip className="h-5 w-5" />
+        </button>
+
         <div className="flex-1 relative">
           {/* Quick Reply Picker */}
           {showQuickReply && taRef.current && (
@@ -1061,14 +1189,14 @@ export function MessageArea({ contact, connections, organizationId, userId, user
         </div>
         <button
           type="button"
-          onClick={send}
-          disabled={sending}
-          aria-label={text.trim() ? 'Enviar mensagem' : 'Gravar áudio'}
+          onClick={pendingFile ? sendMedia : send}
+          disabled={sending || (!text.trim() && !pendingFile)}
+          aria-label={pendingFile ? 'Enviar arquivo' : text.trim() ? 'Enviar mensagem' : 'Gravar áudio'}
           className={cn(
             'h-[42px] w-[42px] rounded-full flex items-center justify-center flex-shrink-0',
             'transition-all duration-200 active:scale-90',
             'focus-visible:ring-2 focus-visible:ring-[#00a884] focus-visible:ring-offset-2',
-            text.trim()
+            (text.trim() || pendingFile)
               ? 'bg-[#00a884] hover:bg-[#008f72] text-white'
               : 'bg-transparent text-[#54656f] hover:text-[#3b4a54]'
           )}
