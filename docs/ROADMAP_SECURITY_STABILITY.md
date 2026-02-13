@@ -71,7 +71,7 @@
 
 ## BAIXO
 
-### 15. [ ] Remover dead code e libs não utilizadas
+### 15. [x] Remover dead code e libs não utilizadas
 - **Arquivos:** `lib/google-trends.ts`, `lib/ml/*.ts` (5), `lib/generative-ui/*`
 - **Rodar:** `npx depcheck` para dependências não usadas
 
@@ -104,6 +104,6 @@
 | 12 | DONE | Prospecção config check + banner |
 | 13 | DONE | Confirmation dialogs (10 actions, 7 pages) |
 | 14 | DONE | Empty states (automations, webhooks, pipelines) |
-| 15 | Pendente | Dead code cleanup |
+| 15 | DONE | Dead code cleanup (6 deps removed) |
 | 16 | Pendente | Error messages i18n |
 | 17 | Pendente | Integrações teste |
