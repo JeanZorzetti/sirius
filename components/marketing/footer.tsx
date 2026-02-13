@@ -34,6 +34,11 @@ export function Footer() {
                 </Link>
               </li>
               <li>
+                <Link href="/fundadores" className="text-amber-600 hover:text-amber-700 transition-colors font-medium">
+                  ⭐ Programa de Fundadores
+                </Link>
+              </li>
+              <li>
                 <Link href="/followup" className="text-muted-foreground hover:text-foreground transition-colors">
                   Follow-up Automático
                 </Link>

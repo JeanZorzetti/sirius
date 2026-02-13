@@ -1,23 +1,26 @@
 import { Metadata } from 'next'
 import Link from 'next/link'
 import Script from 'next/script'
-import { Check } from 'lucide-react'
+import { Check, Star } from 'lucide-react'
 
 export const metadata: Metadata = {
   title: 'Preços e Planos | Sirius CRM — Plano Gratuito Disponível',
-  description: 'Sirius CRM Solopreneur grátis para sempre. Growth por R$49/mês com 5 usuários, automações e suporte prioritário. Sem cartão para começar.',
+  description: 'Sirius CRM gratuito para sempre. Starter R$49/mês, Pro R$97/mês, Business R$149/mês. Sem cartão para começar.',
+  keywords: ['crm preços', 'sirius crm planos', 'crm gratuito brasil', 'starter pro business', 'assinatura crm'],
   alternates: { canonical: 'https://sirius.roilabs.com.br/pricing' },
   openGraph: {
     title: 'Preços e Planos | Sirius CRM',
-    description: 'Plano gratuito + Growth R$49/mês. Pipeline visual, automações, WhatsApp integrado.',
+    description: 'Plano gratuito + Starter R$49, Pro R$97, Business R$149/mês. Pipeline visual, automações, WhatsApp integrado.',
     url: 'https://sirius.roilabs.com.br/pricing',
+    images: [{ url: 'https://sirius.roilabs.com.br/og-image.png', width: 1200, height: 630 }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Preços e Planos | Sirius CRM',
-    description: 'Plano gratuito + Growth R$49/mês. Pipeline visual, automações, WhatsApp integrado.',
+    description: 'Plano gratuito + Starter R$49, Pro R$97, Business R$149/mês. Pipeline visual, automações, WhatsApp integrado.',
   },
 }
+
 import { Button } from '@/components/ui/button'
 import {
     Card,
@@ -32,49 +35,74 @@ import { TrackedSignupButton } from '@/components/analytics/tracked-signup-butto
 
 const tiers = [
     {
-        name: 'Solopreneur',
-        id: 'tier-solo',
-        href: '/login', // Goes to login/register flow
+        name: 'Gratuito',
+        id: 'tier-free',
+        href: '/register',
         priceMonthly: 'Grátis',
-        description: 'Para quem está começando e precisa organizar a casa.',
+        description: 'Para testar e organizar suas vendas.',
         features: [
             '1 Usuário',
-            'Até 50 Negócios ativos',
-            'Gestão de Contatos Ilimitada',
+            '100 Contatos',
+            '50 Negócios ativos',
             '1 Pipeline Kanban',
             'Suporte via Comunidade',
         ],
         featured: false,
     },
     {
-        name: 'Growth',
-        id: 'tier-growth',
-        href: '/login',
+        name: 'Starter',
+        id: 'tier-starter',
+        href: '/register',
         priceMonthly: 'R$ 49',
-        description: 'Para times em crescimento que precisam de automação.',
+        description: 'Para pequenas empresas que querem crescer.',
         features: [
-            'Até 5 Usuários',
-            'Negócios Ilimitados',
-            'Analytics Avançado',
-            '✨ Múltiplos Pipelines',
-            'Automação de E-mails (Em breve)',
-            'Suporte Prioritário',
+            'Até 3 Usuários',
+            '500 Contatos',
+            '200 Negócios ativos',
+            '3 Pipelines Kanban',
+            '1 instância WhatsApp',
+            '50 créditos de prospecção/mês',
+            'Suporte por e-mail',
+        ],
+        featured: false,
+    },
+    {
+        name: 'Pro',
+        id: 'tier-pro',
+        href: '/register',
+        priceMonthly: 'R$ 97',
+        description: 'Para equipes em crescimento que precisam de mais.',
+        features: [
+            'Até 10 Usuários',
+            '2.000 Contatos',
+            '1.000 Negócios ativos',
+            '10 Pipelines Kanban',
+            '1 instância WhatsApp',
+            '200 créditos de prospecção/mês',
+            'AGI Sirius (IA comercial)',
+            'Analytics avançado',
+            'Webhooks + API pública',
+            'Suporte prioritário',
         ],
         featured: true,
     },
     {
-        name: 'Enterprise',
-        id: 'tier-enterprise',
-        href: '/contact', // Contact page for custom sales inquiries
-        priceMonthly: 'Sob Consulta',
-        description: 'Solução personalizada para grandes operações.',
+        name: 'Business',
+        id: 'tier-business',
+        href: '/register',
+        priceMonthly: 'R$ 149',
+        description: 'Para grandes operações com máxima escala.',
         features: [
-            'Usuários Ilimitados',
-            'API Dedicada',
-            'Onboarding Personalizado',
-            'Gerente de Conta Dedicado',
-            'SLA de 99.9%',
-            'SSO & Segurança Avançada',
+            'Até 50 Usuários',
+            'Contatos Ilimitados',
+            'Negócios Ilimitados',
+            '50 Pipelines Kanban',
+            '5 instâncias WhatsApp',
+            '1.000 créditos de prospecção/mês',
+            'Round-Robin de leads',
+            'Relatórios personalizados',
+            'SSO & Audit Log',
+            'Gerente de conta dedicado',
         ],
         featured: false,
     },
@@ -85,18 +113,8 @@ export default function PricingPage() {
         "@context": "https://schema.org",
         "@type": "BreadcrumbList",
         "itemListElement": [
-            {
-                "@type": "ListItem",
-                "position": 1,
-                "name": "Home",
-                "item": "https://sirius.roilabs.com.br"
-            },
-            {
-                "@type": "ListItem",
-                "position": 2,
-                "name": "Preços",
-                "item": "https://sirius.roilabs.com.br/pricing"
-            }
+            { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://sirius.roilabs.com.br" },
+            { "@type": "ListItem", "position": 2, "name": "Preços", "item": "https://sirius.roilabs.com.br/pricing" }
         ]
     };
 
@@ -117,7 +135,7 @@ export default function PricingPage() {
             {
                 "@type": "Question",
                 "name": "Preciso de cartão para começar?",
-                "acceptedAnswer": { "@type": "Answer", "text": "Não! O plano Solopreneur é gratuito para sempre. Só pedimos cartão quando você quiser fazer upgrade." }
+                "acceptedAnswer": { "@type": "Answer", "text": "Não! O plano Gratuito não precisa de cartão. Só pedimos cartão quando você quiser fazer upgrade." }
             },
             {
                 "@type": "Question",
@@ -127,7 +145,7 @@ export default function PricingPage() {
             {
                 "@type": "Question",
                 "name": "Como funciona a garantia de 7 dias?",
-                "acceptedAnswer": { "@type": "Answer", "text": "Teste o plano Growth sem risco! Se não gostar nos primeiros 7 dias, devolvemos 100% do seu dinheiro, sem perguntas." }
+                "acceptedAnswer": { "@type": "Answer", "text": "Teste qualquer plano pago sem risco! Se não gostar nos primeiros 7 dias, devolvemos 100% do seu dinheiro, sem perguntas." }
             },
             {
                 "@type": "Question",
@@ -137,7 +155,7 @@ export default function PricingPage() {
             {
                 "@type": "Question",
                 "name": "Tem suporte em português?",
-                "acceptedAnswer": { "@type": "Answer", "text": "Sim! Todo o suporte é em português, com times brasileiros. Plano Growth tem prioridade." }
+                "acceptedAnswer": { "@type": "Answer", "text": "Sim! Todo o suporte é em português, com times brasileiros. Planos Pro e Business têm prioridade." }
             }
         ]
     };
@@ -149,27 +167,35 @@ export default function PricingPage() {
         "itemListElement": [
             {
                 "@type": "Offer",
-                "name": "Plano Solopreneur",
+                "name": "Plano Gratuito",
                 "price": "0",
                 "priceCurrency": "BRL",
                 "availability": "https://schema.org/InStock",
-                "description": "Para quem está começando e precisa organizar a casa. 1 usuário, até 50 negócios ativos."
+                "description": "Para testar e organizar suas vendas. 1 usuário, 100 contatos, 50 negócios."
             },
             {
                 "@type": "Offer",
-                "name": "Plano Growth",
+                "name": "Plano Starter",
                 "price": "49",
                 "priceCurrency": "BRL",
                 "availability": "https://schema.org/InStock",
-                "description": "Para times em crescimento. Até 5 usuários, negócios ilimitados, analytics avançado."
+                "description": "Para pequenas empresas. Até 3 usuários, 500 contatos, 200 negócios, WhatsApp integrado."
             },
             {
                 "@type": "Offer",
-                "name": "Plano Enterprise",
-                "price": "0",
+                "name": "Plano Pro",
+                "price": "97",
                 "priceCurrency": "BRL",
                 "availability": "https://schema.org/InStock",
-                "description": "Solução personalizada para grandes operações. Usuários ilimitados, SLA garantido, onboarding dedicado."
+                "description": "Para equipes em crescimento. Até 10 usuários, 2.000 contatos, IA comercial, analytics avançado."
+            },
+            {
+                "@type": "Offer",
+                "name": "Plano Business",
+                "price": "149",
+                "priceCurrency": "BRL",
+                "availability": "https://schema.org/InStock",
+                "description": "Para grandes operações. Até 50 usuários, contatos ilimitados, 5 instâncias WhatsApp, SSO."
             }
         ]
     };
@@ -184,8 +210,8 @@ export default function PricingPage() {
             "@type": "AggregateOffer",
             "priceCurrency": "BRL",
             "lowPrice": "0",
-            "highPrice": "49",
-            "offerCount": "3"
+            "highPrice": "149",
+            "offerCount": "4"
         },
         "aggregateRating": {
             "@type": "AggregateRating",
@@ -243,7 +269,26 @@ export default function PricingPage() {
                 Comece grátis hoje e faça upgrade quando seu time crescer. Sem surpresas, sem taxas escondidas.
             </p>
 
-            <div className="mx-auto mt-16 grid max-w-lg grid-cols-1 gap-y-6 sm:mt-20 sm:gap-y-0 lg:max-w-4xl lg:grid-cols-3 lg:gap-x-8">
+            {/* Founders CTA Banner */}
+            <div className="mx-auto mt-10 max-w-4xl">
+                <div className="rounded-xl border border-amber-200 bg-gradient-to-r from-amber-50 to-orange-50 p-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+                    <div className="flex items-center gap-3">
+                        <Star className="w-6 h-6 text-amber-500 fill-amber-400 shrink-0" />
+                        <div>
+                            <p className="font-semibold text-amber-900">Programa de Fundadores — 41% OFF vitalício!</p>
+                            <p className="text-sm text-amber-700">Starter R$29 · Pro R$57 · Business R$88/mês para sempre. Vagas limitadas.</p>
+                        </div>
+                    </div>
+                    <Button asChild className="bg-amber-500 hover:bg-amber-600 text-white shrink-0">
+                        <Link href="/fundadores">
+                            <Star className="w-4 h-4 mr-2 fill-white" />
+                            Ver oferta
+                        </Link>
+                    </Button>
+                </div>
+            </div>
+
+            <div className="mx-auto mt-16 grid max-w-6xl grid-cols-1 gap-y-6 sm:mt-20 sm:gap-y-0 lg:grid-cols-4 lg:gap-x-6">
                 {tiers.map((tier) => (
                     <Card
                         key={tier.id}
@@ -263,7 +308,7 @@ export default function PricingPage() {
                         <CardContent>
                             <div className="mt-4 flex items-baseline gap-x-2">
                                 <span className="text-4xl font-bold tracking-tight">{tier.priceMonthly}</span>
-                                {tier.priceMonthly !== 'Sob Consulta' && tier.priceMonthly !== 'Grátis' && <span className="text-sm font-semibold leading-6 text-muted-foreground">/mês</span>}
+                                {tier.priceMonthly !== 'Grátis' && <span className="text-sm font-semibold leading-6 text-muted-foreground">/mês</span>}
                             </div>
                             <ul role="list" className="mt-8 space-y-3 text-sm leading-6 text-muted-foreground">
                                 {tier.features.map((feature) => (
@@ -277,7 +322,7 @@ export default function PricingPage() {
                         <CardFooter className="flex flex-col gap-3">
                             <Button asChild className="w-full" variant={tier.featured ? 'default' : 'outline'}>
                                 <Link href={tier.href} aria-describedby={tier.id}>
-                                    {tier.name === 'Enterprise' ? 'Falar com Vendas' : 'Começar Agora'}
+                                    Começar Agora
                                 </Link>
                             </Button>
                             {tier.featured && (
@@ -310,8 +355,8 @@ export default function PricingPage() {
                             <div className="text-sm text-muted-foreground">Aumento em taxa de conversão</div>
                         </div>
                         <div className="text-center p-6 rounded-xl bg-purple-500/5">
-                            <div className="text-3xl font-bold text-purple-600 dark:text-purple-400 mb-2">R$ 49</div>
-                            <div className="text-sm text-muted-foreground">Investimento mensal (Growth)</div>
+                            <div className="text-3xl font-bold text-purple-600 dark:text-purple-400 mb-2">R$ 97</div>
+                            <div className="text-sm text-muted-foreground">Investimento mensal (Pro)</div>
                         </div>
                     </div>
                     <div className="text-center text-sm text-muted-foreground">
@@ -340,7 +385,7 @@ export default function PricingPage() {
                     <div>
                         <h4 className="font-semibold mb-2 text-primary">Preciso de cartão para começar?</h4>
                         <p className="text-sm text-muted-foreground">
-                            Não! O plano Solopreneur é gratuito para sempre. Só pedimos cartão quando você quiser fazer upgrade.
+                            Não! O plano Gratuito é para sempre, sem cartão. Só pedimos quando você quiser fazer upgrade.
                         </p>
                     </div>
                     <div>
@@ -352,7 +397,7 @@ export default function PricingPage() {
                     <div>
                         <h4 className="font-semibold mb-2 text-primary">Como funciona a garantia de 7 dias?</h4>
                         <p className="text-sm text-muted-foreground">
-                            Teste o plano Growth sem risco! Se não gostar nos primeiros 7 dias, devolvemos 100% do seu dinheiro, sem perguntas.
+                            Teste qualquer plano pago sem risco! Se não gostar nos primeiros 7 dias, devolvemos 100% do seu dinheiro, sem perguntas.
                         </p>
                     </div>
                     <div>
@@ -364,7 +409,7 @@ export default function PricingPage() {
                     <div>
                         <h4 className="font-semibold mb-2 text-primary">Tem suporte em português?</h4>
                         <p className="text-sm text-muted-foreground">
-                            Sim! Todo o suporte é em português, com times brasileiros. Plano Growth tem prioridade.
+                            Sim! Todo o suporte é em português, com times brasileiros. Planos Pro e Business têm prioridade.
                         </p>
                     </div>
                 </div>

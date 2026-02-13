@@ -2,10 +2,11 @@
 
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
+import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { Check, X, Loader2, Sparkles, Zap, Building2, Crown } from 'lucide-react'
+import { Check, X, Loader2, Sparkles, Zap, Building2, Crown, Star } from 'lucide-react'
 import { toast } from 'sonner'
 import { PLAN_LIMITS, PLAN_PRICING, PLAN_NAMES, PLAN_DESCRIPTIONS } from '@/lib/entitlements'
 import { SubscriptionTier } from '@prisma/client'
@@ -58,27 +59,23 @@ export default function PlansPage() {
   }
 
   const handleUpgrade = async (tier: SubscriptionTier) => {
-    if (tier === currentTier) return
-    
+    if (tier === currentTier || tier === SubscriptionTier.FREE) return
+
     setProcessing(tier)
-    
+
     try {
-      const res = await fetch('/api/billing/upgrade', {
+      const res = await fetch('/api/mercadopago/checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ tier }),
+        body: JSON.stringify({ plan: tier }),
       })
 
       const data = await res.json()
 
-      if (data.url) {
-        // Redirecionar para checkout do Stripe
-        window.location.href = data.url
-      } else if (data.success) {
-        toast.success('Plano atualizado com sucesso!')
-        router.refresh()
+      if (data.checkoutUrl) {
+        window.location.href = data.checkoutUrl
       } else {
-        toast.error(data.error || 'Erro ao processar upgrade')
+        toast.error(data.error || 'Erro ao iniciar checkout')
       }
     } catch (error) {
       toast.error('Erro ao processar upgrade')
@@ -103,8 +100,8 @@ export default function PlansPage() {
   const getButtonText = (tier: SubscriptionTier) => {
     if (processing === tier) return <Loader2 className="h-4 w-4 animate-spin" />
     if (tier === currentTier) return 'Plano Atual'
-    if (tier === SubscriptionTier.FREE) return 'Usar Grátis'
-    return 'Escolher Plano'
+    if (tier === SubscriptionTier.FREE) return 'Plano Gratuito'
+    return 'Fazer Upgrade'
   }
 
   if (loading) {
@@ -123,6 +120,27 @@ export default function PlansPage() {
           Escolha o plano ideal para o seu negócio. Faça upgrade ou downgrade a qualquer momento.
         </p>
       </div>
+
+      {/* Founders Program Banner */}
+      <Card className="border-amber-200 bg-gradient-to-r from-amber-50 to-orange-50">
+        <CardContent className="flex items-center justify-between gap-4 py-4 flex-wrap">
+          <div className="flex items-center gap-3">
+            <Star className="w-6 h-6 text-amber-500 fill-amber-400 shrink-0" />
+            <div>
+              <p className="font-semibold text-amber-900">Programa de Fundadores — 41% OFF vitalício!</p>
+              <p className="text-sm text-amber-700">
+                Starter R$29 · Pro R$57 · Business R$88 — preço que nunca sobe. Vagas limitadas.
+              </p>
+            </div>
+          </div>
+          <Button asChild className="bg-amber-500 hover:bg-amber-600 text-white shrink-0">
+            <Link href="/fundadores">
+              <Star className="w-4 h-4 mr-2 fill-white" />
+              Ver oferta
+            </Link>
+          </Button>
+        </CardContent>
+      </Card>
 
       {/* Cards dos Planos */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -164,7 +182,7 @@ export default function PlansPage() {
               <Button
                 className="w-full"
                 variant={currentTier === tier ? 'secondary' : 'default'}
-                disabled={processing !== null || currentTier === tier}
+                disabled={processing !== null || currentTier === tier || tier === SubscriptionTier.FREE}
                 onClick={() => handleUpgrade(tier)}
               >
                 {getButtonText(tier)}

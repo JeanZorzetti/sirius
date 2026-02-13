@@ -47,6 +47,13 @@ export default function MarketingLayout({
               >
                 Blog
               </Link>
+              <Link
+                href="/fundadores"
+                className="text-sm font-semibold text-amber-600 hover:text-amber-700 transition-colors flex items-center gap-1"
+              >
+                <span>⭐</span>
+                Fundadores
+              </Link>
             </div>
           </div>
           <div className="flex items-center gap-4">

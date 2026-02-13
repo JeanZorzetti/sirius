@@ -44,6 +44,14 @@ export function MobileNav() {
                     >
                         Blog
                     </Link>
+                    <Link
+                        href="/fundadores"
+                        onClick={() => setOpen(false)}
+                        className="text-sm font-semibold text-amber-600 hover:text-amber-700 transition-colors flex items-center gap-1"
+                    >
+                        <span>⭐</span>
+                        Fundadores — 41% OFF vitalício
+                    </Link>
                     <div className="border-t pt-4 mt-4 flex flex-col gap-4">
                         <Button variant="outline" asChild className="w-full justify-start">
                             <Link href="/login" onClick={() => setOpen(false)}>Entrar</Link>
