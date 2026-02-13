@@ -7,6 +7,8 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { AutomationToggleForm } from './toggle-form'
 import { DeleteAutomationButton } from './delete-button'
+import { EmptyState } from '@/components/ui/empty-state'
+import { Zap } from 'lucide-react'
 
 export const metadata: Metadata = {
   title: 'Automações de Negócios | Sirius CRM'
@@ -105,21 +107,16 @@ export default async function AutomationsPage() {
 
       {/* Empty state */}
       {automations.length === 0 && (
-        <Card>
-          <CardContent className="flex flex-col items-center justify-center py-16 text-center">
-            <p className="text-lg font-medium text-muted-foreground">
-              Nenhuma automação configurada
-            </p>
-            <p className="text-sm text-muted-foreground mt-2">
-              Crie sua primeira automação para executar ações automáticas nos seus negócios.
-            </p>
-            {isPro && (
-              <Button asChild className="mt-4">
-                <Link href="/dashboard/automations/new">Criar automação</Link>
-              </Button>
-            )}
-          </CardContent>
-        </Card>
+        <EmptyState
+          icon={Zap}
+          title="Nenhuma automação configurada"
+          description="Crie sua primeira automação para executar ações automáticas nos seus negócios."
+          action={isPro ? (
+            <Button asChild>
+              <Link href="/dashboard/automations/new">Criar automação</Link>
+            </Button>
+          ) : undefined}
+        />
       )}
 
       {/* Automations list */}

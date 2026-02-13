@@ -252,8 +252,18 @@ export default function WebhooksManagementPage() {
             </CardHeader>
             <CardContent>
               {webhooks.length === 0 ? (
-                <div className="text-center py-8 text-zinc-500 text-sm">
-                  Nenhum webhook configurado. Crie um para começar a receber eventos.
+                <div className="flex flex-col items-center justify-center py-12 text-center">
+                  <div className="flex h-16 w-16 items-center justify-center rounded-full bg-muted mb-4">
+                    <Webhook className="h-8 w-8 text-muted-foreground" />
+                  </div>
+                  <p className="font-medium">Nenhum webhook configurado</p>
+                  <p className="text-sm text-muted-foreground mt-1 max-w-sm">
+                    Crie um webhook para receber eventos em tempo real no seu servidor.
+                  </p>
+                  <Button onClick={() => setShowCreateDialog(true)} className="mt-4" size="sm">
+                    <Plus className="h-4 w-4 mr-2" />
+                    Criar Primeiro Webhook
+                  </Button>
                 </div>
               ) : (
                 <div className="space-y-4">

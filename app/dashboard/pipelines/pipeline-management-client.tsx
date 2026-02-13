@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { Plus, Star, Pencil, Trash2, MoreHorizontal } from 'lucide-react'
+import { Plus, Star, Pencil, Trash2, MoreHorizontal, GitBranch } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import {
   Table,
@@ -190,8 +190,16 @@ export function PipelineManagementClient({ pipelines: initialPipelines, isPro }:
           <TableBody>
             {pipelines.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={5} className="text-center text-muted-foreground py-8">
-                  Nenhum pipeline encontrado. Crie seu primeiro pipeline!
+                <TableCell colSpan={5} className="py-12">
+                  <div className="flex flex-col items-center justify-center text-center">
+                    <div className="flex h-14 w-14 items-center justify-center rounded-full bg-muted mb-3">
+                      <GitBranch className="h-7 w-7 text-muted-foreground" />
+                    </div>
+                    <p className="font-medium">Nenhum pipeline encontrado</p>
+                    <p className="text-sm text-muted-foreground mt-1">
+                      Crie seu primeiro pipeline para organizar seus negócios.
+                    </p>
+                  </div>
                 </TableCell>
               </TableRow>
             ) : (
