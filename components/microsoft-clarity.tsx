@@ -46,7 +46,7 @@ export function MicrosoftClarity() {
   return (
     <Script
       id="microsoft-clarity"
-      strategy="afterInteractive"
+      strategy="lazyOnload"
       onError={(error) => {
         // Silenciosamente logar erro de carregamento do script
         console.debug('[Clarity] Script load error:', error.message)

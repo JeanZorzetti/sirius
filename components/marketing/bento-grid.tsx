@@ -14,7 +14,7 @@ export function BentoGrid() {
                 <div className="grid grid-cols-1 md:grid-cols-3 md:grid-rows-2 gap-4 h-auto md:h-[600px]">
 
                     {/* Bento Item 1: Kanban (Large) */}
-                    <div className="md:col-span-2 md:row-span-2 group relative overflow-hidden rounded-3xl border border-white/10 bg-white/[0.02] backdrop-blur-xl hover:bg-white/[0.04] transition-colors p-8 flex flex-col">
+                    <div className="md:col-span-2 md:row-span-2 group relative overflow-hidden rounded-3xl border border-white/10 bg-white/[0.02] md:backdrop-blur-xl hover:bg-white/[0.04] transition-colors p-8 flex flex-col">
                         <div className="flex items-center justify-between mb-4">
                             <div className="p-3 rounded-xl bg-indigo-500/10 text-indigo-400 w-fit">
                                 <Kanban className="h-6 w-6" />
@@ -58,7 +58,7 @@ export function BentoGrid() {
                     </div>
 
                     {/* Bento Item 2: WhatsApp Integrado */}
-                    <div className="group relative overflow-hidden rounded-3xl border border-white/10 bg-white/[0.02] backdrop-blur-xl hover:bg-white/[0.04] transition-colors p-6 flex flex-col justify-between">
+                    <div className="group relative overflow-hidden rounded-3xl border border-white/10 bg-white/[0.02] md:backdrop-blur-xl hover:bg-white/[0.04] transition-colors p-6 flex flex-col justify-between">
                         <div>
                             <div className="p-3 rounded-xl bg-green-500/10 text-green-400 w-fit mb-4">
                                 <MessageCircle className="h-6 w-6" />
@@ -78,7 +78,7 @@ export function BentoGrid() {
                     </div>
 
                     {/* Bento Item 3: Analytics PRO */}
-                    <div className="group relative overflow-hidden rounded-3xl border border-white/10 bg-white/[0.02] backdrop-blur-xl hover:bg-white/[0.04] transition-colors p-6">
+                    <div className="group relative overflow-hidden rounded-3xl border border-white/10 bg-white/[0.02] md:backdrop-blur-xl hover:bg-white/[0.04] transition-colors p-6">
                         <div className="absolute top-0 right-0 p-6 opacity-0 group-hover:opacity-100 transition-opacity">
                             <ArrowUpRight className="h-6 w-6 text-zinc-500" />
                         </div>
@@ -94,7 +94,7 @@ export function BentoGrid() {
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-4">
 
                     {/* Prospecção Google Maps */}
-                    <div className="group relative overflow-hidden rounded-3xl border border-white/10 bg-white/[0.02] backdrop-blur-xl hover:bg-white/[0.04] transition-colors p-6">
+                    <div className="group relative overflow-hidden rounded-3xl border border-white/10 bg-white/[0.02] md:backdrop-blur-xl hover:bg-white/[0.04] transition-colors p-6">
                         <div className="p-3 rounded-xl bg-blue-500/10 text-blue-400 w-fit mb-4">
                             <Search className="h-6 w-6" />
                         </div>
@@ -106,7 +106,7 @@ export function BentoGrid() {
                     </div>
 
                     {/* Automações */}
-                    <div className="group relative overflow-hidden rounded-3xl border border-white/10 bg-white/[0.02] backdrop-blur-xl hover:bg-white/[0.04] transition-colors p-6">
+                    <div className="group relative overflow-hidden rounded-3xl border border-white/10 bg-white/[0.02] md:backdrop-blur-xl hover:bg-white/[0.04] transition-colors p-6">
                         <div className="p-3 rounded-xl bg-amber-500/10 text-amber-400 w-fit mb-4">
                             <Zap className="h-6 w-6" />
                         </div>
@@ -118,7 +118,7 @@ export function BentoGrid() {
                     </div>
 
                     {/* Email Automations */}
-                    <div className="group relative overflow-hidden rounded-3xl border border-white/10 bg-white/[0.02] backdrop-blur-xl hover:bg-white/[0.04] transition-colors p-6">
+                    <div className="group relative overflow-hidden rounded-3xl border border-white/10 bg-white/[0.02] md:backdrop-blur-xl hover:bg-white/[0.04] transition-colors p-6">
                         <div className="p-3 rounded-xl bg-pink-500/10 text-pink-400 w-fit mb-4">
                             <Mail className="h-6 w-6" />
                         </div>
@@ -130,7 +130,7 @@ export function BentoGrid() {
                     </div>
 
                     {/* Mobile / Check-in */}
-                    <div className="group relative overflow-hidden rounded-3xl border border-white/10 bg-white/[0.02] backdrop-blur-xl hover:bg-white/[0.04] transition-colors p-6">
+                    <div className="group relative overflow-hidden rounded-3xl border border-white/10 bg-white/[0.02] md:backdrop-blur-xl hover:bg-white/[0.04] transition-colors p-6">
                         <div className="p-3 rounded-xl bg-teal-500/10 text-teal-400 w-fit mb-4">
                             <Smartphone className="h-6 w-6" />
                         </div>

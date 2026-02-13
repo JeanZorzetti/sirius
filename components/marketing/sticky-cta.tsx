@@ -9,16 +9,21 @@ export function StickyCTA() {
   const [isDismissed, setIsDismissed] = useState(false)
 
   useEffect(() => {
+    let ticking = false
     const handleScroll = () => {
-      // Show sticky CTA after user scrolls 500px
-      if (window.scrollY > 500 && !isDismissed) {
-        setIsVisible(true)
-      } else if (window.scrollY <= 500) {
-        setIsVisible(false)
-      }
+      if (ticking) return
+      ticking = true
+      requestAnimationFrame(() => {
+        if (window.scrollY > 500 && !isDismissed) {
+          setIsVisible(true)
+        } else if (window.scrollY <= 500) {
+          setIsVisible(false)
+        }
+        ticking = false
+      })
     }
 
-    window.addEventListener('scroll', handleScroll)
+    window.addEventListener('scroll', handleScroll, { passive: true })
     return () => window.removeEventListener('scroll', handleScroll)
   }, [isDismissed])
 

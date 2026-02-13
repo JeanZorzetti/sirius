@@ -211,9 +211,9 @@ export default function RootLayout({
         {/* Google Analytics - Can be managed via GTM or keep standalone */}
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-WJE82VNKX8"
-          strategy="afterInteractive"
+          strategy="lazyOnload"
         />
-        <Script id="google-analytics" strategy="afterInteractive">
+        <Script id="google-analytics" strategy="lazyOnload">
           {`
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
