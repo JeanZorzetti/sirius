@@ -364,7 +364,7 @@ ${guardrailsPrompt}`;
             // Validar guardrails
             const guardrailValidation = validateResponse(response.content);
             if (!guardrailValidation.isValid) {
-                console.error('[GUARDRAIL VIOLATION]', guardrailValidation.violations);
+                logger.error({ violations: guardrailValidation.violations }, '[GUARDRAIL VIOLATION]');
                 // Tentar novamente com prompt reforçado
                 response = await brain.think(
                     message,
@@ -391,7 +391,7 @@ ${guardrailsPrompt}`;
             // Detectar alucinações
             const hallucinations = detectHallucinations(response.content, enhancedContext);
             if (hallucinations.length > 0) {
-                console.error('[HALLUCINATION]', hallucinations);
+                logger.error({ err: hallucinations }, '[HALLUCINATION]');
                 response = await brain.think(
                     message,
                     enhancedContext,
@@ -441,7 +441,7 @@ ${guardrailsPrompt}`;
             qualificationScore: qualScore,
         });
     } catch (error) {
-        console.error('AGI Chat Error:', error);
+        logger.error({ err: error }, 'AGI Chat Error');
 
         // Check if it's an Ollama connection error (this check might become less relevant with multi-provider)
         if (error instanceof Error && error.message.includes('Failed to get response')) {

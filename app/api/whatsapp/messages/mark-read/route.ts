@@ -1,3 +1,4 @@
+import logger from '@/lib/logger'
 import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { getSession } from '@/lib/auth'
@@ -40,7 +41,7 @@ export async function PUT(req: Request) {
 
     return NextResponse.json({ success: true })
   } catch (error) {
-    console.error('Error marking messages as read:', error)
+    logger.error({ err: error }, 'Error marking messages as read')
     return NextResponse.json(
       { error: 'Failed to mark messages as read' },
       { status: 500 }

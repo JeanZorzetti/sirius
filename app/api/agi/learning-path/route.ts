@@ -5,6 +5,7 @@
  * Generates a progressive learning path for a topic.
  */
 
+import logger from '@/lib/logger'
 import { NextRequest, NextResponse } from 'next/server'
 import { requireAuth } from '@/lib/auth'
 import { gerarCaminhoAprendizado } from '@/lib/agi/graph-skills'
@@ -35,7 +36,7 @@ export async function GET(request: NextRequest) {
       learningPath: result,
     })
   } catch (error) {
-    console.error('[API /agi/learning-path] Error:', error)
+    logger.error({ err: error }, '[API /agi/learning-path] Error')
 
     return NextResponse.json(
       {

@@ -5,6 +5,7 @@
  * Returns graph data in D3.js compatible format.
  */
 
+import logger from '@/lib/logger'
 import { NextRequest, NextResponse } from 'next/server'
 import { requireAuth } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
@@ -57,7 +58,7 @@ export async function GET(request: NextRequest) {
     // Return subgraph around specific entity
     return await getSubgraph(entityId, depth, minStrength)
   } catch (error) {
-    console.error('[API /graph/visualization] Error:', error)
+    logger.error({ err: error }, '[API /graph/visualization] Error')
 
     return NextResponse.json(
       {

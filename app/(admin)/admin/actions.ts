@@ -1,5 +1,6 @@
 'use server'
 
+import logger from '@/lib/logger'
 import { prisma } from "@/lib/prisma"
 import { getSession, login } from "@/lib/auth"
 import { revalidatePath } from "next/cache"
@@ -63,7 +64,7 @@ export async function deleteOrganization(orgId: string) {
             where: { id: orgId },
         })
     } catch (e) {
-        console.error("Failed to delete organization", e)
+        logger.error({ err: e }, 'Failed to delete organization')
         throw new Error("Failed to delete organization")
     }
 

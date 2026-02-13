@@ -1,3 +1,4 @@
+import logger from '@/lib/logger'
 import { NextRequest, NextResponse } from 'next/server'
 import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
@@ -34,7 +35,7 @@ export async function GET(req: NextRequest) {
 
     return NextResponse.json(users)
   } catch (error) {
-    console.error('Error fetching users:', error)
+    logger.error({ err: error }, 'Error fetching users')
     return NextResponse.json(
       { error: 'Erro ao buscar usuários' },
       { status: 500 }

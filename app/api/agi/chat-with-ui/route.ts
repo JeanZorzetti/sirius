@@ -279,7 +279,7 @@ IMPORTANT: Use the intelligence analysis above to inform your decision. If a com
               month: today.getMonth() + 1,
             },
           }).catch((err: any) => {
-            console.error('Failed to log cache hit:', err)
+            logger.error({ err: err }, 'Failed to log cache hit')
           })
 
           return {
@@ -435,7 +435,7 @@ IMPORTANT: Use the intelligence analysis above to inform your decision. If a com
               componentAlreadyRendered = true
               logger.info('[AUTO-RENDER] Component rendered successfully')
             } catch (error) {
-              console.error('[AUTO-RENDER] Failed:', error)
+              logger.error({ err: error }, '[AUTO-RENDER] Failed')
             }
           }
 
@@ -462,7 +462,7 @@ IMPORTANT: Use the intelligence analysis above to inform your decision. If a com
                 logger.debug({ output: part.output }, '[STREAM] Tool result content')
               }
               if ((part as any).error) {
-                console.error('[STREAM] Tool error:', (part as any).error)
+                logger.error('[STREAM] Tool error:', (part as any).error)
               }
               if (part.toolName === 'render_ui_component' && part.output) {
                 // Send UI component metadata
@@ -508,7 +508,7 @@ IMPORTANT: Use the intelligence analysis above to inform your decision. If a com
       },
     })
   } catch (error) {
-    console.error('[chat-with-ui] Error:', error)
+    logger.error({ err: error }, '[chat-with-ui] Error')
     return NextResponse.json(
       {
         error: error instanceof Error ? error.message : 'Erro interno do servidor',

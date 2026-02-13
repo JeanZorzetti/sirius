@@ -1,3 +1,4 @@
+import logger from '@/lib/logger'
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { hash } from 'bcryptjs'
@@ -132,7 +133,7 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    console.error('Error creating user:', error)
+    logger.error({ err: error }, 'Error creating user')
     return NextResponse.json(
       { error: 'Erro ao criar usuário' },
       { status: 500 }
@@ -172,7 +173,7 @@ export async function GET() {
     return NextResponse.json({ organizations })
 
   } catch (error) {
-    console.error('Error fetching organizations:', error)
+    logger.error({ err: error }, 'Error fetching organizations')
     return NextResponse.json(
       { error: 'Erro ao buscar organizações' },
       { status: 500 }

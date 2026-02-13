@@ -5,6 +5,7 @@
  * Returns statistics about the knowledge graph (entities, relationships, extractions).
  */
 
+import logger from '@/lib/logger'
 import { NextResponse } from 'next/server'
 import { requireAuth } from '@/lib/auth'
 import { getGraphStats } from '@/lib/nlp/pipeline'
@@ -19,7 +20,7 @@ export async function GET() {
 
     return NextResponse.json(stats)
   } catch (error) {
-    console.error('[API /nlp/stats] Error:', error)
+    logger.error({ err: error }, '[API /nlp/stats] Error')
 
     return NextResponse.json(
       {

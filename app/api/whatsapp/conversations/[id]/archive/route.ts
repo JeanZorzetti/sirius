@@ -1,3 +1,4 @@
+import logger from '@/lib/logger'
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { getSession } from '@/lib/auth'
@@ -43,7 +44,7 @@ export async function PUT(
 
     return NextResponse.json(conversation)
   } catch (error) {
-    console.error('Error archiving conversation:', error)
+    logger.error({ err: error }, 'Error archiving conversation')
     return NextResponse.json(
       { error: 'Failed to archive conversation' },
       { status: 500 }

@@ -1,3 +1,4 @@
+import logger from '@/lib/logger'
 import { NextRequest, NextResponse } from 'next/server'
 import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
@@ -128,7 +129,7 @@ export async function POST(
       systemMessage,
     })
   } catch (error) {
-    console.error('Error assigning agent:', error)
+    logger.error({ err: error }, 'Error assigning agent')
     return NextResponse.json(
       { error: 'Erro ao atribuir agente' },
       { status: 500 }

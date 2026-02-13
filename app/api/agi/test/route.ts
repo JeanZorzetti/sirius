@@ -43,7 +43,7 @@ export async function GET() {
             timestamp: new Date().toISOString(),
         });
     } catch (error) {
-        console.error('Ollama connection test failed:', error);
+        logger.error({ err: error }, 'Ollama connection test failed');
 
         return NextResponse.json({
             success: false,

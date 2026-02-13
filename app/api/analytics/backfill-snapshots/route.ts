@@ -83,7 +83,7 @@ export async function POST(request: NextRequest) {
           totalDeals: snapshot.totalDeals,
         })
       } catch (error) {
-        console.error(`[BACKFILL] Error creating snapshot for ${date}:`, error)
+        logger.error({ err: error }, '[BACKFILL] Error creating snapshot for ${date}')
         results.push({
           date: date.toISOString().split('T')[0],
           success: false,
@@ -108,7 +108,7 @@ export async function POST(request: NextRequest) {
       results,
     })
   } catch (error) {
-    console.error('[BACKFILL] Error:', error)
+    logger.error({ err: error }, '[BACKFILL] Error')
 
     return NextResponse.json(
       {

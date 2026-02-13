@@ -1,3 +1,4 @@
+import logger from '@/lib/logger'
 import { NextRequest, NextResponse } from 'next/server'
 import { getSession } from '@/lib/auth'
 import { seedDemoData } from '@/lib/seed-demo-data'
@@ -64,7 +65,7 @@ export async function POST(request: NextRequest) {
       data: result.data
     })
   } catch (error) {
-    console.error('Error in seed-demo endpoint:', error)
+    logger.error({ err: error }, 'Error in seed-demo endpoint')
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

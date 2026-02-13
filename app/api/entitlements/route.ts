@@ -4,6 +4,7 @@
  * Retorna os entitlements completos da organização atual.
  */
 
+import logger from '@/lib/logger'
 import { NextResponse } from 'next/server'
 import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
@@ -35,7 +36,7 @@ export async function GET() {
 
     return NextResponse.json(entitlements)
   } catch (error) {
-    console.error('Error fetching entitlements:', error)
+    logger.error({ err: error }, 'Error fetching entitlements')
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

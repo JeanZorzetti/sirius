@@ -1,5 +1,6 @@
 'use server'
 
+import logger from '@/lib/logger'
 import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import {
@@ -67,7 +68,7 @@ export async function getOrganizationKPIs(
       }
     }
 
-    console.error('Error getting organization KPIs:', error)
+    logger.error({ err: error }, 'Error getting organization KPIs')
     return {
       success: false,
       error: 'FETCH_ERROR',
@@ -133,7 +134,7 @@ export async function getDealSnapshots(
       }
     }
 
-    console.error('Error getting deal snapshots:', error)
+    logger.error({ err: error }, 'Error getting deal snapshots')
     return {
       success: false,
       error: 'FETCH_ERROR',
@@ -207,7 +208,7 @@ export async function getConversionFunnelData(
       }
     }
 
-    console.error('Error getting conversion funnel data:', error)
+    logger.error({ err: error }, 'Error getting conversion funnel data')
     return {
       success: false,
       error: 'FETCH_ERROR',
@@ -284,7 +285,7 @@ export async function getWinLossData(
       }
     }
 
-    console.error('Error getting win/loss data:', error)
+    logger.error({ err: error }, 'Error getting win/loss data')
     return {
       success: false,
       error: 'FETCH_ERROR',
@@ -327,7 +328,7 @@ export async function getOrganizationPipelines() {
       }
     }
 
-    console.error('Error getting organization pipelines:', error)
+    logger.error({ err: error }, 'Error getting organization pipelines')
     return {
       success: false,
       error: 'FETCH_ERROR',

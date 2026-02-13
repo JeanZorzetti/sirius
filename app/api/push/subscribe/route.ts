@@ -1,3 +1,4 @@
+import logger from '@/lib/logger'
 import { NextRequest, NextResponse } from 'next/server'
 import { getSession } from '@/lib/auth'
 import { subscribeToPushNotifications } from '@/lib/push-notifications'
@@ -72,7 +73,7 @@ export async function POST(request: NextRequest) {
       subscriptionId: result.subscriptionId,
     })
   } catch (error) {
-    console.error('Error subscribing to push notifications:', error)
+    logger.error({ err: error }, 'Error subscribing to push notifications')
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

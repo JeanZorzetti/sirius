@@ -1,3 +1,4 @@
+import logger from '@/lib/logger'
 import { NextRequest, NextResponse } from 'next/server'
 import { getVariantForUser } from '@/lib/generative-ui/ab-testing'
 
@@ -31,7 +32,7 @@ export async function POST(
 
         return NextResponse.json({ variant })
     } catch (error) {
-        console.error('[assign-variant] Error:', error)
+        logger.error({ err: error }, '[assign-variant] Error')
         return NextResponse.json(
             { error: 'Failed to assign variant' },
             { status: 500 }

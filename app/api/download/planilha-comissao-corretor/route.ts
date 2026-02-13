@@ -1,3 +1,4 @@
+import logger from '@/lib/logger'
 import { NextResponse } from 'next/server';
 import { readFileSync } from 'fs';
 import { join } from 'path';
@@ -19,7 +20,7 @@ export async function GET() {
     });
 
   } catch (error) {
-    console.error('Erro ao servir planilha:', error);
+    logger.error({ err: error }, 'Erro ao servir planilha');
     return NextResponse.json(
       { error: 'Erro ao servir planilha' },
       { status: 500 }

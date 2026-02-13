@@ -1,3 +1,4 @@
+import logger from '@/lib/logger'
 import { NextRequest, NextResponse } from 'next/server'
 
 /**
@@ -25,7 +26,7 @@ export async function POST(request: NextRequest) {
       message: 'Sync endpoint called successfully',
     })
   } catch (error) {
-    console.error('Error processing sync:', error)
+    logger.error({ err: error }, 'Error processing sync')
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

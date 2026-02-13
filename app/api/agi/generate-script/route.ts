@@ -5,6 +5,7 @@
  * Generates sales scripts (cold call, cold email, etc.)
  */
 
+import logger from '@/lib/logger'
 import { NextRequest, NextResponse } from 'next/server';
 import { getSession } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
@@ -211,7 +212,7 @@ Seja natural, não robotizado.`;
             model: response.model,
         });
     } catch (error) {
-        console.error('Script Generation Error:', error);
+        logger.error({ err: error }, 'Script Generation Error');
         return NextResponse.json(
             {
                 error: 'Erro ao gerar script',

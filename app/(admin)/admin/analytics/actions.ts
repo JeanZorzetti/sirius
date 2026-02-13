@@ -1,5 +1,6 @@
 'use server'
 
+import logger from '@/lib/logger'
 import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { calculatePlatformKPIs } from '@/lib/analytics/kpis'
@@ -47,7 +48,7 @@ export async function getPlatformKPIs(month: number, year: number) {
       }
     }
 
-    console.error('Error getting platform KPIs:', error)
+    logger.error({ err: error }, 'Error getting platform KPIs')
     return {
       success: false,
       error: 'FETCH_ERROR',
@@ -111,7 +112,7 @@ export async function getRevenueSnapshots(months: number = 6) {
       }
     }
 
-    console.error('Error getting revenue snapshots:', error)
+    logger.error({ err: error }, 'Error getting revenue snapshots')
     return {
       success: false,
       error: 'FETCH_ERROR',
@@ -170,7 +171,7 @@ export async function getLatestForecast() {
       }
     }
 
-    console.error('Error getting latest forecast:', error)
+    logger.error({ err: error }, 'Error getting latest forecast')
     return {
       success: false,
       error: 'FETCH_ERROR',
@@ -216,7 +217,7 @@ export async function getPlatformStats() {
       }
     }
 
-    console.error('Error getting platform stats:', error)
+    logger.error({ err: error }, 'Error getting platform stats')
     return {
       success: false,
       error: 'FETCH_ERROR',

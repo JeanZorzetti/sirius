@@ -1,3 +1,4 @@
+import logger from '@/lib/logger'
 import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { getSession } from '@/lib/auth'
@@ -64,7 +65,7 @@ export async function POST(
 
     return NextResponse.json({ success: true })
   } catch (error) {
-    console.error('Error adding tag to contact:', error)
+    logger.error({ err: error }, 'Error adding tag to contact')
     return NextResponse.json(
       { error: 'Failed to add tag' },
       { status: 500 }
@@ -123,7 +124,7 @@ export async function DELETE(
 
     return NextResponse.json({ success: true })
   } catch (error) {
-    console.error('Error removing tag from contact:', error)
+    logger.error({ err: error }, 'Error removing tag from contact')
     return NextResponse.json(
       { error: 'Failed to remove tag' },
       { status: 500 }

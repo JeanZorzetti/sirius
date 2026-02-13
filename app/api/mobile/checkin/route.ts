@@ -1,3 +1,4 @@
+import logger from '@/lib/logger'
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { getSession } from '@/lib/auth'
@@ -38,7 +39,7 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({ success: true, visitLogId: visitLog.id })
   } catch (error) {
-    console.error('[CHECKIN] Error:', error)
+    logger.error({ err: error }, '[CHECKIN] Error')
     return NextResponse.json({ error: 'Erro interno' }, { status: 500 })
   }
 }
@@ -74,7 +75,7 @@ export async function GET(request: NextRequest) {
 
     return NextResponse.json({ visits })
   } catch (error) {
-    console.error('[CHECKIN GET] Error:', error)
+    logger.error({ err: error }, '[CHECKIN GET] Error')
     return NextResponse.json({ error: 'Erro interno' }, { status: 500 })
   }
 }

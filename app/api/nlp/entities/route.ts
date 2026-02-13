@@ -5,6 +5,7 @@
  * Searches for entities in the knowledge graph.
  */
 
+import logger from '@/lib/logger'
 import { NextRequest, NextResponse } from 'next/server'
 import { requireAuth } from '@/lib/auth'
 import { searchEntities } from '@/lib/nlp/pipeline'
@@ -28,7 +29,7 @@ export async function GET(request: NextRequest) {
       entities,
     })
   } catch (error) {
-    console.error('[API /nlp/entities] Error:', error)
+    logger.error({ err: error }, '[API /nlp/entities] Error')
 
     return NextResponse.json(
       {

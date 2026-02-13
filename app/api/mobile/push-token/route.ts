@@ -1,3 +1,4 @@
+import logger from '@/lib/logger'
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { getSession } from '@/lib/auth'
@@ -37,7 +38,7 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({ success: true })
   } catch (error) {
-    console.error('[PUSH-TOKEN] Error:', error)
+    logger.error({ err: error }, '[PUSH-TOKEN] Error')
     return NextResponse.json({ error: 'Erro interno' }, { status: 500 })
   }
 }
@@ -64,7 +65,7 @@ export async function DELETE(request: NextRequest) {
 
     return NextResponse.json({ success: true })
   } catch (error) {
-    console.error('[PUSH-TOKEN DELETE] Error:', error)
+    logger.error({ err: error }, '[PUSH-TOKEN DELETE] Error')
     return NextResponse.json({ error: 'Erro interno' }, { status: 500 })
   }
 }

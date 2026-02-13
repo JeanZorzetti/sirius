@@ -6,6 +6,7 @@
  * Returns current user's AGI usage stats and limits
  */
 
+import logger from '@/lib/logger'
 import { NextRequest, NextResponse } from 'next/server';
 import { getSession } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
@@ -38,7 +39,7 @@ export async function GET(req: NextRequest) {
 
         return NextResponse.json(limits);
     } catch (error) {
-        console.error('Usage Stats Error:', error);
+        logger.error({ err: error }, 'Usage Stats Error');
         return NextResponse.json(
             { error: 'Erro ao buscar estatísticas de uso' },
             { status: 500 }

@@ -48,7 +48,7 @@ export async function POST(request: NextRequest) {
       timestamp: new Date().toISOString(),
     })
   } catch (error) {
-    console.error('[Analytics Ingest] Error processing event:', error)
+    logger.error({ err: error }, '[Analytics Ingest] Error processing event')
 
     return NextResponse.json(
       { error: 'Failed to process analytics event' },

@@ -71,7 +71,7 @@ export async function GET(request: NextRequest) {
       results: results.results,
     })
   } catch (error) {
-    console.error('[CRON] Error in daily snapshot job:', error)
+    logger.error({ err: error }, '[CRON] Error in daily snapshot job')
 
     return NextResponse.json(
       {

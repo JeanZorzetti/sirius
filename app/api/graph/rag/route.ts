@@ -5,6 +5,7 @@
  * Tests the Graph-Augmented Retrieval system
  */
 
+import logger from '@/lib/logger'
 import { NextRequest, NextResponse } from 'next/server'
 import { requireAuth } from '@/lib/auth'
 import { retrieveWithGraphAugmentation } from '@/lib/nlp/graph-rag'
@@ -39,7 +40,7 @@ export async function POST(request: NextRequest) {
       context,
     })
   } catch (error) {
-    console.error('[API /graph/rag] Error:', error)
+    logger.error({ err: error }, '[API /graph/rag] Error')
 
     if (error instanceof z.ZodError) {
       return NextResponse.json(

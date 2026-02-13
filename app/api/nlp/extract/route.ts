@@ -5,6 +5,7 @@
  * Processes content and extracts entities + relationships using LLM.
  */
 
+import logger from '@/lib/logger'
 import { NextRequest, NextResponse } from 'next/server'
 import { requireAuth } from '@/lib/auth'
 import { processContentNLP } from '@/lib/nlp/pipeline'
@@ -46,7 +47,7 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json(result, { status: 200 })
   } catch (error) {
-    console.error('[API /nlp/extract] Error:', error)
+    logger.error({ err: error }, '[API /nlp/extract] Error')
 
     return NextResponse.json(
       {

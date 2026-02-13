@@ -1,5 +1,6 @@
 'use server'
 
+import logger from '@/lib/logger'
 import { prisma } from '@/lib/prisma'
 import { revalidatePath } from 'next/cache'
 import { getSession } from '@/lib/auth'
@@ -82,7 +83,7 @@ export async function createContact(formData: FormData) {
             }
         }
     } catch (error) {
-        console.error('Failed to create contact:', error)
+        logger.error({ err: error }, 'Failed to create contact')
         return { success: false, error: 'Failed to create contact' }
     }
 }

@@ -1,5 +1,6 @@
 'use server'
 
+import logger from '@/lib/logger'
 import { prisma } from '@/lib/prisma'
 import { revalidatePath } from 'next/cache'
 import { getSession } from '@/lib/auth'
@@ -30,7 +31,7 @@ export async function updateProfile(formData: FormData) {
         revalidatePath('/dashboard')
         return { success: true }
     } catch (error) {
-        console.error('Update profile error:', error)
+        logger.error({ err: error }, 'Update profile error')
         return { success: false, error: 'Falha ao atualizar perfil' }
     }
 }

@@ -70,7 +70,7 @@ export async function PUT(
       message: `Plano atualizado de ${existingOrg.tier} para ${tier}`
     })
   } catch (error) {
-    console.error('Error updating organization tier:', error)
+    logger.error({ err: error }, 'Error updating organization tier')
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

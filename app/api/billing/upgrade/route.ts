@@ -4,6 +4,7 @@
  * Cria preferência de checkout no Mercado Pago para upgrade/downgrade de plano
  */
 
+import logger from '@/lib/logger'
 import { NextResponse } from 'next/server'
 import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
@@ -128,7 +129,7 @@ export async function POST(req: Request) {
     })
 
   } catch (error: any) {
-    console.error('Upgrade error:', error)
+    logger.error({ err: error }, 'Upgrade error')
     return NextResponse.json(
       { error: error.message || 'Internal server error' },
       { status: 500 }

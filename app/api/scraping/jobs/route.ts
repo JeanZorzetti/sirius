@@ -1,3 +1,4 @@
+import logger from '@/lib/logger'
 import { NextResponse } from 'next/server'
 import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
@@ -40,7 +41,7 @@ export async function GET() {
 
     return NextResponse.json({ jobs })
   } catch (error) {
-    console.error('Error fetching scraping jobs:', error)
+    logger.error({ err: error }, 'Error fetching scraping jobs')
     return NextResponse.json({ jobs: [] })
   }
 }

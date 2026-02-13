@@ -1,3 +1,4 @@
+import logger from '@/lib/logger'
 import { NextRequest, NextResponse } from 'next/server'
 import { captureLeadFromCalculator } from '@/lib/email-marketing'
 import { leadCaptureRateLimit } from '@/lib/ratelimit'
@@ -44,7 +45,7 @@ export async function POST(request: NextRequest) {
       message: 'Lead capturado com sucesso'
     })
   } catch (error) {
-    console.error('Error capturing calculator lead:', error)
+    logger.error({ err: error }, 'Error capturing calculator lead')
     return NextResponse.json(
       { error: 'Erro ao processar requisição' },
       { status: 500 }

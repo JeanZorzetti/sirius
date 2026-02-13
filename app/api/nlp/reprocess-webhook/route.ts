@@ -5,6 +5,7 @@
  * Webhook endpoint for triggering automatic reprocessing when content changes
  */
 
+import logger from '@/lib/logger'
 import { NextRequest, NextResponse } from 'next/server'
 import { requireAuth } from '@/lib/auth'
 import {
@@ -37,7 +38,7 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json(result)
   } catch (error) {
-    console.error('[API /nlp/reprocess-webhook] Error:', error)
+    logger.error({ err: error }, '[API /nlp/reprocess-webhook] Error')
 
     return NextResponse.json(
       {

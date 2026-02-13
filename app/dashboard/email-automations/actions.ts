@@ -1,5 +1,6 @@
 'use server'
 
+import logger from '@/lib/logger'
 import { EmailAutomationType, EmailStatus, Prisma } from '@prisma/client'
 import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
@@ -60,7 +61,7 @@ export async function getEmailAutomationSettings() {
 
     return settings
   } catch (error) {
-    console.error('Failed to get email automation settings:', error)
+    logger.error({ err: error }, 'Failed to get email automation settings')
     throw error
   }
 }
@@ -85,7 +86,7 @@ export async function toggleAutomation(automationId: string, enabled: boolean) {
 
     return { success: true }
   } catch (error) {
-    console.error('Failed to toggle automation:', error)
+    logger.error({ err: error }, 'Failed to toggle automation')
     return { success: false, error: 'Failed to toggle automation' }
   }
 }
@@ -117,7 +118,7 @@ export async function updateAutomationTemplate(
 
     return { success: true }
   } catch (error) {
-    console.error('Failed to update automation template:', error)
+    logger.error({ err: error }, 'Failed to update automation template')
     return { success: false, error: 'Failed to update template' }
   }
 }
@@ -151,7 +152,7 @@ export async function updateAutomationConfig(
 
     return { success: true }
   } catch (error) {
-    console.error('Failed to update automation config:', error)
+    logger.error({ err: error }, 'Failed to update automation config')
     return { success: false, error: 'Failed to update config' }
   }
 }
@@ -196,7 +197,7 @@ export async function getEmailHistory(limit: number = 50) {
       isPro: ['PRO', 'BUSINESS'].includes(user.organization.plan)
     }
   } catch (error) {
-    console.error('Failed to get email history:', error)
+    logger.error({ err: error }, 'Failed to get email history')
     return { success: false, error: 'Failed to get email history', logs: [], analytics: null }
   }
 }
@@ -226,7 +227,7 @@ export async function resetAutomationToDefault(automationId: string) {
 
     return { success: true }
   } catch (error) {
-    console.error('Failed to reset automation:', error)
+    logger.error({ err: error }, 'Failed to reset automation')
     return { success: false, error: 'Failed to reset automation' }
   }
 }

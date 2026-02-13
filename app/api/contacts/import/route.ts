@@ -1,3 +1,4 @@
+import logger from '@/lib/logger'
 import { NextRequest, NextResponse } from 'next/server'
 import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
@@ -182,7 +183,7 @@ export async function POST(request: NextRequest) {
     })
 
   } catch (error: any) {
-    console.error('Import error:', error)
+    logger.error({ err: error }, 'Import error')
     return NextResponse.json(
       { error: 'Erro ao processar importação' },
       { status: 500 }

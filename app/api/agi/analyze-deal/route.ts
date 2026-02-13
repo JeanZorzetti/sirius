@@ -5,6 +5,7 @@
  * Analyzes a deal and generates insights using sales frameworks
  */
 
+import logger from '@/lib/logger'
 import { NextRequest, NextResponse } from 'next/server';
 import { getSession } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
@@ -193,7 +194,7 @@ Seja específico e prático.`;
             tokensUsed: totalTokens,
         });
     } catch (error) {
-        console.error('Deal Analysis Error:', error);
+        logger.error({ err: error }, 'Deal Analysis Error');
         return NextResponse.json(
             {
                 error: 'Erro ao analisar deal',

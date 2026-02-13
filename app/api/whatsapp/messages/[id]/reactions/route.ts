@@ -1,3 +1,4 @@
+import logger from '@/lib/logger'
 import { NextRequest, NextResponse } from 'next/server'
 import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
@@ -79,7 +80,7 @@ export async function POST(
       return NextResponse.json({ action: 'added', emoji, reaction })
     }
   } catch (error) {
-    console.error('Error handling reaction:', error)
+    logger.error({ err: error }, 'Error handling reaction')
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
@@ -154,7 +155,7 @@ export async function GET(
 
     return NextResponse.json(Object.values(grouped))
   } catch (error) {
-    console.error('Error fetching reactions:', error)
+    logger.error({ err: error }, 'Error fetching reactions')
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

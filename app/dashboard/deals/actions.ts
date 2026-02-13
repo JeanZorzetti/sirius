@@ -1,5 +1,6 @@
 'use server'
 
+import logger from '@/lib/logger'
 import { getSession } from "@/lib/auth"
 import { prisma } from "@/lib/prisma"
 import { revalidatePath } from "next/cache"
@@ -26,7 +27,7 @@ export async function getDealDetails(dealId: string) {
 
     // Validate dealId format
     if (!dealId || typeof dealId !== 'string' || dealId.trim() === '') {
-        console.error("Invalid dealId provided:", dealId)
+        logger.error({ err: dealId }, 'Invalid dealId provided')
         throw new Error("Deal not found")
     }
 
@@ -49,21 +50,12 @@ export async function getDealDetails(dealId: string) {
     })
 
     if (!deal) {
-        console.error("Deal not found in database:", {
-            dealId,
-            userId: user.id,
-            userOrg: user.organizationId
-        })
+        logger.error({ dealId, userId: user.id, userOrg: user.organizationId }, 'Deal not found in database')
         throw new Error("Deal not found")
     }
 
     if (deal.organizationId !== user.organizationId) {
-        console.error("Deal organization mismatch:", {
-            dealId,
-            userId: user.id,
-            userOrg: user.organizationId,
-            dealOrg: deal.organizationId
-        })
+        logger.error({ dealId, userId: user.id, userOrg: user.organizationId, dealOrg: deal.organizationId }, 'Deal organization mismatch')
         throw new Error("Deal not found")
     }
 

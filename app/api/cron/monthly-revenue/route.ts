@@ -80,7 +80,7 @@ export async function GET(request: NextRequest) {
       },
     })
   } catch (error) {
-    console.error('[CRON] Error in monthly revenue snapshot job:', error)
+    logger.error({ err: error }, '[CRON] Error in monthly revenue snapshot job')
 
     return NextResponse.json(
       {

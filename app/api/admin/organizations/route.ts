@@ -1,3 +1,4 @@
+import logger from '@/lib/logger'
 import { NextResponse } from 'next/server'
 import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
@@ -33,7 +34,7 @@ export async function GET() {
 
     return NextResponse.json({ organizations })
   } catch (error) {
-    console.error('Error fetching organizations:', error)
+    logger.error({ err: error }, 'Error fetching organizations')
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

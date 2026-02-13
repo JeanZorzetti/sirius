@@ -5,6 +5,7 @@
  * Enriches agent responses with auto-citations and related content.
  */
 
+import logger from '@/lib/logger'
 import { NextRequest, NextResponse } from 'next/server'
 import { requireAuth } from '@/lib/auth'
 import { enriquecerRespostaComCitacoes } from '@/lib/agi/graph-skills'
@@ -33,7 +34,7 @@ export async function POST(request: NextRequest) {
       enriched: result,
     })
   } catch (error) {
-    console.error('[API /agi/enrich] Error:', error)
+    logger.error({ err: error }, '[API /agi/enrich] Error')
 
     if (error instanceof z.ZodError) {
       return NextResponse.json(

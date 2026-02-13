@@ -1,3 +1,4 @@
+import logger from '@/lib/logger'
 import { NextResponse } from 'next/server'
 import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
@@ -68,7 +69,7 @@ export async function PUT(
 
     return NextResponse.json(quickReply)
   } catch (error) {
-    console.error('Error updating quick reply:', error)
+    logger.error({ err: error }, 'Error updating quick reply')
     return NextResponse.json(
       { error: 'Failed to update quick reply' },
       { status: 500 }
@@ -115,7 +116,7 @@ export async function DELETE(
 
     return NextResponse.json({ success: true })
   } catch (error) {
-    console.error('Error deleting quick reply:', error)
+    logger.error({ err: error }, 'Error deleting quick reply')
     return NextResponse.json(
       { error: 'Failed to delete quick reply' },
       { status: 500 }

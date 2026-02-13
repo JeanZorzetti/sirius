@@ -1,3 +1,4 @@
+import logger from '@/lib/logger'
 import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { getSession } from '@/lib/auth'
@@ -29,7 +30,7 @@ export async function GET() {
 
     return NextResponse.json(tags)
   } catch (error) {
-    console.error('Error fetching tags:', error)
+    logger.error({ err: error }, 'Error fetching tags')
     return NextResponse.json(
       { error: 'Failed to fetch tags' },
       { status: 500 }
@@ -72,7 +73,7 @@ export async function POST(req: Request) {
 
     return NextResponse.json(tag)
   } catch (error) {
-    console.error('Error creating tag:', error)
+    logger.error({ err: error }, 'Error creating tag')
     return NextResponse.json(
       { error: 'Failed to create tag' },
       { status: 500 }

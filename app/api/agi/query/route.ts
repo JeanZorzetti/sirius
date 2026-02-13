@@ -5,6 +5,7 @@
  * Queries knowledge base using graph-augmented retrieval.
  */
 
+import logger from '@/lib/logger'
 import { NextRequest, NextResponse } from 'next/server'
 import { requireAuth } from '@/lib/auth'
 import { queryGraphKnowledgeBase, buildGraphAugmentedPrompt } from '@/lib/nlp/graph-rag'
@@ -40,7 +41,7 @@ export async function POST(request: NextRequest) {
       })
     }
   } catch (error) {
-    console.error('[API /agi/query] Error:', error)
+    logger.error({ err: error }, '[API /agi/query] Error')
 
     if (error instanceof z.ZodError) {
       return NextResponse.json(

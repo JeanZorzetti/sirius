@@ -228,7 +228,7 @@ IMPORTANTE: Você tem acesso aos dados REAIS do GSC acima. Use-os nas suas respo
 
               return formattedResults;
             } catch (error) {
-              console.error('[Tavily] Error:', error);
+              logger.error({ err: error }, '[Tavily] Error');
               return {
                 error: 'Não foi possível realizar a pesquisa web',
                 details: error instanceof Error ? error.message : 'Unknown error',
@@ -245,7 +245,7 @@ IMPORTANTE: Você tem acesso aos dados REAIS do GSC acima. Use-os nas suas respo
           const totalTokens = (usage.inputTokens || 0) + (usage.outputTokens || 0);
           await recordUsage(user.organizationId, user.id, totalTokens, plan);
         } catch (error) {
-          console.error('Error recording usage:', error);
+          logger.error({ err: error }, 'Error recording usage');
         }
       },
     });
@@ -253,7 +253,7 @@ IMPORTANTE: Você tem acesso aos dados REAIS do GSC acima. Use-os nas suas respo
     // 9. Return streaming response
     return result.toUIMessageStreamResponse();
   } catch (error) {
-    console.error('SEO Chat Error:', error);
+    logger.error({ err: error }, 'SEO Chat Error');
 
     return new Response(
       JSON.stringify({

@@ -1,5 +1,6 @@
 'use server'
 
+import logger from '@/lib/logger'
 import { prisma } from '@/lib/prisma'
 import { revalidatePath } from 'next/cache'
 import { getSession } from "@/lib/auth"
@@ -101,7 +102,7 @@ export async function updateDealStage(dealId: string, stageId: string) {
 
     return { success: true }
   } catch (error) {
-    console.error('Failed to update deal stage:', error)
+    logger.error({ err: error }, 'Failed to update deal stage')
     return { success: false, error: 'Failed to update deal stage' }
   }
 }
@@ -222,7 +223,7 @@ export async function createDeal(formData: FormData) {
     revalidatePath('/dashboard')
     return { success: true, dealId: deal.id }
   } catch (error) {
-    console.error('Failed to create deal:', error)
+    logger.error({ err: error }, 'Failed to create deal')
     return { success: false, error: 'Failed to create deal' }
   }
 }
@@ -284,7 +285,7 @@ export async function updateDeal(formData: FormData) {
     revalidatePath('/dashboard')
     return { success: true }
   } catch (error) {
-    console.error('Failed to update deal:', error)
+    logger.error({ err: error }, 'Failed to update deal')
     return { success: false, error: 'Failed to update deal' }
   }
 }
@@ -361,7 +362,7 @@ export async function moveDealToPipeline(dealId: string, newPipelineId: string, 
     revalidatePath('/dashboard')
     return { success: true }
   } catch (error) {
-    console.error('Failed to move deal to pipeline:', error)
+    logger.error({ err: error }, 'Failed to move deal to pipeline')
     return { success: false, error: 'Failed to move deal to pipeline' }
   }
 }
@@ -396,7 +397,7 @@ export async function deleteDeal(dealId: string) {
     revalidatePath('/dashboard')
     return { success: true }
   } catch (error) {
-    console.error('Failed to delete deal:', error)
+    logger.error({ err: error }, 'Failed to delete deal')
     return { success: false, error: 'Failed to delete deal' }
   }
 }

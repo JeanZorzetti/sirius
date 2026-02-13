@@ -1,3 +1,4 @@
+import logger from '@/lib/logger'
 import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { getSession } from '@/lib/auth'
@@ -46,7 +47,7 @@ export async function POST(request: Request) {
 
         return NextResponse.json(contact)
     } catch (error) {
-        console.error('Error creating contact:', error)
+        logger.error({ err: error }, 'Error creating contact')
         return NextResponse.json(
             { error: 'Erro ao criar contato' },
             { status: 500 }

@@ -5,6 +5,7 @@
  * Diagnoses business problems using knowledge graph traversal.
  */
 
+import logger from '@/lib/logger'
 import { NextRequest, NextResponse } from 'next/server'
 import { requireAuth } from '@/lib/auth'
 import { diagnosticarComGrafo } from '@/lib/agi/graph-skills'
@@ -30,7 +31,7 @@ export async function POST(request: NextRequest) {
       diagnosis: result,
     })
   } catch (error) {
-    console.error('[API /agi/diagnose] Error:', error)
+    logger.error({ err: error }, '[API /agi/diagnose] Error')
 
     if (error instanceof z.ZodError) {
       return NextResponse.json(

@@ -1,3 +1,4 @@
+import logger from '@/lib/logger'
 import { NextRequest, NextResponse } from 'next/server'
 import { calculateResults } from '@/lib/generative-ui/ab-testing'
 
@@ -17,7 +18,7 @@ export async function GET(
 
         return NextResponse.json({ results })
     } catch (error) {
-        console.error('[get-results] Error:', error)
+        logger.error({ err: error }, '[get-results] Error')
         return NextResponse.json(
             { error: 'Failed to calculate results' },
             { status: 500 }

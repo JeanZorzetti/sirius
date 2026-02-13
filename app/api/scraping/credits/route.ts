@@ -1,3 +1,4 @@
+import logger from '@/lib/logger'
 import { NextResponse } from 'next/server'
 import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
@@ -47,7 +48,7 @@ export async function GET() {
 
     return NextResponse.json(credits)
   } catch (error) {
-    console.error('Error fetching scraping credits:', error)
+    logger.error({ err: error }, 'Error fetching scraping credits')
     return NextResponse.json({ balance: 0, monthlyQuota: 0 })
   }
 }

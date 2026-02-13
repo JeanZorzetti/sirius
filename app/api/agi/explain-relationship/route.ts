@@ -5,6 +5,7 @@
  * Explains how two concepts are related using graph traversal.
  */
 
+import logger from '@/lib/logger'
 import { NextRequest, NextResponse } from 'next/server'
 import { requireAuth } from '@/lib/auth'
 import { explicarRelacionamento } from '@/lib/agi/graph-skills'
@@ -46,7 +47,7 @@ export async function GET(request: NextRequest) {
       relationship: result,
     })
   } catch (error) {
-    console.error('[API /agi/explain-relationship] Error:', error)
+    logger.error({ err: error }, '[API /agi/explain-relationship] Error')
 
     return NextResponse.json(
       {

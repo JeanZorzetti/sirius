@@ -5,6 +5,7 @@
  * Processes all blog posts (or only pending ones) through NLP pipeline
  */
 
+import logger from '@/lib/logger'
 import { NextRequest, NextResponse } from 'next/server'
 import { requireAuth } from '@/lib/auth'
 import { processBlogPostsBatch } from '@/lib/nlp/blog-processor'
@@ -65,7 +66,7 @@ export async function POST(request: NextRequest) {
       ...result,
     })
   } catch (error) {
-    console.error('[API /nlp/process-blog-posts] Error:', error)
+    logger.error({ err: error }, '[API /nlp/process-blog-posts] Error')
 
     return NextResponse.json(
       {

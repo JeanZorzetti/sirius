@@ -7,6 +7,7 @@
  * Retrieves AI-generated insights
  */
 
+import logger from '@/lib/logger'
 import { NextRequest, NextResponse } from 'next/server';
 import { getSession } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
@@ -45,7 +46,7 @@ export async function GET(req: NextRequest) {
 
         return NextResponse.json({ insights });
     } catch (error) {
-        console.error('Get Insights Error:', error);
+        logger.error({ err: error }, 'Get Insights Error');
         return NextResponse.json(
             { error: 'Erro ao buscar insights' },
             { status: 500 }
@@ -83,7 +84,7 @@ export async function PATCH(req: NextRequest) {
 
         return NextResponse.json({ success: true });
     } catch (error) {
-        console.error('Update Insight Error:', error);
+        logger.error({ err: error }, 'Update Insight Error');
         return NextResponse.json(
             { error: 'Erro ao atualizar insight' },
             { status: 500 }

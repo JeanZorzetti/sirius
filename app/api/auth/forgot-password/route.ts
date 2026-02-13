@@ -111,7 +111,7 @@ export async function POST(request: NextRequest) {
       logger.warn('RESEND_API_KEY not configured, email not sent')
       // In development, log the reset URL
       if (process.env.NODE_ENV === 'development') {
-        console.log('Reset URL:', resetUrl)
+        logger.info({ resetUrl }, 'Reset URL')
       }
     }
 

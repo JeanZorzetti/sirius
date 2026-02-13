@@ -1,3 +1,4 @@
+import logger from '@/lib/logger'
 import { NextResponse } from 'next/server'
 import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
@@ -25,7 +26,7 @@ export async function GET() {
 
     return NextResponse.json(quickReplies)
   } catch (error) {
-    console.error('Error fetching quick replies:', error)
+    logger.error({ err: error }, 'Error fetching quick replies')
     return NextResponse.json(
       { error: 'Failed to fetch quick replies' },
       { status: 500 }
@@ -89,7 +90,7 @@ export async function POST(request: Request) {
 
     return NextResponse.json(quickReply, { status: 201 })
   } catch (error) {
-    console.error('Error creating quick reply:', error)
+    logger.error({ err: error }, 'Error creating quick reply')
     return NextResponse.json(
       { error: 'Failed to create quick reply' },
       { status: 500 }

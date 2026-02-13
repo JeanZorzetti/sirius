@@ -1,3 +1,4 @@
+import logger from '@/lib/logger'
 import { NextRequest, NextResponse } from 'next/server'
 import { getSession } from '@/lib/auth'
 import { sendNotificationToUser } from '@/lib/push-notifications'
@@ -42,7 +43,7 @@ export async function POST(request: NextRequest) {
       failed: result.failed,
     })
   } catch (error) {
-    console.error('Error sending test push notification:', error)
+    logger.error({ err: error }, 'Error sending test push notification')
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

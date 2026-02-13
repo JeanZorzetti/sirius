@@ -1,5 +1,6 @@
 'use server'
 
+import logger from '@/lib/logger'
 import { getSession } from "@/lib/auth"
 import { prisma } from "@/lib/prisma"
 import { revalidatePath } from "next/cache"
@@ -41,7 +42,7 @@ export async function getPipelines() {
 
         return { success: true, pipelines }
     } catch (error) {
-        console.error('Failed to get pipelines:', error)
+        logger.error({ err: error }, 'Failed to get pipelines')
         return { success: false, error: 'Failed to get pipelines' }
     }
 }
@@ -85,7 +86,7 @@ export async function createPipeline(name: string) {
         revalidatePath('/dashboard/pipelines')
         return { success: true, pipeline }
     } catch (error) {
-        console.error('Failed to create pipeline:', error)
+        logger.error({ err: error }, 'Failed to create pipeline')
         return { success: false, error: 'Failed to create pipeline' }
     }
 }
@@ -116,7 +117,7 @@ export async function updatePipeline(id: string, name: string) {
         revalidatePath('/dashboard/pipelines')
         return { success: true, pipeline }
     } catch (error) {
-        console.error('Failed to update pipeline:', error)
+        logger.error({ err: error }, 'Failed to update pipeline')
         return { success: false, error: 'Failed to update pipeline' }
     }
 }
@@ -179,7 +180,7 @@ export async function deletePipeline(id: string) {
         revalidatePath('/dashboard/pipelines')
         return { success: true }
     } catch (error) {
-        console.error('Failed to delete pipeline:', error)
+        logger.error({ err: error }, 'Failed to delete pipeline')
         return { success: false, error: 'Failed to delete pipeline' }
     }
 }
@@ -218,7 +219,7 @@ export async function setDefaultPipeline(id: string) {
         revalidatePath('/dashboard/pipelines')
         return { success: true }
     } catch (error) {
-        console.error('Failed to set default pipeline:', error)
+        logger.error({ err: error }, 'Failed to set default pipeline')
         return { success: false, error: 'Failed to set default pipeline' }
     }
 }

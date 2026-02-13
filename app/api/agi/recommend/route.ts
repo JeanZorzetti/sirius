@@ -5,6 +5,7 @@
  * Recommends relevant content based on conversation context.
  */
 
+import logger from '@/lib/logger'
 import { NextRequest, NextResponse } from 'next/server'
 import { requireAuth } from '@/lib/auth'
 import { recomendarConteudo } from '@/lib/agi/graph-skills'
@@ -32,7 +33,7 @@ export async function POST(request: NextRequest) {
       recommendations: result,
     })
   } catch (error) {
-    console.error('[API /agi/recommend] Error:', error)
+    logger.error({ err: error }, '[API /agi/recommend] Error')
 
     if (error instanceof z.ZodError) {
       return NextResponse.json(

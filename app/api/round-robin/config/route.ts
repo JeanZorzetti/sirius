@@ -4,6 +4,7 @@
  * Gerencia configuração de round-robin da organização
  */
 
+import logger from '@/lib/logger'
 import { NextResponse } from 'next/server'
 import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
@@ -50,7 +51,7 @@ export async function GET() {
     })
 
   } catch (error: any) {
-    console.error('Error fetching round-robin config:', error)
+    logger.error({ err: error }, 'Error fetching round-robin config')
     return NextResponse.json({ error: error.message }, { status: 500 })
   }
 }
@@ -95,7 +96,7 @@ export async function POST(req: Request) {
     return NextResponse.json({ success: true })
 
   } catch (error: any) {
-    console.error('Error saving round-robin config:', error)
+    logger.error({ err: error }, 'Error saving round-robin config')
     return NextResponse.json({ error: error.message }, { status: 500 })
   }
 }

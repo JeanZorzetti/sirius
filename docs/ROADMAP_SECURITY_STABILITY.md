@@ -33,7 +33,7 @@
 ### 6. [x] Adicionar metadata (title) em 20 páginas do dashboard
 - **Impacto:** Títulos das abas faltando, SEO interno
 
-### 7. [ ] Substituir 42 console.log por logger
+### 7. [x] Substituir 109 console.log/error/warn por logger em 69 arquivos
 - **Impacto:** Info disclosure no browser, poluição de logs
 - **Usar:** `lib/logger.ts`
 
@@ -96,7 +96,7 @@
 | 4 | DONE | Fallback user layout |
 | 5 | DONE | Error boundaries |
 | 6 | DONE | Dashboard metadata (20 pages) |
-| 7 | Pendente | Console.log -> logger |
+| 7 | DONE | Console.log -> logger (109 in 69 files) |
 | 8 | Pendente | Loading states |
 | 9 | Pendente | Rate limiting |
 | 10 | Pendente | Mobile responsiveness |

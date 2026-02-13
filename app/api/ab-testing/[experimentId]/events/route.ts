@@ -1,3 +1,4 @@
+import logger from '@/lib/logger'
 import { NextRequest, NextResponse } from 'next/server'
 import {
     trackImpression,
@@ -49,7 +50,7 @@ export async function POST(
 
         return NextResponse.json({ success: true })
     } catch (error) {
-        console.error('[track-event] Error:', error)
+        logger.error({ err: error }, '[track-event] Error')
         return NextResponse.json(
             { error: 'Failed to track event' },
             { status: 500 }
