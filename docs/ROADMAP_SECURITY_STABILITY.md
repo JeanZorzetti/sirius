@@ -59,7 +59,7 @@
 ### 12. [x] Documentar/resolver dependência da Prospecção Google Maps
 - **Impacto:** Feature aparece na UI mas não funciona sem `SIRIUS_SCRAPER_URL` + `GOOGLE_PLACES_API_KEY`
 
-### 13. [ ] Adicionar confirmation dialogs para ações destrutivas
+### 13. [x] Adicionar confirmation dialogs para ações destrutivas
 - **Impacto:** Exclusão acidental de deals, pipelines, automations, team members
 - **Páginas:** kanban-board, pipelines, automations, team, webhooks
 
@@ -102,7 +102,7 @@
 | 10 | DONE | Mobile responsiveness (6 components) |
 | 11 | DONE | WhatsApp media upload |
 | 12 | DONE | Prospecção config check + banner |
-| 13 | Pendente | Confirmation dialogs |
+| 13 | DONE | Confirmation dialogs (10 actions, 7 pages) |
 | 14 | Pendente | Empty states |
 | 15 | Pendente | Dead code cleanup |
 | 16 | Pendente | Error messages i18n |
