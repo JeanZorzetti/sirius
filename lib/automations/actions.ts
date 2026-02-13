@@ -18,6 +18,22 @@ export interface AutomationAction {
   config: Record<string, unknown>
 }
 
+/**
+ * Replace template variables in a string with values from context.
+ * Supported: {{dealTitle}}, {{dealValue}}, {{dealId}}, {{triggerType}}
+ */
+function resolveTemplate(template: string, context: Record<string, unknown>): string {
+  const formattedValue = context.value !== undefined
+    ? new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(Number(context.value))
+    : ''
+
+  return template
+    .replace(/\{\{dealTitle\}\}/g, String(context.title || ''))
+    .replace(/\{\{dealValue\}\}/g, formattedValue)
+    .replace(/\{\{dealId\}\}/g, String(context.dealId || ''))
+    .replace(/\{\{triggerType\}\}/g, String(context.triggerType || ''))
+}
+
 export interface ActionsResult {
   actionsRun: number
   errors: string[]
@@ -97,8 +113,8 @@ async function handleSendEmail(
   config: Record<string, unknown>,
   context: Record<string, unknown>
 ): Promise<void> {
-  const subject = String(config.subject || 'Notificação do CRM')
-  const body = String(config.body || '')
+  const subject = resolveTemplate(String(config.subject || 'Notificação do CRM'), context)
+  const body = resolveTemplate(String(config.body || ''), context)
   const userId = context.userId as string | undefined
 
   if (!userId) {
@@ -130,7 +146,7 @@ async function handleNotifyUser(
   config: Record<string, unknown>,
   context: Record<string, unknown>
 ): Promise<void> {
-  const message = String(config.message || 'Automação disparada no seu negócio.')
+  const message = resolveTemplate(String(config.message || 'Automação disparada no seu negócio.'), context)
   const userId = context.userId as string | undefined
   const organizationId = context.organizationId as string | undefined
   const dealId = context.dealId as string | undefined
@@ -158,7 +174,7 @@ async function handleCreateTask(
   config: Record<string, unknown>,
   context: Record<string, unknown>
 ): Promise<void> {
-  const taskTitle = String(config.taskTitle || 'Tarefa criada pela automação')
+  const taskTitle = resolveTemplate(String(config.taskTitle || 'Tarefa criada pela automação'), context)
   const dealId = context.dealId as string | undefined
   const userId = context.userId as string | undefined
 

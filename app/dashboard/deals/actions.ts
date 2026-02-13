@@ -5,6 +5,7 @@ import { prisma } from "@/lib/prisma"
 import { revalidatePath } from "next/cache"
 import { dispatchWebhookAsync } from "@/lib/webhooks/dispatcher"
 import { WEBHOOK_EVENTS } from "@/lib/webhooks/events"
+import { executeDealAutomations } from "@/lib/automations/engine"
 
 async function checkPermission() {
     const session = await getSession()
@@ -155,6 +156,26 @@ export async function updateDealStage(dealId: string, stageId: string) {
             userId: user.id
         }
     })
+
+    // Fire-and-forget automation triggers
+    const automationContext = {
+        organizationId: deal.organizationId,
+        value: deal.value ? Number(deal.value) : 0,
+        stageId: stageId,
+        pipelineId: deal.pipelineId,
+        title: deal.title,
+        userId: deal.userId
+    }
+
+    executeDealAutomations(dealId, 'DEAL_MOVED', automationContext).catch(() => {})
+
+    const newStageName = newStage.name.toLowerCase()
+    if (newStageName.includes('ganho') || newStageName.includes('won') || newStageName.includes('fechado')) {
+        executeDealAutomations(dealId, 'DEAL_WON', automationContext).catch(() => {})
+    }
+    if (newStageName.includes('perdido') || newStageName.includes('lost') || newStageName.includes('cancelado')) {
+        executeDealAutomations(dealId, 'DEAL_LOST', automationContext).catch(() => {})
+    }
 
     revalidatePath("/dashboard")
 }
