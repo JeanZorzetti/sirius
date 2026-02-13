@@ -5,9 +5,10 @@
  */
 
 import logger from '@/lib/logger'
-import { NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
 import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
+import { billingRateLimit } from '@/lib/ratelimit'
 import { PLAN_PRICING, PLAN_NAMES } from '@/lib/entitlements'
 import { SubscriptionTier } from '@prisma/client'
 import { MercadoPagoConfig, Preference } from 'mercadopago'
@@ -24,7 +25,10 @@ const MP_PLAN_IDS: Record<SubscriptionTier, string | null> = {
   [SubscriptionTier.BUSINESS]: process.env.MP_BUSINESS_PLAN_ID || null,
 }
 
-export async function POST(req: Request) {
+export async function POST(req: NextRequest) {
+  const blocked = await billingRateLimit(req)
+  if (blocked) return blocked
+
   try {
     // 1. Autenticação
     const session = await getSession()

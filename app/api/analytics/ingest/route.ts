@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import logger from '@/lib/logger'
+import { analyticsIngestRateLimit } from '@/lib/ratelimit'
 import posthog from 'posthog-js'
 
 /**
@@ -13,6 +14,9 @@ import posthog from 'posthog-js'
  */
 
 export async function POST(request: NextRequest) {
+  const blocked = await analyticsIngestRateLimit(request)
+  if (blocked) return blocked
+
   try {
     const body = await request.json()
 

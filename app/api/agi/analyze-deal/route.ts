@@ -13,6 +13,7 @@ import { createAgiBrain } from '@/lib/agi/brain';
 import { canUseAGI, recordUsage } from '@/lib/agi/usage';
 import { createInsight } from '@/lib/agi/insights';
 import { qualificarBANT, analisarFunil } from '@/lib/agi/skills';
+import { agiRateLimit } from '@/lib/ratelimit';
 import type { AgiInsightType } from '@prisma/client';
 
 export const runtime = 'nodejs';

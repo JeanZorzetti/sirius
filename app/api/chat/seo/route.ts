@@ -13,6 +13,7 @@ import { z } from 'zod';
 import { tavily } from '@tavily/core';
 import { getSession } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
+import { agiRateLimit } from '@/lib/ratelimit';
 import { canUseAGI, recordUsage } from '@/lib/agi/usage';
 
 export const runtime = 'nodejs';
@@ -72,6 +73,9 @@ interface ChatRequest {
 }
 
 export async function POST(req: NextRequest) {
+  const blocked = await agiRateLimit(req)
+  if (blocked) return blocked
+
   try {
     // 1. Authentication
     const session = await getSession();

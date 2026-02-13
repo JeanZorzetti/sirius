@@ -1,7 +1,8 @@
-import { NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import logger from '@/lib/logger'
 import { chatEvents } from '@/lib/chat-events'
+import { webhookRateLimit } from '@/lib/ratelimit'
 
 /**
  * Webhook receiver para Evolution API v2
@@ -12,7 +13,10 @@ import { chatEvents } from '@/lib/chat-events'
  * - MESSAGES_UPSERT: Novas mensagens recebidas
  * - MESSAGES_UPDATE: Atualização de status de mensagens (entregue, lido)
  */
-export async function POST(request: Request) {
+export async function POST(request: NextRequest) {
+    const blocked = await webhookRateLimit(request)
+    if (blocked) return blocked
+
     try {
         const payload = await request.json()
         const { event, data, instance, apikey, server_url, sender } = payload

@@ -3,13 +3,14 @@
  * GET /api/agi/test
  */
 
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { requireAuth } from '@/lib/auth';
 import logger from '@/lib/logger';
+import { agiRateLimit } from '@/lib/ratelimit';
 
 export const runtime = 'nodejs';
 
-export async function GET() {
+export async function GET(req: NextRequest) {
     const auth = await requireAuth()
     if (auth instanceof Response) return auth
     try {

@@ -41,7 +41,7 @@
 - **Impacto:** UX ruim em analytics, settings, pipeline
 - **Páginas:** analytics, analytics-pro, settings/*, pipelines
 
-### 9. [ ] Aplicar rate limiting nas APIs públicas
+### 9. [x] Aplicar rate limiting nas APIs públicas
 - **Impacto:** DDoS, esgotamento de créditos Groq/API
 - **Usar:** `lib/ratelimit.ts` (já existe, não é importado)
 
@@ -98,7 +98,7 @@
 | 6 | DONE | Dashboard metadata (20 pages) |
 | 7 | DONE | Console.log -> logger (109 in 69 files) |
 | 8 | DONE | Loading states (12 pages) |
-| 9 | Pendente | Rate limiting |
+| 9 | DONE | Rate limiting (22 routes) |
 | 10 | Pendente | Mobile responsiveness |
 | 11 | Pendente | WhatsApp completo |
 | 12 | Pendente | Prospecção docs |

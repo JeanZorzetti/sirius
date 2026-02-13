@@ -12,6 +12,7 @@ import { prisma } from '@/lib/prisma';
 import { createAgiBrain } from '@/lib/agi/brain';
 import { canUseAGI, recordUsage } from '@/lib/agi/usage';
 import { gerarPerguntasSPIN } from '@/lib/agi/skills';
+import { agiRateLimit } from '@/lib/ratelimit';
 
 export const runtime = 'nodejs';
 export const maxDuration = 60;

@@ -9,6 +9,7 @@ import logger from '@/lib/logger'
 import { NextRequest, NextResponse } from 'next/server'
 import { requireAuth } from '@/lib/auth'
 import { recomendarConteudo } from '@/lib/agi/graph-skills'
+import { agiRateLimit } from '@/lib/ratelimit';
 import { z } from 'zod'
 
 export const runtime = 'nodejs'
@@ -20,6 +21,9 @@ const RecommendRequestSchema = z.object({
 })
 
 export async function POST(request: NextRequest) {
+  const blocked = await agiRateLimit(request)
+  if (blocked) return blocked
+
   const auth = await requireAuth()
   if (auth instanceof Response) return auth
   try {

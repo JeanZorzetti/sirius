@@ -27,6 +27,7 @@ import { componentRegistry } from '@/lib/generative-ui/component-registry'
 import type { StreamChunk, ThinkingState } from '@/lib/generative-ui/types'
 import { analyzeConversation } from '@/lib/generative-ui/intelligence'
 import { componentCacheStore, createCacheKey, hashContext } from '@/lib/generative-ui/cache-store'
+import { agiRateLimit } from '@/lib/ratelimit';
 
 export const runtime = 'nodejs'
 export const maxDuration = 60
@@ -64,6 +65,9 @@ METODOLOGIA:
 Você é a melhor consultora de vendas. Seja breve e precisa.`
 
 export async function POST(req: NextRequest) {
+  const blocked = await agiRateLimit(req)
+  if (blocked) return blocked
+
   try {
     // 1. Authentication
     const session = await getSession()

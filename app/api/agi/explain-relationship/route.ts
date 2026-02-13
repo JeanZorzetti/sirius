@@ -9,10 +9,14 @@ import logger from '@/lib/logger'
 import { NextRequest, NextResponse } from 'next/server'
 import { requireAuth } from '@/lib/auth'
 import { explicarRelacionamento } from '@/lib/agi/graph-skills'
+import { agiRateLimit } from '@/lib/ratelimit';
 
 export const runtime = 'nodejs'
 
 export async function GET(request: NextRequest) {
+  const blocked = await agiRateLimit(request)
+  if (blocked) return blocked
+
   const auth = await requireAuth()
   if (auth instanceof Response) return auth
   try {

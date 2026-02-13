@@ -1,13 +1,17 @@
-import { NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
 import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
+import { scrapingRateLimit } from '@/lib/ratelimit'
 import { searchLeads, isAnyProviderConfigured } from '@/lib/scraping/providers'
 import logger from '@/lib/logger'
 
 export const dynamic = 'force-dynamic'
 export const runtime = 'nodejs' // Necessário para Crawlee
 
-export async function POST(req: Request) {
+export async function POST(req: NextRequest) {
+  const blocked = await scrapingRateLimit(req)
+  if (blocked) return blocked
+
   try {
     const session = await getSession()
     if (!session?.user) {

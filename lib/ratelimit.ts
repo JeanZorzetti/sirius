@@ -169,3 +169,23 @@ export const contactRateLimit = (req: NextRequest) =>
 /** Lead capture: 10 req / 1 hour per IP */
 export const leadCaptureRateLimit = (req: NextRequest) =>
   checkRateLimit(req, 'lead', { limit: 10, windowSeconds: 60 * 60 })
+
+/** Webhook routes: 200 req / 1 min per IP (generous for external services) */
+export const webhookRateLimit = (req: NextRequest) =>
+  checkRateLimit(req, 'webhook', { limit: 200, windowSeconds: 60 })
+
+/** Analytics ingest: 60 req / 1 min per IP (Beacon API) */
+export const analyticsIngestRateLimit = (req: NextRequest) =>
+  checkRateLimit(req, 'analytics-ingest', { limit: 60, windowSeconds: 60 })
+
+/** Public endpoints (health, docs, indexnow): 20 req / 1 min per IP */
+export const publicRateLimit = (req: NextRequest) =>
+  checkRateLimit(req, 'public', { limit: 20, windowSeconds: 60 })
+
+/** Billing/checkout: 10 req / 15 min per IP */
+export const billingRateLimit = (req: NextRequest) =>
+  checkRateLimit(req, 'billing', { limit: 10, windowSeconds: 15 * 60 })
+
+/** Scraping: 5 req / 10 min per IP */
+export const scrapingRateLimit = (req: NextRequest) =>
+  checkRateLimit(req, 'scraping', { limit: 5, windowSeconds: 10 * 60 })

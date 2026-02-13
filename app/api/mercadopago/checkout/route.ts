@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
+import { billingRateLimit } from '@/lib/ratelimit'
 import { createCheckoutPreference, CheckoutPlan } from '@/lib/mercadopago'
 import logger from '@/lib/logger'
 import { SubscriptionTier } from '@prisma/client'
@@ -18,6 +19,9 @@ const FOUNDER_LIMITS: Record<string, { limit: number; tier: SubscriptionTier }> 
  * Body: { plan: 'STARTER' | 'PRO' | 'BUSINESS' | 'FOUNDER_STARTER' | 'FOUNDER_PRO' | 'FOUNDER_BUSINESS' }
  */
 export async function POST(request: NextRequest) {
+  const blocked = await billingRateLimit(request)
+  if (blocked) return blocked
+
   try {
     const session = await getSession()
 

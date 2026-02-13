@@ -5,7 +5,7 @@
  * Documentação: https://www.mercadopago.com.br/developers/pt/docs/your-integrations/notifications/webhooks
  */
 
-import { NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { MercadoPagoConfig, Payment } from 'mercadopago'
 import { SubscriptionTier } from '@prisma/client'
@@ -13,6 +13,7 @@ import logger from '@/lib/logger'
 import { sendEmail } from '@/lib/email'
 import { PaymentConfirmationEmail } from '@/emails/templates/payment-confirmation'
 import { PaymentFailureEmail } from '@/emails/templates/payment-failure'
+import { webhookRateLimit } from '@/lib/ratelimit'
 import { createHmac } from 'crypto'
 
 const MAX_PAYMENT_ATTEMPTS = 3
@@ -72,7 +73,10 @@ function validateWebhookSignature(req: Request, rawBody: string): boolean {
   return true
 }
 
-export async function POST(req: Request) {
+export async function POST(req: NextRequest) {
+  const blocked = await webhookRateLimit(req)
+  if (blocked) return blocked
+
   try {
     const rawBody = await req.text()
     const body = JSON.parse(rawBody)

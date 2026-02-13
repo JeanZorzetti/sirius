@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { submitUrlToIndexNow, submitUrlsToIndexNow } from '@/lib/indexnow'
+import { publicRateLimit } from '@/lib/ratelimit'
 
 /**
  * POST /api/indexnow
@@ -17,6 +18,9 @@ import { submitUrlToIndexNow, submitUrlsToIndexNow } from '@/lib/indexnow'
  * { "success": true, "url": "...", "statusCode": 200 }
  */
 export async function POST(request: NextRequest) {
+  const blocked = await publicRateLimit(request)
+  if (blocked) return blocked
+
   try {
     const body = await request.json()
 

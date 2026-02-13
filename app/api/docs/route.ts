@@ -1,10 +1,14 @@
-import { NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
+import { publicRateLimit } from '@/lib/ratelimit'
 
 /**
  * GET /api/docs
  * Interactive API documentation using Scalar UI
  */
-export async function GET() {
+export async function GET(req: NextRequest) {
+  const blocked = await publicRateLimit(req)
+  if (blocked) return blocked
+
   const html = `
 <!DOCTYPE html>
 <html>

@@ -12,6 +12,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getSession } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
 import { getDealInsights, getRecentInsights, markInsightAsApplied, dismissInsight } from '@/lib/agi/insights';
+import { agiRateLimit } from '@/lib/ratelimit';
 
 export const runtime = 'nodejs';
 

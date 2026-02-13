@@ -1,10 +1,14 @@
-import { NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
+import { publicRateLimit } from '@/lib/ratelimit'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
 
-export async function GET() {
+export async function GET(req: NextRequest) {
+  const blocked = await publicRateLimit(req)
+  if (blocked) return blocked
+
   const start = Date.now()
 
   try {

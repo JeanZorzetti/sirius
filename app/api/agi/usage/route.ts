@@ -11,6 +11,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getSession } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
 import { getUsageLimits } from '@/lib/agi/usage';
+import { agiRateLimit } from '@/lib/ratelimit';
 
 export const runtime = 'nodejs';
 
