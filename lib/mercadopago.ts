@@ -75,7 +75,7 @@ export async function createCheckoutPreference(
           installments: 12 // Até 12x no cartão
         },
         notification_url: `${process.env.NEXT_PUBLIC_APP_URL}/api/webhooks/mercadopago`,
-        external_reference: organizationId, // Usar org ID como referência
+        external_reference: `${organizationId}_${plan}`, // "orgId_TIER" para parsing no webhook
         statement_descriptor: 'SIRIUS CRM',
         expires: false,
         metadata: {

@@ -35,7 +35,7 @@ export async function POST() {
     }
 
     // Verificar se já é PRO ou BUSINESS
-    if (['PRO', 'BUSINESS'].includes(user.organization.plan)) {
+    if (['PRO', 'BUSINESS'].includes(user.organization.tier)) {
       return NextResponse.json(
         { error: 'Organização já está no plano PRO' },
         { status: 400 }

@@ -13,6 +13,7 @@ import logger from '@/lib/logger'
 import { sendEmail } from '@/lib/email'
 import { PaymentConfirmationEmail } from '@/emails/templates/payment-confirmation'
 import { PaymentFailureEmail } from '@/emails/templates/payment-failure'
+import { createHmac } from 'crypto'
 
 const MAX_PAYMENT_ATTEMPTS = 3
 
@@ -22,10 +23,64 @@ const mp = new MercadoPagoConfig({
 
 export const dynamic = 'force-dynamic'
 
+/**
+ * Valida a assinatura do webhook do Mercado Pago.
+ * Docs: https://www.mercadopago.com.br/developers/pt/docs/your-integrations/notifications/webhooks#bookmark_validar_assinatura_da_notificação
+ */
+function validateWebhookSignature(req: Request, rawBody: string): boolean {
+  const secret = process.env.MERCADO_PAGO_WEBHOOK_SECRET
+  if (!secret) {
+    // Em dev/staging sem secret configurado, permitir
+    logger.warn('[MP:WEBHOOK] MERCADO_PAGO_WEBHOOK_SECRET not set — skipping signature validation')
+    return true
+  }
+
+  const xSignature = req.headers.get('x-signature')
+  const xRequestId = req.headers.get('x-request-id')
+  const url = new URL(req.url)
+  const dataId = url.searchParams.get('data.id')
+
+  if (!xSignature) {
+    logger.warn('[MP:WEBHOOK] Missing x-signature header')
+    return false
+  }
+
+  // Extrair ts e v1 do header x-signature
+  const parts = Object.fromEntries(xSignature.split(',').map(p => p.split('=')))
+  const ts = parts['ts']
+  const v1 = parts['v1']
+
+  if (!ts || !v1) {
+    logger.warn('[MP:WEBHOOK] Invalid x-signature format')
+    return false
+  }
+
+  // Construir manifest: "id:{data.id};request-id:{x-request-id};ts:{ts};"
+  const manifest = [
+    dataId ? `id:${dataId}` : null,
+    xRequestId ? `request-id:${xRequestId}` : null,
+    `ts:${ts}`,
+  ].filter(Boolean).join(';') + ';'
+
+  const expectedHash = createHmac('sha256', secret).update(manifest).digest('hex')
+
+  if (expectedHash !== v1) {
+    logger.error({ expected: expectedHash, received: v1 }, '[MP:WEBHOOK] Invalid signature')
+    return false
+  }
+
+  return true
+}
+
 export async function POST(req: Request) {
   try {
-    // Verificar signature (em produção, implementar validação completa)
-    const body = await req.json()
+    const rawBody = await req.text()
+    const body = JSON.parse(rawBody)
+
+    // Validar assinatura do webhook
+    if (!validateWebhookSignature(req, rawBody)) {
+      return NextResponse.json({ error: 'Invalid signature' }, { status: 401 })
+    }
     
     logger.info({ type: body.type, data: body.data }, 'MercadoPago webhook received')
 
