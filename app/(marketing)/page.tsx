@@ -3,9 +3,14 @@ import Link from "next/link"
 import { Hero } from "@/components/marketing/hero"
 import { BentoGrid } from "@/components/marketing/bento-grid"
 import { Logos } from "@/components/marketing/logos"
-import { StickyCTA } from "@/components/marketing/sticky-cta"
-import { AgiPreview } from "@/components/agi/AgiPreview"
+import dynamic from "next/dynamic"
 import Script from "next/script"
+
+const AgiPreview = dynamic(() => import("@/components/agi/AgiPreview").then(m => ({ default: m.AgiPreview })), {
+  loading: () => <div className="h-96 rounded-2xl border border-white/10 bg-white/[0.02] animate-pulse" />,
+})
+
+const StickyCTA = dynamic(() => import("@/components/marketing/sticky-cta").then(m => ({ default: m.StickyCTA })))
 import { Check, Star, ArrowRight } from "lucide-react"
 
 export const metadata: Metadata = {
@@ -206,9 +211,9 @@ export default function LandingPage() {
 
       <div className="min-h-screen bg-zinc-950 text-white selection:bg-indigo-500/30">
 
-        {/* Background Noise/Gradient Wrapper */}
+        {/* Background Gradient */}
         <div className="fixed inset-0 z-0 pointer-events-none">
-          <div className="absolute inset-0 bg-[url('/noise.png')] opacity-[0.03] mix-blend-overlay"></div>
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-zinc-800/20 via-transparent to-transparent opacity-50"></div>
         </div>
 
         <div className="relative z-10">

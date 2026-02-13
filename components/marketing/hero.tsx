@@ -5,9 +5,9 @@ import { ArrowRight, Sparkles } from "lucide-react"
 export function Hero() {
     return (
         <section className="relative overflow-hidden pt-32 pb-24 lg:pt-48 lg:pb-32">
-            {/* Spotlight Effect */}
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[500px] bg-indigo-500/20 rounded-full blur-[120px] -z-10" />
-            <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-purple-500/10 rounded-full blur-[100px] -z-10" />
+            {/* Spotlight Effect — reduced blur for mobile performance */}
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[500px] bg-indigo-500/20 rounded-full blur-[60px] md:blur-[120px] -z-10" />
+            <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-purple-500/10 rounded-full blur-[50px] md:blur-[100px] -z-10" />
 
             <div className="mx-auto max-w-7xl px-6 lg:px-8 text-center">
 
