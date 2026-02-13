@@ -168,14 +168,33 @@ export default function LandingPage() {
     "name": "ROI Labs - Sirius CRM",
     "url": "https://sirius.roilabs.com.br",
     "logo": "https://sirius.roilabs.com.br/logo.png",
+    "image": "https://sirius.roilabs.com.br/og-image.png",
     "description": "CRM visual com pipeline Kanban e IA para vendedores brasileiros",
+    "telephone": "+55-62-98344-3919",
+    "email": "roilabs.ia@gmail.com",
     "areaServed": {
       "@type": "Country",
       "name": "Brasil"
     },
     "address": {
       "@type": "PostalAddress",
-      "addressCountry": "BR"
+      "addressCountry": "BR",
+      "addressRegion": "GO"
+    },
+    "openingHoursSpecification": [
+      {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+        "opens": "09:00",
+        "closes": "18:00"
+      }
+    ],
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "telephone": "+55-62-98344-3919",
+      "contactType": "customer support",
+      "availableLanguage": "Portuguese",
+      "areaServed": "BR"
     },
     "sameAs": [
       "https://www.linkedin.com/company/roilabs",

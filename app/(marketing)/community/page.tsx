@@ -8,6 +8,7 @@ export const metadata: Metadata = {
   title: 'Comunidade | Sirius CRM',
   description: 'Junte-se à comunidade Sirius CRM. Compartilhe experiências, aprenda com outros usuários e contribua para o desenvolvimento da plataforma.',
   keywords: ['comunidade', 'forum', 'suporte', 'discussões', 'sirius crm'],
+  alternates: { canonical: 'https://sirius.roilabs.com.br/community' },
   openGraph: {
     title: 'Comunidade | Sirius CRM',
     description: 'Junte-se à comunidade Sirius CRM e conecte-se com outros profissionais de vendas.',
@@ -18,6 +19,11 @@ export const metadata: Metadata = {
       height: 630,
       alt: 'Sirius CRM - CRM Inteligente para Vendedores Brasileiros',
     }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Comunidade | Sirius CRM',
+    description: '500+ usuários conectados. Compartilhe experiências e aprenda com profissionais de vendas.',
   },
 }
 
@@ -98,12 +104,42 @@ export default function CommunityPage() {
     ]
   }
 
+  const organizationSchema = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "ROI Labs",
+    "url": "https://roilabs.com.br",
+    "logo": "https://sirius.roilabs.com.br/logo.png",
+    "telephone": "+55-62-98344-3919",
+    "email": "roilabs.ia@gmail.com",
+    "areaServed": {
+      "@type": "Country",
+      "name": "Brasil"
+    },
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "telephone": "+55-62-98344-3919",
+      "email": "roilabs.ia@gmail.com",
+      "contactType": "customer support",
+      "availableLanguage": "Portuguese"
+    },
+    "sameAs": [
+      "https://www.linkedin.com/company/roilabs",
+      "https://twitter.com/roilabs"
+    ]
+  }
+
   return (
     <>
       <Script
         id="breadcrumb-schema"
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
+      <Script
+        id="organization-schema"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
       />
 
       <div className="bg-background">

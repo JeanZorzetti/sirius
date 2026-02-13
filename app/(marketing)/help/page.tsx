@@ -24,10 +24,16 @@ import { getAllCategories } from '@/lib/help-articles'
 export const metadata: Metadata = {
   title: 'Central de Ajuda | Sirius CRM',
   description: 'Encontre respostas para suas dúvidas sobre o Sirius CRM. Tutoriais, guias e suporte para aproveitar ao máximo sua ferramenta de vendas.',
+  alternates: { canonical: 'https://sirius.roilabs.com.br/help' },
   openGraph: {
     title: 'Central de Ajuda | Sirius CRM',
     description: 'Encontre respostas para suas dúvidas sobre o Sirius CRM. Tutoriais, guias e suporte.',
     url: 'https://sirius.roilabs.com.br/help',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Central de Ajuda | Sirius CRM',
+    description: 'Tutoriais, guias e suporte para aproveitar ao máximo o Sirius CRM.',
   },
 }
 

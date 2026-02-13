@@ -8,6 +8,7 @@ export const metadata: Metadata = {
   title: 'Changelog | Sirius CRM',
   description: 'Acompanhe todas as novidades, melhorias e correções do Sirius CRM. Fique por dentro das atualizações mais recentes da plataforma.',
   keywords: ['atualizações', 'novidades', 'releases', 'versões', 'sirius crm'],
+  alternates: { canonical: 'https://sirius.roilabs.com.br/changelog' },
   openGraph: {
     title: 'Changelog | Sirius CRM',
     description: 'Acompanhe todas as novidades e atualizações do Sirius CRM.',
@@ -18,6 +19,11 @@ export const metadata: Metadata = {
       height: 630,
       alt: 'Sirius CRM - CRM Inteligente para Vendedores Brasileiros',
     }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Changelog | Sirius CRM',
+    description: 'Novidades, melhorias e correções do Sirius CRM. v1.4.0 com PWA e notificações push.',
   },
 }
 
@@ -258,12 +264,40 @@ export default function ChangelogPage() {
     ]
   }
 
+  const softwareVersionSchema = {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Sirius CRM",
+    "applicationCategory": "BusinessApplication",
+    "operatingSystem": "Web, iOS, Android",
+    "softwareVersion": "1.4.0",
+    "datePublished": "2026-01-09",
+    "releaseNotes": "https://sirius.roilabs.com.br/changelog",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "BRL"
+    },
+    "provider": {
+      "@type": "Organization",
+      "name": "ROI Labs",
+      "url": "https://roilabs.com.br",
+      "telephone": "+55-62-98344-3919",
+      "email": "roilabs.ia@gmail.com"
+    }
+  }
+
   return (
     <>
       <Script
         id="breadcrumb-schema"
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
+      <Script
+        id="software-version-schema"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(softwareVersionSchema) }}
       />
 
       <div className="bg-background">

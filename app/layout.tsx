@@ -139,6 +139,10 @@ export default function RootLayout({
         "contactPoint": {
           "@type": "ContactPoint",
           "contactType": "customer support",
+          "telephone": "+55-62-98344-3919",
+          "email": "roilabs.ia@gmail.com",
+          "contactOption": "TollFree",
+          "areaServed": "BR",
           "availableLanguage": "Portuguese"
         },
         "sameAs": [
