@@ -17,8 +17,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
         '/features',
         '/pricing',
         '/blog',
-        '/login',
-        '/register',
         '/about',
         '/help',
         '/privacy',
@@ -30,11 +28,15 @@ export default function sitemap(): MetadataRoute.Sitemap {
         '/followup',
         '/proposta',
         '/vendas-automaticas',
+        '/fundadores',
+        '/ferramentas',
     ].map((route) => ({
         url: `${baseUrl}${route}`,
         lastModified: new Date(),
         changeFrequency: 'monthly' as const,
-        priority: route === '' ? 1 : route === '/vendas-automaticas' ? 0.9 : 0.8,
+        priority: route === '' ? 1
+            : ['/vendas-automaticas', '/fundadores', '/ferramentas'].includes(route) ? 0.9
+            : 0.8,
     }))
 
     // Dynamic blog posts

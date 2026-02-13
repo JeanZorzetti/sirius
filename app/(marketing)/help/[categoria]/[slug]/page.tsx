@@ -85,8 +85,42 @@ export default async function ArticlePage({
     ]
   }
 
+  // TechArticle JSON-LD for help documentation
+  const articleSchema = {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": article.title,
+    "description": article.description,
+    "url": `https://sirius.roilabs.com.br/help/${categoria}/${slug}`,
+    "dateModified": article.lastUpdated,
+    "author": {
+      "@type": "Organization",
+      "name": "Sirius CRM",
+      "url": "https://sirius.roilabs.com.br",
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "ROI Labs",
+      "url": "https://roilabs.com.br",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://sirius.roilabs.com.br/logo.png",
+      },
+    },
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": `https://sirius.roilabs.com.br/help/${categoria}/${slug}`,
+    },
+    "about": {
+      "@type": "SoftwareApplication",
+      "name": "Sirius CRM",
+      "applicationCategory": "BusinessApplication",
+    },
+  }
+
   return (
     <>
+      <JsonLd data={articleSchema} />
       <JsonLd data={breadcrumbSchema} />
       <div className="min-h-screen bg-background">
       <main className="pt-24 pb-16 px-4">

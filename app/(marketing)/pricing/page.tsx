@@ -366,6 +366,34 @@ export default function PricingPage() {
                 </div>
             </div>
 
+            {/* Calculadoras — Internal Links */}
+            <div className="mx-auto mt-16 max-w-4xl">
+                <div className="text-center mb-8">
+                    <h3 className="text-xl font-semibold mb-2">Calcule o ROI para o seu segmento</h3>
+                    <p className="text-sm text-muted-foreground">
+                        Ferramentas gratuitas para projetar o retorno do Sirius CRM no seu negócio
+                    </p>
+                </div>
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                    {[
+                        { href: '/ferramentas/calculadora-roi', label: 'Calculadora de ROI' },
+                        { href: '/ferramentas/calculadora-roi-corretores', label: 'ROI para Corretores' },
+                        { href: '/ferramentas/calculadora-roi-agencias', label: 'ROI para Agências' },
+                        { href: '/ferramentas/calculadora-roi-consultores', label: 'ROI para Consultores' },
+                        { href: '/ferramentas/calculadora-roi-energia-solar', label: 'ROI Energia Solar' },
+                        { href: '/ferramentas/calculadora-roi-representantes', label: 'ROI Representantes' },
+                    ].map((calc) => (
+                        <Link
+                            key={calc.href}
+                            href={calc.href}
+                            className="rounded-lg border bg-card p-3 text-center text-sm font-medium hover:border-primary/50 hover:bg-primary/5 transition-colors"
+                        >
+                            {calc.label}
+                        </Link>
+                    ))}
+                </div>
+            </div>
+
             {/* FAQ Section */}
             <div className="mx-auto mt-24 max-w-4xl">
                 <h3 className="text-3xl font-bold text-center mb-12">Perguntas Frequentes</h3>
