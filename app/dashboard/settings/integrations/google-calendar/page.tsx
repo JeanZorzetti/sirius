@@ -6,6 +6,8 @@ import { ArrowLeft, Calendar, CheckCircle2, AlertCircle } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { GoogleCalendarConnectButton } from '@/components/integrations/google-calendar-connect-button'
 
+export const metadata = { title: "Google Calendar | Sirius CRM" }
+
 export default async function GoogleCalendarIntegrationPage({
   searchParams
 }: {

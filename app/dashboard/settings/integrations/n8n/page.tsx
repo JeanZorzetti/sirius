@@ -7,6 +7,8 @@ import { Button } from '@/components/ui/button'
 import { N8NSettingsForm } from '@/components/integrations/n8n-settings-form'
 import { redirect } from 'next/navigation'
 
+export const metadata = { title: "N8N | Sirius CRM" }
+
 export default async function N8NIntegrationPage() {
     const session = await getSession()
     if (!session || !session.user || !session.user.email) {

@@ -7,6 +7,8 @@ import { Button } from '@/components/ui/button'
 import { WhatsAppSettingsForm } from '@/components/integrations/whatsapp-settings-form'
 import { redirect } from 'next/navigation'
 
+export const metadata = { title: "WhatsApp | Sirius CRM" }
+
 export default async function WhatsAppIntegrationPage() {
     const session = await getSession()
     if (!session || !session.user || !session.user.email) {

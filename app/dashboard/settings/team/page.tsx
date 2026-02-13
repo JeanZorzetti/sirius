@@ -10,6 +10,8 @@ import { RemoveMemberButton, RevokeInviteButton } from "./team-actions"
 import { format } from "date-fns"
 import { ptBR } from "date-fns/locale"
 
+export const metadata = { title: "Equipe | Sirius CRM" }
+
 export default async function TeamSettingsPage() {
     const session = await getSession()
     if (!session?.user?.email) return null

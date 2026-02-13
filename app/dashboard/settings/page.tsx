@@ -5,6 +5,8 @@ import { SettingsLayout } from '@/components/settings/settings-layout'
 import { SettingsClient } from './client'
 import { SettingsSkeleton } from '@/components/settings/settings-skeleton'
 
+export const metadata = { title: "Configurações | Sirius CRM" }
+
 export default async function SettingsPage() {
     const session = await getSession()
     if (!session || !session.user || !session.user.email) {

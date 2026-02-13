@@ -30,7 +30,7 @@
 
 ## ALTO
 
-### 6. [ ] Adicionar metadata (title/description) em 27 páginas do dashboard
+### 6. [x] Adicionar metadata (title) em 20 páginas do dashboard
 - **Impacto:** Títulos das abas faltando, SEO interno
 
 ### 7. [ ] Substituir 42 console.log por logger
@@ -95,7 +95,7 @@
 | 3 | DONE | Evolution key exposure |
 | 4 | DONE | Fallback user layout |
 | 5 | DONE | Error boundaries |
-| 6 | Pendente | Dashboard metadata |
+| 6 | DONE | Dashboard metadata (20 pages) |
 | 7 | Pendente | Console.log -> logger |
 | 8 | Pendente | Loading states |
 | 9 | Pendente | Rate limiting |

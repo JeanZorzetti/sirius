@@ -6,6 +6,8 @@ import { Workflow, MessageCircle, Calendar, ArrowLeft, CheckCircle2, XCircle, Ac
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 
+export const metadata = { title: "Integrações | Sirius CRM" }
+
 export default async function IntegrationsPage() {
     const session = await getSession()
     if (!session || !session.user || !session.user.email) {

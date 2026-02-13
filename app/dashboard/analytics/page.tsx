@@ -4,6 +4,8 @@ import { OverviewChart } from '@/components/analytics/overview-chart';
 import { DollarSign, TrendingUp, Package, Target, CalendarClock } from 'lucide-react';
 import { getSession } from '@/lib/auth';
 
+export const metadata = { title: "Analytics | Sirius CRM" }
+
 export default async function AnalyticsPage() {
   // CRITICAL FIX: Get authenticated user from session
   const session = await getSession();
