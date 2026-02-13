@@ -9,7 +9,7 @@ export async function GET() {
   try {
     const session = await getSession()
     if (!session?.user) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+      return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
     }
 
     const user = await prisma.user.findUnique({
@@ -18,7 +18,7 @@ export async function GET() {
     })
 
     if (!user?.organizationId) {
-      return NextResponse.json({ error: 'Organization not found' }, { status: 404 })
+      return NextResponse.json({ error: 'Organização não encontrada' }, { status: 404 })
     }
 
     // Check environment variables
@@ -84,7 +84,7 @@ export async function GET() {
   } catch (error: any) {
     logger.error({ error: error.message }, 'WhatsApp diagnostic error')
     return NextResponse.json({
-      error: 'Internal server error',
+      error: 'Erro interno do servidor',
       details: error.message,
     }, { status: 500 })
   }

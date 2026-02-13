@@ -10,7 +10,7 @@ export async function GET() {
   try {
     const session = await getSession()
     if (!session?.user) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+      return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
     }
 
     const user = await prisma.user.findUnique({

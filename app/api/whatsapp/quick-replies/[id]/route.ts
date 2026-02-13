@@ -10,7 +10,7 @@ export async function PUT(
   try {
     const session = await getSession()
     if (!session?.user) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+      return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
     }
 
     const user = await prisma.user.findUnique({
@@ -19,7 +19,7 @@ export async function PUT(
     })
 
     if (!user) {
-      return NextResponse.json({ error: 'User not found' }, { status: 404 })
+      return NextResponse.json({ error: 'Usuário não encontrado' }, { status: 404 })
     }
 
     const { id } = await params
@@ -84,7 +84,7 @@ export async function DELETE(
   try {
     const session = await getSession()
     if (!session?.user) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+      return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
     }
 
     const user = await prisma.user.findUnique({
@@ -93,7 +93,7 @@ export async function DELETE(
     })
 
     if (!user) {
-      return NextResponse.json({ error: 'User not found' }, { status: 404 })
+      return NextResponse.json({ error: 'Usuário não encontrado' }, { status: 404 })
     }
 
     const { id } = await params

@@ -24,7 +24,7 @@ export async function DELETE(
     // 1. Authentication
     const session = await getSession()
     if (!session?.user) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+      return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
     }
 
     // 2. Get user with organization
@@ -35,7 +35,7 @@ export async function DELETE(
 
     if (!user?.organizationId) {
       return NextResponse.json(
-        { error: 'Organization not found' },
+        { error: 'Organização não encontrada' },
         { status: 404 }
       )
     }
@@ -50,7 +50,7 @@ export async function DELETE(
 
     if (!connection) {
       return NextResponse.json(
-        { error: 'Connection not found' },
+        { error: 'Conexão não encontrada' },
         { status: 404 }
       )
     }

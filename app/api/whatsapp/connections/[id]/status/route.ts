@@ -20,7 +20,7 @@ export async function GET(
     // 1. Authentication
     const session = await getSession()
     if (!session?.user) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+      return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
     }
 
     // 2. Get user with organization
@@ -31,7 +31,7 @@ export async function GET(
 
     if (!user?.organizationId) {
       return NextResponse.json(
-        { error: 'Organization not found' },
+        { error: 'Organização não encontrada' },
         { status: 404 }
       )
     }
@@ -46,7 +46,7 @@ export async function GET(
 
     if (!connection) {
       return NextResponse.json(
-        { error: 'Connection not found' },
+        { error: 'Conexão não encontrada' },
         { status: 404 }
       )
     }

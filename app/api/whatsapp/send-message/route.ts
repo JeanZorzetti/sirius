@@ -15,7 +15,7 @@ export async function POST(req: NextRequest) {
     // 1. Authentication
     const session = await getSession()
     if (!session?.user) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+      return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
     }
 
     // 2. Get user with organization
@@ -26,7 +26,7 @@ export async function POST(req: NextRequest) {
 
     if (!user?.organizationId) {
       return NextResponse.json(
-        { error: 'Organization not found' },
+        { error: 'Organização não encontrada' },
         { status: 404 }
       )
     }
@@ -52,7 +52,7 @@ export async function POST(req: NextRequest) {
 
     if (!connection) {
       return NextResponse.json(
-        { error: 'Connection not found' },
+        { error: 'Conexão não encontrada' },
         { status: 404 }
       )
     }
@@ -75,7 +75,7 @@ export async function POST(req: NextRequest) {
 
     if (!contact) {
       return NextResponse.json(
-        { error: 'Contact not found' },
+        { error: 'Contato não encontrado' },
         { status: 404 }
       )
     }
@@ -166,7 +166,7 @@ export async function POST(req: NextRequest) {
   } catch (error) {
     logger.error({ error }, 'Error sending WhatsApp message')
     return NextResponse.json(
-      { error: 'Failed to send message' },
+      { error: 'Falha ao enviar mensagem' },
       { status: 500 }
     )
   }

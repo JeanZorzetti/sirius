@@ -25,7 +25,7 @@ export async function POST(request: NextRequest) {
 
     if (!session?.user?.id) {
       return NextResponse.json(
-        { error: 'Unauthorized' },
+        { error: 'Não autorizado' },
         { status: 401 }
       )
     }
@@ -45,7 +45,7 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     logger.error({ err: error }, 'Error sending test push notification')
     return NextResponse.json(
-      { error: 'Internal server error' },
+      { error: 'Erro interno do servidor' },
       { status: 500 }
     )
   }

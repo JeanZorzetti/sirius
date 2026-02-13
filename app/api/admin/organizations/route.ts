@@ -9,7 +9,7 @@ export async function GET() {
     const session = await getSession()
     
     if (!session?.user) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+      return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
     }
 
     // Only admin/super_admin can access
@@ -36,7 +36,7 @@ export async function GET() {
   } catch (error) {
     logger.error({ err: error }, 'Error fetching organizations')
     return NextResponse.json(
-      { error: 'Internal server error' },
+      { error: 'Erro interno do servidor' },
       { status: 500 }
     )
   }

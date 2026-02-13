@@ -15,7 +15,7 @@ export async function GET(req: NextRequest) {
   try {
     const session = await getSession()
     if (!session?.user) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+      return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
     }
 
     const user = await prisma.user.findUnique({
@@ -24,7 +24,7 @@ export async function GET(req: NextRequest) {
     })
 
     if (!user?.organizationId) {
-      return NextResponse.json({ error: 'Organization not found' }, { status: 404 })
+      return NextResponse.json({ error: 'Organização não encontrada' }, { status: 404 })
     }
 
     const contactId = req.nextUrl.searchParams.get('contactId')
@@ -41,7 +41,7 @@ export async function GET(req: NextRequest) {
     })
 
     if (!contact) {
-      return NextResponse.json({ error: 'Contact not found' }, { status: 404 })
+      return NextResponse.json({ error: 'Contato não encontrado' }, { status: 404 })
     }
 
     // If we already have a cached profile pic, return it

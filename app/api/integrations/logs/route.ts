@@ -19,7 +19,7 @@ export async function GET(request: Request) {
   try {
     const session = await getSession()
     if (!session || !session.user || !session.user.email) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+      return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
     }
 
     const user = await prisma.user.findUnique({
@@ -28,7 +28,7 @@ export async function GET(request: Request) {
     })
 
     if (!user || !user.organizationId) {
-      return NextResponse.json({ error: 'User not found' }, { status: 404 })
+      return NextResponse.json({ error: 'Usuário não encontrado' }, { status: 404 })
     }
 
     // Parse query params
@@ -115,7 +115,7 @@ export async function POST(request: Request) {
   try {
     const session = await getSession()
     if (!session || !session.user || !session.user.email) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+      return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
     }
 
     const user = await prisma.user.findUnique({
@@ -124,7 +124,7 @@ export async function POST(request: Request) {
     })
 
     if (!user || !user.organizationId) {
-      return NextResponse.json({ error: 'User not found' }, { status: 404 })
+      return NextResponse.json({ error: 'Usuário não encontrado' }, { status: 404 })
     }
 
     const body = await request.json()

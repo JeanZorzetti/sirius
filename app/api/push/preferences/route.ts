@@ -13,7 +13,7 @@ export async function GET(request: NextRequest) {
 
     if (!session?.user?.id) {
       return NextResponse.json(
-        { error: 'Unauthorized' },
+        { error: 'Não autorizado' },
         { status: 401 }
       )
     }
@@ -47,7 +47,7 @@ export async function GET(request: NextRequest) {
   } catch (error) {
     logger.error({ error }, 'Error fetching notification preferences')
     return NextResponse.json(
-      { error: 'Internal server error' },
+      { error: 'Erro interno do servidor' },
       { status: 500 }
     )
   }
@@ -63,7 +63,7 @@ export async function PATCH(request: NextRequest) {
 
     if (!session?.user?.id) {
       return NextResponse.json(
-        { error: 'Unauthorized' },
+        { error: 'Não autorizado' },
         { status: 401 }
       )
     }
@@ -116,7 +116,7 @@ export async function PATCH(request: NextRequest) {
   } catch (error) {
     logger.error({ error }, 'Error updating notification preferences')
     return NextResponse.json(
-      { error: 'Internal server error' },
+      { error: 'Erro interno do servidor' },
       { status: 500 }
     )
   }

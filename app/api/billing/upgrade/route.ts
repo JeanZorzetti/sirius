@@ -33,14 +33,14 @@ export async function POST(req: NextRequest) {
     // 1. Autenticação
     const session = await getSession()
     if (!session?.user?.email) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+      return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
     }
 
     // 2. Dados do request
     const { tier } = await req.json()
 
     if (!tier || !Object.values(SubscriptionTier).includes(tier)) {
-      return NextResponse.json({ error: 'Invalid tier' }, { status: 400 })
+      return NextResponse.json({ error: 'Plano inválido' }, { status: 400 })
     }
 
     // 3. Buscar usuário e organização
@@ -54,7 +54,7 @@ export async function POST(req: NextRequest) {
 
     if (!user?.organizationId) {
       return NextResponse.json(
-        { error: 'Organization not found' },
+        { error: 'Organização não encontrada' },
         { status: 404 }
       )
     }
@@ -71,7 +71,7 @@ export async function POST(req: NextRequest) {
 
     if (!org) {
       return NextResponse.json(
-        { error: 'Organization not found' },
+        { error: 'Organização não encontrada' },
         { status: 404 }
       )
     }

@@ -14,7 +14,7 @@ export async function GET(
   try {
     const session = await getSession()
     if (!session?.user) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+      return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
     }
 
     const user = await prisma.user.findUnique({
@@ -23,7 +23,7 @@ export async function GET(
     })
 
     if (!user?.organizationId) {
-      return NextResponse.json({ error: 'Not found' }, { status: 404 })
+      return NextResponse.json({ error: 'Não encontrado' }, { status: 404 })
     }
 
     const job = await prisma.scrapingJob.findFirst({
@@ -45,7 +45,7 @@ export async function GET(
     })
 
     if (!job) {
-      return NextResponse.json({ error: 'Not found' }, { status: 404 })
+      return NextResponse.json({ error: 'Não encontrado' }, { status: 404 })
     }
 
     return NextResponse.json(job)

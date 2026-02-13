@@ -52,7 +52,7 @@ export async function POST(req: NextRequest) {
     // 1. Authentication
     const session = await getSession()
     if (!session?.user) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+      return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
     }
 
     // 2. Get user organization
@@ -62,7 +62,7 @@ export async function POST(req: NextRequest) {
     })
 
     if (!user?.organizationId) {
-      return NextResponse.json({ error: 'Organization not found' }, { status: 404 })
+      return NextResponse.json({ error: 'Organização não encontrada' }, { status: 404 })
     }
 
     // 3. Parse FormData

@@ -10,7 +10,7 @@ export async function POST(request: NextRequest) {
 
     if (!session || !session.user || !session.user.email) {
       return NextResponse.json(
-        { error: 'Unauthorized' },
+        { error: 'Não autorizado' },
         { status: 401 }
       )
     }
@@ -26,7 +26,7 @@ export async function POST(request: NextRequest) {
 
     if (!user || !user.organizationId) {
       return NextResponse.json(
-        { error: 'Organization not found' },
+        { error: 'Organização não encontrada' },
         { status: 400 }
       )
     }
@@ -67,7 +67,7 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     logger.error({ err: error }, 'Error in seed-demo endpoint')
     return NextResponse.json(
-      { error: 'Internal server error' },
+      { error: 'Erro interno do servidor' },
       { status: 500 }
     )
   }

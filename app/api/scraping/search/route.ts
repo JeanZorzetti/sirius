@@ -15,7 +15,7 @@ export async function POST(req: NextRequest) {
   try {
     const session = await getSession()
     if (!session?.user) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+      return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
     }
 
     const user = await prisma.user.findUnique({
@@ -24,7 +24,7 @@ export async function POST(req: NextRequest) {
     })
 
     if (!user?.organizationId) {
-      return NextResponse.json({ error: 'Organization not found' }, { status: 404 })
+      return NextResponse.json({ error: 'Organização não encontrada' }, { status: 404 })
     }
 
     if (!isAnyProviderConfigured()) {

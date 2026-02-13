@@ -18,7 +18,7 @@ export async function PUT(
     const session = await getSession()
     
     if (!session?.user) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+      return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
     }
 
     // Only admin/super_admin can update tiers
@@ -33,7 +33,7 @@ export async function PUT(
     const result = updateTierSchema.safeParse(body)
     if (!result.success) {
       return NextResponse.json(
-        { error: 'Invalid input', details: result.error.format() },
+        { error: 'Entrada inválida', details: result.error.format() },
         { status: 400 }
       )
     }
@@ -47,7 +47,7 @@ export async function PUT(
 
     if (!existingOrg) {
       return NextResponse.json(
-        { error: 'Organization not found' },
+        { error: 'Organização não encontrada' },
         { status: 404 }
       )
     }
@@ -72,7 +72,7 @@ export async function PUT(
   } catch (error) {
     logger.error({ err: error }, 'Error updating organization tier')
     return NextResponse.json(
-      { error: 'Internal server error' },
+      { error: 'Erro interno do servidor' },
       { status: 500 }
     )
   }

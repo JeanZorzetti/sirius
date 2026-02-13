@@ -15,7 +15,7 @@ export async function GET(req: NextRequest) {
   try {
     const session = await getSession()
     if (!session?.user) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+      return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
     }
 
     const user = await prisma.user.findUnique({
@@ -24,7 +24,7 @@ export async function GET(req: NextRequest) {
     })
 
     if (!user?.organizationId) {
-      return NextResponse.json({ error: 'Organization not found' }, { status: 404 })
+      return NextResponse.json({ error: 'Organização não encontrada' }, { status: 404 })
     }
 
     const messageId = req.nextUrl.searchParams.get('messageId')
@@ -41,7 +41,7 @@ export async function GET(req: NextRequest) {
     })
 
     if (!message) {
-      return NextResponse.json({ error: 'Message not found' }, { status: 404 })
+      return NextResponse.json({ error: 'Mensagem não encontrada' }, { status: 404 })
     }
 
     // Encontrar a conexão ativa
@@ -94,7 +94,7 @@ export async function GET(req: NextRequest) {
   } catch (error: any) {
     logger.error({ error: error.message }, 'Error fetching media')
     return NextResponse.json(
-      { error: 'Failed to fetch media', details: error.message },
+      { error: 'Falha ao buscar mídia', details: error.message },
       { status: 500 }
     )
   }

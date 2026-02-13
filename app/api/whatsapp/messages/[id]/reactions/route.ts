@@ -14,7 +14,7 @@ export async function POST(
   try {
     const session = await getSession()
     if (!session?.user?.id) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+      return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
     }
 
     const { id: messageId } = await context.params
@@ -31,7 +31,7 @@ export async function POST(
     })
 
     if (!user?.organizationId) {
-      return NextResponse.json({ error: 'Organization not found' }, { status: 404 })
+      return NextResponse.json({ error: 'Organização não encontrada' }, { status: 404 })
     }
 
     // Verify message exists and user has access
@@ -46,7 +46,7 @@ export async function POST(
     })
 
     if (!message) {
-      return NextResponse.json({ error: 'Message not found' }, { status: 404 })
+      return NextResponse.json({ error: 'Mensagem não encontrada' }, { status: 404 })
     }
 
     // Check if user already reacted with this emoji
@@ -82,7 +82,7 @@ export async function POST(
   } catch (error) {
     logger.error({ err: error }, 'Error handling reaction')
     return NextResponse.json(
-      { error: 'Internal server error' },
+      { error: 'Erro interno do servidor' },
       { status: 500 }
     )
   }
@@ -99,7 +99,7 @@ export async function GET(
   try {
     const session = await getSession()
     if (!session?.user?.id) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+      return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
     }
 
     const { id: messageId } = await context.params
@@ -111,7 +111,7 @@ export async function GET(
     })
 
     if (!user?.organizationId) {
-      return NextResponse.json({ error: 'Organization not found' }, { status: 404 })
+      return NextResponse.json({ error: 'Organização não encontrada' }, { status: 404 })
     }
 
     const message = await prisma.whatsAppMessage.findFirst({
@@ -122,7 +122,7 @@ export async function GET(
     })
 
     if (!message) {
-      return NextResponse.json({ error: 'Message not found' }, { status: 404 })
+      return NextResponse.json({ error: 'Mensagem não encontrada' }, { status: 404 })
     }
 
     // Get reactions grouped by emoji
@@ -157,7 +157,7 @@ export async function GET(
   } catch (error) {
     logger.error({ err: error }, 'Error fetching reactions')
     return NextResponse.json(
-      { error: 'Internal server error' },
+      { error: 'Erro interno do servidor' },
       { status: 500 }
     )
   }

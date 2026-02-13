@@ -18,7 +18,7 @@ export async function GET() {
     // 1. Authentication
     const session = await getSession()
     if (!session?.user) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+      return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
     }
 
     // 2. Get user with organization
@@ -29,7 +29,7 @@ export async function GET() {
 
     if (!user?.organizationId) {
       return NextResponse.json(
-        { error: 'Organization not found' },
+        { error: 'Organização não encontrada' },
         { status: 404 }
       )
     }
@@ -105,7 +105,7 @@ export async function GET() {
   } catch (error: any) {
     logger.error({ error: error.message, stack: error.stack }, 'Debug: Error in groups debug endpoint')
     return NextResponse.json(
-      { error: 'Internal server error', details: error.message },
+      { error: 'Erro interno do servidor', details: error.message },
       { status: 500 }
     )
   }

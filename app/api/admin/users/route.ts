@@ -20,7 +20,7 @@ export async function POST(request: NextRequest) {
     // Check admin authentication
     const session = await getSession()
     if (!session?.user?.email) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+      return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
     }
 
     // Verify user is admin
@@ -146,7 +146,7 @@ export async function GET() {
   try {
     const session = await getSession()
     if (!session?.user?.email) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+      return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
     }
 
     const adminUser = await prisma.user.findUnique({

@@ -48,7 +48,7 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     logger.error({ error }, 'Error tracking PWA metric')
     return NextResponse.json(
-      { error: 'Internal server error' },
+      { error: 'Erro interno do servidor' },
       { status: 500 }
     )
   }
@@ -64,7 +64,7 @@ export async function GET(request: NextRequest) {
 
     if (!session?.user?.organizationId) {
       return NextResponse.json(
-        { error: 'Unauthorized' },
+        { error: 'Não autorizado' },
         { status: 401 }
       )
     }
@@ -168,7 +168,7 @@ export async function GET(request: NextRequest) {
   } catch (error) {
     logger.error({ error }, 'Error fetching PWA metrics')
     return NextResponse.json(
-      { error: 'Internal server error' },
+      { error: 'Erro interno do servidor' },
       { status: 500 }
     )
   }

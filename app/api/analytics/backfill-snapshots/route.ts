@@ -27,7 +27,7 @@ export async function POST(request: NextRequest) {
     const session = await getSession()
     if (!session?.user?.id) {
       return NextResponse.json(
-        { error: 'Unauthorized' },
+        { error: 'Não autorizado' },
         { status: 401 }
       )
     }
@@ -40,7 +40,7 @@ export async function POST(request: NextRequest) {
 
     if (!user?.organization) {
       return NextResponse.json(
-        { error: 'Organization not found' },
+        { error: 'Organização não encontrada' },
         { status: 404 }
       )
     }
