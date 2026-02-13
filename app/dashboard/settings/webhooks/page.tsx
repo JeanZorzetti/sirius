@@ -11,6 +11,7 @@ import { Textarea } from '@/components/ui/textarea'
 import { Switch } from '@/components/ui/switch'
 import { Badge } from '@/components/ui/badge'
 import { toast } from 'sonner'
+import { ConfirmDialog } from '@/components/ui/confirm-dialog'
 
 interface WebhookType {
   id: string
@@ -68,6 +69,7 @@ export default function WebhooksManagementPage() {
   const [formDescription, setFormDescription] = useState('')
   const [formEvents, setFormEvents] = useState<string[]>([])
   const [submitting, setSubmitting] = useState(false)
+  const [deleteTarget, setDeleteTarget] = useState<{ id: string; url: string } | null>(null)
 
   useEffect(() => {
     loadWebhooks()
@@ -130,10 +132,6 @@ export default function WebhooksManagementPage() {
   }
 
   async function handleDeleteWebhook(id: string, url: string) {
-    if (!confirm(`Tem certeza que deseja deletar o webhook para "${url}"?`)) {
-      return
-    }
-
     try {
       const response = await fetch(`/api/v1/webhooks/${id}`, {
         method: 'DELETE'
@@ -304,7 +302,7 @@ export default function WebhooksManagementPage() {
                         <Button
                           variant="ghost"
                           size="sm"
-                          onClick={() => handleDeleteWebhook(webhook.id, webhook.url)}
+                          onClick={() => setDeleteTarget({ id: webhook.id, url: webhook.url })}
                         >
                           <Trash2 className="h-4 w-4 text-red-500" />
                         </Button>
@@ -447,6 +445,20 @@ export default function WebhooksManagementPage() {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+
+      <ConfirmDialog
+        open={!!deleteTarget}
+        onOpenChange={(open) => !open && setDeleteTarget(null)}
+        title="Deletar webhook"
+        description={`Tem certeza que deseja deletar o webhook para "${deleteTarget?.url}"? Esta ação não pode ser desfeita.`}
+        confirmLabel="Deletar"
+        onConfirm={() => {
+          if (deleteTarget) {
+            handleDeleteWebhook(deleteTarget.id, deleteTarget.url)
+            setDeleteTarget(null)
+          }
+        }}
+      />
     </div>
   )
 }

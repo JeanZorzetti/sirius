@@ -6,6 +6,7 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { AutomationToggleForm } from './toggle-form'
+import { DeleteAutomationButton } from './delete-button'
 
 export const metadata: Metadata = {
   title: 'Automações de Negócios | Sirius CRM'
@@ -194,24 +195,4 @@ export default async function AutomationsPage() {
   )
 }
 
-// Inline server-compatible delete button using a form action
-function DeleteAutomationButton({ automationId }: { automationId: string }) {
-  async function deleteAction() {
-    'use server'
-    const { prisma: db } = await import('@/lib/prisma')
-    await db.dealAutomation.delete({ where: { id: automationId } })
-  }
-
-  return (
-    <form action={deleteAction}>
-      <Button
-        type="submit"
-        variant="outline"
-        size="sm"
-        className="text-red-600 hover:text-red-700 hover:bg-red-50"
-      >
-        Deletar
-      </Button>
-    </form>
-  )
-}
+// DeleteAutomationButton moved to ./delete-button.tsx (client component with confirmation dialog)

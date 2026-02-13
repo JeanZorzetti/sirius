@@ -34,6 +34,7 @@ import {
   DialogFooter,
   DialogClose
 } from "@/components/ui/dialog"
+import { ConfirmDialog } from "@/components/ui/confirm-dialog"
 
 type Deal = {
   id: string
@@ -313,6 +314,9 @@ export function KanbanBoard({
   const [isNewStageOpen, setIsNewStageOpen] = useState(false)
   const [newStageName, setNewStageName] = useState("")
 
+  // Delete Stage Confirmation
+  const [deleteStageId, setDeleteStageId] = useState<string | null>(null)
+
   // Filters
   const [searchQuery, setSearchQuery] = useState("")
 
@@ -346,7 +350,6 @@ export function KanbanBoard({
   }
 
   const handleDeleteStage = async (id: string) => {
-    if (!confirm("Tem certeza que deseja excluir esta etapa?")) return
     const result = await deleteStage(id)
     if (result.success) {
       setStages(prev => prev.filter(s => s.id !== id))
@@ -354,6 +357,7 @@ export function KanbanBoard({
     } else {
       alert(result.error || "Erro ao excluir etapa")
     }
+    setDeleteStageId(null)
   }
 
   const handleCreateStage = async (e: React.FormEvent) => {
@@ -475,7 +479,7 @@ export function KanbanBoard({
               stage={stage}
               onDealClick={(deal) => setEditingDeal(deal)}
               onRename={handleRenameStage}
-              onDelete={handleDeleteStage}
+              onDelete={(id) => setDeleteStageId(id)}
             />
           ))}
           <div className="w-10 shrink-0" />
@@ -512,6 +516,15 @@ export function KanbanBoard({
           </form>
         </DialogContent>
       </Dialog>
+
+      <ConfirmDialog
+        open={!!deleteStageId}
+        onOpenChange={(open) => !open && setDeleteStageId(null)}
+        title="Excluir etapa"
+        description="Tem certeza que deseja excluir esta etapa? Todos os deals serão movidos para a primeira etapa."
+        confirmLabel="Excluir"
+        onConfirm={() => deleteStageId && handleDeleteStage(deleteStageId)}
+      />
     </DragDropContext>
   )
 }

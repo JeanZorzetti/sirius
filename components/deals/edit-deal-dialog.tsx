@@ -29,6 +29,8 @@ import { updateDeal, deleteDeal } from '@/app/dashboard/actions'
 import { getDealDetails, addNote, deleteNote } from '@/app/dashboard/deals/actions'
 import { createContact } from '@/app/dashboard/contacts/actions'
 import { Loader2, MessageSquare, History, Tag, Calendar, Send, Trash2, Plus, MessageCircle } from 'lucide-react'
+import { ConfirmDialog } from '@/components/ui/confirm-dialog'
+import { toast } from 'sonner'
 import { format } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
 import { ScrollArea } from "@/components/ui/scroll-area"
@@ -78,6 +80,8 @@ export function EditDealDialog({
     const [quickAddOpen, setQuickAddOpen] = useState(false)
     const [quickAddLoading, setQuickAddLoading] = useState(false)
     const [showScriptGenerator, setShowScriptGenerator] = useState(false)
+    const [confirmDeleteDeal, setConfirmDeleteDeal] = useState(false)
+    const [confirmDeleteNoteId, setConfirmDeleteNoteId] = useState<string | null>(null)
 
     // Fetch full details when dialog opens
     useEffect(() => {
@@ -205,7 +209,6 @@ export function EditDealDialog({
 
     async function handleDelete() {
         if (!initialDeal) return
-        if (!confirm('Tem certeza que deseja excluir este deal?')) return
 
         const dealId = initialDeal.id
 
@@ -264,6 +267,7 @@ export function EditDealDialog({
     if (!initialDeal) return null
 
     return (
+        <>
         <Dialog open={open} onOpenChange={onOpenChange}>
             <DialogContent className="sm:max-w-[700px] h-[80vh] flex flex-col p-0 gap-0 overflow-hidden bg-white dark:bg-zinc-950 border-zinc-200 dark:border-zinc-900">
                 <DialogHeader className="p-6 pb-2 shrink-0">
@@ -454,7 +458,7 @@ export function EditDealDialog({
                                     </div>
 
                                     <div className="pt-4 flex justify-between border-t border-zinc-100 dark:border-zinc-800">
-                                        <Button type="button" variant="ghost" onClick={handleDelete} className="text-red-500 hover:text-red-600 hover:bg-red-50">
+                                        <Button type="button" variant="ghost" onClick={() => setConfirmDeleteDeal(true)} className="text-red-500 hover:text-red-600 hover:bg-red-50">
                                             Excluir Negócio
                                         </Button>
                                         <Button type="submit" disabled={loading} className="bg-indigo-600 hover:bg-indigo-700 text-white">
@@ -485,17 +489,8 @@ export function EditDealDialog({
                                         <div className="text-center py-8 text-zinc-400 text-sm">Nenhuma observação ainda.</div>
                                     ) : (
                                         fullDeal?.notes?.map((note: any) => (
-                                            <NoteItem key={note.id} note={note} onDelete={async () => {
-                                                if (confirm("Excluir nota?")) {
-                                                    try {
-                                                        await deleteNote(note.id)
-                                                        const fresh = await getDealDetails(initialDeal.id)
-                                                        setFullDeal(fresh)
-                                                    } catch (err) {
-                                                        console.error("Failed to delete note:", err)
-                                                        alert("Erro ao excluir nota. O deal pode não existir mais.")
-                                                    }
-                                                }
+                                            <NoteItem key={note.id} note={note} onDelete={() => {
+                                                setConfirmDeleteNoteId(note.id)
                                             }} />
                                         ))
                                     )}
@@ -545,6 +540,36 @@ export function EditDealDialog({
                 dealId={initialDeal?.id}
             />
         </Dialog>
+
+        <ConfirmDialog
+            open={confirmDeleteDeal}
+            onOpenChange={setConfirmDeleteDeal}
+            title="Excluir negócio"
+            description="Tem certeza que deseja excluir este negócio? Esta ação não pode ser desfeita."
+            confirmLabel="Excluir"
+            onConfirm={handleDelete}
+        />
+
+        <ConfirmDialog
+            open={!!confirmDeleteNoteId}
+            onOpenChange={(open) => !open && setConfirmDeleteNoteId(null)}
+            title="Excluir nota"
+            description="Tem certeza que deseja excluir esta nota?"
+            confirmLabel="Excluir"
+            onConfirm={async () => {
+                if (confirmDeleteNoteId && initialDeal) {
+                    try {
+                        await deleteNote(confirmDeleteNoteId)
+                        const fresh = await getDealDetails(initialDeal.id)
+                        setFullDeal(fresh)
+                    } catch {
+                        toast.error("Erro ao excluir nota")
+                    }
+                }
+                setConfirmDeleteNoteId(null)
+            }}
+        />
+        </>
     )
 }
 

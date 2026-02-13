@@ -8,6 +8,7 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { toast } from 'sonner'
+import { ConfirmDialog } from '@/components/ui/confirm-dialog'
 
 interface ApiKey {
   id: string
@@ -27,6 +28,7 @@ export default function ApiManagementPage() {
   const [generatedKey, setGeneratedKey] = useState('')
   const [copied, setCopied] = useState(false)
   const [generating, setGenerating] = useState(false)
+  const [revokeTarget, setRevokeTarget] = useState<{ id: string; name: string } | null>(null)
 
   useEffect(() => {
     loadApiKeys()
@@ -82,10 +84,6 @@ export default function ApiManagementPage() {
   }
 
   async function handleRevokeKey(id: string, name: string) {
-    if (!confirm(`Tem certeza que deseja revogar a API key "${name}"? Esta ação não pode ser desfeita.`)) {
-      return
-    }
-
     try {
       const response = await fetch(`/api/v1/api-keys/${id}`, {
         method: 'DELETE'
@@ -174,7 +172,7 @@ export default function ApiManagementPage() {
                       <Button
                         variant="destructive"
                         size="sm"
-                        onClick={() => handleRevokeKey(key.id, key.name)}
+                        onClick={() => setRevokeTarget({ id: key.id, name: key.name })}
                       >
                         <Trash2 className="h-4 w-4 mr-2" />
                         Revogar
@@ -275,6 +273,20 @@ export default function ApiManagementPage() {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+
+      <ConfirmDialog
+        open={!!revokeTarget}
+        onOpenChange={(open) => !open && setRevokeTarget(null)}
+        title="Revogar API key"
+        description={`Tem certeza que deseja revogar a API key "${revokeTarget?.name}"? Esta ação não pode ser desfeita.`}
+        confirmLabel="Revogar"
+        onConfirm={() => {
+          if (revokeTarget) {
+            handleRevokeKey(revokeTarget.id, revokeTarget.name)
+            setRevokeTarget(null)
+          }
+        }}
+      />
     </div>
   )
 }

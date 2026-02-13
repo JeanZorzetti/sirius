@@ -9,6 +9,7 @@ import { NewConnectionDialog } from './new-connection-dialog'
 import { QRCodeDialog } from './qr-code-dialog'
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
+import { ConfirmDialog } from '@/components/ui/confirm-dialog'
 
 interface Connection {
   id: string
@@ -29,13 +30,12 @@ export function ConnectionManager({ connections, maxInstances }: ConnectionManag
   const [isNewDialogOpen, setIsNewDialogOpen] = useState(false)
   const [selectedConnectionForQR, setSelectedConnectionForQR] = useState<Connection | null>(null)
   const [loadingId, setLoadingId] = useState<string | null>(null)
+  const [confirmAction, setConfirmAction] = useState<{ type: 'disconnect' | 'delete'; id: string } | null>(null)
 
   const activeConnections = connections.filter(c => c.status === 'CONNECTED' || c.status === 'CONNECTING')
   const canAddMore = activeConnections.length < maxInstances
 
   const handleDisconnect = async (connectionId: string) => {
-    if (!confirm('Tem certeza que deseja desconectar este WhatsApp?')) return
-
     setLoadingId(connectionId)
     try {
       const res = await fetch(`/api/whatsapp/connections/${connectionId}/disconnect`, {
@@ -57,8 +57,6 @@ export function ConnectionManager({ connections, maxInstances }: ConnectionManag
   }
 
   const handleDelete = async (connectionId: string) => {
-    if (!confirm('Tem certeza que deseja remover esta conexão permanentemente?')) return
-
     setLoadingId(connectionId)
     try {
       const res = await fetch(`/api/whatsapp/connections/${connectionId}`, {
@@ -162,7 +160,7 @@ export function ConnectionManager({ connections, maxInstances }: ConnectionManag
                     <Button
                       variant="outline"
                       size="sm"
-                      onClick={() => handleDisconnect(connection.id)}
+                      onClick={() => setConfirmAction({ type: 'disconnect', id: connection.id })}
                       disabled={loadingId === connection.id}
                     >
                       {loadingId === connection.id ? (
@@ -178,7 +176,7 @@ export function ConnectionManager({ connections, maxInstances }: ConnectionManag
                     <Button
                       variant="destructive"
                       size="sm"
-                      onClick={() => handleDelete(connection.id)}
+                      onClick={() => setConfirmAction({ type: 'delete', id: connection.id })}
                       disabled={loadingId === connection.id}
                     >
                       {loadingId === connection.id ? (
@@ -199,6 +197,27 @@ export function ConnectionManager({ connections, maxInstances }: ConnectionManag
       <NewConnectionDialog
         open={isNewDialogOpen}
         onOpenChange={setIsNewDialogOpen}
+      />
+
+      <ConfirmDialog
+        open={!!confirmAction}
+        onOpenChange={(open) => !open && setConfirmAction(null)}
+        title={confirmAction?.type === 'disconnect' ? 'Desconectar WhatsApp' : 'Remover conexão'}
+        description={confirmAction?.type === 'disconnect'
+          ? 'Tem certeza que deseja desconectar este WhatsApp? Você precisará escanear o QR Code novamente.'
+          : 'Tem certeza que deseja remover esta conexão permanentemente? Esta ação não pode ser desfeita.'
+        }
+        confirmLabel={confirmAction?.type === 'disconnect' ? 'Desconectar' : 'Remover'}
+        onConfirm={() => {
+          if (confirmAction) {
+            if (confirmAction.type === 'disconnect') {
+              handleDisconnect(confirmAction.id)
+            } else {
+              handleDelete(confirmAction.id)
+            }
+            setConfirmAction(null)
+          }
+        }}
       />
 
       {selectedConnectionForQR && (
