@@ -201,7 +201,7 @@ function KanbanColumn({
   }
 
   return (
-    <div className="w-70 sm:w-80 flex-none flex flex-col h-full">
+    <div className="w-[260px] sm:w-[300px] md:w-80 flex-none flex flex-col h-full">
       {/* Column Header */}
       <div className="flex flex-col gap-1 px-1 mb-4 select-none">
         <div className="flex items-center justify-between group/header">
@@ -449,13 +449,13 @@ export function KanbanBoard({
     <DragDropContext onDragEnd={handleDragEnd}>
       <div className="flex flex-col h-full gap-4">
         {/* Pipeline Header / Toolbar */}
-        <div className="flex items-center justify-between px-2">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 px-2">
           <div className="flex items-center gap-2">
             <Input
               placeholder="Filtrar por nome..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="h-8 w-[200px] bg-white/5 border-white/10"
+              className="h-8 w-full sm:w-[200px] bg-white/5 border-white/10"
             />
           </div>
           <Button variant="outline" size="sm" onClick={() => setIsNewStageOpen(true)} className="gap-2">
@@ -467,7 +467,7 @@ export function KanbanBoard({
         <div
           ref={scrollContainerRef}
           data-tour="pipeline"
-          className="flex h-full gap-6 pb-4 px-2 overflow-x-auto"
+          className="flex h-full gap-3 sm:gap-6 pb-4 px-2 overflow-x-auto snap-x snap-mandatory sm:snap-none"
         >
           {filteredStages.map((stage) => (
             <KanbanColumn

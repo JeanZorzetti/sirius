@@ -35,7 +35,7 @@ export function DataTable<TData, TValue>({
     <div className="flex flex-col gap-4">
       {/* Simple Search Filter can go here later */}
 
-      <div className="rounded-2xl border border-black/5 dark:border-white/5 bg-white dark:bg-white/[0.02] backdrop-blur-xl overflow-hidden shadow-sm">
+      <div className="rounded-2xl border border-black/5 dark:border-white/5 bg-white dark:bg-white/[0.02] backdrop-blur-xl overflow-x-auto shadow-sm">
         <Table>
           <TableHeader className="bg-black/[0.02] dark:bg-white/[0.02]">
             {table.getHeaderGroups().map((headerGroup) => (

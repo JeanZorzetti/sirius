@@ -49,7 +49,7 @@
 
 ## MEDIO
 
-### 10. [ ] Melhorar responsividade mobile do dashboard
+### 10. [x] Melhorar responsividade mobile do dashboard
 - **Impacto:** Kanban, tabelas e charts quebram em tela pequena
 - **Prioridade:** Kanban > Analytics > Settings
 
@@ -99,7 +99,7 @@
 | 7 | DONE | Console.log -> logger (109 in 69 files) |
 | 8 | DONE | Loading states (12 pages) |
 | 9 | DONE | Rate limiting (22 routes) |
-| 10 | Pendente | Mobile responsiveness |
+| 10 | DONE | Mobile responsiveness (6 components) |
 | 11 | Pendente | WhatsApp completo |
 | 12 | Pendente | Prospecção docs |
 | 13 | Pendente | Confirmation dialogs |

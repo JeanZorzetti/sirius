@@ -1,8 +1,9 @@
 'use client'
 
 import { useState, useMemo } from 'react'
-import { Search, Settings, User, Users, Bell, Key, Webhook, Zap, BookOpen } from 'lucide-react'
+import { Search, Settings, User, Users, Bell, Key, Webhook, Zap, BookOpen, Menu, X } from 'lucide-react'
 import { Input } from '@/components/ui/input'
+import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
@@ -101,10 +102,36 @@ export function SettingsLayout({ children, organizationName }: SettingsLayoutPro
     return currentTab?.id || 'general'
   }, [pathname])
 
+  const [sidebarOpen, setSidebarOpen] = useState(false)
+
   return (
-    <div className="flex-1 flex h-full">
+    <div className="flex-1 flex h-full relative">
+      {/* Mobile sidebar toggle */}
+      <div className="md:hidden fixed bottom-4 right-4 z-50">
+        <Button
+          size="icon"
+          variant="default"
+          onClick={() => setSidebarOpen(!sidebarOpen)}
+          className="h-12 w-12 rounded-full shadow-lg"
+        >
+          {sidebarOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+        </Button>
+      </div>
+
+      {/* Mobile overlay */}
+      {sidebarOpen && (
+        <div
+          className="fixed inset-0 bg-black/50 z-40 md:hidden"
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
+
       {/* Sidebar - Navegação Lateral */}
-      <aside className="w-64 border-r border-zinc-200 dark:border-white/5 bg-white/50 dark:bg-white/[0.01] backdrop-blur-xl p-6 space-y-6">
+      <aside className={cn(
+        "w-64 border-r border-zinc-200 dark:border-white/5 bg-white/50 dark:bg-white/[0.01] backdrop-blur-xl p-6 space-y-6",
+        "fixed inset-y-0 left-0 z-40 transition-transform duration-200 md:relative md:translate-x-0",
+        sidebarOpen ? "translate-x-0" : "-translate-x-full"
+      )}>
         {/* Header */}
         <div className="space-y-1">
           <h2 className="text-xl font-bold text-zinc-900 dark:text-white">Configurações</h2>
@@ -179,7 +206,7 @@ export function SettingsLayout({ children, organizationName }: SettingsLayoutPro
             }
 
             return (
-              <Link key={tab.id} href={tab.href}>
+              <Link key={tab.id} href={tab.href} onClick={() => setSidebarOpen(false)}>
                 {content}
               </Link>
             )
