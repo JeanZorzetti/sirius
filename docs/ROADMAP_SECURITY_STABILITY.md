@@ -75,7 +75,7 @@
 - **Arquivos:** `lib/google-trends.ts`, `lib/ml/*.ts` (5), `lib/generative-ui/*`
 - **Rodar:** `npx depcheck` para dependências não usadas
 
-### 16. [ ] Padronizar mensagens de erro (PT-BR para user-facing, EN para logs)
+### 16. [x] Padronizar mensagens de erro (PT-BR para user-facing, EN para logs)
 - **Impacto:** Inconsistência entre português e inglês nos responses
 
 ### 17. [ ] Testar/remover integrações não funcionais
@@ -105,5 +105,5 @@
 | 13 | DONE | Confirmation dialogs (10 actions, 7 pages) |
 | 14 | DONE | Empty states (automations, webhooks, pipelines) |
 | 15 | DONE | Dead code cleanup (6 deps removed) |
-| 16 | Pendente | Error messages i18n |
+| 16 | DONE | Error messages i18n (157 msgs, 59 files) |
 | 17 | Pendente | Integrações teste |
