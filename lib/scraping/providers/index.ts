@@ -66,7 +66,11 @@ export function getConfiguredProviders(): ScrapingProvider[] {
 }
 
 export function isAnyProviderConfigured(): boolean {
-  return true
+  return providers.some(p => p.isConfigured())
+}
+
+export function getProvidersStatus(): { name: string; configured: boolean }[] {
+  return providers.map(p => ({ name: p.name, configured: p.isConfigured() }))
 }
 
 /**

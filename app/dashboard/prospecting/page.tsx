@@ -5,8 +5,9 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { Search, Loader2, Users, CreditCard } from 'lucide-react'
+import { Search, Loader2, Users, CreditCard, AlertTriangle, ExternalLink } from 'lucide-react'
 import { toast } from 'sonner'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 
 interface ScrapingJob {
   id: string
@@ -16,16 +17,23 @@ interface ScrapingJob {
   createdAt: string
 }
 
+interface ProviderStatus {
+  name: string
+  configured: boolean
+}
+
 export default function ProspectingPage() {
   const [query, setQuery] = useState('')
   const [loading, setLoading] = useState(false)
   const [credits, setCredits] = useState({ balance: 0, monthlyQuota: 0 })
   const [jobs, setJobs] = useState<ScrapingJob[]>([])
+  const [configStatus, setConfigStatus] = useState<{ configured: boolean; providers: ProviderStatus[] } | null>(null)
 
-  // Fetch credits on mount
+  // Fetch credits and config on mount
   useEffect(() => {
     fetchCredits()
     fetchJobs()
+    fetchConfigStatus()
   }, [])
 
   const fetchCredits = async () => {
@@ -37,6 +45,18 @@ export default function ProspectingPage() {
       }
     } catch (error) {
       console.error('Error fetching credits:', error)
+    }
+  }
+
+  const fetchConfigStatus = async () => {
+    try {
+      const res = await fetch('/api/scraping/config-status')
+      if (res.ok) {
+        const data = await res.json()
+        setConfigStatus(data)
+      }
+    } catch {
+      // silently fail
     }
   }
 
@@ -146,6 +166,33 @@ export default function ProspectingPage() {
           Créditos: {credits.balance}/{credits.monthlyQuota}
         </Badge>
       </div>
+
+      {/* Config Warning */}
+      {configStatus && !configStatus.configured && (
+        <Alert variant="destructive" className="border-amber-500/50 bg-amber-50 text-amber-900 dark:bg-amber-950/30 dark:text-amber-200 [&>svg]:text-amber-600">
+          <AlertTriangle className="h-4 w-4" />
+          <AlertTitle>Configuração necessária</AlertTitle>
+          <AlertDescription className="space-y-2">
+            <p>
+              A prospecção requer pelo menos um provedor configurado para resultados confiáveis.
+              Sem configuração, a busca usa fallbacks básicos que podem retornar poucos resultados.
+            </p>
+            <div className="text-sm space-y-1">
+              <p className="font-medium">Opções de configuração (variáveis de ambiente no Vercel):</p>
+              <ul className="list-disc list-inside ml-2 space-y-0.5">
+                <li>
+                  <code className="text-xs bg-amber-100 dark:bg-amber-900/50 px-1 rounded">SIRIUS_SCRAPER_URL</code>
+                  {' '}&mdash; Servidor Puppeteer self-hosted (gratuito, deploy no EasyPanel)
+                </li>
+                <li>
+                  <code className="text-xs bg-amber-100 dark:bg-amber-900/50 px-1 rounded">GOOGLE_PLACES_API_KEY</code>
+                  {' '}&mdash; Google Places API (gratuito até $200/mês)
+                </li>
+              </ul>
+            </div>
+          </AlertDescription>
+        </Alert>
+      )}
 
       {/* Search Form */}
       <Card>
