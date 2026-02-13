@@ -20,6 +20,11 @@ async function getAutomationSettings(organizationId: string, type: EmailAutomati
     }
   })
 
+  // If no setting exists (org registered before email automations feature), default to enabled
+  if (!setting) {
+    return { enabled: true, sendDelayMinutes: 0, customSubject: null, customBody: null }
+  }
+
   return setting
 }
 

@@ -1,9 +1,8 @@
 'use server'
 
-import { PrismaClient, EmailAutomationType, EmailStatus, Prisma } from '@prisma/client'
+import { EmailAutomationType, EmailStatus, Prisma } from '@prisma/client'
 import { getSession } from '@/lib/auth'
-
-const prisma = new PrismaClient()
+import { prisma } from '@/lib/prisma'
 
 async function getAuthenticatedUser() {
   const session = await getSession()

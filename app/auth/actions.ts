@@ -98,6 +98,21 @@ export async function registerAction(prevState: any, formData: FormData) {
                     pipelineId: defaultPipeline.id
                 }))
             })
+
+            // Create default email automation settings (all enabled by default)
+            await prisma.emailAutomationSetting.createMany({
+                data: [
+                    'WELCOME_EMAIL',
+                    'DEAL_CREATED',
+                    'DEAL_STAGE_CHANGED',
+                    'UPGRADE_NUDGE',
+                ].map(type => ({
+                    type: type as any,
+                    organizationId: org.id,
+                    enabled: true,
+                    sendDelayMinutes: 0,
+                }))
+            })
         }
 
         const hashedPassword = await hash(password, 10)
