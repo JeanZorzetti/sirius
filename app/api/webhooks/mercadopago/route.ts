@@ -146,6 +146,12 @@ async function processApprovedPayment(payment: any) {
   const organizationId = parts[0]
   const tierOrAddon = parts[1]
 
+  // Programa de Fundadores
+  if (tierOrAddon === 'FOUNDER') {
+    await upgradeToFounder(organizationId, payment)
+    return
+  }
+
   // Verificar se é upgrade de plano
   if (Object.values(SubscriptionTier).includes(tierOrAddon as SubscriptionTier)) {
     await upgradePlan(organizationId, tierOrAddon as SubscriptionTier, payment)
@@ -213,6 +219,84 @@ async function upgradePlan(
   }
 
   logger.info({ organizationId, tier }, 'Plan upgraded successfully')
+}
+
+async function upgradeToFounder(organizationId: string, payment: any) {
+  logger.info({ organizationId }, '[MP:FOUNDER] Processing founder upgrade')
+
+  // Contar fundadores atuais para obter número sequencial
+  const foundersCount = await prisma.organization.count({ where: { isFounder: true } })
+  const founderNumber = foundersCount + 1
+
+  await prisma.organization.update({
+    where: { id: organizationId },
+    data: {
+      tier: SubscriptionTier.PRO,
+      isFounder: true,
+      founderNumber,
+      founderSince: new Date(),
+      customPricing: 29.00,
+      failedPaymentAttempts: 0,
+    },
+  })
+
+  // Criar registro de transação
+  await prisma.transaction.create({
+    data: {
+      organizationId,
+      type: 'PLAN_UPGRADE',
+      amount: payment.transaction_amount ?? 29,
+      currency: payment.currency_id ?? 'BRL',
+      status: 'COMPLETED',
+      provider: 'MERCADO_PAGO',
+      providerPaymentId: String(payment.id),
+      metadata: {
+        tier: 'FOUNDER',
+        founderNumber,
+        paymentMethod: payment.payment_method_id,
+      },
+    },
+  })
+
+  // Inicializar créditos de scraping (mesmo que PRO)
+  await prisma.scrapingCredit.upsert({
+    where: { organizationId },
+    create: { organizationId, balance: 200, monthlyQuota: 200, usedThisMonth: 0, lastRefill: new Date() },
+    update: { balance: 200, monthlyQuota: 200, usedThisMonth: 0, lastRefill: new Date() },
+  })
+
+  // Enviar email de boas-vindas ao fundador
+  const owner = await prisma.user.findFirst({
+    where: { organizationId },
+    select: { email: true, name: true },
+    orderBy: { createdAt: 'asc' },
+  })
+
+  if (owner?.email) {
+    const org = await prisma.organization.findUnique({
+      where: { id: organizationId },
+      select: { name: true },
+    })
+
+    await sendEmail({
+      to: owner.email,
+      subject: `🌟 Bem-vindo ao Programa de Fundadores! Você é o Fundador #${founderNumber}`,
+      react: PaymentConfirmationEmail({
+        userName: owner.name || 'Fundador',
+        organizationName: org?.name || '',
+        paymentId: String(payment.id),
+        paymentType: payment.payment_method_id || 'credit_card',
+        amount: 29,
+        nextBillingDate: (() => {
+          const d = new Date()
+          d.setMonth(d.getMonth() + 1)
+          return d.toLocaleDateString('pt-BR')
+        })(),
+      }),
+    }).catch(err => logger.error({ err }, '[MP:FOUNDER] Failed to send welcome email'))
+  }
+
+  logger.info({ organizationId, founderNumber }, '[MP:FOUNDER] Organization upgraded to founder successfully')
 }
 
 async function processAddonPurchase(

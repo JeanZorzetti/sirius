@@ -32,6 +32,14 @@ model Organization {
   whatsappInstances      Int       @default(1) // Base WhatsApp instances (PRO: 1, BUSINESS: 1)
   failedPaymentAttempts  Int       @default(0) // Retry logic: downgrade after 3 consecutive failures
 
+  // Programa de Fundadores
+  isFounder     Boolean  @default(false) // True para os primeiros 100 clientes fundadores
+  founderNumber Int?                     // Número do fundador (1-100)
+  founderSince  DateTime?               // Data de adesão ao programa de fundadores
+
+  // Programa de Indicação
+  referrals     Referral[] @relation("ReferredOrgs")
+
   // Fase 17 - Ads Integration (CAC Real)
   googleAdsCustomerId    String?                // Google Ads Customer ID (ex: 123-456-7890)
   googleAdsRefreshToken  String?   @db.Text     // OAuth2 Refresh Token (encrypted)
@@ -164,6 +172,11 @@ model User {
 
   role    Role    @default(USER)
   orgRole OrgRole @default(OWNER) // Defaulting to OWNER for now so existing users don't lose access. Ideally MEMBER.
+
+  // Programa de Indicação
+  referralCode     String?   @unique // Código único para indicações
+  referralsMade    Referral[] @relation("ReferrerUser")
+  referredBy       Referral?  @relation("ReferredUser")
 }
 
 enum Role {
@@ -181,6 +194,29 @@ enum SubscriptionTier {
   STARTER
   PRO
   BUSINESS
+}
+
+// Programa de Indicação
+model Referral {
+  id              String         @id @default(uuid())
+  referrerId      String
+  referredUserId  String?        @unique
+  referredOrgId   String?
+  referredEmail   String?        // Email informado no momento do clique (antes do registro)
+  status          ReferralStatus @default(PENDING)
+  rewardGiven     Boolean        @default(false)
+  createdAt       DateTime       @default(now())
+  rewardedAt      DateTime?
+
+  referrer        User           @relation("ReferrerUser", fields: [referrerId], references: [id])
+  referredUser    User?          @relation("ReferredUser", fields: [referredUserId], references: [id])
+  referredOrg     Organization?  @relation("ReferredOrgs", fields: [referredOrgId], references: [id])
+}
+
+enum ReferralStatus {
+  PENDING   // Código usado, aguardando registro
+  ACTIVE    // Usuário registrado, não assinou PRO ainda
+  REWARDED  // Usuário assinou PRO — recompensa concedida ao indicador
 }
 
 model Contact {

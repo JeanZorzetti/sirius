@@ -45,14 +45,23 @@ export async function createCheckoutPreference(
   organizationId: string,
   organizationName: string,
   userEmail: string,
-  plan: 'PRO' = 'PRO'
+  plan: 'PRO' | 'FOUNDER' = 'PRO'
 ) {
   try {
+    const planPrices: Record<string, number> = {
+      PRO: 49.00,
+      FOUNDER: 29.00, // R$29/mês vitalício — Programa de Fundadores
+    }
+    const planTitles: Record<string, string> = {
+      PRO: `Plano PRO - ${organizationName}`,
+      FOUNDER: `Fundador Sirius CRM - ${organizationName} (R$29/mês vitalício)`,
+    }
+
     const item: PreferenceItem = {
       id: `plan_${plan.toLowerCase()}`,
-      title: `Plano ${plan} - ${organizationName}`,
+      title: planTitles[plan] || `Plano ${plan} - ${organizationName}`,
       quantity: 1,
-      unit_price: plan === 'PRO' ? 49.00 : 0, // R$ 49,00/mês para PRO
+      unit_price: planPrices[plan] ?? 49.00,
       currency_id: 'BRL'
     }
 
@@ -205,7 +214,8 @@ export function getPaymentTypeText(type: PaymentType): string {
  */
 export const PLAN_PRICES = {
   FREE: 0,
-  PRO: 49.00
+  PRO: 49.00,
+  FOUNDER: 29.00
 } as const
 
 /**

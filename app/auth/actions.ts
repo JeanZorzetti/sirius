@@ -4,10 +4,15 @@ import { PrismaClient } from '@prisma/client'
 import { hash, compare } from 'bcryptjs'
 import { login, logout } from '@/lib/auth'
 import { redirect } from 'next/navigation'
+import { cookies } from 'next/headers'
 import logger, { generateCorrelationId } from '@/lib/logger'
 import { sendWelcomeEmail, sendEmailAsync } from '@/lib/email-automations'
 
 const prisma = new PrismaClient()
+
+function generateReferralCode(): string {
+  return Math.random().toString(36).substring(2, 6) + Math.random().toString(36).substring(2, 6)
+}
 
 export async function registerAction(prevState: any, formData: FormData) {
     const correlationId = generateCorrelationId()
@@ -117,8 +122,14 @@ export async function registerAction(prevState: any, formData: FormData) {
 
         const hashedPassword = await hash(password, 10)
 
+        // Generate unique referral code
+        let referralCode = generateReferralCode()
+        // Ensure uniqueness (very unlikely collision but safe)
+        const existing = await prisma.user.findUnique({ where: { referralCode } })
+        if (existing) referralCode = generateReferralCode() + Math.floor(Math.random() * 99)
+
         // Create User
-        // Note: We removed the transaction for simplicity in branching logic, 
+        // Note: We removed the transaction for simplicity in branching logic,
         // but in prod we should wrap the create in transaction if strict consistency needed.
         const newUser = await prisma.user.create({
             data: {
@@ -126,7 +137,8 @@ export async function registerAction(prevState: any, formData: FormData) {
                 name,
                 password: hashedPassword,
                 organizationId: organizationId,
-                orgRole: orgRole
+                orgRole: orgRole,
+                referralCode
             }
         })
 
@@ -135,6 +147,30 @@ export async function registerAction(prevState: any, formData: FormData) {
             await prisma.invite.delete({
                 where: { token: inviteToken }
             })
+        }
+
+        // Check for referral cookie (set when visiting /r/[code])
+        try {
+            const cookieStore = await cookies()
+            const referredByCode = cookieStore.get('referral_code')?.value
+            if (referredByCode) {
+                const referrer = await prisma.user.findUnique({ where: { referralCode: referredByCode } })
+                if (referrer && referrer.id !== newUser.id) {
+                    await prisma.referral.create({
+                        data: {
+                            referrerId: referrer.id,
+                            referredUserId: newUser.id,
+                            referredOrgId: organizationId,
+                            referredEmail: email,
+                            status: 'PENDING'
+                        }
+                    })
+                }
+                // Clear cookie
+                cookieStore.delete('referral_code')
+            }
+        } catch {
+            // Referral tracking is non-critical, don't fail registration
         }
 
         // 3. Create Session
