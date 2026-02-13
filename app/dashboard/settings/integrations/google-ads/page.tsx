@@ -102,6 +102,9 @@ export default function GoogleAdsSettingsPage() {
         <div>
           <div className="flex items-center gap-2">
             <h2 className="text-2xl font-bold">Google Ads</h2>
+            <Badge variant="outline" className="text-amber-600 border-amber-200">
+              BETA
+            </Badge>
             {isConfigured && (
               <Badge variant="outline" className="text-green-600 border-green-200">
                 <CheckCircle2 className="h-3 w-3 mr-1" />

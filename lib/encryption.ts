@@ -5,6 +5,8 @@
  * - N8N API keys
  * - Evolution API keys
  * - Google Calendar OAuth refresh tokens
+ * - Google Ads OAuth refresh tokens
+ * - Facebook/Meta Ads access tokens
  *
  * Encryption format: "iv:authTag:encryptedData" (all hex-encoded)
  *

@@ -117,7 +117,8 @@ export default async function IntegrationsPage() {
             configured: !!user.organization.n8nBaseUrl,
             href: '/dashboard/settings/integrations/n8n',
             requiresPro: true,
-            eventsLast7Days: n8nLogs
+            eventsLast7Days: n8nLogs,
+            status: 'stable' as const,
         },
         {
             id: 'whatsapp',
@@ -131,7 +132,8 @@ export default async function IntegrationsPage() {
             configured: !!user.organization.evolutionBaseUrl,
             href: '/dashboard/settings/integrations/whatsapp',
             requiresPro: true,
-            eventsLast7Days: whatsappLogs
+            eventsLast7Days: whatsappLogs,
+            status: 'stable' as const,
         },
         {
             id: 'google-calendar',
@@ -145,7 +147,8 @@ export default async function IntegrationsPage() {
             configured: !!user.organization.googleCalendarEmail,
             href: '/dashboard/settings/integrations/google-calendar',
             requiresPro: false,
-            eventsLast7Days: calendarLogs
+            eventsLast7Days: calendarLogs,
+            status: 'stable' as const,
         },
         {
             id: 'google-ads',
@@ -159,7 +162,8 @@ export default async function IntegrationsPage() {
             configured: !!user.organization.googleAdsCustomerId,
             href: '/dashboard/settings/integrations/google-ads',
             requiresPro: true,
-            eventsLast7Days: 0
+            eventsLast7Days: 0,
+            status: 'beta' as const,
         },
         {
             id: 'facebook-ads',
@@ -173,7 +177,8 @@ export default async function IntegrationsPage() {
             configured: !!user.organization.facebookAdAccountId,
             href: '/dashboard/settings/integrations/facebook-ads',
             requiresPro: true,
-            eventsLast7Days: 0
+            eventsLast7Days: 0,
+            status: 'beta' as const,
         }
     ]
 
@@ -317,6 +322,11 @@ export default async function IntegrationsPage() {
                                             {integration.requiresPro && (
                                                 <span className="text-[10px] font-semibold px-1.5 py-0.5 rounded bg-purple-500/10 text-purple-600 dark:text-purple-400 ring-1 ring-purple-500/20">
                                                     PRO
+                                                </span>
+                                            )}
+                                            {integration.status === 'beta' && (
+                                                <span className="text-[10px] font-semibold px-1.5 py-0.5 rounded bg-amber-500/10 text-amber-600 dark:text-amber-400 ring-1 ring-amber-500/20">
+                                                    BETA
                                                 </span>
                                             )}
                                             {integration.configured && (

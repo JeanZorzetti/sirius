@@ -78,11 +78,11 @@
 ### 16. [x] Padronizar mensagens de erro (PT-BR para user-facing, EN para logs)
 - **Impacto:** Inconsistência entre português e inglês nos responses
 
-### 17. [ ] Testar/remover integrações não funcionais
-- **Google Ads:** 30% implementado
-- **Facebook Ads:** 30% implementado
-- **N8N:** 40% implementado
-- **Google Calendar:** 60% implementado
+### 17. [x] Testar/remover integrações não funcionais
+- **Google Ads:** Badge "Beta" adicionado, tokens agora criptografados (AES-256-GCM)
+- **Facebook Ads:** Badge "Beta" adicionado, tokens agora criptografados (AES-256-GCM)
+- **N8N:** Funcional (client + config UI)
+- **Google Calendar:** Funcional (OAuth flow + tokens criptografados)
 
 ---
 
@@ -106,4 +106,4 @@
 | 14 | DONE | Empty states (automations, webhooks, pipelines) |
 | 15 | DONE | Dead code cleanup (6 deps removed) |
 | 16 | DONE | Error messages i18n (157 msgs, 59 files) |
-| 17 | Pendente | Integrações teste |
+| 17 | DONE | Integrações: badges Beta + token encryption (Ads) |

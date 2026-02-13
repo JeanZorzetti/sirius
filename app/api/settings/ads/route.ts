@@ -6,6 +6,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { getSession } from '@/lib/auth'
+import { encrypt } from '@/lib/encryption'
 import logger from '@/lib/logger'
 
 export async function GET() {
@@ -72,9 +73,17 @@ export async function PATCH(request: NextRequest) {
 
     // Campos permitidos
     if ('googleAdsCustomerId' in body) updateData.googleAdsCustomerId = body.googleAdsCustomerId || null
-    if ('googleAdsRefreshToken' in body) updateData.googleAdsRefreshToken = body.googleAdsRefreshToken || null
+    if ('googleAdsRefreshToken' in body) {
+      updateData.googleAdsRefreshToken = body.googleAdsRefreshToken
+        ? encrypt(body.googleAdsRefreshToken)
+        : null
+    }
     if ('facebookAdAccountId' in body) updateData.facebookAdAccountId = body.facebookAdAccountId || null
-    if ('facebookAccessToken' in body) updateData.facebookAccessToken = body.facebookAccessToken || null
+    if ('facebookAccessToken' in body) {
+      updateData.facebookAccessToken = body.facebookAccessToken
+        ? encrypt(body.facebookAccessToken)
+        : null
+    }
     if ('adsIntegrationEnabled' in body) updateData.adsIntegrationEnabled = Boolean(body.adsIntegrationEnabled)
 
     // Auto-ativar integração se qualquer credencial for fornecida

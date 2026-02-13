@@ -17,6 +17,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { fetchGoogleAdsCampaigns } from '@/lib/ads/google-ads'
 import { fetchFacebookAdsCampaigns } from '@/lib/ads/facebook-ads'
+import { decrypt } from '@/lib/encryption'
 import logger from '@/lib/logger'
 
 export const runtime = 'nodejs'
@@ -74,10 +75,11 @@ export async function GET(request: NextRequest) {
 
         // Google Ads
         if (org.googleAdsCustomerId && org.googleAdsRefreshToken) {
+          const decryptedRefreshToken = decrypt(org.googleAdsRefreshToken)
           const campaigns = await fetchGoogleAdsCampaigns(
             {
               customerId: org.googleAdsCustomerId,
-              refreshToken: org.googleAdsRefreshToken,
+              refreshToken: decryptedRefreshToken,
               developerToken,
               clientId: googleClientId,
               clientSecret: googleClientSecret,
@@ -129,9 +131,10 @@ export async function GET(request: NextRequest) {
 
         // Facebook Ads
         if (org.facebookAdAccountId && org.facebookAccessToken) {
+          const decryptedAccessToken = decrypt(org.facebookAccessToken)
           const campaigns = await fetchFacebookAdsCampaigns(
             org.facebookAdAccountId,
-            org.facebookAccessToken,
+            decryptedAccessToken,
             startStr,
             endStr
           )
