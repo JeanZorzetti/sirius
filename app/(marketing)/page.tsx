@@ -1,25 +1,28 @@
 import { Metadata } from "next"
+import Link from "next/link"
 import { Hero } from "@/components/marketing/hero"
 import { BentoGrid } from "@/components/marketing/bento-grid"
 import { Logos } from "@/components/marketing/logos"
 import { StickyCTA } from "@/components/marketing/sticky-cta"
 import { AgiPreview } from "@/components/agi/AgiPreview"
 import Script from "next/script"
+import { Check, Star, ArrowRight } from "lucide-react"
 
 export const metadata: Metadata = {
   title: 'Sirius CRM | O CRM Inteligente para Vendedores Brasileiros',
-  description: 'CRM gratuito com pipeline visual Kanban, automações de vendas, WhatsApp integrado e IA. Organize leads, acompanhe negócios e feche mais vendas.',
+  description: 'CRM gratuito com pipeline Kanban, WhatsApp integrado (Evolution API), IA comercial, prospecção Google Maps, automações de deals e email. 4 planos: Gratuito, Starter R$49, Pro R$97, Business R$149.',
+  keywords: ['crm gratuito', 'crm brasil', 'pipeline kanban', 'whatsapp crm', 'ia comercial', 'prospecção leads', 'automação vendas'],
   alternates: { canonical: 'https://sirius.roilabs.com.br' },
   openGraph: {
     title: 'Sirius CRM | O CRM Inteligente para Vendedores Brasileiros',
-    description: 'Pipeline visual, automações e IA para fechar mais vendas. Grátis para começar.',
+    description: 'Pipeline visual, WhatsApp integrado, IA comercial, prospecção Google Maps e automações. Grátis para começar.',
     url: 'https://sirius.roilabs.com.br',
-    images: [{ url: '/api/og/blog?title=Sirius%20CRM%20%E2%80%94%20O%20CRM%20Inteligente&category=CRM', width: 1200, height: 630 }],
+    images: [{ url: 'https://sirius.roilabs.com.br/og-image.png', width: 1200, height: 630 }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Sirius CRM | O CRM Inteligente para Vendedores Brasileiros',
-    description: 'Pipeline visual, automações e IA para fechar mais vendas. Grátis para começar.',
+    description: 'Pipeline visual, WhatsApp integrado, IA comercial, prospecção Google Maps e automações. Grátis para começar.',
   },
 }
 
@@ -28,57 +31,23 @@ export default function LandingPage() {
     "@context": "https://schema.org",
     "@type": "Product",
     "name": "Sirius CRM",
-    "description": "CRM intuitivo para gestão de vendas brasileiras com pipeline Kanban visual, gestão de contatos, WhatsApp integrado e métricas em tempo real.",
+    "description": "CRM completo para vendas brasileiras com pipeline Kanban, WhatsApp integrado via Evolution API, AGI com IA comercial, prospecção Google Maps, automações de deals e email, analytics avançado e API pública.",
     "brand": {
       "@type": "Brand",
       "name": "ROI Labs"
     },
     "offers": {
-      "@type": "Offer",
-      "price": "0",
+      "@type": "AggregateOffer",
       "priceCurrency": "BRL",
+      "lowPrice": "0",
+      "highPrice": "149",
+      "offerCount": "4",
       "availability": "https://schema.org/InStock",
-      "url": "https://sirius.roilabs.com.br/register",
-      "priceValidUntil": "2026-12-31",
-      "shippingDetails": {
-        "@type": "OfferShippingDetails",
-        "shippingRate": {
-          "@type": "MonetaryAmount",
-          "value": "0",
-          "currency": "BRL"
-        },
-        "shippingDestination": {
-          "@type": "DefinedRegion",
-          "addressCountry": "BR"
-        },
-        "deliveryTime": {
-          "@type": "ShippingDeliveryTime",
-          "handlingTime": {
-            "@type": "QuantitativeValue",
-            "minValue": 0,
-            "maxValue": 0,
-            "unitCode": "DAY"
-          },
-          "transitTime": {
-            "@type": "QuantitativeValue",
-            "minValue": 0,
-            "maxValue": 0,
-            "unitCode": "DAY"
-          }
-        }
-      },
-      "hasMerchantReturnPolicy": {
-        "@type": "MerchantReturnPolicy",
-        "applicableCountry": "BR",
-        "returnPolicyCategory": "https://schema.org/MerchantReturnFiniteReturnWindow",
-        "merchantReturnDays": 7,
-        "returnMethod": "https://schema.org/ReturnByMail",
-        "returnFees": "https://schema.org/FreeReturn"
-      }
+      "url": "https://sirius.roilabs.com.br/pricing"
     },
     "aggregateRating": {
       "@type": "AggregateRating",
-      "ratingValue": "5.0",
+      "ratingValue": "4.8",
       "reviewCount": "12",
       "bestRating": "5",
       "worstRating": "1"
@@ -86,29 +55,15 @@ export default function LandingPage() {
     "review": [
       {
         "@type": "Review",
-        "author": {
-          "@type": "Person",
-          "name": "Carlos Silva"
-        },
-        "reviewRating": {
-          "@type": "Rating",
-          "ratingValue": "5",
-          "bestRating": "5"
-        },
+        "author": { "@type": "Person", "name": "Carlos Silva" },
+        "reviewRating": { "@type": "Rating", "ratingValue": "5", "bestRating": "5" },
         "reviewBody": "Finalmente um CRM que não complica. Em 10 minutos já estava usando e fechando negócios mais rápido."
       },
       {
         "@type": "Review",
-        "author": {
-          "@type": "Person",
-          "name": "Mariana Souza"
-        },
-        "reviewRating": {
-          "@type": "Rating",
-          "ratingValue": "5",
-          "bestRating": "5"
-        },
-        "reviewBody": "O botão de WhatsApp com 1 clique economiza horas por semana. Meu time adora!"
+        "author": { "@type": "Person", "name": "Mariana Souza" },
+        "reviewRating": { "@type": "Rating", "ratingValue": "5", "bestRating": "5" },
+        "reviewBody": "O WhatsApp integrado economiza horas por semana. Meu time adora a simplicidade!"
       }
     ],
     "image": "https://sirius.roilabs.com.br/og-image.png",
@@ -124,15 +79,7 @@ export default function LandingPage() {
         "name": "O que é o Sirius CRM?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Sirius CRM é um sistema de gestão de vendas intuitivo e moderno, feito especialmente para vendas brasileiras. Com pipeline visual Kanban, gestão de contatos, WhatsApp integrado e métricas em tempo real, você transforma leads em receita recorrente sem burocracia."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "Como funciona o WhatsApp com 1 clique?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Cada card de negócio no Sirius possui um botão verde que abre a conversa do WhatsApp diretamente com o contato. Não precisa copiar telefone, trocar de app ou perder tempo - é só clicar e começar a conversar."
+          "text": "Sirius CRM é uma plataforma completa de vendas com pipeline Kanban, WhatsApp integrado via Evolution API, IA comercial (AGI Sirius), prospecção automática pelo Google Maps, automações de deals e email, analytics avançado e API pública. Feito para vendedores brasileiros."
         }
       },
       {
@@ -140,23 +87,31 @@ export default function LandingPage() {
         "name": "O Sirius CRM é gratuito?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Sim! O Sirius oferece um plano gratuito com funcionalidades essenciais para começar. Para times que precisam de recursos avançados, oferecemos planos Pro com mais usuários, relatórios avançados e suporte prioritário."
+          "text": "Sim! O plano Gratuito inclui 100 contatos, 50 negócios e 1 pipeline sem prazo de expiração. Para mais recursos, oferecemos Starter (R$49/mês), Pro (R$97/mês) e Business (R$149/mês)."
         }
       },
       {
         "@type": "Question",
-        "name": "Quantos negócios posso ter no plano gratuito?",
+        "name": "Como funciona o WhatsApp integrado?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "No plano gratuito você pode gerenciar até 20 negócios ativos simultaneamente. Para times com volume maior de vendas, o plano Pro oferece negócios ilimitados."
+          "text": "O Sirius se conecta ao WhatsApp via Evolution API com pareamento por QR Code. Você envia e recebe mensagens direto do CRM, com inbox unificado, tags, respostas rápidas e atribuição de conversas por vendedor."
         }
       },
       {
         "@type": "Question",
-        "name": "Como o Sirius me ajuda a identificar gargalos?",
+        "name": "Como funciona a prospecção pelo Google Maps?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "O dashboard de Analytics do Sirius mostra qual vendedor trava em qual etapa do funil, taxa de conversão por fase e onde você está perdendo negócios. Visualize padrões, identifique problemas e otimize seu processo de vendas baseado em dados reais."
+          "text": "Busque leads por segmento e cidade. O Sirius extrai automaticamente nome, telefone, email, site e endereço do Google Maps. Cada plano inclui créditos mensais: Starter 50, Pro 200 e Business 1.000 leads/mês."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Posso cancelar quando quiser?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Sim, sem multas ou taxas. Cancele a qualquer momento e mantenha acesso até o fim do período pago. Garantia de 7 dias em todos os planos pagos."
         }
       }
     ]
@@ -169,18 +124,11 @@ export default function LandingPage() {
     "url": "https://sirius.roilabs.com.br",
     "logo": "https://sirius.roilabs.com.br/logo.png",
     "image": "https://sirius.roilabs.com.br/og-image.png",
-    "description": "CRM visual com pipeline Kanban e IA para vendedores brasileiros",
+    "description": "CRM completo com pipeline Kanban, WhatsApp integrado, IA comercial, prospecção Google Maps e automações para vendedores brasileiros",
     "telephone": "+55-62-98344-3919",
     "email": "roilabs.ia@gmail.com",
-    "areaServed": {
-      "@type": "Country",
-      "name": "Brasil"
-    },
-    "address": {
-      "@type": "PostalAddress",
-      "addressCountry": "BR",
-      "addressRegion": "GO"
-    },
+    "areaServed": { "@type": "Country", "name": "Brasil" },
+    "address": { "@type": "PostalAddress", "addressCountry": "BR", "addressRegion": "GO" },
     "openingHoursSpecification": [
       {
         "@type": "OpeningHoursSpecification",
@@ -200,33 +148,62 @@ export default function LandingPage() {
       "https://www.linkedin.com/company/roilabs",
       "https://twitter.com/roilabs"
     ],
-    "priceRange": "R$ 0 - R$ 49/mês"
+    "priceRange": "R$ 0 - R$ 149/mês"
   };
+
+  const plans = [
+    {
+      name: 'Gratuito',
+      price: 'R$ 0',
+      period: '',
+      description: 'Para testar o CRM',
+      features: ['1 Usuário', '100 Contatos', '50 Negócios', '1 Pipeline'],
+      highlighted: false,
+    },
+    {
+      name: 'Starter',
+      price: 'R$ 49',
+      period: '/mês',
+      description: 'Para pequenas empresas',
+      features: ['3 Usuários', '500 Contatos', 'WhatsApp', '50 leads/mês'],
+      highlighted: false,
+    },
+    {
+      name: 'Pro',
+      price: 'R$ 97',
+      period: '/mês',
+      description: 'Para equipes em crescimento',
+      features: ['10 Usuários', '2.000 Contatos', 'IA Comercial', '200 leads/mês'],
+      highlighted: true,
+    },
+    {
+      name: 'Business',
+      price: 'R$ 149',
+      period: '/mês',
+      description: 'Para grandes operações',
+      features: ['50 Usuários', 'Ilimitado', 'Round-Robin', '1.000 leads/mês'],
+      highlighted: false,
+    },
+  ]
 
   return (
     <>
-      {/* Product Schema with Reviews */}
       <Script
         id="product-schema"
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }}
       />
-
-      {/* FAQ Schema for SEO */}
       <Script
         id="faq-schema"
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
       />
-
-      {/* LocalBusiness Schema for Local SEO */}
       <Script
         id="local-business-schema"
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessSchema) }}
       />
 
-      {/* Force dark mode aesthetic for the landing page */}
       <div className="min-h-screen bg-zinc-950 text-white selection:bg-indigo-500/30">
 
         {/* Background Noise/Gradient Wrapper */}
@@ -239,12 +216,38 @@ export default function LandingPage() {
           <Logos />
           <BentoGrid />
 
+          {/* Founders Banner */}
+          <section className="px-6 pb-12">
+            <div className="mx-auto max-w-5xl">
+              <div className="rounded-2xl border border-amber-500/30 bg-gradient-to-r from-amber-500/10 to-orange-500/10 backdrop-blur-xl p-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+                <div className="flex items-center gap-4">
+                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-amber-500/20">
+                    <Star className="w-6 h-6 text-amber-400 fill-amber-400" />
+                  </div>
+                  <div>
+                    <p className="font-bold text-white text-lg">Programa de Fundadores — 41% OFF vitalicio!</p>
+                    <p className="text-sm text-amber-200/80">
+                      Starter R$29 · Pro R$57 · Business R$88/mes para sempre. Vagas limitadas.
+                    </p>
+                  </div>
+                </div>
+                <Link
+                  href="/fundadores"
+                  className="inline-flex h-11 items-center justify-center rounded-lg bg-amber-500 hover:bg-amber-400 px-6 text-sm font-semibold text-black transition-colors shrink-0"
+                >
+                  <Star className="w-4 h-4 mr-2 fill-black" />
+                  Ver oferta
+                </Link>
+              </div>
+            </div>
+          </section>
+
           {/* Testimonials Section */}
           <section className="py-24 px-6">
             <div className="mx-auto max-w-7xl">
               <div className="mb-16 text-center">
                 <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl mb-4">Times de alta performance confiam no Sirius</h2>
-                <p className="text-zinc-400 max-w-2xl mx-auto">Veja como empresas reais aumentaram suas vendas em até 40%</p>
+                <p className="text-zinc-400 max-w-2xl mx-auto">Veja como empresas reais aumentaram suas vendas</p>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -260,7 +263,7 @@ export default function LandingPage() {
                     </div>
                   </div>
                   <p className="text-zinc-300 text-sm leading-relaxed mb-4">
-                    "Finalmente um CRM que não complica. Em 10 minutos já estava usando e fechando negócios mais rápido. <span className="text-green-400 font-semibold">+40% de conversão</span> no primeiro mês."
+                    &quot;Finalmente um CRM que não complica. Em 10 minutos já estava usando e fechando negócios mais rápido. <span className="text-green-400 font-semibold">+40% de conversão</span> no primeiro mês.&quot;
                   </p>
                   <div className="flex text-yellow-400">
                     {[...Array(5)].map((_, i) => (
@@ -283,7 +286,7 @@ export default function LandingPage() {
                     </div>
                   </div>
                   <p className="text-zinc-300 text-sm leading-relaxed mb-4">
-                    "O botão de WhatsApp com 1 clique economiza <span className="text-indigo-400 font-semibold">3 horas por semana</span> por vendedor. Meu time adora a simplicidade!"
+                    &quot;O WhatsApp integrado economiza <span className="text-indigo-400 font-semibold">3 horas por semana</span> por vendedor. Meu time adora a simplicidade!&quot;
                   </p>
                   <div className="flex text-yellow-400">
                     {[...Array(5)].map((_, i) => (
@@ -306,7 +309,7 @@ export default function LandingPage() {
                     </div>
                   </div>
                   <p className="text-zinc-300 text-sm leading-relaxed mb-4">
-                    "Os gargalos ficaram evidentes no primeiro dia. Consegui <span className="text-purple-400 font-semibold">redistribuir leads</span> e nossa taxa de fechamento subiu 25%."
+                    &quot;A prospecção pelo Google Maps e o analytics mostraram gargalos no primeiro dia. <span className="text-purple-400 font-semibold">Taxa de fechamento subiu 25%</span>.&quot;
                   </p>
                   <div className="flex text-yellow-400">
                     {[...Array(5)].map((_, i) => (
@@ -329,13 +332,13 @@ export default function LandingPage() {
                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-purple-400 opacity-75"></span>
                     <span className="relative inline-flex rounded-full h-2 w-2 bg-purple-500"></span>
                   </span>
-                  <span className="font-medium">NOVIDADE: AGI Sirius</span>
+                  <span className="font-medium">AGI Sirius — IA Comercial</span>
                 </div>
                 <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl mb-4">
                   Sua Consultora de Vendas com IA
                 </h2>
                 <p className="text-zinc-400 max-w-2xl mx-auto">
-                  Especialista em BANT, SPIN Selling, quebra de objeções e análise de pipeline. Experimente agora!
+                  Analisa deals, gera scripts de venda, enriquece contatos e recomenda próximas ações. Baseada em Knowledge Graph + RAG.
                 </p>
               </div>
 
@@ -343,10 +346,76 @@ export default function LandingPage() {
             </div>
           </section>
 
+          {/* Plans Section */}
+          <section className="py-24 px-6">
+            <div className="mx-auto max-w-7xl">
+              <div className="mb-16 text-center">
+                <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl mb-4">Planos para cada momento</h2>
+                <p className="text-zinc-400 max-w-2xl mx-auto">Comece grátis e escale conforme seu time cresce. Sem surpresas.</p>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                {plans.map((plan) => (
+                  <div
+                    key={plan.name}
+                    className={`relative rounded-2xl border p-6 flex flex-col ${
+                      plan.highlighted
+                        ? 'border-indigo-500/50 bg-indigo-500/5 ring-1 ring-indigo-500/20'
+                        : 'border-white/10 bg-white/[0.02]'
+                    }`}
+                  >
+                    {plan.highlighted && (
+                      <div className="absolute -top-3 left-1/2 -translate-x-1/2">
+                        <div className="rounded-full bg-gradient-to-r from-indigo-600 to-purple-600 px-3 py-1 text-xs font-semibold text-white">
+                          Mais Popular
+                        </div>
+                      </div>
+                    )}
+                    <div className="mb-4">
+                      <h3 className="text-lg font-bold text-white">{plan.name}</h3>
+                      <p className="text-sm text-zinc-500">{plan.description}</p>
+                    </div>
+                    <div className="flex items-baseline gap-1 mb-6">
+                      <span className="text-3xl font-bold text-white">{plan.price}</span>
+                      {plan.period && <span className="text-sm text-zinc-500">{plan.period}</span>}
+                    </div>
+                    <ul className="space-y-2 mb-6 flex-1">
+                      {plan.features.map((feature) => (
+                        <li key={feature} className="flex items-center gap-2 text-sm text-zinc-300">
+                          <Check className="h-4 w-4 text-green-500 shrink-0" />
+                          {feature}
+                        </li>
+                      ))}
+                    </ul>
+                    <Link
+                      href={plan.highlighted ? '/register' : '/pricing'}
+                      className={`inline-flex h-10 items-center justify-center rounded-lg text-sm font-semibold transition-colors w-full ${
+                        plan.highlighted
+                          ? 'bg-indigo-600 hover:bg-indigo-500 text-white'
+                          : 'border border-white/10 text-zinc-300 hover:bg-white/5'
+                      }`}
+                    >
+                      {plan.price === 'R$ 0' ? 'Começar Grátis' : 'Ver detalhes'}
+                    </Link>
+                  </div>
+                ))}
+              </div>
+
+              <div className="mt-8 text-center">
+                <Link
+                  href="/pricing"
+                  className="inline-flex items-center text-sm text-indigo-400 hover:text-indigo-300 transition-colors"
+                >
+                  Ver comparação completa entre planos
+                  <ArrowRight className="ml-1 h-4 w-4" />
+                </Link>
+              </div>
+            </div>
+          </section>
+
           {/* Footer CTA */}
           <section className="py-24 px-6 text-center">
             <div className="mx-auto max-w-2xl border border-white/10 bg-white/[0.02] rounded-3xl p-12 backdrop-blur-xl relative overflow-hidden">
-              {/* Subtle gradient orb */}
               <div className="absolute top-0 right-0 w-64 h-64 bg-indigo-500/10 rounded-full blur-3xl" />
 
               <div className="relative z-10">
@@ -360,7 +429,8 @@ export default function LandingPage() {
 
                 <div className="flex flex-col sm:flex-row justify-center gap-4 mb-6">
                   <a href="/register" className="inline-flex h-12 items-center justify-center rounded-lg bg-indigo-600 px-8 text-base font-semibold text-white hover:bg-indigo-500 transition-colors shadow-lg shadow-indigo-500/20">
-                    Criar Conta Grátis →
+                    Criar Conta Grátis
+                    <ArrowRight className="ml-2 h-4 w-4" />
                   </a>
                   <a href="/pricing" className="inline-flex h-12 items-center justify-center rounded-lg border border-white/10 bg-transparent px-8 text-base font-medium text-white hover:bg-white/5 transition-colors">
                     Ver Planos
@@ -387,7 +457,6 @@ export default function LandingPage() {
           </section>
         </div>
 
-        {/* Sticky CTA for mobile conversion */}
         <StickyCTA />
       </div>
     </>
