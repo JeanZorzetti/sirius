@@ -37,7 +37,7 @@
 - **Impacto:** Info disclosure no browser, poluição de logs
 - **Usar:** `lib/logger.ts`
 
-### 8. [ ] Adicionar loading states (Suspense/skeleton) nas páginas lentas
+### 8. [x] Adicionar loading states (Suspense/skeleton) nas páginas lentas
 - **Impacto:** UX ruim em analytics, settings, pipeline
 - **Páginas:** analytics, analytics-pro, settings/*, pipelines
 
@@ -97,7 +97,7 @@
 | 5 | DONE | Error boundaries |
 | 6 | DONE | Dashboard metadata (20 pages) |
 | 7 | DONE | Console.log -> logger (109 in 69 files) |
-| 8 | Pendente | Loading states |
+| 8 | DONE | Loading states (12 pages) |
 | 9 | Pendente | Rate limiting |
 | 10 | Pendente | Mobile responsiveness |
 | 11 | Pendente | WhatsApp completo |
