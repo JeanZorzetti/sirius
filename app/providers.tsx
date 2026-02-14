@@ -45,6 +45,9 @@ export function PostHogProvider({ children }: { children: React.ReactNode }) {
           disable_surveys: true,
           autocapture: false,
           enable_heatmaps: false,
+          disable_external_dependency_loading: true,
+          person_profiles: 'identified_only',
+          advanced_disable_decide: true,
         })
       } else {
         ;(window as any).posthog = posthog
