@@ -1,15 +1,14 @@
-import posthog from 'posthog-js'
 import type { AiEngine } from './analytics/ai-tracker'
 
 /**
- * Helper para obter instância do PostHog (window.posthog ou import)
- * Prioriza window.posthog que é inicializado pelo PostHogProvider
+ * Helper para obter instância do PostHog via window.posthog
+ * Inicializado pelo PostHogProvider via lazy import
  */
 function getPostHog() {
   if (typeof window !== 'undefined' && (window as any).posthog) {
     return (window as any).posthog
   }
-  return posthog
+  return { capture: () => {}, identify: () => {}, reset: () => {} }
 }
 
 // Helper para capturar eventos do PostHog de forma type-safe
