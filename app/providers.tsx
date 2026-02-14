@@ -41,6 +41,10 @@ export function PostHogProvider({ children }: { children: React.ReactNode }) {
           capture_pageview: false,
           capture_pageleave: true,
           persistence: 'localStorage+cookie',
+          disable_session_recording: true,
+          disable_surveys: true,
+          autocapture: false,
+          enable_heatmaps: false,
         })
       } else {
         ;(window as any).posthog = posthog

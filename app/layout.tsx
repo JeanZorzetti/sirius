@@ -189,6 +189,9 @@ export default function RootLayout({
   return (
     <html lang="pt-BR" suppressHydrationWarning>
       <head>
+        {/* Preconnect to critical third-party origins */}
+        <link rel="preconnect" href="https://us.i.posthog.com" />
+        <link rel="preconnect" href="https://us-assets.i.posthog.com" crossOrigin="anonymous" />
         {/* Schema.org JSON-LD */}
         <script
           type="application/ld+json"
