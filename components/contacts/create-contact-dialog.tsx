@@ -25,23 +25,29 @@ export function CreateContactDialog() {
         event.preventDefault()
         setLoading(true)
 
-        const formData = new FormData(event.currentTarget)
+        try {
+            const formData = new FormData(event.currentTarget)
 
-        const result = await createContact(formData)
+            const result = await createContact(formData)
 
-        setLoading(false)
-
-        if (result.success) {
-            setOpen(false)
-        } else {
-            // Rastrear quando limite é atingido
-            if ('code' in result && result.code === 'PLAN_LIMIT_REACHED') {
-                analytics.limitReached({
-                    limit_type: 'contacts',
-                    current_count: result.current || 0
-                })
+            if (result.success) {
+                setOpen(false)
+            } else {
+                console.error('[CreateContact] Server action error:', result)
+                // Rastrear quando limite é atingido
+                if ('code' in result && result.code === 'PLAN_LIMIT_REACHED') {
+                    analytics.limitReached({
+                        limit_type: 'contacts',
+                        current_count: result.current || 0
+                    })
+                }
+                alert(result.error || 'Falha ao criar contato')
             }
-            alert("Falha ao criar contato")
+        } catch (error) {
+            console.error('[CreateContact] Exception:', error)
+            alert('Erro de conexão ao criar contato. Tente novamente.')
+        } finally {
+            setLoading(false)
         }
     }
 
