@@ -1,11 +1,12 @@
 'use client'
 
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useMemo } from 'react'
 import dynamic from 'next/dynamic'
 import { useRouter } from 'next/navigation'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { ChatInterface } from '@/components/chat/chat-interface'
 import { CreateDealDialog } from '@/components/deals/create-deal-dialog'
+import { PipelineSelector } from '@/components/pipelines/pipeline-selector'
 import { toast } from 'sonner'
 import { MessageSquare, Layout, Loader2 } from 'lucide-react'
 
@@ -43,6 +44,18 @@ export function DashboardTabs({
   const [activeTab, setActiveTab] = useState('pipeline')
   const [chatData, setChatData] = useState<any>(null)
   const [loadingChat, setLoadingChat] = useState(false)
+
+  // Pipeline selector state
+  const [selectedPipelineId, setSelectedPipelineId] = useState<string>(() => {
+    const defaultPipeline = pipelines.find((p: any) => p.isDefault)
+    return defaultPipeline ? defaultPipeline.id : (pipelines[0]?.id || '')
+  })
+
+  // Filter stages by selected pipeline
+  const filteredStages = useMemo(() => {
+    if (!selectedPipelineId) return stages
+    return stages.filter((stage: any) => stage.pipelineId === selectedPipelineId)
+  }, [stages, selectedPipelineId])
 
   const syncWithServer = useCallback(() => {
     router.refresh()
@@ -86,17 +99,23 @@ export function DashboardTabs({
         </TabsList>
 
         {activeTab === 'pipeline' && (
-          <CreateDealDialog
-            stages={stages}
-            contacts={contacts}
-            onSuccess={syncWithServer}
-          />
+          <div className="flex items-center gap-2">
+            <PipelineSelector
+              pipelines={pipelines}
+              onPipelineChange={setSelectedPipelineId}
+            />
+            <CreateDealDialog
+              stages={filteredStages}
+              contacts={contacts}
+              onSuccess={syncWithServer}
+            />
+          </div>
         )}
       </div>
 
       <TabsContent value="pipeline" className="flex-1 m-0 data-[state=inactive]:hidden">
         <KanbanBoard
-          stages={stages as any}
+          stages={filteredStages as any}
           contacts={contacts}
         />
       </TabsContent>
