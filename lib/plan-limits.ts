@@ -1,5 +1,3 @@
-'use server'
-
 import { prisma } from '@/lib/prisma'
 import { SubscriptionTier } from '@prisma/client'
 import { PLAN_LIMITS } from '@/lib/entitlements'
