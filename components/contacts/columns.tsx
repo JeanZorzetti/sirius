@@ -1,9 +1,89 @@
 'use client'
 
+import { useState } from 'react'
 import { ColumnDef } from '@tanstack/react-table'
 import { Contact } from '@prisma/client'
 import { Button } from "@/components/ui/button"
-import { MessageCircle } from "lucide-react"
+import { MessageCircle, Trash2, Loader2 } from "lucide-react"
+import { deleteContact } from '@/app/dashboard/contacts/actions'
+import { toast } from 'sonner'
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger,
+} from '@/components/ui/alert-dialog'
+import { useRouter } from 'next/navigation'
+
+function DeleteContactButton({ contact }: { contact: Contact }) {
+    const router = useRouter()
+    const [loading, setLoading] = useState(false)
+    const [open, setOpen] = useState(false)
+
+    async function handleDelete() {
+        setLoading(true)
+        try {
+            const result = await deleteContact(contact.id)
+            if (result.success) {
+                toast.success('Contato excluído com sucesso')
+                setOpen(false)
+                router.refresh()
+            } else {
+                toast.error(result.error || 'Falha ao excluir contato')
+            }
+        } catch (error) {
+            toast.error('Erro ao excluir contato')
+        } finally {
+            setLoading(false)
+        }
+    }
+
+    return (
+        <AlertDialog open={open} onOpenChange={setOpen}>
+            <AlertDialogTrigger asChild>
+                <Button
+                    size="icon"
+                    variant="ghost"
+                    className="h-7 w-7 rounded-full text-zinc-400 hover:text-red-500 hover:bg-red-500/10 transition-all opacity-0 group-hover:opacity-100"
+                    title="Excluir contato"
+                >
+                    <Trash2 className="h-4 w-4" />
+                </Button>
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+                <AlertDialogHeader>
+                    <AlertDialogTitle>Excluir contato</AlertDialogTitle>
+                    <AlertDialogDescription>
+                        Tem certeza que deseja excluir <strong>{contact.name}</strong>?
+                        Esta ação não pode ser desfeita.
+                    </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                    <AlertDialogCancel disabled={loading}>Cancelar</AlertDialogCancel>
+                    <AlertDialogAction
+                        onClick={handleDelete}
+                        disabled={loading}
+                        className="bg-red-600 hover:bg-red-700 text-white"
+                    >
+                        {loading ? (
+                            <>
+                                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                Excluindo...
+                            </>
+                        ) : (
+                            'Excluir'
+                        )}
+                    </AlertDialogAction>
+                </AlertDialogFooter>
+            </AlertDialogContent>
+        </AlertDialog>
+    )
+}
 
 export const columns: ColumnDef<Contact>[] = [
     {
@@ -72,6 +152,18 @@ export const columns: ColumnDef<Contact>[] = [
             return (
                 <div className="inline-flex items-center px-2 py-1 rounded-md bg-zinc-100 dark:bg-zinc-800/50 border border-zinc-200 dark:border-white/5">
                     <span className="text-xs font-medium text-zinc-700 dark:text-zinc-400">{company}</span>
+                </div>
+            )
+        },
+    },
+    {
+        id: 'actions',
+        header: '',
+        cell: ({ row }) => {
+            const contact = row.original
+            return (
+                <div className="flex items-center justify-end">
+                    <DeleteContactButton contact={contact} />
                 </div>
             )
         },

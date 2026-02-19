@@ -1,11 +1,15 @@
 'use client'
 
+import { useState } from 'react'
 import {
   ColumnDef,
   flexRender,
   getCoreRowModel,
+  getFilteredRowModel,
   useReactTable,
 } from '@tanstack/react-table'
+import { Search } from 'lucide-react'
+import { Input } from '@/components/ui/input'
 
 import {
   Table,
@@ -25,15 +29,32 @@ export function DataTable<TData, TValue>({
   columns,
   data,
 }: DataTableProps<TData, TValue>) {
+  const [globalFilter, setGlobalFilter] = useState('')
+
   const table = useReactTable({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
+    globalFilterFn: 'includesString',
+    state: {
+      globalFilter,
+    },
+    onGlobalFilterChange: setGlobalFilter,
   })
 
   return (
     <div className="flex flex-col gap-4">
-      {/* Simple Search Filter can go here later */}
+      {/* Search Filter */}
+      <div className="relative max-w-sm">
+        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-400" />
+        <Input
+          placeholder="Buscar contatos..."
+          value={globalFilter}
+          onChange={(e) => setGlobalFilter(e.target.value)}
+          className="pl-9 bg-white dark:bg-white/[0.02] border-black/10 dark:border-white/10 h-9"
+        />
+      </div>
 
       <div className="rounded-2xl border border-black/5 dark:border-white/5 bg-white dark:bg-white/[0.02] backdrop-blur-xl overflow-x-auto shadow-sm">
         <Table>
@@ -73,7 +94,7 @@ export function DataTable<TData, TValue>({
             ) : (
               <TableRow>
                 <TableCell colSpan={columns.length} className="h-24 text-center text-zinc-500">
-                  Nenhum resultado encontrado.
+                  {globalFilter ? 'Nenhum resultado para a busca.' : 'Nenhum resultado encontrado.'}
                 </TableCell>
               </TableRow>
             )}
@@ -81,7 +102,10 @@ export function DataTable<TData, TValue>({
         </Table>
       </div>
 
-      {/* Pagination controls can go here */}
+      {/* Row count */}
+      <div className="text-xs text-zinc-500">
+        {table.getFilteredRowModel().rows.length} de {data.length} contato(s)
+      </div>
     </div>
   )
 }
