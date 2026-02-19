@@ -1,39 +1,36 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import dynamic from 'next/dynamic'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { ChatInterface } from '@/components/chat/chat-interface'
+import { DashboardWithPipelineSelector } from '@/components/dashboard-with-pipeline-selector'
 import { toast } from 'sonner'
 import { MessageSquare, Layout, Loader2 } from 'lucide-react'
-
-// Dynamic import do KanbanBoard (517 linhas, carrega apenas quando necessário)
-const KanbanBoard = dynamic(
-  () => import('@/components/kanban-board').then(m => ({ default: m.KanbanBoard })),
-  {
-    loading: () => (
-      <div className="flex items-center justify-center h-96">
-        <Loader2 className="h-8 w-8 animate-spin text-primary" />
-      </div>
-    ),
-    ssr: false,
-  }
-)
 
 interface DashboardTabsProps {
   pipelines: any[]
   stages: any[]
+  contacts: any[]
+  dealCount: number
+  isPro: boolean
+  isMember: boolean
+  planLimits: any
   userId: string
   userName: string
   organizationId: string
 }
 
-export function DashboardTabs({ 
-  pipelines, 
-  stages, 
-  userId, 
-  userName, 
-  organizationId 
+export function DashboardTabs({
+  pipelines,
+  stages,
+  contacts,
+  dealCount,
+  isPro,
+  isMember,
+  planLimits,
+  userId,
+  userName,
+  organizationId
 }: DashboardTabsProps) {
   const [activeTab, setActiveTab] = useState('pipeline')
   const [chatData, setChatData] = useState<any>(null)
@@ -76,9 +73,14 @@ export function DashboardTabs({
       </TabsList>
 
       <TabsContent value="pipeline" className="flex-1 m-0 data-[state=inactive]:hidden">
-        <KanbanBoard 
-          stages={stages as any} 
-          contacts={[]}
+        <DashboardWithPipelineSelector
+          pipelines={pipelines}
+          allStages={stages}
+          contacts={contacts}
+          dealCount={dealCount}
+          isPro={isPro}
+          isMember={isMember}
+          planLimits={planLimits}
         />
       </TabsContent>
 
@@ -108,3 +110,4 @@ export function DashboardTabs({
     </Tabs>
   )
 }
+
