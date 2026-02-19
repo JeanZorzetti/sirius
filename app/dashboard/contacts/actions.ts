@@ -97,6 +97,82 @@ export async function createContact(formData: FormData) {
     }
 }
 
+export async function updateContact(contactId: string, formData: FormData) {
+    try {
+        const user = await getAuthenticatedUser()
+        if (!user) {
+            return { success: false, error: 'Unauthorized' }
+        }
+
+        const name = formData.get('name') as string
+        const email = formData.get('email') as string
+        const phone = formData.get('phone') as string
+        const company = formData.get('company') as string
+
+        if (!name?.trim()) {
+            return { success: false, error: 'Nome é obrigatório' }
+        }
+
+        // Verify the contact belongs to the user's organization
+        const existing = await prisma.contact.findUnique({
+            where: { id: contactId },
+            select: { id: true, organizationId: true, email: true }
+        })
+
+        if (!existing) {
+            return { success: false, error: 'Contato não encontrado.' }
+        }
+
+        if (existing.organizationId !== user.organizationId) {
+            return { success: false, error: 'Sem permissão para editar este contato.' }
+        }
+
+        // Check email uniqueness (only if email changed)
+        const newEmail = email?.trim() || null
+        if (newEmail && newEmail !== existing.email) {
+            const emailConflict = await prisma.contact.findFirst({
+                where: {
+                    organizationId: user.organizationId,
+                    email: newEmail,
+                    id: { not: contactId }
+                }
+            })
+            if (emailConflict) {
+                return { success: false, error: 'Já existe um contato com este email.' }
+            }
+        }
+
+        const contact = await prisma.contact.update({
+            where: { id: contactId },
+            data: {
+                name: name.trim(),
+                email: newEmail,
+                phone: phone?.trim() || null,
+                company: company?.trim() || null,
+            }
+        })
+
+        dispatchWebhookAsync(user.organizationId, WEBHOOK_EVENTS.CONTACT_UPDATED, {
+            contact: {
+                id: contact.id,
+                name: contact.name,
+                email: contact.email,
+                phone: contact.phone,
+                company: contact.company
+            }
+        })
+
+        revalidatePath('/dashboard/contacts')
+        revalidatePath('/dashboard')
+
+        return { success: true }
+    } catch (error: any) {
+        console.error('[UPDATE_CONTACT] Error:', error?.message, error?.stack)
+        logger.error({ err: error }, 'Failed to update contact')
+        return { success: false, error: `Falha ao atualizar contato: ${error?.message || 'Erro desconhecido'}` }
+    }
+}
+
 export async function deleteContact(contactId: string) {
     try {
         const user = await getAuthenticatedUser()

@@ -6,6 +6,7 @@ import { Contact } from '@prisma/client'
 import { Button } from "@/components/ui/button"
 import { MessageCircle, Trash2, Loader2 } from "lucide-react"
 import { deleteContact } from '@/app/dashboard/contacts/actions'
+import { EditContactDialog } from '@/components/contacts/edit-contact-dialog'
 import { toast } from 'sonner'
 import {
     AlertDialog,
@@ -162,7 +163,8 @@ export const columns: ColumnDef<Contact>[] = [
         cell: ({ row }) => {
             const contact = row.original
             return (
-                <div className="flex items-center justify-end">
+                <div className="flex items-center justify-end gap-1">
+                    <EditContactDialog contact={contact} />
                     <DeleteContactButton contact={contact} />
                 </div>
             )
