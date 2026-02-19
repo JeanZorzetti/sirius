@@ -100,6 +100,16 @@ export async function DashboardTabsWrapper({
   // Count total deals across all stages
   const dealCount = stages.reduce((acc, stage) => acc + stage.deals.length, 0)
 
+  // Serialize planLimits - convert Infinity to -1 (not JSON-serializable)
+  const serializedPlanLimits = {
+    ...planLimits,
+    limits: {
+      maxContacts: planLimits.limits.maxContacts === Infinity ? -1 : planLimits.limits.maxContacts,
+      maxPipelines: planLimits.limits.maxPipelines === Infinity ? -1 : planLimits.limits.maxPipelines,
+      maxDeals: planLimits.limits.maxDeals === Infinity ? -1 : planLimits.limits.maxDeals,
+    },
+  }
+
   return (
     <DashboardTabs
       pipelines={pipelines}
@@ -108,7 +118,7 @@ export async function DashboardTabsWrapper({
       dealCount={dealCount}
       isPro={isPro}
       isMember={isMember}
-      planLimits={planLimits}
+      planLimits={serializedPlanLimits}
       userId={userId}
       userName={userName}
       organizationId={organizationId}
