@@ -82,8 +82,9 @@ export async function createContact(formData: FormData) {
                 updatedAt: contact.updatedAt.toISOString()
             }
         }
-    } catch (error) {
+    } catch (error: any) {
+        console.error('[CREATE_CONTACT] Error:', error?.message, error?.stack)
         logger.error({ err: error }, 'Failed to create contact')
-        return { success: false, error: 'Failed to create contact' }
+        return { success: false, error: `Failed to create contact: ${error?.message || 'Unknown error'}` }
     }
 }
