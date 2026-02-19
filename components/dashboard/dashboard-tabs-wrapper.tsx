@@ -1,6 +1,5 @@
 import { DashboardTabs } from "./dashboard-tabs"
 import { prisma } from "@/lib/prisma"
-import { getOrganizationPlanLimits } from "@/lib/plan-limits"
 
 interface DashboardTabsWrapperProps {
   userId: string
@@ -15,8 +14,8 @@ export async function DashboardTabsWrapper({
   organizationId,
   isMember,
 }: DashboardTabsWrapperProps) {
-  // Fetch pipelines, contacts, and plan limits in parallel
-  const [rawPipelines, rawStages, contacts, planLimits, org] = await Promise.all([
+  // Fetch pipelines and stages (original queries) + contacts for CreateDealDialog
+  const [rawPipelines, rawStages, contacts] = await Promise.all([
     prisma.pipeline.findMany({
       where: { organizationId },
       include: {
@@ -66,14 +65,7 @@ export async function DashboardTabsWrapper({
       },
       orderBy: { name: "asc" },
     }),
-    getOrganizationPlanLimits(organizationId),
-    prisma.organization.findUnique({
-      where: { id: organizationId },
-      select: { plan: true },
-    }),
   ])
-
-  const isPro = org?.plan === "PRO"
 
   // Transform data to serializable format
   const pipelines = rawPipelines.map((p) => ({
@@ -97,28 +89,11 @@ export async function DashboardTabsWrapper({
     })),
   }))
 
-  // Count total deals across all stages
-  const dealCount = stages.reduce((acc, stage) => acc + stage.deals.length, 0)
-
-  // Serialize planLimits - convert Infinity to -1 (not JSON-serializable)
-  const serializedPlanLimits = {
-    ...planLimits,
-    limits: {
-      maxContacts: planLimits.limits.maxContacts === Infinity ? -1 : planLimits.limits.maxContacts,
-      maxPipelines: planLimits.limits.maxPipelines === Infinity ? -1 : planLimits.limits.maxPipelines,
-      maxDeals: planLimits.limits.maxDeals === Infinity ? -1 : planLimits.limits.maxDeals,
-    },
-  }
-
   return (
     <DashboardTabs
       pipelines={pipelines}
       stages={stages}
       contacts={contacts}
-      dealCount={dealCount}
-      isPro={isPro}
-      isMember={isMember}
-      planLimits={serializedPlanLimits}
       userId={userId}
       userName={userName}
       organizationId={organizationId}

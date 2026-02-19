@@ -1,20 +1,31 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
+import dynamic from 'next/dynamic'
+import { useRouter } from 'next/navigation'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { ChatInterface } from '@/components/chat/chat-interface'
-import { DashboardWithPipelineSelector } from '@/components/dashboard-with-pipeline-selector'
+import { CreateDealDialog } from '@/components/deals/create-deal-dialog'
 import { toast } from 'sonner'
 import { MessageSquare, Layout, Loader2 } from 'lucide-react'
+
+// Dynamic import do KanbanBoard (carrega apenas quando necessário)
+const KanbanBoard = dynamic(
+  () => import('@/components/kanban-board').then(m => ({ default: m.KanbanBoard })),
+  {
+    loading: () => (
+      <div className="flex items-center justify-center h-96">
+        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+      </div>
+    ),
+    ssr: false,
+  }
+)
 
 interface DashboardTabsProps {
   pipelines: any[]
   stages: any[]
   contacts: any[]
-  dealCount: number
-  isPro: boolean
-  isMember: boolean
-  planLimits: any
   userId: string
   userName: string
   organizationId: string
@@ -24,17 +35,18 @@ export function DashboardTabs({
   pipelines,
   stages,
   contacts,
-  dealCount,
-  isPro,
-  isMember,
-  planLimits,
   userId,
   userName,
   organizationId
 }: DashboardTabsProps) {
+  const router = useRouter()
   const [activeTab, setActiveTab] = useState('pipeline')
   const [chatData, setChatData] = useState<any>(null)
   const [loadingChat, setLoadingChat] = useState(false)
+
+  const syncWithServer = useCallback(() => {
+    router.refresh()
+  }, [router])
 
   // Fetch chat data when tab changes to chat
   useEffect(() => {
@@ -61,26 +73,31 @@ export function DashboardTabs({
 
   return (
     <Tabs value={activeTab} onValueChange={setActiveTab} className="h-full flex flex-col">
-      <TabsList className="grid w-full sm:w-[300px] grid-cols-2 mb-4">
-        <TabsTrigger value="pipeline" className="flex items-center gap-2">
-          <Layout className="h-4 w-4" />
-          Pipeline
-        </TabsTrigger>
-        <TabsTrigger value="chat" className="flex items-center gap-2">
-          <MessageSquare className="h-4 w-4" />
-          WhatsApp
-        </TabsTrigger>
-      </TabsList>
+      <div className="flex items-center justify-between mb-4">
+        <TabsList className="grid w-full sm:w-[300px] grid-cols-2">
+          <TabsTrigger value="pipeline" className="flex items-center gap-2">
+            <Layout className="h-4 w-4" />
+            Pipeline
+          </TabsTrigger>
+          <TabsTrigger value="chat" className="flex items-center gap-2">
+            <MessageSquare className="h-4 w-4" />
+            WhatsApp
+          </TabsTrigger>
+        </TabsList>
+
+        {activeTab === 'pipeline' && (
+          <CreateDealDialog
+            stages={stages}
+            contacts={contacts}
+            onSuccess={syncWithServer}
+          />
+        )}
+      </div>
 
       <TabsContent value="pipeline" className="flex-1 m-0 data-[state=inactive]:hidden">
-        <DashboardWithPipelineSelector
-          pipelines={pipelines}
-          allStages={stages}
+        <KanbanBoard
+          stages={stages as any}
           contacts={contacts}
-          dealCount={dealCount}
-          isPro={isPro}
-          isMember={isMember}
-          planLimits={planLimits}
         />
       </TabsContent>
 
@@ -110,4 +127,3 @@ export function DashboardTabs({
     </Tabs>
   )
 }
-
