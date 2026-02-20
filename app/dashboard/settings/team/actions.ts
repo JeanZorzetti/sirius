@@ -4,6 +4,8 @@ import { getSession } from "@/lib/auth"
 import { prisma } from "@/lib/prisma"
 import { revalidatePath } from "next/cache"
 import { randomBytes } from "crypto"
+import { sendEmail } from "@/lib/email"
+import { InviteEmail } from "@/emails/templates/invite"
 
 async function checkOwner() {
     const session = await getSession()
@@ -44,6 +46,11 @@ export async function createInvite(email: string) {
     const token = randomBytes(32).toString('hex')
     const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000) // 7 days
 
+    const organization = await prisma.organization.findUnique({
+        where: { id: owner.organizationId },
+        select: { name: true }
+    })
+
     await prisma.invite.create({
         data: {
             email,
@@ -52,6 +59,18 @@ export async function createInvite(email: string) {
             expiresAt,
             role: 'MEMBER'
         }
+    })
+
+    // Envia o e-mail de convite via Resend
+    const inviteUrl = `${process.env.NEXT_PUBLIC_APP_URL}/register?invite=${token}`
+    await sendEmail({
+        to: email,
+        subject: `${owner.name} convidou você para o ${organization?.name ?? 'Sirius CRM'}`,
+        react: InviteEmail({
+            inviterName: owner.name ?? 'Um colega',
+            organizationName: organization?.name ?? 'Sirius CRM',
+            inviteUrl,
+        }),
     })
 
     revalidatePath("/dashboard/settings/team")

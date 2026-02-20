@@ -77,14 +77,17 @@ export function InviteDialog() {
                             disabled={!email || isPending}
                             className="w-full bg-white text-black hover:bg-zinc-200"
                         >
-                            {isPending ? "Gerando..." : "Gerar Link"}
+                            {isPending ? "Enviando..." : "Enviar Convite"}
                         </Button>
                     </div>
                 ) : (
                     <div className="flex flex-col gap-4 py-4 animate-in fade-in slide-in-from-bottom-2">
                         <div className="p-4 rounded-lg bg-green-500/10 border border-green-500/20 text-green-400 text-sm text-center">
-                            Convite criado com sucesso!
+                            E-mail de convite enviado para <strong>{email}</strong>!
                         </div>
+                        <p className="text-xs text-zinc-500 text-center">
+                            O link de convite também está disponível abaixo caso precise compartilhá-lo manualmente.
+                        </p>
                         <div className="flex gap-2">
                             <Input
                                 readOnly
@@ -95,9 +98,6 @@ export function InviteDialog() {
                                 {copied ? <Check className="h-4 w-4 text-green-500" /> : <Copy className="h-4 w-4" />}
                             </Button>
                         </div>
-                        <p className="text-xs text-zinc-500 text-center">
-                            Copie e envie este link para o novo membro.
-                        </p>
                     </div>
                 )}
             </DialogContent>
