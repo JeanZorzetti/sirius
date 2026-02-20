@@ -173,6 +173,10 @@ model User {
   role    Role    @default(USER)
   orgRole OrgRole @default(OWNER) // Defaulting to OWNER for now so existing users don't lose access. Ideally MEMBER.
 
+  // Pipeline visibility (OWNER sees all; MEMBER can be restricted)
+  pipelineRestricted Boolean  @default(false) // false = no restriction (all visible)
+  allowedPipelineIds String[] // IDs of pipelines this user can see (only used when pipelineRestricted = true)
+
   // Programa de Indicação
   referralCode     String?   @unique // Código único para indicações
   referralsMade    Referral[] @relation("ReferrerUser")

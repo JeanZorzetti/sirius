@@ -71,7 +71,7 @@ export default async function AdminUsersPage() {
                                     {format(user.createdAt, "dd MMM yyyy", { locale: ptBR })}
                                 </TableCell>
                                 <TableCell className="text-right">
-                                    <UserActions userId={user.id} userName={user.name || 'User'} />
+                                    <UserActions userId={user.id} userName={user.name || 'User'} currentOrgId={user.organizationId} />
                                 </TableCell>
                             </TableRow>
                         ))}

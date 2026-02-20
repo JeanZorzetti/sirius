@@ -129,6 +129,34 @@ export async function revokeInvite(inviteId: string) {
     return { success: true }
 }
 
+export async function updateUserPipelineVisibility(
+    targetUserId: string,
+    restricted: boolean,
+    allowedPipelineIds: string[]
+) {
+    const owner = await checkOwner()
+
+    // Ensure target user belongs to same org
+    const target = await prisma.user.findUnique({
+        where: { id: targetUserId }
+    })
+
+    if (!target || target.organizationId !== owner.organizationId) {
+        throw new Error("Usuário não encontrado na organização")
+    }
+
+    await prisma.user.update({
+        where: { id: targetUserId },
+        data: {
+            pipelineRestricted: restricted,
+            allowedPipelineIds: restricted ? allowedPipelineIds : [],
+        }
+    })
+
+    revalidatePath("/dashboard/settings/team")
+    return { success: true }
+}
+
 export async function removeMember(userId: string) {
     const owner = await checkOwner()
 

@@ -3,10 +3,9 @@ import { getSession } from "@/lib/auth"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
-import { Users, Trash2 } from "lucide-react"
 import { InviteDialog } from "./invite-dialog"
 import { RemoveMemberButton, RevokeInviteButton, ResendInviteButton } from "./team-actions"
+import { PipelineVisibilityDialog } from "./pipeline-visibility-dialog"
 import { format } from "date-fns"
 import { ptBR } from "date-fns/locale"
 
@@ -16,7 +15,6 @@ export default async function TeamSettingsPage() {
     const session = await getSession()
     if (!session?.user?.email) return null
 
-    // Get current user strict data
     const currentUser = await prisma.user.findUnique({
         where: { email: session.user.email },
         include: { organization: true }
@@ -26,17 +24,21 @@ export default async function TeamSettingsPage() {
 
     const isOwner = currentUser.orgRole === "OWNER"
 
-    // Fetch Team Members
-    const members = await prisma.user.findMany({
-        where: { organizationId: currentUser.organizationId },
-        orderBy: { createdAt: 'asc' }
-    })
-
-    // Fetch Pending Invites
-    const invites = await prisma.invite.findMany({
-        where: { organizationId: currentUser.organizationId },
-        orderBy: { createdAt: 'desc' }
-    })
+    const [members, invites, pipelines] = await Promise.all([
+        prisma.user.findMany({
+            where: { organizationId: currentUser.organizationId },
+            orderBy: { createdAt: 'asc' }
+        }),
+        prisma.invite.findMany({
+            where: { organizationId: currentUser.organizationId },
+            orderBy: { createdAt: 'desc' }
+        }),
+        prisma.pipeline.findMany({
+            where: { organizationId: currentUser.organizationId },
+            orderBy: [{ isDefault: 'desc' }, { name: 'asc' }],
+            select: { id: true, name: true, isDefault: true }
+        }),
+    ])
 
     return (
         <div className="flex-1 space-y-4 p-8 pt-6">
@@ -62,6 +64,7 @@ export default async function TeamSettingsPage() {
                                     <TableHead>Nome</TableHead>
                                     <TableHead>Email</TableHead>
                                     <TableHead>Função</TableHead>
+                                    {isOwner && <TableHead>Pipelines</TableHead>}
                                     <TableHead className="text-right">Ações</TableHead>
                                 </TableRow>
                             </TableHeader>
@@ -82,6 +85,21 @@ export default async function TeamSettingsPage() {
                                                 {member.orgRole}
                                             </Badge>
                                         </TableCell>
+                                        {isOwner && (
+                                            <TableCell>
+                                                {member.orgRole === 'OWNER' ? (
+                                                    <Badge variant="outline" className="text-xs border-green-500/30 text-green-400">Todos</Badge>
+                                                ) : (
+                                                    <PipelineVisibilityDialog
+                                                        userId={member.id}
+                                                        userName={member.name ?? member.email}
+                                                        pipelines={pipelines}
+                                                        currentRestricted={member.pipelineRestricted}
+                                                        currentAllowedIds={member.allowedPipelineIds}
+                                                    />
+                                                )}
+                                            </TableCell>
+                                        )}
                                         <TableCell className="text-right">
                                             {isOwner && member.id !== currentUser.id && (
                                                 <RemoveMemberButton userId={member.id} />

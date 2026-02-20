@@ -72,6 +72,32 @@ export async function deleteOrganization(orgId: string) {
     return { success: true }
 }
 
+export async function moveUserToOrganization(userId: string, newOrgId: string) {
+    await checkAdmin()
+
+    const [user, org] = await Promise.all([
+        prisma.user.findUnique({ where: { id: userId } }),
+        prisma.organization.findUnique({ where: { id: newOrgId } }),
+    ])
+
+    if (!user) throw new Error("Usuário não encontrado")
+    if (!org) throw new Error("Organização não encontrada")
+    if (user.organizationId === newOrgId) throw new Error("Usuário já está nessa organização")
+
+    await prisma.user.update({
+        where: { id: userId },
+        data: {
+            organizationId: newOrgId,
+            orgRole: 'MEMBER', // Downgrade to MEMBER when moved
+            pipelineRestricted: false,
+            allowedPipelineIds: [],
+        },
+    })
+
+    revalidatePath("/admin/users")
+    return { success: true }
+}
+
 export async function impersonateUser(userId: string) {
     await checkAdmin()
 
