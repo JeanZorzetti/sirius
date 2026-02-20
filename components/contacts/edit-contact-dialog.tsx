@@ -108,6 +108,27 @@ export function EditContactDialog({ contact }: { contact: Contact }) {
                                 className="col-span-3"
                             />
                         </div>
+                        <div className="grid grid-cols-4 items-center gap-4">
+                            <Label htmlFor="city" className="text-right">Cidade</Label>
+                            <Input
+                                id="city"
+                                name="city"
+                                defaultValue={(contact as any).city ?? ''}
+                                placeholder="São Paulo"
+                                className="col-span-3"
+                            />
+                        </div>
+                        <div className="grid grid-cols-4 items-center gap-4">
+                            <Label htmlFor="state" className="text-right">Estado</Label>
+                            <Input
+                                id="state"
+                                name="state"
+                                defaultValue={(contact as any).state ?? ''}
+                                placeholder="SP"
+                                maxLength={2}
+                                className="col-span-3"
+                            />
+                        </div>
                     </div>
                     <DialogFooter>
                         <Button type="button" variant="outline" onClick={() => setOpen(false)} disabled={loading}>

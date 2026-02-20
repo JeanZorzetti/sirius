@@ -37,6 +37,8 @@ export async function createContact(formData: FormData) {
         const email = formData.get('email') as string
         const phone = formData.get('phone') as string
         const company = formData.get('company') as string
+        const city = formData.get('city') as string
+        const state = formData.get('state') as string
 
         if (!name) {
             return { success: false, error: 'Nome é obrigatório' }
@@ -60,6 +62,8 @@ export async function createContact(formData: FormData) {
                 email: email || null,
                 phone: phone || null,
                 company: company || null,
+                city: city || null,
+                state: state ? state.toUpperCase().slice(0, 2) : null,
                 organizationId: user.organizationId
             }
         })
@@ -108,6 +112,8 @@ export async function updateContact(contactId: string, formData: FormData) {
         const email = formData.get('email') as string
         const phone = formData.get('phone') as string
         const company = formData.get('company') as string
+        const city = formData.get('city') as string
+        const state = formData.get('state') as string
 
         if (!name?.trim()) {
             return { success: false, error: 'Nome é obrigatório' }
@@ -149,6 +155,8 @@ export async function updateContact(contactId: string, formData: FormData) {
                 email: newEmail,
                 phone: phone?.trim() || null,
                 company: company?.trim() || null,
+                city: city?.trim() || null,
+                state: state?.trim() ? state.trim().toUpperCase().slice(0, 2) : null,
             }
         })
 

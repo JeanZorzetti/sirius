@@ -158,6 +158,27 @@ export const columns: ColumnDef<Contact>[] = [
         },
     },
     {
+        accessorKey: 'city',
+        header: 'Cidade',
+        cell: ({ row }) => {
+            const city = row.getValue('city') as string | null
+            return <span className="text-zinc-600 dark:text-zinc-500">{city || '-'}</span>
+        },
+    },
+    {
+        accessorKey: 'state',
+        header: 'Estado',
+        cell: ({ row }) => {
+            const state = row.getValue('state') as string | null
+            if (!state) return <span className="text-zinc-500">-</span>
+            return (
+                <div className="inline-flex items-center px-2 py-0.5 rounded bg-zinc-100 dark:bg-zinc-800/50 border border-zinc-200 dark:border-white/5">
+                    <span className="text-xs font-mono font-medium text-zinc-700 dark:text-zinc-400">{state.toUpperCase()}</span>
+                </div>
+            )
+        },
+    },
+    {
         id: 'actions',
         header: '',
         cell: ({ row }) => {

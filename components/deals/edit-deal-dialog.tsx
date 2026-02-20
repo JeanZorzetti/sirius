@@ -438,7 +438,7 @@ export function EditDealDialog({
 
                                     <div className="grid grid-cols-2 gap-4">
                                         <div className="space-y-2">
-                                            <Label>Data de Previsão</Label>
+                                            <Label>Data do Fechamento</Label>
                                             <Input
                                                 name="closeDate"
                                                 type="date"

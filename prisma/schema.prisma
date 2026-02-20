@@ -229,6 +229,8 @@ model Contact {
   email         String?
   phone         String?
   company       String?
+  city          String? // Cidade
+  state         String? // Estado (UF)
   profilePicUrl String? // WhatsApp profile picture URL
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
