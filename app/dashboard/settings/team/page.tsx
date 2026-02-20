@@ -6,7 +6,7 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Users, Trash2 } from "lucide-react"
 import { InviteDialog } from "./invite-dialog"
-import { RemoveMemberButton, RevokeInviteButton } from "./team-actions"
+import { RemoveMemberButton, RevokeInviteButton, ResendInviteButton } from "./team-actions"
 import { format } from "date-fns"
 import { ptBR } from "date-fns/locale"
 
@@ -124,7 +124,10 @@ export default async function TeamSettingsPage() {
                                             </TableCell>
                                             <TableCell className="text-right">
                                                 {isOwner && (
-                                                    <RevokeInviteButton inviteId={invite.id} />
+                                                    <div className="flex items-center justify-end gap-1">
+                                                        <ResendInviteButton inviteId={invite.id} />
+                                                        <RevokeInviteButton inviteId={invite.id} />
+                                                    </div>
                                                 )}
                                             </TableCell>
                                         </TableRow>

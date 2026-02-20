@@ -2,8 +2,8 @@
 
 import { useState, useTransition } from "react"
 import { Button } from "@/components/ui/button"
-import { Trash2 } from "lucide-react"
-import { removeMember, revokeInvite } from "./actions"
+import { Trash2, RefreshCw } from "lucide-react"
+import { removeMember, revokeInvite, resendInvite } from "./actions"
 import { ConfirmDialog } from "@/components/ui/confirm-dialog"
 import { toast } from "sonner"
 
@@ -42,6 +42,34 @@ export function RemoveMemberButton({ userId }: { userId: string }) {
                 onConfirm={handleRemove}
             />
         </>
+    )
+}
+
+export function ResendInviteButton({ inviteId }: { inviteId: string }) {
+    const [isPending, startTransition] = useTransition()
+
+    const handleResend = () => {
+        startTransition(async () => {
+            try {
+                await resendInvite(inviteId)
+                toast.success("Convite reenviado com sucesso")
+            } catch {
+                toast.error("Erro ao reenviar convite")
+            }
+        })
+    }
+
+    return (
+        <Button
+            variant="ghost"
+            size="sm"
+            className="text-zinc-500 hover:text-zinc-700"
+            onClick={handleResend}
+            disabled={isPending}
+        >
+            <RefreshCw className={`h-3.5 w-3.5 mr-1 ${isPending ? 'animate-spin' : ''}`} />
+            Reenviar
+        </Button>
     )
 }
 
