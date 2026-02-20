@@ -6,9 +6,9 @@ import { prisma } from "@/lib/prisma"
 export default async function RegisterPage({
     searchParams,
 }: {
-    searchParams: { invite?: string }
+    searchParams: Promise<{ invite?: string }>
 }) {
-    const inviteToken = searchParams.invite
+    const { invite: inviteToken } = await searchParams
     let inviteData = null
 
     if (inviteToken) {
