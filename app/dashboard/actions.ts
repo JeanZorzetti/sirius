@@ -118,7 +118,7 @@ export async function createDeal(formData: FormData) {
     }
 
     const value = valueStr ? parseFloat(valueStr) : null
-    // stageId declared above at line 28
+    const closeDateStr = formData.get('closeDate') as string
     const contactId = formData.get('contactId') as string || null
 
     const user = await getAuthenticatedUser()
@@ -160,6 +160,7 @@ export async function createDeal(formData: FormData) {
         contactId: contactId || null,
         userId: user.id,
         organizationId: user.organizationId,
+        closeDate: closeDateStr ? new Date(closeDateStr) : null,
       },
       include: {
         stage: true,

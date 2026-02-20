@@ -231,6 +231,17 @@ export function CreateDealDialog({
                                     className="col-span-3"
                                 />
                             </div>
+                            <div className="grid grid-cols-4 items-center gap-4">
+                                <Label htmlFor="closeDate" className="text-right">
+                                    Data do Fechamento
+                                </Label>
+                                <Input
+                                    id="closeDate"
+                                    name="closeDate"
+                                    type="date"
+                                    className="col-span-3"
+                                />
+                            </div>
                             <div className="grid grid-cols-4 items-start gap-4">
                                 <Label htmlFor="contactId" className="text-right pt-2">
                                     Contato
