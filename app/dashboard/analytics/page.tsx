@@ -1,6 +1,7 @@
 import { prisma } from '@/lib/prisma';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { OverviewChart } from '@/components/analytics/overview-chart';
+import { MonthlyChart } from '@/components/analytics/monthly-chart';
 import { DollarSign, TrendingUp, Target, CalendarClock } from 'lucide-react';
 import { getSession } from '@/lib/auth';
 import { Suspense } from 'react';
@@ -89,7 +90,36 @@ export default async function AnalyticsPage({
   const wonDealsCount = deals.filter(deal => wonStageIds.includes(deal.stageId)).length;
   const conversionRate = dealCount > 0 ? (wonDealsCount / dealCount) * 100 : 0;
 
-  // Chart
+  // Monthly analysis — last 12 months (always full picture, ignores date filter)
+  const twelveMonthsAgo = new Date(now.getFullYear(), now.getMonth() - 11, 1)
+  const allMonthlyDeals = await prisma.deal.findMany({
+    where: {
+      organizationId: user.organizationId,
+      closeDate: { gte: twelveMonthsAgo },
+    },
+    select: { value: true, closeDate: true },
+  })
+
+  const monthSlots: { key: string; label: string; value: number; count: number }[] = []
+  for (let i = 11; i >= 0; i--) {
+    const d = new Date(now.getFullYear(), now.getMonth() - i, 1)
+    const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`
+    const label = d.toLocaleDateString('pt-BR', { month: 'short', year: '2-digit' })
+    monthSlots.push({ key, label, value: 0, count: 0 })
+  }
+  for (const deal of allMonthlyDeals) {
+    if (!deal.closeDate) continue
+    const d = new Date(deal.closeDate)
+    const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`
+    const slot = monthSlots.find(m => m.key === key)
+    if (slot) {
+      slot.value += Number(deal.value || 0)
+      slot.count += 1
+    }
+  }
+  const monthlyData = monthSlots.map(({ label, value, count }) => ({ label, value, count }))
+
+  // Stage chart
   const stageData = deals.reduce((acc: Record<string, { name: string; count: number; value: number }>, deal) => {
     const stageId = deal.stageId;
     const stageName = deal.stage?.name || 'Unknown';
@@ -205,13 +235,26 @@ export default async function AnalyticsPage({
         </Card>
       </div>
 
-      {/* Chart */}
+      {/* Stage chart */}
       <Card className="bg-white/50 dark:bg-zinc-900/50 border-zinc-200 dark:border-white/5 backdrop-blur-sm">
         <CardHeader>
           <CardTitle className="text-lg font-semibold text-zinc-900 dark:text-white">Negócios por Etapa</CardTitle>
         </CardHeader>
         <CardContent className="pl-0">
           <OverviewChart data={chartData} />
+        </CardContent>
+      </Card>
+
+      {/* Monthly chart */}
+      <Card className="bg-white/50 dark:bg-zinc-900/50 border-zinc-200 dark:border-white/5 backdrop-blur-sm">
+        <CardHeader>
+          <div>
+            <CardTitle className="text-lg font-semibold text-zinc-900 dark:text-white">Análise Mensal</CardTitle>
+            <p className="text-xs text-zinc-500 mt-1">Valor e quantidade de negócios com fechamento nos últimos 12 meses</p>
+          </div>
+        </CardHeader>
+        <CardContent className="pl-0">
+          <MonthlyChart data={monthlyData} />
         </CardContent>
       </Card>
     </div>
