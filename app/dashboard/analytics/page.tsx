@@ -6,20 +6,21 @@ import { DollarSign, TrendingUp, Target, CalendarClock } from 'lucide-react';
 import { getSession } from '@/lib/auth';
 import { Suspense } from 'react';
 import { AnalyticsDateFilter } from './date-filter';
+import { MonthlyChartFilter } from './monthly-filter';
 
 export const metadata = { title: "Analytics | Sirius CRM" }
 
 export default async function AnalyticsPage({
   searchParams,
 }: {
-  searchParams: Promise<{ from?: string; to?: string }>
+  searchParams: Promise<{ from?: string; to?: string; mfrom?: string; mto?: string }>
 }) {
   const session = await getSession();
   if (!session || !session.user || !session.user.email) {
     return <div>Não autorizado. Faça login novamente.</div>;
   }
 
-  const { from, to } = await searchParams;
+  const { from, to, mfrom, mto } = await searchParams;
 
   const user = await prisma.user.findUnique({
     where: { email: session.user.email },
@@ -90,22 +91,32 @@ export default async function AnalyticsPage({
   const wonDealsCount = deals.filter(deal => wonStageIds.includes(deal.stageId)).length;
   const conversionRate = dealCount > 0 ? (wonDealsCount / dealCount) * 100 : 0;
 
-  // Monthly analysis — last 12 months (always full picture, ignores date filter)
-  const twelveMonthsAgo = new Date(now.getFullYear(), now.getMonth() - 11, 1)
+  // Monthly analysis — dynamic range, defaults to Jan 2025 → current month
+  const mFromStr = mfrom ?? '2025-01'
+  const mToStr = mto ?? `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`
+  const [mFromYear, mFromMonth] = mFromStr.split('-').map(Number)
+  const [mToYear, mToMonth] = mToStr.split('-').map(Number)
+
+  const mStartDate = new Date(mFromYear, mFromMonth - 1, 1)
+  const mEndDate = new Date(mToYear, mToMonth, 0, 23, 59, 59, 999) // last ms of last day in mTo month
+
   const allMonthlyDeals = await prisma.deal.findMany({
     where: {
       organizationId: user.organizationId,
-      closeDate: { gte: twelveMonthsAgo },
+      closeDate: { gte: mStartDate, lte: mEndDate },
     },
     select: { value: true, closeDate: true },
   })
 
   const monthSlots: { key: string; label: string; value: number; count: number }[] = []
-  for (let i = 11; i >= 0; i--) {
-    const d = new Date(now.getFullYear(), now.getMonth() - i, 1)
-    const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`
+  let sy = mFromYear, sm = mFromMonth
+  while (sy < mToYear || (sy === mToYear && sm <= mToMonth)) {
+    const d = new Date(sy, sm - 1, 1)
+    const key = `${sy}-${String(sm).padStart(2, '0')}`
     const label = d.toLocaleDateString('pt-BR', { month: 'short', year: '2-digit' })
     monthSlots.push({ key, label, value: 0, count: 0 })
+    sm++
+    if (sm > 12) { sm = 1; sy++ }
   }
   for (const deal of allMonthlyDeals) {
     if (!deal.closeDate) continue
@@ -248,9 +259,14 @@ export default async function AnalyticsPage({
       {/* Monthly chart */}
       <Card className="bg-white/50 dark:bg-zinc-900/50 border-zinc-200 dark:border-white/5 backdrop-blur-sm">
         <CardHeader>
-          <div>
-            <CardTitle className="text-lg font-semibold text-zinc-900 dark:text-white">Análise Mensal</CardTitle>
-            <p className="text-xs text-zinc-500 mt-1">Valor e quantidade de negócios com fechamento nos últimos 12 meses</p>
+          <div className="flex items-start justify-between flex-wrap gap-4">
+            <div>
+              <CardTitle className="text-lg font-semibold text-zinc-900 dark:text-white">Análise Mensal</CardTitle>
+              <p className="text-xs text-zinc-500 mt-1">Valor e quantidade de negócios com fechamento no período</p>
+            </div>
+            <Suspense>
+              <MonthlyChartFilter />
+            </Suspense>
           </div>
         </CardHeader>
         <CardContent className="pl-0">
