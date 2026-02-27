@@ -8,20 +8,21 @@ import { getSession } from '@/lib/auth';
 import { Suspense } from 'react';
 import { AnalyticsDateFilter } from './date-filter';
 import { MonthlyChartFilter } from './monthly-filter';
+import { ClientChartFilter } from './client-filter';
 
 export const metadata = { title: "Analytics | Sirius CRM" }
 
 export default async function AnalyticsPage({
   searchParams,
 }: {
-  searchParams: Promise<{ from?: string; to?: string; mfrom?: string; mto?: string }>
+  searchParams: Promise<{ from?: string; to?: string; mfrom?: string; mto?: string; ctop?: string; csort?: string }>
 }) {
   const session = await getSession();
   if (!session || !session.user || !session.user.email) {
     return <div>Não autorizado. Faça login novamente.</div>;
   }
 
-  const { from, to, mfrom, mto } = await searchParams;
+  const { from, to, mfrom, mto, ctop, csort } = await searchParams;
 
   const user = await prisma.user.findUnique({
     where: { email: session.user.email },
@@ -163,9 +164,11 @@ export default async function AnalyticsPage({
     clientMap[name].value += Number(deal.value || 0);
     clientMap[name].count += 1;
   }
+  const clientSortKey = csort === 'count' ? 'count' : 'value'
+  const clientLimit = Math.min(Math.max(Number(ctop ?? 10), 1), 20)
   const clientData = Object.values(clientMap)
-    .sort((a, b) => b.value - a.value)
-    .slice(0, 10);
+    .sort((a, b) => b[clientSortKey] - a[clientSortKey])
+    .slice(0, clientLimit);
 
   return (
     <div className="flex-1 space-y-4">
@@ -302,8 +305,17 @@ export default async function AnalyticsPage({
       {/* Client chart */}
       <Card className="bg-white/50 dark:bg-zinc-900/50 border-zinc-200 dark:border-white/5 backdrop-blur-sm">
         <CardHeader>
-          <CardTitle className="text-lg font-semibold text-zinc-900 dark:text-white">Análise por Cliente</CardTitle>
-          <p className="text-xs text-zinc-500 mt-1">Top 10 clientes por valor total — barras = valor (R$), linha = quantidade</p>
+          <div className="flex items-start justify-between flex-wrap gap-4">
+            <div>
+              <CardTitle className="text-lg font-semibold text-zinc-900 dark:text-white">Análise por Cliente</CardTitle>
+              <p className="text-xs text-zinc-500 mt-1">
+                Top {clientLimit} clientes por {clientSortKey === 'count' ? 'quantidade' : 'valor'} — barras = valor (R$), linha = quantidade
+              </p>
+            </div>
+            <Suspense>
+              <ClientChartFilter />
+            </Suspense>
+          </div>
         </CardHeader>
         <CardContent className="pl-0">
           <ClientChart data={clientData} />
