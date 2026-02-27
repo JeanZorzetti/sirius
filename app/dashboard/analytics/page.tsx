@@ -9,20 +9,21 @@ import { Suspense } from 'react';
 import { AnalyticsDateFilter } from './date-filter';
 import { MonthlyChartFilter } from './monthly-filter';
 import { ClientChartFilter } from './client-filter';
+import { PipelineFilter } from './pipeline-filter';
 
 export const metadata = { title: "Analytics | Sirius CRM" }
 
 export default async function AnalyticsPage({
   searchParams,
 }: {
-  searchParams: Promise<{ from?: string; to?: string; mfrom?: string; mto?: string; ctop?: string; csort?: string }>
+  searchParams: Promise<{ from?: string; to?: string; mfrom?: string; mto?: string; ctop?: string; csort?: string; pid?: string }>
 }) {
   const session = await getSession();
   if (!session || !session.user || !session.user.email) {
     return <div>Não autorizado. Faça login novamente.</div>;
   }
 
-  const { from, to, mfrom, mto, ctop, csort } = await searchParams;
+  const { from, to, mfrom, mto, ctop, csort, pid } = await searchParams;
 
   const user = await prisma.user.findUnique({
     where: { email: session.user.email },
@@ -32,6 +33,16 @@ export default async function AnalyticsPage({
   if (!user || !user.organizationId) {
     return <div>Usuário não pertence a uma organização.</div>
   }
+
+  // Pipelines disponíveis para o filtro
+  const pipelines = await prisma.pipeline.findMany({
+    where: { organizationId: user.organizationId },
+    select: { id: true, name: true, isDefault: true },
+    orderBy: [{ isDefault: 'desc' }, { name: 'asc' }],
+  })
+
+  // Pipeline filter — undefined = todas
+  const pipelineFilter = pid && pid !== 'all' ? { pipelineId: pid } : {}
 
   // Build closeDate filter when date params are present
   const closeDateFilter: any = {}
@@ -46,6 +57,7 @@ export default async function AnalyticsPage({
   const deals = await prisma.deal.findMany({
     where: {
       organizationId: user.organizationId,
+      ...pipelineFilter,
       ...(isFiltered ? { closeDate: closeDateFilter } : {}),
     },
     select: {
@@ -58,7 +70,10 @@ export default async function AnalyticsPage({
   });
 
   const stages = await prisma.pipelineStage.findMany({
-    where: { organizationId: user.organizationId },
+    where: {
+      organizationId: user.organizationId,
+      ...(pid && pid !== 'all' ? { pipelineId: pid } : {}),
+    },
     orderBy: { order: 'asc' }
   });
 
@@ -100,11 +115,12 @@ export default async function AnalyticsPage({
   const [mToYear, mToMonth] = mToStr.split('-').map(Number)
 
   const mStartDate = new Date(mFromYear, mFromMonth - 1, 1)
-  const mEndDate = new Date(mToYear, mToMonth, 0, 23, 59, 59, 999) // last ms of last day in mTo month
+  const mEndDate = new Date(mToYear, mToMonth, 0, 23, 59, 59, 999)
 
   const allMonthlyDeals = await prisma.deal.findMany({
     where: {
       organizationId: user.organizationId,
+      ...pipelineFilter,
       closeDate: { gte: mStartDate, lte: mEndDate },
     },
     select: { value: true, closeDate: true },
@@ -144,10 +160,11 @@ export default async function AnalyticsPage({
 
   const chartData = Object.values(stageData);
 
-  // Client chart — top 10 clientes por valor total
+  // Client chart
   const clientDeals = await prisma.deal.findMany({
     where: {
       organizationId: user.organizationId,
+      ...pipelineFilter,
       contactId: { not: null },
       ...(isFiltered ? { closeDate: closeDateFilter } : {}),
     },
@@ -170,6 +187,8 @@ export default async function AnalyticsPage({
     .sort((a, b) => b[clientSortKey] - a[clientSortKey])
     .slice(0, clientLimit);
 
+  const activePipelineName = pipelines.find(p => p.id === pid)?.name
+
   return (
     <div className="flex-1 space-y-4">
       <div className="flex items-start justify-between flex-wrap gap-4">
@@ -184,12 +203,21 @@ export default async function AnalyticsPage({
         </Suspense>
       </div>
 
-      {isFiltered && (
+      {/* Pipeline filter */}
+      <Suspense>
+        <PipelineFilter pipelines={pipelines} />
+      </Suspense>
+
+      {(isFiltered || activePipelineName) && (
         <p className="text-xs text-zinc-500">
-          Filtrando por data do fechamento
-          {from ? ` a partir de ${new Date(from).toLocaleDateString('pt-BR')}` : ''}
-          {to ? ` até ${new Date(to).toLocaleDateString('pt-BR')}` : ''}
-          {' — '}<strong>{dealCount}</strong> negócio(s) encontrado(s).
+          {activePipelineName && <><strong>{activePipelineName}</strong>{' — '}</>}
+          {isFiltered && <>
+            Filtrando por data do fechamento
+            {from ? ` a partir de ${new Date(from).toLocaleDateString('pt-BR')}` : ''}
+            {to ? ` até ${new Date(to).toLocaleDateString('pt-BR')}` : ''}
+            {' — '}
+          </>}
+          <strong>{dealCount}</strong> negócio(s) encontrado(s).
         </p>
       )}
 
