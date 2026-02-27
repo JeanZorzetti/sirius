@@ -6,6 +6,8 @@ interface DashboardTabsWrapperProps {
   userName: string
   organizationId: string
   isMember: boolean
+  vsearch?: string
+  csearch?: string
 }
 
 export async function DashboardTabsWrapper({
@@ -13,6 +15,8 @@ export async function DashboardTabsWrapper({
   userName,
   organizationId,
   isMember,
+  vsearch,
+  csearch,
 }: DashboardTabsWrapperProps) {
   // Fetch pipelines and stages (original queries) + contacts for CreateDealDialog
   const [rawPipelines, rawStages, contacts] = await Promise.all([
@@ -38,6 +42,8 @@ export async function DashboardTabsWrapper({
           where: {
             organizationId,
             ...(isMember ? { userId } : {}),
+            ...(vsearch ? { value: { equals: Number(vsearch) } as any } : {}),
+            ...(csearch ? { contact: { name: { contains: csearch, mode: "insensitive" } } } : {}),
           },
           include: {
             contact: {

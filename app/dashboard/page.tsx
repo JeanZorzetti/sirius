@@ -5,6 +5,8 @@ import { DashboardTabsWrapper } from "@/components/dashboard/dashboard-tabs-wrap
 import { DashboardTabsSkeleton } from "@/components/skeletons/dashboard-tabs-skeleton"
 import { getSession } from "@/lib/auth"
 import { prisma } from "@/lib/prisma"
+import { ValueSearch } from "./analytics/value-search"
+import { ContactSearch } from "./analytics/contact-search"
 
 export const metadata: Metadata = {
   title: "Pipelines - CRM",
@@ -12,7 +14,13 @@ export const metadata: Metadata = {
 
 export const dynamic = "force-dynamic"
 
-export default async function DashboardPage() {
+export default async function DashboardPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ vsearch?: string; csearch?: string }>
+}) {
+  const { vsearch, csearch } = await searchParams
+
   try {
     const session = await getSession()
 
@@ -63,8 +71,16 @@ export default async function DashboardPage() {
         shouldShowOnboarding={shouldShowOnboarding}
       >
         <div className="h-full flex flex-col">
-          <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center justify-between mb-4 flex-wrap gap-3">
             <h1 className="text-2xl font-bold">Dashboard</h1>
+            <div className="flex items-end gap-3 flex-wrap">
+              <Suspense>
+                <ValueSearch />
+              </Suspense>
+              <Suspense>
+                <ContactSearch />
+              </Suspense>
+            </div>
           </div>
 
           <Suspense fallback={<DashboardTabsSkeleton />}>
@@ -73,6 +89,8 @@ export default async function DashboardPage() {
               userName={user.name || ""}
               organizationId={user.organizationId}
               isMember={isMember}
+              vsearch={vsearch}
+              csearch={csearch}
             />
           </Suspense>
         </div>
