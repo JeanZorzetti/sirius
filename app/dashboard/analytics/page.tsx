@@ -10,22 +10,20 @@ import { AnalyticsDateFilter } from './date-filter';
 import { MonthlyChartFilter } from './monthly-filter';
 import { ClientChartFilter } from './client-filter';
 import { PipelineFilter } from './pipeline-filter';
-import { ValueFilter } from './value-filter';
-import { ContactFilter } from './contact-filter';
 
 export const metadata = { title: "Analytics | Sirius CRM" }
 
 export default async function AnalyticsPage({
   searchParams,
 }: {
-  searchParams: Promise<{ from?: string; to?: string; mfrom?: string; mto?: string; ctop?: string; csort?: string; pid?: string; vmin?: string; vmax?: string; cid?: string }>
+  searchParams: Promise<{ from?: string; to?: string; mfrom?: string; mto?: string; ctop?: string; csort?: string; pid?: string }>
 }) {
   const session = await getSession();
   if (!session || !session.user || !session.user.email) {
     return <div>Não autorizado. Faça login novamente.</div>;
   }
 
-  const { from, to, mfrom, mto, ctop, csort, pid, vmin, vmax, cid } = await searchParams;
+  const { from, to, mfrom, mto, ctop, csort, pid } = await searchParams;
 
   const user = await prisma.user.findUnique({
     where: { email: session.user.email },
@@ -46,25 +44,6 @@ export default async function AnalyticsPage({
   // Pipeline filter — undefined = todas
   const pipelineFilter = pid && pid !== 'all' ? { pipelineId: pid } : {}
 
-  // Value filter
-  const valueFilter: any = {}
-  if (vmin) valueFilter.gte = Number(vmin)
-  if (vmax) valueFilter.lte = Number(vmax)
-  const hasValueFilter = !!(vmin || vmax)
-
-  // Contact filter
-  const contactFilter = cid ? { contactId: cid } : {}
-
-  // Contacts list for filter dropdown (only contacts with deals)
-  const contactsWithDeals = await prisma.contact.findMany({
-    where: {
-      organizationId: user.organizationId,
-      deals: { some: { organizationId: user.organizationId } },
-    },
-    select: { id: true, name: true },
-    orderBy: { name: 'asc' },
-  })
-
   // Build closeDate filter when date params are present
   const closeDateFilter: any = {}
   if (from) closeDateFilter.gte = new Date(from)
@@ -79,9 +58,7 @@ export default async function AnalyticsPage({
     where: {
       organizationId: user.organizationId,
       ...pipelineFilter,
-      ...contactFilter,
       ...(isFiltered ? { closeDate: closeDateFilter } : {}),
-      ...(hasValueFilter ? { value: valueFilter } : {}),
     },
     select: {
       id: true,
@@ -144,8 +121,6 @@ export default async function AnalyticsPage({
     where: {
       organizationId: user.organizationId,
       ...pipelineFilter,
-      ...contactFilter,
-      ...(hasValueFilter ? { value: valueFilter } : {}),
       closeDate: { gte: mStartDate, lte: mEndDate },
     },
     select: { value: true, closeDate: true },
@@ -190,10 +165,8 @@ export default async function AnalyticsPage({
     where: {
       organizationId: user.organizationId,
       ...pipelineFilter,
-      ...contactFilter,
       contactId: { not: null },
       ...(isFiltered ? { closeDate: closeDateFilter } : {}),
-      ...(hasValueFilter ? { value: valueFilter } : {}),
     },
     select: {
       value: true,
@@ -230,18 +203,10 @@ export default async function AnalyticsPage({
         </Suspense>
       </div>
 
-      {/* Filters row */}
-      <div className="flex flex-wrap gap-x-6 gap-y-3 items-end">
-        <Suspense>
-          <PipelineFilter pipelines={pipelines} />
-        </Suspense>
-        <Suspense>
-          <ValueFilter />
-        </Suspense>
-        <Suspense>
-          <ContactFilter contacts={contactsWithDeals} />
-        </Suspense>
-      </div>
+      {/* Pipeline filter */}
+      <Suspense>
+        <PipelineFilter pipelines={pipelines} />
+      </Suspense>
 
       {(isFiltered || activePipelineName) && (
         <p className="text-xs text-zinc-500">
