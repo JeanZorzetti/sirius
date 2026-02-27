@@ -2,6 +2,7 @@ import { prisma } from '@/lib/prisma';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { OverviewChart } from '@/components/analytics/overview-chart';
 import { MonthlyChart } from '@/components/analytics/monthly-chart';
+import { ClientChart } from '@/components/analytics/client-chart';
 import { DollarSign, TrendingUp, Target, CalendarClock } from 'lucide-react';
 import { getSession } from '@/lib/auth';
 import { Suspense } from 'react';
@@ -142,6 +143,30 @@ export default async function AnalyticsPage({
 
   const chartData = Object.values(stageData);
 
+  // Client chart — top 10 clientes por valor total
+  const clientDeals = await prisma.deal.findMany({
+    where: {
+      organizationId: user.organizationId,
+      contactId: { not: null },
+      ...(isFiltered ? { closeDate: closeDateFilter } : {}),
+    },
+    select: {
+      value: true,
+      contact: { select: { name: true } },
+    },
+  });
+
+  const clientMap: Record<string, { name: string; value: number; count: number }> = {};
+  for (const deal of clientDeals) {
+    const name = deal.contact?.name ?? 'Sem nome';
+    if (!clientMap[name]) clientMap[name] = { name, value: 0, count: 0 };
+    clientMap[name].value += Number(deal.value || 0);
+    clientMap[name].count += 1;
+  }
+  const clientData = Object.values(clientMap)
+    .sort((a, b) => b.value - a.value)
+    .slice(0, 10);
+
   return (
     <div className="flex-1 space-y-4">
       <div className="flex items-start justify-between flex-wrap gap-4">
@@ -271,6 +296,17 @@ export default async function AnalyticsPage({
         </CardHeader>
         <CardContent className="pl-0">
           <MonthlyChart data={monthlyData} />
+        </CardContent>
+      </Card>
+
+      {/* Client chart */}
+      <Card className="bg-white/50 dark:bg-zinc-900/50 border-zinc-200 dark:border-white/5 backdrop-blur-sm">
+        <CardHeader>
+          <CardTitle className="text-lg font-semibold text-zinc-900 dark:text-white">Análise por Cliente</CardTitle>
+          <p className="text-xs text-zinc-500 mt-1">Top 10 clientes por valor total — barras = valor (R$), linha = quantidade</p>
+        </CardHeader>
+        <CardContent className="pl-0">
+          <ClientChart data={clientData} />
         </CardContent>
       </Card>
     </div>
