@@ -10,20 +10,22 @@ import { AnalyticsDateFilter } from './date-filter';
 import { MonthlyChartFilter } from './monthly-filter';
 import { ClientChartFilter } from './client-filter';
 import { PipelineFilter } from './pipeline-filter';
+import { ValueSearch } from './value-search';
+import { ContactSearch } from './contact-search';
 
 export const metadata = { title: "Analytics | Sirius CRM" }
 
 export default async function AnalyticsPage({
   searchParams,
 }: {
-  searchParams: Promise<{ from?: string; to?: string; mfrom?: string; mto?: string; ctop?: string; csort?: string; pid?: string }>
+  searchParams: Promise<{ from?: string; to?: string; mfrom?: string; mto?: string; ctop?: string; csort?: string; pid?: string; vsearch?: string; csearch?: string }>
 }) {
   const session = await getSession();
   if (!session || !session.user || !session.user.email) {
     return <div>Não autorizado. Faça login novamente.</div>;
   }
 
-  const { from, to, mfrom, mto, ctop, csort, pid } = await searchParams;
+  const { from, to, mfrom, mto, ctop, csort, pid, vsearch, csearch } = await searchParams;
 
   const user = await prisma.user.findUnique({
     where: { email: session.user.email },
@@ -41,8 +43,24 @@ export default async function AnalyticsPage({
     orderBy: [{ isDefault: 'desc' }, { name: 'asc' }],
   })
 
-  // Pipeline filter — undefined = todas
+  // Pipeline filter
   const pipelineFilter = pid && pid !== 'all' ? { pipelineId: pid } : {}
+
+  // Exact value search
+  const valueSearchFilter = vsearch ? { value: { equals: Number(vsearch) } as any } : {}
+
+  // Contact name search — resolve matching contact IDs first
+  let contactSearchFilter: any = {}
+  if (csearch) {
+    const matchedContacts = await prisma.contact.findMany({
+      where: {
+        organizationId: user.organizationId,
+        name: { contains: csearch, mode: 'insensitive' },
+      },
+      select: { id: true },
+    })
+    contactSearchFilter = { contactId: { in: matchedContacts.map(c => c.id) } }
+  }
 
   // Build closeDate filter when date params are present
   const closeDateFilter: any = {}
@@ -58,6 +76,8 @@ export default async function AnalyticsPage({
     where: {
       organizationId: user.organizationId,
       ...pipelineFilter,
+      ...valueSearchFilter,
+      ...contactSearchFilter,
       ...(isFiltered ? { closeDate: closeDateFilter } : {}),
     },
     select: {
@@ -121,6 +141,8 @@ export default async function AnalyticsPage({
     where: {
       organizationId: user.organizationId,
       ...pipelineFilter,
+      ...valueSearchFilter,
+      ...contactSearchFilter,
       closeDate: { gte: mStartDate, lte: mEndDate },
     },
     select: { value: true, closeDate: true },
@@ -165,6 +187,8 @@ export default async function AnalyticsPage({
     where: {
       organizationId: user.organizationId,
       ...pipelineFilter,
+      ...valueSearchFilter,
+      ...contactSearchFilter,
       contactId: { not: null },
       ...(isFiltered ? { closeDate: closeDateFilter } : {}),
     },
@@ -203,10 +227,18 @@ export default async function AnalyticsPage({
         </Suspense>
       </div>
 
-      {/* Pipeline filter */}
-      <Suspense>
-        <PipelineFilter pipelines={pipelines} />
-      </Suspense>
+      {/* Filters + Search row */}
+      <div className="flex flex-wrap gap-x-6 gap-y-3 items-end">
+        <Suspense>
+          <PipelineFilter pipelines={pipelines} />
+        </Suspense>
+        <Suspense>
+          <ValueSearch />
+        </Suspense>
+        <Suspense>
+          <ContactSearch />
+        </Suspense>
+      </div>
 
       {(isFiltered || activePipelineName) && (
         <p className="text-xs text-zinc-500">
