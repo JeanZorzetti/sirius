@@ -9,6 +9,11 @@ import { post as post7 } from './posts/planilha-controle-comissao-corretor'
 import { post as post8 } from './posts/crm-ia-inteligencia-artificial-2026'
 import { post as post9 } from './posts/crm-automacao-vendas-guia-completo'
 import { post as post10 } from './posts/melhor-crm-2026-comparativo'
+import { post as post11 } from './posts/prospeccao-de-clientes-b2b'
+import { post as post12 } from './posts/tecnicas-de-fechamento-de-vendas'
+import { post as post13 } from './posts/como-superar-objecoes-em-vendas'
+import { post as post14 } from './posts/kpis-de-vendas'
+import { post as post15 } from './posts/erros-crm-comuns'
 
 export const blogPosts: BlogPost[] = [
   post1,
@@ -21,4 +26,9 @@ export const blogPosts: BlogPost[] = [
   post8,
   post9,
   post10,
+  post11,
+  post12,
+  post13,
+  post14,
+  post15,
 ]

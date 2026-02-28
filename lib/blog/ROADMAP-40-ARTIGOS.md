@@ -44,11 +44,11 @@
 
 | # | Slug | Título | Categoria | Keyword Alvo | Intenção | Palavras |
 |---|------|--------|-----------|-------------|----------|---------|
-| 1 | `prospeccao-de-clientes-b2b` | Como Prospectar Clientes B2B em 2026: Métodos que Funcionam | Vendas | prospecção de clientes b2b | Informacional | 2.500 |
-| 2 | `tecnicas-de-fechamento-de-vendas` | 7 Técnicas de Fechamento de Vendas que Realmente Funcionam | Vendas | técnicas de fechamento de vendas | Informacional | 2.000 |
-| 3 | `como-superar-objecoes-em-vendas` | Como Superar Objeções em Vendas: 10 Respostas Prontas | Vendas | objeções em vendas | Informacional | 2.000 |
-| 4 | `kpis-de-vendas` | 12 KPIs de Vendas que Todo Gestor Precisa Acompanhar | Gestão | kpis de vendas | Informacional | 2.000 |
-| 5 | `erros-crm-comuns` | 7 Erros de CRM que Destroem sua Operação de Vendas | Dicas | erros crm | Informacional | 1.800 |
+| 1 | `prospeccao-de-clientes-b2b` | Como Prospectar Clientes B2B em 2026: Métodos que Funcionam | Vendas | prospecção de clientes b2b | Informacional | 2.500 | ✅ Publicado |
+| 2 | `tecnicas-de-fechamento-de-vendas` | 7 Técnicas de Fechamento de Vendas que Realmente Funcionam | Vendas | técnicas de fechamento de vendas | Informacional | 2.000 | ✅ Publicado |
+| 3 | `como-superar-objecoes-em-vendas` | Como Superar Objeções em Vendas: 10 Respostas Prontas | Vendas | objeções em vendas | Informacional | 2.000 | ✅ Publicado |
+| 4 | `kpis-de-vendas` | 12 KPIs de Vendas que Todo Gestor Precisa Acompanhar | Gestão | kpis de vendas | Informacional | 2.000 | ✅ Publicado |
+| 5 | `erros-crm-comuns` | 7 Erros de CRM que Destroem sua Operação de Vendas | Dicas | erros crm | Informacional | 1.800 | ✅ Publicado |
 
 **Notas de SEO/GEO:**
 - Posts 1-3: linkar entre si via `relatedSlugs` + linkar para `spin-selling-guia-completo` e `como-organizar-pipeline-vendas`
@@ -192,7 +192,7 @@
 
 | Fase | Semanas | Artigos | Status |
 |------|---------|---------|--------|
-| Fase 1 — Fundamentos de Vendas | 1–2 | 1–5 | ⬜ Pendente |
+| Fase 1 — Fundamentos de Vendas | 1–2 | 1–5 | 🔄 Em andamento |
 | Fase 2 — Gestão de Pipeline | 3–4 | 6–10 | ⬜ Pendente |
 | Fase 3 — CRM por Segmento | 5–6 | 11–15 | ⬜ Pendente |
 | Fase 4 — ROI e Estratégia | 7–8 | 16–20 | ⬜ Pendente |
