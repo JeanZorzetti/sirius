@@ -7,6 +7,10 @@ import { CALCULATOR_LAST_MODIFIED } from '@/config/calculator-metadata'
 export default function sitemap(): MetadataRoute.Sitemap {
     const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://sirius.roilabs.com.br'
 
+    // Data da última atualização significativa do site
+    // Atualizar manualmente quando houver mudanças reais nas páginas estáticas
+    const lastSiteUpdate = new Date('2026-02-28')
+
     // Static routes
     // Priorização Hierárquica (Seção 7.2):
     // - Homepage (1.0): Ponto central da marca
@@ -32,7 +36,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
         '/ferramentas',
     ].map((route) => ({
         url: `${baseUrl}${route}`,
-        lastModified: new Date(),
+        lastModified: lastSiteUpdate,
         changeFrequency: 'monthly' as const,
         priority: route === '' ? 1
             : ['/vendas-automaticas', '/fundadores', '/ferramentas'].includes(route) ? 0.9
@@ -81,7 +85,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     // Páginas de soluções por nicho (geradas dinamicamente do niche-data.ts)
     const nicheSolutionPages = NICHES.map((niche) => ({
         url: `${baseUrl}/solucoes/${niche.slug}`,
-        lastModified: new Date(),
+        lastModified: lastSiteUpdate,
         changeFrequency: 'weekly' as const,
         priority: 0.9, // Alta prioridade - páginas de conversão principais
     }))
