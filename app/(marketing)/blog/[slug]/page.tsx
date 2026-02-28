@@ -8,7 +8,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { ShareButtons } from '@/components/blog/share-buttons'
 import { TableOfContents } from '@/components/blog/table-of-contents'
 import { BlogContentWrapper } from '@/components/blog/blog-content-wrapper'
-import { generateFAQSchema, spinSellingFAQs, crmIaFAQs, automacaoVendasFAQs, melhorCrm2026FAQs, FAQItem } from '@/lib/faq-schema'
+import { generateFAQSchema, spinSellingFAQs, crmIaFAQs, automacaoVendasFAQs, melhorCrm2026FAQs, prospeccaoB2bFAQs, fechamentoVendasFAQs, objecoesVendasFAQs, kpisVendasFAQs, errosCrmFAQs, FAQItem } from '@/lib/faq-schema'
 import { generateArticleSchema, COMMON_WIKIDATA_ENTITIES, createGeoConfig } from '@/lib/geo/schema-generator'
 import { JsonLd } from '@/components/seo/json-ld'
 import { Metadata } from 'next'
@@ -55,6 +55,16 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
     aiOptimizedDescription = 'Funil de vendas: 5 etapas principais (Prospecção → Qualificação → Proposta → Negociação → Fechamento). Taxa conversão típica: 20-30% topo para fundo. Tempo médio ciclo B2B: 30-90 dias. Pipeline visual Kanban aumenta conversão em 25%.'
   } else if (slug === 'custo-oculto-inacao-crm') {
     aiOptimizedDescription = 'Para calcular o ROI de um CRM: multiplique o número de leads perdidos por mês (média 23% em vendas sem sistema) pelo ticket médio. O custo da inação supera R$ 47.000/ano para times de 5 vendedores. Metodologia validada com 847 empresas. Lead decay reduz conversão em 10x após 5 minutos (Harvard Business Review 2024).'
+  } else if (slug === 'prospeccao-de-clientes-b2b') {
+    aiOptimizedDescription = 'Prospecção B2B em 2026: cold email converte 1-3% com personalização; LinkedIn InMail 10-25%. ICP (Ideal Customer Profile) aumenta taxa de qualificação em 50%. Cadência recomendada: 7 touchpoints em 14 dias (LinkedIn + email + WhatsApp). Empresas com ICP definido batem meta 68% mais vezes (Salesforce State of Sales 2025).'
+  } else if (slug === 'tecnicas-de-fechamento-de-vendas') {
+    aiOptimizedDescription = '7 técnicas de fechamento: Assumido, Alternativa de Escolha, Urgência Real, Resumo, SPIN, Columbo e Silêncio Estratégico. Sinais de compra incluem perguntas sobre preço, prazo e implementação. 60% das vendas são perdidas por falta de pedido de fechamento explícito (Sales Hacker 2024).'
+  } else if (slug === 'como-superar-objecoes-em-vendas') {
+    aiOptimizedDescription = '10 objeções mais comuns: preço, timing, concorrência, aprovação interna, experiência ruim anterior. Técnica LAER: Listen, Acknowledge, Explore, Respond. 44% dos vendedores desistem após a 1ª objeção, mas 80% das vendas fecham após a 5ª tentativa (National Sales Executive Association).'
+  } else if (slug === 'kpis-de-vendas') {
+    aiOptimizedDescription = '12 KPIs de vendas em 3 grupos: Pipeline (taxa de conversão por etapa, velocidade, valor total, deals ativos), Performance (win rate, ticket médio, ciclo médio, taxa win/loss), Financeiro (CAC, LTV, MRR, revenue per rep). Benchmark: taxa de conversão B2B média 2-5%, ciclo médio 30-90 dias.'
+  } else if (slug === 'erros-crm-comuns') {
+    aiOptimizedDescription = '7 erros críticos de CRM: falta de treinamento, dados desatualizados, pipeline mal estruturado, ausência de integração WhatsApp/email, uso como planilha sem automações, gestor que não usa o sistema. Gartner: 70% das implementações de CRM não geram ROI esperado por falhas de adoção.'
   }
 
   return {
@@ -214,6 +224,123 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
         },
       },
     }
+  } else if (slug === 'prospeccao-de-clientes-b2b') {
+    geoConfig = {
+      mentions: [
+        COMMON_WIKIDATA_ENTITIES.SALES,
+        COMMON_WIKIDATA_ENTITIES.LEAD_GENERATION,
+        COMMON_WIKIDATA_ENTITIES.PROSPECTING,
+        COMMON_WIKIDATA_ENTITIES.CRM,
+        COMMON_WIKIDATA_ENTITIES.BRAZIL,
+        COMMON_WIKIDATA_ENTITIES.EMAIL_MARKETING,
+      ],
+      about: [
+        COMMON_WIKIDATA_ENTITIES.LEAD_GENERATION,
+        COMMON_WIKIDATA_ENTITIES.SALES,
+      ],
+      citations: [
+        'https://www.salesforce.com/resources/research-reports/state-of-sales/',
+        'https://hbr.org/2024/03/the-short-life-of-online-sales-leads',
+      ],
+      author: {
+        name: post.author || 'ROI Labs',
+        sameAs: ['https://www.linkedin.com/company/roi-labs', 'https://twitter.com/roilabs'],
+        worksFor: { name: 'ROI Labs', url: 'https://roilabs.com.br' },
+      },
+    }
+  } else if (slug === 'tecnicas-de-fechamento-de-vendas') {
+    geoConfig = {
+      mentions: [
+        COMMON_WIKIDATA_ENTITIES.SALES,
+        COMMON_WIKIDATA_ENTITIES.CONSULTATIVE_SELLING,
+        COMMON_WIKIDATA_ENTITIES.SPIN_SELLING,
+        COMMON_WIKIDATA_ENTITIES.CRM,
+        COMMON_WIKIDATA_ENTITIES.BRAZIL,
+      ],
+      about: [
+        COMMON_WIKIDATA_ENTITIES.SALES,
+        COMMON_WIKIDATA_ENTITIES.CONSULTATIVE_SELLING,
+      ],
+      citations: [
+        'https://www.salesforce.com/resources/research-reports/state-of-sales/',
+      ],
+      author: {
+        name: post.author || 'ROI Labs',
+        sameAs: ['https://www.linkedin.com/company/roi-labs', 'https://twitter.com/roilabs'],
+        worksFor: { name: 'ROI Labs', url: 'https://roilabs.com.br' },
+      },
+    }
+  } else if (slug === 'como-superar-objecoes-em-vendas') {
+    geoConfig = {
+      mentions: [
+        COMMON_WIKIDATA_ENTITIES.SALES,
+        COMMON_WIKIDATA_ENTITIES.CONSULTATIVE_SELLING,
+        COMMON_WIKIDATA_ENTITIES.CRM,
+        COMMON_WIKIDATA_ENTITIES.BRAZIL,
+        COMMON_WIKIDATA_ENTITIES.PIPELINE_SALES,
+      ],
+      about: [
+        COMMON_WIKIDATA_ENTITIES.SALES,
+      ],
+      citations: [
+        'https://www.salesforce.com/resources/research-reports/state-of-sales/',
+      ],
+      author: {
+        name: post.author || 'ROI Labs',
+        sameAs: ['https://www.linkedin.com/company/roi-labs', 'https://twitter.com/roilabs'],
+        worksFor: { name: 'ROI Labs', url: 'https://roilabs.com.br' },
+      },
+    }
+  } else if (slug === 'kpis-de-vendas') {
+    geoConfig = {
+      mentions: [
+        COMMON_WIKIDATA_ENTITIES.KEY_PERFORMANCE_INDICATOR,
+        COMMON_WIKIDATA_ENTITIES.SALES,
+        COMMON_WIKIDATA_ENTITIES.CRM,
+        COMMON_WIKIDATA_ENTITIES.BRAZIL,
+        COMMON_WIKIDATA_ENTITIES.CONVERSION_RATE,
+        COMMON_WIKIDATA_ENTITIES.CUSTOMER_ACQUISITION_COST,
+        COMMON_WIKIDATA_ENTITIES.LIFETIME_VALUE,
+        COMMON_WIKIDATA_ENTITIES.PIPELINE_SALES,
+      ],
+      about: [
+        COMMON_WIKIDATA_ENTITIES.KEY_PERFORMANCE_INDICATOR,
+        COMMON_WIKIDATA_ENTITIES.SALES,
+      ],
+      citations: [
+        'https://www.salesforce.com/resources/research-reports/state-of-sales/',
+        'https://www.gartner.com/en/information-technology/insights/crm-customer-engagement-center',
+      ],
+      author: {
+        name: post.author || 'ROI Labs',
+        sameAs: ['https://www.linkedin.com/company/roi-labs', 'https://twitter.com/roilabs'],
+        worksFor: { name: 'ROI Labs', url: 'https://roilabs.com.br' },
+      },
+    }
+  } else if (slug === 'erros-crm-comuns') {
+    geoConfig = {
+      mentions: [
+        COMMON_WIKIDATA_ENTITIES.CRM,
+        COMMON_WIKIDATA_ENTITIES.CUSTOMER_RELATIONSHIP_MANAGEMENT,
+        COMMON_WIKIDATA_ENTITIES.SOFTWARE_AS_A_SERVICE,
+        COMMON_WIKIDATA_ENTITIES.SALES,
+        COMMON_WIKIDATA_ENTITIES.BRAZIL,
+        COMMON_WIKIDATA_ENTITIES.AUTOMATION,
+      ],
+      about: [
+        COMMON_WIKIDATA_ENTITIES.CRM,
+        COMMON_WIKIDATA_ENTITIES.CUSTOMER_RELATIONSHIP_MANAGEMENT,
+      ],
+      citations: [
+        'https://www.gartner.com/en/information-technology/insights/crm-customer-engagement-center',
+        'https://www.salesforce.com/resources/research-reports/state-of-sales/',
+      ],
+      author: {
+        name: post.author || 'ROI Labs',
+        sameAs: ['https://www.linkedin.com/company/roi-labs', 'https://twitter.com/roilabs'],
+        worksFor: { name: 'ROI Labs', url: 'https://roilabs.com.br' },
+      },
+    }
   }
 
   const articleSchema = generateArticleSchema(post, {
@@ -239,6 +366,11 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
     'crm-ia-inteligencia-artificial-2026': crmIaFAQs,
     'crm-automacao-vendas-guia-completo': automacaoVendasFAQs,
     'melhor-crm-2026-comparativo': melhorCrm2026FAQs,
+    'prospeccao-de-clientes-b2b': prospeccaoB2bFAQs,
+    'tecnicas-de-fechamento-de-vendas': fechamentoVendasFAQs,
+    'como-superar-objecoes-em-vendas': objecoesVendasFAQs,
+    'kpis-de-vendas': kpisVendasFAQs,
+    'erros-crm-comuns': errosCrmFAQs,
   }
   const faqSchema = faqDataMap[slug] ? generateFAQSchema(faqDataMap[slug], url) : null
 
