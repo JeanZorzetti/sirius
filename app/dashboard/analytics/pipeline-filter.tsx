@@ -11,16 +11,18 @@ interface Pipeline {
 
 interface Props {
   pipelines: Pipeline[]
+  defaultId?: string
 }
 
-export function PipelineFilter({ pipelines }: Props) {
+export function PipelineFilter({ pipelines, defaultId }: Props) {
   const router = useRouter()
   const pathname = usePathname()
   const searchParams = useSearchParams()
 
   // Multi-select: comma-separated IDs in ?pid=
+  // When nothing in URL, visually highlight the default pipeline
   const raw = searchParams.get('pid') ?? ''
-  const selected = raw ? raw.split(',').filter(Boolean) : []
+  const selected = raw ? raw.split(',').filter(Boolean) : (defaultId ? [defaultId] : [])
 
   function toggle(id: string) {
     const params = new URLSearchParams(searchParams.toString())

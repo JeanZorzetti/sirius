@@ -44,7 +44,9 @@ export default async function AnalyticsPage({
   })
 
   // Pipeline filter — multi-select (comma-separated IDs)
-  const selectedPids = pid ? pid.split(',').filter(Boolean) : []
+  // Default: Pipeline Principal (isDefault: true) when nothing is selected
+  const defaultPipeline = pipelines.find(p => p.isDefault) ?? pipelines[0]
+  const selectedPids = pid ? pid.split(',').filter(Boolean) : (defaultPipeline ? [defaultPipeline.id] : [])
   const pipelineFilter = selectedPids.length > 0 ? { pipelineId: { in: selectedPids } } : {}
 
   // Exact value search
@@ -231,7 +233,7 @@ export default async function AnalyticsPage({
       {/* Filters + Search row */}
       <div className="flex flex-wrap gap-x-6 gap-y-3 items-end">
         <Suspense>
-          <PipelineFilter pipelines={pipelines} />
+          <PipelineFilter pipelines={pipelines} defaultId={defaultPipeline?.id} />
         </Suspense>
         <Suspense>
           <ValueSearch />
