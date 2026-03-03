@@ -43,8 +43,9 @@ export default async function AnalyticsPage({
     orderBy: [{ isDefault: 'desc' }, { name: 'asc' }],
   })
 
-  // Pipeline filter
-  const pipelineFilter = pid && pid !== 'all' ? { pipelineId: pid } : {}
+  // Pipeline filter — multi-select (comma-separated IDs)
+  const selectedPids = pid ? pid.split(',').filter(Boolean) : []
+  const pipelineFilter = selectedPids.length > 0 ? { pipelineId: { in: selectedPids } } : {}
 
   // Exact value search
   const valueSearchFilter = vsearch ? { value: { equals: Number(vsearch) } as any } : {}
@@ -92,7 +93,7 @@ export default async function AnalyticsPage({
   const stages = await prisma.pipelineStage.findMany({
     where: {
       organizationId: user.organizationId,
-      ...(pid && pid !== 'all' ? { pipelineId: pid } : {}),
+      ...(selectedPids.length > 0 ? { pipelineId: { in: selectedPids } } : {}),
     },
     orderBy: { order: 'asc' }
   });
@@ -211,7 +212,7 @@ export default async function AnalyticsPage({
     .sort((a, b) => b[clientSortKey] - a[clientSortKey])
     .slice(0, clientLimit);
 
-  const activePipelineName = pipelines.find(p => p.id === pid)?.name
+  const activePipelineNames = pipelines.filter(p => selectedPids.includes(p.id)).map(p => p.name)
 
   return (
     <div className="flex-1 space-y-4">
@@ -240,9 +241,9 @@ export default async function AnalyticsPage({
         </Suspense>
       </div>
 
-      {(isFiltered || activePipelineName) && (
+      {(isFiltered || activePipelineNames.length > 0) && (
         <p className="text-xs text-zinc-500">
-          {activePipelineName && <><strong>{activePipelineName}</strong>{' — '}</>}
+          {activePipelineNames.length > 0 && <><strong>{activePipelineNames.join(', ')}</strong>{' — '}</>}
           {isFiltered && <>
             Filtrando por data do fechamento
             {from ? ` a partir de ${new Date(from).toLocaleDateString('pt-BR')}` : ''}
