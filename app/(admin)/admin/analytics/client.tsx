@@ -146,12 +146,12 @@ export function AdminAnalyticsClient() {
         <PlatformKPICard
           title="Total de Organizações"
           value={kpis ? kpis.totalOrganizations : '-'}
-          subtitle="FREE + PRO"
+          subtitle="Todas as organizações"
           icon={Building2}
           loading={loading}
         />
         <PlatformKPICard
-          title="Organizações PRO"
+          title="Organizações Pagas"
           value={kpis ? kpis.proOrganizations : '-'}
           subtitle={
             kpis

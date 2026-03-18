@@ -189,7 +189,7 @@ export async function getPlatformStats() {
 
     const [totalOrgs, proOrgs, totalUsers, totalDeals] = await Promise.all([
       prisma.organization.count(),
-      prisma.organization.count({ where: { plan: 'PRO' } }),
+      prisma.organization.count({ where: { tier: { in: ['STARTER', 'PRO', 'BUSINESS'] } } }),
       prisma.user.count(),
       prisma.deal.count(),
     ])

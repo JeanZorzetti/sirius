@@ -2,20 +2,25 @@ import { prisma } from '@/lib/prisma'
 import { Decimal } from '@prisma/client/runtime/library'
 
 /**
- * Constantes de negócio
+ * Constantes de negócio — preço mensal por tier
  */
-const PRO_PLAN_PRICE = 97 // R$ 97/mês
+const TIER_PRICES: Record<string, number> = {
+  STARTER: 49,
+  PRO: 97,
+  BUSINESS: 149,
+}
 
 /**
  * Calcula o MRR (Monthly Recurring Revenue) atual
- * MRR = número de organizações PRO * preço mensal
+ * MRR = soma do preço mensal de cada organização paga
  */
 export async function calculateMRR(): Promise<number> {
-  const proOrganizationsCount = await prisma.organization.count({
-    where: { plan: 'PRO' },
+  const paidOrgs = await prisma.organization.findMany({
+    where: { tier: { in: ['STARTER', 'PRO', 'BUSINESS'] } },
+    select: { tier: true },
   })
 
-  return proOrganizationsCount * PRO_PLAN_PRICE
+  return paidOrgs.reduce((sum, org) => sum + (TIER_PRICES[org.tier] || 0), 0)
 }
 
 /**
@@ -80,19 +85,19 @@ export async function calculateChurnRate(
  * @returns LTV médio em reais
  */
 export async function calculateLTV(monthlyChurnRate: number = 0.05): Promise<number> {
-  const proOrganizationsCount = await prisma.organization.count({
-    where: { plan: 'PRO' },
+  const paidOrgs = await prisma.organization.findMany({
+    where: { tier: { in: ['STARTER', 'PRO', 'BUSINESS'] } },
+    select: { tier: true },
   })
 
-  if (proOrganizationsCount === 0 || monthlyChurnRate === 0) {
+  if (paidOrgs.length === 0 || monthlyChurnRate === 0) {
     return 0
   }
 
-  // MRR médio por cliente PRO
-  const avgRevenuePerCustomer = PRO_PLAN_PRICE
+  const totalRevenue = paidOrgs.reduce((sum, org) => sum + (TIER_PRICES[org.tier] || 0), 0)
+  const avgRevenuePerCustomer = totalRevenue / paidOrgs.length
 
   // LTV = Receita média por cliente / Churn rate mensal
-  // Exemplo: R$ 97 / 0.05 = R$ 1,940
   const ltv = avgRevenuePerCustomer / monthlyChurnRate
 
   return Math.round(ltv * 100) / 100
@@ -435,7 +440,7 @@ export async function calculatePlatformKPIs(
     calculateMRR(),
     calculateARR(),
     prisma.organization.count(),
-    prisma.organization.count({ where: { plan: 'PRO' } }),
+    prisma.organization.count({ where: { tier: { in: ['STARTER', 'PRO', 'BUSINESS'] } } }),
     calculateChurnRate(startOfMonth, endOfMonth),
     calculateCAC(month, year),
   ])
