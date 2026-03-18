@@ -52,12 +52,12 @@ export function SettingsClient({ user }: SettingsClientProps) {
                 {user.organization.name}
               </Badge>
             )}
-            {user.organization?.plan === 'PRO' && (
+            {user.organization?.tier === 'PRO' && (
               <Badge className="bg-gradient-to-r from-indigo-500 to-purple-600 text-white border-0">
                 PRO
               </Badge>
             )}
-            {user.organization?.plan === 'BUSINESS' && (
+            {user.organization?.tier === 'BUSINESS' && (
               <Badge className="bg-gradient-to-r from-amber-500 to-orange-600 text-white border-0">
                 BUSINESS
               </Badge>

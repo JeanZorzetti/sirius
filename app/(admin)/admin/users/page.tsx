@@ -64,7 +64,7 @@ export default async function AdminUsersPage() {
                                 </TableCell>
                                 <TableCell>
                                     <Badge variant="secondary" className="bg-zinc-800 text-zinc-300 hover:bg-zinc-700">
-                                        {user.organization?.plan}
+                                        {user.organization?.tier}
                                     </Badge>
                                 </TableCell>
                                 <TableCell className="text-zinc-500">
