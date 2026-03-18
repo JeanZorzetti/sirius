@@ -65,6 +65,7 @@ type Contact = {
 type KanbanBoardProps = {
   stages: Stage[]
   contacts: Contact[]
+  pipelineId?: string
   onOptimisticUpdate?: (dealId: string, updates: any) => void
   onOptimisticDelete?: (dealId: string) => void
   onRollback?: (tempId: string) => void
@@ -302,6 +303,7 @@ function KanbanColumn({
 export function KanbanBoard({
   stages: initialStages,
   contacts,
+  pipelineId,
   onOptimisticUpdate,
   onOptimisticDelete,
   onRollback,
@@ -364,7 +366,7 @@ export function KanbanBoard({
     e.preventDefault()
     if (!newStageName) return
 
-    const result = await createStage(newStageName)
+    const result = await createStage(newStageName, pipelineId)
     if (result.success) {
       setIsNewStageOpen(false)
       setNewStageName("")

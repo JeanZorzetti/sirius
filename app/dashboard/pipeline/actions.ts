@@ -35,27 +35,44 @@ export async function updateStageOrder(stages: { id: string, order: number }[]) 
     return { success: true }
 }
 
-export async function createStage(name: string) {
+export async function createStage(name: string, pipelineId?: string) {
     const user = await checkPermission()
     if (!name) return { success: false, error: "Nome obrigatório" }
 
-    // Get default pipeline
-    const defaultPipeline = await prisma.pipeline.findFirst({
+    // Use provided pipelineId or fallback to default pipeline
+    let targetPipelineId = pipelineId
+
+    if (!targetPipelineId) {
+        const defaultPipeline = await prisma.pipeline.findFirst({
+            where: {
+                organizationId: user.organizationId,
+                isDefault: true
+            }
+        })
+
+        if (!defaultPipeline) {
+            return { success: false, error: "Pipeline não encontrado" }
+        }
+        targetPipelineId = defaultPipeline.id
+    }
+
+    // Verify the pipeline belongs to the user's organization
+    const pipeline = await prisma.pipeline.findFirst({
         where: {
+            id: targetPipelineId,
             organizationId: user.organizationId,
-            isDefault: true
         }
     })
 
-    if (!defaultPipeline) {
-        return { success: false, error: "Pipeline padrão não encontrado" }
+    if (!pipeline) {
+        return { success: false, error: "Pipeline não encontrado" }
     }
 
     // Find max order for this pipeline
     const maxOrder = await prisma.pipelineStage.findFirst({
         where: {
             organizationId: user.organizationId,
-            pipelineId: defaultPipeline.id
+            pipelineId: targetPipelineId
         },
         orderBy: { order: 'desc' }
     })
@@ -67,7 +84,7 @@ export async function createStage(name: string) {
             name,
             order: newOrder,
             organizationId: user.organizationId,
-            pipelineId: defaultPipeline.id
+            pipelineId: targetPipelineId
         }
     })
 

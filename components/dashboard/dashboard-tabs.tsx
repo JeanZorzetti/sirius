@@ -117,6 +117,7 @@ export function DashboardTabs({
         <KanbanBoard
           stages={filteredStages as any}
           contacts={contacts}
+          pipelineId={selectedPipelineId}
         />
       </TabsContent>
 
