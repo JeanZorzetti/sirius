@@ -220,6 +220,8 @@ async function handleConnectionUpdate(connection: any, data: any) {
         data?.number ||
         connection.phoneNumber // manter o existente se não vier novo
 
+    const wasDisconnected = connection.status !== 'CONNECTED'
+
     await prisma.whatsAppConnection.update({
         where: { id: connection.id },
         data: {
@@ -230,6 +232,15 @@ async function handleConnectionUpdate(connection: any, data: any) {
     })
 
     logger.info({ connectionId: connection.id, status, phoneNumber }, '✅ Connection updated in DB')
+
+    // Notificar clientes via Pusher sobre mudança de conexão
+    // O cliente auto-sync quando recebe connection:ready
+    if (status === 'CONNECTED' && wasDisconnected) {
+        triggerEvent(connection.organizationId, 'connection:ready', {
+            connectionId: connection.id,
+            instanceName: connection.instanceName,
+        })
+    }
 }
 
 /**

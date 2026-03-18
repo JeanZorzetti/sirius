@@ -192,6 +192,26 @@ export function ChatInterface({
       setMessageRefreshTrigger(prev => prev + 1)
     })
 
+    // Auto-sync: quando uma conexão WhatsApp fica pronta, importar histórico
+    channel.bind('connection:ready', async (data: any) => {
+      console.log('[CHAT] Connection ready, auto-syncing history...', data)
+      fetchConnections()
+      try {
+        const res = await fetch(`/api/whatsapp/connections/${data.connectionId}/sync`, {
+          method: 'POST',
+        })
+        if (res.ok) {
+          const result = await res.json()
+          if (result.syncedMessages > 0 || result.syncedContacts > 0) {
+            toast.success(`Histórico importado: ${result.syncedContacts} contatos, ${result.syncedMessages} mensagens`)
+          }
+          fetchConversations()
+        }
+      } catch (err) {
+        console.error('[CHAT] Auto-sync failed:', err)
+      }
+    })
+
     // Poll connections less frequently (30s instead of 10s)
     const connectionInterval = setInterval(fetchConnections, 30000)
 

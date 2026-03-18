@@ -116,6 +116,14 @@ export function ChatDrawer({ userId, userName, organizationId }: ChatDrawerProps
 
     channel.bind('message:sent', () => fetchData())
 
+    // Auto-sync on connection ready
+    channel.bind('connection:ready', async (data: any) => {
+      try {
+        await fetch(`/api/whatsapp/connections/${data.connectionId}/sync`, { method: 'POST' })
+        fetchData()
+      } catch {}
+    })
+
     return () => {
       channel.unbind_all()
       client.unsubscribe(`private-org-${organizationId}`)

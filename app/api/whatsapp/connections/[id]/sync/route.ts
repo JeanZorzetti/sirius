@@ -141,12 +141,24 @@ export async function POST(
     // 6. Extrair remoteJid de cada chat
     // Evolution API v2 retorna chats com id=null
     // O remoteJid real está em lastMessage.key.remoteJid
+    // LID resolution: WhatsApp agora usa @lid para privacidade, número real está em senderPn
     const parsedChats = (chats || []).map((chat: any) => {
-      const remoteJid =
+      let remoteJid =
         chat.id ||                                     // v1 format
         chat.remoteJid ||                              // alternate field
         chat.lastMessage?.key?.remoteJid ||            // v2 format - dentro do lastMessage
         ''
+
+      // LID resolution: se o JID é @lid, buscar o número real em senderPn
+      if (remoteJid.includes('@lid')) {
+        const senderPn = chat.lastMessage?.key?.senderPn || chat.senderPn || ''
+        if (senderPn) {
+          const cleanPhone = senderPn.replace(/\D/g, '')
+          remoteJid = `${cleanPhone}@s.whatsapp.net`
+          logger.debug({ originalJid: chat.id || chat.remoteJid, resolvedJid: remoteJid }, 'Resolved LID to real phone in sync')
+        }
+      }
+
       const isGroup = remoteJid.includes('@g.us')
 
       // Prioridade para nome:
@@ -179,11 +191,12 @@ export async function POST(
     })
 
     // Filter: incluir conversas individuais (@s.whatsapp.net) E grupos (@g.us)
-    // Excluir: LID (contatos internos do WhatsApp), status, newsletter, sem JID
+    // Excluir: LID não resolvido, status, newsletter, broadcast, sem JID
+    // LIDs já foram resolvidos acima para @s.whatsapp.net quando senderPn disponível
     const validChats = parsedChats.filter((chat: any) => {
       const jid = chat._remoteJid
       if (!jid) return false
-      if (jid.includes('@lid')) return false
+      if (jid.includes('@lid')) return false  // LID não resolvido (sem senderPn)
       if (jid.includes('@broadcast')) return false
       if (jid.includes('status@')) return false
       if (jid.includes('@newsletter')) return false
@@ -214,8 +227,8 @@ export async function POST(
       return true
     })
 
-    // Processar até 50 conversas mais recentes
-    const chatsToSync = uniqueChats.slice(0, 50)
+    // Processar até 100 conversas mais recentes
+    const chatsToSync = uniqueChats.slice(0, 100)
 
     for (const chat of chatsToSync) {
       try {
@@ -301,10 +314,10 @@ export async function POST(
           }
         }
 
-        // Fetch messages for this chat (até 30 mensagens por conversa)
+        // Fetch messages for this chat (até 100 mensagens por conversa)
         let chatMessages: any[] = []
         try {
-          const rawMessages = await evolutionClient.getMessages(connection.instanceName, remoteJid, 30)
+          const rawMessages = await evolutionClient.getMessages(connection.instanceName, remoteJid, 100)
           chatMessages = Array.isArray(rawMessages) ? rawMessages : []
         } catch (err: any) {
           logger.debug({ remoteJid, error: err.message }, 'Failed to fetch messages for chat')
