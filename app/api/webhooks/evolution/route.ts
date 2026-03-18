@@ -276,15 +276,26 @@ async function handleIncomingMessage(connection: any, data: any) {
             try {
                 const isFromMe = !!message?.key?.fromMe
 
-                // Validar remoteJid
-                const remoteJid = message?.key?.remoteJid
-                if (!remoteJid) {
-                    logger.debug({ remoteJid }, 'Skipping message without remoteJid')
+                // Validar remoteJid — LID resolve via senderPn
+                let remoteJid = message?.key?.remoteJid
+                const senderPn = message?.key?.senderPn // WhatsApp LID privacy: real number here
+
+                if (!remoteJid && !senderPn) {
+                    logger.debug({ remoteJid }, 'Skipping message without remoteJid or senderPn')
                     continue
                 }
 
-                // Ignorar status, newsletter, LID direto
-                if (remoteJid.includes('status@') || remoteJid.includes('@broadcast') || remoteJid.includes('@newsletter')) {
+                // Se remoteJid é LID, usar senderPn como remoteJid real
+                if (remoteJid?.includes('@lid') && senderPn) {
+                    logger.info({ lid: remoteJid, senderPn }, '🔄 Resolving LID to senderPn')
+                    remoteJid = senderPn
+                } else if (remoteJid?.includes('@lid') && !senderPn) {
+                    logger.debug({ remoteJid }, 'Skipping LID message without senderPn')
+                    continue
+                }
+
+                // Ignorar status, newsletter, broadcast
+                if (remoteJid!.includes('status@') || remoteJid!.includes('@broadcast') || remoteJid!.includes('@newsletter')) {
                     logger.debug({ remoteJid }, 'Skipping status/broadcast/newsletter message')
                     continue
                 }
