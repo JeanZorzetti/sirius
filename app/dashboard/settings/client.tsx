@@ -17,7 +17,7 @@ interface SettingsClientProps {
     email: string
     organization: {
       name: string
-      plan: string
+      tier: string
     } | null
   }
 }
