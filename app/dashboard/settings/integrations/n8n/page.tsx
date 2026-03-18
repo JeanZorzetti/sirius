@@ -21,7 +21,7 @@ export default async function N8NIntegrationPage() {
             organization: {
                 select: {
                     id: true,
-                    plan: true,
+                    tier: true,
                     n8nEnabled: true,
                     n8nBaseUrl: true,
                     n8nWebhookUrl: true

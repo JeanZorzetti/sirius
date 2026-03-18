@@ -20,7 +20,7 @@ export default async function IntegrationsPage() {
             organization: {
                 select: {
                     id: true,
-                    plan: true,
+                    tier: true,
                     n8nEnabled: true,
                     n8nBaseUrl: true,
                     evolutionEnabled: true,

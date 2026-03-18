@@ -2,16 +2,16 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { prisma } from '@/lib/prisma'
 import { getSession } from '@/lib/auth'
 import Link from 'next/link'
-import { ArrowLeft, MessageCircle } from 'lucide-react'
+import { ArrowLeft, MessageSquare } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { WhatsAppSettingsForm } from '@/components/integrations/whatsapp-settings-form'
+import { WhatsAppOfficialSettingsForm } from '@/components/integrations/whatsapp-official-settings-form'
 import { redirect } from 'next/navigation'
 
-export const metadata = { title: "WhatsApp | Sirius CRM" }
+export const metadata = { title: "WhatsApp Oficial | Sirius CRM" }
 
-export default async function WhatsAppIntegrationPage() {
+export default async function WhatsAppOfficialPage() {
     const session = await getSession()
-    if (!session || !session.user || !session.user.email) {
+    if (!session?.user?.email) {
         return <div>Não autorizado. Faça login novamente.</div>
     }
 
@@ -22,23 +22,26 @@ export default async function WhatsAppIntegrationPage() {
                 select: {
                     id: true,
                     tier: true,
-                    evolutionEnabled: true,
-                    evolutionBaseUrl: true,
-                    evolutionInstance: true
-                    // Note: We don't select evolutionApiKey for security (it's encrypted)
+                    wabaEnabled: true,
+                    wabaPhoneNumberId: true,
+                    wabaAccessToken: true,
+                    wabaBusinessAccountId: true,
+                    wabaWebhookVerifyToken: true
+                    // wabaAccessToken is intentionally selected only to check existence, never returned to client
                 }
             }
         }
     })
 
-    if (!user || !user.organization) {
+    if (!user?.organization) {
         return <div>Usuário não encontrado.</div>
     }
 
-    // Require PRO or BUSINESS plan
     if (!['PRO', 'BUSINESS'].includes(user.organization.tier)) {
         redirect('/dashboard/settings/integrations')
     }
+
+    const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://seu-crm.com'
 
     return (
         <div className="flex-1 space-y-4 p-8 pt-6">
@@ -55,14 +58,14 @@ export default async function WhatsAppIntegrationPage() {
                 <div className="flex flex-col gap-1">
                     <div className="flex items-center gap-3">
                         <div className="h-10 w-10 rounded-lg bg-green-500/10 flex items-center justify-center text-green-500 ring-1 ring-white/5 shadow-[0_0_10px_rgba(34,197,94,0.2)]">
-                            <MessageCircle className="h-5 w-5" />
+                            <MessageSquare className="h-5 w-5" />
                         </div>
                         <h2 className="text-2xl font-bold tracking-tight text-zinc-900 dark:text-white">
-                            INTEGRAÇÃO WHATSAPP
+                            WHATSAPP OFICIAL
                         </h2>
                     </div>
                     <p className="text-sm text-zinc-500 ml-13">
-                        Configure a integração com Evolution API para mensagens WhatsApp
+                        API Oficial do WhatsApp Business (Meta Cloud API)
                     </p>
                 </div>
             </div>
@@ -74,21 +77,44 @@ export default async function WhatsAppIntegrationPage() {
                             Configuração
                         </CardTitle>
                         <CardDescription className="text-zinc-500 text-xs">
-                            Configure as credenciais da sua instância Evolution API
+                            Configure as credenciais da sua conta WhatsApp Business no Meta
                         </CardDescription>
                     </CardHeader>
                     <CardContent>
-                        <WhatsAppSettingsForm
+                        <WhatsAppOfficialSettingsForm
                             organizationId={user.organization.id}
                             initialData={{
-                                enabled: user.organization.evolutionEnabled,
-                                baseUrl: user.organization.evolutionBaseUrl || '',
-                                instanceName: user.organization.evolutionInstance || ''
+                                enabled: user.organization.wabaEnabled,
+                                phoneNumberId: user.organization.wabaPhoneNumberId || '',
+                                businessAccountId: user.organization.wabaBusinessAccountId || '',
+                                webhookVerifyToken: user.organization.wabaWebhookVerifyToken || '',
+                                hasAccessToken: !!user.organization.wabaAccessToken
                             }}
                         />
                     </CardContent>
                 </Card>
 
+                {/* Webhook URL card */}
+                <Card className="bg-zinc-50 dark:bg-white/[0.02] border-zinc-200 dark:border-white/5">
+                    <CardHeader>
+                        <CardTitle className="text-sm font-medium text-zinc-700 dark:text-zinc-300">
+                            URL do Webhook
+                        </CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                        <p className="text-xs text-zinc-500 mb-2">
+                            Configure esta URL no Meta Business Manager → WhatsApp → Configuração → Webhooks:
+                        </p>
+                        <code className="block bg-zinc-100 dark:bg-zinc-800 px-3 py-2 rounded text-xs text-zinc-800 dark:text-zinc-200 break-all">
+                            {appUrl}/api/webhooks/whatsapp-official
+                        </code>
+                        <p className="text-xs text-zinc-400 mt-2">
+                            Campos subscritos recomendados: <strong>messages</strong>
+                        </p>
+                    </CardContent>
+                </Card>
+
+                {/* Setup guide */}
                 <Card className="bg-green-50 dark:bg-green-500/5 border-green-200 dark:border-green-500/20">
                     <CardHeader>
                         <CardTitle className="text-sm font-medium text-green-700 dark:text-green-300">
@@ -97,48 +123,39 @@ export default async function WhatsAppIntegrationPage() {
                     </CardHeader>
                     <CardContent className="text-xs text-green-600 dark:text-green-400 space-y-3">
                         <div>
-                            <p className="font-medium mb-1">1. Evolution API</p>
+                            <p className="font-medium mb-1">1. Pré-requisitos</p>
                             <p className="text-green-600/80 dark:text-green-400/80">
-                                Você precisa ter uma instância Evolution API rodando.
-                                Repositório: https://github.com/EvolutionAPI/evolution-api
+                                Conta Meta Business Manager, WhatsApp Business Account verificada e número aprovado.
                             </p>
                         </div>
                         <div>
-                            <p className="font-medium mb-1">2. URL Base</p>
+                            <p className="font-medium mb-1">2. Phone Number ID</p>
                             <p className="text-green-600/80 dark:text-green-400/80">
-                                URL da sua instância Evolution API (ex: https://evolution.seudominio.com)
+                                No Meta Business Manager → WhatsApp → Configuração → selecione o número e copie o "Phone number ID".
                             </p>
                         </div>
                         <div>
-                            <p className="font-medium mb-1">3. API Key</p>
+                            <p className="font-medium mb-1">3. Access Token</p>
                             <p className="text-green-600/80 dark:text-green-400/80">
-                                A API Key global da sua instância Evolution API (configurada no .env)
+                                Gere um token de sistema permanente em: Meta Business Manager → Configurações → Usuários do sistema → Adicionar usuário de sistema → Gerar token.
+                                Selecione o app e permissão <code className="bg-green-100 dark:bg-green-900/30 px-1 rounded">whatsapp_business_messaging</code>.
                             </p>
                         </div>
                         <div>
-                            <p className="font-medium mb-1">4. Nome da Instância</p>
+                            <p className="font-medium mb-1">4. Webhook</p>
                             <p className="text-green-600/80 dark:text-green-400/80">
-                                O nome da instância WhatsApp que você criou na Evolution API
+                                No Meta Business Manager → WhatsApp → Configuração → Webhook, adicione a URL acima e o token de verificação configurado.
+                                Subscreva o campo <strong>messages</strong>.
                             </p>
                         </div>
                         <div className="pt-2 border-t border-green-200 dark:border-green-500/20">
                             <p className="font-medium mb-1">Recursos disponíveis:</p>
                             <ul className="list-disc list-inside text-green-600/80 dark:text-green-400/80 space-y-1">
-                                <li>Enviar mensagens manuais a partir de deals</li>
-                                <li>Enviar mensagens automáticas (mudança de stage, etc.)</li>
-                                <li>Receber mensagens e criar deals automaticamente</li>
-                                <li>Rastrear status de entrega (enviado, entregue, lido)</li>
+                                <li>Envio de mensagens de texto</li>
+                                <li>Envio de templates aprovados pela Meta</li>
+                                <li>Recebimento de mensagens via webhook</li>
+                                <li>Status de entrega (enviado, entregue, lido)</li>
                             </ul>
-                        </div>
-                        <div className="pt-2 border-t border-green-200 dark:border-green-500/20">
-                            <p className="font-medium mb-1">⚠️ Configurar Webhook:</p>
-                            <p className="text-green-600/80 dark:text-green-400/80">
-                                Após salvar, configure o webhook da Evolution API para:
-                                <br />
-                                <code className="bg-green-100 dark:bg-green-900/20 px-2 py-1 rounded text-[11px] mt-1 inline-block">
-                                    {process.env.NEXT_PUBLIC_APP_URL || 'https://seu-crm.com'}/api/webhooks/evolution
-                                </code>
-                            </p>
                         </div>
                     </CardContent>
                 </Card>
