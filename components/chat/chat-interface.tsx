@@ -77,6 +77,11 @@ export function ChatInterface({
   const activeConnections = connections.filter(c => c.status === 'CONNECTED')
   const totalUnread = contacts.reduce((sum, contact) => sum + (contact._count.unreadMessages || 0), 0)
 
+  // Ref para selectedContact — evita que fetchConversations mude de referência
+  // a cada seleção, o que causaria reconexão do Pusher
+  const selectedContactRef = useRef(selectedContact)
+  selectedContactRef.current = selectedContact
+
   const fetchConversations = useCallback(async (showLoading = false) => {
     if (showLoading) setIsRefreshing(true)
     try {
@@ -84,8 +89,9 @@ export function ChatInterface({
       if (res.ok) {
         const data = await res.json()
         setContacts(data)
-        if (selectedContact) {
-          const updated = data.find((c: Contact) => c.id === selectedContact.id)
+        const current = selectedContactRef.current
+        if (current) {
+          const updated = data.find((c: Contact) => c.id === current.id)
           if (updated) setSelectedContact(updated)
         }
       }
@@ -94,7 +100,7 @@ export function ChatInterface({
     } finally {
       setIsRefreshing(false)
     }
-  }, [selectedContact])
+  }, [])
 
   const fetchConnections = useCallback(async () => {
     try {
@@ -216,11 +222,11 @@ export function ChatInterface({
     const connectionInterval = setInterval(fetchConnections, 30000)
 
     return () => {
+      clearInterval(connectionInterval)
       channel.unbind_all()
       client.unsubscribe(`private-org-${organizationId}`)
       client.disconnect()
       pusherRef.current = null
-      clearInterval(connectionInterval)
     }
   }, [organizationId, fetchConversations, fetchConnections])
 
