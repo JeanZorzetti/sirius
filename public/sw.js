@@ -50,8 +50,9 @@ self.addEventListener('fetch', (event) => {
   // Skip non-GET requests
   if (request.method !== 'GET') return;
 
-  // Skip chrome extensions and dev server
+  // Skip chrome extensions, dev server, and third-party origins
   if (url.protocol === 'chrome-extension:' || url.hostname === 'localhost') return;
+  if (url.origin !== self.location.origin) return;
 
   // API requests - Network first
   if (url.pathname.startsWith('/api/')) {
