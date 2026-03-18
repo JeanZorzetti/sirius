@@ -35,7 +35,7 @@ export async function GET(req: NextRequest) {
             );
         }
 
-        const plan = user.organization.plan as 'FREE' | 'PRO';
+        const plan = user.organization.tier as 'FREE' | 'PRO';
         const limits = await getUsageLimits(user.organizationId, user.id, plan);
 
         return NextResponse.json(limits);

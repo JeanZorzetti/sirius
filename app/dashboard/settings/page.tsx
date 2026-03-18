@@ -29,7 +29,7 @@ export default async function SettingsPage() {
                         email: user.email,
                         organization: user.organization ? {
                             name: user.organization.name,
-                            plan: user.organization.plan,
+                            plan: user.organization.tier,
                         } : null,
                     }}
                 />

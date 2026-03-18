@@ -129,7 +129,7 @@ export async function createDeal(formData: FormData) {
 
     // LIMIT CHECK (FREEMIUM)
     // If Plan is FREE (or null), limit to 10 deals.
-    const isPro = ['PRO', 'BUSINESS'].includes(user.organization.plan)
+    const isPro = ['PRO', 'BUSINESS'].includes(user.organization.tier)
 
     if (!isPro) {
       const dealCount = await prisma.deal.count({
@@ -207,7 +207,7 @@ export async function createDeal(formData: FormData) {
       )
 
       // Check if should send upgrade nudge (at 8/10 deals for FREE tier)
-      if (shouldSendUpgradeNudge(newDealCount, 10, user.organization.plan || 'FREE')) {
+      if (shouldSendUpgradeNudge(newDealCount, 10, user.organization.tier || 'FREE')) {
         sendEmailAsync(
           sendUpgradeNudgeEmail({
             to: user.email,

@@ -100,7 +100,7 @@ export async function POST(req: NextRequest) {
       });
     }
 
-    const plan = user.organization.plan as 'FREE' | 'PRO';
+    const plan = user.organization.tier as 'FREE' | 'PRO';
 
     // 3. Check usage limits
     const usageCheck = await canUseAGI(

@@ -194,7 +194,7 @@ export async function getEmailHistory(limit: number = 50) {
       success: true,
       logs,
       analytics,
-      isPro: ['PRO', 'BUSINESS'].includes(user.organization.plan)
+      isPro: ['PRO', 'BUSINESS'].includes(user.organization.tier)
     }
   } catch (error) {
     logger.error({ err: error }, 'Failed to get email history')

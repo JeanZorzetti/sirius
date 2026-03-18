@@ -173,11 +173,12 @@ async function upgradePlan(
 ) {
   logger.info({ organizationId, tier }, 'Upgrading plan')
 
-  // Atualizar organização
+  // Atualizar organização (sync tier + plan para compatibilidade)
   await prisma.organization.update({
     where: { id: organizationId },
     data: {
       tier,
+      plan: tier,
       updatedAt: new Date(),
     },
   })
@@ -249,6 +250,7 @@ async function upgradeToFounder(organizationId: string, founderPlan: string, pay
     where: { id: organizationId },
     data: {
       tier: config.tier,
+      plan: config.tier,
       isFounder: true,
       founderNumber,
       founderSince: new Date(),
@@ -418,10 +420,10 @@ async function processSubscriptionEvent(preapprovalId: string, action: string) {
     }
 
     if (action === 'subscription_preapproval.cancelled' || action === 'cancelled') {
-      // Downgrade para FREE ao cancelar
+      // Downgrade para FREE ao cancelar (sync tier + plan)
       await prisma.organization.update({
         where: { id: org.id },
-        data: { tier: SubscriptionTier.FREE },
+        data: { tier: SubscriptionTier.FREE, plan: 'FREE' },
       })
 
       // Registrar downgrade como churn
@@ -486,11 +488,12 @@ async function processRecurringPayment(paymentId: string) {
 
     const subscriptionTier = (tier || 'PRO') as SubscriptionTier
 
-    // Renovação aprovada: resetar contador de falhas
+    // Renovação aprovada: resetar contador de falhas (sync tier + plan)
     const org = await prisma.organization.update({
       where: { id: organizationId },
       data: {
         tier: subscriptionTier,
+        plan: subscriptionTier,
         failedPaymentAttempts: 0,
       },
       select: { id: true, name: true },
@@ -592,11 +595,12 @@ async function handleFailedRecurringPayment(organizationId: string, payment: any
   const billingUrl = `${process.env.NEXT_PUBLIC_APP_URL}/dashboard/settings/billing`
 
   if (isFinal) {
-    // Downgrade para FREE após atingir o limite
+    // Downgrade para FREE após atingir o limite (sync tier + plan)
     await prisma.organization.update({
       where: { id: org.id },
       data: {
         tier: SubscriptionTier.FREE,
+        plan: 'FREE',
         failedPaymentAttempts: 0,
       },
     })

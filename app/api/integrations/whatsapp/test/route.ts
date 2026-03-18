@@ -22,7 +22,7 @@ export async function POST(request: Request) {
         }
 
         // Verificar plano PRO ou BUSINESS
-        if (!['PRO', 'BUSINESS'].includes(user.organization.plan)) {
+        if (!['PRO', 'BUSINESS'].includes(user.organization.tier)) {
             return NextResponse.json(
                 { error: 'Integração WhatsApp disponível apenas no plano PRO' },
                 { status: 403 }

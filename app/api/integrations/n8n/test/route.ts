@@ -22,7 +22,7 @@ export async function POST(request: Request) {
         }
 
         // Check PRO or BUSINESS plan requirement
-        if (!['PRO', 'BUSINESS'].includes(user.organization.plan)) {
+        if (!['PRO', 'BUSINESS'].includes(user.organization.tier)) {
             return NextResponse.json(
                 { error: 'Integração N8N disponível apenas no plano PRO' },
                 { status: 403 }

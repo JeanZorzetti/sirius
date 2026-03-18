@@ -23,7 +23,7 @@ export async function GET(request: NextRequest) {
       where: { email: session.user.email },
       select: {
         organizationId: true,
-        organization: { select: { plan: true } }
+        organization: { select: { tier: true } }
       }
     })
 
@@ -34,8 +34,8 @@ export async function GET(request: NextRequest) {
       )
     }
 
-    // Check PRO or BUSINESS plan (API keys are PRO+ feature)
-    if (!['PRO', 'BUSINESS'].includes(user.organization.plan)) {
+    // Check PRO or BUSINESS tier (API keys are PRO+ feature)
+    if (!['PRO', 'BUSINESS'].includes(user.organization.tier)) {
       return NextResponse.json(
         {
           error: 'API Keys são uma funcionalidade PRO. Faça upgrade em /dashboard/settings/billing'
@@ -76,7 +76,7 @@ export async function POST(request: NextRequest) {
       where: { email: session.user.email },
       select: {
         organizationId: true,
-        organization: { select: { plan: true } }
+        organization: { select: { tier: true } }
       }
     })
 
@@ -87,8 +87,8 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Check PRO or BUSINESS plan (API keys are PRO+ feature)
-    if (!['PRO', 'BUSINESS'].includes(user.organization.plan)) {
+    // Check PRO or BUSINESS tier (API keys are PRO+ feature)
+    if (!['PRO', 'BUSINESS'].includes(user.organization.tier)) {
       return NextResponse.json(
         {
           error: 'API Keys são uma funcionalidade PRO. Faça upgrade em /dashboard/settings/billing'

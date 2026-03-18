@@ -25,7 +25,7 @@ export async function GET(request: NextRequest) {
       where: { email: session.user.email },
       select: {
         organizationId: true,
-        organization: { select: { plan: true } }
+        organization: { select: { tier: true } }
       }
     })
 
@@ -36,8 +36,8 @@ export async function GET(request: NextRequest) {
       )
     }
 
-    // Check PRO or BUSINESS plan
-    if (!['PRO', 'BUSINESS'].includes(user.organization.plan)) {
+    // Check PRO or BUSINESS tier
+    if (!['PRO', 'BUSINESS'].includes(user.organization.tier)) {
       return NextResponse.json(
         {
           error: 'Webhooks são uma funcionalidade PRO. Faça upgrade em /dashboard/settings/billing'
@@ -92,7 +92,7 @@ export async function POST(request: NextRequest) {
       where: { email: session.user.email },
       select: {
         organizationId: true,
-        organization: { select: { plan: true, name: true } }
+        organization: { select: { tier: true, name: true } }
       }
     })
 
@@ -103,8 +103,8 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Check PRO plan
-    if (user.organization.plan !== 'PRO') {
+    // Check PRO or BUSINESS tier
+    if (!['PRO', 'BUSINESS'].includes(user.organization.tier)) {
       return NextResponse.json(
         {
           error: 'Webhooks são uma funcionalidade PRO. Faça upgrade em /dashboard/settings/billing'

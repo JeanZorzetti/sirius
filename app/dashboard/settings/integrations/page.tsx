@@ -2,7 +2,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { prisma } from '@/lib/prisma'
 import { getSession } from '@/lib/auth'
 import Link from 'next/link'
-import { Workflow, MessageCircle, Calendar, ArrowLeft, CheckCircle2, XCircle, Activity, TrendingUp, AlertCircle, BarChart3, Share2 } from 'lucide-react'
+import { Workflow, MessageCircle, MessageSquare, Calendar, ArrowLeft, CheckCircle2, XCircle, Activity, TrendingUp, AlertCircle, BarChart3, Share2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 
@@ -25,6 +25,8 @@ export default async function IntegrationsPage() {
                     n8nBaseUrl: true,
                     evolutionEnabled: true,
                     evolutionBaseUrl: true,
+                    wabaEnabled: true,
+                    wabaPhoneNumberId: true,
                     googleCalendarEnabled: true,
                     googleCalendarEmail: true,
                     googleAdsCustomerId: true,
@@ -39,7 +41,7 @@ export default async function IntegrationsPage() {
         return <div>Usuário não encontrado.</div>
     }
 
-    const isPro = ['PRO', 'BUSINESS'].includes(user.organization.plan)
+    const isPro = ['PRO', 'BUSINESS'].includes(user.organization.tier)
 
     // Get metrics from IntegrationLog
     const last24Hours = new Date(Date.now() - 24 * 60 * 60 * 1000)
@@ -51,6 +53,7 @@ export default async function IntegrationsPage() {
         recentLogs,
         n8nLogs,
         whatsappLogs,
+        wabaLogs,
         calendarLogs
     ] = await Promise.all([
         prisma.integrationLog.count({
@@ -96,6 +99,13 @@ export default async function IntegrationsPage() {
         prisma.integrationLog.count({
             where: {
                 organizationId: user.organization.id,
+                type: 'WHATSAPP_OFFICIAL',
+                createdAt: { gte: last7Days }
+            }
+        }),
+        prisma.integrationLog.count({
+            where: {
+                organizationId: user.organization.id,
                 type: 'GOOGLE_CALENDAR',
                 createdAt: { gte: last7Days }
             }
@@ -133,6 +143,21 @@ export default async function IntegrationsPage() {
             href: '/dashboard/settings/integrations/whatsapp',
             requiresPro: true,
             eventsLast7Days: whatsappLogs,
+            status: 'stable' as const,
+        },
+        {
+            id: 'whatsapp-official',
+            name: 'WhatsApp Oficial',
+            description: 'API Oficial do WhatsApp Business (Meta Cloud API)',
+            icon: MessageSquare,
+            iconColor: 'text-emerald-500',
+            iconBg: 'bg-emerald-500/10',
+            iconShadow: 'shadow-[0_0_10px_rgba(16,185,129,0.2)]',
+            enabled: user.organization.wabaEnabled,
+            configured: !!user.organization.wabaPhoneNumberId,
+            href: '/dashboard/settings/integrations/whatsapp-official',
+            requiresPro: true,
+            eventsLast7Days: wabaLogs,
             status: 'stable' as const,
         },
         {
@@ -422,8 +447,12 @@ export default async function IntegrationsPage() {
                                 Configure webhooks e gerencie workflows via API.
                             </p>
                             <p>
-                                <strong>WhatsApp:</strong> Envie mensagens manuais ou automatizadas via Evolution API.
+                                <strong>WhatsApp (Evolution):</strong> Envie mensagens manuais ou automatizadas via Evolution API.
                                 Receba mensagens e crie deals automaticamente.
+                            </p>
+                            <p>
+                                <strong>WhatsApp Oficial:</strong> API Oficial do WhatsApp Business (Meta Cloud API).
+                                Envie mensagens e templates aprovados pela Meta com número verificado.
                             </p>
                             <p>
                                 <strong>Google Calendar:</strong> Sincronize eventos do calendário com deals.

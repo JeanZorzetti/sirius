@@ -36,7 +36,7 @@ export default async function WhatsAppIntegrationPage() {
     }
 
     // Require PRO or BUSINESS plan
-    if (!['PRO', 'BUSINESS'].includes(user.organization.plan)) {
+    if (!['PRO', 'BUSINESS'].includes(user.organization.tier)) {
         redirect('/dashboard/settings/integrations')
     }
 

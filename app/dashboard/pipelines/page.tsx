@@ -38,7 +38,7 @@ export default async function PipelinesPage() {
     ]
   })
 
-  const isPro = ['PRO', 'BUSINESS'].includes(user.organization.plan)
+  const isPro = ['PRO', 'BUSINESS'].includes(user.organization.tier)
 
   return (
     <div className="p-8">

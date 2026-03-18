@@ -82,6 +82,7 @@ export async function POST(req: NextRequest) {
         where: { id: org.id },
         data: {
           tier: SubscriptionTier.FREE,
+          plan: 'FREE',
         },
       })
 
