@@ -9,6 +9,7 @@ import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { getOrgEvolutionClient } from '@/lib/evolution-api-client'
 import logger from '@/lib/logger'
+import { triggerEvent } from '@/lib/pusher'
 
 export async function POST(req: NextRequest) {
   try {
@@ -160,6 +161,12 @@ export async function POST(req: NextRequest) {
         replyToId: true,
         replyToText: true,
       },
+    })
+
+    // Real-time: notify via Pusher
+    triggerEvent(user.organizationId, 'message:sent', {
+      contactId: contact.id,
+      message: savedMessage,
     })
 
     return NextResponse.json(savedMessage)

@@ -1,6 +1,7 @@
 'use client'
 
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
+import PusherClient from 'pusher-js'
 import { ConnectionManager } from './connection-manager'
 import { ConversationList } from './conversation-list'
 import { MessageArea } from './message-area'
@@ -149,57 +150,59 @@ export function ChatInterface({
     }
   }
 
-  // SSE connection for real-time updates
+  // Pusher real-time connection
+  const pusherRef = useRef<PusherClient | null>(null)
+
   useEffect(() => {
-    let eventSource: EventSource | null = null
-    let reconnectTimeout: NodeJS.Timeout | null = null
-
-    const connect = () => {
-      setConnectionStatus('connecting')
-      eventSource = new EventSource('/api/whatsapp/stream')
-
-      eventSource.onopen = () => {
-        setConnectionStatus('connected')
-      }
-
-      eventSource.onmessage = (event) => {
-        try {
-          const data = JSON.parse(event.data)
-
-          switch (data.type) {
-            case 'conversation.updated':
-            case 'message.new':
-              fetchConversations()
-              setMessageRefreshTrigger(prev => prev + 1)
-              break
-            case 'message.status':
-              setMessageRefreshTrigger(prev => prev + 1)
-              break
-          }
-        } catch (error) {
-          console.error('[CHAT_INTERFACE] [ERRO] SSE parse error:', error)
-        }
-      }
-
-      eventSource.onerror = (error) => {
-        console.error('[CHAT_INTERFACE] [ERRO] SSE error:', error)
-        setConnectionStatus('disconnected')
-        eventSource?.close()
-        reconnectTimeout = setTimeout(() => {
-          connect()
-        }, 5000)
-      }
+    const key = process.env.NEXT_PUBLIC_PUSHER_KEY
+    const cluster = process.env.NEXT_PUBLIC_PUSHER_CLUSTER
+    if (!key || !cluster) {
+      // Fallback: polling if Pusher not configured
+      const interval = setInterval(() => {
+        fetchConversations()
+        setMessageRefreshTrigger(prev => prev + 1)
+      }, 5000)
+      return () => clearInterval(interval)
     }
 
-    connect()
-    const connectionInterval = setInterval(fetchConnections, 10000)
+    setConnectionStatus('connecting')
+    const client = new PusherClient(key, {
+      cluster,
+      authEndpoint: '/api/pusher/auth',
+    })
+    pusherRef.current = client
+
+    client.connection.bind('connected', () => setConnectionStatus('connected'))
+    client.connection.bind('disconnected', () => setConnectionStatus('disconnected'))
+    client.connection.bind('connecting', () => setConnectionStatus('connecting'))
+
+    const channel = client.subscribe(`private-org-${organizationId}`)
+
+    channel.bind('message:new', (data: any) => {
+      fetchConversations()
+      setMessageRefreshTrigger(prev => prev + 1)
+    })
+
+    channel.bind('message:sent', (data: any) => {
+      fetchConversations()
+      setMessageRefreshTrigger(prev => prev + 1)
+    })
+
+    channel.bind('message:status', () => {
+      setMessageRefreshTrigger(prev => prev + 1)
+    })
+
+    // Poll connections less frequently (30s instead of 10s)
+    const connectionInterval = setInterval(fetchConnections, 30000)
 
     return () => {
-      if (eventSource) eventSource.close()
-      if (reconnectTimeout) clearTimeout(reconnectTimeout)
+      channel.unbind_all()
+      client.unsubscribe(`private-org-${organizationId}`)
+      client.disconnect()
+      pusherRef.current = null
       clearInterval(connectionInterval)
     }
-  }, [fetchConversations, fetchConnections])
+  }, [organizationId, fetchConversations, fetchConnections])
 
   // Update document title with unread count
   useEffect(() => {

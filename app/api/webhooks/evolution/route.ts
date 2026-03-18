@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import logger from '@/lib/logger'
-import { chatEvents } from '@/lib/chat-events'
+import { triggerEvent } from '@/lib/pusher'
 import { webhookRateLimit } from '@/lib/ratelimit'
 
 /**
@@ -424,8 +424,21 @@ async function handleIncomingMessage(connection: any, data: any) {
                     direction: isFromMe ? 'OUTBOUND' : 'INBOUND',
                 }, '✅ WhatsApp message saved successfully')
 
-                // Emit event for SSE (Fase 3.2)
-                chatEvents.emitNewMessage(organizationId, contact.id, savedMsg)
+                // Real-time: notify via Pusher
+                triggerEvent(organizationId, 'message:new', {
+                  contactId: contact.id,
+                  message: {
+                    id: savedMsg.id,
+                    text: savedMsg.text,
+                    direction: savedMsg.direction,
+                    status: savedMsg.status,
+                    sentAt: savedMsg.sentAt.toISOString(),
+                    mediaUrl: savedMsg.mediaUrl,
+                    mediaType: savedMsg.mediaType,
+                  },
+                  contactName: contact.name,
+                  contactPhone: contact.phone,
+                })
 
             } catch (msgError: any) {
                 logger.error({
@@ -529,8 +542,11 @@ async function handleMessageStatusUpdate(connection: any, data: any) {
                         deliveredAt: new Date(),
                     },
                 })
-                // Emit event for SSE (Fase 3.2)
-                chatEvents.emitMessageStatus(organizationId, messageId, 'DELIVERED')
+                // Real-time: notify via Pusher
+                triggerEvent(organizationId, 'message:status', {
+                  messageId,
+                  status: 'DELIVERED',
+                })
             } else if (status === 'READ' || status === 4) {
                 await prisma.whatsAppMessage.updateMany({
                     where: {
@@ -544,8 +560,11 @@ async function handleMessageStatusUpdate(connection: any, data: any) {
                         deliveredAt: new Date(),
                     },
                 })
-                // Emit event for SSE (Fase 3.2)
-                chatEvents.emitMessageStatus(organizationId, messageId, 'READ')
+                // Real-time: notify via Pusher
+                triggerEvent(organizationId, 'message:status', {
+                  messageId,
+                  status: 'READ',
+                })
             }
         }
     } catch (error: any) {

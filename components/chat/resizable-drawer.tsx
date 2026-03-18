@@ -1,6 +1,7 @@
 'use client'
 
-import { useState, useEffect, useCallback, useTransition } from 'react'
+import { useState, useEffect, useCallback, useTransition, useRef } from 'react'
+import PusherClient from 'pusher-js'
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
@@ -91,42 +92,45 @@ export function ResizableDrawer({ userId, userName, organizationId }: ResizableD
     }
   }, [isOpen, fetchData])
 
-  // Real-time updates via SSE
+  // Real-time updates via Pusher
+  const pusherRef = useRef<PusherClient | null>(null)
+
   useEffect(() => {
     if (!isOpen) return
 
-    const eventSource = new EventSource('/api/whatsapp/stream')
-
-    eventSource.onopen = () => {
-      setSseStatus('connected')
+    const key = process.env.NEXT_PUBLIC_PUSHER_KEY
+    const cluster = process.env.NEXT_PUBLIC_PUSHER_CLUSTER
+    if (!key || !cluster) {
+      const interval = setInterval(fetchData, 5000)
+      return () => clearInterval(interval)
     }
 
-    eventSource.onmessage = (event) => {
-      try {
-        const data = JSON.parse(event.data)
+    const client = new PusherClient(key, { cluster, authEndpoint: '/api/pusher/auth' })
+    pusherRef.current = client
 
-        if (data.type === 'conversation.updated' || data.type === 'message.new') {
-          fetchData()
-          if (data.type === 'message.new' && data.message?.direction === 'INBOUND') {
-            toast.info(`Nova mensagem de ${data.contact?.name || 'desconhecido'}`, {
-              description: data.message?.text?.substring(0, 50) + '...',
-            })
-          }
-        }
-      } catch (error) {
-        console.error('[ResizableDrawer] Error parsing SSE message:', error)
+    client.connection.bind('connected', () => setSseStatus('connected'))
+    client.connection.bind('disconnected', () => setSseStatus('error'))
+
+    const channel = client.subscribe(`private-org-${organizationId}`)
+
+    channel.bind('message:new', (data: any) => {
+      fetchData()
+      if (data.message?.direction === 'INBOUND') {
+        toast.info(`Nova mensagem de ${data.contactName || 'desconhecido'}`, {
+          description: data.message?.text?.substring(0, 50) + '...',
+        })
       }
-    }
+    })
 
-    eventSource.onerror = (error) => {
-      console.error('[ResizableDrawer] SSE error:', error)
-      setSseStatus('error')
-    }
+    channel.bind('message:sent', () => fetchData())
 
     return () => {
-      eventSource.close()
+      channel.unbind_all()
+      client.unsubscribe(`private-org-${organizationId}`)
+      client.disconnect()
+      pusherRef.current = null
     }
-  }, [isOpen, fetchData])
+  }, [isOpen, fetchData, organizationId])
 
   // Resize handlers
   const handleMouseDown = useCallback((e: React.MouseEvent) => {
