@@ -5,7 +5,6 @@ interface DashboardTabsWrapperProps {
   userId: string
   userName: string
   organizationId: string
-  isMember: boolean
   vsearch?: string
   csearch?: string
 }
@@ -14,7 +13,6 @@ export async function DashboardTabsWrapper({
   userId,
   userName,
   organizationId,
-  isMember,
   vsearch,
   csearch,
 }: DashboardTabsWrapperProps) {
@@ -41,7 +39,6 @@ export async function DashboardTabsWrapper({
         deals: {
           where: {
             organizationId,
-            ...(isMember ? { userId } : {}),
             ...(vsearch ? { value: { equals: Number(vsearch) } as any } : {}),
             ...(csearch ? { contact: { name: { contains: csearch, mode: "insensitive" } } } : {}),
           },

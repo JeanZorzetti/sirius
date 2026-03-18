@@ -60,7 +60,6 @@ export default async function DashboardPage({
       return <div>Usuário não pertence a uma organização.</div>
     }
 
-    const isMember = user.orgRole === "MEMBER"
     const shouldShowOnboarding =
       !user.onboarding || user.onboarding.status === "IN_PROGRESS"
 
@@ -88,7 +87,6 @@ export default async function DashboardPage({
               userId={user.id}
               userName={user.name || ""}
               organizationId={user.organizationId}
-              isMember={isMember}
               vsearch={vsearch}
               csearch={csearch}
             />
