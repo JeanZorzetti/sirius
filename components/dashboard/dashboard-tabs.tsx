@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback, useMemo } from 'react'
 import dynamic from 'next/dynamic'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { ChatInterface } from '@/components/chat/chat-interface'
 import { CreateDealDialog } from '@/components/deals/create-deal-dialog'
@@ -41,15 +41,26 @@ export function DashboardTabs({
   organizationId
 }: DashboardTabsProps) {
   const router = useRouter()
+  const searchParams = useSearchParams()
   const [activeTab, setActiveTab] = useState('pipeline')
   const [chatData, setChatData] = useState<any>(null)
   const [loadingChat, setLoadingChat] = useState(false)
 
-  // Pipeline selector state
+  // Pipeline selector state — persist via URL ?pipeline=ID
   const [selectedPipelineId, setSelectedPipelineId] = useState<string>(() => {
+    const fromUrl = searchParams.get('pipeline')
+    if (fromUrl && pipelines.some((p: any) => p.id === fromUrl)) return fromUrl
     const defaultPipeline = pipelines.find((p: any) => p.isDefault)
     return defaultPipeline ? defaultPipeline.id : (pipelines[0]?.id || '')
   })
+
+  // Sync selected pipeline to URL
+  const handlePipelineChange = useCallback((id: string) => {
+    setSelectedPipelineId(id)
+    const params = new URLSearchParams(searchParams.toString())
+    params.set('pipeline', id)
+    router.replace(`?${params.toString()}`, { scroll: false })
+  }, [searchParams, router])
 
   // Filter stages by selected pipeline
   const filteredStages = useMemo(() => {
@@ -102,7 +113,7 @@ export function DashboardTabs({
           <div className="flex items-center gap-2">
             <PipelineSelector
               pipelines={pipelines}
-              onPipelineChange={setSelectedPipelineId}
+              onPipelineChange={handlePipelineChange}
             />
             <CreateDealDialog
               stages={filteredStages}
