@@ -45,6 +45,19 @@ export const whatsappRateLimit = new Ratelimit({
 })
 
 /**
+ * WhatsApp Official API (Meta Cloud API) Rate Limiter
+ *
+ * Limit: 80 requests per hour per organization
+ * Meta allows higher throughput but we keep conservative to avoid quality flags
+ */
+export const whatsappOfficialRateLimit = new Ratelimit({
+  redis,
+  limiter: Ratelimit.slidingWindow(80, '1 h'),
+  prefix: 'ratelimit:waba',
+  analytics: true
+})
+
+/**
  * Google Calendar Rate Limiter
  *
  * Limit: 200 requests per hour per organization

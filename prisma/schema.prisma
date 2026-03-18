@@ -79,6 +79,13 @@ model Organization {
   evolutionApiKey   String? // Encrypted
   evolutionInstance String?
 
+  // WhatsApp Official API (Meta Cloud API)
+  wabaEnabled             Boolean @default(false)
+  wabaPhoneNumberId       String?
+  wabaAccessToken         String? @db.Text // Encrypted with AES-256-GCM
+  wabaBusinessAccountId   String?
+  wabaWebhookVerifyToken  String?
+
   googleCalendarEnabled      Boolean @default(false)
   googleCalendarRefreshToken String? @db.Text // Encrypted
   googleCalendarEmail        String?
@@ -644,6 +651,7 @@ model WebhookLog {
 enum IntegrationType {
   N8N
   WHATSAPP
+  WHATSAPP_OFFICIAL
   GOOGLE_CALENDAR
 }
 

@@ -71,9 +71,19 @@ const nextConfig: NextConfig = {
     ]
   },
 
-  /* Security Headers */
+  /* Security & Performance Headers */
   async headers() {
     return [
+      // Cache immutable static assets (JS, CSS, fonts) for 1 year
+      {
+        source: '/_next/static/(.*)',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
+          },
+        ],
+      },
       {
         source: '/(.*)',
         headers: [

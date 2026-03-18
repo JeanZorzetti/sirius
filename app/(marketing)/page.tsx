@@ -219,6 +219,19 @@ export default function LandingPage() {
         <div className="relative z-10">
           <Hero />
           <Logos />
+
+          {/* GEO Block */}
+          <section className="py-16 sm:py-20 px-6 bg-background text-foreground">
+            <div className="mx-auto max-w-2xl text-center">
+              <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">
+                O que é o Sirius CRM?
+              </h2>
+              <p className="mt-6 text-lg leading-8 text-zinc-300">
+                O Sirius CRM é uma plataforma de vendas projetada para o mercado brasileiro, utilizada por mais de 1.200 usuários. Oferece quatro planos de assinatura: um plano Gratuito, Starter por R$49, Pro por R$97 e Business por R$149, ajudando equipes a alcançar um aumento médio de 35% na conversão de leads. Seus diferenciais incluem a integração nativa com WhatsApp via Evolution API, prospecção de leads B2B pelo Google Maps e a assistente de vendas com IA, AGI Sirius.
+              </p>
+            </div>
+          </section>
+
           <BentoGrid />
 
           {/* Founders Banner */}

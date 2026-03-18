@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import Script from "next/script";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -100,7 +99,7 @@ import { PWARegister } from "@/components/pwa-register"
 import { PushNotificationManager } from "@/components/push-notification-manager"
 import { OfflineStatus } from "@/components/offline-status"
 import { GoogleTagManager, GoogleTagManagerNoScript } from "@/components/google-tag-manager"
-import { MicrosoftClarity } from "@/components/microsoft-clarity"
+// MicrosoftClarity movido para GTM
 import { analyticsConfig } from "@/lib/analytics-config"
 import { SpeedInsights } from "@vercel/speed-insights/next"
 import { Analytics } from "@vercel/analytics/next"
@@ -190,6 +189,9 @@ export default function RootLayout({
     <html lang="pt-BR" suppressHydrationWarning>
       <head>
         {/* Preconnect to critical third-party origins */}
+        <link rel="preconnect" href="https://www.googletagmanager.com" />
+        <link rel="preconnect" href="https://www.google-analytics.com" />
+        <link rel="preconnect" href="https://js.sentry-cdn.com" />
         <link rel="preconnect" href="https://us.i.posthog.com" />
         <link rel="preconnect" href="https://us-assets.i.posthog.com" crossOrigin="anonymous" />
         {/* Schema.org JSON-LD */}
@@ -211,23 +213,10 @@ export default function RootLayout({
           <GoogleTagManager gtmId={analyticsConfig.gtm.id} />
         )}
 
-        {/* Google Analytics - Can be managed via GTM or keep standalone */}
-        <Script
-          src="https://www.googletagmanager.com/gtag/js?id=G-WJE82VNKX8"
-          strategy="lazyOnload"
-        />
-        <Script id="google-analytics" strategy="lazyOnload">
-          {`
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-
-            gtag('config', 'G-WJE82VNKX8');
-          `}
-        </Script>
-
-        {/* Microsoft Clarity - With error handling */}
-        <MicrosoftClarity />
+        {/* 
+          Google Analytics e Microsoft Clarity foram movidos para o Google Tag Manager.
+          A configuração centralizada via GTM simplifica a gestão de tags e melhora o desempenho.
+        */}
 
         <PostHogProvider>
           <Suspense fallback={null}>

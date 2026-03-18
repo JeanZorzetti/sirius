@@ -22,17 +22,29 @@ export default function robots(): MetadataRoute.Robots {
       // ========================================
 
       // OpenAI SearchGPT - Indexação para respostas com link direto
-      // Justificativa: Gera tráfego qualificado e citações diretas em SearchGPT
       {
         userAgent: 'OAI-SearchBot',
         allow: '/',
         disallow: ['/dashboard/', '/api/', '/admin/'],
       },
 
+      // ChatGPT User Navigation - quando usuário pede ao ChatGPT para visitar uma URL
+      {
+        userAgent: 'ChatGPT-User',
+        allow: '/',
+        disallow: ['/dashboard/', '/api/', '/admin/'],
+      },
+
       // Perplexity - Motor de resposta com alta taxa de citação
-      // Justificativa: Fonte crítica de tráfego B2B técnico
       {
         userAgent: 'PerplexityBot',
+        allow: '/',
+        disallow: ['/dashboard/', '/api/', '/admin/'],
+      },
+
+      // Claude Web Navigation - quando usuário pede ao Claude para acessar URLs
+      {
+        userAgent: 'Claude-Web',
         allow: '/',
         disallow: ['/dashboard/', '/api/', '/admin/'],
       },
@@ -41,20 +53,20 @@ export default function robots(): MetadataRoute.Robots {
       // CATEGORIA: Hybrid Bots (ALLOW PARCIAL)
       // ========================================
 
-      // ChatGPT/GPT-4 - Treinamento de modelo + Navegação
-      // Justificativa: Permitido apenas em /blog/ para construir autoridade
-      // do modelo sobre a marca, mas bloqueado em áreas privadas
+      // ChatGPT/GPT-4 - Treinamento de modelo
+      // Permitido em áreas públicas para construir autoridade da marca
+      // Pricing/Register liberados para AIs responderem "quanto custa o Sirius?"
       {
         userAgent: 'GPTBot',
-        allow: ['/blog/', '/help/', '/ferramentas/', '/solucoes/'],
-        disallow: ['/dashboard/', '/api/', '/admin/', '/pricing', '/register'],
+        allow: ['/blog/', '/help/', '/ferramentas/', '/solucoes/', '/pricing', '/features'],
+        disallow: ['/dashboard/', '/api/', '/admin/'],
       },
 
-      // Anthropic Claude - Similar ao GPTBot
+      // Anthropic Claude - Treinamento de modelo
       {
         userAgent: 'anthropic-ai',
-        allow: ['/blog/', '/help/', '/ferramentas/', '/solucoes/'],
-        disallow: ['/dashboard/', '/api/', '/admin/', '/pricing', '/register'],
+        allow: ['/blog/', '/help/', '/ferramentas/', '/solucoes/', '/pricing', '/features'],
+        disallow: ['/dashboard/', '/api/', '/admin/'],
       },
 
       // Google Gemini/Bard

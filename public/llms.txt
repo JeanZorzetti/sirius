@@ -99,10 +99,11 @@
 - Location: Brazil
 - Support: In-app chat, Email (support@roilabs.com.br), WhatsApp
 
-## Pricing (Updated 2026)
-- **Solopreneur Plan**: Free forever (1 user, 50 active deals)
-- **Growth Plan**: R$49/month (5 users, unlimited deals, automations, priority support)
-- **Enterprise Plan**: Custom pricing (unlimited users, dedicated onboarding, SLA 99.9%)
+## Pricing (Updated February 2026)
+- **Gratuito**: Free forever (basic features)
+- **Starter**: R$49/month (WhatsApp, automações básicas)
+- **Pro**: R$97/month (IA comercial, prospecção Google Maps, analytics avançado)
+- **Business**: R$149/month (multi-usuário, API, prioridade total)
 - URL: /pricing
 
 ## Technical Stack
