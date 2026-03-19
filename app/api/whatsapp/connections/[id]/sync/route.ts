@@ -12,6 +12,9 @@ import { prisma } from '@/lib/prisma'
 import { getOrgEvolutionClient } from '@/lib/evolution-api-client'
 import logger from '@/lib/logger'
 
+// Vercel serverless timeout — sync é pesado, precisa de mais tempo
+export const maxDuration = 120
+
 export async function POST(
   req: NextRequest,
   { params }: { params: Promise<{ id: string }> }
@@ -69,12 +72,15 @@ export async function POST(
       )
     }
 
+    logger.info({ connectionId: connection.id, instanceName: connection.instanceName }, '🔄 Starting chat sync')
+
     // 5. Fetch ALL chats from Evolution API
     let chats: any[] = []
     try {
       chats = await evolutionClient.getChats(connection.instanceName)
+      logger.info({ chatsCount: chats?.length || 0, instanceName: connection.instanceName }, '📋 Fetched chats from Evolution API')
     } catch (err: any) {
-      logger.warn({ error: err.message, instanceName: connection.instanceName }, 'Failed to fetch chats from Evolution API')
+      logger.error({ error: err.message, instanceName: connection.instanceName }, '❌ Failed to fetch chats from Evolution API')
       return NextResponse.json(
         { error: 'Falha ao buscar conversas do WhatsApp', details: err.message },
         { status: 502 }
@@ -319,8 +325,9 @@ export async function POST(
         try {
           const rawMessages = await evolutionClient.getMessages(connection.instanceName, remoteJid, 100)
           chatMessages = Array.isArray(rawMessages) ? rawMessages : []
+          logger.info({ remoteJid, messagesCount: chatMessages.length }, '📨 Fetched messages for chat')
         } catch (err: any) {
-          logger.debug({ remoteJid, error: err.message }, 'Failed to fetch messages for chat')
+          logger.warn({ remoteJid, error: err.message }, '⚠️ Failed to fetch messages for chat')
           // Fallback: usar lastMessage do chat como única mensagem
           if (chat.lastMessage) {
             chatMessages = [chat.lastMessage]
@@ -350,30 +357,40 @@ export async function POST(
           return tsA - tsB
         })
 
+        // Buscar todos messageIds existentes de uma vez (evita N+1 queries)
+        const allMsgIds = sortedMessages
+          .map((m: any) => m.key?.id)
+          .filter(Boolean) as string[]
+
+        const existingMsgs = allMsgIds.length > 0
+          ? await prisma.whatsAppMessage.findMany({
+              where: {
+                organizationId: user.organizationId,
+                messageId: { in: allMsgIds },
+              },
+              select: { messageId: true },
+            })
+          : []
+        const existingIds = new Set(existingMsgs.map(m => m.messageId))
+
         // Save messages
         for (const msg of sortedMessages) {
           const messageId = msg.key?.id
           if (!messageId) continue
 
-          // Skip if already exists
-          const existing = await prisma.whatsAppMessage.findFirst({
-            where: { messageId, organizationId: user.organizationId }
-          })
-          if (existing) {
+          if (existingIds.has(messageId)) {
             skippedExisting++
             continue
           }
 
           let messageText = extractMessageText(msg)
           const mediaInfo = extractMediaInfo(msg)
-          // Aceitar mídia sem caption
           if (!messageText) {
             messageText = '[Mensagem]'
           }
 
           const rawTimestamp = msg.messageTimestamp
           const ts = typeof rawTimestamp === 'string' ? parseInt(rawTimestamp) : rawTimestamp
-          // Se timestamp parece ser em segundos (< 2000000000), converter para ms
           const timestamp = ts > 0
             ? new Date(ts > 9999999999 ? ts : ts * 1000)
             : new Date()
@@ -395,7 +412,6 @@ export async function POST(
             })
             syncedMessages++
           } catch (createErr: any) {
-            // Pode falhar por unique constraint se houve race condition
             logger.debug({ messageId, error: createErr.message }, 'Failed to create message (probably duplicate)')
           }
         }
