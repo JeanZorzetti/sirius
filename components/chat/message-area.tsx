@@ -219,9 +219,9 @@ function MediaBubble({ msg, outbound }: { msg: WhatsAppMessage; outbound: boolea
     }
   }, [msg.messageId, mediaData, loading])
 
-  // Auto-load images and stickers on mount (no manual click needed)
+  // Auto-load images, stickers and audio on mount (no manual click needed)
   useEffect(() => {
-    if ((mType === 'image' || mType === 'sticker') && !mediaData?.startsWith('data:') && msg.messageId && !loading && !error) {
+    if ((mType === 'image' || mType === 'sticker' || mType === 'audio') && !mediaData?.startsWith('data:') && msg.messageId && !loading && !error) {
       fetchMedia()
     }
   }, [mType, msg.messageId]) // eslint-disable-line react-hooks/exhaustive-deps

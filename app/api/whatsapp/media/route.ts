@@ -61,9 +61,14 @@ export async function GET(req: NextRequest) {
       return NextResponse.json({ error: 'Evolution API not configured' }, { status: 400 })
     }
 
+    // Verificar se é áudio pela mensagem salva — converter para mp4 para compatibilidade
+    const isAudio = message.mediaType === 'audio' ||
+      message.text?.startsWith('[Áudio]')
+
     const media = await client.getBase64FromMediaMessage(
       connection.instanceName,
       messageId,
+      isAudio, // convertToMp4 para áudios (ogg/opus não funciona no Safari)
     )
 
     // Build proper data URI for frontend rendering
