@@ -387,13 +387,15 @@ export class EvolutionAPIClient {
   /**
    * Get messages from a chat
    * Evolution API v2: POST /chat/findMessages/{instance}
+   * Response format: { messages: { total, pages, currentPage, records: [...] } }
+   * or plain array in older versions
    */
   async getMessages(
     instanceName: string,
     remoteJid: string,
     limit: number = 50
   ): Promise<Message[]> {
-    return this.request<Message[]>(
+    const raw = await this.request<any>(
       `/chat/findMessages/${instanceName}`,
       {
         method: 'POST',
@@ -407,6 +409,18 @@ export class EvolutionAPIClient {
         }),
       }
     )
+
+    // Evolution API v2 returns paginated: { messages: { records: [...] } }
+    if (raw?.messages?.records && Array.isArray(raw.messages.records)) {
+      return raw.messages.records
+    }
+    // Older format: plain array
+    if (Array.isArray(raw)) {
+      return raw
+    }
+    // Fallback
+    logger.warn({ remoteJid, rawType: typeof raw, keys: raw ? Object.keys(raw) : [] }, 'Unexpected getMessages response format')
+    return []
   }
 
   // ============================================

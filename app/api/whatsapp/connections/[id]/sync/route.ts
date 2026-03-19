@@ -196,17 +196,15 @@ export async function POST(
       return { ...chat, _remoteJid: remoteJid, _pushName: pushName, _isGroup: isGroup }
     })
 
-    // Filter: incluir conversas individuais (@s.whatsapp.net) E grupos (@g.us)
-    // Excluir: LID não resolvido, status, newsletter, broadcast, sem JID
-    // LIDs já foram resolvidos acima para @s.whatsapp.net quando senderPn disponível
+    // Filter: incluir conversas válidas
+    // LIDs não resolvidos são MANTIDOS — serão resolvidos ao buscar mensagens
     const validChats = parsedChats.filter((chat: any) => {
       const jid = chat._remoteJid
       if (!jid) return false
-      if (jid.includes('@lid')) return false  // LID não resolvido (sem senderPn)
       if (jid.includes('@broadcast')) return false
       if (jid.includes('status@')) return false
       if (jid.includes('@newsletter')) return false
-      return jid.includes('@s.whatsapp.net') || jid.includes('@g.us')
+      return jid.includes('@s.whatsapp.net') || jid.includes('@g.us') || jid.includes('@lid')
     })
 
     const individualCount = validChats.filter((c: any) => !c._isGroup).length
@@ -238,26 +236,78 @@ export async function POST(
 
     for (const chat of chatsToSync) {
       try {
-        const remoteJid = chat._remoteJid
+        let remoteJid = chat._remoteJid
         if (!remoteJid) continue
 
-        const isGroup = chat._isGroup
+        const isLid = remoteJid.includes('@lid')
+        let isGroup = chat._isGroup
+
+        // Fetch messages PRIMEIRO — necessário para resolver LID e para salvar
+        let chatMessages: any[] = []
+        try {
+          const rawMessages = await evolutionClient.getMessages(connection.instanceName, remoteJid, 100)
+          chatMessages = Array.isArray(rawMessages) ? rawMessages : []
+          logger.info({ remoteJid, messagesCount: chatMessages.length, isLid }, '📨 Fetched messages for chat')
+        } catch (err: any) {
+          logger.warn({ remoteJid, error: err.message }, '⚠️ Failed to fetch messages for chat')
+          if (chat.lastMessage) {
+            chatMessages = [chat.lastMessage]
+          }
+        }
+
+        // LID resolution: buscar senderPn em qualquer mensagem INBOUND
+        if (isLid) {
+          let resolvedPhone = ''
+          // Tentar lastMessage primeiro
+          const lastSenderPn = chat.lastMessage?.key?.senderPn || ''
+          if (lastSenderPn) {
+            resolvedPhone = lastSenderPn.replace('@s.whatsapp.net', '').replace(/\D/g, '')
+          }
+          // Se não achou, buscar nas mensagens
+          if (!resolvedPhone) {
+            for (const msg of chatMessages) {
+              const spn = msg.key?.senderPn || ''
+              if (spn && spn.includes('@s.whatsapp.net')) {
+                resolvedPhone = spn.replace('@s.whatsapp.net', '').replace(/\D/g, '')
+                break
+              }
+            }
+          }
+          // Se não achou, buscar pushName no contactsMap (matching por nome)
+          if (!resolvedPhone) {
+            const pushName = chat._pushName || chat.lastMessage?.pushName || ''
+            if (pushName) {
+              // Buscar no contactsMap por nome
+              for (const [jid, name] of contactsMap.entries()) {
+                if (name === pushName && jid.includes('@s.whatsapp.net')) {
+                  resolvedPhone = jid.replace('@s.whatsapp.net', '').replace(/\D/g, '')
+                  break
+                }
+              }
+            }
+          }
+
+          if (resolvedPhone) {
+            remoteJid = `${resolvedPhone}@s.whatsapp.net`
+            logger.info({ originalLid: chat._remoteJid, resolvedJid: remoteJid }, '✅ Resolved LID to real phone')
+          } else {
+            logger.warn({ lid: remoteJid, pushName: chat._pushName }, '⚠️ Could not resolve LID — skipping chat')
+            continue
+          }
+        }
 
         // Para grupos: usar o group JID como identificador
-        // Para individuais: usar o phone number
         const phoneNumber = isGroup
-          ? remoteJid // Para grupos, salvar o JID completo como "phone"
+          ? remoteJid
           : normalizePhoneNumber(remoteJid.replace('@s.whatsapp.net', ''))
 
-        // Nome do contato/grupo
         const contactName = isGroup
           ? (chat._pushName || `Grupo ${remoteJid.replace('@g.us', '')}`)
-          : (chat._pushName || phoneNumber)
+          : (chat._pushName || contactsMap.get(remoteJid) || phoneNumber)
 
         // Find or create contact
         let contact: any = null
         if (isGroup) {
-          // Grupos: buscar por phone = remoteJid (JID completo)
           contact = await prisma.contact.findFirst({
             where: { organizationId: user.organizationId, phone: remoteJid }
           })
@@ -274,63 +324,20 @@ export async function POST(
             }
           })
           syncedContacts++
-          logger.info({ contactName, phone: phoneNumber, isGroup }, 'Created contact from sync')
         } else {
-          // Atualizar nome se:
-          // 1. Veio um nome real do groupsMap (para grupos) ou contactsMap (para individuais)
-          // 2. O contato ainda não tem nome, ou tem telefone/JID como nome
-          // 3. Para GRUPOS: sempre atualizar se o nome veio do groupsMap
-          //    (pois o webhook pode ter gravado o nome do remetente erroneamente)
-          // 4. Para GRUPOS: também atualizar se o nome atual é genérico "Grupo X"
           const hasRealGroupName = isGroup && groupsMap.has(remoteJid)
           const groupHasGenericName = isGroup && contact.name && contact.name.startsWith('Grupo ')
           const shouldUpdateName = contactName && contactName !== phoneNumber && (
             !contact.name ||
             contact.name === contact.phone ||
-            groupHasGenericName || // grupo com nome genérico - atualizar para nome real
-            hasRealGroupName // grupo com nome do groupsMap - sempre atualizar
+            groupHasGenericName ||
+            hasRealGroupName
           )
           if (shouldUpdateName) {
             await prisma.contact.update({
               where: { id: contact.id },
               data: { name: contactName },
             })
-            logger.info({ contactId: contact.id, oldName: contact.name, newName: contactName, isGroup, source: hasRealGroupName ? 'groupsMap' : 'chat' }, 'Updated contact name from sync')
-          }
-        }
-
-        // Buscar foto de perfil do grupo (apenas para grupos sem foto)
-        if (isGroup && !contact.profilePicUrl) {
-          try {
-            const profilePic = await evolutionClient.fetchProfilePictureUrl(
-              connection.instanceName,
-              remoteJid
-            )
-            if (profilePic?.profilePictureUrl) {
-              await prisma.contact.update({
-                where: { id: contact.id },
-                data: { profilePicUrl: profilePic.profilePictureUrl },
-              })
-              contact.profilePicUrl = profilePic.profilePictureUrl
-              logger.info({ contactId: contact.id, profilePicUrl: profilePic.profilePictureUrl }, 'Updated group profile picture')
-            }
-          } catch (err: any) {
-            // Grupo pode não ter foto de perfil - ignorar erro
-            logger.debug({ contactId: contact.id, error: err.message }, 'Failed to fetch group profile picture')
-          }
-        }
-
-        // Fetch messages for this chat (até 100 mensagens por conversa)
-        let chatMessages: any[] = []
-        try {
-          const rawMessages = await evolutionClient.getMessages(connection.instanceName, remoteJid, 100)
-          chatMessages = Array.isArray(rawMessages) ? rawMessages : []
-          logger.info({ remoteJid, messagesCount: chatMessages.length }, '📨 Fetched messages for chat')
-        } catch (err: any) {
-          logger.warn({ remoteJid, error: err.message }, '⚠️ Failed to fetch messages for chat')
-          // Fallback: usar lastMessage do chat como única mensagem
-          if (chat.lastMessage) {
-            chatMessages = [chat.lastMessage]
           }
         }
 
