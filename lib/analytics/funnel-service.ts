@@ -102,9 +102,7 @@ export async function getFunnelMetrics(
             lte: end,
           },
           organization: {
-            slug: {
-              notIn: TEST_ORGANIZATION_SLUGS,
-            },
+            isTestAccount: false,
           },
         },
       }),
@@ -118,9 +116,7 @@ export async function getFunnelMetrics(
             lte: end,
           },
           organization: {
-            slug: {
-              notIn: TEST_ORGANIZATION_SLUGS,
-            },
+            isTestAccount: false,
           },
         },
       }),
@@ -129,9 +125,7 @@ export async function getFunnelMetrics(
       // Busca organizações e filtra por quantidade de contatos
       prisma.organization.findMany({
         where: {
-          slug: {
-            notIn: TEST_ORGANIZATION_SLUGS,
-          },
+          isTestAccount: false,
           users: {
             some: {
               createdAt: {
@@ -151,14 +145,12 @@ export async function getFunnelMetrics(
       }),
 
       // Customers (quem pagou)
-      // Count de organizações com plan !== 'FREE' criadas no período
+      // Count de organizações criadas no período que possuem tier PRO/STARTER/BUSINESS e não são de teste
       prisma.organization.count({
         where: {
-          slug: {
-            notIn: TEST_ORGANIZATION_SLUGS,
-          },
-          plan: {
-            not: 'FREE',
+          isTestAccount: false,
+          tier: {
+            in: ['STARTER', 'PRO', 'BUSINESS'],
           },
           users: {
             some: {
