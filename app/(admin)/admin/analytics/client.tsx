@@ -21,6 +21,8 @@ import {
   getRevenueSnapshots,
   getLatestForecast,
   getPlatformStats,
+  getPaidOrganizations,
+  toggleTestAccount,
 } from './actions'
 
 export function AdminAnalyticsClient() {
@@ -29,6 +31,8 @@ export function AdminAnalyticsClient() {
   const [snapshots, setSnapshots] = useState<any[]>([])
   const [forecast, setForecast] = useState<any>(null)
   const [stats, setStats] = useState<any>(null)
+  const [paidOrganizations, setPaidOrganizations] = useState<any[]>([])
+  const [togglingOrgId, setTogglingOrgId] = useState<string | null>(null)
 
   useEffect(() => {
     async function fetchData() {
@@ -39,12 +43,13 @@ export function AdminAnalyticsClient() {
       const currentYear = now.getFullYear()
 
       try {
-        const [kpisResult, snapshotsResult, forecastResult, statsResult] =
+        const [kpisResult, snapshotsResult, forecastResult, statsResult, orgsResult] =
           await Promise.all([
             getPlatformKPIs(currentMonth, currentYear),
             getRevenueSnapshots(6), // Últimos 6 meses
             getLatestForecast(),
             getPlatformStats(),
+            getPaidOrganizations(),
           ])
 
         if (kpisResult.success) {
@@ -59,6 +64,9 @@ export function AdminAnalyticsClient() {
         if (statsResult.success) {
           setStats(statsResult.data)
         }
+        if (orgsResult.success) {
+          setPaidOrganizations(orgsResult.data || [])
+        }
       } catch (error) {
         console.error('Error fetching admin analytics data:', error)
       } finally {
@@ -68,6 +76,24 @@ export function AdminAnalyticsClient() {
 
     fetchData()
   }, [])
+
+  async function handleToggleTestAccount(orgId: string, isTest: boolean) {
+    setTogglingOrgId(orgId)
+    try {
+      const res = await toggleTestAccount(orgId, isTest)
+      if (res.success) {
+        setPaidOrganizations((prev) =>
+          prev.map((org) => (org.id === orgId ? { ...org, isTestAccount: isTest } : org))
+        )
+        // Recarregar os dados para atualizar KPIs no topo da tela
+        window.location.reload()
+      }
+    } catch (error) {
+      console.error('Error toggling test account:', error)
+    } finally {
+      setTogglingOrgId(null)
+    }
+  }
 
   return (
     <div className="space-y-6">
@@ -264,6 +290,70 @@ export function AdminAnalyticsClient() {
           </div>
         </div>
       )}
+
+      {/* Tabela de Organizações Pagas */}
+      <div className="rounded-lg border">
+        <div className="p-4 flex items-center justify-between">
+          <div>
+            <h3 className="text-lg font-semibold">Organizações Pagas</h3>
+            <p className="text-sm text-muted-foreground">
+              Gerencie as contas premium e sinalize contas de teste (ignorar receita)
+            </p>
+          </div>
+        </div>
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead className="border-t bg-muted/50">
+              <tr>
+                <th className="p-3 text-left font-medium">Nome (Slug)</th>
+                <th className="p-3 text-left font-medium">Plano</th>
+                <th className="p-3 text-left font-medium">Desde</th>
+                <th className="p-3 text-center font-medium">Conta Teste (Sem Receita)</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y">
+              {paidOrganizations.length === 0 ? (
+                <tr>
+                  <td colSpan={4} className="p-3 text-center text-muted-foreground">
+                    Nenhuma organização premium encontrada.
+                  </td>
+                </tr>
+              ) : (
+                paidOrganizations.map((org) => (
+                  <tr key={org.id} className="hover:bg-muted/50">
+                    <td className="p-3">
+                      <div className="font-medium">{org.name}</div>
+                      <div className="text-xs text-muted-foreground">{org.slug}</div>
+                    </td>
+                    <td className="p-3">
+                      <span className="inline-flex items-center rounded-full bg-primary/10 px-2.5 py-0.5 text-xs font-medium text-primary">
+                        {org.tier}
+                      </span>
+                    </td>
+                    <td className="p-3 text-muted-foreground">
+                      {new Date(org.createdAt).toLocaleDateString('pt-BR')}
+                    </td>
+                    <td className="p-3 text-center">
+                      <div className="flex justify-center">
+                        <label className="relative inline-flex cursor-pointer items-center">
+                          <input
+                            type="checkbox"
+                            className="peer sr-only"
+                            checked={org.isTestAccount}
+                            disabled={togglingOrgId === org.id}
+                            onChange={(e) => handleToggleTestAccount(org.id, e.target.checked)}
+                          />
+                          <div className="peer h-5 w-9 rounded-full bg-muted after:absolute after:left-[2px] after:top-[2px] after:h-4 after:w-4 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:bg-orange-500 peer-checked:after:translate-x-full peer-checked:after:border-white peer-focus:outline-none dark:border-gray-600 dark:bg-gray-700"></div>
+                        </label>
+                      </div>
+                    </td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
   )
 }

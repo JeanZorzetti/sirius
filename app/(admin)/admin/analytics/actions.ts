@@ -225,3 +225,81 @@ export async function getPlatformStats() {
     }
   }
 }
+
+/**
+ * Busca todas as organizações pagas
+ */
+export async function getPaidOrganizations() {
+  try {
+    await requireAdminRole()
+
+    const organizations = await prisma.organization.findMany({
+      where: {
+        tier: { in: ['STARTER', 'PRO', 'BUSINESS'] },
+      },
+      select: {
+        id: true,
+        name: true,
+        slug: true,
+        tier: true,
+        isTestAccount: true,
+        createdAt: true,
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+    })
+
+    return {
+      success: true,
+      data: organizations,
+    }
+  } catch (error: any) {
+    if (error.message === 'FORBIDDEN') {
+      return {
+        success: false,
+        error: 'FORBIDDEN',
+        message: 'Acesso negado.',
+      }
+    }
+    logger.error({ err: error }, 'Error getting paid organizations')
+    return {
+      success: false,
+      error: 'FETCH_ERROR',
+      message: 'Erro ao buscar organizações pagas',
+    }
+  }
+}
+
+/**
+ * Alterna a flag de conta teste (isTestAccount)
+ */
+export async function toggleTestAccount(organizationId: string, isTestAccount: boolean) {
+  try {
+    await requireAdminRole()
+
+    const organization = await prisma.organization.update({
+      where: { id: organizationId },
+      data: { isTestAccount },
+    })
+
+    return {
+      success: true,
+      data: organization,
+    }
+  } catch (error: any) {
+    if (error.message === 'FORBIDDEN') {
+      return {
+        success: false,
+        error: 'FORBIDDEN',
+        message: 'Acesso negado.',
+      }
+    }
+    logger.error({ err: error }, 'Error updating test account flag')
+    return {
+      success: false,
+      error: 'UPDATE_ERROR',
+      message: 'Erro ao atualizar flag de conta teste',
+    }
+  }
+}

@@ -16,7 +16,10 @@ const TIER_PRICES: Record<string, number> = {
  */
 export async function calculateMRR(): Promise<number> {
   const paidOrgs = await prisma.organization.findMany({
-    where: { tier: { in: ['STARTER', 'PRO', 'BUSINESS'] } },
+    where: { 
+      tier: { in: ['STARTER', 'PRO', 'BUSINESS'] },
+      isTestAccount: false
+    },
     select: { tier: true },
   })
 
@@ -86,7 +89,10 @@ export async function calculateChurnRate(
  */
 export async function calculateLTV(monthlyChurnRate: number = 0.05): Promise<number> {
   const paidOrgs = await prisma.organization.findMany({
-    where: { tier: { in: ['STARTER', 'PRO', 'BUSINESS'] } },
+    where: { 
+      tier: { in: ['STARTER', 'PRO', 'BUSINESS'] },
+      isTestAccount: false
+    },
     select: { tier: true },
   })
 
@@ -132,6 +138,7 @@ export async function calculateCAC(month: number, year: number): Promise<number>
   const newPaidOrgs = await prisma.organization.count({
     where: {
       tier: { in: ['STARTER', 'PRO', 'BUSINESS'] },
+      isTestAccount: false,
       createdAt: { gte: startOfMonth, lte: endOfMonth },
     },
   })
@@ -440,7 +447,12 @@ export async function calculatePlatformKPIs(
     calculateMRR(),
     calculateARR(),
     prisma.organization.count(),
-    prisma.organization.count({ where: { tier: { in: ['STARTER', 'PRO', 'BUSINESS'] } } }),
+    prisma.organization.count({ 
+      where: { 
+        tier: { in: ['STARTER', 'PRO', 'BUSINESS'] },
+        isTestAccount: false
+      } 
+    }),
     calculateChurnRate(startOfMonth, endOfMonth),
     calculateCAC(month, year),
   ])

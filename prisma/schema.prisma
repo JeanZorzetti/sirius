@@ -32,6 +32,9 @@ model Organization {
   whatsappInstances      Int       @default(1) // Base WhatsApp instances (PRO: 1, BUSINESS: 1)
   failedPaymentAttempts  Int       @default(0) // Retry logic: downgrade after 3 consecutive failures
 
+  // Flag to exclude from revenue metrics (test users with paid tiers)
+  isTestAccount          Boolean   @default(false)
+
   // Programa de Fundadores
   isFounder     Boolean  @default(false) // True para os primeiros 100 clientes fundadores
   founderNumber Int?                     // Número do fundador (1-100)
