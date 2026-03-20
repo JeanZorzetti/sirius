@@ -1,7 +1,8 @@
 'use client'
 
-import { useState, useEffect, useCallback, useRef } from 'react'
-import PusherClient from 'pusher-js'
+import { useState, useEffect, useCallback } from 'react'
+import { usePusher } from '@/hooks/use-pusher'
+import type { MessageNewEvent, ConnectionReadyEvent } from '@/hooks/use-pusher'
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
@@ -83,54 +84,31 @@ export function ChatDrawer({ userId, userName, organizationId }: ChatDrawerProps
     }
   }, [isOpen, fetchData])
 
-  // Real-time updates via Pusher
-  const pusherRef = useRef<PusherClient | null>(null)
-
-  useEffect(() => {
-    if (!isOpen) return
-
-    const key = process.env.NEXT_PUBLIC_PUSHER_KEY
-    const cluster = process.env.NEXT_PUBLIC_PUSHER_CLUSTER
-    if (!key || !cluster) {
-      // Fallback: polling
-      const interval = setInterval(fetchData, 5000)
-      return () => clearInterval(interval)
-    }
-
-    const client = new PusherClient(key, { cluster, authEndpoint: '/api/pusher/auth' })
-    pusherRef.current = client
-
-    client.connection.bind('connected', () => setSseStatus('connected'))
-    client.connection.bind('disconnected', () => setSseStatus('error'))
-
-    const channel = client.subscribe(`private-org-${organizationId}`)
-
-    channel.bind('message:new', (data: any) => {
+  // Real-time via shared Pusher hook
+  const { connectionStatus } = usePusher({
+    organizationId,
+    enabled: isOpen,
+    onMessageNew: useCallback((data: MessageNewEvent) => {
       fetchData()
       if (data.message?.direction === 'INBOUND') {
         toast.info(`Nova mensagem de ${data.contactName || 'desconhecido'}`, {
           description: data.message?.text?.substring(0, 50) + '...',
         })
       }
-    })
-
-    channel.bind('message:sent', () => fetchData())
-
-    // Auto-sync on connection ready
-    channel.bind('connection:ready', async (data: any) => {
+    }, [fetchData]),
+    onMessageSent: useCallback(() => fetchData(), [fetchData]),
+    onConnectionReady: useCallback(async (data: ConnectionReadyEvent) => {
       try {
         await fetch(`/api/whatsapp/connections/${data.connectionId}/sync`, { method: 'POST' })
         fetchData()
       } catch {}
-    })
+    }, [fetchData]),
+  })
 
-    return () => {
-      channel.unbind_all()
-      client.unsubscribe(`private-org-${organizationId}`)
-      client.disconnect()
-      pusherRef.current = null
-    }
-  }, [isOpen, fetchData, organizationId])
+  // Sync connection status
+  useEffect(() => {
+    setSseStatus(connectionStatus === 'connected' ? 'connected' : connectionStatus === 'disconnected' ? 'disconnected' : 'disconnected')
+  }, [connectionStatus])
 
   const handleSelectContact = (contact: Contact) => {
     setSelectedContact(contact)

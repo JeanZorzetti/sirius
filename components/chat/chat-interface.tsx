@@ -1,7 +1,8 @@
 'use client'
 
 import { useState, useEffect, useCallback, useRef } from 'react'
-import PusherClient from 'pusher-js'
+import { usePusher } from '@/hooks/use-pusher'
+import type { MessageNewEvent, MessageSentEvent, ConnectionReadyEvent } from '@/hooks/use-pusher'
 import { ConnectionManager } from './connection-manager'
 import { ConversationList } from './conversation-list'
 import { MessageArea } from './message-area'
@@ -156,51 +157,21 @@ export function ChatInterface({
     }
   }
 
-  // Pusher real-time connection
-  const pusherRef = useRef<PusherClient | null>(null)
-
-  useEffect(() => {
-    const key = process.env.NEXT_PUBLIC_PUSHER_KEY
-    const cluster = process.env.NEXT_PUBLIC_PUSHER_CLUSTER
-    if (!key || !cluster) {
-      // Fallback: polling if Pusher not configured
-      const interval = setInterval(() => {
-        fetchConversations()
-        setMessageRefreshTrigger(prev => prev + 1)
-      }, 5000)
-      return () => clearInterval(interval)
-    }
-
-    setConnectionStatus('connecting')
-    const client = new PusherClient(key, {
-      cluster,
-      authEndpoint: '/api/pusher/auth',
-    })
-    pusherRef.current = client
-
-    client.connection.bind('connected', () => setConnectionStatus('connected'))
-    client.connection.bind('disconnected', () => setConnectionStatus('disconnected'))
-    client.connection.bind('connecting', () => setConnectionStatus('connecting'))
-
-    const channel = client.subscribe(`private-org-${organizationId}`)
-
-    channel.bind('message:new', (data: any) => {
+  // Real-time via shared Pusher hook (singleton, ref-based callbacks)
+  const { connectionStatus: pusherStatus } = usePusher({
+    organizationId,
+    onMessageNew: useCallback((data: MessageNewEvent) => {
       fetchConversations()
       setMessageRefreshTrigger(prev => prev + 1)
-    })
-
-    channel.bind('message:sent', (data: any) => {
+    }, [fetchConversations]),
+    onMessageSent: useCallback(() => {
       fetchConversations()
       setMessageRefreshTrigger(prev => prev + 1)
-    })
-
-    channel.bind('message:status', () => {
+    }, [fetchConversations]),
+    onMessageStatus: useCallback(() => {
       setMessageRefreshTrigger(prev => prev + 1)
-    })
-
-    // Auto-sync: quando uma conexão WhatsApp fica pronta, importar histórico
-    channel.bind('connection:ready', async (data: any) => {
-      console.log('[CHAT] Connection ready, auto-syncing history...', data)
+    }, []),
+    onConnectionReady: useCallback(async (data: ConnectionReadyEvent) => {
       fetchConnections()
       try {
         const res = await fetch(`/api/whatsapp/connections/${data.connectionId}/sync`, {
@@ -209,26 +180,26 @@ export function ChatInterface({
         if (res.ok) {
           const result = await res.json()
           if (result.syncedMessages > 0 || result.syncedContacts > 0) {
-            toast.success(`Histórico importado: ${result.syncedContacts} contatos, ${result.syncedMessages} mensagens`)
+            toast.success(`Historico importado: ${result.syncedContacts} contatos, ${result.syncedMessages} mensagens`)
           }
           fetchConversations()
         }
       } catch (err) {
         console.error('[CHAT] Auto-sync failed:', err)
       }
-    })
+    }, [fetchConnections, fetchConversations]),
+  })
 
-    // Poll connections less frequently (30s instead of 10s)
-    const connectionInterval = setInterval(fetchConnections, 30000)
+  // Sync pusher status to local state
+  useEffect(() => {
+    setConnectionStatus(pusherStatus)
+  }, [pusherStatus])
 
-    return () => {
-      clearInterval(connectionInterval)
-      channel.unbind_all()
-      client.unsubscribe(`private-org-${organizationId}`)
-      client.disconnect()
-      pusherRef.current = null
-    }
-  }, [organizationId, fetchConversations, fetchConnections])
+  // Poll connections less frequently (60s safety net)
+  useEffect(() => {
+    const interval = setInterval(fetchConnections, 60000)
+    return () => clearInterval(interval)
+  }, [fetchConnections])
 
   // Update document title with unread count
   useEffect(() => {
