@@ -44,6 +44,10 @@ export interface FunnelMetrics {
     averageTicket: number // Ticket médio
     estimatedLTV: number // Lifetime Value estimado
   }
+  realizedRevenue: {
+    gross: number
+    net: number
+  }
 }
 
 interface GetFunnelMetricsParams {
@@ -162,10 +166,37 @@ export async function getFunnelMetrics(
           },
         },
       }),
+
+      // Receita Realizada (Net e Gross das transações com tipo PLAN_UPGRADE do mesmo cohort de usuários)
+      prisma.transaction.aggregate({
+        where: {
+          type: 'PLAN_UPGRADE',
+          status: 'COMPLETED',
+          createdAt: {
+            gte: start,
+            lte: end,
+          },
+          organization: {
+            isTestAccount: false,
+            users: {
+              some: {
+                createdAt: {
+                  gte: start,
+                  lte: end,
+                },
+              },
+            },
+          },
+        },
+        _sum: {
+          amount: true,
+          netAmount: true,
+        },
+      }),
     ]),
   ])
 
-  const [signups, activated, orgsWithUsers, customers] = dbMetrics
+  const [signups, activated, orgsWithUsers, customers, revenueData] = dbMetrics
 
   // Filtrar organizações que atingiram o limite (>= 45 contatos)
   const hitLimit = orgsWithUsers.filter((org) => org._count.contacts >= 45).length
@@ -221,6 +252,9 @@ export async function getFunnelMetrics(
   const monthlySEOCost = 100 * 20 // R$ 2.000
   const organicCAC = customers > 0 ? monthlySEOCost / customers : 0
 
+  const grossRevenue = Number(revenueData?._sum?.amount || 0)
+  const netRevenue = Number(revenueData?._sum?.netAmount || 0)
+
   return {
     stages,
     globalConversion,
@@ -232,6 +266,10 @@ export async function getFunnelMetrics(
       organicCAC: Math.round(organicCAC),
       averageTicket,
       estimatedLTV,
+    },
+    realizedRevenue: {
+      gross: grossRevenue,
+      net: netRevenue > 0 ? netRevenue : grossRevenue, // Fallback se transições antigas não tiverem netAmount
     },
   }
 }

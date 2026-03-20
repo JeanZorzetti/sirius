@@ -197,15 +197,15 @@ async function FunnelContent({ searchParams }: { searchParams: { from?: string; 
 
         <Card className="border-slate-200 bg-white shadow-sm">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium text-slate-600">Nova Receita Recebida</CardTitle>
+            <CardTitle className="text-sm font-medium text-slate-600">Nova Receita (Líquida)</CardTitle>
             <DollarSign className="h-4 w-4 text-emerald-600" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-emerald-700">
-              R$ {(metrics.stages.customers.value * metrics.unitEconomics.averageTicket).toLocaleString('pt-BR')}
+              R$ {metrics.realizedRevenue.net.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
             </div>
             <p className="text-xs text-slate-500 mt-1">
-              Ticket Médio: R$ {metrics.unitEconomics.averageTicket.toLocaleString('pt-BR')}
+              Gerado Bruto: R$ {metrics.realizedRevenue.gross.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
             </p>
           </CardContent>
         </Card>

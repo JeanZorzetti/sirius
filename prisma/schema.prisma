@@ -1616,9 +1616,11 @@ model Transaction {
   organizationId String
   organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
 
-  type     TransactionType
-  amount   Decimal           @db.Decimal(10, 2)
-  currency String            @default("BRL")
+  type      TransactionType
+  amount    Decimal           @db.Decimal(10, 2)
+  feeAmount Decimal?          @db.Decimal(10, 2) // Taxa do gateway (ex: MercadoPago take rate)
+  netAmount Decimal?          @db.Decimal(10, 2) // Valor liquido real
+  currency  String            @default("BRL")
   status   TransactionStatus @default(PENDING)
 
   provider          String
