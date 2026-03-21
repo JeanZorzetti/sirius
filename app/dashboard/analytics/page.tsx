@@ -12,29 +12,34 @@ import { ClientChartFilter } from './client-filter';
 import { PipelineFilter } from './pipeline-filter';
 import { ValueSearch } from './value-search';
 import { ContactSearch } from './contact-search';
+import { AnalyticsTabNav } from './tab-nav';
+import { AnalyticsProClient } from '@/app/dashboard/analytics-pro/client';
 
 export const metadata = { title: "Analytics | Sirius CRM" }
 
 export default async function AnalyticsPage({
   searchParams,
 }: {
-  searchParams: Promise<{ from?: string; to?: string; mfrom?: string; mto?: string; ctop?: string; csort?: string; pid?: string; vsearch?: string; csearch?: string }>
+  searchParams: Promise<{ from?: string; to?: string; mfrom?: string; mto?: string; ctop?: string; csort?: string; pid?: string; vsearch?: string; csearch?: string; tab?: string }>
 }) {
   const session = await getSession();
   if (!session || !session.user || !session.user.email) {
     return <div>Não autorizado. Faça login novamente.</div>;
   }
 
-  const { from, to, mfrom, mto, ctop, csort, pid, vsearch, csearch } = await searchParams;
+  const { from, to, mfrom, mto, ctop, csort, pid, vsearch, csearch, tab } = await searchParams;
+  const activeTab = tab === 'pro' ? 'pro' : 'overview';
 
   const user = await prisma.user.findUnique({
     where: { email: session.user.email },
-    select: { organizationId: true }
+    select: { organizationId: true, organization: { select: { tier: true } } }
   })
 
   if (!user || !user.organizationId) {
     return <div>Usuário não pertence a uma organização.</div>
   }
+
+  const isPro = ['PRO', 'BUSINESS'].includes(user.organization?.tier ?? '')
 
   // Pipelines disponíveis para o filtro
   const pipelines = await prisma.pipeline.findMany({
@@ -42,6 +47,16 @@ export default async function AnalyticsPage({
     select: { id: true, name: true, isDefault: true },
     orderBy: [{ isDefault: 'desc' }, { name: 'asc' }],
   })
+
+  // PRO tab — skip all heavy overview queries
+  if (activeTab === 'pro') {
+    return (
+      <div className="flex-1 space-y-4">
+        <AnalyticsTabNav activeTab="pro" isPro={isPro} />
+        <AnalyticsProClient pipelines={pipelines} />
+      </div>
+    )
+  }
 
   // Pipeline filter — multi-select (comma-separated IDs)
   // Default: Pipeline Principal (isDefault: true) when nothing is selected
@@ -250,6 +265,8 @@ export default async function AnalyticsPage({
 
   return (
     <div className="flex-1 space-y-4">
+      <AnalyticsTabNav activeTab="overview" isPro={isPro} />
+
       <div className="flex items-start justify-between flex-wrap gap-4">
         <div>
           <h2 className="text-2xl sm:text-3xl font-bold tracking-tight">Dashboard</h2>

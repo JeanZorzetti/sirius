@@ -4,7 +4,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 import { cn } from '@/lib/utils'
-import { Home, Users, Settings, BarChart3, CreditCard, Mail, LineChart, Search, RotateCw, MessageSquare, TrendingDown, Zap, TrendingUp, MapPin } from 'lucide-react'
+import { Home, Users, Settings, BarChart3, CreditCard, Mail, Search, RotateCw, MessageSquare, TrendingDown, Zap, TrendingUp, MapPin } from 'lucide-react'
 
 const navItems = [
   {
@@ -31,12 +31,6 @@ const navItems = [
     title: 'Dashboard',
     href: '/dashboard/analytics',
     icon: BarChart3,
-  },
-  {
-    title: 'Analytics PRO',
-    href: '/dashboard/analytics-pro',
-    icon: LineChart,
-    badge: 'PRO',
   },
   {
     title: 'Neg. Perdidos',
