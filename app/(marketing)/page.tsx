@@ -272,7 +272,7 @@ export default function LandingPage() {
           <Logos />
 
           {/* GEO Block */}
-          <section className="py-16 sm:py-20 px-6 bg-background text-foreground">
+          <section className="py-16 sm:py-20 px-6">
             <div className="mx-auto max-w-2xl text-center">
               <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">
                 O que é o Sirius CRM?
