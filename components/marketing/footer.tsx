@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { NICHES } from '@/config/niche-data'
+import { CITIES, CITY_DISPLAY_NAMES } from '@/config/city-data'
 
 export function Footer() {
   const currentYear = new Date().getFullYear()
@@ -7,7 +8,7 @@ export function Footer() {
   return (
     <footer className="border-t bg-zinc-50 dark:bg-zinc-950">
       <div className="container mx-auto px-4 py-12 md:py-16">
-        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-8">
+        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-8">
           {/* Coluna 1: Sobre */}
           <div>
             <h3 className="font-bold text-sm mb-4">Sirius CRM</h3>
@@ -133,7 +134,24 @@ export function Footer() {
             </ul>
           </div>
 
-          {/* Coluna 5: Recursos */}
+          {/* Coluna 5: Principais Cidades */}
+          <div>
+            <h3 className="font-bold text-sm mb-4">Principais Cidades</h3>
+            <ul className="space-y-3 text-sm">
+              {CITIES.map((city) => (
+                <li key={city.slug}>
+                  <Link
+                    href={`/solucoes/cidade/${city.slug}`}
+                    className="text-muted-foreground hover:text-foreground transition-colors"
+                  >
+                    {CITY_DISPLAY_NAMES[city.slug] ?? city.slug}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Coluna 6: Recursos */}
           <div>
             <h3 className="font-bold text-sm mb-4">Recursos</h3>
             <ul className="space-y-3 text-sm">

@@ -2,6 +2,7 @@ import { MetadataRoute } from 'next'
 import { blogPosts } from '@/lib/blog-data'
 import { helpArticles } from '@/lib/help-articles'
 import { NICHES } from '@/config/niche-data'
+import { CITIES } from '@/config/city-data'
 import { CALCULATOR_LAST_MODIFIED } from '@/config/calculator-metadata'
 
 export default function sitemap(): MetadataRoute.Sitemap {
@@ -91,11 +92,20 @@ export default function sitemap(): MetadataRoute.Sitemap {
         priority: 0.9, // Alta prioridade - páginas de conversão principais
     }))
 
+    // Páginas de SEO local por cidade (geradas dinamicamente do city-data.ts)
+    const citySolutionPages = CITIES.map((city) => ({
+        url: `${baseUrl}/solucoes/cidade/${city.slug}`,
+        lastModified: lastSiteUpdate,
+        changeFrequency: 'weekly' as const,
+        priority: 0.85, // Alta prioridade - SEO local de alto valor
+    }))
+
     return [
         ...routes,
         ...posts,
         ...helpArticlePages,
         ...calculatorPages,
         ...nicheSolutionPages,
+        ...citySolutionPages,
     ]
 }

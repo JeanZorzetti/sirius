@@ -30,6 +30,8 @@ import { post as post28 } from './posts/sirius-vs-pipedrive'
 import { post as post29 } from './posts/sirius-vs-rd-station'
 import { post as post30 } from './posts/sirius-vs-hubspot'
 import { post as post31 } from './posts/alternativas-ao-pipedrive-brasil'
+import { post as post32 } from './posts/representante-comercial-autonomo-ferramentas'
+import { post as post33 } from './posts/automacao-email-para-vendedores'
 
 export const blogPosts: BlogPost[] = [
   post1,
@@ -63,4 +65,6 @@ export const blogPosts: BlogPost[] = [
   post29,
   post30,
   post31,
+  post32,
+  post33,
 ]
