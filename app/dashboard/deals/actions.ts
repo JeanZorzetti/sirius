@@ -210,6 +210,64 @@ export async function deleteNote(noteId: string) {
     return { success: true }
 }
 
+export async function addDealClosing(dealId: string, date: string, value: number, note?: string) {
+    const user = await checkPermission()
+
+    const deal = await prisma.deal.findUnique({ where: { id: dealId } })
+    if (!deal) throw new Error("Deal not found")
+    if (deal.organizationId !== user.organizationId) throw new Error("Unauthorized")
+
+    const closing = await prisma.dealClosing.create({
+        data: { dealId, date: new Date(date), value, note: note || null }
+    })
+
+    await prisma.activity.create({
+        data: {
+            type: "NOTE_ADDED",
+            description: `Registrou novo fechamento: R$ ${value.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`,
+            dealId,
+            userId: user.id
+        }
+    })
+
+    revalidatePath("/dashboard")
+    return { ...closing, value: Number(closing.value), date: closing.date.toISOString(), createdAt: closing.createdAt.toISOString() }
+}
+
+export async function deleteDealClosing(closingId: string) {
+    const user = await checkPermission()
+
+    const closing = await prisma.dealClosing.findUnique({
+        where: { id: closingId },
+        include: { deal: true }
+    })
+    if (!closing) throw new Error("Closing not found")
+    if (closing.deal.organizationId !== user.organizationId) throw new Error("Unauthorized")
+
+    await prisma.dealClosing.delete({ where: { id: closingId } })
+    revalidatePath("/dashboard")
+    return { success: true }
+}
+
+export async function getDealClosings(dealId: string) {
+    const user = await checkPermission()
+
+    const deal = await prisma.deal.findUnique({ where: { id: dealId } })
+    if (!deal || deal.organizationId !== user.organizationId) throw new Error("Unauthorized")
+
+    const closings = await prisma.dealClosing.findMany({
+        where: { dealId },
+        orderBy: { date: 'desc' }
+    })
+
+    return closings.map(c => ({
+        ...c,
+        value: Number(c.value),
+        date: c.date.toISOString(),
+        createdAt: c.createdAt.toISOString()
+    }))
+}
+
 export async function reorderDeals(stageId: string, dealOrders: { id: string, order: number }[]) {
     const user = await checkPermission()
 

@@ -349,9 +349,26 @@ model Deal {
   // Deal Automations
   automationExecutions AutomationExecution[]
 
+  // Fechamentos (múltiplas compras por cliente)
+  closings DealClosing[]
+
   // Performance indexes
   @@index([organizationId, stageId])
   @@index([userId])
+}
+
+model DealClosing {
+  id        String   @id @default(uuid())
+  date      DateTime
+  value     Decimal  @db.Decimal(10, 2)
+  note      String?
+
+  dealId String
+  deal   Deal   @relation(fields: [dealId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@index([dealId])
 }
 
 model Invite {

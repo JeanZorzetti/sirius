@@ -26,9 +26,9 @@ import {
     PopoverTrigger,
 } from '@/components/ui/popover'
 import { updateDeal, deleteDeal } from '@/app/dashboard/actions'
-import { getDealDetails, addNote, deleteNote } from '@/app/dashboard/deals/actions'
+import { getDealDetails, addNote, deleteNote, addDealClosing, deleteDealClosing, getDealClosings } from '@/app/dashboard/deals/actions'
 import { createContact } from '@/app/dashboard/contacts/actions'
-import { Loader2, MessageSquare, History, Tag, Calendar, Send, Trash2, Plus, MessageCircle } from 'lucide-react'
+import { Loader2, MessageSquare, History, Tag, Calendar, Send, Trash2, Plus, MessageCircle, DollarSign } from 'lucide-react'
 import { ConfirmDialog } from '@/components/ui/confirm-dialog'
 import { toast } from 'sonner'
 import { format } from 'date-fns'
@@ -83,16 +83,28 @@ export function EditDealDialog({
     const [confirmDeleteDeal, setConfirmDeleteDeal] = useState(false)
     const [confirmDeleteNoteId, setConfirmDeleteNoteId] = useState<string | null>(null)
 
+    // Fechamentos state
+    const [closings, setClosings] = useState<any[]>([])
+    const [loadingClosings, setLoadingClosings] = useState(false)
+    const [closingDate, setClosingDate] = useState(new Date().toISOString().split('T')[0])
+    const [closingValue, setClosingValue] = useState('')
+    const [closingNote, setClosingNote] = useState('')
+    const [savingClosing, setSavingClosing] = useState(false)
+
     // Fetch full details when dialog opens
     useEffect(() => {
         let cancelled = false
 
         if (open && initialDeal?.id) {
             setFetchingDetails(true)
-            getDealDetails(initialDeal.id)
-                .then((data) => {
+            Promise.all([
+                getDealDetails(initialDeal.id),
+                getDealClosings(initialDeal.id),
+            ])
+                .then(([data, closingsData]) => {
                     if (!cancelled) {
                         setFullDeal(data)
+                        setClosings(closingsData)
                     }
                 })
                 .catch((err) => {
@@ -264,6 +276,32 @@ export function EditDealDialog({
         })
     }
 
+    const handleAddClosing = async () => {
+        if (!closingValue || !closingDate || !initialDeal) return
+        setSavingClosing(true)
+        try {
+            const newClosing = await addDealClosing(initialDeal.id, closingDate, parseFloat(closingValue), closingNote || undefined)
+            setClosings(prev => [newClosing, ...prev])
+            setClosingValue('')
+            setClosingNote('')
+            toast.success('Fechamento registrado!')
+        } catch {
+            toast.error('Erro ao registrar fechamento')
+        } finally {
+            setSavingClosing(false)
+        }
+    }
+
+    const handleDeleteClosing = async (closingId: string) => {
+        try {
+            await deleteDealClosing(closingId)
+            setClosings(prev => prev.filter(c => c.id !== closingId))
+            toast.success('Fechamento removido')
+        } catch {
+            toast.error('Erro ao remover fechamento')
+        }
+    }
+
     if (!initialDeal) return null
 
     return (
@@ -292,6 +330,15 @@ export function EditDealDialog({
                             <TabsTrigger value="timeline" className="data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:border-b-2 data-[state=active]:border-indigo-500 rounded-none px-0 pb-3 font-normal text-zinc-500 data-[state=active]:text-indigo-500">
                                 <History className="w-4 h-4 mr-2" />
                                 Histórico
+                            </TabsTrigger>
+                            <TabsTrigger value="closings" className="data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:border-b-2 data-[state=active]:border-emerald-500 rounded-none px-0 pb-3 font-normal text-zinc-500 data-[state=active]:text-emerald-500">
+                                <DollarSign className="w-4 h-4 mr-2" />
+                                Fechamentos
+                                {closings.length > 0 && (
+                                    <span className="ml-1.5 text-xs bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-400 px-1.5 py-0.5 rounded-full font-medium">
+                                        {closings.length}
+                                    </span>
+                                )}
                             </TabsTrigger>
                             <TabsTrigger value="agi" className="data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:border-b-2 data-[state=active]:border-purple-500 rounded-none px-0 pb-3 font-normal text-zinc-500 data-[state=active]:text-purple-500">
                                 <Wand2 className="w-4 h-4 mr-2" />
@@ -511,6 +558,97 @@ export function EditDealDialog({
                                 </div>
                             </TabsContent>
 
+                            <TabsContent value="closings" className="mt-0 space-y-4">
+                                {/* Formulário novo fechamento */}
+                                <div className="border border-zinc-200 dark:border-zinc-800 rounded-lg p-4 space-y-3 bg-zinc-50 dark:bg-zinc-900/50">
+                                    <h4 className="text-sm font-medium text-zinc-700 dark:text-zinc-300">Registrar novo fechamento</h4>
+                                    <div className="grid grid-cols-2 gap-3">
+                                        <div className="space-y-1">
+                                            <Label className="text-xs">Data</Label>
+                                            <Input
+                                                type="date"
+                                                value={closingDate}
+                                                onChange={e => setClosingDate(e.target.value)}
+                                                className="h-8 text-sm bg-white dark:bg-zinc-800"
+                                            />
+                                        </div>
+                                        <div className="space-y-1">
+                                            <Label className="text-xs">Valor (R$)</Label>
+                                            <Input
+                                                type="number"
+                                                step="0.01"
+                                                placeholder="0,00"
+                                                value={closingValue}
+                                                onChange={e => setClosingValue(e.target.value)}
+                                                className="h-8 text-sm bg-white dark:bg-zinc-800"
+                                            />
+                                        </div>
+                                    </div>
+                                    <div className="space-y-1">
+                                        <Label className="text-xs">Observação (opcional)</Label>
+                                        <Input
+                                            placeholder="Ex: Renovação anual, produto X..."
+                                            value={closingNote}
+                                            onChange={e => setClosingNote(e.target.value)}
+                                            className="h-8 text-sm bg-white dark:bg-zinc-800"
+                                            onKeyDown={e => e.key === 'Enter' && handleAddClosing()}
+                                        />
+                                    </div>
+                                    <Button
+                                        onClick={handleAddClosing}
+                                        disabled={!closingValue || !closingDate || savingClosing}
+                                        size="sm"
+                                        className="w-full bg-emerald-600 hover:bg-emerald-700 text-white"
+                                    >
+                                        {savingClosing ? <Loader2 className="w-3.5 h-3.5 mr-2 animate-spin" /> : <Plus className="w-3.5 h-3.5 mr-2" />}
+                                        Registrar Fechamento
+                                    </Button>
+                                </div>
+
+                                {/* Lista de fechamentos */}
+                                {closings.length > 0 && (
+                                    <div className="space-y-2">
+                                        <div className="flex items-center justify-between text-xs text-zinc-500 px-1">
+                                            <span>{closings.length} fechamento{closings.length > 1 ? 's' : ''}</span>
+                                            <span className="font-semibold text-emerald-600 dark:text-emerald-400">
+                                                Total: R$ {closings.reduce((s, c) => s + c.value, 0).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                                            </span>
+                                        </div>
+                                        {closings.map(closing => (
+                                            <div key={closing.id} className="flex items-start justify-between p-3 bg-white dark:bg-zinc-900 border border-zinc-100 dark:border-zinc-800 rounded-lg group">
+                                                <div className="space-y-0.5">
+                                                    <div className="flex items-center gap-2">
+                                                        <span className="text-sm font-semibold text-emerald-600 dark:text-emerald-400">
+                                                            R$ {closing.value.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                                                        </span>
+                                                        <span className="text-xs text-zinc-500">
+                                                            {format(new Date(closing.date), "dd/MM/yyyy", { locale: ptBR })}
+                                                        </span>
+                                                    </div>
+                                                    {closing.note && (
+                                                        <p className="text-xs text-zinc-500">{closing.note}</p>
+                                                    )}
+                                                </div>
+                                                <Button
+                                                    variant="ghost"
+                                                    size="icon"
+                                                    className="h-6 w-6 opacity-0 group-hover:opacity-100 text-zinc-400 hover:text-red-500 shrink-0"
+                                                    onClick={() => handleDeleteClosing(closing.id)}
+                                                >
+                                                    <Trash2 className="w-3 h-3" />
+                                                </Button>
+                                            </div>
+                                        ))}
+                                    </div>
+                                )}
+
+                                {closings.length === 0 && !fetchingDetails && (
+                                    <div className="text-center py-8 text-zinc-400 text-sm">
+                                        Nenhum fechamento registrado ainda.
+                                    </div>
+                                )}
+                            </TabsContent>
+
                             <TabsContent value="agi" className="mt-0 space-y-4">
                                 {/* Script Generator Button */}
                                 <div className="flex justify-end">
@@ -606,7 +744,7 @@ function NoteItem({ note, onDelete }: { note: any, onDelete: () => void }) {
     )
 }
 
-import { ArrowRight, DollarSign, Sparkles, CheckCircle2 } from 'lucide-react'
+import { ArrowRight, Sparkles, CheckCircle2 } from 'lucide-react'
 
 function ActivityItem({ activity }: { activity: any }) {
     const getIcon = (type: string) => {
