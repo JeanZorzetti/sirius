@@ -68,3 +68,42 @@ export const blogPosts: BlogPost[] = [
   post32,
   post33,
 ]
+
+/**
+ * Slugify a category name for URL usage.
+ * "Vendas" → "vendas", "Gestão" → "gestao", "ROI e Estratégia" → "roi-e-estrategia"
+ */
+export function slugifyCategory(category: string): string {
+  return category
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '') // remove diacritics
+    .replace(/[^a-z0-9]+/g, '-')    // replace non-alphanumeric with hyphen
+    .replace(/^-+|-+$/g, '')        // trim leading/trailing hyphens
+}
+
+/**
+ * Get all unique categories from blog posts.
+ */
+export function getAllCategories(): string[] {
+  return Array.from(new Set(blogPosts.map(post => post.category)))
+}
+
+/**
+ * Get posts filtered by category name (exact match).
+ * Returns posts sorted by date (most recent first).
+ */
+export function getPostsByCategory(category: string): BlogPost[] {
+  return blogPosts
+    .filter(post => post.category === category)
+    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+}
+
+/**
+ * Find the original category name from its slug.
+ * Returns undefined if not found.
+ */
+export function getCategoryFromSlug(slug: string): string | undefined {
+  const categories = getAllCategories()
+  return categories.find(cat => slugifyCategory(cat) === slug)
+}

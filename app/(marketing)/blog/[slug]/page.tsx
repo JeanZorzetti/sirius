@@ -17,6 +17,7 @@ import { Metadata } from 'next'
 import { ChevronLeft, ChevronRight, Calendar, Clock, User } from 'lucide-react'
 import { getRelatedPostsByEntities, processBlogPost } from '@/lib/nlp/blog-processor'
 import { RelatedLinksBar } from '@/components/blog/related-links-bar'
+import { NewsletterCTA } from '@/components/blog/newsletter-cta'
 
 interface BlogPostPageProps {
   params: Promise<{
@@ -494,6 +495,9 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
 
           {/* Internal Linking Bar */}
           <RelatedLinksBar currentSlug={slug} relatedSlugs={post.relatedSlugs} />
+
+          {/* Newsletter CTA */}
+          <NewsletterCTA />
 
           {/* Related Posts Section */}
           {relatedPosts.length > 0 && (

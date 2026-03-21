@@ -11,6 +11,8 @@ const AgiPreview = dynamic(() => import("@/components/agi/AgiPreview").then(m =>
 })
 
 const StickyCTA = dynamic(() => import("@/components/marketing/sticky-cta").then(m => ({ default: m.StickyCTA })))
+import { blogPosts } from "@/lib/blog-data"
+import Image from "next/image"
 import { Check, Star, ArrowRight } from "lucide-react"
 
 export const metadata: Metadata = {
@@ -474,6 +476,58 @@ export default function LandingPage() {
                   className="inline-flex items-center text-sm text-indigo-400 hover:text-indigo-300 transition-colors"
                 >
                   Ver comparação completa entre planos
+                  <ArrowRight className="ml-1 h-4 w-4" />
+                </Link>
+              </div>
+            </div>
+          </section>
+
+          {/* Blog Posts Section */}
+          <section className="py-24 px-6">
+            <div className="mx-auto max-w-7xl">
+              <div className="mb-16 text-center">
+                <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl mb-4">
+                  Artigos para Vendedores B2B
+                </h2>
+                <p className="text-zinc-400 max-w-2xl mx-auto">
+                  Conteudo pratico sobre prospeccao, CRM, automacao e tecnicas de vendas
+                </p>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                {blogPosts.slice(0, 3).map((post) => (
+                  <Link
+                    key={post.slug}
+                    href={`/blog/${post.slug}`}
+                    className="group relative overflow-hidden rounded-2xl border border-white/10 bg-white/[0.02] backdrop-blur-xl transition-all duration-300 hover:border-indigo-500/50 hover:shadow-lg hover:shadow-indigo-500/5"
+                  >
+                    <div className="relative aspect-video overflow-hidden">
+                      <Image
+                        src={post.image}
+                        alt={post.title}
+                        fill
+                        className="object-cover transition-transform duration-300 group-hover:scale-105"
+                        sizes="(max-width: 768px) 100vw, 33vw"
+                      />
+                    </div>
+                    <div className="p-6">
+                      <h3 className="text-lg font-bold text-white mb-2 line-clamp-2 group-hover:text-indigo-400 transition-colors">
+                        {post.title}
+                      </h3>
+                      <p className="text-sm text-zinc-400 line-clamp-2 leading-relaxed">
+                        {post.excerpt}
+                      </p>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+
+              <div className="mt-10 text-center">
+                <Link
+                  href="/blog"
+                  className="inline-flex items-center text-sm font-medium text-indigo-400 hover:text-indigo-300 transition-colors"
+                >
+                  Ver todos os artigos
                   <ArrowRight className="ml-1 h-4 w-4" />
                 </Link>
               </div>

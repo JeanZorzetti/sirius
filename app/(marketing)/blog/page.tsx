@@ -6,7 +6,7 @@ import { useState, useEffect, useRef } from 'react'
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
-import { blogPosts } from '@/lib/blog-data'
+import { blogPosts, getAllCategories, slugifyCategory } from '@/lib/blog-data'
 import { ArrowRight, Clock, Tag, BookOpen } from 'lucide-react'
 
 export default function BlogPage() {
@@ -93,6 +93,19 @@ export default function BlogPage() {
                             </Badge>
                         ))}
                     </div>
+
+                    {/* SEO: Links indexáveis para páginas de categoria */}
+                    <nav className="flex gap-2 mt-2 overflow-x-auto scrollbar-hide" aria-label="Categorias do blog">
+                        {getAllCategories().map((cat) => (
+                            <Link
+                                key={cat}
+                                href={`/blog/categoria/${slugifyCategory(cat)}`}
+                                className="text-xs text-muted-foreground hover:text-primary whitespace-nowrap transition-colors"
+                            >
+                                {cat}
+                            </Link>
+                        ))}
+                    </nav>
                 </div>
             </section>
 

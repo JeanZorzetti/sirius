@@ -1,5 +1,5 @@
 import { MetadataRoute } from 'next'
-import { blogPosts } from '@/lib/blog-data'
+import { blogPosts, getAllCategories, slugifyCategory } from '@/lib/blog-data'
 import { helpArticles } from '@/lib/help-articles'
 import { NICHES } from '@/config/niche-data'
 import { CITIES } from '@/config/city-data'
@@ -100,9 +100,18 @@ export default function sitemap(): MetadataRoute.Sitemap {
         priority: 0.85, // Alta prioridade - SEO local de alto valor
     }))
 
+    // Blog category pages (rotas indexáveis por categoria)
+    const blogCategoryPages = getAllCategories().map((category) => ({
+        url: `${baseUrl}/blog/categoria/${slugifyCategory(category)}`,
+        lastModified: lastSiteUpdate,
+        changeFrequency: 'weekly' as const,
+        priority: 0.8,
+    }))
+
     return [
         ...routes,
         ...posts,
+        ...blogCategoryPages,
         ...helpArticlePages,
         ...calculatorPages,
         ...nicheSolutionPages,
