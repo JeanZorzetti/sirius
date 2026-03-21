@@ -14,7 +14,8 @@ SEO
                     - Artigos de Suporte (Long-tail SEO):
                         - [DONE 2026-03-21] Como organizar sua carteira de clientes sem depender do sistema da fábrica.
                             - Executado: lib/blog/posts/como-organizar-carteira-clientes-representante.ts — curva ABC, exportação CSV, independência do ERP.
-                        - [PENDING] Representante comercial autônomo: 5 ferramentas essenciais para gestão de vendas externas.
+                        - [DONE 2026-03-21] Representante comercial autônomo: 5 ferramentas essenciais para gestão de vendas externas.
+                            - Executado: lib/blog/posts/representante-comercial-autonomo-ferramentas.ts — 5 ferramentas (CRM offline, WhatsApp Business, comissões, Maps, assinatura digital), Sirius substitui 3 das 5.
                         - [DONE 2026-03-21] CRM offline para vendedores: Como registrar pedidos sem internet e sincronizar depois.
                             - Executado: lib/blog/posts/crm-offline-para-vendedores.ts — PWA, sync offline, fluxo passo a passo.
                         - [DONE] Como calcular e conferir comissões de representação comercial usando um CRM.
@@ -32,7 +33,8 @@ SEO
                     - Artigos de Suporte (Long-tail SEO):
                         - [DONE] Como automatizar follow-ups de vendas no WhatsApp sem parecer robô.
                             - Executado: lib/blog/posts/poder-do-follow-up.ts (pre-existente, cobre o tema).
-                        - [PENDING] Automação de e-mail para vendedores: 4 gatilhos que aumentam a taxa de resposta em 40%.
+                        - [DONE 2026-03-21] Automação de e-mail para vendedores: 4 gatilhos que aumentam a taxa de resposta em 40%.
+                            - Executado: lib/blog/posts/automacao-email-para-vendedores.ts — 4 gatilhos com templates reais, timing, benchmarks HubSpot/Outreach.
                         - [DONE 2026-03-21] CRM com WhatsApp integrado: Como centralizar todas as conversas comerciais num só lugar.
                             - Executado: lib/blog/posts/crm-com-whatsapp-integrado.ts — Chat Center, Evolution API, cadência WhatsApp.
                         - [DONE 2026-03-21] IA para vendas: Como um assistente virtual qualifica leads automaticamente com BANT e MEDDIC.
@@ -119,15 +121,15 @@ SEO
             - [DONE 2026-03-21] HowTo: lib/howto-schemas.ts com 5 artigos tutoriais (pipeline, carteira, google-maps, offline, prospecção) + features/page.tsx.
 - 3. GEO (Generative Engine Optimization): Dominando as IAs
     - O objetivo final é fazer com que modelos de linguagem (ChatGPT, Gemini, Perplexity, Claude) recomendem o Sirius CRM espontaneamente quando alguém perguntar "qual o melhor CRM para representante comercial no Brasil?"
-        - [PENDING] Relações Públicas Digitais (Digital PR):
+        - [AÇÃO MANUAL] Relações Públicas Digitais (Digital PR):
  O Sirius CRM precisa existir fora do próprio domínio. As IAs aprendem sobre marcas lendo sites de terceiros com alta autoridade.
             - Estratégia de Injeção via Digital PR
                 - As IAs não citam marcas que só existem no próprio site. O Sirius precisa ser mencionado em portais externos.
-                    - [PENDING] Publicação em Massa:
+                    - [AÇÃO MANUAL] Publicação em Massa:
  Jean (fundador/dev) e o time da ROI Labs devem publicar artigos de opinião em portais de negócios, tecnologia e vendas — Exame PME, Sebrae, Endeavor, Mundo do Marketing, portais regionais de negócios.
                     - A Pauta de Atração:
  Os textos distribuídos devem vincular o Sirius à solução de problemas reais: "A crise de produtividade do vendedor B2B brasileiro: como a IA e o CRM offline estão mudando o jogo para representantes comerciais autônomos".
-                    - [PENDING] Product Hunt e Comunidades Tech:
+                    - [AÇÃO MANUAL] Product Hunt e Comunidades Tech:
  Lançar o Sirius no Product Hunt, IndieHackers, TabNews e comunidades brasileiras de SaaS. Cada menção em plataforma de alta autoridade ensina as IAs que o Sirius é uma alternativa real aos concorrentes globais.
                     - O Resultado:
  Esta citação em massa em diferentes domínios educa e força as IAs a reconhecerem o Sirius CRM como uma entidade legítima e recomendável no ecossistema de CRM brasileiro.
@@ -172,11 +174,11 @@ SEO
  Next.js App Router com SSG para páginas de marketing, ISR para blog, RSC para dashboard. PWA com Service Worker para cache agressivo. Imagens otimizadas via next/image.
 - 5. SEO Local: Dominar a Busca Regional
     - Embora o Sirius seja um SaaS nacional, posicionar-se em buscas locais amplia o alcance para PMEs que buscam soluções "perto de mim" ou regionais.
-        - [PENDING] Google Business Profile:
+        - [AÇÃO MANUAL] Google Business Profile:
  Criar perfil da ROI Labs / Sirius CRM no Google Meu Negócio. Mesmo sendo SaaS, o perfil valida a marca como empresa real e aparece em buscas locais por "crm" + cidade.
-        - [PENDING] Páginas Programáticas por Cidade:
- Expandir /solucoes/ com variantes regionais: "/solucoes/crm-para-empresas-em-sao-paulo", "/solucoes/crm-para-vendedores-em-curitiba". Cada página com conteúdo levemente diferente, nunca duplicado.
-        - [PENDING] Diretórios e Listas SaaS:
+        - [DONE 2026-03-21] Páginas Programáticas por Cidade:
+ Expandir /solucoes/ com variantes regionais. Executado: config/city-data.ts com 6 cidades (SP, Curitiba, BH, Porto Alegre, RJ, Brasília). Rota SSG em /solucoes/cidade/[slug] com LocalBusiness schema, BreadcrumbList e FAQPage. Footer atualizado com coluna "Principais Cidades". Sitemap inclui as 6 URLs com prioridade 0.85.
+        - [AÇÃO MANUAL] Diretórios e Listas SaaS:
  O Sirius em diretórios de software brasileiros: B2B Stack, Capterra Brasil, G2 (categoria CRM), Buscapé Empresas. Cada listing é um backlink de alta autoridade + sinal para IAs.
 
 - 6. Diagnóstico de Tração (Pós-Análise de Dados Reais - Mar/2026)
@@ -249,8 +251,8 @@ SEO
         - [DONE 2026-03-20] 4. Criar artigo "Como Escolher CRM B2B 2026" (4h)
             - Executado: lib/blog/posts/como-escolher-crm-b2b-2026.ts criado com 7 critérios eliminatórios, comparativo Sirius vs Pipedrive/RD Station/HubSpot, FAQ section AEO-otimizada. Registrado em lib/blog/index.ts.
         - [DONE 2026-03-21] 5. Produzir conteúdo focado no nicho representantes (ongoing)
-            - Executado: Cluster 1 completo — pilar (crm-para-representante-comercial-2026) + carteira-clientes + crm-offline. Total 16 → 31 artigos produzidos nesta sessão.
+            - Executado: Cluster 1 completo — pilar + carteira-clientes + crm-offline + representante-autonomo-ferramentas. Total 16 → 33 artigos produzidos nesta sessão.
         - [DONE 2026-03-20] 6. Migrar keywords de "crm" genérico para queries compostas (2h)
             - Executado: Homepage, Features, Pricing atualizados com "crm com ia", "crm online 2026", "automação de vendas ia", "crm mobile".
-        - [PENDING] 7. Melhorar onboarding/engagement no produto (sprint dedicado)
-            - LTV/CAC 0.6x — melhorar onboarding, Trial PRO 7 dias, email drip. Sprint dedicado V3.
+        - [AÇÃO MANUAL / V3] 7. Melhorar onboarding/engagement no produto (sprint dedicado)
+            - LTV/CAC 0.6x — melhorar onboarding, Trial PRO 7 dias, email drip. Escopo do Sprint V3 — fora do escopo SEO.
