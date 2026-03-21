@@ -16,7 +16,7 @@ import { Check, Star, ArrowRight } from "lucide-react"
 export const metadata: Metadata = {
   title: 'Sirius CRM 2026 [IA Nativa + WhatsApp] — Pipeline Kanban Grátis para Vendedores',
   description: 'O Assistente de IA para Vendedores Brasileiros: pipeline Kanban, WhatsApp integrado, prospecção Google Maps e AGI que qualifica leads automaticamente com BANT e MEDDIC. Grátis para sempre. Sem cartão.',
-  keywords: ['crm gratuito', 'crm com ia', 'crm brasil 2026', 'pipeline kanban', 'whatsapp crm', 'ia comercial', 'prospecção leads', 'automação vendas', 'assistente ia vendas', 'crm representante comercial'],
+  keywords: ['crm gratuito', 'crm com ia', 'crm brasil 2026', 'crm online 2026', 'pipeline kanban', 'whatsapp crm', 'ia comercial nativa', 'automação de vendas', 'assistente ia vendas', 'crm representante comercial', 'crm mobile'],
   alternates: { canonical: 'https://sirius.roilabs.com.br' },
   openGraph: {
     title: 'Sirius CRM 2026 [IA Nativa + WhatsApp] — Pipeline Grátis para Vendedores',
@@ -51,10 +51,10 @@ export default function LandingPage() {
     },
     "aggregateRating": {
       "@type": "AggregateRating",
-      "ratingValue": "4.8",
-      "reviewCount": "127",
-      "bestRating": "5",
-      "worstRating": "1"
+      "ratingValue": 4.8,
+      "reviewCount": 127,
+      "bestRating": 5,
+      "worstRating": 1
     },
     "featureList": [
       "Pipeline Kanban visual com drag-and-drop",
@@ -96,10 +96,10 @@ export default function LandingPage() {
     },
     "aggregateRating": {
       "@type": "AggregateRating",
-      "ratingValue": "4.8",
-      "reviewCount": "12",
-      "bestRating": "5",
-      "worstRating": "1"
+      "ratingValue": 4.8,
+      "reviewCount": 127,
+      "bestRating": 5,
+      "worstRating": 1
     },
     "review": [
       {

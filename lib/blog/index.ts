@@ -14,6 +14,7 @@ import { post as post12 } from './posts/tecnicas-de-fechamento-de-vendas'
 import { post as post13 } from './posts/como-superar-objecoes-em-vendas'
 import { post as post14 } from './posts/kpis-de-vendas'
 import { post as post15 } from './posts/erros-crm-comuns'
+import { post as post16 } from './posts/como-escolher-crm-b2b-2026'
 
 export const blogPosts: BlogPost[] = [
   post1,
@@ -31,4 +32,5 @@ export const blogPosts: BlogPost[] = [
   post13,
   post14,
   post15,
+  post16,
 ]

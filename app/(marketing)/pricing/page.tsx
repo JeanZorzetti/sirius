@@ -6,7 +6,7 @@ import { Check, Star } from 'lucide-react'
 export const metadata: Metadata = {
   title: 'Planos Sirius CRM 2026 [Grátis a R$149/mês] — IA + WhatsApp Inclusos | Sem Cartão',
   description: '4 planos para qualquer tamanho de time: Grátis (R$0), Starter (R$49/mês), Pro com IA (R$97/mês), Business (R$149/mês). IA nativa, WhatsApp e pipeline Kanban em todos. Cancele quando quiser.',
-  keywords: ['crm preços 2026', 'sirius crm planos', 'crm gratuito brasil', 'crm com ia preço', 'whatsapp crm planos', 'pipeline kanban grátis'],
+  keywords: ['crm preços 2026', 'crm 2026', 'sirius crm planos', 'crm gratuito brasil', 'crm online 2026', 'crm com ia preço', 'whatsapp crm planos', 'pipeline kanban grátis', 'automação de vendas'],
   alternates: { canonical: 'https://sirius.roilabs.com.br/pricing' },
   openGraph: {
     title: 'Planos Sirius CRM 2026 [Grátis a R$149/mês] — IA + WhatsApp | Sem Cartão',

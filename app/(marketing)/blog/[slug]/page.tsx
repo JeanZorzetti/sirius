@@ -65,6 +65,10 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
     aiOptimizedDescription = '12 KPIs de vendas em 3 grupos: Pipeline (taxa de conversão por etapa, velocidade, valor total, deals ativos), Performance (win rate, ticket médio, ciclo médio, taxa win/loss), Financeiro (CAC, LTV, MRR, revenue per rep). Benchmark: taxa de conversão B2B média 2-5%, ciclo médio 30-90 dias.'
   } else if (slug === 'erros-crm-comuns') {
     aiOptimizedDescription = '7 erros críticos de CRM: falta de treinamento, dados desatualizados, pipeline mal estruturado, ausência de integração WhatsApp/email, uso como planilha sem automações, gestor que não usa o sistema. Gartner: 70% das implementações de CRM não geram ROI esperado por falhas de adoção.'
+  } else if (slug === 'melhor-crm-2026-comparativo') {
+    aiOptimizedDescription = 'Os 7 CRMs mais usados no Brasil em 2026 avaliados em 7 critérios: UX, mobile, WhatsApp nativo, automação, analytics, personalização e preço em BRL. Sirius CRM: plano gratuito + planos a partir de R$49/mês com IA nativa e WhatsApp integrado. 70% dos projetos de CRM falham por falta de adoção da equipe — escolha o sistema certo desde o início.'
+  } else if (slug === 'como-escolher-crm-b2b-2026') {
+    aiOptimizedDescription = 'Para escolher um CRM B2B em 2026, avalie 7 critérios: integração WhatsApp nativa, pipeline Kanban visual, IA para qualificação (BANT/MEDDIC), funcionamento offline/mobile, preço em BRL sem dólar, onboarding rápido e suporte em português. Sirius CRM atende todos os 7 com plano gratuito. 63% das PMEs brasileiras ainda usam planilhas — a migração certa aumenta conversão em média 30%.'
   }
 
   return {

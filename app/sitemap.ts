@@ -9,7 +9,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
     // Data da última atualização significativa do site
     // Atualizar manualmente quando houver mudanças reais nas páginas estáticas
-    const lastSiteUpdate = new Date('2026-02-28')
+    const lastSiteUpdate = new Date('2026-03-20')
 
     // Static routes
     // Priorização Hierárquica (Seção 7.2):

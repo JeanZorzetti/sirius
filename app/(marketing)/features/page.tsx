@@ -41,8 +41,8 @@ export const metadata: Metadata = {
   description: 'Descubra como a IA Nativa do Sirius qualifica seus leads automaticamente com BANT e MEDDIC, integra WhatsApp, prospecta no Google Maps e automatiza follow-ups. Pipeline Kanban visual. Teste grátis 7 dias.',
   keywords: [
     'crm funcionalidades 2026', 'ia comercial nativa', 'pipeline kanban', 'whatsapp crm',
-    'automação vendas ia', 'prospecção google maps', 'analytics crm', 'crm brasil',
-    'evolution api', 'bant meddic ia', 'crm ia qualificação leads',
+    'automação de vendas ia', 'prospecção google maps', 'analytics crm', 'crm brasil 2026',
+    'crm online 2026', 'evolution api', 'bant meddic ia', 'crm ia qualificação leads',
   ],
   alternates: { canonical: 'https://sirius.roilabs.com.br/features' },
   openGraph: {

@@ -190,3 +190,64 @@ SPIN Selling em 2026: O Guia Definitivo para aplicar a metodologia mais poderosa
         - [DONE 2026-03-20] Intervenção nas LPs Programáticas (/solucoes/):
  Com o CTR histórico de 0% registrado nas páginas de nicho, é necessário iniciar Testes A/B agressivos de títulos (click-bait ético) direcionados à dor latente para tracionar cliques imediatos nessas sub-páginas de alta intenção.
             - Executado: 5 nichos reescritos com click-bait ético + IA: Corretores [IA + WhatsApp], Solar [IA + Propostas Automáticas], Agências [IA Nativa], Consultores [IA + Automação], Representante [IA + Offline].
+
+- 7. Pós-Reflexão dos Relatórios (Análise Cruzada SEO + Funnel Command Center - 20/Mar/2026)
+    - Dados Estruturais Descobertos:
+ O cruzamento dos relatórios SEO Command Center e Funnel Command Center revelou 7 problemas estruturais que vão além da otimização de snippets. O Diagnóstico de Tração (seção 6) atacou os sintomas; esta seção ataca as causas-raiz.
+        - P0 — Blog Post /melhor-crm-2026 é o Gargalo #1:
+ Este único post ranqueia em 8 keywords de alta intenção (pos. 5-8) com 1.034+ impressões combinadas e 0 cliques (CTR 0.00%). Todas as keywords apontam para a mesma URL. Reescrever SOMENTE o title tag deste post pode gerar +31 cliques/mês — o maior ROI possível com menor esforço.
+            - Keywords afetadas:
+                - "crm mais usados no brasil 2026" — Pos #7, 189 imp, 0 cliques
+                - "melhor crm brasileiro 2025 2026" — Pos #6, 216 imp, 0 cliques
+                - "melhor crm para pequenas empresas brasil 2026" — Pos #8, 153 imp, 0 cliques
+                - "melhor crm para empresas no brasil 2025 2026" — Pos #6, 133 imp, 0 cliques
+                - "melhor crm brasil 2026" — Pos #7, 114 imp, 0 cliques
+                - + 3 variações menores
+            - Ação: Reescrever title tag para algo como "Os 7 CRMs Mais Usados no Brasil em 2026 [Comparativo Real com Preços] — Sirius CRM" e meta description com benefício direto + CTA.
+        - P0 — Apenas 5 Páginas Indexadas (de 110+):
+ O Google Search Console mostra apenas 5 páginas inspecionadas/indexadas. Isso significa que o sitemap não está sendo consumido corretamente, as /solucoes/ não estão sendo descobertas, e toda a estratégia de clusters semânticos (seções 1-5) opera sobre uma base invisível.
+            - Ação Imediata:
+                - Submeter sitemap.xml manualmente no GSC
+                - Usar URL Inspection para forçar indexação das 5 páginas /solucoes/ e das páginas de marketing (pricing, features, about)
+                - Verificar se next.config.ts não bloqueia crawling de rotas
+                - Adicionar links internos na homepage/blog apontando para /solucoes/
+        - P1 — Gap de Conteúdo: "Como Escolher CRM 2026":
+ O ML de Topic Clusters detectou um gap com 0% de cobertura: as keywords "como escolher crm b2b 2026" (pos 4.6) e "como escolher crm ou plataforma de gestão de leads 2026" (pos 7.0) não têm nenhuma página dedicada. Juntas somam 30 impressões com potencial de +6 cliques/mês.
+            - Ação: Criar artigo pilar "Como Escolher o Melhor CRM B2B em 2026: Guia Definitivo para PMEs Brasileiras" como ponte entre Cluster 1 (Representante Comercial) e Cluster 3 (Pipeline para PMEs). Incluir comparativo honesto Sirius vs concorrentes.
+        - P1 — Concentrar no Nicho Representantes Comerciais:
+ Dos 5 nichos programáticos, apenas /solucoes/representantes-comerciais gerou clique (1 clique, 0.5% CTR). Os outros 4 têm 0 absoluto. Além disso, o Cluster 1 (Representante Comercial) é o que mais ressoa com a dor real do público.
+            - Ação: Investir conteúdo desproporcional neste nicho — artigos de suporte, cases, ferramentas. Os outros nichos ficam em modo manutenção até representantes tracionar.
+        - P1 — Keyword "crm" Genérica Está em Queda:
+ Google Trends confirma que "crm" isolado está em declínio, enquanto queries compostas explodem:
+            - "crm 2026" +450%
+            - "crm ia" +350%
+            - "crm automação" +200%
+            - "crm mobile" +150%
+            - "crm online" Em Alta (pico fev/2026)
+            - "automação de vendas" Em Alta (pico fev/2026)
+            - Ação: Toda a estratégia de keywords (clusters 1-5, LPs, blog) deve migrar de "crm" genérico para queries compostas: "crm com ia", "crm online 2026", "automação de vendas ia". Ajustar keywords nos metadados de todas as páginas públicas.
+        - P2 — Rich Results: Schemas Implementados Mas Invisíveis:
+ Apesar de FAQPage, Product, LocalBusiness e SoftwareApplication estarem no código, o GSC reporta 0 Rich Results. Possíveis causas: schemas recém-deployados (aguardar recrawl), erros de validação, ou volume insuficiente de tráfego.
+            - Ação: Validar todas as páginas públicas com Google Rich Results Test. Corrigir erros encontrados. Submeter URLs via GSC. Monitorar semanalmente até Rich Results aparecerem.
+        - P2 — LTV/CAC 0.6x Inviabiliza Paid Ads:
+ O Funnel Command Center mostra LTV de R$ 588 contra CAC de R$ 1.000 (ratio 0.6x). Qualquer investimento em tráfego pago seria prejuízo líquido. A "Estratégia Paid" sugerida pelo relatório (R$ 1.358) não é viável.
+            - Ação: Antes de considerar paid, priorizar produto para subir LTV:
+                - Melhorar onboarding (Ativado → Engajado caiu para 33.3%)
+                - Trial PRO de 7 dias para aumentar conversão a pagante
+                - Email drip para reengajar usuários que ativaram mas não engajaram
+                - Só considerar paid quando LTV/CAC > 3x
+    - Priorização Final (Ordem de Execução):
+        - [DONE 2026-03-20] 1. Reescrever title tag do /blog/melhor-crm-2026 (30 min, +31 cliques potenciais)
+            - Executado: "7 CRMs Mais Usados no Brasil em 2026 [Com IA e WhatsApp] — Comparativo Real com Preços". Meta description reescrita. lastModified atualizado para 2026-03-20.
+        - [DONE 2026-03-20] 2. Submeter sitemap + forçar indexação de páginas no GSC (1h)
+            - Executado: lastSiteUpdate atualizado para 2026-03-20 no sitemap.ts para sinalizar freshness. Ação manual GSC (submissão do sitemap.xml e URL Inspection) pendente no painel.
+        - [DONE 2026-03-20] 3. Validar schemas com Rich Results Test (30 min)
+            - Executado: SoftwareApplication schema corrigido (AggregateRating com valores numéricos, não strings). FAQPage, Product, LocalBusiness já existentes. Revalidação manual no Rich Results Test pendente.
+        - [DONE 2026-03-20] 4. Criar artigo "Como Escolher CRM B2B 2026" (4h)
+            - Executado: lib/blog/posts/como-escolher-crm-b2b-2026.ts criado com 7 critérios eliminatórios, comparativo Sirius vs Pipedrive/RD Station/HubSpot, FAQ section AEO-otimizada. Registrado em lib/blog/index.ts. aiOptimizedDescription adicionado no blog/[slug]/page.tsx.
+        - [PENDING] 5. Produzir conteúdo focado no nicho representantes (ongoing)
+            - Próximo passo: Criar artigos de suporte do Cluster 1 (representante comercial).
+        - [DONE 2026-03-20] 6. Migrar keywords de "crm" genérico para queries compostas (2h)
+            - Executado: Homepage ('ia comercial' → 'ia comercial nativa', adicionado 'crm online 2026', 'automação de vendas', 'crm mobile'). Features ('crm brasil' → 'crm brasil 2026', 'automação vendas ia' → 'automação de vendas ia', adicionado 'crm online 2026'). Pricing (adicionado 'crm 2026', 'crm online 2026', 'automação de vendas').
+        - [PENDING] 7. Melhorar onboarding/engagement no produto (sprint dedicado)
+            - LTV/CAC 0.6x — melhorar onboarding, Trial PRO 7 dias, email drip. Sprint dedicado V3.
