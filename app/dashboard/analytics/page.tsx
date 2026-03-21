@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { OverviewChart } from '@/components/analytics/overview-chart';
 import { MonthlyChart } from '@/components/analytics/monthly-chart';
 import { ClientChart } from '@/components/analytics/client-chart';
-import { DollarSign, TrendingUp, Target, CalendarClock } from 'lucide-react';
+import { DollarSign, TrendingUp, Target, CalendarClock, Banknote } from 'lucide-react';
 import { getSession } from '@/lib/auth';
 import { Suspense } from 'react';
 import { AnalyticsDateFilter } from './date-filter';
@@ -151,13 +151,38 @@ export default async function AnalyticsPage({
     select: { value: true, closeDate: true },
   })
 
-  const monthSlots: { key: string; label: string; value: number; count: number }[] = []
+  // DealClosing — receita real efetivada
+  const allClosings = await prisma.dealClosing.findMany({
+    where: {
+      deal: {
+        organizationId: user.organizationId,
+        ...(selectedPids.length > 0 ? { pipelineId: { in: selectedPids } } : {}),
+      },
+      date: { gte: mStartDate, lte: mEndDate },
+    },
+    select: { value: true, date: true },
+  })
+
+  // KPI: total realizado (respeitando o mesmo filtro de data da tabela principal)
+  const kpiClosings = await prisma.dealClosing.findMany({
+    where: {
+      deal: {
+        organizationId: user.organizationId,
+        ...(selectedPids.length > 0 ? { pipelineId: { in: selectedPids } } : {}),
+      },
+      ...(isFiltered ? { date: closeDateFilter } : {}),
+    },
+    select: { value: true },
+  })
+  const totalRealized = kpiClosings.reduce((s, c) => s + Number(c.value), 0)
+
+  const monthSlots: { key: string; label: string; value: number; count: number; closingsValue: number }[] = []
   let sy = mFromYear, sm = mFromMonth
   while (sy < mToYear || (sy === mToYear && sm <= mToMonth)) {
     const d = new Date(sy, sm - 1, 1)
     const key = `${sy}-${String(sm).padStart(2, '0')}`
     const label = d.toLocaleDateString('pt-BR', { month: 'short', year: '2-digit' })
-    monthSlots.push({ key, label, value: 0, count: 0 })
+    monthSlots.push({ key, label, value: 0, count: 0, closingsValue: 0 })
     sm++
     if (sm > 12) { sm = 1; sy++ }
   }
@@ -171,7 +196,14 @@ export default async function AnalyticsPage({
       slot.count += 1
     }
   }
-  const monthlyData = monthSlots.map(({ label, value, count }) => ({ label, value, count }))
+  for (const closing of allClosings) {
+    const d = new Date(closing.date)
+    const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`
+    const slot = monthSlots.find(m => m.key === key)
+    if (slot) slot.closingsValue += Number(closing.value)
+  }
+
+  const monthlyData = monthSlots.map(({ label, value, count, closingsValue }) => ({ label, value, count, closingsValue }))
 
   // Stage chart
   const stageData = deals.reduce((acc: Record<string, { name: string; count: number; value: number }>, deal) => {
@@ -257,7 +289,7 @@ export default async function AnalyticsPage({
       )}
 
       {/* KPI Cards */}
-      <div className="grid gap-4 sm:gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="grid gap-4 sm:gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-5">
         <Card className="bg-white dark:bg-white/[0.02] border-zinc-200 dark:border-white/5 backdrop-blur-xl hover:bg-zinc-50 dark:hover:bg-white/[0.04] transition-colors overflow-hidden relative group shadow-sm">
           <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
             <DollarSign className="h-24 w-24 text-indigo-500 transform rotate-12 translate-x-4 -translate-y-4" />
@@ -333,6 +365,26 @@ export default async function AnalyticsPage({
               {avgTicket.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
             </div>
             <p className="text-xs text-zinc-500 mt-1">Valor médio dos negócios</p>
+          </CardContent>
+        </Card>
+
+        <Card className="bg-white dark:bg-white/[0.02] border-zinc-200 dark:border-white/5 backdrop-blur-xl hover:bg-zinc-50 dark:hover:bg-white/[0.04] transition-colors overflow-hidden relative group shadow-sm">
+          <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+            <Banknote className="h-24 w-24 text-emerald-500 transform -rotate-12 translate-x-4 -translate-y-4" />
+          </div>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 relative z-10">
+            <CardTitle className="text-sm font-medium text-zinc-500 dark:text-zinc-400">Receita Realizada</CardTitle>
+            <div className="h-8 w-8 rounded-lg bg-emerald-500/10 flex items-center justify-center text-emerald-400 ring-1 ring-white/5 shadow-[0_0_10px_rgba(16,185,129,0.2)]">
+              <Banknote className="h-4 w-4" />
+            </div>
+          </CardHeader>
+          <CardContent className="relative z-10">
+            <div className="text-2xl font-bold text-zinc-900 dark:text-white font-mono">
+              {totalRealized.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
+            </div>
+            <p className="text-xs text-zinc-500 mt-1">
+              {isFiltered ? 'Fechamentos no período' : 'Total de fechamentos registrados'}
+            </p>
           </CardContent>
         </Card>
       </div>

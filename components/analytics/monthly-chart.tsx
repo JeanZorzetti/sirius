@@ -2,7 +2,6 @@
 
 import {
   Bar,
-  BarChart,
   Line,
   ComposedChart,
   ResponsiveContainer,
@@ -21,13 +20,11 @@ const CustomTooltip = ({ active, payload, label }: any) => {
         {payload.map((entry: any) => (
           <div key={entry.dataKey} className="flex items-center gap-2 mt-1">
             <div className="w-2 h-2 rounded-full" style={{ backgroundColor: entry.color }} />
-            {entry.dataKey === 'value' ? (
+            {entry.dataKey === 'count' ? (
+              <p className="text-sm text-zinc-300">{entry.value} negócio(s)</p>
+            ) : (
               <p className="text-sm font-mono text-zinc-300">
                 {Number(entry.value).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
-              </p>
-            ) : (
-              <p className="text-sm text-zinc-300">
-                {entry.value} negócio(s)
               </p>
             )}
           </div>
@@ -43,6 +40,7 @@ interface MonthlyChartProps {
     label: string;
     value: number;
     count: number;
+    closingsValue?: number;
   }[];
 }
 
@@ -57,11 +55,17 @@ export function MonthlyChart({ data }: MonthlyChartProps) {
     );
   }
 
+  const hasClosings = data.some(d => (d.closingsValue ?? 0) > 0)
+
   return (
     <ResponsiveContainer width="100%" height={350}>
       <ComposedChart data={data} margin={{ top: 20, right: 20, bottom: 0, left: 0 }}>
         <defs>
           <linearGradient id="monthlyBarGradient" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="#6366f1" stopOpacity={0.9} />
+            <stop offset="100%" stopColor="#4f46e5" stopOpacity={0.5} />
+          </linearGradient>
+          <linearGradient id="closingsBarGradient" x1="0" y1="0" x2="0" y2="1">
             <stop offset="0%" stopColor="#10b981" stopOpacity={1} />
             <stop offset="100%" stopColor="#059669" stopOpacity={0.6} />
           </linearGradient>
@@ -106,7 +110,11 @@ export function MonthlyChart({ data }: MonthlyChartProps) {
         <Tooltip cursor={{ fill: 'rgba(255,255,255,0.02)' }} content={<CustomTooltip />} />
 
         <Legend
-          formatter={(value) => value === 'value' ? 'Valor (R$)' : 'Qtd. Negócios'}
+          formatter={(value) => {
+            if (value === 'value') return 'Pipeline (R$)'
+            if (value === 'closingsValue') return 'Receita Real (R$)'
+            return 'Qtd. Negócios'
+          }}
           wrapperStyle={{ fontSize: 12, color: '#71717a', paddingTop: 12 }}
         />
 
@@ -115,18 +123,30 @@ export function MonthlyChart({ data }: MonthlyChartProps) {
           dataKey="value"
           fill="url(#monthlyBarGradient)"
           radius={[6, 6, 0, 0]}
-          maxBarSize={48}
+          maxBarSize={hasClosings ? 32 : 48}
           animationDuration={1200}
           name="value"
         />
+
+        {hasClosings && (
+          <Bar
+            yAxisId="value"
+            dataKey="closingsValue"
+            fill="url(#closingsBarGradient)"
+            radius={[6, 6, 0, 0]}
+            maxBarSize={32}
+            animationDuration={1200}
+            name="closingsValue"
+          />
+        )}
 
         <Line
           yAxisId="count"
           type="monotone"
           dataKey="count"
-          stroke="#6366f1"
+          stroke="#f59e0b"
           strokeWidth={2}
-          dot={{ r: 4, fill: '#6366f1', strokeWidth: 0 }}
+          dot={{ r: 4, fill: '#f59e0b', strokeWidth: 0 }}
           activeDot={{ r: 6 }}
           animationDuration={1200}
           name="count"
