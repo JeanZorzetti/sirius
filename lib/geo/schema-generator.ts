@@ -101,7 +101,18 @@ export function generateArticleSchema(
     : {
         '@type': 'Person',
         name: post.author || 'ROI Labs',
+        url: 'https://sirius.roilabs.com.br',
+        sameAs: ['https://www.linkedin.com/company/roi-labs'],
       }
+
+  // ISO 8601 completo com timezone Brasil (UTC-3) — requerido pelo Google Rich Results
+  const toIsoDate = (date: string) =>
+    date.includes('T') ? date : `${date}T00:00:00-03:00`
+
+  // Garante que imageUrl não duplique o domínio para URLs Unsplash/externas
+  const resolvedImageUrl = imageUrl
+    ? (imageUrl.startsWith('http') ? imageUrl : `https://sirius.roilabs.com.br${imageUrl}`)
+    : (post.image?.startsWith('http') ? post.image : `https://sirius.roilabs.com.br${post.image || '/logo.png'}`)
 
   // Montar schema BlogPosting
   const schema: WithContext<BlogPosting> = {
@@ -109,9 +120,9 @@ export function generateArticleSchema(
     '@type': 'BlogPosting',
     headline: post.title,
     description: post.excerpt,
-    image: imageUrl || post.image,
-    datePublished: post.date,
-    dateModified: (post as any).lastModified || post.date,
+    image: resolvedImageUrl,
+    datePublished: toIsoDate(post.date),
+    dateModified: toIsoDate((post as any).lastModified || post.date),
     author: authorSchema,
     publisher: {
       '@type': 'Organization',

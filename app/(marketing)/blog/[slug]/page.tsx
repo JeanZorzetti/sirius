@@ -134,7 +134,8 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
   const relatedPosts = await getRelatedPostsByEntities(slug, 2)
 
   const url = `https://sirius.roilabs.com.br/blog/${slug}`
-  const imageUrl = `https://sirius.roilabs.com.br${post.image || '/logo.png'}`
+  const rawImage = post.image || '/logo.png'
+  const imageUrl = rawImage.startsWith('http') ? rawImage : `https://sirius.roilabs.com.br${rawImage}`
 
   // GEO-optimized JSON-LD Schema with Wikidata entity disambiguation
   let geoConfig = createGeoConfig.crm()
