@@ -102,6 +102,24 @@ export default function FerramentasPage() {
             })}
           </div>
 
+          {/* Recursos de dados */}
+          <div className="mt-12 max-w-5xl mx-auto">
+            <h2 className="text-lg font-semibold mb-4 text-center">Dados e Benchmarks</h2>
+            <Link href="/anuario">
+              <Card className="hover:border-primary/50 hover:shadow-md transition-all">
+                <CardHeader className="flex flex-row items-center gap-4">
+                  <div className="h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
+                    <BarChart3 className="h-5 w-5 text-primary" />
+                  </div>
+                  <div>
+                    <CardTitle className="text-lg">Anuário do Vendedor B2B Brasileiro 2026</CardTitle>
+                    <CardDescription>Benchmarks exclusivos: taxa de conversão, ciclo de venda e impacto da IA por setor. Dados de +127 empresas.</CardDescription>
+                  </div>
+                </CardHeader>
+              </Card>
+            </Link>
+          </div>
+
           <div className="mt-16 text-center">
             <p className="text-sm text-muted-foreground mb-4">
               Quer ver o Sirius CRM em ação?

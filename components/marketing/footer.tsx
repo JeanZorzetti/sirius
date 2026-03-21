@@ -143,6 +143,11 @@ export function Footer() {
                 </Link>
               </li>
               <li>
+                <Link href="/anuario" className="text-muted-foreground hover:text-foreground transition-colors">
+                  Anuário B2B 2026
+                </Link>
+              </li>
+              <li>
                 <Link href="/help" className="text-muted-foreground hover:text-foreground transition-colors">
                   Central de Ajuda
                 </Link>

@@ -34,6 +34,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
         '/vendas-automaticas',
         '/fundadores',
         '/ferramentas',
+        '/anuario',
     ].map((route) => ({
         url: `${baseUrl}${route}`,
         lastModified: lastSiteUpdate,
