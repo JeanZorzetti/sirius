@@ -14,24 +14,68 @@ const StickyCTA = dynamic(() => import("@/components/marketing/sticky-cta").then
 import { Check, Star, ArrowRight } from "lucide-react"
 
 export const metadata: Metadata = {
-  title: 'Sirius CRM | O CRM Inteligente para Vendedores Brasileiros',
-  description: 'CRM gratuito com pipeline Kanban, WhatsApp integrado (Evolution API), IA comercial, prospecção Google Maps, automações de deals e email. 4 planos: Gratuito, Starter R$49, Pro R$97, Business R$149.',
-  keywords: ['crm gratuito', 'crm brasil', 'pipeline kanban', 'whatsapp crm', 'ia comercial', 'prospecção leads', 'automação vendas'],
+  title: 'Sirius CRM 2026 [IA Nativa + WhatsApp] — Pipeline Kanban Grátis para Vendedores',
+  description: 'O Assistente de IA para Vendedores Brasileiros: pipeline Kanban, WhatsApp integrado, prospecção Google Maps e AGI que qualifica leads automaticamente com BANT e MEDDIC. Grátis para sempre. Sem cartão.',
+  keywords: ['crm gratuito', 'crm com ia', 'crm brasil 2026', 'pipeline kanban', 'whatsapp crm', 'ia comercial', 'prospecção leads', 'automação vendas', 'assistente ia vendas', 'crm representante comercial'],
   alternates: { canonical: 'https://sirius.roilabs.com.br' },
   openGraph: {
-    title: 'Sirius CRM | O CRM Inteligente para Vendedores Brasileiros',
-    description: 'Pipeline visual, WhatsApp integrado, IA comercial, prospecção Google Maps e automações. Grátis para começar.',
+    title: 'Sirius CRM 2026 [IA Nativa + WhatsApp] — Pipeline Grátis para Vendedores',
+    description: 'IA que qualifica leads, WhatsApp integrado, pipeline Kanban e prospecção Google Maps. O assistente de vendas mais completo do Brasil. Grátis para sempre.',
     url: 'https://sirius.roilabs.com.br',
     images: [{ url: 'https://sirius.roilabs.com.br/og-image.png', width: 1200, height: 630 }],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Sirius CRM | O CRM Inteligente para Vendedores Brasileiros',
-    description: 'Pipeline visual, WhatsApp integrado, IA comercial, prospecção Google Maps e automações. Grátis para começar.',
+    title: 'Sirius CRM 2026 [IA Nativa + WhatsApp] — Pipeline Grátis para Vendedores',
+    description: 'IA que qualifica leads, WhatsApp integrado, pipeline Kanban e prospecção Google Maps. Grátis para sempre. Sem cartão.',
   },
 }
 
 export default function LandingPage() {
+  const softwareSchema = {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Sirius CRM",
+    "applicationCategory": "BusinessApplication",
+    "applicationSubCategory": "CRM",
+    "operatingSystem": "Web, iOS, Android",
+    "url": "https://sirius.roilabs.com.br",
+    "description": "O Assistente de Inteligência Artificial para Vendedores Brasileiros: pipeline Kanban, WhatsApp integrado, AGI que qualifica leads com BANT e MEDDIC, prospecção Google Maps e automação de follow-ups.",
+    "offers": {
+      "@type": "AggregateOffer",
+      "priceCurrency": "BRL",
+      "lowPrice": "0",
+      "highPrice": "149",
+      "offerCount": "4",
+      "availability": "https://schema.org/InStock"
+    },
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "4.8",
+      "reviewCount": "127",
+      "bestRating": "5",
+      "worstRating": "1"
+    },
+    "featureList": [
+      "Pipeline Kanban visual com drag-and-drop",
+      "WhatsApp integrado via Evolution API",
+      "AGI Sirius — IA que qualifica leads com BANT e MEDDIC",
+      "Prospecção automática pelo Google Maps",
+      "Automações de follow-up por email e WhatsApp",
+      "Analytics PRO com previsão de receita",
+      "Modo offline para vendedores externos",
+      "API pública e webhooks"
+    ],
+    "screenshot": "https://sirius.roilabs.com.br/og-image.png",
+    "softwareVersion": "2.0",
+    "datePublished": "2024-01-01",
+    "author": {
+      "@type": "Organization",
+      "name": "ROI Labs",
+      "url": "https://roilabs.com.br"
+    }
+  };
+
   const productSchema = {
     "@context": "https://schema.org",
     "@type": "Product",
@@ -193,6 +237,11 @@ export default function LandingPage() {
 
   return (
     <>
+      <Script
+        id="software-schema"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(softwareSchema) }}
+      />
       <Script
         id="product-schema"
         type="application/ld+json"

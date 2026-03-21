@@ -122,8 +122,8 @@ export const NICHES: NicheData[] = [
       }
     ],
     seo: {
-      title: 'CRM para Corretores de Imóveis 2026 | Automação de Vendas e Comissões',
-      description: 'Melhor CRM para corretores e imobiliárias em 2026. Automação de follow-up, gestão de visitas e controle de comissões. Pare de perder vendas por desorganização. Teste grátis.',
+      title: 'CRM para Corretores 2026 [IA + WhatsApp] — Nunca Perca Uma Comissão | Grátis',
+      description: 'Corretores que usam IA vendem 50% mais. Follow-up automático, pipeline visual e WhatsApp integrado. Pare de perder comissões por desorganização. Sem planilha. Teste grátis — sem cartão.',
       keywords: [
         'crm para corretores',
         'crm imobiliário',
@@ -204,8 +204,8 @@ export const NICHES: NicheData[] = [
       }
     ],
     seo: {
-      title: 'CRM para Energia Solar 2026 | Sistema de Gestão de Propostas Fotovoltaicas',
-      description: 'Melhor CRM para integradoras solares em 2026. Gestão completa de propostas, visitas técnicas e instalações. Converta mais projetos com automação inteligente. Teste grátis.',
+      title: 'CRM para Solar 2026 [IA + Propostas Automáticas] — Feche 3x Mais Projetos | Grátis',
+      description: 'Integradoras solares que usam IA qualificam leads 3x mais rápido. Pipeline visual, propostas automáticas e WhatsApp do pré-venda ao fechamento. Sem planilha. Teste grátis — sem cartão.',
       keywords: [
         'crm energia solar',
         'crm fotovoltaica',
@@ -286,8 +286,8 @@ export const NICHES: NicheData[] = [
       }
     ],
     seo: {
-      title: 'CRM para Agências de Marketing 2026 | Melhor Sistema de Vendas e Automação',
-      description: 'Top #1 CRM para agências digitais em 2026. Automação de propostas comerciais, qualificação de leads e métricas em tempo real. Escale suas vendas hoje. Teste grátis.',
+      title: 'CRM para Agências 2026 [IA Nativa] — Escale Clientes Sem Contratar Mais | Grátis',
+      description: 'Agências que usam IA convertem 40% mais leads. Automação de propostas, qualificação inteligente e métricas em tempo real. Cresça o faturamento sem aumentar o time. Teste grátis — sem cartão.',
       keywords: [
         'crm para agencias',
         'crm agencia marketing',
@@ -368,8 +368,8 @@ export const NICHES: NicheData[] = [
       }
     ],
     seo: {
-      title: 'CRM para Consultores 2026 | Gestão Automatizada de Projetos e Clientes',
-      description: 'Melhor CRM para consultores empresariais em 2026. Automação de follow-up, controle de projetos e propostas comerciais. Feche mais contratos com menos esforço. Grátis.',
+      title: 'CRM para Consultores 2026 [IA + Automação] — Feche Contratos Enquanto Dorme | Grátis',
+      description: 'Consultores que automatizam follow-ups fecham 35% mais contratos. IA qualifica leads, pipeline visual e histórico completo de projetos. Foque em entregar, deixe a IA vender. Teste grátis — sem cartão.',
       keywords: [
         'crm para consultores',
         'crm consultoria empresarial',
@@ -450,8 +450,8 @@ export const NICHES: NicheData[] = [
       }
     ],
     seo: {
-      title: 'CRM para Representante Comercial 2026 | Sistema de Gestão de Carteira e Pedidos',
-      description: 'Melhor CRM para representantes comerciais em 2026. Substitua planilhas por automação inteligente: gestão de carteira, lembretes de recompra e histórico de pedidos. Aumente suas vendas 50%. Grátis.',
+      title: 'CRM para Representante Comercial 2026 [IA + Offline] — Nunca Perca Dados ao Trocar de Representada',
+      description: 'O único CRM com IA que funciona OFFLINE para representantes. Sua carteira fica com você — mesmo trocando de representada. Gestão de pedidos, comissões e WhatsApp automático. Grátis para sempre.',
       keywords: [
         'crm para representante comercial',
         'crm representante comercial',

@@ -4,20 +4,20 @@ import Script from 'next/script'
 import { Check, Star } from 'lucide-react'
 
 export const metadata: Metadata = {
-  title: 'Preços e Planos | Sirius CRM — Plano Gratuito Disponível',
-  description: 'Sirius CRM gratuito para sempre. Starter R$49/mês, Pro R$97/mês, Business R$149/mês. Sem cartão para começar.',
-  keywords: ['crm preços', 'sirius crm planos', 'crm gratuito brasil', 'starter pro business', 'assinatura crm'],
+  title: 'Planos Sirius CRM 2026 [Grátis a R$149/mês] — IA + WhatsApp Inclusos | Sem Cartão',
+  description: '4 planos para qualquer tamanho de time: Grátis (R$0), Starter (R$49/mês), Pro com IA (R$97/mês), Business (R$149/mês). IA nativa, WhatsApp e pipeline Kanban em todos. Cancele quando quiser.',
+  keywords: ['crm preços 2026', 'sirius crm planos', 'crm gratuito brasil', 'crm com ia preço', 'whatsapp crm planos', 'pipeline kanban grátis'],
   alternates: { canonical: 'https://sirius.roilabs.com.br/pricing' },
   openGraph: {
-    title: 'Preços e Planos | Sirius CRM',
-    description: 'Plano gratuito + Starter R$49, Pro R$97, Business R$149/mês. Pipeline visual, automações, WhatsApp integrado.',
+    title: 'Planos Sirius CRM 2026 [Grátis a R$149/mês] — IA + WhatsApp | Sem Cartão',
+    description: '4 planos: Grátis, Starter R$49, Pro com IA R$97, Business R$149/mês. Pipeline, WhatsApp e IA inclusos. Cancele quando quiser.',
     url: 'https://sirius.roilabs.com.br/pricing',
     images: [{ url: 'https://sirius.roilabs.com.br/og-image.png', width: 1200, height: 630 }],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Preços e Planos | Sirius CRM',
-    description: 'Plano gratuito + Starter R$49, Pro R$97, Business R$149/mês. Pipeline visual, automações, WhatsApp integrado.',
+    title: 'Planos Sirius CRM 2026 [Grátis a R$149/mês] — IA + WhatsApp | Sem Cartão',
+    description: '4 planos: Grátis, Starter R$49, Pro com IA R$97, Business R$149/mês. Cancele quando quiser.',
   },
 }
 

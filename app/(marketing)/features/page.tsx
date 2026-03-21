@@ -37,24 +37,24 @@ import {
 } from 'lucide-react'
 
 export const metadata: Metadata = {
-  title: 'Funcionalidades | Sirius CRM — Pipeline, WhatsApp, IA, Prospecção, Automações',
-  description: 'Todas as funcionalidades do Sirius CRM: Pipeline Kanban, WhatsApp integrado (Evolution API), AGI com IA comercial, prospecção Google Maps, automações de deals e email, analytics PRO, API pública, round-robin e muito mais.',
+  title: 'Funcionalidades Sirius CRM 2026 [12+ Ferramentas de IA] — WhatsApp, Pipeline, Prospecção e Mais',
+  description: 'Descubra como a IA Nativa do Sirius qualifica seus leads automaticamente com BANT e MEDDIC, integra WhatsApp, prospecta no Google Maps e automatiza follow-ups. Pipeline Kanban visual. Teste grátis 7 dias.',
   keywords: [
-    'crm funcionalidades', 'pipeline kanban', 'whatsapp crm', 'automação vendas',
-    'prospecção leads', 'analytics crm', 'ia comercial', 'crm brasil',
-    'evolution api', 'google maps leads', 'round robin vendas',
+    'crm funcionalidades 2026', 'ia comercial nativa', 'pipeline kanban', 'whatsapp crm',
+    'automação vendas ia', 'prospecção google maps', 'analytics crm', 'crm brasil',
+    'evolution api', 'bant meddic ia', 'crm ia qualificação leads',
   ],
   alternates: { canonical: 'https://sirius.roilabs.com.br/features' },
   openGraph: {
-    title: 'Funcionalidades | Sirius CRM',
-    description: 'Pipeline Kanban, WhatsApp integrado, AGI com IA comercial, prospecção Google Maps, automações, analytics PRO, API pública e muito mais.',
+    title: 'Funcionalidades Sirius CRM 2026 [12+ Ferramentas de IA] — WhatsApp e Pipeline',
+    description: 'IA que qualifica leads automaticamente, WhatsApp integrado, pipeline Kanban, prospecção Google Maps, automações e analytics PRO. Tudo em um só CRM.',
     url: 'https://sirius.roilabs.com.br/features',
     images: [{ url: 'https://sirius.roilabs.com.br/og-image.png', width: 1200, height: 630 }],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Funcionalidades | Sirius CRM',
-    description: 'Pipeline Kanban, WhatsApp integrado, AGI com IA comercial, prospecção Google Maps, automações, analytics PRO e muito mais.',
+    title: 'Funcionalidades Sirius CRM 2026 [12+ Ferramentas de IA] — WhatsApp e Pipeline',
+    description: 'IA que qualifica leads com BANT e MEDDIC, WhatsApp integrado, pipeline Kanban, prospecção Google Maps e automações. Teste grátis.',
   },
 }
 
