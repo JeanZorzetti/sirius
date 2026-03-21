@@ -7,7 +7,7 @@ export const post: BlogPost = {
   date: '2026-02-28',
   lastModified: '2026-02-28',
   category: 'Vendas',
-  image: '/images/blog/como-superar-objecoes-em-vendas.webp',
+  image: 'https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=1200&h=630&fit=crop&auto=format&q=80',
   author: 'Equipe Sirius CRM',
   relatedSlugs: ['tecnicas-de-fechamento-de-vendas', 'spin-selling-guia-completo', 'poder-do-follow-up'],
   content: `

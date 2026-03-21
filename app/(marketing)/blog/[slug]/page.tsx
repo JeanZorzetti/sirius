@@ -1,5 +1,6 @@
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
+import Image from 'next/image'
 import { blogPosts } from '@/lib/blog-data'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
@@ -462,6 +463,18 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
               <ShareButtons title={post.title} url={url} />
             </div>
           </header>
+
+          {/* Cover Image */}
+          <div className="relative w-full aspect-video rounded-2xl overflow-hidden mb-8 sm:mb-12 shadow-lg">
+            <Image
+              src={post.image.startsWith('/') ? post.image : post.image}
+              alt={post.title}
+              fill
+              className="object-cover"
+              sizes="(max-width: 768px) 100vw, (max-width: 1280px) 90vw, 1200px"
+              priority
+            />
+          </div>
 
           {/* Article Content - 2 Column Layout */}
           <div className="grid lg:grid-cols-[1fr_320px] lg:gap-12 xl:gap-16">

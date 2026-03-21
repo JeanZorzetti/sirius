@@ -7,7 +7,7 @@ export const post: BlogPost = {
   date: '2026-02-10',
   lastModified: '2026-03-20',
   category: 'Comparativos',
-  image: '/images/blog/melhor-crm-2026.png',
+  image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=1200&h=630&fit=crop&auto=format&q=80',
   author: 'Equipe Sirius CRM',
   relatedSlugs: ['crm-simples-vs-complexo', 'crm-ia-inteligencia-artificial-2026'],
   content: `

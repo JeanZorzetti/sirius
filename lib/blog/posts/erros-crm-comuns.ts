@@ -7,7 +7,7 @@ export const post: BlogPost = {
   date: '2026-02-28',
   lastModified: '2026-02-28',
   category: 'Dicas',
-  image: '/images/blog/erros-crm-comuns.webp',
+  image: 'https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=1200&h=630&fit=crop&auto=format&q=80',
   author: 'Equipe Sirius CRM',
   relatedSlugs: ['crm-simples-vs-complexo', 'como-organizar-pipeline-vendas', 'custo-oculto-inacao-crm'],
   content: `

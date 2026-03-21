@@ -7,7 +7,7 @@ export const post: BlogPost = {
   date: '2026-02-10',
   lastModified: '2026-02-10',
   category: 'Automação',
-  image: '/images/blog/crm-automacao-vendas.png',
+  image: 'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=1200&h=630&fit=crop&auto=format&q=80',
   author: 'Equipe Sirius CRM',
   relatedSlugs: ['poder-do-follow-up', 'crm-ia-inteligencia-artificial-2026'],
   content: `

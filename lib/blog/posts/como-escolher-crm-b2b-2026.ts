@@ -7,7 +7,7 @@ export const post: BlogPost = {
   date: '2026-03-20',
   lastModified: '2026-03-20',
   category: 'Comparativos',
-  image: '/images/blog/como-escolher-crm-b2b-2026.png',
+  image: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=1200&h=630&fit=crop&auto=format&q=80',
   author: 'Equipe Sirius CRM',
   relatedSlugs: ['melhor-crm-2026-comparativo', 'erros-crm-comuns', 'custo-oculto-inacao-crm'],
   content: `

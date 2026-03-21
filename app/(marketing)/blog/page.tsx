@@ -180,6 +180,17 @@ export default function BlogPage() {
                                         {/* Animated border gradient */}
                                         <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-linear-to-r from-blue-500/20 via-purple-500/20 to-pink-500/20 blur-xl -z-10" />
 
+                                        {/* Thumbnail */}
+                                        <div className="relative aspect-video w-full rounded-xl overflow-hidden mb-4">
+                                          <Image
+                                            src={post.image}
+                                            alt={post.title}
+                                            fill
+                                            className="object-cover group-hover:scale-105 transition-transform duration-700"
+                                            sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                                          />
+                                        </div>
+
                                         <CardHeader className="relative z-10 flex-none space-y-3 p-0 mb-4">
                                             <div className="flex items-center gap-2">
                                                 <Badge variant="secondary" className="text-xs">
