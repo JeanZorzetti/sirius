@@ -26,6 +26,10 @@ import { post as post24 } from './posts/scraping-etico-vs-compra-de-listas'
 import { post as post25 } from './posts/prospeccao-linkedin-vendedores-b2b'
 import { post as post26 } from './posts/sandler-selling-system'
 import { post as post27 } from './posts/sales-intelligence-ia-vendas-2026'
+import { post as post28 } from './posts/sirius-vs-pipedrive'
+import { post as post29 } from './posts/sirius-vs-rd-station'
+import { post as post30 } from './posts/sirius-vs-hubspot'
+import { post as post31 } from './posts/alternativas-ao-pipedrive-brasil'
 
 export const blogPosts: BlogPost[] = [
   post1,
@@ -55,4 +59,8 @@ export const blogPosts: BlogPost[] = [
   post25,
   post26,
   post27,
+  post28,
+  post29,
+  post30,
+  post31,
 ]
