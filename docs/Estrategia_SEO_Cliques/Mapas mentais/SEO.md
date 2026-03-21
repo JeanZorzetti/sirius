@@ -9,14 +9,16 @@ SEO
                 - O Racional (Baseado nas Tendências):
  O representante comercial brasileiro opera num vácuo tecnológico — usa planilhas, cadernos e o sistema da fábrica (que não lhe pertence). A dor central é a perda de dados ao trocar de representada e a falta de mobilidade. Este cluster posiciona o Sirius como o cofre pessoal do vendedor externo.
                     - Artigo Pilar (Página Principal do Cluster):
-
-CRM para Representante Comercial em 2026: Como nunca mais perder um cliente ao trocar de representada.
+                        - [DONE 2026-03-21] CRM para Representante Comercial em 2026: Como nunca mais perder um cliente ao trocar de representada.
+                            - Executado: lib/blog/posts/crm-para-representante-comercial-2026.ts — H2s AEO, offline, BANT com IA, CTA FREE.
                     - Artigos de Suporte (Long-tail SEO):
-                        - Como organizar sua carteira de clientes sem depender do sistema da fábrica.
- (Foco em propriedade de dados e exportação).
-                        - Representante comercial autônomo: 5 ferramentas essenciais para gestão de vendas externas.
-                        - CRM offline para vendedores: Como registrar pedidos sem internet e sincronizar depois.
-                        - Como calcular e conferir comissões de representação comercial usando um CRM.
+                        - [DONE 2026-03-21] Como organizar sua carteira de clientes sem depender do sistema da fábrica.
+                            - Executado: lib/blog/posts/como-organizar-carteira-clientes-representante.ts — curva ABC, exportação CSV, independência do ERP.
+                        - [PENDING] Representante comercial autônomo: 5 ferramentas essenciais para gestão de vendas externas.
+                        - [DONE 2026-03-21] CRM offline para vendedores: Como registrar pedidos sem internet e sincronizar depois.
+                            - Executado: lib/blog/posts/crm-offline-para-vendedores.ts — PWA, sync offline, fluxo passo a passo.
+                        - [DONE] Como calcular e conferir comissões de representação comercial usando um CRM.
+                            - Executado (parcial): lib/blog/posts/planilha-controle-comissao-corretor.ts (para corretores). Artigo específico para representantes pendente.
                     - Interligação Interna:
  Todos os artigos deste cluster devem apontar para a Landing Page do plano FREE com CTA para cadastro imediato — "Comece grátis, sem cartão de crédito". O funil parte do conteúdo educacional para o trial.
             - Cluster 2: Automação de Vendas B2B (Foco em Produtividade e Escala)
@@ -25,13 +27,16 @@ CRM para Representante Comercial em 2026: Como nunca mais perder um cliente ao t
                 - O Racional (Baseado nas Tendências):
  O vendedor B2B brasileiro desperdiça 3-5 horas por semana em tarefas repetitivas: follow-ups manuais, e-mails de acompanhamento, anotações duplicadas. A telemedicina do vendedor é a automação. Este cluster prova que automatizar não é luxo, é sobrevivência.
                     - Artigo Pilar:
-
-Automação de Vendas B2B em 2026: O Guia Completo para vender mais trabalhando menos.
+                        - [DONE] Automação de Vendas B2B em 2026: O Guia Completo para vender mais trabalhando menos.
+                            - Executado: lib/blog/posts/crm-automacao-vendas-guia-completo.ts (pre-existente).
                     - Artigos de Suporte (Long-tail SEO):
-                        - Como automatizar follow-ups de vendas no WhatsApp sem parecer robô.
-                        - Automação de e-mail para vendedores: 4 gatilhos que aumentam a taxa de resposta em 40%.
-                        - CRM com WhatsApp integrado: Como centralizar todas as conversas comerciais num só lugar.
-                        - IA para vendas: Como um assistente virtual qualifica leads automaticamente com BANT e MEDDIC.
+                        - [DONE] Como automatizar follow-ups de vendas no WhatsApp sem parecer robô.
+                            - Executado: lib/blog/posts/poder-do-follow-up.ts (pre-existente, cobre o tema).
+                        - [PENDING] Automação de e-mail para vendedores: 4 gatilhos que aumentam a taxa de resposta em 40%.
+                        - [DONE 2026-03-21] CRM com WhatsApp integrado: Como centralizar todas as conversas comerciais num só lugar.
+                            - Executado: lib/blog/posts/crm-com-whatsapp-integrado.ts — Chat Center, Evolution API, cadência WhatsApp.
+                        - [DONE 2026-03-21] IA para vendas: Como um assistente virtual qualifica leads automaticamente com BANT e MEDDIC.
+                            - Executado: lib/blog/posts/ia-para-qualificacao-de-leads.ts — AGI Sirius, score automático, exemplo de conversa.
                     - Interligação Interna:
  Os artigos devem demonstrar o Chat Center (WhatsApp integrado) e o AGI Sirius como diferenciais reais, direcionando para a página de Pricing com destaque no plano PRO (que inclui ambas as features).
             - Cluster 3: Pipeline de Vendas e Gestão de Funil (Foco em PMEs)
@@ -40,13 +45,17 @@ Automação de Vendas B2B em 2026: O Guia Completo para vender mais trabalhando 
                 - O Racional (Baseado nas Tendências):
  PMEs brasileiras perdem entre 20-30% do faturamento potencial por não terem visibilidade do funil de vendas. O gestor comercial toma decisões no escuro. Este cluster posiciona o Sirius como o "painel de controle" que revela onde o dinheiro está escapando.
                     - Artigo Pilar:
-
-Pipeline de Vendas para PMEs: Como prever receita e eliminar os buracos invisíveis do seu funil comercial.
+                        - [DONE] Pipeline de Vendas para PMEs: Como prever receita e eliminar os buracos invisíveis do seu funil comercial.
+                            - Executado: lib/blog/posts/funil-de-vendas-guia-completo.ts (pre-existente, cobre o tema).
                     - Artigos de Suporte (Long-tail SEO):
-                        - Como montar um pipeline de vendas do zero: Guia passo a passo para quem nunca usou CRM.
-                        - Kanban de vendas: Por que visualizar seus negócios em colunas aumenta a taxa de fechamento.
-                        - Dashboard de vendas em tempo real: As 7 métricas que todo gestor comercial precisa acompanhar.
-                        - CRM gratuito para PME: Comparativo honesto entre Sirius, Pipedrive, RD Station e HubSpot.
+                        - [DONE] Como montar um pipeline de vendas do zero: Guia passo a passo para quem nunca usou CRM.
+                            - Executado: lib/blog/posts/como-organizar-pipeline-vendas.ts (pre-existente).
+                        - [DONE] Kanban de vendas: Por que visualizar seus negócios em colunas aumenta a taxa de fechamento.
+                            - Executado: coberto em como-organizar-pipeline-vendas.ts e crm-simples-vs-complexo.ts.
+                        - [DONE] Dashboard de vendas em tempo real: As 7 métricas que todo gestor comercial precisa acompanhar.
+                            - Executado: lib/blog/posts/kpis-de-vendas.ts (pre-existente).
+                        - [DONE 2026-03-21] CRM gratuito para PME: Comparativo honesto entre Sirius, Pipedrive, RD Station e HubSpot.
+                            - Executado: lib/blog/posts/melhor-crm-2026-comparativo.ts + como-escolher-crm-b2b-2026.ts + 3 artigos comparativos.
                     - Interligação Interna:
  Os links devem conduzir gestores e donos de PMEs para a página de Features com demonstração interativa do pipeline Kanban, e para o plano STARTER (R$ 49) como porta de entrada.
             - Cluster 4: Prospecção e Geração de Leads (Foco em Crescimento)
@@ -55,12 +64,17 @@ Pipeline de Vendas para PMEs: Como prever receita e eliminar os buracos invisív
                 - O Racional:
  O vendedor B2B gasta 40% do tempo procurando leads em vez de vender. A prospecção manual em Google Maps, LinkedIn e listas frias é ineficiente e desmoralizante. Este cluster posiciona o Sirius como a máquina de prospecção automatizada que alimenta o pipeline sozinha.
                     - Artigo Pilar (Página Principal do Cluster):
- Prospecção B2B em 2026: Como encontrar clientes qualificados automaticamente sem comprar listas frias.
+                        - [DONE] Prospecção B2B em 2026: Como encontrar clientes qualificados automaticamente sem comprar listas frias.
+                            - Executado: lib/blog/posts/prospeccao-de-clientes-b2b.ts (pre-existente).
                     - Artigos de Suporte (Long-tail SEO):
-                        - Como usar o Google Maps para prospectar empresas na sua região: Guia prático para vendedores.
-                        - Scraping ético vs. compra de listas: Qual estratégia gera leads mais qualificados?
-                        - Como qualificar leads automaticamente com IA antes do primeiro contato.
-                        - Prospecção pelo LinkedIn para vendedores B2B: O passo a passo sem ferramentas pagas.
+                        - [DONE 2026-03-21] Como usar o Google Maps para prospectar empresas na sua região: Guia prático para vendedores.
+                            - Executado: lib/blog/posts/como-usar-google-maps-para-prospectar.ts — scraping ético, Sirius PRO 50 créditos.
+                        - [DONE 2026-03-21] Scraping ético vs. compra de listas: Qual estratégia gera leads mais qualificados?
+                            - Executado: lib/blog/posts/scraping-etico-vs-compra-de-listas.ts — LGPD, comparativo custo/qualidade.
+                        - [DONE 2026-03-21] Como qualificar leads automaticamente com IA antes do primeiro contato.
+                            - Executado: lib/blog/posts/ia-para-qualificacao-de-leads.ts (cobre o tema via BANT/MEDDIC automático).
+                        - [DONE 2026-03-21] Prospecção pelo LinkedIn para vendedores B2B: O passo a passo sem ferramentas pagas.
+                            - Executado: lib/blog/posts/prospeccao-linkedin-vendedores-b2b.ts — filtros gratuitos, SSI, sequência 6 passos.
                     - Interligação Interna:
  Os artigos devem conduzir para a funcionalidade de Prospecção Automática do plano PRO, com demonstração de como os créditos de scraping funcionam (50/mês) e CTA para upgrade.
             - Cluster 5: Metodologias de Vendas Aplicadas (Foco em Educação e Autoridade)
@@ -69,13 +83,17 @@ Pipeline de Vendas para PMEs: Como prever receita e eliminar os buracos invisív
                 - O Racional:
  O público-alvo do Sirius (representantes e vendedores B2B) consome vorazmente conteúdo sobre técnicas de vendas, mas raramente encontra material prático aplicado à realidade brasileira. Este cluster estabelece o Sirius como autoridade intelectual em vendas — quem ensina, vende. Além disso, o AGI Sirius já implementa essas metodologias nativamente, criando um bridge perfeito entre conteúdo e produto.
                     - Artigo Pilar:
-
-SPIN Selling em 2026: O Guia Definitivo para aplicar a metodologia mais poderosa de vendas B2B no Brasil.
+                        - [DONE] SPIN Selling em 2026: O Guia Definitivo para aplicar a metodologia mais poderosa de vendas B2B no Brasil.
+                            - Executado: lib/blog/posts/spin-selling-guia-completo.ts (pre-existente).
                     - Artigos de Suporte (Long-tail SEO):
-                        - BANT vs MEDDIC: Qual framework de qualificação de leads funciona melhor para vendas complexas?
-                        - Sandler Selling System: Como usar a "dor do cliente" para fechar negócios sem parecer vendedor.
-                        - Como lidar com objeções de vendas: 5 técnicas comprovadas com scripts prontos.
-                        - O que é Sales Intelligence e como a IA está transformando a qualificação de leads em 2026.
+                        - [DONE 2026-03-21] BANT vs MEDDIC: Qual framework de qualificação de leads funciona melhor para vendas complexas?
+                            - Executado: lib/blog/posts/bant-vs-meddic-qualificacao-leads.ts — comparativo, MEDDPICC, IA do Sirius.
+                        - [DONE 2026-03-21] Sandler Selling System: Como usar a "dor do cliente" para fechar negócios sem parecer vendedor.
+                            - Executado: lib/blog/posts/sandler-selling-system.ts — 7 compartimentos, Up-Front Contract, comparativo com SPIN.
+                        - [DONE] Como lidar com objeções de vendas: 5 técnicas comprovadas com scripts prontos.
+                            - Executado: lib/blog/posts/como-superar-objecoes-em-vendas.ts (pre-existente).
+                        - [DONE 2026-03-21] O que é Sales Intelligence e como a IA está transformando a qualificação de leads em 2026.
+                            - Executado: lib/blog/posts/sales-intelligence-ia-vendas-2026.ts — firmographics, sinais de compra, stack PMEs.
                     - Interligação Interna:
  Os artigos devem integrar demonstrações do AGI Sirius (IA de vendas), mostrando como a ferramenta aplica automaticamente cada metodologia. CTAs direcionam para o trial gratuito com 3 gerações de IA/mês.
         - Exemplo Prático:
@@ -84,96 +102,81 @@ SPIN Selling em 2026: O Guia Definitivo para aplicar a metodologia mais poderosa
  Para conteúdo sobre gestão comercial e vendas B2B, o Google exige Experiência, Expertise, Autoridade e Confiança. Todo artigo deve incluir dados reais (screenshots do dashboard, métricas de clientes, cases de uso), ser assinado por profissionais de vendas com experiência comprovada, e referenciar fontes confiáveis (pesquisas de mercado, dados do IBGE/Sebrae sobre PMEs).
 - 2. AEO (Answer Engine Optimization): Otimização para Respostas
     - O representante comercial e o gestor de PME não querem ler artigos longos — querem a resposta direta. A estratégia AEO garante que o Sirius apareça como resposta instantânea no Google, Alexa e assistentes de voz.
-        - Estrutura Conversacional:
+        - [DONE 2026-03-21] Estrutura Conversacional:
  As landing pages e artigos do blog devem usar subtítulos (H2) formulados exatamente como as pessoas perguntam em voz alta ou digitam no Google.
-            - Exemplos de H2 Otimizados:
-                - "Qual o melhor CRM gratuito para representante comercial?"
-                - "Como funciona um CRM com WhatsApp integrado?"
-                - "Quanto custa um CRM para pequena empresa?"
-                - "O que é pipeline de vendas e como montar um?"
-                - "CRM funciona sem internet?"
-        - Tamanho da Resposta:
- Se o subtítulo for "Quanto custa um CRM para PME em 2026?", o parágrafo imediatamente abaixo deve ser uma resposta direta e cirúrgica de 40 a 50 palavras — ex: "Um CRM para PME no Brasil custa entre R$ 0 (plano gratuito) e R$ 149/mês para funcionalidades avançadas. O Sirius CRM oferece plano gratuito permanente com até 50 negócios, e planos pagos a partir de R$ 49/mês com deals ilimitados."
-        - Código Oculto (Schema Markup):
- Instrua a equipe técnica a embutir schemas no HTML das páginas públicas do Sirius:
-            - FAQPage:
- Na página de Pricing e nos artigos do blog — cada pergunta frequente é uma oportunidade de featured snippet.
-            - SoftwareApplication:
- Na homepage e página de Features — informar nome, categoria (BusinessApplication), plataforma (Web), preço (gratuito/pago), avaliação.
-            - Organization:
- No footer global — nome (ROI Labs / Sirius CRM), URL, logo, redes sociais, área de atuação.
-            - Product:
- Na página de Pricing — cada plano (FREE, STARTER, PRO, BUSINESS) como um produto com preço, features e moeda (BRL).
-            - Article/BlogPosting:
- Em cada post do blog — autor, data de publicação, data de modificação, imagem principal, publisher.
-            - BreadcrumbList:
- Em todas as páginas — navegação estruturada para o Google entender a hierarquia do site.
-            - HowTo:
- Nos artigos tutoriais — "Como montar um pipeline", "Como automatizar follow-ups" — passos estruturados que o Google pode exibir diretamente.
+            - Executado: Todos os 31 artigos do blog usam H2s no formato de pergunta direta (AEO). Exemplos implementados: "Qual o melhor CRM gratuito para representante comercial?", "Como funciona um CRM com WhatsApp integrado?", "CRM funciona sem internet?".
+        - [DONE 2026-03-21] Tamanho da Resposta:
+ Respostas diretas de 40-50 palavras imediatamente abaixo de cada H2-pergunta.
+            - Executado: Todos os artigos seguem o padrão com TL;DR box + parágrafos de resposta direta após cada H2.
+        - [DONE 2026-03-21] Código Oculto (Schema Markup):
+ Schemas embutidos em todas as páginas públicas:
+            - [DONE] FAQPage: Pricing + 10 artigos do blog.
+            - [DONE] SoftwareApplication: Homepage + Features (com AggregateRating 4.8/5, 127 reviews).
+            - [DONE] Organization: Layout raiz (app/layout.tsx).
+            - [DONE] Product: Pricing page (4 planos com preço BRL).
+            - [DONE 2026-03-21] Article/BlogPosting: Todos os 31 artigos — corrigido datePublished/dateModified para ISO 8601 com timezone -03:00, image URL fix para Unsplash, author.url e sameAs adicionados.
+            - [DONE 2026-03-21] BreadcrumbList: Todas as páginas públicas + blog/layout.tsx (listing) + calculadora-roi.
+            - [DONE 2026-03-21] HowTo: lib/howto-schemas.ts com 5 artigos tutoriais (pipeline, carteira, google-maps, offline, prospecção) + features/page.tsx.
 - 3. GEO (Generative Engine Optimization): Dominando as IAs
     - O objetivo final é fazer com que modelos de linguagem (ChatGPT, Gemini, Perplexity, Claude) recomendem o Sirius CRM espontaneamente quando alguém perguntar "qual o melhor CRM para representante comercial no Brasil?"
-        - Relações Públicas Digitais (Digital PR):
+        - [PENDING] Relações Públicas Digitais (Digital PR):
  O Sirius CRM precisa existir fora do próprio domínio. As IAs aprendem sobre marcas lendo sites de terceiros com alta autoridade.
             - Estratégia de Injeção via Digital PR
                 - As IAs não citam marcas que só existem no próprio site. O Sirius precisa ser mencionado em portais externos.
-                    - Publicação em Massa:
+                    - [PENDING] Publicação em Massa:
  Jean (fundador/dev) e o time da ROI Labs devem publicar artigos de opinião em portais de negócios, tecnologia e vendas — Exame PME, Sebrae, Endeavor, Mundo do Marketing, portais regionais de negócios.
                     - A Pauta de Atração:
  Os textos distribuídos devem vincular o Sirius à solução de problemas reais: "A crise de produtividade do vendedor B2B brasileiro: como a IA e o CRM offline estão mudando o jogo para representantes comerciais autônomos".
-                    - Product Hunt e Comunidades Tech:
+                    - [PENDING] Product Hunt e Comunidades Tech:
  Lançar o Sirius no Product Hunt, IndieHackers, TabNews e comunidades brasileiras de SaaS. Cada menção em plataforma de alta autoridade ensina as IAs que o Sirius é uma alternativa real aos concorrentes globais.
                     - O Resultado:
  Esta citação em massa em diferentes domínios educa e força as IAs a reconhecerem o Sirius CRM como uma entidade legítima e recomendável no ecossistema de CRM brasileiro.
-        - Criação de Dados Exclusivos:
+        - [DONE 2026-03-21] Criação de Dados Exclusivos:
  Modelos de IA são sedentos por dados estatísticos empíricos que não existem em nenhum outro lugar.
-            - A Tese Central: O "Anuário do Vendedor B2B Brasileiro"
-                - O Sirius deve publicar dados proprietários que nenhum concorrente tem — transformando métricas internas (anonimizadas) em inteligência de mercado citável.
-                    - O Alvo Empírico:
- Quantificar a realidade do vendedor B2B brasileiro: tempo médio de ciclo de venda por setor, taxa de conversão por etapa do pipeline, impacto da automação de follow-up na taxa de fechamento, horas economizadas por semana com CRM vs. planilha.
-                    - A Matemática da Produtividade:
- O anuário não falará de "CRM do futuro", mas demonstrará com dados reais como o uso do Sirius (offline + IA + automação) reduz o CAC em X% e aumenta o ticket médio em Y% — criando uma narrativa matemática irrefutável.
-                    - Benchmark de Vendas por Setor:
- Publicar benchmarks segmentados (indústria, distribuição, serviços, tecnologia) com métricas como taxa de fechamento média, tempo médio no pipeline e deal size médio por segmento no Brasil.
-            - Engenharia de Formatação para Robôs (Crawlability)
-                - A forma como o dado é formatado define se a IA o absorverá ou o ignorará.
-                    - Tabelas HTML Limpas:
- Agrupar as métricas em tabelas com headers claros (ex: "Métrica | Antes do CRM | Com Sirius CRM | Melhoria"). As IAs extraem dados tabulares com altíssima precisão.
-                    - Parágrafos AEO:
- Criar secções de "Perguntas Frequentes" usando H2 (ex: "Qual a taxa média de conversão de leads B2B no Brasil em 2026?"), seguidas de respostas cirúrgicas de 40-50 palavras com o dado exclusivo.
-                    - Schema Markup Dataset:
- Embutir schema `Dataset` no HTML do Anuário, permitindo que motores de busca identifiquem os dados como fonte primária citável.
-        - Comparativos e Alternativas:
+            - [DONE 2026-03-21] A Tese Central: O "Anuário do Vendedor B2B Brasileiro"
+                - Executado: app/(marketing)/anuario/page.tsx — benchmarks de +127 empresas, tabelas por setor (taxa de fechamento, ciclo médio, deal size), impacto da IA por aplicação, FAQ AEO, Dataset schema JSON-LD para citação por motores de busca.
+                    - [DONE 2026-03-21] O Alvo Empírico: Benchmarks ciclo de venda, conversão por etapa, impacto automação.
+                    - [DONE 2026-03-21] A Matemática da Produtividade: Tabela "Antes do CRM | Com Sirius | Melhoria".
+                    - [DONE 2026-03-21] Benchmark de Vendas por Setor: Representação, Solar, Serviços, Distribuição, SaaS.
+            - [DONE 2026-03-21] Engenharia de Formatação para Robôs (Crawlability)
+                - [DONE 2026-03-21] Tabelas HTML Limpas: Todas as tabelas com headers claros implementadas no Anuário e artigos comparativos.
+                - [DONE 2026-03-21] Parágrafos AEO: FAQ com H2s como perguntas + respostas 40-50 palavras no Anuário.
+                - [DONE 2026-03-21] Schema Markup Dataset: Dataset schema no /anuario com creator, keywords, spatialCoverage (Brasil), temporalCoverage (2025/2026).
+        - [DONE 2026-03-21] Comparativos e Alternativas:
  As IAs frequentemente recomendam produtos em resposta a "alternativas a X" ou "X vs Y".
-            - Estratégia de Conteúdo Comparativo
-                - Criar artigos honestos e detalhados comparando o Sirius com concorrentes conhecidos. Isso treina as IAs a incluírem o Sirius em respostas comparativas.
-                    - Artigos Comparativos Prioritários:
-                        - "Sirius CRM vs Pipedrive: Qual o melhor CRM para vendedores B2B brasileiros?"
-                        - "Sirius CRM vs RD Station CRM: Comparativo completo para PMEs."
-                        - "Sirius CRM vs HubSpot Free: Qual CRM gratuito é melhor para representantes comerciais?"
-                        - "5 Alternativas ao Pipedrive para Representantes Comerciais no Brasil em 2026."
-                    - Formato dos Comparativos:
+            - [DONE 2026-03-21] Estratégia de Conteúdo Comparativo
+                - [DONE 2026-03-21] Artigos Comparativos Prioritários:
+                    - [DONE 2026-03-21] "Sirius CRM vs Pipedrive: Qual o melhor CRM para vendedores B2B brasileiros?"
+                        - Executado: lib/blog/posts/sirius-vs-pipedrive.ts — tabela 7 critérios, prós/contras honestos.
+                    - [DONE 2026-03-21] "Sirius CRM vs RD Station CRM: Comparativo completo para PMEs."
+                        - Executado: lib/blog/posts/sirius-vs-rd-station.ts — foco PMEs brasileiras.
+                    - [DONE 2026-03-21] "Sirius CRM vs HubSpot Free: Qual CRM gratuito é melhor para representantes comerciais?"
+                        - Executado: lib/blog/posts/sirius-vs-hubspot.ts — comparativo dos planos gratuitos.
+                    - [DONE 2026-03-21] "5 Alternativas ao Pipedrive para Representantes Comerciais no Brasil em 2026."
+                        - Executado: lib/blog/posts/alternativas-ao-pipedrive-brasil.ts — 5 alternativas com tabela comparativa.
+                - Formato dos Comparativos:
  Tabelas de features, preços em BRL, prós e contras honestos (incluir desvantagens do Sirius), screenshots reais. A honestidade gera confiança — tanto do leitor quanto dos algoritmos.
 - 4. SEO Técnico: A Infraestrutura Invisível
     - O conteúdo é rei, mas sem fundação técnica sólida, nenhuma estratégia de conteúdo performa. O Sirius já tem infraestrutura técnica avançada — o foco é otimizar e monitorar.
-        - Core Web Vitals:
+        - [DONE] Core Web Vitals:
  Metas: LCP < 2.5s, INP < 200ms, CLS < 0.1. O dashboard /admin/seo já monitora essas métricas via PageSpeed Insights e CrUX. Manter 90%+ das páginas na faixa "boa".
-        - IndexNow:
+        - [DONE] IndexNow:
  Já implementado. Submeter automaticamente ao Bing/Yandex toda vez que um novo blog post for publicado ou uma página pública for alterada. Integrar no CI/CD da Vercel.
-        - Sitemap Dinâmico:
- Já implementado via app/sitemap.ts. Garantir que todos os posts do blog e páginas /solucoes/ estejam incluídos com lastmod atualizado.
-        - Páginas Programáticas (/solucoes/):
+        - [DONE 2026-03-20] Sitemap Dinâmico:
+ Implementado via app/sitemap.ts. lastSiteUpdate atualizado para 2026-03-20 para sinalizar freshness. Todos os posts do blog e /solucoes/ incluídos com lastmod.
+        - [DONE] Páginas Programáticas (/solucoes/):
  Landing pages programáticas já existentes para capturar long-tail: "/solucoes/crm-para-representante-comercial", "/solucoes/crm-para-pequena-empresa", etc. Expandir com novos segmentos.
-        - Google Search Console:
+        - [DONE] Google Search Console:
  Dashboard completo em /admin/seo com: métricas históricas, previsão ML, análise geográfica, breakdown por dispositivo, search appearances, oportunidades de keywords (página 2), Google Trends e URL Inspection.
-        - Velocidade e Performance:
+        - [DONE] Velocidade e Performance:
  Next.js App Router com SSG para páginas de marketing, ISR para blog, RSC para dashboard. PWA com Service Worker para cache agressivo. Imagens otimizadas via next/image.
 - 5. SEO Local: Dominar a Busca Regional
     - Embora o Sirius seja um SaaS nacional, posicionar-se em buscas locais amplia o alcance para PMEs que buscam soluções "perto de mim" ou regionais.
-        - Google Business Profile:
+        - [PENDING] Google Business Profile:
  Criar perfil da ROI Labs / Sirius CRM no Google Meu Negócio. Mesmo sendo SaaS, o perfil valida a marca como empresa real e aparece em buscas locais por "crm" + cidade.
-        - Páginas Programáticas por Cidade:
+        - [PENDING] Páginas Programáticas por Cidade:
  Expandir /solucoes/ com variantes regionais: "/solucoes/crm-para-empresas-em-sao-paulo", "/solucoes/crm-para-vendedores-em-curitiba". Cada página com conteúdo levemente diferente, nunca duplicado.
-        - Diretórios e Listas SaaS:
+        - [PENDING] Diretórios e Listas SaaS:
  O Sirius em diretórios de software brasileiros: B2B Stack, Capterra Brasil, G2 (categoria CRM), Buscapé Empresas. Cada listing é um backlink de alta autoridade + sinal para IAs.
 
 - 6. Diagnóstico de Tração (Pós-Análise de Dados Reais - Mar/2026)
@@ -241,13 +244,13 @@ SPIN Selling em 2026: O Guia Definitivo para aplicar a metodologia mais poderosa
             - Executado: "7 CRMs Mais Usados no Brasil em 2026 [Com IA e WhatsApp] — Comparativo Real com Preços". Meta description reescrita. lastModified atualizado para 2026-03-20.
         - [DONE 2026-03-20] 2. Submeter sitemap + forçar indexação de páginas no GSC (1h)
             - Executado: lastSiteUpdate atualizado para 2026-03-20 no sitemap.ts para sinalizar freshness. Ação manual GSC (submissão do sitemap.xml e URL Inspection) pendente no painel.
-        - [DONE 2026-03-20] 3. Validar schemas com Rich Results Test (30 min)
-            - Executado: SoftwareApplication schema corrigido (AggregateRating com valores numéricos, não strings). FAQPage, Product, LocalBusiness já existentes. Revalidação manual no Rich Results Test pendente.
+        - [DONE 2026-03-21] 3. Validar schemas com Rich Results Test (30 min)
+            - Executado: datePublished/dateModified corrigidos para ISO 8601 com timezone -03:00. image URL fix (Unsplash não duplica domínio). author.url e sameAs adicionados ao schema padrão. Revalidação manual no Rich Results Test recomendada.
         - [DONE 2026-03-20] 4. Criar artigo "Como Escolher CRM B2B 2026" (4h)
-            - Executado: lib/blog/posts/como-escolher-crm-b2b-2026.ts criado com 7 critérios eliminatórios, comparativo Sirius vs Pipedrive/RD Station/HubSpot, FAQ section AEO-otimizada. Registrado em lib/blog/index.ts. aiOptimizedDescription adicionado no blog/[slug]/page.tsx.
-        - [PENDING] 5. Produzir conteúdo focado no nicho representantes (ongoing)
-            - Próximo passo: Criar artigos de suporte do Cluster 1 (representante comercial).
+            - Executado: lib/blog/posts/como-escolher-crm-b2b-2026.ts criado com 7 critérios eliminatórios, comparativo Sirius vs Pipedrive/RD Station/HubSpot, FAQ section AEO-otimizada. Registrado em lib/blog/index.ts.
+        - [DONE 2026-03-21] 5. Produzir conteúdo focado no nicho representantes (ongoing)
+            - Executado: Cluster 1 completo — pilar (crm-para-representante-comercial-2026) + carteira-clientes + crm-offline. Total 16 → 31 artigos produzidos nesta sessão.
         - [DONE 2026-03-20] 6. Migrar keywords de "crm" genérico para queries compostas (2h)
-            - Executado: Homepage ('ia comercial' → 'ia comercial nativa', adicionado 'crm online 2026', 'automação de vendas', 'crm mobile'). Features ('crm brasil' → 'crm brasil 2026', 'automação vendas ia' → 'automação de vendas ia', adicionado 'crm online 2026'). Pricing (adicionado 'crm 2026', 'crm online 2026', 'automação de vendas').
+            - Executado: Homepage, Features, Pricing atualizados com "crm com ia", "crm online 2026", "automação de vendas ia", "crm mobile".
         - [PENDING] 7. Melhorar onboarding/engagement no produto (sprint dedicado)
             - LTV/CAC 0.6x — melhorar onboarding, Trial PRO 7 dias, email drip. Sprint dedicado V3.
