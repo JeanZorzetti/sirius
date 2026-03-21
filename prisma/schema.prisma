@@ -311,7 +311,8 @@ model Deal {
 
   // Deal Status (FASE 13 - Analytics)
   status DealStatus @default(ACTIVE)
-  lostReason String? // Motivo da perda (ex: "preço", "timing", "concorrente")
+  lostReason   String? // Motivo da perda (ex: "preço", "timing", "concorrente")
+  observations String? // Observações rápidas sobre o deal
 
   // v2.0: Soft Archive (FREE >50 deals)
   archived       Boolean   @default(false)

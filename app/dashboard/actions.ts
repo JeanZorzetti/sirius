@@ -254,6 +254,7 @@ export async function updateDeal(formData: FormData) {
     const value = valueStr ? parseFloat(valueStr) : null
     const closeDate = closeDateStr ? new Date(closeDateStr) : null
     const dueDate = dueDateStr ? new Date(dueDateStr) : null
+    const observations = formData.get('observations') as string | null
 
     const updatedDeal = await prisma.deal.update({
       where: { id: dealId },
@@ -263,7 +264,8 @@ export async function updateDeal(formData: FormData) {
         stageId,
         contactId,
         closeDate,
-        dueDate
+        dueDate,
+        observations: observations || null,
       },
       include: {
         stage: true
@@ -290,6 +292,22 @@ export async function updateDeal(formData: FormData) {
     return { success: false, error: 'Failed to update deal' }
   }
 }
+export async function updateDealStatus(dealId: string, status: 'ACTIVE' | 'LOST') {
+  try {
+    const user = await getAuthenticatedUser()
+    const deal = await prisma.deal.findUnique({ where: { id: dealId } })
+    if (!deal || deal.organizationId !== user.organizationId) {
+      return { success: false, error: 'Unauthorized' }
+    }
+    await prisma.deal.update({ where: { id: dealId }, data: { status } })
+    revalidatePath('/dashboard')
+    return { success: true }
+  } catch (error) {
+    logger.error({ err: error }, 'Failed to update deal status')
+    return { success: false, error: 'Failed to update deal status' }
+  }
+}
+
 export async function moveDealToPipeline(dealId: string, newPipelineId: string, newStageId: string) {
   try {
     const user = await getAuthenticatedUser()

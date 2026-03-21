@@ -15,7 +15,12 @@ export const metadata: Metadata = {
 
 export const dynamic = 'force-dynamic'
 
-export default async function ChatPage() {
+export default async function ChatPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ phone?: string }>
+}) {
+  const { phone: initialPhone } = await searchParams
   const session = await getSession()
 
   if (!session?.user) {
@@ -119,6 +124,7 @@ export default async function ChatPage() {
         userName={user.name || 'Usuário'}
         organizationId={user.organizationId}
         maxInstances={user.organization.whatsappInstances || 1}
+        initialPhone={initialPhone}
       />
     </div>
   )

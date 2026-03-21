@@ -282,7 +282,7 @@ export function ConversationList({ contacts, selectedContact, onSelectContact, c
 
       {/* List */}
       <div
-        className="flex-1 overflow-y-auto"
+        className="flex-1 overflow-y-auto custom-scrollbar"
         role="list"
         aria-label="Lista de conversas"
       >

@@ -54,6 +54,7 @@ interface ChatInterfaceProps {
   userName: string
   organizationId: string
   maxInstances: number
+  initialPhone?: string
 }
 
 const POLL_INTERVAL = 3000 // 3s para tempo real
@@ -64,7 +65,8 @@ export function ChatInterface({
   userId,
   userName,
   organizationId,
-  maxInstances
+  maxInstances,
+  initialPhone,
 }: ChatInterfaceProps) {
   const [selectedContact, setSelectedContact] = useState<Contact | null>(null)
   const [activeView, setActiveView] = useState<'chat' | 'connections'>('chat')
@@ -77,6 +79,14 @@ export function ChatInterface({
 
   const activeConnections = connections.filter(c => c.status === 'CONNECTED')
   const totalUnread = contacts.reduce((sum, contact) => sum + (contact._count.unreadMessages || 0), 0)
+
+  // Auto-select contact when arriving from a WhatsApp button click (via ?phone=...)
+  useEffect(() => {
+    if (!initialPhone || contacts.length === 0) return
+    const normalized = initialPhone.replace(/\D/g, '')
+    const match = contacts.find(c => c.phone?.replace(/\D/g, '') === normalized)
+    if (match) setSelectedContact(match)
+  }, [initialPhone, contacts])
 
   // Ref para selectedContact — evita que fetchConversations mude de referência
   // a cada seleção, o que causaria reconexão do Pusher

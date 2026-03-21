@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect, useTransition } from 'react'
+import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import {
     Dialog,
@@ -29,6 +30,7 @@ import { updateDeal, deleteDeal } from '@/app/dashboard/actions'
 import { getDealDetails, addNote, deleteNote, addDealClosing, deleteDealClosing, getDealClosings } from '@/app/dashboard/deals/actions'
 import { createContact } from '@/app/dashboard/contacts/actions'
 import { Loader2, MessageSquare, History, Tag, Calendar, Send, Trash2, Plus, MessageCircle, DollarSign } from 'lucide-react'
+import { Textarea } from '@/components/ui/textarea'
 import { ConfirmDialog } from '@/components/ui/confirm-dialog'
 import { toast } from 'sonner'
 import { format } from 'date-fns'
@@ -70,8 +72,10 @@ export function EditDealDialog({
     onRollback,
     onSuccess
 }: EditDealDialogProps) {
+    const router = useRouter()
     const [loading, setLoading] = useState(false)
     const [fullDeal, setFullDeal] = useState<any>(null)
+    const [observations, setObservations] = useState('')
     const [fetchingDetails, setFetchingDetails] = useState(false)
     const [newNote, setNewNote] = useState("")
     const [isPending, startTransition] = useTransition()
@@ -105,6 +109,7 @@ export function EditDealDialog({
                     if (!cancelled) {
                         setFullDeal(data)
                         setClosings(closingsData)
+                        setObservations(data?.observations || '')
                     }
                 })
                 .catch((err) => {
@@ -471,7 +476,10 @@ export function EditDealDialog({
                                                             className="shrink-0 text-green-600 border-green-200 hover:bg-green-50 hover:text-green-700 dark:border-green-900/50 dark:text-green-400 dark:hover:bg-green-900/20"
                                                             onClick={() => {
                                                                 const phone = selectedContact.phone?.replace(/\D/g, '')
-                                                                if (phone) window.open(`https://wa.me/${phone}`, '_blank')
+                                                                if (phone) {
+                                                                    onOpenChange(false)
+                                                                    router.push(`/dashboard/chat?phone=${phone}`)
+                                                                }
                                                             }}
                                                             title="Conversar no WhatsApp"
                                                         >
@@ -502,6 +510,17 @@ export function EditDealDialog({
                                                 className="bg-zinc-50 dark:bg-zinc-900/50"
                                             />
                                         </div>
+                                    </div>
+
+                                    <div className="space-y-2">
+                                        <Label>Observações do Deal</Label>
+                                        <Textarea
+                                            name="observations"
+                                            value={observations}
+                                            onChange={(e) => setObservations(e.target.value)}
+                                            placeholder="Anotações rápidas sobre este negócio..."
+                                            className="bg-zinc-50 dark:bg-zinc-900/50 resize-none min-h-[80px]"
+                                        />
                                     </div>
 
                                     <div className="pt-4 flex justify-between border-t border-zinc-100 dark:border-zinc-800">

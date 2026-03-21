@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect, useRef, useMemo } from 'react'
+import { useRouter } from 'next/navigation'
 import { createPortal } from 'react-dom'
 import {
   DragDropContext,
@@ -12,7 +13,7 @@ import {
   DraggableStateSnapshot
 } from '@hello-pangea/dnd'
 import { Card, CardContent } from '@/components/ui/card'
-import { updateDealStage } from '@/app/dashboard/actions'
+import { updateDealStage, updateDealStatus } from '@/app/dashboard/actions'
 import { updateStageOrder, deleteStage, updateStage, createStage } from '@/app/dashboard/pipeline/actions'
 import { reorderDeals } from '@/app/dashboard/deals/actions'
 import { EditDealDialog } from '@/components/deals/edit-deal-dialog'
@@ -41,6 +42,7 @@ type Deal = {
   title: string
   value: any
   stageId: string
+  status?: string
   contact?: {
     name: string
     phone?: string | null
@@ -48,6 +50,8 @@ type Deal = {
   closeDate?: string | Date | null
   dueDate?: string | Date | null
 }
+
+const LOST_COLUMN_ID = '__PERDIDO__'
 
 type Stage = {
   id: string
@@ -91,11 +95,12 @@ function DealCard({
   snapshot: DraggableStateSnapshot
   onClick?: () => void
 }) {
+  const router = useRouter()
   const handleWhatsApp = (e: React.MouseEvent) => {
     e.stopPropagation()
     if (!deal.contact?.phone) return
     const phone = deal.contact.phone.replace(/\D/g, '')
-    window.open(`https://wa.me/${phone}`, '_blank')
+    router.push(`/dashboard/chat?phone=${phone}`)
   }
 
   // Remove transition during drag for instant movement (no elastic/lag feeling)
@@ -300,6 +305,72 @@ function KanbanColumn({
   )
 }
 
+function LostColumn({
+  deals,
+  onDealClick,
+}: {
+  deals: Deal[]
+  onDealClick?: (deal: Deal) => void
+}) {
+  const totalValue = deals.reduce((acc, d) => acc + (d.value ? Number(d.value) : 0), 0)
+
+  return (
+    <div className="w-[260px] sm:w-[300px] md:w-80 flex-none flex flex-col h-full">
+      <div className="flex flex-col gap-1 px-1 mb-4 select-none">
+        <div className="flex items-center justify-between">
+          <h3 className="text-xs font-bold uppercase tracking-widest text-red-500/80">
+            Perdido
+          </h3>
+          <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-red-900/30 px-1.5 text-[10px] font-medium text-red-400">
+            {deals.length}
+          </span>
+        </div>
+        <div className="h-1 w-full rounded-full bg-zinc-900 overflow-hidden mt-2">
+          <div className="h-full bg-red-500/20 w-full" />
+        </div>
+        <div className="mt-1 text-xs font-mono text-zinc-500">
+          Total: <span className="text-red-400/80">R$ {totalValue.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</span>
+        </div>
+      </div>
+
+      <Droppable droppableId={LOST_COLUMN_ID} type="DEAL">
+        {(provided: DroppableProvided, snapshot) => (
+          <div
+            ref={provided.innerRef}
+            {...provided.droppableProps}
+            className={cn(
+              "flex-1 rounded-2xl bg-gradient-to-b from-red-950/10 to-red-950/5 backdrop-blur-xl p-3 border border-red-500/10 shadow-[0_8px_32px_0_rgba(0,0,0,0.08)]",
+              snapshot.isDraggingOver && "border-red-500/30 bg-red-500/5"
+            )}
+          >
+            <div className="flex flex-col gap-3 min-h-[150px]">
+              {deals.map((deal, index) => (
+                <Draggable key={deal.id} draggableId={deal.id} index={index}>
+                  {(provided, snapshot) => (
+                    <DealCard
+                      deal={deal}
+                      provided={provided}
+                      snapshot={snapshot}
+                      onClick={() => onDealClick?.(deal)}
+                    />
+                  )}
+                </Draggable>
+              ))}
+              {provided.placeholder}
+              {deals.length === 0 && (
+                <div className="flex h-40 flex-col items-center justify-center rounded-xl border-2 border-dashed border-red-500/10 p-4 text-center gap-3">
+                  <span className="text-xs font-medium text-zinc-600">Nenhum negócio perdido</span>
+                  <span className="text-[10px] text-zinc-700">Arraste um card para marcar como perdido</span>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+      </Droppable>
+    </div>
+  )
+}
+
 export function KanbanBoard({
   stages: initialStages,
   contacts,
@@ -328,20 +399,34 @@ export function KanbanBoard({
     setStages(initialStages.sort((a, b) => a.order - b.order))
   }, [initialStages])
 
-  // Filter deals based on search
+  // Filter deals based on search, excluding LOST deals from regular columns
   const filteredStages = useMemo(() => {
-    if (!searchQuery) {
-      return stages
-    }
+    const activeStages = stages.map(stage => ({
+      ...stage,
+      deals: stage.deals.filter(d => d.status !== 'LOST'),
+    }))
+
+    if (!searchQuery) return activeStages
 
     const query = searchQuery.toLowerCase()
-    return stages.map(stage => ({
+    return activeStages.map(stage => ({
       ...stage,
       deals: stage.deals.filter(deal =>
         deal.title.toLowerCase().includes(query) ||
-        deal.contact?.name.toLowerCase().includes(query)
-      )
+        deal.contact?.name?.toLowerCase().includes(query)
+      ),
     }))
+  }, [stages, searchQuery])
+
+  // LOST deals for the fixed "Perdido" column
+  const lostDeals = useMemo(() => {
+    const allLost = stages.flatMap(s => s.deals.filter(d => d.status === 'LOST'))
+    if (!searchQuery) return allLost
+    const query = searchQuery.toLowerCase()
+    return allLost.filter(d =>
+      d.title.toLowerCase().includes(query) ||
+      d.contact?.name?.toLowerCase().includes(query)
+    )
   }, [stages, searchQuery])
 
   // Handlers for Stage CRUD
@@ -378,18 +463,56 @@ export function KanbanBoard({
 
   const handleDragEnd = async (result: DropResult) => {
     const { destination, source, draggableId } = result
+    const dealId = draggableId
 
-    // Dropped outside
     if (!destination) return
+    if (destination.droppableId === source.droppableId && destination.index === source.index) return
 
-    // No movement
-    if (
-      destination.droppableId === source.droppableId &&
-      destination.index === source.index
-    ) {
+    // --- Drag INTO Perdido: mark deal as LOST ---
+    if (destination.droppableId === LOST_COLUMN_ID) {
+      setStages(prev => prev.map(s => ({
+        ...s,
+        deals: s.deals.map(d => d.id === dealId ? { ...d, status: 'LOST' } : d),
+      })))
+      await updateDealStatus(dealId, 'LOST')
       return
     }
 
+    // --- Drag OUT OF Perdido to a real stage: restore as ACTIVE ---
+    if (source.droppableId === LOST_COLUMN_ID) {
+      const destStageIdx = stages.findIndex(s => s.id === destination.droppableId)
+      if (destStageIdx === -1) return
+
+      setStages(prev => {
+        const srcStageIdx = prev.findIndex(s => s.deals.some(d => d.id === dealId))
+        if (srcStageIdx === -1) return prev
+
+        const deal = prev[srcStageIdx].deals.find(d => d.id === dealId)!
+        const updatedDeal = { ...deal, status: 'ACTIVE', stageId: destination.droppableId }
+
+        return prev.map((s, i) => {
+          if (i === srcStageIdx) {
+            return { ...s, deals: s.deals.filter(d => d.id !== dealId) }
+          }
+          if (i === destStageIdx) {
+            const activeDeals = s.deals.filter(d => d.status !== 'LOST')
+            const lostDealsInStage = s.deals.filter(d => d.status === 'LOST')
+            const newActive = [...activeDeals]
+            newActive.splice(destination.index, 0, updatedDeal)
+            return { ...s, deals: [...newActive, ...lostDealsInStage] }
+          }
+          return s
+        })
+      })
+
+      await Promise.all([
+        updateDealStatus(dealId, 'ACTIVE'),
+        updateDealStage(dealId, destination.droppableId),
+      ])
+      return
+    }
+
+    // --- Normal stage-to-stage drag ---
     const sourceStageIndex = stages.findIndex(s => s.id === source.droppableId)
     const destStageIndex = stages.findIndex(s => s.id === destination.droppableId)
 
@@ -398,55 +521,51 @@ export function KanbanBoard({
     const sourceStage = stages[sourceStageIndex]
     const destStage = stages[destStageIndex]
 
-    // Same column reorder
+    // Use filtered (non-LOST) deals for index-based operations since that's what is displayed
+    const sourceActiveDeals = sourceStage.deals.filter(d => d.status !== 'LOST')
+    const sourceLostDeals = sourceStage.deals.filter(d => d.status === 'LOST')
+
     if (source.droppableId === destination.droppableId) {
-      const newDeals = reorder(sourceStage.deals, source.index, destination.index)
+      const newActiveDeals = reorder(sourceActiveDeals, source.index, destination.index)
 
       setStages(prev => {
         const newStages = [...prev]
         newStages[sourceStageIndex] = {
           ...sourceStage,
-          deals: newDeals
+          deals: [...newActiveDeals, ...sourceLostDeals],
         }
         return newStages
       })
 
-      // Persist to backend
-      const reorderedDeals = newDeals.map((deal, index) => ({ id: deal.id, order: index }))
+      const reorderedDeals = newActiveDeals.map((deal, index) => ({ id: deal.id, order: index }))
       await reorderDeals(sourceStage.id, reorderedDeals)
-
     } else {
-      // Moving to different column
-      const sourceDeal = sourceStage.deals[source.index]
+      const destActiveDeals = destStage.deals.filter(d => d.status !== 'LOST')
+      const destLostDeals = destStage.deals.filter(d => d.status === 'LOST')
 
-      // Remove from source
-      const newSourceDeals = [...sourceStage.deals]
-      newSourceDeals.splice(source.index, 1)
+      const sourceDeal = sourceActiveDeals[source.index]
+      if (!sourceDeal) return
 
-      // Add to destination
-      const newDestDeals = [...destStage.deals]
+      const newSourceActive = sourceActiveDeals.filter((_, i) => i !== source.index)
+      const newDestActive = [...destActiveDeals]
       const updatedDeal = { ...sourceDeal, stageId: destStage.id }
-      newDestDeals.splice(destination.index, 0, updatedDeal)
+      newDestActive.splice(destination.index, 0, updatedDeal)
 
       setStages(prev => {
         const newStages = [...prev]
         newStages[sourceStageIndex] = {
           ...sourceStage,
-          deals: newSourceDeals
+          deals: [...newSourceActive, ...sourceLostDeals],
         }
         newStages[destStageIndex] = {
           ...destStage,
-          deals: newDestDeals
+          deals: [...newDestActive, ...destLostDeals],
         }
         return newStages
       })
 
-      // Persist to backend
-      // 1. Update deal's stage
       await updateDealStage(sourceDeal.id, destStage.id)
-
-      // 2. Update order in destination stage
-      const reorderedDeals = newDestDeals.map((deal, index) => ({ id: deal.id, order: index }))
+      const reorderedDeals = newDestActive.map((deal, index) => ({ id: deal.id, order: index }))
       await reorderDeals(destStage.id, reorderedDeals)
     }
   }
@@ -484,6 +603,10 @@ export function KanbanBoard({
               onDelete={(id) => setDeleteStageId(id)}
             />
           ))}
+          <LostColumn
+            deals={lostDeals}
+            onDealClick={(deal) => setEditingDeal(deal)}
+          />
           <div className="w-10 shrink-0" />
         </div>
       </div>
