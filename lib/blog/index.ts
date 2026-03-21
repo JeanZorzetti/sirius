@@ -20,6 +20,12 @@ import { post as post18 } from './posts/como-organizar-carteira-clientes-represe
 import { post as post19 } from './posts/crm-offline-para-vendedores'
 import { post as post20 } from './posts/bant-vs-meddic-qualificacao-leads'
 import { post as post21 } from './posts/como-usar-google-maps-para-prospectar'
+import { post as post22 } from './posts/crm-com-whatsapp-integrado'
+import { post as post23 } from './posts/ia-para-qualificacao-de-leads'
+import { post as post24 } from './posts/scraping-etico-vs-compra-de-listas'
+import { post as post25 } from './posts/prospeccao-linkedin-vendedores-b2b'
+import { post as post26 } from './posts/sandler-selling-system'
+import { post as post27 } from './posts/sales-intelligence-ia-vendas-2026'
 
 export const blogPosts: BlogPost[] = [
   post1,
@@ -43,4 +49,10 @@ export const blogPosts: BlogPost[] = [
   post19,
   post20,
   post21,
+  post22,
+  post23,
+  post24,
+  post25,
+  post26,
+  post27,
 ]
