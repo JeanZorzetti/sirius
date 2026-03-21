@@ -11,6 +11,7 @@ import { TableOfContents } from '@/components/blog/table-of-contents'
 import { BlogContentWrapper } from '@/components/blog/blog-content-wrapper'
 import { generateFAQSchema, spinSellingFAQs, crmIaFAQs, automacaoVendasFAQs, melhorCrm2026FAQs, prospeccaoB2bFAQs, fechamentoVendasFAQs, objecoesVendasFAQs, kpisVendasFAQs, errosCrmFAQs, FAQItem } from '@/lib/faq-schema'
 import { generateArticleSchema, COMMON_WIKIDATA_ENTITIES, createGeoConfig } from '@/lib/geo/schema-generator'
+import { getHowToSchema } from '@/lib/howto-schemas'
 import { JsonLd } from '@/components/seo/json-ld'
 import { Metadata } from 'next'
 import { ChevronLeft, ChevronRight, Calendar, Clock, User } from 'lucide-react'
@@ -390,6 +391,9 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
 
       {/* FAQ Schema for Featured Snippets (if available) */}
       {faqSchema && <JsonLd data={faqSchema} />}
+
+      {/* HowTo Schema for tutorial articles */}
+      {(() => { const h = getHowToSchema(slug); return h ? <JsonLd data={h} /> : null })()}
 
       <article className="relative">
         {/* Premium Header Background */}

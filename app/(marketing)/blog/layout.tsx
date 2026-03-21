@@ -40,12 +40,26 @@ export default function BlogLayout({
     }))
   }
 
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Início", "item": "https://sirius.roilabs.com.br" },
+      { "@type": "ListItem", "position": 2, "name": "Blog", "item": "https://sirius.roilabs.com.br/blog" },
+    ]
+  }
+
   return (
     <>
       <Script
         id="collection-schema"
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionSchema) }}
+      />
+      <Script
+        id="breadcrumb-blog-schema"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
       {children}
     </>

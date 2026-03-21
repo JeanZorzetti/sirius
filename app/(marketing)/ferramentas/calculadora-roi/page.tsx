@@ -1,4 +1,5 @@
 import { Metadata } from 'next'
+import Script from 'next/script'
 import { CalculadoraROI } from '@/components/calculadora-roi'
 
 export const metadata: Metadata = {
@@ -17,9 +18,20 @@ export const metadata: Metadata = {
   },
 }
 
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Início", "item": "https://sirius.roilabs.com.br" },
+    { "@type": "ListItem", "position": 2, "name": "Ferramentas", "item": "https://sirius.roilabs.com.br/ferramentas" },
+    { "@type": "ListItem", "position": 3, "name": "Calculadora de ROI", "item": "https://sirius.roilabs.com.br/ferramentas/calculadora-roi" },
+  ]
+}
+
 export default function CalculadoraROIPage() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-zinc-50 to-white dark:from-zinc-950 dark:to-zinc-900">
+      <Script id="breadcrumb-calculadora-roi" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <div className="container mx-auto px-4 py-12 sm:py-16 lg:py-24">
         {/* Hero Section */}
         <div className="max-w-3xl mx-auto text-center mb-12 sm:mb-16">
