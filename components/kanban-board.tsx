@@ -121,11 +121,11 @@ function DealCard({
       style={style}
       data-tour={isOverdue ? "overdue-task" : "deal-card"}
       className={cn(
-        "group relative flex gap-3 rounded-xl border p-4 shadow-sm select-none",
-        "bg-card border-border hover:border-indigo-500/30",
-        "dark:bg-[#121217] dark:border-white/5",
-        snapshot.isDragging && "shadow-2xl shadow-indigo-500/40 z-[9999] ring-2 ring-indigo-500 rotate-2 scale-105",
-        isOverdue && "border-red-500 border-2 bg-red-50 dark:bg-red-950/20"
+        "group relative flex gap-3 rounded-xl border p-3.5 shadow-sm transition-all duration-300 select-none",
+        "bg-card border-border hover:shadow-md hover:border-primary/40",
+        "dark:bg-zinc-900/80 dark:backdrop-blur-xl dark:border-white/10 dark:hover:bg-zinc-800/90",
+        snapshot.isDragging && "shadow-xl shadow-primary/20 z-[9999] ring-1 ring-primary rotate-2 scale-105",
+        isOverdue && "border-destructive border ring-1 ring-destructive/20 bg-destructive/10 dark:bg-destructive/20"
       )}
     >
       {/* Drag Handle */}
@@ -146,7 +146,7 @@ function DealCard({
             <span className="text-[10px] uppercase tracking-wider text-zinc-500 font-semibold">
               Valor
             </span>
-            <span className="text-sm font-mono font-bold text-indigo-400">
+            <span className="text-sm font-mono font-bold text-primary/90">
               {deal.value ? `R$ ${Number(deal.value).toFixed(2)}` : '-'}
             </span>
           </div>
@@ -249,11 +249,11 @@ function KanbanColumn({
             </DropdownMenu>
           </div>
         </div>
-        <div className="h-1 w-full rounded-full bg-zinc-900 overflow-hidden mt-2">
-          <div className="h-full bg-indigo-500/20 w-full" />
+        <div className="h-1 w-full rounded-full bg-zinc-200 dark:bg-zinc-900 overflow-hidden mt-2">
+          <div className="h-full bg-primary/40 w-full" />
         </div>
         <div className="mt-1 text-xs font-mono text-zinc-500">
-          Total: <span className="text-indigo-400/80">R$ {totalValue.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</span>
+          Total: <span className="text-primary/80 font-semibold">R$ {totalValue.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</span>
         </div>
       </div>
 
@@ -264,8 +264,10 @@ function KanbanColumn({
             ref={provided.innerRef}
             {...provided.droppableProps}
             className={cn(
-              "flex-1 rounded-2xl bg-gradient-to-b from-white/[0.07] to-white/[0.02] backdrop-blur-xl p-3 border border-white/10 shadow-[0_8px_32px_0_rgba(0,0,0,0.08)] dark:shadow-[0_8px_32px_0_rgba(0,0,0,0.3)]",
-              snapshot.isDraggingOver && "border-indigo-500/30 bg-indigo-500/5"
+              "flex-1 rounded-2xl p-3 border shadow-sm transition-colors",
+              "bg-muted/30 border-border/50",
+              "dark:bg-gradient-to-b dark:from-white/[0.04] dark:to-white/[0.01] dark:backdrop-blur-md dark:border-white/5 dark:shadow-[0_4px_24px_rgba(0,0,0,0.2)]",
+              snapshot.isDraggingOver && "border-primary/30 bg-primary/5 dark:bg-primary/10"
             )}
           >
             <div className="flex flex-col gap-3 min-h-[150px]">
@@ -325,8 +327,8 @@ function LostColumn({
             {deals.length}
           </span>
         </div>
-        <div className="h-1 w-full rounded-full bg-zinc-900 overflow-hidden mt-2">
-          <div className="h-full bg-red-500/20 w-full" />
+        <div className="h-1 w-full rounded-full bg-zinc-200 dark:bg-zinc-900 overflow-hidden mt-2">
+          <div className="h-full bg-red-400 w-full" />
         </div>
         <div className="mt-1 text-xs font-mono text-zinc-500">
           Total: <span className="text-red-400/80">R$ {totalValue.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</span>
@@ -339,8 +341,9 @@ function LostColumn({
             ref={provided.innerRef}
             {...provided.droppableProps}
             className={cn(
-              "flex-1 rounded-2xl bg-gradient-to-b from-red-950/10 to-red-950/5 backdrop-blur-xl p-3 border border-red-500/10 shadow-[0_8px_32px_0_rgba(0,0,0,0.08)]",
-              snapshot.isDraggingOver && "border-red-500/30 bg-red-500/5"
+              "flex-1 rounded-2xl p-3 border shadow-sm transition-colors bg-red-50/50 border-red-100",
+              "dark:bg-gradient-to-b dark:from-red-950/20 dark:to-red-950/5 dark:backdrop-blur-md dark:border-red-500/10 dark:shadow-[0_4px_24px_rgba(0,0,0,0.2)]",
+              snapshot.isDraggingOver && "border-red-500/30 bg-red-500/10"
             )}
           >
             <div className="flex flex-col gap-3 min-h-[150px]">

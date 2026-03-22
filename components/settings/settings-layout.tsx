@@ -1,12 +1,13 @@
 'use client'
 
 import { useState, useMemo } from 'react'
-import { Search, Settings, User, Users, Bell, Key, Webhook, Zap, BookOpen, Menu, X } from 'lucide-react'
+import { Search, Settings, User, Users, Bell, Key, Webhook, Zap, BookOpen, Menu, X, RotateCw, Sun, Moon } from 'lucide-react'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import { useTheme } from 'next-themes'
 
 interface SettingsTab {
   id: string
@@ -63,6 +64,13 @@ const tabs: SettingsTab[] = [
     description: 'N8N, WhatsApp e Google Calendar',
   },
   {
+    id: 'round-robin',
+    label: 'Round-Robin',
+    icon: RotateCw,
+    href: '/dashboard/settings/round-robin',
+    description: 'Distribuição automática de leads',
+  },
+  {
     id: 'help',
     label: 'Ajuda',
     icon: BookOpen,
@@ -79,6 +87,8 @@ interface SettingsLayoutProps {
 export function SettingsLayout({ children, organizationName }: SettingsLayoutProps) {
   const pathname = usePathname()
   const [searchQuery, setSearchQuery] = useState('')
+  const { theme, setTheme } = useTheme()
+  const isDark = theme === 'dark'
 
   // Filter tabs based on search query
   const filteredTabs = useMemo(() => {
@@ -128,7 +138,7 @@ export function SettingsLayout({ children, organizationName }: SettingsLayoutPro
 
       {/* Sidebar - Navegação Lateral */}
       <aside className={cn(
-        "w-64 border-r border-zinc-200 dark:border-white/5 bg-white/50 dark:bg-white/[0.01] backdrop-blur-xl p-6 space-y-6",
+        "w-64 border-r border-zinc-200 dark:border-white/5 bg-white/50 dark:bg-white/[0.01] backdrop-blur-xl p-6 space-y-6 overflow-y-auto",
         "fixed inset-y-0 left-0 z-40 transition-transform duration-200 md:relative md:translate-x-0",
         sidebarOpen ? "translate-x-0" : "-translate-x-full"
       )}>
@@ -222,6 +232,23 @@ export function SettingsLayout({ children, organizationName }: SettingsLayoutPro
             </p>
           </div>
         )}
+
+        {/* Theme Toggle */}
+        <div className="pt-4 border-t border-zinc-200 dark:border-white/5">
+          <button
+            onClick={() => setTheme(isDark ? 'light' : 'dark')}
+            className="flex items-center gap-3 w-full px-3 py-2.5 rounded-lg text-sm font-medium text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-white/5 hover:text-zinc-900 dark:hover:text-zinc-100 transition-all duration-200"
+          >
+            {isDark
+              ? <Sun className="h-5 w-5 text-zinc-400" />
+              : <Moon className="h-5 w-5 text-zinc-400" />
+            }
+            <div className="flex-1 text-left">
+              <div className="text-sm font-medium">Tema</div>
+              <div className="text-xs text-zinc-500 mt-0.5">{isDark ? 'Modo claro' : 'Modo escuro'}</div>
+            </div>
+          </button>
+        </div>
       </aside>
 
       {/* Main Content */}

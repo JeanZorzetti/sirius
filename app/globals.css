@@ -264,19 +264,6 @@
     @apply bg-background text-foreground;
   }
 
-  /* Texture Pattern for Light Mode */
-  body:not(.dark) {
-    background-image: radial-gradient(#d4d4d8 1px, transparent 1px);
-    background-size: 24px 24px;
-  }
-
-  .dark body {
-    /* Subtle Indigo dots on Slate background (High Contrast) */
-    background-image: radial-gradient(circle at 1px 1px, rgba(129, 140, 248, 0.15) 2px, transparent 0);
-    background-size: 24px 24px;
-    background-color: oklch(0.18 0.01 260);
-    /* Matches new background var */
-  }
 }
 
 @layer utilities {

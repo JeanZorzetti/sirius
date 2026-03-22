@@ -8,8 +8,10 @@ import { cn } from '@/lib/utils'
 import { motion } from 'framer-motion'
 import {
   Home, Users, Settings, BarChart3, CreditCard, Mail,
-  RotateCw, MessageSquare, TrendingDown, Zap, TrendingUp,
+  MessageSquare, TrendingDown, Zap, TrendingUp, LogOut,
 } from 'lucide-react'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { logoutAction } from '@/app/auth/actions'
 import { Separator } from '@/components/ui/separator'
 import { SidebarProvider, useSidebar } from '@/components/ui/sidebar'
 
@@ -20,15 +22,15 @@ type NavItem = {
 }
 
 const crmItems: NavItem[] = [
-  { title: 'Pipelines',      href: '/dashboard',              icon: Home },
-  { title: 'Contatos',       href: '/dashboard/contacts',     icon: Users },
-  { title: 'Chat WhatsApp',  href: '/dashboard/chat',         icon: MessageSquare },
+  { title: 'Pipelines',      href: '/dashboard',          icon: Home },
+  { title: 'Contatos',       href: '/dashboard/contacts', icon: Users },
+  { title: 'Chat WhatsApp',  href: '/dashboard/chat',     icon: MessageSquare },
 ]
 
 const analyticsItems: NavItem[] = [
-  { title: 'Dashboard',      href: '/dashboard/analytics',                  icon: BarChart3 },
-  { title: 'Neg. Perdidos',  href: '/dashboard/analytics/lost-deals',       icon: TrendingDown },
-  { title: 'Campanhas & CAC',href: '/dashboard/marketing/campaigns',        icon: TrendingUp },
+  { title: 'Dashboard',       href: '/dashboard/analytics',              icon: BarChart3 },
+  { title: 'Neg. Perdidos',   href: '/dashboard/analytics/lost-deals',   icon: TrendingDown },
+  { title: 'Campanhas & CAC', href: '/dashboard/marketing/campaigns',    icon: TrendingUp },
 ]
 
 const automationItems: NavItem[] = [
@@ -37,9 +39,8 @@ const automationItems: NavItem[] = [
 ]
 
 const accountItems: NavItem[] = [
-  { title: 'Planos e Preços', href: '/dashboard/billing/plans',         icon: CreditCard },
-  { title: 'Configurações',   href: '/dashboard/settings',              icon: Settings },
-  { title: 'Round-Robin',     href: '/dashboard/settings/round-robin',  icon: RotateCw },
+  { title: 'Planos e Preços', href: '/dashboard/billing/plans', icon: CreditCard },
+  { title: 'Configurações',   href: '/dashboard/settings',      icon: Settings },
 ]
 
 // ── helpers ──────────────────────────────────────────────────────────────────
@@ -49,8 +50,8 @@ function SectionLabel({ children }: { children: React.ReactNode }) {
   return (
     <motion.span
       animate={{
-        display:  animate ? (open ? 'block' : 'none') : 'block',
-        opacity:  animate ? (open ? 1 : 0)           : 1,
+        display: animate ? (open ? 'block' : 'none') : 'block',
+        opacity: animate ? (open ? 1 : 0) : 1,
       }}
       className="px-3 py-2 text-[11px] font-semibold uppercase tracking-wider text-zinc-400 dark:text-zinc-600 whitespace-pre"
     >
@@ -91,7 +92,7 @@ function NavLink({ item, pathname }: { item: NavItem; pathname: string }) {
       <motion.span
         animate={{
           display:  animate ? (open ? 'inline-block' : 'none') : 'inline-block',
-          opacity:  animate ? (open ? 1 : 0)                   : 1,
+          opacity:  animate ? (open ? 1 : 0) : 1,
         }}
         className="z-10 whitespace-pre flex-1"
       >
@@ -127,7 +128,7 @@ function WhatsAppFounderButton() {
       <motion.span
         animate={{
           display:  animate ? (open ? 'inline-block' : 'none') : 'inline-block',
-          opacity:  animate ? (open ? 1 : 0)                   : 1,
+          opacity:  animate ? (open ? 1 : 0) : 1,
         }}
         className="whitespace-pre"
       >
@@ -137,14 +138,81 @@ function WhatsAppFounderButton() {
   )
 }
 
+function SidebarUserNav({ user }: { user: any }) {
+  const { open: sidebarOpen, animate } = useSidebar()
+  const [expanded, setExpanded] = useState(false)
+
+  const linkClass = 'flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-all duration-200 text-zinc-600 dark:text-zinc-400 hover:bg-black/5 dark:hover:bg-white/5 hover:text-zinc-900 dark:hover:text-zinc-200'
+
+  return (
+    <div>
+      {/* Expand inline acima do botão */}
+      {sidebarOpen && expanded && (
+        <motion.div
+          initial={{ opacity: 0, height: 0 }}
+          animate={{ opacity: 1, height: 'auto' }}
+          exit={{ opacity: 0, height: 0 }}
+          transition={{ duration: 0.2 }}
+          className="overflow-hidden mb-1"
+        >
+          <div className="px-3 py-2">
+            <p className="text-xs text-muted-foreground truncate">{user.email}</p>
+          </div>
+          <Link href="/dashboard/settings" className={linkClass}>
+            <Settings className="h-4 w-4 flex-shrink-0 text-zinc-500" />
+            <span>Perfil</span>
+          </Link>
+          {user.role === 'ADMIN' && (
+            <a href="/admin" className={cn(linkClass, 'text-red-500 dark:text-red-400 font-bold')}>
+              <Settings className="h-4 w-4 flex-shrink-0" />
+              <span>Admin Panel</span>
+            </a>
+          )}
+          <button
+            onClick={() => logoutAction()}
+            className={cn(linkClass, 'w-full text-red-500 dark:text-red-400')}
+          >
+            <LogOut className="h-4 w-4 flex-shrink-0" />
+            <span>Sair</span>
+          </button>
+        </motion.div>
+      )}
+
+      {/* Avatar trigger */}
+      <button
+        onClick={() => sidebarOpen && setExpanded(!expanded)}
+        className={cn(
+          'w-full flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-all duration-200',
+          'text-zinc-600 dark:text-zinc-400 hover:bg-black/5 dark:hover:bg-white/5',
+          !sidebarOpen && animate ? 'justify-center px-2' : ''
+        )}
+      >
+        <Avatar className="h-7 w-7 flex-shrink-0">
+          <AvatarImage src="" alt={user.name} />
+          <AvatarFallback className="text-xs">{user.name ? user.name.charAt(0).toUpperCase() : 'U'}</AvatarFallback>
+        </Avatar>
+        <motion.span
+          animate={{
+            display: animate ? (sidebarOpen ? 'inline-block' : 'none') : 'inline-block',
+            opacity: animate ? (sidebarOpen ? 1 : 0) : 1,
+          }}
+          className="whitespace-pre truncate flex-1 text-left"
+        >
+          {user.name}
+        </motion.span>
+      </button>
+    </div>
+  )
+}
+
 // ── inner sidebar (consumes context) ─────────────────────────────────────────
 
-function SidebarInner({ pathname }: { pathname: string }) {
+function SidebarInner({ pathname, user }: { pathname: string; user: any }) {
   const { open, setOpen } = useSidebar()
 
   return (
     <motion.div
-      className="h-screen border-r border-border bg-sidebar/80 backdrop-blur-xl relative z-50 flex flex-col overflow-hidden"
+      className="h-[calc(100vh-16px)] m-2 rounded-xl border border-border/40 shadow-md bg-sidebar/80 backdrop-blur-xl relative z-50 flex flex-col overflow-hidden"
       animate={{ width: open ? '256px' : '60px' }}
       transition={{ duration: 0.25, ease: 'easeInOut' }}
       onMouseEnter={() => setOpen(true)}
@@ -159,20 +227,10 @@ function SidebarInner({ pathname }: { pathname: string }) {
       <div className="flex h-16 items-center px-3 border-b border-white/5 flex-shrink-0">
         <Link href="/dashboard" className="flex items-center gap-3 group">
           <div className="relative w-8 h-8 flex-shrink-0 group-hover:scale-105 transition-transform duration-300">
-            <Image
-              src="/logo.png"
-              alt="Sirius Logo"
-              fill
-              className="object-contain"
-              priority
-              sizes="32px"
-            />
+            <Image src="/logo.png" alt="Sirius Logo" fill className="object-contain" priority sizes="32px" />
           </div>
           <motion.div
-            animate={{
-              display:  open ? 'flex' : 'none',
-              opacity:  open ? 1 : 0,
-            }}
+            animate={{ display: open ? 'flex' : 'none', opacity: open ? 1 : 0 }}
             className="flex flex-col whitespace-pre"
           >
             <span className="text-sm font-bold bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-white dark:to-zinc-400 bg-clip-text text-transparent">
@@ -212,8 +270,9 @@ function SidebarInner({ pathname }: { pathname: string }) {
       {/* Footer – Account */}
       <div className="border-t border-border px-2 py-3 grid gap-0.5 flex-shrink-0 relative z-10">
         {accountItems.map((item) => (
-          <NavLink key={item.href} item={item} pathname={pathname} />
+          <NavLink key={item.title} item={item} pathname={pathname} />
         ))}
+        <SidebarUserNav user={user} />
       </div>
     </motion.div>
   )
@@ -221,13 +280,13 @@ function SidebarInner({ pathname }: { pathname: string }) {
 
 // ── public export ─────────────────────────────────────────────────────────────
 
-export function Sidebar() {
+export function Sidebar({ user }: { user: any }) {
   const [open, setOpen] = useState(false)
   const pathname = usePathname()
 
   return (
     <SidebarProvider open={open} setOpen={setOpen} animate={true}>
-      <SidebarInner pathname={pathname} />
+      <SidebarInner pathname={pathname} user={user} />
     </SidebarProvider>
   )
 }

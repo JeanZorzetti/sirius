@@ -1,7 +1,5 @@
 import { Sidebar } from '@/components/dashboard/sidebar'
 import { MobileNav } from '@/components/dashboard/mobile-nav'
-import { UserNav } from '@/components/dashboard/user-nav'
-import { ModeToggle } from '@/components/ui/mode-toggle'
 import { PWAInstallPrompt } from '@/components/pwa-install-prompt'
 import { SignUpTracker } from '@/components/analytics/signup-tracker'
 import { LoginTracker } from '@/components/analytics/login-tracker'
@@ -37,19 +35,14 @@ export default async function DashboardLayout({
     <div className="flex h-screen overflow-hidden">
       {/* Sidebar - hidden on mobile, visible on desktop */}
       <aside className="hidden lg:block">
-        <Sidebar />
+        <Sidebar user={user} />
       </aside>
 
       {/* Main content area */}
       <div className="flex flex-1 flex-col overflow-hidden">
-        {/* Header */}
-        <header className="flex h-14 items-center gap-4 border-b bg-background px-4 lg:h-15 lg:px-6">
+        {/* Header - mobile only */}
+        <header className="flex h-14 items-center gap-4 border-b bg-background px-4 lg:hidden">
           <MobileNav />
-          <div className="flex-1" />
-          <div className="flex items-center gap-2">
-            <ModeToggle />
-            <UserNav user={user} />
-          </div>
         </header>
 
         {/* Page content */}
