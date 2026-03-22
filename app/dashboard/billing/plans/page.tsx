@@ -97,10 +97,18 @@ export default function PlansPage() {
     }
   }
 
+  const TIER_ORDER: Record<SubscriptionTier, number> = {
+    [SubscriptionTier.FREE]: 0,
+    [SubscriptionTier.STARTER]: 1,
+    [SubscriptionTier.PRO]: 2,
+    [SubscriptionTier.BUSINESS]: 3,
+  }
+
   const getButtonText = (tier: SubscriptionTier) => {
     if (processing === tier) return <Loader2 className="h-4 w-4 animate-spin" />
     if (tier === currentTier) return 'Plano Atual'
     if (tier === SubscriptionTier.FREE) return 'Plano Gratuito'
+    if (currentTier && TIER_ORDER[tier] < TIER_ORDER[currentTier]) return 'Fazer Downgrade'
     return 'Fazer Upgrade'
   }
 
