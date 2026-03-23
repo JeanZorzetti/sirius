@@ -31,7 +31,7 @@ export default async function ProductsPage() {
   })
 
   // Serialize Decimal to number for client component
-  const products = rawProducts.map(p => ({
+  const products = rawProducts.map((p: any) => ({
     ...p,
     price: Number(p.price),
     createdAt: p.createdAt.toISOString(),
