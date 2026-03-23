@@ -108,14 +108,12 @@ export function EditDealDialog({
             Promise.all([
                 getDealDetails(initialDeal.id),
                 getDealClosings(initialDeal.id),
-                getOrganizationProducts(),
             ])
-                .then(([data, closingsData, productsData]) => {
+                .then(([data, closingsData]) => {
                     if (!cancelled) {
                         setFullDeal(data)
                         setClosings(closingsData)
                         setObservations(data?.observations || '')
-                        setProducts(productsData)
                         setSelectedProductId((data as any)?.productId || 'no_product')
                     }
                 })
@@ -131,6 +129,13 @@ export function EditDealDialog({
                         setFetchingDetails(false)
                     }
                 })
+
+            // Fetch products separately — errors here don't close the dialog
+            getOrganizationProducts()
+                .then((productsData) => {
+                    if (!cancelled) setProducts(productsData)
+                })
+                .catch(() => {/* silent — select will show empty */})
         } else {
             setFullDeal(null)
         }
