@@ -293,3 +293,12 @@ export async function reorderDeals(stageId: string, dealOrders: { id: string, or
     revalidatePath("/dashboard")
     return { success: true }
 }
+
+export async function getOrganizationProducts() {
+    const user = await checkPermission()
+    return prisma.product.findMany({
+        where: { organizationId: user.organizationId, isActive: true },
+        select: { id: true, name: true, price: true },
+        orderBy: { name: 'asc' },
+    })
+}

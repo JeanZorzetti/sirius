@@ -27,7 +27,7 @@ import {
     PopoverTrigger,
 } from '@/components/ui/popover'
 import { updateDeal, deleteDeal } from '@/app/dashboard/actions'
-import { getDealDetails, addNote, deleteNote, addDealClosing, deleteDealClosing, getDealClosings } from '@/app/dashboard/deals/actions'
+import { getDealDetails, addNote, deleteNote, addDealClosing, deleteDealClosing, getDealClosings, getOrganizationProducts } from '@/app/dashboard/deals/actions'
 import { createContact } from '@/app/dashboard/contacts/actions'
 import { Loader2, MessageSquare, History, Tag, Calendar, Send, Trash2, Plus, MessageCircle, DollarSign } from 'lucide-react'
 import { Textarea } from '@/components/ui/textarea'
@@ -87,6 +87,10 @@ export function EditDealDialog({
     const [confirmDeleteDeal, setConfirmDeleteDeal] = useState(false)
     const [confirmDeleteNoteId, setConfirmDeleteNoteId] = useState<string | null>(null)
 
+    // Products state
+    const [products, setProducts] = useState<{ id: string; name: string; price: any }[]>([])
+    const [selectedProductId, setSelectedProductId] = useState<string>('no_product')
+
     // Fechamentos state
     const [closings, setClosings] = useState<any[]>([])
     const [loadingClosings, setLoadingClosings] = useState(false)
@@ -104,12 +108,15 @@ export function EditDealDialog({
             Promise.all([
                 getDealDetails(initialDeal.id),
                 getDealClosings(initialDeal.id),
+                getOrganizationProducts(),
             ])
-                .then(([data, closingsData]) => {
+                .then(([data, closingsData, productsData]) => {
                     if (!cancelled) {
                         setFullDeal(data)
                         setClosings(closingsData)
                         setObservations(data?.observations || '')
+                        setProducts(productsData)
+                        setSelectedProductId((data as any)?.productId || 'no_product')
                     }
                 })
                 .catch((err) => {
@@ -175,6 +182,7 @@ export function EditDealDialog({
 
         // Override contactId with the controlled selected value
         formData.set('contactId', selectedContactId === 'no_contact' ? '' : selectedContactId)
+        formData.set('productId', selectedProductId === 'no_product' ? '' : selectedProductId)
 
         // Extract updates for optimistic UI
         const updates = {
@@ -489,6 +497,31 @@ export function EditDealDialog({
                                                 })()}
                                             </div>
                                         </div>
+                                    </div>
+
+                                    <div className="space-y-2">
+                                        <Label>Produto</Label>
+                                        <Select
+                                            value={selectedProductId}
+                                            onValueChange={setSelectedProductId}
+                                        >
+                                            <SelectTrigger className="bg-zinc-50 dark:bg-zinc-900/50">
+                                                <SelectValue placeholder="Sem produto" />
+                                            </SelectTrigger>
+                                            <SelectContent>
+                                                <SelectItem value="no_product">Sem produto</SelectItem>
+                                                {products.map((product) => (
+                                                    <SelectItem key={product.id} value={product.id}>
+                                                        {product.name}
+                                                        {product.price != null && (
+                                                            <span className="ml-2 text-xs text-muted-foreground">
+                                                                R$ {Number(product.price).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                                                            </span>
+                                                        )}
+                                                    </SelectItem>
+                                                ))}
+                                            </SelectContent>
+                                        </Select>
                                     </div>
 
                                     <div className="grid grid-cols-2 gap-4">

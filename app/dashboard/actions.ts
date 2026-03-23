@@ -236,6 +236,7 @@ export async function updateDeal(formData: FormData) {
     const valueStr = formData.get('value') as string
     const stageId = formData.get('stageId') as string
     const contactId = formData.get('contactId') as string || null
+    const productId = formData.get('productId') as string || null
     const closeDateStr = formData.get('closeDate') as string
     const dueDateStr = formData.get('dueDate') as string
 
@@ -263,6 +264,7 @@ export async function updateDeal(formData: FormData) {
         value,
         stageId,
         contactId,
+        productId,
         closeDate,
         dueDate,
         observations: observations || null,
