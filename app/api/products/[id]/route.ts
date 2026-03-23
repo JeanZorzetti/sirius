@@ -28,28 +28,28 @@ export async function PATCH(
   req: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  const organizationId = await getOrganizationId()
-  if (!organizationId) {
-    return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
-  }
-
-  const { id } = await params
-
   try {
+    const organizationId = await getOrganizationId()
+    if (!organizationId) {
+      return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
+    }
+
+    const { id } = await params
     const body = await req.json()
     const data = updateSchema.parse(body)
 
-    const product = await prisma.product.update({
+    const product = await (prisma as any).product.update({
       where: { id, organizationId },
       data,
     })
 
     return NextResponse.json(product)
-  } catch (error) {
+  } catch (error: any) {
+    console.error('[PRODUCTS_PATCH]', error?.message || error)
     if (error instanceof z.ZodError) {
-      return NextResponse.json({ error: (error as any).errors[0]?.message ?? 'Dados inválidos' }, { status: 400 })
+      return NextResponse.json({ error: (error as any).errors?.[0]?.message ?? 'Dados inválidos' }, { status: 400 })
     }
-    return NextResponse.json({ error: 'Erro interno' }, { status: 500 })
+    return NextResponse.json({ error: error?.message || 'Erro interno' }, { status: 500 })
   }
 }
 
@@ -57,13 +57,17 @@ export async function DELETE(
   _req: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  const organizationId = await getOrganizationId()
-  if (!organizationId) {
-    return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
+  try {
+    const organizationId = await getOrganizationId()
+    if (!organizationId) {
+      return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
+    }
+
+    const { id } = await params
+    await (prisma as any).product.delete({ where: { id, organizationId } })
+    return NextResponse.json({ success: true })
+  } catch (error: any) {
+    console.error('[PRODUCTS_DELETE]', error?.message || error)
+    return NextResponse.json({ error: error?.message || 'Erro interno' }, { status: 500 })
   }
-
-  const { id } = await params
-
-  await prisma.product.delete({ where: { id, organizationId } })
-  return NextResponse.json({ success: true })
 }

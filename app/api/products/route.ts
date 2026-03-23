@@ -5,11 +5,11 @@ import { getSession } from '@/lib/auth'
 
 const productSchema = z.object({
   name: z.string().min(1, 'Nome é obrigatório'),
-  description: z.string().optional(),
-  sku: z.string().optional(),
+  description: z.string().optional().nullable(),
+  sku: z.string().optional().nullable(),
   price: z.number().min(0, 'Preço inválido'),
   stock: z.number().int().optional().nullable(),
-  category: z.string().optional(),
+  category: z.string().optional().nullable(),
   isActive: z.boolean().optional().default(true),
   imageUrl: z.string().url().optional().nullable(),
 })
@@ -26,42 +26,53 @@ async function getOrganizationId() {
 }
 
 export async function GET() {
-  const organizationId = await getOrganizationId()
-  if (!organizationId) {
-    return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
+  try {
+    const organizationId = await getOrganizationId()
+    if (!organizationId) {
+      return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
+    }
+
+    const products = await (prisma as any).product.findMany({
+      where: { organizationId },
+      orderBy: { createdAt: 'desc' },
+    })
+
+    return NextResponse.json(products)
+  } catch (error: any) {
+    console.error('[PRODUCTS_GET]', error?.message || error)
+    return NextResponse.json({ error: 'Erro ao buscar produtos' }, { status: 500 })
   }
-
-  const products = await prisma.product.findMany({
-    where: { organizationId },
-    orderBy: { createdAt: 'desc' },
-  })
-
-  return NextResponse.json(products)
 }
 
 export async function POST(req: Request) {
-  const organizationId = await getOrganizationId()
-  if (!organizationId) {
-    return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
-  }
-
   try {
+    const organizationId = await getOrganizationId()
+    if (!organizationId) {
+      return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
+    }
+
     const body = await req.json()
     const data = productSchema.parse(body)
 
-    const product = await prisma.product.create({
+    const product = await (prisma as any).product.create({
       data: {
-        ...data,
+        name: data.name,
+        description: data.description || null,
+        sku: data.sku || null,
         price: data.price,
+        stock: data.stock ?? null,
+        category: data.category || null,
+        isActive: data.isActive,
         organizationId,
       },
     })
 
     return NextResponse.json(product, { status: 201 })
-  } catch (error) {
+  } catch (error: any) {
+    console.error('[PRODUCTS_POST]', error?.message || error)
     if (error instanceof z.ZodError) {
-      return NextResponse.json({ error: (error as any).errors[0]?.message ?? 'Dados inválidos' }, { status: 400 })
+      return NextResponse.json({ error: (error as any).errors?.[0]?.message ?? 'Dados inválidos' }, { status: 400 })
     }
-    return NextResponse.json({ error: 'Erro interno' }, { status: 500 })
+    return NextResponse.json({ error: error?.message || 'Erro interno' }, { status: 500 })
   }
 }

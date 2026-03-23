@@ -25,7 +25,7 @@ export default async function ProductsPage() {
     return <div>Usuário não pertence a uma organização.</div>
   }
 
-  const rawProducts = await prisma.product.findMany({
+  const rawProducts = await (prisma as any).product.findMany({
     where: { organizationId: user.organizationId },
     orderBy: { createdAt: 'desc' },
   })
