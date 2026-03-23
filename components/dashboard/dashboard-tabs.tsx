@@ -98,12 +98,18 @@ export function DashboardTabs({
   return (
     <Tabs value={activeTab} onValueChange={setActiveTab} className="h-full flex flex-col">
       <div className="flex items-center justify-between mb-4">
-        <TabsList className="grid w-full sm:w-[300px] grid-cols-2">
-          <TabsTrigger value="pipeline" className="flex items-center gap-2">
+        <TabsList className="inline-flex h-11 items-center justify-center rounded-lg bg-zinc-100/80 dark:bg-zinc-800/80 p-1 text-muted-foreground backdrop-blur-sm border border-black/5 dark:border-white/5">
+          <TabsTrigger 
+            value="pipeline" 
+            className="inline-flex items-center justify-center whitespace-nowrap rounded-md px-4 py-2 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-white dark:data-[state=active]:bg-zinc-900 data-[state=active]:text-indigo-600 dark:data-[state=active]:text-indigo-400 data-[state=active]:shadow-sm gap-2"
+          >
             <Layout className="h-4 w-4" />
             Pipeline
           </TabsTrigger>
-          <TabsTrigger value="chat" className="flex items-center gap-2">
+          <TabsTrigger 
+            value="chat" 
+            className="inline-flex items-center justify-center whitespace-nowrap rounded-md px-4 py-2 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-white dark:data-[state=active]:bg-zinc-900 data-[state=active]:text-indigo-600 dark:data-[state=active]:text-indigo-400 data-[state=active]:shadow-sm gap-2"
+          >
             <MessageSquare className="h-4 w-4" />
             WhatsApp
           </TabsTrigger>

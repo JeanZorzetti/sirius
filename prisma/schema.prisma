@@ -137,6 +137,9 @@ model Organization {
   // Mobile App (Capacitor)
   pushTokens PushToken[]
   visitLogs  VisitLog[]
+
+  // Products (Catálogo)
+  products Product[]
 }
 
 model User {
@@ -1808,4 +1811,29 @@ model VisitLog {
 
   @@index([organizationId, visitedAt])
   @@index([userId])
+}
+
+// ============================================================================
+// PRODUCTS (Catálogo de Produtos)
+// ============================================================================
+
+model Product {
+  id          String   @id @default(uuid())
+  name        String
+  description String?  @db.Text
+  sku         String?
+  price       Decimal  @db.Decimal(10, 2)
+  stock       Int?
+  category    String?
+  isActive    Boolean  @default(true)
+  imageUrl    String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@index([organizationId])
+  @@index([organizationId, isActive])
 }

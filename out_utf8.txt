@@ -1,0 +1,633 @@
+
+
+--- CONTENT OF SEO Command Center - Admin.pdf ---
+
+SEO Command Center
+Dados do Google Search ConsolePersonalizado 01/12/2025  - 19/03/2026 SEO Assistant (IA)
+Comp arador de P eriodos ML ML A tivo
+Compare periodos com analise estatistica e deteccao de anomalias
+28 dias
+1 mês completo (4 semaMatch day-o f-week Mostrar for ecast
+Periodo A tual: 18/02 - 17/03 Periodo Ant erior :21/01 - 17/02
+Cliques
+0
++30.0% NS
+p = 0.317Impr essoes
+386
++881.2 % 100%
+p = 0.001CTR
+0.19%
+-82.4 % 99%
+p = 0.010Posicao Media
+7
+-29.9 % 100%
+p = 0.000
+Comp aracao de P eriodos
+Media diaria de cliques e impressoesForecast ML (7 dias)
+Predicao baseada em regressao linear
+Insights do ML
+Periodo Anterior Periodo Atual01234
+0100200300400
+Periodo Atual
+Cliques  : 0
+Impressoes  : 386
+18/03 19/03 20/03 21/03 22/03 23/03 24/0300.511.52SIRIUS ADMIN Overview Users Organizations Analy tics PWA Metrics SEO Funnel A/B T esting GenUI Demo Knowledge Graph Graph-RA G Auto-Citation SPIN Chat Voltar ao App
+📊Trafego organico estavel: variacao de 30.0% nao e estatisticamente significativa
+👁Visibilidade aumentando 881.2% - boa oportunidade de crescimento
+🎯CTR piorou 82.4% - snippets estao menos atrativos
+⚠3 anomalia(s) detectada(s) nos periodos analisados
+Anomalias Det ectadas
+• Periodo atual: 17/03/2026  - Valor 3 acima da média (3.3σ)
+• Periodo anterior: 30/01/2026  - Valor 2 acima da média (2.7σ)
+• Periodo anterior: 10/02/2026  - Valor 2 acima da média (2.7σ)
+Recomendacao
+➡ Performance estavel. R ecomendado: (1) Focar em oportunidades de keywords, (2) Melhorar conteudo existente, (3) Buscar backlinks.
+Metodologia:  Two-sample t-test |  Nivel de confianca:  95% (p < 0.05) |  Efeit o: negligible  (d = 0.15)
+Insight de IA - Pr evisao ML (30 dias)
+Tendencia de T rafego (Cliques)
+Estav el 🟢
+ML Dir eta: 30 cliques
+Via Eficiencia:  30 cliques
+Velocidade:  +0.01/dia
+Confianca:  5%Tendencia de Visibilidade (Impr essoes)
+Alta 🔵
+Previsao:  17.471  imp
+Velocidade:  +7.76/dia
+Confianca:  21%
+Modelo:  Regressao Linear (Baseado em 82 dias de dados)
+Total de Cliques
+27
+Visitantes organicosTotal de Impr essoes
+12.109
+Aparicoes no GoogleCTR Medio
+0.22%
+Taxa de cliquesCusto de Visibilidade
+448
+▲ Aler ta: Snippets menos atrativ os
+Prev. 30d: 520
+Performance e Pr evisao Dupla
+Historico (solida), ML Direta (cinza pontilhada) e ML via Eficiencia (laranja pontilhada)
+Alertas de Anomalias (ML)
+6 anomalia s detectada s nos últimos 3 dias2 crítico s 2 aviso s 2
+Crítico ( 2)
+Impr essoes
+Detectado em  16 de mar. de 2026100% confiança
+Baseline
+327,3Atual
+3.350Desvio
++923.6%
+Ações R ecomendadas:
+•Aumento de visibilidade detectado!
+•Otimizar CTR para aproveitar mais impressoes
+•Verificar quais keywords subiram
+Método: z-scor e+iqr
+CTR
+Detectado em  17 de mar. de 2026100% confiança
+Baseline
+0Atual
+0,3Desvio
+0.0%
+Ações R ecomendadas:
+•Investigar causa raiz da anomalia
+•Monitorar metrica nas proximas 48h
+Método: iqr
+Avisos ( 2)27/12 30/12 02/01 05/01 08/01 11/01 14/01 17/01 20/01 23/01 26/01 29/01 01/02 04/02 07/02 10/02 13/02 16/02 19/02 22/02 25/02 28/02 03/03 06/03 09/03 12/03 15/03 18/03 21/03 24/03 27/03 30/03 02/04 05/04 08/04 11/04 14/04 17/0400.751.52.253Cliques
+0850170025503400Impressoesoje
+Cliques (R eal) Impressoes (R eal) Cliques ML Direta Cliques via Eficiencia Impressoes (Previsao IA)
+Cliques
+Detectado em  16 de mar. de 2026100% confiança
+Baseline
+0,2Atual
+2Desvio
++833.3%
+Impacto Estimado:
+• Cliques ganhos/dia : 2
+Ações R ecomendadas:
+•Spike positivo detectado! Analisar a causa
+•Verificar se algum conteudo viralizou
+•Aproveitar o momento para otimizar conversion
+Método: z-scor e+iqr
+Cliques
+Detectado em  17 de mar. de 2026100% confiança
+Baseline
+0,4Atual
+3Desvio
++740.0%
+Impacto Estimado:
+• Cliques ganhos/dia : 3
+Ações R ecomendadas:
+•Spike positivo detectado! Analisar a causa
+•Verificar se algum conteudo viralizou
+•Aproveitar o momento para otimizar conversion
+Método: z-scor e+iqr
+Infor mação ( 2)
+Impr essoes
+Detectado em  17 de mar. de 202683% confiança
+Baseline
+341Atual
+1.011Desvio
++196.5%
+Ações R ecomendadas:
+•Aumento de visibilidade detectado!
+•Otimizar CTR para aproveitar mais impressoes
+•Verificar quais keywords subiram
+Método: iqr
+CTR
+Detectado em  16 de mar. de 202670% confiança
+Baseline Atual Desvio
+0 0,1 0.0%
+Ações R ecomendadas:
+•Investigar causa raiz da anomalia
+•Monitorar metrica nas proximas 48h
+Método: iqr
+Powered by Machine Learning Z-Scor e + IQR Atualizado:  20 de mar., 11:37
+Ranking Pr edictions (ML)
+5 keywords analisadas com scoring de oportunidadeTrafego P otencial
++18 cliques/mesValor Estimado
+R$ 45,00
+0
+Quick Win4
+Otimizar CTR0
+Striking Distance0
+Oportunidade de Crescimento1
+Defender P osicao
+Otimizar CTR  (4)
+Keywords bem posicionadas mas com CTR abaixo do esperado. Otimize title/description.Potencial total
++16 cliques
+como escolher cr m b2b 2025 or 2026 melhor es práticas Score: 37
+16 impressoes 0 cliques Esforco: BaixoGanho estimado
++3 cliques
+Posicao Atual
+#4.6Alvo
+#3CTR Atual
+0.00%CTR Alvo
+18.7%
+65% confianca
+Valor estimado: R$ 7,50 /mes
+CTR 9.5% abaixo do esperado para posicao 5
+3 acoes r ecomendadas
+como escolher cr m ou platafor ma de gestão de leads 2026 Score: 32
+14 impressoes 0 cliques Esforco: BaixoGanho estimado
++3 cliques
+Posicao Atual
+#7.0Alvo
+#3CTR Atual
+0.00%CTR Alvo
+18.7%
+75% confianca
+Valor estimado: R$ 7,50 /mes
+CTR 4.2% abaixo do esperado para posicao 7
+3 acoes r ecomendadas
+como aut omatizar cálculo de comissão v endas ex cel google sheets Score: 29 Ganho estimado
+36 impressoes 0 cliques Esforco: Baixo+7 cliques
+Posicao Atual
+#8.8Alvo
+#3CTR Atual
+0.00%CTR Alvo
+18.7%
+75% confianca
+Valor estimado: R$ 17,50  /mes
+CTR 2.8% abaixo do esperado para posicao 9
+3 acoes r ecomendadas
+como aut omatizar r evisão de pipeline de v endas cr m 2025 2026 Score: 28
+17 impressoes 0 cliques Esforco: BaixoGanho estimado
++3 cliques
+Posicao Atual
+#9.1Alvo
+#3CTR Atual
+0.00%CTR Alvo
+18.7%
+75% confianca
+Valor estimado: R$ 7,50 /mes
+CTR 2.8% abaixo do esperado para posicao 9
+3 acoes r ecomendadas
+Powered by Machine Learning CTR Cur ve + Oppor tunity Scoring Atualizado:  20 de mar., 11:37
+Topic Clust ers (ML)
+1 topicos identificados a partir de 6 keywords1 gap +2 cliques pot enciais
+Escolher Cr m 2026 Criar P agina
+como escolher crm b2b 2025 or 2026 melhores práticas como escolher crm ou plataforma de gestão de leads 2026
+2 keywords 30 impressoes 0 cliques Pos. media: 5.8Cobertura
+0%
+Powered by Machine Learning Jaccar d Similarity + Agglomerativ e Clust ering Atualizado:  20 de mar., 11:37
+Calendário de A tualização de Cont eúdo (ML)
+Nenhuma página em risco detectada
+Tudo em or dem!
+Nenhum conteúdo com alto risco de decay detectado no momento.
+Breakdown por Dispositiv o
+Performance em Desktop, Mobile e T ablet
+Breakdown Geográfico
+Top 20 países por tráfego orgânico 🇧🇷Top País
+96.3%
+Países A tivos
+20
+Com tráfego no períodoCTR Médio Glob al
+0.19%
+Média ponderadaPosição Média Glob al
+6.7
+Ranking médio
+#1 🇧🇷Brasil96.3% do tráfegoCliques
+26Impr essões
+2.216CTR
+1.17%Posição
+8.8
+#2🌐IRL3.7% do tráfegoCliques
+1Impr essões
+37CTR
+2.70%Posição
+5.6
+#3🌐AGO0.0% do tráfegoCliques
+0Impr essões
+3CTR
+0.00%Posição
+8.7
+#4🌐ALB0.0% do tráfegoCliques
+0Impr essões
+14CTR
+0.00%Posição
+6.1
+#5🌐AND0.0% do tráfegoCliques
+0Impr essões
+1CTR
+0.00%Posição
+5.0
+Cliques Impr essões CTR Posição
+#6🌐ARE0.0% do tráfego0 30 0.00% 6.3
+#7 🇦🇷Argentina0.0% do tráfegoCliques
+0Impr essões
+184CTR
+0.00%Posição
+6.8
+#8🌐ARM0.0% do tráfegoCliques
+0Impr essões
+8CTR
+0.00%Posição
+6.3
+#9🌐ATG0.0% do tráfegoCliques
+0Impr essões
+2CTR
+0.00%Posição
+4.0
+#10 🇦🇺Austrália0.0% do tráfegoCliques
+0Impr essões
+38CTR
+0.00%Posição
+9.2
+#11🌐AUT0.0% do tráfegoCliques
+0Impr essões
+7CTR
+0.00%Posição
+9.6
+#12🌐AZE0.0% do tráfegoCliques
+0Impr essões
+8CTR
+0.00%Posição
+7.4
+#13🌐BEL0.0% do tráfegoCliques
+0Impr essões
+27CTR
+0.00%Posição
+5.4
+#14🌐BEN0.0% do tráfegoCliques
+0Impr essões
+2CTR
+0.00%Posição
+5.0
+#15🌐BGD0.0% do tráfegoCliques
+0Impr essões
+107CTR
+0.00%Posição
+6.4
+#16🌐BGR0.0% do tráfegoCliques
+0Impr essões
+28CTR
+0.00%Posição
+7.2
+#17🌐BHR0.0% do tráfegoCliques
+0Impr essões
+5CTR
+0.00%Posição
+6.8
+#18🌐BHS0.0% do tráfegoCliques
+0Impr essões
+13CTR
+0.00%Posição
+6.2
+#19🌐BIH0.0% do tráfegoCliques
+0Impr essões
+10CTR
+0.00%Posição
+7.6
+#20🌐BLR0.0% do tráfegoCliques
+0Impr essões
+8CTR
+0.00%Posição
+5.1
+💡 Opor tunidade de Exp ansão Int ernacional
+O tráfego está altamente concentrado em Brasil  (96%). Considere estratégias de expansão internacional para diversificar fontes de tráfego.
+Search Appearances & Rich R esults
+Como suas páginas aparecem nos resultados do Google
+Nenhum Rich R esult det ectado
+Você ainda não tem páginas aparecendo com rich results (vídeos, rich cards, AMP, etc.) no Google.
+💡 Como adicionar Rich R esults:
+Adicione structured data (schema.org) nas suas páginas
+Implemente VideoObject para vídeos
+Use Article schema para posts de blog
+Adicione F AQ schema para perguntas frequentes
+Opor tunidades de K eywords
+Quick wins para aumentar tráfego orgânicoPotencial T otal
++31 cliques/mês
+Keywords na P ágina 2 1 keywords
+Keywords ranqueando entre posição 11-20. Com pequenas otimizações, podem subir para a primeira página e gerar muito mais tráfego.
+#15contr ole de v endas e comissoes gratis
+Posição atual: 15.0 | CTR: 0.00%Ganho estimado
++0 cliques/mês
+0 → 0
+2 impressões •0 cliques atuais
+Keywords com Baix o CTR 8 keywords
+Keywords com alto volume de impressões mas CTR baixo (<2%). Otimize title tags e meta descriptions para melhorar taxa de cliques.
+Posição # 7crm mais usados no brasil 2026
+https://sirius.roilabs.com.br/blog/melhor-crm-2026-co …
+CTR atual: 0.00% (abaixo da média)Se melhorar para 3%
++6 cliques/mês
+0.00% → 3%
+189 impressões •0 cliques •Snippet pr ecisa de melhoria
+Posição # 6melhor crm brasileir o 2025 2026
+https://sirius.roilabs.com.br/blog/melhor-crm-2026-co …
+CTR atual: 0.00% (abaixo da média)Se melhorar para 3%
++6 cliques/mês
+0.00% → 3%
+216 impressões •0 cliques •Snippet pr ecisa de melhoria
+Posição # 8melhor crm p ara pequenas empr esas brasil 2026
+https://sirius.roilabs.com.br/blog/melhor-crm-2026-co …
+CTR atual: 0.00% (abaixo da média)Se melhorar para 3%
++5 cliques/mês
+0.00% → 3%
+153 impressões •0 cliques •Snippet pr ecisa de melhoria
+Posição # 6melhor crm p ara empr esas no brasil 2025 2026
+https://sirius.roilabs.com.br/blog/melhor-crm-2026-co …
+CTR atual: 0.00% (abaixo da média)Se melhorar para 3%
++4 cliques/mês
+0.00% → 3%
+133 impressões •0 cliques •Snippet pr ecisa de melhoria
+Posição # 7melhor crm brasil 2026
+https://sirius.roilabs.com.br/blog/melhor-crm-2026-co …
+CTR atual: 0.00% (abaixo da média)Se melhorar para 3%
++3 cliques/mês
+0.00% → 3%
+114 impressões •0 cliques •Snippet pr ecisa de melhoria
+Posição # 5melhor crm p ara pequenas empr esas brasil 2025 2026
+https://sirius.roilabs.com.br/blog/melhor-crm-2026-co …
+CTR atual: 0.00% (abaixo da média)Se melhorar para 3%
++3 cliques/mês
+0.00% → 3%
+93 impressões •0 cliques •Snippet pr ecisa de melhoria
+Posição # 6crm mais usados no brasil 2025 2026
+https://sirius.roilabs.com.br/blog/melhor-crm-2026-co …
+CTR atual: 0.00% (abaixo da média)Se melhorar para 3%
++2 cliques/mês
+0.00% → 3%
+79 impressões •0 cliques •Snippet pr ecisa de melhoria
+Posição # 8melhor crm p ara v endas pequenas empr esas brasil 2026
+https://sirius.roilabs.com.br/blog/melhor-crm-2026-co …Se melhorar para 3%
++2 cliques/mês
+CTR atual: 0.00% (abaixo da média)
+0.00% → 3%
+57 impressões •0 cliques •Snippet pr ecisa de melhoria
+🎯 Plano de Ação R ecomendado
+Para K eywords na P ágina 2:
+Adicione links internos apontando para essas páginas
+Melhore o conteúdo com mais profundidade e palavras-chave relacionadas
+Otimize headings (H2, H3) com keywords
+Aumente a autoridade com backlinks externos
+Para K eywords com Baix o CTR:
+Reescreva title tags para serem mais atraentes e incluir call-to-action
+Otimize meta descriptions com benefícios claros
+Adicione números, anos, ou palavras de ação nos títulos
+Teste emojis nos títulos (quando apropriado)
+Core Web Vitals
+Métricas de performance e experiência do usuário
+Nenhum dado disponív el no Chr ome UX R epor t
+Seu site ainda não tem volume suficiente de usuários Chrome para gerar dados de campo. Continue otimizando e os dados aparecerão em breve!
+Cober tura de Indexação
+Status de indexação das suas páginas no GoogleExcelent e
+Cober tura
+Total de P áginas
+5
+Páginas inspecionadasIndexadas
+5
+100% do totalExcluídas
+0
+0% do totalCom Err o
+0
+0% do total
+Taxa de Indexação 100%
+Taxa de Err o 0%
+Cober tura Ex celent e
+Sua taxa de indexação está ótima! Continue monitorando para manter esse padrão.
+Tendências de Busca
+Interesse ao longo do tempo (últimos 12 meses) • Dados: Google T rends
+crm
+Média
+41Pico
+55
+Em Queda
+Pico em abr. de 2025crm online
+Média
+66Pico
+81
+Em Alta
+Pico em fev. de 2026automação de v endas
+Média
+51Pico
+66
+Em Alta
+Pico em fev. de 2026
+Keywords em Alta
+crm online  - Crescimento detectado
+automação de v endas  - Crescimento detectado
+💡 Priorize conteúdo para essas keywordsKeywords em Queda
+crm - Interesse diminuindo
+⚠ Considere diversificar ou atualizar conteúdo
+Queries R elacionadas
+Top queries e queries em crescimento relacionadas às suas keywords
+crmabr. de 2025 mai. de 2025 jun. de 2025 jul. de 2025 ago. de 2025 set. de 2025 out. de 2025 nov. de 2025 dez. de 2025 jan. de 2026 fev. de 2026 mar. de 20260255075100Interesse (0-100)
+automação de vendas crm crm online
+Top Quer ies
+#1crm preço 100
+#2crm gratuito 85
+#3melhor crm 70
+#4crm online 65
+#5como usar crm 60
+💡 Queries mais pesquisadas relacionadasRising Quer ies
+crm 2026 +450%
+crm ia +350%
+crm automação +200%
+crm mobile +150%
+🔥 Queries com maior crescimento - oportunidade!
+crm online
+Top Quer ies
+#1crm online preço 100
+#2crm online gratuito 85
+#3melhor crm online 70
+#4crm online online 65
+#5como usar crm online 60
+💡 Queries mais pesquisadas relacionadasRising Quer ies
+crm online 2026 +450%
+crm online ia +350%
+crm online automação +200%
+crm online mobile +150%
+🔥 Queries com maior crescimento - oportunidade!
+automação de v endas
+Top Quer ies
+#1automação de vendas preço 100
+#2automação de vendas gratuito 85
+#3melhor automação de vendas 70
+#4automação de vendas online 65
+#5como usar automação de vendas 60
+💡 Queries mais pesquisadas relacionadasRising Quer ies
+automação de vendas 2026 +450%
+automação de vendas ia +350%
+automação de vendas automação +200%
+automação de vendas mobile +150%
+🔥 Queries com maior crescimento - oportunidade!
+Trending Sear ches
+O que está sendo muito buscado agora no BrasilAtualizado em
+19/03/2026
+#1Inteligência Ar tificial 2026
+500K+ buscas
+Queries r elacionadas:
+IA generativa ChatGPT Claude AI#2CRM p ara pequenas empr esas
+200K+ buscas
+Queries r elacionadas:
+CRM grátis Melhor CRM CRM online
+#3Mark eting digital
+150K+ buscas
+Queries r elacionadas:
+SEO Google Ads Redes sociais#4Automação de v endas
+100K+ buscas
+Queries r elacionadas:
+Vendas automatizadas Bot de vendas Pipeline automático
+Opor tunidades de Cont eúdo
+Sugestões baseadas em queries em alta
+Para " crm":
+Criar conteúdo sobre:  crm 2026
+Crescimento de +450%  - alta demanda
+Criar conteúdo sobre:  crm ia
+Crescimento de +350%  - alta demanda
+Criar conteúdo sobre:  crm aut omação
+Crescimento de +200%  - alta demanda
+Para " crm online ":
+Criar conteúdo sobre:  crm online 2026
+Crescimento de +450%  - alta demanda
+Criar conteúdo sobre:  crm online ia
+Crescimento de +350%  - alta demanda
+Criar conteúdo sobre:  crm online aut omação
+Crescimento de +200%  - alta demanda
+Para " automação de v endas ":
+Criar conteúdo sobre:  automação de v endas 2026
+Crescimento de +450%  - alta demanda
+Criar conteúdo sobre:  automação de v endas ia
+Crescimento de +350%  - alta demanda
+Criar conteúdo sobre:  automação de v endas aut omação
+Crescimento de +200%  - alta demanda
+💡 Dica de Estrat égia
+Priorize criar conteúdo para rising queries antes que a concorrência perceba. Essas keywords têm alta demanda e baixa competição agora.
+Top Buscas
+Termos que mais trazem trafego
+#1 sirius crm 12 cliques 44 imp
+#2 améliorer qualification lead … 0 cliques 2 imp
+#3 comercial 0 cliques 1 imp
+#4 como automatizar cálculo … 0 cliques 36 imp
+#5 como automatizar revisão … 0 cliques 17 imp
+#6 como escolher crm b2b 20 … 0 cliques 16 imp
+#7 como escolher crm ou plat … 0 cliques 14 imp
+#8 como escolher o melhor sis … 0 cliques 5 imp
+#9 como escolher o sistema m … 0 cliques 2 imp
+#10 como prospectar clientes d … 0 cliques 1 impNichos Pr ogramaticos
+Performance das paginas /solucoes/
+#1 /solucoes/representantes-c … 1 cliques 0.5% CTR
+#2 /solucoes/agencias-de-mar … 0 cliques 0.0% CTR
+#3 /solucoes/consultores-emp … 0 cliques 0.0% CTR
+#4 /solucoes/corretores-de-im … 0 cliques 0.0% CTR
+#5 /solucoes/energia-solar 0 cliques 0.0% CTR
+
+
+--- CONTENT OF Ultimate Funnel Command Center _ Sirius Admin.pdf ---
+
+Funnel Command Center
+Integração T otal: T ráfego SEO → Conversão CRM → R eceita R ealPersonalizado 20/02/2026  - 20/03/2026
+Insight de IA - Diagnóstico Int egrado Alerta: Fuga de T ráfego Det ectada
+Ponto de A trito Princip al
+Cliques
+Drop-off de 99.9%.
+Sugestão:  Melhorar CTR nos títulos do Google (adicione números e ano atual)Eficiência L TV/CA C
+0.6x
+Custo de Aquisição: R$ 1.000
+Retenção Estimada (L TV): R$ 588
+Tráfego SEO (T opo)
+11
+Cliques OrgânicosConv ersões a Lead (Meio)
+4
+36.4% Taxa de CadastroNovos Client es (Fundo)
+2
+0.02% Conversão GlobalNova Receita (Líquida)
+R$ 145,00
+Gerado Bruto: R$ 145,00
+Fluxo da Jornada do Client e
+Como os usuários fluem desde o tráfego gerado na busca orgânica até se tornarem clientes.
+SIRIUS ADMIN Overview Users Organizations Analy tics PWA Metrics SEO Funnel A/B T esting GenUI Demo Knowledge Graph Graph-RA G Auto-Citation SPIN Chat Voltar ao App
+Impr essões
+10.698Cliques
+11
+0.1% converteram
+GargaloCadastr os
+4
+36.4% converteramAtivados
+3
+75.0% converteramEngajados
+1
+33.3% converteramPagant es
+2
+200.0 % converteram
+Conversão Global (Impressão → P agante)
+0.019 %
+Benchmark SaaS B2B: ~0.05% - 0.1%
+Previsão de R eceita (Analy tics Side)
+Simulador para visualizar métricas necessárias na conquista de metas.
+Meta de F aturament o Mensal (R$)
+300 Simular
+Resultado da Simulação
+Para faturar R$ 300 por mêsIrrealista
+Clientes P agantes Necessários
+7 client es PR ORetorno sobr e Otimizações (SEO Side)
+Estimativa do incremento no faturamento (MRR) de acordo com o esforço de otimização no fluxo.
+Melhorar Cadastr o (Top of Funnel) +50%
+Receita Atual: R$ 98
+Receita Adicional Estimada: +R$ 49
+Melhorar A tivação (Mid Funnel) +30%
+Receita Atual: R$ 98
+Receita Adicional Estimada: +R$ 29
+0 3.0k 6.0k 9.0k 12.0kImpressões
+Cliques
+Cadastros
+Ativados
+Engajados
+Pagantes
+Com ticket médio de R$ 49
+Impressões
+10.698  → 48.628
++355%Cliques
+11 → 50
++355%Cadastros
+4 → 18
++350%Ativados
+3 → 13
++333%
+🎯 Recomendação Primária
+CTR (0.10%) está abaixo do benchmark (3%). Atualize títulos das páginas /solucoes/ com ano "2026" e
+números. A TENÇÃ O: Crescer 355% em impressões demanda investimento em conteúdo (20+
+artigos/mês).
+💡 Estrat égia Alt ernativ a
+Estratégia P aid: Com L TV de R$ 588, você pode gastar até R$ 194/cliente. Orçamento total: R$ 1358
+para Google Ads + Meta Ads.
+* Simulação baseada nas taxas de conversão dos últimos  28 dias. R esultados reais podem variar.

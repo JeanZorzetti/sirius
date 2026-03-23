@@ -8,6 +8,8 @@ import { prisma } from "@/lib/prisma"
 import { ValueSearch } from "./analytics/value-search"
 import { ContactSearch } from "./analytics/contact-search"
 
+import { AnimatedPageContainer } from "@/components/dashboard/animated-page-container"
+
 export const metadata: Metadata = {
   title: "Pipelines - CRM",
 }
@@ -69,13 +71,18 @@ export default async function DashboardPage({
         userName={user.name || undefined}
         shouldShowOnboarding={shouldShowOnboarding}
       >
-        <div className="h-full flex flex-col">
-          <div className="flex items-center justify-between mb-4 flex-wrap gap-3">
-            <h1 className="text-2xl font-bold">Dashboard</h1>
-            <div className="flex items-end gap-3 flex-wrap">
+        <AnimatedPageContainer>
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-6 flex-wrap gap-4">
+            <div className="space-y-1">
+              <h1 className="text-3xl font-bold tracking-tight text-foreground/90">Dashboard</h1>
+              <p className="text-sm text-muted-foreground">Gerencie seus negócios e acompanhe o pipeline de vendas</p>
+            </div>
+            
+            <div className="flex items-center gap-3 bg-muted/40 p-1.5 rounded-2xl border border-border/50 backdrop-blur-md">
               <Suspense>
                 <ValueSearch />
               </Suspense>
+              <div className="w-px h-8 bg-border/50" />
               <Suspense>
                 <ContactSearch />
               </Suspense>
@@ -91,7 +98,7 @@ export default async function DashboardPage({
               csearch={csearch}
             />
           </Suspense>
-        </div>
+        </AnimatedPageContainer>
       </OnboardingWrapper>
     )
   } catch (error: any) {
