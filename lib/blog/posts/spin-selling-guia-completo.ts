@@ -700,6 +700,7 @@ a Sirius resolve especificamente [Problema 1], [Problema 2] e [Problema 3]..."
 
 <strong>#SPINSelling #VendasB2B #VendasConsultivas #CRM #SiriusCRM</strong>`,
   date: '2026-01-10',
+  lastModified: '2026-03-23',
   category: 'Vendas',
   image: '/images/blog/spin-selling.webp',
   author: 'Equipe Sirius CRM',

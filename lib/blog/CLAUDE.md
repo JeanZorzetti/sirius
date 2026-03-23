@@ -113,7 +113,7 @@ Posts com seção de dúvidas frequentes DEVEM ter FAQ schema:
 5. `<h3>` para subseções
 6. Tabela comparativa quando aplicável
 7. FAQ section antes do CTA final
-8. CTA final linkando para `/cadastro` ou feature relevante do Sirius
+8. CTA final linkando para `/register` ou feature relevante do Sirius
 
 ### Qualidade de conteúdo
 - **Mínimo 1.500 palavras** para ranquear (posts de pilar: 3.000+)
@@ -139,4 +139,4 @@ Posts com seção de dúvidas frequentes DEVEM ter FAQ schema:
 - [ ] Post importado e adicionado em `lib/blog/index.ts`
 - [ ] FAQ schema adicionado em `lib/faq-schema.ts` (se aplicável)
 - [ ] `generateArticleSchema` configurado na page.tsx com entities Wikidata
-- [ ] Mínimo 1 CTA interno apontando para `/cadastro`
+- [ ] Mínimo 1 CTA interno apontando para `/register`

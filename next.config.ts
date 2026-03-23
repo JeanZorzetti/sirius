@@ -130,6 +130,15 @@ const nextConfig: NextConfig = {
   /* Security & Performance Headers */
   async headers() {
     return [
+      // Prevent manifest.json and favicon from being indexed as pages
+      {
+        source: '/manifest.json',
+        headers: [{ key: 'X-Robots-Tag', value: 'noindex, nofollow' }],
+      },
+      {
+        source: '/favicon.ico',
+        headers: [{ key: 'X-Robots-Tag', value: 'noindex, nofollow' }],
+      },
       // Cache immutable static assets (JS, CSS, fonts) for 1 year
       {
         source: '/_next/static/(.*)',
