@@ -59,17 +59,17 @@ export default async function ProductsPage() {
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
         {[
           { label: 'Total de Produtos', value: products.length },
-          { label: 'Produtos Ativos', value: products.filter(p => p.isActive).length },
+          { label: 'Produtos Ativos', value: products.filter((p: any) => p.isActive).length },
           {
             label: 'Valor Médio',
             value: products.length
               ? new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' })
-                  .format(products.reduce((s, p) => s + p.price, 0) / products.length)
+                  .format(products.reduce((s: number, p: any) => s + p.price, 0) / products.length)
               : 'R$ 0,00',
           },
           {
             label: 'Categorias',
-            value: new Set(products.map(p => p.category).filter(Boolean)).size,
+            value: new Set(products.map((p: any) => p.category).filter(Boolean)).size,
           },
         ].map(stat => (
           <div
