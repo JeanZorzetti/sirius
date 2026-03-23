@@ -667,7 +667,7 @@ export const post: BlogPost = {
           </a>
 
           <!-- Card 2 -->
-          <a href="/blog/crm-completo-iniciantes" style="text-decoration: none;">
+          <a href="/blog/como-escolher-crm-b2b-2026" style="text-decoration: none;">
             <div style="background: linear-gradient(135deg, #f0f9ff 0%, #dbeafe 100%); border: 2px solid #93c5fd; border-radius: 1rem; padding: 1.5rem; transition: transform 0.2s, box-shadow 0.2s; height: 100%;">
               <div style="background: #3b82f6; width: 3rem; height: 3rem; border-radius: 0.75rem; display: flex; align-items: center; justify-content: center; margin-bottom: 1rem; font-size: 1.5rem;">
                 🎯

@@ -42,7 +42,7 @@ export const post: BlogPost = {
     icon="🧮"
     title="Calculadora de ROI do SPIN"
     description="Descubra quanto sua equipe pode ganhar aplicando SPIN"
-    url="/calculadora-roi-spin"
+    url="/ferramentas/calculadora-roi"
     cta="Usar Calculadora"
   />
 </div>
