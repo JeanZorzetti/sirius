@@ -250,7 +250,7 @@ export const post: BlogPost = {
       <div style="background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%); padding: 2rem; border-radius: 1rem; margin: 2.5rem 0; text-align: center;">
         <p style="color: white; font-size: 1.25rem; font-weight: 700; margin: 0 0 0.5rem;">Saiba quando cada deal está pronto para fechar</p>
         <p style="color: #bfdbfe; margin: 0 0 1.25rem;">O Sirius CRM mostra o histórico completo de cada negociação e alerta no momento certo de agir.</p>
-        <a href="/cadastro" style="display: inline-block; background: white; color: #2563eb; padding: 0.75rem 2rem; border-radius: 0.5rem; font-weight: 700; text-decoration: none;">Começar Grátis →</a>
+        <a href="/register" style="display: inline-block; background: white; color: #2563eb; padding: 0.75rem 2rem; border-radius: 0.5rem; font-weight: 700; text-decoration: none;">Começar Grátis →</a>
       </div>
 
       <h2>Perguntas Frequentes sobre Fechamento de Vendas</h2>

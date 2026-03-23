@@ -193,7 +193,7 @@ export const post: BlogPost = {
       <div style="background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%); padding: 2rem; border-radius: 1rem; margin: 2.5rem 0; text-align: center;">
         <p style="color: white; font-size: 1.25rem; font-weight: 700; margin: 0 0 0.5rem;">Registre suas visitas em campo com o Sirius CRM</p>
         <p style="color: #bfdbfe; margin: 0 0 1.25rem;">PWA offline nativo — funciona em galpão, câmara fria, área rural e qualquer lugar sem sinal. Sincroniza automaticamente ao voltar para cobertura.</p>
-        <a href="/cadastro" style="display: inline-block; background: white; color: #2563eb; padding: 0.75rem 2rem; border-radius: 0.5rem; font-weight: 700; text-decoration: none;">Testar Grátis →</a>
+        <a href="/register" style="display: inline-block; background: white; color: #2563eb; padding: 0.75rem 2rem; border-radius: 0.5rem; font-weight: 700; text-decoration: none;">Testar Grátis →</a>
       </div>
 
       <h2>Perguntas Frequentes sobre CRM Offline para Vendedores</h2>

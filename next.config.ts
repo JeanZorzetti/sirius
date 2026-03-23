@@ -74,6 +74,56 @@ const nextConfig: NextConfig = {
         destination: '/contact',
         permanent: true,
       },
+      // /cadastro → /register (linked from multiple blog posts)
+      {
+        source: '/cadastro',
+        destination: '/register',
+        permanent: true,
+      },
+      // /agradecimento → home
+      {
+        source: '/agradecimento',
+        destination: '/',
+        permanent: true,
+      },
+      // Missing blog posts → closest existing posts
+      {
+        source: '/blog/pipeline-vendas-guia',
+        destination: '/blog/como-organizar-pipeline-vendas',
+        permanent: true,
+      },
+      {
+        source: '/blog/crm-vendas-consultivas',
+        destination: '/blog/crm-automacao-vendas-guia-completo',
+        permanent: true,
+      },
+      {
+        source: '/blog/link-telegram',
+        destination: '/blog/spin-selling-guia-completo',
+        permanent: true,
+      },
+      // Pricing billing fragments crawled as paths
+      {
+        source: '/ano',
+        destination: '/pricing',
+        permanent: false,
+      },
+      {
+        source: '/m%C3%AAs',
+        destination: '/pricing',
+        permanent: false,
+      },
+      // Malformed URLs crawled by Google
+      {
+        source: '/&',
+        destination: '/',
+        permanent: false,
+      },
+      {
+        source: '/$',
+        destination: '/',
+        permanent: false,
+      },
     ]
   },
 
