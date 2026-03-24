@@ -27,7 +27,7 @@ import {
     PopoverTrigger,
 } from '@/components/ui/popover'
 import { updateDeal, deleteDeal } from '@/app/dashboard/actions'
-import { getDealDetails, addNote, deleteNote, addDealClosing, deleteDealClosing, getDealClosings, getOrganizationProducts } from '@/app/dashboard/deals/actions'
+import { getDealDetails, addNote, deleteNote, addDealClosing, deleteDealClosing, getDealClosings } from '@/app/dashboard/deals/actions'
 import { createContact } from '@/app/dashboard/contacts/actions'
 import { Loader2, MessageSquare, History, Tag, Calendar, Send, Trash2, Plus, MessageCircle, DollarSign } from 'lucide-react'
 import { Textarea } from '@/components/ui/textarea'
@@ -130,8 +130,9 @@ export function EditDealDialog({
                     }
                 })
 
-            // Fetch products separately — errors here don't close the dialog
-            getOrganizationProducts()
+            // Fetch products via REST API (same endpoint used by /dashboard/products)
+            fetch('/api/products')
+                .then(r => r.ok ? r.json() : [])
                 .then((productsData) => {
                     if (!cancelled) setProducts(productsData)
                 })
