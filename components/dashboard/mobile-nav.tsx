@@ -4,7 +4,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 import { cn } from '@/lib/utils'
-import { Home, Users, Settings, BarChart3, CreditCard, Menu, X, Mail, RotateCw, MessageSquare, TrendingDown, Zap, TrendingUp } from 'lucide-react'
+import { Home, Users, Settings, BarChart3, CreditCard, Menu, X, Mail, RotateCw, MessageSquare, TrendingDown, Zap, TrendingUp, Package, CalendarDays } from 'lucide-react'
 import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { ScrollArea } from '@/components/ui/scroll-area'
@@ -17,9 +17,11 @@ type NavItem = {
 }
 
 const crmItems: NavItem[] = [
-  { title: 'Pipelines', href: '/dashboard', icon: Home },
-  { title: 'Contatos', href: '/dashboard/contacts', icon: Users },
-  { title: 'Chat WhatsApp', href: '/dashboard/chat', icon: MessageSquare },
+  { title: 'Pipelines',     href: '/dashboard',          icon: Home },
+  { title: 'Contatos',      href: '/dashboard/contacts', icon: Users },
+  { title: 'Agenda',        href: '/dashboard/agenda',   icon: CalendarDays },
+  { title: 'Produtos',      href: '/dashboard/products', icon: Package },
+  { title: 'Chat WhatsApp', href: '/dashboard/chat',     icon: MessageSquare },
 ]
 
 const analyticsItems: NavItem[] = [
