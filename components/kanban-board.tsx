@@ -18,6 +18,7 @@ import { updateStageOrder, deleteStage, updateStage, createStage } from '@/app/d
 import { reorderDeals } from '@/app/dashboard/deals/actions'
 import { EditDealDialog } from '@/components/deals/edit-deal-dialog'
 import { MessageCircle, GripVertical, MoreHorizontal, Pencil, Trash2, Plus } from 'lucide-react'
+import { isToday, isTomorrow, isThisWeek, isPast } from 'date-fns'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 import {
@@ -84,6 +85,18 @@ function reorder<T>(list: T[], startIndex: number, endIndex: number): T[] {
   return result
 }
 
+type DueUrgency = 'overdue' | 'today' | 'tomorrow' | 'this-week' | null
+
+function getDueUrgency(dueDate?: string | Date | null): DueUrgency {
+  if (!dueDate) return null
+  const d = new Date(dueDate)
+  if (isPast(d) && !isToday(d)) return 'overdue'
+  if (isToday(d)) return 'today'
+  if (isTomorrow(d)) return 'tomorrow'
+  if (isThisWeek(d)) return 'this-week'
+  return null
+}
+
 function DealCard({
   deal,
   provided,
@@ -109,8 +122,7 @@ function DealCard({
     cursor: snapshot.isDragging ? 'grabbing' : 'grab',
   }
 
-  // Check if deal is overdue
-  const isOverdue = deal.dueDate && new Date(deal.dueDate) < new Date()
+  const urgency = getDueUrgency(deal.dueDate)
 
   const cardContent = (
     <div
@@ -119,13 +131,16 @@ function DealCard({
       {...provided.dragHandleProps}
       onClick={onClick}
       style={style}
-      data-tour={isOverdue ? "overdue-task" : "deal-card"}
+      data-tour={urgency === 'overdue' ? "overdue-task" : "deal-card"}
       className={cn(
         "group relative flex gap-3 rounded-xl border p-3.5 shadow-sm transition-all duration-300 select-none",
         "bg-card border-border hover:shadow-md hover:border-primary/40",
         "dark:bg-zinc-900/80 dark:backdrop-blur-xl dark:border-white/10 dark:hover:bg-zinc-800/90",
         snapshot.isDragging && "shadow-xl shadow-primary/20 z-[9999] ring-1 ring-primary rotate-2 scale-105",
-        isOverdue && "border-destructive border ring-1 ring-destructive/20 bg-destructive/10 dark:bg-destructive/20"
+        urgency === 'overdue'   && "border-destructive border-2 ring-1 ring-destructive/20 bg-destructive/10 dark:bg-destructive/20",
+        urgency === 'today'     && "border-l-[3px] border-l-red-500 bg-red-500/5 dark:bg-red-500/10",
+        urgency === 'tomorrow'  && "border-l-[3px] border-l-orange-400 bg-orange-400/5 dark:bg-orange-400/10",
+        urgency === 'this-week' && "border-l-[3px] border-l-yellow-400 bg-yellow-400/5 dark:bg-yellow-400/10",
       )}
     >
       {/* Drag Handle */}
@@ -409,15 +424,26 @@ export function KanbanBoard({
       deals: stage.deals.filter(d => d.status !== 'LOST'),
     }))
 
-    if (!searchQuery) return activeStages
-
     const query = searchQuery.toLowerCase()
-    return activeStages.map(stage => ({
+    const filtered = !searchQuery
+      ? activeStages
+      : activeStages.map(stage => ({
+          ...stage,
+          deals: stage.deals.filter(deal =>
+            deal.title.toLowerCase().includes(query) ||
+            deal.contact?.name?.toLowerCase().includes(query)
+          ),
+        }))
+
+    // Sort: deals with dueDate ascending first, then deals without dueDate
+    return filtered.map(stage => ({
       ...stage,
-      deals: stage.deals.filter(deal =>
-        deal.title.toLowerCase().includes(query) ||
-        deal.contact?.name?.toLowerCase().includes(query)
-      ),
+      deals: [...stage.deals].sort((a, b) => {
+        if (!a.dueDate && !b.dueDate) return 0
+        if (!a.dueDate) return 1
+        if (!b.dueDate) return -1
+        return new Date(a.dueDate).getTime() - new Date(b.dueDate).getTime()
+      }),
     }))
   }, [stages, searchQuery])
 
