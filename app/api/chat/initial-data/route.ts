@@ -36,16 +36,21 @@ export async function GET() {
       orderBy: { createdAt: 'desc' },
     })
 
-    // 4. Fetch contacts with messages
+    // 4. Get active connection to scope messages
+    const activeConnection = connections.find(c => c.status === 'CONNECTED' || c.status === 'CONNECTING')
+    const messageFilter = activeConnection ? { connectionId: activeConnection.id } : {}
+
+    // 5. Fetch contacts with messages (scoped to active connection)
     const contacts = await prisma.contact.findMany({
       where: {
         organizationId: user.organizationId,
         whatsappMessages: {
-          some: {}
+          some: messageFilter,
         }
       },
       include: {
         whatsappMessages: {
+          where: messageFilter,
           orderBy: { sentAt: 'desc' },
           take: 1,
         },
@@ -65,6 +70,7 @@ export async function GET() {
           select: {
             whatsappMessages: {
               where: {
+                ...messageFilter,
                 direction: 'INBOUND',
               }
             }
@@ -76,11 +82,12 @@ export async function GET() {
       }
     })
 
-    // 5. Fetch unread counts
+    // 6. Fetch unread counts (scoped to active connection)
     const contactsWithUnread = await Promise.all(
       contacts.map(async (contact) => {
         const unreadCount = await prisma.whatsAppMessage.count({
           where: {
+            ...messageFilter,
             contactId: contact.id,
             direction: 'INBOUND',
             isRead: false,

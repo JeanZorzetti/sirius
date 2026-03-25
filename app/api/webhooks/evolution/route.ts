@@ -422,6 +422,7 @@ async function handleIncomingMessage(connection: any, data: any) {
                     data: {
                         contactId: contact.id,
                         organizationId,
+                        connectionId: connection.id,
                         remoteJid,
                         messageId: messageId || `gen-${Date.now()}`,
                         text: messageText,

@@ -763,6 +763,10 @@ model WhatsAppMessage {
   contactId String?
   contact   Contact? @relation(fields: [contactId], references: [id], onDelete: SetNull)
 
+  // Which WhatsApp connection this message belongs to
+  connectionId String?
+  connection   WhatsAppConnection? @relation(fields: [connectionId], references: [id], onDelete: SetNull)
+
   // Timestamps
   sentAt      DateTime  @default(now())
   deliveredAt DateTime?
@@ -779,6 +783,7 @@ model WhatsAppMessage {
   @@index([contactId])
   @@index([remoteJid])
   @@index([contactId, isRead, direction])
+  @@index([connectionId])
 }
 
 // ============================================================================
@@ -1302,7 +1307,8 @@ model WhatsAppConnection {
   createdAt      DateTime       @default(now())
   updatedAt      DateTime       @updatedAt
 
-  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  organization Organization      @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  messages     WhatsAppMessage[]
 
   @@unique([organizationId, instanceName])
   @@index([organizationId])

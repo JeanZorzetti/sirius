@@ -33,16 +33,32 @@ export async function GET() {
       )
     }
 
-    // 3. Buscar contatos com mensagens WhatsApp
+    // 3. Get active connection to filter messages by connection
+    const activeConnection = await prisma.whatsAppConnection.findFirst({
+      where: {
+        organizationId: user.organizationId,
+        status: { in: ['CONNECTED', 'CONNECTING'] },
+      },
+      orderBy: { connectedAt: 'desc' },
+    })
+
+    // Build message filter: if active connection exists, show only its messages
+    // Fall back to showing all messages (legacy data before connectionId was added)
+    const messageFilter = activeConnection
+      ? { connectionId: activeConnection.id }
+      : {}
+
+    // 4. Buscar contatos com mensagens WhatsApp
     const contacts = await prisma.contact.findMany({
       where: {
         organizationId: user.organizationId,
         whatsappMessages: {
-          some: {}
+          some: messageFilter,
         }
       },
       include: {
         whatsappMessages: {
+          where: messageFilter,
           orderBy: { sentAt: 'desc' },
           take: 1,
         },
@@ -62,6 +78,7 @@ export async function GET() {
           select: {
             whatsappMessages: {
               where: {
+                ...messageFilter,
                 direction: 'INBOUND',
               }
             }
@@ -73,11 +90,12 @@ export async function GET() {
       }
     })
 
-    // 4. Buscar contagem de mensagens não lidas para cada contato
+    // 5. Buscar contagem de mensagens não lidas para cada contato (filtrada por conexão)
     const contactsWithUnread = await Promise.all(
       contacts.map(async (contact) => {
         const unreadCount = await prisma.whatsAppMessage.count({
           where: {
+            ...messageFilter,
             contactId: contact.id,
             direction: 'INBOUND',
             isRead: false,
