@@ -51,15 +51,19 @@ export async function POST(
       )
     }
 
-    // 4. Logout from Evolution API
+    // 4. Logout from Evolution API (best-effort — instance may already be gone)
     const evolutionClient = await getOrgEvolutionClient(user.organizationId)
-    if (!evolutionClient) {
-      return NextResponse.json(
-        { error: 'Evolution API não está configurada.' },
-        { status: 400 }
-      )
+    if (evolutionClient) {
+      try {
+        await evolutionClient.logoutInstance(connection.instanceName)
+      } catch (err: any) {
+        // Instance may not exist or already be disconnected — proceed anyway
+        logger.warn(
+          { error: err?.message, instanceName: connection.instanceName },
+          'Evolution API logout failed, forcing DB disconnect'
+        )
+      }
     }
-    await evolutionClient.logoutInstance(connection.instanceName)
 
     // 5. Update status in database
     await prisma.whatsAppConnection.update({
