@@ -19,10 +19,6 @@
     {
       "path": "/api/cron/deal-idle",
       "schedule": "0 9 * * *"
-    },
-    {
-      "path": "/api/cron/sync-whatsapp",
-      "schedule": "*/10 * * * *"
     }
   ]
 }
