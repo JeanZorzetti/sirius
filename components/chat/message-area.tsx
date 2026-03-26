@@ -1,6 +1,7 @@
 'use client'
 
-import { useState, useEffect, useRef, useCallback, useOptimistic } from 'react'
+import { useState, useEffect, useRef, useCallback, useOptimistic, useMemo } from 'react'
+import { Virtuoso, VirtuosoHandle } from 'react-virtuoso'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import {
@@ -76,12 +77,24 @@ interface WhatsAppMessage {
   replyToId?: string | null; replyToText?: string | null
   reactions?: Reaction[]
 }
+interface InboundMessage {
+  id: string; text: string; direction: string; sentAt: string
+  mediaUrl: string | null; mediaType: string | null; status: string
+}
+
 interface MessageAreaProps {
   contact: Contact; connections: Connection[]
   organizationId: string; userId: string; userName: string
   onContactUpdate?: () => void
   onBack?: () => void
   refreshTrigger?: number
+  newInboundMessage?: InboundMessage | null
+}
+
+type MessageItem = {
+  msg: WhatsAppMessage
+  showDate: boolean
+  pos: BubblePos
 }
 
 const POLL = 2000 // 2s para tempo real
@@ -390,7 +403,7 @@ function MediaBubble({ msg, outbound }: { msg: WhatsAppMessage; outbound: boolea
 
 // ── Component ───────────────────────────────────────────────
 
-export function MessageArea({ contact, connections, organizationId, userId, userName, onContactUpdate, onBack, refreshTrigger }: MessageAreaProps) {
+export function MessageArea({ contact, connections, organizationId, userId, userName, onContactUpdate, onBack, refreshTrigger, newInboundMessage }: MessageAreaProps) {
   const [messages, setMessages] = useState<WhatsAppMessage[]>([])
   const [optimisticMessages, addOptimisticMessage] = useOptimistic<WhatsAppMessage[], WhatsAppMessage>(
     messages,
@@ -414,33 +427,25 @@ export function MessageArea({ contact, connections, organizationId, userId, user
   const [isTyping, setIsTyping] = useState(false)
   const typingTimeoutRef = useRef<NodeJS.Timeout | null>(null)
   const [showReactionBar, setShowReactionBar] = useState<string | null>(null)
-  const endRef = useRef<HTMLDivElement>(null)
+  const virtuosoRef = useRef<VirtuosoHandle>(null)
   const taRef = useRef<HTMLTextAreaElement>(null)
-  const containerRef = useRef<HTMLDivElement>(null)
   const prevMsgCount = useRef(0)
-  const messageRefs = useRef<Map<string, HTMLDivElement>>(new Map())
+  // Keep a ref to messages so scroll callbacks are never stale
+  const messagesRef = useRef(messages)
+  messagesRef.current = messages
 
   const scrollToBottom = useCallback((behavior: ScrollBehavior = 'smooth') => {
-    const container = containerRef.current
-    if (container) {
-      if (behavior === 'instant') {
-        container.scrollTop = container.scrollHeight
-      } else {
-        container.scrollTo({ top: container.scrollHeight, behavior: 'smooth' })
-      }
-    }
+    virtuosoRef.current?.scrollToIndex({
+      index: 'LAST',
+      behavior: behavior === 'instant' ? 'auto' : 'smooth',
+    })
   }, [])
 
   const scrollToMessage = useCallback((messageId: string) => {
-    const element = messageRefs.current.get(messageId)
-    const container = containerRef.current
-    if (element && container) {
-      const containerRect = container.getBoundingClientRect()
-      const elementRect = element.getBoundingClientRect()
-      const offset = elementRect.top - containerRect.top - containerRect.height / 2 + elementRect.height / 2
-      container.scrollTo({ top: container.scrollTop + offset, behavior: 'smooth' })
+    const index = messagesRef.current.findIndex(m => m.id === messageId)
+    if (index >= 0) {
+      virtuosoRef.current?.scrollToIndex({ index, behavior: 'smooth', align: 'center' })
       setHighlightedMessageId(messageId)
-      // Remover highlight após 2s
       setTimeout(() => setHighlightedMessageId(null), 2000)
     }
   }, [])
@@ -483,12 +488,30 @@ export function MessageArea({ contact, connections, organizationId, userId, user
 
   useEffect(() => { fetchMsgs(true) }, [contact.id, fetchMsgs])
 
-  // Real-time: refresh messages when SSE triggers a refresh via parent
+  // Real-time: refresh messages when Pusher triggers a status update
   useEffect(() => {
     if (refreshTrigger && refreshTrigger > 0) {
       fetchMsgs()
     }
   }, [refreshTrigger]) // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Append inbound messages pushed directly from chat-interface (no fetch needed)
+  useEffect(() => {
+    if (!newInboundMessage) return
+    const newMsg: WhatsAppMessage = {
+      id: newInboundMessage.id,
+      text: newInboundMessage.text,
+      direction: newInboundMessage.direction,
+      sentAt: new Date(newInboundMessage.sentAt),
+      deliveredAt: null, readAt: null,
+      status: newInboundMessage.status,
+      mediaUrl: newInboundMessage.mediaUrl,
+      mediaType: newInboundMessage.mediaType,
+      reactions: [],
+    }
+    setMessages(prev => prev.some(m => m.id === newInboundMessage.id) ? prev : [...prev, newMsg])
+    setTimeout(() => scrollToBottom(), 50)
+  }, [newInboundMessage?.id]) // eslint-disable-line react-hooks/exhaustive-deps
 
   // Fallback polling (60s) in case SSE misses events
   useEffect(() => {
@@ -576,6 +599,15 @@ export function MessageArea({ contact, connections, organizationId, userId, user
     prevMsgCount.current = messages.length
   }, [messages.length, scrollToBottom])
 
+  // Pre-compute per-item metadata for Virtuoso (avoids re-computing inside render)
+  const messageItems = useMemo((): MessageItem[] =>
+    optimisticMessages.map((msg, i) => ({
+      msg,
+      showDate: needsDateSep(msg, i > 0 ? optimisticMessages[i - 1] : null),
+      pos: getBubblePos(optimisticMessages, i),
+    })),
+  [optimisticMessages])
+
   const handleQuickReplySelect = (content: string) => {
     // Substituir o "/" + query pelo conteúdo da resposta rápida
     const words = text.split(/\s/)
@@ -659,8 +691,12 @@ export function MessageArea({ contact, connections, organizationId, userId, user
       }
       const confirmedMsg = await r.json()
 
-      // Replace temp message with confirmed message
-      setMessages(prev => prev.map(m => m.id === tempId ? confirmedMsg : m))
+      // Add confirmed message (tempId was only in optimistic state, not in messages[])
+      setMessages(prev =>
+        prev.some(m => m.id === tempId)
+          ? prev.map(m => m.id === tempId ? confirmedMsg : m)
+          : [...prev, confirmedMsg]
+      )
       setTimeout(() => scrollToBottom(), 100)
     } catch(err:any) {
       // Remove optimistic message on error
@@ -747,7 +783,11 @@ export function MessageArea({ contact, connections, organizationId, userId, user
         throw new Error(d.error)
       }
       const confirmedMsg = await r.json()
-      setMessages(prev => prev.map(m => m.id === tempId ? confirmedMsg : m))
+      setMessages(prev =>
+        prev.some(m => m.id === tempId)
+          ? prev.map(m => m.id === tempId ? confirmedMsg : m)
+          : [...prev, confirmedMsg]
+      )
       setTimeout(() => scrollToBottom(), 100)
     } catch (err: any) {
       setMessages(prev => prev.filter(m => m.id !== tempId))
@@ -799,7 +839,7 @@ export function MessageArea({ contact, connections, organizationId, userId, user
           messages={messages.map(m => ({ id: m.id, text: m.text }))}
           onClose={() => setIsSearchOpen(false)}
           onNavigate={scrollToMessage}
-          containerRef={containerRef}
+          containerRef={{ current: null }}
         />
       )}
 
@@ -893,52 +933,57 @@ export function MessageArea({ contact, connections, organizationId, userId, user
       </div>
 
       {/* Messages area */}
-      <div
-        ref={containerRef}
-        className="flex-1 overflow-y-auto px-4 py-2 md:px-[12%] whatsapp-bg-pattern"
-        role="log"
-        aria-live="polite"
-        aria-label="Mensagens da conversa"
-      >
-        {loading && messages.length === 0 ? (
-          <div className="flex items-center justify-center h-full">
-            {/* Skeleton loading */}
-            <div className="w-full max-w-md space-y-3">
-              {[...Array(5)].map((_,i) => (
-                <div key={i} className={cn('flex', i%2===0?'justify-start':'justify-end')}>
-                  <div className={cn(
-                    'h-10 rounded-[18px] animate-pulse',
-                    i%2===0 ? 'bg-white/60 w-[55%]' : 'bg-[#d9fdd3]/60 w-[45%]'
-                  )} />
-                </div>
-              ))}
-            </div>
-          </div>
-        ) : messages.length === 0 ? (
-          <div className="flex items-center justify-center h-full">
-            <div className="bg-white/80 dark:bg-zinc-800/80 backdrop-blur rounded-xl px-6 py-5 text-center shadow-[0_1px_3px_rgba(11,20,26,0.08)] max-w-[280px]">
-              <div className="w-14 h-14 rounded-full bg-[#00a884]/10 flex items-center justify-center mx-auto mb-3">
-                <Send className="h-6 w-6 text-[#00a884]" />
+      {loading && messages.length === 0 ? (
+        <div className="flex-1 flex items-center justify-center px-4 whatsapp-bg-pattern">
+          <div className="w-full max-w-md space-y-3">
+            {[...Array(5)].map((_,i) => (
+              <div key={i} className={cn('flex', i%2===0?'justify-start':'justify-end')}>
+                <div className={cn(
+                  'h-10 rounded-[18px] animate-pulse',
+                  i%2===0 ? 'bg-white/60 w-[55%]' : 'bg-[#d9fdd3]/60 w-[45%]'
+                )} />
               </div>
-              <p className="text-sm font-semibold text-[#111b21] dark:text-zinc-100">Nenhuma mensagem</p>
-              <p className="text-xs text-[#667781] mt-1">
-                Envie a primeira mensagem para iniciar a conversa
-              </p>
-            </div>
+            ))}
           </div>
-        ) : (
-          <div className="py-2">
-            {optimisticMessages.map((msg, i) => {
+        </div>
+      ) : messages.length === 0 ? (
+        <div className="flex-1 flex items-center justify-center whatsapp-bg-pattern">
+          <div className="bg-white/80 dark:bg-zinc-800/80 backdrop-blur rounded-xl px-6 py-5 text-center shadow-[0_1px_3px_rgba(11,20,26,0.08)] max-w-[280px]">
+            <div className="w-14 h-14 rounded-full bg-[#00a884]/10 flex items-center justify-center mx-auto mb-3">
+              <Send className="h-6 w-6 text-[#00a884]" />
+            </div>
+            <p className="text-sm font-semibold text-[#111b21] dark:text-zinc-100">Nenhuma mensagem</p>
+            <p className="text-xs text-[#667781] mt-1">
+              Envie a primeira mensagem para iniciar a conversa
+            </p>
+          </div>
+        </div>
+      ) : (
+        <Virtuoso
+          ref={virtuosoRef}
+          className="flex-1 px-4 py-2 md:px-[12%] whatsapp-bg-pattern"
+          role="log"
+          aria-live="polite"
+          aria-label="Mensagens da conversa"
+          data={messageItems}
+          followOutput="smooth"
+          initialTopMostItemIndex={Math.max(0, messageItems.length - 1)}
+          components={{
+            Footer: () => (
+              <>
+                {isTyping && <TypingIndicator variant="bubble" className="mt-2 ml-2" />}
+                <div className="h-4" />
+              </>
+            ),
+          }}
+          itemContent={(_index, { msg, showDate, pos }) => {
               const out = msg.direction === 'OUTBOUND'
-              const prev = i>0 ? optimisticMessages[i-1] : null
-              const showDate = needsDateSep(msg, prev)
-              const pos = getBubblePos(optimisticMessages, i)
               const isGroupedWithPrev = pos === 'middle' || pos === 'last'
               const media = hasMedia(msg)
               const displayText = getDisplayText(msg)
 
               return (
-                <div key={msg.id}>
+                <div>
                   {/* Date separator - sticky */}
                   {showDate && (
                     <div className="sticky top-0 z-10 flex justify-center py-2 my-1">
@@ -970,9 +1015,6 @@ export function MessageArea({ contact, connections, organizationId, userId, user
                     )}
 
                     <div
-                      ref={(el) => {
-                        if (el) messageRefs.current.set(msg.id, el)
-                      }}
                       role="article"
                       aria-label={`Mensagem ${out ? 'enviada' : 'recebida'} às ${fmtTime(msg.sentAt)}`}
                       className={cn(
@@ -1067,17 +1109,9 @@ export function MessageArea({ contact, connections, organizationId, userId, user
                   </div>
                 </div>
               )
-            })}
-
-            {/* Typing indicator bubble */}
-            {isTyping && (
-              <TypingIndicator variant="bubble" className="mt-2" />
-            )}
-
-            <div ref={endRef} />
-          </div>
-        )}
-      </div>
+          }}
+        />
+      )}
 
       {/* Reply preview bar */}
       {replyingTo && (

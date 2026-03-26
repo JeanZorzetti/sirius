@@ -76,6 +76,12 @@ export function ChatInterface({
   const [isSyncing, setIsSyncing] = useState(false)
   const [connectionStatus, setConnectionStatus] = useState<'connected' | 'connecting' | 'disconnected'>('disconnected')
   const [messageRefreshTrigger, setMessageRefreshTrigger] = useState(0)
+  // New message pushed directly to MessageArea without full refetch
+  const [pendingNewMessage, setPendingNewMessage] = useState<MessageNewEvent['message'] | null>(null)
+
+  // Keep a ref so Pusher callbacks always see current contacts (no stale closure)
+  const contactsRef = useRef(contacts)
+  contactsRef.current = contacts
 
   const activeConnections = connections.filter(c => c.status === 'CONNECTED')
   const totalUnread = contacts.reduce((sum, contact) => sum + (contact._count.unreadMessages || 0), 0)
@@ -92,6 +98,9 @@ export function ChatInterface({
   // a cada seleção, o que causaria reconexão do Pusher
   const selectedContactRef = useRef(selectedContact)
   selectedContactRef.current = selectedContact
+
+  // Reset pending message when user switches conversations
+  useEffect(() => { setPendingNewMessage(null) }, [selectedContact?.id])
 
   const fetchConversations = useCallback(async (showLoading = false) => {
     if (showLoading) setIsRefreshing(true)
@@ -171,8 +180,39 @@ export function ChatInterface({
   const { connectionStatus: pusherStatus } = usePusher({
     organizationId,
     onMessageNew: useCallback((data: MessageNewEvent) => {
-      fetchConversations()
-      setMessageRefreshTrigger(prev => prev + 1)
+      const { contactId, message } = data
+      const known = contactsRef.current.some(c => c.id === contactId)
+
+      if (known) {
+        // Update local state — no API call needed
+        setContacts(prev => {
+          const idx = prev.findIndex(c => c.id === contactId)
+          if (idx === -1) return prev
+          const isSelected = selectedContactRef.current?.id === contactId
+          const existing = prev[idx]
+          const updated: Contact = {
+            ...existing,
+            whatsappMessages: [{
+              id: message.id, text: message.text,
+              direction: message.direction, sentAt: new Date(message.sentAt),
+            }],
+            _count: {
+              ...existing._count,
+              unreadMessages: isSelected
+                ? (existing._count.unreadMessages || 0)
+                : (existing._count.unreadMessages || 0) + 1,
+            },
+          }
+          return [updated, ...prev.filter(c => c.id !== contactId)]
+        })
+        // Push directly into the open conversation
+        if (selectedContactRef.current?.id === contactId) {
+          setPendingNewMessage(message)
+        }
+      } else {
+        // Unknown contact (new conversation) — full fetch required
+        fetchConversations()
+      }
     }, [fetchConversations]),
     onMessageSent: useCallback(() => {
       fetchConversations()
@@ -413,6 +453,7 @@ export function ChatInterface({
                     onContactUpdate={() => fetchConversations()}
                     onBack={() => setSelectedContact(null)}
                     refreshTrigger={messageRefreshTrigger}
+                    newInboundMessage={pendingNewMessage}
                   />
                 ) : (
                   <div className="flex-1 flex items-center justify-center bg-[#efeae2] dark:bg-zinc-900">
