@@ -71,28 +71,38 @@ export default async function ChatPage({
     )
   }
 
-  let connections
+  let connections: any[] = []
+  let activeConnection = null
+  let messageFilter = {}
+
   try {
     connections = await prisma.whatsAppConnection.findMany({
       where: { organizationId: user.organizationId },
       orderBy: { createdAt: 'desc' },
     })
+
+    // Localizar a conexão ativa
+    activeConnection = connections.find((c: any) => c.status === 'CONNECTED' || c.status === 'CONNECTING')
+    if (activeConnection) {
+      messageFilter = { connectionId: activeConnection.id }
+    }
   } catch (err: any) {
     console.error("[CHAT_PAGE] Falha ao buscar conexões:", err.message)
     return <div>Erro ao buscar conexões: {err.message}</div>
   }
 
-  let contacts
+  let contacts: any[] = []
   try {
-    contacts = await prisma.contact.findMany({
+    const rawContacts = await prisma.contact.findMany({
       where: {
         organizationId: user.organizationId,
         whatsappMessages: {
-          some: {}
+          some: messageFilter
         }
       },
       include: {
         whatsappMessages: {
+          where: messageFilter,
           orderBy: { sentAt: 'desc' },
           take: 1,
         },
@@ -100,6 +110,7 @@ export default async function ChatPage({
           select: {
             whatsappMessages: {
               where: {
+                ...messageFilter,
                 direction: 'INBOUND',
               }
             }
@@ -110,6 +121,26 @@ export default async function ChatPage({
         updatedAt: 'desc'
       }
     })
+
+    contacts = await Promise.all(
+      rawContacts.map(async (contact) => {
+        const unreadCount = await prisma.whatsAppMessage.count({
+          where: {
+            ...messageFilter,
+            contactId: contact.id,
+            direction: 'INBOUND',
+            isRead: false,
+          }
+        })
+        return {
+          ...contact,
+          _count: {
+            ...contact._count,
+            unreadMessages: unreadCount,
+          }
+        }
+      })
+    )
   } catch (err: any) {
     console.error("[CHAT_PAGE] Falha ao buscar contatos:", err.message)
     return <div>Erro ao buscar contatos: {err.message}</div>
