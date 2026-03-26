@@ -928,7 +928,7 @@ export function MessageArea({ contact, connections, organizationId, userId, user
         <Virtuoso
           ref={virtuosoRef}
           style={{ flex: 1 }}
-          className="px-4 py-2 md:px-[12%] whatsapp-bg-pattern overflow-x-hidden"
+          className="whatsapp-bg-pattern overflow-x-hidden"
           role="log"
           aria-live="polite"
           aria-label="Mensagens da conversa"
@@ -938,7 +938,11 @@ export function MessageArea({ contact, connections, organizationId, userId, user
           components={{
             Footer: () => (
               <>
-                {isTyping && <TypingIndicator variant="bubble" className="mt-2 ml-2" />}
+                {isTyping && (
+                  <div className="w-full max-w-4xl mx-auto px-4 md:px-8">
+                    <TypingIndicator variant="bubble" className="mt-2 ml-2" />
+                  </div>
+                )}
                 <div className="h-4" />
               </>
             ),
@@ -950,7 +954,7 @@ export function MessageArea({ contact, connections, organizationId, userId, user
               const displayText = getDisplayText(msg)
 
               return (
-                <div>
+                <div className="w-full max-w-4xl mx-auto px-4 md:px-8">
                   {/* Date separator - sticky */}
                   {showDate && (
                     <div className="sticky top-0 z-10 flex justify-center py-2 my-1">
@@ -963,7 +967,7 @@ export function MessageArea({ contact, connections, organizationId, userId, user
                   {/* Bubble */}
                   <div
                     className={cn(
-                      'flex message-bubble-animate group relative',
+                      'flex message-bubble-animate group relative w-full',
                       out ? 'justify-end' : 'justify-start',
                       isGroupedWithPrev ? 'mt-[2px]' : 'mt-2'
                     )}
