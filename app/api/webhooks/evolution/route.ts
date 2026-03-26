@@ -1,11 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { after } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import logger from '@/lib/logger'
 import { triggerEvent } from '@/lib/pusher'
 import { webhookRateLimit } from '@/lib/ratelimit'
 import {
-  syncConnectionHistory,
   normalizePhoneNumber,
   findContactByPhone,
   extractMessageText,
@@ -67,7 +65,8 @@ export async function POST(request: NextRequest) {
             })
             logger.info({ allConnections }, '📋 All connections in DB')
 
-            return NextResponse.json({ error: 'Instance not found' }, { status: 404 })
+            // Retorna 200 para evitar re-envios do provedor
+            return NextResponse.json({ ignored: true })
         }
 
         logger.info({ connectionId: connection.id, instanceName: connection.instanceName }, '✅ Connection matched')
@@ -113,11 +112,9 @@ export async function POST(request: NextRequest) {
         return NextResponse.json({ success: true })
 
     } catch (error: any) {
-        logger.error({ error: error.message, stack: error.stack }, '💥 Error processing Evolution webhook')
-        return NextResponse.json(
-            { error: 'Internal server error' },
-            { status: 500 }
-        )
+        // Sempre retorna 200 — provedores re-enviam quando recebem 4xx/5xx
+        logger.error({ error: error.message, stack: error.stack }, 'Error processing Evolution webhook')
+        return NextResponse.json({ success: true })
     }
 }
 
@@ -246,21 +243,6 @@ async function handleConnectionUpdate(connection: any, data: any) {
         triggerEvent(connection.organizationId, 'connection:ready', {
             connectionId: connection.id,
             instanceName: connection.instanceName,
-        })
-
-        // Backend auto-sync: importar histórico após responder o webhook
-        after(async () => {
-            try {
-                const result = await syncConnectionHistory(connection.id)
-                logger.info({ connectionId: connection.id, ...result }, 'Auto-sync completed on connect')
-                triggerEvent(connection.organizationId, 'sync:complete', {
-                    connectionId: connection.id,
-                    syncedContacts: result.syncedContacts,
-                    syncedMessages: result.syncedMessages,
-                })
-            } catch (err: any) {
-                logger.error({ connectionId: connection.id, error: err.message }, 'Auto-sync failed on connect')
-            }
         })
     }
 }

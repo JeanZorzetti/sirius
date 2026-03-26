@@ -1,8 +1,6 @@
 'use client'
 
 import { useState, useEffect, useCallback, useRef } from 'react'
-import { usePusher } from '@/hooks/use-pusher'
-import type { MessageNewEvent, SyncCompleteEvent } from '@/hooks/use-pusher'
 import { ConnectionManager } from './connection-manager'
 import { ConversationList } from './conversation-list'
 import { MessageArea } from './message-area'
@@ -16,7 +14,6 @@ import {
   MessageCircle,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { toast } from 'sonner'
 import { cn } from '@/lib/utils'
 
 interface Connection {
@@ -69,14 +66,6 @@ export function ChatInterface({
   const [contacts, setContacts] = useState<Contact[]>(initialContacts)
   const [connections, setConnections] = useState<Connection[]>(initialConnections)
   const [isRefreshing, setIsRefreshing] = useState(false)
-  const [connectionStatus, setConnectionStatus] = useState<'connected' | 'connecting' | 'disconnected'>('disconnected')
-  const [messageRefreshTrigger, setMessageRefreshTrigger] = useState(0)
-  // New message pushed directly to MessageArea without full refetch
-  const [pendingNewMessage, setPendingNewMessage] = useState<MessageNewEvent['message'] | null>(null)
-
-  // Keep a ref so Pusher callbacks always see current contacts (no stale closure)
-  const contactsRef = useRef(contacts)
-  contactsRef.current = contacts
 
   const activeConnections = connections.filter(c => c.status === 'CONNECTED')
   const totalUnread = contacts.reduce((sum, contact) => sum + (contact._count.unreadMessages || 0), 0)
@@ -89,13 +78,8 @@ export function ChatInterface({
     if (match) setSelectedContact(match)
   }, [initialPhone, contacts])
 
-  // Ref para selectedContact — evita que fetchConversations mude de referência
-  // a cada seleção, o que causaria reconexão do Pusher
   const selectedContactRef = useRef(selectedContact)
   selectedContactRef.current = selectedContact
-
-  // Reset pending message when user switches conversations
-  useEffect(() => { setPendingNewMessage(null) }, [selectedContact?.id])
 
   const fetchConversations = useCallback(async (showLoading = false) => {
     if (showLoading) setIsRefreshing(true)
@@ -111,7 +95,7 @@ export function ChatInterface({
         }
       }
     } catch (error) {
-      console.error('[CHAT_INTERFACE] [ERRO] fetchConversations:', error)
+      console.error('[CHAT] fetchConversations error:', error)
     } finally {
       setIsRefreshing(false)
     }
@@ -125,83 +109,21 @@ export function ChatInterface({
         setConnections(data)
       }
     } catch (error) {
-      console.error('[CHAT_INTERFACE] [ERRO] fetchConnections:', error)
+      console.error('[CHAT] fetchConnections error:', error)
     }
   }, [])
 
-  // Real-time via shared Pusher hook (singleton, ref-based callbacks)
-  const { connectionStatus: pusherStatus } = usePusher({
-    organizationId,
-    onMessageNew: useCallback((data: MessageNewEvent) => {
-      const { contactId, message } = data
-      const known = contactsRef.current.some(c => c.id === contactId)
-
-      if (known) {
-        // Update local state — no API call needed
-        setContacts(prev => {
-          const idx = prev.findIndex(c => c.id === contactId)
-          if (idx === -1) return prev
-          const isSelected = selectedContactRef.current?.id === contactId
-          const existing = prev[idx]
-          const updated: Contact = {
-            ...existing,
-            whatsappMessages: [{
-              id: message.id, text: message.text,
-              direction: message.direction, sentAt: new Date(message.sentAt),
-            }],
-            _count: {
-              ...existing._count,
-              unreadMessages: isSelected
-                ? (existing._count.unreadMessages || 0)
-                : (existing._count.unreadMessages || 0) + 1,
-            },
-          }
-          return [updated, ...prev.filter(c => c.id !== contactId)]
-        })
-        // Push directly into the open conversation
-        if (selectedContactRef.current?.id === contactId) {
-          setPendingNewMessage(message)
-        }
-      } else {
-        // Unknown contact (new conversation) — full fetch required
-        fetchConversations()
-      }
-    }, [fetchConversations]),
-    onMessageSent: useCallback(() => {
-      fetchConversations()
-      setMessageRefreshTrigger(prev => prev + 1)
-    }, [fetchConversations]),
-    onMessageStatus: useCallback(() => {
-      setMessageRefreshTrigger(prev => prev + 1)
-    }, []),
-    onConnectionReady: useCallback(() => {
-      fetchConnections()
-      fetchConversations()
-      toast.success('WhatsApp conectado! Importando historico...')
-    }, [fetchConnections, fetchConversations]),
-    onSyncComplete: useCallback((data: SyncCompleteEvent) => {
-      fetchConversations()
-      if (data.syncedMessages > 0 || data.syncedContacts > 0) {
-        toast.success(`Historico importado: ${data.syncedContacts} contatos, ${data.syncedMessages} mensagens`)
-      }
-    }, [fetchConversations]),
-  })
-
-  // Sync pusher status to local state
+  // Polling: conversas a cada 5s, conexões a cada 30s
   useEffect(() => {
-    setConnectionStatus(pusherStatus)
-  }, [pusherStatus])
-
-  // Poll connections less frequently (60s safety net)
-  useEffect(() => {
-    const interval = setInterval(fetchConnections, 60000)
-    return () => clearInterval(interval)
-  }, [fetchConnections])
+    const convInterval = setInterval(() => fetchConversations(), 5000)
+    const connInterval = setInterval(fetchConnections, 30000)
+    return () => { clearInterval(convInterval); clearInterval(connInterval) }
+  }, [fetchConversations, fetchConnections])
 
   // Update document title with unread count
   useEffect(() => {
-    const totalUnread = contacts.reduce((sum, contact) => sum + (contact._count.unreadMessages || 0), 0)
-    document.title = totalUnread > 0 ? `Chat Center (${totalUnread})` : 'Chat Center'
+    const unread = contacts.reduce((sum, contact) => sum + (contact._count.unreadMessages || 0), 0)
+    document.title = unread > 0 ? `Chat Center (${unread})` : 'Chat Center'
     return () => { document.title = 'Chat Center' }
   }, [contacts])
 
@@ -270,23 +192,6 @@ export function ChatInterface({
               {activeConnections.length}/{connections.length}
             </span>
           </button>
-        </div>
-
-        <div className="flex items-center gap-2">
-          <div className="flex items-center gap-1.5 px-2 py-1 rounded-md bg-zinc-100 dark:bg-zinc-800">
-            <div className={cn(
-              'h-2 w-2 rounded-full transition-colors',
-              connectionStatus === 'connected' ? 'bg-emerald-500' :
-              connectionStatus === 'connecting' ? 'bg-amber-500 animate-pulse' :
-              'bg-red-500'
-            )} />
-            <span className="text-[10px] font-medium text-zinc-600 dark:text-zinc-400">
-              {connectionStatus === 'connected' ? 'Conectado' :
-               connectionStatus === 'connecting' ? 'Conectando...' :
-               'Desconectado'}
-            </span>
-          </div>
-
         </div>
       </div>
 
@@ -369,8 +274,6 @@ export function ChatInterface({
                     userName={userName}
                     onContactUpdate={() => fetchConversations()}
                     onBack={() => setSelectedContact(null)}
-                    refreshTrigger={messageRefreshTrigger}
-                    newInboundMessage={pendingNewMessage}
                   />
                 ) : (
                   <div className="flex-1 flex items-center justify-center bg-[#efeae2] dark:bg-zinc-900">

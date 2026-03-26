@@ -77,18 +77,11 @@ interface WhatsAppMessage {
   replyToId?: string | null; replyToText?: string | null
   reactions?: Reaction[]
 }
-interface InboundMessage {
-  id: string; text: string; direction: string; sentAt: string
-  mediaUrl: string | null; mediaType: string | null; status: string
-}
-
 interface MessageAreaProps {
   contact: Contact; connections: Connection[]
   organizationId: string; userId: string; userName: string
   onContactUpdate?: () => void
   onBack?: () => void
-  refreshTrigger?: number
-  newInboundMessage?: InboundMessage | null
 }
 
 type MessageItem = {
@@ -96,8 +89,6 @@ type MessageItem = {
   showDate: boolean
   pos: BubblePos
 }
-
-const POLL = 2000 // 2s para tempo real
 
 // ── Helpers ──────────────────────────────────────────────────
 
@@ -403,7 +394,7 @@ function MediaBubble({ msg, outbound }: { msg: WhatsAppMessage; outbound: boolea
 
 // ── Component ───────────────────────────────────────────────
 
-export function MessageArea({ contact, connections, organizationId, userId, userName, onContactUpdate, onBack, refreshTrigger, newInboundMessage }: MessageAreaProps) {
+export function MessageArea({ contact, connections, organizationId, userId, userName, onContactUpdate, onBack }: MessageAreaProps) {
   const [messages, setMessages] = useState<WhatsAppMessage[]>([])
   const [optimisticMessages, addOptimisticMessage] = useOptimistic<WhatsAppMessage[], WhatsAppMessage>(
     messages,
@@ -488,34 +479,9 @@ export function MessageArea({ contact, connections, organizationId, userId, user
 
   useEffect(() => { fetchMsgs(true) }, [contact.id, fetchMsgs])
 
-  // Real-time: refresh messages when Pusher triggers a status update
+  // Polling: rebusca mensagens a cada 5s (simples, confiável, self-healing)
   useEffect(() => {
-    if (refreshTrigger && refreshTrigger > 0) {
-      fetchMsgs()
-    }
-  }, [refreshTrigger]) // eslint-disable-line react-hooks/exhaustive-deps
-
-  // Append inbound messages pushed directly from chat-interface (no fetch needed)
-  useEffect(() => {
-    if (!newInboundMessage) return
-    const newMsg: WhatsAppMessage = {
-      id: newInboundMessage.id,
-      text: newInboundMessage.text,
-      direction: newInboundMessage.direction,
-      sentAt: new Date(newInboundMessage.sentAt),
-      deliveredAt: null, readAt: null,
-      status: newInboundMessage.status,
-      mediaUrl: newInboundMessage.mediaUrl,
-      mediaType: newInboundMessage.mediaType,
-      reactions: [],
-    }
-    setMessages(prev => prev.some(m => m.id === newInboundMessage.id) ? prev : [...prev, newMsg])
-    setTimeout(() => scrollToBottom(), 50)
-  }, [newInboundMessage?.id]) // eslint-disable-line react-hooks/exhaustive-deps
-
-  // Fallback polling (60s) in case SSE misses events
-  useEffect(() => {
-    const i = setInterval(() => fetchMsgs(), 60000)
+    const i = setInterval(() => fetchMsgs(), 5000)
     return () => clearInterval(i)
   }, [fetchMsgs])
 
