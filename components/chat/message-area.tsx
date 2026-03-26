@@ -796,9 +796,9 @@ export function MessageArea({ contact, connections, organizationId, userId, user
   }
 
   return (
-    <div className="flex-1 flex min-w-0">
+    <div className="flex-1 flex min-w-0 overflow-hidden">
       {/* Main message area */}
-      <div className="flex-1 flex flex-col min-w-0">
+      <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
         {/* Search bar (conditionally rendered) */}
         {isSearchOpen && (
         <MessageSearch
@@ -927,7 +927,8 @@ export function MessageArea({ contact, connections, organizationId, userId, user
       ) : (
         <Virtuoso
           ref={virtuosoRef}
-          className="flex-1 px-4 py-2 md:px-[12%] whatsapp-bg-pattern"
+          style={{ flex: 1 }}
+          className="px-4 py-2 md:px-[12%] whatsapp-bg-pattern overflow-x-hidden"
           role="log"
           aria-live="polite"
           aria-label="Mensagens da conversa"
