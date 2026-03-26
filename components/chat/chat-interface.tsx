@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { usePusher } from '@/hooks/use-pusher'
-import type { MessageNewEvent, MessageSentEvent, ConnectionReadyEvent } from '@/hooks/use-pusher'
+import type { MessageNewEvent, SyncCompleteEvent } from '@/hooks/use-pusher'
 import { ConnectionManager } from './connection-manager'
 import { ConversationList } from './conversation-list'
 import { MessageArea } from './message-area'
@@ -10,8 +10,6 @@ import { EmptyState } from '@/components/ui/empty-state'
 import {
   MessageSquare,
   RefreshCw,
-  Download,
-  Loader2,
   Wifi,
   WifiOff,
   Settings2,
@@ -57,8 +55,6 @@ interface ChatInterfaceProps {
   initialPhone?: string
 }
 
-const POLL_INTERVAL = 3000 // 3s para tempo real
-
 export function ChatInterface({
   connections: initialConnections,
   contacts: initialContacts,
@@ -73,7 +69,6 @@ export function ChatInterface({
   const [contacts, setContacts] = useState<Contact[]>(initialContacts)
   const [connections, setConnections] = useState<Connection[]>(initialConnections)
   const [isRefreshing, setIsRefreshing] = useState(false)
-  const [isSyncing, setIsSyncing] = useState(false)
   const [connectionStatus, setConnectionStatus] = useState<'connected' | 'connecting' | 'disconnected'>('disconnected')
   const [messageRefreshTrigger, setMessageRefreshTrigger] = useState(0)
   // New message pushed directly to MessageArea without full refetch
@@ -134,48 +129,6 @@ export function ChatInterface({
     }
   }, [])
 
-  const syncConversations = async () => {
-    if (activeConnections.length === 0) {
-      toast.error('Nenhuma conexão ativa para sincronizar')
-      return
-    }
-
-    setIsSyncing(true)
-    toast.info('Importando conversas do WhatsApp...')
-
-    let totalContacts = 0
-    let totalMessages = 0
-
-    try {
-      for (const conn of activeConnections) {
-        try {
-          const res = await fetch(`/api/whatsapp/connections/${conn.id}/sync`, {
-            method: 'POST',
-          })
-          if (res.ok) {
-            const data = await res.json()
-            totalContacts += data.syncedContacts || 0
-            totalMessages += data.syncedMessages || 0
-          }
-        } catch (err) {
-          console.error('[CHAT_INTERFACE] [ERRO] sync request failed:', err)
-        }
-      }
-
-      if (totalMessages > 0 || totalContacts > 0) {
-        toast.success(`Importado: ${totalContacts} contatos, ${totalMessages} mensagens`)
-      } else {
-        toast.info('Nenhuma conversa nova encontrada')
-      }
-
-      await fetchConversations(true)
-    } catch (error) {
-      toast.error('Erro ao importar conversas')
-    } finally {
-      setIsSyncing(false)
-    }
-  }
-
   // Real-time via shared Pusher hook (singleton, ref-based callbacks)
   const { connectionStatus: pusherStatus } = usePusher({
     organizationId,
@@ -221,23 +174,17 @@ export function ChatInterface({
     onMessageStatus: useCallback(() => {
       setMessageRefreshTrigger(prev => prev + 1)
     }, []),
-    onConnectionReady: useCallback(async (data: ConnectionReadyEvent) => {
+    onConnectionReady: useCallback(() => {
       fetchConnections()
-      try {
-        const res = await fetch(`/api/whatsapp/connections/${data.connectionId}/sync`, {
-          method: 'POST',
-        })
-        if (res.ok) {
-          const result = await res.json()
-          if (result.syncedMessages > 0 || result.syncedContacts > 0) {
-            toast.success(`Historico importado: ${result.syncedContacts} contatos, ${result.syncedMessages} mensagens`)
-          }
-          fetchConversations()
-        }
-      } catch (err) {
-        console.error('[CHAT] Auto-sync failed:', err)
-      }
+      fetchConversations()
+      toast.success('WhatsApp conectado! Importando historico...')
     }, [fetchConnections, fetchConversations]),
+    onSyncComplete: useCallback((data: SyncCompleteEvent) => {
+      fetchConversations()
+      if (data.syncedMessages > 0 || data.syncedContacts > 0) {
+        toast.success(`Historico importado: ${data.syncedContacts} contatos, ${data.syncedMessages} mensagens`)
+      }
+    }, [fetchConversations]),
   })
 
   // Sync pusher status to local state
@@ -340,22 +287,6 @@ export function ChatInterface({
             </span>
           </div>
 
-          {activeConnections.length > 0 && activeView === 'chat' && (
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={syncConversations}
-              disabled={isSyncing}
-              className="h-8 text-xs gap-1.5"
-            >
-              {isSyncing ? (
-                <Loader2 className="h-3.5 w-3.5 animate-spin" />
-              ) : (
-                <Download className="h-3.5 w-3.5" />
-              )}
-              {isSyncing ? 'Importando...' : 'Importar'}
-            </Button>
-          )}
         </div>
       </div>
 
@@ -396,32 +327,18 @@ export function ChatInterface({
                 <div>
                   <h3 className="font-semibold text-lg">Nenhuma conversa ainda</h3>
                   <p className="text-sm text-muted-foreground mt-1 max-w-sm">
-                    Importe suas conversas existentes do WhatsApp ou aguarde novas mensagens
+                    Suas conversas aparecem automaticamente ao receber ou enviar mensagens
                   </p>
                 </div>
-                <div className="flex items-center justify-center gap-3">
-                  <Button
-                    onClick={syncConversations}
-                    disabled={isSyncing}
-                    size="sm"
-                  >
-                    {isSyncing ? (
-                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    ) : (
-                      <Download className="mr-2 h-4 w-4" />
-                    )}
-                    {isSyncing ? 'Importando...' : 'Importar Conversas'}
-                  </Button>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => fetchConversations(true)}
-                    disabled={isRefreshing}
-                  >
-                    <RefreshCw className={cn('mr-2 h-4 w-4', isRefreshing && 'animate-spin')} />
-                    Atualizar
-                  </Button>
-                </div>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => fetchConversations(true)}
+                  disabled={isRefreshing}
+                >
+                  <RefreshCw className={cn('mr-2 h-4 w-4', isRefreshing && 'animate-spin')} />
+                  Atualizar
+                </Button>
               </div>
             </div>
           ) : (

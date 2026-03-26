@@ -46,6 +46,12 @@ export interface ConnectionReadyEvent {
   instanceName: string
 }
 
+export interface SyncCompleteEvent {
+  connectionId: string
+  syncedContacts: number
+  syncedMessages: number
+}
+
 // --- Singleton client management ---
 
 interface ClientEntry {
@@ -110,6 +116,7 @@ export interface UsePusherOptions {
   onMessageSent?: (data: MessageSentEvent) => void
   onMessageStatus?: (data: MessageStatusEvent) => void
   onConnectionReady?: (data: ConnectionReadyEvent) => void
+  onSyncComplete?: (data: SyncCompleteEvent) => void
 }
 
 export function usePusher({
@@ -119,6 +126,7 @@ export function usePusher({
   onMessageSent,
   onMessageStatus,
   onConnectionReady,
+  onSyncComplete,
 }: UsePusherOptions) {
   const [connectionStatus, setConnectionStatus] = useState<'connected' | 'connecting' | 'disconnected'>('disconnected')
 
@@ -127,11 +135,13 @@ export function usePusher({
   const onMessageSentRef = useRef(onMessageSent)
   const onMessageStatusRef = useRef(onMessageStatus)
   const onConnectionReadyRef = useRef(onConnectionReady)
+  const onSyncCompleteRef = useRef(onSyncComplete)
 
   onMessageNewRef.current = onMessageNew
   onMessageSentRef.current = onMessageSent
   onMessageStatusRef.current = onMessageStatus
   onConnectionReadyRef.current = onConnectionReady
+  onSyncCompleteRef.current = onSyncComplete
 
   useEffect(() => {
     const key = process.env.NEXT_PUBLIC_PUSHER_KEY
@@ -160,17 +170,20 @@ export function usePusher({
     const handleMessageSent = (data: MessageSentEvent) => onMessageSentRef.current?.(data)
     const handleMessageStatus = (data: MessageStatusEvent) => onMessageStatusRef.current?.(data)
     const handleConnectionReady = (data: ConnectionReadyEvent) => onConnectionReadyRef.current?.(data)
+    const handleSyncComplete = (data: SyncCompleteEvent) => onSyncCompleteRef.current?.(data)
 
     channel.bind('message:new', handleMessageNew)
     channel.bind('message:sent', handleMessageSent)
     channel.bind('message:status', handleMessageStatus)
     channel.bind('connection:ready', handleConnectionReady)
+    channel.bind('sync:complete', handleSyncComplete)
 
     return () => {
       channel.unbind('message:new', handleMessageNew)
       channel.unbind('message:sent', handleMessageSent)
       channel.unbind('message:status', handleMessageStatus)
       channel.unbind('connection:ready', handleConnectionReady)
+      channel.unbind('sync:complete', handleSyncComplete)
 
       client.connection.unbind('connected', onConnected)
       client.connection.unbind('disconnected', onDisconnected)

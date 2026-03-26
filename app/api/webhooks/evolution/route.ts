@@ -1,8 +1,16 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { after } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import logger from '@/lib/logger'
 import { triggerEvent } from '@/lib/pusher'
 import { webhookRateLimit } from '@/lib/ratelimit'
+import {
+  syncConnectionHistory,
+  normalizePhoneNumber,
+  findContactByPhone,
+  extractMessageText,
+  extractMediaInfo,
+} from '@/lib/whatsapp-sync'
 
 /**
  * Webhook receiver para Evolution API v2
@@ -234,11 +242,25 @@ async function handleConnectionUpdate(connection: any, data: any) {
     logger.info({ connectionId: connection.id, status, phoneNumber }, '✅ Connection updated in DB')
 
     // Notificar clientes via Pusher sobre mudança de conexão
-    // O cliente auto-sync quando recebe connection:ready
     if (status === 'CONNECTED' && wasDisconnected) {
         triggerEvent(connection.organizationId, 'connection:ready', {
             connectionId: connection.id,
             instanceName: connection.instanceName,
+        })
+
+        // Backend auto-sync: importar histórico após responder o webhook
+        after(async () => {
+            try {
+                const result = await syncConnectionHistory(connection.id)
+                logger.info({ connectionId: connection.id, ...result }, 'Auto-sync completed on connect')
+                triggerEvent(connection.organizationId, 'sync:complete', {
+                    connectionId: connection.id,
+                    syncedContacts: result.syncedContacts,
+                    syncedMessages: result.syncedMessages,
+                })
+            } catch (err: any) {
+                logger.error({ connectionId: connection.id, error: err.message }, 'Auto-sync failed on connect')
+            }
         })
     }
 }
@@ -480,55 +502,7 @@ async function handleIncomingMessage(connection: any, data: any) {
     }
 }
 
-/**
- * Normaliza número de telefone para formato consistente
- */
-function normalizePhoneNumber(phone: string): string {
-    let cleaned = phone.replace(/\D/g, '')
-
-    if (cleaned.length === 11 && !cleaned.startsWith('55')) {
-        cleaned = '55' + cleaned
-    }
-    if (cleaned.length === 10 && !cleaned.startsWith('55')) {
-        cleaned = '55' + cleaned
-    }
-
-    return cleaned
-}
-
-/**
- * Busca contato por telefone com vários formatos
- */
-async function findContactByPhone(organizationId: string, phone: string) {
-    let contact = await prisma.contact.findFirst({
-        where: { organizationId, phone }
-    })
-    if (contact) return contact
-
-    const withoutCountry = phone.startsWith('55') ? phone.substring(2) : phone
-    contact = await prisma.contact.findFirst({
-        where: { organizationId, phone: withoutCountry }
-    })
-    if (contact) return contact
-
-    if (!phone.startsWith('55')) {
-        contact = await prisma.contact.findFirst({
-            where: { organizationId, phone: '55' + phone }
-        })
-    }
-
-    // Busca parcial - telefone contém ou é contido
-    if (!contact) {
-        contact = await prisma.contact.findFirst({
-            where: {
-                organizationId,
-                phone: { contains: phone.slice(-8) }, // últimos 8 dígitos
-            }
-        })
-    }
-
-    return contact
-}
+// normalizePhoneNumber, findContactByPhone — imported from @/lib/whatsapp-sync
 
 /**
  * Atualiza status de mensagem (entregue, lido)
@@ -595,134 +569,7 @@ async function handleMessageStatusUpdate(connection: any, data: any) {
     }
 }
 
-/**
- * Extrai texto da mensagem (suporta diferentes tipos)
- * Agora retorna texto para TODOS os tipos de mídia, mesmo sem caption
- */
-function extractMessageText(message: any): string {
-    const msg = message.message
-
-    if (!msg) return ''
-
-    // Mensagem de texto simples
-    if (msg.conversation) return msg.conversation
-
-    // Mensagem de texto estendida
-    if (msg.extendedTextMessage?.text) return msg.extendedTextMessage.text
-
-    // Mensagem com imagem
-    if (msg.imageMessage) {
-        return msg.imageMessage.caption
-            ? `[Imagem] ${msg.imageMessage.caption}`
-            : '[Imagem]'
-    }
-
-    // Mensagem com vídeo
-    if (msg.videoMessage) {
-        return msg.videoMessage.caption
-            ? `[Vídeo] ${msg.videoMessage.caption}`
-            : '[Vídeo]'
-    }
-
-    // Mensagem com documento
-    if (msg.documentMessage) {
-        return msg.documentMessage.fileName
-            ? `[Documento] ${msg.documentMessage.fileName}`
-            : '[Documento]'
-    }
-
-    // Mensagem com áudio
-    if (msg.audioMessage || msg.pttMessage) return '[Áudio]'
-
-    // Sticker
-    if (msg.stickerMessage) return '[Figurinha]'
-
-    // Localização
-    if (msg.locationMessage || msg.liveLocationMessage) return '[Localização]'
-
-    // Contato
-    if (msg.contactMessage || msg.contactsArrayMessage) return '[Contato]'
-
-    // Visualização única
-    if (msg.viewOnceMessage || msg.viewOnceMessageV2) return '[Visualização única]'
-
-    // Enquete
-    if (msg.pollCreationMessage || msg.pollCreationMessageV3) return '[Enquete]'
-
-    // Reação
-    if (msg.reactionMessage) return ''  // Reações não criam mensagem
-
-    // Mensagem de protocolo (sistema)
-    if (msg.protocolMessage) return ''
-
-    // System key distribution
-    if (msg.senderKeyDistributionMessage) return ''
-
-    // Qualquer outro tipo de mensagem
-    return '[Mensagem]'
-}
-
-/**
- * Extrai informações de mídia da mensagem
- * Retorna { type, url, mimetype, fileName } ou null se não for mídia
- */
-function extractMediaInfo(message: any): { type: string; url: string | null; mimetype: string | null; fileName: string | null } | null {
-    const msg = message.message
-    if (!msg) return null
-
-    // Imagem
-    if (msg.imageMessage) {
-        return {
-            type: 'image',
-            url: msg.imageMessage.url || msg.imageMessage.directPath || null,
-            mimetype: msg.imageMessage.mimetype || 'image/jpeg',
-            fileName: null,
-        }
-    }
-
-    // Vídeo
-    if (msg.videoMessage) {
-        return {
-            type: 'video',
-            url: msg.videoMessage.url || msg.videoMessage.directPath || null,
-            mimetype: msg.videoMessage.mimetype || 'video/mp4',
-            fileName: null,
-        }
-    }
-
-    // Documento
-    if (msg.documentMessage) {
-        return {
-            type: 'document',
-            url: msg.documentMessage.url || msg.documentMessage.directPath || null,
-            mimetype: msg.documentMessage.mimetype || 'application/octet-stream',
-            fileName: msg.documentMessage.fileName || null,
-        }
-    }
-
-    // Áudio
-    if (msg.audioMessage || msg.pttMessage) {
-        const audio = msg.audioMessage || msg.pttMessage
-        return {
-            type: 'audio',
-            url: audio.url || audio.directPath || null,
-            mimetype: audio.mimetype || 'audio/ogg',
-            fileName: null,
-        }
-    }
-
-    // Sticker
-    if (msg.stickerMessage) {
-        return {
-            type: 'sticker',
-            url: msg.stickerMessage.url || msg.stickerMessage.directPath || null,
-            mimetype: msg.stickerMessage.mimetype || 'image/webp',
-            fileName: null,
-        }
-    }
-
-    return null
-}
+// extractMessageText, extractMediaInfo — imported from @/lib/whatsapp-sync
 
 
 /**
