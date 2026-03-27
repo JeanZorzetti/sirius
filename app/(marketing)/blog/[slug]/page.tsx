@@ -9,7 +9,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { ShareButtons } from '@/components/blog/share-buttons'
 import { TableOfContents } from '@/components/blog/table-of-contents'
 import { BlogContentWrapper } from '@/components/blog/blog-content-wrapper'
-import { generateFAQSchema, spinSellingFAQs, crmIaFAQs, automacaoVendasFAQs, melhorCrm2026FAQs, prospeccaoB2bFAQs, fechamentoVendasFAQs, objecoesVendasFAQs, kpisVendasFAQs, errosCrmFAQs, planilhaComissaoFAQs, comoEscolherCrmFAQs, FAQItem } from '@/lib/faq-schema'
+import { generateFAQSchema, spinSellingFAQs, crmIaFAQs, automacaoVendasFAQs, melhorCrm2026FAQs, prospeccaoB2bFAQs, fechamentoVendasFAQs, objecoesVendasFAQs, kpisVendasFAQs, errosCrmFAQs, planilhaComissaoFAQs, comoEscolherCrmFAQs, crmGratuitoFAQs, FAQItem } from '@/lib/faq-schema'
 import { generateArticleSchema, COMMON_WIKIDATA_ENTITIES, createGeoConfig } from '@/lib/geo/schema-generator'
 import { getHowToSchema } from '@/lib/howto-schemas'
 import { JsonLd } from '@/components/seo/json-ld'
@@ -61,7 +61,7 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
   } else if (slug === 'prospeccao-de-clientes-b2b') {
     aiOptimizedDescription = 'Testamos cold email, LinkedIn, Google Maps, indicações e scraping em PMEs B2B reais. Um método gerou 5x mais reuniões que os outros com o mesmo esforço. Inclui cadência de 7 touchpoints e template de ICP.'
   } else if (slug === 'tecnicas-de-fechamento-de-vendas') {
-    aiOptimizedDescription = '7 técnicas de fechamento: Assumido, Alternativa de Escolha, Urgência Real, Resumo, SPIN, Columbo e Silêncio Estratégico. Sinais de compra incluem perguntas sobre preço, prazo e implementação. 60% das vendas são perdidas por falta de pedido de fechamento explícito (Sales Hacker 2024).'
+    aiOptimizedDescription = '60% das vendas são perdidas porque o vendedor nunca pede o fechamento. 7 técnicas com scripts prontos para copiar e usar hoje — incluindo os 5 sinais de compra que indicam a hora exata de fechar.'
   } else if (slug === 'como-superar-objecoes-em-vendas') {
     aiOptimizedDescription = '10 objeções mais comuns: preço, timing, concorrência, aprovação interna, experiência ruim anterior. Técnica LAER: Listen, Acknowledge, Explore, Respond. 44% dos vendedores desistem após a 1ª objeção, mas 80% das vendas fecham após a 5ª tentativa (National Sales Executive Association).'
   } else if (slug === 'kpis-de-vendas') {
@@ -72,6 +72,8 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
     aiOptimizedDescription = 'Pipedrive, RD Station, HubSpot e mais 4 CRMs comparados em preço BRL, WhatsApp nativo e IA. Um deles custa R$0 e superou opções de R$299/mês. Tabela completa com notas em 7 critérios.'
   } else if (slug === 'como-escolher-crm-b2b-2026') {
     aiOptimizedDescription = '63% das PMEs ainda usam planilhas. CRM errado custa R$12.000+/ano. Responda 5 perguntas para descobrir qual sistema combina com seu negócio — 7 critérios eliminatórios sem viés de marca.'
+  } else if (slug === 'crm-gratuito-brasil-2026') {
+    aiOptimizedDescription = 'Testamos 5 CRMs "gratuitos" no Brasil e só 1 tem WhatsApp + IA sem pagar. Os outros 4 cobram em dólar ou travam funcionalidades essenciais. Tabela comparativa com contatos, usuários e preço do upgrade.'
   }
 
   return {
@@ -385,6 +387,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
     'erros-crm-comuns': errosCrmFAQs,
     'planilha-controle-comissao-corretor': planilhaComissaoFAQs,
     'como-escolher-crm-b2b-2026': comoEscolherCrmFAQs,
+    'crm-gratuito-brasil-2026': crmGratuitoFAQs,
   }
   const faqSchema = faqDataMap[slug] ? generateFAQSchema(faqDataMap[slug], url) : null
 
@@ -401,6 +404,43 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
 
       {/* HowTo Schema for tutorial articles */}
       {(() => { const h = getHowToSchema(slug); return h ? <JsonLd data={h} /> : null })()}
+
+      {/* ItemList Schema for comparison articles (enables list rich snippets) */}
+      {slug === 'melhor-crm-2026-comparativo' && (
+        <JsonLd data={{
+          "@context": "https://schema.org",
+          "@type": "ItemList",
+          "name": "Melhores CRMs do Brasil em 2026",
+          "description": "Comparativo dos 7 CRMs mais usados no Brasil em 2026, avaliados em UX, mobile, WhatsApp, automação, analytics, personalização e preço.",
+          "numberOfItems": 7,
+          "itemListElement": [
+            { "@type": "ListItem", "position": 1, "name": "Sirius CRM", "url": "https://sirius.roilabs.com.br" },
+            { "@type": "ListItem", "position": 2, "name": "Pipedrive", "url": "https://www.pipedrive.com/pt" },
+            { "@type": "ListItem", "position": 3, "name": "HubSpot CRM", "url": "https://www.hubspot.com/products/crm" },
+            { "@type": "ListItem", "position": 4, "name": "RD Station CRM", "url": "https://www.rdstation.com/crm/" },
+            { "@type": "ListItem", "position": 5, "name": "Ploomes", "url": "https://www.ploomes.com" },
+            { "@type": "ListItem", "position": 6, "name": "Agendor", "url": "https://www.agendor.com.br" },
+            { "@type": "ListItem", "position": 7, "name": "Bitrix24", "url": "https://www.bitrix24.com.br" },
+          ],
+        }} />
+      )}
+
+      {slug === 'crm-gratuito-brasil-2026' && (
+        <JsonLd data={{
+          "@context": "https://schema.org",
+          "@type": "ItemList",
+          "name": "CRMs Gratuitos no Brasil em 2026",
+          "description": "Comparativo de 5 CRMs com plano gratuito funcional no Brasil em 2026, avaliados em contatos, usuários, WhatsApp, IA e preço de upgrade.",
+          "numberOfItems": 5,
+          "itemListElement": [
+            { "@type": "ListItem", "position": 1, "name": "Sirius CRM", "url": "https://sirius.roilabs.com.br" },
+            { "@type": "ListItem", "position": 2, "name": "HubSpot Free", "url": "https://www.hubspot.com/products/crm" },
+            { "@type": "ListItem", "position": 3, "name": "Agendor", "url": "https://www.agendor.com.br" },
+            { "@type": "ListItem", "position": 4, "name": "Bitrix24", "url": "https://www.bitrix24.com.br" },
+            { "@type": "ListItem", "position": 5, "name": "RD Station CRM", "url": "https://www.rdstation.com/crm/" },
+          ],
+        }} />
+      )}
 
       <article className="relative">
         {/* Premium Header Background */}

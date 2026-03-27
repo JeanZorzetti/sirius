@@ -304,6 +304,28 @@ export const planilhaComissaoFAQs: FAQItem[] = [
 /**
  * FAQ data for Como Escolher CRM B2B 2026 blog post
  */
+/**
+ * FAQ data for CRM Gratuito Brasil 2026 blog post
+ */
+export const crmGratuitoFAQs: FAQItem[] = [
+  {
+    question: 'CRM gratuito é realmente de graça?',
+    answer: 'Sim, os 5 CRMs listados neste artigo têm planos genuinamente gratuitos sem limite de tempo. A diferença para um trial é que o plano free não expira — você pode usar por meses ou anos sem pagar. As limitações são em volume (contatos, usuários) ou funcionalidades (automações, relatórios avançados).',
+  },
+  {
+    question: 'Qual CRM gratuito tem WhatsApp integrado?',
+    answer: 'Entre os 5 analisados, apenas o Sirius CRM oferece integração WhatsApp nativa no plano gratuito. HubSpot, Agendor, Bitrix24 e RD Station CRM não integram WhatsApp nativamente — exigem ferramentas de terceiros ou planos pagos.',
+  },
+  {
+    question: 'Posso migrar de um CRM gratuito para outro?',
+    answer: 'Sim. A maioria dos CRMs permite exportar dados em CSV. O processo: exporte contatos e deals do CRM atual, importe no novo. Dica: faça a migração quando tiver menos de 200 contatos — acima disso, o mapeamento de campos fica mais complexo.',
+  },
+  {
+    question: 'CRM gratuito funciona para equipes?',
+    answer: 'Depende do tamanho. Bitrix24 é o único com usuários ilimitados no free. RD Station CRM permite 4, HubSpot 5, Agendor 2, Sirius 1. Para equipes de 3+, avalie se o plano free do CRM escolhido suporta todos os vendedores — senão, o plano pago mais barato pode sair mais em conta do que usar um CRM inferior só porque é grátis.',
+  },
+]
+
 export const comoEscolherCrmFAQs: FAQItem[] = [
   {
     question: 'Qual o melhor CRM para pequenas empresas no Brasil?',

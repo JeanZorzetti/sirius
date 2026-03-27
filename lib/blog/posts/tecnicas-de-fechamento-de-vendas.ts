@@ -2,10 +2,10 @@ import { BlogPost } from '../../blog-types'
 
 export const post: BlogPost = {
   slug: 'tecnicas-de-fechamento-de-vendas',
-  title: '7 Técnicas de Fechamento de Vendas que Realmente Funcionam',
-  excerpt: 'Aprenda as 7 técnicas de fechamento de vendas mais eficazes, quando usar cada uma e como o CRM ajuda a identificar o momento certo para fechar.',
+  title: 'Técnicas de Fechamento de Vendas: 7 Scripts Prontos [2026]',
+  excerpt: '7 técnicas de fechamento com scripts reais e exemplos. Inclui sinais de compra que indicam a hora certa de pedir o compromisso.',
   date: '2026-02-28',
-  lastModified: '2026-02-28',
+  lastModified: '2026-03-27',
   category: 'Vendas',
   image: 'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=1200&h=630&fit=crop&auto=format&q=80',
   author: 'Equipe Sirius CRM',

@@ -15,27 +15,27 @@ CTR de **3%** em 3 meses (Jun 2026) = **~400 cliques/mes** vs 29 atual
 - [x] Adicionar hreflang pt-BR em todas as paginas dinamicas
 - [ ] Forcar re-crawl das 5 URLs no GSC (Inspecionar URL > Solicitar indexacao)
 
-## Fase 2: Structured Data + Rich Snippets (Semana 3-4)
+## Fase 2: Structured Data + Rich Snippets (Semana 3-4) -- DONE
 Objetivo: ganhar rich snippets (FAQ, HowTo, estrelas) que aumentam CTR em 20-30%.
 
-- [ ] 2.1 FAQ schema nas top 5 paginas — verificar se todas tem FAQ schema ativo
-- [ ] 2.2 HowTo schema no `planilha-controle-comissao-corretor`
-- [ ] 2.3 Breadcrumb schema em todas as paginas de blog
-- [ ] 2.4 Review/Rating schema na pagina `melhor-crm-2026-comparativo`
+- [x] 2.1 FAQ schema nas top 5 paginas (5/5 agora tem — adicionado planilha-comissao e como-escolher-crm)
+- [x] 2.2 HowTo schema em 4 paginas (melhor-crm, kpis, planilha-comissao, como-escolher-crm)
+- [x] 2.3 Breadcrumb schema em todas as paginas de blog (ja existia)
+- [x] 2.4 ItemList schema no comparativo (Review/Rating descartado — sem ratings numericos, violaria diretrizes Google)
 
 ## Fase 3: Conteudo que Converte Cliques (Semana 5-8)
 Atacar queries com mais impressoes e 0 cliques:
 
-| Query | Impressoes | Acao |
-|---|---|---|
-| "melhores crms para pequenas empresas brasil 2026" | 561 | Adicionar H2 "Melhor CRM para Pequenas Empresas" + anchor link no comparativo |
-| "crm mais usados no brasil 2026" | 264 | Adicionar secao "Ranking de popularidade" com dados |
-| "tecnicas de fechamento de vendas" | 146 (pos 11.8) | Otimizar title/H1 para subir para top 10 |
-| "crm para representante comercial" | 57 (pos 20) | Reforcar conteudo com long-tail keywords |
+| Query | Impressoes | Acao | Status |
+|---|---|---|---|
+| "melhores crms para pequenas empresas brasil 2026" | 561 | Adicionar H2 "Melhor CRM para Pequenas Empresas" + anchor link no comparativo | DONE |
+| "crm mais usados no brasil 2026" | 264 | Adicionar secao "Ranking de popularidade" com dados | |
+| "tecnicas de fechamento de vendas" | 146 (pos 11.8) | Otimizar title/H1 para subir para top 10 | DONE |
+| "crm para representante comercial" | 57 (pos 20) | Reforcar conteudo com long-tail keywords | |
 
 Novas paginas para gap de conteudo:
-- [ ] 3.1 "CRM gratuito Brasil 2026" — query com volume implicito (33+ variacoes)
-- [ ] 3.2 Paginas individuais de comparacao (Sirius vs Pipedrive, vs RD Station, vs HubSpot)
+- [x] 3.1 "CRM gratuito Brasil 2026" — query com volume implicito (33+ variacoes) — post criado com FAQ, ItemList, meta description
+- [x] 3.2 Paginas individuais de comparacao (Sirius vs Pipedrive, vs RD Station, vs HubSpot) — ja existiam (post28-31)
 - [ ] 3.3 "CRM para varejo" — 7 impressoes posicao 9.71, oportunidade com artigo dedicado
 - [ ] 3.4 Otimizar H2s do comparativo para incluir variacoes das top queries
 

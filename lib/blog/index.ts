@@ -32,6 +32,7 @@ import { post as post30 } from './posts/sirius-vs-hubspot'
 import { post as post31 } from './posts/alternativas-ao-pipedrive-brasil'
 import { post as post32 } from './posts/representante-comercial-autonomo-ferramentas'
 import { post as post33 } from './posts/automacao-email-para-vendedores'
+import { post as post34 } from './posts/crm-gratuito-brasil-2026'
 
 export const blogPosts: BlogPost[] = [
   post1,
@@ -67,6 +68,7 @@ export const blogPosts: BlogPost[] = [
   post31,
   post32,
   post33,
+  post34,
 ]
 
 /**
