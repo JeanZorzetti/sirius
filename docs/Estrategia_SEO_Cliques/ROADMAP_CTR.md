@@ -1,0 +1,69 @@
+# Roadmap de CTR — Sirius CRM
+
+## Situacao Atual (Marco 2026)
+- **13.517 impressoes**, **29 cliques**, **0.21% CTR**
+- Posicao media: 7 (boa, deveria gerar ~3-5% CTR)
+- 12 dos 29 cliques sao brand ("sirius crm") — CTR nao-brand efetivo: **0.13%**
+
+## Meta
+CTR de **3%** em 3 meses (Jun 2026) = **~400 cliques/mes** vs 29 atual
+
+---
+
+## Fase 1: Quick Wins (Semana 1-2) -- DONE
+- [x] Reescrever titles e meta descriptions das top 5 paginas
+- [x] Adicionar hreflang pt-BR em todas as paginas dinamicas
+- [ ] Forcar re-crawl das 5 URLs no GSC (Inspecionar URL > Solicitar indexacao)
+
+## Fase 2: Structured Data + Rich Snippets (Semana 3-4)
+Objetivo: ganhar rich snippets (FAQ, HowTo, estrelas) que aumentam CTR em 20-30%.
+
+- [ ] 2.1 FAQ schema nas top 5 paginas — verificar se todas tem FAQ schema ativo
+- [ ] 2.2 HowTo schema no `planilha-controle-comissao-corretor`
+- [ ] 2.3 Breadcrumb schema em todas as paginas de blog
+- [ ] 2.4 Review/Rating schema na pagina `melhor-crm-2026-comparativo`
+
+## Fase 3: Conteudo que Converte Cliques (Semana 5-8)
+Atacar queries com mais impressoes e 0 cliques:
+
+| Query | Impressoes | Acao |
+|---|---|---|
+| "melhores crms para pequenas empresas brasil 2026" | 561 | Adicionar H2 "Melhor CRM para Pequenas Empresas" + anchor link no comparativo |
+| "crm mais usados no brasil 2026" | 264 | Adicionar secao "Ranking de popularidade" com dados |
+| "tecnicas de fechamento de vendas" | 146 (pos 11.8) | Otimizar title/H1 para subir para top 10 |
+| "crm para representante comercial" | 57 (pos 20) | Reforcar conteudo com long-tail keywords |
+
+Novas paginas para gap de conteudo:
+- [ ] 3.1 "CRM gratuito Brasil 2026" — query com volume implicito (33+ variacoes)
+- [ ] 3.2 Paginas individuais de comparacao (Sirius vs Pipedrive, vs RD Station, vs HubSpot)
+- [ ] 3.3 "CRM para varejo" — 7 impressoes posicao 9.71, oportunidade com artigo dedicado
+- [ ] 3.4 Otimizar H2s do comparativo para incluir variacoes das top queries
+
+## Fase 4: Internal Linking e Topical Authority (Semana 9-12)
+- [ ] 4.1 Auditar e corrigir interlinks hub-and-spoke em todos os 5 clusters
+- [ ] 4.2 Trocar anchor texts genericos ("clique aqui") por keywords
+- [ ] 4.3 Sidebar de posts relacionados por cluster (nao aleatorios)
+- [ ] 4.4 Breadcrumbs visuais com schema: Inicio > Blog > Categoria > Post
+
+## Fase 5: Core Web Vitals (Semana 9-12, paralelo)
+- [ ] 5.1 Auditar LCP, FID, CLS das top 5 paginas via PageSpeed Insights
+- [ ] 5.2 Otimizar imagens de blog (Unsplash direto → next/image)
+- [ ] 5.3 Lazy load componentes pesados (calculadoras, tabelas)
+
+## Fase 6: Monitoramento e Iteracao (Continuo)
+- [ ] 6.1 Exportar GSC semanalmente
+- [ ] 6.2 Dashboard de acompanhamento: CTR por pagina, por query, posicao vs CTR
+- [ ] 6.3 A/B test de titles para paginas com >500 impressoes
+- [ ] 6.4 Identificar quais tipos de title geram mais cliques
+
+---
+
+## KPIs de Acompanhamento
+
+| Metrica | Mar 2026 (baseline) | Meta Abr | Meta Mai | Meta Jun |
+|---|---|---|---|---|
+| Impressoes | 13.517 | 15.000 | 18.000 | 22.000 |
+| Cliques | 29 | 100 | 200 | 400 |
+| CTR | 0.21% | 0.67% | 1.1% | 1.8% |
+| Cliques nao-brand | 17 | 70 | 160 | 350 |
+| Posicao media | 7.0 | 6.5 | 6.0 | 5.5 |

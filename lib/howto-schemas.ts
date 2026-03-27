@@ -91,6 +91,55 @@ export const howToSchemas: Record<string, HowToSchema> = {
     { totalTime: 'PT15M', cost: '0' }
   ),
 
+  'melhor-crm-2026-comparativo': buildHowTo(
+    'Como Escolher o Melhor CRM para sua Empresa em 2026',
+    'Método em 4 passos para comparar CRMs com critérios objetivos e escolher o sistema certo sem depender de opiniões enviesadas.',
+    [
+      { name: 'Liste suas 5 necessidades prioritárias', text: 'Antes de comparar ferramentas, defina o que é inegociável: WhatsApp integrado? Pipeline Kanban? IA para qualificação? Preço em BRL? Funcionamento offline? Priorize 5 critérios do seu processo de vendas real.' },
+      { name: 'Avalie os 7 critérios eliminatórios', text: 'Para cada CRM, verifique: (1) UX/facilidade, (2) mobile/offline, (3) WhatsApp nativo, (4) automações, (5) analytics, (6) personalização, (7) preço em BRL. Se falhar em 2+ critérios prioritários, elimine.' },
+      { name: 'Teste os 2-3 finalistas por 7 dias', text: 'Crie conta gratuita nos finalistas e simule seu fluxo real: importe 10 contatos, crie 5 negócios, envie 1 proposta. O que parecer mais natural em 7 dias é o vencedor.' },
+      { name: 'Calcule o custo total de 12 meses', text: 'Some licença mensal × 12 × número de usuários + custo de migração + horas de treinamento. Compare o investimento total, não apenas o preço por mês. Alguns CRMs cobram extras por WhatsApp, IA ou relatórios.' },
+    ],
+    { totalTime: 'PT30M', cost: '0' }
+  ),
+
+  'kpis-de-vendas': buildHowTo(
+    'Como Montar um Dashboard de KPIs de Vendas',
+    'Passo a passo para configurar os 12 KPIs essenciais no seu CRM e acompanhar a performance da equipe comercial em tempo real.',
+    [
+      { name: 'Defina os KPIs por grupo', text: 'Organize em 3 categorias: Pipeline (taxa de conversão por etapa, velocidade, valor total), Performance (win rate, ticket médio, ciclo), Financeiro (CAC, LTV, MRR). Comece com 4-5 KPIs, não os 12 de uma vez.' },
+      { name: 'Configure o pipeline com etapas mensuráveis', text: 'Cada etapa do Kanban deve ter critério claro de saída: "Qualificado" = respondeu 3 perguntas BANT, "Proposta" = recebeu documento formal. Sem critérios claros, os KPIs ficam imprecisos.' },
+      { name: 'Estabeleça benchmarks internos', text: 'Calcule seus KPIs dos últimos 3 meses como linha de base. Benchmark B2B típico: conversão 2-5%, ciclo 30-90 dias, win rate 15-25%. Mas o mais importante é melhorar em relação a si mesmo.' },
+      { name: 'Revise semanalmente com o time', text: 'Na reunião de vendas, mostre o dashboard com 3 perguntas: (1) Quais KPIs melhoraram? (2) Quais pioraram? (3) O que faremos diferente esta semana? KPI sem ação é só decoração.' },
+    ],
+    { totalTime: 'PT20M', cost: '0' }
+  ),
+
+  'planilha-controle-comissao-corretor': buildHowTo(
+    'Como Usar a Planilha de Controle de Comissão para Corretores',
+    'Passo a passo para baixar, configurar e usar a planilha gratuita de comissões imobiliárias no Excel ou Google Sheets.',
+    [
+      { name: 'Baixe a planilha gratuita', text: 'Clique no botão de download no artigo. A planilha funciona no Excel (2016+) e Google Sheets. São 4 abas: Controle de Vendas, Dashboard, Calculadora ROI e Instruções.' },
+      { name: 'Configure suas faixas de comissão', text: 'Na aba Instruções, ajuste os percentuais: comissão padrão (6%), split com imobiliária (50/50 ou 60/40) e bônus por meta. A planilha calcula automaticamente com base nesses parâmetros.' },
+      { name: 'Registre cada venda no momento do fechamento', text: 'Preencha: data, nome do cliente, valor do imóvel, tipo (venda/locação), status (pendente/recebido). A aba Dashboard atualiza automaticamente os totais.' },
+      { name: 'Acompanhe comissões pendentes mensalmente', text: 'A aba Dashboard mostra: total recebido, total pendente, previsão dos próximos 30 dias e comparativo mensal. Use para cobrar comissões atrasadas e planejar seu fluxo de caixa.' },
+    ],
+    { totalTime: 'PT10M', cost: '0' }
+  ),
+
+  'como-escolher-crm-b2b-2026': buildHowTo(
+    'Como Escolher um CRM B2B em 5 Passos',
+    'Método prático para PMEs e representantes comerciais escolherem o CRM ideal sem gastar tempo com demos infinitas.',
+    [
+      { name: 'Responda as 5 perguntas de qualificação', text: 'Antes de pesquisar: (1) Quantos vendedores? (2) Seu processo é B2B ou B2C? (3) Usa WhatsApp para vender? (4) Precisa funcionar offline? (5) Orçamento mensal por usuário? As respostas eliminam 80% das opções.' },
+      { name: 'Aplique os 7 critérios eliminatórios', text: 'Para cada CRM: WhatsApp nativo, pipeline Kanban, IA, mobile/offline, preço em BRL, onboarding rápido, suporte em português. Se falhar em 2+ critérios, não perca tempo testando.' },
+      { name: 'Compare preço total em 12 meses', text: 'Calcule: (preço/mês × usuários × 12) + custo de migração + treinamento. Cuidado com CRMs que cobram em dólar — R$49/mês fixo vs US$12.50/mês que vira R$75 com câmbio e IOF.' },
+      { name: 'Teste o favorito por 7 dias com dados reais', text: 'Importe seus contatos reais, crie negócios verdadeiros e use por uma semana. Se o time não adotar naturalmente em 7 dias, o CRM é complexo demais para sua operação.' },
+      { name: 'Decida com base em adoção, não em features', text: 'O melhor CRM é o que o time realmente usa. Um sistema com 200 features e 10% de adoção perde para um sistema simples com 90% de adoção. Priorize UX sobre funcionalidades.' },
+    ],
+    { totalTime: 'PT45M', cost: '0' }
+  ),
+
   'prospeccao-de-clientes-b2b': buildHowTo(
     'Como Prospectar Clientes B2B com um CRM',
     'Método em 5 passos para estruturar a prospecção B2B usando ICP, cadência multicanal e CRM para escalar sem perder qualidade.',

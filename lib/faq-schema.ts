@@ -278,3 +278,47 @@ export const errosCrmFAQs: FAQItem[] = [
     answer: 'Se o CRM está com dados inconsistentes, etapas embaralhadas e time sem adesão, a melhor abordagem é um "reset" controlado: (1) Exporte os contatos e deals ativos; (2) Archive tudo que tem mais de 90 dias sem movimentação; (3) Reconfigure o pipeline do zero com as etapas corretas; (4) Faça um treinamento de reimplantação com o time; (5) Recomece com disciplina de atualização diária. É mais eficaz do que tentar "arrumar" um sistema em caos.',
   },
 ]
+
+/**
+ * FAQ data for Planilha de Comissão para Corretores blog post
+ */
+export const planilhaComissaoFAQs: FAQItem[] = [
+  {
+    question: 'Como calcular comissão de corretor de imóveis?',
+    answer: 'A comissão padrão no Brasil é de 6% sobre o valor do imóvel para vendas e 1 aluguel para locação. Para imóveis usados, a média é 5-8%; para lançamentos, 3-5% pagos pela incorporadora. Exemplo: imóvel de R$500.000 × 6% = R$30.000 de comissão bruta. Se houver divisão com a imobiliária (50/50), o corretor recebe R$15.000.',
+  },
+  {
+    question: 'Qual a melhor planilha para controle de comissões?',
+    answer: 'Uma boa planilha de comissões deve ter 4 componentes: (1) Registro de vendas com valor, data e status do pagamento; (2) Cálculo automático da comissão por faixa; (3) Dashboard visual com total recebido vs pendente; (4) Histórico mensal para declaração de IR. Planilhas gratuitas resolvem até ~20 vendas/mês; acima disso, um CRM com cálculo automático evita erros manuais.',
+  },
+  {
+    question: 'Corretor autônomo precisa declarar comissão no Imposto de Renda?',
+    answer: 'Sim. Corretores autônomos declaram via carnê-leão mensal (DARF) com alíquota progressiva de 7,5% a 27,5% sobre o lucro líquido. Despesas dedutíveis incluem: combustível para visitas, telefone, internet, material de marketing e mensalidade de CRM/ferramentas. Manter planilha organizada com todas as comissões recebidas e despesas é essencial para evitar problemas com a Receita Federal.',
+  },
+  {
+    question: 'Como evitar perder comissões por falta de controle?',
+    answer: 'Os 3 maiores motivos de perda de comissão são: (1) Não registrar o negócio formalmente — sem contrato de exclusividade, outro corretor pode fechar; (2) Perder o prazo de cobrança — comissões têm vencimento; (3) Erro no cálculo de split com a imobiliária. A solução é registrar cada venda no momento em que acontece, com valor, data de vencimento da comissão e percentual de split.',
+  },
+]
+
+/**
+ * FAQ data for Como Escolher CRM B2B 2026 blog post
+ */
+export const comoEscolherCrmFAQs: FAQItem[] = [
+  {
+    question: 'Qual o melhor CRM para pequenas empresas no Brasil?',
+    answer: 'O melhor CRM para PMEs brasileiras em 2026 deve ter 4 características: preço em BRL (sem variação cambial), suporte em português, integração com WhatsApp (canal #1 de vendas no Brasil) e pipeline Kanban visual. CRMs internacionais como HubSpot e Pipedrive cobram em dólar e não integram WhatsApp nativamente. Opções brasileiras como Sirius CRM, RD Station CRM e Ploomes atendem melhor esses critérios.',
+  },
+  {
+    question: 'CRM gratuito vale a pena para empresas B2B?',
+    answer: 'CRMs gratuitos são ideais para times de 1-3 vendedores que precisam organizar o pipeline pela primeira vez. As limitações típicas dos planos free são: sem automações, sem relatórios avançados e limite de contatos (500-1.000). Para PMEs em fase de crescimento, o plano gratuito serve como validação — se o time usar consistentemente por 30 dias, é sinal de que vale investir no plano pago.',
+  },
+  {
+    question: 'Quanto custa implementar um CRM B2B?',
+    answer: 'O custo total de um CRM tem 3 componentes: (1) Licença mensal — de R$0 (planos free) a R$299/usuário em ferramentas enterprise; (2) Implementação — de R$0 (self-service) a R$15.000+ com consultoria; (3) Treinamento — 2-4 horas por vendedor. CRMs modernos self-service (como Sirius, Pipedrive) eliminam o custo de implementação, reduzindo o investimento total para apenas a mensalidade.',
+  },
+  {
+    question: 'Como migrar de planilha para CRM sem perder dados?',
+    answer: 'O processo em 5 passos: (1) Limpe a planilha — remova duplicatas e contatos inativos há mais de 6 meses; (2) Padronize os campos — telefone com DDD, CNPJ sem pontuação; (3) Exporte como CSV UTF-8; (4) Importe no CRM mapeando colunas para campos; (5) Valide 10% dos registros manualmente. A maioria dos CRMs importa planilhas em menos de 5 minutos para até 5.000 contatos.',
+  },
+]
