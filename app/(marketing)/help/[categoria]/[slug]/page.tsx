@@ -47,6 +47,10 @@ export async function generateMetadata({
     keywords: [article.category, 'ajuda', 'tutorial', 'CRM', 'Sirius'],
     alternates: {
       canonical: `https://sirius.roilabs.com.br/help/${categoria}/${slug}`,
+      languages: {
+        'pt-BR': `https://sirius.roilabs.com.br/help/${categoria}/${slug}`,
+        'x-default': `https://sirius.roilabs.com.br/help/${categoria}/${slug}`,
+      },
     },
     openGraph: {
       title: `${article.title} - Central de Ajuda | Sirius CRM`,

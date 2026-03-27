@@ -48,6 +48,10 @@ export async function generateMetadata({
     description,
     alternates: {
       canonical: `https://sirius.roilabs.com.br/blog/categoria/${categorySlug}`,
+      languages: {
+        'pt-BR': `https://sirius.roilabs.com.br/blog/categoria/${categorySlug}`,
+        'x-default': `https://sirius.roilabs.com.br/blog/categoria/${categorySlug}`,
+      },
     },
     openGraph: {
       title,

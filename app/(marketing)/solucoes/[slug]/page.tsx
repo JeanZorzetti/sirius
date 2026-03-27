@@ -44,6 +44,10 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     keywords: niche.seo.keywords.join(', '),
     alternates: {
       canonical: `https://sirius.roilabs.com.br/solucoes/${niche.slug}`,
+      languages: {
+        'pt-BR': `https://sirius.roilabs.com.br/solucoes/${niche.slug}`,
+        'x-default': `https://sirius.roilabs.com.br/solucoes/${niche.slug}`,
+      },
     },
     openGraph: {
       title: niche.seo.title,

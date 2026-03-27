@@ -80,6 +80,10 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
     keywords: post.category,
     alternates: {
       canonical: url,
+      languages: {
+        'pt-BR': url,
+        'x-default': url,
+      },
     },
     openGraph: {
       title: post.title,

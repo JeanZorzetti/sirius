@@ -61,6 +61,10 @@ export async function generateMetadata({
     keywords: city.seo.keywords.join(', '),
     alternates: {
       canonical: `https://sirius.roilabs.com.br/solucoes/cidade/${city.slug}`,
+      languages: {
+        'pt-BR': `https://sirius.roilabs.com.br/solucoes/cidade/${city.slug}`,
+        'x-default': `https://sirius.roilabs.com.br/solucoes/cidade/${city.slug}`,
+      },
     },
     openGraph: {
       title: city.seo.title,
