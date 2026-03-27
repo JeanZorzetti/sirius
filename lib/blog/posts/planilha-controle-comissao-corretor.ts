@@ -2,8 +2,8 @@ import { BlogPost } from '../../blog-types'
 
 export const post: BlogPost = {
   slug: 'planilha-controle-comissao-corretor',
-  title: 'Planilha de Controle de Comissão para Corretores [2026]',
-  excerpt: 'Descubra quanto dinheiro você perde por mês com desorganização. Calculadora gratuita de comissões perdidas + guia completo para controlar vendas e comissões.',
+  title: 'Planilha de Comissão para Corretores: Download Grátis [2026]',
+  excerpt: 'Planilha gratuita para Excel e Google Sheets com 4 abas: controle de vendas, dashboard, calculadora ROI e instruções. Sem cadastro.',
   content: '',
   date: '2026-01-28',
   category: 'Ferramentas',

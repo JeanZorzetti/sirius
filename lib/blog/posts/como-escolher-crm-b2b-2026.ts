@@ -2,8 +2,8 @@ import { BlogPost } from '../../blog-types'
 
 export const post: BlogPost = {
   slug: 'como-escolher-crm-b2b-2026',
-  title: 'Como Escolher o Melhor CRM B2B em 2026 [Guia Definitivo para PMEs e Representantes]',
-  excerpt: 'Escolher o CRM errado custa R$12.000+ por ano em perda de produtividade. 7 critérios eliminatórios, comparativo com preços em BRL e um questionário de 5 perguntas para achar o sistema ideal para o seu negócio.',
+  title: 'Como Escolher um CRM B2B em 2026: 7 Critérios Decisivos',
+  excerpt: 'CRM errado custa R$12.000+/ano em produtividade perdida. Responda 5 perguntas e descubra qual sistema combina com seu negócio.',
   date: '2026-03-20',
   lastModified: '2026-03-20',
   category: 'Comparativos',

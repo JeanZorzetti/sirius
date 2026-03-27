@@ -2,8 +2,8 @@ import { BlogPost } from '../../blog-types'
 
 export const post: BlogPost = {
   slug: 'prospeccao-de-clientes-b2b',
-  title: 'Como Prospectar Clientes B2B em 2026: Métodos que Funcionam',
-  excerpt: 'Descubra os métodos mais eficazes de prospecção B2B em 2026: cold email, LinkedIn, ICP, cadência e como o CRM potencializa cada etapa do processo.',
+  title: 'Prospecção B2B: 5 Métodos que Geram Leads Qualificados em 2026',
+  excerpt: 'Cold email converte 1-3%, LinkedIn InMail até 25%. Testamos 5 métodos de prospecção B2B e mostramos qual gera mais leads para PMEs sem comprar listas.',
   date: '2026-02-28',
   lastModified: '2026-02-28',
   category: 'Vendas',

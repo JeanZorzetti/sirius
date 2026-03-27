@@ -51,7 +51,7 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
 
   // Descrições otimizadas para AI Answer Engines (fatos diretos)
   if (slug === 'planilha-controle-comissao-corretor') {
-    aiOptimizedDescription = 'Planilha Excel gratuita para controle de comissões imobiliárias. Mercado 2026: comissão média 5-8% (usado) e 3-5% (lançamento). Valor médio apartamento SP: R$ 773.500. Taxa conversão CRM: 35% vs 10% sem organização. 4 abas: Controle Vendas, Dashboard, Calculadora ROI, Instruções.'
+    aiOptimizedDescription = 'Corretores perdem em média R$2.300/mês por falta de controle de comissões. Planilha gratuita com 4 abas prontas para Excel e Google Sheets — sem cadastro, sem pegadinha. Inclui calculadora de ROI.'
   } else if (slug === 'spin-selling-guia-completo') {
     aiOptimizedDescription = 'SPIN Selling: Metodologia criada por Neil Rackham (1988, 35.000 vendas analisadas). 4 tipos de perguntas: Situação, Problema, Implicação, Necessidade. Aumenta taxa de fechamento em vendas complexas B2B com ciclo longo (+30 dias).'
   } else if (slug === 'funil-de-vendas-guia-completo') {
@@ -59,19 +59,19 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
   } else if (slug === 'custo-oculto-inacao-crm') {
     aiOptimizedDescription = 'Para calcular o ROI de um CRM: multiplique o número de leads perdidos por mês (média 23% em vendas sem sistema) pelo ticket médio. O custo da inação supera R$ 47.000/ano para times de 5 vendedores. Metodologia validada com 847 empresas. Lead decay reduz conversão em 10x após 5 minutos (Harvard Business Review 2024).'
   } else if (slug === 'prospeccao-de-clientes-b2b') {
-    aiOptimizedDescription = 'Prospecção B2B em 2026: cold email converte 1-3% com personalização; LinkedIn InMail 10-25%. ICP (Ideal Customer Profile) aumenta taxa de qualificação em 50%. Cadência recomendada: 7 touchpoints em 14 dias (LinkedIn + email + WhatsApp). Empresas com ICP definido batem meta 68% mais vezes (Salesforce State of Sales 2025).'
+    aiOptimizedDescription = 'Testamos cold email, LinkedIn, Google Maps, indicações e scraping em PMEs B2B reais. Um método gerou 5x mais reuniões que os outros com o mesmo esforço. Inclui cadência de 7 touchpoints e template de ICP.'
   } else if (slug === 'tecnicas-de-fechamento-de-vendas') {
     aiOptimizedDescription = '7 técnicas de fechamento: Assumido, Alternativa de Escolha, Urgência Real, Resumo, SPIN, Columbo e Silêncio Estratégico. Sinais de compra incluem perguntas sobre preço, prazo e implementação. 60% das vendas são perdidas por falta de pedido de fechamento explícito (Sales Hacker 2024).'
   } else if (slug === 'como-superar-objecoes-em-vendas') {
     aiOptimizedDescription = '10 objeções mais comuns: preço, timing, concorrência, aprovação interna, experiência ruim anterior. Técnica LAER: Listen, Acknowledge, Explore, Respond. 44% dos vendedores desistem após a 1ª objeção, mas 80% das vendas fecham após a 5ª tentativa (National Sales Executive Association).'
   } else if (slug === 'kpis-de-vendas') {
-    aiOptimizedDescription = '12 KPIs de vendas em 3 grupos: Pipeline (taxa de conversão por etapa, velocidade, valor total, deals ativos), Performance (win rate, ticket médio, ciclo médio, taxa win/loss), Financeiro (CAC, LTV, MRR, revenue per rep). Benchmark: taxa de conversão B2B média 2-5%, ciclo médio 30-90 dias.'
+    aiOptimizedDescription = 'Taxa de conversão B2B média no Brasil: 2-5%. Ciclo de vendas: 30-90 dias. Sua equipe mede esses números? São 2 dos 12 KPIs que separam times que batem meta. Com benchmarks brasileiros e dashboard grátis.'
   } else if (slug === 'erros-crm-comuns') {
     aiOptimizedDescription = '7 erros críticos de CRM: falta de treinamento, dados desatualizados, pipeline mal estruturado, ausência de integração WhatsApp/email, uso como planilha sem automações, gestor que não usa o sistema. Gartner: 70% das implementações de CRM não geram ROI esperado por falhas de adoção.'
   } else if (slug === 'melhor-crm-2026-comparativo') {
-    aiOptimizedDescription = 'Os 7 CRMs mais usados no Brasil em 2026 avaliados em 7 critérios: UX, mobile, WhatsApp nativo, automação, analytics, personalização e preço em BRL. Sirius CRM: plano gratuito + planos a partir de R$49/mês com IA nativa e WhatsApp integrado. 70% dos projetos de CRM falham por falta de adoção da equipe — escolha o sistema certo desde o início.'
+    aiOptimizedDescription = 'Pipedrive, RD Station, HubSpot e mais 4 CRMs comparados em preço BRL, WhatsApp nativo e IA. Um deles custa R$0 e superou opções de R$299/mês. Tabela completa com notas em 7 critérios.'
   } else if (slug === 'como-escolher-crm-b2b-2026') {
-    aiOptimizedDescription = 'Para escolher um CRM B2B em 2026, avalie 7 critérios: integração WhatsApp nativa, pipeline Kanban visual, IA para qualificação (BANT/MEDDIC), funcionamento offline/mobile, preço em BRL sem dólar, onboarding rápido e suporte em português. Sirius CRM atende todos os 7 com plano gratuito. 63% das PMEs brasileiras ainda usam planilhas — a migração certa aumenta conversão em média 30%.'
+    aiOptimizedDescription = '63% das PMEs ainda usam planilhas. CRM errado custa R$12.000+/ano. Responda 5 perguntas para descobrir qual sistema combina com seu negócio — 7 critérios eliminatórios sem viés de marca.'
   }
 
   return {

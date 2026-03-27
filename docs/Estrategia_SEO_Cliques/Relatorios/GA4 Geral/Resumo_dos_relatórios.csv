@@ -1,0 +1,624 @@
+# ----------------------------------------
+# Resumo dos relatórios
+# Conta: ROI Labs
+# Propriedade: Sirius
+# ----------------------------------------
+#  
+# Data de início: 20260101
+# Data de término: 20260327
+Nº dia,Usuários ativos
+0000,1
+0001,2
+0002,2
+0003,795
+0004,1
+0005,1690
+0006,168
+0007,3
+0008,3
+0009,2
+0010,4
+0011,1
+0012,1
+0013,1
+0014,3
+0015,0
+0016,1
+0017,2
+0018,1
+0019,0
+0020,2
+0021,1
+0022,1
+0023,1
+0024,0
+0025,1
+0026,4
+0027,3
+0028,1
+0029,4
+0030,2
+0031,1
+0032,4
+0033,3
+0034,4
+0035,1
+0036,3
+0037,2
+0038,1
+0039,6
+0040,2
+0041,2
+0042,6
+0043,2
+0044,1
+0045,0
+0046,1
+0047,3
+0048,2
+0049,4
+0050,5
+0051,1
+0052,0
+0053,2
+0054,4
+0055,0
+0056,1
+0057,1
+0058,0
+0059,0
+0060,6
+0061,7
+0062,4
+0063,0
+0064,2
+0065,0
+0066,0
+0067,1
+0068,4
+0069,2
+0070,2
+0071,4
+0072,5
+0073,2
+0074,0
+0075,6
+0076,11
+0077,5
+0078,11
+0079,7
+0080,5
+0081,8
+0082,12
+0083,17
+0084,10
+0085,12
+
+# Data de início: 20260101
+# Data de término: 20260327
+Nº dia,Novos usuários
+0000,0
+0001,1
+0002,1
+0003,793
+0004,1
+0005,1689
+0006,166
+0007,0
+0008,1
+0009,0
+0010,2
+0011,0
+0012,0
+0013,0
+0014,1
+0015,0
+0016,0
+0017,2
+0018,0
+0019,0
+0020,0
+0021,0
+0022,0
+0023,0
+0024,0
+0025,0
+0026,2
+0027,2
+0028,0
+0029,2
+0030,1
+0031,0
+0032,2
+0033,2
+0034,3
+0035,0
+0036,2
+0037,1
+0038,0
+0039,4
+0040,1
+0041,1
+0042,4
+0043,1
+0044,0
+0045,0
+0046,1
+0047,3
+0048,1
+0049,2
+0050,5
+0051,1
+0052,0
+0053,2
+0054,4
+0055,0
+0056,1
+0057,1
+0058,0
+0059,0
+0060,6
+0061,7
+0062,4
+0063,0
+0064,2
+0065,0
+0066,0
+0067,1
+0068,4
+0069,2
+0070,2
+0071,4
+0072,5
+0073,2
+0074,0
+0075,6
+0076,10
+0077,2
+0078,8
+0079,7
+0080,3
+0081,7
+0082,8
+0083,13
+0084,5
+0085,12
+
+# Data de início: 20260101
+# Data de término: 20260327
+Nº dia,Tempo médio de engajamento por usuário ativo
+0000,288
+0001,333
+0002,27
+0003,3.771069182389937
+0004,613
+0005,1.9414201183431952
+0006,2.7202380952380953
+0007,478.6666666666667
+0008,704
+0009,871.5
+0010,9.5
+0011,9
+0012,20
+0013,658
+0014,7.666666666666667
+0015,0
+0016,0
+0017,50.5
+0018,31
+0019,0
+0020,464
+0021,137
+0022,133
+0023,2
+0024,0
+0025,1141
+0026,253.25
+0027,906
+0028,630
+0029,198
+0030,930
+0031,235
+0032,204.25
+0033,597.3333333333334
+0034,1276.75
+0035,492
+0036,2299.6666666666665
+0037,86.5
+0038,1357
+0039,224.83333333333334
+0040,1453.5
+0041,273.5
+0042,38.833333333333336
+0043,190
+0044,0
+0045,0
+0046,0
+0047,363.3333333333333
+0048,68.5
+0049,181.5
+0050,114.2
+0051,92
+0052,0
+0053,1.5
+0054,8.5
+0055,0
+0056,2
+0057,1311
+0058,0
+0059,0
+0060,40.5
+0061,14.714285714285714
+0062,1
+0063,0
+0064,5
+0065,0
+0066,0
+0067,0
+0068,5.25
+0069,60.5
+0070,0
+0071,27
+0072,0
+0073,0
+0074,0
+0075,41.833333333333336
+0076,42.09090909090909
+0077,63.6
+0078,9
+0079,2.7142857142857144
+0080,3.2
+0081,42.75
+0082,175.91666666666666
+0083,62.88235294117647
+0084,36.1
+0085,31.25
+
+# Data de início: 20260101
+# Data de término: 20260327
+Nº dia,Receita total
+0000,0
+0001,0
+0002,0
+0003,0
+0004,0
+0005,0
+0006,0
+0007,0
+0008,0
+0009,0
+0010,0
+0011,0
+0012,0
+0013,0
+0014,0
+0015,0
+0016,0
+0017,0
+0018,0
+0019,0
+0020,0
+0021,0
+0022,0
+0023,0
+0024,0
+0025,0
+0026,0
+0027,0
+0028,0
+0029,0
+0030,0
+0031,0
+0032,0
+0033,0
+0034,0
+0035,0
+0036,0
+0037,0
+0038,0
+0039,0
+0040,0
+0041,0
+0042,0
+0043,0
+0044,0
+0045,0
+0046,0
+0047,0
+0048,0
+0049,0
+0050,0
+0051,0
+0052,0
+0053,0
+0054,0
+0055,0
+0056,0
+0057,0
+0058,0
+0059,0
+0060,0
+0061,0
+0062,0
+0063,0
+0064,0
+0065,0
+0066,0
+0067,0
+0068,0
+0069,0
+0070,0
+0071,0
+0072,0
+0073,0
+0074,0
+0075,0
+0076,0
+0077,0
+0078,0
+0079,0
+0080,0
+0081,0
+0082,0
+0083,0
+0084,0
+0085,0
+
+# Qual é a origem dos novos usuários?
+# Data de início: 20260101
+# Data de término: 20260327
+Grupo principal de canais do primeiro usuário (Agrupamento de canais padrão),Novos usuários
+Direct,2757
+Organic Search,41
+Referral,22
+Unassigned,5
+Organic Social,1
+
+#  
+# Data de início: 20260101
+# Data de término: 20260327
+Grupo principal de canais da sessão (Agrupamento de canais padrão),Sessões
+Direct,2813
+Referral,281
+Organic Search,101
+Unassigned,8
+Organic Social,1
+
+#  
+# Data de início: 20260101
+# Data de término: 20260327
+ID do país,Usuários ativos
+AR,3
+BR,2769
+IN,3
+US,30
+
+# Data de início: 20260101
+# Data de término: 20260327
+País,Usuários ativos
+BR,2769
+US,30
+AR,3
+IN,3
+
+# Qual é a tendência dos usuários ativos?
+# Data de início: 20260101
+# Data de término: 20260327
+Nº dia,30 dias,7 dias,1 dia
+0000,18,18,1
+0001,19,19,2
+0002,20,20,2
+0003,813,805,795
+0004,813,804,1
+0005,2502,2491,1690
+0006,2668,2652,168
+0007,2668,2653,3
+0008,2669,2653,3
+0009,2669,2652,2
+0010,2671,1861,4
+0011,2671,1861,1
+0012,2671,172,1
+0013,2671,6,1
+0014,2672,6,3
+0015,2672,5,0
+0016,2672,5,1
+0017,2674,5,2
+0018,2674,5,1
+0019,2674,5,0
+0020,2674,5,2
+0021,2674,4,1
+0022,2674,4,1
+0023,2674,4,1
+0024,2674,2,0
+0025,2674,2,1
+0026,2668,5,4
+0027,2669,6,3
+0028,2667,6,1
+0029,2665,9,4
+0030,2666,10,2
+0031,2665,10,1
+0032,2666,12,4
+0033,1876,12,3
+0034,1879,13,4
+0035,190,13,1
+0036,26,12,3
+0037,26,12,2
+0038,25,12,1
+0039,29,13,6
+0040,28,12,2
+0041,29,10,2
+0042,33,14,6
+0043,34,14,2
+0044,33,13,1
+0045,33,13,0
+0046,34,10,1
+0047,35,12,3
+0048,36,13,2
+0049,38,11,4
+0050,43,15,5
+0051,44,16,1
+0052,44,16,0
+0053,46,17,2
+0054,50,18,4
+0055,50,16,0
+0056,49,13,1
+0057,48,9,1
+0058,48,8,0
+0059,46,8,0
+0060,51,12,6
+0061,58,15,7
+0062,60,19,4
+0063,58,18,0
+0064,57,19,2
+0065,57,19,0
+0066,56,19,0
+0067,56,14,1
+0068,60,11,4
+0069,58,9,2
+0070,59,11,2
+0071,62,13,4
+0072,62,18,5
+0073,63,20,2
+0074,63,19,0
+0075,69,21,6
+0076,78,30,11
+0077,78,31,5
+0078,84,35,11
+0079,88,37,7
+0080,88,40,5
+0081,94,47,8
+0082,103,52,12
+0083,114,56,17
+0084,116,60,10
+0085,127,62,12
+
+# Qual é sua performance na retenção de usuários?
+# Data de início: 20260208
+# Data de término: 20260321
+Data,Semana 0,Semana 1,Semana 2,Semana 3,Semana 4,Semana 5
+8 de fev. - 14 de fev.,11,0,0,1
+15 de fev. - 21 de fev.,13,0,0,0
+22 de fev. - 28 de fev.,8,0,0,0
+1 de mar. - 7 de mar.,19,0,1,-1
+8 de mar. - 14 de mar.,18,0,-1,-1
+15 de mar. - 21 de mar.,35,-1,-1,-1
+
+#  
+# Data de início: 20260101
+# Data de término: 20260327
+Título da página e classe da tela,Visualizações
+Sirius CRM | ROI Labs,3739
+Pipelines - CRM,1243
+SEO Command Center - Admin,114
+Contatos - CRM,112
+Chat Center - WhatsApp,91
+1 nova mensagem,73
+Automações de Email | Sirius CRM,69
+SPIN Selling: A Metodologia de Vendas que Aumenta Conversão em 53% [Guia Completo 2026] | Sirius Blog,50
+404: This page could not be found.,41
+Generative UI Demo | Sirius CRM,33
+Analytics PRO | Sirius CRM,28
+Sirius CRM | O CRM Inteligente para Vendedores Brasileiros,25
+Login | Sirius CRM,22
+Ultimate Sales Funnel | Sirius Admin,20
+Central de Ajuda | Sirius CRM,16
+Criar Conta | Sirius CRM,14
+Planilha de Controle de Vendas e Comissão para Corretores 2026 | Melhor que Excel,13
+AGI Generative UI - Teste | Sirius CRM,12
+Analytics da Plataforma | Sirius CRM Admin,12
+CRM com IA: Como a Inteligência Artificial Está Revolucionando as Vendas em 2026 | Sirius Blog,12
+"Funil de Vendas: O Que É, Etapas e Como Criar o Seu [Guia Completo 2026] | Sirius Blog",12
+SPIN/Sandler Chat | Sirius Admin,12
+Sobre Nós | Sirius CRM,12
+Chat Center,11
+Como organizar seu Pipeline de Vendas: O Guia Definitivo para 2025 | Sirius Blog,11
+CRM para Corretores de Imóveis | Organize suas Vendas e Aumente suas Comissões,8
+Melhor CRM 2026: Guia Completo para Escolher o Sistema Certo para seu Negócio | Sirius Blog,8
+Preços e Planos | Sirius CRM — Plano Gratuito Disponível,8
+O Custo Oculto da Inação no CRM: Quantificando Perdas Invisíveis | Sirius Blog,7
+Calculadora de Vazamento de Vendas | Sirius CRM,5
+Changelog | Sirius CRM,5
+"Funcionalidades | Sirius CRM — Pipeline, WhatsApp, IA, Prospecção, Automações",5
+Graph-RAG | Sirius Admin,5
+Sirius CRM - Vendas Organizadas em 5 Minutos | R$ 49/mês,5
+Auto-Citation | Sirius Admin,4
+Calculadora de ROI para Corretores de Imóveis | Sirius CRM,4
+Configurações | Sirius CRM,4
+"Funcionalidades | Sirius CRM — Pipeline, Automações, IA, WhatsApp",4
+CRM para Representante Comercial 2026 | Sistema de Gestão de Carteira e Pedidos,3
+Como Prospectar Clientes B2B em 2026: Métodos que Funcionam | Sirius Blog,3
+Como cadastrar e gerenciar contatos - Central de Ajuda | Sirius CRM,3
+Esqueci a Senha | Sirius CRM,3
+Graph Visualization | Sirius Admin,3
+Programa de Fundadores | Sirius CRM — 41% OFF vitalício,3
+Sistema de Follow-up Inteligente | Sirius CRM,3
+7 Técnicas de Fechamento de Vendas que Realmente Funcionam | Sirius Blog,2
+Assinatura & Faturamento | Sirius CRM,2
+Automações de Negócios | Sirius CRM,2
+Baixar Sirius CRM | App Mobile,2
+CRM e Automação de Vendas: Guia Completo para Aumentar suas Vendas em 2026 | Sirius Blog,2
+CRM para Corretores de Imóveis 2026 | Automação de Vendas e Comissões,2
+Campanhas & CAC | Sirius CRM,2
+Comunidade | Sirius CRM,2
+Política de Privacidade | Sirius CRM,2
+Prospecção | Sirius CRM,2
+Termos de Uso | Sirius CRM,2
+12 KPIs de Vendas que Todo Gestor Precisa Acompanhar em 2026 | Sirius Blog,1
+A Ciência do Follow-up: Como vender 80% mais sem ser chato | Sirius Blog,1
+Analytics | Sirius CRM,1
+"Blog | Sirius CRM — Dicas de Vendas, CRM e Gestão Comercial",1
+CRM Simples vs. Complexo: Por que a burocracia custa milhões | Sirius Blog,1
+CRM para Consultores 2026 | Gestão Automatizada de Projetos e Clientes,1
+Como Superar Objeções em Vendas: 10 Respostas Prontas para Fechar Mais | Sirius Blog,1
+Equipe | Sirius CRM,1
+Melhores práticas de gestão de vendas - Central de Ajuda | Sirius CRM,1
+Negócios Perdidos – Analytics | Sirius CRM,1
+Planos | Sirius CRM,1
+Página não encontrada | Sirius CRM,1
+Round Robin | Sirius CRM,1
+Solicitar Proposta Comercial | Sirius CRM,1
+Visitas & Check-ins | Sirius CRM,1
+
+#  
+# Data de início: 20260101
+# Data de término: 20260327
+Nome do evento,Contagem de eventos
+page_view,5946
+All Pages,4150
+session_start,3260
+sign_up,3187
+first_visit,2826
+form_start,1866
+scroll,1129
+user_engagement,1049
+login,398
+view_billing_page,142
+view_pricing_page,58
+create_deal,34
+click,23
+file_download,7
+create_contact,6
+
+# Quais são os eventos principais com melhor performance?
+# Data de início: 20260101
+# Data de término: 20260327
+Nome do evento,Eventos principais
+sign_up,3187
+
+# Qual é a origem do seu valor médio de 120 dias?
+# Data de início: 20260101
+# Data de término: 20260327
+Grupo principal de canais do primeiro usuário (Agrupamento de canais padrão),Valor médio de 120 dias
+
+
+#  
+# Data de início: 20260101
+# Data de término: 20260327
+Nome do item,Itens comprados
+
+
+# Quais são as diferenças entre as atividades nas suas plataformas?
+# Data de início: 20260101
+# Data de término: 20260327
+Plataforma,Eventos principais
+web,3187
