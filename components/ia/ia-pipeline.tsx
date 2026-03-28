@@ -10,7 +10,7 @@ interface Deal {
   title: string
   value: number | null
   contact: { id: string; name: string; company: string | null } | null
-  user: { id: true; name: string | null } | null
+  user: { id: string; name: string | null } | null
   createdAt: string
   agentAction: {
     agentName: string
