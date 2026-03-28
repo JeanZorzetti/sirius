@@ -6,7 +6,7 @@ import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { Check, X, Loader2, Sparkles, Zap, Building2, Crown, Star } from 'lucide-react'
+import { Check, X, Loader2, Sparkles, Zap, Building2, Crown, Star, Bot } from 'lucide-react'
 import { toast } from 'sonner'
 import { PLAN_LIMITS, PLAN_PRICING, PLAN_NAMES, PLAN_DESCRIPTIONS } from '@/lib/entitlements'
 import { SubscriptionTier } from '@prisma/client'
@@ -32,6 +32,9 @@ const features: PlanFeature[] = [
   { name: 'Relatórios Customizados', free: false, starter: false, pro: false, business: true },
   { name: 'Distribuição Round-Robin', free: false, starter: false, pro: false, business: true },
   { name: 'Suporte', free: 'Comunidade', starter: 'Email', pro: 'Prioritário', business: 'Dedicado' },
+  { name: 'Agentes IA (Sofia)', free: 'Visualiza', starter: '1 agente', pro: '3 agentes', business: 'Ilimitados' },
+  { name: 'Ações autônomas/mês', free: false, starter: '100', pro: '500', business: 'Ilimitadas' },
+  { name: 'Aprovação de ações IA', free: false, starter: true, pro: true, business: true },
 ]
 
 export default function PlansPage() {

@@ -18,6 +18,33 @@ import { createHmac } from 'crypto'
 
 const MAX_PAYMENT_ATTEMPTS = 3
 
+/**
+ * AgaaS limits per tier — mirrors lib/agaas-quota.ts TIER_LIMITS
+ */
+const AGAAS_TIER_LIMITS: Record<string, { enabled: boolean; agents: number; quota: number }> = {
+  FREE:     { enabled: false, agents: 0,  quota: 0 },
+  STARTER:  { enabled: true,  agents: 1,  quota: 100 },
+  PRO:      { enabled: true,  agents: 3,  quota: 500 },
+  BUSINESS: { enabled: true,  agents: -1, quota: -1 },
+}
+
+function getAgaasDataForTier(tier: string) {
+  const limits = AGAAS_TIER_LIMITS[tier] || AGAAS_TIER_LIMITS.FREE
+  return {
+    agaasEnabled: limits.enabled,
+    agaasAgentLimit: limits.agents,
+    agaasMonthlyQuota: limits.quota,
+  }
+}
+
+function nextMonthDate(): Date {
+  const d = new Date()
+  d.setMonth(d.getMonth() + 1)
+  d.setDate(1)
+  d.setHours(0, 0, 0, 0)
+  return d
+}
+
 const mp = new MercadoPagoConfig({
   accessToken: process.env.MERCADO_PAGO_ACCESS_TOKEN!,
 })
@@ -173,12 +200,16 @@ async function upgradePlan(
 ) {
   logger.info({ organizationId, tier }, 'Upgrading plan')
 
-  // Atualizar organização (sync tier + plan para compatibilidade)
+  // Atualizar organização (sync tier + plan + agaas para compatibilidade)
+  const agaasData = getAgaasDataForTier(tier)
   await prisma.organization.update({
     where: { id: organizationId },
     data: {
       tier,
       plan: tier,
+      ...agaasData,
+      agaasActionsUsed: 0,
+      agaasQuotaResetAt: nextMonthDate(),
       updatedAt: new Date(),
     },
   })
@@ -248,6 +279,7 @@ async function upgradeToFounder(organizationId: string, founderPlan: string, pay
   const foundersCount = await prisma.organization.count({ where: { isFounder: true } })
   const founderNumber = foundersCount + 1
 
+  const founderAgaasData = getAgaasDataForTier(config.tier)
   await prisma.organization.update({
     where: { id: organizationId },
     data: {
@@ -258,6 +290,9 @@ async function upgradeToFounder(organizationId: string, founderPlan: string, pay
       founderSince: new Date(),
       customPricing: config.price,
       failedPaymentAttempts: 0,
+      ...founderAgaasData,
+      agaasActionsUsed: 0,
+      agaasQuotaResetAt: nextMonthDate(),
     },
   })
 
@@ -426,10 +461,14 @@ async function processSubscriptionEvent(preapprovalId: string, action: string) {
     }
 
     if (action === 'subscription_preapproval.cancelled' || action === 'cancelled') {
-      // Downgrade para FREE ao cancelar (sync tier + plan)
+      // Downgrade para FREE ao cancelar (sync tier + plan + agaas)
       await prisma.organization.update({
         where: { id: org.id },
-        data: { tier: SubscriptionTier.FREE, plan: 'FREE' },
+        data: {
+          tier: SubscriptionTier.FREE,
+          plan: 'FREE',
+          ...getAgaasDataForTier('FREE'),
+        },
       })
 
       // Registrar downgrade como churn
@@ -496,13 +535,17 @@ async function processRecurringPayment(paymentId: string) {
 
     const subscriptionTier = (tier || 'PRO') as SubscriptionTier
 
-    // Renovação aprovada: resetar contador de falhas (sync tier + plan)
+    // Renovação aprovada: resetar contador de falhas + agaas usage (sync tier + plan)
+    const renewalAgaasData = getAgaasDataForTier(subscriptionTier)
     const org = await prisma.organization.update({
       where: { id: organizationId },
       data: {
         tier: subscriptionTier,
         plan: subscriptionTier,
         failedPaymentAttempts: 0,
+        ...renewalAgaasData,
+        agaasActionsUsed: 0,
+        agaasQuotaResetAt: nextMonthDate(),
       },
       select: { id: true, name: true },
     })
@@ -605,13 +648,14 @@ async function handleFailedRecurringPayment(organizationId: string, payment: any
   const billingUrl = `${process.env.NEXT_PUBLIC_APP_URL}/dashboard/settings/billing`
 
   if (isFinal) {
-    // Downgrade para FREE após atingir o limite (sync tier + plan)
+    // Downgrade para FREE após atingir o limite (sync tier + plan + agaas)
     await prisma.organization.update({
       where: { id: org.id },
       data: {
         tier: SubscriptionTier.FREE,
         plan: 'FREE',
         failedPaymentAttempts: 0,
+        ...getAgaasDataForTier('FREE'),
       },
     })
 

@@ -62,6 +62,8 @@ const tiers = [
             '3 Pipelines Kanban',
             '1 instância WhatsApp',
             '50 créditos de prospecção/mês',
+            '1 Agente IA autônomo (Sofia)',
+            '100 ações autônomas/mês',
             'Suporte por e-mail',
         ],
         featured: false,
@@ -79,7 +81,8 @@ const tiers = [
             '10 Pipelines Kanban',
             '1 instância WhatsApp',
             '200 créditos de prospecção/mês',
-            'AGI Sirius (IA comercial)',
+            '3 Agentes IA autônomos (Sofia)',
+            '500 ações autônomas/mês',
             'Analytics avançado',
             'Webhooks + API pública',
             'Suporte prioritário',
@@ -99,6 +102,8 @@ const tiers = [
             '50 Pipelines Kanban',
             '5 instâncias WhatsApp',
             '1.000 créditos de prospecção/mês',
+            'Agentes IA ilimitados (Sofia)',
+            'Ações autônomas ilimitadas',
             'Round-Robin de leads',
             'Relatórios personalizados',
             'SSO & Audit Log',
@@ -149,6 +154,11 @@ export default function PricingPage() {
             },
             {
                 "@type": "Question",
+                "name": "Como funcionam os agentes IA (Sofia)?",
+                "acceptedAnswer": { "@type": "Answer", "text": "Os agentes Sofia operam seu CRM autonomamente: qualificam leads, fazem follow-up, agendam reuniões e movem deals no pipeline. Você supervisiona e aprova as ações pelo painel /IA. Disponível a partir do plano Starter." }
+            },
+            {
+                "@type": "Question",
                 "name": "Meus dados ficam seguros?",
                 "acceptedAnswer": { "@type": "Answer", "text": "Totalmente. Usamos criptografia de ponta a ponta e hospedamos em servidores certificados no Brasil." }
             },
@@ -179,7 +189,7 @@ export default function PricingPage() {
                 "price": "49",
                 "priceCurrency": "BRL",
                 "availability": "https://schema.org/InStock",
-                "description": "Para pequenas empresas. Até 3 usuários, 500 contatos, 200 negócios, WhatsApp integrado."
+                "description": "Para pequenas empresas. Até 3 usuários, 500 contatos, 200 negócios, WhatsApp integrado, 1 agente IA autônomo."
             },
             {
                 "@type": "Offer",
@@ -187,7 +197,7 @@ export default function PricingPage() {
                 "price": "97",
                 "priceCurrency": "BRL",
                 "availability": "https://schema.org/InStock",
-                "description": "Para equipes em crescimento. Até 10 usuários, 2.000 contatos, IA comercial, analytics avançado."
+                "description": "Para equipes em crescimento. Até 10 usuários, 2.000 contatos, 3 agentes IA autônomos, analytics avançado."
             },
             {
                 "@type": "Offer",
@@ -195,7 +205,7 @@ export default function PricingPage() {
                 "price": "149",
                 "priceCurrency": "BRL",
                 "availability": "https://schema.org/InStock",
-                "description": "Para grandes operações. Até 50 usuários, contatos ilimitados, 5 instâncias WhatsApp, SSO."
+                "description": "Para grandes operações. Até 50 usuários, contatos ilimitados, agentes IA ilimitados, 5 instâncias WhatsApp, SSO."
             }
         ]
     };
@@ -426,6 +436,12 @@ export default function PricingPage() {
                         <h4 className="font-semibold mb-2 text-primary">Como funciona a garantia de 7 dias?</h4>
                         <p className="text-sm text-muted-foreground">
                             Teste qualquer plano pago sem risco! Se não gostar nos primeiros 7 dias, devolvemos 100% do seu dinheiro, sem perguntas.
+                        </p>
+                    </div>
+                    <div>
+                        <h4 className="font-semibold mb-2 text-primary">Como funcionam os agentes IA (Sofia)?</h4>
+                        <p className="text-sm text-muted-foreground">
+                            Os agentes Sofia operam seu CRM autonomamente: qualificam leads, fazem follow-up, agendam reuniões e movem deals no pipeline. Você supervisiona e aprova as ações pelo painel /IA. Disponível a partir do plano Starter.
                         </p>
                     </div>
                     <div>
