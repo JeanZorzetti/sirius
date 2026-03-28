@@ -22,10 +22,10 @@ export const post: BlogPost = {
       <div class="not-prose" style="background: #1e293b; padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
         <p style="margin: 0 0 0.75rem; font-weight: 700; font-size: 1.05rem; color: #818cf8;">⚡ TL;DR — Resposta Rápida</p>
         <ul style="margin: 0; padding-left: 1.25rem; line-height: 2; color: #ffffff;">
-          <li>Existem <strong>7 critérios eliminatórios</strong> para avaliar um CRM B2B em 2026. Se falhar em 2 ou mais, descarte.</li>
+          <li>Existem <strong>7 critérios eliminatórios</strong> para avaliar um CRM B2B em 2026. Se falhar em 2 ou mais, descarte. Veja nosso <a href="/blog/melhor-crm-2026-comparativo" style="color: #2563eb;">comparativo dos 7 CRMs mais usados</a>.</li>
           <li>O critério mais ignorado: <strong>funciona offline?</strong> Essencial para representantes comerciais externos.</li>
           <li>O critério mais subestimado: <strong>integração nativa com WhatsApp</strong>. No Brasil, é canal primário de vendas B2B.</li>
-          <li>O critério mais caro de ignorar: <strong>IA integrada</strong>. Vendedores sem assistência de IA perdem 35% em produtividade vs concorrentes que usam (McKinsey Sales Survey 2025).</li>
+          <li>O critério mais caro de ignorar: <strong><a href="/blog/crm-ia-inteligencia-artificial-2026" style="color: #2563eb;">IA integrada</a></strong>. Vendedores sem assistência de IA perdem 35% em produtividade vs concorrentes que usam (McKinsey Sales Survey 2025).</li>
           <li>Regra de ouro: o melhor CRM é o que sua equipe vai realmente usar. Facilidade de uso bate funcionalidade.</li>
         </ul>
       </div>

@@ -25,7 +25,7 @@ export const post: BlogPost = {
           <li><strong>ICP bem definido</strong> é o primeiro passo — prospectar sem ICP é desperdiçar esforço em 80% dos leads errados</li>
           <li>Os 5 canais mais eficazes em 2026: <strong>LinkedIn, Cold Email personalizado, Indicações, Comunidades/Eventos, Outbound com IA</strong></li>
           <li>Cold email funciona quando segue a fórmula: <strong>assunto específico + problema relevante + CTA de baixo atrito</strong></li>
-          <li>Cadência multicanal (email + LinkedIn + ligação) gera <strong>3x mais respostas</strong> que canal único (HubSpot Sales Trends 2025)</li>
+          <li>Cadência multicanal (email + LinkedIn + ligação) gera <strong>3x mais respostas</strong> que canal único (HubSpot Sales Trends 2025) — e prepara o terreno para as <a href="/blog/tecnicas-de-fechamento-de-vendas" style="color: #2563eb;">técnicas de fechamento</a></li>
           <li>Um CRM organiza a prospecção e elimina o maior problema: o follow-up que não acontece</li>
         </ul>
       </div>
@@ -60,7 +60,7 @@ export const post: BlogPost = {
       </ol>
 
       <p>
-        Os gatilhos de compra são ouro para a prospecção B2B. Exemplos comuns: contratou um novo diretor comercial, levantou rodada de investimento, perdeu market share, está expandindo para nova cidade. Com esse padrão identificado, você sabe exatamente quem prospectar e quando.
+        Os gatilhos de compra são ouro para a prospecção B2B. Exemplos comuns: contratou um novo diretor comercial, levantou rodada de investimento, perdeu market share, está expandindo para nova cidade. Com esse padrão identificado, você sabe exatamente quem prospectar e quando — e a metodologia <a href="/blog/spin-selling-guia-completo" style="color: #2563eb;">SPIN Selling</a> ajuda a explorar essas dores na conversa.
       </p>
 
       <h2>Os 5 Melhores Canais de Prospecção B2B em 2026</h2>
@@ -220,7 +220,7 @@ export const post: BlogPost = {
         A maior causa de falha em prospecção B2B não é a qualidade da mensagem — é a falta de sistema. Vendedores perdem leads porque esquecem de fazer o 3º follow-up, não registram o motivo da recusa, e não têm visibilidade de onde cada lead está na cadência.
       </p>
 
-      <p>Um CRM como o Sirius resolve os 4 gargalos mais comuns:</p>
+      <p>Um <a href="/blog/como-organizar-pipeline-vendas" style="color: #2563eb;">CRM com pipeline bem organizado</a> resolve os 4 gargalos mais comuns:</p>
 
       <ul style="line-height: 2; padding-left: 1.5rem;">
         <li><strong>Registro automático:</strong> Cada touchpoint fica registrado — email enviado, ligação feita, mensagem respondida</li>

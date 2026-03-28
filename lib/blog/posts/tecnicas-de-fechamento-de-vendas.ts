@@ -37,7 +37,7 @@ export const post: BlogPost = {
       </p>
 
       <p>
-        O fechamento eficaz começa muito antes: na qualificação, no discovery, no entendimento das dores e na construção de valor. As técnicas abaixo funcionam quando o terreno está preparado — não como atalhos para pular etapas.
+        O fechamento eficaz começa muito antes: na qualificação, no discovery, no entendimento das dores e na construção de valor. As técnicas abaixo funcionam quando o terreno está preparado — não como atalhos para pular etapas. Antes delas, domine como <a href="/blog/como-superar-objecoes-em-vendas" style="color: #2563eb;">superar objeções</a>.
       </p>
 
       <h2>Os Sinais de Compra que Indicam que o Momento Chegou</h2>
@@ -148,7 +148,7 @@ export const post: BlogPost = {
         <strong>Por que funciona:</strong> O resumo cria sensação de conclusão natural. Se tudo está correto, o próximo passo lógico é assinar.
       </p>
 
-      <h3>5. Pergunta de Comprometimento (Método SPIN)</h3>
+      <h3>5. Pergunta de Comprometimento (Método <a href="/blog/spin-selling-guia-completo" style="color: #2563eb;">SPIN</a>)</h3>
 
       <p>
         <strong>O que é:</strong> Perguntar ao cliente se ele mesmo descreve o valor que viu — criando comprometimento interno antes do fechamento.

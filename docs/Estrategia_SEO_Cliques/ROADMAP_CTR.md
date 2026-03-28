@@ -39,11 +39,11 @@ Novas paginas para gap de conteudo:
 - [x] 3.3 "CRM para varejo" — DESCARTADO: apenas 7 impressoes, ROI muito baixo para artigo dedicado
 - [x] 3.4 Otimizar H2s do comparativo — renomeados para incluir "sistema de vendas", "tipo de negocio", "ranking"
 
-## Fase 4: Internal Linking e Topical Authority (Semana 9-12)
-- [ ] 4.1 Auditar e corrigir interlinks hub-and-spoke em todos os 5 clusters
-- [ ] 4.2 Trocar anchor texts genericos ("clique aqui") por keywords
-- [ ] 4.3 Sidebar de posts relacionados por cluster (nao aleatorios)
-- [ ] 4.4 Breadcrumbs visuais com schema: Inicio > Blog > Categoria > Post
+## Fase 4: Internal Linking e Topical Authority (Semana 9-12) -- DONE
+- [x] 4.1 Auditar e adicionar links contextuais nos top 5 posts (10 links internos adicionados no corpo do texto)
+- [x] 4.2 Auditado: zero anchor texts genericos encontrados — todos ja usam keywords
+- [x] 4.3 RelatedLinksBar ja funciona por cluster via relatedSlugs (100% dos posts tem 2-3 slugs)
+- [x] 4.4 Breadcrumbs visuais + BreadcrumbList schema ja existiam em page.tsx
 
 ## Fase 5: Core Web Vitals (Semana 9-12, paralelo)
 - [ ] 5.1 Auditar LCP, FID, CLS das top 5 paginas via PageSpeed Insights

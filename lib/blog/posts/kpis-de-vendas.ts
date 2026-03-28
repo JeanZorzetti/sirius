@@ -42,12 +42,12 @@ export const post: BlogPost = {
 
       <h2>Grupo 1 — KPIs de Pipeline (Olhar para o Futuro)</h2>
 
-      <p>KPIs de pipeline são preditivos — eles avisam com semanas de antecedência se o mês vai ser bom ou ruim.</p>
+      <p>KPIs de pipeline são preditivos — eles avisam com semanas de antecedência se o mês vai ser bom ou ruim. A base está em <a href="/blog/como-organizar-pipeline-vendas" style="color: #2563eb;">organizar o pipeline corretamente</a> desde o início.</p>
 
       <h3>KPI 1: Taxa de Conversão por Etapa</h3>
 
       <p>
-        <strong>O que mede:</strong> Percentual de deals que avançam de uma etapa para a próxima no pipeline.
+        <strong>O que mede:</strong> Percentual de deals que avançam de uma etapa para a próxima no <a href="/blog/funil-de-vendas-guia-completo" style="color: #2563eb;">funil de vendas</a>.
       </p>
 
       <p>
@@ -263,7 +263,7 @@ export const post: BlogPost = {
       </p>
 
       <p>
-        O Sirius CRM calcula e exibe todos esses KPIs automaticamente, em tempo real, no dashboard de gestão:
+        O Sirius CRM <a href="/blog/crm-automacao-vendas-guia-completo" style="color: #2563eb;">automatiza o cálculo</a> e exibe todos esses KPIs em tempo real no dashboard de gestão:
       </p>
 
       <ul style="line-height: 2; padding-left: 1.5rem;">
