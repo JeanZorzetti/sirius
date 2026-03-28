@@ -8,7 +8,7 @@ import { cn } from '@/lib/utils'
 import { motion } from 'framer-motion'
 import {
   Home, Users, Settings, BarChart3, CreditCard, Mail,
-  MessageSquare, TrendingDown, Zap, TrendingUp, LogOut, Package, CalendarDays,
+  MessageSquare, TrendingDown, Zap, TrendingUp, LogOut, Package, CalendarDays, Sparkles,
 } from 'lucide-react'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { logoutAction } from '@/app/auth/actions'
@@ -210,7 +210,7 @@ function SidebarUserNav({ user }: { user: any }) {
 // ── inner sidebar (consumes context) ─────────────────────────────────────────
 
 function SidebarInner({ pathname, user }: { pathname: string; user: any }) {
-  const { open, setOpen } = useSidebar()
+  const { open, setOpen, animate } = useSidebar()
 
   return (
     <motion.div
@@ -246,6 +246,27 @@ function SidebarInner({ pathname, user }: { pathname: string; user: any }) {
       {/* Navigation */}
       <div className="flex-1 overflow-y-auto overflow-x-hidden py-4 px-2 relative z-10">
         <nav className="grid gap-0.5">
+          {/* Modo IA link */}
+          <Link
+            href="/IA"
+            className={cn(
+              'flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-all duration-200 mb-2',
+              'bg-gradient-to-r from-cyan-500/10 to-violet-500/10 border border-cyan-500/20',
+              'text-cyan-400 hover:from-cyan-500/20 hover:to-violet-500/20 hover:text-cyan-300',
+            )}
+          >
+            <Sparkles className="h-4 w-4 flex-shrink-0" />
+            <motion.span
+              animate={{
+                display: animate ? (open ? 'inline-block' : 'none') : 'inline-block',
+                opacity: animate ? (open ? 1 : 0) : 1,
+              }}
+              className="whitespace-pre"
+            >
+              Modo IA
+            </motion.span>
+          </Link>
+
           <WhatsAppFounderButton />
 
           <SectionLabel>CRM</SectionLabel>
