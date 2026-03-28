@@ -12,42 +12,55 @@ export default async function IAHomePage() {
   })
   if (!user) redirect('/login')
 
-  // Fetch recent agent actions
-  const actions = await prisma.agentAction.findMany({
-    where: { organizationId: user.organizationId },
-    orderBy: { createdAt: 'desc' },
-    take: 50
-  })
-
-  // Summary stats
-  const today = new Date()
-  today.setHours(0, 0, 0, 0)
-
-  const [todayCount, pendingCount, successCount] = await Promise.all([
-    prisma.agentAction.count({
-      where: { organizationId: user.organizationId, createdAt: { gte: today } }
-    }),
-    prisma.agentAction.count({
-      where: { organizationId: user.organizationId, status: { in: ['NEEDS_APPROVAL', 'PENDING'] } }
-    }),
-    prisma.agentAction.count({
-      where: { organizationId: user.organizationId, status: 'SUCCESS', createdAt: { gte: today } }
+  try {
+    // Fetch recent agent actions
+    const actions = await prisma.agentAction.findMany({
+      where: { organizationId: user.organizationId },
+      orderBy: { createdAt: 'desc' },
+      take: 50
     })
-  ])
 
-  const serializedActions = actions.map(a => ({
-    ...a,
-    input: a.input as any,
-    output: a.output as any,
-    createdAt: a.createdAt.toISOString(),
-    reviewedAt: a.reviewedAt?.toISOString() || null
-  }))
+    // Summary stats
+    const today = new Date()
+    today.setHours(0, 0, 0, 0)
 
-  return (
-    <IAFeed
-      actions={serializedActions}
-      stats={{ today: todayCount, pending: pendingCount, success: successCount }}
-      organizationId={user.organizationId}
-    />
-  )
+    const [todayCount, pendingCount, successCount] = await Promise.all([
+      prisma.agentAction.count({
+        where: { organizationId: user.organizationId, createdAt: { gte: today } }
+      }),
+      prisma.agentAction.count({
+        where: { organizationId: user.organizationId, status: { in: ['NEEDS_APPROVAL', 'PENDING'] } }
+      }),
+      prisma.agentAction.count({
+        where: { organizationId: user.organizationId, status: 'SUCCESS', createdAt: { gte: today } }
+      })
+    ])
+
+    const serializedActions = actions.map(a => ({
+      id: a.id,
+      agentName: a.agentName,
+      actionType: a.actionType,
+      entityType: a.entityType,
+      entityId: a.entityId,
+      reasoning: a.reasoning,
+      confidence: a.confidence,
+      status: a.status,
+      input: a.input as Record<string, unknown> | null,
+      output: a.output as Record<string, unknown> | null,
+      createdAt: a.createdAt.toISOString(),
+      reviewedAt: a.reviewedAt?.toISOString() || null,
+      reviewedBy: a.reviewedBy || null
+    }))
+
+    return (
+      <IAFeed
+        actions={serializedActions}
+        stats={{ today: todayCount, pending: pendingCount, success: successCount }}
+        organizationId={user.organizationId}
+      />
+    )
+  } catch (error) {
+    console.error('[IA Page] Error loading data:', error)
+    throw error
+  }
 }
