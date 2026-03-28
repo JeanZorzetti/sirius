@@ -17,7 +17,7 @@ export async function middleware(request: NextRequest) {
     const sessionCookie = request.cookies.get('session')?.value
 
     // 3. Protected Routes Logic
-    if (request.nextUrl.pathname.startsWith('/dashboard')) {
+    if (request.nextUrl.pathname.startsWith('/dashboard') || request.nextUrl.pathname.startsWith('/IA')) {
         if (!sessionCookie) {
             return NextResponse.redirect(new URL('/login', request.url))
         }
@@ -36,5 +36,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-    matcher: ['/dashboard/:path*', '/login', '/register', '/((?!api|_next/static|_next/image|favicon.ico).*)'],
+    matcher: ['/dashboard/:path*', '/IA/:path*', '/login', '/register', '/((?!api|_next/static|_next/image|favicon.ico).*)'],
 }

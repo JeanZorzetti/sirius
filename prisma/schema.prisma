@@ -140,6 +140,9 @@ model Organization {
 
   // Products (Catálogo)
   products Product[]
+
+  // AgaaS — Agent Actions
+  agentActions AgentAction[]
 }
 
 model User {
@@ -1847,4 +1850,31 @@ model Product {
 
   @@index([organizationId])
   @@index([organizationId, isActive])
+}
+
+// ============================================================================
+// AGENT ACTIONS (AgaaS — Auditoria de Agentes Autônomos)
+// ============================================================================
+
+model AgentAction {
+  id             String   @id @default(uuid())
+  organizationId String
+  agentName      String   // "LeadQualifier", "FollowUpCoordinator", etc.
+  actionType     String   // "UPDATE_DEAL", "SEND_WHATSAPP", "CREATE_NOTE", etc.
+  entityType     String   // "Deal", "Contact", "WhatsAppMessage"
+  entityId       String
+  reasoning      String   @db.Text
+  confidence     Float    // 0.0 - 1.0
+  input          Json
+  output         Json?
+  status         String   @default("PENDING") // PENDING, NEEDS_APPROVAL, SUCCESS, FAILED
+  reviewedBy     String?  // userId que aprovou/rejeitou
+  reviewedAt     DateTime?
+  createdAt      DateTime @default(now())
+
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@index([organizationId, createdAt])
+  @@index([entityType, entityId])
+  @@index([status])
 }
