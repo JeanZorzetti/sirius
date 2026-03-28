@@ -246,7 +246,8 @@ function SidebarInner({ pathname, user }: { pathname: string; user: any }) {
       {/* Navigation */}
       <div className="flex-1 overflow-y-auto overflow-x-hidden py-4 px-2 relative z-10">
         <nav className="grid gap-0.5">
-          {/* Modo IA link */}
+          {/* Modo IA link — only for admin */}
+          {user.email === 'jeanzorzetti@gmail.com' && (
           <Link
             href="/IA"
             className={cn(
@@ -266,6 +267,7 @@ function SidebarInner({ pathname, user }: { pathname: string; user: any }) {
               Modo IA
             </motion.span>
           </Link>
+          )}
 
           <WhatsAppFounderButton />
 
