@@ -57,7 +57,7 @@ export const post: BlogPost = {
           <li>WhatsApp integrado nativamente em todos os planos</li>
           <li>IA BANT/MEDDIC para qualificação automática de leads</li>
           <li>Modo offline: funciona sem internet no campo</li>
-          <li>Preço fixo em BRL: FREE (R$ 0) ou PRO (R$ 149/mês)</li>
+          <li>Preço fixo em BRL: FREE (R$ 0) ou PRO (R$ 397/mês)</li>
           <li>Interface e suporte 100% em português brasileiro</li>
         </ul>
       </div>
@@ -189,7 +189,7 @@ export const post: BlogPost = {
           <tbody>
             <tr style="background: #ecfdf5;">
               <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; font-weight: 700; color: #065f46;">Sirius CRM</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center; font-weight: 600;">R$ 0 / R$ 149</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center; font-weight: 600;">R$ 0 / R$ 397</td>
               <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center; color: #059669;">✓</td>
               <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center; color: #059669;">✓</td>
               <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center; color: #059669;">✓</td>

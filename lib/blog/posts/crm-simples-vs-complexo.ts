@@ -50,8 +50,8 @@ export const post: BlogPost = {
           <tr>
             <td>Licenças (15 usuários)</td>
             <td>R$ 7.500/mês</td>
-            <td>R$ 735/mês</td>
-            <td>R$ 81.180</td>
+            <td>R$ 1.005/mês</td>
+            <td>R$ 77.940</td>
           </tr>
           <tr>
             <td>Implementação</td>
@@ -80,15 +80,15 @@ export const post: BlogPost = {
           <tr>
             <td><strong>TOTAL ANO 1</strong></td>
             <td><strong>R$ 242.000</strong></td>
-            <td><strong>R$ 60.820</strong></td>
-            <td><strong>R$ 181.180</strong></td>
+            <td><strong>R$ 64.060</strong></td>
+            <td><strong>R$ 177.940</strong></td>
           </tr>
         </tbody>
       </table>
 
       <div class="callout-stat">
         <p><strong>💸 Custo de Oportunidade</strong></p>
-        <p style="font-size: 3rem; font-weight: 800; color: #2563eb; margin: 1rem 0; line-height: 1;">R$ 181 mil</p>
+        <p style="font-size: 3rem; font-weight: 800; color: #2563eb; margin: 1rem 0; line-height: 1;">R$ 178 mil</p>
         <p>Desperdiçados no primeiro ano. E isso sem contar o custo de oportunidade dos deals que você perdeu porque seu vendedor estava preenchendo 47 campos obrigatórios em vez de ligar para o cliente.</p>
       </div>
 
@@ -244,7 +244,7 @@ export const post: BlogPost = {
         <p style="text-align: center; font-size: 1.25rem; font-weight: 700; color: #2563eb; margin-top: 1.5rem;">Friction mata vendas. Simplicidade fecha deals.</p>
       </div>
 
-      <h2>Case Real: Migração que Economizou R$ 53k/ano</h2>
+      <h2>Case Real: Migração que Economizou R$ 51k/ano</h2>
 
       <p>
         Uma empresa de consultoria B2B com 8 vendedores estava usando HubSpot Sales Hub Professional (R$ 400/usuário/mês = R$ 3.200/mês).
@@ -263,7 +263,7 @@ export const post: BlogPost = {
       </ul>
 
       <p>
-        Migraram para o Sirius (R$ 49/usuário/mês = R$ 392/mês):
+        Migraram para o Sirius (R$ 67/usuário/mês = R$ 536/mês):
       </p>
 
       <ul>
@@ -271,12 +271,12 @@ export const post: BlogPost = {
         <li>Zero treinamento necessário (interface intuitiva)</li>
         <li>Taxa de atualização do pipeline subiu para 85%</li>
         <li>WhatsApp nativo (eliminaram Zapier)</li>
-        <li>Economia: R$ 3.200 - R$ 392 = R$ 2.808/mês = <strong>R$ 33.696/ano</strong></li>
+        <li>Economia: R$ 3.200 - R$ 536 = R$ 2.664/mês = <strong>R$ 31.968/ano</strong></li>
         <li>Tempo de manutenção: 0 horas (eliminou custo de R$ 19.200/ano em tempo de gestão)</li>
       </ul>
 
       <p>
-        <strong>Economia total: R$ 52.896 no primeiro ano.</strong> E o mais importante: vendedores felizes, dados confiáveis, processo fluido.
+        <strong>Economia total: R$ 51.168 no primeiro ano.</strong> E o mais importante: vendedores felizes, dados confiáveis, processo fluido.
       </p>
 
       <h2>Quando um CRM Complexo REALMENTE faz sentido</h2>

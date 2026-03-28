@@ -23,7 +23,7 @@ export const post: BlogPost = {
         <p style="margin: 0 0 0.75rem; font-weight: 700; font-size: 1.05rem; color: #818cf8;">⚡ TL;DR — Resposta Rápida</p>
         <ul style="margin: 0; padding-left: 1.25rem; line-height: 2; color: #ffffff;">
           <li><strong style="color: #818cf8;">HubSpot Free</strong>: usuários e contatos ilimitados, mas sem WhatsApp nativo, sem IA, sem pipeline personalizável, suporte apenas em inglês</li>
-          <li><strong style="color: #818cf8;">Sirius CRM FREE</strong>: até 50 deals, mas com IA nativa (3 gen/mês), WhatsApp integrado, modo offline, suporte em português</li>
+          <li><strong style="color: #818cf8;">Sirius CRM FREE</strong>: até 100 deals, mas com IA nativa (3 gen/mês), WhatsApp integrado, modo offline, suporte em português</li>
           <li>Para representantes B2B brasileiros: <strong>Sirius CRM FREE é mais funcional</strong> no dia a dia</li>
           <li>Para times grandes que não precisam de WhatsApp ou IA: HubSpot Free escala melhor</li>
         </ul>
@@ -53,7 +53,7 @@ export const post: BlogPost = {
             </tr>
             <tr style="background: #f8fafc;">
               <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; font-weight: 600;">Deals/Contatos</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center;">Até 50 deals ativos</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center;">Até 100 deals ativos</td>
               <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center;">Ilimitados</td>
             </tr>
             <tr>
@@ -115,14 +115,14 @@ export const post: BlogPost = {
         Para um representante comercial ou uma PME de 3 a 15 vendedores, o HubSpot Free frequentemente gera sensação de "excesso de ferramenta" — muitos recursos que nunca serão usados, dificultando a adoção.
       </p>
 
-      <h2>O limite de 50 deals do Sirius CRM FREE é um problema?</h2>
+      <h2>O limite de 100 deals do Sirius CRM FREE é um problema?</h2>
 
       <p>
-        Para a maioria dos vendedores e pequenas equipes, não. Um vendedor B2B ativo raramente tem mais de 30 a 40 deals em negociação simultânea. Deals fechados (ganhos ou perdidos) saem do limite ativo. Na prática, 50 deals ativos é suficiente para a maioria dos representantes comerciais individuais e times de 2 a 4 vendedores.
+        Para a maioria dos vendedores e pequenas equipes, não. Um vendedor B2B ativo raramente tem mais de 30 a 40 deals em negociação simultânea. Deals fechados (ganhos ou perdidos) saem do limite ativo. Na prática, 100 deals ativos é suficiente para a maioria dos representantes comerciais individuais e times de 2 a 4 vendedores.
       </p>
 
       <p>
-        Quando o negócio cresce e o limite passa a ser um obstáculo real, o upgrade para Sirius PRO (R$ 149/mês) remove todos os limites e adiciona recursos avançados de IA e prospecção.
+        Quando o negócio cresce e o limite passa a ser um obstáculo real, o upgrade para Sirius PRO (R$ 397/mês) remove todos os limites e adiciona recursos avançados de IA e prospecção.
       </p>
 
       <h2>Prós e Contras Honestos</h2>
@@ -139,7 +139,7 @@ export const post: BlogPost = {
 
       <h3>Sirius CRM FREE — Pontos Fracos</h3>
       <ul style="line-height: 2; padding-left: 1.5rem; color: #374151;">
-        <li>Limite de 50 deals ativos — pode ser insuficiente para times maiores ou operações com alto volume</li>
+        <li>Limite de 100 deals ativos — pode ser insuficiente para times maiores ou operações com alto volume</li>
         <li>Sem automações avançadas de email no plano gratuito</li>
         <li>Integrações limitadas comparado ao HubSpot Marketplace</li>
       </ul>
@@ -184,7 +184,7 @@ export const post: BlogPost = {
         <li>Quer IA de qualificação sem pagar por ela</li>
         <li>Trabalha em campo com possibilidade de sinal instável</li>
         <li>Quer um CRM simples, rápido de aprender e 100% em português</li>
-        <li>Tem até 50 deals ativos simultâneos</li>
+        <li>Tem até 100 deals ativos simultâneos</li>
       </ul>
 
       <div style="background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%); border: 1px solid #6ee7b7; padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0; text-align: center;">
@@ -202,7 +202,7 @@ export const post: BlogPost = {
 
       <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
         <summary style="font-weight: 600; cursor: pointer; color: #1e293b; list-style: revert;">O Sirius CRM FREE tem alguma limitação oculta?</summary>
-        <p style="margin: 0.75rem 0 0; color: #4b5563;">A principal limitação é o máximo de 50 deals ativos simultâneos. Deals ganhos ou perdidos não contam para o limite. Além disso, a IA é limitada a 3 gerações por mês no plano gratuito (ilimitada no PRO) e as integrações com ferramentas externas são mais limitadas. Não há cobrança surpresa nem cartão de crédito exigido.</p>
+        <p style="margin: 0.75rem 0 0; color: #4b5563;">A principal limitação é o máximo de 100 deals ativos simultâneos. Deals ganhos ou perdidos não contam para o limite. Além disso, a IA é limitada a 3 gerações por mês no plano gratuito (ilimitada no PRO) e as integrações com ferramentas externas são mais limitadas. Não há cobrança surpresa nem cartão de crédito exigido.</p>
       </details>
 
       <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">

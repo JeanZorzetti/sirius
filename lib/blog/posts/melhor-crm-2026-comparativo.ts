@@ -216,7 +216,7 @@ export const post: BlogPost = {
               <td style="padding: 0.75rem; text-align: center; border-bottom: 1px solid #e2e8f0; font-weight: 700;">7</td>
               <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0; font-weight: 600;">Sirius CRM</td>
               <td style="padding: 0.75rem; text-align: center; border-bottom: 1px solid #e2e8f0;">Brasil</td>
-              <td style="padding: 0.75rem; text-align: center; border-bottom: 1px solid #e2e8f0;">Gratis / R$49/mes</td>
+              <td style="padding: 0.75rem; text-align: center; border-bottom: 1px solid #e2e8f0;">Gratis / R$67/mes</td>
               <td style="padding: 0.75rem; text-align: center; border-bottom: 1px solid #e2e8f0;">WhatsApp + IA nativa</td>
             </tr>
           </tbody>

@@ -38,6 +38,11 @@ import { post as post36 } from './posts/crm-para-varejo-2026'
 import { post as post37 } from './posts/crm-para-agencia-de-marketing'
 import { post as post38 } from './posts/como-montar-processo-de-vendas'
 import { post as post39 } from './posts/whatsapp-vendas-b2b-estrategias'
+import { post as post40 } from './posts/agentes-ia-autonomos-crm-2026'
+import { post as post41 } from './posts/como-funciona-sofia-ia-sirius'
+import { post as post42 } from './posts/agentes-ia-vs-saas-tradicional'
+import { post as post43 } from './posts/automacao-vendas-agentes-ia'
+import { post as post44 } from './posts/roi-agentes-ia-vendas-b2b'
 
 export const blogPosts: BlogPost[] = [
   post1,
@@ -79,6 +84,11 @@ export const blogPosts: BlogPost[] = [
   post37,
   post38,
   post39,
+  post40,
+  post41,
+  post42,
+  post43,
+  post44,
 ]
 
 /**

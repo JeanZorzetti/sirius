@@ -72,7 +72,7 @@ export const post: BlogPost = {
       <h3>Custo</h3>
 
       <p>
-        O Sirius CRM tem plano gratuito com até 3 usuários. Planos pagos a partir de R$ 49/mês — menos do que um almoço de negócios por semana para um representante com portfólio de R$ 30.000+/mês.
+        O Sirius CRM tem plano gratuito com até 3 usuários. Planos pagos a partir de R$ 67/mês — menos do que um almoço de negócios por semana para um representante com portfólio de R$ 30.000+/mês.
       </p>
 
       <div class="callout-tip">
@@ -220,7 +220,7 @@ export const post: BlogPost = {
             <td style="padding: 0.75rem; border: 1px solid #e2e8f0;"><strong>Sirius CRM</strong></td>
             <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">CRM + comissões + prospecção</td>
             <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Sim — até 200 contatos</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">R$ 49/mês</td>
+            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">R$ 67/mês</td>
           </tr>
           <tr style="background: #f8fafc;">
             <td style="padding: 0.75rem; border: 1px solid #e2e8f0;"><strong>WhatsApp Business</strong></td>
@@ -339,7 +339,7 @@ export const post: BlogPost = {
 
       <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
         <summary style="font-weight: 600; cursor: pointer; color: #1e293b; list-style: revert;">Vale a pena pagar por CRM sendo representante autônomo pequeno?</summary>
-        <p style="margin: 0.75rem 0 0; color: #4b5563;">Depende do volume. Para portfólio abaixo de R$ 10.000/mês com menos de 50 clientes ativos, o plano gratuito do Sirius CRM é suficiente. Para portfólios maiores, o custo de R$ 49-99/mês de um CRM pago é recuperado na primeira semana ao evitar um único pedido perdido por falta de follow-up. A conta é simples: se o CRM te ajuda a não perder 1 pedido por mês e sua comissão média por pedido é R$ 300, o ROI é 3-6x no primeiro mês.</p>
+        <p style="margin: 0.75rem 0 0; color: #4b5563;">Depende do volume. Para portfólio abaixo de R$ 10.000/mês com menos de 50 clientes ativos, o plano gratuito do Sirius CRM é suficiente. Para portfólios maiores, o custo de R$ 67-99/mês de um CRM pago é recuperado na primeira semana ao evitar um único pedido perdido por falta de follow-up. A conta é simples: se o CRM te ajuda a não perder 1 pedido por mês e sua comissão média por pedido é R$ 300, o ROI é 3-6x no primeiro mês.</p>
       </details>
 
       <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin-bottom: 2rem;">

@@ -25,7 +25,7 @@ export const post: BlogPost = {
           <li><strong style="color: #818cf8;">RD Station CRM</strong>: melhor para empresas que já usam RD Marketing e querem integração de funil completo (marketing + vendas)</li>
           <li><strong style="color: #818cf8;">Sirius CRM</strong>: melhor para representantes, vendedores de campo e PMEs com foco em vendas ativas — WhatsApp, IA e offline inclusos</li>
           <li>RD Station CRM tem plano gratuito básico, mas funcionalidades essenciais exigem plano pago</li>
-          <li>Sirius CRM FREE é gratuito para sempre com IA e WhatsApp; PRO em R$ 149/mês</li>
+          <li>Sirius CRM FREE é gratuito para sempre com IA e WhatsApp; PRO em R$ 397/mês</li>
         </ul>
       </div>
 
@@ -51,7 +51,7 @@ export const post: BlogPost = {
           <tbody>
             <tr style="background: #f8fafc;">
               <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; font-weight: 600;">Plano Gratuito</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center; color: #059669;">✓ Para sempre (50 deals)</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center; color: #059669;">✓ Para sempre (100 deals)</td>
               <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center; color: #f59e0b;">Limitado</td>
             </tr>
             <tr>
@@ -86,7 +86,7 @@ export const post: BlogPost = {
             </tr>
             <tr>
               <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; font-weight: 600;">Preço Base</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center; font-weight: 700; color: #059669;">R$ 0 (FREE) / R$ 149 (PRO)</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center; font-weight: 700; color: #059669;">R$ 0 (FREE) / R$ 397 (PRO)</td>
               <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center;">Consultar (planos Basic/Pro/Enterprise)</td>
             </tr>
           </tbody>

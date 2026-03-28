@@ -61,10 +61,10 @@ export const post: BlogPost = {
             <tr>
               <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0; font-weight: 600;">Sirius CRM</td>
               <td style="padding: 0.75rem; text-align: center; border-bottom: 1px solid #e2e8f0;">50</td>
-              <td style="padding: 0.75rem; text-align: center; border-bottom: 1px solid #e2e8f0;">1</td>
+              <td style="padding: 0.75rem; text-align: center; border-bottom: 1px solid #e2e8f0;">2</td>
               <td style="padding: 0.75rem; text-align: center; border-bottom: 1px solid #e2e8f0;">✅ Nativo</td>
               <td style="padding: 0.75rem; text-align: center; border-bottom: 1px solid #e2e8f0;">✅ 3/mes</td>
-              <td style="padding: 0.75rem; text-align: center; border-bottom: 1px solid #e2e8f0;">R$49/mes</td>
+              <td style="padding: 0.75rem; text-align: center; border-bottom: 1px solid #e2e8f0;">R$67/mes</td>
             </tr>
             <tr style="background: #fafafa;">
               <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0; font-weight: 600;">HubSpot Free</td>
@@ -118,7 +118,7 @@ export const post: BlogPost = {
         <li>Importacao CSV/Excel</li>
       </ul>
 
-      <p><strong>Limitacoes do plano free:</strong> 1 usuario, 50 contatos, 3 usos de IA/mes, sem automacoes de email.</p>
+      <p><strong>Limitacoes do plano free:</strong> 2 usuarios, 50 contatos, 3 usos de IA/mes, sem automacoes de email.</p>
 
       <p><strong>Para quem serve:</strong> vendedores autonomos, representantes comerciais, corretores e MEIs que precisam sair da planilha sem investir.</p>
 
@@ -220,7 +220,7 @@ export const post: BlogPost = {
 
       <details style="margin: 1rem 0; border: 1px solid #e2e8f0; border-radius: 0.75rem; overflow: hidden;">
         <summary style="font-weight: 600; cursor: pointer; padding: 1rem; color: #1e293b; background: #f8fafc;">CRM gratuito funciona para equipes?</summary>
-        <p style="padding: 1rem; margin: 0; color: #4b5563;">Depende do tamanho. Bitrix24 e o unico com usuarios ilimitados no free. RD Station CRM permite 4, HubSpot 5, Agendor 2, Sirius 1. Para equipes de 3+, avalie se o plano free do CRM escolhido suporta todos os vendedores — senao, o plano pago mais barato pode sair mais em conta do que usar um CRM inferior so porque e gratis.</p>
+        <p style="padding: 1rem; margin: 0; color: #4b5563;">Depende do tamanho. Bitrix24 e o unico com usuarios ilimitados no free. RD Station CRM permite 4, HubSpot 5, Agendor 2, Sirius 2. Para equipes de 3+, avalie se o plano free do CRM escolhido suporta todos os vendedores — senao, o plano pago mais barato pode sair mais em conta do que usar um CRM inferior so porque e gratis.</p>
       </details>
 
       <h2>Conclusao: Qual CRM Gratuito Escolher?</h2>

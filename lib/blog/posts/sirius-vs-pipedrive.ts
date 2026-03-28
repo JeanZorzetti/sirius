@@ -25,7 +25,7 @@ export const post: BlogPost = {
           <li><strong style="color: #818cf8;">Pipedrive</strong>: melhor para times internacionais, integrações robustas, equipes de SDR estruturadas</li>
           <li><strong style="color: #818cf8;">Sirius CRM</strong>: melhor para representantes e vendedores B2B brasileiros — WhatsApp nativo, IA BANT/MEDDIC, plano gratuito real</li>
           <li>Pipedrive Essential custa <strong>R$ 89/mês/usuário</strong> — sem WhatsApp nativo e sem IA</li>
-          <li>Sirius CRM FREE é gratuito para sempre; Sirius PRO custa <strong>R$ 149/mês</strong></li>
+          <li>Sirius CRM FREE é gratuito para sempre; Sirius PRO custa <strong>R$ 397/mês</strong></li>
         </ul>
       </div>
 
@@ -50,7 +50,7 @@ export const post: BlogPost = {
             <tr style="background: #f8fafc;">
               <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; font-weight: 600;">Preço (BRL)</td>
               <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center; color: #059669; font-weight: 700;">Grátis</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center; font-weight: 700;">R$ 149/mês</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center; font-weight: 700;">R$ 397/mês</td>
               <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center;">~R$ 89/mês*</td>
               <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center;">~R$ 179/mês*</td>
             </tr>
@@ -130,7 +130,7 @@ export const post: BlogPost = {
 
       <h3>Sirius CRM — Pontos Fortes</h3>
       <ul style="line-height: 2; padding-left: 1.5rem; color: #374151;">
-        <li>Plano gratuito real e permanente (até 50 deals)</li>
+        <li>Plano gratuito real e permanente (até 100 deals)</li>
         <li>WhatsApp integrado nativamente — sem add-on</li>
         <li>IA BANT/MEDDIC inclusa em todos os planos</li>
         <li>Modo offline: funciona sem internet no campo</li>
@@ -200,7 +200,7 @@ export const post: BlogPost = {
 
       <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
         <summary style="font-weight: 600; cursor: pointer; color: #1e293b; list-style: revert;">Sirius CRM é mais barato que o Pipedrive em 2026?</summary>
-        <p style="margin: 0.75rem 0 0; color: #4b5563;">Sim. O Sirius CRM tem plano gratuito para sempre (até 50 deals) e o plano PRO custa R$ 149/mês fixo em reais. O Pipedrive não oferece plano gratuito — apenas trial de 14 dias — e o plano Essential parte de aproximadamente R$ 89/mês, sujeito à variação do câmbio dólar-real. Considerando que o Sirius inclui WhatsApp e IA sem add-ons, o custo total é substancialmente menor para vendedores brasileiros.</p>
+        <p style="margin: 0.75rem 0 0; color: #4b5563;">Sim. O Sirius CRM tem plano gratuito para sempre (até 100 deals) e o plano PRO custa R$ 397/mês fixo em reais. O Pipedrive não oferece plano gratuito — apenas trial de 14 dias — e o plano Essential parte de aproximadamente R$ 89/mês, sujeito à variação do câmbio dólar-real. Considerando que o Sirius inclui WhatsApp e IA sem add-ons, o custo total é substancialmente menor para vendedores brasileiros.</p>
       </details>
 
       <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">

@@ -90,9 +90,9 @@ export const post: BlogPost = {
         </ol>
         <div style="margin-top: 1.25rem; padding-top: 1rem; border-top: 1px solid #334155;">
           <p style="margin: 0 0 0.5rem; color: #94a3b8; font-size: 0.9rem;"><strong style="color: #f8fafc;">5-8 pontos:</strong> Plano gratuito é suficiente. Comece sem gastar nada.</p>
-          <p style="margin: 0 0 0.5rem; color: #94a3b8; font-size: 0.9rem;"><strong style="color: #f8fafc;">9-11 pontos:</strong> Plano Starter (R$49/mês). WhatsApp + automações básicas.</p>
-          <p style="margin: 0 0 0.5rem; color: #94a3b8; font-size: 0.9rem;"><strong style="color: #f8fafc;">12-14 pontos:</strong> Plano Pro (R$97/mês). IA completa + prospecção automática.</p>
-          <p style="margin: 0; color: #94a3b8; font-size: 0.9rem;"><strong style="color: #f8fafc;">15 pontos:</strong> Plano Business (R$149/mês). Escala completa + round-robin + API.</p>
+          <p style="margin: 0 0 0.5rem; color: #94a3b8; font-size: 0.9rem;"><strong style="color: #f8fafc;">9-11 pontos:</strong> Plano Starter (R$67/mês). WhatsApp + automações básicas.</p>
+          <p style="margin: 0 0 0.5rem; color: #94a3b8; font-size: 0.9rem;"><strong style="color: #f8fafc;">12-14 pontos:</strong> Plano Pro (R$147/mês). IA completa + prospecção automática.</p>
+          <p style="margin: 0; color: #94a3b8; font-size: 0.9rem;"><strong style="color: #f8fafc;">15 pontos:</strong> Plano Business (R$397/mês). Escala completa + round-robin + API.</p>
         </div>
       </div>
 
@@ -147,7 +147,7 @@ export const post: BlogPost = {
             </tr>
             <tr style="background: #1e293b;">
               <td style="padding: 0.75rem; color: #cbd5e1; border: 1px solid #334155;">Preço inicial (BRL)</td>
-              <td style="padding: 0.75rem; text-align: center; color: #22c55e; border: 1px solid #334155;">R$0 → R$49/mês</td>
+              <td style="padding: 0.75rem; text-align: center; color: #22c55e; border: 1px solid #334155;">R$0 → R$67/mês</td>
               <td style="padding: 0.75rem; text-align: center; color: #94a3b8; border: 1px solid #334155;">~R$75/mês</td>
               <td style="padding: 0.75rem; text-align: center; color: #94a3b8; border: 1px solid #334155;">~R$99/mês</td>
               <td style="padding: 0.75rem; text-align: center; color: #94a3b8; border: 1px solid #334155;">R$0 → R$800+</td>
@@ -192,7 +192,7 @@ export const post: BlogPost = {
 
       <h3>Qual o melhor CRM para representante comercial em 2026?</h3>
       <p>
-        O melhor CRM para representante comercial em 2026 precisa funcionar offline, ter gestão de carteira de clientes, lembretes de recompra e histórico de pedidos por cliente. O Sirius CRM é o único com modo PWA offline nativo e plano gratuito permanente. Custo: R$0 a R$97/mês.
+        O melhor CRM para representante comercial em 2026 precisa funcionar offline, ter gestão de carteira de clientes, lembretes de recompra e histórico de pedidos por cliente. O Sirius CRM é o único com modo PWA offline nativo e plano gratuito permanente. Custo: R$0 a R$147/mês.
       </p>
 
       <h3>Como escolher entre CRM gratuito e pago?</h3>
@@ -207,7 +207,7 @@ export const post: BlogPost = {
 
       <h3>Quanto custa implementar um CRM B2B no Brasil em 2026?</h3>
       <p>
-        O custo total de implementação de um CRM B2B no Brasil varia entre R$0 (CRM gratuito, configuração própria) e R$15.000+ (enterprise com consultoria e integração ERP). Para PMEs, o custo médio realista é R$49-149/mês de assinatura + 8-16 horas de configuração interna. Nenhum CRM sério cobra taxa de implementação para PMEs.
+        O custo total de implementação de um CRM B2B no Brasil varia entre R$0 (CRM gratuito, configuração própria) e R$15.000+ (enterprise com consultoria e integração ERP). Para PMEs, o custo médio realista é R$67-397/mês de assinatura + 8-16 horas de configuração interna. Nenhum CRM sério cobra taxa de implementação para PMEs.
       </p>
   `,
 }
