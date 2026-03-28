@@ -1,11 +1,11 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { motion } from 'framer-motion'
 import { cn } from '@/lib/utils'
-import { Bot, Zap, MessageSquare, GitBranch, Calendar, Search, ToggleLeft, ToggleRight } from 'lucide-react'
+import { Bot, Zap, MessageSquare, GitBranch, Calendar, Search, ToggleLeft, ToggleRight, Loader2 } from 'lucide-react'
 
-interface Agent {
+interface AgentDef {
   id: string
   name: string
   description: string
@@ -13,10 +13,9 @@ interface Agent {
   gradient: string
   capabilities: string[]
   triggers: string[]
-  enabled: boolean
 }
 
-const defaultAgents: Agent[] = [
+const AGENT_DEFS: AgentDef[] = [
   {
     id: 'lead-qualifier',
     name: 'LeadQualifier',
@@ -25,7 +24,6 @@ const defaultAgents: Agent[] = [
     gradient: 'from-cyan-500 to-blue-500',
     capabilities: ['Qualificação BANT', 'Análise SPIN', 'Criação de Deal', 'Roteamento automático'],
     triggers: ['whatsapp.message.in', 'contact.created'],
-    enabled: false
   },
   {
     id: 'followup-coordinator',
@@ -35,7 +33,6 @@ const defaultAgents: Agent[] = [
     gradient: 'from-violet-500 to-purple-500',
     capabilities: ['Follow-up inteligente', 'Análise de contexto', 'Mensagens personalizadas', 'Timing adaptativo'],
     triggers: ['deal.idle'],
-    enabled: false
   },
   {
     id: 'deal-stage-analyzer',
@@ -45,7 +42,6 @@ const defaultAgents: Agent[] = [
     gradient: 'from-amber-500 to-orange-500',
     capabilities: ['Análise de sentimento', 'Detecção de intenção', 'Movimentação automática', 'Sugestões de próximo passo'],
     triggers: ['note.created', 'whatsapp.message.in'],
-    enabled: false
   },
   {
     id: 'meeting-scheduler',
@@ -55,7 +51,6 @@ const defaultAgents: Agent[] = [
     gradient: 'from-emerald-500 to-green-500',
     capabilities: ['Check de disponibilidade', 'Proposta de horários', 'Agendamento automático', 'Confirmação via WhatsApp'],
     triggers: ['Delegação de outros agentes'],
-    enabled: false
   },
   {
     id: 'contact-enricher',
@@ -65,11 +60,15 @@ const defaultAgents: Agent[] = [
     gradient: 'from-pink-500 to-rose-500',
     capabilities: ['Busca web', 'Enriquecimento de dados', 'Perfil profissional', 'Insights de empresa'],
     triggers: ['contact.created'],
-    enabled: false
-  }
+  },
 ]
 
-function AgentCard({ agent, onToggle }: { agent: Agent; onToggle: (id: string) => void }) {
+function AgentCard({ agent, enabled, onToggle, saving }: {
+  agent: AgentDef
+  enabled: boolean
+  onToggle: (id: string) => void
+  saving: boolean
+}) {
   const Icon = agent.icon
 
   return (
@@ -78,7 +77,7 @@ function AgentCard({ agent, onToggle }: { agent: Agent; onToggle: (id: string) =
       animate={{ opacity: 1, y: 0 }}
       className={cn(
         'rounded-xl border p-5 transition-all duration-200',
-        agent.enabled
+        enabled
           ? 'border-zinc-700/50 bg-zinc-900/60'
           : 'border-zinc-800/30 bg-zinc-900/30 opacity-70'
       )}
@@ -96,9 +95,10 @@ function AgentCard({ agent, onToggle }: { agent: Agent; onToggle: (id: string) =
 
         <button
           onClick={() => onToggle(agent.id)}
-          className="shrink-0 mt-1"
+          disabled={saving}
+          className="shrink-0 mt-1 disabled:opacity-50"
         >
-          {agent.enabled ? (
+          {enabled ? (
             <ToggleRight className="h-6 w-6 text-cyan-400" />
           ) : (
             <ToggleLeft className="h-6 w-6 text-zinc-600" />
@@ -106,7 +106,6 @@ function AgentCard({ agent, onToggle }: { agent: Agent; onToggle: (id: string) =
         </button>
       </div>
 
-      {/* Capabilities */}
       <div className="flex flex-wrap gap-1.5 mb-3">
         {agent.capabilities.map(cap => (
           <span key={cap} className="px-2 py-0.5 rounded-full text-[11px] font-medium bg-zinc-800/60 text-zinc-400 border border-zinc-700/30">
@@ -115,7 +114,6 @@ function AgentCard({ agent, onToggle }: { agent: Agent; onToggle: (id: string) =
         ))}
       </div>
 
-      {/* Triggers */}
       <div className="flex items-center gap-1.5">
         <span className="text-[10px] text-zinc-600 uppercase tracking-wider font-semibold">Triggers:</span>
         {agent.triggers.map(t => (
@@ -127,15 +125,60 @@ function AgentCard({ agent, onToggle }: { agent: Agent; onToggle: (id: string) =
 }
 
 export function IAAgents() {
-  const [agents, setAgents] = useState(defaultAgents)
+  const [enabledAgents, setEnabledAgents] = useState<Record<string, boolean>>({})
+  const [loading, setLoading] = useState(true)
+  const [saving, setSaving] = useState(false)
+
+  // Load config from API
+  useEffect(() => {
+    fetch('/api/ia/settings')
+      .then(r => r.json())
+      .then(data => {
+        const config = data.config || {}
+        setEnabledAgents(config.enabledAgents || {})
+      })
+      .catch(() => {})
+      .finally(() => setLoading(false))
+  }, [])
+
+  // Save to API
+  const saveConfig = useCallback(async (newEnabledAgents: Record<string, boolean>) => {
+    setSaving(true)
+    try {
+      // Load existing config first to merge
+      const res = await fetch('/api/ia/settings')
+      const data = await res.json()
+      const existingConfig = data.config || {}
+
+      await fetch('/api/ia/settings', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          config: { ...existingConfig, enabledAgents: newEnabledAgents }
+        })
+      })
+    } catch {
+      // Silently fail — toggle still updates locally
+    } finally {
+      setSaving(false)
+    }
+  }, [])
 
   const handleToggle = (id: string) => {
-    setAgents(prev => prev.map(a =>
-      a.id === id ? { ...a, enabled: !a.enabled } : a
-    ))
+    const newState = { ...enabledAgents, [id]: !enabledAgents[id] }
+    setEnabledAgents(newState)
+    saveConfig(newState)
   }
 
-  const activeCount = agents.filter(a => a.enabled).length
+  const activeCount = AGENT_DEFS.filter(a => enabledAgents[a.id]).length
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center py-20">
+        <Loader2 className="h-6 w-6 text-zinc-500 animate-spin" />
+      </div>
+    )
+  }
 
   return (
     <div className="mx-auto max-w-3xl px-6 py-8">
@@ -143,29 +186,26 @@ export function IAAgents() {
         <div>
           <h1 className="text-2xl font-bold tracking-tight text-zinc-100">Agentes</h1>
           <p className="text-sm text-zinc-500 mt-1">
-            {activeCount} de {agents.length} agentes ativos
+            {activeCount} de {AGENT_DEFS.length} agentes ativos
           </p>
         </div>
         <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-zinc-900/60 border border-zinc-800/50">
           <Bot className="h-4 w-4 text-cyan-400" />
           <span className="text-xs font-medium text-zinc-400">Sofia IA</span>
-          <span className="h-2 w-2 rounded-full bg-amber-400 animate-pulse" />
-          <span className="text-[10px] text-zinc-600">Fase 3</span>
+          <span className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
+          <span className="text-[10px] text-emerald-400">Conectada</span>
         </div>
       </div>
 
-      {/* Info banner */}
-      <div className="rounded-xl border border-cyan-500/10 bg-cyan-500/5 p-4 mb-6">
-        <p className="text-xs text-cyan-400/80 leading-relaxed">
-          Os agentes serão ativados na <span className="font-semibold">Fase 3</span> quando a Sofia IA estiver configurada
-          como cérebro orquestrador. Por enquanto, configure quais agentes deseja utilizar e seus parâmetros.
-        </p>
-      </div>
-
-      {/* Agent list */}
       <div className="space-y-3">
-        {agents.map(agent => (
-          <AgentCard key={agent.id} agent={agent} onToggle={handleToggle} />
+        {AGENT_DEFS.map(agent => (
+          <AgentCard
+            key={agent.id}
+            agent={agent}
+            enabled={!!enabledAgents[agent.id]}
+            onToggle={handleToggle}
+            saving={saving}
+          />
         ))}
       </div>
     </div>

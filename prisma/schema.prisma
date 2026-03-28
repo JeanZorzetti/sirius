@@ -141,8 +141,9 @@ model Organization {
   // Products (Catálogo)
   products Product[]
 
-  // AgaaS — Agent Actions
+  // AgaaS — Agent Actions & Config
   agentActions AgentAction[]
+  iaConfig     Json?          // Configuração do modo IA (agentes habilitados, thresholds, horários)
 }
 
 model User {

@@ -1,23 +1,9 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { Shield, Sliders, Clock, MessageSquare, Save } from 'lucide-react'
+import { Shield, Sliders, Clock, MessageSquare, Save, Loader2 } from 'lucide-react'
 import { cn } from '@/lib/utils'
-
-interface SettingSection {
-  id: string
-  icon: typeof Shield
-  title: string
-  description: string
-}
-
-const sections: SettingSection[] = [
-  { id: 'approval', icon: Shield, title: 'Aprovação', description: 'Threshold de confiança e regras de aprovação' },
-  { id: 'limits', icon: Sliders, title: 'Limites', description: 'Limites de ações por dia e por agente' },
-  { id: 'schedule', icon: Clock, title: 'Horários', description: 'Janelas de operação dos agentes' },
-  { id: 'channels', icon: MessageSquare, title: 'Canais', description: 'Canais permitidos para ações autônomas' },
-]
 
 export function IASettings() {
   const [confidenceThreshold, setConfidenceThreshold] = useState(70)
@@ -28,11 +14,69 @@ export function IASettings() {
   const [whatsappEnabled, setWhatsappEnabled] = useState(true)
   const [emailEnabled, setEmailEnabled] = useState(true)
   const [calendarEnabled, setCalendarEnabled] = useState(true)
+  const [loading, setLoading] = useState(true)
+  const [saving, setSaving] = useState(false)
   const [saved, setSaved] = useState(false)
 
-  const handleSave = () => {
-    setSaved(true)
-    setTimeout(() => setSaved(false), 2000)
+  // Load config from API
+  useEffect(() => {
+    fetch('/api/ia/settings')
+      .then(r => r.json())
+      .then(data => {
+        const config = data.config || {}
+        if (config.confidenceThreshold !== undefined) setConfidenceThreshold(config.confidenceThreshold)
+        if (config.maxActionsPerDay !== undefined) setMaxActionsPerDay(config.maxActionsPerDay)
+        if (config.operatingHoursStart) setOperatingHoursStart(config.operatingHoursStart)
+        if (config.operatingHoursEnd) setOperatingHoursEnd(config.operatingHoursEnd)
+        if (config.weekendsEnabled !== undefined) setWeekendsEnabled(config.weekendsEnabled)
+        if (config.whatsappEnabled !== undefined) setWhatsappEnabled(config.whatsappEnabled)
+        if (config.emailEnabled !== undefined) setEmailEnabled(config.emailEnabled)
+        if (config.calendarEnabled !== undefined) setCalendarEnabled(config.calendarEnabled)
+      })
+      .catch(() => {})
+      .finally(() => setLoading(false))
+  }, [])
+
+  const handleSave = async () => {
+    setSaving(true)
+    try {
+      // Load existing config to merge (preserve enabledAgents etc.)
+      const res = await fetch('/api/ia/settings')
+      const data = await res.json()
+      const existingConfig = data.config || {}
+
+      await fetch('/api/ia/settings', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          config: {
+            ...existingConfig,
+            confidenceThreshold,
+            maxActionsPerDay,
+            operatingHoursStart,
+            operatingHoursEnd,
+            weekendsEnabled,
+            whatsappEnabled,
+            emailEnabled,
+            calendarEnabled,
+          }
+        })
+      })
+      setSaved(true)
+      setTimeout(() => setSaved(false), 2000)
+    } catch {
+      // Silently fail
+    } finally {
+      setSaving(false)
+    }
+  }
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center py-20">
+        <Loader2 className="h-6 w-6 text-zinc-500 animate-spin" />
+      </div>
+    )
   }
 
   return (
@@ -45,15 +89,16 @@ export function IASettings() {
         </div>
         <button
           onClick={handleSave}
+          disabled={saving}
           className={cn(
             'flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200',
             saved
               ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30'
-              : 'bg-zinc-100 text-zinc-900 hover:bg-zinc-200'
+              : 'bg-zinc-100 text-zinc-900 hover:bg-zinc-200 disabled:opacity-50'
           )}
         >
-          <Save className="h-4 w-4" />
-          {saved ? 'Salvo!' : 'Salvar'}
+          {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
+          {saved ? 'Salvo!' : saving ? 'Salvando...' : 'Salvar'}
         </button>
       </div>
 
