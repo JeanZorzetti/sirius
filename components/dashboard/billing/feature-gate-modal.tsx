@@ -92,7 +92,7 @@ export function FeatureGateModal({
                             <Link href="/dashboard/billing" className="flex items-center justify-center gap-2">
                                 <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/50 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
                                 <Rocket className="w-4 h-4 relative z-10" />
-                                <span className="font-bold text-sm relative z-10">Fazer Upgrade (R$ 49/mês)</span>
+                                <span className="font-bold text-sm relative z-10">Fazer Upgrade (R$ 67/mês)</span>
                             </Link>
                         </Button>
                         <Button variant="ghost" className="w-full h-8 text-[11px] text-zinc-500 hover:text-zinc-300 hover:bg-transparent uppercase tracking-wider font-medium" onClick={onClose}>

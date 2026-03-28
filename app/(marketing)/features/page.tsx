@@ -81,7 +81,7 @@ const heroFeatures = [
   },
   {
     name: 'Prospecção Google Maps',
-    description: 'Encontre leads automaticamente pelo Google Maps. Busque por segmento e localização, e o Sirius extrai nome, telefone, email, site e endereço. Créditos mensais por plano — de 50 a 1.000 leads/mês.',
+    description: 'Encontre leads automaticamente pelo Google Maps. Busque por segmento e localização, e o Sirius extrai nome, telefone, email, site e endereço. Créditos mensais por plano — de 75 a 1.500 leads/mês.',
     icon: Search,
     badge: 'Starter+',
   },
@@ -181,7 +181,7 @@ const prospectingFeatures = [
   },
   {
     name: 'Sistema de Créditos',
-    description: 'Cada plano inclui créditos mensais de prospecção: Starter 50, Pro 200, Business 1.000. Compre pacotes extras de 100 ou 500 leads quando precisar.',
+    description: 'Cada plano inclui créditos mensais de prospecção: Starter 75, Pro 300, Business 1.500. Compre pacotes extras de 100 ou 500 leads quando precisar.',
     icon: Target,
   },
   {
@@ -427,7 +427,7 @@ export default function FeaturesPage() {
       "@type": "AggregateOffer",
       "priceCurrency": "BRL",
       "lowPrice": "0",
-      "highPrice": "149",
+      "highPrice": "397",
       "offerCount": "4"
     },
     "aggregateRating": {
@@ -524,7 +524,7 @@ export default function FeaturesPage() {
               <div>
                 <p className="font-bold text-amber-900 text-lg">Programa de Fundadores — 41% OFF vitalicio!</p>
                 <p className="text-sm text-amber-700">
-                  Starter R$29 · Pro R$57 · Business R$88/mes para sempre. Vagas limitadas.
+                  Starter R$39 · Pro R$87 · Business R$234/mes para sempre. Vagas limitadas.
                 </p>
               </div>
             </div>
@@ -651,18 +651,18 @@ export default function FeaturesPage() {
                   <tr className="border-b-2 border-border">
                     <th className="text-left py-3 px-4 font-semibold w-1/3">Recurso</th>
                     <th className="text-center py-3 px-4 font-semibold">Gratuito</th>
-                    <th className="text-center py-3 px-4 font-semibold">Starter<br /><span className="text-xs text-muted-foreground font-normal">R$49/mes</span></th>
-                    <th className="text-center py-3 px-4 font-semibold">Pro<br /><span className="text-xs text-muted-foreground font-normal">R$97/mes</span></th>
-                    <th className="text-center py-3 px-4 font-semibold">Business<br /><span className="text-xs text-muted-foreground font-normal">R$149/mes</span></th>
+                    <th className="text-center py-3 px-4 font-semibold">Starter<br /><span className="text-xs text-muted-foreground font-normal">R$67/mes</span></th>
+                    <th className="text-center py-3 px-4 font-semibold">Pro<br /><span className="text-xs text-muted-foreground font-normal">R$147/mes</span></th>
+                    <th className="text-center py-3 px-4 font-semibold">Business<br /><span className="text-xs text-muted-foreground font-normal">R$397/mes</span></th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-border">
-                  <PlanRow label="Contatos" free="100" starter="500" pro="2.000" business="Ilimitado" />
-                  <PlanRow label="Negocios (Deals)" free="50" starter="200" pro="1.000" business="Ilimitado" />
-                  <PlanRow label="Pipelines" free="1" starter="3" pro="10" business="50" />
-                  <PlanRow label="Usuarios" free="1" starter="3" pro="10" business="50" />
-                  <PlanRow label="WhatsApp" free={false} starter="1 instancia" pro="1 instancia" business="5 instancias" />
-                  <PlanRow label="Prospeccao mensal" free={false} starter="50 leads" pro="200 leads" business="1.000 leads" />
+                  <PlanRow label="Contatos" free="250" starter="1.000" pro="5.000" business="Ilimitado" />
+                  <PlanRow label="Negocios (Deals)" free="100" starter="500" pro="2.500" business="Ilimitado" />
+                  <PlanRow label="Pipelines" free="1" starter="5" pro="15" business="50" />
+                  <PlanRow label="Usuarios" free="2" starter="5" pro="15" business="50" />
+                  <PlanRow label="WhatsApp" free={false} starter="1 instancia" pro="3 instancias" business="5 instancias" />
+                  <PlanRow label="Prospeccao mensal" free={false} starter="75 leads" pro="300 leads" business="1.500 leads" />
                   <PlanRow label="Automacoes de email" free={false} starter="3" pro="10" business="50" />
                   <PlanRow label="Automacoes de deals" free={false} starter="3" pro="10" business="50" />
                   <PlanRow label="AGI Sirius (IA)" free={false} starter={false} pro={true} business={true} />

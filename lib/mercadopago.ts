@@ -45,6 +45,9 @@ export type CheckoutPlan =
   | 'STARTER'
   | 'PRO'
   | 'BUSINESS'
+  | 'STARTER_ANNUAL'
+  | 'PRO_ANNUAL'
+  | 'BUSINESS_ANNUAL'
   | 'FOUNDER_STARTER'
   | 'FOUNDER_PRO'
   | 'FOUNDER_BUSINESS'
@@ -57,27 +60,33 @@ export async function createCheckoutPreference(
 ) {
   try {
     const planPrices: Record<string, number> = {
-      STARTER: 49.00,
-      PRO: 97.00,
-      BUSINESS: 149.00,
-      FOUNDER_STARTER: 29.00, // R$29/mês vitalício (~41% off STARTER)
-      FOUNDER_PRO: 57.00,     // R$57/mês vitalício (~41% off PRO)
-      FOUNDER_BUSINESS: 88.00, // R$88/mês vitalício (~41% off BUSINESS)
+      STARTER: 67.00,
+      PRO: 147.00,
+      BUSINESS: 397.00,
+      STARTER_ANNUAL: 643.20,
+      PRO_ANNUAL: 1411.20,
+      BUSINESS_ANNUAL: 3811.20,
+      FOUNDER_STARTER: 39.00,
+      FOUNDER_PRO: 87.00,
+      FOUNDER_BUSINESS: 234.00,
     }
     const planTitles: Record<string, string> = {
-      STARTER: `Plano Starter - ${organizationName}`,
-      PRO: `Plano Pro - ${organizationName}`,
-      BUSINESS: `Plano Business - ${organizationName}`,
-      FOUNDER_STARTER: `Fundador Starter - ${organizationName} (R$29/mês vitalício)`,
-      FOUNDER_PRO: `Fundador Pro - ${organizationName} (R$57/mês vitalício)`,
-      FOUNDER_BUSINESS: `Fundador Business - ${organizationName} (R$88/mês vitalício)`,
+      STARTER: `Plano Starter Mensal - ${organizationName}`,
+      PRO: `Plano Pro Mensal - ${organizationName}`,
+      BUSINESS: `Plano Business Mensal - ${organizationName}`,
+      STARTER_ANNUAL: `Plano Starter Anual - ${organizationName} (20% off)`,
+      PRO_ANNUAL: `Plano Pro Anual - ${organizationName} (20% off)`,
+      BUSINESS_ANNUAL: `Plano Business Anual - ${organizationName} (20% off)`,
+      FOUNDER_STARTER: `Fundador Starter - ${organizationName} (R$39/mês vitalício)`,
+      FOUNDER_PRO: `Fundador Pro - ${organizationName} (R$87/mês vitalício)`,
+      FOUNDER_BUSINESS: `Fundador Business - ${organizationName} (R$234/mês vitalício)`,
     }
 
     const item: PreferenceItem = {
       id: `plan_${plan.toLowerCase()}`,
       title: planTitles[plan] || `Plano ${plan} - ${organizationName}`,
       quantity: 1,
-      unit_price: planPrices[plan] ?? 49.00,
+      unit_price: planPrices[plan] ?? 67.00,
       currency_id: 'BRL'
     }
 
@@ -230,12 +239,15 @@ export function getPaymentTypeText(type: PaymentType): string {
  */
 export const PLAN_PRICES = {
   FREE: 0,
-  STARTER: 49.00,
-  PRO: 97.00,
-  BUSINESS: 149.00,
-  FOUNDER_STARTER: 29.00,
-  FOUNDER_PRO: 57.00,
-  FOUNDER_BUSINESS: 88.00,
+  STARTER: 67.00,
+  PRO: 147.00,
+  BUSINESS: 397.00,
+  STARTER_ANNUAL: 643.20,
+  PRO_ANNUAL: 1411.20,
+  BUSINESS_ANNUAL: 3811.20,
+  FOUNDER_STARTER: 39.00,
+  FOUNDER_PRO: 87.00,
+  FOUNDER_BUSINESS: 234.00,
 } as const
 
 /**

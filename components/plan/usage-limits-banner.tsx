@@ -95,7 +95,7 @@ export function UsageLimitsBanner({
                 </h3>
                 <p className="text-sm text-zinc-600 dark:text-zinc-400">
                   {isLimitReached
-                    ? 'Você atingiu o limite do plano gratuito. Desbloqueie recursos ilimitados por apenas R$ 49/mês.'
+                    ? 'Você atingiu o limite do plano gratuito. Desbloqueie recursos ilimitados por apenas R$ 67/mês.'
                     : 'Você está usando quase todo o plano gratuito. Considere fazer upgrade para continuar crescendo.'}
                 </p>
               </div>
@@ -175,7 +175,7 @@ export function UsageLimitsBanner({
                   className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700"
                 >
                   <Sparkles className="mr-2 w-4 h-4" />
-                  Fazer Upgrade por R$ 49/mês
+                  Fazer Upgrade por R$ 67/mês
                 </Button>
                 <Button variant="outline" asChild>
                   <Link href="/dashboard/billing">
@@ -197,7 +197,7 @@ export function UsageLimitsBanner({
               Desbloqueie o Sirius PRO
             </DialogTitle>
             <DialogDescription className="text-base pt-2">
-              Continue crescendo sem limites por apenas R$ 49/mês.
+              Continue crescendo sem limites por apenas R$ 67/mês.
             </DialogDescription>
           </DialogHeader>
 
@@ -227,7 +227,7 @@ export function UsageLimitsBanner({
             {/* Pricing */}
             <div className="p-4 rounded-xl bg-blue-50 dark:bg-blue-950/20 border border-blue-200 dark:border-blue-900">
               <div className="flex items-baseline gap-2 mb-1">
-                <span className="text-3xl font-bold text-blue-600">R$ 49</span>
+                <span className="text-3xl font-bold text-blue-600">R$ 67</span>
                 <span className="text-zinc-600 dark:text-zinc-400">/mês</span>
               </div>
               <p className="text-sm text-zinc-600 dark:text-zinc-400">

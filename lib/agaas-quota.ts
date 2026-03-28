@@ -6,9 +6,9 @@ import { prisma } from '@/lib/prisma'
  */
 const TIER_LIMITS: Record<string, { agents: number; quota: number }> = {
   FREE:     { agents: 0,  quota: 0 },
-  STARTER:  { agents: 1,  quota: 100 },
-  PRO:      { agents: 3,  quota: 500 },
-  BUSINESS: { agents: -1, quota: -1 }, // -1 = unlimited
+  STARTER:  { agents: 1,  quota: 200 },
+  PRO:      { agents: 3,  quota: 1000 },
+  BUSINESS: { agents: 5,  quota: 3000 },
 }
 
 function nextMonthDate(): Date {

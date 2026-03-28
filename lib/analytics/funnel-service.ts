@@ -243,7 +243,7 @@ export async function getFunnelMetrics(
     impressions > 0 ? (customers / impressions) * 100 : 0
 
   // Unit Economics (valores estimados)
-  const averageTicket = 49 // R$ 49/mês (plano PRO)
+  const averageTicket = 147 // R$ 147/mês (plano PRO)
   const estimatedRetentionMonths = 12 // Retenção média estimada
   const estimatedLTV = averageTicket * estimatedRetentionMonths
 

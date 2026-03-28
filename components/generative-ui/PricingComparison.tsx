@@ -30,9 +30,9 @@ interface PricingComparisonComponentProps extends PricingComparisonProps {
 
 // Feature definitions
 const FEATURES = [
-  { id: 'contacts', name: 'Contatos', free: '100', pro: 'Ilimitados', highlight: true },
+  { id: 'contacts', name: 'Contatos', free: '250', pro: 'Ilimitados', highlight: true },
   { id: 'pipelines', name: 'Pipelines', free: '1', pro: 'Ilimitados', highlight: true },
-  { id: 'deals', name: 'Negócios', free: '50/mês', pro: 'Ilimitados', highlight: true },
+  { id: 'deals', name: 'Negócios', free: '100/mês', pro: 'Ilimitados', highlight: true },
   { id: 'api_access', name: 'Acesso à API', free: false, pro: true, highlight: false },
   { id: 'agi_assistant', name: 'AGI Sirius', free: 'Limitado', pro: 'Completo', highlight: true },
   { id: 'automations', name: 'Automações', free: false, pro: true, highlight: false },
@@ -127,7 +127,7 @@ export function PricingComparison({
               <p className="font-bold text-lg flex items-center justify-center gap-1">
                 PRO <Sparkles className="h-4 w-4 text-primary" />
               </p>
-              <p className="text-2xl font-bold text-primary">R$ 97</p>
+              <p className="text-2xl font-bold text-primary">R$ 147</p>
               <p className="text-xs text-muted-foreground">/mês</p>
             </motion.div>
           </div>

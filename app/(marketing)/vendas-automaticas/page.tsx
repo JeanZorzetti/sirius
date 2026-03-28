@@ -21,13 +21,13 @@ import {
 } from 'lucide-react'
 
 export const metadata: Metadata = {
-  title: 'Sirius CRM - Vendas Organizadas em 5 Minutos | R$ 49/mês',
-  description: 'CRM self-service sem implantação cara. Organize suas vendas agora por R$ 49/mês. Sem cartão para testar, cancele quando quiser.',
-  keywords: 'crm barato, crm self-service, crm simples, crm R$ 49, organizar vendas',
+  title: 'Sirius CRM - Vendas Organizadas em 5 Minutos | R$ 67/mês',
+  description: 'CRM self-service sem implantação cara. Organize suas vendas agora por R$ 67/mês. Sem cartão para testar, cancele quando quiser.',
+  keywords: 'crm barato, crm self-service, crm simples, crm R$ 67, organizar vendas',
   alternates: { canonical: 'https://sirius.roilabs.com.br/vendas-automaticas' },
   openGraph: {
     title: 'Sirius CRM - Vendas Organizadas em 5 Minutos',
-    description: 'CRM self-service sem implantação cara. R$ 49/mês, sem cartão para testar.',
+    description: 'CRM self-service sem implantação cara. R$ 67/mês, sem cartão para testar.',
     type: 'website',
     url: 'https://sirius.roilabs.com.br/vendas-automaticas',
     images: [{
@@ -40,7 +40,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'Sirius CRM - Vendas Organizadas em 5 Minutos',
-    description: 'CRM self-service por R$ 49/mês. Sem cartão para testar, cancele quando quiser.',
+    description: 'CRM self-service por R$ 67/mês. Sem cartão para testar, cancele quando quiser.',
   },
 }
 
@@ -72,7 +72,7 @@ export default function VendasAutomaticasPage() {
     "operatingSystem": "Web, iOS, Android",
     "offers": {
       "@type": "Offer",
-      "price": "49",
+      "price": "67",
       "priceCurrency": "BRL",
       "priceValidUntil": "2027-12-31",
       "availability": "https://schema.org/InStock"
@@ -178,7 +178,7 @@ export default function VendasAutomaticasPage() {
               </div>
               <div className="w-px h-10 bg-zinc-300 dark:bg-zinc-700" />
               <div className="text-center">
-                <div className="text-2xl font-bold text-blue-600 dark:text-blue-500">R$ 49</div>
+                <div className="text-2xl font-bold text-blue-600 dark:text-blue-500">R$ 67</div>
                 <div className="text-zinc-600 dark:text-zinc-400">Por Mês</div>
               </div>
               <div className="w-px h-10 bg-zinc-300 dark:bg-zinc-700" />
@@ -292,7 +292,7 @@ export default function VendasAutomaticasPage() {
                     </Badge>
                   </div>
                   <div className="text-3xl font-bold text-blue-600 dark:text-blue-500">
-                    R$ 49
+                    R$ 67
                     <span className="text-base font-normal text-zinc-600 dark:text-zinc-400">/mês</span>
                   </div>
                 </CardHeader>
@@ -361,7 +361,7 @@ export default function VendasAutomaticasPage() {
                 className="h-12 px-8 bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700"
               >
                 <Link href="/register">
-                  Começar Agora por R$ 49/mês
+                  Começar Agora por R$ 67/mês
                   <ArrowRight className="ml-2 w-5 h-5" />
                 </Link>
               </Button>
@@ -470,7 +470,7 @@ export default function VendasAutomaticasPage() {
                 </span>
               </h2>
               <p className="text-lg text-zinc-600 dark:text-zinc-400">
-                Sem pegadinhas. Sem planos escondidos. Apenas R$ 49/mês.
+                Sem pegadinhas. Sem planos escondidos. Apenas R$ 67/mês.
               </p>
             </div>
 
@@ -490,7 +490,7 @@ export default function VendasAutomaticasPage() {
                 </div>
                 <div className="space-y-2">
                   <div className="flex items-baseline justify-center gap-2">
-                    <span className="text-5xl font-black text-blue-600 dark:text-blue-500">R$ 49</span>
+                    <span className="text-5xl font-black text-blue-600 dark:text-blue-500">R$ 67</span>
                     <span className="text-xl text-zinc-600 dark:text-zinc-400">/mês</span>
                   </div>
                   <p className="text-sm text-zinc-600 dark:text-zinc-400">
@@ -529,7 +529,7 @@ export default function VendasAutomaticasPage() {
                 >
                   <Link href="/register">
                     <DollarSign className="mr-2 w-5 h-5" />
-                    Começar Agora por R$ 49/mês
+                    Começar Agora por R$ 67/mês
                   </Link>
                 </Button>
 
@@ -681,17 +681,17 @@ export default function VendasAutomaticasPage() {
               <Card>
                 <CardHeader>
                   <CardTitle className="text-xl">
-                    R$ 49/mês é para sempre ou aumenta depois?
+                    R$ 67/mês é para sempre ou aumenta depois?
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
                   <p className="text-zinc-600 dark:text-zinc-400">
-                    <strong className="text-zinc-900 dark:text-white">R$ 49/mês é o preço.</strong> Não tem "promoção de lançamento" que aumenta depois.
+                    <strong className="text-zinc-900 dark:text-white">R$ 67/mês é o preço.</strong> Não tem "promoção de lançamento" que aumenta depois.
                     Não temos planos escondidos com recursos básicos bloqueados.
                   </p>
                   <p className="text-zinc-600 dark:text-zinc-400 mt-2">
                     No futuro, podemos lançar um plano PRO com recursos avançados (IA, automações complexas),
-                    mas o plano de R$ 49 continuará existindo com tudo que você precisa para organizar vendas.
+                    mas o plano de R$ 67 continuará existindo com tudo que você precisa para organizar vendas.
                   </p>
                 </CardContent>
               </Card>

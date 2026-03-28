@@ -23,9 +23,9 @@ const MAX_PAYMENT_ATTEMPTS = 3
  */
 const AGAAS_TIER_LIMITS: Record<string, { enabled: boolean; agents: number; quota: number }> = {
   FREE:     { enabled: false, agents: 0,  quota: 0 },
-  STARTER:  { enabled: true,  agents: 1,  quota: 100 },
-  PRO:      { enabled: true,  agents: 3,  quota: 500 },
-  BUSINESS: { enabled: true,  agents: -1, quota: -1 },
+  STARTER:  { enabled: true,  agents: 1,  quota: 200 },
+  PRO:      { enabled: true,  agents: 3,  quota: 1000 },
+  BUSINESS: { enabled: true,  agents: 5,  quota: 3000 },
 }
 
 function getAgaasDataForTier(tier: string) {
@@ -176,7 +176,13 @@ async function processApprovedPayment(payment: any) {
   }
 
   const organizationId = externalReference.substring(0, underscoreIdx)
-  const tierOrAddon = externalReference.substring(underscoreIdx + 1)
+  let tierOrAddon = externalReference.substring(underscoreIdx + 1)
+
+  // Detect annual billing suffix (e.g. STARTER_ANNUAL, PRO_ANNUAL)
+  const isAnnual = tierOrAddon.endsWith('_ANNUAL')
+  if (isAnnual) {
+    tierOrAddon = tierOrAddon.replace('_ANNUAL', '')
+  }
 
   // Programa de Fundadores (FOUNDER_STARTER | FOUNDER_PRO | FOUNDER_BUSINESS)
   if (tierOrAddon.startsWith('FOUNDER_')) {
@@ -186,7 +192,7 @@ async function processApprovedPayment(payment: any) {
 
   // Verificar se é upgrade de plano
   if (Object.values(SubscriptionTier).includes(tierOrAddon as SubscriptionTier)) {
-    await upgradePlan(organizationId, tierOrAddon as SubscriptionTier, payment)
+    await upgradePlan(organizationId, tierOrAddon as SubscriptionTier, payment, isAnnual)
   } else {
     // É um add-on
     await processAddonPurchase(organizationId, tierOrAddon, payment)
@@ -194,13 +200,14 @@ async function processApprovedPayment(payment: any) {
 }
 
 async function upgradePlan(
-  organizationId: string, 
+  organizationId: string,
   tier: SubscriptionTier,
-  payment: any
+  payment: any,
+  isAnnual: boolean = false
 ) {
-  logger.info({ organizationId, tier }, 'Upgrading plan')
+  logger.info({ organizationId, tier, isAnnual }, 'Upgrading plan')
 
-  // Atualizar organização (sync tier + plan + agaas para compatibilidade)
+  // Atualizar organização (sync tier + plan + agaas + billing period)
   const agaasData = getAgaasDataForTier(tier)
   await prisma.organization.update({
     where: { id: organizationId },
@@ -210,6 +217,8 @@ async function upgradePlan(
       ...agaasData,
       agaasActionsUsed: 0,
       agaasQuotaResetAt: nextMonthDate(),
+      billingPeriod: isAnnual ? 'ANNUAL' : 'MONTHLY',
+      billingStartDate: new Date(),
       updatedAt: new Date(),
     },
   })
@@ -236,8 +245,8 @@ async function upgradePlan(
 
   // Se for plano pago, criar/resetar créditos de scraping
   if (tier !== SubscriptionTier.FREE) {
-    const monthlyCredits = tier === SubscriptionTier.STARTER ? 50 : 
-                          tier === SubscriptionTier.PRO ? 200 : 1000
+    const monthlyCredits = tier === SubscriptionTier.STARTER ? 75 :
+                          tier === SubscriptionTier.PRO ? 300 : 1500
 
     await prisma.scrapingCredit.upsert({
       where: { organizationId },
@@ -261,9 +270,9 @@ async function upgradePlan(
 }
 
 const FOUNDER_TIER_MAP: Record<string, { tier: SubscriptionTier; price: number; scrapingQuota: number }> = {
-  FOUNDER_STARTER: { tier: SubscriptionTier.STARTER, price: 29.00, scrapingQuota: 50 },
-  FOUNDER_PRO:     { tier: SubscriptionTier.PRO,     price: 57.00, scrapingQuota: 200 },
-  FOUNDER_BUSINESS:{ tier: SubscriptionTier.BUSINESS, price: 88.00, scrapingQuota: 1000 },
+  FOUNDER_STARTER: { tier: SubscriptionTier.STARTER, price: 39.00, scrapingQuota: 75 },
+  FOUNDER_PRO:     { tier: SubscriptionTier.PRO,     price: 87.00, scrapingQuota: 300 },
+  FOUNDER_BUSINESS:{ tier: SubscriptionTier.BUSINESS, price: 234.00, scrapingQuota: 1500 },
 }
 
 async function upgradeToFounder(organizationId: string, founderPlan: string, payment: any) {
@@ -461,12 +470,13 @@ async function processSubscriptionEvent(preapprovalId: string, action: string) {
     }
 
     if (action === 'subscription_preapproval.cancelled' || action === 'cancelled') {
-      // Downgrade para FREE ao cancelar (sync tier + plan + agaas)
+      // Downgrade para FREE ao cancelar (sync tier + plan + agaas + billing)
       await prisma.organization.update({
         where: { id: org.id },
         data: {
           tier: SubscriptionTier.FREE,
           plan: 'FREE',
+          billingPeriod: 'MONTHLY',
           ...getAgaasDataForTier('FREE'),
         },
       })
@@ -519,7 +529,10 @@ async function processRecurringPayment(paymentId: string) {
       return
     }
 
-    const [organizationId, tier] = externalReference.split('_')
+    const underscoreIdx = externalReference.indexOf('_')
+    if (underscoreIdx === -1) return
+    const organizationId = externalReference.substring(0, underscoreIdx)
+    const tier = externalReference.substring(underscoreIdx + 1).replace('_ANNUAL', '')
     if (!organizationId) return
 
     // Pagamento rejeitado → retry logic
@@ -551,8 +564,8 @@ async function processRecurringPayment(paymentId: string) {
     })
 
     // Resetar créditos mensais de scraping
-    const monthlyCredits = subscriptionTier === SubscriptionTier.STARTER ? 50
-      : subscriptionTier === SubscriptionTier.PRO ? 200 : 1000
+    const monthlyCredits = subscriptionTier === SubscriptionTier.STARTER ? 75
+      : subscriptionTier === SubscriptionTier.PRO ? 300 : 1500
 
     await prisma.scrapingCredit.upsert({
       where: { organizationId },
@@ -648,13 +661,14 @@ async function handleFailedRecurringPayment(organizationId: string, payment: any
   const billingUrl = `${process.env.NEXT_PUBLIC_APP_URL}/dashboard/settings/billing`
 
   if (isFinal) {
-    // Downgrade para FREE após atingir o limite (sync tier + plan + agaas)
+    // Downgrade para FREE após atingir o limite (sync tier + plan + agaas + billing)
     await prisma.organization.update({
       where: { id: org.id },
       data: {
         tier: SubscriptionTier.FREE,
         plan: 'FREE',
         failedPaymentAttempts: 0,
+        billingPeriod: 'MONTHLY',
         ...getAgaasDataForTier('FREE'),
       },
     })

@@ -16,7 +16,7 @@ const FOUNDER_LIMITS: Record<string, { limit: number; tier: SubscriptionTier }> 
 /**
  * POST /api/mercadopago/checkout
  * Cria preferência de checkout para planos pagos ou programa de fundadores
- * Body: { plan: 'STARTER' | 'PRO' | 'BUSINESS' | 'FOUNDER_STARTER' | 'FOUNDER_PRO' | 'FOUNDER_BUSINESS' }
+ * Body: { plan: 'STARTER' | 'PRO' | 'BUSINESS' | 'FOUNDER_STARTER' | ..., billingPeriod?: 'MONTHLY' | 'ANNUAL' }
  */
 export async function POST(request: NextRequest) {
   const blocked = await billingRateLimit(request)
@@ -31,11 +31,19 @@ export async function POST(request: NextRequest) {
 
     // Parse body
     let plan: CheckoutPlan = 'STARTER'
+    let billingPeriod: 'MONTHLY' | 'ANNUAL' = 'MONTHLY'
     try {
       const body = await request.json()
       if (body?.plan) plan = body.plan as CheckoutPlan
+      if (body?.billingPeriod === 'ANNUAL') billingPeriod = 'ANNUAL'
     } catch {
-      // No body — default to STARTER
+      // No body — default to STARTER MONTHLY
+    }
+
+    // Build annual plan key (e.g. STARTER → STARTER_ANNUAL)
+    const isFounderPlan = plan.startsWith('FOUNDER_')
+    if (billingPeriod === 'ANNUAL' && !isFounderPlan && !plan.endsWith('_ANNUAL')) {
+      plan = `${plan}_ANNUAL` as CheckoutPlan
     }
 
     // Buscar usuário e organização
@@ -49,7 +57,6 @@ export async function POST(request: NextRequest) {
     }
 
     const org = user.organization
-    const isFounderPlan = plan.startsWith('FOUNDER_')
 
     // Já é fundador — não pode comprar novamente
     if (org.isFounder) {
@@ -75,9 +82,10 @@ export async function POST(request: NextRequest) {
       }
     } else {
       // Plano regular — verificar se já está neste tier ou superior
+      const baseTier = plan.replace('_ANNUAL', '') as SubscriptionTier
       const tierOrder = [SubscriptionTier.FREE, SubscriptionTier.STARTER, SubscriptionTier.PRO, SubscriptionTier.BUSINESS]
       const currentIdx = tierOrder.indexOf(org.tier as SubscriptionTier)
-      const requestedIdx = tierOrder.indexOf(plan as SubscriptionTier)
+      const requestedIdx = tierOrder.indexOf(baseTier)
       if (requestedIdx !== -1 && currentIdx >= requestedIdx) {
         return NextResponse.json({ error: 'Organização já está neste plano ou superior' }, { status: 400 })
       }

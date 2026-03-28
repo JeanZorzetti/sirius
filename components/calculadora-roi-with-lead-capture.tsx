@@ -41,7 +41,7 @@ export function CalculadoraROIWithLeadCapture({
     const faturamentoOtimizado = volumeLeads * (taxaOtimizada / 100) * ticketMedio
     const perdaMensal = faturamentoOtimizado - faturamentoAtual
     const perdaAnual = perdaMensal * 12
-    const custoSirius = 49
+    const custoSirius = 67
     const roiMensal = perdaMensal / custoSirius
     const roiPrimeirasSemanas = (perdaMensal / 4) / custoSirius
 
@@ -251,7 +251,7 @@ export function CalculadoraROIWithLeadCapture({
                   <div className="grid gap-3 sm:grid-cols-3 p-4 rounded-xl bg-indigo-500/5 border border-indigo-500/20">
                     <div className="text-center sm:text-left">
                       <p className="text-xs text-muted-foreground mb-1">Investimento Sirius</p>
-                      <p className="text-xl font-bold text-indigo-600 dark:text-indigo-400">R$ 49/mês</p>
+                      <p className="text-xl font-bold text-indigo-600 dark:text-indigo-400">R$ 67/mês</p>
                     </div>
                     <div className="text-center sm:text-left">
                       <p className="text-xs text-muted-foreground mb-1">ROI Mensal</p>

@@ -59,11 +59,11 @@ export interface PlanLimits {
 
 export const PLAN_LIMITS: Record<SubscriptionTier, PlanLimits> = {
   [SubscriptionTier.FREE]: {
-    maxContacts: 100,
-    maxDeals: 50,
-    maxDealsPerPipeline: 50,
+    maxContacts: 250,
+    maxDeals: 100,
+    maxDealsPerPipeline: 100,
     maxPipelines: 1,
-    maxUsers: 1,
+    maxUsers: 2,
     scrapingCreditsMonthly: 0,
     maxScrapingPerSearch: 0,
     maxWhatsAppInstances: 0,
@@ -85,16 +85,16 @@ export const PLAN_LIMITS: Record<SubscriptionTier, PlanLimits> = {
   },
   
   [SubscriptionTier.STARTER]: {
-    maxContacts: 500,
-    maxDeals: 200,
-    maxDealsPerPipeline: 200,
-    maxPipelines: 3,
-    maxUsers: 3,
-    scrapingCreditsMonthly: 50,
-    maxScrapingPerSearch: 50,
+    maxContacts: 1000,
+    maxDeals: 500,
+    maxDealsPerPipeline: 500,
+    maxPipelines: 5,
+    maxUsers: 5,
+    scrapingCreditsMonthly: 75,
+    maxScrapingPerSearch: 75,
     maxWhatsAppInstances: 1,
-    maxEmailAutomations: 3,
-    maxSequences: 3,
+    maxEmailAutomations: 5,
+    maxSequences: 5,
     allowedIntegrations: ['google-calendar', 'n8n'],
     advancedAnalytics: false,
     customReports: false,
@@ -111,16 +111,16 @@ export const PLAN_LIMITS: Record<SubscriptionTier, PlanLimits> = {
   },
   
   [SubscriptionTier.PRO]: {
-    maxContacts: 2000,
-    maxDeals: 1000,
-    maxDealsPerPipeline: 1000,
-    maxPipelines: 10,
-    maxUsers: 10,
-    scrapingCreditsMonthly: 200,
-    maxScrapingPerSearch: 100,
-    maxWhatsAppInstances: 1,
-    maxEmailAutomations: 10,
-    maxSequences: 10,
+    maxContacts: 5000,
+    maxDeals: 2500,
+    maxDealsPerPipeline: 2500,
+    maxPipelines: 15,
+    maxUsers: 15,
+    scrapingCreditsMonthly: 300,
+    maxScrapingPerSearch: 150,
+    maxWhatsAppInstances: 3,
+    maxEmailAutomations: 15,
+    maxSequences: 15,
     allowedIntegrations: ['google-calendar', 'n8n', 'webhook', 'zapier'],
     advancedAnalytics: true,
     customReports: false,
@@ -142,7 +142,7 @@ export const PLAN_LIMITS: Record<SubscriptionTier, PlanLimits> = {
     maxDealsPerPipeline: null,
     maxPipelines: 50,
     maxUsers: 50,
-    scrapingCreditsMonthly: 1000,
+    scrapingCreditsMonthly: 1500,
     maxScrapingPerSearch: 500,
     maxWhatsAppInstances: 5,
     maxEmailAutomations: 50,
@@ -166,9 +166,25 @@ export const PLAN_LIMITS: Record<SubscriptionTier, PlanLimits> = {
 // Preços dos planos (mensal)
 export const PLAN_PRICING: Record<SubscriptionTier, number> = {
   [SubscriptionTier.FREE]: 0,
-  [SubscriptionTier.STARTER]: 49,
-  [SubscriptionTier.PRO]: 97,
-  [SubscriptionTier.BUSINESS]: 149,
+  [SubscriptionTier.STARTER]: 67,
+  [SubscriptionTier.PRO]: 147,
+  [SubscriptionTier.BUSINESS]: 397,
+}
+
+// Preços anuais (20% off)
+export const PLAN_PRICING_ANNUAL: Record<SubscriptionTier, number> = {
+  [SubscriptionTier.FREE]: 0,
+  [SubscriptionTier.STARTER]: 643.20,
+  [SubscriptionTier.PRO]: 1411.20,
+  [SubscriptionTier.BUSINESS]: 3811.20,
+}
+
+export const ANNUAL_DISCOUNT_PERCENT = 20
+
+// Add-on pricing
+export const ADDON_PRICING = {
+  EXTRA_ACTION: 0.15,
+  EXTRA_AGENT: 29,
 }
 
 // Nomes amigáveis
@@ -267,10 +283,10 @@ export const PLAN_FEATURES: Record<SubscriptionTier, {
   can_use_team_reports: boolean
 }> = {
   [SubscriptionTier.FREE]: {
-    max_deals: 50,
-    max_users: 1,
+    max_deals: 100,
+    max_users: 2,
     max_pipelines: 1,
-    max_contacts: 100,
+    max_contacts: 250,
     agi_monthly_quota: 0,
     scraping_monthly_credits: 0,
     scraping_initial_credits: 0,
@@ -281,13 +297,13 @@ export const PLAN_FEATURES: Record<SubscriptionTier, {
     can_use_team_reports: false,
   },
   [SubscriptionTier.STARTER]: {
-    max_deals: 200,
-    max_users: 3,
-    max_pipelines: 3,
-    max_contacts: 500,
-    agi_monthly_quota: 50,
-    scraping_monthly_credits: 50,
-    scraping_initial_credits: 50,
+    max_deals: 500,
+    max_users: 5,
+    max_pipelines: 5,
+    max_contacts: 1000,
+    agi_monthly_quota: 200,
+    scraping_monthly_credits: 75,
+    scraping_initial_credits: 75,
     can_use_automation: true,
     can_use_agi: true,
     can_use_chat_interface: true,
@@ -295,13 +311,13 @@ export const PLAN_FEATURES: Record<SubscriptionTier, {
     can_use_team_reports: false,
   },
   [SubscriptionTier.PRO]: {
-    max_deals: 1000,
-    max_users: 10,
-    max_pipelines: 10,
-    max_contacts: 2000,
-    agi_monthly_quota: 200,
-    scraping_monthly_credits: 200,
-    scraping_initial_credits: 200,
+    max_deals: 2500,
+    max_users: 15,
+    max_pipelines: 15,
+    max_contacts: 5000,
+    agi_monthly_quota: 1000,
+    scraping_monthly_credits: 300,
+    scraping_initial_credits: 300,
     can_use_automation: true,
     can_use_agi: true,
     can_use_chat_interface: true,
@@ -313,9 +329,9 @@ export const PLAN_FEATURES: Record<SubscriptionTier, {
     max_users: 50,
     max_pipelines: 50,
     max_contacts: -1, // ilimitado
-    agi_monthly_quota: -1, // ilimitado
-    scraping_monthly_credits: 1000,
-    scraping_initial_credits: 1000,
+    agi_monthly_quota: 3000,
+    scraping_monthly_credits: 1500,
+    scraping_initial_credits: 1500,
     can_use_automation: true,
     can_use_agi: true,
     can_use_chat_interface: true,

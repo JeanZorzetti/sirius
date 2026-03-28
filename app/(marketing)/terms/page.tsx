@@ -108,8 +108,8 @@ export default function TermsPage() {
                   Oferecemos dois planos principais:
                 </p>
                 <ul className="list-disc list-inside space-y-2">
-                  <li><strong>Plano FREE:</strong> Gratuito para sempre, com limites de uso (1 pipeline, 10 deals, 1 usuário)</li>
-                  <li><strong>Plano PRO:</strong> R$ 97/mês, sem limites de pipelines, deals ou usuários</li>
+                  <li><strong>Plano FREE:</strong> Gratuito para sempre, com limites de uso (1 pipeline, 100 deals, 2 usuários)</li>
+                  <li><strong>Plano PRO:</strong> R$ 147/mês, sem limites de pipelines, deals ou usuários</li>
                 </ul>
 
                 <h3 className="text-xl font-semibold mt-6">3.2. Pagamentos</h3>

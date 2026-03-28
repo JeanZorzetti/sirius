@@ -5,12 +5,12 @@ import { Button } from '@/components/ui/button'
 import { FounderCheckoutButton } from './founder-checkout-button'
 
 export const metadata: Metadata = {
-  title: 'Programa de Fundadores | Sirius CRM — 41% OFF vitalício',
-  description: 'Seja um dos fundadores do Sirius CRM. Starter R$29, Pro R$57 ou Business R$88/mês para sempre. 41% de desconto vitalício em qualquer plano.',
+  title: 'Programa de Fundadores | Sirius CRM — 42% OFF vitalício',
+  description: 'Seja um dos fundadores do Sirius CRM. Starter R$39, Pro R$87 ou Business R$234/mês para sempre. Até 42% de desconto vitalício em qualquer plano.',
   alternates: { canonical: 'https://sirius.roilabs.com.br/fundadores' },
   openGraph: {
-    title: 'Programa de Fundadores | Sirius CRM — 41% OFF vitalício',
-    description: 'Starter R$29, Pro R$57 ou Business R$88/mês para sempre. Vagas limitadas.',
+    title: 'Programa de Fundadores | Sirius CRM — 42% OFF vitalício',
+    description: 'Starter R$39, Pro R$87 ou Business R$234/mês para sempre. Vagas limitadas.',
     url: 'https://sirius.roilabs.com.br/fundadores',
     images: [{ url: 'https://sirius.roilabs.com.br/og-image.png', width: 1200, height: 630 }],
   },
@@ -22,37 +22,40 @@ const FOUNDER_TIERS = [
   {
     plan: 'FOUNDER_STARTER' as const,
     name: 'Fundador Starter',
-    regularPrice: 49,
-    founderPrice: 29,
+    regularPrice: 67,
+    founderPrice: 39,
     limit: 100,
     highlight: false,
     color: 'border-muted',
     features: [
-      '500 Contatos',
-      '200 Negócios ativos',
-      '3 Pipelines Kanban',
-      'Até 3 usuários',
+      '1.000 Contatos',
+      '500 Negócios ativos',
+      '5 Pipelines Kanban',
+      'Até 5 usuários',
       '1 instância WhatsApp',
-      '50 créditos de prospecção/mês',
+      '75 créditos de prospecção/mês',
+      '1 Agente IA autônomo',
+      '200 ações autônomas/mês',
       'Suporte por e-mail',
     ],
   },
   {
     plan: 'FOUNDER_PRO' as const,
     name: 'Fundador Pro',
-    regularPrice: 97,
-    founderPrice: 57,
+    regularPrice: 147,
+    founderPrice: 87,
     limit: 50,
     highlight: true,
     color: 'border-primary ring-2 ring-primary/20 shadow-lg scale-105 z-10',
     features: [
-      '2.000 Contatos',
-      '1.000 Negócios ativos',
-      '10 Pipelines Kanban',
-      'Até 10 usuários',
-      '1 instância WhatsApp',
-      '200 créditos de prospecção/mês',
-      'AGI Sirius (IA comercial)',
+      '5.000 Contatos',
+      '2.500 Negócios ativos',
+      '15 Pipelines Kanban',
+      'Até 15 usuários',
+      '3 instâncias WhatsApp',
+      '300 créditos de prospecção/mês',
+      '3 Agentes IA autônomos',
+      '1.000 ações autônomas/mês',
       'Webhooks + API pública',
       'Analytics avançado',
       'Suporte prioritário',
@@ -61,8 +64,8 @@ const FOUNDER_TIERS = [
   {
     plan: 'FOUNDER_BUSINESS' as const,
     name: 'Fundador Business',
-    regularPrice: 149,
-    founderPrice: 88,
+    regularPrice: 397,
+    founderPrice: 234,
     limit: 25,
     highlight: false,
     color: 'border-muted',
@@ -72,11 +75,12 @@ const FOUNDER_TIERS = [
       '50 Pipelines Kanban',
       'Até 50 usuários',
       '5 instâncias WhatsApp',
-      '1.000 créditos de prospecção/mês',
+      '1.500 créditos de prospecção/mês',
+      '5 Agentes IA autônomos',
+      '3.000 ações autônomas/mês',
       'Round-Robin de leads',
       'Relatórios personalizados',
       'SSO & Audit Log',
-      'Domínio customizado',
       'Gerente de conta dedicado',
     ],
   },
@@ -122,7 +126,7 @@ export default async function FundadoresPage() {
           </h1>
 
           <p className="text-xl text-muted-foreground mb-4 max-w-2xl mx-auto">
-            <strong className="text-foreground">41% de desconto vitalício</strong> em qualquer plano.
+            <strong className="text-foreground">Até 42% de desconto vitalício</strong> em qualquer plano.
             Seu preço nunca muda — mesmo quando os planos subirem.
           </p>
 

@@ -178,7 +178,7 @@ export function CompetitorMatrix({
                 Sirius
               </div>
               {showPricing && (
-                <Badge variant="default" className="mt-1">R$ 97/mês</Badge>
+                <Badge variant="default" className="mt-1">A partir de R$ 67/mês</Badge>
               )}
             </div>
             {selectedCompetitors.map((comp) => (

@@ -1,23 +1,24 @@
 import { Metadata } from 'next'
 import Link from 'next/link'
 import Script from 'next/script'
-import { Check, Star } from 'lucide-react'
+import { Check, Star, Building2 } from 'lucide-react'
+import { PricingToggle } from './pricing-toggle'
 
 export const metadata: Metadata = {
-  title: 'Planos Sirius CRM 2026 [Grátis a R$149/mês] — IA + WhatsApp Inclusos | Sem Cartão',
-  description: '4 planos para qualquer tamanho de time: Grátis (R$0), Starter (R$49/mês), Pro com IA (R$97/mês), Business (R$149/mês). IA nativa, WhatsApp e pipeline Kanban em todos. Cancele quando quiser.',
-  keywords: ['crm preços 2026', 'crm 2026', 'sirius crm planos', 'crm gratuito brasil', 'crm online 2026', 'crm com ia preço', 'whatsapp crm planos', 'pipeline kanban grátis', 'automação de vendas'],
+  title: 'Planos Sirius CRM 2026 [Grátis a R$397/mês] — IA + WhatsApp Inclusos | Sem Cartão',
+  description: '4 planos para qualquer tamanho de time: Grátis (R$0), Starter (R$67/mês), Pro com IA (R$147/mês), Business (R$397/mês). Agentes IA autônomos, WhatsApp e pipeline Kanban. Cancele quando quiser.',
+  keywords: ['crm preços 2026', 'crm 2026', 'sirius crm planos', 'crm gratuito brasil', 'crm online 2026', 'crm com ia preço', 'whatsapp crm planos', 'pipeline kanban grátis', 'automação de vendas', 'agentes ia crm'],
   alternates: { canonical: 'https://sirius.roilabs.com.br/pricing' },
   openGraph: {
-    title: 'Planos Sirius CRM 2026 [Grátis a R$149/mês] — IA + WhatsApp | Sem Cartão',
-    description: '4 planos: Grátis, Starter R$49, Pro com IA R$97, Business R$149/mês. Pipeline, WhatsApp e IA inclusos. Cancele quando quiser.',
+    title: 'Planos Sirius CRM 2026 [Grátis a R$397/mês] — IA + WhatsApp | Sem Cartão',
+    description: '4 planos: Grátis, Starter R$67, Pro com IA R$147, Business R$397/mês. Agentes IA autônomos, WhatsApp e pipeline Kanban. Cancele quando quiser.',
     url: 'https://sirius.roilabs.com.br/pricing',
     images: [{ url: 'https://sirius.roilabs.com.br/og-image.png', width: 1200, height: 630 }],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Planos Sirius CRM 2026 [Grátis a R$149/mês] — IA + WhatsApp | Sem Cartão',
-    description: '4 planos: Grátis, Starter R$49, Pro com IA R$97, Business R$149/mês. Cancele quando quiser.',
+    title: 'Planos Sirius CRM 2026 [Grátis a R$397/mês] — IA + WhatsApp | Sem Cartão',
+    description: '4 planos: Grátis, Starter R$67, Pro com IA R$147, Business R$397/mês. Cancele quando quiser.',
   },
 }
 
@@ -39,11 +40,12 @@ const tiers = [
         id: 'tier-free',
         href: '/register',
         priceMonthly: 'Grátis',
+        priceAnnual: 'Grátis',
         description: 'Para testar e organizar suas vendas.',
         features: [
-            '1 Usuário',
-            '100 Contatos',
-            '50 Negócios ativos',
+            'Até 2 Usuários',
+            '250 Contatos',
+            '100 Negócios ativos',
             '1 Pipeline Kanban',
             'Suporte via Comunidade',
         ],
@@ -53,17 +55,18 @@ const tiers = [
         name: 'Starter',
         id: 'tier-starter',
         href: '/register',
-        priceMonthly: 'R$ 49',
+        priceMonthly: 'R$ 67',
+        priceAnnual: 'R$ 53,60',
         description: 'Para pequenas empresas que querem crescer.',
         features: [
-            'Até 3 Usuários',
-            '500 Contatos',
-            '200 Negócios ativos',
-            '3 Pipelines Kanban',
+            'Até 5 Usuários',
+            '1.000 Contatos',
+            '500 Negócios ativos',
+            '5 Pipelines Kanban',
             '1 instância WhatsApp',
-            '50 créditos de prospecção/mês',
+            '75 créditos de prospecção/mês',
             '1 Agente IA autônomo (Sofia)',
-            '100 ações autônomas/mês',
+            '200 ações autônomas/mês',
             'Suporte por e-mail',
         ],
         featured: false,
@@ -72,17 +75,18 @@ const tiers = [
         name: 'Pro',
         id: 'tier-pro',
         href: '/register',
-        priceMonthly: 'R$ 97',
+        priceMonthly: 'R$ 147',
+        priceAnnual: 'R$ 117,60',
         description: 'Para equipes em crescimento que precisam de mais.',
         features: [
-            'Até 10 Usuários',
-            '2.000 Contatos',
-            '1.000 Negócios ativos',
-            '10 Pipelines Kanban',
-            '1 instância WhatsApp',
-            '200 créditos de prospecção/mês',
+            'Até 15 Usuários',
+            '5.000 Contatos',
+            '2.500 Negócios ativos',
+            '15 Pipelines Kanban',
+            '3 instâncias WhatsApp',
+            '300 créditos de prospecção/mês',
             '3 Agentes IA autônomos (Sofia)',
-            '500 ações autônomas/mês',
+            '1.000 ações autônomas/mês',
             'Analytics avançado',
             'Webhooks + API pública',
             'Suporte prioritário',
@@ -93,7 +97,8 @@ const tiers = [
         name: 'Business',
         id: 'tier-business',
         href: '/register',
-        priceMonthly: 'R$ 149',
+        priceMonthly: 'R$ 397',
+        priceAnnual: 'R$ 317,60',
         description: 'Para grandes operações com máxima escala.',
         features: [
             'Até 50 Usuários',
@@ -101,9 +106,9 @@ const tiers = [
             'Negócios Ilimitados',
             '50 Pipelines Kanban',
             '5 instâncias WhatsApp',
-            '1.000 créditos de prospecção/mês',
-            'Agentes IA ilimitados (Sofia)',
-            'Ações autônomas ilimitadas',
+            '1.500 créditos de prospecção/mês',
+            '5 Agentes IA autônomos (Sofia)',
+            '3.000 ações autônomas/mês',
             'Round-Robin de leads',
             'Relatórios personalizados',
             'SSO & Audit Log',
@@ -181,31 +186,31 @@ export default function PricingPage() {
                 "price": "0",
                 "priceCurrency": "BRL",
                 "availability": "https://schema.org/InStock",
-                "description": "Para testar e organizar suas vendas. 1 usuário, 100 contatos, 50 negócios."
+                "description": "Para testar e organizar suas vendas. 2 usuários, 250 contatos, 100 negócios."
             },
             {
                 "@type": "Offer",
                 "name": "Plano Starter",
-                "price": "49",
+                "price": "67",
                 "priceCurrency": "BRL",
                 "availability": "https://schema.org/InStock",
-                "description": "Para pequenas empresas. Até 3 usuários, 500 contatos, 200 negócios, WhatsApp integrado, 1 agente IA autônomo."
+                "description": "Para pequenas empresas. Até 5 usuários, 1.000 contatos, 500 negócios, WhatsApp integrado, 1 agente IA autônomo."
             },
             {
                 "@type": "Offer",
                 "name": "Plano Pro",
-                "price": "97",
+                "price": "147",
                 "priceCurrency": "BRL",
                 "availability": "https://schema.org/InStock",
-                "description": "Para equipes em crescimento. Até 10 usuários, 2.000 contatos, 3 agentes IA autônomos, analytics avançado."
+                "description": "Para equipes em crescimento. Até 15 usuários, 5.000 contatos, 3 agentes IA autônomos, analytics avançado."
             },
             {
                 "@type": "Offer",
                 "name": "Plano Business",
-                "price": "149",
+                "price": "397",
                 "priceCurrency": "BRL",
                 "availability": "https://schema.org/InStock",
-                "description": "Para grandes operações. Até 50 usuários, contatos ilimitados, agentes IA ilimitados, 5 instâncias WhatsApp, SSO."
+                "description": "Para grandes operações. Até 50 usuários, contatos ilimitados, 5 agentes IA, 3.000 ações/mês, SSO."
             }
         ]
     };
@@ -220,7 +225,7 @@ export default function PricingPage() {
             "@type": "AggregateOffer",
             "priceCurrency": "BRL",
             "lowPrice": "0",
-            "highPrice": "149",
+            "highPrice": "397",
             "offerCount": "4"
         },
         "aggregateRating": {
@@ -285,8 +290,8 @@ export default function PricingPage() {
                     <div className="flex items-center gap-3">
                         <Star className="w-6 h-6 text-amber-500 fill-amber-400 shrink-0" />
                         <div>
-                            <p className="font-semibold text-amber-900">Programa de Fundadores — 41% OFF vitalício!</p>
-                            <p className="text-sm text-amber-700">Starter R$29 · Pro R$57 · Business R$88/mês para sempre. Vagas limitadas.</p>
+                            <p className="font-semibold text-amber-900">Programa de Fundadores — até 42% OFF vitalício!</p>
+                            <p className="text-sm text-amber-700">Starter R$39 · Pro R$87 · Business R$234/mês para sempre. Vagas limitadas.</p>
                         </div>
                     </div>
                     <Button asChild className="bg-amber-500 hover:bg-amber-600 text-white shrink-0">
@@ -298,55 +303,88 @@ export default function PricingPage() {
                 </div>
             </div>
 
-            <div className="mx-auto mt-16 grid max-w-6xl grid-cols-1 gap-y-6 sm:mt-20 sm:gap-y-0 lg:grid-cols-4 lg:gap-x-6">
-                {tiers.map((tier) => (
-                    <Card
-                        key={tier.id}
-                        className={`flex flex-col justify-between relative ${tier.featured ? 'border-primary shadow-lg scale-105 z-10 ring-2 ring-primary/20' : ''}`}
-                    >
-                        {tier.featured && (
-                            <div className="absolute -top-4 left-1/2 -translate-x-1/2 z-20">
-                                <div className="rounded-full bg-gradient-to-r from-indigo-600 to-purple-600 px-4 py-1 text-xs font-semibold text-white shadow-lg">
-                                    ⚡ Mais Popular
+            <PricingToggle>
+                {(isAnnual) => (
+                    <div className="mx-auto mt-10 grid max-w-6xl grid-cols-1 gap-y-6 sm:gap-y-0 lg:grid-cols-4 lg:gap-x-6">
+                        {tiers.map((tier) => {
+                            const price = isAnnual ? tier.priceAnnual : tier.priceMonthly
+                            const isFree = price === 'Grátis'
+                            return (
+                                <Card
+                                    key={tier.id}
+                                    className={`flex flex-col justify-between relative ${tier.featured ? 'border-primary shadow-lg scale-105 z-10 ring-2 ring-primary/20' : ''}`}
+                                >
+                                    {tier.featured && (
+                                        <div className="absolute -top-4 left-1/2 -translate-x-1/2 z-20">
+                                            <div className="rounded-full bg-gradient-to-r from-indigo-600 to-purple-600 px-4 py-1 text-xs font-semibold text-white shadow-lg">
+                                                ⚡ Mais Popular
+                                            </div>
+                                        </div>
+                                    )}
+                                    <CardHeader>
+                                        <CardTitle id={tier.id} className="text-2xl font-bold">{tier.name}</CardTitle>
+                                        <CardDescription>{tier.description}</CardDescription>
+                                    </CardHeader>
+                                    <CardContent>
+                                        <div className="mt-4 flex items-baseline gap-x-2">
+                                            <span className="text-4xl font-bold tracking-tight">{price}</span>
+                                            {!isFree && <span className="text-sm font-semibold leading-6 text-muted-foreground">/mês</span>}
+                                        </div>
+                                        {isAnnual && !isFree && (
+                                            <p className="mt-1 text-xs text-muted-foreground">
+                                                Cobrado anualmente · <span className="line-through">{tier.priceMonthly}/mês</span>
+                                            </p>
+                                        )}
+                                        <ul role="list" className="mt-8 space-y-3 text-sm leading-6 text-muted-foreground">
+                                            {tier.features.map((feature) => (
+                                                <li key={feature} className="flex gap-x-3">
+                                                    <Check className="h-6 w-5 flex-none text-primary" aria-hidden="true" />
+                                                    {feature}
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    </CardContent>
+                                    <CardFooter className="flex flex-col gap-3">
+                                        <Button asChild className="w-full" variant={tier.featured ? 'default' : 'outline'}>
+                                            <Link href={tier.href} aria-describedby={tier.id}>
+                                                Começar Agora
+                                            </Link>
+                                        </Button>
+                                        {tier.featured && (
+                                            <div className="flex items-center justify-center gap-2 text-xs text-green-600 dark:text-green-400">
+                                                <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 20 20">
+                                                    <path fillRule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                                                </svg>
+                                                <span className="font-medium">Garantia de 7 dias - 100% do seu dinheiro de volta</span>
+                                            </div>
+                                        )}
+                                    </CardFooter>
+                                </Card>
+                            )
+                        })}
+
+                        {/* Enterprise Card */}
+                        <Card className="flex flex-col justify-between relative border-dashed lg:col-span-4 mt-6">
+                            <CardContent className="flex flex-col sm:flex-row items-center justify-between gap-4 py-6">
+                                <div className="flex items-center gap-4">
+                                    <Building2 className="h-8 w-8 text-muted-foreground shrink-0" />
+                                    <div>
+                                        <h3 className="text-lg font-bold">Enterprise</h3>
+                                        <p className="text-sm text-muted-foreground">
+                                            Precisa de mais? Limites customizados, SLA dedicado, onboarding assistido e suporte white-glove.
+                                        </p>
+                                    </div>
                                 </div>
-                            </div>
-                        )}
-                        <CardHeader>
-                            <CardTitle id={tier.id} className="text-2xl font-bold">{tier.name}</CardTitle>
-                            <CardDescription>{tier.description}</CardDescription>
-                        </CardHeader>
-                        <CardContent>
-                            <div className="mt-4 flex items-baseline gap-x-2">
-                                <span className="text-4xl font-bold tracking-tight">{tier.priceMonthly}</span>
-                                {tier.priceMonthly !== 'Grátis' && <span className="text-sm font-semibold leading-6 text-muted-foreground">/mês</span>}
-                            </div>
-                            <ul role="list" className="mt-8 space-y-3 text-sm leading-6 text-muted-foreground">
-                                {tier.features.map((feature) => (
-                                    <li key={feature} className="flex gap-x-3">
-                                        <Check className="h-6 w-5 flex-none text-primary" aria-hidden="true" />
-                                        {feature}
-                                    </li>
-                                ))}
-                            </ul>
-                        </CardContent>
-                        <CardFooter className="flex flex-col gap-3">
-                            <Button asChild className="w-full" variant={tier.featured ? 'default' : 'outline'}>
-                                <Link href={tier.href} aria-describedby={tier.id}>
-                                    Começar Agora
-                                </Link>
-                            </Button>
-                            {tier.featured && (
-                                <div className="flex items-center justify-center gap-2 text-xs text-green-600 dark:text-green-400">
-                                    <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 20 20">
-                                        <path fillRule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                                    </svg>
-                                    <span className="font-medium">Garantia de 7 dias - 100% do seu dinheiro de volta</span>
-                                </div>
-                            )}
-                        </CardFooter>
-                    </Card>
-                ))}
-            </div>
+                                <Button asChild variant="outline" className="shrink-0">
+                                    <a href="https://wa.me/5511999999999" target="_blank" rel="noopener noreferrer">
+                                        Fale com Vendas
+                                    </a>
+                                </Button>
+                            </CardContent>
+                        </Card>
+                    </div>
+                )}
+            </PricingToggle>
 
             {/* ROI Calculator Section */}
             <div className="mx-auto mt-24 max-w-3xl">
@@ -365,7 +403,7 @@ export default function PricingPage() {
                             <div className="text-sm text-muted-foreground">Aumento em taxa de conversão</div>
                         </div>
                         <div className="text-center p-6 rounded-xl bg-purple-500/5">
-                            <div className="text-3xl font-bold text-purple-600 dark:text-purple-400 mb-2">R$ 97</div>
+                            <div className="text-3xl font-bold text-purple-600 dark:text-purple-400 mb-2">R$ 147</div>
                             <div className="text-sm text-muted-foreground">Investimento mensal (Pro)</div>
                         </div>
                     </div>

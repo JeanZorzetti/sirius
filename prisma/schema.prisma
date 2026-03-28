@@ -29,7 +29,9 @@ model Organization {
   customPricingExpiresAt DateTime? // When grandfathering ends
   grandfatheredDealLimit Int? // FREE clients: custom deal limit (null = use tier limit)
   grandfatheredAt        DateTime? // When grandfathering was applied
-  whatsappInstances      Int       @default(1) // Base WhatsApp instances (PRO: 1, BUSINESS: 1)
+  billingPeriod          String    @default("MONTHLY") // "MONTHLY" | "ANNUAL"
+  billingStartDate       DateTime? // Start of current billing period
+  whatsappInstances      Int       @default(1) // Base WhatsApp instances
   failedPaymentAttempts  Int       @default(0) // Retry logic: downgrade after 3 consecutive failures
 
   // Flag to exclude from revenue metrics (test users with paid tiers)

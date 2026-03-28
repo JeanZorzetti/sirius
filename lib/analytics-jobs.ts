@@ -191,8 +191,8 @@ export async function createMonthlyRevenueSnapshot(year: number, month: number) 
     const proOrgs = allOrgs.filter((org) => org.plan === 'PRO').length
     const freeOrgs = totalOrgs - proOrgs
 
-    // MRR = número de orgs PRO * R$ 97
-    const proPrice = 97
+    // MRR simplificado (TODO: calcular por tier real com customPricing)
+    const proPrice = 147
     const mrr = proOrgs * proPrice
     const arr = mrr * 12
 

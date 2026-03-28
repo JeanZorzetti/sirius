@@ -12,9 +12,9 @@ import { SubscriptionTier, AddonType } from '@prisma/client'
  */
 export const MERCADO_PAGO_PLAN_IDS: Record<SubscriptionTier, string | null> = {
   FREE: null, // FREE não tem plano pago
-  STARTER: process.env.MERCADOPAGO_PLAN_STARTER_ID || 'STARTER_PLAN_ID', // R$ 49/mês
-  PRO: process.env.MERCADOPAGO_PLAN_PRO_ID || 'PRO_PLAN_ID', // R$ 97/mês
-  BUSINESS: process.env.MERCADOPAGO_PLAN_BUSINESS_ID || 'BUSINESS_PLAN_ID', // R$ 149/mês
+  STARTER: process.env.MERCADOPAGO_PLAN_STARTER_ID || 'STARTER_PLAN_ID', // R$ 67/mês
+  PRO: process.env.MERCADOPAGO_PLAN_PRO_ID || 'PRO_PLAN_ID', // R$ 147/mês
+  BUSINESS: process.env.MERCADOPAGO_PLAN_BUSINESS_ID || 'BUSINESS_PLAN_ID', // R$ 397/mês
 }
 
 /**
@@ -39,8 +39,8 @@ export const PLANS: Record<SubscriptionTier, PlanConfig> = {
     currency: 'BRL',
     frequency: 'monthly',
     features: [
-      'Até 50 deals ativos',
-      '1 usuário',
+      'Até 100 deals ativos',
+      '2 usuários',
       '1 pipeline',
       'Kanban board completo',
       'Gestão de contatos',
@@ -55,7 +55,7 @@ export const PLANS: Record<SubscriptionTier, PlanConfig> = {
     id: MERCADO_PAGO_PLAN_IDS.STARTER,
     name: 'Starter',
     description: 'Organização ilimitada para autônomos',
-    price: 49,
+    price: 67,
     currency: 'BRL',
     frequency: 'monthly',
     features: [
@@ -75,7 +75,7 @@ export const PLANS: Record<SubscriptionTier, PlanConfig> = {
     id: MERCADO_PAGO_PLAN_IDS.PRO,
     name: 'PRO',
     description: 'Automação e inteligência para vendedores profissionais',
-    price: 97,
+    price: 147,
     currency: 'BRL',
     frequency: 'monthly',
     features: [
@@ -95,7 +95,7 @@ export const PLANS: Record<SubscriptionTier, PlanConfig> = {
     id: MERCADO_PAGO_PLAN_IDS.BUSINESS,
     name: 'Business',
     description: 'Gestão completa de equipes de vendas',
-    price: 149,
+    price: 397,
     currency: 'BRL',
     frequency: 'monthly',
     features: [

@@ -35,7 +35,7 @@ describe('PricingComparison', () => {
             expect(screen.getByText('FREE')).toBeInTheDocument()
             expect(screen.getByText('PRO')).toBeInTheDocument()
             expect(screen.getByText('R$ 0')).toBeInTheDocument()
-            expect(screen.getByText('R$ 97')).toBeInTheDocument()
+            expect(screen.getByText('R$ 147')).toBeInTheDocument()
         })
 
         it('should render all 10 features', () => {

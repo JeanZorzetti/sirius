@@ -53,7 +53,7 @@ export default function CalculadoraROIPage() {
 
         {/* Calculadora */}
         <CalculadoraROI
-          ctaText="Ver Como Organizar por R$ 49/mês"
+          ctaText="Ver Como Organizar por R$ 67/mês"
           ctaHref="/vendas-automaticas"
         />
 
@@ -78,7 +78,7 @@ export default function CalculadoraROIPage() {
             </div>
             <div className="space-y-2">
               <div className="text-3xl sm:text-4xl font-bold text-indigo-600 dark:text-indigo-400">
-                R$ 49
+                R$ 67
               </div>
               <p className="text-sm text-zinc-600 dark:text-zinc-400">
                 Investimento mensal

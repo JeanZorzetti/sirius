@@ -47,7 +47,7 @@ export default function LandingPage() {
       "@type": "AggregateOffer",
       "priceCurrency": "BRL",
       "lowPrice": "0",
-      "highPrice": "149",
+      "highPrice": "397",
       "offerCount": "4",
       "availability": "https://schema.org/InStock"
     },
@@ -91,7 +91,7 @@ export default function LandingPage() {
       "@type": "AggregateOffer",
       "priceCurrency": "BRL",
       "lowPrice": "0",
-      "highPrice": "149",
+      "highPrice": "397",
       "offerCount": "4",
       "availability": "https://schema.org/InStock",
       "url": "https://sirius.roilabs.com.br/pricing"
@@ -138,7 +138,7 @@ export default function LandingPage() {
         "name": "O Sirius CRM é gratuito?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Sim! O plano Gratuito inclui 100 contatos, 50 negócios e 1 pipeline sem prazo de expiração. Para mais recursos, oferecemos Starter (R$49/mês), Pro (R$97/mês) e Business (R$149/mês)."
+          "text": "Sim! O plano Gratuito inclui 250 contatos, 100 negócios e 1 pipeline sem prazo de expiração. Para mais recursos, oferecemos Starter (R$67/mês), Pro (R$147/mês) e Business (R$397/mês)."
         }
       },
       {
@@ -154,7 +154,7 @@ export default function LandingPage() {
         "name": "Como funciona a prospecção pelo Google Maps?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Busque leads por segmento e cidade. O Sirius extrai automaticamente nome, telefone, email, site e endereço do Google Maps. Cada plano inclui créditos mensais: Starter 50, Pro 200 e Business 1.000 leads/mês."
+          "text": "Busque leads por segmento e cidade. O Sirius extrai automaticamente nome, telefone, email, site e endereço do Google Maps. Cada plano inclui créditos mensais: Starter 75, Pro 300 e Business 1.500 leads/mês."
         }
       },
       {
@@ -199,7 +199,7 @@ export default function LandingPage() {
       "https://www.linkedin.com/company/roilabs",
       "https://twitter.com/roilabs"
     ],
-    "priceRange": "R$ 0 - R$ 149/mês"
+    "priceRange": "R$ 0 - R$ 397/mês"
   };
 
   const plans = [
@@ -208,31 +208,31 @@ export default function LandingPage() {
       price: 'R$ 0',
       period: '',
       description: 'Para testar o CRM',
-      features: ['1 Usuário', '100 Contatos', '50 Negócios', '1 Pipeline'],
+      features: ['2 Usuários', '250 Contatos', '100 Negócios', '1 Pipeline'],
       highlighted: false,
     },
     {
       name: 'Starter',
-      price: 'R$ 49',
+      price: 'R$ 67',
       period: '/mês',
       description: 'Para pequenas empresas',
-      features: ['3 Usuários', '500 Contatos', 'WhatsApp', '50 leads/mês'],
+      features: ['5 Usuários', '1.000 Contatos', 'WhatsApp', '75 leads/mês'],
       highlighted: false,
     },
     {
       name: 'Pro',
-      price: 'R$ 97',
+      price: 'R$ 147',
       period: '/mês',
       description: 'Para equipes em crescimento',
-      features: ['10 Usuários', '2.000 Contatos', 'IA Comercial', '200 leads/mês'],
+      features: ['15 Usuários', '5.000 Contatos', 'IA Comercial', '300 leads/mês'],
       highlighted: true,
     },
     {
       name: 'Business',
-      price: 'R$ 149',
+      price: 'R$ 397',
       period: '/mês',
       description: 'Para grandes operações',
-      features: ['50 Usuários', 'Ilimitado', 'Round-Robin', '1.000 leads/mês'],
+      features: ['50 Usuários', 'Ilimitado', 'Round-Robin', '1.500 leads/mês'],
       highlighted: false,
     },
   ]
@@ -278,7 +278,7 @@ export default function LandingPage() {
                 O que é o Sirius CRM?
               </h2>
               <p className="mt-6 text-lg leading-8 text-zinc-300">
-                O Sirius CRM é uma plataforma de vendas projetada para o mercado brasileiro, utilizada por mais de 1.200 usuários. Oferece quatro planos de assinatura: um plano Gratuito, Starter por R$49, Pro por R$97 e Business por R$149, ajudando equipes a alcançar um aumento médio de 35% na conversão de leads. Seus diferenciais incluem a integração nativa com WhatsApp via Evolution API, prospecção de leads B2B pelo Google Maps e a assistente de vendas com IA, AGI Sirius.
+                O Sirius CRM é uma plataforma de vendas projetada para o mercado brasileiro, utilizada por mais de 1.200 usuários. Oferece quatro planos de assinatura: um plano Gratuito, Starter por R$67, Pro por R$147 e Business por R$397, ajudando equipes a alcançar um aumento médio de 35% na conversão de leads. Seus diferenciais incluem a integração nativa com WhatsApp via Evolution API, prospecção de leads B2B pelo Google Maps e a assistente de vendas com IA, AGI Sirius.
               </p>
             </div>
           </section>
@@ -296,7 +296,7 @@ export default function LandingPage() {
                   <div>
                     <p className="font-bold text-white text-lg">Programa de Fundadores — 41% OFF vitalicio!</p>
                     <p className="text-sm text-amber-200/80">
-                      Starter R$29 · Pro R$57 · Business R$88/mes para sempre. Vagas limitadas.
+                      Starter R$39 · Pro R$87 · Business R$234/mes para sempre. Vagas limitadas.
                     </p>
                   </div>
                 </div>

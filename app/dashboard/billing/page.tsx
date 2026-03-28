@@ -133,7 +133,7 @@ export default async function BillingPage() {
               <div>
                 <p className="font-semibold text-amber-900">Programa de Fundadores — 41% OFF vitalício!</p>
                 <p className="text-sm text-amber-700">
-                  Starter R$29 · Pro R$57 · Business R$88 — preço que nunca sobe. Vagas limitadas.
+                  Starter R$39 · Pro R$87 · Business R$234 — preço que nunca sobe. Vagas limitadas.
                 </p>
               </div>
             </div>
@@ -154,7 +154,7 @@ export default async function BillingPage() {
             <div>
               <p className="font-semibold">Pronto para escalar?</p>
               <p className="text-sm text-muted-foreground">
-                Upgrade para Starter (R$49), Pro (R$97) ou Business (R$149/mês).
+                Upgrade para Starter (R$67), Pro (R$147) ou Business (R$397/mês).
               </p>
             </div>
             <Button asChild>

@@ -72,7 +72,7 @@ export function autoFillROICalculator(context: AutoFillContext): AutoFillResult<
     warnings.push('Using default currentCost of R$15,000 - ask user to confirm')
   }
 
-  // Calculate Sirius cost (PRO plan = R$97/user, estimate based on team size)
+  // Calculate Sirius cost (PRO plan = R$147/user, estimate based on team size)
   let teamMultiplier = 5 // Default 5 users
   if (context.entities.teamSizes) {
     const sizeMap = { solo: 1, small: 3, medium: 8, large: 20 }
@@ -80,7 +80,7 @@ export function autoFillROICalculator(context: AutoFillContext): AutoFillResult<
     filledFields.push('teamSize')
   }
 
-  const withSirius = 97 * teamMultiplier
+  const withSirius = 147 * teamMultiplier
   const monthlySavings = Math.max(0, currentCost - withSirius)
   const annualROI = monthlySavings * 12
   const paybackPeriod = monthlySavings > 0 ? Math.ceil(withSirius / monthlySavings) : 0
@@ -332,7 +332,7 @@ export function autoFillPricingComparison(context: AutoFillContext): AutoFillRes
   const costValues = context.entities.monetaryValues.filter(v => v.context === 'cost')
   if (costValues.length > 0) {
     const currentMonthly = costValues[0].value
-    const siriusMonthly = 97 * 5 // Estimate 5 users
+    const siriusMonthly = 147 * 5 // Estimate 5 users
     annual_savings = Math.max(0, (currentMonthly - siriusMonthly) * 12)
     filledFields.push('annual_savings')
   }

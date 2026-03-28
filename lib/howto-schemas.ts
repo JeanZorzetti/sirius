@@ -133,7 +133,7 @@ export const howToSchemas: Record<string, HowToSchema> = {
     [
       { name: 'Responda as 5 perguntas de qualificação', text: 'Antes de pesquisar: (1) Quantos vendedores? (2) Seu processo é B2B ou B2C? (3) Usa WhatsApp para vender? (4) Precisa funcionar offline? (5) Orçamento mensal por usuário? As respostas eliminam 80% das opções.' },
       { name: 'Aplique os 7 critérios eliminatórios', text: 'Para cada CRM: WhatsApp nativo, pipeline Kanban, IA, mobile/offline, preço em BRL, onboarding rápido, suporte em português. Se falhar em 2+ critérios, não perca tempo testando.' },
-      { name: 'Compare preço total em 12 meses', text: 'Calcule: (preço/mês × usuários × 12) + custo de migração + treinamento. Cuidado com CRMs que cobram em dólar — R$49/mês fixo vs US$12.50/mês que vira R$75 com câmbio e IOF.' },
+      { name: 'Compare preço total em 12 meses', text: 'Calcule: (preço/mês × usuários × 12) + custo de migração + treinamento. Cuidado com CRMs que cobram em dólar — R$67/mês fixo vs US$12.50/mês que vira R$75 com câmbio e IOF.' },
       { name: 'Teste o favorito por 7 dias com dados reais', text: 'Importe seus contatos reais, crie negócios verdadeiros e use por uma semana. Se o time não adotar naturalmente em 7 dias, o CRM é complexo demais para sua operação.' },
       { name: 'Decida com base em adoção, não em features', text: 'O melhor CRM é o que o time realmente usa. Um sistema com 200 features e 10% de adoção perde para um sistema simples com 90% de adoção. Priorize UX sobre funcionalidades.' },
     ],

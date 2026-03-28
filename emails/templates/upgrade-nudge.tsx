@@ -62,7 +62,7 @@ export function UpgradeNudgeEmail({
 
       <Section style={styles.pricingCard}>
         <Text style={styles.pricingText}>
-          <span style={styles.price}>R$ 49</span>
+          <span style={styles.price}>R$ 67</span>
           <span style={styles.period}>/mês</span>
         </Text>
         <Text style={styles.pricingSubtext}>
