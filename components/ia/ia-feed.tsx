@@ -1,10 +1,11 @@
 'use client'
 
-import { useState, useCallback } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { motion } from 'framer-motion'
-import { Activity, Clock, CheckCircle2, Zap, RefreshCw } from 'lucide-react'
+import { Activity, Clock, CheckCircle2, Zap, RefreshCw, Lock } from 'lucide-react'
 import { AgentActionCard } from './agent-action-card'
 import { useRouter } from 'next/navigation'
+import Link from 'next/link'
 
 interface Action {
   id: string
@@ -47,7 +48,17 @@ function StatCard({ icon: Icon, label, value, accent }: {
 export function IAFeed({ actions: initialActions, stats, organizationId }: IAFeedProps) {
   const [actions, setActions] = useState(initialActions)
   const [filter, setFilter] = useState<string>('all')
+  const [tier, setTier] = useState<string>('FREE')
   const router = useRouter()
+
+  const canApprove = tier !== 'FREE'
+
+  useEffect(() => {
+    fetch('/api/ia/quota')
+      .then(r => r.json())
+      .then(data => { if (data.tier) setTier(data.tier) })
+      .catch(() => {})
+  }, [])
 
   const handleReview = useCallback(async (actionId: string, decision: 'APPROVED' | 'REJECTED') => {
     try {
@@ -126,6 +137,21 @@ export function IAFeed({ actions: initialActions, stats, organizationId }: IAFee
         <StatCard icon={CheckCircle2} label="Sucesso" value={stats.success} accent="text-emerald-400" />
       </div>
 
+      {/* FREE tier banner */}
+      {!canApprove && (
+        <div className="rounded-xl border border-amber-500/20 bg-amber-500/5 p-3 mb-6 flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <Lock className="h-3.5 w-3.5 text-amber-400" />
+            <span className="text-xs text-amber-400/80">
+              Plano Free — visualização apenas. Faça upgrade para aprovar/rejeitar ações.
+            </span>
+          </div>
+          <Link href="/dashboard/billing/plans" className="text-xs text-amber-300 hover:text-amber-200 font-medium">
+            Upgrade
+          </Link>
+        </div>
+      )}
+
       {/* Filters */}
       <div className="flex items-center gap-1.5 mb-6 overflow-x-auto pb-1">
         {[
@@ -159,8 +185,8 @@ export function IAFeed({ actions: initialActions, stats, organizationId }: IAFee
                 <AgentActionCard
                   key={action.id}
                   action={action}
-                  onApprove={(id) => handleReview(id, 'APPROVED')}
-                  onReject={(id) => handleReview(id, 'REJECTED')}
+                  onApprove={canApprove ? (id) => handleReview(id, 'APPROVED') : undefined}
+                  onReject={canApprove ? (id) => handleReview(id, 'REJECTED') : undefined}
                 />
               ))}
             </div>

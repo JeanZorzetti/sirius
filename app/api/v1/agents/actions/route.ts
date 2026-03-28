@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { withApiMiddleware, apiResponse } from '@/lib/api-middleware'
 import { prisma } from '@/lib/prisma'
 import { getPaginationParams } from '@/lib/api-helpers'
+import { checkAgaasQuota, incrementAgaasUsage } from '@/lib/agaas-quota'
 import logger from '@/lib/logger'
 
 /**
@@ -35,6 +36,18 @@ export async function POST(request: NextRequest) {
         )
       }
 
+      // Check AgaaS quota before allowing the action
+      const quota = await checkAgaasQuota(context.organizationId)
+      if (!quota.allowed) {
+        return NextResponse.json(
+          apiResponse(context.requestId, undefined, {
+            code: 'QUOTA_EXCEEDED',
+            message: quota.reason || 'AgaaS quota exceeded',
+          }),
+          { status: 429 }
+        )
+      }
+
       // Determine status based on confidence threshold
       const actionStatus = status || (confidence >= 0.7 ? 'SUCCESS' : 'NEEDS_APPROVAL')
 
@@ -52,6 +65,9 @@ export async function POST(request: NextRequest) {
           status: actionStatus
         }
       })
+
+      // Increment usage counter
+      await incrementAgaasUsage(context.organizationId)
 
       logger.info({
         requestId: context.requestId,

@@ -2,8 +2,25 @@
 
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { Shield, Sliders, Clock, MessageSquare, Save, Loader2 } from 'lucide-react'
+import { Shield, Sliders, Clock, MessageSquare, Save, Loader2, Activity } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import Link from 'next/link'
+
+interface QuotaInfo {
+  tier: string
+  quota: number
+  used: number
+  remaining: number
+  agentLimit: number
+  resetsAt: string | null
+}
+
+const TIER_LABELS: Record<string, string> = {
+  FREE: 'Free',
+  STARTER: 'Starter',
+  PRO: 'Pro',
+  BUSINESS: 'Business',
+}
 
 export function IASettings() {
   const [confidenceThreshold, setConfidenceThreshold] = useState(70)
@@ -14,16 +31,19 @@ export function IASettings() {
   const [whatsappEnabled, setWhatsappEnabled] = useState(true)
   const [emailEnabled, setEmailEnabled] = useState(true)
   const [calendarEnabled, setCalendarEnabled] = useState(true)
+  const [quotaInfo, setQuotaInfo] = useState<QuotaInfo | null>(null)
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
   const [saved, setSaved] = useState(false)
 
-  // Load config from API
+  // Load config + quota from API
   useEffect(() => {
-    fetch('/api/ia/settings')
-      .then(r => r.json())
-      .then(data => {
-        const config = data.config || {}
+    Promise.all([
+      fetch('/api/ia/settings').then(r => r.json()),
+      fetch('/api/ia/quota').then(r => r.json()),
+    ])
+      .then(([settingsData, quotaData]) => {
+        const config = settingsData.config || {}
         if (config.confidenceThreshold !== undefined) setConfidenceThreshold(config.confidenceThreshold)
         if (config.maxActionsPerDay !== undefined) setMaxActionsPerDay(config.maxActionsPerDay)
         if (config.operatingHoursStart) setOperatingHoursStart(config.operatingHoursStart)
@@ -32,6 +52,7 @@ export function IASettings() {
         if (config.whatsappEnabled !== undefined) setWhatsappEnabled(config.whatsappEnabled)
         if (config.emailEnabled !== undefined) setEmailEnabled(config.emailEnabled)
         if (config.calendarEnabled !== undefined) setCalendarEnabled(config.calendarEnabled)
+        setQuotaInfo(quotaData)
       })
       .catch(() => {})
       .finally(() => setLoading(false))
@@ -103,6 +124,60 @@ export function IASettings() {
       </div>
 
       <div className="space-y-6">
+        {/* Usage badge */}
+        {quotaInfo && quotaInfo.quota !== 0 && (
+          <motion.div
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="rounded-xl border border-zinc-800/50 bg-zinc-900/40 p-5"
+          >
+            <div className="flex items-center gap-2 mb-3">
+              <Activity className="h-4 w-4 text-cyan-400" />
+              <h3 className="text-sm font-semibold text-zinc-200">Uso Mensal</h3>
+            </div>
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-xs text-zinc-400">
+                <span className="text-zinc-200 font-semibold">{TIER_LABELS[quotaInfo.tier]}</span>
+                {quotaInfo.quota === -1
+                  ? ` — ${quotaInfo.used} ações este mês — Ilimitado`
+                  : ` — ${quotaInfo.used} / ${quotaInfo.quota} ações este mês`
+                }
+              </span>
+              {quotaInfo.resetsAt && quotaInfo.quota !== -1 && (
+                <span className="text-[10px] text-zinc-600">
+                  Renova em {Math.max(0, Math.ceil((new Date(quotaInfo.resetsAt).getTime() - Date.now()) / 86400000))} dias
+                </span>
+              )}
+            </div>
+            {quotaInfo.quota !== -1 && (
+              <div className="w-full h-2 bg-zinc-800 rounded-full overflow-hidden">
+                <div
+                  className={cn(
+                    'h-full rounded-full transition-all duration-500',
+                    quotaInfo.used / quotaInfo.quota > 0.9
+                      ? 'bg-red-500'
+                      : quotaInfo.used / quotaInfo.quota > 0.7
+                        ? 'bg-amber-500'
+                        : 'bg-cyan-500'
+                  )}
+                  style={{ width: `${Math.min(100, (quotaInfo.used / quotaInfo.quota) * 100)}%` }}
+                />
+              </div>
+            )}
+            {quotaInfo.quota !== -1 && quotaInfo.used >= quotaInfo.quota && (
+              <div className="mt-2 flex items-center justify-between">
+                <span className="text-xs text-red-400">Cota esgotada. Agentes pausados até renovação.</span>
+                <Link
+                  href="/dashboard/billing/plans"
+                  className="text-xs text-amber-400 hover:text-amber-300 font-medium"
+                >
+                  Upgrade
+                </Link>
+              </div>
+            )}
+          </motion.div>
+        )}
+
         {/* Approval threshold */}
         <motion.div
           initial={{ opacity: 0, y: 8 }}

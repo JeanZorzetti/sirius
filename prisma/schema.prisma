@@ -141,9 +141,15 @@ model Organization {
   // Products (Catálogo)
   products Product[]
 
-  // AgaaS — Agent Actions & Config
+  // AgaaS — Agent Actions, Config & Quota
   agentActions AgentAction[]
   iaConfig     Json?          // Configuração do modo IA (agentes habilitados, thresholds, horários)
+
+  agaasEnabled        Boolean  @default(false)
+  agaasAgentLimit     Int      @default(0)   // 0=free, 1=starter, 3=pro, -1=unlimited
+  agaasMonthlyQuota   Int      @default(0)   // Ações/mês permitidas (0=free)
+  agaasActionsUsed    Int      @default(0)   // Contador reset mensal
+  agaasQuotaResetAt   DateTime?              // Próximo reset
 }
 
 model User {

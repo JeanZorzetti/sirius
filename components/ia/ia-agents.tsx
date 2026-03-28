@@ -3,7 +3,8 @@
 import { useState, useEffect, useCallback } from 'react'
 import { motion } from 'framer-motion'
 import { cn } from '@/lib/utils'
-import { Bot, Zap, MessageSquare, GitBranch, Calendar, Search, ToggleLeft, ToggleRight, Loader2 } from 'lucide-react'
+import { Bot, Zap, MessageSquare, GitBranch, Calendar, Search, ToggleLeft, ToggleRight, Loader2, Lock, Crown } from 'lucide-react'
+import Link from 'next/link'
 
 interface AgentDef {
   id: string
@@ -63,10 +64,20 @@ const AGENT_DEFS: AgentDef[] = [
   },
 ]
 
-function AgentCard({ agent, enabled, onToggle, saving }: {
+interface QuotaInfo {
+  tier: string
+  agentLimit: number
+  quota: number
+  used: number
+  remaining: number
+  resetsAt: string | null
+}
+
+function AgentCard({ agent, enabled, onToggle, locked, saving }: {
   agent: AgentDef
   enabled: boolean
   onToggle: (id: string) => void
+  locked: boolean
   saving: boolean
 }) {
   const Icon = agent.icon
@@ -77,9 +88,11 @@ function AgentCard({ agent, enabled, onToggle, saving }: {
       animate={{ opacity: 1, y: 0 }}
       className={cn(
         'rounded-xl border p-5 transition-all duration-200',
-        enabled
-          ? 'border-zinc-700/50 bg-zinc-900/60'
-          : 'border-zinc-800/30 bg-zinc-900/30 opacity-70'
+        locked
+          ? 'border-zinc-800/20 bg-zinc-900/20 opacity-50'
+          : enabled
+            ? 'border-zinc-700/50 bg-zinc-900/60'
+            : 'border-zinc-800/30 bg-zinc-900/30 opacity-70'
       )}
     >
       <div className="flex items-start justify-between mb-4">
@@ -93,17 +106,21 @@ function AgentCard({ agent, enabled, onToggle, saving }: {
           </div>
         </div>
 
-        <button
-          onClick={() => onToggle(agent.id)}
-          disabled={saving}
-          className="shrink-0 mt-1 disabled:opacity-50"
-        >
-          {enabled ? (
-            <ToggleRight className="h-6 w-6 text-cyan-400" />
-          ) : (
-            <ToggleLeft className="h-6 w-6 text-zinc-600" />
-          )}
-        </button>
+        {locked ? (
+          <Lock className="h-5 w-5 text-zinc-700 shrink-0 mt-1" />
+        ) : (
+          <button
+            onClick={() => onToggle(agent.id)}
+            disabled={saving}
+            className="shrink-0 mt-1 disabled:opacity-50"
+          >
+            {enabled ? (
+              <ToggleRight className="h-6 w-6 text-cyan-400" />
+            ) : (
+              <ToggleLeft className="h-6 w-6 text-zinc-600" />
+            )}
+          </button>
+        )}
       </div>
 
       <div className="flex flex-wrap gap-1.5 mb-3">
@@ -124,28 +141,36 @@ function AgentCard({ agent, enabled, onToggle, saving }: {
   )
 }
 
+const TIER_LABELS: Record<string, string> = {
+  FREE: 'Free',
+  STARTER: 'Starter',
+  PRO: 'Pro',
+  BUSINESS: 'Business',
+}
+
 export function IAAgents() {
   const [enabledAgents, setEnabledAgents] = useState<Record<string, boolean>>({})
+  const [quotaInfo, setQuotaInfo] = useState<QuotaInfo | null>(null)
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
 
-  // Load config from API
   useEffect(() => {
-    fetch('/api/ia/settings')
-      .then(r => r.json())
-      .then(data => {
-        const config = data.config || {}
+    Promise.all([
+      fetch('/api/ia/settings').then(r => r.json()),
+      fetch('/api/ia/quota').then(r => r.json()),
+    ])
+      .then(([settingsData, quotaData]) => {
+        const config = settingsData.config || {}
         setEnabledAgents(config.enabledAgents || {})
+        setQuotaInfo(quotaData)
       })
       .catch(() => {})
       .finally(() => setLoading(false))
   }, [])
 
-  // Save to API
   const saveConfig = useCallback(async (newEnabledAgents: Record<string, boolean>) => {
     setSaving(true)
     try {
-      // Load existing config first to merge
       const res = await fetch('/api/ia/settings')
       const data = await res.json()
       const existingConfig = data.config || {}
@@ -158,19 +183,44 @@ export function IAAgents() {
         })
       })
     } catch {
-      // Silently fail — toggle still updates locally
+      // Silently fail
     } finally {
       setSaving(false)
     }
   }, [])
 
   const handleToggle = (id: string) => {
+    if (!quotaInfo) return
+
+    const currentlyEnabled = Object.entries(enabledAgents).filter(([, v]) => v).map(([k]) => k)
+    const isEnabling = !enabledAgents[id]
+
+    // Check agent limit when enabling
+    if (isEnabling && quotaInfo.agentLimit !== -1 && currentlyEnabled.length >= quotaInfo.agentLimit) {
+      return // Can't enable more agents than the limit
+    }
+
     const newState = { ...enabledAgents, [id]: !enabledAgents[id] }
     setEnabledAgents(newState)
     saveConfig(newState)
   }
 
   const activeCount = AGENT_DEFS.filter(a => enabledAgents[a.id]).length
+  const agentLimit = quotaInfo?.agentLimit ?? 0
+  const tier = quotaInfo?.tier || 'FREE'
+  const isFree = tier === 'FREE'
+
+  // Determine which agents are locked (beyond the limit)
+  const enabledIds = AGENT_DEFS.filter(a => enabledAgents[a.id]).map(a => a.id)
+
+  function isLocked(agentId: string): boolean {
+    if (isFree) return true
+    if (agentLimit === -1) return false // BUSINESS = unlimited
+    // If already enabled, not locked
+    if (enabledAgents[agentId]) return false
+    // If at the limit and not enabled, locked
+    return enabledIds.length >= agentLimit
+  }
 
   if (loading) {
     return (
@@ -186,7 +236,8 @@ export function IAAgents() {
         <div>
           <h1 className="text-2xl font-bold tracking-tight text-zinc-100">Agentes</h1>
           <p className="text-sm text-zinc-500 mt-1">
-            {activeCount} de {AGENT_DEFS.length} agentes ativos
+            {activeCount} de {agentLimit === -1 ? AGENT_DEFS.length : agentLimit} agentes
+            {agentLimit !== -1 && ` (${TIER_LABELS[tier]})`}
           </p>
         </div>
         <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-zinc-900/60 border border-zinc-800/50">
@@ -197,6 +248,36 @@ export function IAAgents() {
         </div>
       </div>
 
+      {/* Upgrade banner for FREE tier */}
+      {isFree && (
+        <div className="rounded-xl border border-amber-500/20 bg-amber-500/5 p-4 mb-6">
+          <div className="flex items-center gap-2 mb-1">
+            <Crown className="h-4 w-4 text-amber-400" />
+            <span className="text-sm font-semibold text-amber-300">Upgrade para ativar agentes</span>
+          </div>
+          <p className="text-xs text-amber-400/70 mb-3">
+            No plano Free, você pode visualizar os agentes mas não ativá-los. Faça upgrade para Starter (1 agente), Pro (3 agentes) ou Business (ilimitados).
+          </p>
+          <Link
+            href="/dashboard/billing/plans"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-amber-500/20 text-amber-300 text-xs font-medium hover:bg-amber-500/30 transition-colors"
+          >
+            <Crown className="h-3 w-3" />
+            Ver Planos
+          </Link>
+        </div>
+      )}
+
+      {/* Agent limit info for STARTER/PRO */}
+      {!isFree && agentLimit !== -1 && (
+        <div className="rounded-xl border border-zinc-800/50 bg-zinc-900/40 p-3 mb-6">
+          <p className="text-xs text-zinc-500">
+            Plano <span className="text-zinc-300 font-semibold">{TIER_LABELS[tier]}</span> — {activeCount}/{agentLimit} agentes ativos.
+            {activeCount >= agentLimit && ' Faça upgrade para ativar mais agentes.'}
+          </p>
+        </div>
+      )}
+
       <div className="space-y-3">
         {AGENT_DEFS.map(agent => (
           <AgentCard
@@ -204,6 +285,7 @@ export function IAAgents() {
             agent={agent}
             enabled={!!enabledAgents[agent.id]}
             onToggle={handleToggle}
+            locked={isLocked(agent.id)}
             saving={saving}
           />
         ))}
