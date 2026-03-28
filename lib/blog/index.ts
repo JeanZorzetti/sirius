@@ -33,6 +33,11 @@ import { post as post31 } from './posts/alternativas-ao-pipedrive-brasil'
 import { post as post32 } from './posts/representante-comercial-autonomo-ferramentas'
 import { post as post33 } from './posts/automacao-email-para-vendedores'
 import { post as post34 } from './posts/crm-gratuito-brasil-2026'
+import { post as post35 } from './posts/como-migrar-planilha-para-crm'
+import { post as post36 } from './posts/crm-para-varejo-2026'
+import { post as post37 } from './posts/crm-para-agencia-de-marketing'
+import { post as post38 } from './posts/como-montar-processo-de-vendas'
+import { post as post39 } from './posts/whatsapp-vendas-b2b-estrategias'
 
 export const blogPosts: BlogPost[] = [
   post1,
@@ -69,6 +74,11 @@ export const blogPosts: BlogPost[] = [
   post32,
   post33,
   post34,
+  post35,
+  post36,
+  post37,
+  post38,
+  post39,
 ]
 
 /**

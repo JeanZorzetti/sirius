@@ -9,7 +9,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { ShareButtons } from '@/components/blog/share-buttons'
 import { TableOfContents } from '@/components/blog/table-of-contents'
 import { BlogContentWrapper } from '@/components/blog/blog-content-wrapper'
-import { generateFAQSchema, spinSellingFAQs, crmIaFAQs, automacaoVendasFAQs, melhorCrm2026FAQs, prospeccaoB2bFAQs, fechamentoVendasFAQs, objecoesVendasFAQs, kpisVendasFAQs, errosCrmFAQs, planilhaComissaoFAQs, comoEscolherCrmFAQs, crmGratuitoFAQs, FAQItem } from '@/lib/faq-schema'
+import { generateFAQSchema, spinSellingFAQs, crmIaFAQs, automacaoVendasFAQs, melhorCrm2026FAQs, prospeccaoB2bFAQs, fechamentoVendasFAQs, objecoesVendasFAQs, kpisVendasFAQs, errosCrmFAQs, planilhaComissaoFAQs, comoEscolherCrmFAQs, crmGratuitoFAQs, migrarPlanilhaFAQs, crmVarejoFAQs, whatsappVendasFAQs, processoVendasFAQs, crmAgenciaFAQs, FAQItem } from '@/lib/faq-schema'
 import { generateArticleSchema, COMMON_WIKIDATA_ENTITIES, createGeoConfig } from '@/lib/geo/schema-generator'
 import { getHowToSchema } from '@/lib/howto-schemas'
 import { JsonLd } from '@/components/seo/json-ld'
@@ -76,6 +76,16 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
     aiOptimizedDescription = 'Testamos 5 CRMs "gratuitos" no Brasil e só 1 tem WhatsApp + IA sem pagar. Os outros 4 cobram em dólar ou travam funcionalidades essenciais. Tabela comparativa com contatos, usuários e preço do upgrade.'
   } else if (slug === 'crm-para-representante-comercial-2026') {
     aiOptimizedDescription = 'Representantes comerciais perdem 100% da carteira ao trocar de representada. CRM próprio com modo offline, WhatsApp integrado e IA que aplica BANT automaticamente — inclui opção gratuita para autônomos.'
+  } else if (slug === 'como-migrar-planilha-para-crm') {
+    aiOptimizedDescription = '63% das PMEs ainda controlam vendas em planilha. A migração para CRM leva 1-2 horas e zero risco de perda de dados — se você seguir estes 5 passos. Checklist de migração incluso.'
+  } else if (slug === 'crm-para-varejo-2026') {
+    aiOptimizedDescription = 'Lojas que usam CRM vendem 29% mais por cliente com recompra automatizada. Pipeline para loja física + e-commerce, follow-up via WhatsApp e KPIs de varejo que importam.'
+  } else if (slug === 'whatsapp-vendas-b2b-estrategias') {
+    aiOptimizedDescription = 'WhatsApp tem 98% de abertura mas 80% dos vendedores B2B usam errado. 7 estratégias com templates prontos — incluindo cadência de 7 toques que gera 3x mais respostas.'
+  } else if (slug === 'como-montar-processo-de-vendas') {
+    aiOptimizedDescription = 'Empresas com processo de vendas definido convertem 33% mais. 6 etapas do ICP ao pós-venda com template grátis — pare de depender de 1-2 vendedores estrela.'
+  } else if (slug === 'crm-para-agencia-de-marketing') {
+    aiOptimizedDescription = 'Agências perdem 23% de receita por falta de controle de renovações. Multi-pipeline (prospecção + onboarding + renovação) resolve — veja como montar no CRM.'
   }
 
   return {
@@ -390,6 +400,11 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
     'planilha-controle-comissao-corretor': planilhaComissaoFAQs,
     'como-escolher-crm-b2b-2026': comoEscolherCrmFAQs,
     'crm-gratuito-brasil-2026': crmGratuitoFAQs,
+    'como-migrar-planilha-para-crm': migrarPlanilhaFAQs,
+    'crm-para-varejo-2026': crmVarejoFAQs,
+    'whatsapp-vendas-b2b-estrategias': whatsappVendasFAQs,
+    'como-montar-processo-de-vendas': processoVendasFAQs,
+    'crm-para-agencia-de-marketing': crmAgenciaFAQs,
   }
   const faqSchema = faqDataMap[slug] ? generateFAQSchema(faqDataMap[slug], url) : null
 

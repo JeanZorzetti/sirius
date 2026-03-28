@@ -326,6 +326,116 @@ export const crmGratuitoFAQs: FAQItem[] = [
   },
 ]
 
+/**
+ * FAQ data for Como Migrar de Planilha para CRM blog post
+ */
+export const migrarPlanilhaFAQs: FAQItem[] = [
+  {
+    question: 'Quanto tempo leva para migrar de planilha para CRM?',
+    answer: 'Para empresas com até 500 contatos e 1-3 vendedores, a migração completa leva de 1 a 2 horas: 30 minutos para limpar a planilha, 15 minutos para exportar CSV, 15 minutos para importar no CRM e 30 minutos para validar os dados. Times maiores (4-10 vendedores) precisam de 2-3 horas incluindo treinamento.',
+  },
+  {
+    question: 'Vou perder dados ao migrar de planilha para CRM?',
+    answer: 'Não, se você seguir o processo correto: exporte sua planilha como CSV com codificação UTF-8, mapeie os campos (nome, telefone, email, status) para os campos equivalentes no CRM e valide 10% dos registros após a importação. A maioria dos CRMs modernos importa CSV em menos de 5 minutos para até 5.000 contatos.',
+  },
+  {
+    question: 'Qual CRM é mais fácil para quem vem de planilha?',
+    answer: 'CRMs com pipeline visual Kanban são os mais intuitivos para quem vem de planilha. O Sirius CRM, Pipedrive e Agendor têm interfaces que lembram um quadro de tarefas — cada deal é um cartão que você arrasta entre etapas. O onboarding leva menos de 30 minutos sem treinamento técnico.',
+  },
+  {
+    question: 'Posso continuar usando planilha junto com o CRM?',
+    answer: 'Pode, mas não deveria. Manter dois sistemas cria dados duplicados, versões conflitantes e retrabalho. O ideal é migrar 100% para o CRM em até 2 semanas. Se a equipe resistir, defina uma data de corte: a partir do dia X, toda informação que não estiver no CRM não conta para comissão.',
+  },
+]
+
+/**
+ * FAQ data for CRM para Varejo blog post
+ */
+export const crmVarejoFAQs: FAQItem[] = [
+  {
+    question: 'CRM funciona para loja física ou só para e-commerce?',
+    answer: 'CRM funciona para ambos. Na loja física, o vendedor cadastra o cliente pelo celular no momento da visita, registra interesses e agenda follow-up via WhatsApp. No e-commerce, o CRM integra com a plataforma e transforma carrinhos abandonados e leads de formulário em oportunidades no pipeline automaticamente.',
+  },
+  {
+    question: 'Qual o melhor CRM gratuito para varejo?',
+    answer: 'Para varejo com 1-3 vendedores, o Sirius CRM oferece plano gratuito com pipeline visual, WhatsApp integrado e alertas de follow-up — essencial para recompra. HubSpot Free também funciona, mas não tem WhatsApp nativo, o que é limitante para o varejo brasileiro onde 93% das vendas envolvem WhatsApp.',
+  },
+  {
+    question: 'CRM no varejo substitui o sistema de PDV?',
+    answer: 'Não. CRM e PDV (Ponto de Venda) têm funções diferentes. O PDV registra a transação (emissão de nota fiscal, controle de estoque, pagamento). O CRM gerencia o relacionamento: quem é o cliente, o que ele comprou antes, quando deve voltar, como fazer follow-up. Os dois se complementam.',
+  },
+  {
+    question: 'Como medir o ROI do CRM no varejo?',
+    answer: 'Compare 3 métricas antes e depois do CRM: (1) Taxa de recompra — clientes que voltam em 90 dias; (2) Ticket médio — o CRM permite vender complementos baseado no histórico; (3) Leads perdidos — quantos clientes entraram na loja, pediram orçamento e nunca mais foram contatados. A maioria das lojas recupera o investimento em 60 dias.',
+  },
+]
+
+/**
+ * FAQ data for WhatsApp Vendas B2B blog post
+ */
+export const whatsappVendasFAQs: FAQItem[] = [
+  {
+    question: 'WhatsApp Business ou WhatsApp Business API: qual usar para vendas B2B?',
+    answer: 'WhatsApp Business (app gratuito) é suficiente para times de até 3 vendedores com volume baixo-médio. A API (via provedores como Evolution API, Twilio ou Z-API) é necessária quando você precisa de múltiplos atendentes no mesmo número, automações avançadas ou integração com CRM. Para PMEs, o app gratuito + CRM com integração resolve 90% dos casos.',
+  },
+  {
+    question: 'Quantas mensagens posso enviar por dia no WhatsApp sem ser bloqueado?',
+    answer: 'O WhatsApp não divulga limites exatos, mas a prática segura é: até 20 mensagens novas por dia para contatos que nunca te responderam, sem limite para conversas já iniciadas pelo cliente. Envios em massa (broadcast) para contatos frios resultam em bloqueio. A regra de ouro: personalize cada mensagem e não envie a mesma mensagem para mais de 10 contatos ao mesmo tempo.',
+  },
+  {
+    question: 'Como registrar conversas do WhatsApp no CRM automaticamente?',
+    answer: 'CRMs com integração WhatsApp nativa (como o Sirius CRM) registram cada mensagem automaticamente no histórico do contato. CRMs sem integração exigem cópia manual ou ferramentas intermediárias. O registro automático é essencial para não perder contexto quando outro vendedor assume o cliente ou quando você precisa revisar o histórico antes de uma ligação.',
+  },
+  {
+    question: 'WhatsApp funciona para prospecção B2B fria?',
+    answer: 'Sim, com ressalvas. A taxa de resposta para mensagens frias no WhatsApp é 5-15% (vs 1-3% do email frio), mas só funciona se a mensagem for personalizada e relevante. Nunca envie catálogo sem contexto. A abordagem que funciona: mencione algo específico da empresa do prospect (evento recente, vaga aberta, expansão) e faça uma pergunta consultiva.',
+  },
+]
+
+/**
+ * FAQ data for Como Montar Processo de Vendas blog post
+ */
+export const processoVendasFAQs: FAQItem[] = [
+  {
+    question: 'Qual a diferença entre processo de vendas e funil de vendas?',
+    answer: 'O processo de vendas é o que o vendedor FAZ em cada etapa (prospectar, qualificar, apresentar, negociar, fechar). O funil de vendas é a VISUALIZAÇÃO de quantos leads estão em cada etapa e como eles progridem. O processo define as ações; o funil mede os resultados. Você precisa dos dois: processo sem funil não mede; funil sem processo não executa.',
+  },
+  {
+    question: 'Quantas etapas deve ter um processo de vendas?',
+    answer: 'Para PMEs B2B, o ideal é 5 a 7 etapas. Menos que 5 não dá visibilidade suficiente (onde o deal travou?). Mais que 7 cria burocracia e o vendedor para de atualizar. Etapas clássicas: Prospecção → Qualificação → Discovery → Proposta → Negociação → Fechamento → Pós-venda.',
+  },
+  {
+    question: 'Preciso de CRM para ter um processo de vendas?',
+    answer: 'Não para começar — você pode documentar o processo em um documento e usar planilha nos primeiros 30 dias. Mas para escalar, medir e automatizar, o CRM é indispensável. Sem CRM, o processo depende 100% da disciplina individual do vendedor, e a gestão não tem visibilidade de onde os deals estão travando.',
+  },
+  {
+    question: 'Como treinar a equipe no novo processo de vendas?',
+    answer: 'O treinamento mais eficaz é em 3 fases: (1) Workshop de 2 horas apresentando o processo e o CRM; (2) Shadowing na primeira semana — gestor acompanha 2-3 calls de cada vendedor e dá feedback em tempo real; (3) Revisão semanal nos primeiros 30 dias, ajustando etapas e critérios de qualificação com base nos dados reais do pipeline.',
+  },
+]
+
+/**
+ * FAQ data for CRM para Agência de Marketing blog post
+ */
+export const crmAgenciaFAQs: FAQItem[] = [
+  {
+    question: 'CRM para agência é diferente de CRM para vendas?',
+    answer: 'Sim. Agências precisam de multi-pipeline (um para prospecção de novos clientes, outro para onboarding, outro para renovação), campos customizados por tipo de serviço (SEO, Mídia, Social) e visão de MRR por cliente. CRMs genéricos funcionam, mas precisam de customização. O diferencial é conseguir separar gestão comercial de gestão de projetos.',
+  },
+  {
+    question: 'Posso usar Trello ou Asana no lugar de CRM para minha agência?',
+    answer: 'Trello e Asana são ótimos para gestão de projetos (tarefas, prazos, entregas), mas péssimos para gestão comercial. Eles não rastreiam valor de deal, taxa de conversão, ciclo de vendas ou MRR. Se você só usa Trello, está gerenciando entregas mas não está gerenciando receita. O ideal é usar CRM para vendas + Trello/Asana para projetos.',
+  },
+  {
+    question: 'Como evitar churn de clientes na agência com CRM?',
+    answer: 'Configure 3 alertas no CRM: (1) Cliente sem interação há 15 dias — hora de ligar; (2) Contrato vencendo em 45 dias — iniciar conversa de renovação; (3) NPS abaixo de 7 — acionar plano de retenção. Agências que monitoram esses 3 indicadores reduzem churn em 30-40% porque detectam insatisfação antes que o cliente cancele.',
+  },
+  {
+    question: 'Qual o melhor CRM gratuito para agência pequena?',
+    answer: 'Para agências de até 5 pessoas, o Sirius CRM oferece pipeline visual gratuito com WhatsApp integrado — ideal para prospecção e atendimento. HubSpot Free é outra opção com formulários e email marketing básico. O critério decisivo para agências é suporte a múltiplos pipelines e campos customizados — verifique se o plano gratuito oferece isso.',
+  },
+]
+
 export const comoEscolherCrmFAQs: FAQItem[] = [
   {
     question: 'Qual o melhor CRM para pequenas empresas no Brasil?',
