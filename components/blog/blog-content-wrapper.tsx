@@ -2,12 +2,6 @@
 
 import { useEffect, useRef } from 'react'
 import { createRoot } from 'react-dom/client'
-import { FunnelCalculator } from './funnel-calculator'
-import { FunnelTemplateDownload } from './funnel-template-download'
-import { CalculadoraROI } from '@/components/calculadora-roi'
-import { CRMIAQuiz } from './crm-ia-quiz'
-import { ROIAutomacaoCalc } from './roi-automacao-calc'
-import { CRMFinder } from './crm-finder'
 
 interface BlogContentWrapperProps {
   content: string
@@ -20,75 +14,82 @@ export function BlogContentWrapper({ content, slug }: BlogContentWrapperProps) {
   useEffect(() => {
     if (!contentRef.current) return
 
-    // For funil-de-vendas article, inject interactive components
+    // Dynamic imports: only load component JS for the specific slug
     if (slug === 'funil-de-vendas-guia-completo') {
-      // Inject FunnelCalculator
-      const calculatorPlaceholder = contentRef.current.querySelector('.funnel-calculator-component')
-      if (calculatorPlaceholder && !calculatorPlaceholder.hasChildNodes()) {
-        const root = createRoot(calculatorPlaceholder)
-        root.render(<FunnelCalculator />)
+      const calcPlaceholder = contentRef.current.querySelector('.funnel-calculator-component')
+      if (calcPlaceholder && !calcPlaceholder.hasChildNodes()) {
+        import('./funnel-calculator').then(({ FunnelCalculator }) => {
+          const root = createRoot(calcPlaceholder)
+          root.render(<FunnelCalculator />)
+        })
       }
 
-      // Inject FunnelTemplateDownload
       const templatePlaceholder = contentRef.current.querySelector('.funnel-template-download-component')
       if (templatePlaceholder && !templatePlaceholder.hasChildNodes()) {
-        const root = createRoot(templatePlaceholder)
-        root.render(<FunnelTemplateDownload />)
+        import('./funnel-template-download').then(({ FunnelTemplateDownload }) => {
+          const root = createRoot(templatePlaceholder)
+          root.render(<FunnelTemplateDownload />)
+        })
       }
     }
 
-    // For planilha-controle-comissao-corretor, inject ROI Calculator (Honey Trap)
     if (slug === 'planilha-controle-comissao-corretor') {
-      const roiCalculatorPlaceholder = contentRef.current.querySelector('.roi-calculator-component')
-      if (roiCalculatorPlaceholder && !roiCalculatorPlaceholder.hasChildNodes()) {
-        const root = createRoot(roiCalculatorPlaceholder)
-        root.render(
-          <CalculadoraROI
-            ctaText="Pare de perder comissões - Teste o Sirius CRM Grátis"
-            ctaHref="/register"
-          />
-        )
+      const placeholder = contentRef.current.querySelector('.roi-calculator-component')
+      if (placeholder && !placeholder.hasChildNodes()) {
+        import('@/components/calculadora-roi').then(({ CalculadoraROI }) => {
+          const root = createRoot(placeholder)
+          root.render(
+            <CalculadoraROI
+              ctaText="Pare de perder comissões - Teste o Sirius CRM Grátis"
+              ctaHref="/register"
+            />
+          )
+        })
       }
     }
 
-    // For custo-oculto-inacao-crm, inject ROI Calculator (Honey Trap)
     if (slug === 'custo-oculto-inacao-crm') {
-      const roiCalculatorPlaceholder = contentRef.current.querySelector('.roi-calculator-component')
-      if (roiCalculatorPlaceholder && !roiCalculatorPlaceholder.hasChildNodes()) {
-        const root = createRoot(roiCalculatorPlaceholder)
-        root.render(
-          <CalculadoraROI
-            ctaText="Calcule seu custo de inação agora"
-            ctaHref="/register"
-          />
-        )
+      const placeholder = contentRef.current.querySelector('.roi-calculator-component')
+      if (placeholder && !placeholder.hasChildNodes()) {
+        import('@/components/calculadora-roi').then(({ CalculadoraROI }) => {
+          const root = createRoot(placeholder)
+          root.render(
+            <CalculadoraROI
+              ctaText="Calcule seu custo de inação agora"
+              ctaHref="/register"
+            />
+          )
+        })
       }
     }
 
-    // For crm-ia-inteligencia-artificial-2026, inject CRM IA Quiz
     if (slug === 'crm-ia-inteligencia-artificial-2026') {
       const placeholder = contentRef.current.querySelector('.crm-ia-quiz-component')
       if (placeholder && !placeholder.hasChildNodes()) {
-        const root = createRoot(placeholder)
-        root.render(<CRMIAQuiz />)
+        import('./crm-ia-quiz').then(({ CRMIAQuiz }) => {
+          const root = createRoot(placeholder)
+          root.render(<CRMIAQuiz />)
+        })
       }
     }
 
-    // For crm-automacao-vendas-guia-completo, inject ROI Automacao Calculator
     if (slug === 'crm-automacao-vendas-guia-completo') {
       const placeholder = contentRef.current.querySelector('.roi-automacao-component')
       if (placeholder && !placeholder.hasChildNodes()) {
-        const root = createRoot(placeholder)
-        root.render(<ROIAutomacaoCalc />)
+        import('./roi-automacao-calc').then(({ ROIAutomacaoCalc }) => {
+          const root = createRoot(placeholder)
+          root.render(<ROIAutomacaoCalc />)
+        })
       }
     }
 
-    // For melhor-crm-2026-comparativo, inject CRM Finder
     if (slug === 'melhor-crm-2026-comparativo') {
       const placeholder = contentRef.current.querySelector('.crm-finder-component')
       if (placeholder && !placeholder.hasChildNodes()) {
-        const root = createRoot(placeholder)
-        root.render(<CRMFinder />)
+        import('./crm-finder').then(({ CRMFinder }) => {
+          const root = createRoot(placeholder)
+          root.render(<CRMFinder />)
+        })
       }
     }
   }, [slug])

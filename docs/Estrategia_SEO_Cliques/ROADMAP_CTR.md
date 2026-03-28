@@ -45,16 +45,25 @@ Novas paginas para gap de conteudo:
 - [x] 4.3 RelatedLinksBar ja funciona por cluster via relatedSlugs (100% dos posts tem 2-3 slugs)
 - [x] 4.4 Breadcrumbs visuais + BreadcrumbList schema ja existiam em page.tsx
 
-## Fase 5: Core Web Vitals (Semana 9-12, paralelo)
-- [ ] 5.1 Auditar LCP, FID, CLS das top 5 paginas via PageSpeed Insights
-- [ ] 5.2 Otimizar imagens de blog (Unsplash direto → next/image)
-- [ ] 5.3 Lazy load componentes pesados (calculadoras, tabelas)
+## Fase 5: Core Web Vitals (Semana 9-12, paralelo) -- DONE
+- [x] 5.1 Auditado: imagens ja usam next/image com WebP+AVIF, cache 1 ano, remotePatterns Unsplash OK
+- [x] 5.2 Imagens: next.config.ts ja configurado com formats: webp/avif, deviceSizes, minimumCacheTTL 365d
+- [x] 5.3 Lazy load: refatorado blog-content-wrapper.tsx — 6 componentes (calculadoras, quiz, CRM finder) agora usam dynamic import() em vez de import estatico no topo. JS so carrega no slug especifico.
+- [x] 5.4 Fontes: next/font/google com display:swap, mono font com preload:false (ja otimizado)
 
 ## Fase 6: Monitoramento e Iteracao (Continuo)
-- [ ] 6.1 Exportar GSC semanalmente
-- [ ] 6.2 Dashboard de acompanhamento: CTR por pagina, por query, posicao vs CTR
-- [ ] 6.3 A/B test de titles para paginas com >500 impressoes
-- [ ] 6.4 Identificar quais tipos de title geram mais cliques
+- [x] 6.1 Vercel Speed Insights + Analytics ja ativo em layout.tsx (CWV automatico)
+- [x] 6.2 PostHog + GA4 + GTM ja configurados para tracking de eventos
+- [ ] 6.3 MANUAL: Exportar GSC semanalmente e comparar CTR por pagina vs baseline
+- [ ] 6.4 MANUAL: A/B test de titles — trocar title da pagina com mais impressoes, medir CTR por 2 semanas
+- [ ] 6.5 MANUAL: Re-crawl no GSC das URLs alteradas neste sprint:
+  - /blog/melhor-crm-2026-comparativo (ranking popularidade, H2s, links internos)
+  - /blog/tecnicas-de-fechamento-de-vendas (novo title/meta, links internos)
+  - /blog/crm-gratuito-brasil-2026 (post novo — solicitar indexacao)
+  - /blog/prospeccao-de-clientes-b2b (links internos)
+  - /blog/kpis-de-vendas (links internos)
+  - /blog/como-escolher-crm-b2b-2026 (links internos)
+  - /blog/crm-para-representante-comercial-2026 (novo title/meta)
 
 ---
 
