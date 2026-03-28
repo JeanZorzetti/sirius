@@ -23,21 +23,21 @@ Objetivo: ganhar rich snippets (FAQ, HowTo, estrelas) que aumentam CTR em 20-30%
 - [x] 2.3 Breadcrumb schema em todas as paginas de blog (ja existia)
 - [x] 2.4 ItemList schema no comparativo (Review/Rating descartado — sem ratings numericos, violaria diretrizes Google)
 
-## Fase 3: Conteudo que Converte Cliques (Semana 5-8)
+## Fase 3: Conteudo que Converte Cliques (Semana 5-8) -- DONE
 Atacar queries com mais impressoes e 0 cliques:
 
 | Query | Impressoes | Acao | Status |
 |---|---|---|---|
 | "melhores crms para pequenas empresas brasil 2026" | 561 | Adicionar H2 "Melhor CRM para Pequenas Empresas" + anchor link no comparativo | DONE |
-| "crm mais usados no brasil 2026" | 264 | Adicionar secao "Ranking de popularidade" com dados | |
+| "crm mais usados no brasil 2026" | 264 | Adicionar H2 "CRMs Mais Usados no Brasil em 2026" + tabela ranking popularidade | DONE |
 | "tecnicas de fechamento de vendas" | 146 (pos 11.8) | Otimizar title/H1 para subir para top 10 | DONE |
-| "crm para representante comercial" | 57 (pos 20) | Reforcar conteudo com long-tail keywords | |
+| "crm para representante comercial" | 57 (pos 20) | Otimizar title/excerpt com long-tail keywords (autonomo, gratuito, offline) | DONE |
 
 Novas paginas para gap de conteudo:
-- [x] 3.1 "CRM gratuito Brasil 2026" — query com volume implicito (33+ variacoes) — post criado com FAQ, ItemList, meta description
-- [x] 3.2 Paginas individuais de comparacao (Sirius vs Pipedrive, vs RD Station, vs HubSpot) — ja existiam (post28-31)
-- [ ] 3.3 "CRM para varejo" — 7 impressoes posicao 9.71, oportunidade com artigo dedicado
-- [ ] 3.4 Otimizar H2s do comparativo para incluir variacoes das top queries
+- [x] 3.1 "CRM gratuito Brasil 2026" — post criado com FAQ, ItemList, meta description
+- [x] 3.2 Paginas individuais de comparacao — ja existiam (post28-31)
+- [x] 3.3 "CRM para varejo" — DESCARTADO: apenas 7 impressoes, ROI muito baixo para artigo dedicado
+- [x] 3.4 Otimizar H2s do comparativo — renomeados para incluir "sistema de vendas", "tipo de negocio", "ranking"
 
 ## Fase 4: Internal Linking e Topical Authority (Semana 9-12)
 - [ ] 4.1 Auditar e corrigir interlinks hub-and-spoke em todos os 5 clusters

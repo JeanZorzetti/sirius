@@ -74,6 +74,8 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
     aiOptimizedDescription = '63% das PMEs ainda usam planilhas. CRM errado custa R$12.000+/ano. Responda 5 perguntas para descobrir qual sistema combina com seu negócio — 7 critérios eliminatórios sem viés de marca.'
   } else if (slug === 'crm-gratuito-brasil-2026') {
     aiOptimizedDescription = 'Testamos 5 CRMs "gratuitos" no Brasil e só 1 tem WhatsApp + IA sem pagar. Os outros 4 cobram em dólar ou travam funcionalidades essenciais. Tabela comparativa com contatos, usuários e preço do upgrade.'
+  } else if (slug === 'crm-para-representante-comercial-2026') {
+    aiOptimizedDescription = 'Representantes comerciais perdem 100% da carteira ao trocar de representada. CRM próprio com modo offline, WhatsApp integrado e IA que aplica BANT automaticamente — inclui opção gratuita para autônomos.'
   }
 
   return {

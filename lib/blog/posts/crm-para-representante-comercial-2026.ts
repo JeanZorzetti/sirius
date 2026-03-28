@@ -2,10 +2,10 @@ import { BlogPost } from '../../blog-types'
 
 export const post: BlogPost = {
   slug: 'crm-para-representante-comercial-2026',
-  title: 'CRM para Representante Comercial em 2026: Como Nunca Mais Perder um Cliente ao Trocar de Representada',
-  excerpt: 'Descubra como um CRM próprio protege sua carteira ao trocar de representada, funciona offline em campo e usa IA para qualificar leads com BANT automaticamente.',
+  title: 'CRM para Representante Comercial Autônomo: Gratuito, Offline e com IA [2026]',
+  excerpt: 'Representantes comerciais perdem a carteira ao trocar de representada. CRM próprio com offline, WhatsApp e IA resolve — veja qual é gratuito para autônomos.',
   date: '2026-03-21',
-  lastModified: '2026-03-21',
+  lastModified: '2026-03-28',
   category: 'Vendas',
   image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=1200&h=630&fit=crop&auto=format&q=80',
   author: 'Equipe Sirius CRM',
