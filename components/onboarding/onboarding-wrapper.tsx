@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import { WelcomeModal } from './welcome-modal'
 import { TourProvider } from './product-tour'
 
@@ -29,14 +29,25 @@ export function OnboardingWrapper({
     }
   }, [shouldShowOnboarding])
 
+  const handleClose = useCallback(() => {
+    setShowWelcome(false)
+    // Persist dismissal so modal doesn't reappear on refresh
+    fetch('/api/onboarding/complete', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ status: 'SKIPPED' })
+    }).catch(() => {})
+  }, [])
+
   return (
     <TourProvider>
       <WelcomeModal
         open={showWelcome}
-        onClose={() => setShowWelcome(false)}
+        onClose={handleClose}
         userName={userName}
       />
       {children}
     </TourProvider>
   )
 }
+
