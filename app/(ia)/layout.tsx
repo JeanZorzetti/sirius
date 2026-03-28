@@ -21,7 +21,11 @@ export default async function IALayout({
 
   const user = await prisma.user.findUnique({
     where: { email: session.user.email },
-    include: {
+    select: {
+      id: true,
+      name: true,
+      email: true,
+      organizationId: true,
       organization: {
         select: { id: true, name: true, tier: true }
       }
@@ -41,7 +45,7 @@ export default async function IALayout({
       </div>
 
       {/* Top navigation */}
-      <IANavbar user={user} organizationName={user.organization.name} />
+      <IANavbar user={{ name: user.name, email: user.email }} organizationName={user.organization.name} />
 
       {/* Page content */}
       <main className="relative pt-16">
