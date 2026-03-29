@@ -19,6 +19,7 @@ interface AgentAction {
   reasoning: string
   confidence: number
   input: any
+  userId: string
 }
 
 /**
@@ -40,7 +41,7 @@ export async function executeAgentAction(action: AgentAction): Promise<{ success
  * LeadQualifier: Analyze the message, qualify the lead, and create a deal.
  */
 async function executeLeadQualifier(action: AgentAction): Promise<{ success: boolean; output: Record<string, any> }> {
-  const { organizationId, entityId: contactId, input } = action
+  const { organizationId, entityId: contactId, input, userId } = action
   const messageText = input?.messageText || ''
   const contactName = input?.contactName || 'Lead'
 
@@ -105,6 +106,7 @@ Responda APENAS em JSON válido com esta estrutura:
     const deal = await prisma.deal.create({
       data: {
         organizationId,
+        userId,
         contactId,
         pipelineId: pipeline.id,
         stageId: pipeline.stages[0].id,

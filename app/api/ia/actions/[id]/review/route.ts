@@ -79,6 +79,7 @@ export async function PATCH(
         reasoning: action.reasoning,
         confidence: action.confidence,
         input: action.input,
+        userId: user.id,
       })
 
       const updated = await prisma.agentAction.update({
