@@ -329,10 +329,23 @@ async function handleIncomingMessage(connection: any, data: any) {
                     continue
                 }
 
-                // Ignorar mensagens de protocolo/sistema
+                // Ignorar mensagens puramente de protocolo/sistema
+                // IMPORTANT: senderKeyDistributionMessage is an encryption key exchange
+                // that is often bundled WITH the actual message content (extendedTextMessage,
+                // conversation, imageMessage, etc.). Only skip if it's the ONLY content.
                 const msg = message.message
-                if (msg?.protocolMessage || msg?.reactionMessage || msg?.senderKeyDistributionMessage) {
+                if (msg?.protocolMessage || msg?.reactionMessage) {
                     logger.debug({ messageId: message.key?.id }, 'Skipping protocol/reaction message')
+                    continue
+                }
+                if (msg?.senderKeyDistributionMessage && !msg.conversation && !msg.extendedTextMessage
+                    && !msg.imageMessage && !msg.videoMessage && !msg.documentMessage
+                    && !msg.audioMessage && !msg.pttMessage && !msg.stickerMessage
+                    && !msg.contactMessage && !msg.contactsArrayMessage
+                    && !msg.locationMessage && !msg.liveLocationMessage
+                    && !msg.viewOnceMessage && !msg.viewOnceMessageV2
+                    && !msg.pollCreationMessage && !msg.pollCreationMessageV3) {
+                    logger.debug({ messageId: message.key?.id }, 'Skipping pure senderKeyDistribution message')
                     continue
                 }
 
