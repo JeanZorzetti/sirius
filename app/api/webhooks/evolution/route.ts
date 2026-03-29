@@ -292,22 +292,35 @@ async function handleIncomingMessage(connection: any, data: any) {
             try {
                 const isFromMe = !!message?.key?.fromMe
 
-                // Validar remoteJid — LID resolve via senderPn
+                // Resolve remoteJid — WhatsApp LID privacy sends @lid instead of real number.
+                // Real number can be in: senderPn, remoteJidAlt, or participant (groups).
                 let remoteJid = message?.key?.remoteJid
-                const senderPn = message?.key?.senderPn // WhatsApp LID privacy: real number here
+                const senderPn = message?.key?.senderPn
+                const remoteJidAlt = message?.key?.remoteJidAlt
 
-                if (!remoteJid && !senderPn) {
-                    logger.debug({ remoteJid }, 'Skipping message without remoteJid or senderPn')
+                if (!remoteJid && !senderPn && !remoteJidAlt) {
+                    logger.info({ messageKey: message?.key }, 'Skipping message without any JID')
                     continue
                 }
 
-                // Se remoteJid é LID, usar senderPn como remoteJid real
-                if (remoteJid?.includes('@lid') && senderPn) {
-                    logger.info({ lid: remoteJid, senderPn }, '🔄 Resolving LID to senderPn')
-                    remoteJid = senderPn
-                } else if (remoteJid?.includes('@lid') && !senderPn) {
-                    logger.debug({ remoteJid }, 'Skipping LID message without senderPn')
-                    continue
+                // Resolve LID to real JID
+                if (remoteJid?.includes('@lid')) {
+                    if (senderPn) {
+                        logger.info({ lid: remoteJid, senderPn }, '🔄 Resolving LID via senderPn')
+                        remoteJid = senderPn.includes('@') ? senderPn : `${senderPn}@s.whatsapp.net`
+                    } else if (remoteJidAlt && !remoteJidAlt.includes('@lid')) {
+                        logger.info({ lid: remoteJid, remoteJidAlt }, '🔄 Resolving LID via remoteJidAlt')
+                        remoteJid = remoteJidAlt
+                    } else {
+                        logger.warn({ remoteJid, keyFields: Object.keys(message?.key || {}) }, '⚠️ LID message without senderPn or remoteJidAlt — skipping')
+                        continue
+                    }
+                }
+
+                // Fallback if remoteJid is missing entirely
+                if (!remoteJid) {
+                    remoteJid = senderPn || remoteJidAlt
+                    if (!remoteJid) continue
                 }
 
                 // Ignorar status, newsletter, broadcast
