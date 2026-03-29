@@ -6,7 +6,9 @@ import { Button } from '@/components/ui/button'
 import {
   X, Users, Phone, Mail, Building2, ChevronDown, ChevronUp,
   Plus, DollarSign, Calendar, StickyNote, Tag as TagIcon, ExternalLink,
+  Trash2, Loader2,
 } from 'lucide-react'
+import { toast } from 'sonner'
 import { cn } from '@/lib/utils'
 import Link from 'next/link'
 
@@ -55,6 +57,7 @@ interface ContactData {
 interface ContactSidebarProps {
   contact: ContactData
   onClose: () => void
+  onChatCleared?: () => void
 }
 
 const COLORS = ['bg-blue-500','bg-emerald-500','bg-violet-500','bg-amber-500','bg-rose-500','bg-cyan-500','bg-pink-500','bg-teal-500']
@@ -97,10 +100,40 @@ function formatCurrency(value: number | null): string {
   }).format(value)
 }
 
-export function ContactSidebar({ contact, onClose }: ContactSidebarProps) {
+export function ContactSidebar({ contact, onClose, onChatCleared }: ContactSidebarProps) {
   const [dealsOpen, setDealsOpen] = useState(true)
   const [tagsOpen, setTagsOpen] = useState(true)
   const [notesOpen, setNotesOpen] = useState(true)
+  const [clearing, setClearing] = useState(false)
+  const [confirmClear, setConfirmClear] = useState(false)
+
+  const handleClearChat = async () => {
+    if (!confirmClear) {
+      setConfirmClear(true)
+      setTimeout(() => setConfirmClear(false), 4000)
+      return
+    }
+    setClearing(true)
+    try {
+      const r = await fetch(`/api/whatsapp/messages/clear`, {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ contactId: contact.id }),
+      })
+      if (!r.ok) {
+        const d = await r.json()
+        throw new Error(d.error || 'Erro ao limpar')
+      }
+      const data = await r.json()
+      toast.success(`${data.deleted} mensagens removidas`)
+      setConfirmClear(false)
+      onChatCleared?.()
+    } catch (err: any) {
+      toast.error(err.message || 'Erro ao limpar histórico')
+    } finally {
+      setClearing(false)
+    }
+  }
 
   const name = getName(contact)
   const phone = formatPhone(contact.phone)
@@ -314,6 +347,20 @@ export function ContactSidebar({ contact, onClose }: ContactSidebarProps) {
             Ver Perfil Completo
           </Button>
         </Link>
+        <Button
+          variant={confirmClear ? 'destructive' : 'outline'}
+          size="sm"
+          className="w-full"
+          onClick={handleClearChat}
+          disabled={clearing}
+        >
+          {clearing ? (
+            <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+          ) : (
+            <Trash2 className="h-4 w-4 mr-2" />
+          )}
+          {confirmClear ? 'Confirmar? Clique novamente' : 'Limpar Histórico'}
+        </Button>
       </div>
     </div>
   )

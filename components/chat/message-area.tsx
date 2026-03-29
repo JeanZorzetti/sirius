@@ -1219,6 +1219,7 @@ export function MessageArea({ contact, connections, organizationId, userId, user
             _count: contactData._count,
           }}
           onClose={() => setShowSidebar(false)}
+          onChatCleared={() => { setMessages([]); fetchContactData() }}
         />
       )}
     </div>
