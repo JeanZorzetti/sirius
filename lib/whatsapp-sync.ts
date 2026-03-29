@@ -56,6 +56,10 @@ export async function findContactByPhone(organizationId: string, phone: string) 
 }
 
 export function extractMessageText(message: any): string {
+  // Evolution API v2 sometimes puts text directly on the message object
+  if (message.body) return message.body
+  if (message.text) return message.text
+
   const msg = message.message
   if (!msg) {
     if (message.messageType === 'conversation') return ''
@@ -75,7 +79,8 @@ export function extractMessageText(message: any): string {
   if (msg.pollCreationMessage || msg.pollCreationMessageV3) return '[Enquete]'
   if (msg.reactionMessage) return ''
   if (msg.protocolMessage) return ''
-  if (msg.senderKeyDistributionMessage) return ''
+  // senderKeyDistributionMessage is a crypto key exchange — ignore it,
+  // but DON'T return '' because it can coexist with real content above
 
   return '[Mensagem]'
 }

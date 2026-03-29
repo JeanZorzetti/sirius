@@ -290,10 +290,21 @@ async function handleIncomingMessage(connection: any, data: any) {
 
         for (const message of messages) {
             try {
+                // Log every single message for debugging
+                const msgKeys = message?.message ? Object.keys(message.message) : []
+                logger.info({
+                    keyId: message?.key?.id,
+                    remoteJid: message?.key?.remoteJid,
+                    senderPn: message?.key?.senderPn,
+                    remoteJidAlt: message?.key?.remoteJidAlt,
+                    fromMe: message?.key?.fromMe,
+                    messageTypes: msgKeys,
+                    messageType: message?.messageType,
+                }, '🔍 Processing individual message')
+
                 const isFromMe = !!message?.key?.fromMe
 
                 // Resolve remoteJid — WhatsApp LID privacy sends @lid instead of real number.
-                // Real number can be in: senderPn, remoteJidAlt, or participant (groups).
                 let remoteJid = message?.key?.remoteJid
                 const senderPn = message?.key?.senderPn
                 const remoteJidAlt = message?.key?.remoteJidAlt
