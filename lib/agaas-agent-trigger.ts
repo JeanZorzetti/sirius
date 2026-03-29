@@ -47,12 +47,19 @@ export async function triggerAgentsForInboundMessage(ctx: InboundMessageContext)
       select: { iaConfig: true },
     })
 
-    const config = (org?.iaConfig || {}) as Record<string, { enabled?: boolean }>
+    const rawConfig = (org?.iaConfig || {}) as Record<string, any>
+
+    // iaConfig supports two formats:
+    //   Format A (UI): { enabledAgents: { 'lead-qualifier': true, ... } }
+    //   Format B:      { 'lead-qualifier': { enabled: true }, ... }
+    const enabledMap = rawConfig.enabledAgents || rawConfig
 
     // Find which whatsapp-triggered agents are enabled
-    const enabledAgents = WHATSAPP_MESSAGE_AGENTS.filter(
-      (agentId) => config[agentId]?.enabled === true
-    )
+    const enabledAgents = WHATSAPP_MESSAGE_AGENTS.filter((agentId) => {
+      const val = enabledMap[agentId]
+      // true (Format A) or { enabled: true } (Format B)
+      return val === true || val?.enabled === true
+    })
 
     if (enabledAgents.length === 0) return
 
