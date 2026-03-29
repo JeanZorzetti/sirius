@@ -8,6 +8,7 @@
  * Actions are created as NEEDS_APPROVAL so the user reviews them in /IA.
  */
 
+import { Prisma } from '@prisma/client'
 import { prisma } from '@/lib/prisma'
 import { checkAgaasQuota, incrementAgaasUsage } from '@/lib/agaas-quota'
 import logger from '@/lib/logger'
@@ -69,7 +70,7 @@ export async function triggerAgentsForInboundMessage(ctx: InboundMessageContext)
       entityId: string
       reasoning: string
       confidence: number
-      input: Record<string, unknown>
+      input: Prisma.InputJsonValue
     }> = []
 
     // LeadQualifier: triggers when contact has NO deal (new lead)
