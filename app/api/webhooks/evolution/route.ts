@@ -9,6 +9,7 @@ import {
   extractMessageText,
   extractMediaInfo,
 } from '@/lib/whatsapp-sync'
+import { triggerAgentsForInboundMessage } from '@/lib/agaas-agent-trigger'
 
 /**
  * Webhook receiver para Evolution API v2
@@ -466,6 +467,18 @@ async function handleIncomingMessage(connection: any, data: any) {
                   contactName: contact.name,
                   contactPhone: contact.phone,
                 })
+
+                // AgaaS: trigger agents for inbound messages (non-blocking)
+                if (!isFromMe && messageText) {
+                  triggerAgentsForInboundMessage({
+                    organizationId,
+                    contactId: contact.id,
+                    messageId: savedMsg.id,
+                    messageText,
+                    contactName: contact.name || '',
+                    contactPhone: contact.phone,
+                  }).catch(() => {}) // fire-and-forget, errors logged internally
+                }
 
             } catch (msgError: any) {
                 logger.error({
