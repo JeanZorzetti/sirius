@@ -239,7 +239,7 @@ export async function triggerAgentsForInboundMessage(ctx: InboundMessageContext)
       if (autoExecute) {
         // Find an admin/owner user for the org to assign as deal owner
         const orgUser = await prisma.user.findFirst({
-          where: { organizationId, role: { in: ['ADMIN', 'OWNER'] } },
+          where: { organizationId, role: 'ADMIN' },
           select: { id: true },
         })
 
