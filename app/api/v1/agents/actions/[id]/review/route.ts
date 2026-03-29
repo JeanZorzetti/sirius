@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { withApiMiddleware, apiResponse } from '@/lib/api-middleware'
 import { prisma } from '@/lib/prisma'
 import { uuidSchema } from '@/lib/api-validators'
+import { executeAgentAction } from '@/lib/agaas-executor'
 import logger from '@/lib/logger'
 
 /**
@@ -68,32 +69,67 @@ export async function PATCH(
         )
       }
 
-      // Update the action
-      const newStatus = decision === 'APPROVED' ? 'SUCCESS' : 'FAILED'
-      const updated = await prisma.agentAction.update({
+      if (decision === 'REJECTED') {
+        const updated = await prisma.agentAction.update({
+          where: { id: paramsData.id },
+          data: { status: 'FAILED', reviewedBy: reviewedBy || null, reviewedAt: new Date() },
+        })
+        return NextResponse.json(
+          apiResponse(context.requestId, {
+            ...updated,
+            createdAt: updated.createdAt.toISOString(),
+            reviewedAt: updated.reviewedAt?.toISOString() || null,
+          })
+        )
+      }
+
+      // APPROVED — execute the agent action
+      await prisma.agentAction.update({
         where: { id: paramsData.id },
-        data: {
-          status: newStatus,
-          reviewedBy: reviewedBy || null,
-          reviewedAt: new Date()
-        }
+        data: { status: 'PENDING', reviewedBy: reviewedBy || null, reviewedAt: new Date() },
       })
 
-      logger.info({
-        requestId: context.requestId,
-        organizationId: context.organizationId,
-        actionId: updated.id,
-        decision,
-        reviewedBy
-      }, 'Agent action reviewed via API')
-
-      return NextResponse.json(
-        apiResponse(context.requestId, {
-          ...updated,
-          createdAt: updated.createdAt.toISOString(),
-          reviewedAt: updated.reviewedAt?.toISOString() || null
+      try {
+        const result = await executeAgentAction({
+          id: action.id,
+          organizationId: action.organizationId,
+          agentName: action.agentName,
+          actionType: action.actionType,
+          entityType: action.entityType,
+          entityId: action.entityId,
+          reasoning: action.reasoning,
+          confidence: action.confidence,
+          input: action.input,
         })
-      )
+
+        const updated = await prisma.agentAction.update({
+          where: { id: paramsData.id },
+          data: { status: result.success ? 'SUCCESS' : 'FAILED', output: result.output },
+        })
+
+        logger.info({ actionId: updated.id, decision, success: result.success }, 'Agent action executed via API')
+
+        return NextResponse.json(
+          apiResponse(context.requestId, {
+            ...updated,
+            createdAt: updated.createdAt.toISOString(),
+            reviewedAt: updated.reviewedAt?.toISOString() || null,
+          })
+        )
+      } catch (execError: any) {
+        const updated = await prisma.agentAction.update({
+          where: { id: paramsData.id },
+          data: { status: 'FAILED', output: { error: execError.message } },
+        })
+
+        return NextResponse.json(
+          apiResponse(context.requestId, {
+            ...updated,
+            createdAt: updated.createdAt.toISOString(),
+            reviewedAt: updated.reviewedAt?.toISOString() || null,
+          })
+        )
+      }
     } catch (error) {
       logger.error({
         requestId: context.requestId,

@@ -1,10 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
+import { executeAgentAction } from '@/lib/agaas-executor'
+import logger from '@/lib/logger'
 
 /**
  * PATCH /api/ia/actions/[id]/review
  * Internal session-based route for the /IA feed to approve/reject agent actions.
+ * When APPROVED, executes the agent action (LLM call + CRM operation).
  */
 export async function PATCH(
   request: NextRequest,
@@ -43,20 +46,74 @@ export async function PATCH(
       return NextResponse.json({ error: `Action is already ${action.status}` }, { status: 409 })
     }
 
-    const updated = await prisma.agentAction.update({
+    if (decision === 'REJECTED') {
+      const updated = await prisma.agentAction.update({
+        where: { id },
+        data: {
+          status: 'FAILED',
+          reviewedBy: user.id,
+          reviewedAt: new Date(),
+        },
+      })
+      return NextResponse.json({
+        ...updated,
+        createdAt: updated.createdAt.toISOString(),
+        reviewedAt: updated.reviewedAt?.toISOString(),
+      })
+    }
+
+    // APPROVED — mark as executing, then run the agent
+    await prisma.agentAction.update({
       where: { id },
-      data: {
-        status: decision === 'APPROVED' ? 'SUCCESS' : 'FAILED',
-        reviewedBy: user.id,
-        reviewedAt: new Date()
-      }
+      data: { status: 'PENDING', reviewedBy: user.id, reviewedAt: new Date() },
     })
 
-    return NextResponse.json({
-      ...updated,
-      createdAt: updated.createdAt.toISOString(),
-      reviewedAt: updated.reviewedAt?.toISOString()
-    })
+    try {
+      const result = await executeAgentAction({
+        id: action.id,
+        organizationId: action.organizationId,
+        agentName: action.agentName,
+        actionType: action.actionType,
+        entityType: action.entityType,
+        entityId: action.entityId,
+        reasoning: action.reasoning,
+        confidence: action.confidence,
+        input: action.input,
+      })
+
+      const updated = await prisma.agentAction.update({
+        where: { id },
+        data: {
+          status: result.success ? 'SUCCESS' : 'FAILED',
+          output: result.output,
+        },
+      })
+
+      logger.info({ actionId: id, agentName: action.agentName, success: result.success }, '[AgaaS:Review] Action executed')
+
+      return NextResponse.json({
+        ...updated,
+        createdAt: updated.createdAt.toISOString(),
+        reviewedAt: updated.reviewedAt?.toISOString(),
+      })
+    } catch (execError: any) {
+      // Execution failed — mark as FAILED with error details
+      const updated = await prisma.agentAction.update({
+        where: { id },
+        data: {
+          status: 'FAILED',
+          output: { error: execError.message },
+        },
+      })
+
+      logger.error({ actionId: id, error: execError.message }, '[AgaaS:Review] Action execution failed')
+
+      return NextResponse.json({
+        ...updated,
+        createdAt: updated.createdAt.toISOString(),
+        reviewedAt: updated.reviewedAt?.toISOString(),
+      })
+    }
   } catch (error) {
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
