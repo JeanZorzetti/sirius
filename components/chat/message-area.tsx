@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useRef, useCallback, useOptimistic, useMemo } from 'react'
+import { useState, useEffect, useRef, useCallback, useMemo } from 'react'
 import { Virtuoso, VirtuosoHandle } from 'react-virtuoso'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
@@ -396,10 +396,6 @@ function MediaBubble({ msg, outbound }: { msg: WhatsAppMessage; outbound: boolea
 
 export function MessageArea({ contact, connections, organizationId, userId, userName, onContactUpdate, onBack }: MessageAreaProps) {
   const [messages, setMessages] = useState<WhatsAppMessage[]>([])
-  const [optimisticMessages, addOptimisticMessage] = useOptimistic<WhatsAppMessage[], WhatsAppMessage>(
-    messages,
-    (state, newMessage) => [...state, newMessage]
-  )
   const [text, setText] = useState('')
   const [conn, setConn] = useState(connections[0]?.id||'')
   const [loading, setLoading] = useState(false)
@@ -448,11 +444,13 @@ export function MessageArea({ contact, connections, organizationId, userId, user
       if (!r.ok) throw new Error()
       const d: WhatsAppMessage[] = await r.json()
       setMessages(prev => {
-        // Só fazer scroll se há mensagens novas
-        if (d.length > prev.length) {
+        // Keep any temp messages that are still being sent
+        const tempMsgs = prev.filter(m => m.id.startsWith('temp-'))
+        const merged = [...d, ...tempMsgs]
+        if (merged.length > prev.length) {
           setTimeout(() => scrollToBottom(), 100)
         }
-        return d
+        return merged
       })
     } catch { if (show) toast.error('Erro ao carregar mensagens') }
     finally { setLoading(false) }
@@ -567,12 +565,12 @@ export function MessageArea({ contact, connections, organizationId, userId, user
 
   // Pre-compute per-item metadata for Virtuoso (avoids re-computing inside render)
   const messageItems = useMemo((): MessageItem[] =>
-    optimisticMessages.map((msg, i) => ({
+    messages.map((msg, i) => ({
       msg,
-      showDate: needsDateSep(msg, i > 0 ? optimisticMessages[i - 1] : null),
-      pos: getBubblePos(optimisticMessages, i),
+      showDate: needsDateSep(msg, i > 0 ? messages[i - 1] : null),
+      pos: getBubblePos(messages, i),
     })),
-  [optimisticMessages])
+  [messages])
 
   const handleQuickReplySelect = (content: string) => {
     // Substituir o "/" + query pelo conteúdo da resposta rápida
@@ -628,7 +626,7 @@ export function MessageArea({ contact, connections, organizationId, userId, user
     }
 
     // Add optimistic message instantly to UI
-    addOptimisticMessage(optimisticMsg)
+    setMessages(prev => [...prev, optimisticMsg])
     setText('')
     const replyingToMsg = replyingTo
     setReplyingTo(null)
@@ -657,12 +655,8 @@ export function MessageArea({ contact, connections, organizationId, userId, user
       }
       const confirmedMsg = await r.json()
 
-      // Add confirmed message (tempId was only in optimistic state, not in messages[])
-      setMessages(prev =>
-        prev.some(m => m.id === tempId)
-          ? prev.map(m => m.id === tempId ? confirmedMsg : m)
-          : [...prev, confirmedMsg]
-      )
+      // Replace temp message with confirmed one from server
+      setMessages(prev => prev.map(m => m.id === tempId ? confirmedMsg : m))
       setTimeout(() => scrollToBottom(), 100)
     } catch(err:any) {
       // Remove optimistic message on error
@@ -726,7 +720,7 @@ export function MessageArea({ contact, connections, organizationId, userId, user
       reactions: [],
     }
 
-    addOptimisticMessage(optimisticMsg)
+    setMessages(prev => [...prev, optimisticMsg])
     setText('')
     const fileToSend = pendingFile
     cancelFile()
@@ -749,11 +743,8 @@ export function MessageArea({ contact, connections, organizationId, userId, user
         throw new Error(d.error)
       }
       const confirmedMsg = await r.json()
-      setMessages(prev =>
-        prev.some(m => m.id === tempId)
-          ? prev.map(m => m.id === tempId ? confirmedMsg : m)
-          : [...prev, confirmedMsg]
-      )
+      // Replace temp message with confirmed one from server
+      setMessages(prev => prev.map(m => m.id === tempId ? confirmedMsg : m))
       setTimeout(() => scrollToBottom(), 100)
     } catch (err: any) {
       setMessages(prev => prev.filter(m => m.id !== tempId))
