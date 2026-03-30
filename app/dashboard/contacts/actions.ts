@@ -181,6 +181,46 @@ export async function updateContact(contactId: string, formData: FormData) {
     }
 }
 
+export async function bulkDeleteContacts(contactIds: string[]) {
+    try {
+        const user = await getAuthenticatedUser()
+        if (!user) return { success: false, error: 'Unauthorized' }
+
+        if (!contactIds.length) return { success: false, error: 'Nenhum contato selecionado.' }
+
+        // Verify all contacts belong to this org
+        const contacts = await prisma.contact.findMany({
+            where: { id: { in: contactIds }, organizationId: user.organizationId },
+            select: { id: true, name: true }
+        })
+
+        if (contacts.length !== contactIds.length) {
+            return { success: false, error: 'Alguns contatos não foram encontrados.' }
+        }
+
+        // Check for linked deals
+        const dealsCount = await prisma.deal.count({
+            where: { contactId: { in: contactIds } }
+        })
+
+        if (dealsCount > 0) {
+            return { success: false, error: `${dealsCount} contato(s) possuem negócios vinculados. Remova os negócios antes de excluir.` }
+        }
+
+        await prisma.contact.deleteMany({
+            where: { id: { in: contactIds }, organizationId: user.organizationId }
+        })
+
+        revalidatePath('/dashboard/contacts')
+        revalidatePath('/dashboard')
+
+        return { success: true, deleted: contacts.length }
+    } catch (error: any) {
+        console.error('[BULK_DELETE_CONTACTS] Error:', error?.message)
+        return { success: false, error: `Falha ao excluir contatos: ${error?.message || 'Erro desconhecido'}` }
+    }
+}
+
 export async function deleteContact(contactId: string) {
     try {
         const user = await getAuthenticatedUser()

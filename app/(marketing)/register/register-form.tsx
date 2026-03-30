@@ -68,6 +68,20 @@ export function RegisterForm({ inviteData, inviteToken }: { inviteData: any, inv
                 )}
 
                 <div className="space-y-2">
+                    <Label htmlFor="whatsapp" className="flex items-center gap-1.5">
+                        WhatsApp
+                        <span className="text-xs text-zinc-500 font-normal">(opcional)</span>
+                    </Label>
+                    <Input
+                        id="whatsapp"
+                        name="whatsapp"
+                        type="tel"
+                        placeholder="+55 11 99999-9999"
+                        className="bg-zinc-800 border-zinc-700 text-white"
+                    />
+                </div>
+
+                <div className="space-y-2">
                     <Label htmlFor="password">Senha</Label>
                     <Input id="password" name="password" type="password" required className="bg-zinc-800 border-zinc-700 text-white" />
                 </div>

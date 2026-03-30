@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { ColumnDef } from '@tanstack/react-table'
 import { Contact } from '@prisma/client'
 import { Button } from "@/components/ui/button"
+import { Checkbox } from "@/components/ui/checkbox"
 import { MessageCircle, Trash2, Loader2 } from "lucide-react"
 import { deleteContact } from '@/app/dashboard/contacts/actions'
 import { EditContactDialog } from '@/components/contacts/edit-contact-dialog'
@@ -87,6 +88,31 @@ function DeleteContactButton({ contact }: { contact: Contact }) {
 }
 
 export const columns: ColumnDef<Contact>[] = [
+    {
+        id: 'select',
+        header: ({ table }) => (
+            <Checkbox
+                checked={
+                    table.getIsAllPageRowsSelected() ||
+                    (table.getIsSomePageRowsSelected() && 'indeterminate')
+                }
+                onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+                aria-label="Selecionar todos"
+                className="border-zinc-300 dark:border-zinc-600"
+            />
+        ),
+        cell: ({ row }) => (
+            <Checkbox
+                checked={row.getIsSelected()}
+                onCheckedChange={(value) => row.toggleSelected(!!value)}
+                aria-label="Selecionar linha"
+                className="border-zinc-300 dark:border-zinc-600"
+                onClick={(e) => e.stopPropagation()}
+            />
+        ),
+        enableSorting: false,
+        enableHiding: false,
+    },
     {
         accessorKey: 'name',
         header: 'Nome',

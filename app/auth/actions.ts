@@ -12,6 +12,62 @@ function generateReferralCode(): string {
   return Math.random().toString(36).substring(2, 6) + Math.random().toString(36).substring(2, 6)
 }
 
+async function enrollAsLead({ name, email, whatsapp, companyName }: {
+  name: string, email: string, whatsapp: string | null, companyName: string | null
+}) {
+  const leadsOrgId = process.env.LEADS_PIPELINE_ORG_ID
+  if (!leadsOrgId) return
+
+  // Find the default pipeline for the leads org
+  const pipeline = await prisma.pipeline.findFirst({
+    where: { organizationId: leadsOrgId, isDefault: true },
+    include: { stages: { orderBy: { order: 'asc' }, take: 1 } }
+  })
+  if (!pipeline || !pipeline.stages.length) return
+
+  const firstStage = pipeline.stages[0]
+
+  // Find owner/admin user of that org to assign the deal
+  const owner = await prisma.user.findFirst({
+    where: { organizationId: leadsOrgId, orgRole: 'OWNER' }
+  })
+  if (!owner) return
+
+  // Upsert contact (avoid duplicates on email)
+  let contact = email
+    ? await prisma.contact.findFirst({ where: { organizationId: leadsOrgId, email } })
+    : null
+
+  if (!contact) {
+    contact = await prisma.contact.create({
+      data: {
+        name,
+        email: email || null,
+        phone: whatsapp || null,
+        company: companyName || null,
+        organizationId: leadsOrgId,
+      }
+    })
+  }
+
+  // Create deal only if none exists for this contact in this pipeline
+  const existingDeal = await prisma.deal.findFirst({
+    where: { contactId: contact.id, pipelineId: pipeline.id }
+  })
+  if (existingDeal) return
+
+  await prisma.deal.create({
+    data: {
+      title: `Lead: ${name}`,
+      stageId: firstStage.id,
+      pipelineId: pipeline.id,
+      organizationId: leadsOrgId,
+      userId: owner.id,
+      contactId: contact.id,
+    }
+  })
+}
+
 export async function registerAction(prevState: any, formData: FormData) {
     const correlationId = generateCorrelationId()
     const name = formData.get('name') as string
@@ -19,6 +75,7 @@ export async function registerAction(prevState: any, formData: FormData) {
     const password = formData.get('password') as string
     const companyName = formData.get('company') as string
     const inviteToken = formData.get('inviteToken') as string
+    const whatsapp = (formData.get('whatsapp') as string)?.trim() || null
 
     logger.info({ correlationId, email, hasInvite: !!inviteToken }, 'Registration attempt')
 
@@ -170,6 +227,9 @@ export async function registerAction(prevState: any, formData: FormData) {
         } catch {
             // Referral tracking is non-critical, don't fail registration
         }
+
+        // Enroll new registrant as a lead in the owner's pipeline (async, non-blocking)
+        enrollAsLead({ name, email, whatsapp, companyName: companyName || null }).catch(() => {})
 
         // 3. Create Session
         await login({ id: newUser.id, email: newUser.email, name: newUser.name, organizationId: newUser.organizationId })
