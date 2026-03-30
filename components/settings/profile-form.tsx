@@ -5,12 +5,13 @@ import { updateProfile } from '@/app/dashboard/settings/actions'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Button } from '@/components/ui/button'
-import { CheckCircle2, AlertCircle, Save } from 'lucide-react'
+import { CheckCircle2, AlertCircle, Save, Building2 } from 'lucide-react'
 
 interface ProfileFormProps {
   initialData: {
     name: string
     email: string
+    organizationName?: string
   }
 }
 
@@ -79,6 +80,24 @@ export function ProfileForm({ initialData }: ProfileFormProps) {
             placeholder="seu@email.com"
           />
         </div>
+
+        {initialData.organizationName !== undefined && (
+          <div className="space-y-2">
+            <Label htmlFor="organizationName" className="text-zinc-700 dark:text-zinc-300 flex items-center gap-1.5">
+              <Building2 className="h-3.5 w-3.5" />
+              Nome da Empresa
+            </Label>
+            <Input
+              id="organizationName"
+              name="organizationName"
+              type="text"
+              defaultValue={initialData.organizationName}
+              disabled={loading}
+              className="bg-white dark:bg-black/20 border-zinc-200 dark:border-white/10 focus:ring-indigo-500/20"
+              placeholder="Nome da sua empresa"
+            />
+          </div>
+        )}
       </div>
 
       <div className="flex justify-end pt-2">

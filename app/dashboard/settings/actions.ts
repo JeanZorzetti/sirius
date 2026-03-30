@@ -22,13 +22,22 @@ export async function updateProfile(formData: FormData) {
 
         const name = formData.get('name') as string
         const email = formData.get('email') as string
+        const organizationName = formData.get('organizationName') as string | null
 
         await prisma.user.update({
             where: { id: user.id },
             data: { name, email },
         })
 
+        if (organizationName?.trim() && user.organizationId) {
+            await prisma.organization.update({
+                where: { id: user.organizationId },
+                data: { name: organizationName.trim() },
+            })
+        }
+
         revalidatePath('/dashboard')
+        revalidatePath('/dashboard/settings')
         return { success: true }
     } catch (error) {
         logger.error({ err: error }, 'Update profile error')

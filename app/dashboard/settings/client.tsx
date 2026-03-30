@@ -101,7 +101,7 @@ export function SettingsClient({ user }: SettingsClientProps) {
             </CardHeader>
             {!isCompact && (
               <CardContent className="pt-0">
-                <ProfileForm initialData={{ name: user.name || '', email: user.email }} />
+                <ProfileForm initialData={{ name: user.name || '', email: user.email, organizationName: user.organization?.name || '' }} />
               </CardContent>
             )}
           </Card>
