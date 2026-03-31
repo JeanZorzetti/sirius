@@ -11,7 +11,7 @@ import { prisma } from '@/lib/prisma'
 import { syncConnectionHistory } from '@/lib/whatsapp-sync'
 import logger from '@/lib/logger'
 
-export const maxDuration = 120
+export const maxDuration = 300
 
 export async function POST(
   req: NextRequest,

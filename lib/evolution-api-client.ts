@@ -334,13 +334,33 @@ export class EvolutionAPIClient {
    * Evolution API v2: POST /chat/findChats/{instance}
    */
   async getChats(instanceName: string): Promise<any[]> {
-    return this.request<any[]>(
-      `/chat/findChats/${instanceName}`,
-      {
-        method: 'POST',
-        body: JSON.stringify({ where: {} }),
+    // Evolution API v2 usa raw SQL com LIMIT/OFFSET via take/skip
+    // Buscamos em lotes para pegar todas as conversas
+    const allChats: any[] = []
+    const pageSize = 100
+    let skip = 0
+    let hasMore = true
+
+    while (hasMore) {
+      const batch = await this.request<any[]>(
+        `/chat/findChats/${instanceName}`,
+        {
+          method: 'POST',
+          body: JSON.stringify({ where: {}, take: pageSize, skip }),
+        }
+      )
+
+      if (Array.isArray(batch) && batch.length > 0) {
+        allChats.push(...batch)
+        skip += batch.length
+        // Se retornou menos que o pageSize, não tem mais
+        if (batch.length < pageSize) hasMore = false
+      } else {
+        hasMore = false
       }
-    )
+    }
+
+    return allChats
   }
 
   /**
@@ -390,35 +410,85 @@ export class EvolutionAPIClient {
    * Response format: { messages: { total, pages, currentPage, records: [...] } }
    * or plain array in older versions
    */
-  async getMessages(
-    instanceName: string,
-    remoteJid: string,
-    limit: number = 50,
-    afterTimestamp?: number
-  ): Promise<Message[]> {
-    const where: any = { key: { remoteJid } }
-    if (afterTimestamp) {
-      where.messageTimestamp = { gte: afterTimestamp }
-    }
-    const raw = await this.request<any>(
-      `/chat/findMessages/${instanceName}`,
-      {
-        method: 'POST',
-        body: JSON.stringify({ where, limit }),
-      }
-    )
-
-    // Evolution API v2 returns paginated: { messages: { records: [...] } }
+  /**
+   * Extrai records de resposta do findMessages (suporta v2 paginado e array direto)
+   */
+  private extractMessageRecords(raw: any): Message[] {
+    // Evolution API v2 paginado: { messages: { total, pages, currentPage, records: [...] } }
     if (raw?.messages?.records && Array.isArray(raw.messages.records)) {
       return raw.messages.records
     }
-    // Older format: plain array
+    // Formato antigo: array direto
     if (Array.isArray(raw)) {
       return raw
     }
-    // Fallback
-    logger.warn({ remoteJid, rawType: typeof raw, keys: raw ? Object.keys(raw) : [] }, 'Unexpected getMessages response format')
     return []
+  }
+
+  /**
+   * Get messages from a chat with pagination.
+   * Evolution API v2 usa page (1-based) e offset (items per page / take).
+   * afterTimestamp: Unix timestamp em segundos para filtrar mensagens mais recentes.
+   */
+  async getMessages(
+    instanceName: string,
+    remoteJid: string,
+    afterTimestamp?: number
+  ): Promise<Message[]> {
+    const allMessages: Message[] = []
+    const pageSize = 100
+    let page = 1
+    let hasMore = true
+
+    while (hasMore) {
+      const where: any = { key: { remoteJid } }
+      if (afterTimestamp) {
+        where.messageTimestamp = afterTimestamp
+      }
+
+      const raw = await this.request<any>(
+        `/chat/findMessages/${instanceName}`,
+        {
+          method: 'POST',
+          body: JSON.stringify({ where, page, offset: pageSize }),
+        }
+      )
+
+      const records = this.extractMessageRecords(raw)
+
+      if (records.length > 0) {
+        // Filtra client-side por timestamp se a API não suportar o filtro nativamente
+        if (afterTimestamp) {
+          for (const msg of records) {
+            const ts = typeof msg.messageTimestamp === 'string'
+              ? parseInt(msg.messageTimestamp)
+              : (msg.messageTimestamp || 0)
+            if (ts >= afterTimestamp) {
+              allMessages.push(msg)
+            }
+          }
+        } else {
+          allMessages.push(...records)
+        }
+
+        // Checa se tem mais páginas
+        const totalPages = raw?.messages?.pages || 0
+        if (totalPages > 0 && page >= totalPages) {
+          hasMore = false
+        } else if (records.length < pageSize) {
+          hasMore = false
+        } else {
+          page++
+        }
+      } else {
+        hasMore = false
+      }
+
+      // Safety: max 20 páginas (2000 msgs) por chat
+      if (page > 20) hasMore = false
+    }
+
+    return allMessages
   }
 
   // ============================================

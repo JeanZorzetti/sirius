@@ -246,10 +246,10 @@ export async function syncConnectionHistory(connectionId: string): Promise<SyncR
       const isLid = remoteJid.includes('@lid')
       const isGroup = chat._isGroup
 
-      // Fetch messages dos últimos 7 dias (limit 500 por chat)
+      // Fetch mensagens dos últimos 7 dias com paginação automática
       let chatMessages: any[] = []
       try {
-        const rawMessages = await evolutionClient.getMessages(connection.instanceName, remoteJid, 500, sevenDaysAgoTs)
+        const rawMessages = await evolutionClient.getMessages(connection.instanceName, remoteJid, sevenDaysAgoTs)
         chatMessages = Array.isArray(rawMessages) ? rawMessages : []
       } catch (err: any) {
         logger.warn({ remoteJid, error: err.message }, 'Failed to fetch messages for chat')
