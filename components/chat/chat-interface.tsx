@@ -113,6 +113,23 @@ export function ChatInterface({
     }
   }, [])
 
+  // Auto-sync: ao montar, dispara sync da conexão ativa (background)
+  const hasSyncedRef = useRef(false)
+  useEffect(() => {
+    if (hasSyncedRef.current) return
+    const active = connections.find(c => c.status === 'CONNECTED')
+    if (!active) return
+    hasSyncedRef.current = true
+    fetch(`/api/whatsapp/connections/${active.id}/sync`, { method: 'POST' })
+      .then(res => res.ok ? res.json() : null)
+      .then(data => {
+        if (data?.syncedMessages > 0 || data?.syncedContacts > 0) {
+          fetchConversations()
+        }
+      })
+      .catch(() => {})
+  }, [connections, fetchConversations])
+
   // Polling: conversas a cada 5s, conexões a cada 30s
   useEffect(() => {
     const convInterval = setInterval(() => fetchConversations(), 5000)
