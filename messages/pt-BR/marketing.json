@@ -617,7 +617,15 @@
     },
     "calculators": {
       "title": "Calcule o ROI para o seu segmento",
-      "subtitle": "Ferramentas gratuitas para projetar o retorno do Sirius CRM no seu negócio"
+      "subtitle": "Ferramentas gratuitas para projetar o retorno do Sirius CRM no seu negócio",
+      "links": {
+        "general": "Calculadora de ROI",
+        "realtors": "ROI para Corretores",
+        "agencies": "ROI para Agências",
+        "consultants": "ROI para Consultores",
+        "solar": "ROI Energia Solar",
+        "reps": "ROI Representantes"
+      }
     },
     "faq": {
       "title": "Perguntas Frequentes",

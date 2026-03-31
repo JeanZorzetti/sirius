@@ -218,7 +218,7 @@ export default function LandingPage() {
     },
     {
       name: 'Starter',
-      price: isEn ? '$ 19' : 'R$ 67',
+      price: 'R$ 67',
       period: isEn ? '/mo' : '/mês',
       description: isEn ? 'For small businesses' : 'Para pequenas empresas',
       features: isEn ? ['5 Users', '1,000 Contacts', 'WhatsApp', '75 leads/mo'] : ['5 Usuários', '1.000 Contatos', 'WhatsApp', '75 leads/mês'],
@@ -226,7 +226,7 @@ export default function LandingPage() {
     },
     {
       name: 'Pro',
-      price: isEn ? '$ 39' : 'R$ 147',
+      price: 'R$ 147',
       period: isEn ? '/mo' : '/mês',
       description: isEn ? 'For growing teams' : 'Para equipes em crescimento',
       features: isEn ? ['15 Users', '5,000 Contacts', 'Sales AI', '300 leads/mo'] : ['15 Usuários', '5.000 Contatos', 'IA Comercial', '300 leads/mês'],
@@ -234,7 +234,7 @@ export default function LandingPage() {
     },
     {
       name: 'Business',
-      price: isEn ? '$ 99' : 'R$ 397',
+      price: 'R$ 397',
       period: isEn ? '/mo' : '/mês',
       description: isEn ? 'For large operations' : 'Para grandes operações',
       features: isEn ? ['50 Users', 'Unlimited', 'Round-Robin', '1,500 leads/mo'] : ['50 Usuários', 'Ilimitado', 'Round-Robin', '1.500 leads/mês'],

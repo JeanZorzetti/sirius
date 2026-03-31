@@ -275,19 +275,19 @@ export default function PricingPage() {
                 </div>
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
                     {[
-                        { href: '/ferramentas/calculadora-roi', label: 'Calculadora de ROI' },
-                        { href: '/ferramentas/calculadora-roi-corretores', label: 'ROI para Corretores' },
-                        { href: '/ferramentas/calculadora-roi-agencias', label: 'ROI para Agências' },
-                        { href: '/ferramentas/calculadora-roi-consultores', label: 'ROI para Consultores' },
-                        { href: '/ferramentas/calculadora-roi-energia-solar', label: 'ROI Energia Solar' },
-                        { href: '/ferramentas/calculadora-roi-representantes', label: 'ROI Representantes' },
+                        { href: '/ferramentas/calculadora-roi', labelKey: 'calculators.links.general' },
+                        { href: '/ferramentas/calculadora-roi-corretores', labelKey: 'calculators.links.realtors' },
+                        { href: '/ferramentas/calculadora-roi-agencias', labelKey: 'calculators.links.agencies' },
+                        { href: '/ferramentas/calculadora-roi-consultores', labelKey: 'calculators.links.consultants' },
+                        { href: '/ferramentas/calculadora-roi-energia-solar', labelKey: 'calculators.links.solar' },
+                        { href: '/ferramentas/calculadora-roi-representantes', labelKey: 'calculators.links.reps' },
                     ].map((calc) => (
                         <Link
                             key={calc.href}
                             href={calc.href}
                             className="rounded-lg border bg-card p-3 text-center text-sm font-medium hover:border-primary/50 hover:bg-primary/5 transition-colors"
                         >
-                            {calc.label}
+                            {t(calc.labelKey as any)}
                         </Link>
                     ))}
                 </div>
