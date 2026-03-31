@@ -1,4 +1,5 @@
-import { Metadata } from 'next'
+import { getTranslations } from 'next-intl/server'
+import type { Metadata } from 'next'
 import Link from 'next/link'
 import Script from 'next/script'
 import { Button } from '@/components/ui/button'
@@ -36,270 +37,32 @@ import {
   Blocks,
 } from 'lucide-react'
 
-export const metadata: Metadata = {
-  title: 'Funcionalidades Sirius CRM 2026 [12+ Ferramentas de IA] — WhatsApp, Pipeline, Prospecção e Mais',
-  description: 'Descubra como a IA Nativa do Sirius qualifica seus leads automaticamente com BANT e MEDDIC, integra WhatsApp, prospecta no Google Maps e automatiza follow-ups. Pipeline Kanban visual. Teste grátis 7 dias.',
-  keywords: [
-    'crm funcionalidades 2026', 'ia comercial nativa', 'pipeline kanban', 'whatsapp crm',
-    'automação de vendas ia', 'prospecção google maps', 'analytics crm', 'crm brasil 2026',
-    'crm online 2026', 'evolution api', 'bant meddic ia', 'crm ia qualificação leads',
-  ],
-  alternates: { canonical: 'https://sirius.roilabs.com.br/features' },
-  openGraph: {
-    title: 'Funcionalidades Sirius CRM 2026 [12+ Ferramentas de IA] — WhatsApp e Pipeline',
-    description: 'IA que qualifica leads automaticamente, WhatsApp integrado, pipeline Kanban, prospecção Google Maps, automações e analytics PRO. Tudo em um só CRM.',
-    url: 'https://sirius.roilabs.com.br/features',
-    images: [{ url: 'https://sirius.roilabs.com.br/og-image.png', width: 1200, height: 630 }],
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Funcionalidades Sirius CRM 2026 [12+ Ferramentas de IA] — WhatsApp e Pipeline',
-    description: 'IA que qualifica leads com BANT e MEDDIC, WhatsApp integrado, pipeline Kanban, prospecção Google Maps e automações. Teste grátis.',
-  },
+// ─── Metadata ──────────────────────────────────────────────────────────────────
+
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations('marketing.features.meta')
+  return {
+    title: t('title'),
+    description: t('description'),
+    keywords: [
+      'crm funcionalidades 2026', 'ia comercial nativa', 'pipeline kanban', 'whatsapp crm',
+      'automação de vendas ia', 'prospecção google maps', 'analytics crm', 'crm brasil 2026',
+      'crm online 2026', 'evolution api', 'bant meddic ia', 'crm ia qualificação leads',
+    ],
+    alternates: { canonical: 'https://sirius.roilabs.com.br/features' },
+    openGraph: {
+      title: t('ogTitle'),
+      description: t('ogDescription'),
+      url: 'https://sirius.roilabs.com.br/features',
+      images: [{ url: 'https://sirius.roilabs.com.br/og-image.png', width: 1200, height: 630 }],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: t('twitterTitle'),
+      description: t('twitterDescription'),
+    },
+  }
 }
-
-// ─── Feature Categories ────────────────────────────────────────────────────────
-
-const heroFeatures = [
-  {
-    name: 'Pipeline Kanban',
-    description: 'Visualize negócios em estágios claros com drag-and-drop. Crie múltiplos pipelines personalizados por produto, região ou equipe. Veja valor total por estágio e previsão de fechamento em tempo real.',
-    icon: Kanban,
-    badge: 'Core',
-  },
-  {
-    name: 'WhatsApp Integrado',
-    description: 'Conecte seu WhatsApp via Evolution API com pareamento por QR Code. Envie e receba mensagens direto do CRM. Inbox unificado com tags, respostas rápidas, atribuição de conversas e mídia (fotos, áudios, documentos).',
-    icon: MessageSquare,
-    badge: 'Starter+',
-  },
-  {
-    name: 'AGI Sirius — IA Comercial',
-    description: 'Inteligência Artificial que analisa seus deals, gera scripts de venda personalizados, faz diagnóstico de saúde do negócio, enriquece contatos e recomenda próximas ações. Baseada em Knowledge Graph com RAG.',
-    icon: Brain,
-    badge: 'Pro+',
-  },
-  {
-    name: 'Prospecção Google Maps',
-    description: 'Encontre leads automaticamente pelo Google Maps. Busque por segmento e localização, e o Sirius extrai nome, telefone, email, site e endereço. Créditos mensais por plano — de 75 a 1.500 leads/mês.',
-    icon: Search,
-    badge: 'Starter+',
-  },
-  {
-    name: 'Automações de Deals',
-    description: 'Crie automações por gatilhos: deal criado, movido de estágio, ganho, perdido ou parado há X dias. Ações: enviar email, enviar WhatsApp, criar tarefa ou atualizar campo. Logs completos de execução.',
-    icon: Zap,
-    badge: 'Starter+',
-  },
-  {
-    name: 'Analytics PRO',
-    description: 'Dashboards avançados com win rate, ciclo de vendas, velocidade de pipeline, análise de deals perdidos e tendências. Filtros por período e comparação temporal. Previsão de receita por data de fechamento.',
-    icon: BarChart3,
-    badge: 'Pro+',
-  },
-]
-
-const crmFeatures = [
-  {
-    name: 'Gestão de Contatos',
-    description: 'CRUD completo com importação e exportação CSV. Histórico de interações, associação com empresas, tags personalizáveis e timeline de atividades. Até contatos ilimitados no plano Business.',
-    icon: Users,
-  },
-  {
-    name: 'Negócios (Deals)',
-    description: 'Controle valor, data de fechamento, responsável e estágio. Notas, atividades e comentários vinculados. Drag-and-drop no Kanban. Exportação de dados.',
-    icon: Target,
-  },
-  {
-    name: 'Múltiplos Pipelines',
-    description: 'Crie pipelines separados por produto, região ou equipe. Configure estágios customizados, defina pipeline padrão e vincule automações específicas por pipeline.',
-    icon: LayoutGrid,
-  },
-  {
-    name: 'Atividades e Tarefas',
-    description: 'Crie tarefas vinculadas a deals e contatos. Defina responsáveis, prazos e lembretes. Sincronize com Google Calendar automaticamente.',
-    icon: Calendar,
-  },
-]
-
-const communicationFeatures = [
-  {
-    name: 'Inbox Unificado (WhatsApp)',
-    description: 'Todas as conversas WhatsApp em um só lugar. Filtre por tags, busque por nome, fixe chats importantes, arquive conversas antigas. Atribua conversas a membros da equipe.',
-    icon: MessageSquare,
-  },
-  {
-    name: 'Respostas Rápidas',
-    description: 'Crie templates de respostas rápidas para agilizar o atendimento no WhatsApp. Acesse com um clique direto do chat.',
-    icon: FileText,
-  },
-  {
-    name: 'Automações de Email',
-    description: 'Campanhas automáticas de e-mail: boas-vindas, deal criado, troca de estágio, nudge de upgrade. Templates com variáveis dinâmicas (nome, valor, empresa). Analytics de abertura e cliques.',
-    icon: Mail,
-  },
-  {
-    name: 'Notificações em Tempo Real',
-    description: 'Push notifications (PWA) para novos deals, deals ganhos, mensagens WhatsApp e lembretes de calendário. Streaming SSE para atualizações instantâneas no navegador.',
-    icon: Bell,
-  },
-]
-
-const aiFeatures = [
-  {
-    name: 'Análise de Deals com IA',
-    description: 'A AGI Sirius analisa cada negócio e gera um score de probabilidade de fechamento, identifica riscos e sugere ações para aumentar a conversão.',
-    icon: Brain,
-  },
-  {
-    name: 'Gerador de Scripts de Venda',
-    description: 'IA gera scripts de ligação e abordagem personalizados com base no perfil do contato, estágio do deal e histórico de interações.',
-    icon: Bot,
-  },
-  {
-    name: 'Enriquecimento de Contatos',
-    description: 'A IA complementa dados dos seus contatos automaticamente: cargo, empresa, rede social e informações relevantes para sua abordagem comercial.',
-    icon: Users,
-  },
-  {
-    name: 'Knowledge Graph + RAG',
-    description: 'Sistema de conhecimento baseado em grafos que extrai entidades e relacionamentos dos seus dados e blog. Consultas semânticas via Retrieval-Augmented Generation.',
-    icon: BookOpen,
-  },
-  {
-    name: 'Insights e Recomendações',
-    description: 'Receba insights automáticos sobre seu pipeline: gargalos, oportunidades, tendências e recomendações de próximos passos baseadas em dados históricos.',
-    icon: TrendingUp,
-  },
-]
-
-const prospectingFeatures = [
-  {
-    name: 'Busca por Google Maps',
-    description: 'Digite o segmento (ex: "pizzarias") e a cidade. O Sirius busca automaticamente no Google Maps e retorna: nome, telefone, email, site, endereço e avaliação.',
-    icon: MapPin,
-  },
-  {
-    name: 'Sistema de Créditos',
-    description: 'Cada plano inclui créditos mensais de prospecção: Starter 75, Pro 300, Business 1.500. Compre pacotes extras de 100 ou 500 leads quando precisar.',
-    icon: Target,
-  },
-  {
-    name: 'Conversão Automática em Contato',
-    description: 'Leads encontrados podem ser convertidos em contatos do CRM com um clique. Histórico de buscas salvo para consulta futura.',
-    icon: Users,
-  },
-]
-
-const analyticsFeatures = [
-  {
-    name: 'Dashboard de Vendas',
-    description: 'Valor total do pipeline, taxa de conversão, ticket médio, previsão de fechamento e deals por estágio. Visão consolidada de toda a operação comercial.',
-    icon: BarChart3,
-  },
-  {
-    name: 'Analytics Avançado',
-    description: 'Win rate, ciclo médio de vendas, velocidade de pipeline, tendências ao longo do tempo. Filtros por período personalizado e comparação entre períodos.',
-    icon: TrendingUp,
-  },
-  {
-    name: 'Análise de Deals Perdidos',
-    description: 'Entenda por que deals são perdidos. Categorize motivos, identifique padrões e ajuste seu processo comercial com dados.',
-    icon: Target,
-  },
-  {
-    name: 'Marketing & CAC',
-    description: 'Integre com Google Ads e Meta Ads para calcular CAC automaticamente. Acompanhe ROI de campanhas, LTV/CAC ratio e custo por lead com entrada manual ou automática.',
-    icon: Megaphone,
-  },
-]
-
-const integrationFeatures = [
-  {
-    name: 'WhatsApp (Evolution API)',
-    description: 'Integração nativa com Evolution API. Multi-instância no Business (até 5). QR Code para pareamento, envio/recebimento de mensagens, mídia e status em tempo real.',
-    icon: MessageSquare,
-  },
-  {
-    name: 'Google Calendar',
-    description: 'Sincronize atividades e reuniões com Google Calendar via OAuth. Crie eventos automaticamente a partir de deals. Receba lembretes de compromissos.',
-    icon: Calendar,
-  },
-  {
-    name: 'Google Ads & Meta Ads',
-    description: 'Conecte suas contas de anúncios para importar métricas de campanhas, gastos e conversões. Calcule CAC e ROI automaticamente.',
-    icon: Megaphone,
-  },
-  {
-    name: 'n8n',
-    description: 'Integre com n8n para criar workflows avançados de automação. Conecte o Sirius a centenas de ferramentas via nodes customizados.',
-    icon: Blocks,
-  },
-  {
-    name: 'Webhooks',
-    description: 'Configure webhooks para receber eventos em tempo real: deal criado, contato atualizado, negócio ganho/perdido. Signing secrets para segurança. Logs de execução com retry automático.',
-    icon: Webhook,
-  },
-  {
-    name: 'API REST v1',
-    description: 'API pública documentada para desenvolvedores. Gerencie contatos, deals, pipelines e webhooks programaticamente. Chaves de API com permissões configuráveis.',
-    icon: Plug,
-  },
-]
-
-const teamFeatures = [
-  {
-    name: 'Gestão de Equipe',
-    description: 'Convide membros por email, gerencie papéis (Owner/Member) e controle permissões. Veja convites pendentes e atividade da equipe.',
-    icon: Users,
-  },
-  {
-    name: 'Round-Robin de Leads',
-    description: 'Distribua novos leads automaticamente entre vendedores em rodízio. Pule usuários offline, notifique sobre novas atribuições e garanta distribuição equilibrada.',
-    icon: Shuffle,
-  },
-  {
-    name: 'Atribuição de Conversas',
-    description: 'No chat WhatsApp, atribua conversas a membros específicos da equipe. Cada vendedor vê apenas seus chats atribuídos.',
-    icon: MessageSquare,
-  },
-]
-
-const mobileFeatures = [
-  {
-    name: 'PWA (Progressive Web App)',
-    description: 'Instale o Sirius na tela inicial do celular como um app nativo. Funciona offline para consultas básicas. Push notifications mesmo com o app fechado.',
-    icon: Smartphone,
-  },
-  {
-    name: 'Check-in com GPS',
-    description: 'Para vendedores de campo: faça check-in em visitas com localização GPS. Histórico de visitas com mapa, horários e anotações. Interface otimizada para mobile.',
-    icon: MapPin,
-  },
-  {
-    name: 'Sync Offline',
-    description: 'Seus dados ficam disponíveis mesmo sem internet. Quando a conexão voltar, tudo sincroniza automaticamente.',
-    icon: Globe,
-  },
-]
-
-const securityFeatures = [
-  {
-    name: 'Criptografia de Dados',
-    description: 'Todos os dados são criptografados em trânsito (TLS) e em repouso. Seus dados ficam isolados por organização.',
-    icon: Shield,
-  },
-  {
-    name: 'SSO & Audit Log',
-    description: 'Single Sign-On para login corporativo e log de auditoria completo de todas as ações na plataforma. Plano Business.',
-    icon: Shield,
-  },
-  {
-    name: 'API Keys com Permissões',
-    description: 'Crie chaves de API com escopo definido. Revogue a qualquer momento. Webhook signing secrets para validar origem das requisições.',
-    icon: Settings,
-  },
-]
 
 // ─── Feature Section Component ─────────────────────────────────────────────────
 
@@ -356,23 +119,186 @@ function FeatureSection({
   )
 }
 
-// ─── Quick Nav ─────────────────────────────────────────────────────────────────
+// ─── Plan Row Helper ───────────────────────────────────────────────────────────
 
-const sections = [
-  { id: 'crm', label: 'CRM Core' },
-  { id: 'comunicacao', label: 'Comunicacao' },
-  { id: 'ia', label: 'IA & AGI' },
-  { id: 'prospeccao', label: 'Prospeccao' },
-  { id: 'analytics', label: 'Analytics' },
-  { id: 'integracoes', label: 'Integracoes' },
-  { id: 'equipe', label: 'Equipe' },
-  { id: 'mobile', label: 'Mobile' },
-  { id: 'seguranca', label: 'Seguranca' },
-]
+function PlanRow({
+  label,
+  free,
+  starter,
+  pro,
+  business,
+}: {
+  label: string
+  free: string | boolean
+  starter: string | boolean
+  pro: string | boolean
+  business: string | boolean
+}) {
+  return (
+    <tr>
+      <td className="py-3 px-4 font-medium">{label}</td>
+      <td className="text-center py-3 px-4"><CellValue value={free} /></td>
+      <td className="text-center py-3 px-4"><CellValue value={starter} /></td>
+      <td className="text-center py-3 px-4"><CellValue value={pro} /></td>
+      <td className="text-center py-3 px-4"><CellValue value={business} /></td>
+    </tr>
+  )
+}
+
+function CellValue({ value }: { value: string | boolean }) {
+  if (value === true) return <Check className="h-4 w-4 text-green-500 mx-auto" />
+  if (value === false) return <span className="text-muted-foreground">—</span>
+  return <span className="text-muted-foreground">{value}</span>
+}
 
 // ─── Page ──────────────────────────────────────────────────────────────────────
 
-export default function FeaturesPage() {
+export default async function FeaturesPage() {
+  const t = await getTranslations('marketing.features')
+
+  // ─── Feature data (built from translations) ────────────────────────────────
+
+  const heroFeatures = [
+    { name: t('heroFeatures.kanban.name'), description: t('heroFeatures.kanban.description'), icon: Kanban, badge: t('heroFeatures.kanban.badge') },
+    { name: t('heroFeatures.whatsapp.name'), description: t('heroFeatures.whatsapp.description'), icon: MessageSquare, badge: t('heroFeatures.whatsapp.badge') },
+    { name: t('heroFeatures.agi.name'), description: t('heroFeatures.agi.description'), icon: Brain, badge: t('heroFeatures.agi.badge') },
+    { name: t('heroFeatures.maps.name'), description: t('heroFeatures.maps.description'), icon: Search, badge: t('heroFeatures.maps.badge') },
+    { name: t('heroFeatures.automations.name'), description: t('heroFeatures.automations.description'), icon: Zap, badge: t('heroFeatures.automations.badge') },
+    { name: t('heroFeatures.analytics.name'), description: t('heroFeatures.analytics.description'), icon: BarChart3, badge: t('heroFeatures.analytics.badge') },
+  ]
+
+  const crmFeatures = [
+    { name: t('sections.crm.contacts.name'), description: t('sections.crm.contacts.description'), icon: Users },
+    { name: t('sections.crm.deals.name'), description: t('sections.crm.deals.description'), icon: Target },
+    { name: t('sections.crm.pipelines.name'), description: t('sections.crm.pipelines.description'), icon: LayoutGrid },
+    { name: t('sections.crm.tasks.name'), description: t('sections.crm.tasks.description'), icon: Calendar },
+  ]
+
+  const communicationFeatures = [
+    { name: t('sections.comunicacao.inbox.name'), description: t('sections.comunicacao.inbox.description'), icon: MessageSquare },
+    { name: t('sections.comunicacao.quickReplies.name'), description: t('sections.comunicacao.quickReplies.description'), icon: FileText },
+    { name: t('sections.comunicacao.emailAutomations.name'), description: t('sections.comunicacao.emailAutomations.description'), icon: Mail },
+    { name: t('sections.comunicacao.notifications.name'), description: t('sections.comunicacao.notifications.description'), icon: Bell },
+  ]
+
+  const aiFeatures = [
+    { name: t('sections.ia.dealAnalysis.name'), description: t('sections.ia.dealAnalysis.description'), icon: Brain },
+    { name: t('sections.ia.scripts.name'), description: t('sections.ia.scripts.description'), icon: Bot },
+    { name: t('sections.ia.enrichment.name'), description: t('sections.ia.enrichment.description'), icon: Users },
+    { name: t('sections.ia.rag.name'), description: t('sections.ia.rag.description'), icon: BookOpen },
+    { name: t('sections.ia.insights.name'), description: t('sections.ia.insights.description'), icon: TrendingUp },
+  ]
+
+  const prospectingFeatures = [
+    { name: t('sections.prospeccao.search.name'), description: t('sections.prospeccao.search.description'), icon: MapPin },
+    { name: t('sections.prospeccao.credits.name'), description: t('sections.prospeccao.credits.description'), icon: Target },
+    { name: t('sections.prospeccao.conversion.name'), description: t('sections.prospeccao.conversion.description'), icon: Users },
+  ]
+
+  const analyticsFeatures = [
+    { name: t('sections.analytics.dashboard.name'), description: t('sections.analytics.dashboard.description'), icon: BarChart3 },
+    { name: t('sections.analytics.advanced.name'), description: t('sections.analytics.advanced.description'), icon: TrendingUp },
+    { name: t('sections.analytics.lostDeals.name'), description: t('sections.analytics.lostDeals.description'), icon: Target },
+    { name: t('sections.analytics.marketing.name'), description: t('sections.analytics.marketing.description'), icon: Megaphone },
+  ]
+
+  const integrationFeatures = [
+    { name: t('sections.integracoes.whatsapp.name'), description: t('sections.integracoes.whatsapp.description'), icon: MessageSquare },
+    { name: t('sections.integracoes.calendar.name'), description: t('sections.integracoes.calendar.description'), icon: Calendar },
+    { name: t('sections.integracoes.ads.name'), description: t('sections.integracoes.ads.description'), icon: Megaphone },
+    { name: t('sections.integracoes.n8n.name'), description: t('sections.integracoes.n8n.description'), icon: Blocks },
+    { name: t('sections.integracoes.webhooks.name'), description: t('sections.integracoes.webhooks.description'), icon: Webhook },
+    { name: t('sections.integracoes.api.name'), description: t('sections.integracoes.api.description'), icon: Plug },
+  ]
+
+  const teamFeatures = [
+    { name: t('sections.equipe.management.name'), description: t('sections.equipe.management.description'), icon: Users },
+    { name: t('sections.equipe.roundRobin.name'), description: t('sections.equipe.roundRobin.description'), icon: Shuffle },
+    { name: t('sections.equipe.assignment.name'), description: t('sections.equipe.assignment.description'), icon: MessageSquare },
+  ]
+
+  const mobileFeatures = [
+    { name: t('sections.mobile.pwa.name'), description: t('sections.mobile.pwa.description'), icon: Smartphone },
+    { name: t('sections.mobile.gps.name'), description: t('sections.mobile.gps.description'), icon: MapPin },
+    { name: t('sections.mobile.offline.name'), description: t('sections.mobile.offline.description'), icon: Globe },
+  ]
+
+  const securityFeatures = [
+    { name: t('sections.seguranca.encryption.name'), description: t('sections.seguranca.encryption.description'), icon: Shield },
+    { name: t('sections.seguranca.sso.name'), description: t('sections.seguranca.sso.description'), icon: Shield },
+    { name: t('sections.seguranca.apiKeys.name'), description: t('sections.seguranca.apiKeys.description'), icon: Settings },
+  ]
+
+  const sections = [
+    { id: 'crm', label: t('nav.crm') },
+    { id: 'comunicacao', label: t('nav.comunicacao') },
+    { id: 'ia', label: t('nav.ia') },
+    { id: 'prospeccao', label: t('nav.prospeccao') },
+    { id: 'analytics', label: t('nav.analytics') },
+    { id: 'integracoes', label: t('nav.integracoes') },
+    { id: 'equipe', label: t('nav.equipe') },
+    { id: 'mobile', label: t('nav.mobile') },
+    { id: 'seguranca', label: t('nav.seguranca') },
+  ]
+
+  // plan comparison helpers — typed accessors
+  const pr = {
+    contacts: t('planComparison.rows.contacts'),
+    deals: t('planComparison.rows.deals'),
+    pipelines: t('planComparison.rows.pipelines'),
+    users: t('planComparison.rows.users'),
+    whatsapp: t('planComparison.rows.whatsapp'),
+    prospecting: t('planComparison.rows.prospecting'),
+    emailAutomations: t('planComparison.rows.emailAutomations'),
+    dealAutomations: t('planComparison.rows.dealAutomations'),
+    agi: t('planComparison.rows.agi'),
+    advancedAnalytics: t('planComparison.rows.advancedAnalytics'),
+    customReports: t('planComparison.rows.customReports'),
+    api: t('planComparison.rows.api'),
+    googleCalendar: t('planComparison.rows.googleCalendar'),
+    ads: t('planComparison.rows.ads'),
+    n8n: t('planComparison.rows.n8n'),
+    roundRobin: t('planComparison.rows.roundRobin'),
+    sso: t('planComparison.rows.sso'),
+    gpsCheckin: t('planComparison.rows.gpsCheckin'),
+    pwa: t('planComparison.rows.pwa'),
+    support: t('planComparison.rows.support'),
+  }
+  const pv = {
+    contacts_free: t('planComparison.values.contacts_free'),
+    contacts_starter: t('planComparison.values.contacts_starter'),
+    contacts_pro: t('planComparison.values.contacts_pro'),
+    contacts_business: t('planComparison.values.contacts_business'),
+    deals_free: t('planComparison.values.deals_free'),
+    deals_starter: t('planComparison.values.deals_starter'),
+    deals_pro: t('planComparison.values.deals_pro'),
+    deals_business: t('planComparison.values.deals_business'),
+    pipelines_free: t('planComparison.values.pipelines_free'),
+    pipelines_starter: t('planComparison.values.pipelines_starter'),
+    pipelines_pro: t('planComparison.values.pipelines_pro'),
+    pipelines_business: t('planComparison.values.pipelines_business'),
+    users_free: t('planComparison.values.users_free'),
+    users_starter: t('planComparison.values.users_starter'),
+    users_pro: t('planComparison.values.users_pro'),
+    users_business: t('planComparison.values.users_business'),
+    whatsapp_starter: t('planComparison.values.whatsapp_starter'),
+    whatsapp_pro: t('planComparison.values.whatsapp_pro'),
+    whatsapp_business: t('planComparison.values.whatsapp_business'),
+    prospecting_starter: t('planComparison.values.prospecting_starter'),
+    prospecting_pro: t('planComparison.values.prospecting_pro'),
+    prospecting_business: t('planComparison.values.prospecting_business'),
+    emailAutomations_starter: t('planComparison.values.emailAutomations_starter'),
+    emailAutomations_pro: t('planComparison.values.emailAutomations_pro'),
+    emailAutomations_business: t('planComparison.values.emailAutomations_business'),
+    dealAutomations_starter: t('planComparison.values.dealAutomations_starter'),
+    dealAutomations_pro: t('planComparison.values.dealAutomations_pro'),
+    dealAutomations_business: t('planComparison.values.dealAutomations_business'),
+    support_free: t('planComparison.values.support_free'),
+    support_starter: t('planComparison.values.support_starter'),
+    support_pro: t('planComparison.values.support_pro'),
+    support_business: t('planComparison.values.support_business'),
+  }
+
   const howToSchema = {
     "@context": "https://schema.org",
     "@type": "HowTo",
@@ -406,7 +332,7 @@ export default function FeaturesPage() {
       }
     ],
     "totalTime": "PT20M"
-  };
+  }
 
   const breadcrumbSchema = {
     "@context": "https://schema.org",
@@ -415,7 +341,7 @@ export default function FeaturesPage() {
       { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://sirius.roilabs.com.br" },
       { "@type": "ListItem", "position": 2, "name": "Funcionalidades", "item": "https://sirius.roilabs.com.br/features" }
     ]
-  };
+  }
 
   const softwareAppSchema = {
     "@context": "https://schema.org",
@@ -449,7 +375,7 @@ export default function FeaturesPage() {
       "PWA com Push Notifications"
     ],
     "screenshot": "https://sirius.roilabs.com.br/og-image.png"
-  };
+  }
 
   return (
     <>
@@ -475,26 +401,24 @@ export default function FeaturesPage() {
           <div className="mx-auto max-w-7xl px-6 lg:px-8">
             <div className="mx-auto max-w-3xl text-center">
               <Badge variant="outline" className="mb-4 text-primary border-primary/30">
-                +50 funcionalidades
+                {t('hero.badge')}
               </Badge>
               <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">
-                Tudo para vender mais,{' '}
-                <span className="text-primary">sem complexidade</span>
+                {t('hero.title')}{' '}
+                <span className="text-primary">{t('hero.titleHighlight')}</span>
               </h1>
               <p className="mt-6 text-lg leading-8 text-muted-foreground">
-                Pipeline Kanban, WhatsApp integrado, IA comercial, prospecção automática, automações
-                de deals e email, analytics avançado, API pública e muito mais.
-                Desenhamos cada recurso pensando na produtividade do vendedor brasileiro.
+                {t('hero.subtitle')}
               </p>
               <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
                 <Button asChild size="lg">
                   <Link href="/register">
-                    Testar Gratis
+                    {t('hero.ctaPrimary')}
                     <ArrowRight className="ml-2 h-4 w-4" />
                   </Link>
                 </Button>
                 <Button asChild size="lg" variant="outline">
-                  <Link href="/pricing">Ver Planos e Precos</Link>
+                  <Link href="/pricing">{t('hero.ctaSecondary')}</Link>
                 </Button>
               </div>
             </div>
@@ -522,16 +446,14 @@ export default function FeaturesPage() {
             <div className="flex items-center gap-3">
               <Star className="w-7 h-7 text-amber-500 fill-amber-400 shrink-0" />
               <div>
-                <p className="font-bold text-amber-900 text-lg">Programa de Fundadores — 41% OFF vitalicio!</p>
-                <p className="text-sm text-amber-700">
-                  Starter R$39 · Pro R$87 · Business R$234/mes para sempre. Vagas limitadas.
-                </p>
+                <p className="font-bold text-amber-900 text-lg">{t('founders.badge')}</p>
+                <p className="text-sm text-amber-700">{t('founders.pricing')}</p>
               </div>
             </div>
             <Button asChild className="bg-amber-500 hover:bg-amber-600 text-white shrink-0">
               <Link href="/fundadores">
                 <Star className="w-4 h-4 mr-2 fill-white" />
-                Ver oferta
+                {t('founders.cta')}
               </Link>
             </Button>
           </div>
@@ -540,9 +462,9 @@ export default function FeaturesPage() {
         {/* Hero Features (top 6) */}
         <div className="mx-auto max-w-7xl px-6 lg:px-8 pb-24">
           <div className="text-center mb-12">
-            <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">Destaques</h2>
+            <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">{t('highlights.title')}</h2>
             <p className="mt-3 text-lg text-muted-foreground max-w-2xl mx-auto">
-              As funcionalidades que fazem o Sirius se destacar de qualquer outro CRM
+              {t('highlights.subtitle')}
             </p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -571,67 +493,67 @@ export default function FeaturesPage() {
 
           <FeatureSection
             id="crm"
-            title="CRM Core"
-            subtitle="A base do seu processo comercial: contatos, deals, pipelines e atividades"
+            title={t('sections.crm.title')}
+            subtitle={t('sections.crm.subtitle')}
             features={crmFeatures}
             columns={2}
           />
 
           <FeatureSection
             id="comunicacao"
-            title="Comunicacao Multi-canal"
-            subtitle="WhatsApp, email e notificacoes — tudo integrado sem sair do CRM"
+            title={t('sections.comunicacao.title')}
+            subtitle={t('sections.comunicacao.subtitle')}
             features={communicationFeatures}
             columns={2}
           />
 
           <FeatureSection
             id="ia"
-            title="Inteligencia Artificial (AGI Sirius)"
-            subtitle="IA comercial que analisa, sugere e enriquece seus dados automaticamente"
+            title={t('sections.ia.title')}
+            subtitle={t('sections.ia.subtitle')}
             features={aiFeatures}
           />
 
           <FeatureSection
             id="prospeccao"
-            title="Prospeccao Automatica"
-            subtitle="Encontre novos clientes sem esforco com busca automatica pelo Google Maps"
+            title={t('sections.prospeccao.title')}
+            subtitle={t('sections.prospeccao.subtitle')}
             features={prospectingFeatures}
           />
 
           <FeatureSection
             id="analytics"
-            title="Analytics e BI"
-            subtitle="Dashboards que mostram a saude real da sua operacao comercial"
+            title={t('sections.analytics.title')}
+            subtitle={t('sections.analytics.subtitle')}
             features={analyticsFeatures}
             columns={2}
           />
 
           <FeatureSection
             id="integracoes"
-            title="Integracoes"
-            subtitle="Conecte o Sirius a todo o seu ecossistema de ferramentas"
+            title={t('sections.integracoes.title')}
+            subtitle={t('sections.integracoes.subtitle')}
             features={integrationFeatures}
           />
 
           <FeatureSection
             id="equipe"
-            title="Gestao de Equipe"
-            subtitle="Ferramentas para times comerciais trabalharem juntos de forma eficiente"
+            title={t('sections.equipe.title')}
+            subtitle={t('sections.equipe.subtitle')}
             features={teamFeatures}
           />
 
           <FeatureSection
             id="mobile"
-            title="Mobile e Campo"
-            subtitle="Feche negocios de qualquer lugar com a experiencia mobile completa"
+            title={t('sections.mobile.title')}
+            subtitle={t('sections.mobile.subtitle')}
             features={mobileFeatures}
           />
 
           <FeatureSection
             id="seguranca"
-            title="Seguranca e Compliance"
-            subtitle="Seus dados protegidos com os mais altos padroes de seguranca"
+            title={t('sections.seguranca.title')}
+            subtitle={t('sections.seguranca.subtitle')}
             features={securityFeatures}
           />
         </div>
@@ -640,54 +562,54 @@ export default function FeaturesPage() {
         <div className="bg-muted/30 py-24">
           <div className="mx-auto max-w-7xl px-6 lg:px-8">
             <div className="text-center mb-12">
-              <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">Funcionalidades por Plano</h2>
+              <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">{t('planComparison.title')}</h2>
               <p className="mt-3 text-lg text-muted-foreground max-w-2xl mx-auto">
-                Veja o que cada plano inclui. Comece gratis e escale conforme seu time cresce.
+                {t('planComparison.subtitle')}
               </p>
             </div>
             <div className="overflow-x-auto">
               <table className="w-full text-sm border-collapse">
                 <thead>
                   <tr className="border-b-2 border-border">
-                    <th className="text-left py-3 px-4 font-semibold w-1/3">Recurso</th>
-                    <th className="text-center py-3 px-4 font-semibold">Gratuito</th>
-                    <th className="text-center py-3 px-4 font-semibold">Starter<br /><span className="text-xs text-muted-foreground font-normal">R$67/mes</span></th>
-                    <th className="text-center py-3 px-4 font-semibold">Pro<br /><span className="text-xs text-muted-foreground font-normal">R$147/mes</span></th>
-                    <th className="text-center py-3 px-4 font-semibold">Business<br /><span className="text-xs text-muted-foreground font-normal">R$397/mes</span></th>
+                    <th className="text-left py-3 px-4 font-semibold w-1/3">{t('planComparison.col_feature')}</th>
+                    <th className="text-center py-3 px-4 font-semibold">{t('planComparison.col_free')}</th>
+                    <th className="text-center py-3 px-4 font-semibold">{t('planComparison.col_starter')}<br /><span className="text-xs text-muted-foreground font-normal">{t('planComparison.starter_price')}</span></th>
+                    <th className="text-center py-3 px-4 font-semibold">{t('planComparison.col_pro')}<br /><span className="text-xs text-muted-foreground font-normal">{t('planComparison.pro_price')}</span></th>
+                    <th className="text-center py-3 px-4 font-semibold">{t('planComparison.col_business')}<br /><span className="text-xs text-muted-foreground font-normal">{t('planComparison.business_price')}</span></th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-border">
-                  <PlanRow label="Contatos" free="250" starter="1.000" pro="5.000" business="Ilimitado" />
-                  <PlanRow label="Negocios (Deals)" free="100" starter="500" pro="2.500" business="Ilimitado" />
-                  <PlanRow label="Pipelines" free="1" starter="5" pro="15" business="50" />
-                  <PlanRow label="Usuarios" free="2" starter="5" pro="15" business="50" />
-                  <PlanRow label="WhatsApp" free={false} starter="1 instancia" pro="3 instancias" business="5 instancias" />
-                  <PlanRow label="Prospeccao mensal" free={false} starter="75 leads" pro="300 leads" business="1.500 leads" />
-                  <PlanRow label="Automacoes de email" free={false} starter="3" pro="10" business="50" />
-                  <PlanRow label="Automacoes de deals" free={false} starter="3" pro="10" business="50" />
-                  <PlanRow label="AGI Sirius (IA)" free={false} starter={false} pro={true} business={true} />
-                  <PlanRow label="Analytics avancado" free={false} starter={false} pro={true} business={true} />
-                  <PlanRow label="Relatorios customizados" free={false} starter={false} pro={false} business={true} />
-                  <PlanRow label="API publica + Webhooks" free={false} starter={false} pro={true} business={true} />
-                  <PlanRow label="Google Calendar" free={false} starter={true} pro={true} business={true} />
-                  <PlanRow label="Google Ads / Meta Ads" free={false} starter={false} pro={true} business={true} />
-                  <PlanRow label="n8n" free={false} starter={true} pro={true} business={true} />
-                  <PlanRow label="Round-Robin" free={false} starter={false} pro={false} business={true} />
-                  <PlanRow label="SSO + Audit Log" free={false} starter={false} pro={false} business={true} />
-                  <PlanRow label="Check-in GPS" free={true} starter={true} pro={true} business={true} />
-                  <PlanRow label="PWA + Push" free={true} starter={true} pro={true} business={true} />
-                  <PlanRow label="Suporte" free="Comunidade" starter="Email" pro="Prioritario" business="Dedicado" />
+                  <PlanRow label={pr.contacts} free={pv.contacts_free} starter={pv.contacts_starter} pro={pv.contacts_pro} business={pv.contacts_business} />
+                  <PlanRow label={pr.deals} free={pv.deals_free} starter={pv.deals_starter} pro={pv.deals_pro} business={pv.deals_business} />
+                  <PlanRow label={pr.pipelines} free={pv.pipelines_free} starter={pv.pipelines_starter} pro={pv.pipelines_pro} business={pv.pipelines_business} />
+                  <PlanRow label={pr.users} free={pv.users_free} starter={pv.users_starter} pro={pv.users_pro} business={pv.users_business} />
+                  <PlanRow label={pr.whatsapp} free={false} starter={pv.whatsapp_starter} pro={pv.whatsapp_pro} business={pv.whatsapp_business} />
+                  <PlanRow label={pr.prospecting} free={false} starter={pv.prospecting_starter} pro={pv.prospecting_pro} business={pv.prospecting_business} />
+                  <PlanRow label={pr.emailAutomations} free={false} starter={pv.emailAutomations_starter} pro={pv.emailAutomations_pro} business={pv.emailAutomations_business} />
+                  <PlanRow label={pr.dealAutomations} free={false} starter={pv.dealAutomations_starter} pro={pv.dealAutomations_pro} business={pv.dealAutomations_business} />
+                  <PlanRow label={pr.agi} free={false} starter={false} pro={true} business={true} />
+                  <PlanRow label={pr.advancedAnalytics} free={false} starter={false} pro={true} business={true} />
+                  <PlanRow label={pr.customReports} free={false} starter={false} pro={false} business={true} />
+                  <PlanRow label={pr.api} free={false} starter={false} pro={true} business={true} />
+                  <PlanRow label={pr.googleCalendar} free={false} starter={true} pro={true} business={true} />
+                  <PlanRow label={pr.ads} free={false} starter={false} pro={true} business={true} />
+                  <PlanRow label={pr.n8n} free={false} starter={true} pro={true} business={true} />
+                  <PlanRow label={pr.roundRobin} free={false} starter={false} pro={false} business={true} />
+                  <PlanRow label={pr.sso} free={false} starter={false} pro={false} business={true} />
+                  <PlanRow label={pr.gpsCheckin} free={true} starter={true} pro={true} business={true} />
+                  <PlanRow label={pr.pwa} free={true} starter={true} pro={true} business={true} />
+                  <PlanRow label={pr.support} free={pv.support_free} starter={pv.support_starter} pro={pv.support_pro} business={pv.support_business} />
                 </tbody>
               </table>
             </div>
             <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
               <Button asChild size="lg">
-                <Link href="/pricing">Ver Planos Detalhados</Link>
+                <Link href="/pricing">{t('planComparison.ctaPrimary')}</Link>
               </Button>
               <Button asChild size="lg" variant="outline" className="border-amber-300 text-amber-700 hover:bg-amber-50">
                 <Link href="/fundadores">
                   <Star className="w-4 h-4 mr-2 fill-amber-400 text-amber-500" />
-                  Fundadores — 41% OFF
+                  {t('planComparison.ctaSecondary')}
                 </Link>
               </Button>
             </div>
@@ -698,20 +620,20 @@ export default function FeaturesPage() {
         <div className="py-24">
           <div className="mx-auto max-w-3xl px-6 lg:px-8 text-center">
             <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
-              Pronto para transformar suas vendas?
+              {t('cta.title')}
             </h2>
             <p className="mt-4 text-lg text-muted-foreground">
-              Comece gratis agora. Sem cartao, sem compromisso. Upgrade quando quiser.
+              {t('cta.subtitle')}
             </p>
             <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
               <Button asChild size="lg">
                 <Link href="/register">
-                  Criar Conta Gratis
+                  {t('cta.ctaPrimary')}
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Link>
               </Button>
               <Button asChild size="lg" variant="outline">
-                <Link href="/pricing">Comparar Planos</Link>
+                <Link href="/pricing">{t('cta.ctaSecondary')}</Link>
               </Button>
             </div>
           </div>
@@ -719,36 +641,4 @@ export default function FeaturesPage() {
       </div>
     </>
   )
-}
-
-// ─── Plan Row Helper ───────────────────────────────────────────────────────────
-
-function PlanRow({
-  label,
-  free,
-  starter,
-  pro,
-  business,
-}: {
-  label: string
-  free: string | boolean
-  starter: string | boolean
-  pro: string | boolean
-  business: string | boolean
-}) {
-  return (
-    <tr>
-      <td className="py-3 px-4 font-medium">{label}</td>
-      <td className="text-center py-3 px-4"><CellValue value={free} /></td>
-      <td className="text-center py-3 px-4"><CellValue value={starter} /></td>
-      <td className="text-center py-3 px-4"><CellValue value={pro} /></td>
-      <td className="text-center py-3 px-4"><CellValue value={business} /></td>
-    </tr>
-  )
-}
-
-function CellValue({ value }: { value: string | boolean }) {
-  if (value === true) return <Check className="h-4 w-4 text-green-500 mx-auto" />
-  if (value === false) return <span className="text-muted-foreground">—</span>
-  return <span className="text-muted-foreground">{value}</span>
 }

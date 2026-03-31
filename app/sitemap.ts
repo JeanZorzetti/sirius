@@ -17,32 +17,47 @@ export default function sitemap(): MetadataRoute.Sitemap {
     // - Homepage (1.0): Ponto central da marca
     // - Ferramentas/Conversão (0.9): Ativos de engajamento e conversão
     // - Demais páginas (0.8): Conteúdo de suporte
-    const routes = [
-        '',
-        '/features',
-        '/pricing',
-        '/blog',
-        '/about',
-        '/help',
-        '/privacy',
-        '/terms',
-        '/changelog',
-        '/community',
-        '/contact',
-        '/download',
-        '/followup',
-        '/proposta',
-        '/vendas-automaticas',
-        '/fundadores',
-        '/ferramentas',
-        '/anuario',
-    ].map((route) => ({
-        url: `${baseUrl}${route}`,
+    // Helper to build alternates for a PT-BR path and its EN equivalent
+    const withAlternates = (ptPath: string, enPath?: string) => {
+        const enRoute = enPath ?? ptPath // same path if no EN equivalent
+        return {
+            alternates: {
+                languages: {
+                    'pt-BR': `${baseUrl}${ptPath}`,
+                    'en': `${baseUrl}/en${enRoute}`,
+                    'x-default': `${baseUrl}${ptPath}`,
+                },
+            },
+        }
+    }
+
+    const STATIC_ROUTES: { pt: string; en?: string; priority?: number }[] = [
+        { pt: '' },
+        { pt: '/features', priority: 0.9 },
+        { pt: '/pricing', priority: 0.9 },
+        { pt: '/blog' },
+        { pt: '/about' },
+        { pt: '/help' },
+        { pt: '/privacy' },
+        { pt: '/terms' },
+        { pt: '/changelog' },
+        { pt: '/community' },
+        { pt: '/contact' },
+        { pt: '/download' },
+        { pt: '/followup' },
+        { pt: '/proposta', en: '/proposal' },
+        { pt: '/vendas-automaticas', en: '/automatic-sales', priority: 0.9 },
+        { pt: '/fundadores', en: '/founders', priority: 0.9 },
+        { pt: '/ferramentas', en: '/tools', priority: 0.9 },
+        { pt: '/anuario', en: '/yearbook' },
+    ]
+
+    const routes = STATIC_ROUTES.map(({ pt, en, priority }) => ({
+        url: `${baseUrl}${pt}`,
         lastModified: lastSiteUpdate,
         changeFrequency: 'monthly' as const,
-        priority: route === '' ? 1
-            : ['/vendas-automaticas', '/fundadores', '/ferramentas'].includes(route) ? 0.9
-            : 0.8,
+        priority: priority ?? (pt === '' ? 1 : 0.8),
+        ...withAlternates(pt, en),
     }))
 
     // Dynamic blog posts
@@ -50,11 +65,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     // lastModified: Usa data de modificação quando disponível, senão usa data de publicação
     // Isso sinaliza para crawlers que o conteúdo está "vivo" e deve ser reprocessado
     const posts = blogPosts.map((post) => ({
-            url: `${baseUrl}/blog/${post.slug}`,
-            lastModified: new Date(post.lastModified || post.date),
-            changeFrequency: 'weekly' as const,
-            priority: 0.8,
-        }))
+        url: `${baseUrl}/blog/${post.slug}`,
+        lastModified: new Date(post.lastModified || post.date),
+        changeFrequency: 'weekly' as const,
+        priority: 0.8,
+        ...withAlternates(`/blog/${post.slug}`),
+    }))
 
     // Help articles (23 artigos)
     const helpArticlePages = helpArticles.map((article) => ({
@@ -89,7 +105,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
         url: `${baseUrl}/solucoes/${niche.slug}`,
         lastModified: lastSiteUpdate,
         changeFrequency: 'weekly' as const,
-        priority: 0.9, // Alta prioridade - páginas de conversão principais
+        priority: 0.9,
+        ...withAlternates(`/solucoes/${niche.slug}`, `/solutions/${niche.slug}`),
     }))
 
     // Páginas de SEO local por cidade (geradas dinamicamente do city-data.ts)

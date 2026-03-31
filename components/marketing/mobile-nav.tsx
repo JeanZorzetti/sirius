@@ -1,14 +1,11 @@
 'use client'
 
-import Link from 'next/link'
+import { useState } from 'react'
 import { Menu, ChevronDown, Building2, Sun, Megaphone, Briefcase, Users, Calculator } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import {
-    Sheet,
-    SheetContent,
-    SheetTrigger,
-} from '@/components/ui/sheet'
-import { useState } from 'react'
+import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
+import { useTranslations } from 'next-intl'
+import { Link } from '@/i18n/routing'
 import { NICHES } from '@/config/niche-data'
 
 const NICHE_ICONS: Record<string, typeof Building2> = {
@@ -19,30 +16,17 @@ const NICHE_ICONS: Record<string, typeof Building2> = {
     'representantes-comerciais': Users,
 }
 
-const NICHE_LABELS: Record<string, string> = {
-    'corretores-de-imoveis': 'Corretores de Imóveis',
-    'energia-solar': 'Energia Solar',
-    'agencias-de-marketing': 'Agências de Marketing',
-    'consultores-empresariais': 'Consultores Empresariais',
-    'representantes-comerciais': 'Representantes Comerciais',
-}
-
-const FERRAMENTAS = [
-    { href: '/ferramentas/calculadora-roi', label: 'Calculadora ROI Geral' },
-    { href: '/ferramentas/calculadora-roi-corretores', label: 'ROI para Corretores' },
-    { href: '/ferramentas/calculadora-roi-energia-solar', label: 'ROI para Energia Solar' },
-    { href: '/ferramentas/calculadora-roi-agencias', label: 'ROI para Agências' },
-    { href: '/ferramentas/calculadora-roi-consultores', label: 'ROI para Consultores' },
-    { href: '/ferramentas/calculadora-roi-representantes', label: 'ROI para Representantes' },
+const FERRAMENTAS_KEYS = [
+    { href: '/ferramentas/calculadora-roi' as const, tKey: 'roi_general' },
+    { href: '/ferramentas/calculadora-roi-corretores' as const, tKey: 'roi_realtors' },
+    { href: '/ferramentas/calculadora-roi-energia-solar' as const, tKey: 'roi_solar' },
+    { href: '/ferramentas/calculadora-roi-agencias' as const, tKey: 'roi_agencies' },
+    { href: '/ferramentas/calculadora-roi-consultores' as const, tKey: 'roi_consultants' },
+    { href: '/ferramentas/calculadora-roi-representantes' as const, tKey: 'roi_reps' },
 ]
 
-function CollapsibleSection({ title, children, onNavigate }: {
-    title: string
-    children: React.ReactNode
-    onNavigate: () => void
-}) {
+function CollapsibleSection({ title, children }: { title: string; children: React.ReactNode }) {
     const [expanded, setExpanded] = useState(false)
-
     return (
         <div>
             <button
@@ -63,6 +47,8 @@ function CollapsibleSection({ title, children, onNavigate }: {
 
 export function MobileNav() {
     const [open, setOpen] = useState(false)
+    const tNav = useTranslations('marketing.home.nav')
+    const tNiches = useTranslations('marketing.home.niche_labels')
 
     return (
         <Sheet open={open} onOpenChange={setOpen}>
@@ -79,28 +65,28 @@ export function MobileNav() {
                         onClick={() => setOpen(false)}
                         className="text-sm font-medium transition-colors hover:text-primary"
                     >
-                        Funcionalidades
+                        {tNav('features')}
                     </Link>
 
-                    <CollapsibleSection title="Soluções por Segmento" onNavigate={() => setOpen(false)}>
+                    <CollapsibleSection title={tNav('solutions')}>
                         {NICHES.map((niche) => {
                             const Icon = NICHE_ICONS[niche.slug] || Building2
                             return (
                                 <Link
                                     key={niche.slug}
-                                    href={`/solucoes/${niche.slug}`}
+                                    href={`/solucoes/${niche.slug}` as any}
                                     onClick={() => setOpen(false)}
                                     className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
                                 >
                                     <Icon className="h-4 w-4" />
-                                    {NICHE_LABELS[niche.slug] || niche.slug}
+                                    {tNiches(niche.slug as any)}
                                 </Link>
                             )
                         })}
                     </CollapsibleSection>
 
-                    <CollapsibleSection title="Ferramentas Grátis" onNavigate={() => setOpen(false)}>
-                        {FERRAMENTAS.map((tool) => (
+                    <CollapsibleSection title={tNav('tools')}>
+                        {FERRAMENTAS_KEYS.map((tool) => (
                             <Link
                                 key={tool.href}
                                 href={tool.href}
@@ -108,7 +94,7 @@ export function MobileNav() {
                                 className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
                             >
                                 <Calculator className="h-4 w-4" />
-                                {tool.label}
+                                {tNav(`tools_labels.${tool.tKey}` as any)}
                             </Link>
                         ))}
                     </CollapsibleSection>
@@ -118,14 +104,14 @@ export function MobileNav() {
                         onClick={() => setOpen(false)}
                         className="text-sm font-medium transition-colors hover:text-primary"
                     >
-                        Preços
+                        {tNav('pricing')}
                     </Link>
                     <Link
                         href="/blog"
                         onClick={() => setOpen(false)}
                         className="text-sm font-medium transition-colors hover:text-primary"
                     >
-                        Blog
+                        {tNav('blog')}
                     </Link>
                     <Link
                         href="/fundadores"
@@ -133,14 +119,14 @@ export function MobileNav() {
                         className="text-sm font-semibold text-amber-600 hover:text-amber-700 transition-colors flex items-center gap-1"
                     >
                         <span>⭐</span>
-                        Fundadores — 41% OFF vitalício
+                        {tNav('founders')}
                     </Link>
                     <div className="border-t pt-4 mt-4 flex flex-col gap-4">
                         <Button variant="outline" asChild className="w-full justify-start">
-                            <Link href="/login" onClick={() => setOpen(false)}>Entrar</Link>
+                            <Link href="/login" onClick={() => setOpen(false)}>{tNav('login')}</Link>
                         </Button>
                         <Button asChild className="w-full justify-start">
-                            <Link href="/register" onClick={() => setOpen(false)}>Começar Grátis</Link>
+                            <Link href="/register" onClick={() => setOpen(false)}>{tNav('startFree')}</Link>
                         </Button>
                     </div>
                 </nav>

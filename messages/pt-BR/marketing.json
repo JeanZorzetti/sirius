@@ -38,44 +38,44 @@
       "representantes-comerciais": "Representantes Comerciais"
     },
     "features": {
-    "title": "Tudo o que você precisa",
-    "subtitle": "Feito para vendas brasileiras. Sem burocracia, sem fricção.",
-    "badges": {
-      "core": "Core",
-      "starter": "Starter+",
-      "all": "Todos"
+      "title": "Tudo o que você precisa",
+      "subtitle": "Feito para vendas brasileiras. Sem burocracia, sem fricção.",
+      "badges": {
+        "core": "Core",
+        "starter": "Starter+",
+        "all": "Todos"
+      },
+      "kanban": {
+        "title": "Kanban Drag & Drop",
+        "description": "Gerencie seu pipeline visualmente. Múltiplos pipelines por produto, região ou equipe. Valor total por estágio e previsão de fechamento."
+      },
+      "whatsapp": {
+        "title": "WhatsApp Integrado",
+        "description": "Inbox unificado via Evolution API. Tags, respostas rápidas, atribuição por vendedor e mídia.",
+        "metric": "98% leitura"
+      },
+      "analytics": {
+        "title": "Analytics PRO",
+        "description": "Win rate, ciclo de vendas, velocidade de pipeline, CAC e tendências. Identifique gargalos e otimize seu processo."
+      },
+      "maps": {
+        "title": "Prospecção Google Maps",
+        "description": "Encontre leads automaticamente. Nome, telefone, email e endereço extraídos do Google Maps."
+      },
+      "automations": {
+        "title": "Automações de Deals",
+        "description": "Gatilhos: deal criado, movido, ganho, perdido ou parado. Ações: email, WhatsApp, tarefas."
+      },
+      "email": {
+        "title": "Email Automático",
+        "description": "Boas-vindas, follow-up, troca de estágio. Templates com variáveis dinâmicas e analytics."
+      },
+      "mobile": {
+        "title": "Mobile + Check-in GPS",
+        "description": "PWA com push notifications. Check-in de visitas com GPS para vendedores de campo."
+      }
     },
-    "kanban": {
-      "title": "Kanban Drag & Drop",
-      "description": "Gerencie seu pipeline visualmente. Múltiplos pipelines por produto, região ou equipe. Valor total por estágio e previsão de fechamento."
-    },
-    "whatsapp": {
-      "title": "WhatsApp Integrado",
-      "description": "Inbox unificado via Evolution API. Tags, respostas rápidas, atribuição por vendedor e mídia.",
-      "metric": "98% leitura"
-    },
-    "analytics": {
-      "title": "Analytics PRO",
-      "description": "Win rate, ciclo de vendas, velocidade de pipeline, CAC e tendências. Identifique gargalos e otimize seu processo."
-    },
-    "maps": {
-      "title": "Prospecção Google Maps",
-      "description": "Encontre leads automaticamente. Nome, telefone, email e endereço extraídos do Google Maps."
-    },
-    "automations": {
-      "title": "Automações de Deals",
-      "description": "Gatilhos: deal criado, movido, ganho, perdido ou parado. Ações: email, WhatsApp, tarefas."
-    },
-    "email": {
-      "title": "Email Automático",
-      "description": "Boas-vindas, follow-up, troca de estágio. Templates com variáveis dinâmicas e analytics."
-    },
-    "mobile": {
-      "title": "Mobile + Check-in GPS",
-      "description": "PWA com push notifications. Check-in de visitas com GPS para vendedores de campo."
-    }
-  },
-  "about": {
+    "about": {
       "title": "O que é o Sirius CRM?",
       "description": "O Sirius CRM é uma plataforma de vendas projetada para o mercado brasileiro, utilizada por mais de 1.200 usuários. Oferece quatro planos de assinatura: um plano Gratuito, Starter por R$67, Pro por R$147 e Business por R$397, ajudando equipes a alcançar um aumento médio de 35% na conversão de leads. Seus diferenciais incluem a integração nativa com WhatsApp via Evolution API, prospecção de leads B2B pelo Google Maps e a assistente de vendas com IA, AGI Sirius."
     },
@@ -185,6 +185,472 @@
       "loginMsg": "⚠️ Faça login para experimentar a AGI Sirius completa!",
       "inputPlaceholder": "Faça uma pergunta sobre vendas...",
       "hint": "💡 Experimente perguntas sobre BANT, SPIN Selling, objeções, métricas de vendas e mais!"
+    }
+  },
+  "features": {
+    "meta": {
+      "title": "Funcionalidades Sirius CRM 2026 [12+ Ferramentas de IA] — WhatsApp, Pipeline, Prospecção e Mais",
+      "description": "Descubra como a IA Nativa do Sirius qualifica seus leads automaticamente com BANT e MEDDIC, integra WhatsApp, prospecta no Google Maps e automatiza follow-ups. Pipeline Kanban visual. Teste grátis 7 dias.",
+      "ogTitle": "Funcionalidades Sirius CRM 2026 [12+ Ferramentas de IA] — WhatsApp e Pipeline",
+      "ogDescription": "IA que qualifica leads automaticamente, WhatsApp integrado, pipeline Kanban, prospecção Google Maps, automações e analytics PRO. Tudo em um só CRM.",
+      "twitterTitle": "Funcionalidades Sirius CRM 2026 [12+ Ferramentas de IA] — WhatsApp e Pipeline",
+      "twitterDescription": "IA que qualifica leads com BANT e MEDDIC, WhatsApp integrado, pipeline Kanban, prospecção Google Maps e automações. Teste grátis."
+    },
+    "hero": {
+      "badge": "+50 funcionalidades",
+      "title": "Tudo para vender mais,",
+      "titleHighlight": "sem complexidade",
+      "subtitle": "Pipeline Kanban, WhatsApp integrado, IA comercial, prospecção automática, automações de deals e email, analytics avançado, API pública e muito mais. Desenhamos cada recurso pensando na produtividade do vendedor brasileiro.",
+      "ctaPrimary": "Testar Grátis",
+      "ctaSecondary": "Ver Planos e Preços"
+    },
+    "nav": {
+      "crm": "CRM Core",
+      "comunicacao": "Comunicação",
+      "ia": "IA & AGI",
+      "prospeccao": "Prospecção",
+      "analytics": "Analytics",
+      "integracoes": "Integrações",
+      "equipe": "Equipe",
+      "mobile": "Mobile",
+      "seguranca": "Segurança"
+    },
+    "founders": {
+      "badge": "Programa de Fundadores — 41% OFF vitalício!",
+      "pricing": "Starter R$39 · Pro R$87 · Business R$234/mês para sempre. Vagas limitadas.",
+      "cta": "Ver oferta"
+    },
+    "highlights": {
+      "title": "Destaques",
+      "subtitle": "As funcionalidades que fazem o Sirius se destacar de qualquer outro CRM"
+    },
+    "heroFeatures": {
+      "kanban": {
+        "name": "Pipeline Kanban",
+        "description": "Visualize negócios em estágios claros com drag-and-drop. Crie múltiplos pipelines personalizados por produto, região ou equipe. Veja valor total por estágio e previsão de fechamento em tempo real.",
+        "badge": "Core"
+      },
+      "whatsapp": {
+        "name": "WhatsApp Integrado",
+        "description": "Conecte seu WhatsApp via Evolution API com pareamento por QR Code. Envie e receba mensagens direto do CRM. Inbox unificado com tags, respostas rápidas, atribuição de conversas e mídia (fotos, áudios, documentos).",
+        "badge": "Starter+"
+      },
+      "agi": {
+        "name": "AGI Sirius — IA Comercial",
+        "description": "Inteligência Artificial que analisa seus deals, gera scripts de venda personalizados, faz diagnóstico de saúde do negócio, enriquece contatos e recomenda próximas ações. Baseada em Knowledge Graph com RAG.",
+        "badge": "Pro+"
+      },
+      "maps": {
+        "name": "Prospecção Google Maps",
+        "description": "Encontre leads automaticamente pelo Google Maps. Busque por segmento e localização, e o Sirius extrai nome, telefone, email, site e endereço. Créditos mensais por plano — de 75 a 1.500 leads/mês.",
+        "badge": "Starter+"
+      },
+      "automations": {
+        "name": "Automações de Deals",
+        "description": "Crie automações por gatilhos: deal criado, movido de estágio, ganho, perdido ou parado há X dias. Ações: enviar email, enviar WhatsApp, criar tarefa ou atualizar campo. Logs completos de execução.",
+        "badge": "Starter+"
+      },
+      "analytics": {
+        "name": "Analytics PRO",
+        "description": "Dashboards avançados com win rate, ciclo de vendas, velocidade de pipeline, análise de deals perdidos e tendências. Filtros por período e comparação temporal. Previsão de receita por data de fechamento.",
+        "badge": "Pro+"
+      }
+    },
+    "sections": {
+      "crm": {
+        "title": "CRM Core",
+        "subtitle": "A base do seu processo comercial: contatos, deals, pipelines e atividades",
+        "contacts": {
+          "name": "Gestão de Contatos",
+          "description": "CRUD completo com importação e exportação CSV. Histórico de interações, associação com empresas, tags personalizáveis e timeline de atividades. Até contatos ilimitados no plano Business."
+        },
+        "deals": {
+          "name": "Negócios (Deals)",
+          "description": "Controle valor, data de fechamento, responsável e estágio. Notas, atividades e comentários vinculados. Drag-and-drop no Kanban. Exportação de dados."
+        },
+        "pipelines": {
+          "name": "Múltiplos Pipelines",
+          "description": "Crie pipelines separados por produto, região ou equipe. Configure estágios customizados, defina pipeline padrão e vincule automações específicas por pipeline."
+        },
+        "tasks": {
+          "name": "Atividades e Tarefas",
+          "description": "Crie tarefas vinculadas a deals e contatos. Defina responsáveis, prazos e lembretes. Sincronize com Google Calendar automaticamente."
+        }
+      },
+      "comunicacao": {
+        "title": "Comunicação Multi-canal",
+        "subtitle": "WhatsApp, email e notificações — tudo integrado sem sair do CRM",
+        "inbox": {
+          "name": "Inbox Unificado (WhatsApp)",
+          "description": "Todas as conversas WhatsApp em um só lugar. Filtre por tags, busque por nome, fixe chats importantes, arquive conversas antigas. Atribua conversas a membros da equipe."
+        },
+        "quickReplies": {
+          "name": "Respostas Rápidas",
+          "description": "Crie templates de respostas rápidas para agilizar o atendimento no WhatsApp. Acesse com um clique direto do chat."
+        },
+        "emailAutomations": {
+          "name": "Automações de Email",
+          "description": "Campanhas automáticas de e-mail: boas-vindas, deal criado, troca de estágio, nudge de upgrade. Templates com variáveis dinâmicas (nome, valor, empresa). Analytics de abertura e cliques."
+        },
+        "notifications": {
+          "name": "Notificações em Tempo Real",
+          "description": "Push notifications (PWA) para novos deals, deals ganhos, mensagens WhatsApp e lembretes de calendário. Streaming SSE para atualizações instantâneas no navegador."
+        }
+      },
+      "ia": {
+        "title": "Inteligência Artificial (AGI Sirius)",
+        "subtitle": "IA comercial que analisa, sugere e enriquece seus dados automaticamente",
+        "dealAnalysis": {
+          "name": "Análise de Deals com IA",
+          "description": "A AGI Sirius analisa cada negócio e gera um score de probabilidade de fechamento, identifica riscos e sugere ações para aumentar a conversão."
+        },
+        "scripts": {
+          "name": "Gerador de Scripts de Venda",
+          "description": "IA gera scripts de ligação e abordagem personalizados com base no perfil do contato, estágio do deal e histórico de interações."
+        },
+        "enrichment": {
+          "name": "Enriquecimento de Contatos",
+          "description": "A IA complementa dados dos seus contatos automaticamente: cargo, empresa, rede social e informações relevantes para sua abordagem comercial."
+        },
+        "rag": {
+          "name": "Knowledge Graph + RAG",
+          "description": "Sistema de conhecimento baseado em grafos que extrai entidades e relacionamentos dos seus dados e blog. Consultas semânticas via Retrieval-Augmented Generation."
+        },
+        "insights": {
+          "name": "Insights e Recomendações",
+          "description": "Receba insights automáticos sobre seu pipeline: gargalos, oportunidades, tendências e recomendações de próximos passos baseadas em dados históricos."
+        }
+      },
+      "prospeccao": {
+        "title": "Prospecção Automática",
+        "subtitle": "Encontre novos clientes sem esforço com busca automática pelo Google Maps",
+        "search": {
+          "name": "Busca por Google Maps",
+          "description": "Digite o segmento (ex: \"pizzarias\") e a cidade. O Sirius busca automaticamente no Google Maps e retorna: nome, telefone, email, site, endereço e avaliação."
+        },
+        "credits": {
+          "name": "Sistema de Créditos",
+          "description": "Cada plano inclui créditos mensais de prospecção: Starter 75, Pro 300, Business 1.500. Compre pacotes extras de 100 ou 500 leads quando precisar."
+        },
+        "conversion": {
+          "name": "Conversão Automática em Contato",
+          "description": "Leads encontrados podem ser convertidos em contatos do CRM com um clique. Histórico de buscas salvo para consulta futura."
+        }
+      },
+      "analytics": {
+        "title": "Analytics e BI",
+        "subtitle": "Dashboards que mostram a saúde real da sua operação comercial",
+        "dashboard": {
+          "name": "Dashboard de Vendas",
+          "description": "Valor total do pipeline, taxa de conversão, ticket médio, previsão de fechamento e deals por estágio. Visão consolidada de toda a operação comercial."
+        },
+        "advanced": {
+          "name": "Analytics Avançado",
+          "description": "Win rate, ciclo médio de vendas, velocidade de pipeline, tendências ao longo do tempo. Filtros por período personalizado e comparação entre períodos."
+        },
+        "lostDeals": {
+          "name": "Análise de Deals Perdidos",
+          "description": "Entenda por que deals são perdidos. Categorize motivos, identifique padrões e ajuste seu processo comercial com dados."
+        },
+        "marketing": {
+          "name": "Marketing & CAC",
+          "description": "Integre com Google Ads e Meta Ads para calcular CAC automaticamente. Acompanhe ROI de campanhas, LTV/CAC ratio e custo por lead com entrada manual ou automática."
+        }
+      },
+      "integracoes": {
+        "title": "Integrações",
+        "subtitle": "Conecte o Sirius a todo o seu ecossistema de ferramentas",
+        "whatsapp": {
+          "name": "WhatsApp (Evolution API)",
+          "description": "Integração nativa com Evolution API. Multi-instância no Business (até 5). QR Code para pareamento, envio/recebimento de mensagens, mídia e status em tempo real."
+        },
+        "calendar": {
+          "name": "Google Calendar",
+          "description": "Sincronize atividades e reuniões com Google Calendar via OAuth. Crie eventos automaticamente a partir de deals. Receba lembretes de compromissos."
+        },
+        "ads": {
+          "name": "Google Ads & Meta Ads",
+          "description": "Conecte suas contas de anúncios para importar métricas de campanhas, gastos e conversões. Calcule CAC e ROI automaticamente."
+        },
+        "n8n": {
+          "name": "n8n",
+          "description": "Integre com n8n para criar workflows avançados de automação. Conecte o Sirius a centenas de ferramentas via nodes customizados."
+        },
+        "webhooks": {
+          "name": "Webhooks",
+          "description": "Configure webhooks para receber eventos em tempo real: deal criado, contato atualizado, negócio ganho/perdido. Signing secrets para segurança. Logs de execução com retry automático."
+        },
+        "api": {
+          "name": "API REST v1",
+          "description": "API pública documentada para desenvolvedores. Gerencie contatos, deals, pipelines e webhooks programaticamente. Chaves de API com permissões configuráveis."
+        }
+      },
+      "equipe": {
+        "title": "Gestão de Equipe",
+        "subtitle": "Ferramentas para times comerciais trabalharem juntos de forma eficiente",
+        "management": {
+          "name": "Gestão de Equipe",
+          "description": "Convide membros por email, gerencie papéis (Owner/Member) e controle permissões. Veja convites pendentes e atividade da equipe."
+        },
+        "roundRobin": {
+          "name": "Round-Robin de Leads",
+          "description": "Distribua novos leads automaticamente entre vendedores em rodízio. Pule usuários offline, notifique sobre novas atribuições e garanta distribuição equilibrada."
+        },
+        "assignment": {
+          "name": "Atribuição de Conversas",
+          "description": "No chat WhatsApp, atribua conversas a membros específicos da equipe. Cada vendedor vê apenas seus chats atribuídos."
+        }
+      },
+      "mobile": {
+        "title": "Mobile e Campo",
+        "subtitle": "Feche negócios de qualquer lugar com a experiência mobile completa",
+        "pwa": {
+          "name": "PWA (Progressive Web App)",
+          "description": "Instale o Sirius na tela inicial do celular como um app nativo. Funciona offline para consultas básicas. Push notifications mesmo com o app fechado."
+        },
+        "gps": {
+          "name": "Check-in com GPS",
+          "description": "Para vendedores de campo: faça check-in em visitas com localização GPS. Histórico de visitas com mapa, horários e anotações. Interface otimizada para mobile."
+        },
+        "offline": {
+          "name": "Sync Offline",
+          "description": "Seus dados ficam disponíveis mesmo sem internet. Quando a conexão voltar, tudo sincroniza automaticamente."
+        }
+      },
+      "seguranca": {
+        "title": "Segurança e Compliance",
+        "subtitle": "Seus dados protegidos com os mais altos padrões de segurança",
+        "encryption": {
+          "name": "Criptografia de Dados",
+          "description": "Todos os dados são criptografados em trânsito (TLS) e em repouso. Seus dados ficam isolados por organização."
+        },
+        "sso": {
+          "name": "SSO & Audit Log",
+          "description": "Single Sign-On para login corporativo e log de auditoria completo de todas as ações na plataforma. Plano Business."
+        },
+        "apiKeys": {
+          "name": "API Keys com Permissões",
+          "description": "Crie chaves de API com escopo definido. Revogue a qualquer momento. Webhook signing secrets para validar origem das requisições."
+        }
+      }
+    },
+    "planComparison": {
+      "title": "Funcionalidades por Plano",
+      "subtitle": "Veja o que cada plano inclui. Comece grátis e escale conforme seu time cresce.",
+      "col_feature": "Recurso",
+      "col_free": "Gratuito",
+      "col_starter": "Starter",
+      "col_pro": "Pro",
+      "col_business": "Business",
+      "starter_price": "R$67/mês",
+      "pro_price": "R$147/mês",
+      "business_price": "R$397/mês",
+      "rows": {
+        "contacts": "Contatos",
+        "deals": "Negócios (Deals)",
+        "pipelines": "Pipelines",
+        "users": "Usuários",
+        "whatsapp": "WhatsApp",
+        "prospecting": "Prospecção mensal",
+        "emailAutomations": "Automações de email",
+        "dealAutomations": "Automações de deals",
+        "agi": "AGI Sirius (IA)",
+        "advancedAnalytics": "Analytics avançado",
+        "customReports": "Relatórios customizados",
+        "api": "API pública + Webhooks",
+        "googleCalendar": "Google Calendar",
+        "ads": "Google Ads / Meta Ads",
+        "n8n": "n8n",
+        "roundRobin": "Round-Robin",
+        "sso": "SSO + Audit Log",
+        "gpsCheckin": "Check-in GPS",
+        "pwa": "PWA + Push",
+        "support": "Suporte"
+      },
+      "values": {
+        "contacts_free": "250",
+        "contacts_starter": "1.000",
+        "contacts_pro": "5.000",
+        "contacts_business": "Ilimitado",
+        "deals_free": "100",
+        "deals_starter": "500",
+        "deals_pro": "2.500",
+        "deals_business": "Ilimitado",
+        "pipelines_free": "1",
+        "pipelines_starter": "5",
+        "pipelines_pro": "15",
+        "pipelines_business": "50",
+        "users_free": "2",
+        "users_starter": "5",
+        "users_pro": "15",
+        "users_business": "50",
+        "whatsapp_starter": "1 instância",
+        "whatsapp_pro": "3 instâncias",
+        "whatsapp_business": "5 instâncias",
+        "prospecting_starter": "75 leads",
+        "prospecting_pro": "300 leads",
+        "prospecting_business": "1.500 leads",
+        "emailAutomations_free": "3",
+        "emailAutomations_starter": "3",
+        "emailAutomations_pro": "10",
+        "emailAutomations_business": "50",
+        "dealAutomations_free": "3",
+        "dealAutomations_starter": "3",
+        "dealAutomations_pro": "10",
+        "dealAutomations_business": "50",
+        "support_free": "Comunidade",
+        "support_starter": "Email",
+        "support_pro": "Prioritário",
+        "support_business": "Dedicado"
+      },
+      "ctaPrimary": "Ver Planos Detalhados",
+      "ctaSecondary": "Fundadores — 41% OFF"
+    },
+    "cta": {
+      "title": "Pronto para transformar suas vendas?",
+      "subtitle": "Comece grátis agora. Sem cartão, sem compromisso. Upgrade quando quiser.",
+      "ctaPrimary": "Criar Conta Grátis",
+      "ctaSecondary": "Comparar Planos"
+    }
+  },
+  "pricing": {
+    "badge": "Teste grátis por tempo ilimitado",
+    "tagline": "Preços Transparentes",
+    "title": "Pague apenas quando escalar",
+    "subtitle": "Comece grátis hoje e faça upgrade quando seu time crescer. Sem surpresas, sem taxas escondidas.",
+    "founders": {
+      "badge": "Programa de Fundadores — até 42% OFF vitalício!",
+      "details": "Starter R$39 · Pro R$87 · Business R$234/mês para sempre. Vagas limitadas.",
+      "cta": "Ver oferta"
+    },
+    "tiers": {
+      "free": {
+        "name": "Gratuito",
+        "price_monthly": "Grátis",
+        "price_annual": "Grátis",
+        "description": "Para testar e organizar suas vendas.",
+        "features": [
+          "Até 2 Usuários",
+          "250 Contatos",
+          "100 Negócios ativos",
+          "1 Pipeline Kanban",
+          "Suporte via Comunidade"
+        ]
+      },
+      "starter": {
+        "name": "Starter",
+        "price_monthly": "R$ 67",
+        "price_annual": "R$ 53,60",
+        "description": "Para pequenas empresas que querem crescer.",
+        "features": [
+          "Até 5 Usuários",
+          "1.000 Contatos",
+          "500 Negócios ativos",
+          "5 Pipelines Kanban",
+          "1 instância WhatsApp",
+          "75 créditos de prospecção/mês",
+          "1 Agente IA autônomo (Sofia)",
+          "200 ações autônomas/mês",
+          "Suporte por e-mail"
+        ]
+      },
+      "pro": {
+        "name": "Pro",
+        "price_monthly": "R$ 147",
+        "price_annual": "R$ 117,60",
+        "description": "Para equipes em crescimento que precisam de mais.",
+        "features": [
+          "Até 15 Usuários",
+          "5.000 Contatos",
+          "2.500 Negócios ativos",
+          "15 Pipelines Kanban",
+          "3 instâncias WhatsApp",
+          "300 créditos de prospecção/mês",
+          "3 Agentes IA autônomos (Sofia)",
+          "1.000 ações autônomas/mês",
+          "Analytics avançado",
+          "Webhooks + API pública",
+          "Suporte prioritário"
+        ]
+      },
+      "business": {
+        "name": "Business",
+        "price_monthly": "R$ 397",
+        "price_annual": "R$ 317,60",
+        "description": "Para grandes operações com máxima escala.",
+        "features": [
+          "Até 50 Usuários",
+          "Contatos Ilimitados",
+          "Negócios Ilimitados",
+          "50 Pipelines Kanban",
+          "5 instâncias WhatsApp",
+          "1.500 créditos de prospecção/mês",
+          "5 Agentes IA autônomos (Sofia)",
+          "3.000 ações autônomas/mês",
+          "Round-Robin de leads",
+          "Relatórios personalizados",
+          "SSO & Audit Log",
+          "Gerente de conta dedicado"
+        ]
+      }
+    },
+    "mostPopular": "⚡ Mais Popular",
+    "perMonth": "/mês",
+    "billedAnnually": "Cobrado anualmente",
+    "getStarted": "Começar Agora",
+    "guarantee": "Garantia de 7 dias - 100% do seu dinheiro de volta",
+    "enterprise": {
+      "name": "Enterprise",
+      "description": "Precisa de mais? Limites customizados, SLA dedicado, onboarding assistido e suporte white-glove.",
+      "cta": "Fale com Vendas"
+    },
+    "roi": {
+      "title": "Calcule seu ROI",
+      "subtitle": "Veja quanto você economiza em tempo e aumenta em receita",
+      "stat1Value": "3h",
+      "stat1Label": "Economizadas por vendedor/semana",
+      "stat2Value": "+25%",
+      "stat2Label": "Aumento em taxa de conversão",
+      "stat3Value": "R$ 147",
+      "stat3Label": "Investimento mensal (Pro)",
+      "note": "Com 5 vendedores: 15h economizadas/semana = ~R$ 3.000/mês em produtividade"
+    },
+    "calculators": {
+      "title": "Calcule o ROI para o seu segmento",
+      "subtitle": "Ferramentas gratuitas para projetar o retorno do Sirius CRM no seu negócio"
+    },
+    "faq": {
+      "title": "Perguntas Frequentes",
+      "q1": "Posso trocar de plano depois?",
+      "a1": "Sim! Você pode fazer upgrade ou downgrade a qualquer momento. Ajustamos o valor proporcionalmente.",
+      "q2": "Como funciona o plano gratuito?",
+      "a2": "100% funcional, sem prazo de expiração. Perfeito para validar o CRM antes de escalar seu time.",
+      "q3": "Preciso de cartão para começar?",
+      "a3": "Não! O plano Gratuito é para sempre, sem cartão. Só pedimos quando você quiser fazer upgrade.",
+      "q4": "Posso cancelar quando quiser?",
+      "a4": "Sem multas ou taxas. Cancele a qualquer momento e mantenha acesso até o fim do período pago.",
+      "q5": "Como funciona a garantia de 7 dias?",
+      "a5": "Teste qualquer plano pago sem risco! Se não gostar nos primeiros 7 dias, devolvemos 100% do seu dinheiro, sem perguntas.",
+      "q6": "Como funcionam os agentes IA (Sofia)?",
+      "a6": "Os agentes Sofia operam seu CRM autonomamente: qualificam leads, fazem follow-up, agendam reuniões e movem deals no pipeline. Você supervisiona e aprova as ações pelo painel /IA. Disponível a partir do plano Starter.",
+      "q7": "Meus dados ficam seguros?",
+      "a7": "Totalmente. Usamos criptografia de ponta a ponta e hospedamos em servidores certificados no Brasil.",
+      "q8": "Tem suporte em português?",
+      "a8": "Sim! Todo o suporte é em português, com times brasileiros. Planos Pro e Business têm prioridade."
+    },
+    "finalCta": {
+      "title": "Ainda tem dúvidas?",
+      "subtitle": "Fale com nosso time de vendas e tire todas as suas dúvidas",
+      "btnPrimary": "Começar Grátis",
+      "btnSecondary": "Falar com Vendas"
+    },
+    "labelMonthly": "Mensal",
+    "labelAnnual": "Anual",
+    "meta": {
+      "title": "Planos Sirius CRM 2026 [Grátis a R$397/mês] — IA + WhatsApp Inclusos | Sem Cartão",
+      "description": "4 planos para qualquer tamanho de time: Grátis (R$0), Starter (R$67/mês), Pro com IA (R$147/mês), Business (R$397/mês). Agentes IA autônomos, WhatsApp e pipeline Kanban. Cancele quando quiser.",
+      "ogTitle": "Planos Sirius CRM 2026 [Grátis a R$397/mês] — IA + WhatsApp",
+      "ogDescription": "4 planos: Grátis, Starter R$67, Pro com IA R$147, Business R$397/mês. Agentes IA autônomos, WhatsApp e pipeline Kanban."
     }
   }
 }
