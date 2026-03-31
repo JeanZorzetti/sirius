@@ -1,7 +1,7 @@
 /**
- * Script para remover contatos duplicados de uma org e reagregar mensagens.
- * Mantém o contato mais antigo (menor createdAt) e redireciona mensagens dos duplicados.
- * Trata variações de telefone: com/sem DDI 55, com/sem @s.whatsapp.net.
+ * Script para limpar dados duplicados de uma org:
+ * 1. Remove contatos duplicados (mesmo phone normalizado) e reagrega mensagens
+ * 2. Remove mensagens duplicadas (mesmo messageId)
  *
  * Uso: npx tsx scripts/fix-duplicate-contacts.ts <orgId>
  */
@@ -10,44 +10,26 @@ import { PrismaClient } from '@prisma/client'
 
 const prisma = new PrismaClient()
 
-/**
- * Normaliza phone para uma chave canônica de dedup:
- * - Remove @s.whatsapp.net, @g.us etc
- * - Remove tudo que não é dígito
- * - Se tem 11 dígitos (DDD+celular BR), adiciona 55
- * - Se tem 10 dígitos (DDD+fixo BR), adiciona 55
- * Retorna string puramente numérica com DDI (ex: "5511999887766")
- */
 function normalizePhone(phone: string): string {
-  // Grupos ficam como estão
   if (phone.includes('@g.us')) return phone
-
   let cleaned = phone
     .replace(/@s\.whatsapp\.net/g, '')
     .replace(/@lid/g, '')
     .replace(/\D/g, '')
-
-  // Celulares BR sem DDI
-  if (cleaned.length === 11 && !cleaned.startsWith('55')) {
-    cleaned = '55' + cleaned
-  }
-  // Fixos BR sem DDI
-  if (cleaned.length === 10 && !cleaned.startsWith('55')) {
-    cleaned = '55' + cleaned
-  }
+  if (cleaned.length === 11 && !cleaned.startsWith('55')) cleaned = '55' + cleaned
+  if (cleaned.length === 10 && !cleaned.startsWith('55')) cleaned = '55' + cleaned
   return cleaned
 }
 
 async function fixDuplicateContacts(organizationId: string) {
-  console.log(`\nFixing duplicate contacts for org: ${organizationId}\n`)
+  console.log(`\n=== STEP 1: Fix duplicate CONTACTS for org ${organizationId} ===\n`)
 
   const contacts = await prisma.contact.findMany({
     where: { organizationId },
     orderBy: { createdAt: 'asc' },
     select: { id: true, name: true, phone: true, createdAt: true },
   })
-
-  console.log(`  Found ${contacts.length} total contacts`)
+  console.log(`  Total contacts: ${contacts.length}`)
 
   // Agrupa por phone normalizado
   const byPhone = new Map<string, typeof contacts>()
@@ -59,60 +41,98 @@ async function fixDuplicateContacts(organizationId: string) {
     byPhone.get(key)!.push(c)
   }
 
-  let totalMerged = 0
+  let totalContactsMerged = 0
   let totalMessagesReassigned = 0
-  let totalDealsReassigned = 0
 
   for (const [phone, group] of byPhone.entries()) {
     if (group.length <= 1) continue
 
-    // Mantém o mais antigo (index 0 — já ordenado por createdAt asc)
     const keeper = group[0]
     const duplicates = group.slice(1)
 
-    console.log(`\n  Phone: ${phone} (${group.length} registros)`)
-    console.log(`    Keeper: ${keeper.id} | "${keeper.name}" | phone="${keeper.phone}"`)
+    console.log(`\n  Phone: ${phone} (${group.length} records)`)
+    console.log(`    Keeper: ${keeper.id} | "${keeper.name}" | raw="${keeper.phone}"`)
 
     for (const dup of duplicates) {
-      console.log(`    Merging: ${dup.id} | "${dup.name}" | phone="${dup.phone}"`)
+      console.log(`    Merging: ${dup.id} | "${dup.name}" | raw="${dup.phone}"`)
 
-      // Redireciona mensagens WhatsApp
-      const reassignedMsgs = await prisma.whatsAppMessage.updateMany({
+      // Reassign messages
+      const msgs = await prisma.whatsAppMessage.updateMany({
         where: { contactId: dup.id },
         data: { contactId: keeper.id },
       })
-      totalMessagesReassigned += reassignedMsgs.count
+      totalMessagesReassigned += msgs.count
 
-      // Redireciona deals
+      // Reassign deals
       try {
-        const reassignedDeals = await prisma.deal.updateMany({
-          where: { contactId: dup.id },
-          data: { contactId: keeper.id },
-        })
-        totalDealsReassigned += reassignedDeals.count
-      } catch {
-        // ignora se não existir relação
-      }
+        await prisma.deal.updateMany({ where: { contactId: dup.id }, data: { contactId: keeper.id } })
+      } catch {}
 
-      // Remove o duplicado
+      // Reassign chat conversations
+      try {
+        await (prisma as any).chatConversation.updateMany({ where: { contactId: dup.id }, data: { contactId: keeper.id } })
+      } catch {}
+
+      // Delete duplicate
       await prisma.contact.delete({ where: { id: dup.id } })
-      totalMerged++
+      totalContactsMerged++
     }
 
-    // Atualiza nome do keeper para o melhor nome disponível
+    // Best name
     const bestName = group.find(c =>
       c.name && c.name !== c.phone && !c.name.match(/^\d+$/) && !c.name.startsWith('Grupo ')
     )?.name
     if (bestName && bestName !== keeper.name) {
       await prisma.contact.update({ where: { id: keeper.id }, data: { name: bestName } })
-      console.log(`    Updated keeper name: "${keeper.name}" → "${bestName}"`)
+      console.log(`    Name updated: "${keeper.name}" → "${bestName}"`)
     }
   }
 
-  console.log(`\n========================================`)
-  console.log(`  Merged: ${totalMerged} duplicates`)
+  console.log(`\n  Contacts merged: ${totalContactsMerged}`)
   console.log(`  Messages reassigned: ${totalMessagesReassigned}`)
-  console.log(`  Deals reassigned: ${totalDealsReassigned}`)
+
+  // =============================================
+  // STEP 2: Remove duplicate MESSAGES
+  // =============================================
+  console.log(`\n=== STEP 2: Fix duplicate MESSAGES ===\n`)
+
+  // Busca mensagens com messageId duplicado
+  const duplicateMessageIds = await prisma.$queryRaw<Array<{ messageId: string; cnt: bigint }>>`
+    SELECT "messageId", COUNT(*) as cnt
+    FROM "WhatsAppMessage"
+    WHERE "organizationId" = ${organizationId}
+      AND "messageId" IS NOT NULL
+    GROUP BY "messageId"
+    HAVING COUNT(*) > 1
+  `
+
+  console.log(`  Found ${duplicateMessageIds.length} messageIds with duplicates`)
+
+  let totalMsgDeleted = 0
+
+  for (const { messageId } of duplicateMessageIds) {
+    const msgs = await prisma.whatsAppMessage.findMany({
+      where: { organizationId, messageId },
+      orderBy: { createdAt: 'asc' },
+      select: { id: true },
+    })
+
+    // Keep the first, delete the rest
+    const toDelete = msgs.slice(1).map(m => m.id)
+    if (toDelete.length > 0) {
+      await prisma.whatsAppMessage.deleteMany({
+        where: { id: { in: toDelete } },
+      })
+      totalMsgDeleted += toDelete.length
+    }
+  }
+
+  console.log(`  Duplicate messages deleted: ${totalMsgDeleted}`)
+
+  console.log(`\n========================================`)
+  console.log(`  Contacts merged: ${totalContactsMerged}`)
+  console.log(`  Messages reassigned: ${totalMessagesReassigned}`)
+  console.log(`  Duplicate messages deleted: ${totalMsgDeleted}`)
   console.log(`========================================\n`)
 
   await prisma.$disconnect()

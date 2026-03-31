@@ -790,6 +790,7 @@ model WhatsAppMessage {
   // Reactions (Fase 4.2)
   reactions MessageReaction[]
 
+  @@unique([organizationId, messageId])
   @@index([organizationId, sentAt])
   @@index([dealId])
   @@index([contactId])
