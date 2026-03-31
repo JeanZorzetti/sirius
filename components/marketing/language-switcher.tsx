@@ -28,6 +28,7 @@ export function LanguageSwitcher() {
 
   function switchLocale(nextLocale: Locale) {
     startTransition(() => {
+      // @ts-expect-error: pathname from usePathname() includes dynamic segments, which next-intl strict routing cannot resolve statically without params
       router.replace(pathname, { locale: nextLocale })
     })
   }
