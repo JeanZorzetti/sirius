@@ -186,9 +186,9 @@ app/
 | 1 | `/` | `/en` | `(marketing)/page.tsx` | 28KB 🔴 ✅ |
 | 2 | `/features` | `/en/features` | `(marketing)/features/page.tsx` | 33KB 🔴 ✅ |
 | 3 | `/pricing` | `/en/pricing` | `(marketing)/pricing/page.tsx` | 27KB 🔴 ✅ |
-| 4 | `/about` | `/en/about` | `(marketing)/about/page.tsx` | 9KB |
+| 4 | `/about` | `/en/about` | `(marketing)/about/page.tsx` | 9KB ✅ |
 | 5 | `/contact` | `/en/contact` | `(marketing)/contact/page.tsx` | — |
-| 6 | `/blog` | `/en/blog` | `(marketing)/blog/page.tsx` | 13KB |
+| 6 | `/blog` | `/en/blog` | `(marketing)/blog/page.tsx` | 13KB ✅ |
 | 7 | `/blog/[slug]` | `/en/blog/[slug]` | `(marketing)/blog/[slug]/page.tsx` | 29KB 🔴 |
 | 8 | `/blog/categoria/[category]` | `/en/blog/category/[category]` | `(marketing)/blog/categoria/[category]/page.tsx` | — |
 | 9 | `/blog/planilha-controle-comissao-corretor` | `/en/blog/broker-commission-spreadsheet` | standalone page | 26KB 🔴 |
