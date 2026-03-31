@@ -1,5 +1,4 @@
 import { Metadata } from "next"
-import Link from "next/link"
 import { Hero } from "@/components/marketing/hero"
 import { BentoGrid } from "@/components/marketing/bento-grid"
 import { Logos } from "@/components/marketing/logos"
@@ -502,7 +501,7 @@ export default function LandingPage() {
                 {blogPosts.slice(0, 3).map((post) => (
                   <Link
                     key={post.slug}
-                    href={`/blog/${post.slug}`}
+                    href={{ pathname: '/blog/[slug]', params: { slug: post.slug } }}
                     className="group relative overflow-hidden rounded-2xl border border-white/10 bg-white/[0.02] backdrop-blur-xl transition-all duration-300 hover:border-indigo-500/50 hover:shadow-lg hover:shadow-indigo-500/5"
                   >
                     <div className="relative aspect-video overflow-hidden">
