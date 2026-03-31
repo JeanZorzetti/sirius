@@ -660,5 +660,57 @@
       "ogTitle": "Sirius CRM Plans 2026 [Free to R$397/mo] — AI + WhatsApp",
       "ogDescription": "4 plans: Free, Starter R$67, Pro with AI R$147, Business R$397/mo. Autonomous AI agents, WhatsApp, and Kanban pipeline."
     }
+  },
+  "about": {
+    "meta": {
+      "title": "About Us | Sirius CRM",
+      "description": "Learn about Sirius CRM, part of ROI Labs Group. Our mission is to simplify sales for entrepreneurs with accessible and efficient technology.",
+      "ogTitle": "About Us | Sirius CRM",
+      "ogDescription": "Learn about Sirius CRM, part of ROI Labs Group. Our mission is to simplify sales for entrepreneurs.",
+      "ogImageAlt": "Sirius CRM - Intelligent CRM for Sales Professionals",
+      "twitterTitle": "About Us | Sirius CRM",
+      "twitterDescription": "Learn about Sirius CRM, part of ROI Labs Group."
+    },
+    "hero": {
+      "badge": "About Sirius CRM",
+      "title": "Shine in sales with ROI Labs' star",
+      "subtitle": "We are a team passionate about simplifying sales management for entrepreneurs. We believe that quality technology should be accessible to everyone."
+    },
+    "mission": {
+      "title": "Our Mission",
+      "paragraph1": "Create tools that transform the way small and medium businesses manage their sales. Without unnecessary complexity, without endless learning curves.",
+      "paragraph2": "Every Sirius CRM feature was designed with real sales productivity in mind. Less time configuring, more time selling."
+    },
+    "values": {
+      "title": "Our Values",
+      "simplicity": {
+        "title": "Simplicity",
+        "description": "We believe that powerful software does not need to be complicated. Every feature is designed to be intuitive."
+      },
+      "customer": {
+        "title": "Customer Focus",
+        "description": "We listen to our users and iterate fast. Your feedback shapes the product we build."
+      },
+      "growth": {
+        "title": "Growth",
+        "description": "We constantly evolve. New features are launched regularly based on real data."
+      }
+    },
+    "roiLabs": {
+      "title": "Part of ROI Labs Group",
+      "description": "Sirius CRM is developed by ROI Labs, a company focused on creating technological solutions that generate real returns for businesses.",
+      "button": "Learn About ROI Labs"
+    },
+    "cta": {
+      "title": "Ready to simplify your sales?",
+      "subtitle": "Join hundreds of entrepreneurs already selling more with Sirius CRM.",
+      "button1": "Start Free",
+      "button2": "View Features"
+    },
+    "schema": {
+      "orgDescription": "Intuitive CRM for SMEs. Simplified sales management.",
+      "breadcrumbHome": "Home",
+      "breadcrumbAbout": "About"
+    }
   }
 }

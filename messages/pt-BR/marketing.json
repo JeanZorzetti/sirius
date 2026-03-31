@@ -660,5 +660,57 @@
       "ogTitle": "Planos Sirius CRM 2026 [Grátis a R$397/mês] — IA + WhatsApp",
       "ogDescription": "4 planos: Grátis, Starter R$67, Pro com IA R$147, Business R$397/mês. Agentes IA autônomos, WhatsApp e pipeline Kanban."
     }
+  },
+  "about": {
+    "meta": {
+      "title": "Sobre Nós | Sirius CRM",
+      "description": "Conheça a história do Sirius CRM, parte do Grupo ROI Labs. Nossa missão é simplificar vendas para empreendedores brasileiros com tecnologia acessível e eficiente.",
+      "ogTitle": "Sobre Nós | Sirius CRM",
+      "ogDescription": "Conheça a história do Sirius CRM, parte do Grupo ROI Labs. Nossa missão é simplificar vendas para empreendedores brasileiros.",
+      "ogImageAlt": "Sirius CRM - CRM Inteligente para Vendedores Brasileiros",
+      "twitterTitle": "Sobre Nós | Sirius CRM",
+      "twitterDescription": "Conheça a história do Sirius CRM, parte do Grupo ROI Labs."
+    },
+    "hero": {
+      "badge": "Sobre o Sirius CRM",
+      "title": "Brilhe nas vendas com a estrela do ROI Labs",
+      "subtitle": "Somos uma equipe apaixonada por simplificar a gestão de vendas para empreendedores brasileiros. Acreditamos que tecnologia de qualidade deve ser acessível a todos."
+    },
+    "mission": {
+      "title": "Nossa Missão",
+      "paragraph1": "Criar ferramentas que transformam a maneira como pequenas e médias empresas gerenciam suas vendas. Sem complexidade desnecessária, sem curvas de aprendizado intermináveis.",
+      "paragraph2": "Cada funcionalidade do Sirius CRM foi desenhada pensando na produtividade real do vendedor brasileiro. Menos tempo configurando, mais tempo vendendo."
+    },
+    "values": {
+      "title": "Nossos Valores",
+      "simplicity": {
+        "title": "Simplicidade",
+        "description": "Acreditamos que software poderoso não precisa ser complicado. Cada feature é pensada para ser intuitiva."
+      },
+      "customer": {
+        "title": "Foco no Cliente",
+        "description": "Ouvimos nossos usuários e iteramos rápido. Seu feedback molda o produto que construímos."
+      },
+      "growth": {
+        "title": "Crescimento",
+        "description": "Evoluímos constantemente. Novas funcionalidades são lançadas regularmente baseadas em dados reais."
+      }
+    },
+    "roiLabs": {
+      "title": "Parte do Grupo ROI Labs",
+      "description": "O Sirius CRM é desenvolvido pela ROI Labs, uma empresa focada em criar soluções tecnológicas que geram retorno real para negócios brasileiros.",
+      "button": "Conheça a ROI Labs"
+    },
+    "cta": {
+      "title": "Pronto para simplificar suas vendas?",
+      "subtitle": "Junte-se a centenas de empreendedores que já estão vendendo mais com o Sirius CRM.",
+      "button1": "Começar Grátis",
+      "button2": "Ver Funcionalidades"
+    },
+    "schema": {
+      "orgDescription": "CRM intuitivo para PMEs brasileiras. Gestão de vendas simplificada.",
+      "breadcrumbHome": "Home",
+      "breadcrumbAbout": "Sobre"
+    }
   }
 }
