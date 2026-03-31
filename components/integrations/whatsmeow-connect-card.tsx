@@ -8,7 +8,6 @@ import { Label } from '@/components/ui/label'
 import { Badge } from '@/components/ui/badge'
 import { useToast } from '@/hooks/use-toast'
 import { Loader2, Smartphone, Wifi, WifiOff, RefreshCw, QrCode } from 'lucide-react'
-import Image from 'next/image'
 import QRCode from 'qrcode'
 
 type Step = 'idle' | 'creating' | 'qr' | 'connected' | 'error'
@@ -46,7 +45,7 @@ export function WhatsmeowConnectCard() {
 
       setGatewayInstanceId(data.gatewayInstanceId)
       setStep('qr')
-      startQRStream(data.qrStreamUrl)
+      startQRStream(`/api/whatsapp/connections/whatsmeow/${data.gatewayInstanceId}/qr`)
     } catch {
       toast({ title: 'Erro', description: 'Falha ao criar instância.', variant: 'destructive' })
       setStep('idle')
@@ -84,8 +83,7 @@ export function WhatsmeowConnectCard() {
 
   function handleRefreshQR() {
     if (!gatewayInstanceId) return
-    const GATEWAY_URL = process.env.NEXT_PUBLIC_WHATSAPP_GATEWAY_URL
-    startQRStream(`${GATEWAY_URL}/api/instances/${gatewayInstanceId}/qr`)
+    startQRStream(`/api/whatsapp/connections/whatsmeow/${gatewayInstanceId}/qr`)
   }
 
   return (
@@ -152,13 +150,12 @@ export function WhatsmeowConnectCard() {
             <div className="relative">
               {qrDataUrl ? (
                 <div className="rounded-xl overflow-hidden ring-1 ring-border/50 shadow-sm">
-                  <Image
+                  <img
                     src={qrDataUrl}
                     alt="QR Code WhatsApp"
                     width={224}
                     height={224}
                     className="block"
-                    unoptimized
                   />
                 </div>
               ) : (
