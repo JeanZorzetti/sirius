@@ -85,6 +85,10 @@ export const routing = defineRouting({
       'pt-BR': '/solucoes/[slug]',
       en: '/solutions/[slug]',
     },
+    '/solucoes/cidade/[slug]': {
+      'pt-BR': '/solucoes/cidade/[slug]',
+      en: '/solutions/city/[slug]',
+    },
 
     // Blog
     '/blog': '/blog',

@@ -71,7 +71,7 @@ export function Footer() {
               {NICHES.map((niche) => (
                 <li key={niche.slug}>
                   <Link
-                    href={`/solucoes/${niche.slug}`}
+                    href={{ pathname: '/solucoes/[slug]', params: { slug: niche.slug } }}
                     className="text-muted-foreground hover:text-foreground transition-colors"
                   >
                     {getNicheShortLabel(niche.slug)}
@@ -143,7 +143,7 @@ export function Footer() {
               {CITIES.map((city) => (
                 <li key={city.slug}>
                   <Link
-                    href={`/solucoes/cidade/${city.slug}`}
+                    href={{ pathname: '/solucoes/cidade/[slug]', params: { slug: city.slug } }}
                     className="text-muted-foreground hover:text-foreground transition-colors"
                   >
                     {CITY_DISPLAY_NAMES[city.slug] ?? city.slug}
