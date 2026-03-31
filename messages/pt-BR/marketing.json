@@ -712,5 +712,31 @@
       "breadcrumbHome": "Home",
       "breadcrumbAbout": "Sobre"
     }
+  },
+  "blog": {
+    "meta": {
+      "title": "Blog | Sirius CRM — Dicas de Vendas e CRM",
+      "description": "Estratégias de vendas, guias de CRM, automação comercial e gestão de pipeline para empreendedores e equipes comerciais.",
+      "ogTitle": "Blog Sirius CRM — Vendas, CRM e Automação",
+      "ogDescription": "Artigos sobre vendas B2B, pipeline, WhatsApp comercial, IA em vendas e gestão de equipes."
+    },
+    "hero": {
+      "title": "Blog",
+      "subtitle": "Dicas, estratégias e insights sobre vendas, CRM e gestão comercial"
+    },
+    "featured": {
+      "label": "Post em Destaque"
+    },
+    "recent": {
+      "label": "Artigos Recentes"
+    },
+    "categories": {
+      "all": "Todos"
+    },
+    "post": {
+      "readingTime": "min de leitura",
+      "readMore": "Ler artigo completo",
+      "read": "Ler"
+    }
   }
 }

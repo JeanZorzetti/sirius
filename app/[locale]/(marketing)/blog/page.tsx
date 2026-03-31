@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { useState, useEffect, useRef } from 'react'
+import { useTranslations } from 'next-intl'
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
@@ -10,7 +11,9 @@ import { blogPosts, getAllCategories, slugifyCategory } from '@/lib/blog-data'
 import { ArrowRight, Clock, Tag, BookOpen } from 'lucide-react'
 
 export default function BlogPage() {
-    const [selectedCategory, setSelectedCategory] = useState('Todos')
+    const t = useTranslations('marketing.blog')
+    const allCategory = t('categories.all')
+    const [selectedCategory, setSelectedCategory] = useState(allCategory)
     const cardsRef = useRef<(HTMLDivElement | null)[]>([])
 
     useEffect(() => {
@@ -37,7 +40,7 @@ export default function BlogPage() {
     }, [])
 
     // Extract unique categories
-    const categories = ['Todos', ...Array.from(new Set(blogPosts.map(post => post.category)))]
+    const categories = [allCategory, ...Array.from(new Set(blogPosts.map(post => post.category)))]
 
     // Sort posts by date (most recent first)
     const sortedPosts = [...blogPosts].sort((a, b) => {
@@ -47,7 +50,7 @@ export default function BlogPage() {
     })
 
     // Filter posts by category
-    const filteredPosts = selectedCategory === 'Todos'
+    const filteredPosts = selectedCategory === allCategory
         ? sortedPosts
         : sortedPosts.filter(post => post.category === selectedCategory)
 
@@ -65,10 +68,10 @@ export default function BlogPage() {
                         <div className="absolute -top-20 left-1/2 -translate-x-1/2 w-150 h-150 bg-linear-to-r from-blue-500/20 via-purple-500/20 to-pink-500/20 rounded-full blur-3xl -z-10" />
 
                         <h1 className="text-5xl sm:text-6xl font-bold tracking-tight bg-linear-to-br from-foreground via-foreground/90 to-foreground/70 bg-clip-text text-transparent mb-6">
-                            Blog
+                            {t('hero.title')}
                         </h1>
                         <p className="text-xl leading-8 text-muted-foreground max-w-2xl mx-auto">
-                            Dicas, estratégias e insights sobre vendas, CRM e gestão comercial
+                            {t('hero.subtitle')}
                         </p>
                     </div>
                 </div>
@@ -113,7 +116,7 @@ export default function BlogPage() {
             {featuredPost && (
                 <section className="container mx-auto px-4 py-16">
                     <div className="mb-8">
-                        <h2 className="text-2xl font-semibold mb-2">Post em Destaque</h2>
+                        <h2 className="text-2xl font-semibold mb-2">{t('featured.label')}</h2>
                         <div className="h-px bg-linear-to-r from-primary via-primary/50 to-transparent" />
                     </div>
 
@@ -154,12 +157,12 @@ export default function BlogPage() {
                                     <span>•</span>
                                     <span className="flex items-center gap-1.5">
                                         <BookOpen className="w-4 h-4" />
-                                        5 min de leitura
+                                        5 {t('post.readingTime')}
                                     </span>
                                 </div>
 
                                 <Button className="group/btn">
-                                    Ler artigo completo
+                                    {t('post.readMore')}
                                     <ArrowRight className="ml-2 h-4 w-4 group-hover/btn:translate-x-1 transition-transform" />
                                 </Button>
                             </div>
@@ -172,7 +175,7 @@ export default function BlogPage() {
             {recentPosts.length > 0 && (
                 <section className="container mx-auto px-4 py-16">
                     <div className="mb-12">
-                        <h2 className="text-2xl font-semibold mb-2">Artigos Recentes</h2>
+                        <h2 className="text-2xl font-semibold mb-2">{t('recent.label')}</h2>
                         <div className="h-px bg-linear-to-r from-primary via-primary/50 to-transparent" />
                     </div>
 
@@ -230,7 +233,7 @@ export default function BlogPage() {
                                             </div>
                                             <Button variant="ghost" size="sm" className="group/btn p-0 h-auto hover:bg-transparent hover:text-primary">
                                                 <span className="flex items-center gap-1">
-                                                    Ler
+                                                    {t('post.read')}
                                                     <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform duration-300" />
                                                 </span>
                                             </Button>

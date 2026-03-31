@@ -1,16 +1,26 @@
-import { Metadata } from 'next'
+import { getTranslations } from 'next-intl/server'
+import type { Metadata } from 'next'
 import Script from 'next/script'
 import { blogPosts } from '@/lib/blog-data'
 
-export const metadata: Metadata = {
-  title: 'Blog | Sirius CRM — Dicas de Vendas, CRM e Gestão Comercial',
-  description: 'Artigos sobre vendas, CRM, pipeline, SPIN Selling, automação e gestão comercial para vendedores e times de alta performance.',
-  alternates: { canonical: 'https://sirius.roilabs.com.br/blog' },
-  openGraph: {
-    title: 'Blog | Sirius CRM — Dicas de Vendas e Gestão Comercial',
-    description: 'Artigos sobre vendas, CRM, pipeline, SPIN Selling, automação e gestão comercial para times de alta performance.',
-    url: 'https://sirius.roilabs.com.br/blog',
-  },
+export async function generateMetadata(
+  { params }: { params: Promise<{ locale: string }> }
+): Promise<Metadata> {
+  const { locale } = await params
+  const t = await getTranslations({ locale, namespace: 'marketing.blog.meta' })
+  const baseUrl = 'https://sirius.roilabs.com.br'
+  const canonicalUrl = locale === 'en' ? `${baseUrl}/en/blog` : `${baseUrl}/blog`
+
+  return {
+    title: t('title'),
+    description: t('description'),
+    alternates: { canonical: canonicalUrl },
+    openGraph: {
+      title: t('ogTitle'),
+      description: t('ogDescription'),
+      url: canonicalUrl,
+    },
+  }
 }
 
 export default function BlogLayout({
@@ -18,7 +28,6 @@ export default function BlogLayout({
 }: {
   children: React.ReactNode
 }) {
-  // CollectionPage JSON-LD schema para listagem de blog
   const collectionSchema = {
     "@context": "https://schema.org",
     "@type": "CollectionPage",

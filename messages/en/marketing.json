@@ -712,5 +712,31 @@
       "breadcrumbHome": "Home",
       "breadcrumbAbout": "About"
     }
+  },
+  "blog": {
+    "meta": {
+      "title": "Blog | Sirius CRM — Sales & CRM Tips",
+      "description": "Sales strategies, CRM guides, sales automation and pipeline management for entrepreneurs and sales teams.",
+      "ogTitle": "Sirius CRM Blog — Sales, CRM & Automation",
+      "ogDescription": "Articles on B2B sales, pipeline, WhatsApp for business, AI in sales, and team management."
+    },
+    "hero": {
+      "title": "Blog",
+      "subtitle": "Tips, strategies and insights on sales, CRM and sales management"
+    },
+    "featured": {
+      "label": "Featured Post"
+    },
+    "recent": {
+      "label": "Recent Articles"
+    },
+    "categories": {
+      "all": "All"
+    },
+    "post": {
+      "readingTime": "min read",
+      "readMore": "Read full article",
+      "read": "Read"
+    }
   }
 }
