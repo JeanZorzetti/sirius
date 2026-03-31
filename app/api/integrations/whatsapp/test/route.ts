@@ -21,10 +21,10 @@ export async function POST(request: Request) {
             return NextResponse.json({ error: 'Usuário não encontrado' }, { status: 404 })
         }
 
-        // Verificar plano PRO ou BUSINESS
-        if (!['PRO', 'BUSINESS'].includes(user.organization.tier)) {
+        // Verificar plano STARTER, PRO ou BUSINESS
+        if (!['STARTER', 'PRO', 'BUSINESS'].includes(user.organization.tier)) {
             return NextResponse.json(
-                { error: 'Integração WhatsApp disponível apenas no plano PRO' },
+                { error: 'Integração WhatsApp disponível a partir do plano Starter' },
                 { status: 403 }
             )
         }
