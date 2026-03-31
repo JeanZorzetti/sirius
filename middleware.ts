@@ -52,7 +52,7 @@ export async function middleware(request: NextRequest) {
 
 export const config = {
     matcher: [
-        // Inclui todas as rotas exceto assets estáticos e API
-        '/((?!api|_next/static|_next/image|favicon.ico|icons|images|audio|avatars|downloads|manifest.json|sw.js|sw-push.js|llms.txt|openapi.json|google[\\w-]*\\.html).*)',
+        // Inclui todas as rotas exceto assets estáticos, API e arquivos na raiz do public
+        '/((?!api|_next/static|_next/image|favicon.ico|icons|images|audio|avatars|downloads|manifest.json|sw.js|sw-push.js|llms.txt|openapi.json|google[\\w-]*\\.html|.*\\.png|.*\\.jpg|.*\\.jpeg|.*\\.svg|.*\\.ico|.*\\.webp|.*\\.txt|.*\\.xml).*)',
     ],
 }
