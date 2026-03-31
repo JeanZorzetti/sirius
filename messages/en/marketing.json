@@ -18,7 +18,24 @@
       "blog": "Blog",
       "founders": "Founders",
       "login": "Login",
-      "startFree": "Get Started Free"
+      "startFree": "Get Started Free",
+      "solutions": "Solutions",
+      "tools": "Tools",
+      "tools_labels": {
+        "roi_general": "General ROI Calculator",
+        "roi_realtors": "ROI for Realtors",
+        "roi_solar": "ROI for Solar Energy",
+        "roi_agencies": "ROI for Agencies",
+        "roi_consultants": "ROI for Consultants",
+        "roi_reps": "ROI for Sales Reps"
+      }
+    },
+    "niche_labels": {
+      "corretores-de-imoveis": "Realtors",
+      "energia-solar": "Solar Energy",
+      "agencias-de-marketing": "Marketing Agencies",
+      "consultores-empresariais": "Consultants",
+      "representantes-comerciais": "Sales Reps"
     },
     "features": {
     "title": "Everything you need",
@@ -152,6 +169,22 @@
         "terms": "Terms of Use",
         "contact": "Contact"
       }
+    },
+    "agiPreview": {
+      "specialist": "B2B Sales Specialist",
+      "trySirius": "Try Sirius 🚀",
+      "subtitle": "Your AI sales consultant. Expert in BANT, SPIN Selling, handling objections, and much more.",
+      "prompts": {
+        "p1_cat": "Qualification",
+        "p1_text": "How to qualify a lead using BANT?",
+        "p2_cat": "Discovery",
+        "p2_text": "Create SPIN questions for discovery",
+        "p3_cat": "Objections",
+        "p3_text": "How to handle a price objection?"
+      },
+      "loginMsg": "⚠️ Please login to try the full AGI Sirius version!",
+      "inputPlaceholder": "Ask a sales question...",
+      "hint": "💡 Try asking about BANT, SPIN Selling, objections, sales metrics, and more!"
     }
   }
 }

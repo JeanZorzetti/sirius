@@ -17,8 +17,25 @@
       "pricing": "Preços",
       "blog": "Blog",
       "founders": "Fundadores",
-      "login": "Entrar",
-      "startFree": "Começar Grátis"
+      "login": "Login",
+      "startFree": "Começar Grátis",
+      "solutions": "Soluções",
+      "tools": "Ferramentas",
+      "tools_labels": {
+        "roi_general": "Calculadora ROI Geral",
+        "roi_realtors": "ROI para Corretores",
+        "roi_solar": "ROI para Energia Solar",
+        "roi_agencies": "ROI para Agências",
+        "roi_consultants": "ROI para Consultores",
+        "roi_reps": "ROI para Representantes"
+      }
+    },
+    "niche_labels": {
+      "corretores-de-imoveis": "Corretores de Imóveis",
+      "energia-solar": "Energia Solar",
+      "agencias-de-marketing": "Agências de Marketing",
+      "consultores-empresariais": "Consultores Empresariais",
+      "representantes-comerciais": "Representantes Comerciais"
     },
     "features": {
     "title": "Tudo o que você precisa",
@@ -152,6 +169,22 @@
         "terms": "Termos de Uso",
         "contact": "Contato"
       }
+    },
+    "agiPreview": {
+      "specialist": "Especialista em Vendas B2B",
+      "trySirius": "Experimente a Sirius 🚀",
+      "subtitle": "Sua consultora de vendas com IA. Especialista em BANT, SPIN Selling, quebra de objeções e muito mais.",
+      "prompts": {
+        "p1_cat": "Qualificação",
+        "p1_text": "Como qualificar um lead usando BANT?",
+        "p2_cat": "Discovery",
+        "p2_text": "Crie perguntas SPIN para descoberta",
+        "p3_cat": "Objeções",
+        "p3_text": "Como quebrar objeção de preço?"
+      },
+      "loginMsg": "⚠️ Faça login para experimentar a AGI Sirius completa!",
+      "inputPlaceholder": "Faça uma pergunta sobre vendas...",
+      "hint": "💡 Experimente perguntas sobre BANT, SPIN Selling, objeções, métricas de vendas e mais!"
     }
   }
 }

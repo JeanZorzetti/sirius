@@ -1,11 +1,13 @@
 import { Link } from '@/i18n/routing'
 import { NICHES } from '@/config/niche-data'
 import { CITIES, CITY_DISPLAY_NAMES } from '@/config/city-data'
-import { useTranslations } from 'next-intl'
+import { useTranslations, useLocale } from 'next-intl'
 
 export function Footer() {
   const currentYear = new Date().getFullYear()
   const t = useTranslations('marketing.home.footer')
+  const tNiches = useTranslations('marketing.niche_labels')
+  const locale = useLocale()
 
   return (
     <footer className="border-t bg-zinc-50 dark:bg-zinc-950">
@@ -74,7 +76,7 @@ export function Footer() {
                     href={{ pathname: '/solucoes/[slug]', params: { slug: niche.slug } }}
                     className="text-muted-foreground hover:text-foreground transition-colors"
                   >
-                    {getNicheShortLabel(niche.slug)}
+                    {tNiches(niche.slug as any)}
                   </Link>
                 </li>
               ))}
@@ -137,21 +139,23 @@ export function Footer() {
           </div>
 
           {/* Coluna 5: Principais Cidades */}
-          <div>
-            <h3 className="font-bold text-sm mb-4">{t('citiesTitle')}</h3>
-            <ul className="space-y-3 text-sm">
-              {CITIES.map((city) => (
-                <li key={city.slug}>
-                  <Link
-                    href={{ pathname: '/solucoes/cidade/[slug]', params: { slug: city.slug } }}
-                    className="text-muted-foreground hover:text-foreground transition-colors"
-                  >
-                    {CITY_DISPLAY_NAMES[city.slug] ?? city.slug}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
+          {locale === 'pt-BR' && (
+            <div>
+              <h3 className="font-bold text-sm mb-4">{t('citiesTitle')}</h3>
+              <ul className="space-y-3 text-sm">
+                {CITIES.map((city) => (
+                  <li key={city.slug}>
+                    <Link
+                      href={{ pathname: '/solucoes/cidade/[slug]', params: { slug: city.slug } }}
+                      className="text-muted-foreground hover:text-foreground transition-colors"
+                    >
+                      {CITY_DISPLAY_NAMES[city.slug] ?? city.slug}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
 
           {/* Coluna 6: Recursos */}
           <div>

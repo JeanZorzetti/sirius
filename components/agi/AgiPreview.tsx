@@ -2,26 +2,28 @@
 
 import { useState } from 'react';
 import { Sparkles, Send, Loader2, Zap, Brain, Target } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 
 const DEMO_PROMPTS = [
     {
         icon: Target,
-        text: "Como qualificar um lead usando BANT?",
-        category: "Qualificação"
+        textKey: "p1_text",
+        categoryKey: "p1_cat"
     },
     {
         icon: Zap,
-        text: "Crie perguntas SPIN para descoberta",
-        category: "Discovery"
+        textKey: "p2_text",
+        categoryKey: "p2_cat"
     },
     {
         icon: Brain,
-        text: "Como quebrar objeção de preço?",
-        category: "Objeções"
+        textKey: "p3_text",
+        categoryKey: "p3_cat"
     },
 ];
 
 export function AgiPreview() {
+    const t = useTranslations('marketing.agiPreview');
     const [input, setInput] = useState('');
     const [messages, setMessages] = useState<Array<{ role: 'user' | 'assistant', content: string }>>([]);
     const [isLoading, setIsLoading] = useState(false);
@@ -49,7 +51,7 @@ export function AgiPreview() {
         } catch (error) {
             setMessages(prev => [...prev, {
                 role: 'assistant',
-                content: '⚠️ Faça login para experimentar a AGI Sirius completa!'
+                content: t('loginMsg')
             }]);
         } finally {
             setIsLoading(false);
@@ -70,7 +72,7 @@ export function AgiPreview() {
                     </div>
                     <div>
                         <h3 className="text-2xl font-bold text-white">AGI Sirius</h3>
-                        <p className="text-purple-100 text-sm">Especialista em Vendas B2B</p>
+                        <p className="text-purple-100 text-sm">{t('specialist')}</p>
                     </div>
                 </div>
             </div>
@@ -83,10 +85,10 @@ export function AgiPreview() {
                             <Sparkles className="h-8 w-8 text-purple-600 dark:text-purple-400" />
                         </div>
                         <h4 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
-                            Experimente a Sirius 🚀
+                            {t('trySirius')}
                         </h4>
                         <p className="text-gray-600 dark:text-gray-400 mb-6 max-w-md mx-auto">
-                            Sua consultora de vendas com IA. Especialista em BANT, SPIN Selling, quebra de objeções e muito mais.
+                            {t('subtitle')}
                         </p>
 
                         {/* Quick Prompts */}
@@ -94,7 +96,7 @@ export function AgiPreview() {
                             {DEMO_PROMPTS.map((prompt, idx) => (
                                 <button
                                     key={idx}
-                                    onClick={() => sendMessage(prompt.text)}
+                                    onClick={() => sendMessage(t(`prompts.${prompt.textKey}` as any))}
                                     className="group relative bg-white dark:bg-gray-800 rounded-xl p-4 shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border-2 border-transparent hover:border-purple-500"
                                 >
                                     <div className="flex items-start gap-3 text-left">
@@ -103,10 +105,10 @@ export function AgiPreview() {
                                         </div>
                                         <div className="flex-1 min-w-0">
                                             <span className="text-xs font-semibold text-purple-600 dark:text-purple-400 uppercase tracking-wide">
-                                                {prompt.category}
+                                                {t(`prompts.${prompt.categoryKey}` as any)}
                                             </span>
                                             <p className="text-sm text-gray-700 dark:text-gray-300 mt-1 line-clamp-2">
-                                                {prompt.text}
+                                                {t(`prompts.${prompt.textKey}` as any)}
                                             </p>
                                         </div>
                                     </div>
@@ -151,7 +153,7 @@ export function AgiPreview() {
                         value={input}
                         onChange={(e) => setInput(e.target.value)}
                         onKeyPress={(e) => e.key === 'Enter' && !e.shiftKey && sendMessage(input)}
-                        placeholder="Faça uma pergunta sobre vendas..."
+                        placeholder={t('inputPlaceholder')}
                         className="flex-1 rounded-xl border-2 border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent text-gray-900 dark:text-white placeholder-gray-400 transition-all"
                         disabled={isLoading}
                     />
@@ -168,7 +170,7 @@ export function AgiPreview() {
                     </button>
                 </div>
                 <p className="text-xs text-gray-500 dark:text-gray-400 mt-2 text-center">
-                    💡 Experimente perguntas sobre BANT, SPIN Selling, objeções, métricas de vendas e mais!
+                    {t('hint')}
                 </p>
             </div>
 

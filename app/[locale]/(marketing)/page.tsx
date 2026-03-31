@@ -13,7 +13,7 @@ const StickyCTA = dynamic(() => import("@/components/marketing/sticky-cta").then
 import { blogPosts } from "@/lib/blog-data"
 import Image from "next/image"
 import { Check, Star, ArrowRight } from "lucide-react"
-import { useTranslations } from "next-intl"
+import { useTranslations, useLocale } from "next-intl"
 import { Link } from "@/i18n/routing"
 
 export const metadata: Metadata = {
@@ -36,6 +36,8 @@ export const metadata: Metadata = {
 
 export default function LandingPage() {
   const t = useTranslations("marketing.home")
+  const locale = useLocale()
+  const isEn = locale === 'en'
 
   const softwareSchema = {
     "@context": "https://schema.org",
@@ -207,35 +209,35 @@ export default function LandingPage() {
 
   const plans = [
     {
-      name: 'Gratuito',
-      price: 'R$ 0',
-      period: '',
-      description: 'Para testar o CRM',
-      features: ['2 Usuários', '250 Contatos', '100 Negócios', '1 Pipeline'],
+      name: isEn ? 'Free' : 'Gratuito',
+      price: isEn ? '$ 0' : 'R$ 0',
+      period: isEn ? '' : '',
+      description: isEn ? 'To test the CRM' : 'Para testar o CRM',
+      features: isEn ? ['2 Users', '250 Contacts', '100 Deals', '1 Pipeline'] : ['2 Usuários', '250 Contatos', '100 Negócios', '1 Pipeline'],
       highlighted: false,
     },
     {
       name: 'Starter',
-      price: 'R$ 67',
-      period: '/mês',
-      description: 'Para pequenas empresas',
-      features: ['5 Usuários', '1.000 Contatos', 'WhatsApp', '75 leads/mês'],
+      price: isEn ? '$ 19' : 'R$ 67',
+      period: isEn ? '/mo' : '/mês',
+      description: isEn ? 'For small businesses' : 'Para pequenas empresas',
+      features: isEn ? ['5 Users', '1,000 Contacts', 'WhatsApp', '75 leads/mo'] : ['5 Usuários', '1.000 Contatos', 'WhatsApp', '75 leads/mês'],
       highlighted: false,
     },
     {
       name: 'Pro',
-      price: 'R$ 147',
-      period: '/mês',
-      description: 'Para equipes em crescimento',
-      features: ['15 Usuários', '5.000 Contatos', 'IA Comercial', '300 leads/mês'],
+      price: isEn ? '$ 39' : 'R$ 147',
+      period: isEn ? '/mo' : '/mês',
+      description: isEn ? 'For growing teams' : 'Para equipes em crescimento',
+      features: isEn ? ['15 Users', '5,000 Contacts', 'Sales AI', '300 leads/mo'] : ['15 Usuários', '5.000 Contatos', 'IA Comercial', '300 leads/mês'],
       highlighted: true,
     },
     {
       name: 'Business',
-      price: 'R$ 397',
-      period: '/mês',
-      description: 'Para grandes operações',
-      features: ['50 Usuários', 'Ilimitado', 'Round-Robin', '1.500 leads/mês'],
+      price: isEn ? '$ 99' : 'R$ 397',
+      period: isEn ? '/mo' : '/mês',
+      description: isEn ? 'For large operations' : 'Para grandes operações',
+      features: isEn ? ['50 Users', 'Unlimited', 'Round-Robin', '1,500 leads/mo'] : ['50 Usuários', 'Ilimitado', 'Round-Robin', '1.500 leads/mês'],
       highlighted: false,
     },
   ]
@@ -272,7 +274,7 @@ export default function LandingPage() {
 
         <div className="relative z-10">
           <Hero />
-          <Logos />
+          {locale === 'pt-BR' && <Logos />}
 
           {/* GEO Block */}
           <section className="py-16 sm:py-20 px-6">
@@ -467,7 +469,7 @@ export default function LandingPage() {
                           : 'border border-white/10 text-zinc-300 hover:bg-white/5'
                       }`}
                     >
-                      {plan.price === 'R$ 0' ? t('plans.startFree') : t('plans.seeDetails')}
+                      {plan.price === 'R$ 0' || plan.price === '$ 0' ? t('plans.startFree') : t('plans.seeDetails')}
                     </Link>
                   </div>
                 ))}

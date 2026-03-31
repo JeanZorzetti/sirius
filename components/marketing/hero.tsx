@@ -1,10 +1,11 @@
 import { Link } from "@/i18n/routing"
 import { Button } from "@/components/ui/button"
 import { ArrowRight, Sparkles } from "lucide-react"
-import { useTranslations } from "next-intl"
+import { useTranslations, useLocale } from "next-intl"
 
 export function Hero() {
     const t = useTranslations("marketing.home.hero")
+    const locale = useLocale()
 
     return (
         <section className="relative overflow-hidden pt-32 pb-24 lg:pt-48 lg:pb-32">
@@ -68,23 +69,25 @@ export function Hero() {
                     </div>
 
                     {/* Social Proof Stats */}
-                    <div className="flex items-center gap-6 text-sm">
-                        <div className="flex items-center gap-2">
-                            <div className="flex -space-x-2">
-                                <div className="h-8 w-8 rounded-full bg-gradient-to-br from-indigo-400 to-purple-500 border-2 border-zinc-950" />
-                                <div className="h-8 w-8 rounded-full bg-gradient-to-br from-purple-400 to-pink-500 border-2 border-zinc-950" />
-                                <div className="h-8 w-8 rounded-full bg-gradient-to-br from-pink-400 to-red-500 border-2 border-zinc-950" />
-                                <div className="h-8 w-8 rounded-full bg-gradient-to-br from-indigo-500 to-blue-500 border-2 border-zinc-950 flex items-center justify-center text-xs font-bold">
-                                    +120
+                    {locale === 'pt-BR' && (
+                        <div className="flex items-center gap-6 text-sm">
+                            <div className="flex items-center gap-2">
+                                <div className="flex -space-x-2">
+                                    <div className="h-8 w-8 rounded-full bg-gradient-to-br from-indigo-400 to-purple-500 border-2 border-zinc-950" />
+                                    <div className="h-8 w-8 rounded-full bg-gradient-to-br from-purple-400 to-pink-500 border-2 border-zinc-950" />
+                                    <div className="h-8 w-8 rounded-full bg-gradient-to-br from-pink-400 to-red-500 border-2 border-zinc-950" />
+                                    <div className="h-8 w-8 rounded-full bg-gradient-to-br from-indigo-500 to-blue-500 border-2 border-zinc-950 flex items-center justify-center text-xs font-bold">
+                                        +120
+                                    </div>
                                 </div>
+                                <span className="text-zinc-300">
+                                    {t.rich('socialProof', {
+                                        white: (chunks) => <strong className="text-white">{chunks}</strong>
+                                    })}
+                                </span>
                             </div>
-                            <span className="text-zinc-300">
-                                {t.rich('socialProof', {
-                                    white: (chunks) => <strong className="text-white">{chunks}</strong>
-                                })}
-                            </span>
                         </div>
-                    </div>
+                    )}
                 </div>
             </div>
         </section>

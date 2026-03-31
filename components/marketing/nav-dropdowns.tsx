@@ -21,13 +21,13 @@ const NICHE_LABELS: Record<string, string> = {
   'representantes-comerciais': 'Representantes Comerciais',
 }
 
-const FERRAMENTAS = [
-  { href: '/ferramentas/calculadora-roi', label: 'Calculadora ROI Geral' },
-  { href: '/ferramentas/calculadora-roi-corretores', label: 'ROI para Corretores' },
-  { href: '/ferramentas/calculadora-roi-energia-solar', label: 'ROI para Energia Solar' },
-  { href: '/ferramentas/calculadora-roi-agencias', label: 'ROI para Agências' },
-  { href: '/ferramentas/calculadora-roi-consultores', label: 'ROI para Consultores' },
-  { href: '/ferramentas/calculadora-roi-representantes', label: 'ROI para Representantes' },
+const FERRAMENTAS_KEYS = [
+  { href: '/ferramentas/calculadora-roi', tKey: 'roi_general' },
+  { href: '/ferramentas/calculadora-roi-corretores', tKey: 'roi_realtors' },
+  { href: '/ferramentas/calculadora-roi-energia-solar', tKey: 'roi_solar' },
+  { href: '/ferramentas/calculadora-roi-agencias', tKey: 'roi_agencies' },
+  { href: '/ferramentas/calculadora-roi-consultores', tKey: 'roi_consultants' },
+  { href: '/ferramentas/calculadora-roi-representantes', tKey: 'roi_reps' },
 ]
 
 function DropdownMenu({ label, children }: { label: string; children: React.ReactNode }) {
@@ -94,10 +94,15 @@ function DropdownItem({ href, icon: Icon, label, onClick }: {
   )
 }
 
+import { useTranslations } from 'next-intl'
+
 export function NavDropdowns() {
+  const tNav = useTranslations('marketing.home.nav')
+  const tNiches = useTranslations('marketing.niche_labels')
+
   return (
     <>
-      <DropdownMenu label="Soluções">
+      <DropdownMenu label={tNav('solutions')}>
         {NICHES.map((niche) => {
           const Icon = NICHE_ICONS[niche.slug] || Building2
           return (
@@ -105,19 +110,19 @@ export function NavDropdowns() {
               key={niche.slug}
               href={`/solucoes/${niche.slug}`}
               icon={Icon}
-              label={NICHE_LABELS[niche.slug] || niche.slug}
+              label={tNiches(niche.slug as any)}
             />
           )
         })}
       </DropdownMenu>
 
-      <DropdownMenu label="Ferramentas">
-        {FERRAMENTAS.map((tool) => (
+      <DropdownMenu label={tNav('tools')}>
+        {FERRAMENTAS_KEYS.map((tool) => (
           <DropdownItem
             key={tool.href}
             href={tool.href}
             icon={Calculator}
-            label={tool.label}
+            label={tNav(`tools_labels.${tool.tKey}` as any)}
           />
         ))}
       </DropdownMenu>

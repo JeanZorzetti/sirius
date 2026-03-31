@@ -20,16 +20,14 @@ export default function MarketingLayout({
         <div className="container mx-auto flex h-16 items-center justify-between px-4">
           <div className="flex items-center gap-4 md:gap-8">
             <Link href="/" className="text-xl font-bold flex items-center gap-2">
-              <div className="relative w-8 h-8">
-                <Image
-                  src="/logo.png"
-                  alt="Sirius Logo"
-                  fill
-                  className="object-contain"
-                  priority
-                  sizes="32px"
-                />
-              </div>
+              <Image
+                src="/logo.png"
+                alt="Sirius Logo"
+                width={32}
+                height={32}
+                className="object-contain"
+                priority
+              />
               <span className="font-bold tracking-tight">Sirius CRM</span>
             </Link>
             <div className="hidden md:flex items-center gap-6">
