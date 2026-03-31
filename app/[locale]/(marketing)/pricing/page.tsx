@@ -297,11 +297,11 @@ export default function PricingPage() {
             <div className="mx-auto mt-24 max-w-4xl">
                 <h3 className="text-3xl font-bold text-center mb-12">{t('faq.title')}</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    {faqKeys.map((qKey) => (
+                    {faqPairs.map(([qKey, aKey]) => (
                         <div key={qKey}>
-                            <h4 className="font-semibold mb-2 text-primary">{t(`faq.${qKey}`)}</h4>
+                            <h4 className="font-semibold mb-2 text-primary">{t(`faq.${qKey as FaqQ}`)}</h4>
                             <p className="text-sm text-muted-foreground">
-                                {t(`faq.${qKey.replace('q', 'a')}`)}
+                                {t(`faq.${aKey as FaqA}`)}
                             </p>
                         </div>
                     ))}
