@@ -91,12 +91,19 @@ export const columns: ColumnDef<Contact>[] = [
     {
         id: 'select',
         header: ({ table }) => (
-            <Checkbox
-                checked={table.getIsAllPageRowsSelected() ? true : table.getIsSomePageRowsSelected() ? 'indeterminate' : false}
-                onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-                aria-label="Selecionar todos"
-                className="border-zinc-300 dark:border-zinc-600"
-            />
+            <div onClick={(e) => e.stopPropagation()}>
+                <Checkbox
+                    checked={table.getIsAllPageRowsSelected()}
+                    onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+                    aria-label="Selecionar todos"
+                    className="border-zinc-300 dark:border-zinc-600"
+                    ref={(el) => {
+                        if (el && table.getIsSomePageRowsSelected() && !table.getIsAllPageRowsSelected()) {
+                            el.setAttribute('data-state', 'indeterminate')
+                        }
+                    }}
+                />
+            </div>
         ),
         cell: ({ row }) => (
             <Checkbox
