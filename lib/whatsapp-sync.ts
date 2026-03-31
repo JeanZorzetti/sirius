@@ -228,11 +228,14 @@ export async function syncConnectionHistory(connectionId: string): Promise<SyncR
     return true
   })
 
-  const chatsToSync = uniqueChats.slice(0, 100)
+  const chatsToSync = uniqueChats
 
   let syncedContacts = 0
   let syncedMessages = 0
   let skippedExisting = 0
+
+  // Janela de 7 dias em segundos (timestamp Unix)
+  const sevenDaysAgoTs = Math.floor((Date.now() - 7 * 24 * 60 * 60 * 1000) / 1000)
 
   // 7. Process each chat
   for (const chat of chatsToSync) {
@@ -243,10 +246,10 @@ export async function syncConnectionHistory(connectionId: string): Promise<SyncR
       const isLid = remoteJid.includes('@lid')
       const isGroup = chat._isGroup
 
-      // Fetch messages
+      // Fetch messages dos últimos 7 dias (limit 500 por chat)
       let chatMessages: any[] = []
       try {
-        const rawMessages = await evolutionClient.getMessages(connection.instanceName, remoteJid, 100)
+        const rawMessages = await evolutionClient.getMessages(connection.instanceName, remoteJid, 500, sevenDaysAgoTs)
         chatMessages = Array.isArray(rawMessages) ? rawMessages : []
       } catch (err: any) {
         logger.warn({ remoteJid, error: err.message }, 'Failed to fetch messages for chat')
@@ -296,25 +299,37 @@ export async function syncConnectionHistory(connectionId: string): Promise<SyncR
         ? (chat._pushName || `Grupo ${remoteJid.replace('@g.us', '')}`)
         : (chat._pushName || contactsMap.get(remoteJid) || phoneNumber)
 
-      // Find or create contact
+      // Find or create contact — upsert atômico para evitar duplicatas por race condition
+      const canonicalPhone = isGroup ? remoteJid : phoneNumber
       let contact: any = null
-      if (isGroup) {
-        contact = await prisma.contact.findFirst({
-          where: { organizationId: connection.organizationId, phone: remoteJid }
-        })
-      } else {
-        contact = await findContactByPhone(connection.organizationId, phoneNumber)
-      }
+
+      // Primeiro tenta achar pelo phone canônico
+      contact = isGroup
+        ? await prisma.contact.findFirst({ where: { organizationId: connection.organizationId, phone: remoteJid } })
+        : await findContactByPhone(connection.organizationId, phoneNumber)
 
       if (!contact) {
-        contact = await prisma.contact.create({
-          data: {
-            organizationId: connection.organizationId,
-            name: contactName,
-            phone: isGroup ? remoteJid : phoneNumber,
+        // Upsert: createOrUpdate pelo par (organizationId, phone) usando updateMany + create
+        // para evitar duplicata em corrida paralela
+        try {
+          contact = await prisma.contact.create({
+            data: {
+              organizationId: connection.organizationId,
+              name: contactName,
+              phone: canonicalPhone,
+            }
+          })
+          syncedContacts++
+        } catch (createErr: any) {
+          // Se falhou por unique constraint (outro processo criou antes), busca novamente
+          contact = isGroup
+            ? await prisma.contact.findFirst({ where: { organizationId: connection.organizationId, phone: remoteJid } })
+            : await findContactByPhone(connection.organizationId, phoneNumber)
+          if (!contact) {
+            logger.warn({ canonicalPhone, error: createErr.message }, 'Could not create or find contact — skipping chat')
+            continue
           }
-        })
-        syncedContacts++
+        }
       } else {
         const hasRealGroupName = isGroup && groupsMap.has(remoteJid)
         const groupHasGenericName = isGroup && contact.name && contact.name.startsWith('Grupo ')

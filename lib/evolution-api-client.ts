@@ -393,20 +393,18 @@ export class EvolutionAPIClient {
   async getMessages(
     instanceName: string,
     remoteJid: string,
-    limit: number = 50
+    limit: number = 50,
+    afterTimestamp?: number
   ): Promise<Message[]> {
+    const where: any = { key: { remoteJid } }
+    if (afterTimestamp) {
+      where.messageTimestamp = { gte: afterTimestamp }
+    }
     const raw = await this.request<any>(
       `/chat/findMessages/${instanceName}`,
       {
         method: 'POST',
-        body: JSON.stringify({
-          where: {
-            key: {
-              remoteJid,
-            },
-          },
-          limit,
-        }),
+        body: JSON.stringify({ where, limit }),
       }
     )
 
