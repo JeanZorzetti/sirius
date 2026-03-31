@@ -1,40 +1,58 @@
+import createMiddleware from 'next-intl/middleware'
+import { routing } from './i18n/routing'
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
-import { updateSession, decrypt } from '@/lib/auth'
+import { updateSession } from '@/lib/auth'
+
+// Cria o middleware do next-intl com nossas rotas configuradas
+const intlMiddleware = createMiddleware(routing)
 
 export async function middleware(request: NextRequest) {
-    // 1. Redirect invalid/malformed URLs to homepage (SEO fix)
     const pathname = request.nextUrl.pathname
-    const malformedPatterns = ['/mês', '/mes', '/month']
 
+    // 1. Redirect invalid/malformed URLs to homepage (SEO fix)
+    const malformedPatterns = ['/mês', '/mes', '/month']
     if (malformedPatterns.some(pattern => pathname.includes(pattern))) {
         return NextResponse.redirect(new URL('/', request.url))
     }
 
-    // 2. Update session expiration if it exists
-    const response = await updateSession(request)
+    // 2. Strip /en prefix for locale-agnostic auth checks
+    const pathnameWithoutLocale = pathname.replace(/^\/en/, '') || '/'
 
     const sessionCookie = request.cookies.get('session')?.value
 
-    // 3. Protected Routes Logic
-    if (request.nextUrl.pathname.startsWith('/dashboard') || request.nextUrl.pathname.startsWith('/IA')) {
+    // 3. Protected routes — redirect to /login or /en/login depending on locale
+    if (
+        pathnameWithoutLocale.startsWith('/dashboard') ||
+        pathnameWithoutLocale.startsWith('/IA')
+    ) {
         if (!sessionCookie) {
-            return NextResponse.redirect(new URL('/login', request.url))
+            const isEnglish = pathname.startsWith('/en')
+            const loginPath = isEnglish ? '/en/login' : '/login'
+            return NextResponse.redirect(new URL(loginPath, request.url))
         }
-
-        // Optional: Verify validity here if paranoid, but updateSession does basic decrypt
     }
 
-    // 4. Auth Routes (redirect to dashboard if already logged in)
-    if (request.nextUrl.pathname.startsWith('/login') || request.nextUrl.pathname.startsWith('/register')) {
+    // 4. Auth routes — redirect to dashboard if already logged in
+    if (
+        pathnameWithoutLocale.startsWith('/login') ||
+        pathnameWithoutLocale.startsWith('/register')
+    ) {
         if (sessionCookie) {
             return NextResponse.redirect(new URL('/dashboard', request.url))
         }
     }
 
-    return response || NextResponse.next()
+    // 5. Update session expiration
+    await updateSession(request)
+
+    // 6. Run next-intl middleware (locale detection, /en prefix, hreflang cookies)
+    return intlMiddleware(request)
 }
 
 export const config = {
-    matcher: ['/dashboard/:path*', '/IA/:path*', '/login', '/register', '/((?!api|_next/static|_next/image|favicon.ico).*)'],
+    matcher: [
+        // Inclui todas as rotas exceto assets estáticos e API
+        '/((?!api|_next/static|_next/image|favicon.ico|icons|images|audio|avatars|downloads|manifest.json|sw.js|sw-push.js|llms.txt|openapi.json|google[\\w-]*\\.html).*)',
+    ],
 }

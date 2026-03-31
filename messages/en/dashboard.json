@@ -1,0 +1,117 @@
+{
+  "dashboard": {
+    "nav": {
+      "pipeline": "Pipeline",
+      "pipelines": "Pipelines",
+      "contacts": "Contacts",
+      "deals": "Deals",
+      "analytics": "Analytics",
+      "analyticsPro": "Analytics Pro",
+      "chat": "WhatsApp Chat",
+      "products": "Products",
+      "billing": "Plan & Billing",
+      "settings": "Settings",
+      "agenda": "Calendar",
+      "automations": "Automations",
+      "emailAutomations": "Email Automation",
+      "marketing": "Marketing",
+      "prospecting": "Prospecting",
+      "visits": "Visits"
+    },
+    "sidebar": {
+      "main": "Main",
+      "sales": "Sales",
+      "growth": "Growth",
+      "intelligence": "Intelligence",
+      "account": "Account"
+    },
+    "main": {
+      "title": "Overview",
+      "welcomeBack": "Welcome back",
+      "todaysTasks": "Today's tasks",
+      "recentActivity": "Recent activity",
+      "quickActions": "Quick actions",
+      "newDeal": "New Deal",
+      "newContact": "New Contact",
+      "openPipeline": "Open Pipeline"
+    },
+    "contacts": {
+      "title": "Contacts",
+      "subtitle": "Manage your contact database",
+      "newContact": "New Contact",
+      "importContacts": "Import Contacts",
+      "exportContacts": "Export Contacts",
+      "searchPlaceholder": "Search contacts...",
+      "name": "Name",
+      "email": "Email",
+      "phone": "Phone",
+      "company": "Company",
+      "status": "Status",
+      "createdAt": "Created",
+      "actions": "Actions",
+      "edit": "Edit",
+      "delete": "Delete",
+      "noContacts": "No contacts found",
+      "noContactsDesc": "Create your first contact or import a spreadsheet."
+    },
+    "deals": {
+      "title": "Deals",
+      "subtitle": "Manage your sales opportunities",
+      "newDeal": "New Deal",
+      "dealName": "Deal Name",
+      "value": "Value",
+      "stage": "Stage",
+      "owner": "Owner",
+      "closeDate": "Close Date",
+      "contact": "Contact",
+      "company": "Company",
+      "probability": "Probability",
+      "notes": "Notes",
+      "activities": "Activities",
+      "won": "Won",
+      "lost": "Lost",
+      "open": "Open"
+    },
+    "pipeline": {
+      "title": "Sales Pipeline",
+      "addCard": "Add Deal",
+      "addStage": "Add Stage",
+      "totalValue": "Total Value",
+      "deals": "Deals",
+      "dragHint": "Drag to move between stages"
+    },
+    "chat": {
+      "title": "Conversation Center",
+      "subtitle": "Integrated WhatsApp for customer support",
+      "newConversation": "New Conversation",
+      "searchConversations": "Search conversations...",
+      "noConversations": "No conversations",
+      "typeMessage": "Type a message...",
+      "send": "Send",
+      "connected": "Connected",
+      "disconnected": "Disconnected",
+      "connecting": "Connecting..."
+    },
+    "settings": {
+      "title": "Settings",
+      "profile": "Profile",
+      "security": "Security",
+      "integrations": "Integrations",
+      "notifications": "Notifications",
+      "team": "Team",
+      "billing": "Billing"
+    },
+    "onboarding": {
+      "welcomeTitle": "Welcome to Sirius CRM! 🚀",
+      "welcomeSubtitle": "Let's set up your account in a few steps",
+      "step1": "Set up your pipeline",
+      "step2": "Import your contacts",
+      "step3": "Connect WhatsApp",
+      "step4": "Invite your team",
+      "skipTour": "Skip tour",
+      "startTour": "Start tour",
+      "next": "Next",
+      "finish": "Done"
+    }
+  }
+}

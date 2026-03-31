@@ -1,9 +1,11 @@
-import Link from 'next/link'
+import { Link } from '@/i18n/routing'
 import { NICHES } from '@/config/niche-data'
 import { CITIES, CITY_DISPLAY_NAMES } from '@/config/city-data'
+import { useTranslations } from 'next-intl'
 
 export function Footer() {
   const currentYear = new Date().getFullYear()
+  const t = useTranslations('marketing.home.footer')
 
   return (
     <footer className="border-t bg-zinc-50 dark:bg-zinc-950">
@@ -11,9 +13,9 @@ export function Footer() {
         <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-8">
           {/* Coluna 1: Sobre */}
           <div>
-            <h3 className="font-bold text-sm mb-4">Sirius CRM</h3>
+            <h3 className="font-bold text-sm mb-4">{t('about.title')}</h3>
             <p className="text-sm text-muted-foreground mb-4">
-              O CRM que organiza suas vendas e multiplica seus resultados.
+              {t('about.description')}
             </p>
             <p className="text-xs text-muted-foreground">
               © {currentYear} ROI Labs
@@ -22,41 +24,41 @@ export function Footer() {
 
           {/* Coluna 2: Produto */}
           <div>
-            <h3 className="font-bold text-sm mb-4">Produto</h3>
+            <h3 className="font-bold text-sm mb-4">{t('product.title')}</h3>
             <ul className="space-y-3 text-sm">
               <li>
                 <Link href="/features" className="text-muted-foreground hover:text-foreground transition-colors">
-                  Funcionalidades
+                  {t('product.features')}
                 </Link>
               </li>
               <li>
                 <Link href="/pricing" className="text-muted-foreground hover:text-foreground transition-colors">
-                  Preços
+                  {t('product.pricing')}
                 </Link>
               </li>
               <li>
                 <Link href="/fundadores" className="text-amber-600 hover:text-amber-700 transition-colors font-medium">
-                  ⭐ Programa de Fundadores
+                  {t('product.founders')}
                 </Link>
               </li>
               <li>
                 <Link href="/followup" className="text-muted-foreground hover:text-foreground transition-colors">
-                  Follow-up Automático
+                  {t('product.followup')}
                 </Link>
               </li>
               <li>
                 <Link href="/vendas-automaticas" className="text-muted-foreground hover:text-foreground transition-colors">
-                  Vendas Automáticas
+                  {t('product.autoSales')}
                 </Link>
               </li>
               <li>
                 <Link href="/proposta" className="text-muted-foreground hover:text-foreground transition-colors">
-                  Solicitar Proposta
+                  {t('product.proposal')}
                 </Link>
               </li>
               <li>
                 <Link href="/changelog" className="text-muted-foreground hover:text-foreground transition-colors">
-                  Atualizações
+                  {t('product.changelog')}
                 </Link>
               </li>
             </ul>
@@ -64,7 +66,7 @@ export function Footer() {
 
           {/* Coluna 3: Soluções por Segmento (Dinâmica) */}
           <div>
-            <h3 className="font-bold text-sm mb-4">Soluções por Segmento</h3>
+            <h3 className="font-bold text-sm mb-4">{t('nichesTitle')}</h3>
             <ul className="space-y-3 text-sm">
               {NICHES.map((niche) => (
                 <li key={niche.slug}>
@@ -81,14 +83,14 @@ export function Footer() {
 
           {/* Coluna 4: Ferramentas Grátis (Dinâmica) */}
           <div>
-            <h3 className="font-bold text-sm mb-4">Ferramentas Grátis</h3>
+            <h3 className="font-bold text-sm mb-4">{t('toolsTitle')}</h3>
             <ul className="space-y-3 text-sm">
               <li>
                 <Link
                   href="/ferramentas/calculadora-roi"
                   className="text-muted-foreground hover:text-foreground transition-colors"
                 >
-                  Calculadora ROI
+                  {t('tools.roi')}
                 </Link>
               </li>
               <li>
@@ -96,7 +98,7 @@ export function Footer() {
                   href="/ferramentas/calculadora-roi-corretores"
                   className="text-muted-foreground hover:text-foreground transition-colors"
                 >
-                  Calc. para Corretores
+                  {t('tools.realtors')}
                 </Link>
               </li>
               <li>
@@ -104,7 +106,7 @@ export function Footer() {
                   href="/ferramentas/calculadora-roi-energia-solar"
                   className="text-muted-foreground hover:text-foreground transition-colors"
                 >
-                  Calc. para Energia Solar
+                  {t('tools.solar')}
                 </Link>
               </li>
               <li>
@@ -112,7 +114,7 @@ export function Footer() {
                   href="/ferramentas/calculadora-roi-agencias"
                   className="text-muted-foreground hover:text-foreground transition-colors"
                 >
-                  Calc. para Agências
+                  {t('tools.agencies')}
                 </Link>
               </li>
               <li>
@@ -120,7 +122,7 @@ export function Footer() {
                   href="/ferramentas/calculadora-roi-consultores"
                   className="text-muted-foreground hover:text-foreground transition-colors"
                 >
-                  Calc. para Consultores
+                  {t('tools.consultants')}
                 </Link>
               </li>
               <li>
@@ -128,7 +130,7 @@ export function Footer() {
                   href="/ferramentas/calculadora-roi-representantes"
                   className="text-muted-foreground hover:text-foreground transition-colors"
                 >
-                  Calc. para Representantes
+                  {t('tools.reps')}
                 </Link>
               </li>
             </ul>
@@ -136,7 +138,7 @@ export function Footer() {
 
           {/* Coluna 5: Principais Cidades */}
           <div>
-            <h3 className="font-bold text-sm mb-4">Principais Cidades</h3>
+            <h3 className="font-bold text-sm mb-4">{t('citiesTitle')}</h3>
             <ul className="space-y-3 text-sm">
               {CITIES.map((city) => (
                 <li key={city.slug}>
@@ -153,31 +155,31 @@ export function Footer() {
 
           {/* Coluna 6: Recursos */}
           <div>
-            <h3 className="font-bold text-sm mb-4">Recursos</h3>
+            <h3 className="font-bold text-sm mb-4">{t('resources.title')}</h3>
             <ul className="space-y-3 text-sm">
               <li>
                 <Link href="/blog" className="text-muted-foreground hover:text-foreground transition-colors">
-                  Blog
+                  {t('resources.blog')}
                 </Link>
               </li>
               <li>
                 <Link href="/anuario" className="text-muted-foreground hover:text-foreground transition-colors">
-                  Anuário B2B 2026
+                  {t('resources.book')}
                 </Link>
               </li>
               <li>
                 <Link href="/help" className="text-muted-foreground hover:text-foreground transition-colors">
-                  Central de Ajuda
+                  {t('resources.help')}
                 </Link>
               </li>
               <li>
                 <Link href="/about" className="text-muted-foreground hover:text-foreground transition-colors">
-                  Sobre
+                  {t('resources.about')}
                 </Link>
               </li>
               <li>
                 <Link href="/community" className="text-muted-foreground hover:text-foreground transition-colors">
-                  Comunidade
+                  {t('resources.community')}
                 </Link>
               </li>
             </ul>
@@ -188,13 +190,13 @@ export function Footer() {
         <div className="border-t mt-12 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
           <div className="flex flex-wrap justify-center md:justify-start gap-6 text-sm text-muted-foreground">
             <Link href="/privacy" className="hover:text-foreground transition-colors">
-              Privacidade
+              {t('legal.privacy')}
             </Link>
             <Link href="/terms" className="hover:text-foreground transition-colors">
-              Termos de Uso
+              {t('legal.terms')}
             </Link>
             <a href="mailto:contato@roilabs.com.br" className="hover:text-foreground transition-colors">
-              Contato
+              {t('legal.contact')}
             </a>
           </div>
 

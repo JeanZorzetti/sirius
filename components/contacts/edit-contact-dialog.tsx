@@ -14,7 +14,7 @@ import {
 } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { updateContact } from '@/app/dashboard/contacts/actions'
+import { updateContact } from '@/app/[locale]/dashboard/contacts/actions'
 import { toast } from 'sonner'
 import { useRouter } from 'next/navigation'
 import { Contact } from '@prisma/client'

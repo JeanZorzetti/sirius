@@ -12,7 +12,7 @@ import {
 import { Search, Trash2, Loader2 } from 'lucide-react'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
-import { bulkDeleteContacts } from '@/app/dashboard/contacts/actions'
+import { bulkDeleteContacts } from '@/app/[locale]/dashboard/contacts/actions'
 import { toast } from 'sonner'
 import { useRouter } from 'next/navigation'
 import {

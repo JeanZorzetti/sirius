@@ -1,0 +1,157 @@
+{
+  "home": {
+    "hero": {
+      "badge": "The Next-Gen CRM",
+      "title_prefix": "Turn Leads into",
+      "title_highlight": "Recurring Revenue",
+      "subtitle": "Sirius is the sales platform designed for high-performance teams. No spreadsheets, no complexity. Just focus on closing deals.",
+      "cta1": "Get Started Free Now",
+      "cta2": "I already have an account",
+      "risk1": "No credit card required",
+      "risk2": "Set up in 5 minutes",
+      "risk3": "Cancel anytime",
+      "socialProof": "<white>120+</white> teams selling right now"
+    },
+    "nav": {
+      "features": "Features",
+      "pricing": "Pricing",
+      "blog": "Blog",
+      "founders": "Founders",
+      "login": "Login",
+      "startFree": "Get Started Free"
+    },
+    "features": {
+    "title": "Everything you need",
+    "subtitle": "Built for sales. No bureaucracy, no friction.",
+    "badges": {
+      "core": "Core",
+      "starter": "Starter+",
+      "all": "All Plans"
+    },
+    "kanban": {
+      "title": "Drag & Drop Kanban",
+      "description": "Manage your pipeline visually. Multiple pipelines by product, region, or team. Total value per stage and closing forecast."
+    },
+    "whatsapp": {
+      "title": "Integrated WhatsApp",
+      "description": "Unified inbox via Evolution API. Tags, quick replies, routing by salesperson, and media support.",
+      "metric": "98% open rate"
+    },
+    "analytics": {
+      "title": "PRO Analytics",
+      "description": "Win rate, sales cycle, pipeline velocity, CAC, and trends. Identify bottlenecks and optimize your process."
+    },
+    "maps": {
+      "title": "Google Maps Prospecting",
+      "description": "Find leads automatically. Name, phone number, email, and address extracted straight from Google Maps."
+    },
+    "automations": {
+      "title": "Deal Automations",
+      "description": "Triggers: deal created, moved, won, lost, or stale. Actions: email, WhatsApp message, task creation."
+    },
+    "email": {
+      "title": "Email Sequences",
+      "description": "Welcome, follow-up, and stage change sequences. Templates with dynamic variables and full analytics."
+    },
+    "mobile": {
+      "title": "Mobile + GPS Check-in",
+      "description": "PWA with push notifications. GPS check-ins for field sales reps when visiting clients."
+    }
+  },
+  "about": {
+      "title": "What is Sirius CRM?",
+      "description": "Sirius CRM is a sales platform designed for high-performance teams, used by over 1,200 users. It offers four subscription plans: Free, Starter for $67, Pro for $147, and Business for $397, helping teams achieve an average 35% increase in lead conversion. Key differentiators include native WhatsApp integration via Evolution API, B2B lead prospecting through Google Maps, and our AI sales assistant, AGI Sirius."
+    },
+    "founders": {
+      "badge": "Founders Program — 41% OFF for life!",
+      "pricing": "Starter $39 · Pro $87 · Business $234/month forever. Limited spots.",
+      "cta": "View offer"
+    },
+    "testimonials": {
+      "title": "High-performance teams trust Sirius",
+      "subtitle": "See how real companies increased their sales",
+      "t1": {
+        "author": "Carlos Silva",
+        "role": "CEO, TechFlow",
+        "quote": "Finally a CRM that doesn't complicate things. In 10 minutes I was already using it and closing deals faster. <green>+40% conversion</green> in the first month."
+      },
+      "t2": {
+        "author": "Mariana Souza",
+        "role": "Sales Director, GrowHub",
+        "quote": "The integrated WhatsApp saves <indigo>3 hours a week</indigo> per salesperson. My team loves the simplicity!"
+      },
+      "t3": {
+        "author": "Rafael Alves",
+        "role": "Head of Sales, ScaleUp",
+        "quote": "Prospecting via Google Maps and analytics showed bottlenecks on the first day. <purple>Closing rate went up 25%</purple>."
+      }
+    },
+    "agi": {
+      "badge": "AGI Sirius — AI Sales Consultant",
+      "title": "Your AI Sales Consultant",
+      "description": "Analyzes deals, generates sales scripts, enriches contacts, and recommends next actions. Powered by Knowledge Graph + RAG."
+    },
+    "plans": {
+      "title": "Plans for every stage",
+      "subtitle": "Start free and scale as your team grows. No surprises.",
+      "mostPopular": "Most Popular",
+      "seeDetails": "View details",
+      "startFree": "Get Started Free",
+      "compareLink": "See full plan comparison"
+    },
+    "blog": {
+      "title": "Articles for B2B Salespeople",
+      "subtitle": "Practical content on prospecting, CRM, automation, and sales techniques",
+      "viewAll": "View all articles"
+    },
+    "cta": {
+      "badge": "Join companies already organizing their sales with Sirius",
+      "title": "Start selling more today",
+      "subtitle": "Set up in 5 minutes. No credit card. No commitment. Cancel anytime.",
+      "btnPrimary": "Create Free Account",
+      "btnSecondary": "View Plans",
+      "freeForever": "Free forever",
+      "supportPt": "Top tier support"
+    },
+    "footer": {
+      "about": {
+        "title": "Sirius CRM",
+        "description": "The CRM that organizes your sales and multiplies your results."
+      },
+      "product": {
+        "title": "Product",
+        "features": "Features",
+        "pricing": "Pricing",
+        "founders": "⭐ Founders Program",
+        "followup": "Automatic Follow-up",
+        "autoSales": "Automated Sales",
+        "proposal": "Request Proposal",
+        "changelog": "Changelog"
+      },
+      "nichesTitle": "Solutions by Industry",
+      "toolsTitle": "Free Tools",
+      "tools": {
+        "roi": "ROI Calculator",
+        "realtors": "Calc. for Realtors",
+        "solar": "Calc. for Solar Energy",
+        "agencies": "Calc. for Agencies",
+        "consultants": "Calc. for Consultants",
+        "reps": "Calc. for Sales Reps"
+      },
+      "citiesTitle": "Top Cities",
+      "resources": {
+        "title": "Resources",
+        "blog": "Blog",
+        "book": "B2B Yearbook 2026",
+        "help": "Help Center",
+        "about": "About",
+        "community": "Community"
+      },
+      "legal": {
+        "privacy": "Privacy",
+        "terms": "Terms of Use",
+        "contact": "Contact"
+      }
+    }
+  }
+}

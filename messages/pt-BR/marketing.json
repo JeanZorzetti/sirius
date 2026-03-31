@@ -1,0 +1,157 @@
+{
+  "home": {
+    "hero": {
+      "badge": "O CRM da Nova Geração",
+      "title_prefix": "Transforme Leads em",
+      "title_highlight": "Receita Recorrente",
+      "subtitle": "Sirius é a plataforma de vendas desenhada para times de alta performance. Sem planilhas, sem complexidade. Apenas foco em fechar negócios.",
+      "cta1": "Começar Grátis Agora",
+      "cta2": "Já tenho conta",
+      "risk1": "Sem cartão de crédito",
+      "risk2": "Configure em 5 minutos",
+      "risk3": "Cancele quando quiser",
+      "socialProof": "<white>120+</white> times vendendo agora"
+    },
+    "nav": {
+      "features": "Funcionalidades",
+      "pricing": "Preços",
+      "blog": "Blog",
+      "founders": "Fundadores",
+      "login": "Entrar",
+      "startFree": "Começar Grátis"
+    },
+    "features": {
+    "title": "Tudo o que você precisa",
+    "subtitle": "Feito para vendas brasileiras. Sem burocracia, sem fricção.",
+    "badges": {
+      "core": "Core",
+      "starter": "Starter+",
+      "all": "Todos"
+    },
+    "kanban": {
+      "title": "Kanban Drag & Drop",
+      "description": "Gerencie seu pipeline visualmente. Múltiplos pipelines por produto, região ou equipe. Valor total por estágio e previsão de fechamento."
+    },
+    "whatsapp": {
+      "title": "WhatsApp Integrado",
+      "description": "Inbox unificado via Evolution API. Tags, respostas rápidas, atribuição por vendedor e mídia.",
+      "metric": "98% leitura"
+    },
+    "analytics": {
+      "title": "Analytics PRO",
+      "description": "Win rate, ciclo de vendas, velocidade de pipeline, CAC e tendências. Identifique gargalos e otimize seu processo."
+    },
+    "maps": {
+      "title": "Prospecção Google Maps",
+      "description": "Encontre leads automaticamente. Nome, telefone, email e endereço extraídos do Google Maps."
+    },
+    "automations": {
+      "title": "Automações de Deals",
+      "description": "Gatilhos: deal criado, movido, ganho, perdido ou parado. Ações: email, WhatsApp, tarefas."
+    },
+    "email": {
+      "title": "Email Automático",
+      "description": "Boas-vindas, follow-up, troca de estágio. Templates com variáveis dinâmicas e analytics."
+    },
+    "mobile": {
+      "title": "Mobile + Check-in GPS",
+      "description": "PWA com push notifications. Check-in de visitas com GPS para vendedores de campo."
+    }
+  },
+  "about": {
+      "title": "O que é o Sirius CRM?",
+      "description": "O Sirius CRM é uma plataforma de vendas projetada para o mercado brasileiro, utilizada por mais de 1.200 usuários. Oferece quatro planos de assinatura: um plano Gratuito, Starter por R$67, Pro por R$147 e Business por R$397, ajudando equipes a alcançar um aumento médio de 35% na conversão de leads. Seus diferenciais incluem a integração nativa com WhatsApp via Evolution API, prospecção de leads B2B pelo Google Maps e a assistente de vendas com IA, AGI Sirius."
+    },
+    "founders": {
+      "badge": "Programa de Fundadores — 41% OFF vitalício!",
+      "pricing": "Starter R$39 · Pro R$87 · Business R$234/mês para sempre. Vagas limitadas.",
+      "cta": "Ver oferta"
+    },
+    "testimonials": {
+      "title": "Times de alta performance confiam no Sirius",
+      "subtitle": "Veja como empresas reais aumentaram suas vendas",
+      "t1": {
+        "author": "Carlos Silva",
+        "role": "CEO, TechFlow",
+        "quote": "Finalmente um CRM que não complica. Em 10 minutos já estava usando e fechando negócios mais rápido. <green>+40% de conversão</green> no primeiro mês."
+      },
+      "t2": {
+        "author": "Mariana Souza",
+        "role": "Diretora Comercial, GrowHub",
+        "quote": "O WhatsApp integrado economiza <indigo>3 horas por semana</indigo> por vendedor. Meu time adora a simplicidade!"
+      },
+      "t3": {
+        "author": "Rafael Alves",
+        "role": "Head de Vendas, ScaleUp",
+        "quote": "A prospecção pelo Google Maps e o analytics mostraram gargalos no primeiro dia. <purple>Taxa de fechamento subiu 25%</purple>."
+      }
+    },
+    "agi": {
+      "badge": "AGI Sirius — IA Comercial",
+      "title": "Sua Consultora de Vendas com IA",
+      "description": "Analisa deals, gera scripts de venda, enriquece contatos e recomenda próximas ações. Baseada em Knowledge Graph + RAG."
+    },
+    "plans": {
+      "title": "Planos para cada momento",
+      "subtitle": "Comece grátis e escale conforme seu time cresce. Sem surpresas.",
+      "mostPopular": "Mais Popular",
+      "seeDetails": "Ver detalhes",
+      "startFree": "Começar Grátis",
+      "compareLink": "Ver comparação completa entre planos"
+    },
+    "blog": {
+      "title": "Artigos para Vendedores B2B",
+      "subtitle": "Conteúdo prático sobre prospecção, CRM, automação e técnicas de vendas",
+      "viewAll": "Ver todos os artigos"
+    },
+    "cta": {
+      "badge": "Junte-se a empresas que já organizam suas vendas com o Sirius",
+      "title": "Comece a vender mais hoje",
+      "subtitle": "Configure em 5 minutos. Sem cartão de crédito. Sem compromisso. Cancele quando quiser.",
+      "btnPrimary": "Criar Conta Grátis",
+      "btnSecondary": "Ver Planos",
+      "freeForever": "Grátis para sempre",
+      "supportPt": "Suporte em português"
+    },
+    "footer": {
+      "about": {
+        "title": "Sirius CRM",
+        "description": "O CRM que organiza suas vendas e multiplica seus resultados."
+      },
+      "product": {
+        "title": "Produto",
+        "features": "Funcionalidades",
+        "pricing": "Preços",
+        "founders": "⭐ Programa de Fundadores",
+        "followup": "Follow-up Automático",
+        "autoSales": "Vendas Automáticas",
+        "proposal": "Solicitar Proposta",
+        "changelog": "Atualizações"
+      },
+      "nichesTitle": "Soluções por Segmento",
+      "toolsTitle": "Ferramentas Grátis",
+      "tools": {
+        "roi": "Calculadora ROI",
+        "realtors": "Calc. para Corretores",
+        "solar": "Calc. para Energia Solar",
+        "agencies": "Calc. para Agências",
+        "consultants": "Calc. para Consultores",
+        "reps": "Calc. para Representantes"
+      },
+      "citiesTitle": "Principais Cidades",
+      "resources": {
+        "title": "Recursos",
+        "blog": "Blog",
+        "book": "Anuário B2B 2026",
+        "help": "Central de Ajuda",
+        "about": "Sobre",
+        "community": "Comunidade"
+      },
+      "legal": {
+        "privacy": "Privacidade",
+        "terms": "Termos de Uso",
+        "contact": "Contato"
+      }
+    }
+  }
+}

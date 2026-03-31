@@ -23,7 +23,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/components/ui/select'
-import { createDeal } from '@/app/dashboard/actions'
+import { createDeal } from '@/app/[locale]/dashboard/actions'
 
 type Stage = {
     id: string

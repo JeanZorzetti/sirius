@@ -1,0 +1,33 @@
+{
+  "blog": {
+    "title": "Blog",
+    "subtitle": "Dicas de vendas, CRM e estratégias para fechar mais negócios",
+    "readMore": "Ler artigo",
+    "readingTime": "min de leitura",
+    "publishedAt": "Publicado em",
+    "updatedAt": "Atualizado em",
+    "author": "Autor",
+    "categories": "Categorias",
+    "allCategories": "Todos os artigos",
+    "relatedPosts": "Artigos relacionados",
+    "sharePost": "Compartilhar artigo",
+    "tableOfContents": "Índice",
+    "newsletter": {
+      "title": "Receba dicas de vendas toda semana",
+      "subtitle": "Junte-se a mais de 3.000 vendedores que leem nossa newsletter",
+      "placeholder": "seu@email.com",
+      "button": "Assinar gratuitamente",
+      "success": "Obrigado! Verifique seu e-mail."
+    },
+    "search": {
+      "placeholder": "Buscar artigos...",
+      "noResults": "Nenhum artigo encontrado",
+      "noResultsDesc": "Tente outro termo de busca"
+    },
+    "pagination": {
+      "previous": "Anterior",
+      "next": "Próximo",
+      "page": "Página"
+    }
+  }
+}

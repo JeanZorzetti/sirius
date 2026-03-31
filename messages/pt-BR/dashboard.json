@@ -1,0 +1,117 @@
+{
+  "dashboard": {
+    "nav": {
+      "pipeline": "Pipeline",
+      "pipelines": "Pipelines",
+      "contacts": "Contatos",
+      "deals": "Negócios",
+      "analytics": "Analytics",
+      "analyticsPro": "Analytics Pro",
+      "chat": "Chat WhatsApp",
+      "products": "Produtos",
+      "billing": "Plano e Cobrança",
+      "settings": "Configurações",
+      "agenda": "Agenda",
+      "automations": "Automações",
+      "emailAutomations": "E-mail Automático",
+      "marketing": "Marketing",
+      "prospecting": "Prospecção",
+      "visits": "Visitas"
+    },
+    "sidebar": {
+      "main": "Principal",
+      "sales": "Vendas",
+      "growth": "Crescimento",
+      "intelligence": "Inteligência",
+      "account": "Conta"
+    },
+    "main": {
+      "title": "Resumo",
+      "welcomeBack": "Bem-vindo de volta",
+      "todaysTasks": "Tarefas de hoje",
+      "recentActivity": "Atividade recente",
+      "quickActions": "Ações rápidas",
+      "newDeal": "Novo Negócio",
+      "newContact": "Novo Contato",
+      "openPipeline": "Abrir Pipeline"
+    },
+    "contacts": {
+      "title": "Contatos",
+      "subtitle": "Gerencie sua base de contatos",
+      "newContact": "Novo Contato",
+      "importContacts": "Importar Contatos",
+      "exportContacts": "Exportar Contatos",
+      "searchPlaceholder": "Buscar contatos...",
+      "name": "Nome",
+      "email": "E-mail",
+      "phone": "Telefone",
+      "company": "Empresa",
+      "status": "Status",
+      "createdAt": "Criado em",
+      "actions": "Ações",
+      "edit": "Editar",
+      "delete": "Excluir",
+      "noContacts": "Nenhum contato encontrado",
+      "noContactsDesc": "Crie seu primeiro contato ou importe uma planilha."
+    },
+    "deals": {
+      "title": "Negócios",
+      "subtitle": "Gerencie suas oportunidades de venda",
+      "newDeal": "Novo Negócio",
+      "dealName": "Nome do Negócio",
+      "value": "Valor",
+      "stage": "Etapa",
+      "owner": "Responsável",
+      "closeDate": "Data de Fechamento",
+      "contact": "Contato",
+      "company": "Empresa",
+      "probability": "Probabilidade",
+      "notes": "Notas",
+      "activities": "Atividades",
+      "won": "Ganho",
+      "lost": "Perdido",
+      "open": "Em Aberto"
+    },
+    "pipeline": {
+      "title": "Pipeline de Vendas",
+      "addCard": "Adicionar Negócio",
+      "addStage": "Adicionar Etapa",
+      "totalValue": "Valor Total",
+      "deals": "Negócios",
+      "dragHint": "Arraste para mover entre etapas"
+    },
+    "chat": {
+      "title": "Central de Conversas",
+      "subtitle": "WhatsApp integrado para atendimento",
+      "newConversation": "Nova Conversa",
+      "searchConversations": "Buscar conversas...",
+      "noConversations": "Nenhuma conversa",
+      "typeMessage": "Digite uma mensagem...",
+      "send": "Enviar",
+      "connected": "Conectado",
+      "disconnected": "Desconectado",
+      "connecting": "Conectando..."
+    },
+    "settings": {
+      "title": "Configurações",
+      "profile": "Perfil",
+      "security": "Segurança",
+      "integrations": "Integrações",
+      "notifications": "Notificações",
+      "team": "Equipe",
+      "billing": "Cobrança"
+    },
+    "onboarding": {
+      "welcomeTitle": "Bem-vindo ao Sirius CRM! 🚀",
+      "welcomeSubtitle": "Vamos configurar sua conta em poucos passos",
+      "step1": "Configure seu pipeline",
+      "step2": "Importe seus contatos",
+      "step3": "Conecte o WhatsApp",
+      "step4": "Convide seu time",
+      "skipTour": "Pular tour",
+      "startTour": "Começar tour",
+      "next": "Próximo",
+      "finish": "Concluir"
+    }
+  }
+}

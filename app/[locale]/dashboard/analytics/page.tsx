@@ -13,7 +13,7 @@ import { PipelineFilter } from './pipeline-filter';
 import { ValueSearch } from './value-search';
 import { ContactSearch } from './contact-search';
 import { AnalyticsTabNav } from './tab-nav';
-import { AnalyticsProClient } from '@/app/dashboard/analytics-pro/client';
+import { AnalyticsProClient } from '@/app/[locale]/dashboard/analytics-pro/client';
 
 export const metadata = { title: "Analytics | Sirius CRM" }
 

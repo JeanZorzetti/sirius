@@ -26,9 +26,9 @@ import {
     PopoverContent,
     PopoverTrigger,
 } from '@/components/ui/popover'
-import { updateDeal, deleteDeal } from '@/app/dashboard/actions'
-import { getDealDetails, addNote, deleteNote, addDealClosing, deleteDealClosing, getDealClosings } from '@/app/dashboard/deals/actions'
-import { createContact } from '@/app/dashboard/contacts/actions'
+import { updateDeal, deleteDeal } from '@/app/[locale]/dashboard/actions'
+import { getDealDetails, addNote, deleteNote, addDealClosing, deleteDealClosing, getDealClosings } from '@/app/[locale]/dashboard/deals/actions'
+import { createContact } from '@/app/[locale]/dashboard/contacts/actions'
 import { Loader2, MessageSquare, History, Tag, Calendar, Send, Trash2, Plus, MessageCircle, DollarSign } from 'lucide-react'
 import { Textarea } from '@/components/ui/textarea'
 import { ConfirmDialog } from '@/components/ui/confirm-dialog'

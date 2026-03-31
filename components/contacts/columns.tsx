@@ -6,7 +6,7 @@ import { Contact } from '@prisma/client'
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 import { MessageCircle, Trash2, Loader2 } from "lucide-react"
-import { deleteContact } from '@/app/dashboard/contacts/actions'
+import { deleteContact } from '@/app/[locale]/dashboard/contacts/actions'
 import { EditContactDialog } from '@/components/contacts/edit-contact-dialog'
 import { toast } from 'sonner'
 import {

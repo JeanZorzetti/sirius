@@ -18,7 +18,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Badge } from '@/components/ui/badge'
 import { VariableHelper } from './variable-helper'
 import { Eye, Save, RotateCcw } from 'lucide-react'
-import { updateAutomationTemplate, resetAutomationToDefault } from '@/app/dashboard/email-automations/actions'
+import { updateAutomationTemplate, resetAutomationToDefault } from '@/app/[locale]/dashboard/email-automations/actions'
 import { useRouter } from 'next/navigation'
 
 interface TemplateEditorProps {

@@ -13,9 +13,9 @@ import {
   DraggableStateSnapshot
 } from '@hello-pangea/dnd'
 import { Card, CardContent } from '@/components/ui/card'
-import { updateDealStage, updateDealStatus } from '@/app/dashboard/actions'
-import { updateStageOrder, deleteStage, updateStage, createStage } from '@/app/dashboard/pipeline/actions'
-import { reorderDeals } from '@/app/dashboard/deals/actions'
+import { updateDealStage, updateDealStatus } from '@/app/[locale]/dashboard/actions'
+import { updateStageOrder, deleteStage, updateStage, createStage } from '@/app/[locale]/dashboard/pipeline/actions'
+import { reorderDeals } from '@/app/[locale]/dashboard/deals/actions'
 import { EditDealDialog } from '@/components/deals/edit-deal-dialog'
 import { MessageCircle, GripVertical, MoreHorizontal, Pencil, Trash2, Plus } from 'lucide-react'
 import { isToday, isTomorrow, isThisWeek, isPast } from 'date-fns'

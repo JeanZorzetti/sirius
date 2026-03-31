@@ -1,0 +1,27 @@
+{
+  "errors": {
+    "notFound": {
+      "title": "Page not found",
+      "description": "Oops! The page you're looking for doesn't exist or has been moved.",
+      "backHome": "Back to Home",
+      "features": "Features",
+      "pricing": "Pricing",
+      "contact": "Contact",
+      "blogHint": "Or visit our",
+      "blogLink": "Blog",
+      "blogSuffix": "for sales and CRM tips"
+    },
+    "error": {
+      "title": "Something went wrong",
+      "description": "An unexpected error occurred. Try again or go back to the homepage.",
+      "retry": "Try again",
+      "backHome": "Home",
+      "errorCode": "Code"
+    },
+    "globalError": {
+      "title": "Critical error",
+      "description": "A critical application error occurred. Try reloading the page.",
+      "reload": "Reload"
+    }
+  }
+}

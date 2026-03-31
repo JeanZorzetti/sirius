@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Settings, Mail, UserPlus, TrendingUp, ArrowRight } from 'lucide-react'
-import { toggleAutomation } from '@/app/dashboard/email-automations/actions'
+import { toggleAutomation } from '@/app/[locale]/dashboard/email-automations/actions'
 import { useRouter } from 'next/navigation'
 
 interface AutomationCardProps {

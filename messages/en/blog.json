@@ -1,0 +1,33 @@
+{
+  "blog": {
+    "title": "Blog",
+    "subtitle": "Sales tips, CRM insights and strategies to close more deals",
+    "readMore": "Read article",
+    "readingTime": "min read",
+    "publishedAt": "Published on",
+    "updatedAt": "Updated on",
+    "author": "Author",
+    "categories": "Categories",
+    "allCategories": "All articles",
+    "relatedPosts": "Related articles",
+    "sharePost": "Share article",
+    "tableOfContents": "Table of Contents",
+    "newsletter": {
+      "title": "Get sales tips every week",
+      "subtitle": "Join over 3,000 salespeople who read our newsletter",
+      "placeholder": "you@email.com",
+      "button": "Subscribe for free",
+      "success": "Thanks! Check your email."
+    },
+    "search": {
+      "placeholder": "Search articles...",
+      "noResults": "No articles found",
+      "noResultsDesc": "Try a different search term"
+    },
+    "pagination": {
+      "previous": "Previous",
+      "next": "Next",
+      "page": "Page"
+    }
+  }
+}

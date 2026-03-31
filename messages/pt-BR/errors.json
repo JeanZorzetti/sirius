@@ -1,0 +1,27 @@
+{
+  "errors": {
+    "notFound": {
+      "title": "Página não encontrada",
+      "description": "Ops! A página que você procura não existe ou foi movida.",
+      "backHome": "Voltar para Home",
+      "features": "Funcionalidades",
+      "pricing": "Preços",
+      "contact": "Contato",
+      "blogHint": "Ou visite nosso",
+      "blogLink": "Blog",
+      "blogSuffix": "para dicas de vendas e CRM"
+    },
+    "error": {
+      "title": "Algo deu errado",
+      "description": "Ocorreu um erro inesperado. Tente novamente ou volte para a página inicial.",
+      "retry": "Tentar novamente",
+      "backHome": "Início",
+      "errorCode": "Código"
+    },
+    "globalError": {
+      "title": "Erro crítico",
+      "description": "Ocorreu um erro grave na aplicação. Tente recarregar a página.",
+      "reload": "Recarregar"
+    }
+  }
+}

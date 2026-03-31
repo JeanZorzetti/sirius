@@ -1,13 +1,16 @@
 import { Badge } from "@/components/ui/badge"
 import { BarChart3, MessageCircle, Target, Kanban, ArrowUpRight, Search, Zap, Mail, Smartphone } from "lucide-react"
+import { useTranslations } from "next-intl"
 
 export function BentoGrid() {
+    const t = useTranslations("marketing.home.features")
+
     return (
         <section className="py-24 px-6 lg:px-8">
             <div className="mx-auto max-w-7xl">
                 <div className="mb-16 text-center">
-                    <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl mb-4">Tudo o que você precisa</h2>
-                    <p className="text-zinc-400 max-w-2xl mx-auto">Feito para vendas brasileiras. Sem burocracia, sem fricção.</p>
+                    <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl mb-4">{t('title')}</h2>
+                    <p className="text-zinc-400 max-w-2xl mx-auto">{t('subtitle')}</p>
                 </div>
 
                 {/* Row 1: Kanban (large) + WhatsApp + Analytics */}
@@ -19,10 +22,10 @@ export function BentoGrid() {
                             <div className="p-3 rounded-xl bg-indigo-500/10 text-indigo-400 w-fit">
                                 <Kanban className="h-6 w-6" />
                             </div>
-                            <Badge variant="outline" className="border-indigo-500/30 text-indigo-400">Core</Badge>
+                            <Badge variant="outline" className="border-indigo-500/30 text-indigo-400">{t('badges.core')}</Badge>
                         </div>
-                        <h3 className="text-2xl font-bold text-white mb-2">Kanban Drag & Drop</h3>
-                        <p className="text-zinc-400 mb-8 max-w-md">Gerencie seu pipeline visualmente. Múltiplos pipelines por produto, região ou equipe. Valor total por estágio e previsão de fechamento.</p>
+                        <h3 className="text-2xl font-bold text-white mb-2">{t('kanban.title')}</h3>
+                        <p className="text-zinc-400 mb-8 max-w-md">{t('kanban.description')}</p>
 
                         {/* Visual Mockup */}
                         <div className="flex-1 w-full bg-zinc-900/50 rounded-xl border border-white/5 p-4 relative overflow-hidden group-hover:border-indigo-500/20 transition-colors">
@@ -63,8 +66,8 @@ export function BentoGrid() {
                             <div className="p-3 rounded-xl bg-green-500/10 text-green-400 w-fit mb-4">
                                 <MessageCircle className="h-6 w-6" />
                             </div>
-                            <h3 className="text-xl font-bold text-white mb-1">WhatsApp Integrado</h3>
-                            <p className="text-sm text-zinc-400">Inbox unificado via Evolution API. Tags, respostas rápidas, atribuição por vendedor e mídia.</p>
+                            <h3 className="text-xl font-bold text-white mb-1">{t('whatsapp.title')}</h3>
+                            <p className="text-sm text-zinc-400">{t('whatsapp.description')}</p>
                         </div>
                         <div className="mt-4 flex items-center gap-2 opacity-60 group-hover:opacity-100 transition-opacity">
                             <div className="h-10 w-10 rounded-full bg-green-500/20 flex items-center justify-center ring-2 ring-green-500/30 group-hover:ring-green-500/50 transition-all">
@@ -73,7 +76,7 @@ export function BentoGrid() {
                             <div className="flex-1 h-2 bg-green-500/20 rounded-full overflow-hidden">
                                 <div className="h-full bg-green-500/60 w-full animate-pulse"></div>
                             </div>
-                            <span className="text-xs font-mono text-green-400">98% leitura</span>
+                            <span className="text-xs font-mono text-green-400">{t('whatsapp.metric')}</span>
                         </div>
                     </div>
 
@@ -85,8 +88,8 @@ export function BentoGrid() {
                         <div className="p-3 rounded-xl bg-purple-500/10 text-purple-400 w-fit mb-4">
                             <BarChart3 className="h-6 w-6" />
                         </div>
-                        <h3 className="text-xl font-bold text-white mb-2">Analytics PRO</h3>
-                        <p className="text-sm text-zinc-400">Win rate, ciclo de vendas, velocidade de pipeline, CAC e tendências. Identifique gargalos e otimize seu processo.</p>
+                        <h3 className="text-xl font-bold text-white mb-2">{t('analytics.title')}</h3>
+                        <p className="text-sm text-zinc-400">{t('analytics.description')}</p>
                     </div>
                 </div>
 
@@ -98,10 +101,10 @@ export function BentoGrid() {
                         <div className="p-3 rounded-xl bg-blue-500/10 text-blue-400 w-fit mb-4">
                             <Search className="h-6 w-6" />
                         </div>
-                        <h3 className="text-lg font-bold text-white mb-1">Prospecção Google Maps</h3>
-                        <p className="text-sm text-zinc-400">Encontre leads automaticamente. Nome, telefone, email e endereço extraídos do Google Maps.</p>
+                        <h3 className="text-lg font-bold text-white mb-1">{t('maps.title')}</h3>
+                        <p className="text-sm text-zinc-400">{t('maps.description')}</p>
                         <div className="mt-3">
-                            <Badge variant="outline" className="border-blue-500/30 text-blue-400 text-xs">Starter+</Badge>
+                            <Badge variant="outline" className="border-blue-500/30 text-blue-400 text-xs">{t('badges.starter')}</Badge>
                         </div>
                     </div>
 
@@ -110,10 +113,10 @@ export function BentoGrid() {
                         <div className="p-3 rounded-xl bg-amber-500/10 text-amber-400 w-fit mb-4">
                             <Zap className="h-6 w-6" />
                         </div>
-                        <h3 className="text-lg font-bold text-white mb-1">Automações de Deals</h3>
-                        <p className="text-sm text-zinc-400">Gatilhos: deal criado, movido, ganho, perdido ou parado. Ações: email, WhatsApp, tarefas.</p>
+                        <h3 className="text-lg font-bold text-white mb-1">{t('automations.title')}</h3>
+                        <p className="text-sm text-zinc-400">{t('automations.description')}</p>
                         <div className="mt-3">
-                            <Badge variant="outline" className="border-amber-500/30 text-amber-400 text-xs">Starter+</Badge>
+                            <Badge variant="outline" className="border-amber-500/30 text-amber-400 text-xs">{t('badges.starter')}</Badge>
                         </div>
                     </div>
 
@@ -122,10 +125,10 @@ export function BentoGrid() {
                         <div className="p-3 rounded-xl bg-pink-500/10 text-pink-400 w-fit mb-4">
                             <Mail className="h-6 w-6" />
                         </div>
-                        <h3 className="text-lg font-bold text-white mb-1">Email Automático</h3>
-                        <p className="text-sm text-zinc-400">Boas-vindas, follow-up, troca de estágio. Templates com variáveis dinâmicas e analytics.</p>
+                        <h3 className="text-lg font-bold text-white mb-1">{t('email.title')}</h3>
+                        <p className="text-sm text-zinc-400">{t('email.description')}</p>
                         <div className="mt-3">
-                            <Badge variant="outline" className="border-pink-500/30 text-pink-400 text-xs">Starter+</Badge>
+                            <Badge variant="outline" className="border-pink-500/30 text-pink-400 text-xs">{t('badges.starter')}</Badge>
                         </div>
                     </div>
 
@@ -134,10 +137,10 @@ export function BentoGrid() {
                         <div className="p-3 rounded-xl bg-teal-500/10 text-teal-400 w-fit mb-4">
                             <Smartphone className="h-6 w-6" />
                         </div>
-                        <h3 className="text-lg font-bold text-white mb-1">Mobile + Check-in GPS</h3>
-                        <p className="text-sm text-zinc-400">PWA com push notifications. Check-in de visitas com GPS para vendedores de campo.</p>
+                        <h3 className="text-lg font-bold text-white mb-1">{t('mobile.title')}</h3>
+                        <p className="text-sm text-zinc-400">{t('mobile.description')}</p>
                         <div className="mt-3">
-                            <Badge variant="outline" className="border-teal-500/30 text-teal-400 text-xs">Todos</Badge>
+                            <Badge variant="outline" className="border-teal-500/30 text-teal-400 text-xs">{t('badges.all')}</Badge>
                         </div>
                     </div>
                 </div>

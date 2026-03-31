@@ -14,7 +14,7 @@ import {
 } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { createContact } from '@/app/dashboard/contacts/actions'
+import { createContact } from '@/app/[locale]/dashboard/contacts/actions'
 import { analytics } from '@/lib/posthog'
 
 export function CreateContactDialog() {

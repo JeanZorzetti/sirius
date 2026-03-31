@@ -14,6 +14,8 @@ const StickyCTA = dynamic(() => import("@/components/marketing/sticky-cta").then
 import { blogPosts } from "@/lib/blog-data"
 import Image from "next/image"
 import { Check, Star, ArrowRight } from "lucide-react"
+import { useTranslations } from "next-intl"
+import { Link } from "@/i18n/routing"
 
 export const metadata: Metadata = {
   title: 'Sirius CRM 2026 [IA Nativa + WhatsApp] — Pipeline Kanban Grátis para Vendedores',
@@ -34,6 +36,8 @@ export const metadata: Metadata = {
 }
 
 export default function LandingPage() {
+  const t = useTranslations("marketing.home")
+
   const softwareSchema = {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
@@ -275,10 +279,10 @@ export default function LandingPage() {
           <section className="py-16 sm:py-20 px-6">
             <div className="mx-auto max-w-2xl text-center">
               <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">
-                O que é o Sirius CRM?
+                {t('about.title')}
               </h2>
               <p className="mt-6 text-lg leading-8 text-zinc-300">
-                O Sirius CRM é uma plataforma de vendas projetada para o mercado brasileiro, utilizada por mais de 1.200 usuários. Oferece quatro planos de assinatura: um plano Gratuito, Starter por R$67, Pro por R$147 e Business por R$397, ajudando equipes a alcançar um aumento médio de 35% na conversão de leads. Seus diferenciais incluem a integração nativa com WhatsApp via Evolution API, prospecção de leads B2B pelo Google Maps e a assistente de vendas com IA, AGI Sirius.
+                {t('about.description')}
               </p>
             </div>
           </section>
@@ -294,9 +298,9 @@ export default function LandingPage() {
                     <Star className="w-6 h-6 text-amber-400 fill-amber-400" />
                   </div>
                   <div>
-                    <p className="font-bold text-white text-lg">Programa de Fundadores — 41% OFF vitalicio!</p>
+                    <p className="font-bold text-white text-lg">{t('founders.badge')}</p>
                     <p className="text-sm text-amber-200/80">
-                      Starter R$39 · Pro R$87 · Business R$234/mes para sempre. Vagas limitadas.
+                      {t('founders.pricing')}
                     </p>
                   </div>
                 </div>
@@ -305,7 +309,7 @@ export default function LandingPage() {
                   className="inline-flex h-11 items-center justify-center rounded-lg bg-amber-500 hover:bg-amber-400 px-6 text-sm font-semibold text-black transition-colors shrink-0"
                 >
                   <Star className="w-4 h-4 mr-2 fill-black" />
-                  Ver oferta
+                  {t('founders.cta')}
                 </Link>
               </div>
             </div>
@@ -315,8 +319,8 @@ export default function LandingPage() {
           <section className="py-24 px-6">
             <div className="mx-auto max-w-7xl">
               <div className="mb-16 text-center">
-                <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl mb-4">Times de alta performance confiam no Sirius</h2>
-                <p className="text-zinc-400 max-w-2xl mx-auto">Veja como empresas reais aumentaram suas vendas</p>
+                <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl mb-4">{t('testimonials.title')}</h2>
+                <p className="text-zinc-400 max-w-2xl mx-auto">{t('testimonials.subtitle')}</p>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -327,12 +331,12 @@ export default function LandingPage() {
                       CS
                     </div>
                     <div>
-                      <div className="font-semibold text-white">Carlos Silva</div>
-                      <div className="text-sm text-zinc-500">CEO, TechFlow</div>
+                      <div className="font-semibold text-white">{t('testimonials.t1.author')}</div>
+                      <div className="text-sm text-zinc-500">{t('testimonials.t1.role')}</div>
                     </div>
                   </div>
                   <p className="text-zinc-300 text-sm leading-relaxed mb-4">
-                    &quot;Finalmente um CRM que não complica. Em 10 minutos já estava usando e fechando negócios mais rápido. <span className="text-green-400 font-semibold">+40% de conversão</span> no primeiro mês.&quot;
+                    &quot;{t.rich('testimonials.t1.quote', { green: (chunks) => <span className="text-green-400 font-semibold">{chunks}</span> })}&quot;
                   </p>
                   <div className="flex text-yellow-400">
                     {[...Array(5)].map((_, i) => (
@@ -350,12 +354,12 @@ export default function LandingPage() {
                       MS
                     </div>
                     <div>
-                      <div className="font-semibold text-white">Mariana Souza</div>
-                      <div className="text-sm text-zinc-500">Diretora Comercial, GrowHub</div>
+                      <div className="font-semibold text-white">{t('testimonials.t2.author')}</div>
+                      <div className="text-sm text-zinc-500">{t('testimonials.t2.role')}</div>
                     </div>
                   </div>
                   <p className="text-zinc-300 text-sm leading-relaxed mb-4">
-                    &quot;O WhatsApp integrado economiza <span className="text-indigo-400 font-semibold">3 horas por semana</span> por vendedor. Meu time adora a simplicidade!&quot;
+                    &quot;{t.rich('testimonials.t2.quote', { indigo: (chunks) => <span className="text-indigo-400 font-semibold">{chunks}</span> })}&quot;
                   </p>
                   <div className="flex text-yellow-400">
                     {[...Array(5)].map((_, i) => (
@@ -373,12 +377,12 @@ export default function LandingPage() {
                       RA
                     </div>
                     <div>
-                      <div className="font-semibold text-white">Rafael Alves</div>
-                      <div className="text-sm text-zinc-500">Head de Vendas, ScaleUp</div>
+                      <div className="font-semibold text-white">{t('testimonials.t3.author')}</div>
+                      <div className="text-sm text-zinc-500">{t('testimonials.t3.role')}</div>
                     </div>
                   </div>
                   <p className="text-zinc-300 text-sm leading-relaxed mb-4">
-                    &quot;A prospecção pelo Google Maps e o analytics mostraram gargalos no primeiro dia. <span className="text-purple-400 font-semibold">Taxa de fechamento subiu 25%</span>.&quot;
+                    &quot;{t.rich('testimonials.t3.quote', { purple: (chunks) => <span className="text-purple-400 font-semibold">{chunks}</span> })}&quot;
                   </p>
                   <div className="flex text-yellow-400">
                     {[...Array(5)].map((_, i) => (
@@ -401,13 +405,13 @@ export default function LandingPage() {
                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-purple-400 opacity-75"></span>
                     <span className="relative inline-flex rounded-full h-2 w-2 bg-purple-500"></span>
                   </span>
-                  <span className="font-medium">AGI Sirius — IA Comercial</span>
+                  <span className="font-medium">{t('agi.badge')}</span>
                 </div>
                 <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl mb-4">
-                  Sua Consultora de Vendas com IA
+                  {t('agi.title')}
                 </h2>
                 <p className="text-zinc-400 max-w-2xl mx-auto">
-                  Analisa deals, gera scripts de venda, enriquece contatos e recomenda próximas ações. Baseada em Knowledge Graph + RAG.
+                  {t('agi.description')}
                 </p>
               </div>
 
@@ -419,8 +423,8 @@ export default function LandingPage() {
           <section className="py-24 px-6">
             <div className="mx-auto max-w-7xl">
               <div className="mb-16 text-center">
-                <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl mb-4">Planos para cada momento</h2>
-                <p className="text-zinc-400 max-w-2xl mx-auto">Comece grátis e escale conforme seu time cresce. Sem surpresas.</p>
+                <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl mb-4">{t('plans.title')}</h2>
+                <p className="text-zinc-400 max-w-2xl mx-auto">{t('plans.subtitle')}</p>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -436,7 +440,7 @@ export default function LandingPage() {
                     {plan.highlighted && (
                       <div className="absolute -top-3 left-1/2 -translate-x-1/2">
                         <div className="rounded-full bg-gradient-to-r from-indigo-600 to-purple-600 px-3 py-1 text-xs font-semibold text-white">
-                          Mais Popular
+                          {t('plans.mostPopular')}
                         </div>
                       </div>
                     )}
@@ -464,7 +468,7 @@ export default function LandingPage() {
                           : 'border border-white/10 text-zinc-300 hover:bg-white/5'
                       }`}
                     >
-                      {plan.price === 'R$ 0' ? 'Começar Grátis' : 'Ver detalhes'}
+                      {plan.price === 'R$ 0' ? t('plans.startFree') : t('plans.seeDetails')}
                     </Link>
                   </div>
                 ))}
@@ -475,7 +479,7 @@ export default function LandingPage() {
                   href="/pricing"
                   className="inline-flex items-center text-sm text-indigo-400 hover:text-indigo-300 transition-colors"
                 >
-                  Ver comparação completa entre planos
+                  {t('plans.compareLink')}
                   <ArrowRight className="ml-1 h-4 w-4" />
                 </Link>
               </div>
@@ -487,10 +491,10 @@ export default function LandingPage() {
             <div className="mx-auto max-w-7xl">
               <div className="mb-16 text-center">
                 <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl mb-4">
-                  Artigos para Vendedores B2B
+                  {t('blog.title')}
                 </h2>
                 <p className="text-zinc-400 max-w-2xl mx-auto">
-                  Conteudo pratico sobre prospeccao, CRM, automacao e tecnicas de vendas
+                  {t('blog.subtitle')}
                 </p>
               </div>
 
@@ -527,7 +531,7 @@ export default function LandingPage() {
                   href="/blog"
                   className="inline-flex items-center text-sm font-medium text-indigo-400 hover:text-indigo-300 transition-colors"
                 >
-                  Ver todos os artigos
+                  {t('blog.viewAll')}
                   <ArrowRight className="ml-1 h-4 w-4" />
                 </Link>
               </div>
@@ -542,20 +546,20 @@ export default function LandingPage() {
               <div className="relative z-10">
                 <div className="inline-flex items-center gap-2 rounded-full border border-green-500/30 bg-green-500/10 px-3 py-1 text-sm text-green-400 mb-6">
                   <div className="h-2 w-2 rounded-full bg-green-500 animate-pulse" />
-                  <span className="font-medium">Junte-se a empresas que já organizam suas vendas com o Sirius</span>
+                  <span className="font-medium">{t('cta.badge')}</span>
                 </div>
 
-                <h2 className="text-3xl font-bold text-white mb-4">Comece a vender mais hoje</h2>
-                <p className="text-zinc-400 mb-8 max-w-lg mx-auto">Configure em 5 minutos. Sem cartão de crédito. Sem compromisso. Cancele quando quiser.</p>
+                <h2 className="text-3xl font-bold text-white mb-4">{t('cta.title')}</h2>
+                <p className="text-zinc-400 mb-8 max-w-lg mx-auto">{t('cta.subtitle')}</p>
 
                 <div className="flex flex-col sm:flex-row justify-center gap-4 mb-6">
-                  <a href="/register" className="inline-flex h-12 items-center justify-center rounded-lg bg-indigo-600 px-8 text-base font-semibold text-white hover:bg-indigo-500 transition-colors shadow-lg shadow-indigo-500/20">
-                    Criar Conta Grátis
+                  <Link href="/register" className="inline-flex h-12 items-center justify-center rounded-lg bg-indigo-600 px-8 text-base font-semibold text-white hover:bg-indigo-500 transition-colors shadow-lg shadow-indigo-500/20">
+                    {t('cta.btnPrimary')}
                     <ArrowRight className="ml-2 h-4 w-4" />
-                  </a>
-                  <a href="/pricing" className="inline-flex h-12 items-center justify-center rounded-lg border border-white/10 bg-transparent px-8 text-base font-medium text-white hover:bg-white/5 transition-colors">
-                    Ver Planos
-                  </a>
+                  </Link>
+                  <Link href="/pricing" className="inline-flex h-12 items-center justify-center rounded-lg border border-white/10 bg-transparent px-8 text-base font-medium text-white hover:bg-white/5 transition-colors">
+                    {t('cta.btnSecondary')}
+                  </Link>
                 </div>
 
                 <div className="flex items-center justify-center gap-6 text-sm text-zinc-500">
@@ -563,14 +567,14 @@ export default function LandingPage() {
                     <svg className="h-4 w-4 text-green-500" fill="currentColor" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                     </svg>
-                    Grátis para sempre
+                    {t('cta.freeForever')}
                   </div>
                   <span>•</span>
                   <div className="flex items-center gap-1">
                     <svg className="h-4 w-4 text-green-500" fill="currentColor" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                     </svg>
-                    Suporte em português
+                    {t('cta.supportPt')}
                   </div>
                 </div>
               </div>

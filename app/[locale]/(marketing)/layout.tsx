@@ -1,15 +1,18 @@
-import Link from 'next/link'
 import Image from 'next/image'
 import { Button } from '@/components/ui/button'
 import { MobileNav } from '@/components/marketing/mobile-nav'
 import { NavDropdowns } from '@/components/marketing/nav-dropdowns'
 import { Footer } from '@/components/marketing/footer'
+import { Link } from '@/i18n/routing'
+import { useTranslations } from 'next-intl'
 
 export default function MarketingLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
+  const t = useTranslations('marketing.home.nav')
+
   return (
     <div className="flex min-h-screen flex-col">
       {/* Navbar */}
@@ -34,37 +37,37 @@ export default function MarketingLayout({
                 href="/features"
                 className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
               >
-                Funcionalidades
+                {t('features')}
               </Link>
               <NavDropdowns />
               <Link
                 href="/pricing"
                 className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
               >
-                Preços
+                {t('pricing')}
               </Link>
               <Link
                 href="/blog"
                 className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
               >
-                Blog
+                {t('blog')}
               </Link>
               <Link
                 href="/fundadores"
                 className="text-sm font-semibold text-amber-600 hover:text-amber-700 transition-colors flex items-center gap-1"
               >
                 <span>⭐</span>
-                Fundadores
+                {t('founders')}
               </Link>
             </div>
           </div>
           <div className="flex items-center gap-4">
             <MobileNav />
             <Button variant="ghost" asChild className="hidden md:inline-flex">
-              <Link href="/login">Entrar</Link>
+              <Link href="/login">{t('login')}</Link>
             </Button>
             <Button asChild className="hidden md:inline-flex">
-              <Link href="/register">Começar Grátis</Link>
+              <Link href="/register">{t('startFree')}</Link>
             </Button>
           </div>
         </div>

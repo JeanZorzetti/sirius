@@ -1,0 +1,66 @@
+{
+  "emails": {
+    "welcome": {
+      "subject": "Bem-vindo ao Sirius CRM! 🚀",
+      "preheader": "Sua conta está pronta. Vamos começar?",
+      "title": "Bem-vindo ao Sirius CRM!",
+      "body": "Sua conta está configurada e pronta para uso. Comece importando seus contatos ou criando seu primeiro negócio no pipeline.",
+      "cta": "Acessar minha conta",
+      "footer": "Se você não criou esta conta, ignore este e-mail."
+    },
+    "invite": {
+      "subject": "Você foi convidado para o Sirius CRM",
+      "preheader": "Aceite o convite e comece a colaborar",
+      "title": "Convite para o time",
+      "body": "{inviterName} convidou você para colaborar no Sirius CRM.",
+      "cta": "Aceitar convite",
+      "expires": "Este convite expira em 7 dias."
+    },
+    "dealCreated": {
+      "subject": "Novo negócio criado: {dealName}",
+      "preheader": "Um novo negócio foi adicionado ao seu pipeline",
+      "title": "Novo negócio no pipeline",
+      "body": "O negócio {dealName} foi criado com valor de {value}.",
+      "cta": "Ver negócio"
+    },
+    "followUp": {
+      "subject": "Lembrete de follow-up: {contactName}",
+      "preheader": "É hora de entrar em contato",
+      "title": "Hora do follow-up!",
+      "body": "Você tem um follow-up pendente com {contactName} da {company}.",
+      "cta": "Ver contato",
+      "note": "Este lembrete foi configurado em {configuredDate}."
+    },
+    "paymentConfirmation": {
+      "subject": "Pagamento confirmado — Sirius CRM {plan}",
+      "preheader": "Seu pagamento foi processado com sucesso",
+      "title": "Pagamento confirmado!",
+      "body": "Seu plano {plan} está ativo até {expiresAt}.",
+      "cta": "Acessar minha conta",
+      "receipt": "Ver recibo"
+    },
+    "paymentFailure": {
+      "subject": "Falha no pagamento — Ação necessária",
+      "preheader": "Atualize seu método de pagamento",
+      "title": "Problema com o pagamento",
+      "body": "Não conseguimos processar seu pagamento. Atualize seu método de pagamento para continuar usando o Sirius CRM.",
+      "cta": "Atualizar pagamento"
+    },
+    "upgradeNudge": {
+      "subject": "Você está usando {usage}% do seu limite",
+      "preheader": "Faça upgrade para continuar crescendo",
+      "title": "Limite quase atingido",
+      "body": "Você usou {usage}% dos seus {limit} negócios do plano gratuito. Faça upgrade para continuar crescendo.",
+      "cta": "Ver planos"
+    },
+    "weeklyNewsletter": {
+      "subject": "Sua semana em números — Sirius CRM",
+      "preheader": "Confira o resumo da sua semana de vendas",
+      "title": "Resumo semanal",
+      "newDeals": "Novos negócios",
+      "dealsWon": "Negócios fechados",
+      "totalRevenue": "Receita total",
+      "cta": "Ver detalhes"
+    }
+  }
+}

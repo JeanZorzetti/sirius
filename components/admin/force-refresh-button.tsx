@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { RefreshCw } from 'lucide-react'
-import { forceRefreshFunnel } from '@/app/(admin)/admin/funnel/actions'
+import { forceRefreshFunnel } from '@/app/[locale]/(admin)/admin/funnel/actions'
 import { useRouter } from 'next/navigation'
 
 export function ForceRefreshButton() {

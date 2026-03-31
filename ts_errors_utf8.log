@@ -1,0 +1,324 @@
+﻿__tests__/components/generative-ui/DynamicUIComponent.test.tsx(20,43): error TS1109: Expression expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(20,46): error TS1127: Invalid character.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(21,35): error TS1109: Expression expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(21,38): error TS1127: Invalid character.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(30,49): error TS1109: Expression expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(30,52): error TS1127: Invalid character.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(31,44): error TS1005: '=>' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(31,45): error TS1127: Invalid character.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(31,52): error TS1005: ',' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(32,17): error TS1005: ',' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(32,38): error TS1005: ',' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(34,22): error TS1005: '{' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(34,23): error TS1127: Invalid character.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(34,30): error TS1127: Invalid character.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(34,40): error TS1005: ',' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(34,44): error TS1005: ',' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(34,52): error TS1005: ',' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(34,53): error TS1127: Invalid character.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(34,113): error TS1002: Unterminated string literal.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(35,5): error TS1005: ',' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(36,5): error TS1135: Argument expression expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(39,9): error TS1109: Expression expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(39,12): error TS1127: Invalid character.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(39,19): error TS1127: Invalid character.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(39,20): error TS1434: Unexpected keyword or identifier.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(39,42): error TS1005: ';' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(39,71): error TS1127: Invalid character.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(39,72): error TS1434: Unexpected keyword or identifier.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(39,93): error TS1127: Invalid character.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(39,105): error TS1127: Invalid character.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(40,3): error TS1128: Declaration or statement expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(40,4): error TS1128: Declaration or statement expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(40,5): error TS1128: Declaration or statement expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(42,1): error TS1109: Expression expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(42,2): error TS1128: Declaration or statement expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(42,3): error TS1128: Declaration or statement expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(45,17): error TS1109: Expression expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(45,20): error TS1127: Invalid character.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(45,27): error TS1005: ',' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(46,11): error TS1005: ',' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(50,69): error TS1127: Invalid character.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(50,76): error TS1005: ',' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(51,19): error TS1005: ':' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(51,29): error TS1005: ',' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(66,7): error TS1005: ',' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(66,14): error TS1127: Invalid character.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(66,39): error TS1005: ',' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(66,57): error TS1005: ',' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(66,58): error TS1127: Invalid character.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(69,24): error TS1109: Expression expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(69,27): error TS1127: Invalid character.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(69,34): error TS1005: ',' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(70,26): error TS1005: ',' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(70,61): error TS1005: ',' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(74,60): error TS1127: Invalid character.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(74,67): error TS1005: ',' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(75,11): error TS1005: ':' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(75,16): error TS1005: ',' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(82,7): error TS1005: ',' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(82,14): error TS1127: Invalid character.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(82,39): error TS1005: ',' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(82,52): error TS1005: ',' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(82,53): error TS1127: Invalid character.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(84,16): error TS1109: Expression expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(84,19): error TS1127: Invalid character.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(84,26): error TS1005: ',' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(85,11): error TS1005: ':' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(86,9): error TS1005: ',' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(86,23): error TS1005: ',' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(86,51): error TS1005: ',' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(90,7): error TS1128: Declaration or statement expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(90,8): error TS1128: Declaration or statement expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(91,5): error TS1128: Declaration or statement expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(91,6): error TS1128: Declaration or statement expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(93,51): error TS1127: Invalid character.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(93,58): error TS1005: ',' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(94,11): error TS1005: ':' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(94,16): error TS1005: ',' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(101,7): error TS1005: ',' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(101,14): error TS1127: Invalid character.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(101,39): error TS1005: ',' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(101,52): error TS1005: ',' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(101,53): error TS1127: Invalid character.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(103,16): error TS1109: Expression expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(103,19): error TS1127: Invalid character.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(103,26): error TS1005: ',' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(104,11): error TS1005: ':' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(105,9): error TS1005: ',' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(105,23): error TS1005: ',' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(105,51): error TS1005: ',' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(106,7): error TS1128: Declaration or statement expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(106,8): error TS1128: Declaration or statement expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(107,5): error TS1128: Declaration or statement expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(107,6): error TS1128: Declaration or statement expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(108,3): error TS1128: Declaration or statement expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(108,4): error TS1128: Declaration or statement expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(111,60): error TS1109: Expression expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(111,63): error TS1127: Invalid character.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(111,70): error TS1005: ',' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(112,15): error TS1005: ':' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(112,20): error TS1005: ',' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(117,7): error TS1005: ',' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(117,14): error TS1127: Invalid character.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(117,39): error TS1005: ',' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(117,52): error TS1005: ',' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(117,53): error TS1127: Invalid character.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(123,45): error TS1109: Expression expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(123,48): error TS1127: Invalid character.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(123,55): error TS1005: ',' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(124,11): error TS1005: ':' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(124,16): error TS1005: ',' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(129,7): error TS1005: ',' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(129,14): error TS1127: Invalid character.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(129,39): error TS1005: ',' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(129,52): error TS1005: ',' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(129,53): error TS1127: Invalid character.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(132,5): error TS1128: Declaration or statement expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(132,6): error TS1128: Declaration or statement expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(133,3): error TS1128: Declaration or statement expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(133,4): error TS1128: Declaration or statement expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(136,59): error TS1109: Expression expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(136,62): error TS1127: Invalid character.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(136,69): error TS1005: ',' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(137,15): error TS1005: ':' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(137,27): error TS1005: ',' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(150,7): error TS1005: ',' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(150,14): error TS1127: Invalid character.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(150,39): error TS1005: ',' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(150,59): error TS1005: ',' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(150,60): error TS1127: Invalid character.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(155,48): error TS1109: Expression expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(155,51): error TS1127: Invalid character.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(155,58): error TS1005: ',' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(156,11): error TS1005: ':' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(156,23): error TS1005: ',' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(163,7): error TS1005: ',' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(163,14): error TS1127: Invalid character.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(163,39): error TS1005: ',' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(163,59): error TS1005: ',' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(163,60): error TS1127: Invalid character.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(166,5): error TS1128: Declaration or statement expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(166,6): error TS1128: Declaration or statement expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(168,46): error TS1109: Expression expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(168,49): error TS1127: Invalid character.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(168,56): error TS1005: ',' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(169,11): error TS1005: ':' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(169,23): error TS1005: ',' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(176,7): error TS1005: ',' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(176,14): error TS1127: Invalid character.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(176,39): error TS1005: ',' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(176,59): error TS1005: ',' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(176,60): error TS1127: Invalid character.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(180,5): error TS1128: Declaration or statement expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(180,6): error TS1128: Declaration or statement expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(181,3): error TS1128: Declaration or statement expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(181,4): error TS1128: Declaration or statement expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(184,60): error TS1127: Invalid character.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(184,67): error TS1005: ',' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(185,15): error TS1005: ':' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(186,7): error TS1005: ',' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(186,13): error TS1005: ':' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(186,18): error TS1005: ',' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(200,7): error TS1005: ',' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(200,14): error TS1127: Invalid character.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(200,39): error TS1005: ',' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(200,52): error TS1005: ',' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(200,53): error TS1127: Invalid character.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(202,20): error TS1109: Expression expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(202,23): error TS1127: Invalid character.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(202,30): error TS1005: ',' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(203,22): error TS1005: ',' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(203,57): error TS1005: ',' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(209,5): error TS1128: Declaration or statement expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(209,6): error TS1128: Declaration or statement expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(211,58): error TS1127: Invalid character.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(211,65): error TS1005: ',' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(212,11): error TS1005: ':' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(213,7): error TS1005: ',' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(213,13): error TS1005: ':' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(215,7): error TS1005: ',' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(215,13): error TS1005: ':' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(215,18): error TS1005: ',' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(225,7): error TS1005: ',' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(225,14): error TS1127: Invalid character.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(225,39): error TS1005: ',' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(225,52): error TS1005: ',' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(225,53): error TS1127: Invalid character.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(227,16): error TS1109: Expression expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(227,19): error TS1127: Invalid character.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(227,26): error TS1005: ',' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(228,26): error TS1005: '{' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(237,5): error TS1128: Declaration or statement expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(237,6): error TS1128: Declaration or statement expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(238,3): error TS1128: Declaration or statement expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(238,4): error TS1128: Declaration or statement expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(241,60): error TS1127: Invalid character.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(241,67): error TS1005: ',' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(242,15): error TS1005: ':' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(242,20): error TS1005: ',' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(252,7): error TS1005: ',' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(252,13): error TS1005: ':' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(252,36): error TS1127: Invalid character.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(252,61): error TS1005: ',' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(252,75): error TS1127: Invalid character.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(254,7): error TS1005: ',' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(254,13): error TS1005: ',' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(254,21): error TS1138: Parameter declaration expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(254,25): error TS1127: Invalid character.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(254,32): error TS1005: ',' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(257,25): error TS1005: ',' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(257,59): error TS1005: ',' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(259,5): error TS1128: Declaration or statement expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(259,6): error TS1128: Declaration or statement expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(261,57): error TS1127: Invalid character.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(261,64): error TS1005: ',' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(262,11): error TS1005: ':' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(262,16): error TS1005: ',' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(273,7): error TS1005: ',' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(273,13): error TS1005: ':' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(273,36): error TS1127: Invalid character.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(273,61): error TS1005: ',' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(273,74): error TS1005: ',' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(273,91): error TS1005: ':' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(273,94): error TS1127: Invalid character.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(275,7): error TS1005: ',' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(275,13): error TS1005: ',' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(275,21): error TS1138: Parameter declaration expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(275,25): error TS1127: Invalid character.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(275,32): error TS1005: ',' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(276,21): error TS1005: ',' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(276,55): error TS1005: ',' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(277,7): error TS1128: Declaration or statement expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(277,8): error TS1128: Declaration or statement expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(278,5): error TS1128: Declaration or statement expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(278,6): error TS1128: Declaration or statement expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(279,3): error TS1128: Declaration or statement expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(279,4): error TS1128: Declaration or statement expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(282,47): error TS1109: Expression expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(282,50): error TS1127: Invalid character.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(282,57): error TS1005: ',' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(283,15): error TS1005: ':' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(283,20): error TS1005: ',' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(298,7): error TS1005: ',' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(298,14): error TS1127: Invalid character.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(298,39): error TS1005: ',' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(298,52): error TS1005: ',' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(298,53): error TS1127: Invalid character.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(305,3): error TS1128: Declaration or statement expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(305,4): error TS1128: Declaration or statement expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(308,60): error TS1127: Invalid character.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(308,67): error TS1005: ',' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(309,15): error TS1005: ':' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(309,20): error TS1005: ',' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(319,7): error TS1005: ',' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(319,13): error TS1005: ':' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(319,36): error TS1127: Invalid character.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(319,61): error TS1005: ',' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(319,75): error TS1127: Invalid character.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(321,7): error TS1005: ',' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(321,13): error TS1005: ',' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(321,21): error TS1138: Parameter declaration expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(321,25): error TS1127: Invalid character.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(321,32): error TS1005: ',' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(322,25): error TS1005: ',' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(322,59): error TS1005: ',' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(326,5): error TS1128: Declaration or statement expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(326,6): error TS1128: Declaration or statement expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(327,3): error TS1128: Declaration or statement expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(327,4): error TS1128: Declaration or statement expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(330,69): error TS1127: Invalid character.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(330,76): error TS1005: ',' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(331,15): error TS1005: ':' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(332,13): error TS1127: Invalid character.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(333,11): error TS1005: ',' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(333,17): error TS1127: Invalid character.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(333,34): error TS1002: Unterminated string literal.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(334,11): error TS1005: ',' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(334,20): error TS1136: Property assignment expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(342,10): error TS1005: ',' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(343,10): error TS1127: Invalid character.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(346,20): error TS1109: Expression expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(346,23): error TS1127: Invalid character.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(346,30): error TS1005: ',' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(347,22): error TS1005: ',' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(347,57): error TS1005: ',' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(351,5): error TS1127: Invalid character.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(352,11): error TS1005: ',' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(352,17): error TS1127: Invalid character.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(352,38): error TS1002: Unterminated string literal.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(353,11): error TS1005: ',' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(353,20): error TS1136: Property assignment expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(355,2): error TS1005: ',' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(356,9): error TS1161: Unterminated regular expression literal.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(359,16): error TS1109: Expression expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(359,19): error TS1127: Invalid character.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(359,26): error TS1005: ',' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(360,18): error TS1005: ',' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(360,57): error TS1005: ',' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(361,7): error TS1128: Declaration or statement expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(361,8): error TS1128: Declaration or statement expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(362,5): error TS1128: Declaration or statement expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(362,6): error TS1128: Declaration or statement expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(363,3): error TS1128: Declaration or statement expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(363,4): error TS1128: Declaration or statement expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(366,54): error TS1127: Invalid character.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(366,61): error TS1005: ',' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(367,15): error TS1005: ':' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(367,20): error TS1005: ',' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(374,7): error TS1005: ',' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(374,14): error TS1127: Invalid character.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(374,39): error TS1005: ',' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(374,52): error TS1005: ',' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(374,53): error TS1127: Invalid character.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(376,20): error TS1109: Expression expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(376,23): error TS1127: Invalid character.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(376,30): error TS1005: ',' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(377,22): error TS1005: ',' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(377,60): error TS1005: ',' expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(379,5): error TS1128: Declaration or statement expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(379,6): error TS1128: Declaration or statement expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(380,3): error TS1128: Declaration or statement expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(380,4): error TS1128: Declaration or statement expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(381,1): error TS1128: Declaration or statement expected.
+__tests__/components/generative-ui/DynamicUIComponent.test.tsx(381,2): error TS1128: Declaration or statement expected.

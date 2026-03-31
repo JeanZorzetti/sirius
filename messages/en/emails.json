@@ -1,0 +1,66 @@
+{
+  "emails": {
+    "welcome": {
+      "subject": "Welcome to Sirius CRM! 🚀",
+      "preheader": "Your account is ready. Let's get started?",
+      "title": "Welcome to Sirius CRM!",
+      "body": "Your account is set up and ready to use. Start by importing your contacts or creating your first deal in the pipeline.",
+      "cta": "Access my account",
+      "footer": "If you didn't create this account, please ignore this email."
+    },
+    "invite": {
+      "subject": "You've been invited to Sirius CRM",
+      "preheader": "Accept the invitation and start collaborating",
+      "title": "Team invitation",
+      "body": "{inviterName} invited you to collaborate on Sirius CRM.",
+      "cta": "Accept invitation",
+      "expires": "This invitation expires in 7 days."
+    },
+    "dealCreated": {
+      "subject": "New deal created: {dealName}",
+      "preheader": "A new deal has been added to your pipeline",
+      "title": "New deal in pipeline",
+      "body": "The deal {dealName} was created with a value of {value}.",
+      "cta": "View deal"
+    },
+    "followUp": {
+      "subject": "Follow-up reminder: {contactName}",
+      "preheader": "Time to get in touch",
+      "title": "Follow-up time!",
+      "body": "You have a pending follow-up with {contactName} from {company}.",
+      "cta": "View contact",
+      "note": "This reminder was set on {configuredDate}."
+    },
+    "paymentConfirmation": {
+      "subject": "Payment confirmed — Sirius CRM {plan}",
+      "preheader": "Your payment was successfully processed",
+      "title": "Payment confirmed!",
+      "body": "Your {plan} plan is active until {expiresAt}.",
+      "cta": "Access my account",
+      "receipt": "View receipt"
+    },
+    "paymentFailure": {
+      "subject": "Payment failed — Action required",
+      "preheader": "Update your payment method",
+      "title": "Payment issue",
+      "body": "We couldn't process your payment. Update your payment method to continue using Sirius CRM.",
+      "cta": "Update payment"
+    },
+    "upgradeNudge": {
+      "subject": "You're using {usage}% of your limit",
+      "preheader": "Upgrade to keep growing",
+      "title": "Limit almost reached",
+      "body": "You've used {usage}% of your {limit} deals on the free plan. Upgrade to keep growing.",
+      "cta": "View plans"
+    },
+    "weeklyNewsletter": {
+      "subject": "Your week in numbers — Sirius CRM",
+      "preheader": "Check out your weekly sales summary",
+      "title": "Weekly summary",
+      "newDeals": "New deals",
+      "dealsWon": "Deals won",
+      "totalRevenue": "Total revenue",
+      "cta": "View details"
+    }
+  }
+}
