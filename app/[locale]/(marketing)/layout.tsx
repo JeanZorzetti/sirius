@@ -27,6 +27,7 @@ export default function MarketingLayout({
                 height={32}
                 className="object-contain"
                 priority
+                unoptimized
               />
               <span className="font-bold tracking-tight">Sirius CRM</span>
             </Link>

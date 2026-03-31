@@ -23,7 +23,7 @@ const DEMO_PROMPTS = [
 ];
 
 export function AgiPreview() {
-    const t = useTranslations('marketing.agiPreview');
+    const t = useTranslations('marketing.home.agiPreview');
     const [input, setInput] = useState('');
     const [messages, setMessages] = useState<Array<{ role: 'user' | 'assistant', content: string }>>([]);
     const [isLoading, setIsLoading] = useState(false);

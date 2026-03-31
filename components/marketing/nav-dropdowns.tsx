@@ -98,7 +98,7 @@ import { useTranslations } from 'next-intl'
 
 export function NavDropdowns() {
   const tNav = useTranslations('marketing.home.nav')
-  const tNiches = useTranslations('marketing.niche_labels')
+  const tNiches = useTranslations('marketing.home.niche_labels')
 
   return (
     <>

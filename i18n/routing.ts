@@ -4,6 +4,7 @@ export const routing = defineRouting({
   locales: ['pt-BR', 'en'],
   defaultLocale: 'pt-BR',
   localePrefix: 'as-needed', // pt-BR sem prefixo, en com /en
+  localeDetection: false, // Não redirecionar baseado no Accept-Language do browser
 
   // Pathnames localizados: segmentos em PT-BR → EN
   pathnames: {

@@ -6,7 +6,7 @@ import { useTranslations, useLocale } from 'next-intl'
 export function Footer() {
   const currentYear = new Date().getFullYear()
   const t = useTranslations('marketing.home.footer')
-  const tNiches = useTranslations('marketing.niche_labels')
+  const tNiches = useTranslations('marketing.home.niche_labels')
   const locale = useLocale()
 
   return (

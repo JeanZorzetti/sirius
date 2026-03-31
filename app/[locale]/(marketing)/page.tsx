@@ -316,8 +316,8 @@ export default function LandingPage() {
             </div>
           </section>
 
-          {/* Testimonials Section */}
-          <section className="py-24 px-6">
+          {/* Testimonials Section — only PT-BR */}
+          {locale === 'pt-BR' && <section className="py-24 px-6">
             <div className="mx-auto max-w-7xl">
               <div className="mb-16 text-center">
                 <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl mb-4">{t('testimonials.title')}</h2>
@@ -395,7 +395,7 @@ export default function LandingPage() {
                 </div>
               </div>
             </div>
-          </section>
+          </section>}
 
           {/* AGI Sirius Preview Section */}
           <section className="py-24 px-6">
