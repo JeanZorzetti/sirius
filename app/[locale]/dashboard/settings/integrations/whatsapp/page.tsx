@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { ArrowLeft, MessageCircle } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { WhatsAppSettingsForm } from '@/components/integrations/whatsapp-settings-form'
+import { WhatsmeowConnectCard } from '@/components/integrations/whatsmeow-connect-card'
 import { redirect } from 'next/navigation'
 
 export const metadata = { title: "WhatsApp | Sirius CRM" }
@@ -68,6 +69,7 @@ export default async function WhatsAppIntegrationPage() {
             </div>
 
             <div className="grid gap-6 max-w-2xl">
+                <WhatsmeowConnectCard />
                 <Card className="bg-white dark:bg-white/[0.02] border-zinc-200 dark:border-white/5 backdrop-blur-xl shadow-sm">
                     <CardHeader>
                         <CardTitle className="text-base font-semibold text-zinc-900 dark:text-zinc-100">
