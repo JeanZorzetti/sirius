@@ -210,7 +210,7 @@ export default function LandingPage() {
   const plans = [
     {
       name: isEn ? 'Free' : 'Gratuito',
-      price: isEn ? '$ 0' : 'R$ 0',
+      price: 'R$ 0',
       period: isEn ? '' : '',
       description: isEn ? 'To test the CRM' : 'Para testar o CRM',
       features: isEn ? ['2 Users', '250 Contacts', '100 Deals', '1 Pipeline'] : ['2 Usuários', '250 Contatos', '100 Negócios', '1 Pipeline'],

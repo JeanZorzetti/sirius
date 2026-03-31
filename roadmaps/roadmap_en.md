@@ -184,8 +184,8 @@ app/
 | # | Current Route | English Route | File | Size |
 |---|---|---|---|---|
 | 1 | `/` | `/en` | `(marketing)/page.tsx` | 28KB 🔴 ✅ |
-| 2 | `/features` | `/en/features` | `(marketing)/features/page.tsx` | 33KB 🔴 |
-| 3 | `/pricing` | `/en/pricing` | `(marketing)/pricing/page.tsx` | 27KB 🔴 |
+| 2 | `/features` | `/en/features` | `(marketing)/features/page.tsx` | 33KB 🔴 ✅ |
+| 3 | `/pricing` | `/en/pricing` | `(marketing)/pricing/page.tsx` | 27KB 🔴 ✅ |
 | 4 | `/about` | `/en/about` | `(marketing)/about/page.tsx` | 9KB |
 | 5 | `/contact` | `/en/contact` | `(marketing)/contact/page.tsx` | — |
 | 6 | `/blog` | `/en/blog` | `(marketing)/blog/page.tsx` | 13KB |
@@ -221,8 +221,9 @@ app/
 
 | Component | File | Size |
 |---|---|---|
-| Navbar | `components/marketing/nav-dropdowns.tsx` | 4KB |
-| Mobile Nav | `components/marketing/mobile-nav.tsx` | 6.5KB |
+| Navbar | `components/marketing/nav-dropdowns.tsx` | 4KB ✅ |
+| Mobile Nav | `components/marketing/mobile-nav.tsx` | 6.5KB ✅ |
+| Language Switcher | `components/marketing/language-switcher.tsx` | — ✅ |
 | Footer | `components/marketing/footer.tsx` | 11KB ✅ |
 | Hero | `components/marketing/hero.tsx` | 6KB ✅ |
 | Bento Grid | `components/marketing/bento-grid.tsx` | 11KB ✅ |
@@ -233,7 +234,7 @@ app/
 | Lead Capture Modal | `components/lead-capture-modal.tsx` | 6.7KB |
 | Campaign ROI Chart | `components/marketing/campaign-roi-chart.tsx` | 4KB |
 | Ad Entry Form | `components/marketing/manual-ad-entry-form.tsx` | 6.8KB |
-| Pricing Toggle | `app/(marketing)/pricing/pricing-toggle.tsx` | 1.4KB |
+| Pricing Toggle | `app/(marketing)/pricing/pricing-toggle.tsx` | 1.4KB ✅ |
 
 ### Blog Components to translate (11):
 
@@ -686,7 +687,7 @@ alternates: {
 }
 ```
 
-### 10.2 Sitemap (`app/sitemap.ts`)
+### 10.2 Sitemap (`app/sitemap.ts`) ✅
 
 - Generate entries for both locales
 - Add `alternateRefs` for each URL pair:
