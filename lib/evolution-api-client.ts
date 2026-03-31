@@ -330,34 +330,43 @@ export class EvolutionAPIClient {
   }
 
   /**
-   * Get all chats
-   * Evolution API v2: POST /chat/findChats/{instance}
+   * Get all chats with pagination.
+   * Evolution API v2 (source: channel.service.ts fetchChats):
+   *   - Aceita: { where: { remoteJid?, messageTimestamp?: { gte, lte } }, take?, skip? }
+   *   - take/skip mapeiam para SQL LIMIT/OFFSET
+   *   - messageTimestamp.gte/lte devem ser ISO date strings (API faz new Date(val).getTime()/1000)
+   *   - Retorna array flat com: remoteJid, pushName, lastMessage, unreadCount, updatedAt, etc.
    */
-  async getChats(instanceName: string): Promise<any[]> {
-    // Evolution API v2 usa raw SQL com LIMIT/OFFSET via take/skip
-    // Buscamos em lotes para pegar todas as conversas
+  async getChats(instanceName: string, sinceDate?: string): Promise<any[]> {
     const allChats: any[] = []
-    const pageSize = 100
+    const pageSize = 200
     let skip = 0
     let hasMore = true
 
     while (hasMore) {
+      const body: any = { where: {}, take: pageSize, skip }
+      if (sinceDate) {
+        body.where.messageTimestamp = { gte: sinceDate, lte: new Date().toISOString() }
+      }
+
       const batch = await this.request<any[]>(
         `/chat/findChats/${instanceName}`,
         {
           method: 'POST',
-          body: JSON.stringify({ where: {}, take: pageSize, skip }),
+          body: JSON.stringify(body),
         }
       )
 
       if (Array.isArray(batch) && batch.length > 0) {
         allChats.push(...batch)
         skip += batch.length
-        // Se retornou menos que o pageSize, não tem mais
         if (batch.length < pageSize) hasMore = false
       } else {
         hasMore = false
       }
+
+      // Safety: max 5000 chats
+      if (skip >= 5000) hasMore = false
     }
 
     return allChats
@@ -405,35 +414,33 @@ export class EvolutionAPIClient {
   }
 
   /**
-   * Get messages from a chat
-   * Evolution API v2: POST /chat/findMessages/{instance}
-   * Response format: { messages: { total, pages, currentPage, records: [...] } }
-   * or plain array in older versions
-   */
-  /**
    * Extrai records de resposta do findMessages (suporta v2 paginado e array direto)
    */
-  private extractMessageRecords(raw: any): Message[] {
-    // Evolution API v2 paginado: { messages: { total, pages, currentPage, records: [...] } }
+  private extractMessageRecords(raw: any): { records: Message[]; totalPages: number } {
     if (raw?.messages?.records && Array.isArray(raw.messages.records)) {
-      return raw.messages.records
+      return { records: raw.messages.records, totalPages: raw.messages.pages || 1 }
     }
-    // Formato antigo: array direto
     if (Array.isArray(raw)) {
-      return raw
+      return { records: raw, totalPages: 1 }
     }
-    return []
+    return { records: [], totalPages: 0 }
   }
 
   /**
-   * Get messages from a chat with pagination.
-   * Evolution API v2 usa page (1-based) e offset (items per page / take).
-   * afterTimestamp: Unix timestamp em segundos para filtrar mensagens mais recentes.
+   * Get messages from a chat with full pagination.
+   *
+   * Evolution API v2 (source: channel.service.ts fetchMessages):
+   *   - Paginação: page (1-based), offset (items per page = take). Default: page=1, offset=50
+   *   - skip = offset * (page === 1 ? 0 : page - 1), take = offset
+   *   - Timestamp filter: where.messageTimestamp = { gte: ISO_STRING, lte: ISO_STRING }
+   *     A API converte via: Math.floor(new Date(value).getTime() / 1000)
+   *   - Response: { messages: { total, pages, currentPage, records: [...] } }
+   *   - Records ordered by messageTimestamp DESC
    */
   async getMessages(
     instanceName: string,
     remoteJid: string,
-    afterTimestamp?: number
+    sinceDate?: string
   ): Promise<Message[]> {
     const allMessages: Message[] = []
     const pageSize = 100
@@ -442,8 +449,8 @@ export class EvolutionAPIClient {
 
     while (hasMore) {
       const where: any = { key: { remoteJid } }
-      if (afterTimestamp) {
-        where.messageTimestamp = afterTimestamp
+      if (sinceDate) {
+        where.messageTimestamp = { gte: sinceDate, lte: new Date().toISOString() }
       }
 
       const raw = await this.request<any>(
@@ -454,25 +461,11 @@ export class EvolutionAPIClient {
         }
       )
 
-      const records = this.extractMessageRecords(raw)
+      const { records, totalPages } = this.extractMessageRecords(raw)
 
       if (records.length > 0) {
-        // Filtra client-side por timestamp se a API não suportar o filtro nativamente
-        if (afterTimestamp) {
-          for (const msg of records) {
-            const ts = typeof msg.messageTimestamp === 'string'
-              ? parseInt(msg.messageTimestamp)
-              : (msg.messageTimestamp || 0)
-            if (ts >= afterTimestamp) {
-              allMessages.push(msg)
-            }
-          }
-        } else {
-          allMessages.push(...records)
-        }
+        allMessages.push(...records)
 
-        // Checa se tem mais páginas
-        const totalPages = raw?.messages?.pages || 0
         if (totalPages > 0 && page >= totalPages) {
           hasMore = false
         } else if (records.length < pageSize) {
@@ -484,8 +477,8 @@ export class EvolutionAPIClient {
         hasMore = false
       }
 
-      // Safety: max 20 páginas (2000 msgs) por chat
-      if (page > 20) hasMore = false
+      // Safety: max 50 páginas (5000 msgs) por chat
+      if (page > 50) hasMore = false
     }
 
     return allMessages

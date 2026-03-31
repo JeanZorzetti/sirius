@@ -141,17 +141,20 @@ export async function syncConnectionHistory(connectionId: string): Promise<SyncR
 
   logger.info({ connectionId, instanceName: connection.instanceName }, 'Starting chat sync')
 
-  // 1. Fetch chats
+  // Janela de 7 dias — ISO string para a Evolution API
+  const sevenDaysAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString()
+
+  // 1. Fetch chats (findChats já retorna remoteJid, pushName, lastMessage, etc.)
   let chats: any[] = []
   try {
-    chats = await evolutionClient.getChats(connection.instanceName)
+    chats = await evolutionClient.getChats(connection.instanceName, sevenDaysAgo)
     logger.info({ chatsCount: chats?.length || 0 }, 'Fetched chats from Evolution API')
   } catch (err: any) {
     logger.error({ error: err.message }, 'Failed to fetch chats')
     throw new Error(`Failed to fetch chats: ${err.message}`)
   }
 
-  // 2. Fetch contacts for name resolution
+  // 2. Fetch contacts for name resolution (fallback)
   const contactsMap = new Map<string, string>()
   try {
     const contacts = await evolutionClient.getContacts(connection.instanceName)
@@ -166,7 +169,7 @@ export async function syncConnectionHistory(connectionId: string): Promise<SyncR
     logger.debug({ error: err.message }, 'Failed to fetch contacts for name resolution')
   }
 
-  // 3. Fetch groups for name resolution
+  // 3. Fetch groups for name resolution (fallback)
   const groupsMap = new Map<string, { subject: string; description?: string }>()
   try {
     const groups = await evolutionClient.getGroups(connection.instanceName)
@@ -183,9 +186,10 @@ export async function syncConnectionHistory(connectionId: string): Promise<SyncR
     logger.error({ error: err.message }, 'Failed to fetch groups')
   }
 
-  // 4. Parse chats — resolve LIDs, extract names
+  // 4. Parse chats — findChats v2 retorna { remoteJid, pushName, lastMessage, ... }
   const parsedChats = (chats || []).map((chat: any) => {
-    let remoteJid = chat.id || chat.remoteJid || chat.lastMessage?.key?.remoteJid || ''
+    // findChats retorna remoteJid direto; fallback para formatos alternativos
+    let remoteJid = chat.remoteJid || chat.id || chat.lastMessage?.key?.remoteJid || ''
 
     if (remoteJid.includes('@lid')) {
       const senderPn = chat.lastMessage?.key?.senderPn || chat.senderPn || ''
@@ -196,17 +200,14 @@ export async function syncConnectionHistory(connectionId: string): Promise<SyncR
     }
 
     const isGroup = remoteJid.includes('@g.us')
-    let pushName = ''
+    let pushName = chat.pushName || ''
 
-    if (isGroup) {
+    if (!pushName && isGroup) {
       const groupInfo = groupsMap.get(remoteJid)
       pushName = groupInfo?.subject || chat.subject || chat.name || ''
-    } else {
-      pushName = contactsMap.get(remoteJid) || chat.name || chat.pushName || chat.notify || ''
     }
-
     if (!pushName && !isGroup) {
-      pushName = chat.lastMessage?.pushName || ''
+      pushName = contactsMap.get(remoteJid) || chat.name || chat.lastMessage?.pushName || ''
     }
 
     return { ...chat, _remoteJid: remoteJid, _pushName: pushName, _isGroup: isGroup }
@@ -220,7 +221,7 @@ export async function syncConnectionHistory(connectionId: string): Promise<SyncR
     return jid.includes('@s.whatsapp.net') || jid.includes('@g.us') || jid.includes('@lid')
   })
 
-  // 6. Deduplicate
+  // 6. Deduplicate by remoteJid
   const seenJids = new Set<string>()
   const uniqueChats = validChats.filter((chat: any) => {
     if (seenJids.has(chat._remoteJid)) return false
@@ -234,8 +235,7 @@ export async function syncConnectionHistory(connectionId: string): Promise<SyncR
   let syncedMessages = 0
   let skippedExisting = 0
 
-  // Janela de 7 dias em segundos (timestamp Unix)
-  const sevenDaysAgoTs = Math.floor((Date.now() - 7 * 24 * 60 * 60 * 1000) / 1000)
+  logger.info({ totalChats: chatsToSync.length }, 'Chats to sync after dedup/filter')
 
   // 7. Process each chat
   for (const chat of chatsToSync) {
@@ -249,10 +249,11 @@ export async function syncConnectionHistory(connectionId: string): Promise<SyncR
       // Fetch mensagens dos últimos 7 dias com paginação automática
       let chatMessages: any[] = []
       try {
-        const rawMessages = await evolutionClient.getMessages(connection.instanceName, remoteJid, sevenDaysAgoTs)
+        const rawMessages = await evolutionClient.getMessages(connection.instanceName, remoteJid, sevenDaysAgo)
         chatMessages = Array.isArray(rawMessages) ? rawMessages : []
       } catch (err: any) {
         logger.warn({ remoteJid, error: err.message }, 'Failed to fetch messages for chat')
+        // Usa lastMessage do findChats como fallback
         if (chat.lastMessage) chatMessages = [chat.lastMessage]
       }
 
