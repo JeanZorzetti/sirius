@@ -11,6 +11,7 @@
 
 import { NextRequest, NextResponse } from 'next/server'
 import { createHmac } from 'crypto'
+import { WhatsAppStatus } from '@prisma/client'
 import { prisma } from '@/lib/prisma'
 import logger from '@/lib/logger'
 import { triggerEvent } from '@/lib/pusher'
@@ -213,17 +214,17 @@ async function handleConnectionUpdate(instanceId: string, data: any) {
   const { status, organizationId } = data
 
   // Map gateway statuses to CRM statuses
-  const statusMap: Record<string, string> = {
-    connected: 'CONNECTED',
-    disconnected: 'DISCONNECTED',
-    qr_pending: 'CONNECTING',
-    qr_timeout: 'DISCONNECTED',
-    error: 'DISCONNECTED',
-    banned: 'DISCONNECTED',
-    logged_out: 'DISCONNECTED',
+  const statusMap: Record<string, WhatsAppStatus> = {
+    connected: WhatsAppStatus.CONNECTED,
+    disconnected: WhatsAppStatus.DISCONNECTED,
+    qr_pending: WhatsAppStatus.CONNECTING,
+    qr_timeout: WhatsAppStatus.DISCONNECTED,
+    error: WhatsAppStatus.DISCONNECTED,
+    banned: WhatsAppStatus.DISCONNECTED,
+    logged_out: WhatsAppStatus.DISCONNECTED,
   }
 
-  const crmStatus = statusMap[status] || 'DISCONNECTED'
+  const crmStatus = statusMap[status] ?? WhatsAppStatus.DISCONNECTED
 
   const connection = await prisma.whatsAppConnection.findFirst({
     where: { instanceName: instanceId },
