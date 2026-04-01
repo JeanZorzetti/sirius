@@ -182,11 +182,12 @@ client.SendNode(*req)
 
 **Funcionalidades:**
 - [x] Enviar texto para JID individual e grupo
-- [ ] Upload e envio de mídia (imagem, vídeo, documento, áudio, sticker)
+- [x] Upload e envio de mídia (imagem, vídeo, documento, áudio, sticker) — gateway + CRM
 - [x] Receber mensagens e encaminhar ao CRM via webhook
 - [x] Receber e encaminhar receipts (sent, delivered, read)
+- [x] Enviar reações (emoji) — gateway + CRM client
+- [x] Marcar mensagens como lidas — gateway + CRM client
 - [ ] WebSocket para typing indicators em tempo real
-- [ ] Marcar mensagens como lidas
 
 ---
 
@@ -233,8 +234,11 @@ Adaptar o CRM para consumir do gateway Go em vez da Evolution API.
   - QR code via SSE proxy (`/api/whatsapp/connections/whatsmeow/[id]/qr`)
   - UI: WhatsmeowConnectCard com form + QR + status badge
 - [x] API: `POST /api/whatsapp/connections/whatsmeow` (criar instância)
-- [ ] Adaptar `chat-interface.tsx` para enviar via whatsmeow gateway
+- [x] Adaptar `chat-interface.tsx` — transparente (send-message/send-media auto-detect provider)
 - [x] Adaptar `send-message` route para suportar provider whatsmeow (auto-detect por `apiKey`)
+- [x] Adaptar `send-media` route para suportar provider whatsmeow
+- [x] Adaptar `v1/whatsapp/send` (Sofia IA) para suportar provider whatsmeow
+- [x] whatsmeow-client.ts: sendMedia, markRead, sendReaction
 - [ ] Feature flag: `WHATSAPP_PROVIDER=whatsmeow|evolution` (coexistência temporária)
 - [ ] Migrar dados existentes da Evolution API para o novo formato (se necessário)
 

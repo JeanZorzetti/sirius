@@ -1,14 +1,16 @@
 /**
  * API Route: /api/whatsapp/send-media
  *
- * Envia mídia (imagem, vídeo, áudio, documento) via WhatsApp
- * Aceita FormData com file + metadata
+ * Envia mídia (imagem, vídeo, áudio, documento) via WhatsApp.
+ * Detecta automaticamente o provider (Evolution API ou Whatsmeow Gateway).
  */
 
 import { NextRequest, NextResponse } from 'next/server'
 import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { getOrgEvolutionClient } from '@/lib/evolution-api-client'
+import { whatsmeowClient } from '@/lib/integrations/whatsmeow-client'
+import { normalizePhoneNumber } from '@/lib/whatsapp-sync'
 import logger from '@/lib/logger'
 
 const MAX_FILE_SIZE = 16 * 1024 * 1024 // 16MB (WhatsApp limit)
@@ -112,29 +114,51 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Contact not found or has no phone' }, { status: 404 })
     }
 
-    // 7. Get Evolution client
-    const evolutionClient = await getOrgEvolutionClient(user.organizationId)
-    if (!evolutionClient) {
-      return NextResponse.json({ error: 'Evolution API não está configurada.' }, { status: 400 })
-    }
-
-    // 8. Convert file to base64
-    const arrayBuffer = await file.arrayBuffer()
-    const base64 = Buffer.from(arrayBuffer).toString('base64')
+    // 7. Detect provider and send
+    const isWhatsmeow = !connection.apiKey
     const mediatype = getMediaType(file.type)
-    const base64Data = `data:${file.type};base64,${base64}`
+    const arrayBuffer = await file.arrayBuffer()
 
-    // 9. Send via Evolution API
-    const whatsappNumber = evolutionClient.formatPhoneNumber(contact.phone)
+    let messageId: string
+    let remoteJid: string
 
-    const evolutionResponse = await evolutionClient.sendMediaMessage({
-      instanceName: connection.instanceName,
-      number: whatsappNumber,
-      mediatype,
-      media: base64Data,
-      caption: caption || undefined,
-      fileName: mediatype === 'document' ? file.name : undefined,
-    })
+    if (isWhatsmeow) {
+      // --- Whatsmeow Gateway ---
+      const phoneNumber = normalizePhoneNumber(contact.phone)
+      remoteJid = phoneNumber
+
+      const res = await whatsmeowClient.sendMedia(
+        connection.instanceName,
+        phoneNumber,
+        Buffer.from(arrayBuffer),
+        file.type,
+        caption || undefined,
+        file.name
+      )
+      messageId = res.messageId
+    } else {
+      // --- Evolution API ---
+      const evolutionClient = await getOrgEvolutionClient(user.organizationId)
+      if (!evolutionClient) {
+        return NextResponse.json({ error: 'Evolution API não está configurada.' }, { status: 400 })
+      }
+
+      const base64 = Buffer.from(arrayBuffer).toString('base64')
+      const base64Data = `data:${file.type};base64,${base64}`
+      const whatsappNumber = evolutionClient.formatPhoneNumber(contact.phone)
+      remoteJid = whatsappNumber
+
+      const evolutionResponse = await evolutionClient.sendMediaMessage({
+        instanceName: connection.instanceName,
+        number: whatsappNumber,
+        mediatype,
+        media: base64Data,
+        caption: caption || undefined,
+        fileName: mediatype === 'document' ? file.name : undefined,
+      })
+
+      messageId = evolutionResponse.key.id
+    }
 
     logger.info({
       connectionId: connection.id,
@@ -142,9 +166,10 @@ export async function POST(req: NextRequest) {
       mediatype,
       fileName: file.name,
       fileSize: file.size,
+      provider: isWhatsmeow ? 'whatsmeow' : 'evolution',
     }, 'WhatsApp media message sent')
 
-    // 10. Save to database
+    // 8. Save to database
     const messageText = caption
       ? `${getMediaLabel(mediatype)} ${caption}`
       : getMediaLabel(mediatype)
@@ -153,12 +178,12 @@ export async function POST(req: NextRequest) {
       data: {
         contactId: contact.id,
         organizationId: user.organizationId,
-        remoteJid: whatsappNumber,
-        messageId: evolutionResponse.key.id,
+        connectionId: connection.id,
+        remoteJid,
+        messageId,
         text: messageText,
         direction: 'OUTBOUND',
         status: 'SENT',
-        mediaUrl: base64Data,
         mediaType: mediatype,
         sentAt: new Date(),
       },

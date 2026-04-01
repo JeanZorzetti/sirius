@@ -4,6 +4,7 @@ import { prisma } from '@/lib/prisma'
 import { uuidSchema } from '@/lib/api-validators'
 import logger from '@/lib/logger'
 import { EvolutionClient } from '@/lib/integrations/evolution-client'
+import { whatsmeowClient } from '@/lib/integrations/whatsmeow-client'
 
 /**
  * POST /api/v1/whatsapp/send
@@ -65,33 +66,42 @@ export async function POST(request: NextRequest) {
         )
       }
 
-      // Get Evolution API config from organization
-      const org = await prisma.organization.findUnique({
-        where: { id: context.organizationId },
-        select: { evolutionBaseUrl: true, evolutionApiKey: true }
-      })
-
-      if (!org?.evolutionBaseUrl || !org?.evolutionApiKey) {
-        return NextResponse.json(
-          apiResponse(context.requestId, undefined, {
-            code: 'PRECONDITION_FAILED',
-            message: 'Evolution API not configured for this organization'
-          }),
-          { status: 412 }
-        )
-      }
-
-      // Send message via Evolution API
-      const client = new EvolutionClient(
-        org.evolutionBaseUrl,
-        org.evolutionApiKey,
-        connection.instanceName
-      )
-
+      const isWhatsmeow = !connection.apiKey
       const normalizedPhone = phone.replace(/\D/g, '')
       const remoteJid = `${normalizedPhone}@s.whatsapp.net`
 
-      const result = await client.sendTextMessage(remoteJid, message)
+      let messageId: string | null = null
+
+      if (isWhatsmeow) {
+        // --- Whatsmeow Gateway ---
+        const res = await whatsmeowClient.sendText(connection.instanceName, normalizedPhone, message)
+        messageId = res.messageId
+      } else {
+        // --- Evolution API ---
+        const org = await prisma.organization.findUnique({
+          where: { id: context.organizationId },
+          select: { evolutionBaseUrl: true, evolutionApiKey: true }
+        })
+
+        if (!org?.evolutionBaseUrl || !org?.evolutionApiKey) {
+          return NextResponse.json(
+            apiResponse(context.requestId, undefined, {
+              code: 'PRECONDITION_FAILED',
+              message: 'Evolution API not configured for this organization'
+            }),
+            { status: 412 }
+          )
+        }
+
+        const client = new EvolutionClient(
+          org.evolutionBaseUrl,
+          org.evolutionApiKey,
+          connection.instanceName
+        )
+
+        const result = await client.sendTextMessage(remoteJid, message)
+        messageId = result?.key?.id || null
+      }
 
       // Store message in DB
       await prisma.whatsAppMessage.create({
@@ -102,7 +112,7 @@ export async function POST(request: NextRequest) {
           status: 'SENT',
           organizationId: context.organizationId,
           connectionId: connection.id,
-          messageId: result?.key?.id || undefined
+          messageId: messageId || undefined
         }
       })
 
@@ -110,7 +120,8 @@ export async function POST(request: NextRequest) {
         requestId: context.requestId,
         organizationId: context.organizationId,
         connectionId,
-        phone: normalizedPhone
+        phone: normalizedPhone,
+        provider: isWhatsmeow ? 'whatsmeow' : 'evolution',
       }, 'WhatsApp message sent via API')
 
       return NextResponse.json(
@@ -118,7 +129,7 @@ export async function POST(request: NextRequest) {
           sent: true,
           phone: normalizedPhone,
           connectionId,
-          messageId: result?.key?.id || null
+          messageId,
         }),
         { status: 200 }
       )

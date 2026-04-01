@@ -76,6 +76,48 @@ export const whatsmeowClient = {
     })
   },
 
+  async sendMedia(
+    instanceId: string,
+    number: string,
+    fileBuffer: Buffer,
+    mimetype: string,
+    caption?: string,
+    fileName?: string
+  ): Promise<SendTextResponse> {
+    const formData = new FormData()
+    formData.append('number', number)
+    formData.append('file', new Blob([fileBuffer], { type: mimetype }), fileName || 'file')
+    if (caption) formData.append('caption', caption)
+    if (fileName) formData.append('fileName', fileName)
+
+    const res = await fetch(`${GATEWAY_URL}/api/instances/${instanceId}/messages/media`, {
+      method: 'POST',
+      headers: { 'X-API-Key': GATEWAY_API_KEY },
+      body: formData,
+    })
+
+    if (!res.ok) {
+      const body = await res.text()
+      throw new Error(`Gateway error ${res.status}: ${body}`)
+    }
+
+    return res.json() as Promise<SendTextResponse>
+  },
+
+  async markRead(instanceId: string, remoteJid: string, messageIds: string[]): Promise<void> {
+    await gatewayFetch(`/api/instances/${instanceId}/messages/read`, {
+      method: 'POST',
+      body: JSON.stringify({ remoteJid, messageIds }),
+    })
+  },
+
+  async sendReaction(instanceId: string, remoteJid: string, messageId: string, reaction: string): Promise<void> {
+    await gatewayFetch(`/api/instances/${instanceId}/messages/reaction`, {
+      method: 'POST',
+      body: JSON.stringify({ remoteJid, messageId, reaction }),
+    })
+  },
+
   /** Returns the SSE URL for streaming QR codes (to be used client-side) */
   getQRStreamURL(instanceId: string): string {
     return `${GATEWAY_URL}/api/instances/${instanceId}/qr`
