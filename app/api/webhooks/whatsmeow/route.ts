@@ -113,8 +113,14 @@ async function handleMessage(instanceId: string, data: any) {
 
   if (!remoteJid) return
 
-  // Skip broadcast/status
-  if (remoteJid.includes('status@') || remoteJid.includes('@broadcast')) return
+  // Skip broadcast/status/newsletter
+  if (remoteJid.includes('status@') || remoteJid.includes('@broadcast') || remoteJid.includes('@newsletter')) return
+
+  // Skip invalid JIDs (WhatsApp internal IDs with >15 digits)
+  if (!isGroup) {
+    const rawPhone = remoteJid.replace('@s.whatsapp.net', '').replace('@c.us', '')
+    if (rawPhone.length > 15) return
+  }
 
   const phone = isGroup
     ? remoteJid
@@ -292,11 +298,22 @@ async function handleHistorySync(instanceId: string, data: any) {
   const { remoteJid, pushName, messages } = data
   if (!messages?.length || !remoteJid) return
 
+  // Skip broadcast, status, and newsletter JIDs
+  if (remoteJid.includes('status@') || remoteJid.includes('@broadcast') || remoteJid.includes('@newsletter')) return
+
   const { organizationId } = connection
   const isGroup = remoteJid.includes('@g.us')
-  const phone = isGroup
-    ? remoteJid
-    : normalizePhoneNumber(remoteJid.replace('@s.whatsapp.net', '').replace('@c.us', ''))
+
+  // Extract phone from JID
+  const rawPhone = remoteJid.replace('@s.whatsapp.net', '').replace('@c.us', '').replace('@g.us', '')
+
+  // Skip invalid JIDs: non-group numbers longer than 15 digits are WhatsApp internal IDs
+  if (!isGroup && rawPhone.length > 15) {
+    logger.debug({ remoteJid }, 'whatsmeow: skipping invalid JID (too long)')
+    return
+  }
+
+  const phone = isGroup ? remoteJid : normalizePhoneNumber(rawPhone)
 
   let contact: any = isGroup
     ? await prisma.contact.findFirst({ where: { organizationId, phone: remoteJid } })
@@ -308,32 +325,50 @@ async function handleHistorySync(instanceId: string, data: any) {
     })
   }
 
-  let saved = 0
-  for (const msg of messages) {
-    if (!msg.messageId) continue
+  // Filter messages: skip empty/protocol-only messages
+  const validMessages = messages.filter((msg: any) => {
+    if (!msg.messageId) return false
+    // Skip messages with no text and no media — these are protocol/system messages
+    if (!msg.text && !msg.mediaType) return false
+    return true
+  })
 
-    const existing = await prisma.whatsAppMessage.findFirst({
-      where: { messageId: msg.messageId, organizationId },
-    })
-    if (existing) continue
+  if (validMessages.length === 0) return
+
+  // Batch dedup: check which messageIds already exist
+  const msgIds = validMessages.map((m: any) => m.messageId)
+  const existing = await prisma.whatsAppMessage.findMany({
+    where: { organizationId, messageId: { in: msgIds } },
+    select: { messageId: true },
+  })
+  const existingIds = new Set(existing.map((m: any) => m.messageId))
+
+  let saved = 0
+  for (const msg of validMessages) {
+    if (existingIds.has(msg.messageId)) continue
 
     const sentAt = msg.timestamp ? new Date(msg.timestamp * 1000) : new Date()
 
-    await prisma.whatsAppMessage.create({
-      data: {
-        contactId: contact.id,
-        organizationId,
-        connectionId: connection.id,
-        remoteJid,
-        messageId: msg.messageId,
-        text: msg.text || (msg.fromMe ? '[Mensagem enviada]' : '[Mensagem recebida]'),
-        direction: msg.fromMe ? 'OUTBOUND' : 'INBOUND',
-        status: msg.fromMe ? 'SENT' : 'DELIVERED',
-        mediaType: msg.mediaType || null,
-        sentAt,
-      },
-    })
-    saved++
+    try {
+      await prisma.whatsAppMessage.create({
+        data: {
+          contactId: contact.id,
+          organizationId,
+          connectionId: connection.id,
+          remoteJid,
+          messageId: msg.messageId,
+          text: msg.text || (msg.mediaType ? `[${msg.mediaType}]` : '[Mensagem]'),
+          direction: msg.fromMe ? 'OUTBOUND' : 'INBOUND',
+          status: msg.fromMe ? 'SENT' : 'DELIVERED',
+          mediaType: msg.mediaType || null,
+          sentAt,
+        },
+      })
+      saved++
+      existingIds.add(msg.messageId)
+    } catch {
+      // Unique constraint — skip
+    }
   }
 
   logger.info({ instanceId, remoteJid, total: messages.length, saved }, 'whatsmeow: history sync processed')
