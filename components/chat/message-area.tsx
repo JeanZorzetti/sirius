@@ -23,6 +23,7 @@ import { AgentAssignment } from './agent-assignment'
 import { TypingIndicator } from './typing-indicator'
 import { ReactionBar } from './reaction-bar'
 import { ReactionChips } from './reaction-chips'
+import { MediaLightbox } from './media-lightbox'
 
 interface Tag { id: string; name: string; color: string }
 interface Deal {
@@ -191,7 +192,7 @@ function getMediaCaption(text: string): string {
 
 // ── Media Component ─────────────────────────────────────────
 
-function MediaBubble({ msg, outbound }: { msg: WhatsAppMessage; outbound: boolean }) {
+function MediaBubble({ msg, outbound, onOpenLightbox }: { msg: WhatsAppMessage; outbound: boolean; onOpenLightbox?: (src: string, type: 'image' | 'video') => void }) {
   const [mediaData, setMediaData] = useState<string | null>(msg.mediaUrl || null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(false)
@@ -238,11 +239,11 @@ function MediaBubble({ msg, outbound }: { msg: WhatsAppMessage; outbound: boolea
           <img
             src={mediaData}
             alt="Imagem"
-            className="rounded-lg max-w-[280px] max-h-[300px] object-cover cursor-pointer hover:opacity-90 transition-opacity"
-            onClick={() => {
-              const w = window.open('')
-              if (w) { w.document.write(`<img src="${mediaData}" style="max-width:100%;max-height:100vh;object-fit:contain;margin:auto;display:block;background:#000;" />`); w.document.title = 'Imagem' }
-            }}
+            className={cn(
+              'rounded-lg max-w-[280px] max-h-[300px] object-cover cursor-pointer hover:opacity-90 transition-opacity',
+              mType === 'sticker' && 'bg-transparent !max-w-[180px] !max-h-[180px]'
+            )}
+            onClick={() => onOpenLightbox?.(mediaData!, 'image')}
           />
         ) : loading ? (
           <div className={cn(
@@ -282,11 +283,18 @@ function MediaBubble({ msg, outbound }: { msg: WhatsAppMessage; outbound: boolea
     return (
       <div className="space-y-1">
         {mediaData?.startsWith('data:') ? (
-          <video
-            src={mediaData}
-            controls
-            className="rounded-lg max-w-[280px] max-h-[300px]"
-          />
+          <div className="relative cursor-pointer group" onClick={() => onOpenLightbox?.(mediaData!, 'video')}>
+            <video
+              src={mediaData}
+              className="rounded-lg max-w-[280px] max-h-[300px]"
+              muted
+            />
+            <div className="absolute inset-0 flex items-center justify-center bg-black/20 rounded-lg group-hover:bg-black/30 transition-colors">
+              <div className="w-12 h-12 rounded-full bg-white/90 flex items-center justify-center shadow-lg">
+                <Play className="h-6 w-6 text-[#111b21] ml-0.5 fill-[#111b21]" />
+              </div>
+            </div>
+          </div>
         ) : (
           <button
             onClick={fetchMedia}
@@ -414,7 +422,13 @@ export function MessageArea({ contact, connections, organizationId, userId, user
   const [isTyping, setIsTyping] = useState(false)
   const typingTimeoutRef = useRef<NodeJS.Timeout | null>(null)
   const [showReactionBar, setShowReactionBar] = useState<string | null>(null)
+  const [lightbox, setLightbox] = useState<{ src: string; type: 'image' | 'video' } | null>(null)
+  const [isDragOver, setIsDragOver] = useState(false)
   const virtuosoRef = useRef<VirtuosoHandle>(null)
+
+  const openLightbox = useCallback((src: string, type: 'image' | 'video') => {
+    setLightbox({ src, type })
+  }, [])
   const taRef = useRef<HTMLTextAreaElement>(null)
   const prevMsgCount = useRef(0)
   // Keep a ref to messages so scroll callbacks are never stale
@@ -787,7 +801,47 @@ export function MessageArea({ contact, connections, organizationId, userId, user
   }
 
   return (
-    <div className="flex-1 flex min-w-0 overflow-hidden">
+    <div
+      className="flex-1 flex min-w-0 overflow-hidden relative"
+      onDragOver={(e) => { e.preventDefault(); setIsDragOver(true) }}
+      onDragLeave={() => setIsDragOver(false)}
+      onDrop={(e) => {
+        e.preventDefault()
+        setIsDragOver(false)
+        const file = e.dataTransfer.files?.[0]
+        if (file) {
+          if (file.size > 16 * 1024 * 1024) {
+            toast.error('Arquivo muito grande (máx 16MB)')
+            return
+          }
+          setPendingFile(file)
+          if (file.type.startsWith('image/')) {
+            setPendingFilePreview(URL.createObjectURL(file))
+          } else {
+            setPendingFilePreview(null)
+          }
+        }
+      }}
+    >
+      {/* Drag overlay */}
+      {isDragOver && (
+        <div className="absolute inset-0 z-40 bg-primary/10 border-2 border-dashed border-primary rounded-lg flex items-center justify-center pointer-events-none">
+          <div className="bg-white dark:bg-zinc-800 rounded-xl px-6 py-4 shadow-lg flex items-center gap-3">
+            <Paperclip className="h-6 w-6 text-primary" />
+            <span className="text-lg font-medium text-foreground">Solte o arquivo aqui</span>
+          </div>
+        </div>
+      )}
+
+      {/* Lightbox */}
+      {lightbox && (
+        <MediaLightbox
+          src={lightbox.src}
+          type={lightbox.type}
+          onClose={() => setLightbox(null)}
+        />
+      )}
+
       {/* Main message area */}
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
         {/* Search bar (conditionally rendered) */}
@@ -1009,7 +1063,7 @@ export function MessageArea({ contact, connections, organizationId, userId, user
                       {/* Media content */}
                       {media && (
                         <div className="mb-0.5">
-                          <MediaBubble msg={msg} outbound={out} />
+                          <MediaBubble msg={msg} outbound={out} onOpenLightbox={openLightbox} />
                         </div>
                       )}
 
@@ -1177,6 +1231,21 @@ export function MessageArea({ contact, connections, organizationId, userId, user
             )}
             onKeyDown={e => {
               if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send(e) }
+            }}
+            onPaste={e => {
+              const items = e.clipboardData?.items
+              if (!items) return
+              for (const item of Array.from(items)) {
+                if (item.type.startsWith('image/')) {
+                  e.preventDefault()
+                  const file = item.getAsFile()
+                  if (file) {
+                    setPendingFile(file)
+                    setPendingFilePreview(URL.createObjectURL(file))
+                  }
+                  break
+                }
+              }
             }}
           />
           <span id="message-help-text" className="sr-only">

@@ -145,6 +145,7 @@ export const MessageBubble = memo(function MessageBubble({
   const isGroupedWithPrev = pos === 'middle' || pos === 'last'
   const media = hasMedia(msg)
   const displayText = getDisplayText(msg)
+  const isSticker = (msg.mediaType === 'sticker') || getMediaTypeFromText(msg.text) === 'sticker'
 
   return (
     <div>
@@ -181,14 +182,19 @@ export const MessageBubble = memo(function MessageBubble({
         <div
           ref={setMessageRef}
           className={cn(
-            'max-w-[65%] shadow-[0_1px_0.5px_rgba(11,20,26,0.13)] relative overflow-hidden transition-colors',
-            media ? 'p-[3px]' : 'px-[9px] pt-[6px] pb-[7px]',
-            bubbleRadius(pos, out),
-            highlightedMessageId === msg.id
-              ? 'ring-2 ring-[#f59e0b] bg-[#fef3c7]'
-              : out
-                ? 'bg-[#d9fdd3] dark:bg-emerald-900/60'
-                : 'bg-white dark:bg-zinc-800'
+            'max-w-[65%] relative overflow-hidden transition-colors',
+            isSticker
+              ? 'bg-transparent shadow-none p-0'
+              : cn(
+                  'shadow-[0_1px_0.5px_rgba(11,20,26,0.13)]',
+                  media ? 'p-[3px]' : 'px-[9px] pt-[6px] pb-[7px]',
+                  bubbleRadius(pos, out),
+                  highlightedMessageId === msg.id
+                    ? 'ring-2 ring-[#f59e0b] bg-[#fef3c7]'
+                    : out
+                      ? 'bg-[#d9fdd3] dark:bg-emerald-900/60'
+                      : 'bg-white dark:bg-zinc-800'
+                )
           )}
         >
           {/* Quoted message */}

@@ -181,19 +181,109 @@
 
 ---
 
-## Status Final
+### Fase 8 — Refinamentos do Chat (UX & Mídia)
 
-**Todas as 8 fases completas.** O gateway whatsmeow é um microserviço Go production-ready com:
+> Elevar o chat de "funcional" para "WhatsApp-like" com visualização rica de mídia, fotos de perfil, e UX premium.
 
-- **15 endpoints REST** (instâncias, mensagens, contatos, grupos, sync, métricas)
-- **8 tipos de webhook** (message, reaction, receipt, connection, contact, presence, alert, history)
-- **Resiliência**: auto-reconnect, QR auto-restart, webhook retry + dead-letter, graceful shutdown
-- **Segurança**: HMAC-SHA256 webhooks, API key auth, rate limiting, instance limits
-- **Observabilidade**: structured logging (slog JSON), metrics endpoint, sync tracking
-- **14 testes Go** cobrindo middleware, rate limiter, webhook client
+#### 8.1 — Visualização de Mídia no Chat
 
-### Único item deferido:
-- Criptografia de credenciais em repouso (baixa prioridade — credenciais são env vars, não armazenadas no DB)
+- [x] **Lightbox para imagens**: Modal com zoom, pan e close (substituir `window.open()` atual)
+  - Componente: `components/chat/media-lightbox.tsx`
+  - Zoom (+/-/double-click), rotação (R), download, Esc para fechar
+  - Keyboard shortcuts completos
+  - Botão de download na lightbox
+- [x] **Thumbnails de imagem no bubble**: Renderizar preview inline (max 280px) com blur placeholder
+  - Lazy load com skeleton enquanto carrega base64
+  - Click abre lightbox
+- [x] **Player de vídeo melhorado**: Thumbnail com ícone play → abre lightbox com player fullscreen
+  - Thumbnail com overlay de play button
+  - Player fullscreen no lightbox com autoPlay e controls
+- [ ] **Player de áudio customizado**: Waveform visual (estilo WhatsApp)
+  - Barra de progresso com duração total
+  - Ícone de play/pause estilizado
+  - Indicador de mensagem de voz vs áudio genérico
+- [ ] **Preview de documentos**: Ícone por tipo (PDF, DOCX, XLS, ZIP)
+  - Nome do arquivo + tamanho formatado (KB/MB)
+  - PDF inline viewer (iframe ou react-pdf) para arquivos pequenos
+  - Botão de download sempre visível
+- [x] **Stickers/Figurinhas**: Renderizar como imagem sem bubble background (fundo transparente)
+- [ ] **Galeria de mídia por conversa**: Tab "Mídia" no contact-sidebar
+  - Grid de thumbnails (imagens, vídeos)
+  - Lista de documentos e áudios
+  - Click abre lightbox com contexto da conversa
+
+#### 8.2 — Fotos de Perfil (Avatares)
+
+- [ ] **Fetch automático de fotos via whatsmeow**: Chamar `GET /api/instances/:id/profile-pic/:jid` em batch
+  - Endpoint CRM: `POST /api/whatsapp/profile-pics/batch` (aceita array de contactIds)
+  - Cache em `Contact.profilePicUrl` com TTL de 7 dias (re-fetch se stale)
+- [ ] **Avatar na conversation list**: Já implementado — garantir que busca proativa para contatos visíveis
+- [ ] **Avatar no message header**: Foto grande no topo da conversa ativa (já existe, confirmar que funciona com whatsmeow)
+- [ ] **Avatar no contact sidebar**: Foto grande (80x80) clicável para ver em tamanho completo
+- [ ] **Fallback melhorado**: Gradiente baseado no hash do nome (em vez de 8 cores fixas)
+
+#### 8.3 — Envio de Mídia (Upload UX)
+
+- [x] **Drag & Drop**: Arrastar arquivo para a área de chat abre preview
+  - Overlay visual "Solte o arquivo aqui" com ícone Paperclip
+  - Suportar múltiplos arquivos (enviar em sequência)
+- [x] **Paste de imagem**: Ctrl+V / Cmd+V cola imagem do clipboard
+  - Detectar `clipboardData.items` com tipo `image/*`
+  - Gerar preview instantâneo e abrir barra de confirmação
+- [ ] **Preview antes de enviar**: Modal com preview expandido + campo de legenda
+  - Imagem: preview com crop/resize opcional
+  - Vídeo: player com preview
+  - Documento: ícone + nome + tamanho
+  - Áudio: waveform preview
+- [ ] **Progress bar de upload**: Barra de progresso real (não apenas spinner)
+  - Usar `XMLHttpRequest` com `onprogress` ou stream upload
+  - Mostrar % e tamanho enviado
+- [ ] **Compressão de imagem client-side**: Reduzir imagens >1MB antes de enviar
+  - Canvas resize para max 1920px no maior lado
+  - Qualidade JPEG 85%
+  - Manter original para documentos
+
+#### 8.4 — UX do Chat
+
+- [ ] **Indicador de digitação**: Mostrar "digitando..." baseado no Pusher `chat:typing` event
+  - Animação com 3 dots (já existe `typing-indicator.tsx`, conectar ao Pusher)
+- [ ] **Link preview**: Detectar URLs no texto e mostrar card com título + imagem + domínio
+  - Endpoint: `GET /api/og-preview?url=...` (fetch Open Graph tags server-side)
+  - Cache de OG data por URL
+- [ ] **Mensagens de localização**: Renderizar mini-mapa estático (Google Static Maps ou Mapbox)
+  - Extrair lat/lng do `locationMessage` no gateway
+  - Click abre Google Maps
+- [ ] **Contatos compartilhados**: Renderizar card com nome + telefone do vCard
+  - Botão "Adicionar ao CRM" para criar contato automaticamente
+- [ ] **Scroll to bottom FAB**: Botão flutuante quando scroll está acima das últimas mensagens
+  - Badge com count de novas mensagens não vistas
+- [ ] **Read receipts visuais**: Ticks azuis animados (✓ → ✓✓ → ✓✓ azul)
+  - Já parcialmente implementado — refinar animação de transição
+
+#### 8.5 — Performance & Polish
+
+- [ ] **Lazy loading de mídia**: Só buscar base64 quando bubble entra no viewport
+  - Usar IntersectionObserver no MediaBubble
+  - Placeholder skeleton enquanto carrega
+- [ ] **Cache de mídia no client**: IndexedDB para armazenar base64 de mídia já carregada
+  - Evita re-fetch ao rolar para cima e voltar
+  - Limite de 100MB com LRU eviction
+- [ ] **Skeleton loading na conversa**: Ao trocar de contato, mostrar skeleton do chat (não flash branco)
+- [ ] **Otimização de re-renders**: Memo nos message bubbles, evitar re-render da lista inteira
+  - Aproveitar react-virtuoso itemContent com keys estáveis
+- [ ] **PWA Push notifications**: Notificar no desktop quando mensagem chega
+  - Pusher → Service Worker → Notification API
+
+---
+
+## Status
+
+**Fases 0-7 completas.** Gateway whatsmeow production-ready.
+
+**Fase 8 (Refinamentos)**: Novo — foco em UX do chat e visualização de mídia.
+
+### Item deferido:
+- Criptografia de credenciais em repouso (baixa prioridade)
 
 ---
 
@@ -209,6 +299,7 @@
 | 5 | Integração CRM | ✅ |
 | 6 | Deploy + Observabilidade | ✅ |
 | 7 | Hardening + Produção | ✅ |
+| 8 | Refinamentos Chat & Mídia | 🔧 |
 
 ## Referências
 
