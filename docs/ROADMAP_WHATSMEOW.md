@@ -263,15 +263,15 @@ Adaptar o CRM para consumir do gateway Go em vez da Evolution API.
 
 ---
 
-### Fase 7 — Hardening e Produção (2-3 dias)
+### Fase 7 — Hardening e Produção (2-3 dias) ✅ DONE (core)
 
-- [ ] Retry com dead-letter queue para webhooks que falham
-- [ ] Graceful shutdown (aguardar mensagens em flight)
-- [ ] Limite de instâncias por organização (respeitar plano)
+- [x] Retry com dead-letter queue para webhooks que falham (3 retries, backoff exponencial, persist em `webhook_dead_letters` table)
+- [x] Graceful shutdown (SIGINT/SIGTERM → drain HTTP 15s → disconnect all WA clients → drain webhook queue)
+- [x] Limite de instâncias por organização (`MAX_INSTANCES_PER_ORG` env, default 5, valida no CreateInstance)
 - [ ] Criptografia de credenciais em repouso
 - [ ] Testes de integração (Go test)
-- [ ] Monitoramento de bans temporários (`events.TemporaryBan`)
-- [ ] Alertas quando conexão cai e não reconecta
+- [x] Monitoramento de bans temporários (`events.TemporaryBan` → webhook `connection.update` com status `banned`)
+- [x] Alertas quando conexão cai e não reconecta (webhook `connection.alert` após 30 tentativas falhas)
 
 ---
 
