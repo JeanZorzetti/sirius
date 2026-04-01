@@ -10,7 +10,7 @@ import { useToast } from '@/hooks/use-toast'
 import { Loader2, Smartphone, Wifi, WifiOff, RefreshCw, QrCode, Trash2, Plus } from 'lucide-react'
 import QRCode from 'qrcode'
 
-type Step = 'idle' | 'creating' | 'qr' | 'connected' | 'error'
+type Step = 'idle' | 'creating' | 'qr' | 'verifying' | 'connected' | 'error'
 
 // Gateway instance (fonte de verdade)
 interface GatewayInstance {
@@ -27,6 +27,7 @@ export function WhatsmeowConnectCard() {
   const [instanceName, setInstanceName] = useState('')
   const [qrDataUrl, setQrDataUrl] = useState<string | null>(null)
   const [gatewayInstanceId, setGatewayInstanceId] = useState<string | null>(null)
+  const gatewayInstanceIdRef = useRef<string | null>(null)
   const [instances, setInstances] = useState<GatewayInstance[]>([])
   const [loadingInstances, setLoadingInstances] = useState(true)
   const [deletingId, setDeletingId] = useState<string | null>(null)
@@ -72,6 +73,7 @@ export function WhatsmeowConnectCard() {
       }
 
       setGatewayInstanceId(data.gatewayInstanceId)
+      gatewayInstanceIdRef.current = data.gatewayInstanceId
       setStep('qr')
       startQRStream(`/api/whatsapp/connections/whatsmeow/${data.gatewayInstanceId}/qr`)
     } catch {
@@ -85,8 +87,10 @@ export function WhatsmeowConnectCard() {
 
     const es = new EventSource(url)
     eventSourceRef.current = es
+    let receivedQR = false
 
     es.addEventListener('qr', async (e) => {
+      receivedQR = true
       try {
         const dataUrl = await QRCode.toDataURL(e.data, { width: 256, margin: 1 })
         setQrDataUrl(dataUrl)
@@ -97,9 +101,40 @@ export function WhatsmeowConnectCard() {
 
     es.onerror = () => {
       es.close()
-      // Recarrega lista após scan
-      fetchInstances()
+      // Se já tinha QR e o stream fechou → provavelmente escaneou com sucesso
+      if (receivedQR) {
+        pollForConnection()
+      } else {
+        fetchInstances()
+      }
     }
+  }
+
+  async function pollForConnection() {
+    const instId = gatewayInstanceIdRef.current
+    if (!instId) { fetchInstances(); return }
+    setStep('verifying')
+
+    const maxAttempts = 12 // 12 × 1.5s = 18s
+    for (let i = 0; i < maxAttempts; i++) {
+      await new Promise(r => setTimeout(r, 1500))
+      try {
+        const res = await fetch(`/api/whatsapp/connections/whatsmeow/${instId}/status`)
+        if (res.ok) {
+          const data = await res.json()
+          if (data.connected || data.status === 'connected') {
+            setStep('connected')
+            fetchInstances()
+            return
+          }
+        }
+      } catch {
+        // continue polling
+      }
+    }
+    // Timeout — atualiza lista e volta ao idle (pode ter conectado mas status atrasado)
+    fetchInstances()
+    setStep('idle')
   }
 
   function handleReset() {
@@ -108,6 +143,7 @@ export function WhatsmeowConnectCard() {
     setInstanceName('')
     setQrDataUrl(null)
     setGatewayInstanceId(null)
+    gatewayInstanceIdRef.current = null
     setShowForm(false)
     fetchInstances()
   }
@@ -136,7 +172,7 @@ export function WhatsmeowConnectCard() {
     }
   }
 
-  const isCreating = step === 'creating' || step === 'qr'
+  const isCreating = step === 'creating' || step === 'qr' || step === 'verifying'
 
   return (
     <Card className="bg-white dark:bg-white/[0.02] border-border/50">
@@ -301,8 +337,41 @@ export function WhatsmeowConnectCard() {
             </div>
 
             <p className="text-[11px] text-muted-foreground text-center">
-              O QR expira em 60 segundos. Após escanear, a página atualiza automaticamente.
+              O QR expira em 60 segundos. Escaneie com o celular para conectar.
             </p>
+          </div>
+        )}
+
+        {step === 'verifying' && (
+          <div className="flex flex-col items-center gap-3 py-8">
+            <div className="relative">
+              <div className="h-12 w-12 rounded-full bg-emerald-500/10 flex items-center justify-center">
+                <Loader2 className="h-6 w-6 animate-spin text-emerald-500" />
+              </div>
+            </div>
+            <div className="text-center">
+              <p className="text-sm font-medium">Verificando conexão...</p>
+              <p className="text-xs text-muted-foreground mt-1">
+                QR escaneado! Aguardando confirmação do WhatsApp.
+              </p>
+            </div>
+          </div>
+        )}
+
+        {step === 'connected' && (
+          <div className="flex flex-col items-center gap-3 py-6">
+            <div className="h-12 w-12 rounded-full bg-emerald-500/10 flex items-center justify-center ring-2 ring-emerald-500/30">
+              <Wifi className="h-6 w-6 text-emerald-500" />
+            </div>
+            <div className="text-center">
+              <p className="text-sm font-semibold text-emerald-600 dark:text-emerald-400">Conectado com sucesso!</p>
+              <p className="text-xs text-muted-foreground mt-1">
+                Mensagens recebidas serão salvas automaticamente no CRM.
+              </p>
+            </div>
+            <Button variant="outline" size="sm" onClick={handleReset} className="h-8 text-xs mt-1">
+              Adicionar outra instância
+            </Button>
           </div>
         )}
       </CardContent>
