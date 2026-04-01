@@ -380,22 +380,24 @@ export function WhatsmeowConnectCard() {
 }
 
 function StatusDot({ status }: { status: string }) {
+  const s = status.toUpperCase()
   const color =
-    status === 'CONNECTED' ? 'bg-emerald-500' :
-    status === 'CONNECTING' ? 'bg-amber-500 animate-pulse' :
+    s === 'CONNECTED' ? 'bg-emerald-500' :
+    s === 'CONNECTING' ? 'bg-amber-500 animate-pulse' :
     'bg-zinc-400'
   return <span className={`h-2 w-2 rounded-full flex-shrink-0 ${color}`} />
 }
 
 function StatusBadgeSmall({ status }: { status: string }) {
-  if (status === 'CONNECTED')
+  const s = status.toUpperCase()
+  if (s === 'CONNECTED')
     return (
       <Badge variant="outline" className="text-emerald-500 border-emerald-500/30 bg-emerald-500/5 text-[10px] px-1.5 py-0">
         <Wifi className="h-2.5 w-2.5 mr-1" />
         Ativo
       </Badge>
     )
-  if (status === 'CONNECTING')
+  if (s === 'CONNECTING')
     return (
       <Badge variant="outline" className="text-amber-500 border-amber-500/30 bg-amber-500/5 text-[10px] px-1.5 py-0">
         Conectando
