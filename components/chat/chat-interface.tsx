@@ -15,6 +15,8 @@ import {
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
+import { usePusher } from '@/hooks/use-pusher'
+import type { MessageNewEvent, ConnectionReadyEvent } from '@/hooks/use-pusher'
 
 interface Connection {
   id: string
@@ -112,6 +114,24 @@ export function ChatInterface({
       console.error('[CHAT] fetchConnections error:', error)
     }
   }, [])
+
+  // Real-time: Pusher events update conversation list immediately
+  usePusher({
+    organizationId,
+    onMessageNew: useCallback((_data: MessageNewEvent) => {
+      fetchConversations()
+    }, [fetchConversations]),
+    onMessageSent: useCallback(() => {
+      fetchConversations()
+    }, [fetchConversations]),
+    onConnectionReady: useCallback(async (data: ConnectionReadyEvent) => {
+      try {
+        await fetch(`/api/whatsapp/connections/${data.connectionId}/sync`, { method: 'POST' })
+      } catch {}
+      fetchConversations()
+      fetchConnections()
+    }, [fetchConversations, fetchConnections]),
+  })
 
   // Auto-sync: ao montar, dispara sync da conexão ativa (background)
   const hasSyncedRef = useRef(false)
