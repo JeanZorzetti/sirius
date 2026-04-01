@@ -118,6 +118,22 @@ export const whatsmeowClient = {
     })
   },
 
+  async getContacts(instanceId: string): Promise<any[]> {
+    return gatewayFetch(`/api/instances/${instanceId}/contacts`)
+  },
+
+  async getGroups(instanceId: string): Promise<any[]> {
+    return gatewayFetch(`/api/instances/${instanceId}/groups`)
+  },
+
+  async getGroupInfo(instanceId: string, groupJid: string): Promise<any> {
+    return gatewayFetch(`/api/instances/${instanceId}/groups/${encodeURIComponent(groupJid)}`)
+  },
+
+  async getProfilePic(instanceId: string, jid: string): Promise<{ url: string }> {
+    return gatewayFetch(`/api/instances/${instanceId}/profile-pic/${encodeURIComponent(jid)}`)
+  },
+
   /** Returns the SSE URL for streaming QR codes (to be used client-side) */
   getQRStreamURL(instanceId: string): string {
     return `${GATEWAY_URL}/api/instances/${instanceId}/qr`

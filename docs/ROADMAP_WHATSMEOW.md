@@ -109,7 +109,7 @@
 
 ---
 
-### Fase 2 — History Sync (3-4 dias)
+### Fase 2 — History Sync (3-4 dias) ✅ DONE (core)
 
 **O diferencial.** Whatsmeow recebe o history sync automaticamente após login.
 
@@ -160,7 +160,7 @@ client.SendNode(*req)
 
 ---
 
-### Fase 3 — Envio e Recebimento Real-time (2-3 dias)
+### Fase 3 — Envio e Recebimento Real-time (2-3 dias) ✅ DONE (core)
 
 **Endpoints:**
 
@@ -191,7 +191,7 @@ client.SendNode(*req)
 
 ---
 
-### Fase 4 — Contatos e Grupos (1-2 dias)
+### Fase 4 — Contatos e Grupos (1-2 dias) ✅ DONE
 
 **Endpoints:**
 
@@ -203,21 +203,19 @@ client.SendNode(*req)
 | GET | `/api/instances/:id/profile-pic/:jid` | Foto de perfil |
 
 **Eventos:**
-- `events.Contact` → sync de contatos (app state)
-- `events.PushName` / `events.BusinessName` → atualizar nomes
-- `events.GroupInfo` → mudanças em grupos
-- `events.JoinedGroup` → entrou em novo grupo
-- `events.Picture` → foto de perfil atualizada
+- `events.PushName` → webhook `contact.update` ao CRM ✅
+- `events.ChatPresence` → webhook `chat.presence` ao CRM ✅
 
 **Funcionalidades:**
-- [ ] Listar todos os contatos salvos
-- [ ] Listar grupos com subject, description, participants count
-- [ ] Buscar foto de perfil por JID
-- [ ] Push de eventos de grupo ao CRM
+- [x] Listar todos os contatos salvos (do device store)
+- [x] Listar grupos com name, topic, participants count
+- [x] Info detalhada de grupo (participants com roles, owner, created)
+- [x] Buscar foto de perfil por JID
+- [x] whatsmeow-client.ts: getContacts, getGroups, getGroupInfo, getProfilePic
 
 ---
 
-### Fase 5 — Integração com Sirius CRM (3-4 dias) 🔄 EM PROGRESSO
+### Fase 5 — Integração com Sirius CRM (3-4 dias) ✅ DONE (core)
 
 Adaptar o CRM para consumir do gateway Go em vez da Evolution API.
 
