@@ -122,25 +122,32 @@ export default async function ChatPage({
       }
     })
 
-    contacts = await Promise.all(
-      rawContacts.map(async (contact) => {
-        const unreadCount = await prisma.whatsAppMessage.count({
+    // Single aggregated query instead of N+1 count() per contact
+    const contactIds = rawContacts.map(c => c.id)
+    const unreadCounts = contactIds.length > 0
+      ? await prisma.whatsAppMessage.groupBy({
+          by: ['contactId'],
           where: {
             ...messageFilter,
-            contactId: contact.id,
+            contactId: { in: contactIds },
             direction: 'INBOUND',
             isRead: false,
-          }
+          },
+          _count: { id: true },
         })
-        return {
-          ...contact,
-          _count: {
-            ...contact._count,
-            unreadMessages: unreadCount,
-          }
-        }
-      })
+      : []
+
+    const unreadMap = new Map(
+      unreadCounts.map(u => [u.contactId, u._count.id])
     )
+
+    contacts = rawContacts.map(contact => ({
+      ...contact,
+      _count: {
+        ...contact._count,
+        unreadMessages: unreadMap.get(contact.id) || 0,
+      }
+    }))
   } catch (err: any) {
     console.error("[CHAT_PAGE] Falha ao buscar contatos:", err.message)
     return <div>Erro ao buscar contatos: {err.message}</div>

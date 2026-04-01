@@ -82,26 +82,32 @@ export async function GET() {
       }
     })
 
-    // 6. Fetch unread counts (scoped to active connection)
-    const contactsWithUnread = await Promise.all(
-      contacts.map(async (contact) => {
-        const unreadCount = await prisma.whatsAppMessage.count({
+    // 6. Fetch unread counts — single aggregated query instead of N+1
+    const contactIds = contacts.map(c => c.id)
+    const unreadCounts = contactIds.length > 0
+      ? await prisma.whatsAppMessage.groupBy({
+          by: ['contactId'],
           where: {
             ...messageFilter,
-            contactId: contact.id,
+            contactId: { in: contactIds },
             direction: 'INBOUND',
             isRead: false,
-          }
+          },
+          _count: { id: true },
         })
-        return {
-          ...contact,
-          _count: {
-            ...contact._count,
-            unreadMessages: unreadCount,
-          }
-        }
-      })
+      : []
+
+    const unreadMap = new Map(
+      unreadCounts.map(u => [u.contactId, u._count.id])
     )
+
+    const contactsWithUnread = contacts.map(contact => ({
+      ...contact,
+      _count: {
+        ...contact._count,
+        unreadMessages: unreadMap.get(contact.id) || 0,
+      }
+    }))
 
     return NextResponse.json({
       connections,

@@ -90,26 +90,32 @@ export async function GET() {
       }
     })
 
-    // 5. Buscar contagem de mensagens não lidas para cada contato (filtrada por conexão)
-    const contactsWithUnread = await Promise.all(
-      contacts.map(async (contact) => {
-        const unreadCount = await prisma.whatsAppMessage.count({
+    // 5. Buscar contagem de não lidas — query única agregada (não N+1)
+    const contactIds = contacts.map(c => c.id)
+    const unreadCounts = contactIds.length > 0
+      ? await prisma.whatsAppMessage.groupBy({
+          by: ['contactId'],
           where: {
             ...messageFilter,
-            contactId: contact.id,
+            contactId: { in: contactIds },
             direction: 'INBOUND',
             isRead: false,
-          }
+          },
+          _count: { id: true },
         })
-        return {
-          ...contact,
-          _count: {
-            ...contact._count,
-            unreadMessages: unreadCount,
-          }
-        }
-      })
+      : []
+
+    const unreadMap = new Map(
+      unreadCounts.map(u => [u.contactId, u._count.id])
     )
+
+    const contactsWithUnread = contacts.map(contact => ({
+      ...contact,
+      _count: {
+        ...contact._count,
+        unreadMessages: unreadMap.get(contact.id) || 0,
+      }
+    }))
 
     return NextResponse.json(contactsWithUnread)
   } catch (error: any) {
