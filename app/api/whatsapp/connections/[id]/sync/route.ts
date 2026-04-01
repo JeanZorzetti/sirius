@@ -48,24 +48,22 @@ export async function POST(
       return NextResponse.json({ error: 'Connection is not active' }, { status: 400 })
     }
 
-    // Whatsmeow: request on-demand history sync via gateway
+    // Whatsmeow: history sync is automatic on connect via webhook events.
+    // This endpoint is a no-op for whatsmeow — just return success.
+    // Optionally try on-demand sync but don't fail if gateway is unavailable.
     if (isWhatsmeow(connection)) {
       try {
         await whatsmeowClient.requestSync(connection.instanceName)
         logger.info({ connectionId: id, instanceName: connection.instanceName }, 'Whatsmeow: on-demand sync requested')
-        return NextResponse.json({
-          success: true,
-          provider: 'whatsmeow',
-          message: 'History sync requested. Messages will arrive via webhook.',
-        })
       } catch (err: any) {
-        logger.error({ error: err.message }, 'Whatsmeow sync request failed')
-        return NextResponse.json({
-          success: false,
-          provider: 'whatsmeow',
-          message: 'Sync request failed: ' + err.message,
-        }, { status: 500 })
+        // Best-effort — history sync already happens automatically
+        logger.debug({ error: err.message }, 'Whatsmeow on-demand sync skipped (not critical)')
       }
+      return NextResponse.json({
+        success: true,
+        provider: 'whatsmeow',
+        message: 'History sync is automatic for whatsmeow connections.',
+      })
     }
 
     // Evolution: legacy sync
