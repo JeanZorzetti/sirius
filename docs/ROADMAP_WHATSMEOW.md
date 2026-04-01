@@ -262,15 +262,16 @@
 
 #### 8.5 — Performance & Polish
 
-- [ ] **Lazy loading de mídia**: Só buscar base64 quando bubble entra no viewport
-  - Usar IntersectionObserver no MediaBubble
+- [x] **Lazy loading de mídia**: Só buscar base64 quando bubble entra no viewport
+  - IntersectionObserver com 200px rootMargin no MediaBubble, hasTriggered ref para single-fire
   - Placeholder skeleton enquanto carrega
 - [ ] **Cache de mídia no client**: IndexedDB para armazenar base64 de mídia já carregada
   - Evita re-fetch ao rolar para cima e voltar
   - Limite de 100MB com LRU eviction
-- [ ] **Skeleton loading na conversa**: Ao trocar de contato, mostrar skeleton do chat (não flash branco)
-- [ ] **Otimização de re-renders**: Memo nos message bubbles, evitar re-render da lista inteira
-  - Aproveitar react-virtuoso itemContent com keys estáveis
+- [x] **Skeleton loading na conversa**: Ao trocar de contato, mostrar skeleton do chat (não flash branco)
+  - Já implementado: 5 skeleton bubbles alternados durante loading
+- [x] **Otimização de re-renders**: Memo nos message bubbles, evitar re-render da lista inteira
+  - react-virtuoso com `data` array + `useMemo` para messageItems pré-computados
 - [ ] **PWA Push notifications**: Notificar no desktop quando mensagem chega
   - Pusher → Service Worker → Notification API
 

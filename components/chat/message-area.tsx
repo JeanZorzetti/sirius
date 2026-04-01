@@ -198,12 +198,14 @@ function MediaBubble({ msg, outbound, onOpenLightbox }: { msg: WhatsAppMessage; 
   const [mediaData, setMediaData] = useState<string | null>(msg.mediaUrl || null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(false)
+  const containerRef = useRef<HTMLDivElement>(null)
+  const hasTriggered = useRef(false)
 
   const mType = msg.mediaType || getMediaTypeFromText(msg.text)
   const caption = getMediaCaption(msg.text)
 
   const fetchMedia = useCallback(async () => {
-    if (mediaData?.startsWith('data:') || loading) return // already loaded base64
+    if (mediaData?.startsWith('data:') || loading) return
     if (!msg.messageId) return
     setLoading(true)
     try {
@@ -211,7 +213,6 @@ function MediaBubble({ msg, outbound, onOpenLightbox }: { msg: WhatsAppMessage; 
       if (r.ok) {
         const data = await r.json()
         if (data.base64) {
-          // API now returns full data URI: data:mimetype;base64,...
           setMediaData(data.base64)
         } else {
           setError(true)
@@ -226,17 +227,32 @@ function MediaBubble({ msg, outbound, onOpenLightbox }: { msg: WhatsAppMessage; 
     }
   }, [msg.messageId, mediaData, loading])
 
-  // Auto-load images, stickers and audio on mount (no manual click needed)
+  // Lazy load: only fetch media when element enters viewport
   useEffect(() => {
-    if ((mType === 'image' || mType === 'sticker' || mType === 'audio') && !mediaData?.startsWith('data:') && msg.messageId && !loading && !error) {
-      fetchMedia()
-    }
-  }, [mType, msg.messageId]) // eslint-disable-line react-hooks/exhaustive-deps
+    const shouldAutoLoad = (mType === 'image' || mType === 'sticker' || mType === 'audio')
+    if (!shouldAutoLoad || mediaData?.startsWith('data:') || !msg.messageId || hasTriggered.current) return
+
+    const el = containerRef.current
+    if (!el) return
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !hasTriggered.current) {
+          hasTriggered.current = true
+          fetchMedia()
+          observer.disconnect()
+        }
+      },
+      { rootMargin: '200px' }
+    )
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [mType, msg.messageId, mediaData, fetchMedia])
 
   // Image
   if (mType === 'image' || mType === 'sticker') {
     return (
-      <div className="space-y-1">
+      <div ref={containerRef} className="space-y-1">
         {mediaData?.startsWith('data:') ? (
           <img
             src={mediaData}
@@ -283,7 +299,7 @@ function MediaBubble({ msg, outbound, onOpenLightbox }: { msg: WhatsAppMessage; 
   // Video
   if (mType === 'video') {
     return (
-      <div className="space-y-1">
+      <div ref={containerRef} className="space-y-1">
         {mediaData?.startsWith('data:') ? (
           <div className="relative cursor-pointer group" onClick={() => onOpenLightbox?.(mediaData!, 'video')}>
             <video
@@ -326,7 +342,7 @@ function MediaBubble({ msg, outbound, onOpenLightbox }: { msg: WhatsAppMessage; 
   // Audio
   if (mType === 'audio') {
     return (
-      <div className="space-y-1">
+      <div ref={containerRef} className="space-y-1">
         {mediaData?.startsWith('data:') ? (
           <audio src={mediaData} controls className="max-w-[260px] h-[36px]" />
         ) : (
@@ -359,7 +375,7 @@ function MediaBubble({ msg, outbound, onOpenLightbox }: { msg: WhatsAppMessage; 
   if (mType === 'document') {
     const fileName = caption || 'Documento'
     return (
-      <div className="space-y-1">
+      <div ref={containerRef} className="space-y-1">
         <div className={cn(
           'flex items-center gap-3 rounded-lg px-3 py-2.5 min-w-[200px] max-w-[280px]',
           outbound ? 'bg-[#c4edc0]' : 'bg-gray-100'
