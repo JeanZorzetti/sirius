@@ -134,6 +134,24 @@ export const whatsmeowClient = {
     return gatewayFetch(`/api/instances/${instanceId}/profile-pic/${encodeURIComponent(jid)}`)
   },
 
+  async requestSync(instanceId: string, count?: number): Promise<void> {
+    await gatewayFetch(`/api/instances/${instanceId}/sync/request`, {
+      method: 'POST',
+      body: JSON.stringify({ count: count || 100 }),
+    })
+  },
+
+  async getSyncStatus(instanceId: string): Promise<{ totalMessages: number; totalConversations: number; lastSyncAt: string; inProgress: boolean }> {
+    return gatewayFetch(`/api/instances/${instanceId}/sync/status`)
+  },
+
+  async downloadMedia(instanceId: string, messageId: string, remoteJid: string): Promise<{ base64: string; mimetype: string }> {
+    return gatewayFetch(`/api/instances/${instanceId}/messages/download`, {
+      method: 'POST',
+      body: JSON.stringify({ messageId, remoteJid }),
+    })
+  },
+
   /** Returns the SSE URL for streaming QR codes (to be used client-side) */
   getQRStreamURL(instanceId: string): string {
     return `${GATEWAY_URL}/api/instances/${instanceId}/qr`

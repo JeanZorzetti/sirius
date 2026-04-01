@@ -108,6 +108,7 @@ async function handleMessage(instanceId: string, data: any) {
     timestamp,
     text,
     mediaType,
+    mediaBase64,
     isGroup,
   } = data
 
@@ -162,6 +163,7 @@ async function handleMessage(instanceId: string, data: any) {
       direction: fromMe ? 'OUTBOUND' : 'INBOUND',
       status: fromMe ? 'SENT' : 'DELIVERED',
       mediaType: mediaType || null,
+      mediaUrl: mediaBase64 || null,
       sentAt,
     },
   })

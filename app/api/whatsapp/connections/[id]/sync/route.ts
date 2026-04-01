@@ -1,14 +1,16 @@
 /**
  * API Route: /api/whatsapp/connections/[id]/sync
  *
- * Sincroniza conversas existentes do Evolution API para o banco local.
- * Agora delega para lib/whatsapp-sync.ts (lógica compartilhada com auto-sync e cron).
+ * Sincroniza conversas do WhatsApp para o banco local.
+ * - Whatsmeow: solicita history sync on-demand via gateway
+ * - Evolution: delega para lib/whatsapp-sync.ts (legado)
  */
 
 import { NextRequest, NextResponse } from 'next/server'
 import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
-import { syncConnectionHistory } from '@/lib/whatsapp-sync'
+import { isWhatsmeow } from '@/lib/whatsapp-provider'
+import { whatsmeowClient } from '@/lib/integrations/whatsmeow-client'
 import logger from '@/lib/logger'
 
 export const maxDuration = 300
@@ -34,7 +36,6 @@ export async function POST(
       return NextResponse.json({ error: 'Organização não encontrada' }, { status: 404 })
     }
 
-    // Verify connection belongs to user's org
     const connection = await prisma.whatsAppConnection.findFirst({
       where: { id, organizationId: user.organizationId },
     })
@@ -47,8 +48,29 @@ export async function POST(
       return NextResponse.json({ error: 'Connection is not active' }, { status: 400 })
     }
 
-    const result = await syncConnectionHistory(id)
+    // Whatsmeow: request on-demand history sync via gateway
+    if (isWhatsmeow(connection)) {
+      try {
+        await whatsmeowClient.requestSync(connection.instanceName)
+        logger.info({ connectionId: id, instanceName: connection.instanceName }, 'Whatsmeow: on-demand sync requested')
+        return NextResponse.json({
+          success: true,
+          provider: 'whatsmeow',
+          message: 'History sync requested. Messages will arrive via webhook.',
+        })
+      } catch (err: any) {
+        logger.error({ error: err.message }, 'Whatsmeow sync request failed')
+        return NextResponse.json({
+          success: false,
+          provider: 'whatsmeow',
+          message: 'Sync request failed: ' + err.message,
+        }, { status: 500 })
+      }
+    }
 
+    // Evolution: legacy sync
+    const { syncConnectionHistory } = await import('@/lib/whatsapp-sync')
+    const result = await syncConnectionHistory(id)
     return NextResponse.json(result)
   } catch (error: any) {
     logger.error({ error: error.message, stack: error.stack }, 'Error syncing WhatsApp chats')
