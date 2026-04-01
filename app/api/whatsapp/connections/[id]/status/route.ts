@@ -1,13 +1,13 @@
 /**
  * API Route: /api/whatsapp/connections/[id]/status
  *
- * Verifica o status de conexão de uma instância WhatsApp
+ * Verifica o status de conexão de uma instância WhatsApp via Whatsmeow Gateway
  */
 
 import { NextRequest, NextResponse } from 'next/server'
 import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
-import { getOrgEvolutionClient } from '@/lib/evolution-api-client'
+import { whatsmeowClient } from '@/lib/integrations/whatsmeow-client'
 import logger from '@/lib/logger'
 
 export async function GET(
@@ -51,28 +51,14 @@ export async function GET(
       )
     }
 
-    // 4. Get Evolution API client for the organization
-    const evolutionClient = await getOrgEvolutionClient(user.organizationId)
-    if (!evolutionClient) {
-      return NextResponse.json(
-        { error: 'Evolution API não está configurada.' },
-        { status: 400 }
-      )
-    }
+    // 4. Get status from whatsmeow gateway
+    const gatewayStatus = await whatsmeowClient.getStatus(connection.instanceName)
 
-    const evolutionState = await evolutionClient.getConnectionState(
-      connection.instanceName
-    )
-
-    // 5. Map Evolution API state to our status
-    // Evolution API v2 retorna: { instance: { instanceName, state } }
-    const state = evolutionState?.instance?.state ?? evolutionState?.state
+    // 5. Map gateway state to our status
     let status = connection.status
-    if (state === 'open') {
+    if (gatewayStatus?.connected === true) {
       status = 'CONNECTED'
-    } else if (state === 'connecting' || state === 'close') {
-      status = 'CONNECTING'
-    } else {
+    } else if (gatewayStatus?.connected === false) {
       status = 'DISCONNECTED'
     }
 
@@ -99,7 +85,6 @@ export async function GET(
       status,
       phoneNumber: connection.phoneNumber,
       connectedAt: connection.connectedAt,
-      evolutionState: state,
     })
   } catch (error: any) {
     logger.error({ error }, 'Error fetching connection status')

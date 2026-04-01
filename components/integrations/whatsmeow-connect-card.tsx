@@ -12,12 +12,13 @@ import QRCode from 'qrcode'
 
 type Step = 'idle' | 'creating' | 'qr' | 'connected' | 'error'
 
-interface Connection {
+// Gateway instance (fonte de verdade)
+interface GatewayInstance {
   id: string
-  instanceName: string
+  name: string
   status: string
   phoneNumber: string | null
-  connectedAt: string | null
+  organizationId: string
 }
 
 export function WhatsmeowConnectCard() {
@@ -26,30 +27,30 @@ export function WhatsmeowConnectCard() {
   const [instanceName, setInstanceName] = useState('')
   const [qrDataUrl, setQrDataUrl] = useState<string | null>(null)
   const [gatewayInstanceId, setGatewayInstanceId] = useState<string | null>(null)
-  const [connections, setConnections] = useState<Connection[]>([])
-  const [loadingConnections, setLoadingConnections] = useState(true)
+  const [instances, setInstances] = useState<GatewayInstance[]>([])
+  const [loadingInstances, setLoadingInstances] = useState(true)
   const [deletingId, setDeletingId] = useState<string | null>(null)
   const [showForm, setShowForm] = useState(false)
   const eventSourceRef = useRef<EventSource | null>(null)
 
-  const fetchConnections = useCallback(async () => {
+  const fetchInstances = useCallback(async () => {
     try {
-      const res = await fetch('/api/whatsapp/connections')
+      const res = await fetch('/api/whatsapp/connections/whatsmeow')
       if (res.ok) {
         const data = await res.json()
-        setConnections(data)
+        setInstances(data)
       }
     } catch {
       // silent
     } finally {
-      setLoadingConnections(false)
+      setLoadingInstances(false)
     }
   }, [])
 
   useEffect(() => {
-    fetchConnections()
+    fetchInstances()
     return () => eventSourceRef.current?.close()
-  }, [fetchConnections])
+  }, [fetchInstances])
 
   async function handleCreate() {
     if (!instanceName.trim()) return
@@ -97,7 +98,7 @@ export function WhatsmeowConnectCard() {
     es.onerror = () => {
       es.close()
       // Recarrega lista após scan
-      fetchConnections()
+      fetchInstances()
     }
   }
 
@@ -108,7 +109,7 @@ export function WhatsmeowConnectCard() {
     setQrDataUrl(null)
     setGatewayInstanceId(null)
     setShowForm(false)
-    fetchConnections()
+    fetchInstances()
   }
 
   function handleRefreshQR() {
@@ -116,14 +117,14 @@ export function WhatsmeowConnectCard() {
     startQRStream(`/api/whatsapp/connections/whatsmeow/${gatewayInstanceId}/qr`)
   }
 
-  async function handleDelete(connectionId: string, instanceNameLabel: string) {
-    if (!confirm(`Deletar a instância "${instanceNameLabel}"? Esta ação não pode ser desfeita.`)) return
-    setDeletingId(connectionId)
+  async function handleDelete(gatewayId: string, label: string) {
+    if (!confirm(`Deletar a instância "${label}"?\nEsta ação remove do gateway e não pode ser desfeita.`)) return
+    setDeletingId(gatewayId)
     try {
-      const res = await fetch(`/api/whatsapp/connections/${connectionId}`, { method: 'DELETE' })
+      const res = await fetch(`/api/whatsapp/connections/whatsmeow/${gatewayId}`, { method: 'DELETE' })
       if (res.ok) {
-        toast({ title: 'Instância deletada', description: `"${instanceNameLabel}" removida com sucesso.` })
-        fetchConnections()
+        toast({ title: 'Instância deletada', description: `"${label}" removida com sucesso.` })
+        fetchInstances()
       } else {
         const data = await res.json()
         toast({ title: 'Erro ao deletar', description: data.error, variant: 'destructive' })
@@ -155,37 +156,38 @@ export function WhatsmeowConnectCard() {
 
       <CardContent className="space-y-4">
         {/* Lista de conexões existentes */}
-        {loadingConnections ? (
+        {loadingInstances ? (
           <div className="flex items-center gap-2 py-2">
             <Loader2 className="h-3.5 w-3.5 animate-spin text-muted-foreground" />
             <span className="text-xs text-muted-foreground">Carregando instâncias...</span>
           </div>
-        ) : connections.length > 0 ? (
+        ) : instances.length > 0 ? (
           <div className="space-y-2">
-            {connections.map((conn) => (
+            {instances.map((inst) => (
               <div
-                key={conn.id}
+                key={inst.id}
                 className="flex items-center justify-between p-2.5 rounded-lg border border-border/50 bg-muted/30"
               >
                 <div className="flex items-center gap-2.5 min-w-0">
-                  <StatusDot status={conn.status} />
+                  <StatusDot status={inst.status} />
                   <div className="min-w-0">
-                    <p className="text-xs font-medium truncate">{conn.instanceName}</p>
-                    {conn.phoneNumber && (
-                      <p className="text-[11px] text-muted-foreground">{conn.phoneNumber}</p>
+                    <p className="text-xs font-medium truncate">{inst.name || inst.id}</p>
+                    {inst.phoneNumber && (
+                      <p className="text-[11px] text-muted-foreground">{inst.phoneNumber}</p>
                     )}
+                    <p className="text-[10px] text-muted-foreground/60 truncate font-mono">{inst.id}</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-2 flex-shrink-0">
-                  <StatusBadgeSmall status={conn.status} />
+                  <StatusBadgeSmall status={inst.status} />
                   <Button
                     variant="ghost"
                     size="icon"
                     className="h-7 w-7 text-muted-foreground hover:text-destructive hover:bg-destructive/10"
-                    onClick={() => handleDelete(conn.id, conn.instanceName)}
-                    disabled={deletingId === conn.id}
+                    onClick={() => handleDelete(inst.id, inst.name || inst.id)}
+                    disabled={deletingId === inst.id}
                   >
-                    {deletingId === conn.id ? (
+                    {deletingId === inst.id ? (
                       <Loader2 className="h-3.5 w-3.5 animate-spin" />
                     ) : (
                       <Trash2 className="h-3.5 w-3.5" />

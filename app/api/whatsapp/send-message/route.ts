@@ -1,19 +1,16 @@
 /**
  * API Route: /api/whatsapp/send-message
  *
- * Envia mensagem WhatsApp através de uma conexão.
- * Detecta automaticamente o provider (Evolution API ou Whatsmeow Gateway).
+ * Envia mensagem WhatsApp através do Whatsmeow Gateway.
  */
 
 import { NextRequest, NextResponse } from 'next/server'
 import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
-import { getOrgEvolutionClient } from '@/lib/evolution-api-client'
 import { whatsmeowClient } from '@/lib/integrations/whatsmeow-client'
 import logger from '@/lib/logger'
 import { triggerEvent } from '@/lib/pusher'
 import { normalizePhoneNumber } from '@/lib/whatsapp-sync'
-import { isWhatsmeow } from '@/lib/whatsapp-provider'
 
 export async function POST(req: NextRequest) {
   try {
@@ -92,68 +89,18 @@ export async function POST(req: NextRequest) {
       )
     }
 
-    // 7. Detect provider and send
-    const useWhatsmeow = isWhatsmeow(connection)
+    // 7. Send via Whatsmeow Gateway
     const phoneNumber = normalizePhoneNumber(contact.phone)
+    const remoteJid = phoneNumber
 
-    let messageId: string
-    let remoteJid: string
-
-    if (useWhatsmeow) {
-      // --- Whatsmeow Gateway ---
-      remoteJid = phoneNumber
-      const res = await whatsmeowClient.sendText(connection.instanceName, phoneNumber, message)
-      messageId = res.messageId
-    } else {
-      // --- Evolution API ---
-      const evolutionClient = await getOrgEvolutionClient(user.organizationId)
-      if (!evolutionClient) {
-        return NextResponse.json(
-          { error: 'Evolution API não está configurada.' },
-          { status: 400 }
-        )
-      }
-
-      const whatsappNumber = evolutionClient.formatPhoneNumber(contact.phone)
-      remoteJid = whatsappNumber
-
-      let quotedMessage = null
-      let replyToText = null
-
-      if (replyToId) {
-        const originalMessage = await prisma.whatsAppMessage.findFirst({
-          where: {
-            id: replyToId,
-            organizationId: user.organizationId,
-          },
-        })
-
-        if (originalMessage && originalMessage.messageId) {
-          quotedMessage = {
-            key: {
-              remoteJid: whatsappNumber,
-              id: originalMessage.messageId,
-            },
-          }
-          replyToText = originalMessage.text
-        }
-      }
-
-      const evolutionResponse = await evolutionClient.sendTextMessage({
-        instanceName: connection.instanceName,
-        number: whatsappNumber,
-        text: message,
-        ...(quotedMessage && { quoted: quotedMessage }),
-      })
-
-      messageId = evolutionResponse.key.id
-    }
+    const res = await whatsmeowClient.sendText(connection.instanceName, phoneNumber, message)
+    const messageId = res.messageId
 
     logger.info({
       connectionId: connection.id,
       contactId: contact.id,
       messageId,
-      provider: useWhatsmeow ? 'whatsmeow' : 'evolution',
+      provider: 'whatsmeow',
     }, 'WhatsApp message sent')
 
     // 8. Salvar mensagem no banco

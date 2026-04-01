@@ -1,13 +1,13 @@
 /**
  * API Route: /api/whatsapp/connections/[id]/qr-code
  *
- * Retorna o QR Code para conectar uma instância do WhatsApp
+ * Retorna a URL do QR stream do Whatsmeow Gateway para conectar uma instância
  */
 
 import { NextRequest, NextResponse } from 'next/server'
 import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
-import { getOrgEvolutionClient } from '@/lib/evolution-api-client'
+import { whatsmeowClient } from '@/lib/integrations/whatsmeow-client'
 import logger from '@/lib/logger'
 
 export async function GET(
@@ -59,26 +59,13 @@ export async function GET(
       )
     }
 
-    // 5. Get Evolution API client for the organization
-    const evolutionClient = await getOrgEvolutionClient(user.organizationId)
-    if (!evolutionClient) {
-      return NextResponse.json(
-        { error: 'Evolution API não está configurada.' },
-        { status: 400 }
-      )
-    }
-
-    const qrCodeData = await evolutionClient.getQRCode(connection.instanceName)
-
     logger.info({
       connectionId: connection.id,
       instanceName: connection.instanceName,
-    }, 'QR Code retrieved')
+    }, 'QR stream URL retrieved')
 
     return NextResponse.json({
-      qrCode: qrCodeData.base64,
-      code: qrCodeData.code,
-      expiresIn: 30, // QR Code expira em 30 segundos
+      qrStreamUrl: whatsmeowClient.getQRStreamURL(connection.instanceName),
     })
   } catch (error: any) {
     logger.error({ error }, 'Error fetching QR code')

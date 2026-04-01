@@ -1,7 +1,7 @@
 /**
  * WhatsApp Automations Library
  *
- * Funções para enviar mensagens automatizadas do WhatsApp:
+ * Funções para enviar mensagens automatizadas do WhatsApp via Whatsmeow Gateway:
  * - Mudança de stage
  * - Deal criado
  * - Deal ganho/perdido
@@ -9,12 +9,8 @@
  */
 
 import { prisma } from '@/lib/prisma'
-import {
-    getEvolutionClient,
-    formatWhatsAppNumber,
-    logWhatsAppActivity,
-    checkWhatsAppRateLimit
-} from './evolution-client'
+import { whatsmeowClient } from '@/lib/integrations/whatsmeow-client'
+import { normalizePhoneNumber } from '@/lib/whatsapp-sync'
 import logger from '@/lib/logger'
 
 interface SendWhatsAppMessageParams {
@@ -33,15 +29,6 @@ export async function sendWhatsAppMessage(params: SendWhatsAppMessageParams): Pr
     const { organizationId, dealId, message } = params
 
     try {
-        // Verificar rate limit
-        const rateLimit = await checkWhatsAppRateLimit(organizationId)
-        if (!rateLimit) {
-            return {
-                success: false,
-                error: 'Limite de mensagens excedido. Tente novamente mais tarde.'
-            }
-        }
-
         // Buscar deal com contato
         const deal = await prisma.deal.findUnique({
             where: { id: dealId },
@@ -55,20 +42,23 @@ export async function sendWhatsAppMessage(params: SendWhatsAppMessageParams): Pr
             }
         }
 
-        // Obter cliente Evolution
-        const client = await getEvolutionClient(organizationId)
-        if (!client) {
+        // Obter conexão ativa da organização
+        const connection = await prisma.whatsAppConnection.findFirst({
+            where: { organizationId, status: 'CONNECTED' }
+        })
+
+        if (!connection) {
             return {
                 success: false,
-                error: 'WhatsApp não configurado para esta organização'
+                error: 'WhatsApp não conectado para esta organização'
             }
         }
 
-        // Formatar número WhatsApp
-        const remoteJid = formatWhatsAppNumber(deal.contact.phone)
+        // Normalizar número e enviar
+        const phoneNumber = normalizePhoneNumber(deal.contact.phone)
+        const remoteJid = `${phoneNumber}@s.whatsapp.net`
 
-        // Enviar mensagem
-        const response = await client.sendTextMessage(remoteJid, message)
+        const response = await whatsmeowClient.sendText(connection.instanceName, phoneNumber, message)
 
         // Salvar mensagem no banco
         await prisma.whatsAppMessage.create({
@@ -77,41 +67,24 @@ export async function sendWhatsAppMessage(params: SendWhatsAppMessageParams): Pr
                 dealId,
                 contactId: deal.contactId!,
                 remoteJid,
-                messageId: response.key.id,
+                messageId: response.messageId,
                 text: message,
                 direction: 'OUTBOUND',
-                status: 'SENT'
+                status: 'SENT',
+                connectionId: connection.id,
             }
         })
-
-        // Log da atividade
-        await logWhatsAppActivity(
-            organizationId,
-            'send_message',
-            'SUCCESS',
-            { dealId, message },
-            { messageId: response.key.id }
-        )
 
         logger.info({
             organizationId,
             dealId,
-            messageId: response.key.id
+            messageId: response.messageId
         }, 'WhatsApp message sent successfully')
 
         return { success: true }
 
     } catch (error: any) {
         logger.error({ error, organizationId, dealId }, 'Error sending WhatsApp message')
-
-        await logWhatsAppActivity(
-            organizationId,
-            'send_message',
-            'FAILED',
-            { dealId, message },
-            null,
-            error.message
-        )
 
         return {
             success: false,

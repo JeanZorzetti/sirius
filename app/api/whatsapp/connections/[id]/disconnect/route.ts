@@ -7,7 +7,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
-import { getOrgEvolutionClient } from '@/lib/evolution-api-client'
+import { whatsmeowClient } from '@/lib/integrations/whatsmeow-client'
 import logger from '@/lib/logger'
 
 export async function POST(
@@ -51,18 +51,15 @@ export async function POST(
       )
     }
 
-    // 4. Logout from Evolution API (best-effort — instance may already be gone)
-    const evolutionClient = await getOrgEvolutionClient(user.organizationId)
-    if (evolutionClient) {
-      try {
-        await evolutionClient.logoutInstance(connection.instanceName)
-      } catch (err: any) {
-        // Instance may not exist or already be disconnected — proceed anyway
-        logger.warn(
-          { error: err?.message, instanceName: connection.instanceName },
-          'Evolution API logout failed, forcing DB disconnect'
-        )
-      }
+    // 4. Logout from whatsmeow gateway (best-effort)
+    try {
+      await whatsmeowClient.deleteInstance(connection.instanceName)
+    } catch (err: any) {
+      // Instance may not exist or already be disconnected — proceed anyway
+      logger.warn(
+        { error: err?.message, instanceName: connection.instanceName },
+        'Whatsmeow logout failed, forcing DB disconnect'
+      )
     }
 
     // 5. Update status in database

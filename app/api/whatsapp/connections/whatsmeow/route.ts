@@ -1,6 +1,6 @@
 /**
- * POST /api/whatsapp/connections/whatsmeow
- * Cria instância whatsmeow no gateway e salva no DB
+ * GET  /api/whatsapp/connections/whatsmeow — lista instâncias do gateway
+ * POST /api/whatsapp/connections/whatsmeow — cria instância no gateway e salva no DB
  */
 
 import { NextRequest, NextResponse } from 'next/server'
@@ -8,6 +8,29 @@ import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { whatsmeowClient } from '@/lib/integrations/whatsmeow-client'
 import logger from '@/lib/logger'
+
+export async function GET() {
+  const session = await getSession()
+  if (!session?.user) {
+    return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
+  }
+
+  const user = await prisma.user.findUnique({
+    where: { id: session.user.id },
+    select: { organizationId: true },
+  })
+  if (!user?.organizationId) {
+    return NextResponse.json({ error: 'Organização não encontrada' }, { status: 404 })
+  }
+
+  try {
+    const instances = await whatsmeowClient.listInstances(user.organizationId)
+    return NextResponse.json(instances)
+  } catch (err: any) {
+    logger.warn({ error: err.message }, 'whatsmeow: failed to list gateway instances')
+    return NextResponse.json([], { status: 200 }) // gateway offline → retorna vazio
+  }
+}
 
 export async function POST(req: NextRequest) {
   const session = await getSession()

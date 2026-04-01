@@ -1,18 +1,13 @@
 /**
  * API Route: /api/whatsapp/media
  *
- * Busca mídia (base64) de uma mensagem WhatsApp
+ * Busca mídia (base64) de uma mensagem WhatsApp via Whatsmeow Gateway
  * GET ?messageId=xxx
- *
- * Dual-provider:
- * - Whatsmeow: POST /api/instances/:id/messages/download
- * - Evolution: getBase64FromMediaMessage (legacy)
  */
 
 import { NextRequest, NextResponse } from 'next/server'
 import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
-import { isWhatsmeow } from '@/lib/whatsapp-provider'
 import { whatsmeowClient } from '@/lib/integrations/whatsmeow-client'
 import logger from '@/lib/logger'
 
@@ -63,76 +58,31 @@ export async function GET(req: NextRequest) {
       return NextResponse.json({ error: 'No active connection' }, { status: 400 })
     }
 
-    // Whatsmeow provider
-    if (isWhatsmeow(connection)) {
-      try {
-        const result = await whatsmeowClient.downloadMedia(
-          connection.instanceName,
-          messageId,
-          message.remoteJid || '',
-        )
-
-        const mimeType = result.mimetype || 'application/octet-stream'
-        const dataUri = result.base64.startsWith('data:')
-          ? result.base64
-          : `data:${mimeType};base64,${result.base64}`
-
-        // Cache in DB
-        await prisma.whatsAppMessage.updateMany({
-          where: { messageId, organizationId: user.organizationId },
-          data: { mediaUrl: dataUri },
-        })
-
-        return NextResponse.json({ base64: dataUri, mimetype: mimeType })
-      } catch (err: any) {
-        logger.error({ error: err.message, messageId }, 'Whatsmeow media download failed')
-        return NextResponse.json(
-          { error: 'Mídia não disponível', details: err.message },
-          { status: 404 }
-        )
-      }
-    }
-
-    // Evolution provider (legacy)
+    // Download via Whatsmeow Gateway
     try {
-      const { getOrgEvolutionClient } = await import('@/lib/evolution-api-client')
-      const client = await getOrgEvolutionClient(user.organizationId)
-      if (!client) {
-        return NextResponse.json({ error: 'Evolution API not configured' }, { status: 400 })
-      }
-
-      const isAudio = message.mediaType === 'audio' || message.text?.startsWith('[Áudio]')
-
-      const media = await client.getBase64FromMediaMessage(
+      const result = await whatsmeowClient.downloadMedia(
         connection.instanceName,
         messageId,
-        isAudio,
+        message.remoteJid || '',
       )
 
-      const mimeType = media.mimetype || 'application/octet-stream'
-      const dataUri = media.base64.startsWith('data:')
-        ? media.base64
-        : `data:${mimeType};base64,${media.base64}`
+      const mimeType = result.mimetype || 'application/octet-stream'
+      const dataUri = result.base64.startsWith('data:')
+        ? result.base64
+        : `data:${mimeType};base64,${result.base64}`
 
       // Cache in DB
-      if (media.base64) {
-        await prisma.whatsAppMessage.updateMany({
-          where: { messageId, organizationId: user.organizationId },
-          data: { mediaUrl: dataUri },
-        })
-      }
-
-      return NextResponse.json({
-        base64: dataUri,
-        mimetype: media.mimetype,
-        mediaType: media.mediaType,
-        fileName: media.fileName,
+      await prisma.whatsAppMessage.updateMany({
+        where: { messageId, organizationId: user.organizationId },
+        data: { mediaUrl: dataUri },
       })
-    } catch (error: any) {
-      logger.error({ error: error.message }, 'Evolution media fetch failed')
+
+      return NextResponse.json({ base64: dataUri, mimetype: mimeType })
+    } catch (err: any) {
+      logger.error({ error: err.message, messageId }, 'Whatsmeow media download failed')
       return NextResponse.json(
-        { error: 'Falha ao buscar mídia', details: error.message },
-        { status: 500 }
+        { error: 'Mídia não disponível', details: err.message },
+        { status: 404 }
       )
     }
   } catch (error: any) {

@@ -3,9 +3,7 @@ import { withApiMiddleware, apiResponse } from '@/lib/api-middleware'
 import { prisma } from '@/lib/prisma'
 import { uuidSchema } from '@/lib/api-validators'
 import logger from '@/lib/logger'
-import { EvolutionClient } from '@/lib/integrations/evolution-client'
 import { whatsmeowClient } from '@/lib/integrations/whatsmeow-client'
-import { isWhatsmeow } from '@/lib/whatsapp-provider'
 
 /**
  * POST /api/v1/whatsapp/send
@@ -67,42 +65,12 @@ export async function POST(request: NextRequest) {
         )
       }
 
-      const useWhatsmeow = isWhatsmeow(connection)
       const normalizedPhone = phone.replace(/\D/g, '')
       const remoteJid = `${normalizedPhone}@s.whatsapp.net`
 
-      let messageId: string | null = null
-
-      if (useWhatsmeow) {
-        // --- Whatsmeow Gateway ---
-        const res = await whatsmeowClient.sendText(connection.instanceName, normalizedPhone, message)
-        messageId = res.messageId
-      } else {
-        // --- Evolution API ---
-        const org = await prisma.organization.findUnique({
-          where: { id: context.organizationId },
-          select: { evolutionBaseUrl: true, evolutionApiKey: true }
-        })
-
-        if (!org?.evolutionBaseUrl || !org?.evolutionApiKey) {
-          return NextResponse.json(
-            apiResponse(context.requestId, undefined, {
-              code: 'PRECONDITION_FAILED',
-              message: 'Evolution API not configured for this organization'
-            }),
-            { status: 412 }
-          )
-        }
-
-        const client = new EvolutionClient(
-          org.evolutionBaseUrl,
-          org.evolutionApiKey,
-          connection.instanceName
-        )
-
-        const result = await client.sendTextMessage(remoteJid, message)
-        messageId = result?.key?.id || null
-      }
+      // Send via Whatsmeow Gateway
+      const res = await whatsmeowClient.sendText(connection.instanceName, normalizedPhone, message)
+      const messageId = res.messageId
 
       // Store message in DB
       await prisma.whatsAppMessage.create({
@@ -122,7 +90,7 @@ export async function POST(request: NextRequest) {
         organizationId: context.organizationId,
         connectionId,
         phone: normalizedPhone,
-        provider: useWhatsmeow ? 'whatsmeow' : 'evolution',
+        provider: 'whatsmeow',
       }, 'WhatsApp message sent via API')
 
       return NextResponse.json(

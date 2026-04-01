@@ -1,18 +1,15 @@
 /**
  * API Route: /api/whatsapp/send-media
  *
- * Envia mídia (imagem, vídeo, áudio, documento) via WhatsApp.
- * Detecta automaticamente o provider (Evolution API ou Whatsmeow Gateway).
+ * Envia mídia (imagem, vídeo, áudio, documento) via Whatsmeow Gateway.
  */
 
 import { NextRequest, NextResponse } from 'next/server'
 import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
-import { getOrgEvolutionClient } from '@/lib/evolution-api-client'
 import { whatsmeowClient } from '@/lib/integrations/whatsmeow-client'
 import { normalizePhoneNumber } from '@/lib/whatsapp-sync'
 import logger from '@/lib/logger'
-import { isWhatsmeow } from '@/lib/whatsapp-provider'
 
 const MAX_FILE_SIZE = 16 * 1024 * 1024 // 16MB (WhatsApp limit)
 
@@ -115,51 +112,21 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Contact not found or has no phone' }, { status: 404 })
     }
 
-    // 7. Detect provider and send
-    const useWhatsmeow = isWhatsmeow(connection)
+    // 7. Send via Whatsmeow Gateway
+    const phoneNumber = normalizePhoneNumber(contact.phone)
+    const remoteJid = phoneNumber
     const mediatype = getMediaType(file.type)
     const arrayBuffer = await file.arrayBuffer()
 
-    let messageId: string
-    let remoteJid: string
-
-    if (useWhatsmeow) {
-      // --- Whatsmeow Gateway ---
-      const phoneNumber = normalizePhoneNumber(contact.phone)
-      remoteJid = phoneNumber
-
-      const res = await whatsmeowClient.sendMedia(
-        connection.instanceName,
-        phoneNumber,
-        Buffer.from(arrayBuffer),
-        file.type,
-        caption || undefined,
-        file.name
-      )
-      messageId = res.messageId
-    } else {
-      // --- Evolution API ---
-      const evolutionClient = await getOrgEvolutionClient(user.organizationId)
-      if (!evolutionClient) {
-        return NextResponse.json({ error: 'Evolution API não está configurada.' }, { status: 400 })
-      }
-
-      const base64 = Buffer.from(arrayBuffer).toString('base64')
-      const base64Data = `data:${file.type};base64,${base64}`
-      const whatsappNumber = evolutionClient.formatPhoneNumber(contact.phone)
-      remoteJid = whatsappNumber
-
-      const evolutionResponse = await evolutionClient.sendMediaMessage({
-        instanceName: connection.instanceName,
-        number: whatsappNumber,
-        mediatype,
-        media: base64Data,
-        caption: caption || undefined,
-        fileName: mediatype === 'document' ? file.name : undefined,
-      })
-
-      messageId = evolutionResponse.key.id
-    }
+    const res = await whatsmeowClient.sendMedia(
+      connection.instanceName,
+      phoneNumber,
+      Buffer.from(arrayBuffer),
+      file.type,
+      caption || undefined,
+      file.name
+    )
+    const messageId = res.messageId
 
     logger.info({
       connectionId: connection.id,
@@ -167,7 +134,7 @@ export async function POST(req: NextRequest) {
       mediatype,
       fileName: file.name,
       fileSize: file.size,
-      provider: useWhatsmeow ? 'whatsmeow' : 'evolution',
+      provider: 'whatsmeow',
     }, 'WhatsApp media message sent')
 
     // 8. Save to database

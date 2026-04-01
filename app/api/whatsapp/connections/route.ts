@@ -1,14 +1,12 @@
 /**
  * API Route: /api/whatsapp/connections
  *
- * CRUD de conexões WhatsApp (Evolution API)
+ * CRUD de conexões WhatsApp (Whatsmeow Gateway)
  */
 
-import { NextRequest, NextResponse } from 'next/server'
+import { NextResponse } from 'next/server'
 import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
-import { getOrgEvolutionClient } from '@/lib/evolution-api-client'
-import { canUseFeature } from '@/lib/entitlements'
 import logger from '@/lib/logger'
 
 /**
@@ -54,153 +52,11 @@ export async function GET() {
 
 /**
  * POST /api/whatsapp/connections
- * Cria nova conexão WhatsApp
+ * Use /api/whatsapp/connections/whatsmeow to create connections.
  */
-export async function POST(req: NextRequest) {
-  try {
-    // 1. Authentication
-    const session = await getSession()
-    if (!session?.user) {
-      return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
-    }
-
-    // 2. Get user with organization
-    const user = await prisma.user.findUnique({
-      where: { id: session.user.id },
-      include: { organization: true },
-    })
-
-    if (!user?.organization) {
-      return NextResponse.json(
-        { error: 'Organização não encontrada' },
-        { status: 404 }
-      )
-    }
-
-    // 3. Check entitlement
-    if (!canUseFeature(user.organization.tier, 'can_use_chat_interface')) {
-      return NextResponse.json(
-        {
-          error: 'Upgrade to PRO to use WhatsApp Chat Center',
-          requiredTier: 'PRO'
-        },
-        { status: 403 }
-      )
-    }
-
-    // 4. Check instance limit
-    const currentConnections = await prisma.whatsAppConnection.count({
-      where: {
-        organizationId: user.organizationId,
-        status: { in: ['CONNECTING', 'CONNECTED'] }
-      },
-    })
-
-    const maxInstances = user.organization.whatsappInstances || 1
-
-    // Contar add-ons de instâncias extras
-    const extraInstances = await prisma.addon.count({
-      where: {
-        organizationId: user.organizationId,
-        type: 'WHATSAPP_EXTRA_INSTANCE',
-        status: 'ACTIVE',
-      },
-    })
-
-    const totalAllowed = maxInstances + extraInstances
-
-    if (currentConnections >= totalAllowed) {
-      return NextResponse.json(
-        {
-          error: `Instance limit reached (${currentConnections}/${totalAllowed}). Upgrade or buy add-on.`,
-          currentConnections,
-          maxInstances: totalAllowed,
-        },
-        { status: 403 }
-      )
-    }
-
-    // 5. Parse request body
-    const body = await req.json()
-    const { instanceName } = body
-
-    if (!instanceName) {
-      return NextResponse.json(
-        { error: 'instanceName is required' },
-        { status: 400 }
-      )
-    }
-
-    // 6. Validar nome da instância (apenas letras, números, hífen)
-    if (!/^[a-zA-Z0-9-]+$/.test(instanceName)) {
-      return NextResponse.json(
-        { error: 'instanceName must contain only letters, numbers, and hyphens' },
-        { status: 400 }
-      )
-    }
-
-    // 7. Verificar se já existe
-    const existing = await prisma.whatsAppConnection.findFirst({
-      where: {
-        organizationId: user.organizationId,
-        instanceName,
-      },
-    })
-
-    if (existing) {
-      return NextResponse.json(
-        { error: 'Instance with this name already exists' },
-        { status: 409 }
-      )
-    }
-
-    // 8. Obter cliente Evolution API da organização
-    const evolutionClient = await getOrgEvolutionClient(user.organizationId)
-    if (!evolutionClient) {
-      return NextResponse.json(
-        { error: 'Evolution API não está configurada. Acesse Configurações > Integrações > WhatsApp para configurar.' },
-        { status: 400 }
-      )
-    }
-
-    // Determinar URL base: usar env var ou derivar do header da requisição
-    const appUrl = process.env.NEXT_PUBLIC_APP_URL || `https://${req.headers.get('host')}`
-    const webhookUrl = `${appUrl}/api/webhooks/evolution`
-
-    const evolutionInstance = await evolutionClient.createInstance({
-      instanceName: `${user.organizationId}-${instanceName}`,
-      qrcode: true,
-      integration: 'WHATSAPP-BAILEYS',
-      webhookUrl,
-    })
-
-    logger.info({
-      organizationId: user.organizationId,
-      instanceName,
-      evolutionInstance,
-    }, 'Evolution API instance created')
-
-    // 9. Salvar no banco
-    const connection = await prisma.whatsAppConnection.create({
-      data: {
-        organizationId: user.organizationId,
-        userId: session.user.id,
-        instanceName: `${user.organizationId}-${instanceName}`,
-        status: 'CONNECTING',
-      },
-    })
-
-    return NextResponse.json(connection, { status: 201 })
-  } catch (error: any) {
-    const errorMessage = error?.message || String(error)
-    logger.error({ error, errorMessage }, 'Error creating WhatsApp connection')
-
-    // Tentar deletar instância do Evolution API se falhou criar no banco
-    // (cleanup)
-
-    return NextResponse.json(
-      { error: 'Failed to create WhatsApp connection', details: errorMessage },
-      { status: 500 }
-    )
-  }
+export async function POST() {
+  return NextResponse.json(
+    { error: 'Use a rota /api/whatsapp/connections/whatsmeow para criar conexões' },
+    { status: 400 }
+  )
 }

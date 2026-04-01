@@ -252,15 +252,20 @@ async function retryN8N(log: any): Promise<{ success: boolean; response?: any; e
 }
 
 /**
- * Retry WhatsApp message
+ * Retry WhatsApp message via Whatsmeow Gateway
  */
 async function retryWhatsApp(log: any): Promise<{ success: boolean; response?: any; error?: string }> {
   try {
-    const { getEvolutionClient } = await import('./evolution-client')
-    const client = await getEvolutionClient(log.organizationId)
+    const { whatsmeowClient } = await import('./whatsmeow-client')
+    const { prisma } = await import('@/lib/prisma')
 
-    if (!client) {
-      return { success: false, error: 'WhatsApp client not configured' }
+    // Find active connection for the organization
+    const connection = await prisma.whatsAppConnection.findFirst({
+      where: { organizationId: log.organizationId, status: 'CONNECTED' }
+    })
+
+    if (!connection) {
+      return { success: false, error: 'No active WhatsApp connection' }
     }
 
     // Extract message data from request
@@ -270,8 +275,10 @@ async function retryWhatsApp(log: any): Promise<{ success: boolean; response?: a
       return { success: false, error: 'Invalid message data in log' }
     }
 
-    // Resend message
-    await client.sendTextMessage(remoteJid, text)
+    // Normalize phone (strip @s.whatsapp.net if present)
+    const phone = remoteJid.replace('@s.whatsapp.net', '').replace(/\D/g, '')
+
+    await whatsmeowClient.sendText(connection.instanceName, phone, text)
 
     return { success: true }
   } catch (error: any) {
