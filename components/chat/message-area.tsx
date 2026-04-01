@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button'
 import {
   Send, Users, Loader2, Check, CheckCheck, Mic, Paperclip,
   Image as ImageIcon, Video, FileText, Download, Play, Pause,
-  File, Search, Reply, X, Info, ArrowLeft,
+  File, Search, Reply, X, Info, ArrowLeft, ChevronDown,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { toast } from 'sonner'
@@ -24,6 +24,8 @@ import { TypingIndicator } from './typing-indicator'
 import { ReactionBar } from './reaction-bar'
 import { ReactionChips } from './reaction-chips'
 import { MediaLightbox } from './media-lightbox'
+import { usePusher } from '@/hooks/use-pusher'
+import type { ChatTypingEvent, MessageNewEvent, MessageStatusEvent } from '@/hooks/use-pusher'
 
 interface Tag { id: string; name: string; color: string }
 interface Deal {
@@ -424,22 +426,28 @@ export function MessageArea({ contact, connections, organizationId, userId, user
   const [showReactionBar, setShowReactionBar] = useState<string | null>(null)
   const [lightbox, setLightbox] = useState<{ src: string; type: 'image' | 'video' } | null>(null)
   const [isDragOver, setIsDragOver] = useState(false)
+  const [atBottom, setAtBottom] = useState(true)
+  const [newMsgCount, setNewMsgCount] = useState(0)
   const virtuosoRef = useRef<VirtuosoHandle>(null)
 
   const openLightbox = useCallback((src: string, type: 'image' | 'video') => {
     setLightbox({ src, type })
   }, [])
+
   const taRef = useRef<HTMLTextAreaElement>(null)
   const prevMsgCount = useRef(0)
-  // Keep a ref to messages so scroll callbacks are never stale
+  // Keep refs so callbacks are never stale
   const messagesRef = useRef(messages)
   messagesRef.current = messages
+  const atBottomRef = useRef(atBottom)
+  atBottomRef.current = atBottom
 
   const scrollToBottom = useCallback((behavior: ScrollBehavior = 'smooth') => {
     virtuosoRef.current?.scrollToIndex({
       index: 'LAST',
       behavior: behavior === 'instant' ? 'auto' : 'smooth',
     })
+    setNewMsgCount(0)
   }, [])
 
   const scrollToMessage = useCallback((messageId: string) => {
@@ -461,14 +469,47 @@ export function MessageArea({ contact, connections, organizationId, userId, user
         // Keep any temp messages that are still being sent
         const tempMsgs = prev.filter(m => m.id.startsWith('temp-'))
         const merged = [...d, ...tempMsgs]
-        if (merged.length > prev.length) {
-          setTimeout(() => scrollToBottom(), 100)
+        const newCount = merged.length - prev.length
+        if (newCount > 0) {
+          if (atBottomRef.current) {
+            setTimeout(() => scrollToBottom(), 100)
+          } else {
+            setNewMsgCount(c => c + newCount)
+          }
         }
         return merged
       })
     } catch { if (show) toast.error('Erro ao carregar mensagens') }
     finally { setLoading(false) }
   }, [contact.id, scrollToBottom])
+
+  // Pusher: real-time typing indicator + message/status updates
+  const contactPhone = contact.phone
+  usePusher({
+    organizationId,
+    onChatTyping: useCallback((data: ChatTypingEvent) => {
+      if (!contactPhone) return
+      const jidPhone = data.remoteJid?.replace('@s.whatsapp.net', '').replace('@c.us', '') || ''
+      const cleanContactPhone = contactPhone.replace(/\D/g, '')
+      if (jidPhone.includes(cleanContactPhone) || cleanContactPhone.includes(jidPhone)) {
+        setIsTyping(data.isTyping)
+        if (data.isTyping) {
+          if (typingTimeoutRef.current) clearTimeout(typingTimeoutRef.current)
+          typingTimeoutRef.current = setTimeout(() => setIsTyping(false), 5000)
+        }
+      }
+    }, [contactPhone]),
+    onMessageNew: useCallback((data: MessageNewEvent) => {
+      if (data.contactId === contact.id) {
+        fetchMsgs()
+      }
+    }, [contact.id, fetchMsgs]),
+    onMessageStatus: useCallback((data: MessageStatusEvent) => {
+      setMessages(prev => prev.map(m =>
+        m.messageId === data.messageId ? { ...m, status: data.status } : m
+      ))
+    }, []),
+  })
 
   const fetchContactData = useCallback(async () => {
     try {
@@ -980,6 +1021,10 @@ export function MessageArea({ contact, connections, organizationId, userId, user
           data={messageItems}
           followOutput="smooth"
           initialTopMostItemIndex={Math.max(0, messageItems.length - 1)}
+          atBottomStateChange={(bottom) => {
+            setAtBottom(bottom)
+            if (bottom) setNewMsgCount(0)
+          }}
           components={{
             Footer: () => (
               <>
@@ -1127,6 +1172,24 @@ export function MessageArea({ contact, connections, organizationId, userId, user
               )
           }}
         />
+      )}
+
+      {/* Scroll to bottom FAB */}
+      {!atBottom && messages.length > 0 && (
+        <div className="relative">
+          <button
+            onClick={() => scrollToBottom()}
+            className="absolute bottom-2 right-4 z-20 h-10 w-10 rounded-full bg-white dark:bg-zinc-800 shadow-lg flex items-center justify-center hover:bg-gray-50 dark:hover:bg-zinc-700 transition-all animate-in fade-in-0 slide-in-from-bottom-2 duration-200"
+            title="Rolar para o final"
+          >
+            <ChevronDown className="h-5 w-5 text-[#54656f]" />
+            {newMsgCount > 0 && (
+              <span className="absolute -top-1.5 -right-1.5 min-w-[20px] h-5 rounded-full bg-[#00a884] text-white text-[11px] font-bold flex items-center justify-center px-1">
+                {newMsgCount > 99 ? '99+' : newMsgCount}
+              </span>
+            )}
+          </button>
+        </div>
       )}
 
       {/* Reply preview bar */}

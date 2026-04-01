@@ -46,6 +46,11 @@ export interface ConnectionReadyEvent {
   instanceName: string
 }
 
+export interface ChatTypingEvent {
+  remoteJid: string
+  isTyping: boolean
+}
+
 
 // --- Singleton client management ---
 
@@ -111,6 +116,7 @@ export interface UsePusherOptions {
   onMessageSent?: (data: MessageSentEvent) => void
   onMessageStatus?: (data: MessageStatusEvent) => void
   onConnectionReady?: (data: ConnectionReadyEvent) => void
+  onChatTyping?: (data: ChatTypingEvent) => void
 }
 
 export function usePusher({
@@ -120,6 +126,7 @@ export function usePusher({
   onMessageSent,
   onMessageStatus,
   onConnectionReady,
+  onChatTyping,
 }: UsePusherOptions) {
   const [connectionStatus, setConnectionStatus] = useState<'connected' | 'connecting' | 'disconnected'>('disconnected')
 
@@ -128,11 +135,13 @@ export function usePusher({
   const onMessageSentRef = useRef(onMessageSent)
   const onMessageStatusRef = useRef(onMessageStatus)
   const onConnectionReadyRef = useRef(onConnectionReady)
+  const onChatTypingRef = useRef(onChatTyping)
 
   onMessageNewRef.current = onMessageNew
   onMessageSentRef.current = onMessageSent
   onMessageStatusRef.current = onMessageStatus
   onConnectionReadyRef.current = onConnectionReady
+  onChatTypingRef.current = onChatTyping
 
   useEffect(() => {
     const key = process.env.NEXT_PUBLIC_PUSHER_KEY
@@ -161,17 +170,20 @@ export function usePusher({
     const handleMessageSent = (data: MessageSentEvent) => onMessageSentRef.current?.(data)
     const handleMessageStatus = (data: MessageStatusEvent) => onMessageStatusRef.current?.(data)
     const handleConnectionReady = (data: ConnectionReadyEvent) => onConnectionReadyRef.current?.(data)
+    const handleChatTyping = (data: ChatTypingEvent) => onChatTypingRef.current?.(data)
 
     channel.bind('message:new', handleMessageNew)
     channel.bind('message:sent', handleMessageSent)
     channel.bind('message:status', handleMessageStatus)
     channel.bind('connection:ready', handleConnectionReady)
+    channel.bind('chat:typing', handleChatTyping)
 
     return () => {
       channel.unbind('message:new', handleMessageNew)
       channel.unbind('message:sent', handleMessageSent)
       channel.unbind('message:status', handleMessageStatus)
       channel.unbind('connection:ready', handleConnectionReady)
+      channel.unbind('chat:typing', handleChatTyping)
 
       client.connection.unbind('connected', onConnected)
       client.connection.unbind('disconnected', onDisconnected)

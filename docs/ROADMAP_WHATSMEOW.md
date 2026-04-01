@@ -245,8 +245,8 @@
 
 #### 8.4 — UX do Chat
 
-- [ ] **Indicador de digitação**: Mostrar "digitando..." baseado no Pusher `chat:typing` event
-  - Animação com 3 dots (já existe `typing-indicator.tsx`, conectar ao Pusher)
+- [x] **Indicador de digitação**: Mostrar "digitando..." baseado no Pusher `chat:typing` event
+  - Conectado via `usePusher` hook em `message-area.tsx`, auto-clear 5s failsafe
 - [ ] **Link preview**: Detectar URLs no texto e mostrar card com título + imagem + domínio
   - Endpoint: `GET /api/og-preview?url=...` (fetch Open Graph tags server-side)
   - Cache de OG data por URL
@@ -255,10 +255,10 @@
   - Click abre Google Maps
 - [ ] **Contatos compartilhados**: Renderizar card com nome + telefone do vCard
   - Botão "Adicionar ao CRM" para criar contato automaticamente
-- [ ] **Scroll to bottom FAB**: Botão flutuante quando scroll está acima das últimas mensagens
-  - Badge com count de novas mensagens não vistas
-- [ ] **Read receipts visuais**: Ticks azuis animados (✓ → ✓✓ → ✓✓ azul)
-  - Já parcialmente implementado — refinar animação de transição
+- [x] **Scroll to bottom FAB**: Botão flutuante quando scroll está acima das últimas mensagens
+  - Badge com count de novas mensagens não vistas, Virtuoso `atBottomStateChange`
+- [x] **Read receipts visuais**: Ticks azuis animados (✓ → ✓✓ → ✓✓ azul)
+  - Real-time via Pusher `message:status` event, atualiza status inline sem re-fetch
 
 #### 8.5 — Performance & Polish
 
