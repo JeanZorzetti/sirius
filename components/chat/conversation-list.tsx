@@ -164,9 +164,9 @@ export function ConversationList({ contacts, selectedContact, onSelectContact, c
   }, [])
 
   useEffect(() => {
-    // Fetch profile pics for visible contacts without cached photos (non-groups only)
+    // Fetch profile pics for visible contacts (non-groups only)
+    // Always fetch via proxy since WhatsApp CDN URLs expire
     const toFetch = contacts.filter(c =>
-      !c.profilePicUrl &&
       !c.phone?.includes('@g.us') &&
       !fetchedRef.current.has(c.id)
     )
@@ -339,8 +339,8 @@ export function ConversationList({ contacts, selectedContact, onSelectContact, c
                 {/* Avatar */}
                 <div className="relative flex-shrink-0">
                   <Avatar className="h-[48px] w-[48px]">
-                    {(contact.profilePicUrl || profilePics[contact.id]) && (
-                      <AvatarImage src={contact.profilePicUrl || profilePics[contact.id]} alt={name} />
+                    {profilePics[contact.id] && (
+                      <AvatarImage src={profilePics[contact.id]} alt={name} />
                     )}
                     <AvatarFallback className={cn('text-sm font-semibold text-white', color)}>
                       {group ? <Users className="h-5 w-5" /> : initials(contact)}

@@ -570,11 +570,11 @@ export function MessageArea({ contact, connections, organizationId, userId, user
     fetchUsers()
   }, [])
 
-  // Fetch profile picture if not cached
-  const [profilePicUrl, setProfilePicUrl] = useState<string | null>(contact.profilePicUrl || null)
+  // Fetch profile picture via proxy (WhatsApp CDN URLs expire)
+  const [profilePicUrl, setProfilePicUrl] = useState<string | null>(null)
   useEffect(() => {
-    setProfilePicUrl(contact.profilePicUrl || null)
-    if (!contact.profilePicUrl && contact.phone && !contact.phone.includes('@g.us')) {
+    setProfilePicUrl(null)
+    if (contact.phone && !contact.phone.includes('@g.us')) {
       fetch(`/api/whatsapp/profile-pic?contactId=${contact.id}`)
         .then(r => r.json())
         .then(data => {
@@ -582,7 +582,7 @@ export function MessageArea({ contact, connections, organizationId, userId, user
         })
         .catch(() => {})
     }
-  }, [contact.id, contact.profilePicUrl, contact.phone])
+  }, [contact.id, contact.phone])
 
   // Marcar mensagens como lidas quando a conversa é aberta
   useEffect(() => {
@@ -927,8 +927,8 @@ export function MessageArea({ contact, connections, organizationId, userId, user
             </Button>
           )}
           <Avatar className="h-10 w-10">
-            {(profilePicUrl || contact.profilePicUrl) && (
-              <AvatarImage src={profilePicUrl || contact.profilePicUrl || ''} alt={name} />
+            {profilePicUrl && (
+              <AvatarImage src={profilePicUrl} alt={name} />
             )}
             <AvatarFallback className={cn('text-xs font-semibold text-white', clr)}>
               {isGrp ? <Users className="h-4 w-4" /> : initials()}
