@@ -8,6 +8,8 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { getOrgEvolutionClient } from '@/lib/evolution-api-client'
+import { isWhatsmeow } from '@/lib/whatsapp-provider'
+import { whatsmeowClient } from '@/lib/integrations/whatsmeow-client'
 import logger from '@/lib/logger'
 
 /**
@@ -55,15 +57,19 @@ export async function DELETE(
       )
     }
 
-    // 4. Delete from Evolution API (logout + delete instance)
+    // 4. Delete from gateway (whatsmeow or Evolution)
     try {
-      const evolutionClient = await getOrgEvolutionClient(user.organizationId)
-      if (evolutionClient) {
-        await evolutionClient.deleteInstance(connection.instanceName)
+      if (isWhatsmeow(connection)) {
+        await whatsmeowClient.deleteInstance(connection.instanceName)
+      } else {
+        const evolutionClient = await getOrgEvolutionClient(user.organizationId)
+        if (evolutionClient) {
+          await evolutionClient.deleteInstance(connection.instanceName)
+        }
       }
     } catch (error) {
-      // Log but continue - instance might already be deleted
-      logger.warn({ error, instanceName: connection.instanceName }, 'Failed to delete Evolution API instance')
+      // Log but continue - instance might already be deleted on gateway
+      logger.warn({ error, instanceName: connection.instanceName }, 'Failed to delete gateway instance (continuing)')
     }
 
     // 5. Delete from database

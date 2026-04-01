@@ -1,16 +1,24 @@
 'use client'
 
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Badge } from '@/components/ui/badge'
 import { useToast } from '@/hooks/use-toast'
-import { Loader2, Smartphone, Wifi, WifiOff, RefreshCw, QrCode } from 'lucide-react'
+import { Loader2, Smartphone, Wifi, WifiOff, RefreshCw, QrCode, Trash2, Plus } from 'lucide-react'
 import QRCode from 'qrcode'
 
 type Step = 'idle' | 'creating' | 'qr' | 'connected' | 'error'
+
+interface Connection {
+  id: string
+  instanceName: string
+  status: string
+  phoneNumber: string | null
+  connectedAt: string | null
+}
 
 export function WhatsmeowConnectCard() {
   const { toast } = useToast()
@@ -18,11 +26,30 @@ export function WhatsmeowConnectCard() {
   const [instanceName, setInstanceName] = useState('')
   const [qrDataUrl, setQrDataUrl] = useState<string | null>(null)
   const [gatewayInstanceId, setGatewayInstanceId] = useState<string | null>(null)
+  const [connections, setConnections] = useState<Connection[]>([])
+  const [loadingConnections, setLoadingConnections] = useState(true)
+  const [deletingId, setDeletingId] = useState<string | null>(null)
+  const [showForm, setShowForm] = useState(false)
   const eventSourceRef = useRef<EventSource | null>(null)
 
-  useEffect(() => {
-    return () => eventSourceRef.current?.close()
+  const fetchConnections = useCallback(async () => {
+    try {
+      const res = await fetch('/api/whatsapp/connections')
+      if (res.ok) {
+        const data = await res.json()
+        setConnections(data)
+      }
+    } catch {
+      // silent
+    } finally {
+      setLoadingConnections(false)
+    }
   }, [])
+
+  useEffect(() => {
+    fetchConnections()
+    return () => eventSourceRef.current?.close()
+  }, [fetchConnections])
 
   async function handleCreate() {
     if (!instanceName.trim()) return
@@ -68,8 +95,9 @@ export function WhatsmeowConnectCard() {
     })
 
     es.onerror = () => {
-      // SSE closes after QR scan (success) or timeout
       es.close()
+      // Recarrega lista após scan
+      fetchConnections()
     }
   }
 
@@ -79,12 +107,35 @@ export function WhatsmeowConnectCard() {
     setInstanceName('')
     setQrDataUrl(null)
     setGatewayInstanceId(null)
+    setShowForm(false)
+    fetchConnections()
   }
 
   function handleRefreshQR() {
     if (!gatewayInstanceId) return
     startQRStream(`/api/whatsapp/connections/whatsmeow/${gatewayInstanceId}/qr`)
   }
+
+  async function handleDelete(connectionId: string, instanceNameLabel: string) {
+    if (!confirm(`Deletar a instância "${instanceNameLabel}"? Esta ação não pode ser desfeita.`)) return
+    setDeletingId(connectionId)
+    try {
+      const res = await fetch(`/api/whatsapp/connections/${connectionId}`, { method: 'DELETE' })
+      if (res.ok) {
+        toast({ title: 'Instância deletada', description: `"${instanceNameLabel}" removida com sucesso.` })
+        fetchConnections()
+      } else {
+        const data = await res.json()
+        toast({ title: 'Erro ao deletar', description: data.error, variant: 'destructive' })
+      }
+    } catch {
+      toast({ title: 'Erro', description: 'Falha ao deletar instância.', variant: 'destructive' })
+    } finally {
+      setDeletingId(null)
+    }
+  }
+
+  const isCreating = step === 'creating' || step === 'qr'
 
   return (
     <Card className="bg-white dark:bg-white/[0.02] border-border/50">
@@ -99,15 +150,68 @@ export function WhatsmeowConnectCard() {
               Conexão direta — sem Evolution API
             </CardDescription>
           </div>
-          <div className="ml-auto">
-            <StatusBadge step={step} />
-          </div>
         </div>
       </CardHeader>
 
       <CardContent className="space-y-4">
-        {step === 'idle' && (
-          <div className="space-y-3">
+        {/* Lista de conexões existentes */}
+        {loadingConnections ? (
+          <div className="flex items-center gap-2 py-2">
+            <Loader2 className="h-3.5 w-3.5 animate-spin text-muted-foreground" />
+            <span className="text-xs text-muted-foreground">Carregando instâncias...</span>
+          </div>
+        ) : connections.length > 0 ? (
+          <div className="space-y-2">
+            {connections.map((conn) => (
+              <div
+                key={conn.id}
+                className="flex items-center justify-between p-2.5 rounded-lg border border-border/50 bg-muted/30"
+              >
+                <div className="flex items-center gap-2.5 min-w-0">
+                  <StatusDot status={conn.status} />
+                  <div className="min-w-0">
+                    <p className="text-xs font-medium truncate">{conn.instanceName}</p>
+                    {conn.phoneNumber && (
+                      <p className="text-[11px] text-muted-foreground">{conn.phoneNumber}</p>
+                    )}
+                  </div>
+                </div>
+                <div className="flex items-center gap-2 flex-shrink-0">
+                  <StatusBadgeSmall status={conn.status} />
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="h-7 w-7 text-muted-foreground hover:text-destructive hover:bg-destructive/10"
+                    onClick={() => handleDelete(conn.id, conn.instanceName)}
+                    disabled={deletingId === conn.id}
+                  >
+                    {deletingId === conn.id ? (
+                      <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                    ) : (
+                      <Trash2 className="h-3.5 w-3.5" />
+                    )}
+                  </Button>
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : null}
+
+        {/* Formulário / QR de nova instância */}
+        {!isCreating && !showForm && (
+          <Button
+            variant="outline"
+            size="sm"
+            className="w-full h-9 gap-2 text-xs"
+            onClick={() => setShowForm(true)}
+          >
+            <Plus className="h-3.5 w-3.5" />
+            Adicionar instância
+          </Button>
+        )}
+
+        {!isCreating && showForm && (
+          <div className="space-y-3 pt-1">
             <div className="space-y-1.5">
               <Label className="text-xs font-medium">Nome da instância</Label>
               <Input
@@ -116,20 +220,31 @@ export function WhatsmeowConnectCard() {
                 onChange={(e) => setInstanceName(e.target.value.replace(/[^a-zA-Z0-9-]/g, ''))}
                 onKeyDown={(e) => e.key === 'Enter' && handleCreate()}
                 className="h-9 text-sm"
+                autoFocus
               />
               <p className="text-[11px] text-muted-foreground">
                 Apenas letras, números e hífen.
               </p>
             </div>
-            <Button
-              onClick={handleCreate}
-              disabled={!instanceName.trim()}
-              size="sm"
-              className="w-full h-9 gap-2"
-            >
-              <QrCode className="h-3.5 w-3.5" />
-              Criar e conectar
-            </Button>
+            <div className="flex gap-2">
+              <Button
+                onClick={handleCreate}
+                disabled={!instanceName.trim()}
+                size="sm"
+                className="flex-1 h-9 gap-2"
+              >
+                <QrCode className="h-3.5 w-3.5" />
+                Criar e conectar
+              </Button>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="h-9 px-3 text-xs text-muted-foreground"
+                onClick={() => { setShowForm(false); setInstanceName('') }}
+              >
+                Cancelar
+              </Button>
+            </div>
           </div>
         )}
 
@@ -188,44 +303,36 @@ export function WhatsmeowConnectCard() {
             </p>
           </div>
         )}
-
-        {step === 'connected' && (
-          <div className="flex flex-col items-center gap-3 py-4">
-            <div className="h-10 w-10 rounded-full bg-emerald-500/10 flex items-center justify-center">
-              <Wifi className="h-5 w-5 text-emerald-500" />
-            </div>
-            <p className="text-sm font-medium">Conectado com sucesso!</p>
-            <p className="text-xs text-muted-foreground text-center">
-              Mensagens recebidas serão salvas automaticamente no CRM.
-            </p>
-            <Button variant="outline" size="sm" onClick={handleReset} className="h-8 text-xs">
-              Adicionar outra instância
-            </Button>
-          </div>
-        )}
       </CardContent>
     </Card>
   )
 }
 
-function StatusBadge({ step }: { step: Step }) {
-  if (step === 'connected')
+function StatusDot({ status }: { status: string }) {
+  const color =
+    status === 'CONNECTED' ? 'bg-emerald-500' :
+    status === 'CONNECTING' ? 'bg-amber-500 animate-pulse' :
+    'bg-zinc-400'
+  return <span className={`h-2 w-2 rounded-full flex-shrink-0 ${color}`} />
+}
+
+function StatusBadgeSmall({ status }: { status: string }) {
+  if (status === 'CONNECTED')
     return (
-      <Badge variant="outline" className="text-emerald-500 border-emerald-500/30 bg-emerald-500/5 text-[11px] gap-1">
-        <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
-        Conectado
+      <Badge variant="outline" className="text-emerald-500 border-emerald-500/30 bg-emerald-500/5 text-[10px] px-1.5 py-0">
+        <Wifi className="h-2.5 w-2.5 mr-1" />
+        Ativo
       </Badge>
     )
-  if (step === 'qr' || step === 'creating')
+  if (status === 'CONNECTING')
     return (
-      <Badge variant="outline" className="text-amber-500 border-amber-500/30 bg-amber-500/5 text-[11px] gap-1">
-        <span className="h-1.5 w-1.5 rounded-full bg-amber-500 animate-pulse" />
-        Aguardando
+      <Badge variant="outline" className="text-amber-500 border-amber-500/30 bg-amber-500/5 text-[10px] px-1.5 py-0">
+        Conectando
       </Badge>
     )
   return (
-    <Badge variant="outline" className="text-muted-foreground text-[11px] gap-1">
-      <WifiOff className="h-2.5 w-2.5" />
+    <Badge variant="outline" className="text-muted-foreground text-[10px] px-1.5 py-0">
+      <WifiOff className="h-2.5 w-2.5 mr-1" />
       Inativo
     </Badge>
   )
