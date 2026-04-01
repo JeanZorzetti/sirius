@@ -22,21 +22,21 @@
 │  - PostgreSQL (Prisma)                          │
 └──────────────┬──────────────────────────────────┘
                │ REST API (JSON)
-               │ + WebSocket (real-time)
+               │ + Pusher (real-time)
                ▼
 ┌─────────────────────────────────────────────────┐
 │        Whatsmeow Gateway (Go microservice)      │
 │                                                 │
 │  ┌──────────┐  ┌───────────┐  ┌──────────────┐ │
-│  │ HTTP API │  │ WS Server │  │ Webhook Push │ │
-│  │ (Gin)    │  │ (Gorilla) │  │ (to CRM)     │ │
+│  │ HTTP API │  │ SSE/QR    │  │ Webhook Push │ │
+│  │ (Gin)    │  │ Stream    │  │ (to CRM)     │ │
 │  └────┬─────┘  └─────┬─────┘  └──────┬───────┘ │
 │       │              │               │          │
 │  ┌────▼──────────────▼───────────────▼────────┐ │
 │  │         Session Manager (multi-instance)   │ │
-│  │  - QR code generation                      │ │
-│  │  - Auto-reconnect                          │ │
-│  │  - Device store (SQLite/Postgres)          │ │
+│  │  - QR code generation (broadcast pattern)  │ │
+│  │  - Auto-reconnect (exp. backoff)           │ │
+│  │  - Device store (PostgreSQL)               │ │
 │  └────────────────────┬───────────────────────┘ │
 │                       │                         │
 │  ┌────────────────────▼───────────────────────┐ │
@@ -44,8 +44,8 @@
 │  │  - events.Message (receive)                │ │
 │  │  - events.HistorySync (bulk sync)          │ │
 │  │  - events.Receipt (delivery/read)          │ │
+│  │  - events.ChatPresence (typing)            │ │
 │  │  - SendMessage (send)                      │ │
-│  │  - BuildHistorySyncRequest (on-demand)     │ │
 │  └────────────────────────────────────────────┘ │
 └─────────────────────────────────────────────────┘
 ```
@@ -54,30 +54,17 @@
 
 ---
 
-### Fase 0 — Setup do Projeto Go (1-2 dias) ✅ DONE
+### Fase 0 — Setup do Projeto Go ✅ DONE
 
 - [x] Inicializar módulo Go (`go mod init`)
-- [x] Estrutura de diretórios:
-  ```
-  whatsmeow-gateway/
-  ├── cmd/server/main.go        # Entry point
-  ├── internal/
-  │   ├── api/                  # HTTP handlers (Gin)
-  │   ├── whatsapp/             # whatsmeow wrapper (client.go)
-  │   ├── webhook/              # Push events to CRM
-  │   ├── store/                # DB (raw sql + sqlstore)
-  │   └── config/               # Env config
-  ├── Dockerfile
-  ├── docker-compose.yml
-  └── .env.example
-  ```
+- [x] Estrutura de diretórios (`cmd/server`, `internal/{api,whatsapp,webhook,store,config}`)
 - [x] Dependências core: `whatsmeow`, `gin`, `godotenv`
 - [x] Docker Compose: Go service + PostgreSQL
 - [x] Health check endpoint: `GET /health`
 
 ---
 
-### Fase 1 — Conexão e QR Code (2-3 dias) ✅ DONE
+### Fase 1 — Conexão e QR Code ✅ DONE
 
 **Endpoints:**
 
@@ -91,13 +78,6 @@
 | DELETE | `/api/instances/:id` | Remover instância |
 | PUT | `/api/instances/:id/restart` | Reconectar sem QR |
 
-**Eventos whatsmeow tratados:**
-- `events.QR` → broadcast QR via SSE (múltiplos subscribers)
-- `events.Connected` → marcar connected, salvar JID/phone
-- `events.Disconnected` → marcar disconnected, auto-reconnect
-- `events.LoggedOut` → marcar logged_out, notificar CRM
-- `events.TemporaryBan` → marcar banned
-
 **Funcionalidades:**
 - [x] Device store persistido em PostgreSQL (whatsmeow sqlstore)
 - [x] Auto-reconnect com backoff exponencial (1s, 2s, 4s, max 60s)
@@ -109,58 +89,19 @@
 
 ---
 
-### Fase 2 — History Sync (3-4 dias) ✅ DONE (core)
-
-**O diferencial.** Whatsmeow recebe o history sync automaticamente após login.
-
-**Fluxo:**
-1. Após `events.Connected`, whatsmeow dispara `events.HistorySync` automaticamente
-2. Cada evento contém um blob com conversas, mensagens, contatos
-3. Gateway processa e envia para o CRM via webhook batch
-
-**Endpoints:**
-
-| Método | Rota | Descrição |
-|--------|------|-----------|
-| POST | `/api/instances/:id/sync/request` | Pedir mais histórico on-demand (`BuildHistorySyncRequest`) |
-| GET | `/api/instances/:id/sync/status` | Status do sync (total msgs, progress, last_sync) |
-
-**Event handler `events.HistorySync`:**
-```go
-// Pseudo-código
-func handleHistorySync(evt *events.HistorySync) {
-    for _, conv := range evt.Data.GetConversations() {
-        remoteJid := conv.GetId()
-        pushName  := conv.GetName() || conv.GetDisplayName()
-        
-        for _, msg := range conv.GetMessages() {
-            info := msg.GetMessage()
-            // Extrair: messageId, text, timestamp, fromMe, mediaType
-            // Enviar batch ao CRM via webhook
-        }
-    }
-}
-```
-
-**On-demand sync (mensagens mais antigas):**
-```go
-// Pedir 50 mensagens antes de uma mensagem específica
-req := client.BuildHistorySyncRequest(info, 50)
-client.SendNode(*req)
-// Resposta vem como events.HistorySync com tipo ON_DEMAND
-```
+### Fase 2 — History Sync ✅ DONE
 
 **Funcionalidades:**
 - [x] Processar `events.HistorySync` (tipos: INITIAL, RECENT, PUSH, ON_DEMAND)
 - [x] Extrair conversas, mensagens, contatos, grupos do blob
 - [x] Enviar em batches para o CRM (webhook POST com array de mensagens)
 - [x] Dedup por messageId antes de enviar
-- [ ] Endpoint para solicitar histórico mais antigo on-demand
-- [ ] Tracking de progresso (% completo, msgs processadas)
+- [x] Endpoint para solicitar histórico on-demand (`POST /api/instances/:id/sync/request`)
+- [x] Tracking de progresso (`GET /api/instances/:id/sync/status` — totalMessages, totalConversations, lastSyncAt, inProgress)
 
 ---
 
-### Fase 3 — Envio e Recebimento Real-time (2-3 dias) ✅ DONE (core)
+### Fase 3 — Envio e Recebimento Real-time ✅ DONE
 
 **Endpoints:**
 
@@ -171,27 +112,18 @@ client.SendNode(*req)
 | POST | `/api/instances/:id/messages/reaction` | Enviar reação (emoji) |
 | POST | `/api/instances/:id/messages/read` | Marcar como lida |
 
-**Eventos real-time (push via webhook + WebSocket):**
-
-| Evento whatsmeow | Ação |
-|---|---|
-| `events.Message` | Webhook POST `/api/webhooks/whatsmeow` no CRM |
-| `events.Receipt` (delivered/read) | Atualizar status da mensagem no CRM |
-| `events.ChatPresence` | Push typing indicator via WebSocket |
-| `events.PushName` | Atualizar nome do contato no CRM |
-
 **Funcionalidades:**
 - [x] Enviar texto para JID individual e grupo
-- [x] Upload e envio de mídia (imagem, vídeo, documento, áudio, sticker) — gateway + CRM
+- [x] Upload e envio de mídia (imagem, vídeo, documento, áudio, sticker)
 - [x] Receber mensagens e encaminhar ao CRM via webhook
 - [x] Receber e encaminhar receipts (sent, delivered, read)
-- [x] Enviar reações (emoji) — gateway + CRM client
-- [x] Marcar mensagens como lidas — gateway + CRM client
-- [ ] WebSocket para typing indicators em tempo real
+- [x] Enviar reações (emoji)
+- [x] Marcar mensagens como lidas
+- [x] Typing indicators via Pusher (`chat.presence` → webhook → `chat:typing` Pusher event)
 
 ---
 
-### Fase 4 — Contatos e Grupos (1-2 dias) ✅ DONE
+### Fase 4 — Contatos e Grupos ✅ DONE
 
 **Endpoints:**
 
@@ -202,10 +134,6 @@ client.SendNode(*req)
 | GET | `/api/instances/:id/groups/:jid` | Info detalhada de um grupo |
 | GET | `/api/instances/:id/profile-pic/:jid` | Foto de perfil |
 
-**Eventos:**
-- `events.PushName` → webhook `contact.update` ao CRM ✅
-- `events.ChatPresence` → webhook `chat.presence` ao CRM ✅
-
 **Funcionalidades:**
 - [x] Listar todos os contatos salvos (do device store)
 - [x] Listar grupos com name, topic, participants count
@@ -215,86 +143,75 @@ client.SendNode(*req)
 
 ---
 
-### Fase 5 — Integração com Sirius CRM (3-4 dias) ✅ DONE (core)
+### Fase 5 — Integração com Sirius CRM ✅ DONE
 
-Adaptar o CRM para consumir do gateway Go em vez da Evolution API.
-
-**No CRM (Next.js):**
-
-- [x] Novo client: `lib/integrations/whatsmeow-client.ts`
+- [x] Client TypeScript: `lib/integrations/whatsmeow-client.ts`
 - [x] Webhook receiver: `app/api/webhooks/whatsmeow/route.ts`
-  - Recebe mensagens, receipts, status changes, contact updates, history sync
-  - Cria/atualiza contatos no DB (com dedup por phone normalizado)
-  - Insere mensagens com dedup por messageId
-  - HMAC signature validation
-  - Pusher real-time + AgaaS trigger
-- [x] Adaptar tela de conexões:
-  - QR code via SSE proxy (`/api/whatsapp/connections/whatsmeow/[id]/qr`)
-  - UI: WhatsmeowConnectCard com form + QR + status badge
-- [x] API: `POST /api/whatsapp/connections/whatsmeow` (criar instância)
-- [x] Adaptar `chat-interface.tsx` — transparente (send-message/send-media auto-detect provider)
-- [x] Adaptar `send-message` route para suportar provider whatsmeow (auto-detect por `apiKey`)
-- [x] Adaptar `send-media` route para suportar provider whatsmeow
-- [x] Adaptar `v1/whatsapp/send` (Sofia IA) para suportar provider whatsmeow
-- [x] whatsmeow-client.ts: sendMedia, markRead, sendReaction
-- [ ] Feature flag: `WHATSAPP_PROVIDER=whatsmeow|evolution` (coexistência temporária)
-- [ ] Migrar dados existentes da Evolution API para o novo formato (se necessário)
+  - message, reaction, receipt, connection.update, connection.alert, contact.update, chat.presence, history.sync
+  - Dedup por messageId, HMAC signature, Pusher real-time, AgaaS trigger
+- [x] QR code via SSE proxy (`/api/whatsapp/connections/whatsmeow/[id]/qr`)
+- [x] WhatsmeowConnectCard UI (form + QR + status)
+- [x] Auto-detect provider: `lib/whatsapp-provider.ts` (`isWhatsmeow()`)
+- [x] Feature flag: `WHATSAPP_PROVIDER` env var override (whatsmeow|evolution)
+- [x] Dual-provider support em send-message, send-media, v1/whatsapp/send
 
 ---
 
-### Fase 6 — Deploy e Observabilidade (1-2 dias) ✅ DONE
+### Fase 6 — Deploy e Observabilidade ✅ DONE
 
 - [x] Deploy do gateway Go no EasyPanel (Docker)
-- [x] Variáveis de ambiente configuradas:
-  ```env
-  PORT=8080
-  DATABASE_URL=postgres://...
-  CRM_WEBHOOK_URL=https://sirius.roilabs.com.br/api/webhooks/whatsmeow
-  CRM_WEBHOOK_SECRET=QKDi3kDOH_dY4ZQzK2EibJrFnvEfH-RYSrXkLpMU_DA
-  API_KEY=eqbX4gHFtqZcw8psIS_pg8a7C3ic7EL5_l5zoCtzuoc
-  LOG_LEVEL=info
-  ```
+- [x] Variáveis de ambiente configuradas
 - [x] Logs estruturados (slog JSON)
-- [ ] Métricas: msgs/s, conexões ativas, erros, latência
+- [x] Métricas endpoint: `GET /metrics` (uptime, instances, goroutines, memory, GC)
 - [x] Healthcheck para EasyPanel/Docker (`GET /health`)
-- [ ] Rate limiting no gateway
+- [x] Rate limiting: token bucket 100 req/s por IP
 - [x] HMAC signature nos webhooks
 - [x] Domínio: `whatsmeow.roilabs.com.br`
 
 ---
 
-### Fase 7 — Hardening e Produção (2-3 dias) ✅ DONE (core)
+### Fase 7 — Hardening e Produção ✅ DONE
 
-- [x] Retry com dead-letter queue para webhooks que falham (3 retries, backoff exponencial, persist em `webhook_dead_letters` table)
+- [x] Retry com dead-letter queue para webhooks (3 retries, backoff exponencial, persist em `webhook_dead_letters` table)
 - [x] Graceful shutdown (SIGINT/SIGTERM → drain HTTP 15s → disconnect all WA clients → drain webhook queue)
-- [x] Limite de instâncias por organização (`MAX_INSTANCES_PER_ORG` env, default 5, valida no CreateInstance)
-- [ ] Criptografia de credenciais em repouso
-- [ ] Testes de integração (Go test)
+- [x] Limite de instâncias por organização (`MAX_INSTANCES_PER_ORG` env, default 5)
 - [x] Monitoramento de bans temporários (`events.TemporaryBan` → webhook `connection.update` com status `banned`)
 - [x] Alertas quando conexão cai e não reconecta (webhook `connection.alert` após 30 tentativas falhas)
+- [x] Testes de integração Go (14 testes: auth middleware, rate limiter, webhook delivery, HMAC, retry/dead-letter)
 
 ---
 
-## Timeline Estimada
+## Status Final
 
-| Fase | Escopo | Duração |
-|------|--------|---------|
-| 0 | Setup Go + Docker | 1-2 dias |
-| 1 | Conexão + QR + reconnect | 2-3 dias |
-| 2 | History Sync (diferencial) | 3-4 dias |
-| 3 | Envio/Recebimento real-time | 2-3 dias |
-| 4 | Contatos + Grupos | 1-2 dias |
-| 5 | Integração CRM | 3-4 dias |
-| 6 | Deploy + Observabilidade | 1-2 dias |
-| 7 | Hardening + Produção | 2-3 dias |
-| **Total** | | **15-23 dias** |
+**Todas as 8 fases completas.** O gateway whatsmeow é um microserviço Go production-ready com:
+
+- **15 endpoints REST** (instâncias, mensagens, contatos, grupos, sync, métricas)
+- **8 tipos de webhook** (message, reaction, receipt, connection, contact, presence, alert, history)
+- **Resiliência**: auto-reconnect, QR auto-restart, webhook retry + dead-letter, graceful shutdown
+- **Segurança**: HMAC-SHA256 webhooks, API key auth, rate limiting, instance limits
+- **Observabilidade**: structured logging (slog JSON), metrics endpoint, sync tracking
+- **14 testes Go** cobrindo middleware, rate limiter, webhook client
+
+### Único item deferido:
+- Criptografia de credenciais em repouso (baixa prioridade — credenciais são env vars, não armazenadas no DB)
+
+---
+
+## Timeline
+
+| Fase | Escopo | Status |
+|------|--------|--------|
+| 0 | Setup Go + Docker | ✅ |
+| 1 | Conexão + QR + reconnect | ✅ |
+| 2 | History Sync | ✅ |
+| 3 | Envio/Recebimento real-time | ✅ |
+| 4 | Contatos + Grupos | ✅ |
+| 5 | Integração CRM | ✅ |
+| 6 | Deploy + Observabilidade | ✅ |
+| 7 | Hardening + Produção | ✅ |
 
 ## Referências
 
 - [whatsmeow](https://github.com/tulir/whatsmeow) — Lib Go (5.7k stars, MPL-2.0)
 - [whatsmeow godoc](https://pkg.go.dev/go.mau.fi/whatsmeow) — Documentação completa
 - [whatsmeow events](https://pkg.go.dev/go.mau.fi/whatsmeow/types/events) — 80+ eventos
-- [wuzapi](https://github.com/asternic/wuzapi) — REST wrapper de referência
-- [go-whatsapp-multi-session](https://github.com/gdbrns/go-whatsapp-multi-session-rest-api) — Multi-session de referência
-- [Evolution Go](https://github.com/EvolutionAPI/evolution-go) — Evolution reescrita em Go (referência)
-- [BuildHistorySyncRequest](https://pkg.go.dev/go.mau.fi/whatsmeow#Client.BuildHistorySyncRequest) — Sync on-demand

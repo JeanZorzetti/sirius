@@ -5,6 +5,7 @@ import { uuidSchema } from '@/lib/api-validators'
 import logger from '@/lib/logger'
 import { EvolutionClient } from '@/lib/integrations/evolution-client'
 import { whatsmeowClient } from '@/lib/integrations/whatsmeow-client'
+import { isWhatsmeow } from '@/lib/whatsapp-provider'
 
 /**
  * POST /api/v1/whatsapp/send
@@ -66,13 +67,13 @@ export async function POST(request: NextRequest) {
         )
       }
 
-      const isWhatsmeow = !connection.apiKey
+      const useWhatsmeow = isWhatsmeow(connection)
       const normalizedPhone = phone.replace(/\D/g, '')
       const remoteJid = `${normalizedPhone}@s.whatsapp.net`
 
       let messageId: string | null = null
 
-      if (isWhatsmeow) {
+      if (useWhatsmeow) {
         // --- Whatsmeow Gateway ---
         const res = await whatsmeowClient.sendText(connection.instanceName, normalizedPhone, message)
         messageId = res.messageId
@@ -121,7 +122,7 @@ export async function POST(request: NextRequest) {
         organizationId: context.organizationId,
         connectionId,
         phone: normalizedPhone,
-        provider: isWhatsmeow ? 'whatsmeow' : 'evolution',
+        provider: useWhatsmeow ? 'whatsmeow' : 'evolution',
       }, 'WhatsApp message sent via API')
 
       return NextResponse.json(

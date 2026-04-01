@@ -2,11 +2,14 @@
  * Webhook receiver for whatsmeow-gateway
  *
  * Receives events:
- * - message          → new WhatsApp message (inbound or outbound)
- * - receipt          → delivery/read receipt
+ * - message           → new WhatsApp message (inbound or outbound)
+ * - reaction          → emoji reaction to a message
+ * - receipt           → delivery/read receipt
  * - connection.update → instance status changed
- * - contact.update   → push name updated
- * - history.sync     → bulk history messages on first connect
+ * - connection.alert  → reconnection failures, ban alerts
+ * - contact.update    → push name updated
+ * - chat.presence     → typing indicators (composing/paused)
+ * - history.sync      → bulk history messages on first connect
  */
 
 import { NextRequest, NextResponse } from 'next/server'
@@ -59,6 +62,15 @@ export async function POST(request: NextRequest) {
         break
       case 'contact.update':
         await handleContactUpdate(instanceId, data)
+        break
+      case 'reaction':
+        await handleReaction(instanceId, data)
+        break
+      case 'chat.presence':
+        await handleChatPresence(instanceId, data)
+        break
+      case 'connection.alert':
+        await handleConnectionAlert(instanceId, data)
         break
       case 'history.sync':
         await handleHistorySync(instanceId, data)
@@ -325,4 +337,49 @@ async function handleHistorySync(instanceId: string, data: any) {
   }
 
   logger.info({ instanceId, remoteJid, total: messages.length, saved }, 'whatsmeow: history sync processed')
+}
+
+async function handleReaction(instanceId: string, data: any) {
+  const connection = await findConnectionByInstanceId(instanceId)
+  if (!connection) return
+
+  const { messageId, reaction, senderJid, fromMe } = data
+  if (!messageId) return
+
+  // Update the message with reaction info via Pusher
+  triggerEvent(connection.organizationId, 'message:reaction', {
+    messageId,
+    reaction,
+    senderJid,
+    fromMe,
+  })
+}
+
+async function handleChatPresence(instanceId: string, data: any) {
+  const connection = await findConnectionByInstanceId(instanceId)
+  if (!connection) return
+
+  const { jid, state } = data
+  if (!jid) return
+
+  // state: "composing" or "paused"
+  triggerEvent(connection.organizationId, 'chat:typing', {
+    remoteJid: jid,
+    isTyping: state === 'composing',
+  })
+}
+
+async function handleConnectionAlert(instanceId: string, data: any) {
+  const { organizationId, status, message, attempts } = data
+  logger.error({ instanceId, status, attempts, message }, 'whatsmeow: connection alert')
+
+  // Notify via Pusher so admin dashboard can show alert
+  if (organizationId) {
+    triggerEvent(organizationId, 'connection:alert', {
+      instanceId,
+      status,
+      message,
+      attempts,
+    })
+  }
 }

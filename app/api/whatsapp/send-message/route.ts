@@ -13,6 +13,7 @@ import { whatsmeowClient } from '@/lib/integrations/whatsmeow-client'
 import logger from '@/lib/logger'
 import { triggerEvent } from '@/lib/pusher'
 import { normalizePhoneNumber } from '@/lib/whatsapp-sync'
+import { isWhatsmeow } from '@/lib/whatsapp-provider'
 
 export async function POST(req: NextRequest) {
   try {
@@ -92,13 +93,13 @@ export async function POST(req: NextRequest) {
     }
 
     // 7. Detect provider and send
-    const isWhatsmeow = !connection.apiKey
+    const useWhatsmeow = isWhatsmeow(connection)
     const phoneNumber = normalizePhoneNumber(contact.phone)
 
     let messageId: string
     let remoteJid: string
 
-    if (isWhatsmeow) {
+    if (useWhatsmeow) {
       // --- Whatsmeow Gateway ---
       remoteJid = phoneNumber
       const res = await whatsmeowClient.sendText(connection.instanceName, phoneNumber, message)
@@ -152,7 +153,7 @@ export async function POST(req: NextRequest) {
       connectionId: connection.id,
       contactId: contact.id,
       messageId,
-      provider: isWhatsmeow ? 'whatsmeow' : 'evolution',
+      provider: useWhatsmeow ? 'whatsmeow' : 'evolution',
     }, 'WhatsApp message sent')
 
     // 8. Salvar mensagem no banco

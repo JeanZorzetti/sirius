@@ -12,6 +12,7 @@ import { getOrgEvolutionClient } from '@/lib/evolution-api-client'
 import { whatsmeowClient } from '@/lib/integrations/whatsmeow-client'
 import { normalizePhoneNumber } from '@/lib/whatsapp-sync'
 import logger from '@/lib/logger'
+import { isWhatsmeow } from '@/lib/whatsapp-provider'
 
 const MAX_FILE_SIZE = 16 * 1024 * 1024 // 16MB (WhatsApp limit)
 
@@ -115,14 +116,14 @@ export async function POST(req: NextRequest) {
     }
 
     // 7. Detect provider and send
-    const isWhatsmeow = !connection.apiKey
+    const useWhatsmeow = isWhatsmeow(connection)
     const mediatype = getMediaType(file.type)
     const arrayBuffer = await file.arrayBuffer()
 
     let messageId: string
     let remoteJid: string
 
-    if (isWhatsmeow) {
+    if (useWhatsmeow) {
       // --- Whatsmeow Gateway ---
       const phoneNumber = normalizePhoneNumber(contact.phone)
       remoteJid = phoneNumber
@@ -166,7 +167,7 @@ export async function POST(req: NextRequest) {
       mediatype,
       fileName: file.name,
       fileSize: file.size,
-      provider: isWhatsmeow ? 'whatsmeow' : 'evolution',
+      provider: useWhatsmeow ? 'whatsmeow' : 'evolution',
     }, 'WhatsApp media message sent')
 
     // 8. Save to database
