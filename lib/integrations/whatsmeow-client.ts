@@ -86,7 +86,7 @@ export const whatsmeowClient = {
   ): Promise<SendTextResponse> {
     const formData = new FormData()
     formData.append('number', number)
-    formData.append('file', new Blob([fileBuffer], { type: mimetype }), fileName || 'file')
+    formData.append('file', new Blob([new Uint8Array(fileBuffer)], { type: mimetype }), fileName || 'file')
     if (caption) formData.append('caption', caption)
     if (fileName) formData.append('fileName', fileName)
 
