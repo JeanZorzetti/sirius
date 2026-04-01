@@ -214,11 +214,12 @@
 
 #### 8.2 — Fotos de Perfil (Avatares)
 
-- [ ] **Fetch automático de fotos via whatsmeow**: Chamar `GET /api/instances/:id/profile-pic/:jid` em batch
-  - Endpoint CRM: `POST /api/whatsapp/profile-pics/batch` (aceita array de contactIds)
-  - Cache em `Contact.profilePicUrl` com TTL de 7 dias (re-fetch se stale)
-- [ ] **Avatar na conversation list**: Já implementado — garantir que busca proativa para contatos visíveis
-- [ ] **Avatar no message header**: Foto grande no topo da conversa ativa (já existe, confirmar que funciona com whatsmeow)
+- [x] **Proxy de fotos via whatsmeow**: `GET /api/whatsapp/profile-pic?contactId=x&proxy=1`
+  - Busca URL fresca no gateway a cada request (URLs do CDN do WhatsApp expiram)
+  - Faz download e proxy da imagem — browser nunca acessa `pps.whatsapp.net` diretamente
+  - Cache-Control: 24h no browser
+- [x] **Avatar na conversation list**: Busca proativa para contatos visíveis (stagger 200ms)
+- [x] **Avatar no message header**: Funciona via proxy, nunca usa URL stale do DB
 - [ ] **Avatar no contact sidebar**: Foto grande (80x80) clicável para ver em tamanho completo
 - [ ] **Fallback melhorado**: Gradiente baseado no hash do nome (em vez de 8 cores fixas)
 
@@ -230,11 +231,9 @@
 - [x] **Paste de imagem**: Ctrl+V / Cmd+V cola imagem do clipboard
   - Detectar `clipboardData.items` com tipo `image/*`
   - Gerar preview instantâneo e abrir barra de confirmação
-- [ ] **Preview antes de enviar**: Modal com preview expandido + campo de legenda
-  - Imagem: preview com crop/resize opcional
-  - Vídeo: player com preview
-  - Documento: ícone + nome + tamanho
-  - Áudio: waveform preview
+- [x] **Preview antes de enviar**: Barra de preview com thumbnail + nome + tamanho + botão cancelar
+  - Imagem: preview 48x48 com thumbnail
+  - Documento: ícone FileText + nome + tamanho em KB
 - [ ] **Progress bar de upload**: Barra de progresso real (não apenas spinner)
   - Usar `XMLHttpRequest` com `onprogress` ou stream upload
   - Mostrar % e tamanho enviado
@@ -277,11 +276,37 @@
 
 ---
 
+### Fase 9 — Bugfixes de Produção ✅ DONE
+
+Correções de bugs encontrados em produção após deploy completo.
+
+- [x] **Proxy de fotos de perfil**: URLs `pps.whatsapp.net` expiram — `/api/whatsapp/profile-pic` agora faz proxy da imagem e nunca retorna URLs diretas do CDN do WhatsApp
+- [x] **Sync route 500**: `/connections/[id]/sync` chamava Evolution API para instâncias whatsmeow → 404. Corrigido para no-op (history sync é automático via webhook)
+- [x] **Media route 500**: `/whatsapp/media` chamava Evolution API para instâncias whatsmeow. Corrigido para dual-provider (whatsmeow usa `downloadMedia` do gateway)
+- [x] **Media inline no webhook**: Gateway Go agora baixa midia (`whatsmeow.Client.Download`) e inclui `mediaBase64` no payload do webhook — CRM salva direto no `mediaUrl`
+- [x] **Filtro de LIDs**: JIDs com >15 dígitos (WhatsApp internal IDs) filtrados em `handleMessage` e `handleHistorySync`
+- [x] **Phantom contacts**: 1.412 contatos LID removidos da produção via SQL cleanup
+- [x] **N+1 queries**: Substituído `Promise.all(contacts.map(count))` por `groupBy` em 3 rotas (unread counts)
+- [x] **Connection pool exhaustion**: `connection_limit=3` no `DATABASE_URL` para Vercel serverless
+- [x] **Sync automático no connectionReady**: Para whatsmeow é best-effort (não falha com 500 se gateway não disponível)
+
+---
+
 ## Status
 
-**Fases 0-7 completas.** Gateway whatsmeow production-ready.
+**Fases 0-9 completas.** Gateway whatsmeow e integração CRM production-ready.
 
-**Fase 8 (Refinamentos)**: Novo — foco em UX do chat e visualização de mídia.
+### Fase 8 — Itens pendentes (baixa prioridade):
+- Player de áudio customizado (waveform visual)
+- Galeria de mídia por conversa (tab "Mídia" no sidebar)
+- Progress bar de upload real
+- Compressão de imagem client-side
+- IndexedDB cache de mídia
+- PWA Push notifications
+- Link preview para URLs em mensagens
+- Mensagens de localização (mini-mapa)
+- Contatos compartilhados (vCard)
+- Gradiente de avatar baseado em hash do nome
 
 ### Item deferido:
 - Criptografia de credenciais em repouso (baixa prioridade)
@@ -300,7 +325,8 @@
 | 5 | Integração CRM | ✅ |
 | 6 | Deploy + Observabilidade | ✅ |
 | 7 | Hardening + Produção | ✅ |
-| 8 | Refinamentos Chat & Mídia | 🔧 |
+| 8 | Refinamentos Chat & Mídia | 🔧 em andamento |
+| 9 | Bugfixes de Produção | ✅ |
 
 ## Referências
 
