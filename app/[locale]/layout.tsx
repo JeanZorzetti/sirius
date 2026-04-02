@@ -28,8 +28,6 @@ import { PushNotificationManager } from '@/components/push-notification-manager'
 import { OfflineStatus } from '@/components/offline-status'
 import { GoogleTagManager, GoogleTagManagerNoScript } from '@/components/google-tag-manager'
 import { analyticsConfig } from '@/lib/analytics-config'
-import { SpeedInsights } from '@vercel/speed-insights/next'
-import { Analytics } from '@vercel/analytics/next'
 import { Toaster } from '@/components/ui/sonner'
 import { PostHogProvider } from '../providers'
 import { AiTrafficMonitor } from '@/components/analytics/ai-traffic-monitor'
@@ -289,8 +287,6 @@ export default async function LocaleLayout({
             </ThemeProvider>
           </PostHogProvider>
         </NextIntlClientProvider>
-        <Analytics />
-        <SpeedInsights />
       </body>
     </html>
   )
