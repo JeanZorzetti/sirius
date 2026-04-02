@@ -15,7 +15,8 @@ COPY package*.json ./
 # ===== Dependencies Stage =====
 FROM base AS deps
 
-RUN npm ci --legacy-peer-deps
+RUN --mount=type=cache,target=/root/.npm \
+    npm ci --legacy-peer-deps
 
 # ===== Builder Stage =====
 FROM base AS builder
@@ -26,7 +27,8 @@ COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
 # Generate Prisma client (schema only, no DB connection needed)
-RUN npx prisma generate
+RUN --mount=type=cache,target=/root/.npm \
+    npx prisma generate
 
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV NODE_ENV=production
