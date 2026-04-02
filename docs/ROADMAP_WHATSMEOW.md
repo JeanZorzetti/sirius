@@ -294,7 +294,7 @@ Correções de bugs encontrados em produção após deploy completo.
 
 ## Status
 
-**Fases 0-9 completas.** Gateway whatsmeow e integração CRM production-ready.
+**Fases 0-10 completas.** Gateway whatsmeow e integração CRM production-ready.
 
 ### Fase 8 — Itens pendentes (baixa prioridade):
 - Player de áudio customizado (waveform visual)
@@ -313,6 +313,22 @@ Correções de bugs encontrados em produção após deploy completo.
 
 ---
 
+### Fase 10 — Polimento de Produção ✅ DONE
+
+Melhorias UX e remoção de código legado pós-go-live.
+
+- [x] **Real-time em ChatInterface**: `usePusher` adicionado ao componente raiz do chat — `message:new` atualiza lista de conversas instantaneamente (sem esperar polling de 5s)
+- [x] **Remoção da Evolution API**: Todos os arquivos Evolution removidos (cliente, webhook, formulário de settings, rotas legado). Whatsmeow é o único provider.
+- [x] **Gerenciamento de instâncias**: `WhatsmeowConnectCard` agora lista instâncias direto do gateway (fonte de verdade), com botão de deletar que remove do gateway E do banco
+- [x] **DELETE dual**: `DELETE /api/whatsapp/connections/whatsmeow/[id]` remove instâncias "fantasma" (no gateway mas não no banco)
+- [x] **Feedback pós-QR scan**: Após escanear QR, polling de status por 18s → tela "Conectado!" com ícone verde em vez de tela estática
+- [x] **Status badge case-insensitive**: Gateway retorna `connected` (minúsculo), Prisma usa `CONNECTED` — normalizado com `.toUpperCase()`
+- [x] **History sync 6 meses**: `FullSyncDaysLimit=180` configurado no `DeviceProps` do gateway — WhatsApp entrega 6 meses de histórico no primeiro sync (requer reconexão)
+- [x] **Rota GET gateway instances**: `GET /api/whatsapp/connections/whatsmeow` lista instâncias direto do gateway
+- [x] **Rota status por instanceId**: `GET /api/whatsapp/connections/whatsmeow/[id]/status` para polling pós-QR
+
+---
+
 ## Timeline
 
 | Fase | Escopo | Status |
@@ -327,6 +343,7 @@ Correções de bugs encontrados em produção após deploy completo.
 | 7 | Hardening + Produção | ✅ |
 | 8 | Refinamentos Chat & Mídia | 🔧 em andamento |
 | 9 | Bugfixes de Produção | ✅ |
+| 10 | Polimento & Remoção Evolution | ✅ |
 
 ## Referências
 
