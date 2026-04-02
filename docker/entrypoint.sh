@@ -2,7 +2,7 @@
 set -e
 
 echo "Running Prisma migrations..."
-npx prisma migrate deploy
+node_modules/.bin/prisma migrate deploy
 
 echo "Starting Sirius CRM..."
 exec node server.js
