@@ -15,11 +15,13 @@ import {
 import logger from '@/lib/logger'
 
 /**
- * Initialize Groq client
+ * Lazy Groq client — instantiated on first use to avoid build-time errors
  */
-const groq = new Groq({
-  apiKey: process.env.GROQ_API_KEY,
-})
+let _groq: Groq | null = null
+function getGroq(): Groq {
+  if (!_groq) _groq = new Groq({ apiKey: process.env.GROQ_API_KEY })
+  return _groq
+}
 
 /**
  * System prompt for entity extraction
@@ -162,7 +164,7 @@ export async function extractEntities(
     } = request
 
     // Call Groq API with JSON mode
-    const completion = await groq.chat.completions.create({
+    const completion = await getGroq().chat.completions.create({
       model: 'llama-3.3-70b-versatile', // Fast and high-quality
       messages: [
         {
