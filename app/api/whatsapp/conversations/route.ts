@@ -42,10 +42,9 @@ export async function GET() {
       orderBy: { connectedAt: 'desc' },
     })
 
-    // Build message filter: if active connection exists, show only its messages
-    // Fall back to showing all messages (legacy data before connectionId was added)
+    // Show messages from active connection OR legacy messages (connectionId null)
     const messageFilter = activeConnection
-      ? { connectionId: activeConnection.id }
+      ? { OR: [{ connectionId: activeConnection.id }, { connectionId: null }] }
       : {}
 
     // 4. Buscar contatos com mensagens WhatsApp

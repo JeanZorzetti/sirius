@@ -84,7 +84,7 @@ export default async function ChatPage({
     // Localizar a conexão ativa
     activeConnection = connections.find((c: any) => c.status === 'CONNECTED' || c.status === 'CONNECTING')
     if (activeConnection) {
-      messageFilter = { connectionId: activeConnection.id }
+      messageFilter = { OR: [{ connectionId: activeConnection.id }, { connectionId: null }] }
     }
   } catch (err: any) {
     console.error("[CHAT_PAGE] Falha ao buscar conexões:", err.message)

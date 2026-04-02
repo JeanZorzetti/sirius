@@ -341,13 +341,24 @@ async function handleHistorySync(instanceId: string, data: any) {
   const msgIds = validMessages.map((m: any) => m.messageId)
   const existing = await prisma.whatsAppMessage.findMany({
     where: { organizationId, messageId: { in: msgIds } },
-    select: { messageId: true },
+    select: { messageId: true, connectionId: true },
   })
-  const existingIds = new Set(existing.map((m: any) => m.messageId))
+  const existingMap = new Map(existing.map((m: any) => [m.messageId, m.connectionId]))
+
+  // Reassign orphaned messages (connectionId null) to current connection
+  const orphanIds = existing
+    .filter((m: any) => m.connectionId === null)
+    .map((m: any) => m.messageId)
+  if (orphanIds.length > 0) {
+    await prisma.whatsAppMessage.updateMany({
+      where: { organizationId, messageId: { in: orphanIds } },
+      data: { connectionId: connection.id },
+    })
+  }
 
   let saved = 0
   for (const msg of validMessages) {
-    if (existingIds.has(msg.messageId)) continue
+    if (existingMap.has(msg.messageId)) continue
 
     const sentAt = msg.timestamp ? new Date(msg.timestamp * 1000) : new Date()
 
@@ -367,13 +378,13 @@ async function handleHistorySync(instanceId: string, data: any) {
         },
       })
       saved++
-      existingIds.add(msg.messageId)
+      existingMap.set(msg.messageId, connection.id)
     } catch {
       // Unique constraint — skip
     }
   }
 
-  logger.info({ instanceId, remoteJid, total: messages.length, saved }, 'whatsmeow: history sync processed')
+  logger.info({ instanceId, remoteJid, total: messages.length, saved, reassigned: orphanIds.length }, 'whatsmeow: history sync processed')
 }
 
 async function handleReaction(instanceId: string, data: any) {
