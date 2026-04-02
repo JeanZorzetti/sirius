@@ -62,11 +62,12 @@ export function UserNav({ user }: { user: any }) {
           )}
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
-        <DropdownMenuItem onClick={() => {
-          analytics.reset()
-          logoutAction()
-        }}>
-          Sair
+        <DropdownMenuItem asChild>
+          <form action={logoutAction} className="w-full">
+            <button type="submit" className="w-full text-left cursor-default" onClick={() => analytics.reset()}>
+              Sair
+            </button>
+          </form>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

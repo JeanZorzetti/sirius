@@ -170,13 +170,15 @@ function SidebarUserNav({ user }: { user: any }) {
               <span>Admin Panel</span>
             </a>
           )}
-          <button
-            onClick={() => logoutAction()}
-            className={cn(linkClass, 'w-full text-red-500 dark:text-red-400')}
-          >
-            <LogOut className="h-4 w-4 flex-shrink-0" />
-            <span>Sair</span>
-          </button>
+          <form action={logoutAction}>
+            <button
+              type="submit"
+              className={cn(linkClass, 'w-full text-red-500 dark:text-red-400')}
+            >
+              <LogOut className="h-4 w-4 flex-shrink-0" />
+              <span>Sair</span>
+            </button>
+          </form>
         </motion.div>
       )}
 
