@@ -32,7 +32,7 @@ ENV NEXT_TELEMETRY_DISABLED=1
 ENV NODE_ENV=production
 
 # Build Next.js (migrations run at container start, not build time)
-RUN next build
+RUN node_modules/.bin/next build
 
 # ===== Runner Stage =====
 FROM node:20-alpine AS runner
