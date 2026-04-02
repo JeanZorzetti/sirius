@@ -116,6 +116,13 @@ export async function GET() {
       }
     }))
 
+    // Sort by latest message time (not Contact.updatedAt) to match WhatsApp ordering
+    contactsWithUnread.sort((a, b) => {
+      const aTime = a.whatsappMessages[0]?.sentAt?.getTime() ?? 0
+      const bTime = b.whatsappMessages[0]?.sentAt?.getTime() ?? 0
+      return bTime - aTime
+    })
+
     return NextResponse.json(contactsWithUnread)
   } catch (error: any) {
     logger.error({ error }, 'Error fetching WhatsApp conversations')

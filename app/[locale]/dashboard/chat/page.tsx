@@ -148,6 +148,13 @@ export default async function ChatPage({
         unreadMessages: unreadMap.get(contact.id) || 0,
       }
     }))
+
+    // Sort by latest message time to match WhatsApp ordering
+    contacts.sort((a: any, b: any) => {
+      const aTime = a.whatsappMessages[0]?.sentAt?.getTime() ?? 0
+      const bTime = b.whatsappMessages[0]?.sentAt?.getTime() ?? 0
+      return bTime - aTime
+    })
   } catch (err: any) {
     console.error("[CHAT_PAGE] Falha ao buscar contatos:", err.message)
     return <div>Erro ao buscar contatos: {err.message}</div>

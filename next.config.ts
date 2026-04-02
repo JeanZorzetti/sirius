@@ -5,6 +5,7 @@ import createNextIntlPlugin from 'next-intl/plugin';
 const withNextIntl = createNextIntlPlugin('./i18n/request.ts');
 
 const nextConfig: NextConfig = {
+  output: 'standalone',
   // @ts-expect-error - Next.js 16 deprecated eslint in NextConfig but we still need to bypass lint
   eslint: { ignoreDuringBuilds: true },
   /* Image Optimization */

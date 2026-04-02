@@ -165,6 +165,7 @@ async function handleMessage(instanceId: string, data: any) {
       mediaType: mediaType || null,
       mediaUrl: mediaBase64 || null,
       sentAt,
+      isRead: fromMe, // Outbound messages don't need "reading"; inbound start unread
     },
   })
 
@@ -375,6 +376,7 @@ async function handleHistorySync(instanceId: string, data: any) {
           status: msg.fromMe ? 'SENT' : 'DELIVERED',
           mediaType: msg.mediaType || null,
           sentAt,
+          isRead: true, // History sync = old messages, not new notifications
         },
       })
       saved++
