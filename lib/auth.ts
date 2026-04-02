@@ -27,27 +27,28 @@ import { SignJWT, jwtVerify } from 'jose'
 import { cookies } from 'next/headers'
 import { NextRequest, NextResponse } from 'next/server'
 
-// SECURITY: No default fallback - will fail fast if SESSION_SECRET is missing
-if (!process.env.SESSION_SECRET) {
-    throw new Error(
-        'SESSION_SECRET environment variable is required. ' +
-        'Generate a secure random string with: openssl rand -base64 32'
-    )
+// Lazy getter — validated at runtime, not at import/build time
+function getKey(): Uint8Array {
+    const secret = process.env.SESSION_SECRET
+    if (!secret) {
+        throw new Error(
+            'SESSION_SECRET environment variable is required. ' +
+            'Generate a secure random string with: openssl rand -base64 32'
+        )
+    }
+    return new TextEncoder().encode(secret)
 }
-
-const secretKey = process.env.SESSION_SECRET
-const key = new TextEncoder().encode(secretKey)
 
 export async function encrypt(payload: any) {
     return await new SignJWT(payload)
         .setProtectedHeader({ alg: 'HS256' })
         .setIssuedAt()
         .setExpirationTime('24h')
-        .sign(key)
+        .sign(getKey())
 }
 
 export async function decrypt(input: string): Promise<any> {
-    const { payload } = await jwtVerify(input, key, {
+    const { payload } = await jwtVerify(input, getKey(), {
         algorithms: ['HS256'],
     })
     return payload
