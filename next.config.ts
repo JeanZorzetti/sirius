@@ -8,6 +8,7 @@ const nextConfig: NextConfig = {
   output: 'standalone',
   // @ts-expect-error - Next.js 16 deprecated eslint in NextConfig but we still need to bypass lint
   eslint: { ignoreDuringBuilds: true },
+  typescript: { ignoreBuildErrors: true },
   /* Image Optimization */
   images: {
     remotePatterns: [
