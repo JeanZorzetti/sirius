@@ -13,12 +13,17 @@ import { prisma } from '@/lib/prisma'
 import { encrypt } from '@/lib/auth'
 
 export async function GET(req: NextRequest) {
+  console.log('[google-session] Bridge route hit')
+  console.log('[google-session] Cookies:', req.cookies.getAll().map(c => c.name).join(', '))
+  console.log('[google-session] NEXTAUTH_SECRET set:', !!process.env.NEXTAUTH_SECRET)
   try {
     // Read the Next-Auth JWT directly from the cookie
     const token = await getToken({
       req,
       secret: process.env.NEXTAUTH_SECRET || 'supersecret',
     })
+
+    console.log('[google-session] Token result:', token ? { email: token.email, name: token.name } : null)
 
     if (!token?.email) {
       console.error('[google-session] No token or email found')

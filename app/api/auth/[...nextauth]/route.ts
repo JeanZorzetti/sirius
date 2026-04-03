@@ -79,6 +79,7 @@ export const authOptions: NextAuthOptions = {
             return token
         },
         async redirect({ url, baseUrl }) {
+            console.log('[nextauth] redirect callback:', { url, baseUrl })
             // After Google OAuth, always go to bridge that creates custom JWT
             if (url.includes('/api/auth/google-session')) return url
             if (url.startsWith('/')) return `${baseUrl}/api/auth/google-session`
