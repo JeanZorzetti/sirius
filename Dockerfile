@@ -22,7 +22,7 @@ COPY . .
 RUN node_modules/.bin/prisma generate
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV NODE_ENV=production
-RUN NODE_OPTIONS="--max-old-space-size=4096" NEXT_TURBOPACK=0 SENTRY_DISABLE_SERVER_WEBPACK_PLUGIN=1 SENTRY_DISABLE_CLIENT_WEBPACK_PLUGIN=1 node_modules/.bin/next build
+RUN NODE_OPTIONS="--max-old-space-size=4096" SENTRY_DISABLE_SERVER_WEBPACK_PLUGIN=1 SENTRY_DISABLE_CLIENT_WEBPACK_PLUGIN=1 node_modules/.bin/next build --no-turbopack
 
 # ===== Runner =====
 FROM node:20-alpine AS runner
