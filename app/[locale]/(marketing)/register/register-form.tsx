@@ -106,7 +106,7 @@ export function RegisterForm({ inviteData, inviteToken }: { inviteData: any, inv
                             type="button"
                             variant="outline"
                             className="w-full bg-zinc-800 border-zinc-700 text-white hover:bg-zinc-700"
-                            onClick={() => signIn('google', { callbackUrl: '/api/auth/google-session' })}
+                            onClick={() => signIn('google', { callbackUrl: '/dashboard' })}
                         >
                             <svg className="mr-2 h-4 w-4" viewBox="0 0 24 24">
                                 <path

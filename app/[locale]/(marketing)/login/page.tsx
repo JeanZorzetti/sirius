@@ -75,7 +75,7 @@ export default function LoginPage() {
                             type="button"
                             variant="outline"
                             className="w-full"
-                            onClick={() => signIn('google', { callbackUrl: '/api/auth/google-session' })}
+                            onClick={() => signIn('google', { callbackUrl: '/dashboard' })}
                         >
                             <svg className="mr-2 h-4 w-4" viewBox="0 0 24 24">
                                 <path
