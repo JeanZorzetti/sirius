@@ -102,13 +102,21 @@ export async function GET(req: NextRequest) {
       expires,
     })
 
-    const response = NextResponse.redirect(new URL('/dashboard', req.url))
+    console.log('[google-session] User found/created:', { id: user.id, email: user.email })
+    console.log('[google-session] Session token length:', sessionToken.length)
+
+    const redirectUrl = new URL('/dashboard', req.url)
+    console.log('[google-session] Redirecting to:', redirectUrl.toString())
+
+    const response = NextResponse.redirect(redirectUrl)
     response.cookies.set('session', sessionToken, {
       expires,
       httpOnly: true,
       sameSite: 'lax',
       path: '/',
     })
+
+    console.log('[google-session] Response headers Set-Cookie:', response.headers.get('set-cookie')?.substring(0, 100))
 
     return response
   } catch (error) {

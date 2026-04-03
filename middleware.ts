@@ -27,6 +27,8 @@ export async function middleware(request: NextRequest) {
         pathnameWithoutLocale.startsWith('/IA')
     ) {
         if (!sessionCookie) {
+            console.log('[middleware] No session cookie for protected route:', pathname)
+            console.log('[middleware] All cookies:', request.cookies.getAll().map(c => c.name).join(', '))
             const isEnglish = pathname.startsWith('/en')
             const loginPath = isEnglish ? '/en/login' : '/login'
             return NextResponse.redirect(new URL(loginPath, request.url))
