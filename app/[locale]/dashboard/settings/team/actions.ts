@@ -62,7 +62,7 @@ export async function createInvite(email: string) {
     })
 
     // Envia o e-mail de convite via Resend
-    const inviteUrl = `${process.env.NEXT_PUBLIC_APP_URL}/register?invite=${token}`
+    const inviteUrl = `${process.env.NEXTAUTH_URL || process.env.NEXT_PUBLIC_APP_URL || 'https://sirius.roilabs.com.br'}/register?invite=${token}`
     await sendEmail({
         to: email,
         subject: `${owner.name} convidou você para o ${organization?.name ?? 'Sirius CRM'}`,
@@ -100,7 +100,7 @@ export async function resendInvite(inviteId: string) {
         select: { name: true }
     })
 
-    const inviteUrl = `${process.env.NEXT_PUBLIC_APP_URL}/register?invite=${token}`
+    const inviteUrl = `${process.env.NEXTAUTH_URL || process.env.NEXT_PUBLIC_APP_URL || 'https://sirius.roilabs.com.br'}/register?invite=${token}`
     await sendEmail({
         to: invite.email,
         subject: `${owner.name} convidou você para o ${organization?.name ?? 'Sirius CRM'}`,
