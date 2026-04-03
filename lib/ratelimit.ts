@@ -158,9 +158,9 @@ export async function checkRateLimit(
 export const authRateLimit = (req: NextRequest) =>
   checkRateLimit(req, 'auth', { limit: 5, windowSeconds: 15 * 60 })
 
-/** AGI routes: 20 req / 1 hour per IP */
+/** AGI routes: 200 req / 1 hour per IP */
 export const agiRateLimit = (req: NextRequest) =>
-  checkRateLimit(req, 'agi', { limit: 20, windowSeconds: 60 * 60 })
+  checkRateLimit(req, 'agi', { limit: 200, windowSeconds: 60 * 60 })
 
 /** Contact form: 3 req / 1 hour per IP */
 export const contactRateLimit = (req: NextRequest) =>

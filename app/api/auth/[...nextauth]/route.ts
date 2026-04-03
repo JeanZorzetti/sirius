@@ -77,7 +77,21 @@ export const authOptions: NextAuthOptions = {
                 token.id = user.id
             }
             return token
-        }
+        },
+        async redirect({ url, baseUrl }) {
+            // After Google OAuth, go to session bridge to create custom JWT
+            if (url === baseUrl || url === `${baseUrl}/`) {
+                return `${baseUrl}/api/auth/google-session`
+            }
+            // If callbackUrl points to google-session, allow it
+            if (url.includes('/api/auth/google-session')) {
+                return url
+            }
+            // Default: relative URLs stay on same origin
+            if (url.startsWith('/')) return `${baseUrl}${url}`
+            if (new URL(url).origin === baseUrl) return url
+            return `${baseUrl}/api/auth/google-session`
+        },
     },
     session: {
         strategy: "jwt",
