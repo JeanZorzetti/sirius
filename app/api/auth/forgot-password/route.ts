@@ -52,7 +52,7 @@ export async function POST(request: NextRequest) {
     })
 
     // Build reset URL
-    const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://sirius.roilabs.com.br'
+    const baseUrl = process.env.NEXTAUTH_URL || process.env.NEXT_PUBLIC_APP_URL || 'https://sirius.roilabs.com.br'
     const resetUrl = `${baseUrl}/reset-password?token=${token}`
 
     // Send email

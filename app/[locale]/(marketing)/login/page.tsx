@@ -9,9 +9,11 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
+import { Eye, EyeOff } from 'lucide-react'
 
 export default function LoginPage() {
     const [error, setError] = useState<string>('')
+    const [showPassword, setShowPassword] = useState(false)
     const [isPending, startTransition] = useTransition()
     const router = useRouter()
 
@@ -51,7 +53,17 @@ export default function LoginPage() {
                                     Esqueceu sua senha?
                                 </Link>
                             </div>
-                            <Input id="password" name="password" type="password" required />
+                            <div className="relative">
+                                <Input id="password" name="password" type={showPassword ? 'text' : 'password'} required className="pr-10" />
+                                <button
+                                    type="button"
+                                    onClick={() => setShowPassword(!showPassword)}
+                                    className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+                                    tabIndex={-1}
+                                >
+                                    {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                                </button>
+                            </div>
                         </div>
                         {error && (
                             <div className="text-sm text-red-500 font-medium">{error}</div>
