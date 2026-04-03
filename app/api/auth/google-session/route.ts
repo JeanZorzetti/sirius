@@ -2,25 +2,30 @@
  * Google OAuth Session Bridge
  *
  * After Next-Auth completes Google auth, it redirects here.
- * This route reads the Next-Auth session, finds/creates the user in DB,
- * creates the custom JWT session cookie, then redirects to /dashboard.
+ * This route decodes the Next-Auth JWT token from the cookie,
+ * finds/creates the user in DB, creates the custom JWT session
+ * cookie on the response, then redirects to /dashboard.
  */
 
 import { NextRequest, NextResponse } from 'next/server'
-import { getServerSession } from 'next-auth'
-import { authOptions } from '@/app/api/auth/[...nextauth]/route'
+import { getToken } from 'next-auth/jwt'
 import { prisma } from '@/lib/prisma'
-import { login } from '@/lib/auth'
+import { encrypt } from '@/lib/auth'
 
 export async function GET(req: NextRequest) {
   try {
-    const nextAuthSession = await getServerSession(authOptions)
+    // Read the Next-Auth JWT directly from the cookie
+    const token = await getToken({
+      req,
+      secret: process.env.NEXTAUTH_SECRET || 'supersecret',
+    })
 
-    if (!nextAuthSession?.user?.email) {
+    if (!token?.email) {
+      console.error('[google-session] No token or email found')
       return NextResponse.redirect(new URL('/login?error=oauth', req.url))
     }
 
-    const { email, name } = nextAuthSession.user
+    const { email, name } = token
 
     // Find or create user
     let user = await prisma.user.findUnique({ where: { email } })
@@ -28,7 +33,7 @@ export async function GET(req: NextRequest) {
     if (!user) {
       // New user via Google — create org + user
       const slug =
-        (name || email)
+        (String(name || email))
           .toLowerCase()
           .replace(/[^a-z0-9]/g, '-')
           .substring(0, 30) +
@@ -36,10 +41,9 @@ export async function GET(req: NextRequest) {
         Math.floor(Math.random() * 1000)
 
       const org = await prisma.organization.create({
-        data: { name: name || email, slug },
+        data: { name: String(name || email), slug },
       })
 
-      // Default pipeline
       const pipeline = await prisma.pipeline.create({
         data: { name: 'Pipeline Principal', isDefault: true, organizationId: org.id },
       })
@@ -65,7 +69,6 @@ export async function GET(req: NextRequest) {
         ),
       })
 
-      // Generate referral code
       const referralCode =
         Math.random().toString(36).substring(2, 6) +
         Math.random().toString(36).substring(2, 6)
@@ -73,8 +76,8 @@ export async function GET(req: NextRequest) {
       user = await prisma.user.create({
         data: {
           email,
-          name: name || email,
-          password: '', // No password for OAuth users
+          name: String(name || email),
+          password: '',
           organizationId: org.id,
           orgRole: 'OWNER',
           referralCode,
@@ -82,15 +85,27 @@ export async function GET(req: NextRequest) {
       })
     }
 
-    // Create custom JWT session
-    await login({
-      id: user.id,
-      email: user.email,
-      name: user.name,
-      organizationId: user.organizationId,
+    // Create custom JWT session and set it on the redirect response
+    const expires = new Date(Date.now() + 24 * 60 * 60 * 1000)
+    const sessionToken = await encrypt({
+      user: {
+        id: user.id,
+        email: user.email,
+        name: user.name,
+        organizationId: user.organizationId,
+      },
+      expires,
     })
 
-    return NextResponse.redirect(new URL('/dashboard', req.url))
+    const response = NextResponse.redirect(new URL('/dashboard', req.url))
+    response.cookies.set('session', sessionToken, {
+      expires,
+      httpOnly: true,
+      sameSite: 'lax',
+      path: '/',
+    })
+
+    return response
   } catch (error) {
     console.error('[google-session] Error:', error)
     return NextResponse.redirect(new URL('/login?error=session', req.url))
