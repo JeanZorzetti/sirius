@@ -1,0 +1,153 @@
+// WhatsApp Database Schema — Separated from CRM for performance isolation
+// Migrations: prisma migrate deploy --schema prisma/whatsapp.prisma
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../node_modules/.prisma/client-wa"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL_WA")
+  directUrl = env("DATABASE_URL_WA_DIRECT")
+}
+
+// ============================================================================
+// ENUMS
+// ============================================================================
+
+enum MessageDirection {
+  INBOUND
+  OUTBOUND
+}
+
+enum WhatsAppMessageStatus {
+  PENDING
+  SENT
+  DELIVERED
+  READ
+  FAILED
+}
+
+enum WhatsAppStatus {
+  DISCONNECTED
+  CONNECTING
+  CONNECTED
+  FAILED
+}
+
+// ============================================================================
+// WHATSAPP MESSAGE
+// ============================================================================
+
+model WhatsAppMessage {
+  id String @id @default(uuid())
+
+  // WhatsApp identifiers
+  remoteJid String
+  messageId String?
+
+  // Message content
+  text      String                @db.Text
+  direction MessageDirection
+  status    WhatsAppMessageStatus @default(PENDING)
+
+  // Read status
+  isRead Boolean @default(false)
+
+  // Reply/Quote
+  replyToId   String?
+  replyTo     WhatsAppMessage?  @relation("MessageReplies", fields: [replyToId], references: [id], onDelete: SetNull)
+  replies     WhatsAppMessage[] @relation("MessageReplies")
+  replyToText String?           @db.Text
+
+  // Media
+  mediaUrl  String?
+  mediaType String?
+
+  // Cross-DB references (plain IDs — no @relation to CRM models)
+  dealId    String?
+  contactId String?
+
+  // Which WhatsApp connection this message belongs to
+  connectionId String?
+  connection   WhatsAppConnection? @relation(fields: [connectionId], references: [id], onDelete: SetNull)
+
+  // Timestamps
+  sentAt      DateTime  @default(now())
+  deliveredAt DateTime?
+  readAt      DateTime?
+
+  organizationId String
+
+  // Reactions
+  reactions MessageReaction[]
+
+  @@unique([organizationId, messageId])
+  @@index([organizationId, sentAt])
+  @@index([dealId])
+  @@index([contactId])
+  @@index([remoteJid])
+  @@index([contactId, isRead, direction])
+  @@index([connectionId])
+}
+
+// ============================================================================
+// MESSAGE REACTIONS
+// ============================================================================
+
+model MessageReaction {
+  id        String          @id @default(uuid())
+  emoji     String
+  messageId String
+  message   WhatsAppMessage @relation(fields: [messageId], references: [id], onDelete: Cascade)
+  userId    String // Cross-DB reference (plain ID)
+  createdAt DateTime        @default(now())
+
+  @@unique([messageId, userId, emoji])
+  @@index([messageId])
+}
+
+// ============================================================================
+// QUICK REPLIES
+// ============================================================================
+
+model QuickReply {
+  id             String   @id @default(uuid())
+  shortcut       String
+  title          String
+  content        String   @db.Text
+  category       String?
+  organizationId String // Cross-DB reference (plain ID)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  @@unique([organizationId, shortcut])
+  @@index([organizationId])
+}
+
+// ============================================================================
+// WHATSAPP CONNECTION
+// ============================================================================
+
+model WhatsAppConnection {
+  id             String         @id @default(uuid())
+  organizationId String // Cross-DB reference (plain ID)
+  userId         String // Cross-DB reference (plain ID)
+  instanceName   String
+  phoneNumber    String?
+  qrCode         String?        @db.Text
+  status         WhatsAppStatus @default(DISCONNECTED)
+  apiKey         String?        @db.Text
+  webhookUrl     String?
+  connectedAt    DateTime?
+  lastSyncAt     DateTime?
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+
+  messages WhatsAppMessage[]
+
+  @@unique([organizationId, instanceName])
+  @@index([organizationId])
+  @@index([status])
+}

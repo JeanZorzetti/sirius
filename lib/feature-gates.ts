@@ -382,14 +382,13 @@ export async function getScrapingCreditsStatus(organizationId: string) {
 export async function checkWhatsAppInstanceLimit(
   organizationId: string
 ): Promise<boolean> {
+  const { prismaWa } = await import('@/lib/prisma-wa')
+
   const org = await prisma.organization.findUnique({
     where: { id: organizationId },
     select: {
       tier: true,
       whatsappInstances: true,
-      whatsappConnections: {
-        select: { id: true },
-      },
       addons: {
         where: {
           type: 'WHATSAPP_EXTRA_INSTANCE',
@@ -412,8 +411,10 @@ export async function checkWhatsAppInstanceLimit(
   )
   const totalLimit = baseLimit + addonInstances
 
-  // Contar instâncias atuais
-  const currentCount = org.whatsappConnections.length
+  // Contar instâncias atuais (from WA DB)
+  const currentCount = await prismaWa.whatsAppConnection.count({
+    where: { organizationId },
+  })
 
   return currentCount < totalLimit
 }

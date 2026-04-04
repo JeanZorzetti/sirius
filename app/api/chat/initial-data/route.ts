@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
+import { prismaWa } from '@/lib/prisma-wa'
 import logger from '@/lib/logger'
 
 export const dynamic = 'force-dynamic'
@@ -16,7 +17,7 @@ export async function GET() {
     // 2. Get user with organization
     const user = await prisma.user.findUnique({
       where: { id: session.user.id },
-      select: { 
+      select: {
         id: true,
         name: true,
         organizationId: true,
@@ -30,8 +31,8 @@ export async function GET() {
       )
     }
 
-    // 3. Fetch connections
-    const connections = await prisma.whatsAppConnection.findMany({
+    // 3. Fetch connections from WA DB
+    const connections = await prismaWa.whatsAppConnection.findMany({
       where: { organizationId: user.organizationId },
       orderBy: { createdAt: 'desc' },
     })
@@ -40,52 +41,67 @@ export async function GET() {
     const activeConnection = connections.find(c => c.status === 'CONNECTED' || c.status === 'CONNECTING')
     const messageFilter = activeConnection ? { connectionId: activeConnection.id } : {}
 
-    // 5. Fetch contacts with messages (scoped to active connection)
-    const contacts = await prisma.contact.findMany({
+    // 5. Get distinct contactIds that have messages (from WA DB)
+    const contactIdsWithMessages = await prismaWa.whatsAppMessage.findMany({
       where: {
         organizationId: user.organizationId,
-        whatsappMessages: {
-          some: messageFilter,
-        }
+        ...messageFilter,
       },
-      include: {
-        whatsappMessages: {
-          where: messageFilter,
-          orderBy: { sentAt: 'desc' },
-          take: 1,
-        },
-        tags: true,
-        chatConversation: {
-          include: {
-            assignedUser: {
-              select: {
-                id: true,
-                name: true,
-                email: true,
-              }
-            }
-          }
-        },
-        _count: {
-          select: {
-            whatsappMessages: {
-              where: {
-                ...messageFilter,
-                direction: 'INBOUND',
-              }
-            }
-          }
-        }
-      },
-      orderBy: {
-        updatedAt: 'desc'
-      }
+      distinct: ['contactId'],
+      select: { contactId: true },
     })
 
-    // 6. Fetch unread counts — single aggregated query instead of N+1
-    const contactIds = contacts.map(c => c.id)
+    const contactIds = contactIdsWithMessages
+      .map(m => m.contactId)
+      .filter((id): id is string => id !== null)
+
+    // 6. Fetch contacts from CRM DB
+    const contacts = contactIds.length > 0
+      ? await prisma.contact.findMany({
+          where: {
+            id: { in: contactIds },
+            organizationId: user.organizationId,
+          },
+          include: {
+            tags: true,
+            chatConversation: {
+              include: {
+                assignedUser: {
+                  select: {
+                    id: true,
+                    name: true,
+                    email: true,
+                  }
+                }
+              }
+            },
+          },
+          orderBy: {
+            updatedAt: 'desc'
+          }
+        })
+      : []
+
+    // 7. Fetch last message per contact from WA DB
+    const lastMessages = contactIds.length > 0
+      ? await prismaWa.whatsAppMessage.findMany({
+          where: {
+            organizationId: user.organizationId,
+            contactId: { in: contactIds },
+            ...messageFilter,
+          },
+          orderBy: { sentAt: 'desc' },
+          distinct: ['contactId'],
+        })
+      : []
+
+    const lastMessageMap = new Map(
+      lastMessages.map(m => [m.contactId, m])
+    )
+
+    // 8. Fetch unread counts from WA DB
     const unreadCounts = contactIds.length > 0
-      ? await prisma.whatsAppMessage.groupBy({
+      ? await prismaWa.whatsAppMessage.groupBy({
           by: ['contactId'],
           where: {
             ...messageFilter,
@@ -101,13 +117,35 @@ export async function GET() {
       unreadCounts.map(u => [u.contactId, u._count.id])
     )
 
-    const contactsWithUnread = contacts.map(contact => ({
-      ...contact,
-      _count: {
-        ...contact._count,
-        unreadMessages: unreadMap.get(contact.id) || 0,
+    // 9. Fetch total inbound counts
+    const totalCounts = contactIds.length > 0
+      ? await prismaWa.whatsAppMessage.groupBy({
+          by: ['contactId'],
+          where: {
+            ...messageFilter,
+            contactId: { in: contactIds },
+            direction: 'INBOUND',
+          },
+          _count: { id: true },
+        })
+      : []
+
+    const totalCountMap = new Map(
+      totalCounts.map(u => [u.contactId, u._count.id])
+    )
+
+    // 10. Merge
+    const contactsWithUnread = contacts.map(contact => {
+      const lastMsg = lastMessageMap.get(contact.id)
+      return {
+        ...contact,
+        whatsappMessages: lastMsg ? [lastMsg] : [],
+        _count: {
+          whatsappMessages: totalCountMap.get(contact.id) || 0,
+          unreadMessages: unreadMap.get(contact.id) || 0,
+        },
       }
-    }))
+    })
 
     return NextResponse.json({
       connections,
@@ -115,7 +153,7 @@ export async function GET() {
       userId: user.id,
       userName: user.name,
       organizationId: user.organizationId,
-      maxInstances: 1 // Default value
+      maxInstances: 1
     })
 
   } catch (error: any) {

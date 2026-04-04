@@ -19,7 +19,8 @@ WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 # Copy source AFTER deps to maximize cache hits
 COPY . .
-RUN node_modules/.bin/prisma generate
+RUN node_modules/.bin/prisma generate && \
+    node_modules/.bin/prisma generate --schema prisma/whatsapp.prisma
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV NODE_ENV=production
 RUN NODE_OPTIONS="--max-old-space-size=2048" node_modules/.bin/next build --webpack
@@ -41,7 +42,8 @@ COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 COPY --from=builder --chown=nextjs:nodejs /app/public ./public
 COPY --from=builder --chown=nextjs:nodejs /app/prisma ./prisma
-COPY --from=builder --chown=nextjs:nodejs /app/node_modules/.prisma ./node_modules/.prisma
+COPY --from=builder --chown=nextjs:nodejs /app/node_modules/.prisma/client ./node_modules/.prisma/client
+COPY --from=builder --chown=nextjs:nodejs /app/node_modules/.prisma/client-wa ./node_modules/.prisma/client-wa
 COPY --from=builder --chown=nextjs:nodejs /app/node_modules/@prisma ./node_modules/@prisma
 COPY --from=builder --chown=nextjs:nodejs /app/node_modules/prisma ./node_modules/prisma
 

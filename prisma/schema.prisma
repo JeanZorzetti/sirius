@@ -96,7 +96,6 @@ model Organization {
   googleCalendarEmail        String?
 
   integrationLogs   IntegrationLog[]
-  whatsappMessages  WhatsAppMessage[]
   calendarEvents    CalendarEvent[]
   pushSubscriptions PushSubscription[]
   pwaMetrics        PWAMetric[]
@@ -119,16 +118,12 @@ model Organization {
   scrapingCredit        ScrapingCredit?
   scrapingJobs          ScrapingJob[]
   addons                Addon[]
-  whatsappConnections   WhatsAppConnection[]
   agiQuota              AgiQuota?
   leadDistributionRules LeadDistributionRule[]
 
   // v2.0 Planos & Billing
   roundRobinConfig RoundRobinConfig?
   transactions     Transaction[]
-
-  // Chat Center - Quick Replies (Fase 2.1)
-  quickReplies QuickReply[]
 
   // Chat Center - Conversation Management (Fase 3.1)
   chatConversations ChatConversation[]
@@ -187,9 +182,6 @@ model User {
 
   // Chat Center - Assigned conversations (Fase 3.1)
   assignedConversations ChatConversation[]
-
-  // Chat Center - Message reactions (Fase 4.2)
-  messageReactions MessageReaction[]
 
   // Mobile App (Capacitor)
   pushTokens PushToken[]
@@ -268,7 +260,6 @@ model Contact {
   assignedTo   User?   @relation(fields: [assignedToId], references: [id], onDelete: SetNull)
 
   deals            Deal[]
-  whatsappMessages WhatsAppMessage[]
   tags             Tag[] // Many-to-Many (Fase 1.2)
   chatConversation ChatConversation? // One-to-One (Fase 3.1)
 
@@ -362,7 +353,6 @@ model Deal {
   activities Activity[]
 
   // Integrations
-  whatsappMessages WhatsAppMessage[]
   calendarEvents   CalendarEvent[]
 
   // Deal Automations
@@ -701,19 +691,6 @@ enum IntegrationStatus {
   RETRYING
 }
 
-enum MessageDirection {
-  INBOUND
-  OUTBOUND
-}
-
-enum WhatsAppMessageStatus {
-  PENDING
-  SENT
-  DELIVERED
-  READ
-  FAILED
-}
-
 enum SyncStatus {
   PENDING
   SYNCED
@@ -741,98 +718,6 @@ model IntegrationLog {
 
   @@index([organizationId, type, createdAt])
   @@index([status, createdAt])
-}
-
-model WhatsAppMessage {
-  id String @id @default(uuid())
-
-  // WhatsApp identifiers
-  remoteJid String // "5511987654321@s.whatsapp.net"
-  messageId String? // Evolution API message ID
-
-  // Message content
-  text      String                @db.Text
-  direction MessageDirection
-  status    WhatsAppMessageStatus @default(PENDING)
-
-  // Read status (Fase 1.1)
-  isRead Boolean @default(false)
-
-  // Reply/Quote (Fase 2.2)
-  replyToId   String?
-  replyTo     WhatsAppMessage?  @relation("MessageReplies", fields: [replyToId], references: [id], onDelete: SetNull)
-  replies     WhatsAppMessage[] @relation("MessageReplies")
-  replyToText String?           @db.Text // Cache para performance de exibição
-
-  // Media (optional)
-  mediaUrl  String?
-  mediaType String? // "image", "video", "document", "audio"
-
-  // Relations
-  dealId String?
-  deal   Deal?   @relation(fields: [dealId], references: [id], onDelete: SetNull)
-
-  contactId String?
-  contact   Contact? @relation(fields: [contactId], references: [id], onDelete: SetNull)
-
-  // Which WhatsApp connection this message belongs to
-  connectionId String?
-  connection   WhatsAppConnection? @relation(fields: [connectionId], references: [id], onDelete: SetNull)
-
-  // Timestamps
-  sentAt      DateTime  @default(now())
-  deliveredAt DateTime?
-  readAt      DateTime?
-
-  organizationId String
-  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
-
-  // Reactions (Fase 4.2)
-  reactions MessageReaction[]
-
-  @@unique([organizationId, messageId])
-  @@index([organizationId, sentAt])
-  @@index([dealId])
-  @@index([contactId])
-  @@index([remoteJid])
-  @@index([contactId, isRead, direction])
-  @@index([connectionId])
-}
-
-// ============================================================================
-// CHAT CENTER - MESSAGE REACTIONS (Fase 4.2)
-// ============================================================================
-
-model MessageReaction {
-  id        String          @id @default(uuid())
-  emoji     String
-  messageId String
-  message   WhatsAppMessage @relation(fields: [messageId], references: [id], onDelete: Cascade)
-  userId    String
-  user      User            @relation(fields: [userId], references: [id], onDelete: Cascade)
-  createdAt DateTime        @default(now())
-
-  @@unique([messageId, userId, emoji])
-  @@index([messageId])
-}
-
-// ============================================================================
-// CHAT CENTER - QUICK REPLIES (Fase 2.1)
-// ============================================================================
-
-model QuickReply {
-  id             String       @id @default(uuid())
-  shortcut       String // "/saudacao", "/followup"
-  title          String
-  content        String       @db.Text
-  category       String? // "saudacao", "fechamento", "followup"
-  organizationId String
-  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
-  createdAt      DateTime     @default(now())
-  updatedAt      DateTime     @updatedAt
-
-  @@unique([organizationId, shortcut])
-  @@index([organizationId])
 }
 
 model CalendarEvent {
@@ -1293,37 +1178,6 @@ model Addon {
 
   organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
 
-  @@index([organizationId])
-  @@index([status])
-}
-
-enum WhatsAppStatus {
-  DISCONNECTED
-  CONNECTING
-  CONNECTED
-  FAILED
-}
-
-// WhatsAppConnection: Conexões WhatsApp (Evolution API)
-model WhatsAppConnection {
-  id             String         @id @default(uuid())
-  organizationId String
-  userId         String // Usuário responsável
-  instanceName   String // Nome da instância no Evolution API
-  phoneNumber    String? // Número conectado
-  qrCode         String?        @db.Text // QR Code para conexão
-  status         WhatsAppStatus @default(DISCONNECTED)
-  apiKey         String?        @db.Text // Evolution API key (encrypted)
-  webhookUrl     String? // URL do webhook
-  connectedAt    DateTime?
-  lastSyncAt     DateTime?
-  createdAt      DateTime       @default(now())
-  updatedAt      DateTime       @updatedAt
-
-  organization Organization      @relation(fields: [organizationId], references: [id], onDelete: Cascade)
-  messages     WhatsAppMessage[]
-
-  @@unique([organizationId, instanceName])
   @@index([organizationId])
   @@index([status])
 }

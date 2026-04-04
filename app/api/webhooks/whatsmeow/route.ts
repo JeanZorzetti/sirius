@@ -14,8 +14,9 @@
 
 import { NextRequest, NextResponse } from 'next/server'
 import { createHmac } from 'crypto'
-import { WhatsAppStatus } from '@prisma/client'
+import { WhatsAppStatus } from '.prisma/client-wa'
 import { prisma } from '@/lib/prisma'
+import { prismaWa } from '@/lib/prisma-wa'
 import logger from '@/lib/logger'
 import { triggerEvent } from '@/lib/pusher'
 import { normalizePhoneNumber, findContactByPhone } from '@/lib/whatsapp-sync'
@@ -86,9 +87,8 @@ export async function POST(request: NextRequest) {
 }
 
 async function findConnectionByInstanceId(instanceId: string) {
-  return prisma.whatsAppConnection.findFirst({
+  return prismaWa.whatsAppConnection.findFirst({
     where: { instanceName: instanceId },
-    include: { organization: true },
   })
 }
 
@@ -131,7 +131,7 @@ async function handleMessage(instanceId: string, data: any) {
 
   // Dedup
   if (messageId) {
-    const existing = await prisma.whatsAppMessage.findFirst({
+    const existing = await prismaWa.whatsAppMessage.findFirst({
       where: { messageId, organizationId },
     })
     if (existing) return
@@ -165,7 +165,7 @@ async function handleMessage(instanceId: string, data: any) {
   const messageText = text || `[${mediaType}]`
   const sentAt = timestamp ? new Date(timestamp * 1000) : new Date()
 
-  const savedMsg = await prisma.whatsAppMessage.create({
+  const savedMsg = await prismaWa.whatsAppMessage.create({
     data: {
       contactId: contact.id,
       organizationId,
@@ -227,7 +227,7 @@ async function handleReceipt(instanceId: string, data: any) {
 
   if (!isDelivered && !isRead) return
 
-  await prisma.whatsAppMessage.updateMany({
+  await prismaWa.whatsAppMessage.updateMany({
     where: { organizationId, messageId: { in: messageIds }, direction: 'OUTBOUND' },
     data: {
       status: isRead ? 'READ' : 'DELIVERED',
@@ -260,7 +260,7 @@ async function handleConnectionUpdate(instanceId: string, data: any) {
 
   const crmStatus = statusMap[status] ?? WhatsAppStatus.DISCONNECTED
 
-  const connection = await prisma.whatsAppConnection.findFirst({
+  const connection = await prismaWa.whatsAppConnection.findFirst({
     where: { instanceName: instanceId },
   })
 
@@ -268,7 +268,7 @@ async function handleConnectionUpdate(instanceId: string, data: any) {
 
   const wasDisconnected = connection.status !== 'CONNECTED'
 
-  await prisma.whatsAppConnection.update({
+  await prismaWa.whatsAppConnection.update({
     where: { id: connection.id },
     data: {
       status: crmStatus,
@@ -363,7 +363,7 @@ async function handleHistorySync(instanceId: string, data: any) {
 
   // Batch dedup: check which messageIds already exist
   const msgIds = validMessages.map((m: any) => m.messageId)
-  const existing = await prisma.whatsAppMessage.findMany({
+  const existing = await prismaWa.whatsAppMessage.findMany({
     where: { organizationId, messageId: { in: msgIds } },
     select: { messageId: true, connectionId: true },
   })
@@ -374,7 +374,7 @@ async function handleHistorySync(instanceId: string, data: any) {
     .filter((m: any) => m.connectionId === null)
     .map((m: any) => m.messageId)
   if (orphanIds.length > 0) {
-    await prisma.whatsAppMessage.updateMany({
+    await prismaWa.whatsAppMessage.updateMany({
       where: { organizationId, messageId: { in: orphanIds } },
       data: { connectionId: connection.id },
     })
@@ -387,7 +387,7 @@ async function handleHistorySync(instanceId: string, data: any) {
     const sentAt = msg.timestamp ? new Date(msg.timestamp * 1000) : new Date()
 
     try {
-      await prisma.whatsAppMessage.create({
+      await prismaWa.whatsAppMessage.create({
         data: {
           contactId: contact.id,
           organizationId,

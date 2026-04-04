@@ -7,6 +7,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
+import { prismaWa } from '@/lib/prisma-wa'
 import { whatsmeowClient } from '@/lib/integrations/whatsmeow-client'
 import logger from '@/lib/logger'
 import { triggerEvent } from '@/lib/pusher'
@@ -45,7 +46,7 @@ export async function POST(req: NextRequest) {
     }
 
     // 4. Verificar se a conexão pertence à organização
-    const connection = await prisma.whatsAppConnection.findFirst({
+    const connection = await prismaWa.whatsAppConnection.findFirst({
       where: {
         id: connectionId,
         organizationId: user.organizationId,
@@ -104,7 +105,7 @@ export async function POST(req: NextRequest) {
     }, 'WhatsApp message sent')
 
     // 8. Salvar mensagem no banco
-    const savedMessage = await prisma.whatsAppMessage.create({
+    const savedMessage = await prismaWa.whatsAppMessage.create({
       data: {
         contactId: contact.id,
         organizationId: user.organizationId,

@@ -257,10 +257,10 @@ async function retryN8N(log: any): Promise<{ success: boolean; response?: any; e
 async function retryWhatsApp(log: any): Promise<{ success: boolean; response?: any; error?: string }> {
   try {
     const { whatsmeowClient } = await import('./whatsmeow-client')
-    const { prisma } = await import('@/lib/prisma')
+    const { prismaWa } = await import('@/lib/prisma-wa')
 
     // Find active connection for the organization
-    const connection = await prisma.whatsAppConnection.findFirst({
+    const connection = await prismaWa.whatsAppConnection.findFirst({
       where: { organizationId: log.organizationId, status: 'CONNECTED' }
     })
 

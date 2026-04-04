@@ -7,6 +7,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
+import { prismaWa } from '@/lib/prisma-wa'
 import { whatsmeowClient } from '@/lib/integrations/whatsmeow-client'
 import { normalizePhoneNumber } from '@/lib/whatsapp-sync'
 import logger from '@/lib/logger'
@@ -88,7 +89,7 @@ export async function POST(req: NextRequest) {
     }
 
     // 5. Verify connection
-    const connection = await prisma.whatsAppConnection.findFirst({
+    const connection = await prismaWa.whatsAppConnection.findFirst({
       where: {
         id: connectionId,
         organizationId: user.organizationId,
@@ -142,7 +143,7 @@ export async function POST(req: NextRequest) {
       ? `${getMediaLabel(mediatype)} ${caption}`
       : getMediaLabel(mediatype)
 
-    const savedMessage = await prisma.whatsAppMessage.create({
+    const savedMessage = await prismaWa.whatsAppMessage.create({
       data: {
         contactId: contact.id,
         organizationId: user.organizationId,

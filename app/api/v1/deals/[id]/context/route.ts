@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { withApiMiddleware, apiResponse } from '@/lib/api-middleware'
 import { prisma } from '@/lib/prisma'
+import { prismaWa } from '@/lib/prisma-wa'
 import { formatDecimal, formatDate } from '@/lib/api-helpers'
 import { uuidSchema } from '@/lib/api-validators'
 import logger from '@/lib/logger'
@@ -90,7 +91,7 @@ export async function GET(
       if (deal.contact?.id) whatsappWhere.OR.push({ contactId: deal.contact.id })
 
       if (whatsappWhere.OR.length > 0) {
-        whatsappMessages = await prisma.whatsAppMessage.findMany({
+        whatsappMessages = await prismaWa.whatsAppMessage.findMany({
           where: whatsappWhere,
           select: {
             id: true, remoteJid: true, text: true,

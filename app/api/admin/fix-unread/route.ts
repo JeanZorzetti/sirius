@@ -9,6 +9,7 @@
 import { NextResponse } from 'next/server'
 import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
+import { prismaWa } from '@/lib/prisma-wa'
 import logger from '@/lib/logger'
 
 export async function POST() {
@@ -27,14 +28,14 @@ export async function POST() {
   }
 
   // 1. Mark all OUTBOUND messages as read (they never need "reading")
-  const outbound = await prisma.whatsAppMessage.updateMany({
+  const outbound = await prismaWa.whatsAppMessage.updateMany({
     where: { direction: 'OUTBOUND', isRead: false },
     data: { isRead: true },
   })
 
   // 2. Mark all old INBOUND messages as read (older than 24h = historical)
   const cutoff = new Date(Date.now() - 24 * 60 * 60 * 1000)
-  const oldInbound = await prisma.whatsAppMessage.updateMany({
+  const oldInbound = await prismaWa.whatsAppMessage.updateMany({
     where: {
       direction: 'INBOUND',
       isRead: false,

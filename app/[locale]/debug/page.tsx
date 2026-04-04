@@ -1,4 +1,5 @@
 import { prisma } from "@/lib/prisma"
+import { prismaWa } from "@/lib/prisma-wa"
 import { getSession } from "@/lib/auth"
 
 export const dynamic = 'force-dynamic'
@@ -21,7 +22,7 @@ export default async function DebugPage() {
     
     // Test 3: WhatsAppConnection model
     logs.push("[6] Testando WhatsAppConnection...")
-    const connCount = await prisma.whatsAppConnection.count()
+    const connCount = await prismaWa.whatsAppConnection.count()
     logs.push(`[7] Conexões WhatsApp: ${connCount}`)
     
     // Test 4: Contact model with messages

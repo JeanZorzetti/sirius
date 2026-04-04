@@ -6,6 +6,7 @@
  */
 
 import { prisma } from '@/lib/prisma'
+import { prismaWa } from '@/lib/prisma-wa'
 import { callLLM } from '@/lib/agi/providers'
 import logger from '@/lib/logger'
 
@@ -46,7 +47,7 @@ async function executeLeadQualifier(action: AgentAction): Promise<{ success: boo
   const contactName = input?.contactName || 'Lead'
 
   // Get contact's recent messages for context
-  const recentMessages = await prisma.whatsAppMessage.findMany({
+  const recentMessages = await prismaWa.whatsAppMessage.findMany({
     where: { contactId, organizationId },
     orderBy: { sentAt: 'desc' },
     take: 10,
@@ -158,7 +159,7 @@ async function executeDealStageAnalyzer(action: AgentAction): Promise<{ success:
 
   // Get recent messages
   const recentMessages = contactId
-    ? await prisma.whatsAppMessage.findMany({
+    ? await prismaWa.whatsAppMessage.findMany({
         where: { contactId, organizationId },
         orderBy: { sentAt: 'desc' },
         take: 10,

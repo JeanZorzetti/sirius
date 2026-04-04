@@ -8,6 +8,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
+import { prismaWa } from '@/lib/prisma-wa'
 import { whatsmeowClient } from '@/lib/integrations/whatsmeow-client'
 import logger from '@/lib/logger'
 
@@ -33,7 +34,7 @@ export async function GET(req: NextRequest) {
     }
 
     // Find message in DB
-    const message = await prisma.whatsAppMessage.findFirst({
+    const message = await prismaWa.whatsAppMessage.findFirst({
       where: { messageId, organizationId: user.organizationId },
     })
 
@@ -50,7 +51,7 @@ export async function GET(req: NextRequest) {
     }
 
     // Find active connection
-    const connection = await prisma.whatsAppConnection.findFirst({
+    const connection = await prismaWa.whatsAppConnection.findFirst({
       where: { organizationId: user.organizationId, status: 'CONNECTED' },
     })
 
@@ -72,7 +73,7 @@ export async function GET(req: NextRequest) {
         : `data:${mimeType};base64,${result.base64}`
 
       // Cache in DB
-      await prisma.whatsAppMessage.updateMany({
+      await prismaWa.whatsAppMessage.updateMany({
         where: { messageId, organizationId: user.organizationId },
         data: { mediaUrl: dataUri },
       })

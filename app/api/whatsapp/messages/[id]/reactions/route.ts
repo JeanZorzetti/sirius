@@ -2,6 +2,7 @@ import logger from '@/lib/logger'
 import { NextRequest, NextResponse } from 'next/server'
 import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
+import { prismaWa } from '@/lib/prisma-wa'
 
 /**
  * POST /api/whatsapp/messages/[id]/reactions
@@ -35,7 +36,7 @@ export async function POST(
     }
 
     // Verify message exists and user has access
-    const message = await prisma.whatsAppMessage.findFirst({
+    const message = await prismaWa.whatsAppMessage.findFirst({
       where: {
         id: messageId,
         organizationId: user.organizationId,
@@ -50,7 +51,7 @@ export async function POST(
     }
 
     // Check if user already reacted with this emoji
-    const existingReaction = await prisma.messageReaction.findUnique({
+    const existingReaction = await prismaWa.messageReaction.findUnique({
       where: {
         messageId_userId_emoji: {
           messageId,
@@ -62,14 +63,14 @@ export async function POST(
 
     if (existingReaction) {
       // Remove reaction (toggle off)
-      await prisma.messageReaction.delete({
+      await prismaWa.messageReaction.delete({
         where: { id: existingReaction.id }
       })
 
       return NextResponse.json({ action: 'removed', emoji })
     } else {
       // Add reaction
-      const reaction = await prisma.messageReaction.create({
+      const reaction = await prismaWa.messageReaction.create({
         data: {
           emoji,
           messageId,
@@ -114,7 +115,7 @@ export async function GET(
       return NextResponse.json({ error: 'Organização não encontrada' }, { status: 404 })
     }
 
-    const message = await prisma.whatsAppMessage.findFirst({
+    const message = await prismaWa.whatsAppMessage.findFirst({
       where: {
         id: messageId,
         organizationId: user.organizationId,
@@ -125,15 +126,20 @@ export async function GET(
       return NextResponse.json({ error: 'Mensagem não encontrada' }, { status: 404 })
     }
 
-    // Get reactions grouped by emoji
-    const reactions = await prisma.messageReaction.findMany({
+    // Get reactions from WA DB
+    const reactions = await prismaWa.messageReaction.findMany({
       where: { messageId },
-      include: {
-        user: {
-          select: { id: true, name: true }
-        }
-      }
     })
+
+    // Enrich with user names from CRM DB
+    const userIds = [...new Set(reactions.map(r => r.userId))]
+    const users = userIds.length > 0
+      ? await prisma.user.findMany({
+          where: { id: { in: userIds } },
+          select: { id: true, name: true },
+        })
+      : []
+    const userMap = new Map(users.map(u => [u.id, u.name || 'Usuário']))
 
     // Group by emoji and count
     const grouped = reactions.reduce((acc, reaction) => {
@@ -146,7 +152,7 @@ export async function GET(
         }
       }
       acc[reaction.emoji].count++
-      acc[reaction.emoji].users.push(reaction.user.name || 'Usuário')
+      acc[reaction.emoji].users.push(userMap.get(reaction.userId) || 'Usuário')
       if (reaction.userId === session.user.id) {
         acc[reaction.emoji].userReacted = true
       }

@@ -6,6 +6,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
+import { prismaWa } from '@/lib/prisma-wa'
 import { whatsmeowClient } from '@/lib/integrations/whatsmeow-client'
 import logger from '@/lib/logger'
 
@@ -58,7 +59,7 @@ export async function POST(req: NextRequest) {
   }
 
   // Verificar duplicata
-  const existing = await prisma.whatsAppConnection.findFirst({
+  const existing = await prismaWa.whatsAppConnection.findFirst({
     where: { organizationId: user.organizationId, instanceName },
   })
 
@@ -72,7 +73,7 @@ export async function POST(req: NextRequest) {
   logger.info({ gatewayInstance, organizationId: user.organizationId }, 'whatsmeow instance created')
 
   // Salvar no DB — instanceName = gatewayInstance.id para usar no lookup do webhook
-  const connection = await prisma.whatsAppConnection.create({
+  const connection = await prismaWa.whatsAppConnection.create({
     data: {
       organizationId: user.organizationId,
       userId: session.user.id,

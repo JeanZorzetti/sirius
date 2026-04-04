@@ -2,6 +2,7 @@ import logger from '@/lib/logger'
 import { NextResponse } from 'next/server'
 import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
+import { prismaWa } from '@/lib/prisma-wa'
 
 export async function GET() {
   try {
@@ -19,7 +20,7 @@ export async function GET() {
       return NextResponse.json({ error: 'Usuário não encontrado' }, { status: 404 })
     }
 
-    const quickReplies = await prisma.quickReply.findMany({
+    const quickReplies = await prismaWa.quickReply.findMany({
       where: { organizationId: user.organizationId },
       orderBy: [{ category: 'asc' }, { shortcut: 'asc' }],
     })
@@ -62,7 +63,7 @@ export async function POST(request: Request) {
     }
 
     // Verificar se o shortcut já existe
-    const existing = await prisma.quickReply.findUnique({
+    const existing = await prismaWa.quickReply.findUnique({
       where: {
         organizationId_shortcut: {
           organizationId: user.organizationId,
@@ -78,7 +79,7 @@ export async function POST(request: Request) {
       )
     }
 
-    const quickReply = await prisma.quickReply.create({
+    const quickReply = await prismaWa.quickReply.create({
       data: {
         shortcut,
         title,

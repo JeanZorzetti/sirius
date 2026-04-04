@@ -8,6 +8,7 @@
 import { NextResponse } from 'next/server'
 import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
+import { prismaWa } from '@/lib/prisma-wa'
 import logger from '@/lib/logger'
 
 function normalizePhone(phone: string): string {
@@ -30,9 +31,9 @@ export async function POST() {
   }
 
   // Get active WhatsApp connections
-  const connections = await prisma.whatsAppConnection.findMany({
-    where: { organizationId: user.organizationId, status: 'connected' },
-    select: { instanceId: true },
+  const connections = await prismaWa.whatsAppConnection.findMany({
+    where: { organizationId: user.organizationId, status: 'CONNECTED' },
+    select: { instanceName: true },
   })
 
   if (connections.length === 0) {
@@ -50,12 +51,12 @@ export async function POST() {
 
   for (const conn of connections) {
     try {
-      const res = await fetch(`${gatewayUrl}/api/instances/${conn.instanceId}/contacts`, {
+      const res = await fetch(`${gatewayUrl}/api/instances/${conn.instanceName}/contacts`, {
         headers: { 'X-API-Key': apiKey },
       })
 
       if (!res.ok) {
-        logger.warn({ instanceId: conn.instanceId, status: res.status }, 'Failed to fetch contacts from gateway')
+        logger.warn({ instanceId: conn.instanceName, status: res.status }, 'Failed to fetch contacts from gateway')
         continue
       }
 
@@ -108,7 +109,7 @@ export async function POST() {
         }
       }
     } catch (err) {
-      logger.error({ err, instanceId: conn.instanceId }, 'Error syncing contacts')
+      logger.error({ err, instanceId: conn.instanceName }, 'Error syncing contacts')
     }
   }
 

@@ -13,6 +13,7 @@
 
 import { Prisma } from '@prisma/client'
 import { prisma } from '@/lib/prisma'
+import { prismaWa } from '@/lib/prisma-wa'
 import { checkAgaasQuota, incrementAgaasUsage } from '@/lib/agaas-quota'
 import { executeAgentAction } from '@/lib/agaas-executor'
 import logger from '@/lib/logger'
@@ -135,7 +136,7 @@ export async function triggerAgentsForInboundMessage(ctx: InboundMessageContext)
     })
 
     // Count recent messages from this contact to estimate engagement/confidence
-    const recentMsgCount = await prisma.whatsAppMessage.count({
+    const recentMsgCount = await prismaWa.whatsAppMessage.count({
       where: {
         contactId,
         organizationId,

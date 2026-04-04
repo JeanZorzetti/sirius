@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
+import { prismaWa } from '@/lib/prisma-wa'
 import logger from '@/lib/logger'
 
 export const dynamic = 'force-dynamic'
@@ -30,7 +31,7 @@ export async function GET() {
     }
 
     // Check connections
-    const connections = await prisma.whatsAppConnection.findMany({
+    const connections = await prismaWa.whatsAppConnection.findMany({
       where: { organizationId: user.organizationId },
       select: {
         id: true,
@@ -43,7 +44,7 @@ export async function GET() {
     })
 
     // Check recent messages
-    const recentMessages = await prisma.whatsAppMessage.findMany({
+    const recentMessages = await prismaWa.whatsAppMessage.findMany({
       where: { organizationId: user.organizationId },
       orderBy: { sentAt: 'desc' },
       take: 5,
@@ -52,12 +53,7 @@ export async function GET() {
         direction: true,
         text: true,
         sentAt: true,
-        contact: {
-          select: {
-            name: true,
-            phone: true,
-          }
-        }
+        contactId: true,
       }
     })
 

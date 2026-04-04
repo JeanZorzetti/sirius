@@ -9,6 +9,7 @@
  */
 
 import { prisma } from '@/lib/prisma'
+import { prismaWa } from '@/lib/prisma-wa'
 import { whatsmeowClient } from '@/lib/integrations/whatsmeow-client'
 import { normalizePhoneNumber } from '@/lib/whatsapp-sync'
 import logger from '@/lib/logger'
@@ -43,7 +44,7 @@ export async function sendWhatsAppMessage(params: SendWhatsAppMessageParams): Pr
         }
 
         // Obter conexão ativa da organização
-        const connection = await prisma.whatsAppConnection.findFirst({
+        const connection = await prismaWa.whatsAppConnection.findFirst({
             where: { organizationId, status: 'CONNECTED' }
         })
 
@@ -61,7 +62,7 @@ export async function sendWhatsAppMessage(params: SendWhatsAppMessageParams): Pr
         const response = await whatsmeowClient.sendText(connection.instanceName, phoneNumber, message)
 
         // Salvar mensagem no banco
-        await prisma.whatsAppMessage.create({
+        await prismaWa.whatsAppMessage.create({
             data: {
                 organizationId,
                 dealId,
@@ -231,40 +232,62 @@ export async function sendFollowUpReminder(
  * Busca histórico de mensagens WhatsApp de um deal
  */
 export async function getDealWhatsAppMessages(dealId: string) {
-    return prisma.whatsAppMessage.findMany({
+    const messages = await prismaWa.whatsAppMessage.findMany({
         where: { dealId },
         orderBy: { sentAt: 'asc' },
-        include: {
-            contact: {
-                select: {
-                    name: true,
-                    phone: true
-                }
-            }
-        }
     })
+
+    // Enrich with contact data from CRM DB
+    const contactIds = [...new Set(messages.map(m => m.contactId).filter(Boolean))] as string[]
+    const contacts = contactIds.length > 0
+        ? await prisma.contact.findMany({
+              where: { id: { in: contactIds } },
+              select: { id: true, name: true, phone: true },
+          })
+        : []
+    const contactMap = new Map(contacts.map(c => [c.id, c]))
+
+    return messages.map(m => ({
+        ...m,
+        contact: m.contactId ? contactMap.get(m.contactId) || null : null,
+    }))
 }
 
 /**
  * Busca últimas mensagens WhatsApp de uma organização
  */
 export async function getOrganizationWhatsAppMessages(organizationId: string, limit: number = 50) {
-    return prisma.whatsAppMessage.findMany({
+    const messages = await prismaWa.whatsAppMessage.findMany({
         where: { organizationId },
         orderBy: { sentAt: 'desc' },
         take: limit,
-        include: {
-            contact: {
-                select: {
-                    name: true,
-                    phone: true
-                }
-            },
-            deal: {
-                select: {
-                    title: true
-                }
-            }
-        }
     })
+
+    // Enrich with contact and deal data from CRM DB
+    const contactIds = [...new Set(messages.map(m => m.contactId).filter(Boolean))] as string[]
+    const dealIds = [...new Set(messages.map(m => m.dealId).filter(Boolean))] as string[]
+
+    const [contacts, deals] = await Promise.all([
+        contactIds.length > 0
+            ? prisma.contact.findMany({
+                  where: { id: { in: contactIds } },
+                  select: { id: true, name: true, phone: true },
+              })
+            : [],
+        dealIds.length > 0
+            ? prisma.deal.findMany({
+                  where: { id: { in: dealIds } },
+                  select: { id: true, title: true },
+              })
+            : [],
+    ])
+
+    const contactMap = new Map(contacts.map(c => [c.id, c]))
+    const dealMap = new Map(deals.map(d => [d.id, d]))
+
+    return messages.map(m => ({
+        ...m,
+        contact: m.contactId ? contactMap.get(m.contactId) || null : null,
+        deal: m.dealId ? dealMap.get(m.dealId) || null : null,
+    }))
 }

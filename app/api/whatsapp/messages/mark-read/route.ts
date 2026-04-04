@@ -1,6 +1,7 @@
 import logger from '@/lib/logger'
 import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
+import { prismaWa } from '@/lib/prisma-wa'
 import { getSession } from '@/lib/auth'
 
 export async function PUT(req: Request) {
@@ -27,7 +28,7 @@ export async function PUT(req: Request) {
     }
 
     // Marcar todas as mensagens INBOUND deste contato como lidas
-    await prisma.whatsAppMessage.updateMany({
+    await prismaWa.whatsAppMessage.updateMany({
       where: {
         contactId,
         organizationId: user.organizationId,

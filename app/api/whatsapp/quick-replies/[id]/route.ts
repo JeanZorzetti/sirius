@@ -2,6 +2,7 @@ import logger from '@/lib/logger'
 import { NextResponse } from 'next/server'
 import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
+import { prismaWa } from '@/lib/prisma-wa'
 
 export async function PUT(
   request: Request,
@@ -27,7 +28,7 @@ export async function PUT(
     const { shortcut, title, content, category } = body
 
     // Verificar se o quick reply existe e pertence à organização
-    const existing = await prisma.quickReply.findUnique({
+    const existing = await prismaWa.quickReply.findUnique({
       where: { id },
     })
 
@@ -40,7 +41,7 @@ export async function PUT(
 
     // Se o shortcut mudou, verificar se o novo não existe
     if (shortcut && shortcut !== existing.shortcut) {
-      const duplicate = await prisma.quickReply.findUnique({
+      const duplicate = await prismaWa.quickReply.findUnique({
         where: {
           organizationId_shortcut: {
             organizationId: user.organizationId,
@@ -57,7 +58,7 @@ export async function PUT(
       }
     }
 
-    const quickReply = await prisma.quickReply.update({
+    const quickReply = await prismaWa.quickReply.update({
       where: { id },
       data: {
         shortcut: shortcut || existing.shortcut,
@@ -99,7 +100,7 @@ export async function DELETE(
     const { id } = await params
 
     // Verificar se o quick reply existe e pertence à organização
-    const existing = await prisma.quickReply.findUnique({
+    const existing = await prismaWa.quickReply.findUnique({
       where: { id },
     })
 
@@ -110,7 +111,7 @@ export async function DELETE(
       )
     }
 
-    await prisma.quickReply.delete({
+    await prismaWa.quickReply.delete({
       where: { id },
     })
 

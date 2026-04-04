@@ -7,6 +7,7 @@
 import { NextResponse } from 'next/server'
 import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
+import { prismaWa } from '@/lib/prisma-wa'
 import logger from '@/lib/logger'
 
 /**
@@ -35,7 +36,7 @@ export async function GET() {
     }
 
     // 3. Get connections
-    const connections = await prisma.whatsAppConnection.findMany({
+    const connections = await prismaWa.whatsAppConnection.findMany({
       where: { organizationId: user.organizationId },
       orderBy: { createdAt: 'desc' },
     })

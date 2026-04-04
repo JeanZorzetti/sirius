@@ -7,6 +7,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
+import { prismaWa } from '@/lib/prisma-wa'
 import logger from '@/lib/logger'
 
 export async function GET(
@@ -51,13 +52,15 @@ export async function GET(
           take: 5,
           orderBy: { updatedAt: 'desc' },
         },
-        _count: {
-          select: {
-            whatsappMessages: true,
-          },
-        },
       },
     })
+
+    // Count WhatsApp messages from WA DB
+    const whatsappMessageCount = contact
+      ? await prismaWa.whatsAppMessage.count({
+          where: { contactId: contact.id, organizationId: user.organizationId },
+        })
+      : 0
 
     if (!contact) {
       return NextResponse.json(
@@ -87,6 +90,7 @@ export async function GET(
 
     return NextResponse.json({
       ...contact,
+      _count: { whatsappMessages: whatsappMessageCount },
       notes,
     })
   } catch (error: any) {

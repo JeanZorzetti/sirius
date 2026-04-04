@@ -7,8 +7,10 @@
  */
 
 import { PrismaClient } from '@prisma/client'
+import { PrismaClient as PrismaClientWa } from '.prisma/client-wa'
 
 const prisma = new PrismaClient()
+const prismaWa = new PrismaClientWa()
 
 function normalizePhone(phone: string): string {
   if (phone.includes('@g.us')) return phone
@@ -57,7 +59,7 @@ async function fixDuplicateContacts(organizationId: string) {
       console.log(`    Merging: ${dup.id} | "${dup.name}" | raw="${dup.phone}"`)
 
       // Reassign messages
-      const msgs = await prisma.whatsAppMessage.updateMany({
+      const msgs = await prismaWa.whatsAppMessage.updateMany({
         where: { contactId: dup.id },
         data: { contactId: keeper.id },
       })
@@ -97,7 +99,7 @@ async function fixDuplicateContacts(organizationId: string) {
   console.log(`\n=== STEP 2: Fix duplicate MESSAGES ===\n`)
 
   // Busca mensagens com messageId duplicado
-  const duplicateMessageIds = await prisma.$queryRaw<Array<{ messageId: string; cnt: bigint }>>`
+  const duplicateMessageIds = await prismaWa.$queryRaw<Array<{ messageId: string; cnt: bigint }>>`
     SELECT "messageId", COUNT(*) as cnt
     FROM "WhatsAppMessage"
     WHERE "organizationId" = ${organizationId}
@@ -111,7 +113,7 @@ async function fixDuplicateContacts(organizationId: string) {
   let totalMsgDeleted = 0
 
   for (const { messageId } of duplicateMessageIds) {
-    const msgs = await prisma.whatsAppMessage.findMany({
+    const msgs = await prismaWa.whatsAppMessage.findMany({
       where: { organizationId, messageId },
       orderBy: { createdAt: 'asc' },
       select: { id: true },
@@ -120,7 +122,7 @@ async function fixDuplicateContacts(organizationId: string) {
     // Keep the first, delete the rest
     const toDelete = msgs.slice(1).map(m => m.id)
     if (toDelete.length > 0) {
-      await prisma.whatsAppMessage.deleteMany({
+      await prismaWa.whatsAppMessage.deleteMany({
         where: { id: { in: toDelete } },
       })
       totalMsgDeleted += toDelete.length
@@ -136,6 +138,7 @@ async function fixDuplicateContacts(organizationId: string) {
   console.log(`========================================\n`)
 
   await prisma.$disconnect()
+  await prismaWa.$disconnect()
 }
 
 const orgId = process.argv[2]

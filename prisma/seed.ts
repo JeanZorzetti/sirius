@@ -1,8 +1,10 @@
 
 import { PrismaClient } from '@prisma/client'
+import { PrismaClient as WaClient } from '.prisma/client-wa'
 import { hash } from 'bcryptjs'
 
 const prisma = new PrismaClient()
+const prismaWa = new WaClient()
 
 async function main() {
     console.log('Start seeding...')
@@ -124,7 +126,7 @@ async function main() {
     ]
 
     for (const qr of quickRepliesData) {
-        await prisma.quickReply.create({
+        await prismaWa.quickReply.create({
             data: {
                 ...qr,
                 organizationId: org.id,
@@ -139,9 +141,11 @@ async function main() {
 main()
     .then(async () => {
         await prisma.$disconnect()
+        await prismaWa.$disconnect()
     })
     .catch(async (e) => {
         console.error(e)
         await prisma.$disconnect()
+        await prismaWa.$disconnect()
         process.exit(1)
     })

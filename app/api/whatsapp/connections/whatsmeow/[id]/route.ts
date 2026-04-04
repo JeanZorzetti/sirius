@@ -8,6 +8,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
+import { prismaWa } from '@/lib/prisma-wa'
 import { whatsmeowClient } from '@/lib/integrations/whatsmeow-client'
 import logger from '@/lib/logger'
 
@@ -39,12 +40,12 @@ export async function DELETE(
   }
 
   // 2. Deletar no banco se existir
-  const connection = await prisma.whatsAppConnection.findFirst({
+  const connection = await prismaWa.whatsAppConnection.findFirst({
     where: { instanceName: gatewayInstanceId, organizationId: user.organizationId },
   })
 
   if (connection) {
-    await prisma.whatsAppConnection.delete({ where: { id: connection.id } })
+    await prismaWa.whatsAppConnection.delete({ where: { id: connection.id } })
     logger.info({ connectionId: connection.id, gatewayInstanceId }, 'whatsmeow: deleted from DB')
   }
 

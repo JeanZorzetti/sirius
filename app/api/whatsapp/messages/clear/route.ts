@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
+import { prismaWa } from '@/lib/prisma-wa'
 
 /**
  * DELETE /api/whatsapp/messages/clear
@@ -35,7 +36,7 @@ export async function DELETE(request: NextRequest) {
     }
 
     // Delete all messages for this contact (reactions cascade-delete via FK)
-    const result = await prisma.whatsAppMessage.deleteMany({
+    const result = await prismaWa.whatsAppMessage.deleteMany({
       where: { contactId, organizationId: user.organizationId },
     })
 

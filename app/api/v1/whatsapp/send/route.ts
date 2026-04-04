@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { withApiMiddleware, apiResponse } from '@/lib/api-middleware'
 import { prisma } from '@/lib/prisma'
+import { prismaWa } from '@/lib/prisma-wa'
 import { uuidSchema } from '@/lib/api-validators'
 import logger from '@/lib/logger'
 import { whatsmeowClient } from '@/lib/integrations/whatsmeow-client'
@@ -38,7 +39,7 @@ export async function POST(request: NextRequest) {
       }
 
       // Verify connection exists and is connected
-      const connection = await prisma.whatsAppConnection.findFirst({
+      const connection = await prismaWa.whatsAppConnection.findFirst({
         where: {
           id: connectionId,
           organizationId: context.organizationId
@@ -73,7 +74,7 @@ export async function POST(request: NextRequest) {
       const messageId = res.messageId
 
       // Store message in DB
-      await prisma.whatsAppMessage.create({
+      await prismaWa.whatsAppMessage.create({
         data: {
           remoteJid,
           text: message,

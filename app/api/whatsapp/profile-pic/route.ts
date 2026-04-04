@@ -13,6 +13,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
+import { prismaWa } from '@/lib/prisma-wa'
 import { whatsmeowClient } from '@/lib/integrations/whatsmeow-client'
 import { isWhatsmeow } from '@/lib/whatsapp-provider'
 import logger from '@/lib/logger'
@@ -56,7 +57,7 @@ export async function GET(req: NextRequest) {
     }
 
     // Find active whatsmeow connection
-    const connection = await prisma.whatsAppConnection.findFirst({
+    const connection = await prismaWa.whatsAppConnection.findFirst({
       where: { organizationId: user.organizationId, status: 'CONNECTED' },
     })
 

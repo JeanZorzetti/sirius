@@ -9,6 +9,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
+import { prismaWa } from '@/lib/prisma-wa'
 import { whatsmeowClient } from '@/lib/integrations/whatsmeow-client'
 import logger from '@/lib/logger'
 
@@ -35,7 +36,7 @@ export async function POST(
       return NextResponse.json({ error: 'Organização não encontrada' }, { status: 404 })
     }
 
-    const connection = await prisma.whatsAppConnection.findFirst({
+    const connection = await prismaWa.whatsAppConnection.findFirst({
       where: { id, organizationId: user.organizationId },
     })
 

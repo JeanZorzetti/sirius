@@ -7,6 +7,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
+import { prismaWa } from '@/lib/prisma-wa'
 import logger from '@/lib/logger'
 
 export async function GET(
@@ -51,7 +52,7 @@ export async function GET(
     }
 
     // 4. Buscar mensagens WhatsApp do contato com reações (Fase 4.2)
-    const messages = await prisma.whatsAppMessage.findMany({
+    const messages = await prismaWa.whatsAppMessage.findMany({
       where: {
         contactId: id,
         organizationId: user.organizationId,
@@ -72,11 +73,7 @@ export async function GET(
         mediaType: true,
         replyToId: true,
         replyToText: true,
-        reactions: {
-          include: {
-            user: { select: { id: true, name: true } }
-          }
-        }
+        reactions: true
       },
     })
 
