@@ -9,15 +9,23 @@ import { MercadoPagoConfig, Preference } from 'mercadopago'
 import { getPlanConfig, getAddonConfig } from './products'
 import logger from '@/lib/logger'
 
-// Inicializar cliente do Mercado Pago
-const client = new MercadoPagoConfig({
-  accessToken: process.env.MERCADOPAGO_ACCESS_TOKEN!,
-  options: {
-    timeout: 5000,
-  },
-})
+// Lazy singleton — avoid top-level instantiation (breaks Docker standalone build)
+let _client: MercadoPagoConfig | null = null
+function getClient() {
+  if (!_client) {
+    _client = new MercadoPagoConfig({
+      accessToken: process.env.MERCADOPAGO_ACCESS_TOKEN!,
+      options: { timeout: 5000 },
+    })
+  }
+  return _client
+}
 
-const preference = new Preference(client)
+let _preference: Preference | null = null
+function getPreference() {
+  if (!_preference) _preference = new Preference(getClient())
+  return _preference
+}
 
 /**
  * Cria um checkout para assinatura de plano
@@ -54,12 +62,12 @@ export async function createPlanCheckout(params: {
       name: userName,
     },
     back_urls: {
-      success: `${process.env.NEXT_PUBLIC_APP_URL}/settings/billing?success=true&tier=${tier}`,
-      failure: `${process.env.NEXT_PUBLIC_APP_URL}/settings/billing?canceled=true`,
-      pending: `${process.env.NEXT_PUBLIC_APP_URL}/settings/billing?pending=true`,
+      success: `${process.env.NEXTAUTH_URL || process.env.NEXT_PUBLIC_APP_URL}/settings/billing?success=true&tier=${tier}`,
+      failure: `${process.env.NEXTAUTH_URL || process.env.NEXT_PUBLIC_APP_URL}/settings/billing?canceled=true`,
+      pending: `${process.env.NEXTAUTH_URL || process.env.NEXT_PUBLIC_APP_URL}/settings/billing?pending=true`,
     },
     auto_return: 'approved' as const,
-    notification_url: `${process.env.NEXT_PUBLIC_APP_URL}/api/webhooks/mercado-pago`,
+    notification_url: `${process.env.NEXTAUTH_URL || process.env.NEXT_PUBLIC_APP_URL}/api/webhooks/mercado-pago`,
     external_reference: organizationId, // Para identificar a org no webhook
     metadata: {
       organization_id: organizationId,
@@ -75,7 +83,7 @@ export async function createPlanCheckout(params: {
     },
   }
 
-  const response = await preference.create({ body: preferenceData })
+  const response = await getPreference().create({ body: preferenceData })
 
   return {
     preferenceId: response.id,
@@ -115,12 +123,12 @@ export async function createAddonCheckout(params: {
       name: userName,
     },
     back_urls: {
-      success: `${process.env.NEXT_PUBLIC_APP_URL}/settings/addons?success=true&addon=${addonType}`,
-      failure: `${process.env.NEXT_PUBLIC_APP_URL}/settings/addons?canceled=true`,
-      pending: `${process.env.NEXT_PUBLIC_APP_URL}/settings/addons?pending=true`,
+      success: `${process.env.NEXTAUTH_URL || process.env.NEXT_PUBLIC_APP_URL}/settings/addons?success=true&addon=${addonType}`,
+      failure: `${process.env.NEXTAUTH_URL || process.env.NEXT_PUBLIC_APP_URL}/settings/addons?canceled=true`,
+      pending: `${process.env.NEXTAUTH_URL || process.env.NEXT_PUBLIC_APP_URL}/settings/addons?pending=true`,
     },
     auto_return: 'approved' as const,
-    notification_url: `${process.env.NEXT_PUBLIC_APP_URL}/api/webhooks/mercado-pago`,
+    notification_url: `${process.env.NEXTAUTH_URL || process.env.NEXT_PUBLIC_APP_URL}/api/webhooks/mercado-pago`,
     external_reference: organizationId,
     metadata: {
       organization_id: organizationId,
@@ -140,7 +148,7 @@ export async function createAddonCheckout(params: {
     }
   }
 
-  const response = await preference.create({ body: preferenceData })
+  const response = await getPreference().create({ body: preferenceData })
 
   return {
     preferenceId: response.id,
@@ -201,12 +209,12 @@ export async function createUpgradeCheckout(params: {
       name: userName,
     },
     back_urls: {
-      success: `${process.env.NEXT_PUBLIC_APP_URL}/settings/billing?success=true&upgrade=true&tier=${newTier}`,
-      failure: `${process.env.NEXT_PUBLIC_APP_URL}/settings/billing?canceled=true`,
-      pending: `${process.env.NEXT_PUBLIC_APP_URL}/settings/billing?pending=true`,
+      success: `${process.env.NEXTAUTH_URL || process.env.NEXT_PUBLIC_APP_URL}/settings/billing?success=true&upgrade=true&tier=${newTier}`,
+      failure: `${process.env.NEXTAUTH_URL || process.env.NEXT_PUBLIC_APP_URL}/settings/billing?canceled=true`,
+      pending: `${process.env.NEXTAUTH_URL || process.env.NEXT_PUBLIC_APP_URL}/settings/billing?pending=true`,
     },
     auto_return: 'approved' as const,
-    notification_url: `${process.env.NEXT_PUBLIC_APP_URL}/api/webhooks/mercado-pago`,
+    notification_url: `${process.env.NEXTAUTH_URL || process.env.NEXT_PUBLIC_APP_URL}/api/webhooks/mercado-pago`,
     external_reference: organizationId,
     metadata: {
       organization_id: organizationId,
@@ -222,7 +230,7 @@ export async function createUpgradeCheckout(params: {
     },
   }
 
-  const response = await preference.create({ body: preferenceData })
+  const response = await getPreference().create({ body: preferenceData })
 
   return {
     preferenceId: response.id,

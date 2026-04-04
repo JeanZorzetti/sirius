@@ -45,9 +45,11 @@ function nextMonthDate(): Date {
   return d
 }
 
-const mp = new MercadoPagoConfig({
-  accessToken: process.env.MERCADO_PAGO_ACCESS_TOKEN!,
-})
+let _mp: MercadoPagoConfig | null = null
+function getMp() {
+  if (!_mp) _mp = new MercadoPagoConfig({ accessToken: process.env.MERCADO_PAGO_ACCESS_TOKEN! })
+  return _mp
+}
 
 export const dynamic = 'force-dynamic'
 
@@ -120,7 +122,7 @@ export async function POST(req: NextRequest) {
       const paymentId = body.data.id
       
       // Buscar detalhes do pagamento
-      const payment = await new Payment(mp).get({ id: paymentId })
+      const payment = await new Payment(getMp()).get({ id: paymentId })
       
       logger.info({ 
         paymentId, 
@@ -521,7 +523,7 @@ async function processRecurringPayment(paymentId: string) {
   logger.info({ paymentId }, '[MP:RECURRING] Processing recurring payment')
 
   try {
-    const payment = await new Payment(mp).get({ id: paymentId })
+    const payment = await new Payment(getMp()).get({ id: paymentId })
 
     const externalReference = payment.external_reference
     if (!externalReference) {
@@ -658,7 +660,7 @@ async function handleFailedRecurringPayment(organizationId: string, payment: any
   const newAttempts = (org.failedPaymentAttempts || 0) + 1
   const isFinal = newAttempts >= MAX_PAYMENT_ATTEMPTS
 
-  const billingUrl = `${process.env.NEXT_PUBLIC_APP_URL}/dashboard/settings/billing`
+  const billingUrl = `${process.env.NEXTAUTH_URL || process.env.NEXT_PUBLIC_APP_URL}/dashboard/settings/billing`
 
   if (isFinal) {
     // Downgrade para FREE após atingir o limite (sync tier + plan + agaas + billing)

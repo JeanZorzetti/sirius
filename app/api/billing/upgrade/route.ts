@@ -13,9 +13,11 @@ import { PLAN_PRICING, PLAN_NAMES } from '@/lib/entitlements'
 import { SubscriptionTier } from '@prisma/client'
 import { MercadoPagoConfig, Preference } from 'mercadopago'
 
-const mp = new MercadoPagoConfig({
-  accessToken: process.env.MERCADO_PAGO_ACCESS_TOKEN!,
-})
+let _mp: MercadoPagoConfig | null = null
+function getMp() {
+  if (!_mp) _mp = new MercadoPagoConfig({ accessToken: process.env.MERCADO_PAGO_ACCESS_TOKEN! })
+  return _mp
+}
 
 // IDs dos planos no Mercado Pago (criar no dashboard)
 const MP_PLAN_IDS: Record<SubscriptionTier, string | null> = {
@@ -97,7 +99,7 @@ export async function POST(req: NextRequest) {
     const price = PLAN_PRICING[tier as SubscriptionTier]
     const planName = PLAN_NAMES[tier as SubscriptionTier]
 
-    const preference = await new Preference(mp).create({
+    const preference = await new Preference(getMp()).create({
       body: {
         items: [
           {
@@ -114,12 +116,12 @@ export async function POST(req: NextRequest) {
         },
         external_reference: `${org.id}_${tier}`,
         back_urls: {
-          success: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard/billing/plans?success=true&tier=${tier}`,
-          failure: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard/billing/plans?error=true`,
-          pending: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard/billing/plans?pending=true`,
+          success: `${process.env.NEXTAUTH_URL || process.env.NEXT_PUBLIC_APP_URL}/dashboard/billing/plans?success=true&tier=${tier}`,
+          failure: `${process.env.NEXTAUTH_URL || process.env.NEXT_PUBLIC_APP_URL}/dashboard/billing/plans?error=true`,
+          pending: `${process.env.NEXTAUTH_URL || process.env.NEXT_PUBLIC_APP_URL}/dashboard/billing/plans?pending=true`,
         },
         auto_return: 'approved',
-        notification_url: `${process.env.NEXT_PUBLIC_APP_URL}/api/webhooks/mercadopago`,
+        notification_url: `${process.env.NEXTAUTH_URL || process.env.NEXT_PUBLIC_APP_URL}/api/webhooks/mercadopago`,
         metadata: {
           organizationId: org.id,
           userId: user.id,

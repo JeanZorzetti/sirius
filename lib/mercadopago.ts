@@ -1,17 +1,29 @@
 import { MercadoPagoConfig, Preference, Payment } from 'mercadopago'
 import logger from './logger'
 
-// Inicializar cliente Mercado Pago
-const client = new MercadoPagoConfig({
-  accessToken: process.env.MERCADO_PAGO_ACCESS_TOKEN!,
-  options: {
-    timeout: 5000,
-    idempotencyKey: 'your-idempotency-key' // Será gerado dinamicamente
+// Lazy singleton — avoid top-level instantiation (breaks Docker standalone build)
+let _client: MercadoPagoConfig | null = null
+function getClient() {
+  if (!_client) {
+    _client = new MercadoPagoConfig({
+      accessToken: process.env.MERCADO_PAGO_ACCESS_TOKEN!,
+      options: { timeout: 5000 },
+    })
   }
-})
+  return _client
+}
 
-const preferenceClient = new Preference(client)
-const paymentClient = new Payment(client)
+let _preferenceClient: Preference | null = null
+function getPreferenceClient() {
+  if (!_preferenceClient) _preferenceClient = new Preference(getClient())
+  return _preferenceClient
+}
+
+let _paymentClient: Payment | null = null
+function getPaymentClient() {
+  if (!_paymentClient) _paymentClient = new Payment(getClient())
+  return _paymentClient
+}
 
 /**
  * Interface para item de preferência
@@ -94,21 +106,21 @@ export async function createCheckoutPreference(
       email: userEmail
     }
 
-    const preference = await preferenceClient.create({
+    const preference = await getPreferenceClient().create({
       body: {
         items: [item],
         payer,
         back_urls: {
-          success: `${process.env.NEXT_PUBLIC_APP_URL}/checkout/sucesso`,
-          failure: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard/billing?status=failure`,
-          pending: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard/billing?status=pending`
+          success: `${process.env.NEXTAUTH_URL || process.env.NEXT_PUBLIC_APP_URL}/checkout/sucesso`,
+          failure: `${process.env.NEXTAUTH_URL || process.env.NEXT_PUBLIC_APP_URL}/dashboard/billing?status=failure`,
+          pending: `${process.env.NEXTAUTH_URL || process.env.NEXT_PUBLIC_APP_URL}/dashboard/billing?status=pending`
         },
         auto_return: 'approved',
         payment_methods: {
           excluded_payment_types: [], // Aceitar todos (PIX, cartão, boleto)
           installments: 12 // Até 12x no cartão
         },
-        notification_url: `${process.env.NEXT_PUBLIC_APP_URL}/api/webhooks/mercadopago`,
+        notification_url: `${process.env.NEXTAUTH_URL || process.env.NEXT_PUBLIC_APP_URL}/api/webhooks/mercadopago`,
         external_reference: `${organizationId}_${plan}`, // "orgId_TIER" para parsing no webhook
         statement_descriptor: 'SIRIUS CRM',
         expires: false,
@@ -145,7 +157,7 @@ export async function createCheckoutPreference(
  */
 export async function getPayment(paymentId: string) {
   try {
-    const payment = await paymentClient.get({ id: paymentId })
+    const payment = await getPaymentClient().get({ id: paymentId })
 
     logger.info({
       paymentId,
@@ -262,4 +274,4 @@ export function validateMercadoPagoCredentials(): boolean {
   return true
 }
 
-export { client as mercadoPagoClient }
+export { getClient as getMercadoPagoClient }
