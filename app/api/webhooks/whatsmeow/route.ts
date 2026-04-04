@@ -147,9 +147,19 @@ async function handleMessage(instanceId: string, data: any) {
       data: { organizationId, name: senderName, phone },
     })
     logger.info({ contactId: contact.id, phone }, 'whatsmeow: created contact')
+  } else if (pushName && !isGroup) {
+    const hasGenericName =
+      !contact.name || contact.name === contact.phone || /^\d+$/.test(contact.name.replace(/\D/g, ''))
+    if (hasGenericName) {
+      await prisma.contact.update({
+        where: { id: contact.id },
+        data: { name: pushName },
+      })
+      contact.name = pushName
+    }
   }
 
-  const messageText = text || (fromMe ? '[Mensagem enviada]' : '[Mensagem recebida]')
+  const messageText = text || (mediaType ? `[${mediaType}]` : (fromMe ? '[Mensagem enviada]' : '[Mensagem recebida]'))
   const sentAt = timestamp ? new Date(timestamp * 1000) : new Date()
 
   const savedMsg = await prisma.whatsAppMessage.create({
@@ -326,12 +336,22 @@ async function handleHistorySync(instanceId: string, data: any) {
     contact = await prisma.contact.create({
       data: { organizationId, name: pushName || phone, phone },
     })
+  } else if (pushName && !isGroup) {
+    const hasGenericName =
+      !contact.name || contact.name === contact.phone || /^\d+$/.test(contact.name.replace(/\D/g, ''))
+    if (hasGenericName) {
+      await prisma.contact.update({
+        where: { id: contact.id },
+        data: { name: pushName },
+      })
+      contact.name = pushName
+    }
   }
 
-  // Filter messages: skip empty/protocol-only messages
+  // Filter messages: only skip those without an ID (protocol/system)
   const validMessages = messages.filter((msg: any) => {
     if (!msg.messageId) return false
-    // Skip messages with no text and no media — these are protocol/system messages
+    // Skip protocol messages with no content at all
     if (!msg.text && !msg.mediaType) return false
     return true
   })

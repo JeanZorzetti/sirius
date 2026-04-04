@@ -33,18 +33,19 @@ export async function GET() {
       )
     }
 
-    // 3. Get active connection to filter messages by connection
-    const activeConnection = await prisma.whatsAppConnection.findFirst({
-      where: {
-        organizationId: user.organizationId,
-        status: { in: ['CONNECTED', 'CONNECTING'] },
-      },
-      orderBy: { connectedAt: 'desc' },
+    // 3. Get ALL connections for this org (not just active) so messages
+    //    from previous sessions are never hidden. This ensures conversations
+    //    persist across reconnections/new WhatsApp pairings.
+    const orgConnections = await prisma.whatsAppConnection.findMany({
+      where: { organizationId: user.organizationId },
+      select: { id: true },
     })
 
-    // Show messages from active connection OR legacy messages (connectionId null)
-    const messageFilter = activeConnection
-      ? { OR: [{ connectionId: activeConnection.id }, { connectionId: null }] }
+    const connectionIds = orgConnections.map(c => c.id)
+
+    // Show messages from ANY org connection OR legacy messages (connectionId null)
+    const messageFilter = connectionIds.length > 0
+      ? { OR: [{ connectionId: { in: connectionIds } }, { connectionId: null }] }
       : {}
 
     // 4. Buscar contatos com mensagens WhatsApp
@@ -61,8 +62,8 @@ export async function GET() {
           orderBy: { sentAt: 'desc' },
           take: 1,
         },
-        tags: true, // Fase 1.2
-        chatConversation: { // Fase 3.1
+        tags: true,
+        chatConversation: {
           include: {
             assignedUser: {
               select: {
@@ -116,8 +117,11 @@ export async function GET() {
       }
     }))
 
-    // Sort by latest message time (not Contact.updatedAt) to match WhatsApp ordering
+    // Sort: pinned first, then by latest message time (matches WhatsApp ordering)
     contactsWithUnread.sort((a, b) => {
+      const aPinned = a.chatConversation?.isPinned ? 1 : 0
+      const bPinned = b.chatConversation?.isPinned ? 1 : 0
+      if (aPinned !== bPinned) return bPinned - aPinned
       const aTime = a.whatsappMessages[0]?.sentAt?.getTime() ?? 0
       const bTime = b.whatsappMessages[0]?.sentAt?.getTime() ?? 0
       return bTime - aTime

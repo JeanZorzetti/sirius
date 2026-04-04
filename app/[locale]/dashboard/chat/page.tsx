@@ -72,7 +72,6 @@ export default async function ChatPage({
   }
 
   let connections: any[] = []
-  let activeConnection = null
   let messageFilter = {}
 
   try {
@@ -81,10 +80,9 @@ export default async function ChatPage({
       orderBy: { createdAt: 'desc' },
     })
 
-    // Localizar a conexão ativa
-    activeConnection = connections.find((c: any) => c.status === 'CONNECTED' || c.status === 'CONNECTING')
-    if (activeConnection) {
-      messageFilter = { OR: [{ connectionId: activeConnection.id }, { connectionId: null }] }
+    const connectionIds = connections.map((c: any) => c.id)
+    if (connectionIds.length > 0) {
+      messageFilter = { OR: [{ connectionId: { in: connectionIds } }, { connectionId: null }] }
     }
   } catch (err: any) {
     console.error("[CHAT_PAGE] Falha ao buscar conexões:", err.message)
