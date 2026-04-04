@@ -159,7 +159,10 @@ async function handleMessage(instanceId: string, data: any) {
     }
   }
 
-  const messageText = text || (mediaType ? `[${mediaType}]` : (fromMe ? '[Mensagem enviada]' : '[Mensagem recebida]'))
+  // Skip messages with no content (system messages, reactions, pin events, etc.)
+  if (!text && !mediaType) return
+
+  const messageText = text || `[${mediaType}]`
   const sentAt = timestamp ? new Date(timestamp * 1000) : new Date()
 
   const savedMsg = await prisma.whatsAppMessage.create({
