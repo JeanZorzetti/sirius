@@ -268,19 +268,115 @@
         "subtitle": "A base do seu processo comercial: contatos, deals, pipelines e atividades",
         "contacts": {
           "name": "Gestão de Contatos",
-          "description": "CRUD completo com importação e exportação CSV. Histórico de interações, associação com empresas, tags personalizáveis e timeline de atividades. Até contatos ilimitados no plano Business."
+          "description": "CRUD completo com importação e exportação CSV. Histórico de interações, associação com empresas, tags personalizáveis e timeline de atividades. Até contatos ilimitados no plano Business.",
+          "detail": {
+            "headline": "Centralize todas as informações dos seus clientes em um só lugar",
+            "benefits": {
+              "1": "Importação e exportação em massa via CSV — migre de qualquer CRM em minutos",
+              "2": "Timeline completa de interações: emails, WhatsApp, notas e atividades em ordem cronológica",
+              "3": "Tags personalizáveis para segmentar contatos por perfil, estágio ou campanha",
+              "4": "Associação contato ↔ empresa com hierarquia de decisores e influenciadores",
+              "5": "Busca avançada com filtros combinados: tag, responsável, data de criação e campos customizados",
+              "6": "Contatos ilimitados no plano Business — escale sem se preocupar com limites"
+            },
+            "useCases": {
+              "1": "Vendedor de campo que precisa consultar dados do cliente antes de uma visita",
+              "2": "Gerente que quer segmentar a base para campanhas de reativação",
+              "3": "Equipe que migrou de planilhas e precisa importar milhares de registros"
+            },
+            "howItWorks": {
+              "title": "Como funciona",
+              "1": "Crie contatos manualmente ou importe via CSV com mapeamento de campos inteligente",
+              "2": "Enriqueça automaticamente com dados da IA: cargo, empresa, redes sociais",
+              "3": "Vincule contatos a deals e empresas para ter a visão 360° de cada oportunidade",
+              "4": "Use filtros e tags para encontrar qualquer contato em segundos"
+            },
+            "planInfo": "Gratuito: até 100 contatos | Starter: 2.500 | Pro: 15.000 | Business: ilimitado"
+          }
         },
         "deals": {
           "name": "Negócios (Deals)",
-          "description": "Controle valor, data de fechamento, responsável e estágio. Notas, atividades e comentários vinculados. Drag-and-drop no Kanban. Exportação de dados."
+          "description": "Controle valor, data de fechamento, responsável e estágio. Notas, atividades e comentários vinculados. Drag-and-drop no Kanban. Exportação de dados.",
+          "detail": {
+            "headline": "Acompanhe cada oportunidade de venda do primeiro contato ao fechamento",
+            "benefits": {
+              "1": "Kanban visual com drag-and-drop — mova deals entre estágios com um gesto",
+              "2": "Valor, data prevista de fechamento e probabilidade em cada card",
+              "3": "Notas, atividades e comentários vinculados ao deal com histórico completo",
+              "4": "Campos customizados para adaptar o deal ao seu modelo de negócio",
+              "5": "Filtros por responsável, pipeline, estágio, valor e período",
+              "6": "Exportação de deals para CSV e relatórios automatizados"
+            },
+            "useCases": {
+              "1": "Closer que precisa priorizar os deals com maior valor e probabilidade",
+              "2": "Gestor que quer visibilidade sobre o pipeline inteiro da equipe",
+              "3": "SDR que precisa registrar cada interação para passar o bastão ao closer"
+            },
+            "howItWorks": {
+              "title": "Como funciona",
+              "1": "Crie um deal manualmente ou automaticamente quando um lead entra no pipeline",
+              "2": "Arraste entre estágios no Kanban conforme o deal avança",
+              "3": "Adicione notas, tarefas e atividades para manter o histórico atualizado",
+              "4": "Marque como Ganho ou Perdido — a IA registra motivos e gera insights"
+            },
+            "planInfo": "Gratuito: até 50 deals ativos | Starter: 500 | Pro: 5.000 | Business: ilimitado"
+          }
         },
         "pipelines": {
           "name": "Múltiplos Pipelines",
-          "description": "Crie pipelines separados por produto, região ou equipe. Configure estágios customizados, defina pipeline padrão e vincule automações específicas por pipeline."
+          "description": "Crie pipelines separados por produto, região ou equipe. Configure estágios customizados, defina pipeline padrão e vincule automações específicas por pipeline.",
+          "detail": {
+            "headline": "Organize seus processos de venda com pipelines independentes",
+            "benefits": {
+              "1": "Múltiplos pipelines — separe por produto, serviço, região ou equipe",
+              "2": "Estágios customizáveis com nomes, cores e ordem personalizados",
+              "3": "Pipeline padrão configurável para novos deals",
+              "4": "Automações vinculadas por pipeline — regras diferentes para cada fluxo",
+              "5": "Visão consolidada: veja o valor total e deals por estágio de cada pipeline",
+              "6": "Permissões por pipeline: restrinja visibilidade por membro da equipe"
+            },
+            "useCases": {
+              "1": "Empresa com produtos diferentes que precisam de funis de venda distintos",
+              "2": "Equipe nacional com pipelines separados por região (SP, RJ, MG)",
+              "3": "Agência que gerencia vendas de serviços recorrentes e projetos pontuais"
+            },
+            "howItWorks": {
+              "title": "Como funciona",
+              "1": "Crie um novo pipeline em Configurações > Pipelines com nome e descrição",
+              "2": "Defina os estágios arrastando para reordenar — cada estágio pode ter cor e rótulo",
+              "3": "Configure automações específicas: ex. enviar email ao entrar em 'Proposta Enviada'",
+              "4": "Atribua deals ao pipeline correto na criação ou mova entre pipelines"
+            },
+            "planInfo": "Gratuito: 1 pipeline | Starter: 3 | Pro: 10 | Business: ilimitado"
+          }
         },
         "tasks": {
           "name": "Atividades e Tarefas",
-          "description": "Crie tarefas vinculadas a deals e contatos. Defina responsáveis, prazos e lembretes. Sincronize com Google Calendar automaticamente."
+          "description": "Crie tarefas vinculadas a deals e contatos. Defina responsáveis, prazos e lembretes. Sincronize com Google Calendar automaticamente.",
+          "detail": {
+            "headline": "Nunca perca um follow-up — tarefas e lembretes integrados ao CRM",
+            "benefits": {
+              "1": "Tarefas vinculadas a deals e contatos com contexto completo",
+              "2": "Prazos com lembretes por push notification e email",
+              "3": "Sincronização automática com Google Calendar (bidirecional)",
+              "4": "Tipos de atividade: ligação, reunião, email, visita, follow-up",
+              "5": "Visão de agenda diária/semanal integrada ao dashboard",
+              "6": "Atribuição a membros da equipe com notificação instantânea"
+            },
+            "useCases": {
+              "1": "Vendedor que precisa agendar follow-ups automáticos após cada reunião",
+              "2": "Gestor que quer acompanhar a produtividade diária da equipe",
+              "3": "Vendedor de campo que usa a agenda do celular e precisa de sincronização"
+            },
+            "howItWorks": {
+              "title": "Como funciona",
+              "1": "Crie uma tarefa a partir de qualquer deal ou contato com tipo, prazo e responsável",
+              "2": "Receba lembretes automáticos por push e email antes do prazo",
+              "3": "A tarefa aparece no Google Calendar sincronizado — edite em qualquer lugar",
+              "4": "Marque como concluída e o histórico fica registrado na timeline do deal"
+            },
+            "planInfo": "Disponível em todos os planos | Google Calendar: a partir do Starter"
+          }
         }
       },
       "comunicacao": {

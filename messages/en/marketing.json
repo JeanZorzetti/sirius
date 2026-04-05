@@ -268,19 +268,115 @@
         "subtitle": "The foundation of your sales process: contacts, deals, pipelines, and activities",
         "contacts": {
           "name": "Contact Management",
-          "description": "Full CRUD with CSV import and export. Interaction history, company association, customizable tags, and activity timeline. Up to unlimited contacts on the Business plan."
+          "description": "Full CRUD with CSV import and export. Interaction history, company association, customizable tags, and activity timeline. Up to unlimited contacts on the Business plan.",
+          "detail": {
+            "headline": "Centralize all your customer information in one place",
+            "benefits": {
+              "1": "Bulk CSV import and export — migrate from any CRM in minutes",
+              "2": "Complete interaction timeline: emails, WhatsApp, notes, and activities in chronological order",
+              "3": "Customizable tags to segment contacts by profile, stage, or campaign",
+              "4": "Contact ↔ company association with decision-maker and influencer hierarchy",
+              "5": "Advanced search with combined filters: tag, assignee, creation date, and custom fields",
+              "6": "Unlimited contacts on the Business plan — scale without worrying about limits"
+            },
+            "useCases": {
+              "1": "Field salesperson who needs to check client data before a visit",
+              "2": "Manager who wants to segment the base for reactivation campaigns",
+              "3": "Team migrating from spreadsheets that needs to import thousands of records"
+            },
+            "howItWorks": {
+              "title": "How it works",
+              "1": "Create contacts manually or import via CSV with smart field mapping",
+              "2": "Automatically enrich with AI data: job title, company, social media",
+              "3": "Link contacts to deals and companies for a 360° view of each opportunity",
+              "4": "Use filters and tags to find any contact in seconds"
+            },
+            "planInfo": "Free: up to 100 contacts | Starter: 2,500 | Pro: 15,000 | Business: unlimited"
+          }
         },
         "deals": {
           "name": "Deals",
-          "description": "Track value, closing date, assignee, and stage. Linked notes, activities, and comments. Drag-and-drop in Kanban. Data export."
+          "description": "Track value, closing date, assignee, and stage. Linked notes, activities, and comments. Drag-and-drop in Kanban. Data export.",
+          "detail": {
+            "headline": "Track every sales opportunity from first contact to close",
+            "benefits": {
+              "1": "Visual Kanban with drag-and-drop — move deals between stages with a gesture",
+              "2": "Value, expected close date, and probability on each card",
+              "3": "Linked notes, activities, and comments with complete history",
+              "4": "Custom fields to adapt the deal to your business model",
+              "5": "Filters by assignee, pipeline, stage, value, and period",
+              "6": "Deal export to CSV and automated reports"
+            },
+            "useCases": {
+              "1": "Closer who needs to prioritize deals with the highest value and probability",
+              "2": "Manager who wants visibility over the entire team's pipeline",
+              "3": "SDR who needs to log every interaction before handing off to the closer"
+            },
+            "howItWorks": {
+              "title": "How it works",
+              "1": "Create a deal manually or automatically when a lead enters the pipeline",
+              "2": "Drag between stages in Kanban as the deal progresses",
+              "3": "Add notes, tasks, and activities to keep the history up to date",
+              "4": "Mark as Won or Lost — AI records reasons and generates insights"
+            },
+            "planInfo": "Free: up to 50 active deals | Starter: 500 | Pro: 5,000 | Business: unlimited"
+          }
         },
         "pipelines": {
           "name": "Multiple Pipelines",
-          "description": "Create separate pipelines by product, region, or team. Configure custom stages, set a default pipeline, and link specific automations per pipeline."
+          "description": "Create separate pipelines by product, region, or team. Configure custom stages, set a default pipeline, and link specific automations per pipeline.",
+          "detail": {
+            "headline": "Organize your sales processes with independent pipelines",
+            "benefits": {
+              "1": "Multiple pipelines — separate by product, service, region, or team",
+              "2": "Customizable stages with personalized names, colors, and order",
+              "3": "Configurable default pipeline for new deals",
+              "4": "Pipeline-linked automations — different rules for each flow",
+              "5": "Consolidated view: see total value and deals per stage for each pipeline",
+              "6": "Pipeline permissions: restrict visibility by team member"
+            },
+            "useCases": {
+              "1": "Company with different products that need distinct sales funnels",
+              "2": "National team with separate pipelines by region",
+              "3": "Agency managing recurring service sales and one-off projects"
+            },
+            "howItWorks": {
+              "title": "How it works",
+              "1": "Create a new pipeline in Settings > Pipelines with name and description",
+              "2": "Define stages by dragging to reorder — each stage can have a color and label",
+              "3": "Configure specific automations: e.g., send email when entering 'Proposal Sent'",
+              "4": "Assign deals to the correct pipeline on creation or move between pipelines"
+            },
+            "planInfo": "Free: 1 pipeline | Starter: 3 | Pro: 10 | Business: unlimited"
+          }
         },
         "tasks": {
           "name": "Activities & Tasks",
-          "description": "Create tasks linked to deals and contacts. Set assignees, deadlines, and reminders. Automatically sync with Google Calendar."
+          "description": "Create tasks linked to deals and contacts. Set assignees, deadlines, and reminders. Automatically sync with Google Calendar.",
+          "detail": {
+            "headline": "Never miss a follow-up — tasks and reminders integrated into the CRM",
+            "benefits": {
+              "1": "Tasks linked to deals and contacts with full context",
+              "2": "Deadlines with push notification and email reminders",
+              "3": "Automatic sync with Google Calendar (bidirectional)",
+              "4": "Activity types: call, meeting, email, visit, follow-up",
+              "5": "Daily/weekly agenda view integrated into the dashboard",
+              "6": "Team member assignment with instant notification"
+            },
+            "useCases": {
+              "1": "Salesperson who needs to schedule automatic follow-ups after each meeting",
+              "2": "Manager who wants to track the team's daily productivity",
+              "3": "Field salesperson who uses the phone calendar and needs synchronization"
+            },
+            "howItWorks": {
+              "title": "How it works",
+              "1": "Create a task from any deal or contact with type, deadline, and assignee",
+              "2": "Receive automatic reminders via push and email before the deadline",
+              "3": "The task appears in synced Google Calendar — edit from anywhere",
+              "4": "Mark as complete and the history is recorded in the deal's timeline"
+            },
+            "planInfo": "Available on all plans | Google Calendar: from Starter onwards"
+          }
         }
       },
       "comunicacao": {

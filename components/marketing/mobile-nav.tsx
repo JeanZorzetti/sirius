@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { Menu, ChevronDown, Building2, Sun, Megaphone, Briefcase, Users, Calculator, ArrowRight } from 'lucide-react'
+import { Menu, ChevronDown, ChevronRight, Building2, Sun, Megaphone, Briefcase, Users, Calculator, ArrowRight } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
 import { useTranslations } from 'next-intl'
@@ -46,6 +46,26 @@ function CollapsibleSection({ title, children }: { title: string; children: Reac
     )
 }
 
+function MobileCollapsibleSub({ title, children }: { title: string; children: React.ReactNode }) {
+    const [expanded, setExpanded] = useState(false)
+    return (
+        <div className="mb-1">
+            <button
+                onClick={() => setExpanded(!expanded)}
+                className="flex items-center justify-between w-full text-[11px] font-medium text-primary/70 hover:text-primary py-0.5 transition-colors"
+            >
+                {title}
+                <ChevronRight className={`h-3 w-3 transition-transform duration-200 ${expanded ? 'rotate-90' : ''}`} />
+            </button>
+            {expanded && (
+                <div className="ml-2 mt-0.5 flex flex-col gap-0.5 border-l border-muted pl-2">
+                    {children}
+                </div>
+            )}
+        </div>
+    )
+}
+
 export function MobileNav() {
     const [open, setOpen] = useState(false)
     const tNav = useTranslations('marketing.home.nav')
@@ -70,10 +90,7 @@ export function MobileNav() {
                                     {tNav(`features_menu.${cat.menuKey}` as any)}
                                 </p>
                                 {cat.sections.map((sec) => (
-                                    <div key={sec.sectionKey} className="mb-1">
-                                        <p className="text-[11px] font-medium text-primary/70 mb-0.5">
-                                            {tFeatNav(sec.sectionKey as any)}
-                                        </p>
+                                    <MobileCollapsibleSub key={sec.sectionKey} title={tFeatNav(sec.sectionKey as any)}>
                                         {sec.features.map((feature) => (
                                             <Link
                                                 key={feature.slug}
@@ -85,7 +102,7 @@ export function MobileNav() {
                                                 {tSections(`${sec.sectionKey}.${feature.featureKey}.name` as any)}
                                             </Link>
                                         ))}
-                                    </div>
+                                    </MobileCollapsibleSub>
                                 ))}
                             </div>
                         ))}
