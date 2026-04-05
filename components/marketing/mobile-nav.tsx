@@ -1,12 +1,13 @@
 'use client'
 
 import { useState } from 'react'
-import { Menu, ChevronDown, Building2, Sun, Megaphone, Briefcase, Users, Calculator } from 'lucide-react'
+import { Menu, ChevronDown, Building2, Sun, Megaphone, Briefcase, Users, Calculator, ArrowRight } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
 import { useTranslations } from 'next-intl'
 import { Link } from '@/i18n/routing'
 import { NICHES } from '@/config/niche-data'
+import { FEATURE_CATEGORIES } from '@/config/features-data'
 
 const NICHE_ICONS: Record<string, typeof Building2> = {
     'corretores-de-imoveis': Building2,
@@ -49,6 +50,8 @@ export function MobileNav() {
     const [open, setOpen] = useState(false)
     const tNav = useTranslations('marketing.home.nav')
     const tNiches = useTranslations('marketing.home.niche_labels')
+    const tFeatNav = useTranslations('marketing.features.nav')
+    const tSections = useTranslations('marketing.features.sections')
 
     return (
         <Sheet open={open} onOpenChange={setOpen}>
@@ -60,13 +63,41 @@ export function MobileNav() {
             </SheetTrigger>
             <SheetContent side="left">
                 <nav className="flex flex-col gap-4 mt-8">
-                    <Link
-                        href="/features"
-                        onClick={() => setOpen(false)}
-                        className="text-sm font-medium transition-colors hover:text-primary"
-                    >
-                        {tNav('features')}
-                    </Link>
+                    <CollapsibleSection title={tNav('features')}>
+                        {FEATURE_CATEGORIES.map((cat) => (
+                            <div key={cat.menuKey} className="mb-2">
+                                <p className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground mb-1">
+                                    {tNav(`features_menu.${cat.menuKey}` as any)}
+                                </p>
+                                {cat.sections.map((sec) => (
+                                    <div key={sec.sectionKey} className="mb-1">
+                                        <p className="text-[11px] font-medium text-primary/70 mb-0.5">
+                                            {tFeatNav(sec.sectionKey as any)}
+                                        </p>
+                                        {sec.features.map((feature) => (
+                                            <Link
+                                                key={feature.slug}
+                                                href={`/features/${feature.slug}` as any}
+                                                onClick={() => setOpen(false)}
+                                                className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors py-0.5"
+                                            >
+                                                <feature.icon className="h-3.5 w-3.5 shrink-0" />
+                                                {tSections(`${sec.sectionKey}.${feature.featureKey}.name` as any)}
+                                            </Link>
+                                        ))}
+                                    </div>
+                                ))}
+                            </div>
+                        ))}
+                        <Link
+                            href="/features"
+                            onClick={() => setOpen(false)}
+                            className="flex items-center gap-1 text-sm font-medium text-primary hover:text-primary/80 transition-colors mt-1"
+                        >
+                            {tNav('features_menu.all_features' as any)}
+                            <ArrowRight className="h-3.5 w-3.5" />
+                        </Link>
+                    </CollapsibleSection>
 
                     <CollapsibleSection title={tNav('solutions')}>
                         {NICHES.map((niche) => {

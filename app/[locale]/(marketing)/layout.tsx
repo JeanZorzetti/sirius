@@ -2,6 +2,7 @@ import Image from 'next/image'
 import { Button } from '@/components/ui/button'
 import { MobileNav } from '@/components/marketing/mobile-nav'
 import { NavDropdowns } from '@/components/marketing/nav-dropdowns'
+import { FeaturesDropdown } from '@/components/marketing/features-dropdown'
 import { Footer } from '@/components/marketing/footer'
 import { LanguageSwitcher } from '@/components/marketing/language-switcher'
 import { Link } from '@/i18n/routing'
@@ -33,12 +34,7 @@ export default function MarketingLayout({
               <span className="font-bold tracking-tight">Sirius CRM</span>
             </Link>
             <div className="hidden md:flex items-center gap-6">
-              <Link
-                href="/features"
-                className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
-              >
-                {t('features')}
-              </Link>
+              <FeaturesDropdown />
               <NavDropdowns />
               <Link
                 href="/pricing"

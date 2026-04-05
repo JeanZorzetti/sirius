@@ -28,6 +28,12 @@
         "roi_agencies": "ROI for Agencies",
         "roi_consultants": "ROI for Consultants",
         "roi_reps": "ROI for Sales Reps"
+      },
+      "features_menu": {
+        "vendas": "Sales",
+        "comunicacao_ia": "Communication & AI",
+        "plataforma": "Platform",
+        "all_features": "View all features"
       }
     },
     "niche_labels": {
@@ -243,7 +249,7 @@
       "maps": {
         "name": "Google Maps Prospecting",
         "description": "Find leads automatically via Google Maps. Search by segment and location, and Sirius extracts name, phone, email, website, and address. Monthly credits per plan — from 75 to 1,500 leads/month.",
-        "badge": "Starter+"
+        "badge": "Business"
       },
       "automations": {
         "name": "Deal Automations",
@@ -855,6 +861,524 @@
     "cta": {
       "doubt": "Still unsure? Spots are limited.",
       "button": "View available plans"
+    }
+  },
+  "changelog": {
+    "meta": {
+      "title": "Changelog | Sirius CRM",
+      "description": "Track all updates, improvements and fixes to Sirius CRM. Stay up to date with the latest platform changes.",
+      "ogTitle": "Changelog | Sirius CRM",
+      "ogDescription": "Track all updates and changes to Sirius CRM."
+    },
+    "hero": {
+      "subtitle": "Track all updates, improvements and fixes to Sirius CRM. We're always evolving to deliver the best experience."
+    },
+    "itemTypes": {
+      "feature": "New",
+      "improvement": "Improvement",
+      "fix": "Fix",
+      "security": "Security"
+    },
+    "releaseTypes": {
+      "major": "Release",
+      "beta": "Beta"
+    },
+    "releases": {
+      "v140": {
+        "items": [
+          {
+            "title": "Progressive Web App (PWA)",
+            "description": "Install Sirius as a native app on your phone or desktop with full offline support."
+          },
+          {
+            "title": "Web Push Notifications",
+            "description": "Receive real-time notifications about new deals, WhatsApp messages and calendar reminders."
+          },
+          {
+            "title": "Offline Background Sync",
+            "description": "Create deals and contacts even without internet — everything syncs automatically when you come back online."
+          },
+          {
+            "title": "Notification Preferences",
+            "description": "Granular control over which notifications you want to receive: deals, WhatsApp, calendar and more."
+          },
+          {
+            "title": "PWA Metrics Dashboard",
+            "description": "Admins can monitor install rate, push notification conversion and offline usage at /admin/pwa-metrics."
+          }
+        ]
+      },
+      "v130": {
+        "items": [
+          {
+            "title": "Full E2E Test Suite",
+            "description": "Implemented 118 E2E tests with Playwright covering authentication, pipelines and deals across 3 browsers."
+          },
+          {
+            "title": "Google OAuth Login",
+            "description": "You can now sign in with your Google account quickly and securely."
+          }
+        ]
+      },
+      "v120": {
+        "items": [
+          {
+            "title": "Multiple Pipelines (PRO)",
+            "description": "PRO users can now create unlimited pipelines for different sales processes."
+          },
+          {
+            "title": "Pipeline Selector",
+            "description": "New visual pipeline selector with deal counter and localStorage persistence."
+          },
+          {
+            "title": "Pipeline Management",
+            "description": "Dedicated page to create, edit and delete pipelines with smart validations."
+          }
+        ]
+      },
+      "v110": {
+        "items": [
+          {
+            "title": "Email Automations",
+            "description": "Configure custom automations: Welcome Email, Deal Created, Stage Changed and Upgrade Nudge."
+          },
+          {
+            "title": "Template Editor",
+            "description": "Visual editor to customize email subject and body with real-time preview."
+          },
+          {
+            "title": "Email History",
+            "description": "Track all sent emails with delivery, open and click status (PRO)."
+          },
+          {
+            "title": "Security Tests",
+            "description": "Implemented 50+ unit tests covering authentication, multi-tenant isolation and payments."
+          }
+        ]
+      },
+      "v100": {
+        "items": [
+          {
+            "title": "Official Launch",
+            "description": "First stable version of Sirius CRM with all core features."
+          },
+          {
+            "title": "Kanban Pipeline",
+            "description": "Visual deal management with drag & drop between customizable stages."
+          },
+          {
+            "title": "Contact Management",
+            "description": "Full contact CRUD with 1-click WhatsApp integration."
+          },
+          {
+            "title": "Analytics Dashboard",
+            "description": "Real-time metrics: conversion rate, average ticket and close date forecast."
+          },
+          {
+            "title": "Secure Authentication",
+            "description": "Login/register system with JWT, bcrypt and protection against common attacks."
+          },
+          {
+            "title": "Multi-Tenant Isolation",
+            "description": "Each organization's data is completely isolated with validations on every query."
+          }
+        ]
+      },
+      "v090": {
+        "items": [
+          {
+            "title": "Mercado Pago Integration",
+            "description": "Full integration with Mercado Pago for recurring payments and PRO upgrade."
+          },
+          {
+            "title": "Feature Gates",
+            "description": "Plan-based limits: 10 deals for Free, unlimited for PRO."
+          },
+          {
+            "title": "Sentry Monitoring",
+            "description": "Error capture and tracking in production with source maps."
+          },
+          {
+            "title": "Structured Logging",
+            "description": "Pino-based structured logging system for better debugging."
+          }
+        ]
+      }
+    },
+    "subscribe": {
+      "title": "Want to receive update notifications?",
+      "subtitle": "Create a free account and receive emails when we launch new features.",
+      "cta": "Get Started Free",
+      "blog": "Read Blog"
+    },
+    "roadmap": {
+      "title": "Coming Soon",
+      "subtitle": "We're working on amazing features for the coming months:",
+      "items": [
+        {
+          "title": "N8N Integrations",
+          "description": "Advanced workflow automation with bidirectional webhooks."
+        },
+        {
+          "title": "WhatsApp Evolution",
+          "description": "Full integration: send, receive and automate messages."
+        },
+        {
+          "title": "Google Calendar Sync",
+          "description": "Bidirectional event sync and automatic reminders."
+        },
+        {
+          "title": "AI Insights",
+          "description": "Intelligent next-action suggestions powered by AI."
+        }
+      ]
+    }
+  },
+  "contact": {
+    "meta": {
+      "title": "Contact | Sirius CRM",
+      "description": "Get in touch with the Sirius CRM team. We're here to help with questions, technical support and partnerships.",
+      "ogTitle": "Contact | Sirius CRM",
+      "ogDescription": "Get in touch with the Sirius CRM team."
+    },
+    "hero": {
+      "title": "Get in Touch",
+      "subtitle": "Have a question, suggestion or need help? Our team is ready to assist you."
+    },
+    "info": {
+      "title": "Contact Information",
+      "email": {
+        "title": "Email"
+      },
+      "chat": {
+        "title": "Live Chat",
+        "available": "Available in the customer dashboard",
+        "hours": "Business hours"
+      },
+      "schedule": {
+        "title": "Support Hours",
+        "weekdays": "Monday–Friday: 9am – 6pm",
+        "saturday": "Saturday: 9am – 1pm"
+      },
+      "location": {
+        "title": "Location",
+        "description": "Brazil — 100% remote support"
+      },
+      "responseTime": {
+        "title": "Average response time",
+        "description": "We respond to most messages within 24 business hours. For urgent support, use the live chat in the dashboard."
+      }
+    },
+    "form": {
+      "title": "Send us a Message",
+      "name": {
+        "label": "Full name *",
+        "placeholder": "Your name"
+      },
+      "email": {
+        "label": "Email *",
+        "placeholder": "you@email.com"
+      },
+      "phone": {
+        "label": "Phone",
+        "placeholder": "+1 (555) 000-0000"
+      },
+      "company": {
+        "label": "Company",
+        "placeholder": "Company name"
+      },
+      "subject": {
+        "label": "Subject *",
+        "placeholder": "Select a subject"
+      },
+      "message": {
+        "label": "Message *",
+        "placeholder": "Describe your question, suggestion or how we can help..."
+      },
+      "submit": "Send Message",
+      "sending": "Sending..."
+    },
+    "subjects": [
+      {
+        "value": "sales",
+        "label": "Sales information"
+      },
+      {
+        "value": "support",
+        "label": "Technical support"
+      },
+      {
+        "value": "partnership",
+        "label": "Partnerships"
+      },
+      {
+        "value": "feedback",
+        "label": "Feedback & suggestions"
+      },
+      {
+        "value": "other",
+        "label": "Other topics"
+      }
+    ],
+    "success": {
+      "title": "Message Sent!",
+      "description": "Thank you for reaching out. Our team has received your message and will get back to you as soon as possible.",
+      "backHome": "Back to Home",
+      "newMessage": "Send Another Message"
+    },
+    "toast": {
+      "successTitle": "Message sent!",
+      "successDesc": "We'll get back to you shortly.",
+      "errorTitle": "Failed to send",
+      "errorDesc": "Please try again later."
+    },
+    "faq": {
+      "title": "Frequently Asked Questions",
+      "subtitle": "Answers to the most common questions",
+      "q1": "How long does it take to get a response?",
+      "a1": "Our team responds to most messages within 24 business hours. For urgent matters, we recommend the live chat.",
+      "q2": "How can I try Sirius CRM?",
+      "a2": "You can create a free account and test all features for 14 days with no commitment.",
+      "a2Link": "Create free account",
+      "q3": "Do you offer training?",
+      "a3": "Yes! In addition to full documentation, we offer onboarding sessions for new customers and team training.",
+      "helpCenter": "View Help Center"
+    }
+  },
+  "privacy": {
+    "meta": {
+      "title": "Privacy Policy | Sirius CRM",
+      "description": "Sirius CRM privacy policy. How we collect, use and protect your data. Full transparency on data handling.",
+      "ogTitle": "Privacy Policy | Sirius CRM",
+      "ogDescription": "How we collect, use and protect your data at Sirius CRM."
+    },
+    "title": "Privacy Policy",
+    "lastUpdated": "Last updated: January 1, 2026",
+    "intro": "Your privacy is fundamental to us. This policy explains how we collect, use and protect your data.",
+    "s1": {
+      "title": "1. Information We Collect",
+      "registration": "Registration Information:",
+      "registrationText": "Name, email, password (encrypted), organization name.",
+      "usage": "Usage Data:",
+      "usageText": "Pages visited, features used, session duration.",
+      "crm": "CRM Data:",
+      "crmText": "Contacts, deals, pipelines and other information you enter into the system.",
+      "payment": "Payment Information:",
+      "paymentText": "Processed exclusively by Mercado Pago. We do not store credit card data."
+    },
+    "s2": {
+      "title": "2. How We Use Your Data",
+      "provide": "Provide the Service:",
+      "provideText": "Manage your account, process payments, send notifications.",
+      "improve": "Improve the Product:",
+      "improveText": "Analyze aggregate usage to identify improvements and bugs.",
+      "communicate": "Communication:",
+      "communicateText": "Send transactional emails (account confirmation, invoices) and marketing (with opt-out).",
+      "security": "Security:",
+      "securityText": "Detect and prevent fraud, abuse and attacks.",
+      "neverSell": "We never sell your data to third parties."
+    },
+    "s3": {
+      "title": "3. Data Isolation (Multi-Tenant)",
+      "p1": "Each organization's data is completely isolated. Users of {orgA} can never view or access data from {orgB}.",
+      "orgA": "Organization A",
+      "orgB": "Organization B",
+      "p2": "All database queries include a filter by {field} to ensure absolute isolation."
+    },
+    "s4": {
+      "title": "4. Security Measures",
+      "encryption": "Encryption:",
+      "encryptionText": "Passwords with bcrypt, data in transit via HTTPS/TLS.",
+      "auth": "Authentication:",
+      "authText": "JWT tokens with expiration, HttpOnly and SameSite cookies.",
+      "db": "Database:",
+      "dbText": "PostgreSQL hosted on secure servers with daily backups.",
+      "monitoring": "Monitoring:",
+      "monitoringText": "Access logs and error monitoring via Sentry."
+    },
+    "s5": {
+      "title": "5. Cookies and Tracking",
+      "essential": "Essential Cookies:",
+      "essentialText": "Required for authentication and system operation.",
+      "analytics": "Google Analytics:",
+      "analyticsText": "We use GA4 for aggregated usage analysis (anonymized).",
+      "optOut": "You can disable non-essential cookies in your browser settings."
+    },
+    "s6": {
+      "title": "6. Data Sharing",
+      "intro": "We share data only with:",
+      "mp": "Mercado Pago:",
+      "mpText": "For payment processing (PCI-DSS compliant).",
+      "resend": "Resend:",
+      "resendText": "For transactional and marketing emails.",
+      "vercel": "Vercel:",
+      "vercelText": "Application hosting (SOC 2 Type II certified).",
+      "sentry": "Sentry:",
+      "sentryText": "Error monitoring (anonymized data).",
+      "dpa": "All partners sign DPAs (Data Processing Agreements) in compliance with LGPD."
+    },
+    "s7": {
+      "title": "7. Your Rights (LGPD)",
+      "intro": "Under the General Data Protection Law (LGPD), you have the right to:",
+      "access": "Access:",
+      "accessText": "Request a copy of all your data.",
+      "correction": "Correction:",
+      "correctionText": "Update incorrect data.",
+      "deletion": "Deletion:",
+      "deletionText": "Delete your account and all associated data.",
+      "portability": "Portability:",
+      "portabilityText": "Export your data in a readable format.",
+      "revocation": "Revocation:",
+      "revocationText": "Withdraw consent for marketing at any time.",
+      "contact": "To exercise your rights, send an email to:"
+    },
+    "s8": {
+      "title": "8. Data Retention",
+      "active": "Active Account:",
+      "activeText": "We retain your data while your account is active.",
+      "afterCancel": "After Cancellation:",
+      "afterCancelText": "Data is retained for 90 days for recovery, then permanently deleted.",
+      "logs": "Access Logs:",
+      "logsText": "Retained for 1 year for security purposes."
+    },
+    "s9": {
+      "title": "9. Changes to This Policy",
+      "p1": "We may update this policy periodically. Significant changes will be communicated by email with 30 days' notice.",
+      "p2": "We recommend reviewing this page regularly."
+    },
+    "s10": {
+      "title": "10. Contact",
+      "intro": "For privacy questions, contact us:",
+      "emailLabel": "Email:",
+      "companyLabel": "Company:",
+      "company": "ROI Labs",
+      "dpoLabel": "Data Protection Officer (DPO):"
+    },
+    "cta": {
+      "title": "Questions about privacy?",
+      "subtitle": "Our team is available to clarify any questions about how we handle your data.",
+      "dpo": "Contact DPO",
+      "terms": "View Terms of Use"
+    }
+  },
+  "terms": {
+    "meta": {
+      "title": "Terms of Use | Sirius CRM",
+      "description": "Terms and conditions of use for the Sirius CRM platform. Learn your rights and responsibilities when using our sales management system.",
+      "ogTitle": "Terms of Use | Sirius CRM",
+      "ogDescription": "Terms and conditions of use for the Sirius CRM platform."
+    },
+    "title": "Terms of Use",
+    "lastUpdated": "Last updated: February 2, 2026",
+    "backHome": "Back to Home",
+    "s1": {
+      "title": "1. Acceptance of Terms",
+      "p1": "By accessing and using the {product} platform (\"Platform\", \"Service\"), developed by {company}, you agree to these Terms of Use. If you do not agree with any part of these terms, you must not use our services.",
+      "p2Link": "Privacy Policy",
+      "p2": "By creating an account, you confirm that you have read, understood and fully accepted these Terms, as well as our {link}."
+    },
+    "s2": {
+      "title": "2. Service Description",
+      "intro": "Sirius CRM is a SaaS (Software as a Service) customer relationship management platform that offers:",
+      "li1": "Kanban Pipeline for visual deal management",
+      "li2": "Contact and organization management",
+      "li3": "Email automations and workflows",
+      "li4": "Sales analytics and reports",
+      "li5": "Integrations with WhatsApp, Google Calendar and other tools",
+      "li6": "API for custom integrations",
+      "outro": "We reserve the right to modify, suspend or discontinue any feature at any time, with 30 days' notice for significant changes."
+    },
+    "s3": {
+      "title": "3. Plans and Payment",
+      "s31title": "3.1. Available Plans",
+      "s31intro": "We offer plans with different usage levels. See our pricing page for details.",
+      "s32title": "3.2. Payments",
+      "s32text": "Payments are processed via Mercado Pago and renew automatically until cancellation. We do not store credit card data.",
+      "s33title": "3.3. Cancellation",
+      "s33text": "You can cancel your subscription at any time through account Settings. Cancellations take effect immediately, but you retain access to the plan until the end of the paid period.",
+      "s33noRefund": "No pro-rated refunds.",
+      "s34title": "3.4. Non-Payment",
+      "s34text": "In case of payment failure, your account will be automatically downgraded to the FREE Plan. Data exceeding FREE limits will be archived but not deleted."
+    },
+    "s4": {
+      "title": "4. Registration and User Responsibilities",
+      "intro": "By creating an account, you agree to:",
+      "li1": "Provide true, up-to-date and complete information",
+      "li2": "Keep your password secure and not share it with third parties",
+      "li3": "Notify us immediately of any unauthorized use of your account",
+      "li4": "Use the service in compliance with local laws and these Terms",
+      "responsible": "You are fully responsible for all activities carried out under your account."
+    },
+    "s5": {
+      "title": "5. Prohibited Use",
+      "intro": "It is expressly prohibited to use Sirius CRM to:",
+      "li1": "Send spam, phishing or unsolicited mass communications",
+      "li2": "Violate third-party intellectual property rights",
+      "li3": "Distribute malware, viruses or malicious code",
+      "li4": "Reverse engineer, decompile or modify the software",
+      "li5": "Attempt to access other organizations' data (multi-tenant violation)",
+      "li6": "Overload our infrastructure with abusive API usage",
+      "li7": "Resell or sublicense the service without express authorization",
+      "warning": "Violations will result in immediate account suspension, without refund."
+    },
+    "s6": {
+      "title": "6. Intellectual Property",
+      "s61title": "6.1. ROI Labs Ownership",
+      "s61text": "All code, design, brand, interfaces and features of Sirius CRM are the exclusive property of ROI Labs and protected by copyright and intellectual property laws.",
+      "s62title": "6.2. Your Data",
+      "s62text": "You retain all rights to the data you enter into the system (contacts, deals, pipelines, etc.). We are granted only a limited license to process this data solely to provide the service.",
+      "s63title": "6.3. Feedback and Suggestions",
+      "s63text": "By submitting suggestions, ideas or feedback, you grant ROI Labs the right to use, implement and commercialize those ideas without compensation or attribution."
+    },
+    "s7": {
+      "title": "7. Limitation of Liability",
+      "asIs": "Sirius CRM is provided \"as is\" and \"as available\", without warranties of any kind.",
+      "noGuarantee": "We do not guarantee:",
+      "li1": "Uninterrupted service availability (99.5% uptime target)",
+      "li2": "Absence of errors or bugs",
+      "li3": "Specific sales or conversion results",
+      "li4": "Compatibility with all browsers or devices",
+      "liability": "Our total liability for damages is limited to the amount paid in the last 3 months.",
+      "notResponsible": "We are not responsible for:",
+      "li5": "Data loss caused by user action",
+      "li6": "Third-party integration failures (Mercado Pago, WhatsApp, etc.)",
+      "li7": "Indirect damages, loss of profits or missed opportunities"
+    },
+    "s8": {
+      "title": "8. Account Termination",
+      "s81title": "8.1. By You",
+      "s81text": "You can delete your account at any time through Settings. Data will be retained for 90 days for recovery and then permanently deleted.",
+      "s82title": "8.2. By Us",
+      "s82intro": "We reserve the right to suspend or terminate accounts that:",
+      "li1": "Violate these Terms of Use",
+      "li2": "Are involved in illegal or fraudulent activities",
+      "li3": "Pose a risk to the security or stability of the platform",
+      "s82outro": "We will notify by email with 7 days' notice, except in cases of serious violation."
+    },
+    "s9": {
+      "title": "9. Changes to These Terms",
+      "p1": "We may update these Terms periodically. Significant changes will be communicated by email with 30 days' notice.",
+      "p2": "Continued use of the service after changes constitutes acceptance of the new terms. If you disagree, you must discontinue use and delete your account."
+    },
+    "s10": {
+      "title": "10. Governing Law and Jurisdiction",
+      "p1": "These Terms are governed by the laws of the Federative Republic of Brazil, specifically the General Data Protection Law (LGPD - Law 13.709/2018) and the Consumer Protection Code.",
+      "p2": "The courts of {jurisdiction} are elected to settle any disputes arising from these Terms.",
+      "jurisdiction": "São Paulo/SP, Brazil"
+    },
+    "s11": {
+      "title": "11. Contact",
+      "intro": "For questions about these Terms of Use, contact us:",
+      "emailLabel": "Email:",
+      "companyLabel": "Company:",
+      "company": "ROI Labs",
+      "productLabel": "Product:",
+      "product": "Sirius CRM"
+    },
+    "cta": {
+      "readAlso": "Also read:",
+      "privacy": "Privacy Policy",
+      "help": "Help Center"
     }
   }
 }
