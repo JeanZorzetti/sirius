@@ -2,6 +2,28 @@
 
 > Baseado no estudo "Arquitetura e Sincronizacao de Banco de Dados para Integracao de Mensageria em Plataformas CRM"
 > Data: 2026-04-05
+> **Status: CONCLUIDO (2026-04-05)**
+
+---
+
+## Status de Implementacao
+
+| Pilar | Status | Commits Gateway | Commits CRM |
+|-------|--------|-----------------|-------------|
+| 1 - Connection Pooling | PRODUCAO | `fce2a84` | N/A |
+| 2 - Redis Buffer | PRODUCAO | `c781b74`, `63519dc` | `987ff97` |
+| 3 - Snowflake ID | PRODUCAO | `fce2a84` | `bccf460` |
+| 4 - LID Resolution | PRODUCAO | `fce2a84` | N/A |
+
+### Infraestrutura Provisionada
+- **Redis 7 Alpine** — `dados/redis-sirius` (EasyPanel, porta externa 6380)
+- **WA DB separado** — `dados/wpp_sirius` (PostgreSQL, porta externa 5433)
+
+### Observacoes de Producao
+- **LID Resolution**: 3375 mapeamentos LID→PN no session DB. LIDs nao mapeados sao salvos como fallback e resolvidos gradualmente conforme o WhatsApp envia novos mapeamentos.
+- **Redis Buffer**: `OfflineSyncCompleted` chega antes dos history blobs — corrigido com delayed flush (15s + polling de estado por ate 3 min).
+- **Snowflake IDs**: Mensagens novas tem `snowflakeId` preenchido. Mensagens antigas (migradas) tem `snowflakeId = null` — ordenacao usa `sentAt` como fallback.
+- **Fallback graceful**: Se Redis estiver indisponivel, gateway volta ao comportamento antigo (webhook direto).
 
 ---
 
@@ -640,21 +662,20 @@ if IsLID(rawJID) {
 
 ---
 
-## Ordem de Execucao
+## Ordem de Execucao (Realizada em 2026-04-05)
 
 ```
-Semana 1:
-  [x] Dia 1: Pilar 1 — Connection Pooling (30 min)
-  [x] Dia 1: Pilar 4 — LID Resolution (4-6h)
-  [ ] Dia 2: Pilar 3 — Snowflake ID no gateway (4h)
-  [ ] Dia 2: Pilar 3 — Migration + queries no CRM (4h)
-
-Semana 2:
-  [ ] Dia 3: Provisionar Redis no EasyPanel
-  [ ] Dia 3-4: Pilar 2 — Redis Stream + buffer.go no gateway (8-12h)
-  [ ] Dia 4: Pilar 2 — OfflineSyncPreview/Completed handlers (4h)
-  [ ] Dia 5: Pilar 2 — Batch endpoint no CRM + testes (4h)
-  [ ] Dia 5: Deploy + testes end-to-end
+Dia 1 (2026-04-05) — Tudo implementado em uma sessao:
+  [x] Pilar 1 — Connection Pooling (30 min)
+  [x] Pilar 4 — LID Resolution (1h)
+  [x] Pilar 3 — Snowflake ID no gateway + CRM (2h)
+  [x] Pilar 2 — Provisionar Redis no EasyPanel (10 min)
+  [x] Pilar 2 — Redis Stream + buffer + delayed flush (2h)
+  [x] Pilar 2 — OfflineSyncPreview/Completed handlers (30 min)
+  [x] Pilar 2 — Batch endpoint no CRM (1h)
+  [x] Deploy + testes end-to-end (1h)
+  [x] Fix: race condition OfflineSyncCompleted vs HistorySync (30 min)
+  [x] Fix: nil pointer guard em BuildHistorySyncRequest (10 min)
 ```
 
 ## Arquitetura Final
