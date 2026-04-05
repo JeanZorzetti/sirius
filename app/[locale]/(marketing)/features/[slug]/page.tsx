@@ -50,11 +50,20 @@ export async function generateMetadata({
   }
 }
 
-// Safely try a translation key — returns null if the key path is returned as-is (meaning it's missing)
+// Safely try a translation key — returns null if missing.
+// next-intl returns the raw key path when a key doesn't exist, so we detect that.
 function tryT(t: any, key: string): string | null {
   try {
     const val = t(key)
     if (typeof val !== 'string') return null
+    // next-intl returns the last segment or the full key when missing
+    if (val === key) return null
+    // Also detect when it returns just the last segment (e.g. "title" for "x.y.title")
+    const lastSegment = key.split('.').pop()
+    if (val === lastSegment) return null
+    // Detect raw key paths like "marketing.features.sections.crm.contacts.detail.benefits.7.title"
+    if (val.includes('marketing.features.sections.')) return null
+    if (val.includes('.detail.')) return null
     return val
   } catch {
     return null
