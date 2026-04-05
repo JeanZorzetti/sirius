@@ -272,26 +272,79 @@
           "detail": {
             "headline": "Centralize todas as informações dos seus clientes em um só lugar",
             "benefits": {
-              "1": "Importação e exportação em massa via CSV — migre de qualquer CRM em minutos",
-              "2": "Timeline completa de interações: emails, WhatsApp, notas e atividades em ordem cronológica",
-              "3": "Tags personalizáveis para segmentar contatos por perfil, estágio ou campanha",
-              "4": "Associação contato ↔ empresa com hierarquia de decisores e influenciadores",
-              "5": "Busca avançada com filtros combinados: tag, responsável, data de criação e campos customizados",
-              "6": "Contatos ilimitados no plano Business — escale sem se preocupar com limites"
+              "1": {
+                "title": "Importação inteligente via CSV",
+                "text": "Migre de qualquer CRM, planilha ou ERP em minutos. O mapeamento automático de campos identifica colunas e normaliza dados — sem trabalho manual."
+              },
+              "2": {
+                "title": "Timeline 360° de interações",
+                "text": "Cada contato tem uma timeline cronológica completa: mensagens WhatsApp, emails enviados/recebidos, notas da equipe, atividades e mudanças de estágio."
+              },
+              "3": {
+                "title": "Tags e segmentação avançada",
+                "text": "Crie tags ilimitadas com cores personalizadas. Segmente por perfil de comprador, estágio no funil, campanha de origem ou qualquer critério que fizer sentido para o seu negócio."
+              },
+              "4": {
+                "title": "Hierarquia de contatos e empresas",
+                "text": "Vincule múltiplos contatos a uma empresa. Defina quem é decisor, influenciador e champion. Visualize o organograma do deal direto na ficha."
+              },
+              "5": {
+                "title": "Busca e filtros combinados",
+                "text": "Encontre qualquer contato em segundos. Combine filtros por tag, responsável, data de criação, empresa, pipeline e campos customizados. Salve filtros favoritos para acesso rápido."
+              },
+              "6": {
+                "title": "Escale sem limites",
+                "text": "De 100 contatos no plano gratuito até ilimitado no Business. Conforme seu time cresce, o Sirius cresce com você — sem precisar migrar de plataforma."
+              }
             },
             "useCases": {
-              "1": "Vendedor de campo que precisa consultar dados do cliente antes de uma visita",
-              "2": "Gerente que quer segmentar a base para campanhas de reativação",
-              "3": "Equipe que migrou de planilhas e precisa importar milhares de registros"
+              "1": {
+                "persona": "Vendedor de campo",
+                "scenario": "Antes da visita, consulta a ficha completa do cliente no celular: último contato, valor do deal aberto, histórico de compras e anotações da equipe."
+              },
+              "2": {
+                "persona": "Gerente comercial",
+                "scenario": "Segmenta a base por tag 'Inativo > 60 dias' e cria uma campanha de reativação por email com um clique. Monitora aberturas e respostas no analytics."
+              },
+              "3": {
+                "persona": "Equipe em migração",
+                "scenario": "Importa 15.000 contatos do HubSpot via CSV. O Sirius mapeia campos automaticamente, remove duplicatas e preserva o histórico de interações."
+              }
             },
             "howItWorks": {
-              "title": "Como funciona",
-              "1": "Crie contatos manualmente ou importe via CSV com mapeamento de campos inteligente",
-              "2": "Enriqueça automaticamente com dados da IA: cargo, empresa, redes sociais",
-              "3": "Vincule contatos a deals e empresas para ter a visão 360° de cada oportunidade",
-              "4": "Use filtros e tags para encontrar qualquer contato em segundos"
+              "title": "Como funciona na prática",
+              "1": {
+                "title": "Importe ou crie",
+                "text": "Suba seu CSV ou crie contatos manualmente. O mapeamento inteligente reconhece nome, email, telefone e campos customizados automaticamente."
+              },
+              "2": {
+                "title": "Enriqueça com IA",
+                "text": "A AGI Sirius complementa automaticamente: cargo, empresa, LinkedIn, segmento e dados relevantes para sua abordagem. Sem copiar-colar."
+              },
+              "3": {
+                "title": "Vincule ao pipeline",
+                "text": "Associe contatos a deals e empresas para ter a visão 360° de cada oportunidade. Cada interação alimenta a timeline automaticamente."
+              },
+              "4": {
+                "title": "Encontre em segundos",
+                "text": "Use a busca global com filtros combinados. Salve filtros favoritos. Exporte segmentos para campanhas de email ou WhatsApp."
+              }
             },
-            "planInfo": "Gratuito: até 100 contatos | Starter: 2.500 | Pro: 15.000 | Business: ilimitado"
+            "planInfo": "Gratuito: até 100 contatos | Starter: 2.500 | Pro: 15.000 | Business: ilimitado",
+            "faq": {
+              "1": {
+                "q": "Posso importar contatos de outro CRM?",
+                "a": "Sim. O Sirius aceita CSV com mapeamento automático de campos. Funciona com exports do HubSpot, Pipedrive, RD Station, Salesforce e qualquer planilha."
+              },
+              "2": {
+                "q": "Os contatos são compartilhados com a equipe?",
+                "a": "Sim. Todos os membros da organização veem os contatos. No plano Business, você pode restringir visibilidade por pipeline."
+              },
+              "3": {
+                "q": "Tem integração com WhatsApp?",
+                "a": "Sim. As conversas de WhatsApp aparecem automaticamente na timeline do contato. Você pode responder direto do CRM sem alternar de tela."
+              }
+            }
           }
         },
         "deals": {
@@ -300,26 +353,79 @@
           "detail": {
             "headline": "Acompanhe cada oportunidade de venda do primeiro contato ao fechamento",
             "benefits": {
-              "1": "Kanban visual com drag-and-drop — mova deals entre estágios com um gesto",
-              "2": "Valor, data prevista de fechamento e probabilidade em cada card",
-              "3": "Notas, atividades e comentários vinculados ao deal com histórico completo",
-              "4": "Campos customizados para adaptar o deal ao seu modelo de negócio",
-              "5": "Filtros por responsável, pipeline, estágio, valor e período",
-              "6": "Exportação de deals para CSV e relatórios automatizados"
+              "1": {
+                "title": "Kanban visual com drag-and-drop",
+                "text": "Arraste deals entre estágios com um gesto. Visualize todo o funil em colunas com valor acumulado, contagem e previsão de fechamento por estágio."
+              },
+              "2": {
+                "title": "Informações completas no card",
+                "text": "Cada card mostra valor, data prevista, responsável, probabilidade de fechamento e temperatura do deal. Sem precisar abrir a ficha."
+              },
+              "3": {
+                "title": "Histórico completo de interações",
+                "text": "Notas, atividades, comentários e mensagens WhatsApp vinculados ao deal em uma timeline cronológica. Toda a equipe vê o contexto completo."
+              },
+              "4": {
+                "title": "Campos customizados ilimitados",
+                "text": "Adapte o deal ao seu modelo de negócio. Crie campos de texto, número, data, seleção e checkbox. Configure quais campos aparecem no card do Kanban."
+              },
+              "5": {
+                "title": "Filtros poderosos e views salvas",
+                "text": "Filtre por responsável, pipeline, estágio, valor mínimo/máximo e período. Salve combinações de filtros como views para acesso rápido."
+              },
+              "6": {
+                "title": "Exportação e relatórios",
+                "text": "Exporte deals filtrados para CSV. Gere relatórios de previsão de receita, velocidade de pipeline e taxa de conversão por estágio."
+              }
             },
             "useCases": {
-              "1": "Closer que precisa priorizar os deals com maior valor e probabilidade",
-              "2": "Gestor que quer visibilidade sobre o pipeline inteiro da equipe",
-              "3": "SDR que precisa registrar cada interação para passar o bastão ao closer"
+              "1": {
+                "persona": "Closer",
+                "scenario": "Ordena o Kanban por valor e probabilidade para focar nos deals que têm mais chance de fechar esta semana. Adiciona notas após cada call."
+              },
+              "2": {
+                "persona": "Gestor comercial",
+                "scenario": "Abre a visão consolidada do pipeline: R$ 2.3M em aberto, 47 deals ativos, 12 parados há mais de 7 dias. Identifica gargalos instantaneamente."
+              },
+              "3": {
+                "persona": "SDR",
+                "scenario": "Cria o deal após qualificar o lead, registra todas as interações, e move para 'Qualificado' — o closer recebe notificação automática com contexto completo."
+              }
             },
             "howItWorks": {
-              "title": "Como funciona",
-              "1": "Crie um deal manualmente ou automaticamente quando um lead entra no pipeline",
-              "2": "Arraste entre estágios no Kanban conforme o deal avança",
-              "3": "Adicione notas, tarefas e atividades para manter o histórico atualizado",
-              "4": "Marque como Ganho ou Perdido — a IA registra motivos e gera insights"
+              "title": "Como funciona na prática",
+              "1": {
+                "title": "Crie o deal",
+                "text": "Manualmente em 3 cliques ou automaticamente via automação quando um lead chega. Defina valor, responsável e estágio inicial."
+              },
+              "2": {
+                "title": "Arraste no Kanban",
+                "text": "Conforme o deal avança, arraste entre estágios. Cada mudança é registrada na timeline com data, hora e quem moveu."
+              },
+              "3": {
+                "title": "Registre tudo",
+                "text": "Adicione notas após calls, agende follow-ups como tarefas, envie mensagens por WhatsApp — tudo fica no histórico do deal."
+              },
+              "4": {
+                "title": "Feche ou aprenda",
+                "text": "Marque como Ganho e celebre. Ou marque como Perdido com motivo — a IA analisa padrões de perda e sugere melhorias no processo."
+              }
             },
-            "planInfo": "Gratuito: até 50 deals ativos | Starter: 500 | Pro: 5.000 | Business: ilimitado"
+            "planInfo": "Gratuito: até 50 deals ativos | Starter: 500 | Pro: 5.000 | Business: ilimitado",
+            "faq": {
+              "1": {
+                "q": "Posso ter deals em múltiplos pipelines?",
+                "a": "Sim. Cada deal pertence a um pipeline, mas você pode movê-lo entre pipelines a qualquer momento. Ideal para transferir entre equipes."
+              },
+              "2": {
+                "q": "Os deals arquivados contam no limite?",
+                "a": "Não. Apenas deals ativos (abertos) contam. Deals ganhos, perdidos ou arquivados não afetam seu limite."
+              },
+              "3": {
+                "q": "Consigo ver previsão de receita?",
+                "a": "Sim. O analytics mostra previsão de receita baseada em valor × probabilidade × data estimada de fechamento de cada deal aberto."
+              }
+            }
           }
         },
         "pipelines": {
@@ -328,26 +434,79 @@
           "detail": {
             "headline": "Organize seus processos de venda com pipelines independentes",
             "benefits": {
-              "1": "Múltiplos pipelines — separe por produto, serviço, região ou equipe",
-              "2": "Estágios customizáveis com nomes, cores e ordem personalizados",
-              "3": "Pipeline padrão configurável para novos deals",
-              "4": "Automações vinculadas por pipeline — regras diferentes para cada fluxo",
-              "5": "Visão consolidada: veja o valor total e deals por estágio de cada pipeline",
-              "6": "Permissões por pipeline: restrinja visibilidade por membro da equipe"
+              "1": {
+                "title": "Pipelines independentes",
+                "text": "Cada pipeline é um funil completo. Separe por produto, serviço, região ou equipe. Cada um com seus estágios, automações e métricas."
+              },
+              "2": {
+                "title": "Estágios 100% customizáveis",
+                "text": "Defina nomes, cores e ordem dos estágios. Arraste para reordenar. Configure probabilidade padrão de fechamento por estágio."
+              },
+              "3": {
+                "title": "Pipeline padrão inteligente",
+                "text": "Defina qual pipeline recebe novos deals automaticamente. Perfeito para times que têm um funil principal e funis especializados."
+              },
+              "4": {
+                "title": "Automações por pipeline",
+                "text": "Cada pipeline pode ter suas próprias regras: enviar email ao entrar em 'Proposta', criar tarefa ao chegar em 'Negociação', alertar gestor em 'Fechamento'."
+              },
+              "5": {
+                "title": "Visão consolidada e individual",
+                "text": "Dashboard mostra métricas de todos os pipelines juntos ou filtrado por um só. Compare performance entre funis."
+              },
+              "6": {
+                "title": "Permissões granulares",
+                "text": "No plano Business, restrinja quais vendedores veem quais pipelines. Ideal para equipes com processos confidenciais ou regionais."
+              }
             },
             "useCases": {
-              "1": "Empresa com produtos diferentes que precisam de funis de venda distintos",
-              "2": "Equipe nacional com pipelines separados por região (SP, RJ, MG)",
-              "3": "Agência que gerencia vendas de serviços recorrentes e projetos pontuais"
+              "1": {
+                "persona": "SaaS com múltiplos produtos",
+                "scenario": "Pipeline 'Enterprise' com 8 estágios e ciclo longo. Pipeline 'Self-service' com 3 estágios e ciclo curto. Métricas separadas, mesma equipe."
+              },
+              "2": {
+                "persona": "Equipe nacional",
+                "scenario": "Pipelines por região: SP, RJ, MG, Sul. Cada gestor regional vê apenas seu pipeline. Diretor vê o consolidado de todos."
+              },
+              "3": {
+                "persona": "Agência de marketing",
+                "scenario": "Pipeline 'Contratos recorrentes' para fee mensal. Pipeline 'Projetos' para jobs pontuais. Automações diferentes para cada fluxo de venda."
+              }
             },
             "howItWorks": {
-              "title": "Como funciona",
-              "1": "Crie um novo pipeline em Configurações > Pipelines com nome e descrição",
-              "2": "Defina os estágios arrastando para reordenar — cada estágio pode ter cor e rótulo",
-              "3": "Configure automações específicas: ex. enviar email ao entrar em 'Proposta Enviada'",
-              "4": "Atribua deals ao pipeline correto na criação ou mova entre pipelines"
+              "title": "Como funciona na prática",
+              "1": {
+                "title": "Crie o pipeline",
+                "text": "Em Configurações > Pipelines, dê um nome e descrição. Escolha se será o pipeline padrão para novos deals."
+              },
+              "2": {
+                "title": "Configure os estágios",
+                "text": "Adicione estágios com nome e cor. Arraste para reordenar. Defina a probabilidade padrão de fechamento em cada estágio."
+              },
+              "3": {
+                "title": "Vincule automações",
+                "text": "Para cada estágio, crie gatilhos: enviar email, criar tarefa, notificar equipe. Cada pipeline pode ter regras totalmente diferentes."
+              },
+              "4": {
+                "title": "Atribua e acompanhe",
+                "text": "Novos deals entram automaticamente no pipeline padrão. Mova entre pipelines quando necessário. Acompanhe métricas de cada funil separadamente."
+              }
             },
-            "planInfo": "Gratuito: 1 pipeline | Starter: 3 | Pro: 10 | Business: ilimitado"
+            "planInfo": "Gratuito: 1 pipeline | Starter: 3 | Pro: 10 | Business: ilimitado",
+            "faq": {
+              "1": {
+                "q": "Posso mover um deal de um pipeline para outro?",
+                "a": "Sim, a qualquer momento. O histórico é preservado e a mudança fica registrada na timeline do deal."
+              },
+              "2": {
+                "q": "Automações de um pipeline afetam outro?",
+                "a": "Não. Cada pipeline tem suas próprias automações. Uma regra criada no pipeline 'Enterprise' não dispara no pipeline 'Self-service'."
+              },
+              "3": {
+                "q": "Posso comparar performance entre pipelines?",
+                "a": "Sim. O Analytics mostra win rate, ciclo médio, valor total e velocidade por pipeline. Ideal para identificar qual funil performa melhor."
+              }
+            }
           }
         },
         "tasks": {
@@ -356,26 +515,79 @@
           "detail": {
             "headline": "Nunca perca um follow-up — tarefas e lembretes integrados ao CRM",
             "benefits": {
-              "1": "Tarefas vinculadas a deals e contatos com contexto completo",
-              "2": "Prazos com lembretes por push notification e email",
-              "3": "Sincronização automática com Google Calendar (bidirecional)",
-              "4": "Tipos de atividade: ligação, reunião, email, visita, follow-up",
-              "5": "Visão de agenda diária/semanal integrada ao dashboard",
-              "6": "Atribuição a membros da equipe com notificação instantânea"
+              "1": {
+                "title": "Tarefas com contexto completo",
+                "text": "Cada tarefa está vinculada ao deal ou contato. Ao abrir, você vê todo o histórico de interações, valor do deal e última mensagem — sem precisar navegar."
+              },
+              "2": {
+                "title": "Lembretes multi-canal",
+                "text": "Receba lembretes por push notification no celular, email e notificação no navegador. Configure quanto tempo antes do prazo quer ser avisado."
+              },
+              "3": {
+                "title": "Sync bidirecional com Google Calendar",
+                "text": "Tarefas criadas no Sirius aparecem no seu Google Calendar. Eventos criados no Google Calendar aparecem na agenda do Sirius. Edite em qualquer lugar."
+              },
+              "4": {
+                "title": "Tipos de atividade especializados",
+                "text": "Ligação, reunião presencial, videoconferência, email, visita de campo, follow-up. Cada tipo tem ícone e cor própria para identificação rápida na agenda."
+              },
+              "5": {
+                "title": "Agenda integrada ao dashboard",
+                "text": "Visão diária e semanal das tarefas de toda a equipe. Arraste para reagendar. Filtre por responsável, tipo ou deal. Identifique dias sobrecarregados."
+              },
+              "6": {
+                "title": "Atribuição e delegação",
+                "text": "Atribua tarefas a qualquer membro da equipe. O responsável recebe notificação instantânea com contexto do deal. Ideal para gestores delegarem follow-ups."
+              }
             },
             "useCases": {
-              "1": "Vendedor que precisa agendar follow-ups automáticos após cada reunião",
-              "2": "Gestor que quer acompanhar a produtividade diária da equipe",
-              "3": "Vendedor de campo que usa a agenda do celular e precisa de sincronização"
+              "1": {
+                "persona": "Vendedor interno",
+                "scenario": "Após cada reunião pelo Zoom, cria uma tarefa de follow-up para 3 dias depois. O lembrete chega por push no celular e por email. Nunca esquece de retomar a conversa."
+              },
+              "2": {
+                "persona": "Gestor de equipe",
+                "scenario": "Abre a agenda semanal da equipe: 42 tarefas para os 5 vendedores. Identifica que João tem 15 e Ana tem 3. Redistribui arrastando tarefas entre responsáveis."
+              },
+              "3": {
+                "persona": "Vendedor de campo",
+                "scenario": "Agenda visitas no Google Calendar pelo celular. As visitas aparecem automaticamente no Sirius vinculadas ao deal. Faz check-in GPS ao chegar no cliente."
+              }
             },
             "howItWorks": {
-              "title": "Como funciona",
-              "1": "Crie uma tarefa a partir de qualquer deal ou contato com tipo, prazo e responsável",
-              "2": "Receba lembretes automáticos por push e email antes do prazo",
-              "3": "A tarefa aparece no Google Calendar sincronizado — edite em qualquer lugar",
-              "4": "Marque como concluída e o histórico fica registrado na timeline do deal"
+              "title": "Como funciona na prática",
+              "1": {
+                "title": "Crie a tarefa",
+                "text": "Direto na ficha do deal ou contato. Escolha o tipo (call, reunião, follow-up), defina prazo e atribua a um responsável. 3 cliques."
+              },
+              "2": {
+                "title": "Receba lembretes",
+                "text": "Push notification + email antes do prazo. Configure com 15 min, 1h, 1 dia ou intervalo customizado de antecedência."
+              },
+              "3": {
+                "title": "Veja na agenda",
+                "text": "A tarefa aparece na agenda do Sirius E no Google Calendar. Edite em qualquer lugar — a sincronização é bidirecional e automática."
+              },
+              "4": {
+                "title": "Conclua e registre",
+                "text": "Marque como feita, adicione uma nota sobre o resultado e o Sirius registra tudo na timeline do deal. O gestor vê a atividade no relatório."
+              }
             },
-            "planInfo": "Disponível em todos os planos | Google Calendar: a partir do Starter"
+            "planInfo": "Disponível em todos os planos | Google Calendar: a partir do Starter",
+            "faq": {
+              "1": {
+                "q": "Preciso do Google Calendar para usar tarefas?",
+                "a": "Não. As tarefas funcionam independentemente. O Google Calendar é uma integração opcional que ativa sync bidirecional (disponível a partir do Starter)."
+              },
+              "2": {
+                "q": "Posso criar tarefas recorrentes?",
+                "a": "Sim. Configure frequência (diária, semanal, mensal) e o Sirius cria automaticamente a próxima tarefa quando a atual é concluída."
+              },
+              "3": {
+                "q": "As tarefas contam algum limite?",
+                "a": "Não. Tarefas são ilimitadas em todos os planos. Crie quantas precisar sem se preocupar."
+              }
+            }
           }
         }
       },

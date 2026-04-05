@@ -272,26 +272,79 @@
           "detail": {
             "headline": "Centralize all your customer information in one place",
             "benefits": {
-              "1": "Bulk CSV import and export — migrate from any CRM in minutes",
-              "2": "Complete interaction timeline: emails, WhatsApp, notes, and activities in chronological order",
-              "3": "Customizable tags to segment contacts by profile, stage, or campaign",
-              "4": "Contact ↔ company association with decision-maker and influencer hierarchy",
-              "5": "Advanced search with combined filters: tag, assignee, creation date, and custom fields",
-              "6": "Unlimited contacts on the Business plan — scale without worrying about limits"
+              "1": {
+                "title": "Smart CSV import",
+                "text": "Migrate from any CRM, spreadsheet, or ERP in minutes. Auto field mapping identifies columns and normalizes data — no manual work."
+              },
+              "2": {
+                "title": "360° interaction timeline",
+                "text": "Every contact has a complete chronological timeline: WhatsApp messages, emails sent/received, team notes, activities, and stage changes."
+              },
+              "3": {
+                "title": "Tags and advanced segmentation",
+                "text": "Create unlimited tags with custom colors. Segment by buyer profile, funnel stage, campaign source, or any criteria that makes sense for your business."
+              },
+              "4": {
+                "title": "Contact and company hierarchy",
+                "text": "Link multiple contacts to a company. Define who is the decision-maker, influencer, and champion. View the deal's org chart directly on the contact card."
+              },
+              "5": {
+                "title": "Combined search and filters",
+                "text": "Find any contact in seconds. Combine filters by tag, assignee, creation date, company, pipeline, and custom fields. Save favorite filters for quick access."
+              },
+              "6": {
+                "title": "Scale without limits",
+                "text": "From 100 contacts on the free plan to unlimited on Business. As your team grows, Sirius grows with you — no platform migration needed."
+              }
             },
             "useCases": {
-              "1": "Field salesperson who needs to check client data before a visit",
-              "2": "Manager who wants to segment the base for reactivation campaigns",
-              "3": "Team migrating from spreadsheets that needs to import thousands of records"
+              "1": {
+                "persona": "Field salesperson",
+                "scenario": "Before a visit, checks the full client profile on mobile: last contact, open deal value, purchase history, and team notes."
+              },
+              "2": {
+                "persona": "Sales manager",
+                "scenario": "Segments the base by tag 'Inactive > 60 days' and creates a reactivation email campaign with one click. Monitors opens and replies in analytics."
+              },
+              "3": {
+                "persona": "Migrating team",
+                "scenario": "Imports 15,000 contacts from HubSpot via CSV. Sirius maps fields automatically, removes duplicates, and preserves interaction history."
+              }
             },
             "howItWorks": {
-              "title": "How it works",
-              "1": "Create contacts manually or import via CSV with smart field mapping",
-              "2": "Automatically enrich with AI data: job title, company, social media",
-              "3": "Link contacts to deals and companies for a 360° view of each opportunity",
-              "4": "Use filters and tags to find any contact in seconds"
+              "title": "How it works in practice",
+              "1": {
+                "title": "Import or create",
+                "text": "Upload your CSV or create contacts manually. Smart mapping recognizes name, email, phone, and custom fields automatically."
+              },
+              "2": {
+                "title": "Enrich with AI",
+                "text": "AGI Sirius automatically complements: job title, company, LinkedIn, segment, and relevant data for your approach. No copy-pasting."
+              },
+              "3": {
+                "title": "Link to pipeline",
+                "text": "Associate contacts with deals and companies for a 360° view of each opportunity. Every interaction feeds the timeline automatically."
+              },
+              "4": {
+                "title": "Find in seconds",
+                "text": "Use global search with combined filters. Save favorite filters. Export segments for email or WhatsApp campaigns."
+              }
             },
-            "planInfo": "Free: up to 100 contacts | Starter: 2,500 | Pro: 15,000 | Business: unlimited"
+            "planInfo": "Free: up to 100 contacts | Starter: 2,500 | Pro: 15,000 | Business: unlimited",
+            "faq": {
+              "1": {
+                "q": "Can I import contacts from another CRM?",
+                "a": "Yes. Sirius accepts CSV with automatic field mapping. Works with exports from HubSpot, Pipedrive, RD Station, Salesforce, and any spreadsheet."
+              },
+              "2": {
+                "q": "Are contacts shared with the team?",
+                "a": "Yes. All organization members see contacts. On Business plan, you can restrict visibility per pipeline."
+              },
+              "3": {
+                "q": "Is there WhatsApp integration?",
+                "a": "Yes. WhatsApp conversations appear automatically on the contact timeline. You can reply directly from the CRM without switching screens."
+              }
+            }
           }
         },
         "deals": {
@@ -300,26 +353,79 @@
           "detail": {
             "headline": "Track every sales opportunity from first contact to close",
             "benefits": {
-              "1": "Visual Kanban with drag-and-drop — move deals between stages with a gesture",
-              "2": "Value, expected close date, and probability on each card",
-              "3": "Linked notes, activities, and comments with complete history",
-              "4": "Custom fields to adapt the deal to your business model",
-              "5": "Filters by assignee, pipeline, stage, value, and period",
-              "6": "Deal export to CSV and automated reports"
+              "1": {
+                "title": "Visual Kanban with drag-and-drop",
+                "text": "Drag deals between stages with a gesture. Visualize the entire funnel in columns with accumulated value, count, and closing forecast per stage."
+              },
+              "2": {
+                "title": "Complete card information",
+                "text": "Each card shows value, expected date, assignee, close probability, and deal temperature. No need to open the detail view."
+              },
+              "3": {
+                "title": "Complete interaction history",
+                "text": "Notes, activities, comments, and WhatsApp messages linked to the deal in a chronological timeline. The entire team sees the full context."
+              },
+              "4": {
+                "title": "Unlimited custom fields",
+                "text": "Adapt the deal to your business model. Create text, number, date, select, and checkbox fields. Configure which fields appear on the Kanban card."
+              },
+              "5": {
+                "title": "Powerful filters and saved views",
+                "text": "Filter by assignee, pipeline, stage, min/max value, and period. Save filter combinations as views for quick access."
+              },
+              "6": {
+                "title": "Export and reports",
+                "text": "Export filtered deals to CSV. Generate revenue forecast, pipeline velocity, and conversion rate reports by stage."
+              }
             },
             "useCases": {
-              "1": "Closer who needs to prioritize deals with the highest value and probability",
-              "2": "Manager who wants visibility over the entire team's pipeline",
-              "3": "SDR who needs to log every interaction before handing off to the closer"
+              "1": {
+                "persona": "Closer",
+                "scenario": "Sorts the Kanban by value and probability to focus on deals most likely to close this week. Adds notes after each call."
+              },
+              "2": {
+                "persona": "Sales manager",
+                "scenario": "Opens the consolidated pipeline view: $460K open, 47 active deals, 12 stale for over 7 days. Identifies bottlenecks instantly."
+              },
+              "3": {
+                "persona": "SDR",
+                "scenario": "Creates the deal after qualifying the lead, logs all interactions, and moves to 'Qualified' — the closer gets an automatic notification with full context."
+              }
             },
             "howItWorks": {
-              "title": "How it works",
-              "1": "Create a deal manually or automatically when a lead enters the pipeline",
-              "2": "Drag between stages in Kanban as the deal progresses",
-              "3": "Add notes, tasks, and activities to keep the history up to date",
-              "4": "Mark as Won or Lost — AI records reasons and generates insights"
+              "title": "How it works in practice",
+              "1": {
+                "title": "Create the deal",
+                "text": "Manually in 3 clicks or automatically via automation when a lead arrives. Set value, assignee, and initial stage."
+              },
+              "2": {
+                "title": "Drag in Kanban",
+                "text": "As the deal progresses, drag between stages. Each change is logged in the timeline with date, time, and who moved it."
+              },
+              "3": {
+                "title": "Log everything",
+                "text": "Add notes after calls, schedule follow-ups as tasks, send WhatsApp messages — everything stays in the deal history."
+              },
+              "4": {
+                "title": "Close or learn",
+                "text": "Mark as Won and celebrate. Or mark as Lost with a reason — AI analyzes loss patterns and suggests process improvements."
+              }
             },
-            "planInfo": "Free: up to 50 active deals | Starter: 500 | Pro: 5,000 | Business: unlimited"
+            "planInfo": "Free: up to 50 active deals | Starter: 500 | Pro: 5,000 | Business: unlimited",
+            "faq": {
+              "1": {
+                "q": "Can I have deals in multiple pipelines?",
+                "a": "Yes. Each deal belongs to one pipeline, but you can move it between pipelines at any time. Ideal for transfers between teams."
+              },
+              "2": {
+                "q": "Do archived deals count toward the limit?",
+                "a": "No. Only active (open) deals count. Won, lost, or archived deals don't affect your limit."
+              },
+              "3": {
+                "q": "Can I see revenue forecast?",
+                "a": "Yes. Analytics shows revenue forecast based on value x probability x estimated closing date for each open deal."
+              }
+            }
           }
         },
         "pipelines": {
@@ -328,26 +434,79 @@
           "detail": {
             "headline": "Organize your sales processes with independent pipelines",
             "benefits": {
-              "1": "Multiple pipelines — separate by product, service, region, or team",
-              "2": "Customizable stages with personalized names, colors, and order",
-              "3": "Configurable default pipeline for new deals",
-              "4": "Pipeline-linked automations — different rules for each flow",
-              "5": "Consolidated view: see total value and deals per stage for each pipeline",
-              "6": "Pipeline permissions: restrict visibility by team member"
+              "1": {
+                "title": "Independent pipelines",
+                "text": "Each pipeline is a complete funnel. Separate by product, service, region, or team. Each with its own stages, automations, and metrics."
+              },
+              "2": {
+                "title": "100% customizable stages",
+                "text": "Define names, colors, and order for stages. Drag to reorder. Set default close probability per stage."
+              },
+              "3": {
+                "title": "Smart default pipeline",
+                "text": "Define which pipeline receives new deals automatically. Perfect for teams with one main funnel and specialized funnels."
+              },
+              "4": {
+                "title": "Per-pipeline automations",
+                "text": "Each pipeline can have its own rules: send email on 'Proposal', create task on 'Negotiation', alert manager on 'Closing'."
+              },
+              "5": {
+                "title": "Consolidated and individual views",
+                "text": "Dashboard shows metrics for all pipelines together or filtered by one. Compare performance across funnels."
+              },
+              "6": {
+                "title": "Granular permissions",
+                "text": "On Business plan, restrict which salespeople see which pipelines. Ideal for teams with confidential or regional processes."
+              }
             },
             "useCases": {
-              "1": "Company with different products that need distinct sales funnels",
-              "2": "National team with separate pipelines by region",
-              "3": "Agency managing recurring service sales and one-off projects"
+              "1": {
+                "persona": "Multi-product SaaS",
+                "scenario": "Enterprise pipeline with 8 stages and long cycle. Self-service pipeline with 3 stages and short cycle. Separate metrics, same team."
+              },
+              "2": {
+                "persona": "National team",
+                "scenario": "Pipelines by region: East, West, Central, South. Each regional manager sees only their pipeline. Director sees all consolidated."
+              },
+              "3": {
+                "persona": "Marketing agency",
+                "scenario": "Recurring contracts pipeline for monthly fees. Projects pipeline for one-off jobs. Different automations for each sales flow."
+              }
             },
             "howItWorks": {
-              "title": "How it works",
-              "1": "Create a new pipeline in Settings > Pipelines with name and description",
-              "2": "Define stages by dragging to reorder — each stage can have a color and label",
-              "3": "Configure specific automations: e.g., send email when entering 'Proposal Sent'",
-              "4": "Assign deals to the correct pipeline on creation or move between pipelines"
+              "title": "How it works in practice",
+              "1": {
+                "title": "Create the pipeline",
+                "text": "In Settings > Pipelines, give it a name and description. Choose if it's the default pipeline for new deals."
+              },
+              "2": {
+                "title": "Configure stages",
+                "text": "Add stages with name and color. Drag to reorder. Set default close probability for each stage."
+              },
+              "3": {
+                "title": "Link automations",
+                "text": "For each stage, create triggers: send email, create task, notify team. Each pipeline can have totally different rules."
+              },
+              "4": {
+                "title": "Assign and track",
+                "text": "New deals enter the default pipeline automatically. Move between pipelines when needed. Track each funnel's metrics separately."
+              }
             },
-            "planInfo": "Free: 1 pipeline | Starter: 3 | Pro: 10 | Business: unlimited"
+            "planInfo": "Free: 1 pipeline | Starter: 3 | Pro: 10 | Business: unlimited",
+            "faq": {
+              "1": {
+                "q": "Can I move a deal from one pipeline to another?",
+                "a": "Yes, at any time. History is preserved and the change is logged in the deal timeline."
+              },
+              "2": {
+                "q": "Do automations from one pipeline affect another?",
+                "a": "No. Each pipeline has its own automations. A rule created in the 'Enterprise' pipeline won't fire in 'Self-service'."
+              },
+              "3": {
+                "q": "Can I compare performance across pipelines?",
+                "a": "Yes. Analytics shows win rate, average cycle, total value, and velocity per pipeline. Ideal for identifying your best-performing funnel."
+              }
+            }
           }
         },
         "tasks": {
@@ -356,26 +515,79 @@
           "detail": {
             "headline": "Never miss a follow-up — tasks and reminders integrated into the CRM",
             "benefits": {
-              "1": "Tasks linked to deals and contacts with full context",
-              "2": "Deadlines with push notification and email reminders",
-              "3": "Automatic sync with Google Calendar (bidirectional)",
-              "4": "Activity types: call, meeting, email, visit, follow-up",
-              "5": "Daily/weekly agenda view integrated into the dashboard",
-              "6": "Team member assignment with instant notification"
+              "1": {
+                "title": "Tasks with full context",
+                "text": "Each task is linked to the deal or contact. When you open it, you see the full interaction history, deal value, and last message — no navigation needed."
+              },
+              "2": {
+                "title": "Multi-channel reminders",
+                "text": "Get reminders via mobile push notification, email, and browser notification. Configure how far in advance you want to be notified."
+              },
+              "3": {
+                "title": "Bidirectional Google Calendar sync",
+                "text": "Tasks created in Sirius appear in your Google Calendar. Events created in Google Calendar appear in Sirius's agenda. Edit anywhere."
+              },
+              "4": {
+                "title": "Specialized activity types",
+                "text": "Call, in-person meeting, video conference, email, field visit, follow-up. Each type has its own icon and color for quick identification."
+              },
+              "5": {
+                "title": "Dashboard-integrated agenda",
+                "text": "Daily and weekly view of the entire team's tasks. Drag to reschedule. Filter by assignee, type, or deal. Identify overloaded days."
+              },
+              "6": {
+                "title": "Assignment and delegation",
+                "text": "Assign tasks to any team member. The assignee gets an instant notification with deal context. Ideal for managers delegating follow-ups."
+              }
             },
             "useCases": {
-              "1": "Salesperson who needs to schedule automatic follow-ups after each meeting",
-              "2": "Manager who wants to track the team's daily productivity",
-              "3": "Field salesperson who uses the phone calendar and needs synchronization"
+              "1": {
+                "persona": "Inside sales rep",
+                "scenario": "After each Zoom meeting, creates a follow-up task for 3 days later. Gets push and email reminders. Never forgets to resume the conversation."
+              },
+              "2": {
+                "persona": "Team manager",
+                "scenario": "Opens the team's weekly agenda: 42 tasks across 5 reps. Sees John has 15 and Ana has 3. Redistributes by dragging tasks between assignees."
+              },
+              "3": {
+                "persona": "Field salesperson",
+                "scenario": "Schedules visits on Google Calendar from mobile. Visits auto-appear in Sirius linked to the deal. Checks in with GPS on arrival."
+              }
             },
             "howItWorks": {
-              "title": "How it works",
-              "1": "Create a task from any deal or contact with type, deadline, and assignee",
-              "2": "Receive automatic reminders via push and email before the deadline",
-              "3": "The task appears in synced Google Calendar — edit from anywhere",
-              "4": "Mark as complete and the history is recorded in the deal's timeline"
+              "title": "How it works in practice",
+              "1": {
+                "title": "Create the task",
+                "text": "Directly from the deal or contact card. Choose type (call, meeting, follow-up), set deadline, and assign. 3 clicks."
+              },
+              "2": {
+                "title": "Get reminders",
+                "text": "Push notification + email before deadline. Configure 15 min, 1 hour, 1 day, or custom advance interval."
+              },
+              "3": {
+                "title": "See in your agenda",
+                "text": "The task appears in Sirius's agenda AND Google Calendar. Edit anywhere — sync is bidirectional and automatic."
+              },
+              "4": {
+                "title": "Complete and log",
+                "text": "Mark as done, add a note about the outcome, and Sirius logs everything in the deal timeline. Manager sees it in the report."
+              }
             },
-            "planInfo": "Available on all plans | Google Calendar: from Starter onwards"
+            "planInfo": "Available on all plans | Google Calendar: from Starter onwards",
+            "faq": {
+              "1": {
+                "q": "Do I need Google Calendar to use tasks?",
+                "a": "No. Tasks work independently. Google Calendar is an optional integration that enables bidirectional sync (available from Starter)."
+              },
+              "2": {
+                "q": "Can I create recurring tasks?",
+                "a": "Yes. Set frequency (daily, weekly, monthly) and Sirius automatically creates the next task when the current one is completed."
+              },
+              "3": {
+                "q": "Do tasks count toward any limit?",
+                "a": "No. Tasks are unlimited on all plans. Create as many as you need without worrying."
+              }
+            }
           }
         }
       },
