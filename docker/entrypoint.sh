@@ -4,8 +4,8 @@ set -e
 echo "Running CRM database migrations..."
 node node_modules/prisma/build/index.js migrate deploy
 
-echo "Running WhatsApp database migrations..."
-node node_modules/prisma/build/index.js migrate deploy --schema prisma/whatsapp.prisma
+echo "Syncing WhatsApp database schema..."
+node node_modules/prisma/build/index.js db push --schema prisma/whatsapp.prisma --accept-data-loss --skip-generate
 
 echo "Starting Sirius CRM..."
 exec node server.js
