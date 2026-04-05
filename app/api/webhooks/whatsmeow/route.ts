@@ -76,6 +76,12 @@ export async function POST(request: NextRequest) {
       case 'history.sync':
         await handleHistorySync(instanceId, data)
         break
+      case 'history.sync.batch':
+        await handleHistorySyncBatch(instanceId, data)
+        break
+      case 'sync.completed':
+        logger.info({ instanceId, data }, 'whatsmeow: sync completed')
+        break
       default:
         logger.info({ type }, 'whatsmeow webhook: unhandled event type')
     }
@@ -446,6 +452,88 @@ async function handleChatPresence(instanceId: string, data: any) {
     remoteJid: jid,
     isTyping: state === 'composing',
   })
+}
+
+async function handleHistorySyncBatch(instanceId: string, data: any) {
+  const connection = await findConnectionByInstanceId(instanceId)
+  if (!connection) return
+
+  const { messages, count } = data
+  if (!messages?.length) return
+
+  const { organizationId } = connection
+  let saved = 0
+
+  // Group messages by remoteJid for contact resolution
+  const byJid = new Map<string, any[]>()
+  for (const msg of messages) {
+    const jid = msg.remoteJid
+    if (!jid) continue
+    if (jid.includes('status@') || jid.includes('@broadcast') || jid.includes('@newsletter')) continue
+    if (!byJid.has(jid)) byJid.set(jid, [])
+    byJid.get(jid)!.push(msg)
+  }
+
+  for (const [remoteJid, msgs] of byJid) {
+    const isGroup = remoteJid.includes('@g.us')
+    const rawPhone = remoteJid.replace('@s.whatsapp.net', '').replace('@c.us', '').replace('@g.us', '')
+
+    if (!isGroup && rawPhone.length > 15) continue
+
+    const phone = isGroup ? remoteJid : normalizePhoneNumber(rawPhone)
+    const pushName = msgs[0]?.pushName || phone
+
+    let contact: any = isGroup
+      ? await prisma.contact.findFirst({ where: { organizationId, phone: remoteJid } })
+      : await findContactByPhone(organizationId, phone)
+
+    if (!contact) {
+      contact = await prisma.contact.create({
+        data: { organizationId, name: pushName, phone },
+      })
+    }
+
+    // Batch dedup
+    const msgIds = msgs.map((m: any) => m.messageId).filter(Boolean)
+    const existing = await prismaWa.whatsAppMessage.findMany({
+      where: { organizationId, messageId: { in: msgIds } },
+      select: { messageId: true },
+    })
+    const existingSet = new Set(existing.map((m: any) => m.messageId))
+
+    for (const msg of msgs) {
+      if (!msg.messageId || existingSet.has(msg.messageId)) continue
+      if (!msg.text && !msg.mediaType) continue
+
+      const sentAt = msg.timestamp ? new Date(msg.timestamp * 1000) : new Date()
+
+      try {
+        await prismaWa.whatsAppMessage.create({
+          data: {
+            contactId: contact.id,
+            organizationId,
+            connectionId: connection.id,
+            remoteJid,
+            messageId: msg.messageId,
+            text: msg.text || (msg.mediaType ? `[${msg.mediaType}]` : '[Mensagem]'),
+            direction: msg.fromMe ? 'OUTBOUND' : 'INBOUND',
+            status: msg.fromMe ? 'SENT' : 'DELIVERED',
+            mediaType: msg.mediaType || null,
+            sentAt,
+            isRead: true,
+            snowflakeId: msg.snowflakeId ? BigInt(msg.snowflakeId) : null,
+            sourceTimestamp: msg.sourceTimestamp ? new Date(msg.sourceTimestamp) : sentAt,
+          },
+        })
+        saved++
+        existingSet.add(msg.messageId)
+      } catch {
+        // Unique constraint — skip
+      }
+    }
+  }
+
+  logger.info({ instanceId, total: count, saved }, 'whatsmeow: history.sync.batch processed')
 }
 
 async function handleConnectionAlert(instanceId: string, data: any) {
