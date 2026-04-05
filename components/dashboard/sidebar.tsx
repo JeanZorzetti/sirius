@@ -249,7 +249,7 @@ function SidebarInner({ pathname, user }: { pathname: string; user: any }) {
       <div className="flex-1 overflow-y-auto overflow-x-hidden py-4 px-2 relative z-10">
         <nav className="grid gap-0.5">
           {/* Modo IA link — only for admin */}
-          {user.email === 'jeanzorzetti@gmail.com' && (
+          {user.role === 'ADMIN' && (
           <Link
             href="/IA"
             className={cn(
