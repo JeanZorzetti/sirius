@@ -47,6 +47,10 @@ model WhatsAppMessage {
   remoteJid String
   messageId String?
 
+  // Time-sortable ordering (Snowflake ID from WhatsApp messageTimestamp)
+  snowflakeId     BigInt?   @unique
+  sourceTimestamp  DateTime? // Original WhatsApp timestamp (from protobuf)
+
   // Message content
   text      String                @db.Text
   direction MessageDirection
@@ -85,6 +89,7 @@ model WhatsAppMessage {
 
   @@unique([organizationId, messageId])
   @@index([organizationId, sentAt])
+  @@index([contactId, snowflakeId])
   @@index([dealId])
   @@index([contactId])
   @@index([remoteJid])

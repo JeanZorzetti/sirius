@@ -110,6 +110,8 @@ async function handleMessage(instanceId: string, data: any) {
     mediaType,
     mediaBase64,
     isGroup,
+    snowflakeId,
+    sourceTimestamp,
   } = data
 
   if (!remoteJid) return
@@ -178,7 +180,9 @@ async function handleMessage(instanceId: string, data: any) {
       mediaType: mediaType || null,
       mediaUrl: mediaBase64 || null,
       sentAt,
-      isRead: fromMe, // Outbound messages don't need "reading"; inbound start unread
+      isRead: fromMe,
+      snowflakeId: snowflakeId ? BigInt(snowflakeId) : null,
+      sourceTimestamp: sourceTimestamp ? new Date(sourceTimestamp) : sentAt,
     },
   })
 
@@ -399,7 +403,9 @@ async function handleHistorySync(instanceId: string, data: any) {
           status: msg.fromMe ? 'SENT' : 'DELIVERED',
           mediaType: msg.mediaType || null,
           sentAt,
-          isRead: true, // History sync = old messages, not new notifications
+          isRead: true,
+          snowflakeId: msg.snowflakeId ? BigInt(msg.snowflakeId) : null,
+          sourceTimestamp: msg.sourceTimestamp ? new Date(msg.sourceTimestamp) : sentAt,
         },
       })
       saved++
