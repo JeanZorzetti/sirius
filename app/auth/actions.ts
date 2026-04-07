@@ -12,8 +12,8 @@ function generateReferralCode(): string {
   return Math.random().toString(36).substring(2, 6) + Math.random().toString(36).substring(2, 6)
 }
 
-async function enrollAsLead({ name, email, whatsapp, companyName }: {
-  name: string, email: string, whatsapp: string | null, companyName: string | null
+async function enrollAsLead({ name, email, whatsapp, companyName, jobTitle, segment }: {
+  name: string, email: string, whatsapp: string | null, companyName: string | null, jobTitle: string | null, segment: string | null
 }) {
   const leadsOrgId = process.env.LEADS_PIPELINE_ORG_ID
   if (!leadsOrgId) return
@@ -56,6 +56,11 @@ async function enrollAsLead({ name, email, whatsapp, companyName }: {
   })
   if (existingDeal) return
 
+  const observations = [
+    jobTitle && `Cargo: ${jobTitle}`,
+    segment && `Segmento: ${segment}`,
+  ].filter(Boolean).join(' | ') || null
+
   await prisma.deal.create({
     data: {
       title: companyName ? `Lead: ${name} — ${companyName}` : `Lead: ${name}`,
@@ -64,6 +69,7 @@ async function enrollAsLead({ name, email, whatsapp, companyName }: {
       organizationId: leadsOrgId,
       userId: owner.id,
       contactId: contact.id,
+      observations,
     }
   })
 }
@@ -75,7 +81,12 @@ export async function registerAction(prevState: any, formData: FormData) {
     const password = formData.get('password') as string
     const companyName = formData.get('company') as string
     const inviteToken = formData.get('inviteToken') as string
-    const whatsapp = (formData.get('whatsapp') as string)?.trim() || null
+    const phone = (formData.get('phone') as string)?.trim() || null
+    const jobTitle = (formData.get('jobTitle') as string)?.trim() || null
+    const companyDescription = (formData.get('companyDescription') as string)?.trim() || null
+    const segment = (formData.get('segment') as string)?.trim() || null
+    // Legacy field: keep whatsapp as alias for phone
+    const whatsapp = phone || (formData.get('whatsapp') as string)?.trim() || null
 
     logger.info({ correlationId, email, hasInvite: !!inviteToken }, 'Registration attempt')
 
@@ -128,7 +139,9 @@ export async function registerAction(prevState: any, formData: FormData) {
             const org = await prisma.organization.create({
                 data: {
                     name: companyName,
-                    slug: slug
+                    slug: slug,
+                    description: companyDescription || null,
+                    segment: segment || null,
                 }
             })
             organizationId = org.id
@@ -193,7 +206,9 @@ export async function registerAction(prevState: any, formData: FormData) {
                 password: hashedPassword,
                 organizationId: organizationId,
                 orgRole: orgRole,
-                referralCode
+                referralCode,
+                jobTitle: jobTitle || null,
+                phone: phone || null,
             }
         })
 
@@ -229,7 +244,7 @@ export async function registerAction(prevState: any, formData: FormData) {
         }
 
         // Enroll new registrant as a lead in the owner's pipeline (async, non-blocking)
-        enrollAsLead({ name, email, whatsapp, companyName: companyName || null }).catch(() => {})
+        enrollAsLead({ name, email, whatsapp, companyName: companyName || null, jobTitle: jobTitle || null, segment: segment || null }).catch(() => {})
 
         // 3. Create Session
         await login({ id: newUser.id, email: newUser.email, name: newUser.name, organizationId: newUser.organizationId })

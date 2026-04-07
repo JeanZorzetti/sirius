@@ -11,11 +11,13 @@ datasource db {
 }
 
 model Organization {
-  id        String   @id @default(uuid())
-  name      String
-  slug      String   @unique
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id          String   @id @default(uuid())
+  name        String
+  slug        String   @unique
+  description String?  @db.Text // O que a empresa faz (capturado no signup)
+  segment     String?  // Segmento de atuação (ex: "Imobiliárias", "Saúde")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 
   // Mercado Pago & Billing
   mercadoPagoCustomerId     String? // Customer ID no Mercado Pago
@@ -154,6 +156,8 @@ model User {
   email     String   @unique
   name      String?
   password  String // Password hash
+  jobTitle  String? // Cargo na empresa (ex: "Sócio", "Diretor de Vendas")
+  phone     String? // Telefone principal capturado no signup
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
