@@ -42,8 +42,10 @@ export async function GET(req: NextRequest) {
     const { email, name } = token
 
     let user = await prisma.user.findUnique({ where: { email } })
+    let isNewUser = false
 
     if (!user) {
+      isNewUser = true
       const slug =
         String(name || email).toLowerCase().replace(/[^a-z0-9]/g, '-').substring(0, 30) +
         '-' + Math.floor(Math.random() * 1000)
@@ -104,9 +106,13 @@ export async function GET(req: NextRequest) {
       expires,
     })
 
-    console.log('[google-session] OK — user:', user.email, '→ /dashboard')
+    // New users or users without profile completion go to /complete-profile
+    const needsCompletion = isNewUser || !user.phone || !user.jobTitle
 
-    const response = NextResponse.redirect(new URL('/dashboard', baseUrl))
+    const redirectPath = needsCompletion ? '/complete-profile' : '/dashboard'
+    console.log('[google-session] OK — user:', user.email, '→', redirectPath)
+
+    const response = NextResponse.redirect(new URL(redirectPath, baseUrl))
     response.cookies.set('session', sessionToken, {
       expires,
       httpOnly: true,
