@@ -63,11 +63,14 @@ export function CompleteProfileForm({ userId, userName, organizationId, currentO
   const [company, setCompany] = useState(currentOrgName === userName ? '' : currentOrgName)
   const [companyDescription, setCompanyDescription] = useState('')
   const [segment, setSegment] = useState('')
+  const [customJobTitle, setCustomJobTitle] = useState('')
 
   const totalSteps = 2
 
+  const effectiveJobTitle = jobTitle === 'Outro' ? customJobTitle : jobTitle
+
   function canAdvance() {
-    if (step === 1) return phone && jobTitle
+    if (step === 1) return phone && effectiveJobTitle
     if (step === 2) return company && segment
     return false
   }
@@ -88,7 +91,7 @@ export function CompleteProfileForm({ userId, userName, organizationId, currentO
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             phone,
-            jobTitle,
+            jobTitle: effectiveJobTitle,
             company,
             companyDescription,
             segment,
@@ -199,6 +202,15 @@ export function CompleteProfileForm({ userId, userName, organizationId, currentO
                   </select>
                   <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400 pointer-events-none" />
                 </div>
+                {jobTitle === 'Outro' && (
+                  <Input
+                    value={customJobTitle}
+                    onChange={e => setCustomJobTitle(e.target.value)}
+                    placeholder="Digite seu cargo"
+                    required
+                    className="mt-2 bg-white border-gray-300 text-gray-900 placeholder:text-gray-400 focus:border-indigo-500 focus:ring-indigo-500"
+                  />
+                )}
               </div>
             </>
           )}

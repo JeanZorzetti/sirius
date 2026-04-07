@@ -65,12 +65,15 @@ export function RegisterForm({ inviteData, inviteToken }: { inviteData: any, inv
   const [company, setCompany] = useState('')
   const [companyDescription, setCompanyDescription] = useState('')
   const [segment, setSegment] = useState('')
+  const [customJobTitle, setCustomJobTitle] = useState('')
 
   const totalSteps = inviteData ? 1 : 3
 
+  const effectiveJobTitle = jobTitle === 'Outro' ? customJobTitle : jobTitle
+
   function canAdvance() {
     if (step === 1) return name && email && password
-    if (step === 2) return phone && jobTitle
+    if (step === 2) return phone && effectiveJobTitle
     if (step === 3) return company && segment
     return false
   }
@@ -101,7 +104,7 @@ export function RegisterForm({ inviteData, inviteToken }: { inviteData: any, inv
     formData.set('email', email)
     formData.set('password', password)
     formData.set('phone', phone)
-    formData.set('jobTitle', jobTitle)
+    formData.set('jobTitle', effectiveJobTitle)
     formData.set('company', company)
     formData.set('companyDescription', companyDescription)
     formData.set('segment', segment)
@@ -254,6 +257,15 @@ export function RegisterForm({ inviteData, inviteToken }: { inviteData: any, inv
                 </select>
                 <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-500 pointer-events-none" />
               </div>
+              {jobTitle === 'Outro' && (
+                <Input
+                  value={customJobTitle}
+                  onChange={e => setCustomJobTitle(e.target.value)}
+                  placeholder="Digite seu cargo"
+                  required
+                  className="mt-2 bg-zinc-800 border-zinc-700 text-white"
+                />
+              )}
             </div>
           </>
         )}
