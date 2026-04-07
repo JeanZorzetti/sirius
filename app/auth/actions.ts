@@ -16,7 +16,11 @@ async function enrollAsLead({ name, email, whatsapp, companyName, jobTitle, segm
   name: string, email: string, whatsapp: string | null, companyName: string | null, jobTitle: string | null, segment: string | null
 }) {
   const leadsOrgId = process.env.LEADS_PIPELINE_ORG_ID
-  if (!leadsOrgId) return
+  if (!leadsOrgId) {
+    logger.warn({ email }, '[enrollAsLead] LEADS_PIPELINE_ORG_ID not set, skipping')
+    return
+  }
+  logger.info({ email, leadsOrgId }, '[enrollAsLead] Starting enrollment')
 
   // Find the default pipeline for the leads org
   const pipeline = await prisma.pipeline.findFirst({
@@ -244,7 +248,9 @@ export async function registerAction(prevState: any, formData: FormData) {
         }
 
         // Enroll new registrant as a lead in the owner's pipeline (async, non-blocking)
-        enrollAsLead({ name, email, whatsapp, companyName: companyName || null, jobTitle: jobTitle || null, segment: segment || null }).catch(() => {})
+        enrollAsLead({ name, email, whatsapp, companyName: companyName || null, jobTitle: jobTitle || null, segment: segment || null }).catch((err) => {
+            logger.error({ err, email }, '[enrollAsLead] Failed to enroll lead')
+        })
 
         // 3. Create Session
         await login({ id: newUser.id, email: newUser.email, name: newUser.name, organizationId: newUser.organizationId })

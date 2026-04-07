@@ -93,6 +93,43 @@ export async function GET(req: NextRequest) {
           referralCode,
         },
       })
+
+      // Enroll as lead immediately (even with partial data)
+      // complete-profile will enrich later if user completes it
+      try {
+        const leadsOrgId = process.env.LEADS_PIPELINE_ORG_ID
+        if (leadsOrgId) {
+          const leadsPipeline = await prisma.pipeline.findFirst({
+            where: { organizationId: leadsOrgId, isDefault: true },
+            include: { stages: { orderBy: { order: 'asc' }, take: 1 } }
+          })
+          const leadsOwner = await prisma.user.findFirst({
+            where: { organizationId: leadsOrgId, orgRole: 'OWNER' }
+          })
+          if (leadsPipeline?.stages.length && leadsOwner) {
+            const contact = await prisma.contact.create({
+              data: {
+                name: String(name || email),
+                email,
+                organizationId: leadsOrgId,
+              }
+            })
+            await prisma.deal.create({
+              data: {
+                title: `Lead: ${name || email}`,
+                stageId: leadsPipeline.stages[0].id,
+                pipelineId: leadsPipeline.id,
+                organizationId: leadsOrgId,
+                userId: leadsOwner.id,
+                contactId: contact.id,
+                observations: 'Via Google OAuth',
+              }
+            })
+          }
+        }
+      } catch (e) {
+        console.error('[google-session] enrollAsLead error:', e)
+      }
     }
 
     const expires = new Date(Date.now() + 24 * 60 * 60 * 1000)

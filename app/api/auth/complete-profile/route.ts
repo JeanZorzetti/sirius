@@ -35,19 +35,37 @@ async function enrollAsLead({ name, email, phone, companyName, jobTitle, segment
     })
   }
 
-  const existingDeal = await prisma.deal.findFirst({
-    where: { contactId: contact.id, pipelineId: pipeline.id }
-  })
-  if (existingDeal) return
-
   const observations = [
     jobTitle && `Cargo: ${jobTitle}`,
     segment && `Segmento: ${segment}`,
   ].filter(Boolean).join(' | ') || null
 
+  const newTitle = companyName ? `Lead: ${name} — ${companyName}` : `Lead: ${name}`
+
+  const existingDeal = await prisma.deal.findFirst({
+    where: { contactId: contact.id, pipelineId: pipeline.id }
+  })
+
+  if (existingDeal) {
+    // Enrich existing deal with completed profile data
+    await prisma.deal.update({
+      where: { id: existingDeal.id },
+      data: { title: newTitle, observations },
+    })
+    // Also enrich contact
+    await prisma.contact.update({
+      where: { id: contact.id },
+      data: {
+        phone: phone || contact.phone,
+        company: companyName || contact.company,
+      }
+    })
+    return
+  }
+
   await prisma.deal.create({
     data: {
-      title: companyName ? `Lead: ${name} — ${companyName}` : `Lead: ${name}`,
+      title: newTitle,
       stageId: pipeline.stages[0].id,
       pipelineId: pipeline.id,
       organizationId: leadsOrgId,
