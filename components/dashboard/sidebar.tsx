@@ -111,7 +111,7 @@ function WhatsAppFounderButton() {
   const { open, animate } = useSidebar()
   return (
     <a
-      href="https://wa.me/5562983443919?text=Olá! Gostaria de falar com o fundador."
+      href="https://wa.me/5562998015884?text=Olá! Preciso de ajuda com o Sirius CRM."
       target="_blank"
       rel="noopener noreferrer"
       className={cn(
@@ -134,7 +134,7 @@ function WhatsAppFounderButton() {
         }}
         className="whitespace-pre"
       >
-        Falar com o Fundador
+        Falar com suporte
       </motion.span>
     </a>
   )
