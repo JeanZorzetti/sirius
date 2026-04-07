@@ -1,7 +1,11 @@
 /**
  * API Route: /api/whatsapp/media
  *
- * Busca mídia (base64) de uma mensagem WhatsApp via Whatsmeow Gateway
+ * Serves WhatsApp media. Resolution order:
+ * 1. MinIO key (new format) → pre-signed URL or stream
+ * 2. Base64 data URI (legacy cached) → migrate to MinIO, return
+ * 3. Not cached → download from gateway → upload to MinIO → return
+ *
  * GET ?messageId=xxx
  */
 
@@ -10,6 +14,7 @@ import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { prismaWa } from '@/lib/prisma-wa'
 import { whatsmeowClient } from '@/lib/integrations/whatsmeow-client'
+import { uploadBase64, getMediaUrl, isMinioKey } from '@/lib/storage'
 import logger from '@/lib/logger'
 
 export async function GET(req: NextRequest) {
@@ -33,7 +38,6 @@ export async function GET(req: NextRequest) {
       return NextResponse.json({ error: 'messageId required' }, { status: 400 })
     }
 
-    // Find message in DB
     const message = await prismaWa.whatsAppMessage.findFirst({
       where: { messageId, organizationId: user.organizationId },
     })
@@ -42,15 +46,39 @@ export async function GET(req: NextRequest) {
       return NextResponse.json({ error: 'Mensagem não encontrada' }, { status: 404 })
     }
 
-    // If already cached as data URI, return it
-    if (message.mediaUrl?.startsWith('data:')) {
-      return NextResponse.json({
-        base64: message.mediaUrl,
-        mimetype: message.mediaType || 'application/octet-stream',
-      })
+    // 1. MinIO key — return pre-signed URL
+    if (message.mediaUrl && isMinioKey(message.mediaUrl)) {
+      const url = await getMediaUrl(message.mediaUrl)
+      return NextResponse.json({ url, mimetype: message.mediaType || 'application/octet-stream' })
     }
 
-    // Find active connection
+    // 2. Legacy base64 in DB — migrate to MinIO, then return
+    if (message.mediaUrl?.startsWith('data:')) {
+      try {
+        const key = await uploadBase64({
+          orgId: user.organizationId,
+          contactId: message.contactId,
+          messageId: message.messageId || message.id,
+          base64Data: message.mediaUrl,
+        })
+        // Update DB to point to MinIO key
+        await prismaWa.whatsAppMessage.updateMany({
+          where: { messageId, organizationId: user.organizationId },
+          data: { mediaUrl: key },
+        })
+        const url = await getMediaUrl(key)
+        return NextResponse.json({ url, mimetype: message.mediaType || 'application/octet-stream' })
+      } catch (err) {
+        // Fallback: return base64 directly if MinIO upload fails
+        logger.warn({ err, messageId }, 'Failed to migrate base64 to MinIO, returning base64')
+        return NextResponse.json({
+          base64: message.mediaUrl,
+          mimetype: message.mediaType || 'application/octet-stream',
+        })
+      }
+    }
+
+    // 3. Not cached — download from gateway, upload to MinIO
     const connection = await prismaWa.whatsAppConnection.findFirst({
       where: { organizationId: user.organizationId, status: 'CONNECTED' },
     })
@@ -59,7 +87,6 @@ export async function GET(req: NextRequest) {
       return NextResponse.json({ error: 'No active connection' }, { status: 400 })
     }
 
-    // Download via Whatsmeow Gateway
     try {
       const result = await whatsmeowClient.downloadMedia(
         connection.instanceName,
@@ -68,17 +95,33 @@ export async function GET(req: NextRequest) {
       )
 
       const mimeType = result.mimetype || 'application/octet-stream'
-      const dataUri = result.base64.startsWith('data:')
+      const base64Data = result.base64.startsWith('data:')
         ? result.base64
         : `data:${mimeType};base64,${result.base64}`
 
-      // Cache in DB
-      await prismaWa.whatsAppMessage.updateMany({
-        where: { messageId, organizationId: user.organizationId },
-        data: { mediaUrl: dataUri },
-      })
-
-      return NextResponse.json({ base64: dataUri, mimetype: mimeType })
+      // Try to upload to MinIO
+      try {
+        const key = await uploadBase64({
+          orgId: user.organizationId,
+          contactId: message.contactId,
+          messageId: message.messageId || message.id,
+          base64Data,
+        })
+        await prismaWa.whatsAppMessage.updateMany({
+          where: { messageId, organizationId: user.organizationId },
+          data: { mediaUrl: key },
+        })
+        const url = await getMediaUrl(key)
+        return NextResponse.json({ url, mimetype: mimeType })
+      } catch (uploadErr) {
+        // Fallback: cache as base64 in DB (old behavior)
+        logger.warn({ err: uploadErr, messageId }, 'MinIO upload failed, caching as base64')
+        await prismaWa.whatsAppMessage.updateMany({
+          where: { messageId, organizationId: user.organizationId },
+          data: { mediaUrl: base64Data },
+        })
+        return NextResponse.json({ base64: base64Data, mimetype: mimeType })
+      }
     } catch (err: any) {
       logger.error({ error: err.message, messageId }, 'Whatsmeow media download failed')
       return NextResponse.json(

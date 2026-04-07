@@ -21,6 +21,7 @@ import logger from '@/lib/logger'
 import { triggerEvent } from '@/lib/pusher'
 import { normalizePhoneNumber, findContactByPhone } from '@/lib/whatsapp-sync'
 import { triggerAgentsForInboundMessage } from '@/lib/agaas-agent-trigger'
+import { uploadBase64 } from '@/lib/storage'
 
 const WEBHOOK_SECRET = process.env.WHATSAPP_GATEWAY_WEBHOOK_SECRET || ''
 
@@ -173,6 +174,24 @@ async function handleMessage(instanceId: string, data: any) {
   const messageText = text || `[${mediaType}]`
   const sentAt = timestamp ? new Date(timestamp * 1000) : new Date()
 
+  // Upload media to MinIO if present
+  let mediaUrl: string | null = null
+  if (mediaBase64 && mediaType) {
+    try {
+      const msgIdForStorage = messageId || `gen-${Date.now()}`
+      mediaUrl = await uploadBase64({
+        orgId: organizationId,
+        contactId: contact.id,
+        messageId: msgIdForStorage,
+        base64Data: mediaBase64,
+      })
+      logger.info({ messageId: msgIdForStorage, mediaType }, 'whatsmeow: media uploaded to MinIO')
+    } catch (err) {
+      logger.error({ err, messageId }, 'whatsmeow: failed to upload media to MinIO, falling back to base64')
+      mediaUrl = mediaBase64 // Fallback: store base64 in DB
+    }
+  }
+
   const savedMsg = await prismaWa.whatsAppMessage.create({
     data: {
       contactId: contact.id,
@@ -184,7 +203,7 @@ async function handleMessage(instanceId: string, data: any) {
       direction: fromMe ? 'OUTBOUND' : 'INBOUND',
       status: fromMe ? 'SENT' : 'DELIVERED',
       mediaType: mediaType || null,
-      mediaUrl: mediaBase64 || null,
+      mediaUrl,
       sentAt,
       isRead: fromMe,
       snowflakeId: snowflakeId ? BigInt(snowflakeId) : null,

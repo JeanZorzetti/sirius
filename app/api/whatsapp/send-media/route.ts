@@ -10,6 +10,7 @@ import { prisma } from '@/lib/prisma'
 import { prismaWa } from '@/lib/prisma-wa'
 import { whatsmeowClient } from '@/lib/integrations/whatsmeow-client'
 import { normalizePhoneNumber } from '@/lib/whatsapp-sync'
+import { uploadMedia } from '@/lib/storage'
 import logger from '@/lib/logger'
 
 const MAX_FILE_SIZE = 16 * 1024 * 1024 // 16MB (WhatsApp limit)
@@ -138,7 +139,22 @@ export async function POST(req: NextRequest) {
       provider: 'whatsmeow',
     }, 'WhatsApp media message sent')
 
-    // 8. Save to database
+    // 8. Upload to MinIO for persistent storage
+    let mediaUrlKey: string | null = null
+    try {
+      mediaUrlKey = await uploadMedia({
+        orgId: user.organizationId,
+        contactId: contact.id,
+        messageId,
+        buffer: Buffer.from(arrayBuffer),
+        mimetype: file.type,
+        fileName: file.name,
+      })
+    } catch (err) {
+      logger.warn({ err, messageId }, 'MinIO upload failed for sent media')
+    }
+
+    // 9. Save to database
     const messageText = caption
       ? `${getMediaLabel(mediatype)} ${caption}`
       : getMediaLabel(mediatype)
@@ -154,6 +170,7 @@ export async function POST(req: NextRequest) {
         direction: 'OUTBOUND',
         status: 'SENT',
         mediaType: mediatype,
+        mediaUrl: mediaUrlKey,
         sentAt: new Date(),
       },
       select: {

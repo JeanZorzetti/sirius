@@ -194,6 +194,10 @@ function getMediaCaption(text: string): string {
 
 // ── Media Component ─────────────────────────────────────────
 
+function isMediaLoaded(data: string | null): boolean {
+  return !!data && (data.startsWith('data:') || data.startsWith('http'))
+}
+
 function MediaBubble({ msg, outbound, onOpenLightbox }: { msg: WhatsAppMessage; outbound: boolean; onOpenLightbox?: (src: string, type: 'image' | 'video') => void }) {
   const [mediaData, setMediaData] = useState<string | null>(msg.mediaUrl || null)
   const [loading, setLoading] = useState(false)
@@ -205,14 +209,16 @@ function MediaBubble({ msg, outbound, onOpenLightbox }: { msg: WhatsAppMessage; 
   const caption = getMediaCaption(msg.text)
 
   const fetchMedia = useCallback(async () => {
-    if (mediaData?.startsWith('data:') || loading) return
+    if (isMediaLoaded(mediaData) || loading) return
     if (!msg.messageId) return
     setLoading(true)
     try {
       const r = await fetch(`/api/whatsapp/media?messageId=${msg.messageId}`)
       if (r.ok) {
         const data = await r.json()
-        if (data.base64) {
+        if (data.url) {
+          setMediaData(data.url)
+        } else if (data.base64) {
           setMediaData(data.base64)
         } else {
           setError(true)
@@ -230,7 +236,7 @@ function MediaBubble({ msg, outbound, onOpenLightbox }: { msg: WhatsAppMessage; 
   // Lazy load: only fetch media when element enters viewport
   useEffect(() => {
     const shouldAutoLoad = (mType === 'image' || mType === 'sticker' || mType === 'audio')
-    if (!shouldAutoLoad || mediaData?.startsWith('data:') || !msg.messageId || hasTriggered.current) return
+    if (!shouldAutoLoad || isMediaLoaded(mediaData) || !msg.messageId || hasTriggered.current) return
 
     const el = containerRef.current
     if (!el) return
@@ -253,9 +259,9 @@ function MediaBubble({ msg, outbound, onOpenLightbox }: { msg: WhatsAppMessage; 
   if (mType === 'image' || mType === 'sticker') {
     return (
       <div ref={containerRef} className="space-y-1">
-        {mediaData?.startsWith('data:') ? (
+        {isMediaLoaded(mediaData) ? (
           <img
-            src={mediaData}
+            src={mediaData!}
             alt="Imagem"
             className={cn(
               'rounded-lg max-w-[280px] max-h-[300px] object-cover cursor-pointer hover:opacity-90 transition-opacity',
@@ -300,10 +306,10 @@ function MediaBubble({ msg, outbound, onOpenLightbox }: { msg: WhatsAppMessage; 
   if (mType === 'video') {
     return (
       <div ref={containerRef} className="space-y-1">
-        {mediaData?.startsWith('data:') ? (
+        {isMediaLoaded(mediaData) ? (
           <div className="relative cursor-pointer group" onClick={() => onOpenLightbox?.(mediaData!, 'video')}>
             <video
-              src={mediaData}
+              src={mediaData!}
               className="rounded-lg max-w-[280px] max-h-[300px]"
               muted
             />
@@ -343,8 +349,8 @@ function MediaBubble({ msg, outbound, onOpenLightbox }: { msg: WhatsAppMessage; 
   if (mType === 'audio') {
     return (
       <div ref={containerRef} className="space-y-1">
-        {mediaData?.startsWith('data:') ? (
-          <audio src={mediaData} controls className="max-w-[260px] h-[36px]" />
+        {isMediaLoaded(mediaData) ? (
+          <audio src={mediaData!} controls className="max-w-[260px] h-[36px]" />
         ) : (
           <button
             onClick={fetchMedia}
@@ -389,9 +395,9 @@ function MediaBubble({ msg, outbound, onOpenLightbox }: { msg: WhatsAppMessage; 
             </p>
             <p className="text-[11px] text-[#667781] mt-0.5">Documento</p>
           </div>
-          {mediaData?.startsWith('data:') ? (
+          {isMediaLoaded(mediaData) ? (
             <a
-              href={mediaData}
+              href={mediaData!}
               download={fileName}
               className="flex-shrink-0 p-1.5 rounded-full hover:bg-black/5 transition-colors"
             >
