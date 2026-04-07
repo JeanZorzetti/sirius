@@ -7,31 +7,7 @@ import Papa from 'papaparse'
 export const dynamic = 'force-dynamic'
 
 interface ContactRow {
-  Nome?: string
-  nome?: string
-  name?: string
-  Email?: string
-  email?: string
-  Telefone?: string
-  telefone?: string
-  phone?: string
-  Celular?: string
-  celular?: string
-  Empresa?: string
-  empresa?: string
-  company?: string
-  Cargo?: string
-  cargo?: string
-  role?: string
-  Endereço?: string
-  endereco?: string
-  address?: string
-  Cidade?: string
-  cidade?: string
-  city?: string
-  Estado?: string
-  estado?: string
-  state?: string
+  [key: string]: string | undefined
 }
 
 export async function POST(request: NextRequest) {
@@ -106,18 +82,32 @@ export async function POST(request: NextRequest) {
     let errors = 0
     const errorDetails: string[] = []
 
+    // Build a normalized key lookup: lowercase+stripped → original key
+    function getField(row: ContactRow, ...aliases: string[]): string {
+      for (const alias of aliases) {
+        // Try exact match first
+        if (row[alias]) return String(row[alias]).trim()
+      }
+      // Fuzzy: normalize all keys and try matching
+      const lowerAliases = aliases.map(a => a.toLowerCase().replace(/[-_\s]/g, ''))
+      for (const key of Object.keys(row)) {
+        const norm = key.toLowerCase().replace(/[-_\s]/g, '')
+        if (lowerAliases.includes(norm) && row[key]) return String(row[key]).trim()
+      }
+      return ''
+    }
+
     for (let i = 0; i < rows.length; i++) {
       const row = rows[i]
       const rowNum = i + 2 // +2 porque linha 1 é header
 
       try {
-        // Extrair dados (suporta múltiplos nomes de colunas)
-        const name = (row.Nome || row.nome || row.name || '').trim()
-        const email = (row.Email || row.email || '').trim()
-        const phone = (row.Telefone || row.telefone || row.phone || row.Celular || row.celular || '').trim()
-        const company = (row.Empresa || row.empresa || row.company || '').trim()
-        const city = (row.Cidade || row.cidade || row.city || '').trim()
-        const state = (row.Estado || row.estado || row.state || '').trim()
+        const name = getField(row, 'Nome', 'nome', 'name', 'Name')
+        const email = getField(row, 'Email', 'email', 'E-mail', 'e-mail', 'E-Mail')
+        const phone = getField(row, 'Telefone', 'telefone', 'phone', 'Phone', 'Celular', 'celular', 'Tel')
+        const company = getField(row, 'Empresa', 'empresa', 'company', 'Company')
+        const city = getField(row, 'Cidade', 'cidade', 'city', 'City')
+        const state = getField(row, 'Estado', 'estado', 'state', 'State', 'UF', 'uf')
 
         // Validar dados mínimos
         if (!name && !email && !phone) {
