@@ -58,7 +58,7 @@ async function enrollAsLead({ name, email, whatsapp, companyName }: {
 
   await prisma.deal.create({
     data: {
-      title: `Lead: ${name}`,
+      title: companyName ? `Lead: ${name} — ${companyName}` : `Lead: ${name}`,
       stageId: firstStage.id,
       pipelineId: pipeline.id,
       organizationId: leadsOrgId,

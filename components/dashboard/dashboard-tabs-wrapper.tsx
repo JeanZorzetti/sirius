@@ -40,7 +40,11 @@ export async function DashboardTabsWrapper({
           where: {
             organizationId,
             ...(vsearch ? { value: { equals: Number(vsearch) } as any } : {}),
-            ...(csearch ? { contact: { name: { contains: csearch, mode: "insensitive" } } } : {}),
+            ...(csearch ? { contact: { OR: [
+              { name: { contains: csearch, mode: "insensitive" } },
+              { company: { contains: csearch, mode: "insensitive" } },
+              { email: { contains: csearch, mode: "insensitive" } },
+            ] } } : {}),
           },
           include: {
             contact: {
