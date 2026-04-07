@@ -100,10 +100,10 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Planilha vazia' }, { status: 400 })
     }
 
-    // Processar contatos
-    let success = 0
+    // Processar contatos (enrich-or-create)
+    let created = 0
+    let enriched = 0
     let errors = 0
-    let duplicates = 0
     const errorDetails: string[] = []
 
     for (let i = 0; i < rows.length; i++) {
@@ -112,25 +112,17 @@ export async function POST(request: NextRequest) {
 
       try {
         // Extrair dados (suporta múltiplos nomes de colunas)
-        const name = row.Nome || row.nome || row.name || ''
-        const email = row.Email || row.email || ''
-        const phone = row.Telefone || row.telefone || row.phone || row.Celular || row.celular || ''
-        const company = row.Empresa || row.empresa || row.company || ''
-        const role = row.Cargo || row.cargo || row.role || ''
-        const address = row.Endereço || row.endereco || row.address || ''
-        const city = row.Cidade || row.cidade || row.city || ''
-        const state = row.Estado || row.estado || row.state || ''
+        const name = (row.Nome || row.nome || row.name || '').trim()
+        const email = (row.Email || row.email || '').trim()
+        const phone = (row.Telefone || row.telefone || row.phone || row.Celular || row.celular || '').trim()
+        const company = (row.Empresa || row.empresa || row.company || '').trim()
+        const city = (row.Cidade || row.cidade || row.city || '').trim()
+        const state = (row.Estado || row.estado || row.state || '').trim()
 
         // Validar dados mínimos
-        if (!name) {
+        if (!name && !email && !phone) {
           errors++
-          errorDetails.push(`Linha ${rowNum}: Nome é obrigatório`)
-          continue
-        }
-
-        if (!email && !phone) {
-          errors++
-          errorDetails.push(`Linha ${rowNum}: Email ou Telefone é obrigatório`)
+          errorDetails.push(`Linha ${rowNum}: Nome, Email ou Telefone é obrigatório`)
           continue
         }
 
@@ -138,36 +130,53 @@ export async function POST(request: NextRequest) {
         const cleanPhone = phone ? phone.replace(/\D/g, '') : ''
         const formattedPhone = cleanPhone ? (cleanPhone.startsWith('55') ? cleanPhone : '55' + cleanPhone) : ''
 
-        // Verificar duplicados
+        // Buscar contato existente por email ou telefone
+        let existing = null
         if (email || formattedPhone) {
-          const existing = await prisma.contact.findFirst({
+          const orConditions = []
+          if (email) orConditions.push({ email })
+          if (formattedPhone) orConditions.push({ phone: formattedPhone })
+
+          existing = await prisma.contact.findFirst({
             where: {
               organizationId: user.organizationId,
-              OR: [
-                email ? { email } : {},
-                formattedPhone ? { phone: formattedPhone } : {},
-              ].filter(Boolean),
+              OR: orConditions,
             },
           })
-
-          if (existing) {
-            duplicates++
-            continue
-          }
         }
 
-        // Criar contato
-        await prisma.contact.create({
-          data: {
-            organizationId: user.organizationId,
-            name: name.trim(),
-            email: email.trim() || null,
-            phone: formattedPhone || null,
-            company: company.trim() || null,
-          },
-        })
+        if (existing) {
+          // Enriquecer: preencher campos vazios com dados da planilha
+          const updates: Record<string, string> = {}
+          if (!existing.name && name) updates.name = name
+          if (!existing.email && email) updates.email = email
+          if (!existing.phone && formattedPhone) updates.phone = formattedPhone
+          if (!existing.company && company) updates.company = company
+          if (!existing.city && city) updates.city = city
+          if (!existing.state && state) updates.state = state
 
-        success++
+          if (Object.keys(updates).length > 0) {
+            await prisma.contact.update({
+              where: { id: existing.id },
+              data: updates,
+            })
+            enriched++
+          }
+        } else {
+          // Criar novo contato com todos os campos
+          await prisma.contact.create({
+            data: {
+              organizationId: user.organizationId,
+              name: name || 'Sem nome',
+              email: email || null,
+              phone: formattedPhone || null,
+              company: company || null,
+              city: city || null,
+              state: state || null,
+            },
+          })
+          created++
+        }
       } catch (error: any) {
         errors++
         errorDetails.push(`Linha ${rowNum}: ${error.message}`)
@@ -175,11 +184,11 @@ export async function POST(request: NextRequest) {
     }
 
     return NextResponse.json({
-      success,
+      created,
+      enriched,
       errors,
-      duplicates,
       total: rows.length,
-      errorDetails: errorDetails.slice(0, 10), // Limitar detalhes
+      errorDetails: errorDetails.slice(0, 10),
     })
 
   } catch (error: any) {

@@ -21,9 +21,9 @@ import { toast } from 'sonner'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 
 interface ImportResult {
-  success: number
+  created: number
+  enriched: number
   errors: number
-  duplicates: number
   total: number
   errorDetails?: string[]
 }
@@ -81,9 +81,11 @@ Carlos Eduardo,carlos@tech.com.br,5511966666666,Tech Solutions,CEO,Rua E 200,Por
 
       setResult(data)
       
-      if (data.success > 0) {
-        toast.success(`${data.success} contatos importados com sucesso!`)
-        // Recarregar página após 2 segundos
+      if (data.created > 0 || data.enriched > 0) {
+        const parts = []
+        if (data.created > 0) parts.push(`${data.created} criados`)
+        if (data.enriched > 0) parts.push(`${data.enriched} enriquecidos`)
+        toast.success(`Contatos: ${parts.join(', ')}!`)
         setTimeout(() => {
           window.location.reload()
         }, 2000)
@@ -179,9 +181,9 @@ Carlos Eduardo,carlos@tech.com.br,5511966666666,Tech Solutions,CEO,Rua E 200,Por
               <div className="space-y-2">
                 <p className="font-medium">Dicas:</p>
                 <ul className="list-disc list-inside space-y-1 text-muted-foreground">
-                  <li>Telefone deve ter DDD (ex: 11999999999 ou 5511999999999)</li>
-                  <li>Contatos duplicados (mesmo email ou telefone) serão ignorados</li>
-                  <li>Revise os dados antes de importar</li>
+                  <li>Telefone deve ter DDD (ex: 11999999999 ou +55 11 99999-9999)</li>
+                  <li>Contatos existentes (mesmo email ou telefone) serão <strong>enriquecidos</strong> com dados que faltam</li>
+                  <li>Novos contatos serão criados automaticamente</li>
                 </ul>
               </div>
             </AccordionContent>
@@ -264,12 +266,17 @@ Carlos Eduardo,carlos@tech.com.br,5511966666666,Tech Solutions,CEO,Rua E 200,Por
               <AlertTitle>Importação Concluída</AlertTitle>
               <AlertDescription>
                 <div className="mt-2 space-y-1">
-                  <p>✅ <strong>{result.success}</strong> contatos importados</p>
-                  {result.duplicates > 0 && (
-                    <p>⚠️ <strong>{result.duplicates}</strong> duplicados ignorados</p>
+                  {result.created > 0 && (
+                    <p>✅ <strong>{result.created}</strong> contatos criados</p>
+                  )}
+                  {result.enriched > 0 && (
+                    <p>✨ <strong>{result.enriched}</strong> contatos enriquecidos</p>
                   )}
                   {result.errors > 0 && (
                     <p>❌ <strong>{result.errors}</strong> erros</p>
+                  )}
+                  {result.created === 0 && result.enriched === 0 && result.errors === 0 && (
+                    <p>Nenhuma alteração necessária — todos os contatos já estão completos.</p>
                   )}
                 </div>
               </AlertDescription>
