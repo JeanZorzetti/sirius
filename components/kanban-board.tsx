@@ -65,6 +65,7 @@ type Contact = {
   id: string
   name: string
   phone?: string | null
+  email?: string | null
 }
 
 type KanbanBoardProps = {

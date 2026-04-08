@@ -29,7 +29,7 @@ import {
 import { updateDeal, deleteDeal } from '@/app/[locale]/dashboard/actions'
 import { getDealDetails, addNote, deleteNote, addDealClosing, deleteDealClosing, getDealClosings } from '@/app/[locale]/dashboard/deals/actions'
 import { createContact } from '@/app/[locale]/dashboard/contacts/actions'
-import { Loader2, MessageSquare, History, Tag, Calendar, Send, Trash2, Plus, MessageCircle, DollarSign } from 'lucide-react'
+import { Loader2, MessageSquare, History, Tag, Calendar, Send, Trash2, Plus, MessageCircle, DollarSign, Phone, Mail } from 'lucide-react'
 import { Textarea } from '@/components/ui/textarea'
 import { ConfirmDialog } from '@/components/ui/confirm-dialog'
 import { toast } from 'sonner'
@@ -54,7 +54,7 @@ interface EditDealDialogProps {
     open: boolean
     onOpenChange: (open: boolean) => void
     stages: { id: string, name: string }[]
-    contacts: { id: string, name: string, phone?: string | null }[]
+    contacts: { id: string, name: string, phone?: string | null, email?: string | null }[]
     onOptimisticUpdate?: (dealId: string, updates: any) => void
     onOptimisticDelete?: (dealId: string) => void
     onRollback?: (tempId: string) => void
@@ -502,6 +502,32 @@ export function EditDealDialog({
                                                     ) : null
                                                 })()}
                                             </div>
+                                            {(() => {
+                                                const selectedContact = localContacts.find(c => c.id === selectedContactId)
+                                                if (!selectedContact || (!selectedContact.phone && !selectedContact.email)) return null
+                                                return (
+                                                    <div className="mt-2 space-y-1 rounded-lg border border-border/50 bg-muted/30 px-3 py-2 text-xs">
+                                                        {selectedContact.phone && (
+                                                            <a
+                                                                href={`tel:${selectedContact.phone.replace(/\D/g, '')}`}
+                                                                className="flex items-center gap-2 text-muted-foreground transition-colors hover:text-foreground"
+                                                            >
+                                                                <Phone className="h-3.5 w-3.5 shrink-0 text-indigo-500" />
+                                                                <span className="truncate">{selectedContact.phone}</span>
+                                                            </a>
+                                                        )}
+                                                        {selectedContact.email && (
+                                                            <a
+                                                                href={`mailto:${selectedContact.email}`}
+                                                                className="flex items-center gap-2 text-muted-foreground transition-colors hover:text-foreground"
+                                                            >
+                                                                <Mail className="h-3.5 w-3.5 shrink-0 text-indigo-500" />
+                                                                <span className="truncate">{selectedContact.email}</span>
+                                                            </a>
+                                                        )}
+                                                    </div>
+                                                )
+                                            })()}
                                         </div>
                                     </div>
 

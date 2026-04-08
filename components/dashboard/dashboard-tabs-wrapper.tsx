@@ -69,6 +69,7 @@ export async function DashboardTabsWrapper({
         id: true,
         name: true,
         phone: true,
+        email: true,
       },
       orderBy: { name: "asc" },
     }),
