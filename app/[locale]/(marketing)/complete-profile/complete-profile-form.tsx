@@ -64,14 +64,16 @@ export function CompleteProfileForm({ userId, userName, organizationId, currentO
   const [companyDescription, setCompanyDescription] = useState('')
   const [segment, setSegment] = useState('')
   const [customJobTitle, setCustomJobTitle] = useState('')
+  const [customSegment, setCustomSegment] = useState('')
 
   const totalSteps = 2
 
   const effectiveJobTitle = jobTitle === 'Outro' ? customJobTitle : jobTitle
+  const effectiveSegment = segment === 'Outro' ? customSegment : segment
 
   function canAdvance() {
     if (step === 1) return phone && effectiveJobTitle
-    if (step === 2) return company && segment
+    if (step === 2) return company && effectiveSegment
     return false
   }
 
@@ -94,7 +96,7 @@ export function CompleteProfileForm({ userId, userName, organizationId, currentO
             jobTitle: effectiveJobTitle,
             company,
             companyDescription,
-            segment,
+            segment: effectiveSegment,
           }),
         })
 
@@ -250,7 +252,7 @@ export function CompleteProfileForm({ userId, userName, organizationId, currentO
                   <select
                     id="segment"
                     value={segment}
-                    onChange={e => setSegment(e.target.value)}
+                    onChange={e => { setSegment(e.target.value); if (e.target.value !== 'Outro') setCustomSegment('') }}
                     required
                     className="w-full h-10 rounded-md bg-white border border-gray-300 text-gray-900 px-3 pr-8 text-sm appearance-none cursor-pointer focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
                   >
@@ -261,6 +263,15 @@ export function CompleteProfileForm({ userId, userName, organizationId, currentO
                   </select>
                   <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400 pointer-events-none" />
                 </div>
+                {segment === 'Outro' && (
+                  <Input
+                    value={customSegment}
+                    onChange={e => setCustomSegment(e.target.value)}
+                    placeholder="Qual é o segmento?"
+                    required
+                    className="bg-white border-gray-300 text-gray-900 placeholder:text-gray-400 focus:border-indigo-500 focus:ring-indigo-500"
+                  />
+                )}
               </div>
             </>
           )}

@@ -66,15 +66,17 @@ export function RegisterForm({ inviteData, inviteToken }: { inviteData: any, inv
   const [companyDescription, setCompanyDescription] = useState('')
   const [segment, setSegment] = useState('')
   const [customJobTitle, setCustomJobTitle] = useState('')
+  const [customSegment, setCustomSegment] = useState('')
 
   const totalSteps = inviteData ? 1 : 3
 
   const effectiveJobTitle = jobTitle === 'Outro' ? customJobTitle : jobTitle
+  const effectiveSegment = segment === 'Outro' ? customSegment : segment
 
   function canAdvance() {
     if (step === 1) return name && email && password
     if (step === 2) return phone && effectiveJobTitle
-    if (step === 3) return company && segment
+    if (step === 3) return company && effectiveSegment
     return false
   }
 
@@ -107,7 +109,7 @@ export function RegisterForm({ inviteData, inviteToken }: { inviteData: any, inv
     formData.set('jobTitle', effectiveJobTitle)
     formData.set('company', company)
     formData.set('companyDescription', companyDescription)
-    formData.set('segment', segment)
+    formData.set('segment', effectiveSegment)
     if (inviteToken) formData.set('inviteToken', inviteToken)
 
     startTransition(async () => {
@@ -305,7 +307,7 @@ export function RegisterForm({ inviteData, inviteToken }: { inviteData: any, inv
                 <select
                   id="segment"
                   value={segment}
-                  onChange={e => setSegment(e.target.value)}
+                  onChange={e => { setSegment(e.target.value); if (e.target.value !== 'Outro') setCustomSegment('') }}
                   required
                   className="w-full h-10 rounded-md bg-zinc-800 border border-zinc-700 text-white px-3 pr-8 text-sm appearance-none cursor-pointer focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
                 >
@@ -316,6 +318,15 @@ export function RegisterForm({ inviteData, inviteToken }: { inviteData: any, inv
                 </select>
                 <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-500 pointer-events-none" />
               </div>
+              {segment === 'Outro' && (
+                <Input
+                  value={customSegment}
+                  onChange={e => setCustomSegment(e.target.value)}
+                  placeholder="Qual é o segmento?"
+                  required
+                  className="bg-zinc-800 border-zinc-700 text-white placeholder:text-zinc-500"
+                />
+              )}
             </div>
           </>
         )}
