@@ -8,7 +8,7 @@ import { cn } from '@/lib/utils'
 import { motion } from 'framer-motion'
 import {
   Home, Users, Settings, BarChart3, CreditCard, Mail,
-  MessageSquare, TrendingDown, Zap, TrendingUp, LogOut, Package, CalendarDays, Sparkles,
+  MessageSquare, TrendingDown, Zap, TrendingUp, LogOut, Package, CalendarDays, Sparkles, CheckSquare,
 } from 'lucide-react'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { logoutAction } from '@/app/auth/actions'
@@ -24,6 +24,7 @@ type NavItem = {
 const crmItems: NavItem[] = [
   { title: 'Pipelines',      href: '/dashboard',          icon: Home },
   { title: 'Contatos',       href: '/dashboard/contacts', icon: Users },
+  { title: 'Tarefas',        href: '/dashboard/tasks',    icon: CheckSquare },
   { title: 'Agenda',         href: '/dashboard/agenda',   icon: CalendarDays },
   { title: 'Produtos',       href: '/dashboard/products', icon: Package },
   { title: 'Chat WhatsApp',  href: '/dashboard/chat',     icon: MessageSquare },

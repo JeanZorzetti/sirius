@@ -165,6 +165,99 @@ export async function checkPipelineLimit(
 }
 
 /**
+ * Verifica o limite de projetos de tarefas e lança erro se atingido
+ */
+export async function checkTaskProjectLimit(
+  organizationId: string
+): Promise<void> {
+  const org = await prisma.organization.findUnique({
+    where: { id: organizationId },
+    select: { tier: true },
+  })
+
+  if (!org) {
+    throw new Error('Organization not found')
+  }
+
+  const limit = getLimit(org.tier, 'max_task_projects')
+
+  if (limit === -1) {
+    return
+  }
+
+  const projectCount = await prisma.taskProject.count({
+    where: { organizationId, archived: false },
+  })
+
+  if (projectCount >= limit) {
+    throw new LimitReachedError('task_projects', limit, projectCount)
+  }
+}
+
+/**
+ * Verifica o limite de tarefas e lança erro se atingido
+ */
+export async function checkTaskLimit(
+  organizationId: string
+): Promise<void> {
+  const org = await prisma.organization.findUnique({
+    where: { id: organizationId },
+    select: { tier: true },
+  })
+
+  if (!org) {
+    throw new Error('Organization not found')
+  }
+
+  const limit = getLimit(org.tier, 'max_tasks')
+
+  if (limit === -1) {
+    return
+  }
+
+  const taskCount = await prisma.task.count({
+    where: { organizationId, archived: false },
+  })
+
+  if (taskCount >= limit) {
+    throw new LimitReachedError('tasks', limit, taskCount)
+  }
+}
+
+/**
+ * Verifica o limite de statuses por projeto de tarefas
+ */
+export async function checkTaskStatusLimit(
+  projectId: string
+): Promise<void> {
+  const project = await prisma.taskProject.findUnique({
+    where: { id: projectId },
+    select: {
+      organizationId: true,
+      organization: { select: { tier: true } },
+    },
+  })
+
+  if (!project) {
+    throw new Error('Task project not found')
+  }
+
+  const limit = getLimit(project.organization.tier, 'max_task_statuses_per_project')
+
+  if (limit === -1) {
+    return
+  }
+
+  const statusCount = await prisma.taskStatus.count({
+    where: { projectId },
+  })
+
+  if (statusCount >= limit) {
+    throw new LimitReachedError('task_statuses', limit, statusCount)
+  }
+}
+
+/**
  * Verifica a quota de IA (AGI) e lança erro se excedida
  */
 export async function checkAgiQuota(organizationId: string): Promise<boolean> {
@@ -430,11 +523,21 @@ export interface OrganizationEntitlements {
     chatInterface: boolean
     roundRobin: boolean
     teamReports: boolean
+    taskKanban: boolean
+    taskCalendar: boolean
+    taskTable: boolean
+    timeTracking: boolean
+    taskDependencies: boolean
+    recurringTasks: boolean
+    taskBulkActions: boolean
   }
   limits: {
     deals: number // -1 = unlimited
     users: number
     pipelines: number
+    taskProjects: number
+    tasks: number
+    taskStatusesPerProject: number
   }
   quotas: {
     agi: {
@@ -483,11 +586,21 @@ export async function getOrganizationEntitlements(
       chatInterface: features.can_use_chat_interface,
       roundRobin: features.can_use_round_robin,
       teamReports: features.can_use_team_reports,
+      taskKanban: features.can_use_task_kanban,
+      taskCalendar: features.can_use_task_calendar,
+      taskTable: features.can_use_task_table,
+      timeTracking: features.can_use_time_tracking,
+      taskDependencies: features.can_use_task_dependencies,
+      recurringTasks: features.can_use_recurring_tasks,
+      taskBulkActions: features.can_use_task_bulk_actions,
     },
     limits: {
       deals: org.grandfatheredDealLimit ?? features.max_deals,
       users: features.max_users,
       pipelines: features.max_pipelines,
+      taskProjects: features.max_task_projects,
+      tasks: features.max_tasks,
+      taskStatusesPerProject: features.max_task_statuses_per_project,
     },
     quotas: {
       agi: {

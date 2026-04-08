@@ -140,6 +140,10 @@ model Organization {
   // Products (Catálogo)
   products Product[]
 
+  // Task Management
+  taskProjects TaskProject[]
+  tasks        Task[]
+
   // AgaaS — Agent Actions, Config & Quota
   agentActions AgentAction[]
   iaConfig     Json?          // Configuração do modo IA (agentes habilitados, thresholds, horários)
@@ -190,6 +194,13 @@ model User {
   // Mobile App (Capacitor)
   pushTokens PushToken[]
   visitLogs  VisitLog[]
+
+  // Task Management
+  tasksAssigned  Task[]         @relation("TaskAssignee")
+  tasksCreated   Task[]         @relation("TaskCreator")
+  taskComments   TaskComment[]  @relation("TaskCommentAuthor")
+  timeEntries    TimeEntry[]    @relation("TimeEntryUser")
+  taskActivities TaskActivity[] @relation("TaskActivityUser")
 
   role    Role    @default(USER)
   orgRole OrgRole @default(OWNER) // Defaulting to OWNER for now so existing users don't lose access. Ideally MEMBER.
@@ -266,6 +277,7 @@ model Contact {
   deals            Deal[]
   tags             Tag[] // Many-to-Many (Fase 1.2)
   chatConversation ChatConversation? // One-to-One (Fase 3.1)
+  tasks            Task[] // Task Management
 
   // Mobile App (Capacitor)
   visitLogs VisitLog[]
@@ -361,6 +373,9 @@ model Deal {
 
   // Deal Automations
   automationExecutions AutomationExecution[]
+
+  // Task Management
+  tasks Task[]
 
   // Fechamentos (múltiplas compras por cliente)
   closings DealClosing[]
@@ -984,6 +999,11 @@ enum NotificationType {
   CALENDAR_REMINDER
   MENTION
   SYSTEM
+  TASK_ASSIGNED
+  TASK_DUE_SOON
+  TASK_OVERDUE
+  TASK_COMPLETED
+  TASK_COMMENTED
 }
 
 model Notification {
@@ -1027,6 +1047,12 @@ model NotificationPreference {
   dealWonEnabled          Boolean @default(true)
   whatsappMessageEnabled  Boolean @default(true)
   calendarReminderEnabled Boolean @default(true)
+
+  // Task notifications
+  taskAssignedEnabled   Boolean @default(true)
+  taskDueSoonEnabled    Boolean @default(true)
+  taskOverdueEnabled    Boolean @default(true)
+  taskCompletedEnabled  Boolean @default(true)
 
   // Timestamps
   createdAt DateTime @default(now())
@@ -1745,4 +1771,278 @@ model AgentAction {
   @@index([organizationId, createdAt])
   @@index([entityType, entityId])
   @@index([status])
+}
+
+// ============================================================================
+// TASK MANAGEMENT (estilo ClickUp)
+// ============================================================================
+
+enum TaskStatusType {
+  OPEN
+  IN_PROGRESS
+  DONE
+  CLOSED
+}
+
+enum TaskPriority {
+  NONE
+  LOW
+  MEDIUM
+  HIGH
+  URGENT
+}
+
+enum DependencyType {
+  BLOCKS
+  BLOCKED_BY
+  RELATED
+}
+
+enum RecurrenceFrequency {
+  DAILY
+  WEEKLY
+  BIWEEKLY
+  MONTHLY
+  QUARTERLY
+  YEARLY
+  CUSTOM
+}
+
+// TaskProject: Agrupamento de tarefas (como espaços no ClickUp)
+model TaskProject {
+  id          String   @id @default(uuid())
+  name        String
+  description String?  @db.Text
+  color       String   @default("#6366f1")
+  icon        String?
+  archived    Boolean  @default(false)
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  statuses TaskStatus[]
+  tasks    Task[]
+  labels   TaskLabel[]
+
+  @@index([organizationId])
+  @@index([organizationId, archived])
+}
+
+// TaskStatus: Colunas customizáveis por projeto
+model TaskStatus {
+  id        String         @id @default(uuid())
+  name      String
+  color     String
+  type      TaskStatusType @default(OPEN)
+  order     Int            @default(0)
+  isDefault Boolean        @default(false)
+  createdAt DateTime       @default(now())
+  updatedAt DateTime       @updatedAt
+
+  projectId String
+  project   TaskProject @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  tasks Task[]
+
+  @@index([projectId, order])
+}
+
+// TaskLabel: Etiquetas por projeto
+model TaskLabel {
+  id    String @id @default(uuid())
+  name  String
+  color String
+
+  projectId String
+  project   TaskProject @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  tasks Task[]
+
+  @@index([projectId])
+}
+
+// Task: Modelo principal de tarefa
+model Task {
+  id               String       @id @default(uuid())
+  title            String
+  description      String?      @db.Text
+  priority         TaskPriority @default(NONE)
+  order            Int          @default(0)
+  dueDate          DateTime?
+  startDate        DateTime?
+  completedAt      DateTime?
+  estimatedMinutes Int?
+  archived         Boolean      @default(false)
+  createdAt        DateTime     @default(now())
+  updatedAt        DateTime     @updatedAt
+
+  // Projeto e status
+  projectId String
+  project   TaskProject @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  statusId String
+  status   TaskStatus @relation(fields: [statusId], references: [id])
+
+  // Atribuição
+  assigneeId String?
+  assignee   User?   @relation("TaskAssignee", fields: [assigneeId], references: [id], onDelete: SetNull)
+
+  creatorId String
+  creator   User   @relation("TaskCreator", fields: [creatorId], references: [id])
+
+  // Subtarefas (hierarquia)
+  parentId String?
+  parent   Task?   @relation("TaskSubtasks", fields: [parentId], references: [id], onDelete: Cascade)
+  subtasks Task[]  @relation("TaskSubtasks")
+
+  // Integração CRM
+  dealId    String?
+  deal      Deal?    @relation(fields: [dealId], references: [id], onDelete: SetNull)
+
+  contactId String?
+  contact   Contact? @relation(fields: [contactId], references: [id], onDelete: SetNull)
+
+  // Organização
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  // Relações
+  labels           TaskLabel[]
+  comments         TaskComment[]
+  checklists       TaskChecklist[]
+  timeEntries      TimeEntry[]
+  activities       TaskActivity[]
+  dependenciesFrom TaskDependency[] @relation("DependencyFrom")
+  dependenciesTo   TaskDependency[] @relation("DependencyTo")
+  recurrence       TaskRecurrence?
+
+  @@index([organizationId, projectId])
+  @@index([organizationId, assigneeId])
+  @@index([organizationId, dueDate])
+  @@index([projectId, statusId, order])
+  @@index([parentId])
+  @@index([dealId])
+  @@index([contactId])
+}
+
+// TaskComment: Comentários em tarefas
+model TaskComment {
+  id        String   @id @default(uuid())
+  content   String   @db.Text
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  taskId String
+  task   Task   @relation(fields: [taskId], references: [id], onDelete: Cascade)
+
+  userId String
+  user   User   @relation("TaskCommentAuthor", fields: [userId], references: [id])
+
+  @@index([taskId, createdAt])
+}
+
+// TaskChecklist: Lista de checagem
+model TaskChecklist {
+  id    String @id @default(uuid())
+  title String
+  order Int    @default(0)
+
+  taskId String
+  task   Task   @relation(fields: [taskId], references: [id], onDelete: Cascade)
+
+  items TaskChecklistItem[]
+
+  @@index([taskId])
+}
+
+// TaskChecklistItem: Item individual de checklist
+model TaskChecklistItem {
+  id          String    @id @default(uuid())
+  title       String
+  completed   Boolean   @default(false)
+  completedAt DateTime?
+  order       Int       @default(0)
+  assigneeId  String?
+
+  checklistId String
+  checklist   TaskChecklist @relation(fields: [checklistId], references: [id], onDelete: Cascade)
+
+  @@index([checklistId, order])
+}
+
+// TimeEntry: Registro de tempo em tarefas
+model TimeEntry {
+  id          String    @id @default(uuid())
+  description String?
+  startTime   DateTime
+  endTime     DateTime?
+  durationMs  Int?
+  billable    Boolean   @default(false)
+  createdAt   DateTime  @default(now())
+
+  taskId String
+  task   Task   @relation(fields: [taskId], references: [id], onDelete: Cascade)
+
+  userId String
+  user   User   @relation("TimeEntryUser", fields: [userId], references: [id])
+
+  @@index([taskId])
+  @@index([userId, startTime])
+}
+
+// TaskDependency: Dependências entre tarefas
+model TaskDependency {
+  id   String         @id @default(uuid())
+  type DependencyType @default(BLOCKS)
+
+  fromTaskId String
+  fromTask   Task   @relation("DependencyFrom", fields: [fromTaskId], references: [id], onDelete: Cascade)
+
+  toTaskId String
+  toTask   Task   @relation("DependencyTo", fields: [toTaskId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@unique([fromTaskId, toTaskId])
+  @@index([fromTaskId])
+  @@index([toTaskId])
+}
+
+// TaskRecurrence: Recorrência de tarefas
+model TaskRecurrence {
+  id                 String              @id @default(uuid())
+  frequency          RecurrenceFrequency
+  interval           Int                 @default(1)
+  daysOfWeek         Int[]
+  dayOfMonth         Int?
+  endDate            DateTime?
+  maxOccurrences     Int?
+  occurrencesCreated Int                 @default(0)
+  nextRunAt          DateTime?
+  enabled            Boolean             @default(true)
+
+  taskId String @unique
+  task   Task   @relation(fields: [taskId], references: [id], onDelete: Cascade)
+
+  @@index([nextRunAt, enabled])
+}
+
+// TaskActivity: Log de atividades da tarefa
+model TaskActivity {
+  id          String   @id @default(uuid())
+  type        String
+  description String
+  metadata    Json?
+  createdAt   DateTime @default(now())
+
+  taskId String
+  task   Task   @relation(fields: [taskId], references: [id], onDelete: Cascade)
+
+  userId String
+  user   User   @relation("TaskActivityUser", fields: [userId], references: [id])
+
+  @@index([taskId, createdAt])
 }

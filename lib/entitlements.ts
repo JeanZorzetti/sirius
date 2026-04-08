@@ -13,38 +13,43 @@ export { SubscriptionTier }
 export interface PlanLimits {
   // Contatos
   maxContacts: number | null // null = ilimitado
-  
+
   // Deals
   maxDeals: number | null
   maxDealsPerPipeline: number | null
-  
+
   // Pipelines
   maxPipelines: number
-  
+
   // Usuários
   maxUsers: number
-  
+
   // Scraping/Prospecção
   scrapingCreditsMonthly: number
   maxScrapingPerSearch: number
-  
+
   // WhatsApp
   maxWhatsAppInstances: number
-  
+
   // Automações
   maxEmailAutomations: number
   maxSequences: number
-  
+
   // Integrações
   allowedIntegrations: string[]
-  
+
   // Analytics
   advancedAnalytics: boolean
   customReports: boolean
-  
+
   // Suporte
   supportLevel: 'community' | 'email' | 'priority' | 'dedicated'
-  
+
+  // Task Management
+  maxTaskProjects: number
+  maxTasks: number
+  maxTaskStatusesPerProject: number
+
   // Features exclusivas
   features: {
     roundRobin: boolean
@@ -54,6 +59,13 @@ export interface PlanLimits {
     customDomain: boolean
     sso: boolean
     auditLog: boolean
+    taskKanban: boolean
+    taskCalendar: boolean
+    taskTable: boolean
+    timeTracking: boolean
+    taskDependencies: boolean
+    recurringTasks: boolean
+    taskBulkActions: boolean
   }
 }
 
@@ -73,6 +85,9 @@ export const PLAN_LIMITS: Record<SubscriptionTier, PlanLimits> = {
     advancedAnalytics: false,
     customReports: false,
     supportLevel: 'community',
+    maxTaskProjects: 1,
+    maxTasks: 50,
+    maxTaskStatusesPerProject: 3,
     features: {
       roundRobin: false,
       leadScoring: false,
@@ -81,9 +96,16 @@ export const PLAN_LIMITS: Record<SubscriptionTier, PlanLimits> = {
       customDomain: false,
       sso: false,
       auditLog: false,
+      taskKanban: false,
+      taskCalendar: false,
+      taskTable: false,
+      timeTracking: false,
+      taskDependencies: false,
+      recurringTasks: false,
+      taskBulkActions: false,
     },
   },
-  
+
   [SubscriptionTier.STARTER]: {
     maxContacts: 1000,
     maxDeals: 500,
@@ -99,6 +121,9 @@ export const PLAN_LIMITS: Record<SubscriptionTier, PlanLimits> = {
     advancedAnalytics: false,
     customReports: false,
     supportLevel: 'email',
+    maxTaskProjects: 5,
+    maxTasks: 500,
+    maxTaskStatusesPerProject: 6,
     features: {
       roundRobin: false,
       leadScoring: false,
@@ -107,9 +132,16 @@ export const PLAN_LIMITS: Record<SubscriptionTier, PlanLimits> = {
       customDomain: false,
       sso: false,
       auditLog: false,
+      taskKanban: true,
+      taskCalendar: true,
+      taskTable: false,
+      timeTracking: false,
+      taskDependencies: false,
+      recurringTasks: false,
+      taskBulkActions: false,
     },
   },
-  
+
   [SubscriptionTier.PRO]: {
     maxContacts: 5000,
     maxDeals: 2500,
@@ -125,6 +157,9 @@ export const PLAN_LIMITS: Record<SubscriptionTier, PlanLimits> = {
     advancedAnalytics: true,
     customReports: false,
     supportLevel: 'priority',
+    maxTaskProjects: 25,
+    maxTasks: 5000,
+    maxTaskStatusesPerProject: 15,
     features: {
       roundRobin: false,
       leadScoring: true,
@@ -133,9 +168,16 @@ export const PLAN_LIMITS: Record<SubscriptionTier, PlanLimits> = {
       customDomain: false,
       sso: false,
       auditLog: false,
+      taskKanban: true,
+      taskCalendar: true,
+      taskTable: true,
+      timeTracking: true,
+      taskDependencies: true,
+      recurringTasks: true,
+      taskBulkActions: true,
     },
   },
-  
+
   [SubscriptionTier.BUSINESS]: {
     maxContacts: null, // ilimitado
     maxDeals: null, // ilimitado
@@ -151,6 +193,9 @@ export const PLAN_LIMITS: Record<SubscriptionTier, PlanLimits> = {
     advancedAnalytics: true,
     customReports: true,
     supportLevel: 'dedicated',
+    maxTaskProjects: -1, // ilimitado
+    maxTasks: -1, // ilimitado
+    maxTaskStatusesPerProject: -1, // ilimitado
     features: {
       roundRobin: true,
       leadScoring: true,
@@ -159,6 +204,13 @@ export const PLAN_LIMITS: Record<SubscriptionTier, PlanLimits> = {
       customDomain: true,
       sso: true,
       auditLog: true,
+      taskKanban: true,
+      taskCalendar: true,
+      taskTable: true,
+      timeTracking: true,
+      taskDependencies: true,
+      recurringTasks: true,
+      taskBulkActions: true,
     },
   },
 }
@@ -273,6 +325,9 @@ export const PLAN_FEATURES: Record<SubscriptionTier, {
   max_users: number
   max_pipelines: number
   max_contacts: number
+  max_task_projects: number
+  max_tasks: number
+  max_task_statuses_per_project: number
   agi_monthly_quota: number
   scraping_monthly_credits: number
   scraping_initial_credits: number
@@ -281,12 +336,22 @@ export const PLAN_FEATURES: Record<SubscriptionTier, {
   can_use_chat_interface: boolean
   can_use_round_robin: boolean
   can_use_team_reports: boolean
+  can_use_task_kanban: boolean
+  can_use_task_calendar: boolean
+  can_use_task_table: boolean
+  can_use_time_tracking: boolean
+  can_use_task_dependencies: boolean
+  can_use_recurring_tasks: boolean
+  can_use_task_bulk_actions: boolean
 }> = {
   [SubscriptionTier.FREE]: {
     max_deals: 100,
     max_users: 2,
     max_pipelines: 1,
     max_contacts: 250,
+    max_task_projects: 1,
+    max_tasks: 50,
+    max_task_statuses_per_project: 3,
     agi_monthly_quota: 0,
     scraping_monthly_credits: 0,
     scraping_initial_credits: 0,
@@ -295,12 +360,22 @@ export const PLAN_FEATURES: Record<SubscriptionTier, {
     can_use_chat_interface: false,
     can_use_round_robin: false,
     can_use_team_reports: false,
+    can_use_task_kanban: false,
+    can_use_task_calendar: false,
+    can_use_task_table: false,
+    can_use_time_tracking: false,
+    can_use_task_dependencies: false,
+    can_use_recurring_tasks: false,
+    can_use_task_bulk_actions: false,
   },
   [SubscriptionTier.STARTER]: {
     max_deals: 500,
     max_users: 5,
     max_pipelines: 5,
     max_contacts: 1000,
+    max_task_projects: 5,
+    max_tasks: 500,
+    max_task_statuses_per_project: 6,
     agi_monthly_quota: 200,
     scraping_monthly_credits: 75,
     scraping_initial_credits: 75,
@@ -309,12 +384,22 @@ export const PLAN_FEATURES: Record<SubscriptionTier, {
     can_use_chat_interface: true,
     can_use_round_robin: false,
     can_use_team_reports: false,
+    can_use_task_kanban: true,
+    can_use_task_calendar: true,
+    can_use_task_table: false,
+    can_use_time_tracking: false,
+    can_use_task_dependencies: false,
+    can_use_recurring_tasks: false,
+    can_use_task_bulk_actions: false,
   },
   [SubscriptionTier.PRO]: {
     max_deals: 2500,
     max_users: 15,
     max_pipelines: 15,
     max_contacts: 5000,
+    max_task_projects: 25,
+    max_tasks: 5000,
+    max_task_statuses_per_project: 15,
     agi_monthly_quota: 1000,
     scraping_monthly_credits: 300,
     scraping_initial_credits: 300,
@@ -323,12 +408,22 @@ export const PLAN_FEATURES: Record<SubscriptionTier, {
     can_use_chat_interface: true,
     can_use_round_robin: false,
     can_use_team_reports: true,
+    can_use_task_kanban: true,
+    can_use_task_calendar: true,
+    can_use_task_table: true,
+    can_use_time_tracking: true,
+    can_use_task_dependencies: true,
+    can_use_recurring_tasks: true,
+    can_use_task_bulk_actions: true,
   },
   [SubscriptionTier.BUSINESS]: {
     max_deals: -1, // ilimitado
     max_users: 50,
     max_pipelines: 50,
     max_contacts: -1, // ilimitado
+    max_task_projects: -1, // ilimitado
+    max_tasks: -1, // ilimitado
+    max_task_statuses_per_project: -1, // ilimitado
     agi_monthly_quota: 3000,
     scraping_monthly_credits: 1500,
     scraping_initial_credits: 1500,
@@ -337,6 +432,13 @@ export const PLAN_FEATURES: Record<SubscriptionTier, {
     can_use_chat_interface: true,
     can_use_round_robin: true,
     can_use_team_reports: true,
+    can_use_task_kanban: true,
+    can_use_task_calendar: true,
+    can_use_task_table: true,
+    can_use_time_tracking: true,
+    can_use_task_dependencies: true,
+    can_use_recurring_tasks: true,
+    can_use_task_bulk_actions: true,
   },
 }
 
