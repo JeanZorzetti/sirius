@@ -16,17 +16,17 @@ export default async function AgendaPage() {
   })
   if (!user?.organizationId) return <div>Usuário sem organização.</div>
 
-  const whereBase = {
-    organizationId: user.organizationId,
-    archived: false,
-    status: 'ACTIVE' as const,
-    dueDate: { not: null },
-    ...(user.orgRole === 'MEMBER' ? { userId: user.id } : {}),
-  }
+  const isMember = user.orgRole === 'MEMBER'
 
-  const [deals, stages, contacts] = await Promise.all([
+  const [deals, stages, contacts, tasks] = await Promise.all([
     prisma.deal.findMany({
-      where: whereBase,
+      where: {
+        organizationId: user.organizationId,
+        archived: false,
+        status: 'ACTIVE' as const,
+        dueDate: { not: null },
+        ...(isMember ? { userId: user.id } : {}),
+      },
       select: {
         id: true,
         title: true,
@@ -49,13 +49,36 @@ export default async function AgendaPage() {
       select: { id: true, name: true, phone: true },
       orderBy: { name: 'asc' },
     }),
+    prisma.task.findMany({
+      where: {
+        organizationId: user.organizationId,
+        archived: false,
+        completedAt: null,
+        dueDate: { not: null },
+        ...(isMember ? { assigneeId: user.id } : {}),
+      },
+      select: {
+        id: true,
+        title: true,
+        dueDate: true,
+        priority: true,
+        status: { select: { id: true, name: true, color: true } },
+        project: { select: { id: true, name: true } },
+        assignee: { select: { id: true, name: true } },
+      },
+      orderBy: { dueDate: 'asc' },
+    }),
   ])
 
-  // Serialize Decimals
   const serializedDeals = deals.map(d => ({
     ...d,
     value: d.value ? Number(d.value) : null,
     dueDate: d.dueDate!.toISOString(),
+  }))
+
+  const serializedTasks = tasks.map(t => ({
+    ...t,
+    dueDate: t.dueDate!.toISOString(),
   }))
 
   return (
@@ -63,6 +86,7 @@ export default async function AgendaPage() {
       deals={serializedDeals}
       stages={stages}
       contacts={contacts}
+      tasks={serializedTasks}
     />
   )
 }

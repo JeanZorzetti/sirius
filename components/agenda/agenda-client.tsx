@@ -2,7 +2,8 @@
 
 import { useState } from 'react'
 import { motion } from 'framer-motion'
-import { Calendar, Clock, ChevronRight, User, Inbox } from 'lucide-react'
+import { Calendar, ChevronRight, User, Inbox, CheckSquare, Flag } from 'lucide-react'
+import Link from 'next/link'
 import { EditDealDialog } from '@/components/deals/edit-deal-dialog'
 import { AnimatedPageContainer } from '@/components/dashboard/animated-page-container'
 import { cn } from '@/lib/utils'
@@ -21,42 +22,68 @@ type Deal = {
   contact: { id: string; name: string; phone: string | null } | null
 }
 
-type Props = {
-  deals: Deal[]
-  stages: { id: string; name: string }[]
-  contacts: { id: string; name: string; phone: string | null }[]
+type AgendaTask = {
+  id: string
+  title: string
+  dueDate: string
+  priority: string
+  status: { id: string; name: string; color: string } | null
+  project: { id: string; name: string } | null
+  assignee: { id: string; name: string } | null
 }
+
+type AgendaItem =
+  | { kind: 'deal'; item: Deal }
+  | { kind: 'task'; item: AgendaTask }
 
 type Group = {
   label: string
   color: string
   dotColor: string
-  deals: Deal[]
+  items: AgendaItem[]
 }
 
-function groupDeals(deals: Deal[]): Group[] {
-  const overdue: Deal[] = []
-  const today: Deal[] = []
-  const tomorrow: Deal[] = []
-  const thisWeek: Deal[] = []
-  const upcoming: Deal[] = []
+type Props = {
+  deals: Deal[]
+  stages: { id: string; name: string }[]
+  contacts: { id: string; name: string; phone: string | null }[]
+  tasks: AgendaTask[]
+}
 
-  for (const deal of deals) {
-    const date = parseISO(deal.dueDate)
-    if (isPast(date) && !isToday(date)) overdue.push(deal)
-    else if (isToday(date)) today.push(deal)
-    else if (isTomorrow(date)) tomorrow.push(deal)
-    else if (isThisWeek(date, { locale: ptBR })) thisWeek.push(deal)
-    else upcoming.push(deal)
+const PRIORITY_COLORS: Record<string, string> = {
+  URGENT: 'text-red-500',
+  HIGH: 'text-orange-500',
+  MEDIUM: 'text-yellow-500',
+  LOW: 'text-blue-400',
+  NONE: 'text-muted-foreground',
+}
+
+function groupItems(deals: Deal[], tasks: AgendaTask[]): Group[] {
+  const overdue: AgendaItem[] = []
+  const today: AgendaItem[] = []
+  const tomorrow: AgendaItem[] = []
+  const thisWeek: AgendaItem[] = []
+  const upcoming: AgendaItem[] = []
+
+  const push = (item: AgendaItem) => {
+    const date = parseISO(item.kind === 'deal' ? item.item.dueDate : item.item.dueDate)
+    if (isPast(date) && !isToday(date)) overdue.push(item)
+    else if (isToday(date)) today.push(item)
+    else if (isTomorrow(date)) tomorrow.push(item)
+    else if (isThisWeek(date, { locale: ptBR })) thisWeek.push(item)
+    else upcoming.push(item)
   }
 
+  for (const d of deals) push({ kind: 'deal', item: d })
+  for (const t of tasks) push({ kind: 'task', item: t })
+
   return [
-    { label: 'Atrasado',       color: 'text-red-600 dark:text-red-400',    dotColor: 'bg-red-500',    deals: overdue },
-    { label: 'Hoje',           color: 'text-amber-600 dark:text-amber-400', dotColor: 'bg-amber-500',  deals: today },
-    { label: 'Amanhã',         color: 'text-blue-600 dark:text-blue-400',  dotColor: 'bg-blue-500',   deals: tomorrow },
-    { label: 'Esta semana',    color: 'text-indigo-600 dark:text-indigo-400', dotColor: 'bg-indigo-500', deals: thisWeek },
-    { label: 'Próximas datas', color: 'text-zinc-500',                     dotColor: 'bg-zinc-400',   deals: upcoming },
-  ].filter(g => g.deals.length > 0)
+    { label: 'Atrasado',       color: 'text-red-600 dark:text-red-400',       dotColor: 'bg-red-500',    items: overdue },
+    { label: 'Hoje',           color: 'text-amber-600 dark:text-amber-400',   dotColor: 'bg-amber-500',  items: today },
+    { label: 'Amanhã',         color: 'text-blue-600 dark:text-blue-400',     dotColor: 'bg-blue-500',   items: tomorrow },
+    { label: 'Esta semana',    color: 'text-indigo-600 dark:text-indigo-400', dotColor: 'bg-indigo-500', items: thisWeek },
+    { label: 'Próximas datas', color: 'text-zinc-500',                        dotColor: 'bg-zinc-400',   items: upcoming },
+  ].filter(g => g.items.length > 0)
 }
 
 function DealRow({ deal, onClick }: { deal: Deal; onClick: () => void }) {
@@ -118,10 +145,79 @@ function DealRow({ deal, onClick }: { deal: Deal; onClick: () => void }) {
   )
 }
 
-export function AgendaClient({ deals, stages, contacts }: Props) {
+function TaskRow({ task }: { task: AgendaTask }) {
+  const date = parseISO(task.dueDate)
+  const overdue = isPast(date) && !isToday(date)
+
+  return (
+    <Link
+      href={`/dashboard/tasks/task/${task.id}`}
+      className="group flex items-center gap-4 px-4 py-3 rounded-xl border border-indigo-500/20 bg-indigo-500/[0.03] hover:bg-indigo-500/[0.07] hover:border-indigo-500/30 transition-all duration-150"
+    >
+      {/* Time */}
+      <div className={cn(
+        'shrink-0 flex flex-col items-center justify-center w-14 text-center',
+        overdue ? 'text-red-500' : 'text-muted-foreground'
+      )}>
+        <span className="text-xs font-semibold tabular-nums leading-none">
+          {format(date, 'HH:mm')}
+        </span>
+        <span className="text-[10px] mt-0.5 leading-none">
+          {isToday(date) ? 'Hoje' : format(date, 'dd/MM', { locale: ptBR })}
+        </span>
+      </div>
+
+      <div className="h-8 w-px bg-border shrink-0" />
+
+      {/* Task icon + info */}
+      <div className="flex-1 min-w-0 flex items-start gap-2">
+        <CheckSquare className="h-3.5 w-3.5 mt-0.5 shrink-0 text-indigo-500/70" />
+        <div className="min-w-0">
+          <p className="text-sm font-medium text-foreground truncate group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
+            {task.title}
+          </p>
+          <div className="flex items-center gap-2 mt-0.5 text-xs text-muted-foreground">
+            {task.project && <span className="truncate">{task.project.name}</span>}
+            {task.status && (
+              <>
+                {task.project && <span>·</span>}
+                <span className="flex items-center gap-1">
+                  <span
+                    className="h-1.5 w-1.5 rounded-full"
+                    style={{ backgroundColor: task.status.color }}
+                  />
+                  {task.status.name}
+                </span>
+              </>
+            )}
+            {task.assignee && (
+              <>
+                <span>·</span>
+                <span className="flex items-center gap-1 truncate">
+                  <User className="h-3 w-3 shrink-0" />
+                  {task.assignee.name}
+                </span>
+              </>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* Priority */}
+      {task.priority !== 'NONE' && (
+        <Flag className={cn('h-3.5 w-3.5 shrink-0', PRIORITY_COLORS[task.priority])} />
+      )}
+
+      <ChevronRight className="h-4 w-4 shrink-0 text-muted-foreground group-hover:text-indigo-500 transition-colors" />
+    </Link>
+  )
+}
+
+export function AgendaClient({ deals, stages, contacts, tasks }: Props) {
   const [selectedDeal, setSelectedDeal] = useState<Deal | null>(null)
   const [dialogOpen, setDialogOpen] = useState(false)
-  const groups = groupDeals(deals)
+  const groups = groupItems(deals, tasks)
+  const totalItems = deals.length + tasks.length
 
   function openDeal(deal: Deal) {
     setSelectedDeal(deal)
@@ -138,20 +234,20 @@ export function AgendaClient({ deals, stages, contacts }: Props) {
         <div>
           <h1 className="text-2xl font-bold tracking-tight">Agenda</h1>
           <p className="text-sm text-muted-foreground">
-            {deals.length === 0
-              ? 'Nenhum follow-up agendado'
-              : `${deals.length} follow-up${deals.length > 1 ? 's' : ''} agendado${deals.length > 1 ? 's' : ''}`}
+            {totalItems === 0
+              ? 'Nenhum item agendado'
+              : `${deals.length > 0 ? `${deals.length} deal${deals.length > 1 ? 's' : ''}` : ''}${deals.length > 0 && tasks.length > 0 ? ' · ' : ''}${tasks.length > 0 ? `${tasks.length} tarefa${tasks.length > 1 ? 's' : ''}` : ''}`}
           </p>
         </div>
       </div>
 
       {/* Empty state */}
-      {deals.length === 0 && (
+      {totalItems === 0 && (
         <div className="flex flex-col items-center justify-center py-24 text-center">
           <Inbox className="h-12 w-12 text-muted-foreground/30 mb-4" />
-          <p className="text-base font-medium text-muted-foreground">Nenhum deal agendado</p>
+          <p className="text-base font-medium text-muted-foreground">Nenhum item agendado</p>
           <p className="text-sm text-muted-foreground/60 mt-1">
-            Defina uma data de follow-up em qualquer deal do pipeline
+            Defina uma data de follow-up em deals ou tarefas
           </p>
         </div>
       )}
@@ -166,18 +262,22 @@ export function AgendaClient({ deals, stages, contacts }: Props) {
                 {group.label}
               </span>
               <span className="text-xs text-muted-foreground">
-                ({group.deals.length})
+                ({group.items.length})
               </span>
             </div>
             <div className="space-y-2">
-              {group.deals.map((deal, i) => (
+              {group.items.map((item, i) => (
                 <motion.div
-                  key={deal.id}
+                  key={item.kind === 'deal' ? `deal-${item.item.id}` : `task-${item.item.id}`}
                   initial={{ opacity: 0, y: 8 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: i * 0.04 }}
                 >
-                  <DealRow deal={deal} onClick={() => openDeal(deal)} />
+                  {item.kind === 'deal' ? (
+                    <DealRow deal={item.item} onClick={() => openDeal(item.item)} />
+                  ) : (
+                    <TaskRow task={item.item} />
+                  )}
                 </motion.div>
               ))}
             </div>

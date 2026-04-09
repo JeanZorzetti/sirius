@@ -65,8 +65,24 @@ export async function POST(request: Request) {
     let dueSoonSent = 0
     let overdueSent = 0
 
+    // Cache preferences per user to avoid repeated DB calls
+    const prefsCache = new Map<string, { taskDueSoonEnabled: boolean; taskOverdueEnabled: boolean }>()
+    const getPrefs = async (userId: string) => {
+      if (!prefsCache.has(userId)) {
+        const p = await prisma.notificationPreference.findUnique({ where: { userId } })
+        prefsCache.set(userId, {
+          taskDueSoonEnabled: p?.taskDueSoonEnabled ?? true,
+          taskOverdueEnabled: p?.taskOverdueEnabled ?? true,
+        })
+      }
+      return prefsCache.get(userId)!
+    }
+
     for (const task of dueSoonTasks) {
       if (!task.assigneeId) continue
+      const prefs = await getPrefs(task.assigneeId)
+      if (!prefs.taskDueSoonEnabled) continue
+
       // Check if already notified today for this task
       const existing = await prisma.notification.findFirst({
         where: {
@@ -90,6 +106,9 @@ export async function POST(request: Request) {
 
     for (const task of overdueTasks) {
       if (!task.assigneeId) continue
+      const prefs = await getPrefs(task.assigneeId)
+      if (!prefs.taskOverdueEnabled) continue
+
       const existing = await prisma.notification.findFirst({
         where: {
           userId: task.assigneeId,

@@ -42,6 +42,10 @@ export async function GET(request: NextRequest) {
         dealWonEnabled: preferences.dealWonEnabled,
         whatsappMessageEnabled: preferences.whatsappMessageEnabled,
         calendarReminderEnabled: preferences.calendarReminderEnabled,
+        taskAssignedEnabled: preferences.taskAssignedEnabled,
+        taskDueSoonEnabled: preferences.taskDueSoonEnabled,
+        taskOverdueEnabled: preferences.taskOverdueEnabled,
+        taskCompletedEnabled: preferences.taskCompletedEnabled,
       },
     })
   } catch (error) {
@@ -74,6 +78,10 @@ export async function PATCH(request: NextRequest) {
       dealWonEnabled,
       whatsappMessageEnabled,
       calendarReminderEnabled,
+      taskAssignedEnabled,
+      taskDueSoonEnabled,
+      taskOverdueEnabled,
+      taskCompletedEnabled,
     } = body
 
     // Update or create preferences
@@ -84,6 +92,10 @@ export async function PATCH(request: NextRequest) {
         ...(typeof dealWonEnabled === 'boolean' && { dealWonEnabled }),
         ...(typeof whatsappMessageEnabled === 'boolean' && { whatsappMessageEnabled }),
         ...(typeof calendarReminderEnabled === 'boolean' && { calendarReminderEnabled }),
+        ...(typeof taskAssignedEnabled === 'boolean' && { taskAssignedEnabled }),
+        ...(typeof taskDueSoonEnabled === 'boolean' && { taskDueSoonEnabled }),
+        ...(typeof taskOverdueEnabled === 'boolean' && { taskOverdueEnabled }),
+        ...(typeof taskCompletedEnabled === 'boolean' && { taskCompletedEnabled }),
       },
       create: {
         userId: session.user.id,
@@ -91,18 +103,12 @@ export async function PATCH(request: NextRequest) {
         dealWonEnabled: dealWonEnabled ?? true,
         whatsappMessageEnabled: whatsappMessageEnabled ?? true,
         calendarReminderEnabled: calendarReminderEnabled ?? true,
+        taskAssignedEnabled: taskAssignedEnabled ?? true,
+        taskDueSoonEnabled: taskDueSoonEnabled ?? true,
+        taskOverdueEnabled: taskOverdueEnabled ?? true,
+        taskCompletedEnabled: taskCompletedEnabled ?? true,
       },
     })
-
-    logger.info({
-      userId: session.user.id,
-      preferences: {
-        newDealEnabled: preferences.newDealEnabled,
-        dealWonEnabled: preferences.dealWonEnabled,
-        whatsappMessageEnabled: preferences.whatsappMessageEnabled,
-        calendarReminderEnabled: preferences.calendarReminderEnabled,
-      },
-    }, 'Notification preferences updated')
 
     return NextResponse.json({
       success: true,
@@ -111,6 +117,10 @@ export async function PATCH(request: NextRequest) {
         dealWonEnabled: preferences.dealWonEnabled,
         whatsappMessageEnabled: preferences.whatsappMessageEnabled,
         calendarReminderEnabled: preferences.calendarReminderEnabled,
+        taskAssignedEnabled: preferences.taskAssignedEnabled,
+        taskDueSoonEnabled: preferences.taskDueSoonEnabled,
+        taskOverdueEnabled: preferences.taskOverdueEnabled,
+        taskCompletedEnabled: preferences.taskCompletedEnabled,
       },
     })
   } catch (error) {
