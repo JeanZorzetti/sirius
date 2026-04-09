@@ -1,0 +1,114 @@
+import { Metadata } from 'next'
+import Link from 'next/link'
+import { ChevronLeft, BarChart3 } from 'lucide-react'
+import { prisma } from '@/lib/prisma'
+import { getSession } from '@/lib/auth'
+import { getOrganizationEntitlements } from '@/lib/feature-gates'
+import { UpgradePrompt } from '@/components/upgrade/upgrade-prompt'
+import { AnalyticsDashboard } from '@/components/tasks/analytics/analytics-dashboard'
+
+export const metadata: Metadata = {
+  title: 'Analytics de Tarefas - CRM',
+}
+
+export const dynamic = 'force-dynamic'
+
+interface Props {
+  params: Promise<{ locale: string }>
+  searchParams: Promise<{ projectId?: string }>
+}
+
+export default async function TasksAnalyticsPage({ params, searchParams }: Props) {
+  const { locale } = await params
+  const { projectId } = await searchParams
+
+  const session = await getSession()
+  if (!session?.user?.email) {
+    return <div>Não autorizado. Faça login novamente.</div>
+  }
+
+  const user = await prisma.user.findUnique({
+    where: { email: session.user.email },
+    select: { id: true, organizationId: true },
+  })
+
+  if (!user?.organizationId) {
+    return <div>Usuário não pertence a uma organização.</div>
+  }
+
+  const entitlements = await getOrganizationEntitlements(user.organizationId)
+
+  // Buscar nome do projeto se houver filtro
+  let projectName: string | null = null
+  if (projectId && entitlements.features.taskAnalytics) {
+    const project = await prisma.taskProject.findFirst({
+      where: { id: projectId, organizationId: user.organizationId },
+      select: { name: true },
+    })
+    projectName = project?.name ?? null
+  }
+
+  // Gate: feature bloqueada para FREE e STARTER
+  if (!entitlements.features.taskAnalytics) {
+    return (
+      <div className="flex-1 space-y-6">
+        <Link
+          href={`/${locale}/dashboard/tasks`}
+          className="inline-flex items-center gap-1 text-xs font-medium text-muted-foreground hover:text-foreground transition-colors"
+        >
+          <ChevronLeft className="h-3 w-3" />
+          Voltar para tarefas
+        </Link>
+
+        <div className="flex items-start gap-4">
+          <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-primary/10 ring-1 ring-inset ring-primary/20">
+            <BarChart3 className="h-6 w-6 text-primary" />
+          </div>
+          <div>
+            <h1 className="font-display text-3xl font-bold tracking-tighter text-foreground">
+              Analytics de Tarefas
+            </h1>
+            <p className="mt-1 text-sm text-muted-foreground">
+              Métricas de produtividade, tendências e insights do seu time
+            </p>
+          </div>
+        </div>
+
+        <UpgradePrompt feature="Analytics de Tarefas" requiredTier="PRO" />
+      </div>
+    )
+  }
+
+  return (
+    <div className="flex-1 space-y-6">
+      <Link
+        href={`/${locale}/dashboard/tasks`}
+        className="inline-flex items-center gap-1 text-xs font-medium text-muted-foreground hover:text-foreground transition-colors"
+      >
+        <ChevronLeft className="h-3 w-3" />
+        Voltar para tarefas
+      </Link>
+
+      {/* Header */}
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+        <div className="flex items-start gap-4">
+          <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-primary/10 ring-1 ring-inset ring-primary/20">
+            <BarChart3 className="h-6 w-6 text-primary" />
+          </div>
+          <div className="min-w-0">
+            <h1 className="font-display text-2xl sm:text-3xl font-bold tracking-tighter text-foreground truncate">
+              Analytics de Tarefas
+            </h1>
+            <p className="mt-1 text-sm text-muted-foreground">
+              {projectName
+                ? `Métricas do projeto "${projectName}"`
+                : 'Métricas de produtividade, tendências e insights do seu time'}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <AnalyticsDashboard projectId={projectId} locale={locale} />
+    </div>
+  )
+}

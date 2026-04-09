@@ -1,9 +1,10 @@
 import { Metadata } from 'next'
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
-import { FolderKanban, CheckSquare, Clock, AlertCircle, Plus } from 'lucide-react'
+import { FolderKanban, CheckSquare, Clock, AlertCircle, Plus, BarChart3, ArrowRight } from 'lucide-react'
 import { prisma } from '@/lib/prisma'
 import { getSession } from '@/lib/auth'
+import { getOrganizationEntitlements } from '@/lib/feature-gates'
 import { EmptyState } from '@/components/ui/empty-state'
 import { Button } from '@/components/ui/button'
 import { TasksHubActions } from '@/components/tasks/tasks-hub-actions'
@@ -58,7 +59,7 @@ export default async function TasksHubPage() {
   const now = new Date()
   const endOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59, 59)
 
-  const [myTotal, myOverdue, myDueToday] = await Promise.all([
+  const [myTotal, myOverdue, myDueToday, entitlements] = await Promise.all([
     prisma.task.count({ where: myTasksWhere }),
     prisma.task.count({
       where: { ...myTasksWhere, dueDate: { lt: now } },
@@ -66,7 +67,10 @@ export default async function TasksHubPage() {
     prisma.task.count({
       where: { ...myTasksWhere, dueDate: { gte: now, lte: endOfToday } },
     }),
+    getOrganizationEntitlements(user.organizationId),
   ])
+
+  const canAccessAnalytics = entitlements.features.taskAnalytics ?? false
 
   return (
     <div className="flex-1 space-y-8">
@@ -83,43 +87,67 @@ export default async function TasksHubPage() {
         <TasksHubActions />
       </div>
 
-      {/* My Tasks Quick Card */}
-      <Link
-        href="/dashboard/tasks/my-tasks"
-        className="group relative block overflow-hidden rounded-2xl border border-border/50 bg-gradient-to-br from-indigo-500/5 via-purple-500/5 to-transparent p-6 transition-all duration-200 hover:border-indigo-500/30 hover:shadow-md"
-      >
-        <div className="flex items-center justify-between gap-6">
-          <div className="flex items-center gap-4">
-            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-indigo-500/10 text-indigo-500">
-              <CheckSquare className="h-6 w-6" />
+      {/* Quick Cards Grid */}
+      <div className={canAccessAnalytics ? 'grid grid-cols-1 gap-4 lg:grid-cols-3' : ''}>
+        {/* My Tasks Quick Card */}
+        <Link
+          href="/dashboard/tasks/my-tasks"
+          className={`group relative block overflow-hidden rounded-2xl border border-border/50 bg-gradient-to-br from-indigo-500/5 via-purple-500/5 to-transparent p-6 transition-all duration-200 hover:border-indigo-500/30 hover:shadow-md ${canAccessAnalytics ? 'lg:col-span-2' : ''}`}
+        >
+          <div className="flex items-center justify-between gap-6">
+            <div className="flex items-center gap-4">
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-indigo-500/10 text-indigo-500">
+                <CheckSquare className="h-6 w-6" />
+              </div>
+              <div>
+                <h2 className="text-base font-semibold text-foreground">Minhas Tarefas</h2>
+                <p className="text-xs text-muted-foreground">
+                  Todas as tarefas atribuídas a você, em todos os projetos
+                </p>
+              </div>
             </div>
-            <div>
-              <h2 className="text-base font-semibold text-foreground">Minhas Tarefas</h2>
-              <p className="text-xs text-muted-foreground">
-                Todas as tarefas atribuídas a você, em todos os projetos
-              </p>
+            <div className="hidden items-center gap-6 sm:flex">
+              <div className="text-center">
+                <div className="text-2xl font-bold tracking-tight text-foreground">{myTotal}</div>
+                <div className="text-[10px] uppercase tracking-wide text-muted-foreground">Abertas</div>
+              </div>
+              <div className="text-center">
+                <div className="flex items-center gap-1 text-2xl font-bold tracking-tight text-amber-600 dark:text-amber-400">
+                  {myDueToday}
+                </div>
+                <div className="text-[10px] uppercase tracking-wide text-muted-foreground">Hoje</div>
+              </div>
+              <div className="text-center">
+                <div className="flex items-center gap-1 text-2xl font-bold tracking-tight text-red-600 dark:text-red-400">
+                  {myOverdue}
+                </div>
+                <div className="text-[10px] uppercase tracking-wide text-muted-foreground">Atrasadas</div>
+              </div>
             </div>
           </div>
-          <div className="hidden items-center gap-6 sm:flex">
-            <div className="text-center">
-              <div className="text-2xl font-bold tracking-tight text-foreground">{myTotal}</div>
-              <div className="text-[10px] uppercase tracking-wide text-muted-foreground">Abertas</div>
-            </div>
-            <div className="text-center">
-              <div className="flex items-center gap-1 text-2xl font-bold tracking-tight text-amber-600 dark:text-amber-400">
-                {myDueToday}
+        </Link>
+
+        {/* Analytics Quick Card (PRO+) */}
+        {canAccessAnalytics && (
+          <Link
+            href="/dashboard/tasks/analytics"
+            className="group relative flex items-center justify-between gap-4 overflow-hidden rounded-2xl border border-border/50 bg-gradient-to-br from-emerald-500/5 via-teal-500/5 to-transparent p-6 transition-all duration-200 hover:border-emerald-500/30 hover:shadow-md"
+          >
+            <div className="flex items-center gap-4">
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-500/10 text-emerald-500">
+                <BarChart3 className="h-6 w-6" />
               </div>
-              <div className="text-[10px] uppercase tracking-wide text-muted-foreground">Hoje</div>
-            </div>
-            <div className="text-center">
-              <div className="flex items-center gap-1 text-2xl font-bold tracking-tight text-red-600 dark:text-red-400">
-                {myOverdue}
+              <div>
+                <h2 className="text-base font-semibold text-foreground">Analytics</h2>
+                <p className="text-xs text-muted-foreground">
+                  Produtividade e insights
+                </p>
               </div>
-              <div className="text-[10px] uppercase tracking-wide text-muted-foreground">Atrasadas</div>
             </div>
-          </div>
-        </div>
-      </Link>
+            <ArrowRight className="h-5 w-5 shrink-0 text-muted-foreground transition-all duration-200 group-hover:translate-x-1 group-hover:text-foreground" />
+          </Link>
+        )}
+      </div>
 
       {/* Projects Grid */}
       <section className="space-y-4">

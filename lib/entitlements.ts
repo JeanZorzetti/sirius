@@ -66,6 +66,7 @@ export interface PlanLimits {
     taskDependencies: boolean
     recurringTasks: boolean
     taskBulkActions: boolean
+    taskAnalytics: boolean
   }
 }
 
@@ -103,6 +104,7 @@ export const PLAN_LIMITS: Record<SubscriptionTier, PlanLimits> = {
       taskDependencies: false,
       recurringTasks: false,
       taskBulkActions: false,
+      taskAnalytics: false,
     },
   },
 
@@ -139,6 +141,7 @@ export const PLAN_LIMITS: Record<SubscriptionTier, PlanLimits> = {
       taskDependencies: false,
       recurringTasks: false,
       taskBulkActions: false,
+      taskAnalytics: false,
     },
   },
 
@@ -175,6 +178,7 @@ export const PLAN_LIMITS: Record<SubscriptionTier, PlanLimits> = {
       taskDependencies: true,
       recurringTasks: true,
       taskBulkActions: true,
+      taskAnalytics: true,
     },
   },
 
@@ -211,6 +215,7 @@ export const PLAN_LIMITS: Record<SubscriptionTier, PlanLimits> = {
       taskDependencies: true,
       recurringTasks: true,
       taskBulkActions: true,
+      taskAnalytics: true,
     },
   },
 }
@@ -343,6 +348,7 @@ export const PLAN_FEATURES: Record<SubscriptionTier, {
   can_use_task_dependencies: boolean
   can_use_recurring_tasks: boolean
   can_use_task_bulk_actions: boolean
+  can_use_task_analytics: boolean
 }> = {
   [SubscriptionTier.FREE]: {
     max_deals: 100,
@@ -367,6 +373,7 @@ export const PLAN_FEATURES: Record<SubscriptionTier, {
     can_use_task_dependencies: false,
     can_use_recurring_tasks: false,
     can_use_task_bulk_actions: false,
+    can_use_task_analytics: false,
   },
   [SubscriptionTier.STARTER]: {
     max_deals: 500,
@@ -391,6 +398,7 @@ export const PLAN_FEATURES: Record<SubscriptionTier, {
     can_use_task_dependencies: false,
     can_use_recurring_tasks: false,
     can_use_task_bulk_actions: false,
+    can_use_task_analytics: false,
   },
   [SubscriptionTier.PRO]: {
     max_deals: 2500,
@@ -415,6 +423,7 @@ export const PLAN_FEATURES: Record<SubscriptionTier, {
     can_use_task_dependencies: true,
     can_use_recurring_tasks: true,
     can_use_task_bulk_actions: true,
+    can_use_task_analytics: true,
   },
   [SubscriptionTier.BUSINESS]: {
     max_deals: -1, // ilimitado
@@ -439,6 +448,7 @@ export const PLAN_FEATURES: Record<SubscriptionTier, {
     can_use_task_dependencies: true,
     can_use_recurring_tasks: true,
     can_use_task_bulk_actions: true,
+    can_use_task_analytics: true,
   },
 }
 

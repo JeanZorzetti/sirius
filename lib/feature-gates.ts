@@ -530,6 +530,7 @@ export interface OrganizationEntitlements {
     taskDependencies: boolean
     recurringTasks: boolean
     taskBulkActions: boolean
+    taskAnalytics: boolean
   }
   limits: {
     deals: number // -1 = unlimited
@@ -593,6 +594,7 @@ export async function getOrganizationEntitlements(
       taskDependencies: features.can_use_task_dependencies,
       recurringTasks: features.can_use_recurring_tasks,
       taskBulkActions: features.can_use_task_bulk_actions,
+      taskAnalytics: features.can_use_task_analytics,
     },
     limits: {
       deals: org.grandfatheredDealLimit ?? features.max_deals,

@@ -6,6 +6,7 @@ import { prisma } from '@/lib/prisma'
 import { getSession } from '@/lib/auth'
 import { getOrganizationEntitlements } from '@/lib/feature-gates'
 import { TaskProjectWorkspace } from '@/components/tasks/task-project-workspace'
+import { ProjectMetricsBar } from '@/components/tasks/project-metrics-bar'
 import type { TaskLite, TaskStatusLite } from '@/components/tasks/task-types'
 
 export const metadata: Metadata = {
@@ -19,7 +20,7 @@ interface Props {
 }
 
 export default async function TaskProjectPage({ params }: Props) {
-  const { projectId } = await params
+  const { projectId, locale } = await params
 
   const session = await getSession()
   if (!session?.user?.email) {
@@ -121,6 +122,15 @@ export default async function TaskProjectPage({ params }: Props) {
           </div>
         </div>
       </div>
+
+      {/* Metrics bar */}
+      <ProjectMetricsBar
+        tasks={tasks as unknown as TaskLite[]}
+        statuses={project.statuses as TaskStatusLite[]}
+        projectId={project.id}
+        locale={locale}
+        canAccessAnalytics={entitlements.features.taskAnalytics ?? false}
+      />
 
       {/* Workspace */}
       <TaskProjectWorkspace
