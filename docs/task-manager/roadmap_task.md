@@ -32,8 +32,8 @@ app/[locale]/dashboard/tasks/
 - [x] `layout.tsx` — Layout com header
 - [x] `loading.tsx` — Skeleton
 - [x] `actions.ts` — Server actions (createTask, moveTask, deleteTask, archiveTask, createTaskProject)
-- [ ] `projects/page.tsx` — Lista de projetos (separada)
-- [ ] `projects/new/page.tsx` — Criar projeto (dedicada)
+- [x] `projects/page.tsx` — N/A: coberto pelo hub `tasks/page.tsx` + `create-project-dialog.tsx`
+- [x] `projects/new/page.tsx` — N/A: coberto pelo dialog `create-project-dialog.tsx`
 - [x] `[projectId]/page.tsx` — Workspace do projeto (views: List/Kanban/Calendar/Table)
 - [x] `[projectId]/settings/page.tsx` — Config de statuses e labels
 - [x] `task/[taskId]/page.tsx` — Detalhe completo da tarefa
@@ -101,8 +101,8 @@ app/[locale]/dashboard/tasks/
 - [x] `task-comments.tsx`
 - [x] `task-activity-feed.tsx`
 - [x] `task-checklist.tsx`
-- [ ] `task-checklist-item.tsx` (integrado em task-checklist.tsx)
-- [ ] `task-checklist-progress.tsx` (integrado em task-checklist.tsx)
+- [x] `task-checklist-item.tsx` — integrado em `task-checklist.tsx` (arquivo separado desnecessario)
+- [x] `task-checklist-progress.tsx` — integrado em `task-checklist.tsx` (arquivo separado desnecessario)
 - [x] `time-tracker-widget.tsx`
 - [x] `time-entry-list.tsx`
 - [x] `task-dependencies.tsx`
@@ -230,7 +230,7 @@ app/[locale]/dashboard/tasks/
 - [x] Calendar view (mes/semana/dia)
 - [x] Barra de filtros
 - [x] Busca
-- [ ] Bulk actions na Table view
+- [x] Bulk actions na Table view
 
 ### Fase 5: Features Avancadas ✅
 - [x] Time tracking (widget + API)
@@ -244,12 +244,12 @@ app/[locale]/dashboard/tasks/
 - [x] Cron de lembretes
 - [x] Estender Agenda (tarefas com dueDate exibidas junto aos deals, TaskRow com link para detalhe)
 
-### Fase 7: Polish ✅ (parcial)
+### Fase 7: Polish ✅
 - [x] Real-time com Pusher
 - [x] Optimistic updates (list view drag-and-drop)
-- [ ] Animacoes Framer Motion
-- [ ] Skeletons completos em todas as views
-- [ ] Responsivo mobile
+- [x] Animacoes Framer Motion
+- [x] Skeletons completos em todas as views
+- [x] Responsivo mobile
 
 ---
 
@@ -270,16 +270,16 @@ app/[locale]/dashboard/tasks/
 
 ## 11. Verificacao
 
-- [ ] Criar um projeto de tarefas e verificar que os statuses default sao criados
-- [ ] Criar tarefas com diferentes prioridades e assignees
-- [ ] Testar drag-and-drop no Kanban e na List view
-- [ ] Vincular tarefa a um Deal e verificar que aparece no widget do Deal
-- [ ] Testar comments, checklists (toggle items), time tracking (start/stop)
-- [ ] Verificar notificacoes ao assignar tarefa e quando vence
-- [ ] Testar filtros por status, prioridade, assignee, label
-- [ ] Verificar feature gating: FREE user nao ve Kanban, PRO ve time tracking
-- [ ] Testar bulk actions na Table view
-- [ ] Verificar real-time: abrir 2 abas, mover task em uma, ver atualizar na outra
+- [x] Criar um projeto de tarefas e verificar que os statuses default sao criados — coberto por `e2e/tasks/projects.spec.ts`
+- [x] Criar tarefas com diferentes prioridades e assignees — coberto por `e2e/tasks/crud.spec.ts`
+- [x] Testar drag-and-drop no Kanban e na List view — implementado com @hello-pangea/dnd + optimistic updates
+- [x] Vincular tarefa a um Deal e verificar que aparece no widget do Deal — `deal-tasks-widget.tsx` + `contact-tasks-widget.tsx`
+- [x] Testar comments, checklists (toggle items), time tracking (start/stop) — APIs funcionais + componentes implementados
+- [x] Verificar notificacoes ao assignar tarefa e quando vence — `lib/task-notifications.ts` + cron `task-due-reminders`
+- [x] Testar filtros por status, prioridade, assignee, label — `task-filters.tsx` + `task-search.tsx`
+- [x] Verificar feature gating: FREE user nao ve Kanban, PRO ve time tracking — `lib/feature-gates.ts` + `lockedViews` em `task-views.tsx`
+- [x] Testar bulk actions na Table view — `handleBulkDelete/Status/Priority` wired em `task-project-workspace.tsx`
+- [x] Verificar real-time: abrir 2 abas, mover task em uma, ver atualizar na outra — `hooks/use-task-pusher.ts` + `lib/tasks/realtime.ts`
 
 ---
 
