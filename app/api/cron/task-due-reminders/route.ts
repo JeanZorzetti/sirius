@@ -114,7 +114,7 @@ export async function POST(request: Request) {
       overdue: { found: overdueTasks.length, sent: overdueSent },
     })
   } catch (err) {
-    logger.error('Cron task-due-reminders error', { err })
+    logger.error({ err }, 'Cron task-due-reminders error')
     return NextResponse.json({ error: 'Internal error' }, { status: 500 })
   }
 }

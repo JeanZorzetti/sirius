@@ -99,7 +99,7 @@ export async function POST(request: Request) {
       skipped,
     })
   } catch (err) {
-    logger.error('Cron task-recurrence error', { err })
+    logger.error({ err }, 'Cron task-recurrence error')
     return NextResponse.json({ error: 'Internal error' }, { status: 500 })
   }
 }

@@ -153,6 +153,22 @@ export function TaskProjectWorkspace({
     [router]
   )
 
+  const handleInlineEdit = useCallback(
+    async (taskId: string, patch: { statusId?: string; priority?: string }) => {
+      const res = await fetch(`/api/tasks/${taskId}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(patch),
+      })
+      if (!res.ok) {
+        toast.error('Erro ao atualizar')
+        throw new Error('Failed to update task')
+      }
+      router.refresh()
+    },
+    [router]
+  )
+
   return (
     <div className="space-y-4">
       {/* Toolbar: filters + action */}
@@ -190,6 +206,7 @@ export function TaskProjectWorkspace({
         onBulkDelete={handleBulkDelete}
         onBulkStatusChange={handleBulkStatusChange}
         onBulkPriorityChange={handleBulkPriorityChange}
+        onInlineEdit={handleInlineEdit}
       />
 
       <CreateTaskDialog

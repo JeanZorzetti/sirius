@@ -36,7 +36,7 @@ export async function DELETE(
     await prisma.taskDependency.delete({ where: { id: depId } })
     return NextResponse.json({ success: true })
   } catch (err) {
-    logger.error('DELETE dependencies error', { err })
+    logger.error({ err }, 'DELETE dependencies error')
     return NextResponse.json({ error: 'Internal error' }, { status: 500 })
   }
 }

@@ -175,20 +175,78 @@ async function handleCreateTask(
   context: Record<string, unknown>
 ): Promise<void> {
   const taskTitle = resolveTemplate(String(config.taskTitle || 'Tarefa criada pela automação'), context)
+  const taskDescription = config.taskDescription
+    ? resolveTemplate(String(config.taskDescription), context)
+    : null
+  const priority = (config.priority as string) || 'MEDIUM'
+  const dueInDays = config.dueInDays ? Number(config.dueInDays) : null
+  const taskProjectId = config.taskProjectId as string | undefined
   const dealId = context.dealId as string | undefined
+  const contactId = context.contactId as string | undefined
   const userId = context.userId as string | undefined
+  const organizationId = context.organizationId as string | undefined
 
-  if (!dealId || !userId) {
-    throw new Error('No dealId or userId in context for CREATE_TASK action')
+  if (!userId) {
+    throw new Error('No userId in context for CREATE_TASK action')
   }
 
-  // Use the Note model (generic notes tied to a deal)
+  // If a taskProjectId is configured, create a real Task in the task manager
+  if (taskProjectId && organizationId) {
+    const project = await prisma.taskProject.findFirst({
+      where: { id: taskProjectId, organizationId },
+      include: {
+        statuses: { orderBy: { order: 'asc' }, take: 1 },
+      },
+    })
+
+    if (!project) {
+      throw new Error(`TaskProject ${taskProjectId} not found in organization`)
+    }
+
+    const firstStatus = project.statuses[0]
+    if (!firstStatus) {
+      throw new Error(`TaskProject ${taskProjectId} has no statuses`)
+    }
+
+    const dueDate = dueInDays !== null && !Number.isNaN(dueInDays)
+      ? new Date(Date.now() + dueInDays * 24 * 60 * 60 * 1000)
+      : null
+
+    const maxOrder = await prisma.task.aggregate({
+      where: { projectId: taskProjectId, statusId: firstStatus.id },
+      _max: { order: true },
+    })
+
+    await prisma.task.create({
+      data: {
+        title: taskTitle,
+        description: taskDescription,
+        priority: priority as 'NONE' | 'LOW' | 'MEDIUM' | 'HIGH' | 'URGENT',
+        order: (maxOrder._max.order ?? -1) + 1,
+        dueDate,
+        projectId: taskProjectId,
+        statusId: firstStatus.id,
+        creatorId: userId,
+        assigneeId: userId,
+        organizationId,
+        dealId: dealId || null,
+        contactId: contactId || null,
+      },
+    })
+    return
+  }
+
+  // Legacy fallback: create a Note on the deal
+  if (!dealId) {
+    throw new Error('No dealId in context for legacy CREATE_TASK action (and no taskProjectId configured)')
+  }
+
   await prisma.note.create({
     data: {
       content: `[TAREFA] ${taskTitle}`,
       dealId,
-      userId
-    }
+      userId,
+    },
   })
 }
 

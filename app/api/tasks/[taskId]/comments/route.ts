@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { getSession } from '@/lib/auth'
 import { notifyTaskCommented } from '@/lib/task-notifications'
+import { triggerTaskEvent } from '@/lib/tasks/realtime'
 import logger from '@/lib/logger'
 
 // GET /api/tasks/[taskId]/comments
@@ -95,6 +96,11 @@ export async function POST(
         organizationId: user.organizationId,
       }).catch((err) => logger.error({ err }, 'Error notifying task commented'))
     }
+
+    triggerTaskEvent(user.organizationId, 'task:commented', {
+      taskId,
+      commentId: comment.id,
+    }).catch(() => {})
 
     return NextResponse.json(comment, { status: 201 })
   } catch (error) {

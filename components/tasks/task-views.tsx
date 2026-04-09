@@ -25,6 +25,7 @@ interface TaskViewsProps {
   onBulkDelete?: (taskIds: string[]) => Promise<void>
   onBulkStatusChange?: (taskIds: string[], statusId: string) => Promise<void>
   onBulkPriorityChange?: (taskIds: string[], priority: string) => Promise<void>
+  onInlineEdit?: (taskId: string, patch: { statusId?: string; priority?: string }) => Promise<void>
 }
 
 const VIEW_CONFIG: Record<TaskViewMode, { label: string; icon: typeof List }> = {
@@ -48,6 +49,7 @@ export function TaskViews({
   onBulkDelete,
   onBulkStatusChange,
   onBulkPriorityChange,
+  onInlineEdit,
 }: TaskViewsProps) {
   const [view, setView] = useState<TaskViewMode>(defaultView)
 
@@ -89,6 +91,7 @@ export function TaskViews({
             onTaskClick={onTaskClick}
             onToggleComplete={onToggleComplete}
             onAddTask={onAddTask}
+            onTaskMove={onTaskMove}
           />
         )}
         {view === 'kanban' && (
@@ -116,6 +119,7 @@ export function TaskViews({
             onBulkDelete={onBulkDelete}
             onBulkStatusChange={onBulkStatusChange}
             onBulkPriorityChange={onBulkPriorityChange}
+            onInlineEdit={onInlineEdit}
           />
         )}
       </div>

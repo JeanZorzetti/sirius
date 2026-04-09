@@ -2,6 +2,8 @@ import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { getSession } from '@/lib/auth'
 import { notifyTaskAssigned, notifyTaskCompleted } from '@/lib/task-notifications'
+import { triggerTaskEvent } from '@/lib/tasks/realtime'
+import { executeTaskAutomations } from '@/lib/automations/task-engine'
 import logger from '@/lib/logger'
 
 const taskInclude = {
@@ -213,6 +215,27 @@ export async function PATCH(
       await prisma.taskActivity.createMany({ data: activities })
     }
 
+    // Real-time event — distinguish move vs generic update
+    const eventName: 'task:moved' | 'task:updated' =
+      statusId && statusId !== existing.statusId ? 'task:moved' : 'task:updated'
+    triggerTaskEvent(user.organizationId, eventName, {
+      taskId: task.id,
+      projectId: task.projectId,
+      statusId: task.statusId,
+    }).catch(() => {})
+
+    // Task completed automation
+    if (
+      statusId &&
+      statusId !== existing.statusId &&
+      task.status.type === 'DONE'
+    ) {
+      executeTaskAutomations(task.id, 'TASK_COMPLETED', {
+        userId: user.id,
+        organizationId: user.organizationId,
+      }).catch((err) => logger.error({ err }, 'Task completed automation failed'))
+    }
+
     return NextResponse.json(task)
   } catch (error) {
     logger.error({ err: error }, 'Error updating task')
@@ -250,6 +273,11 @@ export async function DELETE(
     }
 
     await prisma.task.delete({ where: { id: taskId } })
+
+    triggerTaskEvent(user.organizationId, 'task:deleted', {
+      taskId,
+      projectId: existing.projectId,
+    }).catch(() => {})
 
     return NextResponse.json({ success: true })
   } catch (error) {

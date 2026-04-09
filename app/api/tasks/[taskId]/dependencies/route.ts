@@ -64,7 +64,7 @@ export async function GET(
 
     return NextResponse.json({ outgoing: from, incoming: to })
   } catch (err) {
-    logger.error('GET dependencies error', { err })
+    logger.error({ err }, 'GET dependencies error')
     return NextResponse.json({ error: 'Internal error' }, { status: 500 })
   }
 }
@@ -148,7 +148,7 @@ export async function POST(
         { status: 409 }
       )
     }
-    logger.error('POST dependencies error', { err })
+    logger.error({ err }, 'POST dependencies error')
     return NextResponse.json({ error: 'Internal error' }, { status: 500 })
   }
 }

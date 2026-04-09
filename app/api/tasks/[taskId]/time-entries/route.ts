@@ -42,7 +42,7 @@ export async function GET(
 
     return NextResponse.json(entries)
   } catch (err) {
-    logger.error('GET /api/tasks/[taskId]/time-entries error', { err })
+    logger.error({ err }, 'GET /api/tasks/[taskId]/time-entries error')
     return NextResponse.json({ error: 'Internal error' }, { status: 500 })
   }
 }
@@ -111,7 +111,7 @@ export async function POST(
 
     return NextResponse.json(entry, { status: 201 })
   } catch (err) {
-    logger.error('POST /api/tasks/[taskId]/time-entries error', { err })
+    logger.error({ err }, 'POST /api/tasks/[taskId]/time-entries error')
     return NextResponse.json({ error: 'Internal error' }, { status: 500 })
   }
 }

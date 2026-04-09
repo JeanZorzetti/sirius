@@ -3,6 +3,8 @@ import { prisma } from '@/lib/prisma'
 import { getSession } from '@/lib/auth'
 import { checkTaskLimit } from '@/lib/feature-gates'
 import { notifyTaskAssigned } from '@/lib/task-notifications'
+import { triggerTaskEvent } from '@/lib/tasks/realtime'
+import { executeTaskAutomations } from '@/lib/automations/task-engine'
 import logger from '@/lib/logger'
 
 // GET /api/tasks - Listar tarefas com filtros
@@ -185,6 +187,20 @@ export async function POST(request: Request) {
         projectId,
       }).catch((err) => logger.error({ err }, 'Error notifying task assigned'))
     }
+
+    // Real-time event
+    triggerTaskEvent(user.organizationId, 'task:created', {
+      taskId: task.id,
+      projectId: task.projectId,
+      statusId: task.statusId,
+      title: task.title,
+    }).catch(() => {})
+
+    // Task automations
+    executeTaskAutomations(task.id, 'TASK_CREATED', {
+      userId: user.id,
+      organizationId: user.organizationId,
+    }).catch((err) => logger.error({ err }, 'Task automation failed'))
 
     return NextResponse.json(task, { status: 201 })
   } catch (error) {

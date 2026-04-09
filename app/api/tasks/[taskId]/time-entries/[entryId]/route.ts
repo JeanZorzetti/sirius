@@ -65,7 +65,7 @@ export async function PATCH(
 
     return NextResponse.json(updated)
   } catch (err) {
-    logger.error('PATCH time-entries error', { err })
+    logger.error({ err }, 'PATCH time-entries error')
     return NextResponse.json({ error: 'Internal error' }, { status: 500 })
   }
 }
@@ -108,7 +108,7 @@ export async function DELETE(
 
     return NextResponse.json({ success: true })
   } catch (err) {
-    logger.error('DELETE time-entries error', { err })
+    logger.error({ err }, 'DELETE time-entries error')
     return NextResponse.json({ error: 'Internal error' }, { status: 500 })
   }
 }

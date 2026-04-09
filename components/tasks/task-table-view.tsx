@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useMemo } from 'react'
-import { ArrowUpDown, ArrowUp, ArrowDown, MoreHorizontal, Trash2 } from 'lucide-react'
+import { ArrowUpDown, ArrowUp, ArrowDown, MoreHorizontal, Trash2, Download } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { toast } from 'sonner'
 import { Checkbox } from '@/components/ui/checkbox'
@@ -27,6 +27,57 @@ interface TaskTableViewProps {
   onBulkDelete?: (taskIds: string[]) => Promise<void>
   onBulkStatusChange?: (taskIds: string[], statusId: string) => Promise<void>
   onBulkPriorityChange?: (taskIds: string[], priority: string) => Promise<void>
+  onInlineEdit?: (taskId: string, patch: { statusId?: string; priority?: string }) => Promise<void>
+}
+
+const PRIORITY_LABELS: Record<string, string> = {
+  URGENT: 'Urgente',
+  HIGH: 'Alta',
+  MEDIUM: 'Média',
+  LOW: 'Baixa',
+  NONE: 'Nenhuma',
+}
+
+function csvEscape(v: string | number | null | undefined): string {
+  if (v === null || v === undefined) return ''
+  const s = String(v)
+  if (s.includes(',') || s.includes('"') || s.includes('\n')) {
+    return `"${s.replace(/"/g, '""')}"`
+  }
+  return s
+}
+
+function exportTasksCsv(tasks: TaskLite[]) {
+  const headers = [
+    'Título',
+    'Status',
+    'Prioridade',
+    'Responsável',
+    'Labels',
+    'Prazo',
+    'Criado em',
+    'Concluído em',
+  ]
+  const rows = tasks.map((t) => [
+    csvEscape(t.title),
+    csvEscape(t.status?.name || ''),
+    csvEscape(PRIORITY_LABELS[t.priority] || t.priority),
+    csvEscape(t.assignee?.name || t.assignee?.email || ''),
+    csvEscape((t.labels || []).map((l) => l.name).join('; ')),
+    csvEscape(t.dueDate ? new Date(t.dueDate).toLocaleDateString('pt-BR') : ''),
+    csvEscape(new Date(t.createdAt).toLocaleDateString('pt-BR')),
+    csvEscape(t.completedAt ? new Date(t.completedAt).toLocaleDateString('pt-BR') : ''),
+  ])
+  const csv = [headers.join(','), ...rows.map((r) => r.join(','))].join('\n')
+  const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8' })
+  const url = URL.createObjectURL(blob)
+  const a = document.createElement('a')
+  a.href = url
+  a.download = `tarefas-${new Date().toISOString().slice(0, 10)}.csv`
+  document.body.appendChild(a)
+  a.click()
+  document.body.removeChild(a)
+  URL.revokeObjectURL(url)
 }
 
 type SortKey = 'title' | 'status' | 'priority' | 'assignee' | 'dueDate' | 'createdAt'
@@ -47,6 +98,7 @@ export function TaskTableView({
   onBulkDelete,
   onBulkStatusChange,
   onBulkPriorityChange,
+  onInlineEdit,
 }: TaskTableViewProps) {
   const [selected, setSelected] = useState<Set<string>>(new Set())
   const [sortKey, setSortKey] = useState<SortKey>('dueDate')
@@ -144,8 +196,40 @@ export function TaskTableView({
     return sortDir === 'asc' ? <ArrowUp className="h-3 w-3" /> : <ArrowDown className="h-3 w-3" />
   }
 
+  const handleInlineStatus = async (taskId: string, statusId: string) => {
+    if (!onInlineEdit) return
+    try {
+      await onInlineEdit(taskId, { statusId })
+    } catch {
+      toast.error('Erro ao atualizar')
+    }
+  }
+
+  const handleInlinePriority = async (taskId: string, priority: string) => {
+    if (!onInlineEdit) return
+    try {
+      await onInlineEdit(taskId, { priority })
+    } catch {
+      toast.error('Erro ao atualizar')
+    }
+  }
+
   return (
     <div className="space-y-3">
+      {/* Export toolbar */}
+      <div className="flex items-center justify-end">
+        <Button
+          variant="outline"
+          size="sm"
+          className="h-7 gap-1.5 text-xs"
+          onClick={() => exportTasksCsv(sorted)}
+          disabled={sorted.length === 0}
+        >
+          <Download className="h-3 w-3" />
+          Exportar CSV
+        </Button>
+      </div>
+
       {/* Bulk actions bar */}
       {selected.size > 0 && (
         <div className="flex items-center justify-between rounded-lg border border-indigo-500/30 bg-indigo-500/5 px-4 py-2">
@@ -286,19 +370,61 @@ export function TaskTableView({
                       </td>
                       <td className="px-3 py-2.5">
                         {task.status && (
-                          <div className="inline-flex items-center gap-1.5">
-                            <span
-                              className="h-1.5 w-1.5 rounded-full"
-                              style={{ backgroundColor: task.status.color }}
-                            />
-                            <span className="text-xs text-muted-foreground">
-                              {task.status.name}
-                            </span>
-                          </div>
+                          <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                              <button
+                                onClick={(e) => e.stopPropagation()}
+                                className="inline-flex items-center gap-1.5 rounded px-1.5 py-0.5 hover:bg-muted"
+                              >
+                                <span
+                                  className="h-1.5 w-1.5 rounded-full"
+                                  style={{ backgroundColor: task.status.color }}
+                                />
+                                <span className="text-xs text-muted-foreground">
+                                  {task.status.name}
+                                </span>
+                              </button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent onClick={(e) => e.stopPropagation()}>
+                              {statuses.map((s) => (
+                                <DropdownMenuItem
+                                  key={s.id}
+                                  onClick={() => handleInlineStatus(task.id, s.id)}
+                                >
+                                  <div className="flex items-center gap-2">
+                                    <span
+                                      className="h-2 w-2 rounded-full"
+                                      style={{ backgroundColor: s.color }}
+                                    />
+                                    {s.name}
+                                  </div>
+                                </DropdownMenuItem>
+                              ))}
+                            </DropdownMenuContent>
+                          </DropdownMenu>
                         )}
                       </td>
                       <td className="px-3 py-2.5">
-                        <TaskPriorityIcon priority={task.priority} />
+                        <DropdownMenu>
+                          <DropdownMenuTrigger asChild>
+                            <button
+                              onClick={(e) => e.stopPropagation()}
+                              className="inline-flex items-center rounded px-1.5 py-0.5 hover:bg-muted"
+                            >
+                              <TaskPriorityIcon priority={task.priority} />
+                            </button>
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent onClick={(e) => e.stopPropagation()}>
+                            {['URGENT', 'HIGH', 'MEDIUM', 'LOW', 'NONE'].map((p) => (
+                              <DropdownMenuItem
+                                key={p}
+                                onClick={() => handleInlinePriority(task.id, p)}
+                              >
+                                {PRIORITY_LABELS[p]}
+                              </DropdownMenuItem>
+                            ))}
+                          </DropdownMenuContent>
+                        </DropdownMenu>
                       </td>
                       <td className="px-3 py-2.5">
                         <TaskAssigneeAvatar user={task.assignee} size="sm" />

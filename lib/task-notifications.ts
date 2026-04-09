@@ -24,7 +24,7 @@ export async function notifyTaskAssigned({
     type: 'TASK_ASSIGNED',
     title: 'Tarefa atribuída a você',
     message: `${assignerName} atribuiu a tarefa "${taskTitle}" a você`,
-    actionUrl: `/dashboard/tasks/${taskId}`,
+    actionUrl: `/dashboard/tasks/task/${taskId}`,
     metadata: { taskId, assignerName, projectId },
   })
 }
@@ -51,7 +51,7 @@ export async function notifyTaskDueSoon({
     type: 'TASK_DUE_SOON',
     title: 'Tarefa com prazo próximo',
     message: `A tarefa "${taskTitle}" vence em ${dueDate.toLocaleDateString('pt-BR')}`,
-    actionUrl: `/dashboard/tasks/${taskId}`,
+    actionUrl: `/dashboard/tasks/task/${taskId}`,
     metadata: { taskId, dueDate: dueDate.toISOString() },
   })
 }
@@ -76,7 +76,7 @@ export async function notifyTaskOverdue({
     type: 'TASK_OVERDUE',
     title: 'Tarefa atrasada',
     message: `A tarefa "${taskTitle}" está atrasada`,
-    actionUrl: `/dashboard/tasks/${taskId}`,
+    actionUrl: `/dashboard/tasks/task/${taskId}`,
     metadata: { taskId },
   })
 }
@@ -103,7 +103,7 @@ export async function notifyTaskCompleted({
     type: 'TASK_COMPLETED',
     title: 'Tarefa concluída',
     message: `${completedByName} concluiu a tarefa "${taskTitle}"`,
-    actionUrl: `/dashboard/tasks/${taskId}`,
+    actionUrl: `/dashboard/tasks/task/${taskId}`,
     metadata: { taskId, completedByName },
   })
 }
@@ -130,7 +130,7 @@ export async function notifyTaskCommented({
     type: 'TASK_COMMENTED',
     title: 'Novo comentário em tarefa',
     message: `${commenterName} comentou na tarefa "${taskTitle}"`,
-    actionUrl: `/dashboard/tasks/${taskId}`,
+    actionUrl: `/dashboard/tasks/task/${taskId}`,
     metadata: { taskId, commenterName },
   })
 }

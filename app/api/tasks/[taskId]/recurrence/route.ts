@@ -37,7 +37,7 @@ export async function GET(
 
     return NextResponse.json(recurrence || null)
   } catch (err) {
-    logger.error('GET recurrence error', { err })
+    logger.error({ err }, 'GET recurrence error')
     return NextResponse.json({ error: 'Internal error' }, { status: 500 })
   }
 }
@@ -123,7 +123,7 @@ export async function PUT(
 
     return NextResponse.json(recurrence)
   } catch (err) {
-    logger.error('PUT recurrence error', { err })
+    logger.error({ err }, 'PUT recurrence error')
     return NextResponse.json({ error: 'Internal error' }, { status: 500 })
   }
 }
@@ -158,7 +158,7 @@ export async function DELETE(
     await prisma.taskRecurrence.deleteMany({ where: { taskId } })
     return NextResponse.json({ success: true })
   } catch (err) {
-    logger.error('DELETE recurrence error', { err })
+    logger.error({ err }, 'DELETE recurrence error')
     return NextResponse.json({ error: 'Internal error' }, { status: 500 })
   }
 }
