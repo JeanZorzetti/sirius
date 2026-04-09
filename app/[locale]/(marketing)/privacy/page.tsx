@@ -2,47 +2,43 @@ import Link from 'next/link'
 import Script from 'next/script'
 import { Shield, Lock, Eye, Server, UserCheck, FileText } from 'lucide-react'
 import type { Metadata } from 'next'
+import { getTranslations } from 'next-intl/server'
 
-export const metadata: Metadata = {
-  title: 'Política de Privacidade | Sirius CRM',
-  description: 'Política de privacidade do Sirius CRM. Como coletamos, usamos e protegemos seus dados. Transparência total sobre o tratamento de informações.',
-  openGraph: {
-    title: 'Política de Privacidade | Sirius CRM',
-    description: 'Como coletamos, usamos e protegemos seus dados no Sirius CRM.',
-    url: 'https://sirius.roilabs.com.br/privacy',
-  },
+export async function generateMetadata(
+  { params }: { params: Promise<{ locale: string }> }
+): Promise<Metadata> {
+  const { locale } = await params
+  const t = await getTranslations({ locale, namespace: 'marketing.privacy.meta' })
+  const canonical = `https://sirius.roilabs.com.br${locale === 'en' ? '/en' : ''}/privacy`
+  return {
+    title: t('title'),
+    description: t('description'),
+    alternates: { canonical },
+    openGraph: { title: t('ogTitle'), description: t('ogDescription'), url: canonical },
+  }
 }
 
-export default function PrivacyPage() {
+export default async function PrivacyPage(
+  { params }: { params: Promise<{ locale: string }> }
+) {
+  const { locale } = await params
+  const t = await getTranslations({ locale, namespace: 'marketing.privacy' })
+
   const breadcrumbSchema = {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
     "itemListElement": [
-      {
-        "@type": "ListItem",
-        "position": 1,
-        "name": "Home",
-        "item": "https://sirius.roilabs.com.br"
-      },
-      {
-        "@type": "ListItem",
-        "position": 2,
-        "name": "Privacidade",
-        "item": "https://sirius.roilabs.com.br/privacy"
-      }
+      { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://sirius.roilabs.com.br" },
+      { "@type": "ListItem", "position": 2, "name": t('title'), "item": "https://sirius.roilabs.com.br/privacy" },
     ]
   }
 
   return (
     <>
-      <Script
-        id="breadcrumb-schema"
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
-      />
+      <Script id="breadcrumb-schema" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
 
       <div className="bg-background">
-        {/* Hero Section */}
+        {/* Hero */}
         <section className="py-20 sm:py-32">
           <div className="mx-auto max-w-4xl px-6 lg:px-8">
             <div className="text-center">
@@ -51,232 +47,179 @@ export default function PrivacyPage() {
                   <Shield className="h-8 w-8 text-primary" />
                 </div>
               </div>
-              <h1 className="text-4xl font-bold tracking-tight text-foreground sm:text-5xl">
-                Política de Privacidade
-              </h1>
-              <p className="mt-6 text-lg leading-8 text-muted-foreground">
-                Última atualização: 1 de janeiro de 2026
-              </p>
-              <p className="mt-4 text-lg leading-8 text-muted-foreground">
-                Sua privacidade é fundamental para nós. Esta política explica como coletamos, usamos e protegemos seus dados.
-              </p>
+              <h1 className="text-4xl font-bold tracking-tight text-foreground sm:text-5xl">{t('title')}</h1>
+              <p className="mt-6 text-lg leading-8 text-muted-foreground">{t('lastUpdated')}</p>
+              <p className="mt-4 text-lg leading-8 text-muted-foreground">{t('intro')}</p>
             </div>
           </div>
         </section>
 
-        {/* Main Content */}
+        {/* Content */}
         <section className="py-16">
           <div className="mx-auto max-w-4xl px-6 lg:px-8">
             <div className="prose prose-lg max-w-none">
 
-              {/* 1. Informações que Coletamos */}
+              {/* 1 */}
               <div className="mb-12">
                 <div className="flex items-center gap-3 mb-4">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10">
-                    <FileText className="h-5 w-5 text-primary" />
-                  </div>
-                  <h2 className="text-2xl font-bold text-foreground m-0">1. Informações que Coletamos</h2>
+                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10"><FileText className="h-5 w-5 text-primary" /></div>
+                  <h2 className="text-2xl font-bold text-foreground m-0">{t('s1.title')}</h2>
                 </div>
                 <div className="text-muted-foreground space-y-4 ml-13">
-                  <p className="text-base leading-7">
-                    <strong className="text-foreground">Informações de Cadastro:</strong> Nome, email, senha (criptografada), nome da organização.
-                  </p>
-                  <p className="text-base leading-7">
-                    <strong className="text-foreground">Dados de Uso:</strong> Páginas visitadas, funcionalidades utilizadas, tempo de sessão.
-                  </p>
-                  <p className="text-base leading-7">
-                    <strong className="text-foreground">Dados de CRM:</strong> Contatos, negócios, pipelines e outras informações que você insere no sistema.
-                  </p>
-                  <p className="text-base leading-7">
-                    <strong className="text-foreground">Informações de Pagamento:</strong> Processadas exclusivamente pelo Mercado Pago. Não armazenamos dados de cartão de crédito.
-                  </p>
+                  <p className="text-base leading-7"><strong className="text-foreground">{t('s1.registration')}</strong> {t('s1.registrationText')}</p>
+                  <p className="text-base leading-7"><strong className="text-foreground">{t('s1.usage')}</strong> {t('s1.usageText')}</p>
+                  <p className="text-base leading-7"><strong className="text-foreground">{t('s1.crm')}</strong> {t('s1.crmText')}</p>
+                  <p className="text-base leading-7"><strong className="text-foreground">{t('s1.payment')}</strong> {t('s1.paymentText')}</p>
                 </div>
               </div>
 
-              {/* 2. Como Usamos Seus Dados */}
+              {/* 2 */}
               <div className="mb-12">
                 <div className="flex items-center gap-3 mb-4">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10">
-                    <Eye className="h-5 w-5 text-primary" />
-                  </div>
-                  <h2 className="text-2xl font-bold text-foreground m-0">2. Como Usamos Seus Dados</h2>
+                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10"><Eye className="h-5 w-5 text-primary" /></div>
+                  <h2 className="text-2xl font-bold text-foreground m-0">{t('s2.title')}</h2>
                 </div>
                 <div className="text-muted-foreground space-y-4 ml-13">
                   <ul className="list-disc list-inside space-y-2 text-base leading-7">
-                    <li><strong className="text-foreground">Fornecer o Serviço:</strong> Gerenciar sua conta, processar pagamentos, enviar notificações.</li>
-                    <li><strong className="text-foreground">Melhorar o Produto:</strong> Analisar uso agregado para identificar melhorias e bugs.</li>
-                    <li><strong className="text-foreground">Comunicação:</strong> Enviar emails transacionais (confirmação de conta, faturas) e marketing (com opt-out).</li>
-                    <li><strong className="text-foreground">Segurança:</strong> Detectar e prevenir fraudes, abusos e ataques.</li>
+                    <li><strong className="text-foreground">{t('s2.provide')}</strong> {t('s2.provideText')}</li>
+                    <li><strong className="text-foreground">{t('s2.improve')}</strong> {t('s2.improveText')}</li>
+                    <li><strong className="text-foreground">{t('s2.communicate')}</strong> {t('s2.communicateText')}</li>
+                    <li><strong className="text-foreground">{t('s2.security')}</strong> {t('s2.securityText')}</li>
                   </ul>
-                  <p className="text-base leading-7 font-semibold text-foreground">
-                    Nunca vendemos seus dados para terceiros.
-                  </p>
+                  <p className="text-base leading-7 font-semibold text-foreground">{t('s2.neverSell')}</p>
                 </div>
               </div>
 
-              {/* 3. Isolamento Multi-Tenant */}
+              {/* 3 */}
               <div className="mb-12">
                 <div className="flex items-center gap-3 mb-4">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10">
-                    <Lock className="h-5 w-5 text-primary" />
-                  </div>
-                  <h2 className="text-2xl font-bold text-foreground m-0">3. Isolamento de Dados (Multi-Tenant)</h2>
+                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10"><Lock className="h-5 w-5 text-primary" /></div>
+                  <h2 className="text-2xl font-bold text-foreground m-0">{t('s3.title')}</h2>
                 </div>
                 <div className="text-muted-foreground space-y-4 ml-13">
                   <p className="text-base leading-7">
-                    Cada organização tem seus dados completamente isolados. Usuários da <strong className="text-foreground">Organização A</strong> nunca
-                    conseguem ver ou acessar dados da <strong className="text-foreground">Organização B</strong>.
+                    {t('s3.p1', { orgA: t('s3.orgA'), orgB: t('s3.orgB') }).split(t('s3.orgA')).reduce<React.ReactNode[]>((acc, part, i) => {
+                      if (i === 0) return [part]
+                      return [...acc, <strong key={`a${i}`} className="text-foreground">{t('s3.orgA')}</strong>, part]
+                    }, []).flatMap((node, i, arr) => {
+                      if (typeof node !== 'string') return [node]
+                      return node.split(t('s3.orgB')).reduce<React.ReactNode[]>((acc2, p, j) => {
+                        if (j === 0) return [p]
+                        return [...acc2, <strong key={`b${j}`} className="text-foreground">{t('s3.orgB')}</strong>, p]
+                      }, [])
+                    })}
                   </p>
                   <p className="text-base leading-7">
-                    Todas as queries de banco de dados incluem filtro por <code className="bg-muted px-1.5 py-0.5 rounded text-sm">organizationId</code> para
-                    garantir isolamento absoluto.
+                    {t('s3.p2', { field: 'organizationId' }).split('organizationId').map((part, i, arr) =>
+                      i < arr.length - 1 ? [part, <code key={i} className="bg-muted px-1.5 py-0.5 rounded text-sm">organizationId</code>] : part
+                    )}
                   </p>
                 </div>
               </div>
 
-              {/* 4. Segurança */}
+              {/* 4 */}
               <div className="mb-12">
                 <div className="flex items-center gap-3 mb-4">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10">
-                    <Shield className="h-5 w-5 text-primary" />
-                  </div>
-                  <h2 className="text-2xl font-bold text-foreground m-0">4. Medidas de Segurança</h2>
+                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10"><Shield className="h-5 w-5 text-primary" /></div>
+                  <h2 className="text-2xl font-bold text-foreground m-0">{t('s4.title')}</h2>
                 </div>
                 <div className="text-muted-foreground space-y-4 ml-13">
                   <ul className="list-disc list-inside space-y-2 text-base leading-7">
-                    <li><strong className="text-foreground">Criptografia:</strong> Senhas com bcrypt, dados em trânsito via HTTPS/TLS.</li>
-                    <li><strong className="text-foreground">Autenticação:</strong> JWT tokens com expiração, cookies HttpOnly e SameSite.</li>
-                    <li><strong className="text-foreground">Banco de Dados:</strong> PostgreSQL hospedado em servidores seguros com backups diários.</li>
-                    <li><strong className="text-foreground">Monitoramento:</strong> Logs de acesso e monitoramento de erros via Sentry.</li>
+                    <li><strong className="text-foreground">{t('s4.encryption')}</strong> {t('s4.encryptionText')}</li>
+                    <li><strong className="text-foreground">{t('s4.auth')}</strong> {t('s4.authText')}</li>
+                    <li><strong className="text-foreground">{t('s4.db')}</strong> {t('s4.dbText')}</li>
+                    <li><strong className="text-foreground">{t('s4.monitoring')}</strong> {t('s4.monitoringText')}</li>
                   </ul>
                 </div>
               </div>
 
-              {/* 5. Cookies e Rastreamento */}
+              {/* 5 */}
               <div className="mb-12">
                 <div className="flex items-center gap-3 mb-4">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10">
-                    <Server className="h-5 w-5 text-primary" />
-                  </div>
-                  <h2 className="text-2xl font-bold text-foreground m-0">5. Cookies e Rastreamento</h2>
+                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10"><Server className="h-5 w-5 text-primary" /></div>
+                  <h2 className="text-2xl font-bold text-foreground m-0">{t('s5.title')}</h2>
                 </div>
                 <div className="text-muted-foreground space-y-4 ml-13">
-                  <p className="text-base leading-7">
-                    <strong className="text-foreground">Cookies Essenciais:</strong> Necessários para autenticação e funcionamento do sistema.
-                  </p>
-                  <p className="text-base leading-7">
-                    <strong className="text-foreground">Google Analytics:</strong> Usamos GA4 para análise agregada de uso (anonimizada).
-                  </p>
-                  <p className="text-base leading-7">
-                    Você pode desabilitar cookies não essenciais nas configurações do seu navegador.
-                  </p>
+                  <p className="text-base leading-7"><strong className="text-foreground">{t('s5.essential')}</strong> {t('s5.essentialText')}</p>
+                  <p className="text-base leading-7"><strong className="text-foreground">{t('s5.analytics')}</strong> {t('s5.analyticsText')}</p>
+                  <p className="text-base leading-7">{t('s5.optOut')}</p>
                 </div>
               </div>
 
-              {/* 6. Compartilhamento de Dados */}
+              {/* 6 */}
               <div className="mb-12">
                 <div className="flex items-center gap-3 mb-4">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10">
-                    <UserCheck className="h-5 w-5 text-primary" />
-                  </div>
-                  <h2 className="text-2xl font-bold text-foreground m-0">6. Compartilhamento de Dados</h2>
+                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10"><UserCheck className="h-5 w-5 text-primary" /></div>
+                  <h2 className="text-2xl font-bold text-foreground m-0">{t('s6.title')}</h2>
                 </div>
                 <div className="text-muted-foreground space-y-4 ml-13">
-                  <p className="text-base leading-7">
-                    Compartilhamos dados apenas com:
-                  </p>
+                  <p className="text-base leading-7">{t('s6.intro')}</p>
                   <ul className="list-disc list-inside space-y-2 text-base leading-7">
-                    <li><strong className="text-foreground">Mercado Pago:</strong> Para processamento de pagamentos (PCI-DSS compliant).</li>
-                    <li><strong className="text-foreground">Resend:</strong> Para envio de emails transacionais e marketing.</li>
-                    <li><strong className="text-foreground">Vercel:</strong> Hospedagem da aplicação (SOC 2 Type II certified).</li>
-                    <li><strong className="text-foreground">Sentry:</strong> Monitoramento de erros (dados anonimizados).</li>
+                    <li><strong className="text-foreground">{t('s6.mp')}</strong> {t('s6.mpText')}</li>
+                    <li><strong className="text-foreground">{t('s6.resend')}</strong> {t('s6.resendText')}</li>
+                    <li><strong className="text-foreground">{t('s6.vercel')}</strong> {t('s6.vercelText')}</li>
+                    <li><strong className="text-foreground">{t('s6.sentry')}</strong> {t('s6.sentryText')}</li>
                   </ul>
-                  <p className="text-base leading-7 font-semibold text-foreground">
-                    Todos os parceiros assinam DPAs (Data Processing Agreements) em conformidade com LGPD.
-                  </p>
+                  <p className="text-base leading-7 font-semibold text-foreground">{t('s6.dpa')}</p>
                 </div>
               </div>
 
-              {/* 7. Seus Direitos (LGPD) */}
+              {/* 7 */}
               <div className="mb-12">
                 <div className="flex items-center gap-3 mb-4">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10">
-                    <Shield className="h-5 w-5 text-primary" />
-                  </div>
-                  <h2 className="text-2xl font-bold text-foreground m-0">7. Seus Direitos (LGPD)</h2>
+                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10"><Shield className="h-5 w-5 text-primary" /></div>
+                  <h2 className="text-2xl font-bold text-foreground m-0">{t('s7.title')}</h2>
                 </div>
                 <div className="text-muted-foreground space-y-4 ml-13">
-                  <p className="text-base leading-7">
-                    Conforme a Lei Geral de Proteção de Dados (LGPD), você tem direito a:
-                  </p>
+                  <p className="text-base leading-7">{t('s7.intro')}</p>
                   <ul className="list-disc list-inside space-y-2 text-base leading-7">
-                    <li><strong className="text-foreground">Acesso:</strong> Solicitar cópia de todos os seus dados.</li>
-                    <li><strong className="text-foreground">Correção:</strong> Atualizar dados incorretos.</li>
-                    <li><strong className="text-foreground">Exclusão:</strong> Deletar sua conta e todos os dados associados.</li>
-                    <li><strong className="text-foreground">Portabilidade:</strong> Exportar seus dados em formato legível.</li>
-                    <li><strong className="text-foreground">Revogação:</strong> Retirar consentimento para marketing a qualquer momento.</li>
+                    <li><strong className="text-foreground">{t('s7.access')}</strong> {t('s7.accessText')}</li>
+                    <li><strong className="text-foreground">{t('s7.correction')}</strong> {t('s7.correctionText')}</li>
+                    <li><strong className="text-foreground">{t('s7.deletion')}</strong> {t('s7.deletionText')}</li>
+                    <li><strong className="text-foreground">{t('s7.portability')}</strong> {t('s7.portabilityText')}</li>
+                    <li><strong className="text-foreground">{t('s7.revocation')}</strong> {t('s7.revocationText')}</li>
                   </ul>
-                  <p className="text-base leading-7">
-                    Para exercer seus direitos, envie email para: <a href="mailto:privacidade@roilabs.com.br" className="text-primary hover:underline">privacidade@roilabs.com.br</a>
-                  </p>
+                  <p className="text-base leading-7">{t('s7.contact')} <a href="mailto:privacidade@roilabs.com.br" className="text-primary hover:underline">privacidade@roilabs.com.br</a></p>
                 </div>
               </div>
 
-              {/* 8. Retenção de Dados */}
+              {/* 8 */}
               <div className="mb-12">
                 <div className="flex items-center gap-3 mb-4">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10">
-                    <Server className="h-5 w-5 text-primary" />
-                  </div>
-                  <h2 className="text-2xl font-bold text-foreground m-0">8. Retenção de Dados</h2>
+                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10"><Server className="h-5 w-5 text-primary" /></div>
+                  <h2 className="text-2xl font-bold text-foreground m-0">{t('s8.title')}</h2>
                 </div>
                 <div className="text-muted-foreground space-y-4 ml-13">
-                  <p className="text-base leading-7">
-                    <strong className="text-foreground">Conta Ativa:</strong> Mantemos seus dados enquanto sua conta estiver ativa.
-                  </p>
-                  <p className="text-base leading-7">
-                    <strong className="text-foreground">Após Cancelamento:</strong> Dados são retidos por 90 dias para recuperação, depois deletados permanentemente.
-                  </p>
-                  <p className="text-base leading-7">
-                    <strong className="text-foreground">Logs de Acesso:</strong> Mantidos por 1 ano para fins de segurança.
-                  </p>
+                  <p className="text-base leading-7"><strong className="text-foreground">{t('s8.active')}</strong> {t('s8.activeText')}</p>
+                  <p className="text-base leading-7"><strong className="text-foreground">{t('s8.afterCancel')}</strong> {t('s8.afterCancelText')}</p>
+                  <p className="text-base leading-7"><strong className="text-foreground">{t('s8.logs')}</strong> {t('s8.logsText')}</p>
                 </div>
               </div>
 
-              {/* 9. Alterações na Política */}
+              {/* 9 */}
               <div className="mb-12">
                 <div className="flex items-center gap-3 mb-4">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10">
-                    <FileText className="h-5 w-5 text-primary" />
-                  </div>
-                  <h2 className="text-2xl font-bold text-foreground m-0">9. Alterações nesta Política</h2>
+                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10"><FileText className="h-5 w-5 text-primary" /></div>
+                  <h2 className="text-2xl font-bold text-foreground m-0">{t('s9.title')}</h2>
                 </div>
                 <div className="text-muted-foreground space-y-4 ml-13">
-                  <p className="text-base leading-7">
-                    Podemos atualizar esta política periodicamente. Mudanças significativas serão comunicadas por email com 30 dias de antecedência.
-                  </p>
-                  <p className="text-base leading-7">
-                    Recomendamos revisar esta página regularmente.
-                  </p>
+                  <p className="text-base leading-7">{t('s9.p1')}</p>
+                  <p className="text-base leading-7">{t('s9.p2')}</p>
                 </div>
               </div>
 
-              {/* 10. Contato */}
+              {/* 10 */}
               <div className="mb-12">
                 <div className="flex items-center gap-3 mb-4">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10">
-                    <UserCheck className="h-5 w-5 text-primary" />
-                  </div>
-                  <h2 className="text-2xl font-bold text-foreground m-0">10. Contato</h2>
+                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10"><UserCheck className="h-5 w-5 text-primary" /></div>
+                  <h2 className="text-2xl font-bold text-foreground m-0">{t('s10.title')}</h2>
                 </div>
                 <div className="text-muted-foreground space-y-4 ml-13">
-                  <p className="text-base leading-7">
-                    Para dúvidas sobre privacidade, entre em contato:
-                  </p>
+                  <p className="text-base leading-7">{t('s10.intro')}</p>
                   <ul className="list-none space-y-2 text-base leading-7">
-                    <li><strong className="text-foreground">Email:</strong> <a href="mailto:privacidade@roilabs.com.br" className="text-primary hover:underline">privacidade@roilabs.com.br</a></li>
-                    <li><strong className="text-foreground">Empresa:</strong> ROI Labs</li>
-                    <li><strong className="text-foreground">Encarregado de Dados (DPO):</strong> privacidade@roilabs.com.br</li>
+                    <li><strong className="text-foreground">{t('s10.emailLabel')}</strong> <a href="mailto:privacidade@roilabs.com.br" className="text-primary hover:underline">privacidade@roilabs.com.br</a></li>
+                    <li><strong className="text-foreground">{t('s10.companyLabel')}</strong> {t('s10.company')}</li>
+                    <li><strong className="text-foreground">{t('s10.dpoLabel')}</strong> privacidade@roilabs.com.br</li>
                   </ul>
                 </div>
               </div>
@@ -285,28 +228,18 @@ export default function PrivacyPage() {
           </div>
         </section>
 
-        {/* CTA Section */}
+        {/* CTA */}
         <section className="py-16 bg-muted/50">
           <div className="mx-auto max-w-4xl px-6 lg:px-8">
             <div className="text-center">
-              <h2 className="text-2xl font-bold text-foreground mb-4">
-                Tem dúvidas sobre privacidade?
-              </h2>
-              <p className="text-muted-foreground mb-6">
-                Nossa equipe está disponível para esclarecer qualquer questão sobre como tratamos seus dados.
-              </p>
+              <h2 className="text-2xl font-bold text-foreground mb-4">{t('cta.title')}</h2>
+              <p className="text-muted-foreground mb-6">{t('cta.subtitle')}</p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Link
-                  href="mailto:privacidade@roilabs.com.br"
-                  className="inline-flex items-center justify-center rounded-md bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-sm hover:bg-primary/90 transition-colors"
-                >
-                  Falar com DPO
+                <Link href="mailto:privacidade@roilabs.com.br" className="inline-flex items-center justify-center rounded-md bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-sm hover:bg-primary/90 transition-colors">
+                  {t('cta.dpo')}
                 </Link>
-                <Link
-                  href="/terms"
-                  className="inline-flex items-center justify-center rounded-md border border-input bg-background px-6 py-3 text-sm font-semibold hover:bg-accent hover:text-accent-foreground transition-colors"
-                >
-                  Ver Termos de Uso
+                <Link href="/terms" className="inline-flex items-center justify-center rounded-md border border-input bg-background px-6 py-3 text-sm font-semibold hover:bg-accent hover:text-accent-foreground transition-colors">
+                  {t('cta.terms')}
                 </Link>
               </div>
             </div>

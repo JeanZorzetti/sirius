@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useCallback } from 'react'
+import { motion } from 'framer-motion'
 import {
   DragDropContext,
   Droppable,
@@ -164,9 +165,12 @@ export function TaskListView({
                             index={index}
                           >
                             {(prov, snap) => (
-                              <div
+                              <motion.div
                                 ref={prov.innerRef}
                                 {...prov.draggableProps}
+                                initial={{ opacity: 0, x: -10 }}
+                                animate={{ opacity: 1, x: 0 }}
+                                transition={{ delay: index * 0.02, duration: 0.2 }}
                                 className={cn(
                                   snap.isDragging && 'bg-background shadow-lg ring-1 ring-indigo-500/30'
                                 )}
@@ -177,7 +181,7 @@ export function TaskListView({
                                   onClick={() => onTaskClick?.(task)}
                                   onToggleComplete={onToggleComplete}
                                 />
-                              </div>
+                              </motion.div>
                             )}
                           </Draggable>
                         ))
@@ -208,7 +212,7 @@ function TaskRow({ task, dragHandleProps, onClick, onToggleComplete }: TaskRowPr
   return (
     <div
       className={cn(
-        'group flex items-center gap-3 px-4 py-2.5 hover:bg-muted/30 transition-colors',
+        'group flex items-center gap-2 sm:gap-3 px-2 sm:px-4 py-2.5 hover:bg-muted/30 transition-colors',
         isCompleted && 'opacity-60'
       )}
     >

@@ -288,7 +288,7 @@ app/[locale]/dashboard/tasks/
 - [x] Bulk actions na Table view (mudar status, prioridade, deletar em massa)
 - [x] Estender Agenda com tarefas (calendario do CRM)
 - [x] Estender NotificationPreference com toggles por tipo de task
-- [ ] Animacoes Framer Motion nas views de task
-- [ ] Skeletons completos em todas as views de task
-- [ ] Responsivo mobile nas views de task
-- [ ] Testes E2E (checklist de verificacao acima)
+- [x] Animacoes Framer Motion nas views de task — `task-views.tsx` com AnimatePresence, `task-kanban-view.tsx` com stagger delay, `task-list-view.tsx`, `task-table-view.tsx`, `task-card.tsx` com whileHover
+- [x] Skeletons completos em todas as views de task — `task-list-skeleton.tsx`, `task-kanban-skeleton.tsx`, `task-calendar-skeleton.tsx`, `task-table-skeleton.tsx`
+- [x] Responsivo mobile nas views de task — kanban com scrollbar thin, calendar com texto reduzido, table com colunas ocultas em mobile, list com padding responsivo
+- [x] Testes E2E (checklist de verificacao acima) — `e2e/tasks/crud.spec.ts`, `e2e/tasks/views.spec.ts`, `e2e/tasks/projects.spec.ts`, `e2e/page-objects/task-page.ts`

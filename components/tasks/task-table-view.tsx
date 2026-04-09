@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useMemo } from 'react'
+import { motion } from 'framer-motion'
 import { ArrowUpDown, ArrowUp, ArrowDown, MoreHorizontal, Trash2, Download } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { toast } from 'sonner'
@@ -320,7 +321,7 @@ export function TaskTableView({
                 <SortHeader label="Responsável" active={sortKey === 'assignee'} onClick={() => toggleSort('assignee')}>
                   <SortIcon k="assignee" />
                 </SortHeader>
-                <th className="px-3 py-2.5 text-left text-[10px] font-semibold uppercase tracking-wide text-muted-foreground">
+                <th className="hidden md:table-cell px-3 py-2.5 text-left text-[10px] font-semibold uppercase tracking-wide text-muted-foreground">
                   Labels
                 </th>
                 <SortHeader label="Prazo" active={sortKey === 'dueDate'} onClick={() => toggleSort('dueDate')}>
@@ -337,12 +338,15 @@ export function TaskTableView({
                   </td>
                 </tr>
               ) : (
-                sorted.map((task) => {
+                sorted.map((task, index) => {
                   const isSelected = selected.has(task.id)
                   const isCompleted = !!task.completedAt
                   return (
-                    <tr
+                    <motion.tr
                       key={task.id}
+                      initial={{ opacity: 0, y: 5 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: index * 0.02, duration: 0.2 }}
                       className={cn(
                         'group border-b border-border/30 transition-colors hover:bg-muted/20',
                         isSelected && 'bg-indigo-500/5',
@@ -429,7 +433,7 @@ export function TaskTableView({
                       <td className="px-3 py-2.5">
                         <TaskAssigneeAvatar user={task.assignee} size="sm" />
                       </td>
-                      <td className="px-3 py-2.5">
+                      <td className="hidden md:table-cell px-3 py-2.5">
                         {task.labels && task.labels.length > 0 && (
                           <TaskLabels labels={task.labels} maxVisible={2} />
                         )}
@@ -461,7 +465,7 @@ export function TaskTableView({
                           </DropdownMenuContent>
                         </DropdownMenu>
                       </td>
-                    </tr>
+                    </motion.tr>
                   )
                 })
               )}

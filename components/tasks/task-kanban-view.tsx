@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useCallback } from 'react'
+import { motion } from 'framer-motion'
 import { DragDropContext, Droppable, Draggable, type DropResult } from '@hello-pangea/dnd'
 import { Plus } from 'lucide-react'
 import { cn } from '@/lib/utils'
@@ -68,7 +69,9 @@ export function TaskKanbanView({
 
   return (
     <DragDropContext onDragEnd={handleDragEnd}>
-      <div className="flex gap-4 overflow-x-auto pb-4">
+      <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-thin scrollbar-thumb-muted-foreground/20 relative">
+        {/* Mobile scroll fade indicator */}
+        <div className="pointer-events-none fixed right-0 top-0 bottom-0 w-12 bg-gradient-to-l from-background to-transparent sm:hidden" />
         {statuses.map((status) => {
           const columnTasks = tasksByStatus[status.id] || []
           return (
@@ -114,17 +117,20 @@ export function TaskKanbanView({
                     {columnTasks.map((task, index) => (
                       <Draggable key={task.id} draggableId={task.id} index={index}>
                         {(dragProvided, dragSnapshot) => (
-                          <div
+                          <motion.div
                             ref={dragProvided.innerRef}
                             {...dragProvided.draggableProps}
                             {...dragProvided.dragHandleProps}
+                            initial={{ opacity: 0, y: 8 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: index * 0.03, duration: 0.2 }}
                           >
                             <TaskCard
                               task={task}
                               onClick={() => onTaskClick?.(task)}
                               isDragging={dragSnapshot.isDragging}
                             />
-                          </div>
+                          </motion.div>
                         )}
                       </Draggable>
                     ))}

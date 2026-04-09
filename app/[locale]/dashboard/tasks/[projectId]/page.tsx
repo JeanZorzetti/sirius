@@ -104,8 +104,8 @@ export default async function TaskProjectPage({ params }: Props) {
           >
             {project.name.charAt(0).toUpperCase()}
           </div>
-          <div className="space-y-1">
-            <h1 className="font-display text-3xl font-bold tracking-tighter text-foreground">
+          <div className="space-y-1 min-w-0">
+            <h1 className="font-display text-2xl sm:text-3xl font-bold tracking-tighter text-foreground truncate">
               {project.name}
             </h1>
             {project.description && (

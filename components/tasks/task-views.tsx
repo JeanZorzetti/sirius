@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
 import { List, KanbanSquare, Calendar, Table2, Lock } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import type { TaskLite, TaskStatusLite } from './task-types'
@@ -83,46 +84,54 @@ export function TaskViews({
       </div>
 
       {/* Active view */}
-      <div>
-        {view === 'list' && (
-          <TaskListView
-            tasks={tasks}
-            statuses={statuses}
-            onTaskClick={onTaskClick}
-            onToggleComplete={onToggleComplete}
-            onAddTask={onAddTask}
-            onTaskMove={onTaskMove}
-          />
-        )}
-        {view === 'kanban' && (
-          <TaskKanbanView
-            tasks={tasks}
-            statuses={statuses}
-            onTaskClick={onTaskClick}
-            onTaskMove={onTaskMove}
-            onAddTask={onAddTask}
-          />
-        )}
-        {view === 'calendar' && (
-          <TaskCalendarView
-            tasks={tasks}
-            statuses={statuses}
-            onTaskClick={onTaskClick}
-            onDayClick={onDayClick}
-          />
-        )}
-        {view === 'table' && (
-          <TaskTableView
-            tasks={tasks}
-            statuses={statuses}
-            onTaskClick={onTaskClick}
-            onBulkDelete={onBulkDelete}
-            onBulkStatusChange={onBulkStatusChange}
-            onBulkPriorityChange={onBulkPriorityChange}
-            onInlineEdit={onInlineEdit}
-          />
-        )}
-      </div>
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={view}
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -10 }}
+          transition={{ duration: 0.2, ease: [0.25, 0.1, 0.25, 1.0] }}
+        >
+          {view === 'list' && (
+            <TaskListView
+              tasks={tasks}
+              statuses={statuses}
+              onTaskClick={onTaskClick}
+              onToggleComplete={onToggleComplete}
+              onAddTask={onAddTask}
+              onTaskMove={onTaskMove}
+            />
+          )}
+          {view === 'kanban' && (
+            <TaskKanbanView
+              tasks={tasks}
+              statuses={statuses}
+              onTaskClick={onTaskClick}
+              onTaskMove={onTaskMove}
+              onAddTask={onAddTask}
+            />
+          )}
+          {view === 'calendar' && (
+            <TaskCalendarView
+              tasks={tasks}
+              statuses={statuses}
+              onTaskClick={onTaskClick}
+              onDayClick={onDayClick}
+            />
+          )}
+          {view === 'table' && (
+            <TaskTableView
+              tasks={tasks}
+              statuses={statuses}
+              onTaskClick={onTaskClick}
+              onBulkDelete={onBulkDelete}
+              onBulkStatusChange={onBulkStatusChange}
+              onBulkPriorityChange={onBulkPriorityChange}
+              onInlineEdit={onInlineEdit}
+            />
+          )}
+        </motion.div>
+      </AnimatePresence>
     </div>
   )
 }

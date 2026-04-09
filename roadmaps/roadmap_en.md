@@ -199,7 +199,7 @@ app/
 | 14 | `/help/[categoria]/[slug]` | `/en/help/[category]/[slug]` | dynamic help articles | — |
 | 15 | `/privacy` | `/en/privacy` | `(marketing)/privacy/page.tsx` | 17KB |
 | 16 | `/terms` | `/en/terms` | `(marketing)/terms/page.tsx` | 16KB |
-| 17 | `/fundadores` | `/en/founders` | `(marketing)/fundadores/page.tsx` | — |
+| 17 | `/fundadores` | `/en/founders` | `(marketing)/fundadores/page.tsx` | — ✅ |
 | 18 | `/proposta` | `/en/proposal` | `(marketing)/proposta/page.tsx` | — |
 | 19 | `/anuario` | `/en/yearbook` | `(marketing)/anuario/page.tsx` | 24KB 🔴 |
 | 20 | `/followup` | `/en/followup` | `(marketing)/followup/page.tsx` | 12KB |
