@@ -52,15 +52,17 @@ export async function GET(
       )
     }
 
-    // 4. Get status from whatsmeow gateway
-    const gatewayStatus = await whatsmeowClient.getStatus(connection.instanceName)
-
-    // 5. Map gateway state to our status
+    // 4. Get status from whatsmeow gateway (non-blocking — fallback to DB status)
     let status = connection.status
-    if (gatewayStatus?.connected === true) {
-      status = 'CONNECTED'
-    } else if (gatewayStatus?.connected === false) {
-      status = 'DISCONNECTED'
+    try {
+      const gatewayStatus = await whatsmeowClient.getStatus(connection.instanceName)
+      if (gatewayStatus?.connected === true) {
+        status = 'CONNECTED'
+      } else if (gatewayStatus?.connected === false) {
+        status = 'DISCONNECTED'
+      }
+    } catch (err: any) {
+      logger.warn({ instanceName: connection.instanceName, error: err.message }, 'Gateway status check failed — using DB status')
     }
 
     // 6. Update status in database if changed
