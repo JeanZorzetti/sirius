@@ -68,6 +68,8 @@ export function ChatInterface({
   const [contacts, setContacts] = useState<Contact[]>(initialContacts)
   const [connections, setConnections] = useState<Connection[]>(initialConnections)
   const [isRefreshing, setIsRefreshing] = useState(false)
+  // True while the initial sync is running (first load with 0 conversations)
+  const [isSyncing, setIsSyncing] = useState(initialContacts.length === 0)
 
   const activeConnections = connections.filter(c => c.status === 'CONNECTED')
   const disconnectedConnections = connections.filter(c => c.status === 'DISCONNECTED')
@@ -92,6 +94,7 @@ export function ChatInterface({
       if (res.ok) {
         const data = await res.json()
         setContacts(data)
+        setIsSyncing(false)
         const current = selectedContactRef.current
         if (current) {
           const updated = data.find((c: Contact) => c.id === current.id)
@@ -100,6 +103,7 @@ export function ChatInterface({
       }
     } catch (error) {
       console.error('[CHAT] fetchConversations error:', error)
+      setIsSyncing(false)
     } finally {
       setIsRefreshing(false)
     }
@@ -140,16 +144,16 @@ export function ChatInterface({
   useEffect(() => {
     if (hasSyncedRef.current) return
     const active = connections.find(c => c.status === 'CONNECTED')
-    if (!active) return
+    if (!active) {
+      // No active connection — stop spinner immediately
+      setIsSyncing(false)
+      return
+    }
     hasSyncedRef.current = true
     fetch(`/api/whatsapp/connections/${active.id}/sync`, { method: 'POST' })
       .then(res => res.ok ? res.json() : null)
-      .then(data => {
-        if (data?.syncedMessages > 0 || data?.syncedContacts > 0) {
-          fetchConversations()
-        }
-      })
-      .catch(() => {})
+      .then(() => fetchConversations())
+      .catch(() => setIsSyncing(false))
   }, [connections, fetchConversations])
 
   // Polling: conversas a cada 5s, conexões a cada 30s
@@ -285,26 +289,65 @@ export function ChatInterface({
               />
             </div>
           ) : contacts.length === 0 ? (
-            <div className="flex-1 flex items-center justify-center p-8">
-              <div className="text-center space-y-4">
-                <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto">
-                  <MessageSquare className="h-7 w-7 text-primary" />
+            <div className="flex-1 flex overflow-hidden chat-layout">
+              {/* Left panel: skeleton or empty state */}
+              <div className="w-full md:w-[340px] lg:w-[340px] flex-shrink-0 border-r flex flex-col">
+                {isSyncing ? (
+                  /* Skeleton conversation list */
+                  <div className="flex flex-col">
+                    <div className="px-3 py-2 border-b">
+                      <div className="h-8 rounded-lg bg-zinc-100 dark:bg-zinc-800 animate-pulse" />
+                    </div>
+                    <div className="p-2 space-y-1">
+                      {Array.from({ length: 7 }).map((_, i) => (
+                        <div key={i} className="flex items-center gap-3 px-2 py-2.5 rounded-lg">
+                          <div className="h-10 w-10 rounded-full bg-zinc-200 dark:bg-zinc-700 animate-pulse flex-shrink-0" />
+                          <div className="flex-1 space-y-1.5 min-w-0">
+                            <div className="flex justify-between gap-2">
+                              <div className="h-3.5 rounded bg-zinc-200 dark:bg-zinc-700 animate-pulse" style={{ width: `${55 + (i * 13) % 30}%` }} />
+                              <div className="h-3 w-8 rounded bg-zinc-100 dark:bg-zinc-800 animate-pulse flex-shrink-0" />
+                            </div>
+                            <div className="h-3 rounded bg-zinc-100 dark:bg-zinc-800 animate-pulse" style={{ width: `${40 + (i * 17) % 35}%` }} />
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                    <div className="mt-auto px-4 py-3 border-t">
+                      <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                        <RefreshCw className="h-3 w-3 animate-spin text-[#00a884]" />
+                        <span>Sincronizando conversas...</span>
+                      </div>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="flex-1 flex items-center justify-center p-6">
+                    <div className="text-center space-y-3">
+                      <div className="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center mx-auto">
+                        <MessageSquare className="h-6 w-6 text-primary" />
+                      </div>
+                      <div>
+                        <h3 className="font-semibold">Nenhuma conversa ainda</h3>
+                        <p className="text-xs text-muted-foreground mt-1">
+                          Suas conversas aparecem automaticamente ao receber mensagens
+                        </p>
+                      </div>
+                      <Button variant="outline" size="sm" onClick={() => fetchConversations(true)} disabled={isRefreshing}>
+                        <RefreshCw className={cn('mr-2 h-3.5 w-3.5', isRefreshing && 'animate-spin')} />
+                        Atualizar
+                      </Button>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* Right panel: empty */}
+              <div className="hidden md:flex flex-1 items-center justify-center bg-[#efeae2] dark:bg-zinc-900">
+                <div className="text-center space-y-2">
+                  <div className="w-16 h-16 rounded-full bg-white/60 dark:bg-zinc-800/60 backdrop-blur flex items-center justify-center mx-auto">
+                    <MessageSquare className="h-7 w-7 text-muted-foreground/40" />
+                  </div>
+                  <p className="text-sm text-muted-foreground/60">Sirius Chat</p>
                 </div>
-                <div>
-                  <h3 className="font-semibold text-lg">Nenhuma conversa ainda</h3>
-                  <p className="text-sm text-muted-foreground mt-1 max-w-sm">
-                    Suas conversas aparecem automaticamente ao receber ou enviar mensagens
-                  </p>
-                </div>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => fetchConversations(true)}
-                  disabled={isRefreshing}
-                >
-                  <RefreshCw className={cn('mr-2 h-4 w-4', isRefreshing && 'animate-spin')} />
-                  Atualizar
-                </Button>
               </div>
             </div>
           ) : (
