@@ -1,10 +1,18 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
-import PusherClient from 'pusher-js'
-import type { Channel } from 'pusher-js'
+/**
+ * useSSE (exported as usePusher for backwards compatibility)
+ *
+ * Connects to /api/whatsapp/stream via EventSource and dispatches
+ * real-time WhatsApp events to the chat UI.
+ *
+ * Replaces Pusher — zero external dependencies.
+ * Auto-reconnects on disconnect with exponential backoff.
+ */
 
-// --- Event types (match server-side shapes from lib/pusher.ts triggers) ---
+import { useEffect, useRef, useState } from 'react'
+
+// --- Event types (same shape as before) ---
 
 export interface MessageNewEvent {
   contactId: string
@@ -51,62 +59,6 @@ export interface ChatTypingEvent {
   isTyping: boolean
 }
 
-
-// --- Singleton client management ---
-
-interface ClientEntry {
-  client: PusherClient
-  channel: Channel
-  refCount: number
-}
-
-const clients = new Map<string, ClientEntry>()
-
-function getOrCreateClient(organizationId: string): ClientEntry {
-  const existing = clients.get(organizationId)
-  if (existing) {
-    existing.refCount++
-    return existing
-  }
-
-  const key = process.env.NEXT_PUBLIC_PUSHER_KEY!
-  const host = process.env.NEXT_PUBLIC_PUSHER_HOST
-  const cluster = process.env.NEXT_PUBLIC_PUSHER_CLUSTER
-
-  const client = new PusherClient(key, {
-    cluster: cluster || 'mt1',
-    authEndpoint: '/api/pusher/auth',
-    ...(host ? {
-      wsHost: host,
-      wsPort: 443,
-      wssPort: 443,
-      forceTLS: true,
-      disableStats: true,
-      enabledTransports: ['ws', 'wss'] as ('ws' | 'wss')[],
-    } : {}),
-  })
-
-  const channelName = `private-org-${organizationId}`
-  const channel = client.subscribe(channelName)
-
-  const entry: ClientEntry = { client, channel, refCount: 1 }
-  clients.set(organizationId, entry)
-  return entry
-}
-
-function releaseClient(organizationId: string) {
-  const entry = clients.get(organizationId)
-  if (!entry) return
-
-  entry.refCount--
-  if (entry.refCount <= 0) {
-    entry.channel.unbind_all()
-    entry.client.unsubscribe(`private-org-${organizationId}`)
-    entry.client.disconnect()
-    clients.delete(organizationId)
-  }
-}
-
 // --- Hook ---
 
 export interface UsePusherOptions {
@@ -130,7 +82,7 @@ export function usePusher({
 }: UsePusherOptions) {
   const [connectionStatus, setConnectionStatus] = useState<'connected' | 'connecting' | 'disconnected'>('disconnected')
 
-  // Store callbacks in refs so effect doesn't re-run when they change
+  // Stable refs so the effect never needs to re-run when callbacks change
   const onMessageNewRef = useRef(onMessageNew)
   const onMessageSentRef = useRef(onMessageSent)
   const onMessageStatusRef = useRef(onMessageStatus)
@@ -144,52 +96,64 @@ export function usePusher({
   onChatTypingRef.current = onChatTyping
 
   useEffect(() => {
-    const key = process.env.NEXT_PUBLIC_PUSHER_KEY
-    if (!enabled || !key) return
+    if (!enabled || !organizationId) return
 
-    const entry = getOrCreateClient(organizationId)
-    const { client, channel } = entry
+    let es: EventSource | null = null
+    let reconnectTimer: ReturnType<typeof setTimeout> | null = null
+    let attempt = 0
+    let destroyed = false
 
-    // Connection state
-    const onConnected = () => setConnectionStatus('connected')
-    const onDisconnected = () => setConnectionStatus('disconnected')
-    const onConnecting = () => setConnectionStatus('connecting')
+    function connect() {
+      if (destroyed) return
+      setConnectionStatus('connecting')
 
-    client.connection.bind('connected', onConnected)
-    client.connection.bind('disconnected', onDisconnected)
-    client.connection.bind('connecting', onConnecting)
+      es = new EventSource('/api/whatsapp/stream')
 
-    // Set initial state
-    const state = client.connection.state
-    if (state === 'connected') setConnectionStatus('connected')
-    else if (state === 'connecting') setConnectionStatus('connecting')
-    else setConnectionStatus('disconnected')
+      es.addEventListener('ping', () => {
+        attempt = 0
+        setConnectionStatus('connected')
+      })
 
-    // Event bindings — call through refs
-    const handleMessageNew = (data: MessageNewEvent) => onMessageNewRef.current?.(data)
-    const handleMessageSent = (data: MessageSentEvent) => onMessageSentRef.current?.(data)
-    const handleMessageStatus = (data: MessageStatusEvent) => onMessageStatusRef.current?.(data)
-    const handleConnectionReady = (data: ConnectionReadyEvent) => onConnectionReadyRef.current?.(data)
-    const handleChatTyping = (data: ChatTypingEvent) => onChatTypingRef.current?.(data)
+      es.addEventListener('message:new', (e) => {
+        try { onMessageNewRef.current?.(JSON.parse(e.data)) } catch { /* ignore */ }
+      })
 
-    channel.bind('message:new', handleMessageNew)
-    channel.bind('message:sent', handleMessageSent)
-    channel.bind('message:status', handleMessageStatus)
-    channel.bind('connection:ready', handleConnectionReady)
-    channel.bind('chat:typing', handleChatTyping)
+      es.addEventListener('message:sent', (e) => {
+        try { onMessageSentRef.current?.(JSON.parse(e.data)) } catch { /* ignore */ }
+      })
+
+      es.addEventListener('message:status', (e) => {
+        try { onMessageStatusRef.current?.(JSON.parse(e.data)) } catch { /* ignore */ }
+      })
+
+      es.addEventListener('connection:ready', (e) => {
+        try { onConnectionReadyRef.current?.(JSON.parse(e.data)) } catch { /* ignore */ }
+      })
+
+      es.addEventListener('chat:typing', (e) => {
+        try { onChatTypingRef.current?.(JSON.parse(e.data)) } catch { /* ignore */ }
+      })
+
+      es.onerror = () => {
+        es?.close()
+        es = null
+        if (destroyed) return
+        setConnectionStatus('disconnected')
+
+        // Exponential backoff: 1s, 2s, 4s, 8s, max 30s
+        const delay = Math.min(1000 * Math.pow(2, attempt), 30_000)
+        attempt++
+        reconnectTimer = setTimeout(connect, delay)
+      }
+    }
+
+    connect()
 
     return () => {
-      channel.unbind('message:new', handleMessageNew)
-      channel.unbind('message:sent', handleMessageSent)
-      channel.unbind('message:status', handleMessageStatus)
-      channel.unbind('connection:ready', handleConnectionReady)
-      channel.unbind('chat:typing', handleChatTyping)
-
-      client.connection.unbind('connected', onConnected)
-      client.connection.unbind('disconnected', onDisconnected)
-      client.connection.unbind('connecting', onConnecting)
-
-      releaseClient(organizationId)
+      destroyed = true
+      if (reconnectTimer) clearTimeout(reconnectTimer)
+      es?.close()
+      setConnectionStatus('disconnected')
     }
   }, [organizationId, enabled])
 

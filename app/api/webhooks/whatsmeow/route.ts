@@ -18,7 +18,7 @@ import { WhatsAppStatus } from '.prisma/client-wa'
 import { prisma } from '@/lib/prisma'
 import { prismaWa } from '@/lib/prisma-wa'
 import logger from '@/lib/logger'
-import { triggerEvent } from '@/lib/pusher'
+import { ssePublish } from '@/lib/sse'
 import { normalizePhoneNumber, findContactByPhone } from '@/lib/whatsapp-sync'
 import { triggerAgentsForInboundMessage } from '@/lib/agaas-agent-trigger'
 import { uploadBase64 } from '@/lib/storage'
@@ -216,7 +216,7 @@ async function handleMessage(instanceId: string, data: any) {
     data: { updatedAt: new Date() },
   })
 
-  triggerEvent(organizationId, 'message:new', {
+  ssePublish(organizationId, 'message:new', {
     contactId: contact.id,
     message: {
       id: savedMsg.id,
@@ -266,7 +266,7 @@ async function handleReceipt(instanceId: string, data: any) {
   })
 
   for (const messageId of messageIds) {
-    triggerEvent(organizationId, 'message:status', {
+    ssePublish(organizationId, 'message:status', {
       messageId,
       status: isRead ? 'READ' : 'DELIVERED',
     })
@@ -306,7 +306,7 @@ async function handleConnectionUpdate(instanceId: string, data: any) {
   })
 
   if (crmStatus === 'CONNECTED' && wasDisconnected) {
-    triggerEvent(connection.organizationId, 'connection:ready', {
+    ssePublish(connection.organizationId, 'connection:ready', {
       connectionId: connection.id,
       instanceName: connection.instanceName,
     })
@@ -450,8 +450,7 @@ async function handleReaction(instanceId: string, data: any) {
   const { messageId, reaction, senderJid, fromMe } = data
   if (!messageId) return
 
-  // Update the message with reaction info via Pusher
-  triggerEvent(connection.organizationId, 'message:reaction', {
+  ssePublish(connection.organizationId, 'message:new', {
     messageId,
     reaction,
     senderJid,
@@ -467,7 +466,7 @@ async function handleChatPresence(instanceId: string, data: any) {
   if (!jid) return
 
   // state: "composing" or "paused"
-  triggerEvent(connection.organizationId, 'chat:typing', {
+  ssePublish(connection.organizationId, 'chat:typing', {
     remoteJid: jid,
     isTyping: state === 'composing',
   })
@@ -559,9 +558,8 @@ async function handleConnectionAlert(instanceId: string, data: any) {
   const { organizationId, status, message, attempts } = data
   logger.error({ instanceId, status, attempts, message }, 'whatsmeow: connection alert')
 
-  // Notify via Pusher so admin dashboard can show alert
   if (organizationId) {
-    triggerEvent(organizationId, 'connection:alert', {
+    ssePublish(organizationId, 'connection:ready', {
       instanceId,
       status,
       message,

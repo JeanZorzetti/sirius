@@ -10,7 +10,7 @@ import { prisma } from '@/lib/prisma'
 import { prismaWa } from '@/lib/prisma-wa'
 import { whatsmeowClient } from '@/lib/integrations/whatsmeow-client'
 import logger from '@/lib/logger'
-import { triggerEvent } from '@/lib/pusher'
+import { ssePublish } from '@/lib/sse'
 import { normalizePhoneNumber } from '@/lib/whatsapp-sync'
 
 export async function POST(req: NextRequest) {
@@ -131,8 +131,7 @@ export async function POST(req: NextRequest) {
       },
     })
 
-    // Real-time: notify via Pusher
-    triggerEvent(user.organizationId, 'message:sent', {
+    ssePublish(user.organizationId, 'message:sent', {
       contactId: contact.id,
       message: savedMessage,
     })
