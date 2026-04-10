@@ -61,13 +61,14 @@ export async function GET(
       return NextResponse.json({ error: 'Tarefa não encontrada' }, { status: 404 })
     }
 
-    // Checar acesso por visibilidade
+    // Checar acesso por visibilidade (campo pode não existir em deploys antigos)
+    const visibility = (task as any).visibility ?? 'PUBLIC'
     if (user.orgRole === 'MEMBER') {
-      if (task.visibility === 'ADMINS_ONLY') {
+      if (visibility === 'ADMINS_ONLY') {
         return NextResponse.json({ error: 'Sem permissão' }, { status: 403 })
       }
       if (
-        task.visibility === 'PRIVATE' &&
+        visibility === 'PRIVATE' &&
         task.creatorId !== user.id &&
         task.assigneeId !== user.id
       ) {
@@ -112,13 +113,14 @@ export async function PATCH(
       return NextResponse.json({ error: 'Tarefa não encontrada' }, { status: 404 })
     }
 
-    // Checar acesso por visibilidade
+    // Checar acesso por visibilidade (campo pode não existir em deploys antigos)
+    const taskVisibility = (existing as any).visibility ?? 'PUBLIC'
     if (user.orgRole === 'MEMBER') {
-      if (existing.visibility === 'ADMINS_ONLY') {
+      if (taskVisibility === 'ADMINS_ONLY') {
         return NextResponse.json({ error: 'Sem permissão' }, { status: 403 })
       }
       if (
-        existing.visibility === 'PRIVATE' &&
+        taskVisibility === 'PRIVATE' &&
         existing.creatorId !== user.id &&
         existing.assigneeId !== user.id
       ) {
