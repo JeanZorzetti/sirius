@@ -84,106 +84,111 @@ export default async function ChatPage({
     return <div>Erro ao buscar conexões: {err.message}</div>
   }
 
-  const connectionIds = connections.map((c: any) => c.id)
+  // Filter only active connections — prevents mixing messages from old/disconnected instances
+  const activeConnections = connections.filter((c: any) => c.status === 'CONNECTED')
+  const connectionIds = activeConnections.map((c: any) => c.id)
   const messageFilter = connectionIds.length > 0
-    ? { OR: [{ connectionId: { in: connectionIds } }, { connectionId: null }] as any }
-    : {}
+    ? { connectionId: { in: connectionIds } }
+    : null
 
   let contacts: any[] = []
   try {
-    // 1. Get distinct contactIds with messages from WA DB
-    const contactIdsWithMessages = await prismaWa.whatsAppMessage.findMany({
-      where: {
-        organizationId: user.organizationId,
-        ...messageFilter,
-      },
-      distinct: ['contactId'],
-      select: { contactId: true },
-    })
-
-    const contactIds = contactIdsWithMessages
-      .map(m => m.contactId)
-      .filter((id): id is string => id !== null)
-
-    if (contactIds.length === 0) {
+    // No active connections — nothing to show
+    if (!messageFilter) {
       contacts = []
     } else {
-      // 2. Fetch contacts from CRM DB
-      const rawContacts = await prisma.contact.findMany({
-        where: {
-          id: { in: contactIds },
-          organizationId: user.organizationId,
-        },
-        orderBy: { updatedAt: 'desc' },
-      })
-
-      // 3. Fetch last message per contact from WA DB
-      const lastMessages = await prismaWa.whatsAppMessage.findMany({
+      // 1. Get distinct contactIds with messages from WA DB
+      const contactIdsWithMessages = await prismaWa.whatsAppMessage.findMany({
         where: {
           organizationId: user.organizationId,
-          contactId: { in: contactIds },
           ...messageFilter,
         },
-        orderBy: { sentAt: 'desc' },
         distinct: ['contactId'],
+        select: { contactId: true },
       })
 
-      const lastMessageMap = new Map(
-        lastMessages.map(m => [m.contactId, m])
-      )
+      const contactIds = contactIdsWithMessages
+        .map(m => m.contactId)
+        .filter((id): id is string => id !== null)
 
-      // 4. Fetch unread counts from WA DB
-      const unreadCounts = await prismaWa.whatsAppMessage.groupBy({
-        by: ['contactId'],
-        where: {
-          organizationId: user.organizationId,
-          contactId: { in: contactIds },
-          direction: 'INBOUND',
-          isRead: false,
-          ...messageFilter,
-        },
-        _count: { id: true },
-      })
-
-      const unreadMap = new Map(
-        unreadCounts.map(u => [u.contactId, u._count.id])
-      )
-
-      // 5. Fetch total inbound counts from WA DB
-      const totalCounts = await prismaWa.whatsAppMessage.groupBy({
-        by: ['contactId'],
-        where: {
-          organizationId: user.organizationId,
-          contactId: { in: contactIds },
-          direction: 'INBOUND',
-          ...messageFilter,
-        },
-        _count: { id: true },
-      })
-
-      const totalCountMap = new Map(
-        totalCounts.map(u => [u.contactId, u._count.id])
-      )
-
-      // 6. Merge CRM contacts with WA data
-      contacts = rawContacts.map(contact => {
-        const lastMsg = lastMessageMap.get(contact.id)
-        return {
-          ...contact,
-          whatsappMessages: lastMsg ? [lastMsg] : [],
-          _count: {
-            whatsappMessages: totalCountMap.get(contact.id) || 0,
-            unreadMessages: unreadMap.get(contact.id) || 0,
+      if (contactIds.length > 0) {
+        // 2. Fetch contacts from CRM DB
+        const rawContacts = await prisma.contact.findMany({
+          where: {
+            id: { in: contactIds },
+            organizationId: user.organizationId,
           },
-        }
-      })
+          orderBy: { updatedAt: 'desc' },
+        })
 
-      // Sort by latest message time to match WhatsApp ordering
-      contacts.sort((a: any, b: any) => {
-        const aTime = a.whatsappMessages[0]?.sentAt?.getTime() ?? 0
-        const bTime = b.whatsappMessages[0]?.sentAt?.getTime() ?? 0
-        return bTime - aTime
-      })
+        // 3. Fetch last message per contact from WA DB
+        const lastMessages = await prismaWa.whatsAppMessage.findMany({
+          where: {
+            organizationId: user.organizationId,
+            contactId: { in: contactIds },
+            ...messageFilter,
+          },
+          orderBy: { sentAt: 'desc' },
+          distinct: ['contactId'],
+        })
+
+        const lastMessageMap = new Map(
+          lastMessages.map(m => [m.contactId, m])
+        )
+
+        // 4. Fetch unread counts from WA DB
+        const unreadCounts = await prismaWa.whatsAppMessage.groupBy({
+          by: ['contactId'],
+          where: {
+            organizationId: user.organizationId,
+            contactId: { in: contactIds },
+            direction: 'INBOUND',
+            isRead: false,
+            ...messageFilter,
+          },
+          _count: { id: true },
+        })
+
+        const unreadMap = new Map(
+          unreadCounts.map(u => [u.contactId, u._count.id])
+        )
+
+        // 5. Fetch total inbound counts from WA DB
+        const totalCounts = await prismaWa.whatsAppMessage.groupBy({
+          by: ['contactId'],
+          where: {
+            organizationId: user.organizationId,
+            contactId: { in: contactIds },
+            direction: 'INBOUND',
+            ...messageFilter,
+          },
+          _count: { id: true },
+        })
+
+        const totalCountMap = new Map(
+          totalCounts.map(u => [u.contactId, u._count.id])
+        )
+
+        // 6. Merge CRM contacts with WA data
+        contacts = rawContacts.map(contact => {
+          const lastMsg = lastMessageMap.get(contact.id)
+          return {
+            ...contact,
+            whatsappMessages: lastMsg ? [lastMsg] : [],
+            _count: {
+              whatsappMessages: totalCountMap.get(contact.id) || 0,
+              unreadMessages: unreadMap.get(contact.id) || 0,
+            },
+          }
+        })
+
+        // Sort by latest message time to match WhatsApp ordering
+        contacts.sort((a: any, b: any) => {
+          const aTime = a.whatsappMessages[0]?.sentAt?.getTime() ?? 0
+          const bTime = b.whatsappMessages[0]?.sentAt?.getTime() ?? 0
+          return bTime - aTime
+        })
+      }
     }
   } catch (err: any) {
     console.error("[CHAT_PAGE] Falha ao buscar contatos:", err.message)

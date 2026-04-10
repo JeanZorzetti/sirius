@@ -34,18 +34,20 @@ export async function GET() {
       )
     }
 
-    // 3. Get ALL connections for this org
+    // 3. Get active (CONNECTED) connections for this org only
     const orgConnections = await prismaWa.whatsAppConnection.findMany({
-      where: { organizationId: user.organizationId },
+      where: { organizationId: user.organizationId, status: 'CONNECTED' },
       select: { id: true },
     })
 
     const connectionIds = orgConnections.map(c => c.id)
 
-    // Build message filter: messages from any org connection OR legacy (connectionId null)
-    const messageFilter = connectionIds.length > 0
-      ? { OR: [{ connectionId: { in: connectionIds } }, { connectionId: null }] as any }
-      : {}
+    // If no active connections, return empty — don't show stale data from old instances
+    if (connectionIds.length === 0) {
+      return NextResponse.json([])
+    }
+
+    const messageFilter = { connectionId: { in: connectionIds } }
 
     // 4. Get distinct contactIds that have messages (from WA DB)
     const contactIdsWithMessages = await prismaWa.whatsAppMessage.findMany({

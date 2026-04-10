@@ -51,11 +51,21 @@ export async function GET(
       )
     }
 
-    // 4. Buscar mensagens WhatsApp do contato com reações (Fase 4.2)
+    // 4. Get active connections to filter messages by current instance only
+    const activeConnections = await prismaWa.whatsAppConnection.findMany({
+      where: { organizationId: user.organizationId, status: 'CONNECTED' },
+      select: { id: true },
+    })
+    const activeConnectionIds = activeConnections.map(c => c.id)
+
+    // 5. Buscar mensagens WhatsApp do contato com reações (Fase 4.2)
     const messages = await prismaWa.whatsAppMessage.findMany({
       where: {
         contactId: id,
         organizationId: user.organizationId,
+        ...(activeConnectionIds.length > 0
+          ? { connectionId: { in: activeConnectionIds } }
+          : {}),
       },
       orderBy: {
         sentAt: 'asc',
