@@ -1,6 +1,10 @@
 import { DashboardTabs } from "./dashboard-tabs"
 import { prisma } from "@/lib/prisma"
 
+function normalize(str: string) {
+  return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase()
+}
+
 interface DashboardTabsWrapperProps {
   userId: string
   userName: string
@@ -40,11 +44,6 @@ export async function DashboardTabsWrapper({
           where: {
             organizationId,
             ...(vsearch ? { value: { equals: Number(vsearch) } as any } : {}),
-            ...(csearch ? { contact: { OR: [
-              { name: { contains: csearch, mode: "insensitive" } },
-              { company: { contains: csearch, mode: "insensitive" } },
-              { email: { contains: csearch, mode: "insensitive" } },
-            ] } } : {}),
           },
           include: {
             contact: {
@@ -53,6 +52,7 @@ export async function DashboardTabsWrapper({
                 name: true,
                 email: true,
                 phone: true,
+                company: true,
               },
             },
           },
@@ -82,19 +82,32 @@ export async function DashboardTabsWrapper({
     updatedAt: p.updatedAt.toISOString(),
   }))
 
+  const csearchNorm = csearch ? normalize(csearch) : null
+
   const stages = rawStages.map((stage) => ({
     ...stage,
     createdAt: stage.createdAt.toISOString(),
     updatedAt: stage.updatedAt.toISOString(),
     pipelineId: stage.pipelineId,
-    deals: stage.deals.map((deal) => ({
-      ...deal,
-      value: deal.value ? Number(deal.value) : null,
-      closeDate: deal.closeDate ? deal.closeDate.toISOString() : null,
-      dueDate: deal.dueDate ? deal.dueDate.toISOString() : null,
-      createdAt: deal.createdAt.toISOString(),
-      updatedAt: deal.updatedAt.toISOString(),
-    })),
+    deals: stage.deals
+      .filter((deal) => {
+        if (!csearchNorm) return true
+        const c = deal.contact
+        if (!c) return false
+        return (
+          normalize(c.name ?? '').includes(csearchNorm) ||
+          normalize(c.company ?? '').includes(csearchNorm) ||
+          normalize(c.email ?? '').includes(csearchNorm)
+        )
+      })
+      .map((deal) => ({
+        ...deal,
+        value: deal.value ? Number(deal.value) : null,
+        closeDate: deal.closeDate ? deal.closeDate.toISOString() : null,
+        dueDate: deal.dueDate ? deal.dueDate.toISOString() : null,
+        createdAt: deal.createdAt.toISOString(),
+        updatedAt: deal.updatedAt.toISOString(),
+      })),
   }))
 
   return (
