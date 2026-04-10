@@ -59,7 +59,11 @@ export default async function TasksHubPage() {
   const now = new Date()
   const endOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59, 59)
 
-  const [myTotal, myOverdue, myDueToday, entitlements] = await Promise.all([
+  // Velocity: tasks concluídas nas últimas 4 semanas para sparkline
+  const fourWeeksAgo = new Date(now)
+  fourWeeksAgo.setDate(fourWeeksAgo.getDate() - 28)
+
+  const [myTotal, myOverdue, myDueToday, entitlements, velocityRaw] = await Promise.all([
     prisma.task.count({ where: myTasksWhere }),
     prisma.task.count({
       where: { ...myTasksWhere, dueDate: { lt: now } },
@@ -68,9 +72,29 @@ export default async function TasksHubPage() {
       where: { ...myTasksWhere, dueDate: { gte: now, lte: endOfToday } },
     }),
     getOrganizationEntitlements(user.organizationId),
+    prisma.task.findMany({
+      where: {
+        organizationId: user.organizationId,
+        archived: false,
+        completedAt: { gte: fourWeeksAgo, lte: now },
+      },
+      select: { completedAt: true },
+    }),
   ])
 
   const canAccessAnalytics = entitlements.features.taskAnalytics ?? false
+
+  // Calcular velocity por semana (4 pontos)
+  const weeklyVelocity: number[] = [0, 0, 0, 0]
+  for (const t of velocityRaw) {
+    if (!t.completedAt) continue
+    const diffDays = Math.floor((now.getTime() - t.completedAt.getTime()) / (1000 * 60 * 60 * 24))
+    const weekIdx = Math.min(3, Math.floor(diffDays / 7))
+    weeklyVelocity[3 - weekIdx] += 1 // índice 3 = semana mais recente
+  }
+  const currentVelocity = weeklyVelocity[3]
+  const prevVelocity = weeklyVelocity[2]
+  const velocityDelta = prevVelocity > 0 ? Math.round(((currentVelocity - prevVelocity) / prevVelocity) * 100) : null
 
   return (
     <div className="flex-1 space-y-8">
@@ -127,24 +151,61 @@ export default async function TasksHubPage() {
           </div>
         </Link>
 
-        {/* Analytics Quick Card (PRO+) */}
+        {/* Analytics + Velocity Card (PRO+) */}
         {canAccessAnalytics && (
           <Link
             href="/dashboard/tasks/analytics"
-            className="group relative flex items-center justify-between gap-4 overflow-hidden rounded-2xl border border-border/50 bg-gradient-to-br from-emerald-500/5 via-teal-500/5 to-transparent p-6 transition-all duration-200 hover:border-emerald-500/30 hover:shadow-md"
+            className="group relative flex flex-col justify-between gap-4 overflow-hidden rounded-2xl border border-border/50 bg-gradient-to-br from-emerald-500/5 via-teal-500/5 to-transparent p-6 transition-all duration-200 hover:border-emerald-500/30 hover:shadow-md"
           >
-            <div className="flex items-center gap-4">
-              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-500/10 text-emerald-500">
-                <BarChart3 className="h-6 w-6" />
+            {/* Top: icon + título */}
+            <div className="flex items-start justify-between gap-3">
+              <div className="flex items-center gap-3">
+                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-500/10 text-emerald-500">
+                  <BarChart3 className="h-5 w-5" />
+                </div>
+                <div>
+                  <h2 className="text-base font-semibold text-foreground">Analytics</h2>
+                  <p className="text-xs text-muted-foreground">Produtividade e insights</p>
+                </div>
               </div>
-              <div>
-                <h2 className="text-base font-semibold text-foreground">Analytics</h2>
-                <p className="text-xs text-muted-foreground">
-                  Produtividade e insights
-                </p>
-              </div>
+              <ArrowRight className="h-4 w-4 shrink-0 text-muted-foreground/50 transition-all duration-200 group-hover:translate-x-0.5 group-hover:text-foreground" />
             </div>
-            <ArrowRight className="h-5 w-5 shrink-0 text-muted-foreground transition-all duration-200 group-hover:translate-x-1 group-hover:text-foreground" />
+
+            {/* Sparkline de velocity */}
+            <div className="space-y-2">
+              <div className="flex items-baseline justify-between gap-2">
+                <div>
+                  <p className="font-display text-3xl font-bold tracking-tighter text-foreground leading-none">
+                    {currentVelocity}
+                  </p>
+                  <p className="mt-1 text-[10px] uppercase tracking-wider text-muted-foreground">
+                    tasks/semana
+                  </p>
+                </div>
+                {velocityDelta !== null && (
+                  <div className={`flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-semibold ${velocityDelta >= 0 ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400' : 'bg-rose-500/10 text-rose-600 dark:text-rose-400'}`}>
+                    {velocityDelta >= 0 ? '↑' : '↓'} {Math.abs(velocityDelta)}%
+                  </div>
+                )}
+              </div>
+
+              {/* Mini sparkline SVG */}
+              <div className="flex items-end gap-1 h-8">
+                {weeklyVelocity.map((v, i) => {
+                  const maxV = Math.max(...weeklyVelocity, 1)
+                  const h = Math.max(4, Math.round((v / maxV) * 32))
+                  const isLast = i === weeklyVelocity.length - 1
+                  return (
+                    <div
+                      key={i}
+                      className={`flex-1 rounded-t-sm transition-all duration-300 ${isLast ? 'bg-emerald-500' : 'bg-emerald-500/25'}`}
+                      style={{ height: `${h}px` }}
+                    />
+                  )
+                })}
+              </div>
+              <p className="text-[10px] text-muted-foreground/60">últimas 4 semanas</p>
+            </div>
           </Link>
         )}
       </div>

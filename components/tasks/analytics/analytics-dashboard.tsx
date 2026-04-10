@@ -5,10 +5,18 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { Loader2 } from 'lucide-react'
 import { AnalyticsOverview } from './analytics-overview'
 import { TasksByStatusChart } from './tasks-by-status-chart'
+import { TasksByPriorityChart } from './tasks-by-priority-chart'
 import { CompletionTrendChart } from './completion-trend-chart'
 import { ProductivityByUser } from './productivity-by-user'
 import { OverdueTasksList } from './overdue-tasks-list'
+import { AnalyticsExportButton } from './analytics-export-button'
 import { cn } from '@/lib/utils'
+
+interface ComparisonDatum {
+  current: number
+  previous: number
+  delta: number | null
+}
 
 interface AnalyticsData {
   rangeDays: number
@@ -20,6 +28,15 @@ interface AnalyticsData {
     overdue: number
     completionRate: number
     avgCompletionHours: number
+    velocity: number
+    created: number
+  }
+  comparison: {
+    completed: ComparisonDatum
+    overdue: ComparisonDatum
+    created: ComparisonDatum
+    avgCompletionHours: ComparisonDatum
+    velocity: ComparisonDatum
   }
   tasksByStatus: Array<{
     statusId: string
@@ -28,7 +45,12 @@ interface AnalyticsData {
     count: number
     type: string
   }>
-  tasksByPriority: Array<{ priority: string; count: number }>
+  tasksByPriority: Array<{
+    priority: string
+    label: string
+    color: string
+    count: number
+  }>
   trend: Array<{ date: string; created: number; completed: number }>
   topAssignees: Array<{
     userId: string
@@ -84,15 +106,14 @@ export function AnalyticsDashboard({ projectId, locale }: Props) {
     }
 
     fetchAnalytics()
-    return () => {
-      cancelled = true
-    }
+    return () => { cancelled = true }
   }, [range, projectId])
 
   return (
     <div className="space-y-6">
-      {/* Range selector */}
-      <div className="flex items-center justify-end">
+      {/* Toolbar: range + export */}
+      <div className="flex items-center justify-between gap-3">
+        {/* Range selector */}
         <div className="inline-flex items-center gap-1 rounded-xl border border-border/50 bg-card/40 p-1 backdrop-blur-xl">
           {RANGE_OPTIONS.map((opt) => (
             <button
@@ -110,6 +131,11 @@ export function AnalyticsDashboard({ projectId, locale }: Props) {
             </button>
           ))}
         </div>
+
+        {/* Export button — só aparece quando há dados */}
+        {data && (
+          <AnalyticsExportButton data={data} projectId={projectId} rangeDays={range} />
+        )}
       </div>
 
       <AnimatePresence mode="wait">
@@ -145,19 +171,32 @@ export function AnalyticsDashboard({ projectId, locale }: Props) {
             transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1.0] }}
             className="space-y-6"
           >
-            {/* KPIs */}
-            <AnalyticsOverview kpis={data.kpis} />
+            {/* Comparação aviso de período */}
+            <p className="text-[11px] text-muted-foreground/60 text-right">
+              ↑↓ comparado com os {range} dias anteriores
+            </p>
 
-            {/* Grid de gráficos */}
+            {/* KPIs com deltas */}
+            <AnalyticsOverview
+              kpis={data.kpis}
+              comparison={data.comparison}
+              rangeDays={data.rangeDays}
+            />
+
+            {/* Grid linha 1: Tendência + Status */}
             <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
               <CompletionTrendChart data={data.trend} rangeDays={data.rangeDays} />
               <TasksByStatusChart data={data.tasksByStatus} />
             </div>
 
+            {/* Grid linha 2: Prioridade + Assignees */}
             <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+              <TasksByPriorityChart data={data.tasksByPriority} />
               <ProductivityByUser data={data.topAssignees} />
-              <OverdueTasksList data={data.overdueList} locale={locale} />
             </div>
+
+            {/* Overdue — full width */}
+            <OverdueTasksList data={data.overdueList} locale={locale} />
           </motion.div>
         ) : null}
       </AnimatePresence>

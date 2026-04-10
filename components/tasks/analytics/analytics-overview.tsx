@@ -1,8 +1,14 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { CheckCircle2, Clock, AlertTriangle, ListChecks, TrendingUp, Timer } from 'lucide-react'
+import { CheckCircle2, Clock, AlertTriangle, ListChecks, TrendingUp, Timer, TrendingDown, Minus, Zap } from 'lucide-react'
 import { cn } from '@/lib/utils'
+
+interface ComparisonDatum {
+  current: number
+  previous: number
+  delta: number | null
+}
 
 interface KpisData {
   total: number
@@ -11,21 +17,25 @@ interface KpisData {
   overdue: number
   completionRate: number
   avgCompletionHours: number
+  velocity: number
+  created: number
+}
+
+interface ComparisonData {
+  completed: ComparisonDatum
+  overdue: ComparisonDatum
+  created: ComparisonDatum
+  avgCompletionHours: ComparisonDatum
+  velocity: ComparisonDatum
 }
 
 interface Props {
   kpis: KpisData
+  comparison?: ComparisonData
+  rangeDays: number
 }
 
-interface KpiCard {
-  label: string
-  value: string | number
-  sub?: string
-  icon: React.ElementType
-  tone: 'neutral' | 'success' | 'warning' | 'danger' | 'info'
-}
-
-const toneStyles: Record<KpiCard['tone'], { ring: string; icon: string; glow: string }> = {
+const toneStyles = {
   neutral: {
     ring: 'ring-border/50',
     icon: 'text-foreground',
@@ -51,7 +61,14 @@ const toneStyles: Record<KpiCard['tone'], { ring: string; icon: string; glow: st
     icon: 'text-sky-500',
     glow: 'from-sky-500/10 via-transparent to-transparent',
   },
+  violet: {
+    ring: 'ring-violet-500/20',
+    icon: 'text-violet-500',
+    glow: 'from-violet-500/10 via-transparent to-transparent',
+  },
 }
+
+type Tone = keyof typeof toneStyles
 
 function formatHours(h: number): string {
   if (h <= 0) return '—'
@@ -60,20 +77,76 @@ function formatHours(h: number): string {
   return `${(h / 24).toFixed(1)}d`
 }
 
-export function AnalyticsOverview({ kpis }: Props) {
-  const cards: KpiCard[] = [
-    {
-      label: 'Total de Tarefas',
-      value: kpis.total.toLocaleString('pt-BR'),
-      icon: ListChecks,
-      tone: 'neutral',
-    },
+interface DeltaBadgeProps {
+  delta: number | null
+  /** Se true, delta negativo é bom (ex: overdue) */
+  invertedGood?: boolean
+  /** Se true, delta negativo é bom (ex: tempo médio) */
+  lowerIsBetter?: boolean
+}
+
+function DeltaBadge({ delta, invertedGood = false, lowerIsBetter = false }: DeltaBadgeProps) {
+  if (delta === null) return null
+
+  const isPositive = delta > 0
+  const isGood = lowerIsBetter ? !isPositive : (invertedGood ? !isPositive : isPositive)
+
+  if (delta === 0) {
+    return (
+      <div className="flex items-center gap-0.5 rounded-full bg-muted/60 px-1.5 py-0.5">
+        <Minus className="h-2.5 w-2.5 text-muted-foreground" />
+        <span className="text-[10px] font-medium text-muted-foreground">0%</span>
+      </div>
+    )
+  }
+
+  return (
+    <div
+      className={cn(
+        'flex items-center gap-0.5 rounded-full px-1.5 py-0.5',
+        isGood
+          ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400'
+          : 'bg-rose-500/10 text-rose-600 dark:text-rose-400'
+      )}
+    >
+      {isPositive ? (
+        <TrendingUp className="h-2.5 w-2.5" />
+      ) : (
+        <TrendingDown className="h-2.5 w-2.5" />
+      )}
+      <span className="text-[10px] font-semibold">
+        {isPositive ? '+' : ''}{delta}%
+      </span>
+    </div>
+  )
+}
+
+export function AnalyticsOverview({ kpis, comparison, rangeDays }: Props) {
+  const cards: Array<{
+    label: string
+    value: string | number
+    sub?: string
+    icon: React.ElementType
+    tone: Tone
+    delta?: number | null
+    invertedGood?: boolean
+    lowerIsBetter?: boolean
+  }> = [
     {
       label: 'Concluídas',
       value: kpis.completed.toLocaleString('pt-BR'),
       sub: `${kpis.completionRate}% do total`,
       icon: CheckCircle2,
       tone: 'success',
+      delta: comparison?.completed.delta,
+    },
+    {
+      label: 'Criadas',
+      value: kpis.created.toLocaleString('pt-BR'),
+      sub: `últimos ${rangeDays}d`,
+      icon: ListChecks,
+      tone: 'neutral',
+      delta: comparison?.created.delta,
     },
     {
       label: 'Em Progresso',
@@ -87,12 +160,16 @@ export function AnalyticsOverview({ kpis }: Props) {
       sub: kpis.overdue > 0 ? 'requer atenção' : 'tudo em dia',
       icon: AlertTriangle,
       tone: kpis.overdue > 0 ? 'danger' : 'success',
+      delta: comparison?.overdue.delta,
+      invertedGood: true,
     },
     {
-      label: 'Taxa de Conclusão',
-      value: `${kpis.completionRate}%`,
-      icon: TrendingUp,
-      tone: 'info',
+      label: 'Velocity',
+      value: `${kpis.velocity}`,
+      sub: 'tasks/semana',
+      icon: Zap,
+      tone: 'violet',
+      delta: comparison?.velocity.delta,
     },
     {
       label: 'Tempo Médio',
@@ -100,6 +177,8 @@ export function AnalyticsOverview({ kpis }: Props) {
       sub: 'criação → conclusão',
       icon: Timer,
       tone: 'neutral',
+      delta: comparison?.avgCompletionHours.delta,
+      lowerIsBetter: true,
     },
   ]
 
@@ -113,11 +192,7 @@ export function AnalyticsOverview({ kpis }: Props) {
             key={card.label}
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{
-              duration: 0.4,
-              delay: i * 0.05,
-              ease: [0.25, 0.1, 0.25, 1.0],
-            }}
+            transition={{ duration: 0.4, delay: i * 0.05, ease: [0.25, 0.1, 0.25, 1.0] }}
             className={cn(
               'group relative overflow-hidden rounded-2xl',
               'border border-border/50 bg-card/40 backdrop-blur-xl',
@@ -135,28 +210,38 @@ export function AnalyticsOverview({ kpis }: Props) {
               )}
             />
 
-            <div className="relative flex items-start justify-between gap-2">
-              <div className="min-w-0 flex-1">
-                <p className="text-[10px] sm:text-xs font-medium uppercase tracking-wider text-muted-foreground">
-                  {card.label}
-                </p>
-                <p className="mt-2 font-display text-2xl sm:text-3xl font-bold tracking-tighter text-foreground">
+            <div className="relative space-y-3">
+              {/* Icon + delta */}
+              <div className="flex items-start justify-between gap-1">
+                <div
+                  className={cn(
+                    'flex h-8 w-8 items-center justify-center rounded-lg',
+                    'bg-background/60 ring-1 ring-inset',
+                    styles.ring
+                  )}
+                >
+                  <Icon className={cn('h-3.5 w-3.5', styles.icon)} />
+                </div>
+                <DeltaBadge
+                  delta={card.delta ?? null}
+                  invertedGood={card.invertedGood}
+                  lowerIsBetter={card.lowerIsBetter}
+                />
+              </div>
+
+              {/* Value */}
+              <div>
+                <p className="font-display text-2xl sm:text-3xl font-bold tracking-tighter text-foreground leading-none">
                   {card.value}
                 </p>
+                <p className="mt-1.5 text-[10px] sm:text-xs font-medium uppercase tracking-wider text-muted-foreground">
+                  {card.label}
+                </p>
                 {card.sub && (
-                  <p className="mt-1 text-[10px] sm:text-xs text-muted-foreground truncate">
+                  <p className="mt-0.5 text-[10px] text-muted-foreground/70 truncate">
                     {card.sub}
                   </p>
                 )}
-              </div>
-              <div
-                className={cn(
-                  'flex h-9 w-9 shrink-0 items-center justify-center rounded-xl',
-                  'bg-background/60 ring-1 ring-inset',
-                  styles.ring
-                )}
-              >
-                <Icon className={cn('h-4 w-4', styles.icon)} />
               </div>
             </div>
           </motion.div>

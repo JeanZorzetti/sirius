@@ -8,10 +8,10 @@ import logger from '@/lib/logger'
  * GET /api/tasks/analytics
  *
  * Query params:
- *   - projectId?: string  → escopo em um projeto (opcional, default = toda a org)
- *   - rangeDays?: number  → janela temporal para tendências (default: 30)
+ *   - projectId?: string  → escopo em um projeto (opcional)
+ *   - rangeDays?: number  → janela temporal (default: 30)
  *
- * Retorna métricas agregadas para o dashboard de analytics de tasks (PRO+).
+ * Retorna métricas + comparação com período anterior (PRO+).
  */
 export async function GET(request: Request) {
   try {
@@ -26,13 +26,9 @@ export async function GET(request: Request) {
     })
 
     if (!user?.organizationId) {
-      return NextResponse.json(
-        { error: 'Organização não encontrada' },
-        { status: 404 }
-      )
+      return NextResponse.json({ error: 'Organização não encontrada' }, { status: 404 })
     }
 
-    // Feature gate: analytics é PRO+
     try {
       await requireFeature(user.organizationId, 'can_use_task_analytics')
     } catch (err) {
@@ -52,28 +48,33 @@ export async function GET(request: Request) {
 
     const { searchParams } = new URL(request.url)
     const projectId = searchParams.get('projectId') || undefined
-    const rangeDays = Math.max(
-      1,
-      Math.min(365, Number(searchParams.get('rangeDays') || 30))
-    )
+    const rangeDays = Math.max(1, Math.min(365, Number(searchParams.get('rangeDays') || 30)))
 
+    // ── Janelas de tempo ────────────────────────────────────────────
     const now = new Date()
+
     const rangeStart = new Date(now)
     rangeStart.setDate(rangeStart.getDate() - rangeDays)
     rangeStart.setHours(0, 0, 0, 0)
 
+    // Período anterior: mesmo número de dias, imediatamente antes do rangeStart
+    const prevRangeEnd = new Date(rangeStart)
+    prevRangeEnd.setMilliseconds(prevRangeEnd.getMilliseconds() - 1)
+    const prevRangeStart = new Date(rangeStart)
+    prevRangeStart.setDate(prevRangeStart.getDate() - rangeDays)
+    prevRangeStart.setHours(0, 0, 0, 0)
+
+    // ── Base where ──────────────────────────────────────────────────
     const baseWhere: any = {
       organizationId: user.organizationId,
       archived: false,
     }
     if (projectId) baseWhere.projectId = projectId
-
-    // MEMBER só vê o que pode ver
     if (user.orgRole === 'MEMBER') {
       baseWhere.OR = [{ assigneeId: user.id }, { creatorId: user.id }]
     }
 
-    // ── Queries em paralelo ────────────────────────────────────────
+    // ── Queries período atual + anterior em paralelo ────────────────
     const [
       totalTasks,
       completedTasks,
@@ -85,60 +86,46 @@ export async function GET(request: Request) {
       topAssigneesRaw,
       avgCompletionTimeRaw,
       overdueList,
+      // Período anterior
+      prevCompletedTasks,
+      prevOverdueTasks,
+      prevCreatedTasks,
+      prevAvgCompletionTimeRaw,
     ] = await Promise.all([
-      // Total
+      // ── Período atual ──
       prisma.task.count({ where: baseWhere }),
 
-      // Concluídas (no range)
       prisma.task.count({
-        where: {
-          ...baseWhere,
-          completedAt: { gte: rangeStart, lte: now },
-        },
+        where: { ...baseWhere, completedAt: { gte: rangeStart, lte: now } },
       }),
 
-      // Overdue (dueDate passou e não concluída)
       prisma.task.count({
-        where: {
-          ...baseWhere,
-          dueDate: { lt: now },
-          completedAt: null,
-        },
+        where: { ...baseWhere, dueDate: { lt: now }, completedAt: null },
       }),
 
-      // Por status
       prisma.task.groupBy({
         by: ['statusId'],
         where: baseWhere,
         _count: { _all: true },
       }),
 
-      // Por prioridade
       prisma.task.groupBy({
         by: ['priority'],
         where: baseWhere,
         _count: { _all: true },
+        orderBy: { _count: { priority: 'desc' } },
       }),
 
-      // Concluídas por dia no range
       prisma.task.findMany({
-        where: {
-          ...baseWhere,
-          completedAt: { gte: rangeStart, lte: now },
-        },
+        where: { ...baseWhere, completedAt: { gte: rangeStart, lte: now } },
         select: { completedAt: true },
       }),
 
-      // Criadas por dia no range
       prisma.task.findMany({
-        where: {
-          ...baseWhere,
-          createdAt: { gte: rangeStart, lte: now },
-        },
+        where: { ...baseWhere, createdAt: { gte: rangeStart, lte: now } },
         select: { createdAt: true },
       }),
 
-      // Top assignees (todas as tasks do escopo)
       prisma.task.groupBy({
         by: ['assigneeId'],
         where: { ...baseWhere, assigneeId: { not: null } },
@@ -147,22 +134,13 @@ export async function GET(request: Request) {
         take: 10,
       }),
 
-      // Tempo médio de conclusão (em ms) — só tasks com completedAt e createdAt
       prisma.task.findMany({
-        where: {
-          ...baseWhere,
-          completedAt: { not: null, gte: rangeStart },
-        },
+        where: { ...baseWhere, completedAt: { not: null, gte: rangeStart } },
         select: { createdAt: true, completedAt: true },
       }),
 
-      // Lista de overdue (top 10 mais antigas)
       prisma.task.findMany({
-        where: {
-          ...baseWhere,
-          dueDate: { lt: now },
-          completedAt: null,
-        },
+        where: { ...baseWhere, dueDate: { lt: now }, completedAt: null },
         select: {
           id: true,
           title: true,
@@ -176,13 +154,29 @@ export async function GET(request: Request) {
         orderBy: { dueDate: 'asc' },
         take: 10,
       }),
+
+      // ── Período anterior ──
+      prisma.task.count({
+        where: { ...baseWhere, completedAt: { gte: prevRangeStart, lte: prevRangeEnd } },
+      }),
+
+      prisma.task.count({
+        where: { ...baseWhere, dueDate: { lt: prevRangeEnd }, completedAt: null, createdAt: { lte: prevRangeEnd } },
+      }),
+
+      prisma.task.count({
+        where: { ...baseWhere, createdAt: { gte: prevRangeStart, lte: prevRangeEnd } },
+      }),
+
+      prisma.task.findMany({
+        where: { ...baseWhere, completedAt: { not: null, gte: prevRangeStart, lte: prevRangeEnd } },
+        select: { createdAt: true, completedAt: true },
+      }),
     ])
 
-    // ── Resolver nomes de status e assignees ─────────────────────────
+    // ── Resolver nomes ──────────────────────────────────────────────
     const statusIds = tasksByStatusRaw.map((s) => s.statusId)
-    const assigneeIds = topAssigneesRaw
-      .map((a) => a.assigneeId)
-      .filter((id): id is string => !!id)
+    const assigneeIds = topAssigneesRaw.map((a) => a.assigneeId).filter((id): id is string => !!id)
 
     const [statusDetails, assigneeDetails] = await Promise.all([
       prisma.taskStatus.findMany({
@@ -198,7 +192,7 @@ export async function GET(request: Request) {
     const statusMap = new Map(statusDetails.map((s) => [s.id, s]))
     const assigneeMap = new Map(assigneeDetails.map((u) => [u.id, u]))
 
-    // ── Processamento ───────────────────────────────────────────────
+    // ── Processamento período atual ─────────────────────────────────
     const tasksByStatus = tasksByStatusRaw.map((s) => ({
       statusId: s.statusId,
       count: s._count._all,
@@ -207,16 +201,31 @@ export async function GET(request: Request) {
       type: statusMap.get(s.statusId)?.type ?? 'OPEN',
     }))
 
-    const priorityCounts = tasksByPriority.map((p) => ({
-      priority: p.priority,
-      count: p._count._all,
-    }))
+    const PRIORITY_ORDER = ['URGENT', 'HIGH', 'MEDIUM', 'LOW', 'NONE']
+    const PRIORITY_LABELS: Record<string, string> = {
+      URGENT: 'Urgente',
+      HIGH: 'Alta',
+      MEDIUM: 'Média',
+      LOW: 'Baixa',
+      NONE: 'Sem prioridade',
+    }
+    const PRIORITY_COLORS: Record<string, string> = {
+      URGENT: '#f43f5e',
+      HIGH: '#f97316',
+      MEDIUM: '#f59e0b',
+      LOW: '#38bdf8',
+      NONE: '#71717a',
+    }
+    const priorityMap = new Map(tasksByPriority.map((p) => [p.priority, p._count._all]))
+    const tasksByPriorityFull = PRIORITY_ORDER.map((p) => ({
+      priority: p,
+      label: PRIORITY_LABELS[p],
+      color: PRIORITY_COLORS[p],
+      count: priorityMap.get(p as any) ?? 0,
+    })).filter((p) => p.count > 0)
 
-    // Série diária: completions vs created
-    const dailyMap = new Map<
-      string,
-      { date: string; completed: number; created: number }
-    >()
+    // Série diária
+    const dailyMap = new Map<string, { date: string; completed: number; created: number }>()
     for (let d = 0; d < rangeDays; d++) {
       const day = new Date(rangeStart)
       day.setDate(day.getDate() + d)
@@ -236,7 +245,11 @@ export async function GET(request: Request) {
     }
     const trend = Array.from(dailyMap.values())
 
-    // Top assignees com dados
+    // Velocity: média de tasks concluídas por semana
+    const weeksInRange = Math.max(1, rangeDays / 7)
+    const velocity = Math.round((completionsInRange.length / weeksInRange) * 10) / 10
+
+    // Top assignees
     const topAssignees = topAssigneesRaw
       .filter((a) => a.assigneeId)
       .map((a) => {
@@ -250,25 +263,30 @@ export async function GET(request: Request) {
         }
       })
 
-    // Tempo médio de conclusão
-    let avgCompletionHours = 0
-    if (avgCompletionTimeRaw.length > 0) {
-      const totalMs = avgCompletionTimeRaw.reduce((sum, t) => {
+    // Tempo médio de conclusão (horas)
+    function calcAvgHours(rows: { createdAt: Date; completedAt: Date | null }[]): number {
+      if (rows.length === 0) return 0
+      const totalMs = rows.reduce((sum, t) => {
         if (!t.completedAt) return sum
         return sum + (t.completedAt.getTime() - t.createdAt.getTime())
       }, 0)
-      avgCompletionHours = totalMs / avgCompletionTimeRaw.length / (1000 * 60 * 60)
+      return totalMs / rows.length / (1000 * 60 * 60)
     }
 
-    // KPIs
-    const completionRate =
-      totalTasks > 0
-        ? Math.round((completedTasks / totalTasks) * 100)
-        : 0
-    const inProgressCount =
-      tasksByStatus
-        .filter((s) => s.type === 'IN_PROGRESS')
-        .reduce((sum, s) => sum + s.count, 0) || 0
+    const avgCompletionHours = calcAvgHours(avgCompletionTimeRaw)
+    const prevAvgCompletionHours = calcAvgHours(prevAvgCompletionTimeRaw)
+
+    // ── Helpers de comparação ───────────────────────────────────────
+    function delta(current: number, previous: number): number | null {
+      if (previous === 0) return null
+      return Math.round(((current - previous) / previous) * 100)
+    }
+
+    const currentCreated = createdInRange.length
+    const prevCreatedCount = prevCreatedTasks
+
+    const completionRate = totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0
+    const inProgressCount = tasksByStatus.filter((s) => s.type === 'IN_PROGRESS').reduce((sum, s) => sum + s.count, 0)
 
     return NextResponse.json({
       rangeDays,
@@ -280,18 +298,50 @@ export async function GET(request: Request) {
         overdue: overdueTasks,
         completionRate,
         avgCompletionHours: Number(avgCompletionHours.toFixed(1)),
+        velocity,
+        created: currentCreated,
+      },
+      comparison: {
+        completed: {
+          current: completedTasks,
+          previous: prevCompletedTasks,
+          delta: delta(completedTasks, prevCompletedTasks),
+        },
+        overdue: {
+          current: overdueTasks,
+          previous: prevOverdueTasks,
+          delta: delta(overdueTasks, prevOverdueTasks),
+        },
+        created: {
+          current: currentCreated,
+          previous: prevCreatedCount,
+          delta: delta(currentCreated, prevCreatedCount),
+        },
+        avgCompletionHours: {
+          current: Number(avgCompletionHours.toFixed(1)),
+          previous: Number(prevAvgCompletionHours.toFixed(1)),
+          delta: delta(
+            Math.round(avgCompletionHours * 10),
+            Math.round(prevAvgCompletionHours * 10)
+          ),
+        },
+        velocity: {
+          current: velocity,
+          previous: Math.round((prevAvgCompletionTimeRaw.length / weeksInRange) * 10) / 10,
+          delta: delta(
+            completedTasks,
+            prevCompletedTasks
+          ),
+        },
       },
       tasksByStatus,
-      tasksByPriority: priorityCounts,
+      tasksByPriority: tasksByPriorityFull,
       trend,
       topAssignees,
       overdueList,
     })
   } catch (error) {
     logger.error({ err: error }, '[tasks/analytics] error')
-    return NextResponse.json(
-      { error: 'Erro interno ao calcular analytics' },
-      { status: 500 }
-    )
+    return NextResponse.json({ error: 'Erro interno ao calcular analytics' }, { status: 500 })
   }
 }
