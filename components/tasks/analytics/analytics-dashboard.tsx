@@ -52,6 +52,7 @@ interface AnalyticsData {
     count: number
   }>
   trend: Array<{ date: string; created: number; completed: number }>
+  prevTrend?: number[]
   topAssignees: Array<{
     userId: string
     name: string
@@ -185,7 +186,7 @@ export function AnalyticsDashboard({ projectId, locale }: Props) {
 
             {/* Grid linha 1: Tendência + Status */}
             <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
-              <CompletionTrendChart data={data.trend} rangeDays={data.rangeDays} />
+              <CompletionTrendChart data={data.trend} prevTrend={data.prevTrend} rangeDays={data.rangeDays} />
               <TasksByStatusChart data={data.tasksByStatus} />
             </div>
 

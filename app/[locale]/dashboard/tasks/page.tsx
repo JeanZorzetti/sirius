@@ -63,7 +63,9 @@ export default async function TasksHubPage() {
   const fourWeeksAgo = new Date(now)
   fourWeeksAgo.setDate(fourWeeksAgo.getDate() - 28)
 
-  const [myTotal, myOverdue, myDueToday, entitlements, velocityRaw] = await Promise.all([
+  const projectIds = projects.map((p) => p.id)
+
+  const [myTotal, myOverdue, myDueToday, entitlements, velocityRaw, projectDoneRaw, projectOverdueRaw] = await Promise.all([
     prisma.task.count({ where: myTasksWhere }),
     prisma.task.count({
       where: { ...myTasksWhere, dueDate: { lt: now } },
@@ -80,7 +82,34 @@ export default async function TasksHubPage() {
       },
       select: { completedAt: true },
     }),
+    // Done count por projeto
+    prisma.task.groupBy({
+      by: ['projectId'],
+      where: {
+        organizationId: user.organizationId,
+        archived: false,
+        projectId: { in: projectIds },
+        completedAt: { not: null },
+      },
+      _count: { _all: true },
+    }),
+    // Overdue count por projeto
+    prisma.task.groupBy({
+      by: ['projectId'],
+      where: {
+        organizationId: user.organizationId,
+        archived: false,
+        projectId: { in: projectIds },
+        dueDate: { lt: now },
+        completedAt: null,
+      },
+      _count: { _all: true },
+    }),
   ])
+
+  // Maps para lookup rápido por projectId
+  const doneByProject = new Map(projectDoneRaw.map((r) => [r.projectId, r._count._all]))
+  const overdueByProject = new Map(projectOverdueRaw.map((r) => [r.projectId, r._count._all]))
 
   const canAccessAnalytics = entitlements.features.taskAnalytics ?? false
 
@@ -228,38 +257,83 @@ export default async function TasksHubPage() {
           />
         ) : (
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {projects.map((project) => (
-              <Link
-                key={project.id}
-                href={`/dashboard/tasks/${project.id}`}
-                className="group relative flex flex-col overflow-hidden rounded-2xl border border-border/50 bg-card p-5 transition-all duration-200 hover:-translate-y-0.5 hover:border-border hover:shadow-md"
-              >
-                <div className="flex items-start justify-between gap-3">
+            {projects.map((project) => {
+              const total = project._count.tasks
+              const done = doneByProject.get(project.id) ?? 0
+              const overdue = overdueByProject.get(project.id) ?? 0
+              const progress = total > 0 ? Math.round((done / total) * 100) : 0
+
+              return (
+                <Link
+                  key={project.id}
+                  href={`/dashboard/tasks/${project.id}`}
+                  className="group relative flex flex-col overflow-hidden rounded-2xl border border-border/50 bg-card p-5 transition-all duration-200 hover:-translate-y-0.5 hover:border-border hover:shadow-md"
+                >
+                  {/* Accent bar colorida no topo */}
                   <div
-                    className="flex h-10 w-10 items-center justify-center rounded-xl text-white"
+                    className="absolute inset-x-0 top-0 h-0.5 opacity-60 transition-opacity duration-200 group-hover:opacity-100"
                     style={{ backgroundColor: project.color }}
-                  >
-                    <FolderKanban className="h-5 w-5" />
+                  />
+
+                  <div className="flex items-start justify-between gap-3">
+                    <div
+                      className="flex h-10 w-10 items-center justify-center rounded-xl text-white shadow-sm"
+                      style={{ backgroundColor: project.color }}
+                    >
+                      <FolderKanban className="h-5 w-5" />
+                    </div>
+                    <div className="flex items-center gap-2">
+                      {overdue > 0 && (
+                        <span className="flex items-center gap-1 rounded-full bg-rose-500/10 px-2 py-0.5 text-[10px] font-semibold text-rose-500 ring-1 ring-inset ring-rose-500/20">
+                          {overdue} atrasada{overdue !== 1 ? 's' : ''}
+                        </span>
+                      )}
+                      <span className="rounded-full bg-muted px-2 py-0.5 text-[10px] font-medium text-muted-foreground">
+                        {total} task{total !== 1 ? 's' : ''}
+                      </span>
+                    </div>
                   </div>
-                  <span className="rounded-full bg-muted px-2 py-0.5 text-[10px] font-medium text-muted-foreground">
-                    {project._count.tasks} tarefa(s)
-                  </span>
-                </div>
-                <h3 className="mt-4 text-base font-semibold leading-tight text-foreground">
-                  {project.name}
-                </h3>
-                {project.description && (
-                  <p className="mt-1 line-clamp-2 text-xs text-muted-foreground leading-relaxed">
-                    {project.description}
-                  </p>
-                )}
-                <div className="mt-auto pt-4">
-                  <span className="text-[11px] font-medium text-muted-foreground group-hover:text-foreground transition-colors">
-                    Abrir projeto →
-                  </span>
-                </div>
-              </Link>
-            ))}
+
+                  <h3 className="mt-4 text-base font-semibold leading-tight text-foreground">
+                    {project.name}
+                  </h3>
+                  {project.description && (
+                    <p className="mt-1 line-clamp-2 text-xs text-muted-foreground leading-relaxed">
+                      {project.description}
+                    </p>
+                  )}
+
+                  {/* Progress bar + stats */}
+                  <div className="mt-auto pt-4 space-y-2">
+                    {total > 0 && (
+                      <>
+                        <div className="flex items-center justify-between gap-2">
+                          <div className="relative h-1.5 flex-1 overflow-hidden rounded-full bg-muted/60">
+                            <div
+                              className="absolute inset-y-0 left-0 rounded-full transition-all duration-500"
+                              style={{
+                                width: `${progress}%`,
+                                backgroundColor: project.color,
+                                opacity: 0.8,
+                              }}
+                            />
+                          </div>
+                          <span className="font-mono text-[10px] font-semibold tabular-nums text-muted-foreground">
+                            {progress}%
+                          </span>
+                        </div>
+                        <p className="text-[10px] text-muted-foreground">
+                          {done} de {total} concluída{done !== 1 ? 's' : ''}
+                        </p>
+                      </>
+                    )}
+                    <span className="block text-[11px] font-medium text-muted-foreground group-hover:text-foreground transition-colors">
+                      Abrir projeto →
+                    </span>
+                  </div>
+                </Link>
+              )
+            })}
           </div>
         )}
       </section>

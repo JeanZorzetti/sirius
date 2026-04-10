@@ -91,6 +91,7 @@ export async function GET(request: Request) {
       prevOverdueTasks,
       prevCreatedTasks,
       prevAvgCompletionTimeRaw,
+      prevCompletionsInRange,
     ] = await Promise.all([
       // ── Período atual ──
       prisma.task.count({ where: baseWhere }),
@@ -172,6 +173,12 @@ export async function GET(request: Request) {
         where: { ...baseWhere, completedAt: { not: null, gte: prevRangeStart, lte: prevRangeEnd } },
         select: { createdAt: true, completedAt: true },
       }),
+
+      // Série diária do período anterior (para overlay no trend chart)
+      prisma.task.findMany({
+        where: { ...baseWhere, completedAt: { gte: prevRangeStart, lte: prevRangeEnd } },
+        select: { completedAt: true },
+      }),
     ])
 
     // ── Resolver nomes ──────────────────────────────────────────────
@@ -244,6 +251,25 @@ export async function GET(request: Request) {
       if (entry) entry.created += 1
     }
     const trend = Array.from(dailyMap.values())
+
+    // Série do período anterior — mesmos índices de dia (0..rangeDays-1) para overlay
+    const prevDailyMap = new Map<string, number>()
+    for (let d = 0; d < rangeDays; d++) {
+      const day = new Date(prevRangeStart)
+      day.setDate(day.getDate() + d)
+      const key = day.toISOString().slice(0, 10)
+      prevDailyMap.set(key, 0)
+    }
+    for (const t of prevCompletionsInRange) {
+      if (!t.completedAt) continue
+      const key = t.completedAt.toISOString().slice(0, 10)
+      if (prevDailyMap.has(key)) prevDailyMap.set(key, (prevDailyMap.get(key) ?? 0) + 1)
+    }
+    // Converte para array com índice relativo (0 = mais antigo) para o chart
+    const prevTrend = trend.map((_, i) => {
+      const entries = Array.from(prevDailyMap.values())
+      return entries[i] ?? 0
+    })
 
     // Velocity: média de tasks concluídas por semana
     const weeksInRange = Math.max(1, rangeDays / 7)
@@ -337,6 +363,7 @@ export async function GET(request: Request) {
       tasksByStatus,
       tasksByPriority: tasksByPriorityFull,
       trend,
+      prevTrend,
       topAssignees,
       overdueList,
     })
