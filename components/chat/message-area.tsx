@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button'
 import {
   Send, Users, Loader2, Check, CheckCheck, Mic, Paperclip,
   Image as ImageIcon, Video, FileText, Download, Play, Pause,
-  File, Search, Reply, X, Info, ArrowLeft, ChevronDown,
+  File, Search, Reply, X, Info, ArrowLeft, ChevronDown, Trash2,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { toast } from 'sonner'
@@ -452,6 +452,14 @@ export function MessageArea({ contact, connections, organizationId, userId, user
   const [newMsgCount, setNewMsgCount] = useState(0)
   const virtuosoRef = useRef<VirtuosoHandle>(null)
 
+  // Audio recording
+  const [isRecording, setIsRecording] = useState(false)
+  const [recordingTime, setRecordingTime] = useState(0)
+  const mediaRecorderRef = useRef<MediaRecorder | null>(null)
+  const audioChunksRef = useRef<Blob[]>([])
+  const recordingTimerRef = useRef<ReturnType<typeof setInterval> | null>(null)
+  const audioStreamRef = useRef<MediaStream | null>(null)
+
   const openLightbox = useCallback((src: string, type: 'image' | 'video') => {
     setLightbox({ src, type })
   }, [])
@@ -830,6 +838,144 @@ export function MessageArea({ contact, connections, organizationId, userId, user
       setSending(false)
     }
   }
+
+  // --- Audio recording ---
+  const startRecording = async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true })
+      audioStreamRef.current = stream
+      audioChunksRef.current = []
+
+      const mimeType = MediaRecorder.isTypeSupported('audio/webm;codecs=opus')
+        ? 'audio/webm;codecs=opus'
+        : 'audio/webm'
+      const recorder = new MediaRecorder(stream, { mimeType })
+      mediaRecorderRef.current = recorder
+
+      recorder.ondataavailable = (e) => {
+        if (e.data.size > 0) audioChunksRef.current.push(e.data)
+      }
+
+      recorder.onstop = () => {
+        // Cleanup stream tracks
+        stream.getTracks().forEach(t => t.stop())
+        audioStreamRef.current = null
+      }
+
+      recorder.start(100) // collect in 100ms chunks
+      setIsRecording(true)
+      setRecordingTime(0)
+      recordingTimerRef.current = setInterval(() => {
+        setRecordingTime(prev => prev + 1)
+      }, 1000)
+    } catch {
+      toast.error('Não foi possível acessar o microfone')
+    }
+  }
+
+  const cancelRecording = () => {
+    if (mediaRecorderRef.current?.state !== 'inactive') {
+      mediaRecorderRef.current?.stop()
+    }
+    if (recordingTimerRef.current) clearInterval(recordingTimerRef.current)
+    audioChunksRef.current = []
+    setIsRecording(false)
+    setRecordingTime(0)
+  }
+
+  const sendRecording = async () => {
+    if (!conn) return
+    const recorder = mediaRecorderRef.current
+    if (!recorder || recorder.state === 'inactive') return
+
+    // Stop recording and wait for final data
+    return new Promise<void>((resolve) => {
+      recorder.onstop = async () => {
+        audioStreamRef.current?.getTracks().forEach(t => t.stop())
+        audioStreamRef.current = null
+
+        if (recordingTimerRef.current) clearInterval(recordingTimerRef.current)
+        setIsRecording(false)
+
+        const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/webm;codecs=opus' })
+        audioChunksRef.current = []
+
+        if (audioBlob.size === 0) {
+          setRecordingTime(0)
+          resolve()
+          return
+        }
+
+        const duration = recordingTime
+        setRecordingTime(0)
+
+        const tempId = `temp-audio-${Date.now()}`
+        const optimisticMsg: WhatsAppMessage = {
+          id: tempId,
+          text: `[Áudio ${fmtDuration(duration)}]`,
+          direction: 'OUTBOUND',
+          sentAt: new Date(),
+          deliveredAt: null,
+          readAt: null,
+          status: 'SENDING',
+          mediaUrl: null,
+          mediaType: 'audio',
+          messageId: undefined,
+          replyToId: null,
+          replyToText: null,
+          reactions: [],
+        }
+
+        setMessages(prev => [...prev, optimisticMsg])
+        setTimeout(() => scrollToBottom(), 50)
+
+        setSending(true)
+        try {
+          const formData = new FormData()
+          formData.append('file', audioBlob, 'audio.webm')
+          formData.append('connectionId', conn)
+          formData.append('contactId', contact.id)
+
+          const r = await fetch('/api/whatsapp/send-media', {
+            method: 'POST',
+            body: formData,
+          })
+          if (!r.ok) {
+            const d = await r.json()
+            throw new Error(d.error)
+          }
+          const confirmedMsg = await r.json()
+          setMessages(prev => prev.map(m => m.id === tempId ? confirmedMsg : m))
+          setTimeout(() => scrollToBottom(), 100)
+        } catch (err: any) {
+          setMessages(prev => prev.filter(m => m.id !== tempId))
+          toast.error(err.message || 'Erro ao enviar áudio')
+        } finally {
+          setSending(false)
+        }
+        resolve()
+      }
+
+      recorder.stop()
+    })
+  }
+
+  const fmtDuration = (seconds: number) => {
+    const m = Math.floor(seconds / 60)
+    const s = seconds % 60
+    return `${m}:${s.toString().padStart(2, '0')}`
+  }
+
+  // Cleanup recording on unmount
+  useEffect(() => {
+    return () => {
+      if (mediaRecorderRef.current?.state !== 'inactive') {
+        mediaRecorderRef.current?.stop()
+      }
+      if (recordingTimerRef.current) clearInterval(recordingTimerRef.current)
+      audioStreamRef.current?.getTracks().forEach(t => t.stop())
+    }
+  }, [])
 
   const fmtTime = (d: Date) => new Date(d).toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'})
 
@@ -1258,107 +1404,158 @@ export function MessageArea({ contact, connections, organizationId, userId, user
 
       {/* Input area */}
       <div className="px-3 py-2 bg-[#f0f2f5] whatsapp-header border-t border-[#e9edef] dark:border-zinc-700 flex items-end gap-2">
-        {/* Attachment button */}
-        <input
-          ref={fileInputRef}
-          type="file"
-          className="hidden"
-          accept="image/*,video/*,audio/*,.pdf,.doc,.docx,.xls,.xlsx,.txt"
-          onChange={handleFileSelect}
-        />
-        <button
-          type="button"
-          onClick={() => fileInputRef.current?.click()}
-          disabled={sending}
-          aria-label="Anexar arquivo"
-          className="h-[42px] w-[42px] rounded-full flex items-center justify-center flex-shrink-0 text-[#54656f] hover:text-[#3b4a54] hover:bg-black/5 transition-colors"
-        >
-          <Paperclip className="h-5 w-5" />
-        </button>
+        {isRecording ? (
+          /* Recording UI — replaces the normal input */
+          <>
+            <button
+              type="button"
+              onClick={cancelRecording}
+              aria-label="Cancelar gravação"
+              className="h-[42px] w-[42px] rounded-full flex items-center justify-center flex-shrink-0 text-destructive hover:bg-destructive/10 transition-colors"
+            >
+              <Trash2 className="h-5 w-5" />
+            </button>
 
-        <div className="flex-1 relative">
-          {/* Quick Reply Picker */}
-          {showQuickReply && taRef.current && (
-            <QuickReplyPicker
-              query={quickReplyQuery}
-              onSelect={handleQuickReplySelect}
-              onClose={() => {
-                setShowQuickReply(false)
-                setQuickReplyQuery('')
-              }}
-              position={{
-                top: taRef.current.offsetHeight,
-                left: 0,
-              }}
-              contact={contact}
-              userName={userName}
+            <div className="flex-1 flex items-center gap-3 bg-white dark:bg-zinc-800 rounded-lg px-4 py-2 min-h-[42px] shadow-[0_1px_1px_rgba(11,20,26,0.06)]">
+              <span className="w-2.5 h-2.5 rounded-full bg-red-500 animate-pulse flex-shrink-0" />
+              <span className="text-sm font-medium text-[#111b21] dark:text-zinc-100 tabular-nums">
+                {fmtDuration(recordingTime)}
+              </span>
+              <div className="flex-1 flex items-center gap-[2px] overflow-hidden">
+                {Array.from({ length: 30 }).map((_, i) => (
+                  <div
+                    key={i}
+                    className="w-[3px] rounded-full bg-[#00a884]/60"
+                    style={{
+                      height: `${8 + Math.sin((recordingTime * 3 + i) * 0.5) * 8 + Math.random() * 6}px`,
+                      transition: 'height 0.15s ease',
+                    }}
+                  />
+                ))}
+              </div>
+            </div>
+
+            <button
+              type="button"
+              onClick={sendRecording}
+              disabled={sending}
+              aria-label="Enviar áudio"
+              className="h-[42px] w-[42px] rounded-full flex items-center justify-center flex-shrink-0 bg-[#00a884] hover:bg-[#008f72] text-white transition-all duration-200 active:scale-90"
+            >
+              {sending ? (
+                <Loader2 className="h-5 w-5 animate-spin" />
+              ) : (
+                <Send className="h-5 w-5" />
+              )}
+            </button>
+          </>
+        ) : (
+          /* Normal input */
+          <>
+            <input
+              ref={fileInputRef}
+              type="file"
+              className="hidden"
+              accept="image/*,video/*,audio/*,.pdf,.doc,.docx,.xls,.xlsx,.txt"
+              onChange={handleFileSelect}
             />
-          )}
+            <button
+              type="button"
+              onClick={() => fileInputRef.current?.click()}
+              disabled={sending}
+              aria-label="Anexar arquivo"
+              className="h-[42px] w-[42px] rounded-full flex items-center justify-center flex-shrink-0 text-[#54656f] hover:text-[#3b4a54] hover:bg-black/5 transition-colors"
+            >
+              <Paperclip className="h-5 w-5" />
+            </button>
 
-          <textarea
-            ref={taRef}
-            placeholder="Mensagem"
-            value={text}
-            onChange={e => setText(e.target.value)}
-            disabled={sending}
-            rows={1}
-            aria-label="Campo de mensagem"
-            aria-describedby="message-help-text"
-            className={cn(
-              'w-full resize-none rounded-lg border-0',
-              'bg-white whatsapp-input px-3 py-[9px] text-[14px] leading-[1.46]',
-              'placeholder:text-[#8696a0]',
-              'focus:outline-none focus:ring-1 focus:ring-[#00a884]/40',
-              'disabled:opacity-50',
-              'min-h-[42px] max-h-[120px]',
-              'shadow-[0_1px_1px_rgba(11,20,26,0.06)]',
-              'whatsapp-text-primary'
-            )}
-            onKeyDown={e => {
-              if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send(e) }
-            }}
-            onPaste={e => {
-              const items = e.clipboardData?.items
-              if (!items) return
-              for (const item of Array.from(items)) {
-                if (item.type.startsWith('image/')) {
-                  e.preventDefault()
-                  const file = item.getAsFile()
-                  if (file) {
-                    setPendingFile(file)
-                    setPendingFilePreview(URL.createObjectURL(file))
+            <div className="flex-1 relative">
+              {showQuickReply && taRef.current && (
+                <QuickReplyPicker
+                  query={quickReplyQuery}
+                  onSelect={handleQuickReplySelect}
+                  onClose={() => {
+                    setShowQuickReply(false)
+                    setQuickReplyQuery('')
+                  }}
+                  position={{
+                    top: taRef.current.offsetHeight,
+                    left: 0,
+                  }}
+                  contact={contact}
+                  userName={userName}
+                />
+              )}
+
+              <textarea
+                ref={taRef}
+                placeholder="Mensagem"
+                value={text}
+                onChange={e => setText(e.target.value)}
+                disabled={sending}
+                rows={1}
+                aria-label="Campo de mensagem"
+                aria-describedby="message-help-text"
+                className={cn(
+                  'w-full resize-none rounded-lg border-0',
+                  'bg-white whatsapp-input px-3 py-[9px] text-[14px] leading-[1.46]',
+                  'placeholder:text-[#8696a0]',
+                  'focus:outline-none focus:ring-1 focus:ring-[#00a884]/40',
+                  'disabled:opacity-50',
+                  'min-h-[42px] max-h-[120px]',
+                  'shadow-[0_1px_1px_rgba(11,20,26,0.06)]',
+                  'whatsapp-text-primary'
+                )}
+                onKeyDown={e => {
+                  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send(e) }
+                }}
+                onPaste={e => {
+                  const items = e.clipboardData?.items
+                  if (!items) return
+                  for (const item of Array.from(items)) {
+                    if (item.type.startsWith('image/')) {
+                      e.preventDefault()
+                      const file = item.getAsFile()
+                      if (file) {
+                        setPendingFile(file)
+                        setPendingFilePreview(URL.createObjectURL(file))
+                      }
+                      break
+                    }
                   }
-                  break
-                }
-              }
-            }}
-          />
-          <span id="message-help-text" className="sr-only">
-            Pressione Enter para enviar, Shift+Enter para nova linha
-          </span>
-        </div>
-        <button
-          type="button"
-          onClick={pendingFile ? sendMedia : send}
-          disabled={sending || (!text.trim() && !pendingFile)}
-          aria-label={pendingFile ? 'Enviar arquivo' : text.trim() ? 'Enviar mensagem' : 'Gravar áudio'}
-          className={cn(
-            'h-[42px] w-[42px] rounded-full flex items-center justify-center flex-shrink-0',
-            'transition-all duration-200 active:scale-90',
-            'focus-visible:ring-2 focus-visible:ring-[#00a884] focus-visible:ring-offset-2',
-            (text.trim() || pendingFile)
-              ? 'bg-[#00a884] hover:bg-[#008f72] text-white'
-              : 'bg-transparent text-[#54656f] hover:text-[#3b4a54]'
-          )}
-        >
-          {sending ? (
-            <Loader2 className="h-5 w-5 animate-spin" />
-          ) : text.trim() ? (
-            <Send className="h-5 w-5" />
-          ) : (
-            <Mic className="h-5 w-5" />
-          )}
-        </button>
+                }}
+              />
+              <span id="message-help-text" className="sr-only">
+                Pressione Enter para enviar, Shift+Enter para nova linha
+              </span>
+            </div>
+
+            <button
+              type="button"
+              onClick={pendingFile ? sendMedia : text.trim() ? send : startRecording}
+              disabled={sending}
+              aria-label={pendingFile ? 'Enviar arquivo' : text.trim() ? 'Enviar mensagem' : 'Gravar áudio'}
+              className={cn(
+                'h-[42px] w-[42px] rounded-full flex items-center justify-center flex-shrink-0',
+                'transition-all duration-200 active:scale-90',
+                'focus-visible:ring-2 focus-visible:ring-[#00a884] focus-visible:ring-offset-2',
+                (text.trim() || pendingFile)
+                  ? 'bg-[#00a884] hover:bg-[#008f72] text-white'
+                  : 'bg-transparent text-[#54656f] hover:text-[#3b4a54]'
+              )}
+            >
+              {sending ? (
+                <Loader2 className="h-5 w-5 animate-spin" />
+              ) : pendingFile ? (
+                <Send className="h-5 w-5" />
+              ) : text.trim() ? (
+                <Send className="h-5 w-5" />
+              ) : (
+                <Mic className="h-5 w-5" />
+              )}
+            </button>
+          </>
+        )}
       </div>
       </div>
 
