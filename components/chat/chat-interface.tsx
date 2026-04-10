@@ -70,6 +70,8 @@ export function ChatInterface({
   const [isRefreshing, setIsRefreshing] = useState(false)
 
   const activeConnections = connections.filter(c => c.status === 'CONNECTED')
+  const disconnectedConnections = connections.filter(c => c.status === 'DISCONNECTED')
+  const hasDisconnected = disconnectedConnections.length > 0 && activeConnections.length === 0
   const totalUnread = contacts.reduce((sum, contact) => sum + (contact._count.unreadMessages || 0), 0)
 
   // Auto-select contact when arriving from a WhatsApp button click (via ?phone=...)
@@ -231,6 +233,28 @@ export function ChatInterface({
           </button>
         </div>
       </div>
+
+      {/* Disconnected banner */}
+      {hasDisconnected && activeView === 'chat' && (
+        <div className="flex items-center gap-3 px-4 py-2.5 bg-amber-50 dark:bg-amber-950/30 border-b border-amber-200 dark:border-amber-900/50">
+          <WifiOff className="h-4 w-4 text-amber-600 dark:text-amber-400 flex-shrink-0" />
+          <p className="text-sm text-amber-800 dark:text-amber-300 flex-1">
+            {disconnectedConnections.length === 1
+              ? `WhatsApp "${disconnectedConnections[0].phoneNumber || disconnectedConnections[0].instanceName}" está desconectado`
+              : `${disconnectedConnections.length} conexões desconectadas`
+            }
+            {' '}&mdash; mensagens não serão recebidas até reconectar.
+          </p>
+          <Button
+            variant="outline"
+            size="sm"
+            className="h-7 text-xs border-amber-300 dark:border-amber-800 text-amber-700 dark:text-amber-300 hover:bg-amber-100 dark:hover:bg-amber-900/40 flex-shrink-0"
+            onClick={() => setActiveView('connections')}
+          >
+            Reconectar
+          </Button>
+        </div>
+      )}
 
       {/* Content */}
       {activeView === 'connections' ? (
