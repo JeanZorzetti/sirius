@@ -4,11 +4,10 @@ import { useState, useEffect, useCallback, useMemo } from 'react'
 import dynamic from 'next/dynamic'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { ChatInterface } from '@/components/chat/chat-interface'
 import { CreateDealDialog } from '@/components/deals/create-deal-dialog'
 import { PipelineSelector } from '@/components/pipelines/pipeline-selector'
 import { toast } from 'sonner'
-import { MessageSquare, Layout, Loader2 } from 'lucide-react'
+import { Layout, Loader2 } from 'lucide-react'
 
 // Dynamic import do KanbanBoard (carrega apenas quando necessário)
 const KanbanBoard = dynamic(
@@ -43,8 +42,6 @@ export function DashboardTabs({
   const router = useRouter()
   const searchParams = useSearchParams()
   const [activeTab, setActiveTab] = useState('pipeline')
-  const [chatData, setChatData] = useState<any>(null)
-  const [loadingChat, setLoadingChat] = useState(false)
 
   // Pipeline selector state — persist via URL ?pipeline=ID
   const [selectedPipelineId, setSelectedPipelineId] = useState<string>(() => {
@@ -72,28 +69,6 @@ export function DashboardTabs({
     router.refresh()
   }, [router])
 
-  // Fetch chat data when tab changes to chat
-  useEffect(() => {
-    if (activeTab === 'chat' && !chatData && !loadingChat) {
-      setLoadingChat(true)
-      fetch('/api/chat/initial-data')
-        .then(res => res.json())
-        .then(data => {
-          if (data.error) {
-            toast.error(data.error)
-          } else {
-            setChatData(data)
-          }
-        })
-        .catch(error => {
-          console.error('Error fetching chat data:', error)
-          toast.error('Erro ao carregar chat')
-        })
-        .finally(() => {
-          setLoadingChat(false)
-        })
-    }
-  }, [activeTab, chatData, loadingChat])
 
   return (
     <Tabs value={activeTab} onValueChange={setActiveTab} className="h-full flex flex-col">
@@ -105,13 +80,6 @@ export function DashboardTabs({
           >
             <Layout className="h-4 w-4" />
             Pipeline
-          </TabsTrigger>
-          <TabsTrigger 
-            value="chat" 
-            className="inline-flex items-center justify-center whitespace-nowrap rounded-md px-4 py-2 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-white dark:data-[state=active]:bg-zinc-900 data-[state=active]:text-indigo-600 dark:data-[state=active]:text-indigo-400 data-[state=active]:shadow-sm gap-2"
-          >
-            <MessageSquare className="h-4 w-4" />
-            WhatsApp
           </TabsTrigger>
         </TabsList>
 
@@ -138,29 +106,6 @@ export function DashboardTabs({
         />
       </TabsContent>
 
-      <TabsContent value="chat" className="flex-1 m-0 h-[calc(100vh-280px)] data-[state=inactive]:hidden">
-        <div className="h-full border rounded-lg overflow-hidden bg-white">
-          {loadingChat ? (
-            <div className="h-full flex items-center justify-center">
-              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-green-600" />
-            </div>
-          ) : chatData ? (
-            <ChatInterface
-              connections={chatData.connections}
-              contacts={chatData.contacts}
-              userId={chatData.userId}
-              userName={chatData.userName}
-              organizationId={chatData.organizationId}
-              maxInstances={chatData.maxInstances}
-            />
-          ) : (
-            <div className="h-full flex flex-col items-center justify-center text-muted-foreground">
-              <MessageSquare className="h-12 w-12 mb-4" />
-              <p>Erro ao carregar chat. Tente novamente.</p>
-            </div>
-          )}
-        </div>
-      </TabsContent>
     </Tabs>
   )
 }
