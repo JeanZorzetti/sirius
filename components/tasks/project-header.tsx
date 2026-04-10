@@ -2,6 +2,7 @@
 
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
+import { CheckCircle2, LayoutList } from 'lucide-react'
 import { InlineEditTitle } from './inline-edit-title'
 
 interface ProjectHeaderProps {
@@ -40,35 +41,56 @@ export function ProjectHeader({
   }
 
   return (
-    <div className="flex items-start gap-4">
-      <div
-        className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl text-white text-lg font-bold"
-        style={{ backgroundColor: projectColor }}
-      >
-        {projectName.charAt(0).toUpperCase()}
+    <div className="flex flex-col sm:flex-row items-start sm:items-center gap-5 sm:gap-6 w-full mb-2">
+      {/* Premium Icon Block */}
+      <div className="relative group">
+        <div 
+          className="absolute inset-0 blur-xl opacity-30 group-hover:opacity-60 transition-opacity duration-500 rounded-2xl"
+          style={{ backgroundColor: projectColor }}
+        />
+        <div
+          className="relative flex h-16 w-16 sm:h-20 sm:w-20 shrink-0 items-center justify-center rounded-[1.25rem] text-white text-2xl sm:text-3xl font-black shadow-xl ring-1 ring-white/20 transition-transform duration-300 group-hover:scale-105"
+          style={{ 
+            background: `linear-gradient(135deg, ${projectColor} 0%, ${projectColor}dd 100%)` 
+          }}
+        >
+          {projectName.charAt(0).toUpperCase()}
+        </div>
       </div>
-      <div className="space-y-1 min-w-0">
-        {canEdit ? (
-          <InlineEditTitle
-            value={projectName}
-            onSave={handleRename}
-            className="font-display text-2xl sm:text-3xl font-bold tracking-tighter text-foreground"
-            inputClassName="font-display text-2xl font-bold tracking-tighter"
-          />
-        ) : (
-          <h1 className="font-display text-2xl sm:text-3xl font-bold tracking-tighter text-foreground truncate">
-            {projectName}
-          </h1>
-        )}
+      
+      {/* Title & Info */}
+      <div className="space-y-3 min-w-0 flex-1">
+        <div className="flex flex-wrap items-center gap-3">
+          {canEdit ? (
+            <InlineEditTitle
+              value={projectName}
+              onSave={handleRename}
+              className="font-display text-3xl sm:text-4xl font-extrabold tracking-tight text-foreground hover:text-primary transition-colors"
+              inputClassName="font-display text-3xl sm:text-4xl font-extrabold tracking-tight"
+            />
+          ) : (
+            <h1 className="font-display text-3xl sm:text-4xl font-extrabold tracking-tight text-foreground truncate">
+              {projectName}
+            </h1>
+          )}
+        </div>
+        
         {projectDescription && (
-          <p className="text-sm text-muted-foreground leading-relaxed max-w-2xl">
+          <p className="text-sm sm:text-base text-muted-foreground leading-relaxed max-w-3xl">
             {projectDescription}
           </p>
         )}
-        <div className="flex items-center gap-3 pt-1 text-xs text-muted-foreground">
-          <span>{taskCount} tarefa(s)</span>
-          <span>·</span>
-          <span>{statusCount} status</span>
+        
+        {/* Modern Badges */}
+        <div className="flex flex-wrap items-center gap-3 pt-1">
+          <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-secondary/60 border border-border/50 text-xs font-semibold text-secondary-foreground shadow-sm">
+            <CheckCircle2 className="w-3.5 h-3.5 opacity-70" />
+            <span>{taskCount} tarefas</span>
+          </div>
+          <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-secondary/60 border border-border/50 text-xs font-semibold text-secondary-foreground shadow-sm">
+            <LayoutList className="w-3.5 h-3.5 opacity-70" />
+            <span>{statusCount} status</span>
+          </div>
         </div>
       </div>
     </div>

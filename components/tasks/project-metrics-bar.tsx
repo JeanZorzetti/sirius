@@ -69,24 +69,27 @@ export function ProjectMetricsBar({
   const burnStyles = {
     'on-track': {
       label: 'No prazo',
-      color: 'text-emerald-500',
-      bg: 'bg-emerald-500/10',
-      ring: 'ring-emerald-500/20',
+      color: 'text-emerald-600 dark:text-emerald-400',
+      bg: 'bg-emerald-500/15',
+      ring: 'ring-emerald-500/30',
       dot: 'bg-emerald-500',
+      glow: 'from-emerald-500/10'
     },
     'at-risk': {
       label: 'Atenção',
-      color: 'text-amber-500',
-      bg: 'bg-amber-500/10',
-      ring: 'ring-amber-500/20',
+      color: 'text-amber-600 dark:text-amber-400',
+      bg: 'bg-amber-500/15',
+      ring: 'ring-amber-500/30',
       dot: 'bg-amber-500',
+      glow: 'from-amber-500/10'
     },
     behind: {
       label: 'Atrasado',
-      color: 'text-rose-500',
-      bg: 'bg-rose-500/10',
-      ring: 'ring-rose-500/20',
+      color: 'text-rose-600 dark:text-rose-400',
+      bg: 'bg-rose-500/15',
+      ring: 'ring-rose-500/30',
       dot: 'bg-rose-500',
+      glow: 'from-rose-500/10'
     },
   }
 
@@ -96,71 +99,66 @@ export function ProjectMetricsBar({
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 8 }}
+      initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1.0] }}
+      transition={{ duration: 0.5, ease: [0.23, 1, 0.32, 1] }}
       className={cn(
-        'relative overflow-hidden rounded-2xl border border-border/50',
-        'bg-card/30 backdrop-blur-xl'
+        'relative overflow-hidden rounded-[24px] border border-border/30 shadow-sm',
+        'bg-card/40 backdrop-blur-2xl'
       )}
     >
-      {/* Glow sutil baseado no burn */}
-      <div
-        className={cn(
-          'pointer-events-none absolute inset-0 bg-gradient-to-r opacity-50',
-          metrics.burn === 'on-track' && 'from-emerald-500/[0.03] via-transparent to-transparent',
-          metrics.burn === 'at-risk' && 'from-amber-500/[0.03] via-transparent to-transparent',
-          metrics.burn === 'behind' && 'from-rose-500/[0.04] via-transparent to-transparent'
-        )}
-      />
+      {/* Ambient Burn Glow */}
+      <div className={cn('absolute top-0 -left-1/4 w-full h-[150%] rounded-full blur-[100px] opacity-40 pointer-events-none bg-gradient-to-r via-transparent to-transparent', burnStyle.glow)} />
 
-      <div className="relative flex flex-col gap-4 p-4 sm:flex-row sm:items-center sm:gap-6 sm:p-5">
-        {/* Progresso */}
-        <div className="min-w-0 flex-1">
-          <div className="mb-2 flex items-baseline justify-between gap-2">
-            <div className="flex items-center gap-2">
-              <TrendingUp className="h-3.5 w-3.5 text-muted-foreground" />
-              <span className="text-[11px] font-medium uppercase tracking-wider text-muted-foreground">
-                Progresso
-              </span>
-            </div>
-            <span className="font-mono text-sm font-semibold text-foreground tabular-nums">
-              {metrics.progress}%
-            </span>
+      <div className="relative z-10 flex flex-col xl:flex-row xl:items-center gap-6 xl:gap-10 p-6 md:p-8">
+        
+        {/* Progress Display */}
+        <div className="flex-1 min-w-[280px]">
+          <div className="flex items-center justify-between mb-4">
+             <div className="flex items-center gap-2.5">
+               <div className="bg-primary/10 p-1.5 rounded-md"><TrendingUp className="w-4 h-4 text-primary" /></div>
+               <span className="text-xs font-bold uppercase tracking-widest text-muted-foreground/80">Progresso</span>
+             </div>
+             <div className="text-3xl font-black text-foreground tabular-nums tracking-tighter">
+               {metrics.progress}%
+             </div>
           </div>
-          <div className="relative h-2 w-full overflow-hidden rounded-full bg-muted/40">
+          <div className="relative h-2.5 w-full overflow-hidden rounded-full bg-secondary/70 shadow-inner">
             <motion.div
               initial={{ width: 0 }}
               animate={{ width: `${metrics.progress}%` }}
-              transition={{ duration: 0.9, ease: [0.25, 0.1, 0.25, 1.0] }}
+              transition={{ duration: 1.2, ease: "easeOut" }}
               className={cn(
                 'absolute inset-y-0 left-0 rounded-full',
-                metrics.burn === 'on-track' &&
-                  'bg-gradient-to-r from-emerald-500/70 to-emerald-400',
-                metrics.burn === 'at-risk' &&
-                  'bg-gradient-to-r from-amber-500/70 to-amber-400',
-                metrics.burn === 'behind' &&
-                  'bg-gradient-to-r from-rose-500/70 to-rose-400'
+                metrics.burn === 'on-track' && 'bg-gradient-to-r from-emerald-400 to-emerald-500',
+                metrics.burn === 'at-risk' && 'bg-gradient-to-r from-amber-400 to-amber-500',
+                metrics.burn === 'behind' && 'bg-gradient-to-r from-rose-400 to-rose-500'
               )}
             />
           </div>
-          <p className="mt-1.5 text-[11px] text-muted-foreground">
-            {metrics.done} de {metrics.total} tarefas concluídas
+          <p className="mt-2.5 text-xs font-medium text-muted-foreground">
+             <strong className="text-foreground">{metrics.done}</strong> concluídas de <strong className="text-foreground">{metrics.total}</strong> totais
           </p>
         </div>
 
-        <div className="h-px w-full bg-border/50 sm:h-10 sm:w-px" />
+        <div className="hidden xl:block h-16 w-px bg-border/40" />
+        <div className="xl:hidden h-px w-full bg-border/40" />
 
-        {/* Stats compactos */}
-        <div className="grid grid-cols-3 gap-3 sm:flex sm:items-center sm:gap-4">
-          <Stat
+        {/* Floating Stat Pills */}
+        <div className="flex flex-wrap items-center gap-4 xl:gap-6">
+          <StatPill
             icon={CheckCircle2}
             label="Concluídas"
             value={metrics.done}
             tone="emerald"
           />
-          <Stat icon={Clock} label="Em progresso" value={metrics.inProgress} tone="sky" />
-          <Stat
+          <StatPill 
+             icon={Clock} 
+             label="Em Andamento" 
+             value={metrics.inProgress} 
+             tone="sky" 
+          />
+          <StatPill
             icon={AlertTriangle}
             label="Atrasadas"
             value={metrics.overdue}
@@ -168,19 +166,23 @@ export function ProjectMetricsBar({
           />
         </div>
 
-        <div className="h-px w-full bg-border/50 sm:h-10 sm:w-px" />
+        <div className="hidden xl:block h-16 w-px bg-border/40" />
+        <div className="xl:hidden h-px w-full bg-border/40" />
 
-        {/* Burn indicator */}
-        <div className="flex items-center gap-3">
+        {/* Burn Indicator & Actions */}
+        <div className="flex items-center justify-between sm:justify-start gap-4">
           <div
             className={cn(
-              'flex items-center gap-2 rounded-full px-3 py-1.5 ring-1 ring-inset',
+              'flex items-center gap-2.5 rounded-full px-4 py-2 ring-1 ring-inset shadow-sm transition-all duration-300 hover:shadow-md hover:scale-105',
               burnStyle.bg,
               burnStyle.ring
             )}
           >
-            <span className={cn('h-1.5 w-1.5 rounded-full animate-pulse', burnStyle.dot)} />
-            <span className={cn('text-xs font-semibold', burnStyle.color)}>
+            <span className={cn('relative flex h-2 w-2')}>
+               <span className={cn('animate-ping absolute inline-flex h-full w-full rounded-full opacity-75', burnStyle.bg)} />
+               <span className={cn('relative inline-flex rounded-full h-2 w-2', burnStyle.dot)} />
+            </span>
+            <span className={cn('text-sm font-bold', burnStyle.color)}>
               {burnStyle.label}
             </span>
           </div>
@@ -189,15 +191,15 @@ export function ProjectMetricsBar({
             <Link
               href={`/${locale}/dashboard/tasks/analytics?projectId=${projectId}`}
               className={cn(
-                'group hidden items-center gap-1.5 rounded-full border border-border/50',
-                'bg-background/40 px-3 py-1.5 text-xs font-medium text-foreground',
-                'transition-all duration-200 hover:border-border hover:bg-background/80 sm:flex',
+                'group flex items-center gap-2 rounded-full border border-border/50',
+                'bg-card shadow-sm px-4 py-2 text-sm font-semibold text-foreground',
+                'transition-all duration-300 hover:border-emerald-500/40 hover:bg-emerald-500/5 hover:-translate-y-0.5',
                 'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2'
               )}
             >
-              <BarChart3 className="h-3 w-3" />
-              Analytics
-              <ArrowRight className="h-3 w-3 transition-transform group-hover:translate-x-0.5" />
+              <BarChart3 className="h-4 w-4 text-emerald-500/70" />
+              Ver Analytics
+              <ArrowRight className="h-4 w-4 opacity-50 transition-all group-hover:translate-x-1 group-hover:opacity-100" />
             </Link>
           )}
         </div>
@@ -206,28 +208,33 @@ export function ProjectMetricsBar({
   )
 }
 
-interface StatProps {
+interface StatPillProps {
   icon: React.ElementType
   label: string
   value: number
   tone: 'emerald' | 'sky' | 'rose' | 'muted'
 }
 
-function Stat({ icon: Icon, label, value, tone }: StatProps) {
-  const toneColors = {
-    emerald: 'text-emerald-500',
-    sky: 'text-sky-500',
-    rose: 'text-rose-500',
-    muted: 'text-muted-foreground',
+function StatPill({ icon: Icon, label, value, tone }: StatPillProps) {
+  const toneMap = {
+    emerald: { text: 'text-emerald-500', bg: 'bg-emerald-500/10' },
+    sky: { text: 'text-sky-500', bg: 'bg-sky-500/10' },
+    rose: { text: 'text-rose-500', bg: 'bg-rose-500/15' },
+    muted: { text: 'text-muted-foreground', bg: 'bg-muted' },
   }
+  
+  const currentTone = toneMap[tone]
+
   return (
-    <div className="flex items-center gap-2">
-      <Icon className={cn('h-3.5 w-3.5 shrink-0', toneColors[tone])} />
-      <div className="min-w-0">
-        <p className="font-mono text-sm font-semibold text-foreground tabular-nums leading-none">
+    <div className="flex items-center gap-3 bg-secondary/50 rounded-2xl p-2 pr-5 border border-border/40 hover:bg-secondary/70 transition-colors">
+      <div className={cn("flex h-10 w-10 items-center justify-center rounded-xl", currentTone.bg)}>
+         <Icon className={cn('h-5 w-5', currentTone.text)} />
+      </div>
+      <div>
+        <p className="font-display text-xl font-bold text-foreground tabular-nums leading-none tracking-tight">
           {value}
         </p>
-        <p className="mt-0.5 text-[10px] uppercase tracking-wider text-muted-foreground">
+        <p className="mt-1 text-[10px] font-bold uppercase tracking-wider text-muted-foreground/80">
           {label}
         </p>
       </div>

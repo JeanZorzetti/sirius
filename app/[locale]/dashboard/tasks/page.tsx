@@ -1,7 +1,7 @@
 import { Metadata } from 'next'
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
-import { FolderKanban, CheckSquare, Clock, AlertCircle, Plus, BarChart3, ArrowRight } from 'lucide-react'
+import { FolderKanban, CheckSquare, Clock, AlertCircle, Plus, BarChart3, ArrowRight, LayoutGrid, CheckCircle2 } from 'lucide-react'
 import { prisma } from '@/lib/prisma'
 import { getSession } from '@/lib/auth'
 import { getOrganizationEntitlements } from '@/lib/feature-gates'
@@ -126,55 +126,60 @@ export default async function TasksHubPage() {
   const velocityDelta = prevVelocity > 0 ? Math.round(((currentVelocity - prevVelocity) / prevVelocity) * 100) : null
 
   return (
-    <div className="flex-1 space-y-8">
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-end justify-between gap-4">
-        <div className="space-y-1">
-          <h1 className="font-display text-4xl font-bold tracking-tighter text-foreground">
-            Tarefas
+    <div className="flex-1 space-y-10 sm:space-y-12 pb-12 w-full max-w-7xl mx-auto px-2 sm:px-4">
+      {/* Header Premium */}
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
+        <div className="space-y-2 max-w-2xl">
+          <h1 className="font-display text-4xl sm:text-5xl font-extrabold tracking-tight text-foreground flex items-center gap-3">
+            Tarefas <span className="text-muted-foreground/30 font-light">/</span>
           </h1>
-          <p className="text-sm text-muted-foreground leading-relaxed">
-            Organize seu trabalho em projetos. Crie tarefas, defina prazos e acompanhe o progresso.
+          <p className="text-base sm:text-lg text-muted-foreground leading-relaxed">
+            Central de projetos e produtividade. Organize demandas, gerencie status e monitore a performance da sua equipe de forma interativa.
           </p>
         </div>
         <TasksHubActions />
       </div>
 
       {/* Quick Cards Grid */}
-      <div className={canAccessAnalytics ? 'grid grid-cols-1 gap-4 lg:grid-cols-3' : ''}>
+      <div className={canAccessAnalytics ? 'grid grid-cols-1 gap-5 lg:grid-cols-3' : 'grid grid-cols-1 gap-5'}>
         {/* My Tasks Quick Card */}
         <Link
           href="/dashboard/tasks/my-tasks"
-          className={`group relative block overflow-hidden rounded-2xl border border-border/50 bg-gradient-to-br from-indigo-500/5 via-purple-500/5 to-transparent p-6 transition-all duration-200 hover:border-indigo-500/30 hover:shadow-md ${canAccessAnalytics ? 'lg:col-span-2' : ''}`}
+          className={`group relative block overflow-hidden rounded-3xl border border-indigo-500/10 bg-gradient-to-br from-indigo-500/10 via-purple-500/5 to-background p-8 transition-all duration-300 hover:border-indigo-500/30 hover:shadow-[0_8px_30px_rgb(99,102,241,0.12)] hover:-translate-y-1 ${canAccessAnalytics ? 'lg:col-span-2' : ''}`}
         >
-          <div className="flex items-center justify-between gap-6">
-            <div className="flex items-center gap-4">
-              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-indigo-500/10 text-indigo-500">
-                <CheckSquare className="h-6 w-6" />
+          {/* Background Ambient Glow */}
+          <div className="absolute -top-24 -left-24 w-48 h-48 bg-indigo-500/20 rounded-full blur-3xl opacity-50 group-hover:opacity-70 transition-opacity" />
+
+          <div className="relative z-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-8 h-full">
+            <div className="flex items-center gap-5">
+              <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-indigo-500/15 text-indigo-500 ring-1 ring-inset ring-indigo-500/30 shadow-inner group-hover:scale-105 transition-transform duration-300">
+                <CheckSquare className="h-7 w-7" />
               </div>
               <div>
-                <h2 className="text-base font-semibold text-foreground">Minhas Tarefas</h2>
-                <p className="text-xs text-muted-foreground">
-                  Todas as tarefas atribuídas a você, em todos os projetos
+                <h2 className="text-xl font-bold tracking-tight text-foreground group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">A Minha Fila</h2>
+                <p className="mt-1 text-sm text-muted-foreground/80 font-medium">
+                  {myTotal === 0 ? "Você não possui nenhuma atividade atribuída." : `Sua lista tem ${myTotal} atividades distribuídas.`}
                 </p>
               </div>
             </div>
-            <div className="hidden items-center gap-6 sm:flex">
-              <div className="text-center">
-                <div className="text-2xl font-bold tracking-tight text-foreground">{myTotal}</div>
-                <div className="text-[10px] uppercase tracking-wide text-muted-foreground">Abertas</div>
+            
+            <div className="flex w-full md:w-auto items-center justify-around md:justify-end gap-6 sm:gap-10 border-t md:border-t-0 border-border/40 pt-6 md:pt-0">
+              <div className="text-center group/stat">
+                <div className="text-3xl font-black tracking-tight text-foreground transition-transform group-hover/stat:scale-110">{myTotal}</div>
+                <div className="mt-1 text-[11px] font-semibold uppercase tracking-widest text-muted-foreground">Abertas</div>
               </div>
-              <div className="text-center">
-                <div className="flex items-center gap-1 text-2xl font-bold tracking-tight text-amber-600 dark:text-amber-400">
+              <div className="text-center group/stat">
+                <div className="flex items-center justify-center gap-1 text-3xl font-black tracking-tight text-amber-500 transition-transform group-hover/stat:scale-110">
                   {myDueToday}
                 </div>
-                <div className="text-[10px] uppercase tracking-wide text-muted-foreground">Hoje</div>
+                <div className="mt-1 text-[11px] font-semibold uppercase tracking-widest text-muted-foreground">Hoje</div>
               </div>
-              <div className="text-center">
-                <div className="flex items-center gap-1 text-2xl font-bold tracking-tight text-red-600 dark:text-red-400">
+              <div className="text-center group/stat relative">
+                {myOverdue > 0 && <span className="absolute -top-1 -right-2 flex h-2.5 w-2.5"><span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75"></span><span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-rose-500"></span></span>}
+                <div className="flex items-center justify-center gap-1 text-3xl font-black tracking-tight text-rose-500 transition-transform group-hover/stat:scale-110">
                   {myOverdue}
                 </div>
-                <div className="text-[10px] uppercase tracking-wide text-muted-foreground">Atrasadas</div>
+                <div className="mt-1 text-[11px] font-semibold uppercase tracking-widest text-rose-500/70">Atrasos</div>
               </div>
             </div>
           </div>
@@ -184,68 +189,75 @@ export default async function TasksHubPage() {
         {canAccessAnalytics && (
           <Link
             href="/dashboard/tasks/analytics"
-            className="group relative flex flex-col justify-between gap-4 overflow-hidden rounded-2xl border border-border/50 bg-gradient-to-br from-emerald-500/5 via-teal-500/5 to-transparent p-6 transition-all duration-200 hover:border-emerald-500/30 hover:shadow-md"
+            className="group relative flex flex-col justify-between gap-5 overflow-hidden rounded-3xl border border-emerald-500/10 bg-gradient-to-br from-emerald-500/10 via-teal-500/5 to-background p-8 transition-all duration-300 hover:border-emerald-500/30 hover:shadow-[0_8px_30px_rgb(16,185,129,0.12)] hover:-translate-y-1"
           >
+            {/* Ambient glow */}
+            <div className="absolute -bottom-24 -right-24 w-48 h-48 bg-emerald-500/20 rounded-full blur-3xl opacity-50 group-hover:opacity-70 transition-opacity" />
+
             {/* Top: icon + título */}
-            <div className="flex items-start justify-between gap-3">
-              <div className="flex items-center gap-3">
-                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-500/10 text-emerald-500">
-                  <BarChart3 className="h-5 w-5" />
+            <div className="relative z-10 flex items-start justify-between gap-3">
+              <div className="flex items-center gap-4">
+                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-emerald-500/15 text-emerald-500 ring-1 ring-inset ring-emerald-500/30 shadow-inner group-hover:scale-105 transition-transform duration-300">
+                  <BarChart3 className="h-6 w-6" />
                 </div>
                 <div>
-                  <h2 className="text-base font-semibold text-foreground">Analytics</h2>
-                  <p className="text-xs text-muted-foreground">Produtividade e insights</p>
+                  <h2 className="text-lg font-bold tracking-tight text-foreground">Desempenho</h2>
+                  <p className="text-xs text-emerald-600/80 font-medium tracking-wide uppercase mt-0.5">Visão Analytics</p>
                 </div>
               </div>
-              <ArrowRight className="h-4 w-4 shrink-0 text-muted-foreground/50 transition-all duration-200 group-hover:translate-x-0.5 group-hover:text-foreground" />
+              <div className="h-8 w-8 rounded-full bg-background/50 flex items-center justify-center backdrop-blur shadow-sm group-hover:bg-background transition-colors">
+                 <ArrowRight className="h-4 w-4 text-muted-foreground group-hover:text-emerald-600 group-hover:-rotate-45 transition-all duration-300" />
+              </div>
             </div>
 
             {/* Sparkline de velocity */}
-            <div className="space-y-2">
+            <div className="relative z-10 space-y-3 mt-auto">
               <div className="flex items-baseline justify-between gap-2">
                 <div>
-                  <p className="font-display text-3xl font-bold tracking-tighter text-foreground leading-none">
+                  <p className="font-display text-4xl font-black tracking-tighter text-foreground leading-none">
                     {currentVelocity}
                   </p>
-                  <p className="mt-1 text-[10px] uppercase tracking-wider text-muted-foreground">
-                    tasks/semana
+                  <p className="mt-1.5 text-[11px] font-semibold uppercase tracking-widest text-muted-foreground">
+                    tasks entregues / sem
                   </p>
                 </div>
                 {velocityDelta !== null && (
-                  <div className={`flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-semibold ${velocityDelta >= 0 ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400' : 'bg-rose-500/10 text-rose-600 dark:text-rose-400'}`}>
+                  <div className={`flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-bold shadow-sm ${velocityDelta >= 0 ? 'bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 ring-1 ring-emerald-500/20' : 'bg-rose-500/15 text-rose-600 dark:text-rose-400 ring-1 ring-rose-500/20'}`}>
                     {velocityDelta >= 0 ? '↑' : '↓'} {Math.abs(velocityDelta)}%
                   </div>
                 )}
               </div>
 
-              {/* Mini sparkline SVG */}
-              <div className="flex items-end gap-1 h-8">
+              {/* Mini sparkline SVG bar */}
+              <div className="flex items-end gap-1.5 h-10 mt-2">
                 {weeklyVelocity.map((v, i) => {
                   const maxV = Math.max(...weeklyVelocity, 1)
-                  const h = Math.max(4, Math.round((v / maxV) * 32))
+                  const h = Math.max(10, Math.round((v / maxV) * 100))
                   const isLast = i === weeklyVelocity.length - 1
                   return (
                     <div
                       key={i}
-                      className={`flex-1 rounded-t-sm transition-all duration-300 ${isLast ? 'bg-emerald-500' : 'bg-emerald-500/25'}`}
-                      style={{ height: `${h}px` }}
+                      className={`flex-1 rounded-md transition-all duration-500 ${isLast ? 'bg-emerald-500 shadow-md' : 'bg-emerald-500/20'}`}
+                      style={{ height: `${h}%` }}
                     />
                   )
                 })}
               </div>
-              <p className="text-[10px] text-muted-foreground/60">últimas 4 semanas</p>
             </div>
           </Link>
         )}
       </div>
 
       {/* Projects Grid */}
-      <section className="space-y-4">
-        <div className="flex items-center justify-between">
-          <h2 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">
-            Projetos
-          </h2>
-          <span className="text-xs text-muted-foreground">{projects.length} projeto(s)</span>
+      <section className="space-y-6 pt-4">
+        <div className="flex items-center justify-between border-b border-border/40 pb-4">
+          <div className="flex items-center gap-3">
+             <div className="bg-muted p-2 rounded-lg"><LayoutGrid className="w-5 h-5 text-muted-foreground" /></div>
+             <h2 className="text-xl font-bold tracking-tight text-foreground">
+              Diretórios do Projeto
+             </h2>
+          </div>
+          <span className="text-sm font-semibold text-muted-foreground bg-muted/50 px-3 py-1 rounded-full">{projects.length} ativados</span>
         </div>
 
         {projects.length === 0 ? (
@@ -256,7 +268,7 @@ export default async function TasksHubPage() {
             action={<TasksHubActions variant="empty" />}
           />
         ) : (
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {projects.map((project) => {
               const total = project._count.tasks
               const done = doneByProject.get(project.id) ?? 0
@@ -267,69 +279,62 @@ export default async function TasksHubPage() {
                 <Link
                   key={project.id}
                   href={`/dashboard/tasks/${project.id}`}
-                  className="group relative flex flex-col overflow-hidden rounded-2xl border border-border/50 bg-card p-5 transition-all duration-200 hover:-translate-y-0.5 hover:border-border hover:shadow-md"
+                  className="group relative flex flex-col overflow-hidden rounded-[24px] border border-border/40 bg-card/60 backdrop-blur-sm p-6 transition-all duration-300 hover:-translate-y-1.5 hover:border-transparent hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.1)] dark:hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.4)] hover:bg-card"
                 >
-                  {/* Accent bar colorida no topo */}
+                  {/* Premium animated Hover shadow powered by project color */}
                   <div
-                    className="absolute inset-x-0 top-0 h-0.5 opacity-60 transition-opacity duration-200 group-hover:opacity-100"
+                    className="absolute -top-1/2 -left-1/2 w-[200%] h-[200%] opacity-0 group-hover:opacity-10 transition-opacity duration-700 pointer-events-none"
+                    style={{ background: `radial-gradient(circle at center, ${project.color} 0%, transparent 60%)` }}
+                  />
+
+                  {/* Accent Top Bar */}
+                  <div
+                    className="absolute inset-x-0 top-0 h-1.5 opacity-80 transition-all duration-300 scale-x-0 group-hover:scale-x-100 origin-left"
                     style={{ backgroundColor: project.color }}
                   />
 
-                  <div className="flex items-start justify-between gap-3">
+                  <div className="relative z-10 flex items-start justify-between gap-4 mb-5">
                     <div
-                      className="flex h-10 w-10 items-center justify-center rounded-xl text-white shadow-sm"
+                      className="flex h-14 w-14 shrink-0 items-center justify-center rounded-[18px] text-white shadow-lg ring-1 ring-white/20 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3"
                       style={{ backgroundColor: project.color }}
                     >
-                      <FolderKanban className="h-5 w-5" />
+                      <FolderKanban className="h-6 w-6" strokeWidth={2.5} />
                     </div>
-                    <div className="flex items-center gap-2">
-                      {overdue > 0 && (
-                        <span className="flex items-center gap-1 rounded-full bg-rose-500/10 px-2 py-0.5 text-[10px] font-semibold text-rose-500 ring-1 ring-inset ring-rose-500/20">
-                          {overdue} atrasada{overdue !== 1 ? 's' : ''}
-                        </span>
-                      )}
-                      <span className="rounded-full bg-muted px-2 py-0.5 text-[10px] font-medium text-muted-foreground">
-                        {total} task{total !== 1 ? 's' : ''}
+                    {overdue > 0 && (
+                      <span className="flex items-center gap-1 rounded-full bg-rose-500/10 px-2.5 py-1 text-[10px] font-bold text-rose-500 ring-1 ring-inset ring-rose-500/20 shadow-sm animate-in fade-in zoom-in">
+                        {overdue} {overdue !== 1 ? 'atrasadas' : 'atrasada'}
                       </span>
-                    </div>
+                    )}
                   </div>
 
-                  <h3 className="mt-4 text-base font-semibold leading-tight text-foreground">
+                  <h3 className="relative z-10 text-xl font-bold tracking-tight leading-tight text-foreground group-hover:text-primary transition-colors">
                     {project.name}
                   </h3>
-                  {project.description && (
-                    <p className="mt-1 line-clamp-2 text-xs text-muted-foreground leading-relaxed">
-                      {project.description}
-                    </p>
+                  
+                  {project.description ? (
+                     <p className="relative z-10 mt-2 line-clamp-2 text-sm text-muted-foreground leading-relaxed">
+                       {project.description}
+                     </p>
+                  ) : (
+                     <p className="relative z-10 mt-2 text-sm text-muted-foreground/50 italic">Sem descrição</p>
                   )}
 
                   {/* Progress bar + stats */}
-                  <div className="mt-auto pt-4 space-y-2">
-                    {total > 0 && (
-                      <>
-                        <div className="flex items-center justify-between gap-2">
-                          <div className="relative h-1.5 flex-1 overflow-hidden rounded-full bg-muted/60">
-                            <div
-                              className="absolute inset-y-0 left-0 rounded-full transition-all duration-500"
-                              style={{
-                                width: `${progress}%`,
-                                backgroundColor: project.color,
-                                opacity: 0.8,
-                              }}
-                            />
-                          </div>
-                          <span className="font-mono text-[10px] font-semibold tabular-nums text-muted-foreground">
-                            {progress}%
-                          </span>
-                        </div>
-                        <p className="text-[10px] text-muted-foreground">
-                          {done} de {total} concluída{done !== 1 ? 's' : ''}
-                        </p>
-                      </>
-                    )}
-                    <span className="block text-[11px] font-medium text-muted-foreground group-hover:text-foreground transition-colors">
-                      Abrir projeto →
-                    </span>
+                  <div className="relative z-10 mt-auto pt-6 space-y-3">
+                    <div className="flex items-center justify-between text-sm font-semibold">
+                       <span className="text-muted-foreground flex items-center gap-1.5"><CheckCircle2 className="w-4 h-4 text-emerald-500/70" />{done} <span className="text-muted-foreground/50 font-normal">/ {total}</span></span>
+                       <span className="tabular-nums" style={{ color: project.color }}>{progress}%</span>
+                    </div>
+
+                    <div className="relative h-2 w-full overflow-hidden rounded-full bg-secondary/60">
+                       <div
+                         className="absolute inset-y-0 left-0 rounded-full transition-all duration-700 ease-out shadow-inner"
+                         style={{
+                           width: `${progress}%`,
+                           backgroundColor: project.color,
+                         }}
+                       />
+                    </div>
                   </div>
                 </Link>
               )
