@@ -31,10 +31,19 @@ interface CreateTaskDialogProps {
   statuses: TaskStatusLite[]
   defaultStatusId?: string
   defaultDueDate?: string
+  isAdmin?: boolean
   onCreated?: () => void
 }
 
 type Priority = 'NONE' | 'LOW' | 'MEDIUM' | 'HIGH' | 'URGENT'
+type Visibility = 'PUBLIC' | 'PRIVATE' | 'ADMINS_ONLY'
+
+interface OrgMember {
+  id: string
+  name: string | null
+  email: string
+  orgRole: string
+}
 
 export function CreateTaskDialog({
   open,
@@ -43,6 +52,7 @@ export function CreateTaskDialog({
   statuses,
   defaultStatusId,
   defaultDueDate,
+  isAdmin = false,
   onCreated,
 }: CreateTaskDialogProps) {
   const [loading, setLoading] = useState(false)
@@ -51,6 +61,16 @@ export function CreateTaskDialog({
   const [statusId, setStatusId] = useState<string>(defaultStatusId || statuses[0]?.id || '')
   const [priority, setPriority] = useState<Priority>('NONE')
   const [dueDate, setDueDate] = useState('')
+  const [assigneeId, setAssigneeId] = useState<string>('none')
+  const [visibility, setVisibility] = useState<Visibility>('PUBLIC')
+  const [members, setMembers] = useState<OrgMember[]>([])
+
+  useEffect(() => {
+    fetch('/api/org/members')
+      .then((r) => r.json())
+      .then((data) => Array.isArray(data) && setMembers(data))
+      .catch(() => {})
+  }, [])
 
   useEffect(() => {
     if (open) {
@@ -59,6 +79,8 @@ export function CreateTaskDialog({
       setStatusId(defaultStatusId || statuses[0]?.id || '')
       setPriority('NONE')
       setDueDate(defaultDueDate || '')
+      setAssigneeId('none')
+      setVisibility('PUBLIC')
     }
   }, [open, defaultStatusId, defaultDueDate, statuses])
 
@@ -81,6 +103,8 @@ export function CreateTaskDialog({
           description: description.trim() || null,
           priority,
           dueDate: dueDate || null,
+          assigneeId: assigneeId === 'none' ? null : assigneeId,
+          visibility,
         }),
       })
 
@@ -182,6 +206,48 @@ export function CreateTaskDialog({
                 onChange={(e) => setDueDate(e.target.value)}
               />
             </div>
+
+            {/* Responsável */}
+            {members.length > 0 && (
+              <div className="grid gap-2">
+                <Label>Responsável</Label>
+                <Select value={assigneeId} onValueChange={setAssigneeId}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Sem responsável" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="none">Sem responsável</SelectItem>
+                    {members.map((m) => (
+                      <SelectItem key={m.id} value={m.id}>
+                        <div className="flex items-center gap-2">
+                          <div className="flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-primary/10 text-[8px] font-bold text-primary uppercase">
+                            {(m.name || m.email).charAt(0)}
+                          </div>
+                          <span>{m.name || m.email}</span>
+                        </div>
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+            )}
+
+            {/* Visibilidade — só admin vê */}
+            {isAdmin && (
+              <div className="grid gap-2">
+                <Label>Visibilidade</Label>
+                <Select value={visibility} onValueChange={(v) => setVisibility(v as Visibility)}>
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="PUBLIC">Pública — todos os membros</SelectItem>
+                    <SelectItem value="PRIVATE">Privada — só criador e responsável</SelectItem>
+                    <SelectItem value="ADMINS_ONLY">Apenas admins</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            )}
           </div>
 
           <DialogFooter>

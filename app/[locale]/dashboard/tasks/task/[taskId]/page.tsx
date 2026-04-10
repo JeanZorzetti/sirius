@@ -97,6 +97,7 @@ export default async function TaskDetailPage({ params }: Props) {
       <TaskDetailContent
         task={task as any}
         currentUserId={user.id}
+        currentUserRole={user.orgRole}
       />
     </div>
   )

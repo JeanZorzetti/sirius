@@ -1798,6 +1798,12 @@ enum DependencyType {
   RELATED
 }
 
+enum TaskVisibility {
+  PUBLIC      // Todos os membros da org podem ver
+  PRIVATE     // Apenas criador e responsável (assignee) podem ver
+  ADMINS_ONLY // Apenas OWNER e ADMIN podem ver
+}
+
 enum RecurrenceFrequency {
   DAILY
   WEEKLY
@@ -1904,6 +1910,9 @@ model Task {
 
   contactId String?
   contact   Contact? @relation(fields: [contactId], references: [id], onDelete: SetNull)
+
+  // Visibilidade (controle de acesso)
+  visibility TaskVisibility @default(PUBLIC)
 
   // Organização
   organizationId String

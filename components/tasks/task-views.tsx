@@ -104,6 +104,7 @@ export function TaskViews({
             <TaskListView
               tasks={tasks}
               statuses={statuses}
+              projectId={projectId}
               onTaskClick={onTaskClick}
               onToggleComplete={onToggleComplete}
               onAddTask={onAddTask}
@@ -114,6 +115,7 @@ export function TaskViews({
             <TaskKanbanView
               tasks={tasks}
               statuses={statuses}
+              projectId={projectId}
               onTaskClick={onTaskClick}
               onTaskMove={onTaskMove}
               onAddTask={onAddTask}

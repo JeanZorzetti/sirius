@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useCallback } from 'react'
+import { useRouter } from 'next/navigation'
 import { motion } from 'framer-motion'
 import {
   DragDropContext,
@@ -17,10 +18,12 @@ import { TaskDueDate } from './task-due-date'
 import { TaskLabels } from './task-labels'
 import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
+import { InlineEditTitle } from './inline-edit-title'
 
 interface TaskListViewProps {
   tasks: TaskLite[]
   statuses: TaskStatusLite[]
+  projectId?: string
   onTaskClick?: (task: TaskLite) => void
   onToggleComplete?: (task: TaskLite) => Promise<void>
   onAddTask?: (statusId: string) => void
@@ -30,11 +33,13 @@ interface TaskListViewProps {
 export function TaskListView({
   tasks,
   statuses,
+  projectId,
   onTaskClick,
   onToggleComplete,
   onAddTask,
   onTaskMove,
 }: TaskListViewProps) {
+  const router = useRouter()
   const [collapsed, setCollapsed] = useState<Record<string, boolean>>({})
   const [optimisticTasks, setOptimisticTasks] = useState<TaskLite[] | null>(null)
 
@@ -106,40 +111,58 @@ export function TaskListView({
               className="rounded-xl border border-border/50 bg-card overflow-hidden"
             >
               {/* Group Header */}
-              <button
-                onClick={() => toggleCollapse(status.id)}
-                className="flex w-full items-center justify-between gap-2 px-4 py-3 hover:bg-muted/30 transition-colors"
-              >
-                <div className="flex items-center gap-3">
-                  {isCollapsed ? (
-                    <ChevronRight className="h-4 w-4 text-muted-foreground" />
-                  ) : (
-                    <ChevronDown className="h-4 w-4 text-muted-foreground" />
-                  )}
-                  <div
-                    className="h-2 w-2 rounded-full"
-                    style={{ backgroundColor: status.color }}
-                  />
-                  <h3 className="text-sm font-semibold uppercase tracking-wide text-foreground">
-                    {status.name}
-                  </h3>
-                  <span className="rounded-full bg-muted px-2 py-0.5 text-[10px] font-medium text-muted-foreground">
-                    {groupTasks.length}
-                  </span>
+              <div className="flex w-full items-center justify-between gap-2 px-4 py-3">
+                <div className="flex items-center gap-3 min-w-0 flex-1">
+                  <button
+                    onClick={() => toggleCollapse(status.id)}
+                    className="flex items-center gap-3 min-w-0 flex-1 hover:opacity-80 transition-opacity text-left"
+                  >
+                    {isCollapsed ? (
+                      <ChevronRight className="h-4 w-4 shrink-0 text-muted-foreground" />
+                    ) : (
+                      <ChevronDown className="h-4 w-4 shrink-0 text-muted-foreground" />
+                    )}
+                    <div
+                      className="h-2 w-2 shrink-0 rounded-full"
+                      style={{ backgroundColor: status.color }}
+                    />
+                    {projectId ? (
+                      <InlineEditTitle
+                        value={status.name}
+                        onSave={async (name) => {
+                          const res = await fetch(
+                            `/api/task-projects/${projectId}/statuses/${status.id}`,
+                            {
+                              method: 'PATCH',
+                              headers: { 'Content-Type': 'application/json' },
+                              body: JSON.stringify({ name }),
+                            }
+                          )
+                          if (!res.ok) throw new Error('fail')
+                          router.refresh()
+                        }}
+                        className="text-sm font-semibold uppercase tracking-wide text-foreground"
+                      />
+                    ) : (
+                      <h3 className="text-sm font-semibold uppercase tracking-wide text-foreground truncate">
+                        {status.name}
+                      </h3>
+                    )}
+                    <span className="rounded-full bg-muted px-2 py-0.5 text-[10px] font-medium text-muted-foreground shrink-0">
+                      {groupTasks.length}
+                    </span>
+                  </button>
                 </div>
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="h-7 px-2 text-xs"
-                  onClick={(e) => {
-                    e.stopPropagation()
-                    onAddTask?.(status.id)
-                  }}
+                  className="h-7 px-2 text-xs shrink-0"
+                  onClick={() => onAddTask?.(status.id)}
                 >
                   <Plus className="mr-1 h-3 w-3" />
                   Adicionar
                 </Button>
-              </button>
+              </div>
 
               {/* Task Rows */}
               {!isCollapsed && (

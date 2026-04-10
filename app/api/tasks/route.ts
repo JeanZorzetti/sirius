@@ -40,9 +40,25 @@ export async function GET(request: Request) {
       archived: false,
     }
 
-    // MEMBER só vê tasks atribuídas ou criadas por ele
+    // Filtro de visibilidade:
+    // ADMINS_ONLY: só OWNER vê (MEMBER não vê)
+    // PRIVATE: só criador e assignee veem (se não for OWNER)
     if (user.orgRole === 'MEMBER') {
-      where.OR = [{ assigneeId: user.id }, { creatorId: user.id }]
+      where.AND = [
+        {
+          OR: [
+            { visibility: 'PUBLIC' },
+            // PRIVATE: é o criador ou assignee
+            { AND: [{ visibility: 'PRIVATE' }, { OR: [{ assigneeId: user.id }, { creatorId: user.id }] }] },
+            // ADMINS_ONLY: não visível para MEMBER
+          ],
+        },
+        // MEMBER só vê tasks atribuídas ou criadas por ele em PUBLIC
+        // (mantém comportamento anterior para tarefas PUBLIC)
+      ]
+    } else {
+      // OWNER/ADMIN: bloco ADMINS_ONLY visível normalmente
+      // Sem filtro extra — vê tudo
     }
 
     if (projectId) where.projectId = projectId
@@ -118,7 +134,7 @@ export async function POST(request: Request) {
     const {
       title, description, priority, projectId, statusId,
       assigneeId, dueDate, startDate, estimatedMinutes,
-      parentId, dealId, contactId, labelIds,
+      parentId, dealId, contactId, labelIds, visibility,
     } = body
 
     if (!title || typeof title !== 'string' || title.trim().length === 0) {
@@ -151,6 +167,7 @@ export async function POST(request: Request) {
         parentId: parentId || null,
         dealId: dealId || null,
         contactId: contactId || null,
+        visibility: visibility || 'PUBLIC',
         organizationId: user.organizationId,
         ...(labelIds?.length && {
           labels: { connect: labelIds.map((id: string) => ({ id })) },

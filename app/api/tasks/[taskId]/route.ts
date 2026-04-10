@@ -45,7 +45,7 @@ export async function GET(
 
     const user = await prisma.user.findUnique({
       where: { email: session.user.email },
-      select: { organizationId: true },
+      select: { id: true, organizationId: true, orgRole: true },
     })
 
     if (!user?.organizationId) {
@@ -59,6 +59,20 @@ export async function GET(
 
     if (!task) {
       return NextResponse.json({ error: 'Tarefa não encontrada' }, { status: 404 })
+    }
+
+    // Checar acesso por visibilidade
+    if (user.orgRole === 'MEMBER') {
+      if (task.visibility === 'ADMINS_ONLY') {
+        return NextResponse.json({ error: 'Sem permissão' }, { status: 403 })
+      }
+      if (
+        task.visibility === 'PRIVATE' &&
+        task.creatorId !== user.id &&
+        task.assigneeId !== user.id
+      ) {
+        return NextResponse.json({ error: 'Sem permissão' }, { status: 403 })
+      }
     }
 
     return NextResponse.json(task)
@@ -82,7 +96,7 @@ export async function PATCH(
 
     const user = await prisma.user.findUnique({
       where: { email: session.user.email },
-      select: { id: true, name: true, organizationId: true },
+      select: { id: true, name: true, organizationId: true, orgRole: true },
     })
 
     if (!user?.organizationId) {
@@ -98,11 +112,25 @@ export async function PATCH(
       return NextResponse.json({ error: 'Tarefa não encontrada' }, { status: 404 })
     }
 
+    // Checar acesso por visibilidade
+    if (user.orgRole === 'MEMBER') {
+      if (existing.visibility === 'ADMINS_ONLY') {
+        return NextResponse.json({ error: 'Sem permissão' }, { status: 403 })
+      }
+      if (
+        existing.visibility === 'PRIVATE' &&
+        existing.creatorId !== user.id &&
+        existing.assigneeId !== user.id
+      ) {
+        return NextResponse.json({ error: 'Sem permissão' }, { status: 403 })
+      }
+    }
+
     const body = await request.json()
     const {
       title, description, priority, statusId, assigneeId,
       dueDate, startDate, estimatedMinutes, order,
-      dealId, contactId, labelIds, archived,
+      dealId, contactId, labelIds, archived, visibility,
     } = body
 
     // Preparar dados de update
@@ -119,6 +147,7 @@ export async function PATCH(
     if (dealId !== undefined) data.dealId = dealId || null
     if (contactId !== undefined) data.contactId = contactId || null
     if (archived !== undefined) data.archived = archived
+    if (visibility !== undefined) data.visibility = visibility
 
     // Marcar como completado se mudou para status DONE
     if (statusId && statusId !== existing.statusId) {

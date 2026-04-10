@@ -7,6 +7,7 @@ import { getSession } from '@/lib/auth'
 import { getOrganizationEntitlements } from '@/lib/feature-gates'
 import { TaskProjectWorkspace } from '@/components/tasks/task-project-workspace'
 import { ProjectMetricsBar } from '@/components/tasks/project-metrics-bar'
+import { ProjectHeader } from '@/components/tasks/project-header'
 import type { TaskLite, TaskStatusLite } from '@/components/tasks/task-types'
 
 export const metadata: Metadata = {
@@ -98,29 +99,15 @@ export default async function TaskProjectPage({ params }: Props) {
 
       {/* Header */}
       <div className="flex flex-col sm:flex-row items-start sm:items-end justify-between gap-4">
-        <div className="flex items-start gap-4">
-          <div
-            className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl text-white text-lg font-bold"
-            style={{ backgroundColor: project.color }}
-          >
-            {project.name.charAt(0).toUpperCase()}
-          </div>
-          <div className="space-y-1 min-w-0">
-            <h1 className="font-display text-2xl sm:text-3xl font-bold tracking-tighter text-foreground truncate">
-              {project.name}
-            </h1>
-            {project.description && (
-              <p className="text-sm text-muted-foreground leading-relaxed max-w-2xl">
-                {project.description}
-              </p>
-            )}
-            <div className="flex items-center gap-3 pt-1 text-xs text-muted-foreground">
-              <span>{tasks.length} tarefa(s)</span>
-              <span>·</span>
-              <span>{project.statuses.length} status</span>
-            </div>
-          </div>
-        </div>
+        <ProjectHeader
+          projectId={project.id}
+          projectName={project.name}
+          projectColor={project.color}
+          projectDescription={project.description}
+          taskCount={tasks.length}
+          statusCount={project.statuses.length}
+          canEdit={user.orgRole === 'OWNER'}
+        />
       </div>
 
       {/* Metrics bar */}
@@ -137,6 +124,7 @@ export default async function TaskProjectPage({ params }: Props) {
         projectId={project.id}
         projectName={project.name}
         locale={locale}
+        isAdmin={user.orgRole === 'OWNER'}
         statuses={project.statuses as TaskStatusLite[]}
         tasks={tasks as unknown as TaskLite[]}
         entitlements={{

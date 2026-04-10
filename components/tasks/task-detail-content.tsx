@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import {
@@ -18,6 +18,7 @@ import {
   Activity as ActivityIcon,
   GitBranch,
   Repeat,
+  Eye,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -42,27 +43,54 @@ import { TaskRecurrenceConfig } from './task-recurrence-config'
 import { TimeTrackerWidget } from './time-tracker-widget'
 
 type Priority = 'NONE' | 'LOW' | 'MEDIUM' | 'HIGH' | 'URGENT'
+type Visibility = 'PUBLIC' | 'PRIVATE' | 'ADMINS_ONLY'
+
+interface OrgMember {
+  id: string
+  name: string | null
+  email: string
+  orgRole: string
+}
+
+const VISIBILITY_CONFIG: Record<Visibility, { label: string; description: string }> = {
+  PUBLIC: { label: 'Pública', description: 'Todos os membros podem ver' },
+  PRIVATE: { label: 'Privada', description: 'Só criador e responsável' },
+  ADMINS_ONLY: { label: 'Apenas admins', description: 'Só OWNER e ADMIN' },
+}
 
 interface TaskDetailContentProps {
   task: any
   currentUserId: string
+  currentUserRole?: string
 }
 
-export function TaskDetailContent({ task, currentUserId }: TaskDetailContentProps) {
+export function TaskDetailContent({ task, currentUserId, currentUserRole }: TaskDetailContentProps) {
   const router = useRouter()
   const [saving, setSaving] = useState(false)
   const [deleting, setDeleting] = useState(false)
+  const [members, setMembers] = useState<OrgMember[]>([])
 
   const [title, setTitle] = useState<string>(task.title)
   const [description, setDescription] = useState<string>(task.description || '')
   const [statusId, setStatusId] = useState<string>(task.statusId)
   const [priority, setPriority] = useState<Priority>(task.priority as Priority)
+  const [assigneeId, setAssigneeId] = useState<string>(task.assigneeId || 'none')
+  const [visibility, setVisibility] = useState<Visibility>((task.visibility as Visibility) || 'PUBLIC')
   const [dueDate, setDueDate] = useState<string>(
     task.dueDate ? new Date(task.dueDate).toISOString().slice(0, 10) : ''
   )
   const [estimatedMinutes, setEstimatedMinutes] = useState<number | ''>(
     task.estimatedMinutes || ''
   )
+
+  const isAdmin = currentUserRole === 'OWNER'
+
+  useEffect(() => {
+    fetch('/api/org/members')
+      .then((r) => r.json())
+      .then((data) => Array.isArray(data) && setMembers(data))
+      .catch(() => {})
+  }, [])
 
   const save = async () => {
     setSaving(true)
@@ -75,6 +103,8 @@ export function TaskDetailContent({ task, currentUserId }: TaskDetailContentProp
           description,
           statusId,
           priority,
+          assigneeId: assigneeId === 'none' ? null : assigneeId,
+          visibility,
           dueDate: dueDate || null,
           estimatedMinutes: estimatedMinutes || null,
         }),
@@ -298,21 +328,76 @@ export function TaskDetailContent({ task, currentUserId }: TaskDetailContentProp
             </Select>
           </div>
 
-          {/* Assignee */}
+          {/* Assignee — editável */}
           <div className="space-y-1.5">
             <Label className="flex items-center gap-1.5 text-xs text-muted-foreground">
               <UserIcon className="h-3 w-3" />
               Responsável
             </Label>
-            <div className="rounded-md border border-border/40 bg-background px-2 py-1.5 text-xs">
-              {task.assignee ? (
-                <span className="text-foreground">
-                  {task.assignee.name || task.assignee.email}
-                </span>
-              ) : (
-                <span className="text-muted-foreground">Ninguém</span>
-              )}
-            </div>
+            <Select
+              value={assigneeId}
+              onValueChange={(v) => {
+                setAssigneeId(v)
+                setTimeout(save, 0)
+              }}
+            >
+              <SelectTrigger className="h-8 text-xs">
+                <SelectValue placeholder="Sem responsável" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="none">
+                  <span className="text-muted-foreground">Sem responsável</span>
+                </SelectItem>
+                {members.map((m) => (
+                  <SelectItem key={m.id} value={m.id}>
+                    <div className="flex items-center gap-2">
+                      <div className="flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-primary/10 text-[8px] font-bold text-primary uppercase">
+                        {(m.name || m.email).charAt(0)}
+                      </div>
+                      <span className="truncate">{m.name || m.email}</span>
+                      {m.orgRole === 'OWNER' && (
+                        <span className="ml-auto text-[9px] text-muted-foreground">Owner</span>
+                      )}
+                    </div>
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+
+          {/* Visibilidade — só admin pode alterar */}
+          <div className="space-y-1.5">
+            <Label className="flex items-center gap-1.5 text-xs text-muted-foreground">
+              <Eye className="h-3 w-3" />
+              Visibilidade
+            </Label>
+            {isAdmin ? (
+              <Select
+                value={visibility}
+                onValueChange={(v) => {
+                  setVisibility(v as Visibility)
+                  setTimeout(save, 0)
+                }}
+              >
+                <SelectTrigger className="h-8 text-xs">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  {(Object.entries(VISIBILITY_CONFIG) as [Visibility, { label: string; description: string }][]).map(([key, cfg]) => (
+                    <SelectItem key={key} value={key}>
+                      <div>
+                        <span className="font-medium">{cfg.label}</span>
+                        <span className="ml-1.5 text-[10px] text-muted-foreground">{cfg.description}</span>
+                      </div>
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            ) : (
+              <div className="rounded-md border border-border/40 bg-background px-2 py-1.5 text-xs text-muted-foreground">
+                {VISIBILITY_CONFIG[visibility]?.label ?? 'Pública'}
+              </div>
+            )}
           </div>
 
           {/* Due date */}

@@ -15,6 +15,7 @@ interface TaskProjectWorkspaceProps {
   projectId: string
   projectName?: string
   locale?: string
+  isAdmin?: boolean
   statuses: TaskStatusLite[]
   tasks: TaskLite[]
   entitlements: {
@@ -37,6 +38,7 @@ export function TaskProjectWorkspace({
   projectId,
   projectName,
   locale = 'pt',
+  isAdmin = false,
   statuses,
   tasks,
   entitlements,
@@ -226,6 +228,7 @@ export function TaskProjectWorkspace({
         statuses={statuses}
         defaultStatusId={createStatusId}
         defaultDueDate={createDueDate}
+        isAdmin={isAdmin}
         onCreated={() => router.refresh()}
       />
 

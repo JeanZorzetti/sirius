@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useCallback } from 'react'
+import { useRouter } from 'next/navigation'
 import { motion } from 'framer-motion'
 import { DragDropContext, Droppable, Draggable, type DropResult } from '@hello-pangea/dnd'
 import { Plus } from 'lucide-react'
@@ -8,10 +9,12 @@ import { cn } from '@/lib/utils'
 import type { TaskLite, TaskStatusLite } from './task-types'
 import { TaskCard } from './task-card'
 import { Button } from '@/components/ui/button'
+import { InlineEditTitle } from './inline-edit-title'
 
 interface TaskKanbanViewProps {
   tasks: TaskLite[]
   statuses: TaskStatusLite[]
+  projectId?: string
   onTaskClick?: (task: TaskLite) => void
   onTaskMove?: (taskId: string, statusId: string, order: number) => Promise<void>
   onAddTask?: (statusId: string) => void
@@ -20,10 +23,12 @@ interface TaskKanbanViewProps {
 export function TaskKanbanView({
   tasks: initialTasks,
   statuses,
+  projectId,
   onTaskClick,
   onTaskMove,
   onAddTask,
 }: TaskKanbanViewProps) {
+  const router = useRouter()
   const [tasks, setTasks] = useState(initialTasks)
 
   const tasksByStatus = statuses.reduce<Record<string, TaskLite[]>>((acc, status) => {
@@ -81,22 +86,41 @@ export function TaskKanbanView({
             >
               {/* Column Header */}
               <div className="flex items-center justify-between gap-2 border-b border-border/50 p-3">
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2 min-w-0 flex-1">
                   <div
-                    className="h-2 w-2 rounded-full"
+                    className="h-2 w-2 shrink-0 rounded-full"
                     style={{ backgroundColor: status.color }}
                   />
-                  <h3 className="text-sm font-semibold uppercase tracking-wide text-foreground">
-                    {status.name}
-                  </h3>
-                  <span className="text-xs text-muted-foreground">
+                  {projectId ? (
+                    <InlineEditTitle
+                      value={status.name}
+                      onSave={async (name) => {
+                        const res = await fetch(
+                          `/api/task-projects/${projectId}/statuses/${status.id}`,
+                          {
+                            method: 'PATCH',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ name }),
+                          }
+                        )
+                        if (!res.ok) throw new Error('fail')
+                        router.refresh()
+                      }}
+                      className="text-sm font-semibold uppercase tracking-wide text-foreground"
+                    />
+                  ) : (
+                    <h3 className="text-sm font-semibold uppercase tracking-wide text-foreground truncate">
+                      {status.name}
+                    </h3>
+                  )}
+                  <span className="text-xs text-muted-foreground shrink-0">
                     {columnTasks.length}
                   </span>
                 </div>
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="h-7 w-7 p-0"
+                  className="h-7 w-7 p-0 shrink-0"
                   onClick={() => onAddTask?.(status.id)}
                 >
                   <Plus className="h-4 w-4" />
