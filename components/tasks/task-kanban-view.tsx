@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useCallback, useRef } from 'react'
+import { useState, useCallback, useRef, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { DragDropContext, Droppable, Draggable, type DropResult } from '@hello-pangea/dnd'
 import { Plus, GripVertical } from 'lucide-react'
@@ -32,6 +32,11 @@ export function TaskKanbanView({
   const [tasks, setTasks] = useState(initialTasks)
   const [draggingId, setDraggingId] = useState<string | null>(null)
   const isSaving = useRef(false)
+  const [isMounted, setIsMounted] = useState(false)
+
+  useEffect(() => {
+    setIsMounted(true)
+  }, [])
 
   const getTasksByStatus = useCallback(
     (currentTasks: TaskLite[]) =>
@@ -101,6 +106,8 @@ export function TaskKanbanView({
   )
 
   const tasksByStatus = getTasksByStatus(tasks)
+
+  if (!isMounted) return null
 
   return (
     <DragDropContext onDragStart={handleDragStart} onDragEnd={handleDragEnd}>

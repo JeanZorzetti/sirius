@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import {
   DragDropContext,
@@ -41,6 +41,11 @@ export function TaskListView({
   const router = useRouter()
   const [collapsed, setCollapsed] = useState<Record<string, boolean>>({})
   const [optimisticTasks, setOptimisticTasks] = useState<TaskLite[] | null>(null)
+  const [isMounted, setIsMounted] = useState(false)
+
+  useEffect(() => {
+    setIsMounted(true)
+  }, [])
 
   const toggleCollapse = useCallback((statusId: string) => {
     setCollapsed((prev) => ({ ...prev, [statusId]: !prev[statusId] }))
@@ -94,6 +99,8 @@ export function TaskListView({
     },
     [workingTasks, onTaskMove]
   )
+
+  if (!isMounted) return null
 
   return (
     <DragDropContext onDragEnd={handleDragEnd}>

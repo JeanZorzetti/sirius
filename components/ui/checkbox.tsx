@@ -16,7 +16,7 @@ const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
     }
 
     return (
-      <div className="relative inline-flex items-center">
+      <label className="relative inline-flex items-center cursor-pointer">
         <input
           type="checkbox"
           ref={ref}
@@ -27,7 +27,7 @@ const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
         />
         <div
           className={cn(
-            "h-4 w-4 shrink-0 rounded-sm border border-primary ring-offset-background",
+            "h-4 w-4 shrink-0 rounded-sm border border-primary ring-offset-background cursor-pointer",
             "peer-focus-visible:outline-none peer-focus-visible:ring-2 peer-focus-visible:ring-ring peer-focus-visible:ring-offset-2",
             "peer-disabled:cursor-not-allowed peer-disabled:opacity-50",
             checked ? "bg-primary text-primary-foreground" : "bg-transparent",
@@ -35,10 +35,10 @@ const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
           )}
         >
           {checked && (
-            <Check className="h-4 w-4" />
+            <Check className="h-3 w-3 m-0.5" />
           )}
         </div>
-      </div>
+      </label>
     )
   }
 )
