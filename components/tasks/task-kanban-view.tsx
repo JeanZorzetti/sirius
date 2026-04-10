@@ -1,15 +1,15 @@
 'use client'
 
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useRef } from 'react'
 import { useRouter } from 'next/navigation'
-import { motion } from 'framer-motion'
 import { DragDropContext, Droppable, Draggable, type DropResult } from '@hello-pangea/dnd'
-import { Plus } from 'lucide-react'
+import { Plus, GripVertical } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import type { TaskLite, TaskStatusLite } from './task-types'
 import { TaskCard } from './task-card'
 import { Button } from '@/components/ui/button'
 import { InlineEditTitle } from './inline-edit-title'
+import { toast } from 'sonner'
 
 interface TaskKanbanViewProps {
   tasks: TaskLite[]
@@ -30,62 +30,90 @@ export function TaskKanbanView({
 }: TaskKanbanViewProps) {
   const router = useRouter()
   const [tasks, setTasks] = useState(initialTasks)
+  const [draggingId, setDraggingId] = useState<string | null>(null)
+  const isSaving = useRef(false)
 
-  const tasksByStatus = statuses.reduce<Record<string, TaskLite[]>>((acc, status) => {
-    acc[status.id] = tasks
-      .filter((t) => t.statusId === status.id)
-      .sort((a, b) => a.order - b.order)
-    return acc
-  }, {})
+  const getTasksByStatus = useCallback(
+    (currentTasks: TaskLite[]) =>
+      statuses.reduce<Record<string, TaskLite[]>>((acc, status) => {
+        acc[status.id] = currentTasks
+          .filter((t) => t.statusId === status.id)
+          .sort((a, b) => a.order - b.order)
+        return acc
+      }, {}),
+    [statuses]
+  )
+
+  const handleDragStart = useCallback((start: { draggableId: string }) => {
+    setDraggingId(start.draggableId)
+  }, [])
 
   const handleDragEnd = useCallback(
     async (result: DropResult) => {
+      setDraggingId(null)
+
       const { destination, source, draggableId } = result
       if (!destination) return
       if (
         destination.droppableId === source.droppableId &&
         destination.index === source.index
-      ) {
-        return
+      ) return
+
+      if (isSaving.current) return
+      isSaving.current = true
+
+      const targetStatusId = destination.droppableId
+
+      // Compute new order value
+      const targetGroup = tasks
+        .filter((t) => t.statusId === targetStatusId && t.id !== draggableId)
+        .sort((a, b) => a.order - b.order)
+
+      let newOrder: number
+      if (targetGroup.length === 0) {
+        newOrder = 0
+      } else if (destination.index === 0) {
+        newOrder = targetGroup[0].order - 1
+      } else if (destination.index >= targetGroup.length) {
+        newOrder = targetGroup[targetGroup.length - 1].order + 1
+      } else {
+        const before = targetGroup[destination.index - 1].order
+        const after = targetGroup[destination.index].order
+        newOrder = (before + after) / 2
       }
 
       // Optimistic update
-      const task = tasks.find((t) => t.id === draggableId)
-      if (!task) return
-
-      const newTasks = tasks.filter((t) => t.id !== draggableId)
-      const updatedTask = {
-        ...task,
-        statusId: destination.droppableId,
-        order: destination.index,
-      }
-      newTasks.push(updatedTask)
-      setTasks(newTasks)
+      const next = tasks.map((t) =>
+        t.id === draggableId ? { ...t, statusId: targetStatusId, order: newOrder } : t
+      )
+      setTasks(next)
 
       try {
-        await onTaskMove?.(draggableId, destination.droppableId, destination.index)
-      } catch (err) {
-        // Rollback
+        await onTaskMove?.(draggableId, targetStatusId, newOrder)
+      } catch {
+        toast.error('Erro ao mover tarefa')
         setTasks(initialTasks)
+      } finally {
+        isSaving.current = false
       }
     },
-    [tasks, onTaskMove, initialTasks]
+    [tasks, initialTasks, onTaskMove]
   )
 
+  const tasksByStatus = getTasksByStatus(tasks)
+
   return (
-    <DragDropContext onDragEnd={handleDragEnd}>
-      <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-thin scrollbar-thumb-muted-foreground/20 relative">
-        {/* Mobile scroll fade indicator */}
-        <div className="pointer-events-none fixed right-0 top-0 bottom-0 w-12 bg-gradient-to-l from-background to-transparent sm:hidden" />
+    <DragDropContext onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
+      <div className="flex gap-3 overflow-x-auto pb-4">
         {statuses.map((status) => {
           const columnTasks = tasksByStatus[status.id] || []
           return (
             <div
               key={status.id}
-              className="flex w-80 flex-shrink-0 flex-col rounded-xl border border-border/50 bg-muted/30"
+              className="flex w-72 flex-shrink-0 flex-col rounded-xl border border-border/50 bg-muted/20 max-h-[calc(100vh-260px)]"
             >
               {/* Column Header */}
-              <div className="flex items-center justify-between gap-2 border-b border-border/50 p-3">
+              <div className="flex items-center justify-between gap-2 px-3 py-2.5 border-b border-border/40">
                 <div className="flex items-center gap-2 min-w-0 flex-1">
                   <div
                     className="h-2 w-2 shrink-0 rounded-full"
@@ -106,55 +134,69 @@ export function TaskKanbanView({
                         if (!res.ok) throw new Error('fail')
                         router.refresh()
                       }}
-                      className="text-sm font-semibold uppercase tracking-wide text-foreground"
+                      className="text-xs font-semibold uppercase tracking-wider text-foreground"
                     />
                   ) : (
-                    <h3 className="text-sm font-semibold uppercase tracking-wide text-foreground truncate">
+                    <span className="text-xs font-semibold uppercase tracking-wider text-foreground truncate">
                       {status.name}
-                    </h3>
+                    </span>
                   )}
-                  <span className="text-xs text-muted-foreground shrink-0">
+                  <span className="ml-1 rounded-full bg-muted px-1.5 py-0.5 text-[10px] font-medium text-muted-foreground shrink-0">
                     {columnTasks.length}
                   </span>
                 </div>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="h-7 w-7 p-0 shrink-0"
+                <button
                   onClick={() => onAddTask?.(status.id)}
+                  className="flex h-6 w-6 items-center justify-center rounded-md text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
                 >
-                  <Plus className="h-4 w-4" />
-                </Button>
+                  <Plus className="h-3.5 w-3.5" />
+                </button>
               </div>
 
-              {/* Droppable area */}
-              <Droppable droppableId={status.id}>
+              {/* Cards */}
+              <Droppable droppableId={status.id} type="KANBAN_CARD">
                 {(provided, snapshot) => (
                   <div
                     ref={provided.innerRef}
                     {...provided.droppableProps}
                     className={cn(
-                      'flex flex-1 flex-col gap-2 p-3 transition-colors min-h-[200px]',
-                      snapshot.isDraggingOver && 'bg-indigo-500/5'
+                      'flex flex-1 flex-col gap-2 overflow-y-auto p-2 transition-colors duration-150',
+                      snapshot.isDraggingOver && 'bg-primary/5'
                     )}
+                    style={{ minHeight: 80 }}
                   >
                     {columnTasks.map((task, index) => (
                       <Draggable key={task.id} draggableId={task.id} index={index}>
                         {(dragProvided, dragSnapshot) => (
-                          <motion.div
+                          <div
                             ref={dragProvided.innerRef}
                             {...dragProvided.draggableProps}
-                            {...dragProvided.dragHandleProps}
-                            initial={{ opacity: 0, y: 8 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: index * 0.03, duration: 0.2 }}
+                            style={{
+                              ...dragProvided.draggableProps.style,
+                              // Prevent transform jitter — use direct style
+                            }}
+                            className={cn(
+                              'rounded-xl transition-shadow duration-150',
+                              dragSnapshot.isDragging && 'shadow-xl ring-2 ring-primary/20 rotate-[0.8deg]'
+                            )}
                           >
-                            <TaskCard
-                              task={task}
-                              onClick={() => onTaskClick?.(task)}
-                              isDragging={dragSnapshot.isDragging}
-                            />
-                          </motion.div>
+                            {/* Drag handle + card in a wrapper */}
+                            <div className="group relative">
+                              {/* Grip handle — only shows on hover */}
+                              <div
+                                {...dragProvided.dragHandleProps}
+                                className="absolute left-1.5 top-1/2 -translate-y-1/2 z-10 opacity-0 group-hover:opacity-100 transition-opacity cursor-grab active:cursor-grabbing"
+                                onClick={(e) => e.stopPropagation()}
+                              >
+                                <GripVertical className="h-3.5 w-3.5 text-muted-foreground" />
+                              </div>
+                              <TaskCard
+                                task={task}
+                                onClick={() => !dragSnapshot.isDragging && onTaskClick?.(task)}
+                                isDragging={dragSnapshot.isDragging}
+                              />
+                            </div>
+                          </div>
                         )}
                       </Draggable>
                     ))}
@@ -163,9 +205,9 @@ export function TaskKanbanView({
                     {columnTasks.length === 0 && !snapshot.isDraggingOver && (
                       <button
                         onClick={() => onAddTask?.(status.id)}
-                        className="flex items-center justify-center rounded-lg border border-dashed border-border/50 py-6 text-xs text-muted-foreground hover:border-border hover:text-foreground transition-colors"
+                        className="flex items-center justify-center gap-1 rounded-lg border border-dashed border-border/40 py-5 text-xs text-muted-foreground/60 hover:border-border hover:text-muted-foreground transition-colors"
                       >
-                        <Plus className="mr-1 h-3 w-3" />
+                        <Plus className="h-3 w-3" />
                         Adicionar tarefa
                       </button>
                     )}

@@ -1,6 +1,5 @@
 'use client'
 
-import { motion } from 'framer-motion'
 import { cn } from '@/lib/utils'
 import { MessageSquare, ListChecks, GitBranch, Link2 } from 'lucide-react'
 import type { TaskLite } from './task-types'
@@ -26,16 +25,13 @@ export function TaskCard({ task, onClick, isDragging, className }: TaskCardProps
     task.contactId
 
   return (
-    <motion.div
+    <div
       onClick={onClick}
-      whileHover={{ scale: 1.01 }}
-      transition={{ duration: 0.2 }}
       className={cn(
         'group relative rounded-xl border border-border/50 bg-card p-3 text-left',
-        'transition-all duration-200 ease-out',
-        'hover:border-border hover:shadow-sm hover:-translate-y-0.5',
-        'cursor-pointer',
-        isDragging && 'shadow-lg ring-2 ring-indigo-500/30 rotate-1',
+        'transition-all duration-150 ease-out',
+        'hover:border-border hover:shadow-sm cursor-pointer',
+        isDragging && 'opacity-90',
         className
       )}
     >
@@ -106,6 +102,6 @@ export function TaskCard({ task, onClick, isDragging, className }: TaskCardProps
         <TaskDueDate dueDate={task.dueDate} completedAt={task.completedAt} compact />
         <TaskAssigneeAvatar user={task.assignee} size="sm" />
       </div>
-    </motion.div>
+    </div>
   )
 }

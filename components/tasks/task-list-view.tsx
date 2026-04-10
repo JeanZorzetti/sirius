@@ -2,7 +2,6 @@
 
 import { useState, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
-import { motion } from 'framer-motion'
 import {
   DragDropContext,
   Droppable,
@@ -188,23 +187,21 @@ export function TaskListView({
                             index={index}
                           >
                             {(prov, snap) => (
-                              <motion.div
+                              <div
                                 ref={prov.innerRef}
                                 {...prov.draggableProps}
-                                initial={{ opacity: 0, x: -10 }}
-                                animate={{ opacity: 1, x: 0 }}
-                                transition={{ delay: index * 0.02, duration: 0.2 }}
                                 className={cn(
-                                  snap.isDragging && 'bg-background shadow-lg ring-1 ring-indigo-500/30'
+                                  'transition-shadow duration-150',
+                                  snap.isDragging && 'bg-background shadow-lg ring-1 ring-primary/20 rounded-lg z-50'
                                 )}
                               >
                                 <TaskRow
                                   task={task}
                                   dragHandleProps={prov.dragHandleProps}
-                                  onClick={() => onTaskClick?.(task)}
+                                  onClick={() => !snap.isDragging && onTaskClick?.(task)}
                                   onToggleComplete={onToggleComplete}
                                 />
-                              </motion.div>
+                              </div>
                             )}
                           </Draggable>
                         ))
