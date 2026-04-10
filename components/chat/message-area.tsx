@@ -1530,30 +1530,31 @@ export function MessageArea({ contact, connections, organizationId, userId, user
               </span>
             </div>
 
-            <button
-              type="button"
-              onClick={pendingFile ? sendMedia : text.trim() ? send : startRecording}
-              disabled={sending}
-              aria-label={pendingFile ? 'Enviar arquivo' : text.trim() ? 'Enviar mensagem' : 'Gravar áudio'}
-              className={cn(
-                'h-[42px] w-[42px] rounded-full flex items-center justify-center flex-shrink-0',
-                'transition-all duration-200 active:scale-90',
-                'focus-visible:ring-2 focus-visible:ring-[#00a884] focus-visible:ring-offset-2',
-                (text.trim() || pendingFile)
-                  ? 'bg-[#00a884] hover:bg-[#008f72] text-white'
-                  : 'bg-transparent text-[#54656f] hover:text-[#3b4a54]'
-              )}
-            >
-              {sending ? (
-                <Loader2 className="h-5 w-5 animate-spin" />
-              ) : pendingFile ? (
-                <Send className="h-5 w-5" />
-              ) : text.trim() ? (
-                <Send className="h-5 w-5" />
-              ) : (
+            {(text.trim() || pendingFile) ? (
+              <button
+                type="button"
+                onClick={pendingFile ? sendMedia : send}
+                disabled={sending}
+                aria-label={pendingFile ? 'Enviar arquivo' : 'Enviar mensagem'}
+                className="h-[42px] w-[42px] rounded-full flex items-center justify-center flex-shrink-0 bg-[#00a884] hover:bg-[#008f72] text-white transition-all duration-200 active:scale-90 focus-visible:ring-2 focus-visible:ring-[#00a884] focus-visible:ring-offset-2"
+              >
+                {sending ? (
+                  <Loader2 className="h-5 w-5 animate-spin" />
+                ) : (
+                  <Send className="h-5 w-5" />
+                )}
+              </button>
+            ) : (
+              <button
+                type="button"
+                onClick={startRecording}
+                disabled={sending}
+                aria-label="Gravar áudio"
+                className="h-[42px] w-[42px] rounded-full flex items-center justify-center flex-shrink-0 bg-[#00a884] hover:bg-[#008f72] text-white transition-all duration-200 active:scale-90 focus-visible:ring-2 focus-visible:ring-[#00a884] focus-visible:ring-offset-2"
+              >
                 <Mic className="h-5 w-5" />
-              )}
-            </button>
+              </button>
+            )}
           </>
         )}
       </div>
