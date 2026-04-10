@@ -125,7 +125,7 @@ export default async function TasksAnalyticsPage({ params, searchParams }: Props
         </div>
       </div>
 
-      <AnalyticsDashboard projectId={projectId} locale={locale} />
+      <AnalyticsDashboard projectId={projectId} projectName={selectedProject?.name} locale={locale} />
     </div>
   )
 }

@@ -10,6 +10,8 @@ import { CompletionTrendChart } from './completion-trend-chart'
 import { ProductivityByUser } from './productivity-by-user'
 import { OverdueTasksList } from './overdue-tasks-list'
 import { AnalyticsExportButton } from './analytics-export-button'
+import { ActivityHeatmap } from './activity-heatmap'
+import { AnalyticsAISummary } from './analytics-ai-summary'
 import { cn } from '@/lib/utils'
 
 interface ComparisonDatum {
@@ -53,6 +55,7 @@ interface AnalyticsData {
   }>
   trend: Array<{ date: string; created: number; completed: number }>
   prevTrend?: number[]
+  heatmap: Array<{ date: string; count: number }>
   topAssignees: Array<{
     userId: string
     name: string
@@ -65,6 +68,7 @@ interface AnalyticsData {
 
 interface Props {
   projectId?: string
+  projectName?: string
   locale: string
 }
 
@@ -74,7 +78,7 @@ const RANGE_OPTIONS = [
   { label: '90d', value: 90 },
 ]
 
-export function AnalyticsDashboard({ projectId, locale }: Props) {
+export function AnalyticsDashboard({ projectId, projectName, locale }: Props) {
   const [range, setRange] = useState(30)
   const [data, setData] = useState<AnalyticsData | null>(null)
   const [loading, setLoading] = useState(true)
@@ -177,6 +181,14 @@ export function AnalyticsDashboard({ projectId, locale }: Props) {
               ↑↓ comparado com os {range} dias anteriores
             </p>
 
+            {/* AI Summary */}
+            <AnalyticsAISummary
+              kpis={data.kpis}
+              comparison={data.comparison}
+              rangeDays={data.rangeDays}
+              projectName={projectName}
+            />
+
             {/* KPIs com deltas */}
             <AnalyticsOverview
               kpis={data.kpis}
@@ -198,6 +210,9 @@ export function AnalyticsDashboard({ projectId, locale }: Props) {
 
             {/* Overdue — full width */}
             <OverdueTasksList data={data.overdueList} locale={locale} />
+
+            {/* Heatmap anual — full width */}
+            <ActivityHeatmap data={data.heatmap ?? []} />
           </motion.div>
         ) : null}
       </AnimatePresence>

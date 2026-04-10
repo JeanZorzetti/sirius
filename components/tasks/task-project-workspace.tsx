@@ -13,12 +13,15 @@ import { TaskFilters, applyTaskFilters, type TaskFiltersState } from './task-fil
 
 interface TaskProjectWorkspaceProps {
   projectId: string
+  projectName?: string
+  locale?: string
   statuses: TaskStatusLite[]
   tasks: TaskLite[]
   entitlements: {
     taskKanban: boolean
     taskCalendar: boolean
     taskTable: boolean
+    taskAnalytics: boolean
   }
 }
 
@@ -32,6 +35,8 @@ const EMPTY_FILTERS: TaskFiltersState = {
 
 export function TaskProjectWorkspace({
   projectId,
+  projectName,
+  locale = 'pt',
   statuses,
   tasks,
   entitlements,
@@ -48,6 +53,7 @@ export function TaskProjectWorkspace({
   if (!entitlements.taskKanban) lockedViews.push('kanban')
   if (!entitlements.taskCalendar) lockedViews.push('calendar')
   if (!entitlements.taskTable) lockedViews.push('table')
+  if (!entitlements.taskAnalytics) lockedViews.push('analytics')
 
   const filteredTasks = useMemo(() => applyTaskFilters(tasks, filters), [tasks, filters])
 
@@ -196,8 +202,12 @@ export function TaskProjectWorkspace({
       <TaskViews
         tasks={filteredTasks}
         statuses={statuses}
+        availableViews={['list', 'kanban', 'calendar', 'table', 'analytics']}
         lockedViews={lockedViews}
         defaultView="list"
+        projectId={projectId}
+        projectName={projectName}
+        locale={locale}
         onTaskClick={handleTaskClick}
         onTaskMove={handleTaskMove}
         onToggleComplete={handleToggleComplete}

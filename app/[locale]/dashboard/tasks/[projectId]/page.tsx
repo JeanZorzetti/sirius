@@ -135,12 +135,15 @@ export default async function TaskProjectPage({ params }: Props) {
       {/* Workspace */}
       <TaskProjectWorkspace
         projectId={project.id}
+        projectName={project.name}
+        locale={locale}
         statuses={project.statuses as TaskStatusLite[]}
         tasks={tasks as unknown as TaskLite[]}
         entitlements={{
           taskKanban: entitlements.features.taskKanban ?? true,
           taskCalendar: entitlements.features.taskCalendar ?? false,
           taskTable: entitlements.features.taskTable ?? false,
+          taskAnalytics: entitlements.features.taskAnalytics ?? false,
         }}
       />
     </div>

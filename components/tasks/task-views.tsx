@@ -2,15 +2,16 @@
 
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { List, KanbanSquare, Calendar, Table2, Lock } from 'lucide-react'
+import { List, KanbanSquare, Calendar, Table2, Lock, BarChart2 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import type { TaskLite, TaskStatusLite } from './task-types'
 import { TaskListView } from './task-list-view'
 import { TaskKanbanView } from './task-kanban-view'
 import { TaskCalendarView } from './task-calendar-view'
 import { TaskTableView } from './task-table-view'
+import { AnalyticsDashboard } from './analytics/analytics-dashboard'
 
-export type TaskViewMode = 'list' | 'kanban' | 'calendar' | 'table'
+export type TaskViewMode = 'list' | 'kanban' | 'calendar' | 'table' | 'analytics'
 
 interface TaskViewsProps {
   tasks: TaskLite[]
@@ -18,6 +19,9 @@ interface TaskViewsProps {
   availableViews?: TaskViewMode[]
   lockedViews?: TaskViewMode[]
   defaultView?: TaskViewMode
+  projectId?: string
+  projectName?: string
+  locale?: string
   onTaskClick?: (task: TaskLite) => void
   onTaskMove?: (taskId: string, statusId: string, order: number) => Promise<void>
   onToggleComplete?: (task: TaskLite) => Promise<void>
@@ -34,6 +38,7 @@ const VIEW_CONFIG: Record<TaskViewMode, { label: string; icon: typeof List }> = 
   kanban: { label: 'Kanban', icon: KanbanSquare },
   calendar: { label: 'Calendário', icon: Calendar },
   table: { label: 'Tabela', icon: Table2 },
+  analytics: { label: 'Analytics', icon: BarChart2 },
 }
 
 export function TaskViews({
@@ -42,6 +47,9 @@ export function TaskViews({
   availableViews = ['list', 'kanban', 'calendar', 'table'],
   lockedViews = [],
   defaultView = 'list',
+  projectId,
+  projectName,
+  locale = 'pt',
   onTaskClick,
   onTaskMove,
   onToggleComplete,
@@ -128,6 +136,13 @@ export function TaskViews({
               onBulkStatusChange={onBulkStatusChange}
               onBulkPriorityChange={onBulkPriorityChange}
               onInlineEdit={onInlineEdit}
+            />
+          )}
+          {view === 'analytics' && projectId && (
+            <AnalyticsDashboard
+              projectId={projectId}
+              projectName={projectName}
+              locale={locale}
             />
           )}
         </motion.div>

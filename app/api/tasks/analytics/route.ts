@@ -92,6 +92,7 @@ export async function GET(request: Request) {
       prevCreatedTasks,
       prevAvgCompletionTimeRaw,
       prevCompletionsInRange,
+      heatmapRaw,
     ] = await Promise.all([
       // ── Período atual ──
       prisma.task.count({ where: baseWhere }),
@@ -177,6 +178,18 @@ export async function GET(request: Request) {
       // Série diária do período anterior (para overlay no trend chart)
       prisma.task.findMany({
         where: { ...baseWhere, completedAt: { gte: prevRangeStart, lte: prevRangeEnd } },
+        select: { completedAt: true },
+      }),
+
+      // Heatmap anual: completions por dia nos últimos 365 dias
+      prisma.task.findMany({
+        where: {
+          ...baseWhere,
+          completedAt: {
+            gte: new Date(new Date().setFullYear(new Date().getFullYear() - 1)),
+            lte: now,
+          },
+        },
         select: { completedAt: true },
       }),
     ])
@@ -314,6 +327,15 @@ export async function GET(request: Request) {
     const completionRate = totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0
     const inProgressCount = tasksByStatus.filter((s) => s.type === 'IN_PROGRESS').reduce((sum, s) => sum + s.count, 0)
 
+    // ── Heatmap: { date: 'yyyy-mm-dd', count: number }[] ──────────────
+    const heatmapMap = new Map<string, number>()
+    for (const t of heatmapRaw) {
+      if (!t.completedAt) continue
+      const key = t.completedAt.toISOString().slice(0, 10)
+      heatmapMap.set(key, (heatmapMap.get(key) ?? 0) + 1)
+    }
+    const heatmap = Array.from(heatmapMap.entries()).map(([date, count]) => ({ date, count }))
+
     return NextResponse.json({
       rangeDays,
       projectId: projectId ?? null,
@@ -364,6 +386,7 @@ export async function GET(request: Request) {
       tasksByPriority: tasksByPriorityFull,
       trend,
       prevTrend,
+      heatmap,
       topAssignees,
       overdueList,
     })
