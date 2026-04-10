@@ -7,6 +7,7 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
+import { usePathname } from 'next/navigation';
 import { X, MessageSquare, Send, Loader2, Sparkles } from 'lucide-react';
 
 interface Message {
@@ -22,7 +23,11 @@ interface AgiChatSidebarProps {
 }
 
 export function AgiChatSidebar({ dealId, pipelineId, context }: AgiChatSidebarProps) {
+    const pathname = usePathname();
     const [isOpen, setIsOpen] = useState(false);
+
+    // Hide on the chat page — the widget overlaps the mic button
+    if (pathname?.includes('/dashboard/chat')) return null;
     const [messages, setMessages] = useState<Message[]>([]);
     const [input, setInput] = useState('');
     const [isLoading, setIsLoading] = useState(false);
