@@ -47,21 +47,9 @@ export function QRCodeDialog({ connection, open, onOpenChange }: QRCodeDialogPro
     setConnected(false)
 
     try {
-      // Get the SSE URL from CRM API
-      const res = await fetch(`/api/whatsapp/connections/${connection.id}/qr-code`)
-      const data = await res.json()
-
-      if (!res.ok) {
-        throw new Error(data.error || 'Erro ao buscar QR Code')
-      }
-
-      const streamUrl = data.qrStreamUrl
-      if (!streamUrl) {
-        throw new Error('QR Stream URL não disponível')
-      }
-
-      // Connect to gateway QR SSE stream
-      const es = new EventSource(streamUrl)
+      // Connect to CRM's SSE proxy — it forwards the gateway QR stream
+      // with proper auth and no CORS issues
+      const es = new EventSource(`/api/whatsapp/connections/${connection.id}/qr-code`)
       eventSourceRef.current = es
 
       es.addEventListener('qr', (e) => {
@@ -94,10 +82,26 @@ export function QRCodeDialog({ connection, open, onOpenChange }: QRCodeDialogPro
         setIsLoading(false)
       })
 
+      es.addEventListener('error', (e) => {
+        // SSE error event from our proxy (gateway unreachable, instance not found, etc.)
+        const evt = e as MessageEvent
+        if (evt.data) {
+          try {
+            const parsed = JSON.parse(evt.data)
+            setError(parsed.error || 'Erro no gateway')
+          } catch {
+            setError('Erro ao conectar com o gateway')
+          }
+          cleanup()
+          setIsLoading(false)
+        }
+      })
+
       es.onerror = () => {
-        // SSE reconnects automatically, but if it fails completely:
         if (es.readyState === EventSource.CLOSED) {
-          setError('Conexão com o gateway perdida')
+          if (!qrCode) {
+            setError('Não foi possível conectar ao gateway')
+          }
           setIsLoading(false)
         }
       }
