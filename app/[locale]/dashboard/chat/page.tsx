@@ -122,19 +122,22 @@ export default async function ChatPage({
         })
 
         // 3. Fetch last message per contact from WA DB
-        const lastMessages = await prismaWa.whatsAppMessage.findMany({
+        // distinct + orderBy on different fields causes INSUFFICIENT_PATH — dedupe in JS instead
+        const lastMessagesRaw = await prismaWa.whatsAppMessage.findMany({
           where: {
             organizationId: user.organizationId,
             contactId: { in: contactIds },
             ...messageFilter,
           },
           orderBy: { sentAt: 'desc' },
-          distinct: ['contactId'],
         })
 
-        const lastMessageMap = new Map(
-          lastMessages.map(m => [m.contactId, m])
-        )
+        const lastMessageMap = new Map<string, typeof lastMessagesRaw[0]>()
+        for (const msg of lastMessagesRaw) {
+          if (msg.contactId && !lastMessageMap.has(msg.contactId)) {
+            lastMessageMap.set(msg.contactId, msg)
+          }
+        }
 
         // 4. Fetch unread counts from WA DB
         const unreadCounts = await prismaWa.whatsAppMessage.groupBy({

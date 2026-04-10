@@ -83,7 +83,7 @@ export async function GET() {
       : []
 
     // 7. Fetch last message per contact from WA DB
-    const lastMessages = contactIds.length > 0
+    const lastMessagesRaw = contactIds.length > 0
       ? await prismaWa.whatsAppMessage.findMany({
           where: {
             organizationId: user.organizationId,
@@ -91,13 +91,16 @@ export async function GET() {
             ...messageFilter,
           },
           orderBy: { sentAt: 'desc' },
-          distinct: ['contactId'],
         })
       : []
 
-    const lastMessageMap = new Map(
-      lastMessages.map(m => [m.contactId, m])
-    )
+    // distinct + orderBy on different fields causes INSUFFICIENT_PATH — dedupe in JS
+    const lastMessageMap = new Map<string, typeof lastMessagesRaw[0]>()
+    for (const msg of lastMessagesRaw) {
+      if (msg.contactId && !lastMessageMap.has(msg.contactId)) {
+        lastMessageMap.set(msg.contactId, msg)
+      }
+    }
 
     // 8. Fetch unread counts from WA DB
     const unreadCounts = contactIds.length > 0
