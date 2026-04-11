@@ -264,6 +264,8 @@ model Contact {
   city          String? // Cidade
   state         String? // Estado (UF)
   profilePicUrl String? // WhatsApp profile picture URL
+  latitude      Float?  // Geolocalização — Sprint 4.3
+  longitude     Float?  // Geolocalização — Sprint 4.3
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 
