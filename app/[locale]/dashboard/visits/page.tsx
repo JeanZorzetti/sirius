@@ -57,7 +57,6 @@ export default async function VisitsPage() {
         contactId: { not: null },
       },
       select: { contactId: true },
-      distinct: ['contactId'],
     }),
   ])
 

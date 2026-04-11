@@ -41,19 +41,25 @@ export async function GET() {
     const activeConnection = connections.find(c => c.status === 'CONNECTED' || c.status === 'CONNECTING')
     const messageFilter = activeConnection ? { connectionId: activeConnection.id } : {}
 
-    // 5. Get distinct contactIds via groupBy (avoids INSUFFICIENT_PATH from distinct)
-    const contactIdGroups = await prismaWa.whatsAppMessage.groupBy({
-      by: ['contactId'],
-      where: {
-        organizationId: user.organizationId,
-        contactId: { not: null },
-        ...messageFilter,
-      },
-    })
+    // 5. Get distinct contactIds via raw SQL — groupBy/distinct on nullable fields
+    // causes INSUFFICIENT_PATH in Prisma 5.x, raw SQL is the safe alternative
+    const connectionIdFilter = activeConnection ? activeConnection.id : null
+    const rows = connectionIdFilter
+      ? await prismaWa.$queryRaw<{ contact_id: string }[]>`
+          SELECT DISTINCT "contactId" AS contact_id
+          FROM "WhatsAppMessage"
+          WHERE "organizationId" = ${user.organizationId}
+            AND "contactId" IS NOT NULL
+            AND "connectionId" = ${connectionIdFilter}
+        `
+      : await prismaWa.$queryRaw<{ contact_id: string }[]>`
+          SELECT DISTINCT "contactId" AS contact_id
+          FROM "WhatsAppMessage"
+          WHERE "organizationId" = ${user.organizationId}
+            AND "contactId" IS NOT NULL
+        `
 
-    const contactIds = contactIdGroups
-      .map(m => m.contactId)
-      .filter((id): id is string => id !== null)
+    const contactIds = rows.map(r => r.contact_id)
 
     // 6. Fetch contacts from CRM DB
     const contacts = contactIds.length > 0
