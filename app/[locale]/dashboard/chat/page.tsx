@@ -97,17 +97,17 @@ export default async function ChatPage({
     if (!messageFilter) {
       contacts = []
     } else {
-      // 1. Get distinct contactIds with messages from WA DB
-      const contactIdsWithMessages = await prismaWa.whatsAppMessage.findMany({
+      // 1. Get distinct contactIds via groupBy (avoids INSUFFICIENT_PATH from distinct)
+      const contactIdGroups = await prismaWa.whatsAppMessage.groupBy({
+        by: ['contactId'],
         where: {
           organizationId: user.organizationId,
+          contactId: { not: null },
           ...messageFilter,
         },
-        distinct: ['contactId'],
-        select: { contactId: true },
       })
 
-      const contactIds = contactIdsWithMessages
+      const contactIds = contactIdGroups
         .map(m => m.contactId)
         .filter((id): id is string => id !== null)
 

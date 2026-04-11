@@ -49,17 +49,17 @@ export async function GET() {
 
     const messageFilter = { connectionId: { in: connectionIds } }
 
-    // 4. Get distinct contactIds that have messages (from WA DB)
-    const contactIdsWithMessages = await prismaWa.whatsAppMessage.findMany({
+    // 4. Get distinct contactIds via groupBy (avoids INSUFFICIENT_PATH from distinct)
+    const contactIdGroups = await prismaWa.whatsAppMessage.groupBy({
+      by: ['contactId'],
       where: {
         organizationId: user.organizationId,
+        contactId: { not: null },
         ...messageFilter,
       },
-      distinct: ['contactId'],
-      select: { contactId: true },
     })
 
-    const contactIds = contactIdsWithMessages
+    const contactIds = contactIdGroups
       .map(m => m.contactId)
       .filter((id): id is string => id !== null)
 
