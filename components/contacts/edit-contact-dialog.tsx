@@ -19,7 +19,13 @@ import { toast } from 'sonner'
 import { useRouter } from 'next/navigation'
 import { Contact } from '@prisma/client'
 
-export function EditContactDialog({ contact }: { contact: Contact }) {
+export function EditContactDialog({
+    contact,
+    trigger,
+}: {
+    contact: Contact
+    trigger?: React.ReactNode
+}) {
     const router = useRouter()
     const [open, setOpen] = useState(false)
     const [loading, setLoading] = useState(false)
@@ -49,14 +55,16 @@ export function EditContactDialog({ contact }: { contact: Contact }) {
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
-                <Button
-                    size="icon"
-                    variant="ghost"
-                    className="h-7 w-7 rounded-full text-zinc-400 hover:text-indigo-500 hover:bg-indigo-500/10 transition-all opacity-0 group-hover:opacity-100"
-                    title="Editar contato"
-                >
-                    <Pencil className="h-4 w-4" />
-                </Button>
+                {trigger ?? (
+                    <Button
+                        size="icon"
+                        variant="ghost"
+                        className="h-7 w-7 rounded-full text-zinc-400 hover:text-indigo-500 hover:bg-indigo-500/10 transition-all opacity-0 group-hover:opacity-100"
+                        title="Editar contato"
+                    >
+                        <Pencil className="h-4 w-4" />
+                    </Button>
+                )}
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px]">
                 <form onSubmit={onSubmit}>

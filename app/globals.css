@@ -742,6 +742,33 @@
     outline: 2px solid #00a884;
     outline-offset: 2px;
   }
+
+  /* ── Mobile Touch Targets (Fase 1 Roadmap Mobile 2026) ─────────────────
+     Garante que elementos interativos respeitem o mínimo de 44x44px
+     recomendado pelo Apple HIG e Material Design em telas < lg.
+     Adicione `.touch-target` em qualquer botão/link que precise crescer
+     apenas no mobile, sem alterar o visual desktop.
+  */
+  @media (max-width: 1023px) {
+    .touch-target {
+      min-height: 44px;
+      min-width: 44px;
+    }
+    .touch-target-inline {
+      min-height: 44px;
+    }
+  }
+
+  /* Safe-area helpers (iOS notch / Android gesture bar) */
+  .pb-safe {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  .pt-safe {
+    padding-top: env(safe-area-inset-top);
+  }
+  .mb-safe {
+    margin-bottom: env(safe-area-inset-bottom);
+  }
 }
 /* Drag and Drop improvements - TEMPORARIAMENTE DESATIVADO PARA TESTE */
 /* [data-dnd-kit-drag-handle] {

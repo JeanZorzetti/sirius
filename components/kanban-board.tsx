@@ -171,7 +171,7 @@ function DealCard({
             <Button
               size="icon"
               variant="ghost"
-              className="h-7 w-7 rounded-full bg-green-500/10 text-green-500 hover:bg-green-500/20 hover:text-green-400 transition-colors"
+              className="h-7 w-7 touch-target rounded-full bg-green-500/10 text-green-500 hover:bg-green-500/20 hover:text-green-400 transition-colors"
               onClick={handleWhatsApp}
               title={`Conversar com ${deal.contact.name}`}
             >
@@ -250,7 +250,7 @@ function KanbanColumn({
             </span>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="icon" className="h-6 w-6 opacity-0 group-hover/header:opacity-100 transition-opacity">
+                <Button variant="ghost" size="icon" className="h-8 w-8 touch-target opacity-100 lg:h-6 lg:w-6 lg:opacity-0 lg:group-hover/header:opacity-100 transition-opacity">
                   <MoreHorizontal className="w-3 h-3" />
                 </Button>
               </DropdownMenuTrigger>

@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import {
   ColumnDef,
+  Row,
   flexRender,
   getCoreRowModel,
   getFilteredRowModel,
@@ -10,6 +11,7 @@ import {
   RowSelectionState,
 } from '@tanstack/react-table'
 import { Search, Trash2, Loader2 } from 'lucide-react'
+import { cn } from '@/lib/utils'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { bulkDeleteContacts } from '@/app/[locale]/dashboard/contacts/actions'
@@ -38,11 +40,17 @@ import {
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
+  /**
+   * Renderiza cada row como um card no mobile (<lg). Se não fornecido,
+   * mantém a tabela com scroll horizontal (comportamento legado).
+   */
+  renderMobileCard?: (row: Row<TData>) => React.ReactNode
 }
 
 export function DataTable<TData extends { id: string }, TValue>({
   columns,
   data,
+  renderMobileCard,
 }: DataTableProps<TData, TValue>) {
   const [globalFilter, setGlobalFilter] = useState('')
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({})
@@ -133,7 +141,13 @@ export function DataTable<TData extends { id: string }, TValue>({
         )}
       </div>
 
-      <div className="rounded-2xl border border-black/5 dark:border-white/5 bg-white dark:bg-white/[0.02] backdrop-blur-xl overflow-x-auto shadow-sm">
+      {/* Desktop Table — escondida em <lg quando há renderMobileCard */}
+      <div
+        className={cn(
+          'rounded-2xl border border-black/5 dark:border-white/5 bg-white dark:bg-white/[0.02] backdrop-blur-xl shadow-sm',
+          renderMobileCard ? 'hidden lg:block overflow-hidden' : 'overflow-x-auto',
+        )}
+      >
         <Table>
           <TableHeader className="bg-black/[0.02] dark:bg-white/[0.02]">
             {table.getHeaderGroups().map((headerGroup) => (
@@ -178,6 +192,21 @@ export function DataTable<TData extends { id: string }, TValue>({
           </TableBody>
         </Table>
       </div>
+
+      {/* Mobile Cards — só aparecem quando renderMobileCard é fornecido */}
+      {renderMobileCard && (
+        <div className="flex flex-col gap-3 lg:hidden">
+          {table.getRowModel().rows?.length ? (
+            table.getRowModel().rows.map((row) => (
+              <div key={row.id}>{renderMobileCard(row)}</div>
+            ))
+          ) : (
+            <div className="rounded-2xl border border-black/5 dark:border-white/5 bg-white dark:bg-white/[0.02] p-8 text-center text-sm text-zinc-500">
+              {globalFilter ? 'Nenhum resultado para a busca.' : 'Nenhum resultado encontrado.'}
+            </div>
+          )}
+        </div>
+      )}
 
       {/* Row count */}
       <div className="text-xs text-zinc-500">

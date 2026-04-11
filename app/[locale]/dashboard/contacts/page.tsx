@@ -1,7 +1,6 @@
 import { Metadata } from "next"
 import { prisma } from "@/lib/prisma"
-import { DataTable } from "@/components/contacts/data-table"
-import { columns } from "@/components/contacts/columns"
+import { ContactsDataTableClient } from "@/components/contacts/contacts-data-table-client"
 import { CreateContactDialog } from "@/components/contacts/create-contact-dialog"
 import { ImportContactsDialog } from "@/components/contacts/import-contacts-dialog"
 import { EmptyState } from "@/components/ui/empty-state"
@@ -65,7 +64,7 @@ export default async function ContactsPage() {
                 />
             ) : (
                 <div className="h-full flex-1 flex-col space-y-8 flex">
-                    <DataTable columns={columns} data={contacts} />
+                    <ContactsDataTableClient data={contacts} />
                 </div>
             )}
         </div>
