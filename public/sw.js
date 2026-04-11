@@ -123,15 +123,146 @@ self.addEventListener('fetch', (event) => {
   );
 });
 
-// Push notification handler (for future use)
+// ─────────────────────────────────────────────────────────────────────────────
+// Push notifications acionáveis (Sprint 3.3)
+// ─────────────────────────────────────────────────────────────────────────────
+//
+// Payload esperado (FCM `data` ou Web Push):
+// {
+//   title: string,
+//   body: string,
+//   category: 'PROPOSAL_OPENED' | 'DEAL_STALLED' | 'CHAT_MESSAGE' | 'TASK_DUE',
+//   dealId?, contactId?, conversationId?, taskId?, phone?
+// }
+
+const ACTION_CATEGORIES = {
+  PROPOSAL_OPENED: [
+    { action: 'CALL', title: '📞 Ligar' },
+    { action: 'WHATSAPP', title: '💬 WhatsApp' },
+  ],
+  DEAL_STALLED: [
+    { action: 'VIEW', title: '👀 Ver' },
+    { action: 'COMPLETE', title: '✅ Concluir' },
+  ],
+  CHAT_MESSAGE: [{ action: 'REPLY', title: '💬 Responder' }],
+  TASK_DUE: [
+    { action: 'COMPLETE', title: '✅ Concluir' },
+    { action: 'SNOOZE', title: '⏰ Adiar' },
+  ],
+};
+
 self.addEventListener('push', (event) => {
-  console.log('[SW] Push notification received');
+  let payload = {};
+  if (event.data) {
+    try {
+      payload = event.data.json();
+    } catch {
+      payload = { title: 'Sirius CRM', body: event.data.text() };
+    }
+  }
+
+  const title = payload.title || 'Sirius CRM';
+  const category = payload.category;
+  const actions = (category && ACTION_CATEGORIES[category]) || [];
+
   const options = {
-    body: event.data ? event.data.text() : 'Nova notificação',
+    body: payload.body || 'Nova notificação',
     icon: '/icon.png',
     badge: '/icon.png',
+    tag: payload.tag || category || 'sirius-default',
+    renotify: true,
+    requireInteraction: category === 'PROPOSAL_OPENED' || category === 'CHAT_MESSAGE',
+    actions,
+    data: {
+      category,
+      dealId: payload.dealId,
+      contactId: payload.contactId,
+      conversationId: payload.conversationId,
+      taskId: payload.taskId,
+      phone: payload.phone,
+    },
   };
+
+  event.waitUntil(self.registration.showNotification(title, options));
+});
+
+function cleanPhone(phone) {
+  if (!phone) return null;
+  const digits = String(phone).replace(/\D/g, '');
+  return digits.length >= 10 ? digits : null;
+}
+
+function urlForAction(actionId, data) {
+  switch (actionId) {
+    case 'CALL': {
+      const phone = cleanPhone(data.phone);
+      return phone ? `tel:+${phone}` : null;
+    }
+    case 'WHATSAPP': {
+      const phone = cleanPhone(data.phone);
+      return phone ? `https://wa.me/${phone}` : null;
+    }
+    case 'VIEW':
+      if (data.dealId) return `/dashboard/deals/${data.dealId}`;
+      if (data.contactId) return `/dashboard/contacts/${data.contactId}`;
+      return '/dashboard';
+    case 'REPLY':
+      return data.conversationId ? `/dashboard/chat/${data.conversationId}?reply=1` : '/dashboard/chat';
+    default: {
+      // Default tap (sem botão) — abre tela contextual
+      if (data.dealId) return `/dashboard/deals/${data.dealId}`;
+      if (data.contactId) return `/dashboard/contacts/${data.contactId}`;
+      if (data.conversationId) return `/dashboard/chat/${data.conversationId}`;
+      if (data.taskId) return `/dashboard/tasks/${data.taskId}`;
+      return '/dashboard';
+    }
+  }
+}
+
+self.addEventListener('notificationclick', (event) => {
+  const { action, notification } = event;
+  const data = notification.data || {};
+  notification.close();
+
+  // Background actions — chamam API direto sem abrir o app
+  if (action === 'COMPLETE') {
+    const url = data.taskId
+      ? `/api/v1/tasks/${data.taskId}/complete`
+      : data.dealId
+      ? `/api/v1/deals/${data.dealId}/won`
+      : null;
+    if (url) {
+      event.waitUntil(fetch(url, { method: 'POST' }).catch(() => {}));
+      return;
+    }
+  }
+  if (action === 'SNOOZE' && data.taskId) {
+    event.waitUntil(
+      fetch(`/api/v1/tasks/${data.taskId}/snooze`, { method: 'POST' }).catch(() => {}),
+    );
+    return;
+  }
+
+  // Foreground actions — abrem o app numa rota específica
+  const targetUrl = urlForAction(action, data);
+  if (!targetUrl) return;
+
+  // Para deep links externos (tel:, https://wa.me/), usa openWindow direto
+  if (targetUrl.startsWith('tel:') || targetUrl.startsWith('https://wa.me/')) {
+    event.waitUntil(self.clients.openWindow(targetUrl));
+    return;
+  }
+
+  // Para rotas internas, foca janela existente ou abre nova
   event.waitUntil(
-    self.registration.showNotification('Sirius CRM', options)
+    self.clients.matchAll({ type: 'window', includeUncontrolled: true }).then((clients) => {
+      for (const client of clients) {
+        if (client.url.includes(self.location.origin) && 'focus' in client) {
+          client.navigate(targetUrl);
+          return client.focus();
+        }
+      }
+      return self.clients.openWindow(targetUrl);
+    }),
   );
 });

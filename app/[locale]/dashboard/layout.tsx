@@ -8,6 +8,7 @@ import { LoginTracker } from '@/components/analytics/login-tracker'
 import { PostHogUserIdentifier } from '@/components/analytics/posthog-user-identifier'
 import { AgiChatSidebar } from '@/components/agi'
 import { NativeInitializer } from '@/components/mobile/native-initializer'
+import { NetworkStatusBanner } from '@/components/mobile/network-status-banner'
 import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { redirect } from 'next/navigation'
@@ -76,6 +77,9 @@ export default async function DashboardLayout({
 
       {/* Mobile/Native App Initializer - registers push notifications & offline sync */}
       <NativeInitializer />
+
+      {/* Network status banner — offline / pending sync */}
+      <NetworkStatusBanner />
     </div>
   )
 }

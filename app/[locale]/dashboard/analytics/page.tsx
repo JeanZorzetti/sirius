@@ -3,6 +3,8 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { OverviewChart } from '@/components/analytics/overview-chart';
 import { MonthlyChart } from '@/components/analytics/monthly-chart';
 import { ClientChart } from '@/components/analytics/client-chart';
+import { LazyOnVisible } from '@/components/ui/lazy-on-visible';
+import { Skeleton } from '@/components/ui/skeleton';
 import { DollarSign, TrendingUp, Target, CalendarClock, Banknote } from 'lucide-react';
 import { getSession } from '@/lib/auth';
 import { Suspense } from 'react';
@@ -430,7 +432,11 @@ export default async function AnalyticsPage({
           </div>
         </CardHeader>
         <CardContent className="pl-0">
-          <MonthlyChart data={monthlyData} />
+          <LazyOnVisible
+            fallback={<Skeleton className="h-[300px] w-full rounded-md" />}
+          >
+            <MonthlyChart data={monthlyData} />
+          </LazyOnVisible>
         </CardContent>
       </Card>
 
@@ -450,7 +456,11 @@ export default async function AnalyticsPage({
           </div>
         </CardHeader>
         <CardContent className="pl-0">
-          <ClientChart data={clientData} />
+          <LazyOnVisible
+            fallback={<Skeleton className="h-[300px] w-full rounded-md" />}
+          >
+            <ClientChart data={clientData} />
+          </LazyOnVisible>
         </CardContent>
       </Card>
     </div>
