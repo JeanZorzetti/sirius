@@ -68,19 +68,39 @@ export async function POST(req: NextRequest) {
   }
 
   // Criar no gateway
-  const gatewayInstance = await whatsmeowClient.createInstance(instanceName, user.organizationId)
+  let gatewayInstance: any
+  try {
+    gatewayInstance = await whatsmeowClient.createInstance(instanceName, user.organizationId)
+  } catch (gatewayErr: any) {
+    logger.error({ error: gatewayErr.message, organizationId: user.organizationId }, 'whatsmeow: gateway createInstance failed')
+    return NextResponse.json(
+      { error: 'Falha ao criar instância no gateway', details: gatewayErr.message },
+      { status: 502 }
+    )
+  }
 
   logger.info({ gatewayInstance, organizationId: user.organizationId }, 'whatsmeow instance created')
 
   // Salvar no DB — instanceName = gatewayInstance.id para usar no lookup do webhook
-  const connection = await prismaWa.whatsAppConnection.create({
-    data: {
-      organizationId: user.organizationId,
-      userId: session.user.id,
-      instanceName: gatewayInstance.id,
-      status: 'CONNECTING',
-    },
-  })
+  let connection: any
+  try {
+    connection = await prismaWa.whatsAppConnection.create({
+      data: {
+        organizationId: user.organizationId,
+        userId: session.user.id,
+        instanceName: gatewayInstance.id,
+        status: 'CONNECTING',
+      },
+    })
+  } catch (dbErr: any) {
+    logger.error({ error: dbErr.message, gatewayInstanceId: gatewayInstance.id }, 'whatsmeow: DB create failed after gateway create')
+    // Gateway instance was created — try to clean it up
+    try { await whatsmeowClient.deleteInstance(gatewayInstance.id) } catch {}
+    return NextResponse.json(
+      { error: 'Falha ao salvar conexão no banco', details: dbErr.message },
+      { status: 500 }
+    )
+  }
 
   return NextResponse.json(
     {
