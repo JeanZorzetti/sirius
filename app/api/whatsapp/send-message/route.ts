@@ -46,19 +46,22 @@ export async function POST(req: NextRequest) {
     }
 
     // 4. Verificar se a conexão pertence à organização
-    const connection = await prismaWa.whatsAppConnection.findFirst({
-      where: {
-        id: connectionId,
-        organizationId: user.organizationId,
-      },
-    })
+    // Use $queryRaw to avoid any Prisma INSUFFICIENT_PATH on nullable relation fields
+    const connRows = await prismaWa.$queryRaw<Array<{
+      id: string; instanceName: string; status: string; organizationId: string
+    }>>`
+      SELECT id, "instanceName", status, "organizationId"
+      FROM "WhatsAppConnection"
+      WHERE id = ${connectionId}
+        AND "organizationId" = ${user.organizationId}
+      LIMIT 1
+    `
 
-    if (!connection) {
-      return NextResponse.json(
-        { error: 'Conexão não encontrada' },
-        { status: 404 }
-      )
+    if (!connRows.length) {
+      return NextResponse.json({ error: 'Conexão não encontrada' }, { status: 404 })
     }
+
+    const connection = connRows[0]
 
     // 5. Verificar se a conexão está ativa
     if (connection.status !== 'CONNECTED') {
@@ -74,62 +77,83 @@ export async function POST(req: NextRequest) {
         id: contactId,
         organizationId: user.organizationId,
       },
+      select: { id: true, phone: true },
     })
 
     if (!contact) {
-      return NextResponse.json(
-        { error: 'Contato não encontrado' },
-        { status: 404 }
-      )
+      return NextResponse.json({ error: 'Contato não encontrado' }, { status: 404 })
     }
 
     if (!contact.phone) {
-      return NextResponse.json(
-        { error: 'Contact has no phone number' },
-        { status: 400 }
-      )
+      return NextResponse.json({ error: 'Contact has no phone number' }, { status: 400 })
     }
 
-    // 7. Send via Whatsmeow Gateway
+    // 7. Send via Whatsmeow Gateway — this MUST succeed before saving to DB
     const phoneNumber = normalizePhoneNumber(contact.phone)
     const remoteJid = phoneNumber
 
     const res = await whatsmeowClient.sendText(connection.instanceName, phoneNumber, message)
     const messageId = res.messageId
 
-    logger.info({
-      connectionId: connection.id,
-      contactId: contact.id,
-      messageId,
-      provider: 'whatsmeow',
-    }, 'WhatsApp message sent')
+    logger.info({ connectionId: connection.id, contactId: contact.id, messageId }, 'WhatsApp message sent')
 
-    // 8. Salvar mensagem no banco
-    const savedMessage = await prismaWa.whatsAppMessage.create({
-      data: {
-        contactId: contact.id,
-        organizationId: user.organizationId,
-        connectionId: connection.id,
-        remoteJid,
-        messageId,
+    // 8. Save message to DB using raw SQL to bypass any Prisma relation path issues
+    const now = new Date()
+    const msgId = `msg_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`
+
+    let savedMessage: any
+    try {
+      await prismaWa.$executeRaw`
+        INSERT INTO "WhatsAppMessage"
+          (id, "contactId", "organizationId", "connectionId", "remoteJid",
+           "messageId", text, direction, status, "sentAt", "isRead",
+           "replyToId", "replyToText", "createdAt", "updatedAt")
+        VALUES (
+          ${msgId},
+          ${contact.id},
+          ${user.organizationId},
+          ${connection.id},
+          ${remoteJid},
+          ${messageId},
+          ${message},
+          'OUTBOUND',
+          'SENT',
+          ${now},
+          true,
+          ${replyToId ?? null},
+          ${null},
+          ${now},
+          ${now}
+        )
+        ON CONFLICT ("organizationId", "messageId") DO NOTHING
+      `
+
+      savedMessage = {
+        id: msgId,
         text: message,
         direction: 'OUTBOUND',
+        sentAt: now,
+        deliveredAt: null,
+        readAt: null,
         status: 'SENT',
-        sentAt: new Date(),
-        ...(replyToId && { replyToId, replyToText: null }),
-      },
-      select: {
-        id: true,
-        text: true,
-        direction: true,
-        sentAt: true,
-        deliveredAt: true,
-        readAt: true,
-        status: true,
-        replyToId: true,
-        replyToText: true,
-      },
-    })
+        replyToId: replyToId ?? null,
+        replyToText: null,
+      }
+    } catch (dbErr: any) {
+      // DB save failed but message was already sent — log and return success anyway
+      logger.error({ error: dbErr.message, messageId }, 'send-message: DB save failed after send')
+      savedMessage = {
+        id: `temp_${messageId}`,
+        text: message,
+        direction: 'OUTBOUND',
+        sentAt: now,
+        deliveredAt: null,
+        readAt: null,
+        status: 'SENT',
+        replyToId: replyToId ?? null,
+        replyToText: null,
+      }
+    }
 
     ssePublish(user.organizationId, 'message:sent', {
       contactId: contact.id,
@@ -137,10 +161,10 @@ export async function POST(req: NextRequest) {
     })
 
     return NextResponse.json(savedMessage)
-  } catch (error) {
-    logger.error({ error }, 'Error sending WhatsApp message')
+  } catch (error: any) {
+    logger.error({ error: error.message, stack: error.stack, code: error.code }, 'Error sending WhatsApp message')
     return NextResponse.json(
-      { error: 'Falha ao enviar mensagem' },
+      { error: 'Falha ao enviar mensagem', details: error.message },
       { status: 500 }
     )
   }
