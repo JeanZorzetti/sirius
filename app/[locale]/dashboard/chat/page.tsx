@@ -84,6 +84,31 @@ export default async function ChatPage({
     return <div>Erro ao buscar conexões: {err.message}</div>
   }
 
+  // Sync each connection's real status from the gateway (non-blocking, best-effort)
+  // This ensures the DB reflects reality even if the gateway restarted overnight
+  try {
+    const { whatsmeowClient } = await import('@/lib/integrations/whatsmeow-client')
+    await Promise.all(
+      connections.map(async (conn: any) => {
+        try {
+          const gatewayStatus = await whatsmeowClient.getStatus(conn.instanceName)
+          const newStatus = gatewayStatus?.connected === true ? 'CONNECTED' : 'DISCONNECTED'
+          if (newStatus !== conn.status) {
+            await prismaWa.whatsAppConnection.update({
+              where: { id: conn.id },
+              data: { status: newStatus },
+            })
+            conn.status = newStatus
+          }
+        } catch {
+          // Gateway unreachable — keep DB status
+        }
+      })
+    )
+  } catch {
+    // Import or batch failed — continue with DB status
+  }
+
   // Filter only active connections — prevents mixing messages from old/disconnected instances
   const activeConnections = connections.filter((c: any) => c.status === 'CONNECTED')
   const connectionIds = activeConnections.map((c: any) => c.id)
