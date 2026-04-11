@@ -1,54 +1,26 @@
-import { Skeleton } from "@/components/ui/skeleton"
+import { Skeleton } from '@/components/ui/skeleton'
+import { SkeletonCardList, SkeletonTable } from '@/components/ui/skeleton-card-list'
 
 export default function ContactsLoading() {
     return (
-        <div className="flex-1 space-y-4 p-8 pt-6">
-            {/* Header */}
-            <div className="flex items-center justify-between">
-                <div className="space-y-1">
-                    <Skeleton className="h-8 w-[160px]" />
-                    <Skeleton className="h-4 w-[260px]" />
+        <div className="flex-1 space-y-4">
+            <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                <div className="flex flex-col gap-2">
+                    <Skeleton className="h-7 w-40" />
+                    <Skeleton className="h-4 w-64" />
                 </div>
-                <div className="flex items-center gap-2">
-                    <Skeleton className="h-10 w-[100px]" />
-                    <Skeleton className="h-10 w-[120px]" />
-                    <Skeleton className="h-10 w-[140px]" />
+                <div className="flex w-full items-center space-x-2 sm:w-auto">
+                    <Skeleton className="h-9 w-24" />
+                    <Skeleton className="h-9 w-28" />
                 </div>
             </div>
 
-            {/* Search/Filter Bar */}
-            <div className="flex items-center gap-2">
-                <Skeleton className="h-10 w-[300px]" />
-                <Skeleton className="h-10 w-[100px]" />
+            <div className="flex items-center gap-3">
+                <Skeleton className="h-9 w-full max-w-sm" />
             </div>
 
-            {/* Table */}
-            <div className="rounded-md border">
-                {/* Table Header */}
-                <div className="border-b p-4 flex gap-8">
-                    {['w-[200px]', 'w-[180px]', 'w-[160px]', 'w-[120px]', 'w-[100px]'].map((w, i) => (
-                        <Skeleton key={i} className={`h-4 ${w}`} />
-                    ))}
-                </div>
-                {/* Table Rows */}
-                {[1, 2, 3, 4, 5, 6, 7, 8].map((row) => (
-                    <div key={row} className="border-b p-4 flex gap-8">
-                        {['w-[200px]', 'w-[180px]', 'w-[160px]', 'w-[120px]', 'w-[100px]'].map((w, i) => (
-                            <Skeleton key={i} className={`h-4 ${w}`} />
-                        ))}
-                    </div>
-                ))}
-            </div>
-
-            {/* Pagination */}
-            <div className="flex items-center justify-between">
-                <Skeleton className="h-4 w-[120px]" />
-                <div className="flex gap-2">
-                    <Skeleton className="h-9 w-9" />
-                    <Skeleton className="h-9 w-9" />
-                    <Skeleton className="h-9 w-9" />
-                </div>
-            </div>
+            <SkeletonTable rows={8} columns={6} />
+            <SkeletonCardList count={6} />
         </div>
     )
 }

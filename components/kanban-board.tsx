@@ -17,7 +17,8 @@ import { updateDealStage, updateDealStatus } from '@/app/[locale]/dashboard/acti
 import { updateStageOrder, deleteStage, updateStage, createStage } from '@/app/[locale]/dashboard/pipeline/actions'
 import { reorderDeals } from '@/app/[locale]/dashboard/deals/actions'
 import { EditDealDialog } from '@/components/deals/edit-deal-dialog'
-import { MessageCircle, GripVertical, MoreHorizontal, Pencil, Trash2, Plus } from 'lucide-react'
+import { MessageCircle, GripVertical, MoreHorizontal, Pencil, Trash2, Plus, ChevronLeft, ChevronRight } from 'lucide-react'
+import { SwipeableRow } from '@/components/ui/swipeable-row'
 import { isToday, isTomorrow, isThisWeek, isPast } from 'date-fns'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
@@ -102,12 +103,20 @@ function DealCard({
   deal,
   provided,
   snapshot,
-  onClick
+  onClick,
+  onSwipePrev,
+  onSwipeNext,
+  canSwipePrev,
+  canSwipeNext,
 }: {
   deal: Deal
   provided: DraggableProvided
   snapshot: DraggableStateSnapshot
   onClick?: () => void
+  onSwipePrev?: () => void
+  onSwipeNext?: () => void
+  canSwipePrev?: boolean
+  canSwipeNext?: boolean
 }) {
   const router = useRouter()
   const handleWhatsApp = (e: React.MouseEvent) => {
@@ -198,19 +207,56 @@ function DealCard({
     return createPortal(cardContent, document.body)
   }
 
-  return cardContent
+  // Wrap with SwipeableRow para permitir mover stages com swipe em mobile.
+  // SwipeableRow tem CSS que neutraliza seus próprios gestos em lg+ (touch-action
+  // padrão em pointer:fine evita interferência com drag-and-drop desktop).
+  const hasSwipe = !!(onSwipePrev && canSwipePrev) || !!(onSwipeNext && canSwipeNext)
+  if (!hasSwipe) return cardContent
+
+  return (
+    <SwipeableRow
+      leftAction={
+        canSwipePrev && onSwipePrev
+          ? {
+              icon: <ChevronLeft className="h-5 w-5" />,
+              label: 'Voltar',
+              background: 'bg-orange-500',
+              onAction: onSwipePrev,
+            }
+          : undefined
+      }
+      rightAction={
+        canSwipeNext && onSwipeNext
+          ? {
+              icon: <ChevronRight className="h-5 w-5" />,
+              label: 'Avançar',
+              background: 'bg-indigo-500',
+              onAction: onSwipeNext,
+            }
+          : undefined
+      }
+    >
+      {cardContent}
+    </SwipeableRow>
+  )
 }
 
 function KanbanColumn({
   stage,
   onDealClick,
   onRename,
-  onDelete
+  onDelete,
+  onSwipeMoveDeal,
+  hasPrevStage,
+  hasNextStage,
 }: {
   stage: Stage
   onDealClick?: (deal: Deal) => void
   onRename?: (id: string, name: string) => void
   onDelete?: (id: string) => void
+  onSwipeMoveDeal?: (dealId: string, direction: 'prev' | 'next') => void
+  hasPrevStage?: boolean
+  hasNextStage?: boolean
 }) {
   const totalValue = stage.deals.reduce((acc, deal) => acc + (deal.value ? Number(deal.value) : 0), 0)
 
@@ -295,6 +341,18 @@ function KanbanColumn({
                       provided={provided}
                       snapshot={snapshot}
                       onClick={() => onDealClick?.(deal)}
+                      canSwipePrev={hasPrevStage}
+                      canSwipeNext={hasNextStage}
+                      onSwipePrev={
+                        onSwipeMoveDeal && hasPrevStage
+                          ? () => onSwipeMoveDeal(deal.id, 'prev')
+                          : undefined
+                      }
+                      onSwipeNext={
+                        onSwipeMoveDeal && hasNextStage
+                          ? () => onSwipeMoveDeal(deal.id, 'next')
+                          : undefined
+                      }
                     />
                   )}
                 </Draggable>
@@ -501,6 +559,36 @@ export function KanbanBoard({
     )
   }, [stages, searchQuery])
 
+  // Swipe-to-move: permite mover um deal para stage anterior/próximo com swipe em mobile.
+  // Reusa a mesma lógica do drag-and-drop desktop (optimistic update + updateDealStage).
+  const handleSwipeMove = async (dealId: string, direction: 'prev' | 'next') => {
+    const orderedStages = [...stages].sort((a, b) => a.order - b.order)
+    const currentStageIdx = orderedStages.findIndex(s => s.deals.some(d => d.id === dealId))
+    if (currentStageIdx === -1) return
+
+    const targetIdx = direction === 'prev' ? currentStageIdx - 1 : currentStageIdx + 1
+    if (targetIdx < 0 || targetIdx >= orderedStages.length) return
+
+    const targetStage = orderedStages[targetIdx]
+    const deal = orderedStages[currentStageIdx].deals.find(d => d.id === dealId)
+    if (!deal) return
+
+    // Optimistic update
+    setStages(prev => {
+      const srcIdx = prev.findIndex(s => s.id === orderedStages[currentStageIdx].id)
+      const dstIdx = prev.findIndex(s => s.id === targetStage.id)
+      if (srcIdx === -1 || dstIdx === -1) return prev
+      return prev.map((s, i) => {
+        if (i === srcIdx) return { ...s, deals: s.deals.filter(d => d.id !== dealId) }
+        if (i === dstIdx) return { ...s, deals: [{ ...deal, stageId: targetStage.id }, ...s.deals] }
+        return s
+      })
+    })
+
+    await updateDealStage(dealId, targetStage.id)
+    onSuccess?.()
+  }
+
   // Handlers for Stage CRUD
   const handleRenameStage = async (id: string, name: string) => {
     setStages(prev => prev.map(s => s.id === id ? { ...s, name } : s))
@@ -666,13 +754,16 @@ export function KanbanBoard({
           data-tour="pipeline"
           className="flex h-full gap-3 sm:gap-6 pb-4 px-2 overflow-x-auto snap-x snap-mandatory sm:snap-none cursor-grab active:cursor-grabbing"
         >
-          {filteredStages.map((stage) => (
+          {filteredStages.map((stage, idx) => (
             <KanbanColumn
               key={stage.id}
               stage={stage}
               onDealClick={(deal) => setEditingDeal(deal)}
               onRename={handleRenameStage}
               onDelete={(id) => setDeleteStageId(id)}
+              onSwipeMoveDeal={handleSwipeMove}
+              hasPrevStage={idx > 0}
+              hasNextStage={idx < filteredStages.length - 1}
             />
           ))}
           <LostColumn

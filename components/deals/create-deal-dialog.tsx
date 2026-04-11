@@ -6,14 +6,14 @@ import { Button } from '@/components/ui/button'
 import { FeatureGateModal } from '@/components/dashboard/billing/feature-gate-modal'
 import { trackDealCreated, trackContactCreated } from '@/lib/analytics'
 import {
-    Dialog,
-    DialogContent,
-    DialogDescription,
-    DialogFooter,
-    DialogHeader,
-    DialogTitle,
-    DialogTrigger,
-} from '@/components/ui/dialog'
+    ResponsiveDialog,
+    ResponsiveDialogContent,
+    ResponsiveDialogDescription,
+    ResponsiveDialogFooter,
+    ResponsiveDialogHeader,
+    ResponsiveDialogTitle,
+    ResponsiveDialogTrigger,
+} from '@/components/ui/responsive-dialog'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import {
@@ -191,20 +191,20 @@ export function CreateDealDialog({
                 description="O plano gratuito permite até 10 negócios no pipeline. Faça upgrade para remover este limite."
             />
 
-            <Dialog open={open} onOpenChange={handleOpenChange}>
-                <DialogTrigger asChild>
+            <ResponsiveDialog open={open} onOpenChange={handleOpenChange}>
+                <ResponsiveDialogTrigger asChild>
                     <Button>
                         <Plus className="mr-2 h-4 w-4" /> Novo Deal
                     </Button>
-                </DialogTrigger>
-                <DialogContent className="sm:max-w-[425px]">
+                </ResponsiveDialogTrigger>
+                <ResponsiveDialogContent className="sm:max-w-[425px]">
                     <form onSubmit={onSubmit}>
-                        <DialogHeader>
-                            <DialogTitle>Novo Deal</DialogTitle>
-                            <DialogDescription>
+                        <ResponsiveDialogHeader>
+                            <ResponsiveDialogTitle>Novo Deal</ResponsiveDialogTitle>
+                            <ResponsiveDialogDescription>
                                 Crie um novo lead para o seu pipeline.
-                            </DialogDescription>
-                        </DialogHeader>
+                            </ResponsiveDialogDescription>
+                        </ResponsiveDialogHeader>
                         <div className="grid gap-4 py-4">
                             <div className="grid grid-cols-4 items-center gap-4">
                                 <Label htmlFor="title" className="text-right">
@@ -356,14 +356,14 @@ export function CreateDealDialog({
                                 </div>
                             </div>
                         </div>
-                        <DialogFooter>
-                            <Button type="submit" disabled={loading}>
+                        <ResponsiveDialogFooter>
+                            <Button type="submit" disabled={loading} className="touch-target">
                                 {loading ? 'Salvando...' : 'Salvar'}
                             </Button>
-                        </DialogFooter>
+                        </ResponsiveDialogFooter>
                     </form>
-                </DialogContent>
-            </Dialog>
+                </ResponsiveDialogContent>
+            </ResponsiveDialog>
         </>
     )
 }

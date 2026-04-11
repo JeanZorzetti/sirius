@@ -769,6 +769,19 @@
   .mb-safe {
     margin-bottom: env(safe-area-inset-bottom);
   }
+
+  /* Remove o highlight cinza padrão do iOS Safari/Android Chrome em
+     elementos interativos. O feedback visual fica por conta de active:scale,
+     hover states e haptics — comportamento nativo de app premium. */
+  a,
+  button,
+  [role="button"],
+  input,
+  select,
+  textarea,
+  label {
+    -webkit-tap-highlight-color: transparent;
+  }
 }
 /* Drag and Drop improvements - TEMPORARIAMENTE DESATIVADO PARA TESTE */
 /* [data-dnd-kit-drag-handle] {

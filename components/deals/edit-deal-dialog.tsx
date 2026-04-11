@@ -4,13 +4,11 @@ import { useState, useEffect, useTransition } from 'react'
 import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import {
-    Dialog,
-    DialogContent,
-    DialogDescription,
-    DialogFooter,
-    DialogHeader,
-    DialogTitle,
-} from '@/components/ui/dialog'
+    ResponsiveDialog,
+    ResponsiveDialogContent,
+    ResponsiveDialogHeader,
+    ResponsiveDialogTitle,
+} from '@/components/ui/responsive-dialog'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
@@ -325,16 +323,20 @@ export function EditDealDialog({
 
     return (
         <>
-        <Dialog open={open} onOpenChange={onOpenChange}>
-            <DialogContent className="sm:max-w-[700px] h-[80vh] flex flex-col p-0 gap-0 overflow-hidden bg-white dark:bg-zinc-950 border-zinc-200 dark:border-zinc-900">
-                <DialogHeader className="p-6 pb-2 shrink-0">
-                    <DialogTitle className="text-xl">{initialDeal.title}</DialogTitle>
+        <ResponsiveDialog open={open} onOpenChange={onOpenChange}>
+            <ResponsiveDialogContent
+                className="sm:max-w-[700px] h-[80vh] flex flex-col p-0 gap-0 overflow-hidden bg-white dark:bg-zinc-950 border-zinc-200 dark:border-zinc-900"
+                mobileClassName="h-[92vh] bg-white dark:bg-zinc-950 border-zinc-200 dark:border-zinc-900"
+            >
+                <div className="flex h-full flex-col">
+                <ResponsiveDialogHeader className="p-6 pb-2 shrink-0">
+                    <ResponsiveDialogTitle className="text-xl">{initialDeal.title}</ResponsiveDialogTitle>
                     <div className="flex items-center gap-2 text-sm text-zinc-500">
                         <span className="font-mono text-zinc-400">#{initialDeal.id.slice(0, 5)}</span>
                         <span>•</span>
                         <span>{fetchingDetails ? 'Carregando detalhes...' : (fullDeal?.user?.name ? `Responsável: ${fullDeal.user.name}` : '')}</span>
                     </div>
-                </DialogHeader>
+                </ResponsiveDialogHeader>
 
                 <Tabs defaultValue="details" className="flex-1 flex flex-col min-h-0">
                     <div className="px-6 border-b border-zinc-200 dark:border-zinc-800">
@@ -753,7 +755,8 @@ export function EditDealDialog({
                         </div>
                     </ScrollArea>
                 </Tabs>
-            </DialogContent>
+                </div>
+            </ResponsiveDialogContent>
 
             {/* Script Generator Modal */}
             <ScriptGenerator
@@ -761,7 +764,7 @@ export function EditDealDialog({
                 onClose={() => setShowScriptGenerator(false)}
                 dealId={initialDeal?.id}
             />
-        </Dialog>
+        </ResponsiveDialog>
 
         <ConfirmDialog
             open={confirmDeleteDeal}

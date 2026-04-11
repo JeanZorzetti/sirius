@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button'
 import { MessageCircle, Phone, Mail, MapPin, Building2, Pencil } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { EditContactDialog } from '@/components/contacts/edit-contact-dialog'
+import { SwipeableRow } from '@/components/ui/swipeable-row'
 
 interface ContactMobileCardProps {
   contact: Contact
@@ -27,7 +28,37 @@ export function ContactMobileCard({
 
   const cleanPhone = contact.phone?.replace(/\D/g, '') || ''
 
+  const handleCall = () => {
+    if (cleanPhone) window.location.href = `tel:${cleanPhone}`
+  }
+  const handleWhatsApp = () => {
+    if (cleanPhone) window.open(`https://wa.me/${cleanPhone}`, '_blank')
+  }
+
   return (
+    <SwipeableRow
+      disabled={!cleanPhone}
+      leftAction={
+        cleanPhone
+          ? {
+              icon: <Phone className="h-5 w-5" />,
+              label: 'Ligar',
+              background: 'bg-blue-500',
+              onAction: handleCall,
+            }
+          : undefined
+      }
+      rightAction={
+        cleanPhone
+          ? {
+              icon: <MessageCircle className="h-5 w-5" />,
+              label: 'WhatsApp',
+              background: 'bg-green-500',
+              onAction: handleWhatsApp,
+            }
+          : undefined
+      }
+    >
     <div
       className={cn(
         'rounded-2xl border bg-white dark:bg-white/[0.02] backdrop-blur-xl shadow-sm transition-all',
@@ -125,5 +156,6 @@ export function ContactMobileCard({
         />
       </div>
     </div>
+    </SwipeableRow>
   )
 }
