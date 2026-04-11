@@ -162,38 +162,30 @@ export default async function ChatPage({
           }
         }
 
-        // 4. Fetch unread counts from WA DB
-        const unreadCounts = await prismaWa.whatsAppMessage.groupBy({
-          by: ['contactId'],
-          where: {
-            organizationId: user.organizationId,
-            contactId: { in: contactIds },
-            direction: 'INBOUND',
-            isRead: false,
-            ...messageFilter,
-          },
-          _count: { id: true },
-        })
-
-        const unreadMap = new Map(
-          unreadCounts.map(u => [u.contactId, u._count.id])
-        )
+        // 4. Fetch unread counts from WA DB (raw SQL — groupBy on nullable contactId causes INSUFFICIENT_PATH)
+        const unreadRows = await prismaWa.$queryRaw<{ contact_id: string; cnt: bigint }[]>`
+          SELECT "contactId" AS contact_id, COUNT(id)::bigint AS cnt
+          FROM "WhatsAppMessage"
+          WHERE "organizationId" = ${user.organizationId}
+            AND "contactId" = ANY(${contactIds}::text[])
+            AND "connectionId" = ANY(${connectionIds}::text[])
+            AND direction = 'INBOUND'
+            AND "isRead" = false
+          GROUP BY "contactId"
+        `
+        const unreadMap = new Map(unreadRows.map(r => [r.contact_id, Number(r.cnt)]))
 
         // 5. Fetch total inbound counts from WA DB
-        const totalCounts = await prismaWa.whatsAppMessage.groupBy({
-          by: ['contactId'],
-          where: {
-            organizationId: user.organizationId,
-            contactId: { in: contactIds },
-            direction: 'INBOUND',
-            ...messageFilter,
-          },
-          _count: { id: true },
-        })
-
-        const totalCountMap = new Map(
-          totalCounts.map(u => [u.contactId, u._count.id])
-        )
+        const totalRows = await prismaWa.$queryRaw<{ contact_id: string; cnt: bigint }[]>`
+          SELECT "contactId" AS contact_id, COUNT(id)::bigint AS cnt
+          FROM "WhatsAppMessage"
+          WHERE "organizationId" = ${user.organizationId}
+            AND "contactId" = ANY(${contactIds}::text[])
+            AND "connectionId" = ANY(${connectionIds}::text[])
+            AND direction = 'INBOUND'
+          GROUP BY "contactId"
+        `
+        const totalCountMap = new Map(totalRows.map(r => [r.contact_id, Number(r.cnt)]))
 
         // 6. Merge CRM contacts with WA data
         contacts = rawContacts.map(contact => {

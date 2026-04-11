@@ -108,40 +108,54 @@ export async function GET() {
       }
     }
 
-    // 8. Fetch unread counts from WA DB
-    const unreadCounts = contactIds.length > 0
-      ? await prismaWa.whatsAppMessage.groupBy({
-          by: ['contactId'],
-          where: {
-            ...messageFilter,
-            contactId: { in: contactIds },
-            direction: 'INBOUND',
-            isRead: false,
-          },
-          _count: { id: true },
-        })
-      : []
+    // 8. Fetch unread counts from WA DB (raw SQL — groupBy on nullable contactId causes INSUFFICIENT_PATH)
+    const unreadMap = new Map<string, number>()
+    const totalCountMap = new Map<string, number>()
+    if (contactIds.length > 0) {
+      const connIdFilter = activeConnection ? activeConnection.id : null
+      const unreadRows = connIdFilter
+        ? await prismaWa.$queryRaw<{ contact_id: string; cnt: bigint }[]>`
+            SELECT "contactId" AS contact_id, COUNT(id)::bigint AS cnt
+            FROM "WhatsAppMessage"
+            WHERE "organizationId" = ${user.organizationId}
+              AND "contactId" = ANY(${contactIds}::text[])
+              AND "connectionId" = ${connIdFilter}
+              AND direction = 'INBOUND'
+              AND "isRead" = false
+            GROUP BY "contactId"
+          `
+        : await prismaWa.$queryRaw<{ contact_id: string; cnt: bigint }[]>`
+            SELECT "contactId" AS contact_id, COUNT(id)::bigint AS cnt
+            FROM "WhatsAppMessage"
+            WHERE "organizationId" = ${user.organizationId}
+              AND "contactId" = ANY(${contactIds}::text[])
+              AND direction = 'INBOUND'
+              AND "isRead" = false
+            GROUP BY "contactId"
+          `
+      for (const r of unreadRows) unreadMap.set(r.contact_id, Number(r.cnt))
 
-    const unreadMap = new Map(
-      unreadCounts.map(u => [u.contactId, u._count.id])
-    )
-
-    // 9. Fetch total inbound counts
-    const totalCounts = contactIds.length > 0
-      ? await prismaWa.whatsAppMessage.groupBy({
-          by: ['contactId'],
-          where: {
-            ...messageFilter,
-            contactId: { in: contactIds },
-            direction: 'INBOUND',
-          },
-          _count: { id: true },
-        })
-      : []
-
-    const totalCountMap = new Map(
-      totalCounts.map(u => [u.contactId, u._count.id])
-    )
+      // 9. Fetch total inbound counts
+      const totalRows = connIdFilter
+        ? await prismaWa.$queryRaw<{ contact_id: string; cnt: bigint }[]>`
+            SELECT "contactId" AS contact_id, COUNT(id)::bigint AS cnt
+            FROM "WhatsAppMessage"
+            WHERE "organizationId" = ${user.organizationId}
+              AND "contactId" = ANY(${contactIds}::text[])
+              AND "connectionId" = ${connIdFilter}
+              AND direction = 'INBOUND'
+            GROUP BY "contactId"
+          `
+        : await prismaWa.$queryRaw<{ contact_id: string; cnt: bigint }[]>`
+            SELECT "contactId" AS contact_id, COUNT(id)::bigint AS cnt
+            FROM "WhatsAppMessage"
+            WHERE "organizationId" = ${user.organizationId}
+              AND "contactId" = ANY(${contactIds}::text[])
+              AND direction = 'INBOUND'
+            GROUP BY "contactId"
+          `
+      for (const r of totalRows) totalCountMap.set(r.contact_id, Number(r.cnt))
+    }
 
     // 10. Merge
     const contactsWithUnread = contacts.map(contact => {
