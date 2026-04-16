@@ -55,6 +55,16 @@ type Deal = {
 
 const LOST_COLUMN_ID = '__PERDIDO__'
 
+const LOST_REASONS = [
+  'Preço alto',
+  'Concorrente escolhido',
+  'Sem orçamento',
+  'Sem resposta',
+  'Fora do escopo',
+  'Timing ruim',
+  'Produto inadequado',
+]
+
 type Stage = {
   id: string
   name: string
@@ -460,6 +470,10 @@ export function KanbanBoard({
   const [stages, setStages] = useState(initialStages)
   const [editingDeal, setEditingDeal] = useState<Deal | null>(null)
 
+  // Lost Reason Modal
+  const [pendingLostDealId, setPendingLostDealId] = useState<string | null>(null)
+  const [lostReasonInput, setLostReasonInput] = useState('')
+
   // New Stage Dialog
   const [isNewStageOpen, setIsNewStageOpen] = useState(false)
   const [newStageName, setNewStageName] = useState("")
@@ -621,6 +635,27 @@ export function KanbanBoard({
     }
   }
 
+  const handleLostReasonConfirm = async () => {
+    if (!pendingLostDealId) return
+    const reason = lostReasonInput.trim()
+    const dealId = pendingLostDealId
+    setPendingLostDealId(null)
+    setLostReasonInput('')
+    await updateDealStatus(dealId, 'LOST', reason || undefined)
+  }
+
+  const handleLostReasonCancel = () => {
+    if (!pendingLostDealId) return
+    const revertId = pendingLostDealId
+    // Revert the optimistic update
+    setStages((prev: Stage[]) => prev.map((s: Stage) => ({
+      ...s,
+      deals: s.deals.map((d: Deal) => d.id === revertId ? { ...d, status: 'ACTIVE' } : d),
+    })))
+    setPendingLostDealId(null)
+    setLostReasonInput('')
+  }
+
   const handleDragEnd = async (result: DropResult) => {
     const { destination, source, draggableId } = result
     const dealId = draggableId
@@ -628,13 +663,14 @@ export function KanbanBoard({
     if (!destination) return
     if (destination.droppableId === source.droppableId && destination.index === source.index) return
 
-    // --- Drag INTO Perdido: mark deal as LOST ---
+    // --- Drag INTO Perdido: optimistic update + open reason modal ---
     if (destination.droppableId === LOST_COLUMN_ID) {
       setStages(prev => prev.map(s => ({
         ...s,
         deals: s.deals.map(d => d.id === dealId ? { ...d, status: 'LOST' } : d),
       })))
-      await updateDealStatus(dealId, 'LOST')
+      setLostReasonInput('')
+      setPendingLostDealId(dealId)
       return
     }
 
@@ -813,6 +849,60 @@ export function KanbanBoard({
         confirmLabel="Excluir"
         onConfirm={() => deleteStageId && handleDeleteStage(deleteStageId)}
       />
+
+      {/* Lost Reason Modal */}
+      <Dialog
+        open={!!pendingLostDealId}
+        onOpenChange={(open: boolean) => { if (!open) handleLostReasonCancel() }}
+      >
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle className="text-lg font-semibold tracking-tight">
+              Por que este negócio foi perdido?
+            </DialogTitle>
+          </DialogHeader>
+
+          <div className="space-y-4 py-1">
+            <div className="flex flex-wrap gap-2">
+              {LOST_REASONS.map(reason => (
+                <button
+                  key={reason}
+                  type="button"
+                  onClick={() => setLostReasonInput(reason)}
+                  className={cn(
+                    "px-3 py-1.5 rounded-full text-sm border transition-all duration-200",
+                    lostReasonInput === reason
+                      ? "bg-destructive/10 text-destructive border-destructive/40 font-medium"
+                      : "bg-muted/50 text-muted-foreground border-border/60 hover:border-foreground/30 hover:text-foreground"
+                  )}
+                >
+                  {reason}
+                </button>
+              ))}
+            </div>
+
+            <Input
+              placeholder="Ou descreva outro motivo..."
+              value={lostReasonInput}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setLostReasonInput(e.target.value)}
+              onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => e.key === 'Enter' && lostReasonInput.trim() && handleLostReasonConfirm()}
+            />
+          </div>
+
+          <DialogFooter className="gap-2 sm:gap-2">
+            <Button variant="ghost" onClick={handleLostReasonCancel}>
+              Cancelar
+            </Button>
+            <Button
+              variant="destructive"
+              onClick={handleLostReasonConfirm}
+              disabled={!lostReasonInput.trim()}
+            >
+              Confirmar Perda
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </DragDropContext>
   )
 }

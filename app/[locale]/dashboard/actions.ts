@@ -294,14 +294,21 @@ export async function updateDeal(formData: FormData) {
     return { success: false, error: 'Failed to update deal' }
   }
 }
-export async function updateDealStatus(dealId: string, status: 'ACTIVE' | 'LOST') {
+export async function updateDealStatus(dealId: string, status: 'ACTIVE' | 'LOST', lostReason?: string) {
   try {
     const user = await getAuthenticatedUser()
     const deal = await prisma.deal.findUnique({ where: { id: dealId } })
     if (!deal || deal.organizationId !== user.organizationId) {
       return { success: false, error: 'Unauthorized' }
     }
-    await prisma.deal.update({ where: { id: dealId }, data: { status } })
+    await prisma.deal.update({
+      where: { id: dealId },
+      data: {
+        status,
+        ...(status === 'LOST' && lostReason ? { lostReason } : {}),
+        ...(status === 'ACTIVE' ? { lostReason: null } : {}),
+      },
+    })
     revalidatePath('/dashboard')
     return { success: true }
   } catch (error) {
