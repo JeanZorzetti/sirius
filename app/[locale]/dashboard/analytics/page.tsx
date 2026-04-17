@@ -105,7 +105,8 @@ export default async function AnalyticsPage({
       stageId: true,
       value: true,
       closeDate: true,
-      stage: { select: { name: true } }
+      stage: { select: { name: true } },
+      contact: { select: { name: true } },
     },
   });
 
@@ -223,14 +224,15 @@ export default async function AnalyticsPage({
   const monthlyData = monthSlots.map(({ label, value, count, closingsValue }) => ({ label, value, count, closingsValue }))
 
   // Stage chart
-  const stageData = deals.reduce((acc: Record<string, { name: string; count: number; value: number }>, deal) => {
+  const stageData = deals.reduce((acc: Record<string, { name: string; count: number; value: number; clients: string[] }>, deal) => {
     const stageId = deal.stageId;
     const stageName = deal.stage?.name || 'Unknown';
-    if (!acc[stageId]) acc[stageId] = { name: stageName, count: 0, value: 0 };
+    if (!acc[stageId]) acc[stageId] = { name: stageName, count: 0, value: 0, clients: [] };
     acc[stageId].count += 1;
     acc[stageId].value += deal.value ? Number(deal.value) : 0;
+    if (deal.contact?.name) acc[stageId].clients.push(deal.contact.name);
     return acc;
-  }, {} as Record<string, { name: string; count: number; value: number }>);
+  }, {} as Record<string, { name: string; count: number; value: number; clients: string[] }>);
 
   const chartData = Object.values(stageData);
 
@@ -246,14 +248,14 @@ export default async function AnalyticsPage({
     },
     select: {
       value: true,
-      contact: { select: { name: true } },
+      contact: { select: { name: true, company: true } },
     },
   });
 
-  const clientMap: Record<string, { name: string; value: number; count: number }> = {};
+  const clientMap: Record<string, { name: string; value: number; count: number; company?: string }> = {};
   for (const deal of clientDeals) {
     const name = deal.contact?.name ?? 'Sem nome';
-    if (!clientMap[name]) clientMap[name] = { name, value: 0, count: 0 };
+    if (!clientMap[name]) clientMap[name] = { name, value: 0, count: 0, company: deal.contact?.company ?? undefined };
     clientMap[name].value += Number(deal.value || 0);
     clientMap[name].count += 1;
   }

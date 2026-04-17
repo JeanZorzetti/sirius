@@ -4,8 +4,11 @@ import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis, Tooltip, CartesianGri
 
 const CustomTooltip = ({ active, payload, label }: any) => {
   if (active && payload && payload.length) {
+    const clients: string[] = payload[0].payload.clients ?? []
+    const shown = clients.slice(0, 5)
+    const extra = clients.length - shown.length
     return (
-      <div className="rounded-xl border border-white/10 bg-zinc-900/90 p-4 shadow-xl backdrop-blur-md">
+      <div className="rounded-xl border border-white/10 bg-zinc-900/90 p-4 shadow-xl backdrop-blur-md max-w-[240px]">
         <p className="mb-1 text-sm font-semibold text-white">{label}</p>
         <div className="flex items-center gap-2">
           <div className="w-2 h-2 rounded-full bg-indigo-500" />
@@ -14,8 +17,18 @@ const CustomTooltip = ({ active, payload, label }: any) => {
           </p>
         </div>
         <p className="mt-1 text-xs text-zinc-500">
-          {payload[0].payload.count} negócios
+          {payload[0].payload.count} negócio(s)
         </p>
+        {shown.length > 0 && (
+          <div className="mt-2 pt-2 border-t border-white/10 space-y-1">
+            {shown.map((c: string, i: number) => (
+              <p key={i} className="text-xs text-zinc-400 truncate">{c}</p>
+            ))}
+            {extra > 0 && (
+              <p className="text-xs text-zinc-500">+{extra} mais</p>
+            )}
+          </div>
+        )}
       </div>
     )
   }
@@ -27,6 +40,7 @@ interface OverviewChartProps {
     name: string;
     count: number;
     value: number;
+    clients: string[];
   }[];
 }
 

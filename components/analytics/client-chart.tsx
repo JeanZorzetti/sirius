@@ -14,12 +14,17 @@ import {
 
 const CustomTooltip = ({ active, payload, label }: any) => {
   if (active && payload && payload.length) {
+    const company: string | undefined = payload[0]?.payload?.company
     return (
-      <div className="rounded-xl border border-white/10 bg-zinc-900/90 p-4 shadow-xl backdrop-blur-md">
-        <p className="mb-2 text-sm font-semibold text-white truncate max-w-[200px]">{label}</p>
+      <div className="rounded-xl border border-white/10 bg-zinc-900/90 p-4 shadow-xl backdrop-blur-md max-w-[220px]">
+        <p className="text-sm font-semibold text-white leading-tight">{label}</p>
+        {company && (
+          <p className="text-xs text-zinc-500 mt-0.5 mb-2">{company}</p>
+        )}
+        {!company && <div className="mb-2" />}
         {payload.map((entry: any) => (
           <div key={entry.dataKey} className="flex items-center gap-2 mt-1">
-            <div className="w-2 h-2 rounded-full" style={{ backgroundColor: entry.color }} />
+            <div className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: entry.color }} />
             {entry.dataKey === 'value' ? (
               <p className="text-sm font-mono text-zinc-300">
                 {Number(entry.value).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
@@ -40,6 +45,7 @@ interface ClientChartProps {
     name: string;
     value: number;
     count: number;
+    company?: string;
   }[];
 }
 
@@ -75,7 +81,7 @@ export function ClientChart({ data }: ClientChartProps) {
           tick={{ fill: '#71717a' }}
           dy={10}
           interval={0}
-          tickFormatter={(v: string) => v.length > 12 ? `${v.slice(0, 12)}…` : v}
+          tickFormatter={(v: string) => v.length > 18 ? `${v.slice(0, 18)}…` : v}
         />
 
         <YAxis
