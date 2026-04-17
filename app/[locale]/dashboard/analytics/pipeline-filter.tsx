@@ -26,9 +26,13 @@ export function PipelineFilter({ pipelines, defaultId }: Props) {
 
   function toggle(id: string) {
     const params = new URLSearchParams(searchParams.toString())
-    const next = selected.includes(id)
-      ? selected.filter((s) => s !== id)
-      : [...selected, id]
+    // Use only what's actually in the URL — not the visual fallback to defaultId.
+    // Without this, clicking pipeline B when nothing is in the URL produces
+    // ?pid=defaultId,B instead of ?pid=B, making the server query both pipelines.
+    const currentInUrl = raw.split(',').filter(Boolean)
+    const next = currentInUrl.includes(id)
+      ? currentInUrl.filter((s) => s !== id)
+      : [...currentInUrl, id]
 
     if (next.length === 0) {
       params.delete('pid')
