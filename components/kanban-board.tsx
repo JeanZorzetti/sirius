@@ -709,6 +709,15 @@ export function KanbanBoard({
     }
 
     // --- Normal stage-to-stage drag ---
+    // filteredStages matches exactly what DnD rendered — use it for index resolution
+    const filteredSourceStage = filteredStages.find(s => s.id === source.droppableId)
+    const filteredDestStage = filteredStages.find(s => s.id === destination.droppableId)
+
+    if (!filteredSourceStage || !filteredDestStage) return
+
+    const sourceDeal = filteredSourceStage.deals[source.index]
+    if (!sourceDeal) return
+
     const sourceStageIndex = stages.findIndex(s => s.id === source.droppableId)
     const destStageIndex = stages.findIndex(s => s.id === destination.droppableId)
 
@@ -717,51 +726,45 @@ export function KanbanBoard({
     const sourceStage = stages[sourceStageIndex]
     const destStage = stages[destStageIndex]
 
-    // Use filtered (non-LOST) deals for index-based operations since that's what is displayed
-    const sourceActiveDeals = sourceStage.deals.filter(d => d.status !== 'LOST')
     const sourceLostDeals = sourceStage.deals.filter(d => d.status === 'LOST')
 
     if (source.droppableId === destination.droppableId) {
-      const newActiveDeals = reorder(sourceActiveDeals, source.index, destination.index)
+      const reorderedFiltered = reorder(filteredSourceStage.deals, source.index, destination.index)
 
       setStages(prev => {
         const newStages = [...prev]
         newStages[sourceStageIndex] = {
           ...sourceStage,
-          deals: [...newActiveDeals, ...sourceLostDeals],
+          deals: [...reorderedFiltered, ...sourceLostDeals],
         }
         return newStages
       })
 
-      const reorderedDeals = newActiveDeals.map((deal, index) => ({ id: deal.id, order: index }))
+      const reorderedDeals = reorderedFiltered.map((deal, index) => ({ id: deal.id, order: index }))
       await reorderDeals(sourceStage.id, reorderedDeals)
     } else {
-      const destActiveDeals = destStage.deals.filter(d => d.status !== 'LOST')
       const destLostDeals = destStage.deals.filter(d => d.status === 'LOST')
 
-      const sourceDeal = sourceActiveDeals[source.index]
-      if (!sourceDeal) return
-
-      const newSourceActive = sourceActiveDeals.filter((_, i) => i !== source.index)
-      const newDestActive = [...destActiveDeals]
+      const newSourceFiltered = filteredSourceStage.deals.filter(d => d.id !== sourceDeal.id)
+      const newDestFiltered = [...filteredDestStage.deals]
       const updatedDeal = { ...sourceDeal, stageId: destStage.id }
-      newDestActive.splice(destination.index, 0, updatedDeal)
+      newDestFiltered.splice(destination.index, 0, updatedDeal)
 
       setStages(prev => {
         const newStages = [...prev]
         newStages[sourceStageIndex] = {
           ...sourceStage,
-          deals: [...newSourceActive, ...sourceLostDeals],
+          deals: [...newSourceFiltered, ...sourceLostDeals],
         }
         newStages[destStageIndex] = {
           ...destStage,
-          deals: [...newDestActive, ...destLostDeals],
+          deals: [...newDestFiltered, ...destLostDeals],
         }
         return newStages
       })
 
       await updateDealStage(sourceDeal.id, destStage.id)
-      const reorderedDeals = newDestActive.map((deal, index) => ({ id: deal.id, order: index }))
+      const reorderedDeals = newDestFiltered.map((deal, index) => ({ id: deal.id, order: index }))
       await reorderDeals(destStage.id, reorderedDeals)
     }
   }
