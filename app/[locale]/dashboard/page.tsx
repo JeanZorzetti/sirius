@@ -1,5 +1,6 @@
 import { Metadata } from "next"
 import { Suspense } from "react"
+import { redirect } from "next/navigation"
 import { OnboardingWrapper } from "@/components/onboarding/onboarding-wrapper"
 import { DashboardTabsWrapper } from "@/components/dashboard/dashboard-tabs-wrapper"
 import { DashboardTabsSkeleton } from "@/components/skeletons/dashboard-tabs-skeleton"
@@ -41,9 +42,12 @@ export default async function DashboardPage({
           name: true,
           organizationId: true,
           orgRole: true,
+          phone: true,
+          jobTitle: true,
           organization: {
             select: {
               plan: true,
+              segment: true,
             },
           },
           onboarding: {
@@ -60,6 +64,12 @@ export default async function DashboardPage({
 
     if (!user || !user.organizationId) {
       return <div>Usuário não pertence a uma organização.</div>
+    }
+
+    // Block dashboard access until the user completes their profile.
+    // This prevents bypassing /complete-profile by clicking the header login link.
+    if (!user.phone || !user.jobTitle || !user.organization?.segment) {
+      redirect('/complete-profile')
     }
 
     const shouldShowOnboarding =

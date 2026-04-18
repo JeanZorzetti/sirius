@@ -122,7 +122,7 @@ export async function GET(req: NextRequest) {
                 organizationId: leadsOrgId,
                 userId: leadsOwner.id,
                 contactId: contact.id,
-                observations: 'Via Google OAuth',
+                observations: 'Origem: Google OAuth — perfil pendente de conclusão',
               }
             })
           }
