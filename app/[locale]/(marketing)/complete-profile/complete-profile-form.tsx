@@ -71,8 +71,11 @@ export function CompleteProfileForm({ userId, userName, organizationId, currentO
   const effectiveJobTitle = jobTitle === 'Outro' ? customJobTitle : jobTitle
   const effectiveSegment = segment === 'Outro' ? customSegment : segment
 
+  const phoneDigits = phone.replace(/\D/g, '')
+  const phoneValid = phoneDigits.length >= 10
+
   function canAdvance() {
-    if (step === 1) return phone && effectiveJobTitle
+    if (step === 1) return phoneValid && effectiveJobTitle
     if (step === 2) return company && effectiveSegment
     return false
   }
@@ -173,18 +176,31 @@ export function CompleteProfileForm({ userId, userName, organizationId, currentO
           {step === 1 && (
             <>
               <div className="space-y-2">
-                <Label htmlFor="phone" className="text-gray-700">Telefone Principal</Label>
+                <Label htmlFor="phone" className="text-gray-700">
+                  Telefone Principal <span className="text-red-500">*</span>
+                </Label>
                 <Input
                   id="phone"
                   type="tel"
+                  inputMode="numeric"
                   value={phone}
-                  onChange={e => setPhone(e.target.value)}
+                  onChange={e => {
+                    // Only digits and phone formatting chars allowed
+                    setPhone(e.target.value.replace(/[^0-9+\(\)\-\s]/g, ''))
+                  }}
                   placeholder="+55 (11) 99999-9999"
                   required
                   autoFocus
-                  className="bg-white border-gray-300 text-gray-900 placeholder:text-gray-400 focus:border-indigo-500 focus:ring-indigo-500"
+                  className={cn(
+                    "bg-white border-gray-300 text-gray-900 placeholder:text-gray-400 focus:border-indigo-500 focus:ring-indigo-500",
+                    phone && !phoneValid && "border-red-400 focus:border-red-500 focus:ring-red-500"
+                  )}
                 />
-                <p className="text-xs text-gray-400">Seu número principal para contato.</p>
+                {phone && !phoneValid ? (
+                  <p className="text-xs text-red-500">Informe um número válido com pelo menos 10 dígitos.</p>
+                ) : (
+                  <p className="text-xs text-gray-400">Somente números. Seu contato principal.</p>
+                )}
               </div>
 
               <div className="space-y-2">
