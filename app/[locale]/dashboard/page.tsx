@@ -112,6 +112,8 @@ export default async function DashboardPage({
       </OnboardingWrapper>
     )
   } catch (error: any) {
+    // Next.js redirect() throws internally — must re-throw so it works correctly
+    if (error?.digest?.startsWith('NEXT_REDIRECT')) throw error
     console.error("[DASHBOARD_PAGE] Erro crítico:", error.message)
     return (
       <div className="p-8">
