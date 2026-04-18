@@ -44,6 +44,7 @@ export default async function DashboardPage({
           orgRole: true,
           phone: true,
           jobTitle: true,
+          createdAt: true,
           organization: {
             select: {
               plan: true,
@@ -66,9 +67,10 @@ export default async function DashboardPage({
       return <div>Usuário não pertence a uma organização.</div>
     }
 
-    // Block dashboard access until the user completes their profile.
-    // This prevents bypassing /complete-profile by clicking the header login link.
-    if (!user.phone || !user.jobTitle || !user.organization?.segment) {
+    // Block dashboard only for NEW users (account < 24h) who haven't completed their profile.
+    // Existing users already in the system are let through regardless of missing fields.
+    const isNewAccount = (Date.now() - new Date(user.createdAt).getTime()) < 24 * 60 * 60 * 1000
+    if (isNewAccount && (!user.phone || !user.jobTitle || !user.organization?.segment)) {
       redirect('/complete-profile')
     }
 
