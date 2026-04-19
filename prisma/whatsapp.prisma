@@ -44,12 +44,12 @@ enum WhatsAppStatus {
 model GatewayInstance {
   id             String   @id
   name           String   @unique
-  organizationId String
+  organizationId String   @map("organization_id")
   jid            String?
-  phoneNumber    String?
+  phoneNumber    String?  @map("phone_number")
   status         String   @default("disconnected")
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @default(now())
+  createdAt      DateTime @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt      DateTime @default(now()) @map("updated_at") @db.Timestamptz
 
   @@map("gateway_instances")
 }
