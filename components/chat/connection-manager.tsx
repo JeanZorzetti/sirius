@@ -161,7 +161,7 @@ export function ConnectionManager({ connections, maxInstances }: ConnectionManag
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2">
                         <span className="font-medium text-sm truncate">
-                          {connection.phoneNumber || connection.instanceName}
+                          {connection.displayName || connection.phoneNumber || connection.instanceName}
                         </span>
                         <span className={cn('flex items-center gap-1.5 text-xs font-medium', cfg.labelClass)}>
                           <span className={cn('w-1.5 h-1.5 rounded-full', cfg.dot)} />
@@ -169,9 +169,11 @@ export function ConnectionManager({ connections, maxInstances }: ConnectionManag
                         </span>
                       </div>
                       <div className="flex items-center gap-3 mt-0.5">
-                        {connection.phoneNumber && (
-                          <span className="text-xs text-muted-foreground">
-                            {connection.instanceName}
+                        {(connection.phoneNumber || connection.displayName) && (
+                          <span className="text-xs text-muted-foreground truncate">
+                            {connection.displayName && connection.phoneNumber
+                              ? `${connection.phoneNumber}`
+                              : connection.instanceName}
                           </span>
                         )}
                         {connection.connectedAt && connection.status === 'CONNECTED' && (

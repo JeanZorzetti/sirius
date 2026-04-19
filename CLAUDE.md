@@ -1,5 +1,11 @@
 # Sirius CRM — Contexto para Claude
 
+## Regras Gerais
+
+- **Ação > Análise**: Não gaste tempo excessivo lendo e analisando arquivos. Quando a tarefa é clara, execute imediatamente. Se tiver dúvida, pergunte — não queime tokens explorando.
+- **Debugging — sempre checar env vars primeiro**: Ao debugar erros de API, falhas de deploy ou problemas de conexão DB: 1) Ler todos os `.env` relevantes 2) Checar caracteres especiais (`$`, `#`), comentários no final de URLs, URLs erradas 3) Confirmar que env vars de produção batem com o que o código espera. Só depois ir para código.
+- **Migrations formais**: Sempre use `prisma migrate` em vez de `db execute` manual. Alterações manuais causam bugs em produção quando campos ficam faltando.
+
 ## Projeto
 CRM B2B SaaS em Next.js 15 App Router. Deploy: Vercel. DB: PostgreSQL via Prisma (host: `31.97.23.166:5499`).
 

@@ -89,6 +89,7 @@ export async function POST(req: NextRequest) {
         organizationId: user.organizationId,
         userId: session.user.id,
         instanceName: gatewayInstance.id,
+        displayName: instanceName,
         status: 'CONNECTING',
       },
     })

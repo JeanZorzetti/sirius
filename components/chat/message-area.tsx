@@ -1143,7 +1143,7 @@ export function MessageArea({ contact, connections, organizationId, userId, user
               <SelectContent>
                 {connections.map(c => (
                   <SelectItem key={c.id} value={c.id} className="text-xs">
-                    {c.phoneNumber || c.instanceName.split('-').pop()}
+                    {c.displayName || c.phoneNumber || c.instanceName.split('-').pop()}
                   </SelectItem>
                 ))}
               </SelectContent>

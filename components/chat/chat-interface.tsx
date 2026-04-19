@@ -244,7 +244,7 @@ export function ChatInterface({
           <WifiOff className="h-4 w-4 text-amber-600 dark:text-amber-400 flex-shrink-0" />
           <p className="text-sm text-amber-800 dark:text-amber-300 flex-1">
             {disconnectedConnections.length === 1
-              ? `WhatsApp "${disconnectedConnections[0].phoneNumber || disconnectedConnections[0].instanceName}" está desconectado`
+              ? `WhatsApp "${disconnectedConnections[0].displayName || disconnectedConnections[0].phoneNumber || disconnectedConnections[0].instanceName}" está desconectado`
               : `${disconnectedConnections.length} conexões desconectadas`
             }
             {' '}&mdash; mensagens não serão recebidas até reconectar.

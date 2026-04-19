@@ -169,6 +169,7 @@ model WhatsAppConnection {
   organizationId String // Cross-DB reference (plain ID)
   userId         String // Cross-DB reference (plain ID)
   instanceName   String
+  displayName    String?
   phoneNumber    String?
   qrCode         String?        @db.Text
   status         WhatsAppStatus @default(DISCONNECTED)
