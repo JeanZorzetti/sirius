@@ -1,4 +1,5 @@
 import Image from 'next/image'
+import NextLink from 'next/link'
 import { Button } from '@/components/ui/button'
 import { MobileNav } from '@/components/marketing/mobile-nav'
 import { NavDropdowns } from '@/components/marketing/nav-dropdowns'
@@ -61,10 +62,10 @@ export default function MarketingLayout({
             <LanguageSwitcher />
             <MobileNav />
             <Button variant="ghost" asChild className="hidden md:inline-flex">
-              <Link href="/login">{t('login')}</Link>
+              <NextLink href="/login">{t('login')}</NextLink>
             </Button>
             <Button asChild className="hidden md:inline-flex">
-              <Link href="/register">{t('startFree')}</Link>
+              <NextLink href="/register">{t('startFree')}</NextLink>
             </Button>
           </div>
         </div>
