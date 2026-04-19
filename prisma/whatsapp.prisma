@@ -37,6 +37,35 @@ enum WhatsAppStatus {
 }
 
 // ============================================================================
+// GATEWAY INSTANCES (managed by whatsmeow-gateway Go service)
+// Declared here so `prisma db push --accept-data-loss` does not drop it.
+// ============================================================================
+
+model GatewayInstance {
+  id             String   @id
+  name           String   @unique
+  organizationId String
+  jid            String?
+  phoneNumber    String?
+  status         String   @default("disconnected")
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @default(now())
+
+  @@map("gateway_instances")
+}
+
+model WebhookDeadLetter {
+  id         BigInt   @id @default(autoincrement())
+  eventType  String   @map("event_type")
+  instanceId String   @map("instance_id")
+  payload    Json
+  error      String
+  createdAt  DateTime @default(now()) @map("created_at")
+
+  @@map("webhook_dead_letters")
+}
+
+// ============================================================================
 // WHATSAPP MESSAGE
 // ============================================================================
 
