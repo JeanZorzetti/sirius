@@ -6,7 +6,7 @@ const config: CapacitorConfig = {
   webDir: 'out',
   server: {
     // App carrega o site em produção - sem necessidade de static export
-    url: 'https://sirius.roilabs.com.br',
+    url: 'https://siriuscrm.com.br',
     cleartext: false,
   },
   plugins: {
