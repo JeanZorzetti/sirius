@@ -545,8 +545,8 @@ async function handleHistorySyncBatch(instanceId: string, data: any) {
         })
         saved++
         existingSet.add(msg.messageId)
-      } catch {
-        // Unique constraint — skip
+      } catch (err: any) {
+        logger.warn({ error: err.message, messageId: msg.messageId }, 'whatsmeow: history msg save skipped')
       }
     }
   }
