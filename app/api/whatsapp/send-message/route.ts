@@ -107,7 +107,7 @@ export async function POST(req: NextRequest) {
         INSERT INTO "WhatsAppMessage"
           (id, "contactId", "organizationId", "connectionId", "remoteJid",
            "messageId", text, direction, status, "sentAt", "isRead",
-           "replyToId", "replyToText", "createdAt", "updatedAt")
+           "replyToId", "replyToText")
         VALUES (
           ${msgId},
           ${contact.id},
@@ -121,9 +121,7 @@ export async function POST(req: NextRequest) {
           ${now},
           true,
           ${replyToId ?? null},
-          ${null},
-          ${now},
-          ${now}
+          ${null}
         )
         ON CONFLICT ("organizationId", "messageId") DO NOTHING
       `
