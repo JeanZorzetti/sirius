@@ -14,13 +14,19 @@ import { prisma } from '@/lib/prisma'
  */
 export function normalizePhoneNumber(phone: string): string {
   let cleaned = phone.replace(/\D/g, '')
-  // Celular BR 11 dígitos (DDD + 9 dígitos)
   if (cleaned.length === 11 && !cleaned.startsWith('55')) {
     cleaned = '55' + cleaned
   }
-  // Fixo BR 10 dígitos (DDD + 8 dígitos)
   if (cleaned.length === 10 && !cleaned.startsWith('55')) {
     cleaned = '55' + cleaned
+  }
+  // WhatsApp BR: for DDDs >= 31 (MG, NE, N, CO), strip the 9th digit.
+  // DDDs 11-30 (SP/RJ/ES/Sul) keep the 9. Ref: ANATEL plan + WhatsApp JID rules.
+  if (cleaned.length === 13 && cleaned.startsWith('55') && cleaned[4] === '9') {
+    const ddd = parseInt(cleaned.slice(2, 4), 10)
+    if (ddd >= 31) {
+      cleaned = cleaned.slice(0, 4) + cleaned.slice(5)
+    }
   }
   return cleaned
 }
