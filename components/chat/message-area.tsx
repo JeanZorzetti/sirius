@@ -202,18 +202,19 @@ function fmtAudioTime(s: number): string {
 }
 
 function AudioPlayer({
-  mediaData, outbound, loading, onFetch, containerRef,
+  mediaData, outbound, loading, onFetch, containerRef, knownDuration,
 }: {
   mediaData: string | null
   outbound: boolean
   loading: boolean
   onFetch: () => void
   containerRef: React.RefObject<HTMLDivElement>
+  knownDuration?: number
 }) {
   const audioRef = useRef<HTMLAudioElement>(null)
   const [playing, setPlaying] = useState(false)
   const [currentTime, setCurrentTime] = useState(0)
-  const [duration, setDuration] = useState(0)
+  const [duration, setDuration] = useState(knownDuration ?? 0)
   const [playbackRate, setPlaybackRate] = useState(1)
 
   const progress = duration > 0 ? (currentTime / duration) * 100 : 0
@@ -221,15 +222,48 @@ function AudioPlayer({
   useEffect(() => {
     const audio = audioRef.current
     if (!audio) return
+
     const onTime = () => setCurrentTime(audio.currentTime)
-    const onMeta = () => setDuration(audio.duration)
     const onEnded = () => { setPlaying(false); setCurrentTime(0) }
+
+    const onMeta = () => {
+      if (isFinite(audio.duration) && audio.duration > 0) {
+        setDuration(audio.duration)
+      }
+    }
+
+    // Some browsers return Infinity for duration on blobs/streams.
+    // Workaround: seek to a large time to force duration calculation.
+    const onDurationChange = () => {
+      if (!isFinite(audio.duration)) {
+        audio.currentTime = 1e9 // trigger real duration calculation
+      } else if (audio.duration > 0) {
+        setDuration(audio.duration)
+        audio.currentTime = 0
+      }
+    }
+
+    const onSeeked = () => {
+      if (!isFinite(audio.duration) && audio.currentTime > 0) {
+        setDuration(audio.currentTime)
+        audio.currentTime = 0
+      }
+    }
+
     audio.addEventListener('timeupdate', onTime)
     audio.addEventListener('loadedmetadata', onMeta)
+    audio.addEventListener('durationchange', onDurationChange)
+    audio.addEventListener('seeked', onSeeked)
     audio.addEventListener('ended', onEnded)
+
+    // Force load
+    audio.load()
+
     return () => {
       audio.removeEventListener('timeupdate', onTime)
       audio.removeEventListener('loadedmetadata', onMeta)
+      audio.removeEventListener('durationchange', onDurationChange)
+      audio.removeEventListener('seeked', onSeeked)
       audio.removeEventListener('ended', onEnded)
     }
   }, [mediaData])
@@ -507,7 +541,10 @@ function MediaBubble({ msg, outbound, onOpenLightbox }: { msg: WhatsAppMessage; 
 
   // Audio — WhatsApp-style player
   if (mType === 'audio') {
-    return <AudioPlayer mediaData={mediaData} outbound={outbound} loading={loading} onFetch={fetchMedia} containerRef={containerRef} />
+    // Extract duration from text like "[Áudio 0:04]" → 4 seconds
+    const durMatch = msg.text?.match(/(\d+):(\d{2})/)
+    const knownDuration = durMatch ? parseInt(durMatch[1]) * 60 + parseInt(durMatch[2]) : undefined
+    return <AudioPlayer mediaData={mediaData} outbound={outbound} loading={loading} onFetch={fetchMedia} containerRef={containerRef} knownDuration={knownDuration} />
   }
 
   // Document
