@@ -1,13 +1,14 @@
 import { Metadata } from 'next'
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
-import { FolderKanban, CheckSquare, Clock, AlertCircle, Plus, BarChart3, ArrowRight, LayoutGrid, CheckCircle2 } from 'lucide-react'
+import { FolderKanban, CheckSquare, BarChart3, ArrowRight, LayoutGrid } from 'lucide-react'
 import { prisma } from '@/lib/prisma'
 import { getSession } from '@/lib/auth'
 import { getOrganizationEntitlements } from '@/lib/feature-gates'
 import { EmptyState } from '@/components/ui/empty-state'
 import { Button } from '@/components/ui/button'
 import { TasksHubActions } from '@/components/tasks/tasks-hub-actions'
+import { ProjectCard } from '@/components/tasks/project-card'
 
 export const metadata: Metadata = {
   title: 'Tarefas - CRM',
@@ -276,67 +277,14 @@ export default async function TasksHubPage() {
               const progress = total > 0 ? Math.round((done / total) * 100) : 0
 
               return (
-                <Link
+                <ProjectCard
                   key={project.id}
-                  href={`/dashboard/tasks/${project.id}`}
-                  className="group relative flex flex-col overflow-hidden rounded-[24px] border border-border/40 bg-card/60 backdrop-blur-sm p-6 transition-all duration-300 hover:-translate-y-1.5 hover:border-transparent hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.1)] dark:hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.4)] hover:bg-card"
-                >
-                  {/* Premium animated Hover shadow powered by project color */}
-                  <div
-                    className="absolute -top-1/2 -left-1/2 w-[200%] h-[200%] opacity-0 group-hover:opacity-10 transition-opacity duration-700 pointer-events-none"
-                    style={{ background: `radial-gradient(circle at center, ${project.color} 0%, transparent 60%)` }}
-                  />
-
-                  {/* Accent Top Bar */}
-                  <div
-                    className="absolute inset-x-0 top-0 h-1.5 opacity-80 transition-all duration-300 scale-x-0 group-hover:scale-x-100 origin-left"
-                    style={{ backgroundColor: project.color }}
-                  />
-
-                  <div className="relative z-10 flex items-start justify-between gap-4 mb-5">
-                    <div
-                      className="flex h-14 w-14 shrink-0 items-center justify-center rounded-[18px] text-white shadow-lg ring-1 ring-white/20 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3"
-                      style={{ backgroundColor: project.color }}
-                    >
-                      <FolderKanban className="h-6 w-6" strokeWidth={2.5} />
-                    </div>
-                    {overdue > 0 && (
-                      <span className="flex items-center gap-1 rounded-full bg-rose-500/10 px-2.5 py-1 text-[10px] font-bold text-rose-500 ring-1 ring-inset ring-rose-500/20 shadow-sm animate-in fade-in zoom-in">
-                        {overdue} {overdue !== 1 ? 'atrasadas' : 'atrasada'}
-                      </span>
-                    )}
-                  </div>
-
-                  <h3 className="relative z-10 text-xl font-bold tracking-tight leading-tight text-foreground group-hover:text-primary transition-colors">
-                    {project.name}
-                  </h3>
-                  
-                  {project.description ? (
-                     <p className="relative z-10 mt-2 line-clamp-2 text-sm text-muted-foreground leading-relaxed">
-                       {project.description}
-                     </p>
-                  ) : (
-                     <p className="relative z-10 mt-2 text-sm text-muted-foreground/50 italic">Sem descrição</p>
-                  )}
-
-                  {/* Progress bar + stats */}
-                  <div className="relative z-10 mt-auto pt-6 space-y-3">
-                    <div className="flex items-center justify-between text-sm font-semibold">
-                       <span className="text-muted-foreground flex items-center gap-1.5"><CheckCircle2 className="w-4 h-4 text-emerald-500/70" />{done} <span className="text-muted-foreground/50 font-normal">/ {total}</span></span>
-                       <span className="tabular-nums" style={{ color: project.color }}>{progress}%</span>
-                    </div>
-
-                    <div className="relative h-2 w-full overflow-hidden rounded-full bg-secondary/60">
-                       <div
-                         className="absolute inset-y-0 left-0 rounded-full transition-all duration-700 ease-out shadow-inner"
-                         style={{
-                           width: `${progress}%`,
-                           backgroundColor: project.color,
-                         }}
-                       />
-                    </div>
-                  </div>
-                </Link>
+                  project={project}
+                  total={total}
+                  done={done}
+                  overdue={overdue}
+                  progress={progress}
+                />
               )
             })}
           </div>
