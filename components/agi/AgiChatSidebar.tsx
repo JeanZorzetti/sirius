@@ -41,9 +41,6 @@ export function AgiChatSidebar({ dealId, pipelineId, context }: AgiChatSidebarPr
     const hasVoice = typeof window !== 'undefined'
         ? isWebSpeechSupported() || isMediaRecorderSupported()
         : false;
-
-    // Hide on the chat page — the widget overlaps the mic button
-    if (pathname?.includes('/dashboard/chat')) return null;
     const [messages, setMessages] = useState<Message[]>([]);
     const [input, setInput] = useState('');
     const [isLoading, setIsLoading] = useState(false);
@@ -168,6 +165,9 @@ export function AgiChatSidebar({ dealId, pipelineId, context }: AgiChatSidebarPr
         voiceRecorderRef.current = null;
         setIsVoiceRecording(false);
     }
+
+    // Hide on the chat page — the widget overlaps the mic button
+    if (pathname?.includes('/dashboard/chat')) return null;
 
     // ── Blocos reutilizáveis ────────────────────────────────────────────────
 
