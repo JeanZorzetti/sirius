@@ -1122,6 +1122,7 @@ export function MessageArea({ contact, connections, organizationId, userId, user
           formData.append('connectionId', conn)
           formData.append('contactId', contact.id)
           formData.append('ptt', 'true')
+          formData.append('duration', String(duration))
 
           const r = await fetch('/api/whatsapp/send-media', {
             method: 'POST',
@@ -1133,7 +1134,12 @@ export function MessageArea({ contact, connections, organizationId, userId, user
           }
           const confirmedMsg = await r.json()
           URL.revokeObjectURL(localUrl)
-          setMessages(prev => prev.map(m => m.id === tempId ? confirmedMsg : m))
+          // Preserve the duration text from the optimistic message
+          setMessages(prev => prev.map(m =>
+            m.id === tempId
+              ? { ...confirmedMsg, text: `[Áudio ${fmtDuration(duration)}]` }
+              : m
+          ))
           setTimeout(() => scrollToBottom(), 100)
         } catch (err: any) {
           URL.revokeObjectURL(localUrl)

@@ -76,6 +76,7 @@ export async function POST(req: NextRequest) {
     const contactId = formData.get('contactId') as string
     const caption = formData.get('caption') as string | null
     const ptt = formData.get('ptt') === 'true'
+    const durationSec = parseInt(formData.get('duration') as string || '0', 10) || 0
 
     if (!file || !connectionId || !contactId) {
       return NextResponse.json(
@@ -159,9 +160,14 @@ export async function POST(req: NextRequest) {
     }
 
     // 9. Save to database
-    const messageText = caption
-      ? `${getMediaLabel(mediatype)} ${caption}`
+    function fmtDur(s: number) {
+      const m = Math.floor(s / 60), sec = s % 60
+      return `${m}:${sec.toString().padStart(2, '0')}`
+    }
+    const audioLabel = ptt && durationSec > 0
+      ? `[Áudio ${fmtDur(durationSec)}]`
       : getMediaLabel(mediatype)
+    const messageText = caption ? `${audioLabel} ${caption}` : audioLabel
 
     const savedMessage = await prismaWa.whatsAppMessage.create({
       data: {
