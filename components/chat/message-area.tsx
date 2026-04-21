@@ -217,53 +217,49 @@ function AudioPlayer({
   const [duration, setDuration] = useState(knownDuration ?? 0)
   const [playbackRate, setPlaybackRate] = useState(1)
 
+  // Sync knownDuration into state when it arrives (e.g. after message reloads)
+  useEffect(() => {
+    if (knownDuration && knownDuration > 0) setDuration(knownDuration)
+  }, [knownDuration])
+
   const progress = duration > 0 ? (currentTime / duration) * 100 : 0
 
   useEffect(() => {
+    if (!mediaData) return
     const audio = audioRef.current
     if (!audio) return
 
-    const onTime = () => setCurrentTime(audio.currentTime)
-    const onEnded = () => { setPlaying(false); setCurrentTime(0) }
-
-    const onMeta = () => {
+    const trySetDuration = () => {
       if (isFinite(audio.duration) && audio.duration > 0) {
         setDuration(audio.duration)
-      }
-    }
-
-    // Some browsers return Infinity for duration on blobs/streams.
-    // Workaround: seek to a large time to force duration calculation.
-    const onDurationChange = () => {
-      if (!isFinite(audio.duration)) {
-        audio.currentTime = 1e9 // trigger real duration calculation
-      } else if (audio.duration > 0) {
-        setDuration(audio.duration)
-        audio.currentTime = 0
+      } else if (!isFinite(audio.duration)) {
+        // Blob/stream Infinity bug — seek far to force real duration
+        audio.currentTime = 9999
       }
     }
 
     const onSeeked = () => {
-      if (!isFinite(audio.duration) && audio.currentTime > 0) {
+      if (audio.currentTime > 0 && (!isFinite(audio.duration) || audio.duration === 0)) {
         setDuration(audio.currentTime)
-        audio.currentTime = 0
       }
+      audio.currentTime = 0
     }
 
-    audio.addEventListener('timeupdate', onTime)
-    audio.addEventListener('loadedmetadata', onMeta)
-    audio.addEventListener('durationchange', onDurationChange)
-    audio.addEventListener('seeked', onSeeked)
-    audio.addEventListener('ended', onEnded)
+    const onTime = () => setCurrentTime(audio.currentTime)
+    const onEnded = () => { setPlaying(false); setCurrentTime(0) }
 
-    // Force load
+    audio.addEventListener('loadedmetadata', trySetDuration)
+    audio.addEventListener('durationchange', trySetDuration)
+    audio.addEventListener('seeked', onSeeked)
+    audio.addEventListener('timeupdate', onTime)
+    audio.addEventListener('ended', onEnded)
     audio.load()
 
     return () => {
-      audio.removeEventListener('timeupdate', onTime)
-      audio.removeEventListener('loadedmetadata', onMeta)
-      audio.removeEventListener('durationchange', onDurationChange)
+      audio.removeEventListener('loadedmetadata', trySetDuration)
+      audio.removeEventListener('durationchange', trySetDuration)
       audio.removeEventListener('seeked', onSeeked)
+      audio.removeEventListener('timeupdate', onTime)
       audio.removeEventListener('ended', onEnded)
     }
   }, [mediaData])
