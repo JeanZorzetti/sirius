@@ -1001,8 +1001,16 @@ export function MessageArea({ contact, connections, organizationId, userId, user
       recordingTimerRef.current = setInterval(() => {
         setRecordingTime(prev => prev + 1)
       }, 1000)
-    } catch {
-      toast.error('Não foi possível acessar o microfone')
+    } catch (err: any) {
+      if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+        toast.error('Seu browser não suporta gravação de áudio')
+      } else if (err?.name === 'NotAllowedError' || err?.name === 'PermissionDeniedError') {
+        toast.error('Permissão de microfone negada. Clique no cadeado na barra de endereço e permita o microfone.')
+      } else if (err?.name === 'NotFoundError') {
+        toast.error('Nenhum microfone encontrado no dispositivo')
+      } else {
+        toast.error('Não foi possível acessar o microfone. Verifique as permissões do browser.')
+      }
     }
   }
 
