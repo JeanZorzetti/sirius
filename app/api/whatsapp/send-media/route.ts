@@ -23,10 +23,12 @@ const MIME_TO_MEDIATYPE: Record<string, 'image' | 'video' | 'audio' | 'document'
   'video/mp4': 'video',
   'video/3gpp': 'video',
   'audio/ogg': 'audio',
+  'audio/ogg;codecs=opus': 'audio',
   'audio/mpeg': 'audio',
   'audio/mp4': 'audio',
   'audio/wav': 'audio',
   'audio/webm': 'audio',
+  'audio/webm;codecs=opus': 'audio',
   'application/pdf': 'document',
   'application/msword': 'document',
   'application/vnd.openxmlformats-officedocument.wordprocessingml.document': 'document',
@@ -59,7 +61,7 @@ export async function POST(req: NextRequest) {
 
     // 2. Get user organization
     const user = await prisma.user.findUnique({
-      where: { id: session.user.id },
+      where: { email: session.user.email },
       select: { organizationId: true },
     })
 
@@ -73,6 +75,7 @@ export async function POST(req: NextRequest) {
     const connectionId = formData.get('connectionId') as string
     const contactId = formData.get('contactId') as string
     const caption = formData.get('caption') as string | null
+    const ptt = formData.get('ptt') === 'true'
 
     if (!file || !connectionId || !contactId) {
       return NextResponse.json(
@@ -126,7 +129,8 @@ export async function POST(req: NextRequest) {
       Buffer.from(arrayBuffer),
       file.type,
       caption || undefined,
-      file.name
+      file.name,
+      ptt
     )
     const messageId = res.messageId
 

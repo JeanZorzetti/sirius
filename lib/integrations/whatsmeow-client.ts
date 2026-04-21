@@ -82,13 +82,15 @@ export const whatsmeowClient = {
     fileBuffer: Buffer,
     mimetype: string,
     caption?: string,
-    fileName?: string
+    fileName?: string,
+    ptt?: boolean
   ): Promise<SendTextResponse> {
     const formData = new FormData()
     formData.append('number', number)
     formData.append('file', new Blob([new Uint8Array(fileBuffer)], { type: mimetype }), fileName || 'file')
     if (caption) formData.append('caption', caption)
     if (fileName) formData.append('fileName', fileName)
+    if (ptt) formData.append('ptt', 'true')
 
     const res = await fetch(`${GATEWAY_URL}/api/instances/${instanceId}/messages/media`, {
       method: 'POST',

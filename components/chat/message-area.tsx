@@ -979,9 +979,12 @@ export function MessageArea({ contact, connections, organizationId, userId, user
       audioStreamRef.current = stream
       audioChunksRef.current = []
 
-      const mimeType = MediaRecorder.isTypeSupported('audio/webm;codecs=opus')
-        ? 'audio/webm;codecs=opus'
-        : 'audio/webm'
+      // Prefer ogg/opus (WhatsApp PTT native format); fallback to webm
+      const mimeType = MediaRecorder.isTypeSupported('audio/ogg;codecs=opus')
+        ? 'audio/ogg;codecs=opus'
+        : MediaRecorder.isTypeSupported('audio/webm;codecs=opus')
+          ? 'audio/webm;codecs=opus'
+          : 'audio/webm'
       const recorder = new MediaRecorder(stream, { mimeType })
       mediaRecorderRef.current = recorder
 
@@ -1038,7 +1041,9 @@ export function MessageArea({ contact, connections, organizationId, userId, user
         if (recordingTimerRef.current) clearInterval(recordingTimerRef.current)
         setIsRecording(false)
 
-        const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/webm;codecs=opus' })
+        // Use the actual recorded mimetype so WhatsApp gets the right format
+        const recordedMime = recorder.mimeType || 'audio/webm'
+        const audioBlob = new Blob(audioChunksRef.current, { type: recordedMime })
         audioChunksRef.current = []
 
         if (audioBlob.size === 0) {
@@ -1073,10 +1078,13 @@ export function MessageArea({ contact, connections, organizationId, userId, user
 
         setSending(true)
         try {
+          // Pick file extension based on actual mime type
+          const ext = recordedMime.includes('ogg') ? 'ogg' : 'webm'
           const formData = new FormData()
-          formData.append('file', audioBlob, 'audio.webm')
+          formData.append('file', audioBlob, `audio.${ext}`)
           formData.append('connectionId', conn)
           formData.append('contactId', contact.id)
+          formData.append('ptt', 'true')
 
           const r = await fetch('/api/whatsapp/send-media', {
             method: 'POST',
