@@ -192,6 +192,166 @@ function getMediaCaption(text: string): string {
     .trim()
 }
 
+// ── Audio Player (WhatsApp-style) ───────────────────────────
+
+function fmtAudioTime(s: number): string {
+  if (!isFinite(s) || isNaN(s)) return '0:00'
+  const m = Math.floor(s / 60)
+  const sec = Math.floor(s % 60)
+  return `${m}:${sec.toString().padStart(2, '0')}`
+}
+
+function AudioPlayer({
+  mediaData, outbound, loading, onFetch, containerRef,
+}: {
+  mediaData: string | null
+  outbound: boolean
+  loading: boolean
+  onFetch: () => void
+  containerRef: React.RefObject<HTMLDivElement>
+}) {
+  const audioRef = useRef<HTMLAudioElement>(null)
+  const [playing, setPlaying] = useState(false)
+  const [currentTime, setCurrentTime] = useState(0)
+  const [duration, setDuration] = useState(0)
+  const [playbackRate, setPlaybackRate] = useState(1)
+
+  const progress = duration > 0 ? (currentTime / duration) * 100 : 0
+
+  useEffect(() => {
+    const audio = audioRef.current
+    if (!audio) return
+    const onTime = () => setCurrentTime(audio.currentTime)
+    const onMeta = () => setDuration(audio.duration)
+    const onEnded = () => { setPlaying(false); setCurrentTime(0) }
+    audio.addEventListener('timeupdate', onTime)
+    audio.addEventListener('loadedmetadata', onMeta)
+    audio.addEventListener('ended', onEnded)
+    return () => {
+      audio.removeEventListener('timeupdate', onTime)
+      audio.removeEventListener('loadedmetadata', onMeta)
+      audio.removeEventListener('ended', onEnded)
+    }
+  }, [mediaData])
+
+  function togglePlay() {
+    const audio = audioRef.current
+    if (!audio) return
+    if (playing) { audio.pause(); setPlaying(false) }
+    else { audio.play(); setPlaying(true) }
+  }
+
+  function seekTo(e: React.MouseEvent<HTMLDivElement>) {
+    const audio = audioRef.current
+    if (!audio || !duration) return
+    const rect = e.currentTarget.getBoundingClientRect()
+    const pct = (e.clientX - rect.left) / rect.width
+    audio.currentTime = pct * duration
+  }
+
+  function cycleSpeed() {
+    const rates = [1, 1.5, 2]
+    const next = rates[(rates.indexOf(playbackRate) + 1) % rates.length]
+    setPlaybackRate(next)
+    if (audioRef.current) audioRef.current.playbackRate = next
+  }
+
+  const bg = outbound ? 'bg-[#d9fdd3] dark:bg-emerald-900/60' : 'bg-white dark:bg-zinc-800'
+  const waveColor = outbound ? '#4acd8d' : '#8696a0'
+  const progressColor = '#00a884'
+
+  if (!isMediaLoaded(mediaData)) {
+    return (
+      <div ref={containerRef}>
+        <div className={cn('flex items-center gap-3 rounded-2xl px-3 py-2.5 min-w-[220px]', bg)}>
+          <button
+            onClick={onFetch}
+            disabled={loading}
+            className="w-10 h-10 rounded-full bg-[#00a884] flex items-center justify-center flex-shrink-0 hover:bg-[#008f72] transition-colors disabled:opacity-60"
+          >
+            {loading
+              ? <Loader2 className="h-5 w-5 animate-spin text-white" />
+              : <Play className="h-5 w-5 text-white fill-white ml-0.5" />}
+          </button>
+          <div className="flex-1 space-y-1.5">
+            <div className="flex items-center gap-[2px] h-6">
+              {Array.from({ length: 28 }).map((_, i) => (
+                <div
+                  key={i}
+                  className="w-[2px] rounded-full"
+                  style={{
+                    height: `${6 + Math.abs(Math.sin(i * 0.8)) * 14}px`,
+                    backgroundColor: waveColor,
+                    opacity: 0.5,
+                  }}
+                />
+              ))}
+            </div>
+            <span className="text-[11px] text-[#667781]">0:00</span>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  return (
+    <div ref={containerRef}>
+      <audio ref={audioRef} src={mediaData!} preload="metadata" />
+      <div className={cn('flex items-center gap-3 rounded-2xl px-3 py-2.5 min-w-[220px] max-w-[280px]', bg)}>
+        {/* Play/Pause */}
+        <button
+          onClick={togglePlay}
+          className="w-10 h-10 rounded-full bg-[#00a884] flex items-center justify-center flex-shrink-0 hover:bg-[#008f72] transition-colors"
+        >
+          {playing
+            ? <Pause className="h-5 w-5 text-white fill-white" />
+            : <Play className="h-5 w-5 text-white fill-white ml-0.5" />}
+        </button>
+
+        <div className="flex-1 space-y-1.5 min-w-0">
+          {/* Waveform / seekbar */}
+          <div
+            className="relative h-6 flex items-center cursor-pointer"
+            onClick={seekTo}
+          >
+            {/* Static waveform bars */}
+            <div className="absolute inset-0 flex items-center gap-[2px]">
+              {Array.from({ length: 28 }).map((_, i) => {
+                const barH = 6 + Math.abs(Math.sin(i * 0.8)) * 14
+                const filled = (i / 28) * 100 <= progress
+                return (
+                  <div
+                    key={i}
+                    className="w-[2px] rounded-full flex-shrink-0 transition-colors duration-100"
+                    style={{
+                      height: `${barH}px`,
+                      backgroundColor: filled ? progressColor : waveColor,
+                      opacity: filled ? 1 : 0.45,
+                    }}
+                  />
+                )
+              })}
+            </div>
+          </div>
+
+          {/* Time + speed */}
+          <div className="flex items-center justify-between">
+            <span className="text-[11px] text-[#667781] tabular-nums">
+              {playing || currentTime > 0 ? fmtAudioTime(currentTime) : fmtAudioTime(duration)}
+            </span>
+            <button
+              onClick={cycleSpeed}
+              className="text-[11px] font-semibold text-[#667781] hover:text-[#00a884] transition-colors px-1"
+            >
+              {playbackRate}×
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 // ── Media Component ─────────────────────────────────────────
 
 function isMediaLoaded(data: string | null): boolean {
@@ -345,36 +505,9 @@ function MediaBubble({ msg, outbound, onOpenLightbox }: { msg: WhatsAppMessage; 
     )
   }
 
-  // Audio
+  // Audio — WhatsApp-style player
   if (mType === 'audio') {
-    return (
-      <div ref={containerRef} className="space-y-1">
-        {isMediaLoaded(mediaData) ? (
-          <audio src={mediaData!} controls className="max-w-[260px] h-[36px]" />
-        ) : (
-          <button
-            onClick={fetchMedia}
-            disabled={loading}
-            className={cn(
-              'flex items-center gap-2 rounded-lg px-3 py-3 min-w-[180px] justify-center transition-colors',
-              outbound ? 'bg-[#c4edc0] hover:bg-[#b8e6b4]' : 'bg-gray-100 hover:bg-gray-200'
-            )}
-          >
-            {loading ? (
-              <Loader2 className="h-4 w-4 animate-spin text-[#667781]" />
-            ) : (
-              <>
-                <Play className="h-4 w-4 text-[#00a884] fill-[#00a884]" />
-                <div className="flex-1 h-[4px] bg-[#8696a0]/30 rounded-full mx-1 min-w-[80px]">
-                  <div className="h-full w-0 bg-[#00a884] rounded-full" />
-                </div>
-                <span className="text-[10px] text-[#667781]">0:00</span>
-              </>
-            )}
-          </button>
-        )}
-      </div>
-    )
+    return <AudioPlayer mediaData={mediaData} outbound={outbound} loading={loading} onFetch={fetchMedia} containerRef={containerRef} />
   }
 
   // Document
@@ -909,6 +1042,7 @@ export function MessageArea({ contact, connections, organizationId, userId, user
         const duration = recordingTime
         setRecordingTime(0)
 
+        const localUrl = URL.createObjectURL(audioBlob)
         const tempId = `temp-audio-${Date.now()}`
         const optimisticMsg: WhatsAppMessage = {
           id: tempId,
@@ -918,7 +1052,7 @@ export function MessageArea({ contact, connections, organizationId, userId, user
           deliveredAt: null,
           readAt: null,
           status: 'SENDING',
-          mediaUrl: null,
+          mediaUrl: localUrl,
           mediaType: 'audio',
           messageId: undefined,
           replyToId: null,
@@ -945,9 +1079,11 @@ export function MessageArea({ contact, connections, organizationId, userId, user
             throw new Error(d.error)
           }
           const confirmedMsg = await r.json()
+          URL.revokeObjectURL(localUrl)
           setMessages(prev => prev.map(m => m.id === tempId ? confirmedMsg : m))
           setTimeout(() => scrollToBottom(), 100)
         } catch (err: any) {
+          URL.revokeObjectURL(localUrl)
           setMessages(prev => prev.filter(m => m.id !== tempId))
           toast.error(err.message || 'Erro ao enviar áudio')
         } finally {
