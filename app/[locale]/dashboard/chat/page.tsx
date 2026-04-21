@@ -24,14 +24,14 @@ export default async function ChatPage({
   const { phone: initialPhone } = await searchParams
   const session = await getSession()
 
-  if (!session?.user) {
+  if (!session?.user?.email) {
     return <div>Não autorizado. Faça login novamente.</div>
   }
 
   let user
   try {
     user = await prisma.user.findUnique({
-      where: { id: session.user.id },
+      where: { email: session.user.email },
       select: {
         id: true,
         name: true,
