@@ -130,13 +130,15 @@ export function ChatInterface({
     onMessageSent: useCallback(() => {
       fetchConversations()
     }, [fetchConversations]),
-    onConnectionReady: useCallback(async (data: ConnectionReadyEvent) => {
-      // Refresh connections first so the new CONNECTED status is in state,
-      // then sync history and reload conversations.
+    onConnectionReady: useCallback(async (data: ConnectionReadyEvent & { status?: string }) => {
+      // Refresh connections first so the new status is reflected in state.
       await fetchConnections()
-      try {
-        await fetch(`/api/whatsapp/connections/${data.connectionId}/sync`, { method: 'POST' })
-      } catch {}
+      // Only sync history when actually connecting (not on disconnect events).
+      if (data.status !== 'disconnected') {
+        try {
+          await fetch(`/api/whatsapp/connections/${data.connectionId}/sync`, { method: 'POST' })
+        } catch {}
+      }
       fetchConversations()
     }, [fetchConversations, fetchConnections]),
   })

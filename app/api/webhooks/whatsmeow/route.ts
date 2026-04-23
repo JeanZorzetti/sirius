@@ -305,10 +305,18 @@ async function handleConnectionUpdate(instanceId: string, data: any) {
     },
   })
 
+  // Publish SSE for both connect and disconnect so the UI updates immediately
+  // instead of waiting for the 10s polling interval.
   if (crmStatus === 'CONNECTED' && wasDisconnected) {
     ssePublish(connection.organizationId, 'connection:ready', {
       connectionId: connection.id,
       instanceName: connection.instanceName,
+    })
+  } else if (crmStatus === 'DISCONNECTED') {
+    ssePublish(connection.organizationId, 'connection:ready', {
+      connectionId: connection.id,
+      instanceName: connection.instanceName,
+      status: 'disconnected',
     })
   }
 }

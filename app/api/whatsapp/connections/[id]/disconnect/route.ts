@@ -52,14 +52,17 @@ export async function POST(
       )
     }
 
-    // 4. Logout from whatsmeow gateway (best-effort)
+    // 4. Restart instance on gateway so the session key is preserved.
+    // deleteInstance would wipe the session entirely, forcing a full re-auth
+    // and losing all message history association. restartInstance keeps the
+    // gateway instance alive (session intact) but drops the connection so the
+    // user can re-scan QR and resume receiving messages normally.
     try {
-      await whatsmeowClient.deleteInstance(connection.instanceName)
+      await whatsmeowClient.restartInstance(connection.instanceName)
     } catch (err: any) {
-      // Instance may not exist or already be disconnected — proceed anyway
       logger.warn(
         { error: err?.message, instanceName: connection.instanceName },
-        'Whatsmeow logout failed, forcing DB disconnect'
+        'Whatsmeow restart failed, forcing DB disconnect only'
       )
     }
 
@@ -68,7 +71,6 @@ export async function POST(
       where: { id: connection.id },
       data: {
         status: 'DISCONNECTED',
-        phoneNumber: null,
         connectedAt: null,
       },
     })

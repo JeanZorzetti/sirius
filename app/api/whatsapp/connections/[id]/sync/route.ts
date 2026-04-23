@@ -51,7 +51,8 @@ export async function POST(
     // Whatsmeow: history sync is automatic on connect via webhook events.
     // This endpoint triggers an on-demand sync (best-effort).
     try {
-      await whatsmeowClient.requestSync(connection.instanceName)
+      // Request 500 messages to cover at least 24h of history for active numbers.
+      await whatsmeowClient.requestSync(connection.instanceName, 500)
       logger.info({ connectionId: id, instanceName: connection.instanceName }, 'Whatsmeow: on-demand sync requested')
     } catch (err: any) {
       // Best-effort — history sync already happens automatically
