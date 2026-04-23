@@ -34,15 +34,16 @@ export async function GET() {
       )
     }
 
-    // 3. Get active (CONNECTED) connections for this org only
+    // 3. Get all connections for this org (regardless of status)
+    // Filtering by CONNECTED causes conversations to vanish when a phone temporarily
+    // takes over the session — we want messages to stay visible during reconnection.
     const orgConnections = await prismaWa.whatsAppConnection.findMany({
-      where: { organizationId: user.organizationId, status: 'CONNECTED' },
+      where: { organizationId: user.organizationId },
       select: { id: true },
     })
 
     const connectionIds = orgConnections.map(c => c.id)
 
-    // If no active connections, return empty — don't show stale data from old instances
     if (connectionIds.length === 0) {
       return NextResponse.json([])
     }

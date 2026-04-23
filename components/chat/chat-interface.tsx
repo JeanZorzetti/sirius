@@ -131,11 +131,13 @@ export function ChatInterface({
       fetchConversations()
     }, [fetchConversations]),
     onConnectionReady: useCallback(async (data: ConnectionReadyEvent) => {
+      // Refresh connections first so the new CONNECTED status is in state,
+      // then sync history and reload conversations.
+      await fetchConnections()
       try {
         await fetch(`/api/whatsapp/connections/${data.connectionId}/sync`, { method: 'POST' })
       } catch {}
       fetchConversations()
-      fetchConnections()
     }, [fetchConversations, fetchConnections]),
   })
 
@@ -156,10 +158,11 @@ export function ChatInterface({
       .catch(() => setIsSyncing(false))
   }, [connections, fetchConversations])
 
-  // Polling: conversas a cada 5s, conexões a cada 30s
+  // Polling: conversas a cada 5s, conexões a cada 10s
+  // Connections poll at 10s (down from 30s) to detect multi-device status changes faster.
   useEffect(() => {
     const convInterval = setInterval(() => fetchConversations(), 5000)
-    const connInterval = setInterval(fetchConnections, 30000)
+    const connInterval = setInterval(fetchConnections, 10000)
     return () => { clearInterval(convInterval); clearInterval(connInterval) }
   }, [fetchConversations, fetchConnections])
 
