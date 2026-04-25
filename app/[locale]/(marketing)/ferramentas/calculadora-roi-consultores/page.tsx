@@ -1,4 +1,4 @@
-import { Metadata } from 'next'
+﻿import { Metadata } from 'next'
 import { CalculadoraROI } from '@/components/calculadora-roi'
 import { Briefcase, TrendingUp, Users, CheckCircle2 } from 'lucide-react'
 
@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Calculadora de ROI para Consultores | Quanto você perde por desorganização?',
     description: 'Calcule o impacto real de projetos não acompanhados. Veja quanto um CRM pode aumentar seus honorários.',
-    url: 'https://sirius.roilabs.com.br/ferramentas/calculadora-roi-consultores',
+    url: 'https://siriuscrm.com.br/ferramentas/calculadora-roi-consultores',
     siteName: 'Sirius CRM',
     locale: 'pt_BR',
     type: 'website',

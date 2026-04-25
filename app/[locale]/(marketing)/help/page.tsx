@@ -1,4 +1,4 @@
-import Link from 'next/link'
+﻿import Link from 'next/link'
 import Script from 'next/script'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
@@ -24,11 +24,11 @@ import { getAllCategories } from '@/lib/help-articles'
 export const metadata: Metadata = {
   title: 'Central de Ajuda | Sirius CRM',
   description: 'Encontre respostas para suas dúvidas sobre o Sirius CRM. Tutoriais, guias e suporte para aproveitar ao máximo sua ferramenta de vendas.',
-  alternates: { canonical: 'https://sirius.roilabs.com.br/help' },
+  alternates: { canonical: 'https://siriuscrm.com.br/help' },
   openGraph: {
     title: 'Central de Ajuda | Sirius CRM',
     description: 'Encontre respostas para suas dúvidas sobre o Sirius CRM. Tutoriais, guias e suporte.',
-    url: 'https://sirius.roilabs.com.br/help',
+    url: 'https://siriuscrm.com.br/help',
   },
   twitter: {
     card: 'summary_large_image',

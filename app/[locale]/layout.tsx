@@ -1,4 +1,4 @@
-import type { Metadata } from 'next'
+﻿import type { Metadata } from 'next'
 import { Geist, Geist_Mono } from 'next/font/google'
 import { NextIntlClientProvider } from 'next-intl'
 import { getMessages, getTranslations } from 'next-intl/server'
@@ -42,7 +42,7 @@ export async function generateMetadata({
   const { locale } = await params
 
   const isPtBR = locale === 'pt-BR'
-  const baseUrl = 'https://sirius.roilabs.com.br'
+  const baseUrl = 'https://siriuscrm.com.br'
   const enUrl = `${baseUrl}/en`
 
   if (isPtBR) {
@@ -139,7 +139,7 @@ export function generateStaticParams() {
 
 function buildSchemaOrg(locale: Locale) {
   const isPtBR = locale === 'pt-BR'
-  const baseUrl = 'https://sirius.roilabs.com.br'
+  const baseUrl = 'https://siriuscrm.com.br'
 
   return {
     '@context': 'https://schema.org',

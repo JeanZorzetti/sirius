@@ -1,4 +1,4 @@
-import { Metadata } from 'next'
+﻿import { Metadata } from 'next'
 import { getTranslations } from 'next-intl/server'
 
 export async function generateMetadata(
@@ -6,7 +6,7 @@ export async function generateMetadata(
 ): Promise<Metadata> {
   const { locale } = await params
   const t = await getTranslations({ locale, namespace: 'marketing.pricing.meta' })
-  const baseUrl = 'https://sirius.roilabs.com.br'
+  const baseUrl = 'https://siriuscrm.com.br'
   const canonicalUrl = locale === 'en' ? `${baseUrl}/en/pricing` : `${baseUrl}/pricing`
 
   return {

@@ -1,4 +1,4 @@
-import { Metadata } from 'next'
+﻿import { Metadata } from 'next'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { getAllNicheSlugs, getNicheBySlug } from '@/config/niche-data'
@@ -11,11 +11,11 @@ export const metadata: Metadata = {
     'crm por segmento', 'crm corretores imóveis', 'crm energia solar', 'crm agências marketing',
     'crm consultores', 'crm representantes comerciais', 'solucoes crm brasil 2026',
   ],
-  alternates: { canonical: 'https://sirius.roilabs.com.br/solucoes' },
+  alternates: { canonical: 'https://siriuscrm.com.br/solucoes' },
   openGraph: {
     title: 'Soluções Sirius CRM por Segmento',
     description: 'CRM com solução específica para corretores, solar, agências, consultores e representantes. Comece grátis.',
-    url: 'https://sirius.roilabs.com.br/solucoes',
+    url: 'https://siriuscrm.com.br/solucoes',
     siteName: 'Sirius CRM',
     locale: 'pt_BR',
     type: 'website',
@@ -46,8 +46,8 @@ export default function SolucoesPage() {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
     itemListElement: [
-      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://sirius.roilabs.com.br' },
-      { '@type': 'ListItem', position: 2, name: 'Soluções', item: 'https://sirius.roilabs.com.br/solucoes' },
+      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://siriuscrm.com.br' },
+      { '@type': 'ListItem', position: 2, name: 'Soluções', item: 'https://siriuscrm.com.br/solucoes' },
     ],
   }
 

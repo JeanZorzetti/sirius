@@ -1,4 +1,4 @@
-import { BlogPost } from '../../blog-types'
+﻿import { BlogPost } from '../../blog-types'
 
 export const post: BlogPost = {
   slug: 'como-escolher-crm-b2b-2026',
@@ -185,7 +185,7 @@ export const post: BlogPost = {
       <div style="background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%); padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0; text-align: center;">
         <p style="margin: 0 0 0.5rem; font-weight: 700; color: #ffffff; font-size: 1.15rem;">Teste o Sirius CRM gratuitamente por 7 dias</p>
         <p style="margin: 0 0 1rem; color: #e0e7ff; font-size: 0.95rem;">Sem cartão de crédito. Cancele quando quiser. Suporte em português via WhatsApp.</p>
-        <a href="https://sirius.roilabs.com.br/register" style="display: inline-block; background: #ffffff; color: #4f46e5; font-weight: 700; padding: 0.75rem 2rem; border-radius: 0.5rem; text-decoration: none; font-size: 1rem;">Começar agora — é grátis</a>
+        <a href="https://siriuscrm.com.br/register" style="display: inline-block; background: #ffffff; color: #4f46e5; font-weight: 700; padding: 0.75rem 2rem; border-radius: 0.5rem; text-decoration: none; font-size: 1rem;">Começar agora — é grátis</a>
       </div>
 
       <h2>Perguntas Frequentes</h2>

@@ -1,4 +1,4 @@
-import { notFound } from 'next/navigation'
+﻿import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import Image from 'next/image'
 import { blogPosts } from '@/lib/blog-data'
@@ -21,20 +21,23 @@ import { NewsletterCTA } from '@/components/blog/newsletter-cta'
 
 interface BlogPostPageProps {
   params: Promise<{
+    locale: string
     slug: string
   }>
 }
 
 export async function generateMetadata({ params }: BlogPostPageProps): Promise<Metadata> {
-  const { slug } = await params
+  const { slug, locale } = await params
   const post = blogPosts.find((p) => p.slug === slug)
   if (!post) return { title: 'Post não encontrado' }
 
-  const url = `https://sirius.roilabs.com.br/blog/${slug}`
+  const ptUrl = `https://siriuscrm.com.br/blog/${slug}`
+  const enUrl = `https://siriuscrm.com.br/en/blog/${slug}`
+  const url = locale === 'en' ? enUrl : ptUrl
 
   // OG Image dinâmica para todos os posts (branded com título + categoria)
   const ogParams = new URLSearchParams({ title: post.title, category: post.category })
-  let imageUrl = `https://sirius.roilabs.com.br/api/og/blog?${ogParams.toString()}`
+  let imageUrl = `https://siriuscrm.com.br/api/og/blog?${ogParams.toString()}`
 
   // Override específico: post com calculadora ROI usa OG image customizada
   if (slug === 'custo-oculto-inacao-crm') {
@@ -43,7 +46,7 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
       title: 'O Custo Oculto da Inação no CRM',
       scenario: 'realista',
     })
-    imageUrl = `https://sirius.roilabs.com.br/api/og?${roiParams.toString()}`
+    imageUrl = `https://siriuscrm.com.br/api/og?${roiParams.toString()}`
   }
 
   // AI-optimized description: Fatos diretos, dados concretos, sem clickbait
@@ -95,8 +98,9 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
     alternates: {
       canonical: url,
       languages: {
-        'pt-BR': url,
-        'x-default': url,
+        'pt-BR': ptUrl,
+        'en': enUrl,
+        'x-default': ptUrl,
       },
     },
     openGraph: {
@@ -153,9 +157,9 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
   // Falls back to random posts if knowledge graph not yet populated
   const relatedPosts = await getRelatedPostsByEntities(slug, 2)
 
-  const url = `https://sirius.roilabs.com.br/blog/${slug}`
+  const url = `https://siriuscrm.com.br/blog/${slug}`
   const rawImage = post.image || '/logo.png'
-  const imageUrl = rawImage.startsWith('http') ? rawImage : `https://sirius.roilabs.com.br${rawImage}`
+  const imageUrl = rawImage.startsWith('http') ? rawImage : `https://siriuscrm.com.br${rawImage}`
 
   // GEO-optimized JSON-LD Schema with Wikidata entity disambiguation
   let geoConfig = createGeoConfig.crm()
@@ -380,8 +384,8 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
     "itemListElement": [
-      { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://sirius.roilabs.com.br" },
-      { "@type": "ListItem", "position": 2, "name": "Blog", "item": "https://sirius.roilabs.com.br/blog" },
+      { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://siriuscrm.com.br" },
+      { "@type": "ListItem", "position": 2, "name": "Blog", "item": "https://siriuscrm.com.br/blog" },
       { "@type": "ListItem", "position": 3, "name": post.title, "item": url }
     ]
   }
@@ -431,7 +435,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
           "description": "Comparativo dos 7 CRMs mais usados no Brasil em 2026, avaliados em UX, mobile, WhatsApp, automação, analytics, personalização e preço.",
           "numberOfItems": 7,
           "itemListElement": [
-            { "@type": "ListItem", "position": 1, "name": "Sirius CRM", "url": "https://sirius.roilabs.com.br" },
+            { "@type": "ListItem", "position": 1, "name": "Sirius CRM", "url": "https://siriuscrm.com.br" },
             { "@type": "ListItem", "position": 2, "name": "Pipedrive", "url": "https://www.pipedrive.com/pt" },
             { "@type": "ListItem", "position": 3, "name": "HubSpot CRM", "url": "https://www.hubspot.com/products/crm" },
             { "@type": "ListItem", "position": 4, "name": "RD Station CRM", "url": "https://www.rdstation.com/crm/" },
@@ -450,7 +454,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
           "description": "Comparativo de 5 CRMs com plano gratuito funcional no Brasil em 2026, avaliados em contatos, usuários, WhatsApp, IA e preço de upgrade.",
           "numberOfItems": 5,
           "itemListElement": [
-            { "@type": "ListItem", "position": 1, "name": "Sirius CRM", "url": "https://sirius.roilabs.com.br" },
+            { "@type": "ListItem", "position": 1, "name": "Sirius CRM", "url": "https://siriuscrm.com.br" },
             { "@type": "ListItem", "position": 2, "name": "HubSpot Free", "url": "https://www.hubspot.com/products/crm" },
             { "@type": "ListItem", "position": 3, "name": "Agendor", "url": "https://www.agendor.com.br" },
             { "@type": "ListItem", "position": 4, "name": "Bitrix24", "url": "https://www.bitrix24.com.br" },

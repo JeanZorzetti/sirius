@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import { useState } from 'react'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
@@ -93,7 +93,7 @@ export function FunnelTemplateDownload() {
       doc.text('Sirius CRM', 10, footerY)
 
       // Texto centro
-      const centerText = 'https://sirius.roilabs.com.br/register'
+      const centerText = 'https://siriuscrm.com.br/register'
       const centerWidth = doc.getTextWidth(centerText)
       doc.text(centerText, (pageWidth - centerWidth) / 2, footerY)
 

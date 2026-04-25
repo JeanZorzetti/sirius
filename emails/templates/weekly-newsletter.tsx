@@ -1,4 +1,4 @@
-import { Text, Heading, Button, Section, Hr } from '@react-email/components'
+﻿import { Text, Heading, Button, Section, Hr } from '@react-email/components'
 import { BaseLayout } from '../layouts/base'
 
 interface WeeklyNewsletterProps {
@@ -23,7 +23,7 @@ export function WeeklyNewsletter({
   weekLabel,
   stats,
   tip,
-  dashboardUrl = 'https://sirius.roilabs.com.br/dashboard',
+  dashboardUrl = 'https://siriuscrm.com.br/dashboard',
 }: WeeklyNewsletterProps) {
   return (
     <BaseLayout preview={`📊 Seu resumo da semana (${weekLabel}) – Sirius CRM`}>

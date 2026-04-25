@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import Link from 'next/link'
 import Script from 'next/script'
@@ -47,8 +47,8 @@ export default function PricingPage() {
         "@context": "https://schema.org",
         "@type": "BreadcrumbList",
         "itemListElement": [
-            { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://sirius.roilabs.com.br" },
-            { "@type": "ListItem", "position": 2, "name": t('tagline'), "item": "https://sirius.roilabs.com.br/pricing" }
+            { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://siriuscrm.com.br" },
+            { "@type": "ListItem", "position": 2, "name": t('tagline'), "item": "https://siriuscrm.com.br/pricing" }
         ]
     };
 

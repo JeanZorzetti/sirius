@@ -1,4 +1,4 @@
-import { Metadata } from 'next'
+﻿import { Metadata } from 'next'
 import { CalculadoraROI } from '@/components/calculadora-roi'
 import { Building2, TrendingUp, Users, CheckCircle2 } from 'lucide-react'
 
@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Calculadora de ROI para Corretores | Quanto você perde por desorganização?',
     description: 'Calcule o impacto real de perder leads e oportunidades. Veja quanto um CRM pode aumentar suas comissões.',
-    url: 'https://sirius.roilabs.com.br/ferramentas/calculadora-roi-corretores',
+    url: 'https://siriuscrm.com.br/ferramentas/calculadora-roi-corretores',
     siteName: 'Sirius CRM',
     locale: 'pt_BR',
     type: 'website',

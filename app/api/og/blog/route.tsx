@@ -1,4 +1,4 @@
-import { ImageResponse } from 'next/og'
+﻿import { ImageResponse } from 'next/og'
 import { NextRequest } from 'next/server'
 
 export const runtime = 'edge'
@@ -213,7 +213,7 @@ export async function GET(request: NextRequest) {
                   color: 'rgba(255,255,255,0.5)',
                 }}
               >
-                sirius.roilabs.com.br
+                siriuscrm.com.br
               </span>
               <span
                 style={{

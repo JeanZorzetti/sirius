@@ -1,4 +1,4 @@
-import { Metadata } from 'next'
+﻿import { Metadata } from 'next'
 import Link from 'next/link'
 import Script from 'next/script'
 import { Button } from '@/components/ui/button'
@@ -12,13 +12,13 @@ export const metadata: Metadata = {
   title: 'Solicitar Proposta Comercial | Sirius CRM',
   description: 'Solicite uma proposta comercial personalizada para sua empresa. Nossa equipe entrará em contato em até 24h para apresentar a melhor solução em CRM.',
   keywords: ['proposta comercial', 'plano customizado', 'enterprise', 'vendas', 'sirius crm'],
-  alternates: { canonical: 'https://sirius.roilabs.com.br/proposta' },
+  alternates: { canonical: 'https://siriuscrm.com.br/proposta' },
   openGraph: {
     title: 'Solicitar Proposta Comercial | Sirius CRM',
     description: 'Solicite uma proposta personalizada. Nossa equipe entrará em contato em até 24h.',
-    url: 'https://sirius.roilabs.com.br/proposta',
+    url: 'https://siriuscrm.com.br/proposta',
     images: [{
-      url: 'https://sirius.roilabs.com.br/og-image.png',
+      url: 'https://siriuscrm.com.br/og-image.png',
       width: 1200,
       height: 630,
       alt: 'Sirius CRM - CRM Inteligente para Vendedores Brasileiros',
@@ -40,13 +40,13 @@ export default function PropostaPage() {
         "@type": "ListItem",
         "position": 1,
         "name": "Home",
-        "item": "https://sirius.roilabs.com.br"
+        "item": "https://siriuscrm.com.br"
       },
       {
         "@type": "ListItem",
         "position": 2,
         "name": "Proposta",
-        "item": "https://sirius.roilabs.com.br/proposta"
+        "item": "https://siriuscrm.com.br/proposta"
       }
     ]
   }
@@ -61,7 +61,7 @@ export default function PropostaPage() {
       "contactPoint": {
         "@type": "ContactPoint",
         "contactType": "Sales",
-        "email": "vendas@sirius.roilabs.com.br",
+        "email": "vendas@siriuscrm.com.br",
         "availableLanguage": "Portuguese"
       }
     },
@@ -232,7 +232,7 @@ export default function PropostaPage() {
                 <div className="space-y-3">
                   <div className="flex items-center gap-3">
                     <Mail className="h-5 w-5" />
-                    <span>vendas@sirius.roilabs.com.br</span>
+                    <span>vendas@siriuscrm.com.br</span>
                   </div>
                   <div className="flex items-center gap-3">
                     <Phone className="h-5 w-5" />

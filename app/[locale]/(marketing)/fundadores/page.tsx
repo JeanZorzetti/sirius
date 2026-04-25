@@ -1,4 +1,4 @@
-import { getTranslations } from 'next-intl/server'
+﻿import { getTranslations } from 'next-intl/server'
 import { Metadata } from 'next'
 import { prisma } from '@/lib/prisma'
 import { Check, Star, Zap, Shield, Users, Clock } from 'lucide-react'
@@ -10,7 +10,7 @@ export async function generateMetadata(
 ): Promise<Metadata> {
   const { locale } = await params
   const t = await getTranslations({ locale, namespace: 'marketing.founders.meta' })
-  const canonical = `https://sirius.roilabs.com.br${locale === 'en' ? '/en' : ''}/fundadores`
+  const canonical = `https://siriuscrm.com.br${locale === 'en' ? '/en' : ''}/fundadores`
 
   return {
     title: t('title'),
@@ -20,7 +20,7 @@ export async function generateMetadata(
       title: t('ogTitle'),
       description: t('ogDescription'),
       url: canonical,
-      images: [{ url: 'https://sirius.roilabs.com.br/og-image.png', width: 1200, height: 630 }],
+      images: [{ url: 'https://siriuscrm.com.br/og-image.png', width: 1200, height: 630 }],
     },
   }
 }

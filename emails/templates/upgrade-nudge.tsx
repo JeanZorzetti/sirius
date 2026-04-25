@@ -1,4 +1,4 @@
-import { Text, Heading, Button, Section } from '@react-email/components'
+﻿import { Text, Heading, Button, Section } from '@react-email/components'
 import { BaseLayout } from '../layouts/base'
 
 interface UpgradeNudgeEmailProps {
@@ -12,7 +12,7 @@ export function UpgradeNudgeEmail({
   userName,
   currentDeals,
   maxDeals,
-  upgradeUrl = 'https://sirius.roilabs.com.br/dashboard/billing',
+  upgradeUrl = 'https://siriuscrm.com.br/dashboard/billing',
 }: UpgradeNudgeEmailProps) {
   const percentUsed = Math.round((currentDeals / maxDeals) * 100)
 

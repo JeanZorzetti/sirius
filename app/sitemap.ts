@@ -1,4 +1,4 @@
-import { MetadataRoute } from 'next'
+﻿import { MetadataRoute } from 'next'
 import { blogPosts, getAllCategories, slugifyCategory } from '@/lib/blog-data'
 import { helpArticles } from '@/lib/help-articles'
 import { NICHES } from '@/config/niche-data'
@@ -6,7 +6,7 @@ import { CITIES } from '@/config/city-data'
 import { CALCULATOR_LAST_MODIFIED } from '@/config/calculator-metadata'
 
 export default function sitemap(): MetadataRoute.Sitemap {
-    const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://sirius.roilabs.com.br'
+    const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://siriuscrm.com.br'
 
     // Data da última atualização significativa do site
     // Atualizar manualmente quando houver mudanças reais nas páginas estáticas
@@ -72,32 +72,33 @@ export default function sitemap(): MetadataRoute.Sitemap {
         ...withAlternates(`/blog/${post.slug}`),
     }))
 
-    // Help articles (23 artigos)
+    // Help articles — com alternates EN (/en/help/[category]/[slug])
     const helpArticlePages = helpArticles.map((article) => ({
         url: `${baseUrl}/help/${article.categorySlug}/${article.slug}`,
         lastModified: new Date(article.lastUpdated),
         changeFrequency: 'monthly' as const,
         priority: 0.7,
+        ...withAlternates(
+            `/help/${article.categorySlug}/${article.slug}`,
+            `/help/${article.categorySlug}/${article.slug}`
+        ),
     }))
 
-    // Calculadoras segmentadas por nicho
-    // Priority 0.9: Alta prioridade - "Honey Traps" de engajamento (Seção 7.2)
-    // Ativos técnicos de conversão devem ser indexados preferencialmente
-    // lastModified: Conectado à data de atualização metodológica (Seção 7.1)
-    // Quando a metodologia da calculadora é atualizada (ex: constante de decaimento refinada),
-    // esta data sinaliza aos crawlers que o conteúdo deve ser reprocessado
-    const calculatorPages = [
-        '/ferramentas/calculadora-roi',
-        '/ferramentas/calculadora-roi-corretores',
-        '/ferramentas/calculadora-roi-energia-solar',
-        '/ferramentas/calculadora-roi-agencias',
-        '/ferramentas/calculadora-roi-consultores',
-        '/ferramentas/calculadora-roi-representantes',
-    ].map((route) => ({
-        url: `${baseUrl}${route}`,
+    // Calculadoras — mapeamento PT→EN conforme i18n/routing.ts
+    const calculatorMap: Record<string, string> = {
+        '/ferramentas/calculadora-roi': '/tools/roi-calculator',
+        '/ferramentas/calculadora-roi-corretores': '/tools/roi-calculator-brokers',
+        '/ferramentas/calculadora-roi-energia-solar': '/tools/roi-calculator-solar',
+        '/ferramentas/calculadora-roi-agencias': '/tools/roi-calculator-agencies',
+        '/ferramentas/calculadora-roi-consultores': '/tools/roi-calculator-consultants',
+        '/ferramentas/calculadora-roi-representantes': '/tools/roi-calculator-representatives',
+    }
+    const calculatorPages = Object.entries(calculatorMap).map(([ptRoute, enRoute]) => ({
+        url: `${baseUrl}${ptRoute}`,
         lastModified: new Date(CALCULATOR_LAST_MODIFIED),
         changeFrequency: 'monthly' as const,
         priority: 0.9,
+        ...withAlternates(ptRoute, enRoute),
     }))
 
     // Páginas de soluções por nicho (geradas dinamicamente do niche-data.ts)
@@ -117,13 +118,17 @@ export default function sitemap(): MetadataRoute.Sitemap {
         priority: 0.85, // Alta prioridade - SEO local de alto valor
     }))
 
-    // Blog category pages (rotas indexáveis por categoria)
-    const blogCategoryPages = getAllCategories().map((category) => ({
-        url: `${baseUrl}/blog/categoria/${slugifyCategory(category)}`,
-        lastModified: lastSiteUpdate,
-        changeFrequency: 'weekly' as const,
-        priority: 0.8,
-    }))
+    // Blog category pages — com alternates EN (/en/blog/category/[slug])
+    const blogCategoryPages = getAllCategories().map((category) => {
+        const slug = slugifyCategory(category)
+        return {
+            url: `${baseUrl}/blog/categoria/${slug}`,
+            lastModified: lastSiteUpdate,
+            changeFrequency: 'weekly' as const,
+            priority: 0.8,
+            ...withAlternates(`/blog/categoria/${slug}`, `/blog/category/${slug}`),
+        }
+    })
 
     return [
         ...routes,

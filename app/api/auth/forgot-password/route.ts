@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server'
+﻿import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { Resend } from 'resend'
 import crypto from 'crypto'
@@ -52,13 +52,13 @@ export async function POST(request: NextRequest) {
     })
 
     // Build reset URL
-    const baseUrl = process.env.NEXTAUTH_URL || process.env.NEXT_PUBLIC_APP_URL || 'https://sirius.roilabs.com.br'
+    const baseUrl = process.env.NEXTAUTH_URL || process.env.NEXT_PUBLIC_APP_URL || 'https://siriuscrm.com.br'
     const resetUrl = `${baseUrl}/reset-password?token=${token}`
 
     // Send email
     if (process.env.RESEND_API_KEY) {
       await resend.emails.send({
-        from: process.env.EMAIL_FROM || 'Sirius CRM <noreply@sirius.roilabs.com.br>',
+        from: process.env.EMAIL_FROM || 'Sirius CRM <noreply@siriuscrm.com.br>',
         to: normalizedEmail,
         subject: 'Redefinir sua senha - Sirius CRM',
         html: `

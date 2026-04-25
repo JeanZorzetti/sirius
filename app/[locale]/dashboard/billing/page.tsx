@@ -1,4 +1,4 @@
-import { Metadata } from 'next'
+﻿import { Metadata } from 'next'
 import Link from 'next/link'
 import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
@@ -59,7 +59,7 @@ export default async function BillingPage() {
   const isPaid = tier !== SubscriptionTier.FREE
   const isFounderOpen = await prisma.organization.count({ where: { isFounder: true } }) < FOUNDER_TOTAL_LIMIT
 
-  const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://sirius.roilabs.com.br'
+  const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://siriuscrm.com.br'
   const referralUrl = referralCode ? `${appUrl}/r/${referralCode}` : null
 
   // Preço exibido: customPricing para fundadores, PLAN_PRICING para regular

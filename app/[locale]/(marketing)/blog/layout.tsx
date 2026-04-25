@@ -1,4 +1,4 @@
-import { getTranslations } from 'next-intl/server'
+﻿import { getTranslations } from 'next-intl/server'
 import type { Metadata } from 'next'
 import Script from 'next/script'
 import { blogPosts } from '@/lib/blog-data'
@@ -8,7 +8,7 @@ export async function generateMetadata(
 ): Promise<Metadata> {
   const { locale } = await params
   const t = await getTranslations({ locale, namespace: 'marketing.blog.meta' })
-  const baseUrl = 'https://sirius.roilabs.com.br'
+  const baseUrl = 'https://siriuscrm.com.br'
   const canonicalUrl = locale === 'en' ? `${baseUrl}/en/blog` : `${baseUrl}/blog`
 
   return {
@@ -31,15 +31,15 @@ export default function BlogLayout({
   const collectionSchema = {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
-    "@id": "https://sirius.roilabs.com.br/blog",
+    "@id": "https://siriuscrm.com.br/blog",
     "name": "Blog Sirius CRM",
     "description": "Artigos sobre vendas, CRM, pipeline, SPIN Selling, automação e gestão comercial para vendedores e times de alta performance.",
-    "url": "https://sirius.roilabs.com.br/blog",
+    "url": "https://siriuscrm.com.br/blog",
     "hasPart": blogPosts.map(post => ({
       "@type": "BlogPosting",
       "headline": post.title,
       "description": post.excerpt,
-      "url": `https://sirius.roilabs.com.br/blog/${post.slug}`,
+      "url": `https://siriuscrm.com.br/blog/${post.slug}`,
       "datePublished": post.date,
       "dateModified": post.lastModified || post.date,
       "author": {
@@ -53,8 +53,8 @@ export default function BlogLayout({
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
     "itemListElement": [
-      { "@type": "ListItem", "position": 1, "name": "Início", "item": "https://sirius.roilabs.com.br" },
-      { "@type": "ListItem", "position": 2, "name": "Blog", "item": "https://sirius.roilabs.com.br/blog" },
+      { "@type": "ListItem", "position": 1, "name": "Início", "item": "https://siriuscrm.com.br" },
+      { "@type": "ListItem", "position": 2, "name": "Blog", "item": "https://siriuscrm.com.br/blog" },
     ]
   }
 

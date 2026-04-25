@@ -1,4 +1,4 @@
-/**
+﻿/**
  * HowTo schemas para artigos tutoriais do blog.
  * O Google exibe steps estruturados diretamente nos resultados de busca.
  * Referência: https://schema.org/HowTo
@@ -82,7 +82,7 @@ export const howToSchemas: Record<string, HowToSchema> = {
     'Como Usar um CRM Offline para Registrar Pedidos sem Internet',
     'Passo a passo para vendedores externos registrarem visitas, pedidos e interações sem conexão e sincronizarem ao reconectar.',
     [
-      { name: 'Instale o app como PWA no celular', text: 'Acesse sirius.roilabs.com.br no Chrome, toque em "Adicionar à tela inicial". O app baixa os dados dos clientes para cache local — funciona sem internet.' },
+      { name: 'Instale o app como PWA no celular', text: 'Acesse siriuscrm.com.br no Chrome, toque em "Adicionar à tela inicial". O app baixa os dados dos clientes para cache local — funciona sem internet.' },
       { name: 'Registre visitas e pedidos offline', text: 'Durante a visita, abra o card do cliente, registre o pedido com valor, produtos e observações. Os dados ficam salvos localmente.' },
       { name: 'Fotografe documentos e assinaturas', text: 'Use a câmera do app para registrar pedidos assinados, notas fiscais ou contratos. As fotos ficam na fila de sincronização.' },
       { name: 'Sincronize ao reconectar', text: 'Assim que o Wi-Fi ou 4G reconectar, o app sincroniza automaticamente todos os registros offline com a nuvem. Zero perda de dados.' },

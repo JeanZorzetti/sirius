@@ -1,4 +1,4 @@
-import { Metadata } from 'next'
+﻿import { Metadata } from 'next'
 import Link from 'next/link'
 import Image from 'next/image'
 import Script from 'next/script'
@@ -24,14 +24,14 @@ export const metadata: Metadata = {
   title: 'Sirius CRM - Vendas Organizadas em 5 Minutos | R$ 67/mês',
   description: 'CRM self-service sem implantação cara. Organize suas vendas agora por R$ 67/mês. Sem cartão para testar, cancele quando quiser.',
   keywords: 'crm barato, crm self-service, crm simples, crm R$ 67, organizar vendas',
-  alternates: { canonical: 'https://sirius.roilabs.com.br/vendas-automaticas' },
+  alternates: { canonical: 'https://siriuscrm.com.br/vendas-automaticas' },
   openGraph: {
     title: 'Sirius CRM - Vendas Organizadas em 5 Minutos',
     description: 'CRM self-service sem implantação cara. R$ 67/mês, sem cartão para testar.',
     type: 'website',
-    url: 'https://sirius.roilabs.com.br/vendas-automaticas',
+    url: 'https://siriuscrm.com.br/vendas-automaticas',
     images: [{
-      url: 'https://sirius.roilabs.com.br/og-image.png',
+      url: 'https://siriuscrm.com.br/og-image.png',
       width: 1200,
       height: 630,
       alt: 'Sirius CRM - CRM Inteligente para Vendedores Brasileiros',
@@ -53,13 +53,13 @@ export default function VendasAutomaticasPage() {
         "@type": "ListItem",
         "position": 1,
         "name": "Home",
-        "item": "https://sirius.roilabs.com.br"
+        "item": "https://siriuscrm.com.br"
       },
       {
         "@type": "ListItem",
         "position": 2,
         "name": "Vendas Automáticas",
-        "item": "https://sirius.roilabs.com.br/vendas-automaticas"
+        "item": "https://siriuscrm.com.br/vendas-automaticas"
       }
     ]
   }

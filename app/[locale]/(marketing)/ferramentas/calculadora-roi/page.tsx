@@ -1,4 +1,4 @@
-import { Metadata } from 'next'
+﻿import { Metadata } from 'next'
 import Script from 'next/script'
 import { CalculadoraROI } from '@/components/calculadora-roi'
 
@@ -22,9 +22,9 @@ const breadcrumbSchema = {
   "@context": "https://schema.org",
   "@type": "BreadcrumbList",
   "itemListElement": [
-    { "@type": "ListItem", "position": 1, "name": "Início", "item": "https://sirius.roilabs.com.br" },
-    { "@type": "ListItem", "position": 2, "name": "Ferramentas", "item": "https://sirius.roilabs.com.br/ferramentas" },
-    { "@type": "ListItem", "position": 3, "name": "Calculadora de ROI", "item": "https://sirius.roilabs.com.br/ferramentas/calculadora-roi" },
+    { "@type": "ListItem", "position": 1, "name": "Início", "item": "https://siriuscrm.com.br" },
+    { "@type": "ListItem", "position": 2, "name": "Ferramentas", "item": "https://siriuscrm.com.br/ferramentas" },
+    { "@type": "ListItem", "position": 3, "name": "Calculadora de ROI", "item": "https://siriuscrm.com.br/ferramentas/calculadora-roi" },
   ]
 }
 

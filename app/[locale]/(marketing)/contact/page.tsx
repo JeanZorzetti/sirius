@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState } from "react";
 import Link from "next/link";
@@ -86,8 +86,8 @@ export default function ContactPage() {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
     itemListElement: [
-      { "@type": "ListItem", position: 1, name: "Home", item: "https://sirius.roilabs.com.br" },
-      { "@type": "ListItem", position: 2, name: "Contact", item: "https://sirius.roilabs.com.br/contact" },
+      { "@type": "ListItem", position: 1, name: "Home", item: "https://siriuscrm.com.br" },
+      { "@type": "ListItem", position: 2, name: "Contact", item: "https://siriuscrm.com.br/contact" },
     ],
   };
 
@@ -96,12 +96,12 @@ export default function ContactPage() {
     "@type": "ContactPage",
     name: "Contact - Sirius CRM",
     description: "Get in touch with the Sirius CRM team",
-    url: "https://sirius.roilabs.com.br/contact",
+    url: "https://siriuscrm.com.br/contact",
     mainEntity: {
       "@type": "Organization",
       name: "Sirius CRM",
       email: "contato@roilabs.com.br",
-      url: "https://sirius.roilabs.com.br",
+      url: "https://siriuscrm.com.br",
     },
   };
 

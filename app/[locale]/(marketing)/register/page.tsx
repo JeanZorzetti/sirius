@@ -1,4 +1,4 @@
-import { Metadata } from 'next'
+﻿import { Metadata } from 'next'
 import Link from 'next/link'
 import { RegisterForm } from "./register-form"
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -6,7 +6,7 @@ import { prisma } from "@/lib/prisma"
 
 export const metadata: Metadata = {
   title: 'Criar conta - Sirius CRM',
-  alternates: { canonical: 'https://sirius.roilabs.com.br/register' },
+  alternates: { canonical: 'https://siriuscrm.com.br/register' },
 }
 
 export default async function RegisterPage({

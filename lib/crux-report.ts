@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Chrome UX Report (CrUX) API Integration
  *
  * Fetches real user experience data from Chrome User Experience Report
@@ -158,7 +158,7 @@ function calculatePercentages(
 /**
  * Busca dados do Chrome UX Report
  *
- * @param origin - URL da origem (ex: https://sirius.roilabs.com.br)
+ * @param origin - URL da origem (ex: https://siriuscrm.com.br)
  * @param formFactor - PHONE, DESKTOP, ou TABLET
  * @returns Dados de experiência de usuários reais
  */

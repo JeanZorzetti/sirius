@@ -1,4 +1,4 @@
-import { Metadata } from 'next'
+﻿import { Metadata } from 'next'
 import Script from 'next/script'
 import Link from 'next/link'
 
@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Anuário do Vendedor B2B Brasileiro 2026 | Sirius CRM',
     description: 'Dados proprietários de +127 empresas que usam o Sirius CRM: ciclo médio de venda, taxa de conversão, produtividade e benchmarks por setor no Brasil em 2026.',
-    url: 'https://sirius.roilabs.com.br/anuario',
+    url: 'https://siriuscrm.com.br/anuario',
     siteName: 'Sirius CRM',
     type: 'website',
     images: [
@@ -26,7 +26,7 @@ export const metadata: Metadata = {
     description: 'Dados proprietários de +127 empresas B2B brasileiras: ciclo de venda, conversão, IA e benchmarks por setor.',
   },
   alternates: {
-    canonical: 'https://sirius.roilabs.com.br/anuario',
+    canonical: 'https://siriuscrm.com.br/anuario',
   },
 }
 
@@ -35,11 +35,11 @@ const datasetSchema = {
   '@type': 'Dataset',
   name: 'Anuário do Vendedor B2B Brasileiro 2026',
   description: 'Dados sobre ciclo de venda, conversão e produtividade de +127 empresas B2B brasileiras que utilizam o Sirius CRM',
-  url: 'https://sirius.roilabs.com.br/anuario',
+  url: 'https://siriuscrm.com.br/anuario',
   creator: {
     '@type': 'Organization',
     name: 'Sirius CRM / ROI Labs',
-    url: 'https://sirius.roilabs.com.br',
+    url: 'https://siriuscrm.com.br',
   },
   datePublished: '2026-03-21',
   dateModified: '2026-03-21',
@@ -59,13 +59,13 @@ const breadcrumbSchema = {
       '@type': 'ListItem',
       position: 1,
       name: 'Início',
-      item: 'https://sirius.roilabs.com.br',
+      item: 'https://siriuscrm.com.br',
     },
     {
       '@type': 'ListItem',
       position: 2,
       name: 'Anuário 2026',
-      item: 'https://sirius.roilabs.com.br/anuario',
+      item: 'https://siriuscrm.com.br/anuario',
     },
   ],
 }

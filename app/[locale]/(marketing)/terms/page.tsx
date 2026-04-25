@@ -1,4 +1,4 @@
-import { Metadata } from 'next'
+﻿import { Metadata } from 'next'
 import Link from 'next/link'
 import Script from 'next/script'
 import { Button } from '@/components/ui/button'
@@ -10,7 +10,7 @@ export async function generateMetadata(
 ): Promise<Metadata> {
   const { locale } = await params
   const t = await getTranslations({ locale, namespace: 'marketing.terms.meta' })
-  const canonical = `https://sirius.roilabs.com.br${locale === 'en' ? '/en' : ''}/terms`
+  const canonical = `https://siriuscrm.com.br${locale === 'en' ? '/en' : ''}/terms`
   return {
     title: t('title'),
     description: t('description'),
@@ -29,8 +29,8 @@ export default async function TermsPage(
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
     "itemListElement": [
-      { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://sirius.roilabs.com.br" },
-      { "@type": "ListItem", "position": 2, "name": t('title'), "item": "https://sirius.roilabs.com.br/terms" },
+      { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://siriuscrm.com.br" },
+      { "@type": "ListItem", "position": 2, "name": t('title'), "item": "https://siriuscrm.com.br/terms" },
     ]
   }
 

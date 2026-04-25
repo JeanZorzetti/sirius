@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import { useState, useEffect } from 'react'
 import { Button } from '@/components/ui/button'
@@ -23,7 +23,7 @@ export function DownloadInstructions() {
     }
   }, [])
 
-  const appUrl = 'https://sirius.roilabs.com.br'
+  const appUrl = 'https://siriuscrm.com.br'
 
   const copyLink = () => {
     navigator.clipboard.writeText(appUrl)
@@ -112,10 +112,10 @@ export function DownloadInstructions() {
               </div>
               <div>
                 <p className="text-zinc-300 mb-2">
-                  Abra <strong className="text-white">sirius.roilabs.com.br</strong> no Safari
+                  Abra <strong className="text-white">siriuscrm.com.br</strong> no Safari
                 </p>
                 <div className="bg-zinc-900/50 rounded-lg p-3 border border-zinc-700">
-                  <code className="text-sm text-indigo-400">https://sirius.roilabs.com.br</code>
+                  <code className="text-sm text-indigo-400">https://siriuscrm.com.br</code>
                 </div>
               </div>
             </div>
@@ -170,10 +170,10 @@ export function DownloadInstructions() {
               </div>
               <div>
                 <p className="text-zinc-300 mb-2">
-                  Abra <strong className="text-white">sirius.roilabs.com.br</strong> no Chrome
+                  Abra <strong className="text-white">siriuscrm.com.br</strong> no Chrome
                 </p>
                 <div className="bg-zinc-900/50 rounded-lg p-3 border border-zinc-700">
-                  <code className="text-sm text-indigo-400">https://sirius.roilabs.com.br</code>
+                  <code className="text-sm text-indigo-400">https://siriuscrm.com.br</code>
                 </div>
               </div>
             </div>
@@ -220,7 +220,7 @@ export function DownloadInstructions() {
                 Para a melhor experiência, acesse este link no seu celular
               </p>
               <div className="bg-zinc-900/50 rounded-lg p-4 border border-zinc-700 max-w-md mx-auto">
-                <code className="text-sm text-indigo-400 break-all">https://sirius.roilabs.com.br/download</code>
+                <code className="text-sm text-indigo-400 break-all">https://siriuscrm.com.br/download</code>
               </div>
             </div>
 
@@ -231,7 +231,7 @@ export function DownloadInstructions() {
               <div className="flex justify-center">
                 <div className="bg-white p-6 rounded-2xl shadow-2xl">
                   <QRCodeSVG
-                    value="https://sirius.roilabs.com.br/download"
+                    value="https://siriuscrm.com.br/download"
                     size={192}
                     level="H"
                     includeMargin={false}

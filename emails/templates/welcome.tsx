@@ -1,4 +1,4 @@
-import { Text, Heading, Button, Section } from '@react-email/components'
+﻿import { Text, Heading, Button, Section } from '@react-email/components'
 import { BaseLayout } from '../layouts/base'
 
 interface WelcomeEmailProps {
@@ -10,7 +10,7 @@ interface WelcomeEmailProps {
 export function WelcomeEmail({
   userName,
   organizationName,
-  dashboardUrl = 'https://sirius.roilabs.com.br/dashboard',
+  dashboardUrl = 'https://siriuscrm.com.br/dashboard',
 }: WelcomeEmailProps) {
   return (
     <BaseLayout preview={`Bem-vindo ao Sirius CRM, ${userName}!`}>

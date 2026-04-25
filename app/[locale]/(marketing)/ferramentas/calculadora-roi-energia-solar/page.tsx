@@ -1,4 +1,4 @@
-import { Metadata } from 'next'
+﻿import { Metadata } from 'next'
 import { CalculadoraROI } from '@/components/calculadora-roi'
 import { Sun, TrendingUp, Users, CheckCircle2 } from 'lucide-react'
 
@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Calculadora de ROI para Energia Solar | Quanto você perde por mês?',
     description: 'Descubra quanto faturamento você está deixando na mesa por falta de organização nas propostas.',
-    url: 'https://sirius.roilabs.com.br/ferramentas/calculadora-roi-energia-solar',
+    url: 'https://siriuscrm.com.br/ferramentas/calculadora-roi-energia-solar',
     siteName: 'Sirius CRM',
     locale: 'pt_BR',
     type: 'website',

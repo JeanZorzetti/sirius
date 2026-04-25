@@ -1,4 +1,4 @@
-import Link from 'next/link'
+﻿import Link from 'next/link'
 import Script from 'next/script'
 import { Button } from '@/components/ui/button'
 import { Users, MessageCircle, BookOpen, Github, Lightbulb, Trophy, Heart } from 'lucide-react'
@@ -8,13 +8,13 @@ export const metadata: Metadata = {
   title: 'Comunidade | Sirius CRM',
   description: 'Junte-se à comunidade Sirius CRM. Compartilhe experiências, aprenda com outros usuários e contribua para o desenvolvimento da plataforma.',
   keywords: ['comunidade', 'forum', 'suporte', 'discussões', 'sirius crm'],
-  alternates: { canonical: 'https://sirius.roilabs.com.br/community' },
+  alternates: { canonical: 'https://siriuscrm.com.br/community' },
   openGraph: {
     title: 'Comunidade | Sirius CRM',
     description: 'Junte-se à comunidade Sirius CRM e conecte-se com outros profissionais de vendas.',
-    url: 'https://sirius.roilabs.com.br/community',
+    url: 'https://siriuscrm.com.br/community',
     images: [{
-      url: 'https://sirius.roilabs.com.br/og-image.png',
+      url: 'https://siriuscrm.com.br/og-image.png',
       width: 1200,
       height: 630,
       alt: 'Sirius CRM - CRM Inteligente para Vendedores Brasileiros',
@@ -93,13 +93,13 @@ export default function CommunityPage() {
         "@type": "ListItem",
         "position": 1,
         "name": "Home",
-        "item": "https://sirius.roilabs.com.br"
+        "item": "https://siriuscrm.com.br"
       },
       {
         "@type": "ListItem",
         "position": 2,
         "name": "Comunidade",
-        "item": "https://sirius.roilabs.com.br/community"
+        "item": "https://siriuscrm.com.br/community"
       }
     ]
   }
@@ -109,7 +109,7 @@ export default function CommunityPage() {
     "@type": "Organization",
     "name": "ROI Labs",
     "url": "https://roilabs.com.br",
-    "logo": "https://sirius.roilabs.com.br/logo.png",
+    "logo": "https://siriuscrm.com.br/logo.png",
     "telephone": "+55-62-98344-3919",
     "email": "roilabs.ia@gmail.com",
     "areaServed": {

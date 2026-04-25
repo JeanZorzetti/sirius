@@ -1,4 +1,4 @@
-import { Metadata } from 'next'
+﻿import { Metadata } from 'next'
 import Script from 'next/script'
 import { DownloadInstructions } from '@/components/marketing/download-instructions'
 
@@ -6,13 +6,13 @@ export const metadata: Metadata = {
   title: 'Baixar Sirius CRM | App Mobile',
   description: 'Baixe o Sirius CRM no seu celular. Progressive Web App com suporte offline, sincronização automática e notificações push. Disponível para iOS e Android.',
   keywords: ['baixar sirius crm', 'app mobile', 'pwa', 'download', 'aplicativo'],
-  alternates: { canonical: 'https://sirius.roilabs.com.br/download' },
+  alternates: { canonical: 'https://siriuscrm.com.br/download' },
   openGraph: {
     title: 'Baixar Sirius CRM - App Mobile',
     description: 'Instale o Sirius CRM no seu celular para acesso rápido e offline.',
-    url: 'https://sirius.roilabs.com.br/download',
+    url: 'https://siriuscrm.com.br/download',
     images: [{
-      url: 'https://sirius.roilabs.com.br/og-image.png',
+      url: 'https://siriuscrm.com.br/og-image.png',
       width: 1200,
       height: 630,
       alt: 'Sirius CRM - App Mobile',
@@ -34,13 +34,13 @@ export default function DownloadPage() {
         "@type": "ListItem",
         "position": 1,
         "name": "Home",
-        "item": "https://sirius.roilabs.com.br"
+        "item": "https://siriuscrm.com.br"
       },
       {
         "@type": "ListItem",
         "position": 2,
         "name": "Download",
-        "item": "https://sirius.roilabs.com.br/download"
+        "item": "https://siriuscrm.com.br/download"
       }
     ]
   }

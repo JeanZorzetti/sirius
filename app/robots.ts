@@ -1,4 +1,4 @@
-import { MetadataRoute } from 'next'
+﻿import { MetadataRoute } from 'next'
 
 /**
  * Governança de Bots e Estratégia de Robots.txt para 2026
@@ -13,7 +13,7 @@ import { MetadataRoute } from 'next'
  */
 
 export default function robots(): MetadataRoute.Robots {
-  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://sirius.roilabs.com.br'
+  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://siriuscrm.com.br'
 
   return {
     rules: [

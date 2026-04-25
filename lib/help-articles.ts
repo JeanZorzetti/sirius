@@ -1,4 +1,4 @@
-export interface HelpArticle {
+﻿export interface HelpArticle {
   title: string;
   slug: string;
   category: string;
@@ -849,7 +849,7 @@ export const helpArticles: HelpArticle[] = [
             "Gere uma API key (ou use uma existente)",
             "No N8N, crie um novo workflow",
             "Adicione um node 'HTTP Request' ou 'Webhook'",
-            "Configure a URL base: https://sirius.roilabs.com.br/api",
+            "Configure a URL base: https://siriuscrm.com.br/api",
             "Adicione o header de autenticação com sua API key",
           ],
         },
@@ -1365,7 +1365,7 @@ export const helpArticles: HelpArticle[] = [
             "Verifique sua caixa de spam - o email pode ter ido para lá",
             "Limpe o cache do navegador (Ctrl+Shift+Delete)",
             "Tente em navegador diferente ou modo anônimo",
-            "Se ainda não funcionar, contate suporte@sirius.roilabs.com.br",
+            "Se ainda não funcionar, contate suporte@siriuscrm.com.br",
           ],
         },
         {
@@ -1423,7 +1423,7 @@ export const helpArticles: HelpArticle[] = [
         },
         {
           title: "Ainda com problemas?",
-          content: "Se nenhuma solução acima resolver, entre em contato com nosso suporte: suporte@sirius.roilabs.com.br ou abra um chat dentro do sistema. Inclua screenshots e descrição detalhada do problema.",
+          content: "Se nenhuma solução acima resolver, entre em contato com nosso suporte: suporte@siriuscrm.com.br ou abra um chat dentro do sistema. Inclua screenshots e descrição detalhada do problema.",
         },
       ],
     },

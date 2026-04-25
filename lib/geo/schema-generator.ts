@@ -1,4 +1,4 @@
-import { WithContext, BlogPosting, Person, Organization } from 'schema-dts'
+﻿import { WithContext, BlogPosting, Person, Organization } from 'schema-dts'
 import { BlogPost } from '@/lib/blog-types'
 
 /**
@@ -101,7 +101,7 @@ export function generateArticleSchema(
     : {
         '@type': 'Person',
         name: post.author || 'ROI Labs',
-        url: 'https://sirius.roilabs.com.br',
+        url: 'https://siriuscrm.com.br',
         sameAs: ['https://www.linkedin.com/company/roi-labs'],
       }
 
@@ -111,8 +111,8 @@ export function generateArticleSchema(
 
   // Garante que imageUrl não duplique o domínio para URLs Unsplash/externas
   const resolvedImageUrl = imageUrl
-    ? (imageUrl.startsWith('http') ? imageUrl : `https://sirius.roilabs.com.br${imageUrl}`)
-    : (post.image?.startsWith('http') ? post.image : `https://sirius.roilabs.com.br${post.image || '/logo.png'}`)
+    ? (imageUrl.startsWith('http') ? imageUrl : `https://siriuscrm.com.br${imageUrl}`)
+    : (post.image?.startsWith('http') ? post.image : `https://siriuscrm.com.br${post.image || '/logo.png'}`)
 
   // Montar schema BlogPosting
   const schema: WithContext<BlogPosting> = {
@@ -130,12 +130,12 @@ export function generateArticleSchema(
       url: 'https://roilabs.com.br',
       logo: {
         '@type': 'ImageObject',
-        url: 'https://sirius.roilabs.com.br/logo.png',
+        url: 'https://siriuscrm.com.br/logo.png',
       },
     },
     mainEntityOfPage: {
       '@type': 'WebPage',
-      '@id': canonicalUrl || `https://sirius.roilabs.com.br/blog/${post.slug}`,
+      '@id': canonicalUrl || `https://siriuscrm.com.br/blog/${post.slug}`,
     },
     // GEO: Desambiguação de entidades via Wikidata
     ...(mentions.length > 0 && {

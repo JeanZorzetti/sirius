@@ -1,4 +1,4 @@
-import { Metadata } from 'next'
+﻿import { Metadata } from 'next'
 import Link from 'next/link'
 import Script from 'next/script'
 import { Button } from '@/components/ui/button'
@@ -9,13 +9,13 @@ export const metadata: Metadata = {
   title: 'Sistema de Follow-up Inteligente | Sirius CRM',
   description: 'Nunca mais perca um follow-up. Sistema automático de lembretes e acompanhamento de leads com IA integrada. Alertas inteligentes no timing certo para maximizar conversão.',
   keywords: ['follow-up', 'lembretes', 'automação vendas', 'alertas', 'crm'],
-  alternates: { canonical: 'https://sirius.roilabs.com.br/followup' },
+  alternates: { canonical: 'https://siriuscrm.com.br/followup' },
   openGraph: {
     title: 'Sistema de Follow-up Inteligente | Sirius CRM',
     description: 'Nunca mais perca um follow-up. Sistema automático de lembretes e acompanhamento de leads com IA.',
-    url: 'https://sirius.roilabs.com.br/followup',
+    url: 'https://siriuscrm.com.br/followup',
     images: [{
-      url: 'https://sirius.roilabs.com.br/og-image.png',
+      url: 'https://siriuscrm.com.br/og-image.png',
       width: 1200,
       height: 630,
       alt: 'Sirius CRM - CRM Inteligente para Vendedores Brasileiros',
@@ -37,13 +37,13 @@ export default function FollowupPage() {
         "@type": "ListItem",
         "position": 1,
         "name": "Home",
-        "item": "https://sirius.roilabs.com.br"
+        "item": "https://siriuscrm.com.br"
       },
       {
         "@type": "ListItem",
         "position": 2,
         "name": "Follow-up",
-        "item": "https://sirius.roilabs.com.br/followup"
+        "item": "https://siriuscrm.com.br/followup"
       }
     ]
   }

@@ -1,4 +1,4 @@
-import { Metadata } from 'next'
+﻿import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import {
   getCityBySlug,
@@ -60,16 +60,16 @@ export async function generateMetadata({
     description: city.seo.description,
     keywords: city.seo.keywords.join(', '),
     alternates: {
-      canonical: `https://sirius.roilabs.com.br/solucoes/cidade/${city.slug}`,
+      canonical: `https://siriuscrm.com.br/solucoes/cidade/${city.slug}`,
       languages: {
-        'pt-BR': `https://sirius.roilabs.com.br/solucoes/cidade/${city.slug}`,
-        'x-default': `https://sirius.roilabs.com.br/solucoes/cidade/${city.slug}`,
+        'pt-BR': `https://siriuscrm.com.br/solucoes/cidade/${city.slug}`,
+        'x-default': `https://siriuscrm.com.br/solucoes/cidade/${city.slug}`,
       },
     },
     openGraph: {
       title: city.seo.title,
       description: city.seo.description,
-      url: `https://sirius.roilabs.com.br/solucoes/cidade/${city.slug}`,
+      url: `https://siriuscrm.com.br/solucoes/cidade/${city.slug}`,
       siteName: 'Sirius CRM',
       locale: 'pt_BR',
       type: 'website',
@@ -120,7 +120,7 @@ export default async function CitySolutionPage({
     description: city.seo.description,
     applicationCategory: 'BusinessApplication',
     operatingSystem: 'Web, iOS, Android',
-    url: `https://sirius.roilabs.com.br/solucoes/cidade/${city.slug}`,
+    url: `https://siriuscrm.com.br/solucoes/cidade/${city.slug}`,
     areaServed: {
       '@type': 'City',
       name: addressLocality,
@@ -148,19 +148,19 @@ export default async function CitySolutionPage({
         '@type': 'ListItem',
         position: 1,
         name: 'Home',
-        item: 'https://sirius.roilabs.com.br',
+        item: 'https://siriuscrm.com.br',
       },
       {
         '@type': 'ListItem',
         position: 2,
         name: 'Soluções',
-        item: 'https://sirius.roilabs.com.br/solucoes',
+        item: 'https://siriuscrm.com.br/solucoes',
       },
       {
         '@type': 'ListItem',
         position: 3,
         name: cityName,
-        item: `https://sirius.roilabs.com.br/solucoes/cidade/${city.slug}`,
+        item: `https://siriuscrm.com.br/solucoes/cidade/${city.slug}`,
       },
     ],
   }

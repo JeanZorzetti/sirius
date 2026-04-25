@@ -1,4 +1,4 @@
-import { getTranslations } from 'next-intl/server'
+﻿import { getTranslations } from 'next-intl/server'
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import Script from 'next/script'
@@ -49,12 +49,12 @@ export async function generateMetadata(): Promise<Metadata> {
       'automação de vendas ia', 'prospecção google maps', 'analytics crm', 'crm brasil 2026',
       'crm online 2026', 'evolution api', 'bant meddic ia', 'crm ia qualificação leads',
     ],
-    alternates: { canonical: 'https://sirius.roilabs.com.br/features' },
+    alternates: { canonical: 'https://siriuscrm.com.br/features' },
     openGraph: {
       title: t('ogTitle'),
       description: t('ogDescription'),
-      url: 'https://sirius.roilabs.com.br/features',
-      images: [{ url: 'https://sirius.roilabs.com.br/og-image.png', width: 1200, height: 630 }],
+      url: 'https://siriuscrm.com.br/features',
+      images: [{ url: 'https://siriuscrm.com.br/og-image.png', width: 1200, height: 630 }],
     },
     twitter: {
       card: 'summary_large_image',
@@ -338,8 +338,8 @@ export default async function FeaturesPage() {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
     "itemListElement": [
-      { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://sirius.roilabs.com.br" },
-      { "@type": "ListItem", "position": 2, "name": "Funcionalidades", "item": "https://sirius.roilabs.com.br/features" }
+      { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://siriuscrm.com.br" },
+      { "@type": "ListItem", "position": 2, "name": "Funcionalidades", "item": "https://siriuscrm.com.br/features" }
     ]
   }
 
@@ -374,7 +374,7 @@ export default async function FeaturesPage() {
       "Check-in GPS para Campo",
       "PWA com Push Notifications"
     ],
-    "screenshot": "https://sirius.roilabs.com.br/og-image.png"
+    "screenshot": "https://siriuscrm.com.br/og-image.png"
   }
 
   return (

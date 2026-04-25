@@ -1,4 +1,4 @@
-import { Text, Heading, Button, Section, Hr } from '@react-email/components'
+﻿import { Text, Heading, Button, Section, Hr } from '@react-email/components'
 import { BaseLayout } from '../layouts/base'
 
 interface PaymentConfirmationEmailProps {
@@ -18,7 +18,7 @@ export function PaymentConfirmationEmail({
   paymentType,
   amount,
   nextBillingDate,
-  dashboardUrl = 'https://sirius.roilabs.com.br/dashboard',
+  dashboardUrl = 'https://siriuscrm.com.br/dashboard',
 }: PaymentConfirmationEmailProps) {
   const formatPaymentType = (type: string) => {
     const types: Record<string, string> = {

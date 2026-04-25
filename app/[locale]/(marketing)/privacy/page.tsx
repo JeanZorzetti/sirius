@@ -1,4 +1,4 @@
-import Link from 'next/link'
+﻿import Link from 'next/link'
 import Script from 'next/script'
 import { Shield, Lock, Eye, Server, UserCheck, FileText } from 'lucide-react'
 import type { Metadata } from 'next'
@@ -9,7 +9,7 @@ export async function generateMetadata(
 ): Promise<Metadata> {
   const { locale } = await params
   const t = await getTranslations({ locale, namespace: 'marketing.privacy.meta' })
-  const canonical = `https://sirius.roilabs.com.br${locale === 'en' ? '/en' : ''}/privacy`
+  const canonical = `https://siriuscrm.com.br${locale === 'en' ? '/en' : ''}/privacy`
   return {
     title: t('title'),
     description: t('description'),
@@ -28,8 +28,8 @@ export default async function PrivacyPage(
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
     "itemListElement": [
-      { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://sirius.roilabs.com.br" },
-      { "@type": "ListItem", "position": 2, "name": t('title'), "item": "https://sirius.roilabs.com.br/privacy" },
+      { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://siriuscrm.com.br" },
+      { "@type": "ListItem", "position": 2, "name": t('title'), "item": "https://siriuscrm.com.br/privacy" },
     ]
   }
 

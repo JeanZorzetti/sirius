@@ -1,4 +1,4 @@
-import { getTranslations } from 'next-intl/server'
+﻿import { getTranslations } from 'next-intl/server'
 import Link from 'next/link'
 import Image from 'next/image'
 import Script from 'next/script'
@@ -11,7 +11,7 @@ export async function generateMetadata(
 ): Promise<Metadata> {
   const { locale } = await params
   const t = await getTranslations({ locale, namespace: 'marketing.about.meta' })
-  const baseUrl = 'https://sirius.roilabs.com.br'
+  const baseUrl = 'https://siriuscrm.com.br'
 
   return {
     title: t('title'),
@@ -40,8 +40,8 @@ export default async function AboutPage({ params }: { params: Promise<{ locale: 
     "@context": "https://schema.org",
     "@type": "Organization",
     "name": "Sirius CRM",
-    "url": "https://sirius.roilabs.com.br",
-    "logo": "https://sirius.roilabs.com.br/logo.png",
+    "url": "https://siriuscrm.com.br",
+    "logo": "https://siriuscrm.com.br/logo.png",
     "description": t('schema.orgDescription'),
     "founder": { "@type": "Organization", "name": "ROI Labs" },
     "address": { "@type": "PostalAddress", "addressCountry": "BR" },
@@ -52,8 +52,8 @@ export default async function AboutPage({ params }: { params: Promise<{ locale: 
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
     "itemListElement": [
-      { "@type": "ListItem", "position": 1, "name": t('schema.breadcrumbHome'), "item": "https://sirius.roilabs.com.br" },
-      { "@type": "ListItem", "position": 2, "name": t('schema.breadcrumbAbout'), "item": "https://sirius.roilabs.com.br/about" }
+      { "@type": "ListItem", "position": 1, "name": t('schema.breadcrumbHome'), "item": "https://siriuscrm.com.br" },
+      { "@type": "ListItem", "position": 2, "name": t('schema.breadcrumbAbout'), "item": "https://siriuscrm.com.br/about" }
     ]
   }
 

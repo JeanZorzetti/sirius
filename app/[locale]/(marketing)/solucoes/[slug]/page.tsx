@@ -1,4 +1,4 @@
-import { Metadata } from 'next'
+﻿import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { getNicheBySlug, getAllNicheSlugs } from '@/config/niche-data'
 import { CalculadoraROI } from '@/components/calculadora-roi'
@@ -28,8 +28,8 @@ export async function generateStaticParams() {
 }
 
 // Meta tags dinâmicas por nicho
-export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
-  const { slug } = await params
+export async function generateMetadata({ params }: { params: Promise<{ locale: string; slug: string }> }): Promise<Metadata> {
+  const { locale, slug } = await params
   const niche = getNicheBySlug(slug)
 
   if (!niche) {
@@ -38,23 +38,28 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     }
   }
 
+  const ptUrl = `https://siriuscrm.com.br/solucoes/${niche.slug}`
+  const enUrl = `https://siriuscrm.com.br/en/solutions/${niche.slug}`
+  const canonicalUrl = locale === 'en' ? enUrl : ptUrl
+
   return {
     title: niche.seo.title,
     description: niche.seo.description,
     keywords: niche.seo.keywords.join(', '),
     alternates: {
-      canonical: `https://sirius.roilabs.com.br/solucoes/${niche.slug}`,
+      canonical: canonicalUrl,
       languages: {
-        'pt-BR': `https://sirius.roilabs.com.br/solucoes/${niche.slug}`,
-        'x-default': `https://sirius.roilabs.com.br/solucoes/${niche.slug}`,
+        'pt-BR': ptUrl,
+        'en': enUrl,
+        'x-default': ptUrl,
       },
     },
     openGraph: {
       title: niche.seo.title,
       description: niche.seo.description,
-      url: `https://sirius.roilabs.com.br/solucoes/${niche.slug}`,
+      url: canonicalUrl,
       siteName: 'Sirius CRM',
-      locale: 'pt_BR',
+      locale: locale === 'en' ? 'en_US' : 'pt_BR',
       type: 'website',
     },
     twitter: {
@@ -95,7 +100,7 @@ export default async function NicheSolutionPage({ params }: { params: Promise<{ 
     "description": niche.seo.description,
     "applicationCategory": "BusinessApplication",
     "operatingSystem": "Web, iOS, Android",
-    "url": `https://sirius.roilabs.com.br/solucoes/${niche.slug}`,
+    "url": `https://siriuscrm.com.br/solucoes/${niche.slug}`,
     "offers": {
       "@type": "Offer",
       "price": "0",
@@ -113,9 +118,9 @@ export default async function NicheSolutionPage({ params }: { params: Promise<{ 
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
     "itemListElement": [
-      { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://sirius.roilabs.com.br" },
-      { "@type": "ListItem", "position": 2, "name": "Soluções", "item": "https://sirius.roilabs.com.br/solucoes" },
-      { "@type": "ListItem", "position": 3, "name": niche.seo.title, "item": `https://sirius.roilabs.com.br/solucoes/${niche.slug}` }
+      { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://siriuscrm.com.br" },
+      { "@type": "ListItem", "position": 2, "name": "Soluções", "item": "https://siriuscrm.com.br/solucoes" },
+      { "@type": "ListItem", "position": 3, "name": niche.seo.title, "item": `https://siriuscrm.com.br/solucoes/${niche.slug}` }
     ]
   }
 

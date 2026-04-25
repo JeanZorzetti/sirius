@@ -1,4 +1,4 @@
-import { Metadata } from 'next'
+﻿import { Metadata } from 'next'
 import { CalculadoraROI } from '@/components/calculadora-roi'
 import { TrendingUp, Users, CheckCircle2, Smartphone } from 'lucide-react'
 
@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Calculadora de ROI para Representantes | Quanto você perde por mês?',
     description: 'Calcule o impacto real de pedidos não acompanhados. Veja quanto um CRM pode aumentar suas recompras.',
-    url: 'https://sirius.roilabs.com.br/ferramentas/calculadora-roi-representantes',
+    url: 'https://siriuscrm.com.br/ferramentas/calculadora-roi-representantes',
     siteName: 'Sirius CRM',
     locale: 'pt_BR',
     type: 'website',

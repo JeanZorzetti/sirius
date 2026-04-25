@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Email Marketing Integration
  *
  * Integração com Resend para captura de leads da calculadora ROI.
@@ -71,7 +71,7 @@ async function sendWelcomeEmail(data: LeadCalculadoraData) {
 
   try {
     await resend.emails.send({
-      from: 'Sirius CRM <contato@sirius.roilabs.com.br>',
+      from: 'Sirius CRM <contato@siriuscrm.com.br>',
       to: data.email,
       subject: `${data.nome ? data.nome.split(' ')[0] + ', você' : 'Você'} está perdendo R$ ${formatCurrency(data.perdaMensal)}/mês 💸`,
       html: getWelcomeEmailTemplate(data, nicho),
@@ -95,7 +95,7 @@ async function notifyCommercialTeam(data: LeadCalculadoraData) {
 
   try {
     await resend.emails.send({
-      from: 'Sirius Leads <leads@sirius.roilabs.com.br>',
+      from: 'Sirius Leads <leads@siriuscrm.com.br>',
       to: notifyEmail,
       subject: `🔥 Lead QUENTE: ${data.email} (perde R$ ${formatCurrency(data.perdaMensal)}/mês)`,
       html: `

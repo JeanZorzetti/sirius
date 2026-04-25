@@ -1,4 +1,4 @@
-import { Metadata } from 'next'
+﻿import { Metadata } from 'next'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
@@ -34,27 +34,27 @@ export const metadata: Metadata = {
 
 export default function PlanilhaControleComissaoPage() {
   const publishedDate = new Date().toISOString()
-  const url = 'https://sirius.roilabs.com.br/blog/planilha-controle-comissao-corretor'
+  const url = 'https://siriuscrm.com.br/blog/planilha-controle-comissao-corretor'
 
   // JSON-LD: Article Schema
   const articleSchema = {
     '@context': 'https://schema.org',
     '@type': 'BlogPosting',
     headline: 'Planilha de Controle de Vendas e Comissão para Corretores (2026)',
-    image: 'https://sirius.roilabs.com.br/og-planilha-corretor.png',
+    image: 'https://siriuscrm.com.br/og-planilha-corretor.png',
     datePublished: publishedDate,
     dateModified: publishedDate,
     author: {
       '@type': 'Organization',
       name: 'Sirius Team',
-      url: 'https://sirius.roilabs.com.br',
+      url: 'https://siriuscrm.com.br',
     },
     publisher: {
       '@type': 'Organization',
       name: 'Sirius CRM',
       logo: {
         '@type': 'ImageObject',
-        url: 'https://sirius.roilabs.com.br/logo.png',
+        url: 'https://siriuscrm.com.br/logo.png',
       },
     },
     description: 'Guia completo sobre controle de comissões para corretores com calculadora gratuita',

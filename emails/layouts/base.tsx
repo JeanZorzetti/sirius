@@ -1,4 +1,4 @@
-import {
+﻿import {
   Html,
   Head,
   Body,
@@ -36,15 +36,15 @@ export function BaseLayout({ children, preview }: BaseLayoutProps) {
               © {new Date().getFullYear()} ROI Labs. Todos os direitos reservados.
             </Text>
             <Text style={styles.footerText}>
-              <Link href="https://sirius.roilabs.com.br" style={styles.link}>
-                sirius.roilabs.com.br
+              <Link href="https://siriuscrm.com.br" style={styles.link}>
+                siriuscrm.com.br
               </Link>
               {' • '}
-              <Link href="https://sirius.roilabs.com.br/privacy" style={styles.link}>
+              <Link href="https://siriuscrm.com.br/privacy" style={styles.link}>
                 Privacidade
               </Link>
               {' • '}
-              <Link href="https://sirius.roilabs.com.br/terms" style={styles.link}>
+              <Link href="https://siriuscrm.com.br/terms" style={styles.link}>
                 Termos
               </Link>
             </Text>

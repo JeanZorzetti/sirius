@@ -1,4 +1,4 @@
-import { Metadata } from "next"
+﻿import { Metadata } from "next"
 import { Hero } from "@/components/marketing/hero"
 import { BentoGrid } from "@/components/marketing/bento-grid"
 import { Logos } from "@/components/marketing/logos"
@@ -20,12 +20,12 @@ export const metadata: Metadata = {
   title: 'Sirius CRM 2026 [IA Nativa + WhatsApp] — Pipeline Kanban Grátis para Vendedores',
   description: 'O Assistente de IA para Vendedores Brasileiros: pipeline Kanban, WhatsApp integrado, prospecção Google Maps e AGI que qualifica leads automaticamente com BANT e MEDDIC. Grátis para sempre. Sem cartão.',
   keywords: ['crm gratuito', 'crm com ia', 'crm brasil 2026', 'crm online 2026', 'pipeline kanban', 'whatsapp crm', 'ia comercial nativa', 'automação de vendas', 'assistente ia vendas', 'crm representante comercial', 'crm mobile'],
-  alternates: { canonical: 'https://sirius.roilabs.com.br' },
+  alternates: { canonical: 'https://siriuscrm.com.br' },
   openGraph: {
     title: 'Sirius CRM 2026 [IA Nativa + WhatsApp] — Pipeline Grátis para Vendedores',
     description: 'IA que qualifica leads, WhatsApp integrado, pipeline Kanban e prospecção Google Maps. O assistente de vendas mais completo do Brasil. Grátis para sempre.',
-    url: 'https://sirius.roilabs.com.br',
-    images: [{ url: 'https://sirius.roilabs.com.br/og-image.png', width: 1200, height: 630 }],
+    url: 'https://siriuscrm.com.br',
+    images: [{ url: 'https://siriuscrm.com.br/og-image.png', width: 1200, height: 630 }],
   },
   twitter: {
     card: 'summary_large_image',
@@ -46,7 +46,7 @@ export default function LandingPage() {
     "applicationCategory": "BusinessApplication",
     "applicationSubCategory": "CRM",
     "operatingSystem": "Web, iOS, Android",
-    "url": "https://sirius.roilabs.com.br",
+    "url": "https://siriuscrm.com.br",
     "description": "O Assistente de Inteligência Artificial para Vendedores Brasileiros: pipeline Kanban, WhatsApp integrado, AGI que qualifica leads com BANT e MEDDIC, prospecção Google Maps e automação de follow-ups.",
     "offers": {
       "@type": "AggregateOffer",
@@ -73,7 +73,7 @@ export default function LandingPage() {
       "Modo offline para vendedores externos",
       "API pública e webhooks"
     ],
-    "screenshot": "https://sirius.roilabs.com.br/og-image.png",
+    "screenshot": "https://siriuscrm.com.br/og-image.png",
     "softwareVersion": "2.0",
     "datePublished": "2024-01-01",
     "author": {
@@ -99,7 +99,7 @@ export default function LandingPage() {
       "highPrice": "397",
       "offerCount": "4",
       "availability": "https://schema.org/InStock",
-      "url": "https://sirius.roilabs.com.br/pricing"
+      "url": "https://siriuscrm.com.br/pricing"
     },
     "aggregateRating": {
       "@type": "AggregateRating",
@@ -122,8 +122,8 @@ export default function LandingPage() {
         "reviewBody": "O WhatsApp integrado economiza horas por semana. Meu time adora a simplicidade!"
       }
     ],
-    "image": "https://sirius.roilabs.com.br/og-image.png",
-    "url": "https://sirius.roilabs.com.br"
+    "image": "https://siriuscrm.com.br/og-image.png",
+    "url": "https://siriuscrm.com.br"
   };
 
   const faqSchema = {
@@ -177,9 +177,9 @@ export default function LandingPage() {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
     "name": "ROI Labs - Sirius CRM",
-    "url": "https://sirius.roilabs.com.br",
-    "logo": "https://sirius.roilabs.com.br/logo.png",
-    "image": "https://sirius.roilabs.com.br/og-image.png",
+    "url": "https://siriuscrm.com.br",
+    "logo": "https://siriuscrm.com.br/logo.png",
+    "image": "https://siriuscrm.com.br/og-image.png",
     "description": "CRM completo com pipeline Kanban, WhatsApp integrado, IA comercial, prospecção Google Maps e automações para vendedores brasileiros",
     "telephone": "+55-62-98344-3919",
     "email": "roilabs.ia@gmail.com",

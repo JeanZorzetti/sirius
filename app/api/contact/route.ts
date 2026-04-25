@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from "next/server";
+﻿import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { sendHtmlEmail } from "@/lib/email";
 import logger from "@/lib/logger";
@@ -156,9 +156,9 @@ export async function POST(request: NextRequest) {
 
     <p style="margin: 0;">Enquanto isso, voce pode:</p>
     <ul style="margin: 10px 0 20px 0; padding-left: 20px;">
-      <li>Consultar nossa <a href="https://sirius.roilabs.com.br/help" style="color: #7c3aed;">Central de Ajuda</a></li>
-      <li>Conhecer nossos <a href="https://sirius.roilabs.com.br/pricing" style="color: #7c3aed;">Planos e Precos</a></li>
-      <li>Explorar as <a href="https://sirius.roilabs.com.br/features" style="color: #7c3aed;">Funcionalidades</a> do Sirius CRM</li>
+      <li>Consultar nossa <a href="https://siriuscrm.com.br/help" style="color: #7c3aed;">Central de Ajuda</a></li>
+      <li>Conhecer nossos <a href="https://siriuscrm.com.br/pricing" style="color: #7c3aed;">Planos e Precos</a></li>
+      <li>Explorar as <a href="https://siriuscrm.com.br/features" style="color: #7c3aed;">Funcionalidades</a> do Sirius CRM</li>
     </ul>
 
     <p style="margin: 0;">Atenciosamente,<br><strong>Equipe Sirius CRM</strong></p>
@@ -169,7 +169,7 @@ export async function POST(request: NextRequest) {
       Sirius CRM - Parte do Grupo ROI Labs
     </p>
     <p style="color: rgba(255,255,255,0.5); margin: 10px 0 0 0; font-size: 11px;">
-      <a href="https://sirius.roilabs.com.br" style="color: rgba(255,255,255,0.5);">sirius.roilabs.com.br</a>
+      <a href="https://siriuscrm.com.br" style="color: rgba(255,255,255,0.5);">siriuscrm.com.br</a>
     </p>
   </div>
 </body>

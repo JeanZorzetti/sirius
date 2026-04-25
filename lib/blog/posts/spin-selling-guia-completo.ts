@@ -1,4 +1,4 @@
-import { BlogPost } from '../../blog-types'
+﻿import { BlogPost } from '../../blog-types'
 
 export const post: BlogPost = {
   slug: 'spin-selling-guia-completo',
@@ -229,7 +229,7 @@ export const post: BlogPost = {
 <li>"Qual é o fluxo de aprovação de proposta hoje?"</li>
 <li>"Com que frequência o time atualiza informações dos deals?"</li>
 
-<strong>Link Relacionado:</strong> Quer entender melhor as etapas do funil? Leia nosso <a href="https://sirius.roilabs.com.br/blog/funil-de-vendas-guia-completo" target="_blank" rel="noopener" style="color: #2563eb;">Guia Completo do Funil de Vendas</a>.
+<strong>Link Relacionado:</strong> Quer entender melhor as etapas do funil? Leia nosso <a href="https://siriuscrm.com.br/blog/funil-de-vendas-guia-completo" target="_blank" rel="noopener" style="color: #2563eb;">Guia Completo do Funil de Vendas</a>.
 
 <hr style="margin: 3rem 0; border: none; border-top: 1px solid #e5e7eb;" />
 
@@ -616,7 +616,7 @@ a Sirius resolve especificamente [Problema 1], [Problema 2] e [Problema 3]..."
   industry="Consultoria - São Paulo"
   size="15 vendedores"
   logo="/images/cases/sirius-client-logo.png"
-  source="https://sirius.roilabs.com.br/cases/consultoria-sp"
+  source="https://siriuscrm.com.br/cases/consultoria-sp"
 >
   <strong>Resultados (4 meses):</strong>
   - ✅ Conversão: 32% → <strong>51%</strong> (+59%)<br/>
@@ -687,7 +687,7 @@ a Sirius resolve especificamente [Problema 1], [Problema 2] e [Problema 3]..."
   2. <strong>Crie seu banco de 40 perguntas</strong> (30 min)<br/>
   3. <strong>Faça 1 role-play</strong> com colega (30 min)<br/>
   4. <strong>Aplique na próxima discovery</strong> (essa semana)<br/>
-  5. <strong><a href="https://sirius.roilabs.com.br/register?trial=spin-selling" target="_blank" rel="noopener" style="color: #2563eb; text-decoration: underline;">Teste Sirius CRM 14 dias grátis</a></strong> (opcional)<br/>
+  5. <strong><a href="https://siriuscrm.com.br/register?trial=spin-selling" target="_blank" rel="noopener" style="color: #2563eb; text-decoration: underline;">Teste Sirius CRM 14 dias grátis</a></strong> (opcional)<br/>
 </FinalCTASteps>
 
 <hr style="margin: 3rem 0; border: none; border-top: 1px solid #e5e7eb;" />

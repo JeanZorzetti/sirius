@@ -1,4 +1,4 @@
-import { Metadata } from 'next'
+﻿import { Metadata } from 'next'
 import Link from 'next/link'
 import Image from 'next/image'
 import Script from 'next/script'
@@ -27,9 +27,9 @@ export function generateStaticParams() {
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ category: string }>
+  params: Promise<{ locale: string; category: string }>
 }): Promise<Metadata> {
-  const { category: categorySlug } = await params
+  const { locale, category: categorySlug } = await params
   const categoryName = getCategoryFromSlug(categorySlug)
 
   if (!categoryName) {
@@ -43,20 +43,25 @@ export async function generateMetadata({
     .map((p) => p.title)
     .join(', ')}. Dicas e estratégias para vendedores e times comerciais.`
 
+  const ptUrl = `https://siriuscrm.com.br/blog/categoria/${categorySlug}`
+  const enUrl = `https://siriuscrm.com.br/en/blog/categoria/${categorySlug}`
+  const canonicalUrl = locale === 'en' ? enUrl : ptUrl
+
   return {
     title,
     description,
     alternates: {
-      canonical: `https://sirius.roilabs.com.br/blog/categoria/${categorySlug}`,
+      canonical: canonicalUrl,
       languages: {
-        'pt-BR': `https://sirius.roilabs.com.br/blog/categoria/${categorySlug}`,
-        'x-default': `https://sirius.roilabs.com.br/blog/categoria/${categorySlug}`,
+        'pt-BR': ptUrl,
+        'en': enUrl,
+        'x-default': ptUrl,
       },
     },
     openGraph: {
       title,
       description,
-      url: `https://sirius.roilabs.com.br/blog/categoria/${categorySlug}`,
+      url: canonicalUrl,
     },
   }
 }
@@ -85,19 +90,19 @@ export default async function BlogCategoryPage({
         '@type': 'ListItem',
         position: 1,
         name: 'Início',
-        item: 'https://sirius.roilabs.com.br',
+        item: 'https://siriuscrm.com.br',
       },
       {
         '@type': 'ListItem',
         position: 2,
         name: 'Blog',
-        item: 'https://sirius.roilabs.com.br/blog',
+        item: 'https://siriuscrm.com.br/blog',
       },
       {
         '@type': 'ListItem',
         position: 3,
         name: categoryName,
-        item: `https://sirius.roilabs.com.br/blog/categoria/${categorySlug}`,
+        item: `https://siriuscrm.com.br/blog/categoria/${categorySlug}`,
       },
     ],
   }
@@ -106,15 +111,15 @@ export default async function BlogCategoryPage({
   const collectionSchema = {
     '@context': 'https://schema.org',
     '@type': 'CollectionPage',
-    '@id': `https://sirius.roilabs.com.br/blog/categoria/${categorySlug}`,
+    '@id': `https://siriuscrm.com.br/blog/categoria/${categorySlug}`,
     name: `${categoryName} — Blog Sirius CRM`,
     description: `Artigos sobre ${categoryName.toLowerCase()} para vendedores e times comerciais.`,
-    url: `https://sirius.roilabs.com.br/blog/categoria/${categorySlug}`,
+    url: `https://siriuscrm.com.br/blog/categoria/${categorySlug}`,
     hasPart: posts.map((post) => ({
       '@type': 'BlogPosting',
       headline: post.title,
       description: post.excerpt,
-      url: `https://sirius.roilabs.com.br/blog/${post.slug}`,
+      url: `https://siriuscrm.com.br/blog/${post.slug}`,
       datePublished: post.date,
       dateModified: post.lastModified || post.date,
       author: {

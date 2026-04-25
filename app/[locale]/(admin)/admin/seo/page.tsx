@@ -1,4 +1,4 @@
-import { Metadata } from 'next'
+﻿import { Metadata } from 'next'
 import { Suspense } from 'react'
 import {
   getSEOMetrics,
@@ -96,7 +96,7 @@ async function SEOContent({ searchParams }: { searchParams: { from?: string; to?
 
   try {
     // Get site URL for Core Web Vitals
-    const siteUrl = process.env.GOOGLE_SEARCH_CONSOLE_SITE_URL || 'https://sirius.roilabs.com.br/'
+    const siteUrl = process.env.GOOGLE_SEARCH_CONSOLE_SITE_URL || 'https://siriuscrm.com.br/'
 
     // Keywords to track in Google Trends (customize based on your niche)
     const trackingKeywords = ['crm', 'crm online', 'automação de vendas']

@@ -1,4 +1,4 @@
-import { Metadata } from "next";
+﻿import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import {
@@ -30,9 +30,9 @@ export const dynamicParams = false;
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ categoria: string; slug: string }>;
+  params: Promise<{ locale: string; categoria: string; slug: string }>;
 }): Promise<Metadata> {
-  const { categoria, slug } = await params;
+  const { locale, categoria, slug } = await params;
   const article = getArticle(categoria, slug);
 
   if (!article) {
@@ -41,21 +41,26 @@ export async function generateMetadata({
     };
   }
 
+  const ptUrl = `https://siriuscrm.com.br/help/${categoria}/${slug}`;
+  const enUrl = `https://siriuscrm.com.br/en/help/${categoria}/${slug}`;
+  const canonicalUrl = locale === 'en' ? enUrl : ptUrl;
+
   return {
     title: `${article.title} - Central de Ajuda | Sirius CRM`,
     description: article.description,
     keywords: [article.category, 'ajuda', 'tutorial', 'CRM', 'Sirius'],
     alternates: {
-      canonical: `https://sirius.roilabs.com.br/help/${categoria}/${slug}`,
+      canonical: canonicalUrl,
       languages: {
-        'pt-BR': `https://sirius.roilabs.com.br/help/${categoria}/${slug}`,
-        'x-default': `https://sirius.roilabs.com.br/help/${categoria}/${slug}`,
+        'pt-BR': ptUrl,
+        'en': enUrl,
+        'x-default': ptUrl,
       },
     },
     openGraph: {
       title: `${article.title} - Central de Ajuda | Sirius CRM`,
       description: article.description,
-      url: `https://sirius.roilabs.com.br/help/${categoria}/${slug}`,
+      url: canonicalUrl,
     },
     twitter: {
       card: 'summary',
@@ -82,10 +87,10 @@ export default async function ArticlePage({
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
     "itemListElement": [
-      { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://sirius.roilabs.com.br" },
-      { "@type": "ListItem", "position": 2, "name": "Ajuda", "item": "https://sirius.roilabs.com.br/help" },
-      { "@type": "ListItem", "position": 3, "name": article.category, "item": `https://sirius.roilabs.com.br/help#${article.categorySlug}` },
-      { "@type": "ListItem", "position": 4, "name": article.title, "item": `https://sirius.roilabs.com.br/help/${categoria}/${slug}` }
+      { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://siriuscrm.com.br" },
+      { "@type": "ListItem", "position": 2, "name": "Ajuda", "item": "https://siriuscrm.com.br/help" },
+      { "@type": "ListItem", "position": 3, "name": article.category, "item": `https://siriuscrm.com.br/help#${article.categorySlug}` },
+      { "@type": "ListItem", "position": 4, "name": article.title, "item": `https://siriuscrm.com.br/help/${categoria}/${slug}` }
     ]
   }
 
@@ -95,12 +100,12 @@ export default async function ArticlePage({
     "@type": "TechArticle",
     "headline": article.title,
     "description": article.description,
-    "url": `https://sirius.roilabs.com.br/help/${categoria}/${slug}`,
+    "url": `https://siriuscrm.com.br/help/${categoria}/${slug}`,
     "dateModified": article.lastUpdated,
     "author": {
       "@type": "Organization",
       "name": "Sirius CRM",
-      "url": "https://sirius.roilabs.com.br",
+      "url": "https://siriuscrm.com.br",
     },
     "publisher": {
       "@type": "Organization",
@@ -108,12 +113,12 @@ export default async function ArticlePage({
       "url": "https://roilabs.com.br",
       "logo": {
         "@type": "ImageObject",
-        "url": "https://sirius.roilabs.com.br/logo.png",
+        "url": "https://siriuscrm.com.br/logo.png",
       },
     },
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": `https://sirius.roilabs.com.br/help/${categoria}/${slug}`,
+      "@id": `https://siriuscrm.com.br/help/${categoria}/${slug}`,
     },
     "about": {
       "@type": "SoftwareApplication",

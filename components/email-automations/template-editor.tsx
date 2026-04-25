@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import { useState } from 'react'
 import { EmailAutomationType } from '@prisma/client'
@@ -81,18 +81,18 @@ export function TemplateEditor({
       '{{userName}}': 'João Silva',
       '{{userEmail}}': 'joao@exemplo.com',
       '{{organizationName}}': 'Empresa Demo',
-      '{{dashboardUrl}}': 'https://sirius.roilabs.com.br/dashboard',
+      '{{dashboardUrl}}': 'https://siriuscrm.com.br/dashboard',
       '{{dealTitle}}': 'Venda Software X',
       '{{dealValue}}': 'R$ 5.000,00',
       '{{dealStage}}': 'Negociação',
       '{{contactName}}': 'Maria Santos',
-      '{{dealUrl}}': 'https://sirius.roilabs.com.br/dashboard?deal=123',
+      '{{dealUrl}}': 'https://siriuscrm.com.br/dashboard?deal=123',
       '{{assigneeName}}': 'João Silva',
       '{{oldStage}}': 'Qualificação',
       '{{newStage}}': 'Negociação',
       '{{currentDeals}}': '8',
       '{{maxDeals}}': '10',
-      '{{upgradeUrl}}': 'https://sirius.roilabs.com.br/upgrade'
+      '{{upgradeUrl}}': 'https://siriuscrm.com.br/upgrade'
     }
 
     let preview = content
@@ -190,7 +190,7 @@ export function TemplateEditor({
                   </div>
                   <div className="flex-1">
                     <p className="font-semibold">Sirius CRM</p>
-                    <p className="text-xs text-white/80">noreply@sirius.roilabs.com.br</p>
+                    <p className="text-xs text-white/80">noreply@siriuscrm.com.br</p>
                   </div>
                 </div>
               </div>

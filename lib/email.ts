@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Email utility usando Resend.
  * ✅ FASE 14: Lazy init para não quebrar build quando RESEND_API_KEY não está definida.
  */
@@ -20,7 +20,7 @@ function getResend(): Resend {
 }
 
 export const emailConfig = {
-  from: 'Sirius CRM <noreply@sirius.roilabs.com.br>',
+  from: 'Sirius CRM <noreply@siriuscrm.com.br>',
   replyTo: 'suporte@roilabs.com.br',
 } as const
 

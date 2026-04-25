@@ -1,4 +1,4 @@
-import Link from 'next/link'
+﻿import Link from 'next/link'
 import Script from 'next/script'
 import { Badge } from '@/components/ui/badge'
 import { GitBranch, Sparkles, Bug, Zap, Shield, Users, Smartphone, Bell } from 'lucide-react'
@@ -10,7 +10,7 @@ export async function generateMetadata(
 ): Promise<Metadata> {
   const { locale } = await params
   const t = await getTranslations({ locale, namespace: 'marketing.changelog.meta' })
-  const canonical = `https://sirius.roilabs.com.br${locale === 'en' ? '/en' : ''}/changelog`
+  const canonical = `https://siriuscrm.com.br${locale === 'en' ? '/en' : ''}/changelog`
   return {
     title: t('title'),
     description: t('description'),
@@ -19,7 +19,7 @@ export async function generateMetadata(
       title: t('ogTitle'),
       description: t('ogDescription'),
       url: canonical,
-      images: [{ url: 'https://sirius.roilabs.com.br/og-image.png', width: 1200, height: 630 }],
+      images: [{ url: 'https://siriuscrm.com.br/og-image.png', width: 1200, height: 630 }],
     },
     twitter: { card: 'summary_large_image', title: t('ogTitle'), description: t('ogDescription') },
   }
@@ -56,8 +56,8 @@ export default async function ChangelogPage(
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
     "itemListElement": [
-      { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://sirius.roilabs.com.br" },
-      { "@type": "ListItem", "position": 2, "name": "Changelog", "item": "https://sirius.roilabs.com.br/changelog" },
+      { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://siriuscrm.com.br" },
+      { "@type": "ListItem", "position": 2, "name": "Changelog", "item": "https://siriuscrm.com.br/changelog" },
     ]
   }
 
@@ -69,7 +69,7 @@ export default async function ChangelogPage(
     "operatingSystem": "Web, iOS, Android",
     "softwareVersion": "1.4.0",
     "datePublished": "2026-01-09",
-    "releaseNotes": "https://sirius.roilabs.com.br/changelog",
+    "releaseNotes": "https://siriuscrm.com.br/changelog",
     "offers": { "@type": "Offer", "price": "0", "priceCurrency": "BRL" },
     "provider": { "@type": "Organization", "name": "ROI Labs", "url": "https://roilabs.com.br", "telephone": "+55-62-98344-3919", "email": "roilabs.ia@gmail.com" }
   }

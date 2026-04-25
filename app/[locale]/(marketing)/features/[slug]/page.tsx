@@ -1,4 +1,4 @@
-import { getTranslations } from 'next-intl/server'
+﻿import { getTranslations } from 'next-intl/server'
 import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 import Link from 'next/link'
@@ -41,11 +41,11 @@ export async function generateMetadata({
   return {
     title: `${name} | Sirius CRM`,
     description,
-    alternates: { canonical: `https://sirius.roilabs.com.br/features/${slug}` },
+    alternates: { canonical: `https://siriuscrm.com.br/features/${slug}` },
     openGraph: {
       title: `${name} — Sirius CRM`,
       description,
-      url: `https://sirius.roilabs.com.br/features/${slug}`,
+      url: `https://siriuscrm.com.br/features/${slug}`,
     },
   }
 }
@@ -170,9 +170,9 @@ export default async function FeatureDetailPage({
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
     itemListElement: [
-      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://sirius.roilabs.com.br' },
-      { '@type': 'ListItem', position: 2, name: 'Funcionalidades', item: 'https://sirius.roilabs.com.br/features' },
-      { '@type': 'ListItem', position: 3, name, item: `https://sirius.roilabs.com.br/features/${slug}` },
+      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://siriuscrm.com.br' },
+      { '@type': 'ListItem', position: 2, name: 'Funcionalidades', item: 'https://siriuscrm.com.br/features' },
+      { '@type': 'ListItem', position: 3, name, item: `https://siriuscrm.com.br/features/${slug}` },
     ],
   }
 

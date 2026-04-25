@@ -1,4 +1,4 @@
-import { Metadata } from 'next'
+﻿import { Metadata } from 'next'
 import { CalculadoraROI } from '@/components/calculadora-roi'
 import { Sparkles, TrendingUp, Users, CheckCircle2 } from 'lucide-react'
 
@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Calculadora de ROI para Agências | Quanto você perde por desorganização?',
     description: 'Calcule o impacto real de propostas perdidas e follow-ups esquecidos no faturamento da sua agência.',
-    url: 'https://sirius.roilabs.com.br/ferramentas/calculadora-roi-agencias',
+    url: 'https://siriuscrm.com.br/ferramentas/calculadora-roi-agencias',
     siteName: 'Sirius CRM',
     locale: 'pt_BR',
     type: 'website',

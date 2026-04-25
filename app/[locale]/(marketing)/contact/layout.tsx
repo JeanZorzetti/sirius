@@ -1,4 +1,4 @@
-import { getTranslations } from 'next-intl/server'
+﻿import { getTranslations } from 'next-intl/server'
 import type { Metadata } from 'next'
 
 export async function generateMetadata(
@@ -6,7 +6,7 @@ export async function generateMetadata(
 ): Promise<Metadata> {
   const { locale } = await params
   const t = await getTranslations({ locale, namespace: 'marketing.contact.meta' })
-  const canonical = `https://sirius.roilabs.com.br${locale === 'en' ? '/en' : ''}/contact`
+  const canonical = `https://siriuscrm.com.br${locale === 'en' ? '/en' : ''}/contact`
   return {
     title: t('title'),
     description: t('description'),
