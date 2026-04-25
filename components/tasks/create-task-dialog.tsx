@@ -392,73 +392,103 @@ export function CreateTaskDialog({
 
               {checklists.length > 0 && (
                 <div className="space-y-3">
-                  {checklists.map((cl) => (
-                    <div key={cl.id} className="rounded-lg border border-border/40 bg-muted/30 p-3">
-                      <div className="flex items-center justify-between gap-2">
-                        <span className="text-xs font-semibold">{cl.title}</span>
-                        <button
-                          type="button"
-                          onClick={() => removeChecklist(cl.id)}
-                          className="rounded p-1 text-muted-foreground hover:bg-destructive/10 hover:text-destructive"
-                        >
-                          <Trash2 className="h-3 w-3" />
-                        </button>
-                      </div>
-
-                      {cl.items.length > 0 && (
-                        <ul className="mt-2 space-y-1.5">
-                          {cl.items.map((item) => (
-                            <li key={item.id} className="group flex items-center gap-2">
-                              <Checkbox
-                                checked={item.completed}
-                                onCheckedChange={() => toggleChecklistItem(cl.id, item.id)}
-                                className="h-3.5 w-3.5"
-                              />
-                              <span
-                                className={cn(
-                                  'flex-1 text-xs',
-                                  item.completed ? 'text-muted-foreground line-through' : 'text-foreground'
-                                )}
-                              >
-                                {item.title}
+                  {checklists.map((cl) => {
+                    const done = cl.items.filter((i) => i.completed).length
+                    const total = cl.items.length
+                    const pct = total === 0 ? 0 : Math.round((done / total) * 100)
+                    const allDone = total > 0 && done === total
+                    return (
+                      <div key={cl.id} className="rounded-lg border border-border/40 bg-muted/30 p-3">
+                        <div className="flex items-center justify-between gap-2">
+                          <span className={cn('text-xs font-semibold transition-colors', allDone && 'text-emerald-500')}>
+                            {cl.title}
+                          </span>
+                          <div className="flex items-center gap-2">
+                            {total > 0 && (
+                              <span className="text-[10px] font-medium tabular-nums text-muted-foreground">
+                                {done}/{total}
                               </span>
-                              <button
-                                type="button"
-                                onClick={() => removeChecklistItem(cl.id, item.id)}
-                                className="rounded p-0.5 text-muted-foreground opacity-0 hover:text-destructive group-hover:opacity-100"
-                              >
-                                <X className="h-3 w-3" />
-                              </button>
-                            </li>
-                          ))}
-                        </ul>
-                      )}
+                            )}
+                            <button
+                              type="button"
+                              onClick={() => removeChecklist(cl.id)}
+                              className="rounded p-1 text-muted-foreground hover:bg-destructive/10 hover:text-destructive"
+                            >
+                              <Trash2 className="h-3 w-3" />
+                            </button>
+                          </div>
+                        </div>
 
-                      <div className="mt-2 flex items-center gap-1">
-                        <Input
-                          value={newItemTitles[cl.id] || ''}
-                          onChange={(e) =>
-                            setNewItemTitles((prev) => ({ ...prev, [cl.id]: e.target.value }))
-                          }
-                          onKeyDown={(e) => {
-                            if (e.key === 'Enter') { e.preventDefault(); addChecklistItem(cl.id) }
-                          }}
-                          placeholder="Adicionar item..."
-                          className="h-7 text-xs"
-                        />
-                        <Button
-                          type="button"
-                          size="sm"
-                          variant="ghost"
-                          className="h-7 w-7 shrink-0 p-0"
-                          onClick={() => addChecklistItem(cl.id)}
-                          disabled={!(newItemTitles[cl.id] || '').trim()}
-                        >
-                          <Plus className="h-3 w-3" />
-                        </Button>
+                        {total > 0 && (
+                          <div className="mt-2 h-1 overflow-hidden rounded-full bg-muted">
+                            <div
+                              className={cn(
+                                'h-full transition-all duration-300',
+                                allDone ? 'bg-emerald-500' : 'bg-primary'
+                              )}
+                              style={{ width: `${pct}%` }}
+                            />
+                          </div>
+                        )}
+
+                        {cl.items.length > 0 && (
+                          <ul className="mt-2.5 space-y-1.5">
+                            {cl.items.map((item) => (
+                              <li key={item.id} className="group flex items-center gap-2">
+                                <Checkbox
+                                  checked={item.completed}
+                                  onCheckedChange={() => toggleChecklistItem(cl.id, item.id)}
+                                  className={cn(
+                                    'h-3.5 w-3.5 transition-colors',
+                                    item.completed && 'border-emerald-500 data-[state=checked]:bg-emerald-500'
+                                  )}
+                                />
+                                <span
+                                  className={cn(
+                                    'flex-1 text-xs transition-colors',
+                                    item.completed ? 'text-muted-foreground line-through' : 'text-foreground'
+                                  )}
+                                >
+                                  {item.title}
+                                </span>
+                                <button
+                                  type="button"
+                                  onClick={() => removeChecklistItem(cl.id, item.id)}
+                                  className="rounded p-0.5 text-muted-foreground opacity-0 hover:text-destructive group-hover:opacity-100"
+                                >
+                                  <X className="h-3 w-3" />
+                                </button>
+                              </li>
+                            ))}
+                          </ul>
+                        )}
+
+                        <div className="mt-2 flex items-center gap-1">
+                          <Input
+                            value={newItemTitles[cl.id] || ''}
+                            onChange={(e) =>
+                              setNewItemTitles((prev) => ({ ...prev, [cl.id]: e.target.value }))
+                            }
+                            onKeyDown={(e) => {
+                              if (e.key === 'Enter') { e.preventDefault(); addChecklistItem(cl.id) }
+                            }}
+                            placeholder="Adicionar item..."
+                            className="h-7 text-xs"
+                          />
+                          <Button
+                            type="button"
+                            size="sm"
+                            variant="ghost"
+                            className="h-7 w-7 shrink-0 p-0"
+                            onClick={() => addChecklistItem(cl.id)}
+                            disabled={!(newItemTitles[cl.id] || '').trim()}
+                          >
+                            <Plus className="h-3 w-3" />
+                          </Button>
+                        </div>
                       </div>
-                    </div>
-                  ))}
+                    )
+                  })}
                 </div>
               )}
             </div>
