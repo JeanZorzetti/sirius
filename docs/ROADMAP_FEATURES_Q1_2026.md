@@ -1,4 +1,4 @@
-# Roadmap de Features — Sirius CRM Q1 2026
+﻿# Roadmap de Features — Sirius CRM Q1 2026
 
 > Gerado em: 11/02/2026
 > Foco: Completar features 80% prontas + Diferenciais competitivos
@@ -172,7 +172,7 @@ export async function sendEmail({
   react: React.ReactElement
 }) {
   return await resend.emails.send({
-    from: 'Sirius CRM <noreply@sirius.roilabs.com.br>',
+    from: 'Sirius CRM <noreply@siriuscrm.com.br>',
     to,
     subject,
     react
@@ -798,7 +798,7 @@ const config: CapacitorConfig = {
   appName: 'Sirius CRM',
   webDir: 'out', // Next.js static export
   server: {
-    url: 'https://sirius.roilabs.com.br',
+    url: 'https://siriuscrm.com.br',
     cleartext: true
   }
 }

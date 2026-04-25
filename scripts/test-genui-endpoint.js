@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Script de Teste - Generative UI Endpoint
  *
  * Testa o endpoint /api/agi/chat-with-ui em produção ou local
@@ -7,7 +7,7 @@
  *   node scripts/test-genui-endpoint.js
  */
 
-const BASE_URL = process.env.TEST_URL || 'https://sirius.roilabs.com.br'
+const BASE_URL = process.env.TEST_URL || 'https://siriuscrm.com.br'
 const SESSION_COOKIE = process.env.SESSION_COOKIE || '' // Pegar do browser
 
 async function testChatWithUI() {

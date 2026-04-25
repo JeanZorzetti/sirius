@@ -1,4 +1,4 @@
-# 🚀 Setup: SEO & Email Marketing
+﻿# 🚀 Setup: SEO & Email Marketing
 
 ## 📋 Páginas Criadas
 
@@ -48,7 +48,7 @@ COMMERCIAL_TEAM_EMAIL=comercial@roilabs.com.br
 ### 📧 Setup do Resend
 
 1. Crie conta em [resend.com](https://resend.com)
-2. Adicione o domínio `sirius.roilabs.com.br`
+2. Adicione o domínio `siriuscrm.com.br`
 3. Configure DNS records (SPF, DKIM, DMARC)
 4. Crie uma Audience para os leads
 5. Copie a API Key e Audience ID para o `.env`
@@ -213,10 +213,10 @@ export function trackCalculatorLead(data: {
 
 ## 🔗 URLs das Páginas
 
-### Produção (sirius.roilabs.com.br):
-- https://sirius.roilabs.com.br/ferramentas/calculadora-roi-corretores
-- https://sirius.roilabs.com.br/ferramentas/calculadora-roi-energia-solar
-- https://sirius.roilabs.com.br/ferramentas/calculadora-roi-agencias
+### Produção (siriuscrm.com.br):
+- https://siriuscrm.com.br/ferramentas/calculadora-roi-corretores
+- https://siriuscrm.com.br/ferramentas/calculadora-roi-energia-solar
+- https://siriuscrm.com.br/ferramentas/calculadora-roi-agencias
 
 ### Desenvolvimento (localhost:3000):
 - http://localhost:3000/ferramentas/calculadora-roi-corretores

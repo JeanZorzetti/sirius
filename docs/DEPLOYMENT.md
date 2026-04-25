@@ -1,4 +1,4 @@
-# 🚀 Deployment - Sirius CRM
+﻿# 🚀 Deployment - Sirius CRM
 
 ## Visão Geral
 
@@ -79,7 +79,7 @@ STRIPE_PRO_PRICE_ID="price_..."
 
 # Resend (Email)
 RESEND_API_KEY="re_..."
-RESEND_FROM_EMAIL="noreply@sirius.roilabs.com.br"
+RESEND_FROM_EMAIL="noreply@siriuscrm.com.br"
 
 # Sentry (Monitoring)
 SENTRY_DSN="https://...@sentry.io/..."
@@ -122,7 +122,7 @@ NEXTAUTH_URL="http://localhost:3000"
 
 **Production:**
 ```
-NEXTAUTH_URL="https://sirius.roilabs.com.br"
+NEXTAUTH_URL="https://siriuscrm.com.br"
 ```
 
 #### **NEXTAUTH_SECRET**
@@ -203,7 +203,7 @@ RESEND_API_KEY="re_..."
 Email remetente (deve estar verificado no Resend).
 
 ```
-RESEND_FROM_EMAIL="noreply@sirius.roilabs.com.br"
+RESEND_FROM_EMAIL="noreply@siriuscrm.com.br"
 ```
 
 **Setup de domínio:**
@@ -341,7 +341,7 @@ Clique em "Deploy" e aguarde.
 Settings → Domains → Add Domain
 ```
 
-1. Adicione `sirius.roilabs.com.br`
+1. Adicione `siriuscrm.com.br`
 2. Configure DNS:
    - **A Record:** `76.76.21.21` (Vercel IP)
    - **CNAME:** `cname.vercel-dns.com`
@@ -537,7 +537,7 @@ npx prisma studio
 
 ```bash
 # Health check
-curl https://sirius.roilabs.com.br/api/health
+curl https://siriuscrm.com.br/api/health
 
 # Auth flow
 1. Registrar novo usuário

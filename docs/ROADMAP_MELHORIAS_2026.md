@@ -1,4 +1,4 @@
-# Roadmap de Melhorias — Sirius CRM 2026
+﻿# Roadmap de Melhorias — Sirius CRM 2026
 
 > Gerado em: 10/02/2026
 > Baseado em: Análise completa de codebase (performance, segurança, UX, SEO, código)
@@ -902,7 +902,7 @@ FASE 12 — Testes (meta 40%)          [~] Q1 iniciado (137 testes)  [x] Middlew
 
 ### Ambiente
 - Framework: Next.js 16.1.1 (App Router)
-- Deploy: Vercel → `sirius.roilabs.com.br`
+- Deploy: Vercel → `siriuscrm.com.br`
 - DB: PostgreSQL via Prisma (51 models, 1568 linhas de schema)
 - Auth: next-auth v4 + JWT cookie customizado
 - Monitoramento: Sentry + Vercel Analytics + PostHog + Clarity

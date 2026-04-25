@@ -1,4 +1,4 @@
-# Validação da Stack Técnica - Seção 8
+﻿# Validação da Stack Técnica - Seção 8
 
 **Status**: ✅ **100% Implementado e Validado**
 
@@ -116,7 +116,7 @@ import { MetadataRoute } from 'next'
 export default function robots(): MetadataRoute.Robots {
   return {
     rules: [ /* ... */ ],
-    sitemap: 'https://sirius.roilabs.com.br/sitemap.xml',
+    sitemap: 'https://siriuscrm.com.br/sitemap.xml',
   }
 }
 ```

@@ -1,58 +1,97 @@
 'use client'
 
-/**
- * Inicializa recursos nativos quando o app carrega
- * Deve ser incluído no layout principal do dashboard
- * - Registra push notifications
- * - Configura listener de online/offline para sync
- * - Verifica leads próximos em horário comercial (Sprint 4.3)
- */
+import { useEffect, useRef } from 'react'
+import { useRouter } from 'next/navigation'
+import { useTheme } from 'next-themes'
 
-import { useEffect } from 'react'
-
-/** Horário comercial: 8h–19h de segunda a sexta. */
 function isBusinessHours(): boolean {
   const now = new Date()
   const hour = now.getHours()
-  const day = now.getDay() // 0=Dom, 6=Sab
+  const day = now.getDay()
   return day >= 1 && day <= 5 && hour >= 8 && hour < 19
 }
 
 export function NativeInitializer() {
+  const router = useRouter()
+  const { resolvedTheme } = useTheme()
+  const lastBackgroundedAt = useRef<number | null>(null)
+
+  // Sync status bar with theme
+  useEffect(() => {
+    if (!resolvedTheme) return
+    import('@/lib/mobile/status-bar').then(({ configureStatusBar }) => {
+      configureStatusBar(resolvedTheme === 'dark' ? 'dark' : 'light')
+    })
+  }, [resolvedTheme])
+
   useEffect(() => {
     async function init() {
+      // Register push notifications
       try {
-        // Registrar push notifications
         const { registerPushNotifications } = await import('@/lib/mobile/push')
         await registerPushNotifications()
-      } catch {
-        // Silently ignore - non-critical
-      }
+      } catch {}
 
-      // Listener de online: sincroniza fila offline
+      // Setup deep links
+      try {
+        const { setupDeepLinks } = await import('@/lib/mobile/deep-links')
+        await setupDeepLinks(router)
+      } catch {}
+
+      // Keyboard listeners — adjust scroll when keyboard appears
+      try {
+        const { setupKeyboardListeners } = await import('@/lib/mobile/keyboard')
+        await setupKeyboardListeners(
+          ({ keyboardHeight }) => {
+            document.documentElement.style.setProperty('--keyboard-height', `${keyboardHeight}px`)
+          },
+          () => {
+            document.documentElement.style.setProperty('--keyboard-height', '0px')
+          }
+        )
+      } catch {}
+
+      // App state listener — auto-lock on background
+      try {
+        const { Capacitor } = await import('@capacitor/core')
+        if (Capacitor.isNativePlatform()) {
+          const { App } = await import('@capacitor/app')
+          App.addListener('appStateChange', ({ isActive }) => {
+            if (!isActive) {
+              lastBackgroundedAt.current = Date.now()
+            } else if (lastBackgroundedAt.current) {
+              const elapsed = Date.now() - lastBackgroundedAt.current
+              const biometricEnabled = localStorage.getItem('biometricEnabled') === 'true'
+              const lockTimeout = Number(localStorage.getItem('lockTimeout') || '300000') // 5 min default
+              if (elapsed > lockTimeout && biometricEnabled) {
+                router.push('/auth/biometric-unlock')
+              }
+              lastBackgroundedAt.current = null
+            }
+          })
+        }
+      } catch {}
+
+      // Online: sync offline queue
       const handleOnline = async () => {
         try {
           const { syncOfflineQueue } = await import('@/lib/mobile/offline')
           const { synced, failed } = await syncOfflineQueue()
           if (synced > 0) {
-            console.log(`[Offline sync] ${synced} ações sincronizadas${failed > 0 ? `, ${failed} falharam` : ''}`)
+            console.log(`[Offline sync] ${synced} synced${failed > 0 ? `, ${failed} failed` : ''}`)
           }
-        } catch {
-          // Silently ignore
-        }
+        } catch {}
       }
 
       window.addEventListener('online', handleOnline)
 
-      // Sugestão proativa de leads próximos — apenas em horário comercial,
-      // uma vez por sessão, quando GPS está disponível.
+      // Nearby leads prompt — once per session during business hours
       if (
         isBusinessHours() &&
         !sessionStorage.getItem('nearby_prompted') &&
         'geolocation' in navigator
       ) {
         sessionStorage.setItem('nearby_prompted', '1')
-        // Aguarda 30s para não competir com o carregamento inicial
         setTimeout(async () => {
           try {
             const { getNearbyLeads } = await import('@/lib/mobile/checkin')
@@ -65,9 +104,7 @@ export function NativeInitializer() {
                 data: { url: '/dashboard/nearby' },
               })
             }
-          } catch {
-            // Silently ignore - non-critical
-          }
+          } catch {}
         }, 30_000)
       }
 
@@ -75,7 +112,7 @@ export function NativeInitializer() {
     }
 
     init()
-  }, [])
+  }, [router])
 
   return null
 }

@@ -1,16 +1,16 @@
-# Sirius CRM Dual: SaaS + AgaaS na mesma base
+﻿# Sirius CRM Dual: SaaS + AgaaS na mesma base
 
 ## Context
 
-**Visão:** O Sirius CRM ganha uma segunda face — `sirius.roilabs.com.br/IA` — que funciona como um produto separado visualmente, mas compartilha a mesma base (auth, banco, API, Prisma). O `/dashboard` atual permanece intocado para clientes que preferem operar manualmente. O `/IA` é a experiência AgaaS: futurista, clean, elegante, onde agentes autônomos operam o CRM e o humano supervisiona.
+**Visão:** O Sirius CRM ganha uma segunda face — `siriuscrm.com.br/IA` — que funciona como um produto separado visualmente, mas compartilha a mesma base (auth, banco, API, Prisma). O `/dashboard` atual permanece intocado para clientes que preferem operar manualmente. O `/IA` é a experiência AgaaS: futurista, clean, elegante, onde agentes autônomos operam o CRM e o humano supervisiona.
 
 **Inspiração:** Jensen Huang (GTC 2026) — "toda empresa SaaS se tornará AgaaS". O software não morre; quem opera são agentes. O humano vira supervisor.
 
 **Arquitetura:** Mesmo codebase Next.js, route group `(ia)` com layout/design próprio. Sofia IA como cérebro orquestrador externo chamando Sirius via API.
 
 ```
-sirius.roilabs.com.br/dashboard   →  CRM tradicional (como é hoje)
-sirius.roilabs.com.br/IA          →  CRM agêntico (nova face)
+siriuscrm.com.br/dashboard   →  CRM tradicional (como é hoje)
+siriuscrm.com.br/IA          →  CRM agêntico (nova face)
 ```
 
 ---
@@ -346,7 +346,7 @@ Cada tool é uma função que chama a API v1 do Sirius com Bearer token:
 // src/lib/tools/sirius-tools.ts (Sofia)
 import { z } from 'zod'
 
-const SIRIUS_API_URL = process.env.SIRIUS_API_URL // https://sirius.roilabs.com.br
+const SIRIUS_API_URL = process.env.SIRIUS_API_URL // https://siriuscrm.com.br
 const SIRIUS_API_KEY = process.env.SIRIUS_API_KEY // API key da organização
 
 async function siriusRequest(method: string, path: string, body?: any) {
@@ -491,7 +491,7 @@ export async function POST(request: Request) {
 
 ```env
 # API do Sirius para tools
-SIRIUS_API_URL=https://sirius.roilabs.com.br
+SIRIUS_API_URL=https://siriuscrm.com.br
 SIRIUS_API_KEY=<API key gerada no dashboard Sirius por organização>
 
 # Webhook verification

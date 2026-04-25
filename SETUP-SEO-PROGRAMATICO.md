@@ -1,4 +1,4 @@
-# 🚀 Setup: SEO Programático com Páginas Dinâmicas
+﻿# 🚀 Setup: SEO Programático com Páginas Dinâmicas
 
 ## 📋 Visão Geral
 
@@ -168,7 +168,7 @@ Cada página gera automaticamente:
 <!-- Open Graph para compartilhamento -->
 <meta property="og:title" content="...">
 <meta property="og:description" content="...">
-<meta property="og:url" content="https://sirius.roilabs.com.br/solucoes/corretores-de-imoveis">
+<meta property="og:url" content="https://siriuscrm.com.br/solucoes/corretores-de-imoveis">
 ```
 
 ## 📊 Estrutura de Cada Página
@@ -399,12 +399,12 @@ Cada nicho tem um ícone único:
 
 ## 🔗 URLs Geradas
 
-### Produção (sirius.roilabs.com.br):
-- https://sirius.roilabs.com.br/solucoes/corretores-de-imoveis
-- https://sirius.roilabs.com.br/solucoes/energia-solar
-- https://sirius.roilabs.com.br/solucoes/agencias-de-marketing
-- https://sirius.roilabs.com.br/solucoes/consultores-empresariais
-- https://sirius.roilabs.com.br/solucoes/representantes-comerciais
+### Produção (siriuscrm.com.br):
+- https://siriuscrm.com.br/solucoes/corretores-de-imoveis
+- https://siriuscrm.com.br/solucoes/energia-solar
+- https://siriuscrm.com.br/solucoes/agencias-de-marketing
+- https://siriuscrm.com.br/solucoes/consultores-empresariais
+- https://siriuscrm.com.br/solucoes/representantes-comerciais
 
 ### Desenvolvimento (localhost:3000):
 - http://localhost:3000/solucoes/corretores-de-imoveis

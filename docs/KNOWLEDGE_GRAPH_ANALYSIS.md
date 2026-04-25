@@ -1,4 +1,4 @@
-# Análise: Paradigma do Grafo de Conhecimento - Capítulo 1
+﻿# Análise: Paradigma do Grafo de Conhecimento - Capítulo 1
 
 **Objetivo**: Construir Autoridade Tópica Densa através de expansão automatizada do Knowledge Graph
 
@@ -62,7 +62,7 @@ COMMON_WIKIDATA_ENTITIES.SALES = 'Q184753'
 | ❌ Literal de String | Não usado | N/A |
 | ❌ UUID Interno | Não usado | N/A |
 | ✅ Wikidata Q-Code | **SIM** | `COMMON_WIKIDATA_ENTITIES.CRM = 'Q16635046'` |
-| ❌ Híbrido (URI Semântica) | Não implementado | Não temos URIs proprietárias tipo `https://sirius.roilabs.com.br/id/crm` |
+| ❌ Híbrido (URI Semântica) | Não implementado | Não temos URIs proprietárias tipo `https://siriuscrm.com.br/id/crm` |
 
 **Conclusão**: Estamos usando a estratégia correta (Wikidata Q-Codes), mas sem o nível híbrido que permitiria controle proprietário + linking global.
 

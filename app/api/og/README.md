@@ -1,4 +1,4 @@
-# Dynamic Open Graph Image Generation
+﻿# Dynamic Open Graph Image Generation
 
 Geração dinâmica de imagens OG usando Satori (Edge Runtime).
 
@@ -20,17 +20,17 @@ GET /api/og
 
 ### 1. Imagem Default (Cenário Realista)
 ```
-https://sirius.roilabs.com.br/api/og
+https://siriuscrm.com.br/api/og
 ```
 
 ### 2. Cenário Pessimista (R$ 50.000)
 ```
-https://sirius.roilabs.com.br/api/og?roi=50000&scenario=pessimista
+https://siriuscrm.com.br/api/og?roi=50000&scenario=pessimista
 ```
 
 ### 3. Cenário Otimista com Título Customizado
 ```
-https://sirius.roilabs.com.br/api/og?roi=120000&scenario=otimista&title=ROI+de+CRM+em+60+Dias
+https://siriuscrm.com.br/api/og?roi=120000&scenario=otimista&title=ROI+de+CRM+em+60+Dias
 ```
 
 ### 4. Uso no Metadata do Blog
@@ -40,7 +40,7 @@ const ogParams = new URLSearchParams({
   title: post.title,
   scenario: 'realista',
 })
-const imageUrl = `https://sirius.roilabs.com.br/api/og?${ogParams.toString()}`
+const imageUrl = `https://siriuscrm.com.br/api/og?${ogParams.toString()}`
 ```
 
 ## Personalização por Usuário

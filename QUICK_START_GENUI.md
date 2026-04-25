@@ -1,4 +1,4 @@
-# 🚀 Quick Start - Generative UI
+﻿# 🚀 Quick Start - Generative UI
 
 ## ✅ O que você já tem:
 
@@ -19,7 +19,7 @@ http://localhost:3000/dashboard/agi-genui
 
 **Produção:**
 ```
-https://sirius.roilabs.com.br/dashboard/agi-genui
+https://siriuscrm.com.br/dashboard/agi-genui
 ```
 
 ### Opção 2: Adicionar ao Menu do Dashboard
@@ -110,13 +110,13 @@ No painel da Vercel (ou seu host):
 GROQ_API_KEY=gsk_...
 DATABASE_URL=postgresql://...
 NEXTAUTH_SECRET=...
-NEXTAUTH_URL=https://sirius.roilabs.com.br
+NEXTAUTH_URL=https://siriuscrm.com.br
 ```
 
 ### 3. Acessar
 
 ```
-https://sirius.roilabs.com.br/dashboard/agi-genui
+https://siriuscrm.com.br/dashboard/agi-genui
 ```
 
 ---
@@ -132,14 +132,14 @@ cd scripts
 # 2. Rodar teste
 
 SESSION_COOKIE="next-auth.session-token=SEU_TOKEN" \
-TEST_URL="https://sirius.roilabs.com.br" \
+TEST_URL="https://siriuscrm.com.br" \
 node test-genui-endpoint.js
 ```
 
 ### Via cURL
 
 ```bash
-curl -X POST https://sirius.roilabs.com.br/api/agi/chat-with-ui \
+curl -X POST https://siriuscrm.com.br/api/agi/chat-with-ui \
   -H "Content-Type: application/json" \
   -H "Cookie: next-auth.session-token=SEU_TOKEN_AQUI" \
   -d '{

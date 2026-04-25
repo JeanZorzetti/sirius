@@ -1,4 +1,4 @@
-# IndexNow Submission History
+﻿# IndexNow Submission History
 
 This file tracks all manual submissions to IndexNow for historical reference.
 
@@ -9,35 +9,35 @@ This file tracks all manual submissions to IndexNow for historical reference.
 **Status:** ✅ 202 Accepted
 **URLs:** 5
 
-- https://sirius.roilabs.com.br/
-- https://sirius.roilabs.com.br/features
-- https://sirius.roilabs.com.br/pricing
-- https://sirius.roilabs.com.br/blog
-- https://sirius.roilabs.com.br/about
+- https://siriuscrm.com.br/
+- https://siriuscrm.com.br/features
+- https://siriuscrm.com.br/pricing
+- https://siriuscrm.com.br/blog
+- https://siriuscrm.com.br/about
 
 ### Additional Pages (Batch 2)
 **Date:** 2026-01-11 14:46 UTC
 **Status:** ✅ 200 OK
 **URLs:** 7
 
-- https://sirius.roilabs.com.br/help
-- https://sirius.roilabs.com.br/privacy
-- https://sirius.roilabs.com.br/terms
-- https://sirius.roilabs.com.br/changelog
-- https://sirius.roilabs.com.br/community
-- https://sirius.roilabs.com.br/login
-- https://sirius.roilabs.com.br/register
+- https://siriuscrm.com.br/help
+- https://siriuscrm.com.br/privacy
+- https://siriuscrm.com.br/terms
+- https://siriuscrm.com.br/changelog
+- https://siriuscrm.com.br/community
+- https://siriuscrm.com.br/login
+- https://siriuscrm.com.br/register
 
 ### All Blog Posts (Batch 3)
 **Date:** 2026-01-11 14:47 UTC
 **Status:** ✅ 200 OK
 **URLs:** 5
 
-- https://sirius.roilabs.com.br/blog/como-organizar-pipeline-vendas
-- https://sirius.roilabs.com.br/blog/crm-simples-vs-complexo
-- https://sirius.roilabs.com.br/blog/poder-do-follow-up
-- https://sirius.roilabs.com.br/blog/funil-de-vendas-guia-completo
-- https://sirius.roilabs.com.br/blog/spin-selling-guia-completo
+- https://siriuscrm.com.br/blog/como-organizar-pipeline-vendas
+- https://siriuscrm.com.br/blog/crm-simples-vs-complexo
+- https://siriuscrm.com.br/blog/poder-do-follow-up
+- https://siriuscrm.com.br/blog/funil-de-vendas-guia-completo
+- https://siriuscrm.com.br/blog/spin-selling-guia-completo
 
 ## Summary
 
@@ -63,9 +63,9 @@ This file tracks all manual submissions to IndexNow for historical reference.
 
 2. **Test Search Visibility:**
    ```
-   site:sirius.roilabs.com.br
-   site:sirius.roilabs.com.br spin selling
-   site:sirius.roilabs.com.br features
+   site:siriuscrm.com.br
+   site:siriuscrm.com.br spin selling
+   site:siriuscrm.com.br features
    ```
 
 3. **Setup Automated Submissions:**

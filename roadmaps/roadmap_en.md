@@ -1,4 +1,4 @@
-# 🌐 Roadmap: English Version (`/en`) — Sirius CRM
+﻿# 🌐 Roadmap: English Version (`/en`) — Sirius CRM
 
 > **Goal:** Introduce a fully functional `/en` prefix route for the English version of the entire Sirius CRM project — marketing site, dashboard, blog, API responses, emails, and SEO assets.
 
@@ -680,9 +680,9 @@ model User {
 ```tsx
 alternates: {
   languages: {
-    'pt-BR': 'https://sirius.roilabs.com.br',
-    'en': 'https://sirius.roilabs.com.br/en',
-    'x-default': 'https://sirius.roilabs.com.br',
+    'pt-BR': 'https://siriuscrm.com.br',
+    'en': 'https://siriuscrm.com.br/en',
+    'x-default': 'https://siriuscrm.com.br',
   },
 }
 ```
@@ -694,11 +694,11 @@ alternates: {
 
 ```ts
 {
-  url: 'https://sirius.roilabs.com.br/pricing',
+  url: 'https://siriuscrm.com.br/pricing',
   alternates: {
     languages: {
-      'pt-BR': 'https://sirius.roilabs.com.br/pricing',
-      'en': 'https://sirius.roilabs.com.br/en/pricing',
+      'pt-BR': 'https://siriuscrm.com.br/pricing',
+      'en': 'https://siriuscrm.com.br/en/pricing',
     }
   }
 }

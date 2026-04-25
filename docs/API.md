@@ -1,4 +1,4 @@
-# 📡 API Reference - Sirius CRM
+﻿# 📡 API Reference - Sirius CRM
 
 ## Status da API
 
@@ -30,7 +30,7 @@ Esta documentação prepara a estrutura para a **API REST pública** que será l
 ### Base URL
 
 ```
-Production: https://sirius.roilabs.com.br/api/v1
+Production: https://siriuscrm.com.br/api/v1
 Development: http://localhost:3000/api/v1
 ```
 
@@ -671,7 +671,7 @@ contacts = client.contacts.list(page=1, limit=20)
 ### Ambiente de Teste
 
 ```
-Sandbox URL: https://sandbox.sirius.roilabs.com.br/api/v1
+Sandbox URL: https://sandbox.siriuscrm.com.br/api/v1
 ```
 
 **Características:**
@@ -734,9 +734,9 @@ test('deve criar deal com sucesso', async () => {
 
 ## 🆘 Suporte
 
-- **Documentação:** [docs.sirius.roilabs.com.br](https://docs.sirius.roilabs.com.br)
+- **Documentação:** [docs.siriuscrm.com.br](https://docs.siriuscrm.com.br)
 - **Email:** api@roilabs.com.br
-- **Status Page:** [status.sirius.roilabs.com.br](https://status.sirius.roilabs.com.br)
+- **Status Page:** [status.siriuscrm.com.br](https://status.siriuscrm.com.br)
 - **GitHub Issues:** [github.com/JeanZorzetti/sirius/issues](https://github.com/JeanZorzetti/sirius/issues)
 
 ---

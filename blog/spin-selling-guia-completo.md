@@ -1,4 +1,4 @@
----
+﻿---
 title: "SPIN Selling: A Metodologia de Vendas que Aumenta Conversão em 53% [Guia Completo 2026]"
 slug: "spin-selling-guia-completo"
 description: "Descubra como SPIN Selling aumenta conversão em vendas complexas B2B. Guia completo com 100+ perguntas práticas, matriz de objeções e casos reais. Template gratuito para download."
@@ -249,7 +249,7 @@ Vamos mergulhar na metodologia usando exemplos reais de venda de CRM (como a Sir
    - Taxa de conversão SQL→Ganho: ___%
 ```
 
-**Link Relacionado:** Quer entender melhor as etapas do funil? Leia nosso [Guia Completo do Funil de Vendas](https://sirius.roilabs.com.br/blog/funil-de-vendas-guia-completo).
+**Link Relacionado:** Quer entender melhor as etapas do funil? Leia nosso [Guia Completo do Funil de Vendas](https://siriuscrm.com.br/blog/funil-de-vendas-guia-completo).
 
 ---
 
@@ -490,7 +490,7 @@ se fizer sentido, mostramos como a Sirius pode se encaixar. Faz sentido?"
 
 **⏰ Tempo:** 10 minutos
 
-**Link Relacionado:** Quer entender melhor as métricas de funil? Veja nosso [Guia de Métricas Avançadas](https://sirius.roilabs.com.br/blog/funil-de-vendas-guia-completo#metricas-avancadas).
+**Link Relacionado:** Quer entender melhor as métricas de funil? Veja nosso [Guia de Métricas Avançadas](https://siriuscrm.com.br/blog/funil-de-vendas-guia-completo#metricas-avancadas).
 
 ---
 
@@ -1161,7 +1161,7 @@ Veja exemplos reais de empresas que transformaram vendas com SPIN:
   industry="Consultoria - São Paulo"
   size="15 vendedores"
   logo="/images/cases/sirius-client-logo.png"
-  source="https://sirius.roilabs.com.br/cases/consultoria-sp"
+  source="https://siriuscrm.com.br/cases/consultoria-sp"
 >
   **Desafio:**
   - Conversão SQL→Proposta de 32%
@@ -1212,7 +1212,7 @@ A Sirius CRM foi desenhada para **potencializar** metodologias consultivas como 
     - Você preenche em tempo real
     - Sistema calcula ROI automaticamente baseado nas respostas
 
-    **[Ver Feature: Discovery Templates →](https://sirius.roilabs.com.br/features/discovery-templates)**
+    **[Ver Feature: Discovery Templates →](https://siriuscrm.com.br/features/discovery-templates)**
   </Feature>
 
   <Feature
@@ -1230,7 +1230,7 @@ A Sirius CRM foi desenhada para **potencializar** metodologias consultivas como 
     **Como Configurar:**
     [Dashboard Sirius] → Configurações → Campos Customizados → Criar Seção "SPIN Discovery"
 
-    **[Ver Feature: Custom Fields →](https://sirius.roilabs.com.br/features/custom-fields)**
+    **[Ver Feature: Custom Fields →](https://siriuscrm.com.br/features/custom-fields)**
   </Feature>
 
   <Feature
@@ -1245,7 +1245,7 @@ A Sirius CRM foi desenhada para **potencializar** metodologias consultivas como 
     2. **Notificação para o Gestor** se oportunidade > R$ 50k
     3. **Task automática** para agendar demo em 48h
 
-    **[Ver Feature: Email Automation →](https://sirius.roilabs.com.br/features/email-automation)**
+    **[Ver Feature: Email Automation →](https://siriuscrm.com.br/features/email-automation)**
   </Feature>
 
   <Feature
@@ -1261,7 +1261,7 @@ A Sirius CRM foi desenhada para **potencializar** metodologias consultivas como 
     - Duração média de discovery por vendedor
     - Taxa de conversão Discovery → Demo por vendedor
 
-    **[Ver Feature: Sales Analytics →](https://sirius.roilabs.com.br/dashboard/analytics)**
+    **[Ver Feature: Sales Analytics →](https://siriuscrm.com.br/dashboard/analytics)**
   </Feature>
 
   <Feature
@@ -1276,7 +1276,7 @@ A Sirius CRM foi desenhada para **potencializar** metodologias consultivas como 
     3. Biblioteca cresce organicamente
     4. Todos acessam via busca: "objeção: está caro"
 
-    **[Ver Feature: Sales Playbook →](https://sirius.roilabs.com.br/features/sales-playbook)**
+    **[Ver Feature: Sales Playbook →](https://siriuscrm.com.br/features/sales-playbook)**
   </Feature>
 </FeatureGrid>
 
@@ -1296,7 +1296,7 @@ Teste todas as features SPIN-friendly sem compromisso:
     "✅ Suporte prioritário via WhatsApp"
   ]}
   buttonText="🚀 Comece seu Trial Grátis"
-  buttonUrl="https://sirius.roilabs.com.br/register?trial=spin-selling"
+  buttonUrl="https://siriuscrm.com.br/register?trial=spin-selling"
 />
 
 ---
@@ -1349,7 +1349,7 @@ Não espere estar "100% pronto". Comece agora:
   - ✅ [Matriz Objeções A4](/downloads/matriz-objecoes-spin-a4.pdf)
   - ✅ [Template Discovery](/downloads/template-discovery-spin.docx)
   - ✅ [Calculadora ROI SPIN](/calculadora-roi-spin)
-  - ✅ [Trial Sirius CRM 14 dias](https://sirius.roilabs.com.br/register?trial=spin-selling)
+  - ✅ [Trial Sirius CRM 14 dias](https://siriuscrm.com.br/register?trial=spin-selling)
 </ResourceBoxCompact>
 
 ---
@@ -1481,14 +1481,14 @@ Precisa de ajuda para implementar SPIN na sua equipe?
     "✅ Coaching 1-on-1 para gestores comerciais"
   ]}
   ctaText="📅 Agendar Consultoria Gratuita (30 min)"
-  ctaUrl="https://sirius.roilabs.com.br/contato?ref=spin-selling"
+  ctaUrl="https://siriuscrm.com.br/contato?ref=spin-selling"
 />
 
 ### **💬 Suporte e Comunidade**
 
 <ContactLinks>
   - **WhatsApp:** [+55 11 99999-9999](https://wa.me/5511999999999?text=Olá!%20Quero%20saber%20mais%20sobre%20SPIN%20Selling)
-  - **Email:** vendas@sirius.roilabs.com.br
+  - **Email:** vendas@siriuscrm.com.br
   - **LinkedIn:** [Sirius CRM](https://linkedin.com/company/sirius-crm)
   - **Comunidade:** [Grupo SPIN Selling Brasil (Telegram)](link-telegram)
 </ContactLinks>
@@ -1553,22 +1553,22 @@ Precisa de ajuda para implementar SPIN na sua equipe?
 ### **📚 Artigos Relacionados no Blog Sirius:**
 
 <RelatedArticles>
-  - [Funil de Vendas: Guia Completo 2026](https://sirius.roilabs.com.br/blog/funil-de-vendas-guia-completo) ← **Artigo Origem**
-  - [Pipeline de Vendas: Como Criar em 7 Passos](https://sirius.roilabs.com.br/blog/pipeline-vendas-guia)
-  - [Métricas de Vendas: 15 KPIs Essenciais](https://sirius.roilabs.com.br/blog/metricas-vendas-kpis)
-  - [Discovery Meeting: Template e Checklist](https://sirius.roilabs.com.br/blog/discovery-meeting-template)
-  - [Objeções em Vendas: Como Responder](https://sirius.roilabs.com.br/blog/objecoes-vendas)
-  - [CRM para Vendas Consultivas](https://sirius.roilabs.com.br/blog/crm-vendas-consultivas)
+  - [Funil de Vendas: Guia Completo 2026](https://siriuscrm.com.br/blog/funil-de-vendas-guia-completo) ← **Artigo Origem**
+  - [Pipeline de Vendas: Como Criar em 7 Passos](https://siriuscrm.com.br/blog/pipeline-vendas-guia)
+  - [Métricas de Vendas: 15 KPIs Essenciais](https://siriuscrm.com.br/blog/metricas-vendas-kpis)
+  - [Discovery Meeting: Template e Checklist](https://siriuscrm.com.br/blog/discovery-meeting-template)
+  - [Objeções em Vendas: Como Responder](https://siriuscrm.com.br/blog/objecoes-vendas)
+  - [CRM para Vendas Consultivas](https://siriuscrm.com.br/blog/crm-vendas-consultivas)
 </RelatedArticles>
 
 ### **🛠️ Features Sirius CRM:**
 
 <FeatureLinks>
-  - [Discovery Templates](https://sirius.roilabs.com.br/features/discovery-templates)
-  - [Custom Fields](https://sirius.roilabs.com.br/features/custom-fields)
-  - [Email Automation](https://sirius.roilabs.com.br/features/email-automation)
-  - [Sales Analytics](https://sirius.roilabs.com.br/dashboard/analytics)
-  - [Sales Playbook](https://sirius.roilabs.com.br/features/sales-playbook)
+  - [Discovery Templates](https://siriuscrm.com.br/features/discovery-templates)
+  - [Custom Fields](https://siriuscrm.com.br/features/custom-fields)
+  - [Email Automation](https://siriuscrm.com.br/features/email-automation)
+  - [Sales Analytics](https://siriuscrm.com.br/dashboard/analytics)
+  - [Sales Playbook](https://siriuscrm.com.br/features/sales-playbook)
 </FeatureLinks>
 
 ---
@@ -1597,7 +1597,7 @@ Se você chegou até aqui, parabéns! Você agora tem **todo o conhecimento** ne
   2. **Crie seu banco de 40 perguntas** (30 min)
   3. **Faça 1 role-play** com colega (30 min)
   4. **Aplique na próxima discovery** (essa semana)
-  5. **[Teste Sirius CRM 14 dias grátis](https://sirius.roilabs.com.br/register?trial=spin-selling)** (opcional)
+  5. **[Teste Sirius CRM 14 dias grátis](https://siriuscrm.com.br/register?trial=spin-selling)** (opcional)
 </FinalCTASteps>
 
 ### **💪 Você Está Pronto**
@@ -1617,8 +1617,8 @@ Não espere o "momento perfeito". Comece hoje, erre, aprenda, refine. Em 90 dias
 Se este guia foi útil para você, compartilhe com sua rede e ajude outros profissionais de vendas a aumentarem suas conversões.
 
 <ShareButtons>
-  - 🔗 [Compartilhar no LinkedIn](https://linkedin.com/share?url=https://sirius.roilabs.com.br/blog/spin-selling-guia-completo&title=SPIN%20Selling%20Guia%20Completo%202026)
-  - 💬 [Compartilhar no WhatsApp](https://wa.me/?text=Guia%20completo%20de%20SPIN%20Selling%20com%20100+%20perguntas%20pr%C3%A1ticas%20e%20templates%20gratuitos%20%F0%9F%8E%AF%20https://sirius.roilabs.com.br/blog/spin-selling-guia-completo)
+  - 🔗 [Compartilhar no LinkedIn](https://linkedin.com/share?url=https://siriuscrm.com.br/blog/spin-selling-guia-completo&title=SPIN%20Selling%20Guia%20Completo%202026)
+  - 💬 [Compartilhar no WhatsApp](https://wa.me/?text=Guia%20completo%20de%20SPIN%20Selling%20com%20100+%20perguntas%20pr%C3%A1ticas%20e%20templates%20gratuitos%20%F0%9F%8E%AF%20https://siriuscrm.com.br/blog/spin-selling-guia-completo)
   - 📸 [Compartilhar no Instagram](https://www.instagram.com/)
 </ShareButtons>
 
@@ -1651,6 +1651,6 @@ Agora é com você. Aplique SPIN Selling e veja sua conversão crescer.
 ---
 
 *Tem dúvidas? Comentários? Sugestões?*
-*📧 Envie para: conteudo@sirius.roilabs.com.br*
+*📧 Envie para: conteudo@siriuscrm.com.br*
 
 **#SPINSelling #VendasB2B #VendasConsultivas #CRM #SiriusCRM**

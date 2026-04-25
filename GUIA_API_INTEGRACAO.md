@@ -1,4 +1,4 @@
-# 🚀 Guia de Integração - API Sirius CRM
+﻿# 🚀 Guia de Integração - API Sirius CRM
 
 ## Para Desenvolvedores Externos
 
@@ -8,7 +8,7 @@ Este guia explica como integrar seu site/aplicação com o Sirius CRM para envia
 
 ## 📋 Passo 1: Gerar API Key
 
-1. Acesse: https://sirius.roilabs.com.br/dashboard/settings
+1. Acesse: https://siriuscrm.com.br/dashboard/settings
 2. Clique em **"API Keys"**
 3. Clique em **"Criar Nova API Key"**
 4. Dê um nome (ex: "Integração Site")
@@ -22,7 +22,7 @@ Este guia explica como integrar seu site/aplicação com o Sirius CRM para envia
 
 ### URL Base
 ```
-https://sirius.roilabs.com.br/api/v1
+https://siriuscrm.com.br/api/v1
 ```
 
 ### Endpoint: Criar Contato
@@ -61,7 +61,7 @@ Content-Type: application/json
 ### JavaScript (Fetch API)
 ```javascript
 async function enviarLeadParaSirius(dados) {
-  const response = await fetch('https://sirius.roilabs.com.br/api/v1/contacts', {
+  const response = await fetch('https://siriuscrm.com.br/api/v1/contacts', {
     method: 'POST',
     headers: {
       'Authorization': 'Bearer sk_live_SUA_CHAVE_AQUI',
@@ -100,7 +100,7 @@ enviarLeadParaSirius({
 <?php
 function enviarLeadParaSirius($dados) {
     $apiKey = 'sk_live_SUA_CHAVE_AQUI';
-    $url = 'https://sirius.roilabs.com.br/api/v1/contacts';
+    $url = 'https://siriuscrm.com.br/api/v1/contacts';
 
     $payload = json_encode([
         'name' => $dados['nome'],
@@ -152,7 +152,7 @@ import requests
 
 def enviar_lead_para_sirius(dados):
     api_key = 'sk_live_SUA_CHAVE_AQUI'
-    url = 'https://sirius.roilabs.com.br/api/v1/contacts'
+    url = 'https://siriuscrm.com.br/api/v1/contacts'
 
     headers = {
         'Authorization': f'Bearer {api_key}',
@@ -192,7 +192,7 @@ const axios = require('axios');
 async function enviarLeadParaSirius(dados) {
   try {
     const response = await axios.post(
-      'https://sirius.roilabs.com.br/api/v1/contacts',
+      'https://siriuscrm.com.br/api/v1/contacts',
       {
         name: dados.nome,
         email: dados.email,
@@ -306,7 +306,7 @@ enviarLeadParaSirius({
 
 Para ver todos os endpoints disponíveis (deals, pipelines, analytics, webhooks):
 
-👉 https://sirius.roilabs.com.br/api/docs
+👉 https://siriuscrm.com.br/api/docs
 
 A documentação é interativa e permite testar os endpoints diretamente pelo navegador!
 
@@ -316,7 +316,7 @@ A documentação é interativa e permite testar os endpoints diretamente pelo na
 
 ### 1. Teste via cURL
 ```bash
-curl -X POST https://sirius.roilabs.com.br/api/v1/contacts \
+curl -X POST https://siriuscrm.com.br/api/v1/contacts \
   -H "Authorization: Bearer sk_live_SUA_CHAVE" \
   -H "Content-Type: application/json" \
   -d '{
@@ -327,7 +327,7 @@ curl -X POST https://sirius.roilabs.com.br/api/v1/contacts \
 ```
 
 ### 2. Teste via Postman
-1. Importe a coleção: https://sirius.roilabs.com.br/api/openapi.json
+1. Importe a coleção: https://siriuscrm.com.br/api/openapi.json
 2. Configure o header `Authorization: Bearer SUA_CHAVE`
 3. Execute a requisição
 
@@ -348,8 +348,8 @@ curl -X POST https://sirius.roilabs.com.br/api/v1/contacts \
 Dúvidas ou problemas com a integração?
 
 - **Email**: contato@roilabs.com.br
-- **Dashboard**: https://sirius.roilabs.com.br/dashboard
-- **Documentação**: https://sirius.roilabs.com.br/api/docs
+- **Dashboard**: https://siriuscrm.com.br/dashboard
+- **Documentação**: https://siriuscrm.com.br/api/docs
 
 ---
 
@@ -410,7 +410,7 @@ app.post('/api/enviar-lead', async (req, res) => {
   const { nome, email, telefone, empresa } = req.body;
 
   try {
-    const response = await fetch('https://sirius.roilabs.com.br/api/v1/contacts', {
+    const response = await fetch('https://siriuscrm.com.br/api/v1/contacts', {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${process.env.SIRIUS_API_KEY}`,

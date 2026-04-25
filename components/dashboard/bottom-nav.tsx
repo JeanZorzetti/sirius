@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { cn } from '@/lib/utils'
 import {
   Home,
@@ -33,6 +33,7 @@ type NavItem = {
   title: string
   href: string
   icon: React.ComponentType<{ className?: string }>
+  badge?: number
 }
 
 // Os 4 itens fixos que ocupam a bottom bar. O 5º slot é o "Mais".
@@ -103,12 +104,19 @@ function NavButton({
           : 'text-zinc-500 hover:text-zinc-900 dark:text-zinc-500 dark:hover:text-zinc-200',
       )}
     >
-      <Icon
-        className={cn(
-          'h-5 w-5 transition-transform duration-200',
-          active && 'scale-110',
+      <div className="relative">
+        <Icon
+          className={cn(
+            'h-5 w-5 transition-transform duration-200',
+            active && 'scale-110',
+          )}
+        />
+        {item.badge != null && item.badge > 0 && (
+          <span className="absolute -top-1.5 -right-2 flex h-4 min-w-4 items-center justify-center rounded-full bg-destructive px-0.5 text-[9px] font-bold text-destructive-foreground">
+            {item.badge > 99 ? '99+' : item.badge}
+          </span>
         )}
-      />
+      </div>
       <span className="truncate">{item.title}</span>
       {active && (
         <span className="absolute top-0 left-1/2 h-0.5 w-10 -translate-x-1/2 rounded-full bg-indigo-500" />
@@ -120,6 +128,36 @@ function NavButton({
 export function BottomNav() {
   const pathname = usePathname()
   const [moreOpen, setMoreOpen] = useState(false)
+  const [unreadChat, setUnreadChat] = useState(0)
+
+  useEffect(() => {
+    // Fetch unread chat count — lightweight endpoint
+    const fetchUnread = async () => {
+      try {
+        const res = await fetch('/api/conversations/unread-count', { credentials: 'same-origin' })
+        if (res.ok) {
+          const data = await res.json()
+          const count = data.count ?? 0
+          setUnreadChat(count)
+          // Update app icon badge
+          const { setAppBadge } = await import('@/lib/mobile/badge')
+          setAppBadge(count)
+        }
+      } catch {}
+    }
+
+    fetchUnread()
+    // Refresh every 30s when tab is visible
+    const interval = setInterval(() => {
+      if (!document.hidden) fetchUnread()
+    }, 30_000)
+    return () => clearInterval(interval)
+  }, [])
+
+  // Items with dynamic badges
+  const itemsWithBadges: NavItem[] = primaryItems.map(item =>
+    item.href === '/dashboard/chat' ? { ...item, badge: unreadChat } : item
+  )
 
   // Considera "Mais" ativo quando a rota atual não casa com nenhum primary item
   const moreActive =
@@ -134,7 +172,7 @@ export function BottomNav() {
         'pb-[env(safe-area-inset-bottom)]',
       )}
     >
-      {primaryItems.map(item => (
+      {itemsWithBadges.map(item => (
         <NavButton
           key={item.href}
           item={item}

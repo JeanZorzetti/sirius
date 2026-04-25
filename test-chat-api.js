@@ -1,9 +1,9 @@
-/**
+﻿/**
  * Test script to debug chat-with-ui API
  * Run: node test-chat-api.js
  */
 
-const API_URL = 'https://sirius.roilabs.com.br/api/agi/chat-with-ui'
+const API_URL = 'https://siriuscrm.com.br/api/agi/chat-with-ui'
 
 async function testChatAPI() {
     console.log('🔍 Testing Chat API...\n')

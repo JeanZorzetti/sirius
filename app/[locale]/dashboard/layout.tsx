@@ -9,6 +9,7 @@ import { PostHogUserIdentifier } from '@/components/analytics/posthog-user-ident
 import { AgiChatSidebar } from '@/components/agi'
 import { NativeInitializer } from '@/components/mobile/native-initializer'
 import { NetworkStatusBanner } from '@/components/mobile/network-status-banner'
+import { PageTransition } from '@/components/mobile/page-transition'
 import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { redirect } from 'next/navigation'
@@ -57,7 +58,9 @@ export default async function DashboardLayout({
 
         {/* Page content — padding-bottom mobile reserva espaço para BottomNav (h-14 + safe-area) */}
         <main className="flex-1 overflow-y-auto p-4 pb-[calc(3.5rem+env(safe-area-inset-bottom)+1rem)] lg:p-6 lg:pb-6">
-          {children}
+          <PageTransition>
+            {children}
+          </PageTransition>
         </main>
       </div>
 

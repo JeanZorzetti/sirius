@@ -1,4 +1,4 @@
-# 🏷️ Google Tag Manager - Guia de Configuração
+﻿# 🏷️ Google Tag Manager - Guia de Configuração
 
 Este guia explica como configurar o Google Tag Manager (GTM) no Sirius CRM.
 
@@ -20,7 +20,7 @@ O GTM permite gerenciar todas as suas tags de rastreamento (Google Analytics, Me
 3. Preencha:
    - **Nome da conta**: Sirius CRM (ou ROI Labs)
    - **País**: Brasil
-   - **Nome do contêiner**: sirius.roilabs.com.br
+   - **Nome do contêiner**: siriuscrm.com.br
    - **Plataforma de destino**: Web
 4. Aceite os termos e clique em **"Criar"**
 
@@ -129,7 +129,7 @@ fbq('track', 'PageView');
 ## 🧪 Passo 5: Testar
 
 1. No GTM, clique em **"Visualizar"** (Preview)
-2. Digite: `https://sirius.roilabs.com.br`
+2. Digite: `https://siriuscrm.com.br`
 3. Navegue no site e veja as tags disparando em tempo real
 4. Verifique se tudo funciona corretamente
 

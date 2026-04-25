@@ -1,4 +1,4 @@
-# IndexNow Integration
+﻿# IndexNow Integration
 
 IndexNow é um protocolo que permite notificar instantaneamente mecanismos de busca sobre alterações de conteúdo no site.
 
@@ -21,7 +21,7 @@ IndexNow é um protocolo que permite notificar instantaneamente mecanismos de bu
 ## 🔑 API Key
 
 **Key:** `a573338e-b64d-4494-89f5-aeac5c0e787e`
-**Location:** `https://sirius.roilabs.com.br/a573338e-b64d-4494-89f5-aeac5c0e787e.txt`
+**Location:** `https://siriuscrm.com.br/a573338e-b64d-4494-89f5-aeac5c0e787e.txt`
 
 Este arquivo público é necessário para verificação de ownership do domínio.
 
@@ -50,21 +50,21 @@ npm run indexnow -- --all-blog-posts
 
 **Submeter URL única:**
 ```bash
-curl -X POST https://sirius.roilabs.com.br/api/indexnow \
+curl -X POST https://siriuscrm.com.br/api/indexnow \
   -H "Content-Type: application/json" \
   -d '{"url": "/blog/spin-selling-guia-completo"}'
 ```
 
 **Submeter múltiplas URLs:**
 ```bash
-curl -X POST https://sirius.roilabs.com.br/api/indexnow \
+curl -X POST https://siriuscrm.com.br/api/indexnow \
   -H "Content-Type: application/json" \
   -d '{"urls": ["/blog/post-1", "/blog/post-2"]}'
 ```
 
 **Verificar status da integração:**
 ```bash
-curl https://sirius.roilabs.com.br/api/indexnow
+curl https://siriuscrm.com.br/api/indexnow
 ```
 
 ### 3. Via Código TypeScript
@@ -103,7 +103,7 @@ Submeta URLs para IndexNow sempre que:
 ### Bing Webmaster Tools
 
 1. Acesse: https://www.bing.com/webmasters
-2. Adicione o site `sirius.roilabs.com.br`
+2. Adicione o site `siriuscrm.com.br`
 3. Verifique ownership (usar mesmo método do Google)
 4. Vá em **Index Explorer** → **IndexNow**
 5. Monitore submissões e status de indexação
@@ -151,7 +151,7 @@ console.log('Key válida:', isValid)
 **Causa:** Chave de verificação não encontrada ou incorreta
 
 **Solução:**
-1. Verificar se arquivo existe: `https://sirius.roilabs.com.br/a573338e-b64d-4494-89f5-aeac5c0e787e.txt`
+1. Verificar se arquivo existe: `https://siriuscrm.com.br/a573338e-b64d-4494-89f5-aeac5c0e787e.txt`
 2. Arquivo deve conter APENAS a chave (sem espaços ou quebras de linha extras)
 3. Verificar se está na pasta `/public`
 
@@ -160,7 +160,7 @@ console.log('Key válida:', isValid)
 **Causa:** URL não pertence ao domínio ou está bloqueada
 
 **Solução:**
-1. Usar URLs relativas: `/blog/post` ou absolutas: `https://sirius.roilabs.com.br/blog/post`
+1. Usar URLs relativas: `/blog/post` ou absolutas: `https://siriuscrm.com.br/blog/post`
 2. Verificar se URL existe e retorna 200 OK
 3. Verificar robots.txt não está bloqueando
 
@@ -171,7 +171,7 @@ console.log('Key válida:', isValid)
 **Solução:**
 1. Aguardar 10-15 minutos
 2. Verificar Bing Webmaster Tools → Index Explorer
-3. Fazer busca específica: `site:sirius.roilabs.com.br [título do post]`
+3. Fazer busca específica: `site:siriuscrm.com.br [título do post]`
 
 ## 📚 Referências
 
@@ -201,7 +201,7 @@ console.log('Key válida:', isValid)
 
 2. **Verificar indexação no Bing:**
    - Aguardar 15 minutos
-   - Buscar: `site:sirius.roilabs.com.br spin selling`
+   - Buscar: `site:siriuscrm.com.br spin selling`
 
 3. **Adicionar ao CI/CD** (Vercel):
    - Após cada deploy de novo post, chamar `/api/indexnow`

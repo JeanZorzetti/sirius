@@ -1,12 +1,12 @@
-# Como Testar o Endpoint de Generative UI
+﻿# Como Testar o Endpoint de Generative UI
 
 ## 🧪 Método 1: Script Node.js
 
 ### Passo 1: Pegar o Cookie de Sessão
 
-1. Acesse **https://sirius.roilabs.com.br** e faça login
+1. Acesse **https://siriuscrm.com.br** e faça login
 2. Abra DevTools (F12)
-3. Vá em **Application** → **Cookies** → `https://sirius.roilabs.com.br`
+3. Vá em **Application** → **Cookies** → `https://siriuscrm.com.br`
 4. Copie o valor de `next-auth.session-token`
 
 ### Passo 2: Rodar o Script
@@ -26,7 +26,7 @@ TEST_URL="http://localhost:3000" SESSION_COOKIE="..." node scripts/test-genui-en
 ```
 🧪 Testando Generative UI Endpoint
 
-📍 URL: https://sirius.roilabs.com.br/api/agi/chat-with-ui
+📍 URL: https://siriuscrm.com.br/api/agi/chat-with-ui
 ────────────────────────────────────────────────────────────
 
 📊 Status: 200 OK
@@ -80,7 +80,7 @@ TEST_URL="http://localhost:3000" SESSION_COOKIE="..." node scripts/test-genui-en
 
 ```bash
 # 1. Substituir SEU_TOKEN_AQUI pelo token copiado
-curl -X POST https://sirius.roilabs.com.br/api/agi/chat-with-ui \
+curl -X POST https://siriuscrm.com.br/api/agi/chat-with-ui \
   -H "Content-Type: application/json" \
   -H "Cookie: next-auth.session-token=SEU_TOKEN_AQUI" \
   -d '{
@@ -99,7 +99,7 @@ curl -X POST https://sirius.roilabs.com.br/api/agi/chat-with-ui \
 
 1. **Criar Nova Request:**
    - Method: `POST`
-   - URL: `https://sirius.roilabs.com.br/api/agi/chat-with-ui`
+   - URL: `https://siriuscrm.com.br/api/agi/chat-with-ui`
 
 2. **Headers:**
    - `Content-Type`: `application/json`
@@ -128,7 +128,7 @@ curl -X POST https://sirius.roilabs.com.br/api/agi/chat-with-ui \
 **Causa:** Cookie de sessão inválido ou expirado
 
 **Solução:**
-1. Fazer novo login em sirius.roilabs.com.br
+1. Fazer novo login em siriuscrm.com.br
 2. Pegar novo `next-auth.session-token`
 3. Tentar novamente
 

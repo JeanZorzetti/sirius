@@ -1,4 +1,4 @@
-# URLs do Sirius CRM
+﻿# URLs do Sirius CRM
 
 ## Contagem Total
 - **Landing Pages**: 11 URLs
@@ -266,4 +266,4 @@ O Sirius CRM tem foco diferente do Orion:
 
 **Última atualização**: 2024-01-23
 **Versão**: 1.0.0
-**Base URL**: https://sirius.roilabs.com.br
+**Base URL**: https://siriuscrm.com.br

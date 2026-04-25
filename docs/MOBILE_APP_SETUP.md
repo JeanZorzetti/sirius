@@ -1,9 +1,9 @@
-# Sirius CRM - Mobile App Setup (Capacitor)
+﻿# Sirius CRM - Mobile App Setup (Capacitor)
 
 ## Architecture
 
 The mobile app uses Capacitor as a WebView wrapper over the production site at
-`https://sirius.roilabs.com.br`. This means:
+`https://siriuscrm.com.br`. This means:
 
 - The native app shell loads the production Next.js site via `server.url`
 - Native plugins (camera, GPS, push notifications) are bridged via Capacitor
@@ -112,7 +112,7 @@ server: {
 },
 ```
 
-Do NOT commit this change. Restore `https://sirius.roilabs.com.br` before
+Do NOT commit this change. Restore `https://siriuscrm.com.br` before
 building for production.
 
 ## Environment Variables for Push Notifications

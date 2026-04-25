@@ -1,4 +1,4 @@
-# Phase 3 Implementation Summary - Knowledge Graph Advanced Features
+﻿# Phase 3 Implementation Summary - Knowledge Graph Advanced Features
 
 **Status**: ✅ Completo
 **Data**: 2025-01-30
@@ -23,7 +23,7 @@ Fase 3 do roadmap do Knowledge Graph implementa **3 funcionalidades avançadas**
 
 ### Widget no Dashboard Principal
 
-**Localização**: [https://sirius.roilabs.com.br/admin](https://sirius.roilabs.com.br/admin)
+**Localização**: [https://siriuscrm.com.br/admin](https://siriuscrm.com.br/admin)
 
 **Features:**
 
@@ -154,7 +154,7 @@ handleReprocessWebhook({
 **POST /api/nlp/reprocess-webhook**
 
 ```bash
-curl -X POST https://sirius.roilabs.com.br/api/nlp/reprocess-webhook \
+curl -X POST https://siriuscrm.com.br/api/nlp/reprocess-webhook \
   -H "Content-Type: application/json" \
   -d '{
     "contentType": "blog_post",
@@ -239,7 +239,7 @@ onPostSave(async (post) => {
 
 ```bash
 # Cron job: Daily at 3 AM
-0 3 * * * curl -X POST https://sirius.roilabs.com.br/api/nlp/reprocess-webhook \
+0 3 * * * curl -X POST https://siriuscrm.com.br/api/nlp/reprocess-webhook \
   -d '{"trigger": "scheduled", ...}'
 ```
 
@@ -630,7 +630,7 @@ await findDisambiguatedEntity({
 
 ```
 Navigation:
-1. Go to https://sirius.roilabs.com.br/admin ✅
+1. Go to https://siriuscrm.com.br/admin ✅
 2. Scroll to "Knowledge Graph" section ✅
 3. Verify stats display correctly ✅
 4. Click "Process 0 Pending Posts" ✅

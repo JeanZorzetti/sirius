@@ -1,4 +1,4 @@
-# 📊 DOSSIÊ EXECUTIVO - SIRIUS CRM
+﻿# 📊 DOSSIÊ EXECUTIVO - SIRIUS CRM
 ## Plataforma de Gestão de Vendas com Inteligência Artificial
 
 ---
@@ -839,7 +839,7 @@ Versão instalável do Sirius que funciona como app nativo, sem necessidade de b
 
 #### Instalação Simples
 ```
-1. Acesse sirius.roilabs.com.br no celular
+1. Acesse siriuscrm.com.br no celular
 2. Navegador sugere "Adicionar à tela inicial"
 3. Clica → Ícone aparece como app
 4. Abre igual Instagram, WhatsApp, etc.
@@ -2951,7 +2951,7 @@ FREE → PRO: 2-5% (Sirius: 10%+ ✅✅)
 
 ```
 Produto:
-https://sirius.roilabs.com.br
+https://siriuscrm.com.br
 
 Empresa:
 https://roilabs.com.br
@@ -2960,26 +2960,26 @@ Repositório:
 https://github.com/JeanZorzetti/sirius
 
 Blog:
-https://sirius.roilabs.com.br/blog
+https://siriuscrm.com.br/blog
 
 Documentação API:
-https://sirius.roilabs.com.br/api/docs
+https://siriuscrm.com.br/api/docs
 
 Calculadoras:
-https://sirius.roilabs.com.br/ferramentas/calculadora-roi
+https://siriuscrm.com.br/ferramentas/calculadora-roi
 
 Status Page:
 (Em desenvolvimento)
 
 Changelog:
-https://sirius.roilabs.com.br/changelog
+https://siriuscrm.com.br/changelog
 ```
 
 ### 📧 Contatos
 
 ```
 Comercial: contato@roilabs.com.br
-Suporte: suporte@sirius.roilabs.com.br
+Suporte: suporte@siriuscrm.com.br
 Parcerias: parcerias@roilabs.com.br
 Imprensa: imprensa@roilabs.com.br
 

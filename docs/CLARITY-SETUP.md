@@ -1,4 +1,4 @@
-# 🔧 Microsoft Clarity - Configuração Completa
+﻿# 🔧 Microsoft Clarity - Configuração Completa
 
 ## ⚠️ Problema Identificado
 
@@ -19,7 +19,7 @@ Erro 400 e CORS ao enviar dados para `https://i.clarity.ms/collect`
 3. **Se o projeto NÃO existir:**
    - Clique em **"New Project"**
    - Nome: `Sirius CRM`
-   - Website URL: `https://sirius.roilabs.com.br`
+   - Website URL: `https://siriuscrm.com.br`
    - Clique em **"Create"**
    - Copie o **novo Project ID** gerado
 
@@ -35,12 +35,12 @@ Erro 400 e CORS ao enviar dados para `https://i.clarity.ms/collect`
 1. No projeto Clarity, vá em **"Settings"**
 
 2. Na seção **"Project settings"**, verifique:
-   - **Website URL**: Deve estar `https://sirius.roilabs.com.br`
+   - **Website URL**: Deve estar `https://siriuscrm.com.br`
    - Ou adicione como domínio permitido
 
 3. **Importante:** Certifique-se que o domínio está EXATAMENTE como em produção:
-   - ✅ `sirius.roilabs.com.br` (correto)
-   - ❌ `www.sirius.roilabs.com.br` (incorreto se não usa www)
+   - ✅ `siriuscrm.com.br` (correto)
+   - ❌ `www.siriuscrm.com.br` (incorreto se não usa www)
    - ❌ `localhost` (incorreto para produção)
 
 4. Clique em **"Save"**
@@ -56,7 +56,7 @@ Erro 400 e CORS ao enviar dados para `https://i.clarity.ms/collect`
 
 2. Se não está recebendo dados:
    - Aguarde 5-10 minutos após configurar
-   - Acesse o site `https://sirius.roilabs.com.br`
+   - Acesse o site `https://siriuscrm.com.br`
    - Navegue por algumas páginas
    - Verifique novamente no dashboard do Clarity
 
@@ -87,7 +87,7 @@ git push origin main
 
 ### No Browser (Produção)
 
-1. Acesse: https://sirius.roilabs.com.br
+1. Acesse: https://siriuscrm.com.br
 
 2. Abra **DevTools** (F12) → Aba **Console**
 
@@ -133,7 +133,7 @@ git push origin main
 
 **Solução:**
 1. No projeto Clarity → Settings
-2. Adicione `sirius.roilabs.com.br` como domínio permitido
+2. Adicione `siriuscrm.com.br` como domínio permitido
 3. Salve e aguarde 5 minutos
 
 ### Problema: "No data in Clarity dashboard"
@@ -174,7 +174,7 @@ Antes de considerar resolvido, verifique:
 
 - [ ] Projeto existe em https://clarity.microsoft.com/projects
 - [ ] Projeto está **ativo** (não pausado)
-- [ ] Domínio `sirius.roilabs.com.br` está configurado
+- [ ] Domínio `siriuscrm.com.br` está configurado
 - [ ] Project ID no código está correto (`lib/analytics-config.ts`)
 - [ ] Deploy foi feito após mudanças
 - [ ] Console não mostra mais erros 400 do Clarity

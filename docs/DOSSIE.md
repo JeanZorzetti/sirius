@@ -1,4 +1,4 @@
-# 📋 DOSSIÊ COMPLETO - SIRIUS CRM
+﻿# 📋 DOSSIÊ COMPLETO - SIRIUS CRM
 ## Projeto de CRM Empresarial com IA e Automações
 
 ---
@@ -52,7 +52,7 @@
 ### 📊 Status do Projeto
 - **Versão Atual**: 1.0.0
 - **Status**: Produção
-- **URL de Produção**: https://sirius.roilabs.com.br
+- **URL de Produção**: https://siriuscrm.com.br
 - **Repositório**: https://github.com/JeanZorzetti/sirius.git
 - **Última Atualização**: Janeiro 2026
 
@@ -2883,7 +2883,7 @@ Build Process:
 7. Deploy to Edge
 
 Deployment URL:
-https://sirius.roilabs.com.br
+https://siriuscrm.com.br
 https://sirius-git-main-roilabs.vercel.app
 https://sirius-[hash].vercel.app (preview)
 ```
@@ -3019,7 +3019,7 @@ vercel env pull .env.local
 ### 🌍 Custom Domain
 
 ```typescript
-// Domain: sirius.roilabs.com.br
+// Domain: siriuscrm.com.br
 // Registrar: Hostinger / Registro.br
 
 DNS Configuration:
@@ -3033,7 +3033,7 @@ SSL/TLS:
 - Certificate pinning (planned)
 
 Redirects:
-www.sirius.roilabs.com.br → sirius.roilabs.com.br
+www.siriuscrm.com.br → siriuscrm.com.br
 http:// → https://
 ```
 
@@ -3664,7 +3664,7 @@ Dependencies: 80+ (production + dev)
 
 ### 📞 Contatos & Links
 
-**Website:** https://sirius.roilabs.com.br
+**Website:** https://siriuscrm.com.br
 **Empresa:** ROI Labs (https://roilabs.com.br)
 **Repositório:** https://github.com/JeanZorzetti/sirius.git
 **Desenvolvedor:** Jean Zorzetti
