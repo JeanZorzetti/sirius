@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Loader2 } from 'lucide-react'
+import { Loader2, Plus, X, CheckSquare, Trash2 } from 'lucide-react'
 import {
   Dialog,
   DialogContent,
@@ -21,7 +21,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
+import { Checkbox } from '@/components/ui/checkbox'
 import { toast } from 'sonner'
+import { cn } from '@/lib/utils'
 import type { TaskStatusLite } from './task-types'
 
 interface CreateTaskDialogProps {
@@ -45,6 +47,18 @@ interface OrgMember {
   orgRole: string
 }
 
+interface ChecklistItemDraft {
+  id: string
+  title: string
+  completed: boolean
+}
+
+interface ChecklistDraft {
+  id: string
+  title: string
+  items: ChecklistItemDraft[]
+}
+
 export function CreateTaskDialog({
   open,
   onOpenChange,
@@ -64,6 +78,10 @@ export function CreateTaskDialog({
   const [assigneeId, setAssigneeId] = useState<string>('none')
   const [visibility, setVisibility] = useState<Visibility>('PUBLIC')
   const [members, setMembers] = useState<OrgMember[]>([])
+  const [checklists, setChecklists] = useState<ChecklistDraft[]>([])
+  const [newChecklistTitle, setNewChecklistTitle] = useState('')
+  const [addingChecklist, setAddingChecklist] = useState(false)
+  const [newItemTitles, setNewItemTitles] = useState<Record<string, string>>({})
 
   useEffect(() => {
     fetch('/api/org/members')
@@ -81,8 +99,65 @@ export function CreateTaskDialog({
       setDueDate(defaultDueDate || '')
       setAssigneeId('none')
       setVisibility('PUBLIC')
+      setChecklists([])
+      setNewChecklistTitle('')
+      setAddingChecklist(false)
+      setNewItemTitles({})
     }
   }, [open, defaultStatusId, defaultDueDate, statuses])
+
+  const addChecklist = () => {
+    const t = newChecklistTitle.trim()
+    if (!t) return
+    setChecklists((prev) => [
+      ...prev,
+      { id: crypto.randomUUID(), title: t, items: [] },
+    ])
+    setNewChecklistTitle('')
+    setAddingChecklist(false)
+  }
+
+  const removeChecklist = (id: string) => {
+    setChecklists((prev) => prev.filter((cl) => cl.id !== id))
+  }
+
+  const addChecklistItem = (checklistId: string) => {
+    const t = (newItemTitles[checklistId] || '').trim()
+    if (!t) return
+    setChecklists((prev) =>
+      prev.map((cl) =>
+        cl.id === checklistId
+          ? { ...cl, items: [...cl.items, { id: crypto.randomUUID(), title: t, completed: false }] }
+          : cl
+      )
+    )
+    setNewItemTitles((prev) => ({ ...prev, [checklistId]: '' }))
+  }
+
+  const removeChecklistItem = (checklistId: string, itemId: string) => {
+    setChecklists((prev) =>
+      prev.map((cl) =>
+        cl.id === checklistId
+          ? { ...cl, items: cl.items.filter((it) => it.id !== itemId) }
+          : cl
+      )
+    )
+  }
+
+  const toggleChecklistItem = (checklistId: string, itemId: string) => {
+    setChecklists((prev) =>
+      prev.map((cl) =>
+        cl.id === checklistId
+          ? {
+              ...cl,
+              items: cl.items.map((it) =>
+                it.id === itemId ? { ...it, completed: !it.completed } : it
+              ),
+            }
+          : cl
+      )
+    )
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -113,6 +188,23 @@ export function CreateTaskDialog({
         throw new Error(error.error || 'Erro ao criar tarefa')
       }
 
+      const task = await res.json()
+
+      if (checklists.length > 0) {
+        await Promise.all(
+          checklists.map((cl) =>
+            fetch(`/api/tasks/${task.id}/checklists`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                title: cl.title,
+                items: cl.items.map((it) => ({ title: it.title })),
+              }),
+            })
+          )
+        )
+      }
+
       toast.success('Tarefa criada')
       onOpenChange(false)
       onCreated?.()
@@ -125,7 +217,7 @@ export function CreateTaskDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-lg">
+      <DialogContent className="sm:max-w-xl max-h-[90vh] overflow-y-auto">
         <form onSubmit={handleSubmit}>
           <DialogHeader>
             <DialogTitle>Nova tarefa</DialogTitle>
@@ -248,6 +340,128 @@ export function CreateTaskDialog({
                 </Select>
               </div>
             )}
+
+            {/* Checklists */}
+            <div className="grid gap-2">
+              <div className="flex items-center justify-between">
+                <Label className="flex items-center gap-1.5">
+                  <CheckSquare className="h-3.5 w-3.5 text-muted-foreground" />
+                  Checklists
+                </Label>
+                {!addingChecklist && (
+                  <Button
+                    type="button"
+                    size="sm"
+                    variant="ghost"
+                    className="h-6 gap-1 px-2 text-xs"
+                    onClick={() => setAddingChecklist(true)}
+                  >
+                    <Plus className="h-3 w-3" />
+                    Adicionar
+                  </Button>
+                )}
+              </div>
+
+              {addingChecklist && (
+                <div className="flex items-center gap-2">
+                  <Input
+                    autoFocus
+                    value={newChecklistTitle}
+                    onChange={(e) => setNewChecklistTitle(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') { e.preventDefault(); addChecklist() }
+                      if (e.key === 'Escape') { setAddingChecklist(false); setNewChecklistTitle('') }
+                    }}
+                    placeholder="Nome do checklist"
+                    className="h-8 text-sm"
+                  />
+                  <Button type="button" size="sm" className="h-8 shrink-0" onClick={addChecklist}>
+                    Criar
+                  </Button>
+                  <Button
+                    type="button"
+                    size="sm"
+                    variant="ghost"
+                    className="h-8 w-8 shrink-0 p-0"
+                    onClick={() => { setAddingChecklist(false); setNewChecklistTitle('') }}
+                  >
+                    <X className="h-3.5 w-3.5" />
+                  </Button>
+                </div>
+              )}
+
+              {checklists.length > 0 && (
+                <div className="space-y-3">
+                  {checklists.map((cl) => (
+                    <div key={cl.id} className="rounded-lg border border-border/40 bg-muted/30 p-3">
+                      <div className="flex items-center justify-between gap-2">
+                        <span className="text-xs font-semibold">{cl.title}</span>
+                        <button
+                          type="button"
+                          onClick={() => removeChecklist(cl.id)}
+                          className="rounded p-1 text-muted-foreground hover:bg-destructive/10 hover:text-destructive"
+                        >
+                          <Trash2 className="h-3 w-3" />
+                        </button>
+                      </div>
+
+                      {cl.items.length > 0 && (
+                        <ul className="mt-2 space-y-1.5">
+                          {cl.items.map((item) => (
+                            <li key={item.id} className="group flex items-center gap-2">
+                              <Checkbox
+                                checked={item.completed}
+                                onCheckedChange={() => toggleChecklistItem(cl.id, item.id)}
+                                className="h-3.5 w-3.5"
+                              />
+                              <span
+                                className={cn(
+                                  'flex-1 text-xs',
+                                  item.completed ? 'text-muted-foreground line-through' : 'text-foreground'
+                                )}
+                              >
+                                {item.title}
+                              </span>
+                              <button
+                                type="button"
+                                onClick={() => removeChecklistItem(cl.id, item.id)}
+                                className="rounded p-0.5 text-muted-foreground opacity-0 hover:text-destructive group-hover:opacity-100"
+                              >
+                                <X className="h-3 w-3" />
+                              </button>
+                            </li>
+                          ))}
+                        </ul>
+                      )}
+
+                      <div className="mt-2 flex items-center gap-1">
+                        <Input
+                          value={newItemTitles[cl.id] || ''}
+                          onChange={(e) =>
+                            setNewItemTitles((prev) => ({ ...prev, [cl.id]: e.target.value }))
+                          }
+                          onKeyDown={(e) => {
+                            if (e.key === 'Enter') { e.preventDefault(); addChecklistItem(cl.id) }
+                          }}
+                          placeholder="Adicionar item..."
+                          className="h-7 text-xs"
+                        />
+                        <Button
+                          type="button"
+                          size="sm"
+                          variant="ghost"
+                          className="h-7 w-7 shrink-0 p-0"
+                          onClick={() => addChecklistItem(cl.id)}
+                          disabled={!(newItemTitles[cl.id] || '').trim()}
+                        >
+                          <Plus className="h-3 w-3" />
+                        </Button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
 
           <DialogFooter>
