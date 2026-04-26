@@ -44,7 +44,9 @@ export function CreateDealDialog({
     isPro = false,
     onOptimisticAdd,
     onRollback,
-    onSuccess
+    onSuccess,
+    open: externalOpen,
+    onOpenChange: externalOnOpenChange,
 }: {
     stages: Stage[],
     contacts: Contact[],
@@ -52,9 +54,13 @@ export function CreateDealDialog({
     isPro?: boolean,
     onOptimisticAdd?: (deal: any) => void,
     onRollback?: (tempId: string) => void,
-    onSuccess?: () => void
+    onSuccess?: () => void,
+    open?: boolean,
+    onOpenChange?: (open: boolean) => void,
 }) {
-    const [open, setOpen] = useState(false)
+    const [internalOpen, setInternalOpen] = useState(false)
+    const open = externalOpen !== undefined ? externalOpen : internalOpen
+    const setOpen = externalOnOpenChange ?? setInternalOpen
     const [showUpgradeModal, setShowUpgradeModal] = useState(false)
     const [loading, setLoading] = useState(false)
     const [selectedContactId, setSelectedContactId] = useState<string>('')

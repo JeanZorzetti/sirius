@@ -12,11 +12,13 @@ import {
   WifiOff,
   Settings2,
   MessageCircle,
+  ArrowLeft,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 import { usePusher } from '@/hooks/use-pusher'
 import type { MessageNewEvent, ConnectionReadyEvent } from '@/hooks/use-pusher'
+import { useAppBar } from '@/components/mobile/app-bar-context'
 
 interface Connection {
   id: string
@@ -175,6 +177,26 @@ export function ChatInterface({
     return () => { document.title = 'Chat Center' }
   }, [contacts])
 
+  const { setConfig } = useAppBar()
+
+  useEffect(() => {
+    if (selectedContact) {
+      setConfig({
+        title: selectedContact.name ?? 'Conversa',
+        showBack: true,
+        onBack: () => setSelectedContact(null),
+      })
+    } else {
+      const unread = contacts.reduce((sum, c) => sum + (c._count.unreadMessages || 0), 0)
+      setConfig({
+        title: 'Chat',
+        subtitle: unread > 0 ? `${unread} não lidas` : undefined,
+        showSearch: false,
+      })
+    }
+    return () => setConfig(null)
+  }, [selectedContact, contacts])
+
   // No connections at all
   if (connections.length === 0) {
     return (
@@ -296,7 +318,7 @@ export function ChatInterface({
           ) : contacts.length === 0 ? (
             <div className="flex-1 flex overflow-hidden chat-layout">
               {/* Left panel: skeleton or empty state */}
-              <div className="w-full md:w-[340px] lg:w-[340px] flex-shrink-0 border-r flex flex-col">
+              <div className="w-full lg:w-[340px] flex-shrink-0 border-r flex flex-col">
                 {isSyncing ? (
                   /* Skeleton conversation list */
                   <div className="flex flex-col">
@@ -346,7 +368,7 @@ export function ChatInterface({
               </div>
 
               {/* Right panel: empty */}
-              <div className="hidden md:flex flex-1 items-center justify-center bg-[#efeae2] dark:bg-zinc-900">
+              <div className="hidden lg:flex flex-1 items-center justify-center bg-[#efeae2] dark:bg-zinc-900">
                 <div className="text-center space-y-2">
                   <div className="w-16 h-16 rounded-full bg-white/60 dark:bg-zinc-800/60 backdrop-blur flex items-center justify-center mx-auto">
                     <MessageSquare className="h-7 w-7 text-muted-foreground/40" />
@@ -358,8 +380,8 @@ export function ChatInterface({
           ) : (
             <div className="flex-1 flex overflow-hidden chat-layout">
               <div className={cn(
-                'w-full md:w-[340px] lg:w-[340px] flex-shrink-0 border-r',
-                selectedContact ? 'hidden md:block' : 'block'
+                'w-full lg:w-[340px] flex-shrink-0 border-r',
+                selectedContact ? 'hidden lg:block' : 'block'
               )}>
                 <ConversationList
                   contacts={contacts}
@@ -372,7 +394,7 @@ export function ChatInterface({
 
               <div className={cn(
                 'flex-1 min-w-0',
-                !selectedContact ? 'hidden md:flex' : 'flex'
+                !selectedContact ? 'hidden lg:flex' : 'flex'
               )}>
                 {selectedContact ? (
                   <MessageArea

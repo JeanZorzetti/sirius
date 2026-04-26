@@ -84,12 +84,13 @@ export default async function DashboardPage({
         shouldShowOnboarding={shouldShowOnboarding}
       >
         <AnimatedPageContainer>
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-6 flex-wrap gap-4">
+          {/* Desktop header — hidden on mobile (handled by MobileAppBar) */}
+          <div className="hidden lg:flex flex-col sm:flex-row sm:items-center justify-between mb-6 flex-wrap gap-4">
             <div className="space-y-1">
-              <h1 className="text-3xl font-bold tracking-tight text-foreground/90">Dashboard</h1>
+              <h1 className="text-2xl font-bold tracking-tight text-foreground/90">Pipeline</h1>
               <p className="text-sm text-muted-foreground">Gerencie seus negócios e acompanhe o pipeline de vendas</p>
             </div>
-            
+
             <div className="flex items-center gap-3 bg-muted/40 p-1.5 rounded-2xl border border-border/50 backdrop-blur-md">
               <Suspense>
                 <ValueSearch />

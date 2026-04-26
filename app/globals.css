@@ -793,6 +793,90 @@
   label {
     -webkit-tap-highlight-color: transparent;
   }
+
+  /* ── Mobile Design Tokens (Linear/Notion aesthetic) ──────────────────── */
+
+  :root {
+    --app-bar-height: 3.5rem;
+    --accent-glow: oklch(70% 0.18 270 / 0.3);
+  }
+
+  /* Glass header — sticky app bar with blur */
+  .glass-header {
+    background: color-mix(in oklab, var(--background) 82%, transparent);
+    backdrop-filter: blur(16px) saturate(140%);
+    -webkit-backdrop-filter: blur(16px) saturate(140%);
+    border-bottom: 1px solid color-mix(in oklab, var(--border) 60%, transparent);
+  }
+
+  /* Mobile typography — Linear-style tight */
+  .text-mobile-h1 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    line-height: 1.25;
+  }
+  .text-mobile-h2 {
+    font-size: 1.125rem;
+    font-weight: 600;
+    letter-spacing: -0.015em;
+  }
+  .text-mobile-section {
+    font-size: 0.6875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted-foreground);
+  }
+  .text-mobile-meta {
+    font-size: 0.75rem;
+    color: var(--muted-foreground);
+  }
+
+  /* List item card — unified tappable row */
+  .list-item-card {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.875rem 1rem;
+    transition: background-color 120ms ease, transform 120ms ease;
+  }
+  .list-item-card:active {
+    transform: scale(0.985);
+    background-color: color-mix(in oklab, var(--muted) 40%, transparent);
+  }
+  @media (hover: hover) {
+    .list-item-card:hover {
+      background-color: color-mix(in oklab, var(--muted) 30%, transparent);
+    }
+  }
+
+  /* Section divider — subtle separator */
+  .section-divider {
+    height: 1px;
+    background-color: color-mix(in oklab, var(--border) 50%, transparent);
+    margin: 0 1rem;
+  }
+
+  /* FAB — floating action button */
+  .fab {
+    position: fixed;
+    bottom: calc(4rem + env(safe-area-inset-bottom));
+    right: 1rem;
+    width: 3.25rem;
+    height: 3.25rem;
+    border-radius: 9999px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 20px oklch(40% 0.18 265 / 0.35);
+    transition: transform 150ms ease, box-shadow 150ms ease;
+    z-index: 40;
+  }
+  .fab:active {
+    transform: scale(0.93);
+    box-shadow: 0 2px 10px oklch(40% 0.18 265 / 0.25);
+  }
 }
 /* Drag and Drop improvements - TEMPORARIAMENTE DESATIVADO PARA TESTE */
 /* [data-dnd-kit-drag-handle] {

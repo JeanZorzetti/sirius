@@ -3,6 +3,7 @@ import { prisma } from "@/lib/prisma"
 import { ContactsDataTableClient } from "@/components/contacts/contacts-data-table-client"
 import { CreateContactDialog } from "@/components/contacts/create-contact-dialog"
 import { ImportContactsDialog } from "@/components/contacts/import-contacts-dialog"
+import { ContactsPageClient } from "@/components/contacts/contacts-page-client"
 import { EmptyState } from "@/components/ui/empty-state"
 import { ExportButtons } from "@/components/ui/export-buttons"
 import { Users } from "lucide-react"
@@ -43,9 +44,13 @@ export default async function ContactsPage() {
 
     return (
         <div className="flex-1 space-y-4">
-            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            {/* Mobile app bar config */}
+            <ContactsPageClient contactCount={contacts.length} />
+
+            {/* Desktop header */}
+            <div className="hidden lg:flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                 <div className="flex flex-col gap-1">
-                    <h2 className="text-2xl font-bold tracking-tight text-zinc-900 dark:text-white">CONTATOS</h2>
+                    <h2 className="text-2xl font-bold tracking-tight text-zinc-900 dark:text-white">Contatos</h2>
                     <p className="text-sm text-zinc-500">Gerencie sua base de clientes e leads.</p>
                 </div>
                 <div className="flex items-center space-x-2 w-full sm:w-auto">

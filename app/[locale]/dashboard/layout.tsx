@@ -1,5 +1,3 @@
-import Link from 'next/link'
-import Image from 'next/image'
 import { Sidebar } from '@/components/dashboard/sidebar'
 import { BottomNav } from '@/components/dashboard/bottom-nav'
 import { PWAInstallPrompt } from '@/components/pwa-install-prompt'
@@ -10,6 +8,8 @@ import { AgiChatSidebar } from '@/components/agi'
 import { NativeInitializer } from '@/components/mobile/native-initializer'
 import { NetworkStatusBanner } from '@/components/mobile/network-status-banner'
 import { PageTransition } from '@/components/mobile/page-transition'
+import { AppBarProvider } from '@/components/mobile/app-bar-context'
+import { MobileAppBar } from '@/components/mobile/app-bar'
 import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { redirect } from 'next/navigation'
@@ -36,6 +36,7 @@ export default async function DashboardLayout({
   }
 
   return (
+    <AppBarProvider>
     <div className="flex h-screen overflow-hidden">
       {/* Sidebar - hidden on mobile, visible on desktop */}
       <aside className="hidden lg:block">
@@ -44,20 +45,11 @@ export default async function DashboardLayout({
 
       {/* Main content area */}
       <div className="flex flex-1 flex-col overflow-hidden">
-        {/* Header - mobile only (minimal, só logo — navegação vai no BottomNav) */}
-        <header className="flex h-14 items-center justify-between border-b border-border/60 bg-background/95 px-4 backdrop-blur-md lg:hidden">
-          <Link href="/dashboard" className="flex items-center gap-2">
-            <div className="relative h-7 w-7">
-              <Image src="/logo.png" alt="Sirius" fill sizes="28px" className="object-contain" />
-            </div>
-            <span className="bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-sm font-bold text-transparent dark:from-white dark:to-zinc-400">
-              SIRIUS
-            </span>
-          </Link>
-        </header>
+        {/* Mobile app bar — contextual per route, replaces static header */}
+        <MobileAppBar />
 
         {/* Page content — padding-bottom mobile reserva espaço para BottomNav (h-14 + safe-area) */}
-        <main className="flex-1 overflow-y-auto p-4 pb-[calc(3.5rem+env(safe-area-inset-bottom)+1rem)] lg:p-6 lg:pb-6">
+        <main className="flex-1 overflow-y-auto pb-[calc(3.5rem+env(safe-area-inset-bottom)+1rem)] lg:p-6 lg:pb-6">
           <PageTransition>
             {children}
           </PageTransition>
@@ -84,5 +76,6 @@ export default async function DashboardLayout({
       {/* Network status banner — offline / pending sync */}
       <NetworkStatusBanner />
     </div>
+    </AppBarProvider>
   )
 }
