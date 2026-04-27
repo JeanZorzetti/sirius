@@ -19,6 +19,7 @@ import {
   GitBranch,
   Repeat,
   Eye,
+  Paperclip,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -38,6 +39,7 @@ import { PRIORITY_CONFIG } from './task-types'
 import { TaskComments } from './task-comments'
 import { TaskActivityFeed } from './task-activity-feed'
 import { TaskChecklist } from './task-checklist'
+import { TaskAttachments } from './task-attachments'
 import { TaskDependencies } from './task-dependencies'
 import { TaskRecurrenceConfig } from './task-recurrence-config'
 import { TimeTrackerWidget } from './time-tracker-widget'
@@ -220,7 +222,7 @@ export function TaskDetailContent({ task, currentUserId, currentUserRole }: Task
 
         {/* Tabs */}
         <Tabs defaultValue="comments" className="w-full">
-          <TabsList className="grid w-full grid-cols-5">
+          <TabsList className="grid w-full grid-cols-6">
             <TabsTrigger value="comments" className="text-xs">
               <MessageSquare className="mr-1 h-3 w-3" />
               Comentários
@@ -228,6 +230,10 @@ export function TaskDetailContent({ task, currentUserId, currentUserRole }: Task
             <TabsTrigger value="checklists" className="text-xs">
               <CheckSquare className="mr-1 h-3 w-3" />
               Checklists
+            </TabsTrigger>
+            <TabsTrigger value="attachments" className="text-xs">
+              <Paperclip className="mr-1 h-3 w-3" />
+              Anexos
             </TabsTrigger>
             <TabsTrigger value="dependencies" className="text-xs">
               <GitBranch className="mr-1 h-3 w-3" />
@@ -248,6 +254,9 @@ export function TaskDetailContent({ task, currentUserId, currentUserRole }: Task
           </TabsContent>
           <TabsContent value="checklists" className="mt-4">
             <TaskChecklist taskId={task.id} />
+          </TabsContent>
+          <TabsContent value="attachments" className="mt-4">
+            <TaskAttachments taskId={task.id} />
           </TabsContent>
           <TabsContent value="dependencies" className="mt-4">
             <TaskDependencies taskId={task.id} projectId={task.projectId} />

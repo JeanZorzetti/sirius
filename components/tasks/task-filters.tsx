@@ -1,10 +1,11 @@
 'use client'
 
 import { useMemo } from 'react'
-import { Search, X, Filter } from 'lucide-react'
+import { Search, X, Filter, Calendar } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
+import { Label } from '@/components/ui/label'
 import {
   Popover,
   PopoverContent,
@@ -18,6 +19,8 @@ export interface TaskFiltersState {
   statusIds: string[]
   assigneeIds: string[]
   labelIds: string[]
+  dueDateFrom: string
+  dueDateTo: string
 }
 
 interface TaskFiltersProps {
@@ -74,7 +77,9 @@ export function TaskFilters({ tasks, statuses, value, onChange }: TaskFiltersPro
     value.priorities.length +
     value.statusIds.length +
     value.assigneeIds.length +
-    value.labelIds.length
+    value.labelIds.length +
+    (value.dueDateFrom ? 1 : 0) +
+    (value.dueDateTo ? 1 : 0)
 
   const clearAll = () => {
     onChange({
@@ -83,6 +88,8 @@ export function TaskFilters({ tasks, statuses, value, onChange }: TaskFiltersPro
       statusIds: [],
       assigneeIds: [],
       labelIds: [],
+      dueDateFrom: '',
+      dueDateTo: '',
     })
   }
 
@@ -221,6 +228,39 @@ export function TaskFilters({ tasks, statuses, value, onChange }: TaskFiltersPro
               </div>
             )}
 
+            {/* Due date range */}
+            <div>
+              <h4 className="mb-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                Prazo
+              </h4>
+              <div className="grid grid-cols-2 gap-2">
+                <div className="space-y-1">
+                  <Label className="text-[10px] text-muted-foreground">De</Label>
+                  <div className="relative">
+                    <Calendar className="pointer-events-none absolute left-2 top-1/2 h-3 w-3 -translate-y-1/2 text-muted-foreground" />
+                    <input
+                      type="date"
+                      value={value.dueDateFrom}
+                      onChange={(e) => onChange({ ...value, dueDateFrom: e.target.value })}
+                      className="h-8 w-full rounded-md border border-border/50 bg-background pl-7 pr-2 text-xs focus:border-primary focus:outline-none"
+                    />
+                  </div>
+                </div>
+                <div className="space-y-1">
+                  <Label className="text-[10px] text-muted-foreground">Até</Label>
+                  <div className="relative">
+                    <Calendar className="pointer-events-none absolute left-2 top-1/2 h-3 w-3 -translate-y-1/2 text-muted-foreground" />
+                    <input
+                      type="date"
+                      value={value.dueDateTo}
+                      onChange={(e) => onChange({ ...value, dueDateTo: e.target.value })}
+                      className="h-8 w-full rounded-md border border-border/50 bg-background pl-7 pr-2 text-xs focus:border-primary focus:outline-none"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+
             {activeCount > 0 && (
               <div className="border-t border-border/50 pt-3">
                 <Button
@@ -253,6 +293,9 @@ export function TaskFilters({ tasks, statuses, value, onChange }: TaskFiltersPro
 
 export function applyTaskFilters(tasks: TaskLite[], filters: TaskFiltersState): TaskLite[] {
   const search = filters.search.trim().toLowerCase()
+  const fromMs = filters.dueDateFrom ? new Date(filters.dueDateFrom).getTime() : null
+  const toMs = filters.dueDateTo ? new Date(filters.dueDateTo + 'T23:59:59').getTime() : null
+
   return tasks.filter((t) => {
     if (search && !t.title.toLowerCase().includes(search) && !t.description?.toLowerCase().includes(search)) {
       return false
@@ -271,6 +314,12 @@ export function applyTaskFilters(tasks: TaskLite[], filters: TaskFiltersState): 
       if (!filters.labelIds.some((id) => taskLabelIds.includes(id))) {
         return false
       }
+    }
+    if (fromMs !== null || toMs !== null) {
+      if (!t.dueDate) return false
+      const due = new Date(t.dueDate).getTime()
+      if (fromMs !== null && due < fromMs) return false
+      if (toMs !== null && due > toMs) return false
     }
     return true
   })

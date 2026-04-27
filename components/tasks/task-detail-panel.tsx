@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { X, Trash2, Loader2, Calendar, User, Flag, AlignLeft, CheckCircle2 } from 'lucide-react'
+import { X, Trash2, Loader2, Calendar, User, Flag, AlignLeft, CheckCircle2, CheckSquare, Paperclip } from 'lucide-react'
 import {
   Sheet,
   SheetContent,
@@ -22,6 +22,8 @@ import { toast } from 'sonner'
 import type { TaskLite, TaskStatusLite } from './task-types'
 import { TaskAssigneeAvatar } from './task-assignee-avatar'
 import { TaskPriorityIcon } from './task-priority-icon'
+import { TaskChecklist } from './task-checklist'
+import { TaskAttachments } from './task-attachments'
 
 interface TaskDetailPanelProps {
   open: boolean
@@ -246,6 +248,24 @@ export function TaskDetailPanel({
                   placeholder="Adicione notas, checklists ou qualquer contexto relevante..."
                   className="min-h-[220px] resize-y border-0 bg-muted/30 hover:bg-muted/50 focus:bg-background focus:ring-1 focus:ring-primary/20 transition-all text-[15px] leading-relaxed rounded-2xl p-5 shadow-inner"
                 />
+              </div>
+
+              {/* Checklists */}
+              <div className="space-y-3">
+                <div className="flex items-center gap-2 text-foreground font-semibold">
+                  <CheckSquare className="h-4 w-4 text-muted-foreground" />
+                  <h3>Checklists</h3>
+                </div>
+                <TaskChecklist taskId={task.id} />
+              </div>
+
+              {/* Attachments */}
+              <div className="space-y-3">
+                <div className="flex items-center gap-2 text-foreground font-semibold">
+                  <Paperclip className="h-4 w-4 text-muted-foreground" />
+                  <h3>Anexos</h3>
+                </div>
+                <TaskAttachments taskId={task.id} />
               </div>
 
               {/* Connected Entities */}

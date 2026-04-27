@@ -32,6 +32,8 @@ const EMPTY_FILTERS: TaskFiltersState = {
   statusIds: [],
   assigneeIds: [],
   labelIds: [],
+  dueDateFrom: '',
+  dueDateTo: '',
 }
 
 export function TaskProjectWorkspace({

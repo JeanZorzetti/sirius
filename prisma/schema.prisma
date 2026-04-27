@@ -207,7 +207,8 @@ model User {
   tasksCreated   Task[]         @relation("TaskCreator")
   taskComments   TaskComment[]  @relation("TaskCommentAuthor")
   timeEntries    TimeEntry[]    @relation("TimeEntryUser")
-  taskActivities TaskActivity[] @relation("TaskActivityUser")
+  taskActivities    TaskActivity[]   @relation("TaskActivityUser")
+  taskAttachments   TaskAttachment[] @relation("TaskAttachmentUploader")
 
   role    Role    @default(USER)
   orgRole OrgRole @default(OWNER) // Defaulting to OWNER for now so existing users don't lose access. Ideally MEMBER.
@@ -1963,6 +1964,7 @@ model Task {
   labels           TaskLabel[]
   comments         TaskComment[]
   checklists       TaskChecklist[]
+  attachments      TaskAttachment[]
   timeEntries      TimeEntry[]
   activities       TaskActivity[]
   dependenciesFrom TaskDependency[] @relation("DependencyFrom")
@@ -2095,4 +2097,22 @@ model TaskActivity {
   user   User   @relation("TaskActivityUser", fields: [userId], references: [id])
 
   @@index([taskId, createdAt])
+}
+
+// TaskAttachment: Arquivos anexados a tarefas (armazenados no MinIO)
+model TaskAttachment {
+  id           String   @id @default(uuid())
+  fileName     String
+  fileSize     Int
+  mimeType     String
+  storageKey   String
+  uploadedAt   DateTime @default(now())
+
+  taskId String
+  task   Task   @relation(fields: [taskId], references: [id], onDelete: Cascade)
+
+  uploadedById String
+  uploadedBy   User   @relation("TaskAttachmentUploader", fields: [uploadedById], references: [id])
+
+  @@index([taskId])
 }
