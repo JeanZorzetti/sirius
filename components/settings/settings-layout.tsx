@@ -52,7 +52,6 @@ const tabs: SettingsTab[] = [
     label: 'Webhooks',
     icon: Webhook,
     href: '/dashboard/settings/webhooks',
-    badge: 'PRO',
     description: 'Configure webhooks para eventos',
   },
   {
@@ -60,7 +59,6 @@ const tabs: SettingsTab[] = [
     label: 'Integrações',
     icon: Zap,
     href: '/dashboard/settings/integrations',
-    badge: 'PRO',
     description: 'N8N, WhatsApp e Google Calendar',
   },
   {
