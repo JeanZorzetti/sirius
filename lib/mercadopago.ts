@@ -128,8 +128,11 @@ export async function createCheckoutPreference(
         },
         auto_return: 'approved',
         payment_methods: {
-          excluded_payment_types: [], // Aceitar todos (PIX, cartão, boleto)
-          installments: 12 // Até 12x no cartão
+          excluded_payment_types: [
+            { id: 'ticket' },       // boleto
+            { id: 'bank_transfer' } // PIX
+          ],
+          installments: 12
         },
         notification_url: `${process.env.NEXTAUTH_URL || process.env.NEXT_PUBLIC_APP_URL}/api/webhooks/mercadopago`,
         external_reference: `${organizationId}_${plan}`, // "orgId_TIER" para parsing no webhook
