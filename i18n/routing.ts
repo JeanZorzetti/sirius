@@ -128,6 +128,8 @@ export const routing = defineRouting({
     '/dashboard/marketing': '/dashboard/marketing',
     '/dashboard/prospecting': '/dashboard/prospecting',
     '/dashboard/visits': '/dashboard/visits',
+    '/dashboard/support': '/dashboard/support',
+    '/dashboard/support/[id]': '/dashboard/support/[id]',
 
     // Checkout
     '/checkout/sucesso': {
@@ -159,6 +161,8 @@ export const routing = defineRouting({
     '/admin/spin-chat': '/admin/spin-chat',
     '/admin/users': '/admin/users',
     '/admin/cache-stats': '/admin/cache-stats',
+    '/admin/support': '/admin/support',
+    '/admin/support/[id]': '/admin/support/[id]',
   },
 });
 

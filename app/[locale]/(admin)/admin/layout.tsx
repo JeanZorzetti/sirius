@@ -2,7 +2,7 @@ import { getSession } from "@/lib/auth"
 import { prisma } from "@/lib/prisma"
 import { redirect } from "next/navigation"
 import Link from "next/link"
-import { ShieldAlert, ArrowLeft, Activity } from "lucide-react"
+import { ShieldAlert, ArrowLeft, Activity, LifeBuoy } from "lucide-react"
 
 export default async function AdminLayout({
     children,
@@ -60,6 +60,10 @@ export default async function AdminLayout({
                     <Link href="/admin/access-logs" className="flex items-center gap-1 text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors">
                         <Activity className="h-3.5 w-3.5" />
                         Acessos
+                    </Link>
+                    <Link href="/admin/support" className="flex items-center gap-1 text-sm font-bold text-indigo-600 hover:text-indigo-800 transition-colors">
+                        <LifeBuoy className="h-3.5 w-3.5" />
+                        Tickets
                     </Link>
                 </nav>
                 <div className="ml-auto">
