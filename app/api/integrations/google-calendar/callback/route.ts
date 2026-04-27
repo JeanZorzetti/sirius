@@ -12,6 +12,11 @@ import logger from '@/lib/logger'
  * Google Calendar OAuth 2.0 callback
  * GET /api/integrations/google-calendar/callback?code=xxx&state=xxx
  */
+function redirectTo(path: string) {
+  const base = process.env.NEXTAUTH_URL?.replace(/\/$/, '') ?? 'https://siriuscrm.com.br'
+  return NextResponse.redirect(`${base}${path}`)
+}
+
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url)
@@ -19,28 +24,15 @@ export async function GET(request: Request) {
     const state = searchParams.get('state')
     const error = searchParams.get('error')
 
-    // Handle OAuth errors (user denied access)
     if (error) {
       logger.warn({ error }, 'Google Calendar OAuth error')
-      return NextResponse.redirect(
-        new URL(
-          '/dashboard/settings/integrations/google-calendar?error=access_denied',
-          request.url
-        )
-      )
+      return redirectTo('/dashboard/settings/integrations/google-calendar?error=access_denied')
     }
 
-    // Validate required parameters
     if (!code || !state) {
-      return NextResponse.redirect(
-        new URL(
-          '/dashboard/settings/integrations/google-calendar?error=invalid_request',
-          request.url
-        )
-      )
+      return redirectTo('/dashboard/settings/integrations/google-calendar?error=invalid_request')
     }
 
-    // Decode state parameter
     let organizationId: string
     let userId: string
     try {
@@ -49,22 +41,14 @@ export async function GET(request: Request) {
       userId = decoded.userId
     } catch {
       logger.error({ state }, 'Invalid state parameter')
-      return NextResponse.redirect(
-        new URL(
-          '/dashboard/settings/integrations/google-calendar?error=invalid_state',
-          request.url
-        )
-      )
+      return redirectTo('/dashboard/settings/integrations/google-calendar?error=invalid_state')
     }
 
-    // Exchange authorization code for tokens
-    const { refreshToken, accessToken } = await exchangeCodeForTokens(code)
+    const { refreshToken } = await exchangeCodeForTokens(code)
 
-    // Get user's calendar info (email)
     const client = new GoogleCalendarClient(refreshToken)
     const calendarInfo = await client.getCalendarInfo()
 
-    // Encrypt and store refresh token
     const encryptedRefreshToken = encrypt(refreshToken)
 
     await prisma.organization.update({
@@ -76,7 +60,6 @@ export async function GET(request: Request) {
       }
     })
 
-    // Log successful connection
     await logGoogleCalendarActivity(
       organizationId,
       'oauth_connect',
@@ -85,25 +68,11 @@ export async function GET(request: Request) {
       { connected: true }
     )
 
-    logger.info({
-      organizationId,
-      email: calendarInfo.email
-    }, 'Google Calendar connected successfully')
+    logger.info({ organizationId, email: calendarInfo.email }, 'Google Calendar connected successfully')
 
-    // Redirect back to settings page with success message
-    return NextResponse.redirect(
-      new URL(
-        '/dashboard/settings/integrations/google-calendar?success=true',
-        request.url
-      )
-    )
+    return redirectTo('/dashboard/settings/integrations/google-calendar?success=true')
   } catch (error: any) {
     logger.error({ error }, 'Error in Google Calendar OAuth callback')
-    return NextResponse.redirect(
-      new URL(
-        '/dashboard/settings/integrations/google-calendar?error=connection_failed',
-        request.url
-      )
-    )
+    return redirectTo('/dashboard/settings/integrations/google-calendar?error=connection_failed')
   }
 }
