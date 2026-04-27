@@ -337,53 +337,70 @@ export function EmailAutomationsClient({
 
                 {(broadcastStatus === 'ready' || broadcastStatus === 'sending') && broadcastPreview && (
                   <div className="space-y-4">
-                    <div className="rounded-lg bg-amber-50 border border-amber-200 p-4">
-                      <p className="text-sm font-semibold text-amber-900">
-                        {broadcastPreview.count} organização{broadcastPreview.count !== 1 ? 'ões' : ''} afetada{broadcastPreview.count !== 1 ? 's' : ''}
-                      </p>
-                      <p className="text-xs text-amber-700 mt-1">
-                        Clientes nos planos Starter ou Pro com pelo menos uma conexão WhatsApp cadastrada
-                      </p>
-                    </div>
-
-                    <div className="rounded-lg border divide-y max-h-64 overflow-y-auto text-sm">
-                      {broadcastPreview.orgs.map((org: any) => (
-                        <div key={org.id} className="flex items-center justify-between px-4 py-2.5 hover:bg-muted/40">
-                          <span className="font-medium truncate max-w-[200px]">{org.name}</span>
-                          <div className="flex items-center gap-2 shrink-0">
-                            <Badge variant="outline" className="text-xs">{org.tier}</Badge>
-                            <span className="text-muted-foreground text-xs truncate max-w-[160px]">{org.adminEmail ?? 'sem email'}</span>
+                    {(() => {
+                      const pending = broadcastPreview.orgs.filter((o: any) => !o.alreadySent)
+                      const done = broadcastPreview.orgs.filter((o: any) => o.alreadySent)
+                      return (
+                        <>
+                          <div className="rounded-lg bg-amber-50 border border-amber-200 p-4 flex items-center justify-between gap-4">
+                            <div>
+                              <p className="text-sm font-semibold text-amber-900">
+                                {pending.length} pendente{pending.length !== 1 ? 's' : ''} de {broadcastPreview.count} org{broadcastPreview.count !== 1 ? 's' : ''}
+                              </p>
+                              <p className="text-xs text-amber-700 mt-0.5">
+                                {done.length > 0 ? `${done.length} já receberam — serão puladas automaticamente` : 'Nenhum envio anterior detectado'}
+                              </p>
+                            </div>
+                            {done.length > 0 && (
+                              <div className="flex items-center gap-1 text-xs text-green-700 bg-green-50 border border-green-200 rounded-md px-2.5 py-1 shrink-0">
+                                <CheckCircle className="h-3.5 w-3.5" />
+                                {done.length} já enviado{done.length !== 1 ? 's' : ''}
+                              </div>
+                            )}
                           </div>
-                        </div>
-                      ))}
-                      {broadcastPreview.orgs.length === 0 && (
-                        <p className="px-4 py-6 text-center text-xs text-muted-foreground">Nenhuma organização encontrada</p>
-                      )}
-                    </div>
 
-                    <div className="flex gap-3 pt-2">
-                      <Button
-                        variant="outline"
-                        className="flex-1"
-                        onClick={() => sendBroadcast(true)}
-                        disabled={broadcastStatus === 'sending'}
-                      >
-                        {broadcastStatus === 'sending' ? (
-                          <><Loader2 className="h-4 w-4 animate-spin mr-2" />Simulando...</>
-                        ) : 'Simulação (Dry Run)'}
-                      </Button>
-                      <Button
-                        className="flex-1 bg-green-600 hover:bg-green-700 text-white"
-                        onClick={() => sendBroadcast(false)}
-                        disabled={broadcastStatus === 'sending' || broadcastPreview.count === 0}
-                      >
-                        {broadcastStatus === 'sending' ? (
-                          <><Loader2 className="h-4 w-4 animate-spin mr-2" />Enviando...</>
-                        ) : (
-                          <><Send className="h-4 w-4 mr-2" />Enviar para {broadcastPreview.count} org{broadcastPreview.count !== 1 ? 's' : ''}</>
-                        )}
-                      </Button>
-                    </div>
+                          <div className="rounded-lg border divide-y max-h-64 overflow-y-auto text-sm">
+                            {broadcastPreview.orgs.map((org: any) => (
+                              <div key={org.id} className={`flex items-center justify-between px-4 py-2.5 ${org.alreadySent ? 'opacity-40' : 'hover:bg-muted/40'}`}>
+                                <span className="font-medium truncate max-w-[200px]">{org.name}</span>
+                                <div className="flex items-center gap-2 shrink-0">
+                                  <Badge variant="outline" className="text-xs">{org.tier}</Badge>
+                                  <span className="text-muted-foreground text-xs truncate max-w-[160px]">{org.adminEmail ?? 'sem email'}</span>
+                                  {org.alreadySent && <Badge className="text-xs bg-green-100 text-green-700 border-green-200">Enviado</Badge>}
+                                </div>
+                              </div>
+                            ))}
+                            {broadcastPreview.orgs.length === 0 && (
+                              <p className="px-4 py-6 text-center text-xs text-muted-foreground">Nenhuma organização encontrada</p>
+                            )}
+                          </div>
+
+                          <div className="flex gap-3 pt-2">
+                            <Button
+                              variant="outline"
+                              className="flex-1"
+                              onClick={() => sendBroadcast(true)}
+                              disabled={broadcastStatus === 'sending'}
+                            >
+                              {broadcastStatus === 'sending' ? (
+                                <><Loader2 className="h-4 w-4 animate-spin mr-2" />Simulando...</>
+                              ) : 'Simulação (Dry Run)'}
+                            </Button>
+                            <Button
+                              className="flex-1 bg-green-600 hover:bg-green-700 text-white"
+                              onClick={() => sendBroadcast(false)}
+                              disabled={broadcastStatus === 'sending' || pending.length === 0}
+                            >
+                              {broadcastStatus === 'sending' ? (
+                                <><Loader2 className="h-4 w-4 animate-spin mr-2" />Enviando...</>
+                              ) : (
+                                <><Send className="h-4 w-4 mr-2" />Enviar para {pending.length} org{pending.length !== 1 ? 's' : ''}</>
+                              )}
+                            </Button>
+                          </div>
+                        </>
+                      )
+                    })()}
                   </div>
                 )}
 

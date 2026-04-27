@@ -14,6 +14,7 @@ import logger from '@/lib/logger'
 import React from 'react'
 
 const ADMIN_EMAIL = 'jeanzorzetti@gmail.com'
+const BROADCAST_SUBJECT = BROADCAST_SUBJECT
 
 // FREE orgs that previously had a paid plan — include manually
 const OVERRIDE_ORG_IDS = [
@@ -69,6 +70,12 @@ export async function GET() {
 
   const orgs = await fetchOrgs()
 
+  const alreadySent = await prisma.emailLog.findMany({
+    where: { subject: BROADCAST_SUBJECT, status: 'SENT' },
+    select: { organizationId: true },
+  })
+  const sentOrgIds = new Set(alreadySent.map(l => l.organizationId))
+
   return NextResponse.json({
     count: orgs.length,
     orgs: orgs.map(o => ({
@@ -76,6 +83,7 @@ export async function GET() {
       name: o.name,
       tier: o.tier,
       adminEmail: o.user?.email ? (EMAIL_OVERRIDES[o.user.email] ?? o.user.email) : null,
+      alreadySent: sentOrgIds.has(o.id),
     })),
   })
 }
@@ -90,11 +98,23 @@ export async function POST(req: NextRequest) {
   const dryRun: boolean = body.dryRun === true
 
   const orgs = await fetchOrgs()
-  const results: { orgId: string; orgName: string; email: string; status: 'sent' | 'skipped' | 'no-email' | 'error'; error?: string }[] = []
+
+  const alreadySent = await prisma.emailLog.findMany({
+    where: { subject: BROADCAST_SUBJECT, status: 'SENT' },
+    select: { organizationId: true },
+  })
+  const sentOrgIds = new Set(alreadySent.map(l => l.organizationId))
+
+  const results: { orgId: string; orgName: string; email: string; status: 'sent' | 'skipped' | 'no-email' | 'already-sent' | 'error'; error?: string }[] = []
 
   for (const org of orgs) {
     if (!org.user?.email) {
       results.push({ orgId: org.id, orgName: org.name, email: '(none)', status: 'no-email' })
+      continue
+    }
+
+    if (sentOrgIds.has(org.id)) {
+      results.push({ orgId: org.id, orgName: org.name, email: org.user.email, status: 'already-sent' })
       continue
     }
 
@@ -113,7 +133,7 @@ export async function POST(req: NextRequest) {
 
       const res = await sendEmail({
         to: recipientEmail,
-        subject: 'Atualização importante: WhatsApp Oficial no Sirius CRM',
+        subject: BROADCAST_SUBJECT,
         react: emailElement,
       })
 
@@ -125,7 +145,7 @@ export async function POST(req: NextRequest) {
           userId: org.user.id,
           type: 'UPGRADE_NUDGE',
           to: recipientEmail,
-          subject: 'Atualização importante: WhatsApp Oficial no Sirius CRM',
+          subject: BROADCAST_SUBJECT,
           status: 'SENT',
           sentAt: new Date(),
         },
