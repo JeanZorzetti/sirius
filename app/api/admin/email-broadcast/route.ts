@@ -75,7 +75,7 @@ export async function GET() {
       id: o.id,
       name: o.name,
       tier: o.tier,
-      adminEmail: o.user?.email ?? null,
+      adminEmail: o.user?.email ? (EMAIL_OVERRIDES[o.user.email] ?? o.user.email) : null,
     })),
   })
 }
