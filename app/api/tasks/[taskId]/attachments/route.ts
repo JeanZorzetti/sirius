@@ -8,28 +8,23 @@ import { randomUUID } from 'crypto'
 const BUCKET = 'task-attachments'
 const MAX_FILE_SIZE = 50 * 1024 * 1024 // 50MB
 
+let s3: S3Client | null = null
+
 function getS3Client(): S3Client {
-  const endpoint = process.env.MINIO_ENDPOINT
-  const accessKeyId = process.env.MINIO_ACCESS_KEY
-  const secretAccessKey = process.env.MINIO_SECRET_KEY
+  if (s3) return s3
+  const endpoint = process.env.MINIO_TASKS_ENDPOINT ?? process.env.MINIO_ENDPOINT
+  const accessKeyId = process.env.MINIO_TASKS_ACCESS_KEY ?? process.env.MINIO_ACCESS_KEY
+  const secretAccessKey = process.env.MINIO_TASKS_SECRET_KEY ?? process.env.MINIO_SECRET_KEY
   if (!endpoint || !accessKeyId || !secretAccessKey) {
     throw new Error('MinIO env vars not configured')
   }
-  return new S3Client({
+  s3 = new S3Client({
     endpoint,
     region: 'us-east-1',
     credentials: { accessKeyId, secretAccessKey },
     forcePathStyle: true,
   })
-}
-
-async function ensureBucket(s3: S3Client) {
-  const { HeadBucketCommand, CreateBucketCommand } = await import('@aws-sdk/client-s3')
-  try {
-    await s3.send(new HeadBucketCommand({ Bucket: BUCKET }))
-  } catch {
-    await s3.send(new CreateBucketCommand({ Bucket: BUCKET }))
-  }
+  return s3
 }
 
 // GET /api/tasks/[taskId]/attachments — list with signed URLs
@@ -49,11 +44,11 @@ export async function GET(
     orderBy: { uploadedAt: 'desc' },
   })
 
-  const s3 = getS3Client()
+  const client = getS3Client()
   const withUrls = await Promise.all(
-    attachments.map(async (a: typeof attachments[number]) => {
+    attachments.map(async (a) => {
       const url = await getSignedUrl(
-        s3,
+        client,
         new GetObjectCommand({ Bucket: BUCKET, Key: a.storageKey }),
         { expiresIn: 3600 }
       )
@@ -92,15 +87,14 @@ export async function POST(
   const ext = file.name.split('.').pop() || 'bin'
   const storageKey = `tasks/${task.organizationId}/${taskId}/${randomUUID()}.${ext}`
 
-  const s3 = getS3Client()
-  await ensureBucket(s3)
-  await s3.send(
+  const client = getS3Client()
+  await client.send(
     new PutObjectCommand({
       Bucket: BUCKET,
       Key: storageKey,
       Body: buffer,
-      ContentType: file.type,
-      Metadata: { 'original-filename': file.name },
+      ContentType: file.type || 'application/octet-stream',
+      Metadata: { 'original-filename': encodeURIComponent(file.name) },
     })
   )
 
@@ -108,7 +102,7 @@ export async function POST(
     data: {
       fileName: file.name,
       fileSize: file.size,
-      mimeType: file.type,
+      mimeType: file.type || 'application/octet-stream',
       storageKey,
       taskId,
       uploadedById: user.id,
@@ -117,7 +111,7 @@ export async function POST(
   })
 
   const url = await getSignedUrl(
-    s3,
+    client,
     new GetObjectCommand({ Bucket: BUCKET, Key: storageKey }),
     { expiresIn: 3600 }
   )
@@ -140,16 +134,11 @@ export async function DELETE(
   const id = searchParams.get('id')
   if (!id) return NextResponse.json({ error: 'ID do anexo obrigatório' }, { status: 400 })
 
-  const user = await prisma.user.findUnique({ where: { email: session.user.email } })
-  if (!user) return NextResponse.json({ error: 'Usuário não encontrado' }, { status: 404 })
-
-  const attachment = await prisma.taskAttachment.findFirst({
-    where: { id, taskId },
-  })
+  const attachment = await prisma.taskAttachment.findFirst({ where: { id, taskId } })
   if (!attachment) return NextResponse.json({ error: 'Anexo não encontrado' }, { status: 404 })
 
-  const s3 = getS3Client()
-  await s3.send(new DeleteObjectCommand({ Bucket: BUCKET, Key: attachment.storageKey }))
+  const client = getS3Client()
+  await client.send(new DeleteObjectCommand({ Bucket: BUCKET, Key: attachment.storageKey }))
   await prisma.taskAttachment.delete({ where: { id } })
 
   return NextResponse.json({ ok: true })
