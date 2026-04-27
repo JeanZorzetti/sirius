@@ -25,7 +25,7 @@ const features: PlanFeature[] = [
   { name: 'Pipelines', free: '1', starter: '5', pro: '15', business: '50' },
   { name: 'Usuários', free: '2', starter: '5', pro: '15', business: '50' },
   { name: 'Prospecção mensal', free: false, starter: '75 leads', pro: '300 leads', business: '1.500 leads' },
-  { name: 'WhatsApp', free: false, starter: '1 instância', pro: '3 instâncias', business: '5 instâncias' },
+  { name: 'WhatsApp Oficial (Meta)', free: false, starter: false, pro: false, business: 'API Oficial Meta' },
   { name: 'Automações de Email', free: false, starter: '5', pro: '15', business: '50' },
   { name: 'Integrações', free: false, starter: 'Básicas', pro: 'Avançadas', business: 'Todas' },
   { name: 'Analytics Avançado', free: false, starter: false, pro: true, business: true },

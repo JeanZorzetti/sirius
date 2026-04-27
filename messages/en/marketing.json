@@ -56,8 +56,8 @@
         "description": "Manage your pipeline visually. Multiple pipelines by product, region, or team. Total value per stage and closing forecast."
       },
       "whatsapp": {
-        "title": "Integrated WhatsApp",
-        "description": "Unified inbox via Evolution API. Tags, quick replies, routing by salesperson, and media support.",
+        "title": "Official WhatsApp",
+        "description": "Unified inbox via Meta Official API. Tags, quick replies, routing by salesperson, and media support. Business plan only.",
         "metric": "98% open rate"
       },
       "analytics": {
@@ -83,7 +83,7 @@
     },
     "about": {
       "title": "What is Sirius CRM?",
-      "description": "Sirius CRM is a sales platform designed for high-performance teams, used by over 1,200 users. It offers four subscription plans: Free, Starter for $67, Pro for $147, and Business for $397, helping teams achieve an average 35% increase in lead conversion. Key differentiators include native WhatsApp integration via Evolution API, B2B lead prospecting through Google Maps, and our AI sales assistant, AGI Sirius."
+      "description": "Sirius CRM is a sales platform designed for high-performance teams, used by over 1,200 users. It offers four subscription plans: Free, Starter for $67, Pro for $147, and Business for $397, helping teams achieve an average 35% increase in lead conversion. Key differentiators include native WhatsApp integration via Meta Official API (Business plan), B2B lead prospecting through Google Maps, and our AI sales assistant, AGI Sirius."
     },
     "founders": {
       "badge": "Founders Program — 41% OFF for life!",
@@ -195,18 +195,18 @@
   },
   "features": {
     "meta": {
-      "title": "Sirius CRM Features 2026 [12+ AI Tools] — WhatsApp, Pipeline, Prospecting & More",
-      "description": "Discover how Sirius Native AI automatically qualifies your leads with BANT and MEDDIC, integrates WhatsApp, prospects on Google Maps, and automates follow-ups. Visual Kanban Pipeline. 7-day free trial.",
-      "ogTitle": "Sirius CRM Features 2026 [12+ AI Tools] — WhatsApp & Pipeline",
-      "ogDescription": "AI that qualifies leads automatically, integrated WhatsApp, Kanban pipeline, Google Maps prospecting, automations, and PRO analytics. All in one CRM.",
-      "twitterTitle": "Sirius CRM Features 2026 [12+ AI Tools] — WhatsApp & Pipeline",
-      "twitterDescription": "AI that qualifies leads with BANT and MEDDIC, integrated WhatsApp, Kanban pipeline, Google Maps prospecting, and automations. Try for free."
+      "title": "Sirius CRM Features 2026 [12+ AI Tools] — Official WhatsApp, Pipeline, Prospecting & More",
+      "description": "Discover how Sirius Native AI automatically qualifies your leads with BANT and MEDDIC, integrates WhatsApp via Meta Official API (Business plan), prospects on Google Maps, and automates follow-ups. Visual Kanban Pipeline. 7-day free trial.",
+      "ogTitle": "Sirius CRM Features 2026 [12+ AI Tools] — Official WhatsApp & Pipeline",
+      "ogDescription": "AI that qualifies leads automatically, WhatsApp via Meta Official API (Business), Kanban pipeline, Google Maps prospecting, automations, and PRO analytics. All in one CRM.",
+      "twitterTitle": "Sirius CRM Features 2026 [12+ AI Tools] — Official WhatsApp & Pipeline",
+      "twitterDescription": "AI that qualifies leads with BANT and MEDDIC, WhatsApp via Meta Official API, Kanban pipeline, Google Maps prospecting, and automations. Try for free."
     },
     "hero": {
       "badge": "+50 features",
       "title": "Everything to sell more,",
       "titleHighlight": "without complexity",
-      "subtitle": "Kanban pipeline, integrated WhatsApp, AI sales assistant, automatic prospecting, deal and email automations, advanced analytics, public API and much more. We designed every feature with sales team productivity in mind.",
+      "subtitle": "Kanban pipeline, Official WhatsApp (Business plan), AI sales assistant, automatic prospecting, deal and email automations, advanced analytics, public API and much more. We designed every feature with sales team productivity in mind.",
       "ctaPrimary": "Try for Free",
       "ctaSecondary": "View Plans & Pricing"
     },
@@ -237,9 +237,9 @@
         "badge": "Core"
       },
       "whatsapp": {
-        "name": "Integrated WhatsApp",
-        "description": "Connect your WhatsApp via Evolution API with QR Code pairing. Send and receive messages directly from the CRM. Unified inbox with tags, quick replies, conversation assignment, and media (photos, audio, documents).",
-        "badge": "Starter+"
+        "name": "Official WhatsApp",
+        "description": "Connect your WhatsApp Business via Meta Official API. Send and receive messages directly from the CRM with full compliance. Unified inbox with tags, quick replies, conversation assignment, and media (photos, audio, documents). Business plan only.",
+        "badge": "Business"
       },
       "agi": {
         "name": "AGI Sirius — AI Sales Assistant",
@@ -342,7 +342,7 @@
               },
               "3": {
                 "q": "Is there WhatsApp integration?",
-                "a": "Yes. WhatsApp conversations appear automatically on the contact timeline. You can reply directly from the CRM without switching screens."
+                "a": "Yes. On the Business plan, we integrate via Meta Official WhatsApp Business API. Conversations appear automatically on the contact timeline and you reply directly from the CRM — no ban risk."
               }
             }
           }
@@ -593,10 +593,10 @@
       },
       "comunicacao": {
         "title": "Multi-channel Communication",
-        "subtitle": "WhatsApp, email, and notifications — all integrated without leaving the CRM",
+        "subtitle": "Official WhatsApp, email, and notifications — all integrated without leaving the CRM",
         "inbox": {
-          "name": "Unified Inbox (WhatsApp)",
-          "description": "All WhatsApp conversations in one place. Filter by tags, search by name, pin important chats, archive old conversations. Assign conversations to team members."
+          "name": "Unified Inbox (Official WhatsApp)",
+          "description": "All WhatsApp conversations in one place via Meta Official API. Filter by tags, search by name, pin important chats, archive old conversations. Assign conversations to team members. Available on Business plan."
         },
         "quickReplies": {
           "name": "Quick Replies",
@@ -675,8 +675,8 @@
         "title": "Integrations",
         "subtitle": "Connect Sirius to your entire tool ecosystem",
         "whatsapp": {
-          "name": "WhatsApp (Evolution API)",
-          "description": "Native integration with Evolution API. Multi-instance on Business (up to 5). QR Code for pairing, message sending/receiving, media, and real-time status."
+          "name": "WhatsApp Official (Meta API)",
+          "description": "Integration via Meta Official WhatsApp Business API. No ban risk. Message sending/receiving, approved templates, media, and real-time status. Business plan only."
         },
         "calendar": {
           "name": "Google Calendar",
@@ -798,9 +798,9 @@
         "users_starter": "5",
         "users_pro": "15",
         "users_business": "50",
-        "whatsapp_starter": "1 instance",
-        "whatsapp_pro": "3 instances",
-        "whatsapp_business": "5 instances",
+        "whatsapp_starter": "—",
+        "whatsapp_pro": "—",
+        "whatsapp_business": "Meta Official API",
         "prospecting_starter": "75 leads",
         "prospecting_pro": "300 leads",
         "prospecting_business": "1,500 leads",
@@ -861,7 +861,6 @@
           "1,000 Contacts",
           "500 Active Deals",
           "5 Kanban Pipelines",
-          "1 WhatsApp instance",
           "75 prospecting credits/month",
           "1 Autonomous AI Agent (Sofia)",
           "200 autonomous actions/month",
@@ -878,7 +877,6 @@
           "5,000 Contacts",
           "2,500 Active Deals",
           "15 Kanban Pipelines",
-          "3 WhatsApp instances",
           "300 prospecting credits/month",
           "3 Autonomous AI Agents (Sofia)",
           "1,000 autonomous actions/month",
@@ -897,7 +895,7 @@
           "Unlimited Contacts",
           "Unlimited Deals",
           "50 Kanban Pipelines",
-          "5 WhatsApp instances",
+          "WhatsApp via Meta Official API",
           "1,500 prospecting credits/month",
           "5 Autonomous AI Agents (Sofia)",
           "3,000 autonomous actions/month",
