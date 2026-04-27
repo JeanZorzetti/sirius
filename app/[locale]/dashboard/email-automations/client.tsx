@@ -8,7 +8,8 @@ import { TemplateEditor } from '@/components/email-automations/template-editor'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Badge } from '@/components/ui/badge'
-import { Mail, BarChart3, Settings, Lock } from 'lucide-react'
+import { Button } from '@/components/ui/button'
+import { Mail, BarChart3, Settings, Lock, Send, AlertTriangle, CheckCircle, XCircle, Loader2 } from 'lucide-react'
 
 interface EmailAutomation {
   id: string
@@ -33,6 +34,17 @@ interface EmailAutomationsClientProps {
   analytics: any
   isPro: boolean
   defaultTemplates: DefaultTemplates
+  isAdmin?: boolean
+}
+
+type BroadcastStatus = 'idle' | 'loading-preview' | 'ready' | 'sending' | 'done' | 'error'
+
+interface BroadcastResult {
+  orgId: string
+  orgName: string
+  email: string
+  status: 'sent' | 'skipped' | 'error'
+  error?: string
 }
 
 export function EmailAutomationsClient({
@@ -40,9 +52,42 @@ export function EmailAutomationsClient({
   emailHistory,
   analytics,
   isPro,
-  defaultTemplates
+  defaultTemplates,
+  isAdmin = false,
 }: EmailAutomationsClientProps) {
   const [editingAutomation, setEditingAutomation] = useState<EmailAutomation | null>(null)
+  const [broadcastStatus, setBroadcastStatus] = useState<BroadcastStatus>('idle')
+  const [broadcastPreview, setBroadcastPreview] = useState<{ count: number; orgs: any[] } | null>(null)
+  const [broadcastResults, setBroadcastResults] = useState<{ sent: number; errors: number; results: BroadcastResult[] } | null>(null)
+
+  async function loadBroadcastPreview() {
+    setBroadcastStatus('loading-preview')
+    try {
+      const res = await fetch('/api/admin/email-broadcast')
+      if (!res.ok) throw new Error('Forbidden')
+      const data = await res.json()
+      setBroadcastPreview(data)
+      setBroadcastStatus('ready')
+    } catch {
+      setBroadcastStatus('error')
+    }
+  }
+
+  async function sendBroadcast(dryRun: boolean) {
+    setBroadcastStatus('sending')
+    try {
+      const res = await fetch('/api/admin/email-broadcast', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ dryRun }),
+      })
+      const data = await res.json()
+      setBroadcastResults(data)
+      setBroadcastStatus('done')
+    } catch {
+      setBroadcastStatus('error')
+    }
+  }
 
   return (
     <div className="space-y-8">
@@ -75,6 +120,12 @@ export function EmailAutomationsClient({
             <TabsTrigger value="analytics" className="gap-2">
               <BarChart3 className="h-4 w-4" />
               Analytics
+            </TabsTrigger>
+          )}
+          {isAdmin && (
+            <TabsTrigger value="broadcast" className="gap-2">
+              <Send className="h-4 w-4" />
+              Envio Manual
             </TabsTrigger>
           )}
         </TabsList>
@@ -217,6 +268,153 @@ export function EmailAutomationsClient({
                   <li>✅ Tracking detalhado de cada email</li>
                   <li>✅ Análise de engajamento</li>
                 </ul>
+              </CardContent>
+            </Card>
+          </TabsContent>
+        )}
+        {isAdmin && (
+          <TabsContent value="broadcast" className="space-y-4">
+            <Card>
+              <CardHeader>
+                <div className="flex items-center gap-3">
+                  <div className="h-10 w-10 rounded-lg bg-amber-500/10 flex items-center justify-center ring-1 ring-amber-500/20">
+                    <AlertTriangle className="h-5 w-5 text-amber-500" />
+                  </div>
+                  <div>
+                    <CardTitle>Aviso de Migração WhatsApp</CardTitle>
+                    <CardDescription>
+                      Envia email explicando a mudança para API Oficial Meta a todos os clientes Starter/Pro com conexão WhatsApp ativa
+                    </CardDescription>
+                  </div>
+                </div>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                {broadcastStatus === 'idle' && (
+                  <div className="rounded-xl border border-dashed p-8 text-center space-y-4">
+                    <div className="w-12 h-12 rounded-full bg-muted flex items-center justify-center mx-auto">
+                      <Send className="h-5 w-5 text-muted-foreground" />
+                    </div>
+                    <div className="space-y-1">
+                      <p className="font-medium text-sm">Pronto para disparar</p>
+                      <p className="text-xs text-muted-foreground">
+                        Clique em "Carregar Preview" para ver quantas organizações serão afetadas antes de enviar
+                      </p>
+                    </div>
+                    <Button variant="outline" onClick={loadBroadcastPreview}>
+                      Carregar Preview
+                    </Button>
+                  </div>
+                )}
+
+                {broadcastStatus === 'loading-preview' && (
+                  <div className="flex items-center justify-center py-12 gap-3 text-muted-foreground">
+                    <Loader2 className="h-5 w-5 animate-spin" />
+                    <span className="text-sm">Carregando dados...</span>
+                  </div>
+                )}
+
+                {(broadcastStatus === 'ready' || broadcastStatus === 'sending') && broadcastPreview && (
+                  <div className="space-y-4">
+                    <div className="rounded-lg bg-amber-50 border border-amber-200 p-4">
+                      <p className="text-sm font-semibold text-amber-900">
+                        {broadcastPreview.count} organização{broadcastPreview.count !== 1 ? 'ões' : ''} afetada{broadcastPreview.count !== 1 ? 's' : ''}
+                      </p>
+                      <p className="text-xs text-amber-700 mt-1">
+                        Clientes nos planos Starter ou Pro com pelo menos uma conexão WhatsApp cadastrada
+                      </p>
+                    </div>
+
+                    <div className="rounded-lg border divide-y max-h-64 overflow-y-auto text-sm">
+                      {broadcastPreview.orgs.map((org: any) => (
+                        <div key={org.id} className="flex items-center justify-between px-4 py-2.5 hover:bg-muted/40">
+                          <span className="font-medium truncate max-w-[200px]">{org.name}</span>
+                          <div className="flex items-center gap-2 shrink-0">
+                            <Badge variant="outline" className="text-xs">{org.tier}</Badge>
+                            <span className="text-muted-foreground text-xs truncate max-w-[160px]">{org.adminEmail ?? 'sem email'}</span>
+                          </div>
+                        </div>
+                      ))}
+                      {broadcastPreview.orgs.length === 0 && (
+                        <p className="px-4 py-6 text-center text-xs text-muted-foreground">Nenhuma organização encontrada</p>
+                      )}
+                    </div>
+
+                    <div className="flex gap-3 pt-2">
+                      <Button
+                        variant="outline"
+                        className="flex-1"
+                        onClick={() => sendBroadcast(true)}
+                        disabled={broadcastStatus === 'sending'}
+                      >
+                        {broadcastStatus === 'sending' ? (
+                          <><Loader2 className="h-4 w-4 animate-spin mr-2" />Simulando...</>
+                        ) : 'Simulação (Dry Run)'}
+                      </Button>
+                      <Button
+                        className="flex-1 bg-green-600 hover:bg-green-700 text-white"
+                        onClick={() => sendBroadcast(false)}
+                        disabled={broadcastStatus === 'sending' || broadcastPreview.count === 0}
+                      >
+                        {broadcastStatus === 'sending' ? (
+                          <><Loader2 className="h-4 w-4 animate-spin mr-2" />Enviando...</>
+                        ) : (
+                          <><Send className="h-4 w-4 mr-2" />Enviar para {broadcastPreview.count} org{broadcastPreview.count !== 1 ? 's' : ''}</>
+                        )}
+                      </Button>
+                    </div>
+                  </div>
+                )}
+
+                {broadcastStatus === 'done' && broadcastResults && (
+                  <div className="space-y-4">
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="rounded-lg bg-green-50 border border-green-200 p-4 text-center">
+                        <div className="flex items-center justify-center gap-2 text-green-700 font-bold text-2xl">
+                          <CheckCircle className="h-6 w-6" />
+                          {broadcastResults.sent}
+                        </div>
+                        <p className="text-xs text-green-600 mt-1">enviados</p>
+                      </div>
+                      <div className="rounded-lg bg-red-50 border border-red-200 p-4 text-center">
+                        <div className="flex items-center justify-center gap-2 text-red-700 font-bold text-2xl">
+                          <XCircle className="h-6 w-6" />
+                          {broadcastResults.errors}
+                        </div>
+                        <p className="text-xs text-red-600 mt-1">erros</p>
+                      </div>
+                    </div>
+
+                    <div className="rounded-lg border divide-y max-h-72 overflow-y-auto text-sm">
+                      {broadcastResults.results.map((r, i) => (
+                        <div key={i} className="flex items-center justify-between px-4 py-2.5">
+                          <div className="min-w-0">
+                            <p className="font-medium truncate">{r.orgName}</p>
+                            <p className="text-xs text-muted-foreground truncate">{r.email}</p>
+                          </div>
+                          <div className="shrink-0 ml-3">
+                            {r.status === 'sent' && <Badge className="bg-green-100 text-green-700 border-green-200">Enviado</Badge>}
+                            {r.status === 'skipped' && <Badge variant="outline" className="text-muted-foreground">Simulado</Badge>}
+                            {r.status === 'error' && (
+                              <Badge className="bg-red-100 text-red-700 border-red-200" title={r.error}>Erro</Badge>
+                            )}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+
+                    <Button variant="outline" className="w-full" onClick={() => { setBroadcastStatus('idle'); setBroadcastPreview(null); setBroadcastResults(null) }}>
+                      Novo Envio
+                    </Button>
+                  </div>
+                )}
+
+                {broadcastStatus === 'error' && (
+                  <div className="rounded-lg bg-red-50 border border-red-200 p-6 text-center space-y-2">
+                    <XCircle className="h-8 w-8 text-red-500 mx-auto" />
+                    <p className="text-sm font-medium text-red-700">Erro ao carregar dados</p>
+                    <Button variant="outline" size="sm" onClick={() => setBroadcastStatus('idle')}>Tentar novamente</Button>
+                  </div>
+                )}
               </CardContent>
             </Card>
           </TabsContent>

@@ -2,6 +2,7 @@ import { Suspense } from 'react'
 import { getEmailAutomationSettings, getEmailHistory } from './actions'
 import { EmailAutomationsClient } from './client'
 import { Skeleton } from '@/components/ui/skeleton'
+import { getSession } from '@/lib/auth'
 
 export const dynamic = 'force-dynamic'
 
@@ -11,10 +12,13 @@ export const metadata = {
 }
 
 export default async function EmailAutomationsPage() {
-  const [settings, historyResult] = await Promise.all([
+  const [session, settings, historyResult] = await Promise.all([
+    getSession(),
     getEmailAutomationSettings(),
     getEmailHistory(50)
   ])
+
+  const isAdmin = session?.user?.email === 'jeanzorzetti@gmail.com'
 
   // Default subjects and bodies for each automation type
   const defaultTemplates = {
@@ -99,6 +103,7 @@ Equipe Sirius CRM`
           analytics={historyResult.analytics}
           isPro={historyResult.isPro || false}
           defaultTemplates={defaultTemplates}
+          isAdmin={isAdmin}
         />
       </Suspense>
     </div>
