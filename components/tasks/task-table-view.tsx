@@ -3,7 +3,7 @@
 import { useState, useMemo } from 'react'
 import { motion } from 'framer-motion'
 import { ArrowUpDown, ArrowUp, ArrowDown, MoreHorizontal, Trash2, Download } from 'lucide-react'
-import { cn } from '@/lib/utils'
+import { cn, formatDateBR } from '@/lib/utils'
 import { toast } from 'sonner'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Button } from '@/components/ui/button'
@@ -65,9 +65,9 @@ function exportTasksCsv(tasks: TaskLite[]) {
     csvEscape(PRIORITY_LABELS[t.priority] || t.priority),
     csvEscape(t.assignee?.name || t.assignee?.email || ''),
     csvEscape((t.labels || []).map((l) => l.name).join('; ')),
-    csvEscape(t.dueDate ? new Date(t.dueDate).toLocaleDateString('pt-BR') : ''),
-    csvEscape(new Date(t.createdAt).toLocaleDateString('pt-BR')),
-    csvEscape(t.completedAt ? new Date(t.completedAt).toLocaleDateString('pt-BR') : ''),
+    csvEscape(t.dueDate ? formatDateBR(t.dueDate) : ''),
+    csvEscape(formatDateBR(t.createdAt)),
+    csvEscape(t.completedAt ? formatDateBR(t.completedAt) : ''),
   ])
   const csv = [headers.join(','), ...rows.map((r) => r.join(','))].join('\n')
   const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8' })

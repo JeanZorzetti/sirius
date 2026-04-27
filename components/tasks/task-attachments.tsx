@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from 'react'
 import { Paperclip, Upload, Trash2, Download, FileText, Image, File, X, Loader2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { toast } from 'sonner'
-import { cn } from '@/lib/utils'
+import { cn, formatDateBR } from '@/lib/utils'
 
 interface Attachment {
   id: string
@@ -152,7 +152,7 @@ export function TaskAttachments({ taskId }: TaskAttachmentsProps) {
                 <p className="truncate text-xs font-medium">{a.fileName}</p>
                 <p className="text-[10px] text-muted-foreground">
                   {formatBytes(a.fileSize)} · {a.uploadedBy.name || a.uploadedBy.email} ·{' '}
-                  {new Date(a.uploadedAt).toLocaleDateString('pt-BR')}
+                  {formatDateBR(a.uploadedAt)}
                 </p>
               </div>
               <div className="flex shrink-0 items-center gap-1 opacity-0 transition-opacity group-hover:opacity-100">

@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react'
 import { Play, Square, Clock, Trash2 } from 'lucide-react'
-import { cn } from '@/lib/utils'
+import { cn, formatTimeBR } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { toast } from 'sonner'
@@ -34,12 +34,7 @@ function formatDuration(ms: number): string {
   return `${minutes}m ${seconds.toString().padStart(2, '0')}s`
 }
 
-function formatTime(iso: string): string {
-  return new Date(iso).toLocaleTimeString('pt-BR', {
-    hour: '2-digit',
-    minute: '2-digit',
-  })
-}
+const formatTime = formatTimeBR
 
 export function TimeTrackerWidget({ taskId, locked = false }: TimeTrackerWidgetProps) {
   const [entries, setEntries] = useState<TimeEntry[]>([])

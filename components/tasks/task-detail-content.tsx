@@ -34,7 +34,7 @@ import {
 } from '@/components/ui/select'
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs'
 import { toast } from 'sonner'
-import { cn } from '@/lib/utils'
+import { cn, formatDateBR, toDateInputBR } from '@/lib/utils'
 import { PRIORITY_CONFIG } from './task-types'
 import { TaskComments } from './task-comments'
 import { TaskActivityFeed } from './task-activity-feed'
@@ -79,7 +79,7 @@ export function TaskDetailContent({ task, currentUserId, currentUserRole }: Task
   const [assigneeId, setAssigneeId] = useState<string>(task.assigneeId || 'none')
   const [visibility, setVisibility] = useState<Visibility>((task.visibility as Visibility) || 'PUBLIC')
   const [dueDate, setDueDate] = useState<string>(
-    task.dueDate ? new Date(task.dueDate).toISOString().slice(0, 10) : ''
+    task.dueDate ? toDateInputBR(task.dueDate) : ''
   )
   const [estimatedMinutes, setEstimatedMinutes] = useState<number | ''>(
     task.estimatedMinutes || ''
@@ -495,7 +495,7 @@ export function TaskDetailContent({ task, currentUserId, currentUserRole }: Task
               </span>
             </div>
             <div>
-              em {new Date(task.createdAt).toLocaleDateString('pt-BR')}
+              em {formatDateBR(task.createdAt)}
             </div>
           </div>
         </div>

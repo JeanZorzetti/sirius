@@ -14,7 +14,7 @@ import {
 } from '@/components/ui/select'
 import { Switch } from '@/components/ui/switch'
 import { toast } from 'sonner'
-import { cn } from '@/lib/utils'
+import { cn, formatDateBR } from '@/lib/utils'
 
 interface Recurrence {
   id: string
@@ -247,7 +247,7 @@ export function TaskRecurrenceConfig({ taskId }: TaskRecurrenceConfigProps) {
             <span>Criadas: {recurrence.occurrencesCreated}</span>
             {recurrence.nextRunAt && (
               <span>
-                Próxima: {new Date(recurrence.nextRunAt).toLocaleDateString('pt-BR')}
+                Próxima: {formatDateBR(recurrence.nextRunAt)}
               </span>
             )}
           </div>

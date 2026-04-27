@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { Activity, UserCheck, Flag, Calendar, CheckCircle2, Pencil } from 'lucide-react'
-import { cn } from '@/lib/utils'
+import { cn, formatDateBR } from '@/lib/utils'
 
 interface TaskActivityItem {
   id: string
@@ -48,7 +48,7 @@ function relativeTime(iso: string): string {
   if (hrs < 24) return `${hrs}h atrás`
   const days = Math.floor(hrs / 24)
   if (days < 7) return `${days}d atrás`
-  return new Date(iso).toLocaleDateString('pt-BR')
+  return formatDateBR(iso)
 }
 
 export function TaskActivityFeed({ taskId }: TaskActivityFeedProps) {

@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { Download, Loader2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { formatDateBR } from '@/lib/utils'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -119,7 +120,7 @@ export function AnalyticsExportButton({ data, projectId, rangeDays }: Props) {
         t.project?.name ?? '',
         t.status?.name ?? '',
         t.priority,
-        t.dueDate ? new Date(t.dueDate).toLocaleDateString('pt-BR') : '',
+        t.dueDate ? formatDateBR(t.dueDate) : '',
         t.assignee?.name ?? '',
       ])
       downloadCSV(buildCSV(rows, headers), `tarefas-atrasadas-${formatDateFilename()}.csv`)

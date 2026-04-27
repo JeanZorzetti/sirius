@@ -10,7 +10,7 @@ import {
 } from '@/components/ui/sheet'
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
-import { cn } from '@/lib/utils'
+import { cn, toDateInputBR } from '@/lib/utils'
 import {
   Select,
   SelectContent,
@@ -60,7 +60,7 @@ export function TaskDetailPanel({
       setPriority(task.priority as Priority)
       setDueDate(
         task.dueDate
-          ? new Date(task.dueDate).toISOString().slice(0, 10)
+          ? toDateInputBR(task.dueDate)
           : ''
       )
     }

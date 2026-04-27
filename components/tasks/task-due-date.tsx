@@ -1,6 +1,6 @@
 'use client'
 
-import { cn } from '@/lib/utils'
+import { cn, formatDateBR } from '@/lib/utils'
 import { Calendar, Clock } from 'lucide-react'
 
 interface TaskDueDateProps {
@@ -13,10 +13,12 @@ interface TaskDueDateProps {
 export function TaskDueDate({ dueDate, completedAt, className, compact = false }: TaskDueDateProps) {
   if (!dueDate) return null
 
-  const date = new Date(dueDate)
-  const now = new Date()
-  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate())
-  const dateOnly = new Date(date.getFullYear(), date.getMonth(), date.getDate())
+  const TZ = 'America/Sao_Paulo'
+  // Parse both dates in BRT to avoid UTC off-by-one
+  const nowBR = new Date(new Date().toLocaleString('en-US', { timeZone: TZ }))
+  const dueBR = new Date(new Date(dueDate).toLocaleString('en-US', { timeZone: TZ }))
+  const today = new Date(nowBR.getFullYear(), nowBR.getMonth(), nowBR.getDate())
+  const dateOnly = new Date(dueBR.getFullYear(), dueBR.getMonth(), dueBR.getDate())
   const diffDays = Math.floor((dateOnly.getTime() - today.getTime()) / (1000 * 60 * 60 * 24))
 
   const isCompleted = !!completedAt
@@ -30,7 +32,7 @@ export function TaskDueDate({ dueDate, completedAt, className, compact = false }
   else if (isTomorrow) label = 'Amanhã'
   else if (diffDays === -1) label = 'Ontem'
   else if (diffDays > 0 && diffDays < 7) label = `${diffDays}d`
-  else label = date.toLocaleDateString('pt-BR', { day: '2-digit', month: 'short' })
+  else label = formatDateBR(dueDate, { day: '2-digit', month: 'short' })
 
   return (
     <div

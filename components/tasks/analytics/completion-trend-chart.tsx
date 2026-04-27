@@ -13,7 +13,7 @@ import {
   Line,
   ComposedChart,
 } from 'recharts'
-import { cn } from '@/lib/utils'
+import { cn, formatDateBR } from '@/lib/utils'
 
 interface TrendDatum {
   date: string // ISO yyyy-mm-dd
@@ -29,7 +29,7 @@ interface Props {
 
 function formatDate(iso: string): string {
   const d = new Date(iso)
-  return d.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' })
+  return formatDateBR(iso, { day: '2-digit', month: '2-digit' })
 }
 
 const CustomTooltip = ({ active, payload, label }: any) => {
