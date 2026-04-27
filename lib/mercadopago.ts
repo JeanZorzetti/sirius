@@ -130,7 +130,8 @@ export async function createCheckoutPreference(
         payment_methods: {
           excluded_payment_types: [
             { id: 'ticket' },       // boleto
-            { id: 'bank_transfer' } // PIX
+            { id: 'bank_transfer' }, // PIX
+            { id: 'debit_card' }    // débito (não é recorrente automático)
           ],
           installments: 12
         },
