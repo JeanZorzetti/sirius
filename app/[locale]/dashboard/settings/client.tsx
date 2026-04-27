@@ -190,11 +190,8 @@ export function SettingsClient({ user }: SettingsClientProps) {
                     <Webhook className="h-5 w-5" />
                   </div>
                   <div className="flex flex-col gap-1 flex-1">
-                    <CardTitle className="text-base font-semibold text-zinc-900 dark:text-zinc-100 flex items-center gap-2">
+                    <CardTitle className="text-base font-semibold text-zinc-900 dark:text-zinc-100">
                       Webhooks
-                      <span className="text-[10px] font-semibold px-1.5 py-0.5 rounded bg-purple-500/10 text-purple-600 dark:text-purple-400 ring-1 ring-purple-500/20">
-                        PRO
-                      </span>
                     </CardTitle>
                     {!isCompact && (
                       <CardDescription className="text-zinc-500 text-xs">
@@ -222,11 +219,8 @@ export function SettingsClient({ user }: SettingsClientProps) {
                   <Zap className="h-5 w-5" />
                 </div>
                 <div className="flex flex-col gap-1 flex-1">
-                  <CardTitle className="text-base font-semibold text-zinc-900 dark:text-zinc-100 flex items-center gap-2">
+                  <CardTitle className="text-base font-semibold text-zinc-900 dark:text-zinc-100">
                     Integrações
-                    <span className="text-[10px] font-semibold px-1.5 py-0.5 rounded bg-purple-500/10 text-purple-600 dark:text-purple-400 ring-1 ring-purple-500/20">
-                      PRO
-                    </span>
                   </CardTitle>
                   {!isCompact && (
                     <CardDescription className="text-zinc-500 text-xs">

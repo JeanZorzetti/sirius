@@ -115,48 +115,147 @@ export default async function WhatsAppOfficialPage() {
                 </Card>
 
                 {/* Setup guide */}
-                <Card className="bg-green-50 dark:bg-green-500/5 border-green-200 dark:border-green-500/20">
-                    <CardHeader>
-                        <CardTitle className="text-sm font-medium text-green-700 dark:text-green-300">
+                <Card className="bg-white dark:bg-white/[0.02] border-zinc-200 dark:border-white/5">
+                    <CardHeader className="pb-3">
+                        <CardTitle className="text-base font-semibold text-zinc-900 dark:text-zinc-100 flex items-center gap-2">
                             📘 Como configurar
                         </CardTitle>
+                        <CardDescription className="text-zinc-500 text-xs">
+                            Siga os passos abaixo para conectar o WhatsApp Oficial via Meta Cloud API
+                        </CardDescription>
                     </CardHeader>
-                    <CardContent className="text-xs text-green-600 dark:text-green-400 space-y-3">
-                        <div>
-                            <p className="font-medium mb-1">1. Pré-requisitos</p>
-                            <p className="text-green-600/80 dark:text-green-400/80">
-                                Conta Meta Business Manager, WhatsApp Business Account verificada e número aprovado.
-                            </p>
+                    <CardContent className="space-y-4">
+
+                        {/* PRÉ-REQUISITO EM DESTAQUE */}
+                        <div className="rounded-xl bg-amber-50 dark:bg-amber-500/5 border border-amber-200 dark:border-amber-500/20 p-4">
+                            <div className="flex items-start gap-3">
+                                <span className="text-xl shrink-0 mt-0.5">⚠️</span>
+                                <div className="space-y-1">
+                                    <p className="text-sm font-semibold text-amber-900 dark:text-amber-300">
+                                        Pré-requisito obrigatório: Meta Business Manager verificada
+                                    </p>
+                                    <p className="text-xs text-amber-700 dark:text-amber-400 leading-relaxed">
+                                        Você precisa de uma conta <strong>Meta Business Manager verificada</strong> (com CNPJ ou verificação de negócio aprovada pela Meta) e uma <strong>WhatsApp Business Account (WABA)</strong> associada a ela. Sem isso, não é possível gerar tokens nem configurar webhooks.
+                                    </p>
+                                    <a
+                                        href="https://business.facebook.com/settings"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="inline-flex items-center gap-1 text-xs text-amber-700 dark:text-amber-400 underline underline-offset-2 hover:text-amber-900 transition-colors mt-1"
+                                    >
+                                        Acessar Meta Business Manager →
+                                    </a>
+                                </div>
+                            </div>
                         </div>
-                        <div>
-                            <p className="font-medium mb-1">2. Phone Number ID</p>
-                            <p className="text-green-600/80 dark:text-green-400/80">
-                                No Meta Business Manager → WhatsApp → Configuração → selecione o número e copie o "Phone number ID".
-                            </p>
+
+                        {/* PASSO 1 */}
+                        <div className="space-y-2">
+                            <div className="flex items-center gap-2">
+                                <div className="h-6 w-6 rounded-full bg-zinc-900 dark:bg-white flex items-center justify-center shrink-0">
+                                    <span className="text-[11px] font-bold text-white dark:text-zinc-900">1</span>
+                                </div>
+                                <p className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">Criar um aplicativo no Facebook Developers</p>
+                            </div>
+                            <div className="ml-8 space-y-2 text-xs text-zinc-600 dark:text-zinc-400">
+                                <p>Acesse <a href="https://developers.facebook.com/apps" target="_blank" rel="noopener noreferrer" className="text-blue-600 underline underline-offset-2">developers.facebook.com/apps</a> e crie um novo app do tipo <strong>Business</strong>.</p>
+                                <ol className="list-decimal list-inside space-y-1 text-zinc-500 dark:text-zinc-500">
+                                    <li>Clique em <strong>Criar aplicativo</strong></li>
+                                    <li>Selecione o tipo <strong>Business</strong></li>
+                                    <li>Dê um nome e vincule ao seu Business Manager</li>
+                                    <li>No painel do app, vá em <strong>Adicionar produto</strong> → selecione <strong>WhatsApp</strong></li>
+                                </ol>
+                                <div className="rounded-lg bg-blue-50 dark:bg-blue-500/5 border border-blue-100 dark:border-blue-500/20 px-3 py-2">
+                                    <p className="text-blue-700 dark:text-blue-400">
+                                        💡 O app precisa estar vinculado à mesma Business Manager que contém sua WABA.
+                                    </p>
+                                </div>
+                            </div>
                         </div>
-                        <div>
-                            <p className="font-medium mb-1">3. Access Token</p>
-                            <p className="text-green-600/80 dark:text-green-400/80">
-                                Gere um token de sistema permanente em: Meta Business Manager → Configurações → Usuários do sistema → Adicionar usuário de sistema → Gerar token.
-                                Selecione o app e permissão <code className="bg-green-100 dark:bg-green-900/30 px-1 rounded">whatsapp_business_messaging</code>.
-                            </p>
+
+                        <div className="border-t border-zinc-100 dark:border-white/5" />
+
+                        {/* PASSO 2 */}
+                        <div className="space-y-2">
+                            <div className="flex items-center gap-2">
+                                <div className="h-6 w-6 rounded-full bg-zinc-900 dark:bg-white flex items-center justify-center shrink-0">
+                                    <span className="text-[11px] font-bold text-white dark:text-zinc-900">2</span>
+                                </div>
+                                <p className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">Obter o Phone Number ID</p>
+                            </div>
+                            <div className="ml-8 text-xs text-zinc-600 dark:text-zinc-400 space-y-1">
+                                <p>No Facebook Developers → seu app → <strong>WhatsApp → Configuração de API</strong>:</p>
+                                <ol className="list-decimal list-inside space-y-1 text-zinc-500 dark:text-zinc-500">
+                                    <li>Selecione sua WABA na lista</li>
+                                    <li>Copie o <strong>Phone number ID</strong> (formato: <code className="bg-zinc-100 dark:bg-zinc-800 px-1 rounded">1234567890</code>)</li>
+                                </ol>
+                                <p className="text-zinc-400 dark:text-zinc-500">Também disponível em: Meta Business Manager → WhatsApp → Configuração → número de telefone.</p>
+                            </div>
                         </div>
-                        <div>
-                            <p className="font-medium mb-1">4. Webhook</p>
-                            <p className="text-green-600/80 dark:text-green-400/80">
-                                No Meta Business Manager → WhatsApp → Configuração → Webhook, adicione a URL acima e o token de verificação configurado.
-                                Subscreva o campo <strong>messages</strong>.
-                            </p>
+
+                        <div className="border-t border-zinc-100 dark:border-white/5" />
+
+                        {/* PASSO 3 */}
+                        <div className="space-y-2">
+                            <div className="flex items-center gap-2">
+                                <div className="h-6 w-6 rounded-full bg-zinc-900 dark:bg-white flex items-center justify-center shrink-0">
+                                    <span className="text-[11px] font-bold text-white dark:text-zinc-900">3</span>
+                                </div>
+                                <p className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">Gerar o Access Token permanente</p>
+                            </div>
+                            <div className="ml-8 text-xs text-zinc-600 dark:text-zinc-400 space-y-2">
+                                <p>Tokens temporários expiram em 24h. Use um <strong>token de sistema permanente</strong>:</p>
+                                <ol className="list-decimal list-inside space-y-1 text-zinc-500 dark:text-zinc-500">
+                                    <li>No Meta Business Manager → <strong>Configurações</strong> → <strong>Usuários</strong> → <strong>Usuários do sistema</strong></li>
+                                    <li>Clique em <strong>Adicionar</strong> → escolha <em>Admin</em> ou <em>Funcionário</em></li>
+                                    <li>Clique em <strong>Gerar novo token</strong> → selecione seu app</li>
+                                    <li>Marque as permissões: <code className="bg-zinc-100 dark:bg-zinc-800 px-1 rounded">whatsapp_business_messaging</code> e <code className="bg-zinc-100 dark:bg-zinc-800 px-1 rounded">whatsapp_business_management</code></li>
+                                    <li>Copie o token gerado (ele não é exibido novamente)</li>
+                                </ol>
+                                <div className="rounded-lg bg-red-50 dark:bg-red-500/5 border border-red-100 dark:border-red-500/20 px-3 py-2">
+                                    <p className="text-red-700 dark:text-red-400">
+                                        🔐 Guarde o token em local seguro. Ele dá acesso completo ao envio de mensagens.
+                                    </p>
+                                </div>
+                            </div>
                         </div>
-                        <div className="pt-2 border-t border-green-200 dark:border-green-500/20">
-                            <p className="font-medium mb-1">Recursos disponíveis:</p>
-                            <ul className="list-disc list-inside text-green-600/80 dark:text-green-400/80 space-y-1">
-                                <li>Envio de mensagens de texto</li>
-                                <li>Envio de templates aprovados pela Meta</li>
-                                <li>Recebimento de mensagens via webhook</li>
-                                <li>Status de entrega (enviado, entregue, lido)</li>
+
+                        <div className="border-t border-zinc-100 dark:border-white/5" />
+
+                        {/* PASSO 4 */}
+                        <div className="space-y-2">
+                            <div className="flex items-center gap-2">
+                                <div className="h-6 w-6 rounded-full bg-zinc-900 dark:bg-white flex items-center justify-center shrink-0">
+                                    <span className="text-[11px] font-bold text-white dark:text-zinc-900">4</span>
+                                </div>
+                                <p className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">Configurar o Webhook</p>
+                            </div>
+                            <div className="ml-8 text-xs text-zinc-600 dark:text-zinc-400 space-y-1">
+                                <p>No Facebook Developers → seu app → <strong>WhatsApp → Configuração</strong>:</p>
+                                <ol className="list-decimal list-inside space-y-1 text-zinc-500 dark:text-zinc-500">
+                                    <li>Em <strong>Webhooks</strong>, clique em <strong>Configurar</strong></li>
+                                    <li>Cole a <strong>URL do Webhook</strong> exibida acima</li>
+                                    <li>Cole o <strong>Token de Verificação</strong> que você definiu no formulário</li>
+                                    <li>Clique em <strong>Verificar e salvar</strong></li>
+                                    <li>Ative o campo <strong>messages</strong> nas assinaturas</li>
+                                </ol>
+                            </div>
+                        </div>
+
+                        <div className="border-t border-zinc-100 dark:border-white/5" />
+
+                        {/* RECURSOS */}
+                        <div className="rounded-xl bg-green-50 dark:bg-green-500/5 border border-green-200 dark:border-green-500/20 p-4">
+                            <p className="text-xs font-semibold text-green-700 dark:text-green-400 mb-2">✅ Recursos disponíveis após configuração</p>
+                            <ul className="space-y-1 text-xs text-green-600/80 dark:text-green-400/80">
+                                <li>• Envio e recebimento de mensagens de texto</li>
+                                <li>• Envio de templates aprovados pela Meta</li>
+                                <li>• Status em tempo real: enviado, entregue, lido</li>
+                                <li>• Recebimento de mensagens via webhook</li>
+                                <li>• Chat center integrado ao CRM</li>
                             </ul>
                         </div>
+
                     </CardContent>
                 </Card>
             </div>

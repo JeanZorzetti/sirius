@@ -41,8 +41,6 @@ export default async function IntegrationsPage() {
         return <div>Usuário não encontrado.</div>
     }
 
-    const isPro = ['STARTER', 'PRO', 'BUSINESS'].includes(user.organization.tier)
-
     // Get metrics from IntegrationLog
     const last24Hours = new Date(Date.now() - 24 * 60 * 60 * 1000)
     const last7Days = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)
@@ -126,7 +124,7 @@ export default async function IntegrationsPage() {
             enabled: user.organization.n8nEnabled,
             configured: !!user.organization.n8nBaseUrl,
             href: '/dashboard/settings/integrations/n8n',
-            requiresPro: true,
+            requiresPro: false,
             eventsLast7Days: n8nLogs,
             status: 'stable' as const,
         },
@@ -141,7 +139,7 @@ export default async function IntegrationsPage() {
             enabled: user.organization.evolutionEnabled,
             configured: !!user.organization.evolutionBaseUrl,
             href: '/dashboard/settings/integrations/whatsapp',
-            requiresPro: true,
+            requiresPro: false,
             eventsLast7Days: whatsappLogs,
             status: 'stable' as const,
         },
@@ -156,7 +154,7 @@ export default async function IntegrationsPage() {
             enabled: user.organization.wabaEnabled,
             configured: !!user.organization.wabaPhoneNumberId,
             href: '/dashboard/settings/integrations/whatsapp-official',
-            requiresPro: true,
+            requiresPro: false,
             eventsLast7Days: wabaLogs,
             status: 'stable' as const,
         },
@@ -186,9 +184,9 @@ export default async function IntegrationsPage() {
             enabled: user.organization.adsIntegrationEnabled && !!user.organization.googleAdsCustomerId,
             configured: !!user.organization.googleAdsCustomerId,
             href: '/dashboard/settings/integrations/google-ads',
-            requiresPro: true,
+            requiresPro: false,
             eventsLast7Days: 0,
-            status: 'beta' as const,
+            status: 'stable' as const,
         },
         {
             id: 'facebook-ads',
@@ -201,9 +199,9 @@ export default async function IntegrationsPage() {
             enabled: user.organization.adsIntegrationEnabled && !!user.organization.facebookAdAccountId,
             configured: !!user.organization.facebookAdAccountId,
             href: '/dashboard/settings/integrations/facebook-ads',
-            requiresPro: true,
+            requiresPro: false,
             eventsLast7Days: 0,
-            status: 'beta' as const,
+            status: 'stable' as const,
         }
     ]
 
@@ -303,36 +301,16 @@ export default async function IntegrationsPage() {
                 </Card>
             </div>
 
-            {!isPro && (
-                <div className="bg-purple-500/10 border border-purple-500/20 rounded-lg p-4 max-w-5xl">
-                    <div className="flex items-start gap-3">
-                        <div className="h-8 w-8 rounded-lg bg-purple-500/10 flex items-center justify-center">
-                            <span className="text-purple-600 dark:text-purple-400 text-xs font-bold">PRO</span>
-                        </div>
-                        <div className="flex-1">
-                            <h3 className="font-semibold text-sm text-zinc-900 dark:text-white mb-1">
-                                Upgrade para PRO
-                            </h3>
-                            <p className="text-sm text-zinc-600 dark:text-zinc-400">
-                                A maioria das integrações está disponível apenas no plano PRO.
-                                Faça upgrade para desbloquear N8N e WhatsApp.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            )}
 
             {/* Integrations Cards */}
             <div className="grid gap-6 max-w-5xl">
                 {integrations.map((integration) => {
                     const Icon = integration.icon
-                    const isLocked = integration.requiresPro && !isPro
 
                     return (
                         <Link
                             key={integration.id}
-                            href={isLocked ? '#' : integration.href}
-                            className={isLocked ? 'cursor-not-allowed opacity-60' : ''}
+                            href={integration.href}
                         >
                             <Card className="bg-white dark:bg-white/[0.02] border-zinc-200 dark:border-white/5 backdrop-blur-xl shadow-sm hover:bg-zinc-50 dark:hover:bg-white/[0.04] transition-colors">
                                 <CardHeader className="flex flex-row items-center gap-4 relative overflow-hidden">
@@ -344,23 +322,13 @@ export default async function IntegrationsPage() {
                                             <CardTitle className="text-base font-semibold text-zinc-900 dark:text-zinc-100">
                                                 {integration.name}
                                             </CardTitle>
-                                            {integration.requiresPro && (
-                                                <span className="text-[10px] font-semibold px-1.5 py-0.5 rounded bg-purple-500/10 text-purple-600 dark:text-purple-400 ring-1 ring-purple-500/20">
-                                                    PRO
-                                                </span>
-                                            )}
-                                            {integration.status === 'beta' && (
-                                                <span className="text-[10px] font-semibold px-1.5 py-0.5 rounded bg-amber-500/10 text-amber-600 dark:text-amber-400 ring-1 ring-amber-500/20">
-                                                    BETA
-                                                </span>
-                                            )}
                                             {integration.configured && (
                                                 <div className="flex items-center gap-1 text-xs text-green-600 dark:text-green-400">
                                                     <CheckCircle2 className="h-3 w-3" />
                                                     <span>Configurado</span>
                                                 </div>
                                             )}
-                                            {!integration.configured && !isLocked && (
+                                            {!integration.configured && (
                                                 <div className="flex items-center gap-1 text-xs text-zinc-400">
                                                     <XCircle className="h-3 w-3" />
                                                     <span>Não configurado</span>
