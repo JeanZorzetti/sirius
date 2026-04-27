@@ -92,6 +92,7 @@ model Organization {
   wabaAccessToken         String? @db.Text // Encrypted with AES-256-GCM
   wabaBusinessAccountId   String?
   wabaWebhookVerifyToken  String?
+  wabaGrandfathered       Boolean @default(false) // Starter/Pro orgs that had access before Business-only gate
 
   googleCalendarEnabled      Boolean @default(false)
   googleCalendarRefreshToken String? @db.Text // Encrypted

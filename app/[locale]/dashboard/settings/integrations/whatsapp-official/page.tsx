@@ -30,8 +30,8 @@ export default async function WhatsAppOfficialPage({ searchParams }: { searchPar
                     wabaPhoneNumberId: true,
                     wabaAccessToken: true,
                     wabaBusinessAccountId: true,
-                    wabaWebhookVerifyToken: true
-                    // wabaAccessToken is intentionally selected only to check existence, never returned to client
+                    wabaWebhookVerifyToken: true,
+                    wabaGrandfathered: true,
                 }
             }
         }
@@ -41,8 +41,9 @@ export default async function WhatsAppOfficialPage({ searchParams }: { searchPar
         return <div>Usuário não encontrado.</div>
     }
 
-    if (!['PRO', 'BUSINESS'].includes(user.organization.tier)) {
-        redirect('/dashboard/settings/integrations')
+    const hasAccess = user.organization.tier === 'BUSINESS' || user.organization.wabaGrandfathered
+    if (!hasAccess) {
+        redirect('/dashboard/settings/integrations/whatsapp-official/upgrade')
     }
 
     const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://seu-crm.com'

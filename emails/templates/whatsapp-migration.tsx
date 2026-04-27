@@ -13,58 +13,63 @@ export function WhatsAppMigrationEmail({
   upgradeUrl = 'https://siriuscrm.com.br/dashboard/billing/plans',
 }: WhatsAppMigrationEmailProps) {
   return (
-    <BaseLayout preview="Importante: mudança no WhatsApp do Sirius CRM">
+    <BaseLayout preview="Atualização importante: WhatsApp Oficial no Sirius CRM">
       <Section style={styles.warningBanner}>
         <Text style={styles.warningIcon}>⚠️</Text>
-        <Text style={styles.warningTitle}>Aviso Importante sobre o WhatsApp</Text>
+        <Text style={styles.warningTitle}>Atualização importante sobre o WhatsApp</Text>
       </Section>
 
       <Text style={styles.greeting}>Olá {userName},</Text>
 
       <Text style={styles.text}>
-        Estamos entrando em contato com uma atualização importante sobre a integração WhatsApp no <strong>{organizationName}</strong>.
+        Temos uma atualização importante sobre a integração WhatsApp da <strong>{organizationName}</strong> no Sirius CRM.
       </Text>
 
-      <Section style={styles.alertBox}>
-        <Text style={styles.alertTitle}>A Meta está banindo contas que usam APIs não oficiais</Text>
-        <Text style={styles.alertText}>
-          A Meta começou a bloquear e banir números de WhatsApp que utilizam integrações não oficiais como Evolution API, Baileys, Whatsmeow e similares. Isso afeta diretamente qualquer CRM que use essas tecnologias — incluindo a versão anterior do Sirius CRM.
+      {/* Main hook */}
+      <Section style={styles.hookBox}>
+        <Text style={styles.hookTitle}>Nunca mais tenha o WhatsApp bloqueado.</Text>
+        <Text style={styles.hookText}>
+          A Meta está banindo números que usam integrações não oficiais (Evolution API, Baileys, Whatsmeow e similares).
+          Por isso, migramos para a <strong>API Oficial do WhatsApp Business (Meta Cloud API)</strong> — a única integração
+          permitida pelos Termos de Uso do WhatsApp.
         </Text>
         <Link href="https://faq.whatsapp.com/5957850900902049" style={styles.sourceLink}>
           Fonte oficial: WhatsApp Help Center →
         </Link>
       </Section>
 
-      <Text style={styles.text}>
-        Para proteger o número da sua empresa, o <strong>Sirius CRM migrou para a API Oficial do WhatsApp Business (Meta Cloud API)</strong> — a única integração permitida pelos Termos de Uso da Meta.
-      </Text>
+      {/* Good news */}
+      <Section style={styles.goodNewsBox}>
+        <Text style={styles.goodNewsTitle}>✅ Sua conta está protegida</Text>
+        <Text style={styles.goodNewsText}>
+          Por ser cliente do Sirius CRM antes dessa mudança, você mantém acesso ao WhatsApp Oficial
+          no seu plano atual — <strong>sem precisar fazer upgrade</strong>.
+        </Text>
+      </Section>
 
       <Heading style={styles.subheading}>O que muda para você?</Heading>
 
       <Section style={styles.changesList}>
-        <Text style={styles.changeItem}>❌ <strong>Integração anterior:</strong> Descontinuada (risco de banimento)</Text>
+        <Text style={styles.changeItem}>❌ <strong>Integração anterior:</strong> desativada (risco de banimento)</Text>
         <Text style={styles.changeItem}>✅ <strong>Nova integração:</strong> API Oficial Meta — zero risco de banimento</Text>
-        <Text style={styles.changeItem}>✅ <strong>Suporte a templates</strong> de mensagem aprovados pela Meta</Text>
         <Text style={styles.changeItem}>✅ <strong>Status em tempo real:</strong> entregue, lido, respondido</Text>
+        <Text style={styles.changeItem}>✅ <strong>Uptime 24/7:</strong> não depende de celular conectado</Text>
         <Text style={styles.changeItem}>✅ <strong>Conformidade total</strong> com os Termos de Uso do WhatsApp</Text>
       </Section>
 
-      <Section style={styles.planBox}>
-        <Text style={styles.planLabel}>Disponível exclusivamente no plano</Text>
-        <Text style={styles.planName}>Business — R$ 397/mês</Text>
-        <Text style={styles.planSubtext}>
-          Inclui: 5 instâncias WhatsApp Oficial + contatos ilimitados + 50 usuários + suporte dedicado
-        </Text>
-      </Section>
+      <Text style={styles.text}>
+        Para ativar, acesse <strong>Configurações → Integrações → WhatsApp Oficial</strong> e siga o guia de configuração.
+        Nossa equipe também pode fazer a configuração completa por você por uma taxa única de <strong>R$ 297</strong>.
+      </Text>
 
       <Section style={styles.ctaSection}>
-        <Button href={upgradeUrl} style={styles.button}>
-          Fazer Upgrade para Business
+        <Button href="https://siriuscrm.com.br/dashboard/settings/integrations/whatsapp-official" style={styles.button}>
+          Configurar WhatsApp Oficial
         </Button>
       </Section>
 
       <Text style={styles.footnote}>
-        Se tiver dúvidas, responda este email ou acesse{' '}
+        Dúvidas? Responda este email ou acesse{' '}
         <Link href="https://siriuscrm.com.br" style={styles.inlineLink}>siriuscrm.com.br</Link>.
         Estamos aqui para ajudar na transição.
       </Text>
@@ -109,74 +114,67 @@ const styles = {
     color: '#404040',
     margin: '16px 0',
   },
-  alertBox: {
-    backgroundColor: '#fff7ed',
-    border: '1px solid #fed7aa',
-    borderRadius: '8px',
-    padding: '20px',
+  hookBox: {
+    backgroundColor: '#18181b',
+    borderRadius: '10px',
+    padding: '24px',
     margin: '24px 0',
   },
-  alertTitle: {
-    fontSize: '15px',
+  hookTitle: {
+    fontSize: '22px',
     fontWeight: 'bold',
-    color: '#9a3412',
+    color: '#4ade80',
     margin: '0 0 10px',
+    lineHeight: '1.3',
   },
-  alertText: {
+  hookText: {
     fontSize: '14px',
     lineHeight: '22px',
-    color: '#7c2d12',
+    color: '#a1a1aa',
     margin: '0 0 12px',
   },
   sourceLink: {
     fontSize: '13px',
-    color: '#c2410c',
+    color: '#86efac',
     textDecoration: 'underline',
   },
-  subheading: {
-    fontSize: '20px',
-    fontWeight: 'bold',
-    color: '#1a1a1a',
-    margin: '32px 0 16px',
-  },
-  changesList: {
+  goodNewsBox: {
     backgroundColor: '#f0fdf4',
     border: '1px solid #bbf7d0',
     borderRadius: '8px',
-    padding: '16px 20px',
-    margin: '16px 0',
+    padding: '20px',
+    margin: '24px 0',
   },
-  changeItem: {
-    fontSize: '14px',
-    lineHeight: '26px',
-    color: '#166534',
-    margin: '2px 0',
-  },
-  planBox: {
-    backgroundColor: '#f8fafc',
-    border: '2px solid #22c55e',
-    borderRadius: '10px',
-    padding: '24px',
-    margin: '32px 0',
-    textAlign: 'center' as const,
-  },
-  planLabel: {
-    fontSize: '13px',
-    color: '#666666',
-    textTransform: 'uppercase' as const,
-    letterSpacing: '0.05em',
-    margin: '0 0 4px',
-  },
-  planName: {
-    fontSize: '28px',
+  goodNewsTitle: {
+    fontSize: '15px',
     fontWeight: 'bold',
     color: '#15803d',
     margin: '0 0 8px',
   },
-  planSubtext: {
-    fontSize: '13px',
-    color: '#4b5563',
+  goodNewsText: {
+    fontSize: '14px',
+    lineHeight: '22px',
+    color: '#166534',
     margin: 0,
+  },
+  subheading: {
+    fontSize: '18px',
+    fontWeight: 'bold',
+    color: '#1a1a1a',
+    margin: '32px 0 12px',
+  },
+  changesList: {
+    backgroundColor: '#fafafa',
+    border: '1px solid #e4e4e7',
+    borderRadius: '8px',
+    padding: '16px 20px',
+    margin: '0 0 24px',
+  },
+  changeItem: {
+    fontSize: '14px',
+    lineHeight: '26px',
+    color: '#3f3f46',
+    margin: '2px 0',
   },
   ctaSection: {
     textAlign: 'center' as const,
