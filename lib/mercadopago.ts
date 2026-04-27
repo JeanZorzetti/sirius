@@ -63,6 +63,7 @@ export type CheckoutPlan =
   | 'FOUNDER_STARTER'
   | 'FOUNDER_PRO'
   | 'FOUNDER_BUSINESS'
+  | 'WHATSAPP_SETUP'
 
 export async function createCheckoutPreference(
   organizationId: string,
@@ -81,6 +82,7 @@ export async function createCheckoutPreference(
       FOUNDER_STARTER: 39.00,
       FOUNDER_PRO: 87.00,
       FOUNDER_BUSINESS: 234.00,
+      WHATSAPP_SETUP: 297.00,
     }
     const planTitles: Record<string, string> = {
       STARTER: `Plano Starter Mensal - ${organizationName}`,
@@ -92,6 +94,7 @@ export async function createCheckoutPreference(
       FOUNDER_STARTER: `Fundador Starter - ${organizationName} (R$39/mês vitalício)`,
       FOUNDER_PRO: `Fundador Pro - ${organizationName} (R$87/mês vitalício)`,
       FOUNDER_BUSINESS: `Fundador Business - ${organizationName} (R$234/mês vitalício)`,
+      WHATSAPP_SETUP: `Implantação WhatsApp Oficial - ${organizationName}`,
     }
 
     const item: PreferenceItem = {
@@ -111,7 +114,9 @@ export async function createCheckoutPreference(
         items: [item],
         payer,
         back_urls: {
-          success: `${process.env.NEXTAUTH_URL || process.env.NEXT_PUBLIC_APP_URL}/checkout/sucesso`,
+          success: plan === 'WHATSAPP_SETUP'
+            ? `${process.env.NEXTAUTH_URL || process.env.NEXT_PUBLIC_APP_URL}/dashboard/settings/integrations/whatsapp-official?setup_paid=1`
+            : `${process.env.NEXTAUTH_URL || process.env.NEXT_PUBLIC_APP_URL}/checkout/sucesso`,
           failure: `${process.env.NEXTAUTH_URL || process.env.NEXT_PUBLIC_APP_URL}/dashboard/billing?status=failure`,
           pending: `${process.env.NEXTAUTH_URL || process.env.NEXT_PUBLIC_APP_URL}/dashboard/billing?status=pending`
         },

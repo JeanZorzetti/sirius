@@ -195,6 +195,8 @@ async function processApprovedPayment(payment: any) {
   // Verificar se é upgrade de plano
   if (Object.values(SubscriptionTier).includes(tierOrAddon as SubscriptionTier)) {
     await upgradePlan(organizationId, tierOrAddon as SubscriptionTier, payment, isAnnual)
+  } else if (tierOrAddon === 'WHATSAPP_SETUP') {
+    await processWhatsAppSetupPurchase(organizationId, payment)
   } else {
     // É um add-on
     await processAddonPurchase(organizationId, tierOrAddon, payment)
@@ -726,6 +728,27 @@ async function handleFailedRecurringPayment(organizationId: string, payment: any
       }),
     }).catch(err => logger.error({ err }, '[MP:RECURRING] Failed to send failure email'))
   }
+}
+
+async function processWhatsAppSetupPurchase(organizationId: string, payment: any) {
+  logger.info({ organizationId }, '[MP:WHATSAPP_SETUP] Processing WhatsApp setup purchase')
+
+  await prisma.transaction.create({
+    data: {
+      organizationId,
+      type: 'ADDON_PURCHASE',
+      amount: payment.transaction_amount ?? 297,
+      feeAmount: payment.fee_details?.reduce((acc: number, f: any) => acc + (f.amount || 0), 0) || null,
+      netAmount: payment.transaction_details?.net_received_amount || null,
+      currency: payment.currency_id ?? 'BRL',
+      status: 'COMPLETED',
+      provider: 'MERCADO_PAGO',
+      providerPaymentId: String(payment.id),
+      metadata: { service: 'WHATSAPP_SETUP' },
+    },
+  })
+
+  logger.info({ organizationId }, '[MP:WHATSAPP_SETUP] Transaction recorded')
 }
 
 function getAddonName(type: string): string {

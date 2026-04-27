@@ -2,14 +2,18 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { prisma } from '@/lib/prisma'
 import { getSession } from '@/lib/auth'
 import Link from 'next/link'
-import { ArrowLeft, MessageSquare, Wrench, CheckCircle2 } from 'lucide-react'
+import { ArrowLeft, MessageSquare } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { WhatsAppOfficialSettingsForm } from '@/components/integrations/whatsapp-official-settings-form'
+import { WhatsAppSetupCta } from '@/components/integrations/whatsapp-setup-cta'
 import { redirect } from 'next/navigation'
 
 export const metadata = { title: "WhatsApp Oficial | Sirius CRM" }
 
-export default async function WhatsAppOfficialPage() {
+export default async function WhatsAppOfficialPage({ searchParams }: { searchParams: Promise<{ setup_paid?: string }> }) {
+    const { setup_paid } = await searchParams
+    const setupPaid = setup_paid === '1'
+
     const session = await getSession()
     if (!session?.user?.email) {
         return <div>Não autorizado. Faça login novamente.</div>
@@ -44,7 +48,7 @@ export default async function WhatsAppOfficialPage() {
     const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://seu-crm.com'
 
     const whatsappMessage = encodeURIComponent(
-        `Olá! Sou cliente do Sirius CRM (plano Business) e gostaria de contratar a implantação do WhatsApp Oficial (API Meta) por R$ 297.\n\nPreciso de ajuda para:\n- Configurar o Meta Business Manager\n- Criar o aplicativo no Facebook Developers\n- Gerar o Access Token permanente\n- Configurar o Webhook\n\nJá tenho: (descreva aqui — ex: chip virgem, CNPJ, acesso ao Facebook)`
+        `*Implantação WhatsApp Oficial — Sirius CRM*\n\n✅ Serviço: Implantação WhatsApp Oficial\n💳 Valor: R$ 297 (pago)\n\n📋 Preencha as informações abaixo:\n\n[ ] Chip virgem nunca conectado ao WhatsApp: SIM / NÃO\n\n[ ] Facebook da empresa:\n    Login (e-mail): ___________\n    Senha: ___________\n\n[ ] Meta Business Manager verificada: SIM / NÃO\n\n[ ] CNPJ da empresa: ___________\n\n[ ] Nome da empresa: ___________`
     )
     const whatsappUrl = `https://wa.me/5562998015884?text=${whatsappMessage}`
 
@@ -76,29 +80,7 @@ export default async function WhatsAppOfficialPage() {
             </div>
 
             {/* CTA TOPO */}
-            <div className="max-w-2xl rounded-xl border border-green-200 dark:border-green-500/20 bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-500/5 dark:to-emerald-500/5 p-5">
-                <div className="flex items-start gap-4">
-                    <div className="h-10 w-10 rounded-lg bg-green-500/15 flex items-center justify-center shrink-0">
-                        <Wrench className="h-5 w-5 text-green-600 dark:text-green-400" />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                        <p className="text-sm font-semibold text-green-900 dark:text-green-300">
-                            Prefere que a gente configure para você?
-                        </p>
-                        <p className="text-xs text-green-700/80 dark:text-green-400/80 mt-1 leading-relaxed">
-                            A configuração da API Oficial envolve Meta Business Manager, Facebook Developers e tokens de sistema — pode ser complexo. Nossa equipe faz tudo por <strong>R$ 297</strong>, uma única vez.
-                        </p>
-                        <div className="flex flex-wrap gap-3 mt-3">
-                            <a href={whatsappUrl} target="_blank" rel="noopener noreferrer">
-                                <Button size="sm" className="bg-green-600 hover:bg-green-700 text-white gap-2 shadow-sm">
-                                    <MessageSquare className="h-4 w-4" />
-                                    Contratar implantação — R$ 297
-                                </Button>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <WhatsAppSetupCta variant="top" whatsappUrl={whatsappUrl} setupPaid={setupPaid} />
 
             <div className="grid gap-6 max-w-2xl">
                 <Card className="bg-white dark:bg-white/[0.02] border-zinc-200 dark:border-white/5 backdrop-blur-xl shadow-sm">
@@ -291,43 +273,7 @@ export default async function WhatsAppOfficialPage() {
             </div>
 
             {/* CTA RODAPÉ */}
-            <div className="max-w-2xl rounded-xl border border-zinc-200 dark:border-white/10 bg-zinc-50 dark:bg-white/[0.02] p-5">
-                <div className="flex items-start gap-4">
-                    <div className="h-10 w-10 rounded-lg bg-zinc-100 dark:bg-white/5 flex items-center justify-center shrink-0">
-                        <Wrench className="h-5 w-5 text-zinc-500" />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                        <p className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">
-                            Ficou com dúvida ou não quer fazer sozinho?
-                        </p>
-                        <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-1 leading-relaxed">
-                            Nossa equipe assume a configuração completa. Você precisará de um <strong>chip de celular virgem</strong> (nunca conectado ao WhatsApp) e acesso ao Facebook da sua empresa. Cuidamos do resto.
-                        </p>
-                        <div className="flex flex-wrap items-center gap-4 mt-3">
-                            <a href={whatsappUrl} target="_blank" rel="noopener noreferrer">
-                                <Button size="sm" variant="outline" className="gap-2 border-zinc-300 dark:border-white/10 hover:border-green-500 hover:text-green-600 transition-colors">
-                                    <MessageSquare className="h-4 w-4" />
-                                    Falar com a equipe — R$ 297
-                                </Button>
-                            </a>
-                            <div className="flex flex-col gap-1">
-                                <div className="flex items-center gap-1.5 text-xs text-zinc-400">
-                                    <CheckCircle2 className="h-3 w-3 text-green-500 shrink-0" />
-                                    Chip virgem nunca conectado ao WhatsApp
-                                </div>
-                                <div className="flex items-center gap-1.5 text-xs text-zinc-400">
-                                    <CheckCircle2 className="h-3 w-3 text-green-500 shrink-0" />
-                                    Acesso ao Facebook / Meta Business Manager
-                                </div>
-                                <div className="flex items-center gap-1.5 text-xs text-zinc-400">
-                                    <CheckCircle2 className="h-3 w-3 text-green-500 shrink-0" />
-                                    Pagamento único — sem mensalidade extra
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <WhatsAppSetupCta variant="bottom" whatsappUrl={whatsappUrl} />
         </div>
     )
 }

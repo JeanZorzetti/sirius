@@ -42,7 +42,8 @@ export async function POST(request: NextRequest) {
 
     // Build annual plan key (e.g. STARTER → STARTER_ANNUAL)
     const isFounderPlan = plan.startsWith('FOUNDER_')
-    if (billingPeriod === 'ANNUAL' && !isFounderPlan && !plan.endsWith('_ANNUAL')) {
+    const isServicePlan = plan === 'WHATSAPP_SETUP'
+    if (billingPeriod === 'ANNUAL' && !isFounderPlan && !isServicePlan && !plan.endsWith('_ANNUAL')) {
       plan = `${plan}_ANNUAL` as CheckoutPlan
     }
 
@@ -61,6 +62,19 @@ export async function POST(request: NextRequest) {
     // Já é fundador — não pode comprar novamente
     if (org.isFounder) {
       return NextResponse.json({ error: 'Organização já é fundadora do Sirius CRM' }, { status: 400 })
+    }
+
+    // Serviços avulsos (sem tier — só criar preferência)
+    if (isServicePlan) {
+      const { preferenceId, initPoint, sandboxInitPoint } = await createCheckoutPreference(
+        org.id, org.name, user.email, plan
+      )
+      await prisma.organization.update({
+        where: { id: org.id },
+        data: { mercadoPagoPreferenceId: preferenceId }
+      })
+      const checkoutUrl = process.env.NODE_ENV === 'production' ? initPoint : (sandboxInitPoint || initPoint)
+      return NextResponse.json({ success: true, preferenceId, checkoutUrl })
     }
 
     if (isFounderPlan) {
