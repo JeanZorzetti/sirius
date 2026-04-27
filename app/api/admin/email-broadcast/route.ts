@@ -130,6 +130,9 @@ export async function POST(req: NextRequest) {
       results.push({ orgId: org.id, orgName: org.name, email: org.user.email, status: 'error', error: err.message })
       logger.error({ orgId: org.id, email: org.user.email, error: err.message }, 'broadcast: failed to send')
     }
+
+    // Stay under Resend's 5 req/s rate limit
+    await new Promise(resolve => setTimeout(resolve, 250))
   }
 
   const sent = results.filter(r => r.status === 'sent').length
