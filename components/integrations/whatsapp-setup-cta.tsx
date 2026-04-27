@@ -91,6 +91,8 @@ export function WhatsAppSetupCta({ variant, whatsappUrl, setupPaid }: WhatsAppSe
     )
   }
 
+  const directWhatsappUrl = `https://wa.me/5562998015884?text=${encodeURIComponent('Olá! Tenho interesse na implantação do WhatsApp Oficial pelo Sirius CRM. Vi o guia de configuração e prefiro contratar o serviço — pode me passar os detalhes?')}`
+
   return (
     <div className="max-w-2xl rounded-xl border border-zinc-200 dark:border-white/10 bg-zinc-50 dark:bg-white/[0.02] p-5">
       <div className="flex items-start gap-4">
@@ -105,16 +107,16 @@ export function WhatsAppSetupCta({ variant, whatsappUrl, setupPaid }: WhatsAppSe
             Nossa equipe assume a configuração completa. Você precisará de um <strong>chip de celular virgem</strong> (nunca conectado ao WhatsApp) e acesso ao Facebook da sua empresa. Cuidamos do resto.
           </p>
           <div className="flex flex-wrap items-center gap-4 mt-3">
-            <Button
-              size="sm"
-              variant="outline"
-              className="gap-2 border-zinc-300 dark:border-white/10 hover:border-green-500 hover:text-green-600 transition-colors"
-              onClick={handleCheckout}
-              disabled={loading}
-            >
-              {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <MessageSquare className="h-4 w-4" />}
-              {loading ? 'Aguarde...' : 'Contratar implantação — R$ 297'}
-            </Button>
+            <a href={directWhatsappUrl} target="_blank" rel="noopener noreferrer">
+              <Button
+                size="sm"
+                variant="outline"
+                className="gap-2 border-zinc-300 dark:border-white/10 hover:border-green-500 hover:text-green-600 transition-colors"
+              >
+                <MessageSquare className="h-4 w-4" />
+                Falar com a equipe
+              </Button>
+            </a>
             <div className="flex flex-col gap-1">
               <div className="flex items-center gap-1.5 text-xs text-zinc-400">
                 <CheckCircle2 className="h-3 w-3 text-green-500 shrink-0" />
