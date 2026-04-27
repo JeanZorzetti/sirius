@@ -1,4 +1,4 @@
-import { MercadoPagoConfig, Preference, Payment } from 'mercadopago'
+import { MercadoPagoConfig, Preference, Payment, PreApproval } from 'mercadopago'
 import logger from './logger'
 
 // Lazy singleton — avoid top-level instantiation (breaks Docker standalone build)
@@ -23,6 +23,12 @@ let _paymentClient: Payment | null = null
 function getPaymentClient() {
   if (!_paymentClient) _paymentClient = new Payment(getClient())
   return _paymentClient
+}
+
+let _preApprovalClient: PreApproval | null = null
+function getPreApprovalClient() {
+  if (!_preApprovalClient) _preApprovalClient = new PreApproval(getClient())
+  return _preApprovalClient
 }
 
 /**
@@ -277,6 +283,85 @@ export function validateMercadoPagoCredentials(): boolean {
   }
 
   return true
+}
+
+/**
+ * Cria assinatura recorrente mensal (PreApproval) — apenas cartão de crédito.
+ * Retorna subscriptionId que deve ser salvo na organização.
+ */
+export async function createSubscription(
+  organizationId: string,
+  organizationName: string,
+  userEmail: string,
+  plan: CheckoutPlan
+) {
+  const planPrices: Record<string, number> = {
+    STARTER: 67.00,
+    PRO: 147.00,
+    BUSINESS: 397.00,
+    FOUNDER_STARTER: 39.00,
+    FOUNDER_PRO: 87.00,
+    FOUNDER_BUSINESS: 234.00,
+  }
+
+  const planTitles: Record<string, string> = {
+    STARTER: `Sirius CRM Starter - ${organizationName}`,
+    PRO: `Sirius CRM Pro - ${organizationName}`,
+    BUSINESS: `Sirius CRM Business - ${organizationName}`,
+    FOUNDER_STARTER: `Sirius CRM Fundador Starter - ${organizationName}`,
+    FOUNDER_PRO: `Sirius CRM Fundador Pro - ${organizationName}`,
+    FOUNDER_BUSINESS: `Sirius CRM Fundador Business - ${organizationName}`,
+  }
+
+  const price = planPrices[plan]
+  if (!price) throw new Error(`Plano ${plan} não suporta assinatura recorrente`)
+
+  const baseUrl = process.env.NEXTAUTH_URL || process.env.NEXT_PUBLIC_APP_URL
+
+  try {
+    const subscription = await getPreApprovalClient().create({
+      body: {
+        reason: planTitles[plan] || `Sirius CRM ${plan} - ${organizationName}`,
+        payer_email: userEmail,
+        auto_recurring: {
+          frequency: 1,
+          frequency_type: 'months',
+          transaction_amount: price,
+          currency_id: 'BRL',
+        },
+        back_url: `${baseUrl}/checkout/sucesso`,
+        notification_url: `${baseUrl}/api/webhooks/mercadopago`,
+        external_reference: `${organizationId}_${plan}`,
+        status: 'pending',
+      },
+    })
+
+    logger.info({ organizationId, subscriptionId: subscription.id, plan }, 'MP subscription created')
+
+    return {
+      subscriptionId: subscription.id!,
+      initPoint: subscription.init_point!,
+    }
+  } catch (error) {
+    logger.error({ error, organizationId, plan }, 'Failed to create MP subscription')
+    throw new Error('Erro ao criar assinatura recorrente')
+  }
+}
+
+/**
+ * Cancela uma assinatura ativa no Mercado Pago.
+ */
+export async function cancelSubscription(subscriptionId: string) {
+  try {
+    await getPreApprovalClient().update({
+      id: subscriptionId,
+      body: { status: 'cancelled' },
+    })
+    logger.info({ subscriptionId }, 'MP subscription cancelled')
+  } catch (error) {
+    logger.error({ error, subscriptionId }, 'Failed to cancel MP subscription')
+    throw new Error('Erro ao cancelar assinatura')
+  }
 }
 
 export { getClient as getMercadoPagoClient }

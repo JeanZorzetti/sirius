@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { billingRateLimit } from '@/lib/ratelimit'
-import { createCheckoutPreference, CheckoutPlan } from '@/lib/mercadopago'
+import { createCheckoutPreference, createSubscription, CheckoutPlan } from '@/lib/mercadopago'
 import logger from '@/lib/logger'
 import { SubscriptionTier } from '@prisma/client'
 
@@ -105,7 +105,27 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    // Criar preferência de checkout
+    // Planos mensais de cartão → PreApproval (assinatura recorrente real)
+    // Planos anuais, founders e PIX-only → Preference (pagamento único)
+    const isMonthlyCardPlan = billingPeriod === 'MONTHLY' && !isFounderPlan && !isServicePlan
+    if (isMonthlyCardPlan) {
+      const { subscriptionId, initPoint } = await createSubscription(
+        org.id,
+        org.name,
+        user.email,
+        plan
+      )
+
+      await prisma.organization.update({
+        where: { id: org.id },
+        data: { mercadoPagoSubscriptionId: subscriptionId },
+      })
+
+      logger.info({ organizationId: org.id, subscriptionId, plan }, 'Subscription created')
+      return NextResponse.json({ success: true, subscriptionId, checkoutUrl: initPoint })
+    }
+
+    // Anual / Founder / avulso → preferência de pagamento único
     const { preferenceId, initPoint, sandboxInitPoint } = await createCheckoutPreference(
       org.id,
       org.name,

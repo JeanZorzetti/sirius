@@ -213,6 +213,12 @@ async function upgradePlan(
 
   // Atualizar organização (sync tier + plan + agaas + billing period)
   const agaasData = getAgaasDataForTier(tier)
+
+  // Salvar subscriptionId se vier no pagamento (primeiro ciclo de assinatura recorrente)
+  const subscriptionIdToSave = payment.metadata?.preapproval_id
+    || payment.preapproval_id
+    || null
+
   await prisma.organization.update({
     where: { id: organizationId },
     data: {
@@ -224,6 +230,7 @@ async function upgradePlan(
       billingPeriod: isAnnual ? 'ANNUAL' : 'MONTHLY',
       billingStartDate: new Date(),
       updatedAt: new Date(),
+      ...(subscriptionIdToSave ? { mercadoPagoSubscriptionId: subscriptionIdToSave } : {}),
     },
   })
 
@@ -554,6 +561,10 @@ async function processRecurringPayment(paymentId: string) {
 
     // Renovação aprovada: resetar contador de falhas + agaas usage (sync tier + plan)
     const renewalAgaasData = getAgaasDataForTier(subscriptionTier)
+
+    // Garantir que o subscriptionId está salvo (pode ter chegado nulo no primeiro ciclo)
+    const subscriptionIdFromPayment = (payment as any).preapproval_id || null
+
     const org = await prisma.organization.update({
       where: { id: organizationId },
       data: {
@@ -563,6 +574,7 @@ async function processRecurringPayment(paymentId: string) {
         ...renewalAgaasData,
         agaasActionsUsed: 0,
         agaasQuotaResetAt: nextMonthDate(),
+        ...(subscriptionIdFromPayment ? { mercadoPagoSubscriptionId: subscriptionIdFromPayment } : {}),
       },
       select: { id: true, name: true },
     })
