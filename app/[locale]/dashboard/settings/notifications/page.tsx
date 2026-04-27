@@ -4,8 +4,10 @@ import { useState, useEffect } from 'react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Switch } from '@/components/ui/switch'
 import { Label } from '@/components/ui/label'
-import { Bell, CheckSquare, Loader2 } from 'lucide-react'
+import { Bell, CheckSquare, Loader2, ArrowLeft } from 'lucide-react'
 import { toast } from 'sonner'
+import Link from 'next/link'
+import { Button } from '@/components/ui/button'
 
 interface NotificationPreferences {
   newDealEnabled: boolean
@@ -83,6 +85,14 @@ export default function NotificationsPage() {
 
   return (
     <div className="flex-1 space-y-4 p-8 pt-6">
+      <div className="flex items-center gap-4">
+        <Link href="/dashboard/settings">
+          <Button variant="ghost" size="sm" className="gap-2">
+            <ArrowLeft className="h-4 w-4" />
+            Voltar
+          </Button>
+        </Link>
+      </div>
       <div className="flex flex-col gap-1">
         <h2 className="text-2xl font-bold tracking-tight text-zinc-900 dark:text-white">
           NOTIFICAÇÕES

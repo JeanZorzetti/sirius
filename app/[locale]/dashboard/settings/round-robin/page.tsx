@@ -8,7 +8,8 @@ import { Switch } from '@/components/ui/switch'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import { toast } from 'sonner'
-import { Loader2, Users, RotateCw, Building2 } from 'lucide-react'
+import { Loader2, Users, RotateCw, Building2, ArrowLeft } from 'lucide-react'
+import Link from 'next/link'
 
 interface User {
   id: string
@@ -109,6 +110,14 @@ export default function RoundRobinSettingsPage() {
   if (!isBusiness) {
     return (
       <div className="space-y-6">
+        <div className="flex items-center gap-4">
+          <Link href="/dashboard/settings">
+            <Button variant="ghost" size="sm" className="gap-2">
+              <ArrowLeft className="h-4 w-4" />
+              Voltar
+            </Button>
+          </Link>
+        </div>
         <div>
           <h1 className="text-2xl font-bold">Distribuição Round-Robin</h1>
           <p className="text-muted-foreground">
@@ -135,6 +144,14 @@ export default function RoundRobinSettingsPage() {
 
   return (
     <div className="space-y-6">
+      <div className="flex items-center gap-4">
+        <Link href="/dashboard/settings">
+          <Button variant="ghost" size="sm" className="gap-2">
+            <ArrowLeft className="h-4 w-4" />
+            Voltar
+          </Button>
+        </Link>
+      </div>
       <div>
         <h1 className="text-2xl font-bold">Distribuição Round-Robin</h1>
         <p className="text-muted-foreground">

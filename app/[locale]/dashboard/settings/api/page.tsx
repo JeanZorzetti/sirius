@@ -3,7 +3,8 @@
 import { useState, useEffect } from 'react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { Key, Copy, Check, Trash2, Plus, AlertTriangle } from 'lucide-react'
+import { Key, Copy, Check, Trash2, Plus, AlertTriangle, ArrowLeft } from 'lucide-react'
+import Link from 'next/link'
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -115,6 +116,14 @@ export default function ApiManagementPage() {
 
   return (
     <div className="flex-1 space-y-4 p-8 pt-6">
+      <div className="flex items-center gap-4">
+        <Link href="/dashboard/settings">
+          <Button variant="ghost" size="sm" className="gap-2">
+            <ArrowLeft className="h-4 w-4" />
+            Voltar
+          </Button>
+        </Link>
+      </div>
       <div className="flex items-center justify-between space-y-2">
         <div className="flex flex-col gap-1">
           <h2 className="text-2xl font-bold tracking-tight text-zinc-900 dark:text-white">API KEYS</h2>
