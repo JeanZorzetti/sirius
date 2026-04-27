@@ -34,6 +34,8 @@ const EMPTY_FILTERS: TaskFiltersState = {
   labelIds: [],
   dueDateFrom: '',
   dueDateTo: '',
+  sortBy: 'none',
+  sortDir: 'asc',
 }
 
 export function TaskProjectWorkspace({

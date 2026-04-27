@@ -1,7 +1,7 @@
 'use client'
 
 import { useMemo } from 'react'
-import { Search, X, Filter, Calendar } from 'lucide-react'
+import { Search, X, Filter, Calendar, ArrowUpDown, ArrowUp, ArrowDown } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
@@ -13,6 +13,9 @@ import {
 } from '@/components/ui/popover'
 import type { TaskLite, TaskStatusLite } from './task-types'
 
+export type TaskSortBy = 'none' | 'priority' | 'dueDate'
+export type TaskSortDir = 'asc' | 'desc'
+
 export interface TaskFiltersState {
   search: string
   priorities: string[]
@@ -21,6 +24,8 @@ export interface TaskFiltersState {
   labelIds: string[]
   dueDateFrom: string
   dueDateTo: string
+  sortBy: TaskSortBy
+  sortDir: TaskSortDir
 }
 
 interface TaskFiltersProps {
@@ -90,7 +95,25 @@ export function TaskFilters({ tasks, statuses, value, onChange }: TaskFiltersPro
       labelIds: [],
       dueDateFrom: '',
       dueDateTo: '',
+      sortBy: 'none',
+      sortDir: 'asc',
     })
+  }
+
+  const cycleSort = (field: TaskSortBy) => {
+    if (value.sortBy !== field) {
+      onChange({ ...value, sortBy: field, sortDir: 'asc' })
+    } else if (value.sortDir === 'asc') {
+      onChange({ ...value, sortDir: 'desc' })
+    } else {
+      onChange({ ...value, sortBy: 'none', sortDir: 'asc' })
+    }
+  }
+
+  const SortIcon = ({ field }: { field: TaskSortBy }) => {
+    if (value.sortBy !== field) return <ArrowUpDown className="h-3 w-3 opacity-40" />
+    if (value.sortDir === 'asc') return <ArrowUp className="h-3 w-3" />
+    return <ArrowDown className="h-3 w-3" />
   }
 
   return (
@@ -277,6 +300,34 @@ export function TaskFilters({ tasks, statuses, value, onChange }: TaskFiltersPro
         </PopoverContent>
       </Popover>
 
+      {/* Sort buttons */}
+      <div className="flex items-center gap-1 rounded-lg border border-border/50 bg-muted/30 p-0.5">
+        <button
+          onClick={() => cycleSort('priority')}
+          className={cn(
+            'inline-flex items-center gap-1.5 rounded-md px-2.5 py-1.5 text-xs font-medium transition-all',
+            value.sortBy === 'priority'
+              ? 'bg-background shadow-sm text-foreground'
+              : 'text-muted-foreground hover:text-foreground'
+          )}
+        >
+          <SortIcon field="priority" />
+          Prioridade
+        </button>
+        <button
+          onClick={() => cycleSort('dueDate')}
+          className={cn(
+            'inline-flex items-center gap-1.5 rounded-md px-2.5 py-1.5 text-xs font-medium transition-all',
+            value.sortBy === 'dueDate'
+              ? 'bg-background shadow-sm text-foreground'
+              : 'text-muted-foreground hover:text-foreground'
+          )}
+        >
+          <SortIcon field="dueDate" />
+          Prazo
+        </button>
+      </div>
+
       {/* Active chips inline */}
       {activeCount > 0 && (
         <button
@@ -291,12 +342,20 @@ export function TaskFilters({ tasks, statuses, value, onChange }: TaskFiltersPro
   )
 }
 
+const PRIORITY_ORDER: Record<string, number> = {
+  URGENT: 0,
+  HIGH: 1,
+  MEDIUM: 2,
+  LOW: 3,
+  NONE: 4,
+}
+
 export function applyTaskFilters(tasks: TaskLite[], filters: TaskFiltersState): TaskLite[] {
   const search = filters.search.trim().toLowerCase()
   const fromMs = filters.dueDateFrom ? new Date(filters.dueDateFrom).getTime() : null
   const toMs = filters.dueDateTo ? new Date(filters.dueDateTo + 'T23:59:59').getTime() : null
 
-  return tasks.filter((t) => {
+  const filtered = tasks.filter((t) => {
     if (search && !t.title.toLowerCase().includes(search) && !t.description?.toLowerCase().includes(search)) {
       return false
     }
@@ -322,5 +381,21 @@ export function applyTaskFilters(tasks: TaskLite[], filters: TaskFiltersState): 
       if (toMs !== null && due > toMs) return false
     }
     return true
+  })
+
+  if (filters.sortBy === 'none') return filtered
+
+  const dir = filters.sortDir === 'asc' ? 1 : -1
+
+  return [...filtered].sort((a, b) => {
+    if (filters.sortBy === 'priority') {
+      return ((PRIORITY_ORDER[a.priority] ?? 4) - (PRIORITY_ORDER[b.priority] ?? 4)) * dir
+    }
+    if (filters.sortBy === 'dueDate') {
+      const aMs = a.dueDate ? new Date(a.dueDate).getTime() : Infinity
+      const bMs = b.dueDate ? new Date(b.dueDate).getTime() : Infinity
+      return (aMs - bMs) * dir
+    }
+    return 0
   })
 }
