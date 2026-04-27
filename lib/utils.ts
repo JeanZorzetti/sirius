@@ -29,3 +29,11 @@ export function formatTimeBR(date: string | Date): string {
 export function toDateInputBR(date: string | Date): string {
   return new Date(date).toLocaleDateString('en-CA', { timeZone: TZ }) // en-CA gives YYYY-MM-DD
 }
+
+/**
+ * Convert a YYYY-MM-DD date input value to an ISO string at noon BRT (15:00 UTC).
+ * Prevents UTC off-by-one: storing midnight UTC means the date shows as "yesterday" in BRT.
+ */
+export function dateInputToISO(value: string): string {
+  return `${value}T15:00:00.000Z` // noon BRT = 15:00 UTC
+}

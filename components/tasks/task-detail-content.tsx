@@ -34,7 +34,7 @@ import {
 } from '@/components/ui/select'
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs'
 import { toast } from 'sonner'
-import { cn, formatDateBR, toDateInputBR } from '@/lib/utils'
+import { cn, formatDateBR, toDateInputBR, dateInputToISO } from '@/lib/utils'
 import { PRIORITY_CONFIG } from './task-types'
 import { TaskComments } from './task-comments'
 import { TaskActivityFeed } from './task-activity-feed'
@@ -107,7 +107,7 @@ export function TaskDetailContent({ task, currentUserId, currentUserRole }: Task
           priority,
           assigneeId: assigneeId === 'none' ? null : assigneeId,
           visibility,
-          dueDate: dueDate || null,
+          dueDate: dueDate ? dateInputToISO(dueDate) : null,
           estimatedMinutes: estimatedMinutes || null,
         }),
       })

@@ -23,7 +23,7 @@ import {
 } from '@/components/ui/select'
 import { Checkbox } from '@/components/ui/checkbox'
 import { toast } from 'sonner'
-import { cn } from '@/lib/utils'
+import { cn, dateInputToISO } from '@/lib/utils'
 import type { TaskStatusLite } from './task-types'
 
 interface CreateTaskDialogProps {
@@ -177,7 +177,7 @@ export function CreateTaskDialog({
           title: title.trim(),
           description: description.trim() || null,
           priority,
-          dueDate: dueDate || null,
+          dueDate: dueDate ? dateInputToISO(dueDate) : null,
           assigneeId: assigneeId === 'none' ? null : assigneeId,
           visibility,
         }),

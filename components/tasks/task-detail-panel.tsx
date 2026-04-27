@@ -10,7 +10,7 @@ import {
 } from '@/components/ui/sheet'
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
-import { cn, toDateInputBR } from '@/lib/utils'
+import { cn, toDateInputBR, dateInputToISO } from '@/lib/utils'
 import {
   Select,
   SelectContent,
@@ -83,7 +83,7 @@ export function TaskDetailPanel({
           description: description.trim() || null,
           statusId,
           priority,
-          dueDate: dueDate || null,
+          dueDate: dueDate ? dateInputToISO(dueDate) : null,
         }),
       })
 
