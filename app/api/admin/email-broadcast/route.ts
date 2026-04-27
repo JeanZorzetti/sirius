@@ -22,6 +22,11 @@ const OVERRIDE_ORG_IDS = [
   '9c46f7ac-32b2-4130-adb6-bd66e5d2e75c', // worldseg
 ]
 
+// Email overrides: user has a typo/wrong email in DB, send to correct address instead
+const EMAIL_OVERRIDES: Record<string, string> = {
+  'paulo@wseg.co.br': 'paulo@wseg.com.br', // worldseg — .co.br is wrong domain
+}
+
 async function fetchOrgs() {
   const [payingOrgs, overrideOrgs] = await Promise.all([
     prisma.organization.findMany({
@@ -99,13 +104,15 @@ export async function POST(req: NextRequest) {
     }
 
     try {
+      const recipientEmail = EMAIL_OVERRIDES[org.user.email] ?? org.user.email
+
       const emailElement = React.createElement(WhatsAppMigrationEmail, {
-        userName: org.user.name || org.user.email,
+        userName: org.user.name || recipientEmail,
         organizationName: org.name,
       })
 
       const res = await sendEmail({
-        to: org.user.email,
+        to: recipientEmail,
         subject: 'Atualização importante: WhatsApp Oficial no Sirius CRM',
         react: emailElement,
       })
@@ -117,18 +124,18 @@ export async function POST(req: NextRequest) {
           organizationId: org.id,
           userId: org.user.id,
           type: 'UPGRADE_NUDGE',
-          to: org.user.email,
+          to: recipientEmail,
           subject: 'Atualização importante: WhatsApp Oficial no Sirius CRM',
           status: 'SENT',
           sentAt: new Date(),
         },
       }).catch(() => {})
 
-      results.push({ orgId: org.id, orgName: org.name, email: org.user.email, status: 'sent' })
-      logger.info({ orgId: org.id, email: org.user.email }, 'broadcast: whatsapp migration email sent')
+      results.push({ orgId: org.id, orgName: org.name, email: recipientEmail, status: 'sent' })
+      logger.info({ orgId: org.id, email: recipientEmail }, 'broadcast: whatsapp migration email sent')
     } catch (err: any) {
-      results.push({ orgId: org.id, orgName: org.name, email: org.user.email, status: 'error', error: err.message })
-      logger.error({ orgId: org.id, email: org.user.email, error: err.message }, 'broadcast: failed to send')
+      results.push({ orgId: org.id, orgName: org.name, email: recipientEmail ?? org.user.email, status: 'error', error: err.message })
+      logger.error({ orgId: org.id, email: recipientEmail ?? org.user.email, error: err.message }, 'broadcast: failed to send')
     }
 
     // Stay under Resend's 5 req/s rate limit
