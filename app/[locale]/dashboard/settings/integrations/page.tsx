@@ -2,7 +2,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { prisma } from '@/lib/prisma'
 import { getSession } from '@/lib/auth'
 import Link from 'next/link'
-import { Workflow, MessageCircle, MessageSquare, Calendar, ArrowLeft, CheckCircle2, XCircle, Activity, TrendingUp, AlertCircle, BarChart3, Share2 } from 'lucide-react'
+import { Workflow, MessageSquare, Calendar, ArrowLeft, CheckCircle2, XCircle, Activity, TrendingUp, AlertCircle, BarChart3, Share2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 
@@ -23,8 +23,6 @@ export default async function IntegrationsPage() {
                     tier: true,
                     n8nEnabled: true,
                     n8nBaseUrl: true,
-                    evolutionEnabled: true,
-                    evolutionBaseUrl: true,
                     wabaEnabled: true,
                     wabaPhoneNumberId: true,
                     googleCalendarEnabled: true,
@@ -50,7 +48,6 @@ export default async function IntegrationsPage() {
         successLogs24h,
         recentLogs,
         n8nLogs,
-        whatsappLogs,
         wabaLogs,
         calendarLogs
     ] = await Promise.all([
@@ -90,13 +87,6 @@ export default async function IntegrationsPage() {
         prisma.integrationLog.count({
             where: {
                 organizationId: user.organization.id,
-                type: 'WHATSAPP',
-                createdAt: { gte: last7Days }
-            }
-        }),
-        prisma.integrationLog.count({
-            where: {
-                organizationId: user.organization.id,
                 type: 'WHATSAPP_OFFICIAL',
                 createdAt: { gte: last7Days }
             }
@@ -126,21 +116,6 @@ export default async function IntegrationsPage() {
             href: '/dashboard/settings/integrations/n8n',
             requiresPro: false,
             eventsLast7Days: n8nLogs,
-            status: 'stable' as const,
-        },
-        {
-            id: 'whatsapp',
-            name: 'WhatsApp',
-            description: 'Envie e receba mensagens via Evolution API',
-            icon: MessageCircle,
-            iconColor: 'text-green-500',
-            iconBg: 'bg-green-500/10',
-            iconShadow: 'shadow-[0_0_10px_rgba(34,197,94,0.2)]',
-            enabled: user.organization.evolutionEnabled,
-            configured: !!user.organization.evolutionBaseUrl,
-            href: '/dashboard/settings/integrations/whatsapp',
-            requiresPro: false,
-            eventsLast7Days: whatsappLogs,
             status: 'stable' as const,
         },
         {
@@ -415,12 +390,8 @@ export default async function IntegrationsPage() {
                                 Configure webhooks e gerencie workflows via API.
                             </p>
                             <p>
-                                <strong>WhatsApp (Evolution):</strong> Envie mensagens manuais ou automatizadas via Evolution API.
-                                Receba mensagens e crie deals automaticamente.
-                            </p>
-                            <p>
                                 <strong>WhatsApp Oficial:</strong> API Oficial do WhatsApp Business (Meta Cloud API).
-                                Envie mensagens e templates aprovados pela Meta com número verificado.
+                                Envie mensagens, templates aprovados pela Meta, receba mensagens em tempo real e acompanhe status de entrega e leitura.
                             </p>
                             <p>
                                 <strong>Google Calendar:</strong> Sincronize eventos do calendário com deals.
