@@ -2,7 +2,7 @@ import { getSession } from "@/lib/auth"
 import { prisma } from "@/lib/prisma"
 import { redirect } from "next/navigation"
 import Link from "next/link"
-import { ShieldAlert, ArrowLeft } from "lucide-react"
+import { ShieldAlert, ArrowLeft, Activity } from "lucide-react"
 
 export default async function AdminLayout({
     children,
@@ -54,23 +54,12 @@ export default async function AdminLayout({
                     <Link href="/admin/funnel" className="text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors">
                         Funnel
                     </Link>
-                    <Link href="/admin/ab-testing" className="text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors">
-                        A/B Testing
-                    </Link>
-                    <Link href="/admin/generative-ui" className="text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors">
-                        GenUI Demo
-                    </Link>
                     <Link href="/admin/knowledge-graph" className="text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors">
                         Knowledge Graph
                     </Link>
-                    <Link href="/admin/graph-rag" className="text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors">
-                        Graph-RAG
-                    </Link>
-                    <Link href="/admin/auto-citation" className="text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors">
-                        Auto-Citation
-                    </Link>
-                    <Link href="/admin/spin-chat" className="text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors">
-                        SPIN Chat
+                    <Link href="/admin/access-logs" className="flex items-center gap-1 text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors">
+                        <Activity className="h-3.5 w-3.5" />
+                        Acessos
                     </Link>
                 </nav>
                 <div className="ml-auto">

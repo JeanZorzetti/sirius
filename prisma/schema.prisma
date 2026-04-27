@@ -160,6 +160,10 @@ model Organization {
   agaasMonthlyQuota   Int      @default(0)   // Ações/mês permitidas (0=free)
   agaasActionsUsed    Int      @default(0)   // Contador reset mensal
   agaasQuotaResetAt   DateTime?              // Próximo reset
+
+  // Access Tracking
+  accessSessions AccessSession[]
+  pageViewLogs   PageViewLog[]
 }
 
 model User {
@@ -209,6 +213,10 @@ model User {
   timeEntries    TimeEntry[]    @relation("TimeEntryUser")
   taskActivities    TaskActivity[]   @relation("TaskActivityUser")
   taskAttachments   TaskAttachment[] @relation("TaskAttachmentUploader")
+
+  // Access Tracking
+  accessSessions AccessSession[]
+  pageViewLogs   PageViewLog[]
 
   role    Role    @default(USER)
   orgRole OrgRole @default(OWNER) // Defaulting to OWNER for now so existing users don't lose access. Ideally MEMBER.
@@ -2115,4 +2123,42 @@ model TaskAttachment {
   uploadedBy   User   @relation("TaskAttachmentUploader", fields: [uploadedById], references: [id])
 
   @@index([taskId])
+}
+
+// AccessSession: Registra cada sessão de login/logout para calcular tempo médio logado
+model AccessSession {
+  id        String    @id @default(uuid())
+  loginAt   DateTime  @default(now())
+  logoutAt  DateTime? // null = sessão ainda ativa
+  durationS Int?      // duração em segundos (preenchido no logout ou expiração)
+
+  ipAddress String?
+  userAgent String? @db.Text
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@index([userId, loginAt])
+  @@index([organizationId, loginAt])
+}
+
+// PageViewLog: Registra cada visualização de página para calcular top páginas por org
+model PageViewLog {
+  id        String   @id @default(uuid())
+  path      String   // ex: "/dashboard", "/contacts", "/pipeline/abc"
+  pageTitle String?  // título legível da página
+  createdAt DateTime @default(now())
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@index([organizationId, createdAt])
+  @@index([organizationId, path])
+  @@index([userId, createdAt])
 }
