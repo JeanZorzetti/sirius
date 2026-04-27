@@ -14,7 +14,7 @@ import logger from '@/lib/logger'
 import React from 'react'
 
 const ADMIN_EMAIL = 'jeanzorzetti@gmail.com'
-const BROADCAST_SUBJECT = BROADCAST_SUBJECT
+const BROADCAST_SUBJECT = 'Atualização importante: WhatsApp Oficial no Sirius CRM'
 
 // FREE orgs that previously had a paid plan — include manually
 const OVERRIDE_ORG_IDS = [
@@ -123,8 +123,8 @@ export async function POST(req: NextRequest) {
       continue
     }
 
+    const recipientEmail = EMAIL_OVERRIDES[org.user.email] ?? org.user.email
     try {
-      const recipientEmail = EMAIL_OVERRIDES[org.user.email] ?? org.user.email
 
       const emailElement = React.createElement(WhatsAppMigrationEmail, {
         userName: org.user.name || recipientEmail,
