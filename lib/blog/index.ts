@@ -43,6 +43,7 @@ import { post as post41 } from './posts/como-funciona-sofia-ia-sirius'
 import { post as post42 } from './posts/agentes-ia-vs-saas-tradicional'
 import { post as post43 } from './posts/automacao-vendas-agentes-ia'
 import { post as post44 } from './posts/roi-agentes-ia-vendas-b2b'
+import { post as post45 } from './posts/whatsapp-api-oficial-meta-crm'
 
 export const blogPosts: BlogPost[] = [
   post1,
@@ -89,6 +90,7 @@ export const blogPosts: BlogPost[] = [
   post42,
   post43,
   post44,
+  post45,
 ]
 
 /**
