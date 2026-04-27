@@ -7,7 +7,10 @@ import { redirect } from 'next/navigation'
 
 export const metadata = { title: "WhatsApp Oficial — Upgrade | Sirius CRM" }
 
-export default async function WhatsAppUpgradePage() {
+export default async function WhatsAppUpgradePage({ searchParams }: { searchParams: Promise<{ preview?: string }> }) {
+    const { preview } = await searchParams
+    const isPreview = preview === '1'
+
     const session = await getSession()
     if (!session?.user?.email) redirect('/login')
 
@@ -16,8 +19,8 @@ export default async function WhatsAppUpgradePage() {
         include: { organization: { select: { tier: true, wabaGrandfathered: true } } }
     })
 
-    // Already has access — redirect to config page
-    if (user?.organization?.tier === 'BUSINESS' || user?.organization?.wabaGrandfathered) {
+    // Already has access — redirect to config page (unless previewing)
+    if (!isPreview && (user?.organization?.tier === 'BUSINESS' || user?.organization?.wabaGrandfathered)) {
         redirect('/dashboard/settings/integrations/whatsapp-official')
     }
 

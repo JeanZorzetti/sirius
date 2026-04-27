@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { EmailAutomationType } from '@prisma/client'
 import { AutomationCard } from '@/components/email-automations/automation-card'
 import { EmailHistoryTable } from '@/components/email-automations/email-history-table'
@@ -9,7 +9,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { Mail, BarChart3, Settings, Lock, Send, AlertTriangle, CheckCircle, XCircle, Loader2 } from 'lucide-react'
+import { Mail, BarChart3, Settings, Lock, Send, AlertTriangle, CheckCircle, XCircle, Loader2, Eye, ExternalLink } from 'lucide-react'
 
 interface EmailAutomation {
   id: string
@@ -283,12 +283,34 @@ export function EmailAutomationsClient({
                   <div>
                     <CardTitle>Aviso de Migração WhatsApp</CardTitle>
                     <CardDescription>
-                      Envia email explicando a mudança para API Oficial Meta a todos os clientes Starter/Pro com conexão WhatsApp ativa
+                      Envia email explicando a mudança para API Oficial Meta a todos os clientes ativos (Starter/Pro/Business)
                     </CardDescription>
                   </div>
                 </div>
               </CardHeader>
               <CardContent className="space-y-6">
+
+                {/* Links rápidos */}
+                <div className="flex flex-wrap gap-2">
+                  <a
+                    href="/api/admin/email-preview/whatsapp-migration"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 text-xs text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100 border border-zinc-200 dark:border-white/10 rounded-md px-3 py-1.5 transition-colors"
+                  >
+                    <Eye className="h-3.5 w-3.5" />
+                    Preview do email
+                  </a>
+                  <a
+                    href="/dashboard/settings/integrations/whatsapp-official/upgrade?preview=1"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 text-xs text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100 border border-zinc-200 dark:border-white/10 rounded-md px-3 py-1.5 transition-colors"
+                  >
+                    <ExternalLink className="h-3.5 w-3.5" />
+                    Ver página comercial
+                  </a>
+                </div>
                 {broadcastStatus === 'idle' && (
                   <div className="rounded-xl border border-dashed p-8 text-center space-y-4">
                     <div className="w-12 h-12 rounded-full bg-muted flex items-center justify-center mx-auto">
