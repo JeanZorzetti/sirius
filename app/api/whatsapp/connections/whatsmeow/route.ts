@@ -41,11 +41,25 @@ export async function POST(req: NextRequest) {
 
   const user = await prisma.user.findUnique({
     where: { id: session.user.id },
-    select: { organizationId: true },
+    select: { organizationId: true, organization: { select: { tier: true } } },
   })
 
   if (!user?.organizationId) {
     return NextResponse.json({ error: 'Organização não encontrada' }, { status: 404 })
+  }
+
+  // WhatsApp via API Oficial Meta é exclusivo do plano Business
+  if (user.organization?.tier !== 'BUSINESS') {
+    return NextResponse.json(
+      {
+        error: 'whatsapp_business_only',
+        message: 'O WhatsApp agora é exclusivo do plano Business.',
+        reason: 'A Meta está banindo contas que utilizam APIs não oficiais do WhatsApp. Para proteger seu número, o Sirius CRM migrou para a API Oficial do WhatsApp Business (Meta Cloud API), disponível apenas no plano Business.',
+        source: 'https://faq.whatsapp.com/5957850900902049',
+        upgradeUrl: '/dashboard/billing/plans',
+      },
+      { status: 403 }
+    )
   }
 
   const body = await req.json()

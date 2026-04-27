@@ -24,13 +24,20 @@ export async function POST(req: NextRequest) {
     // 2. Get user with organization
     const user = await prisma.user.findUnique({
       where: { id: session.user.id },
-      select: { organizationId: true },
+      select: { organizationId: true, organization: { select: { tier: true } } },
     })
 
     if (!user?.organizationId) {
       return NextResponse.json(
         { error: 'Organização não encontrada' },
         { status: 404 }
+      )
+    }
+
+    if (user.organization?.tier !== 'BUSINESS') {
+      return NextResponse.json(
+        { error: 'O WhatsApp está disponível apenas no plano Business (API Oficial Meta).' },
+        { status: 403 }
       )
     }
 
