@@ -18,6 +18,11 @@ export default async function AgendaPage() {
 
   const isMember = user.orgRole === 'MEMBER'
 
+  const org = await prisma.organization.findUnique({
+    where: { id: user.organizationId },
+    select: { googleCalendarEnabled: true, googleCalendarEmail: true },
+  })
+
   const [deals, stages, contacts, tasks] = await Promise.all([
     prisma.deal.findMany({
       where: {
@@ -87,6 +92,8 @@ export default async function AgendaPage() {
       stages={stages}
       contacts={contacts}
       tasks={serializedTasks}
+      googleCalendarEnabled={org?.googleCalendarEnabled ?? false}
+      googleCalendarEmail={org?.googleCalendarEmail ?? null}
     />
   )
 }
