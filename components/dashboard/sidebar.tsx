@@ -175,6 +175,19 @@ function SidebarUserNav({ user }: { user: any }) {
             <button
               type="submit"
               className={cn(linkClass, 'w-full text-red-500 dark:text-red-400')}
+              onClick={async () => {
+                const sessionId = sessionStorage.getItem('sirius_access_session_id')
+                if (sessionId) {
+                  sessionStorage.removeItem('sirius_access_session_id')
+                  try {
+                    await fetch('/api/access/session', {
+                      method: 'POST',
+                      headers: { 'Content-Type': 'application/json' },
+                      body: JSON.stringify({ action: 'logout', sessionId }),
+                    })
+                  } catch { /* fire-and-forget */ }
+                }
+              }}
             >
               <LogOut className="h-4 w-4 flex-shrink-0" />
               <span>Sair</span>

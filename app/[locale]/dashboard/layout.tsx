@@ -3,6 +3,7 @@ import { BottomNav } from '@/components/dashboard/bottom-nav'
 import { PWAInstallPrompt } from '@/components/pwa-install-prompt'
 import { SignUpTracker } from '@/components/analytics/signup-tracker'
 import { LoginTracker } from '@/components/analytics/login-tracker'
+import { AccessTracker } from '@/components/analytics/access-tracker'
 import { PostHogUserIdentifier } from '@/components/analytics/posthog-user-identifier'
 import { AgiChatSidebar } from '@/components/agi'
 import { NativeInitializer } from '@/components/mobile/native-initializer'
@@ -66,6 +67,7 @@ export default async function DashboardLayout({
       <SignUpTracker />
       <LoginTracker />
       <PostHogUserIdentifier user={user} />
+      <AccessTracker />
 
       {/* AGI Chat Sidebar - Global AI Assistant */}
       <AgiChatSidebar />

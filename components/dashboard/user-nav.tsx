@@ -64,7 +64,25 @@ export function UserNav({ user }: { user: any }) {
         <DropdownMenuSeparator />
         <DropdownMenuItem asChild>
           <form action={logoutAction} className="w-full">
-            <button type="submit" className="w-full text-left cursor-default" onClick={() => analytics.reset()}>
+            <button
+              type="submit"
+              className="w-full text-left cursor-default"
+              onClick={async () => {
+                analytics.reset()
+                // Close access session before navigating away
+                const sessionId = sessionStorage.getItem('sirius_access_session_id')
+                if (sessionId) {
+                  sessionStorage.removeItem('sirius_access_session_id')
+                  try {
+                    await fetch('/api/access/session', {
+                      method: 'POST',
+                      headers: { 'Content-Type': 'application/json' },
+                      body: JSON.stringify({ action: 'logout', sessionId }),
+                    })
+                  } catch { /* fire-and-forget */ }
+                }
+              }}
+            >
               Sair
             </button>
           </form>
