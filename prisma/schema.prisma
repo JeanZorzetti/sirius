@@ -55,6 +55,11 @@ model Organization {
   adsIntegrationEnabled  Boolean   @default(false)
   adsLastSyncAt          DateTime?
 
+  // Facebook Lead Ads — webhook
+  facebookPageAccessToken  String?  @db.Text   // Page Access Token com leads_retrieval (encrypted)
+  facebookPageId           String?             // ID da Página do Facebook
+  facebookWebhookVerifyToken String?           // Token de verificação do webhook (plain text)
+
   users                   User[]
   contacts                Contact[]
   deals                   Deal[]
@@ -104,6 +109,7 @@ model Organization {
   pwaMetrics        PWAMetric[]
   notifications     Notification[]
   adsMetrics        AdsMetric[]
+  facebookLeads     FacebookLead[]
 
   // AGI Sirius relations
   agiConversations   AgiConversation[]
@@ -1642,6 +1648,38 @@ model AutomationExecution {
 
   @@index([automationId])
   @@index([dealId])
+}
+
+// Facebook Lead Ads — leads recebidos via webhook em tempo real
+model FacebookLead {
+  id             String   @id @default(uuid())
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  // Identificadores da Meta
+  leadgenId  String   @unique // leadgen_id recebido no webhook
+  pageId     String
+  formId     String
+  adId       String?
+  adgroupId  String?
+  campaignId String?
+
+  // Dados do lead (preenchidos após fetch na Graph API)
+  name      String?
+  email     String?
+  phone     String?
+  rawFields Json?   // Todos os campos do formulário (para campos customizados)
+
+  // Rastreamento
+  fetchedAt  DateTime? // Quando os dados foram buscados na Graph API
+  contactId  String?   // ID do Contact criado no CRM (se criado)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([organizationId, createdAt])
+  @@index([organizationId, formId])
+  @@index([contactId])
 }
 
 // Fase 17: Métricas de Ads (Google Ads, Facebook Ads, manual)

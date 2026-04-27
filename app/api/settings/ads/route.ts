@@ -27,6 +27,9 @@ export async function GET() {
             facebookAccessToken: true,
             adsIntegrationEnabled: true,
             adsLastSyncAt: true,
+            facebookPageId: true,
+            facebookPageAccessToken: true,
+            facebookWebhookVerifyToken: true,
           },
         },
       },
@@ -39,12 +42,15 @@ export async function GET() {
     const org = user.organization
     return NextResponse.json({
       googleAdsCustomerId: org.googleAdsCustomerId,
-      // Retornar apenas indicador de se existe (nunca expor token)
       googleAdsRefreshToken: org.googleAdsRefreshToken ? '••••••••' : null,
       facebookAdAccountId: org.facebookAdAccountId,
       facebookAccessToken: org.facebookAccessToken ? '••••••••' : null,
       adsIntegrationEnabled: org.adsIntegrationEnabled,
       adsLastSyncAt: org.adsLastSyncAt,
+      // Lead Ads webhook
+      facebookPageId: org.facebookPageId,
+      facebookPageAccessToken: org.facebookPageAccessToken ? '••••••••' : null,
+      facebookWebhookVerifyToken: org.facebookWebhookVerifyToken,
     })
   } catch (error) {
     logger.error({ error }, '[SETTINGS:ADS] GET error')
@@ -85,6 +91,17 @@ export async function PATCH(request: NextRequest) {
         : null
     }
     if ('adsIntegrationEnabled' in body) updateData.adsIntegrationEnabled = Boolean(body.adsIntegrationEnabled)
+
+    // Lead Ads webhook fields
+    if ('facebookPageId' in body) updateData.facebookPageId = body.facebookPageId || null
+    if ('facebookPageAccessToken' in body) {
+      updateData.facebookPageAccessToken = body.facebookPageAccessToken
+        ? encrypt(body.facebookPageAccessToken)
+        : null
+    }
+    if ('facebookWebhookVerifyToken' in body) {
+      updateData.facebookWebhookVerifyToken = body.facebookWebhookVerifyToken || null
+    }
 
     // Auto-ativar integração se qualquer credencial for fornecida
     if (updateData.googleAdsCustomerId || updateData.facebookAdAccountId) {
