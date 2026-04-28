@@ -131,7 +131,7 @@ export function IndiqueClient() {
             className="mt-12 flex flex-col sm:flex-row gap-4 justify-center items-center"
           >
             <Button asChild size="lg" className="h-14 px-8 rounded-full text-base font-semibold shadow-xl shadow-primary/25 transition-transform hover:-translate-y-1">
-              <Link href="/login">
+              <Link href="/dashboard/billing">
                 Acessar meu link de indicação
                 <ArrowRight className="w-5 h-5 ml-2" />
               </Link>
@@ -432,7 +432,7 @@ export function IndiqueClient() {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button asChild size="lg" className="h-14 px-8 rounded-full text-base font-semibold shadow-xl shadow-primary/25 transition-transform hover:-translate-y-1">
-              <Link href="/login">
+              <Link href="/dashboard/billing">
                 Pegar meu link agora
                 <ArrowRight className="w-5 h-5 ml-2" />
               </Link>
