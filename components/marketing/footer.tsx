@@ -39,6 +39,11 @@ export function Footer() {
                 </Link>
               </li>
               <li>
+                <Link href="/indique" className="text-muted-foreground hover:text-foreground transition-colors">
+                  Indique e Ganhe
+                </Link>
+              </li>
+              <li>
                 <Link href="/followup" className="text-muted-foreground hover:text-foreground transition-colors">
                   {t('product.followup')}
                 </Link>

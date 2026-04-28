@@ -6,7 +6,7 @@ import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { Check, X, Loader2, Sparkles, Zap, Building2, Crown, Star, Bot } from 'lucide-react'
+import { Check, X, Loader2, Sparkles, Zap, Building2, Crown, Bot } from 'lucide-react'
 import { toast } from 'sonner'
 import { PLAN_LIMITS, PLAN_PRICING, PLAN_PRICING_ANNUAL, PLAN_NAMES, PLAN_DESCRIPTIONS } from '@/lib/entitlements'
 import { SubscriptionTier } from '@prisma/client'
@@ -132,22 +132,21 @@ export default function PlansPage() {
         </p>
       </div>
 
-      {/* Founders Program Banner */}
-      <Card className="border-amber-200 bg-gradient-to-r from-amber-50 to-orange-50">
+      {/* Referral Banner */}
+      <Card className="border-primary/20 bg-primary/5">
         <CardContent className="flex items-center justify-between gap-4 py-4 flex-wrap">
           <div className="flex items-center gap-3">
-            <Star className="w-6 h-6 text-amber-500 fill-amber-400 shrink-0" />
+            <Zap className="w-6 h-6 text-primary shrink-0" />
             <div>
-              <p className="font-semibold text-amber-900">Programa de Fundadores — até 42% OFF vitalício!</p>
-              <p className="text-sm text-amber-700">
-                Starter R$39 · Pro R$87 · Business R$234 — preço que nunca sobe. Vagas limitadas.
+              <p className="font-semibold">Indique e ganhe até 100% de desconto recorrente</p>
+              <p className="text-sm text-muted-foreground">
+                Cada indicação ativa = 15% off na sua mensalidade. 7 indicações = mensalidade zerada.
               </p>
             </div>
           </div>
-          <Button asChild className="bg-amber-500 hover:bg-amber-600 text-white shrink-0">
-            <Link href="/fundadores">
-              <Star className="w-4 h-4 mr-2 fill-white" />
-              Ver oferta
+          <Button asChild variant="outline" className="shrink-0">
+            <Link href="/dashboard/billing">
+              Ver programa de indicação
             </Link>
           </Button>
         </CardContent>
