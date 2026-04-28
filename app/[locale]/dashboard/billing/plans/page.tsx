@@ -285,64 +285,6 @@ export default function PlansPage() {
         </CardContent>
       </Card>
 
-      {/* Add-ons */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Add-ons Disponíveis</CardTitle>
-          <CardDescription>
-            Amplie seu plano com créditos extras e recursos adicionais
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <Card>
-              <CardHeader className="pb-3">
-                <CardTitle className="text-base">+100 Leads</CardTitle>
-                <CardDescription>Pacote de prospecção</CardDescription>
-              </CardHeader>
-              <CardContent className="pb-3">
-                <span className="text-2xl font-bold">R$ 29,90</span>
-              </CardContent>
-              <CardFooter>
-                <Button variant="outline" className="w-full" onClick={() => router.push('/dashboard/billing/addons')}>
-                  Comprar
-                </Button>
-              </CardFooter>
-            </Card>
-            
-            <Card>
-              <CardHeader className="pb-3">
-                <CardTitle className="text-base">+500 Leads</CardTitle>
-                <CardDescription>Pacote de prospecção</CardDescription>
-              </CardHeader>
-              <CardContent className="pb-3">
-                <span className="text-2xl font-bold">R$ 99,90</span>
-              </CardContent>
-              <CardFooter>
-                <Button variant="outline" className="w-full" onClick={() => router.push('/dashboard/billing/addons')}>
-                  Comprar
-                </Button>
-              </CardFooter>
-            </Card>
-            
-            <Card>
-              <CardHeader className="pb-3">
-                <CardTitle className="text-base">WhatsApp Extra</CardTitle>
-                <CardDescription>Instância adicional</CardDescription>
-              </CardHeader>
-              <CardContent className="pb-3">
-                <span className="text-2xl font-bold">R$ 29,90</span>
-                <span className="text-muted-foreground">/mês</span>
-              </CardContent>
-              <CardFooter>
-                <Button variant="outline" className="w-full" onClick={() => router.push('/dashboard/billing/addons')}>
-                  Assinar
-                </Button>
-              </CardFooter>
-            </Card>
-          </div>
-        </CardContent>
-      </Card>
     </div>
   )
 }
