@@ -2,8 +2,14 @@ import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 
 // POST /api/admin/migrate-deals-pipeline?token=sirius-migrate-2024
-// Transfers deals from LEAD and PROSPECÇÃO stages of the default pipeline
-// to the "escrito antigo" pipeline's "escrito clientes antigos" stage.
+// Moves deals from Roilabs Lead+Prospecção into pipeline "antigo" / stage "clientes antigos"
+const SOURCE_STAGE_IDS = [
+  '76182ad6-cac2-4d0d-8a63-e06393df2155', // Lead
+  'd03f77f1-5569-40ff-a943-325202f9fd54', // Prospecção
+]
+const TARGET_PIPELINE_ID = '1630c534-facb-4085-9d08-f12c8b86060c' // antigo
+const TARGET_STAGE_ID    = '94b0d441-1da0-4062-ac65-7c4d7db00524' // clientes antigos
+
 export async function POST(req: NextRequest) {
   const token = req.nextUrl.searchParams.get('token')
   if (!token || token !== 'sirius-migrate-2024') {
@@ -11,93 +17,29 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    // Find default (main) pipeline
-    const mainPipeline = await prisma.pipeline.findFirst({
-      where: { isDefault: true },
-      include: {
-        stages: { orderBy: { order: 'asc' } },
-      },
-    })
-
-    if (!mainPipeline) {
-      return NextResponse.json({ error: 'Pipeline principal não encontrado' }, { status: 404 })
-    }
-
-    // Find LEAD and PROSPECÇÃO stages in main pipeline (case-insensitive)
-    const sourceStages = mainPipeline.stages.filter(s =>
-      ['lead', 'prospecção', 'prospeccao', 'prospecao'].includes(s.name.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, ''))
-    )
-
-    if (sourceStages.length === 0) {
-      return NextResponse.json({
-        error: 'Nenhuma etapa LEAD ou PROSPECÇÃO encontrada no pipeline principal',
-        stagesFound: mainPipeline.stages.map(s => s.name),
-      }, { status: 404 })
-    }
-
-    // Find secondary "escrito antigo" pipeline (case-insensitive)
-    const allPipelines = await prisma.pipeline.findMany({
-      where: { organizationId: mainPipeline.organizationId },
-      include: { stages: true },
-    })
-
-    const targetPipeline = allPipelines.find(p =>
-      p.name.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').includes('escrito antigo')
-    )
-
-    if (!targetPipeline) {
-      return NextResponse.json({
-        error: 'Pipeline "escrito antigo" não encontrado',
-        pipelinesFound: allPipelines.map(p => p.name),
-      }, { status: 404 })
-    }
-
-    // Find "escrito clientes antigos" stage in target pipeline
-    const targetStage = targetPipeline.stages.find(s =>
-      s.name.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').includes('escrito clientes antigos')
-    )
-
-    if (!targetStage) {
-      return NextResponse.json({
-        error: 'Etapa "escrito clientes antigos" não encontrada no pipeline de destino',
-        stagesFound: targetPipeline.stages.map(s => s.name),
-      }, { status: 404 })
-    }
-
-    const sourceStageIds = sourceStages.map(s => s.id)
-
-    // Count deals to migrate
     const dealsToMigrate = await prisma.deal.findMany({
-      where: {
-        stageId: { in: sourceStageIds },
-        archived: false,
-      },
+      where: { stageId: { in: SOURCE_STAGE_IDS }, archived: false },
       select: { id: true, title: true, stageId: true },
     })
 
     if (dealsToMigrate.length === 0) {
-      return NextResponse.json({
-        message: 'Nenhum deal encontrado nas etapas LEAD/PROSPECÇÃO',
-        sourceStages: sourceStages.map(s => s.name),
-      })
+      return NextResponse.json({ message: 'Nenhum deal encontrado nas etapas Lead/Prospecção' })
     }
 
-    // Get current max order in target stage
     const maxOrderDeal = await prisma.deal.findFirst({
-      where: { stageId: targetStage.id },
+      where: { stageId: TARGET_STAGE_ID },
       orderBy: { order: 'desc' },
       select: { order: true },
     })
-    let nextOrder = (maxOrderDeal?.order ?? 0) + 1
+    const nextOrder = (maxOrderDeal?.order ?? 0) + 1
 
-    // Transfer all deals to target pipeline + stage
     const updateResults = await prisma.$transaction(
       dealsToMigrate.map((deal, idx) =>
         prisma.deal.update({
           where: { id: deal.id },
           data: {
-            pipelineId: targetPipeline.id,
-            stageId: targetStage.id,
+            pipelineId: TARGET_PIPELINE_ID,
+            stageId: TARGET_STAGE_ID,
             order: nextOrder + idx,
           },
         })
@@ -107,14 +49,6 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({
       success: true,
       migrated: updateResults.length,
-      from: {
-        pipeline: mainPipeline.name,
-        stages: sourceStages.map(s => s.name),
-      },
-      to: {
-        pipeline: targetPipeline.name,
-        stage: targetStage.name,
-      },
       deals: dealsToMigrate.map(d => d.title),
     })
   } catch (error) {
