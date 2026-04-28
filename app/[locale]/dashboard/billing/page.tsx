@@ -86,11 +86,21 @@ export default async function BillingPage() {
       isFounder = user.organization?.isFounder ?? false
       founderNumber = user.organization?.founderNumber ?? null
       customPricing = user.organization?.customPricing ? Number(user.organization.customPricing) : null
-      referralCode = user.referralCode ?? null
       referralDiscount = user.organization?.referralDiscount ?? 0
       rewardedReferrals = user.organization?.referrals?.length ?? 0
       trialEndsAt = user.organization?.trialEndsAt ?? null
       trialStatus = user.organization?.trialStatus ?? null
+
+      // Gerar referralCode se o usuário ainda não tiver (usuários antigos)
+      if (user.referralCode) {
+        referralCode = user.referralCode
+      } else {
+        let code = Math.random().toString(36).substring(2, 6) + Math.random().toString(36).substring(2, 6)
+        const conflict = await prisma.user.findUnique({ where: { referralCode: code } })
+        if (conflict) code = code + Math.floor(Math.random() * 99)
+        await prisma.user.update({ where: { email: session.user.email }, data: { referralCode: code } })
+        referralCode = code
+      }
     }
   }
 
