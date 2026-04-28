@@ -20,6 +20,7 @@ import {
   Package,
   CheckSquare,
   RotateCw,
+  Gift,
 } from 'lucide-react'
 import {
   Sheet,
@@ -71,6 +72,7 @@ const moreGroups: { label: string; items: NavItem[] }[] = [
   {
     label: 'Conta',
     items: [
+      { title: 'Indique e Ganhe', href: '/indique', icon: Gift },
       { title: 'Planos', href: '/dashboard/billing/plans', icon: CreditCard },
       { title: 'Configurações', href: '/dashboard/settings', icon: Settings },
       { title: 'Round-Robin', href: '/dashboard/settings/round-robin', icon: RotateCw },

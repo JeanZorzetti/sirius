@@ -161,6 +161,13 @@ export function MobileNav() {
                     >
                         {tNav('blog')}
                     </Link>
+                    <Link
+                        href="/indique"
+                        onClick={() => setOpen(false)}
+                        className="text-sm font-semibold text-primary transition-colors hover:text-primary/80"
+                    >
+                        Indique e Ganhe
+                    </Link>
                     <div className="border-t pt-4 mt-4 flex flex-col gap-4">
                         <Button variant="outline" asChild className="w-full justify-start">
                             <Link href="/login" onClick={() => setOpen(false)}>{tNav('login')}</Link>

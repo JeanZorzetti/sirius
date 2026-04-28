@@ -49,6 +49,12 @@ export default function MarketingLayout({
               >
                 {t('blog')}
               </Link>
+              <Link
+                href="/indique"
+                className="text-sm font-semibold text-primary transition-colors hover:text-primary/80 whitespace-nowrap"
+              >
+                Indique e Ganhe
+              </Link>
             </div>
           </div>
           <div className="flex items-center gap-2">

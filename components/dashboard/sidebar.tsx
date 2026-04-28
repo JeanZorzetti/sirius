@@ -8,7 +8,7 @@ import { cn } from '@/lib/utils'
 import { motion } from 'framer-motion'
 import {
   Home, Users, Settings, BarChart3, CreditCard, Mail,
-  MessageSquare, TrendingDown, Zap, TrendingUp, LogOut, Package, CalendarDays, Sparkles, CheckSquare, LifeBuoy,
+  MessageSquare, TrendingDown, Zap, TrendingUp, LogOut, Package, CalendarDays, Sparkles, CheckSquare, LifeBuoy, Gift,
 } from 'lucide-react'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { logoutAction } from '@/app/auth/actions'
@@ -42,7 +42,8 @@ const automationItems: NavItem[] = [
 ]
 
 const accountItems: NavItem[] = [
-  { title: 'Suporte',        href: '/dashboard/support',       icon: LifeBuoy },
+  { title: 'Indique e Ganhe', href: '/indique',                 icon: Gift },
+  { title: 'Suporte',         href: '/dashboard/support',       icon: LifeBuoy },
   { title: 'Assinatura',      href: '/dashboard/billing',       icon: CreditCard },
   { title: 'Configurações',   href: '/dashboard/settings',      icon: Settings },
 ]
