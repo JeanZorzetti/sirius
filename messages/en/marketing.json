@@ -16,7 +16,6 @@
       "features": "Features",
       "pricing": "Pricing",
       "blog": "Blog",
-      "founders": "Founders",
       "login": "Login",
       "startFree": "Get Started Free",
       "solutions": "Solutions",
@@ -85,11 +84,6 @@
       "title": "What is Sirius CRM?",
       "description": "Sirius CRM is a sales platform designed for high-performance teams, used by over 1,200 users. It offers four subscription plans: Free, Starter for $67, Pro for $147, and Business for $397, helping teams achieve an average 35% increase in lead conversion. Key differentiators include native WhatsApp integration via Meta Official API (Business plan), B2B lead prospecting through Google Maps, and our AI sales assistant, AGI Sirius."
     },
-    "founders": {
-      "badge": "Founders Program — 41% OFF for life!",
-      "pricing": "Starter $39 · Pro $87 · Business $234/month forever. Limited spots.",
-      "cta": "View offer"
-    },
     "testimonials": {
       "title": "High-performance teams trust Sirius",
       "subtitle": "See how real companies increased their sales",
@@ -145,7 +139,6 @@
         "title": "Product",
         "features": "Features",
         "pricing": "Pricing",
-        "founders": "⭐ Founders Program",
         "followup": "Automatic Follow-up",
         "autoSales": "Automated Sales",
         "proposal": "Request Proposal",
@@ -220,11 +213,6 @@
       "equipe": "Team",
       "mobile": "Mobile",
       "seguranca": "Security"
-    },
-    "founders": {
-      "badge": "Founders Program — 41% OFF for life!",
-      "pricing": "Starter $39 · Pro $87 · Business $234/month forever. Limited spots.",
-      "cta": "View offer"
     },
     "highlights": {
       "title": "Highlights",
@@ -832,11 +820,6 @@
     "tagline": "Transparent Pricing",
     "title": "Pay only when you scale",
     "subtitle": "Start free today and upgrade when your team grows. No surprises, no hidden fees.",
-    "founders": {
-      "badge": "Founders Program — up to 42% OFF for life!",
-      "details": "Starter R$39 · Pro R$87 · Business R$234/month forever. Limited spots.",
-      "cta": "View offer"
-    },
     "tiers": {
       "free": {
         "name": "Free",
@@ -1049,124 +1032,6 @@
       "readingTime": "min read",
       "readMore": "Read full article",
       "read": "Read"
-    }
-  },
-  "founders": {
-    "meta": {
-      "title": "Founders Program | Sirius CRM — 42% OFF for life",
-      "description": "Become a founder of Sirius CRM. Starter R$39, Pro R$87, or Business R$234/month forever. Up to 42% lifetime discount on any plan.",
-      "ogTitle": "Founders Program | Sirius CRM — 42% OFF for life",
-      "ogDescription": "Starter R$39, Pro R$87, or Business R$234/month forever. Limited spots."
-    },
-    "hero": {
-      "badge": "Founders Program — Limited Spots",
-      "title": "Become a Founder of Sirius CRM",
-      "subtitle_bold": "Up to 42% lifetime discount",
-      "subtitle_text": "on any plan. Your price never changes — even when plans increase.",
-      "social_proof": "people have already locked in their lifetime discount · Spots filling up fast"
-    },
-    "tiers": {
-      "starter": {
-        "name": "Founder Starter",
-        "short_name": "Starter",
-        "price_label": "/month forever",
-        "discount_badge": "~41% OFF for life",
-        "spots_label": "Spots filled",
-        "spots_remaining": "spots remaining",
-        "sold_out": "Sold Out",
-        "badge": "⚡ Most Popular",
-        "features": [
-          "1,000 Contacts",
-          "500 Active Deals",
-          "5 Kanban Pipelines",
-          "Up to 5 Users",
-          "1 WhatsApp Instance",
-          "75 Prospecting Credits/Month",
-          "1 Autonomous AI Agent",
-          "200 Autonomous Actions/Month",
-          "Email Support"
-        ]
-      },
-      "pro": {
-        "name": "Founder Pro",
-        "short_name": "Pro",
-        "price_label": "/month forever",
-        "discount_badge": "~41% OFF for life",
-        "spots_label": "Spots filled",
-        "spots_remaining": "spots remaining",
-        "sold_out": "Sold Out",
-        "badge": "⚡ Most Popular",
-        "features": [
-          "5,000 Contacts",
-          "2,500 Active Deals",
-          "15 Kanban Pipelines",
-          "Up to 15 Users",
-          "3 WhatsApp Instances",
-          "300 Prospecting Credits/Month",
-          "3 Autonomous AI Agents",
-          "1,000 Autonomous Actions/Month",
-          "Webhooks + Public API",
-          "Advanced Analytics",
-          "Priority Support"
-        ]
-      },
-      "business": {
-        "name": "Founder Business",
-        "short_name": "Business",
-        "price_label": "/month forever",
-        "discount_badge": "~41% OFF for life",
-        "spots_label": "Spots filled",
-        "spots_remaining": "spots remaining",
-        "sold_out": "Sold Out",
-        "badge": "⚡ Most Popular",
-        "features": [
-          "Unlimited Contacts",
-          "Unlimited Deals",
-          "50 Kanban Pipelines",
-          "Up to 50 Users",
-          "5 WhatsApp Instances",
-          "1,500 Prospecting Credits/Month",
-          "5 Autonomous AI Agents",
-          "3,000 Autonomous Actions/Month",
-          "Lead Round-Robin",
-          "Custom Reports",
-          "SSO & Audit Log",
-          "Dedicated Account Manager"
-        ]
-      }
-    },
-    "security": "Secure payment via Mercado Pago · PIX, credit card (12x), or bank transfer · Cancel anytime",
-    "perks": {
-      "title": "Exclusive Founder Benefits",
-      "perk1": "Exclusive \"Founder #N\" badge on dashboard",
-      "perk2": "Price never increases — guaranteed for life",
-      "perk3": "Early access to all new features",
-      "perk4": "Direct channel with ROI Labs founders on WhatsApp",
-      "perk5": "Maximum priority on roadmap and feature requests"
-    },
-    "comparison": {
-      "title": "Price Comparison",
-      "header_plan": "Plan",
-      "header_regular": "Regular Price",
-      "header_founder": "Founder Price",
-      "header_savings": "Savings/Year"
-    },
-    "faq": {
-      "title": "Frequently Asked Questions",
-      "q1": "Is the discount really for life?",
-      "a1": "Yes. As a Founder, your price never changes — no matter how much the plan increases in the future. The lifetime discount is contractually guaranteed.",
-      "q2": "Can I change founder plans later?",
-      "a2": "You cannot downgrade after purchase, but you can upgrade to a higher founder tier as long as spots are available.",
-      "q3": "What happens when spots run out?",
-      "a3": "The program closes for that tier and pricing returns to regular. There will be no exceptions after closure.",
-      "q4": "Do I have immediate access?",
-      "a4": "Yes. Once payment is approved, your account is updated instantly and you receive your Founder badge.",
-      "q5": "Can I cancel anytime?",
-      "a5": "Yes, with no penalties or commitment. If you cancel and want to return later, you will pay the regular price at that time."
-    },
-    "cta": {
-      "doubt": "Still unsure? Spots are limited.",
-      "button": "View available plans"
     }
   },
   "changelog": {

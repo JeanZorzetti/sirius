@@ -6,6 +6,7 @@ import { validateRequest, createDealSchema } from '@/lib/api-validators'
 import logger from '@/lib/logger'
 import { sendNewDealNotification } from '@/lib/push-notifications'
 import { executeDealAutomations } from '@/lib/automations/engine'
+import { canCreateDeal } from '@/lib/plan-limits'
 
 /**
  * GET /api/v1/deals
@@ -155,6 +156,20 @@ export async function POST(request: NextRequest) {
       }
 
       const data = validation.data
+
+      // Check plan limits / trial read-only
+      const limitCheck = await canCreateDeal(context.organizationId)
+      if (!limitCheck.allowed) {
+        return NextResponse.json(
+          apiResponse(context.requestId, undefined, {
+            code: limitCheck.reason === 'TRIAL_EXPIRED' ? 'TRIAL_EXPIRED' : 'PLAN_LIMIT_REACHED',
+            message: limitCheck.reason === 'TRIAL_EXPIRED'
+              ? 'Seu período de trial expirou. Faça upgrade para continuar.'
+              : `Limite de negócios atingido. Faça upgrade para continuar.`,
+          }),
+          { status: 403 }
+        )
+      }
 
       // Verify stage exists and belongs to organization
       const stage = await prisma.pipelineStage.findFirst({

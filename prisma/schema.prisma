@@ -39,13 +39,19 @@ model Organization {
   // Flag to exclude from revenue metrics (test users with paid tiers)
   isTestAccount          Boolean   @default(false)
 
-  // Programa de Fundadores
-  isFounder     Boolean  @default(false) // True para os primeiros 100 clientes fundadores
-  founderNumber Int?                     // Número do fundador (1-100)
-  founderSince  DateTime?               // Data de adesão ao programa de fundadores
+  // Programa de Fundadores (mantido para honrar founders existentes)
+  isFounder     Boolean  @default(false)
+  founderNumber Int?
+  founderSince  DateTime?
+
+  // Trial de 7 dias (PRO completo)
+  trialStartedAt DateTime?
+  trialEndsAt    DateTime?
+  trialStatus    TrialStatus @default(ACTIVE)
 
   // Programa de Indicação
-  referrals     Referral[] @relation("ReferredOrgs")
+  referralDiscount Float @default(0) // % acumulado para o indicador (0–100)
+  referrals        Referral[] @relation("ReferredOrgs")
 
   // Fase 17 - Ads Integration (CAC Real)
   googleAdsCustomerId    String?                // Google Ads Customer ID (ex: 123-456-7890)
@@ -272,6 +278,8 @@ model Referral {
   createdAt       DateTime       @default(now())
   rewardedAt      DateTime?
 
+  discountAppliedAt DateTime? // Quando o crédito do indicador foi ativado
+
   referrer        User           @relation("ReferrerUser", fields: [referrerId], references: [id])
   referredUser    User?          @relation("ReferredUser", fields: [referredUserId], references: [id])
   referredOrg     Organization?  @relation("ReferredOrgs", fields: [referredOrgId], references: [id])
@@ -280,7 +288,13 @@ model Referral {
 enum ReferralStatus {
   PENDING   // Código usado, aguardando registro
   ACTIVE    // Usuário registrado, não assinou PRO ainda
-  REWARDED  // Usuário assinou PRO — recompensa concedida ao indicador
+  REWARDED  // Usuário assinou plano pago — recompensa concedida ao indicador
+}
+
+enum TrialStatus {
+  ACTIVE    // Trial em andamento
+  EXPIRED   // Trial expirou sem pagamento
+  CONVERTED // Usuário pagou durante ou após trial
 }
 
 model Contact {

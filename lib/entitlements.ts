@@ -1,14 +1,56 @@
 /**
  * Entitlements System
- * 
+ *
  * Define os limites e recursos disponíveis por tier de plano
  * FREE → STARTER → PRO → BUSINESS
+ *
+ * Trial: novos usuários recebem 7 dias com acesso PRO completo.
+ * Após expirar sem pagamento: conta vai para read-only (pode ver, não pode criar/editar).
  */
 
 import { SubscriptionTier } from '@prisma/client'
 
 // Re-exportar SubscriptionTier
 export { SubscriptionTier }
+
+// Tipo mínimo necessário para verificar estado do trial
+type OrgTrialInfo = {
+  tier: SubscriptionTier
+  trialEndsAt: Date | null
+  trialStatus: string | null
+}
+
+/**
+ * Retorna true se o trial do usuário está ativo (não expirou e não converteu)
+ */
+export function isTrialActive(org: OrgTrialInfo): boolean {
+  if (org.tier !== SubscriptionTier.FREE) return false
+  if (org.trialStatus === 'CONVERTED' || org.trialStatus === 'EXPIRED') return false
+  if (!org.trialEndsAt) return false
+  return org.trialEndsAt > new Date()
+}
+
+/**
+ * Retorna o tier efetivo considerando trial.
+ * - Tier pago: retorna o tier real
+ * - Trial ativo: retorna PRO (acesso completo)
+ * - Trial expirado sem pagamento: retorna FREE (read-only aplicado separadamente)
+ */
+export function getEffectiveTier(org: OrgTrialInfo): SubscriptionTier {
+  if (org.tier !== SubscriptionTier.FREE) return org.tier
+  if (isTrialActive(org)) return SubscriptionTier.PRO
+  return SubscriptionTier.FREE
+}
+
+/**
+ * Retorna true se a org está em modo read-only.
+ * Condição: plano FREE + trial expirado (ou nunca iniciado).
+ */
+export function isReadOnly(org: OrgTrialInfo): boolean {
+  if (org.tier !== SubscriptionTier.FREE) return false
+  if (isTrialActive(org)) return false
+  return true
+}
 
 export interface PlanLimits {
   // Contatos

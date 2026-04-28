@@ -7,6 +7,7 @@ import { getSession } from "@/lib/auth"
 import { sendDealCreatedEmail, sendDealStageChangedEmail, sendUpgradeNudgeEmail, sendEmailAsync, shouldSendUpgradeNudge } from '@/lib/email-automations'
 import { dispatchWebhookAsync } from '@/lib/webhooks/dispatcher'
 import { WEBHOOK_EVENTS } from '@/lib/webhooks/events'
+import { canCreateDeal } from '@/lib/plan-limits'
 
 async function getAuthenticatedUser() {
   const session = await getSession()
@@ -127,18 +128,13 @@ export async function createDeal(formData: FormData) {
       return { success: false, error: 'Usuário não pertence a uma organização' }
     }
 
-    // LIMIT CHECK (FREEMIUM)
-    // If Plan is FREE (or null), limit to 10 deals.
-    const isPro = ['PRO', 'BUSINESS'].includes(user.organization.tier)
-
-    if (!isPro) {
-      const dealCount = await prisma.deal.count({
-        where: { organizationId: user.organizationId }
-      })
-
-      if (dealCount >= 10) {
-        return { success: false, error: 'Limite de 10 negócios no plano Gratuito. Faça upgrade para continuar!' }
+    // LIMIT CHECK — usa canCreateDeal (suporta trial + read-only)
+    const limitCheck = await canCreateDeal(user.organizationId)
+    if (!limitCheck.allowed) {
+      if (limitCheck.reason === 'TRIAL_EXPIRED') {
+        return { success: false, error: 'Seu período de trial expirou. Faça upgrade para continuar criando negócios.' }
       }
+      return { success: false, error: limitCheck.reason || 'Limite de negócios atingido. Faça upgrade para continuar.' }
     }
 
     // Get stage to obtain pipelineId

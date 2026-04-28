@@ -11,6 +11,7 @@ import { NetworkStatusBanner } from '@/components/mobile/network-status-banner'
 import { PageTransition } from '@/components/mobile/page-transition'
 import { AppBarProvider } from '@/components/mobile/app-bar-context'
 import { MobileAppBar } from '@/components/mobile/app-bar'
+import { TrialBanner } from '@/components/plan/trial-banner'
 import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { redirect } from 'next/navigation'
@@ -23,12 +24,24 @@ export default async function DashboardLayout({
   const session = await getSession()
   let user = session?.user
 
+  let orgTrialInfo: { tier: string; trialEndsAt: Date | null; trialStatus: string | null } | null = null
+
   if (session?.user?.email) {
     const dbUser = await prisma.user.findUnique({
-      where: { email: session.user.email }
+      where: { email: session.user.email },
+      include: {
+        organization: {
+          select: { tier: true, trialEndsAt: true, trialStatus: true }
+        }
+      }
     })
     if (dbUser) {
       user = dbUser
+      orgTrialInfo = {
+        tier: dbUser.organization.tier,
+        trialEndsAt: dbUser.organization.trialEndsAt,
+        trialStatus: dbUser.organization.trialStatus,
+      }
     }
   }
 
@@ -46,6 +59,15 @@ export default async function DashboardLayout({
 
       {/* Main content area */}
       <div className="flex flex-1 flex-col overflow-hidden">
+        {/* Trial banner — shows for FREE orgs during/after trial */}
+        {orgTrialInfo && (
+          <TrialBanner
+            tier={orgTrialInfo.tier}
+            trialEndsAt={orgTrialInfo.trialEndsAt}
+            trialStatus={orgTrialInfo.trialStatus}
+          />
+        )}
+
         {/* Mobile app bar — contextual per route, replaces static header */}
         <MobileAppBar />
 

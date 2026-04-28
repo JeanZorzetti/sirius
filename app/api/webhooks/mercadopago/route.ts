@@ -203,6 +203,72 @@ async function processApprovedPayment(payment: any) {
   }
 }
 
+/**
+ * Quando uma org paga pela primeira vez, verificar se veio via indicação.
+ * - Indicado: ganha 20% de desconto nos próximos 3 meses (customPricing + customPricingExpiresAt)
+ * - Indicador: acumula +15% de desconto recorrente (referralDiscount, cap 100)
+ */
+async function processReferralReward(referredOrgId: string) {
+  try {
+    const referral = await prisma.referral.findFirst({
+      where: { referredOrgId, status: { in: ['PENDING', 'ACTIVE'] }, rewardGiven: false },
+      include: {
+        referrer: { include: { organization: true } },
+        referredOrg: true,
+      },
+    })
+
+    if (!referral || !referral.referredOrg) return
+
+    // Aplicar 20% de desconto ao indicado (3 meses via customPricing)
+    const basePrice = referral.referredOrg.customPricing ?? null
+    if (!basePrice) {
+      // Buscar o tier atual para calcular base price
+      const org = await prisma.organization.findUnique({
+        where: { id: referredOrgId },
+        select: { tier: true },
+      })
+      if (org && org.tier !== 'FREE') {
+        const prices: Record<string, number> = { STARTER: 67, PRO: 147, BUSINESS: 397 }
+        const discountedPrice = (prices[org.tier] || 67) * 0.80
+        await prisma.organization.update({
+          where: { id: referredOrgId },
+          data: {
+            customPricing: discountedPrice,
+            customPricingExpiresAt: new Date(Date.now() + 90 * 24 * 60 * 60 * 1000),
+          },
+        })
+      }
+    }
+
+    // Aplicar +15% ao indicador (acumulável, cap 100)
+    const referrerOrg = referral.referrer.organization
+    const newDiscount = Math.min(100, (referrerOrg.referralDiscount || 0) + 15)
+    await prisma.organization.update({
+      where: { id: referrerOrg.id },
+      data: { referralDiscount: newDiscount },
+    })
+
+    // Marcar referral como recompensado
+    await prisma.referral.update({
+      where: { id: referral.id },
+      data: {
+        status: 'REWARDED',
+        rewardGiven: true,
+        rewardedAt: new Date(),
+        discountAppliedAt: new Date(),
+      },
+    })
+
+    logger.info(
+      { referredOrgId, referrerOrgId: referrerOrg.id, newDiscount },
+      '[REFERRAL] Reward applied'
+    )
+  } catch (err) {
+    logger.error({ err, referredOrgId }, '[REFERRAL] Failed to process reward')
+  }
+}
+
 async function upgradePlan(
   organizationId: string,
   tier: SubscriptionTier,
@@ -276,6 +342,15 @@ async function upgradePlan(
       },
     })
   }
+
+  // Marcar trial como CONVERTED (se estava em trial)
+  await prisma.organization.update({
+    where: { id: organizationId },
+    data: { trialStatus: 'CONVERTED' },
+  }).catch(() => {})
+
+  // Programa de indicação: recompensar o indicador com +15% de desconto acumulável
+  await processReferralReward(organizationId)
 
   logger.info({ organizationId, tier }, 'Plan upgraded successfully')
 }

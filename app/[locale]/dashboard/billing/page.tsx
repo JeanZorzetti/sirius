@@ -19,9 +19,6 @@ export const metadata: Metadata = {
 
 export const dynamic = 'force-dynamic'
 
-// Total de vagas do programa de fundadores (soma dos 3 tiers)
-const FOUNDER_TOTAL_LIMIT = 175 // 100 Starter + 50 Pro + 25 Business
-
 const TIER_ICON: Record<string, React.ReactNode> = {
   FREE:     <Sparkles className="w-5 h-5" />,
   STARTER:  <Zap className="w-5 h-5" />,
@@ -37,6 +34,8 @@ export default async function BillingPage() {
   let founderNumber: number | null = null
   let customPricing: number | null = null
   let referralCode: string | null = null
+  let referralDiscount = 0
+  let rewardedReferrals = 0
 
   if (session?.user?.email) {
     const user = await prisma.user.findUnique({
@@ -44,7 +43,14 @@ export default async function BillingPage() {
       select: {
         referralCode: true,
         organization: {
-          select: { tier: true, isFounder: true, founderNumber: true, customPricing: true }
+          select: {
+            tier: true,
+            isFounder: true,
+            founderNumber: true,
+            customPricing: true,
+            referralDiscount: true,
+            referrals: { where: { status: 'REWARDED' }, select: { id: true } },
+          }
         }
       }
     })
@@ -54,11 +60,12 @@ export default async function BillingPage() {
       founderNumber = user.organization?.founderNumber ?? null
       customPricing = user.organization?.customPricing ? Number(user.organization.customPricing) : null
       referralCode = user.referralCode ?? null
+      referralDiscount = user.organization?.referralDiscount ?? 0
+      rewardedReferrals = user.organization?.referrals?.length ?? 0
     }
   }
 
   const isPaid = tier !== SubscriptionTier.FREE
-  const isFounderOpen = await prisma.organization.count({ where: { isFounder: true } }) < FOUNDER_TOTAL_LIMIT
 
   const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://siriuscrm.com.br'
   const referralUrl = referralCode ? `${appUrl}/r/${referralCode}` : null
@@ -130,29 +137,6 @@ export default async function BillingPage() {
         </CardHeader>
       </Card>
 
-      {/* Founders Program CTA (para quem não é fundador) */}
-      {!isFounder && isFounderOpen && (
-        <Card className="border-amber-200 bg-gradient-to-r from-amber-50 to-orange-50">
-          <CardContent className="flex items-center justify-between gap-4 py-4 flex-wrap">
-            <div className="flex items-center gap-3">
-              <Star className="w-6 h-6 text-amber-500 fill-amber-400 shrink-0" />
-              <div>
-                <p className="font-semibold text-amber-900">Programa de Fundadores — 41% OFF vitalício!</p>
-                <p className="text-sm text-amber-700">
-                  Starter R$39 · Pro R$87 · Business R$234 — preço que nunca sobe. Vagas limitadas.
-                </p>
-              </div>
-            </div>
-            <Button asChild className="bg-amber-500 hover:bg-amber-600 text-white shrink-0">
-              <Link href="/fundadores">
-                <Star className="w-4 h-4 mr-2 fill-white" />
-                Ver oferta
-              </Link>
-            </Button>
-          </CardContent>
-        </Card>
-      )}
-
       {/* Upgrade CTA (para FREE/STARTER não-fundadores) */}
       {!isPaid && !isFounder && (
         <Card>
@@ -177,14 +161,27 @@ export default async function BillingPage() {
       {referralUrl && (
         <Card>
           <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-lg">
-              <Users className="w-5 h-5 text-primary" />
-              Indique e Ganhe
-            </CardTitle>
-            <CardDescription>
-              Compartilhe seu link exclusivo. Quem você indicar ganha{' '}
-              <strong>30 dias grátis no plano PRO</strong> ao assinar.
-            </CardDescription>
+            <div className="flex items-start justify-between gap-4 flex-wrap">
+              <div>
+                <CardTitle className="flex items-center gap-2 text-lg">
+                  <Users className="w-5 h-5 text-primary" />
+                  Indique e Ganhe
+                </CardTitle>
+                <CardDescription className="mt-1.5">
+                  Cada indicação ativa vale <strong>15% off recorrente</strong> na sua mensalidade.
+                  Acumule até <strong>7 indicações e zere sua conta</strong>. Quem você indicar ganha{' '}
+                  <strong>20% off por 3 meses</strong> no primeiro plano.
+                </CardDescription>
+              </div>
+              {referralDiscount > 0 && (
+                <div className="text-right shrink-0">
+                  <div className="text-2xl font-bold text-primary">{referralDiscount}%</div>
+                  <div className="text-xs text-muted-foreground">
+                    desconto ativo · {rewardedReferrals} indicaç{rewardedReferrals === 1 ? 'ão' : 'ões'}
+                  </div>
+                </div>
+              )}
+            </div>
           </CardHeader>
           <CardContent>
             <div className="flex gap-2 flex-wrap">

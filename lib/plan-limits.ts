@@ -1,6 +1,6 @@
 import { prisma } from '@/lib/prisma'
 import { SubscriptionTier } from '@prisma/client'
-import { PLAN_LIMITS } from '@/lib/entitlements'
+import { PLAN_LIMITS, getEffectiveTier, isReadOnly } from '@/lib/entitlements'
 
 /**
  * Plan limits configuration
@@ -35,14 +35,14 @@ export async function getOrganizationUsage(organizationId: string) {
 export async function getOrganizationPlanLimits(organizationId: string) {
   const org = await prisma.organization.findUnique({
     where: { id: organizationId },
-    select: { tier: true },
+    select: { tier: true, trialEndsAt: true, trialStatus: true },
   })
 
   if (!org) {
     throw new Error('Organization not found')
   }
 
-  const tier = org.tier
+  const tier = getEffectiveTier(org)
   const limits = PLAN_LIMITS[tier]
   const usage = await getOrganizationUsage(organizationId)
 
@@ -86,6 +86,14 @@ export async function canCreateContact(organizationId: string): Promise<{
   current?: number
   limit?: number | null
 }> {
+  const org = await prisma.organization.findUnique({
+    where: { id: organizationId },
+    select: { tier: true, trialEndsAt: true, trialStatus: true },
+  })
+  if (org && isReadOnly(org)) {
+    return { allowed: false, reason: 'TRIAL_EXPIRED' }
+  }
+
   const { tier, limits, usage } = await getOrganizationPlanLimits(organizationId)
 
   // null = unlimited → always allowed
@@ -114,6 +122,14 @@ export async function canCreatePipeline(organizationId: string): Promise<{
   current?: number
   limit?: number | null
 }> {
+  const org = await prisma.organization.findUnique({
+    where: { id: organizationId },
+    select: { tier: true, trialEndsAt: true, trialStatus: true },
+  })
+  if (org && isReadOnly(org)) {
+    return { allowed: false, reason: 'TRIAL_EXPIRED' }
+  }
+
   const { tier, limits, usage } = await getOrganizationPlanLimits(organizationId)
 
   // null = unlimited → always allowed
@@ -142,18 +158,20 @@ export async function canCreateDeal(organizationId: string): Promise<{
   current?: number
   limit?: number | null
 }> {
+  const org = await prisma.organization.findUnique({
+    where: { id: organizationId },
+    select: { tier: true, trialEndsAt: true, trialStatus: true, grandfatheredDealLimit: true },
+  })
+  if (org && isReadOnly(org)) {
+    return { allowed: false, reason: 'TRIAL_EXPIRED' }
+  }
+
   const { tier, limits, usage } = await getOrganizationPlanLimits(organizationId)
 
   // null = unlimited → always allowed
   if (limits.maxDeals === null) {
     return { allowed: true }
   }
-
-  // Check for grandfathered deal limit
-  const org = await prisma.organization.findUnique({
-    where: { id: organizationId },
-    select: { grandfatheredDealLimit: true },
-  })
 
   const effectiveLimit = org?.grandfatheredDealLimit ?? limits.maxDeals
 

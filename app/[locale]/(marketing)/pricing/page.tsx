@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import Script from 'next/script'
-import { Check, Star, Building2 } from 'lucide-react'
+import { Check, Building2, Zap } from 'lucide-react'
 import { PricingToggle } from './pricing-toggle'
 import { useTranslations } from 'next-intl'
 
@@ -136,20 +136,21 @@ export default function PricingPage() {
                 {t('subtitle')}
             </p>
 
-            {/* Founders CTA Banner */}
+            {/* Trial + Referral Banner */}
             <div className="mx-auto mt-10 max-w-4xl">
-                <div className="rounded-xl border border-amber-200 bg-gradient-to-r from-amber-50 to-orange-50 p-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+                <div className="rounded-xl border border-primary/20 bg-primary/5 p-4 flex flex-col sm:flex-row items-center justify-between gap-4">
                     <div className="flex items-center gap-3">
-                        <Star className="w-6 h-6 text-amber-500 fill-amber-400 shrink-0" />
+                        <Zap className="w-6 h-6 text-primary shrink-0" />
                         <div>
-                            <p className="font-semibold text-amber-900">{t('founders.badge')}</p>
-                            <p className="text-sm text-amber-700">{t('founders.details')}</p>
+                            <p className="font-semibold">7 dias grátis com acesso PRO completo</p>
+                            <p className="text-sm text-muted-foreground">
+                                Sem cartão de crédito. Indique amigos e ganhe até 100% de desconto recorrente.
+                            </p>
                         </div>
                     </div>
-                    <Button asChild className="bg-amber-500 hover:bg-amber-600 text-white shrink-0">
-                        <Link href="/fundadores">
-                            <Star className="w-4 h-4 mr-2 fill-white" />
-                            {t('founders.cta')}
+                    <Button asChild className="shrink-0">
+                        <Link href="/register">
+                            Começar grátis
                         </Link>
                     </Button>
                 </div>
