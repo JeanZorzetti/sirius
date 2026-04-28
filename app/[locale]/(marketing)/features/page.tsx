@@ -14,7 +14,6 @@ import {
   Smartphone,
   MessageSquare,
   Mail,
-  Search,
   Brain,
   Globe,
   Calendar,
@@ -162,7 +161,6 @@ export default async function FeaturesPage() {
     { name: t('heroFeatures.kanban.name'), description: t('heroFeatures.kanban.description'), icon: Kanban, badge: t('heroFeatures.kanban.badge') },
     { name: t('heroFeatures.whatsapp.name'), description: t('heroFeatures.whatsapp.description'), icon: MessageSquare, badge: t('heroFeatures.whatsapp.badge') },
     { name: t('heroFeatures.agi.name'), description: t('heroFeatures.agi.description'), icon: Brain, badge: t('heroFeatures.agi.badge') },
-    { name: t('heroFeatures.maps.name'), description: t('heroFeatures.maps.description'), icon: Search, badge: t('heroFeatures.maps.badge') },
     { name: t('heroFeatures.automations.name'), description: t('heroFeatures.automations.description'), icon: Zap, badge: t('heroFeatures.automations.badge') },
     { name: t('heroFeatures.analytics.name'), description: t('heroFeatures.analytics.description'), icon: BarChart3, badge: t('heroFeatures.analytics.badge') },
   ]
@@ -187,12 +185,6 @@ export default async function FeaturesPage() {
     { name: t('sections.ia.enrichment.name'), description: t('sections.ia.enrichment.description'), icon: Users },
     { name: t('sections.ia.rag.name'), description: t('sections.ia.rag.description'), icon: BookOpen },
     { name: t('sections.ia.insights.name'), description: t('sections.ia.insights.description'), icon: TrendingUp },
-  ]
-
-  const prospectingFeatures = [
-    { name: t('sections.prospeccao.search.name'), description: t('sections.prospeccao.search.description'), icon: MapPin },
-    { name: t('sections.prospeccao.credits.name'), description: t('sections.prospeccao.credits.description'), icon: Target },
-    { name: t('sections.prospeccao.conversion.name'), description: t('sections.prospeccao.conversion.description'), icon: Users },
   ]
 
   const analyticsFeatures = [
@@ -233,7 +225,6 @@ export default async function FeaturesPage() {
     { id: 'crm', label: t('nav.crm') },
     { id: 'comunicacao', label: t('nav.comunicacao') },
     { id: 'ia', label: t('nav.ia') },
-    { id: 'prospeccao', label: t('nav.prospeccao') },
     { id: 'analytics', label: t('nav.analytics') },
     { id: 'integracoes', label: t('nav.integracoes') },
     { id: 'equipe', label: t('nav.equipe') },
@@ -512,13 +503,6 @@ export default async function FeaturesPage() {
             title={t('sections.ia.title')}
             subtitle={t('sections.ia.subtitle')}
             features={aiFeatures}
-          />
-
-          <FeatureSection
-            id="prospeccao"
-            title={t('sections.prospeccao.title')}
-            subtitle={t('sections.prospeccao.subtitle')}
-            features={prospectingFeatures}
           />
 
           <FeatureSection

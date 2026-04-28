@@ -56,14 +56,6 @@ export const FEATURE_CATEGORIES: FeatureCategory[] = [
         ],
       },
       {
-        sectionKey: 'prospeccao',
-        features: [
-          { slug: 'busca-google-maps', sectionKey: 'prospeccao', featureKey: 'search', icon: MapPin },
-          { slug: 'sistema-creditos', sectionKey: 'prospeccao', featureKey: 'credits', icon: Target },
-          { slug: 'conversao-contato', sectionKey: 'prospeccao', featureKey: 'conversion', icon: Users },
-        ],
-      },
-      {
         sectionKey: 'analytics',
         features: [
           { slug: 'dashboard-vendas', sectionKey: 'analytics', featureKey: 'dashboard', icon: BarChart3 },
