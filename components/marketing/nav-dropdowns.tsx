@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect, useCallback } from 'react'
 import { ChevronDown, Building2, Sun, Megaphone, Briefcase, Users, Calculator } from 'lucide-react'
 import { NICHES } from '@/config/niche-data'
 
@@ -32,6 +32,7 @@ const FERRAMENTAS_KEYS = [
 
 function DropdownMenu({ label, children }: { label: string; children: React.ReactNode }) {
   const [open, setOpen] = useState(false)
+  const [offsetX, setOffsetX] = useState(0)
   const timeoutRef = useRef<NodeJS.Timeout | null>(null)
   const containerRef = useRef<HTMLDivElement>(null)
 
@@ -43,6 +44,26 @@ function DropdownMenu({ label, children }: { label: string; children: React.Reac
   const handleLeave = () => {
     timeoutRef.current = setTimeout(() => setOpen(false), 150)
   }
+
+  const updatePosition = useCallback(() => {
+    if (!containerRef.current) return
+    const rect = containerRef.current.getBoundingClientRect()
+    const dropdownWidth = 240
+    const centeredLeft = rect.left + rect.width / 2 - dropdownWidth / 2
+    const margin = 16
+    const clamped = Math.max(margin, Math.min(centeredLeft, window.innerWidth - dropdownWidth - margin))
+    setOffsetX(clamped - centeredLeft)
+  }, [])
+
+  useEffect(() => {
+    if (open) updatePosition()
+  }, [open, updatePosition])
+
+  useEffect(() => {
+    if (!open) return
+    window.addEventListener('resize', updatePosition)
+    return () => window.removeEventListener('resize', updatePosition)
+  }, [open, updatePosition])
 
   useEffect(() => {
     return () => {
@@ -59,14 +80,17 @@ function DropdownMenu({ label, children }: { label: string; children: React.Reac
     >
       <button
         onClick={() => setOpen(!open)}
-        className="flex items-center gap-1 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+        className="flex items-center gap-1 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground whitespace-nowrap"
       >
         {label}
         <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-200 ${open ? 'rotate-180' : ''}`} />
       </button>
 
       {open && (
-        <div className="absolute top-full left-1/2 -translate-x-1/2 pt-2 z-50">
+        <div
+          className="absolute top-full left-1/2 pt-2 z-50"
+          style={{ transform: `translateX(calc(-50% + ${offsetX}px))` }}
+        >
           <div className="min-w-[240px] rounded-xl border bg-popover/95 backdrop-blur-xl shadow-xl p-2 animate-in fade-in-0 zoom-in-95 duration-150">
             {children}
           </div>

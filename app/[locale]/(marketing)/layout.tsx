@@ -34,24 +34,24 @@ export default function MarketingLayout({
               />
               <span className="font-bold tracking-tight">Sirius CRM</span>
             </Link>
-            <div className="hidden md:flex items-center gap-6">
+            <div className="hidden md:flex items-center gap-4 lg:gap-6">
               <FeaturesDropdown />
               <NavDropdowns />
               <Link
                 href="/pricing"
-                className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+                className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground whitespace-nowrap"
               >
                 {t('pricing')}
               </Link>
               <Link
                 href="/blog"
-                className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+                className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground whitespace-nowrap"
               >
                 {t('blog')}
               </Link>
               <Link
                 href="/fundadores"
-                className="text-sm font-semibold text-amber-600 hover:text-amber-700 transition-colors flex items-center gap-1"
+                className="text-sm font-semibold text-amber-600 hover:text-amber-700 transition-colors flex items-center gap-1 whitespace-nowrap"
               >
                 <span>⭐</span>
                 {t('founders')}

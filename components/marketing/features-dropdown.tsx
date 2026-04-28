@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect, useCallback } from 'react'
 import { ChevronDown, ChevronRight, ArrowRight } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import { Link } from '@/i18n/routing'
@@ -58,6 +58,7 @@ function CollapsibleSection({
 
 export function FeaturesDropdown() {
   const [open, setOpen] = useState(false)
+  const [dropdownStyle, setDropdownStyle] = useState<React.CSSProperties>({})
   const timeoutRef = useRef<NodeJS.Timeout | null>(null)
   const containerRef = useRef<HTMLDivElement>(null)
   const tNav = useTranslations('marketing.home.nav')
@@ -72,6 +73,27 @@ export function FeaturesDropdown() {
   const handleLeave = () => {
     timeoutRef.current = setTimeout(() => setOpen(false), 200)
   }
+
+  const updateDropdownPosition = useCallback(() => {
+    if (!containerRef.current) return
+    const rect = containerRef.current.getBoundingClientRect()
+    const dropdownWidth = Math.min(720, window.innerWidth - 32)
+    const centeredLeft = rect.left + rect.width / 2 - dropdownWidth / 2
+    const margin = 16
+    const clampedLeft = Math.max(margin, Math.min(centeredLeft, window.innerWidth - dropdownWidth - margin))
+    const offsetFromCenter = clampedLeft - centeredLeft
+    setDropdownStyle({ transform: `translateX(calc(-50% + ${offsetFromCenter}px))` })
+  }, [])
+
+  useEffect(() => {
+    if (open) updateDropdownPosition()
+  }, [open, updateDropdownPosition])
+
+  useEffect(() => {
+    if (!open) return
+    window.addEventListener('resize', updateDropdownPosition)
+    return () => window.removeEventListener('resize', updateDropdownPosition)
+  }, [open, updateDropdownPosition])
 
   useEffect(() => {
     return () => {
@@ -97,8 +119,8 @@ export function FeaturesDropdown() {
       </button>
 
       {open && (
-        <div className="absolute top-full left-1/2 -translate-x-1/2 pt-2 z-50">
-          <div className="w-[720px] max-h-[70vh] overflow-y-auto rounded-xl border bg-popover/95 backdrop-blur-xl shadow-xl p-4 animate-in fade-in-0 zoom-in-95 duration-150">
+        <div className="absolute top-full left-1/2 pt-2 z-50" style={{ ...dropdownStyle, width: `min(720px, calc(100vw - 2rem))` }}>
+          <div className="w-full max-h-[70vh] overflow-y-auto rounded-xl border bg-popover/95 backdrop-blur-xl shadow-xl p-4 animate-in fade-in-0 zoom-in-95 duration-150">
             <div className="grid grid-cols-3 gap-6">
               {FEATURE_CATEGORIES.map((cat, catIdx) => (
                 <div key={cat.menuKey}>
