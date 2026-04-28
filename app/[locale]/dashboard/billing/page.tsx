@@ -9,6 +9,7 @@ import { Star, Users, ArrowUpRight, Zap, Crown, Building2, Sparkles } from "luci
 import { BillingPageTracker } from "@/components/analytics/billing-page-tracker"
 import { PurchaseTracker } from "@/components/analytics/purchase-tracker"
 import { CopyReferralButton } from "./copy-referral-button"
+import { CancelSubscriptionButton } from "./cancel-subscription-button"
 import { PLAN_NAMES, PLAN_PRICING, PLAN_DESCRIPTIONS } from "@/lib/entitlements"
 import { SubscriptionTier } from "@prisma/client"
 
@@ -121,6 +122,11 @@ export default async function BillingPage() {
               )}
             </div>
           </div>
+          {isPaid && !isFounder && (
+            <div className="flex justify-end pt-2 border-t border-border/50 mt-2">
+              <CancelSubscriptionButton planName={tierLabel} />
+            </div>
+          )}
         </CardHeader>
       </Card>
 

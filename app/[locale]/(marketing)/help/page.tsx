@@ -17,6 +17,7 @@ import {
   ChevronRight,
   ExternalLink,
   Clock,
+  LifeBuoy,
 } from 'lucide-react'
 import type { Metadata } from 'next'
 import { getAllCategories } from '@/lib/help-articles'
@@ -263,17 +264,17 @@ export default function HelpPage() {
                 </div>
               </Link>
 
-              <a href="mailto:suporte@roilabs.com.br">
+              <Link href="/dashboard/support">
                 <div className="flex items-center gap-4 p-4 bg-card border border-border rounded-xl hover:border-primary/50 transition-colors">
                   <div className="w-12 h-12 rounded-lg bg-purple-500/10 flex items-center justify-center">
-                    <Mail className="w-6 h-6 text-purple-500" />
+                    <LifeBuoy className="w-6 h-6 text-purple-500" />
                   </div>
                   <div>
-                    <h3 className="font-semibold">Falar com Suporte</h3>
-                    <p className="text-sm text-muted-foreground">Atendimento humano</p>
+                    <h3 className="font-semibold">Abrir Ticket de Suporte</h3>
+                    <p className="text-sm text-muted-foreground">Atendimento rastreável</p>
                   </div>
                 </div>
-              </a>
+              </Link>
             </div>
           </div>
         </section>
@@ -383,11 +384,11 @@ export default function HelpPage() {
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div className="text-center p-4">
                   <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-3">
-                    <Mail className="w-6 h-6 text-primary" />
+                    <LifeBuoy className="w-6 h-6 text-primary" />
                   </div>
-                  <h3 className="font-semibold mb-1">Email</h3>
+                  <h3 className="font-semibold mb-1">Tickets</h3>
                   <p className="text-sm text-muted-foreground">
-                    suporte@roilabs.com.br
+                    Histórico e rastreamento
                   </p>
                 </div>
 
@@ -395,9 +396,9 @@ export default function HelpPage() {
                   <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-3">
                     <MessageCircle className="w-6 h-6 text-primary" />
                   </div>
-                  <h3 className="font-semibold mb-1">Chat</h3>
+                  <h3 className="font-semibold mb-1">Chat em tempo real</h3>
                   <p className="text-sm text-muted-foreground">
-                    Disponível no dashboard
+                    Resposta dentro do ticket
                   </p>
                 </div>
 
@@ -412,11 +413,16 @@ export default function HelpPage() {
                 </div>
               </div>
 
-              <div className="text-center mt-8">
+              <div className="flex flex-col sm:flex-row gap-3 justify-center mt-8">
                 <Button size="lg" asChild>
-                  <a href="mailto:suporte@roilabs.com.br">
-                    Enviar Email para Suporte
+                  <Link href="/dashboard/support">
+                    Abrir Ticket de Suporte
                     <ExternalLink className="w-4 h-4 ml-2" />
+                  </Link>
+                </Button>
+                <Button size="lg" variant="outline" asChild>
+                  <a href="https://wa.me/5562998015884?text=Olá! Preciso de ajuda com o Sirius CRM." target="_blank" rel="noopener noreferrer">
+                    Urgente? WhatsApp
                   </a>
                 </Button>
               </div>

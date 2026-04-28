@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useMemo } from 'react'
-import { Search, Settings, User, Users, Bell, Key, Webhook, Zap, BookOpen, Menu, X, RotateCw, Sun, Moon } from 'lucide-react'
+import { Search, Settings, User, Users, Bell, Key, Webhook, Zap, BookOpen, Menu, X, RotateCw, Sun, Moon, LifeBuoy } from 'lucide-react'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
@@ -73,7 +73,14 @@ const tabs: SettingsTab[] = [
     label: 'Ajuda',
     icon: BookOpen,
     href: '/help',
-    description: 'Central de ajuda e suporte',
+    description: 'Central de ajuda e documentação',
+  },
+  {
+    id: 'support',
+    label: 'Suporte',
+    icon: LifeBuoy,
+    href: '/dashboard/support',
+    description: 'Tickets e chat com a equipe',
   },
 ]
 

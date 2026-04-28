@@ -228,7 +228,7 @@ export default function PricingPage() {
                                     </div>
                                 </div>
                                 <Button asChild variant="outline" className="shrink-0">
-                                    <a href="https://wa.me/5511999999999" target="_blank" rel="noopener noreferrer">
+                                    <a href="https://wa.me/5562998015884" target="_blank" rel="noopener noreferrer">
                                         {t('enterprise.cta')}
                                     </a>
                                 </Button>
@@ -326,7 +326,7 @@ export default function PricingPage() {
                             {t('finalCta.btnPrimary')}
                         </TrackedSignupButton>
                         <Button asChild size="lg" variant="outline">
-                            <a href="https://wa.me/5511999999999" target="_blank" rel="noopener noreferrer">
+                            <a href="https://wa.me/5562998015884" target="_blank" rel="noopener noreferrer">
                                 {t('finalCta.btnSecondary')}
                             </a>
                         </Button>

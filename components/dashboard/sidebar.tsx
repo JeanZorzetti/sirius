@@ -43,7 +43,7 @@ const automationItems: NavItem[] = [
 
 const accountItems: NavItem[] = [
   { title: 'Suporte',        href: '/dashboard/support',       icon: LifeBuoy },
-  { title: 'Planos e Preços', href: '/dashboard/billing/plans', icon: CreditCard },
+  { title: 'Assinatura',      href: '/dashboard/billing',       icon: CreditCard },
   { title: 'Configurações',   href: '/dashboard/settings',      icon: Settings },
 ]
 
