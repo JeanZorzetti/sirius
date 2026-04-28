@@ -30,7 +30,7 @@ const features: PlanFeature[] = [
   { name: 'Analytics Avançado', free: false, starter: false, pro: true, business: true },
   { name: 'Relatórios Customizados', free: false, starter: false, pro: false, business: true },
   { name: 'Distribuição Round-Robin', free: false, starter: false, pro: false, business: true },
-  { name: 'Suporte (Tickets + Chat)', free: 'WhatsApp*', starter: 'WhatsApp* + Tickets', pro: 'Tickets + Chat', business: 'Tickets + Chat' },
+  { name: 'Suporte (Tickets + Chat)', free: 'Tickets + WhatsApp*', starter: 'Tickets + WhatsApp*', pro: 'Tickets + WhatsApp', business: 'Tickets + WhatsApp' },
   { name: 'Agentes IA (Sofia)', free: false, starter: '1 agente', pro: '3 agentes', business: '5 agentes' },
   { name: 'Ações autônomas/mês', free: false, starter: '200', pro: '1.000', business: '3.000' },
   { name: 'Aprovação de ações IA', free: false, starter: true, pro: true, business: true },
