@@ -431,20 +431,19 @@ export default async function FeaturesPage() {
           </div>
         </div>
 
-        {/* Founders Banner */}
+        {/* Trial + Referral Banner */}
         <div className="mx-auto max-w-7xl px-6 lg:px-8 pb-16">
-          <div className="rounded-xl border border-amber-200 bg-gradient-to-r from-amber-50 to-orange-50 p-5 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div className="rounded-xl border border-primary/20 bg-primary/5 p-5 flex flex-col sm:flex-row items-center justify-between gap-4">
             <div className="flex items-center gap-3">
-              <Star className="w-7 h-7 text-amber-500 fill-amber-400 shrink-0" />
+              <Zap className="w-7 h-7 text-primary shrink-0" />
               <div>
-                <p className="font-bold text-amber-900 text-lg">{t('founders.badge')}</p>
-                <p className="text-sm text-amber-700">{t('founders.pricing')}</p>
+                <p className="font-bold text-lg">7 dias grátis com acesso PRO completo</p>
+                <p className="text-sm text-muted-foreground">Sem cartão de crédito. Indique e ganhe até 100% de desconto recorrente.</p>
               </div>
             </div>
-            <Button asChild className="bg-amber-500 hover:bg-amber-600 text-white shrink-0">
-              <Link href="/fundadores">
-                <Star className="w-4 h-4 mr-2 fill-white" />
-                {t('founders.cta')}
+            <Button asChild className="shrink-0">
+              <Link href="/register">
+                Começar grátis
               </Link>
             </Button>
           </div>

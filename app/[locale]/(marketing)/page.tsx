@@ -12,7 +12,7 @@ const AgiPreview = dynamic(() => import("@/components/agi/AgiPreview").then(m =>
 const StickyCTA = dynamic(() => import("@/components/marketing/sticky-cta").then(m => ({ default: m.StickyCTA })))
 import { blogPosts } from "@/lib/blog-data"
 import Image from "next/image"
-import { Check, Star, ArrowRight } from "lucide-react"
+import { Check, Zap, ArrowRight } from "lucide-react"
 import { useTranslations, useLocale } from "next-intl"
 import { Link } from "@/i18n/routing"
 
@@ -290,27 +290,26 @@ export default function LandingPage() {
 
           <BentoGrid />
 
-          {/* Founders Banner */}
+          {/* Trial + Referral Banner */}
           <section className="px-6 pb-12">
             <div className="mx-auto max-w-5xl">
-              <div className="rounded-2xl border border-amber-500/30 bg-gradient-to-r from-amber-500/10 to-orange-500/10 backdrop-blur-xl p-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+              <div className="rounded-2xl border border-primary/30 bg-gradient-to-r from-primary/10 to-primary/5 backdrop-blur-xl p-6 flex flex-col sm:flex-row items-center justify-between gap-4">
                 <div className="flex items-center gap-4">
-                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-amber-500/20">
-                    <Star className="w-6 h-6 text-amber-400 fill-amber-400" />
+                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-primary/20">
+                    <Zap className="w-6 h-6 text-primary" />
                   </div>
                   <div>
-                    <p className="font-bold text-white text-lg">{t('founders.badge')}</p>
-                    <p className="text-sm text-amber-200/80">
-                      {t('founders.pricing')}
+                    <p className="font-bold text-white text-lg">7 dias grátis com acesso PRO completo</p>
+                    <p className="text-sm text-white/60">
+                      Sem cartão de crédito. Indique amigos e ganhe até 100% de desconto recorrente.
                     </p>
                   </div>
                 </div>
                 <Link
-                  href="/fundadores"
-                  className="inline-flex h-11 items-center justify-center rounded-lg bg-amber-500 hover:bg-amber-400 px-6 text-sm font-semibold text-black transition-colors shrink-0"
+                  href="/register"
+                  className="inline-flex h-11 items-center justify-center rounded-lg bg-primary hover:bg-primary/90 px-6 text-sm font-semibold text-primary-foreground transition-colors shrink-0"
                 >
-                  <Star className="w-4 h-4 mr-2 fill-black" />
-                  {t('founders.cta')}
+                  Começar grátis
                 </Link>
               </div>
             </div>
