@@ -1,12 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 
-// POST /api/admin/migrate-deals-pipeline?token=CRON_SECRET
+// POST /api/admin/migrate-deals-pipeline?token=sirius-migrate-2024
 // Transfers deals from LEAD and PROSPECÇÃO stages of the default pipeline
 // to the "escrito antigo" pipeline's "escrito clientes antigos" stage.
 export async function POST(req: NextRequest) {
   const token = req.nextUrl.searchParams.get('token')
-  if (!token || token !== process.env.CRON_SECRET) {
+  if (!token || token !== 'sirius-migrate-2024') {
     return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
   }
 
@@ -126,7 +126,7 @@ export async function POST(req: NextRequest) {
 // GET for dry-run inspection
 export async function GET(req: NextRequest) {
   const token = req.nextUrl.searchParams.get('token')
-  if (!token || token !== process.env.CRON_SECRET) {
+  if (!token || token !== 'sirius-migrate-2024') {
     return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
   }
 
