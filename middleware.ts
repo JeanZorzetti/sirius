@@ -31,7 +31,9 @@ export async function middleware(request: NextRequest) {
             console.log('[middleware] All cookies:', request.cookies.getAll().map(c => c.name).join(', '))
             const isEnglish = pathname.startsWith('/en')
             const loginPath = isEnglish ? '/en/login' : '/login'
-            return NextResponse.redirect(new URL(loginPath, request.url))
+            const loginUrl = new URL(loginPath, request.url)
+            loginUrl.searchParams.set('callbackUrl', pathname)
+            return NextResponse.redirect(loginUrl)
         }
     }
 

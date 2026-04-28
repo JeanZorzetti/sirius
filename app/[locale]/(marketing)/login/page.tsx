@@ -1,8 +1,8 @@
 'use client'
 
-import { useState, useTransition } from 'react'
+import { useState, useTransition, Suspense } from 'react'
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { signIn } from 'next-auth/react'
 import { loginAction } from '@/app/auth/actions'
 import { Button } from '@/components/ui/button'
@@ -11,11 +11,13 @@ import { Label } from '@/components/ui/label'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Eye, EyeOff } from 'lucide-react'
 
-export default function LoginPage() {
+function LoginForm() {
     const [error, setError] = useState<string>('')
     const [showPassword, setShowPassword] = useState(false)
     const [isPending, startTransition] = useTransition()
     const router = useRouter()
+    const searchParams = useSearchParams()
+    const callbackUrl = searchParams.get('callbackUrl') || '/dashboard'
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
@@ -25,8 +27,7 @@ export default function LoginPage() {
             if (result?.error) {
                 setError(result.error)
             } else {
-                // Redirect on success
-                router.push('/dashboard?login=true')
+                router.push(callbackUrl + (callbackUrl === '/dashboard' ? '?login=true' : ''))
             }
         })
     }
@@ -87,7 +88,7 @@ export default function LoginPage() {
                             type="button"
                             variant="outline"
                             className="w-full"
-                            onClick={() => signIn('google', { callbackUrl: '/dashboard' })}
+                            onClick={() => signIn('google', { callbackUrl })}
                         >
                             <svg className="mr-2 h-4 w-4" viewBox="0 0 24 24">
                                 <path
@@ -120,5 +121,13 @@ export default function LoginPage() {
                 </form>
             </Card>
         </div>
+    )
+}
+
+export default function LoginPage() {
+    return (
+        <Suspense>
+            <LoginForm />
+        </Suspense>
     )
 }
