@@ -240,6 +240,13 @@ export function Footer() {
             </a>
           </div>
         </div>
+
+        {/* Dados legais da empresa */}
+        <div className="pt-4 text-center">
+          <p className="text-xs text-muted-foreground">
+            57.493.675 MARIA EDUARDA ROCHA MENDES - ME &nbsp;·&nbsp; CNPJ: 57.493.675/0001-37
+          </p>
+        </div>
       </div>
     </footer>
   )
