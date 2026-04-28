@@ -24,14 +24,13 @@ const features: PlanFeature[] = [
   { name: 'Negócios (Deals)', free: '100', starter: '500', pro: '2.500', business: 'Ilimitado' },
   { name: 'Pipelines', free: '1', starter: '5', pro: '15', business: '50' },
   { name: 'Usuários', free: '2', starter: '5', pro: '15', business: '50' },
-  { name: 'Prospecção mensal', free: false, starter: '75 leads', pro: '300 leads', business: '1.500 leads' },
   { name: 'WhatsApp Oficial (Meta)', free: false, starter: false, pro: false, business: 'API Oficial Meta' },
   { name: 'Automações de Email', free: false, starter: '5', pro: '15', business: '50' },
   { name: 'Integrações', free: false, starter: 'Básicas', pro: 'Avançadas', business: 'Todas' },
   { name: 'Analytics Avançado', free: false, starter: false, pro: true, business: true },
   { name: 'Relatórios Customizados', free: false, starter: false, pro: false, business: true },
   { name: 'Distribuição Round-Robin', free: false, starter: false, pro: false, business: true },
-  { name: 'Suporte', free: 'Comunidade', starter: 'Email', pro: 'Prioritário', business: 'Dedicado' },
+  { name: 'Suporte (Tickets + Chat)', free: 'WhatsApp*', starter: 'WhatsApp* + Tickets', pro: 'Tickets + Chat', business: 'Tickets + Chat' },
   { name: 'Agentes IA (Sofia)', free: false, starter: '1 agente', pro: '3 agentes', business: '5 agentes' },
   { name: 'Ações autônomas/mês', free: false, starter: '200', pro: '1.000', business: '3.000' },
   { name: 'Aprovação de ações IA', free: false, starter: true, pro: true, business: true },
@@ -282,6 +281,9 @@ export default function PlansPage() {
               </tbody>
             </table>
           </div>
+          <p className="text-xs text-muted-foreground mt-4">
+            * Suporte via WhatsApp disponível por tempo limitado nos planos Gratuito e Starter.
+          </p>
         </CardContent>
       </Card>
 
