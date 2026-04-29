@@ -12,6 +12,10 @@ import logger from '@/lib/logger'
 
 const GRAPH_BASE = 'https://graph.facebook.com/v21.0'
 
+export async function GET() {
+  return POST()
+}
+
 export async function POST() {
   const session = await getSession()
   if (!session?.user?.email) {
