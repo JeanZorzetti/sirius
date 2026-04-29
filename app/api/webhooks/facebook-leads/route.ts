@@ -21,6 +21,25 @@ import { fetchLeadData } from '@/lib/ads/facebook-lead-ads'
 import { decrypt } from '@/lib/encryption'
 import logger from '@/lib/logger'
 
+async function getDefaultPipelineStage(organizationId: string) {
+  const pipeline = await prisma.pipeline.findFirst({
+    where: { organizationId },
+    orderBy: { createdAt: 'asc' },
+    include: {
+      stages: { orderBy: { order: 'asc' }, take: 1 },
+    },
+  })
+  const user = await prisma.user.findFirst({
+    where: { organizationId },
+    orderBy: { createdAt: 'asc' },
+  })
+  return {
+    pipelineId: pipeline?.id ?? null,
+    stageId: pipeline?.stages[0]?.id ?? null,
+    userId: user?.id ?? null,
+  }
+}
+
 // ─── GET: Verificação do webhook pelo Meta ────────────────────────────────────
 
 export async function GET(request: Request) {
@@ -113,7 +132,6 @@ export async function POST(request: Request) {
           const leadData = await fetchLeadData(leadgenId, pageToken)
 
           if (leadData) {
-            // Cria Contact no CRM
             const contact = await prisma.contact.create({
               data: {
                 name:           leadData.name ?? 'Lead Facebook',
@@ -123,7 +141,21 @@ export async function POST(request: Request) {
               },
             })
 
-            // Atualiza o FacebookLead com os dados e o contactId
+            // Cria Deal na primeira stage do pipeline
+            const { pipelineId, stageId, userId } = await getDefaultPipelineStage(org.id)
+            if (pipelineId && stageId && userId) {
+              await prisma.deal.create({
+                data: {
+                  title:          `Lead Facebook — ${leadData.name ?? 'Novo Lead'}`,
+                  organizationId: org.id,
+                  pipelineId,
+                  stageId,
+                  contactId:      contact.id,
+                  userId,
+                },
+              })
+            }
+
             await prisma.facebookLead.update({
               where: { id: fbLead.id },
               data: {
@@ -137,8 +169,8 @@ export async function POST(request: Request) {
             })
 
             logger.info(
-              { leadgenId, contactId: contact.id, orgId: org.id },
-              '[FB:LEADS] Lead created and contact saved'
+              { leadgenId, contactId: contact.id, orgId: org.id, pipelineId, stageId },
+              '[FB:LEADS] Lead created, contact and deal saved'
             )
           } else {
             logger.warn({ leadgenId, orgId: org.id }, '[FB:LEADS] Could not fetch lead data from Graph API')

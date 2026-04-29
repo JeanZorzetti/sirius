@@ -62,12 +62,37 @@ export async function GET(request: NextRequest) {
       },
     })
 
+    // Cria Deal na primeira stage do pipeline
+    const pipeline = await prisma.pipeline.findFirst({
+      where: { organizationId: org.id },
+      orderBy: { createdAt: 'asc' },
+      include: { stages: { orderBy: { order: 'asc' }, take: 1 } },
+    })
+    const orgUser = await prisma.user.findFirst({
+      where: { organizationId: org.id },
+      orderBy: { createdAt: 'asc' },
+    })
+    let dealId = null
+    if (pipeline?.id && pipeline.stages[0]?.id && orgUser?.id) {
+      const deal = await prisma.deal.create({
+        data: {
+          title:          `Lead Facebook — ${leadData.name ?? 'Novo Lead'}`,
+          organizationId: org.id,
+          pipelineId:     pipeline.id,
+          stageId:        pipeline.stages[0].id,
+          contactId:      contact.id,
+          userId:         orgUser.id,
+        },
+      })
+      dealId = deal.id
+    }
+
     await prisma.facebookLead.update({
       where: { id: fbLead.id },
       data: { name: leadData.name, email: leadData.email, phone: leadData.phone, rawFields: leadData.rawFields, fetchedAt: new Date(), contactId: contact.id },
     })
 
-    return NextResponse.json({ status: 'created', contactId: contact.id, leadData })
+    return NextResponse.json({ status: 'created', contactId: contact.id, dealId, leadData })
   }
 
   // Diagnóstico geral
