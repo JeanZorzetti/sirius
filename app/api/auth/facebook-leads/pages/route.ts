@@ -92,8 +92,9 @@ export async function POST(request: NextRequest) {
   logger.info({ orgId: user.organizationId, pageId: selected.id }, '[FB:PAGES] Page selected')
 
   // Inscreve o webhook na página selecionada
+  let subscriptionError: unknown = null
   try {
-    await fetch(
+    const subRes = await fetch(
       `${GRAPH_BASE}/${selected.id}/subscribed_apps`,
       {
         method: 'POST',
@@ -104,9 +105,22 @@ export async function POST(request: NextRequest) {
         }),
       }
     )
+    const subData = await subRes.json()
+    if (!subData.success) {
+      subscriptionError = subData
+      logger.warn({ subData, pageId: selected.id }, '[FB:PAGES] subscribed_apps returned non-success')
+    } else {
+      logger.info({ pageId: selected.id }, '[FB:PAGES] Webhook subscribed to leadgen events')
+    }
   } catch (err) {
-    logger.warn({ err }, '[FB:PAGES] Could not subscribe webhook — user may need to do it manually')
+    subscriptionError = err
+    logger.warn({ err }, '[FB:PAGES] Could not subscribe webhook')
   }
 
-  return NextResponse.json({ success: true, pageId: selected.id, pageName: selected.name })
+  return NextResponse.json({
+    success: true,
+    pageId: selected.id,
+    pageName: selected.name,
+    subscriptionError: subscriptionError ?? null,
+  })
 }
