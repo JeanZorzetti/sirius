@@ -34,8 +34,12 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ error: 'Organização não encontrada' }, { status: 404 })
   }
 
-  // Deriva a URL base da própria request (funciona em dev e produção)
-  const { origin } = new URL(request.url)
+  // Deriva o origin real via headers de proxy, com fallback para NEXTAUTH_URL
+  const forwardedHost = request.headers.get('x-forwarded-host')
+  const forwardedProto = request.headers.get('x-forwarded-proto') ?? 'https'
+  const origin = forwardedHost
+    ? `${forwardedProto}://${forwardedHost}`
+    : (process.env.NEXTAUTH_URL ?? new URL(request.url).origin)
   const redirectUri = `${origin}/api/auth/facebook-leads/callback`
 
   // Gera state anti-CSRF único por tentativa

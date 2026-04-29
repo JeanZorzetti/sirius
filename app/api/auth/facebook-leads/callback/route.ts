@@ -46,8 +46,12 @@ export async function GET(request: NextRequest) {
   }
 
   try {
-    // Deriva redirect_uri da própria request (consistente com o que foi enviado ao iniciar o OAuth)
-    const { origin } = new URL(request.url)
+    // Deriva o origin real via headers de proxy, com fallback para NEXTAUTH_URL
+    const forwardedHost = request.headers.get('x-forwarded-host')
+    const forwardedProto = request.headers.get('x-forwarded-proto') ?? 'https'
+    const origin = forwardedHost
+      ? `${forwardedProto}://${forwardedHost}`
+      : (process.env.NEXTAUTH_URL ?? new URL(request.url).origin)
     const redirectUri = `${origin}/api/auth/facebook-leads/callback`
 
     // 1. Troca code por User Access Token
