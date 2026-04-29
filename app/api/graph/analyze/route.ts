@@ -5,7 +5,11 @@ import Groq from 'groq-sdk'
 
 export const runtime = 'nodejs'
 
-const groq = new Groq({ apiKey: process.env.GROQ_API_KEY! })
+let _groq: Groq | null = null
+function getGroq() {
+  if (!_groq) _groq = new Groq({ apiKey: process.env.GROQ_API_KEY! })
+  return _groq
+}
 
 // POST /api/graph/analyze
 // body: { mode: 'analyze' | 'suggest', typeFilter: string, minStrength: number }
@@ -112,7 +116,7 @@ ${ctx}`
   const prompt = mode === 'suggest' ? suggestPrompt : analyzePrompt
 
   // ── Stream response ───────────────────────────────────────────────────────
-  const stream = await groq.chat.completions.create({
+  const stream = await getGroq().chat.completions.create({
     model: 'llama-3.3-70b-versatile',
     messages: [
       { role: 'system', content: systemPrompt },
