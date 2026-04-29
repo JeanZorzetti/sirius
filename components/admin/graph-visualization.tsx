@@ -21,12 +21,10 @@ import {
   Filter,
   X,
   ChevronRight,
-  ZoomIn,
-  ZoomOut,
-  Maximize2,
   RefreshCw,
   Search,
   Info,
+  Download,
 } from 'lucide-react'
 import { Input } from '@/components/ui/input'
 
@@ -151,6 +149,44 @@ function convertToFlow(nodes: D3Node[], links: D3Link[], search: string): { node
   })
 
   return applyDagreLayout(flowNodes, flowEdges)
+}
+
+// ── Export button ─────────────────────────────────────────────────────────────
+function ExportButton({ typeFilter, minStrength }: { typeFilter: string; minStrength: number }) {
+  const [exporting, setExporting] = useState(false)
+
+  const handleExport = async () => {
+    setExporting(true)
+    try {
+      const params = new URLSearchParams({ typeFilter, minStrength: String(minStrength) })
+      const res = await fetch(`/api/graph/export-md?${params}`)
+      if (!res.ok) throw new Error('Falha ao gerar relatório')
+
+      const blob = await res.blob()
+      const url = URL.createObjectURL(blob)
+      const a = document.createElement('a')
+      const filename = res.headers.get('Content-Disposition')?.match(/filename="([^"]+)"/)?.[1]
+        ?? `knowledge-graph-${new Date().toISOString().slice(0, 10)}.md`
+      a.href = url
+      a.download = filename
+      a.click()
+      URL.revokeObjectURL(url)
+    } finally {
+      setExporting(false)
+    }
+  }
+
+  return (
+    <button
+      onClick={handleExport}
+      disabled={exporting}
+      title="Exportar relatório .md"
+      className="flex items-center gap-1.5 h-8 px-3 rounded border border-slate-700 hover:border-slate-500 bg-slate-900 hover:bg-slate-800 disabled:opacity-40 text-slate-300 text-xs font-medium transition-colors"
+    >
+      <Download className={`h-3.5 w-3.5 ${exporting ? 'animate-pulse' : ''}`} />
+      {exporting ? 'Gerando...' : 'Exportar .md'}
+    </button>
+  )
 }
 
 // ── Main component ────────────────────────────────────────────────────────────
@@ -286,6 +322,8 @@ function GraphInner() {
           <RefreshCw className={`h-3.5 w-3.5 ${loading ? 'animate-spin' : ''}`} />
           Atualizar
         </button>
+
+        <ExportButton typeFilter={typeFilter} minStrength={minStrength} />
       </div>
 
       {/* Type filters */}
