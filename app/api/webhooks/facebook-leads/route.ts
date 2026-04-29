@@ -79,8 +79,11 @@ export async function POST(request: Request) {
   try {
     const body = await request.json()
 
+    logger.info({ body: JSON.stringify(body) }, '[FB:LEADS] Webhook POST received')
+
     // Meta envia object: "page" para Lead Ads
     if (body.object !== 'page') {
+      logger.info({ object: body.object }, '[FB:LEADS] Ignored non-page object')
       return NextResponse.json({ status: 'ignored' })
     }
 
