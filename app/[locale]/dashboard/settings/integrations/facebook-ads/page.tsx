@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -9,9 +9,11 @@ import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
 import {
   ArrowLeft, Share2, CheckCircle2, ExternalLink,
-  Loader2, AlertCircle, Zap, Copy, Check,
+  Loader2, AlertCircle, Zap, RefreshCw, ChevronRight,
+  XCircle,
 } from 'lucide-react'
 import Link from 'next/link'
+import { useSearchParams } from 'next/navigation'
 import { toast } from 'sonner'
 
 interface AdsSettings {
@@ -19,43 +21,105 @@ interface AdsSettings {
   facebookAccessToken?: string
   adsIntegrationEnabled: boolean
   adsLastSyncAt?: string
-  // Lead Ads webhook
   facebookPageId?: string
   facebookPageAccessToken?: string
   facebookWebhookVerifyToken?: string
 }
 
-export default function FacebookAdsSettingsPage() {
-  const [settings, setSettings] = useState<AdsSettings>({ adsIntegrationEnabled: false })
-  const [adAccountId, setAdAccountId]     = useState('')
-  const [accessToken, setAccessToken]     = useState('')
-  const [pageId, setPageId]               = useState('')
-  const [pageToken, setPageToken]         = useState('')
-  const [verifyToken, setVerifyToken]     = useState('')
-  const [isSaving, setIsSaving]           = useState(false)
-  const [isSavingLeads, setIsSavingLeads] = useState(false)
-  const [isSyncing, setIsSyncing]         = useState(false)
-  const [isLoading, setIsLoading]         = useState(true)
-  const [copied, setCopied]               = useState(false)
+interface FacebookPage {
+  id: string
+  name: string
+}
 
-  const webhookUrl = typeof window !== 'undefined'
-    ? `${window.location.origin}/api/webhooks/facebook-leads`
-    : 'https://siriuscrm.com.br/api/webhooks/facebook-leads'
+export default function FacebookAdsSettingsPage() {
+  const searchParams = useSearchParams()
+
+  const [settings, setSettings]         = useState<AdsSettings>({ adsIntegrationEnabled: false })
+  const [adAccountId, setAdAccountId]   = useState('')
+  const [accessToken, setAccessToken]   = useState('')
+  const [isSaving, setIsSaving]         = useState(false)
+  const [isSyncing, setIsSyncing]       = useState(false)
+  const [isLoading, setIsLoading]       = useState(true)
+
+  // OAuth Lead Ads state
+  const [pages, setPages]               = useState<FacebookPage[]>([])
+  const [selectedPageId, setSelectedPageId] = useState<string | null>(null)
+  const [selectedPageName, setSelectedPageName] = useState<string | null>(null)
+  const [isSelectingPage, setIsSelectingPage] = useState(false)
+  const [isConnected, setIsConnected]   = useState(false)
+
+  const loadSettings = useCallback(async () => {
+    try {
+      const [adsRes, pagesRes] = await Promise.all([
+        fetch('/api/settings/ads'),
+        fetch('/api/auth/facebook-leads/pages'),
+      ])
+      const adsData   = await adsRes.json()
+      const pagesData = await pagesRes.json()
+
+      setSettings(adsData)
+      setAdAccountId(adsData.facebookAdAccountId ?? '')
+      setAccessToken(adsData.facebookAccessToken ? '••••••••' : '')
+
+      setPages(pagesData.pages ?? [])
+      setSelectedPageId(pagesData.selectedPageId ?? null)
+      if (pagesData.selectedPageId && pagesData.pages?.length) {
+        const p = pagesData.pages.find((x: FacebookPage) => x.id === pagesData.selectedPageId)
+        setSelectedPageName(p?.name ?? null)
+        setIsConnected(true)
+      }
+    } catch {
+      //
+    } finally {
+      setIsLoading(false)
+    }
+  }, [])
 
   useEffect(() => {
-    fetch('/api/settings/ads')
-      .then(r => r.json())
-      .then(data => {
-        setSettings(data)
-        setAdAccountId(data.facebookAdAccountId ?? '')
-        setAccessToken(data.facebookAccessToken ? '••••••••' : '')
-        setPageId(data.facebookPageId ?? '')
-        setPageToken(data.facebookPageAccessToken ? '••••••••' : '')
-        setVerifyToken(data.facebookWebhookVerifyToken ?? '')
+    loadSettings()
+  }, [loadSettings])
+
+  // Trata retorno do OAuth
+  useEffect(() => {
+    const success = searchParams.get('success')
+    const error   = searchParams.get('error')
+
+    if (success === 'connected') {
+      toast.success('Facebook conectado com sucesso!')
+      loadSettings()
+    } else if (success === 'select_page') {
+      toast.success('Facebook conectado! Selecione a Página abaixo.')
+      loadSettings()
+    } else if (error === 'denied') {
+      toast.error('Autorização negada pelo Facebook.')
+    } else if (error) {
+      toast.error(`Erro ao conectar: ${error}`)
+    }
+  }, [searchParams, loadSettings])
+
+  const handleConnectFacebook = () => {
+    window.location.href = '/api/auth/facebook-leads'
+  }
+
+  const handleSelectPage = async (page: FacebookPage) => {
+    setIsSelectingPage(true)
+    try {
+      const res = await fetch('/api/auth/facebook-leads/pages', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ pageId: page.id }),
       })
-      .catch(() => {})
-      .finally(() => setIsLoading(false))
-  }, [])
+      if (!res.ok) throw new Error()
+      setSelectedPageId(page.id)
+      setSelectedPageName(page.name)
+      setIsConnected(true)
+      toast.success(`Página "${page.name}" conectada! Leads serão capturados automaticamente.`)
+    } catch {
+      toast.error('Erro ao selecionar página')
+    } finally {
+      setIsSelectingPage(false)
+    }
+  }
 
   const handleSave = async () => {
     setIsSaving(true)
@@ -72,33 +136,9 @@ export default function FacebookAdsSettingsPage() {
       if (!res.ok) throw new Error()
       toast.success('Credenciais de Ads salvas!')
     } catch {
-      toast.error('Erro ao salvar configurações')
-    } finally {
-      setIsSaving(false)
-    }
-  }
-
-  const handleSaveLeads = async () => {
-    setIsSavingLeads(true)
-    try {
-      const body: Record<string, any> = {
-        facebookPageId: pageId,
-        facebookWebhookVerifyToken: verifyToken,
-      }
-      if (pageToken && !pageToken.startsWith('•')) {
-        body.facebookPageAccessToken = pageToken
-      }
-      const res = await fetch('/api/settings/ads', {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(body),
-      })
-      if (!res.ok) throw new Error()
-      toast.success('Configuração de Lead Ads salva!')
-    } catch {
       toast.error('Erro ao salvar')
     } finally {
-      setIsSavingLeads(false)
+      setIsSaving(false)
     }
   }
 
@@ -115,14 +155,7 @@ export default function FacebookAdsSettingsPage() {
     }
   }
 
-  const handleCopy = () => {
-    navigator.clipboard.writeText(webhookUrl)
-    setCopied(true)
-    setTimeout(() => setCopied(false), 2000)
-  }
-
-  const isConfigured      = !!settings.facebookAdAccountId
-  const isLeadsConfigured = !!(settings.facebookPageId && settings.facebookPageAccessToken)
+  const isAdsConfigured = !!settings.facebookAdAccountId
 
   return (
     <div className="flex-1 space-y-6 p-8 pt-6 max-w-2xl">
@@ -143,10 +176,10 @@ export default function FacebookAdsSettingsPage() {
           <div className="flex items-center gap-2">
             <h2 className="text-2xl font-bold">Meta Ads (Facebook)</h2>
             <Badge variant="outline" className="text-amber-600 border-amber-200">BETA</Badge>
-            {isConfigured && (
+            {isConnected && (
               <Badge variant="outline" className="text-green-600 border-green-200">
                 <CheckCircle2 className="h-3 w-3 mr-1" />
-                Configurado
+                Lead Ads Ativo
               </Badge>
             )}
           </div>
@@ -156,7 +189,118 @@ export default function FacebookAdsSettingsPage() {
         </div>
       </div>
 
-      {/* ── Seção 1: Métricas de Ads ── */}
+      {/* ── Seção 1: Lead Ads OAuth ── */}
+      <Card className={isConnected ? 'border-green-200 dark:border-green-800' : ''}>
+        <CardHeader>
+          <div className="flex items-center gap-2">
+            <Zap className={`h-4 w-4 ${isConnected ? 'text-green-600' : 'text-muted-foreground'}`} />
+            <CardTitle className="text-base">Captura Automática de Leads</CardTitle>
+          </div>
+          <CardDescription>
+            Leads de formulários do Facebook entram automaticamente no CRM em tempo real
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          {isLoading ? (
+            <div className="flex items-center gap-2 text-muted-foreground">
+              <Loader2 className="h-4 w-4 animate-spin" />
+              <span className="text-sm">Carregando...</span>
+            </div>
+          ) : isConnected ? (
+            /* Estado: conectado e página selecionada */
+            <div className="space-y-3">
+              <div className="flex items-center gap-3 p-3 rounded-lg bg-green-50 dark:bg-green-950/20 border border-green-200 dark:border-green-800">
+                <CheckCircle2 className="h-5 w-5 text-green-600 shrink-0" />
+                <div className="flex-1">
+                  <p className="text-sm font-medium text-green-800 dark:text-green-200">
+                    Conectado à página: <strong>{selectedPageName}</strong>
+                  </p>
+                  <p className="text-xs text-green-700 dark:text-green-300">
+                    Leads de formulários serão capturados automaticamente
+                  </p>
+                </div>
+              </div>
+              <div className="flex gap-2">
+                <Button variant="outline" size="sm" onClick={handleConnectFacebook} className="gap-2">
+                  <RefreshCw className="h-3 w-3" />
+                  Reconectar
+                </Button>
+                {pages.length > 1 && (
+                  <Button variant="ghost" size="sm" onClick={() => setIsConnected(false)} className="gap-2">
+                    Trocar página
+                  </Button>
+                )}
+              </div>
+            </div>
+          ) : pages.length > 0 ? (
+            /* Estado: OAuth feito, mas precisa selecionar a página */
+            <div className="space-y-3">
+              <div className="flex items-start gap-3 p-3 rounded-lg bg-amber-50 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-800">
+                <AlertCircle className="h-4 w-4 text-amber-600 shrink-0 mt-0.5" />
+                <p className="text-sm text-amber-800 dark:text-amber-200">
+                  Selecione qual Página do Facebook receberá os leads:
+                </p>
+              </div>
+              <div className="space-y-2">
+                {pages.map(page => (
+                  <button
+                    key={page.id}
+                    onClick={() => handleSelectPage(page)}
+                    disabled={isSelectingPage}
+                    className="w-full flex items-center justify-between p-3 rounded-lg border border-border hover:border-blue-400 hover:bg-blue-50/50 dark:hover:bg-blue-950/20 transition-all text-left"
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className="h-8 w-8 rounded-full bg-blue-600/10 flex items-center justify-center">
+                        <Share2 className="h-4 w-4 text-blue-600" />
+                      </div>
+                      <div>
+                        <p className="text-sm font-medium">{page.name}</p>
+                        <p className="text-xs text-muted-foreground">ID: {page.id}</p>
+                      </div>
+                    </div>
+                    {isSelectingPage ? (
+                      <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
+                    ) : (
+                      <ChevronRight className="h-4 w-4 text-muted-foreground" />
+                    )}
+                  </button>
+                ))}
+              </div>
+              <Button variant="ghost" size="sm" onClick={handleConnectFacebook} className="gap-2 text-muted-foreground">
+                <RefreshCw className="h-3 w-3" />
+                Reconectar com outra conta
+              </Button>
+            </div>
+          ) : (
+            /* Estado: não conectado */
+            <div className="space-y-4">
+              <div className="flex items-start gap-3 p-4 rounded-lg bg-blue-50 dark:bg-blue-950/20 border border-blue-200 dark:border-blue-800">
+                <AlertCircle className="h-4 w-4 text-blue-600 shrink-0 mt-0.5" />
+                <div className="text-sm text-blue-800 dark:text-blue-200 space-y-1">
+                  <p className="font-medium">Como funciona:</p>
+                  <ol className="list-decimal list-inside space-y-1 text-xs">
+                    <li>Clique em "Conectar com Facebook" abaixo</li>
+                    <li>Autorize o Sirius CRM a acessar sua Página</li>
+                    <li>Selecione qual Página receberá os leads</li>
+                    <li>Pronto — leads entram no CRM automaticamente</li>
+                  </ol>
+                </div>
+              </div>
+              <Button
+                onClick={handleConnectFacebook}
+                className="w-full sm:w-auto gap-2 bg-[#1877F2] hover:bg-[#166FE5] text-white"
+              >
+                <Share2 className="h-4 w-4" />
+                Conectar com Facebook
+              </Button>
+            </div>
+          )}
+        </CardContent>
+      </Card>
+
+      <Separator />
+
+      {/* ── Seção 2: Métricas de Ads ── */}
       <Card>
         <CardHeader>
           <CardTitle className="text-base">Métricas de Campanhas</CardTitle>
@@ -165,12 +309,12 @@ export default function FacebookAdsSettingsPage() {
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
-          <Card className="bg-blue-50 dark:bg-blue-950/20 border-blue-200 dark:border-blue-800">
+          <Card className="bg-muted/40 border-border/50">
             <CardContent className="pt-4 pb-4">
               <div className="flex items-start gap-3">
-                <AlertCircle className="h-4 w-4 text-blue-600 shrink-0 mt-0.5" />
-                <div className="text-sm text-blue-800 dark:text-blue-200 space-y-1">
-                  <p className="font-medium">Como obter:</p>
+                <AlertCircle className="h-4 w-4 text-muted-foreground shrink-0 mt-0.5" />
+                <div className="text-sm text-muted-foreground space-y-1">
+                  <p className="font-medium text-foreground">Como obter as credenciais:</p>
                   <ol className="list-decimal list-inside space-y-1 text-xs">
                     <li>
                       Acesse o{' '}
@@ -179,17 +323,11 @@ export default function FacebookAdsSettingsPage() {
                       </a>
                     </li>
                     <li>
-                      <strong>Ad Account ID</strong>: Configurações → Contas de Anúncio (ex:{' '}
-                      <code>act_123456789</code>)
+                      <strong>Ad Account ID</strong>: Configurações → Contas de Anúncio (ex: <code>act_123456789</code>)
                     </li>
                     <li>
                       Gere um <strong>Access Token</strong> com escopo <code>ads_read</code> via{' '}
-                      <a
-                        href="https://developers.facebook.com/tools/explorer"
-                        target="_blank"
-                        rel="noopener"
-                        className="underline"
-                      >
+                      <a href="https://developers.facebook.com/tools/explorer" target="_blank" rel="noopener" className="underline">
                         Graph API Explorer
                       </a>
                     </li>
@@ -231,7 +369,7 @@ export default function FacebookAdsSettingsPage() {
                   {isSaving && <Loader2 className="h-4 w-4 mr-2 animate-spin" />}
                   Salvar
                 </Button>
-                {isConfigured && (
+                {isAdsConfigured && (
                   <Button variant="outline" onClick={handleSync} disabled={isSyncing}>
                     {isSyncing && <Loader2 className="h-4 w-4 mr-2 animate-spin" />}
                     Sincronizar Agora
@@ -246,161 +384,9 @@ export default function FacebookAdsSettingsPage() {
       {settings.adsLastSyncAt && (
         <div className="flex items-center gap-2 text-sm text-muted-foreground px-1">
           <CheckCircle2 className="h-4 w-4 text-green-500" />
-          <span>
-            Última sincronização: {new Date(settings.adsLastSyncAt).toLocaleString('pt-BR')}
-          </span>
+          <span>Última sincronização: {new Date(settings.adsLastSyncAt).toLocaleString('pt-BR')}</span>
         </div>
       )}
-
-      <Separator />
-
-      {/* ── Seção 2: Lead Ads Webhook ── */}
-      <div className="flex items-center gap-3">
-        <div className="h-8 w-8 rounded-md bg-green-600/10 flex items-center justify-center">
-          <Zap className="h-4 w-4 text-green-600" />
-        </div>
-        <div>
-          <div className="flex items-center gap-2">
-            <p className="font-semibold text-sm">Captura Automática de Leads</p>
-            {isLeadsConfigured && (
-              <Badge variant="outline" className="text-green-600 border-green-200 text-xs">
-                <CheckCircle2 className="h-3 w-3 mr-1" />
-                Ativo
-              </Badge>
-            )}
-          </div>
-          <p className="text-xs text-muted-foreground">
-            Leads de formulários do Facebook entram automaticamente no CRM em tempo real
-          </p>
-        </div>
-      </div>
-
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-base">Configuração do Webhook</CardTitle>
-          <CardDescription>
-            Configure no Meta for Developers para receber leads instantaneamente
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-5">
-          {/* Instruções */}
-          <Card className="bg-green-50 dark:bg-green-950/20 border-green-200 dark:border-green-800">
-            <CardContent className="pt-4 pb-4">
-              <div className="flex items-start gap-3">
-                <AlertCircle className="h-4 w-4 text-green-700 shrink-0 mt-0.5" />
-                <div className="text-sm text-green-800 dark:text-green-200 space-y-1">
-                  <p className="font-medium">Como configurar (passo a passo):</p>
-                  <ol className="list-decimal list-inside space-y-1 text-xs">
-                    <li>
-                      Acesse{' '}
-                      <a
-                        href="https://developers.facebook.com/apps"
-                        target="_blank"
-                        rel="noopener"
-                        className="underline"
-                      >
-                        Meta for Developers
-                      </a>{' '}
-                      → seu App → <strong>Webhooks</strong>
-                    </li>
-                    <li>
-                      Clique em <strong>Adicionar URL de Callback</strong>, cole a URL abaixo e defina
-                      um Verify Token (qualquer string secreta)
-                    </li>
-                    <li>
-                      Selecione o objeto <strong>Page</strong> e se inscreva no campo{' '}
-                      <code>leadgen</code>
-                    </li>
-                    <li>
-                      Instale o app na Página: vá em{' '}
-                      <strong>Configurações da Página → Apps Integrados</strong>
-                    </li>
-                    <li>
-                      Gere um <strong>Page Access Token</strong> com permissões{' '}
-                      <code>leads_retrieval</code>, <code>pages_manage_metadata</code>,{' '}
-                      <code>pages_show_list</code> via Graph API Explorer
-                    </li>
-                  </ol>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* URL do Webhook */}
-          <div className="space-y-2">
-            <Label>URL do Webhook</Label>
-            <div className="flex gap-2">
-              <Input value={webhookUrl} readOnly className="font-mono text-xs bg-muted" />
-              <Button variant="outline" size="icon" onClick={handleCopy} className="shrink-0">
-                {copied ? <Check className="h-4 w-4 text-green-600" /> : <Copy className="h-4 w-4" />}
-              </Button>
-            </div>
-            <p className="text-xs text-muted-foreground">
-              Cole esta URL no campo "Callback URL" no Meta for Developers
-            </p>
-          </div>
-
-          {isLoading ? (
-            <div className="flex items-center gap-2 text-muted-foreground">
-              <Loader2 className="h-4 w-4 animate-spin" />
-              <span className="text-sm">Carregando...</span>
-            </div>
-          ) : (
-            <>
-              <div className="space-y-2">
-                <Label htmlFor="verify-token">Verify Token</Label>
-                <Input
-                  id="verify-token"
-                  placeholder="Ex: meu_token_secreto_123"
-                  value={verifyToken}
-                  onChange={e => setVerifyToken(e.target.value)}
-                />
-                <p className="text-xs text-muted-foreground">
-                  String secreta que você define. Use o mesmo valor no Meta for Developers ao registrar o webhook.
-                </p>
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="page-id">ID da Página do Facebook</Label>
-                <Input
-                  id="page-id"
-                  placeholder="Ex: 123456789012345"
-                  value={pageId}
-                  onChange={e => setPageId(e.target.value)}
-                />
-                <p className="text-xs text-muted-foreground">
-                  Encontre em: Página → Sobre → ID da Página
-                </p>
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="page-token">Page Access Token</Label>
-                <Input
-                  id="page-token"
-                  type="password"
-                  placeholder="Token com permissão leads_retrieval"
-                  value={pageToken}
-                  onChange={e => setPageToken(e.target.value)}
-                  onFocus={e => { if (e.target.value.startsWith('•')) setPageToken('') }}
-                />
-                <p className="text-xs text-muted-foreground">
-                  Diferente do Access Token de Ads. Precisa ter{' '}
-                  <code>leads_retrieval</code> e <code>pages_manage_metadata</code>.
-                </p>
-              </div>
-
-              <Button
-                onClick={handleSaveLeads}
-                disabled={isSavingLeads || !pageId || !verifyToken}
-                className="w-full sm:w-auto"
-              >
-                {isSavingLeads && <Loader2 className="h-4 w-4 mr-2 animate-spin" />}
-                Salvar Configuração de Leads
-              </Button>
-            </>
-          )}
-        </CardContent>
-      </Card>
 
       <div className="flex items-center gap-2 text-xs text-muted-foreground">
         <ExternalLink className="h-3 w-3" />
