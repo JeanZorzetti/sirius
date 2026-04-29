@@ -14,10 +14,19 @@ const FACEBOOK_APP_ID     = process.env.FACEBOOK_APP_ID!
 const FACEBOOK_APP_SECRET = process.env.FACEBOOK_APP_SECRET!
 const GRAPH_BASE          = 'https://graph.facebook.com/v21.0'
 
+function getOrigin(request: NextRequest): string {
+  const forwardedHost  = request.headers.get('x-forwarded-host')
+  const forwardedProto = request.headers.get('x-forwarded-proto') ?? 'https'
+  if (forwardedHost) return `${forwardedProto}://${forwardedHost}`
+  return process.env.NEXTAUTH_URL ?? new URL(request.url).origin
+}
+
 export async function GET(request: NextRequest) {
+  const origin = getOrigin(request)
+
   const session = await getSession()
   if (!session?.user?.email) {
-    return NextResponse.redirect(new URL('/dashboard/settings/integrations/facebook-ads?error=unauthorized', request.url))
+    return NextResponse.redirect(`${origin}/dashboard/settings/integrations/facebook-ads?error=unauthorized`)
   }
 
   const { searchParams } = new URL(request.url)
@@ -27,7 +36,7 @@ export async function GET(request: NextRequest) {
 
   if (error || !code || !state) {
     logger.warn({ error }, '[FB:OAUTH] User denied or missing params')
-    return NextResponse.redirect(new URL('/dashboard/settings/integrations/facebook-ads?error=denied', request.url))
+    return NextResponse.redirect(`${origin}/dashboard/settings/integrations/facebook-ads?error=denied`)
   }
 
   const user = await prisma.user.findUnique({
@@ -36,25 +45,17 @@ export async function GET(request: NextRequest) {
   })
 
   if (!user?.organization) {
-    return NextResponse.redirect(new URL('/dashboard/settings/integrations/facebook-ads?error=org_not_found', request.url))
+    return NextResponse.redirect(`${origin}/dashboard/settings/integrations/facebook-ads?error=org_not_found`)
   }
 
-  // Valida anti-CSRF state
   if (user.organization.facebookOAuthState !== state) {
     logger.warn({ orgId: user.organization.id }, '[FB:OAUTH] State mismatch — possible CSRF')
-    return NextResponse.redirect(new URL('/dashboard/settings/integrations/facebook-ads?error=state_mismatch', request.url))
+    return NextResponse.redirect(`${origin}/dashboard/settings/integrations/facebook-ads?error=state_mismatch`)
   }
 
   try {
-    // Deriva o origin real via headers de proxy, com fallback para NEXTAUTH_URL
-    const forwardedHost = request.headers.get('x-forwarded-host')
-    const forwardedProto = request.headers.get('x-forwarded-proto') ?? 'https'
-    const origin = forwardedHost
-      ? `${forwardedProto}://${forwardedHost}`
-      : (process.env.NEXTAUTH_URL ?? new URL(request.url).origin)
     const redirectUri = `${origin}/api/auth/facebook-leads/callback`
 
-    // 1. Troca code por User Access Token
     const tokenParams = new URLSearchParams({
       client_id:     FACEBOOK_APP_ID,
       client_secret: FACEBOOK_APP_SECRET,
@@ -62,32 +63,28 @@ export async function GET(request: NextRequest) {
       code,
     })
 
-    const tokenRes = await fetch(`${GRAPH_BASE}/oauth/access_token?${tokenParams}`)
+    const tokenRes  = await fetch(`${GRAPH_BASE}/oauth/access_token?${tokenParams}`)
     const tokenData = await tokenRes.json()
 
     if (!tokenData.access_token) {
       logger.error({ tokenData }, '[FB:OAUTH] Failed to get access token')
-      return NextResponse.redirect(new URL('/dashboard/settings/integrations/facebook-ads?error=token_failed', request.url))
+      return NextResponse.redirect(`${origin}/dashboard/settings/integrations/facebook-ads?error=token_failed`)
     }
 
     const userAccessToken: string = tokenData.access_token
 
-    // 2. Busca as Páginas que o usuário administra com seus Page Tokens
-    const pagesRes = await fetch(
+    const pagesRes  = await fetch(
       `${GRAPH_BASE}/me/accounts?fields=id,name,access_token&access_token=${userAccessToken}`
     )
     const pagesData = await pagesRes.json()
     const pages: Array<{ id: string; name: string; access_token: string }> = pagesData.data ?? []
 
-    // 3. Salva o user token e as páginas disponíveis na org
-    //    (usuário vai escolher qual Página usar na UI)
     await prisma.organization.update({
       where: { id: user.organization.id },
       data: {
         facebookUserAccessToken: encrypt(userAccessToken),
         facebookAvailablePages:  JSON.stringify(pages.map(p => ({ id: p.id, name: p.name }))),
-        facebookOAuthState:      null, // limpa o state após uso
-        // Se só tem uma página, já seleciona automaticamente
+        facebookOAuthState:      null,
         ...(pages.length === 1 ? {
           facebookPageId:          pages[0].id,
           facebookPageAccessToken: encrypt(pages[0].access_token),
@@ -97,14 +94,13 @@ export async function GET(request: NextRequest) {
 
     logger.info({ orgId: user.organization.id, pagesCount: pages.length }, '[FB:OAUTH] OAuth completed')
 
-    // Redireciona para a página de settings com sucesso
-    const successUrl = pages.length === 1
+    const successPath = pages.length === 1
       ? '/dashboard/settings/integrations/facebook-ads?success=connected'
       : '/dashboard/settings/integrations/facebook-ads?success=select_page'
 
-    return NextResponse.redirect(new URL(successUrl, request.url))
+    return NextResponse.redirect(`${origin}${successPath}`)
   } catch (err) {
     logger.error({ err }, '[FB:OAUTH] Unexpected error')
-    return NextResponse.redirect(new URL('/dashboard/settings/integrations/facebook-ads?error=unexpected', request.url))
+    return NextResponse.redirect(`${origin}/dashboard/settings/integrations/facebook-ads?error=unexpected`)
   }
 }
