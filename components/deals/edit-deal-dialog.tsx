@@ -24,10 +24,17 @@ import {
     PopoverContent,
     PopoverTrigger,
 } from '@/components/ui/popover'
-import { updateDeal, deleteDeal } from '@/app/[locale]/dashboard/actions'
+import {
+    Dialog as TransferDialog,
+    DialogContent as TransferDialogContent,
+    DialogHeader as TransferDialogHeader,
+    DialogTitle as TransferDialogTitle,
+    DialogFooter as TransferDialogFooter,
+} from '@/components/ui/dialog'
+import { updateDeal, deleteDeal, moveDealToPipeline } from '@/app/[locale]/dashboard/actions'
 import { getDealDetails, addNote, deleteNote, addDealClosing, deleteDealClosing, getDealClosings } from '@/app/[locale]/dashboard/deals/actions'
 import { createContact } from '@/app/[locale]/dashboard/contacts/actions'
-import { Loader2, MessageSquare, History, Tag, Calendar, Send, Trash2, Plus, MessageCircle, DollarSign, Phone, Mail } from 'lucide-react'
+import { Loader2, MessageSquare, History, Tag, Calendar, Send, Trash2, Plus, MessageCircle, DollarSign, Phone, Mail, ArrowLeftRight } from 'lucide-react'
 import { Textarea } from '@/components/ui/textarea'
 import { ConfirmDialog } from '@/components/ui/confirm-dialog'
 import { toast } from 'sonner'
@@ -57,6 +64,7 @@ interface EditDealDialogProps {
     onOptimisticDelete?: (dealId: string) => void
     onRollback?: (tempId: string) => void
     onSuccess?: () => void
+    currentUserId?: string
 }
 
 export function EditDealDialog({
@@ -68,7 +76,8 @@ export function EditDealDialog({
     onOptimisticUpdate,
     onOptimisticDelete,
     onRollback,
-    onSuccess
+    onSuccess,
+    currentUserId,
 }: EditDealDialogProps) {
     const router = useRouter()
     const [loading, setLoading] = useState(false)
@@ -84,6 +93,13 @@ export function EditDealDialog({
     const [showScriptGenerator, setShowScriptGenerator] = useState(false)
     const [confirmDeleteDeal, setConfirmDeleteDeal] = useState(false)
     const [confirmDeleteNoteId, setConfirmDeleteNoteId] = useState<string | null>(null)
+
+    // Transfer pipeline state
+    const [showTransferDialog, setShowTransferDialog] = useState(false)
+    const [allPipelines, setAllPipelines] = useState<{ id: string; name: string; stages: { id: string; name: string }[] }[]>([])
+    const [transferPipelineId, setTransferPipelineId] = useState('')
+    const [transferStageId, setTransferStageId] = useState('')
+    const [transferring, setTransferring] = useState(false)
 
     // Products state
     const [products, setProducts] = useState<{ id: string; name: string; price: any }[]>([])
@@ -135,6 +151,14 @@ export function EditDealDialog({
                     if (!cancelled) setProducts(productsData)
                 })
                 .catch(() => {/* silent — select will show empty */})
+
+            // Fetch pipelines for transfer feature
+            fetch('/api/v1/pipelines')
+                .then(r => r.ok ? r.json() : { data: [] })
+                .then((res) => {
+                    if (!cancelled) setAllPipelines(Array.isArray(res.data) ? res.data : [])
+                })
+                .catch(() => {/* silent */})
         } else {
             setFullDeal(null)
         }
@@ -291,6 +315,26 @@ export function EditDealDialog({
                 alert("Erro ao adicionar observação. O deal pode não existir mais.")
             }
         })
+    }
+
+    const handleTransferPipeline = async () => {
+        if (!initialDeal || !transferPipelineId || !transferStageId) return
+        setTransferring(true)
+        try {
+            const result = await moveDealToPipeline(initialDeal.id, transferPipelineId, transferStageId)
+            if (result.success) {
+                toast.success('Negócio transferido com sucesso!')
+                setShowTransferDialog(false)
+                onOpenChange(false)
+                if (onSuccess) onSuccess()
+            } else {
+                toast.error(result.error || 'Erro ao transferir negócio')
+            }
+        } catch {
+            toast.error('Erro ao transferir negócio')
+        } finally {
+            setTransferring(false)
+        }
     }
 
     const handleAddClosing = async () => {
@@ -590,10 +634,28 @@ export function EditDealDialog({
                                         />
                                     </div>
 
-                                    <div className="pt-4 flex justify-between border-t border-zinc-100 dark:border-zinc-800">
-                                        <Button type="button" variant="ghost" onClick={() => setConfirmDeleteDeal(true)} className="text-red-500 hover:text-red-600 hover:bg-red-50">
-                                            Excluir Negócio
-                                        </Button>
+                                    <div className="pt-4 flex justify-between items-center border-t border-zinc-100 dark:border-zinc-800">
+                                        <div className="flex items-center gap-2">
+                                            <Button type="button" variant="ghost" onClick={() => setConfirmDeleteDeal(true)} className="text-red-500 hover:text-red-600 hover:bg-red-50">
+                                                Excluir Negócio
+                                            </Button>
+                                            {(!currentUserId || fullDeal?.userId === currentUserId) && allPipelines.length > 1 && (
+                                                <Button
+                                                    type="button"
+                                                    variant="outline"
+                                                    size="sm"
+                                                    onClick={() => {
+                                                        setTransferPipelineId('')
+                                                        setTransferStageId('')
+                                                        setShowTransferDialog(true)
+                                                    }}
+                                                    className="text-indigo-600 border-indigo-200 hover:bg-indigo-50 hover:text-indigo-700 dark:border-indigo-900/50 dark:text-indigo-400 dark:hover:bg-indigo-900/20"
+                                                >
+                                                    <ArrowLeftRight className="w-3.5 h-3.5 mr-1.5" />
+                                                    Transferir Pipeline
+                                                </Button>
+                                            )}
+                                        </div>
                                         <Button type="submit" disabled={loading} className="bg-indigo-600 hover:bg-indigo-700 text-white">
                                             {loading ? 'Salvando...' : 'Salvar Alterações'}
                                         </Button>
@@ -765,6 +827,75 @@ export function EditDealDialog({
                 dealId={initialDeal?.id}
             />
         </ResponsiveDialog>
+
+        <TransferDialog open={showTransferDialog} onOpenChange={setShowTransferDialog}>
+            <TransferDialogContent className="sm:max-w-[420px]">
+                <TransferDialogHeader>
+                    <TransferDialogTitle className="flex items-center gap-2">
+                        <ArrowLeftRight className="w-4 h-4 text-indigo-500" />
+                        Transferir para outro Pipeline
+                    </TransferDialogTitle>
+                </TransferDialogHeader>
+
+                <div className="space-y-4 py-2">
+                    <div className="space-y-2">
+                        <Label>Pipeline de destino</Label>
+                        <Select
+                            value={transferPipelineId}
+                            onValueChange={(val) => {
+                                setTransferPipelineId(val)
+                                setTransferStageId('')
+                            }}
+                        >
+                            <SelectTrigger>
+                                <SelectValue placeholder="Selecione o pipeline" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                {allPipelines
+                                    .filter(p => !fullDeal?.pipelineId || p.id !== fullDeal.pipelineId)
+                                    .map(p => (
+                                        <SelectItem key={p.id} value={p.id}>{p.name}</SelectItem>
+                                    ))
+                                }
+                            </SelectContent>
+                        </Select>
+                    </div>
+
+                    {transferPipelineId && (
+                        <div className="space-y-2">
+                            <Label>Etapa de entrada</Label>
+                            <Select value={transferStageId} onValueChange={setTransferStageId}>
+                                <SelectTrigger>
+                                    <SelectValue placeholder="Selecione a etapa" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    {allPipelines
+                                        .find(p => p.id === transferPipelineId)
+                                        ?.stages.map(s => (
+                                            <SelectItem key={s.id} value={s.id}>{s.name}</SelectItem>
+                                        ))
+                                    }
+                                </SelectContent>
+                            </Select>
+                        </div>
+                    )}
+                </div>
+
+                <TransferDialogFooter>
+                    <Button variant="outline" onClick={() => setShowTransferDialog(false)}>
+                        Cancelar
+                    </Button>
+                    <Button
+                        onClick={handleTransferPipeline}
+                        disabled={!transferPipelineId || !transferStageId || transferring}
+                        className="bg-indigo-600 hover:bg-indigo-700 text-white"
+                    >
+                        {transferring ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <ArrowLeftRight className="w-4 h-4 mr-2" />}
+                        Transferir
+                    </Button>
+                </TransferDialogFooter>
+            </TransferDialogContent>
+        </TransferDialog>
 
         <ConfirmDialog
             open={confirmDeleteDeal}

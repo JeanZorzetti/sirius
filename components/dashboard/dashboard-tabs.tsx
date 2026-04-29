@@ -145,6 +145,7 @@ export function DashboardTabs({
               stages={filteredStages as any}
               contacts={contacts}
               pipelineId={selectedPipelineId}
+              currentUserId={userId}
             />
           </TabsContent>
         </Tabs>

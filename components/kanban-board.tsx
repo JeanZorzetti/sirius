@@ -83,6 +83,7 @@ type KanbanBoardProps = {
   stages: Stage[]
   contacts: Contact[]
   pipelineId?: string
+  currentUserId?: string
   onOptimisticUpdate?: (dealId: string, updates: any) => void
   onOptimisticDelete?: (dealId: string) => void
   onRollback?: (tempId: string) => void
@@ -462,6 +463,7 @@ export function KanbanBoard({
   stages: initialStages,
   contacts,
   pipelineId,
+  currentUserId,
   onOptimisticUpdate,
   onOptimisticDelete,
   onRollback,
@@ -819,6 +821,7 @@ export function KanbanBoard({
         onOpenChange={(open) => !open && setEditingDeal(null)}
         stages={stages}
         contacts={contacts}
+        currentUserId={currentUserId}
         onOptimisticUpdate={onOptimisticUpdate}
         onOptimisticDelete={onOptimisticDelete}
         onRollback={onRollback}
