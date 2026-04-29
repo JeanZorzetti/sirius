@@ -12,7 +12,6 @@ import logger from '@/lib/logger'
 
 const FACEBOOK_APP_ID     = process.env.FACEBOOK_APP_ID!
 const FACEBOOK_APP_SECRET = process.env.FACEBOOK_APP_SECRET!
-const REDIRECT_URI        = `${process.env.NEXTAUTH_URL}/api/auth/facebook-leads/callback`
 const GRAPH_BASE          = 'https://graph.facebook.com/v21.0'
 
 export async function GET(request: NextRequest) {
@@ -47,11 +46,15 @@ export async function GET(request: NextRequest) {
   }
 
   try {
+    // Deriva redirect_uri da própria request (consistente com o que foi enviado ao iniciar o OAuth)
+    const { origin } = new URL(request.url)
+    const redirectUri = `${origin}/api/auth/facebook-leads/callback`
+
     // 1. Troca code por User Access Token
     const tokenParams = new URLSearchParams({
       client_id:     FACEBOOK_APP_ID,
       client_secret: FACEBOOK_APP_SECRET,
-      redirect_uri:  REDIRECT_URI,
+      redirect_uri:  redirectUri,
       code,
     })
 

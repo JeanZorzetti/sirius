@@ -9,8 +9,7 @@ import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import crypto from 'crypto'
 
-const FACEBOOK_APP_ID     = process.env.FACEBOOK_APP_ID!
-const REDIRECT_URI        = `${process.env.NEXTAUTH_URL}/api/auth/facebook-leads/callback`
+const FACEBOOK_APP_ID = process.env.FACEBOOK_APP_ID!
 const SCOPES = [
   'leads_retrieval',
   'pages_show_list',
@@ -34,10 +33,13 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ error: 'Organização não encontrada' }, { status: 404 })
   }
 
+  // Deriva a URL base da própria request (funciona em dev e produção)
+  const { origin } = new URL(request.url)
+  const redirectUri = `${origin}/api/auth/facebook-leads/callback`
+
   // Gera state anti-CSRF único por tentativa
   const state = crypto.randomBytes(16).toString('hex')
 
-  // Salva state temporário na org para verificar no callback
   await prisma.organization.update({
     where: { id: user.organizationId },
     data: { facebookOAuthState: state },
@@ -45,7 +47,7 @@ export async function GET(request: NextRequest) {
 
   const params = new URLSearchParams({
     client_id:     FACEBOOK_APP_ID,
-    redirect_uri:  REDIRECT_URI,
+    redirect_uri:  redirectUri,
     scope:         SCOPES,
     response_type: 'code',
     state,
