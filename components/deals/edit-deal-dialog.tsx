@@ -153,10 +153,10 @@ export function EditDealDialog({
                 .catch(() => {/* silent — select will show empty */})
 
             // Fetch pipelines for transfer feature
-            fetch('/api/v1/pipelines')
-                .then(r => r.ok ? r.json() : { data: [] })
-                .then((res) => {
-                    if (!cancelled) setAllPipelines(Array.isArray(res.data) ? res.data : [])
+            fetch('/api/pipelines')
+                .then(r => r.ok ? r.json() : [])
+                .then((data) => {
+                    if (!cancelled) setAllPipelines(Array.isArray(data) ? data : [])
                 })
                 .catch(() => {/* silent */})
         } else {

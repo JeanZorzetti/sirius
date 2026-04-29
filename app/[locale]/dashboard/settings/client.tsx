@@ -6,7 +6,7 @@ import { Badge } from '@/components/ui/badge'
 import { ProfileForm } from '@/components/settings/profile-form'
 import { QuickActions } from '@/components/settings/quick-actions'
 import { ViewModeToggle, ViewMode } from '@/components/settings/view-mode-toggle'
-import { User, Users, Key, Webhook, Zap, Bell, BookOpen, ChevronRight } from 'lucide-react'
+import { User, Users, Key, Webhook, Zap, Bell, BookOpen, CreditCard, ChevronRight } from 'lucide-react'
 import Link from 'next/link'
 import { cn } from '@/lib/utils'
 import { toast } from 'sonner'
@@ -105,6 +105,39 @@ export function SettingsClient({ user }: SettingsClientProps) {
               </CardContent>
             )}
           </Card>
+        </div>
+
+        {/* SEÇÃO: ASSINATURA */}
+        <div className="space-y-3">
+          <h3 className="text-xs font-semibold text-zinc-400 uppercase tracking-wider">
+            Assinatura
+          </h3>
+
+          <Link href="/dashboard/settings/billing">
+            <Card className="bg-white dark:bg-white/[0.02] border-zinc-200 dark:border-white/5 backdrop-blur-xl shadow-sm hover:shadow-md hover:border-purple-300 dark:hover:border-purple-500/30 hover:bg-zinc-50 dark:hover:bg-white/[0.04] transition-all duration-200 cursor-pointer group">
+              <CardHeader className="flex flex-row items-center gap-4 relative overflow-hidden">
+                <div className="h-10 w-10 rounded-lg bg-purple-500/10 flex items-center justify-center text-purple-500 ring-1 ring-white/5 shadow-[0_0_10px_rgba(168,85,247,0.2)]">
+                  <CreditCard className="h-5 w-5" />
+                </div>
+                <div className="flex flex-col gap-1 flex-1">
+                  <CardTitle className="text-base font-semibold text-zinc-900 dark:text-zinc-100 flex items-center gap-2">
+                    Assinatura & Pagamento
+                    {user.organization?.tier && user.organization.tier !== 'FREE' && (
+                      <span className="text-[10px] font-semibold px-1.5 py-0.5 rounded bg-purple-500/10 text-purple-600 dark:text-purple-400 ring-1 ring-purple-500/20">
+                        {user.organization.tier}
+                      </span>
+                    )}
+                  </CardTitle>
+                  {!isCompact && (
+                    <CardDescription className="text-zinc-500 text-xs">
+                      Gerencie seu plano e histórico de pagamentos
+                    </CardDescription>
+                  )}
+                </div>
+                <ChevronRight className="h-5 w-5 text-zinc-400 group-hover:text-purple-500 group-hover:translate-x-1 transition-all duration-200" />
+              </CardHeader>
+            </Card>
+          </Link>
         </div>
 
         {/* SEÇÃO: TIME & COLABORAÇÃO */}
