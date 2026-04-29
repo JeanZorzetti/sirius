@@ -25,6 +25,8 @@ import {
   Search,
   Info,
   Download,
+  Sparkles,
+  Lightbulb,
 } from 'lucide-react'
 import { Input } from '@/components/ui/input'
 
@@ -189,6 +191,88 @@ function ExportButton({ typeFilter, minStrength }: { typeFilter: string; minStre
   )
 }
 
+// ── AI Panel ──────────────────────────────────────────────────────────────────
+function AIPanel({
+  typeFilter,
+  minStrength,
+  onClose,
+  mode,
+}: {
+  typeFilter: string
+  minStrength: number
+  onClose: () => void
+  mode: 'analyze' | 'suggest'
+}) {
+  const [text, setText] = useState('')
+  const [loading, setLoading] = useState(false)
+  const [done, setDone] = useState(false)
+
+  useEffect(() => {
+    let cancelled = false
+    async function run() {
+      setLoading(true)
+      setText('')
+      setDone(false)
+      try {
+        const res = await fetch('/api/graph/analyze', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ mode, typeFilter, minStrength }),
+        })
+        if (!res.ok || !res.body) {
+          setText('Erro ao chamar a IA. Tente novamente.')
+          return
+        }
+        const reader = res.body.getReader()
+        const dec = new TextDecoder()
+        while (true) {
+          const { value, done: d } = await reader.read()
+          if (cancelled) break
+          if (d) { setDone(true); break }
+          setText((prev) => prev + dec.decode(value))
+        }
+      } finally {
+        if (!cancelled) setLoading(false)
+      }
+    }
+    run()
+    return () => { cancelled = true }
+  }, [mode, typeFilter, minStrength])
+
+  const title = mode === 'analyze' ? 'Análise do Grafo' : 'Sugestões de Conteúdo'
+  const Icon = mode === 'analyze' ? Sparkles : Lightbulb
+
+  return (
+    <div className="rounded-xl border border-slate-700 bg-slate-900/90 backdrop-blur p-5 relative">
+      <div className="flex items-center gap-2 mb-4">
+        <Icon className="h-4 w-4 text-violet-400" />
+        <h3 className="text-sm font-semibold text-white">{title}</h3>
+        {loading && (
+          <span className="ml-1 flex items-center gap-1 text-[10px] text-violet-400">
+            <RefreshCw className="h-2.5 w-2.5 animate-spin" /> gerando...
+          </span>
+        )}
+        {done && (
+          <span className="ml-1 text-[10px] text-slate-500">concluído</span>
+        )}
+      </div>
+      <button
+        onClick={onClose}
+        className="absolute right-3 top-3 text-slate-600 hover:text-white transition-colors"
+      >
+        <X className="h-4 w-4" />
+      </button>
+
+      <div
+        className="text-xs text-slate-300 leading-relaxed overflow-y-auto whitespace-pre-wrap"
+        style={{ maxHeight: 480, fontFamily: 'inherit' }}
+      >
+        {text || (loading ? <span className="text-slate-600">Aguardando resposta...</span> : null)}
+      </div>
+    </div>
+  )
+}
+
 // ── Main component ────────────────────────────────────────────────────────────
 function GraphInner() {
   const [graphData, setGraphData] = useState<GraphData | null>(null)
@@ -201,6 +285,7 @@ function GraphInner() {
   const [search, setSearch] = useState('')
   const [depth, setDepth] = useState(2)
   const [minStrength, setMinStrength] = useState(0.3)
+  const [aiPanel, setAiPanel] = useState<'analyze' | 'suggest' | null>(null)
 
   const rebuild = useCallback(
     (data: GraphData, filter: string, q: string) => {
@@ -324,6 +409,30 @@ function GraphInner() {
         </button>
 
         <ExportButton typeFilter={typeFilter} minStrength={minStrength} />
+
+        <button
+          onClick={() => setAiPanel(aiPanel === 'analyze' ? null : 'analyze')}
+          className={`flex items-center gap-1.5 h-8 px-3 rounded border text-xs font-medium transition-colors ${
+            aiPanel === 'analyze'
+              ? 'border-violet-500 bg-violet-500/10 text-violet-300'
+              : 'border-slate-700 hover:border-violet-500 bg-slate-900 hover:bg-violet-500/10 text-slate-300 hover:text-violet-300'
+          }`}
+        >
+          <Sparkles className="h-3.5 w-3.5" />
+          Analisar com IA
+        </button>
+
+        <button
+          onClick={() => setAiPanel(aiPanel === 'suggest' ? null : 'suggest')}
+          className={`flex items-center gap-1.5 h-8 px-3 rounded border text-xs font-medium transition-colors ${
+            aiPanel === 'suggest'
+              ? 'border-sky-500 bg-sky-500/10 text-sky-300'
+              : 'border-slate-700 hover:border-sky-500 bg-slate-900 hover:bg-sky-500/10 text-slate-300 hover:text-sky-300'
+          }`}
+        >
+          <Lightbulb className="h-3.5 w-3.5" />
+          Sugerir Conteúdo
+        </button>
       </div>
 
       {/* Type filters */}
@@ -435,6 +544,16 @@ function GraphInner() {
           </ReactFlow>
         )}
       </div>
+
+      {/* AI Panel */}
+      {aiPanel && (
+        <AIPanel
+          mode={aiPanel}
+          typeFilter={typeFilter}
+          minStrength={minStrength}
+          onClose={() => setAiPanel(null)}
+        />
+      )}
 
       {/* Selected node panel */}
       {selectedNode && (
