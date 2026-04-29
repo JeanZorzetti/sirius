@@ -1,183 +1,98 @@
 'use client'
 
-/**
- * Knowledge Graph Actions - Client Component
- *
- * Interactive buttons for processing blog posts and managing the knowledge graph
- */
-
 import { useState } from 'react'
-import { Button } from '@/components/ui/button'
-import { Alert, AlertDescription } from '@/components/ui/alert'
 import { Play, RefreshCw, Loader2, CheckCircle, XCircle } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 
-interface KnowledgeGraphActionsProps {
+interface Props {
   totalPosts: number
   processedPosts: number
 }
 
-export function KnowledgeGraphActions({
-  totalPosts,
-  processedPosts,
-}: KnowledgeGraphActionsProps) {
+export function KnowledgeGraphActions({ totalPosts, processedPosts }: Props) {
   const router = useRouter()
   const [isProcessing, setIsProcessing] = useState(false)
-  const [result, setResult] = useState<{
-    type: 'success' | 'error'
-    message: string
-  } | null>(null)
+  const [result, setResult] = useState<{ type: 'success' | 'error'; message: string } | null>(null)
 
-  const handleProcessAll = async () => {
+  const run = async (force: boolean) => {
+    if (force && !confirm('Reprocessar TODOS os posts, mesmo os já processados? Isso pode levar vários minutos.')) return
     setIsProcessing(true)
     setResult(null)
-
     try {
-      const response = await fetch('/api/nlp/process-blog-posts', {
+      const res = await fetch('/api/nlp/process-blog-posts', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ force: false }),
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ force }),
       })
-
-      const data = await response.json()
-
-      if (response.ok) {
+      const data = await res.json()
+      if (res.ok) {
         setResult({
           type: 'success',
-          message: `Successfully processed ${data.successful}/${data.total} posts. Extracted entities and relationships.`,
+          message: `${data.successful}/${data.total} posts processados com sucesso.`,
         })
-
-        // Refresh the page to show updated stats
-        setTimeout(() => {
-          router.refresh()
-        }, 2000)
+        setTimeout(() => router.refresh(), 2000)
       } else {
-        setResult({
-          type: 'error',
-          message: data.error || 'Failed to process posts',
-        })
+        setResult({ type: 'error', message: data.error ?? 'Falha ao processar posts' })
       }
-    } catch (error) {
-      setResult({
-        type: 'error',
-        message: error instanceof Error ? error.message : 'Unknown error occurred',
-      })
+    } catch (e) {
+      setResult({ type: 'error', message: e instanceof Error ? e.message : 'Erro desconhecido' })
     } finally {
       setIsProcessing(false)
     }
   }
 
-  const handleReprocessAll = async () => {
-    if (
-      !confirm(
-        'This will reprocess ALL blog posts, even those already processed. This may take several minutes. Continue?'
-      )
-    ) {
-      return
-    }
-
-    setIsProcessing(true)
-    setResult(null)
-
-    try {
-      const response = await fetch('/api/nlp/process-blog-posts', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ force: true }),
-      })
-
-      const data = await response.json()
-
-      if (response.ok) {
-        setResult({
-          type: 'success',
-          message: `Reprocessed ${data.successful}/${data.total} posts successfully.`,
-        })
-
-        setTimeout(() => {
-          router.refresh()
-        }, 2000)
-      } else {
-        setResult({
-          type: 'error',
-          message: data.error || 'Failed to reprocess posts',
-        })
-      }
-    } catch (error) {
-      setResult({
-        type: 'error',
-        message: error instanceof Error ? error.message : 'Unknown error occurred',
-      })
-    } finally {
-      setIsProcessing(false)
-    }
-  }
-
-  const pendingPosts = totalPosts - processedPosts
+  const pending = totalPosts - processedPosts
 
   return (
-    <div className="space-y-4">
-      <div className="flex items-center gap-4">
-        <Button
-          onClick={handleProcessAll}
-          disabled={isProcessing || pendingPosts === 0}
-          size="lg"
-          className="gap-2"
+    <div className="space-y-3">
+      <div className="flex items-center gap-3 flex-wrap">
+        <button
+          onClick={() => run(false)}
+          disabled={isProcessing || pending === 0}
+          className="flex items-center gap-2 px-4 py-2 rounded-lg bg-violet-600 hover:bg-violet-500 disabled:opacity-40 text-white text-sm font-medium transition-colors"
         >
           {isProcessing ? (
-            <>
-              <Loader2 className="h-4 w-4 animate-spin" />
-              Processing...
-            </>
+            <Loader2 className="h-4 w-4 animate-spin" />
           ) : (
-            <>
-              <Play className="h-4 w-4" />
-              Process Pending Posts ({pendingPosts})
-            </>
+            <Play className="h-4 w-4" />
           )}
-        </Button>
+          {isProcessing ? 'Processando...' : `Processar pendentes (${pending})`}
+        </button>
 
-        <Button
-          onClick={handleReprocessAll}
+        <button
+          onClick={() => run(true)}
           disabled={isProcessing}
-          variant="outline"
-          size="lg"
-          className="gap-2"
+          className="flex items-center gap-2 px-4 py-2 rounded-lg border border-slate-700 hover:border-slate-500 bg-slate-900 hover:bg-slate-800 disabled:opacity-40 text-slate-300 text-sm font-medium transition-colors"
         >
           <RefreshCw className="h-4 w-4" />
-          Reprocess All
-        </Button>
+          Reprocessar tudo
+        </button>
 
-        <Button
+        <button
           onClick={() => router.refresh()}
-          variant="ghost"
-          size="lg"
           disabled={isProcessing}
+          className="flex items-center gap-2 px-3 py-2 rounded-lg text-slate-500 hover:text-slate-300 text-sm transition-colors disabled:opacity-40"
         >
-          Refresh Stats
-        </Button>
+          <RefreshCw className="h-3.5 w-3.5" />
+          Atualizar stats
+        </button>
       </div>
 
       {result && (
-        <Alert
-          variant={result.type === 'success' ? 'default' : 'destructive'}
-          className={
+        <div
+          className={`flex items-start gap-2 rounded-lg border px-4 py-3 text-sm ${
             result.type === 'success'
-              ? 'bg-green-50 border-green-200 text-green-900'
-              : ''
-          }
+              ? 'border-emerald-500/30 bg-emerald-500/10 text-emerald-300'
+              : 'border-red-500/30 bg-red-500/10 text-red-300'
+          }`}
         >
           {result.type === 'success' ? (
-            <CheckCircle className="h-4 w-4" />
+            <CheckCircle className="h-4 w-4 shrink-0 mt-0.5" />
           ) : (
-            <XCircle className="h-4 w-4" />
+            <XCircle className="h-4 w-4 shrink-0 mt-0.5" />
           )}
-          <AlertDescription>{result.message}</AlertDescription>
-        </Alert>
+          {result.message}
+        </div>
       )}
     </div>
   )

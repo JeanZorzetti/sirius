@@ -1,12 +1,3 @@
-/**
- * Knowledge Graph Admin Dashboard
- *
- * View and curate entities extracted from blog posts via NLP pipeline
- */
-
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
 import { prisma } from '@/lib/prisma'
 import { getBlogProcessingStats, getPostEntities } from '@/lib/nlp/blog-processor'
 import { getGraphStats } from '@/lib/nlp/pipeline'
@@ -21,26 +12,42 @@ import {
   CheckCircle,
   AlertCircle,
   ExternalLink,
-  ArrowRight,
   Eye,
+  Cpu,
+  GitBranch,
+  Layers,
+  ArrowUpRight,
 } from 'lucide-react'
 import { KnowledgeGraphActions } from './actions-client'
 
 export const dynamic = 'force-dynamic'
 
+const TYPE_COLORS: Record<string, { bg: string; text: string; border: string }> = {
+  methodology: { bg: 'bg-violet-500/10', text: 'text-violet-300', border: 'border-violet-500/30' },
+  technology:  { bg: 'bg-sky-500/10',    text: 'text-sky-300',    border: 'border-sky-500/30' },
+  industry:    { bg: 'bg-emerald-500/10', text: 'text-emerald-300',border: 'border-emerald-500/30' },
+  persona:     { bg: 'bg-amber-500/10',  text: 'text-amber-300',  border: 'border-amber-500/30' },
+  metric:      { bg: 'bg-red-500/10',    text: 'text-red-300',    border: 'border-red-500/30' },
+  process:     { bg: 'bg-indigo-500/10', text: 'text-indigo-300', border: 'border-indigo-500/30' },
+  tool:        { bg: 'bg-cyan-500/10',   text: 'text-cyan-300',   border: 'border-cyan-500/30' },
+  concept:     { bg: 'bg-slate-500/10',  text: 'text-slate-300',  border: 'border-slate-500/30' },
+  geography:   { bg: 'bg-orange-500/10', text: 'text-orange-300', border: 'border-orange-500/30' },
+  other:       { bg: 'bg-zinc-500/10',   text: 'text-zinc-400',   border: 'border-zinc-500/30' },
+}
+
+function typeStyle(t: string) {
+  return TYPE_COLORS[t] ?? TYPE_COLORS.other
+}
+
 export default async function KnowledgeGraphPage() {
-  // Get statistics
   const [graphStats, blogStats] = await Promise.all([
     getGraphStats(),
     getBlogProcessingStats(),
   ])
 
-  // Get recent entities
   const recentEntities = await prisma.entity.findMany({
-    orderBy: {
-      createdAt: 'desc',
-    },
-    take: 10,
+    orderBy: { createdAt: 'desc' },
+    take: 12,
     include: {
       _count: {
         select: {
@@ -52,21 +59,13 @@ export default async function KnowledgeGraphPage() {
     },
   })
 
-  // Get all processed blog posts with entity counts
   const processedPosts = await Promise.all(
     blogPosts.map(async (post) => {
       const entities = await getPostEntities(post.slug)
       const extraction = await prisma.entityExtraction.findFirst({
-        where: {
-          contentType: 'blog_post',
-          contentId: post.slug,
-          status: 'completed',
-        },
-        orderBy: {
-          completedAt: 'desc',
-        },
+        where: { contentType: 'blog_post', contentId: post.slug, status: 'completed' },
+        orderBy: { completedAt: 'desc' },
       })
-
       return {
         ...post,
         processed: extraction !== null,
@@ -78,34 +77,32 @@ export default async function KnowledgeGraphPage() {
     })
   )
 
-  const entityTypeColors: Record<string, string> = {
-    methodology: 'bg-purple-100 text-purple-800 border-purple-200',
-    technology: 'bg-blue-100 text-blue-800 border-blue-200',
-    industry: 'bg-green-100 text-green-800 border-green-200',
-    persona: 'bg-yellow-100 text-yellow-800 border-yellow-200',
-    metric: 'bg-red-100 text-red-800 border-red-200',
-    process: 'bg-indigo-100 text-indigo-800 border-indigo-200',
-    tool: 'bg-cyan-100 text-cyan-800 border-cyan-200',
-    concept: 'bg-pink-100 text-pink-800 border-pink-200',
-    geography: 'bg-orange-100 text-orange-800 border-orange-200',
-    other: 'bg-gray-100 text-gray-800 border-gray-200',
-  }
+  const pendingCount = processedPosts.filter((p) => !p.processed).length
+  const processedCount = processedPosts.filter((p) => p.processed).length
+  const processPct = blogStats.totalPosts > 0
+    ? Math.round((blogStats.processedPosts / blogStats.totalPosts) * 100)
+    : 0
 
   return (
-    <div className="space-y-8">
+    <div className="min-h-screen bg-slate-950 text-white p-6 space-y-6">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex items-start justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-slate-900">Knowledge Graph</h1>
-          <p className="text-slate-600 mt-2">
-            Semantic entity extraction and relationship mapping via NLP pipeline
+          <div className="flex items-center gap-2 mb-1">
+            <Network className="h-6 w-6 text-violet-400" />
+            <h1 className="text-2xl font-bold tracking-tight">Knowledge Graph</h1>
+          </div>
+          <p className="text-slate-400 text-sm">
+            Pipeline NLP de extração semântica e mapeamento de relacionamentos entre entidades.
           </p>
         </div>
-        <Link href="/admin/graph-viz">
-          <Button className="flex items-center gap-2">
-            <Eye className="h-4 w-4" />
-            Visualizar Grafo
-          </Button>
+        <Link
+          href="/admin/graph-viz"
+          className="flex items-center gap-2 px-4 py-2 rounded-lg bg-violet-600 hover:bg-violet-500 text-white text-sm font-medium transition-colors"
+        >
+          <Eye className="h-4 w-4" />
+          Visualizar Grafo
+          <ArrowUpRight className="h-3.5 w-3.5" />
         </Link>
       </div>
 
@@ -115,161 +112,153 @@ export default async function KnowledgeGraphPage() {
         processedPosts={blogStats.processedPosts}
       />
 
-      {/* Statistics Grid */}
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Entities</CardTitle>
-            <Database className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{graphStats.totalEntities}</div>
-            <p className="text-xs text-muted-foreground">
-              Across {graphStats.totalRelationships} relationships
-            </p>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Blog Posts</CardTitle>
-            <FileText className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">
-              {blogStats.processedPosts}/{blogStats.totalPosts}
+      {/* Stats grid */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+        {[
+          {
+            icon: <Database className="h-5 w-5 text-violet-400" />,
+            label: 'Entidades',
+            value: graphStats.totalEntities,
+            sub: `${graphStats.totalRelationships} relacionamentos`,
+          },
+          {
+            icon: <GitBranch className="h-5 w-5 text-sky-400" />,
+            label: 'Densidade média',
+            value: graphStats.avgRelationshipsPerEntity,
+            sub: 'rel. por entidade',
+          },
+          {
+            icon: <FileText className="h-5 w-5 text-emerald-400" />,
+            label: 'Posts processados',
+            value: `${processedCount}/${blogStats.totalPosts}`,
+            sub: `${pendingCount} pendentes`,
+          },
+          {
+            icon: <Cpu className="h-5 w-5 text-amber-400" />,
+            label: 'Extrações NLP',
+            value: graphStats.totalExtractions,
+            sub: 'total de execuções',
+          },
+        ].map((s) => (
+          <div
+            key={s.label}
+            className="rounded-xl border border-slate-800 bg-slate-900/60 p-4"
+          >
+            <div className="flex items-center justify-between mb-3">
+              <span className="text-xs text-slate-500 font-medium">{s.label}</span>
+              {s.icon}
             </div>
-            <p className="text-xs text-muted-foreground">
-              {blogStats.pendingPosts} pending processing
-            </p>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Avg Density</CardTitle>
-            <Network className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">
-              {graphStats.avgRelationshipsPerEntity}
-            </div>
-            <p className="text-xs text-muted-foreground">Relationships per entity</p>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Extractions</CardTitle>
-            <TrendingUp className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{graphStats.totalExtractions}</div>
-            <p className="text-xs text-muted-foreground">Total NLP runs</p>
-          </CardContent>
-        </Card>
+            <div className="text-2xl font-mono font-bold text-white">{s.value}</div>
+            <div className="text-xs text-slate-500 mt-1">{s.sub}</div>
+          </div>
+        ))}
       </div>
 
-      {/* Two Column Layout */}
-      <div className="grid gap-8 lg:grid-cols-2">
-        {/* Recent Entities */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Recent Entities</CardTitle>
-            <CardDescription>Latest entities extracted from content</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              {recentEntities.map((entity) => {
-                const totalRelationships =
-                  entity._count.subjectRelationships + entity._count.objectRelationships
+      {/* Progress bar */}
+      <div className="rounded-xl border border-slate-800 bg-slate-900/60 p-4">
+        <div className="flex items-center justify-between mb-2">
+          <span className="text-sm font-medium text-slate-300">
+            Cobertura do blog
+          </span>
+          <span className="text-sm font-mono font-bold text-violet-400">{processPct}%</span>
+        </div>
+        <div className="h-2 rounded-full bg-slate-800 overflow-hidden">
+          <div
+            className="h-full rounded-full bg-gradient-to-r from-violet-600 to-sky-500 transition-all duration-700"
+            style={{ width: `${processPct}%` }}
+          />
+        </div>
+        <p className="text-xs text-slate-600 mt-2">
+          {processedCount} de {blogStats.totalPosts} artigos com entidades extraídas
+        </p>
+      </div>
 
-                return (
-                  <div
-                    key={entity.id}
-                    className="flex items-start justify-between border-b pb-3 last:border-0"
-                  >
-                    <div className="space-y-1">
-                      <div className="flex items-center gap-2">
-                        <p className="font-medium text-sm">{entity.name}</p>
-                        {entity.wikidataId && (
-                          <a
-                            href={`https://www.wikidata.org/wiki/${entity.wikidataId}`}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-blue-600 hover:text-blue-800"
-                          >
-                            <ExternalLink className="h-3 w-3" />
-                          </a>
-                        )}
-                      </div>
-                      {entity.description && (
-                        <p className="text-xs text-slate-600 line-clamp-1">
-                          {entity.description}
-                        </p>
-                      )}
-                      <div className="flex items-center gap-2 mt-1">
-                        <Badge
-                          variant="outline"
-                          className={`text-xs ${entityTypeColors[entity.type] || entityTypeColors.other}`}
-                        >
-                          {entity.type}
-                        </Badge>
-                        <span className="text-xs text-slate-500">
-                          {totalRelationships} rel · {entity._count.contentLinks} posts
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                )
-              })}
+      {/* Two columns */}
+      <div className="grid gap-4 lg:grid-cols-2">
+        {/* Recent entities */}
+        <div className="rounded-xl border border-slate-800 bg-slate-900/60">
+          <div className="px-5 py-4 border-b border-slate-800 flex items-center justify-between">
+            <div>
+              <h2 className="text-sm font-semibold text-white">Entidades Recentes</h2>
+              <p className="text-xs text-slate-500 mt-0.5">Últimas extraídas pelo pipeline</p>
             </div>
-
-            <div className="mt-4 pt-4 border-t">
-              <Link href="/api/nlp/entities?q=&limit=100">
-                <Button variant="outline" size="sm" className="w-full">
-                  View All Entities (API)
-                  <ArrowRight className="ml-2 h-4 w-4" />
-                </Button>
-              </Link>
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Blog Posts Status */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Blog Posts Status</CardTitle>
-            <CardDescription>NLP processing status per article</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-3">
-              {processedPosts.map((post) => (
-                <div
-                  key={post.slug}
-                  className="flex items-start justify-between border-b pb-3 last:border-0"
-                >
-                  <div className="space-y-1 flex-1">
+            <Layers className="h-4 w-4 text-slate-600" />
+          </div>
+          <div className="divide-y divide-slate-800/60">
+            {recentEntities.map((entity) => {
+              const totalRel = entity._count.subjectRelationships + entity._count.objectRelationships
+              const style = typeStyle(entity.type)
+              return (
+                <div key={entity.id} className="px-5 py-3 flex items-center justify-between gap-3 hover:bg-slate-800/30 transition-colors">
+                  <div className="min-w-0">
                     <div className="flex items-center gap-2">
-                      {post.processed ? (
-                        <CheckCircle className="h-4 w-4 text-green-600 flex-shrink-0" />
-                      ) : (
-                        <AlertCircle className="h-4 w-4 text-yellow-600 flex-shrink-0" />
+                      <p className="text-sm font-medium text-white truncate">{entity.name}</p>
+                      {entity.wikidataId && (
+                        <a
+                          href={`https://www.wikidata.org/wiki/${entity.wikidataId}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-slate-600 hover:text-violet-400 transition-colors shrink-0"
+                        >
+                          <ExternalLink className="h-3 w-3" />
+                        </a>
                       )}
-                      <Link
-                        href={`/blog/${post.slug}`}
-                        className="text-sm font-medium hover:text-blue-600 line-clamp-1"
-                      >
-                        {post.title}
-                      </Link>
                     </div>
+                    {entity.description && (
+                      <p className="text-xs text-slate-500 mt-0.5 truncate">{entity.description}</p>
+                    )}
+                  </div>
+                  <div className="flex items-center gap-2 shrink-0">
+                    <span className="text-[10px] text-slate-600">{totalRel}↔ · {entity._count.contentLinks}p</span>
+                    <span
+                      className={`text-[10px] font-medium px-2 py-0.5 rounded-full border capitalize ${style.bg} ${style.text} ${style.border}`}
+                    >
+                      {entity.type}
+                    </span>
+                  </div>
+                </div>
+              )
+            })}
+          </div>
+          <div className="px-5 py-3 border-t border-slate-800">
+            <a
+              href="/api/nlp/entities?q=&limit=100"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-xs text-violet-400 hover:text-violet-300 transition-colors flex items-center gap-1"
+            >
+              Ver todas via API
+              <ArrowUpRight className="h-3 w-3" />
+            </a>
+          </div>
+        </div>
 
+        {/* Blog post status */}
+        <div className="rounded-xl border border-slate-800 bg-slate-900/60">
+          <div className="px-5 py-4 border-b border-slate-800 flex items-center justify-between">
+            <div>
+              <h2 className="text-sm font-semibold text-white">Status dos Artigos</h2>
+              <p className="text-xs text-slate-500 mt-0.5">Processamento NLP por post</p>
+            </div>
+            <FileText className="h-4 w-4 text-slate-600" />
+          </div>
+          <div className="divide-y divide-slate-800/60 max-h-[460px] overflow-y-auto">
+            {processedPosts.map((post) => (
+              <div key={post.slug} className="px-5 py-3 flex items-start justify-between gap-3 hover:bg-slate-800/30 transition-colors">
+                <div className="flex items-start gap-2 min-w-0">
+                  {post.processed ? (
+                    <CheckCircle className="h-4 w-4 text-emerald-500 shrink-0 mt-0.5" />
+                  ) : (
+                    <AlertCircle className="h-4 w-4 text-amber-500 shrink-0 mt-0.5" />
+                  )}
+                  <div className="min-w-0">
+                    <p className="text-sm text-slate-200 truncate">{post.title}</p>
                     {post.processed && (
-                      <div className="flex items-center gap-3 text-xs text-slate-500 ml-6">
-                        <span>{post.entitiesCount} entities</span>
+                      <div className="flex items-center gap-3 mt-0.5 text-[10px] text-slate-600">
+                        <span>{post.entitiesCount} entidades</span>
                         {post.processingTime && (
-                          <span className="flex items-center gap-1">
-                            <Clock className="h-3 w-3" />
+                          <span className="flex items-center gap-0.5">
+                            <Clock className="h-2.5 w-2.5" />
                             {(post.processingTime / 1000).toFixed(1)}s
                           </span>
                         )}
@@ -277,57 +266,39 @@ export default async function KnowledgeGraphPage() {
                       </div>
                     )}
                   </div>
-
-                  <div>
-                    {post.processed ? (
-                      <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200">
-                        Processed
-                      </Badge>
-                    ) : (
-                      <Badge variant="outline" className="bg-yellow-50 text-yellow-700 border-yellow-200">
-                        Pending
-                      </Badge>
-                    )}
-                  </div>
                 </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
+                <span
+                  className={`text-[10px] font-medium px-2 py-0.5 rounded-full border shrink-0 ${
+                    post.processed
+                      ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30'
+                      : 'bg-amber-500/10 text-amber-400 border-amber-500/30'
+                  }`}
+                >
+                  {post.processed ? 'Processado' : 'Pendente'}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
 
-      {/* Documentation */}
-      <Card className="bg-slate-50">
-        <CardHeader>
-          <CardTitle className="text-lg">📚 Documentation</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-2 text-sm text-slate-700">
-          <p>
-            <strong>NLP Pipeline Guide:</strong>{' '}
-            <code className="bg-white px-2 py-0.5 rounded text-xs">
-              docs/NLP_PIPELINE_GUIDE.md
-            </code>
-          </p>
-          <p>
-            <strong>Process Posts:</strong>{' '}
-            <code className="bg-white px-2 py-0.5 rounded text-xs">
-              npx tsx scripts/process-blog-posts.ts
-            </code>
-          </p>
-          <p>
-            <strong>Test Extraction:</strong>{' '}
-            <code className="bg-white px-2 py-0.5 rounded text-xs">
-              npx tsx scripts/test-nlp-pipeline.ts
-            </code>
-          </p>
-          <p>
-            <strong>View Stats API:</strong>{' '}
-            <code className="bg-white px-2 py-0.5 rounded text-xs">
-              GET /api/nlp/stats
-            </code>
-          </p>
-        </CardContent>
-      </Card>
+      {/* Quick reference */}
+      <div className="rounded-xl border border-slate-800 bg-slate-900/40 p-5">
+        <h2 className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-3">Referência rápida</h2>
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 text-xs text-slate-500">
+          {[
+            { label: 'Processar pendentes', code: 'POST /api/nlp/process-blog-posts' },
+            { label: 'Buscar entidades', code: 'GET /api/nlp/entities?q=crm' },
+            { label: 'Stats do grafo', code: 'GET /api/nlp/stats' },
+            { label: 'Graph-RAG query', code: 'POST /api/graph/rag' },
+          ].map((r) => (
+            <div key={r.label} className="rounded-lg bg-slate-900 border border-slate-800 p-3">
+              <p className="text-slate-600 mb-1">{r.label}</p>
+              <code className="text-violet-400 font-mono text-[10px] break-all">{r.code}</code>
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
   )
 }

@@ -1,16 +1,82 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
-import * as d3 from 'd3'
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { Slider } from '@/components/ui/slider'
+import { useState, useCallback, useEffect, useRef } from 'react'
+import ReactFlow, {
+  Node,
+  Edge,
+  Background,
+  Controls,
+  MiniMap,
+  useNodesState,
+  useEdgesState,
+  MarkerType,
+  ReactFlowProvider,
+  Panel,
+} from 'reactflow'
+import dagre from '@dagrejs/dagre'
+import 'reactflow/dist/style.css'
 import { Badge } from '@/components/ui/badge'
-import { Loader2, ZoomIn, ZoomOut, Maximize2 } from 'lucide-react'
+import {
+  Network,
+  Filter,
+  X,
+  ChevronRight,
+  ZoomIn,
+  ZoomOut,
+  Maximize2,
+  RefreshCw,
+  Search,
+  Info,
+} from 'lucide-react'
+import { Input } from '@/components/ui/input'
 
-interface D3Node extends d3.SimulationNodeDatum {
+// ── Color palette ────────────────────────────────────────────────────────────
+const TYPE_COLORS: Record<string, string> = {
+  methodology: '#a78bfa',
+  technology:  '#38bdf8',
+  industry:    '#34d399',
+  persona:     '#fbbf24',
+  metric:      '#f87171',
+  process:     '#818cf8',
+  tool:        '#22d3ee',
+  concept:     '#94a3b8',
+  geography:   '#fb923c',
+  other:       '#64748b',
+}
+
+const RELATION_COLORS: Record<string, string> = {
+  relates_to:   '#94a3b8',
+  part_of:      '#38bdf8',
+  used_in:      '#34d399',
+  enables:      '#a78bfa',
+  requires:     '#f87171',
+  produced_by:  '#fbbf24',
+  synonymous:   '#64748b',
+}
+
+function typeColor(t: string) {
+  return TYPE_COLORS[t] ?? TYPE_COLORS.other
+}
+
+// ── Dagre layout ─────────────────────────────────────────────────────────────
+function applyDagreLayout(nodes: Node[], edges: Edge[]): { nodes: Node[]; edges: Edge[] } {
+  const g = new dagre.graphlib.Graph()
+  g.setDefaultEdgeLabel(() => ({}))
+  g.setGraph({ rankdir: 'LR', ranksep: 90, nodesep: 45 })
+  nodes.forEach((n) => g.setNode(n.id, { width: 160, height: 40 }))
+  edges.forEach((e) => g.setEdge(e.source, e.target))
+  dagre.layout(g)
+  return {
+    nodes: nodes.map((n) => {
+      const p = g.node(n.id)
+      return { ...n, position: { x: (p?.x ?? 0) - 80, y: (p?.y ?? 0) - 20 } }
+    }),
+    edges,
+  }
+}
+
+// ── Types ─────────────────────────────────────────────────────────────────────
+interface D3Node {
   id: string
   name: string
   type: string
@@ -20,417 +86,438 @@ interface D3Node extends d3.SimulationNodeDatum {
   wikidataId?: string
   contentCount: number
 }
-
-interface D3Link extends d3.SimulationLinkDatum<D3Node> {
+interface D3Link {
   source: string | D3Node
   target: string | D3Node
   type: string
   strength: number
   value: number
 }
-
 interface GraphData {
   nodes: D3Node[]
   links: D3Link[]
-  stats: {
-    totalNodes: number
-    totalLinks: number
-    maxDepth: number
-  }
+  stats: { totalNodes: number; totalLinks: number; maxDepth: number }
 }
 
-export function GraphVisualization() {
-  const svgRef = useRef<SVGSVGElement>(null)
+function nodeId(n: string | D3Node): string {
+  return typeof n === 'string' ? n : n.id
+}
+
+function convertToFlow(nodes: D3Node[], links: D3Link[], search: string): { nodes: Node[]; edges: Edge[] } {
+  const q = search.toLowerCase()
+  const matched = q
+    ? new Set(nodes.filter((n) => n.name.toLowerCase().includes(q)).map((n) => n.id))
+    : null
+
+  const flowNodes: Node[] = nodes.map((n) => {
+    const color = typeColor(n.type)
+    const dim = matched && !matched.has(n.id)
+    return {
+      id: n.id,
+      data: { label: n.name, node: n },
+      position: { x: 0, y: 0 },
+      style: {
+        background: color + (dim ? '11' : '1a'),
+        border: `1.5px solid ${color}${dim ? '33' : ''}`,
+        color: dim ? '#475569' : color,
+        borderRadius: 8,
+        fontSize: 11,
+        fontWeight: 500,
+        padding: '5px 12px',
+        minWidth: 110,
+        maxWidth: 170,
+        textAlign: 'center' as const,
+        opacity: dim ? 0.4 : 1,
+        transition: 'opacity 0.2s',
+      },
+    }
+  })
+
+  const flowEdges: Edge[] = links.map((l, i) => {
+    const color = RELATION_COLORS[l.type] ?? '#475569'
+    const srcId = nodeId(l.source)
+    const dim = matched && !matched.has(srcId) && !matched.has(nodeId(l.target))
+    return {
+      id: `e-${i}`,
+      source: srcId,
+      target: nodeId(l.target),
+      label: l.type,
+      animated: l.type === 'enables',
+      style: { stroke: color, strokeWidth: Math.max(1, l.value), opacity: dim ? 0.15 : 0.75 },
+      markerEnd: { type: MarkerType.ArrowClosed, color },
+      labelStyle: { fill: '#94a3b8', fontSize: 9 },
+      labelBgStyle: { fill: '#0f172a', fillOpacity: 0.85 },
+    }
+  })
+
+  return applyDagreLayout(flowNodes, flowEdges)
+}
+
+// ── Main component ────────────────────────────────────────────────────────────
+function GraphInner() {
   const [graphData, setGraphData] = useState<GraphData | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [nodes, setNodes, onNodesChange] = useNodesState([])
+  const [edges, setEdges, onEdgesChange] = useEdgesState([])
   const [selectedNode, setSelectedNode] = useState<D3Node | null>(null)
+  const [typeFilter, setTypeFilter] = useState('all')
+  const [search, setSearch] = useState('')
   const [depth, setDepth] = useState(2)
   const [minStrength, setMinStrength] = useState(0.3)
-  const [zoom, setZoom] = useState(1)
 
-  // Load graph data
-  useEffect(() => {
-    loadGraphData()
-  }, [])
-
-  const loadGraphData = async (entityId?: string) => {
-    setLoading(true)
-    setError(null)
-
-    try {
-      const params = new URLSearchParams({
-        depth: depth.toString(),
-        minStrength: minStrength.toString(),
-      })
-
-      if (entityId) {
-        params.append('entityId', entityId)
-      }
-
-      const response = await fetch(`/api/graph/visualization?${params}`)
-      const result = await response.json()
-
-      if (result.success) {
-        setGraphData(result.data)
-      } else {
-        setError(result.error || 'Failed to load graph')
-      }
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Unknown error')
-    } finally {
-      setLoading(false)
-    }
-  }
-
-  // Render D3 graph
-  useEffect(() => {
-    if (!graphData || !svgRef.current) return
-
-    // Clear previous graph
-    d3.select(svgRef.current).selectAll('*').remove()
-
-    const width = 1200
-    const height = 800
-
-    const svg = d3
-      .select(svgRef.current)
-      .attr('viewBox', [0, 0, width, height])
-      .attr('width', '100%')
-      .attr('height', '100%')
-
-    // Create zoom behavior
-    const zoomBehavior = d3
-      .zoom<SVGSVGElement, unknown>()
-      .scaleExtent([0.1, 4])
-      .on('zoom', (event) => {
-        g.attr('transform', event.transform)
-        setZoom(event.transform.k)
-      })
-
-    svg.call(zoomBehavior)
-
-    const g = svg.append('g')
-
-    // Color scale by type group
-    const color = d3.scaleOrdinal(d3.schemeCategory10)
-
-    // Create simulation
-    const simulation = d3
-      .forceSimulation<D3Node>(graphData.nodes)
-      .force(
-        'link',
-        d3
-          .forceLink<D3Node, D3Link>(graphData.links)
-          .id((d) => d.id)
-          .distance((d) => 100 / d.strength)
+  const rebuild = useCallback(
+    (data: GraphData, filter: string, q: string) => {
+      const filtered =
+        filter === 'all' ? data.nodes : data.nodes.filter((n) => n.type === filter)
+      const ids = new Set(filtered.map((n) => n.id))
+      const filteredLinks = data.links.filter(
+        (l) => ids.has(nodeId(l.source)) && ids.has(nodeId(l.target))
       )
-      .force('charge', d3.forceManyBody().strength(-300))
-      .force('center', d3.forceCenter(width / 2, height / 2))
-      .force('collision', d3.forceCollide().radius((d: any) => d.size + 10))
+      const { nodes: fn, edges: fe } = convertToFlow(filtered, filteredLinks, q)
+      setNodes(fn)
+      setEdges(fe)
+    },
+    [setNodes, setEdges]
+  )
 
-    // Create links
-    const link = g
-      .append('g')
-      .selectAll('line')
-      .data(graphData.links)
-      .join('line')
-      .attr('stroke', '#999')
-      .attr('stroke-opacity', 0.6)
-      .attr('stroke-width', (d) => Math.sqrt(d.value))
+  const loadGraph = useCallback(
+    async (entityId?: string) => {
+      setLoading(true)
+      setError(null)
+      try {
+        const params = new URLSearchParams({
+          depth: String(depth),
+          minStrength: String(minStrength),
+        })
+        if (entityId) params.set('entityId', entityId)
+        const res = await fetch(`/api/graph/visualization?${params}`)
+        const json = await res.json()
+        if (json.success) {
+          setGraphData(json.data)
+          rebuild(json.data, typeFilter, search)
+        } else {
+          setError(json.error ?? 'Erro ao carregar grafo')
+        }
+      } catch (e) {
+        setError(e instanceof Error ? e.message : 'Erro desconhecido')
+      } finally {
+        setLoading(false)
+      }
+    },
+    [depth, minStrength, typeFilter, search, rebuild]
+  )
 
-    // Create link labels
-    const linkLabel = g
-      .append('g')
-      .selectAll('text')
-      .data(graphData.links)
-      .join('text')
-      .attr('font-size', 10)
-      .attr('fill', '#666')
-      .attr('text-anchor', 'middle')
-      .text((d) => d.type)
-      .style('opacity', 0) // Hidden by default
+  useEffect(() => { loadGraph() }, [])
 
-    // Create nodes
-    const node = g
-      .append('g')
-      .selectAll('circle')
-      .data(graphData.nodes)
-      .join('circle')
-      .attr('r', (d) => d.size)
-      .attr('fill', (d) => color(d.group.toString()))
-      .attr('stroke', '#fff')
-      .attr('stroke-width', 2)
-      .style('cursor', 'pointer')
-      .call(
-        d3
-          .drag<SVGCircleElement, D3Node>()
-          .on('start', (event, d) => {
-            if (!event.active) simulation.alphaTarget(0.3).restart()
-            d.fx = d.x
-            d.fy = d.y
-          })
-          .on('drag', (event, d) => {
-            d.fx = event.x
-            d.fy = event.y
-          })
-          .on('end', (event, d) => {
-            if (!event.active) simulation.alphaTarget(0)
-            d.fx = null
-            d.fy = null
-          }) as any
-      )
-      .on('click', (event, d) => {
-        setSelectedNode(d)
-      })
-      .on('mouseover', function (event, d) {
-        // Highlight connected nodes
-        d3.select(this).attr('stroke', '#ff6b6b').attr('stroke-width', 4)
+  useEffect(() => {
+    if (graphData) rebuild(graphData, typeFilter, search)
+  }, [typeFilter, search, graphData, rebuild])
 
-        // Show link labels for this node
-        linkLabel
-          .style('opacity', (l) =>
-            (l.source as D3Node).id === d.id || (l.target as D3Node).id === d.id
-              ? 1
-              : 0
-          )
-      })
-      .on('mouseout', function () {
-        d3.select(this).attr('stroke', '#fff').attr('stroke-width', 2)
-        linkLabel.style('opacity', 0)
-      })
+  const allTypes = graphData
+    ? ['all', ...Array.from(new Set(graphData.nodes.map((n) => n.type))).sort()]
+    : ['all']
 
-    // Create labels
-    const label = g
-      .append('g')
-      .selectAll('text')
-      .data(graphData.nodes)
-      .join('text')
-      .attr('font-size', 12)
-      .attr('dx', (d) => d.size + 5)
-      .attr('dy', 4)
-      .text((d) => d.name)
-      .style('pointer-events', 'none')
-
-    // Update positions on simulation tick
-    simulation.on('tick', () => {
-      link
-        .attr('x1', (d) => (d.source as D3Node).x!)
-        .attr('y1', (d) => (d.source as D3Node).y!)
-        .attr('x2', (d) => (d.target as D3Node).x!)
-        .attr('y2', (d) => (d.target as D3Node).y!)
-
-      linkLabel
-        .attr('x', (d) => ((d.source as D3Node).x! + (d.target as D3Node).x!) / 2)
-        .attr('y', (d) => ((d.source as D3Node).y! + (d.target as D3Node).y!) / 2)
-
-      node.attr('cx', (d) => d.x!).attr('cy', (d) => d.y!)
-
-      label.attr('x', (d) => d.x!).attr('y', (d) => d.y!)
-    })
-
-    // Cleanup
-    return () => {
-      simulation.stop()
-    }
-  }, [graphData])
-
-  const handleZoomIn = () => {
-    if (svgRef.current) {
-      d3.select(svgRef.current)
-        .transition()
-        .call(d3.zoom<SVGSVGElement, unknown>().scaleBy as any, 1.3)
-    }
-  }
-
-  const handleZoomOut = () => {
-    if (svgRef.current) {
-      d3.select(svgRef.current)
-        .transition()
-        .call(d3.zoom<SVGSVGElement, unknown>().scaleBy as any, 0.7)
-    }
-  }
-
-  const handleReset = () => {
-    if (svgRef.current) {
-      d3.select(svgRef.current)
-        .transition()
-        .call(
-          d3.zoom<SVGSVGElement, unknown>().transform as any,
-          d3.zoomIdentity
-        )
-    }
-  }
-
-  if (loading) {
-    return (
-      <Card>
-        <CardContent className="flex items-center justify-center py-12">
-          <Loader2 className="h-8 w-8 animate-spin" />
-          <span className="ml-2">Carregando grafo...</span>
-        </CardContent>
-      </Card>
-    )
-  }
-
-  if (error) {
-    return (
-      <Card>
-        <CardContent className="py-12">
-          <p className="text-red-600">Erro: {error}</p>
-          <Button onClick={() => loadGraphData()} className="mt-4">
-            Tentar Novamente
-          </Button>
-        </CardContent>
-      </Card>
-    )
-  }
+  // Node click → show detail panel + expand subgraph option
+  const handleNodeClick = useCallback(
+    (_: React.MouseEvent, node: Node) => {
+      const raw = graphData?.nodes.find((n) => n.id === node.id) ?? null
+      setSelectedNode(raw)
+    },
+    [graphData]
+  )
 
   return (
-    <div className="space-y-4">
-      {/* Controls */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Controles de Visualização</CardTitle>
-          <CardDescription>
-            Ajuste profundidade e força mínima dos relacionamentos
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div>
-              <Label>Profundidade: {depth}</Label>
-              <Slider
-                value={[depth]}
-                onValueChange={(v) => setDepth(v[0])}
-                min={1}
-                max={4}
-                step={1}
-                className="mt-2"
-              />
-            </div>
-            <div>
-              <Label>Força Mínima: {minStrength.toFixed(2)}</Label>
-              <Slider
-                value={[minStrength * 100]}
-                onValueChange={(v) => setMinStrength(v[0] / 100)}
-                min={0}
-                max={100}
-                step={5}
-                className="mt-2"
-              />
-            </div>
-            <div>
-              <Button onClick={() => loadGraphData()} className="w-full">
-                Atualizar Grafo
-              </Button>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
+    <div className="flex flex-col gap-4" style={{ minHeight: 0 }}>
+      {/* Top bar */}
+      <div className="flex flex-wrap items-center gap-3">
+        {/* Search */}
+        <div className="relative">
+          <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-slate-500" />
+          <Input
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            placeholder="Filtrar entidades..."
+            className="pl-8 h-8 text-xs w-48 bg-slate-900 border-slate-700 text-slate-200 placeholder:text-slate-600"
+          />
+        </div>
 
-      {/* Graph Stats */}
+        {/* Depth */}
+        <div className="flex items-center gap-2 text-xs text-slate-400">
+          <span>Profundidade:</span>
+          {[1, 2, 3, 4].map((d) => (
+            <button
+              key={d}
+              onClick={() => setDepth(d)}
+              className={`h-6 w-6 rounded text-xs font-mono transition-colors ${
+                depth === d
+                  ? 'bg-violet-500 text-white'
+                  : 'bg-slate-800 text-slate-400 hover:bg-slate-700'
+              }`}
+            >
+              {d}
+            </button>
+          ))}
+        </div>
+
+        {/* Min strength */}
+        <div className="flex items-center gap-2 text-xs text-slate-400">
+          <span>Min. força:</span>
+          {[0.1, 0.3, 0.5, 0.7].map((s) => (
+            <button
+              key={s}
+              onClick={() => setMinStrength(s)}
+              className={`h-6 px-2 rounded text-xs font-mono transition-colors ${
+                minStrength === s
+                  ? 'bg-violet-500 text-white'
+                  : 'bg-slate-800 text-slate-400 hover:bg-slate-700'
+              }`}
+            >
+              {s}
+            </button>
+          ))}
+        </div>
+
+        <button
+          onClick={() => loadGraph()}
+          disabled={loading}
+          className="flex items-center gap-1.5 h-8 px-3 rounded bg-violet-600 hover:bg-violet-500 disabled:opacity-40 text-white text-xs font-semibold transition-colors"
+        >
+          <RefreshCw className={`h-3.5 w-3.5 ${loading ? 'animate-spin' : ''}`} />
+          Atualizar
+        </button>
+      </div>
+
+      {/* Type filters */}
+      <div className="flex flex-wrap items-center gap-2">
+        <Filter className="h-3.5 w-3.5 text-slate-600 shrink-0" />
+        {allTypes.map((t) => (
+          <button
+            key={t}
+            onClick={() => setTypeFilter(t)}
+            className={`rounded-full px-3 py-0.5 text-xs font-medium border transition-colors capitalize ${
+              typeFilter === t
+                ? 'border-violet-400 bg-violet-400/10 text-violet-300'
+                : 'border-slate-700 text-slate-500 hover:border-slate-500 hover:text-slate-300'
+            }`}
+            style={
+              t !== 'all' && typeFilter !== t
+                ? { borderColor: typeColor(t) + '55', color: typeColor(t) + 'cc' }
+                : {}
+            }
+          >
+            {t === 'all' ? 'Todos' : t}
+          </button>
+        ))}
+      </div>
+
+      {/* Stats mini row */}
       {graphData && (
-        <div className="grid grid-cols-3 gap-4">
-          <Card>
-            <CardContent className="pt-6">
-              <div className="text-2xl font-bold">{graphData.stats.totalNodes}</div>
-              <p className="text-sm text-muted-foreground">Entidades</p>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardContent className="pt-6">
-              <div className="text-2xl font-bold">{graphData.stats.totalLinks}</div>
-              <p className="text-sm text-muted-foreground">Relacionamentos</p>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardContent className="pt-6">
-              <div className="text-2xl font-bold">{zoom.toFixed(2)}x</div>
-              <p className="text-sm text-muted-foreground">Zoom</p>
-            </CardContent>
-          </Card>
+        <div className="grid grid-cols-4 gap-2">
+          {[
+            { label: 'Entidades', value: graphData.stats.totalNodes },
+            { label: 'Relacionamentos', value: graphData.stats.totalLinks },
+            { label: 'Nós visíveis', value: nodes.length },
+            { label: 'Arestas visíveis', value: edges.length },
+          ].map((s) => (
+            <div
+              key={s.label}
+              className="rounded-lg border border-slate-800 bg-slate-900/60 p-3 text-center"
+            >
+              <div className="text-lg font-mono font-bold text-white">{s.value}</div>
+              <div className="text-[10px] text-slate-500 mt-0.5">{s.label}</div>
+            </div>
+          ))}
         </div>
       )}
 
-      {/* Graph Visualization */}
-      <Card>
-        <CardHeader>
-          <div className="flex items-center justify-between">
-            <div>
-              <CardTitle>Visualização do Grafo de Conhecimento</CardTitle>
-              <CardDescription>
-                Clique e arraste os nós. Clique em um nó para ver detalhes.
-              </CardDescription>
-            </div>
-            <div className="flex gap-2">
-              <Button variant="outline" size="icon" onClick={handleZoomIn}>
-                <ZoomIn className="h-4 w-4" />
-              </Button>
-              <Button variant="outline" size="icon" onClick={handleZoomOut}>
-                <ZoomOut className="h-4 w-4" />
-              </Button>
-              <Button variant="outline" size="icon" onClick={handleReset}>
-                <Maximize2 className="h-4 w-4" />
-              </Button>
+      {/* Graph canvas */}
+      <div
+        className="rounded-xl border border-slate-800 overflow-hidden"
+        style={{ height: 560 }}
+      >
+        {loading ? (
+          <div className="h-full flex items-center justify-center bg-slate-950">
+            <div className="text-center">
+              <RefreshCw className="h-8 w-8 animate-spin text-violet-400 mx-auto mb-3" />
+              <p className="text-sm text-slate-500">Carregando grafo...</p>
             </div>
           </div>
-        </CardHeader>
-        <CardContent>
-          <div className="border rounded-lg overflow-hidden bg-white">
-            <svg ref={svgRef} style={{ width: '100%', height: '800px' }} />
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Selected Node Details */}
-      {selectedNode && (
-        <Card>
-          <CardHeader>
-            <CardTitle>Detalhes do Nó Selecionado</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-2">
-            <div>
-              <span className="font-semibold">Nome:</span> {selectedNode.name}
-            </div>
-            <div>
-              <Badge>{selectedNode.type}</Badge>
-            </div>
-            {selectedNode.description && (
-              <div>
-                <span className="font-semibold">Descrição:</span>{' '}
-                {selectedNode.description}
-              </div>
-            )}
-            <div>
-              <span className="font-semibold">Artigos Relacionados:</span>{' '}
-              {selectedNode.contentCount}
-            </div>
-            {selectedNode.wikidataId && (
-              <div>
-                <span className="font-semibold">Wikidata:</span>{' '}
-                <a
-                  href={selectedNode.wikidataId}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-blue-600 hover:underline"
-                >
-                  {selectedNode.wikidataId}
-                </a>
-              </div>
-            )}
-            <div className="pt-2">
-              <Button
-                onClick={() => loadGraphData(selectedNode.id)}
-                variant="outline"
-                size="sm"
+        ) : error ? (
+          <div className="h-full flex items-center justify-center bg-slate-950">
+            <div className="text-center">
+              <p className="text-sm text-red-400 mb-3">{error}</p>
+              <button
+                onClick={() => loadGraph()}
+                className="px-4 py-2 rounded bg-slate-800 text-slate-300 text-sm hover:bg-slate-700 transition-colors"
               >
-                Explorar a partir deste nó
-              </Button>
+                Tentar novamente
+              </button>
             </div>
-          </CardContent>
-        </Card>
+          </div>
+        ) : nodes.length === 0 ? (
+          <div className="h-full flex items-center justify-center bg-slate-950 text-slate-600 text-sm">
+            Nenhuma entidade encontrada. Processe os blog posts primeiro.
+          </div>
+        ) : (
+          <ReactFlow
+            nodes={nodes}
+            edges={edges}
+            onNodesChange={onNodesChange}
+            onEdgesChange={onEdgesChange}
+            onNodeClick={handleNodeClick}
+            fitView
+            fitViewOptions={{ padding: 0.2 }}
+            minZoom={0.1}
+            maxZoom={3}
+            style={{ background: '#0a0f1a' }}
+          >
+            <Background color="#1e293b" gap={20} />
+            <Controls style={{ background: '#1e293b', border: '1px solid #334155', borderRadius: 8 }} />
+            <MiniMap
+              nodeColor={(n) => typeColor((n.data as any)?.node?.type ?? 'other')}
+              style={{ background: '#1e293b', border: '1px solid #334155', borderRadius: 8 }}
+              maskColor="#0a0f1a88"
+            />
+
+            {/* Legend panel */}
+            <Panel position="top-right">
+              <div className="rounded-lg border border-slate-800 bg-slate-950/90 backdrop-blur p-3 text-xs space-y-1 min-w-[130px]">
+                <p className="text-slate-500 font-medium mb-2 flex items-center gap-1">
+                  <Info className="h-3 w-3" /> Legenda
+                </p>
+                {Object.entries(TYPE_COLORS).map(([t, c]) => (
+                  <div key={t} className="flex items-center gap-2">
+                    <div className="h-2 w-2 rounded-full shrink-0" style={{ background: c }} />
+                    <span className="text-slate-400 capitalize">{t}</span>
+                  </div>
+                ))}
+              </div>
+            </Panel>
+          </ReactFlow>
+        )}
+      </div>
+
+      {/* Selected node panel */}
+      {selectedNode && (
+        <div className="rounded-xl border border-slate-700 bg-slate-900/80 backdrop-blur p-5 relative">
+          <button
+            onClick={() => setSelectedNode(null)}
+            className="absolute right-3 top-3 text-slate-600 hover:text-white transition-colors"
+          >
+            <X className="h-4 w-4" />
+          </button>
+          <div className="flex items-center gap-2 mb-3">
+            <div
+              className="h-3 w-3 rounded-full shrink-0"
+              style={{ background: typeColor(selectedNode.type) }}
+            />
+            <h3 className="font-semibold text-white text-sm">{selectedNode.name}</h3>
+            <span
+              className="text-xs px-2 py-0.5 rounded-full border capitalize"
+              style={{
+                borderColor: typeColor(selectedNode.type) + '55',
+                color: typeColor(selectedNode.type),
+                background: typeColor(selectedNode.type) + '11',
+              }}
+            >
+              {selectedNode.type}
+            </span>
+          </div>
+
+          {selectedNode.description && (
+            <p className="text-xs text-slate-400 mb-3 leading-relaxed">{selectedNode.description}</p>
+          )}
+
+          <div className="flex items-center gap-4 text-xs text-slate-500 mb-4">
+            <span>{selectedNode.contentCount} artigos</span>
+            {selectedNode.wikidataId && (
+              <a
+                href={`https://www.wikidata.org/wiki/${selectedNode.wikidataId}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-violet-400 hover:text-violet-300 transition-colors"
+              >
+                Wikidata ↗
+              </a>
+            )}
+          </div>
+
+          {/* Connected nodes */}
+          {graphData && (() => {
+            const outgoing = graphData.links.filter((l) => nodeId(l.source) === selectedNode.id)
+            const incoming = graphData.links.filter((l) => nodeId(l.target) === selectedNode.id)
+            return (
+              <div className="grid grid-cols-2 gap-4">
+                {outgoing.length > 0 && (
+                  <div>
+                    <p className="text-[10px] text-slate-600 uppercase tracking-wide mb-2">
+                      Aponta para ({outgoing.length})
+                    </p>
+                    <div className="flex flex-wrap gap-1.5">
+                      {outgoing.slice(0, 6).map((l, i) => {
+                        const tgt = graphData.nodes.find((n) => n.id === nodeId(l.target))
+                        return (
+                          <button
+                            key={i}
+                            onClick={() => tgt && setSelectedNode(tgt)}
+                            className="flex items-center gap-1 text-[10px] rounded border border-slate-700 bg-slate-800 px-2 py-1 hover:bg-slate-700 text-slate-300 transition-colors"
+                          >
+                            <span className="text-slate-500">{l.type}</span>
+                            <ChevronRight className="h-2.5 w-2.5 text-slate-600" />
+                            {tgt?.name ?? nodeId(l.target)}
+                          </button>
+                        )
+                      })}
+                    </div>
+                  </div>
+                )}
+                {incoming.length > 0 && (
+                  <div>
+                    <p className="text-[10px] text-slate-600 uppercase tracking-wide mb-2">
+                      Recebe de ({incoming.length})
+                    </p>
+                    <div className="flex flex-wrap gap-1.5">
+                      {incoming.slice(0, 6).map((l, i) => {
+                        const src = graphData.nodes.find((n) => n.id === nodeId(l.source))
+                        return (
+                          <button
+                            key={i}
+                            onClick={() => src && setSelectedNode(src)}
+                            className="flex items-center gap-1 text-[10px] rounded border border-slate-700 bg-slate-800 px-2 py-1 hover:bg-slate-700 text-slate-300 transition-colors"
+                          >
+                            {src?.name ?? nodeId(l.source)}
+                            <ChevronRight className="h-2.5 w-2.5 text-slate-600" />
+                            <span className="text-slate-500">{l.type}</span>
+                          </button>
+                        )
+                      })}
+                    </div>
+                  </div>
+                )}
+              </div>
+            )
+          })()}
+
+          <div className="mt-4 pt-3 border-t border-slate-800">
+            <button
+              onClick={() => loadGraph(selectedNode.id)}
+              className="flex items-center gap-1.5 text-xs text-violet-400 hover:text-violet-300 transition-colors"
+            >
+              <Network className="h-3.5 w-3.5" />
+              Explorar subgrafo a partir deste nó
+            </button>
+          </div>
+        </div>
       )}
     </div>
+  )
+}
+
+export function GraphVisualization() {
+  return (
+    <ReactFlowProvider>
+      <GraphInner />
+    </ReactFlowProvider>
   )
 }
