@@ -10,7 +10,7 @@ import { prisma } from '@/lib/prisma'
 import { fetchLeadData } from '@/lib/ads/facebook-lead-ads'
 import { decrypt } from '@/lib/encryption'
 
-export async function GET() {
+export async function GET(request: NextRequest) {
   const session = await getSession()
   if (!session?.user?.email) {
     return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
@@ -36,6 +36,41 @@ export async function GET() {
   const org = user.organization
   const pageToken = org.facebookPageAccessToken ? decrypt(org.facebookPageAccessToken) : null
 
+  // Se passou ?leadId=XXX, processa o lead diretamente
+  const leadId = new URL(request.url).searchParams.get('leadId')
+  if (leadId && pageToken) {
+    const existing = await prisma.facebookLead.findUnique({ where: { leadgenId: leadId } })
+    if (existing) {
+      return NextResponse.json({ status: 'already_exists', leadId, existingId: existing.id })
+    }
+
+    const fbLead = await prisma.facebookLead.create({
+      data: { leadgenId: leadId, pageId: org.facebookPageId!, formId: '', organizationId: org.id },
+    })
+
+    const leadData = await fetchLeadData(leadId, pageToken)
+    if (!leadData) {
+      return NextResponse.json({ status: 'lead_fetch_failed', fbLeadId: fbLead.id })
+    }
+
+    const contact = await prisma.contact.create({
+      data: {
+        name:           leadData.name ?? 'Lead Facebook',
+        email:          leadData.email ?? null,
+        phone:          leadData.phone ?? null,
+        organizationId: org.id,
+      },
+    })
+
+    await prisma.facebookLead.update({
+      where: { id: fbLead.id },
+      data: { name: leadData.name, email: leadData.email, phone: leadData.phone, rawFields: leadData.rawFields, fetchedAt: new Date(), contactId: contact.id },
+    })
+
+    return NextResponse.json({ status: 'created', contactId: contact.id, leadData })
+  }
+
+  // Diagnóstico geral
   let recentLeads = null
   let leadFetchError = null
   if (pageToken) {
@@ -49,9 +84,7 @@ export async function GET() {
     }
   }
 
-  const leadsInDb = await prisma.facebookLead.count({
-    where: { organizationId: org.id },
-  })
+  const leadsInDb = await prisma.facebookLead.count({ where: { organizationId: org.id } })
 
   return NextResponse.json({
     org: { id: org.id, facebookPageId: org.facebookPageId, hasPageToken: !!pageToken },
