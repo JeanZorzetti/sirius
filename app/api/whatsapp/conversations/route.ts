@@ -45,6 +45,8 @@ export async function GET() {
 
     const wabaActive = user.organization?.wabaEnabled === true && !!user.organization?.wabaPhoneNumberId
 
+    logger.info({ organizationId: user.organizationId, wabaActive, wabaEnabled: user.organization?.wabaEnabled, wabaPhoneNumberId: user.organization?.wabaPhoneNumberId }, 'conversations: org waba state')
+
     // 3. Get all Evolution API connections for this org (regardless of status)
     // Filtering by CONNECTED causes conversations to vanish when a phone temporarily
     // takes over the session — we want messages to stay visible during reconnection.
@@ -58,6 +60,7 @@ export async function GET() {
 
     // If neither Evolution connections nor WABA → no conversations
     if (!hasEvolutionConnections && !wabaActive) {
+      logger.info({ organizationId: user.organizationId, hasEvolutionConnections, wabaActive }, 'conversations: no source, returning empty')
       return NextResponse.json([])
     }
 
