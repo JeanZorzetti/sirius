@@ -50,11 +50,16 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'WABA não configurado para esta organização' }, { status: 400 })
     }
 
-    const mimeType = file.type || 'audio/webm'
+    let mimeType = file.type || 'audio/webm'
+    // Meta does not accept audio/webm — remap to audio/ogg (content is opus either way)
+    if (mimeType === 'audio/webm' || mimeType.startsWith('audio/webm')) {
+      mimeType = 'audio/ogg'
+    }
     const blob = new Blob([await file.arrayBuffer()], { type: mimeType })
 
     // 1. Upload to Meta servers
-    const mediaId = await client.uploadMedia(blob, mimeType, file.name || 'audio.webm')
+    const filename = mimeType === 'audio/ogg' ? 'audio.ogg' : (file.name || 'audio.webm')
+    const mediaId = await client.uploadMedia(blob, mimeType, filename)
 
     // 2. Send the media message
     const phone = normalizePhone(contact.phone)
