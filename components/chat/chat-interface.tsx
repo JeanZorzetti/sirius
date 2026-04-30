@@ -275,29 +275,31 @@ export function ChatInterface({
             )}
           </button>
 
-          <button
-            onClick={() => setActiveView('connections')}
-            className={cn(
-              'flex items-center gap-2 px-3 py-1.5 rounded-md text-sm font-medium transition-colors',
-              activeView === 'connections'
-                ? 'bg-primary/10 text-primary'
-                : 'text-muted-foreground hover:text-foreground hover:bg-zinc-100 dark:hover:bg-zinc-800'
-            )}
-          >
-            <Settings2 className="h-4 w-4" />
-            Conexões
-            <span className={cn(
-              'flex items-center gap-1 text-xs',
-              activeConnections.length > 0 ? 'text-emerald-600' : 'text-zinc-400'
-            )}>
-              {activeConnections.length > 0 ? (
-                <Wifi className="h-3 w-3" />
-              ) : (
-                <WifiOff className="h-3 w-3" />
+          {!wabaEnabled && (
+            <button
+              onClick={() => setActiveView('connections')}
+              className={cn(
+                'flex items-center gap-2 px-3 py-1.5 rounded-md text-sm font-medium transition-colors',
+                activeView === 'connections'
+                  ? 'bg-primary/10 text-primary'
+                  : 'text-muted-foreground hover:text-foreground hover:bg-zinc-100 dark:hover:bg-zinc-800'
               )}
-              {activeConnections.length}/{connections.length}
-            </span>
-          </button>
+            >
+              <Settings2 className="h-4 w-4" />
+              Conexões
+              <span className={cn(
+                'flex items-center gap-1 text-xs',
+                activeConnections.length > 0 ? 'text-emerald-600' : 'text-zinc-400'
+              )}>
+                {activeConnections.length > 0 ? (
+                  <Wifi className="h-3 w-3" />
+                ) : (
+                  <WifiOff className="h-3 w-3" />
+                )}
+                {activeConnections.length}/{connections.length}
+              </span>
+            </button>
+          )}
         </div>
       </div>
 
@@ -441,6 +443,7 @@ export function ChatInterface({
                     userName={userName}
                     onContactUpdate={() => fetchConversations()}
                     onBack={() => setSelectedContact(null)}
+                    wabaEnabled={wabaEnabled}
                   />
                 ) : (
                   <div className="flex-1 flex items-center justify-center bg-[#efeae2] dark:bg-zinc-900">

@@ -85,6 +85,7 @@ interface MessageAreaProps {
   organizationId: string; userId: string; userName: string
   onContactUpdate?: () => void
   onBack?: () => void
+  wabaEnabled?: boolean
 }
 
 type MessageItem = {
@@ -592,7 +593,7 @@ function MediaBubble({ msg, outbound, onOpenLightbox }: { msg: WhatsAppMessage; 
 
 // ── Component ───────────────────────────────────────────────
 
-export function MessageArea({ contact, connections, organizationId, userId, userName, onContactUpdate, onBack }: MessageAreaProps) {
+export function MessageArea({ contact, connections, organizationId, userId, userName, onContactUpdate, onBack, wabaEnabled = false }: MessageAreaProps) {
   const [messages, setMessages] = useState<WhatsAppMessage[]>([])
   const [text, setText] = useState('')
   const [conn, setConn] = useState(connections[0]?.id||'')
@@ -854,7 +855,8 @@ export function MessageArea({ contact, connections, organizationId, userId, user
 
   const send = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (!text.trim() || !conn) return
+    if (!text.trim()) return
+    if (!wabaEnabled && !conn) return
 
     const messageText = text.trim()
     const tempId = `temp-${Date.now()}-${Math.random().toString(36).substring(7)}`
@@ -885,23 +887,27 @@ export function MessageArea({ contact, connections, organizationId, userId, user
 
     setSending(true)
     try {
-      const payload: any = {
-        connectionId: conn,
-        contactId: contact.id,
-        message: messageText,
+      let r: Response
+      if (wabaEnabled) {
+        const payload: any = { contactId: contact.id, message: messageText }
+        if (replyingToMsg) payload.replyToId = replyingToMsg.id
+        r = await fetch('/api/whatsapp/send-waba', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        })
+      } else {
+        const payload: any = { connectionId: conn, contactId: contact.id, message: messageText }
+        if (replyingToMsg) payload.replyToId = replyingToMsg.id
+        r = await fetch('/api/whatsapp/send-message', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        })
       }
 
-      if (replyingToMsg) {
-        payload.replyToId = replyingToMsg.id
-      }
-
-      const r = await fetch('/api/whatsapp/send-message', {
-        method:'POST',
-        headers:{'Content-Type':'application/json'},
-        body: JSON.stringify(payload),
-      })
       if (!r.ok) {
-        const d=await r.json()
+        const d = await r.json()
         throw new Error(d.error)
       }
       const confirmedMsg = await r.json()
