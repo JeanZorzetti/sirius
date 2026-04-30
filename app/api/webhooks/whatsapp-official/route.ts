@@ -19,6 +19,7 @@
 
 import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
+import { prismaWa } from '@/lib/prisma-wa'
 import { logWabaActivity } from '@/lib/integrations/whatsapp-official-client'
 import logger from '@/lib/logger'
 
@@ -111,28 +112,86 @@ export async function POST(request: Request) {
 async function handleIncomingMessage(
   organizationId: string,
   message: any,
-  contact: any
+  metaContact: any
 ) {
   try {
     const from: string = message.from // E.164 without +, e.g. "5511987654321"
     const messageId: string = message.id
     const timestamp = new Date(parseInt(message.timestamp) * 1000)
 
+    // Extract text content based on message type
     let text = ''
     if (message.type === 'text') {
       text = message.text?.body ?? ''
     } else if (message.type === 'interactive') {
       text = message.interactive?.button_reply?.title ?? message.interactive?.list_reply?.title ?? ''
+    } else if (message.type === 'image') {
+      text = message.image?.caption ?? '[Imagem]'
+    } else if (message.type === 'video') {
+      text = message.video?.caption ?? '[Vídeo]'
+    } else if (message.type === 'audio') {
+      text = '[Áudio]'
+    } else if (message.type === 'document') {
+      text = message.document?.filename ?? '[Documento]'
+    } else if (message.type === 'sticker') {
+      text = '[Figurinha]'
+    } else if (message.type === 'location') {
+      text = '[Localização]'
+    } else {
+      text = `[${message.type}]`
     }
 
-    const contactName: string = contact?.profile?.name ?? from
+    const contactName: string = metaContact?.profile?.name ?? from
 
     logger.info(
       { organizationId, from, messageId, type: message.type },
       'WhatsApp Official: incoming message'
     )
 
-    // Log to IntegrationLog for activity tracking
+    // Idempotency — skip if already processed
+    const existing = await prismaWa.whatsAppMessage.findFirst({
+      where: { organizationId, messageId },
+      select: { id: true }
+    })
+    if (existing) return
+
+    // Find or create CRM contact by phone number
+    const phoneDigits = from.replace(/\D/g, '')
+    let contact = await prisma.contact.findFirst({
+      where: {
+        organizationId,
+        phone: { contains: phoneDigits.slice(-9) }, // match last 9 digits to handle format variations
+      },
+      select: { id: true, name: true }
+    })
+
+    if (!contact) {
+      contact = await prisma.contact.create({
+        data: {
+          organizationId,
+          name: contactName,
+          phone: `+${phoneDigits}`,
+        },
+        select: { id: true, name: true }
+      })
+      logger.info({ organizationId, contactId: contact.id, phone: from }, 'WhatsApp Official: created new contact')
+    }
+
+    // Save message to WA DB (no connectionId — WABA doesn't use WhatsAppConnection records)
+    await prismaWa.whatsAppMessage.create({
+      data: {
+        organizationId,
+        messageId,
+        remoteJid: from,
+        text,
+        direction: 'INBOUND',
+        status: 'DELIVERED',
+        isRead: false,
+        contactId: contact.id,
+        sentAt: timestamp,
+      }
+    })
+
     await logWabaActivity(
       organizationId,
       'receive_message',
@@ -140,10 +199,6 @@ async function handleIncomingMessage(
       { from, messageId, type: message.type, text: text.substring(0, 100) },
       undefined
     )
-
-    // TODO: Create or update Contact and WhatsAppMessage record,
-    //       link to ChatConversation, trigger deal automations, etc.
-    // This follows the same pattern as the Evolution API webhook handler.
 
   } catch (error) {
     logger.error({ error, organizationId }, 'Error handling incoming WABA message')
@@ -159,14 +214,31 @@ async function handleStatusUpdate(organizationId: string, status: any) {
       'WhatsApp Official: status update'
     )
 
+    // Map Meta status to our enum
+    const statusMap: Record<string, string> = {
+      sent: 'SENT',
+      delivered: 'DELIVERED',
+      read: 'READ',
+      failed: 'FAILED',
+    }
+    const newStatus = statusMap[deliveryStatus]
+    if (!newStatus) return
+
+    const updateData: any = { status: newStatus }
+    if (deliveryStatus === 'delivered') updateData.deliveredAt = new Date(parseInt(timestamp) * 1000)
+    if (deliveryStatus === 'read') updateData.readAt = new Date(parseInt(timestamp) * 1000)
+
+    await prismaWa.whatsAppMessage.updateMany({
+      where: { organizationId, messageId },
+      data: updateData,
+    })
+
     await logWabaActivity(
       organizationId,
       `status_update:${deliveryStatus}`,
       'SUCCESS',
       { messageId, deliveryStatus, recipient_id }
     )
-
-    // TODO: Update WhatsAppMessage.status in DB (sent → delivered → read)
 
   } catch (error) {
     logger.error({ error, organizationId }, 'Error handling WABA status update')

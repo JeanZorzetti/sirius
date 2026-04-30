@@ -54,6 +54,7 @@ interface ChatInterfaceProps {
   organizationId: string
   maxInstances: number
   initialPhone?: string
+  wabaEnabled?: boolean
 }
 
 export function ChatInterface({
@@ -64,6 +65,7 @@ export function ChatInterface({
   organizationId,
   maxInstances,
   initialPhone,
+  wabaEnabled = false,
 }: ChatInterfaceProps) {
   const [selectedContact, setSelectedContact] = useState<Contact | null>(null)
   const [activeView, setActiveView] = useState<'chat' | 'connections'>('chat')
@@ -197,8 +199,36 @@ export function ChatInterface({
     return () => setConfig(null)
   }, [selectedContact, contacts])
 
-  // No connections at all
+  // No Evolution API connections — but WABA (Official API) may be configured
   if (connections.length === 0) {
+    if (wabaEnabled) {
+      return (
+        <div className="flex-1 flex items-center justify-center p-8">
+          <div className="max-w-md w-full space-y-5 text-center">
+            <div className="w-14 h-14 rounded-2xl bg-green-100 dark:bg-green-950 flex items-center justify-center mx-auto">
+              <MessageSquare className="h-7 w-7 text-green-600 dark:text-green-400" />
+            </div>
+            <div className="space-y-2">
+              <h2 className="font-semibold text-foreground text-lg">API Oficial do WhatsApp conectada</h2>
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                Seu número está configurado via Meta Cloud API. As conversas aparecerão aqui assim que você receber ou enviar a primeira mensagem.
+              </p>
+            </div>
+            <div className="rounded-xl border border-green-200 dark:border-green-900 bg-green-50 dark:bg-green-950/40 p-4 text-left space-y-2">
+              <p className="text-xs font-medium text-green-800 dark:text-green-300 uppercase tracking-wide">Status</p>
+              <div className="flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
+                <span className="text-sm text-green-700 dark:text-green-400">Número ativo e aguardando mensagens</span>
+              </div>
+            </div>
+            <p className="text-xs text-muted-foreground">
+              Para testar, envie uma mensagem do seu celular para o número cadastrado na Meta.
+            </p>
+          </div>
+        </div>
+      )
+    }
+
     return (
       <div className="flex-1 flex items-center justify-center p-8">
         <EmptyState

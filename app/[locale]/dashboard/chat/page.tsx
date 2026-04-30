@@ -40,6 +40,8 @@ export default async function ChatPage({
           select: {
             tier: true,
             whatsappInstances: true,
+            wabaEnabled: true,
+            wabaPhoneNumberId: true,
           }
         }
       }
@@ -142,25 +144,43 @@ export default async function ChatPage({
   // Filter only active connections — prevents mixing messages from old/disconnected instances
   const activeConnections = connections.filter((c: any) => c.status === 'CONNECTED')
   const connectionIds = activeConnections.map((c: any) => c.id)
-  const messageFilter = connectionIds.length > 0
-    ? { connectionId: { in: connectionIds } }
-    : null
+  const wabaEnabled = user.organization.wabaEnabled === true && !!user.organization.wabaPhoneNumberId
+  const hasEvolutionConnections = connectionIds.length > 0
 
   let contacts: any[] = []
   try {
-    // No active connections — nothing to show
-    if (!messageFilter) {
+    // No active Evolution connections and WABA not active — nothing to show
+    if (!hasEvolutionConnections && !wabaEnabled) {
       contacts = []
     } else {
-      // 1. Get distinct contactIds via raw SQL — groupBy/distinct on nullable fields
-      // causes INSUFFICIENT_PATH in Prisma 5.x, raw SQL is the safe alternative
-      const rows = await prismaWa.$queryRaw<{ contact_id: string }[]>`
-        SELECT DISTINCT "contactId" AS contact_id
-        FROM "WhatsAppMessage"
-        WHERE "organizationId" = ${user.organizationId}
-          AND "contactId" IS NOT NULL
-          AND "connectionId" = ANY(${connectionIds}::text[])
-      `
+      // 1. Get distinct contactIds — union of Evolution API and WABA messages
+      let rows: { contact_id: string }[] = []
+      if (hasEvolutionConnections && wabaEnabled) {
+        rows = await prismaWa.$queryRaw<{ contact_id: string }[]>`
+          SELECT DISTINCT "contactId" AS contact_id
+          FROM "WhatsAppMessage"
+          WHERE "organizationId" = ${user.organizationId}
+            AND "contactId" IS NOT NULL
+            AND ("connectionId" = ANY(${connectionIds}::text[]) OR "connectionId" IS NULL)
+        `
+      } else if (hasEvolutionConnections) {
+        rows = await prismaWa.$queryRaw<{ contact_id: string }[]>`
+          SELECT DISTINCT "contactId" AS contact_id
+          FROM "WhatsAppMessage"
+          WHERE "organizationId" = ${user.organizationId}
+            AND "contactId" IS NOT NULL
+            AND "connectionId" = ANY(${connectionIds}::text[])
+        `
+      } else {
+        // WABA only
+        rows = await prismaWa.$queryRaw<{ contact_id: string }[]>`
+          SELECT DISTINCT "contactId" AS contact_id
+          FROM "WhatsAppMessage"
+          WHERE "organizationId" = ${user.organizationId}
+            AND "contactId" IS NOT NULL
+            AND "connectionId" IS NULL
+        `
+      }
 
       const contactIds = rows.map(r => r.contact_id)
 
@@ -175,13 +195,20 @@ export default async function ChatPage({
         })
 
         // 3. Fetch last message per contact from WA DB
-        // distinct + orderBy on different fields causes INSUFFICIENT_PATH — dedupe in JS instead
+        const lastMsgWhere: any = {
+          organizationId: user.organizationId,
+          contactId: { in: contactIds },
+        }
+        if (hasEvolutionConnections && wabaEnabled) {
+          lastMsgWhere.OR = [{ connectionId: { in: connectionIds } }, { connectionId: null }]
+        } else if (hasEvolutionConnections) {
+          lastMsgWhere.connectionId = { in: connectionIds }
+        } else {
+          lastMsgWhere.connectionId = null
+        }
+
         const lastMessagesRaw = await prismaWa.whatsAppMessage.findMany({
-          where: {
-            organizationId: user.organizationId,
-            contactId: { in: contactIds },
-            ...messageFilter,
-          },
+          where: lastMsgWhere,
           orderBy: { sentAt: 'desc' },
         })
 
@@ -192,32 +219,77 @@ export default async function ChatPage({
           }
         }
 
-        // 4. Fetch unread counts from WA DB (raw SQL — groupBy on nullable contactId causes INSUFFICIENT_PATH)
-        const unreadRows = await prismaWa.$queryRaw<{ contact_id: string; cnt: bigint }[]>`
-          SELECT "contactId" AS contact_id, COUNT(id)::bigint AS cnt
-          FROM "WhatsAppMessage"
-          WHERE "organizationId" = ${user.organizationId}
-            AND "contactId" = ANY(${contactIds}::text[])
-            AND "connectionId" = ANY(${connectionIds}::text[])
-            AND direction = 'INBOUND'
-            AND "isRead" = false
-          GROUP BY "contactId"
-        `
-        const unreadMap = new Map(unreadRows.map(r => [r.contact_id, Number(r.cnt)]))
+        // 4. Fetch unread counts from WA DB
+        let unreadRows: { contact_id: string; cnt: bigint }[]
+        let totalRows: { contact_id: string; cnt: bigint }[]
 
-        // 5. Fetch total inbound counts from WA DB
-        const totalRows = await prismaWa.$queryRaw<{ contact_id: string; cnt: bigint }[]>`
-          SELECT "contactId" AS contact_id, COUNT(id)::bigint AS cnt
-          FROM "WhatsAppMessage"
-          WHERE "organizationId" = ${user.organizationId}
-            AND "contactId" = ANY(${contactIds}::text[])
-            AND "connectionId" = ANY(${connectionIds}::text[])
-            AND direction = 'INBOUND'
-          GROUP BY "contactId"
-        `
+        if (hasEvolutionConnections && wabaEnabled) {
+          unreadRows = await prismaWa.$queryRaw<{ contact_id: string; cnt: bigint }[]>`
+            SELECT "contactId" AS contact_id, COUNT(id)::bigint AS cnt
+            FROM "WhatsAppMessage"
+            WHERE "organizationId" = ${user.organizationId}
+              AND "contactId" = ANY(${contactIds}::text[])
+              AND ("connectionId" = ANY(${connectionIds}::text[]) OR "connectionId" IS NULL)
+              AND direction = 'INBOUND'
+              AND "isRead" = false
+            GROUP BY "contactId"
+          `
+          totalRows = await prismaWa.$queryRaw<{ contact_id: string; cnt: bigint }[]>`
+            SELECT "contactId" AS contact_id, COUNT(id)::bigint AS cnt
+            FROM "WhatsAppMessage"
+            WHERE "organizationId" = ${user.organizationId}
+              AND "contactId" = ANY(${contactIds}::text[])
+              AND ("connectionId" = ANY(${connectionIds}::text[]) OR "connectionId" IS NULL)
+              AND direction = 'INBOUND'
+            GROUP BY "contactId"
+          `
+        } else if (hasEvolutionConnections) {
+          unreadRows = await prismaWa.$queryRaw<{ contact_id: string; cnt: bigint }[]>`
+            SELECT "contactId" AS contact_id, COUNT(id)::bigint AS cnt
+            FROM "WhatsAppMessage"
+            WHERE "organizationId" = ${user.organizationId}
+              AND "contactId" = ANY(${contactIds}::text[])
+              AND "connectionId" = ANY(${connectionIds}::text[])
+              AND direction = 'INBOUND'
+              AND "isRead" = false
+            GROUP BY "contactId"
+          `
+          totalRows = await prismaWa.$queryRaw<{ contact_id: string; cnt: bigint }[]>`
+            SELECT "contactId" AS contact_id, COUNT(id)::bigint AS cnt
+            FROM "WhatsAppMessage"
+            WHERE "organizationId" = ${user.organizationId}
+              AND "contactId" = ANY(${contactIds}::text[])
+              AND "connectionId" = ANY(${connectionIds}::text[])
+              AND direction = 'INBOUND'
+            GROUP BY "contactId"
+          `
+        } else {
+          // WABA only
+          unreadRows = await prismaWa.$queryRaw<{ contact_id: string; cnt: bigint }[]>`
+            SELECT "contactId" AS contact_id, COUNT(id)::bigint AS cnt
+            FROM "WhatsAppMessage"
+            WHERE "organizationId" = ${user.organizationId}
+              AND "contactId" = ANY(${contactIds}::text[])
+              AND "connectionId" IS NULL
+              AND direction = 'INBOUND'
+              AND "isRead" = false
+            GROUP BY "contactId"
+          `
+          totalRows = await prismaWa.$queryRaw<{ contact_id: string; cnt: bigint }[]>`
+            SELECT "contactId" AS contact_id, COUNT(id)::bigint AS cnt
+            FROM "WhatsAppMessage"
+            WHERE "organizationId" = ${user.organizationId}
+              AND "contactId" = ANY(${contactIds}::text[])
+              AND "connectionId" IS NULL
+              AND direction = 'INBOUND'
+            GROUP BY "contactId"
+          `
+        }
+
+        const unreadMap = new Map(unreadRows.map(r => [r.contact_id, Number(r.cnt)]))
         const totalCountMap = new Map(totalRows.map(r => [r.contact_id, Number(r.cnt)]))
 
-        // 6. Merge CRM contacts with WA data
+        // 5. Merge CRM contacts with WA data
         contacts = rawContacts.map(contact => {
           const lastMsg = lastMessageMap.get(contact.id)
           return {
@@ -253,6 +325,7 @@ export default async function ChatPage({
         organizationId={user.organizationId}
         maxInstances={user.organization.whatsappInstances || 1}
         initialPhone={initialPhone}
+        wabaEnabled={wabaEnabled}
       />
     </div>
   )
