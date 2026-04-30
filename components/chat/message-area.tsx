@@ -1080,8 +1080,6 @@ export function MessageArea({ contact, connections, organizationId, userId, user
 
         if (recordingTimerRef.current) clearInterval(recordingTimerRef.current)
         setIsRecording(false)
-        setRecordingTime(0)
-        audioChunksRef.current = []
 
         // Use the actual recorded mimetype so WhatsApp gets the right format
         const recordedMime = recorder.mimeType || 'audio/webm'
