@@ -64,16 +64,25 @@ export async function GET() {
       return NextResponse.json([])
     }
 
-    // 4. Get distinct contactIds — union of Evolution API and WABA messages
+    // 4. Get contactIds from CRM DB first (source of truth for org membership),
+    // then intersect with WA DB messages. This prevents cross-org contamination
+    // from orphaned messages (no connectionId) left by old whatsmeow/Evolution instances.
+    const orgContacts = await prisma.contact.findMany({
+      where: { organizationId: user.organizationId },
+      select: { id: true },
+    })
+    const orgContactIds = orgContacts.map(c => c.id)
+
     let contactIds: string[] = []
 
-    if (hasEvolutionConnections && wabaActive) {
-      // Both sources: Evolution connections + WABA (null connectionId)
+    if (orgContactIds.length === 0) {
+      // No contacts in org at all
+    } else if (hasEvolutionConnections && wabaActive) {
       const rows = await prismaWa.$queryRaw<{ contact_id: string }[]>`
         SELECT DISTINCT "contactId" AS contact_id
         FROM "WhatsAppMessage"
         WHERE "organizationId" = ${user.organizationId}
-          AND "contactId" IS NOT NULL
+          AND "contactId" = ANY(${orgContactIds}::text[])
           AND (
             "connectionId" = ANY(${connectionIds}::text[])
             OR "connectionId" IS NULL
@@ -81,22 +90,21 @@ export async function GET() {
       `
       contactIds = rows.map(r => r.contact_id)
     } else if (hasEvolutionConnections) {
-      // Evolution API only
       const rows = await prismaWa.$queryRaw<{ contact_id: string }[]>`
         SELECT DISTINCT "contactId" AS contact_id
         FROM "WhatsAppMessage"
         WHERE "organizationId" = ${user.organizationId}
-          AND "contactId" IS NOT NULL
+          AND "contactId" = ANY(${orgContactIds}::text[])
           AND "connectionId" = ANY(${connectionIds}::text[])
       `
       contactIds = rows.map(r => r.contact_id)
     } else {
-      // WABA only (null connectionId)
+      // WABA only — intersect with org's actual contacts to avoid orphaned messages
       const rows = await prismaWa.$queryRaw<{ contact_id: string }[]>`
         SELECT DISTINCT "contactId" AS contact_id
         FROM "WhatsAppMessage"
         WHERE "organizationId" = ${user.organizationId}
-          AND "contactId" IS NOT NULL
+          AND "contactId" = ANY(${orgContactIds}::text[])
           AND "connectionId" IS NULL
       `
       contactIds = rows.map(r => r.contact_id)

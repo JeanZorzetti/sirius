@@ -153,33 +153,42 @@ export default async function ChatPage({
     if (!hasEvolutionConnections && !wabaEnabled) {
       contacts = []
     } else {
-      // 1. Get distinct contactIds — union of Evolution API and WABA messages
+      // 1. Get org's contacts from CRM DB first (source of truth),
+      // then intersect with WA DB to avoid cross-org orphaned messages
+      const orgContacts = await prisma.contact.findMany({
+        where: { organizationId: user.organizationId },
+        select: { id: true },
+      })
+      const orgContactIds = orgContacts.map(c => c.id)
+
       let rows: { contact_id: string }[] = []
-      if (hasEvolutionConnections && wabaEnabled) {
-        rows = await prismaWa.$queryRaw<{ contact_id: string }[]>`
-          SELECT DISTINCT "contactId" AS contact_id
-          FROM "WhatsAppMessage"
-          WHERE "organizationId" = ${user.organizationId}
-            AND "contactId" IS NOT NULL
-            AND ("connectionId" = ANY(${connectionIds}::text[]) OR "connectionId" IS NULL)
-        `
-      } else if (hasEvolutionConnections) {
-        rows = await prismaWa.$queryRaw<{ contact_id: string }[]>`
-          SELECT DISTINCT "contactId" AS contact_id
-          FROM "WhatsAppMessage"
-          WHERE "organizationId" = ${user.organizationId}
-            AND "contactId" IS NOT NULL
-            AND "connectionId" = ANY(${connectionIds}::text[])
-        `
-      } else {
-        // WABA only
-        rows = await prismaWa.$queryRaw<{ contact_id: string }[]>`
-          SELECT DISTINCT "contactId" AS contact_id
-          FROM "WhatsAppMessage"
-          WHERE "organizationId" = ${user.organizationId}
-            AND "contactId" IS NOT NULL
-            AND "connectionId" IS NULL
-        `
+      if (orgContactIds.length > 0) {
+        if (hasEvolutionConnections && wabaEnabled) {
+          rows = await prismaWa.$queryRaw<{ contact_id: string }[]>`
+            SELECT DISTINCT "contactId" AS contact_id
+            FROM "WhatsAppMessage"
+            WHERE "organizationId" = ${user.organizationId}
+              AND "contactId" = ANY(${orgContactIds}::text[])
+              AND ("connectionId" = ANY(${connectionIds}::text[]) OR "connectionId" IS NULL)
+          `
+        } else if (hasEvolutionConnections) {
+          rows = await prismaWa.$queryRaw<{ contact_id: string }[]>`
+            SELECT DISTINCT "contactId" AS contact_id
+            FROM "WhatsAppMessage"
+            WHERE "organizationId" = ${user.organizationId}
+              AND "contactId" = ANY(${orgContactIds}::text[])
+              AND "connectionId" = ANY(${connectionIds}::text[])
+          `
+        } else {
+          // WABA only — intersect with org's contacts to avoid orphaned messages
+          rows = await prismaWa.$queryRaw<{ contact_id: string }[]>`
+            SELECT DISTINCT "contactId" AS contact_id
+            FROM "WhatsAppMessage"
+            WHERE "organizationId" = ${user.organizationId}
+              AND "contactId" = ANY(${orgContactIds}::text[])
+              AND "connectionId" IS NULL
+          `
+        }
       }
 
       const contactIds = rows.map(r => r.contact_id)
