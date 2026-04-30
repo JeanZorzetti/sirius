@@ -2304,3 +2304,21 @@ model SupportAttachment {
   @@index([ticketId])
   @@index([messageId])
 }
+
+
+model InstagramPost {
+  id           String   @id @default(uuid())
+  type         String   // feed | carousel | stories
+  caption      String
+  hashtags     String
+  altText      String
+  imageUrls    String[] // MinIO public URLs
+  slides       String[] // carousel slide texts
+  scheduledFor DateTime
+  status       String   @default("pending") // pending | posted | failed
+  postedAt     DateTime?
+  error        String?
+  createdAt    DateTime @default(now())
+
+  @@index([status, scheduledFor])
+}
