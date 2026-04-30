@@ -36,7 +36,6 @@
   },
   "dependencies": {
     "@ai-sdk/groq": "^3.0.16",
-    "@anthropic-ai/sdk": "^0.54.0",
     "@ai-sdk/react": "^3.0.60",
     "@anthropic-ai/sdk": "^0.91.1",
     "@aparajita/capacitor-biometric-auth": "^10.0.0",
