@@ -52,3 +52,5 @@ next-env.d.ts
 
 # system
 nul
+scripts/instagram-bot/queue.json
+scripts/instagram-bot/.tmp/

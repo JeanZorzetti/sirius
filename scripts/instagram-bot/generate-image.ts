@@ -1,20 +1,11 @@
 import fs from 'fs'
 import path from 'path'
 import https from 'https'
-import http from 'http'
-
-const HF_TOKEN = process.env.HUGGING_FACE_TOKEN
-const HF_API_URL = 'https://api-inference.huggingface.co/models/black-forest-labs/FLUX.1-schnell'
 
 export type ImageRatio = 'square' | 'portrait' // square=1:1 feed/carousel, portrait=9:16 stories
 
-interface HFResponse {
-  error?: string
-}
-
-async function sleep(ms: number) {
-  return new Promise(resolve => setTimeout(resolve, ms))
-}
+// Pollinations.ai — free, no API key, no rate limits for reasonable usage
+const POLLINATIONS_URL = 'https://image.pollinations.ai/prompt'
 
 export async function generateImage(
   prompt: string,
@@ -24,76 +15,39 @@ export async function generateImage(
   const width = ratio === 'square' ? 1080 : 608
   const height = ratio === 'square' ? 1080 : 1080
 
-  const enhancedPrompt = `${prompt}, professional photography, clean background, high quality, 4k, brand colors blue and white, minimalist design`
+  const enhancedPrompt = `${prompt}, professional photography, high quality, 4k, blue and white brand colors, minimalist design`
+  const encodedPrompt = encodeURIComponent(enhancedPrompt)
+  const url = `${POLLINATIONS_URL}/${encodedPrompt}?width=${width}&height=${height}&nologo=true&seed=${Date.now()}`
 
-  const body = JSON.stringify({
-    inputs: enhancedPrompt,
-    parameters: {
-      width,
-      height,
-      num_inference_steps: 4, // FLUX schnell is optimized for 4 steps
-      guidance_scale: 0,
-    },
-  })
+  const imageBuffer = await fetchWithRedirects(url)
 
-  const maxRetries = 3
-  for (let attempt = 1; attempt <= maxRetries; attempt++) {
-    try {
-      const imageBuffer = await fetchImage(body)
-      fs.writeFileSync(outputPath, imageBuffer)
-      console.log(`[generate-image] Saved to ${outputPath}`)
-      return outputPath
-    } catch (err: unknown) {
-      const error = err as Error & { status?: number }
-      if (error.status === 503 && attempt < maxRetries) {
-        // Model loading — wait and retry
-        console.log(`[generate-image] Model loading, waiting 20s... (attempt ${attempt}/${maxRetries})`)
-        await sleep(20000)
-        continue
-      }
-      throw err
-    }
+  // Validate JPEG magic bytes (FF D8 FF)
+  if (imageBuffer[0] !== 0xff || imageBuffer[1] !== 0xd8 || imageBuffer[2] !== 0xff) {
+    throw new Error(`Invalid image from Pollinations (got: ${imageBuffer.slice(0, 20).toString('hex')})`)
   }
 
-  throw new Error('Failed to generate image after max retries')
+  fs.writeFileSync(outputPath, imageBuffer)
+  console.log(`[generate-image] Saved to ${outputPath}`)
+  return outputPath
 }
 
-function fetchImage(body: string): Promise<Buffer> {
+function fetchWithRedirects(url: string, redirects = 5): Promise<Buffer> {
   return new Promise((resolve, reject) => {
-    const urlObj = new URL(HF_API_URL)
-    const options = {
-      hostname: urlObj.hostname,
-      path: urlObj.pathname,
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${HF_TOKEN}`,
-        'Content-Type': 'application/json',
-        'Content-Length': Buffer.byteLength(body),
-      },
-    }
-
-    const req = https.request(options, res => {
+    https.get(url, { headers: { 'User-Agent': 'SiriusCRM-Bot/1.0' } }, res => {
+      if (res.statusCode && res.statusCode >= 300 && res.statusCode < 400 && res.headers.location) {
+        if (redirects === 0) { reject(new Error('Too many redirects')); return }
+        fetchWithRedirects(res.headers.location, redirects - 1).then(resolve).catch(reject)
+        return
+      }
+      if (res.statusCode !== 200) {
+        reject(new Error(`Pollinations returned status ${res.statusCode}`))
+        return
+      }
       const chunks: Buffer[] = []
       res.on('data', chunk => chunks.push(chunk))
-      res.on('end', () => {
-        const buffer = Buffer.concat(chunks)
-        const contentType = res.headers['content-type'] || ''
-
-        if (contentType.includes('application/json')) {
-          const json: HFResponse = JSON.parse(buffer.toString())
-          const err = new Error(json.error || 'HuggingFace API error') as Error & { status?: number }
-          err.status = res.statusCode
-          reject(err)
-        } else {
-          resolve(buffer)
-        }
-      })
+      res.on('end', () => resolve(Buffer.concat(chunks)))
       res.on('error', reject)
-    })
-
-    req.on('error', reject)
-    req.write(body)
-    req.end()
+    }).on('error', reject)
   })
 }
 

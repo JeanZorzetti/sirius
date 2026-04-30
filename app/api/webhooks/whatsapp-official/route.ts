@@ -273,10 +273,17 @@ async function handleStatusUpdate(organizationId: string, status: any) {
   try {
     const { id: messageId, status: deliveryStatus, timestamp, recipient_id } = status
 
-    logger.info(
-      { organizationId, messageId, deliveryStatus, recipient_id },
-      'WhatsApp Official: status update'
-    )
+    if (deliveryStatus === 'failed') {
+      logger.error(
+        { organizationId, messageId, recipient_id, errors: status.errors },
+        'WhatsApp Official: message delivery FAILED'
+      )
+    } else {
+      logger.info(
+        { organizationId, messageId, deliveryStatus, recipient_id },
+        'WhatsApp Official: status update'
+      )
+    }
 
     // Map Meta status to our enum
     const statusMap: Record<string, string> = {
