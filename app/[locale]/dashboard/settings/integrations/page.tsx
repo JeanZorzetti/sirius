@@ -2,7 +2,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { prisma } from '@/lib/prisma'
 import { getSession } from '@/lib/auth'
 import Link from 'next/link'
-import { Workflow, MessageSquare, Calendar, ArrowLeft, CheckCircle2, XCircle, Activity, TrendingUp, AlertCircle, BarChart3, Share2 } from 'lucide-react'
+import { Workflow, MessageSquare, Calendar, ArrowLeft, CheckCircle2, XCircle, Activity, TrendingUp, AlertCircle, BarChart3, Share2, Database } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 
@@ -30,6 +30,8 @@ export default async function IntegrationsPage() {
                     googleAdsCustomerId: true,
                     facebookAdAccountId: true,
                     adsIntegrationEnabled: true,
+                    omieEnabled: true,
+                    omieAppKey: true,
                 }
             }
         }
@@ -177,7 +179,22 @@ export default async function IntegrationsPage() {
             requiresPro: false,
             eventsLast7Days: 0,
             status: 'stable' as const,
-        }
+        },
+        {
+            id: 'omie',
+            name: 'Omie ERP',
+            description: 'Sincronize clientes, pedidos e financeiro com o Omie',
+            icon: Database,
+            iconColor: 'text-orange-500',
+            iconBg: 'bg-orange-500/10',
+            iconShadow: 'shadow-[0_0_10px_rgba(249,115,22,0.15)]',
+            enabled: user.organization.omieEnabled,
+            configured: !!user.organization.omieAppKey,
+            href: '/dashboard/settings/integrations/omie',
+            requiresPro: false,
+            eventsLast7Days: 0,
+            status: 'stable' as const,
+        },
     ]
 
     const activeIntegrations = integrations.filter(i => i.enabled).length

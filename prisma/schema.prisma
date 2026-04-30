@@ -71,6 +71,11 @@ model Organization {
   facebookAvailablePages   String?  @db.Text   // JSON: [{ id, name }] páginas disponíveis
   facebookOAuthState       String?             // Anti-CSRF state temporário
 
+  // Omie ERP Integration
+  omieAppKey    String?
+  omieAppSecret String?
+  omieEnabled   Boolean @default(false)
+
   users                   User[]
   contacts                Contact[]
   deals                   Deal[]
@@ -121,6 +126,7 @@ model Organization {
   notifications     Notification[]
   adsMetrics        AdsMetric[]
   facebookLeads     FacebookLead[]
+  omieFinanceiro    OmieFinanceiro[]
 
   // AGI Sirius relations
   agiConversations   AgiConversation[]
@@ -331,9 +337,16 @@ model Contact {
   // Mobile App (Capacitor)
   visitLogs VisitLog[]
 
+  // Omie ERP integration
+  omieClienteId  String?
+  document       String? // CNPJ/CPF
+  source         String? // "omie" | "facebook_ads" | "manual" | etc
+  omieFinanceiro OmieFinanceiro[]
+
   // Performance indexes
   @@index([organizationId])
   @@index([assignedToId])
+  @@index([omieClienteId])
 }
 
 model Pipeline {
@@ -2321,4 +2334,23 @@ model InstagramPost {
   createdAt    DateTime @default(now())
 
   @@index([status, scheduledFor])
+}
+
+model OmieFinanceiro {
+  id             String   @id @default(uuid())
+  omieId         String   @unique // codigo_lancamento_omie
+  status         String   // "RECEBIDO" | "VENCIDO" | "A_VENCER"
+  valor          Float
+  vencimento     DateTime
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  contactId      String
+  contact        Contact      @relation(fields: [contactId], references: [id], onDelete: Cascade)
+
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@index([organizationId])
+  @@index([contactId])
 }
