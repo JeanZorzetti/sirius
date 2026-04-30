@@ -178,7 +178,7 @@ async function handleIncomingMessage(
     }
 
     // Save message to WA DB (no connectionId — WABA doesn't use WhatsAppConnection records)
-    await prismaWa.whatsAppMessage.create({
+    const saved = await prismaWa.whatsAppMessage.create({
       data: {
         organizationId,
         messageId,
@@ -191,6 +191,7 @@ async function handleIncomingMessage(
         sentAt: timestamp,
       }
     })
+    logger.info({ organizationId, messageDbId: saved.id, contactId: contact.id }, 'WhatsApp Official: message saved to WA DB')
 
     await logWabaActivity(
       organizationId,
