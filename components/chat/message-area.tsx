@@ -1067,9 +1067,10 @@ export function MessageArea({ contact, connections, organizationId, userId, user
   }
 
   const sendRecording = async () => {
-    if (!conn) return
     const recorder = mediaRecorderRef.current
     if (!recorder || recorder.state === 'inactive') return
+
+    if (!wabaEnabled && !conn) return
 
     // Stop recording and wait for final data
     return new Promise<void>((resolve) => {
@@ -1079,6 +1080,14 @@ export function MessageArea({ contact, connections, organizationId, userId, user
 
         if (recordingTimerRef.current) clearInterval(recordingTimerRef.current)
         setIsRecording(false)
+        setRecordingTime(0)
+        audioChunksRef.current = []
+
+        if (wabaEnabled) {
+          toast.error('Envio de áudio não disponível via API Oficial do WhatsApp')
+          resolve()
+          return
+        }
 
         // Use the actual recorded mimetype so WhatsApp gets the right format
         const recordedMime = recorder.mimeType || 'audio/webm'
@@ -1727,13 +1736,13 @@ export function MessageArea({ contact, connections, organizationId, userId, user
               </span>
             </div>
 
-            {(text.trim() || pendingFile) ? (
+            {(text.trim() || pendingFile || wabaEnabled) ? (
               <button
                 type="button"
                 onClick={pendingFile ? sendMedia : send}
-                disabled={sending}
+                disabled={sending || (wabaEnabled && !text.trim() && !pendingFile)}
                 aria-label={pendingFile ? 'Enviar arquivo' : 'Enviar mensagem'}
-                className="h-[42px] w-[42px] rounded-full flex items-center justify-center flex-shrink-0 bg-[#00a884] hover:bg-[#008f72] text-white transition-all duration-200 active:scale-90 focus-visible:ring-2 focus-visible:ring-[#00a884] focus-visible:ring-offset-2"
+                className="h-[42px] w-[42px] rounded-full flex items-center justify-center flex-shrink-0 bg-[#00a884] hover:bg-[#008f72] text-white transition-all duration-200 active:scale-90 focus-visible:ring-2 focus-visible:ring-[#00a884] focus-visible:ring-offset-2 disabled:opacity-40 disabled:cursor-not-allowed"
               >
                 {sending ? (
                   <Loader2 className="h-5 w-5 animate-spin" />
