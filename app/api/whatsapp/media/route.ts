@@ -78,6 +78,11 @@ export async function GET(req: NextRequest) {
       }
     }
 
+    // 3. Not cached — WABA messages (connectionId=null) have no gateway to fetch from
+    if (!message.connectionId) {
+      return NextResponse.json({ error: 'Media not available for WABA messages' }, { status: 404 })
+    }
+
     // 3. Not cached — download from gateway, upload to MinIO
     const connection = await prismaWa.whatsAppConnection.findFirst({
       where: { organizationId: user.organizationId, status: 'CONNECTED' },

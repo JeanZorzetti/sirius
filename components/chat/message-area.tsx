@@ -195,6 +195,12 @@ function getMediaCaption(text: string): string {
 
 // ── Audio Player (WhatsApp-style) ───────────────────────────
 
+function fmtDurationStatic(seconds: number): string {
+  const m = Math.floor(seconds / 60)
+  const s = seconds % 60
+  return `${m}:${s.toString().padStart(2, '0')}`
+}
+
 function fmtAudioTime(s: number): string {
   if (!isFinite(s) || isNaN(s)) return '0:00'
   const m = Math.floor(s / 60)
@@ -203,7 +209,7 @@ function fmtAudioTime(s: number): string {
 }
 
 function AudioPlayer({
-  mediaData, outbound, loading, onFetch, containerRef, knownDuration,
+  mediaData, outbound, loading, onFetch, containerRef, knownDuration, error,
 }: {
   mediaData: string | null
   outbound: boolean
@@ -211,6 +217,7 @@ function AudioPlayer({
   onFetch: () => void
   containerRef: React.RefObject<HTMLDivElement>
   knownDuration?: number
+  error?: boolean
 }) {
   const audioRef = useRef<HTMLAudioElement>(null)
   const [playing, setPlaying] = useState(false)
@@ -292,6 +299,22 @@ function AudioPlayer({
   const progressColor = '#00a884'
 
   if (!isMediaLoaded(mediaData)) {
+    // Sent audio (WABA outbound) — no playback URL available, show duration badge only
+    if (error) {
+      return (
+        <div ref={containerRef}>
+          <div className={cn('flex items-center gap-2.5 rounded-2xl px-3 py-2.5', bg)}>
+            <div className="w-10 h-10 rounded-full bg-[#00a884]/20 flex items-center justify-center flex-shrink-0">
+              <Mic className="h-5 w-5 text-[#00a884]" />
+            </div>
+            <span className="text-[13px] text-[#667781]">
+              {knownDuration ? fmtDurationStatic(knownDuration) : 'Áudio enviado'}
+            </span>
+          </div>
+        </div>
+      )
+    }
+
     return (
       <div ref={containerRef}>
         <div className={cn('flex items-center gap-3 rounded-2xl px-3 py-2.5 min-w-[220px]', bg)}>
@@ -541,7 +564,7 @@ function MediaBubble({ msg, outbound, onOpenLightbox }: { msg: WhatsAppMessage; 
     // Extract duration from text like "[Áudio 0:04]" → 4 seconds
     const durMatch = msg.text?.match(/(\d+):(\d{2})/)
     const knownDuration = durMatch ? parseInt(durMatch[1]) * 60 + parseInt(durMatch[2]) : undefined
-    return <AudioPlayer mediaData={mediaData} outbound={outbound} loading={loading} onFetch={fetchMedia} containerRef={containerRef} knownDuration={knownDuration} />
+    return <AudioPlayer mediaData={mediaData} outbound={outbound} loading={loading} onFetch={fetchMedia} containerRef={containerRef} knownDuration={knownDuration} error={error} />
   }
 
   // Document
