@@ -201,7 +201,8 @@ export function ChatInterface({
 
   // No Evolution API connections — but WABA (Official API) may be configured
   if (connections.length === 0) {
-    if (wabaEnabled) {
+    // WABA with no conversations yet → show waiting state
+    if (wabaEnabled && contacts.length === 0) {
       return (
         <div className="flex-1 flex items-center justify-center p-8">
           <div className="max-w-md w-full space-y-5 text-center">
@@ -229,21 +230,26 @@ export function ChatInterface({
       )
     }
 
-    return (
-      <div className="flex-1 flex items-center justify-center p-8">
-        <EmptyState
-          icon={MessageSquare}
-          title="Nenhuma conexão WhatsApp"
-          description="Conecte seu WhatsApp para começar a atender seus clientes em tempo real."
-          action={
-            <ConnectionManager
-              connections={connections}
-              maxInstances={maxInstances}
-            />
-          }
-        />
-      </div>
-    )
+    // No WABA and no Evolution connections → prompt to connect
+    if (!wabaEnabled) {
+      return (
+        <div className="flex-1 flex items-center justify-center p-8">
+          <EmptyState
+            icon={MessageSquare}
+            title="Nenhuma conexão WhatsApp"
+            description="Conecte seu WhatsApp para começar a atender seus clientes em tempo real."
+            action={
+              <ConnectionManager
+                connections={connections}
+                maxInstances={maxInstances}
+              />
+            }
+          />
+        </div>
+      )
+    }
+
+    // WABA with conversations — fall through to render the chat UI below
   }
 
   return (
@@ -327,7 +333,7 @@ export function ChatInterface({
         </div>
       ) : (
         <>
-          {activeConnections.length === 0 ? (
+          {activeConnections.length === 0 && !wabaEnabled ? (
             <div className="flex-1 flex items-center justify-center p-8">
               <EmptyState
                 icon={WifiOff}
