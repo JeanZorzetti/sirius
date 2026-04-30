@@ -639,22 +639,21 @@ export function EditDealDialog({
                                             <Button type="button" variant="ghost" onClick={() => setConfirmDeleteDeal(true)} className="text-red-500 hover:text-red-600 hover:bg-red-50">
                                                 Excluir Negócio
                                             </Button>
-                                            {(!currentUserId || fullDeal?.userId === currentUserId) && allPipelines.length > 0 && (
-                                                <Button
-                                                    type="button"
-                                                    variant="outline"
-                                                    size="sm"
-                                                    onClick={() => {
-                                                        setTransferPipelineId('')
-                                                        setTransferStageId('')
-                                                        setShowTransferDialog(true)
-                                                    }}
-                                                    className="text-indigo-600 border-indigo-200 hover:bg-indigo-50 hover:text-indigo-700 dark:border-indigo-900/50 dark:text-indigo-400 dark:hover:bg-indigo-900/20"
-                                                >
-                                                    <ArrowLeftRight className="w-3.5 h-3.5 mr-1.5" />
-                                                    Transferir Pipeline
-                                                </Button>
-                                            )}
+                                            <Button
+                                                type="button"
+                                                variant="outline"
+                                                size="sm"
+                                                disabled={allPipelines.length === 0}
+                                                onClick={() => {
+                                                    setTransferPipelineId('')
+                                                    setTransferStageId('')
+                                                    setShowTransferDialog(true)
+                                                }}
+                                                className="text-indigo-600 border-indigo-200 hover:bg-indigo-50 hover:text-indigo-700 dark:border-indigo-900/50 dark:text-indigo-400 dark:hover:bg-indigo-900/20"
+                                            >
+                                                <ArrowLeftRight className="w-3.5 h-3.5 mr-1.5" />
+                                                Transferir Pipeline
+                                            </Button>
                                         </div>
                                         <Button type="submit" disabled={loading} className="bg-indigo-600 hover:bg-indigo-700 text-white">
                                             {loading ? 'Salvando...' : 'Salvar Alterações'}
