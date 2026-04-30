@@ -639,7 +639,7 @@ export function EditDealDialog({
                                             <Button type="button" variant="ghost" onClick={() => setConfirmDeleteDeal(true)} className="text-red-500 hover:text-red-600 hover:bg-red-50">
                                                 Excluir Negócio
                                             </Button>
-                                            {(!currentUserId || fullDeal?.userId === currentUserId) && allPipelines.length > 1 && (
+                                            {(!currentUserId || fullDeal?.userId === currentUserId) && allPipelines.length > 0 && (
                                                 <Button
                                                     type="button"
                                                     variant="outline"
@@ -851,12 +851,9 @@ export function EditDealDialog({
                                 <SelectValue placeholder="Selecione o pipeline" />
                             </SelectTrigger>
                             <SelectContent>
-                                {allPipelines
-                                    .filter(p => !fullDeal?.pipelineId || p.id !== fullDeal.pipelineId)
-                                    .map(p => (
-                                        <SelectItem key={p.id} value={p.id}>{p.name}</SelectItem>
-                                    ))
-                                }
+                                {allPipelines.map(p => (
+                                    <SelectItem key={p.id} value={p.id}>{p.name}</SelectItem>
+                                ))}
                             </SelectContent>
                         </Select>
                     </div>
