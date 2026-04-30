@@ -4,12 +4,37 @@
  * Accepts multipart/form-data with: file, contactId, [ptt], [duration]
  */
 import { NextRequest, NextResponse } from 'next/server'
+import { exec } from 'child_process'
+import { promisify } from 'util'
+import { writeFile, readFile, unlink } from 'fs/promises'
+import { tmpdir } from 'os'
+import { join } from 'path'
 import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { prismaWa } from '@/lib/prisma-wa'
 import { getWhatsAppOfficialClient, normalizePhone } from '@/lib/integrations/whatsapp-official-client'
 import { uploadMedia } from '@/lib/storage'
 import logger from '@/lib/logger'
+
+const execAsync = promisify(exec)
+
+/**
+ * Convert WebM/Opus audio to OGG/Opus using ffmpeg.
+ * Meta accepts audio/ogg but not audio/webm.
+ */
+async function convertWebmToOgg(inputBuffer: Buffer): Promise<Buffer> {
+  const id = `${Date.now()}_${Math.random().toString(36).slice(2, 6)}`
+  const inputPath = join(tmpdir(), `wa_in_${id}.webm`)
+  const outputPath = join(tmpdir(), `wa_out_${id}.ogg`)
+  try {
+    await writeFile(inputPath, inputBuffer)
+    await execAsync(`ffmpeg -y -i "${inputPath}" -c:a libopus -b:a 64k "${outputPath}"`)
+    return await readFile(outputPath)
+  } finally {
+    await unlink(inputPath).catch(() => {})
+    await unlink(outputPath).catch(() => {})
+  }
+}
 
 export async function POST(req: NextRequest) {
   try {
@@ -51,10 +76,26 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'WABA não configurado para esta organização' }, { status: 400 })
     }
 
-    // Use the browser's native mime type — strip codec params Meta doesn't accept
     const rawMime = file.type || 'audio/webm'
-    const mimeType = rawMime.split(';')[0].trim() // "audio/webm;codecs=opus" → "audio/webm"
-    const audioBuffer = Buffer.from(await file.arrayBuffer())
+    const inputMime = rawMime.split(';')[0].trim()
+    let audioBuffer = Buffer.from(await file.arrayBuffer())
+    let mimeType = inputMime
+    let filename = 'audio.ogg'
+
+    // Meta does not accept audio/webm — convert to OGG/Opus via ffmpeg
+    if (inputMime === 'audio/webm' || inputMime.startsWith('audio/webm')) {
+      try {
+        audioBuffer = await convertWebmToOgg(audioBuffer)
+        mimeType = 'audio/ogg'
+        logger.info({ organizationId: user.organizationId }, 'Converted WebM to OGG for Meta upload')
+      } catch (convErr: any) {
+        logger.error({ err: convErr.message }, 'ffmpeg conversion failed, sending raw webm')
+        // Keep original — will likely fail at Meta but better than crashing
+        mimeType = inputMime
+        filename = 'audio.webm'
+      }
+    }
+
     const blob = new Blob([audioBuffer], { type: mimeType })
 
     const now = new Date()
@@ -62,8 +103,6 @@ export async function POST(req: NextRequest) {
     const durationText = duration > 0 ? `[Áudio ${Math.floor(duration / 60)}:${String(duration % 60).padStart(2, '0')}]` : '[Áudio]'
 
     // 1. Upload to Meta servers
-    const ext = mimeType === 'audio/ogg' ? 'ogg' : 'webm'
-    const filename = `audio.${ext}`
     const mediaId = await client.uploadMedia(blob, mimeType, filename)
 
     // 2. Upload to MinIO for local playback (fallback to base64 data URI if MinIO unavailable)
@@ -79,7 +118,6 @@ export async function POST(req: NextRequest) {
       })
     } catch (err: any) {
       logger.error({ err: err.message, stack: err.stack }, 'WABA audio MinIO upload failed — falling back to base64')
-      // Store as data URI so the audio player still works without MinIO
       minioKey = `data:${mimeType};base64,${audioBuffer.toString('base64')}`
     }
 

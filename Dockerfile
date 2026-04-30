@@ -29,7 +29,7 @@ RUN NODE_OPTIONS="--max-old-space-size=2048" node_modules/.bin/next build --webp
 FROM node:20-alpine AS runner
 WORKDIR /app
 
-RUN apk add --no-cache libc6-compat openssl curl && \
+RUN apk add --no-cache libc6-compat openssl curl ffmpeg && \
     addgroup --system --gid 1001 nodejs && \
     adduser --system --uid 1001 nextjs
 
