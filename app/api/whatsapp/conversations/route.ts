@@ -102,6 +102,8 @@ export async function GET() {
       contactIds = rows.map(r => r.contact_id)
     }
 
+    logger.info({ organizationId: user.organizationId, contactIds, hasEvolutionConnections, wabaActive }, 'conversations: contactIds found')
+
     if (contactIds.length === 0) {
       return NextResponse.json([])
     }
