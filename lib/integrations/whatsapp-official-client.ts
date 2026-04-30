@@ -154,6 +154,33 @@ export class WhatsAppOfficialClient {
   }
 
   /**
+   * Download media from Meta servers given a media_id.
+   * Returns the binary buffer and MIME type.
+   */
+  async downloadMedia(mediaId: string): Promise<{ buffer: Buffer; mimeType: string }> {
+    // Step 1: get the download URL from Meta
+    const url = `${GRAPH_API_BASE}/${mediaId}`
+    const metaRes = await fetch(url, {
+      headers: { Authorization: `Bearer ${this.accessToken}` },
+    })
+    const meta = await metaRes.json()
+    if (!metaRes.ok) throw new Error(`Meta media info error: ${meta?.error?.message || metaRes.status}`)
+    if (!meta.url) throw new Error(`Meta media: no url for id ${mediaId}`)
+
+    // Step 2: download the binary
+    const binRes = await fetch(meta.url, {
+      headers: { Authorization: `Bearer ${this.accessToken}` },
+    })
+    if (!binRes.ok) throw new Error(`Meta media download failed: ${binRes.status}`)
+
+    const arrayBuffer = await binRes.arrayBuffer()
+    return {
+      buffer: Buffer.from(arrayBuffer),
+      mimeType: meta.mime_type || 'application/octet-stream',
+    }
+  }
+
+  /**
    * Upload media to Meta servers and return a media_id.
    * Must use multipart/form-data — do NOT set Content-Type manually (fetch handles boundary).
    */

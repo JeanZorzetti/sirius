@@ -20,7 +20,8 @@
 import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { prismaWa } from '@/lib/prisma-wa'
-import { logWabaActivity } from '@/lib/integrations/whatsapp-official-client'
+import { logWabaActivity, getWhatsAppOfficialClient } from '@/lib/integrations/whatsapp-official-client'
+import { uploadMedia } from '@/lib/storage'
 import logger from '@/lib/logger'
 
 // ─── GET: Meta webhook verification challenge ─────────────────────────────────
@@ -119,22 +120,35 @@ async function handleIncomingMessage(
     const messageId: string = message.id
     const timestamp = new Date(parseInt(message.timestamp) * 1000)
 
-    // Extract text content based on message type
+    // Extract text content and media info based on message type
     let text = ''
+    let mediaId: string | null = null
+    let mediaType: string | null = null
+
     if (message.type === 'text') {
       text = message.text?.body ?? ''
     } else if (message.type === 'interactive') {
       text = message.interactive?.button_reply?.title ?? message.interactive?.list_reply?.title ?? ''
     } else if (message.type === 'image') {
       text = message.image?.caption ?? '[Imagem]'
+      mediaId = message.image?.id ?? null
+      mediaType = 'image'
     } else if (message.type === 'video') {
       text = message.video?.caption ?? '[Vídeo]'
+      mediaId = message.video?.id ?? null
+      mediaType = 'video'
     } else if (message.type === 'audio') {
       text = '[Áudio]'
+      mediaId = message.audio?.id ?? null
+      mediaType = 'audio'
     } else if (message.type === 'document') {
       text = message.document?.filename ?? '[Documento]'
+      mediaId = message.document?.id ?? null
+      mediaType = 'document'
     } else if (message.type === 'sticker') {
       text = '[Figurinha]'
+      mediaId = message.sticker?.id ?? null
+      mediaType = 'sticker'
     } else if (message.type === 'location') {
       text = '[Localização]'
     } else {
@@ -189,9 +203,22 @@ async function handleIncomingMessage(
         isRead: false,
         contactId: contact.id,
         sentAt: timestamp,
+        ...(mediaType ? { mediaType } : {}),
       }
     })
     logger.info({ organizationId, messageDbId: saved.id, contactId: contact.id }, 'WhatsApp Official: message saved to WA DB')
+
+    // Download media in background — don't await, webhook must return fast
+    if (mediaId && mediaType) {
+      downloadAndCacheWabaMedia({
+        organizationId,
+        messageDbId: saved.id,
+        messageId,
+        mediaId,
+        mediaType,
+        contactId: contact.id,
+      }).catch(err => logger.error({ err, mediaId }, 'WABA media background download failed'))
+    }
 
     await logWabaActivity(
       organizationId,
@@ -204,6 +231,42 @@ async function handleIncomingMessage(
   } catch (error) {
     logger.error({ error, organizationId }, 'Error handling incoming WABA message')
   }
+}
+
+async function downloadAndCacheWabaMedia({
+  organizationId,
+  messageDbId,
+  messageId,
+  mediaId,
+  mediaType,
+  contactId,
+}: {
+  organizationId: string
+  messageDbId: string
+  messageId: string
+  mediaId: string
+  mediaType: string
+  contactId: string
+}) {
+  const client = await getWhatsAppOfficialClient(organizationId)
+  if (!client) return
+
+  const { buffer, mimeType } = await client.downloadMedia(mediaId)
+
+  const key = await uploadMedia({
+    orgId: organizationId,
+    contactId,
+    messageId: messageDbId,
+    buffer,
+    mimetype: mimeType,
+  })
+
+  await prismaWa.whatsAppMessage.update({
+    where: { id: messageDbId },
+    data: { mediaUrl: key, mediaType },
+  })
+
+  logger.info({ organizationId, messageDbId, mediaType, mimeType }, 'WABA media cached to MinIO')
 }
 
 async function handleStatusUpdate(organizationId: string, status: any) {
