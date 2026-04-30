@@ -51,11 +51,9 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'WABA não configurado para esta organização' }, { status: 400 })
     }
 
-    let mimeType = file.type || 'audio/webm'
-    // Meta does not accept audio/webm — remap to audio/ogg (content is opus either way)
-    if (mimeType === 'audio/webm' || mimeType.startsWith('audio/webm')) {
-      mimeType = 'audio/ogg'
-    }
+    // Use the browser's native mime type — strip codec params Meta doesn't accept
+    const rawMime = file.type || 'audio/webm'
+    const mimeType = rawMime.split(';')[0].trim() // "audio/webm;codecs=opus" → "audio/webm"
     const audioBuffer = Buffer.from(await file.arrayBuffer())
     const blob = new Blob([audioBuffer], { type: mimeType })
 
@@ -64,7 +62,8 @@ export async function POST(req: NextRequest) {
     const durationText = duration > 0 ? `[Áudio ${Math.floor(duration / 60)}:${String(duration % 60).padStart(2, '0')}]` : '[Áudio]'
 
     // 1. Upload to Meta servers
-    const filename = mimeType === 'audio/ogg' ? 'audio.ogg' : (file.name || 'audio.webm')
+    const ext = mimeType === 'audio/ogg' ? 'ogg' : 'webm'
+    const filename = `audio.${ext}`
     const mediaId = await client.uploadMedia(blob, mimeType, filename)
 
     // 2. Upload to MinIO for local playback (fallback to base64 data URI if MinIO unavailable)
