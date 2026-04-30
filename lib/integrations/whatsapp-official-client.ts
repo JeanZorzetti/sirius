@@ -12,7 +12,6 @@
 
 import { prisma } from '@/lib/prisma'
 import { decrypt } from '@/lib/encryption'
-import { whatsappOfficialRateLimit } from './rate-limiter'
 import logger from '@/lib/logger'
 
 const GRAPH_API_VERSION = 'v22.0'
@@ -241,12 +240,6 @@ export async function getWhatsAppOfficialClient(
   }
 
   const accessToken = decrypt(org.wabaAccessToken)
-
-  const rateCheck = await whatsappOfficialRateLimit.limit(organizationId)
-  if (!rateCheck.success) {
-    logger.warn({ organizationId }, 'WhatsApp Official rate limit exceeded')
-    return null
-  }
 
   return new WhatsAppOfficialClient(org.wabaPhoneNumberId, accessToken)
 }
