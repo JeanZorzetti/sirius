@@ -67,7 +67,7 @@ export async function POST(req: NextRequest) {
     const filename = mimeType === 'audio/ogg' ? 'audio.ogg' : (file.name || 'audio.webm')
     const mediaId = await client.uploadMedia(blob, mimeType, filename)
 
-    // 2. Upload to MinIO for local playback (fire-and-forget on failure)
+    // 2. Upload to MinIO for local playback (fallback to base64 data URI if MinIO unavailable)
     let minioKey: string | null = null
     try {
       minioKey = await uploadMedia({
@@ -79,7 +79,9 @@ export async function POST(req: NextRequest) {
         fileName: filename,
       })
     } catch (err: any) {
-      logger.warn({ err: err.message }, 'WABA audio MinIO upload failed — playback unavailable')
+      logger.error({ err: err.message, stack: err.stack }, 'WABA audio MinIO upload failed — falling back to base64')
+      // Store as data URI so the audio player still works without MinIO
+      minioKey = `data:${mimeType};base64,${audioBuffer.toString('base64')}`
     }
 
     // 3. Send via Meta Cloud API
