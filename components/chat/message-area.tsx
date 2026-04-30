@@ -972,7 +972,7 @@ export function MessageArea({ contact, connections, organizationId, userId, user
   }
 
   const sendMedia = async () => {
-    if (!pendingFile || !conn) return
+    if (!pendingFile || (!wabaEnabled && !conn)) return
     const tempId = `temp-media-${Date.now()}`
     const mediaLabel = pendingFile.type.startsWith('image/') ? '[Imagem]'
       : pendingFile.type.startsWith('video/') ? '[Vídeo]'
@@ -1010,11 +1010,12 @@ export function MessageArea({ contact, connections, organizationId, userId, user
     try {
       const formData = new FormData()
       formData.append('file', fileToSend)
-      formData.append('connectionId', conn)
       formData.append('contactId', contact.id)
       if (caption) formData.append('caption', caption)
+      if (!wabaEnabled && conn) formData.append('connectionId', conn)
 
-      const r = await fetch('/api/whatsapp/send-media', {
+      const endpoint = wabaEnabled ? '/api/whatsapp/send-waba-media' : '/api/whatsapp/send-media'
+      const r = await fetch(endpoint, {
         method: 'POST',
         body: formData,
       })

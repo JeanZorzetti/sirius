@@ -1,7 +1,7 @@
 /**
  * POST /api/whatsapp/send-waba-media
- * Send audio/image/video/document via WhatsApp Official API (Meta Cloud API).
- * Accepts multipart/form-data with: file, contactId, [ptt], [duration]
+ * Send audio/image/document via WhatsApp Official API (Meta Cloud API).
+ * Accepts multipart/form-data with: file, contactId, [caption], [ptt], [duration]
  */
 import { NextRequest, NextResponse } from 'next/server'
 import { exec } from 'child_process'
@@ -36,6 +36,12 @@ async function convertWebmToOgg(inputBuffer: Buffer): Promise<Buffer> {
   }
 }
 
+function getMediaCategory(mimeType: string): 'audio' | 'image' | 'document' {
+  if (mimeType.startsWith('audio/')) return 'audio'
+  if (mimeType.startsWith('image/')) return 'image'
+  return 'document'
+}
+
 export async function POST(req: NextRequest) {
   try {
     const session = await getSession()
@@ -55,6 +61,7 @@ export async function POST(req: NextRequest) {
     const formData = await req.formData()
     const file = formData.get('file') as File | null
     const contactId = formData.get('contactId') as string | null
+    const caption = (formData.get('caption') as string | null) || undefined
     const ptt = formData.get('ptt') === 'true'
     const duration = parseInt(formData.get('duration') as string || '0', 10)
 
@@ -76,54 +83,71 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'WABA não configurado para esta organização' }, { status: 400 })
     }
 
-    const rawMime = file.type || 'audio/webm'
+    const rawMime = file.type || 'application/octet-stream'
     const inputMime = rawMime.split(';')[0].trim()
-    let audioBuffer = Buffer.from(await file.arrayBuffer())
+    let fileBuffer = Buffer.from(await file.arrayBuffer())
     let mimeType = inputMime
-    let filename = 'audio.ogg'
+    let filename = file.name || 'file'
 
     // Meta does not accept audio/webm — convert to OGG/Opus via ffmpeg
     if (inputMime === 'audio/webm' || inputMime.startsWith('audio/webm')) {
       try {
-        audioBuffer = await convertWebmToOgg(audioBuffer)
+        fileBuffer = await convertWebmToOgg(fileBuffer)
         mimeType = 'audio/ogg'
+        filename = 'audio.ogg'
         logger.info({ organizationId: user.organizationId }, 'Converted WebM to OGG for Meta upload')
       } catch (convErr: any) {
-        logger.error({ err: convErr.message }, 'ffmpeg conversion failed, sending raw webm')
-        // Keep original — will likely fail at Meta but better than crashing
-        mimeType = inputMime
-        filename = 'audio.webm'
+        logger.error({ err: convErr.message }, 'ffmpeg conversion failed')
+        return NextResponse.json({ error: 'Falha ao converter áudio' }, { status: 500 })
       }
     }
 
-    const blob = new Blob([audioBuffer], { type: mimeType })
+    const mediaCategory = getMediaCategory(mimeType)
+    const blob = new Blob([fileBuffer], { type: mimeType })
 
     const now = new Date()
     const msgId = `waba_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`
-    const durationText = duration > 0 ? `[Áudio ${Math.floor(duration / 60)}:${String(duration % 60).padStart(2, '0')}]` : '[Áudio]'
+
+    let messageText: string
+    if (mediaCategory === 'audio') {
+      messageText = duration > 0
+        ? `[Áudio ${Math.floor(duration / 60)}:${String(duration % 60).padStart(2, '0')}]`
+        : '[Áudio]'
+    } else if (mediaCategory === 'image') {
+      messageText = caption ? `[Imagem] ${caption}` : '[Imagem]'
+    } else {
+      messageText = caption ? `[Documento] ${filename} ${caption}` : `[Documento] ${filename}`
+    }
 
     // 1. Upload to Meta servers
     const mediaId = await client.uploadMedia(blob, mimeType, filename)
 
-    // 2. Upload to MinIO for local playback (fallback to base64 data URI if MinIO unavailable)
+    // 2. Upload to MinIO for local playback
     let minioKey: string | null = null
     try {
       minioKey = await uploadMedia({
         orgId: user.organizationId,
         contactId: contact.id,
         messageId: msgId,
-        buffer: audioBuffer,
+        buffer: fileBuffer,
         mimetype: mimeType,
         fileName: filename,
       })
     } catch (err: any) {
-      logger.error({ err: err.message, stack: err.stack }, 'WABA audio MinIO upload failed — falling back to base64')
-      minioKey = `data:${mimeType};base64,${audioBuffer.toString('base64')}`
+      logger.error({ err: err.message }, 'WABA media MinIO upload failed — falling back to base64')
+      minioKey = `data:${mimeType};base64,${fileBuffer.toString('base64')}`
     }
 
     // 3. Send via Meta Cloud API
     const phone = normalizePhone(contact.phone)
-    const result = await client.sendAudioMessage(phone, mediaId, ptt)
+    let result
+    if (mediaCategory === 'audio') {
+      result = await client.sendAudioMessage(phone, mediaId, ptt)
+    } else if (mediaCategory === 'image') {
+      result = await client.sendImageMessage(phone, mediaId, caption)
+    } else {
+      result = await client.sendDocumentMessage(phone, mediaId, filename, caption)
+    }
     const wamid = result.messages?.[0]?.id ?? null
 
     await prismaWa.$executeRaw`
@@ -138,12 +162,12 @@ export async function POST(req: NextRequest) {
         ${null},
         ${phone},
         ${wamid},
-        ${durationText},
+        ${messageText},
         'OUTBOUND',
         'SENT',
         ${now},
         true,
-        'audio',
+        ${mediaCategory},
         ${minioKey},
         ${null},
         ${null}
@@ -151,17 +175,17 @@ export async function POST(req: NextRequest) {
       ON CONFLICT ("organizationId", "messageId") DO NOTHING
     `
 
-    logger.info({ contactId, wamid, minioKey, organizationId: user.organizationId }, 'WABA audio sent')
+    logger.info({ contactId, wamid, minioKey, mediaCategory, organizationId: user.organizationId }, 'WABA media sent')
 
     return NextResponse.json({
       id: msgId,
-      text: durationText,
+      text: messageText,
       direction: 'OUTBOUND',
       sentAt: now,
       deliveredAt: null,
       readAt: null,
       status: 'SENT',
-      mediaType: 'audio',
+      mediaType: mediaCategory,
       mediaUrl: minioKey,
       replyToId: null,
       replyToText: null,

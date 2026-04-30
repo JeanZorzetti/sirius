@@ -223,6 +223,38 @@ export class WhatsAppOfficialClient {
     )
   }
 
+  async sendImageMessage(to: string, mediaId: string, caption?: string): Promise<WabaSendMessageResponse> {
+    return this.request<WabaSendMessageResponse>(
+      `/${this.phoneNumberId}/messages`,
+      {
+        method: 'POST',
+        body: JSON.stringify({
+          messaging_product: 'whatsapp',
+          recipient_type: 'individual',
+          to: normalizePhone(to),
+          type: 'image',
+          image: { id: mediaId, ...(caption ? { caption } : {}) },
+        }),
+      }
+    )
+  }
+
+  async sendDocumentMessage(to: string, mediaId: string, filename: string, caption?: string): Promise<WabaSendMessageResponse> {
+    return this.request<WabaSendMessageResponse>(
+      `/${this.phoneNumberId}/messages`,
+      {
+        method: 'POST',
+        body: JSON.stringify({
+          messaging_product: 'whatsapp',
+          recipient_type: 'individual',
+          to: normalizePhone(to),
+          type: 'document',
+          document: { id: mediaId, filename, ...(caption ? { caption } : {}) },
+        }),
+      }
+    )
+  }
+
   /**
    * Mark an incoming message as read
    *
