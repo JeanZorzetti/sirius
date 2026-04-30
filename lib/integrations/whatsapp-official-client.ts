@@ -154,6 +154,49 @@ export class WhatsAppOfficialClient {
   }
 
   /**
+   * Upload media to Meta servers and return a media_id.
+   * Must use multipart/form-data — do NOT set Content-Type manually (fetch handles boundary).
+   */
+  async uploadMedia(blob: Blob, mimeType: string, filename: string): Promise<string> {
+    const url = `${GRAPH_API_BASE}/${this.phoneNumberId}/media`
+    const form = new FormData()
+    form.append('messaging_product', 'whatsapp')
+    form.append('type', mimeType)
+    form.append('file', blob, filename)
+
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${this.accessToken}` },
+      body: form,
+    })
+    const data = await response.json()
+    if (!response.ok) {
+      throw new Error(`Meta media upload error: ${data?.error?.message || response.status}`)
+    }
+    return data.id as string
+  }
+
+  /**
+   * Send an audio message using a previously uploaded media_id.
+   * ptt=true makes it render as a voice note (push-to-talk) in WhatsApp.
+   */
+  async sendAudioMessage(to: string, mediaId: string, ptt = true): Promise<WabaSendMessageResponse> {
+    return this.request<WabaSendMessageResponse>(
+      `/${this.phoneNumberId}/messages`,
+      {
+        method: 'POST',
+        body: JSON.stringify({
+          messaging_product: 'whatsapp',
+          recipient_type: 'individual',
+          to: normalizePhone(to),
+          type: 'audio',
+          audio: { id: mediaId },
+        }),
+      }
+    )
+  }
+
+  /**
    * Mark an incoming message as read
    *
    * @param messageId - The wamid of the received message

@@ -1083,12 +1083,6 @@ export function MessageArea({ contact, connections, organizationId, userId, user
         setRecordingTime(0)
         audioChunksRef.current = []
 
-        if (wabaEnabled) {
-          toast.error('Envio de áudio não disponível via API Oficial do WhatsApp')
-          resolve()
-          return
-        }
-
         // Use the actual recorded mimetype so WhatsApp gets the right format
         const recordedMime = recorder.mimeType || 'audio/webm'
         const audioBlob = new Blob(audioChunksRef.current, { type: recordedMime })
@@ -1130,12 +1124,13 @@ export function MessageArea({ contact, connections, organizationId, userId, user
           const ext = recordedMime.includes('ogg') ? 'ogg' : 'webm'
           const formData = new FormData()
           formData.append('file', audioBlob, `audio.${ext}`)
-          formData.append('connectionId', conn)
           formData.append('contactId', contact.id)
           formData.append('ptt', 'true')
           formData.append('duration', String(duration))
+          if (!wabaEnabled) formData.append('connectionId', conn)
 
-          const r = await fetch('/api/whatsapp/send-media', {
+          const endpoint = wabaEnabled ? '/api/whatsapp/send-waba-media' : '/api/whatsapp/send-media'
+          const r = await fetch(endpoint, {
             method: 'POST',
             body: formData,
           })
@@ -1736,13 +1731,13 @@ export function MessageArea({ contact, connections, organizationId, userId, user
               </span>
             </div>
 
-            {(text.trim() || pendingFile || wabaEnabled) ? (
+            {(text.trim() || pendingFile) ? (
               <button
                 type="button"
                 onClick={pendingFile ? sendMedia : send}
-                disabled={sending || (wabaEnabled && !text.trim() && !pendingFile)}
+                disabled={sending}
                 aria-label={pendingFile ? 'Enviar arquivo' : 'Enviar mensagem'}
-                className="h-[42px] w-[42px] rounded-full flex items-center justify-center flex-shrink-0 bg-[#00a884] hover:bg-[#008f72] text-white transition-all duration-200 active:scale-90 focus-visible:ring-2 focus-visible:ring-[#00a884] focus-visible:ring-offset-2 disabled:opacity-40 disabled:cursor-not-allowed"
+                className="h-[42px] w-[42px] rounded-full flex items-center justify-center flex-shrink-0 bg-[#00a884] hover:bg-[#008f72] text-white transition-all duration-200 active:scale-90 focus-visible:ring-2 focus-visible:ring-[#00a884] focus-visible:ring-offset-2"
               >
                 {sending ? (
                   <Loader2 className="h-5 w-5 animate-spin" />
