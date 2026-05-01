@@ -49,6 +49,7 @@ export async function GET(req: NextRequest) {
     // 1. MinIO key — return pre-signed URL
     if (message.mediaUrl && isMinioKey(message.mediaUrl)) {
       const url = await getMediaUrl(message.mediaUrl)
+      logger.info({ messageId, key: message.mediaUrl, url: url.substring(0, 80) }, 'media: returning presigned URL')
       return NextResponse.json({ url, mimetype: message.mediaType || 'application/octet-stream' })
     }
 
