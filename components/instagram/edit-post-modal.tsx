@@ -12,6 +12,8 @@ import { PostTypeIcon, PostTypeLabel } from './post-type-icon'
 import { ImageUploader } from './image-uploader'
 import { PostCommentsThread } from './post-comments-thread'
 import { RecurrencePicker, RecurrenceValue } from './recurrence-picker'
+import { BestTimeHint } from './best-time-hint'
+import type { PostType } from '@/lib/instagram/scheduling'
 
 interface Post {
   id: string
@@ -304,14 +306,22 @@ export function EditPostModal({ postId, onClose, onUpdated, onDeleted }: Props) 
               {tab === 'schedule' && (
                 <>
                   {isEditable ? (
-                    <div className="flex flex-col gap-1.5">
-                      <Label className="text-xs">Data e hora (Brasília)</Label>
-                      <Input
-                        type="datetime-local"
-                        value={scheduledFor}
-                        onChange={e => setScheduledFor(e.target.value)}
-                        className="text-sm"
-                      />
+                    <div className="flex flex-col gap-3">
+                      <div className="flex flex-col gap-1.5">
+                        <Label className="text-xs">Data e hora (Brasília)</Label>
+                        <Input
+                          type="datetime-local"
+                          value={scheduledFor}
+                          onChange={e => setScheduledFor(e.target.value)}
+                          className="text-sm"
+                        />
+                      </div>
+                      {scheduledFor && (
+                        <BestTimeHint
+                          scheduledFor={new Date(scheduledFor).toISOString()}
+                          postType={post.type as PostType}
+                        />
+                      )}
                     </div>
                   ) : (
                     <div className="rounded-lg bg-muted p-3 text-sm">

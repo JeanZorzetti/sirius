@@ -1,5 +1,5 @@
 'use client'
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useEffect } from 'react'
 import { Instagram, RefreshCw, Plus } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { ViewToggle, CalendarView } from './view-toggle'
@@ -71,6 +71,13 @@ export function InstagramDashboard({ initialPosts }: Props) {
   const [preselectedDate, setPreselectedDate] = useState<Date | undefined>(undefined)
   const [editPostId, setEditPostId] = useState<string | null>(null)
   const [search, setSearch] = useState('')
+
+  // On mobile (<768px) default to list view — calendar is too cramped
+  useEffect(() => {
+    if (typeof window !== 'undefined' && window.innerWidth < 768) {
+      setView('list')
+    }
+  }, [])
   const [dateFrom, setDateFrom] = useState('')
   const [dateTo, setDateTo] = useState('')
 
@@ -179,7 +186,9 @@ export function InstagramDashboard({ initialPosts }: Props) {
             <RefreshCw className={`h-4 w-4 mr-2 ${loading ? 'animate-spin' : ''}`} />
             Atualizar
           </Button>
-          <ViewToggle view={view} onChange={setView} />
+          <div className="hidden sm:block">
+            <ViewToggle view={view} onChange={setView} />
+          </div>
           <Button size="sm" onClick={() => { setPreselectedDate(undefined); setModalOpen(true) }}
             className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white">
             <Plus className="h-4 w-4 mr-2" />
@@ -235,19 +244,25 @@ export function InstagramDashboard({ initialPosts }: Props) {
         />
       </div>
 
-      {/* Content */}
-      {view === 'calendar' ? (
-        <PostCalendarView
-          posts={calendarPosts}
-          onPostClick={handlePostClick}
-          onDayClick={handleDayClick}
-        />
-      ) : (
-        <PostListView
-          posts={listPosts}
-          onDelete={deletePost}
-          onEdit={handleEdit}
-        />
+      {/* Content — calendar only on sm+, list always shown on mobile */}
+      {view === 'calendar' && (
+        <div className="hidden sm:block">
+          <PostCalendarView
+            posts={calendarPosts}
+            onPostClick={handlePostClick}
+            onDayClick={handleDayClick}
+          />
+        </div>
+      )}
+
+      {(view === 'list' || view === 'calendar') && (
+        <div className={view === 'calendar' ? 'sm:hidden' : ''}>
+          <PostListView
+            posts={listPosts}
+            onDelete={deletePost}
+            onEdit={handleEdit}
+          />
+        </div>
       )}
 
       <NewPostModal

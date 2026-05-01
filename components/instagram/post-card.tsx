@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { motion } from 'framer-motion'
 import { Trash2, ChevronLeft, ChevronRight, Image as ImageIcon, Edit, Copy, CheckCircle2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
@@ -62,7 +63,12 @@ export function PostCard({
 
   return (
     <>
-      <div
+      <motion.div
+        layout
+        initial={{ opacity: 0, y: 6 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: -6 }}
+        transition={{ duration: 0.18 }}
         className="flex gap-4 rounded-xl border border-border bg-card p-4 hover:border-purple-500/40 transition-all cursor-pointer"
         onClick={() => { setSlideIndex(0); setExpanded(true) }}
       >
@@ -132,7 +138,7 @@ export function PostCard({
             )
           )}
         </div>
-      </div>
+      </motion.div>
 
       {/* Expanded modal */}
       <Dialog open={expanded} onOpenChange={setExpanded}>
