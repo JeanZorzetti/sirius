@@ -2,7 +2,7 @@
 ALTER TABLE "InstagramPost" ADD COLUMN IF NOT EXISTS "organizationId" TEXT;
 
 -- Assign all existing posts to ROI Labs organization
-UPDATE "InstagramPost" SET "organizationId" = 'a372357d-5dd3-41a6-91f7-5692b83810a8' WHERE "organizationId" IS NULL;
+UPDATE "InstagramPost" SET "organizationId" = '09c166c7-b3d9-4eda-bfe3-f5bf83fc3ab5' WHERE "organizationId" IS NULL;
 
 -- Make the column required
 ALTER TABLE "InstagramPost" ALTER COLUMN "organizationId" SET NOT NULL;
