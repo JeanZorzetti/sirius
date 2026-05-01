@@ -6,8 +6,8 @@ import { ViewToggle, CalendarView } from './view-toggle'
 import { PostCalendarView } from './post-calendar-view'
 import { PostListView, ListPost } from './post-list-view'
 import { NewPostModal } from './new-post-modal'
+import { EditPostModal } from './edit-post-modal'
 import { CalendarPost } from './post-calendar-item'
-import { format } from 'date-fns'
 
 interface InstagramPost {
   id: string
@@ -68,6 +68,7 @@ export function InstagramDashboard({ initialPosts }: Props) {
   const [statusFilter, setStatusFilter] = useState<string | null>(null)
   const [typeFilter, setTypeFilter] = useState<string>('all')
   const [preselectedDate, setPreselectedDate] = useState<Date | undefined>(undefined)
+  const [editPostId, setEditPostId] = useState<string | null>(null)
 
   const filtered = posts.filter(p => {
     if (statusFilter && p.status !== statusFilter) return false
@@ -100,8 +101,15 @@ export function InstagramDashboard({ initialPosts }: Props) {
   }
 
   function handleEdit(id: string) {
-    // Sprint 4: edit modal
-    console.log('edit', id)
+    setEditPostId(id)
+  }
+
+  function handlePostUpdated(updated: InstagramPost) {
+    setPosts(prev => prev.map(p => p.id === updated.id ? { ...p, ...updated } : p))
+  }
+
+  function handlePostDeleted(id: string) {
+    setPosts(prev => prev.filter(p => p.id !== id))
   }
 
   function onPostCreated(post: InstagramPost) {
@@ -229,6 +237,13 @@ export function InstagramDashboard({ initialPosts }: Props) {
         onClose={() => { setModalOpen(false); setPreselectedDate(undefined) }}
         onCreated={onPostCreated}
         preselectedDate={preselectedDate}
+      />
+
+      <EditPostModal
+        postId={editPostId}
+        onClose={() => setEditPostId(null)}
+        onUpdated={handlePostUpdated}
+        onDeleted={handlePostDeleted}
       />
     </div>
   )
