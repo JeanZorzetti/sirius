@@ -2,52 +2,65 @@ import fs from 'fs'
 import path from 'path'
 import https from 'https'
 
-export type ImageRatio = 'square' | 'portrait' // square=1:1 feed/carousel, portrait=9:16 stories
+export type ImageRatio = 'square' | 'portrait'
 
-// Pollinations.ai — free, no API key, no rate limits for reasonable usage
-const POLLINATIONS_URL = 'https://image.pollinations.ai/prompt'
+const OPENAI_API_KEY = process.env.OPENAI_API_KEY!
 
 export async function generateImage(
   prompt: string,
   ratio: ImageRatio = 'square',
   outputPath: string
 ): Promise<string> {
-  const width = ratio === 'square' ? 1080 : 608
-  const height = ratio === 'square' ? 1080 : 1080
+  const size = ratio === 'square' ? '1024x1024' : '1024x1792'
 
-  const enhancedPrompt = `${prompt}, professional photography, high quality, 4k, blue and white brand colors, minimalist design`
-  const encodedPrompt = encodeURIComponent(enhancedPrompt)
-  const url = `${POLLINATIONS_URL}/${encodedPrompt}?width=${width}&height=${height}&nologo=true&seed=${Date.now()}`
+  const enhancedPrompt = `${prompt}, professional photography, high quality, 4k, blue and white brand colors, minimalist modern design, no text overlays`
 
-  const imageBuffer = await fetchWithRedirects(url)
+  const body = JSON.stringify({
+    model: 'gpt-image-2',
+    prompt: enhancedPrompt,
+    n: 1,
+    size,
+    quality: 'medium',
+    output_format: 'jpeg',
+  })
 
-  // Validate JPEG magic bytes (FF D8 FF)
-  if (imageBuffer[0] !== 0xff || imageBuffer[1] !== 0xd8 || imageBuffer[2] !== 0xff) {
-    throw new Error(`Invalid image from Pollinations (got: ${imageBuffer.slice(0, 20).toString('hex')})`)
-  }
-
-  fs.writeFileSync(outputPath, imageBuffer)
+  const imageB64 = await fetchImage(body)
+  const buffer = Buffer.from(imageB64, 'base64')
+  fs.writeFileSync(outputPath, buffer)
   console.log(`[generate-image] Saved to ${outputPath}`)
   return outputPath
 }
 
-function fetchWithRedirects(url: string, redirects = 5): Promise<Buffer> {
+function fetchImage(body: string): Promise<string> {
   return new Promise((resolve, reject) => {
-    https.get(url, { headers: { 'User-Agent': 'SiriusCRM-Bot/1.0' } }, res => {
-      if (res.statusCode && res.statusCode >= 300 && res.statusCode < 400 && res.headers.location) {
-        if (redirects === 0) { reject(new Error('Too many redirects')); return }
-        fetchWithRedirects(res.headers.location, redirects - 1).then(resolve).catch(reject)
-        return
-      }
-      if (res.statusCode !== 200) {
-        reject(new Error(`Pollinations returned status ${res.statusCode}`))
-        return
-      }
+    const options = {
+      hostname: 'api.openai.com',
+      path: '/v1/images/generations',
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${OPENAI_API_KEY}`,
+        'Content-Type': 'application/json',
+        'Content-Length': Buffer.byteLength(body),
+      },
+    }
+
+    const req = https.request(options, res => {
       const chunks: Buffer[] = []
       res.on('data', chunk => chunks.push(chunk))
-      res.on('end', () => resolve(Buffer.concat(chunks)))
+      res.on('end', () => {
+        const json = JSON.parse(Buffer.concat(chunks).toString())
+        if (json.error) {
+          reject(new Error(`OpenAI: ${json.error.message}`))
+          return
+        }
+        resolve(json.data[0].b64_json)
+      })
       res.on('error', reject)
-    }).on('error', reject)
+    })
+
+    req.on('error', reject)
+    req.write(body)
+    req.end()
   })
 }
 
@@ -61,6 +74,6 @@ export function cleanupTempImage(filePath: string) {
   try {
     if (fs.existsSync(filePath)) fs.unlinkSync(filePath)
   } catch {
-    // ignore cleanup errors
+    // ignore
   }
 }
