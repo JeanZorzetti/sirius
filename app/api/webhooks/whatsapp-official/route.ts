@@ -248,25 +248,33 @@ async function downloadAndCacheWabaMedia({
   mediaType: string
   contactId: string
 }) {
-  const client = await getWhatsAppOfficialClient(organizationId)
-  if (!client) return
+  try {
+    const client = await getWhatsAppOfficialClient(organizationId)
+    if (!client) {
+      logger.warn({ organizationId, messageDbId }, 'WABA media download skipped: no WABA client')
+      return
+    }
 
-  const { buffer, mimeType } = await client.downloadMedia(mediaId)
+    const { buffer, mimeType } = await client.downloadMedia(mediaId)
+    logger.info({ organizationId, messageDbId, mediaType, mimeType, bytes: buffer.length }, 'WABA media downloaded from Meta')
 
-  const key = await uploadMedia({
-    orgId: organizationId,
-    contactId,
-    messageId: messageDbId,
-    buffer,
-    mimetype: mimeType,
-  })
+    const key = await uploadMedia({
+      orgId: organizationId,
+      contactId,
+      messageId: messageDbId,
+      buffer,
+      mimetype: mimeType,
+    })
 
-  await prismaWa.whatsAppMessage.update({
-    where: { id: messageDbId },
-    data: { mediaUrl: key, mediaType },
-  })
+    await prismaWa.whatsAppMessage.update({
+      where: { id: messageDbId },
+      data: { mediaUrl: key, mediaType },
+    })
 
-  logger.info({ organizationId, messageDbId, mediaType, mimeType }, 'WABA media cached to MinIO')
+    logger.info({ organizationId, messageDbId, mediaType, mimeType, key }, 'WABA media cached to MinIO')
+  } catch (err: any) {
+    logger.error({ err: err.message, stack: err.stack, organizationId, messageDbId, mediaId }, 'WABA media download/cache failed')
+  }
 }
 
 async function handleStatusUpdate(organizationId: string, status: any) {
