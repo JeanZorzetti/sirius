@@ -40,6 +40,36 @@ export async function GET(request: NextRequest) {
   return NextResponse.json(posts)
 }
 
+export async function POST(request: NextRequest) {
+  const session = await getSession()
+  if (!session?.user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+
+  const body = await request.json()
+  const { type, caption, hashtags, altText, imageUrls, slides, scheduledFor, status } = body
+
+  if (!type || !caption || !scheduledFor) {
+    return NextResponse.json({ error: 'type, caption and scheduledFor are required' }, { status: 400 })
+  }
+
+  const post = await prisma.instagramPost.create({
+    data: {
+      organizationId: session.user.organizationId,
+      createdById: session.user.id,
+      type,
+      caption,
+      hashtags: hashtags ?? '',
+      altText: altText ?? '',
+      imageUrls: imageUrls ?? [],
+      slides: slides ?? [],
+      scheduledFor: new Date(scheduledFor),
+      status: status ?? 'draft',
+    },
+    include: { _count: { select: { comments: true } } },
+  })
+
+  return NextResponse.json(post)
+}
+
 export async function DELETE(request: NextRequest) {
   const session = await getSession()
   if (!session?.user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
