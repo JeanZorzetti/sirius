@@ -25,7 +25,15 @@ export interface CalendarPost {
   imageUrls: string[]
 }
 
-export function PostCalendarItem({ post, onClick }: { post: CalendarPost; onClick: (id: string) => void }) {
+export function PostCalendarItem({
+  post,
+  onClick,
+  isDragging = false,
+}: {
+  post: CalendarPost
+  onClick: (id: string) => void
+  isDragging?: boolean
+}) {
   const colors = STATUS_COLORS[post.status] || STATUS_COLORS.draft
   const time = new Date(post.scheduledFor).toLocaleTimeString('pt-BR', {
     hour: '2-digit', minute: '2-digit', timeZone: 'America/Sao_Paulo',
@@ -34,7 +42,9 @@ export function PostCalendarItem({ post, onClick }: { post: CalendarPost; onClic
   return (
     <button
       onClick={(e) => { e.stopPropagation(); onClick(post.id) }}
-      className={`w-full text-left rounded px-1.5 py-0.5 border text-[10px] flex items-center gap-1 truncate hover:opacity-80 transition-opacity ${colors}`}
+      className={`w-full text-left rounded px-1.5 py-0.5 border text-[10px] flex items-center gap-1 truncate transition-all ${colors}
+        ${isDragging ? 'shadow-lg scale-[1.03] ring-1 ring-purple-400/50' : 'hover:opacity-80'}
+      `}
     >
       {post.imageUrls[0] ? (
         // eslint-disable-next-line @next/next/no-img-element
