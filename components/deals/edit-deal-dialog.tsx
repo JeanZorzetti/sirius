@@ -34,7 +34,7 @@ import {
 import { updateDeal, deleteDeal, moveDealToPipeline } from '@/app/[locale]/dashboard/actions'
 import { getDealDetails, addNote, deleteNote, addDealClosing, deleteDealClosing, getDealClosings } from '@/app/[locale]/dashboard/deals/actions'
 import { createContact } from '@/app/[locale]/dashboard/contacts/actions'
-import { Loader2, MessageSquare, History, Tag, Calendar, Send, Trash2, Plus, MessageCircle, DollarSign, Phone, Mail, ArrowLeftRight, Bell, BellOff, Clock, CheckCircle2, AlertCircle } from 'lucide-react'
+import { Loader2, MessageSquare, History, Tag, Calendar, Send, Trash2, Plus, MessageCircle, DollarSign, Phone, Mail, ArrowLeftRight, Bell, BellOff, Clock, CheckCircle2, AlertCircle, ArrowRight, Sparkles } from 'lucide-react'
 import { Textarea } from '@/components/ui/textarea'
 import { ConfirmDialog } from '@/components/ui/confirm-dialog'
 import { toast } from 'sonner'
@@ -1039,8 +1039,6 @@ function NoteItem({ note, onDelete }: { note: any, onDelete: () => void }) {
         </div>
     )
 }
-
-import { ArrowRight, Sparkles, CheckCircle2 } from 'lucide-react'
 
 function ActivityItem({ activity }: { activity: any }) {
     const getIcon = (type: string) => {
