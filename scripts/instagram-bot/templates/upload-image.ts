@@ -24,7 +24,6 @@ export async function uploadToStorage(imagePath: string): Promise<string> {
       Key: filename,
       Body: body,
       ContentType: 'image/jpeg',
-      ACL: 'public-read',
     })
   )
 

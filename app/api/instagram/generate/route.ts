@@ -82,7 +82,7 @@ async function uploadToMinio(b64: string, filename: string): Promise<string> {
     Key: key,
     Body: buffer,
     ContentType: 'image/jpeg',
-    ACL: 'public-read',
+
   }))
   return `${process.env.MINIO_TASKS_ENDPOINT}/task-attachments/${key}`
 }
