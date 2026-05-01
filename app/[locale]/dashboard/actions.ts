@@ -235,6 +235,7 @@ export async function updateDeal(formData: FormData) {
     const productId = formData.get('productId') as string || null
     const closeDateStr = formData.get('closeDate') as string
     const dueDateStr = formData.get('dueDate') as string
+    const dueDateNote = formData.get('dueDateNote') as string | null
 
     if (!dealId || !title || !stageId) {
       return { success: false, error: 'Missing required fields' }
@@ -263,6 +264,7 @@ export async function updateDeal(formData: FormData) {
         productId,
         closeDate,
         dueDate,
+        dueDateNote: dueDateNote || null,
         observations: observations || null,
       },
       include: {

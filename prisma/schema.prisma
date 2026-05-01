@@ -398,7 +398,8 @@ model Deal {
   title     String // "Venda Software X"
   value     Decimal?  @db.Decimal(10, 2)
   closeDate DateTime?
-  dueDate   DateTime? // [NEW] Agenda/Follow-up
+  dueDate     DateTime? // [NEW] Agenda/Follow-up
+  dueDateNote String?   // Descrição do follow-up
   order     Int? // [NEW] Manual sorting in column
 
   // Deal Status (FASE 13 - Analytics)

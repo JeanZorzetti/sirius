@@ -34,7 +34,7 @@ import {
 import { updateDeal, deleteDeal, moveDealToPipeline } from '@/app/[locale]/dashboard/actions'
 import { getDealDetails, addNote, deleteNote, addDealClosing, deleteDealClosing, getDealClosings } from '@/app/[locale]/dashboard/deals/actions'
 import { createContact } from '@/app/[locale]/dashboard/contacts/actions'
-import { Loader2, MessageSquare, History, Tag, Calendar, Send, Trash2, Plus, MessageCircle, DollarSign, Phone, Mail, ArrowLeftRight } from 'lucide-react'
+import { Loader2, MessageSquare, History, Tag, Calendar, Send, Trash2, Plus, MessageCircle, DollarSign, Phone, Mail, ArrowLeftRight, Bell, BellOff, Clock, CheckCircle2, AlertCircle } from 'lucide-react'
 import { Textarea } from '@/components/ui/textarea'
 import { ConfirmDialog } from '@/components/ui/confirm-dialog'
 import { toast } from 'sonner'
@@ -83,6 +83,8 @@ export function EditDealDialog({
     const [loading, setLoading] = useState(false)
     const [fullDeal, setFullDeal] = useState<any>(null)
     const [observations, setObservations] = useState('')
+    const [dueDateNote, setDueDateNote] = useState('')
+    const [dueDateValue, setDueDateValue] = useState('')
     const [fetchingDetails, setFetchingDetails] = useState(false)
     const [newNote, setNewNote] = useState("")
     const [isPending, startTransition] = useTransition()
@@ -128,6 +130,8 @@ export function EditDealDialog({
                         setFullDeal(data)
                         setClosings(closingsData)
                         setObservations(data?.observations || '')
+                        setDueDateNote((data as any)?.dueDateNote || '')
+                        setDueDateValue((data as any)?.dueDate ? new Date((data as any).dueDate).toISOString().slice(0, 16) : '')
                         setSelectedProductId((data as any)?.productId || 'no_product')
                     }
                 })
@@ -613,15 +617,93 @@ export function EditDealDialog({
                                             />
                                         </div>
                                         <div className="space-y-2">
-                                            <Label>Agenda (Follow-up)</Label>
+                                            <Label className="flex items-center gap-1.5">
+                                                <Bell className="w-3.5 h-3.5 text-indigo-500" />
+                                                Agenda (Follow-up)
+                                            </Label>
                                             <Input
                                                 name="dueDate"
                                                 type="datetime-local"
-                                                defaultValue={fullDeal?.dueDate ? new Date(fullDeal.dueDate).toISOString().slice(0, 16) : ''}
+                                                value={dueDateValue}
+                                                onChange={(e) => setDueDateValue(e.target.value)}
                                                 className="bg-zinc-50 dark:bg-zinc-900/50"
                                             />
                                         </div>
                                     </div>
+
+                                    {/* Banner de status do follow-up */}
+                                    {dueDateValue && (() => {
+                                        const due = new Date(dueDateValue)
+                                        const now = new Date()
+                                        const diffMs = due.getTime() - now.getTime()
+                                        const diffH = diffMs / (1000 * 60 * 60)
+                                        const diffD = Math.floor(Math.abs(diffH) / 24)
+                                        const isOverdue = diffMs < 0
+                                        const isToday = !isOverdue && diffH < 24
+                                        const timeLabel = isOverdue
+                                            ? diffD === 0 ? 'há algumas horas' : `há ${diffD} dia${diffD > 1 ? 's' : ''}`
+                                            : diffH < 1 ? 'em menos de 1 hora'
+                                            : diffH < 24 ? `em ${Math.round(diffH)}h`
+                                            : `em ${diffD} dia${diffD > 1 ? 's' : ''}`
+                                        const formattedDate = format(due, "dd/MM 'às' HH:mm", { locale: ptBR })
+
+                                        return (
+                                            <div className={`flex items-start gap-3 rounded-lg border px-3.5 py-3 text-sm transition-all ${
+                                                isOverdue
+                                                    ? 'border-red-200 bg-red-50 dark:border-red-900/40 dark:bg-red-950/30'
+                                                    : isToday
+                                                    ? 'border-amber-200 bg-amber-50 dark:border-amber-900/40 dark:bg-amber-950/30'
+                                                    : 'border-indigo-200 bg-indigo-50 dark:border-indigo-900/40 dark:bg-indigo-950/30'
+                                            }`}>
+                                                <div className="mt-0.5 shrink-0">
+                                                    {isOverdue
+                                                        ? <AlertCircle className="w-4 h-4 text-red-500" />
+                                                        : isToday
+                                                        ? <Clock className="w-4 h-4 text-amber-500" />
+                                                        : <Bell className="w-4 h-4 text-indigo-500" />
+                                                    }
+                                                </div>
+                                                <div className="flex-1 min-w-0">
+                                                    <p className={`font-medium leading-none mb-0.5 ${
+                                                        isOverdue ? 'text-red-700 dark:text-red-400'
+                                                        : isToday ? 'text-amber-700 dark:text-amber-400'
+                                                        : 'text-indigo-700 dark:text-indigo-400'
+                                                    }`}>
+                                                        {isOverdue ? 'Follow-up atrasado' : isToday ? 'Follow-up hoje' : 'Follow-up agendado'}
+                                                        <span className="ml-2 font-normal text-xs opacity-80">{formattedDate} · {timeLabel}</span>
+                                                    </p>
+                                                    {dueDateNote && (
+                                                        <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-1 truncate">{dueDateNote}</p>
+                                                    )}
+                                                </div>
+                                                <button
+                                                    type="button"
+                                                    title="Marcar como concluído"
+                                                    onClick={() => { setDueDateValue(''); setDueDateNote('') }}
+                                                    className="shrink-0 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300 transition-colors"
+                                                >
+                                                    <CheckCircle2 className="w-4 h-4" />
+                                                </button>
+                                            </div>
+                                        )
+                                    })()}
+
+                                    {/* Nota do follow-up — aparece só quando há data */}
+                                    {dueDateValue && (
+                                        <div className="space-y-2">
+                                            <Label className="flex items-center gap-1.5 text-zinc-600 dark:text-zinc-400">
+                                                <MessageCircle className="w-3.5 h-3.5" />
+                                                O que fazer neste follow-up?
+                                            </Label>
+                                            <Input
+                                                name="dueDateNote"
+                                                value={dueDateNote}
+                                                onChange={(e) => setDueDateNote(e.target.value)}
+                                                placeholder="Ex: Ligar para apresentar proposta, enviar contrato..."
+                                                className="bg-zinc-50 dark:bg-zinc-900/50"
+                                            />
+                                        </div>
+                                    )}
 
                                     <div className="space-y-2">
                                         <Label>Observações do Deal</Label>
