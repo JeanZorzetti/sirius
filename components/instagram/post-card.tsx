@@ -1,11 +1,11 @@
 'use client'
 
 import { useState } from 'react'
-import Image from 'next/image'
-import { Trash2, Clock, CheckCircle2, XCircle, LayoutGrid, Image as ImageIcon, Film, X, ChevronLeft, ChevronRight } from 'lucide-react'
+import { Trash2, Clock, CheckCircle2, XCircle, LayoutGrid, Image as ImageIcon, Film, ChevronLeft, ChevronRight } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
-import { Dialog, DialogContent } from '@/components/ui/dialog'
+import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog'
+import { VisuallyHidden } from '@radix-ui/react-visually-hidden'
 
 interface InstagramPost {
   id: string
@@ -60,7 +60,8 @@ export function PostCard({ post, onDelete }: { post: InstagramPost; onDelete: (i
         {/* Thumbnail */}
         <div className="relative shrink-0 w-20 h-20 rounded-lg overflow-hidden bg-muted">
           {post.imageUrls[0] ? (
-            <Image src={post.imageUrls[0]} alt="Preview" fill className="object-cover" unoptimized />
+            // eslint-disable-next-line @next/next/no-img-element
+            <img src={post.imageUrls[0]} alt="Preview" className="w-full h-full object-cover" />
           ) : (
             <div className="flex items-center justify-center h-full">
               <ImageIcon className="h-6 w-6 opacity-30" />
@@ -119,13 +120,13 @@ export function PostCard({ post, onDelete }: { post: InstagramPost; onDelete: (i
           <div className="flex flex-col md:flex-row h-full">
             {/* Image area */}
             <div className="relative bg-black flex items-center justify-center md:w-[60%] min-h-[300px] md:min-h-[500px]">
+              <VisuallyHidden><DialogTitle>Preview do post</DialogTitle></VisuallyHidden>
               {post.imageUrls[slideIndex] ? (
-                <Image
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
                   src={post.imageUrls[slideIndex]}
                   alt={`Slide ${slideIndex + 1}`}
-                  fill
-                  className="object-contain"
-                  unoptimized
+                  className="w-full h-full object-contain"
                 />
               ) : (
                 <ImageIcon className="h-16 w-16 opacity-20" />
