@@ -261,6 +261,11 @@ model User {
   assignedSupportTickets  SupportTicket[]    @relation("SupportTicketAssignee")
   supportMessages         SupportMessage[]
   uploadedAttachments     SupportAttachment[]
+
+  // Instagram Bot
+  instagramPostsCreated  InstagramPost[] @relation("InstagramPostCreator")
+  instagramPostsApproved InstagramPost[] @relation("InstagramPostApprover")
+  instagramPostComments  InstagramPostComment[] @relation("InstagramPostCommentAuthor")
 }
 
 enum Role {
@@ -2330,15 +2335,47 @@ model InstagramPost {
   caption        String
   hashtags       String
   altText        String
-  imageUrls      String[]     // MinIO public URLs
-  slides         String[]     // carousel slide texts
+  imageUrls      String[]
+  slides         String[]
   scheduledFor   DateTime
-  status         String       @default("pending") // pending | posted | failed
+  status         String       @default("draft")   // draft | scheduled | awaiting_approval | posted | failed | cancelled
   postedAt       DateTime?
   error          String?
   createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+
+  // Autoria e aprovação
+  createdById    String?
+  createdBy      User?        @relation("InstagramPostCreator", fields: [createdById], references: [id], onDelete: SetNull)
+  approvedById   String?
+  approvedBy     User?        @relation("InstagramPostApprover", fields: [approvedById], references: [id], onDelete: SetNull)
+  approvedAt     DateTime?
+
+  // Recorrência
+  recurrenceRule       String?
+  recurrenceEndDate    DateTime?
+  recurrenceParentId   String?
+  recurrenceParent     InstagramPost?  @relation("InstagramRecurrence", fields: [recurrenceParentId], references: [id], onDelete: Cascade)
+  recurrenceChildren   InstagramPost[] @relation("InstagramRecurrence")
+
+  comments       InstagramPostComment[]
 
   @@index([organizationId, status, scheduledFor])
+  @@index([recurrenceParentId])
+}
+
+model InstagramPostComment {
+  id        String        @id @default(uuid())
+  postId    String
+  post      InstagramPost @relation(fields: [postId], references: [id], onDelete: Cascade)
+  userId    String
+  user      User          @relation("InstagramPostCommentAuthor", fields: [userId], references: [id], onDelete: Cascade)
+  content   String        @db.Text
+  resolved  Boolean       @default(false)
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+
+  @@index([postId, createdAt])
 }
 
 model OmieFinanceiro {

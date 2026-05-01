@@ -28,6 +28,7 @@ interface Props {
   open: boolean
   onClose: () => void
   onCreated: (post: InstagramPost) => void
+  preselectedDate?: Date
 }
 
 const TOPIC_SUGGESTIONS = [
@@ -39,7 +40,7 @@ const TOPIC_SUGGESTIONS = [
   'Gestão de tempo para corretores de sucesso',
 ]
 
-export function NewPostModal({ open, onClose, onCreated }: Props) {
+export function NewPostModal({ open, onClose, onCreated, preselectedDate }: Props) {
   const [type, setType] = useState<'feed' | 'carousel' | 'stories'>('feed')
   const [topic, setTopic] = useState('')
   const [step, setStep] = useState<'form' | 'preview'>('form')
@@ -71,10 +72,16 @@ export function NewPostModal({ open, onClose, onCreated }: Props) {
     const payload = buildPromptFromTopic(topic, type)
 
     try {
+      const body: Record<string, unknown> = { type, ...payload }
+      if (preselectedDate) {
+        const d = new Date(preselectedDate)
+        d.setHours(9, 0, 0, 0)
+        body.scheduledFor = d.toISOString()
+      }
       const res = await fetch('/api/instagram/generate', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ type, ...payload }),
+        body: JSON.stringify(body),
       })
       const data = await res.json()
       if (!res.ok) throw new Error(data.error || 'Erro ao gerar post')

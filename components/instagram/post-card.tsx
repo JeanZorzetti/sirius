@@ -1,11 +1,13 @@
 'use client'
 
 import { useState } from 'react'
-import { Trash2, Clock, CheckCircle2, XCircle, LayoutGrid, Image as ImageIcon, Film, ChevronLeft, ChevronRight } from 'lucide-react'
+import { Trash2, ChevronLeft, ChevronRight, Image as ImageIcon, Edit, Copy, CheckCircle2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog'
 import { VisuallyHidden } from '@radix-ui/react-visually-hidden'
+import { PostStatusBadge } from './post-status-badge'
+import { PostTypeIcon, PostTypeLabel } from './post-type-icon'
 
 interface InstagramPost {
   id: string
@@ -17,28 +19,25 @@ interface InstagramPost {
   status: string
   postedAt: string | null
   error: string | null
+  _count?: { comments: number }
 }
 
-const TYPE_LABELS: Record<string, { label: string; icon: React.ReactNode }> = {
-  feed:     { label: 'Feed',      icon: <ImageIcon className="h-3 w-3" /> },
-  carousel: { label: 'Carrossel', icon: <LayoutGrid className="h-3 w-3" /> },
-  stories:  { label: 'Stories',   icon: <Film className="h-3 w-3" /> },
-}
-
-const STATUS_CONFIG: Record<string, { label: string; icon: React.ReactNode; class: string }> = {
-  pending: { label: 'Agendado',  icon: <Clock className="h-3 w-3" />,         class: 'bg-yellow-500/10 text-yellow-500 border-yellow-500/20' },
-  posted:  { label: 'Publicado', icon: <CheckCircle2 className="h-3 w-3" />,  class: 'bg-green-500/10 text-green-500 border-green-500/20' },
-  failed:  { label: 'Erro',      icon: <XCircle className="h-3 w-3" />,       class: 'bg-red-500/10 text-red-500 border-red-500/20' },
-}
-
-export function PostCard({ post, onDelete }: { post: InstagramPost; onDelete: (id: string) => void }) {
+export function PostCard({
+  post,
+  onDelete,
+  onEdit,
+}: {
+  post: InstagramPost
+  onDelete: (id: string) => void
+  onEdit: (id: string) => void
+}) {
   const [confirming, setConfirming] = useState(false)
   const [expanded, setExpanded] = useState(false)
   const [slideIndex, setSlideIndex] = useState(0)
+  const [duplicating, setDuplicating] = useState(false)
 
-  const status = STATUS_CONFIG[post.status] || STATUS_CONFIG.pending
-  const typeInfo = TYPE_LABELS[post.type] || TYPE_LABELS.feed
   const scheduledDate = new Date(post.scheduledFor)
+  const isEditable = !['posted'].includes(post.status)
 
   function prevSlide(e: React.MouseEvent) {
     e.stopPropagation()
@@ -50,9 +49,19 @@ export function PostCard({ post, onDelete }: { post: InstagramPost; onDelete: (i
     setSlideIndex(i => Math.min(post.imageUrls.length - 1, i + 1))
   }
 
+  async function handleDuplicate(e: React.MouseEvent) {
+    e.stopPropagation()
+    setDuplicating(true)
+    try {
+      await fetch(`/api/instagram/posts/${post.id}/duplicate`, { method: 'POST' })
+      window.location.reload()
+    } finally {
+      setDuplicating(false)
+    }
+  }
+
   return (
     <>
-      {/* Card */}
       <div
         className="flex gap-4 rounded-xl border border-border bg-card p-4 hover:border-purple-500/40 transition-all cursor-pointer"
         onClick={() => { setSlideIndex(0); setExpanded(true) }}
@@ -78,11 +87,12 @@ export function PostCard({ post, onDelete }: { post: InstagramPost; onDelete: (i
         <div className="flex flex-col gap-1 flex-1 min-w-0">
           <div className="flex items-center gap-2 flex-wrap">
             <Badge variant="outline" className="gap-1 text-xs">
-              {typeInfo.icon} {typeInfo.label}
+              <PostTypeIcon type={post.type} /> <PostTypeLabel type={post.type} />
             </Badge>
-            <Badge variant="outline" className={`gap-1 text-xs ${status.class}`}>
-              {status.icon} {status.label}
-            </Badge>
+            <PostStatusBadge status={post.status} />
+            {post._count && post._count.comments > 0 && (
+              <span className="text-xs text-muted-foreground/60">{post._count.comments} comentário{post._count.comments > 1 ? 's' : ''}</span>
+            )}
             <span className="text-xs text-muted-foreground ml-auto">
               {scheduledDate.toLocaleString('pt-BR', {
                 day: '2-digit', month: '2-digit', year: '2-digit',
@@ -96,22 +106,32 @@ export function PostCard({ post, onDelete }: { post: InstagramPost; onDelete: (i
           {post.error && <p className="text-xs text-red-400 mt-1">Erro: {post.error}</p>}
         </div>
 
-        {/* Delete */}
-        {post.status === 'pending' && (
-          <div className="shrink-0 flex items-start" onClick={e => e.stopPropagation()}>
-            {confirming ? (
-              <div className="flex gap-2">
-                <Button size="sm" variant="destructive" onClick={() => onDelete(post.id)}>Confirmar</Button>
-                <Button size="sm" variant="ghost" onClick={() => setConfirming(false)}>Cancelar</Button>
+        {/* Actions */}
+        <div className="shrink-0 flex items-start gap-1" onClick={e => e.stopPropagation()}>
+          {isEditable && (
+            <Button size="icon" variant="ghost" className="h-8 w-8 text-muted-foreground hover:text-purple-400"
+              onClick={() => onEdit(post.id)}>
+              <Edit className="h-3.5 w-3.5" />
+            </Button>
+          )}
+          <Button size="icon" variant="ghost" className="h-8 w-8 text-muted-foreground hover:text-blue-400"
+            onClick={handleDuplicate} disabled={duplicating}>
+            <Copy className="h-3.5 w-3.5" />
+          </Button>
+          {isEditable && (
+            confirming ? (
+              <div className="flex gap-1">
+                <Button size="sm" variant="destructive" className="h-8" onClick={() => onDelete(post.id)}>Confirmar</Button>
+                <Button size="sm" variant="ghost" className="h-8" onClick={() => setConfirming(false)}>Cancelar</Button>
               </div>
             ) : (
-              <Button size="icon" variant="ghost" className="text-muted-foreground hover:text-red-500"
+              <Button size="icon" variant="ghost" className="h-8 w-8 text-muted-foreground hover:text-red-500"
                 onClick={() => setConfirming(true)}>
-                <Trash2 className="h-4 w-4" />
+                <Trash2 className="h-3.5 w-3.5" />
               </Button>
-            )}
-          </div>
-        )}
+            )
+          )}
+        </div>
       </div>
 
       {/* Expanded modal */}
@@ -123,16 +143,10 @@ export function PostCard({ post, onDelete }: { post: InstagramPost; onDelete: (i
               <VisuallyHidden><DialogTitle>Preview do post</DialogTitle></VisuallyHidden>
               {post.imageUrls[slideIndex] ? (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img
-                  src={post.imageUrls[slideIndex]}
-                  alt={`Slide ${slideIndex + 1}`}
-                  className="w-full h-full object-contain"
-                />
+                <img src={post.imageUrls[slideIndex]} alt={`Slide ${slideIndex + 1}`} className="w-full h-full object-contain" />
               ) : (
                 <ImageIcon className="h-16 w-16 opacity-20" />
               )}
-
-              {/* Carousel nav */}
               {post.imageUrls.length > 1 && (
                 <>
                   <button onClick={prevSlide} disabled={slideIndex === 0}
@@ -157,11 +171,9 @@ export function PostCard({ post, onDelete }: { post: InstagramPost; onDelete: (i
             <div className="flex flex-col gap-4 p-5 md:w-[40%] bg-card overflow-y-auto max-h-[500px]">
               <div className="flex items-center gap-2 flex-wrap">
                 <Badge variant="outline" className="gap-1 text-xs">
-                  {typeInfo.icon} {typeInfo.label}
+                  <PostTypeIcon type={post.type} /> <PostTypeLabel type={post.type} />
                 </Badge>
-                <Badge variant="outline" className={`gap-1 text-xs ${status.class}`}>
-                  {status.icon} {status.label}
-                </Badge>
+                <PostStatusBadge status={post.status} />
               </div>
 
               <div>
@@ -191,12 +203,26 @@ export function PostCard({ post, onDelete }: { post: InstagramPost; onDelete: (i
                 </div>
               )}
 
-              {post.status === 'pending' && (
-                <Button variant="destructive" size="sm" className="mt-auto"
-                  onClick={() => { onDelete(post.id); setExpanded(false) }}>
-                  <Trash2 className="h-4 w-4 mr-2" /> Cancelar post
-                </Button>
+              {post.status === 'posted' && post.postedAt && (
+                <div className="flex items-center gap-1.5 text-xs text-green-400">
+                  <CheckCircle2 className="h-3.5 w-3.5" />
+                  Publicado em {new Date(post.postedAt).toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo' })}
+                </div>
               )}
+
+              <div className="flex flex-col gap-2 mt-auto">
+                {isEditable && (
+                  <Button variant="outline" size="sm" onClick={() => { setExpanded(false); onEdit(post.id) }}>
+                    <Edit className="h-3.5 w-3.5 mr-2" /> Editar post
+                  </Button>
+                )}
+                {isEditable && (
+                  <Button variant="destructive" size="sm"
+                    onClick={() => { onDelete(post.id); setExpanded(false) }}>
+                    <Trash2 className="h-4 w-4 mr-2" /> Cancelar post
+                  </Button>
+                )}
+              </div>
             </div>
           </div>
         </DialogContent>

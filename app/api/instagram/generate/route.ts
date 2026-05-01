@@ -3,6 +3,7 @@ import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import https from 'https'
 import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3'
+import { nextScheduledTime, PostType } from '@/lib/instagram/scheduling'
 
 export const runtime = 'nodejs'
 export const maxDuration = 120
@@ -17,26 +18,6 @@ const s3 = new S3Client({
   },
   forcePathStyle: true,
 })
-
-type PostType = 'feed' | 'carousel' | 'stories'
-
-function nextScheduledTime(type: PostType): Date {
-  const slots: Record<PostType, { days: number[]; hour: number; minute: number }> = {
-    stories:  { days: [1, 2, 3, 4, 5], hour: 8,  minute: 30 },
-    feed:     { days: [2, 3, 4],       hour: 9,  minute: 0  },
-    carousel: { days: [2, 3, 4],       hour: 12, minute: 30 },
-  }
-  const slot = slots[type]
-  const candidate = new Date()
-  candidate.setUTCHours(slot.hour + 3, slot.minute, 0, 0)
-  let attempts = 0
-  while (attempts < 14 && (candidate <= new Date() || !slot.days.includes(candidate.getDay()))) {
-    candidate.setDate(candidate.getDate() + 1)
-    candidate.setUTCHours(slot.hour + 3, slot.minute, 0, 0)
-    attempts++
-  }
-  return candidate
-}
 
 async function generateImageBase64(prompt: string, size: string): Promise<string> {
   const body = JSON.stringify({
@@ -82,7 +63,6 @@ async function uploadToMinio(b64: string, filename: string): Promise<string> {
     Key: key,
     Body: buffer,
     ContentType: 'image/jpeg',
-
   }))
   return `${process.env.MINIO_TASKS_ENDPOINT}/task-attachments/${key}`
 }
@@ -91,7 +71,8 @@ export async function POST(request: NextRequest) {
   const session = await getSession()
   if (!session?.user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
-  const { type, caption, hashtags, altText, imagePrompt, slides } = await request.json()
+  const body = await request.json()
+  const { type, caption, hashtags, altText, imagePrompt, slides, scheduledFor: scheduledForRaw, recurrenceRule, recurrenceEndDate } = body
 
   if (!type || !caption || !imagePrompt) {
     return NextResponse.json({ error: 'Missing required fields' }, { status: 400 })
@@ -114,18 +95,26 @@ export async function POST(request: NextRequest) {
   }
 
   const organizationId = session.user.organizationId
-  const scheduledFor = nextScheduledTime(type as PostType)
+  const scheduledFor = scheduledForRaw ? new Date(scheduledForRaw) : nextScheduledTime(type as PostType)
+  const orgRole = session.user.orgRole || 'MEMBER'
+  const status = scheduledForRaw
+    ? (orgRole === 'OWNER' || orgRole === 'ADMIN' ? 'scheduled' : 'awaiting_approval')
+    : 'draft'
+
   const post = await prisma.instagramPost.create({
     data: {
       organizationId,
       type,
       caption,
-      hashtags,
+      hashtags: hashtags || '',
       altText: altText || '',
       imageUrls,
       slides: slides || [],
       scheduledFor,
-      status: 'pending',
+      status,
+      createdById: session.user.id,
+      ...(recurrenceRule && { recurrenceRule }),
+      ...(recurrenceEndDate && { recurrenceEndDate: new Date(recurrenceEndDate) }),
     },
   })
 

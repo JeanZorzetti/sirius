@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
+import { createNextRecurrenceChild } from '@/lib/instagram/recurrence'
 import logger from '@/lib/logger'
 
 export const runtime = 'nodejs'
@@ -30,9 +31,7 @@ async function postToInstagram(
   async function waitForContainer(containerId: string): Promise<void> {
     const start = Date.now()
     while (Date.now() - start < 60000) {
-      const res = await fetch(
-        `${BASE}/${containerId}?fields=status_code&access_token=${TOKEN}`
-      )
+      const res = await fetch(`${BASE}/${containerId}?fields=status_code&access_token=${TOKEN}`)
       const json = await res.json()
       if (json.status_code === 'FINISHED') return
       if (json.status_code === 'ERROR') throw new Error(`Container ${containerId} failed`)
@@ -42,29 +41,20 @@ async function postToInstagram(
   }
 
   if (type === 'feed') {
-    const containerId = await graphPost(`/${IG_ID}/media`, {
-      image_url: imageUrls[0],
-      caption,
-      alt_text: altText,
-    })
+    const containerId = await graphPost(`/${IG_ID}/media`, { image_url: imageUrls[0], caption, alt_text: altText })
     await waitForContainer(containerId)
     return graphPost(`/${IG_ID}/media_publish`, { creation_id: containerId })
   }
 
   if (type === 'stories') {
-    const containerId = await graphPost(`/${IG_ID}/media`, {
-      image_url: imageUrls[0],
-      media_type: 'IMAGE',
-    })
+    const containerId = await graphPost(`/${IG_ID}/media`, { image_url: imageUrls[0], media_type: 'IMAGE' })
     await waitForContainer(containerId)
     return graphPost(`/${IG_ID}/media_publish`, { creation_id: containerId })
   }
 
   if (type === 'carousel') {
     const childIds = await Promise.all(
-      imageUrls.map(url =>
-        graphPost(`/${IG_ID}/media`, { image_url: url, is_carousel_item: 'true' })
-      )
+      imageUrls.map(url => graphPost(`/${IG_ID}/media`, { image_url: url, is_carousel_item: 'true' }))
     )
     await Promise.all(childIds.map(waitForContainer))
     const carouselId = await graphPost(`/${IG_ID}/media`, {
@@ -95,7 +85,7 @@ export async function GET(request: NextRequest) {
 
   const now = new Date()
   const pending = await prisma.instagramPost.findMany({
-    where: { status: 'pending', scheduledFor: { lte: now } },
+    where: { status: 'scheduled', scheduledFor: { lte: now } },
     orderBy: { scheduledFor: 'asc' },
   })
 
@@ -115,6 +105,13 @@ export async function GET(request: NextRequest) {
         where: { id: post.id },
         data: { status: 'posted', postedAt: new Date() },
       })
+
+      if (post.recurrenceRule) {
+        const parentId = post.recurrenceParentId || post.id
+        await createNextRecurrenceChild(parentId).catch(err =>
+          logger.error(`[instagram-poster] Recurrence failed for ${post.id}: ${err}`)
+        )
+      }
 
       logger.info(`[instagram-poster] Posted ${post.type} id=${post.id}`)
       results.push({ id: post.id, type: post.type, status: 'posted' })

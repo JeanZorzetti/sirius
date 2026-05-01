@@ -1,24 +1,28 @@
 'use client'
-
-import { useState } from 'react'
-import { Instagram, Plus, RefreshCw } from 'lucide-react'
+import { useState, useCallback } from 'react'
+import { Instagram, RefreshCw, Plus } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { PostCard } from './post-card'
+import { ViewToggle, CalendarView } from './view-toggle'
+import { PostCalendarView } from './post-calendar-view'
+import { PostListView, ListPost } from './post-list-view'
 import { NewPostModal } from './new-post-modal'
+import { CalendarPost } from './post-calendar-item'
+import { format } from 'date-fns'
 
 interface InstagramPost {
   id: string
   type: string
   caption: string
   hashtags: string
-  altText: string
+  altText?: string
   imageUrls: string[]
-  slides: string[]
+  slides?: string[]
   scheduledFor: string
   status: string
   postedAt: string | null
   error: string | null
-  createdAt: string
+  createdAt?: string
+  _count?: { comments: number }
 }
 
 interface Props {
@@ -26,58 +30,126 @@ interface Props {
 }
 
 const STATUS_LABELS: Record<string, string> = {
-  pending: 'Agendados',
+  draft: 'Rascunhos',
+  awaiting_approval: 'Aguardando',
+  scheduled: 'Agendados',
   posted: 'Publicados',
   failed: 'Com erro',
+}
+
+const STATUS_COLORS: Record<string, string> = {
+  draft: 'border-gray-500/30 text-gray-400',
+  awaiting_approval: 'border-blue-500/30 text-blue-400',
+  scheduled: 'border-yellow-500/30 text-yellow-400',
+  posted: 'border-green-500/30 text-green-400',
+  failed: 'border-red-500/30 text-red-400',
+}
+
+const STATUS_ACTIVE: Record<string, string> = {
+  draft: 'border-gray-400 bg-gray-500/10',
+  awaiting_approval: 'border-blue-400 bg-blue-500/10',
+  scheduled: 'border-yellow-400 bg-yellow-500/10',
+  posted: 'border-green-400 bg-green-500/10',
+  failed: 'border-red-400 bg-red-500/10',
+}
+
+const TYPE_LABELS: Record<string, string> = {
+  all: 'Todos',
+  feed: 'Feed',
+  carousel: 'Carrossel',
+  stories: 'Stories',
 }
 
 export function InstagramDashboard({ initialPosts }: Props) {
   const [posts, setPosts] = useState<InstagramPost[]>(initialPosts)
   const [modalOpen, setModalOpen] = useState(false)
   const [loading, setLoading] = useState(false)
-  const [activeTab, setActiveTab] = useState<'pending' | 'posted' | 'failed'>('pending')
+  const [view, setView] = useState<CalendarView>('calendar')
+  const [statusFilter, setStatusFilter] = useState<string | null>(null)
+  const [typeFilter, setTypeFilter] = useState<string>('all')
+  const [preselectedDate, setPreselectedDate] = useState<Date | undefined>(undefined)
 
-  const filtered = posts.filter(p => p.status === activeTab)
+  const filtered = posts.filter(p => {
+    if (statusFilter && p.status !== statusFilter) return false
+    if (typeFilter !== 'all' && p.type !== typeFilter) return false
+    return true
+  })
 
-  async function refresh() {
-    setLoading(true)
-    const res = await fetch('/api/instagram/posts')
-    const data = await res.json()
-    setPosts(data)
-    setLoading(false)
-  }
-
-  async function deletePost(id: string) {
-    await fetch('/api/instagram/posts', {
-      method: 'DELETE',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ id }),
-    })
-    setPosts(prev => prev.filter(p => p.id !== id))
-  }
-
-  function onPostCreated(post: InstagramPost) {
-    setPosts(prev => [post, ...prev])
-    setActiveTab('pending')
-  }
-
-  const counts = {
-    pending: posts.filter(p => p.status === 'pending').length,
+  const counts: Record<string, number> = {
+    draft: posts.filter(p => p.status === 'draft').length,
+    awaiting_approval: posts.filter(p => p.status === 'awaiting_approval').length,
+    scheduled: posts.filter(p => p.status === 'scheduled').length,
     posted: posts.filter(p => p.status === 'posted').length,
     failed: posts.filter(p => p.status === 'failed').length,
   }
 
+  async function refresh() {
+    setLoading(true)
+    const params = new URLSearchParams()
+    if (statusFilter) params.set('status', statusFilter)
+    if (typeFilter !== 'all') params.set('type', typeFilter)
+    const res = await fetch(`/api/instagram/posts?${params}`)
+    const data = await res.json()
+    setPosts(Array.isArray(data) ? data : [])
+    setLoading(false)
+  }
+
+  async function deletePost(id: string) {
+    await fetch(`/api/instagram/posts/${id}`, { method: 'DELETE' })
+    setPosts(prev => prev.filter(p => p.id !== id))
+  }
+
+  function handleEdit(id: string) {
+    // Sprint 4: edit modal
+    console.log('edit', id)
+  }
+
+  function onPostCreated(post: InstagramPost) {
+    setPosts(prev => [post, ...prev])
+  }
+
+  const handleDayClick = useCallback((date: Date) => {
+    setPreselectedDate(date)
+    setModalOpen(true)
+  }, [])
+
+  const handlePostClick = useCallback((id: string) => {
+    handleEdit(id)
+  }, [])
+
+  const calendarPosts: CalendarPost[] = filtered.map(p => ({
+    id: p.id,
+    type: p.type,
+    status: p.status,
+    scheduledFor: p.scheduledFor,
+    caption: p.caption,
+    imageUrls: p.imageUrls,
+  }))
+
+  const listPosts: ListPost[] = filtered.map(p => ({
+    id: p.id,
+    type: p.type,
+    caption: p.caption,
+    hashtags: p.hashtags,
+    imageUrls: p.imageUrls,
+    scheduledFor: p.scheduledFor,
+    status: p.status,
+    postedAt: p.postedAt,
+    error: p.error,
+    _count: p._count,
+  }))
+
   return (
-    <div className="flex flex-col gap-6 p-6 max-w-5xl mx-auto">
+    <div className="flex flex-col gap-6 p-6 max-w-6xl mx-auto">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between flex-wrap gap-3">
         <div className="flex items-center gap-3">
           <div className="p-2 rounded-xl bg-gradient-to-br from-purple-500 to-pink-500">
             <Instagram className="h-5 w-5 text-white" />
           </div>
           <div>
             <h1 className="text-xl font-semibold">Instagram Bot</h1>
-            <p className="text-sm text-muted-foreground">Posts gerados por IA para o Sirius CRM</p>
+            <p className="text-sm text-muted-foreground">Agendador de posts para Instagram</p>
           </div>
         </div>
         <div className="flex items-center gap-2">
@@ -85,7 +157,8 @@ export function InstagramDashboard({ initialPosts }: Props) {
             <RefreshCw className={`h-4 w-4 mr-2 ${loading ? 'animate-spin' : ''}`} />
             Atualizar
           </Button>
-          <Button size="sm" onClick={() => setModalOpen(true)}
+          <ViewToggle view={view} onChange={setView} />
+          <Button size="sm" onClick={() => { setPreselectedDate(undefined); setModalOpen(true) }}
             className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white">
             <Plus className="h-4 w-4 mr-2" />
             Novo Post
@@ -93,45 +166,69 @@ export function InstagramDashboard({ initialPosts }: Props) {
         </div>
       </div>
 
-      {/* Stats */}
-      <div className="grid grid-cols-3 gap-4">
-        {(['pending', 'posted', 'failed'] as const).map(status => (
+      {/* Stats bar */}
+      <div className="grid grid-cols-2 sm:grid-cols-5 gap-2">
+        {(Object.keys(STATUS_LABELS) as string[]).map(status => (
           <button
             key={status}
-            onClick={() => setActiveTab(status)}
-            className={`rounded-xl border p-4 text-left transition-all ${
-              activeTab === status
-                ? 'border-purple-500 bg-purple-500/10'
-                : 'border-border hover:border-purple-500/50'
+            onClick={() => setStatusFilter(prev => prev === status ? null : status)}
+            className={`rounded-xl border p-3 text-left transition-all ${
+              statusFilter === status
+                ? STATUS_ACTIVE[status]
+                : `border-border hover:${STATUS_ACTIVE[status]}`
             }`}
           >
-            <div className="text-2xl font-bold">{counts[status]}</div>
-            <div className="text-sm text-muted-foreground">{STATUS_LABELS[status]}</div>
+            <div className={`text-xl font-bold ${STATUS_COLORS[status]}`}>{counts[status]}</div>
+            <div className="text-xs text-muted-foreground mt-0.5">{STATUS_LABELS[status]}</div>
           </button>
         ))}
       </div>
 
-      {/* Posts list */}
-      <div className="flex flex-col gap-4">
-        {filtered.length === 0 ? (
-          <div className="text-center py-16 text-muted-foreground border border-dashed rounded-xl">
-            <Instagram className="h-10 w-10 mx-auto mb-3 opacity-30" />
-            <p className="font-medium">Nenhum post {STATUS_LABELS[activeTab].toLowerCase()}</p>
-            {activeTab === 'pending' && (
-              <p className="text-sm mt-1">Clique em <strong>Novo Post</strong> para criar um</p>
-            )}
-          </div>
-        ) : (
-          filtered.map(post => (
-            <PostCard key={post.id} post={post} onDelete={deletePost} />
-          ))
+      {/* Type filters */}
+      <div className="flex items-center gap-2">
+        {Object.entries(TYPE_LABELS).map(([value, label]) => (
+          <button
+            key={value}
+            onClick={() => setTypeFilter(value)}
+            className={`text-xs px-3 py-1.5 rounded-full border transition-all ${
+              typeFilter === value
+                ? 'border-purple-500 bg-purple-500/10 text-purple-400'
+                : 'border-border text-muted-foreground hover:border-purple-500/50'
+            }`}
+          >
+            {label}
+          </button>
+        ))}
+        {(statusFilter || typeFilter !== 'all') && (
+          <button
+            onClick={() => { setStatusFilter(null); setTypeFilter('all') }}
+            className="text-xs px-3 py-1.5 rounded-full border border-red-500/30 text-red-400 hover:bg-red-500/10 transition-all ml-auto"
+          >
+            Limpar filtros
+          </button>
         )}
       </div>
 
+      {/* Content */}
+      {view === 'calendar' ? (
+        <PostCalendarView
+          posts={calendarPosts}
+          onPostClick={handlePostClick}
+          onDayClick={handleDayClick}
+        />
+      ) : (
+        <PostListView
+          posts={listPosts}
+          onDelete={deletePost}
+          onEdit={handleEdit}
+        />
+      )}
+
       <NewPostModal
         open={modalOpen}
-        onClose={() => setModalOpen(false)}
+        onClose={() => { setModalOpen(false); setPreselectedDate(undefined) }}
         onCreated={onPostCreated}
+        preselectedDate={preselectedDate}
       />
     </div>
   )
