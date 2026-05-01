@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
+import { getUserRole } from '@/lib/instagram/get-user-role'
 
 export const runtime = 'nodejs'
 
@@ -19,7 +20,8 @@ export async function DELETE(_req: NextRequest, { params }: { params: Promise<{ 
   const { commentId } = await params
   const comment = await prisma.instagramPostComment.findUnique({ where: { id: commentId } })
   if (!comment) return NextResponse.json({ error: 'Not found' }, { status: 404 })
-  if (comment.userId !== session.user.id && session.user.orgRole !== 'OWNER' && session.user.orgRole !== 'ADMIN') {
+  const userRole = await getUserRole(session.user.id)
+  if (comment.userId !== session.user.id && userRole !== 'OWNER' && userRole !== 'ADMIN') {
     return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
   }
   await prisma.instagramPostComment.delete({ where: { id: commentId } })

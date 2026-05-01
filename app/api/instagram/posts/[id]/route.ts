@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { canEdit, canDelete } from '@/lib/instagram/post-permissions'
+import { getUserRole } from '@/lib/instagram/get-user-role'
 
 export const runtime = 'nodejs'
 
@@ -31,7 +32,8 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
   const post = await prisma.instagramPost.findFirst({ where: { id, organizationId: session.user.organizationId } })
   if (!post) return NextResponse.json({ error: 'Not found' }, { status: 404 })
 
-  const allowed = canEdit({ userRole: session.user.orgRole || 'MEMBER', userId: session.user.id, post })
+  const userRole = await getUserRole(session.user.id)
+  const allowed = canEdit({ userRole, userId: session.user.id, post })
   if (!allowed) return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
 
   const body = await req.json()
@@ -61,7 +63,8 @@ export async function DELETE(_req: NextRequest, { params }: { params: Promise<{ 
   const post = await prisma.instagramPost.findFirst({ where: { id, organizationId: session.user.organizationId } })
   if (!post) return NextResponse.json({ error: 'Not found' }, { status: 404 })
 
-  const allowed = canDelete({ userRole: session.user.orgRole || 'MEMBER', userId: session.user.id, post })
+  const userRole2 = await getUserRole(session.user.id)
+  const allowed = canDelete({ userRole: userRole2, userId: session.user.id, post })
   if (!allowed) return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
 
   await prisma.instagramPost.delete({ where: { id } })

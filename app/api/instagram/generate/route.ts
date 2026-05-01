@@ -4,6 +4,7 @@ import { prisma } from '@/lib/prisma'
 import https from 'https'
 import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3'
 import { nextScheduledTime, PostType } from '@/lib/instagram/scheduling'
+import { getUserRole } from '@/lib/instagram/get-user-role'
 
 export const runtime = 'nodejs'
 export const maxDuration = 120
@@ -96,7 +97,7 @@ export async function POST(request: NextRequest) {
 
   const organizationId = session.user.organizationId
   const scheduledFor = scheduledForRaw ? new Date(scheduledForRaw) : nextScheduledTime(type as PostType)
-  const orgRole = session.user.orgRole || 'MEMBER'
+  const orgRole = await getUserRole(session.user.id)
   const status = scheduledForRaw
     ? (orgRole === 'OWNER' || orgRole === 'ADMIN' ? 'scheduled' : 'awaiting_approval')
     : 'draft'
