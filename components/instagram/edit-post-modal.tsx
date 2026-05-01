@@ -10,6 +10,8 @@ import { Loader2, Trash2, CheckCircle2, Zap, Edit3, Image as ImageIcon } from 'l
 import { PostStatusBadge } from './post-status-badge'
 import { PostTypeIcon, PostTypeLabel } from './post-type-icon'
 import { ImageUploader } from './image-uploader'
+import { PostCommentsThread } from './post-comments-thread'
+import { RecurrencePicker, RecurrenceValue } from './recurrence-picker'
 
 interface Post {
   id: string
@@ -22,6 +24,9 @@ interface Post {
   status: string
   postedAt: string | null
   error: string | null
+  recurrenceRule?: string | null
+  recurrenceEndDate?: string | null
+  _count?: { comments: number }
 }
 
 interface Props {
@@ -31,7 +36,15 @@ interface Props {
   onDeleted: (id: string) => void
 }
 
-type Tab = 'content' | 'images' | 'schedule'
+type Tab = 'content' | 'images' | 'schedule' | 'recurrence' | 'comments'
+
+const TAB_LABELS: Record<Tab, string> = {
+  content: 'Conteúdo',
+  images: 'Imagens',
+  schedule: 'Agendamento',
+  recurrence: 'Recorrência',
+  comments: 'Comentários',
+}
 
 export function EditPostModal({ postId, onClose, onUpdated, onDeleted }: Props) {
   const [post, setPost] = useState<Post | null>(null)
@@ -50,6 +63,7 @@ export function EditPostModal({ postId, onClose, onUpdated, onDeleted }: Props) 
   const [altText, setAltText] = useState('')
   const [imageUrls, setImageUrls] = useState<string[]>([])
   const [scheduledFor, setScheduledFor] = useState('')
+  const [recurrence, setRecurrence] = useState<RecurrenceValue>({ rule: 'NONE', endDate: '' })
 
   const open = !!postId
 
@@ -66,12 +80,15 @@ export function EditPostModal({ postId, onClose, onUpdated, onDeleted }: Props) 
         setHashtags(data.hashtags ?? '')
         setAltText(data.altText ?? '')
         setImageUrls(data.imageUrls ?? [])
-        // Format for datetime-local input (YYYY-MM-DDThh:mm)
         const d = new Date(data.scheduledFor)
         const pad = (n: number) => String(n).padStart(2, '0')
         setScheduledFor(
           `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`
         )
+        setRecurrence({
+          rule: (data.recurrenceRule ?? 'NONE') as RecurrenceValue['rule'],
+          endDate: data.recurrenceEndDate ? data.recurrenceEndDate.slice(0, 10) : '',
+        })
         setTab('content')
       })
       .catch(() => setError('Erro ao carregar post'))
@@ -94,6 +111,8 @@ export function EditPostModal({ postId, onClose, onUpdated, onDeleted }: Props) 
           altText,
           imageUrls,
           scheduledFor: scheduledFor ? new Date(scheduledFor).toISOString() : undefined,
+          recurrenceRule: recurrence.rule === 'NONE' ? null : recurrence.rule,
+          recurrenceEndDate: recurrence.endDate ? new Date(recurrence.endDate).toISOString() : null,
         }),
       })
       if (!res.ok) {
@@ -101,7 +120,7 @@ export function EditPostModal({ postId, onClose, onUpdated, onDeleted }: Props) 
         throw new Error(d.error || 'Erro ao salvar')
       }
       const updated = await res.json()
-      onUpdated({ ...updated, scheduledFor: updated.scheduledFor, postedAt: updated.postedAt })
+      onUpdated(updated)
       onClose()
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Erro desconhecido')
@@ -132,7 +151,7 @@ export function EditPostModal({ postId, onClose, onUpdated, onDeleted }: Props) 
       if (!res.ok) throw new Error('Sem permissão para aprovar')
       const updated = await res.json()
       setPost(prev => prev ? { ...prev, status: updated.status } : null)
-      onUpdated({ ...updated, scheduledFor: updated.scheduledFor, postedAt: updated.postedAt })
+      onUpdated(updated)
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Erro ao aprovar')
     } finally {
@@ -147,7 +166,7 @@ export function EditPostModal({ postId, onClose, onUpdated, onDeleted }: Props) 
       const res = await fetch(`/api/instagram/posts/${post.id}/publish-now`, { method: 'POST' })
       if (!res.ok) throw new Error('Sem permissão para publicar agora')
       const updated = await res.json()
-      onUpdated({ ...updated, scheduledFor: updated.scheduledFor, postedAt: updated.postedAt })
+      onUpdated(updated)
       onClose()
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Erro ao publicar')
@@ -163,6 +182,10 @@ export function EditPostModal({ postId, onClose, onUpdated, onDeleted }: Props) 
   }) : ''
 
   const maxImages = post?.type === 'carousel' ? 10 : 1
+  const showComments = post && !['posted'].includes(post.status)
+  const commentCount = post?._count?.comments ?? 0
+
+  const tabs: Tab[] = ['content', 'images', 'schedule', 'recurrence', ...(showComments ? ['comments' as Tab] : [])]
 
   return (
     <Dialog open={open} onOpenChange={v => !v && onClose()}>
@@ -191,28 +214,33 @@ export function EditPostModal({ postId, onClose, onUpdated, onDeleted }: Props) 
         {!loading && post && (
           <div className="flex flex-col">
             {/* Tabs */}
-            <div className="flex border-b border-border px-5 mt-4">
-              {(['content', 'images', 'schedule'] as Tab[]).map(t => (
+            <div className="flex border-b border-border px-5 mt-4 overflow-x-auto">
+              {tabs.map(t => (
                 <button
                   key={t}
                   onClick={() => setTab(t)}
-                  className={`px-3 py-2 text-sm border-b-2 transition-colors -mb-px
+                  className={`px-3 py-2 text-sm border-b-2 transition-colors -mb-px whitespace-nowrap flex items-center gap-1.5
                     ${tab === t ? 'border-purple-500 text-purple-400' : 'border-transparent text-muted-foreground hover:text-foreground'}
                   `}
                 >
-                  {t === 'content' ? 'Conteúdo' : t === 'images' ? 'Imagens' : 'Agendamento'}
+                  {TAB_LABELS[t]}
+                  {t === 'comments' && commentCount > 0 && (
+                    <span className="bg-purple-500/20 text-purple-400 text-[10px] rounded-full px-1.5 leading-4">
+                      {commentCount}
+                    </span>
+                  )}
                 </button>
               ))}
             </div>
 
-            <div className="p-5 flex flex-col gap-4 max-h-[50vh] overflow-y-auto">
+            <div className="p-5 flex flex-col gap-4 max-h-[52vh] overflow-y-auto">
               {/* Content tab */}
               {tab === 'content' && (
                 <>
                   <div className="flex flex-col gap-1.5">
-                    <Label className="text-xs">
+                    <Label className="text-xs flex justify-between">
                       Legenda
-                      <span className="ml-auto text-muted-foreground font-normal float-right">{caption.length}/2200</span>
+                      <span className="text-muted-foreground font-normal">{caption.length}/2200</span>
                     </Label>
                     <Textarea
                       value={caption}
@@ -248,30 +276,28 @@ export function EditPostModal({ postId, onClose, onUpdated, onDeleted }: Props) 
 
               {/* Images tab */}
               {tab === 'images' && (
-                <>
-                  {isEditable ? (
-                    <ImageUploader
-                      postType={post.type}
-                      urls={imageUrls}
-                      onChange={setImageUrls}
-                      maxImages={maxImages}
-                    />
-                  ) : (
-                    <div className="flex flex-wrap gap-2">
-                      {imageUrls.map((url, i) => (
-                        <div key={i} className="w-24 h-24 rounded-lg overflow-hidden border border-border">
-                          {/* eslint-disable-next-line @next/next/no-img-element */}
-                          <img src={url} alt="" className="w-full h-full object-cover" />
-                        </div>
-                      ))}
-                      {imageUrls.length === 0 && (
-                        <div className="flex items-center justify-center w-24 h-24 rounded-lg border border-dashed border-border">
-                          <ImageIcon className="h-6 w-6 text-muted-foreground/40" />
-                        </div>
-                      )}
-                    </div>
-                  )}
-                </>
+                isEditable ? (
+                  <ImageUploader
+                    postType={post.type}
+                    urls={imageUrls}
+                    onChange={setImageUrls}
+                    maxImages={maxImages}
+                  />
+                ) : (
+                  <div className="flex flex-wrap gap-2">
+                    {imageUrls.map((url, i) => (
+                      <div key={i} className="w-24 h-24 rounded-lg overflow-hidden border border-border">
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img src={url} alt="" className="w-full h-full object-cover" />
+                      </div>
+                    ))}
+                    {imageUrls.length === 0 && (
+                      <div className="flex items-center justify-center w-24 h-24 rounded-lg border border-dashed border-border">
+                        <ImageIcon className="h-6 w-6 text-muted-foreground/40" />
+                      </div>
+                    )}
+                  </div>
+                )
               )}
 
               {/* Schedule tab */}
@@ -308,6 +334,22 @@ export function EditPostModal({ postId, onClose, onUpdated, onDeleted }: Props) 
                   )}
                 </>
               )}
+
+              {/* Recurrence tab */}
+              {tab === 'recurrence' && (
+                <RecurrencePicker
+                  value={recurrence}
+                  onChange={setRecurrence}
+                  disabled={!isEditable}
+                />
+              )}
+
+              {/* Comments tab */}
+              {tab === 'comments' && (
+                <div className="h-[320px]">
+                  <PostCommentsThread postId={post.id} />
+                </div>
+              )}
             </div>
 
             {/* Error */}
@@ -315,33 +357,30 @@ export function EditPostModal({ postId, onClose, onUpdated, onDeleted }: Props) 
 
             {/* Actions footer */}
             <div className="flex items-center gap-2 px-5 pb-5 pt-3 border-t border-border flex-wrap">
-              {/* Approve (draft / awaiting_approval) */}
               {['draft', 'awaiting_approval'].includes(post.status) && (
                 <Button size="sm" onClick={handleApprove} disabled={approving}
                   className="bg-blue-600 hover:bg-blue-700 text-white">
-                  {approving ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <CheckCircle2 className="h-3.5 w-3.5 mr-1.5" />}
+                  {approving ? <Loader2 className="h-3.5 w-3.5 animate-spin mr-1.5" /> : <CheckCircle2 className="h-3.5 w-3.5 mr-1.5" />}
                   Aprovar
                 </Button>
               )}
 
-              {/* Publish now (scheduled / failed) */}
               {['scheduled', 'failed'].includes(post.status) && (
                 <Button size="sm" onClick={handlePublishNow} disabled={publishingNow}
                   className="bg-green-600 hover:bg-green-700 text-white">
-                  {publishingNow ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Zap className="h-3.5 w-3.5 mr-1.5" />}
+                  {publishingNow ? <Loader2 className="h-3.5 w-3.5 animate-spin mr-1.5" /> : <Zap className="h-3.5 w-3.5 mr-1.5" />}
                   Publicar agora
                 </Button>
               )}
 
               <div className="flex-1" />
 
-              {/* Delete */}
               {isEditable && (
                 confirmDelete ? (
                   <>
                     <Button size="sm" variant="destructive" onClick={handleDelete} disabled={deleting}>
                       {deleting ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Trash2 className="h-3.5 w-3.5 mr-1.5" />}
-                      Confirmar exclusão
+                      Confirmar
                     </Button>
                     <Button size="sm" variant="ghost" onClick={() => setConfirmDelete(false)}>Cancelar</Button>
                   </>
@@ -355,10 +394,10 @@ export function EditPostModal({ postId, onClose, onUpdated, onDeleted }: Props) 
 
               <Button size="sm" variant="outline" onClick={onClose}>Fechar</Button>
 
-              {isEditable && (
+              {isEditable && tab !== 'comments' && (
                 <Button size="sm" onClick={handleSave} disabled={saving}
                   className="bg-purple-600 hover:bg-purple-700 text-white">
-                  {saving ? <><Loader2 className="h-3.5 w-3.5 mr-1.5 animate-spin" /> Salvando...</> : 'Salvar'}
+                  {saving ? <><Loader2 className="h-3.5 w-3.5 mr-1.5 animate-spin" />Salvando…</> : 'Salvar'}
                 </Button>
               )}
             </div>

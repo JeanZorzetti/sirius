@@ -7,6 +7,7 @@ import { PostCalendarView } from './post-calendar-view'
 import { PostListView, ListPost } from './post-list-view'
 import { NewPostModal } from './new-post-modal'
 import { EditPostModal } from './edit-post-modal'
+import { PostFilters } from './post-filters'
 import { CalendarPost } from './post-calendar-item'
 
 interface InstagramPost {
@@ -69,10 +70,23 @@ export function InstagramDashboard({ initialPosts }: Props) {
   const [typeFilter, setTypeFilter] = useState<string>('all')
   const [preselectedDate, setPreselectedDate] = useState<Date | undefined>(undefined)
   const [editPostId, setEditPostId] = useState<string | null>(null)
+  const [search, setSearch] = useState('')
+  const [dateFrom, setDateFrom] = useState('')
+  const [dateTo, setDateTo] = useState('')
 
   const filtered = posts.filter(p => {
     if (statusFilter && p.status !== statusFilter) return false
     if (typeFilter !== 'all' && p.type !== typeFilter) return false
+    if (search && !p.caption.toLowerCase().includes(search.toLowerCase())) return false
+    if (dateFrom) {
+      const from = new Date(dateFrom)
+      if (new Date(p.scheduledFor) < from) return false
+    }
+    if (dateTo) {
+      const to = new Date(dateTo)
+      to.setHours(23, 59, 59, 999)
+      if (new Date(p.scheduledFor) > to) return false
+    }
     return true
   })
 
@@ -192,29 +206,33 @@ export function InstagramDashboard({ initialPosts }: Props) {
         ))}
       </div>
 
-      {/* Type filters */}
-      <div className="flex items-center gap-2">
-        {Object.entries(TYPE_LABELS).map(([value, label]) => (
-          <button
-            key={value}
-            onClick={() => setTypeFilter(value)}
-            className={`text-xs px-3 py-1.5 rounded-full border transition-all ${
-              typeFilter === value
-                ? 'border-purple-500 bg-purple-500/10 text-purple-400'
-                : 'border-border text-muted-foreground hover:border-purple-500/50'
-            }`}
-          >
-            {label}
-          </button>
-        ))}
-        {(statusFilter || typeFilter !== 'all') && (
-          <button
-            onClick={() => { setStatusFilter(null); setTypeFilter('all') }}
-            className="text-xs px-3 py-1.5 rounded-full border border-red-500/30 text-red-400 hover:bg-red-500/10 transition-all ml-auto"
-          >
-            Limpar filtros
-          </button>
-        )}
+      {/* Type filters + search */}
+      <div className="flex flex-col gap-2">
+        <div className="flex items-center gap-2">
+          {Object.entries(TYPE_LABELS).map(([value, label]) => (
+            <button
+              key={value}
+              onClick={() => setTypeFilter(value)}
+              className={`text-xs px-3 py-1.5 rounded-full border transition-all ${
+                typeFilter === value
+                  ? 'border-purple-500 bg-purple-500/10 text-purple-400'
+                  : 'border-border text-muted-foreground hover:border-purple-500/50'
+              }`}
+            >
+              {label}
+            </button>
+          ))}
+        </div>
+        <PostFilters
+          search={search}
+          onSearchChange={setSearch}
+          dateFrom={dateFrom}
+          onDateFromChange={setDateFrom}
+          dateTo={dateTo}
+          onDateToChange={setDateTo}
+          hasActiveFilters={!!(search || dateFrom || dateTo || statusFilter || typeFilter !== 'all')}
+          onClear={() => { setSearch(''); setDateFrom(''); setDateTo(''); setStatusFilter(null); setTypeFilter('all') }}
+        />
       </div>
 
       {/* Content */}
