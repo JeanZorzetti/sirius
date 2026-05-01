@@ -8,7 +8,9 @@ export async function GET() {
   const session = await getSession()
   if (!session?.user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
+  const organizationId = session.user.organizationId
   const posts = await prisma.instagramPost.findMany({
+    where: { organizationId },
     orderBy: { scheduledFor: 'desc' },
     take: 50,
   })
@@ -20,8 +22,9 @@ export async function DELETE(request: NextRequest) {
   const session = await getSession()
   if (!session?.user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
+  const organizationId = session.user.organizationId
   const { id } = await request.json()
-  await prisma.instagramPost.delete({ where: { id } })
+  await prisma.instagramPost.deleteMany({ where: { id, organizationId } })
 
   return NextResponse.json({ success: true })
 }

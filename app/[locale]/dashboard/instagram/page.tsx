@@ -10,7 +10,9 @@ export default async function InstagramPage() {
   const session = await getSession()
   if (!session?.user) return <div>Não autorizado.</div>
 
+  const organizationId = session.user.organizationId
   const posts = await prisma.instagramPost.findMany({
+    where: { organizationId },
     orderBy: { scheduledFor: 'desc' },
     take: 50,
   })

@@ -184,6 +184,9 @@ model Organization {
 
   // Support Tickets
   supportTickets SupportTicket[]
+
+  // Instagram Bot
+  instagramPosts InstagramPost[]
 }
 
 model User {
@@ -2320,20 +2323,22 @@ model SupportAttachment {
 
 
 model InstagramPost {
-  id           String   @id @default(uuid())
-  type         String   // feed | carousel | stories
-  caption      String
-  hashtags     String
-  altText      String
-  imageUrls    String[] // MinIO public URLs
-  slides       String[] // carousel slide texts
-  scheduledFor DateTime
-  status       String   @default("pending") // pending | posted | failed
-  postedAt     DateTime?
-  error        String?
-  createdAt    DateTime @default(now())
+  id             String       @id @default(uuid())
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  type           String       // feed | carousel | stories
+  caption        String
+  hashtags       String
+  altText        String
+  imageUrls      String[]     // MinIO public URLs
+  slides         String[]     // carousel slide texts
+  scheduledFor   DateTime
+  status         String       @default("pending") // pending | posted | failed
+  postedAt       DateTime?
+  error          String?
+  createdAt      DateTime     @default(now())
 
-  @@index([status, scheduledFor])
+  @@index([organizationId, status, scheduledFor])
 }
 
 model OmieFinanceiro {

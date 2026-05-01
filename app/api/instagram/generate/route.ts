@@ -113,9 +113,11 @@ export async function POST(request: NextRequest) {
     imageUrls.push(url)
   }
 
+  const organizationId = session.user.organizationId
   const scheduledFor = nextScheduledTime(type as PostType)
   const post = await prisma.instagramPost.create({
     data: {
+      organizationId,
       type,
       caption,
       hashtags,
