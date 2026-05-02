@@ -11,7 +11,7 @@ import crypto from 'crypto'
 
 export const runtime = 'nodejs'
 
-const FACEBOOK_APP_ID = process.env.FACEBOOK_APP_ID!
+const FACEBOOK_APP_ID = process.env.INSTAGRAM_APP_ID!
 const SCOPES = [
   'instagram_basic',
   'instagram_business_basic',

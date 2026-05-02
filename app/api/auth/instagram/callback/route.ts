@@ -12,8 +12,8 @@ import logger from '@/lib/logger'
 
 export const runtime = 'nodejs'
 
-const FACEBOOK_APP_ID     = process.env.FACEBOOK_APP_ID!
-const FACEBOOK_APP_SECRET = process.env.FACEBOOK_APP_SECRET!
+const FACEBOOK_APP_ID     = process.env.INSTAGRAM_APP_ID!
+const FACEBOOK_APP_SECRET = process.env.INSTAGRAM_APP_SECRET!
 const GRAPH_BASE          = 'https://graph.facebook.com/v21.0'
 
 function getOrigin(request: NextRequest): string {
