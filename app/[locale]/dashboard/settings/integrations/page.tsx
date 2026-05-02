@@ -2,7 +2,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { prisma } from '@/lib/prisma'
 import { getSession } from '@/lib/auth'
 import Link from 'next/link'
-import { Workflow, MessageSquare, Calendar, ArrowLeft, CheckCircle2, XCircle, Activity, TrendingUp, AlertCircle, BarChart3, Share2, Database } from 'lucide-react'
+import { Workflow, MessageSquare, Calendar, ArrowLeft, CheckCircle2, XCircle, Activity, TrendingUp, AlertCircle, BarChart3, Share2, Database, Instagram } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 
@@ -32,6 +32,7 @@ export default async function IntegrationsPage() {
                     adsIntegrationEnabled: true,
                     omieEnabled: true,
                     omieAppKey: true,
+                    instagramBusinessAccountId: true,
                 }
             }
         }
@@ -191,6 +192,21 @@ export default async function IntegrationsPage() {
             enabled: user.organization.omieEnabled,
             configured: !!user.organization.omieAppKey,
             href: '/dashboard/settings/integrations/omie',
+            requiresPro: false,
+            eventsLast7Days: 0,
+            status: 'stable' as const,
+        },
+        {
+            id: 'instagram',
+            name: 'Instagram Bot',
+            description: 'Agendador de posts para Instagram com publicação automática via Meta API',
+            icon: Instagram,
+            iconColor: 'text-pink-500',
+            iconBg: 'bg-pink-500/10',
+            iconShadow: 'shadow-[0_0_10px_rgba(236,72,153,0.2)]',
+            enabled: !!user.organization.instagramBusinessAccountId,
+            configured: !!user.organization.instagramBusinessAccountId,
+            href: '/dashboard/settings/integrations/instagram',
             requiresPro: false,
             eventsLast7Days: 0,
             status: 'stable' as const,
