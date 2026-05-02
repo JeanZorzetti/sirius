@@ -14,7 +14,8 @@ export const runtime = 'nodejs'
 const FACEBOOK_APP_ID = process.env.FACEBOOK_APP_ID!
 const SCOPES = [
   'instagram_basic',
-  'instagram_content_publish',
+  'instagram_business_basic',
+  'instagram_business_content_publish',
   'pages_show_list',
   'pages_read_engagement',
 ].join(',')
