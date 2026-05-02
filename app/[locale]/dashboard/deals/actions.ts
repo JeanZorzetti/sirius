@@ -67,6 +67,7 @@ export async function getDealDetails(dealId: string) {
         value: deal.value ? Number(deal.value) : null,
         closeDate: deal.closeDate ? deal.closeDate.toISOString() : null,
         dueDate: deal.dueDate ? deal.dueDate.toISOString() : null,
+        dueDateNote: deal.dueDateNote ?? null,
         createdAt: deal.createdAt.toISOString(),
         updatedAt: deal.updatedAt.toISOString(),
         stage: { ...deal.stage, createdAt: deal.stage.createdAt.toISOString(), updatedAt: deal.stage.updatedAt.toISOString() },
