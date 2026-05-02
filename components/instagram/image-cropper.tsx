@@ -63,7 +63,7 @@ export function ImageCropper({
       const compressed = await imageCompression(new File([blob], 'crop.jpg', { type: 'image/jpeg' }), {
         maxSizeMB: 2,
         maxWidthOrHeight: 1920,
-        useWebWorker: true,
+        useWebWorker: false,
       })
 
       const form = new FormData()
