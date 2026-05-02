@@ -71,6 +71,11 @@ model Organization {
   facebookAvailablePages   String?  @db.Text   // JSON: [{ id, name }] páginas disponíveis
   facebookOAuthState       String?             // Anti-CSRF state temporário
 
+  // Instagram OAuth flow
+  instagramPageAccessToken   String?  @db.Text  // Page Access Token encrypted (AES-256-GCM)
+  instagramBusinessAccountId String?            // Instagram Business Account ID
+  instagramOAuthState        String?            // Anti-CSRF state temporário
+
   // Omie ERP Integration
   omieAppKey    String?
   omieAppSecret String?
