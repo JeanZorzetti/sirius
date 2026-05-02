@@ -59,13 +59,7 @@ export async function getDealDetails(dealId: string) {
         throw new Error("Deal not found")
     }
 
-    // Visibility check (MEMBER can only see own deals?)
-    // For now keeping simple: MEMBER sees own deals OR we expand this later based on settings.
-    // The Dashboard main query already filters. Here if they have ID they can see details?
-    // Let's enforce strict ownership for now if role is MEMBER.
-    if (user.orgRole === "MEMBER" && deal.userId !== user.id) {
-        throw new Error("Access denied")
-    }
+    // All org members can view deal details — the kanban shows all org deals regardless of userId.
 
     // Force serialization to simple types to prevent Next.js boundaries errors
     return {
