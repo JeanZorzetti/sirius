@@ -170,6 +170,6 @@
     "typescript": "^5",
     "vitest": "^4.0.16",
     "vitest-mock-extended": "^3.1.0",
-    "sharp": "^0.33.5"
+    "sharp": "^0.34.5"
   }
 }
