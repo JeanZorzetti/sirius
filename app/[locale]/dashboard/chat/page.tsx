@@ -325,7 +325,7 @@ export default async function ChatPage({
   }
 
   return (
-    <div className="flex-1 flex flex-col h-[calc(100vh-4rem)]">
+    <div className="flex-1 flex flex-col h-[calc(100svh-var(--app-bar-height)-3.5rem-env(safe-area-inset-bottom))] lg:h-[calc(100vh-4rem)]">
       <ChatInterface
         connections={connections}
         contacts={contacts}

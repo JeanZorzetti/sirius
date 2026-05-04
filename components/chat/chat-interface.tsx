@@ -253,7 +253,7 @@ export function ChatInterface({
   }
 
   return (
-    <div className="flex-1 flex flex-col h-full">
+    <div className="flex-1 flex flex-col" style={{ height: '100%' }}>
       {/* Top bar — hidden on mobile when a conversation is selected (app bar covers it) */}
       <div className={cn(
         'h-12 border-b bg-white dark:bg-zinc-950 flex items-center justify-between px-4 flex-shrink-0',
