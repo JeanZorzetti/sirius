@@ -52,8 +52,8 @@ export default async function DashboardLayout({
   return (
     <AppBarProvider>
     <div className="flex h-screen overflow-hidden">
-      {/* Sidebar - hidden on mobile, visible on desktop */}
-      <aside className="hidden lg:block">
+      {/* Sidebar - hidden on mobile, icon-only on tablet, full on desktop */}
+      <aside className="hidden md:block">
         <Sidebar user={user} />
       </aside>
 
@@ -72,7 +72,7 @@ export default async function DashboardLayout({
         <MobileAppBar />
 
         {/* Page content — padding-bottom mobile reserva espaço para BottomNav (h-14 + safe-area) */}
-        <main className="flex-1 overflow-y-auto pb-[calc(3.5rem+env(safe-area-inset-bottom)+1rem)] lg:p-6 lg:pb-6">
+        <main className="flex-1 overflow-y-auto pb-[calc(3.5rem+env(safe-area-inset-bottom)+1rem)] md:p-4 md:pb-4 lg:p-6 lg:pb-6">
           <PageTransition>
             {children}
           </PageTransition>

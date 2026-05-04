@@ -119,7 +119,7 @@ function NavButton({
           </span>
         )}
       </div>
-      <span className="truncate">{item.title}</span>
+      <span className="truncate [@media(max-height:500px)]:hidden">{item.title}</span>
       {active && (
         <span className="absolute top-0 left-1/2 h-0.5 w-10 -translate-x-1/2 rounded-full bg-indigo-500" />
       )}
@@ -170,7 +170,7 @@ export function BottomNav() {
     <nav
       aria-label="Navegação principal mobile"
       className={cn(
-        'fixed bottom-0 left-0 right-0 z-40 flex h-14 border-t border-border/60 bg-background/95 backdrop-blur-md lg:hidden',
+        'fixed bottom-0 left-0 right-0 z-40 flex h-14 border-t border-border/60 bg-background/95 backdrop-blur-md md:hidden',
         'pb-[env(safe-area-inset-bottom)]',
       )}
     >
@@ -197,7 +197,7 @@ export function BottomNav() {
             <MoreHorizontal
               className={cn('h-5 w-5 transition-transform duration-200', moreActive && 'scale-110')}
             />
-            <span>Mais</span>
+            <span className="[@media(max-height:500px)]:hidden">Mais</span>
             {moreActive && (
               <span className="absolute top-0 left-1/2 h-0.5 w-10 -translate-x-1/2 rounded-full bg-indigo-500" />
             )}
@@ -216,7 +216,7 @@ export function BottomNav() {
                 <h3 className="mb-2 px-1 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
                   {group.label}
                 </h3>
-                <div className="grid grid-cols-3 gap-2">
+                <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
                   {group.items.map(item => {
                     const Icon = item.icon
                     const active = isItemActive(pathname, item.href)

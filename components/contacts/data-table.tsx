@@ -195,7 +195,7 @@ export function DataTable<TData extends { id: string }, TValue>({
 
       {/* Mobile Cards — só aparecem quando renderMobileCard é fornecido */}
       {renderMobileCard && (
-        <div className="flex flex-col gap-3 lg:hidden">
+        <div className="flex flex-col gap-3 md:grid md:grid-cols-2 md:gap-4 lg:hidden">
           {table.getRowModel().rows?.length ? (
             table.getRowModel().rows.map((row) => (
               <div key={row.id}>{renderMobileCard(row)}</div>

@@ -801,6 +801,13 @@
     --accent-glow: oklch(70% 0.18 270 / 0.3);
   }
 
+  /* Landscape mobile — compact chrome */
+  @media (max-height: 500px) and (orientation: landscape) {
+    :root {
+      --app-bar-height: 2.5rem;
+    }
+  }
+
   /* Glass header — sticky app bar with blur */
   .glass-header {
     background: color-mix(in oklab, var(--background) 82%, transparent);

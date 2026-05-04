@@ -28,7 +28,7 @@ const STAGE_COLORS = [
 export function StageStories({ stages, activeStageId, onSelect }: StageStoriesProps) {
   return (
     <div
-      className="flex gap-3 overflow-x-auto px-4 py-3 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+      className="flex gap-2 overflow-x-auto px-3 py-3 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden md:grid md:grid-cols-4 md:overflow-visible md:gap-3 md:px-4"
       style={{ scrollSnapType: 'x mandatory' }}
     >
       {stages.map((stage, idx) => {
@@ -42,8 +42,8 @@ export function StageStories({ stages, activeStageId, onSelect }: StageStoriesPr
             onClick={() => onSelect(stage.id)}
             style={{ scrollSnapAlign: 'start' }}
             className={cn(
-              'flex shrink-0 flex-col items-center gap-1.5 rounded-2xl px-4 py-3 transition-all duration-150',
-              'min-w-[88px] active:scale-95',
+              'flex shrink-0 flex-col items-center gap-1.5 rounded-2xl px-3 py-2.5 transition-all duration-150',
+              'min-w-[76px] sm:min-w-[88px] active:scale-95 md:min-w-0 md:w-full md:px-4 md:py-3',
               isActive
                 ? 'border border-indigo-500/30 bg-indigo-500/5 shadow-sm'
                 : 'border border-border/40 bg-card hover:bg-muted/30',

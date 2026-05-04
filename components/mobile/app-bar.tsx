@@ -23,7 +23,7 @@ export function MobileAppBar() {
   return (
     <>
       <header className="glass-header sticky top-0 z-30 lg:hidden" style={{ paddingTop: 'env(safe-area-inset-top)' }}>
-        <div className="flex h-14 items-center gap-2 px-3">
+        <div className="flex h-14 [@media(max-height:500px)]:h-10 items-center gap-2 px-3">
           {showBack && (
             <button
               onClick={handleBack}

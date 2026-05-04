@@ -65,7 +65,7 @@ export function MobilePipelineList({ stages, onCreateDeal }: MobilePipelineListP
           }
         >
           {activeStage.deals.length === 0 ? (
-            <div className="flex flex-col items-center gap-3 py-16 text-center">
+            <div className="flex flex-col items-center gap-3 py-10 sm:py-16 text-center">
               <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-muted/50">
                 <Plus className="h-6 w-6 text-muted-foreground/40" />
               </div>
@@ -83,13 +83,15 @@ export function MobilePipelineList({ stages, onCreateDeal }: MobilePipelineListP
               )}
             </div>
           ) : (
-            activeStage.deals.map((deal) => (
-              <DealMobileCard
-                key={deal.id}
-                deal={deal}
-                onClick={(id) => router.push(`/dashboard?deal=${id}`)}
-              />
-            ))
+            <div className="md:grid md:grid-cols-2">
+              {activeStage.deals.map((deal) => (
+                <DealMobileCard
+                  key={deal.id}
+                  deal={deal}
+                  onClick={(id) => router.push(`/dashboard?deal=${id}`)}
+                />
+              ))}
+            </div>
           )}
         </MobileListSection>
       )}

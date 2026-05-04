@@ -67,7 +67,7 @@ export function DealMobileCard({ deal, onClick, className }: DealMobileCardProps
         <p className="truncate text-[15px] font-medium leading-tight">{deal.title}</p>
         <div className="mt-0.5 flex items-center gap-1.5 text-mobile-meta">
           {deal.contact && (
-            <span className="truncate max-w-[120px]">{deal.contact.company ?? deal.contact.name}</span>
+            <span className="truncate max-w-[90px] sm:max-w-[140px]">{deal.contact.company ?? deal.contact.name}</span>
           )}
           {dateLabel && (
             <>
@@ -84,7 +84,7 @@ export function DealMobileCard({ deal, onClick, className }: DealMobileCardProps
       {/* Value + chevron */}
       <div className="ml-2 flex shrink-0 flex-col items-end gap-1">
         {deal.value != null && deal.value > 0 && (
-          <span className="text-[13px] font-semibold text-foreground/80">
+          <span className="text-xs sm:text-[13px] font-semibold text-foreground/80">
             {formatValue(deal.value)}
           </span>
         )}
