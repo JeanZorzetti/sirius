@@ -12,6 +12,24 @@ import { getWhatsAppOfficialClient, normalizePhone } from '@/lib/integrations/wh
 import { getGoogleCalendarClient } from '@/lib/integrations/google-calendar-client'
 import logger from '@/lib/logger'
 
+/**
+ * Check if the contact sent a message in the last 24 hours (Meta conversation window).
+ * Outside this window only approved templates can be sent — free-form text is blocked.
+ */
+async function isWithin24hWindow(contactId: string, organizationId: string): Promise<boolean> {
+  const cutoff = new Date(Date.now() - 24 * 60 * 60 * 1000)
+  const lastInbound = await prismaWa.whatsAppMessage.findFirst({
+    where: {
+      contactId,
+      organizationId,
+      direction: 'INBOUND',
+      sentAt: { gte: cutoff },
+    },
+    select: { id: true },
+  })
+  return !!lastInbound
+}
+
 interface AgentAction {
   id: string
   organizationId: string
@@ -289,6 +307,15 @@ async function executeFollowUpCoordinator(action: AgentAction): Promise<{ succes
     return { success: false, output: { error: 'Contact not found or has no phone' } }
   }
 
+  // Meta rule: free-form messages only allowed within 24h of last inbound message
+  const windowOpen = await isWithin24hWindow(contactId, organizationId)
+  if (!windowOpen) {
+    return {
+      success: false,
+      output: { error: 'Meta 24h window closed — contact must send a message first before free-form text can be sent', contactId },
+    }
+  }
+
   const recentMessages = await prismaWa.whatsAppMessage.findMany({
     where: { contactId, organizationId },
     orderBy: { sentAt: 'desc' },
@@ -429,6 +456,15 @@ Horários disponíveis:\n${slotLines}`,
 
   if (!phone) {
     return { success: false, output: { error: 'Contact phone not found', message, slots: candidates.map(s => s.label) } }
+  }
+
+  // Meta rule: free-form messages only allowed within 24h of last inbound message
+  const windowOpen = await isWithin24hWindow(contactId, organizationId)
+  if (!windowOpen) {
+    return {
+      success: false,
+      output: { error: 'Meta 24h window closed — contact must send a message first before meeting proposal can be sent', slots: candidates.map(s => s.label) },
+    }
   }
 
   const wabaClient = await getWhatsAppOfficialClient(organizationId)
