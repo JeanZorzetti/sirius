@@ -24,7 +24,6 @@ import {
   FileText,
   MapPin,
   Plug,
-  Star,
   Webhook,
   Bot,
   LayoutGrid,
@@ -34,6 +33,7 @@ import {
   Megaphone,
   Shuffle,
   Blocks,
+  Gift,
 } from 'lucide-react'
 
 // ─── Metadata ──────────────────────────────────────────────────────────────────
@@ -589,10 +589,10 @@ export default async function FeaturesPage() {
               <Button asChild size="lg">
                 <Link href="/pricing">{t('planComparison.ctaPrimary')}</Link>
               </Button>
-              <Button asChild size="lg" variant="outline" className="border-amber-300 text-amber-700 hover:bg-amber-50">
-                <Link href="/fundadores">
-                  <Star className="w-4 h-4 mr-2 fill-amber-400 text-amber-500" />
-                  {t('planComparison.ctaSecondary')}
+              <Button asChild size="lg" variant="outline">
+                <Link href="/indique">
+                  <Gift className="w-4 h-4 mr-2" />
+                  Indique e ganhe até 100% off
                 </Link>
               </Button>
             </div>
