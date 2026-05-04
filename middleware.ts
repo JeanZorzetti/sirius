@@ -51,7 +51,13 @@ export async function middleware(request: NextRequest) {
     await updateSession(request)
 
     // 6. Run next-intl middleware (locale detection, /en prefix, hreflang cookies)
-    return intlMiddleware(request)
+    const response = intlMiddleware(request)
+    const res = response ?? NextResponse.next()
+
+    // 7. Inject pathname header so server components can read it
+    res.headers.set('x-pathname', pathname)
+
+    return res
 }
 
 export const config = {

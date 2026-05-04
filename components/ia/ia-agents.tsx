@@ -1,13 +1,14 @@
 'use client'
 
 import { useState, useEffect, useCallback } from 'react'
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import { cn } from '@/lib/utils'
 import {
   Bot, Zap, MessageSquare, GitBranch, Calendar, Search,
-  Loader2, Lock, Crown, Pencil,
+  Loader2, Lock, Crown, Pencil, ChevronRight,
   Home, MapPin, FileText, UserCheck, Handshake,
 } from 'lucide-react'
+import { Input } from '@/components/ui/input'
 import Link from 'next/link'
 import { Switch } from '@/components/ui/switch'
 import { Progress } from '@/components/ui/progress'
@@ -326,24 +327,89 @@ function AgentCard({ agent, enabled, onToggle, onEdit, locked, saving, overrideN
   )
 }
 
-function VerticalBanner({ vertical, agentCount }: { vertical: VerticalDef; agentCount: number }) {
+function VerticalSection({
+  vertical,
+  agents,
+  enabledAgents,
+  isLocked,
+  saving,
+  agentOverrides,
+  onToggle,
+  onEdit,
+  forceExpand,
+}: {
+  vertical: VerticalDef
+  agents: AgentDef[]
+  enabledAgents: Record<string, boolean>
+  isLocked: (id: string) => boolean
+  saving: boolean
+  agentOverrides: Record<string, AgentOverride>
+  onToggle: (id: string) => void
+  onEdit: (agent: AgentDef) => void
+  forceExpand?: boolean
+}) {
+  const [collapsed, setCollapsed] = useState(true)
   const Icon = vertical.icon
+  const enabledCount = agents.filter(a => enabledAgents[a.id]).length
+  const isOpen = forceExpand || !collapsed
+
   return (
-    <div className={cn('rounded-xl border p-4 mb-4', vertical.accentClasses)}>
-      <div className="flex items-start justify-between">
-        <div className="flex items-start gap-3">
-          <div className={cn('flex h-8 w-8 items-center justify-center rounded-lg shrink-0', vertical.accentClasses)}>
-            <Icon className={cn('h-4 w-4', vertical.iconClasses)} />
-          </div>
-          <div>
-            <p className="text-sm font-semibold text-zinc-200">{vertical.label}</p>
-            <p className="text-xs text-zinc-500 mt-0.5">{vertical.description}</p>
-          </div>
+    <div className="mb-6">
+      <button
+        type="button"
+        onClick={() => setCollapsed(v => !v)}
+        className={cn(
+          'w-full flex items-center justify-between px-4 py-3 rounded-xl border transition-all',
+          vertical.accentClasses,
+          'hover:brightness-110'
+        )}
+      >
+        <div className="flex items-center gap-2.5">
+          <ChevronRight className={cn(
+            'h-4 w-4 transition-transform duration-200',
+            vertical.iconClasses,
+            isOpen && 'rotate-90'
+          )} />
+          <Icon className={cn('h-4 w-4', vertical.iconClasses)} />
+          <span className="text-sm font-semibold text-zinc-200">{vertical.label}</span>
+          {enabledCount > 0 && (
+            <span className="text-[11px] text-emerald-400 font-medium">
+              {enabledCount} {enabledCount === 1 ? 'ativo' : 'ativos'}
+            </span>
+          )}
         </div>
-        <span className={cn('text-[11px] font-mono shrink-0 mt-0.5', vertical.iconClasses + '/70')}>
-          {agentCount} agentes
+        <span className={cn('text-[11px] font-mono', vertical.iconClasses)}>
+          {agents.length} agentes
         </span>
-      </div>
+      </button>
+
+      <AnimatePresence initial={false}>
+        {isOpen && (
+          <motion.div
+            key="content"
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: 'auto', opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.2, ease: 'easeInOut' }}
+            style={{ overflow: 'hidden' }}
+          >
+            <div className="mt-3 space-y-3">
+              {sortAgents(agents, enabledAgents, isLocked).map(agent => (
+                <AgentCard
+                  key={agent.id}
+                  agent={agent}
+                  enabled={!!enabledAgents[agent.id]}
+                  onToggle={onToggle}
+                  onEdit={onEdit}
+                  locked={isLocked(agent.id)}
+                  saving={saving}
+                  overrideName={agentOverrides[agent.id]?.displayName}
+                />
+              ))}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   )
 }
@@ -376,6 +442,7 @@ export function IAAgents() {
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
   const [editState, setEditState] = useState<EditState | null>(null)
+  const [search, setSearch] = useState('')
 
   useEffect(() => {
     Promise.all([
@@ -483,12 +550,23 @@ export function IAAgents() {
   const quotaBarColor = quotaPct >= 90 ? 'bg-red-500' : quotaPct >= 70 ? 'bg-amber-500' : 'bg-emerald-500'
   const resetDays = daysUntil(quotaInfo?.resetsAt ?? null)
 
-  const coreAgents = AGENT_DEFS.filter(a => !a.vertical)
+  const searchTerm = search.trim().toLowerCase()
+
+  const matchesSearch = (agent: AgentDef) => {
+    if (!searchTerm) return true
+    return (
+      agent.name.toLowerCase().includes(searchTerm) ||
+      agent.description.toLowerCase().includes(searchTerm) ||
+      agent.capabilities.some(c => c.toLowerCase().includes(searchTerm))
+    )
+  }
+
+  const coreAgents = AGENT_DEFS.filter(a => !a.vertical && matchesSearch(a))
 
   // Build vertical groups dynamically — order follows VERTICALS dict insertion order
   const verticalGroups = Object.values(VERTICALS).map(v => ({
     vertical: v,
-    agents: AGENT_DEFS.filter(a => a.vertical === v.id),
+    agents: AGENT_DEFS.filter(a => a.vertical === v.id && matchesSearch(a)),
   })).filter(g => g.agents.length > 0)
 
   if (loading) {
@@ -594,42 +672,59 @@ export function IAAgents() {
         </div>
       )}
 
-      {/* Core agents */}
-      <div className="space-y-3 mb-10">
-        {sortAgents(coreAgents, enabledAgents, isLocked).map(agent => (
-          <AgentCard
-            key={agent.id}
-            agent={agent}
-            enabled={!!enabledAgents[agent.id]}
-            onToggle={handleToggle}
-            onEdit={handleEdit}
-            locked={isLocked(agent.id)}
-            saving={saving}
-            overrideName={agentOverrides[agent.id]?.displayName}
-          />
-        ))}
+      {/* Search bar */}
+      <div className="relative mb-6">
+        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-500 pointer-events-none" />
+        <Input
+          value={search}
+          onChange={e => setSearch(e.target.value)}
+          placeholder="Buscar agente por nome ou capacidade..."
+          className="pl-9 bg-zinc-900/60 border-zinc-800/60 text-zinc-100 placeholder:text-zinc-600 focus-visible:ring-cyan-500 focus-visible:border-zinc-700"
+        />
       </div>
 
-      {/* Vertical sections — rendered automatically from VERTICALS dict */}
-      {verticalGroups.map(({ vertical, agents }) => (
-        <div key={vertical.id} className="mb-10">
-          <VerticalBanner vertical={vertical} agentCount={agents.length} />
-          <div className="space-y-3">
-            {sortAgents(agents, enabledAgents, isLocked).map(agent => (
-              <AgentCard
-                key={agent.id}
-                agent={agent}
-                enabled={!!enabledAgents[agent.id]}
-                onToggle={handleToggle}
-                onEdit={handleEdit}
-                locked={isLocked(agent.id)}
-                saving={saving}
-                overrideName={agentOverrides[agent.id]?.displayName}
-              />
-            ))}
-          </div>
+      {/* Core agents */}
+      {coreAgents.length > 0 && (
+        <div className="space-y-3 mb-10">
+          {sortAgents(coreAgents, enabledAgents, isLocked).map(agent => (
+            <AgentCard
+              key={agent.id}
+              agent={agent}
+              enabled={!!enabledAgents[agent.id]}
+              onToggle={handleToggle}
+              onEdit={handleEdit}
+              locked={isLocked(agent.id)}
+              saving={saving}
+              overrideName={agentOverrides[agent.id]?.displayName}
+            />
+          ))}
         </div>
+      )}
+
+      {/* Vertical sections — collapsible, auto-expanded when searching */}
+      {verticalGroups.map(({ vertical, agents }) => (
+        <VerticalSection
+          key={vertical.id}
+          vertical={vertical}
+          agents={agents}
+          enabledAgents={enabledAgents}
+          isLocked={isLocked}
+          saving={saving}
+          agentOverrides={agentOverrides}
+          onToggle={handleToggle}
+          onEdit={handleEdit}
+          forceExpand={!!searchTerm}
+        />
       ))}
+
+      {/* No results */}
+      {searchTerm && coreAgents.length === 0 && verticalGroups.length === 0 && (
+        <div className="flex flex-col items-center justify-center py-16 text-center">
+          <Search className="h-8 w-8 text-zinc-700 mb-3" />
+          <p className="text-zinc-500 font-medium">Nenhum agente encontrado</p>
+          <p className="text-xs text-zinc-700 mt-1">Tente buscar por outro termo</p>
+        </div>
+      )}
 
       {/* Edit modal */}
       {editState && (

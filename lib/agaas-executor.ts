@@ -53,10 +53,24 @@ function injectRagContext(basePrompt: string, ragContext: string): string {
  * Execute an approved agent action.
  * Returns the output object to store in the AgentAction record.
  */
+const AGENT_NAME_TO_ID: Record<string, string> = {
+  LeadQualifier: 'lead-qualifier',
+  DealStageAnalyzer: 'deal-stage-analyzer',
+  FollowUpCoordinator: 'followup-coordinator',
+  MeetingScheduler: 'meeting-scheduler',
+  ContactEnricher: 'contact-enricher',
+  PropertyMatcher: 'property-matcher',
+  VisitScheduler: 'visit-scheduler',
+  ProposalFollowUp: 'proposal-followup',
+  LeadProfiler: 'lead-profiler',
+  NegotiationAssistant: 'negotiation-assistant',
+}
+
 export async function executeAgentAction(action: AgentAction): Promise<{ success: boolean; output: Record<string, any> }> {
-  // Retrieve RAG context from the org's knowledge base before dispatching
+  // Retrieve RAG context scoped to this agent (+ global docs) from the knowledge base
   const ragQuery = action.input?.messageText || action.input?.context || action.actionType
-  const ragContext = await retrieveContext(action.organizationId, ragQuery, 3).catch(() => '')
+  const agentId = AGENT_NAME_TO_ID[action.agentName]
+  const ragContext = await retrieveContext(action.organizationId, ragQuery, agentId, 3).catch(() => '')
   const enrichedAction = { ...action, input: { ...action.input, ragContext } }
 
   switch (enrichedAction.agentName) {

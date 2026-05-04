@@ -1,6 +1,7 @@
 import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { redirect } from 'next/navigation'
+import { headers } from 'next/headers'
 import { IANavbar } from '@/components/ia/ia-navbar'
 import { Toaster } from '@/components/ui/sonner'
 
@@ -38,6 +39,16 @@ export default async function IALayout({
   }
 
   const iaConfig = (user.organization.iaConfig || {}) as Record<string, unknown>
+  const setupCompleted = iaConfig.setupCompleted as boolean | undefined
+
+  // Auto-redirect to setup wizard on first visit
+  const headersList = await headers()
+  const pathname = headersList.get('x-pathname') || headersList.get('next-url') || ''
+  const isSetupPage = pathname.includes('/IA/setup')
+  if (!setupCompleted && !isSetupPage) {
+    redirect('/IA/setup')
+  }
+
   const enabledAgents = (iaConfig.enabledAgents || {}) as Record<string, boolean>
   const enabledAgentCount = Object.values(enabledAgents).filter(Boolean).length
 

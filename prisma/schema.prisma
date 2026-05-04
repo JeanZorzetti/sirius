@@ -2415,6 +2415,7 @@ model KnowledgeDocument {
   title          String
   content        String   @db.Text
   contentType    String   // "script" | "faq" | "process" | "playbook" | "custom"
+  agentIds       String[] @default([]) // [] = global; non-empty = only these agent IDs
   metadata       Json?
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
