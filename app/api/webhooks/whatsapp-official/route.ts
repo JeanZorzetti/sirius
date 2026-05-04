@@ -21,6 +21,7 @@ import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { prismaWa } from '@/lib/prisma-wa'
 import { logWabaActivity, getWhatsAppOfficialClient } from '@/lib/integrations/whatsapp-official-client'
+import { triggerAgentsForInboundMessage } from '@/lib/agaas-agent-trigger'
 import { uploadMedia } from '@/lib/storage'
 import logger from '@/lib/logger'
 
@@ -218,6 +219,18 @@ async function handleIncomingMessage(
         mediaType,
         contactId: contact.id,
       }).catch(err => logger.error({ err, mediaId }, 'WABA media background download failed'))
+    }
+
+    // Trigger IA agents in background — only for text messages
+    if (message.type === 'text' && text.trim()) {
+      triggerAgentsForInboundMessage({
+        organizationId,
+        contactId: contact.id,
+        messageId: saved.id,
+        messageText: text,
+        contactName: contact.name || contactName,
+        contactPhone: from,
+      }).catch(err => logger.error({ err }, 'WABA agent trigger failed'))
     }
 
     await logWabaActivity(

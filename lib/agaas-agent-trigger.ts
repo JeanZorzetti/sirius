@@ -81,7 +81,7 @@ async function isDailyLimitReached(organizationId: string, maxPerDay: number): P
 
 /**
  * Evaluate an inbound WhatsApp message and trigger relevant agents.
- * Called from the Evolution webhook after saving an INBOUND message.
+ * Called from the WABA webhook after saving an INBOUND message.
  * Non-blocking — catches all errors to never break the webhook.
  */
 export async function triggerAgentsForInboundMessage(ctx: InboundMessageContext) {
