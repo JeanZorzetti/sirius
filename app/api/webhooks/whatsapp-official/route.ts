@@ -21,7 +21,7 @@ import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { prismaWa } from '@/lib/prisma-wa'
 import { logWabaActivity, getWhatsAppOfficialClient } from '@/lib/integrations/whatsapp-official-client'
-import { triggerAgentsForInboundMessage } from '@/lib/agaas-agent-trigger'
+import { triggerAgentsForInboundMessage, triggerAgentsForContactCreated } from '@/lib/agaas-agent-trigger'
 import { uploadMedia } from '@/lib/storage'
 import logger from '@/lib/logger'
 
@@ -190,6 +190,12 @@ async function handleIncomingMessage(
         select: { id: true, name: true }
       })
       logger.info({ organizationId, contactId: contact.id, phone: from }, 'WhatsApp Official: created new contact')
+      triggerAgentsForContactCreated({
+        organizationId,
+        contactId: contact.id,
+        contactName: contactName,
+        contactPhone: `+${phoneDigits}`,
+      }).catch(err => logger.error({ err }, 'WABA ContactEnricher trigger failed'))
     }
 
     // Save message to WA DB (no connectionId — WABA doesn't use WhatsAppConnection records)

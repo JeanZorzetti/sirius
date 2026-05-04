@@ -2,6 +2,7 @@ import logger from '@/lib/logger'
 import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { getSession } from '@/lib/auth'
+import { triggerAgentsForContactCreated } from '@/lib/agaas-agent-trigger'
 
 export async function POST(request: Request) {
     try {
@@ -44,6 +45,14 @@ export async function POST(request: Request) {
                 organizationId: user.organizationId
             }
         })
+
+        triggerAgentsForContactCreated({
+            organizationId: user.organizationId,
+            contactId: contact.id,
+            contactName: name,
+            contactPhone: phone || undefined,
+            contactEmail: email || undefined,
+        }).catch(err => logger.error({ err }, 'ContactEnricher trigger failed'))
 
         return NextResponse.json(contact)
     } catch (error) {

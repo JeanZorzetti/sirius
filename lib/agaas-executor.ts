@@ -8,6 +8,8 @@
 import { prisma } from '@/lib/prisma'
 import { prismaWa } from '@/lib/prisma-wa'
 import { callLLM } from '@/lib/agi/providers'
+import { getWhatsAppOfficialClient, normalizePhone } from '@/lib/integrations/whatsapp-official-client'
+import { getGoogleCalendarClient } from '@/lib/integrations/google-calendar-client'
 import logger from '@/lib/logger'
 
 interface AgentAction {
@@ -33,6 +35,12 @@ export async function executeAgentAction(action: AgentAction): Promise<{ success
       return executeLeadQualifier(action)
     case 'DealStageAnalyzer':
       return executeDealStageAnalyzer(action)
+    case 'FollowUpCoordinator':
+      return executeFollowUpCoordinator(action)
+    case 'MeetingScheduler':
+      return executeMeetingScheduler(action)
+    case 'ContactEnricher':
+      return executeContactEnricher(action)
     default:
       return { success: false, output: { error: `Unknown agent: ${action.agentName}` } }
   }
@@ -119,6 +127,26 @@ Responda APENAS em JSON válido com esta estrutura:
     dealId = deal.id
 
     logger.info({ dealId, contactId, qualification: qualification.qualification }, '[AgaaS:LeadQualifier] Deal created')
+  }
+
+  // Delegate to MeetingScheduler if next action suggests a meeting
+  if (qualification.nextAction?.toLowerCase().includes('reuni') || qualification.nextAction?.toLowerCase().includes('agendar')) {
+    const contact = await prisma.contact.findUnique({ where: { id: contactId }, select: { name: true, phone: true } })
+    if (contact?.phone) {
+      await prisma.agentAction.create({
+        data: {
+          organizationId,
+          agentName: 'MeetingScheduler',
+          actionType: 'SCHEDULE_MEETING',
+          entityType: 'Contact',
+          entityId: contactId,
+          reasoning: `LeadQualifier sugeriu: "${qualification.nextAction}". Propor horários de reunião.`,
+          confidence: 0.7,
+          input: { contactId, contactName: contact.name, contactPhone: contact.phone, context: qualification.nextAction, trigger: 'agent.delegation' },
+          status: 'NEEDS_APPROVAL',
+        },
+      }).catch(() => {})
+    }
   }
 
   return {
@@ -241,6 +269,267 @@ Responda APENAS em JSON válido:
       reasoning: analysis.reasoning,
       buyingSignals: analysis.buyingSignals,
       confidence: analysis.confidence,
+    },
+  }
+}
+
+/**
+ * FollowUpCoordinator: Generate a personalized follow-up message and send via WABA.
+ */
+async function executeFollowUpCoordinator(action: AgentAction): Promise<{ success: boolean; output: Record<string, any> }> {
+  const { organizationId, input } = action
+  const { contactId, dealId, dealTitle, idleDays } = input
+
+  const contact = await prisma.contact.findUnique({
+    where: { id: contactId },
+    select: { id: true, name: true, phone: true },
+  })
+
+  if (!contact?.phone) {
+    return { success: false, output: { error: 'Contact not found or has no phone' } }
+  }
+
+  const recentMessages = await prismaWa.whatsAppMessage.findMany({
+    where: { contactId, organizationId },
+    orderBy: { sentAt: 'desc' },
+    take: 10,
+    select: { text: true, direction: true, sentAt: true },
+  })
+
+  const conversationContext = recentMessages
+    .reverse()
+    .map(m => `[${m.direction === 'INBOUND' ? contact.name || 'Lead' : 'Vendedor'}]: ${m.text}`)
+    .join('\n')
+
+  const llmResponse = await callLLM([
+    {
+      role: 'system' as const,
+      content: `Você é um vendedor B2B experiente. Escreva uma mensagem de follow-up natural, curta (máx 3 linhas) e personalizada para retomar o contato com um prospect.
+Não use templates genéricos. Baseie-se no contexto da conversa.
+Responda APENAS com o texto da mensagem, sem aspas, sem explicações.`,
+    },
+    {
+      role: 'user' as const,
+      content: `Prospect: ${contact.name || contact.phone}
+Deal: "${dealTitle}"
+Dias sem contato: ${idleDays}
+Última conversa:\n${conversationContext || 'Sem histórico de conversa.'}`,
+    },
+  ], 'PRO')
+
+  const message = llmResponse.content.trim()
+
+  // Send via WABA
+  const client = await getWhatsAppOfficialClient(organizationId)
+  if (!client) {
+    return { success: false, output: { error: 'WABA not configured', message } }
+  }
+
+  await client.sendTextMessage(normalizePhone(contact.phone), message)
+
+  // Save to WA DB
+  const msgId = `agaas_followup_${Date.now()}`
+  await prismaWa.$executeRaw`
+    INSERT INTO "WhatsAppMessage"
+      (id, "contactId", "organizationId", "connectionId", "remoteJid",
+       "messageId", text, direction, status, "sentAt", "isRead",
+       "mediaType", "mediaUrl", "replyToId", "replyToText")
+    VALUES (
+      ${msgId}, ${contactId}, ${organizationId}, ${null},
+      ${normalizePhone(contact.phone)}, ${null},
+      ${message}, 'OUTBOUND', 'SENT', ${new Date()}, true,
+      ${null}, ${null}, ${null}, ${null}
+    )
+    ON CONFLICT ("organizationId", "messageId") DO NOTHING
+  `
+
+  logger.info({ organizationId, contactId, dealId }, '[AgaaS:FollowUpCoordinator] Follow-up sent')
+
+  return {
+    success: true,
+    output: { message, contactName: contact.name, dealTitle, idleDays },
+  }
+}
+
+/**
+ * MeetingScheduler: Check Google Calendar availability and propose meeting slots via WABA.
+ */
+async function executeMeetingScheduler(action: AgentAction): Promise<{ success: boolean; output: Record<string, any> }> {
+  const { organizationId, input } = action
+  const { contactId, contactName, contactPhone, context } = input
+
+  const calendarClient = await getGoogleCalendarClient(organizationId)
+  if (!calendarClient) {
+    return { success: false, output: { error: 'Google Calendar not configured for this organization' } }
+  }
+
+  // Get next 7 days of events to find free slots
+  const now = new Date()
+  const weekLater = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000)
+  const events = await calendarClient.listEvents({
+    timeMin: now.toISOString(),
+    timeMax: weekLater.toISOString(),
+    maxResults: 50,
+  })
+
+  // Build busy intervals
+  const busySlots = events.map((e: any) => ({
+    start: new Date(e.start?.dateTime || e.start?.date),
+    end: new Date(e.end?.dateTime || e.end?.date),
+  }))
+
+  // Generate candidate slots: weekdays 9-18h, 1h blocks
+  const candidates: Array<{ start: Date; end: Date; label: string }> = []
+  const d = new Date(now)
+  d.setMinutes(0, 0, 0)
+  d.setHours(d.getHours() + 1)
+
+  while (candidates.length < 6 && d < weekLater) {
+    const day = d.getDay()
+    const hour = d.getHours()
+    if (day !== 0 && day !== 6 && hour >= 9 && hour < 17) {
+      const end = new Date(d.getTime() + 60 * 60 * 1000)
+      const isBusy = busySlots.some(b => d < b.end && end > b.start)
+      if (!isBusy) {
+        const label = d.toLocaleString('pt-BR', {
+          weekday: 'short', day: '2-digit', month: '2-digit',
+          hour: '2-digit', minute: '2-digit', timeZone: 'America/Sao_Paulo',
+        })
+        candidates.push({ start: new Date(d), end, label })
+      }
+    }
+    d.setHours(d.getHours() + 1)
+  }
+
+  if (candidates.length === 0) {
+    return { success: false, output: { error: 'No free slots found in the next 7 days' } }
+  }
+
+  const slotLines = candidates.map((s, i) => `${i + 1}. ${s.label}`).join('\n')
+
+  const llmResponse = await callLLM([
+    {
+      role: 'system' as const,
+      content: `Você é um assistente de vendas. Escreva uma mensagem curta e profissional propondo horários de reunião para um prospect. Use os horários disponíveis fornecidos. Máx 5 linhas. Responda APENAS com o texto da mensagem.`,
+    },
+    {
+      role: 'user' as const,
+      content: `Prospect: ${contactName || contactPhone}
+Contexto: ${context || 'Agendamento de reunião de apresentação'}
+Horários disponíveis:\n${slotLines}`,
+    },
+  ], 'PRO')
+
+  const message = llmResponse.content.trim()
+
+  const phone = contactPhone || (await prisma.contact.findUnique({
+    where: { id: contactId },
+    select: { phone: true },
+  }))?.phone
+
+  if (!phone) {
+    return { success: false, output: { error: 'Contact phone not found', message, slots: candidates.map(s => s.label) } }
+  }
+
+  const wabaClient = await getWhatsAppOfficialClient(organizationId)
+  if (!wabaClient) {
+    return { success: false, output: { error: 'WABA not configured', message, slots: candidates.map(s => s.label) } }
+  }
+
+  await wabaClient.sendTextMessage(normalizePhone(typeof phone === 'string' ? phone : ''), message)
+
+  const msgId = `agaas_meeting_${Date.now()}`
+  await prismaWa.$executeRaw`
+    INSERT INTO "WhatsAppMessage"
+      (id, "contactId", "organizationId", "connectionId", "remoteJid",
+       "messageId", text, direction, status, "sentAt", "isRead",
+       "mediaType", "mediaUrl", "replyToId", "replyToText")
+    VALUES (
+      ${msgId}, ${contactId}, ${organizationId}, ${null},
+      ${normalizePhone(typeof phone === 'string' ? phone : '')}, ${null},
+      ${message}, 'OUTBOUND', 'SENT', ${new Date()}, true,
+      ${null}, ${null}, ${null}, ${null}
+    )
+    ON CONFLICT ("organizationId", "messageId") DO NOTHING
+  `
+
+  logger.info({ organizationId, contactId, slots: candidates.length }, '[AgaaS:MeetingScheduler] Meeting proposal sent')
+
+  return {
+    success: true,
+    output: { message, slots: candidates.map(s => s.label), slotsCount: candidates.length },
+  }
+}
+
+/**
+ * ContactEnricher: Search web for contact info and update CRM record.
+ */
+async function executeContactEnricher(action: AgentAction): Promise<{ success: boolean; output: Record<string, any> }> {
+  const { organizationId, entityId: contactId, input } = action
+  const { contactName, contactPhone, contactEmail } = input
+
+  if (!contactName || contactName.length < 3) {
+    return { success: false, output: { error: 'Contact name too short to enrich' } }
+  }
+
+  const llmResponse = await callLLM([
+    {
+      role: 'system' as const,
+      content: `Você é um analista de inteligência comercial. Com base no nome, telefone e email fornecidos, infira o perfil profissional mais provável deste contato.
+Se o nome for genérico ou insuficiente, retorne campos vazios.
+Responda APENAS em JSON válido:
+{
+  "jobTitle": "cargo inferido ou vazio",
+  "company": "empresa inferida ou vazio",
+  "industry": "setor inferido ou vazio",
+  "linkedinUrl": "url do linkedin se puder inferir ou vazio",
+  "notes": "insights úteis para o vendedor (max 2 frases)",
+  "confidence": 0-100
+}`,
+    },
+    {
+      role: 'user' as const,
+      content: `Nome: ${contactName}
+Telefone: ${contactPhone || 'não informado'}
+Email: ${contactEmail || 'não informado'}`,
+    },
+  ], 'PRO')
+
+  let enriched: any
+  try {
+    const cleaned = llmResponse.content.replace(/```json?\s*/g, '').replace(/```/g, '').trim()
+    enriched = JSON.parse(cleaned)
+  } catch {
+    return { success: false, output: { error: 'Failed to parse LLM enrichment response' } }
+  }
+
+  if (enriched.confidence < 30) {
+    return { success: false, output: { error: 'Confidence too low to update contact', confidence: enriched.confidence } }
+  }
+
+  // Build update — only set fields that exist in the Contact model
+  const updateData: Record<string, string> = {}
+  if (enriched.company) updateData.company = enriched.company
+
+  if (Object.keys(updateData).length > 0) {
+    await prisma.contact.update({
+      where: { id: contactId },
+      data: updateData,
+    })
+  }
+
+  logger.info({ organizationId, contactId, confidence: enriched.confidence }, '[AgaaS:ContactEnricher] Contact enriched')
+
+  return {
+    success: true,
+    output: {
+      jobTitle: enriched.jobTitle,
+      company: enriched.company,
+      industry: enriched.industry,
+      linkedinUrl: enriched.linkedinUrl,
+      notes: enriched.notes,
+      confidence: enriched.confidence,
+      fieldsUpdated: Object.keys(updateData),
     },
   }
 }

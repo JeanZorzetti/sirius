@@ -290,3 +290,226 @@ export async function triggerAgentsForInboundMessage(ctx: InboundMessageContext)
     logger.error({ error: error.message, organizationId: ctx.organizationId }, '[AgaaS:Trigger] Error evaluating message')
   }
 }
+
+// ─── ContactEnricher trigger ──────────────────────────────────────────────────
+
+interface ContactCreatedContext {
+  organizationId: string
+  contactId: string
+  contactName: string
+  contactPhone?: string
+  contactEmail?: string
+}
+
+/**
+ * Trigger ContactEnricher when a new contact is created.
+ * Non-blocking — call with .catch() from contact creation routes.
+ */
+export async function triggerAgentsForContactCreated(ctx: ContactCreatedContext) {
+  try {
+    const { organizationId, contactId, contactName } = ctx
+
+    const quota = await checkAgaasQuota(organizationId)
+    if (!quota.allowed) return
+
+    const org = await prisma.organization.findUnique({
+      where: { id: organizationId },
+      select: { iaConfig: true },
+    })
+
+    const rawConfig = (org?.iaConfig || {}) as IAConfig
+    const enabledMap = rawConfig.enabledAgents || rawConfig
+    if (!(enabledMap['contact-enricher'] === true || enabledMap['contact-enricher']?.enabled === true)) return
+
+    const confidenceThreshold = (rawConfig.confidenceThreshold ?? 70) / 100
+
+    const created = await prisma.agentAction.create({
+      data: {
+        organizationId,
+        agentName: 'ContactEnricher',
+        actionType: 'ENRICH_CONTACT',
+        entityType: 'Contact',
+        entityId: contactId,
+        reasoning: `Novo contato criado: ${contactName}. Enriquecer com cargo, empresa e insights.`,
+        confidence: 0.75,
+        input: {
+          contactName: ctx.contactName,
+          contactPhone: ctx.contactPhone,
+          contactEmail: ctx.contactEmail,
+          trigger: 'contact.created',
+        },
+        status: 0.75 >= confidenceThreshold ? 'PENDING' : 'NEEDS_APPROVAL',
+      },
+    })
+
+    await incrementAgaasUsage(organizationId)
+
+    if (0.75 >= confidenceThreshold) {
+      const orgUser = await prisma.user.findFirst({
+        where: { organizationId, role: 'ADMIN' },
+        select: { id: true },
+      })
+      if (orgUser) {
+        try {
+          const result = await executeAgentAction({
+            id: created.id,
+            organizationId,
+            agentName: 'ContactEnricher',
+            actionType: 'ENRICH_CONTACT',
+            entityType: 'Contact',
+            entityId: contactId,
+            reasoning: created.reasoning,
+            confidence: 0.75,
+            input: created.input,
+            userId: orgUser.id,
+          })
+          await prisma.agentAction.update({
+            where: { id: created.id },
+            data: { status: result.success ? 'SUCCESS' : 'FAILED', output: result.output as Prisma.InputJsonValue },
+          })
+        } catch (e: any) {
+          await prisma.agentAction.update({
+            where: { id: created.id },
+            data: { status: 'FAILED', output: { error: e.message } as Prisma.InputJsonValue },
+          })
+        }
+      }
+    }
+
+    logger.info({ organizationId, contactId }, '[AgaaS:Trigger] ContactEnricher triggered')
+  } catch (error: any) {
+    logger.error({ error: error.message, organizationId: ctx.organizationId }, '[AgaaS:Trigger] ContactEnricher error')
+  }
+}
+
+// ─── FollowUpCoordinator trigger (called by cron) ─────────────────────────────
+
+/**
+ * Scan all orgs for idle deals and trigger FollowUpCoordinator.
+ * Called by GET /api/cron/agaas-idle-deals
+ */
+export async function triggerFollowUpForIdleDeals() {
+  const IDLE_DAYS = 3
+
+  const orgs = await prisma.organization.findMany({
+    where: { agaasEnabled: true },
+    select: { id: true, iaConfig: true },
+  })
+
+  let triggered = 0
+
+  for (const org of orgs) {
+    try {
+      const quota = await checkAgaasQuota(org.id)
+      if (!quota.allowed) continue
+
+      const rawConfig = (org.iaConfig || {}) as IAConfig
+      const enabledMap = rawConfig.enabledAgents || rawConfig
+      if (!(enabledMap['followup-coordinator'] === true || enabledMap['followup-coordinator']?.enabled === true)) continue
+
+      if (!isWithinOperatingHours(rawConfig)) continue
+
+      const confidenceThreshold = (rawConfig.confidenceThreshold ?? 70) / 100
+      const maxActionsPerDay = rawConfig.maxActionsPerDay ?? 100
+      if (await isDailyLimitReached(org.id, maxActionsPerDay)) continue
+
+      const idleCutoff = new Date(Date.now() - IDLE_DAYS * 24 * 60 * 60 * 1000)
+
+      const idleDeals = await prisma.deal.findMany({
+        where: {
+          organizationId: org.id,
+          status: 'ACTIVE',
+          updatedAt: { lte: idleCutoff },
+        },
+        select: { id: true, title: true, contactId: true, updatedAt: true },
+        take: 10,
+        orderBy: { updatedAt: 'asc' },
+      })
+
+      for (const deal of idleDeals) {
+        if (!deal.contactId) continue
+
+        // Skip if we already triggered a follow-up for this deal recently
+        const recentAction = await prisma.agentAction.findFirst({
+          where: {
+            organizationId: org.id,
+            agentName: 'FollowUpCoordinator',
+            entityId: deal.id,
+            createdAt: { gte: new Date(Date.now() - 24 * 60 * 60 * 1000) },
+          },
+        })
+        if (recentAction) continue
+
+        const contact = await prisma.contact.findUnique({
+          where: { id: deal.contactId },
+          select: { id: true, name: true, phone: true },
+        })
+        if (!contact?.phone) continue
+
+        const idleDays = Math.floor((Date.now() - deal.updatedAt.getTime()) / (24 * 60 * 60 * 1000))
+
+        const created = await prisma.agentAction.create({
+          data: {
+            organizationId: org.id,
+            agentName: 'FollowUpCoordinator',
+            actionType: 'SEND_FOLLOWUP',
+            entityType: 'Deal',
+            entityId: deal.id,
+            reasoning: `Deal "${deal.title}" parado há ${idleDays} dias. Enviar follow-up personalizado para ${contact.name || contact.phone}.`,
+            confidence: 0.8,
+            input: {
+              contactId: contact.id,
+              contactName: contact.name,
+              contactPhone: contact.phone,
+              dealId: deal.id,
+              dealTitle: deal.title,
+              idleDays,
+              trigger: 'deal.idle',
+            },
+            status: 0.8 >= confidenceThreshold ? 'PENDING' : 'NEEDS_APPROVAL',
+          },
+        })
+
+        await incrementAgaasUsage(org.id)
+        triggered++
+
+        if (0.8 >= confidenceThreshold) {
+          const orgUser = await prisma.user.findFirst({
+            where: { organizationId: org.id, role: 'ADMIN' },
+            select: { id: true },
+          })
+          if (orgUser) {
+            try {
+              const result = await executeAgentAction({
+                id: created.id,
+                organizationId: org.id,
+                agentName: 'FollowUpCoordinator',
+                actionType: 'SEND_FOLLOWUP',
+                entityType: 'Deal',
+                entityId: deal.id,
+                reasoning: created.reasoning,
+                confidence: 0.8,
+                input: created.input as any,
+                userId: orgUser.id,
+              })
+              await prisma.agentAction.update({
+                where: { id: created.id },
+                data: { status: result.success ? 'SUCCESS' : 'FAILED', output: result.output as Prisma.InputJsonValue },
+              })
+            } catch (e: any) {
+              await prisma.agentAction.update({
+                where: { id: created.id },
+                data: { status: 'FAILED', output: { error: e.message } as Prisma.InputJsonValue },
+              })
+            }
+          }
+        }
+      }
+    } catch (e: any) {
+      logger.error({ error: e.message, orgId: org.id }, '[AgaaS:FollowUp] Error processing org')
+    }
+  }
+
+  logger.info({ triggered }, '[AgaaS:FollowUp] Idle deal scan complete')
+  return triggered
+}
