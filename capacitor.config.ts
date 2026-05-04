@@ -10,6 +10,8 @@ const config: CapacitorConfig = {
     androidScheme: 'https',
     iosScheme: 'https',
     allowNavigation: ['siriuscrm.com.br', '*.siriuscrm.com.br'],
+    // Always open at login — auth middleware redirects to /dashboard if session is valid
+    startPath: '/login',
   },
   ios: {
     contentInset: 'always',

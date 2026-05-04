@@ -254,8 +254,11 @@ export function ChatInterface({
 
   return (
     <div className="flex-1 flex flex-col h-full">
-      {/* Top bar */}
-      <div className="h-12 border-b bg-white dark:bg-zinc-950 flex items-center justify-between px-4 flex-shrink-0">
+      {/* Top bar — hidden on mobile when a conversation is selected (app bar covers it) */}
+      <div className={cn(
+        'h-12 border-b bg-white dark:bg-zinc-950 flex items-center justify-between px-4 flex-shrink-0',
+        selectedContact && 'hidden lg:flex'
+      )}>
         <div className="flex items-center gap-1">
           <button
             onClick={() => setActiveView('chat')}

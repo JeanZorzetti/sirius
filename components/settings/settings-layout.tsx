@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import { Search, Settings, User, Users, Bell, Key, Webhook, Zap, BookOpen, Menu, X, RotateCw, Sun, Moon, LifeBuoy } from 'lucide-react'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
@@ -8,6 +8,7 @@ import { cn } from '@/lib/utils'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useTheme } from 'next-themes'
+import { useAppBar } from '@/components/mobile/app-bar-context'
 
 interface SettingsTab {
   id: string
@@ -118,11 +119,21 @@ export function SettingsLayout({ children, organizationName }: SettingsLayoutPro
   }, [pathname])
 
   const [sidebarOpen, setSidebarOpen] = useState(false)
+  const { setConfig } = useAppBar()
+
+  useEffect(() => {
+    const activeTab = tabs.find(t => t.id === activeTabId)
+    setConfig({
+      title: activeTab?.label ?? 'Configurações',
+      showBack: activeTabId !== 'general',
+    })
+    return () => setConfig(null)
+  }, [activeTabId])
 
   return (
     <div className="flex-1 flex h-full relative">
-      {/* Mobile sidebar toggle */}
-      <div className="md:hidden fixed bottom-4 right-4 z-50">
+      {/* Mobile sidebar toggle — float above bottom nav */}
+      <div className="md:hidden fixed bottom-[calc(3.5rem+env(safe-area-inset-bottom)+0.75rem)] right-4 z-50">
         <Button
           size="icon"
           variant="default"
@@ -144,7 +155,7 @@ export function SettingsLayout({ children, organizationName }: SettingsLayoutPro
       {/* Sidebar - Navegação Lateral */}
       <aside className={cn(
         "w-64 border-r border-zinc-200 dark:border-white/5 bg-white/50 dark:bg-white/[0.01] backdrop-blur-xl p-6 space-y-6 overflow-y-auto",
-        "fixed inset-y-0 left-0 z-40 transition-transform duration-200 md:relative md:translate-x-0",
+        "fixed top-[var(--app-bar-height)] bottom-[calc(3.5rem+env(safe-area-inset-bottom))] left-0 z-40 transition-transform duration-200 md:relative md:inset-auto md:translate-x-0",
         sidebarOpen ? "translate-x-0" : "-translate-x-full"
       )}>
         {/* Header */}

@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useTransition } from 'react'
+import { useState, useTransition, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import {
   Calendar,
@@ -29,6 +29,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/tooltip'
+import { useAppBar } from '@/components/mobile/app-bar-context'
 
 type Deal = {
   id: string
@@ -205,10 +206,10 @@ function DealRow({
     >
       <button
         onClick={onClick}
-        className="flex-1 text-left group flex items-center gap-4 px-4 py-3 rounded-xl border border-border bg-card hover:bg-accent/50 hover:border-border/80 transition-all duration-150"
+        className="flex-1 text-left group flex items-center gap-3 px-3 py-2.5 sm:gap-4 sm:px-4 sm:py-3 rounded-xl border border-border bg-card hover:bg-accent/50 hover:border-border/80 transition-all active:scale-[0.99] duration-150"
       >
         <div className={cn(
-          'shrink-0 flex flex-col items-center justify-center w-14 text-center',
+          'shrink-0 flex flex-col items-center justify-center w-11 sm:w-14 text-center',
           overdue ? 'text-red-500' : 'text-muted-foreground'
         )}>
           <span className="text-xs font-semibold tabular-nums leading-none">
@@ -225,16 +226,14 @@ function DealRow({
           <p className="text-sm font-medium text-foreground truncate group-hover:text-primary transition-colors">
             {deal.title}
           </p>
-          <div className="flex items-center gap-2 mt-0.5 text-xs text-muted-foreground">
-            <span className="truncate">{deal.pipeline.name}</span>
-            <span>·</span>
-            <span className="truncate">{deal.stage.name}</span>
+          <div className="flex items-center gap-1.5 mt-0.5 text-xs text-muted-foreground min-w-0">
+            <span className="truncate max-w-[80px] sm:max-w-none">{deal.stage.name}</span>
             {deal.contact && (
               <>
-                <span>·</span>
+                <span className="shrink-0">·</span>
                 <span className="flex items-center gap-1 truncate">
                   <User className="h-3 w-3 shrink-0" />
-                  {deal.contact.name}
+                  <span className="truncate">{deal.contact.name}</span>
                 </span>
               </>
             )}
@@ -242,7 +241,7 @@ function DealRow({
         </div>
 
         {deal.value != null && (
-          <span className="shrink-0 text-sm font-semibold tabular-nums text-foreground/80">
+          <span className="hidden sm:inline shrink-0 text-sm font-semibold tabular-nums text-foreground/80">
             {deal.value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL', maximumFractionDigits: 0 })}
           </span>
         )}
@@ -273,10 +272,10 @@ function TaskRow({
     >
       <Link
         href={`/dashboard/tasks/task/${task.id}`}
-        className="flex-1 group flex items-center gap-4 px-4 py-3 rounded-xl border border-indigo-500/20 bg-indigo-500/[0.03] hover:bg-indigo-500/[0.07] hover:border-indigo-500/30 transition-all duration-150"
+        className="flex-1 group flex items-center gap-3 px-3 py-2.5 sm:gap-4 sm:px-4 sm:py-3 rounded-xl border border-indigo-500/20 bg-indigo-500/[0.03] hover:bg-indigo-500/[0.07] hover:border-indigo-500/30 transition-all active:scale-[0.99] duration-150"
       >
         <div className={cn(
-          'shrink-0 flex flex-col items-center justify-center w-14 text-center',
+          'shrink-0 flex flex-col items-center justify-center w-11 sm:w-14 text-center',
           overdue ? 'text-red-500' : 'text-muted-foreground'
         )}>
           <span className="text-xs font-semibold tabular-nums leading-none">
@@ -344,6 +343,15 @@ export function AgendaClient({
   const [showCalendar, setShowCalendar] = useState(false)
   const groups = groupItems(deals, tasks)
   const totalItems = deals.length + tasks.length
+  const { setConfig } = useAppBar()
+
+  useEffect(() => {
+    const subtitle = totalItems === 0
+      ? 'Nenhum item'
+      : `${deals.length > 0 ? `${deals.length} deal${deals.length > 1 ? 's' : ''}` : ''}${deals.length > 0 && tasks.length > 0 ? ' · ' : ''}${tasks.length > 0 ? `${tasks.length} tarefa${tasks.length > 1 ? 's' : ''}` : ''}`
+    setConfig({ title: 'Agenda', subtitle })
+    return () => setConfig(null)
+  }, [totalItems, deals.length, tasks.length])
 
   function openDeal(deal: Deal) {
     setSelectedDeal(deal)
@@ -352,8 +360,9 @@ export function AgendaClient({
 
   return (
     <AnimatedPageContainer>
-      {/* Header */}
-      <div className="flex items-center justify-between mb-6">
+      <div className="px-4 md:px-0">
+      {/* Header — desktop only */}
+      <div className="hidden lg:flex items-center justify-between mb-6">
         <div className="flex items-center gap-3">
           <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary/10">
             <Calendar className="h-5 w-5 text-primary" />
@@ -389,6 +398,25 @@ export function AgendaClient({
             </Link>
           )}
         </div>
+      </div>
+
+      {/* Mobile Google Calendar button */}
+      <div className="lg:hidden mb-4 px-1">
+        {googleCalendarEnabled ? (
+          <Button variant={showCalendar ? 'default' : 'outline'} size="sm"
+            className="gap-2 h-8 text-xs w-full" onClick={() => setShowCalendar(v => !v)}>
+            <CalendarDays className="h-3.5 w-3.5" />
+            {showCalendar ? 'Ocultar calendário' : 'Ver Google Calendar'}
+          </Button>
+        ) : (
+          <Link href="/dashboard/settings/integrations/google-calendar">
+            <Button variant="outline" size="sm" className="gap-2 h-8 text-xs text-muted-foreground w-full">
+              <CalendarDays className="h-3.5 w-3.5" />
+              Conectar Google Calendar
+              <ExternalLink className="h-3 w-3" />
+            </Button>
+          </Link>
+        )}
       </div>
 
       {/* Google Calendar embed panel */}
@@ -478,6 +506,7 @@ export function AgendaClient({
         contacts={contacts}
         onSuccess={() => window.location.reload()}
       />
+      </div>
     </AnimatedPageContainer>
   )
 }

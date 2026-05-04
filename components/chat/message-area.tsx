@@ -1286,8 +1286,8 @@ export function MessageArea({ contact, connections, organizationId, userId, user
         />
       )}
 
-      {/* Header */}
-      <div className="h-[60px] px-4 border-b flex items-center justify-between bg-[#f0f2f5] whatsapp-header flex-shrink-0">
+      {/* Header — hidden on mobile (app bar contextual already shows name + back) */}
+      <div className="hidden lg:flex h-[60px] px-4 border-b items-center justify-between bg-[#f0f2f5] whatsapp-header flex-shrink-0">
         <div className="flex items-center gap-3">
           {/* Mobile back button */}
           {onBack && (
@@ -1372,6 +1372,38 @@ export function MessageArea({ contact, connections, organizationId, userId, user
               </SelectContent>
             </Select>
           )}
+        </div>
+      </div>
+
+      {/* Mobile action bar — shown only on mobile (header is hidden there) */}
+      <div className="lg:hidden flex items-center gap-1 px-3 py-1.5 border-b bg-[#f0f2f5] dark:bg-zinc-900 flex-shrink-0">
+        <div className="flex items-center gap-1.5 text-xs text-muted-foreground min-w-0 flex-1">
+          <Avatar className="h-6 w-6 shrink-0">
+            {profilePicUrl && <AvatarImage src={profilePicUrl} alt={name} />}
+            <AvatarFallback className={cn('text-[9px] font-semibold text-white', clr)}>
+              {isGrp ? <Users className="h-3 w-3" /> : initials()}
+            </AvatarFallback>
+          </Avatar>
+          {sub && <span className="truncate">{sub}</span>}
+        </div>
+        <div className="flex items-center gap-0.5 shrink-0">
+          {users.length > 0 && (
+            <AgentAssignment
+              contactId={contact.id}
+              assignedUserId={contact.chatConversation?.assignedUserId || null}
+              users={users}
+              onAssignmentChange={onContactUpdate}
+            />
+          )}
+          <Button variant="ghost" size="sm" onClick={() => setIsSearchOpen(!isSearchOpen)}
+            className="h-8 w-8 p-0" aria-label="Buscar">
+            <Search className="h-4 w-4" />
+          </Button>
+          <Button variant="ghost" size="sm" onClick={toggleSidebar}
+            className={cn('h-8 w-8 p-0', showSidebar && 'bg-[#00a884]/10 text-[#00a884]')}
+            aria-label="Informações do contato">
+            <Info className="h-4 w-4" />
+          </Button>
         </div>
       </div>
 

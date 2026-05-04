@@ -10,6 +10,8 @@ import { User, Users, Key, Webhook, Zap, Bell, BookOpen, CreditCard, ChevronRigh
 import Link from 'next/link'
 import { cn } from '@/lib/utils'
 import { toast } from 'sonner'
+import { useEffect } from 'react'
+import { useAppBar } from '@/components/mobile/app-bar-context'
 
 interface SettingsClientProps {
   user: {
@@ -24,6 +26,12 @@ interface SettingsClientProps {
 
 export function SettingsClient({ user }: SettingsClientProps) {
   const [viewMode, setViewMode] = useState<ViewMode>('expanded')
+  const { setConfig } = useAppBar()
+
+  useEffect(() => {
+    setConfig({ title: 'Configurações' })
+    return () => setConfig(null)
+  }, [])
 
   const handleExportData = () => {
     toast.promise(
@@ -39,12 +47,12 @@ export function SettingsClient({ user }: SettingsClientProps) {
   const isCompact = viewMode === 'compact'
 
   return (
-    <div className="p-8 pt-6 space-y-6">
+    <div className="px-4 py-4 md:p-8 md:pt-6 space-y-6">
       {/* Header com Quick Actions */}
-      <div className="flex items-start justify-between gap-4">
-        <div className="flex-1">
-          <div className="flex items-center gap-3 mb-2">
-            <h1 className="text-3xl font-bold tracking-tight text-zinc-900 dark:text-white">
+      <div className="flex flex-wrap items-start justify-between gap-3">
+        <div className="flex-1 min-w-0">
+          <div className="flex flex-wrap items-center gap-2 mb-1">
+            <h1 className="text-2xl md:text-3xl font-bold tracking-tight text-zinc-900 dark:text-white">
               Configurações
             </h1>
             {user.organization && (
