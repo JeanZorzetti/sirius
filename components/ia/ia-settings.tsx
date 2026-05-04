@@ -1,10 +1,11 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { motion } from 'framer-motion'
 import { Shield, Sliders, Clock, MessageSquare, Save, Loader2, Activity } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import Link from 'next/link'
+import { toast } from 'sonner'
 
 interface QuotaInfo {
   tier: string
@@ -35,6 +36,8 @@ export function IASettings() {
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
   const [saved, setSaved] = useState(false)
+  // Keep a ref to the full config so we can merge on save without a second GET
+  const existingConfigRef = useRef<Record<string, unknown>>({})
 
   // Load config + quota from API
   useEffect(() => {
@@ -44,6 +47,7 @@ export function IASettings() {
     ])
       .then(([settingsData, quotaData]) => {
         const config = settingsData.config || {}
+        existingConfigRef.current = config
         if (config.confidenceThreshold !== undefined) setConfidenceThreshold(config.confidenceThreshold)
         if (config.maxActionsPerDay !== undefined) setMaxActionsPerDay(config.maxActionsPerDay)
         if (config.operatingHoursStart) setOperatingHoursStart(config.operatingHoursStart)
@@ -54,24 +58,21 @@ export function IASettings() {
         if (config.calendarEnabled !== undefined) setCalendarEnabled(config.calendarEnabled)
         setQuotaInfo(quotaData)
       })
-      .catch(() => {})
+      .catch(() => {
+        toast.error('Erro ao carregar configurações.')
+      })
       .finally(() => setLoading(false))
   }, [])
 
   const handleSave = async () => {
     setSaving(true)
     try {
-      // Load existing config to merge (preserve enabledAgents etc.)
-      const res = await fetch('/api/ia/settings')
-      const data = await res.json()
-      const existingConfig = data.config || {}
-
-      await fetch('/api/ia/settings', {
+      const res = await fetch('/api/ia/settings', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           config: {
-            ...existingConfig,
+            ...existingConfigRef.current,
             confidenceThreshold,
             maxActionsPerDay,
             operatingHoursStart,
@@ -83,10 +84,23 @@ export function IASettings() {
           }
         })
       })
+      if (!res.ok) throw new Error()
+      existingConfigRef.current = {
+        ...existingConfigRef.current,
+        confidenceThreshold,
+        maxActionsPerDay,
+        operatingHoursStart,
+        operatingHoursEnd,
+        weekendsEnabled,
+        whatsappEnabled,
+        emailEnabled,
+        calendarEnabled,
+      }
       setSaved(true)
       setTimeout(() => setSaved(false), 2000)
+      toast.success('Configurações salvas')
     } catch {
-      // Silently fail
+      toast.error('Erro ao salvar. Tente novamente.')
     } finally {
       setSaving(false)
     }
