@@ -28,6 +28,7 @@
     "cap:run:android": "npx cap run android",
     "build:mobile": "npm run build && npx cap sync",
     "version:bump": "node scripts/bump-mobile-version.js",
+    "logos:generate": "node scripts/generate-all-logos.js",
     "instagram-bot:poster": "tsx scripts/instagram-bot/poster.ts",
     "instagram-bot:queue": "tsx scripts/instagram-bot/claude-skill.ts queue",
     "instagram-bot:feed": "tsx scripts/instagram-bot/claude-skill.ts feed",
@@ -168,6 +169,7 @@
     "tw-animate-css": "^1.4.0",
     "typescript": "^5",
     "vitest": "^4.0.16",
-    "vitest-mock-extended": "^3.1.0"
+    "vitest-mock-extended": "^3.1.0",
+    "sharp": "^0.33.5"
   }
 }
