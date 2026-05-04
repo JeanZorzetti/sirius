@@ -1,21 +1,26 @@
 'use client'
 
 import { useState } from 'react'
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog'
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import { Slider } from '@/components/ui/slider'
-import { Loader2, RotateCcw } from 'lucide-react'
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
+import { Loader2, RotateCcw, ChevronDown, Info } from 'lucide-react'
+import { cn } from '@/lib/utils'
 import type { AgentOverride } from '@/lib/agaas-types'
+import { toast } from 'sonner'
 
 interface AgentEditModalProps {
   open: boolean
   onOpenChange: (open: boolean) => void
   agentId: string
   agentName: string
+  agentDescription?: string
   defaultPrompt: string
+  agentGradient?: string
   currentOverride?: AgentOverride
   onSaved: (agentId: string, override: AgentOverride | null) => void
 }
@@ -25,7 +30,9 @@ export function AgentEditModal({
   onOpenChange,
   agentId,
   agentName,
+  agentDescription,
   defaultPrompt,
+  agentGradient = 'from-cyan-500 to-blue-500',
   currentOverride,
   onSaved,
 }: AgentEditModalProps) {
@@ -34,6 +41,14 @@ export function AgentEditModal({
   const [threshold, setThreshold] = useState(currentOverride?.confidenceThreshold ?? 75)
   const [saving, setSaving] = useState(false)
   const [resetting, setResetting] = useState(false)
+  const [showDefaultPrompt, setShowDefaultPrompt] = useState(false)
+
+  function thresholdDescription(t: number): string {
+    if (t >= 90) return 'Muito conservador — raramente executa sem aprovação'
+    if (t >= 75) return 'Recomendado — executa automaticamente quando confiante'
+    if (t >= 60) return 'Moderado — aceita incerteza média'
+    return 'Agressivo — executa com baixa confiança'
+  }
 
   async function handleSave() {
     setSaving(true)
@@ -43,14 +58,19 @@ export function AgentEditModal({
       if (systemPrompt.trim()) override.systemPrompt = systemPrompt.trim()
       override.confidenceThreshold = threshold
 
-      await fetch('/api/ia/agent-config', {
+      const res = await fetch('/api/ia/agent-config', {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ agentId, override }),
       })
 
+      if (!res.ok) throw new Error()
+
       onSaved(agentId, override)
       onOpenChange(false)
+      toast.success('Configurações salvas')
+    } catch {
+      toast.error('Erro ao salvar. Tente novamente.')
     } finally {
       setSaving(false)
     }
@@ -59,17 +79,22 @@ export function AgentEditModal({
   async function handleReset() {
     setResetting(true)
     try {
-      await fetch('/api/ia/agent-config', {
+      const res = await fetch('/api/ia/agent-config', {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ agentId, override: null }),
       })
+
+      if (!res.ok) throw new Error()
 
       setDisplayName('')
       setSystemPrompt('')
       setThreshold(75)
       onSaved(agentId, null)
       onOpenChange(false)
+      toast('Configurações restauradas ao padrão')
+    } catch {
+      toast.error('Erro ao restaurar. Tente novamente.')
     } finally {
       setResetting(false)
     }
@@ -79,10 +104,18 @@ export function AgentEditModal({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="bg-zinc-900 border-zinc-800 text-zinc-100 max-w-lg">
         <DialogHeader>
-          <DialogTitle className="text-zinc-100">Editar agente — {agentName}</DialogTitle>
+          {/* Gradient accent strip */}
+          <div className={cn('h-1 w-full rounded-full bg-gradient-to-r mb-3', agentGradient)} />
+          <DialogTitle className="text-zinc-100">{agentName}</DialogTitle>
+          {agentDescription && (
+            <DialogDescription className="text-zinc-500 text-xs mt-0.5">
+              {agentDescription}
+            </DialogDescription>
+          )}
         </DialogHeader>
 
         <div className="space-y-5 py-2">
+          {/* Display name */}
           <div className="space-y-1.5">
             <Label className="text-xs text-zinc-400">Nome de exibição</Label>
             <Input
@@ -93,22 +126,51 @@ export function AgentEditModal({
             />
           </div>
 
+          {/* System prompt */}
           <div className="space-y-1.5">
             <Label className="text-xs text-zinc-400">Prompt do sistema</Label>
             <Textarea
               value={systemPrompt}
               onChange={e => setSystemPrompt(e.target.value)}
-              placeholder={defaultPrompt}
-              rows={5}
+              placeholder="Deixe em branco para usar o prompt padrão..."
+              rows={4}
               className="bg-zinc-800 border-zinc-700 text-zinc-100 placeholder:text-zinc-600 focus-visible:ring-cyan-500 resize-none text-sm"
             />
-            <p className="text-[11px] text-zinc-600">Deixe em branco para usar o prompt padrão.</p>
+
+            {/* Default prompt toggle */}
+            <button
+              type="button"
+              onClick={() => setShowDefaultPrompt(v => !v)}
+              className="flex items-center gap-1 text-[11px] text-zinc-600 hover:text-zinc-400 transition-colors"
+            >
+              <ChevronDown className={cn('h-3 w-3 transition-transform duration-200', showDefaultPrompt && 'rotate-180')} />
+              Ver prompt padrão
+            </button>
+
+            {showDefaultPrompt && (
+              <pre className="text-xs text-zinc-500 bg-zinc-800/60 border border-zinc-700/30 rounded-lg p-3 whitespace-pre-wrap leading-relaxed">
+                {defaultPrompt}
+              </pre>
+            )}
           </div>
 
+          {/* Confidence threshold */}
           <div className="space-y-2">
             <div className="flex items-center justify-between">
-              <Label className="text-xs text-zinc-400">Threshold de confiança</Label>
-              <span className="text-sm font-mono font-medium text-cyan-400">{threshold}%</span>
+              <div className="flex items-center gap-1.5">
+                <Label className="text-xs text-zinc-400">Threshold de confiança</Label>
+                <TooltipProvider delayDuration={200}>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Info className="h-3 w-3 text-zinc-600 cursor-help" />
+                    </TooltipTrigger>
+                    <TooltipContent side="top" className="bg-zinc-800 border-zinc-700 text-zinc-300 text-xs max-w-xs">
+                      Ações com confiança acima deste valor são executadas automaticamente. Abaixo disso, ficam aguardando aprovação no Feed.
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+              </div>
+              <span className="text-sm font-mono font-semibold text-cyan-400">{threshold}%</span>
             </div>
             <Slider
               value={[threshold]}
@@ -117,9 +179,7 @@ export function AgentEditModal({
               max={100}
               step={5}
             />
-            <p className="text-[11px] text-zinc-600">
-              Ações com confiança ≥ {threshold}% são executadas automaticamente. Abaixo disso ficam aguardando aprovação.
-            </p>
+            <p className="text-[11px] text-zinc-600">{thresholdDescription(threshold)}</p>
           </div>
         </div>
 

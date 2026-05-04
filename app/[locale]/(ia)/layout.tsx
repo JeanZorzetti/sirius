@@ -2,6 +2,7 @@ import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { redirect } from 'next/navigation'
 import { IANavbar } from '@/components/ia/ia-navbar'
+import { Toaster } from '@/components/ui/sonner'
 
 export const metadata = {
   title: 'Sirius IA | Modo Agêntico',
@@ -51,6 +52,8 @@ export default async function IALayout({
       <main className="relative pt-16">
         {children}
       </main>
+
+      <Toaster position="bottom-right" theme="dark" />
     </div>
   )
 }
