@@ -10,6 +10,7 @@ import { prismaWa } from '@/lib/prisma-wa'
 import { callLLM } from '@/lib/agi/providers'
 import { getWhatsAppOfficialClient, normalizePhone } from '@/lib/integrations/whatsapp-official-client'
 import { getGoogleCalendarClient } from '@/lib/integrations/google-calendar-client'
+import { retrieveContext } from '@/lib/rag/retrieval'
 import logger from '@/lib/logger'
 
 /**
@@ -43,34 +44,44 @@ interface AgentAction {
   userId: string
 }
 
+function injectRagContext(basePrompt: string, ragContext: string): string {
+  if (!ragContext) return basePrompt
+  return `${basePrompt}\n\nBASE DE CONHECIMENTO RELEVANTE:\n---\n${ragContext}\n---`
+}
+
 /**
  * Execute an approved agent action.
  * Returns the output object to store in the AgentAction record.
  */
 export async function executeAgentAction(action: AgentAction): Promise<{ success: boolean; output: Record<string, any> }> {
-  switch (action.agentName) {
+  // Retrieve RAG context from the org's knowledge base before dispatching
+  const ragQuery = action.input?.messageText || action.input?.context || action.actionType
+  const ragContext = await retrieveContext(action.organizationId, ragQuery, 3).catch(() => '')
+  const enrichedAction = { ...action, input: { ...action.input, ragContext } }
+
+  switch (enrichedAction.agentName) {
     case 'LeadQualifier':
-      return executeLeadQualifier(action)
+      return executeLeadQualifier(enrichedAction)
     case 'DealStageAnalyzer':
-      return executeDealStageAnalyzer(action)
+      return executeDealStageAnalyzer(enrichedAction)
     case 'FollowUpCoordinator':
-      return executeFollowUpCoordinator(action)
+      return executeFollowUpCoordinator(enrichedAction)
     case 'MeetingScheduler':
-      return executeMeetingScheduler(action)
+      return executeMeetingScheduler(enrichedAction)
     case 'ContactEnricher':
-      return executeContactEnricher(action)
+      return executeContactEnricher(enrichedAction)
     case 'PropertyMatcher':
-      return executePropertyMatcher(action)
+      return executePropertyMatcher(enrichedAction)
     case 'VisitScheduler':
-      return executeVisitScheduler(action)
+      return executeVisitScheduler(enrichedAction)
     case 'ProposalFollowUp':
-      return executeProposalFollowUp(action)
+      return executeProposalFollowUp(enrichedAction)
     case 'LeadProfiler':
-      return executeLeadProfiler(action)
+      return executeLeadProfiler(enrichedAction)
     case 'NegotiationAssistant':
-      return executeNegotiationAssistant(action)
+      return executeNegotiationAssistant(enrichedAction)
     default:
-      return { success: false, output: { error: `Unknown agent: ${action.agentName}` } }
+      return { success: false, output: { error: `Unknown agent: ${enrichedAction.agentName}` } }
   }
 }
 
@@ -96,10 +107,11 @@ async function executeLeadQualifier(action: AgentAction): Promise<{ success: boo
     .join('\n')
 
   // Call LLM to qualify
+  const ragContext = action.input?.ragContext || ''
   const llmResponse = await callLLM([
     {
       role: 'system' as const,
-      content: `Você é um analista de vendas B2B. Analise a conversa e qualifique o lead usando critérios BANT.
+      content: injectRagContext(`Você é um analista de vendas B2B. Analise a conversa e qualifique o lead usando critérios BANT.
 Responda APENAS em JSON válido com esta estrutura:
 {
   "qualification": "HOT" | "WARM" | "COLD",
@@ -108,7 +120,7 @@ Responda APENAS em JSON válido com esta estrutura:
   "suggestedDealTitle": "título sugerido para o deal",
   "suggestedDealValue": 0,
   "nextAction": "ação recomendada"
-}`,
+}`, ragContext),
     },
     {
       role: 'user' as const,
@@ -229,11 +241,12 @@ async function executeDealStageAnalyzer(action: AgentAction): Promise<{ success:
     .join('\n')
 
   const stageNames = deal.pipeline.stages.map((s, i) => `${i + 1}. ${s.name}`).join('\n')
+  const ragContext = action.input?.ragContext || ''
 
   const llmResponse = await callLLM([
     {
       role: 'system' as const,
-      content: `Você é um analista de pipeline de vendas B2B. Analise a conversa e determine se o deal deve avançar de estágio.
+      content: injectRagContext(`Você é um analista de pipeline de vendas B2B. Analise a conversa e determine se o deal deve avançar de estágio.
 
 Estágios do pipeline (em ordem):
 ${stageNames}
@@ -247,7 +260,7 @@ Responda APENAS em JSON válido:
   "reasoning": "por que mover ou manter",
   "buyingSignals": ["sinal 1", "sinal 2"],
   "confidence": 0-100
-}`,
+}`, ragContext),
     },
     {
       role: 'user' as const,
@@ -338,12 +351,13 @@ async function executeFollowUpCoordinator(action: AgentAction): Promise<{ succes
     .map(m => `[${m.direction === 'INBOUND' ? contact.name || 'Lead' : 'Vendedor'}]: ${m.text}`)
     .join('\n')
 
+  const ragContext = action.input?.ragContext || ''
   const llmResponse = await callLLM([
     {
       role: 'system' as const,
-      content: `Você é um vendedor B2B experiente. Escreva uma mensagem de follow-up natural, curta (máx 3 linhas) e personalizada para retomar o contato com um prospect.
+      content: injectRagContext(`Você é um vendedor B2B experiente. Escreva uma mensagem de follow-up natural, curta (máx 3 linhas) e personalizada para retomar o contato com um prospect.
 Não use templates genéricos. Baseie-se no contexto da conversa.
-Responda APENAS com o texto da mensagem, sem aspas, sem explicações.`,
+Responda APENAS com o texto da mensagem, sem aspas, sem explicações.`, ragContext),
     },
     {
       role: 'user' as const,
@@ -444,10 +458,11 @@ async function executeMeetingScheduler(action: AgentAction): Promise<{ success: 
 
   const slotLines = candidates.map((s, i) => `${i + 1}. ${s.label}`).join('\n')
 
+  const ragContext = action.input?.ragContext || ''
   const llmResponse = await callLLM([
     {
       role: 'system' as const,
-      content: `Você é um assistente de vendas. Escreva uma mensagem curta e profissional propondo horários de reunião para um prospect. Use os horários disponíveis fornecidos. Máx 5 linhas. Responda APENAS com o texto da mensagem.`,
+      content: injectRagContext(`Você é um assistente de vendas. Escreva uma mensagem curta e profissional propondo horários de reunião para um prospect. Use os horários disponíveis fornecidos. Máx 5 linhas. Responda APENAS com o texto da mensagem.`, ragContext),
     },
     {
       role: 'user' as const,
@@ -518,10 +533,11 @@ async function executeContactEnricher(action: AgentAction): Promise<{ success: b
     return { success: false, output: { error: 'Contact name too short to enrich' } }
   }
 
+  const ragContext = action.input?.ragContext || ''
   const llmResponse = await callLLM([
     {
       role: 'system' as const,
-      content: `Você é um analista de inteligência comercial. Com base no nome, telefone e email fornecidos, infira o perfil profissional mais provável deste contato.
+      content: injectRagContext(`Você é um analista de inteligência comercial. Com base no nome, telefone e email fornecidos, infira o perfil profissional mais provável deste contato.
 Se o nome for genérico ou insuficiente, retorne campos vazios.
 Responda APENAS em JSON válido:
 {
@@ -531,7 +547,7 @@ Responda APENAS em JSON válido:
   "linkedinUrl": "url do linkedin se puder inferir ou vazio",
   "notes": "insights úteis para o vendedor (max 2 frases)",
   "confidence": 0-100
-}`,
+}`, ragContext),
     },
     {
       role: 'user' as const,
@@ -625,9 +641,10 @@ async function executePropertyMatcher(action: AgentAction): Promise<{ success: b
   const portfolioList = portfolioDeals.map(d => `- ${d.title} (R$ ${Number(d.value).toLocaleString('pt-BR')})`).join('\n')
 
   const defaultPrompt = `Você é um corretor de imóveis experiente. Analise a conversa e extraia os critérios de busca do cliente (tipo de imóvel, bairro, dormitórios, faixa de preço, objetivo: compra/aluguel). Compare com o portfólio disponível e sugira os 2-3 imóveis mais compatíveis. Escreva uma mensagem natural e personalizada para o cliente. Máx 6 linhas. Responda APENAS com o texto da mensagem.`
+  const ragContext = action.input?.ragContext || ''
 
   const llmResponse = await callLLM([
-    { role: 'system' as const, content: systemPromptOverride || defaultPrompt },
+    { role: 'system' as const, content: injectRagContext(systemPromptOverride || defaultPrompt, ragContext) },
     {
       role: 'user' as const,
       content: `Conversa com ${contact.name || contact.phone}:\n${conversationContext}\n\nPortfólio disponível:\n${portfolioList || 'Nenhum imóvel cadastrado ainda.'}`,
@@ -713,9 +730,10 @@ async function executeVisitScheduler(action: AgentAction): Promise<{ success: bo
   } catch {}
 
   const defaultPrompt = `Você é um corretor de imóveis. O cliente demonstrou interesse em visitar um imóvel. Proponha horários para visita de forma simpática e profissional. Se houver horários disponíveis, use-os. Máx 5 linhas. Responda APENAS com o texto da mensagem.`
+  const ragContext = action.input?.ragContext || ''
 
   const llmResponse = await callLLM([
-    { role: 'system' as const, content: systemPromptOverride || defaultPrompt },
+    { role: 'system' as const, content: injectRagContext(systemPromptOverride || defaultPrompt, ragContext) },
     {
       role: 'user' as const,
       content: `Cliente: ${contact.name || contact.phone}\n${slotLines ? `Horários disponíveis:\n${slotLines}` : 'Sem horários de agenda disponíveis — ofereça para combinar por mensagem.'}`,
@@ -780,9 +798,10 @@ async function executeProposalFollowUp(action: AgentAction): Promise<{ success: 
     .join('\n')
 
   const defaultPrompt = `Você é um corretor de imóveis. Escreva um follow-up elegante e não insistente para retomar contato com um cliente que está avaliando uma proposta. Seja natural, curto (máx 3 linhas) e personalize com base na conversa. Responda APENAS com o texto da mensagem.`
+  const ragContext = action.input?.ragContext || ''
 
   const llmResponse = await callLLM([
-    { role: 'system' as const, content: systemPromptOverride || defaultPrompt },
+    { role: 'system' as const, content: injectRagContext(systemPromptOverride || defaultPrompt, ragContext) },
     {
       role: 'user' as const,
       content: `Cliente: ${contact.name || contact.phone}\nDeal: "${dealTitle}"\nDias sem resposta: ${idleDays}\nÚltima conversa:\n${conversationContext || 'Sem histórico.'}`,
@@ -831,9 +850,10 @@ Responda APENAS em JSON válido:
   "reasoning": "justificativa curta",
   "profileNotes": "detalhes úteis para o corretor (max 2 frases)"
 }`
+  const ragContext = action.input?.ragContext || ''
 
   const llmResponse = await callLLM([
-    { role: 'system' as const, content: systemPromptOverride || defaultPrompt },
+    { role: 'system' as const, content: injectRagContext(systemPromptOverride || defaultPrompt, ragContext) },
     { role: 'user' as const, content: `Conversa:\n${conversationContext}` },
   ], 'PRO')
 
@@ -888,9 +908,10 @@ async function executeNegotiationAssistant(action: AgentAction): Promise<{ succe
     .join('\n')
 
   const defaultPrompt = `Você é um especialista em negociação imobiliária. Analise a objeção de preço/condição do cliente e sugira uma contra-proposta respeitosa e estratégica. Não faça concessões precipitadas. Escreva uma mensagem natural de resposta (máx 4 linhas). Responda APENAS com o texto da mensagem.`
+  const ragContext = action.input?.ragContext || ''
 
   const llmResponse = await callLLM([
-    { role: 'system' as const, content: systemPromptOverride || defaultPrompt },
+    { role: 'system' as const, content: injectRagContext(systemPromptOverride || defaultPrompt, ragContext) },
     {
       role: 'user' as const,
       content: `Cliente: ${contact?.name || 'Lead'}\nConversa:\n${conversationContext}\nÚltima mensagem de objeção: "${input?.messageText || ''}"`,

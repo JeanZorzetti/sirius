@@ -52,11 +52,21 @@ export default async function IAHomePage() {
       reviewedBy: a.reviewedBy || null
     }))
 
+    // Count enabled agents from iaConfig
+    const org = await prisma.organization.findUnique({
+      where: { id: user.organizationId },
+      select: { iaConfig: true },
+    })
+    const iaConfig = (org?.iaConfig || {}) as Record<string, unknown>
+    const enabledAgents = (iaConfig.enabledAgents || {}) as Record<string, boolean>
+    const enabledAgentCount = Object.values(enabledAgents).filter(Boolean).length
+
     return (
       <IAFeed
         actions={serializedActions}
         stats={{ today: todayCount, pending: pendingCount, success: successCount }}
         organizationId={user.organizationId}
+        enabledAgentCount={enabledAgentCount}
       />
     )
   } catch (error) {

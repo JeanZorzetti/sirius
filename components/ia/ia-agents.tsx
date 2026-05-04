@@ -16,6 +16,27 @@ import { AgentEditModal } from '@/components/ia/agent-edit-modal'
 import type { AgentOverride } from '@/lib/agaas-types'
 import { toast } from 'sonner'
 
+interface VerticalDef {
+  id: string
+  label: string
+  description: string
+  icon: typeof Bot
+  accentClasses: string
+  iconClasses: string
+}
+
+// Add new verticals here — zero layout changes needed
+const VERTICALS: Record<string, VerticalDef> = {
+  'real-estate': {
+    id: 'real-estate',
+    label: 'Vertical Imobiliária',
+    description: 'Agentes especializados para corretoras e imobiliárias. Ative os ideais para o seu fluxo de atendimento.',
+    icon: Home,
+    accentClasses: 'border-indigo-500/20 bg-indigo-500/5',
+    iconClasses: 'text-indigo-400',
+  },
+}
+
 interface AgentDef {
   id: string
   name: string
@@ -26,7 +47,7 @@ interface AgentDef {
   borderColor: string
   capabilities: string[]
   triggers: string[]
-  vertical?: string
+  vertical?: string // key into VERTICALS
 }
 
 const AGENT_DEFS: AgentDef[] = [
@@ -97,7 +118,7 @@ const AGENT_DEFS: AgentDef[] = [
     borderColor: 'border-l-indigo-500',
     capabilities: ['Extração de critérios', 'Match de portfólio', 'Sugestões personalizadas', 'Envio via WhatsApp'],
     triggers: ['whatsapp.message.in'],
-    vertical: 'Imobiliária',
+    vertical: 'real-estate',
   },
   {
     id: 'visit-scheduler',
@@ -109,7 +130,7 @@ const AGENT_DEFS: AgentDef[] = [
     borderColor: 'border-l-teal-500',
     capabilities: ['Detecção de intenção', 'Check de agenda', 'Proposta de visita', 'Confirmação automática'],
     triggers: ['whatsapp.message.in'],
-    vertical: 'Imobiliária',
+    vertical: 'real-estate',
   },
   {
     id: 'proposal-followup',
@@ -121,7 +142,7 @@ const AGENT_DEFS: AgentDef[] = [
     borderColor: 'border-l-amber-400',
     capabilities: ['Follow-up de proposta', 'Rascunho inteligente', 'Aprovação obrigatória', 'Timing estratégico'],
     triggers: ['deal.idle (estágio Proposta)'],
-    vertical: 'Imobiliária',
+    vertical: 'real-estate',
   },
   {
     id: 'lead-profiler',
@@ -133,7 +154,7 @@ const AGENT_DEFS: AgentDef[] = [
     borderColor: 'border-l-violet-500',
     capabilities: ['Classificação de perfil', 'Análise de intenção', 'Segmentação automática', 'Atualização de CRM'],
     triggers: ['whatsapp.message.in', 'contact.created'],
-    vertical: 'Imobiliária',
+    vertical: 'real-estate',
   },
   {
     id: 'negotiation-assistant',
@@ -145,7 +166,7 @@ const AGENT_DEFS: AgentDef[] = [
     borderColor: 'border-l-rose-500',
     capabilities: ['Detecção de objeção', 'Contra-proposta', 'Aprovação obrigatória', 'Estratégia de negociação'],
     triggers: ['whatsapp.message.in'],
-    vertical: 'Imobiliária',
+    vertical: 'real-estate',
   },
 ]
 
@@ -239,7 +260,6 @@ function AgentCard({ agent, enabled, onToggle, onEdit, locked, saving, overrideN
             </div>
             <div className="min-w-0">
               <div className="flex items-center gap-2">
-                {/* Status dot */}
                 <span className={cn(
                   'h-1.5 w-1.5 rounded-full shrink-0',
                   enabled ? 'bg-emerald-400 animate-pulse' : 'bg-zinc-600'
@@ -255,7 +275,6 @@ function AgentCard({ agent, enabled, onToggle, onEdit, locked, saving, overrideN
             </div>
           </div>
 
-          {/* Actions */}
           <div className="flex items-center gap-2 shrink-0 ml-3">
             {!locked && (
               <button
@@ -304,6 +323,28 @@ function AgentCard({ agent, enabled, onToggle, onEdit, locked, saving, overrideN
         </div>
       </div>
     </motion.div>
+  )
+}
+
+function VerticalBanner({ vertical, agentCount }: { vertical: VerticalDef; agentCount: number }) {
+  const Icon = vertical.icon
+  return (
+    <div className={cn('rounded-xl border p-4 mb-4', vertical.accentClasses)}>
+      <div className="flex items-start justify-between">
+        <div className="flex items-start gap-3">
+          <div className={cn('flex h-8 w-8 items-center justify-center rounded-lg shrink-0', vertical.accentClasses)}>
+            <Icon className={cn('h-4 w-4', vertical.iconClasses)} />
+          </div>
+          <div>
+            <p className="text-sm font-semibold text-zinc-200">{vertical.label}</p>
+            <p className="text-xs text-zinc-500 mt-0.5">{vertical.description}</p>
+          </div>
+        </div>
+        <span className={cn('text-[11px] font-mono shrink-0 mt-0.5', vertical.iconClasses + '/70')}>
+          {agentCount} agentes
+        </span>
+      </div>
+    </div>
   )
 }
 
@@ -436,7 +477,6 @@ export function IAAgents() {
     return enabledIds.length >= agentLimit
   }
 
-  // Quota bar values
   const quotaUsed = quotaInfo?.used ?? 0
   const quotaTotal = quotaInfo?.quota ?? 0
   const quotaPct = quotaTotal > 0 ? Math.min(100, Math.round((quotaUsed / quotaTotal) * 100)) : 0
@@ -444,12 +484,16 @@ export function IAAgents() {
   const resetDays = daysUntil(quotaInfo?.resetsAt ?? null)
 
   const coreAgents = AGENT_DEFS.filter(a => !a.vertical)
-  const reAgents = AGENT_DEFS.filter(a => a.vertical === 'Imobiliária')
+
+  // Build vertical groups dynamically — order follows VERTICALS dict insertion order
+  const verticalGroups = Object.values(VERTICALS).map(v => ({
+    vertical: v,
+    agents: AGENT_DEFS.filter(a => a.vertical === v.id),
+  })).filter(g => g.agents.length > 0)
 
   if (loading) {
     return (
       <div className="mx-auto max-w-3xl px-6 py-8">
-        {/* Header skeleton */}
         <div className="flex items-start justify-between mb-8">
           <div className="space-y-2">
             <Skeleton className="h-7 w-24" />
@@ -461,7 +505,6 @@ export function IAAgents() {
             <Skeleton className="h-3 w-24" />
           </div>
         </div>
-        {/* Card skeletons */}
         <div className="space-y-3 mb-8">
           {[0, 1, 2].map(i => <AgentCardSkeleton key={i} />)}
         </div>
@@ -567,39 +610,26 @@ export function IAAgents() {
         ))}
       </div>
 
-      {/* Real estate vertical */}
-      <div className="mb-4">
-        {/* Banner */}
-        <div className="rounded-xl border border-indigo-500/20 bg-indigo-500/5 p-4 mb-4">
-          <div className="flex items-start justify-between">
-            <div className="flex items-start gap-3">
-              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-indigo-500/20 shrink-0">
-                <Home className="h-4 w-4 text-indigo-400" />
-              </div>
-              <div>
-                <p className="text-sm font-semibold text-zinc-200">Vertical Imobiliária</p>
-                <p className="text-xs text-zinc-500 mt-0.5">Agentes especializados para corretoras e imobiliárias. Ative os ideais para o seu fluxo de atendimento.</p>
-              </div>
-            </div>
-            <span className="text-[11px] text-indigo-400/70 font-mono shrink-0 mt-0.5">{reAgents.length} agentes</span>
+      {/* Vertical sections — rendered automatically from VERTICALS dict */}
+      {verticalGroups.map(({ vertical, agents }) => (
+        <div key={vertical.id} className="mb-10">
+          <VerticalBanner vertical={vertical} agentCount={agents.length} />
+          <div className="space-y-3">
+            {sortAgents(agents, enabledAgents, isLocked).map(agent => (
+              <AgentCard
+                key={agent.id}
+                agent={agent}
+                enabled={!!enabledAgents[agent.id]}
+                onToggle={handleToggle}
+                onEdit={handleEdit}
+                locked={isLocked(agent.id)}
+                saving={saving}
+                overrideName={agentOverrides[agent.id]?.displayName}
+              />
+            ))}
           </div>
         </div>
-
-        <div className="space-y-3">
-          {sortAgents(reAgents, enabledAgents, isLocked).map(agent => (
-            <AgentCard
-              key={agent.id}
-              agent={agent}
-              enabled={!!enabledAgents[agent.id]}
-              onToggle={handleToggle}
-              onEdit={handleEdit}
-              locked={isLocked(agent.id)}
-              saving={saving}
-              overrideName={agentOverrides[agent.id]?.displayName}
-            />
-          ))}
-        </div>
-      </div>
+      ))}
 
       {/* Edit modal */}
       {editState && (

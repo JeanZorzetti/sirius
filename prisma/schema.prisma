@@ -183,6 +183,9 @@ model Organization {
   agaasActionsUsed    Int      @default(0)   // Contador reset mensal
   agaasQuotaResetAt   DateTime?              // Próximo reset
 
+  // RAG Knowledge Base
+  knowledgeDocuments KnowledgeDocument[]
+
   // Access Tracking
   accessSessions AccessSession[]
   pageViewLogs   PageViewLog[]
@@ -2401,4 +2404,34 @@ model OmieFinanceiro {
 
   @@index([organizationId])
   @@index([contactId])
+}
+
+// ── RAG Knowledge Base ─────────────────────────────────────────────────────
+
+model KnowledgeDocument {
+  id             String   @id @default(uuid())
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  title          String
+  content        String   @db.Text
+  contentType    String   // "script" | "faq" | "process" | "playbook" | "custom"
+  metadata       Json?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  chunks KnowledgeChunk[]
+
+  @@index([organizationId])
+}
+
+model KnowledgeChunk {
+  id          String                        @id @default(uuid())
+  documentId  String
+  document    KnowledgeDocument             @relation(fields: [documentId], references: [id], onDelete: Cascade)
+  chunkIndex  Int
+  text        String                        @db.Text
+  embedding   Unsupported("vector(1536)")?
+  createdAt   DateTime                      @default(now())
+
+  @@index([documentId])
 }

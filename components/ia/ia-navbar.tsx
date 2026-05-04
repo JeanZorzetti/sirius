@@ -5,26 +5,27 @@ import { usePathname } from 'next/navigation'
 import { cn } from '@/lib/utils'
 import { motion } from 'framer-motion'
 import {
-  Activity, GitBranch, MessageSquareText, Bot,
-  BarChart3, Settings, ExternalLink
+  Activity, GitBranch, Bot,
+  BarChart3, Settings, ExternalLink, BookOpen
 } from 'lucide-react'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 
 interface IANavbarProps {
   user: { name?: string | null; email: string }
   organizationName: string
+  enabledAgentCount?: number
 }
 
 const navItems = [
   { title: 'Feed', href: '/IA', icon: Activity },
-  { title: 'Pipeline', href: '/IA/pipeline', icon: GitBranch },
-  { title: 'Comando', href: '/IA/command', icon: MessageSquareText },
   { title: 'Agentes', href: '/IA/agents', icon: Bot },
+  { title: 'Conhecimento', href: '/IA/knowledge', icon: BookOpen },
+  { title: 'Pipeline', href: '/IA/pipeline', icon: GitBranch },
   { title: 'Analytics', href: '/IA/analytics', icon: BarChart3 },
   { title: 'Config', href: '/IA/settings', icon: Settings },
 ]
 
-export function IANavbar({ user, organizationName }: IANavbarProps) {
+export function IANavbar({ user, organizationName, enabledAgentCount = 0 }: IANavbarProps) {
   const pathname = usePathname()
 
   const isActive = (href: string) => {
@@ -61,6 +62,7 @@ export function IANavbar({ user, organizationName }: IANavbarProps) {
           {navItems.map(item => {
             const Icon = item.icon
             const active = isActive(item.href)
+            const showBadge = item.href === '/IA/agents' && enabledAgentCount === 0
             return (
               <Link
                 key={item.href}
@@ -79,8 +81,15 @@ export function IANavbar({ user, organizationName }: IANavbarProps) {
                     transition={{ type: 'spring', stiffness: 500, damping: 35 }}
                   />
                 )}
-                <Icon className="relative z-10 h-4 w-4" />
-                <span className="relative z-10 hidden md:inline">{item.title}</span>
+                <span className="relative z-10 flex items-center gap-1.5">
+                  <span className="relative">
+                    <Icon className="h-4 w-4" />
+                    {showBadge && (
+                      <span className="absolute -top-0.5 -right-0.5 h-2 w-2 rounded-full bg-cyan-400 animate-pulse" />
+                    )}
+                  </span>
+                  <span className="hidden md:inline">{item.title}</span>
+                </span>
               </Link>
             )
           })}

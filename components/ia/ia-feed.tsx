@@ -2,8 +2,9 @@
 
 import { useState, useEffect, useCallback } from 'react'
 import { motion } from 'framer-motion'
-import { Activity, Clock, CheckCircle2, Zap, RefreshCw, Lock } from 'lucide-react'
+import { Activity, Clock, CheckCircle2, Zap, RefreshCw, Lock, Bot, MessageSquare, UserPlus } from 'lucide-react'
 import { AgentActionCard } from './agent-action-card'
+import { IASetupProgress } from './ia-setup-progress'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 
@@ -26,6 +27,7 @@ interface IAFeedProps {
   actions: Action[]
   stats: { today: number; pending: number; success: number }
   organizationId: string
+  enabledAgentCount?: number
 }
 
 function StatCard({ icon: Icon, label, value, accent }: {
@@ -45,18 +47,24 @@ function StatCard({ icon: Icon, label, value, accent }: {
   )
 }
 
-export function IAFeed({ actions: initialActions, stats, organizationId }: IAFeedProps) {
+export function IAFeed({ actions: initialActions, stats, organizationId, enabledAgentCount = 0 }: IAFeedProps) {
   const [actions, setActions] = useState(initialActions)
   const [filter, setFilter] = useState<string>('all')
   const [tier, setTier] = useState<string>('FREE')
+  const [iaConfig, setIaConfig] = useState<Record<string, unknown>>({})
   const router = useRouter()
 
   const canApprove = tier !== 'FREE'
 
   useEffect(() => {
-    fetch('/api/ia/quota')
-      .then(r => r.json())
-      .then(data => { if (data.tier) setTier(data.tier) })
+    Promise.all([
+      fetch('/api/ia/quota').then(r => r.json()),
+      fetch('/api/ia/settings').then(r => r.json()),
+    ])
+      .then(([quota, settings]) => {
+        if (quota.tier) setTier(quota.tier)
+        if (settings.config) setIaConfig(settings.config)
+      })
       .catch(() => {})
   }, [])
 
@@ -88,7 +96,6 @@ export function IAFeed({ actions: initialActions, stats, organizationId }: IAFee
 
   const uniqueAgents = [...new Set(actions.map(a => a.agentName))]
 
-  // Group actions by relative time
   const now = new Date()
   const groups: { label: string; actions: Action[] }[] = []
 
@@ -99,10 +106,9 @@ export function IAFeed({ actions: initialActions, stats, organizationId }: IAFee
     groups.push({ label: `Pendente aprovação (${pendingActions.length})`, actions: pendingActions })
   }
 
-  // Split completed by time
   const recentActions = completedActions.filter(a => {
     const diff = now.getTime() - new Date(a.createdAt).getTime()
-    return diff < 3600000 // last 1h
+    return diff < 3600000
   })
 
   const olderActions = completedActions.filter(a => {
@@ -112,6 +118,9 @@ export function IAFeed({ actions: initialActions, stats, organizationId }: IAFee
 
   if (recentActions.length > 0) groups.push({ label: 'Última hora', actions: recentActions })
   if (olderActions.length > 0) groups.push({ label: 'Anteriores', actions: olderActions })
+
+  const hasConfiguredThreshold = iaConfig.confidenceThreshold !== undefined
+  const hasActions = stats.today > 0
 
   return (
     <div className="mx-auto max-w-3xl px-6 py-8">
@@ -129,6 +138,13 @@ export function IAFeed({ actions: initialActions, stats, organizationId }: IAFee
           Atualizar
         </button>
       </div>
+
+      {/* Setup progress — shown while onboarding steps are incomplete */}
+      <IASetupProgress
+        enabledAgentCount={enabledAgentCount}
+        hasConfiguredThreshold={hasConfiguredThreshold}
+        hasActions={hasActions}
+      />
 
       {/* Stats */}
       <div className="grid grid-cols-3 gap-3 mb-8">
@@ -181,7 +197,7 @@ export function IAFeed({ actions: initialActions, stats, organizationId }: IAFee
               {group.label}
             </h3>
             <div className="space-y-2">
-              {group.actions.map((action, i) => (
+              {group.actions.map((action) => (
                 <AgentActionCard
                   key={action.id}
                   action={action}
@@ -197,15 +213,45 @@ export function IAFeed({ actions: initialActions, stats, organizationId }: IAFee
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="flex flex-col items-center justify-center py-20 text-center"
+            className="flex flex-col items-center justify-center py-16 text-center"
           >
-            <div className="h-16 w-16 rounded-2xl bg-zinc-800/50 border border-zinc-700/30 flex items-center justify-center mb-4">
-              <Activity className="h-7 w-7 text-zinc-600" />
+            <div className="h-14 w-14 rounded-2xl bg-zinc-800/50 border border-zinc-700/30 flex items-center justify-center mb-4">
+              <Activity className="h-6 w-6 text-zinc-600" />
             </div>
-            <h3 className="text-sm font-semibold text-zinc-400 mb-1">Nenhuma atividade</h3>
-            <p className="text-xs text-zinc-600 max-w-xs">
-              Quando os agentes Sofia começarem a operar, suas ações aparecerão aqui em tempo real.
+            <h3 className="text-sm font-semibold text-zinc-400 mb-1">Nenhuma ação ainda</h3>
+            <p className="text-xs text-zinc-600 max-w-xs mb-5">
+              Os agentes estão aguardando eventos do CRM para começar a operar.
             </p>
+
+            {enabledAgentCount === 0 ? (
+              <Link
+                href="/IA/agents"
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-cyan-500/10 border border-cyan-500/20 text-xs text-cyan-400 hover:bg-cyan-500/20 transition-colors"
+              >
+                <Bot className="h-3.5 w-3.5" />
+                Ativar agentes primeiro
+              </Link>
+            ) : (
+              <div className="space-y-2 text-left">
+                <p className="text-[11px] text-zinc-600 font-semibold uppercase tracking-wider text-center mb-3">Como disparar os agentes</p>
+                <div className="flex items-start gap-2.5 text-xs text-zinc-500">
+                  <MessageSquare className="h-3.5 w-3.5 text-cyan-500 shrink-0 mt-0.5" />
+                  <span>Envie uma mensagem pelo WhatsApp para disparar o <span className="text-zinc-400">LeadQualifier</span></span>
+                </div>
+                <div className="flex items-start gap-2.5 text-xs text-zinc-500">
+                  <UserPlus className="h-3.5 w-3.5 text-violet-400 shrink-0 mt-0.5" />
+                  <span>Crie um contato para disparar o <span className="text-zinc-400">ContactEnricher</span></span>
+                </div>
+                <div className="flex items-center gap-2 mt-3 pt-3 border-t border-zinc-800/50">
+                  <Link
+                    href="/dashboard"
+                    className="text-[11px] text-zinc-500 hover:text-zinc-300 transition-colors"
+                  >
+                    Ir para o Dashboard →
+                  </Link>
+                </div>
+              </div>
+            )}
           </motion.div>
         )}
       </div>
