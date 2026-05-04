@@ -59,6 +59,16 @@ export async function executeAgentAction(action: AgentAction): Promise<{ success
       return executeMeetingScheduler(action)
     case 'ContactEnricher':
       return executeContactEnricher(action)
+    case 'PropertyMatcher':
+      return executePropertyMatcher(action)
+    case 'VisitScheduler':
+      return executeVisitScheduler(action)
+    case 'ProposalFollowUp':
+      return executeProposalFollowUp(action)
+    case 'LeadProfiler':
+      return executeLeadProfiler(action)
+    case 'NegotiationAssistant':
+      return executeNegotiationAssistant(action)
     default:
       return { success: false, output: { error: `Unknown agent: ${action.agentName}` } }
   }
@@ -567,5 +577,333 @@ Email: ${contactEmail || 'não informado'}`,
       confidence: enriched.confidence,
       fieldsUpdated: Object.keys(updateData),
     },
+  }
+}
+
+// ─── Real Estate Vertical ─────────────────────────────────────────────────────
+
+/**
+ * PropertyMatcher: Extract search criteria from conversation and suggest matching deals/properties.
+ */
+async function executePropertyMatcher(action: AgentAction): Promise<{ success: boolean; output: Record<string, any> }> {
+  const { organizationId, entityId: contactId, input } = action
+  const systemPromptOverride = input?.systemPromptOverride as string | undefined
+
+  const contact = await prisma.contact.findUnique({
+    where: { id: contactId },
+    select: { id: true, name: true, phone: true },
+  })
+  if (!contact?.phone) {
+    return { success: false, output: { error: 'Contact not found or has no phone' } }
+  }
+
+  const windowOpen = await isWithin24hWindow(contactId, organizationId)
+  if (!windowOpen) {
+    return { success: false, output: { error: 'Meta 24h window closed' } }
+  }
+
+  const recentMessages = await prismaWa.whatsAppMessage.findMany({
+    where: { contactId, organizationId },
+    orderBy: { sentAt: 'desc' },
+    take: 15,
+    select: { text: true, direction: true },
+  })
+
+  const conversationContext = recentMessages
+    .reverse()
+    .map(m => `[${m.direction === 'INBOUND' ? 'Cliente' : 'Corretor'}]: ${m.text}`)
+    .join('\n')
+
+  // Fetch portfolio deals to match against
+  const portfolioDeals = await prisma.deal.findMany({
+    where: { organizationId, status: 'ACTIVE' },
+    select: { id: true, title: true, value: true },
+    take: 20,
+    orderBy: { updatedAt: 'desc' },
+  })
+
+  const portfolioList = portfolioDeals.map(d => `- ${d.title} (R$ ${Number(d.value).toLocaleString('pt-BR')})`).join('\n')
+
+  const defaultPrompt = `Você é um corretor de imóveis experiente. Analise a conversa e extraia os critérios de busca do cliente (tipo de imóvel, bairro, dormitórios, faixa de preço, objetivo: compra/aluguel). Compare com o portfólio disponível e sugira os 2-3 imóveis mais compatíveis. Escreva uma mensagem natural e personalizada para o cliente. Máx 6 linhas. Responda APENAS com o texto da mensagem.`
+
+  const llmResponse = await callLLM([
+    { role: 'system' as const, content: systemPromptOverride || defaultPrompt },
+    {
+      role: 'user' as const,
+      content: `Conversa com ${contact.name || contact.phone}:\n${conversationContext}\n\nPortfólio disponível:\n${portfolioList || 'Nenhum imóvel cadastrado ainda.'}`,
+    },
+  ], 'PRO')
+
+  const message = llmResponse.content.trim()
+
+  const wabaClient = await getWhatsAppOfficialClient(organizationId)
+  if (!wabaClient) {
+    return { success: false, output: { error: 'WABA not configured', message } }
+  }
+
+  await wabaClient.sendTextMessage(normalizePhone(contact.phone), message)
+
+  const msgId = `agaas_propmatch_${Date.now()}`
+  await prismaWa.$executeRaw`
+    INSERT INTO "WhatsAppMessage"
+      (id, "contactId", "organizationId", "connectionId", "remoteJid",
+       "messageId", text, direction, status, "sentAt", "isRead",
+       "mediaType", "mediaUrl", "replyToId", "replyToText")
+    VALUES (
+      ${msgId}, ${contactId}, ${organizationId}, ${null},
+      ${normalizePhone(contact.phone)}, ${null},
+      ${message}, 'OUTBOUND', 'SENT', ${new Date()}, true,
+      ${null}, ${null}, ${null}, ${null}
+    )
+    ON CONFLICT ("organizationId", "messageId") DO NOTHING
+  `
+
+  logger.info({ organizationId, contactId, portfolioCount: portfolioDeals.length }, '[AgaaS:PropertyMatcher] Suggestions sent')
+
+  return { success: true, output: { message, portfolioMatched: portfolioDeals.length } }
+}
+
+/**
+ * VisitScheduler: Detect visit intent and offer calendar slots via WABA.
+ */
+async function executeVisitScheduler(action: AgentAction): Promise<{ success: boolean; output: Record<string, any> }> {
+  const { organizationId, entityId: contactId, input } = action
+  const systemPromptOverride = input?.systemPromptOverride as string | undefined
+
+  const contact = await prisma.contact.findUnique({
+    where: { id: contactId },
+    select: { id: true, name: true, phone: true },
+  })
+  if (!contact?.phone) {
+    return { success: false, output: { error: 'Contact not found or has no phone' } }
+  }
+
+  const windowOpen = await isWithin24hWindow(contactId, organizationId)
+  if (!windowOpen) {
+    return { success: false, output: { error: 'Meta 24h window closed' } }
+  }
+
+  // Try to get calendar slots
+  let slotLines = ''
+  try {
+    const calendarClient = await getGoogleCalendarClient(organizationId)
+    if (calendarClient) {
+      const now = new Date()
+      const weekLater = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000)
+      const events = await calendarClient.listEvents({ timeMin: now.toISOString(), timeMax: weekLater.toISOString(), maxResults: 50 })
+      const busy = events.map((e: any) => ({ start: new Date(e.start?.dateTime || e.start?.date), end: new Date(e.end?.dateTime || e.end?.date) }))
+      const candidates: string[] = []
+      const d = new Date(now)
+      d.setMinutes(0, 0, 0)
+      d.setHours(d.getHours() + 1)
+      while (candidates.length < 3 && d < weekLater) {
+        const day = d.getDay()
+        const hour = d.getHours()
+        if (day !== 0 && day !== 6 && hour >= 9 && hour < 17) {
+          const end = new Date(d.getTime() + 60 * 60 * 1000)
+          const isBusy = busy.some((b: any) => d < b.end && end > b.start)
+          if (!isBusy) {
+            candidates.push(d.toLocaleString('pt-BR', { weekday: 'short', day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit', timeZone: 'America/Sao_Paulo' }))
+          }
+        }
+        d.setHours(d.getHours() + 1)
+      }
+      slotLines = candidates.map((s, i) => `${i + 1}. ${s}`).join('\n')
+    }
+  } catch {}
+
+  const defaultPrompt = `Você é um corretor de imóveis. O cliente demonstrou interesse em visitar um imóvel. Proponha horários para visita de forma simpática e profissional. Se houver horários disponíveis, use-os. Máx 5 linhas. Responda APENAS com o texto da mensagem.`
+
+  const llmResponse = await callLLM([
+    { role: 'system' as const, content: systemPromptOverride || defaultPrompt },
+    {
+      role: 'user' as const,
+      content: `Cliente: ${contact.name || contact.phone}\n${slotLines ? `Horários disponíveis:\n${slotLines}` : 'Sem horários de agenda disponíveis — ofereça para combinar por mensagem.'}`,
+    },
+  ], 'PRO')
+
+  const message = llmResponse.content.trim()
+
+  const wabaClient = await getWhatsAppOfficialClient(organizationId)
+  if (!wabaClient) {
+    return { success: false, output: { error: 'WABA not configured', message } }
+  }
+
+  await wabaClient.sendTextMessage(normalizePhone(contact.phone), message)
+
+  const msgId = `agaas_visit_${Date.now()}`
+  await prismaWa.$executeRaw`
+    INSERT INTO "WhatsAppMessage"
+      (id, "contactId", "organizationId", "connectionId", "remoteJid",
+       "messageId", text, direction, status, "sentAt", "isRead",
+       "mediaType", "mediaUrl", "replyToId", "replyToText")
+    VALUES (
+      ${msgId}, ${contactId}, ${organizationId}, ${null},
+      ${normalizePhone(contact.phone)}, ${null},
+      ${message}, 'OUTBOUND', 'SENT', ${new Date()}, true,
+      ${null}, ${null}, ${null}, ${null}
+    )
+    ON CONFLICT ("organizationId", "messageId") DO NOTHING
+  `
+
+  logger.info({ organizationId, contactId }, '[AgaaS:VisitScheduler] Visit proposal sent')
+
+  return { success: true, output: { message, slotsOffered: slotLines } }
+}
+
+/**
+ * ProposalFollowUp: Follow up on stalled deals in proposal stage. Always NEEDS_APPROVAL.
+ */
+async function executeProposalFollowUp(action: AgentAction): Promise<{ success: boolean; output: Record<string, any> }> {
+  const { organizationId, input } = action
+  const { contactId, dealId, dealTitle, idleDays } = input
+  const systemPromptOverride = input?.systemPromptOverride as string | undefined
+
+  const contact = await prisma.contact.findUnique({
+    where: { id: contactId },
+    select: { id: true, name: true, phone: true },
+  })
+  if (!contact?.phone) {
+    return { success: false, output: { error: 'Contact not found or has no phone' } }
+  }
+
+  const recentMessages = await prismaWa.whatsAppMessage.findMany({
+    where: { contactId, organizationId },
+    orderBy: { sentAt: 'desc' },
+    take: 8,
+    select: { text: true, direction: true },
+  })
+
+  const conversationContext = recentMessages
+    .reverse()
+    .map(m => `[${m.direction === 'INBOUND' ? contact.name || 'Cliente' : 'Corretor'}]: ${m.text}`)
+    .join('\n')
+
+  const defaultPrompt = `Você é um corretor de imóveis. Escreva um follow-up elegante e não insistente para retomar contato com um cliente que está avaliando uma proposta. Seja natural, curto (máx 3 linhas) e personalize com base na conversa. Responda APENAS com o texto da mensagem.`
+
+  const llmResponse = await callLLM([
+    { role: 'system' as const, content: systemPromptOverride || defaultPrompt },
+    {
+      role: 'user' as const,
+      content: `Cliente: ${contact.name || contact.phone}\nDeal: "${dealTitle}"\nDias sem resposta: ${idleDays}\nÚltima conversa:\n${conversationContext || 'Sem histórico.'}`,
+    },
+  ], 'PRO')
+
+  const message = llmResponse.content.trim()
+
+  logger.info({ organizationId, contactId, dealId, idleDays }, '[AgaaS:ProposalFollowUp] Draft generated (NEEDS_APPROVAL)')
+
+  // Never auto-send — always returns draft for human review
+  return {
+    success: true,
+    output: { message, contactName: contact.name, dealTitle, idleDays, requiresApproval: true },
+  }
+}
+
+/**
+ * LeadProfiler: Classify lead as COMPRADOR/VENDEDOR/LOCATARIO/INVESTIDOR.
+ */
+async function executeLeadProfiler(action: AgentAction): Promise<{ success: boolean; output: Record<string, any> }> {
+  const { organizationId, entityId: contactId, input } = action
+  const systemPromptOverride = input?.systemPromptOverride as string | undefined
+
+  const recentMessages = await prismaWa.whatsAppMessage.findMany({
+    where: { contactId, organizationId },
+    orderBy: { sentAt: 'desc' },
+    take: 20,
+    select: { text: true, direction: true },
+  })
+
+  if (recentMessages.length === 0) {
+    return { success: false, output: { error: 'No messages to analyze' } }
+  }
+
+  const conversationContext = recentMessages
+    .reverse()
+    .map(m => `[${m.direction === 'INBOUND' ? 'Cliente' : 'Corretor'}]: ${m.text}`)
+    .join('\n')
+
+  const defaultPrompt = `Você é um especialista em perfil de clientes imobiliários. Analise a conversa e classifique o lead.
+Responda APENAS em JSON válido:
+{
+  "profile": "COMPRADOR" | "VENDEDOR" | "LOCATARIO" | "INVESTIDOR",
+  "confidence": 0-100,
+  "reasoning": "justificativa curta",
+  "profileNotes": "detalhes úteis para o corretor (max 2 frases)"
+}`
+
+  const llmResponse = await callLLM([
+    { role: 'system' as const, content: systemPromptOverride || defaultPrompt },
+    { role: 'user' as const, content: `Conversa:\n${conversationContext}` },
+  ], 'PRO')
+
+  let result: any
+  try {
+    const cleaned = llmResponse.content.replace(/```json?\s*/g, '').replace(/```/g, '').trim()
+    result = JSON.parse(cleaned)
+  } catch {
+    return { success: false, output: { error: 'Failed to parse LLM response' } }
+  }
+
+  if (result.confidence < 40) {
+    return { success: false, output: { error: 'Confidence too low', confidence: result.confidence } }
+  }
+
+  // Store profile in contact.company field (repurposed as type-of-lead in RE vertical)
+  await prisma.contact.update({
+    where: { id: contactId },
+    data: { company: `[${result.profile}] ${result.profileNotes || ''}`.trim() },
+  })
+
+  logger.info({ organizationId, contactId, profile: result.profile, confidence: result.confidence }, '[AgaaS:LeadProfiler] Profile saved')
+
+  return {
+    success: true,
+    output: { profile: result.profile, confidence: result.confidence, reasoning: result.reasoning, profileNotes: result.profileNotes },
+  }
+}
+
+/**
+ * NegotiationAssistant: Detect price objections and suggest counter-proposals. Always NEEDS_APPROVAL.
+ */
+async function executeNegotiationAssistant(action: AgentAction): Promise<{ success: boolean; output: Record<string, any> }> {
+  const { organizationId, entityId: contactId, input } = action
+  const systemPromptOverride = input?.systemPromptOverride as string | undefined
+
+  const contact = await prisma.contact.findUnique({
+    where: { id: contactId },
+    select: { id: true, name: true, phone: true },
+  })
+
+  const recentMessages = await prismaWa.whatsAppMessage.findMany({
+    where: { contactId, organizationId },
+    orderBy: { sentAt: 'desc' },
+    take: 10,
+    select: { text: true, direction: true },
+  })
+
+  const conversationContext = recentMessages
+    .reverse()
+    .map(m => `[${m.direction === 'INBOUND' ? 'Cliente' : 'Corretor'}]: ${m.text}`)
+    .join('\n')
+
+  const defaultPrompt = `Você é um especialista em negociação imobiliária. Analise a objeção de preço/condição do cliente e sugira uma contra-proposta respeitosa e estratégica. Não faça concessões precipitadas. Escreva uma mensagem natural de resposta (máx 4 linhas). Responda APENAS com o texto da mensagem.`
+
+  const llmResponse = await callLLM([
+    { role: 'system' as const, content: systemPromptOverride || defaultPrompt },
+    {
+      role: 'user' as const,
+      content: `Cliente: ${contact?.name || 'Lead'}\nConversa:\n${conversationContext}\nÚltima mensagem de objeção: "${input?.messageText || ''}"`,
+    },
+  ], 'PRO')
+
+  const message = llmResponse.content.trim()
+
+  logger.info({ organizationId, contactId }, '[AgaaS:NegotiationAssistant] Counter-proposal drafted (NEEDS_APPROVAL)')
+
+  // Confidence is fixed at 0.6 — always goes to NEEDS_APPROVAL
+  return {
+    success: true,
+    output: { message, contactName: contact?.name, requiresApproval: true },
   }
 }

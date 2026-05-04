@@ -32,6 +32,12 @@ const agentColors: Record<string, string> = {
   DealStageAnalyzer: 'from-amber-500 to-orange-500',
   MeetingScheduler: 'from-emerald-500 to-green-500',
   ContactEnricher: 'from-pink-500 to-rose-500',
+  // Real estate vertical
+  PropertyMatcher: 'from-indigo-500 to-blue-600',
+  VisitScheduler: 'from-teal-500 to-cyan-600',
+  ProposalFollowUp: 'from-amber-400 to-yellow-500',
+  LeadProfiler: 'from-violet-500 to-indigo-500',
+  NegotiationAssistant: 'from-rose-500 to-pink-600',
 }
 
 const statusConfig: Record<string, { icon: typeof CheckCircle2; color: string; label: string }> = {

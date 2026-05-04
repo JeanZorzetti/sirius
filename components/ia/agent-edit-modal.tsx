@@ -1,0 +1,161 @@
+'use client'
+
+import { useState } from 'react'
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { Textarea } from '@/components/ui/textarea'
+import { Slider } from '@/components/ui/slider'
+import { Loader2, RotateCcw } from 'lucide-react'
+import type { AgentOverride } from '@/lib/agaas-types'
+
+interface AgentEditModalProps {
+  open: boolean
+  onOpenChange: (open: boolean) => void
+  agentId: string
+  agentName: string
+  defaultPrompt: string
+  currentOverride?: AgentOverride
+  onSaved: (agentId: string, override: AgentOverride | null) => void
+}
+
+export function AgentEditModal({
+  open,
+  onOpenChange,
+  agentId,
+  agentName,
+  defaultPrompt,
+  currentOverride,
+  onSaved,
+}: AgentEditModalProps) {
+  const [displayName, setDisplayName] = useState(currentOverride?.displayName ?? '')
+  const [systemPrompt, setSystemPrompt] = useState(currentOverride?.systemPrompt ?? '')
+  const [threshold, setThreshold] = useState(currentOverride?.confidenceThreshold ?? 75)
+  const [saving, setSaving] = useState(false)
+  const [resetting, setResetting] = useState(false)
+
+  async function handleSave() {
+    setSaving(true)
+    try {
+      const override: AgentOverride = {}
+      if (displayName.trim()) override.displayName = displayName.trim()
+      if (systemPrompt.trim()) override.systemPrompt = systemPrompt.trim()
+      override.confidenceThreshold = threshold
+
+      await fetch('/api/ia/agent-config', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ agentId, override }),
+      })
+
+      onSaved(agentId, override)
+      onOpenChange(false)
+    } finally {
+      setSaving(false)
+    }
+  }
+
+  async function handleReset() {
+    setResetting(true)
+    try {
+      await fetch('/api/ia/agent-config', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ agentId, override: null }),
+      })
+
+      setDisplayName('')
+      setSystemPrompt('')
+      setThreshold(75)
+      onSaved(agentId, null)
+      onOpenChange(false)
+    } finally {
+      setResetting(false)
+    }
+  }
+
+  return (
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className="bg-zinc-900 border-zinc-800 text-zinc-100 max-w-lg">
+        <DialogHeader>
+          <DialogTitle className="text-zinc-100">Editar agente — {agentName}</DialogTitle>
+        </DialogHeader>
+
+        <div className="space-y-5 py-2">
+          <div className="space-y-1.5">
+            <Label className="text-xs text-zinc-400">Nome de exibição</Label>
+            <Input
+              value={displayName}
+              onChange={e => setDisplayName(e.target.value)}
+              placeholder={agentName}
+              className="bg-zinc-800 border-zinc-700 text-zinc-100 placeholder:text-zinc-600 focus-visible:ring-cyan-500"
+            />
+          </div>
+
+          <div className="space-y-1.5">
+            <Label className="text-xs text-zinc-400">Prompt do sistema</Label>
+            <Textarea
+              value={systemPrompt}
+              onChange={e => setSystemPrompt(e.target.value)}
+              placeholder={defaultPrompt}
+              rows={5}
+              className="bg-zinc-800 border-zinc-700 text-zinc-100 placeholder:text-zinc-600 focus-visible:ring-cyan-500 resize-none text-sm"
+            />
+            <p className="text-[11px] text-zinc-600">Deixe em branco para usar o prompt padrão.</p>
+          </div>
+
+          <div className="space-y-2">
+            <div className="flex items-center justify-between">
+              <Label className="text-xs text-zinc-400">Threshold de confiança</Label>
+              <span className="text-sm font-mono font-medium text-cyan-400">{threshold}%</span>
+            </div>
+            <Slider
+              value={[threshold]}
+              onValueChange={([v]) => setThreshold(v)}
+              min={0}
+              max={100}
+              step={5}
+            />
+            <p className="text-[11px] text-zinc-600">
+              Ações com confiança ≥ {threshold}% são executadas automaticamente. Abaixo disso ficam aguardando aprovação.
+            </p>
+          </div>
+        </div>
+
+        <DialogFooter className="flex items-center justify-between gap-2 sm:justify-between">
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={handleReset}
+            disabled={resetting || saving}
+            className="text-zinc-500 hover:text-zinc-300 hover:bg-zinc-800 gap-1.5"
+          >
+            {resetting ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <RotateCcw className="h-3.5 w-3.5" />}
+            Restaurar padrão
+          </Button>
+          <div className="flex gap-2">
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => onOpenChange(false)}
+              disabled={saving}
+              className="text-zinc-400 hover:bg-zinc-800"
+            >
+              Cancelar
+            </Button>
+            <Button
+              size="sm"
+              onClick={handleSave}
+              disabled={saving}
+              className="bg-cyan-500 hover:bg-cyan-600 text-black font-semibold gap-1.5"
+            >
+              {saving && <Loader2 className="h-3.5 w-3.5 animate-spin" />}
+              Salvar
+            </Button>
+          </div>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  )
+}

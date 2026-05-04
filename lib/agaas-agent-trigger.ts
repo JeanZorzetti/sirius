@@ -16,10 +16,18 @@ import { prisma } from '@/lib/prisma'
 import { prismaWa } from '@/lib/prisma-wa'
 import { checkAgaasQuota, incrementAgaasUsage } from '@/lib/agaas-quota'
 import { executeAgentAction } from '@/lib/agaas-executor'
+import type { IAConfig } from '@/lib/agaas-types'
 import logger from '@/lib/logger'
 
 /** Agent IDs that respond to whatsapp.message.in */
-const WHATSAPP_MESSAGE_AGENTS = ['lead-qualifier', 'deal-stage-analyzer']
+const WHATSAPP_MESSAGE_AGENTS = [
+  'lead-qualifier',
+  'deal-stage-analyzer',
+  'property-matcher',
+  'visit-scheduler',
+  'lead-profiler',
+  'negotiation-assistant',
+]
 
 interface InboundMessageContext {
   organizationId: string
@@ -30,15 +38,6 @@ interface InboundMessageContext {
   contactPhone: string
 }
 
-interface IAConfig {
-  enabledAgents?: Record<string, boolean>
-  confidenceThreshold?: number       // 0-100, default 70
-  maxActionsPerDay?: number           // default 100
-  operatingHoursStart?: string        // "HH:MM", default "09:00"
-  operatingHoursEnd?: string          // "HH:MM", default "18:00"
-  weekendsEnabled?: boolean           // default false
-  [key: string]: any
-}
 
 /**
  * Check if current time is within operating hours.
@@ -104,8 +103,17 @@ export async function triggerAgentsForInboundMessage(ctx: InboundMessageContext)
     const rawConfig = (org?.iaConfig || {}) as IAConfig
 
     // Parse config values
-    const confidenceThreshold = (rawConfig.confidenceThreshold ?? 70) / 100 // convert to 0-1
+    const globalThreshold = (rawConfig.confidenceThreshold ?? 70) / 100
     const maxActionsPerDay = rawConfig.maxActionsPerDay ?? 100
+
+    // Per-agent threshold: agentOverrides[id].confidenceThreshold (0-100) overrides global
+    const getThreshold = (agentId: string): number => {
+      const override = rawConfig.agentOverrides?.[agentId]
+      if (override?.confidenceThreshold !== undefined) return override.confidenceThreshold / 100
+      return globalThreshold
+    }
+
+    const confidenceThreshold = globalThreshold // keep for backward compat below
 
     // Check operating hours
     if (!isWithinOperatingHours(rawConfig)) {
@@ -120,10 +128,10 @@ export async function triggerAgentsForInboundMessage(ctx: InboundMessageContext)
     }
 
     // Determine enabled agents (supports both iaConfig formats)
-    const enabledMap = rawConfig.enabledAgents || rawConfig
+    const enabledMap = (rawConfig.enabledAgents || rawConfig) as Record<string, unknown>
     const enabledAgents = WHATSAPP_MESSAGE_AGENTS.filter((agentId) => {
       const val = enabledMap[agentId]
-      return val === true || val?.enabled === true
+      return val === true || (typeof val === 'object' && val !== null && (val as any).enabled === true)
     })
 
     if (enabledAgents.length === 0) return
@@ -198,6 +206,92 @@ export async function triggerAgentsForInboundMessage(ctx: InboundMessageContext)
       })
     }
 
+    // LeadProfiler: classify lead profile on first messages
+    if (enabledAgents.includes('lead-profiler') && recentMsgCount <= 5) {
+      const override = rawConfig.agentOverrides?.['lead-profiler']
+      actions.push({
+        agentName: 'LeadProfiler',
+        actionType: 'PROFILE_LEAD',
+        entityType: 'Contact',
+        entityId: contactId,
+        reasoning: `${recentMsgCount} mensagens de ${ctx.contactName || ctx.contactPhone}. Classificar perfil: COMPRADOR/VENDEDOR/LOCATARIO/INVESTIDOR.`,
+        confidence: Math.min(0.85, 0.5 + recentMsgCount * 0.07),
+        input: {
+          messageId,
+          messageText: messageText.substring(0, 500),
+          contactName: ctx.contactName,
+          trigger: 'whatsapp.message.in',
+          ...(override?.systemPrompt ? { systemPromptOverride: override.systemPrompt } : {}),
+        },
+      })
+    }
+
+    // PropertyMatcher: suggest properties when lead mentions search criteria
+    const propertyKeywords = ['quarto', 'dormitório', 'bairro', 'comprar', 'alugar', 'imóvel', 'apartamento', 'casa', 'studio', 'm²', 'metro', 'condomínio']
+    const hasPropertyIntent = propertyKeywords.some(k => messageText.toLowerCase().includes(k))
+    if (enabledAgents.includes('property-matcher') && hasPropertyIntent) {
+      const override = rawConfig.agentOverrides?.['property-matcher']
+      actions.push({
+        agentName: 'PropertyMatcher',
+        actionType: 'MATCH_PROPERTIES',
+        entityType: 'Contact',
+        entityId: contactId,
+        reasoning: `${ctx.contactName || ctx.contactPhone} mencionou critérios de busca imobiliária. Sugerir imóveis compatíveis do portfólio.`,
+        confidence: 0.82,
+        input: {
+          messageId,
+          messageText: messageText.substring(0, 500),
+          contactName: ctx.contactName,
+          trigger: 'whatsapp.message.in',
+          ...(override?.systemPrompt ? { systemPromptOverride: override.systemPrompt } : {}),
+        },
+      })
+    }
+
+    // VisitScheduler: detect visit intent
+    const visitKeywords = ['visitar', 'visita', 'conhecer', 'ver o imóvel', 'posso ver', 'quero ver', 'agendar visita']
+    const hasVisitIntent = visitKeywords.some(k => messageText.toLowerCase().includes(k))
+    if (enabledAgents.includes('visit-scheduler') && hasVisitIntent) {
+      const override = rawConfig.agentOverrides?.['visit-scheduler']
+      actions.push({
+        agentName: 'VisitScheduler',
+        actionType: 'SCHEDULE_VISIT',
+        entityType: 'Contact',
+        entityId: contactId,
+        reasoning: `${ctx.contactName || ctx.contactPhone} demonstrou intenção de visitar um imóvel. Propor horários disponíveis.`,
+        confidence: 0.80,
+        input: {
+          messageId,
+          messageText: messageText.substring(0, 500),
+          contactName: ctx.contactName,
+          trigger: 'whatsapp.message.in',
+          ...(override?.systemPrompt ? { systemPromptOverride: override.systemPrompt } : {}),
+        },
+      })
+    }
+
+    // NegotiationAssistant: detect price/condition objections
+    const objectionKeywords = ['muito caro', 'caro demais', 'não tenho', 'consigo', 'abaixar', 'desconto', 'negociar', 'valor alto', 'acima do']
+    const hasObjection = objectionKeywords.some(k => messageText.toLowerCase().includes(k))
+    if (enabledAgents.includes('negotiation-assistant') && hasObjection) {
+      const override = rawConfig.agentOverrides?.['negotiation-assistant']
+      actions.push({
+        agentName: 'NegotiationAssistant',
+        actionType: 'HANDLE_OBJECTION',
+        entityType: 'Contact',
+        entityId: contactId,
+        reasoning: `${ctx.contactName || ctx.contactPhone} apresentou objeção de preço/condição. Sugerir contra-proposta estratégica.`,
+        confidence: 0.6, // always NEEDS_APPROVAL
+        input: {
+          messageId,
+          messageText: messageText.substring(0, 500),
+          contactName: ctx.contactName,
+          trigger: 'whatsapp.message.in',
+          ...(override?.systemPrompt ? { systemPromptOverride: override.systemPrompt } : {}),
+        },
+      })
+    }
+
     // Create all actions (check quota for each)
     for (const action of actions) {
       const currentQuota = await checkAgaasQuota(organizationId)
@@ -206,8 +300,20 @@ export async function triggerAgentsForInboundMessage(ctx: InboundMessageContext)
         break
       }
 
+      // Per-agent threshold (falls back to global)
+      const agentIdMap: Record<string, string> = {
+        LeadQualifier: 'lead-qualifier',
+        DealStageAnalyzer: 'deal-stage-analyzer',
+        LeadProfiler: 'lead-profiler',
+        PropertyMatcher: 'property-matcher',
+        VisitScheduler: 'visit-scheduler',
+        NegotiationAssistant: 'negotiation-assistant',
+      }
+      const agentId = agentIdMap[action.agentName] || action.agentName.toLowerCase()
+      const threshold = getThreshold(agentId)
+
       // Determine status based on confidence vs threshold
-      const autoExecute = action.confidence >= confidenceThreshold
+      const autoExecute = action.confidence >= threshold
       const status = autoExecute ? 'PENDING' : 'NEEDS_APPROVAL'
 
       const created = await prisma.agentAction.create({
@@ -318,10 +424,74 @@ export async function triggerAgentsForContactCreated(ctx: ContactCreatedContext)
     })
 
     const rawConfig = (org?.iaConfig || {}) as IAConfig
-    const enabledMap = rawConfig.enabledAgents || rawConfig
-    if (!(enabledMap['contact-enricher'] === true || enabledMap['contact-enricher']?.enabled === true)) return
-
+    const enabledMap = (rawConfig.enabledAgents || rawConfig) as Record<string, unknown>
     const confidenceThreshold = (rawConfig.confidenceThreshold ?? 70) / 100
+
+    const isEnabled = (key: string) => enabledMap[key] === true || (typeof enabledMap[key] === 'object' && enabledMap[key] !== null && (enabledMap[key] as any).enabled === true)
+    const enricherEnabled = isEnabled('contact-enricher')
+    const profilerEnabled = isEnabled('lead-profiler')
+
+    if (!enricherEnabled && !profilerEnabled) return
+
+    // LeadProfiler on contact.created
+    if (profilerEnabled) {
+      const profilerThreshold = rawConfig.agentOverrides?.['lead-profiler']?.confidenceThreshold !== undefined
+        ? rawConfig.agentOverrides['lead-profiler'].confidenceThreshold / 100
+        : confidenceThreshold
+      const profilerOverride = rawConfig.agentOverrides?.['lead-profiler']
+
+      const createdProfiler = await prisma.agentAction.create({
+        data: {
+          organizationId,
+          agentName: 'LeadProfiler',
+          actionType: 'PROFILE_LEAD',
+          entityType: 'Contact',
+          entityId: contactId,
+          reasoning: `Novo contato criado: ${contactName}. Classificar perfil imobiliário.`,
+          confidence: 0.65,
+          input: {
+            contactName: ctx.contactName,
+            contactPhone: ctx.contactPhone,
+            contactEmail: ctx.contactEmail,
+            trigger: 'contact.created',
+            ...(profilerOverride?.systemPrompt ? { systemPromptOverride: profilerOverride.systemPrompt } : {}),
+          },
+          status: 0.65 >= profilerThreshold ? 'PENDING' : 'NEEDS_APPROVAL',
+        },
+      })
+      await incrementAgaasUsage(organizationId)
+
+      if (0.65 >= profilerThreshold) {
+        const orgUser = await prisma.user.findFirst({ where: { organizationId, role: 'ADMIN' }, select: { id: true } })
+        if (orgUser) {
+          try {
+            const result = await executeAgentAction({
+              id: createdProfiler.id,
+              organizationId,
+              agentName: 'LeadProfiler',
+              actionType: 'PROFILE_LEAD',
+              entityType: 'Contact',
+              entityId: contactId,
+              reasoning: createdProfiler.reasoning,
+              confidence: 0.65,
+              input: createdProfiler.input,
+              userId: orgUser.id,
+            })
+            await prisma.agentAction.update({
+              where: { id: createdProfiler.id },
+              data: { status: result.success ? 'SUCCESS' : 'FAILED', output: result.output as Prisma.InputJsonValue },
+            })
+          } catch (e: any) {
+            await prisma.agentAction.update({
+              where: { id: createdProfiler.id },
+              data: { status: 'FAILED', output: { error: e.message } as Prisma.InputJsonValue },
+            })
+          }
+        }
+      }
+    }
+
+    if (!enricherEnabled) return
 
     const created = await prisma.agentAction.create({
       data: {
@@ -404,8 +574,13 @@ export async function triggerFollowUpForIdleDeals() {
       if (!quota.allowed) continue
 
       const rawConfig = (org.iaConfig || {}) as IAConfig
-      const enabledMap = rawConfig.enabledAgents || rawConfig
-      if (!(enabledMap['followup-coordinator'] === true || enabledMap['followup-coordinator']?.enabled === true)) continue
+      const enabledMap = (rawConfig.enabledAgents || rawConfig) as Record<string, unknown>
+      const isEnabled = (key: string) => enabledMap[key] === true || (typeof enabledMap[key] === 'object' && enabledMap[key] !== null && (enabledMap[key] as any).enabled === true)
+
+      const followUpEnabled = isEnabled('followup-coordinator')
+      const proposalFollowUpEnabled = isEnabled('proposal-followup')
+
+      if (!followUpEnabled && !proposalFollowUpEnabled) continue
 
       if (!isWithinOperatingHours(rawConfig)) continue
 
@@ -421,24 +596,13 @@ export async function triggerFollowUpForIdleDeals() {
           status: 'ACTIVE',
           updatedAt: { lte: idleCutoff },
         },
-        select: { id: true, title: true, contactId: true, updatedAt: true },
+        select: { id: true, title: true, contactId: true, updatedAt: true, stage: { select: { name: true } } },
         take: 10,
         orderBy: { updatedAt: 'asc' },
       })
 
       for (const deal of idleDeals) {
         if (!deal.contactId) continue
-
-        // Skip if we already triggered a follow-up for this deal recently
-        const recentAction = await prisma.agentAction.findFirst({
-          where: {
-            organizationId: org.id,
-            agentName: 'FollowUpCoordinator',
-            entityId: deal.id,
-            createdAt: { gte: new Date(Date.now() - 24 * 60 * 60 * 1000) },
-          },
-        })
-        if (recentAction) continue
 
         const contact = await prisma.contact.findUnique({
           where: { id: deal.contactId },
@@ -447,60 +611,140 @@ export async function triggerFollowUpForIdleDeals() {
         if (!contact?.phone) continue
 
         const idleDays = Math.floor((Date.now() - deal.updatedAt.getTime()) / (24 * 60 * 60 * 1000))
+        const isProposalStage = deal.stage?.name?.toLowerCase().includes('proposta')
 
-        const created = await prisma.agentAction.create({
-          data: {
-            organizationId: org.id,
-            agentName: 'FollowUpCoordinator',
-            actionType: 'SEND_FOLLOWUP',
-            entityType: 'Deal',
-            entityId: deal.id,
-            reasoning: `Deal "${deal.title}" parado há ${idleDays} dias. Enviar follow-up personalizado para ${contact.name || contact.phone}.`,
-            confidence: 0.8,
-            input: {
-              contactId: contact.id,
-              contactName: contact.name,
-              contactPhone: contact.phone,
-              dealId: deal.id,
-              dealTitle: deal.title,
-              idleDays,
-              trigger: 'deal.idle',
+        // ProposalFollowUp: deals in "Proposta" stage (always NEEDS_APPROVAL)
+        if (proposalFollowUpEnabled && isProposalStage) {
+          const recentProposal = await prisma.agentAction.findFirst({
+            where: {
+              organizationId: org.id,
+              agentName: 'ProposalFollowUp',
+              entityId: deal.id,
+              createdAt: { gte: new Date(Date.now() - 24 * 60 * 60 * 1000) },
             },
-            status: 0.8 >= confidenceThreshold ? 'PENDING' : 'NEEDS_APPROVAL',
-          },
-        })
-
-        await incrementAgaasUsage(org.id)
-        triggered++
-
-        if (0.8 >= confidenceThreshold) {
-          const orgUser = await prisma.user.findFirst({
-            where: { organizationId: org.id, role: 'ADMIN' },
-            select: { id: true },
           })
-          if (orgUser) {
-            try {
-              const result = await executeAgentAction({
-                id: created.id,
+          if (!recentProposal) {
+            const override = rawConfig.agentOverrides?.['proposal-followup']
+            const created = await prisma.agentAction.create({
+              data: {
                 organizationId: org.id,
-                agentName: 'FollowUpCoordinator',
-                actionType: 'SEND_FOLLOWUP',
+                agentName: 'ProposalFollowUp',
+                actionType: 'PROPOSAL_FOLLOWUP',
                 entityType: 'Deal',
                 entityId: deal.id,
-                reasoning: created.reasoning,
-                confidence: 0.8,
-                input: created.input as any,
-                userId: orgUser.id,
-              })
-              await prisma.agentAction.update({
-                where: { id: created.id },
-                data: { status: result.success ? 'SUCCESS' : 'FAILED', output: result.output as Prisma.InputJsonValue },
-              })
-            } catch (e: any) {
-              await prisma.agentAction.update({
-                where: { id: created.id },
-                data: { status: 'FAILED', output: { error: e.message } as Prisma.InputJsonValue },
-              })
+                reasoning: `Deal "${deal.title}" em Proposta, parado há ${idleDays} dias. Rascunho de follow-up para aprovação.`,
+                confidence: 0.6,
+                input: {
+                  contactId: contact.id,
+                  contactName: contact.name,
+                  contactPhone: contact.phone,
+                  dealId: deal.id,
+                  dealTitle: deal.title,
+                  idleDays,
+                  trigger: 'deal.idle',
+                  ...(override?.systemPrompt ? { systemPromptOverride: override.systemPrompt } : {}),
+                },
+                status: 'NEEDS_APPROVAL', // always requires human approval
+              },
+            })
+            await incrementAgaasUsage(org.id)
+            triggered++
+
+            // Still pre-generate the draft so the user sees the message ready to approve
+            const orgUser = await prisma.user.findFirst({ where: { organizationId: org.id, role: 'ADMIN' }, select: { id: true } })
+            if (orgUser) {
+              try {
+                const result = await executeAgentAction({
+                  id: created.id,
+                  organizationId: org.id,
+                  agentName: 'ProposalFollowUp',
+                  actionType: 'PROPOSAL_FOLLOWUP',
+                  entityType: 'Deal',
+                  entityId: deal.id,
+                  reasoning: created.reasoning,
+                  confidence: 0.6,
+                  input: created.input as any,
+                  userId: orgUser.id,
+                })
+                await prisma.agentAction.update({
+                  where: { id: created.id },
+                  data: { output: result.output as Prisma.InputJsonValue },
+                })
+              } catch {}
+            }
+          }
+        }
+
+        // FollowUpCoordinator: any idle deal (auto-sends if within threshold)
+        if (followUpEnabled) {
+          const recentAction = await prisma.agentAction.findFirst({
+            where: {
+              organizationId: org.id,
+              agentName: 'FollowUpCoordinator',
+              entityId: deal.id,
+              createdAt: { gte: new Date(Date.now() - 24 * 60 * 60 * 1000) },
+            },
+          })
+          if (recentAction) continue
+
+          const followUpThreshold = rawConfig.agentOverrides?.['followup-coordinator']?.confidenceThreshold !== undefined
+            ? rawConfig.agentOverrides['followup-coordinator'].confidenceThreshold / 100
+            : confidenceThreshold
+
+          const created = await prisma.agentAction.create({
+            data: {
+              organizationId: org.id,
+              agentName: 'FollowUpCoordinator',
+              actionType: 'SEND_FOLLOWUP',
+              entityType: 'Deal',
+              entityId: deal.id,
+              reasoning: `Deal "${deal.title}" parado há ${idleDays} dias. Enviar follow-up personalizado para ${contact.name || contact.phone}.`,
+              confidence: 0.8,
+              input: {
+                contactId: contact.id,
+                contactName: contact.name,
+                contactPhone: contact.phone,
+                dealId: deal.id,
+                dealTitle: deal.title,
+                idleDays,
+                trigger: 'deal.idle',
+              },
+              status: 0.8 >= followUpThreshold ? 'PENDING' : 'NEEDS_APPROVAL',
+            },
+          })
+
+          await incrementAgaasUsage(org.id)
+          triggered++
+
+          if (0.8 >= followUpThreshold) {
+            const orgUser = await prisma.user.findFirst({
+              where: { organizationId: org.id, role: 'ADMIN' },
+              select: { id: true },
+            })
+            if (orgUser) {
+              try {
+                const result = await executeAgentAction({
+                  id: created.id,
+                  organizationId: org.id,
+                  agentName: 'FollowUpCoordinator',
+                  actionType: 'SEND_FOLLOWUP',
+                  entityType: 'Deal',
+                  entityId: deal.id,
+                  reasoning: created.reasoning,
+                  confidence: 0.8,
+                  input: created.input as any,
+                  userId: orgUser.id,
+                })
+                await prisma.agentAction.update({
+                  where: { id: created.id },
+                  data: { status: result.success ? 'SUCCESS' : 'FAILED', output: result.output as Prisma.InputJsonValue },
+                })
+              } catch (e: any) {
+                await prisma.agentAction.update({
+                  where: { id: created.id },
+                  data: { status: 'FAILED', output: { error: e.message } as Prisma.InputJsonValue },
+                })
+              }
             }
           }
         }
