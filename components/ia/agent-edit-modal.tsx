@@ -36,8 +36,8 @@ export function AgentEditModal({
   currentOverride,
   onSaved,
 }: AgentEditModalProps) {
-  const [displayName, setDisplayName] = useState(currentOverride?.displayName ?? '')
-  const [systemPrompt, setSystemPrompt] = useState(currentOverride?.systemPrompt ?? '')
+  const [displayName, setDisplayName] = useState(currentOverride?.displayName ?? agentName)
+  const [systemPrompt, setSystemPrompt] = useState(currentOverride?.systemPrompt ?? defaultPrompt)
   const [threshold, setThreshold] = useState(currentOverride?.confidenceThreshold ?? 75)
   const [saving, setSaving] = useState(false)
   const [resetting, setResetting] = useState(false)
@@ -54,8 +54,10 @@ export function AgentEditModal({
     setSaving(true)
     try {
       const override: AgentOverride = {}
-      if (displayName.trim()) override.displayName = displayName.trim()
-      if (systemPrompt.trim()) override.systemPrompt = systemPrompt.trim()
+      const trimmedName = displayName.trim()
+      const trimmedPrompt = systemPrompt.trim()
+      if (trimmedName && trimmedName !== agentName) override.displayName = trimmedName
+      if (trimmedPrompt && trimmedPrompt !== defaultPrompt) override.systemPrompt = trimmedPrompt
       override.confidenceThreshold = threshold
 
       const res = await fetch('/api/ia/agent-config', {
@@ -87,8 +89,8 @@ export function AgentEditModal({
 
       if (!res.ok) throw new Error()
 
-      setDisplayName('')
-      setSystemPrompt('')
+      setDisplayName(agentName)
+      setSystemPrompt(defaultPrompt)
       setThreshold(75)
       onSaved(agentId, null)
       onOpenChange(false)
@@ -132,7 +134,7 @@ export function AgentEditModal({
             <Textarea
               value={systemPrompt}
               onChange={e => setSystemPrompt(e.target.value)}
-              placeholder="Deixe em branco para usar o prompt padrão..."
+              placeholder={defaultPrompt}
               rows={4}
               className="bg-zinc-800 border-zinc-700 text-zinc-100 placeholder:text-zinc-600 focus-visible:ring-cyan-500 resize-none text-sm"
             />
