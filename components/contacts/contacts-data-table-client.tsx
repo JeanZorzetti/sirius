@@ -5,7 +5,13 @@ import { DataTable } from '@/components/contacts/data-table'
 import { getColumns } from '@/components/contacts/columns'
 import { ContactMobileCard } from '@/components/contacts/contact-mobile-card'
 import { useState } from 'react'
-import { ContactProfileModal } from '@/components/contacts/contact-profile-modal'
+import dynamic from 'next/dynamic'
+
+// Lazy-load — só carrega o modal de perfil quando o usuário abre um
+const ContactProfileModal = dynamic(
+  () => import('@/components/contacts/contact-profile-modal').then(m => ({ default: m.ContactProfileModal })),
+  { ssr: false }
+)
 
 export type EnrichedContact = {
   id: string
