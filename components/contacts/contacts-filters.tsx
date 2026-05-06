@@ -12,15 +12,18 @@ export type ContactFilters = {
   assignees: string[] // names; special value '__none__' = sem responsável
   cities: string[]
   states: string[]
+  stages: string[] // stage names; special value '__none__' = sem deal/etapa
 }
 
 export const EMPTY_FILTERS: ContactFilters = {
   assignees: [],
   cities: [],
   states: [],
+  stages: [],
 }
 
 const NO_ASSIGNEE = '__none__'
+const NO_STAGE = '__none__'
 
 interface ContactsFiltersProps {
   data: EnrichedContact[]
@@ -30,28 +33,34 @@ interface ContactsFiltersProps {
 
 export function ContactsFilters({ data, value, onChange }: ContactsFiltersProps) {
   // Build option lists from data
-  const { assigneeOptions, cityOptions, stateOptions } = useMemo(() => {
+  const { assigneeOptions, cityOptions, stateOptions, stageOptions } = useMemo(() => {
     const assigneeSet = new Set<string>()
     const citySet = new Set<string>()
     const stateSet = new Set<string>()
+    const stageSet = new Set<string>()
     let hasUnassigned = false
+    let hasNoStage = false
 
     for (const c of data) {
       if (c.assigneeName) assigneeSet.add(c.assigneeName)
       else hasUnassigned = true
       if (c.city?.trim()) citySet.add(c.city.trim())
       if (c.state?.trim()) stateSet.add(c.state.trim().toUpperCase())
+      if (c.activeStageName) stageSet.add(c.activeStageName)
+      else hasNoStage = true
     }
 
     const assignees = Array.from(assigneeSet).sort((a, b) => a.localeCompare(b, 'pt-BR'))
+    const stages = Array.from(stageSet).sort((a, b) => a.localeCompare(b, 'pt-BR'))
     return {
       assigneeOptions: hasUnassigned ? [NO_ASSIGNEE, ...assignees] : assignees,
       cityOptions: Array.from(citySet).sort((a, b) => a.localeCompare(b, 'pt-BR')),
       stateOptions: Array.from(stateSet).sort(),
+      stageOptions: hasNoStage ? [NO_STAGE, ...stages] : stages,
     }
   }, [data])
 
-  const totalActive = value.assignees.length + value.cities.length + value.states.length
+  const totalActive = value.assignees.length + value.cities.length + value.states.length + value.stages.length
 
   return (
     <div className="flex flex-wrap items-center gap-2">
@@ -73,6 +82,13 @@ export function ContactsFilters({ data, value, onChange }: ContactsFiltersProps)
         options={stateOptions}
         selected={value.states}
         onSelectedChange={(next) => onChange({ ...value, states: next })}
+      />
+      <FilterPopover
+        label="Etapa"
+        options={stageOptions}
+        selected={value.stages}
+        onSelectedChange={(next) => onChange({ ...value, stages: next })}
+        renderOption={(opt) => (opt === NO_STAGE ? 'Sem etapa' : opt)}
       />
       {totalActive > 0 && (
         <Button
@@ -214,8 +230,8 @@ export function applyContactFilters(
   data: EnrichedContact[],
   filters: ContactFilters
 ): EnrichedContact[] {
-  const { assignees, cities, states } = filters
-  if (assignees.length === 0 && cities.length === 0 && states.length === 0) {
+  const { assignees, cities, states, stages } = filters
+  if (assignees.length === 0 && cities.length === 0 && states.length === 0 && stages.length === 0) {
     return data
   }
 
@@ -223,6 +239,8 @@ export function applyContactFilters(
   const wantedAssignees = new Set(assignees.filter((a) => a !== NO_ASSIGNEE))
   const wantedCities = new Set(cities)
   const wantedStates = new Set(states.map((s) => s.toUpperCase()))
+  const wantsNoStage = stages.includes(NO_STAGE)
+  const wantedStages = new Set(stages.filter((s) => s !== NO_STAGE))
 
   return data.filter((c) => {
     if (assignees.length > 0) {
@@ -237,6 +255,13 @@ export function applyContactFilters(
     }
     if (states.length > 0) {
       if (!c.state || !wantedStates.has(c.state.trim().toUpperCase())) return false
+    }
+    if (stages.length > 0) {
+      if (c.activeStageName) {
+        if (!wantedStages.has(c.activeStageName)) return false
+      } else {
+        if (!wantsNoStage) return false
+      }
     }
     return true
   })
