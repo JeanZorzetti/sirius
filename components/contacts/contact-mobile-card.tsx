@@ -3,21 +3,24 @@
 import { Contact } from '@prisma/client'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Button } from '@/components/ui/button'
-import { MessageCircle, Phone, Mail, MapPin, Building2, Pencil } from 'lucide-react'
+import { MessageCircle, Phone, Mail, MapPin, Building2, Pencil, Kanban, User } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { EditContactDialog } from '@/components/contacts/edit-contact-dialog'
 import { SwipeableRow } from '@/components/ui/swipeable-row'
+import type { EnrichedContact } from './contacts-data-table-client'
 
 interface ContactMobileCardProps {
-  contact: Contact
+  contact: EnrichedContact
   selected: boolean
   onToggleSelected: (value: boolean) => void
+  onOpenProfile?: () => void
 }
 
 export function ContactMobileCard({
   contact,
   selected,
   onToggleSelected,
+  onOpenProfile,
 }: ContactMobileCardProps) {
   const initials = contact.name
     .split(' ')
@@ -74,20 +77,44 @@ export function ContactMobileCard({
           onCheckedChange={v => onToggleSelected(!!v)}
           aria-label={`Selecionar ${contact.name}`}
           className="mt-1 touch-target border-zinc-300 dark:border-zinc-600"
+          onClick={e => e.stopPropagation()}
         />
 
-        <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-indigo-500/20 to-purple-500/20 text-sm font-bold text-indigo-600 ring-1 ring-white/10 dark:text-indigo-300">
+        <button
+          type="button"
+          onClick={onOpenProfile}
+          className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-indigo-500/20 to-purple-500/20 text-sm font-bold text-indigo-600 ring-1 ring-white/10 dark:text-indigo-300"
+        >
           {initials}
-        </div>
+        </button>
 
-        <div className="min-w-0 flex-1">
-          <h3 className="truncate text-sm font-semibold text-zinc-900 dark:text-zinc-100">
+        <div
+          className={cn('min-w-0 flex-1', onOpenProfile && 'cursor-pointer')}
+          onClick={onOpenProfile}
+        >
+          <h3 className="truncate text-sm font-semibold text-zinc-900 dark:text-zinc-100 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
             {contact.name}
           </h3>
           {contact.company && (
             <div className="mt-0.5 flex items-center gap-1 text-xs text-zinc-500 dark:text-zinc-400">
               <Building2 className="h-3 w-3 shrink-0" />
               <span className="truncate">{contact.company}</span>
+            </div>
+          )}
+          {(contact.activeStageName || contact.assigneeName) && (
+            <div className="mt-1.5 flex flex-wrap items-center gap-1.5">
+              {contact.activeStageName && (
+                <span className="inline-flex items-center gap-1 rounded-full bg-indigo-500/10 px-2 py-0.5 text-[10px] font-semibold text-indigo-600 dark:text-indigo-400">
+                  <Kanban className="h-2.5 w-2.5" />
+                  {contact.activeStageName}
+                </span>
+              )}
+              {contact.assigneeName && (
+                <span className="inline-flex items-center gap-1 rounded-full bg-violet-500/10 px-2 py-0.5 text-[10px] font-semibold text-violet-600 dark:text-violet-400">
+                  <User className="h-2.5 w-2.5" />
+                  {contact.assigneeName}
+                </span>
+              )}
             </div>
           )}
         </div>
@@ -138,16 +165,24 @@ export function ContactMobileCard({
             WhatsApp
           </Button>
         )}
+        {onOpenProfile && (
+          <Button
+            type="button"
+            variant="outline"
+            className="touch-target h-11 flex-1 gap-2"
+            onClick={onOpenProfile}
+          >
+            <User className="h-4 w-4" />
+            Ver ficha
+          </Button>
+        )}
         <EditContactDialog
           contact={contact}
           trigger={
             <Button
               type="button"
               variant="outline"
-              className={cn(
-                'touch-target h-11 gap-2',
-                cleanPhone ? 'flex-none px-4' : 'flex-1',
-              )}
+              className="touch-target h-11 flex-none px-4 gap-2"
             >
               <Pencil className="h-4 w-4" />
               Editar

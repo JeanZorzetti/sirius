@@ -40,17 +40,15 @@ import {
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
-  /**
-   * Renderiza cada row como um card no mobile (<lg). Se não fornecido,
-   * mantém a tabela com scroll horizontal (comportamento legado).
-   */
   renderMobileCard?: (row: Row<TData>) => React.ReactNode
+  onRowClick?: (row: Row<TData>) => void
 }
 
 export function DataTable<TData extends { id: string }, TValue>({
   columns,
   data,
   renderMobileCard,
+  onRowClick,
 }: DataTableProps<TData, TValue>) {
   const [globalFilter, setGlobalFilter] = useState('')
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({})
@@ -173,7 +171,11 @@ export function DataTable<TData extends { id: string }, TValue>({
                 <TableRow
                   key={row.id}
                   data-state={row.getIsSelected() && 'selected'}
-                  className="border-black/5 dark:border-white/5 hover:bg-black/[0.02] dark:hover:bg-white/[0.02] transition-colors group data-[state=selected]:bg-indigo-50/50 dark:data-[state=selected]:bg-indigo-500/5"
+                  onClick={() => onRowClick?.(row)}
+                  className={cn(
+                    "border-black/5 dark:border-white/5 hover:bg-black/[0.02] dark:hover:bg-white/[0.02] transition-colors group data-[state=selected]:bg-indigo-50/50 dark:data-[state=selected]:bg-indigo-500/5",
+                    onRowClick && "cursor-pointer"
+                  )}
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id} className="py-3 text-zinc-700 dark:text-zinc-300">

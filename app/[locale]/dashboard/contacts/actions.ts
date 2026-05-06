@@ -39,6 +39,10 @@ export async function createContact(formData: FormData) {
         const company = formData.get('company') as string
         const city = formData.get('city') as string
         const state = formData.get('state') as string
+        const zipCode = formData.get('zipCode') as string
+        const street = formData.get('street') as string
+        const streetNumber = formData.get('streetNumber') as string
+        const complement = formData.get('complement') as string
 
         if (!name) {
             return { success: false, error: 'Nome é obrigatório' }
@@ -57,6 +61,7 @@ export async function createContact(formData: FormData) {
         }
 
         const contact = await prisma.contact.create({
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             data: {
                 name,
                 email: email || null,
@@ -64,8 +69,12 @@ export async function createContact(formData: FormData) {
                 company: company || null,
                 city: city || null,
                 state: state ? state.toUpperCase().slice(0, 2) : null,
+                zipCode: zipCode || null,
+                street: street || null,
+                streetNumber: streetNumber || null,
+                complement: complement || null,
                 organizationId: user.organizationId
-            }
+            } as any
         })
 
         // Dispatch webhook (async, non-blocking)
@@ -114,6 +123,10 @@ export async function updateContact(contactId: string, formData: FormData) {
         const company = formData.get('company') as string
         const city = formData.get('city') as string
         const state = formData.get('state') as string
+        const zipCode = formData.get('zipCode') as string
+        const street = formData.get('street') as string
+        const streetNumber = formData.get('streetNumber') as string
+        const complement = formData.get('complement') as string
 
         if (!name?.trim()) {
             return { success: false, error: 'Nome é obrigatório' }
@@ -150,6 +163,7 @@ export async function updateContact(contactId: string, formData: FormData) {
 
         const contact = await prisma.contact.update({
             where: { id: contactId },
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             data: {
                 name: name.trim(),
                 email: newEmail,
@@ -157,7 +171,11 @@ export async function updateContact(contactId: string, formData: FormData) {
                 company: company?.trim() || null,
                 city: city?.trim() || null,
                 state: state?.trim() ? state.trim().toUpperCase().slice(0, 2) : null,
-            }
+                zipCode: zipCode?.trim() || null,
+                street: street?.trim() || null,
+                streetNumber: streetNumber?.trim() || null,
+                complement: complement?.trim() || null,
+            } as any
         })
 
         dispatchWebhookAsync(user.organizationId, WEBHOOK_EVENTS.CONTACT_UPDATED, {
