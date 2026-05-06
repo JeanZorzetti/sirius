@@ -2,15 +2,14 @@ import createMiddleware from 'next-intl/middleware'
 import { routing } from './i18n/routing'
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
-import { updateSession } from '@/lib/auth'
+import { maybeRefreshSession } from '@/lib/auth'
 
-// Cria o middleware do next-intl com nossas rotas configuradas
 const intlMiddleware = createMiddleware(routing)
 
 export async function middleware(request: NextRequest) {
     const pathname = request.nextUrl.pathname
 
-    // 1. Redirect invalid/malformed URLs to homepage (SEO fix)
+    // 1. Redirect malformed URLs (SEO fix)
     const malformedPatterns = ['/mês', '/mes', '/month']
     if (malformedPatterns.some(pattern => pathname.includes(pattern))) {
         return NextResponse.redirect(new URL('/', request.url))
@@ -21,14 +20,12 @@ export async function middleware(request: NextRequest) {
 
     const sessionCookie = request.cookies.get('session')?.value
 
-    // 3. Protected routes — redirect to /login or /en/login depending on locale
+    // 3. Protected routes — redirect to login if no session
     if (
         pathnameWithoutLocale.startsWith('/dashboard') ||
         pathnameWithoutLocale.startsWith('/IA')
     ) {
         if (!sessionCookie) {
-            console.log('[middleware] No session cookie for protected route:', pathname)
-            console.log('[middleware] All cookies:', request.cookies.getAll().map(c => c.name).join(', '))
             const isEnglish = pathname.startsWith('/en')
             const loginPath = isEnglish ? '/en/login' : '/login'
             const loginUrl = new URL(loginPath, request.url)
@@ -47,22 +44,39 @@ export async function middleware(request: NextRequest) {
         }
     }
 
-    // 5. Update session expiration
-    await updateSession(request)
-
-    // 6. Run next-intl middleware (locale detection, /en prefix, hreflang cookies)
+    // 5. Run next-intl middleware (locale detection, hreflang cookies)
     const response = intlMiddleware(request)
     const res = response ?? NextResponse.next()
 
-    // 7. Inject pathname header so server components can read it
+    // 6. Inject pathname header for server components
     res.headers.set('x-pathname', pathname)
+
+    // 7. Sliding-window JWT refresh — only re-encrypt when token is within 6h of expiry.
+    //    Fix: we apply the refreshed cookie onto the FINAL response (was previously lost
+    //    because updateSession returned its own NextResponse that got discarded).
+    const refreshResult = await maybeRefreshSession(request)
+    if ('invalid' in refreshResult && refreshResult.invalid) {
+        const loginUrl = new URL('/login', request.url)
+        const redirect = NextResponse.redirect(loginUrl)
+        redirect.cookies.set('session', '', { expires: new Date(0), path: '/' })
+        return redirect
+    }
+    if (refreshResult.refreshed) {
+        res.cookies.set({
+            name: 'session',
+            value: refreshResult.cookieValue,
+            httpOnly: true,
+            expires: refreshResult.expires,
+            sameSite: 'lax',
+            path: '/',
+        })
+    }
 
     return res
 }
 
 export const config = {
     matcher: [
-        // Inclui todas as rotas exceto assets estáticos, API e arquivos na raiz do public
         '/((?!api|_next/static|_next/image|favicon.ico|icons|images|audio|avatars|downloads|manifest.json|sw.js|sw-push.js|llms.txt|openapi.json|google[\\w-]*\\.html|.*\\.png|.*\\.jpg|.*\\.jpeg|.*\\.svg|.*\\.ico|.*\\.webp|.*\\.txt|.*\\.xml).*)',
     ],
 }

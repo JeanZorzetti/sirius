@@ -94,28 +94,57 @@ export async function logout() {
     cookieStore.set('session', '', { expires: new Date(0), path: '/' })
 }
 
-export async function updateSession(request: NextRequest) {
+// 6h threshold: only refresh if token expires within 6h (avoids re-encrypting every request)
+const REFRESH_THRESHOLD_MS = 6 * 60 * 60 * 1000
+
+export type SessionRefreshResult =
+  | { refreshed: false }
+  | { refreshed: true; cookieValue: string; expires: Date }
+  | { invalid: true }
+
+export async function maybeRefreshSession(request: NextRequest): Promise<SessionRefreshResult> {
     const session = request.cookies.get('session')?.value
-    if (!session) return
+    if (!session) return { refreshed: false }
+
+    // Skip refresh on OPTIONS and Next.js data requests
+    if (
+        request.method === 'OPTIONS' ||
+        request.nextUrl.pathname.startsWith('/_next/data')
+    ) {
+        return { refreshed: false }
+    }
 
     try {
-        // Refresh the session so it doesn't expire
         const parsed = await decrypt(session)
-        parsed.expires = new Date(Date.now() + 24 * 60 * 60 * 1000)
-        const res = NextResponse.next()
-        res.cookies.set({
-            name: 'session',
-            value: await encrypt(parsed),
-            httpOnly: true,
-            expires: parsed.expires,
-        })
-        return res
-    } catch (error) {
-        // Session is invalid (wrong secret, expired, corrupted)
-        // Clear the invalid cookie and redirect to login
-        console.error('[AUTH] Failed to decrypt session:', error)
+        const expiresAt = parsed.expires ? new Date(parsed.expires).getTime() : 0
+        const now = Date.now()
+
+        // Only re-encrypt when within the refresh window
+        if (expiresAt - now > REFRESH_THRESHOLD_MS) {
+            return { refreshed: false }
+        }
+
+        const newExpires = new Date(now + 24 * 60 * 60 * 1000)
+        parsed.expires = newExpires
+        const cookieValue = await encrypt(parsed)
+        return { refreshed: true, cookieValue, expires: newExpires }
+    } catch {
+        // Invalid/expired/corrupted token
+        return { invalid: true }
+    }
+}
+
+// Kept for backwards compat — not used internally anymore
+export async function updateSession(request: NextRequest) {
+    const result = await maybeRefreshSession(request)
+    if ('invalid' in result) {
         const response = NextResponse.redirect(new URL('/login', request.url))
         response.cookies.set('session', '', { expires: new Date(0), path: '/' })
         return response
+    }
+    if ('cookieValue' in result) {
+        const res = NextResponse.next()
+        res.cookies.set({ name: 'session', value: result.cookieValue, httpOnly: true, expires: result.expires, sameSite: 'lax', path: '/' })
+        return res
     }
 }
