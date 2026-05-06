@@ -91,11 +91,15 @@ export async function POST(request: NextRequest) {
     // Planos anuais e PIX-only → Preference (pagamento único)
     const isMonthlyCardPlan = billingPeriod === 'MONTHLY' && !isServicePlan
     if (isMonthlyCardPlan) {
+      const customPrice = org.customPricing && baseTier === 'PRO'
+        ? Number(org.customPricing)
+        : undefined
       const { subscriptionId, initPoint } = await createSubscription(
         org.id,
         org.name,
         user.email,
-        plan
+        plan,
+        customPrice
       )
 
       await prisma.organization.update({

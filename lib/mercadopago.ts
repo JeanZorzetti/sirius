@@ -297,7 +297,8 @@ export async function createSubscription(
   organizationId: string,
   organizationName: string,
   userEmail: string,
-  plan: CheckoutPlan
+  plan: CheckoutPlan,
+  customPrice?: number
 ) {
   const planPrices: Record<string, number> = {
     STARTER: 67.00,
@@ -317,7 +318,7 @@ export async function createSubscription(
     FOUNDER_BUSINESS: `Sirius CRM Fundador Business - ${organizationName}`,
   }
 
-  const price = planPrices[plan]
+  const price = customPrice ?? planPrices[plan]
   if (!price) throw new Error(`Plano ${plan} não suporta assinatura recorrente`)
 
   const baseUrl = process.env.NEXTAUTH_URL || process.env.NEXT_PUBLIC_APP_URL
