@@ -33,31 +33,59 @@ export default async function TasksHubPage() {
 
   const userRole = user.orgRole ?? 'MEMBER'
 
-  // Fetch all projects for organization, then filter by allowedRoles client-side
-  // (Postgres array filtering with empty = all is easier in memory)
-  const allProjects = await prisma.taskProject.findMany({
-    where: {
-      organizationId: user.organizationId,
-      archived: false,
-    },
-    include: {
-      _count: {
-        select: {
-          tasks: {
-            where: { archived: false },
+  // Fetch all projects for organization, then filter by allowedRoles client-side.
+  // allowedRoles column may not exist yet if db push hasn't run — graceful fallback.
+  let allProjects: Array<{
+    id: string
+    name: string
+    description: string | null
+    color: string
+    allowedRoles: string[]
+    order: number
+    createdAt: Date
+    _count: { tasks: number }
+  }>
+
+  try {
+    allProjects = await prisma.taskProject.findMany({
+      where: {
+        organizationId: user.organizationId,
+        archived: false,
+      },
+      select: {
+        id: true,
+        name: true,
+        description: true,
+        color: true,
+        allowedRoles: true,
+        order: true,
+        createdAt: true,
+        _count: {
+          select: {
+            tasks: {
+              where: { archived: false },
+            },
           },
         },
       },
-    },
-    orderBy: [{ order: 'asc' }, { createdAt: 'asc' }],
-  })
+      orderBy: [{ order: 'asc' }, { createdAt: 'asc' }],
+    })
+  } catch {
+    // Fallback: query without allowedRoles if column doesn't exist yet (pre-migration)
+    const rows = await prisma.taskProject.findMany({
+      where: { organizationId: user.organizationId, archived: false },
+      select: { id: true, name: true, description: true, color: true, order: true, createdAt: true, _count: { select: { tasks: { where: { archived: false } } } } },
+      orderBy: [{ order: 'asc' }, { createdAt: 'asc' }],
+    })
+    allProjects = rows.map((p) => ({ ...p, allowedRoles: [] }))
+  }
 
   // OWNER always sees all projects. Others: if allowedRoles is empty → visible to all,
   // otherwise the user's role must be in the list.
   const projects = userRole === 'OWNER'
     ? allProjects
     : allProjects.filter((p) =>
-        p.allowedRoles.length === 0 || p.allowedRoles.includes(userRole as any)
+        p.allowedRoles.length === 0 || p.allowedRoles.includes(userRole as string)
       )
 
   // My tasks aggregate counts
