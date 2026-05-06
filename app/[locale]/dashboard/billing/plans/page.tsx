@@ -39,6 +39,7 @@ const features: PlanFeature[] = [
 export default function PlansPage() {
   const router = useRouter()
   const [currentTier, setCurrentTier] = useState<SubscriptionTier | null>(null)
+  const [customPricing, setCustomPricing] = useState<number | null>(null)
   const [loading, setLoading] = useState(true)
   const [processing, setProcessing] = useState<SubscriptionTier | null>(null)
   const [isAnnual, setIsAnnual] = useState(false)
@@ -53,6 +54,7 @@ export default function PlansPage() {
       if (res.ok) {
         const data = await res.json()
         setCurrentTier(data.tier)
+        setCustomPricing(data.customPricing ?? null)
       }
     } catch (error) {
       console.error('Error fetching plan:', error)
@@ -181,8 +183,9 @@ export default function PlansPage() {
       {/* Cards dos Planos */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         {Object.values(SubscriptionTier).map((tier) => {
-          const monthlyPrice = PLAN_PRICING[tier]
-          const annualMonthly = PLAN_PRICING_ANNUAL[tier] / 12
+          const isProWithCustom = tier === SubscriptionTier.PRO && customPricing !== null
+          const monthlyPrice = isProWithCustom ? customPricing! : PLAN_PRICING[tier]
+          const annualMonthly = isProWithCustom ? customPricing! * 0.8 : PLAN_PRICING_ANNUAL[tier] / 12
           const displayPrice = isAnnual ? annualMonthly : monthlyPrice
 
           return (
@@ -210,6 +213,11 @@ export default function PlansPage() {
 
               <CardContent className="pb-3">
                 <div className="flex items-baseline gap-1">
+                  {isProWithCustom && !isAnnual && (
+                    <span className="text-lg line-through text-muted-foreground mr-1">
+                      R$ {PLAN_PRICING[tier].toFixed(2)}
+                    </span>
+                  )}
                   <span className="text-3xl font-bold">
                     R$ {displayPrice.toFixed(2)}
                   </span>
@@ -217,9 +225,14 @@ export default function PlansPage() {
                     <span className="text-muted-foreground">/mês</span>
                   )}
                 </div>
+                {isProWithCustom && !isAnnual && (
+                  <p className="text-xs text-green-500 font-medium mt-1">
+                    Preço especial aplicado
+                  </p>
+                )}
                 {isAnnual && tier !== SubscriptionTier.FREE && (
                   <p className="text-xs text-muted-foreground mt-1">
-                    Cobrado R$ {PLAN_PRICING_ANNUAL[tier].toFixed(2)}/ano
+                    Cobrado R$ {(isProWithCustom ? customPricing! * 0.8 * 12 : PLAN_PRICING_ANNUAL[tier]).toFixed(2)}/ano
                   </p>
                 )}
               </CardContent>

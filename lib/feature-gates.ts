@@ -517,6 +517,7 @@ export async function checkWhatsAppInstanceLimit(
  */
 export interface OrganizationEntitlements {
   tier: SubscriptionTier
+  customPricing?: number | null
   features: {
     automation: boolean
     agi: boolean
@@ -564,6 +565,7 @@ export async function getOrganizationEntitlements(
     where: { id: organizationId },
     select: {
       tier: true,
+      customPricing: true,
       grandfatheredDealLimit: true,
       agiQuota: true,
       scrapingCredit: true,
@@ -581,6 +583,7 @@ export async function getOrganizationEntitlements(
 
   return {
     tier: org.tier,
+    customPricing: org.customPricing ? Number(org.customPricing) : null,
     features: {
       automation: features.can_use_automation,
       agi: features.can_use_agi,
