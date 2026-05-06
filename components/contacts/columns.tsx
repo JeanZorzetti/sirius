@@ -1,93 +1,18 @@
 'use client'
 
-import { useState } from 'react'
 import { ColumnDef } from '@tanstack/react-table'
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
-import { MessageCircle, Trash2, Loader2, Kanban, User } from "lucide-react"
-import { deleteContact } from '@/app/[locale]/dashboard/contacts/actions'
-import { EditContactDialog } from '@/components/contacts/edit-contact-dialog'
-import { toast } from 'sonner'
-import {
-    AlertDialog,
-    AlertDialogAction,
-    AlertDialogCancel,
-    AlertDialogContent,
-    AlertDialogDescription,
-    AlertDialogFooter,
-    AlertDialogHeader,
-    AlertDialogTitle,
-    AlertDialogTrigger,
-} from '@/components/ui/alert-dialog'
-import { useRouter } from 'next/navigation'
+import { MessageCircle, Trash2, Pencil, Kanban, User } from "lucide-react"
 import type { EnrichedContact } from './contacts-data-table-client'
-
-function DeleteContactButton({ contact }: { contact: EnrichedContact }) {
-    const router = useRouter()
-    const [loading, setLoading] = useState(false)
-    const [open, setOpen] = useState(false)
-
-    async function handleDelete() {
-        setLoading(true)
-        try {
-            const result = await deleteContact(contact.id)
-            if (result.success) {
-                toast.success('Contato excluído com sucesso')
-                setOpen(false)
-                router.refresh()
-            } else {
-                toast.error(result.error || 'Falha ao excluir contato')
-            }
-        } catch {
-            toast.error('Erro ao excluir contato')
-        } finally {
-            setLoading(false)
-        }
-    }
-
-    return (
-        <AlertDialog open={open} onOpenChange={setOpen}>
-            <AlertDialogTrigger asChild>
-                <Button
-                    size="icon"
-                    variant="ghost"
-                    className="h-7 w-7 rounded-full text-zinc-400 hover:text-red-500 hover:bg-red-500/10 transition-all opacity-0 group-hover:opacity-100"
-                    title="Excluir contato"
-                    onClick={(e) => e.stopPropagation()}
-                >
-                    <Trash2 className="h-4 w-4" />
-                </Button>
-            </AlertDialogTrigger>
-            <AlertDialogContent>
-                <AlertDialogHeader>
-                    <AlertDialogTitle>Excluir contato</AlertDialogTitle>
-                    <AlertDialogDescription>
-                        Tem certeza que deseja excluir <strong>{contact.name}</strong>?
-                        Esta ação não pode ser desfeita.
-                    </AlertDialogDescription>
-                </AlertDialogHeader>
-                <AlertDialogFooter>
-                    <AlertDialogCancel disabled={loading}>Cancelar</AlertDialogCancel>
-                    <AlertDialogAction
-                        onClick={handleDelete}
-                        disabled={loading}
-                        className="bg-red-600 hover:bg-red-700 text-white"
-                    >
-                        {loading ? (
-                            <><Loader2 className="mr-2 h-4 w-4 animate-spin" />Excluindo...</>
-                        ) : 'Excluir'}
-                    </AlertDialogAction>
-                </AlertDialogFooter>
-            </AlertDialogContent>
-        </AlertDialog>
-    )
-}
 
 interface GetColumnsOptions {
     onOpenProfile?: (contact: EnrichedContact) => void
+    onEdit?: (contact: EnrichedContact) => void
+    onDelete?: (contact: EnrichedContact) => void
 }
 
-export function getColumns({ onOpenProfile }: GetColumnsOptions = {}): ColumnDef<EnrichedContact>[] {
+export function getColumns({ onOpenProfile, onEdit, onDelete }: GetColumnsOptions = {}): ColumnDef<EnrichedContact>[] {
     return [
         {
             id: 'select',
@@ -243,8 +168,24 @@ export function getColumns({ onOpenProfile }: GetColumnsOptions = {}): ColumnDef
                         className="flex items-center justify-end gap-1"
                         onClick={(e) => e.stopPropagation()}
                     >
-                        <EditContactDialog contact={contact} />
-                        <DeleteContactButton contact={contact} />
+                        <Button
+                            size="icon"
+                            variant="ghost"
+                            className="h-7 w-7 rounded-full text-zinc-400 hover:text-indigo-500 hover:bg-indigo-500/10 transition-all opacity-0 group-hover:opacity-100"
+                            title="Editar contato"
+                            onClick={() => onEdit?.(contact)}
+                        >
+                            <Pencil className="h-4 w-4" />
+                        </Button>
+                        <Button
+                            size="icon"
+                            variant="ghost"
+                            className="h-7 w-7 rounded-full text-zinc-400 hover:text-red-500 hover:bg-red-500/10 transition-all opacity-0 group-hover:opacity-100"
+                            title="Excluir contato"
+                            onClick={() => onDelete?.(contact)}
+                        >
+                            <Trash2 className="h-4 w-4" />
+                        </Button>
                     </div>
                 )
             },
@@ -252,5 +193,5 @@ export function getColumns({ onOpenProfile }: GetColumnsOptions = {}): ColumnDef
     ]
 }
 
-// Exportação legada para compatibilidade (columns estático sem profile handler)
+// Backwards compat
 export const columns = getColumns()

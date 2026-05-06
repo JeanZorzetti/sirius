@@ -1,11 +1,9 @@
 'use client'
 
-import { Contact } from '@prisma/client'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Button } from '@/components/ui/button'
 import { MessageCircle, Phone, Mail, MapPin, Building2, Pencil, Kanban, User } from 'lucide-react'
 import { cn } from '@/lib/utils'
-import { EditContactDialog } from '@/components/contacts/edit-contact-dialog'
 import { SwipeableRow } from '@/components/ui/swipeable-row'
 import type { EnrichedContact } from './contacts-data-table-client'
 
@@ -14,6 +12,7 @@ interface ContactMobileCardProps {
   selected: boolean
   onToggleSelected: (value: boolean) => void
   onOpenProfile?: () => void
+  onEdit?: () => void
 }
 
 export function ContactMobileCard({
@@ -21,6 +20,7 @@ export function ContactMobileCard({
   selected,
   onToggleSelected,
   onOpenProfile,
+  onEdit,
 }: ContactMobileCardProps) {
   const initials = contact.name
     .split(' ')
@@ -176,19 +176,17 @@ export function ContactMobileCard({
             Ver ficha
           </Button>
         )}
-        <EditContactDialog
-          contact={contact}
-          trigger={
-            <Button
-              type="button"
-              variant="outline"
-              className="touch-target h-11 flex-none px-4 gap-2"
-            >
-              <Pencil className="h-4 w-4" />
-              Editar
-            </Button>
-          }
-        />
+        {onEdit && (
+          <Button
+            type="button"
+            variant="outline"
+            className="touch-target h-11 flex-none px-4 gap-2"
+            onClick={onEdit}
+          >
+            <Pencil className="h-4 w-4" />
+            Editar
+          </Button>
+        )}
       </div>
     </div>
     </SwipeableRow>

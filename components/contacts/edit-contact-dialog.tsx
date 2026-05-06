@@ -35,12 +35,19 @@ type EditableContact = {
 export function EditContactDialog({
     contact,
     trigger,
+    open: controlledOpen,
+    onOpenChange: controlledOnOpenChange,
 }: {
     contact: EditableContact
     trigger?: React.ReactNode
+    open?: boolean
+    onOpenChange?: (open: boolean) => void
 }) {
     const router = useRouter()
-    const [open, setOpen] = useState(false)
+    const [internalOpen, setInternalOpen] = useState(false)
+    const isControlled = controlledOpen !== undefined
+    const open = isControlled ? controlledOpen : internalOpen
+    const setOpen = isControlled ? (controlledOnOpenChange ?? (() => {})) : setInternalOpen
     const [loading, setLoading] = useState(false)
 
     async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
@@ -69,19 +76,21 @@ export function EditContactDialog({
 
     return (
         <Dialog open={open} onOpenChange={setOpen}>
-            <DialogTrigger asChild>
-                {trigger ?? (
-                    <Button
-                        size="icon"
-                        variant="ghost"
-                        className="h-7 w-7 rounded-full text-zinc-400 hover:text-indigo-500 hover:bg-indigo-500/10 transition-all opacity-0 group-hover:opacity-100"
-                        title="Editar contato"
-                        onClick={(e) => e.stopPropagation()}
-                    >
-                        <Pencil className="h-4 w-4" />
-                    </Button>
-                )}
-            </DialogTrigger>
+            {!isControlled && (
+                <DialogTrigger asChild>
+                    {trigger ?? (
+                        <Button
+                            size="icon"
+                            variant="ghost"
+                            className="h-7 w-7 rounded-full text-zinc-400 hover:text-indigo-500 hover:bg-indigo-500/10 transition-all opacity-0 group-hover:opacity-100"
+                            title="Editar contato"
+                            onClick={(e) => e.stopPropagation()}
+                        >
+                            <Pencil className="h-4 w-4" />
+                        </Button>
+                    )}
+                </DialogTrigger>
+            )}
             <DialogContent className="sm:max-w-[520px] max-h-[90vh] overflow-y-auto">
                 <form onSubmit={onSubmit}>
                     <DialogHeader>

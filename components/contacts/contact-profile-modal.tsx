@@ -22,13 +22,13 @@ import {
     Calendar,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
-import { EditContactDialog } from '@/components/contacts/edit-contact-dialog'
 import type { EnrichedContact } from './contacts-data-table-client'
 
 interface ContactProfileModalProps {
     contact: EnrichedContact
     open: boolean
     onOpenChange: (open: boolean) => void
+    onEdit?: () => void
 }
 
 function InfoRow({
@@ -78,7 +78,7 @@ function SectionTitle({ children }: { children: React.ReactNode }) {
     )
 }
 
-export function ContactProfileModal({ contact, open, onOpenChange }: ContactProfileModalProps) {
+export function ContactProfileModal({ contact, open, onOpenChange, onEdit }: ContactProfileModalProps) {
     const initials = contact.name
         .split(' ')
         .map(n => n[0])
@@ -255,14 +255,11 @@ export function ContactProfileModal({ contact, open, onOpenChange }: ContactProf
                     <Button variant="ghost" size="sm" onClick={() => onOpenChange(false)} className="text-muted-foreground">
                         Fechar
                     </Button>
-                    <EditContactDialog
-                        contact={contact}
-                        trigger={
-                            <Button size="sm" className="gap-1.5">
-                                <Pencil className="h-3.5 w-3.5" /> Editar
-                            </Button>
-                        }
-                    />
+                    {onEdit && (
+                        <Button size="sm" className="gap-1.5" onClick={() => { onOpenChange(false); onEdit() }}>
+                            <Pencil className="h-3.5 w-3.5" /> Editar
+                        </Button>
+                    )}
                 </div>
             </DialogContent>
         </Dialog>
