@@ -3,6 +3,7 @@
 import { useState, useTransition } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
 import {
     Dialog,
     DialogContent,
@@ -11,12 +12,28 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog"
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select"
 import { Plus, Copy, Check } from "lucide-react"
 import { createInvite } from "./actions"
+import { OrgRole } from "@prisma/client"
 
-export function InviteDialog() {
+interface InviteDialogProps {
+    assignableRoles: OrgRole[]
+    roleLabels: Record<string, string>
+}
+
+export function InviteDialog({ assignableRoles, roleLabels }: InviteDialogProps) {
     const [open, setOpen] = useState(false)
     const [email, setEmail] = useState("")
+    const [role, setRole] = useState<OrgRole>(
+        (assignableRoles.find((r) => r === 'VENDEDOR') ?? assignableRoles[assignableRoles.length - 1]) as OrgRole
+    )
     const [inviteLink, setInviteLink] = useState("")
     const [isPending, startTransition] = useTransition()
     const [copied, setCopied] = useState(false)
@@ -24,7 +41,7 @@ export function InviteDialog() {
     const handleInvite = () => {
         startTransition(async () => {
             try {
-                const res = await createInvite(email)
+                const res = await createInvite(email, role)
                 if (res.token) {
                     const link = `${window.location.origin}/register?invite=${res.token}`
                     setInviteLink(link)
@@ -60,18 +77,40 @@ export function InviteDialog() {
                 <DialogHeader>
                     <DialogTitle>Convidar Membro</DialogTitle>
                     <DialogDescription className="text-zinc-400">
-                        Envie o link de convite para adicionar alguém ao seu time.
+                        Envie o convite e defina a função inicial. Permissões e features são herdadas do template da função.
                     </DialogDescription>
                 </DialogHeader>
 
                 {!inviteLink ? (
                     <div className="flex flex-col gap-4 py-4">
-                        <Input
-                            placeholder="email@exemplo.com"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            className="bg-zinc-900 border-zinc-800 focus:border-indigo-500"
-                        />
+                        <div className="grid gap-2">
+                            <Label htmlFor="invite-email" className="text-zinc-300">Email</Label>
+                            <Input
+                                id="invite-email"
+                                placeholder="email@exemplo.com"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                className="bg-zinc-900 border-zinc-800 focus:border-indigo-500"
+                            />
+                        </div>
+                        <div className="grid gap-2">
+                            <Label className="text-zinc-300">Função</Label>
+                            <Select value={role} onValueChange={(v) => setRole(v as OrgRole)}>
+                                <SelectTrigger className="bg-zinc-900 border-zinc-800">
+                                    <SelectValue />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    {assignableRoles.map((r) => (
+                                        <SelectItem key={r} value={r}>
+                                            {roleLabels[r] ?? r}
+                                        </SelectItem>
+                                    ))}
+                                </SelectContent>
+                            </Select>
+                            <p className="text-xs text-zinc-500">
+                                As permissões serão aplicadas conforme o template configurado para essa função.
+                            </p>
+                        </div>
                         <Button
                             onClick={handleInvite}
                             disabled={!email || isPending}

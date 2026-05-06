@@ -295,9 +295,15 @@ function SidebarInner({ pathname, user, open, setOpen }: { pathname: string; use
           <WhatsAppFounderButton open={open} />
 
           <SectionLabel open={open}>CRM</SectionLabel>
-          {crmItems.map((item) => (
-            <NavLink key={item.href} item={item} pathname={pathname} open={open} />
-          ))}
+          {crmItems
+            .filter((item) => {
+              if (item.href === '/dashboard/tasks' && user?.features?.canAccessTasks === false) return false
+              if (item.href === '/dashboard/agenda' && user?.features?.canAccessAgenda === false) return false
+              return true
+            })
+            .map((item) => (
+              <NavLink key={item.href} item={item} pathname={pathname} open={open} />
+            ))}
 
           <Separator className="my-3" />
 

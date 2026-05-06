@@ -82,6 +82,7 @@ model Organization {
   omieEnabled   Boolean @default(false)
 
   users                   User[]
+  rolePermissions         RolePermissions[]
   contacts                Contact[]
   deals                   Deal[]
   pipelines               Pipeline[]
@@ -283,7 +284,28 @@ enum Role {
 
 enum OrgRole {
   OWNER
-  MEMBER
+  GERENTE
+  COORDENADOR
+  SUPERVISOR
+  VENDEDOR
+  MEMBER // legacy — treated as VENDEDOR in UI
+}
+
+// Per-role feature permissions, configured by OWNER per organization
+model RolePermissions {
+  id              String   @id @default(uuid())
+  organizationId  String
+  organization    Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  role            OrgRole
+
+  canAccessAgenda Boolean  @default(true)
+  canAccessTasks  Boolean  @default(true)
+
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@unique([organizationId, role])
+  @@index([organizationId])
 }
 
 enum SubscriptionTier {

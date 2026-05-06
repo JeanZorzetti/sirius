@@ -1,4 +1,4 @@
-﻿'use server'
+'use server'
 
 import { getSession } from "@/lib/auth"
 import { prisma } from "@/lib/prisma"
@@ -6,10 +6,17 @@ import { revalidatePath } from "next/cache"
 import { randomBytes } from "crypto"
 import { sendEmail } from "@/lib/email"
 import { InviteEmail } from "@/emails/templates/invite"
+import { OrgRole } from "@prisma/client"
+import {
+    canManageRole,
+    normalizeRole,
+    CONFIGURABLE_ROLES,
+} from "@/lib/role-permissions"
+import { updateTag } from "next/cache"
 
-async function checkOwner() {
+async function getActor() {
     const session = await getSession()
-    if (!session || !session.user || !session.user.email) {
+    if (!session?.user?.email) {
         throw new Error("Unauthorized")
     }
 
@@ -17,37 +24,48 @@ async function checkOwner() {
         where: { email: session.user.email },
     })
 
-    if (!user || user.orgRole !== "OWNER") {
-        throw new Error("Forbidden: Action requires OWNER role")
+    if (!user) {
+        throw new Error("Unauthorized")
     }
 
     return user
 }
 
-export async function createInvite(email: string) {
-    const owner = await checkOwner()
+async function checkOwner() {
+    const user = await getActor()
+    if (normalizeRole(user.orgRole) !== "OWNER") {
+        throw new Error("Forbidden: Action requires OWNER role")
+    }
+    return user
+}
 
-    if (!email) throw new Error("Email is required")
+export async function createInvite(email: string, role: OrgRole = 'VENDEDOR') {
+    const actor = await getActor()
+
+    if (!email) throw new Error("Email é obrigatório")
+
+    // Hierarchy guard: actor must be able to manage the role being assigned
+    if (!canManageRole(actor.orgRole, role)) {
+        throw new Error("Você não tem permissão para convidar com essa função")
+    }
 
     // Check if duplicate
     const existing = await prisma.invite.findFirst({
         where: {
             email,
-            organizationId: owner.organizationId
+            organizationId: actor.organizationId
         }
     })
 
     if (existing) {
-        // If expired, refresh? For now, just error.
-        throw new Error("Invite already exists for this email")
+        throw new Error("Já existe um convite para esse email")
     }
 
-    // Generate secure token
     const token = randomBytes(32).toString('hex')
-    const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000) // 7 days
+    const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
 
     const organization = await prisma.organization.findUnique({
-        where: { id: owner.organizationId },
+        where: { id: actor.organizationId },
         select: { name: true }
     })
 
@@ -55,19 +73,18 @@ export async function createInvite(email: string) {
         data: {
             email,
             token,
-            organizationId: owner.organizationId,
+            organizationId: actor.organizationId,
             expiresAt,
-            role: 'MEMBER'
+            role,
         }
     })
 
-    // Envia o e-mail de convite via Resend
     const inviteUrl = `${process.env.NEXTAUTH_URL || process.env.NEXT_PUBLIC_APP_URL || 'https://siriuscrm.com.br'}/register?invite=${token}`
     await sendEmail({
         to: email,
-        subject: `${owner.name} convidou você para o ${organization?.name ?? 'Sirius CRM'}`,
+        subject: `${actor.name} convidou você para o ${organization?.name ?? 'Sirius CRM'}`,
         react: InviteEmail({
-            inviterName: owner.name ?? 'Um colega',
+            inviterName: actor.name ?? 'Um colega',
             organizationName: organization?.name ?? 'Sirius CRM',
             inviteUrl,
         }),
@@ -78,15 +95,17 @@ export async function createInvite(email: string) {
 }
 
 export async function resendInvite(inviteId: string) {
-    const owner = await checkOwner()
+    const actor = await getActor()
 
     const invite = await prisma.invite.findUnique({
-        where: { id: inviteId, organizationId: owner.organizationId }
+        where: { id: inviteId, organizationId: actor.organizationId }
     })
 
     if (!invite) throw new Error("Convite não encontrado")
+    if (!canManageRole(actor.orgRole, invite.role as OrgRole)) {
+        throw new Error("Você não tem permissão para gerenciar esse convite")
+    }
 
-    // Renova o token e a expiração
     const token = randomBytes(32).toString('hex')
     const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
 
@@ -96,16 +115,16 @@ export async function resendInvite(inviteId: string) {
     })
 
     const organization = await prisma.organization.findUnique({
-        where: { id: owner.organizationId },
+        where: { id: actor.organizationId },
         select: { name: true }
     })
 
     const inviteUrl = `${process.env.NEXTAUTH_URL || process.env.NEXT_PUBLIC_APP_URL || 'https://siriuscrm.com.br'}/register?invite=${token}`
     await sendEmail({
         to: invite.email,
-        subject: `${owner.name} convidou você para o ${organization?.name ?? 'Sirius CRM'}`,
+        subject: `${actor.name} convidou você para o ${organization?.name ?? 'Sirius CRM'}`,
         react: InviteEmail({
-            inviterName: owner.name ?? 'Um colega',
+            inviterName: actor.name ?? 'Um colega',
             organizationName: organization?.name ?? 'Sirius CRM',
             inviteUrl,
         }),
@@ -116,13 +135,18 @@ export async function resendInvite(inviteId: string) {
 }
 
 export async function revokeInvite(inviteId: string) {
-    const owner = await checkOwner()
+    const actor = await getActor()
+
+    const invite = await prisma.invite.findUnique({
+        where: { id: inviteId, organizationId: actor.organizationId }
+    })
+    if (!invite) throw new Error("Convite não encontrado")
+    if (!canManageRole(actor.orgRole, invite.role as OrgRole)) {
+        throw new Error("Você não tem permissão para revogar esse convite")
+    }
 
     await prisma.invite.delete({
-        where: {
-            id: inviteId,
-            organizationId: owner.organizationId // Security check
-        }
+        where: { id: inviteId }
     })
 
     revalidatePath("/dashboard/settings/team")
@@ -134,15 +158,18 @@ export async function updateUserPipelineVisibility(
     restricted: boolean,
     allowedPipelineIds: string[]
 ) {
-    const owner = await checkOwner()
+    const actor = await getActor()
 
-    // Ensure target user belongs to same org
     const target = await prisma.user.findUnique({
         where: { id: targetUserId }
     })
 
-    if (!target || target.organizationId !== owner.organizationId) {
+    if (!target || target.organizationId !== actor.organizationId) {
         throw new Error("Usuário não encontrado na organização")
+    }
+
+    if (!canManageRole(actor.orgRole, target.orgRole)) {
+        throw new Error("Você não tem permissão para gerenciar esse usuário")
     }
 
     await prisma.user.update({
@@ -157,31 +184,109 @@ export async function updateUserPipelineVisibility(
     return { success: true }
 }
 
-export async function removeMember(userId: string) {
-    const owner = await checkOwner()
+export async function updateMemberRole(targetUserId: string, newRole: OrgRole) {
+    const actor = await getActor()
 
-    if (userId === owner.id) {
-        throw new Error("Cannot remove yourself")
+    const target = await prisma.user.findUnique({
+        where: { id: targetUserId }
+    })
+
+    if (!target || target.organizationId !== actor.organizationId) {
+        throw new Error("Usuário não encontrado na organização")
     }
 
-    // Verify user belongs to org
-    const targetUser = await prisma.user.findUnique({
+    // Actor must be able to manage both the current role AND the new role
+    if (!canManageRole(actor.orgRole, target.orgRole)) {
+        throw new Error("Você não tem permissão para alterar a função desse usuário")
+    }
+    if (!canManageRole(actor.orgRole, newRole)) {
+        throw new Error("Você não tem permissão para atribuir essa função")
+    }
+
+    // Guard: never leave the org without an OWNER
+    if (target.orgRole === 'OWNER' && newRole !== 'OWNER') {
+        const ownerCount = await prisma.user.count({
+            where: { organizationId: actor.organizationId, orgRole: 'OWNER' }
+        })
+        if (ownerCount <= 1) {
+            throw new Error("Não é possível rebaixar o último OWNER da organização")
+        }
+    }
+
+    await prisma.user.update({
+        where: { id: targetUserId },
+        data: { orgRole: newRole }
+    })
+
+    // Invalidate cached dashboard user so the new role's features apply on next render
+    updateTag(`user:${target.email}`)
+    revalidatePath("/dashboard/settings/team")
+    return { success: true }
+}
+
+export async function updateRolePermissions(
+    role: OrgRole,
+    perms: { canAccessAgenda: boolean; canAccessTasks: boolean }
+) {
+    const owner = await checkOwner()
+
+    if (!CONFIGURABLE_ROLES.includes(role)) {
+        throw new Error("Função não configurável")
+    }
+
+    await prisma.rolePermissions.upsert({
+        where: { organizationId_role: { organizationId: owner.organizationId, role } },
+        update: {
+            canAccessAgenda: perms.canAccessAgenda,
+            canAccessTasks: perms.canAccessTasks,
+        },
+        create: {
+            organizationId: owner.organizationId,
+            role,
+            canAccessAgenda: perms.canAccessAgenda,
+            canAccessTasks: perms.canAccessTasks,
+        }
+    })
+
+    // Invalidate cached dashboard user for every member with this role so feature flags refresh
+    const affected = await prisma.user.findMany({
+        where: { organizationId: owner.organizationId, orgRole: role },
+        select: { email: true }
+    })
+    for (const u of affected) updateTag(`user:${u.email}`)
+
+    revalidatePath("/dashboard/settings/team")
+    return { success: true }
+}
+
+export async function removeMember(userId: string) {
+    const actor = await getActor()
+
+    if (userId === actor.id) {
+        throw new Error("Você não pode remover a si mesmo")
+    }
+
+    const target = await prisma.user.findUnique({
         where: { id: userId }
     })
 
-    if (!targetUser || targetUser.organizationId !== owner.organizationId) {
-        throw new Error("User not found in organization")
+    if (!target || target.organizationId !== actor.organizationId) {
+        throw new Error("Usuário não encontrado na organização")
     }
 
-    // In a real app we might soft delete or just un-link. 
-    // Here we delete the user account to keep it clean for MVP.
-    // Ideally we should transfer resources or verify dependencies.
-    // For now assumingCASCADE or careful deletion.
+    if (!canManageRole(actor.orgRole, target.orgRole)) {
+        throw new Error("Você não tem permissão para remover esse usuário")
+    }
 
-    // Check if user has deals?
-    // prisma delete cascade might be dangerous.
-    // Let's just unlink organizationId? But user needs Org.
-    // Let's delete user.
+    // Don't allow removing the last OWNER
+    if (target.orgRole === 'OWNER') {
+        const ownerCount = await prisma.user.count({
+            where: { organizationId: actor.organizationId, orgRole: 'OWNER' }
+        })
+        if (ownerCount <= 1) {
+            throw new Error("Não é possível remover o último OWNER da organização")
+        }
+    }
 
     await prisma.user.delete({
         where: { id: userId }
