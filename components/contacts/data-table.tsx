@@ -176,8 +176,15 @@ export function DataTable<TData extends { id: string }, TValue>({
                 <table
                   {...props}
                   className="w-full caption-bottom text-sm border-separate border-spacing-0"
-                  style={{ ...props.style, tableLayout: 'fixed' }}
-                />
+                  style={{ ...props.style, tableLayout: 'fixed', minWidth: '1100px' }}
+                >
+                  <colgroup>
+                    {table.getVisibleLeafColumns().map((col) => (
+                      <col key={col.id} style={{ width: `${col.getSize()}px` }} />
+                    ))}
+                  </colgroup>
+                  {props.children}
+                </table>
               ),
               TableHead: (props: any) => (
                 <thead {...props} className="bg-black/[0.02] dark:bg-white/[0.02] sticky top-0 z-10" />
@@ -205,6 +212,7 @@ export function DataTable<TData extends { id: string }, TValue>({
                   {headerGroup.headers.map((header) => (
                     <th
                       key={header.id}
+                      style={{ width: `${header.getSize()}px` }}
                       className="text-xs uppercase tracking-wider font-semibold text-zinc-600 dark:text-zinc-500 h-10 px-4 text-left bg-black/[0.02] dark:bg-white/[0.02] border-b border-black/5 dark:border-white/5"
                     >
                       {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
@@ -217,7 +225,11 @@ export function DataTable<TData extends { id: string }, TValue>({
               const row = rows[index]
               if (!row) return null
               return row.getVisibleCells().map((cell) => (
-                <td key={cell.id} className="py-3 px-4 text-zinc-700 dark:text-zinc-300 align-middle">
+                <td
+                  key={cell.id}
+                  style={{ width: `${cell.column.getSize()}px`, maxWidth: `${cell.column.getSize()}px` }}
+                  className="py-3 px-4 text-zinc-700 dark:text-zinc-300 align-middle overflow-hidden"
+                >
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
                 </td>
               ))

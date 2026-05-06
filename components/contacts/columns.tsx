@@ -16,6 +16,7 @@ export function getColumns({ onOpenProfile, onEdit, onDelete }: GetColumnsOption
     return [
         {
             id: 'select',
+            size: 40,
             header: ({ table }) => (
                 <div onClick={(e) => e.stopPropagation()}>
                     <Checkbox
@@ -40,6 +41,7 @@ export function getColumns({ onOpenProfile, onEdit, onDelete }: GetColumnsOption
         },
         {
             accessorKey: 'name',
+            size: 220,
             header: 'Nome',
             cell: ({ row }) => {
                 const name = row.getValue('name') as string
@@ -67,14 +69,16 @@ export function getColumns({ onOpenProfile, onEdit, onDelete }: GetColumnsOption
         },
         {
             accessorKey: 'email',
+            size: 240,
             header: 'Email',
             cell: ({ row }) => {
                 const email = row.getValue('email') as string | null
-                return <span className="text-zinc-600 dark:text-zinc-500">{email || '-'}</span>
+                return <span className="text-zinc-600 dark:text-zinc-500 block truncate">{email || '-'}</span>
             },
         },
         {
             accessorKey: 'phone',
+            size: 180,
             header: 'Telefone',
             cell: ({ row }) => {
                 const phone = row.getValue('phone') as string | null
@@ -100,6 +104,7 @@ export function getColumns({ onOpenProfile, onEdit, onDelete }: GetColumnsOption
         },
         {
             accessorKey: 'company',
+            size: 180,
             header: 'Empresa',
             cell: ({ row }) => {
                 const company = row.getValue('company') as string | null
@@ -114,6 +119,7 @@ export function getColumns({ onOpenProfile, onEdit, onDelete }: GetColumnsOption
         {
             id: 'activeStageName',
             accessorKey: 'activeStageName',
+            size: 160,
             header: 'Etapa',
             cell: ({ row }) => {
                 const stage = row.original.activeStageName
@@ -129,6 +135,7 @@ export function getColumns({ onOpenProfile, onEdit, onDelete }: GetColumnsOption
         {
             id: 'assigneeName',
             accessorKey: 'assigneeName',
+            size: 180,
             header: 'Responsável',
             cell: ({ row }) => {
                 const name = row.original.assigneeName
@@ -146,6 +153,7 @@ export function getColumns({ onOpenProfile, onEdit, onDelete }: GetColumnsOption
         },
         {
             accessorKey: 'city',
+            size: 140,
             header: 'Cidade',
             cell: ({ row }) => {
                 const city = row.getValue('city') as string | null
@@ -160,6 +168,7 @@ export function getColumns({ onOpenProfile, onEdit, onDelete }: GetColumnsOption
         },
         {
             id: 'actions',
+            size: 100,
             header: '',
             cell: ({ row }) => {
                 const contact = row.original
