@@ -10,6 +10,12 @@ import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
 import { deleteContact } from '@/app/[locale]/dashboard/contacts/actions'
 import {
+  ContactsFilters,
+  applyContactFilters,
+  EMPTY_FILTERS,
+  type ContactFilters,
+} from '@/components/contacts/contacts-filters'
+import {
   AlertDialog,
   AlertDialogAction,
   AlertDialogCancel,
@@ -86,6 +92,9 @@ export function ContactsDataTableClient({ data }: ContactsDataTableClientProps) 
   const [editContact, setEditContact] = useState<EnrichedContact | null>(null)
   const [deleteTarget, setDeleteTarget] = useState<EnrichedContact | null>(null)
   const [deleting, setDeleting] = useState(false)
+  const [filters, setFilters] = useState<ContactFilters>(EMPTY_FILTERS)
+
+  const filteredData = useMemo(() => applyContactFilters(data, filters), [data, filters])
 
   const handleOpenProfile = useCallback((c: EnrichedContact) => setProfileContact(c), [])
   const handleEdit = useCallback((c: EnrichedContact) => setEditContact(c), [])
@@ -119,9 +128,10 @@ export function ContactsDataTableClient({ data }: ContactsDataTableClientProps) 
 
   return (
     <>
+      <ContactsFilters data={data} value={filters} onChange={setFilters} />
       <DataTable
         columns={columns}
-        data={data}
+        data={filteredData}
         onRowClick={(row) => setProfileContact(row.original)}
         renderMobileCard={(row: Row<EnrichedContact>) => (
           <ContactMobileCard
