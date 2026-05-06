@@ -1,6 +1,5 @@
 'use client'
 
-import { Contact } from '@prisma/client'
 import { Row } from '@tanstack/react-table'
 import { DataTable } from '@/components/contacts/data-table'
 import { getColumns } from '@/components/contacts/columns'
@@ -8,14 +7,24 @@ import { ContactMobileCard } from '@/components/contacts/contact-mobile-card'
 import { useState } from 'react'
 import { ContactProfileModal } from '@/components/contacts/contact-profile-modal'
 
-export type EnrichedContact = Contact & {
+export type EnrichedContact = {
+  id: string
+  name: string
+  email: string | null
+  phone: string | null
+  company: string | null
+  city: string | null
+  state: string | null
+  zipCode: string | null
+  street: string | null
+  streetNumber: string | null
+  complement: string | null
+  createdAt: Date
+  updatedAt: Date
+  organizationId: string
+  assignedToId: string | null
   activeStageName: string | null
   assigneeName: string | null
-  // Address fields (added via schema — available after next DB migration)
-  zipCode?: string | null
-  street?: string | null
-  streetNumber?: string | null
-  complement?: string | null
 }
 
 interface ContactsDataTableClientProps {

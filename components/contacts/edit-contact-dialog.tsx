@@ -17,13 +17,26 @@ import { Label } from '@/components/ui/label'
 import { updateContact } from '@/app/[locale]/dashboard/contacts/actions'
 import { toast } from 'sonner'
 import { useRouter } from 'next/navigation'
-import { Contact } from '@prisma/client'
+
+type EditableContact = {
+    id: string
+    name: string
+    email?: string | null
+    phone?: string | null
+    company?: string | null
+    city?: string | null
+    state?: string | null
+    zipCode?: string | null
+    street?: string | null
+    streetNumber?: string | null
+    complement?: string | null
+}
 
 export function EditContactDialog({
     contact,
     trigger,
 }: {
-    contact: Contact
+    contact: EditableContact
     trigger?: React.ReactNode
 }) {
     const router = useRouter()
@@ -52,14 +65,7 @@ export function EditContactDialog({
         }
     }
 
-    const c = contact as Contact & {
-        city?: string | null
-        state?: string | null
-        zipCode?: string | null
-        street?: string | null
-        streetNumber?: string | null
-        complement?: string | null
-    }
+    const c = contact
 
     return (
         <Dialog open={open} onOpenChange={setOpen}>

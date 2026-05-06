@@ -37,6 +37,23 @@ export default async function ContactsPage() {
         prisma.contact.findMany({
             where: { organizationId: orgId },
             orderBy: { createdAt: 'desc' },
+            select: {
+                id: true,
+                name: true,
+                email: true,
+                phone: true,
+                company: true,
+                city: true,
+                state: true,
+                zipCode: true,
+                street: true,
+                streetNumber: true,
+                complement: true,
+                createdAt: true,
+                updatedAt: true,
+                organizationId: true,
+                assignedToId: true,
+            },
         }),
         // Um deal ativo por contato (mais recente, não arquivado)
         prisma.deal.findMany({

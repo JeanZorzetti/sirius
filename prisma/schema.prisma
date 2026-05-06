@@ -465,6 +465,8 @@ model Deal {
 
   // Performance indexes
   @@index([organizationId, stageId])
+  @@index([organizationId, status, archived, contactId]) // contacts page filter
+  @@index([contactId])
   @@index([userId])
 }
 
