@@ -1,24 +1,14 @@
 import { Metadata } from "next"
 import { Suspense } from "react"
-import nextDynamic from "next/dynamic"
 import { prisma } from "@/lib/prisma"
 import { ContactsDataTableClient } from "@/components/contacts/contacts-data-table-client"
 import { CreateContactDialog } from "@/components/contacts/create-contact-dialog"
+import { ContactsActionsBar } from "@/components/contacts/contacts-actions-bar"
 import { ContactsPageClient } from "@/components/contacts/contacts-page-client"
 import { EmptyState } from "@/components/ui/empty-state"
 import { Skeleton } from "@/components/ui/skeleton"
 import { Users } from "lucide-react"
 import { getSession } from "@/lib/auth"
-
-// Lazy-load — não bloqueia o bundle inicial
-const ImportContactsDialog = nextDynamic(
-    () => import("@/components/contacts/import-contacts-dialog").then(m => ({ default: m.ImportContactsDialog })),
-    { ssr: false, loading: () => null }
-)
-const ExportButtons = nextDynamic(
-    () => import("@/components/ui/export-buttons").then(m => ({ default: m.ExportButtons })),
-    { ssr: false, loading: () => null }
-)
 
 export const metadata: Metadata = {
     title: "Contatos - CRM",
@@ -138,11 +128,7 @@ async function ContactsData({ orgId }: { orgId: string }) {
                     <h2 className="text-2xl font-bold tracking-tight text-zinc-900 dark:text-white">Contatos</h2>
                     <p className="text-sm text-zinc-500">Gerencie sua base de clientes e leads.</p>
                 </div>
-                <div className="flex items-center space-x-2 w-full sm:w-auto">
-                    <ExportButtons resourceType="contacts" />
-                    <ImportContactsDialog />
-                    <CreateContactDialog />
-                </div>
+                <ContactsActionsBar />
             </div>
             <div className="h-full flex-1 flex-col space-y-8 flex">
                 <ContactsDataTableClient data={enrichedContacts} />
