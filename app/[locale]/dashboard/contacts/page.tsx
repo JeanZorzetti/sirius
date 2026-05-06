@@ -5,10 +5,12 @@ import { ContactsDataTableClient } from "@/components/contacts/contacts-data-tab
 import { CreateContactDialog } from "@/components/contacts/create-contact-dialog"
 import { ContactsActionsBar } from "@/components/contacts/contacts-actions-bar"
 import { ContactsPageClient } from "@/components/contacts/contacts-page-client"
+import { PerfMonitor } from "@/components/contacts/perf-monitor"
 import { EmptyState } from "@/components/ui/empty-state"
 import { Skeleton } from "@/components/ui/skeleton"
 import { Users } from "lucide-react"
 import { getSession } from "@/lib/auth"
+import { PerfTimer } from "@/lib/perf-debug"
 
 export const metadata: Metadata = {
     title: "Contatos - CRM",
@@ -41,6 +43,9 @@ function ContactsTableSkeleton() {
 }
 
 async function ContactsData({ orgId }: { orgId: string }) {
+    const timer = new PerfTimer(`contacts-page SSR (org=${orgId})`)
+    timer.mark('queries-start')
+
     // Queries planas em paralelo
     const [contacts, activeDeals, stages, orgUsers] = await Promise.all([
         prisma.contact.findMany({
@@ -89,6 +94,8 @@ async function ContactsData({ orgId }: { orgId: string }) {
         }),
     ])
 
+    timer.mark(`queries-end (contacts=${contacts.length}, deals=${activeDeals.length}, stages=${stages.length}, users=${orgUsers.length})`)
+
     // Lookup: contactId → primeiro deal ativo
     const dealByContact = new Map<string, typeof activeDeals[0]>()
     for (const deal of activeDeals) {
@@ -109,6 +116,9 @@ async function ContactsData({ orgId }: { orgId: string }) {
         }
     })
 
+    timer.mark('enriched')
+    timer.end()
+
     if (enrichedContacts.length === 0) {
         return (
             <EmptyState
@@ -122,6 +132,7 @@ async function ContactsData({ orgId }: { orgId: string }) {
 
     return (
         <>
+            <PerfMonitor pageLabel="Contacts Page" rowCount={enrichedContacts.length} />
             <ContactsPageClient contactCount={enrichedContacts.length} />
             <div className="hidden lg:flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                 <div className="flex flex-col gap-1">
@@ -138,7 +149,11 @@ async function ContactsData({ orgId }: { orgId: string }) {
 }
 
 export default async function ContactsPage() {
+    const pageTimer = new PerfTimer('contacts-page (page entry)')
+
     const session = await getSession()
+    pageTimer.mark('getSession done')
+
     if (!session?.user?.email) {
         return <div>Não autorizado. Faça login novamente.</div>
     }
@@ -147,10 +162,13 @@ export default async function ContactsPage() {
         where: { email: session.user.email },
         select: { organizationId: true }
     })
+    pageTimer.mark('user.findUnique done')
 
     if (!user?.organizationId) {
         return <div>Usuário não pertence a uma organização.</div>
     }
+
+    pageTimer.end()
 
     return (
         <div className="flex-1 space-y-4">

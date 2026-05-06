@@ -4,7 +4,7 @@ import { Row } from '@tanstack/react-table'
 import { DataTable } from '@/components/contacts/data-table'
 import { getColumns } from '@/components/contacts/columns'
 import { ContactMobileCard } from '@/components/contacts/contact-mobile-card'
-import { useState, useCallback, useMemo } from 'react'
+import { useState, useCallback, useMemo, useEffect, useRef } from 'react'
 import dynamic from 'next/dynamic'
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
@@ -57,6 +57,31 @@ interface ContactsDataTableClientProps {
 
 export function ContactsDataTableClient({ data }: ContactsDataTableClientProps) {
   const router = useRouter()
+  const renderCountRef = useRef(0)
+  const firstRenderTimeRef = useRef(performance.now())
+  renderCountRef.current++
+
+  useEffect(() => {
+    const elapsed = performance.now() - firstRenderTimeRef.current
+    console.log(
+      `%c[PERF-CLIENT] ContactsDataTableClient hydrated`,
+      'color: #4f46e5; font-weight: bold',
+      `\n  rows: ${data.length}`,
+      `\n  hydration time: ${elapsed.toFixed(1)}ms`,
+      `\n  render count: ${renderCountRef.current}`
+    )
+  }, [])
+
+  useEffect(() => {
+    if (renderCountRef.current > 1) {
+      console.log(
+        `%c[PERF-CLIENT] ContactsDataTableClient re-rendered`,
+        'color: #f59e0b',
+        `count: ${renderCountRef.current}`
+      )
+    }
+  })
+
   const [profileContact, setProfileContact] = useState<EnrichedContact | null>(null)
   const [editContact, setEditContact] = useState<EnrichedContact | null>(null)
   const [deleteTarget, setDeleteTarget] = useState<EnrichedContact | null>(null)
@@ -66,10 +91,12 @@ export function ContactsDataTableClient({ data }: ContactsDataTableClientProps) 
   const handleEdit = useCallback((c: EnrichedContact) => setEditContact(c), [])
   const handleDelete = useCallback((c: EnrichedContact) => setDeleteTarget(c), [])
 
-  const columns = useMemo(
-    () => getColumns({ onOpenProfile: handleOpenProfile, onEdit: handleEdit, onDelete: handleDelete }),
-    [handleOpenProfile, handleEdit, handleDelete]
-  )
+  const columns = useMemo(() => {
+    const t0 = performance.now()
+    const cols = getColumns({ onOpenProfile: handleOpenProfile, onEdit: handleEdit, onDelete: handleDelete })
+    console.log(`%c[PERF-CLIENT] getColumns()`, 'color: #6366f1', `${(performance.now() - t0).toFixed(1)}ms`)
+    return cols
+  }, [handleOpenProfile, handleEdit, handleDelete])
 
   async function confirmDelete() {
     if (!deleteTarget) return

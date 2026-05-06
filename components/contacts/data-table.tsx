@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import {
   ColumnDef,
   Row,
@@ -56,6 +56,18 @@ export function DataTable<TData extends { id: string }, TValue>({
   const [confirmOpen, setConfirmOpen] = useState(false)
   const router = useRouter()
 
+  const tableInitRef = useRef(performance.now())
+  useEffect(() => {
+    console.log(
+      `%c[PERF-CLIENT] DataTable mounted`,
+      'color: #4f46e5; font-weight: bold',
+      `\n  rows: ${data.length}`,
+      `\n  columns: ${columns.length}`,
+      `\n  init→mount: ${(performance.now() - tableInitRef.current).toFixed(1)}ms`
+    )
+  }, [])
+
+  const tableT0 = performance.now()
   const table = useReactTable({
     data,
     columns,
@@ -70,6 +82,10 @@ export function DataTable<TData extends { id: string }, TValue>({
     onGlobalFilterChange: setGlobalFilter,
     onRowSelectionChange: setRowSelection,
   })
+
+  if (typeof window !== 'undefined' && tableInitRef.current === tableT0) {
+    console.log(`%c[PERF-CLIENT] useReactTable() init`, 'color: #6366f1', `${(performance.now() - tableT0).toFixed(1)}ms`)
+  }
 
   const selectedRows = table.getSelectedRowModel().rows
   const selectedCount = selectedRows.length
