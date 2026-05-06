@@ -845,14 +845,19 @@ export function EditDealDialog({
                                         </div>
                                         {closings.map(closing => (
                                             <div key={closing.id} className="flex items-start justify-between p-3 bg-white dark:bg-zinc-900 border border-zinc-100 dark:border-zinc-800 rounded-lg group">
-                                                <div className="space-y-0.5">
-                                                    <div className="flex items-center gap-2">
+                                                <div className="space-y-0.5 min-w-0 flex-1">
+                                                    <div className="flex items-center gap-2 flex-wrap">
                                                         <span className="text-sm font-semibold text-emerald-600 dark:text-emerald-400">
                                                             R$ {closing.value.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
                                                         </span>
                                                         <span className="text-xs text-zinc-500">
                                                             {format(new Date(closing.date), "dd/MM/yyyy", { locale: ptBR })}
                                                         </span>
+                                                        {closing.userName && (
+                                                            <span className="text-[10px] uppercase tracking-wider text-zinc-400 bg-zinc-100 dark:bg-zinc-800 px-1.5 py-0.5 rounded">
+                                                                por {closing.userName}
+                                                            </span>
+                                                        )}
                                                     </div>
                                                     {closing.note && (
                                                         <p className="text-xs text-zinc-500">{closing.note}</p>
@@ -1044,8 +1049,11 @@ function ActivityItem({ activity }: { activity: any }) {
     const getIcon = (type: string) => {
         switch (type) {
             case 'STAGE_CHANGE': return <ArrowRight className="w-3 h-3" />
+            case 'PIPELINE_CHANGE': return <ArrowLeftRight className="w-3 h-3" />
             case 'VALUE_CHANGE': return <DollarSign className="w-3 h-3" />
             case 'NOTE_ADDED': return <MessageSquare className="w-3 h-3" />
+            case 'CLOSING_ADDED': return <DollarSign className="w-3 h-3" />
+            case 'CLOSING_REMOVED': return <Trash2 className="w-3 h-3" />
             case 'CREATE': return <Sparkles className="w-3 h-3" />
             default: return <CheckCircle2 className="w-3 h-3" />
         }
@@ -1054,8 +1062,11 @@ function ActivityItem({ activity }: { activity: any }) {
     const getBgColor = (type: string) => {
         switch (type) {
             case 'STAGE_CHANGE': return 'bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400'
+            case 'PIPELINE_CHANGE': return 'bg-indigo-100 text-indigo-600 dark:bg-indigo-900/30 dark:text-indigo-400'
             case 'VALUE_CHANGE': return 'bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400'
             case 'NOTE_ADDED': return 'bg-yellow-100 text-yellow-600 dark:bg-yellow-900/30 dark:text-yellow-400'
+            case 'CLOSING_ADDED': return 'bg-emerald-100 text-emerald-600 dark:bg-emerald-900/30 dark:text-emerald-400'
+            case 'CLOSING_REMOVED': return 'bg-red-100 text-red-600 dark:bg-red-900/30 dark:text-red-400'
             default: return 'bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400'
         }
     }

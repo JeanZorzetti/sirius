@@ -215,6 +215,7 @@ model User {
   organization   Organization @relation(fields: [organizationId], references: [id])
 
   deals                  Deal[] // Deals managed by this user
+  dealClosings           DealClosing[] @relation("DealClosingCreator")
   assignedContacts       Contact[] // Contacts assigned via round-robin
   notes                  Note[]
   activities             Activity[]
@@ -501,9 +502,14 @@ model DealClosing {
   dealId String
   deal   Deal   @relation(fields: [dealId], references: [id], onDelete: Cascade)
 
+  // Quem registrou o fechamento (opcional para registros antigos)
+  userId String?
+  user   User?   @relation("DealClosingCreator", fields: [userId], references: [id], onDelete: SetNull)
+
   createdAt DateTime @default(now())
 
   @@index([dealId])
+  @@index([userId])
 }
 
 model Invite {

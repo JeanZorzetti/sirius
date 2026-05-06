@@ -70,6 +70,18 @@ export async function updateDealStage(dealId: string, stageId: string) {
       data: { stageId: stageId },
     })
 
+    // Log activity (only if stage actually changed)
+    if (deal.stageId !== stageId) {
+      await prisma.activity.create({
+        data: {
+          type: 'STAGE_CHANGE',
+          description: `Moveu de "${oldStageName}" para "${newStage.name}"`,
+          dealId,
+          userId: user.id,
+        }
+      })
+    }
+
     // Dispatch webhook (async, non-blocking)
     dispatchWebhookAsync(user.organizationId, WEBHOOK_EVENTS.DEAL_STAGE_CHANGED, {
       deal: {
@@ -164,6 +176,16 @@ export async function createDeal(formData: FormData) {
       }
     })
 
+    // Log activity
+    await prisma.activity.create({
+      data: {
+        type: 'CREATE',
+        description: `Criou o negócio em "${deal.stage.name}"${value ? ` com valor R$ ${value.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}` : ''}`,
+        dealId: deal.id,
+        userId: user.id,
+      }
+    })
+
     // Dispatch webhook (async, non-blocking)
     dispatchWebhookAsync(user.organizationId, WEBHOOK_EVENTS.DEAL_CREATED, {
       deal: {
@@ -244,7 +266,10 @@ export async function updateDeal(formData: FormData) {
     const user = await getAuthenticatedUser()
 
     // Security check
-    const existingDeal = await prisma.deal.findUnique({ where: { id: dealId } })
+    const existingDeal = await prisma.deal.findUnique({
+      where: { id: dealId },
+      include: { stage: true }
+    })
     if (!existingDeal || existingDeal.organizationId !== user.organizationId) {
       return { success: false, error: 'Unauthorized' }
     }
@@ -253,6 +278,12 @@ export async function updateDeal(formData: FormData) {
     const closeDate = closeDateStr ? new Date(closeDateStr) : null
     const dueDate = dueDateStr ? new Date(dueDateStr) : null
     const observations = formData.get('observations') as string | null
+
+    // Detect changes for activity log
+    const oldValue = existingDeal.value !== null ? Number(existingDeal.value) : null
+    const stageChanged = existingDeal.stageId !== stageId
+    const valueChanged = oldValue !== value
+    const oldStageName = existingDeal.stage.name
 
     const updatedDeal = await prisma.deal.update({
       where: { id: dealId },
@@ -271,6 +302,28 @@ export async function updateDeal(formData: FormData) {
         stage: true
       }
     })
+
+    // Log activities for tracked changes
+    const activitiesToLog: { type: string; description: string }[] = []
+    if (stageChanged) {
+      activitiesToLog.push({
+        type: 'STAGE_CHANGE',
+        description: `Moveu de "${oldStageName}" para "${updatedDeal.stage.name}"`,
+      })
+    }
+    if (valueChanged) {
+      const oldStr = oldValue !== null ? `R$ ${oldValue.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}` : 'sem valor'
+      const newStr = value !== null ? `R$ ${value.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}` : 'sem valor'
+      activitiesToLog.push({
+        type: 'VALUE_CHANGE',
+        description: `Alterou valor de ${oldStr} para ${newStr}`,
+      })
+    }
+    if (activitiesToLog.length > 0) {
+      await prisma.activity.createMany({
+        data: activitiesToLog.map(a => ({ ...a, dealId, userId: user.id }))
+      })
+    }
 
     // Dispatch webhook (async, non-blocking)
     dispatchWebhookAsync(user.organizationId, WEBHOOK_EVENTS.DEAL_UPDATED, {
@@ -365,6 +418,16 @@ export async function moveDealToPipeline(dealId: string, newPipelineId: string, 
       data: {
         pipelineId: newPipelineId,
         stageId: newStageId
+      }
+    })
+
+    // Log activity — pipeline + stage move
+    await prisma.activity.create({
+      data: {
+        type: 'PIPELINE_CHANGE',
+        description: `Moveu de "${oldPipelineName} - ${oldStageName}" para "${newPipeline.name} - ${newStage.name}"`,
+        dealId,
+        userId: user.id,
       }
     })
 

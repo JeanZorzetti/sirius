@@ -213,13 +213,15 @@ export async function addDealClosing(dealId: string, date: string, value: number
     if (deal.organizationId !== user.organizationId) throw new Error("Unauthorized")
 
     const closing = await prisma.dealClosing.create({
-        data: { dealId, date: new Date(date), value, note: note || null }
+        data: { dealId, date: new Date(date), value, note: note || null, userId: user.id }
     })
 
+    const valueStr = `R$ ${value.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`
+    const noteStr = note ? ` — ${note}` : ''
     await prisma.activity.create({
         data: {
-            type: "NOTE_ADDED",
-            description: `Registrou novo fechamento: R$ ${value.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`,
+            type: "CLOSING_ADDED",
+            description: `Registrou fechamento de ${valueStr}${noteStr}`,
             dealId,
             userId: user.id
         }
@@ -240,6 +242,17 @@ export async function deleteDealClosing(closingId: string) {
     if (closing.deal.organizationId !== user.organizationId) throw new Error("Unauthorized")
 
     await prisma.dealClosing.delete({ where: { id: closingId } })
+
+    const valueStr = `R$ ${Number(closing.value).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`
+    await prisma.activity.create({
+        data: {
+            type: "CLOSING_REMOVED",
+            description: `Removeu fechamento de ${valueStr}`,
+            dealId: closing.dealId,
+            userId: user.id
+        }
+    })
+
     revalidatePath("/dashboard")
     return { success: true }
 }
@@ -252,14 +265,16 @@ export async function getDealClosings(dealId: string) {
 
     const closings = await prisma.dealClosing.findMany({
         where: { dealId },
-        orderBy: { date: 'desc' }
+        orderBy: { date: 'desc' },
+        include: { user: { select: { id: true, name: true, email: true } } }
     })
 
     return closings.map(c => ({
         ...c,
         value: Number(c.value),
         date: c.date.toISOString(),
-        createdAt: c.createdAt.toISOString()
+        createdAt: c.createdAt.toISOString(),
+        userName: c.user?.name ?? c.user?.email ?? null,
     }))
 }
 
