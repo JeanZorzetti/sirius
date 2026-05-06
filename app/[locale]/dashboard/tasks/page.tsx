@@ -24,15 +24,18 @@ export default async function TasksHubPage() {
 
   const user = await prisma.user.findUnique({
     where: { email: session.user.email },
-    select: { id: true, organizationId: true },
+    select: { id: true, organizationId: true, orgRole: true },
   })
 
   if (!user?.organizationId) {
     return <div>Usuário não pertence a uma organização.</div>
   }
 
-  // Fetch all projects for organization
-  const projects = await prisma.taskProject.findMany({
+  const userRole = user.orgRole ?? 'MEMBER'
+
+  // Fetch all projects for organization, then filter by allowedRoles client-side
+  // (Postgres array filtering with empty = all is easier in memory)
+  const allProjects = await prisma.taskProject.findMany({
     where: {
       organizationId: user.organizationId,
       archived: false,
@@ -48,6 +51,14 @@ export default async function TasksHubPage() {
     },
     orderBy: [{ order: 'asc' }, { createdAt: 'asc' }],
   })
+
+  // OWNER always sees all projects. Others: if allowedRoles is empty → visible to all,
+  // otherwise the user's role must be in the list.
+  const projects = userRole === 'OWNER'
+    ? allProjects
+    : allProjects.filter((p) =>
+        p.allowedRoles.length === 0 || p.allowedRoles.includes(userRole as any)
+      )
 
   // My tasks aggregate counts
   const myTasksWhere = {
@@ -112,6 +123,7 @@ export default async function TasksHubPage() {
   const doneByProject = new Map(projectDoneRaw.map((r) => [r.projectId, r._count._all]))
   const overdueByProject = new Map(projectOverdueRaw.map((r) => [r.projectId, r._count._all]))
 
+  const canManageRoles = userRole === 'OWNER' || userRole === 'GERENTE'
   const canAccessAnalytics = entitlements.features.taskAnalytics ?? false
 
   // Calcular velocity por semana (4 pontos)
@@ -284,6 +296,7 @@ export default async function TasksHubPage() {
                   done={done}
                   overdue={overdue}
                   progress={progress}
+                  canManageRoles={canManageRoles}
                 />
               )
             })}

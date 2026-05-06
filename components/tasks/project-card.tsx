@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { FolderKanban, MoreHorizontal, Pencil, Trash2, CheckCircle2, Loader2 } from 'lucide-react'
+import { FolderKanban, MoreHorizontal, Pencil, Trash2, CheckCircle2, Loader2, Lock, Globe } from 'lucide-react'
 import { toast } from 'sonner'
 import {
   DropdownMenu,
@@ -41,20 +41,31 @@ const PROJECT_COLORS = [
   '#3b82f6', '#64748b',
 ]
 
+const ROLE_OPTIONS = [
+  { value: 'GERENTE',     label: 'Gerente',     color: 'bg-purple-500/15 text-purple-600 dark:text-purple-400 ring-purple-500/20' },
+  { value: 'COORDENADOR', label: 'Coordenador', color: 'bg-blue-500/15 text-blue-600 dark:text-blue-400 ring-blue-500/20' },
+  { value: 'SUPERVISOR',  label: 'Supervisor',  color: 'bg-amber-500/15 text-amber-600 dark:text-amber-400 ring-amber-500/20' },
+  { value: 'VENDEDOR',    label: 'Vendedor',    color: 'bg-zinc-500/15 text-zinc-600 dark:text-zinc-400 ring-zinc-500/20' },
+] as const
+
+type AllowedRole = 'GERENTE' | 'COORDENADOR' | 'SUPERVISOR' | 'VENDEDOR'
+
 interface ProjectCardProps {
   project: {
     id: string
     name: string
     description: string | null
     color: string
+    allowedRoles: string[]
   }
   total: number
   done: number
   overdue: number
   progress: number
+  canManageRoles?: boolean
 }
 
-export function ProjectCard({ project, total, done, overdue, progress }: ProjectCardProps) {
+export function ProjectCard({ project, total, done, overdue, progress, canManageRoles = false }: ProjectCardProps) {
   const router = useRouter()
   const [deleteOpen, setDeleteOpen] = useState(false)
   const [editOpen, setEditOpen] = useState(false)
@@ -63,6 +74,9 @@ export function ProjectCard({ project, total, done, overdue, progress }: Project
   const [editName, setEditName] = useState(project.name)
   const [editDescription, setEditDescription] = useState(project.description ?? '')
   const [editColor, setEditColor] = useState(project.color)
+  const [editAllowedRoles, setEditAllowedRoles] = useState<AllowedRole[]>(
+    (project.allowedRoles ?? []) as AllowedRole[]
+  )
 
   function openEdit(e: React.MouseEvent) {
     e.preventDefault()
@@ -70,7 +84,14 @@ export function ProjectCard({ project, total, done, overdue, progress }: Project
     setEditName(project.name)
     setEditDescription(project.description ?? '')
     setEditColor(project.color)
+    setEditAllowedRoles((project.allowedRoles ?? []) as AllowedRole[])
     setEditOpen(true)
+  }
+
+  function toggleRole(role: AllowedRole) {
+    setEditAllowedRoles((prev) =>
+      prev.includes(role) ? prev.filter((r) => r !== role) : [...prev, role]
+    )
   }
 
   function openDelete(e: React.MouseEvent) {
@@ -106,6 +127,7 @@ export function ProjectCard({ project, total, done, overdue, progress }: Project
           name: editName.trim(),
           description: editDescription.trim() || null,
           color: editColor,
+          ...(canManageRoles && { allowedRoles: editAllowedRoles }),
         }),
       })
       if (!res.ok) throw new Error()
@@ -144,6 +166,12 @@ export function ProjectCard({ project, total, done, overdue, progress }: Project
           </Link>
 
           <div className="flex items-center gap-2 shrink-0">
+            {(project.allowedRoles ?? []).length > 0 && (
+              <span className="flex items-center gap-1 rounded-full bg-amber-500/10 px-2.5 py-1 text-[10px] font-bold text-amber-600 dark:text-amber-400 ring-1 ring-inset ring-amber-500/20 shadow-sm">
+                <Lock className="h-2.5 w-2.5" />
+                Restrito
+              </span>
+            )}
             {overdue > 0 && (
               <span className="flex items-center gap-1 rounded-full bg-rose-500/10 px-2.5 py-1 text-[10px] font-bold text-rose-500 ring-1 ring-inset ring-rose-500/20 shadow-sm">
                 {overdue} {overdue !== 1 ? 'atrasadas' : 'atrasada'}
@@ -251,6 +279,60 @@ export function ProjectCard({ project, total, done, overdue, progress }: Project
                   ))}
                 </div>
               </div>
+
+              {canManageRoles && (
+                <div className="grid gap-3">
+                  <div className="flex items-center justify-between">
+                    <Label className="flex items-center gap-1.5">
+                      <Lock className="h-3.5 w-3.5 text-muted-foreground" />
+                      Visibilidade por cargo
+                    </Label>
+                    {editAllowedRoles.length === 0 ? (
+                      <span className="flex items-center gap-1 text-[11px] font-medium text-emerald-600 dark:text-emerald-400">
+                        <Globe className="h-3 w-3" />
+                        Todos os cargos
+                      </span>
+                    ) : (
+                      <span className="text-[11px] font-medium text-amber-600 dark:text-amber-400">
+                        {editAllowedRoles.length} cargo{editAllowedRoles.length > 1 ? 's' : ''} selecionado{editAllowedRoles.length > 1 ? 's' : ''}
+                      </span>
+                    )}
+                  </div>
+                  <p className="text-xs text-muted-foreground leading-relaxed -mt-1">
+                    Selecione os cargos que podem ver este projeto. Sem seleção = visível para todos.
+                  </p>
+                  <div className="flex flex-wrap gap-2">
+                    {ROLE_OPTIONS.map((role) => {
+                      const active = editAllowedRoles.includes(role.value)
+                      return (
+                        <button
+                          key={role.value}
+                          type="button"
+                          onClick={() => toggleRole(role.value)}
+                          className={cn(
+                            'inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold ring-1 ring-inset transition-all duration-150',
+                            active
+                              ? role.color
+                              : 'bg-muted/50 text-muted-foreground ring-border/50 hover:bg-muted'
+                          )}
+                        >
+                          {active && <span className="h-1.5 w-1.5 rounded-full bg-current" />}
+                          {role.label}
+                        </button>
+                      )
+                    })}
+                  </div>
+                  {editAllowedRoles.length > 0 && (
+                    <button
+                      type="button"
+                      onClick={() => setEditAllowedRoles([])}
+                      className="self-start text-[11px] text-muted-foreground underline-offset-2 hover:underline"
+                    >
+                      Limpar restrições
+                    </button>
+                  )}
+                </div>
+              )}
             </div>
             <DialogFooter>
               <Button type="button" variant="ghost" onClick={() => setEditOpen(false)} disabled={saving}>

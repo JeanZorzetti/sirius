@@ -1961,15 +1961,17 @@ enum RecurrenceFrequency {
 
 // TaskProject: Agrupamento de tarefas (como espaços no ClickUp)
 model TaskProject {
-  id          String   @id @default(uuid())
+  id          String    @id @default(uuid())
   name        String
-  description String?  @db.Text
-  color       String   @default("#6366f1")
+  description String?   @db.Text
+  color       String    @default("#6366f1")
   icon        String?
-  archived    Boolean  @default(false)
-  order       Int      @default(0)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  archived    Boolean   @default(false)
+  order       Int       @default(0)
+  // Empty array = visible to all roles (default). Non-empty = only listed roles can see.
+  allowedRoles OrgRole[] @default([])
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
 
   organizationId String
   organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)

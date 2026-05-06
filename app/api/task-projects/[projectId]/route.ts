@@ -58,7 +58,7 @@ export async function PATCH(
 
     const user = await prisma.user.findUnique({
       where: { email: session.user.email },
-      select: { organizationId: true },
+      select: { organizationId: true, orgRole: true },
     })
 
     if (!user?.organizationId) {
@@ -73,8 +73,11 @@ export async function PATCH(
       return NextResponse.json({ error: 'Projeto não encontrado' }, { status: 404 })
     }
 
+    // Only OWNER and GERENTE can change allowedRoles
     const body = await request.json()
-    const { name, description, color, icon, archived } = body
+    const { name, description, color, icon, archived, allowedRoles } = body
+
+    const canSetRoles = user.orgRole === 'OWNER' || user.orgRole === 'GERENTE'
 
     const project = await prisma.taskProject.update({
       where: { id: projectId },
@@ -84,6 +87,7 @@ export async function PATCH(
         ...(color !== undefined && { color }),
         ...(icon !== undefined && { icon }),
         ...(archived !== undefined && { archived }),
+        ...(allowedRoles !== undefined && canSetRoles && { allowedRoles }),
       },
       include: {
         statuses: { orderBy: { order: 'asc' } },
