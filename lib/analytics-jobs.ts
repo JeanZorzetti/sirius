@@ -205,30 +205,21 @@ export async function createMonthlyRevenueSnapshot(year: number, month: number) 
       return createdAt >= startOfMonth && createdAt <= endOfMonth
     }).length
 
-    // FASE 13: Calcular churn (organizações que cancelaram assinatura neste mês)
+    // Organizações que cancelaram (downgrade para FREE) neste mês
     const churnedOrgs = await prisma.transaction.count({
       where: {
         type: 'PLAN_DOWNGRADE',
         status: 'COMPLETED',
-        createdAt: {
-          gte: startOfMonth,
-          lte: endOfMonth,
-        },
-        // Downgrade para FREE significa churn
-        metadata: {
-          path: ['newTier'],
-          equals: 'FREE',
-        },
+        createdAt: { gte: startOfMonth, lte: endOfMonth },
+        metadata: { path: ['newTier'], equals: 'FREE' },
       },
     })
 
-    // Calcular churn rate do período
+    // Calcular churn e métricas avançadas
     const churnRate = await calculateChurnRate(startOfMonth, endOfMonth)
-    const monthlyChurnRateDecimal = churnRate / 100 // Converter para decimal
-
-    // Calcular métricas avançadas (KPIs)
+    const monthlyChurnRateDecimal = churnRate / 100
     const [ltv, cac, forecasts] = await Promise.all([
-      calculateLTV(monthlyChurnRateDecimal || 0.05), // 5% default se churn for 0
+      calculateLTV(monthlyChurnRateDecimal || 0.05),
       calculateCAC(month, year),
       calculateRevenueForecasts(),
     ])
@@ -252,7 +243,7 @@ export async function createMonthlyRevenueSnapshot(year: number, month: number) 
         proOrganizations: proOrgs,
         freeOrganizations: freeOrgs,
         newOrganizations: newOrgs,
-        churnedOrganizations: churnedOrgs, // ✅ FASE 13: Implementado
+        churnedOrganizations: churnedOrgs,
         avgLtv: ltv > 0 ? new Decimal(ltv) : null,
         avgCac: cac > 0 ? new Decimal(cac) : null,
         forecastNext30d: forecasts.forecastNext30d > 0 ? new Decimal(forecasts.forecastNext30d) : null,
@@ -266,7 +257,7 @@ export async function createMonthlyRevenueSnapshot(year: number, month: number) 
         proOrganizations: proOrgs,
         freeOrganizations: freeOrgs,
         newOrganizations: newOrgs,
-        churnedOrganizations: churnedOrgs, // ✅ FASE 13: Implementado
+        churnedOrganizations: churnedOrgs,
         avgLtv: ltv > 0 ? new Decimal(ltv) : null,
         avgCac: cac > 0 ? new Decimal(cac) : null,
         forecastNext30d: forecasts.forecastNext30d > 0 ? new Decimal(forecasts.forecastNext30d) : null,

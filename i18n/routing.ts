@@ -117,7 +117,6 @@ export const routing = defineRouting({
     '/dashboard/contacts': '/dashboard/contacts',
     '/dashboard/deals': '/dashboard/deals',
     '/dashboard/analytics': '/dashboard/analytics',
-    '/dashboard/analytics-pro': '/dashboard/analytics-pro',
     '/dashboard/chat': '/dashboard/chat',
     '/dashboard/products': '/dashboard/products',
     '/dashboard/billing': '/dashboard/billing',
