@@ -14,20 +14,21 @@ import { ClientChartFilter } from './client-filter';
 import { PipelineFilter } from './pipeline-filter';
 import { ValueSearch } from './value-search';
 import { ContactSearch } from './contact-search';
+import { StageChartFilter } from './stage-chart-filter';
 
 export const metadata = { title: "Analytics | Sirius CRM" }
 
 export default async function AnalyticsPage({
   searchParams,
 }: {
-  searchParams: Promise<{ from?: string; to?: string; mfrom?: string; mto?: string; ctop?: string; csort?: string; pid?: string; vsearch?: string; csearch?: string }>
+  searchParams: Promise<{ from?: string; to?: string; mfrom?: string; mto?: string; ctop?: string; csort?: string; pid?: string; vsearch?: string; csearch?: string; sfrom?: string; sto?: string }>
 }) {
   const session = await getSession();
   if (!session || !session.user || !session.user.email) {
     return <div>Não autorizado. Faça login novamente.</div>;
   }
 
-  const { from, to, mfrom, mto, ctop, csort, pid, vsearch, csearch } = await searchParams;
+  const { from, to, mfrom, mto, ctop, csort, pid, vsearch, csearch, sfrom, sto } = await searchParams;
 
   const user = await prisma.user.findUnique({
     where: { email: session.user.email },
@@ -205,8 +206,32 @@ export default async function AnalyticsPage({
 
   const monthlyData = monthSlots.map(({ label, value, count, closingsValue }) => ({ label, value, count, closingsValue }))
 
-  // Stage chart
-  const stageData = deals.reduce((acc: Record<string, { name: string; count: number; value: number; clients: string[] }>, deal) => {
+  // Stage chart — filtro de data próprio (sfrom/sto) por createdAt
+  const stageCreatedFilter: any = {}
+  if (sfrom) stageCreatedFilter.gte = new Date(sfrom)
+  if (sto) {
+    const stoDate = new Date(sto)
+    stoDate.setHours(23, 59, 59, 999)
+    stageCreatedFilter.lte = stoDate
+  }
+  const stageDeals = (sfrom || sto)
+    ? await prisma.deal.findMany({
+        where: {
+          organizationId: user.organizationId,
+          archived: false,
+          ...pipelineFilter,
+          createdAt: stageCreatedFilter,
+        },
+        select: {
+          stageId: true,
+          value: true,
+          stage: { select: { name: true } },
+          contact: { select: { name: true } },
+        },
+      })
+    : deals
+
+  const stageData = stageDeals.reduce((acc: Record<string, { name: string; count: number; value: number; clients: string[] }>, deal) => {
     const stageId = deal.stageId;
     const stageName = deal.stage?.name || 'Unknown';
     if (!acc[stageId]) acc[stageId] = { name: stageName, count: 0, value: 0, clients: [] };
@@ -403,7 +428,19 @@ export default async function AnalyticsPage({
       {/* Stage chart */}
       <Card className="bg-white/50 dark:bg-zinc-900/50 border-zinc-200 dark:border-white/5 backdrop-blur-sm">
         <CardHeader>
-          <CardTitle className="text-lg font-semibold text-zinc-900 dark:text-white">Negócios por Etapa</CardTitle>
+          <div className="flex items-start justify-between flex-wrap gap-4">
+            <div>
+              <CardTitle className="text-lg font-semibold text-zinc-900 dark:text-white">Negócios por Etapa</CardTitle>
+              <p className="text-xs text-zinc-500 mt-1">
+                {(sfrom || sto)
+                  ? `Negócios criados${sfrom ? ` a partir de ${new Date(sfrom).toLocaleDateString('pt-BR')}` : ''}${sto ? ` até ${new Date(sto).toLocaleDateString('pt-BR')}` : ''}`
+                  : 'Todos os negócios não arquivados'}
+              </p>
+            </div>
+            <Suspense>
+              <StageChartFilter />
+            </Suspense>
+          </div>
         </CardHeader>
         <CardContent className="pl-0">
           <OverviewChart data={chartData} />
