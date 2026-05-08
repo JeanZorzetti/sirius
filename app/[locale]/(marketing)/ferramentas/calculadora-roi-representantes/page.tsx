@@ -1,24 +1,34 @@
 ﻿import { Metadata } from 'next'
 import { CalculadoraROI } from '@/components/calculadora-roi'
 import { TrendingUp, Users, CheckCircle2, Smartphone } from 'lucide-react'
+import { buildLocaleAlternates } from '@/lib/seo/canonical'
 
-export const metadata: Metadata = {
-  title: 'Calculadora de ROI para Representantes Comerciais | Sirius CRM',
-  description: 'Descubra quanto em comissões você está perdendo por desorganização nas suas vendas. Calculadora gratuita que mostra o impacto real de um CRM na sua carteira de clientes.',
-  keywords: 'calculadora roi representante, crm representante comercial, gestão carteira clientes, organizar vendas representante, aumentar comissões representante',
-  openGraph: {
-    title: 'Calculadora de ROI para Representantes | Quanto você perde por mês?',
-    description: 'Calcule o impacto real de pedidos não acompanhados. Veja quanto um CRM pode aumentar suas recompras.',
-    url: 'https://siriuscrm.com.br/ferramentas/calculadora-roi-representantes',
-    siteName: 'Sirius CRM',
-    locale: 'pt_BR',
-    type: 'website',
-  },
-  twitter: {
-    card: 'summary_large_image',
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>
+}): Promise<Metadata> {
+  const { locale } = await params
+  const alternates = buildLocaleAlternates(locale, '/ferramentas/calculadora-roi-representantes', '/tools/roi-calculator-representatives')
+  return {
     title: 'Calculadora de ROI para Representantes Comerciais | Sirius CRM',
-    description: 'Descubra quanto em comissões você está perdendo por desorganização nas suas vendas.',
-  },
+    description: 'Descubra quanto em comissões você está perdendo por desorganização nas suas vendas. Calculadora gratuita que mostra o impacto real de um CRM na sua carteira de clientes.',
+    keywords: 'calculadora roi representante, crm representante comercial, gestão carteira clientes, organizar vendas representante, aumentar comissões representante',
+    alternates,
+    openGraph: {
+      title: 'Calculadora de ROI para Representantes | Quanto você perde por mês?',
+      description: 'Calcule o impacto real de pedidos não acompanhados. Veja quanto um CRM pode aumentar suas recompras.',
+      url: alternates.canonical,
+      siteName: 'Sirius CRM',
+      locale: locale === 'en' ? 'en_US' : 'pt_BR',
+      type: 'website',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: 'Calculadora de ROI para Representantes Comerciais | Sirius CRM',
+      description: 'Descubra quanto em comissões você está perdendo por desorganização nas suas vendas.',
+    },
+  }
 }
 
 export default function CalculadoraRepresentantesPage() {

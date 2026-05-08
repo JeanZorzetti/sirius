@@ -3,10 +3,19 @@ import Link from 'next/link'
 import { RegisterForm } from "./register-form"
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { prisma } from "@/lib/prisma"
+import { buildLocaleAlternates } from "@/lib/seo/canonical"
 
-export const metadata: Metadata = {
-  title: 'Criar conta - Sirius CRM',
-  alternates: { canonical: 'https://siriuscrm.com.br/register' },
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>
+}): Promise<Metadata> {
+  const { locale } = await params
+  const alternates = buildLocaleAlternates(locale, '/register')
+  return {
+    title: 'Criar conta - Sirius CRM',
+    alternates,
+  }
 }
 
 export default async function RegisterPage({

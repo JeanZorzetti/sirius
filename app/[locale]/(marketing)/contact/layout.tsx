@@ -1,20 +1,21 @@
 ﻿import { getTranslations } from 'next-intl/server'
 import type { Metadata } from 'next'
+import { buildLocaleAlternates } from '@/lib/seo/canonical'
 
 export async function generateMetadata(
   { params }: { params: Promise<{ locale: string }> }
 ): Promise<Metadata> {
   const { locale } = await params
   const t = await getTranslations({ locale, namespace: 'marketing.contact.meta' })
-  const canonical = `https://siriuscrm.com.br${locale === 'en' ? '/en' : ''}/contact`
+  const alternates = buildLocaleAlternates(locale, '/contact')
   return {
     title: t('title'),
     description: t('description'),
-    alternates: { canonical },
+    alternates,
     openGraph: {
       title: t('ogTitle'),
       description: t('ogDescription'),
-      url: canonical,
+      url: alternates.canonical,
     },
   }
 }

@@ -38,8 +38,16 @@ import {
 
 // ─── Metadata ──────────────────────────────────────────────────────────────────
 
-export async function generateMetadata(): Promise<Metadata> {
-  const t = await getTranslations('marketing.features.meta')
+import { buildLocaleAlternates } from '@/lib/seo/canonical'
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>
+}): Promise<Metadata> {
+  const { locale } = await params
+  const t = await getTranslations({ locale, namespace: 'marketing.features.meta' })
+  const alternates = buildLocaleAlternates(locale, '/features')
   return {
     title: t('title'),
     description: t('description'),
@@ -48,11 +56,11 @@ export async function generateMetadata(): Promise<Metadata> {
       'automação de vendas ia', 'prospecção google maps', 'analytics crm', 'crm brasil 2026',
       'crm online 2026', 'evolution api', 'bant meddic ia', 'crm ia qualificação leads',
     ],
-    alternates: { canonical: 'https://siriuscrm.com.br/features' },
+    alternates,
     openGraph: {
       title: t('ogTitle'),
       description: t('ogDescription'),
-      url: 'https://siriuscrm.com.br/features',
+      url: alternates.canonical,
       images: [{ url: 'https://siriuscrm.com.br/og-image.png', width: 1200, height: 630 }],
     },
     twitter: {

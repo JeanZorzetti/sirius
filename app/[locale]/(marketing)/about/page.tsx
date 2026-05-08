@@ -5,6 +5,7 @@ import Script from 'next/script'
 import { Button } from '@/components/ui/button'
 import { Users, Target, Lightbulb, TrendingUp } from 'lucide-react'
 import type { Metadata } from 'next'
+import { buildLocaleAlternates } from '@/lib/seo/canonical'
 
 export async function generateMetadata(
   { params }: { params: Promise<{ locale: string }> }
@@ -12,16 +13,17 @@ export async function generateMetadata(
   const { locale } = await params
   const t = await getTranslations({ locale, namespace: 'marketing.about.meta' })
   const baseUrl = 'https://siriuscrm.com.br'
+  const alternates = buildLocaleAlternates(locale, '/about')
 
   return {
     title: t('title'),
     description: t('description'),
     keywords: ['sirius crm', 'roi labs', 'crm brasil', 'sobre', 'empresa'],
-    alternates: { canonical: `${baseUrl}/about` },
+    alternates,
     openGraph: {
       title: t('ogTitle'),
       description: t('ogDescription'),
-      url: `${baseUrl}/about`,
+      url: alternates.canonical,
       images: [{ url: `${baseUrl}/og-image.png`, width: 1200, height: 630, alt: t('ogImageAlt') }],
     },
     twitter: {

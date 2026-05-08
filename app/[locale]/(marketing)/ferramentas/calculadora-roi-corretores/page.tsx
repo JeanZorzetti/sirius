@@ -1,24 +1,34 @@
 ﻿import { Metadata } from 'next'
 import { CalculadoraROI } from '@/components/calculadora-roi'
 import { Building2, TrendingUp, Users, CheckCircle2 } from 'lucide-react'
+import { buildLocaleAlternates } from '@/lib/seo/canonical'
 
-export const metadata: Metadata = {
-  title: 'Calculadora de ROI para Corretores de Imóveis | Sirius CRM',
-  description: 'Descubra quanto dinheiro você está perdendo por desorganização nas vendas. Calculadora gratuita para corretores de imóveis que mostra o impacto real de um CRM nas suas comissões.',
-  keywords: 'calculadora roi corretor, crm imobiliário, vendas imóveis, comissão imobiliária, gestão imobiliária',
-  openGraph: {
-    title: 'Calculadora de ROI para Corretores | Quanto você perde por desorganização?',
-    description: 'Calcule o impacto real de perder leads e oportunidades. Veja quanto um CRM pode aumentar suas comissões.',
-    url: 'https://siriuscrm.com.br/ferramentas/calculadora-roi-corretores',
-    siteName: 'Sirius CRM',
-    locale: 'pt_BR',
-    type: 'website',
-  },
-  twitter: {
-    card: 'summary_large_image',
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>
+}): Promise<Metadata> {
+  const { locale } = await params
+  const alternates = buildLocaleAlternates(locale, '/ferramentas/calculadora-roi-corretores', '/tools/roi-calculator-brokers')
+  return {
     title: 'Calculadora de ROI para Corretores de Imóveis | Sirius CRM',
-    description: 'Descubra quanto você perde em vendas sem um CRM. Cálculo baseado em dados reais do mercado imobiliário.',
-  },
+    description: 'Descubra quanto dinheiro você está perdendo por desorganização nas vendas. Calculadora gratuita para corretores de imóveis que mostra o impacto real de um CRM nas suas comissões.',
+    keywords: 'calculadora roi corretor, crm imobiliário, vendas imóveis, comissão imobiliária, gestão imobiliária',
+    alternates,
+    openGraph: {
+      title: 'Calculadora de ROI para Corretores | Quanto você perde por desorganização?',
+      description: 'Calcule o impacto real de perder leads e oportunidades. Veja quanto um CRM pode aumentar suas comissões.',
+      url: alternates.canonical,
+      siteName: 'Sirius CRM',
+      locale: locale === 'en' ? 'en_US' : 'pt_BR',
+      type: 'website',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: 'Calculadora de ROI para Corretores de Imóveis | Sirius CRM',
+      description: 'Descubra quanto você perde em vendas sem um CRM. Cálculo baseado em dados reais do mercado imobiliário.',
+    },
+  }
 }
 
 export default function CalculadoraCorretoresPage() {

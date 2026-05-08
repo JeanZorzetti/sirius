@@ -2,18 +2,27 @@
 import Link from 'next/link'
 import { Calculator, Building2, Sun, Users, Briefcase, BarChart3 } from 'lucide-react'
 import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
+import { buildLocaleAlternates } from '@/lib/seo/canonical'
 
-export const metadata: Metadata = {
-  title: 'Ferramentas Gratuitas para Vendedores | Sirius CRM',
-  description: 'Calculadoras de ROI gratuitas para vendedores brasileiros. Descubra quanto você perde sem um CRM e projete o retorno do investimento para o seu segmento.',
-  keywords: ['calculadora roi', 'ferramentas vendas', 'crm roi', 'calculadora vendas', 'sirius crm ferramentas'],
-  alternates: { canonical: 'https://siriuscrm.com.br/ferramentas' },
-  openGraph: {
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>
+}): Promise<Metadata> {
+  const { locale } = await params
+  const alternates = buildLocaleAlternates(locale, '/ferramentas', '/tools')
+  return {
     title: 'Ferramentas Gratuitas para Vendedores | Sirius CRM',
-    description: 'Calculadoras de ROI gratuitas para vendedores brasileiros.',
-    url: 'https://siriuscrm.com.br/ferramentas',
-    images: [{ url: 'https://siriuscrm.com.br/og-image.png', width: 1200, height: 630 }],
-  },
+    description: 'Calculadoras de ROI gratuitas para vendedores brasileiros. Descubra quanto você perde sem um CRM e projete o retorno do investimento para o seu segmento.',
+    keywords: ['calculadora roi', 'ferramentas vendas', 'crm roi', 'calculadora vendas', 'sirius crm ferramentas'],
+    alternates,
+    openGraph: {
+      title: 'Ferramentas Gratuitas para Vendedores | Sirius CRM',
+      description: 'Calculadoras de ROI gratuitas para vendedores brasileiros.',
+      url: alternates.canonical,
+      images: [{ url: 'https://siriuscrm.com.br/og-image.png', width: 1200, height: 630 }],
+    },
+  }
 }
 
 const calculators = [

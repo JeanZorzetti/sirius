@@ -4,21 +4,22 @@ import { Badge } from '@/components/ui/badge'
 import { GitBranch, Sparkles, Bug, Zap, Shield, Users, Smartphone, Bell } from 'lucide-react'
 import type { Metadata } from 'next'
 import { getTranslations } from 'next-intl/server'
+import { buildLocaleAlternates } from '@/lib/seo/canonical'
 
 export async function generateMetadata(
   { params }: { params: Promise<{ locale: string }> }
 ): Promise<Metadata> {
   const { locale } = await params
   const t = await getTranslations({ locale, namespace: 'marketing.changelog.meta' })
-  const canonical = `https://siriuscrm.com.br${locale === 'en' ? '/en' : ''}/changelog`
+  const alternates = buildLocaleAlternates(locale, '/changelog')
   return {
     title: t('title'),
     description: t('description'),
-    alternates: { canonical },
+    alternates,
     openGraph: {
       title: t('ogTitle'),
       description: t('ogDescription'),
-      url: canonical,
+      url: alternates.canonical,
       images: [{ url: 'https://siriuscrm.com.br/og-image.png', width: 1200, height: 630 }],
     },
     twitter: { card: 'summary_large_image', title: t('ogTitle'), description: t('ogDescription') },

@@ -1,28 +1,37 @@
 ﻿import { Metadata } from 'next'
 import Script from 'next/script'
 import { DownloadInstructions } from '@/components/marketing/download-instructions'
+import { buildLocaleAlternates } from '@/lib/seo/canonical'
 
-export const metadata: Metadata = {
-  title: 'Baixar Sirius CRM | App Mobile',
-  description: 'Baixe o Sirius CRM no seu celular. Progressive Web App com suporte offline, sincronização automática e notificações push. Disponível para iOS e Android.',
-  keywords: ['baixar sirius crm', 'app mobile', 'pwa', 'download', 'aplicativo'],
-  alternates: { canonical: 'https://siriuscrm.com.br/download' },
-  openGraph: {
-    title: 'Baixar Sirius CRM - App Mobile',
-    description: 'Instale o Sirius CRM no seu celular para acesso rápido e offline.',
-    url: 'https://siriuscrm.com.br/download',
-    images: [{
-      url: 'https://siriuscrm.com.br/og-image.png',
-      width: 1200,
-      height: 630,
-      alt: 'Sirius CRM - App Mobile',
-    }],
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Baixar Sirius CRM - App Mobile',
-    description: 'PWA com suporte offline, sincronização automática e notificações push.',
-  },
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>
+}): Promise<Metadata> {
+  const { locale } = await params
+  const alternates = buildLocaleAlternates(locale, '/download')
+  return {
+    title: 'Baixar Sirius CRM | App Mobile',
+    description: 'Baixe o Sirius CRM no seu celular. Progressive Web App com suporte offline, sincronização automática e notificações push. Disponível para iOS e Android.',
+    keywords: ['baixar sirius crm', 'app mobile', 'pwa', 'download', 'aplicativo'],
+    alternates,
+    openGraph: {
+      title: 'Baixar Sirius CRM - App Mobile',
+      description: 'Instale o Sirius CRM no seu celular para acesso rápido e offline.',
+      url: alternates.canonical,
+      images: [{
+        url: 'https://siriuscrm.com.br/og-image.png',
+        width: 1200,
+        height: 630,
+        alt: 'Sirius CRM - App Mobile',
+      }],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: 'Baixar Sirius CRM - App Mobile',
+      description: 'PWA com suporte offline, sincronização automática e notificações push.',
+    },
+  }
 }
 
 export default function DownloadPage() {

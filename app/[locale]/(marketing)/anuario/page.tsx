@@ -1,33 +1,40 @@
 ﻿import { Metadata } from 'next'
 import Script from 'next/script'
 import Link from 'next/link'
+import { buildLocaleAlternates } from '@/lib/seo/canonical'
 
-export const metadata: Metadata = {
-  title: 'Anuário do Vendedor B2B Brasileiro 2026 | Sirius CRM',
-  description: 'Dados exclusivos sobre vendas B2B no Brasil: ciclo médio de venda, taxa de conversão por etapa, impacto da automação e benchmarks por setor. Pesquisa Sirius CRM com +127 empresas.',
-  openGraph: {
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>
+}): Promise<Metadata> {
+  const { locale } = await params
+  const alternates = buildLocaleAlternates(locale, '/anuario', '/yearbook')
+  return {
     title: 'Anuário do Vendedor B2B Brasileiro 2026 | Sirius CRM',
-    description: 'Dados proprietários de +127 empresas que usam o Sirius CRM: ciclo médio de venda, taxa de conversão, produtividade e benchmarks por setor no Brasil em 2026.',
-    url: 'https://siriuscrm.com.br/anuario',
-    siteName: 'Sirius CRM',
-    type: 'website',
-    images: [
-      {
-        url: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1200&h=630&fit=crop&auto=format&q=80',
-        width: 1200,
-        height: 630,
-        alt: 'Anuário do Vendedor B2B Brasileiro 2026 — Sirius CRM',
-      },
-    ],
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Anuário do Vendedor B2B Brasileiro 2026 | Sirius CRM',
-    description: 'Dados proprietários de +127 empresas B2B brasileiras: ciclo de venda, conversão, IA e benchmarks por setor.',
-  },
-  alternates: {
-    canonical: 'https://siriuscrm.com.br/anuario',
-  },
+    description: 'Dados exclusivos sobre vendas B2B no Brasil: ciclo médio de venda, taxa de conversão por etapa, impacto da automação e benchmarks por setor. Pesquisa Sirius CRM com +127 empresas.',
+    openGraph: {
+      title: 'Anuário do Vendedor B2B Brasileiro 2026 | Sirius CRM',
+      description: 'Dados proprietários de +127 empresas que usam o Sirius CRM: ciclo médio de venda, taxa de conversão, produtividade e benchmarks por setor no Brasil em 2026.',
+      url: alternates.canonical,
+      siteName: 'Sirius CRM',
+      type: 'website',
+      images: [
+        {
+          url: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1200&h=630&fit=crop&auto=format&q=80',
+          width: 1200,
+          height: 630,
+          alt: 'Anuário do Vendedor B2B Brasileiro 2026 — Sirius CRM',
+        },
+      ],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: 'Anuário do Vendedor B2B Brasileiro 2026 | Sirius CRM',
+      description: 'Dados proprietários de +127 empresas B2B brasileiras: ciclo de venda, conversão, IA e benchmarks por setor.',
+    },
+    alternates,
+  }
 }
 
 const datasetSchema = {

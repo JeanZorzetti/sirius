@@ -1,24 +1,34 @@
 ﻿import { Metadata } from 'next'
 import { CalculadoraROI } from '@/components/calculadora-roi'
 import { Sparkles, TrendingUp, Users, CheckCircle2 } from 'lucide-react'
+import { buildLocaleAlternates } from '@/lib/seo/canonical'
 
-export const metadata: Metadata = {
-  title: 'Calculadora de ROI para Agências de Marketing | Sirius CRM',
-  description: 'Descubra quanto sua agência perde por desorganização em vendas. Calcule o impacto real de um CRM na retenção de clientes e fechamento de propostas.',
-  keywords: 'calculadora roi agencia, crm agencia marketing, vendas agencia, gestão clientes agencia, propostas comerciais',
-  openGraph: {
-    title: 'Calculadora de ROI para Agências | Quanto você perde por desorganização?',
-    description: 'Calcule o impacto real de propostas perdidas e follow-ups esquecidos no faturamento da sua agência.',
-    url: 'https://siriuscrm.com.br/ferramentas/calculadora-roi-agencias',
-    siteName: 'Sirius CRM',
-    locale: 'pt_BR',
-    type: 'website',
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Calculadora de ROI para Agências | Sirius CRM',
-    description: 'Calcule o impacto real de propostas perdidas e follow-ups esquecidos no faturamento da sua agência.',
-  },
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>
+}): Promise<Metadata> {
+  const { locale } = await params
+  const alternates = buildLocaleAlternates(locale, '/ferramentas/calculadora-roi-agencias', '/tools/roi-calculator-agencies')
+  return {
+    title: 'Calculadora de ROI para Agências de Marketing | Sirius CRM',
+    description: 'Descubra quanto sua agência perde por desorganização em vendas. Calcule o impacto real de um CRM na retenção de clientes e fechamento de propostas.',
+    keywords: 'calculadora roi agencia, crm agencia marketing, vendas agencia, gestão clientes agencia, propostas comerciais',
+    alternates,
+    openGraph: {
+      title: 'Calculadora de ROI para Agências | Quanto você perde por desorganização?',
+      description: 'Calcule o impacto real de propostas perdidas e follow-ups esquecidos no faturamento da sua agência.',
+      url: alternates.canonical,
+      siteName: 'Sirius CRM',
+      locale: locale === 'en' ? 'en_US' : 'pt_BR',
+      type: 'website',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: 'Calculadora de ROI para Agências | Sirius CRM',
+      description: 'Calcule o impacto real de propostas perdidas e follow-ups esquecidos no faturamento da sua agência.',
+    },
+  }
 }
 
 export default function CalculadoraAgenciasPage() {

@@ -1,24 +1,34 @@
 ﻿import { Metadata } from 'next'
 import { CalculadoraROI } from '@/components/calculadora-roi'
 import { Briefcase, TrendingUp, Users, CheckCircle2 } from 'lucide-react'
+import { buildLocaleAlternates } from '@/lib/seo/canonical'
 
-export const metadata: Metadata = {
-  title: 'Calculadora de ROI para Consultores Empresariais | Sirius CRM',
-  description: 'Descubra quanto dinheiro você está perdendo em honorários por desorganização nas suas consultorias. Calculadora gratuita que mostra o impacto real de um CRM nos seus projetos.',
-  keywords: 'calculadora roi consultor, crm consultoria empresarial, gestão projetos consultoria, honorários consultoria, organizar consultoria',
-  openGraph: {
-    title: 'Calculadora de ROI para Consultores | Quanto você perde por desorganização?',
-    description: 'Calcule o impacto real de projetos não acompanhados. Veja quanto um CRM pode aumentar seus honorários.',
-    url: 'https://siriuscrm.com.br/ferramentas/calculadora-roi-consultores',
-    siteName: 'Sirius CRM',
-    locale: 'pt_BR',
-    type: 'website',
-  },
-  twitter: {
-    card: 'summary_large_image',
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>
+}): Promise<Metadata> {
+  const { locale } = await params
+  const alternates = buildLocaleAlternates(locale, '/ferramentas/calculadora-roi-consultores', '/tools/roi-calculator-consultants')
+  return {
     title: 'Calculadora de ROI para Consultores Empresariais | Sirius CRM',
-    description: 'Calcule o impacto real de projetos não acompanhados. Veja quanto um CRM pode aumentar seus honorários.',
-  },
+    description: 'Descubra quanto dinheiro você está perdendo em honorários por desorganização nas suas consultorias. Calculadora gratuita que mostra o impacto real de um CRM nos seus projetos.',
+    keywords: 'calculadora roi consultor, crm consultoria empresarial, gestão projetos consultoria, honorários consultoria, organizar consultoria',
+    alternates,
+    openGraph: {
+      title: 'Calculadora de ROI para Consultores | Quanto você perde por desorganização?',
+      description: 'Calcule o impacto real de projetos não acompanhados. Veja quanto um CRM pode aumentar seus honorários.',
+      url: alternates.canonical,
+      siteName: 'Sirius CRM',
+      locale: locale === 'en' ? 'en_US' : 'pt_BR',
+      type: 'website',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: 'Calculadora de ROI para Consultores Empresariais | Sirius CRM',
+      description: 'Calcule o impacto real de projetos não acompanhados. Veja quanto um CRM pode aumentar seus honorários.',
+    },
+  }
 }
 
 export default function CalculadoraConsultoresPage() {

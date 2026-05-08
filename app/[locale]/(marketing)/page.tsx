@@ -15,23 +15,32 @@ import Image from "next/image"
 import { Check, Zap, ArrowRight } from "lucide-react"
 import { useTranslations, useLocale } from "next-intl"
 import { Link } from "@/i18n/routing"
+import { buildLocaleAlternates } from "@/lib/seo/canonical"
 
-export const metadata: Metadata = {
-  title: 'Sirius CRM 2026 [IA Nativa + WhatsApp] — Pipeline Kanban Grátis para Vendedores',
-  description: 'O Assistente de IA para Vendedores Brasileiros: pipeline Kanban, WhatsApp integrado, prospecção Google Maps e AGI que qualifica leads automaticamente com BANT e MEDDIC. Grátis para sempre. Sem cartão.',
-  keywords: ['crm gratuito', 'crm com ia', 'crm brasil 2026', 'crm online 2026', 'pipeline kanban', 'whatsapp crm', 'ia comercial nativa', 'automação de vendas', 'assistente ia vendas', 'crm representante comercial', 'crm mobile'],
-  alternates: { canonical: 'https://siriuscrm.com.br' },
-  openGraph: {
-    title: 'Sirius CRM 2026 [IA Nativa + WhatsApp] — Pipeline Grátis para Vendedores',
-    description: 'IA que qualifica leads, WhatsApp integrado, pipeline Kanban e prospecção Google Maps. O assistente de vendas mais completo do Brasil. Grátis para sempre.',
-    url: 'https://siriuscrm.com.br',
-    images: [{ url: 'https://siriuscrm.com.br/og-image.png', width: 1200, height: 630 }],
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Sirius CRM 2026 [IA Nativa + WhatsApp] — Pipeline Grátis para Vendedores',
-    description: 'IA que qualifica leads, WhatsApp integrado, pipeline Kanban e prospecção Google Maps. Grátis para sempre. Sem cartão.',
-  },
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>
+}): Promise<Metadata> {
+  const { locale } = await params
+  const alternates = buildLocaleAlternates(locale, '', '')
+  return {
+    title: 'Sirius CRM 2026 [IA Nativa + WhatsApp] — Pipeline Kanban Grátis para Vendedores',
+    description: 'O Assistente de IA para Vendedores Brasileiros: pipeline Kanban, WhatsApp integrado, prospecção Google Maps e AGI que qualifica leads automaticamente com BANT e MEDDIC. Grátis para sempre. Sem cartão.',
+    keywords: ['crm gratuito', 'crm com ia', 'crm brasil 2026', 'crm online 2026', 'pipeline kanban', 'whatsapp crm', 'ia comercial nativa', 'automação de vendas', 'assistente ia vendas', 'crm representante comercial', 'crm mobile'],
+    alternates,
+    openGraph: {
+      title: 'Sirius CRM 2026 [IA Nativa + WhatsApp] — Pipeline Grátis para Vendedores',
+      description: 'IA que qualifica leads, WhatsApp integrado, pipeline Kanban e prospecção Google Maps. O assistente de vendas mais completo do Brasil. Grátis para sempre.',
+      url: alternates.canonical,
+      images: [{ url: 'https://siriuscrm.com.br/og-image.png', width: 1200, height: 630 }],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: 'Sirius CRM 2026 [IA Nativa + WhatsApp] — Pipeline Grátis para Vendedores',
+      description: 'IA que qualifica leads, WhatsApp integrado, pipeline Kanban e prospecção Google Maps. Grátis para sempre. Sem cartão.',
+    },
+  }
 }
 
 export default function LandingPage() {

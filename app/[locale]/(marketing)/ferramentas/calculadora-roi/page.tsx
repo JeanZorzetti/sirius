@@ -1,21 +1,32 @@
 ﻿import { Metadata } from 'next'
 import Script from 'next/script'
 import { CalculadoraROI } from '@/components/calculadora-roi'
+import { buildLocaleAlternates } from '@/lib/seo/canonical'
 
-export const metadata: Metadata = {
-  title: 'Calculadora de Vazamento de Vendas | Sirius CRM',
-  description: 'Descubra quanto dinheiro você está perdendo por não ter um sistema organizado de vendas. Calcule seu ROI em segundos.',
-  keywords: 'calculadora roi, vazamento de vendas, crm, conversão de vendas, funil de vendas',
-  openGraph: {
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>
+}): Promise<Metadata> {
+  const { locale } = await params
+  const alternates = buildLocaleAlternates(locale, '/ferramentas/calculadora-roi', '/tools/roi-calculator')
+  return {
     title: 'Calculadora de Vazamento de Vendas | Sirius CRM',
-    description: 'Descubra quanto dinheiro você está perdendo por não ter um sistema organizado de vendas.',
-    type: 'website',
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Calculadora de Vazamento de Vendas | Sirius CRM',
-    description: 'Descubra quanto dinheiro você está perdendo por não ter um sistema organizado de vendas.',
-  },
+    description: 'Descubra quanto dinheiro você está perdendo por não ter um sistema organizado de vendas. Calcule seu ROI em segundos.',
+    keywords: 'calculadora roi, vazamento de vendas, crm, conversão de vendas, funil de vendas',
+    alternates,
+    openGraph: {
+      title: 'Calculadora de Vazamento de Vendas | Sirius CRM',
+      description: 'Descubra quanto dinheiro você está perdendo por não ter um sistema organizado de vendas.',
+      url: alternates.canonical,
+      type: 'website',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: 'Calculadora de Vazamento de Vendas | Sirius CRM',
+      description: 'Descubra quanto dinheiro você está perdendo por não ter um sistema organizado de vendas.',
+    },
+  }
 }
 
 const breadcrumbSchema = {

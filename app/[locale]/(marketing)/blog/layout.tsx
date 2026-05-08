@@ -2,23 +2,23 @@
 import type { Metadata } from 'next'
 import Script from 'next/script'
 import { blogPosts } from '@/lib/blog-data'
+import { buildLocaleAlternates } from '@/lib/seo/canonical'
 
 export async function generateMetadata(
   { params }: { params: Promise<{ locale: string }> }
 ): Promise<Metadata> {
   const { locale } = await params
   const t = await getTranslations({ locale, namespace: 'marketing.blog.meta' })
-  const baseUrl = 'https://siriuscrm.com.br'
-  const canonicalUrl = locale === 'en' ? `${baseUrl}/en/blog` : `${baseUrl}/blog`
+  const alternates = buildLocaleAlternates(locale, '/blog')
 
   return {
     title: t('title'),
     description: t('description'),
-    alternates: { canonical: canonicalUrl },
+    alternates,
     openGraph: {
       title: t('ogTitle'),
       description: t('ogDescription'),
-      url: canonicalUrl,
+      url: alternates.canonical,
     },
   }
 }

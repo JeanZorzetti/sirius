@@ -7,16 +7,24 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import { FileText, Mail, Phone, Building2, Users, ArrowLeft } from 'lucide-react'
+import { buildLocaleAlternates } from '@/lib/seo/canonical'
 
-export const metadata: Metadata = {
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>
+}): Promise<Metadata> {
+  const { locale } = await params
+  const alternates = buildLocaleAlternates(locale, '/proposta', '/proposal')
+  return {
   title: 'Solicitar Proposta Comercial | Sirius CRM',
   description: 'Solicite uma proposta comercial personalizada para sua empresa. Nossa equipe entrará em contato em até 24h para apresentar a melhor solução em CRM.',
   keywords: ['proposta comercial', 'plano customizado', 'enterprise', 'vendas', 'sirius crm'],
-  alternates: { canonical: 'https://siriuscrm.com.br/proposta' },
+  alternates,
   openGraph: {
     title: 'Solicitar Proposta Comercial | Sirius CRM',
     description: 'Solicite uma proposta personalizada. Nossa equipe entrará em contato em até 24h.',
-    url: 'https://siriuscrm.com.br/proposta',
+    url: alternates.canonical,
     images: [{
       url: 'https://siriuscrm.com.br/og-image.png',
       width: 1200,
@@ -29,6 +37,7 @@ export const metadata: Metadata = {
     title: 'Solicitar Proposta Comercial | Sirius CRM',
     description: 'Proposta personalizada para sua empresa. Resposta em até 24h.',
   },
+  }
 }
 
 export default function PropostaPage() {

@@ -5,31 +5,42 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge'
 import { Download, AlertTriangle, TrendingUp, CheckCircle2, Calculator } from 'lucide-react'
 import { CalculadoraROI } from '@/components/calculadora-roi'
+import { buildLocaleAlternates } from '@/lib/seo/canonical'
 
-export const metadata: Metadata = {
-  title: 'Planilha de Controle de Vendas e Comissão para Corretores 2026 | Melhor que Excel',
-  description: 'Pare de perder comissões por desorganização. Descubra quanto dinheiro você deixa na mesa todo mês + Calculadora gratuita de comissões perdidas.',
-  keywords: [
-    'planilha controle comissão corretor',
-    'excel vendas imóveis',
-    'controle comissão imobiliária',
-    'planilha corretor gratis',
-    'gestão vendas corretor',
-    'crm para corretores'
-  ],
-  openGraph: {
-    title: 'Planilha de Controle de Comissão para Corretores 2026',
-    description: 'Calculadora gratuita mostra quanto você perde por mês sem controle adequado de follow-ups',
-    type: 'article',
-    publishedTime: new Date().toISOString(),
-    authors: ['Sirius Team'],
-    images: ['/og-planilha-corretor.png'],
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Pare de Perder Comissões por Desorganização',
-    description: 'Calculadora gratuita + Planilha pronta para corretores',
-  },
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>
+}): Promise<Metadata> {
+  const { locale } = await params
+  const alternates = buildLocaleAlternates(locale, '/blog/planilha-controle-comissao-corretor')
+  return {
+    title: 'Planilha de Controle de Vendas e Comissão para Corretores 2026 | Melhor que Excel',
+    description: 'Pare de perder comissões por desorganização. Descubra quanto dinheiro você deixa na mesa todo mês + Calculadora gratuita de comissões perdidas.',
+    keywords: [
+      'planilha controle comissão corretor',
+      'excel vendas imóveis',
+      'controle comissão imobiliária',
+      'planilha corretor gratis',
+      'gestão vendas corretor',
+      'crm para corretores'
+    ],
+    alternates,
+    openGraph: {
+      title: 'Planilha de Controle de Comissão para Corretores 2026',
+      description: 'Calculadora gratuita mostra quanto você perde por mês sem controle adequado de follow-ups',
+      url: alternates.canonical,
+      type: 'article',
+      publishedTime: new Date().toISOString(),
+      authors: ['Sirius Team'],
+      images: ['/og-planilha-corretor.png'],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: 'Pare de Perder Comissões por Desorganização',
+      description: 'Calculadora gratuita + Planilha pronta para corretores',
+    },
+  }
 }
 
 export default function PlanilhaControleComissaoPage() {

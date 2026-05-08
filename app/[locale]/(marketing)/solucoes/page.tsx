@@ -3,23 +3,32 @@ import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { getAllNicheSlugs, getNicheBySlug } from '@/config/niche-data'
 import { Building2, Sun, Sparkles, Briefcase, TrendingUp, ArrowRight, CheckCircle2 } from 'lucide-react'
+import { buildLocaleAlternates } from '@/lib/seo/canonical'
 
-export const metadata: Metadata = {
-  title: 'Soluções Sirius CRM por Segmento — Corretores, Solar, Agências e Mais',
-  description: 'O Sirius CRM tem solução específica para cada segmento: corretores de imóveis, energia solar, agências de marketing, consultores e representantes comerciais. Comece grátis.',
-  keywords: [
-    'crm por segmento', 'crm corretores imóveis', 'crm energia solar', 'crm agências marketing',
-    'crm consultores', 'crm representantes comerciais', 'solucoes crm brasil 2026',
-  ],
-  alternates: { canonical: 'https://siriuscrm.com.br/solucoes' },
-  openGraph: {
-    title: 'Soluções Sirius CRM por Segmento',
-    description: 'CRM com solução específica para corretores, solar, agências, consultores e representantes. Comece grátis.',
-    url: 'https://siriuscrm.com.br/solucoes',
-    siteName: 'Sirius CRM',
-    locale: 'pt_BR',
-    type: 'website',
-  },
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>
+}): Promise<Metadata> {
+  const { locale } = await params
+  const alternates = buildLocaleAlternates(locale, '/solucoes', '/solutions')
+  return {
+    title: 'Soluções Sirius CRM por Segmento — Corretores, Solar, Agências e Mais',
+    description: 'O Sirius CRM tem solução específica para cada segmento: corretores de imóveis, energia solar, agências de marketing, consultores e representantes comerciais. Comece grátis.',
+    keywords: [
+      'crm por segmento', 'crm corretores imóveis', 'crm energia solar', 'crm agências marketing',
+      'crm consultores', 'crm representantes comerciais', 'solucoes crm brasil 2026',
+    ],
+    alternates,
+    openGraph: {
+      title: 'Soluções Sirius CRM por Segmento',
+      description: 'CRM com solução específica para corretores, solar, agências, consultores e representantes. Comece grátis.',
+      url: alternates.canonical,
+      siteName: 'Sirius CRM',
+      locale: locale === 'en' ? 'en_US' : 'pt_BR',
+      type: 'website',
+    },
+  }
 }
 
 const ICON_MAP = {

@@ -1,24 +1,34 @@
 ﻿import { Metadata } from 'next'
 import { CalculadoraROI } from '@/components/calculadora-roi'
 import { Sun, TrendingUp, Users, CheckCircle2 } from 'lucide-react'
+import { buildLocaleAlternates } from '@/lib/seo/canonical'
 
-export const metadata: Metadata = {
-  title: 'Calculadora de ROI para Empresas de Energia Solar | Sirius CRM',
-  description: 'Calcule quanto dinheiro sua empresa de energia solar perde por desorganização. Veja o impacto real de um CRM no seu faturamento e conversão de propostas.',
-  keywords: 'calculadora roi energia solar, crm energia solar, vendas fotovoltaica, gestão solar, propostas energia',
-  openGraph: {
-    title: 'Calculadora de ROI para Energia Solar | Quanto você perde por mês?',
-    description: 'Descubra quanto faturamento você está deixando na mesa por falta de organização nas propostas.',
-    url: 'https://siriuscrm.com.br/ferramentas/calculadora-roi-energia-solar',
-    siteName: 'Sirius CRM',
-    locale: 'pt_BR',
-    type: 'website',
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Calculadora de ROI para Energia Solar | Sirius CRM',
-    description: 'Calcule quanto sua empresa de energia solar perde por desorganização em vendas.',
-  },
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>
+}): Promise<Metadata> {
+  const { locale } = await params
+  const alternates = buildLocaleAlternates(locale, '/ferramentas/calculadora-roi-energia-solar', '/tools/roi-calculator-solar')
+  return {
+    title: 'Calculadora de ROI para Empresas de Energia Solar | Sirius CRM',
+    description: 'Calcule quanto dinheiro sua empresa de energia solar perde por desorganização. Veja o impacto real de um CRM no seu faturamento e conversão de propostas.',
+    keywords: 'calculadora roi energia solar, crm energia solar, vendas fotovoltaica, gestão solar, propostas energia',
+    alternates,
+    openGraph: {
+      title: 'Calculadora de ROI para Energia Solar | Quanto você perde por mês?',
+      description: 'Descubra quanto faturamento você está deixando na mesa por falta de organização nas propostas.',
+      url: alternates.canonical,
+      siteName: 'Sirius CRM',
+      locale: locale === 'en' ? 'en_US' : 'pt_BR',
+      type: 'website',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: 'Calculadora de ROI para Energia Solar | Sirius CRM',
+      description: 'Calcule quanto sua empresa de energia solar perde por desorganização em vendas.',
+    },
+  }
 }
 
 export default function CalculadoraEnergiaSolarPage() {

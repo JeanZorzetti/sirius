@@ -21,21 +21,30 @@ import {
 } from 'lucide-react'
 import type { Metadata } from 'next'
 import { getAllCategories } from '@/lib/help-articles'
+import { buildLocaleAlternates } from '@/lib/seo/canonical'
 
-export const metadata: Metadata = {
-  title: 'Central de Ajuda | Sirius CRM',
-  description: 'Encontre respostas para suas dúvidas sobre o Sirius CRM. Tutoriais, guias e suporte para aproveitar ao máximo sua ferramenta de vendas.',
-  alternates: { canonical: 'https://siriuscrm.com.br/help' },
-  openGraph: {
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>
+}): Promise<Metadata> {
+  const { locale } = await params
+  const alternates = buildLocaleAlternates(locale, '/help')
+  return {
     title: 'Central de Ajuda | Sirius CRM',
-    description: 'Encontre respostas para suas dúvidas sobre o Sirius CRM. Tutoriais, guias e suporte.',
-    url: 'https://siriuscrm.com.br/help',
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Central de Ajuda | Sirius CRM',
-    description: 'Tutoriais, guias e suporte para aproveitar ao máximo o Sirius CRM.',
-  },
+    description: 'Encontre respostas para suas dúvidas sobre o Sirius CRM. Tutoriais, guias e suporte para aproveitar ao máximo sua ferramenta de vendas.',
+    alternates,
+    openGraph: {
+      title: 'Central de Ajuda | Sirius CRM',
+      description: 'Encontre respostas para suas dúvidas sobre o Sirius CRM. Tutoriais, guias e suporte.',
+      url: alternates.canonical,
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: 'Central de Ajuda | Sirius CRM',
+      description: 'Tutoriais, guias e suporte para aproveitar ao máximo o Sirius CRM.',
+    },
+  }
 }
 
 const categories = [

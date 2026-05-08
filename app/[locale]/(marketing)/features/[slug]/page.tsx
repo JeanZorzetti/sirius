@@ -1,6 +1,7 @@
 ﻿import { getTranslations } from 'next-intl/server'
 import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
+import { buildLocaleAlternates } from '@/lib/seo/canonical'
 import Link from 'next/link'
 import Script from 'next/script'
 import { Button } from '@/components/ui/button'
@@ -28,24 +29,25 @@ export function generateStaticParams() {
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ slug: string }>
+  params: Promise<{ locale: string; slug: string }>
 }): Promise<Metadata> {
-  const { slug } = await params
+  const { locale, slug } = await params
   const feature = getFeatureBySlug(slug)
   if (!feature) return {}
 
-  const t = await getTranslations('marketing.features.sections')
+  const t = await getTranslations({ locale, namespace: 'marketing.features.sections' })
   const name = t(`${feature.sectionKey}.${feature.featureKey}.name` as any)
   const description = t(`${feature.sectionKey}.${feature.featureKey}.description` as any)
+  const alternates = buildLocaleAlternates(locale, `/features/${slug}`)
 
   return {
     title: `${name} | Sirius CRM`,
     description,
-    alternates: { canonical: `https://siriuscrm.com.br/features/${slug}` },
+    alternates,
     openGraph: {
       title: `${name} — Sirius CRM`,
       description,
-      url: `https://siriuscrm.com.br/features/${slug}`,
+      url: alternates.canonical,
     },
   }
 }

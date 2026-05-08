@@ -3,18 +3,19 @@ import Script from 'next/script'
 import { Shield, Lock, Eye, Server, UserCheck, FileText } from 'lucide-react'
 import type { Metadata } from 'next'
 import { getTranslations } from 'next-intl/server'
+import { buildLocaleAlternates } from '@/lib/seo/canonical'
 
 export async function generateMetadata(
   { params }: { params: Promise<{ locale: string }> }
 ): Promise<Metadata> {
   const { locale } = await params
   const t = await getTranslations({ locale, namespace: 'marketing.privacy.meta' })
-  const canonical = `https://siriuscrm.com.br${locale === 'en' ? '/en' : ''}/privacy`
+  const alternates = buildLocaleAlternates(locale, '/privacy')
   return {
     title: t('title'),
     description: t('description'),
-    alternates: { canonical },
-    openGraph: { title: t('ogTitle'), description: t('ogDescription'), url: canonical },
+    alternates,
+    openGraph: { title: t('ogTitle'), description: t('ogDescription'), url: alternates.canonical },
   }
 }
 

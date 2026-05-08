@@ -19,29 +19,38 @@ import {
   ChevronDown,
   DollarSign
 } from 'lucide-react'
+import { buildLocaleAlternates } from '@/lib/seo/canonical'
 
-export const metadata: Metadata = {
-  title: 'Sirius CRM - Vendas Organizadas em 5 Minutos | R$ 67/mês',
-  description: 'CRM self-service sem implantação cara. Organize suas vendas agora por R$ 67/mês. Sem cartão para testar, cancele quando quiser.',
-  keywords: 'crm barato, crm self-service, crm simples, crm R$ 67, organizar vendas',
-  alternates: { canonical: 'https://siriuscrm.com.br/vendas-automaticas' },
-  openGraph: {
-    title: 'Sirius CRM - Vendas Organizadas em 5 Minutos',
-    description: 'CRM self-service sem implantação cara. R$ 67/mês, sem cartão para testar.',
-    type: 'website',
-    url: 'https://siriuscrm.com.br/vendas-automaticas',
-    images: [{
-      url: 'https://siriuscrm.com.br/og-image.png',
-      width: 1200,
-      height: 630,
-      alt: 'Sirius CRM - CRM Inteligente para Vendedores Brasileiros',
-    }],
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Sirius CRM - Vendas Organizadas em 5 Minutos',
-    description: 'CRM self-service por R$ 67/mês. Sem cartão para testar, cancele quando quiser.',
-  },
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>
+}): Promise<Metadata> {
+  const { locale } = await params
+  const alternates = buildLocaleAlternates(locale, '/vendas-automaticas', '/automatic-sales')
+  return {
+    title: 'Sirius CRM - Vendas Organizadas em 5 Minutos | R$ 67/mês',
+    description: 'CRM self-service sem implantação cara. Organize suas vendas agora por R$ 67/mês. Sem cartão para testar, cancele quando quiser.',
+    keywords: 'crm barato, crm self-service, crm simples, crm R$ 67, organizar vendas',
+    alternates,
+    openGraph: {
+      title: 'Sirius CRM - Vendas Organizadas em 5 Minutos',
+      description: 'CRM self-service sem implantação cara. R$ 67/mês, sem cartão para testar.',
+      type: 'website',
+      url: alternates.canonical,
+      images: [{
+        url: 'https://siriuscrm.com.br/og-image.png',
+        width: 1200,
+        height: 630,
+        alt: 'Sirius CRM - CRM Inteligente para Vendedores Brasileiros',
+      }],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: 'Sirius CRM - Vendas Organizadas em 5 Minutos',
+      description: 'CRM self-service por R$ 67/mês. Sem cartão para testar, cancele quando quiser.',
+    },
+  }
 }
 
 export default function VendasAutomaticasPage() {

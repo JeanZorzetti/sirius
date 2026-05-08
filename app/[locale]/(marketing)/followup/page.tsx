@@ -4,28 +4,37 @@ import Script from 'next/script'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { CheckCircle2, Clock, Bell, Target, TrendingUp, ArrowLeft, ArrowRight } from 'lucide-react'
+import { buildLocaleAlternates } from '@/lib/seo/canonical'
 
-export const metadata: Metadata = {
-  title: 'Sistema de Follow-up Inteligente | Sirius CRM',
-  description: 'Nunca mais perca um follow-up. Sistema automático de lembretes e acompanhamento de leads com IA integrada. Alertas inteligentes no timing certo para maximizar conversão.',
-  keywords: ['follow-up', 'lembretes', 'automação vendas', 'alertas', 'crm'],
-  alternates: { canonical: 'https://siriuscrm.com.br/followup' },
-  openGraph: {
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>
+}): Promise<Metadata> {
+  const { locale } = await params
+  const alternates = buildLocaleAlternates(locale, '/followup')
+  return {
     title: 'Sistema de Follow-up Inteligente | Sirius CRM',
-    description: 'Nunca mais perca um follow-up. Sistema automático de lembretes e acompanhamento de leads com IA.',
-    url: 'https://siriuscrm.com.br/followup',
-    images: [{
-      url: 'https://siriuscrm.com.br/og-image.png',
-      width: 1200,
-      height: 630,
-      alt: 'Sirius CRM - CRM Inteligente para Vendedores Brasileiros',
-    }],
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Sistema de Follow-up Inteligente | Sirius CRM',
-    description: 'Sistema automático de lembretes com IA. Alertas no timing certo para maximizar conversão.',
-  },
+    description: 'Nunca mais perca um follow-up. Sistema automático de lembretes e acompanhamento de leads com IA integrada. Alertas inteligentes no timing certo para maximizar conversão.',
+    keywords: ['follow-up', 'lembretes', 'automação vendas', 'alertas', 'crm'],
+    alternates,
+    openGraph: {
+      title: 'Sistema de Follow-up Inteligente | Sirius CRM',
+      description: 'Nunca mais perca um follow-up. Sistema automático de lembretes e acompanhamento de leads com IA.',
+      url: alternates.canonical,
+      images: [{
+        url: 'https://siriuscrm.com.br/og-image.png',
+        width: 1200,
+        height: 630,
+        alt: 'Sirius CRM - CRM Inteligente para Vendedores Brasileiros',
+      }],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: 'Sistema de Follow-up Inteligente | Sirius CRM',
+      description: 'Sistema automático de lembretes com IA. Alertas no timing certo para maximizar conversão.',
+    },
+  }
 }
 
 export default function FollowupPage() {

@@ -3,28 +3,37 @@ import Script from 'next/script'
 import { Button } from '@/components/ui/button'
 import { Users, MessageCircle, BookOpen, Github, Lightbulb, Trophy, Heart } from 'lucide-react'
 import type { Metadata } from 'next'
+import { buildLocaleAlternates } from '@/lib/seo/canonical'
 
-export const metadata: Metadata = {
-  title: 'Comunidade | Sirius CRM',
-  description: 'Junte-se à comunidade Sirius CRM. Compartilhe experiências, aprenda com outros usuários e contribua para o desenvolvimento da plataforma.',
-  keywords: ['comunidade', 'forum', 'suporte', 'discussões', 'sirius crm'],
-  alternates: { canonical: 'https://siriuscrm.com.br/community' },
-  openGraph: {
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>
+}): Promise<Metadata> {
+  const { locale } = await params
+  const alternates = buildLocaleAlternates(locale, '/community')
+  return {
     title: 'Comunidade | Sirius CRM',
-    description: 'Junte-se à comunidade Sirius CRM e conecte-se com outros profissionais de vendas.',
-    url: 'https://siriuscrm.com.br/community',
-    images: [{
-      url: 'https://siriuscrm.com.br/og-image.png',
-      width: 1200,
-      height: 630,
-      alt: 'Sirius CRM - CRM Inteligente para Vendedores Brasileiros',
-    }],
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Comunidade | Sirius CRM',
-    description: '500+ usuários conectados. Compartilhe experiências e aprenda com profissionais de vendas.',
-  },
+    description: 'Junte-se à comunidade Sirius CRM. Compartilhe experiências, aprenda com outros usuários e contribua para o desenvolvimento da plataforma.',
+    keywords: ['comunidade', 'forum', 'suporte', 'discussões', 'sirius crm'],
+    alternates,
+    openGraph: {
+      title: 'Comunidade | Sirius CRM',
+      description: 'Junte-se à comunidade Sirius CRM e conecte-se com outros profissionais de vendas.',
+      url: alternates.canonical,
+      images: [{
+        url: 'https://siriuscrm.com.br/og-image.png',
+        width: 1200,
+        height: 630,
+        alt: 'Sirius CRM - CRM Inteligente para Vendedores Brasileiros',
+      }],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: 'Comunidade | Sirius CRM',
+      description: '500+ usuários conectados. Compartilhe experiências e aprenda com profissionais de vendas.',
+    },
+  }
 }
 
 const communityChannels = [
