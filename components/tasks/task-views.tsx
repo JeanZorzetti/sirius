@@ -51,6 +51,7 @@ export function TaskViews({
   projectId,
   projectName,
   locale = 'pt',
+  sortActive = false,
   onTaskClick,
   onTaskMove,
   onToggleComplete,
