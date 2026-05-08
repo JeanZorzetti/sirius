@@ -23,6 +23,7 @@ interface TaskListViewProps {
   tasks: TaskLite[]
   statuses: TaskStatusLite[]
   projectId?: string
+  sortActive?: boolean
   onTaskClick?: (task: TaskLite) => void
   onToggleComplete?: (task: TaskLite) => Promise<void>
   onAddTask?: (statusId: string) => void
@@ -33,6 +34,7 @@ export function TaskListView({
   tasks,
   statuses,
   projectId,
+  sortActive = false,
   onTaskClick,
   onToggleComplete,
   onAddTask,
@@ -106,9 +108,11 @@ export function TaskListView({
     <DragDropContext onDragEnd={handleDragEnd}>
       <div className="flex flex-col gap-2">
         {statuses.map((status) => {
-          const groupTasks = workingTasks
-            .filter((t) => t.statusId === status.id)
-            .sort((a, b) => a.order - b.order)
+          const groupTasks = sortActive
+            ? workingTasks.filter((t) => t.statusId === status.id)
+            : workingTasks
+                .filter((t) => t.statusId === status.id)
+                .sort((a, b) => a.order - b.order)
           const isCollapsed = collapsed[status.id]
 
           return (

@@ -62,6 +62,7 @@ export function TaskProjectWorkspace({
   if (!entitlements.taskAnalytics) lockedViews.push('analytics')
 
   const filteredTasks = useMemo(() => applyTaskFilters(tasks, filters), [tasks, filters])
+  const sortActive = filters.sortBy !== 'none'
 
   const handleTaskClick = useCallback((task: TaskLite) => {
     setSelectedTask(task)
@@ -214,6 +215,7 @@ export function TaskProjectWorkspace({
         projectId={projectId}
         projectName={projectName}
         locale={locale}
+        sortActive={sortActive}
         onTaskClick={handleTaskClick}
         onTaskMove={handleTaskMove}
         onToggleComplete={handleToggleComplete}

@@ -22,6 +22,7 @@ interface TaskViewsProps {
   projectId?: string
   projectName?: string
   locale?: string
+  sortActive?: boolean
   onTaskClick?: (task: TaskLite) => void
   onTaskMove?: (taskId: string, statusId: string, order: number) => Promise<void>
   onToggleComplete?: (task: TaskLite) => Promise<void>
@@ -105,6 +106,7 @@ export function TaskViews({
               tasks={tasks}
               statuses={statuses}
               projectId={projectId}
+              sortActive={sortActive}
               onTaskClick={onTaskClick}
               onToggleComplete={onToggleComplete}
               onAddTask={onAddTask}
