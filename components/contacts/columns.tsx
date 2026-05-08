@@ -3,7 +3,9 @@
 import { ColumnDef } from '@tanstack/react-table'
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
-import { MessageCircle, Trash2, Pencil, Kanban, User } from "lucide-react"
+import { MessageCircle, Trash2, Pencil, Kanban, User, Briefcase, Clock, ArrowUpDown } from "lucide-react"
+import { formatDistanceToNow } from 'date-fns'
+import { ptBR } from 'date-fns/locale'
 import type { EnrichedContact } from './contacts-data-table-client'
 
 interface GetColumnsOptions {
@@ -149,6 +151,65 @@ export function getColumns({ onOpenProfile, onEdit, onDelete }: GetColumnsOption
                         <span className="text-xs text-zinc-600 dark:text-zinc-400 whitespace-nowrap">{name}</span>
                     </div>
                 )
+            },
+        },
+        {
+            id: 'openDealsCount',
+            accessorKey: 'openDealsCount',
+            size: 120,
+            header: ({ column }) => (
+                <button
+                    className="flex items-center gap-1 text-xs font-medium text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300 transition-colors"
+                    onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+                >
+                    Deals abertos
+                    <ArrowUpDown className="h-3 w-3 opacity-60" />
+                </button>
+            ),
+            cell: ({ row }) => {
+                const count = row.original.openDealsCount
+                if (count === 0) return <span className="text-zinc-400 dark:text-zinc-600">—</span>
+                return (
+                    <div className="inline-flex items-center gap-1.5 px-2 py-1 rounded-full bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200/60 dark:border-emerald-800/40">
+                        <Briefcase className="h-3 w-3 text-emerald-500 shrink-0" />
+                        <span className="text-xs font-semibold text-emerald-700 dark:text-emerald-300">{count}</span>
+                    </div>
+                )
+            },
+            sortingFn: 'basic',
+        },
+        {
+            id: 'lastActivityAt',
+            accessorKey: 'lastActivityAt',
+            size: 160,
+            header: ({ column }) => (
+                <button
+                    className="flex items-center gap-1 text-xs font-medium text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300 transition-colors"
+                    onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+                >
+                    Última interação
+                    <ArrowUpDown className="h-3 w-3 opacity-60" />
+                </button>
+            ),
+            cell: ({ row }) => {
+                const date = row.original.lastActivityAt
+                if (!date) return <span className="text-zinc-400 dark:text-zinc-600">—</span>
+                const d = new Date(date)
+                const relative = formatDistanceToNow(d, { locale: ptBR, addSuffix: true })
+                const isRecent = Date.now() - d.getTime() < 7 * 24 * 60 * 60 * 1000
+                return (
+                    <div className="flex items-center gap-1.5" title={d.toLocaleString('pt-BR')}>
+                        <Clock className={`h-3 w-3 shrink-0 ${isRecent ? 'text-emerald-500' : 'text-zinc-400'}`} />
+                        <span className={`text-xs whitespace-nowrap ${isRecent ? 'text-emerald-600 dark:text-emerald-400 font-medium' : 'text-zinc-500 dark:text-zinc-500'}`}>
+                            {relative}
+                        </span>
+                    </div>
+                )
+            },
+            sortingFn: (rowA, rowB) => {
+                const a = rowA.original.lastActivityAt ? new Date(rowA.original.lastActivityAt).getTime() : 0
+                const b = rowB.original.lastActivityAt ? new Date(rowB.original.lastActivityAt).getTime() : 0
+                return a - b
             },
         },
         {

@@ -55,6 +55,8 @@ export type EnrichedContact = {
   assignedToId: string | null
   activeStageName: string | null
   assigneeName: string | null
+  openDealsCount: number
+  lastActivityAt: Date | null
 }
 
 interface ContactsDataTableClientProps {

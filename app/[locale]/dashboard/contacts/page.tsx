@@ -47,7 +47,7 @@ async function ContactsData({ orgId }: { orgId: string }) {
     timer.mark('queries-start')
 
     // Queries planas em paralelo
-    const [contacts, activeDeals, stages, orgUsers] = await Promise.all([
+    const [contacts, activeDeals, stages, orgUsers, lastActivities] = await Promise.all([
         prisma.contact.findMany({
             where: { organizationId: orgId },
             orderBy: { createdAt: 'desc' },
@@ -92,15 +92,43 @@ async function ContactsData({ orgId }: { orgId: string }) {
             where: { organizationId: orgId },
             select: { id: true, name: true },
         }),
+        // Latest activity per contact — via most recent Activity on any deal linked to each contact
+        prisma.activity.findMany({
+            where: {
+                deal: {
+                    organizationId: orgId,
+                    contactId: { not: null },
+                },
+            },
+            select: {
+                createdAt: true,
+                deal: { select: { contactId: true } },
+            },
+            orderBy: { createdAt: 'desc' },
+        }),
     ])
 
     timer.mark(`queries-end (contacts=${contacts.length}, deals=${activeDeals.length}, stages=${stages.length}, users=${orgUsers.length})`)
 
     // Lookup: contactId → primeiro deal ativo
     const dealByContact = new Map<string, typeof activeDeals[0]>()
+    // Lookup: contactId → count of open deals
+    const openDealCountByContact = new Map<string, number>()
     for (const deal of activeDeals) {
-        if (deal.contactId && !dealByContact.has(deal.contactId)) {
+        if (!deal.contactId) continue
+        if (!dealByContact.has(deal.contactId)) {
             dealByContact.set(deal.contactId, deal)
+        }
+        openDealCountByContact.set(deal.contactId, (openDealCountByContact.get(deal.contactId) ?? 0) + 1)
+    }
+
+    // Lookup: contactId → most recent activity date
+    const lastActivityByContact = new Map<string, Date>()
+    for (const a of lastActivities) {
+        const cid = a.deal.contactId
+        if (!cid) continue
+        if (!lastActivityByContact.has(cid)) {
+            lastActivityByContact.set(cid, a.createdAt)
         }
     }
 
@@ -113,6 +141,8 @@ async function ContactsData({ orgId }: { orgId: string }) {
             ...c,
             activeStageName: deal ? (stageById.get(deal.stageId) ?? null) : null,
             assigneeName: deal ? (userById.get(deal.userId) ?? null) : null,
+            openDealsCount: openDealCountByContact.get(c.id) ?? 0,
+            lastActivityAt: lastActivityByContact.get(c.id) ?? null,
         }
     })
 
