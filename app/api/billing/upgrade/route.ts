@@ -68,6 +68,7 @@ export async function POST(req: NextRequest) {
         id: true,
         name: true,
         tier: true,
+        customPricing: true,
       },
     })
 
@@ -96,7 +97,8 @@ export async function POST(req: NextRequest) {
     }
 
     // 6. Criar preferência de checkout no Mercado Pago
-    const price = PLAN_PRICING[tier as SubscriptionTier]
+    const standardPrice = PLAN_PRICING[tier as SubscriptionTier]
+    const price = org.customPricing ? Number(org.customPricing) : standardPrice
     const planName = PLAN_NAMES[tier as SubscriptionTier]
 
     const preference = await new Preference(getMp()).create({
@@ -111,9 +113,6 @@ export async function POST(req: NextRequest) {
             category_id: 'software',
           },
         ],
-        payer: {
-          email: session.user.email,
-        },
         external_reference: `${org.id}_${tier}`,
         back_urls: {
           success: `${process.env.NEXTAUTH_URL || process.env.NEXT_PUBLIC_APP_URL}/dashboard/billing/plans?success=true&tier=${tier}`,
