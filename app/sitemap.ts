@@ -6,7 +6,11 @@ import { CITIES } from '@/config/city-data'
 import { CALCULATOR_LAST_MODIFIED } from '@/config/calculator-metadata'
 
 export default function sitemap(): MetadataRoute.Sitemap {
-    const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://siriuscrm.com.br'
+    const rawUrl = process.env.NEXT_PUBLIC_APP_URL || ''
+    // Never use localhost in the sitemap — always fall back to the real domain
+    const baseUrl = rawUrl.startsWith('http') && !rawUrl.includes('localhost')
+        ? rawUrl
+        : 'https://siriuscrm.com.br'
 
     // Data da última atualização significativa do site
     // Atualizar manualmente quando houver mudanças reais nas páginas estáticas

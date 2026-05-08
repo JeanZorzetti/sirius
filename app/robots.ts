@@ -13,7 +13,10 @@
  */
 
 export default function robots(): MetadataRoute.Robots {
-  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://siriuscrm.com.br'
+  const rawUrl = process.env.NEXT_PUBLIC_APP_URL || ''
+  const baseUrl = rawUrl.startsWith('http') && !rawUrl.includes('localhost')
+    ? rawUrl
+    : 'https://siriuscrm.com.br'
 
   return {
     rules: [
