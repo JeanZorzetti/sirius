@@ -4,9 +4,11 @@ import { useState, useEffect, useRef, useMemo } from 'react'
 import {
   ColumnDef,
   Row,
+  SortingState,
   flexRender,
   getCoreRowModel,
   getFilteredRowModel,
+  getSortedRowModel,
   useReactTable,
   RowSelectionState,
 } from '@tanstack/react-table'
@@ -48,6 +50,7 @@ export function DataTable<TData extends { id: string }, TValue>({
   const [globalFilter, setGlobalFilter] = useState('')
   const [debouncedFilter, setDebouncedFilter] = useState('')
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({})
+  const [sorting, setSorting] = useState<SortingState>([])
   const [bulkDeleting, setBulkDeleting] = useState(false)
   const [confirmOpen, setConfirmOpen] = useState(false)
   const router = useRouter()
@@ -75,14 +78,17 @@ export function DataTable<TData extends { id: string }, TValue>({
     columns,
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
+    getSortedRowModel: getSortedRowModel(),
     globalFilterFn: 'includesString',
     enableRowSelection: true,
     state: {
       globalFilter: debouncedFilter,
       rowSelection,
+      sorting,
     },
     onGlobalFilterChange: setGlobalFilter,
     onRowSelectionChange: setRowSelection,
+    onSortingChange: setSorting,
   })
 
   const rows = table.getRowModel().rows
