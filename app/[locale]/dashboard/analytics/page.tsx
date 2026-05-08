@@ -5,7 +5,7 @@ import { MonthlyChart } from '@/components/analytics/monthly-chart';
 import { ClientChart } from '@/components/analytics/client-chart';
 import { LazyOnVisible } from '@/components/ui/lazy-on-visible';
 import { Skeleton } from '@/components/ui/skeleton';
-import { DollarSign, TrendingUp, Target, CalendarClock, Banknote, Activity } from 'lucide-react';
+import { TrendingUp, Target, CalendarClock, Banknote, Activity } from 'lucide-react';
 import { getSession } from '@/lib/auth';
 import { Suspense } from 'react';
 import { AnalyticsDateFilter } from './date-filter';
@@ -105,9 +105,8 @@ export default async function AnalyticsPage({
   const lostDeals = deals.filter(d => d.status === 'LOST');
 
   const pipelineValue = activeDeals.reduce((s, d) => s + Number(d.value || 0), 0);
-  const totalWonValue = wonDeals.reduce((s, d) => s + Number(d.value || 0), 0);
 
-  // Conversão: ganhos / (ganhos + perdidos)
+  // Conversão: contagem deals WON / (deals WON + deals LOST)
   const closedDealsCount = wonDeals.length + lostDeals.length;
   const conversionRate = closedDealsCount > 0 ? (wonDeals.length / closedDealsCount) * 100 : 0;
 
@@ -121,13 +120,7 @@ export default async function AnalyticsPage({
       });
   const forecastValue = forecastDeals.reduce((s, d) => s + Number(d.value || 0), 0);
 
-  // Ticket Médio: apenas deals com valor definido (WON se houver, senão todos com valor)
-  const wonWithValue = wonDeals.filter(d => d.value !== null && Number(d.value) > 0);
-  const allWithValue = deals.filter(d => d.value !== null && Number(d.value) > 0);
-  const ticketBase = wonWithValue.length > 0 ? wonWithValue : allWithValue;
-  const ticketSum = ticketBase.reduce((s, d) => s + Number(d.value), 0);
-  const avgTicket = ticketBase.length > 0 ? ticketSum / ticketBase.length : 0;
-  const ticketLabel = wonWithValue.length > 0 ? 'Média dos negócios ganhos' : 'Média de todos os negócios';
+  // Ticket Médio: média dos valores reais recebidos (DealClosing) — calculado após kpiClosings
 
   const dealCount = deals.length;
 
@@ -180,6 +173,8 @@ export default async function AnalyticsPage({
     select: { value: true },
   })
   const totalRealized = kpiClosings.reduce((s, c) => s + Number(c.value), 0)
+  const avgTicket = kpiClosings.length > 0 ? totalRealized / kpiClosings.length : 0
+  const ticketLabel = kpiClosings.length > 0 ? `Média de ${kpiClosings.length} recebimento(s)` : 'Nenhum recebimento registrado'
 
   const monthSlots: { key: string; label: string; value: number; count: number; closingsValue: number }[] = []
   let sy = mFromYear, sm = mFromMonth
@@ -300,14 +295,14 @@ export default async function AnalyticsPage({
       )}
 
       {/* KPI Cards */}
-      <div className="grid gap-4 sm:gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
-        {/* Pipeline Aberto */}
+      <div className="grid gap-4 sm:gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
+        {/* Valor Estimado */}
         <Card className="bg-white dark:bg-white/[0.02] border-zinc-200 dark:border-white/5 backdrop-blur-xl hover:bg-zinc-50 dark:hover:bg-white/[0.04] transition-colors overflow-hidden relative group shadow-sm">
           <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
             <Activity className="h-24 w-24 text-indigo-500 transform rotate-12 translate-x-4 -translate-y-4" />
           </div>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 relative z-10">
-            <CardTitle className="text-sm font-medium text-zinc-500 dark:text-zinc-400">Pipeline Aberto</CardTitle>
+            <CardTitle className="text-sm font-medium text-zinc-500 dark:text-zinc-400">Valor Estimado</CardTitle>
             <div className="h-8 w-8 rounded-lg bg-indigo-500/10 flex items-center justify-center text-indigo-400 ring-1 ring-white/5 shadow-[0_0_10px_rgba(99,102,241,0.2)]">
               <Activity className="h-4 w-4" />
             </div>
@@ -316,29 +311,8 @@ export default async function AnalyticsPage({
             <div className="text-2xl font-bold text-zinc-900 dark:text-white font-mono">
               {pipelineValue.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
             </div>
-            <p className="text-xs text-zinc-500 mt-1" title="Soma da expectativa de valor dos negócios ativos (Deal.value)">
+            <p className="text-xs text-zinc-500 mt-1" title="Soma do valor estimado dos negócios ativos (Deal.value)">
               {activeDeals.length} negócio(s) em andamento
-            </p>
-          </CardContent>
-        </Card>
-
-        {/* Total Ganho */}
-        <Card className="bg-white dark:bg-white/[0.02] border-zinc-200 dark:border-white/5 backdrop-blur-xl hover:bg-zinc-50 dark:hover:bg-white/[0.04] transition-colors overflow-hidden relative group shadow-sm">
-          <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
-            <DollarSign className="h-24 w-24 text-violet-500 transform -rotate-6 translate-x-4 -translate-y-4" />
-          </div>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 relative z-10">
-            <CardTitle className="text-sm font-medium text-zinc-500 dark:text-zinc-400">Total Ganho</CardTitle>
-            <div className="h-8 w-8 rounded-lg bg-violet-500/10 flex items-center justify-center text-violet-400 ring-1 ring-white/5 shadow-[0_0_10px_rgba(139,92,246,0.2)]">
-              <DollarSign className="h-4 w-4" />
-            </div>
-          </CardHeader>
-          <CardContent className="relative z-10">
-            <div className="text-2xl font-bold text-zinc-900 dark:text-white font-mono">
-              {totalWonValue.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
-            </div>
-            <p className="text-xs text-zinc-500 mt-1" title="Expectativa de valor dos negócios marcados como WON (Deal.value)">
-              {wonDeals.length} negócio(s) ganho(s)
             </p>
           </CardContent>
         </Card>
