@@ -1,22 +1,20 @@
 /**
  * Backfill PipelineStage.type based on stage name heuristics.
  *
- * Rules:
- *   WON  → name contains: ganho, fechado, won, vendido, aprovado, pago, concluído, finalizado
- *   LOST → name contains: perdido, lost, cancelado, recusado, desistiu
- *   OPEN → everything else
+ * Rules (name-only, no fallback):
+ *   WON  → name contains: ganho, fechado, won, vendido, aprovado, concluído, finalizado, concluido, fechamento, venda realizada
+ *   LOST → name contains: perdido, lost, cancelado, recusado, desistiu, inativo, sem interesse, descartado, arquivado
+ *   OPEN → everything else (stays OPEN — no forced fallback)
  *
- * Fallback: if a pipeline has no WON stage after heuristics, the stage with
- * the highest `order` is marked WON.
- *
- * Usage: npx tsx scripts/backfill-pipeline-stage-type.ts [--dry-run]
+ * Usage: npx tsx scripts/backfill-pipeline-stage-type.ts [--dry-run] [--reset]
+ *   --reset  → resets ALL stages back to OPEN before applying heuristics
  */
 
 import { prisma } from '@/lib/prisma'
 import { PipelineStageType } from '@prisma/client'
 
-const WON_KEYWORDS = ['ganho', 'fechado', 'won', 'vendido', 'aprovado', 'pago', 'concluído', 'finalizado', 'concluido']
-const LOST_KEYWORDS = ['perdido', 'lost', 'cancelado', 'recusado', 'desistiu']
+const WON_KEYWORDS = ['ganho', 'fechado', 'fechamento', 'won', 'vendido', 'aprovado', 'concluído', 'concluido', 'finalizado', 'finalizado e ganho', 'venda realizada', 'negócio pago', 'negocio pago', 'contrato pago', 'cliente pago']
+const LOST_KEYWORDS = ['perdido', 'lost', 'cancelado', 'recusado', 'desistiu', 'inativo', 'sem interesse', 'descartado', 'arquivado']
 
 function classifyStage(name: string): PipelineStageType {
   const lower = name.toLowerCase()
@@ -27,50 +25,39 @@ function classifyStage(name: string): PipelineStageType {
 
 async function main() {
   const isDryRun = process.argv.includes('--dry-run')
+  const isReset = process.argv.includes('--reset')
   if (isDryRun) console.log('[backfill] DRY RUN — no changes will be written')
 
-  const pipelines = await prisma.pipeline.findMany({
-    select: {
-      id: true,
-      name: true,
-      organizationId: true,
-      stages: {
-        select: { id: true, name: true, order: true, type: true },
-        orderBy: { order: 'asc' },
-      },
-    },
+  // Step 1: Reset all stages to OPEN if --reset flag passed
+  if (isReset) {
+    console.log('[backfill] Resetting all stages to OPEN...')
+    if (!isDryRun) {
+      const { count } = await prisma.pipelineStage.updateMany({ data: { type: 'OPEN' } })
+      console.log(`[backfill] Reset ${count} stages to OPEN`)
+    } else {
+      const count = await prisma.pipelineStage.count()
+      console.log(`[backfill] Would reset ${count} stages to OPEN`)
+    }
+  }
+
+  // Step 2: Apply heuristics (name-only, no fallback)
+  const stages = await prisma.pipelineStage.findMany({
+    select: { id: true, name: true, type: true, pipeline: { select: { name: true } } },
   })
 
-  console.log(`[backfill] Found ${pipelines.length} pipelines`)
+  console.log(`[backfill] Classifying ${stages.length} stages by name...`)
 
   let updatedCount = 0
 
-  for (const pipeline of pipelines) {
-    const classifications = pipeline.stages.map(s => ({
-      ...s,
-      newType: classifyStage(s.name),
-    }))
+  for (const stage of stages) {
+    const newType = classifyStage(stage.name)
+    if (stage.type === newType) continue
 
-    // Fallback: if no WON stage from heuristics, mark highest-order stage as WON
-    const hasWon = classifications.some(s => s.newType === 'WON')
-    if (!hasWon && classifications.length > 0) {
-      const lastStage = classifications[classifications.length - 1]
-      lastStage.newType = 'WON'
-      console.log(`  [fallback] Pipeline "${pipeline.name}": marking "${lastStage.name}" (order ${lastStage.order}) as WON`)
-    }
+    console.log(`  [update] "${stage.pipeline.name}" > "${stage.name}": ${stage.type} → ${newType}`)
+    updatedCount++
 
-    for (const stage of classifications) {
-      if (stage.type === stage.newType) continue // already correct
-
-      console.log(`  [update] "${pipeline.name}" > "${stage.name}": ${stage.type} → ${stage.newType}`)
-      updatedCount++
-
-      if (!isDryRun) {
-        await prisma.pipelineStage.update({
-          where: { id: stage.id },
-          data: { type: stage.newType },
-        })
-      }
+    if (!isDryRun) {
+      await prisma.pipelineStage.update({ where: { id: stage.id }, data: { type: newType } })
     }
   }
 
