@@ -39,6 +39,7 @@ function formatDuration(ms: number): string {
 const formatTime = formatTimeBR
 
 export function TimeTrackerWidget({ taskId, locked = false }: TimeTrackerWidgetProps) {
+  const tCommon = useTranslations('common')
   const [entries, setEntries] = useState<TimeEntry[]>([])
   const [loading, setLoading] = useState(true)
   const [running, setRunning] = useState<{ startTime: number; description: string } | null>(null)
@@ -49,7 +50,6 @@ export function TimeTrackerWidget({ taskId, locked = false }: TimeTrackerWidgetP
   useEffect(() => {
     if (locked) return
     loadEntries()
-    const tCommon = useTranslations('common')
     return () => {
       if (tickRef.current !== null) window.clearInterval(tickRef.current)
     }
@@ -60,7 +60,6 @@ export function TimeTrackerWidget({ taskId, locked = false }: TimeTrackerWidgetP
       tickRef.current = window.setInterval(() => {
         setElapsed(Date.now() - running.startTime)
       }, 1000)
-      const tCommon = useTranslations('common')
       return () => {
         if (tickRef.current !== null) window.clearInterval(tickRef.current)
       }
@@ -133,7 +132,6 @@ export function TimeTrackerWidget({ taskId, locked = false }: TimeTrackerWidgetP
   const totalMs = entries.reduce((sum, e) => sum + e.durationMs, 0)
 
   if (locked) {
-    const tCommon = useTranslations('common')
     return (
       <div className="rounded-xl border border-dashed border-border/50 bg-muted/20 p-6 text-center">
         <Clock className="mx-auto h-8 w-8 text-muted-foreground/50" />
@@ -144,8 +142,6 @@ export function TimeTrackerWidget({ taskId, locked = false }: TimeTrackerWidgetP
       </div>
     )
   }
-
-  const tCommon = useTranslations('common')
 
   return (
     <div className="space-y-3">
