@@ -18,8 +18,8 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>
 }): Promise<Metadata> {
   const { locale } = await params
-  const t = await getTranslations({ locale, namespace: 'dashboard.pages.pipeline' })
-  return { title: `${t('title')} - CRM` }
+  const t = await getTranslations({ locale, namespace: 'dashboard' })
+  return { title: `${t('pages.pipeline.title')} - CRM` }
 }
 
 export const dynamic = "force-dynamic"
