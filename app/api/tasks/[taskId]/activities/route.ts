@@ -2,6 +2,8 @@ import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { getSession } from '@/lib/auth'
 import logger from '@/lib/logger'
+import { apiError } from '@/lib/api-error'
+import { ERR } from '@/lib/error-messages'
 
 // GET /api/tasks/[taskId]/activities
 export async function GET(
@@ -12,7 +14,7 @@ export async function GET(
     const { taskId } = await params
     const session = await getSession()
     if (!session?.user?.email) {
-      return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
+      return await apiError(ERR.UNAUTHORIZED, 401)
     }
 
     const activities = await prisma.taskActivity.findMany({
@@ -26,6 +28,6 @@ export async function GET(
     return NextResponse.json(activities)
   } catch (error) {
     logger.error({ err: error }, 'Error listing activities')
-    return NextResponse.json({ error: 'Erro ao listar atividades' }, { status: 500 })
+    return await apiError(ERR.INTERNAL_ERROR, 500)
   }
 }

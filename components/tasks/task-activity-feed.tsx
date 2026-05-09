@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { useTranslations } from 'next-intl'
 import { Activity, UserCheck, Flag, Calendar, CheckCircle2, Pencil } from 'lucide-react'
 import { cn, formatDateBR } from '@/lib/utils'
 
@@ -52,6 +53,7 @@ function relativeTime(iso: string): string {
 }
 
 export function TaskActivityFeed({ taskId }: TaskActivityFeedProps) {
+  const tCommon = useTranslations('common')
   const [activities, setActivities] = useState<TaskActivityItem[]>([])
   const [loading, setLoading] = useState(true)
 
@@ -79,7 +81,7 @@ export function TaskActivityFeed({ taskId }: TaskActivityFeedProps) {
       </div>
 
       {loading ? (
-        <div className="text-xs text-muted-foreground">Carregando...</div>
+        <div className="text-xs text-muted-foreground">{tCommon('buttons.loading')}</div>
       ) : activities.length === 0 ? (
         <div className="rounded-lg border border-dashed border-border/30 py-4 text-center text-xs text-muted-foreground">
           Nenhuma atividade ainda

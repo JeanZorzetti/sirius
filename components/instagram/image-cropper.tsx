@@ -5,6 +5,7 @@ import type { Area } from 'react-easy-crop'
 import { Button } from '@/components/ui/button'
 import { Loader2 } from 'lucide-react'
 import imageCompression from 'browser-image-compression'
+import { useTranslations } from 'next-intl'
 
 const ASPECT_RATIOS: Record<string, number> = {
   feed: 1 / 1,
@@ -43,6 +44,7 @@ export function ImageCropper({
   onConfirm: (url: string) => void
   onCancel: () => void
 }) {
+  const tCommon = useTranslations('common')
   const aspect = ASPECT_RATIOS[postType] ?? 1
   const [crop, setCrop] = useState({ x: 0, y: 0 })
   const [zoom, setZoom] = useState(1)
@@ -110,10 +112,10 @@ export function ImageCropper({
 
       <div className="flex gap-2">
         <Button variant="outline" size="sm" className="flex-1" onClick={onCancel} disabled={uploading}>
-          Cancelar
+          {tCommon('buttons.cancel')}
         </Button>
         <Button size="sm" className="flex-1 bg-purple-600 hover:bg-purple-700 text-white" onClick={handleConfirm} disabled={uploading}>
-          {uploading ? <><Loader2 className="h-3.5 w-3.5 mr-2 animate-spin" /> Enviando...</> : 'Confirmar crop'}
+          {uploading ? <><Loader2 className="h-3.5 w-3.5 mr-2 animate-spin" /> {tCommon('buttons.submitting')}</> : tCommon('buttons.confirm')}
         </Button>
       </div>
     </div>

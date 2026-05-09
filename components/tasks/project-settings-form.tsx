@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { useTranslations } from 'next-intl'
 import { Plus, Trash2, Save, X } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -64,6 +65,7 @@ export function ProjectSettingsForm({
   canEdit,
 }: ProjectSettingsFormProps) {
   const router = useRouter()
+  const tCommon = useTranslations('common')
 
   // Project
   const [name, setName] = useState(project.name)
@@ -91,10 +93,10 @@ export function ProjectSettingsForm({
         body: JSON.stringify({ name, description, color }),
       })
       if (!res.ok) throw new Error('fail')
-      toast.success('Projeto atualizado')
+      toast.success(tCommon('toasts.updated'))
       router.refresh()
     } catch {
-      toast.error('Erro ao atualizar')
+      toast.error(tCommon('toasts.failed'))
     } finally {
       setSavingProject(false)
     }
@@ -119,9 +121,9 @@ export function ProjectSettingsForm({
       const created = await res.json()
       setStatuses((prev) => [...prev, created])
       setNewStatusName('')
-      toast.success('Status criado')
+      toast.success(tCommon('toasts.created'))
     } catch (e: any) {
-      toast.error(e.message || 'Erro ao criar status')
+      toast.error(e.message || tCommon('toasts.failed'))
     }
   }
 
@@ -137,9 +139,9 @@ export function ProjectSettingsForm({
       const created = await res.json()
       setLabels((prev) => [...prev, created])
       setNewLabelName('')
-      toast.success('Etiqueta criada')
+      toast.success(tCommon('toasts.created'))
     } catch {
-      toast.error('Erro ao criar etiqueta')
+      toast.error(tCommon('toasts.failed'))
     }
   }
 
@@ -202,7 +204,7 @@ export function ProjectSettingsForm({
               className="w-full gap-1.5"
             >
               <Save className="h-3 w-3" />
-              {savingProject ? 'Salvando...' : 'Salvar'}
+              {savingProject ? tCommon('buttons.saving') : tCommon('buttons.save')}
             </Button>
           )}
         </div>
@@ -273,7 +275,7 @@ export function ProjectSettingsForm({
               className="w-full gap-1.5"
             >
               <Plus className="h-3 w-3" />
-              Novo status
+              {tCommon('buttons.add')}
             </Button>
           </div>
         )}
@@ -326,7 +328,7 @@ export function ProjectSettingsForm({
                 className="h-8 flex-1 gap-1.5"
               >
                 <Plus className="h-3 w-3" />
-                Nova etiqueta
+                {tCommon('buttons.add')}
               </Button>
             </div>
           </div>

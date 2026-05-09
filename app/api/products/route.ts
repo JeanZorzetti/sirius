@@ -2,6 +2,8 @@ import { NextResponse } from 'next/server'
 import { z } from 'zod'
 import { prisma } from '@/lib/prisma'
 import { getSession } from '@/lib/auth'
+import { apiError } from '@/lib/api-error'
+import { ERR } from '@/lib/error-messages'
 
 const productSchema = z.object({
   name: z.string().min(1, 'Nome é obrigatório'),
@@ -29,7 +31,7 @@ export async function GET() {
   try {
     const organizationId = await getOrganizationId()
     if (!organizationId) {
-      return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
+      return await apiError(ERR.UNAUTHORIZED, 401)
     }
 
     const products = await (prisma as any).product.findMany({
@@ -48,7 +50,7 @@ export async function POST(req: Request) {
   try {
     const organizationId = await getOrganizationId()
     if (!organizationId) {
-      return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
+      return await apiError(ERR.UNAUTHORIZED, 401)
     }
 
     const body = await req.json()

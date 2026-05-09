@@ -16,6 +16,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { createContact } from '@/app/[locale]/dashboard/contacts/actions'
 import { analytics } from '@/lib/posthog'
+import { useTranslations } from 'next-intl'
 
 interface CreateContactDialogProps {
     open?: boolean
@@ -27,6 +28,8 @@ export function CreateContactDialog({ open: externalOpen, onOpenChange: external
     const open = externalOpen !== undefined ? externalOpen : internalOpen
     const setOpen = externalOnOpenChange ?? setInternalOpen
     const [loading, setLoading] = useState(false)
+    const t = useTranslations('components.contacts')
+    const tCommon = useTranslations('common')
 
     async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault()
@@ -45,10 +48,10 @@ export function CreateContactDialog({ open: externalOpen, onOpenChange: external
                         current_count: result.current || 0
                     })
                 }
-                alert(result.error || 'Falha ao criar contato')
+                alert(result.error || tCommon('toasts.failedSave'))
             }
         } catch {
-            alert('Erro de conexão ao criar contato. Tente novamente.')
+            alert(tCommon('toasts.failed'))
         } finally {
             setLoading(false)
         }
@@ -59,15 +62,15 @@ export function CreateContactDialog({ open: externalOpen, onOpenChange: external
             {externalOpen === undefined && (
                 <ResponsiveDialogTrigger asChild>
                     <Button>
-                        <Plus className="mr-2 h-4 w-4" /> Novo Contato
+                        <Plus className="mr-2 h-4 w-4" /> {t('addContact')}
                     </Button>
                 </ResponsiveDialogTrigger>
             )}
             <ResponsiveDialogContent className="sm:max-w-[520px]">
                 <ResponsiveDialogHeader>
-                    <ResponsiveDialogTitle>Novo Contato</ResponsiveDialogTitle>
+                    <ResponsiveDialogTitle>{t('createContact')}</ResponsiveDialogTitle>
                     <ResponsiveDialogDescription>
-                        Adicione um novo contato à sua base.
+                        {t('addContactDesc')}
                     </ResponsiveDialogDescription>
                 </ResponsiveDialogHeader>
 
@@ -76,19 +79,19 @@ export function CreateContactDialog({ open: externalOpen, onOpenChange: external
                         {/* Dados básicos */}
                         <div className="grid gap-3">
                             <div className="grid grid-cols-4 items-center gap-4">
-                                <Label htmlFor="name" className="text-right text-sm">Nome *</Label>
+                                <Label htmlFor="name" className="text-right text-sm">{tCommon('fields.name')} *</Label>
                                 <Input id="name" name="name" placeholder="João Silva" className="col-span-3" required />
                             </div>
                             <div className="grid grid-cols-4 items-center gap-4">
-                                <Label htmlFor="email" className="text-right text-sm">Email</Label>
+                                <Label htmlFor="email" className="text-right text-sm">{tCommon('fields.email')}</Label>
                                 <Input id="email" name="email" type="email" placeholder="joao@empresa.com" className="col-span-3" />
                             </div>
                             <div className="grid grid-cols-4 items-center gap-4">
-                                <Label htmlFor="phone" className="text-right text-sm">Telefone</Label>
+                                <Label htmlFor="phone" className="text-right text-sm">{tCommon('fields.phone')}</Label>
                                 <Input id="phone" name="phone" placeholder="(11) 99999-9999" className="col-span-3" />
                             </div>
                             <div className="grid grid-cols-4 items-center gap-4">
-                                <Label htmlFor="company" className="text-right text-sm">Empresa</Label>
+                                <Label htmlFor="company" className="text-right text-sm">{tCommon('fields.company')}</Label>
                                 <Input id="company" name="company" placeholder="Empresa LTDA" className="col-span-3" />
                             </div>
                         </div>
@@ -96,29 +99,29 @@ export function CreateContactDialog({ open: externalOpen, onOpenChange: external
                         {/* Separador de endereço */}
                         <div className="flex items-center gap-2">
                             <MapPin className="h-3.5 w-3.5 text-muted-foreground shrink-0" />
-                            <span className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Endereço</span>
+                            <span className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">{tCommon('fields.address')}</span>
                             <div className="flex-1 h-px bg-border" />
                         </div>
 
                         {/* Endereço */}
                         <div className="grid gap-3">
                             <div className="grid grid-cols-4 items-center gap-4">
-                                <Label htmlFor="zipCode" className="text-right text-sm">CEP</Label>
+                                <Label htmlFor="zipCode" className="text-right text-sm">{tCommon('fields.zipCode')}</Label>
                                 <Input id="zipCode" name="zipCode" placeholder="00000-000" className="col-span-3 max-w-[160px]" maxLength={9} />
                             </div>
                             <div className="grid grid-cols-4 items-center gap-4">
-                                <Label htmlFor="street" className="text-right text-sm">Rua</Label>
+                                <Label htmlFor="street" className="text-right text-sm">{tCommon('fields.address')}</Label>
                                 <Input id="street" name="street" placeholder="Av. Paulista" className="col-span-3" />
                             </div>
                             <div className="grid grid-cols-4 items-center gap-4">
-                                <Label htmlFor="streetNumber" className="text-right text-sm">Número</Label>
+                                <Label htmlFor="streetNumber" className="text-right text-sm">#</Label>
                                 <div className="col-span-3 flex gap-3">
                                     <Input id="streetNumber" name="streetNumber" placeholder="1000" className="w-28" />
                                     <Input id="complement" name="complement" placeholder="Apto 42, Sala 3..." className="flex-1" />
                                 </div>
                             </div>
                             <div className="grid grid-cols-4 items-center gap-4">
-                                <Label htmlFor="city" className="text-right text-sm">Cidade</Label>
+                                <Label htmlFor="city" className="text-right text-sm">{tCommon('fields.city')}</Label>
                                 <div className="col-span-3 flex gap-3">
                                     <Input id="city" name="city" placeholder="São Paulo" className="flex-1" />
                                     <Input id="state" name="state" placeholder="SP" maxLength={2} className="w-16 uppercase" />
@@ -130,7 +133,7 @@ export function CreateContactDialog({ open: externalOpen, onOpenChange: external
 
                 <ResponsiveDialogFooter>
                     <Button type="submit" form="create-contact-form" disabled={loading}>
-                        {loading ? 'Salvando...' : 'Salvar contato'}
+                        {loading ? tCommon('buttons.saving') : tCommon('buttons.save')}
                     </Button>
                 </ResponsiveDialogFooter>
             </ResponsiveDialogContent>

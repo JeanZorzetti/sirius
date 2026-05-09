@@ -1,4 +1,6 @@
-'use client'
+﻿'use client'
+
+import { useTranslations } from 'next-intl'
 
 import { useState, useEffect } from 'react'
 import { Plus, Trash2, CheckSquare, X } from 'lucide-react'
@@ -144,6 +146,8 @@ export function TaskChecklist({ taskId }: TaskChecklistProps) {
     return <div className="text-xs text-muted-foreground">Carregando...</div>
   }
 
+  const tCommon = useTranslations('common')
+
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
@@ -207,6 +211,7 @@ export function TaskChecklist({ taskId }: TaskChecklistProps) {
             const done = cl.items.filter((i) => i.completed).length
             const total = cl.items.length
             const pct = total === 0 ? 0 : Math.round((done / total) * 100)
+            const tCommon = useTranslations('common')
             return (
               <div key={cl.id} className="rounded-lg border border-border/40 bg-card/30 p-3">
                 <div className="flex items-center justify-between gap-2">

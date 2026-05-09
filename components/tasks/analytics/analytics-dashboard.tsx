@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import { useTranslations } from 'next-intl'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Loader2 } from 'lucide-react'
 import { AnalyticsOverview } from './analytics-overview'
@@ -79,6 +80,7 @@ const RANGE_OPTIONS = [
 ]
 
 export function AnalyticsDashboard({ projectId, projectName, locale }: Props) {
+  const tCommon = useTranslations('common')
   const [range, setRange] = useState(30)
   const [data, setData] = useState<AnalyticsData | null>(null)
   const [loading, setLoading] = useState(true)
@@ -154,7 +156,7 @@ export function AnalyticsDashboard({ projectId, projectName, locale }: Props) {
           >
             <div className="flex flex-col items-center gap-3 text-muted-foreground">
               <Loader2 className="h-6 w-6 animate-spin" />
-              <p className="text-xs">Carregando métricas…</p>
+              <p className="text-xs">{tCommon('buttons.loading')}</p>
             </div>
           </motion.div>
         ) : error ? (

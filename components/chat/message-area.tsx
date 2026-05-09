@@ -26,6 +26,7 @@ import { ReactionChips } from './reaction-chips'
 import { MediaLightbox } from './media-lightbox'
 import { usePusher } from '@/hooks/use-pusher'
 import type { ChatTypingEvent, MessageNewEvent, MessageStatusEvent } from '@/hooks/use-pusher'
+import { useTranslations } from 'next-intl'
 
 interface Tag { id: string; name: string; color: string }
 interface Deal {
@@ -617,6 +618,8 @@ function MediaBubble({ msg, outbound, onOpenLightbox }: { msg: WhatsAppMessage; 
 // ── Component ───────────────────────────────────────────────
 
 export function MessageArea({ contact, connections, organizationId, userId, userName, onContactUpdate, onBack, wabaEnabled = false }: MessageAreaProps) {
+  const tCommon = useTranslations('common')
+  const t = useTranslations('components.chat')
   const [messages, setMessages] = useState<WhatsAppMessage[]>([])
   const [text, setText] = useState('')
   const [conn, setConn] = useState(connections[0]?.id||'')
@@ -1427,7 +1430,7 @@ export function MessageArea({ contact, connections, organizationId, userId, user
             <div className="w-14 h-14 rounded-full bg-[#00a884]/10 flex items-center justify-center mx-auto mb-3">
               <Send className="h-6 w-6 text-[#00a884]" />
             </div>
-            <p className="text-sm font-semibold text-[#111b21] dark:text-zinc-100">Nenhuma mensagem</p>
+            <p className="text-sm font-semibold text-[#111b21] dark:text-zinc-100">{t('noConversations')}</p>
             <p className="text-xs text-[#667781] mt-1">
               Envie a primeira mensagem para iniciar a conversa
             </p>
@@ -1651,7 +1654,7 @@ export function MessageArea({ contact, connections, organizationId, userId, user
             <p className="text-sm font-medium truncate text-[#111b21] dark:text-white">{pendingFile.name}</p>
             <p className="text-xs text-[#667781]">{(pendingFile.size / 1024).toFixed(0)} KB</p>
           </div>
-          <button onClick={cancelFile} className="p-1 rounded-full hover:bg-black/5" title="Cancelar">
+          <button onClick={cancelFile} className="p-1 rounded-full hover:bg-black/5" title={tCommon('buttons.cancel')}>
             <X className="h-4 w-4 text-[#667781]" />
           </button>
         </div>

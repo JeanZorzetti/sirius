@@ -1,13 +1,15 @@
 import { NextResponse } from 'next/server'
 import { getSession } from '@/lib/auth'
 import { getProvidersStatus } from '@/lib/scraping/providers'
+import { apiError } from '@/lib/api-error'
+import { ERR } from '@/lib/error-messages'
 
 export const dynamic = 'force-dynamic'
 
 export async function GET() {
   const session = await getSession()
   if (!session?.user) {
-    return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
+    return await apiError(ERR.UNAUTHORIZED, 401)
   }
 
   const providers = getProvidersStatus()

@@ -1,6 +1,7 @@
 'use client'
 
 import { useRef } from 'react'
+import { useTranslations } from 'next-intl'
 import { motion, useMotionValue, useTransform, AnimatePresence } from 'framer-motion'
 import { Trash2, Archive } from 'lucide-react'
 
@@ -18,9 +19,12 @@ export function SwipeableRow({
   children,
   onDelete,
   onArchive,
-  deleteLabel = 'Excluir',
-  archiveLabel = 'Arquivar',
+  deleteLabel,
+  archiveLabel,
 }: SwipeableRowProps) {
+  const tCommon = useTranslations('common')
+  const resolvedDeleteLabel = deleteLabel ?? tCommon('buttons.delete')
+  const resolvedArchiveLabel = archiveLabel ?? tCommon('buttons.archive')
   const x = useMotionValue(0)
   const triggered = useRef(false)
 
@@ -61,7 +65,7 @@ export function SwipeableRow({
         >
           <motion.div className="flex flex-col items-center gap-1" style={{ scale: deleteScale }}>
             <Trash2 className="h-5 w-5 text-destructive-foreground" />
-            <span className="text-xs text-destructive-foreground font-medium">{deleteLabel}</span>
+            <span className="text-xs text-destructive-foreground font-medium">{resolvedDeleteLabel}</span>
           </motion.div>
         </motion.div>
       )}
@@ -74,7 +78,7 @@ export function SwipeableRow({
         >
           <motion.div className="flex flex-col items-center gap-1" style={{ scale: archiveScale }}>
             <Archive className="h-5 w-5 text-muted-foreground" />
-            <span className="text-xs text-muted-foreground font-medium">{archiveLabel}</span>
+            <span className="text-xs text-muted-foreground font-medium">{resolvedArchiveLabel}</span>
           </motion.div>
         </motion.div>
       )}

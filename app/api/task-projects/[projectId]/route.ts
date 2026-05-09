@@ -2,6 +2,8 @@ import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { getSession } from '@/lib/auth'
 import logger from '@/lib/logger'
+import { apiError } from '@/lib/api-error'
+import { ERR } from '@/lib/error-messages'
 
 // GET /api/task-projects/[projectId]
 export async function GET(
@@ -12,7 +14,7 @@ export async function GET(
     const { projectId } = await params
     const session = await getSession()
     if (!session?.user?.email) {
-      return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
+      return await apiError(ERR.UNAUTHORIZED, 401)
     }
 
     const user = await prisma.user.findUnique({
@@ -21,7 +23,7 @@ export async function GET(
     })
 
     if (!user?.organizationId) {
-      return NextResponse.json({ error: 'Organização não encontrada' }, { status: 404 })
+      return await apiError(ERR.ORG_NOT_FOUND, 404)
     }
 
     const project = await prisma.taskProject.findFirst({
@@ -34,13 +36,13 @@ export async function GET(
     })
 
     if (!project) {
-      return NextResponse.json({ error: 'Projeto não encontrado' }, { status: 404 })
+      return await apiError(ERR.NOT_FOUND, 404)
     }
 
     return NextResponse.json(project)
   } catch (error) {
     logger.error({ err: error }, 'Error fetching task project')
-    return NextResponse.json({ error: 'Erro ao buscar projeto' }, { status: 500 })
+    return await apiError(ERR.INTERNAL_ERROR, 500)
   }
 }
 
@@ -53,7 +55,7 @@ export async function PATCH(
     const { projectId } = await params
     const session = await getSession()
     if (!session?.user?.email) {
-      return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
+      return await apiError(ERR.UNAUTHORIZED, 401)
     }
 
     const user = await prisma.user.findUnique({
@@ -62,7 +64,7 @@ export async function PATCH(
     })
 
     if (!user?.organizationId) {
-      return NextResponse.json({ error: 'Organização não encontrada' }, { status: 404 })
+      return await apiError(ERR.ORG_NOT_FOUND, 404)
     }
 
     const existing = await prisma.taskProject.findFirst({
@@ -70,7 +72,7 @@ export async function PATCH(
     })
 
     if (!existing) {
-      return NextResponse.json({ error: 'Projeto não encontrado' }, { status: 404 })
+      return await apiError(ERR.NOT_FOUND, 404)
     }
 
     // Only OWNER and GERENTE can change allowedRoles
@@ -98,7 +100,7 @@ export async function PATCH(
     return NextResponse.json(project)
   } catch (error) {
     logger.error({ err: error }, 'Error updating task project')
-    return NextResponse.json({ error: 'Erro ao atualizar projeto' }, { status: 500 })
+    return await apiError(ERR.INTERNAL_ERROR, 500)
   }
 }
 
@@ -111,7 +113,7 @@ export async function DELETE(
     const { projectId } = await params
     const session = await getSession()
     if (!session?.user?.email) {
-      return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
+      return await apiError(ERR.UNAUTHORIZED, 401)
     }
 
     const user = await prisma.user.findUnique({
@@ -120,7 +122,7 @@ export async function DELETE(
     })
 
     if (!user?.organizationId) {
-      return NextResponse.json({ error: 'Organização não encontrada' }, { status: 404 })
+      return await apiError(ERR.ORG_NOT_FOUND, 404)
     }
 
     const existing = await prisma.taskProject.findFirst({
@@ -128,7 +130,7 @@ export async function DELETE(
     })
 
     if (!existing) {
-      return NextResponse.json({ error: 'Projeto não encontrado' }, { status: 404 })
+      return await apiError(ERR.NOT_FOUND, 404)
     }
 
     await prisma.taskProject.delete({ where: { id: projectId } })
@@ -136,6 +138,6 @@ export async function DELETE(
     return NextResponse.json({ success: true })
   } catch (error) {
     logger.error({ err: error }, 'Error deleting task project')
-    return NextResponse.json({ error: 'Erro ao deletar projeto' }, { status: 500 })
+    return await apiError(ERR.INTERNAL_ERROR, 500)
   }
 }

@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
+import { useTranslations } from 'next-intl'
 import { FolderKanban, MoreHorizontal, Pencil, Trash2, CheckCircle2, Loader2, Lock, Globe } from 'lucide-react'
 import { toast } from 'sonner'
 import {
@@ -67,6 +68,7 @@ interface ProjectCardProps {
 
 export function ProjectCard({ project, total, done, overdue, progress, canManageRoles = false }: ProjectCardProps) {
   const router = useRouter()
+  const tCommon = useTranslations('common')
   const [deleteOpen, setDeleteOpen] = useState(false)
   const [editOpen, setEditOpen] = useState(false)
   const [deleting, setDeleting] = useState(false)
@@ -105,10 +107,10 @@ export function ProjectCard({ project, total, done, overdue, progress, canManage
     try {
       const res = await fetch(`/api/task-projects/${project.id}`, { method: 'DELETE' })
       if (!res.ok) throw new Error()
-      toast.success('Projeto excluído')
+      toast.success(tCommon('toasts.deleted'))
       router.refresh()
     } catch {
-      toast.error('Erro ao excluir projeto')
+      toast.error(tCommon('toasts.failedDelete'))
     } finally {
       setDeleting(false)
       setDeleteOpen(false)
@@ -117,7 +119,7 @@ export function ProjectCard({ project, total, done, overdue, progress, canManage
 
   async function handleSave(e: React.FormEvent) {
     e.preventDefault()
-    if (!editName.trim()) { toast.error('Nome obrigatório'); return }
+    if (!editName.trim()) { toast.error(tCommon('toasts.failed')); return }
     setSaving(true)
     try {
       const res = await fetch(`/api/task-projects/${project.id}`, {
@@ -131,11 +133,11 @@ export function ProjectCard({ project, total, done, overdue, progress, canManage
         }),
       })
       if (!res.ok) throw new Error()
-      toast.success('Projeto atualizado')
+      toast.success(tCommon('toasts.updated'))
       setEditOpen(false)
       router.refresh()
     } catch {
-      toast.error('Erro ao salvar projeto')
+      toast.error(tCommon('toasts.failedSave'))
     } finally {
       setSaving(false)
     }
@@ -191,12 +193,12 @@ export function ProjectCard({ project, total, done, overdue, progress, canManage
               <DropdownMenuContent align="end" className="w-44">
                 <DropdownMenuItem onClick={openEdit} className="gap-2 cursor-pointer">
                   <Pencil className="h-4 w-4" />
-                  Editar projeto
+                  {tCommon('buttons.edit')}
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={openDelete} className="gap-2 cursor-pointer text-destructive focus:text-destructive">
                   <Trash2 className="h-4 w-4" />
-                  Excluir projeto
+                  {tCommon('buttons.delete')}
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
@@ -238,7 +240,7 @@ export function ProjectCard({ project, total, done, overdue, progress, canManage
         <DialogContent className="sm:max-w-md">
           <form onSubmit={handleSave}>
             <DialogHeader>
-              <DialogTitle>Editar projeto</DialogTitle>
+              <DialogTitle>{tCommon('buttons.edit')}</DialogTitle>
             </DialogHeader>
             <div className="grid gap-4 py-4">
               <div className="grid gap-2">
@@ -336,11 +338,11 @@ export function ProjectCard({ project, total, done, overdue, progress, canManage
             </div>
             <DialogFooter>
               <Button type="button" variant="ghost" onClick={() => setEditOpen(false)} disabled={saving}>
-                Cancelar
+                {tCommon('buttons.cancel')}
               </Button>
               <Button type="submit" disabled={saving || !editName.trim()}>
                 {saving && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                Salvar
+                {tCommon('buttons.save')}
               </Button>
             </DialogFooter>
           </form>
@@ -351,20 +353,20 @@ export function ProjectCard({ project, total, done, overdue, progress, canManage
       <AlertDialog open={deleteOpen} onOpenChange={setDeleteOpen}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Excluir projeto?</AlertDialogTitle>
+            <AlertDialogTitle>{tCommon('buttons.delete')}</AlertDialogTitle>
             <AlertDialogDescription>
               Isso vai excluir permanentemente <strong>{project.name}</strong> e todas as suas tarefas. Esta ação não pode ser desfeita.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel disabled={deleting}>Cancelar</AlertDialogCancel>
+            <AlertDialogCancel disabled={deleting}>{tCommon('buttons.cancel')}</AlertDialogCancel>
             <AlertDialogAction
               onClick={handleDelete}
               disabled={deleting}
               className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
             >
               {deleting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-              Excluir
+              {tCommon('buttons.delete')}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

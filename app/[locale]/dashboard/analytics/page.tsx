@@ -15,17 +15,22 @@ import { PipelineFilter } from './pipeline-filter';
 import { ValueSearch } from './value-search';
 import { ContactSearch } from './contact-search';
 import { StageChartFilter } from './stage-chart-filter';
+import { getTranslations } from 'next-intl/server';
 
 export const metadata = { title: "Analytics | Sirius CRM" }
 
 export default async function AnalyticsPage({
+  params,
   searchParams,
 }: {
+  params: Promise<{ locale: string }>
   searchParams: Promise<{ from?: string; to?: string; mfrom?: string; mto?: string; ctop?: string; csort?: string; pid?: string; vsearch?: string; csearch?: string; sfrom?: string; sto?: string }>
 }) {
+  const { locale } = await params
+  const t = await getTranslations({ locale, namespace: 'dashboard' })
   const session = await getSession();
   if (!session || !session.user || !session.user.email) {
-    return <div>Não autorizado. Faça login novamente.</div>;
+    return <div>{t('errors.unauthorized')}</div>;
   }
 
   const { from, to, mfrom, mto, ctop, csort, pid, vsearch, csearch, sfrom, sto } = await searchParams;
@@ -36,7 +41,7 @@ export default async function AnalyticsPage({
   })
 
   if (!user || !user.organizationId) {
-    return <div>Usuário não pertence a uma organização.</div>
+    return <div>{t('errors.userNoOrg')}</div>
   }
 
   // Pipelines disponíveis para o filtro

@@ -2,6 +2,7 @@
 
 import { useState, useCallback, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
+import { useTranslations } from 'next-intl'
 import {
   DragDropContext,
   Droppable,
@@ -41,6 +42,8 @@ export function TaskListView({
   onTaskMove,
 }: TaskListViewProps) {
   const router = useRouter()
+  const tCommon = useTranslations('common')
+  const t = useTranslations('components.tasks')
   const [collapsed, setCollapsed] = useState<Record<string, boolean>>({})
   const [optimisticTasks, setOptimisticTasks] = useState<TaskLite[] | null>(null)
   const [isMounted, setIsMounted] = useState(false)
@@ -170,7 +173,7 @@ export function TaskListView({
                   onClick={() => onAddTask?.(status.id)}
                 >
                   <Plus className="mr-1 h-3 w-3" />
-                  Adicionar
+                  {tCommon('buttons.add')}
                 </Button>
               </div>
 
@@ -188,7 +191,7 @@ export function TaskListView({
                     >
                       {groupTasks.length === 0 && !snapshot.isDraggingOver ? (
                         <div className="px-4 py-6 text-center text-xs text-muted-foreground">
-                          Nenhuma tarefa neste status
+                          {t('noTasks')}
                         </div>
                       ) : (
                         groupTasks.map((task, index) => (

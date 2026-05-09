@@ -1,6 +1,7 @@
 ﻿import { Metadata } from 'next'
 import Script from 'next/script'
 import Link from 'next/link'
+import { getTranslations } from 'next-intl/server'
 import { buildLocaleAlternates } from '@/lib/seo/canonical'
 
 export async function generateMetadata({
@@ -9,31 +10,22 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>
 }): Promise<Metadata> {
   const { locale } = await params
+  const t = await getTranslations({ locale, namespace: 'marketing.anuario.meta' })
   const alternates = buildLocaleAlternates(locale, '/anuario', '/yearbook')
   return {
-    title: 'Anuário do Vendedor B2B Brasileiro 2026 | Sirius CRM',
-    description: 'Dados exclusivos sobre vendas B2B no Brasil: ciclo médio de venda, taxa de conversão por etapa, impacto da automação e benchmarks por setor. Pesquisa Sirius CRM com +127 empresas.',
+    title: t('title'),
+    description: t('description'),
+    alternates,
     openGraph: {
-      title: 'Anuário do Vendedor B2B Brasileiro 2026 | Sirius CRM',
-      description: 'Dados proprietários de +127 empresas que usam o Sirius CRM: ciclo médio de venda, taxa de conversão, produtividade e benchmarks por setor no Brasil em 2026.',
+      title: t('ogTitle'),
+      description: t('ogDescription'),
       url: alternates.canonical,
-      siteName: 'Sirius CRM',
-      type: 'website',
-      images: [
-        {
-          url: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1200&h=630&fit=crop&auto=format&q=80',
-          width: 1200,
-          height: 630,
-          alt: 'Anuário do Vendedor B2B Brasileiro 2026 — Sirius CRM',
-        },
-      ],
     },
     twitter: {
       card: 'summary_large_image',
-      title: 'Anuário do Vendedor B2B Brasileiro 2026 | Sirius CRM',
-      description: 'Dados proprietários de +127 empresas B2B brasileiras: ciclo de venda, conversão, IA e benchmarks por setor.',
+      title: t('ogTitle'),
+      description: t('ogDescription'),
     },
-    alternates,
   }
 }
 

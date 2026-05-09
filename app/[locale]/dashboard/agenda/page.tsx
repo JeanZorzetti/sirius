@@ -1,20 +1,26 @@
-import { Metadata } from 'next'
 import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { AgendaClient } from '@/components/agenda/agenda-client'
+import { getTranslations } from 'next-intl/server'
 
-export const metadata: Metadata = { title: 'Agenda - CRM' }
+export const metadata = { title: 'Agenda - CRM' }
 export const dynamic = 'force-dynamic'
 
-export default async function AgendaPage() {
+export default async function AgendaPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>
+}) {
+  const { locale } = await params
+  const t = await getTranslations({ locale, namespace: 'dashboard' })
   const session = await getSession()
-  if (!session?.user?.email) return <div>Não autorizado.</div>
+  if (!session?.user?.email) return <div>{t('errors.unauthorized')}</div>
 
   const user = await prisma.user.findUnique({
     where: { email: session.user.email },
     select: { id: true, organizationId: true, orgRole: true },
   })
-  if (!user?.organizationId) return <div>Usuário sem organização.</div>
+  if (!user?.organizationId) return <div>{t('errors.userNoOrg')}</div>
 
   const isMember = user.orgRole === 'MEMBER'
 

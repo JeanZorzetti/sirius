@@ -198,7 +198,7 @@ Seja natural, não robotizado.`;
         }
 
         // 6. Generate script using AGI
-        const brain = createAgiBrain(plan);
+        const brain = createAgiBrain(plan, undefined, user.locale ?? undefined);
         const response = await brain.think(prompt);
 
         // 7. Record usage

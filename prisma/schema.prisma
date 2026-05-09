@@ -254,6 +254,8 @@ model User {
   accessSessions AccessSession[]
   pageViewLogs   PageViewLog[]
 
+  locale  String  @default("pt-BR") // "pt-BR" | "en"
+
   role    Role    @default(USER)
   orgRole OrgRole @default(OWNER) // Defaulting to OWNER for now so existing users don't lose access. Ideally MEMBER.
 

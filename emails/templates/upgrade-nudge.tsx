@@ -1,11 +1,16 @@
-﻿import { Text, Heading, Button, Section } from '@react-email/components'
+import { Text, Heading, Button, Section } from '@react-email/components'
 import { BaseLayout } from '../layouts/base'
+import emailsEn from '@/messages/en/emails.json'
+import emailsPtBr from '@/messages/pt-BR/emails.json'
+
+type Locale = 'pt-BR' | 'en'
 
 interface UpgradeNudgeEmailProps {
   userName: string
   currentDeals: number
   maxDeals: number
   upgradeUrl?: string
+  locale?: Locale
 }
 
 export function UpgradeNudgeEmail({
@@ -13,24 +18,31 @@ export function UpgradeNudgeEmail({
   currentDeals,
   maxDeals,
   upgradeUrl = 'https://siriuscrm.com.br/dashboard/billing',
+  locale = 'pt-BR',
 }: UpgradeNudgeEmailProps) {
+  const s = locale === 'en' ? emailsEn.emails.upgradeNudge : emailsPtBr.emails.upgradeNudge
+
   const percentUsed = Math.round((currentDeals / maxDeals) * 100)
+  const remaining = maxDeals - currentDeals
+
+  const intro = s.intro.replace('{currentDeals}', String(currentDeals))
+  const progressText = s.progressText
+    .replace('{currentDeals}', String(currentDeals))
+    .replace('{maxDeals}', String(maxDeals))
+    .replace('{percentUsed}', String(percentUsed))
+  const warningText = s.warningText.replace('{remaining}', String(remaining))
+  const limitWarning = s.limitWarning.replace('{maxDeals}', String(maxDeals))
 
   return (
-    <BaseLayout preview="Você está perto do limite do plano Gratuito">
-      <Heading style={styles.heading}>Você está crescendo! 🚀</Heading>
+    <BaseLayout preview={s.preview} locale={locale}>
+      <Heading style={styles.heading}>{s.title} 🚀</Heading>
 
-      <Text style={styles.text}>Olá {userName},</Text>
+      <Text style={styles.text}>{locale === 'en' ? `Hi ${userName},` : `Olá ${userName},`}</Text>
 
-      <Text style={styles.text}>
-        Parabéns! Você já tem <strong>{currentDeals} negócios</strong> no seu
-        pipeline.
-      </Text>
+      <Text style={styles.text}>{intro}</Text>
 
       <Section style={styles.progressCard}>
-        <Text style={styles.progressText}>
-          {currentDeals} de {maxDeals} negócios ({percentUsed}%)
-        </Text>
+        <Text style={styles.progressText}>{progressText}</Text>
         <div style={styles.progressBar}>
           <div
             style={{
@@ -39,52 +51,44 @@ export function UpgradeNudgeEmail({
             }}
           />
         </div>
-        <Text style={styles.warningText}>
-          ⚠️ Faltam apenas {maxDeals - currentDeals} negócios para atingir o
-          limite
-        </Text>
+        <Text style={styles.warningText}>⚠️ {warningText}</Text>
       </Section>
 
-      <Text style={styles.text}>
-        Quando você atingir o limite de <strong>{maxDeals} negócios</strong>,
-        não poderá criar novos até fazer upgrade para o plano Pro.
-      </Text>
+      <Text style={styles.text}>{limitWarning}</Text>
 
-      <Heading style={styles.subheading}>Por que fazer upgrade agora?</Heading>
+      <Heading style={styles.subheading}>{s.whyUpgradeTitle}</Heading>
 
       <Section style={styles.benefits}>
-        <Text style={styles.benefit}>✅ Negócios ilimitados</Text>
-        <Text style={styles.benefit}>✅ Múltiplos pipelines personalizados</Text>
-        <Text style={styles.benefit}>✅ Analytics avançado</Text>
-        <Text style={styles.benefit}>✅ Automações de email</Text>
-        <Text style={styles.benefit}>✅ Suporte prioritário</Text>
+        <Text style={styles.benefit}>✅ {s.benefit1}</Text>
+        <Text style={styles.benefit}>✅ {s.benefit2}</Text>
+        <Text style={styles.benefit}>✅ {s.benefit3}</Text>
+        <Text style={styles.benefit}>✅ {s.benefit4}</Text>
+        <Text style={styles.benefit}>✅ {s.benefit5}</Text>
       </Section>
 
       <Section style={styles.pricingCard}>
         <Text style={styles.pricingText}>
-          <span style={styles.price}>R$ 67</span>
-          <span style={styles.period}>/mês</span>
+          <span style={styles.price}>{locale === 'en' ? '$67' : 'R$ 67'}</span>
+          <span style={styles.period}>{locale === 'en' ? '/mo' : '/mês'}</span>
         </Text>
-        <Text style={styles.pricingSubtext}>
-          Sem taxas de setup • Cancele quando quiser
-        </Text>
+        <Text style={styles.pricingSubtext}>{s.pricingSubtext}</Text>
       </Section>
 
       <Section style={styles.ctaSection}>
         <Button href={upgradeUrl} style={styles.button}>
-          Fazer Upgrade Agora
+          {s.cta}
         </Button>
       </Section>
 
-      <Text style={styles.footnote}>
-        Continue usando o plano Gratuito pelo tempo que quiser. Você pode fazer
-        upgrade a qualquer momento! 😊
-      </Text>
+      <Text style={styles.footnote}>{s.footnote}</Text>
 
       <Text style={styles.signature}>
-        Atenciosamente,
-        <br />
-        Equipe Sirius CRM
+        {s.signature.split('\n').map((line, i, arr) => (
+          <span key={i}>
+            {line}
+            {i < arr.length - 1 && <br />}
+          </span>
+        ))}
       </Text>
     </BaseLayout>
   )

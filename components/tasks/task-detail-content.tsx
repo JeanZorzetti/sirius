@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import { useTranslations } from 'next-intl'
 import {
   Calendar,
   Flag,
@@ -68,6 +69,8 @@ interface TaskDetailContentProps {
 
 export function TaskDetailContent({ task, currentUserId, currentUserRole }: TaskDetailContentProps) {
   const router = useRouter()
+  const tCommon = useTranslations('common')
+  const t = useTranslations('components.tasks')
   const [saving, setSaving] = useState(false)
   const [deleting, setDeleting] = useState(false)
   const [members, setMembers] = useState<OrgMember[]>([])
@@ -112,10 +115,10 @@ export function TaskDetailContent({ task, currentUserId, currentUserRole }: Task
         }),
       })
       if (!res.ok) throw new Error('fail')
-      toast.success('Tarefa atualizada')
+      toast.success(t('updateSuccess'))
       router.refresh()
     } catch {
-      toast.error('Erro ao salvar')
+      toast.error(tCommon('toasts.failedSave'))
     } finally {
       setSaving(false)
     }
@@ -127,10 +130,10 @@ export function TaskDetailContent({ task, currentUserId, currentUserRole }: Task
     try {
       const res = await fetch(`/api/tasks/${task.id}`, { method: 'DELETE' })
       if (!res.ok) throw new Error('fail')
-      toast.success('Tarefa excluída')
+      toast.success(t('deleteSuccess'))
       router.push(`/dashboard/tasks/${task.projectId}`)
     } catch {
-      toast.error('Erro ao excluir')
+      toast.error(tCommon('toasts.failedDelete'))
       setDeleting(false)
     }
   }
@@ -512,7 +515,7 @@ export function TaskDetailContent({ task, currentUserId, currentUserRole }: Task
             className="w-full gap-1.5"
           >
             <Save className="h-3 w-3" />
-            {saving ? 'Salvando...' : 'Salvar alterações'}
+            {saving ? tCommon('buttons.saving') : tCommon('buttons.save')}
           </Button>
           <Button
             onClick={remove}
@@ -522,7 +525,7 @@ export function TaskDetailContent({ task, currentUserId, currentUserRole }: Task
             className="w-full gap-1.5 text-destructive hover:bg-destructive/10 hover:text-destructive"
           >
             <Trash2 className="h-3 w-3" />
-            {deleting ? 'Excluindo...' : 'Excluir tarefa'}
+            {deleting ? tCommon('buttons.loading') : t('deleteTask')}
           </Button>
         </div>
       </aside>

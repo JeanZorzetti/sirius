@@ -7,6 +7,8 @@ import { randomBytes } from "crypto"
 import { sendEmail } from "@/lib/email"
 import { InviteEmail } from "@/emails/templates/invite"
 import { OrgRole } from "@prisma/client"
+import { resolveUserLocale } from "@/lib/i18n-server"
+import { defaultLocale } from "@/i18n/config"
 import {
     canManageRole,
     normalizeRole,
@@ -80,13 +82,20 @@ export async function createInvite(email: string, role: OrgRole = 'VENDEDOR') {
     })
 
     const inviteUrl = `${process.env.NEXTAUTH_URL || process.env.NEXT_PUBLIC_APP_URL || 'https://siriuscrm.com.br'}/register?invite=${token}`
+    const locale = (actor.locale as 'pt-BR' | 'en') ?? defaultLocale
+    const inviterName = actor.name ?? (locale === 'en' ? 'A colleague' : 'Um colega')
+    const orgName = organization?.name ?? 'Sirius CRM'
+    const subject = locale === 'en'
+        ? `${inviterName} invited you to ${orgName}`
+        : `${inviterName} convidou você para o ${orgName}`
     await sendEmail({
         to: email,
-        subject: `${actor.name} convidou você para o ${organization?.name ?? 'Sirius CRM'}`,
+        subject,
         react: InviteEmail({
-            inviterName: actor.name ?? 'Um colega',
-            organizationName: organization?.name ?? 'Sirius CRM',
+            inviterName,
+            organizationName: orgName,
             inviteUrl,
+            locale,
         }),
     })
 
@@ -120,13 +129,20 @@ export async function resendInvite(inviteId: string) {
     })
 
     const inviteUrl = `${process.env.NEXTAUTH_URL || process.env.NEXT_PUBLIC_APP_URL || 'https://siriuscrm.com.br'}/register?invite=${token}`
+    const locale = (actor.locale as 'pt-BR' | 'en') ?? defaultLocale
+    const inviterName = actor.name ?? (locale === 'en' ? 'A colleague' : 'Um colega')
+    const orgName = organization?.name ?? 'Sirius CRM'
+    const resendSubject = locale === 'en'
+        ? `${inviterName} invited you to ${orgName}`
+        : `${inviterName} convidou você para o ${orgName}`
     await sendEmail({
         to: invite.email,
-        subject: `${actor.name} convidou você para o ${organization?.name ?? 'Sirius CRM'}`,
+        subject: resendSubject,
         react: InviteEmail({
-            inviterName: actor.name ?? 'Um colega',
-            organizationName: organization?.name ?? 'Sirius CRM',
+            inviterName,
+            organizationName: orgName,
             inviteUrl,
+            locale,
         }),
     })
 

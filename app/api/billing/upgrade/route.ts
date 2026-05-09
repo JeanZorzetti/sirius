@@ -12,6 +12,8 @@ import { billingRateLimit } from '@/lib/ratelimit'
 import { PLAN_PRICING, PLAN_NAMES } from '@/lib/entitlements'
 import { SubscriptionTier } from '@prisma/client'
 import { MercadoPagoConfig, Preference } from 'mercadopago'
+import { apiError } from '@/lib/api-error'
+import { ERR } from '@/lib/error-messages'
 
 let _mp: MercadoPagoConfig | null = null
 function getMp() {
@@ -35,7 +37,7 @@ export async function POST(req: NextRequest) {
     // 1. Autenticação
     const session = await getSession()
     if (!session?.user?.email) {
-      return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
+      return await apiError(ERR.UNAUTHORIZED, 401, { req })
     }
 
     // 2. Dados do request
@@ -55,10 +57,7 @@ export async function POST(req: NextRequest) {
     })
 
     if (!user?.organizationId) {
-      return NextResponse.json(
-        { error: 'Organização não encontrada' },
-        { status: 404 }
-      )
+      return await apiError(ERR.ORG_NOT_FOUND, 404, { req })
     }
 
     // 4. Buscar organização
@@ -73,10 +72,7 @@ export async function POST(req: NextRequest) {
     })
 
     if (!org) {
-      return NextResponse.json(
-        { error: 'Organização não encontrada' },
-        { status: 404 }
-      )
+      return await apiError(ERR.ORG_NOT_FOUND, 404, { req })
     }
 
     // 5. Se for FREE, atualizar diretamente

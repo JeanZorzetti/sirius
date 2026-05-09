@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server'
 import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
+import { apiError } from '@/lib/api-error'
+import { ERR } from '@/lib/error-messages'
 
 export const dynamic = 'force-dynamic'
 
@@ -12,7 +14,7 @@ export async function POST() {
   try {
     const session = await getSession()
     if (!session?.user) {
-      return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
+      return await apiError(ERR.UNAUTHORIZED, 401)
     }
 
     // Jobs travados há mais de 10 minutos

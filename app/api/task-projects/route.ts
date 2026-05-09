@@ -3,13 +3,15 @@ import { prisma } from '@/lib/prisma'
 import { getSession } from '@/lib/auth'
 import { checkTaskProjectLimit } from '@/lib/feature-gates'
 import logger from '@/lib/logger'
+import { apiError } from '@/lib/api-error'
+import { ERR } from '@/lib/error-messages'
 
 // GET /api/task-projects - Listar projetos de tarefas
 export async function GET() {
   try {
     const session = await getSession()
     if (!session?.user?.email) {
-      return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
+      return await apiError(ERR.UNAUTHORIZED, 401)
     }
 
     const user = await prisma.user.findUnique({
@@ -18,7 +20,7 @@ export async function GET() {
     })
 
     if (!user?.organizationId) {
-      return NextResponse.json({ error: 'Organização não encontrada' }, { status: 404 })
+      return await apiError(ERR.ORG_NOT_FOUND, 404)
     }
 
     const projects = await prisma.taskProject.findMany({
@@ -33,7 +35,7 @@ export async function GET() {
     return NextResponse.json(projects)
   } catch (error) {
     logger.error({ err: error }, 'Error listing task projects')
-    return NextResponse.json({ error: 'Erro ao listar projetos' }, { status: 500 })
+    return await apiError(ERR.INTERNAL_ERROR, 500)
   }
 }
 
@@ -42,7 +44,7 @@ export async function POST(request: Request) {
   try {
     const session = await getSession()
     if (!session?.user?.email) {
-      return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
+      return await apiError(ERR.UNAUTHORIZED, 401)
     }
 
     const user = await prisma.user.findUnique({
@@ -51,7 +53,7 @@ export async function POST(request: Request) {
     })
 
     if (!user?.organizationId) {
-      return NextResponse.json({ error: 'Organização não encontrada' }, { status: 404 })
+      return await apiError(ERR.ORG_NOT_FOUND, 404)
     }
 
     // Verificar limite de projetos
@@ -99,6 +101,6 @@ export async function POST(request: Request) {
     return NextResponse.json(project, { status: 201 })
   } catch (error) {
     logger.error({ err: error }, 'Error creating task project')
-    return NextResponse.json({ error: 'Erro ao criar projeto' }, { status: 500 })
+    return await apiError(ERR.INTERNAL_ERROR, 500)
   }
 }

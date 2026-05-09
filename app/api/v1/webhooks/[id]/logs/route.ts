@@ -3,6 +3,8 @@ import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { getPaginationParams, getPaginationMeta, paginatedResponse } from '@/lib/api-helpers'
 import logger from '@/lib/logger'
+import { apiError } from '@/lib/api-error'
+import { ERR } from '@/lib/error-messages'
 
 /**
  * GET /api/v1/webhooks/[id]/logs
@@ -17,10 +19,7 @@ export async function GET(
     const session = await getSession()
 
     if (!session || !session.user || !session.user.email) {
-      return NextResponse.json(
-        { error: 'Não autorizado' },
-        { status: 401 }
-      )
+      return await apiError(ERR.UNAUTHORIZED, 401, { req: request })
     }
 
     const user = await prisma.user.findUnique({
@@ -29,10 +28,7 @@ export async function GET(
     })
 
     if (!user) {
-      return NextResponse.json(
-        { error: 'Usuário não encontrado' },
-        { status: 404 }
-      )
+      return await apiError(ERR.USER_NOT_FOUND, 404, { req: request })
     }
 
     // Verify webhook belongs to organization
@@ -44,10 +40,7 @@ export async function GET(
     })
 
     if (!webhook) {
-      return NextResponse.json(
-        { error: 'Webhook não encontrado' },
-        { status: 404 }
-      )
+      return await apiError(ERR.WEBHOOK_NOT_FOUND, 404, { req: request })
     }
 
     // Parse pagination
@@ -98,9 +91,6 @@ export async function GET(
     )
   } catch (error) {
     logger.error({ error }, 'Error fetching webhook logs')
-    return NextResponse.json(
-      { error: 'Erro ao buscar logs do webhook' },
-      { status: 500 }
-    )
+    return await apiError(ERR.INTERNAL_ERROR, 500, { req: request })
   }
 }

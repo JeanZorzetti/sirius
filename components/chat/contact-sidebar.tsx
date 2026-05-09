@@ -11,6 +11,7 @@ import {
 import { toast } from 'sonner'
 import { cn } from '@/lib/utils'
 import Link from 'next/link'
+import { useTranslations } from 'next-intl'
 
 interface Tag {
   id: string
@@ -101,6 +102,8 @@ function formatCurrency(value: number | null): string {
 }
 
 export function ContactSidebar({ contact, onClose, onChatCleared }: ContactSidebarProps) {
+  const tCommon = useTranslations('common')
+  const t = useTranslations('components.chat')
   const [dealsOpen, setDealsOpen] = useState(true)
   const [tagsOpen, setTagsOpen] = useState(true)
   const [notesOpen, setNotesOpen] = useState(true)
@@ -359,7 +362,7 @@ export function ContactSidebar({ contact, onClose, onChatCleared }: ContactSideb
           ) : (
             <Trash2 className="h-4 w-4 mr-2" />
           )}
-          {confirmClear ? 'Confirmar? Clique novamente' : 'Limpar Histórico'}
+          {confirmClear ? `${tCommon('buttons.confirm')}? Clique novamente` : 'Limpar Histórico'}
         </Button>
       </div>
     </div>

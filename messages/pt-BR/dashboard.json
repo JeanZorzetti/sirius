@@ -112,6 +112,90 @@
       "startTour": "Começar tour",
       "next": "Próximo",
       "finish": "Concluir"
+    },
+    "pages": {
+      "pipeline": {
+        "title": "Pipeline",
+        "subtitle": "Gerencie seus negócios e acompanhe o pipeline de vendas"
+      },
+      "contacts": {
+        "title": "Contatos",
+        "subtitle": "Gerencie seus clientes e leads"
+      },
+      "deals": {
+        "title": "Negócios",
+        "subtitle": "Acompanhe suas oportunidades de vendas"
+      },
+      "analytics": {
+        "title": "Analytics",
+        "subtitle": "Monitore sua performance de vendas"
+      },
+      "tasks": {
+        "title": "Tarefas",
+        "subtitle": "Gerencie seus projetos e tarefas"
+      },
+      "chat": {
+        "title": "Central de Atendimento",
+        "subtitle": "Gerencie todas as suas conversas"
+      },
+      "instagram": {
+        "title": "Bot do Instagram",
+        "subtitle": "Gerencie sua automação no Instagram"
+      },
+      "products": {
+        "title": "Produtos",
+        "subtitle": "Gerencie seu catálogo de produtos"
+      },
+      "pipelines": {
+        "title": "Pipelines",
+        "subtitle": "Gerencie seus pipelines de vendas"
+      },
+      "settings": {
+        "title": "Configurações",
+        "subtitle": "Configure seu espaço de trabalho"
+      },
+      "billing": {
+        "title": "Plano e Cobrança",
+        "subtitle": "Gerencie sua assinatura e uso"
+      },
+      "agenda": {
+        "title": "Agenda",
+        "subtitle": "Gerencie sua agenda e compromissos"
+      },
+      "automations": {
+        "title": "Automações",
+        "subtitle": "Automatize seus fluxos de vendas"
+      },
+      "emailAutomations": {
+        "title": "E-mail Automático",
+        "subtitle": "Configure sequências de e-mail automáticas"
+      },
+      "marketing": {
+        "title": "Marketing",
+        "subtitle": "Gerencie suas campanhas de marketing"
+      },
+      "prospecting": {
+        "title": "Prospecção",
+        "subtitle": "Encontre e qualifique novos leads"
+      },
+      "visits": {
+        "title": "Visitas",
+        "subtitle": "Registre suas visitas em campo"
+      },
+      "support": {
+        "title": "Suporte",
+        "subtitle": "Obtenha ajuda da nossa equipe"
+      },
+      "nearby": {
+        "title": "Próximos",
+        "subtitle": "Encontre contatos perto de você"
+      }
+    },
+    "errors": {
+      "unauthorized": "Não autorizado. Faça login novamente.",
+      "userNoOrg": "Usuário não pertence a uma organização.",
+      "fetchUser": "Falha ao carregar dados do usuário.",
+      "notFound": "A página solicitada não foi encontrada."
     }
   }
 }

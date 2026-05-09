@@ -1,72 +1,88 @@
-﻿import { Text, Heading, Button, Section } from '@react-email/components'
+import { Text, Heading, Button, Section } from '@react-email/components'
 import { BaseLayout } from '../layouts/base'
+import emailsEn from '@/messages/en/emails.json'
+import emailsPtBr from '@/messages/pt-BR/emails.json'
+
+type Locale = 'pt-BR' | 'en'
 
 interface WelcomeEmailProps {
   userName: string
   organizationName: string
   dashboardUrl?: string
+  locale?: Locale
 }
 
 export function WelcomeEmail({
   userName,
   organizationName,
   dashboardUrl = 'https://siriuscrm.com.br/dashboard',
+  locale = 'pt-BR',
 }: WelcomeEmailProps) {
+  const s = locale === 'en' ? emailsEn.emails.welcome : emailsPtBr.emails.welcome
+
+  const preview = s.preview.replace('{userName}', userName)
+  const intro = s.intro.replace('{organizationName}', organizationName)
+
   return (
-    <BaseLayout preview={`Bem-vindo ao Sirius CRM, ${userName}!`}>
-      <Heading style={styles.heading}>Bem-vindo ao Sirius CRM! 🎉</Heading>
+    <BaseLayout preview={preview} locale={locale}>
+      <Heading style={styles.heading}>{s.title}</Heading>
 
-      <Text style={styles.text}>Olá {userName},</Text>
-
-      <Text style={styles.text}>
-        Ficamos muito felizes em ter você e a{' '}
-        <strong>{organizationName}</strong> como parte da família Sirius!
-      </Text>
+      <Text style={styles.text}>{locale === 'en' ? `Hi ${userName},` : `Olá ${userName},`}</Text>
 
       <Text style={styles.text}>
-        Você agora tem acesso ao CRM mais intuitivo do mercado brasileiro.
-        Aqui estão seus próximos passos:
+        {intro.split(organizationName).map((part, i, arr) =>
+          i < arr.length - 1 ? (
+            <span key={i}>
+              {part}
+              <strong>{organizationName}</strong>
+            </span>
+          ) : (
+            <span key={i}>{part}</span>
+          )
+        )}
       </Text>
+
+      <Text style={styles.text}>{s.body}</Text>
 
       <Section style={styles.steps}>
         <Text style={styles.step}>
-          <strong>1. Crie seu primeiro negócio</strong>
+          <strong>{s.step1Title}</strong>
           <br />
-          Comece adicionando suas oportunidades ao pipeline visual
+          {s.step1Body}
         </Text>
 
         <Text style={styles.step}>
-          <strong>2. Adicione seus contatos</strong>
+          <strong>{s.step2Title}</strong>
           <br />
-          Importe ou crie manualmente os contatos dos seus clientes
+          {s.step2Body}
         </Text>
 
         <Text style={styles.step}>
-          <strong>3. Convide sua equipe</strong>
+          <strong>{s.step3Title}</strong>
           <br />
-          Trabalhe em colaboração com todo o time de vendas
+          {s.step3Body}
         </Text>
       </Section>
 
       <Section style={styles.ctaSection}>
         <Button href={dashboardUrl} style={styles.button}>
-          Acessar meu Dashboard
+          {s.cta}
         </Button>
       </Section>
 
       <Text style={styles.tip}>
-        💡 <strong>Dica:</strong> No plano Gratuito você tem até 10 negócios.
-        Faça upgrade para Pro e tenha acesso ilimitado!
+        <strong>{locale === 'en' ? 'Tip:' : 'Dica:'}</strong> {s.tip}
       </Text>
 
-      <Text style={styles.text}>
-        Se tiver qualquer dúvida, estamos aqui para ajudar.
-      </Text>
+      <Text style={styles.text}>{s.helpText}</Text>
 
       <Text style={styles.signature}>
-        Atenciosamente,
-        <br />
-        Equipe Sirius CRM
+        {s.signature.split('\n').map((line, i) => (
+          <span key={i}>
+            {line}
+            {i < s.signature.split('\n').length - 1 && <br />}
+          </span>
+        ))}
       </Text>
     </BaseLayout>
   )

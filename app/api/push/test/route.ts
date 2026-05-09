@@ -2,6 +2,8 @@ import logger from '@/lib/logger'
 import { NextRequest, NextResponse } from 'next/server'
 import { getSession } from '@/lib/auth'
 import { sendNotificationToUser } from '@/lib/push-notifications'
+import { apiError } from '@/lib/api-error'
+import { ERR } from '@/lib/error-messages'
 
 /**
  * @swagger
@@ -24,10 +26,7 @@ export async function POST(request: NextRequest) {
     const session = await getSession()
 
     if (!session?.user?.id) {
-      return NextResponse.json(
-        { error: 'Não autorizado' },
-        { status: 401 }
-      )
+      return await apiError(ERR.UNAUTHORIZED, 401, { req: request })
     }
 
     const result = await sendNotificationToUser(session.user.id, {
@@ -44,9 +43,6 @@ export async function POST(request: NextRequest) {
     })
   } catch (error) {
     logger.error({ err: error }, 'Error sending test push notification')
-    return NextResponse.json(
-      { error: 'Erro interno do servidor' },
-      { status: 500 }
-    )
+    return await apiError(ERR.INTERNAL_ERROR, 500, { req: request })
   }
 }

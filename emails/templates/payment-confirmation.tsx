@@ -1,5 +1,9 @@
-﻿import { Text, Heading, Button, Section, Hr } from '@react-email/components'
+import { Text, Heading, Button, Section, Hr } from '@react-email/components'
 import { BaseLayout } from '../layouts/base'
+import emailsEn from '@/messages/en/emails.json'
+import emailsPtBr from '@/messages/pt-BR/emails.json'
+
+type Locale = 'pt-BR' | 'en'
 
 interface PaymentConfirmationEmailProps {
   userName: string
@@ -9,6 +13,7 @@ interface PaymentConfirmationEmailProps {
   amount: number
   nextBillingDate: string
   dashboardUrl?: string
+  locale?: Locale
 }
 
 export function PaymentConfirmationEmail({
@@ -19,99 +24,107 @@ export function PaymentConfirmationEmail({
   amount,
   nextBillingDate,
   dashboardUrl = 'https://siriuscrm.com.br/dashboard',
+  locale = 'pt-BR',
 }: PaymentConfirmationEmailProps) {
+  const s = locale === 'en' ? emailsEn.emails.paymentConfirmation : emailsPtBr.emails.paymentConfirmation
+
   const formatPaymentType = (type: string) => {
     const types: Record<string, string> = {
-      'credit_card': 'Cartão de Crédito',
-      'debit_card': 'Cartão de Débito',
-      'pix': 'PIX',
-      'boleto': 'Boleto Bancário'
+      'credit_card': s.paymentMethodCreditCard,
+      'debit_card': s.paymentMethodDebitCard,
+      'pix': s.paymentMethodPix,
+      'boleto': s.paymentMethodBoleto,
     }
     return types[type] || type
   }
 
-  return (
-    <BaseLayout preview={`Bem-vindo ao Sirius Pro! Pagamento confirmado 🎉`}>
-      <Heading style={styles.heading}>Pagamento Confirmado! 🎉</Heading>
+  const intro = s.intro.replace('{organizationName}', organizationName)
+  const formattedAmount = locale === 'en'
+    ? `$${amount.toFixed(2)}`
+    : `R$ ${amount.toFixed(2).replace('.', ',')}`
 
-      <Text style={styles.text}>Olá {userName},</Text>
+  return (
+    <BaseLayout preview={s.preview} locale={locale}>
+      <Heading style={styles.heading}>{s.title} 🎉</Heading>
+
+      <Text style={styles.text}>{locale === 'en' ? `Hi ${userName},` : `Olá ${userName},`}</Text>
 
       <Text style={styles.text}>
-        Recebemos seu pagamento com sucesso e a <strong>{organizationName}</strong> foi
-        atualizada para o <strong style={{ color: '#8b5cf6' }}>Plano Pro</strong>!
+        {intro.split(organizationName).map((part, i, arr) =>
+          i < arr.length - 1 ? (
+            <span key={i}>
+              {part}
+              <strong>{organizationName}</strong>
+            </span>
+          ) : (
+            <span key={i}>{part}</span>
+          )
+        )}
       </Text>
 
       <Section style={styles.successCard}>
         <Text style={styles.successIcon}>✓</Text>
-        <Text style={styles.successText}>
-          Pagamento Aprovado
-        </Text>
+        <Text style={styles.successText}>{s.successBadge}</Text>
       </Section>
 
       <Hr style={styles.divider} />
 
-      <Heading style={styles.subheading}>Detalhes do Pagamento</Heading>
+      <Heading style={styles.subheading}>{s.detailsTitle}</Heading>
 
       <Section style={styles.detailsCard}>
         <div style={styles.detailRow}>
-          <Text style={styles.detailLabel}>ID da Transação:</Text>
+          <Text style={styles.detailLabel}>{s.labelTransactionId}</Text>
           <Text style={styles.detailValue}>{paymentId}</Text>
         </div>
         <div style={styles.detailRow}>
-          <Text style={styles.detailLabel}>Método de Pagamento:</Text>
+          <Text style={styles.detailLabel}>{s.labelPaymentMethod}</Text>
           <Text style={styles.detailValue}>{formatPaymentType(paymentType)}</Text>
         </div>
         <div style={styles.detailRow}>
-          <Text style={styles.detailLabel}>Valor Pago:</Text>
-          <Text style={styles.detailValue}>
-            R$ {amount.toFixed(2).replace('.', ',')}
-          </Text>
+          <Text style={styles.detailLabel}>{s.labelAmount}</Text>
+          <Text style={styles.detailValue}>{formattedAmount}</Text>
         </div>
         <div style={styles.detailRow}>
-          <Text style={styles.detailLabel}>Próximo Vencimento:</Text>
+          <Text style={styles.detailLabel}>{s.labelNextBilling}</Text>
           <Text style={styles.detailValue}>{nextBillingDate}</Text>
         </div>
       </Section>
 
       <Hr style={styles.divider} />
 
-      <Heading style={styles.subheading}>Agora você tem acesso a:</Heading>
+      <Heading style={styles.subheading}>{s.featuresTitle}</Heading>
 
       <Section style={styles.features}>
-        <Text style={styles.feature}>✨ Negócios Ilimitados</Text>
-        <Text style={styles.feature}>✨ Múltiplos Pipelines Personalizados</Text>
-        <Text style={styles.feature}>✨ Analytics Avançado</Text>
-        <Text style={styles.feature}>✨ Automações de Email</Text>
-        <Text style={styles.feature}>✨ Suporte Prioritário</Text>
+        <Text style={styles.feature}>✨ {s.feature1}</Text>
+        <Text style={styles.feature}>✨ {s.feature2}</Text>
+        <Text style={styles.feature}>✨ {s.feature3}</Text>
+        <Text style={styles.feature}>✨ {s.feature4}</Text>
+        <Text style={styles.feature}>✨ {s.feature5}</Text>
       </Section>
 
       <Section style={styles.ctaSection}>
         <Button href={dashboardUrl} style={styles.button}>
-          Explorar Recursos Pro
+          {s.cta}
         </Button>
       </Section>
 
       <Text style={styles.tip}>
-        💡 <strong>Dica:</strong> Explore os múltiplos pipelines para organizar diferentes
-        etapas do seu processo de vendas.
+        💡 <strong>{locale === 'en' ? 'Tip:' : 'Dica:'}</strong> {s.tip}
       </Text>
 
       <Hr style={styles.divider} />
 
-      <Text style={styles.small}>
-        <strong>Precisa de ajuda?</strong> Entre em contato com nosso suporte
-        prioritário em suporte@roilabs.com.br ou através do chat no dashboard.
-      </Text>
+      <Text style={styles.small}>{s.helpText}</Text>
 
-      <Text style={styles.small}>
-        <strong>Quer cancelar?</strong> Você pode cancelar a qualquer momento através
-        do painel de configurações. Não fazemos perguntas e não há multa.
-      </Text>
+      <Text style={styles.small}>{s.cancelText}</Text>
 
       <Text style={styles.signature}>
-        Obrigado por escolher o Sirius CRM!
-        <br />
-        Equipe Sirius
+        {s.signature.split('\n').map((line, i, arr) => (
+          <span key={i}>
+            {line}
+            {i < arr.length - 1 && <br />}
+          </span>
+        ))}
       </Text>
     </BaseLayout>
   )

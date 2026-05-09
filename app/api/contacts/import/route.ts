@@ -3,6 +3,8 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import Papa from 'papaparse'
+import { apiError } from '@/lib/api-error'
+import { ERR } from '@/lib/error-messages'
 
 export const dynamic = 'force-dynamic'
 
@@ -15,7 +17,7 @@ export async function POST(request: NextRequest) {
     // Verificar autenticação
     const session = await getSession()
     if (!session?.user?.email) {
-      return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
+      return await apiError(ERR.UNAUTHORIZED, 401, { req: request })
     }
 
     // Buscar usuário e organização
@@ -25,7 +27,7 @@ export async function POST(request: NextRequest) {
     })
 
     if (!user?.organizationId) {
-      return NextResponse.json({ error: 'Organização não encontrada' }, { status: 400 })
+      return await apiError(ERR.ORG_NOT_FOUND, 404, { req: request })
     }
 
     // Processar arquivo
@@ -183,9 +185,6 @@ export async function POST(request: NextRequest) {
 
   } catch (error: any) {
     logger.error({ err: error }, 'Import error')
-    return NextResponse.json(
-      { error: 'Erro ao processar importação' },
-      { status: 500 }
-    )
+    return await apiError(ERR.INTERNAL_ERROR, 500, { req: request })
   }
 }

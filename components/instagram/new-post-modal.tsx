@@ -11,6 +11,7 @@ import { Input } from '@/components/ui/input'
 import { ImageUploader } from './image-uploader'
 import { BestTimeHint } from './best-time-hint'
 import type { PostType } from '@/lib/instagram/scheduling'
+import { useTranslations } from 'next-intl'
 
 interface InstagramPost {
   id: string
@@ -59,6 +60,8 @@ const STEP_LABELS: Record<Step, string> = {
 }
 
 export function NewPostModal({ open, onClose, onCreated, preselectedDate }: Props) {
+  const tCommon = useTranslations('common')
+  const t = useTranslations('components.instagram')
   const [step, setStep] = useState<Step>(1)
   const [type, setType] = useState<PostType>('feed')
   const [source, setSource] = useState<Source>('ai')
@@ -211,7 +214,7 @@ export function NewPostModal({ open, onClose, onCreated, preselectedDate }: Prop
         <DialogHeader className="px-5 pt-5 pb-0">
           <DialogTitle className="flex items-center gap-2 text-base">
             <Sparkles className="h-4 w-4 text-purple-400" />
-            Novo Post
+            {t('newPost')}
           </DialogTitle>
         </DialogHeader>
 
@@ -442,7 +445,7 @@ export function NewPostModal({ open, onClose, onCreated, preselectedDate }: Prop
           <Button variant="ghost" size="sm" onClick={step === 1 ? handleClose : goBack}
             disabled={generating || saving}>
             <ChevronLeft className="h-3.5 w-3.5 mr-1" />
-            {step === 1 ? 'Cancelar' : 'Voltar'}
+            {step === 1 ? tCommon('buttons.cancel') : tCommon('buttons.back')}
           </Button>
 
           <Button size="sm" onClick={goNext}
@@ -451,12 +454,12 @@ export function NewPostModal({ open, onClose, onCreated, preselectedDate }: Prop
             {generating ? (
               <><Loader2 className="h-3.5 w-3.5 mr-1.5 animate-spin" /> Gerando…</>
             ) : saving ? (
-              <><Loader2 className="h-3.5 w-3.5 mr-1.5 animate-spin" /> Salvando…</>
+              <><Loader2 className="h-3.5 w-3.5 mr-1.5 animate-spin" /> {tCommon('buttons.saving')}</>
             ) : step === 3 ? (
               'Salvar rascunho'
             ) : (
               <>{step === 1 && source === 'ai' && !generating ? <Sparkles className="h-3.5 w-3.5 mr-1.5" /> : null}
-              Continuar <ChevronRight className="h-3.5 w-3.5 ml-1" /></>
+              {tCommon('buttons.continue')} <ChevronRight className="h-3.5 w-3.5 ml-1" /></>
             )}
           </Button>
         </div>

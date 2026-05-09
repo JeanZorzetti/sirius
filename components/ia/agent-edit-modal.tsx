@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { useTranslations } from 'next-intl'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -36,6 +37,7 @@ export function AgentEditModal({
   currentOverride,
   onSaved,
 }: AgentEditModalProps) {
+  const tCommon = useTranslations('common')
   const [displayName, setDisplayName] = useState(currentOverride?.displayName ?? agentName)
   const [systemPrompt, setSystemPrompt] = useState(currentOverride?.systemPrompt ?? defaultPrompt)
   const [threshold, setThreshold] = useState(currentOverride?.confidenceThreshold ?? 75)
@@ -194,7 +196,7 @@ export function AgentEditModal({
             className="text-zinc-500 hover:text-zinc-300 hover:bg-zinc-800 gap-1.5"
           >
             {resetting ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <RotateCcw className="h-3.5 w-3.5" />}
-            Restaurar padrão
+            {tCommon('buttons.restore')}
           </Button>
           <div className="flex gap-2">
             <Button
@@ -204,7 +206,7 @@ export function AgentEditModal({
               disabled={saving}
               className="text-zinc-400 hover:bg-zinc-800"
             >
-              Cancelar
+              {tCommon('buttons.cancel')}
             </Button>
             <Button
               size="sm"
@@ -213,7 +215,7 @@ export function AgentEditModal({
               className="bg-cyan-500 hover:bg-cyan-600 text-black font-semibold gap-1.5"
             >
               {saving && <Loader2 className="h-3.5 w-3.5 animate-spin" />}
-              Salvar
+              {tCommon('buttons.save')}
             </Button>
           </div>
         </DialogFooter>

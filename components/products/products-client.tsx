@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect, useCallback } from 'react'
+import { useTranslations } from 'next-intl'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
   Package, Pencil, Trash2, Search, CheckCircle2, XCircle, MoreHorizontal,
@@ -29,6 +30,8 @@ type Product = {
 }
 
 export function ProductsClient({ initialProducts }: { initialProducts: Product[] }) {
+  const tCommon = useTranslations('common')
+  const t = useTranslations('components.products')
   const [products, setProducts] = useState<Product[]>(initialProducts)
   const [query, setQuery] = useState('')
   const [editingProduct, setEditingProduct] = useState<Product | null>(null)
@@ -44,9 +47,9 @@ export function ProductsClient({ initialProducts }: { initialProducts: Product[]
     const res = await fetch(`/api/products/${deletingId}`, { method: 'DELETE' })
     if (res.ok) {
       setProducts(prev => prev.filter(p => p.id !== deletingId))
-      toast.success('Produto removido.')
+      toast.success(t('deleteSuccess'))
     } else {
-      toast.error('Erro ao remover produto.')
+      toast.error(tCommon('toasts.failedDelete'))
     }
     setDeletingId(null)
   }
@@ -132,13 +135,13 @@ export function ProductsClient({ initialProducts }: { initialProducts: Product[]
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
                       <DropdownMenuItem onClick={() => setEditingProduct(product)}>
-                        <Pencil className="w-3.5 h-3.5 mr-2" /> Editar
+                        <Pencil className="w-3.5 h-3.5 mr-2" /> {tCommon('buttons.edit')}
                       </DropdownMenuItem>
                       <DropdownMenuItem
                         className="text-red-500 focus:text-red-500"
                         onClick={() => setDeletingId(product.id)}
                       >
-                        <Trash2 className="w-3.5 h-3.5 mr-2" /> Excluir
+                        <Trash2 className="w-3.5 h-3.5 mr-2" /> {tCommon('buttons.delete')}
                       </DropdownMenuItem>
                     </DropdownMenuContent>
                   </DropdownMenu>
@@ -182,7 +185,7 @@ export function ProductsClient({ initialProducts }: { initialProducts: Product[]
                       <XCircle className="h-3.5 w-3.5 text-muted-foreground" />
                     )}
                     <span className="text-[11px] text-muted-foreground">
-                      {product.isActive ? 'Ativo' : 'Inativo'}
+                      {product.isActive ? t('active') : t('inactive')}
                     </span>
                   </div>
                 </div>
@@ -204,9 +207,9 @@ export function ProductsClient({ initialProducts }: { initialProducts: Product[]
       <ConfirmDialog
         open={!!deletingId}
         onOpenChange={open => !open && setDeletingId(null)}
-        title="Excluir produto"
-        description="Tem certeza que deseja excluir este produto? Esta ação não pode ser desfeita."
-        confirmLabel="Excluir"
+        title={t('deleteProduct')}
+        description={t('deleteConfirm')}
+        confirmLabel={tCommon('buttons.delete')}
         onConfirm={handleDelete}
       />
     </div>

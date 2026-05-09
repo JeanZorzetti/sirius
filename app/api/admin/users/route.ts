@@ -4,6 +4,8 @@ import { prisma } from '@/lib/prisma'
 import { hash } from 'bcryptjs'
 import { getSession } from '@/lib/auth'
 import { z } from 'zod'
+import { apiError } from '@/lib/api-error'
+import { ERR } from '@/lib/error-messages'
 
 const createUserSchema = z.object({
   name: z.string().min(2, 'Nome deve ter pelo menos 2 caracteres'),
@@ -20,7 +22,7 @@ export async function POST(request: NextRequest) {
     // Check admin authentication
     const session = await getSession()
     if (!session?.user?.email) {
-      return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
+      return await apiError(ERR.UNAUTHORIZED, 401)
     }
 
     // Verify user is admin
@@ -134,10 +136,7 @@ export async function POST(request: NextRequest) {
     }
 
     logger.error({ err: error }, 'Error creating user')
-    return NextResponse.json(
-      { error: 'Erro ao criar usuário' },
-      { status: 500 }
-    )
+    return await apiError(ERR.INTERNAL_ERROR, 500)
   }
 }
 
@@ -146,7 +145,7 @@ export async function GET() {
   try {
     const session = await getSession()
     if (!session?.user?.email) {
-      return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
+      return await apiError(ERR.UNAUTHORIZED, 401)
     }
 
     const adminUser = await prisma.user.findUnique({
@@ -174,9 +173,6 @@ export async function GET() {
 
   } catch (error) {
     logger.error({ err: error }, 'Error fetching organizations')
-    return NextResponse.json(
-      { error: 'Erro ao buscar organizações' },
-      { status: 500 }
-    )
+    return await apiError(ERR.INTERNAL_ERROR, 500)
   }
 }

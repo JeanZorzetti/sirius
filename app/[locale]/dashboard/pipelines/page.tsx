@@ -1,13 +1,19 @@
-import { Metadata } from "next"
 import { getSession } from "@/lib/auth"
 import { prisma } from "@/lib/prisma"
 import { redirect } from "next/navigation"
 import { PipelineManagementClient } from "./pipeline-management-client"
 import { Badge } from "@/components/ui/badge"
+import { getTranslations } from "next-intl/server"
 
-export const metadata: Metadata = { title: "Pipelines | Sirius CRM" }
+export const metadata = { title: "Pipelines | Sirius CRM" }
 
-export default async function PipelinesPage() {
+export default async function PipelinesPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>
+}) {
+  const { locale } = await params
+  const t = await getTranslations({ locale, namespace: 'dashboard' })
   const session = await getSession()
   if (!session || !session.user || !session.user.email) {
     redirect('/login')
@@ -19,7 +25,7 @@ export default async function PipelinesPage() {
   })
 
   if (!user || !user.organizationId) {
-    return <div>Usuário não pertence a uma organização.</div>
+    return <div>{t('errors.userNoOrg')}</div>
   }
 
   const pipelines = await prisma.pipeline.findMany({
@@ -44,9 +50,9 @@ export default async function PipelinesPage() {
     <div className="p-8">
       <div className="mb-8 flex items-start justify-between">
         <div>
-          <h1 className="text-3xl font-bold">Gerenciar Pipelines</h1>
+          <h1 className="text-3xl font-bold">{t('pages.pipelines.title')}</h1>
           <p className="text-muted-foreground mt-2">
-            Crie e gerencie múltiplos pipelines para organizar seus negócios
+            {t('pages.pipelines.subtitle')}
           </p>
         </div>
         {!isPro && pipelines.length >= 1 && (

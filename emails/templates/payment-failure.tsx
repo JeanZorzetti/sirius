@@ -1,5 +1,9 @@
 import { Text, Heading, Button, Section, Hr } from '@react-email/components'
 import { BaseLayout } from '../layouts/base'
+import emailsEn from '@/messages/en/emails.json'
+import emailsPtBr from '@/messages/pt-BR/emails.json'
+
+type Locale = 'pt-BR' | 'en'
 
 interface PaymentFailureEmailProps {
   userName: string
@@ -9,6 +13,7 @@ interface PaymentFailureEmailProps {
   maxAttempts: number
   updateCardUrl: string
   isFinal?: boolean
+  locale?: Locale
 }
 
 export function PaymentFailureEmail({
@@ -19,52 +24,68 @@ export function PaymentFailureEmail({
   maxAttempts,
   updateCardUrl,
   isFinal = false,
+  locale = 'pt-BR',
 }: PaymentFailureEmailProps) {
+  const s = locale === 'en' ? emailsEn.emails.paymentFailure : emailsPtBr.emails.paymentFailure
+
   const attemptsRemaining = maxAttempts - attemptNumber
+
+  const preview = isFinal
+    ? s.previewFinal.replace('{organizationName}', organizationName)
+    : s.previewRetry
+        .replace('{attemptNumber}', String(attemptNumber))
+        .replace('{maxAttempts}', String(maxAttempts))
+        .replace('{organizationName}', organizationName)
+
+  const introFinal = s.introFinal
+    .replace('{maxAttempts}', String(maxAttempts))
+    .replace('{planName}', planName)
+    .replace('{organizationName}', organizationName)
+
+  const introRetry = s.introRetry
+    .replace('{planName}', planName)
+    .replace('{organizationName}', organizationName)
+    .replace('{attemptNumber}', String(attemptNumber))
+    .replace('{maxAttempts}', String(maxAttempts))
+
+  const warningRetryTitle = attemptsRemaining === 1
+    ? s.warningRetryTitle.replace('{attemptsRemaining}', String(attemptsRemaining))
+    : s.warningRetryTitlePlural.replace('{attemptsRemaining}', String(attemptsRemaining))
+
+  const warningRetryText = s.warningRetryText.replace('{planName}', planName)
 
   return (
     <BaseLayout
-      preview={
-        isFinal
-          ? `⚠️ Assinatura cancelada – ${organizationName}`
-          : `❌ Falha no pagamento (${attemptNumber}/${maxAttempts}) – ${organizationName}`
-      }
+      preview={isFinal ? `⚠️ ${preview}` : `❌ ${preview}`}
+      locale={locale}
     >
       <Heading style={styles.heading}>
-        {isFinal ? '⚠️ Assinatura Cancelada' : '❌ Falha no Pagamento'}
+        {isFinal ? `⚠️ ${s.titleFinal}` : `❌ ${s.titleRetry}`}
       </Heading>
 
-      <Text style={styles.text}>Olá {userName},</Text>
+      <Text style={styles.text}>{locale === 'en' ? `Hi ${userName},` : `Olá ${userName},`}</Text>
 
       {isFinal ? (
         <>
-          <Text style={styles.text}>
-            Após <strong>{maxAttempts} tentativas</strong> de cobrança sem sucesso, a assinatura{' '}
-            <strong>{planName}</strong> da <strong>{organizationName}</strong> foi cancelada e o plano foi
-            revertido para o plano <strong>Gratuito</strong>.
-          </Text>
+          <Text style={styles.text}>{introFinal}</Text>
 
           <Section style={styles.warningCard}>
-            <Text style={styles.warningTitle}>O que acontece agora?</Text>
-            <Text style={styles.warningItem}>• Seus dados estão seguros e permanecem no sistema</Text>
-            <Text style={styles.warningItem}>• Funcionalidades premium foram desativadas</Text>
-            <Text style={styles.warningItem}>• Você pode reativar a assinatura a qualquer momento</Text>
+            <Text style={styles.warningTitle}>{s.warningFinalTitle}</Text>
+            <Text style={styles.warningItem}>• {s.warningFinalItem1}</Text>
+            <Text style={styles.warningItem}>• {s.warningFinalItem2}</Text>
+            <Text style={styles.warningItem}>• {s.warningFinalItem3}</Text>
           </Section>
         </>
       ) : (
         <>
-          <Text style={styles.text}>
-            Não conseguimos processar o pagamento da sua assinatura <strong>{planName}</strong>{' '}
-            da <strong>{organizationName}</strong>. Esta é a tentativa{' '}
-            <strong style={{ color: '#dc2626' }}>{attemptNumber} de {maxAttempts}</strong>.
-          </Text>
+          <Text style={styles.text}>{introRetry}</Text>
 
           <Section style={{ ...styles.warningCard, borderColor: '#f59e0b', backgroundColor: '#fffbeb' }}>
             <Text style={{ ...styles.warningTitle, color: '#92400e' }}>
-              ⏱️ Ação necessária: {attemptsRemaining} tentativa{attemptsRemaining !== 1 ? 's' : ''} restante{attemptsRemaining !== 1 ? 's' : ''}
+              ⏱️ {warningRetryTitle}
             </Text>
             <Text style={{ ...styles.warningItem, color: '#78350f' }}>
-              Atualize seu cartão para evitar a perda do plano {planName}.
+              {warningRetryText}
             </Text>
           </Section>
         </>
@@ -74,18 +95,13 @@ export function PaymentFailureEmail({
 
       <Section style={styles.ctaSection}>
         <Button href={updateCardUrl} style={isFinal ? styles.buttonPrimary : styles.buttonWarning}>
-          {isFinal ? 'Reativar Assinatura' : 'Atualizar Forma de Pagamento'}
+          {isFinal ? s.ctaFinal : s.ctaRetry}
         </Button>
       </Section>
 
-      <Text style={styles.small}>
-        Caso precise de ajuda, entre em contato com nosso suporte em{' '}
-        <strong>suporte@roilabs.com.br</strong>.
-      </Text>
+      <Text style={styles.small}>{s.helpText}</Text>
 
-      <Text style={styles.signature}>
-        Equipe Sirius CRM
-      </Text>
+      <Text style={styles.signature}>{s.signature}</Text>
     </BaseLayout>
   )
 }

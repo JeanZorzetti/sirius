@@ -1,7 +1,9 @@
-import { NextRequest, NextResponse } from 'next/server'
+﻿import { NextRequest, NextResponse } from 'next/server'
 import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import logger from '@/lib/logger'
+import { apiError } from '@/lib/api-error'
+import { ERR } from '@/lib/error-messages'
 
 /**
  * GET /api/push/preferences
@@ -12,10 +14,7 @@ export async function GET(request: NextRequest) {
     const session = await getSession()
 
     if (!session?.user?.id) {
-      return NextResponse.json(
-        { error: 'Não autorizado' },
-        { status: 401 }
-      )
+      return await apiError(ERR.UNAUTHORIZED, 401, { req: request })
     }
 
     // Get or create preferences
@@ -50,10 +49,7 @@ export async function GET(request: NextRequest) {
     })
   } catch (error) {
     logger.error({ error }, 'Error fetching notification preferences')
-    return NextResponse.json(
-      { error: 'Erro interno do servidor' },
-      { status: 500 }
-    )
+    return await apiError(ERR.INTERNAL_ERROR, 500, { req: request })
   }
 }
 
@@ -66,10 +62,7 @@ export async function PATCH(request: NextRequest) {
     const session = await getSession()
 
     if (!session?.user?.id) {
-      return NextResponse.json(
-        { error: 'Não autorizado' },
-        { status: 401 }
-      )
+      return await apiError(ERR.UNAUTHORIZED, 401, { req })
     }
 
     const body = await request.json()

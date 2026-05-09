@@ -1,13 +1,15 @@
-import logger from '@/lib/logger'
+﻿import logger from '@/lib/logger'
 import { NextRequest, NextResponse } from 'next/server'
 import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
+import { apiError } from '@/lib/api-error'
+import { ERR } from '@/lib/error-messages'
 
 export async function GET(req: NextRequest) {
   try {
     const session = await getSession()
     if (!session?.user?.id) {
-      return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
+      return await apiError(ERR.UNAUTHORIZED, 401, { req })
     }
 
     const user = await prisma.user.findUnique({

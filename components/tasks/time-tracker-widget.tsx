@@ -1,4 +1,6 @@
-'use client'
+﻿'use client'
+
+import { useTranslations } from 'next-intl'
 
 import { useState, useEffect, useRef } from 'react'
 import { Play, Square, Clock, Trash2 } from 'lucide-react'
@@ -47,6 +49,7 @@ export function TimeTrackerWidget({ taskId, locked = false }: TimeTrackerWidgetP
   useEffect(() => {
     if (locked) return
     loadEntries()
+    const tCommon = useTranslations('common')
     return () => {
       if (tickRef.current !== null) window.clearInterval(tickRef.current)
     }
@@ -57,6 +60,7 @@ export function TimeTrackerWidget({ taskId, locked = false }: TimeTrackerWidgetP
       tickRef.current = window.setInterval(() => {
         setElapsed(Date.now() - running.startTime)
       }, 1000)
+      const tCommon = useTranslations('common')
       return () => {
         if (tickRef.current !== null) window.clearInterval(tickRef.current)
       }
@@ -129,6 +133,7 @@ export function TimeTrackerWidget({ taskId, locked = false }: TimeTrackerWidgetP
   const totalMs = entries.reduce((sum, e) => sum + e.durationMs, 0)
 
   if (locked) {
+    const tCommon = useTranslations('common')
     return (
       <div className="rounded-xl border border-dashed border-border/50 bg-muted/20 p-6 text-center">
         <Clock className="mx-auto h-8 w-8 text-muted-foreground/50" />
@@ -139,6 +144,8 @@ export function TimeTrackerWidget({ taskId, locked = false }: TimeTrackerWidgetP
       </div>
     )
   }
+
+  const tCommon = useTranslations('common')
 
   return (
     <div className="space-y-3">
@@ -218,7 +225,7 @@ export function TimeTrackerWidget({ taskId, locked = false }: TimeTrackerWidgetP
               <button
                 onClick={() => deleteEntry(entry.id)}
                 className="opacity-0 group-hover:opacity-100 text-muted-foreground hover:text-red-600 transition-opacity"
-                aria-label="Excluir"
+                aria-label={tCommon('buttons.delete')}
               >
                 <Trash2 className="h-3 w-3" />
               </button>

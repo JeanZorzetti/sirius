@@ -2,6 +2,8 @@ import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { getSession } from '@/lib/auth'
 import logger from '@/lib/logger'
+import { apiError } from '@/lib/api-error'
+import { ERR } from '@/lib/error-messages'
 
 // GET /api/tasks/[taskId]/checklists
 export async function GET(
@@ -12,7 +14,7 @@ export async function GET(
     const { taskId } = await params
     const session = await getSession()
     if (!session?.user?.email) {
-      return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
+      return await apiError(ERR.UNAUTHORIZED, 401)
     }
 
     const checklists = await prisma.taskChecklist.findMany({
@@ -24,7 +26,7 @@ export async function GET(
     return NextResponse.json(checklists)
   } catch (error) {
     logger.error({ err: error }, 'Error listing checklists')
-    return NextResponse.json({ error: 'Erro ao listar checklists' }, { status: 500 })
+    return await apiError(ERR.INTERNAL_ERROR, 500)
   }
 }
 
@@ -37,7 +39,7 @@ export async function POST(
     const { taskId } = await params
     const session = await getSession()
     if (!session?.user?.email) {
-      return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
+      return await apiError(ERR.UNAUTHORIZED, 401)
     }
 
     const body = await request.json()
@@ -72,7 +74,7 @@ export async function POST(
     return NextResponse.json(checklist, { status: 201 })
   } catch (error) {
     logger.error({ err: error }, 'Error creating checklist')
-    return NextResponse.json({ error: 'Erro ao criar checklist' }, { status: 500 })
+    return await apiError(ERR.INTERNAL_ERROR, 500)
   }
 }
 
@@ -85,7 +87,7 @@ export async function PATCH(
     await params
     const session = await getSession()
     if (!session?.user?.email) {
-      return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
+      return await apiError(ERR.UNAUTHORIZED, 401)
     }
 
     const user = await prisma.user.findUnique({
@@ -146,6 +148,6 @@ export async function PATCH(
     return NextResponse.json({ error: 'Ação inválida' }, { status: 400 })
   } catch (error) {
     logger.error({ err: error }, 'Error updating checklist')
-    return NextResponse.json({ error: 'Erro ao atualizar checklist' }, { status: 500 })
+    return await apiError(ERR.INTERNAL_ERROR, 500)
   }
 }

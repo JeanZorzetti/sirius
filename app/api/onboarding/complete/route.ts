@@ -2,16 +2,15 @@ import logger from '@/lib/logger'
 import { NextRequest, NextResponse } from 'next/server'
 import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
+import { apiError } from '@/lib/api-error'
+import { ERR } from '@/lib/error-messages'
 
 export async function POST(request: NextRequest) {
   try {
     const session = await getSession()
 
     if (!session || !session.user || !session.user.email) {
-      return NextResponse.json(
-        { error: 'Não autorizado' },
-        { status: 401 }
-      )
+      return await apiError(ERR.UNAUTHORIZED, 401, { req: request })
     }
 
     const body = await request.json().catch(() => ({}))
@@ -55,9 +54,6 @@ export async function POST(request: NextRequest) {
     })
   } catch (error) {
     logger.error({ err: error }, 'Error completing onboarding')
-    return NextResponse.json(
-      { error: 'Erro interno do servidor' },
-      { status: 500 }
-    )
+    return await apiError(ERR.INTERNAL_ERROR, 500, { req: request })
   }
 }

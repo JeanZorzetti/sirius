@@ -8,6 +8,7 @@ import { sendDealCreatedEmail, sendDealStageChangedEmail, sendUpgradeNudgeEmail,
 import { dispatchWebhookAsync } from '@/lib/webhooks/dispatcher'
 import { WEBHOOK_EVENTS } from '@/lib/webhooks/events'
 import { canCreateDeal } from '@/lib/plan-limits'
+import { ERR } from '@/lib/error-messages'
 
 async function getAuthenticatedUser() {
   const session = await getSession()
@@ -137,7 +138,7 @@ export async function createDeal(formData: FormData) {
     const user = await getAuthenticatedUser()
 
     if (!user.organizationId) {
-      return { success: false, error: 'Usuário não pertence a uma organização' }
+      return { success: false, error: ERR.USER_NO_ORG, code: ERR.USER_NO_ORG }
     }
 
     // LIMIT CHECK — usa canCreateDeal (suporta trial + read-only)

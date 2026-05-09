@@ -9,6 +9,8 @@ import { NextResponse } from 'next/server'
 import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { canUseRoundRobin, getRoundRobinConfig, saveRoundRobinConfig } from '@/lib/round-robin'
+import { apiError } from '@/lib/api-error'
+import { ERR } from '@/lib/error-messages'
 
 export const dynamic = 'force-dynamic'
 
@@ -17,7 +19,7 @@ export async function GET() {
   try {
     const session = await getSession()
     if (!session?.user?.email) {
-      return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
+      return await apiError(ERR.UNAUTHORIZED, 401)
     }
 
     const user = await prisma.user.findUnique({
@@ -26,7 +28,7 @@ export async function GET() {
     })
 
     if (!user?.organizationId) {
-      return NextResponse.json({ error: 'Organização não encontrada' }, { status: 404 })
+      return await apiError(ERR.ORG_NOT_FOUND, 404)
     }
 
     // Verificar se pode usar round-robin
@@ -61,7 +63,7 @@ export async function POST(req: Request) {
   try {
     const session = await getSession()
     if (!session?.user?.email) {
-      return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
+      return await apiError(ERR.UNAUTHORIZED, 401)
     }
 
     const user = await prisma.user.findUnique({
@@ -70,7 +72,7 @@ export async function POST(req: Request) {
     })
 
     if (!user?.organizationId) {
-      return NextResponse.json({ error: 'Organização não encontrada' }, { status: 404 })
+      return await apiError(ERR.ORG_NOT_FOUND, 404)
     }
 
     // Verificar se pode usar round-robin

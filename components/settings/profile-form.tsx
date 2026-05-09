@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { useTranslations } from 'next-intl'
 import { updateProfile } from '@/app/[locale]/dashboard/settings/actions'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -16,6 +17,8 @@ interface ProfileFormProps {
 }
 
 export function ProfileForm({ initialData }: ProfileFormProps) {
+  const tCommon = useTranslations('common')
+  const t = useTranslations('components.settings')
   const [loading, setLoading] = useState(false)
   const [alert, setAlert] = useState<{ type: 'success' | 'error'; message: string } | null>(null)
 
@@ -30,7 +33,7 @@ export function ProfileForm({ initialData }: ProfileFormProps) {
     setLoading(false)
 
     if (result.success) {
-      setAlert({ type: 'success', message: 'Perfil atualizado com sucesso!' })
+      setAlert({ type: 'success', message: t('saveSuccess') })
       // Auto-dismiss after 3s
       setTimeout(() => setAlert(null), 3000)
     } else {
@@ -107,11 +110,11 @@ export function ProfileForm({ initialData }: ProfileFormProps) {
           className="bg-indigo-600 hover:bg-indigo-700 text-white shadow-lg shadow-indigo-500/20"
         >
           {loading ? (
-            <>Salvando...</>
+            <>{tCommon('buttons.saving')}</>
           ) : (
             <div className="flex items-center gap-2">
               <Save className="h-4 w-4" />
-              <span>Salvar Alterações</span>
+              <span>{tCommon('buttons.save')}</span>
             </div>
           )}
         </Button>

@@ -7,10 +7,12 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { listarClientes } from '@/lib/integrations/omie'
+import { apiError } from '@/lib/api-error'
+import { ERR } from '@/lib/error-messages'
 
 export async function GET() {
   const session = await getSession()
-  if (!session?.user?.email) return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
+  if (!session?.user?.email) return await apiError(ERR.UNAUTHORIZED, 401)
 
   const user = await prisma.user.findUnique({
     where: { email: session.user.email },
@@ -27,7 +29,7 @@ export async function GET() {
 
 export async function PATCH(request: NextRequest) {
   const session = await getSession()
-  if (!session?.user?.email) return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
+  if (!session?.user?.email) return await apiError(ERR.UNAUTHORIZED, 401, { req: request })
 
   const { omieAppKey, omieAppSecret, omieEnabled } = await request.json()
 
@@ -35,7 +37,7 @@ export async function PATCH(request: NextRequest) {
     where: { email: session.user.email },
     select: { organizationId: true },
   })
-  if (!user?.organizationId) return NextResponse.json({ error: 'Organização não encontrada' }, { status: 404 })
+  if (!user?.organizationId) return await apiError(ERR.ORG_NOT_FOUND, 404, { req: request })
 
   const data: Record<string, unknown> = {}
   if (omieAppKey    !== undefined && !omieAppKey.startsWith('•'))    data.omieAppKey    = omieAppKey

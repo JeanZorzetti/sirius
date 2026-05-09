@@ -3,6 +3,8 @@ import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { getSession } from '@/lib/auth'
 import { triggerAgentsForContactCreated } from '@/lib/agaas-agent-trigger'
+import { apiError } from '@/lib/api-error'
+import { ERR } from '@/lib/error-messages'
 
 export async function POST(request: Request) {
     try {
@@ -19,10 +21,7 @@ export async function POST(request: Request) {
         // CRITICAL FIX: Get authenticated user from session
         const session = await getSession()
         if (!session || !session.user || !session.user.email) {
-            return NextResponse.json(
-                { error: 'Não autorizado' },
-                { status: 401 }
-            )
+            return await apiError(ERR.UNAUTHORIZED, 401)
         }
 
         const user = await prisma.user.findUnique({
@@ -31,10 +30,7 @@ export async function POST(request: Request) {
         })
 
         if (!user?.organizationId) {
-            return NextResponse.json(
-                { error: 'Organização não encontrada' },
-                { status: 404 }
-            )
+            return await apiError(ERR.ORG_NOT_FOUND, 404)
         }
 
         const contact = await prisma.contact.create({
@@ -57,9 +53,6 @@ export async function POST(request: Request) {
         return NextResponse.json(contact)
     } catch (error) {
         logger.error({ err: error }, 'Error creating contact')
-        return NextResponse.json(
-            { error: 'Erro ao criar contato' },
-            { status: 500 }
-        )
+        return await apiError(ERR.INTERNAL_ERROR, 500)
     }
 }

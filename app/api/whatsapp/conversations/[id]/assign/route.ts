@@ -2,6 +2,8 @@ import logger from '@/lib/logger'
 import { NextRequest, NextResponse } from 'next/server'
 import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
+import { apiError } from '@/lib/api-error'
+import { ERR } from '@/lib/error-messages'
 
 export async function POST(
   req: NextRequest,
@@ -10,7 +12,7 @@ export async function POST(
   try {
     const session = await getSession()
     if (!session?.user?.id) {
-      return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
+      return await apiError(ERR.UNAUTHORIZED, 401, { req })
     }
 
     const user = await prisma.user.findUnique({
@@ -19,7 +21,7 @@ export async function POST(
     })
 
     if (!user) {
-      return NextResponse.json({ error: 'Usuário não encontrado' }, { status: 404 })
+      return await apiError(ERR.USER_NOT_FOUND, 404, { req })
     }
 
     const { assignedUserId } = await req.json()
@@ -130,9 +132,6 @@ export async function POST(
     })
   } catch (error) {
     logger.error({ err: error }, 'Error assigning agent')
-    return NextResponse.json(
-      { error: 'Erro ao atribuir agente' },
-      { status: 500 }
-    )
+    return await apiError(ERR.INTERNAL_ERROR, 500, { req })
   }
 }

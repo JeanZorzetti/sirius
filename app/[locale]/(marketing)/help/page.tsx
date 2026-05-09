@@ -20,6 +20,7 @@ import {
   LifeBuoy,
 } from 'lucide-react'
 import type { Metadata } from 'next'
+import { getTranslations } from 'next-intl/server'
 import { getAllCategories } from '@/lib/help-articles'
 import { buildLocaleAlternates } from '@/lib/seo/canonical'
 
@@ -29,20 +30,21 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>
 }): Promise<Metadata> {
   const { locale } = await params
-  const alternates = buildLocaleAlternates(locale, '/help')
+  const t = await getTranslations({ locale, namespace: 'marketing.help.meta' })
+  const alternates = buildLocaleAlternates(locale, '/ajuda', '/help')
   return {
-    title: 'Central de Ajuda | Sirius CRM',
-    description: 'Encontre respostas para suas dúvidas sobre o Sirius CRM. Tutoriais, guias e suporte para aproveitar ao máximo sua ferramenta de vendas.',
+    title: t('title'),
+    description: t('description'),
     alternates,
     openGraph: {
-      title: 'Central de Ajuda | Sirius CRM',
-      description: 'Encontre respostas para suas dúvidas sobre o Sirius CRM. Tutoriais, guias e suporte.',
+      title: t('ogTitle'),
+      description: t('ogDescription'),
       url: alternates.canonical,
     },
     twitter: {
       card: 'summary_large_image',
-      title: 'Central de Ajuda | Sirius CRM',
-      description: 'Tutoriais, guias e suporte para aproveitar ao máximo o Sirius CRM.',
+      title: t('ogTitle'),
+      description: t('ogDescription'),
     },
   }
 }

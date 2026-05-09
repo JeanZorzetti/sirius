@@ -9,6 +9,7 @@ import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog'
 import { VisuallyHidden } from '@radix-ui/react-visually-hidden'
 import { PostStatusBadge } from './post-status-badge'
 import { PostTypeIcon, PostTypeLabel } from './post-type-icon'
+import { useTranslations } from 'next-intl'
 
 interface InstagramPost {
   id: string
@@ -32,6 +33,8 @@ export function PostCard({
   onDelete: (id: string) => void
   onEdit: (id: string) => void
 }) {
+  const tCommon = useTranslations('common')
+  const t = useTranslations('components.instagram')
   const [confirming, setConfirming] = useState(false)
   const [expanded, setExpanded] = useState(false)
   const [slideIndex, setSlideIndex] = useState(0)
@@ -127,8 +130,8 @@ export function PostCard({
           {isEditable && (
             confirming ? (
               <div className="flex gap-1">
-                <Button size="sm" variant="destructive" className="h-8" onClick={() => onDelete(post.id)}>Confirmar</Button>
-                <Button size="sm" variant="ghost" className="h-8" onClick={() => setConfirming(false)}>Cancelar</Button>
+                <Button size="sm" variant="destructive" className="h-8" onClick={() => onDelete(post.id)}>{tCommon('buttons.confirm')}</Button>
+                <Button size="sm" variant="ghost" className="h-8" onClick={() => setConfirming(false)}>{tCommon('buttons.cancel')}</Button>
               </div>
             ) : (
               <Button size="icon" variant="ghost" className="h-8 w-8 text-muted-foreground hover:text-red-500"
@@ -219,13 +222,13 @@ export function PostCard({
               <div className="flex flex-col gap-2 mt-auto">
                 {isEditable && (
                   <Button variant="outline" size="sm" onClick={() => { setExpanded(false); onEdit(post.id) }}>
-                    <Edit className="h-3.5 w-3.5 mr-2" /> Editar post
+                    <Edit className="h-3.5 w-3.5 mr-2" /> {t('editPost')}
                   </Button>
                 )}
                 {isEditable && (
                   <Button variant="destructive" size="sm"
                     onClick={() => { onDelete(post.id); setExpanded(false) }}>
-                    <Trash2 className="h-4 w-4 mr-2" /> Cancelar post
+                    <Trash2 className="h-4 w-4 mr-2" /> {t('deletePost')}
                   </Button>
                 )}
               </div>

@@ -12,6 +12,8 @@ import { sendEmail } from '@/lib/email'
 import { WhatsAppMigrationEmail } from '@/emails/templates/whatsapp-migration'
 import logger from '@/lib/logger'
 import React from 'react'
+import { apiError } from '@/lib/api-error'
+import { ERR } from '@/lib/error-messages'
 
 const ADMIN_EMAIL = 'jeanzorzetti@gmail.com'
 const BROADCAST_SUBJECT = 'Atualização importante: WhatsApp Oficial no Sirius CRM'

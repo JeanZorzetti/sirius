@@ -1,6 +1,7 @@
 ﻿'use client'
 
 import { useState } from 'react'
+import { useTranslations } from 'next-intl'
 import { EmailAutomationType } from '@prisma/client'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -42,6 +43,7 @@ export function TemplateEditor({
   open,
   onOpenChange
 }: TemplateEditorProps) {
+  const tCommon = useTranslations('common')
   const [subject, setSubject] = useState(currentSubject || defaultSubject)
   const [body, setBody] = useState(currentBody || defaultBody)
   const [isSaving, setIsSaving] = useState(false)
@@ -119,7 +121,7 @@ export function TemplateEditor({
 
         <Tabs defaultValue="edit" className="w-full">
           <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger value="edit">Editar</TabsTrigger>
+            <TabsTrigger value="edit">{tCommon('buttons.edit')}</TabsTrigger>
             <TabsTrigger value="preview" className="gap-2">
               <Eye className="h-4 w-4" />
               Preview
@@ -239,11 +241,11 @@ export function TemplateEditor({
 
         <DialogFooter>
           <Button variant="outline" onClick={() => onOpenChange(false)}>
-            Cancelar
+            {tCommon('buttons.cancel')}
           </Button>
           <Button onClick={handleSave} disabled={isSaving} className="gap-2">
             <Save className="h-4 w-4" />
-            {isSaving ? 'Salvando...' : 'Salvar Template'}
+            {isSaving ? tCommon('buttons.saving') : tCommon('buttons.save')}
           </Button>
         </DialogFooter>
       </DialogContent>

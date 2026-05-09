@@ -1,13 +1,15 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
+import { apiError } from '@/lib/api-error'
+import { ERR } from '@/lib/error-messages'
 
 // POST /api/access/session — action: "login" | "logout", sessionId for logout
 export async function POST(request: NextRequest) {
   try {
     const session = await getSession()
     if (!session?.user?.email) {
-      return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
+      return await apiError(ERR.UNAUTHORIZED, 401)
     }
 
     const body = await request.json()
@@ -17,7 +19,7 @@ export async function POST(request: NextRequest) {
       where: { email: session.user.email },
       select: { id: true, organizationId: true },
     })
-    if (!user) return NextResponse.json({ error: 'Usuário não encontrado' }, { status: 404 })
+    if (!user) return await apiError(ERR.USER_NOT_FOUND, 404)
 
     const ip = request.headers.get('x-forwarded-for')?.split(',')[0] ?? null
     const ua = request.headers.get('user-agent') ?? null
@@ -46,8 +48,8 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ ok: true })
     }
 
-    return NextResponse.json({ error: 'Ação inválida' }, { status: 400 })
+    return await apiError(ERR.INVALID_INPUT, 400)
   } catch {
-    return NextResponse.json({ error: 'Erro interno' }, { status: 500 })
+    return await apiError(ERR.INTERNAL_ERROR, 500)
   }
 }

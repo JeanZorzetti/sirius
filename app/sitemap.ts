@@ -119,7 +119,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
         url: `${baseUrl}/solucoes/cidade/${city.slug}`,
         lastModified: lastSiteUpdate,
         changeFrequency: 'weekly' as const,
-        priority: 0.85, // Alta prioridade - SEO local de alto valor
+        priority: 0.85,
+        ...withAlternates(`/solucoes/cidade/${city.slug}`, `/solutions/city/${city.slug}`),
     }))
 
     // Blog category pages — com alternates EN (/en/blog/category/[slug])

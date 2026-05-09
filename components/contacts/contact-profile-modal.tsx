@@ -23,6 +23,7 @@ import {
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import type { EnrichedContact } from './contacts-data-table-client'
+import { useTranslations } from 'next-intl'
 
 interface ContactProfileModalProps {
     contact: EnrichedContact
@@ -79,6 +80,8 @@ function SectionTitle({ children }: { children: React.ReactNode }) {
 }
 
 export function ContactProfileModal({ contact, open, onOpenChange, onEdit }: ContactProfileModalProps) {
+    const tCommon = useTranslations('common')
+    const t = useTranslations('components.contacts')
     const initials = contact.name
         .split(' ')
         .map(n => n[0])
@@ -253,11 +256,11 @@ export function ContactProfileModal({ contact, open, onOpenChange, onEdit }: Con
                 {/* Footer */}
                 <div className="flex items-center justify-between border-t border-border/60 px-6 py-4">
                     <Button variant="ghost" size="sm" onClick={() => onOpenChange(false)} className="text-muted-foreground">
-                        Fechar
+                        {tCommon('buttons.close')}
                     </Button>
                     {onEdit && (
                         <Button size="sm" className="gap-1.5" onClick={() => { onOpenChange(false); onEdit() }}>
-                            <Pencil className="h-3.5 w-3.5" /> Editar
+                            <Pencil className="h-3.5 w-3.5" /> {tCommon('buttons.edit')}
                         </Button>
                     )}
                 </div>

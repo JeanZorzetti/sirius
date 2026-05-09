@@ -6,13 +6,15 @@ import { notifyTaskAssigned } from '@/lib/task-notifications'
 import { triggerTaskEvent } from '@/lib/tasks/realtime'
 import { executeTaskAutomations } from '@/lib/automations/task-engine'
 import logger from '@/lib/logger'
+import { apiError } from '@/lib/api-error'
+import { ERR } from '@/lib/error-messages'
 
 // GET /api/tasks - Listar tarefas com filtros
 export async function GET(request: Request) {
   try {
     const session = await getSession()
     if (!session?.user?.email) {
-      return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
+      return await apiError(ERR.UNAUTHORIZED, 401)
     }
 
     const user = await prisma.user.findUnique({
@@ -21,7 +23,7 @@ export async function GET(request: Request) {
     })
 
     if (!user?.organizationId) {
-      return NextResponse.json({ error: 'Organização não encontrada' }, { status: 404 })
+      return await apiError(ERR.ORG_NOT_FOUND, 404)
     }
 
     const { searchParams } = new URL(request.url)
@@ -96,7 +98,7 @@ export async function GET(request: Request) {
     return NextResponse.json(tasks)
   } catch (error) {
     logger.error({ err: error }, 'Error listing tasks')
-    return NextResponse.json({ error: 'Erro ao listar tarefas' }, { status: 500 })
+    return await apiError(ERR.INTERNAL_ERROR, 500)
   }
 }
 
@@ -105,7 +107,7 @@ export async function POST(request: Request) {
   try {
     const session = await getSession()
     if (!session?.user?.email) {
-      return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
+      return await apiError(ERR.UNAUTHORIZED, 401)
     }
 
     const user = await prisma.user.findUnique({
@@ -114,7 +116,7 @@ export async function POST(request: Request) {
     })
 
     if (!user?.organizationId) {
-      return NextResponse.json({ error: 'Organização não encontrada' }, { status: 404 })
+      return await apiError(ERR.ORG_NOT_FOUND, 404)
     }
 
     // Verificar limite
@@ -222,6 +224,6 @@ export async function POST(request: Request) {
     return NextResponse.json(task, { status: 201 })
   } catch (error) {
     logger.error({ err: error }, 'Error creating task')
-    return NextResponse.json({ error: 'Erro ao criar tarefa' }, { status: 500 })
+    return await apiError(ERR.INTERNAL_ERROR, 500)
   }
 }

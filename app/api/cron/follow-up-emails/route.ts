@@ -69,7 +69,7 @@ export async function GET(request: NextRequest) {
           },
         },
         include: {
-          user: { select: { email: true, name: true } },
+          user: { select: { email: true, name: true, locale: true } },
           stage: { select: { name: true } },
           contact: { select: { name: true } },
           organization: { select: { tier: true } },
@@ -92,17 +92,23 @@ export async function GET(request: NextRequest) {
         try {
           const dealUrl = `${process.env.NEXT_PUBLIC_APP_URL}/dashboard?deal=${deal.id}`
 
+          const locale = (deal.user.locale as 'pt-BR' | 'en') ?? 'pt-BR'
+          const emoji = days >= 14 ? '🚨' : days >= 7 ? '⚠️' : '📌'
+          const subject = locale === 'en'
+            ? `${emoji} Follow-up: "${deal.title}" stalled for ${days} days`
+            : `${emoji} Follow-up: "${deal.title}" parado há ${days} dias`
           await sendEmail({
             to: deal.user.email,
-            subject: `${days >= 14 ? '🚨' : days >= 7 ? '⚠️' : '📌'} Follow-up: "${deal.title}" parado há ${days} dias`,
+            subject,
             react: FollowUpEmail({
-              userName: deal.user.name || 'Olá',
+              userName: deal.user.name || (locale === 'en' ? 'Hi' : 'Olá'),
               dealTitle: deal.title,
               dealValue: deal.value ? parseFloat(deal.value.toString()) : undefined,
               contactName: deal.contact?.name,
               stageName: deal.stage.name,
               daysSinceUpdate: days,
               dealUrl,
+              locale,
             }),
           })
 

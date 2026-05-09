@@ -4,6 +4,8 @@ import { getSession } from '@/lib/auth'
 import { notifyTaskCommented } from '@/lib/task-notifications'
 import { triggerTaskEvent } from '@/lib/tasks/realtime'
 import logger from '@/lib/logger'
+import { apiError } from '@/lib/api-error'
+import { ERR } from '@/lib/error-messages'
 
 // GET /api/tasks/[taskId]/comments
 export async function GET(
@@ -14,7 +16,7 @@ export async function GET(
     const { taskId } = await params
     const session = await getSession()
     if (!session?.user?.email) {
-      return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
+      return await apiError(ERR.UNAUTHORIZED, 401)
     }
 
     const comments = await prisma.taskComment.findMany({
@@ -28,7 +30,7 @@ export async function GET(
     return NextResponse.json(comments)
   } catch (error) {
     logger.error({ err: error }, 'Error listing comments')
-    return NextResponse.json({ error: 'Erro ao listar comentários' }, { status: 500 })
+    return await apiError(ERR.INTERNAL_ERROR, 500)
   }
 }
 
@@ -41,7 +43,7 @@ export async function POST(
     const { taskId } = await params
     const session = await getSession()
     if (!session?.user?.email) {
-      return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
+      return await apiError(ERR.UNAUTHORIZED, 401)
     }
 
     const user = await prisma.user.findUnique({
@@ -50,7 +52,7 @@ export async function POST(
     })
 
     if (!user?.organizationId) {
-      return NextResponse.json({ error: 'Organização não encontrada' }, { status: 404 })
+      return await apiError(ERR.ORG_NOT_FOUND, 404)
     }
 
     const body = await request.json()
@@ -105,6 +107,6 @@ export async function POST(
     return NextResponse.json(comment, { status: 201 })
   } catch (error) {
     logger.error({ err: error }, 'Error creating comment')
-    return NextResponse.json({ error: 'Erro ao criar comentário' }, { status: 500 })
+    return await apiError(ERR.INTERNAL_ERROR, 500)
   }
 }

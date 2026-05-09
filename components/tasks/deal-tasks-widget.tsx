@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { useTranslations } from 'next-intl'
 import { Plus, CheckSquare, ArrowUpRight } from 'lucide-react'
 import Link from 'next/link'
 import { cn } from '@/lib/utils'
@@ -23,6 +24,8 @@ interface EntityTasksWidgetProps {
  * Shows all tasks linked to this entity.
  */
 export function EntityTasksWidget({ dealId, contactId, title = 'Tarefas' }: EntityTasksWidgetProps) {
+  const tCommon = useTranslations('common')
+  const t = useTranslations('components.tasks')
   const [tasks, setTasks] = useState<TaskLite[]>([])
   const [loading, setLoading] = useState(true)
 
@@ -64,10 +67,10 @@ export function EntityTasksWidget({ dealId, contactId, title = 'Tarefas' }: Enti
         body: JSON.stringify({ statusId: targetId }),
       })
       if (!res.ok) throw new Error('fail')
-      toast.success(isCompleted ? 'Tarefa reaberta' : 'Tarefa concluída')
+      toast.success(tCommon('toasts.updated'))
       loadTasks()
     } catch {
-      toast.error('Erro ao atualizar')
+      toast.error(tCommon('toasts.failed'))
     }
   }
 
@@ -93,10 +96,10 @@ export function EntityTasksWidget({ dealId, contactId, title = 'Tarefas' }: Enti
       </div>
 
       {loading ? (
-        <div className="px-4 py-6 text-center text-xs text-muted-foreground">Carregando...</div>
+        <div className="px-4 py-6 text-center text-xs text-muted-foreground">{tCommon('buttons.loading')}</div>
       ) : tasks.length === 0 ? (
         <div className="px-4 py-8 text-center">
-          <p className="text-xs text-muted-foreground">Nenhuma tarefa vinculada</p>
+          <p className="text-xs text-muted-foreground">{t('noTasks')}</p>
         </div>
       ) : (
         <div className="divide-y divide-border/30">

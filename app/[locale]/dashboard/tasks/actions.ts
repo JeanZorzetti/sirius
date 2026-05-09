@@ -9,6 +9,7 @@ import { triggerTaskEvent } from '@/lib/tasks/realtime'
 import { executeTaskAutomations } from '@/lib/automations/task-engine'
 import logger from '@/lib/logger'
 import type { TaskPriority } from '@prisma/client'
+import { ERR } from '@/lib/error-messages'
 
 // -----------------------------------------------------------------------------
 // Helpers
@@ -17,7 +18,7 @@ import type { TaskPriority } from '@prisma/client'
 async function getCurrentUser() {
   const session = await getSession()
   if (!session?.user?.email) {
-    throw new Error('Não autorizado')
+    throw new Error(ERR.UNAUTHORIZED)
   }
   const user = await prisma.user.findUnique({
     where: { email: session.user.email },

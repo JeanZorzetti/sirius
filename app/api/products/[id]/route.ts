@@ -2,6 +2,8 @@ import { NextResponse } from 'next/server'
 import { z } from 'zod'
 import { prisma } from '@/lib/prisma'
 import { getSession } from '@/lib/auth'
+import { apiError } from '@/lib/api-error'
+import { ERR } from '@/lib/error-messages'
 
 const updateSchema = z.object({
   name: z.string().min(1).optional(),
@@ -31,7 +33,7 @@ export async function PATCH(
   try {
     const organizationId = await getOrganizationId()
     if (!organizationId) {
-      return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
+      return await apiError(ERR.UNAUTHORIZED, 401)
     }
 
     const { id } = await params
@@ -60,7 +62,7 @@ export async function DELETE(
   try {
     const organizationId = await getOrganizationId()
     if (!organizationId) {
-      return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
+      return await apiError(ERR.UNAUTHORIZED, 401)
     }
 
     const { id } = await params

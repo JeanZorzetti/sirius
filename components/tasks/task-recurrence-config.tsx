@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { useTranslations } from 'next-intl'
 import { Repeat, Trash2, Save } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -44,6 +45,7 @@ const DAYS = [
 ]
 
 export function TaskRecurrenceConfig({ taskId }: TaskRecurrenceConfigProps) {
+  const tCommon = useTranslations('common')
   const [recurrence, setRecurrence] = useState<Recurrence | null>(null)
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
@@ -103,10 +105,10 @@ export function TaskRecurrenceConfig({ taskId }: TaskRecurrenceConfigProps) {
         const err = await res.json().catch(() => ({}))
         throw new Error(err.error || 'fail')
       }
-      toast.success('Recorrência salva')
+      toast.success(tCommon('toasts.saved'))
       load()
     } catch (e: any) {
-      toast.error(e.message || 'Erro ao salvar')
+      toast.error(e.message || tCommon('toasts.failedSave'))
     } finally {
       setSaving(false)
     }
@@ -120,9 +122,9 @@ export function TaskRecurrenceConfig({ taskId }: TaskRecurrenceConfigProps) {
       })
       if (!res.ok) throw new Error('fail')
       setRecurrence(null)
-      toast.success('Recorrência removida')
+      toast.success(tCommon('toasts.deleted'))
     } catch {
-      toast.error('Erro ao remover')
+      toast.error(tCommon('toasts.failedDelete'))
     }
   }
 
@@ -133,7 +135,7 @@ export function TaskRecurrenceConfig({ taskId }: TaskRecurrenceConfigProps) {
   }
 
   if (loading) {
-    return <div className="text-xs text-muted-foreground">Carregando...</div>
+    return <div className="text-xs text-muted-foreground">{tCommon('buttons.loading')}</div>
   }
 
   return (
@@ -262,12 +264,12 @@ export function TaskRecurrenceConfig({ taskId }: TaskRecurrenceConfigProps) {
               onClick={remove}
             >
               <Trash2 className="h-3 w-3" />
-              Remover
+              {tCommon('buttons.remove')}
             </Button>
           )}
           <Button size="sm" onClick={save} disabled={saving} className="h-7 gap-1 text-xs">
             <Save className="h-3 w-3" />
-            {saving ? 'Salvando...' : 'Salvar'}
+            {saving ? tCommon('buttons.saving') : tCommon('buttons.save')}
           </Button>
         </div>
       </div>

@@ -2,6 +2,8 @@ import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { getSession } from '@/lib/auth'
 import logger from '@/lib/logger'
+import { apiError } from '@/lib/api-error'
+import { ERR } from '@/lib/error-messages'
 
 // GET /api/task-projects/[projectId]/labels
 export async function GET(
@@ -12,7 +14,7 @@ export async function GET(
     const { projectId } = await params
     const session = await getSession()
     if (!session?.user?.email) {
-      return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
+      return await apiError(ERR.UNAUTHORIZED, 401)
     }
 
     const labels = await prisma.taskLabel.findMany({
@@ -23,7 +25,7 @@ export async function GET(
     return NextResponse.json(labels)
   } catch (error) {
     logger.error({ err: error }, 'Error listing labels')
-    return NextResponse.json({ error: 'Erro ao listar labels' }, { status: 500 })
+    return await apiError(ERR.INTERNAL_ERROR, 500)
   }
 }
 
@@ -36,7 +38,7 @@ export async function POST(
     const { projectId } = await params
     const session = await getSession()
     if (!session?.user?.email) {
-      return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
+      return await apiError(ERR.UNAUTHORIZED, 401)
     }
 
     const body = await request.json()
@@ -57,6 +59,6 @@ export async function POST(
     return NextResponse.json(label, { status: 201 })
   } catch (error) {
     logger.error({ err: error }, 'Error creating label')
-    return NextResponse.json({ error: 'Erro ao criar label' }, { status: 500 })
+    return await apiError(ERR.INTERNAL_ERROR, 500)
   }
 }

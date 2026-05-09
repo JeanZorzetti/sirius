@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { RegisterForm } from "./register-form"
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { prisma } from "@/lib/prisma"
+import { getTranslations } from 'next-intl/server'
 import { buildLocaleAlternates } from "@/lib/seo/canonical"
 
 export async function generateMetadata({
@@ -11,10 +12,22 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>
 }): Promise<Metadata> {
   const { locale } = await params
-  const alternates = buildLocaleAlternates(locale, '/register')
+  const t = await getTranslations({ locale, namespace: 'marketing.register.meta' })
+  const alternates = buildLocaleAlternates(locale, '/cadastrar', '/register')
   return {
-    title: 'Criar conta - Sirius CRM',
+    title: t('title'),
+    description: t('description'),
     alternates,
+    openGraph: {
+      title: t('ogTitle'),
+      description: t('ogDescription'),
+      url: alternates.canonical,
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: t('ogTitle'),
+      description: t('ogDescription'),
+    },
   }
 }
 

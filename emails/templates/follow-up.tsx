@@ -1,5 +1,9 @@
 import { Text, Heading, Button, Section } from '@react-email/components'
 import { BaseLayout } from '../layouts/base'
+import emailsEn from '@/messages/en/emails.json'
+import emailsPtBr from '@/messages/pt-BR/emails.json'
+
+type Locale = 'pt-BR' | 'en'
 
 interface FollowUpEmailProps {
   userName: string
@@ -9,6 +13,7 @@ interface FollowUpEmailProps {
   stageName: string
   daysSinceUpdate: number
   dealUrl: string
+  locale?: Locale
 }
 
 export function FollowUpEmail({
@@ -19,25 +24,52 @@ export function FollowUpEmail({
   stageName,
   daysSinceUpdate,
   dealUrl,
+  locale = 'pt-BR',
 }: FollowUpEmailProps) {
+  const s = locale === 'en' ? emailsEn.emails.followUp : emailsPtBr.emails.followUp
+
   const formattedValue = dealValue
-    ? new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(dealValue)
+    ? new Intl.NumberFormat(locale === 'en' ? 'en-US' : 'pt-BR', {
+        style: 'currency',
+        currency: locale === 'en' ? 'USD' : 'BRL',
+      }).format(dealValue)
     : null
 
-  const urgencyLevel = daysSinceUpdate >= 14 ? 'alto' : daysSinceUpdate >= 7 ? 'médio' : 'baixo'
-  const urgencyColor = urgencyLevel === 'alto' ? '#dc2626' : urgencyLevel === 'médio' ? '#f59e0b' : '#3b82f6'
-  const urgencyEmoji = urgencyLevel === 'alto' ? '🚨' : urgencyLevel === 'médio' ? '⚠️' : '📌'
+  const urgencyLevel = daysSinceUpdate >= 14 ? 'high' : daysSinceUpdate >= 7 ? 'medium' : 'low'
+  const urgencyColor = urgencyLevel === 'high' ? '#dc2626' : urgencyLevel === 'medium' ? '#f59e0b' : '#3b82f6'
+  const urgencyEmoji = urgencyLevel === 'high' ? '🚨' : urgencyLevel === 'medium' ? '⚠️' : '📌'
+
+  const preview = s.preview
+    .replace('{dealTitle}', dealTitle)
+    .replace('{daysSinceUpdate}', String(daysSinceUpdate))
+
+  const intro = s.intro
+    .replace('{dealTitle}', dealTitle)
+    .replace('{daysSinceUpdate}', String(daysSinceUpdate))
+    .replace('{stageName}', stageName)
+
+  const labelNoUpdate = s.labelNoUpdate.replace('{daysSinceUpdate}', String(daysSinceUpdate))
+  const action1 = s.action1.replace('{contactName}', contactName || (locale === 'en' ? 'the contact' : 'o contato'))
 
   return (
-    <BaseLayout preview={`${urgencyEmoji} Follow-up necessário: ${dealTitle} (${daysSinceUpdate} dias sem atualização)`}>
+    <BaseLayout preview={`${urgencyEmoji} ${preview}`} locale={locale}>
       <Heading style={styles.heading}>
-        {urgencyEmoji} Negócio precisando de atenção
+        {urgencyEmoji} {s.title}
       </Heading>
 
-      <Text style={styles.text}>Olá {userName},</Text>
+      <Text style={styles.text}>{locale === 'en' ? `Hi ${userName},` : `Olá ${userName},`}</Text>
 
       <Text style={styles.text}>
-        O negócio <strong>{dealTitle}</strong> está parado há <strong style={{ color: urgencyColor }}>{daysSinceUpdate} dias</strong> na etapa <strong>{stageName}</strong>.
+        {intro.split(dealTitle).map((part, i, arr) =>
+          i < arr.length - 1 ? (
+            <span key={i}>
+              {part}
+              <strong>{dealTitle}</strong>
+            </span>
+          ) : (
+            <span key={i}>{part}</span>
+          )
+        )}
       </Text>
 
       <Section style={{ ...styles.dealCard, borderColor: urgencyColor }}>
@@ -45,48 +77,51 @@ export function FollowUpEmail({
         <Section style={styles.dealDetails}>
           {formattedValue && (
             <Text style={styles.detailRow}>
-              💰 <strong>Valor:</strong> {formattedValue}
+              💰 <strong>{s.labelValue}</strong> {formattedValue}
             </Text>
           )}
           <Text style={styles.detailRow}>
-            📋 <strong>Etapa atual:</strong> {stageName}
+            📋 <strong>{s.labelStage}</strong> {stageName}
           </Text>
           {contactName && (
             <Text style={styles.detailRow}>
-              👤 <strong>Contato:</strong> {contactName}
+              👤 <strong>{s.labelContact}</strong> {contactName}
             </Text>
           )}
           <Text style={{ ...styles.detailRow, color: urgencyColor, fontWeight: 'bold' }}>
-            ⏱️ Sem atualização há: {daysSinceUpdate} dias
+            ⏱️ {labelNoUpdate}
           </Text>
         </Section>
       </Section>
 
       <Text style={styles.text}>
-        <strong>Ações recomendadas:</strong>
+        <strong>{s.actionsTitle}</strong>
       </Text>
 
       <Section style={styles.suggestions}>
-        <Text style={styles.suggestion}>• Ligue ou mande mensagem para {contactName || 'o contato'}</Text>
-        <Text style={styles.suggestion}>• Atualize o status do negócio no pipeline</Text>
-        <Text style={styles.suggestion}>• Adicione uma nota sobre a situação atual</Text>
+        <Text style={styles.suggestion}>• {action1}</Text>
+        <Text style={styles.suggestion}>• {s.action2}</Text>
+        <Text style={styles.suggestion}>• {s.action3}</Text>
         {daysSinceUpdate >= 14 && (
           <Text style={{ ...styles.suggestion, color: '#dc2626' }}>
-            • ⚠️ Considere marcar como perdido se não houver resposta
+            • ⚠️ {s.action4Critical}
           </Text>
         )}
       </Section>
 
       <Section style={styles.ctaSection}>
         <Button href={dealUrl} style={{ ...styles.button, backgroundColor: urgencyColor }}>
-          Atualizar Negócio Agora
+          {s.cta}
         </Button>
       </Section>
 
       <Text style={styles.signature}>
-        Boas vendas!
-        <br />
-        Equipe Sirius CRM
+        {s.signature.split('\n').map((line, i, arr) => (
+          <span key={i}>
+            {line}
+            {i < arr.length - 1 && <br />}
+          </span>
+        ))}
       </Text>
     </BaseLayout>
   )

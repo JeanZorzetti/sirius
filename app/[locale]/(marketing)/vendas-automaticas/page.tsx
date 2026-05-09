@@ -19,6 +19,7 @@ import {
   ChevronDown,
   DollarSign
 } from 'lucide-react'
+import { getTranslations } from 'next-intl/server'
 import { buildLocaleAlternates } from '@/lib/seo/canonical'
 
 export async function generateMetadata({
@@ -27,28 +28,21 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>
 }): Promise<Metadata> {
   const { locale } = await params
-  const alternates = buildLocaleAlternates(locale, '/vendas-automaticas', '/automatic-sales')
+  const t = await getTranslations({ locale, namespace: 'marketing.vendasAutomaticas.meta' })
+  const alternates = buildLocaleAlternates(locale, '/vendas-automaticas', '/automated-sales')
   return {
-    title: 'Sirius CRM - Vendas Organizadas em 5 Minutos | R$ 67/mês',
-    description: 'CRM self-service sem implantação cara. Organize suas vendas agora por R$ 67/mês. Sem cartão para testar, cancele quando quiser.',
-    keywords: 'crm barato, crm self-service, crm simples, crm R$ 67, organizar vendas',
+    title: t('title'),
+    description: t('description'),
     alternates,
     openGraph: {
-      title: 'Sirius CRM - Vendas Organizadas em 5 Minutos',
-      description: 'CRM self-service sem implantação cara. R$ 67/mês, sem cartão para testar.',
-      type: 'website',
+      title: t('ogTitle'),
+      description: t('ogDescription'),
       url: alternates.canonical,
-      images: [{
-        url: 'https://siriuscrm.com.br/og-image.png',
-        width: 1200,
-        height: 630,
-        alt: 'Sirius CRM - CRM Inteligente para Vendedores Brasileiros',
-      }],
     },
     twitter: {
       card: 'summary_large_image',
-      title: 'Sirius CRM - Vendas Organizadas em 5 Minutos',
-      description: 'CRM self-service por R$ 67/mês. Sem cartão para testar, cancele quando quiser.',
+      title: t('ogTitle'),
+      description: t('ogDescription'),
     },
   }
 }

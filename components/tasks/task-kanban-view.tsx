@@ -2,6 +2,7 @@
 
 import { useState, useCallback, useRef, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
+import { useTranslations } from 'next-intl'
 import { DragDropContext, Droppable, Draggable, type DropResult } from '@hello-pangea/dnd'
 import { Plus, GripVertical } from 'lucide-react'
 import { cn } from '@/lib/utils'
@@ -29,6 +30,8 @@ export function TaskKanbanView({
   onAddTask,
 }: TaskKanbanViewProps) {
   const router = useRouter()
+  const tCommon = useTranslations('common')
+  const t = useTranslations('components.tasks')
   const [tasks, setTasks] = useState(initialTasks)
   const [draggingId, setDraggingId] = useState<string | null>(null)
   const isSaving = useRef(false)
@@ -96,7 +99,7 @@ export function TaskKanbanView({
       try {
         await onTaskMove?.(draggableId, targetStatusId, newOrder)
       } catch {
-        toast.error('Erro ao mover tarefa')
+        toast.error(tCommon('toasts.failed'))
         setTasks(initialTasks)
       } finally {
         isSaving.current = false
@@ -215,7 +218,7 @@ export function TaskKanbanView({
                         className="flex items-center justify-center gap-1 rounded-lg border border-dashed border-border/40 py-5 text-xs text-muted-foreground/60 hover:border-border hover:text-muted-foreground transition-colors"
                       >
                         <Plus className="h-3 w-3" />
-                        Adicionar tarefa
+                        {t('addTask')}
                       </button>
                     )}
                   </div>

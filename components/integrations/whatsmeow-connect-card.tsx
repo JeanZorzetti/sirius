@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect, useRef, useCallback } from 'react'
+import { useTranslations } from 'next-intl'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -22,6 +23,7 @@ interface GatewayInstance {
 }
 
 export function WhatsmeowConnectCard() {
+  const tCommon = useTranslations('common')
   const { toast } = useToast()
   const [step, setStep] = useState<Step>('idle')
   const [instanceName, setInstanceName] = useState('')
@@ -244,7 +246,7 @@ export function WhatsmeowConnectCard() {
             onClick={() => setShowForm(true)}
           >
             <Plus className="h-3.5 w-3.5" />
-            Adicionar instância
+            {tCommon('buttons.add')}
           </Button>
         )}
 
@@ -280,7 +282,7 @@ export function WhatsmeowConnectCard() {
                 className="h-9 px-3 text-xs text-muted-foreground"
                 onClick={() => { setShowForm(false); setInstanceName('') }}
               >
-                Cancelar
+                {tCommon('buttons.cancel')}
               </Button>
             </div>
           </div>
@@ -332,7 +334,7 @@ export function WhatsmeowConnectCard() {
                 onClick={handleReset}
                 className="flex-1 h-8 text-xs text-muted-foreground"
               >
-                Cancelar
+                {tCommon('buttons.cancel')}
               </Button>
             </div>
 
@@ -370,7 +372,7 @@ export function WhatsmeowConnectCard() {
               </p>
             </div>
             <Button variant="outline" size="sm" onClick={handleReset} className="h-8 text-xs mt-1">
-              Adicionar outra instância
+              {tCommon('buttons.add')}
             </Button>
           </div>
         )}

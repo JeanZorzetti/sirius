@@ -1,6 +1,7 @@
 ﻿import { Metadata } from 'next'
 import Script from 'next/script'
 import { CalculadoraROI } from '@/components/calculadora-roi'
+import { getTranslations } from 'next-intl/server'
 import { buildLocaleAlternates } from '@/lib/seo/canonical'
 
 export async function generateMetadata({
@@ -9,22 +10,21 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>
 }): Promise<Metadata> {
   const { locale } = await params
+  const t = await getTranslations({ locale, namespace: 'marketing.ferramentas.calculadoraRoi.meta' })
   const alternates = buildLocaleAlternates(locale, '/ferramentas/calculadora-roi', '/tools/roi-calculator')
   return {
-    title: 'Calculadora de Vazamento de Vendas | Sirius CRM',
-    description: 'Descubra quanto dinheiro você está perdendo por não ter um sistema organizado de vendas. Calcule seu ROI em segundos.',
-    keywords: 'calculadora roi, vazamento de vendas, crm, conversão de vendas, funil de vendas',
+    title: t('title'),
+    description: t('description'),
     alternates,
     openGraph: {
-      title: 'Calculadora de Vazamento de Vendas | Sirius CRM',
-      description: 'Descubra quanto dinheiro você está perdendo por não ter um sistema organizado de vendas.',
+      title: t('ogTitle'),
+      description: t('ogDescription'),
       url: alternates.canonical,
-      type: 'website',
     },
     twitter: {
       card: 'summary_large_image',
-      title: 'Calculadora de Vazamento de Vendas | Sirius CRM',
-      description: 'Descubra quanto dinheiro você está perdendo por não ter um sistema organizado de vendas.',
+      title: t('ogTitle'),
+      description: t('ogDescription'),
     },
   }
 }

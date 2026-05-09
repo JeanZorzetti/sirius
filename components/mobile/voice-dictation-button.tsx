@@ -13,6 +13,7 @@
  */
 
 import * as React from 'react'
+import { useTranslations } from 'next-intl'
 import { Mic, MicOff, Loader2, Check, X, Sparkles } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { hapticImpact, hapticSuccess, hapticWarning } from '@/lib/mobile/haptics'
@@ -54,6 +55,7 @@ interface VoiceDictationButtonProps {
 type State = 'idle' | 'recording' | 'processing' | 'confirming' | 'error'
 
 export function VoiceDictationButton({ context, onResult, className }: VoiceDictationButtonProps) {
+  const tCommon = useTranslations('common')
   const [state, setState] = React.useState<State>('idle')
   const [interimText, setInterimText] = React.useState('')
   const [result, setResult] = React.useState<VoiceCommandResult | null>(null)
@@ -226,7 +228,7 @@ export function VoiceDictationButton({ context, onResult, className }: VoiceDict
                   className="flex flex-1 items-center justify-center gap-1.5 rounded-xl border border-border py-3 text-sm font-medium text-foreground transition-colors hover:bg-muted active:scale-[0.98]"
                 >
                   <X className="h-4 w-4" />
-                  Cancelar
+                  {tCommon('buttons.cancel')}
                 </button>
                 <button
                   type="button"
@@ -234,7 +236,7 @@ export function VoiceDictationButton({ context, onResult, className }: VoiceDict
                   className="flex flex-1 items-center justify-center gap-1.5 rounded-xl bg-violet-600 py-3 text-sm font-semibold text-white transition-colors hover:bg-violet-700 active:scale-[0.98]"
                 >
                   <Check className="h-4 w-4" />
-                  Confirmar
+                  {tCommon('buttons.confirm')}
                 </button>
               </div>
             </div>

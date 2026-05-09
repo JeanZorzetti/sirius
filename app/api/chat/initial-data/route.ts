@@ -3,6 +3,8 @@ import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { prismaWa } from '@/lib/prisma-wa'
 import logger from '@/lib/logger'
+import { apiError } from '@/lib/api-error'
+import { ERR } from '@/lib/error-messages'
 
 export const dynamic = 'force-dynamic'
 
@@ -11,7 +13,7 @@ export async function GET() {
     // 1. Authentication
     const session = await getSession()
     if (!session?.user) {
-      return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
+      return await apiError(ERR.UNAUTHORIZED, 401)
     }
 
     // 2. Get user with organization
@@ -25,10 +27,7 @@ export async function GET() {
     })
 
     if (!user?.organizationId) {
-      return NextResponse.json(
-        { error: 'Organização não encontrada' },
-        { status: 404 }
-      )
+      return await apiError(ERR.ORG_NOT_FOUND, 404)
     }
 
     // 3. Fetch connections from WA DB
@@ -181,9 +180,6 @@ export async function GET() {
 
   } catch (error: any) {
     logger.error({ error }, 'Error fetching chat initial data')
-    return NextResponse.json(
-      { error: 'Erro interno do servidor' },
-      { status: 500 }
-    )
+    return await apiError(ERR.INTERNAL_ERROR, 500)
   }
 }

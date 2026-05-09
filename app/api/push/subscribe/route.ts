@@ -1,7 +1,9 @@
-import logger from '@/lib/logger'
+﻿import logger from '@/lib/logger'
 import { NextRequest, NextResponse } from 'next/server'
 import { getSession } from '@/lib/auth'
 import { subscribeToPushNotifications } from '@/lib/push-notifications'
+import { apiError } from '@/lib/api-error'
+import { ERR } from '@/lib/error-messages'
 
 /**
  * @swagger
@@ -36,10 +38,7 @@ export async function POST(request: NextRequest) {
     const session = await getSession()
 
     if (!session?.user?.id) {
-      return NextResponse.json(
-        { error: 'Não autorizado' },
-        { status: 401 }
-      )
+      return await apiError(ERR.UNAUTHORIZED, 401, { req })
     }
 
     const body = await request.json()

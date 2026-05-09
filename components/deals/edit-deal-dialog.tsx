@@ -1,4 +1,6 @@
-'use client'
+﻿'use client'
+
+import { useTranslations } from 'next-intl'
 
 import { useState, useEffect, useTransition, useRef, useMemo } from 'react'
 import { useRouter } from 'next/navigation'
@@ -168,6 +170,8 @@ export function EditDealDialog({
         } else {
             setFullDeal(null)
         }
+
+        const tCommon = useTranslations('common')
 
         return () => {
             cancelled = true
@@ -371,6 +375,8 @@ export function EditDealDialog({
 
     if (!initialDeal) return null
 
+    const tCommon = useTranslations('common')
+
     return (
         <>
         <ResponsiveDialog open={open} onOpenChange={onOpenChange}>
@@ -517,7 +523,7 @@ export function EditDealDialog({
                                                                 disabled={quickAddLoading}
                                                                 className="w-full h-8 text-sm bg-indigo-600 hover:bg-indigo-700"
                                                             >
-                                                                {quickAddLoading ? 'Salvando...' : 'Salvar Contato'}
+                                                                {quickAddLoading ? tCommon('buttons.saving') : 'Salvar Contato'}
                                                             </Button>
                                                         </form>
                                                     </PopoverContent>
@@ -547,6 +553,7 @@ export function EditDealDialog({
                                             {(() => {
                                                 const selectedContact = localContacts.find(c => c.id === selectedContactId)
                                                 if (!selectedContact || (!selectedContact.phone && !selectedContact.email)) return null
+                                                const tCommon = useTranslations('common')
                                                 return (
                                                     <div className="mt-2 space-y-1 rounded-lg border border-border/50 bg-muted/30 px-3 py-2 text-xs">
                                                         {selectedContact.phone && (
@@ -622,6 +629,8 @@ export function EditDealDialog({
                                             : diffH < 24 ? `em ${Math.round(diffH)}h`
                                             : `em ${diffD} dia${diffD > 1 ? 's' : ''}`
                                         const formattedDate = format(due, "dd/MM 'às' HH:mm", { locale: ptBR })
+
+                                        const tCommon = useTranslations('common')
 
                                         return (
                                             <div className={`flex items-start gap-3 rounded-lg border px-3.5 py-3 text-sm transition-all ${
@@ -714,7 +723,7 @@ export function EditDealDialog({
                                             </Button>
                                         </div>
                                         <Button type="submit" disabled={loading} className="bg-indigo-600 hover:bg-indigo-700 text-white">
-                                            {loading ? 'Salvando...' : 'Salvar Alterações'}
+                                            {loading ? tCommon('buttons.saving') : 'Salvar Alterações'}
                                         </Button>
                                     </div>
                                 </form>
@@ -961,7 +970,7 @@ export function EditDealDialog({
             onOpenChange={setConfirmDeleteDeal}
             title="Excluir negócio"
             description="Tem certeza que deseja excluir este negócio? Esta ação não pode ser desfeita."
-            confirmLabel="Excluir"
+            confirmLabel={tCommon('buttons.delete')}
             onConfirm={handleDelete}
         />
 
@@ -970,7 +979,7 @@ export function EditDealDialog({
             onOpenChange={(open) => !open && setConfirmDeleteNoteId(null)}
             title="Excluir nota"
             description="Tem certeza que deseja excluir esta nota?"
-            confirmLabel="Excluir"
+            confirmLabel={tCommon('buttons.delete')}
             onConfirm={async () => {
                 if (confirmDeleteNoteId && initialDeal) {
                     try {
@@ -1012,6 +1021,8 @@ function ContactCombobox({
         setOpen(false)
         setSearch('')
     }
+
+    const tCommon = useTranslations('common')
 
     return (
         <Popover open={open} onOpenChange={(v) => { setOpen(v); if (!v) setSearch('') }}>
@@ -1101,6 +1112,8 @@ function ProductCombobox({
         setSearch('')
     }
 
+    const tCommon = useTranslations('common')
+
     return (
         <Popover open={open} onOpenChange={(v) => { setOpen(v); if (!v) setSearch('') }}>
             <PopoverTrigger asChild>
@@ -1181,6 +1194,7 @@ function getInitials(name: string) {
 }
 
 function NoteItem({ note, onDelete }: { note: any, onDelete: () => void }) {
+    const tCommon = useTranslations('common')
     return (
         <div className="flex gap-3 group">
             <div className="h-8 w-8 rounded-full bg-indigo-100 dark:bg-indigo-900/50 text-indigo-600 dark:text-indigo-400 flex items-center justify-center text-xs font-bold shrink-0">
@@ -1229,6 +1243,8 @@ function ActivityItem({ activity }: { activity: any }) {
             default: return 'bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400'
         }
     }
+
+    const tCommon = useTranslations('common')
 
     return (
         <div className="flex gap-4 relative">

@@ -7,6 +7,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import { FileText, Mail, Phone, Building2, Users, ArrowLeft } from 'lucide-react'
+import { getTranslations } from 'next-intl/server'
 import { buildLocaleAlternates } from '@/lib/seo/canonical'
 
 export async function generateMetadata({
@@ -15,28 +16,22 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>
 }): Promise<Metadata> {
   const { locale } = await params
+  const t = await getTranslations({ locale, namespace: 'marketing.proposta.meta' })
   const alternates = buildLocaleAlternates(locale, '/proposta', '/proposal')
   return {
-  title: 'Solicitar Proposta Comercial | Sirius CRM',
-  description: 'Solicite uma proposta comercial personalizada para sua empresa. Nossa equipe entrará em contato em até 24h para apresentar a melhor solução em CRM.',
-  keywords: ['proposta comercial', 'plano customizado', 'enterprise', 'vendas', 'sirius crm'],
-  alternates,
-  openGraph: {
-    title: 'Solicitar Proposta Comercial | Sirius CRM',
-    description: 'Solicite uma proposta personalizada. Nossa equipe entrará em contato em até 24h.',
-    url: alternates.canonical,
-    images: [{
-      url: 'https://siriuscrm.com.br/og-image.png',
-      width: 1200,
-      height: 630,
-      alt: 'Sirius CRM - CRM Inteligente para Vendedores Brasileiros',
-    }],
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Solicitar Proposta Comercial | Sirius CRM',
-    description: 'Proposta personalizada para sua empresa. Resposta em até 24h.',
-  },
+    title: t('title'),
+    description: t('description'),
+    alternates,
+    openGraph: {
+      title: t('ogTitle'),
+      description: t('ogDescription'),
+      url: alternates.canonical,
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: t('ogTitle'),
+      description: t('ogDescription'),
+    },
   }
 }
 

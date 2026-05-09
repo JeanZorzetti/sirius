@@ -2,6 +2,8 @@ import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { getSession } from '@/lib/auth'
 import logger from '@/lib/logger'
+import { apiError } from '@/lib/api-error'
+import { ERR } from '@/lib/error-messages'
 
 /**
  * GET /api/org/members
@@ -12,7 +14,7 @@ export async function GET() {
   try {
     const session = await getSession()
     if (!session?.user?.email) {
-      return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
+      return await apiError(ERR.UNAUTHORIZED, 401)
     }
 
     const user = await prisma.user.findUnique({
@@ -21,7 +23,7 @@ export async function GET() {
     })
 
     if (!user?.organizationId) {
-      return NextResponse.json({ error: 'Organização não encontrada' }, { status: 404 })
+      return await apiError(ERR.ORG_NOT_FOUND, 404)
     }
 
     const members = await prisma.user.findMany({
@@ -33,6 +35,6 @@ export async function GET() {
     return NextResponse.json(members)
   } catch (error) {
     logger.error({ err: error }, '[org/members] error')
-    return NextResponse.json({ error: 'Erro ao buscar membros' }, { status: 500 })
+    return await apiError(ERR.INTERNAL_ERROR, 500)
   }
 }

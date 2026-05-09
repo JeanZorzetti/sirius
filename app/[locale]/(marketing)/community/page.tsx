@@ -3,6 +3,7 @@ import Script from 'next/script'
 import { Button } from '@/components/ui/button'
 import { Users, MessageCircle, BookOpen, Github, Lightbulb, Trophy, Heart } from 'lucide-react'
 import type { Metadata } from 'next'
+import { getTranslations } from 'next-intl/server'
 import { buildLocaleAlternates } from '@/lib/seo/canonical'
 
 export async function generateMetadata({
@@ -11,27 +12,21 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>
 }): Promise<Metadata> {
   const { locale } = await params
-  const alternates = buildLocaleAlternates(locale, '/community')
+  const t = await getTranslations({ locale, namespace: 'marketing.community.meta' })
+  const alternates = buildLocaleAlternates(locale, '/comunidade', '/community')
   return {
-    title: 'Comunidade | Sirius CRM',
-    description: 'Junte-se à comunidade Sirius CRM. Compartilhe experiências, aprenda com outros usuários e contribua para o desenvolvimento da plataforma.',
-    keywords: ['comunidade', 'forum', 'suporte', 'discussões', 'sirius crm'],
+    title: t('title'),
+    description: t('description'),
     alternates,
     openGraph: {
-      title: 'Comunidade | Sirius CRM',
-      description: 'Junte-se à comunidade Sirius CRM e conecte-se com outros profissionais de vendas.',
+      title: t('ogTitle'),
+      description: t('ogDescription'),
       url: alternates.canonical,
-      images: [{
-        url: 'https://siriuscrm.com.br/og-image.png',
-        width: 1200,
-        height: 630,
-        alt: 'Sirius CRM - CRM Inteligente para Vendedores Brasileiros',
-      }],
     },
     twitter: {
       card: 'summary_large_image',
-      title: 'Comunidade | Sirius CRM',
-      description: '500+ usuários conectados. Compartilhe experiências e aprenda com profissionais de vendas.',
+      title: t('ogTitle'),
+      description: t('ogDescription'),
     },
   }
 }

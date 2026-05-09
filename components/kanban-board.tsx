@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef, useMemo } from 'react'
 import { useRouter } from 'next/navigation'
+import { useTranslations } from 'next-intl'
 import { createPortal } from 'react-dom'
 import {
   DragDropContext,
@@ -129,6 +130,7 @@ function DealCard({
   canSwipePrev?: boolean
   canSwipeNext?: boolean
 }) {
+  const tCommon = useTranslations('common')
   const router = useRouter()
   const handleWhatsApp = (e: React.MouseEvent) => {
     e.stopPropagation()
@@ -230,7 +232,7 @@ function DealCard({
         canSwipePrev && onSwipePrev
           ? {
               icon: <ChevronLeft className="h-5 w-5" />,
-              label: 'Voltar',
+              label: tCommon('buttons.back'),
               background: 'bg-orange-500',
               onAction: onSwipePrev,
             }
@@ -240,7 +242,7 @@ function DealCard({
         canSwipeNext && onSwipeNext
           ? {
               icon: <ChevronRight className="h-5 w-5" />,
-              label: 'Avançar',
+              label: tCommon('buttons.next'),
               background: 'bg-indigo-500',
               onAction: onSwipeNext,
             }
@@ -271,6 +273,7 @@ function KanbanColumn({
 }) {
   const totalValue = stage.deals.reduce((acc, deal) => acc + (deal.value ? Number(deal.value) : 0), 0)
 
+  const tCommon = useTranslations('common')
   const [isEditing, setIsEditing] = useState(false)
   const [newName, setNewName] = useState(stage.name)
 
@@ -313,10 +316,10 @@ function KanbanColumn({
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
                 <DropdownMenuItem onClick={() => setIsEditing(true)}>
-                  <Pencil className="w-3 h-3 mr-2" /> Renomear
+                  <Pencil className="w-3 h-3 mr-2" /> {tCommon('buttons.edit')}
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => onDelete?.(stage.id)} className="text-red-500 focus:text-red-500">
-                  <Trash2 className="w-3 h-3 mr-2" /> Excluir Coluna
+                  <Trash2 className="w-3 h-3 mr-2" /> {tCommon('buttons.delete')}
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
@@ -469,6 +472,8 @@ export function KanbanBoard({
   onRollback,
   onSuccess
 }: KanbanBoardProps) {
+  const tCommon = useTranslations('common')
+  const tComponents = useTranslations('components')
   const [stages, setStages] = useState(initialStages)
   const [editingDeal, setEditingDeal] = useState<Deal | null>(null)
 
@@ -786,7 +791,7 @@ export function KanbanBoard({
           </div>
           <Button variant="outline" size="sm" onClick={() => setIsNewStageOpen(true)} className="gap-2">
             <Plus className="w-4 h-4" />
-            Nova Etapa
+            {tCommon('buttons.add')}
           </Button>
         </div>
 
@@ -831,7 +836,7 @@ export function KanbanBoard({
       <Dialog open={isNewStageOpen} onOpenChange={setIsNewStageOpen}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Nova Etapa</DialogTitle>
+            <DialogTitle>{tCommon('buttons.add')}</DialogTitle>
           </DialogHeader>
           <form onSubmit={handleCreateStage} className="space-y-4">
             <Input
@@ -841,7 +846,7 @@ export function KanbanBoard({
               autoFocus
             />
             <DialogFooter>
-              <Button type="submit">Criar</Button>
+              <Button type="submit">{tCommon('buttons.create')}</Button>
             </DialogFooter>
           </form>
         </DialogContent>
@@ -850,9 +855,9 @@ export function KanbanBoard({
       <ConfirmDialog
         open={!!deleteStageId}
         onOpenChange={(open) => !open && setDeleteStageId(null)}
-        title="Excluir etapa"
-        description="Tem certeza que deseja excluir esta etapa? Todos os deals serão movidos para a primeira etapa."
-        confirmLabel="Excluir"
+        title={tCommon('buttons.delete')}
+        description={tComponents('shared.dialogs.confirmDeleteDesc')}
+        confirmLabel={tCommon('buttons.delete')}
         onConfirm={() => deleteStageId && handleDeleteStage(deleteStageId)}
       />
 
@@ -897,14 +902,14 @@ export function KanbanBoard({
 
           <DialogFooter className="gap-2 sm:gap-2">
             <Button variant="ghost" onClick={handleLostReasonCancel}>
-              Cancelar
+              {tCommon('buttons.cancel')}
             </Button>
             <Button
               variant="destructive"
               onClick={handleLostReasonConfirm}
               disabled={!lostReasonInput.trim()}
             >
-              Confirmar Perda
+              {tCommon('buttons.confirm')}
             </Button>
           </DialogFooter>
         </DialogContent>

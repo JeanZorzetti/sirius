@@ -1,0 +1,78 @@
+{
+  "analytics": {
+    "kpis": {
+      "mrrTotal": "Total MRR",
+      "arrTotal": "Total ARR",
+      "churnRate": "Churn Rate",
+      "ltv": "LTV",
+      "cac": "CAC",
+      "ltvCacRatio": "LTV/CAC Ratio",
+      "averageTicket": "Average Ticket",
+      "conversionRate": "Conversion Rate",
+      "activePipeline": "Active Pipeline",
+      "wonRevenue": "Won Revenue",
+      "lostRevenue": "Lost Revenue",
+      "totalDeals": "Total Deals",
+      "wonDeals": "Won Deals",
+      "lostDeals": "Lost Deals",
+      "openDeals": "Open Deals",
+      "newContacts": "New Contacts",
+      "totalContacts": "Total Contacts",
+      "responseTime": "Response Time",
+      "salesCycle": "Sales Cycle",
+      "forecastAccuracy": "Forecast Accuracy"
+    },
+    "simulator": {
+      "title": "Revenue Simulator",
+      "monthlyRevenue": "Monthly Revenue",
+      "annualRevenue": "Annual Revenue",
+      "growth": "Growth",
+      "projection": "Projection",
+      "scenario": "Scenario",
+      "optimistic": "Optimistic",
+      "realistic": "Realistic",
+      "pessimistic": "Pessimistic"
+    },
+    "periods": {
+      "daily": "Daily",
+      "weekly": "Weekly",
+      "monthly": "Monthly",
+      "quarterly": "Quarterly",
+      "annually": "Annually"
+    }
+  },
+  "blog": {
+    "categories": {
+      "vendas": "Sales",
+      "crm": "CRM",
+      "produtividade": "Productivity",
+      "tecnologia": "Technology",
+      "gestao": "Management",
+      "marketing": "Marketing",
+      "imoveis": "Real Estate",
+      "inteligencia-artificial": "Artificial Intelligence",
+      "whatsapp": "WhatsApp",
+      "pipeline": "Pipeline"
+    }
+  },
+  "emailAutomations": {
+    "followupD3": "Follow-up D+3",
+    "followupD7": "Follow-up D+7",
+    "followupD15": "Follow-up D+15",
+    "winBack": "Win-back Campaign",
+    "onboarding": "Onboarding Sequence",
+    "trialExpiring": "Trial Expiring Soon",
+    "trialExpired": "Trial Expired",
+    "upgradeNudge": "Upgrade Nudge",
+    "weeklyDigest": "Weekly Digest"
+  },
+  "agi": {
+    "guardrails": {
+      "outOfScope": "This request is outside my scope. I can help with sales, contacts, deals, and CRM-related questions.",
+      "sensitiveContent": "I can't help with that type of content.",
+      "rateLimit": "You've reached your AI usage limit for this period. Upgrade your plan for more access.",
+      "noContext": "I need more context to help you. Could you provide more details?",
+      "errorFallback": "Sorry, I encountered an error. Please try again."
+    }
+  }
+}

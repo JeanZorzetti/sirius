@@ -14,23 +14,25 @@ import { prisma } from '@/lib/prisma'
 import { createCheckoutPreference, CheckoutPlan } from '@/lib/mercadopago'
 import { sendEmail } from '@/lib/email'
 import logger from '@/lib/logger'
+import { apiError } from '@/lib/api-error'
+import { ERR } from '@/lib/error-messages'
 
 export async function POST(request: NextRequest) {
   const session = await getSession()
 
   if (!session?.user) {
-    return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
+    return await apiError(ERR.UNAUTHORIZED, 401)
   }
 
   if (session.user.role !== 'ADMIN' && session.user.role !== 'SUPER_ADMIN') {
-    return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
+    return await apiError(ERR.FORBIDDEN, 403)
   }
 
   const body = await request.json()
   const { organizationId, sendEmail: shouldSendEmail = true } = body
 
   if (!organizationId) {
-    return NextResponse.json({ error: 'organizationId obrigatório' }, { status: 400 })
+    return await apiError(ERR.MISSING_FIELDS, 400)
   }
 
   const org = await prisma.organization.findUnique({
@@ -39,7 +41,7 @@ export async function POST(request: NextRequest) {
   })
 
   if (!org) {
-    return NextResponse.json({ error: 'Organização não encontrada' }, { status: 404 })
+    return await apiError(ERR.ORG_NOT_FOUND, 404)
   }
 
   if (org.tier === 'FREE') {

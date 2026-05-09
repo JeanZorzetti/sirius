@@ -133,7 +133,7 @@ export async function POST(req: NextRequest) {
 
         // 6. General AI Analysis (if requested or 'all')
         if (analysisType === 'general' || analysisType === 'all' || analysisType === 'meddic') {
-            const brain = createAgiBrain(plan);
+            const brain = createAgiBrain(plan, undefined, user.locale ?? undefined);
 
             const prompt = `Analise este deal de vendas e forneça insights estratégicos:
 

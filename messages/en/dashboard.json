@@ -112,6 +112,90 @@
       "startTour": "Start tour",
       "next": "Next",
       "finish": "Done"
+    },
+    "pages": {
+      "pipeline": {
+        "title": "Pipeline",
+        "subtitle": "Manage your deals and track your sales pipeline"
+      },
+      "contacts": {
+        "title": "Contacts",
+        "subtitle": "Manage your clients and leads"
+      },
+      "deals": {
+        "title": "Deals",
+        "subtitle": "Track your sales opportunities"
+      },
+      "analytics": {
+        "title": "Analytics",
+        "subtitle": "Monitor your sales performance"
+      },
+      "tasks": {
+        "title": "Tasks",
+        "subtitle": "Manage your projects and tasks"
+      },
+      "chat": {
+        "title": "Chat Center",
+        "subtitle": "Manage all your conversations"
+      },
+      "instagram": {
+        "title": "Instagram Bot",
+        "subtitle": "Manage your Instagram automation"
+      },
+      "products": {
+        "title": "Products",
+        "subtitle": "Manage your product catalog"
+      },
+      "pipelines": {
+        "title": "Pipelines",
+        "subtitle": "Manage your sales pipelines"
+      },
+      "settings": {
+        "title": "Settings",
+        "subtitle": "Configure your workspace"
+      },
+      "billing": {
+        "title": "Plan & Billing",
+        "subtitle": "Manage your subscription and usage"
+      },
+      "agenda": {
+        "title": "Calendar",
+        "subtitle": "Manage your schedule and appointments"
+      },
+      "automations": {
+        "title": "Automations",
+        "subtitle": "Automate your sales workflows"
+      },
+      "emailAutomations": {
+        "title": "Email Automation",
+        "subtitle": "Set up automated email sequences"
+      },
+      "marketing": {
+        "title": "Marketing",
+        "subtitle": "Manage your marketing campaigns"
+      },
+      "prospecting": {
+        "title": "Prospecting",
+        "subtitle": "Find and qualify new leads"
+      },
+      "visits": {
+        "title": "Visits",
+        "subtitle": "Track your field visits"
+      },
+      "support": {
+        "title": "Support",
+        "subtitle": "Get help from our team"
+      },
+      "nearby": {
+        "title": "Nearby",
+        "subtitle": "Find contacts near your location"
+      }
+    },
+    "errors": {
+      "unauthorized": "Unauthorized. Please log in again.",
+      "userNoOrg": "User does not belong to an organization.",
+      "fetchUser": "Failed to load user data.",
+      "notFound": "The requested page was not found."
     }
   }
 }

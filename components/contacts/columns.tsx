@@ -12,9 +12,11 @@ interface GetColumnsOptions {
     onOpenProfile?: (contact: EnrichedContact) => void
     onEdit?: (contact: EnrichedContact) => void
     onDelete?: (contact: EnrichedContact) => void
+    t?: (key: string) => string
 }
 
-export function getColumns({ onOpenProfile, onEdit, onDelete }: GetColumnsOptions = {}): ColumnDef<EnrichedContact>[] {
+export function getColumns({ onOpenProfile, onEdit, onDelete, t }: GetColumnsOptions = {}): ColumnDef<EnrichedContact>[] {
+    const label = (key: string, fallback: string) => t ? t(key) : fallback
     return [
         {
             id: 'select',
@@ -24,7 +26,7 @@ export function getColumns({ onOpenProfile, onEdit, onDelete }: GetColumnsOption
                     <Checkbox
                         checked={table.getIsAllPageRowsSelected()}
                         onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-                        aria-label="Selecionar todos"
+                        aria-label={label('selectAll', 'Select all')}
                         className="border-zinc-300 dark:border-zinc-600"
                     />
                 </div>
@@ -33,7 +35,7 @@ export function getColumns({ onOpenProfile, onEdit, onDelete }: GetColumnsOption
                 <Checkbox
                     checked={row.getIsSelected()}
                     onCheckedChange={(value) => row.toggleSelected(!!value)}
-                    aria-label="Selecionar linha"
+                    aria-label={label('selectRow', 'Select row')}
                     className="border-zinc-300 dark:border-zinc-600"
                     onClick={(e) => e.stopPropagation()}
                 />
@@ -44,7 +46,7 @@ export function getColumns({ onOpenProfile, onEdit, onDelete }: GetColumnsOption
         {
             accessorKey: 'name',
             size: 220,
-            header: 'Nome',
+            header: label('name', 'Name'),
             cell: ({ row }) => {
                 const name = row.getValue('name') as string
                 const initials = name
@@ -72,7 +74,7 @@ export function getColumns({ onOpenProfile, onEdit, onDelete }: GetColumnsOption
         {
             accessorKey: 'email',
             size: 240,
-            header: 'Email',
+            header: label('email', 'Email'),
             cell: ({ row }) => {
                 const email = row.getValue('email') as string | null
                 return <span className="text-zinc-600 dark:text-zinc-500 block truncate">{email || '-'}</span>
@@ -81,7 +83,7 @@ export function getColumns({ onOpenProfile, onEdit, onDelete }: GetColumnsOption
         {
             accessorKey: 'phone',
             size: 180,
-            header: 'Telefone',
+            header: label('phone', 'Phone'),
             cell: ({ row }) => {
                 const phone = row.getValue('phone') as string | null
                 if (!phone) return <span className="text-zinc-500">-</span>
@@ -107,7 +109,7 @@ export function getColumns({ onOpenProfile, onEdit, onDelete }: GetColumnsOption
         {
             accessorKey: 'company',
             size: 180,
-            header: 'Empresa',
+            header: label('company', 'Company'),
             cell: ({ row }) => {
                 const company = row.getValue('company') as string | null
                 if (!company) return <span className="text-zinc-600">-</span>
@@ -122,7 +124,7 @@ export function getColumns({ onOpenProfile, onEdit, onDelete }: GetColumnsOption
             id: 'activeStageName',
             accessorKey: 'activeStageName',
             size: 160,
-            header: 'Etapa',
+            header: label('stage', 'Stage'),
             cell: ({ row }) => {
                 const stage = row.original.activeStageName
                 if (!stage) return <span className="text-zinc-400 dark:text-zinc-600">—</span>
@@ -138,7 +140,7 @@ export function getColumns({ onOpenProfile, onEdit, onDelete }: GetColumnsOption
             id: 'assigneeName',
             accessorKey: 'assigneeName',
             size: 180,
-            header: 'Responsável',
+            header: label('owner', 'Owner'),
             cell: ({ row }) => {
                 const name = row.original.assigneeName
                 if (!name) return <span className="text-zinc-400 dark:text-zinc-600">—</span>
@@ -162,7 +164,7 @@ export function getColumns({ onOpenProfile, onEdit, onDelete }: GetColumnsOption
                     className="flex items-center gap-1 text-xs font-medium text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300 transition-colors"
                     onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
                 >
-                    Deals abertos
+                    {label('openDeals', 'Open Deals')}
                     <ArrowUpDown className="h-3 w-3 opacity-60" />
                 </button>
             ),
@@ -187,7 +189,7 @@ export function getColumns({ onOpenProfile, onEdit, onDelete }: GetColumnsOption
                     className="flex items-center gap-1 text-xs font-medium text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300 transition-colors"
                     onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
                 >
-                    Última interação
+                    {label('lastActivity', 'Last Activity')}
                     <ArrowUpDown className="h-3 w-3 opacity-60" />
                 </button>
             ),
@@ -215,7 +217,7 @@ export function getColumns({ onOpenProfile, onEdit, onDelete }: GetColumnsOption
         {
             accessorKey: 'city',
             size: 140,
-            header: 'Cidade',
+            header: label('city', 'City'),
             cell: ({ row }) => {
                 const city = row.getValue('city') as string | null
                 const state = row.original.state
@@ -242,7 +244,7 @@ export function getColumns({ onOpenProfile, onEdit, onDelete }: GetColumnsOption
                             size="icon"
                             variant="ghost"
                             className="h-7 w-7 rounded-full text-zinc-400 hover:text-indigo-500 hover:bg-indigo-500/10 transition-all opacity-0 group-hover:opacity-100"
-                            title="Editar contato"
+                            title={label('editContact', 'Edit contact')}
                             onClick={() => onEdit?.(contact)}
                         >
                             <Pencil className="h-4 w-4" />
@@ -251,7 +253,7 @@ export function getColumns({ onOpenProfile, onEdit, onDelete }: GetColumnsOption
                             size="icon"
                             variant="ghost"
                             className="h-7 w-7 rounded-full text-zinc-400 hover:text-red-500 hover:bg-red-500/10 transition-all opacity-0 group-hover:opacity-100"
-                            title="Excluir contato"
+                            title={label('deleteContact', 'Delete contact')}
                             onClick={() => onDelete?.(contact)}
                         >
                             <Trash2 className="h-4 w-4" />
@@ -263,5 +265,4 @@ export function getColumns({ onOpenProfile, onEdit, onDelete }: GetColumnsOption
     ]
 }
 
-// Backwards compat
 export const columns = getColumns()

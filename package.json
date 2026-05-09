@@ -20,6 +20,8 @@
     "test:e2e:ui": "playwright test --ui",
     "test:e2e:debug": "playwright test --debug",
     "test:e2e:report": "playwright show-report",
+    "check:i18n": "tsx scripts/detect-pt-strings.ts",
+    "check:i18n:update": "tsx scripts/detect-pt-strings.ts --update-baseline",
     "indexnow": "tsx scripts/submit-to-indexnow.ts",
     "cap:sync": "npx cap sync",
     "cap:open:ios": "npx cap open ios",

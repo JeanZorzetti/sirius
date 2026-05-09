@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { useTranslations } from 'next-intl'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -19,6 +20,7 @@ interface N8NSettingsFormProps {
 }
 
 export function N8NSettingsForm({ organizationId, initialData }: N8NSettingsFormProps) {
+    const tCommon = useTranslations('common')
     const router = useRouter()
     const { toast } = useToast()
     const [isLoading, setIsLoading] = useState(false)
@@ -243,10 +245,10 @@ export function N8NSettingsForm({ organizationId, initialData }: N8NSettingsForm
                     {isLoading ? (
                         <>
                             <Loader2 className="h-4 w-4 animate-spin" />
-                            Salvando...
+                            {tCommon('buttons.saving')}
                         </>
                     ) : (
-                        'Salvar Configurações'
+                        tCommon('buttons.save')
                     )}
                 </Button>
             </div>

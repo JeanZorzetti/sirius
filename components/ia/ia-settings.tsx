@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect, useRef } from 'react'
+import { useTranslations } from 'next-intl'
 import { motion } from 'framer-motion'
 import { Shield, Sliders, Clock, MessageSquare, Save, Loader2, Activity } from 'lucide-react'
 import { cn } from '@/lib/utils'
@@ -24,6 +25,7 @@ const TIER_LABELS: Record<string, string> = {
 }
 
 export function IASettings() {
+  const tCommon = useTranslations('common')
   const [confidenceThreshold, setConfidenceThreshold] = useState(70)
   const [maxActionsPerDay, setMaxActionsPerDay] = useState(100)
   const [operatingHoursStart, setOperatingHoursStart] = useState('09:00')
@@ -133,7 +135,7 @@ export function IASettings() {
           )}
         >
           {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
-          {saved ? 'Salvo!' : saving ? 'Salvando...' : 'Salvar'}
+          {saved ? tCommon('toasts.saved') : saving ? tCommon('buttons.saving') : tCommon('buttons.save')}
         </button>
       </div>
 

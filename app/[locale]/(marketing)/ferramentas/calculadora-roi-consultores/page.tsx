@@ -1,6 +1,7 @@
 ﻿import { Metadata } from 'next'
 import { CalculadoraROI } from '@/components/calculadora-roi'
 import { Briefcase, TrendingUp, Users, CheckCircle2 } from 'lucide-react'
+import { getTranslations } from 'next-intl/server'
 import { buildLocaleAlternates } from '@/lib/seo/canonical'
 
 export async function generateMetadata({
@@ -9,24 +10,21 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>
 }): Promise<Metadata> {
   const { locale } = await params
+  const t = await getTranslations({ locale, namespace: 'marketing.ferramentas.calculadoraRoiConsultores.meta' })
   const alternates = buildLocaleAlternates(locale, '/ferramentas/calculadora-roi-consultores', '/tools/roi-calculator-consultants')
   return {
-    title: 'Calculadora de ROI para Consultores Empresariais | Sirius CRM',
-    description: 'Descubra quanto dinheiro você está perdendo em honorários por desorganização nas suas consultorias. Calculadora gratuita que mostra o impacto real de um CRM nos seus projetos.',
-    keywords: 'calculadora roi consultor, crm consultoria empresarial, gestão projetos consultoria, honorários consultoria, organizar consultoria',
+    title: t('title'),
+    description: t('description'),
     alternates,
     openGraph: {
-      title: 'Calculadora de ROI para Consultores | Quanto você perde por desorganização?',
-      description: 'Calcule o impacto real de projetos não acompanhados. Veja quanto um CRM pode aumentar seus honorários.',
+      title: t('ogTitle'),
+      description: t('ogDescription'),
       url: alternates.canonical,
-      siteName: 'Sirius CRM',
-      locale: locale === 'en' ? 'en_US' : 'pt_BR',
-      type: 'website',
     },
     twitter: {
       card: 'summary_large_image',
-      title: 'Calculadora de ROI para Consultores Empresariais | Sirius CRM',
-      description: 'Calcule o impacto real de projetos não acompanhados. Veja quanto um CRM pode aumentar seus honorários.',
+      title: t('ogTitle'),
+      description: t('ogDescription'),
     },
   }
 }

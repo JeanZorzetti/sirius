@@ -9,11 +9,13 @@ import { prisma } from '@/lib/prisma'
 import { prismaWa } from '@/lib/prisma-wa'
 import { whatsmeowClient } from '@/lib/integrations/whatsmeow-client'
 import logger from '@/lib/logger'
+import { apiError } from '@/lib/api-error'
+import { ERR } from '@/lib/error-messages'
 
 export async function GET() {
   const session = await getSession()
   if (!session?.user) {
-    return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
+    return await apiError(ERR.UNAUTHORIZED, 401)
   }
 
   const user = await prisma.user.findUnique({
@@ -21,7 +23,7 @@ export async function GET() {
     select: { organizationId: true },
   })
   if (!user?.organizationId) {
-    return NextResponse.json({ error: 'Organização não encontrada' }, { status: 404 })
+    return await apiError(ERR.ORG_NOT_FOUND, 404)
   }
 
   try {
@@ -36,7 +38,7 @@ export async function GET() {
 export async function POST(req: NextRequest) {
   const session = await getSession()
   if (!session?.user) {
-    return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
+    return await apiError(ERR.UNAUTHORIZED, 401, { req })
   }
 
   const user = await prisma.user.findUnique({
@@ -45,7 +47,7 @@ export async function POST(req: NextRequest) {
   })
 
   if (!user?.organizationId) {
-    return NextResponse.json({ error: 'Organização não encontrada' }, { status: 404 })
+    return await apiError(ERR.ORG_NOT_FOUND, 404, { req })
   }
 
   // WhatsApp via API Oficial Meta é exclusivo do plano Business

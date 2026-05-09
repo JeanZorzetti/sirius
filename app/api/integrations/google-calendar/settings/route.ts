@@ -3,6 +3,8 @@ import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { logGoogleCalendarActivity } from '@/lib/integrations/google-calendar-client'
 import logger from '@/lib/logger'
+import { apiError } from '@/lib/api-error'
+import { ERR } from '@/lib/error-messages'
 
 /**
  * Disconnect Google Calendar integration
@@ -13,7 +15,7 @@ export async function POST(request: Request) {
     // Authenticate user
     const session = await getSession()
     if (!session || !session.user || !session.user.email) {
-      return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
+      return await apiError(ERR.UNAUTHORIZED, 401)
     }
 
     const user = await prisma.user.findUnique({
@@ -22,7 +24,7 @@ export async function POST(request: Request) {
     })
 
     if (!user || !user.organization) {
-      return NextResponse.json({ error: 'Usuário não encontrado' }, { status: 404 })
+      return await apiError(ERR.USER_NOT_FOUND, 404)
     }
 
     // Parse request body
@@ -30,7 +32,7 @@ export async function POST(request: Request) {
 
     // Validate organization ownership
     if (organizationId !== user.organizationId) {
-      return NextResponse.json({ error: 'Acesso negado' }, { status: 403 })
+      return await apiError(ERR.FORBIDDEN, 403)
     }
 
     // Handle disconnect action
@@ -64,9 +66,6 @@ export async function POST(request: Request) {
     )
   } catch (error: any) {
     logger.error({ error }, 'Error updating Google Calendar settings')
-    return NextResponse.json(
-      { error: 'Erro ao atualizar configurações' },
-      { status: 500 }
-    )
+    return await apiError(ERR.INTERNAL_ERROR, 500)
   }
 }

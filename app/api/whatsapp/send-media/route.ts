@@ -1,4 +1,4 @@
-/**
+﻿/**
  * API Route: /api/whatsapp/send-media
  *
  * Envia mídia (imagem, vídeo, áudio, documento) via Whatsmeow Gateway.
@@ -12,6 +12,8 @@ import { whatsmeowClient } from '@/lib/integrations/whatsmeow-client'
 import { normalizePhoneNumber } from '@/lib/whatsapp-sync'
 import { uploadMedia } from '@/lib/storage'
 import logger from '@/lib/logger'
+import { apiError } from '@/lib/api-error'
+import { ERR } from '@/lib/error-messages'
 
 const MAX_FILE_SIZE = 16 * 1024 * 1024 // 16MB (WhatsApp limit)
 
@@ -56,7 +58,7 @@ export async function POST(req: NextRequest) {
     // 1. Authentication
     const session = await getSession()
     if (!session?.user) {
-      return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
+      return await apiError(ERR.UNAUTHORIZED, 401, { req })
     }
 
     // 2. Get user organization

@@ -1,83 +1,99 @@
 import { Text, Heading, Button, Section, Link } from '@react-email/components'
 import { BaseLayout } from '../layouts/base'
+import emailsEn from '@/messages/en/emails.json'
+import emailsPtBr from '@/messages/pt-BR/emails.json'
+
+type Locale = 'pt-BR' | 'en'
 
 interface WhatsAppMigrationEmailProps {
   userName: string
   organizationName: string
   upgradeUrl?: string
+  locale?: Locale
 }
 
 export function WhatsAppMigrationEmail({
   userName,
   organizationName,
   upgradeUrl = 'https://siriuscrm.com.br/dashboard/billing/plans',
+  locale = 'pt-BR',
 }: WhatsAppMigrationEmailProps) {
+  const s = locale === 'en' ? emailsEn.emails.whatsappMigration : emailsPtBr.emails.whatsappMigration
+
+  const intro = s.intro.replace('{organizationName}', organizationName)
+
   return (
-    <BaseLayout preview="Atualização importante: WhatsApp Oficial no Sirius CRM">
+    <BaseLayout preview={s.preview} locale={locale}>
       <Section style={styles.warningBanner}>
         <Text style={styles.warningIcon}>⚠️</Text>
-        <Text style={styles.warningTitle}>Atualização importante sobre o WhatsApp</Text>
+        <Text style={styles.warningTitle}>{s.warningBannerTitle}</Text>
       </Section>
 
-      <Text style={styles.greeting}>Olá {userName},</Text>
+      <Text style={styles.greeting}>{locale === 'en' ? `Hi ${userName},` : `Olá ${userName},`}</Text>
 
       <Text style={styles.text}>
-        Temos uma atualização importante sobre a integração WhatsApp da <strong>{organizationName}</strong> no Sirius CRM.
+        {intro.split(organizationName).map((part, i, arr) =>
+          i < arr.length - 1 ? (
+            <span key={i}>
+              {part}
+              <strong>{organizationName}</strong>
+            </span>
+          ) : (
+            <span key={i}>{part}</span>
+          )
+        )}
       </Text>
 
       {/* Main hook */}
       <Section style={styles.hookBox}>
-        <Text style={styles.hookTitle}>Nunca mais tenha o WhatsApp bloqueado.</Text>
-        <Text style={styles.hookText}>
-          A Meta está banindo números que usam integrações não oficiais (Evolution API, Baileys, Whatsmeow e similares).
-          Por isso, migramos para a <strong>API Oficial do WhatsApp Business (Meta Cloud API)</strong> — a única integração
-          permitida pelos Termos de Uso do WhatsApp.
-        </Text>
+        <Text style={styles.hookTitle}>{s.hookTitle}</Text>
+        <Text style={styles.hookText}>{s.hookText}</Text>
         <Link href="https://faq.whatsapp.com/5957850900902049" style={styles.sourceLink}>
-          Fonte oficial: WhatsApp Help Center →
+          {s.sourceLink}
         </Link>
       </Section>
 
       {/* Good news */}
       <Section style={styles.goodNewsBox}>
-        <Text style={styles.goodNewsTitle}>✅ Sua conta está protegida</Text>
-        <Text style={styles.goodNewsText}>
-          Por ser cliente do Sirius CRM antes dessa mudança, você mantém acesso ao WhatsApp Oficial
-          no seu plano atual — <strong>sem precisar fazer upgrade</strong>.
-        </Text>
+        <Text style={styles.goodNewsTitle}>✅ {s.goodNewsTitle}</Text>
+        <Text style={styles.goodNewsText}>{s.goodNewsText}</Text>
       </Section>
 
-      <Heading style={styles.subheading}>O que muda para você?</Heading>
+      <Heading style={styles.subheading}>{s.changesTitle}</Heading>
 
       <Section style={styles.changesList}>
-        <Text style={styles.changeItem}>❌ <strong>Integração anterior:</strong> desativada (risco de banimento)</Text>
-        <Text style={styles.changeItem}>✅ <strong>Nova integração:</strong> API Oficial Meta — zero risco de banimento</Text>
-        <Text style={styles.changeItem}>✅ <strong>Status em tempo real:</strong> entregue, lido, respondido</Text>
-        <Text style={styles.changeItem}>✅ <strong>Uptime 24/7:</strong> não depende de celular conectado</Text>
-        <Text style={styles.changeItem}>✅ <strong>Conformidade total</strong> com os Termos de Uso do WhatsApp</Text>
+        <Text style={styles.changeItem}>❌ <strong>{s.change1.split(':')[0]}:</strong>{s.change1.includes(':') ? s.change1.slice(s.change1.indexOf(':') + 1) : ''}</Text>
+        <Text style={styles.changeItem}>✅ <strong>{s.change2.split(':')[0]}:</strong>{s.change2.includes(':') ? s.change2.slice(s.change2.indexOf(':') + 1) : ''}</Text>
+        <Text style={styles.changeItem}>✅ <strong>{s.change3.split(':')[0]}:</strong>{s.change3.includes(':') ? s.change3.slice(s.change3.indexOf(':') + 1) : ''}</Text>
+        <Text style={styles.changeItem}>✅ <strong>{s.change4.split(':')[0]}:</strong>{s.change4.includes(':') ? s.change4.slice(s.change4.indexOf(':') + 1) : ''}</Text>
+        <Text style={styles.changeItem}>✅ {s.change5}</Text>
       </Section>
 
-      <Text style={styles.text}>
-        Para ativar, acesse <strong>Configurações → Integrações → WhatsApp Oficial</strong> e siga o guia de configuração.
-        Nossa equipe também pode fazer a configuração completa por você por uma taxa única de <strong>R$ 297</strong>.
-      </Text>
+      <Text style={styles.text}>{s.instructionText}</Text>
 
       <Section style={styles.ctaSection}>
         <Button href="https://siriuscrm.com.br/dashboard/settings/integrations/whatsapp-official" style={styles.button}>
-          Configurar WhatsApp Oficial
+          {s.cta}
         </Button>
       </Section>
 
       <Text style={styles.footnote}>
-        Dúvidas? Responda este email ou acesse{' '}
-        <Link href="https://siriuscrm.com.br" style={styles.inlineLink}>siriuscrm.com.br</Link>.
-        Estamos aqui para ajudar na transição.
+        {s.footnote.includes('siriuscrm.com.br') ? (
+          <>
+            {s.footnote.split('siriuscrm.com.br')[0]}
+            <Link href="https://siriuscrm.com.br" style={styles.inlineLink}>siriuscrm.com.br</Link>
+            {s.footnote.split('siriuscrm.com.br')[1]}
+          </>
+        ) : s.footnote}
       </Text>
 
       <Text style={styles.signature}>
-        Atenciosamente,
-        <br />
-        Equipe Sirius CRM
+        {s.signature.split('\n').map((line, i, arr) => (
+          <span key={i}>
+            {line}
+            {i < arr.length - 1 && <br />}
+          </span>
+        ))}
       </Text>
     </BaseLayout>
   )

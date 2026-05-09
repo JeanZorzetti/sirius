@@ -44,27 +44,32 @@ export async function generateMetadata({
   const ptUrl = `https://siriuscrm.com.br/help/${categoria}/${slug}`;
   const enUrl = `https://siriuscrm.com.br/en/help/${categoria}/${slug}`;
   const canonicalUrl = locale === 'en' ? enUrl : ptUrl;
+  const isEn = locale === 'en'
+  const hasEnContent = !!(article.titleEn && article.descriptionEn)
+  const displayTitle = isEn && article.titleEn ? article.titleEn : article.title
+  const displayDescription = isEn && article.descriptionEn ? article.descriptionEn : article.description
+  const helpLabel = isEn ? 'Help Center' : 'Central de Ajuda'
 
   return {
-    title: `${article.title} - Central de Ajuda | Sirius CRM`,
-    description: article.description,
-    keywords: [article.category, 'ajuda', 'tutorial', 'CRM', 'Sirius'],
+    title: `${displayTitle} - ${helpLabel} | Sirius CRM`,
+    description: displayDescription,
+    keywords: [article.category, isEn ? 'help' : 'ajuda', 'tutorial', 'CRM', 'Sirius'],
+    ...(isEn && !hasEnContent ? { robots: { index: false, follow: false } } : {}),
     alternates: {
       canonical: canonicalUrl,
       languages: {
         'pt-BR': ptUrl,
-        'en': enUrl,
-        'x-default': ptUrl,
+        ...(hasEnContent ? { 'en': enUrl, 'x-default': ptUrl } : {}),
       },
     },
     openGraph: {
-      title: `${article.title} - Central de Ajuda | Sirius CRM`,
-      description: article.description,
+      title: `${displayTitle} - ${helpLabel} | Sirius CRM`,
+      description: displayDescription,
       url: canonicalUrl,
     },
     twitter: {
       card: 'summary',
-      title: `${article.title} - Central de Ajuda`,
+      title: `${displayTitle} - ${helpLabel}`,
       description: article.description,
     },
   };

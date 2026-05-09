@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { useTranslations } from 'next-intl'
 import { Plus, X } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -35,6 +36,8 @@ interface ProductDialogProps {
 }
 
 export function ProductDialog({ open, onOpenChange, product, onSuccess }: ProductDialogProps) {
+  const tCommon = useTranslations('common')
+  const t = useTranslations('components.products')
   const isEdit = !!product
 
   const [loading, setLoading] = useState(false)
@@ -99,7 +102,7 @@ export function ProductDialog({ open, onOpenChange, product, onSuccess }: Produc
 
     setLoading(false)
     if (res.ok) {
-      toast.success(isEdit ? 'Produto atualizado!' : 'Produto criado!')
+      toast.success(isEdit ? t('updateSuccess') : t('createSuccess'))
       onOpenChange(false)
       onSuccess()
     } else {
@@ -113,7 +116,7 @@ export function ProductDialog({ open, onOpenChange, product, onSuccess }: Produc
       <DialogContent className="sm:max-w-[520px]">
         <DialogHeader>
           <DialogTitle className="text-lg font-semibold">
-            {isEdit ? 'Editar Produto' : 'Novo Produto'}
+            {isEdit ? t('editProduct') : t('addProduct')}
           </DialogTitle>
         </DialogHeader>
 
@@ -212,10 +215,10 @@ export function ProductDialog({ open, onOpenChange, product, onSuccess }: Produc
 
           <DialogFooter className="pt-2">
             <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
-              Cancelar
+              {tCommon('buttons.cancel')}
             </Button>
             <Button type="submit" disabled={loading}>
-              {loading ? 'Salvando...' : isEdit ? 'Salvar Alterações' : 'Criar Produto'}
+              {loading ? tCommon('buttons.saving') : isEdit ? tCommon('buttons.save') : tCommon('buttons.create')}
             </Button>
           </DialogFooter>
         </form>
@@ -225,12 +228,13 @@ export function ProductDialog({ open, onOpenChange, product, onSuccess }: Produc
 }
 
 export function CreateProductButton({ onSuccess }: { onSuccess: () => void }) {
+  const t = useTranslations('components.products')
   const [open, setOpen] = useState(false)
   return (
     <>
       <Button onClick={() => setOpen(true)} className="gap-2">
         <Plus className="h-4 w-4" />
-        Novo Produto
+        {t('addProduct')}
       </Button>
       <ProductDialog open={open} onOpenChange={setOpen} onSuccess={onSuccess} />
     </>

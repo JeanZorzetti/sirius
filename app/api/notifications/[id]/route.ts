@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { getSession } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import logger from "@/lib/logger";
+import { apiError } from "@/lib/api-error";
+import { ERR } from "@/lib/error-messages";
 
 /**
  * PATCH /api/notifications/[id]
@@ -15,7 +17,7 @@ export async function PATCH(
     const session = await getSession();
 
     if (!session?.user) {
-      return NextResponse.json({ error: "Não autorizado" }, { status: 401 });
+      return await apiError(ERR.UNAUTHORIZED, 401, { req: request });
     }
 
     const { id } = await params;
@@ -28,14 +30,11 @@ export async function PATCH(
     });
 
     if (!notification) {
-      return NextResponse.json(
-        { error: "Notificação não encontrada" },
-        { status: 404 }
-      );
+      return await apiError(ERR.NOT_FOUND, 404, { req: request });
     }
 
     if (notification.userId !== session.user.id) {
-      return NextResponse.json({ error: "Não autorizado" }, { status: 403 });
+      return await apiError(ERR.FORBIDDEN, 403, { req: request });
     }
 
     // Update notification
@@ -61,10 +60,7 @@ export async function PATCH(
       error: error instanceof Error ? error.message : "Unknown error",
     });
 
-    return NextResponse.json(
-      { error: "Erro ao atualizar notificação" },
-      { status: 500 }
-    );
+    return await apiError(ERR.INTERNAL_ERROR, 500, { req: request });
   }
 }
 
@@ -80,7 +76,7 @@ export async function DELETE(
     const session = await getSession();
 
     if (!session?.user) {
-      return NextResponse.json({ error: "Não autorizado" }, { status: 401 });
+      return await apiError(ERR.UNAUTHORIZED, 401, { req: request });
     }
 
     const { id } = await params;
@@ -91,14 +87,11 @@ export async function DELETE(
     });
 
     if (!notification) {
-      return NextResponse.json(
-        { error: "Notificação não encontrada" },
-        { status: 404 }
-      );
+      return await apiError(ERR.NOT_FOUND, 404, { req: request });
     }
 
     if (notification.userId !== session.user.id) {
-      return NextResponse.json({ error: "Não autorizado" }, { status: 403 });
+      return await apiError(ERR.FORBIDDEN, 403, { req: request });
     }
 
     // Delete notification
@@ -119,9 +112,6 @@ export async function DELETE(
       error: error instanceof Error ? error.message : "Unknown error",
     });
 
-    return NextResponse.json(
-      { error: "Erro ao deletar notificação" },
-      { status: 500 }
-    );
+    return await apiError(ERR.INTERNAL_ERROR, 500, { req: request });
   }
 }

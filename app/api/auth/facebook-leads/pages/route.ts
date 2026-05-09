@@ -1,4 +1,4 @@
-/**
+﻿/**
  * GET  /api/auth/facebook-leads/pages — lista páginas disponíveis após OAuth
  * POST /api/auth/facebook-leads/pages — seleciona a página ativa
  */
@@ -8,13 +8,15 @@ import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { encrypt, decrypt } from '@/lib/encryption'
 import logger from '@/lib/logger'
+import { apiError } from '@/lib/api-error'
+import { ERR } from '@/lib/error-messages'
 
 const GRAPH_BASE = 'https://graph.facebook.com/v21.0'
 
 export async function GET() {
   const session = await getSession()
   if (!session?.user?.email) {
-    return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
+    return await apiError(ERR.UNAUTHORIZED, 401, { req })
   }
 
   const user = await prisma.user.findUnique({
@@ -42,7 +44,7 @@ export async function GET() {
 export async function POST(request: NextRequest) {
   const session = await getSession()
   if (!session?.user?.email) {
-    return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
+    return await apiError(ERR.UNAUTHORIZED, 401, { req })
   }
 
   const { pageId } = await request.json()

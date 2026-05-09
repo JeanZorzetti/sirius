@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { getAllNicheSlugs, getNicheBySlug } from '@/config/niche-data'
 import { Building2, Sun, Sparkles, Briefcase, TrendingUp, ArrowRight, CheckCircle2 } from 'lucide-react'
+import { getTranslations } from 'next-intl/server'
 import { buildLocaleAlternates } from '@/lib/seo/canonical'
 
 export async function generateMetadata({
@@ -11,22 +12,21 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>
 }): Promise<Metadata> {
   const { locale } = await params
+  const t = await getTranslations({ locale, namespace: 'marketing.solucoes.meta' })
   const alternates = buildLocaleAlternates(locale, '/solucoes', '/solutions')
   return {
-    title: 'Soluções Sirius CRM por Segmento — Corretores, Solar, Agências e Mais',
-    description: 'O Sirius CRM tem solução específica para cada segmento: corretores de imóveis, energia solar, agências de marketing, consultores e representantes comerciais. Comece grátis.',
-    keywords: [
-      'crm por segmento', 'crm corretores imóveis', 'crm energia solar', 'crm agências marketing',
-      'crm consultores', 'crm representantes comerciais', 'solucoes crm brasil 2026',
-    ],
+    title: t('title'),
+    description: t('description'),
     alternates,
     openGraph: {
-      title: 'Soluções Sirius CRM por Segmento',
-      description: 'CRM com solução específica para corretores, solar, agências, consultores e representantes. Comece grátis.',
+      title: t('ogTitle'),
+      description: t('ogDescription'),
       url: alternates.canonical,
-      siteName: 'Sirius CRM',
-      locale: locale === 'en' ? 'en_US' : 'pt_BR',
-      type: 'website',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: t('ogTitle'),
+      description: t('ogDescription'),
     },
   }
 }

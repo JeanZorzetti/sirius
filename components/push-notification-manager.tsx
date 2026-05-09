@@ -1,12 +1,14 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import { useTranslations } from 'next-intl'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Bell, BellOff, X } from 'lucide-react'
 import { trackPushPermission } from '@/lib/pwa-analytics'
 
 export function PushNotificationManager() {
+  const tCommon = useTranslations('common')
   const [permission, setPermission] = useState<NotificationPermission>('default')
   const [isSubscribed, setIsSubscribed] = useState(false)
   const [showPrompt, setShowPrompt] = useState(false)
@@ -217,7 +219,7 @@ export function PushNotificationManager() {
               Ativar
             </Button>
             <Button variant="outline" onClick={handleDismiss} size="sm">
-              Agora não
+              {tCommon('pwa.dismiss')}
             </Button>
           </CardContent>
         </Card>
@@ -232,6 +234,7 @@ export function PushNotificationManager() {
  * Settings component for managing push notifications
  */
 export function PushNotificationSettings() {
+  const tCommon = useTranslations('common')
   const [permission, setPermission] = useState<NotificationPermission>('default')
   const [isSubscribed, setIsSubscribed] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
@@ -396,7 +399,7 @@ export function PushNotificationSettings() {
         variant={isSubscribed ? 'outline' : 'default'}
         size="sm"
       >
-        {isLoading ? 'Carregando...' : isSubscribed ? 'Desativar' : 'Ativar'}
+        {isLoading ? tCommon('buttons.loading') : isSubscribed ? tCommon('buttons.deactivate') : tCommon('buttons.activate')}
       </Button>
     </div>
   )

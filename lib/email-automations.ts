@@ -6,6 +6,13 @@ import { DealStageChangedEmail } from '../emails/templates/deal-stage-changed'
 import { UpgradeNudgeEmail } from '../emails/templates/upgrade-nudge'
 import { EmailAutomationType, EmailStatus } from '@prisma/client'
 import { prisma } from '@/lib/prisma'
+import { resolveUserLocale } from '@/lib/i18n-server'
+import { defaultLocale, type Locale } from '@/i18n/config'
+
+async function getUserLocale(userId?: string): Promise<Locale> {
+  if (!userId) return defaultLocale
+  try { return await resolveUserLocale(userId) } catch { return defaultLocale }
+}
 
 /**
  * Verifica se a automação está habilitada e retorna as configurações
@@ -102,7 +109,10 @@ export async function sendWelcomeEmail({
     logger.info({ delayMinutes: settings.sendDelayMinutes }, '[EMAIL] Would delay send')
   }
 
-  const defaultSubject = `Bem-vindo ao Sirius CRM, ${userName}!`
+  const locale = await getUserLocale(userId)
+  const defaultSubject = locale === 'en'
+    ? `Welcome to Sirius CRM, ${userName}!`
+    : `Bem-vindo ao Sirius CRM, ${userName}!`
   const subject = settings.customSubject
     ? replaceVariables(settings.customSubject, { userName, organizationName })
     : defaultSubject
@@ -115,6 +125,7 @@ export async function sendWelcomeEmail({
         userName,
         organizationName,
         dashboardUrl: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard`,
+        locale,
       }),
     })
 
@@ -179,12 +190,15 @@ export async function sendDealCreatedEmail({
     logger.info({ delayMinutes: settings.sendDelayMinutes }, '[EMAIL] Would delay send')
   }
 
-  const formattedValue = new Intl.NumberFormat('pt-BR', {
+  const locale = await getUserLocale(userId)
+  const formattedValue = new Intl.NumberFormat(locale === 'en' ? 'en-US' : 'pt-BR', {
     style: 'currency',
-    currency: 'BRL'
+    currency: locale === 'en' ? 'USD' : 'BRL'
   }).format(dealValue)
 
-  const defaultSubject = `Novo negócio criado: ${dealTitle}`
+  const defaultSubject = locale === 'en'
+    ? `New deal created: ${dealTitle}`
+    : `Novo negócio criado: ${dealTitle}`
   const subject = settings.customSubject
     ? replaceVariables(settings.customSubject, {
         userName,
@@ -206,6 +220,7 @@ export async function sendDealCreatedEmail({
         dealStage,
         contactName,
         dealUrl,
+        locale,
       }),
     })
 
@@ -269,12 +284,15 @@ export async function sendDealStageChangedEmail({
     logger.info({ delayMinutes: settings.sendDelayMinutes }, '[EMAIL] Would delay send')
   }
 
-  const formattedValue = new Intl.NumberFormat('pt-BR', {
+  const locale = await getUserLocale(userId)
+  const formattedValue = new Intl.NumberFormat(locale === 'en' ? 'en-US' : 'pt-BR', {
     style: 'currency',
-    currency: 'BRL'
+    currency: locale === 'en' ? 'USD' : 'BRL'
   }).format(dealValue)
 
-  const defaultSubject = `${dealTitle} mudou para ${newStage}`
+  const defaultSubject = locale === 'en'
+    ? `Deal updated: ${dealTitle}`
+    : `${dealTitle} mudou para ${newStage}`
   const subject = settings.customSubject
     ? replaceVariables(settings.customSubject, {
         assigneeName,
@@ -296,6 +314,7 @@ export async function sendDealStageChangedEmail({
         oldStage,
         newStage,
         dealUrl,
+        locale,
       }),
     })
 
@@ -353,7 +372,10 @@ export async function sendUpgradeNudgeEmail({
     logger.info({ delayMinutes: settings.sendDelayMinutes }, '[EMAIL] Would delay send')
   }
 
-  const defaultSubject = `Você está perto do limite de negócios! 📊`
+  const locale = await getUserLocale(userId)
+  const defaultSubject = locale === 'en'
+    ? `You're growing! 📊`
+    : `Você está perto do limite de negócios! 📊`
   const subject = settings.customSubject
     ? replaceVariables(settings.customSubject, {
         userName,
@@ -371,6 +393,7 @@ export async function sendUpgradeNudgeEmail({
         currentDeals,
         maxDeals,
         upgradeUrl: `${process.env.NEXT_PUBLIC_APP_URL}/billing`,
+        locale,
       }),
     })
 

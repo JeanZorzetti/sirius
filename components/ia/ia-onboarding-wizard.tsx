@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useCallback } from 'react'
+import { useTranslations } from 'next-intl'
 import { useRouter } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
@@ -65,6 +66,7 @@ interface WizardProps {
 }
 
 export function IAOnboardingWizard({ orgName, initialEnabledAgents, initialThreshold }: WizardProps) {
+  const tCommon = useTranslations('common')
   const router = useRouter()
   const [step, setStep] = useState(0)
   const [saving, setSaving] = useState(false)
@@ -350,7 +352,7 @@ export function IAOnboardingWizard({ orgName, initialEnabledAgents, initialThres
                   ) : (
                     <Rocket className="h-4 w-4" />
                   )}
-                  {saving ? 'Salvando...' : 'Ir para o Feed'}
+                  {saving ? tCommon('buttons.saving') : tCommon('buttons.finish')}
                 </Button>
               </motion.div>
             )}
@@ -367,7 +369,7 @@ export function IAOnboardingWizard({ orgName, initialEnabledAgents, initialThres
               disabled={step === 0}
               className="text-zinc-500 hover:text-zinc-300 hover:bg-zinc-800/60 disabled:opacity-0"
             >
-              Voltar
+              {tCommon('buttons.back')}
             </Button>
 
             <Button
@@ -381,7 +383,7 @@ export function IAOnboardingWizard({ orgName, initialEnabledAgents, initialThres
               }}
               className="bg-cyan-500 hover:bg-cyan-600 text-black font-semibold gap-1.5"
             >
-              {step === 2 ? 'Pular e continuar' : 'Próximo'}
+              {step === 2 ? tCommon('buttons.continue') : tCommon('buttons.next')}
               <ChevronRight className="h-3.5 w-3.5" />
             </Button>
           </div>

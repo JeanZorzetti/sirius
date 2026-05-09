@@ -9,6 +9,7 @@ import dynamic from 'next/dynamic'
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
 import { deleteContact } from '@/app/[locale]/dashboard/contacts/actions'
+import { useTranslations } from 'next-intl'
 import {
   ContactsFilters,
   applyContactFilters,
@@ -64,6 +65,8 @@ interface ContactsDataTableClientProps {
 }
 
 export function ContactsDataTableClient({ data }: ContactsDataTableClientProps) {
+  const tCommon = useTranslations('common')
+  const t = useTranslations('components.contacts')
   const router = useRouter()
   const renderCountRef = useRef(0)
   const firstRenderTimeRef = useRef(performance.now())
@@ -104,7 +107,7 @@ export function ContactsDataTableClient({ data }: ContactsDataTableClientProps) 
 
   const columns = useMemo(() => {
     const t0 = performance.now()
-    const cols = getColumns({ onOpenProfile: handleOpenProfile, onEdit: handleEdit, onDelete: handleDelete })
+    const cols = getColumns({ onOpenProfile: handleOpenProfile, onEdit: handleEdit, onDelete: handleDelete, t: (key: string) => t(key as Parameters<typeof t>[0]) })
     console.log(`%c[PERF-CLIENT] getColumns()`, 'color: #6366f1', `${(performance.now() - t0).toFixed(1)}ms`)
     return cols
   }, [handleOpenProfile, handleEdit, handleDelete])
@@ -115,14 +118,14 @@ export function ContactsDataTableClient({ data }: ContactsDataTableClientProps) 
     try {
       const result = await deleteContact(deleteTarget.id)
       if (result.success) {
-        toast.success('Contato excluído com sucesso')
+        toast.success(t('deleteSuccess'))
         setDeleteTarget(null)
         router.refresh()
       } else {
-        toast.error(result.error || 'Falha ao excluir contato')
+        toast.error(result.error || tCommon('toasts.failedDelete'))
       }
     } catch {
-      toast.error('Erro ao excluir contato')
+      toast.error(tCommon('toasts.failedDelete'))
     } finally {
       setDeleting(false)
     }
@@ -166,22 +169,21 @@ export function ContactsDataTableClient({ data }: ContactsDataTableClientProps) 
       <AlertDialog open={!!deleteTarget} onOpenChange={(open) => { if (!open) setDeleteTarget(null) }}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Excluir contato</AlertDialogTitle>
+            <AlertDialogTitle>{t('deleteContact')}</AlertDialogTitle>
             <AlertDialogDescription>
-              Tem certeza que deseja excluir <strong>{deleteTarget?.name}</strong>?
-              Esta ação não pode ser desfeita.
+              {t('deleteConfirm')} <strong>{deleteTarget?.name}</strong>?
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel disabled={deleting}>Cancelar</AlertDialogCancel>
+            <AlertDialogCancel disabled={deleting}>{tCommon('buttons.cancel')}</AlertDialogCancel>
             <AlertDialogAction
               onClick={confirmDelete}
               disabled={deleting}
               className="bg-red-600 hover:bg-red-700 text-white"
             >
               {deleting ? (
-                <><Loader2 className="mr-2 h-4 w-4 animate-spin" />Excluindo...</>
-              ) : 'Excluir'}
+                <><Loader2 className="mr-2 h-4 w-4 animate-spin" />{tCommon('buttons.loading')}</>
+              ) : tCommon('buttons.delete')}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

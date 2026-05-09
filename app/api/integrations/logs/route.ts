@@ -2,6 +2,8 @@ import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { getSession } from '@/lib/auth'
 import logger from '@/lib/logger'
+import { apiError } from '@/lib/api-error'
+import { ERR } from '@/lib/error-messages'
 
 /**
  * Get integration logs with filtering and pagination
@@ -19,7 +21,7 @@ export async function GET(request: Request) {
   try {
     const session = await getSession()
     if (!session || !session.user || !session.user.email) {
-      return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
+      return await apiError(ERR.UNAUTHORIZED, 401)
     }
 
     const user = await prisma.user.findUnique({
@@ -28,7 +30,7 @@ export async function GET(request: Request) {
     })
 
     if (!user || !user.organizationId) {
-      return NextResponse.json({ error: 'Usuário não encontrado' }, { status: 404 })
+      return await apiError(ERR.USER_NOT_FOUND, 404)
     }
 
     // Parse query params
@@ -115,7 +117,7 @@ export async function POST(request: Request) {
   try {
     const session = await getSession()
     if (!session || !session.user || !session.user.email) {
-      return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
+      return await apiError(ERR.UNAUTHORIZED, 401)
     }
 
     const user = await prisma.user.findUnique({
@@ -124,7 +126,7 @@ export async function POST(request: Request) {
     })
 
     if (!user || !user.organizationId) {
-      return NextResponse.json({ error: 'Usuário não encontrado' }, { status: 404 })
+      return await apiError(ERR.USER_NOT_FOUND, 404)
     }
 
     const body = await request.json()

@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect, useRef } from 'react'
+import { useTranslations } from 'next-intl'
 import { Paperclip, Upload, Trash2, Download, FileText, Image, File, X, Loader2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { toast } from 'sonner'
@@ -33,6 +34,8 @@ function FileIcon({ mimeType }: { mimeType: string }) {
 }
 
 export function TaskAttachments({ taskId }: TaskAttachmentsProps) {
+  const tCommon = useTranslations('common')
+  const t = useTranslations('components.tasks')
   const [attachments, setAttachments] = useState<Attachment[]>([])
   const [loading, setLoading] = useState(true)
   const [uploading, setUploading] = useState(false)
@@ -43,7 +46,7 @@ export function TaskAttachments({ taskId }: TaskAttachmentsProps) {
     fetch(`/api/tasks/${taskId}/attachments`)
       .then((r) => r.json())
       .then((data) => Array.isArray(data) && setAttachments(data))
-      .catch(() => toast.error('Erro ao carregar anexos'))
+      .catch(() => toast.error(tCommon('toasts.failedLoad')))
       .finally(() => setLoading(false))
   }, [taskId])
 
@@ -69,7 +72,7 @@ export function TaskAttachments({ taskId }: TaskAttachmentsProps) {
         toast.error(`Erro ao enviar ${file.name}`)
       }
     }
-    if (uploaded > 0) toast.success(`${uploaded} arquivo(s) enviado(s)`)
+    if (uploaded > 0) toast.success(tCommon('toasts.uploaded'))
     setUploading(false)
   }
 
@@ -79,9 +82,9 @@ export function TaskAttachments({ taskId }: TaskAttachmentsProps) {
       const res = await fetch(`/api/tasks/${taskId}/attachments?id=${id}`, { method: 'DELETE' })
       if (!res.ok) throw new Error()
       setAttachments((prev) => prev.filter((a) => a.id !== id))
-      toast.success('Anexo removido')
+      toast.success(tCommon('toasts.deleted'))
     } catch {
-      toast.error('Erro ao remover anexo')
+      toast.error(tCommon('toasts.failedDelete'))
     }
   }
 
@@ -124,7 +127,7 @@ export function TaskAttachments({ taskId }: TaskAttachmentsProps) {
         {uploading ? (
           <>
             <Loader2 className="h-5 w-5 animate-spin text-primary" />
-            <span className="text-xs text-muted-foreground">Enviando...</span>
+            <span className="text-xs text-muted-foreground">{tCommon('buttons.submitting')}</span>
           </>
         ) : (
           <>

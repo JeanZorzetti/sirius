@@ -272,7 +272,7 @@ ${guardrailsPrompt}`;
         };
 
         // 6. Initialize AGI Brain with conversational memory + SPIN prompts
-        const brain = createAgiBrain(plan, modelOption);
+        const brain = createAgiBrain(plan, modelOption, user.locale ?? undefined);
 
         // Inject Sandler system prompt into brain
         brain.setSystemPrompt(sandlerSystemPrompt);

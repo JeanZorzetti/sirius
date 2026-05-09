@@ -1,19 +1,25 @@
-import { Metadata } from 'next'
 import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { ProductsClient } from '@/components/products/products-client'
 import { Package } from 'lucide-react'
+import { getTranslations } from 'next-intl/server'
 
-export const metadata: Metadata = {
+export const metadata = {
   title: 'Produtos - CRM',
 }
 
 export const dynamic = 'force-dynamic'
 
-export default async function ProductsPage() {
+export default async function ProductsPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>
+}) {
+  const { locale } = await params
+  const t = await getTranslations({ locale, namespace: 'dashboard' })
   const session = await getSession()
   if (!session?.user?.email) {
-    return <div>Não autorizado. Faça login novamente.</div>
+    return <div>{t('errors.unauthorized')}</div>
   }
 
   const user = await prisma.user.findUnique({
@@ -22,7 +28,7 @@ export default async function ProductsPage() {
   })
 
   if (!user?.organizationId) {
-    return <div>Usuário não pertence a uma organização.</div>
+    return <div>{t('errors.userNoOrg')}</div>
   }
 
   const rawProducts = await (prisma as any).product.findMany({

@@ -66,6 +66,12 @@ Você é a melhor consultora de vendas. Seja breve e precisa.`;
    * Set a custom system prompt (e.g., for SPIN/Sandler)
    * Replaces the existing system message in conversation history
    */
+  appendToSystemPrompt(suffix: string): void {
+    this.systemPrompt += suffix;
+    const idx = this.conversationHistory.findIndex(m => m.role === 'system');
+    if (idx !== -1) this.conversationHistory[idx].content = this.systemPrompt;
+  }
+
   setSystemPrompt(newSystemPrompt: string): void {
     this.systemPrompt = newSystemPrompt;
 
@@ -281,8 +287,9 @@ Você é a melhor consultora de vendas. Seja breve e precisa.`;
 
 /**
  * Factory function to create Brain instance based on user plan
+ * @param userLocale - ISO locale string (e.g. 'en', 'pt-BR'). Appended to system prompt so the model responds in the user's language.
  */
-export function createAgiBrain(plan: 'FREE' | 'PRO', modelOption?: 'option1' | 'option2'): AgiBrain {
+export function createAgiBrain(plan: 'FREE' | 'PRO', modelOption?: 'option1' | 'option2', userLocale?: string): AgiBrain {
   const ollamaHost = process.env.AGI_OLLAMA_HOST || 'http://localhost:11434';
   const temperature = parseFloat(process.env.AGI_TEMPERATURE || '0.7');
 
@@ -302,10 +309,12 @@ export function createAgiBrain(plan: 'FREE' | 'PRO', modelOption?: 'option1' | '
     maxTokens = parseInt(process.env.AGI_MAX_TOKENS_FREE || '1024');
   }
 
-  return new AgiBrain({
-    ollamaHost,
-    model,
-    temperature,
-    maxTokens,
-  });
+  const brain = new AgiBrain({ ollamaHost, model, temperature, maxTokens });
+
+  if (userLocale && userLocale !== 'pt-BR') {
+    const langName = userLocale.startsWith('en') ? 'English' : userLocale
+    brain.appendToSystemPrompt(`\n\nIMPORTANT: Always respond in ${langName}. If the user writes in a different language, still respond in ${langName}.`)
+  }
+
+  return brain;
 }

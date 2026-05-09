@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect, useRef, useCallback } from 'react'
+import { useTranslations } from 'next-intl'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
   BookOpen, Plus, Trash2, Loader2, FileText, HelpCircle, GitBranch,
@@ -129,6 +130,7 @@ function AgentChipStyled({ agent, selected, onClick }: { agent: AgentOption; sel
 }
 
 export function IAKnowledge() {
+  const tCommon = useTranslations('common')
   const [docs, setDocs] = useState<KnowledgeDoc[]>([])
   const [loading, setLoading] = useState(true)
   const [showModal, setShowModal] = useState(false)
@@ -313,7 +315,7 @@ export function IAKnowledge() {
           className="bg-cyan-500 hover:bg-cyan-600 text-black font-semibold gap-1.5"
         >
           <Plus className="h-4 w-4" />
-          Adicionar
+          {tCommon('buttons.add')}
         </Button>
       </div>
 
@@ -628,7 +630,7 @@ export function IAKnowledge() {
               onClick={() => { setShowModal(false); resetModal() }}
               className="text-zinc-400 hover:bg-zinc-800"
             >
-              Cancelar
+              {tCommon('buttons.cancel')}
             </Button>
             <Button
               size="sm"
@@ -637,7 +639,7 @@ export function IAKnowledge() {
               className="bg-cyan-500 hover:bg-cyan-600 text-black font-semibold gap-1.5"
             >
               {saving && <Loader2 className="h-3.5 w-3.5 animate-spin" />}
-              Salvar e indexar
+              {tCommon('buttons.save')}
             </Button>
           </DialogFooter>
         </DialogContent>

@@ -4,6 +4,8 @@ import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { SubscriptionTier } from '@prisma/client'
 import { z } from 'zod'
+import { apiError } from '@/lib/api-error'
+import { ERR } from '@/lib/error-messages'
 
 const updateTierSchema = z.object({
   tier: z.nativeEnum(SubscriptionTier),
@@ -18,12 +20,12 @@ export async function PUT(
     const session = await getSession()
     
     if (!session?.user) {
-      return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
+      return await apiError(ERR.UNAUTHORIZED, 401)
     }
 
     // Only admin/super_admin can update tiers
     if (session.user.role !== 'ADMIN' && session.user.role !== 'SUPER_ADMIN') {
-      return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
+      return await apiError(ERR.FORBIDDEN, 403)
     }
 
     const { id } = await params
@@ -32,10 +34,7 @@ export async function PUT(
     // Validate input
     const result = updateTierSchema.safeParse(body)
     if (!result.success) {
-      return NextResponse.json(
-        { error: 'Entrada inválida', details: result.error.format() },
-        { status: 400 }
-      )
+      return await apiError(ERR.INVALID_INPUT, 400)
     }
 
     const { tier } = result.data
@@ -46,10 +45,7 @@ export async function PUT(
     })
 
     if (!existingOrg) {
-      return NextResponse.json(
-        { error: 'Organização não encontrada' },
-        { status: 404 }
-      )
+      return await apiError(ERR.ORG_NOT_FOUND, 404)
     }
 
     // Update the organization tier
@@ -71,9 +67,6 @@ export async function PUT(
     })
   } catch (error) {
     logger.error({ err: error }, 'Error updating organization tier')
-    return NextResponse.json(
-      { error: 'Erro interno do servidor' },
-      { status: 500 }
-    )
+    return await apiError(ERR.INTERNAL_ERROR, 500)
   }
 }

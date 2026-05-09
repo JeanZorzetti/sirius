@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { useTranslations } from 'next-intl'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -27,6 +28,7 @@ export function LeadCaptureModal({
   origem,
   onSuccess
 }: LeadCaptureModalProps) {
+  const tCommon = useTranslations('common')
   const [email, setEmail] = useState('')
   const [nome, setNome] = useState('')
   const [empresa, setEmpresa] = useState('')
@@ -170,7 +172,7 @@ export function LeadCaptureModal({
                   disabled={isLoading}
                   className="flex-1"
                 >
-                  Cancelar
+                  {tCommon('buttons.cancel')}
                 </Button>
                 <Button
                   type="submit"
@@ -180,7 +182,7 @@ export function LeadCaptureModal({
                   {isLoading ? (
                     <>
                       <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                      Enviando...
+                      {tCommon('buttons.submitting')}
                     </>
                   ) : (
                     <>

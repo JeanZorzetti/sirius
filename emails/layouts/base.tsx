@@ -1,4 +1,4 @@
-﻿import {
+import {
   Html,
   Head,
   Body,
@@ -9,21 +9,41 @@
   Hr,
 } from '@react-email/components'
 
+type Locale = 'pt-BR' | 'en'
+
 interface BaseLayoutProps {
   children: React.ReactNode
   preview?: string
+  locale?: Locale
 }
 
-export function BaseLayout({ children, preview }: BaseLayoutProps) {
+// Inline dictionaries — React Email runs outside Next.js request context,
+// so getTranslations/useTranslations are NOT available here.
+const FOOTER_STRINGS: Record<Locale, { rights: string; privacy: string; terms: string }> = {
+  'pt-BR': {
+    rights: 'Todos os direitos reservados.',
+    privacy: 'Privacidade',
+    terms: 'Termos',
+  },
+  en: {
+    rights: 'All rights reserved.',
+    privacy: 'Privacy',
+    terms: 'Terms',
+  },
+}
+
+export function BaseLayout({ children, preview, locale = 'pt-BR' }: BaseLayoutProps) {
+  const footer = FOOTER_STRINGS[locale] ?? FOOTER_STRINGS['pt-BR']
+
   return (
-    <Html>
+    <Html lang={locale}>
       <Head />
       {preview && <Text style={{ display: 'none' }}>{preview}</Text>}
       <Body style={styles.body}>
         <Container style={styles.container}>
           {/* Header */}
           <Section style={styles.header}>
-            <Text style={styles.logo}>⭐ Sirius CRM</Text>
+            <Text style={styles.logo}>Sirius CRM</Text>
           </Section>
 
           {/* Content */}
@@ -33,7 +53,7 @@ export function BaseLayout({ children, preview }: BaseLayoutProps) {
           <Hr style={styles.hr} />
           <Section style={styles.footer}>
             <Text style={styles.footerText}>
-              © {new Date().getFullYear()} ROI Labs. Todos os direitos reservados.
+              &copy; {new Date().getFullYear()} ROI Labs. {footer.rights}
             </Text>
             <Text style={styles.footerText}>
               <Link href="https://siriuscrm.com.br" style={styles.link}>
@@ -41,11 +61,11 @@ export function BaseLayout({ children, preview }: BaseLayoutProps) {
               </Link>
               {' • '}
               <Link href="https://siriuscrm.com.br/privacy" style={styles.link}>
-                Privacidade
+                {footer.privacy}
               </Link>
               {' • '}
               <Link href="https://siriuscrm.com.br/terms" style={styles.link}>
-                Termos
+                {footer.terms}
               </Link>
             </Text>
           </Section>

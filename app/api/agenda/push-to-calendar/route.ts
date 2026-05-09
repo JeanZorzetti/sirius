@@ -2,12 +2,14 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { getGoogleCalendarClient, logGoogleCalendarActivity } from '@/lib/integrations/google-calendar-client'
+import { apiError } from '@/lib/api-error'
+import { ERR } from '@/lib/error-messages'
 
 export async function POST(request: NextRequest) {
   try {
     const session = await getSession()
     if (!session?.user?.email) {
-      return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
+      return await apiError(ERR.UNAUTHORIZED, 401, { req: request })
     }
 
     const user = await prisma.user.findUnique({
@@ -16,7 +18,7 @@ export async function POST(request: NextRequest) {
     })
 
     if (!user?.organizationId) {
-      return NextResponse.json({ error: 'Usuário sem organização' }, { status: 403 })
+      return await apiError(ERR.USER_NO_ORG, 403, { req: request })
     }
 
     const body = await request.json()

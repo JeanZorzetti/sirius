@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from 'next-intl';
 import { useNotifications } from "@/hooks/useNotifications";
 import { Bell, Check, CheckCheck, Trash2, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -37,6 +38,7 @@ const notificationTypeColors = {
 };
 
 export function NotificationCenter() {
+  const tCommon = useTranslations('common');
   const {
     notifications,
     unreadCount,
@@ -65,7 +67,7 @@ export function NotificationCenter() {
       <PopoverContent className="w-96 p-0" align="end">
         <div className="flex items-center justify-between border-b px-4 py-3">
           <div className="flex items-center gap-2">
-            <h3 className="font-semibold">Notificações</h3>
+            <h3 className="font-semibold">{tCommon('common.notifications')}</h3>
             {!isConnected && (
               <div className="h-2 w-2 rounded-full bg-gray-400 animate-pulse" title="Desconectado" />
             )}
@@ -89,7 +91,7 @@ export function NotificationCenter() {
         <ScrollArea className="h-[400px]">
           {isLoading ? (
             <div className="flex items-center justify-center h-40">
-              <p className="text-sm text-muted-foreground">Carregando...</p>
+              <p className="text-sm text-muted-foreground">{tCommon('buttons.loading')}</p>
             </div>
           ) : notifications.length === 0 ? (
             <div className="flex flex-col items-center justify-center h-40 gap-2">

@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { useTranslations } from 'next-intl'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
@@ -19,6 +20,8 @@ interface WelcomeModalProps {
 type OnboardingChoice = 'demo' | 'import' | 'scratch' | null
 
 export function WelcomeModal({ open, onClose, userName }: WelcomeModalProps) {
+  const tCommon = useTranslations('common')
+  const t = useTranslations('components.onboarding')
   const router = useRouter()
   const [isLoading, setIsLoading] = useState(false)
   const [selectedChoice, setSelectedChoice] = useState<OnboardingChoice>(null)
@@ -97,10 +100,10 @@ export function WelcomeModal({ open, onClose, userName }: WelcomeModalProps) {
       <DialogContent className="w-[55vw] sm:max-w-[55vw] max-w-[55vw]!" onPointerDownOutside={(e) => isLoading && e.preventDefault()}>
         <DialogHeader>
           <DialogTitle className="text-2xl sm:text-3xl font-bold text-center">
-            Bem-vindo ao Sirius CRM{userName ? `, ${userName}` : ''}! 🎉
+            {t('welcome')}{userName ? `, ${userName}` : ''}
           </DialogTitle>
           <DialogDescription className="text-center text-base pt-2">
-            Como você gostaria de começar sua jornada?
+            {t('subtitle')}
           </DialogDescription>
         </DialogHeader>
 
@@ -153,7 +156,7 @@ export function WelcomeModal({ open, onClose, userName }: WelcomeModalProps) {
                 {isLoading && selectedChoice === 'demo' ? (
                   <>
                     <Loader2 className="mr-2 w-4 h-4 animate-spin" />
-                    Carregando...
+                    {tCommon('buttons.loading')}
                   </>
                 ) : (
                   'Começar com Demo'

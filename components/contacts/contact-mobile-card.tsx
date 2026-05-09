@@ -6,6 +6,7 @@ import { MessageCircle, Phone, Mail, MapPin, Building2, Pencil, Kanban, User } f
 import { cn } from '@/lib/utils'
 import { SwipeableRow } from '@/components/ui/swipeable-row'
 import type { EnrichedContact } from './contacts-data-table-client'
+import { useTranslations } from 'next-intl'
 
 interface ContactMobileCardProps {
   contact: EnrichedContact
@@ -22,6 +23,8 @@ export function ContactMobileCard({
   onOpenProfile,
   onEdit,
 }: ContactMobileCardProps) {
+  const tCommon = useTranslations('common')
+  const t = useTranslations('components.contacts')
   const initials = contact.name
     .split(' ')
     .map(n => n[0])
@@ -184,7 +187,7 @@ export function ContactMobileCard({
             onClick={onEdit}
           >
             <Pencil className="h-4 w-4" />
-            Editar
+            {tCommon('buttons.edit')}
           </Button>
         )}
       </div>

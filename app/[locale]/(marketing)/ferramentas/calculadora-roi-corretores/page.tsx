@@ -1,6 +1,7 @@
 ﻿import { Metadata } from 'next'
 import { CalculadoraROI } from '@/components/calculadora-roi'
 import { Building2, TrendingUp, Users, CheckCircle2 } from 'lucide-react'
+import { getTranslations } from 'next-intl/server'
 import { buildLocaleAlternates } from '@/lib/seo/canonical'
 
 export async function generateMetadata({
@@ -9,24 +10,21 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>
 }): Promise<Metadata> {
   const { locale } = await params
+  const t = await getTranslations({ locale, namespace: 'marketing.ferramentas.calculadoraRoiCorretores.meta' })
   const alternates = buildLocaleAlternates(locale, '/ferramentas/calculadora-roi-corretores', '/tools/roi-calculator-brokers')
   return {
-    title: 'Calculadora de ROI para Corretores de Imóveis | Sirius CRM',
-    description: 'Descubra quanto dinheiro você está perdendo por desorganização nas vendas. Calculadora gratuita para corretores de imóveis que mostra o impacto real de um CRM nas suas comissões.',
-    keywords: 'calculadora roi corretor, crm imobiliário, vendas imóveis, comissão imobiliária, gestão imobiliária',
+    title: t('title'),
+    description: t('description'),
     alternates,
     openGraph: {
-      title: 'Calculadora de ROI para Corretores | Quanto você perde por desorganização?',
-      description: 'Calcule o impacto real de perder leads e oportunidades. Veja quanto um CRM pode aumentar suas comissões.',
+      title: t('ogTitle'),
+      description: t('ogDescription'),
       url: alternates.canonical,
-      siteName: 'Sirius CRM',
-      locale: locale === 'en' ? 'en_US' : 'pt_BR',
-      type: 'website',
     },
     twitter: {
       card: 'summary_large_image',
-      title: 'Calculadora de ROI para Corretores de Imóveis | Sirius CRM',
-      description: 'Descubra quanto você perde em vendas sem um CRM. Cálculo baseado em dados reais do mercado imobiliário.',
+      title: t('ogTitle'),
+      description: t('ogDescription'),
     },
   }
 }

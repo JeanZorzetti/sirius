@@ -3,6 +3,8 @@ import { getSession } from '@/lib/auth'
 import { generateApiKey, listApiKeys } from '@/lib/api-keys'
 import { prisma } from '@/lib/prisma'
 import logger from '@/lib/logger'
+import { apiError } from '@/lib/api-error'
+import { ERR } from '@/lib/error-messages'
 
 /**
  * GET /api/v1/api-keys
@@ -13,10 +15,7 @@ export async function GET(request: NextRequest) {
     const session = await getSession()
 
     if (!session || !session.user || !session.user.email) {
-      return NextResponse.json(
-        { error: 'Não autorizado' },
-        { status: 401 }
-      )
+      return await apiError(ERR.UNAUTHORIZED, 401, { req: request })
     }
 
     const user = await prisma.user.findUnique({
@@ -28,10 +27,7 @@ export async function GET(request: NextRequest) {
     })
 
     if (!user) {
-      return NextResponse.json(
-        { error: 'Usuário não encontrado' },
-        { status: 404 }
-      )
+      return await apiError(ERR.USER_NOT_FOUND, 404, { req: request })
     }
 
     // Check PRO or BUSINESS tier (API keys are PRO+ feature)
@@ -50,10 +46,7 @@ export async function GET(request: NextRequest) {
 
   } catch (error) {
     logger.error({ error }, 'Error listing API keys')
-    return NextResponse.json(
-      { error: 'Erro ao listar API keys' },
-      { status: 500 }
-    )
+    return await apiError(ERR.INTERNAL_ERROR, 500, { req: request })
   }
 }
 
@@ -66,10 +59,7 @@ export async function POST(request: NextRequest) {
     const session = await getSession()
 
     if (!session || !session.user || !session.user.email) {
-      return NextResponse.json(
-        { error: 'Não autorizado' },
-        { status: 401 }
-      )
+      return await apiError(ERR.UNAUTHORIZED, 401, { req: request })
     }
 
     const user = await prisma.user.findUnique({
@@ -81,10 +71,7 @@ export async function POST(request: NextRequest) {
     })
 
     if (!user) {
-      return NextResponse.json(
-        { error: 'Usuário não encontrado' },
-        { status: 404 }
-      )
+      return await apiError(ERR.USER_NOT_FOUND, 404, { req: request })
     }
 
     // Check PRO or BUSINESS tier (API keys are PRO+ feature)
@@ -135,9 +122,6 @@ export async function POST(request: NextRequest) {
 
   } catch (error) {
     logger.error({ error }, 'Error generating API key')
-    return NextResponse.json(
-      { error: 'Erro ao gerar API key' },
-      { status: 500 }
-    )
+    return await apiError(ERR.INTERNAL_ERROR, 500, { req: request })
   }
 }

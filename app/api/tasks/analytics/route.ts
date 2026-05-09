@@ -3,6 +3,8 @@ import { prisma } from '@/lib/prisma'
 import { getSession } from '@/lib/auth'
 import { requireFeature, FeatureBlockedError } from '@/lib/feature-gates'
 import logger from '@/lib/logger'
+import { apiError } from '@/lib/api-error'
+import { ERR } from '@/lib/error-messages'
 
 /**
  * GET /api/tasks/analytics
@@ -17,7 +19,7 @@ export async function GET(request: Request) {
   try {
     const session = await getSession()
     if (!session?.user?.email) {
-      return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
+      return await apiError(ERR.UNAUTHORIZED, 401)
     }
 
     const user = await prisma.user.findUnique({
@@ -26,7 +28,7 @@ export async function GET(request: Request) {
     })
 
     if (!user?.organizationId) {
-      return NextResponse.json({ error: 'Organização não encontrada' }, { status: 404 })
+      return await apiError(ERR.ORG_NOT_FOUND, 404)
     }
 
     try {
@@ -392,6 +394,6 @@ export async function GET(request: Request) {
     })
   } catch (error) {
     logger.error({ err: error }, '[tasks/analytics] error')
-    return NextResponse.json({ error: 'Erro interno ao calcular analytics' }, { status: 500 })
+    return await apiError(ERR.INTERNAL_ERROR, 500)
   }
 }

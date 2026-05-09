@@ -184,6 +184,13 @@
       "loginMsg": "⚠️ Faça login para experimentar a AGI Sirius completa!",
       "inputPlaceholder": "Faça uma pergunta sobre vendas...",
       "hint": "💡 Experimente perguntas sobre BANT, SPIN Selling, objeções, métricas de vendas e mais!"
+    },
+    "meta": {
+      "title": "Sirius CRM 2026 [IA Nativa + WhatsApp] — Pipeline Kanban Grátis para Vendedores",
+      "description": "O Assistente de IA para Vendedores Brasileiros: pipeline Kanban, WhatsApp integrado, prospecção Google Maps e IA que qualifica leads automaticamente com BANT e MEDDIC. Grátis para sempre. Sem cartão.",
+      "keywords": ["crm gratuito", "crm com ia", "crm brasil 2026", "crm online 2026", "pipeline kanban", "whatsapp crm", "ia comercial nativa", "automação de vendas", "assistente ia vendas", "crm representante comercial", "crm mobile"],
+      "ogTitle": "Sirius CRM 2026 [IA Nativa + WhatsApp] — Pipeline Grátis para Vendedores",
+      "ogDescription": "IA que qualifica leads, WhatsApp integrado, pipeline Kanban e prospecção Google Maps. O assistente de vendas mais completo do Brasil. Grátis para sempre."
     }
   },
   "features": {
@@ -1550,6 +1557,134 @@
       "readAlso": "Leia também:",
       "privacy": "Política de Privacidade",
       "help": "Central de Ajuda"
+    }
+  },
+  "community": {
+    "meta": {
+      "title": "Comunidade | Sirius CRM",
+      "description": "Junte-se à comunidade Sirius CRM. Compartilhe experiências, aprenda com outros usuários e contribua para o desenvolvimento da plataforma.",
+      "ogTitle": "Comunidade | Sirius CRM",
+      "ogDescription": "Junte-se à comunidade Sirius CRM e conecte-se com outros profissionais de vendas."
+    }
+  },
+  "download": {
+    "meta": {
+      "title": "Baixar Sirius CRM | App Mobile",
+      "description": "Baixe o Sirius CRM no seu celular. Progressive Web App com suporte offline, sincronização automática e notificações push. Disponível para iOS e Android.",
+      "ogTitle": "Baixar Sirius CRM — App Mobile",
+      "ogDescription": "Instale o Sirius CRM no seu celular para acesso rápido e offline."
+    }
+  },
+  "followup": {
+    "meta": {
+      "title": "Sistema de Follow-up Inteligente | Sirius CRM",
+      "description": "Nunca mais perca um follow-up. Sistema automático de lembretes e acompanhamento de leads com IA integrada. Alertas inteligentes no timing certo para maximizar conversão.",
+      "ogTitle": "Sistema de Follow-up Inteligente | Sirius CRM",
+      "ogDescription": "Nunca mais perca um follow-up. Sistema automático de lembretes com IA. Alertas no timing certo para maximizar conversão."
+    }
+  },
+  "proposta": {
+    "meta": {
+      "title": "Solicitar Proposta Comercial | Sirius CRM",
+      "description": "Solicite uma proposta comercial personalizada para sua empresa. Nossa equipe entrará em contato em até 24h para apresentar a melhor solução em CRM.",
+      "ogTitle": "Solicitar Proposta Comercial | Sirius CRM",
+      "ogDescription": "Solicite uma proposta personalizada. Nossa equipe entrará em contato em até 24h."
+    }
+  },
+  "vendasAutomaticas": {
+    "meta": {
+      "title": "Sirius CRM — Vendas Organizadas em 5 Minutos | R$ 67/mês",
+      "description": "CRM self-service sem implantação cara. Organize suas vendas agora por R$ 67/mês. Sem cartão para testar, cancele quando quiser.",
+      "ogTitle": "Sirius CRM — Vendas Organizadas em 5 Minutos",
+      "ogDescription": "CRM self-service sem implantação cara. R$ 67/mês, sem cartão para testar."
+    }
+  },
+  "anuario": {
+    "meta": {
+      "title": "Anuário do Vendedor B2B Brasileiro 2026 | Sirius CRM",
+      "description": "Dados exclusivos sobre vendas B2B no Brasil: ciclo médio de venda, taxa de conversão por etapa, impacto da automação e benchmarks por setor. Pesquisa Sirius CRM com +127 empresas.",
+      "ogTitle": "Anuário do Vendedor B2B Brasileiro 2026 | Sirius CRM",
+      "ogDescription": "Dados proprietários de +127 empresas B2B brasileiras: ciclo de venda, conversão, IA e benchmarks por setor."
+    }
+  },
+  "register": {
+    "meta": {
+      "title": "Criar conta — Sirius CRM",
+      "description": "Comece a usar o Sirius CRM gratuitamente. Sem cartão de crédito. Configure em 5 minutos.",
+      "ogTitle": "Criar conta — Sirius CRM",
+      "ogDescription": "Junte-se a 120+ times que já aumentaram suas vendas com o Sirius CRM."
+    }
+  },
+  "help": {
+    "meta": {
+      "title": "Central de Ajuda | Sirius CRM",
+      "description": "Encontre respostas para suas dúvidas sobre o Sirius CRM. Tutoriais, guias e suporte para aproveitar ao máximo sua ferramenta de vendas.",
+      "ogTitle": "Central de Ajuda | Sirius CRM",
+      "ogDescription": "Tutoriais, guias e suporte para aproveitar ao máximo o Sirius CRM."
+    }
+  },
+  "ferramentas": {
+    "meta": {
+      "title": "Ferramentas Gratuitas para Vendedores | Sirius CRM",
+      "description": "Calculadoras de ROI gratuitas para vendedores brasileiros. Descubra quanto você perde sem um CRM e projete o retorno do investimento para o seu segmento.",
+      "ogTitle": "Ferramentas Gratuitas para Vendedores | Sirius CRM",
+      "ogDescription": "Calculadoras de ROI gratuitas para vendedores brasileiros."
+    },
+    "calculadoraRoi": {
+      "meta": {
+        "title": "Calculadora de Vazamento de Vendas | Sirius CRM",
+        "description": "Descubra quanto dinheiro você está perdendo por não ter um sistema organizado de vendas. Calcule seu ROI em segundos.",
+        "ogTitle": "Calculadora de Vazamento de Vendas | Sirius CRM",
+        "ogDescription": "Descubra quanto dinheiro você está perdendo por não ter um sistema organizado de vendas."
+      }
+    },
+    "calculadoraRoiAgencias": {
+      "meta": {
+        "title": "Calculadora de ROI para Agências de Marketing | Sirius CRM",
+        "description": "Descubra quanto sua agência perde por desorganização em vendas. Calcule o impacto real de um CRM na retenção de clientes e fechamento de propostas.",
+        "ogTitle": "Calculadora de ROI para Agências | Quanto você perde por desorganização?",
+        "ogDescription": "Calcule o impacto real de propostas perdidas e follow-ups esquecidos no faturamento da sua agência."
+      }
+    },
+    "calculadoraRoiConsultores": {
+      "meta": {
+        "title": "Calculadora de ROI para Consultores Empresariais | Sirius CRM",
+        "description": "Descubra quanto dinheiro você está perdendo em honorários por desorganização nas suas consultorias. Calculadora gratuita que mostra o impacto real de um CRM nos seus projetos.",
+        "ogTitle": "Calculadora de ROI para Consultores | Quanto você perde por desorganização?",
+        "ogDescription": "Calcule o impacto real de projetos não acompanhados. Veja quanto um CRM pode aumentar seus honorários."
+      }
+    },
+    "calculadoraRoiCorretores": {
+      "meta": {
+        "title": "Calculadora de ROI para Corretores de Imóveis | Sirius CRM",
+        "description": "Descubra quanto dinheiro você está perdendo por desorganização nas vendas. Calculadora gratuita para corretores de imóveis que mostra o impacto real de um CRM nas suas comissões.",
+        "ogTitle": "Calculadora de ROI para Corretores | Quanto você perde por desorganização?",
+        "ogDescription": "Calcule o impacto real de perder leads e oportunidades. Veja quanto um CRM pode aumentar suas comissões."
+      }
+    },
+    "calculadoraRoiEnergiaSolar": {
+      "meta": {
+        "title": "Calculadora de ROI para Empresas de Energia Solar | Sirius CRM",
+        "description": "Calcule quanto dinheiro sua empresa de energia solar perde por desorganização. Veja o impacto real de um CRM no seu faturamento e conversão de propostas.",
+        "ogTitle": "Calculadora de ROI para Energia Solar | Quanto você perde por mês?",
+        "ogDescription": "Descubra quanto faturamento você está deixando na mesa por falta de organização nas propostas."
+      }
+    },
+    "calculadoraRoiRepresentantes": {
+      "meta": {
+        "title": "Calculadora de ROI para Representantes Comerciais | Sirius CRM",
+        "description": "Descubra quanto em comissões você está perdendo por desorganização nas suas vendas. Calculadora gratuita que mostra o impacto real de um CRM na sua carteira de clientes.",
+        "ogTitle": "Calculadora de ROI para Representantes | Quanto você perde por mês?",
+        "ogDescription": "Calcule o impacto real de pedidos não acompanhados. Veja quanto um CRM pode aumentar suas recompras."
+      }
+    }
+  },
+  "solucoes": {
+    "meta": {
+      "title": "Soluções Sirius CRM por Segmento — Corretores, Solar, Agências e Mais",
+      "description": "O Sirius CRM tem solução específica para cada segmento: corretores de imóveis, energia solar, agências de marketing, consultores e representantes comerciais. Comece grátis.",
+      "ogTitle": "Soluções Sirius CRM por Segmento",
+      "ogDescription": "CRM com solução específica para corretores, solar, agências, consultores e representantes. Comece grátis."
     }
   }
 }

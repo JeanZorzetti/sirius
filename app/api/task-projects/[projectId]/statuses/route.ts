@@ -3,6 +3,8 @@ import { prisma } from '@/lib/prisma'
 import { getSession } from '@/lib/auth'
 import { checkTaskStatusLimit } from '@/lib/feature-gates'
 import logger from '@/lib/logger'
+import { apiError } from '@/lib/api-error'
+import { ERR } from '@/lib/error-messages'
 
 // GET /api/task-projects/[projectId]/statuses
 export async function GET(
@@ -13,7 +15,7 @@ export async function GET(
     const { projectId } = await params
     const session = await getSession()
     if (!session?.user?.email) {
-      return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
+      return await apiError(ERR.UNAUTHORIZED, 401)
     }
 
     const statuses = await prisma.taskStatus.findMany({
@@ -25,7 +27,7 @@ export async function GET(
     return NextResponse.json(statuses)
   } catch (error) {
     logger.error({ err: error }, 'Error listing statuses')
-    return NextResponse.json({ error: 'Erro ao listar statuses' }, { status: 500 })
+    return await apiError(ERR.INTERNAL_ERROR, 500)
   }
 }
 
@@ -38,7 +40,7 @@ export async function POST(
     const { projectId } = await params
     const session = await getSession()
     if (!session?.user?.email) {
-      return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
+      return await apiError(ERR.UNAUTHORIZED, 401)
     }
 
     // Verificar limite
@@ -80,7 +82,7 @@ export async function POST(
     return NextResponse.json(status, { status: 201 })
   } catch (error) {
     logger.error({ err: error }, 'Error creating status')
-    return NextResponse.json({ error: 'Erro ao criar status' }, { status: 500 })
+    return await apiError(ERR.INTERNAL_ERROR, 500)
   }
 }
 
@@ -93,7 +95,7 @@ export async function PATCH(
     const { projectId } = await params
     const session = await getSession()
     if (!session?.user?.email) {
-      return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
+      return await apiError(ERR.UNAUTHORIZED, 401)
     }
 
     const body = await request.json()
@@ -121,6 +123,6 @@ export async function PATCH(
     return NextResponse.json(statuses)
   } catch (error) {
     logger.error({ err: error }, 'Error reordering statuses')
-    return NextResponse.json({ error: 'Erro ao reordenar statuses' }, { status: 500 })
+    return await apiError(ERR.INTERNAL_ERROR, 500)
   }
 }

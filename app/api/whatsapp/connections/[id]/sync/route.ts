@@ -12,6 +12,8 @@ import { prisma } from '@/lib/prisma'
 import { prismaWa } from '@/lib/prisma-wa'
 import { whatsmeowClient } from '@/lib/integrations/whatsmeow-client'
 import logger from '@/lib/logger'
+import { apiError } from '@/lib/api-error'
+import { ERR } from '@/lib/error-messages'
 
 export const maxDuration = 300
 
@@ -24,7 +26,7 @@ export async function POST(
 
     const session = await getSession()
     if (!session?.user) {
-      return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
+      return await apiError(ERR.UNAUTHORIZED, 401, { req })
     }
 
     const user = await prisma.user.findUnique({
@@ -33,7 +35,7 @@ export async function POST(
     })
 
     if (!user?.organizationId) {
-      return NextResponse.json({ error: 'Organização não encontrada' }, { status: 404 })
+      return await apiError(ERR.ORG_NOT_FOUND, 404, { req })
     }
 
     const connection = await prismaWa.whatsAppConnection.findFirst({
@@ -41,7 +43,7 @@ export async function POST(
     })
 
     if (!connection) {
-      return NextResponse.json({ error: 'Conexão não encontrada' }, { status: 404 })
+      return await apiError(ERR.CONNECTION_NOT_FOUND, 404, { req })
     }
 
     if (connection.status !== 'CONNECTED') {

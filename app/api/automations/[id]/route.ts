@@ -3,6 +3,8 @@ import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import logger from '@/lib/logger'
 import { z } from 'zod'
+import { apiError } from '@/lib/api-error'
+import { ERR } from '@/lib/error-messages'
 
 const updateAutomationSchema = z.object({
   name: z.string().min(1).max(255).optional(),
@@ -36,12 +38,12 @@ export async function GET(
     const { id } = await params
     const session = await getSession()
     if (!session?.user) {
-      return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
+      return await apiError(ERR.UNAUTHORIZED, 401, { req: request })
     }
 
     const user = await resolveUser(session)
     if (!user?.organizationId) {
-      return NextResponse.json({ error: 'Organização não encontrada' }, { status: 404 })
+      return await apiError(ERR.ORG_NOT_FOUND, 404, { req: request })
     }
 
     const automation = await prisma.dealAutomation.findFirst({
@@ -55,13 +57,13 @@ export async function GET(
     })
 
     if (!automation) {
-      return NextResponse.json({ error: 'Automação não encontrada' }, { status: 404 })
+      return await apiError(ERR.AUTOMATION_NOT_FOUND, 404, { req: request })
     }
 
     return NextResponse.json({ automation })
   } catch (error) {
     logger.error({ error }, 'Error fetching automation')
-    return NextResponse.json({ error: 'Erro interno do servidor' }, { status: 500 })
+    return await apiError(ERR.INTERNAL_ERROR, 500)
   }
 }
 
@@ -77,12 +79,12 @@ export async function PATCH(
     const { id } = await params
     const session = await getSession()
     if (!session?.user) {
-      return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
+      return await apiError(ERR.UNAUTHORIZED, 401, { req: request })
     }
 
     const user = await resolveUser(session)
     if (!user?.organizationId) {
-      return NextResponse.json({ error: 'Organização não encontrada' }, { status: 404 })
+      return await apiError(ERR.ORG_NOT_FOUND, 404, { req: request })
     }
 
     const body = await request.json()
@@ -101,7 +103,7 @@ export async function PATCH(
     })
 
     if (!existing) {
-      return NextResponse.json({ error: 'Automação não encontrada' }, { status: 404 })
+      return await apiError(ERR.AUTOMATION_NOT_FOUND, 404, { req: request })
     }
 
     const data = validation.data
@@ -124,7 +126,7 @@ export async function PATCH(
     return NextResponse.json({ automation })
   } catch (error) {
     logger.error({ error }, 'Error updating automation')
-    return NextResponse.json({ error: 'Erro interno do servidor' }, { status: 500 })
+    return await apiError(ERR.INTERNAL_ERROR, 500)
   }
 }
 
@@ -140,12 +142,12 @@ export async function DELETE(
     const { id } = await params
     const session = await getSession()
     if (!session?.user) {
-      return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
+      return await apiError(ERR.UNAUTHORIZED, 401, { req: request })
     }
 
     const user = await resolveUser(session)
     if (!user?.organizationId) {
-      return NextResponse.json({ error: 'Organização não encontrada' }, { status: 404 })
+      return await apiError(ERR.ORG_NOT_FOUND, 404, { req: request })
     }
 
     // Verify ownership
@@ -154,7 +156,7 @@ export async function DELETE(
     })
 
     if (!existing) {
-      return NextResponse.json({ error: 'Automação não encontrada' }, { status: 404 })
+      return await apiError(ERR.AUTOMATION_NOT_FOUND, 404, { req: request })
     }
 
     await prisma.dealAutomation.delete({ where: { id } })
@@ -164,6 +166,6 @@ export async function DELETE(
     return NextResponse.json({ deleted: true })
   } catch (error) {
     logger.error({ error }, 'Error deleting automation')
-    return NextResponse.json({ error: 'Erro interno do servidor' }, { status: 500 })
+    return await apiError(ERR.INTERNAL_ERROR, 500)
   }
 }

@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { useTranslations } from 'next-intl'
 import { Link2, X, Plus, ArrowRight, ArrowLeft, GitBranch } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -41,6 +42,7 @@ const TYPE_LABELS: Record<string, string> = {
 }
 
 export function TaskDependencies({ taskId, projectId }: TaskDependenciesProps) {
+  const tCommon = useTranslations('common')
   const [outgoing, setOutgoing] = useState<Dependency[]>([])
   const [incoming, setIncoming] = useState<Dependency[]>([])
   const [loading, setLoading] = useState(true)
@@ -98,13 +100,13 @@ export function TaskDependencies({ taskId, projectId }: TaskDependenciesProps) {
         const err = await res.json().catch(() => ({}))
         throw new Error(err.error || 'fail')
       }
-      toast.success('Dependência adicionada')
+      toast.success(tCommon('toasts.created'))
       setAdding(false)
       setSearchQuery('')
       setSearchResults([])
       load()
     } catch (e: any) {
-      toast.error(e.message || 'Erro ao adicionar dependência')
+      toast.error(e.message || tCommon('toasts.failed'))
     }
   }
 
@@ -116,7 +118,7 @@ export function TaskDependencies({ taskId, projectId }: TaskDependenciesProps) {
       if (!res.ok) throw new Error('fail')
       load()
     } catch {
-      toast.error('Erro ao remover dependência')
+      toast.error(tCommon('toasts.failedDelete'))
     }
   }
 
@@ -158,7 +160,7 @@ export function TaskDependencies({ taskId, projectId }: TaskDependenciesProps) {
   }
 
   if (loading) {
-    return <div className="text-xs text-muted-foreground">Carregando...</div>
+    return <div className="text-xs text-muted-foreground">{tCommon('buttons.loading')}</div>
   }
 
   const hasAny = outgoing.length > 0 || incoming.length > 0
@@ -178,7 +180,7 @@ export function TaskDependencies({ taskId, projectId }: TaskDependenciesProps) {
             onClick={() => setAdding(true)}
           >
             <Plus className="h-3 w-3" />
-            Adicionar
+            {tCommon('buttons.add')}
           </Button>
         )}
       </div>

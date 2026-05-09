@@ -5,6 +5,8 @@ import { validateRequest, updateWebhookSchema } from '@/lib/api-validators'
 import { updateSvixEndpoint, deleteSvixEndpoint, getEndpointSecret } from '@/lib/webhooks/svix-client'
 import { getAllWebhookEvents } from '@/lib/webhooks/events'
 import logger from '@/lib/logger'
+import { apiError } from '@/lib/api-error'
+import { ERR } from '@/lib/error-messages'
 
 /**
  * GET /api/v1/webhooks/[id]
@@ -19,10 +21,7 @@ export async function GET(
     const session = await getSession()
 
     if (!session || !session.user || !session.user.email) {
-      return NextResponse.json(
-        { error: 'Não autorizado' },
-        { status: 401 }
-      )
+      return await apiError(ERR.UNAUTHORIZED, 401, { req: request })
     }
 
     const user = await prisma.user.findUnique({
@@ -31,10 +30,7 @@ export async function GET(
     })
 
     if (!user) {
-      return NextResponse.json(
-        { error: 'Usuário não encontrado' },
-        { status: 404 }
-      )
+      return await apiError(ERR.USER_NOT_FOUND, 404, { req: request })
     }
 
     const webhook = await prisma.webhook.findFirst({
@@ -52,10 +48,7 @@ export async function GET(
     })
 
     if (!webhook) {
-      return NextResponse.json(
-        { error: 'Webhook não encontrado' },
-        { status: 404 }
-      )
+      return await apiError(ERR.WEBHOOK_NOT_FOUND, 404, { req: request })
     }
 
     // Get signing secret from Svix
@@ -76,10 +69,7 @@ export async function GET(
     })
   } catch (error) {
     logger.error({ error }, 'Error getting webhook')
-    return NextResponse.json(
-      { error: 'Erro ao buscar webhook' },
-      { status: 500 }
-    )
+    return await apiError(ERR.INTERNAL_ERROR, 500, { req: request })
   }
 }
 
@@ -96,10 +86,7 @@ export async function PATCH(
     const session = await getSession()
 
     if (!session || !session.user || !session.user.email) {
-      return NextResponse.json(
-        { error: 'Não autorizado' },
-        { status: 401 }
-      )
+      return await apiError(ERR.UNAUTHORIZED, 401, { req: request })
     }
 
     const user = await prisma.user.findUnique({
@@ -108,10 +95,7 @@ export async function PATCH(
     })
 
     if (!user) {
-      return NextResponse.json(
-        { error: 'Usuário não encontrado' },
-        { status: 404 }
-      )
+      return await apiError(ERR.USER_NOT_FOUND, 404, { req: request })
     }
 
     // Find webhook
@@ -123,10 +107,7 @@ export async function PATCH(
     })
 
     if (!webhook) {
-      return NextResponse.json(
-        { error: 'Webhook não encontrado' },
-        { status: 404 }
-      )
+      return await apiError(ERR.WEBHOOK_NOT_FOUND, 404, { req: request })
     }
 
     // Validate request body
@@ -206,10 +187,7 @@ export async function PATCH(
     })
   } catch (error) {
     logger.error({ error }, 'Error updating webhook')
-    return NextResponse.json(
-      { error: 'Erro ao atualizar webhook' },
-      { status: 500 }
-    )
+    return await apiError(ERR.INTERNAL_ERROR, 500, { req: request })
   }
 }
 
@@ -226,10 +204,7 @@ export async function DELETE(
     const session = await getSession()
 
     if (!session || !session.user || !session.user.email) {
-      return NextResponse.json(
-        { error: 'Não autorizado' },
-        { status: 401 }
-      )
+      return await apiError(ERR.UNAUTHORIZED, 401, { req: request })
     }
 
     const user = await prisma.user.findUnique({
@@ -238,10 +213,7 @@ export async function DELETE(
     })
 
     if (!user) {
-      return NextResponse.json(
-        { error: 'Usuário não encontrado' },
-        { status: 404 }
-      )
+      return await apiError(ERR.USER_NOT_FOUND, 404, { req: request })
     }
 
     // Find webhook
@@ -253,10 +225,7 @@ export async function DELETE(
     })
 
     if (!webhook) {
-      return NextResponse.json(
-        { error: 'Webhook não encontrado' },
-        { status: 404 }
-      )
+      return await apiError(ERR.WEBHOOK_NOT_FOUND, 404, { req: request })
     }
 
     // Delete from Svix
@@ -278,9 +247,6 @@ export async function DELETE(
     })
   } catch (error) {
     logger.error({ error }, 'Error deleting webhook')
-    return NextResponse.json(
-      { error: 'Erro ao deletar webhook' },
-      { status: 500 }
-    )
+    return await apiError(ERR.INTERNAL_ERROR, 500, { req: request })
   }
 }

@@ -1,5 +1,9 @@
 import { Text, Heading, Button, Section } from '@react-email/components'
 import { BaseLayout } from '../layouts/base'
+import emailsEn from '@/messages/en/emails.json'
+import emailsPtBr from '@/messages/pt-BR/emails.json'
+
+type Locale = 'pt-BR' | 'en'
 
 interface DealCreatedEmailProps {
   userName: string
@@ -8,6 +12,7 @@ interface DealCreatedEmailProps {
   dealStage: string
   contactName?: string
   dealUrl: string
+  locale?: Locale
 }
 
 export function DealCreatedEmail({
@@ -17,66 +22,66 @@ export function DealCreatedEmail({
   dealStage,
   contactName,
   dealUrl,
+  locale = 'pt-BR',
 }: DealCreatedEmailProps) {
-  const formattedValue = new Intl.NumberFormat('pt-BR', {
+  const s = locale === 'en' ? emailsEn.emails.dealCreated : emailsPtBr.emails.dealCreated
+
+  const formattedValue = new Intl.NumberFormat(locale === 'en' ? 'en-US' : 'pt-BR', {
     style: 'currency',
-    currency: 'BRL',
+    currency: locale === 'en' ? 'USD' : 'BRL',
   }).format(dealValue)
 
+  const preview = s.preview.replace('{dealTitle}', dealTitle)
+
   return (
-    <BaseLayout preview={`Novo negócio criado: ${dealTitle}`}>
-      <Heading style={styles.heading}>Novo negócio criado! 💼</Heading>
+    <BaseLayout preview={preview} locale={locale}>
+      <Heading style={styles.heading}>{s.title}</Heading>
 
-      <Text style={styles.text}>Olá {userName},</Text>
+      <Text style={styles.text}>{locale === 'en' ? `Hi ${userName},` : `Olá ${userName},`}</Text>
 
-      <Text style={styles.text}>
-        Um novo negócio foi adicionado ao seu pipeline:
-      </Text>
+      <Text style={styles.text}>{s.intro}</Text>
 
       <Section style={styles.dealCard}>
         <Text style={styles.dealTitle}>{dealTitle}</Text>
 
         <Section style={styles.dealDetails}>
           <Text style={styles.detailRow}>
-            <strong>Valor:</strong> {formattedValue}
+            <strong>{s.labelValue}</strong> {formattedValue}
           </Text>
           <Text style={styles.detailRow}>
-            <strong>Etapa:</strong> {dealStage}
+            <strong>{s.labelStage}</strong> {dealStage}
           </Text>
           {contactName && (
             <Text style={styles.detailRow}>
-              <strong>Contato:</strong> {contactName}
+              <strong>{s.labelContact}</strong> {contactName}
             </Text>
           )}
         </Section>
       </Section>
 
       <Text style={styles.text}>
-        <strong>Próximos passos sugeridos:</strong>
+        <strong>{s.nextStepsTitle}</strong>
       </Text>
 
       <Section style={styles.suggestions}>
-        <Text style={styles.suggestion}>
-          • Agende um follow-up com o cliente
-        </Text>
-        <Text style={styles.suggestion}>
-          • Adicione notas sobre a reunião inicial
-        </Text>
-        <Text style={styles.suggestion}>
-          • Configure lembretes para acompanhamento
-        </Text>
+        <Text style={styles.suggestion}>• {s.step1}</Text>
+        <Text style={styles.suggestion}>• {s.step2}</Text>
+        <Text style={styles.suggestion}>• {s.step3}</Text>
       </Section>
 
       <Section style={styles.ctaSection}>
         <Button href={dealUrl} style={styles.button}>
-          Ver Negócio
+          {s.cta}
         </Button>
       </Section>
 
       <Text style={styles.signature}>
-        Boas vendas!
-        <br />
-        Equipe Sirius CRM
+        {s.signature.split('\n').map((line, i, arr) => (
+          <span key={i}>
+            {line}
+            {i < arr.length - 1 && <br />}
+          </span>
+        ))}
       </Text>
     </BaseLayout>
   )

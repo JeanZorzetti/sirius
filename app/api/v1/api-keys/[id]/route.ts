@@ -3,6 +3,8 @@ import { getSession } from '@/lib/auth'
 import { revokeApiKey } from '@/lib/api-keys'
 import { prisma } from '@/lib/prisma'
 import logger from '@/lib/logger'
+import { apiError } from '@/lib/api-error'
+import { ERR } from '@/lib/error-messages'
 
 /**
  * DELETE /api/v1/api-keys/[id]
@@ -16,10 +18,7 @@ export async function DELETE(
     const session = await getSession()
 
     if (!session || !session.user || !session.user.email) {
-      return NextResponse.json(
-        { error: 'Não autorizado' },
-        { status: 401 }
-      )
+      return await apiError(ERR.UNAUTHORIZED, 401, { req: request })
     }
 
     const user = await prisma.user.findUnique({
@@ -28,10 +27,7 @@ export async function DELETE(
     })
 
     if (!user) {
-      return NextResponse.json(
-        { error: 'Usuário não encontrado' },
-        { status: 404 }
-      )
+      return await apiError(ERR.USER_NOT_FOUND, 404, { req: request })
     }
 
     const { id: apiKeyId } = await params
@@ -43,17 +39,11 @@ export async function DELETE(
     })
 
     if (!apiKey) {
-      return NextResponse.json(
-        { error: 'API key não encontrada' },
-        { status: 404 }
-      )
+      return await apiError(ERR.API_KEY_NOT_FOUND, 404, { req: request })
     }
 
     if (apiKey.organizationId !== user.organizationId) {
-      return NextResponse.json(
-        { error: 'Você não tem permissão para revogar esta API key' },
-        { status: 403 }
-      )
+      return await apiError(ERR.FORBIDDEN, 403, { req: request })
     }
 
     await revokeApiKey(apiKeyId, user.organizationId)
@@ -65,9 +55,6 @@ export async function DELETE(
 
   } catch (error) {
     logger.error({ error }, 'Error revoking API key')
-    return NextResponse.json(
-      { error: 'Erro ao revogar API key' },
-      { status: 500 }
-    )
+    return await apiError(ERR.INTERNAL_ERROR, 500, { req: request })
   }
 }

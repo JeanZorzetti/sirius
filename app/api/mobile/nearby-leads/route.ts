@@ -11,11 +11,13 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
+import { apiError } from '@/lib/api-error'
+import { ERR } from '@/lib/error-messages'
 
 export async function GET(request: NextRequest) {
   const session = await getSession()
   if (!session?.user?.email) {
-    return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
+    return await apiError(ERR.UNAUTHORIZED, 401, { req: request })
   }
 
   const user = await prisma.user.findUnique({
@@ -23,7 +25,7 @@ export async function GET(request: NextRequest) {
     select: { organizationId: true },
   })
   if (!user?.organizationId) {
-    return NextResponse.json({ error: 'Sem organização' }, { status: 404 })
+    return await apiError(ERR.USER_NO_ORG, 403, { req: request })
   }
 
   const { searchParams } = new URL(request.url)

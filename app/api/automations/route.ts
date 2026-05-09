@@ -3,6 +3,8 @@ import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import logger from '@/lib/logger'
 import { z } from 'zod'
+import { apiError } from '@/lib/api-error'
+import { ERR } from '@/lib/error-messages'
 
 const THIRTY_DAYS_AGO = () => {
   const d = new Date()
@@ -29,7 +31,7 @@ export async function GET(request: NextRequest) {
   try {
     const session = await getSession()
     if (!session?.user) {
-      return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
+      return await apiError(ERR.UNAUTHORIZED, 401, { req: request })
     }
 
     const user = await prisma.user.findUnique({
@@ -38,7 +40,7 @@ export async function GET(request: NextRequest) {
     })
 
     if (!user?.organizationId) {
-      return NextResponse.json({ error: 'Organização não encontrada' }, { status: 404 })
+      return await apiError(ERR.ORG_NOT_FOUND, 404, { req: request })
     }
 
     const automations = await prisma.dealAutomation.findMany({
@@ -78,7 +80,7 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ automations: result })
   } catch (error) {
     logger.error({ error }, 'Error listing automations')
-    return NextResponse.json({ error: 'Erro interno do servidor' }, { status: 500 })
+    return await apiError(ERR.INTERNAL_ERROR, 500)
   }
 }
 
@@ -90,7 +92,7 @@ export async function POST(request: NextRequest) {
   try {
     const session = await getSession()
     if (!session?.user) {
-      return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
+      return await apiError(ERR.UNAUTHORIZED, 401, { req: request })
     }
 
     const user = await prisma.user.findUnique({
@@ -99,7 +101,7 @@ export async function POST(request: NextRequest) {
     })
 
     if (!user?.organizationId) {
-      return NextResponse.json({ error: 'Organização não encontrada' }, { status: 404 })
+      return await apiError(ERR.ORG_NOT_FOUND, 404, { req: request })
     }
 
     const body = await request.json()
@@ -132,6 +134,6 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ automation }, { status: 201 })
   } catch (error) {
     logger.error({ error }, 'Error creating automation')
-    return NextResponse.json({ error: 'Erro interno do servidor' }, { status: 500 })
+    return await apiError(ERR.INTERNAL_ERROR, 500)
   }
 }

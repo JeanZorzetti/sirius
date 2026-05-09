@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { getSession } from '@/lib/auth'
+import { apiError } from '@/lib/api-error'
+import { ERR } from '@/lib/error-messages'
 import { S3Client, PutObjectCommand, DeleteObjectCommand, GetObjectCommand } from '@aws-sdk/client-s3'
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner'
 import { randomUUID } from 'crypto'
@@ -35,7 +37,7 @@ export async function GET(
   const { taskId } = await params
   const session = await getSession()
   if (!session?.user?.email) {
-    return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
+    return await apiError(ERR.UNAUTHORIZED, 401)
   }
 
   const attachments = await prisma.taskAttachment.findMany({
@@ -67,14 +69,14 @@ export async function POST(
   const { taskId } = await params
   const session = await getSession()
   if (!session?.user?.email) {
-    return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
+    return await apiError(ERR.UNAUTHORIZED, 401)
   }
 
   const user = await prisma.user.findUnique({ where: { email: session.user.email } })
-  if (!user) return NextResponse.json({ error: 'Usuário não encontrado' }, { status: 404 })
+  if (!user) return await apiError(ERR.USER_NOT_FOUND, 404)
 
   const task = await prisma.task.findUnique({ where: { id: taskId } })
-  if (!task) return NextResponse.json({ error: 'Tarefa não encontrada' }, { status: 404 })
+  if (!task) return await apiError(ERR.NOT_FOUND, 404)
 
   const formData = await request.formData()
   const file = formData.get('file') as File | null
@@ -127,7 +129,7 @@ export async function DELETE(
   const { taskId } = await params
   const session = await getSession()
   if (!session?.user?.email) {
-    return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
+    return await apiError(ERR.UNAUTHORIZED, 401)
   }
 
   const { searchParams } = new URL(request.url)
@@ -135,7 +137,7 @@ export async function DELETE(
   if (!id) return NextResponse.json({ error: 'ID do anexo obrigatório' }, { status: 400 })
 
   const attachment = await prisma.taskAttachment.findFirst({ where: { id, taskId } })
-  if (!attachment) return NextResponse.json({ error: 'Anexo não encontrado' }, { status: 404 })
+  if (!attachment) return await apiError(ERR.NOT_FOUND, 404)
 
   const client = getS3Client()
   await client.send(new DeleteObjectCommand({ Bucket: BUCKET, Key: attachment.storageKey }))

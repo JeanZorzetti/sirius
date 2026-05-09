@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
+import { useTranslations } from 'next-intl'
 import { Loader2 } from 'lucide-react'
 import {
   Dialog,
@@ -39,6 +40,7 @@ const PROJECT_COLORS = [
 
 export function CreateProjectDialog({ open, onOpenChange, onCreated }: CreateProjectDialogProps) {
   const router = useRouter()
+  const tCommon = useTranslations('common')
   const [loading, setLoading] = useState(false)
   const [name, setName] = useState('')
   const [description, setDescription] = useState('')
@@ -55,7 +57,7 @@ export function CreateProjectDialog({ open, onOpenChange, onCreated }: CreatePro
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!name.trim()) {
-      toast.error('O nome é obrigatório')
+      toast.error(tCommon('toasts.failed'))
       return
     }
 
@@ -77,12 +79,12 @@ export function CreateProjectDialog({ open, onOpenChange, onCreated }: CreatePro
       }
 
       const project = await res.json()
-      toast.success('Projeto criado')
+      toast.success(tCommon('toasts.created'))
       onOpenChange(false)
       onCreated?.(project.id)
       router.refresh()
     } catch (err) {
-      toast.error(err instanceof Error ? err.message : 'Erro ao criar projeto')
+      toast.error(err instanceof Error ? err.message : tCommon('toasts.failed'))
     } finally {
       setLoading(false)
     }
@@ -146,11 +148,11 @@ export function CreateProjectDialog({ open, onOpenChange, onCreated }: CreatePro
 
           <DialogFooter>
             <Button type="button" variant="ghost" onClick={() => onOpenChange(false)} disabled={loading}>
-              Cancelar
+              {tCommon('buttons.cancel')}
             </Button>
             <Button type="submit" disabled={loading || !name.trim()}>
               {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-              Criar projeto
+              {tCommon('buttons.create')}
             </Button>
           </DialogFooter>
         </form>

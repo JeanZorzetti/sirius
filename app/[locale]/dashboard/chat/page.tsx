@@ -1,4 +1,3 @@
-import { Metadata } from "next"
 import { getSession } from "@/lib/auth"
 import { prisma } from "@/lib/prisma"
 import { prismaWa } from "@/lib/prisma-wa"
@@ -8,8 +7,9 @@ import { EmptyState } from "@/components/ui/empty-state"
 import { MessageSquare } from "lucide-react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
+import { getTranslations } from "next-intl/server"
 
-export const metadata: Metadata = {
+export const metadata = {
   title: "Chat Center - WhatsApp",
   description: "Central de atendimento WhatsApp"
 }
@@ -17,15 +17,19 @@ export const metadata: Metadata = {
 export const dynamic = 'force-dynamic'
 
 export default async function ChatPage({
+  params,
   searchParams,
 }: {
+  params: Promise<{ locale: string }>
   searchParams: Promise<{ phone?: string }>
 }) {
+  const { locale } = await params
+  const t = await getTranslations({ locale, namespace: 'dashboard' })
   const { phone: initialPhone } = await searchParams
   const session = await getSession()
 
   if (!session?.user?.email) {
-    return <div>Não autorizado. Faça login novamente.</div>
+    return <div>{t('errors.unauthorized')}</div>
   }
 
   let user
@@ -48,11 +52,11 @@ export default async function ChatPage({
     })
   } catch (err: any) {
     console.error("[CHAT_PAGE] Falha ao buscar usuário:", err.message)
-    return <div>Erro ao buscar usuário: {err.message}</div>
+    return <div>{t('errors.fetchUser')}</div>
   }
 
   if (!user?.organizationId || !user.organization) {
-    return <div>Usuário não pertence a uma organização.</div>
+    return <div>{t('errors.userNoOrg')}</div>
   }
 
   const canUseChat = canUseFeature(user.organization.tier, 'can_use_chat_interface')
@@ -113,7 +117,7 @@ export default async function ChatPage({
     })
   } catch (err: any) {
     console.error("[CHAT_PAGE] Falha ao buscar conexões:", err.message)
-    return <div>Erro ao buscar conexões: {err.message}</div>
+    return <div>{t('errors.fetchUser')}</div>
   }
 
   // Sync each connection's real status from the gateway (non-blocking, best-effort)
@@ -321,7 +325,7 @@ export default async function ChatPage({
     }
   } catch (err: any) {
     console.error("[CHAT_PAGE] Falha ao buscar contatos:", err.message)
-    return <div>Erro ao buscar contatos: {err.message}</div>
+    return <div>{t('errors.fetchUser')}</div>
   }
 
   return (

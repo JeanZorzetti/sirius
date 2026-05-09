@@ -2,6 +2,8 @@ import logger from '@/lib/logger'
 import { NextResponse } from 'next/server'
 import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
+import { apiError } from '@/lib/api-error'
+import { ERR } from '@/lib/error-messages'
 
 // GET /api/admin/organizations - List all organizations
 export async function GET() {
@@ -9,7 +11,7 @@ export async function GET() {
     const session = await getSession()
     
     if (!session?.user) {
-      return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
+      return await apiError(ERR.UNAUTHORIZED, 401)
     }
 
     // Only admin/super_admin can access
@@ -35,9 +37,6 @@ export async function GET() {
     return NextResponse.json({ organizations })
   } catch (error) {
     logger.error({ err: error }, 'Error fetching organizations')
-    return NextResponse.json(
-      { error: 'Erro interno do servidor' },
-      { status: 500 }
-    )
+    return await apiError(ERR.INTERNAL_ERROR, 500)
   }
 }

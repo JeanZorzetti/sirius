@@ -1,0 +1,78 @@
+{
+  "analytics": {
+    "kpis": {
+      "mrrTotal": "MRR Total",
+      "arrTotal": "ARR Total",
+      "churnRate": "Taxa de Churn",
+      "ltv": "LTV",
+      "cac": "CAC",
+      "ltvCacRatio": "Ratio LTV/CAC",
+      "averageTicket": "Ticket Médio",
+      "conversionRate": "Taxa de Conversão",
+      "activePipeline": "Pipeline Ativo",
+      "wonRevenue": "Receita Ganha",
+      "lostRevenue": "Receita Perdida",
+      "totalDeals": "Total de Negócios",
+      "wonDeals": "Negócios Ganhos",
+      "lostDeals": "Negócios Perdidos",
+      "openDeals": "Negócios Abertos",
+      "newContacts": "Novos Contatos",
+      "totalContacts": "Total de Contatos",
+      "responseTime": "Tempo de Resposta",
+      "salesCycle": "Ciclo de Vendas",
+      "forecastAccuracy": "Precisão de Forecast"
+    },
+    "simulator": {
+      "title": "Simulador de Receita",
+      "monthlyRevenue": "Receita Mensal",
+      "annualRevenue": "Receita Anual",
+      "growth": "Crescimento",
+      "projection": "Projeção",
+      "scenario": "Cenário",
+      "optimistic": "Otimista",
+      "realistic": "Realista",
+      "pessimistic": "Pessimista"
+    },
+    "periods": {
+      "daily": "Diário",
+      "weekly": "Semanal",
+      "monthly": "Mensal",
+      "quarterly": "Trimestral",
+      "annually": "Anual"
+    }
+  },
+  "blog": {
+    "categories": {
+      "vendas": "Vendas",
+      "crm": "CRM",
+      "produtividade": "Produtividade",
+      "tecnologia": "Tecnologia",
+      "gestao": "Gestão",
+      "marketing": "Marketing",
+      "imoveis": "Imóveis",
+      "inteligencia-artificial": "Inteligência Artificial",
+      "whatsapp": "WhatsApp",
+      "pipeline": "Pipeline"
+    }
+  },
+  "emailAutomations": {
+    "followupD3": "Follow-up D+3",
+    "followupD7": "Follow-up D+7",
+    "followupD15": "Follow-up D+15",
+    "winBack": "Campanha de Recuperação",
+    "onboarding": "Sequência de Onboarding",
+    "trialExpiring": "Trial Expirando em Breve",
+    "trialExpired": "Trial Expirado",
+    "upgradeNudge": "Nudge de Upgrade",
+    "weeklyDigest": "Resumo Semanal"
+  },
+  "agi": {
+    "guardrails": {
+      "outOfScope": "Esta solicitação está fora do meu escopo. Posso ajudar com vendas, contatos, negócios e questões relacionadas ao CRM.",
+      "sensitiveContent": "Não posso ajudar com esse tipo de conteúdo.",
+      "rateLimit": "Você atingiu seu limite de uso de IA para este período. Faça upgrade do seu plano para mais acesso.",
+      "noContext": "Preciso de mais contexto para te ajudar. Você pode fornecer mais detalhes?",
+      "errorFallback": "Desculpe, encontrei um erro. Por favor, tente novamente."
+    }
+  }
+}

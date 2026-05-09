@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
+import { apiError } from '@/lib/api-error'
+import { ERR } from '@/lib/error-messages'
 
 // POST /api/admin/migrate-deals-pipeline?token=sirius-migrate-2024
 // Moves deals from Roilabs Lead+Prospecção into pipeline "antigo" / stage "clientes antigos"
@@ -13,7 +15,7 @@ const TARGET_STAGE_ID    = '94b0d441-1da0-4062-ac65-7c4d7db00524' // clientes an
 export async function POST(req: NextRequest) {
   const token = req.nextUrl.searchParams.get('token')
   if (!token || token !== 'sirius-migrate-2024') {
-    return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
+    return await apiError(ERR.UNAUTHORIZED, 401, { req })
   }
 
   try {
@@ -61,7 +63,7 @@ export async function POST(req: NextRequest) {
 export async function GET(req: NextRequest) {
   const token = req.nextUrl.searchParams.get('token')
   if (!token || token !== 'sirius-migrate-2024') {
-    return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
+    return await apiError(ERR.UNAUTHORIZED, 401, { req })
   }
 
   try {

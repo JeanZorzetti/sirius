@@ -5,6 +5,8 @@ import { validateRequest, createWebhookSchema } from '@/lib/api-validators'
 import { createSvixEndpoint } from '@/lib/webhooks/svix-client'
 import { getAllWebhookEvents } from '@/lib/webhooks/events'
 import logger from '@/lib/logger'
+import { apiError } from '@/lib/api-error'
+import { ERR } from '@/lib/error-messages'
 
 /**
  * GET /api/v1/webhooks
@@ -15,10 +17,7 @@ export async function GET(request: NextRequest) {
     const session = await getSession()
 
     if (!session || !session.user || !session.user.email) {
-      return NextResponse.json(
-        { error: 'Não autorizado' },
-        { status: 401 }
-      )
+      return await apiError(ERR.UNAUTHORIZED, 401, { req: request })
     }
 
     const user = await prisma.user.findUnique({
@@ -30,10 +29,7 @@ export async function GET(request: NextRequest) {
     })
 
     if (!user) {
-      return NextResponse.json(
-        { error: 'Usuário não encontrado' },
-        { status: 404 }
-      )
+      return await apiError(ERR.USER_NOT_FOUND, 404, { req: request })
     }
 
     // Check PRO or BUSINESS tier
@@ -66,10 +62,7 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ webhooks })
   } catch (error) {
     logger.error({ error }, 'Error listing webhooks')
-    return NextResponse.json(
-      { error: 'Erro ao listar webhooks' },
-      { status: 500 }
-    )
+    return await apiError(ERR.INTERNAL_ERROR, 500, { req: request })
   }
 }
 
@@ -82,10 +75,7 @@ export async function POST(request: NextRequest) {
     const session = await getSession()
 
     if (!session || !session.user || !session.user.email) {
-      return NextResponse.json(
-        { error: 'Não autorizado' },
-        { status: 401 }
-      )
+      return await apiError(ERR.UNAUTHORIZED, 401, { req: request })
     }
 
     const user = await prisma.user.findUnique({
@@ -97,10 +87,7 @@ export async function POST(request: NextRequest) {
     })
 
     if (!user) {
-      return NextResponse.json(
-        { error: 'Usuário não encontrado' },
-        { status: 404 }
-      )
+      return await apiError(ERR.USER_NOT_FOUND, 404, { req: request })
     }
 
     // Check PRO or BUSINESS tier
@@ -191,9 +178,6 @@ export async function POST(request: NextRequest) {
     }, { status: 201 })
   } catch (error) {
     logger.error({ error }, 'Error creating webhook')
-    return NextResponse.json(
-      { error: 'Erro ao criar webhook' },
-      { status: 500 }
-    )
+    return await apiError(ERR.INTERNAL_ERROR, 500, { req: request })
   }
 }

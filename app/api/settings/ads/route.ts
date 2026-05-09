@@ -8,12 +8,14 @@ import { prisma } from '@/lib/prisma'
 import { getSession } from '@/lib/auth'
 import { encrypt } from '@/lib/encryption'
 import logger from '@/lib/logger'
+import { apiError } from '@/lib/api-error'
+import { ERR } from '@/lib/error-messages'
 
 export async function GET() {
   try {
     const session = await getSession()
     if (!session?.user?.email) {
-      return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
+      return await apiError(ERR.UNAUTHORIZED, 401)
     }
 
     const user = await prisma.user.findUnique({
@@ -36,7 +38,7 @@ export async function GET() {
     })
 
     if (!user?.organization) {
-      return NextResponse.json({ error: 'Organização não encontrada' }, { status: 404 })
+      return await apiError(ERR.ORG_NOT_FOUND, 404)
     }
 
     const org = user.organization
@@ -54,7 +56,7 @@ export async function GET() {
     })
   } catch (error) {
     logger.error({ error }, '[SETTINGS:ADS] GET error')
-    return NextResponse.json({ error: 'Erro interno' }, { status: 500 })
+    return await apiError(ERR.INTERNAL_ERROR, 500)
   }
 }
 
@@ -62,7 +64,7 @@ export async function PATCH(request: NextRequest) {
   try {
     const session = await getSession()
     if (!session?.user?.email) {
-      return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
+      return await apiError(ERR.UNAUTHORIZED, 401, { req: request })
     }
 
     const user = await prisma.user.findUnique({
@@ -71,7 +73,7 @@ export async function PATCH(request: NextRequest) {
     })
 
     if (!user?.organizationId) {
-      return NextResponse.json({ error: 'Organização não encontrada' }, { status: 404 })
+      return await apiError(ERR.ORG_NOT_FOUND, 404, { req: request })
     }
 
     const body = await request.json()
@@ -118,6 +120,6 @@ export async function PATCH(request: NextRequest) {
     return NextResponse.json({ success: true })
   } catch (error) {
     logger.error({ error }, '[SETTINGS:ADS] PATCH error')
-    return NextResponse.json({ error: 'Erro interno' }, { status: 500 })
+    return await apiError(ERR.INTERNAL_ERROR, 500, { req: request })
   }
 }

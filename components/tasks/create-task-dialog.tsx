@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { useTranslations } from 'next-intl'
 import { Loader2, Plus, X, CheckSquare, Trash2 } from 'lucide-react'
 import {
   Dialog,
@@ -69,6 +70,8 @@ export function CreateTaskDialog({
   isAdmin = false,
   onCreated,
 }: CreateTaskDialogProps) {
+  const tCommon = useTranslations('common')
+  const t = useTranslations('components.tasks')
   const [loading, setLoading] = useState(false)
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
@@ -162,7 +165,7 @@ export function CreateTaskDialog({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!title.trim()) {
-      toast.error('O título é obrigatório')
+      toast.error(tCommon('toasts.failed'))
       return
     }
 
@@ -205,11 +208,11 @@ export function CreateTaskDialog({
         )
       }
 
-      toast.success('Tarefa criada')
+      toast.success(t('createSuccess'))
       onOpenChange(false)
       onCreated?.()
     } catch (err) {
-      toast.error(err instanceof Error ? err.message : 'Erro ao criar tarefa')
+      toast.error(err instanceof Error ? err.message : tCommon('toasts.failed'))
     } finally {
       setLoading(false)
     }
@@ -220,7 +223,7 @@ export function CreateTaskDialog({
       <DialogContent className="sm:max-w-xl max-h-[90vh] overflow-y-auto">
         <form onSubmit={handleSubmit}>
           <DialogHeader>
-            <DialogTitle>Nova tarefa</DialogTitle>
+            <DialogTitle>{t('createTask')}</DialogTitle>
             <DialogDescription>
               Crie uma tarefa e atribua a um status, prioridade e prazo.
             </DialogDescription>
@@ -357,7 +360,7 @@ export function CreateTaskDialog({
                     onClick={() => setAddingChecklist(true)}
                   >
                     <Plus className="h-3 w-3" />
-                    Adicionar
+                    {tCommon('buttons.add')}
                   </Button>
                 )}
               </div>
@@ -376,7 +379,7 @@ export function CreateTaskDialog({
                     className="h-8 text-sm"
                   />
                   <Button type="button" size="sm" className="h-8 shrink-0" onClick={addChecklist}>
-                    Criar
+                    {tCommon('buttons.create')}
                   </Button>
                   <Button
                     type="button"
@@ -496,11 +499,11 @@ export function CreateTaskDialog({
 
           <DialogFooter>
             <Button type="button" variant="ghost" onClick={() => onOpenChange(false)} disabled={loading}>
-              Cancelar
+              {tCommon('buttons.cancel')}
             </Button>
             <Button type="submit" disabled={loading || !title.trim()}>
               {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-              Criar tarefa
+              {t('createTask')}
             </Button>
           </DialogFooter>
         </form>

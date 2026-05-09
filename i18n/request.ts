@@ -11,7 +11,7 @@ export default getRequestConfig(async ({ requestLocale }) => {
   }
 
   // Carregar todos os namespaces para o locale
-  const [common, marketing, auth, dashboard, blog, errors, emails] = await Promise.all([
+  const [common, marketing, auth, dashboard, blog, errors, emails, api, components, lib] = await Promise.all([
     import(`../messages/${locale}/common.json`).then((m) => m.default),
     import(`../messages/${locale}/marketing.json`).then((m) => m.default),
     import(`../messages/${locale}/auth.json`).then((m) => m.default),
@@ -19,6 +19,9 @@ export default getRequestConfig(async ({ requestLocale }) => {
     import(`../messages/${locale}/blog.json`).then((m) => m.default),
     import(`../messages/${locale}/errors.json`).then((m) => m.default),
     import(`../messages/${locale}/emails.json`).then((m) => m.default),
+    import(`../messages/${locale}/api.json`).then((m) => m.default),
+    import(`../messages/${locale}/components.json`).then((m) => m.default),
+    import(`../messages/${locale}/lib.json`).then((m) => m.default),
   ]);
 
   return {
@@ -31,6 +34,9 @@ export default getRequestConfig(async ({ requestLocale }) => {
       blog,
       errors,
       emails,
+      api,
+      components,
+      lib,
     },
   };
 });

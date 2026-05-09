@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { Loader2, Zap } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { useTranslations } from 'next-intl'
 
 interface QuickReply {
   id: string
@@ -36,6 +37,8 @@ export function QuickReplyPicker({
   contact,
   userName,
 }: QuickReplyPickerProps) {
+  const tCommon = useTranslations('common')
+  const t = useTranslations('components.chat')
   const [quickReplies, setQuickReplies] = useState<QuickReply[]>([])
   const [loading, setLoading] = useState(true)
   const [selectedIndex, setSelectedIndex] = useState(0)
@@ -129,7 +132,7 @@ export function QuickReplyPicker({
       >
         <div className="flex items-center gap-2 text-sm text-gray-500">
           <Loader2 className="h-4 w-4 animate-spin" />
-          <span>Carregando respostas rápidas...</span>
+          <span>{tCommon('buttons.loading')}</span>
         </div>
       </div>
     )
@@ -160,7 +163,7 @@ export function QuickReplyPicker({
         <div className="flex items-center gap-2">
           <Zap className="h-4 w-4 text-[#00a884]" />
           <span className="text-xs font-semibold text-gray-700 dark:text-gray-300">
-            Respostas Rápidas
+            {t('quickReply')}
           </span>
           <span className="text-xs text-gray-500 ml-auto">
             {filtered.length} {filtered.length === 1 ? 'resultado' : 'resultados'}

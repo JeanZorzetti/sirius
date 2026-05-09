@@ -9,6 +9,8 @@ import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { prismaWa } from '@/lib/prisma-wa'
 import logger from '@/lib/logger'
+import { apiError } from '@/lib/api-error'
+import { ERR } from '@/lib/error-messages'
 
 /**
  * GET /api/whatsapp/connections
@@ -19,7 +21,7 @@ export async function GET() {
     // 1. Authentication
     const session = await getSession()
     if (!session?.user) {
-      return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
+      return await apiError(ERR.UNAUTHORIZED, 401)
     }
 
     // 2. Get user with organization
@@ -29,10 +31,7 @@ export async function GET() {
     })
 
     if (!user?.organization) {
-      return NextResponse.json(
-        { error: 'Organização não encontrada' },
-        { status: 404 }
-      )
+      return await apiError(ERR.ORG_NOT_FOUND, 404)
     }
 
     // 3. Get connections
@@ -44,10 +43,7 @@ export async function GET() {
     return NextResponse.json(connections)
   } catch (error) {
     logger.error({ error }, 'Error fetching WhatsApp connections')
-    return NextResponse.json(
-      { error: 'Erro interno do servidor' },
-      { status: 500 }
-    )
+    return await apiError(ERR.INTERNAL_ERROR, 500)
   }
 }
 

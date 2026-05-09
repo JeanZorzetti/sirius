@@ -4,12 +4,14 @@ import { prisma } from '@/lib/prisma'
 import { cancelSubscription } from '@/lib/mercadopago'
 import { SubscriptionTier } from '@prisma/client'
 import logger from '@/lib/logger'
+import { apiError } from '@/lib/api-error'
+import { ERR } from '@/lib/error-messages'
 
 export async function POST(req: NextRequest) {
   try {
     const session = await getSession()
     if (!session?.user?.email) {
-      return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
+      return await apiError(ERR.UNAUTHORIZED, 401, { req })
     }
 
     const user = await prisma.user.findUnique({
@@ -26,11 +28,11 @@ export async function POST(req: NextRequest) {
     })
 
     if (!user?.organization) {
-      return NextResponse.json({ error: 'Organização não encontrada' }, { status: 404 })
+      return await apiError(ERR.ORG_NOT_FOUND, 404, { req })
     }
 
     if (user.role !== 'ADMIN') {
-      return NextResponse.json({ error: 'Apenas administradores podem cancelar a assinatura' }, { status: 403 })
+      return await apiError(ERR.FORBIDDEN, 403, { req })
     }
 
     const org = user.organization
@@ -96,6 +98,6 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ success: true })
   } catch (error) {
     logger.error({ error }, 'Error cancelling subscription')
-    return NextResponse.json({ error: 'Erro ao cancelar assinatura' }, { status: 500 })
+    return await apiError(ERR.INTERNAL_ERROR, 500, { req })
   }
 }

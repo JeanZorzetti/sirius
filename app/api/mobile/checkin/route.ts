@@ -2,12 +2,14 @@ import logger from '@/lib/logger'
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { getSession } from '@/lib/auth'
+import { apiError } from '@/lib/api-error'
+import { ERR } from '@/lib/error-messages'
 
 export async function POST(request: NextRequest) {
   try {
     const session = await getSession()
     if (!session?.user?.email) {
-      return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
+      return await apiError(ERR.UNAUTHORIZED, 401, { req: request })
     }
 
     const user = await prisma.user.findUnique({
@@ -16,7 +18,7 @@ export async function POST(request: NextRequest) {
     })
 
     if (!user?.organizationId) {
-      return NextResponse.json({ error: 'Usuário sem organização' }, { status: 404 })
+      return await apiError(ERR.USER_NO_ORG, 403, { req: request })
     }
 
     const { latitude, longitude, contactId, notes } = await request.json()
@@ -40,7 +42,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ success: true, visitLogId: visitLog.id })
   } catch (error) {
     logger.error({ err: error }, '[CHECKIN] Error')
-    return NextResponse.json({ error: 'Erro interno' }, { status: 500 })
+    return await apiError(ERR.INTERNAL_ERROR, 500, { req: request })
   }
 }
 
@@ -48,7 +50,7 @@ export async function GET(request: NextRequest) {
   try {
     const session = await getSession()
     if (!session?.user?.email) {
-      return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
+      return await apiError(ERR.UNAUTHORIZED, 401, { req: request })
     }
 
     const user = await prisma.user.findUnique({
@@ -57,7 +59,7 @@ export async function GET(request: NextRequest) {
     })
 
     if (!user?.organizationId) {
-      return NextResponse.json({ error: 'Usuário sem organização' }, { status: 404 })
+      return await apiError(ERR.USER_NO_ORG, 403, { req: request })
     }
 
     const { searchParams } = new URL(request.url)
@@ -76,6 +78,6 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ visits })
   } catch (error) {
     logger.error({ err: error }, '[CHECKIN GET] Error')
-    return NextResponse.json({ error: 'Erro interno' }, { status: 500 })
+    return await apiError(ERR.INTERNAL_ERROR, 500, { req: request })
   }
 }

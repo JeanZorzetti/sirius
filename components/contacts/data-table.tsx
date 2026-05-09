@@ -30,6 +30,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog'
+import { useTranslations } from 'next-intl'
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
@@ -47,6 +48,8 @@ export function DataTable<TData extends { id: string }, TValue>({
   renderMobileCard,
   onRowClick,
 }: DataTableProps<TData, TValue>) {
+  const tCommon = useTranslations('common')
+  const t = useTranslations('components.contacts')
   const [globalFilter, setGlobalFilter] = useState('')
   const [debouncedFilter, setDebouncedFilter] = useState('')
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({})
@@ -109,10 +112,10 @@ export function DataTable<TData extends { id: string }, TValue>({
         setRowSelection({})
         router.refresh()
       } else {
-        toast.error(result.error || 'Falha ao excluir contatos')
+        toast.error(result.error || tCommon('toasts.failedDelete'))
       }
     } catch {
-      toast.error('Erro ao excluir contatos')
+      toast.error(tCommon('toasts.failedDelete'))
     } finally {
       setBulkDeleting(false)
     }
@@ -127,7 +130,7 @@ export function DataTable<TData extends { id: string }, TValue>({
         <div className="relative flex-1 max-w-sm">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-400" />
           <Input
-            placeholder="Buscar contatos..."
+            placeholder={t('searchPlaceholder')}
             value={globalFilter}
             onChange={(e) => setGlobalFilter(e.target.value)}
             className="pl-9 bg-white dark:bg-white/[0.02] border-black/10 dark:border-white/10 h-9"
@@ -147,7 +150,7 @@ export function DataTable<TData extends { id: string }, TValue>({
               className="h-9 gap-2 text-red-600 dark:text-red-400 hover:bg-red-500/10 hover:text-red-600 dark:hover:text-red-400 border border-red-200 dark:border-red-500/20"
             >
               {bulkDeleting ? <Loader2 className="h-4 w-4 animate-spin" /> : <Trash2 className="h-4 w-4" />}
-              Excluir selecionados
+              {tCommon('buttons.delete')} selecionados
             </Button>
             <Button
               size="sm"
@@ -155,7 +158,7 @@ export function DataTable<TData extends { id: string }, TValue>({
               onClick={() => setRowSelection({})}
               className="h-9 text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300"
             >
-              Cancelar
+              {tCommon('buttons.cancel')}
             </Button>
           </div>
         )}
@@ -327,12 +330,12 @@ export function DataTable<TData extends { id: string }, TValue>({
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancelar</AlertDialogCancel>
+            <AlertDialogCancel>{tCommon('buttons.cancel')}</AlertDialogCancel>
             <AlertDialogAction
               onClick={handleBulkDelete}
               className="bg-red-600 hover:bg-red-700 text-white"
             >
-              Excluir {selectedCount} contato{selectedCount !== 1 ? 's' : ''}
+              {tCommon('buttons.delete')} {selectedCount} contato{selectedCount !== 1 ? 's' : ''}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

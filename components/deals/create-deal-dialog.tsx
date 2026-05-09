@@ -1,4 +1,6 @@
-'use client'
+﻿'use client'
+
+import { useTranslations } from 'next-intl'
 
 import { useState } from 'react'
 import { Plus, MessageCircle, UserPlus } from 'lucide-react'
@@ -188,6 +190,8 @@ export function CreateDealDialog({
         }
     }
 
+    const tCommon = useTranslations('common')
+
     return (
         <>
             <FeatureGateModal
@@ -364,7 +368,7 @@ export function CreateDealDialog({
                         </div>
                         <ResponsiveDialogFooter>
                             <Button type="submit" disabled={loading} className="touch-target">
-                                {loading ? 'Salvando...' : 'Salvar'}
+                                {loading ? tCommon('buttons.saving') : tCommon('buttons.save')}
                             </Button>
                         </ResponsiveDialogFooter>
                     </form>

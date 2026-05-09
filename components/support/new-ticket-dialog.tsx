@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { useTranslations } from 'next-intl'
 import { useRouter } from 'next/navigation'
 import { Plus, Loader2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
@@ -40,6 +41,8 @@ const PRIORITIES = [
 ]
 
 export function NewTicketDialog() {
+  const tCommon = useTranslations('common')
+  const t = useTranslations('components.support')
   const router = useRouter()
   const [open, setOpen] = useState(false)
   const [loading, setLoading] = useState(false)
@@ -77,7 +80,7 @@ export function NewTicketDialog() {
         return
       }
 
-      toast.success('Ticket criado com sucesso!')
+      toast.success(t('createSuccess'))
       setOpen(false)
       setForm({ subject: '', description: '', category: 'QUESTION', priority: 'NORMAL' })
       router.push(`/dashboard/support/${data.ticket.id}`)
@@ -93,7 +96,7 @@ export function NewTicketDialog() {
       <DialogTrigger asChild>
         <Button size="sm" className="gap-2">
           <Plus className="h-4 w-4" />
-          Novo Ticket
+          {t('newTicket')}
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-lg">
@@ -169,11 +172,11 @@ export function NewTicketDialog() {
 
           <div className="flex justify-end gap-2 pt-2">
             <Button type="button" variant="outline" onClick={() => setOpen(false)} disabled={loading}>
-              Cancelar
+              {tCommon('buttons.cancel')}
             </Button>
             <Button type="submit" disabled={loading}>
               {loading ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : null}
-              Abrir Ticket
+              {t('createTicket')}
             </Button>
           </div>
         </form>

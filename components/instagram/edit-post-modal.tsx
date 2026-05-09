@@ -1,5 +1,6 @@
 'use client'
 import { useState, useEffect } from 'react'
+import { useTranslations } from 'next-intl'
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
@@ -49,6 +50,8 @@ const TAB_LABELS: Record<Tab, string> = {
 }
 
 export function EditPostModal({ postId, onClose, onUpdated, onDeleted }: Props) {
+  const tCommon = useTranslations('common')
+  const t = useTranslations('components.instagram')
   const [post, setPost] = useState<Post | null>(null)
   const [loading, setLoading] = useState(false)
   const [saving, setSaving] = useState(false)
@@ -195,7 +198,7 @@ export function EditPostModal({ postId, onClose, onUpdated, onDeleted }: Props) 
         <DialogHeader className="px-5 pt-5 pb-0">
           <DialogTitle className="flex items-center gap-2 text-base">
             <Edit3 className="h-4 w-4 text-purple-400" />
-            Editar Post
+            {t('editPost')}
             {post && (
               <div className="flex items-center gap-1.5 ml-2">
                 <Badge variant="outline" className="gap-1 text-xs font-normal">
@@ -390,9 +393,9 @@ export function EditPostModal({ postId, onClose, onUpdated, onDeleted }: Props) 
                   <>
                     <Button size="sm" variant="destructive" onClick={handleDelete} disabled={deleting}>
                       {deleting ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Trash2 className="h-3.5 w-3.5 mr-1.5" />}
-                      Confirmar
+                      {tCommon('buttons.confirm')}
                     </Button>
-                    <Button size="sm" variant="ghost" onClick={() => setConfirmDelete(false)}>Cancelar</Button>
+                    <Button size="sm" variant="ghost" onClick={() => setConfirmDelete(false)}>{tCommon('buttons.cancel')}</Button>
                   </>
                 ) : (
                   <Button size="sm" variant="ghost" className="text-muted-foreground hover:text-red-400"
@@ -402,12 +405,12 @@ export function EditPostModal({ postId, onClose, onUpdated, onDeleted }: Props) 
                 )
               )}
 
-              <Button size="sm" variant="outline" onClick={onClose}>Fechar</Button>
+              <Button size="sm" variant="outline" onClick={onClose}>{tCommon('buttons.close')}</Button>
 
               {isEditable && tab !== 'comments' && (
                 <Button size="sm" onClick={handleSave} disabled={saving}
                   className="bg-purple-600 hover:bg-purple-700 text-white">
-                  {saving ? <><Loader2 className="h-3.5 w-3.5 mr-1.5 animate-spin" />Salvando…</> : 'Salvar'}
+                  {saving ? <><Loader2 className="h-3.5 w-3.5 mr-1.5 animate-spin" />{tCommon('buttons.saving')}</> : tCommon('buttons.save')}
                 </Button>
               )}
             </div>

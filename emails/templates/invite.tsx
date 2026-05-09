@@ -1,47 +1,58 @@
 import { Text, Heading, Button, Section } from '@react-email/components'
 import { BaseLayout } from '../layouts/base'
+import emailsEn from '@/messages/en/emails.json'
+import emailsPtBr from '@/messages/pt-BR/emails.json'
+
+type Locale = 'pt-BR' | 'en'
 
 interface InviteEmailProps {
   inviterName: string
   organizationName: string
   inviteUrl: string
+  locale?: Locale
 }
 
 export function InviteEmail({
   inviterName,
   organizationName,
   inviteUrl,
+  locale = 'pt-BR',
 }: InviteEmailProps) {
+  const s = locale === 'en' ? emailsEn.emails.invite : emailsPtBr.emails.invite
+
+  const preview = s.preview
+    .replace('{inviterName}', inviterName)
+    .replace('{organizationName}', organizationName)
+
+  const intro = s.intro
+    .replace('{inviterName}', inviterName)
+    .replace('{organizationName}', organizationName)
+
   return (
-    <BaseLayout preview={`${inviterName} convidou você para o ${organizationName} no Sirius CRM`}>
-      <Heading style={styles.heading}>Você foi convidado!</Heading>
+    <BaseLayout preview={preview} locale={locale}>
+      <Heading style={styles.heading}>{s.title}</Heading>
 
-      <Text style={styles.text}>Olá,</Text>
+      <Text style={styles.text}>{locale === 'en' ? 'Hi,' : 'Olá,'}</Text>
 
-      <Text style={styles.text}>
-        <strong>{inviterName}</strong> convidou você para fazer parte da equipe{' '}
-        <strong>{organizationName}</strong> no Sirius CRM.
-      </Text>
+      <Text style={styles.text}>{intro}</Text>
 
-      <Text style={styles.text}>
-        Clique no botão abaixo para criar sua conta e começar a colaborar com o time:
-      </Text>
+      <Text style={styles.text}>{s.body}</Text>
 
       <Section style={styles.ctaSection}>
         <Button href={inviteUrl} style={styles.button}>
-          Aceitar Convite
+          {s.cta}
         </Button>
       </Section>
 
-      <Text style={styles.note}>
-        Este link é válido por <strong>7 dias</strong> e pode ser usado apenas uma vez.
-        Se você não esperava este convite, pode ignorar este e-mail.
-      </Text>
+      <Text style={styles.note}>{s.note}</Text>
 
       <Text style={styles.signature}>
-        Atenciosamente,
-        <br />
-        Equipe Sirius CRM
+        {s.signature.split('\n').map((line, i, arr) => (
+          <span key={i}>
+            {line}
+            {i < arr.length - 1 && <br />}
+          </span>
+        ))}
       </Text>
     </BaseLayout>
   )

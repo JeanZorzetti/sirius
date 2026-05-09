@@ -1,4 +1,4 @@
-/**
+﻿/**
  * GET /api/auth/facebook-leads
  * Inicia o fluxo OAuth do Facebook para Lead Ads.
  * Redireciona o usuário para a tela de autorização da Meta.
@@ -8,6 +8,8 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import crypto from 'crypto'
+import { apiError } from '@/lib/api-error'
+import { ERR } from '@/lib/error-messages'
 
 const FACEBOOK_APP_ID = process.env.FACEBOOK_APP_ID!
 const SCOPES = [
@@ -22,7 +24,7 @@ const SCOPES = [
 export async function GET(request: NextRequest) {
   const session = await getSession()
   if (!session?.user?.email) {
-    return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
+    return await apiError(ERR.UNAUTHORIZED, 401, { req })
   }
 
   const user = await prisma.user.findUnique({

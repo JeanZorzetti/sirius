@@ -4,13 +4,20 @@ import { getSession } from '@/lib/auth'
 import { SettingsLayout } from '@/components/settings/settings-layout'
 import { SettingsClient } from './client'
 import { SettingsSkeleton } from '@/components/settings/settings-skeleton'
+import { getTranslations } from 'next-intl/server'
 
 export const metadata = { title: "Configurações | Sirius CRM" }
 
-export default async function SettingsPage() {
+export default async function SettingsPage({
+    params,
+}: {
+    params: Promise<{ locale: string }>
+}) {
+    const { locale } = await params
+    const t = await getTranslations({ locale, namespace: 'dashboard' })
     const session = await getSession()
     if (!session || !session.user || !session.user.email) {
-        return <div>Não autorizado. Faça login novamente.</div>
+        return <div>{t('errors.unauthorized')}</div>
     }
 
     const user = await prisma.user.findUnique({
@@ -18,7 +25,7 @@ export default async function SettingsPage() {
         include: { organization: true }
     })
 
-    if (!user) return <div>Usuário não encontrado.</div>
+    if (!user) return <div>{t('errors.notFound')}</div>
 
     return (
         <SettingsLayout organizationName={user.organization?.name}>

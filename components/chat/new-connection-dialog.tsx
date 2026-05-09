@@ -8,6 +8,7 @@ import { Label } from '@/components/ui/label'
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
 import { Loader2 } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 
 interface NewConnectionDialogProps {
   open: boolean
@@ -15,6 +16,8 @@ interface NewConnectionDialogProps {
 }
 
 export function NewConnectionDialog({ open, onOpenChange }: NewConnectionDialogProps) {
+  const tCommon = useTranslations('common')
+  const t = useTranslations('components.chat')
   const router = useRouter()
   const [instanceName, setInstanceName] = useState('')
   const [isLoading, setIsLoading] = useState(false)
@@ -95,7 +98,7 @@ export function NewConnectionDialog({ open, onOpenChange }: NewConnectionDialogP
               onClick={() => onOpenChange(false)}
               disabled={isLoading}
             >
-              Cancelar
+              {tCommon('buttons.cancel')}
             </Button>
             <Button type="submit" disabled={isLoading}>
               {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}

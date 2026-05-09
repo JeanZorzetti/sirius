@@ -1,9 +1,13 @@
-﻿import { Text, Heading, Button, Section, Hr } from '@react-email/components'
+import { Text, Heading, Button, Section, Hr } from '@react-email/components'
 import { BaseLayout } from '../layouts/base'
+import emailsEn from '@/messages/en/emails.json'
+import emailsPtBr from '@/messages/pt-BR/emails.json'
+
+type Locale = 'pt-BR' | 'en'
 
 interface WeeklyNewsletterProps {
   userName: string
-  weekLabel: string // ex: "10–16 de Fevereiro de 2026"
+  weekLabel: string
   stats: {
     newDeals: number
     wonDeals: number
@@ -16,6 +20,7 @@ interface WeeklyNewsletterProps {
     body: string
   }
   dashboardUrl?: string
+  locale?: Locale
 }
 
 export function WeeklyNewsletter({
@@ -24,15 +29,31 @@ export function WeeklyNewsletter({
   stats,
   tip,
   dashboardUrl = 'https://siriuscrm.com.br/dashboard',
+  locale = 'pt-BR',
 }: WeeklyNewsletterProps) {
-  return (
-    <BaseLayout preview={`📊 Seu resumo da semana (${weekLabel}) – Sirius CRM`}>
-      <Heading style={styles.heading}>📊 Resumo da Semana</Heading>
+  const s = locale === 'en' ? emailsEn.emails.weeklyNewsletter : emailsPtBr.emails.weeklyNewsletter
 
-      <Text style={styles.text}>Olá {userName},</Text>
+  const preview = s.preview.replace('{weekLabel}', weekLabel)
+  const intro = s.intro.replace('{weekLabel}', weekLabel)
+  const conversionRate = s.conversionRate.replace('{rate}', stats.conversionRate.toFixed(1))
+
+  return (
+    <BaseLayout preview={`📊 ${preview}`} locale={locale}>
+      <Heading style={styles.heading}>📊 {s.title}</Heading>
+
+      <Text style={styles.text}>{locale === 'en' ? `Hi ${userName},` : `Olá ${userName},`}</Text>
 
       <Text style={styles.text}>
-        Confira um resumo das atividades da sua equipe na semana de <strong>{weekLabel}</strong>.
+        {intro.split(weekLabel).map((part, i, arr) =>
+          i < arr.length - 1 ? (
+            <span key={i}>
+              {part}
+              <strong>{weekLabel}</strong>
+            </span>
+          ) : (
+            <span key={i}>{part}</span>
+          )
+        )}
       </Text>
 
       {/* Stats */}
@@ -42,21 +63,21 @@ export function WeeklyNewsletter({
             <tr>
               <td style={styles.statCell}>
                 <Text style={styles.statValue}>{stats.newDeals}</Text>
-                <Text style={styles.statLabel}>Novos Negócios</Text>
+                <Text style={styles.statLabel}>{s.statNewDeals}</Text>
               </td>
               <td style={styles.statCell}>
                 <Text style={{ ...styles.statValue, color: '#16a34a' }}>{stats.wonDeals}</Text>
-                <Text style={styles.statLabel}>Ganhos 🎉</Text>
+                <Text style={styles.statLabel}>{s.statWonDeals} 🎉</Text>
               </td>
             </tr>
             <tr>
               <td style={styles.statCell}>
                 <Text style={{ ...styles.statValue, color: '#dc2626' }}>{stats.lostDeals}</Text>
-                <Text style={styles.statLabel}>Perdidos</Text>
+                <Text style={styles.statLabel}>{s.statLostDeals}</Text>
               </td>
               <td style={styles.statCell}>
                 <Text style={styles.statValue}>{stats.newContacts}</Text>
-                <Text style={styles.statLabel}>Novos Contatos</Text>
+                <Text style={styles.statLabel}>{s.statNewContacts}</Text>
               </td>
             </tr>
           </tbody>
@@ -66,15 +87,15 @@ export function WeeklyNewsletter({
       {stats.conversionRate > 0 && (
         <Section style={styles.conversionBar}>
           <Text style={styles.conversionText}>
-            Taxa de conversão: <strong style={{ color: '#8b5cf6' }}>{stats.conversionRate.toFixed(1)}%</strong>
+            <strong style={{ color: '#8b5cf6' }}>{conversionRate}</strong>
           </Text>
         </Section>
       )}
 
       <Hr style={styles.divider} />
 
-      {/* Dica da semana */}
-      <Heading style={styles.subheading}>💡 Dica da Semana</Heading>
+      {/* Tip of the week */}
+      <Heading style={styles.subheading}>💡 {s.tipTitle}</Heading>
 
       <Section style={styles.tipCard}>
         <Text style={styles.tipTitle}>{tip.title}</Text>
@@ -85,19 +106,20 @@ export function WeeklyNewsletter({
 
       <Section style={styles.ctaSection}>
         <Button href={dashboardUrl} style={styles.button}>
-          Ver Meu Dashboard
+          {s.cta}
         </Button>
       </Section>
 
-      <Text style={styles.small}>
-        Você recebe este email porque possui uma conta ativa no Sirius CRM.
-        Para parar de receber, acesse Configurações → Notificações no dashboard.
-      </Text>
+      <Text style={styles.small}>{s.unsubscribeText}</Text>
 
       <Text style={styles.signature}>
-        Boas vendas! 🚀
-        <br />
-        Equipe Sirius CRM
+        {s.signature.split('\n').map((line, i, arr) => (
+          <span key={i}>
+            {line}
+            {i < arr.length - 1 && <br />}
+          </span>
+        ))}
+        {' '}🚀
       </Text>
     </BaseLayout>
   )

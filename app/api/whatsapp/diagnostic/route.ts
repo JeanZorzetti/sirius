@@ -3,6 +3,8 @@ import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { prismaWa } from '@/lib/prisma-wa'
 import logger from '@/lib/logger'
+import { apiError } from '@/lib/api-error'
+import { ERR } from '@/lib/error-messages'
 
 export const dynamic = 'force-dynamic'
 
@@ -10,7 +12,7 @@ export async function GET() {
   try {
     const session = await getSession()
     if (!session?.user) {
-      return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
+      return await apiError(ERR.UNAUTHORIZED, 401)
     }
 
     const user = await prisma.user.findUnique({
@@ -19,7 +21,7 @@ export async function GET() {
     })
 
     if (!user?.organizationId) {
-      return NextResponse.json({ error: 'Organização não encontrada' }, { status: 404 })
+      return await apiError(ERR.ORG_NOT_FOUND, 404)
     }
 
     // Check environment variables
@@ -79,9 +81,6 @@ export async function GET() {
 
   } catch (error: any) {
     logger.error({ error: error.message }, 'WhatsApp diagnostic error')
-    return NextResponse.json({
-      error: 'Erro interno do servidor',
-      details: error.message,
-    }, { status: 500 })
+    return await apiError(ERR.INTERNAL_ERROR, 500)
   }
 }

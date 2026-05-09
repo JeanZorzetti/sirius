@@ -11,6 +11,7 @@ import {
 import { Input } from '@/components/ui/input'
 import { cn } from '@/lib/utils'
 import { toast } from 'sonner'
+import { useTranslations } from 'next-intl'
 
 interface Tag {
   id: string
@@ -44,6 +45,8 @@ const DEFAULT_TAGS = [
 ]
 
 export function ConversationTags({ contactId, contactTags, onTagsUpdate }: ConversationTagsProps) {
+  const tCommon = useTranslations('common')
+  const t = useTranslations('components.chat')
   const [allTags, setAllTags] = useState<Tag[]>([])
   const [loading, setLoading] = useState(false)
   const [newTagName, setNewTagName] = useState('')
@@ -101,10 +104,10 @@ export function ConversationTags({ contactId, contactTags, onTagsUpdate }: Conve
         toast.success('Tag adicionada')
         onTagsUpdate?.()
       } else {
-        toast.error('Erro ao adicionar tag')
+        toast.error(tCommon('toasts.failed'))
       }
     } catch (error) {
-      toast.error('Erro ao adicionar tag')
+      toast.error(tCommon('toasts.failed'))
     } finally {
       setLoading(false)
     }
@@ -121,10 +124,10 @@ export function ConversationTags({ contactId, contactTags, onTagsUpdate }: Conve
         toast.success('Tag removida')
         onTagsUpdate?.()
       } else {
-        toast.error('Erro ao remover tag')
+        toast.error(tCommon('toasts.failed'))
       }
     } catch (error) {
-      toast.error('Erro ao remover tag')
+      toast.error(tCommon('toasts.failed'))
     } finally {
       setLoading(false)
     }
@@ -148,10 +151,10 @@ export function ConversationTags({ contactId, contactTags, onTagsUpdate }: Conve
         setIsCreating(false)
         toast.success('Tag criada e adicionada')
       } else {
-        toast.error('Erro ao criar tag')
+        toast.error(tCommon('toasts.failed'))
       }
     } catch (error) {
-      toast.error('Erro ao criar tag')
+      toast.error(tCommon('toasts.failed'))
     } finally {
       setLoading(false)
     }
@@ -270,7 +273,7 @@ export function ConversationTags({ contactId, contactTags, onTagsUpdate }: Conve
                       setNewTagName('')
                     }}
                   >
-                    Cancelar
+                    {tCommon('buttons.cancel')}
                   </Button>
                   <Button
                     size="sm"
@@ -278,7 +281,7 @@ export function ConversationTags({ contactId, contactTags, onTagsUpdate }: Conve
                     onClick={createNewTag}
                     disabled={!newTagName.trim() || loading}
                   >
-                    Criar
+                    {tCommon('buttons.create')}
                   </Button>
                 </div>
               </div>

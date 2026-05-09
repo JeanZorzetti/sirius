@@ -3,12 +3,14 @@ import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { WhatsAppOfficialClient } from '@/lib/integrations/whatsapp-official-client'
 import logger from '@/lib/logger'
+import { apiError } from '@/lib/api-error'
+import { ERR } from '@/lib/error-messages'
 
 export async function POST(request: Request) {
   try {
     const session = await getSession()
     if (!session?.user?.email) {
-      return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
+      return await apiError(ERR.UNAUTHORIZED, 401)
     }
 
     const user = await prisma.user.findUnique({
@@ -17,7 +19,7 @@ export async function POST(request: Request) {
     })
 
     if (!user?.organization) {
-      return NextResponse.json({ error: 'Usuário não encontrado' }, { status: 404 })
+      return await apiError(ERR.USER_NOT_FOUND, 404)
     }
 
     if (!['PRO', 'BUSINESS'].includes(user.organization.tier)) {
@@ -49,6 +51,6 @@ export async function POST(request: Request) {
     )
   } catch (error: any) {
     logger.error({ error }, 'Error testing WhatsApp Official connection')
-    return NextResponse.json({ error: 'Erro ao testar conexão' }, { status: 500 })
+    return await apiError(ERR.INTERNAL_ERROR, 500)
   }
 }

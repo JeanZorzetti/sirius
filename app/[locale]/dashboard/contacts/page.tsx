@@ -1,4 +1,3 @@
-import { Metadata } from "next"
 import { Suspense } from "react"
 import { prisma } from "@/lib/prisma"
 import { ContactsDataTableClient } from "@/components/contacts/contacts-data-table-client"
@@ -11,9 +10,12 @@ import { Skeleton } from "@/components/ui/skeleton"
 import { Users } from "lucide-react"
 import { getSession } from "@/lib/auth"
 import { PerfTimer } from "@/lib/perf-debug"
+import { getTranslations } from "next-intl/server"
 
-export const metadata: Metadata = {
-    title: "Contatos - CRM",
+export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
+    const { locale } = await params
+    const t = await getTranslations({ locale, namespace: 'dashboard' })
+    return { title: `${t('pages.contacts.title')} - CRM` }
 }
 
 export const dynamic = 'force-dynamic'
@@ -178,14 +180,20 @@ async function ContactsData({ orgId }: { orgId: string }) {
     )
 }
 
-export default async function ContactsPage() {
+export default async function ContactsPage({
+    params,
+}: {
+    params: Promise<{ locale: string }>
+}) {
+    const { locale } = await params
+    const t = await getTranslations({ locale, namespace: 'dashboard' })
     const pageTimer = new PerfTimer('contacts-page (page entry)')
 
     const session = await getSession()
     pageTimer.mark('getSession done')
 
     if (!session?.user?.email) {
-        return <div>Não autorizado. Faça login novamente.</div>
+        return <div>{t('errors.unauthorized')}</div>
     }
 
     const user = await prisma.user.findUnique({
@@ -195,7 +203,7 @@ export default async function ContactsPage() {
     pageTimer.mark('user.findUnique done')
 
     if (!user?.organizationId) {
-        return <div>Usuário não pertence a uma organização.</div>
+        return <div>{t('errors.userNoOrg')}</div>
     }
 
     pageTimer.end()

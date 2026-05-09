@@ -5,6 +5,8 @@ import { billingRateLimit } from '@/lib/ratelimit'
 import { createCheckoutPreference, createSubscription, CheckoutPlan } from '@/lib/mercadopago'
 import logger from '@/lib/logger'
 import { SubscriptionTier } from '@prisma/client'
+import { apiError } from '@/lib/api-error'
+import { ERR } from '@/lib/error-messages'
 
 /**
  * POST /api/mercadopago/checkout
@@ -19,7 +21,7 @@ export async function POST(request: NextRequest) {
     const session = await getSession()
 
     if (!session || !session.user || !session.user.email) {
-      return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
+      return await apiError(ERR.UNAUTHORIZED, 401, { req: request })
     }
 
     // Parse body
@@ -46,7 +48,7 @@ export async function POST(request: NextRequest) {
     })
 
     if (!user || !user.organization) {
-      return NextResponse.json({ error: 'Usuário ou organização não encontrada' }, { status: 404 })
+      return await apiError(ERR.USER_NOT_FOUND, 404, { req: request })
     }
 
     const org = user.organization

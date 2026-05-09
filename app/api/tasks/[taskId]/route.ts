@@ -5,6 +5,8 @@ import { notifyTaskAssigned, notifyTaskCompleted } from '@/lib/task-notification
 import { triggerTaskEvent } from '@/lib/tasks/realtime'
 import { executeTaskAutomations } from '@/lib/automations/task-engine'
 import logger from '@/lib/logger'
+import { apiError } from '@/lib/api-error'
+import { ERR } from '@/lib/error-messages'
 
 const taskInclude = {
   status: true,
@@ -40,7 +42,7 @@ export async function GET(
     const { taskId } = await params
     const session = await getSession()
     if (!session?.user?.email) {
-      return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
+      return await apiError(ERR.UNAUTHORIZED, 401)
     }
 
     const user = await prisma.user.findUnique({
@@ -49,7 +51,7 @@ export async function GET(
     })
 
     if (!user?.organizationId) {
-      return NextResponse.json({ error: 'Organização não encontrada' }, { status: 404 })
+      return await apiError(ERR.ORG_NOT_FOUND, 404)
     }
 
     const task = await prisma.task.findFirst({
@@ -58,28 +60,28 @@ export async function GET(
     })
 
     if (!task) {
-      return NextResponse.json({ error: 'Tarefa não encontrada' }, { status: 404 })
+      return await apiError(ERR.NOT_FOUND, 404)
     }
 
     // Checar acesso por visibilidade (campo pode não existir em deploys antigos)
     const visibility = (task as any).visibility ?? 'PUBLIC'
     if (user.orgRole === 'MEMBER') {
       if (visibility === 'ADMINS_ONLY') {
-        return NextResponse.json({ error: 'Sem permissão' }, { status: 403 })
+        return await apiError(ERR.FORBIDDEN, 403)
       }
       if (
         visibility === 'PRIVATE' &&
         task.creatorId !== user.id &&
         task.assigneeId !== user.id
       ) {
-        return NextResponse.json({ error: 'Sem permissão' }, { status: 403 })
+        return await apiError(ERR.FORBIDDEN, 403)
       }
     }
 
     return NextResponse.json(task)
   } catch (error) {
     logger.error({ err: error }, 'Error fetching task')
-    return NextResponse.json({ error: 'Erro ao buscar tarefa' }, { status: 500 })
+    return await apiError(ERR.INTERNAL_ERROR, 500)
   }
 }
 
@@ -92,7 +94,7 @@ export async function PATCH(
     const { taskId } = await params
     const session = await getSession()
     if (!session?.user?.email) {
-      return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
+      return await apiError(ERR.UNAUTHORIZED, 401)
     }
 
     const user = await prisma.user.findUnique({
@@ -101,7 +103,7 @@ export async function PATCH(
     })
 
     if (!user?.organizationId) {
-      return NextResponse.json({ error: 'Organização não encontrada' }, { status: 404 })
+      return await apiError(ERR.ORG_NOT_FOUND, 404)
     }
 
     const existing = await prisma.task.findFirst({
@@ -110,21 +112,21 @@ export async function PATCH(
     })
 
     if (!existing) {
-      return NextResponse.json({ error: 'Tarefa não encontrada' }, { status: 404 })
+      return await apiError(ERR.NOT_FOUND, 404)
     }
 
     // Checar acesso por visibilidade (campo pode não existir em deploys antigos)
     const taskVisibility = (existing as any).visibility ?? 'PUBLIC'
     if (user.orgRole === 'MEMBER') {
       if (taskVisibility === 'ADMINS_ONLY') {
-        return NextResponse.json({ error: 'Sem permissão' }, { status: 403 })
+        return await apiError(ERR.FORBIDDEN, 403)
       }
       if (
         taskVisibility === 'PRIVATE' &&
         existing.creatorId !== user.id &&
         existing.assigneeId !== user.id
       ) {
-        return NextResponse.json({ error: 'Sem permissão' }, { status: 403 })
+        return await apiError(ERR.FORBIDDEN, 403)
       }
     }
 
@@ -270,7 +272,7 @@ export async function PATCH(
     return NextResponse.json(task)
   } catch (error) {
     logger.error({ err: error }, 'Error updating task')
-    return NextResponse.json({ error: 'Erro ao atualizar tarefa' }, { status: 500 })
+    return await apiError(ERR.INTERNAL_ERROR, 500)
   }
 }
 
@@ -283,7 +285,7 @@ export async function DELETE(
     const { taskId } = await params
     const session = await getSession()
     if (!session?.user?.email) {
-      return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
+      return await apiError(ERR.UNAUTHORIZED, 401)
     }
 
     const user = await prisma.user.findUnique({
@@ -292,7 +294,7 @@ export async function DELETE(
     })
 
     if (!user?.organizationId) {
-      return NextResponse.json({ error: 'Organização não encontrada' }, { status: 404 })
+      return await apiError(ERR.ORG_NOT_FOUND, 404)
     }
 
     const existing = await prisma.task.findFirst({
@@ -300,7 +302,7 @@ export async function DELETE(
     })
 
     if (!existing) {
-      return NextResponse.json({ error: 'Tarefa não encontrada' }, { status: 404 })
+      return await apiError(ERR.NOT_FOUND, 404)
     }
 
     await prisma.task.delete({ where: { id: taskId } })
@@ -313,6 +315,6 @@ export async function DELETE(
     return NextResponse.json({ success: true })
   } catch (error) {
     logger.error({ err: error }, 'Error deleting task')
-    return NextResponse.json({ error: 'Erro ao deletar tarefa' }, { status: 500 })
+    return await apiError(ERR.INTERNAL_ERROR, 500)
   }
 }

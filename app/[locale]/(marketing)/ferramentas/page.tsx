@@ -2,6 +2,7 @@
 import Link from 'next/link'
 import { Calculator, Building2, Sun, Users, Briefcase, BarChart3 } from 'lucide-react'
 import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
+import { getTranslations } from 'next-intl/server'
 import { buildLocaleAlternates } from '@/lib/seo/canonical'
 
 export async function generateMetadata({
@@ -10,17 +11,21 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>
 }): Promise<Metadata> {
   const { locale } = await params
+  const t = await getTranslations({ locale, namespace: 'marketing.ferramentas.meta' })
   const alternates = buildLocaleAlternates(locale, '/ferramentas', '/tools')
   return {
-    title: 'Ferramentas Gratuitas para Vendedores | Sirius CRM',
-    description: 'Calculadoras de ROI gratuitas para vendedores brasileiros. Descubra quanto você perde sem um CRM e projete o retorno do investimento para o seu segmento.',
-    keywords: ['calculadora roi', 'ferramentas vendas', 'crm roi', 'calculadora vendas', 'sirius crm ferramentas'],
+    title: t('title'),
+    description: t('description'),
     alternates,
     openGraph: {
-      title: 'Ferramentas Gratuitas para Vendedores | Sirius CRM',
-      description: 'Calculadoras de ROI gratuitas para vendedores brasileiros.',
+      title: t('ogTitle'),
+      description: t('ogDescription'),
       url: alternates.canonical,
-      images: [{ url: 'https://siriuscrm.com.br/og-image.png', width: 1200, height: 630 }],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: t('ogTitle'),
+      description: t('ogDescription'),
     },
   }
 }

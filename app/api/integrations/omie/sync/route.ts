@@ -11,10 +11,12 @@ import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { listarClientes, listarContasReceber } from '@/lib/integrations/omie'
 import logger from '@/lib/logger'
+import { apiError } from '@/lib/api-error'
+import { ERR } from '@/lib/error-messages'
 
 export async function POST(request: NextRequest) {
   const session = await getSession()
-  if (!session?.user?.email) return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
+  if (!session?.user?.email) return await apiError(ERR.UNAUTHORIZED, 401, { req: request })
 
   const { type } = await request.json()
 

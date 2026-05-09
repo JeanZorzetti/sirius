@@ -2,6 +2,8 @@ import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { getSession } from '@/lib/auth'
 import logger from '@/lib/logger'
+import { apiError } from '@/lib/api-error'
+import { ERR } from '@/lib/error-messages'
 
 // PATCH /api/task-projects/[projectId]/statuses/[statusId]
 export async function PATCH(
@@ -12,7 +14,7 @@ export async function PATCH(
     const { projectId, statusId } = await params
     const session = await getSession()
     if (!session?.user?.email) {
-      return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
+      return await apiError(ERR.UNAUTHORIZED, 401)
     }
 
     const user = await prisma.user.findUnique({
@@ -21,7 +23,7 @@ export async function PATCH(
     })
 
     if (!user?.organizationId) {
-      return NextResponse.json({ error: 'Organização não encontrada' }, { status: 404 })
+      return await apiError(ERR.ORG_NOT_FOUND, 404)
     }
 
     // Verificar que o status pertence ao projeto da org
@@ -30,7 +32,7 @@ export async function PATCH(
     })
 
     if (!existing) {
-      return NextResponse.json({ error: 'Status não encontrado' }, { status: 404 })
+      return await apiError(ERR.NOT_FOUND, 404)
     }
 
     const body = await request.json()
@@ -48,7 +50,7 @@ export async function PATCH(
     return NextResponse.json(status)
   } catch (error) {
     logger.error({ err: error }, 'Error updating status')
-    return NextResponse.json({ error: 'Erro ao atualizar status' }, { status: 500 })
+    return await apiError(ERR.INTERNAL_ERROR, 500)
   }
 }
 
@@ -61,7 +63,7 @@ export async function DELETE(
     const { projectId, statusId } = await params
     const session = await getSession()
     if (!session?.user?.email) {
-      return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
+      return await apiError(ERR.UNAUTHORIZED, 401)
     }
 
     const user = await prisma.user.findUnique({
@@ -70,7 +72,7 @@ export async function DELETE(
     })
 
     if (!user?.organizationId) {
-      return NextResponse.json({ error: 'Organização não encontrada' }, { status: 404 })
+      return await apiError(ERR.ORG_NOT_FOUND, 404)
     }
 
     const existing = await prisma.taskStatus.findFirst({
@@ -78,7 +80,7 @@ export async function DELETE(
     })
 
     if (!existing) {
-      return NextResponse.json({ error: 'Status não encontrado' }, { status: 404 })
+      return await apiError(ERR.NOT_FOUND, 404)
     }
 
     await prisma.taskStatus.delete({ where: { id: statusId } })
@@ -86,6 +88,6 @@ export async function DELETE(
     return NextResponse.json({ success: true })
   } catch (error) {
     logger.error({ err: error }, 'Error deleting status')
-    return NextResponse.json({ error: 'Erro ao deletar status' }, { status: 500 })
+    return await apiError(ERR.INTERNAL_ERROR, 500)
   }
 }

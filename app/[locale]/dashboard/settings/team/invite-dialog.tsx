@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useTransition } from "react"
+import { useTranslations } from 'next-intl'
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -37,6 +38,7 @@ export function InviteDialog({ assignableRoles, roleLabels }: InviteDialogProps)
     const [inviteLink, setInviteLink] = useState("")
     const [isPending, startTransition] = useTransition()
     const [copied, setCopied] = useState(false)
+    const tCommon = useTranslations('common')
 
     const handleInvite = () => {
         startTransition(async () => {
@@ -116,7 +118,7 @@ export function InviteDialog({ assignableRoles, roleLabels }: InviteDialogProps)
                             disabled={!email || isPending}
                             className="w-full bg-white text-black hover:bg-zinc-200"
                         >
-                            {isPending ? "Enviando..." : "Enviar Convite"}
+                            {isPending ? tCommon('buttons.sending') : tCommon('buttons.invite')}
                         </Button>
                     </div>
                 ) : (

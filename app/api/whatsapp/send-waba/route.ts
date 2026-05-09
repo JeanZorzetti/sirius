@@ -1,4 +1,4 @@
-/**
+﻿/**
  * POST /api/whatsapp/send-waba
  * Send a text message via WhatsApp Official API (Meta Cloud API / WABA).
  * Used when the org has wabaEnabled=true and no Evolution connection.
@@ -9,12 +9,14 @@ import { prisma } from '@/lib/prisma'
 import { prismaWa } from '@/lib/prisma-wa'
 import { getWhatsAppOfficialClient, normalizePhone } from '@/lib/integrations/whatsapp-official-client'
 import logger from '@/lib/logger'
+import { apiError } from '@/lib/api-error'
+import { ERR } from '@/lib/error-messages'
 
 export async function POST(req: NextRequest) {
   try {
     const session = await getSession()
     if (!session?.user) {
-      return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
+      return await apiError(ERR.UNAUTHORIZED, 401, { req })
     }
 
     const user = await prisma.user.findUnique({

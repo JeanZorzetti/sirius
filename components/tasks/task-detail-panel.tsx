@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { useTranslations } from 'next-intl'
 import { X, Trash2, Loader2, Calendar, User, Flag, AlignLeft, CheckCircle2, CheckSquare, Paperclip } from 'lucide-react'
 import {
   Sheet,
@@ -44,6 +45,8 @@ export function TaskDetailPanel({
   onUpdated,
   onDeleted,
 }: TaskDetailPanelProps) {
+  const tCommon = useTranslations('common')
+  const t = useTranslations('components.tasks')
   const [loading, setLoading] = useState(false)
   const [deleting, setDeleting] = useState(false)
   const [title, setTitle] = useState('')
@@ -69,7 +72,7 @@ export function TaskDetailPanel({
   const handleSave = async () => {
     if (!task) return
     if (!title.trim()) {
-      toast.error('O título é obrigatório')
+      toast.error(tCommon('toasts.failed'))
       return
     }
 
@@ -89,11 +92,11 @@ export function TaskDetailPanel({
 
       if (!res.ok) throw new Error('Erro ao salvar')
 
-      toast.success('Tarefa atualizada')
+      toast.success(t('updateSuccess'))
       onUpdated?.()
       onOpenChange(false)
     } catch (err) {
-      toast.error('Erro ao salvar alterações')
+      toast.error(tCommon('toasts.failedSave'))
     } finally {
       setLoading(false)
     }
@@ -108,11 +111,11 @@ export function TaskDetailPanel({
       const res = await fetch(`/api/tasks/${task.id}`, { method: 'DELETE' })
       if (!res.ok) throw new Error('Erro ao excluir')
 
-      toast.success('Tarefa excluída')
+      toast.success(t('deleteSuccess'))
       onDeleted?.()
       onOpenChange(false)
     } catch (err) {
-      toast.error('Erro ao excluir tarefa')
+      toast.error(tCommon('toasts.failedDelete'))
     } finally {
       setDeleting(false)
     }
@@ -310,7 +313,7 @@ export function TaskDetailPanel({
               ) : (
                 <Trash2 className="mr-2 h-4 w-4" />
               )}
-              <span className="font-medium">Excluir</span>
+              <span className="font-medium">{tCommon('buttons.delete')}</span>
             </Button>
             <div className="flex items-center gap-3">
               <Button 
@@ -319,7 +322,7 @@ export function TaskDetailPanel({
                 disabled={loading}
                 className="rounded-full px-5 h-10 border-border/50 hover:bg-muted"
               >
-                Cancelar
+                {tCommon('buttons.cancel')}
               </Button>
               <Button 
                 onClick={handleSave} 
@@ -327,7 +330,7 @@ export function TaskDetailPanel({
                 className="rounded-full px-6 h-10 bg-primary/90 hover:bg-primary shadow-md hover:shadow-lg transition-all"
               >
                 {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                <span className="font-semibold">Salvar alterações</span>
+                <span className="font-semibold">{tCommon('buttons.save')}</span>
               </Button>
             </div>
           </div>

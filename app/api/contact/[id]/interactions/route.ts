@@ -9,6 +9,8 @@ import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { prismaWa } from '@/lib/prisma-wa'
 import logger from '@/lib/logger'
+import { apiError } from '@/lib/api-error'
+import { ERR } from '@/lib/error-messages'
 
 export async function GET(
   req: NextRequest,
@@ -20,7 +22,7 @@ export async function GET(
     // 1. Authentication
     const session = await getSession()
     if (!session?.user) {
-      return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
+      return await apiError(ERR.UNAUTHORIZED, 401, { req })
     }
 
     // 2. Get user with organization
@@ -30,10 +32,7 @@ export async function GET(
     })
 
     if (!user?.organizationId) {
-      return NextResponse.json(
-        { error: 'Organização não encontrada' },
-        { status: 404 }
-      )
+      return await apiError(ERR.ORG_NOT_FOUND, 404, { req })
     }
 
     // 3. Verificar se o contato pertence à organização
@@ -45,10 +44,7 @@ export async function GET(
     })
 
     if (!contact) {
-      return NextResponse.json(
-        { error: 'Contato não encontrado' },
-        { status: 404 }
-      )
+      return await apiError(ERR.CONTACT_NOT_FOUND, 404, { req })
     }
 
     // 4. Get all connections for this org (regardless of status)
@@ -113,9 +109,6 @@ export async function GET(
     return NextResponse.json(messagesWithReactions)
   } catch (error: any) {
     logger.error({ error }, 'Error fetching interactions')
-    return NextResponse.json(
-      { error: 'Erro interno do servidor' },
-      { status: 500 }
-    )
+    return await apiError(ERR.INTERNAL_ERROR, 500, { req })
   }
 }

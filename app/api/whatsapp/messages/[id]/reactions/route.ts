@@ -3,6 +3,8 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { prismaWa } from '@/lib/prisma-wa'
+import { apiError } from '@/lib/api-error'
+import { ERR } from '@/lib/error-messages'
 
 /**
  * POST /api/whatsapp/messages/[id]/reactions
@@ -15,7 +17,7 @@ export async function POST(
   try {
     const session = await getSession()
     if (!session?.user?.id) {
-      return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
+      return await apiError(ERR.UNAUTHORIZED, 401)
     }
 
     const { id: messageId } = await context.params
@@ -32,7 +34,7 @@ export async function POST(
     })
 
     if (!user?.organizationId) {
-      return NextResponse.json({ error: 'Organização não encontrada' }, { status: 404 })
+      return await apiError(ERR.ORG_NOT_FOUND, 404)
     }
 
     // Verify message exists and user has access
@@ -47,7 +49,7 @@ export async function POST(
     })
 
     if (!message) {
-      return NextResponse.json({ error: 'Mensagem não encontrada' }, { status: 404 })
+      return await apiError(ERR.MESSAGE_NOT_FOUND, 404)
     }
 
     // Check if user already reacted with this emoji
@@ -100,7 +102,7 @@ export async function GET(
   try {
     const session = await getSession()
     if (!session?.user?.id) {
-      return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
+      return await apiError(ERR.UNAUTHORIZED, 401)
     }
 
     const { id: messageId } = await context.params
@@ -112,7 +114,7 @@ export async function GET(
     })
 
     if (!user?.organizationId) {
-      return NextResponse.json({ error: 'Organização não encontrada' }, { status: 404 })
+      return await apiError(ERR.ORG_NOT_FOUND, 404)
     }
 
     const message = await prismaWa.whatsAppMessage.findFirst({
@@ -123,7 +125,7 @@ export async function GET(
     })
 
     if (!message) {
-      return NextResponse.json({ error: 'Mensagem não encontrada' }, { status: 404 })
+      return await apiError(ERR.MESSAGE_NOT_FOUND, 404)
     }
 
     // Get reactions from WA DB

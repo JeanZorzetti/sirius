@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import Groq from 'groq-sdk'
+import { apiError } from '@/lib/api-error'
+import { ERR } from '@/lib/error-messages'
 
 export const runtime = 'nodejs'
 
@@ -15,7 +17,7 @@ function getGroq() {
 // body: { mode: 'analyze' | 'suggest', typeFilter: string, minStrength: number }
 export async function POST(request: NextRequest) {
   const session = await getSession()
-  if (!session?.user) return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
+  if (!session?.user) return await apiError(ERR.UNAUTHORIZED, 401, { req: request })
 
   const { mode, typeFilter, minStrength = 0.3 } = await request.json()
 

@@ -14,6 +14,8 @@
 
 import { NextRequest, NextResponse } from 'next/server'
 import { getSession } from '@/lib/auth'
+import { apiError } from '@/lib/api-error'
+import { ERR } from '@/lib/error-messages'
 
 // Lazy-init para evitar erros de build sem env var
 function getGroqClient() {
@@ -73,7 +75,7 @@ Responda APENAS com o JSON. Sem markdown, sem explicações.`
 export async function POST(request: NextRequest) {
   const session = await getSession()
   if (!session?.user?.email) {
-    return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
+    return await apiError(ERR.UNAUTHORIZED, 401, { req: request })
   }
 
   if (!process.env.GROQ_API_KEY) {

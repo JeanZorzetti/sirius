@@ -1,4 +1,3 @@
-import { Metadata } from 'next'
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
 import { FolderKanban, CheckSquare, BarChart3, ArrowRight, LayoutGrid } from 'lucide-react'
@@ -9,17 +8,26 @@ import { EmptyState } from '@/components/ui/empty-state'
 import { Button } from '@/components/ui/button'
 import { TasksHubActions } from '@/components/tasks/tasks-hub-actions'
 import { ProjectCard } from '@/components/tasks/project-card'
+import { getTranslations } from 'next-intl/server'
 
-export const metadata: Metadata = {
-  title: 'Tarefas - CRM',
+export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params
+  const t = await getTranslations({ locale, namespace: 'dashboard' })
+  return { title: `${t('pages.tasks.title')} - CRM` }
 }
 
 export const dynamic = 'force-dynamic'
 
-export default async function TasksHubPage() {
+export default async function TasksHubPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>
+}) {
+  const { locale } = await params
+  const t = await getTranslations({ locale, namespace: 'dashboard' })
   const session = await getSession()
   if (!session?.user?.email) {
-    return <div>Não autorizado. Faça login novamente.</div>
+    return <div>{t('errors.unauthorized')}</div>
   }
 
   const user = await prisma.user.findUnique({
@@ -28,7 +36,7 @@ export default async function TasksHubPage() {
   })
 
   if (!user?.organizationId) {
-    return <div>Usuário não pertence a uma organização.</div>
+    return <div>{t('errors.userNoOrg')}</div>
   }
 
   const userRole = user.orgRole ?? 'MEMBER'

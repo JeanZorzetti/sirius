@@ -3,13 +3,15 @@ import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { encrypt } from '@/lib/encryption'
 import logger from '@/lib/logger'
+import { apiError } from '@/lib/api-error'
+import { ERR } from '@/lib/error-messages'
 
 export async function POST(request: Request) {
     try {
         // Authenticate user
         const session = await getSession()
         if (!session || !session.user || !session.user.email) {
-            return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
+            return await apiError(ERR.UNAUTHORIZED, 401)
         }
 
         const user = await prisma.user.findUnique({
@@ -18,7 +20,7 @@ export async function POST(request: Request) {
         })
 
         if (!user || !user.organization) {
-            return NextResponse.json({ error: 'Usuário não encontrado' }, { status: 404 })
+            return await apiError(ERR.USER_NOT_FOUND, 404)
         }
 
         // Check PRO or BUSINESS plan requirement
@@ -34,7 +36,7 @@ export async function POST(request: Request) {
 
         // Validate organization ownership
         if (organizationId !== user.organizationId) {
-            return NextResponse.json({ error: 'Acesso negado' }, { status: 403 })
+            return await apiError(ERR.FORBIDDEN, 403)
         }
 
         // Validate required fields if enabling
@@ -98,9 +100,6 @@ export async function POST(request: Request) {
 
     } catch (error: any) {
         logger.error({ error }, 'Error updating N8N settings')
-        return NextResponse.json(
-            { error: 'Erro ao salvar configurações' },
-            { status: 500 }
-        )
+        return await apiError(ERR.INTERNAL_ERROR, 500)
     }
 }

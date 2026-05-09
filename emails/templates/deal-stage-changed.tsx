@@ -6,6 +6,10 @@ import {
   Text,
 } from '@react-email/components'
 import { BaseLayout } from '../layouts/base'
+import emailsEn from '@/messages/en/emails.json'
+import emailsPtBr from '@/messages/pt-BR/emails.json'
+
+type Locale = 'pt-BR' | 'en'
 
 interface DealStageChangedEmailProps {
   dealTitle: string
@@ -14,6 +18,76 @@ interface DealStageChangedEmailProps {
   newStage: string
   assigneeName: string
   dealUrl: string
+  locale?: Locale
+}
+
+export function DealStageChangedEmail({
+  dealTitle,
+  dealValue,
+  oldStage,
+  newStage,
+  assigneeName,
+  dealUrl,
+  locale = 'pt-BR',
+}: DealStageChangedEmailProps) {
+  const s = locale === 'en' ? emailsEn.emails.dealStageChanged : emailsPtBr.emails.dealStageChanged
+
+  const formattedValue = new Intl.NumberFormat(locale === 'en' ? 'en-US' : 'pt-BR', {
+    style: 'currency',
+    currency: locale === 'en' ? 'USD' : 'BRL',
+  }).format(dealValue)
+
+  const preview = s.preview.replace('{dealTitle}', dealTitle).replace('{newStage}', newStage)
+  const intro = s.intro.replace('{dealTitle}', dealTitle)
+
+  return (
+    <BaseLayout preview={preview} locale={locale}>
+      <Heading style={styles.heading}>{s.title}</Heading>
+
+      <Text style={styles.text}>{locale === 'en' ? `Hi ${assigneeName},` : `Olá ${assigneeName},`}</Text>
+
+      <Text style={styles.text}>
+        <strong>{dealTitle}</strong> — {intro}
+      </Text>
+
+      <Section style={styles.dealCard}>
+        <Text style={styles.dealTitle}>{dealTitle}</Text>
+        <Text style={styles.valueText}>{formattedValue}</Text>
+
+        <div style={styles.stageTransition}>
+          <div>
+            <Text style={styles.stageLabel}>{s.labelPreviousStage}</Text>
+            <Text style={styles.stageValue}>{oldStage}</Text>
+          </div>
+
+          <Text style={styles.arrow}>&#8595;</Text>
+
+          <div style={styles.newStageHighlight}>
+            <Text style={styles.stageLabel}>{s.labelNewStage}</Text>
+            <Text style={styles.stageValue}>{newStage}</Text>
+          </div>
+        </div>
+      </Section>
+
+      <Section style={styles.nextSteps}>
+        <Text style={styles.nextStepsTitle}>{s.nextStepsTitle}</Text>
+        <Text style={styles.nextStepsText}>• {s.nextStep1}</Text>
+        <Text style={styles.nextStepsText}>• {s.nextStep2}</Text>
+        <Text style={styles.nextStepsText}>• {s.nextStep3}</Text>
+        <Text style={styles.nextStepsText}>• {s.nextStep4}</Text>
+      </Section>
+
+      <Section style={styles.ctaSection}>
+        <Button href={dealUrl} style={styles.button}>
+          {s.cta}
+        </Button>
+      </Section>
+
+      <Hr style={{ margin: '32px 0', borderColor: '#e2e8f0' }} />
+
+      <Text style={styles.text}>{s.closing}</Text>
+    </BaseLayout>
+  )
 }
 
 const styles = {
@@ -41,12 +115,6 @@ const styles = {
     fontSize: '20px',
     fontWeight: 'bold',
     marginBottom: '16px',
-  },
-  dealInfo: {
-    color: '#64748b',
-    fontSize: '14px',
-    lineHeight: '20px',
-    marginBottom: '8px',
   },
   stageTransition: {
     backgroundColor: '#fff',
@@ -120,79 +188,6 @@ const styles = {
     fontSize: '16px',
     display: 'inline-block',
   },
-}
-
-export function DealStageChangedEmail({
-  dealTitle,
-  dealValue,
-  oldStage,
-  newStage,
-  assigneeName,
-  dealUrl,
-}: DealStageChangedEmailProps) {
-  const formattedValue = new Intl.NumberFormat('pt-BR', {
-    style: 'currency',
-    currency: 'BRL',
-  }).format(dealValue)
-
-  return (
-    <BaseLayout preview={`${dealTitle} mudou para ${newStage}`}>
-      <Heading style={styles.heading}>Negócio Atualizado! 🎯</Heading>
-
-      <Text style={styles.text}>Olá {assigneeName},</Text>
-
-      <Text style={styles.text}>
-        O negócio <strong>{dealTitle}</strong> avançou no pipeline!
-      </Text>
-
-      <Section style={styles.dealCard}>
-        <Text style={styles.dealTitle}>{dealTitle}</Text>
-        <Text style={styles.valueText}>{formattedValue}</Text>
-
-        <div style={styles.stageTransition}>
-          <div>
-            <Text style={styles.stageLabel}>Etapa Anterior</Text>
-            <Text style={styles.stageValue}>{oldStage}</Text>
-          </div>
-
-          <Text style={styles.arrow}>↓</Text>
-
-          <div style={styles.newStageHighlight}>
-            <Text style={styles.stageLabel}>Nova Etapa</Text>
-            <Text style={styles.stageValue}>{newStage}</Text>
-          </div>
-        </div>
-      </Section>
-
-      <Section style={styles.nextSteps}>
-        <Text style={styles.nextStepsTitle}>💡 Próximas ações sugeridas:</Text>
-        <Text style={styles.nextStepsText}>
-          • Agende uma reunião de follow-up com o cliente
-        </Text>
-        <Text style={styles.nextStepsText}>
-          • Atualize as notas do negócio com informações recentes
-        </Text>
-        <Text style={styles.nextStepsText}>
-          • Configure lembretes para as próximas etapas do processo
-        </Text>
-        <Text style={styles.nextStepsText}>
-          • Verifique se todos os documentos necessários estão em ordem
-        </Text>
-      </Section>
-
-      <Section style={styles.ctaSection}>
-        <Button href={dealUrl} style={styles.button}>
-          Ver Detalhes do Negócio
-        </Button>
-      </Section>
-
-      <Hr style={{ margin: '32px 0', borderColor: '#e2e8f0' }} />
-
-      <Text style={styles.text}>
-        Continue trabalhando para levar este negócio até o fechamento! 💪
-      </Text>
-    </BaseLayout>
-  )
 }
 
 export default DealStageChangedEmail

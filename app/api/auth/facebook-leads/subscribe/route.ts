@@ -1,4 +1,4 @@
-/**
+﻿/**
  * POST /api/auth/facebook-leads/subscribe
  * Re-subscribes the selected page to leadgen webhook events.
  * Returns full Graph API response for debugging.
@@ -9,6 +9,8 @@ import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { decrypt } from '@/lib/encryption'
 import logger from '@/lib/logger'
+import { apiError } from '@/lib/api-error'
+import { ERR } from '@/lib/error-messages'
 
 const GRAPH_BASE = 'https://graph.facebook.com/v21.0'
 
@@ -19,7 +21,7 @@ export async function GET() {
 export async function POST() {
   const session = await getSession()
   if (!session?.user?.email) {
-    return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
+    return await apiError(ERR.UNAUTHORIZED, 401, { req })
   }
 
   const user = await prisma.user.findUnique({

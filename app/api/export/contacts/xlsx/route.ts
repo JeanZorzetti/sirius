@@ -3,13 +3,15 @@ import { getSession } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { exportToXLSX, formatContactsForExport } from "@/lib/xlsx-export";
 import logger from "@/lib/logger";
+import { apiError } from "@/lib/api-error";
+import { ERR } from "@/lib/error-messages";
 
 export async function GET(request: NextRequest) {
   try {
     const session = await getSession();
 
     if (!session?.user) {
-      return NextResponse.json({ error: "Não autorizado" }, { status: 401 });
+      return await apiError(ERR.UNAUTHORIZED, 401, { req: request });
     }
 
     logger.info({
@@ -50,9 +52,6 @@ export async function GET(request: NextRequest) {
       error: error instanceof Error ? error.message : "Unknown error",
     });
 
-    return NextResponse.json(
-      { error: "Erro ao exportar contatos" },
-      { status: 500 }
-    );
+    return await apiError(ERR.INTERNAL_ERROR, 500, { req: request });
   }
 }

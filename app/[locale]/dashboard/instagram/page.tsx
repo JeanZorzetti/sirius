@@ -1,14 +1,20 @@
-import { Metadata } from 'next'
 import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { InstagramDashboard } from '@/components/instagram/instagram-dashboard'
+import { getTranslations } from 'next-intl/server'
 
-export const metadata: Metadata = { title: 'Instagram Bot - Sirius CRM' }
+export const metadata = { title: 'Instagram Bot - Sirius CRM' }
 export const dynamic = 'force-dynamic'
 
-export default async function InstagramPage() {
+export default async function InstagramPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>
+}) {
+  const { locale } = await params
+  const t = await getTranslations({ locale, namespace: 'dashboard' })
   const session = await getSession()
-  if (!session?.user) return <div>Não autorizado.</div>
+  if (!session?.user) return <div>{t('errors.unauthorized')}</div>
 
   const organizationId = session.user.organizationId
   const raw = await prisma.instagramPost.findMany({

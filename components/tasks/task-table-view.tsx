@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useMemo } from 'react'
+import { useTranslations } from 'next-intl'
 import { motion } from 'framer-motion'
 import { ArrowUpDown, ArrowUp, ArrowDown, MoreHorizontal, Trash2, Download } from 'lucide-react'
 import { cn, formatDateBR } from '@/lib/utils'
@@ -101,6 +102,8 @@ export function TaskTableView({
   onBulkPriorityChange,
   onInlineEdit,
 }: TaskTableViewProps) {
+  const tCommon = useTranslations('common')
+  const t = useTranslations('components.tasks')
   const [selected, setSelected] = useState<Set<string>>(new Set())
   const [sortKey, setSortKey] = useState<SortKey>('dueDate')
   const [sortDir, setSortDir] = useState<SortDir>('asc')
@@ -165,30 +168,30 @@ export function TaskTableView({
     if (!confirm(`Excluir ${selected.size} tarefa(s)?`)) return
     try {
       await onBulkDelete?.(Array.from(selected))
-      toast.success(`${selected.size} tarefa(s) excluída(s)`)
+      toast.success(tCommon('toasts.deleted'))
       setSelected(new Set())
     } catch {
-      toast.error('Erro ao excluir')
+      toast.error(tCommon('toasts.failedDelete'))
     }
   }
 
   const handleBulkStatus = async (statusId: string) => {
     try {
       await onBulkStatusChange?.(Array.from(selected), statusId)
-      toast.success('Status atualizado')
+      toast.success(tCommon('toasts.updated'))
       setSelected(new Set())
     } catch {
-      toast.error('Erro ao atualizar')
+      toast.error(tCommon('toasts.failed'))
     }
   }
 
   const handleBulkPriority = async (priority: string) => {
     try {
       await onBulkPriorityChange?.(Array.from(selected), priority)
-      toast.success('Prioridade atualizada')
+      toast.success(tCommon('toasts.updated'))
       setSelected(new Set())
     } catch {
-      toast.error('Erro ao atualizar')
+      toast.error(tCommon('toasts.failed'))
     }
   }
 
@@ -202,7 +205,7 @@ export function TaskTableView({
     try {
       await onInlineEdit(taskId, { statusId })
     } catch {
-      toast.error('Erro ao atualizar')
+      toast.error(tCommon('toasts.failed'))
     }
   }
 
@@ -211,7 +214,7 @@ export function TaskTableView({
     try {
       await onInlineEdit(taskId, { priority })
     } catch {
-      toast.error('Erro ao atualizar')
+      toast.error(tCommon('toasts.failed'))
     }
   }
 
@@ -227,7 +230,7 @@ export function TaskTableView({
           disabled={sorted.length === 0}
         >
           <Download className="h-3 w-3" />
-          Exportar CSV
+          {tCommon('buttons.export')} CSV
         </Button>
       </div>
 
@@ -291,7 +294,7 @@ export function TaskTableView({
               className="h-7 text-xs text-red-600 hover:text-red-700 hover:bg-red-500/10"
             >
               <Trash2 className="mr-1 h-3 w-3" />
-              Excluir
+              {tCommon('buttons.delete')}
             </Button>
           </div>
         </div>
@@ -334,7 +337,7 @@ export function TaskTableView({
               {sorted.length === 0 ? (
                 <tr>
                   <td colSpan={8} className="px-4 py-12 text-center text-xs text-muted-foreground">
-                    Nenhuma tarefa encontrada
+                    {t('noTasks')}
                   </td>
                 </tr>
               ) : (

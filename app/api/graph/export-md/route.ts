@@ -3,13 +3,15 @@ import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { format } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
+import { apiError } from '@/lib/api-error'
+import { ERR } from '@/lib/error-messages'
 
 export const runtime = 'nodejs'
 
 // GET /api/graph/export-md?typeFilter=all&minStrength=0.3
 export async function GET(request: NextRequest) {
   const session = await getSession()
-  if (!session?.user) return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
+  if (!session?.user) return await apiError(ERR.UNAUTHORIZED, 401, { req: request })
 
   const { searchParams } = new URL(request.url)
   const typeFilter = searchParams.get('typeFilter') ?? 'all'

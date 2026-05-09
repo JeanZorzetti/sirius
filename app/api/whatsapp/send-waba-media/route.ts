@@ -1,4 +1,4 @@
-/**
+﻿/**
  * POST /api/whatsapp/send-waba-media
  * Send audio/image/document via WhatsApp Official API (Meta Cloud API).
  * Accepts multipart/form-data with: file, contactId, [caption], [ptt], [duration]
@@ -15,6 +15,8 @@ import { prismaWa } from '@/lib/prisma-wa'
 import { getWhatsAppOfficialClient, normalizePhone } from '@/lib/integrations/whatsapp-official-client'
 import { uploadMedia } from '@/lib/storage'
 import logger from '@/lib/logger'
+import { apiError } from '@/lib/api-error'
+import { ERR } from '@/lib/error-messages'
 
 const execAsync = promisify(exec)
 
@@ -46,7 +48,7 @@ export async function POST(req: NextRequest) {
   try {
     const session = await getSession()
     if (!session?.user) {
-      return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
+      return await apiError(ERR.UNAUTHORIZED, 401, { req })
     }
 
     const user = await prisma.user.findUnique({

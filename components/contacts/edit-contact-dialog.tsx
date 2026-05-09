@@ -1,4 +1,6 @@
-'use client'
+﻿'use client'
+
+import { useTranslations } from 'next-intl'
 
 import { useState } from 'react'
 import { Pencil, MapPin } from 'lucide-react'
@@ -73,6 +75,8 @@ export function EditContactDialog({
     }
 
     const c = contact
+
+    const tCommon = useTranslations('common')
 
     return (
         <Dialog open={open} onOpenChange={setOpen}>
@@ -160,7 +164,7 @@ export function EditContactDialog({
                             Cancelar
                         </Button>
                         <Button type="submit" disabled={loading}>
-                            {loading ? 'Salvando...' : 'Salvar'}
+                            {loading ? tCommon('buttons.saving') : tCommon('buttons.save')}
                         </Button>
                     </DialogFooter>
                 </form>

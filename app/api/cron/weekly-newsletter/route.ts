@@ -91,7 +91,7 @@ export async function GET(request: NextRequest) {
         id: true,
         name: true,
         users: {
-          select: { id: true, name: true, email: true },
+          select: { id: true, name: true, email: true, locale: true },
           where: { email: { not: undefined } },
           orderBy: { createdAt: 'asc' },
           take: 1, // Apenas o owner/primeiro usuário
@@ -131,14 +131,19 @@ export async function GET(request: NextRequest) {
         const totalForRate = newDeals + wonDeals + lostDeals
         const conversionRate = totalForRate > 0 ? (wonDeals / totalForRate) * 100 : 0
 
+        const locale = (owner.locale as 'pt-BR' | 'en') ?? 'pt-BR'
+        const subject = locale === 'en'
+          ? `📊 Weekly Summary (${weekLabel}) – Sirius CRM`
+          : `📊 Resumo da semana (${weekLabel}) – Sirius CRM`
         await sendEmail({
           to: owner.email,
-          subject: `📊 Resumo da semana (${weekLabel}) – Sirius CRM`,
+          subject,
           react: WeeklyNewsletter({
-            userName: owner.name || 'Olá',
+            userName: owner.name || (locale === 'en' ? 'Hi' : 'Olá'),
             weekLabel,
             stats: { newDeals, wonDeals, lostDeals, newContacts, conversionRate },
             tip,
+            locale,
           }),
         })
 

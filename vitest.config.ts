@@ -24,7 +24,7 @@ export default defineConfig({
         '**/.next/**',
       ],
     },
-    include: ['**/__tests__/**/*.test.{ts,tsx}'],
+    include: ['**/__tests__/**/*.test.{ts,tsx}', '**/*.test.{ts,tsx}'],
     exclude: ['node_modules', '.next', 'dist'],
   },
   resolve: {

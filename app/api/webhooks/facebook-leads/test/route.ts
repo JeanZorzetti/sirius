@@ -1,4 +1,4 @@
-/**
+﻿/**
  * GET  /api/webhooks/facebook-leads/test          — diagnóstico
  * POST /api/webhooks/facebook-leads/test?leadId=X — processa lead manualmente
  * REMOVER após confirmar que o webhook está funcionando.
@@ -9,11 +9,13 @@ import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { fetchLeadData } from '@/lib/ads/facebook-lead-ads'
 import { decrypt } from '@/lib/encryption'
+import { apiError } from '@/lib/api-error'
+import { ERR } from '@/lib/error-messages'
 
 export async function GET(request: NextRequest) {
   const session = await getSession()
   if (!session?.user?.email) {
-    return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
+    return await apiError(ERR.UNAUTHORIZED, 401, { req })
   }
 
   const user = await prisma.user.findUnique({
@@ -123,7 +125,7 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   const session = await getSession()
   if (!session?.user?.email) {
-    return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
+    return await apiError(ERR.UNAUTHORIZED, 401, { req })
   }
 
   const { leadId } = await request.json()

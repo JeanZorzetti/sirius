@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect, useCallback } from 'react'
+import { useTranslations } from 'next-intl'
 import { motion, AnimatePresence } from 'framer-motion'
 import { cn } from '@/lib/utils'
 import {
@@ -436,6 +437,7 @@ function sortAgents(agents: AgentDef[], enabledAgents: Record<string, boolean>, 
 }
 
 export function IAAgents() {
+  const tCommon = useTranslations('common')
   const [enabledAgents, setEnabledAgents] = useState<Record<string, boolean>>({})
   const [agentOverrides, setAgentOverrides] = useState<Record<string, AgentOverride>>({})
   const [quotaInfo, setQuotaInfo] = useState<QuotaInfo | null>(null)

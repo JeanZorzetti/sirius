@@ -184,6 +184,13 @@
       "loginMsg": "⚠️ Please login to try the full AGI Sirius version!",
       "inputPlaceholder": "Ask a sales question...",
       "hint": "💡 Try asking about BANT, SPIN Selling, objections, sales metrics, and more!"
+    },
+    "meta": {
+      "title": "Sirius CRM 2026 [Native AI + WhatsApp] — Free Sales Pipeline",
+      "description": "The AI Sales Assistant for high-performance teams: Kanban pipeline, integrated WhatsApp, Google Maps prospecting, and AI that qualifies leads automatically with BANT and MEDDIC. Free forever. No credit card.",
+      "keywords": ["free crm", "crm with ai", "ai sales assistant", "kanban pipeline crm", "whatsapp crm", "sales automation", "lead qualification ai"],
+      "ogTitle": "Sirius CRM 2026 [Native AI + WhatsApp] — Free Pipeline for Sales Teams",
+      "ogDescription": "AI that qualifies leads, integrated WhatsApp, Kanban pipeline and Google Maps prospecting. The most complete sales assistant. Free forever."
     }
   },
   "features": {
@@ -1550,6 +1557,134 @@
       "readAlso": "Also read:",
       "privacy": "Privacy Policy",
       "help": "Help Center"
+    }
+  },
+  "community": {
+    "meta": {
+      "title": "Community — Sirius CRM",
+      "description": "Join the Sirius CRM community of sales professionals. Share experiences, learn from other users, and contribute to the platform.",
+      "ogTitle": "Community — Sirius CRM",
+      "ogDescription": "Join the Sirius CRM community and connect with other sales professionals."
+    }
+  },
+  "download": {
+    "meta": {
+      "title": "Download Sirius CRM — iOS, Android & Desktop",
+      "description": "Get the Sirius CRM app for all your devices. Progressive Web App with offline support, automatic sync, and push notifications.",
+      "ogTitle": "Download Sirius CRM — Mobile App",
+      "ogDescription": "Install Sirius CRM on your phone for fast offline access."
+    }
+  },
+  "followup": {
+    "meta": {
+      "title": "Automatic Follow-up — Sirius CRM | Never Lose a Deal Again",
+      "description": "Automate your follow-up sequences. Send the right message at the right time, automatically.",
+      "ogTitle": "Automatic Follow-up — Sirius CRM",
+      "ogDescription": "Never lose a follow-up again. Automatic reminder system with AI. Alerts at the right time to maximize conversion."
+    }
+  },
+  "proposta": {
+    "meta": {
+      "title": "Commercial Proposal — Sirius CRM",
+      "description": "Create professional sales proposals in minutes with Sirius CRM. Our team will contact you within 24h.",
+      "ogTitle": "Request a Commercial Proposal — Sirius CRM",
+      "ogDescription": "Request a custom proposal. Our team will contact you within 24h."
+    }
+  },
+  "vendasAutomaticas": {
+    "meta": {
+      "title": "Automated Sales — Sirius CRM | Sell 24/7 with AI",
+      "description": "Automate your sales process with AI-powered tools: lead qualification, follow-ups, and deal closing.",
+      "ogTitle": "Sirius CRM — Organized Sales in 5 Minutes",
+      "ogDescription": "Self-service CRM without expensive setup. Starting at $67/month, no card required to try."
+    }
+  },
+  "anuario": {
+    "meta": {
+      "title": "Sales Yearbook 2026 — Sirius CRM | Data & Trends",
+      "description": "The definitive guide to B2B sales trends, data, and strategies for 2026. Exclusive data from 127+ companies.",
+      "ogTitle": "Sales Yearbook 2026 — Sirius CRM",
+      "ogDescription": "Proprietary data from 127+ B2B companies: sales cycle, conversion, AI, and benchmarks by sector."
+    }
+  },
+  "register": {
+    "meta": {
+      "title": "Create Free Account — Sirius CRM",
+      "description": "Get started with Sirius CRM for free. No credit card required. Set up in 5 minutes.",
+      "ogTitle": "Create Free Account — Sirius CRM",
+      "ogDescription": "Join 120+ teams already increasing their sales with Sirius CRM."
+    }
+  },
+  "help": {
+    "meta": {
+      "title": "Help Center — Sirius CRM",
+      "description": "Find answers to your questions, tutorials, and how-to guides for Sirius CRM.",
+      "ogTitle": "Help Center — Sirius CRM",
+      "ogDescription": "Tutorials, guides, and support to get the most out of Sirius CRM."
+    }
+  },
+  "ferramentas": {
+    "meta": {
+      "title": "Free Sales Tools — Sirius CRM | ROI Calculators & More",
+      "description": "Free tools for sales professionals: ROI calculators, pipeline templates, and more.",
+      "ogTitle": "Free Sales Tools — Sirius CRM",
+      "ogDescription": "Free ROI calculators for sales professionals."
+    },
+    "calculadoraRoi": {
+      "meta": {
+        "title": "Free ROI Calculator — Sirius CRM | Calculate Your Sales ROI",
+        "description": "Calculate your return on investment from CRM and sales automation. Free online calculator.",
+        "ogTitle": "Sales Leakage Calculator — Sirius CRM",
+        "ogDescription": "Find out how much money you are losing without an organized sales system."
+      }
+    },
+    "calculadoraRoiAgencias": {
+      "meta": {
+        "title": "ROI Calculator for Agencies — Sirius CRM",
+        "description": "Calculate the ROI of CRM for marketing and sales agencies.",
+        "ogTitle": "ROI Calculator for Agencies | How much are you losing from disorganization?",
+        "ogDescription": "Calculate the real impact of lost proposals and forgotten follow-ups on your agency's revenue."
+      }
+    },
+    "calculadoraRoiConsultores": {
+      "meta": {
+        "title": "ROI Calculator for Consultants — Sirius CRM",
+        "description": "Calculate the ROI of CRM for consultants and freelancers.",
+        "ogTitle": "ROI Calculator for Consultants | How much are you losing from disorganization?",
+        "ogDescription": "Calculate the real impact of untracked projects. See how much a CRM can increase your fees."
+      }
+    },
+    "calculadoraRoiCorretores": {
+      "meta": {
+        "title": "ROI Calculator for Realtors — Sirius CRM",
+        "description": "Calculate the ROI of CRM for real estate agents and brokers.",
+        "ogTitle": "ROI Calculator for Realtors | How much are you losing from disorganization?",
+        "ogDescription": "Calculate the real impact of losing leads and opportunities. See how much a CRM can increase your commissions."
+      }
+    },
+    "calculadoraRoiEnergiaSolar": {
+      "meta": {
+        "title": "ROI Calculator for Solar Energy Sales — Sirius CRM",
+        "description": "Calculate the ROI of CRM for solar energy sales teams.",
+        "ogTitle": "ROI Calculator for Solar Energy | How much are you losing per month?",
+        "ogDescription": "Find out how much revenue you are leaving on the table from disorganized proposals."
+      }
+    },
+    "calculadoraRoiRepresentantes": {
+      "meta": {
+        "title": "ROI Calculator for Sales Representatives — Sirius CRM",
+        "description": "Calculate the ROI of CRM for field sales representatives.",
+        "ogTitle": "ROI Calculator for Sales Reps | How much are you losing per month?",
+        "ogDescription": "Calculate the real impact of untracked orders. See how much a CRM can increase your repeat sales."
+      }
+    }
+  },
+  "solucoes": {
+    "meta": {
+      "title": "Solutions — Sirius CRM | CRM for Every Industry",
+      "description": "Explore Sirius CRM solutions tailored for real estate, solar energy, agencies, consultants, and sales reps.",
+      "ogTitle": "Sirius CRM Solutions by Segment",
+      "ogDescription": "CRM with specific solutions for realtors, solar, agencies, consultants, and sales reps. Start free."
     }
   }
 }

@@ -1,10 +1,12 @@
 "use client"
 
 import { useState } from "react"
+import { useTranslations } from 'next-intl'
 import { Button } from "@/components/ui/button"
 import { CreditCard, Loader2 } from "lucide-react"
 
 export function EmbeddedCheckoutModal() {
+    const tCommon = useTranslations('common')
     const [isLoading, setIsLoading] = useState(false)
 
     const handleCheckout = async () => {
@@ -44,7 +46,7 @@ export function EmbeddedCheckoutModal() {
             {isLoading ? (
                 <>
                     <Loader2 className="h-4 w-4 animate-spin" />
-                    Carregando...
+                    {tCommon('buttons.loading')}
                 </>
             ) : (
                 <>

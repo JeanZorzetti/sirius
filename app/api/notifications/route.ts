@@ -3,6 +3,8 @@ import { getSession } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import logger from "@/lib/logger";
 import { z } from "zod";
+import { apiError } from "@/lib/api-error";
+import { ERR } from "@/lib/error-messages";
 
 const createNotificationSchema = z.object({
   type: z.enum([
@@ -30,7 +32,7 @@ export async function GET(request: NextRequest) {
     const session = await getSession();
 
     if (!session?.user) {
-      return NextResponse.json({ error: "Não autorizado" }, { status: 401 });
+      return await apiError(ERR.UNAUTHORIZED, 401, { req: request });
     }
 
     const { searchParams } = new URL(request.url);
@@ -65,10 +67,7 @@ export async function GET(request: NextRequest) {
       error: error instanceof Error ? error.message : "Unknown error",
     });
 
-    return NextResponse.json(
-      { error: "Erro ao buscar notificações" },
-      { status: 500 }
-    );
+    return await apiError(ERR.INTERNAL_ERROR, 500, { req: request });
   }
 }
 
@@ -81,7 +80,7 @@ export async function POST(request: NextRequest) {
     const session = await getSession();
 
     if (!session?.user) {
-      return NextResponse.json({ error: "Não autorizado" }, { status: 401 });
+      return await apiError(ERR.UNAUTHORIZED, 401, { req: request });
     }
 
     const body = await request.json();
@@ -115,9 +114,6 @@ export async function POST(request: NextRequest) {
       error: error instanceof Error ? error.message : "Unknown error",
     });
 
-    return NextResponse.json(
-      { error: "Erro ao criar notificação" },
-      { status: 500 }
-    );
+    return await apiError(ERR.INTERNAL_ERROR, 500, { req: request });
   }
 }

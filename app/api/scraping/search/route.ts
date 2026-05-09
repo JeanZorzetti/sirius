@@ -4,6 +4,8 @@ import { prisma } from '@/lib/prisma'
 import { scrapingRateLimit } from '@/lib/ratelimit'
 import { searchLeads, isAnyProviderConfigured } from '@/lib/scraping/providers'
 import logger from '@/lib/logger'
+import { apiError } from '@/lib/api-error'
+import { ERR } from '@/lib/error-messages'
 
 export const dynamic = 'force-dynamic'
 export const runtime = 'nodejs' // Necessário para Crawlee
@@ -15,7 +17,7 @@ export async function POST(req: NextRequest) {
   try {
     const session = await getSession()
     if (!session?.user) {
-      return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
+      return await apiError(ERR.UNAUTHORIZED, 401, { req })
     }
 
     const user = await prisma.user.findUnique({

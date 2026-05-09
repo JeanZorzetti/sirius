@@ -8,27 +8,38 @@ import { getSession } from "@/lib/auth"
 import { prisma } from "@/lib/prisma"
 import { ValueSearch } from "./analytics/value-search"
 import { ContactSearch } from "./analytics/contact-search"
+import { getTranslations } from "next-intl/server"
 
 import { AnimatedPageContainer } from "@/components/dashboard/animated-page-container"
 
-export const metadata: Metadata = {
-  title: "Pipelines - CRM",
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>
+}): Promise<Metadata> {
+  const { locale } = await params
+  const t = await getTranslations({ locale, namespace: 'dashboard.pages.pipeline' })
+  return { title: `${t('title')} - CRM` }
 }
 
 export const dynamic = "force-dynamic"
 
 export default async function DashboardPage({
+  params,
   searchParams,
 }: {
+  params: Promise<{ locale: string }>
   searchParams: Promise<{ vsearch?: string; csearch?: string }>
 }) {
   const { vsearch, csearch } = await searchParams
+  const { locale } = await params
+  const t = await getTranslations({ locale, namespace: 'dashboard' })
 
   try {
     const session = await getSession()
 
     if (!session || !session.user || !session.user.email) {
-      return <div>Não autorizado. Faça login novamente.</div>
+      return <div>{t('errors.unauthorized')}</div>
     }
 
     // Only fetch user data (required for auth + onboarding)
@@ -60,11 +71,11 @@ export default async function DashboardPage({
       })
     } catch (err: any) {
       console.error("[DASHBOARD_PAGE] Falha ao buscar usuário:", err.message)
-      return <div>Erro ao buscar usuário: {err.message}</div>
+      return <div>{t('errors.fetchUser')}</div>
     }
 
     if (!user || !user.organizationId) {
-      return <div>Usuário não pertence a uma organização.</div>
+      return <div>{t('errors.userNoOrg')}</div>
     }
 
     // Block dashboard only for NEW users (account < 24h) who haven't completed their profile.
@@ -87,8 +98,8 @@ export default async function DashboardPage({
           {/* Desktop header — hidden on mobile (handled by MobileAppBar) */}
           <div className="hidden lg:flex flex-col sm:flex-row sm:items-center justify-between mb-6 flex-wrap gap-4">
             <div className="space-y-1">
-              <h1 className="text-2xl font-bold tracking-tight text-foreground/90">Pipeline</h1>
-              <p className="text-sm text-muted-foreground">Gerencie seus negócios e acompanhe o pipeline de vendas</p>
+              <h1 className="text-2xl font-bold tracking-tight text-foreground/90">{t('pages.pipeline.title')}</h1>
+              <p className="text-sm text-muted-foreground">{t('pages.pipeline.subtitle')}</p>
             </div>
 
             <div className="flex items-center gap-3 bg-muted/40 p-1.5 rounded-2xl border border-border/50 backdrop-blur-md">

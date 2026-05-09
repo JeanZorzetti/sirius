@@ -20,6 +20,9 @@
     slug: string;
     category: string;
   }[];
+  // EN variants — if absent, /en/help/... gets noindex
+  titleEn?: string;
+  descriptionEn?: string;
 }
 
 export const helpArticles: HelpArticle[] = [

@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
+import { apiError } from '@/lib/api-error'
+import { ERR } from '@/lib/error-messages'
 
 // Adoption score: 0–100
 // - Sessions last N days:       35%  (capped at 60 sessions = 100%)
@@ -31,14 +33,14 @@ function adoptionLevel(score: number): 'champion' | 'active' | 'regular' | 'dorm
 export async function GET(request: NextRequest) {
   try {
     const session = await getSession()
-    if (!session?.user) return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
+    if (!session?.user) return await apiError(ERR.UNAUTHORIZED, 401)
 
     const dbUser = await prisma.user.findUnique({
       where: { email: session.user.email },
       select: { role: true },
     })
     if (!dbUser || dbUser.role !== 'ADMIN') {
-      return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
+      return await apiError(ERR.FORBIDDEN, 403)
     }
 
     const { searchParams } = new URL(request.url)
@@ -155,6 +157,6 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ organizations: result, days, since })
   } catch (error) {
     console.error('access-logs error', error)
-    return NextResponse.json({ error: 'Erro interno' }, { status: 500 })
+    return await apiError(ERR.INTERNAL_ERROR, 500)
   }
 }

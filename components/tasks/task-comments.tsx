@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { useTranslations } from 'next-intl'
 import { Loader2, Send, MessageSquare } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
@@ -41,6 +42,8 @@ function initials(name: string | null, email: string): string {
 }
 
 export function TaskComments({ taskId }: TaskCommentsProps) {
+  const tCommon = useTranslations('common')
+  const t = useTranslations('components.tasks')
   const [comments, setComments] = useState<Comment[]>([])
   const [loading, setLoading] = useState(true)
   const [content, setContent] = useState('')
@@ -78,7 +81,7 @@ export function TaskComments({ taskId }: TaskCommentsProps) {
       setContent('')
       loadComments()
     } catch {
-      toast.error('Erro ao comentar')
+      toast.error(tCommon('toasts.failed'))
     } finally {
       setSubmitting(false)
     }
@@ -95,7 +98,7 @@ export function TaskComments({ taskId }: TaskCommentsProps) {
     <div className="space-y-3">
       <div className="flex items-center gap-2">
         <MessageSquare className="h-4 w-4 text-muted-foreground" />
-        <h3 className="text-sm font-semibold">Comentários</h3>
+        <h3 className="text-sm font-semibold">{t('comments')}</h3>
         <span className="rounded-full bg-muted px-2 py-0.5 text-[10px] font-medium text-muted-foreground">
           {comments.length}
         </span>
@@ -126,7 +129,7 @@ export function TaskComments({ taskId }: TaskCommentsProps) {
 
       {/* Comments list */}
       {loading ? (
-        <div className="text-xs text-muted-foreground">Carregando comentários...</div>
+        <div className="text-xs text-muted-foreground">{tCommon('buttons.loading')}</div>
       ) : comments.length === 0 ? (
         <div className="rounded-lg border border-dashed border-border/30 py-4 text-center text-xs text-muted-foreground">
           Nenhum comentário ainda

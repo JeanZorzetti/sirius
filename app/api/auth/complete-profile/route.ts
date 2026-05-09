@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
+import { apiError } from '@/lib/api-error'
+import { ERR } from '@/lib/error-messages'
 
 async function enrollAsLead({ name, email, phone, companyName, jobTitle, segment }: {
   name: string, email: string, phone: string | null, companyName: string | null, jobTitle: string | null, segment: string | null
@@ -80,7 +82,7 @@ export async function POST(req: NextRequest) {
   try {
     const session = await getSession()
     if (!session?.user?.email) {
-      return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
+      return await apiError(ERR.UNAUTHORIZED, 401, { req })
     }
 
     const { phone, jobTitle, company, companyDescription, segment } = await req.json()
@@ -95,7 +97,7 @@ export async function POST(req: NextRequest) {
     })
 
     if (!user) {
-      return NextResponse.json({ error: 'Usuário não encontrado' }, { status: 404 })
+      return await apiError(ERR.USER_NOT_FOUND, 404, { req })
     }
 
     // Update user with phone and jobTitle
@@ -127,6 +129,6 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ ok: true })
   } catch (error: any) {
     console.error('[complete-profile] Error:', error)
-    return NextResponse.json({ error: 'Erro interno' }, { status: 500 })
+    return await apiError(ERR.INTERNAL_ERROR, 500, { req })
   }
 }

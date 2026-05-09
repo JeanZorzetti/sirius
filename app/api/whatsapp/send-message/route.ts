@@ -1,4 +1,4 @@
-/**
+﻿/**
  * API Route: /api/whatsapp/send-message
  *
  * Envia mensagem WhatsApp através do Whatsmeow Gateway.
@@ -12,13 +12,15 @@ import { whatsmeowClient } from '@/lib/integrations/whatsmeow-client'
 import logger from '@/lib/logger'
 import { ssePublish } from '@/lib/sse'
 import { normalizePhoneNumber } from '@/lib/whatsapp-sync'
+import { apiError } from '@/lib/api-error'
+import { ERR } from '@/lib/error-messages'
 
 export async function POST(req: NextRequest) {
   try {
     // 1. Authentication
     const session = await getSession()
     if (!session?.user) {
-      return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
+      return await apiError(ERR.UNAUTHORIZED, 401, { req })
     }
 
     // 2. Get user with organization
