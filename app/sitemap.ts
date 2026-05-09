@@ -114,13 +114,18 @@ export default function sitemap(): MetadataRoute.Sitemap {
         ...withAlternates(`/solucoes/${niche.slug}`, `/solutions/${niche.slug}`),
     }))
 
-    // Páginas de SEO local por cidade (geradas dinamicamente do city-data.ts)
+    // City pages are Brazilian-only — no EN alternate in sitemap
     const citySolutionPages = CITIES.map((city) => ({
         url: `${baseUrl}/solucoes/cidade/${city.slug}`,
         lastModified: lastSiteUpdate,
         changeFrequency: 'weekly' as const,
         priority: 0.85,
-        ...withAlternates(`/solucoes/cidade/${city.slug}`, `/solutions/city/${city.slug}`),
+        alternates: {
+            languages: {
+                'pt-BR': `${baseUrl}/solucoes/cidade/${city.slug}`,
+                'x-default': `${baseUrl}/solucoes/cidade/${city.slug}`,
+            },
+        },
     }))
 
     // Blog category pages — com alternates EN (/en/blog/category/[slug])

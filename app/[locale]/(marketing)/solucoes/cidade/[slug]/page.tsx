@@ -46,13 +46,22 @@ export async function generateStaticParams() {
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ slug: string }>
+  params: Promise<{ locale: string; slug: string }>
 }): Promise<Metadata> {
-  const { slug } = await params
+  const { locale, slug } = await params
   const city = getCityBySlug(slug)
 
   if (!city) {
     return { title: 'Página não encontrada' }
+  }
+
+  // City pages are Brazilian-only — noindex for EN locale
+  if (locale === 'en') {
+    return {
+      title: city.seo.title,
+      description: city.seo.description,
+      robots: { index: false, follow: false },
+    }
   }
 
   return {

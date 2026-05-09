@@ -56,6 +56,37 @@ export interface NicheData {
     gradient: string
   }
   icon: 'Building2' | 'Sun' | 'Sparkles' | 'Briefcase' | 'TrendingUp'
+  // EN variants (optional — noindex served when absent)
+  titleEn?: string
+  subtitleEn?: string
+  painPointEn?: string
+  painPointSecondaryEn?: string
+  calculatorCopyEn?: {
+    title: string
+    subtitle: string
+    volumeLabel: string
+    ticketLabel: string
+    ctaText: string
+  }
+  benefitsEn?: Array<{
+    title: string
+    description: string
+  }>
+  testimonialEn?: {
+    quote: string
+    author: string
+    role: string
+    company: string
+  }
+  faqEn?: Array<{
+    question: string
+    answer: string
+  }>
+  seoEn?: {
+    title: string
+    description: string
+    keywords: string[]
+  }
 }
 
 export const NICHES: NicheData[] = [
@@ -139,7 +170,69 @@ export const NICHES: NicheData[] = [
       secondary: 'purple',
       gradient: 'from-indigo-600 to-purple-600'
     },
-    icon: 'Building2'
+    icon: 'Building2',
+    titleEn: 'The CRM That Organizes Your Real Estate Sales',
+    subtitleEn: 'Stop losing commissions due to disorganization',
+    painPointEn: 'Losing commissions because you forgot to follow up?',
+    painPointSecondaryEn: 'Interested buyers going cold because you missed the callback?',
+    calculatorCopyEn: {
+      title: 'How much commission are you leaving on the table?',
+      subtitle: 'Find out the real impact of not tracking your leads',
+      volumeLabel: 'How many leads do you receive per month?',
+      ticketLabel: 'What is your average commission per sale?',
+      ctaText: 'Recover those commissions now'
+    },
+    benefitsEn: [
+      {
+        title: 'Automatic Lead Follow-up',
+        description: 'Never forget to call back that buyer who asked you to check in next week. The system reminds you at exactly the right moment.'
+      },
+      {
+        title: 'Complete Visit History',
+        description: 'Log every property showing, proposal, and negotiation. Pick up any conversation exactly where you left off.'
+      },
+      {
+        title: 'Visual Negotiation Pipeline',
+        description: 'See all your listings and clients in an organized funnel. Know exactly which deals are close to closing.'
+      },
+      {
+        title: 'Projected Commissions',
+        description: 'See how much money sits in each pipeline stage. Know your future commissions in real time.'
+      }
+    ],
+    testimonialEn: {
+      quote: 'Before Sirius, I was losing at least 3 sales a month because I forgot to follow up. Now my closing rate went from 12% to 19%. That meant an extra R$ 42,000 in commissions over the last 6 months.',
+      author: 'Ricardo Mendes',
+      role: 'Independent Real Estate Agent',
+      company: 'São Paulo, SP'
+    },
+    faqEn: [
+      {
+        question: 'Does it work for independent agents or only real estate agencies?',
+        answer: 'It works perfectly for both! Many of our users are independent agents who need to organize their leads without relying on their agency\'s system.'
+      },
+      {
+        question: 'Can I import my contact list from Excel?',
+        answer: 'Yes! You can import your lead spreadsheet in just a few clicks. The system automatically maps the fields.'
+      },
+      {
+        question: 'How does visit tracking work?',
+        answer: 'For each lead, you log the showing, callback date, and notes. The system creates automatic reminders so you never miss a follow-up.'
+      }
+    ],
+    seoEn: {
+      title: 'Real Estate CRM 2026 [AI + WhatsApp] — Never Lose a Commission Again | Free',
+      description: 'Agents using AI close 50% more deals. Automatic follow-up, visual pipeline, and WhatsApp integration. Stop losing commissions to disorganization. No spreadsheet. Free trial — no credit card.',
+      keywords: [
+        'real estate crm',
+        'crm for realtors',
+        'real estate sales software',
+        'property agent crm',
+        'real estate follow-up tool',
+        'increase realtor commissions',
+        'real estate pipeline management'
+      ]
+    }
   },
   {
     slug: 'energia-solar',
@@ -221,7 +314,69 @@ export const NICHES: NicheData[] = [
       secondary: 'orange',
       gradient: 'from-amber-500 to-orange-600'
     },
-    icon: 'Sun'
+    icon: 'Sun',
+    titleEn: 'The CRM That Closes More Solar Energy Proposals',
+    subtitleEn: 'Stop losing installations due to poor follow-up',
+    painPointEn: 'Solar proposals sitting untouched in your inbox?',
+    painPointSecondaryEn: 'Prospects going dark after the site survey?',
+    calculatorCopyEn: {
+      title: 'How much revenue are you missing out on?',
+      subtitle: 'Find out the impact of untracked proposals',
+      volumeLabel: 'How many proposals do you send per month?',
+      ticketLabel: 'What is your average installation ticket?',
+      ctaText: 'Recover those installations now'
+    },
+    benefitsEn: [
+      {
+        title: 'Full Proposal Management',
+        description: 'Track every proposal from quote to installation. See in real time which ones are stalled and why.'
+      },
+      {
+        title: 'Pipeline by Technical Stage',
+        description: 'Organize proposals by: Quote → Site Survey → Approval → Installation. Focus your energy on what converts.'
+      },
+      {
+        title: 'Simulation History',
+        description: 'All energy savings simulations, site visits, and project revisions stored in one place.'
+      },
+      {
+        title: 'Conversion Reports',
+        description: 'See your conversion rate by lead source, region, and installation type. Double down on what works.'
+      }
+    ],
+    testimonialEn: {
+      quote: 'We were losing 40% of our proposals because we had no follow-up control. With Sirius, we built a clear process and our conversion rate went from 15% to 26%. That was an extra R$ 340,000 in just 3 months.',
+      author: 'Rafael Costa',
+      role: 'Commercial Director',
+      company: 'Solar Tech RJ'
+    },
+    faqEn: [
+      {
+        question: 'Can I log technical installation data?',
+        answer: 'Yes! You can add custom fields for kWp, available roof area, tile type, and any other relevant technical information.'
+      },
+      {
+        question: 'Is there integration with simulation tools?',
+        answer: 'Not natively yet, but you can attach simulation PDFs directly to each proposal to keep everything centralized.'
+      },
+      {
+        question: 'How does post-sale follow-up work?',
+        answer: 'After installation, you can create follow-up tasks to ensure customer satisfaction and generate referrals.'
+      }
+    ],
+    seoEn: {
+      title: 'Solar CRM 2026 [AI + Auto Proposals] — Close 3x More Projects | Free',
+      description: 'Solar companies using AI qualify leads 3x faster. Visual pipeline, automated proposals, and WhatsApp from pre-sale to close. No spreadsheet. Free trial — no credit card.',
+      keywords: [
+        'solar energy crm',
+        'solar sales crm',
+        'solar installer software',
+        'solar proposal management',
+        'solar lead tracking',
+        'solar company crm',
+        'photovoltaic sales software'
+      ]
+    }
   },
   {
     slug: 'agencias-de-marketing',
@@ -303,7 +458,69 @@ export const NICHES: NicheData[] = [
       secondary: 'pink',
       gradient: 'from-purple-600 to-pink-600'
     },
-    icon: 'Sparkles'
+    icon: 'Sparkles',
+    titleEn: 'The CRM That Structures Your Agency\'s Sales Process',
+    subtitleEn: 'Stop losing clients to a chaotic sales pipeline',
+    painPointEn: 'Proposals getting buried in your email inbox?',
+    painPointSecondaryEn: 'Sales team wasting time on the wrong leads?',
+    calculatorCopyEn: {
+      title: 'How much revenue is your agency leaving on the table?',
+      subtitle: 'Calculate the cost of a disorganized sales process',
+      volumeLabel: 'How many leads does your agency receive per month?',
+      ticketLabel: 'What is the average ticket for your projects?',
+      ctaText: 'Recover that revenue now'
+    },
+    benefitsEn: [
+      {
+        title: 'Commercial Proposal Pipeline',
+        description: 'Manage every proposal in one place. From discovery to close — never lose a qualified lead again.'
+      },
+      {
+        title: 'Automatic Lead Qualification',
+        description: 'Quickly identify which leads are a fit for your agency. Focus on the right prospects and stop wasting effort.'
+      },
+      {
+        title: 'Complete Interaction History',
+        description: 'Every meeting, presentation, and negotiation recorded. Your whole team stays aligned on every client context.'
+      },
+      {
+        title: 'Real-time Sales Metrics',
+        description: 'Average ticket, sales cycle length, conversion rate by source. Real data to make better decisions.'
+      }
+    ],
+    testimonialEn: {
+      quote: 'Communication between sales and delivery was chaotic. We were losing leads because nobody knew who was talking to whom. With Sirius, we built a predictable process. Closing rate went from 18% to 31%.',
+      author: 'Mariana Alves',
+      role: 'Head of Growth',
+      company: 'Pixel Perfect Agency'
+    },
+    faqEn: [
+      {
+        question: 'Can I separate by service type (SEO, Ads, Social)?',
+        answer: 'Yes! You can create different pipelines for each service line or use tags to categorize opportunities.'
+      },
+      {
+        question: 'Can the whole team access it?',
+        answer: 'Yes! Add all agency members and control each person\'s permissions (sales, account management, leadership).'
+      },
+      {
+        question: 'Is there a commercial funnel report?',
+        answer: 'Yes! You can see how many leads entered, how many advanced at each stage, where they stalled, and the conversion rate for each phase.'
+      }
+    ],
+    seoEn: {
+      title: 'CRM for Marketing Agencies 2026 [Native AI] — Scale Clients Without Hiring More | Free',
+      description: 'Agencies using AI convert 40% more leads. Proposal automation, intelligent qualification, and real-time metrics. Grow revenue without growing headcount. Free trial — no credit card.',
+      keywords: [
+        'crm for marketing agencies',
+        'agency sales crm',
+        'marketing agency management software',
+        'agency lead tracking',
+        'sales process for agencies',
+        'digital agency crm',
+        'proposal pipeline software'
+      ]
+    }
   },
   {
     slug: 'consultores-empresariais',
@@ -385,7 +602,69 @@ export const NICHES: NicheData[] = [
       secondary: 'cyan',
       gradient: 'from-blue-600 to-cyan-600'
     },
-    icon: 'Briefcase'
+    icon: 'Briefcase',
+    titleEn: 'The CRM That Organizes Your Consulting Practice',
+    subtitleEn: 'Stop losing clients due to poor follow-up',
+    painPointEn: 'Consulting projects stalling because nothing is tracked?',
+    painPointSecondaryEn: 'Prospects going cold after you send the commercial proposal?',
+    calculatorCopyEn: {
+      title: 'How much in fees are you missing out on?',
+      subtitle: 'Find out the cost of untracked consulting projects',
+      volumeLabel: 'How many prospects do you talk to per month?',
+      ticketLabel: 'What is your average project value?',
+      ctaText: 'Recover those projects now'
+    },
+    benefitsEn: [
+      {
+        title: 'Project Pipeline Management',
+        description: 'Track every project from prospecting to close. See in real time exactly where each opportunity stands.'
+      },
+      {
+        title: 'Diagnostic Meeting History',
+        description: 'Log all discovery meetings, identified pain points, and sent proposals in one place.'
+      },
+      {
+        title: 'Structured Follow-up',
+        description: 'Create automatic reminders to follow up on every proposal at the right time. Never lose a project to forgetfulness again.'
+      },
+      {
+        title: 'Performance Reports',
+        description: 'Track your conversion rate, average closing time, and average ticket. Optimize your sales process with real data.'
+      }
+    ],
+    testimonialEn: {
+      quote: 'As a solo consultant, I was losing projects because I couldn\'t keep track of all conversations. With Sirius, I organized my process and my conversion rate went from 25% to 38%. That meant an extra R$ 180,000 in closed projects over the past year.',
+      author: 'Dr. Paulo Henrique',
+      role: 'Business Consultant',
+      company: 'Management Specialist'
+    },
+    faqEn: [
+      {
+        question: 'Does it work for solo consultants or only large firms?',
+        answer: 'It works perfectly for both! Many independent consultants use Sirius to organize their projects without needing complex tools.'
+      },
+      {
+        question: 'Can I attach proposals and contracts?',
+        answer: 'Yes! You can attach any file (PDF, Word, Excel) directly to the project to keep everything centralized.'
+      },
+      {
+        question: 'Can I track delivery deadlines?',
+        answer: 'Yes! You can create tasks and milestones with specific dates. The system notifies you when a deadline is approaching.'
+      }
+    ],
+    seoEn: {
+      title: 'CRM for Consultants 2026 [AI + Automation] — Close Contracts While You Sleep | Free',
+      description: 'Consultants who automate follow-ups close 35% more contracts. AI qualifies leads, visual pipeline, and complete project history. Focus on delivery — let the AI handle sales. Free trial — no credit card.',
+      keywords: [
+        'crm for consultants',
+        'consulting business crm',
+        'consulting project management crm',
+        'consultant sales software',
+        'consulting pipeline management',
+        'business consultant crm',
+        'freelance consultant crm'
+      ]
+    }
   },
   {
     slug: 'representantes-comerciais',
@@ -472,7 +751,69 @@ export const NICHES: NicheData[] = [
       secondary: 'emerald',
       gradient: 'from-green-600 to-emerald-600'
     },
-    icon: 'TrendingUp'
+    icon: 'TrendingUp',
+    titleEn: 'The CRM That Multiplies Your Sales as a Sales Rep',
+    subtitleEn: 'Stop losing orders due to disorganization',
+    painPointEn: 'Missing orders because you forgot to follow up with a client?',
+    painPointSecondaryEn: 'Clients buying from a competitor because you didn\'t check in?',
+    calculatorCopyEn: {
+      title: 'How much in commissions are you leaving on the table?',
+      subtitle: 'Calculate the impact of untracked orders',
+      volumeLabel: 'How many clients do you serve per month?',
+      ticketLabel: 'What is your average order value?',
+      ctaText: 'Recover those commissions now'
+    },
+    benefitsEn: [
+      {
+        title: 'Client Portfolio Management',
+        description: 'Organize all your clients by region, category, and buying potential. Focus on the right clients at the right time.'
+      },
+      {
+        title: 'Order History',
+        description: 'See every client\'s complete purchase history. Identify repurchase patterns and anticipate their needs.'
+      },
+      {
+        title: 'Optimized Visit Routing',
+        description: 'Plan your visits by region and priority. Maximize every workday with a smarter route.'
+      },
+      {
+        title: 'Repurchase Reminders',
+        description: 'The system alerts you when a client is in the ideal window to reorder. Never miss an order due to forgetfulness again.'
+      }
+    ],
+    testimonialEn: {
+      quote: 'Before Sirius, I had a giant spreadsheet and was losing sales because I forgot to call clients at the right moment. Now the system tells me exactly when each client is ready to reorder. My sales went up 48% in 6 months.',
+      author: 'Carlos Eduardo',
+      role: 'Sales Representative',
+      company: 'Southern Brazil Region'
+    },
+    faqEn: [
+      {
+        question: 'Does it work on mobile? I need access in the field.',
+        answer: 'Yes! Sirius is fully responsive and works great on mobile. You can log visits and orders from anywhere.'
+      },
+      {
+        question: 'Can I log orders offline?',
+        answer: 'Currently you need a connection to register. But we\'re building offline mode — coming soon!'
+      },
+      {
+        question: 'Can I filter by product line?',
+        answer: 'Yes! You can use tags or custom fields to categorize your clients and orders by product line.'
+      }
+    ],
+    seoEn: {
+      title: 'CRM for Sales Reps 2026 [AI + Offline] — Your Client Portfolio Stays With You | Free',
+      description: 'The only AI-powered CRM built for sales representatives. Your client portfolio stays with you — even when you change manufacturers. Order management, commissions, and automatic WhatsApp. Free forever.',
+      keywords: [
+        'crm for sales representatives',
+        'sales rep crm',
+        'field sales crm',
+        'manufacturer rep software',
+        'client portfolio management crm',
+        'sales territory crm',
+        'mobile crm for sales reps'
+      ]
+    }
   }
 ]
 

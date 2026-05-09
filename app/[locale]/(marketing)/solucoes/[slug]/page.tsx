@@ -24,7 +24,8 @@ const ICON_MAP = {
 // Força rebuild: 2025-01-27
 export async function generateStaticParams() {
   const slugs = getAllNicheSlugs()
-  return slugs.map(slug => ({ slug }))
+  const locales = ['pt-BR', 'en']
+  return locales.flatMap(locale => slugs.map(slug => ({ locale, slug })))
 }
 
 // Meta tags dinâmicas por nicho
@@ -38,52 +39,70 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     }
   }
 
+  const isEn = locale === 'en'
+  const hasEnContent = !!(niche.seoEn && niche.titleEn)
+  const seo = isEn && niche.seoEn ? niche.seoEn : niche.seo
+
   const ptUrl = `https://siriuscrm.com.br/solucoes/${niche.slug}`
   const enUrl = `https://siriuscrm.com.br/en/solutions/${niche.slug}`
-  const canonicalUrl = locale === 'en' ? enUrl : ptUrl
+  const canonicalUrl = isEn ? enUrl : ptUrl
 
   return {
-    title: niche.seo.title,
-    description: niche.seo.description,
-    keywords: niche.seo.keywords.join(', '),
+    title: seo.title,
+    description: seo.description,
+    keywords: seo.keywords.join(', '),
+    ...(isEn && !hasEnContent && { robots: { index: false, follow: false } }),
     alternates: {
       canonical: canonicalUrl,
-      languages: {
+      languages: hasEnContent || !isEn ? {
         'pt-BR': ptUrl,
         'en': enUrl,
+        'x-default': ptUrl,
+      } : {
+        'pt-BR': ptUrl,
         'x-default': ptUrl,
       },
     },
     openGraph: {
-      title: niche.seo.title,
-      description: niche.seo.description,
+      title: seo.title,
+      description: seo.description,
       url: canonicalUrl,
       siteName: 'Sirius CRM',
-      locale: locale === 'en' ? 'en_US' : 'pt_BR',
+      locale: isEn ? 'en_US' : 'pt_BR',
       type: 'website',
     },
     twitter: {
       card: 'summary_large_image',
-      title: niche.seo.title,
-      description: niche.seo.description,
+      title: seo.title,
+      description: seo.description,
     }
   }
 }
 
-export default async function NicheSolutionPage({ params }: { params: Promise<{ slug: string }> }) {
-  const { slug } = await params
+export default async function NicheSolutionPage({ params }: { params: Promise<{ locale: string; slug: string }> }) {
+  const { locale, slug } = await params
   const niche = getNicheBySlug(slug)
 
   if (!niche) {
     notFound()
   }
 
+  const isEn = locale === 'en'
+  const title = isEn && niche.titleEn ? niche.titleEn : niche.title
+  const subtitle = isEn && niche.subtitleEn ? niche.subtitleEn : niche.subtitle
+  const painPoint = isEn && niche.painPointEn ? niche.painPointEn : niche.painPoint
+  const painPointSecondary = isEn && niche.painPointSecondaryEn ? niche.painPointSecondaryEn : niche.painPointSecondary
+  const benefits = isEn && niche.benefitsEn ? niche.benefitsEn : niche.benefits
+  const testimonial = isEn && niche.testimonialEn ? niche.testimonialEn : niche.testimonial
+  const faq = isEn && niche.faqEn ? niche.faqEn : niche.faq
+  const calculatorCopy = isEn && niche.calculatorCopyEn ? niche.calculatorCopyEn : niche.calculatorCopy
+
   const Icon = ICON_MAP[niche.icon]
 
   const faqSchema = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
-    "mainEntity": niche.faq.map(item => ({
+    "mainEntity": faq.map(item => ({
       "@type": "Question",
       "name": item.question,
       "acceptedAnswer": {
@@ -140,20 +159,20 @@ export default async function NicheSolutionPage({ params }: { params: Promise<{ 
 
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
             <span className={`bg-gradient-to-r ${niche.color.gradient} bg-clip-text text-transparent`}>
-              {niche.title}
+              {title}
             </span>
           </h1>
 
           <p className="text-2xl md:text-3xl font-semibold text-muted-foreground mb-4">
-            {niche.subtitle}
+            {subtitle}
           </p>
 
           <div className="space-y-3 mb-8">
             <p className="text-xl text-red-600 dark:text-red-400 font-medium">
-              ❌ {niche.painPoint}
+              ❌ {painPoint}
             </p>
             <p className="text-xl text-red-600 dark:text-red-400 font-medium">
-              ❌ {niche.painPointSecondary}
+              ❌ {painPointSecondary}
             </p>
           </div>
 
@@ -201,7 +220,7 @@ export default async function NicheSolutionPage({ params }: { params: Promise<{ 
             </p>
 
             <div className="grid md:grid-cols-2 gap-6">
-              {niche.benefits.map((benefit, index) => (
+              {benefits.map((benefit, index) => (
                 <div key={index} className="bg-white dark:bg-zinc-900 p-6 rounded-xl border">
                   <CheckCircle2 className="h-8 w-8 text-green-600 mb-4" />
                   <h3 className="text-xl font-bold mb-2">{benefit.title}</h3>
@@ -217,15 +236,15 @@ export default async function NicheSolutionPage({ params }: { params: Promise<{ 
       <section id="calculadora" className="container mx-auto px-4 py-20">
         <div className="max-w-4xl mx-auto text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">
-            {niche.calculatorCopy.title}
+            {calculatorCopy.title}
           </h2>
           <p className="text-xl text-muted-foreground">
-            {niche.calculatorCopy.subtitle}
+            {calculatorCopy.subtitle}
           </p>
         </div>
 
         <CalculadoraROI
-          ctaText={niche.calculatorCopy.ctaText}
+          ctaText={calculatorCopy.ctaText}
           ctaHref={`/register?origem=solucoes-${niche.slug}`}
         />
       </section>
@@ -241,12 +260,12 @@ export default async function NicheSolutionPage({ params }: { params: Promise<{ 
                 </div>
                 <div className="flex-1">
                   <p className="text-lg md:text-xl text-muted-foreground mb-6 italic">
-                    "{niche.testimonial.quote}"
+                    "{testimonial.quote}"
                   </p>
                   <div>
-                    <p className="font-bold">{niche.testimonial.author}</p>
-                    <p className="text-sm text-muted-foreground">{niche.testimonial.role}</p>
-                    <p className="text-sm text-muted-foreground">{niche.testimonial.company}</p>
+                    <p className="font-bold">{testimonial.author}</p>
+                    <p className="text-sm text-muted-foreground">{testimonial.role}</p>
+                    <p className="text-sm text-muted-foreground">{testimonial.company}</p>
                   </div>
                 </div>
               </div>
@@ -327,7 +346,7 @@ export default async function NicheSolutionPage({ params }: { params: Promise<{ 
           </h2>
 
           <Accordion type="single" collapsible className="space-y-4">
-            {niche.faq.map((item, index) => (
+            {faq.map((item, index) => (
               <AccordionItem key={index} value={`item-${index}`} className="border rounded-lg px-6">
                 <AccordionTrigger className="text-left font-semibold">
                   {item.question}
