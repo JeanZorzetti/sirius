@@ -27,5 +27,20 @@
   "failedFetch": "Failed to fetch data",
   "failedSend": "Failed to send",
   "missingFields": "Required fields are missing",
-  "invalidInput": "Invalid input"
+  "invalidInput": "Invalid input",
+  "productNotFound": "Product not found",
+  "taskNotFound": "Task not found",
+  "projectNotFound": "Project not found",
+  "insightNotFound": "Insight not found",
+  "resetPassword": "Failed to reset password",
+  "validateToken": "Failed to validate token",
+  "forgotPassword": "Failed to process request",
+  "createCheckout": "Failed to create checkout",
+  "encryptToken": "Failed to encrypt Access Token. Check INTEGRATION_ENCRYPTION_KEY.",
+  "encryptApiKey": "Failed to encrypt API Key. Check INTEGRATION_ENCRYPTION_KEY.",
+  "testConnection": "Failed to test connection. Check URL and API Key.",
+  "googleCalendarAuth": "Failed to start Google Calendar authentication",
+  "downloadFile": "Failed to serve file",
+  "sendContactMessage": "Failed to send message. Please try again.",
+  "aiServerUnavailable": "Could not connect to AI server. Please try again later."
 }

@@ -8,6 +8,8 @@
 
 import logger from '@/lib/logger'
 import { NextRequest, NextResponse } from 'next/server';
+import { apiError } from '@/lib/api-error';
+import { ERR } from '@/lib/error-messages';
 import { getSession } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
 import { getUsageLimits } from '@/lib/agi/usage';
@@ -19,7 +21,7 @@ export async function GET(req: NextRequest) {
     try {
         const session = await getSession();
         if (!session?.user) {
-            return NextResponse.json({ error: 'Não autenticado' }, { status: 401 });
+            return await apiError(ERR.UNAUTHORIZED, 401)
         }
 
         const userId = session.user.id;
@@ -41,9 +43,6 @@ export async function GET(req: NextRequest) {
         return NextResponse.json(limits);
     } catch (error) {
         logger.error({ err: error }, 'Usage Stats Error');
-        return NextResponse.json(
-            { error: 'Erro ao buscar estatísticas de uso' },
-            { status: 500 }
-        );
+        return await apiError(ERR.FAILED_FETCH, 500)
     }
 }

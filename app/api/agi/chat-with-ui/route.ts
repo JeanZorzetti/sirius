@@ -8,6 +8,8 @@
 
 import { NextRequest, NextResponse } from 'next/server'
 import logger from '@/lib/logger'
+import { apiError } from '@/lib/api-error'
+import { ERR } from '@/lib/error-messages'
 import { streamText, stepCountIs } from 'ai'
 import { createGroq } from '@ai-sdk/groq'
 import { z } from 'zod'
@@ -72,7 +74,7 @@ export async function POST(req: NextRequest) {
     // 1. Authentication
     const session = await getSession()
     if (!session?.user) {
-      return NextResponse.json({ error: 'Não autenticado' }, { status: 401 })
+      return await apiError(ERR.UNAUTHORIZED, 401)
     }
 
     // 2. Get user and organization

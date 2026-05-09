@@ -38,9 +38,6 @@ export async function GET(req: NextRequest) {
     return NextResponse.json(users)
   } catch (error) {
     logger.error({ err: error }, 'Error fetching users')
-    return NextResponse.json(
-      { error: 'Erro ao buscar usuários' },
-      { status: 500 }
-    )
+    return await apiError(ERR.FAILED_FETCH, 500)
   }
 }

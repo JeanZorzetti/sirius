@@ -27,5 +27,20 @@
   "failedFetch": "Falha ao buscar dados",
   "failedSend": "Falha ao enviar",
   "missingFields": "Campos obrigatórios faltando",
-  "invalidInput": "Entrada inválida"
+  "invalidInput": "Entrada inválida",
+  "productNotFound": "Produto não encontrado",
+  "taskNotFound": "Tarefa não encontrada",
+  "projectNotFound": "Projeto não encontrado",
+  "insightNotFound": "Insight não encontrado",
+  "resetPassword": "Erro ao redefinir senha",
+  "validateToken": "Erro ao validar token",
+  "forgotPassword": "Erro ao processar solicitação",
+  "createCheckout": "Erro ao criar preferência de checkout",
+  "encryptToken": "Erro ao criptografar Access Token. Verifique INTEGRATION_ENCRYPTION_KEY.",
+  "encryptApiKey": "Erro ao criptografar API Key. Verifique INTEGRATION_ENCRYPTION_KEY.",
+  "testConnection": "Erro ao testar conexão. Verifique a URL e a API Key.",
+  "googleCalendarAuth": "Erro ao iniciar autenticação com Google Calendar",
+  "downloadFile": "Erro ao servir arquivo",
+  "sendContactMessage": "Erro ao enviar mensagem. Tente novamente.",
+  "aiServerUnavailable": "Não foi possível conectar ao servidor de IA. Tente novamente em breve."
 }

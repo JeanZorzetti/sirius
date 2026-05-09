@@ -7,6 +7,8 @@
 
 import logger from '@/lib/logger'
 import { NextRequest, NextResponse } from 'next/server';
+import { apiError } from '@/lib/api-error';
+import { ERR } from '@/lib/error-messages';
 import { getSession } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
 import { createAgiBrain } from '@/lib/agi/brain';
@@ -29,7 +31,7 @@ export async function POST(req: NextRequest) {
         // 1. Authentication
         const session = await getSession();
         if (!session?.user) {
-            return NextResponse.json({ error: 'Não autenticado' }, { status: 401 });
+            return await apiError(ERR.UNAUTHORIZED, 401)
         }
 
         const user = await prisma.user.findUnique({
@@ -196,12 +198,6 @@ Seja específico e prático.`;
         });
     } catch (error) {
         logger.error({ err: error }, 'Deal Analysis Error');
-        return NextResponse.json(
-            {
-                error: 'Erro ao analisar deal',
-                details: error instanceof Error ? error.message : 'Erro desconhecido',
-            },
-            { status: 500 }
-        );
+        return await apiError(ERR.FAILED_FETCH, 500)
     }
 }

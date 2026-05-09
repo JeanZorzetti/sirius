@@ -79,9 +79,6 @@ export async function POST(request: Request) {
 
     } catch (error: any) {
         logger.error({ error }, 'Error testing N8N connection')
-        return NextResponse.json({
-            success: false,
-            error: 'Erro ao testar conexão. Verifique a URL e a API Key.'
-        }, { status: 500 })
+        return await apiError(ERR.TEST_CONNECTION, 500)
     }
 }

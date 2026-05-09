@@ -3,6 +3,8 @@ import { z } from "zod";
 import { sendHtmlEmail } from "@/lib/email";
 import logger from "@/lib/logger";
 import { contactRateLimit } from "@/lib/ratelimit";
+import { apiError } from "@/lib/api-error";
+import { ERR } from "@/lib/error-messages";
 
 const contactSchema = z.object({
   name: z.string().min(2, "Nome deve ter pelo menos 2 caracteres"),
@@ -125,10 +127,7 @@ export async function POST(request: NextRequest) {
         email,
         error: emailResult.error,
       }, "Failed to send contact email");
-      return NextResponse.json(
-        { error: "Erro ao enviar mensagem. Tente novamente." },
-        { status: 500 }
-      );
+      return await apiError(ERR.SEND_CONTACT_MESSAGE, 500)
     }
 
     // Send confirmation email to user

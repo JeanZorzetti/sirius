@@ -8,6 +8,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import logger from '@/lib/logger';
 import { getSession } from '@/lib/auth';
+import { apiError } from '@/lib/api-error';
+import { ERR } from '@/lib/error-messages';
 import { prisma } from '@/lib/prisma';
 import { agiRateLimit } from '@/lib/ratelimit';
 import { createAgiBrain } from '@/lib/agi/brain';
@@ -59,10 +61,7 @@ export async function POST(req: NextRequest) {
         // 1. Authentication
         const session = await getSession();
         if (!session?.user) {
-            return NextResponse.json(
-                { error: 'Não autenticado' },
-                { status: 401 }
-            );
+            return await apiError(ERR.UNAUTHORIZED, 401)
         }
 
         // 2. Get user and organization
@@ -445,21 +444,9 @@ ${guardrailsPrompt}`;
 
         // Check if it's an Ollama connection error (this check might become less relevant with multi-provider)
         if (error instanceof Error && error.message.includes('Failed to get response')) {
-            return NextResponse.json(
-                {
-                    error: 'Não foi possível conectar ao servidor de IA. Verifique se o Ollama está rodando.',
-                    details: error.message,
-                },
-                { status: 503 }
-            );
+            return await apiError(ERR.AI_SERVER_UNAVAILABLE, 503)
         }
 
-        return NextResponse.json(
-            {
-                error: 'Erro ao processar mensagem',
-                details: error instanceof Error ? error.message : 'Erro desconhecido',
-            },
-            { status: 500 }
-        );
+        return await apiError(ERR.FAILED_SEND, 500)
     }
 }

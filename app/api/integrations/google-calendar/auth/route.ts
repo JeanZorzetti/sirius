@@ -3,6 +3,8 @@ import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { getGoogleCalendarAuthUrl } from '@/lib/integrations/google-calendar-client'
 import logger from '@/lib/logger'
+import { apiError } from '@/lib/api-error'
+import { ERR } from '@/lib/error-messages'
 
 /**
  * Initiate Google Calendar OAuth 2.0 flow
@@ -49,9 +51,6 @@ export async function GET(request: Request) {
     return NextResponse.redirect(authUrl)
   } catch (error: any) {
     logger.error({ error }, 'Error initiating Google Calendar auth')
-    return NextResponse.json(
-      { error: 'Erro ao iniciar autenticação com Google Calendar' },
-      { status: 500 }
-    )
+    return await apiError(ERR.GOOGLE_CALENDAR_AUTH, 500)
   }
 }

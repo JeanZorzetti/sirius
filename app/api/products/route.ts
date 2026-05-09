@@ -42,7 +42,7 @@ export async function GET() {
     return NextResponse.json(products)
   } catch (error: any) {
     console.error('[PRODUCTS_GET]', error?.message || error)
-    return NextResponse.json({ error: 'Erro ao buscar produtos' }, { status: 500 })
+    return await apiError(ERR.FAILED_FETCH, 500)
   }
 }
 

@@ -9,6 +9,8 @@
 
 import logger from '@/lib/logger'
 import { NextRequest, NextResponse } from 'next/server';
+import { apiError } from '@/lib/api-error';
+import { ERR } from '@/lib/error-messages';
 import { getSession } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
 import { getDealInsights, getRecentInsights, markInsightAsApplied, dismissInsight } from '@/lib/agi/insights';
@@ -20,7 +22,7 @@ export async function GET(req: NextRequest) {
     try {
         const session = await getSession();
         if (!session?.user) {
-            return NextResponse.json({ error: 'Não autenticado' }, { status: 401 });
+            return await apiError(ERR.UNAUTHORIZED, 401)
         }
 
         const user = await prisma.user.findUnique({
@@ -28,7 +30,7 @@ export async function GET(req: NextRequest) {
         });
 
         if (!user) {
-            return NextResponse.json({ error: 'Usuário não encontrado' }, { status: 404 });
+            return await apiError(ERR.USER_NOT_FOUND, 404)
         }
 
         const { searchParams } = new URL(req.url);
@@ -48,10 +50,7 @@ export async function GET(req: NextRequest) {
         return NextResponse.json({ insights });
     } catch (error) {
         logger.error({ err: error }, 'Get Insights Error');
-        return NextResponse.json(
-            { error: 'Erro ao buscar insights' },
-            { status: 500 }
-        );
+        return await apiError(ERR.FAILED_FETCH, 500)
     }
 }
 
@@ -59,17 +58,14 @@ export async function PATCH(req: NextRequest) {
     try {
         const session = await getSession();
         if (!session?.user) {
-            return NextResponse.json({ error: 'Não autenticado' }, { status: 401 });
+            return await apiError(ERR.UNAUTHORIZED, 401)
         }
 
         const body = await req.json();
         const { insightId, action } = body;
 
         if (!insightId || !action) {
-            return NextResponse.json(
-                { error: 'insightId e action são obrigatórios' },
-                { status: 400 }
-            );
+            return await apiError(ERR.MISSING_FIELDS, 400)
         }
 
         if (action === 'apply') {
@@ -77,18 +73,12 @@ export async function PATCH(req: NextRequest) {
         } else if (action === 'dismiss') {
             await dismissInsight(insightId);
         } else {
-            return NextResponse.json(
-                { error: 'Action inválida. Use "apply" ou "dismiss"' },
-                { status: 400 }
-            );
+            return await apiError(ERR.INVALID_INPUT, 400)
         }
 
         return NextResponse.json({ success: true });
     } catch (error) {
         logger.error({ err: error }, 'Update Insight Error');
-        return NextResponse.json(
-            { error: 'Erro ao atualizar insight' },
-            { status: 500 }
-        );
+        return await apiError(ERR.FAILED_UPDATE, 500)
     }
 }

@@ -98,7 +98,7 @@ Tom: profissional mas acessível, como um gestor experiente conversando com o ti
     if (!response.ok) {
       const errorText = await response.text()
       logger.error({ err: errorText }, '[tasks/analytics/summary] Groq error')
-      return NextResponse.json({ error: 'Erro ao gerar resumo' }, { status: 502 })
+      return await apiError(ERR.INTERNAL_ERROR, 502)
     }
 
     const data = await response.json()

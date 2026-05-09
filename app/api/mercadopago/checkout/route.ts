@@ -138,9 +138,6 @@ export async function POST(request: NextRequest) {
       message: error instanceof Error ? error.message : 'Unknown error',
     }, 'Error creating checkout preference')
 
-    return NextResponse.json(
-      { error: 'Erro ao criar preferência de checkout', details: error instanceof Error ? error.message : 'Unknown error' },
-      { status: 500 }
-    )
+    return await apiError(ERR.CREATE_CHECKOUT, 500)
   }
 }

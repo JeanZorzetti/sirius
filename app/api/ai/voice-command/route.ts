@@ -153,6 +153,6 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ transcript, action })
   } catch (err) {
     console.error('[voice-command] intent error:', err)
-    return NextResponse.json({ error: 'Erro ao processar comando' }, { status: 500 })
+    return await apiError(ERR.INTERNAL_ERROR, 500)
   }
 }

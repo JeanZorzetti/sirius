@@ -93,10 +93,7 @@ export async function POST(request: Request) {
                 logger.info({ organizationId }, 'API Key encrypted successfully')
             } catch (encryptError) {
                 logger.error({ error: encryptError, organizationId }, 'Failed to encrypt API Key')
-                return NextResponse.json(
-                    { error: 'Erro ao criptografar API Key. Verifique a variável INTEGRATION_ENCRYPTION_KEY.' },
-                    { status: 500 }
-                )
+                return await apiError(ERR.ENCRYPT_API_KEY, 500)
             }
         }
 

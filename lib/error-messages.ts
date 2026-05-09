@@ -45,4 +45,27 @@ export const ERR = {
   // Fields
   MISSING_FIELDS: 'missingFields',
   INVALID_INPUT: 'invalidInput',
+
+  // Resources (extended)
+  PRODUCT_NOT_FOUND: 'productNotFound',
+  TASK_NOT_FOUND: 'taskNotFound',
+  PROJECT_NOT_FOUND: 'projectNotFound',
+  INSIGHT_NOT_FOUND: 'insightNotFound',
+
+  // Auth flows
+  RESET_PASSWORD: 'resetPassword',
+  VALIDATE_TOKEN: 'validateToken',
+  FORGOT_PASSWORD: 'forgotPassword',
+
+  // Integrations
+  CREATE_CHECKOUT: 'createCheckout',
+  ENCRYPT_TOKEN: 'encryptToken',
+  ENCRYPT_API_KEY: 'encryptApiKey',
+  TEST_CONNECTION: 'testConnection',
+  GOOGLE_CALENDAR_AUTH: 'googleCalendarAuth',
+
+  // Misc
+  DOWNLOAD_FILE: 'downloadFile',
+  SEND_CONTACT_MESSAGE: 'sendContactMessage',
+  AI_SERVER_UNAVAILABLE: 'aiServerUnavailable',
 } as const

@@ -66,10 +66,7 @@ export async function POST(request: Request) {
         updateData.wabaAccessToken = encrypt(accessToken)
       } catch (encryptError) {
         logger.error({ error: encryptError, organizationId }, 'Failed to encrypt WABA Access Token')
-        return NextResponse.json(
-          { error: 'Erro ao criptografar Access Token. Verifique INTEGRATION_ENCRYPTION_KEY.' },
-          { status: 500 }
-        )
+        return await apiError(ERR.ENCRYPT_TOKEN, 500)
       }
     }
 

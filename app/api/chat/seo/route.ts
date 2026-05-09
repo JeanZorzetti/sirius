@@ -7,6 +7,8 @@
 
 import { NextRequest } from 'next/server';
 import logger from '@/lib/logger';
+import { apiError } from '@/lib/api-error';
+import { ERR } from '@/lib/error-messages';
 import { streamText, tool, stepCountIs, convertToModelMessages, UIMessage } from 'ai';
 import { groq } from '@ai-sdk/groq';
 import { z } from 'zod';
@@ -80,10 +82,7 @@ export async function POST(req: NextRequest) {
     // 1. Authentication
     const session = await getSession();
     if (!session?.user) {
-      return new Response(JSON.stringify({ error: 'Não autenticado' }), {
-        status: 401,
-        headers: { 'Content-Type': 'application/json' },
-      });
+      return await apiError(ERR.UNAUTHORIZED, 401)
     }
 
     // 2. Get user and organization
@@ -259,15 +258,6 @@ IMPORTANTE: Você tem acesso aos dados REAIS do GSC acima. Use-os nas suas respo
   } catch (error) {
     logger.error({ err: error }, 'SEO Chat Error');
 
-    return new Response(
-      JSON.stringify({
-        error: 'Erro ao processar mensagem',
-        details: error instanceof Error ? error.message : 'Erro desconhecido',
-      }),
-      {
-        status: 500,
-        headers: { 'Content-Type': 'application/json' },
-      }
-    );
+    return await apiError(ERR.FAILED_SEND, 500)
   }
 }

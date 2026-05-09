@@ -3,6 +3,8 @@ import { prisma } from '@/lib/prisma'
 import bcrypt from 'bcryptjs'
 import logger from '@/lib/logger'
 import { authRateLimit } from '@/lib/ratelimit'
+import { apiError } from '@/lib/api-error'
+import { ERR } from '@/lib/error-messages'
 
 // Password validation
 function validatePassword(password: string): { valid: boolean; error?: string } {
@@ -121,10 +123,7 @@ export async function POST(request: NextRequest) {
     })
   } catch (error) {
     logger.error({ error }, 'Error in reset-password')
-    return NextResponse.json(
-      { error: 'Erro ao redefinir senha' },
-      { status: 500 }
-    )
+    return await apiError(ERR.RESET_PASSWORD, 500)
   }
 }
 
@@ -163,9 +162,6 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ valid: true })
   } catch (error) {
     logger.error({ error }, 'Error validating reset token')
-    return NextResponse.json(
-      { valid: false, error: 'Erro ao validar token' },
-      { status: 500 }
-    )
+    return await apiError(ERR.VALIDATE_TOKEN, 500)
   }
 }

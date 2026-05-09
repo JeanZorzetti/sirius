@@ -4,6 +4,8 @@ import { Resend } from 'resend'
 import crypto from 'crypto'
 import logger from '@/lib/logger'
 import { authRateLimit } from '@/lib/ratelimit'
+import { apiError } from '@/lib/api-error'
+import { ERR } from '@/lib/error-messages'
 
 export async function POST(request: NextRequest) {
   const resend = new Resend(process.env.RESEND_API_KEY)
@@ -117,9 +119,6 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ success: true })
   } catch (error) {
     logger.error({ error }, 'Error in forgot-password')
-    return NextResponse.json(
-      { error: 'Erro ao processar solicitacao' },
-      { status: 500 }
-    )
+    return await apiError(ERR.FORGOT_PASSWORD, 500)
   }
 }

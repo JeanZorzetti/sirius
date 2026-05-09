@@ -1,5 +1,7 @@
 import logger from '@/lib/logger'
 import { NextResponse } from 'next/server';
+import { apiError } from '@/lib/api-error'
+import { ERR } from '@/lib/error-messages'
 import { readFileSync } from 'fs';
 import { join } from 'path';
 
@@ -20,10 +22,7 @@ export async function GET() {
     });
 
   } catch (error) {
-    logger.error({ err: error }, 'Erro ao servir planilha');
-    return NextResponse.json(
-      { error: 'Erro ao servir planilha' },
-      { status: 500 }
-    );
+    logger.error({ err: error }, 'Error serving file');
+    return await apiError(ERR.DOWNLOAD_FILE, 500)
   }
 }
