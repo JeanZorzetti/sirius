@@ -43,6 +43,13 @@ export default function DashboardError({
             Código: {error.digest}
           </p>
         )}
+        {/* TEMP DEBUG — remove after identifying root cause */}
+        <details className="mt-4 text-left">
+          <summary className="text-xs text-muted-foreground cursor-pointer">Detalhes do erro</summary>
+          <pre className="mt-2 text-xs text-red-600 bg-red-50 p-2 rounded overflow-auto max-h-40 whitespace-pre-wrap">
+            {error?.message || '(sem mensagem)'}{'\n\n'}{error?.stack || '(sem stack)'}
+          </pre>
+        </details>
       </div>
     </div>
   )
