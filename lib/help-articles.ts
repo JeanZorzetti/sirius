@@ -23,6 +23,15 @@
   // EN variants — if absent, /en/help/... gets noindex
   titleEn?: string;
   descriptionEn?: string;
+  contentEn?: {
+    sections: {
+      title: string;
+      content: string;
+      steps?: string[];
+      tips?: string[];
+      warning?: string;
+    }[];
+  };
 }
 
 export const helpArticles: HelpArticle[] = [
@@ -70,6 +79,43 @@ export const helpArticles: HelpArticle[] = [
         },
       ],
     },
+    titleEn: "How to Create Your First Deal",
+    descriptionEn: "Complete guide to creating and managing your first deal in Sirius CRM",
+    contentEn: {
+      sections: [
+        {
+          title: "Introduction",
+          content: "Creating your first deal in Sirius CRM is simple and intuitive. A 'deal' represents a sales opportunity you are actively working on. Each deal holds information like value, the associated contact, and which stage of your sales process it is in.",
+        },
+        {
+          title: "Creating your first deal",
+          content: "Follow these steps to create a deal:",
+          steps: [
+            "On the main dashboard (Pipeline Kanban), click the '+ New Deal' button in the top-right corner",
+            "Enter a deal title (e.g., 'CRM Sale - ABC Company')",
+            "Enter the estimated deal value",
+            "Select or create a new contact to associate with the deal",
+            "Add a description or notes if needed",
+            "Click 'Create Deal' — it will appear in the first stage of your pipeline",
+          ],
+          tips: [
+            "Use descriptive titles that make the deal easy to identify",
+            "Always associate a contact to make follow-up easier",
+            "Set a realistic value based on your experience or proposal",
+            "You can edit all information later by clicking on the deal card",
+          ],
+        },
+        {
+          title: "Moving the deal through the pipeline",
+          content: "After creating the deal, you can move it between pipeline stages simply by dragging and dropping the card. Each move represents progress in the negotiation.",
+          tips: [
+            "Drag the card to the right as you advance in the negotiation",
+            "Use intermediate stages to avoid skipping important steps",
+            "Update deal information whenever there are significant changes",
+          ],
+        },
+      ],
+    },
     relatedArticles: [
       {
         title: "Entendendo o Pipeline Kanban",
@@ -90,6 +136,8 @@ export const helpArticles: HelpArticle[] = [
     category: "Pipeline e Negócios",
     categorySlug: "pipeline-negocios",
     description: "Aprenda como funciona a visualização Kanban e como usá-la para gerenciar suas vendas",
+    titleEn: "Understanding the Kanban Pipeline",
+    descriptionEn: "Learn how the Kanban view works and how to use it to manage your sales",
     lastUpdated: "2024-01-23",
     readTime: "5 min",
     content: {
@@ -139,6 +187,53 @@ export const helpArticles: HelpArticle[] = [
         },
       ],
     },
+    contentEn: {
+      sections: [
+        {
+          title: "What is the Kanban Pipeline?",
+          content: "The Kanban Pipeline is a column-based view that displays all your sales opportunities organized by stage of the sales process. Each column represents a sales phase, and each card represents an individual deal. It is inspired by the Agile Kanban methodology, widely used in software development and now applied to sales.",
+        },
+        {
+          title: "Default pipeline structure",
+          content: "When you create your Sirius CRM account, it comes pre-loaded with a default 5-stage pipeline:",
+          steps: [
+            "Prospecting — New leads that have come onto your radar",
+            "Qualification — Validated leads with real buying potential",
+            "Proposal — Quote sent and under review by the client",
+            "Negotiation — Final adjustments on price, timeline, and terms",
+            "Closed — Deal won! Contract signed or sale confirmed",
+          ],
+          tips: [
+            "You can customize stage names in Settings > Pipelines",
+            "Add or remove stages to match your sales process",
+            "Avoid too many stages — keep it between 4 and 7",
+          ],
+        },
+        {
+          title: "Using the Kanban day to day",
+          content: "The power of Kanban lies in its visual simplicity. At a glance you can see:",
+          tips: [
+            "How many deals you have at each stage",
+            "Total value in each funnel phase",
+            "Which deals have been stalled for a long time",
+            "Where the bottleneck in your sales process is",
+            "Which rep is closest to hitting quota",
+          ],
+        },
+        {
+          title: "Best practices",
+          content: "To get the most from the Kanban Pipeline:",
+          steps: [
+            "Update the pipeline daily — stalled deals produce inaccurate data",
+            "Move cards only when the stage truly changes",
+            "Use filters to focus on specific reps or time periods",
+            "Mark deals as 'Lost' when they are no longer viable",
+            "Review deals in each stage weekly to identify issues",
+          ],
+          warning: "Deals stalled for more than 30 days in a stage usually signal a problem. Review them regularly and take action or mark them as lost.",
+        },
+      ],
+    },
   },
 
   {
@@ -147,6 +242,8 @@ export const helpArticles: HelpArticle[] = [
     category: "Contatos",
     categorySlug: "contatos",
     description: "Aprenda a criar e organizar seus contatos no Sirius CRM",
+    titleEn: "How to Add and Manage Contacts",
+    descriptionEn: "Learn how to create and organize your contacts in Sirius CRM",
     lastUpdated: "2024-01-23",
     readTime: "3 min",
     content: {
@@ -186,6 +283,43 @@ export const helpArticles: HelpArticle[] = [
         },
       ],
     },
+    contentEn: {
+      sections: [
+        {
+          title: "Why add contacts?",
+          content: "Every deal in Sirius CRM needs to be linked to a contact. Contacts represent the people or companies you are doing business with. Keeping a well-organized contact base makes follow-up, interaction history, and future automations much easier.",
+        },
+        {
+          title: "Adding a new contact",
+          content: "There are 3 ways to add contacts:",
+          steps: [
+            "Via the Contacts menu: Click 'Contacts' in the sidebar > '+ New Contact'",
+            "While creating a deal: You can create a new contact on the fly during deal creation",
+            "Via CSV import: To add multiple contacts at once (see the dedicated article)",
+          ],
+        },
+        {
+          title: "Essential fields",
+          content: "When adding a contact, fill in at least:",
+          steps: [
+            "Full name or company name",
+            "Email — important for future automations",
+            "Phone — for WhatsApp contact",
+            "Company (for B2B)",
+            "Job title (optional but recommended)",
+          ],
+          tips: [
+            "The more complete the record, the more powerful your automations",
+            "Standardize phone format: +1 (555) 999-9999",
+            "Use tags to segment contacts (e.g., 'hot-lead', 'CEO', 'decision-maker')",
+          ],
+        },
+        {
+          title: "Viewing contact history",
+          content: "Clicking on a contact shows all deals linked to them, interaction history, and triggered automations. This gives you complete visibility into each client relationship.",
+        },
+      ],
+    },
   },
 
   {
@@ -194,6 +328,8 @@ export const helpArticles: HelpArticle[] = [
     category: "Pipeline e Negócios",
     categorySlug: "pipeline-negocios",
     description: "Como gerenciar diferentes fluxos de venda com múltiplos pipelines (recurso PRO)",
+    titleEn: "Creating Multiple Pipelines",
+    descriptionEn: "How to manage different sales flows with multiple pipelines (PRO feature)",
     lastUpdated: "2024-01-23",
     readTime: "4 min",
     content: {
@@ -231,6 +367,41 @@ export const helpArticles: HelpArticle[] = [
         },
       ],
     },
+    contentEn: {
+      sections: [
+        {
+          title: "What are multiple pipelines?",
+          content: "Multiple pipelines let you maintain different sales flows within the same account. For example: one pipeline for direct sales, another for partnerships, and another for renewals. Each pipeline can have its own custom stages. This is an exclusive PRO plan feature.",
+        },
+        {
+          title: "When to use multiple pipelines?",
+          content: "Use multiple pipelines when you have very different sales processes:",
+          tips: [
+            "New sales vs. Renewals (different cycles and stages)",
+            "B2B vs. B2C (different complexity and approach)",
+            "Different products with specific processes",
+            "Specialized reps with distinct workflows",
+            "Partnerships or resellers (different approval process)",
+          ],
+          warning: "Don't create unnecessary pipelines. Too many pipelines can confuse the team and dilute metrics. Keep it to 2–4 pipelines maximum.",
+        },
+        {
+          title: "Creating a new pipeline",
+          content: "To create an additional pipeline (requires PRO plan):",
+          steps: [
+            "Go to Settings > Pipelines",
+            "Click '+ New Pipeline'",
+            "Give it a descriptive name (e.g., 'Renewals', 'Partnerships')",
+            "Define the specific stages for that flow",
+            "Save and start adding deals to this pipeline",
+          ],
+        },
+        {
+          title: "Switching between pipelines",
+          content: "On the main dashboard, use the pipeline selector at the top of the screen to switch between your pipelines. Each pipeline shows its own deals and metrics.",
+        },
+      ],
+    },
   },
 
   {
@@ -239,6 +410,8 @@ export const helpArticles: HelpArticle[] = [
     category: "Automações",
     categorySlug: "automacoes",
     description: "Aprenda a criar automações inteligentes baseadas nas etapas do pipeline (PRO)",
+    titleEn: "Setting Up Email Automations",
+    descriptionEn: "Learn how to create smart automations triggered by pipeline stages (PRO)",
     lastUpdated: "2024-01-23",
     readTime: "6 min",
     content: {
@@ -294,6 +467,59 @@ export const helpArticles: HelpArticle[] = [
         },
       ],
     },
+    contentEn: {
+      sections: [
+        {
+          title: "What are email automations?",
+          content: "Email automations in Sirius CRM send messages automatically when a deal moves to a stage. For example: when a deal enters 'Proposal', you can automatically send a follow-up email to the client. This is an exclusive PRO plan feature.",
+        },
+        {
+          title: "Creating your first automation",
+          content: "Follow these steps:",
+          steps: [
+            "Go to 'Email Automations' in the sidebar",
+            "Click '+ New Automation'",
+            "Choose the trigger (event that fires it): 'Deal moved to stage X'",
+            "Select the stage that triggers the automation",
+            "Set a delay (e.g., send 2 hours after the deal enters the stage)",
+            "Write the email subject and body",
+            "Use dynamic variables like {{contact.name}} and {{deal.value}}",
+            "Activate the automation",
+          ],
+          tips: [
+            "Test with a real deal before activating for the whole team",
+            "Use strategic delays — immediate sends are not always best",
+            "Personalize with variables to increase reply rates",
+            "Monitor open and reply metrics in the analytics section",
+          ],
+        },
+        {
+          title: "Available variables",
+          content: "You can use these variables in your emails:",
+          steps: [
+            "{{contact.name}} — Contact's name",
+            "{{contact.email}} — Contact's email",
+            "{{contact.company}} — Contact's company",
+            "{{deal.title}} — Deal title",
+            "{{deal.value}} — Deal value",
+            "{{deal.stage}} — Current stage",
+            "{{user.name}} — Responsible salesperson's name",
+          ],
+        },
+        {
+          title: "Best practices",
+          content: "For effective automations:",
+          tips: [
+            "Keep emails short with a clear call-to-action",
+            "Personalize beyond the name — mention deal details",
+            "Don't automate everything — human interactions are still essential",
+            "A/B test different approaches",
+            "Review and optimize your automations monthly",
+          ],
+          warning: "Be careful not to spam your client. Set appropriate delays and avoid sending multiple automated emails back to back.",
+        },
+      ],
+    },
   },
 
   {
@@ -302,6 +528,8 @@ export const helpArticles: HelpArticle[] = [
     category: "Analytics e Relatórios",
     categorySlug: "analytics",
     description: "Aprenda a interpretar as métricas essenciais do seu funil de vendas",
+    titleEn: "Understanding Basic Analytics",
+    descriptionEn: "Learn how to interpret the essential metrics of your sales funnel",
     lastUpdated: "2024-01-23",
     readTime: "5 min",
     content: {
@@ -346,6 +574,48 @@ export const helpArticles: HelpArticle[] = [
         },
       ],
     },
+    contentEn: {
+      sections: [
+        {
+          title: "Analytics overview",
+          content: "The Analytics page shows real-time metrics about your sales performance. Even on the FREE plan, you have access to essential indicators to track the health of your funnel.",
+        },
+        {
+          title: "Key metrics (available on FREE)",
+          content: "Understanding each metric:",
+          steps: [
+            "Total Deals — Number of active opportunities in the pipeline",
+            "Total Pipeline Value — Sum of all active deals",
+            "Conversion Rate — % of deals that reach close",
+            "Average Ticket — Average value of closed deals",
+            "Deals by Stage — Distribution of opportunities in the funnel",
+            "Deals Created vs. Closed — Period-over-period comparison",
+          ],
+        },
+        {
+          title: "How to interpret your numbers",
+          content: "Use metrics to identify problems:",
+          tips: [
+            "Conversion rate below 20%? Review your qualification process",
+            "Too many deals in Proposal? Your proposals may need improvement",
+            "Few closed deals? Focus on increasing the top of the funnel",
+            "Average ticket dropping? You may be selling to the wrong profile",
+          ],
+        },
+        {
+          title: "PRO Analytics — the next level",
+          content: "On the PRO plan, you unlock:",
+          steps: [
+            "Forecasting — Revenue projection based on pipeline probabilities",
+            "Rep-level analysis — Individual performance for each salesperson",
+            "Average time per stage — Identify process bottlenecks",
+            "Detailed conversion funnel — Conversion rate between each stage",
+            "Historical reports — Compare periods and identify trends",
+            "Data export — Excel and CSV for custom analysis",
+          ],
+        },
+      ],
+    },
   },
 
   {
@@ -354,6 +624,8 @@ export const helpArticles: HelpArticle[] = [
     category: "Integrações",
     categorySlug: "integracoes",
     description: "Como usar a integração nativa com WhatsApp para contatar seus leads",
+    titleEn: "WhatsApp Integration",
+    descriptionEn: "How to use the native WhatsApp integration to contact your leads",
     lastUpdated: "2024-01-23",
     readTime: "3 min",
     content: {
@@ -384,6 +656,34 @@ export const helpArticles: HelpArticle[] = [
         },
       ],
     },
+    contentEn: {
+      sections: [
+        {
+          title: "How does the integration work?",
+          content: "Sirius CRM has native integration with WhatsApp Web. When you click the green button (WhatsApp icon) on a deal card, WhatsApp Web opens automatically with a pre-formatted message for that contact. It is fast, simple, and requires no complex setup.",
+        },
+        {
+          title: "Using WhatsApp day to day",
+          content: "To send a message via WhatsApp:",
+          steps: [
+            "Make sure the contact has a phone number on file",
+            "On the deal card, click the green WhatsApp icon button",
+            "WhatsApp Web will open with a suggested message",
+            "Customize the message as needed",
+            "Send normally through WhatsApp",
+          ],
+          tips: [
+            "Keep phone numbers in a standard format",
+            "Use WhatsApp for quick, informal follow-ups",
+            "For more formal conversations, prefer email",
+          ],
+        },
+        {
+          title: "Pro tip: Message templates",
+          content: "Create custom message templates in WhatsApp Web to speed things up even more. For example, create shortcuts like '/followup', '/proposal', '/thankyou' that expand into full messages.",
+        },
+      ],
+    },
   },
 
   {
@@ -392,6 +692,8 @@ export const helpArticles: HelpArticle[] = [
     category: "Integrações",
     categorySlug: "integracoes",
     description: "Conecte seu Google Calendar para sincronizar reuniões e follow-ups",
+    titleEn: "Syncing with Google Calendar",
+    descriptionEn: "Connect your Google Calendar to sync meetings and follow-ups",
     lastUpdated: "2024-01-23",
     readTime: "4 min",
     content: {
@@ -424,6 +726,36 @@ export const helpArticles: HelpArticle[] = [
         },
       ],
     },
+    contentEn: {
+      sections: [
+        {
+          title: "Why integrate with Google Calendar?",
+          content: "The Google Calendar integration lets you schedule follow-ups and meetings directly in Sirius CRM, and they appear automatically in your calendar. You can also see upcoming appointments without leaving the CRM.",
+        },
+        {
+          title: "Connecting your Google account",
+          content: "To set up the integration:",
+          steps: [
+            "Go to Settings > Integrations > Google Calendar",
+            "Click 'Connect Google Calendar'",
+            "Authorize Sirius CRM to access your calendar (read-only permission)",
+            "Wait for the sync — it may take a few seconds",
+            "Done! You can now schedule events directly from the CRM",
+          ],
+          warning: "Sirius CRM never modifies or deletes existing events. The integration is safe and you can disconnect at any time.",
+        },
+        {
+          title: "Scheduling follow-ups",
+          content: "With the integration active, you can:",
+          tips: [
+            "Schedule meetings when creating or editing a deal",
+            "See upcoming appointments on the dashboard",
+            "Receive automatic reminders for pending follow-ups",
+            "Block time slots directly from the CRM",
+          ],
+        },
+      ],
+    },
   },
 
   {
@@ -432,6 +764,8 @@ export const helpArticles: HelpArticle[] = [
     category: "Equipe e Configurações",
     categorySlug: "equipe",
     description: "Como adicionar usuários e configurar níveis de acesso (PRO)",
+    titleEn: "Managing Team Permissions",
+    descriptionEn: "How to add users and configure access levels (PRO)",
     lastUpdated: "2024-01-23",
     readTime: "5 min",
     content: {
@@ -484,6 +818,56 @@ export const helpArticles: HelpArticle[] = [
         },
       ],
     },
+    contentEn: {
+      sections: [
+        {
+          title: "Permission structure",
+          content: "Sirius CRM has 3 user permission levels:",
+          steps: [
+            "Owner — Full access, including billing and account deletion",
+            "Admin — Manages users, pipelines, and general settings, but cannot change plan or delete account",
+            "Member — Access only to their own deals, no admin permissions",
+          ],
+        },
+        {
+          title: "Adding team members (PRO)",
+          content: "To invite new users:",
+          steps: [
+            "Go to Settings > Team",
+            "Click '+ Invite Member'",
+            "Enter the person's email",
+            "Choose the permission level (Admin or Member)",
+            "Send the invite — the person will receive an email",
+            "They will need to accept the invite and create an account",
+          ],
+          tips: [
+            "Start by adding members as 'Member' — you can promote them later",
+            "Only Owners can manage the subscription and payments",
+            "Each additional user on the PRO plan has an extra cost — see pricing",
+          ],
+        },
+        {
+          title: "Data visibility",
+          content: "What each level can see:",
+          steps: [
+            "Owner and Admin — See all deals from all salespeople",
+            "Member — Sees only their own deals (automatic filter)",
+            "Contacts are shared across the entire organization",
+            "Analytics shows consolidated data for Admin/Owner, individual for Member",
+          ],
+        },
+        {
+          title: "Best practices",
+          content: "Recommendations for team management:",
+          tips: [
+            "Set one primary Owner and 1–2 backup Admins",
+            "Review permissions quarterly",
+            "Remove inactive users to reduce costs",
+            "Use Member visibility limits to encourage ownership",
+          ],
+        },
+      ],
+    },
   },
 
   {
@@ -492,6 +876,8 @@ export const helpArticles: HelpArticle[] = [
     category: "Planos e Billing",
     categorySlug: "planos",
     description: "Entenda os recursos disponíveis em cada plano e quando fazer upgrade",
+    titleEn: "FREE vs PRO Plan Differences",
+    descriptionEn: "Understand the features available in each plan and when to upgrade",
     lastUpdated: "2024-01-23",
     readTime: "4 min",
     content: {
@@ -551,6 +937,63 @@ export const helpArticles: HelpArticle[] = [
         },
       ],
     },
+    contentEn: {
+      sections: [
+        {
+          title: "Plan overview",
+          content: "Sirius CRM offers 2 plans: FREE (free forever) and PRO (paid, with advanced features). Both include unlimited deals, unlimited contacts, and the visual Kanban pipeline.",
+        },
+        {
+          title: "What's included in FREE?",
+          content: "The free plan is robust and perfect for freelancers or small teams:",
+          steps: [
+            "Unlimited deals",
+            "Unlimited contacts",
+            "1 Pipeline with customizable stages",
+            "Visual Kanban board",
+            "Basic analytics (essential metrics)",
+            "WhatsApp integration",
+            "1 user (you)",
+          ],
+        },
+        {
+          title: "What you get with PRO?",
+          content: "The PRO plan unlocks features for teams and more sophisticated operations:",
+          steps: [
+            "Everything in FREE +",
+            "Unlimited pipelines (multiple sales flows)",
+            "Unlimited users (add your team)",
+            "Email Automations (smart automations)",
+            "PRO Analytics (forecasting, advanced reports)",
+            "Permission control (Owner/Admin/Member)",
+            "Priority support",
+            "Data export (CSV/Excel)",
+          ],
+        },
+        {
+          title: "When to upgrade to PRO?",
+          content: "Consider PRO when you:",
+          tips: [
+            "Have more than 1 person on the sales team",
+            "Need different sales processes (multiple pipelines)",
+            "Want to automate follow-ups and nurture leads",
+            "Need forecasting to hit your targets",
+            "Want granular permission control",
+          ],
+        },
+        {
+          title: "How to upgrade?",
+          content: "To switch to the PRO plan:",
+          steps: [
+            "Go to Settings > Subscription",
+            "Click 'Upgrade to PRO'",
+            "Choose between monthly or annual billing (20% discount on annual)",
+            "Complete payment by credit card",
+            "Done! PRO features are unlocked immediately",
+          ],
+        },
+      ],
+    },
   },
 
   {
@@ -559,6 +1002,8 @@ export const helpArticles: HelpArticle[] = [
     category: "Contatos",
     categorySlug: "contatos",
     description: "Como importar múltiplos contatos de uma vez usando planilha",
+    titleEn: "Importing Contacts via CSV",
+    descriptionEn: "How to import multiple contacts at once using a spreadsheet",
     lastUpdated: "2024-01-23",
     readTime: "4 min",
     content: {
@@ -610,6 +1055,55 @@ export const helpArticles: HelpArticle[] = [
         },
       ],
     },
+    contentEn: {
+      sections: [
+        {
+          title: "When to use import?",
+          content: "If you already have a contact base in a spreadsheet (Excel, Google Sheets) or are migrating from another CRM, CSV import is the fastest way to bring all your data into Sirius CRM at once.",
+        },
+        {
+          title: "Preparing your spreadsheet",
+          content: "Before importing, organize your spreadsheet with these columns:",
+          steps: [
+            "name (required) — Full name or company name",
+            "email (required) — Contact email",
+            "phone — Phone number",
+            "company — Company name (for B2B)",
+            "position — Job title",
+            "tags — Comma-separated tags (e.g., hot-lead, CEO)",
+          ],
+          tips: [
+            "Save the file as CSV (not XLSX)",
+            "Use UTF-8 encoding to avoid issues with special characters",
+            "First row must be the header with column names",
+            "Remove duplicate rows before importing",
+          ],
+        },
+        {
+          title: "Importing the file",
+          content: "To perform the import:",
+          steps: [
+            "Go to Contacts > Import",
+            "Upload the CSV file",
+            "Map the columns (the system tries to auto-detect)",
+            "Choose what to do with duplicates (skip or update)",
+            "Click 'Import'",
+            "Wait for processing — you will receive an email when done",
+          ],
+          warning: "The import is irreversible. Test with 10–20 contacts first before importing your entire base.",
+        },
+        {
+          title: "After the import",
+          content: "Once contacts are imported, review:",
+          tips: [
+            "Check that data was mapped correctly",
+            "Look for duplicate contacts and merge if needed",
+            "Add additional tags or segmentations",
+            "Start creating deals linked to these contacts",
+          ],
+        },
+      ],
+    },
   },
 
   {
@@ -618,6 +1112,8 @@ export const helpArticles: HelpArticle[] = [
     category: "Pipeline e Negócios",
     categorySlug: "pipeline-negocios",
     description: "Aprenda a filtrar deals por vendedor, período, valor e outros critérios",
+    titleEn: "Using Filters and Advanced Search",
+    descriptionEn: "Learn how to filter deals by rep, period, value, and other criteria",
     lastUpdated: "2024-01-23",
     readTime: "3 min",
     content: {
@@ -654,6 +1150,40 @@ export const helpArticles: HelpArticle[] = [
         },
       ],
     },
+    contentEn: {
+      sections: [
+        {
+          title: "Why use filters?",
+          content: "When you have dozens or hundreds of deals, filters are essential to focus on what matters. You can filter by responsible rep, minimum value, creation date range, specific stage, and much more.",
+        },
+        {
+          title: "Available filters",
+          content: "At the top of the Pipeline Kanban, you'll find:",
+          steps: [
+            "Title search — Type to find specific deals",
+            "Rep filter — View only a specific rep's deals (useful for managers)",
+            "Date range filter — Deals created within a date range",
+            "Value filter — Deals above a minimum value",
+            "Stage filter — Focus on a specific pipeline phase",
+            "Pipeline filter — Switch between pipelines (PRO)",
+          ],
+        },
+        {
+          title: "Combining filters",
+          content: "You can combine multiple filters. For example: 'Deals from rep John, created in January, with value above $10,000'. This enables very specific analyses.",
+          tips: [
+            "Use filters for weekly reviews of each rep's pipeline",
+            "Filter by date range to close out the month and hit targets",
+            "Combine rep + stage to identify individual bottlenecks",
+            "Save frequent filters as favorites (upcoming feature)",
+          ],
+        },
+        {
+          title: "Smart search",
+          content: "Sirius CRM's search looks across multiple fields: deal title, contact name, company, and notes. Type any related term to quickly find what you need.",
+        },
+      ],
+    },
   },
 
   {
@@ -662,6 +1192,8 @@ export const helpArticles: HelpArticle[] = [
     category: "Pipeline e Negócios",
     categorySlug: "pipeline-negocios",
     description: "Como e quando marcar um negócio como perdido e analisar motivos",
+    titleEn: "Marking Deals as Lost",
+    descriptionEn: "How and when to mark a deal as lost and analyze the reasons",
     lastUpdated: "2024-01-23",
     readTime: "3 min",
     content: {
@@ -717,6 +1249,59 @@ export const helpArticles: HelpArticle[] = [
         },
       ],
     },
+    contentEn: {
+      sections: [
+        {
+          title: "Why mark deals as lost?",
+          content: "Not every deal closes. Marking deals as 'Lost' is essential to keep your pipeline clean and your metrics accurate. Tracking loss reasons also helps identify patterns and improve your process.",
+        },
+        {
+          title: "When to mark a deal as lost?",
+          content: "Mark a deal as lost when:",
+          steps: [
+            "The client explicitly said 'no'",
+            "The client chose a competitor",
+            "The budget was cut or the project was cancelled",
+            "The deal has been inactive for 60+ days without a response",
+            "The lead is no longer qualified (changed companies, for example)",
+          ],
+          warning: "Don't leave ghost deals in the pipeline. This distorts your metrics and gives a false sense of a healthy pipeline.",
+        },
+        {
+          title: "How to mark as lost",
+          content: "To mark a deal as lost:",
+          steps: [
+            "Open the deal card",
+            "Click the actions menu (three dots)",
+            "Select 'Mark as Lost'",
+            "Choose the loss reason (required)",
+            "Add additional notes if relevant",
+            "Confirm — the deal will leave the main pipeline",
+          ],
+        },
+        {
+          title: "Common loss reasons",
+          content: "The system tracks reasons such as:",
+          steps: [
+            "Price too high",
+            "Chose a competitor",
+            "Insufficient budget",
+            "Wrong timing",
+            "Poor product fit",
+            "No response / Ghosting",
+          ],
+          tips: [
+            "Review the most frequent loss reasons monthly",
+            "If 'Price too high' appears often, revisit your pricing strategy",
+            "If 'Ghosting' is common, improve your follow-up",
+          ],
+        },
+        {
+          title: "Reactivating lost deals",
+          content: "You can reactivate a lost deal if circumstances change. Go to 'Lost Deals', find the deal, and click 'Reactivate'. It will return to the first stage of the pipeline.",
+        },
+      ],
+    },
   },
 
   {
@@ -725,6 +1310,8 @@ export const helpArticles: HelpArticle[] = [
     category: "Equipe e Configurações",
     categorySlug: "equipe",
     description: "Personalize quais notificações você quer receber e por qual canal",
+    titleEn: "Configuring Notifications",
+    descriptionEn: "Customize which notifications you want to receive and through which channel",
     lastUpdated: "2024-01-23",
     readTime: "3 min",
     content: {
@@ -768,6 +1355,47 @@ export const helpArticles: HelpArticle[] = [
         },
       ],
     },
+    contentEn: {
+      sections: [
+        {
+          title: "Types of notifications",
+          content: "Sirius CRM sends notifications to keep you informed about important events. You have full control over which notifications to receive and through which channel (email, in-app, push).",
+        },
+        {
+          title: "Available notifications",
+          content: "You can be notified about:",
+          steps: [
+            "New deal created in your account",
+            "Deal moved to another stage",
+            "Deal assigned to you",
+            "Comment on one of your deals",
+            "Deal approaching its due date",
+            "Email automation triggered",
+            "New member added to the team (Admins only)",
+          ],
+        },
+        {
+          title: "Setting your preferences",
+          content: "To customize notifications:",
+          steps: [
+            "Go to Settings > Notifications",
+            "See the list of notification types",
+            "For each type, check the desired channels: Email, In-App, or Push",
+            "Save your changes",
+          ],
+          tips: [
+            "Turn off less critical notifications to reduce noise",
+            "Keep Email enabled for important notifications (assigned deals)",
+            "Push notifications are great for real-time alerts",
+            "Adjust as your workflow evolves",
+          ],
+        },
+        {
+          title: "'Do Not Disturb' mode",
+          content: "If you need full focus, temporarily activate 'Do Not Disturb' mode in settings. This pauses all notifications for a defined period (1h, 4h, until tomorrow).",
+        },
+      ],
+    },
   },
 
   {
@@ -776,6 +1404,8 @@ export const helpArticles: HelpArticle[] = [
     category: "Integrações",
     categorySlug: "integracoes",
     description: "Como gerar chaves de API e integrar o Sirius com sistemas externos",
+    titleEn: "Using the Sirius CRM API",
+    descriptionEn: "How to generate API keys and integrate Sirius with external systems",
     lastUpdated: "2024-01-23",
     readTime: "5 min",
     content: {
@@ -827,6 +1457,55 @@ export const helpArticles: HelpArticle[] = [
         },
       ],
     },
+    contentEn: {
+      sections: [
+        {
+          title: "What is the API?",
+          content: "The Sirius CRM API (Application Programming Interface) lets you integrate the CRM with other systems, automate tasks, and build custom applications. It is the way to make Sirius communicate with your other tools programmatically.",
+        },
+        {
+          title: "Generating an API key",
+          content: "To start using the API:",
+          steps: [
+            "Go to Settings > API",
+            "Click 'Generate New Key'",
+            "Give it a descriptive name (e.g., 'Zapier Integration', 'Reporting Script')",
+            "Copy the generated key — it will only be shown once!",
+            "Store the key somewhere safe (never commit it to Git!)",
+          ],
+          warning: "Treat your API key like a password. Anyone with access to it can take actions on behalf of your account. Revoke compromised keys immediately.",
+        },
+        {
+          title: "Main endpoints",
+          content: "The Sirius REST API provides endpoints for:",
+          steps: [
+            "GET /api/deals — List all deals",
+            "POST /api/deals — Create a new deal",
+            "PATCH /api/deals/:id — Update a deal",
+            "GET /api/contacts — List contacts",
+            "POST /api/contacts — Create a new contact",
+            "GET /api/pipelines — List pipelines",
+          ],
+          tips: [
+            "Every request must include the header: Authorization: Bearer {your-api-key}",
+            "Respect rate limits: 100 requests per minute",
+            "Use pagination to list large data volumes",
+            "See full documentation at /docs/api",
+          ],
+        },
+        {
+          title: "Common use cases",
+          content: "What you can do with the API:",
+          tips: [
+            "Auto-create deals when someone fills out a form on your website",
+            "Sync contacts with your email marketing tool",
+            "Export deals for Business Intelligence analysis",
+            "Integrate with Zapier, Make (Integromat), or N8N",
+            "Build custom dashboards",
+          ],
+        },
+      ],
+    },
   },
 
   {
@@ -835,6 +1514,8 @@ export const helpArticles: HelpArticle[] = [
     category: "Integrações",
     categorySlug: "integracoes",
     description: "Como conectar o Sirius CRM com N8N para criar workflows avançados",
+    titleEn: "Integrating with N8N (Low-Code Automation)",
+    descriptionEn: "How to connect Sirius CRM with N8N to create advanced workflows",
     lastUpdated: "2024-01-23",
     readTime: "6 min",
     content: {
@@ -898,6 +1579,67 @@ export const helpArticles: HelpArticle[] = [
         },
       ],
     },
+    contentEn: {
+      sections: [
+        {
+          title: "What is N8N?",
+          content: "N8N is a low-code automation tool, similar to Zapier but open-source and self-hostable. With it, you can build complex workflows connecting Sirius CRM to hundreds of other tools without writing code.",
+        },
+        {
+          title: "Setting up the integration",
+          content: "To connect Sirius to N8N:",
+          steps: [
+            "Create an N8N account (cloud or self-hosted)",
+            "In Sirius, go to Settings > Integrations > N8N",
+            "Generate an API key (or use an existing one)",
+            "In N8N, create a new workflow",
+            "Add an 'HTTP Request' or 'Webhook' node",
+            "Set the base URL: https://siriuscrm.com.br/api",
+            "Add the authentication header with your API key",
+          ],
+        },
+        {
+          title: "Workflow examples",
+          content: "What you can automate with N8N:",
+          tips: [
+            "Auto-create a deal when a Typeform form is submitted",
+            "Send a Slack notification when a deal closes",
+            "Add a contact to Mailchimp when they enter the CRM",
+            "Create a Todoist task for deal follow-ups",
+            "Generate a Google Docs document with deal data",
+            "Send an SMS via Twilio when a deal changes stage",
+          ],
+        },
+        {
+          title: "Webhook triggers",
+          content: "Sirius can trigger webhooks to N8N when events occur:",
+          steps: [
+            "Go to Settings > Integrations > N8N > Webhooks",
+            "Create a new webhook",
+            "Choose the trigger event (e.g., 'Deal created', 'Deal moved')",
+            "Paste the N8N webhook URL",
+            "Test the webhook",
+            "Activate — N8N will now receive data in real time",
+          ],
+          tips: [
+            "Use webhooks for real-time automations",
+            "Use polling (scheduled HTTP Request) for periodic syncs",
+            "Always validate and handle errors in N8N",
+          ],
+        },
+        {
+          title: "Advanced features",
+          content: "With N8N you can:",
+          tips: [
+            "Create conditional loops (if/else)",
+            "Transform and enrich data between systems",
+            "Make parallel calls to multiple services",
+            "Implement retries and error handling",
+            "Build complex workflows without writing code",
+          ],
+        },
+      ],
+    },
   },
 
   {
@@ -906,6 +1648,8 @@ export const helpArticles: HelpArticle[] = [
     category: "Analytics e Relatórios",
     categorySlug: "analytics",
     description: "Como exportar seus deals e contatos para Excel ou CSV (PRO)",
+    titleEn: "Exporting Data for Analysis",
+    descriptionEn: "How to export your deals and contacts to Excel or CSV (PRO)",
     lastUpdated: "2024-01-23",
     readTime: "3 min",
     content: {
@@ -955,6 +1699,53 @@ export const helpArticles: HelpArticle[] = [
         },
       ],
     },
+    contentEn: {
+      sections: [
+        {
+          title: "Why export data?",
+          content: "While Sirius has built-in analytics, sometimes you need deeper analysis in specialized tools like Excel, Power BI, or Google Sheets. Data export (PRO feature) enables exactly that.",
+        },
+        {
+          title: "What can be exported?",
+          content: "You can export:",
+          steps: [
+            "All deals (active, closed, and lost)",
+            "All contacts with complete fields",
+            "Deal movement history",
+            "Email automation data (sends, opens, clicks)",
+            "Performance metrics by rep",
+          ],
+        },
+        {
+          title: "How to export",
+          content: "To export data:",
+          steps: [
+            "Go to the section you want to export (e.g., Deals, Contacts)",
+            "Apply filters if you only want a subset",
+            "Click the 'Export' button (download icon)",
+            "Choose the format: CSV or Excel (XLSX)",
+            "Wait for processing",
+            "Download the generated file",
+          ],
+          tips: [
+            "Export data regularly as a backup",
+            "Use filters before exporting for smaller, focused datasets",
+            "Excel preserves formatting; CSV is universal",
+          ],
+        },
+        {
+          title: "Common analyses with exported data",
+          content: "What to do with your exported data:",
+          tips: [
+            "Build custom dashboards in Power BI or Tableau",
+            "Cohort analyses (performance by entry period)",
+            "Advanced statistical forecasting models",
+            "Custom reports for board or investors",
+            "Combine with data from other sources (finance, support)",
+          ],
+        },
+      ],
+    },
   },
 
   {
@@ -963,6 +1754,8 @@ export const helpArticles: HelpArticle[] = [
     category: "Equipe e Configurações",
     categorySlug: "equipe",
     description: "Personalize suas informações de perfil e preferências do sistema",
+    titleEn: "Setting Up Your Profile and Preferences",
+    descriptionEn: "Customize your profile information and system preferences",
     lastUpdated: "2024-01-23",
     readTime: "2 min",
     content: {
@@ -996,6 +1789,37 @@ export const helpArticles: HelpArticle[] = [
         },
       ],
     },
+    contentEn: {
+      sections: [
+        {
+          title: "Accessing your profile",
+          content: "To edit your personal information, click your avatar in the top-right corner and select 'Profile', or go to Settings > Profile.",
+        },
+        {
+          title: "Editable information",
+          content: "You can update:",
+          steps: [
+            "Full name — appears in notifications and as author of actions",
+            "Email — used for login and notifications",
+            "Phone — optional, for internal contact",
+            "Avatar — profile photo (recommended for quick identification)",
+            "Job title — helps identify your role in the team",
+          ],
+          tips: [
+            "Use a real photo — it improves collaboration in teams",
+            "Keep email up to date — it is critical for password recovery",
+          ],
+        },
+        {
+          title: "Changing password",
+          content: "To change your password, go to Settings > Profile > Security > Change Password. Enter your current password and the new password (minimum 8 characters).",
+        },
+        {
+          title: "Language and timezone preferences",
+          content: "Set the interface language (Portuguese/English) and your timezone so that dates and times are displayed correctly.",
+        },
+      ],
+    },
   },
 
   {
@@ -1004,6 +1828,8 @@ export const helpArticles: HelpArticle[] = [
     category: "Analytics e Relatórios",
     categorySlug: "analytics",
     description: "Como usar o forecasting para prever faturamento e bater metas (PRO)",
+    titleEn: "PRO Analytics: Sales Forecasting",
+    descriptionEn: "How to use forecasting to predict revenue and hit your targets (PRO)",
     lastUpdated: "2024-01-23",
     readTime: "5 min",
     content: {
@@ -1049,6 +1875,49 @@ export const helpArticles: HelpArticle[] = [
         },
       ],
     },
+    contentEn: {
+      sections: [
+        {
+          title: "What is Forecasting?",
+          content: "Forecasting is revenue prediction based on current pipeline deals. Sirius CRM analyzes your deals, applies closing probabilities by stage, and calculates how much you will likely bill this month or quarter. This is an exclusive PRO plan feature.",
+        },
+        {
+          title: "How is the forecast calculated?",
+          content: "The forecast considers:",
+          steps: [
+            "Value of each deal in the pipeline",
+            "Closing probability based on the current stage",
+            "Historical conversion rate for your team",
+            "Average closing time",
+            "Seasonality (when sufficient data is available)",
+          ],
+          tips: [
+            "The more historical data you have, the more accurate the forecast",
+            "Keep the pipeline up to date for reliable predictions",
+            "Review and adjust custom probabilities per stage if needed",
+          ],
+        },
+        {
+          title: "Interpreting the numbers",
+          content: "On the PRO Analytics page, you see 3 scenarios:",
+          steps: [
+            "Pessimistic — Assumes only deals in late stages close (80% probability)",
+            "Realistic — Calculated using average probabilities for each stage",
+            "Optimistic — Assumes all qualified deals could close (up to 30% probability)",
+          ],
+        },
+        {
+          title: "Using forecast for target management",
+          content: "Compare the realistic forecast with your monthly target:",
+          tips: [
+            "Forecast < target: accelerate prospecting to fill the top of the funnel",
+            "Forecast ≈ target: maintain pace but monitor closely",
+            "Forecast > target: great! But keep prospecting",
+            "Review the forecast weekly and adjust strategy",
+          ],
+        },
+      ],
+    },
   },
 
   {
@@ -1057,6 +1926,8 @@ export const helpArticles: HelpArticle[] = [
     category: "Pipeline e Negócios",
     categorySlug: "pipeline-negocios",
     description: "Como criar, editar e reordenar etapas do seu pipeline",
+    titleEn: "Customizing Pipeline Stages",
+    descriptionEn: "How to create, edit, and reorder your pipeline stages",
     lastUpdated: "2024-01-23",
     readTime: "4 min",
     content: {
@@ -1102,6 +1973,49 @@ export const helpArticles: HelpArticle[] = [
         },
       ],
     },
+    contentEn: {
+      sections: [
+        {
+          title: "Why customize stages?",
+          content: "Every business has a unique sales process. Sirius's default stages are a good starting point, but you can (and should!) adjust them to reflect your real flow. This makes the CRM more intuitive and your data more accurate.",
+        },
+        {
+          title: "Accessing pipeline settings",
+          content: "To edit stages:",
+          steps: [
+            "Go to Settings > Pipelines",
+            "Select the pipeline you want to edit",
+            "You will see the current list of stages",
+            "Use available actions: Add, Edit, Reorder, or Delete",
+          ],
+        },
+        {
+          title: "Adding a new stage",
+          content: "To create a stage:",
+          steps: [
+            "Click '+ New Stage'",
+            "Give it a clear, descriptive name (e.g., 'Demo Scheduled')",
+            "Set the closing probability (0–100%)",
+            "Choose a display color (optional, helps identify quickly)",
+            "Save",
+          ],
+          tips: [
+            "Use names that make sense to the whole team",
+            "Probabilities help with forecasting — be realistic",
+            "Keep it to 4–7 stages — less is more",
+          ],
+        },
+        {
+          title: "Reordering stages",
+          content: "Drag and drop stages in the order that represents your sales process. The order affects how deals flow visually in the Kanban and influences conversion metrics.",
+        },
+        {
+          title: "Deleting stages",
+          content: "When deleting a stage, you will need to choose where to move the existing deals in it. Pick a similar stage or the previous one in the process.",
+          warning: "Do not delete stages with many active deals. First move the deals manually to maintain full control over the process.",
+        },
+      ],
+    },
   },
 
   {
@@ -1110,6 +2024,8 @@ export const helpArticles: HelpArticle[] = [
     category: "Planos e Billing",
     categorySlug: "planos",
     description: "Como atualizar forma de pagamento, mudar plano e cancelar assinatura",
+    titleEn: "Managing Subscription and Payments",
+    descriptionEn: "How to update payment method, change plan, and cancel subscription",
     lastUpdated: "2024-01-23",
     readTime: "4 min",
     content: {
@@ -1162,6 +2078,56 @@ export const helpArticles: HelpArticle[] = [
         },
       ],
     },
+    contentEn: {
+      sections: [
+        {
+          title: "Accessing billing",
+          content: "Only the account Owner can manage billing. Go to Settings > Subscription to see your current plan details, next renewal date, and invoice history.",
+        },
+        {
+          title: "Updating payment method",
+          content: "To change your credit card:",
+          steps: [
+            "Go to Settings > Subscription > Payment Method",
+            "Click 'Update Card'",
+            "Enter the new card details",
+            "Save — the next charge will use the new card",
+          ],
+          tips: [
+            "Update the card before the renewal date to avoid suspension",
+            "Sirius does not store card data — everything is handled via Stripe (PCI compliant)",
+          ],
+        },
+        {
+          title: "Changing plan",
+          content: "To upgrade or downgrade:",
+          steps: [
+            "In Settings > Subscription, click 'Change Plan'",
+            "Choose the new plan (Monthly, Annual, or downgrade to FREE)",
+            "If upgrading: change is immediate, you pay prorated to end of cycle",
+            "If downgrading: change takes effect at the end of the current cycle (no lost paid days)",
+            "Confirm the change",
+          ],
+        },
+        {
+          title: "Cancelling subscription",
+          content: "To cancel the PRO plan and return to FREE:",
+          steps: [
+            "Go to Settings > Subscription",
+            "Scroll to the bottom and click 'Cancel Subscription'",
+            "Provide a reason (optional, but it helps us improve)",
+            "Confirm the cancellation",
+            "Your PRO plan remains active until the end of the paid period",
+            "After expiry, you automatically return to FREE",
+          ],
+          warning: "On the FREE plan, you lose: multiple pipelines, email automations, additional users, and PRO analytics. Your data is preserved.",
+        },
+        {
+          title: "Invoice history",
+          content: "Access all past invoices at Settings > Subscription > Invoices. You can download each invoice as a PDF for accounting.",
+        },
+      ],
+    },
   },
 
   {
@@ -1170,6 +2136,8 @@ export const helpArticles: HelpArticle[] = [
     category: "Pipeline e Negócios",
     categorySlug: "pipeline-negocios",
     description: "Como usar tags e campos customizados para organizar seus deals",
+    titleEn: "Adding Tags and Custom Fields",
+    descriptionEn: "How to use tags and custom fields to organize your deals",
     lastUpdated: "2024-01-23",
     readTime: "4 min",
     content: {
@@ -1222,6 +2190,56 @@ export const helpArticles: HelpArticle[] = [
         },
       ],
     },
+    contentEn: {
+      sections: [
+        {
+          title: "What are tags?",
+          content: "Tags are labels you can add to deals and contacts to categorize them flexibly. For example: 'hot-lead', 'enterprise', 'returning', 'referral'. Tags are useful for quick filters and segmentations.",
+        },
+        {
+          title: "Adding tags to deals",
+          content: "To add tags:",
+          steps: [
+            "Open the deal card",
+            "In the 'Tags' section, click 'Add Tag'",
+            "Type the tag name (or select an existing one)",
+            "Press Enter",
+            "The tag appears on the card and you can filter by it",
+          ],
+          tips: [
+            "Create a naming convention (e.g., priority-high, source-referral)",
+            "Use different colors for different categories",
+            "Don't overdo it — 2–3 tags per deal is enough",
+            "Tags are shared across the whole organization",
+          ],
+        },
+        {
+          title: "Custom fields",
+          content: "Custom fields let you add extra information to deals beyond the default fields. For example: 'Number of employees', 'Industry', 'Lead source', etc.",
+        },
+        {
+          title: "Creating a custom field",
+          content: "To add a custom field:",
+          steps: [
+            "Go to Settings > Custom Fields",
+            "Click '+ New Field'",
+            "Set the field name (e.g., 'Industry')",
+            "Choose the type: Text, Number, Date, Dropdown, etc.",
+            "If dropdown, define the options (e.g., Technology, Retail, Healthcare)",
+            "Save — the field appears in all deals",
+          ],
+          tips: [
+            "Use dropdowns for structured data (makes filtering and analytics easier)",
+            "Free-text fields for open notes",
+            "Don't create too many custom fields — focus on the essentials",
+          ],
+        },
+        {
+          title: "Filtering by tags and custom fields",
+          content: "After adding tags and custom fields, use them in the pipeline filters to segment your deals and run specific analyses.",
+        },
+      ],
+    },
   },
 
   {
@@ -1230,6 +2248,8 @@ export const helpArticles: HelpArticle[] = [
     category: "Primeiros Passos",
     categorySlug: "primeiros-passos",
     description: "Aumente sua produtividade com atalhos de teclado essenciais",
+    titleEn: "Sirius CRM Keyboard Shortcuts",
+    descriptionEn: "Boost your productivity with essential keyboard shortcuts",
     lastUpdated: "2024-01-23",
     readTime: "2 min",
     content: {
@@ -1279,6 +2299,53 @@ export const helpArticles: HelpArticle[] = [
         },
       ],
     },
+    contentEn: {
+      sections: [
+        {
+          title: "Why use shortcuts?",
+          content: "Keyboard shortcuts speed up repetitive tasks and significantly improve your productivity in the CRM. Experienced salespeople use shortcuts constantly to create deals, navigate, and update information quickly.",
+        },
+        {
+          title: "Main shortcuts",
+          content: "Memorize these essential shortcuts:",
+          steps: [
+            "N — Create a new deal (from any screen)",
+            "C — Create a new contact",
+            "/ or Ctrl+K — Open global search",
+            "Esc — Close current modal/dialog",
+            "? — Show full list of shortcuts",
+            "G then D — Go to Dashboard",
+            "G then C — Go to Contacts",
+            "G then A — Go to Analytics",
+          ],
+          tips: [
+            "Practice shortcuts for a week — after that it becomes second nature",
+            "Use 'N' to create deals quickly without taking your hands off the keyboard",
+            "Ctrl+K opens universal search — find deals, contacts, or navigate",
+          ],
+        },
+        {
+          title: "Pipeline navigation",
+          content: "While browsing the Kanban:",
+          steps: [
+            "← → arrows — Navigate between stages",
+            "↑ ↓ arrows — Navigate between deals in the same stage",
+            "Enter — Open selected deal",
+            "Tab — Switch focus between filters and pipeline",
+          ],
+        },
+        {
+          title: "Editing deals",
+          content: "Inside an open deal:",
+          steps: [
+            "Ctrl+S — Save changes",
+            "Ctrl+Enter — Save and close",
+            "E — Quick edit mode",
+            "Delete — Mark as lost (with confirmation)",
+          ],
+        },
+      ],
+    },
   },
 
   {
@@ -1287,6 +2354,8 @@ export const helpArticles: HelpArticle[] = [
     category: "Primeiros Passos",
     categorySlug: "primeiros-passos",
     description: "Dicas e estratégias para maximizar resultados com o Sirius CRM",
+    titleEn: "Sales Management Best Practices",
+    descriptionEn: "Tips and strategies to maximize results with Sirius CRM",
     lastUpdated: "2024-01-23",
     readTime: "6 min",
     content: {
@@ -1347,6 +2416,64 @@ export const helpArticles: HelpArticle[] = [
         },
       ],
     },
+    contentEn: {
+      sections: [
+        {
+          title: "Introduction",
+          content: "A CRM is just a tool. What really generates results is how you use it. Here are the best practices compiled from hundreds of successful sales teams using Sirius CRM.",
+        },
+        {
+          title: "1. Update the pipeline daily",
+          content: "An outdated pipeline means wrong decisions. Commit to updating your deals every day, ideally at the end of the workday.",
+          tips: [
+            "Reserve 15 minutes at the end of the day to update all deals",
+            "Move deals that have progressed",
+            "Mark deals stalled for 60+ days as lost",
+            "Add notes about important interactions",
+          ],
+        },
+        {
+          title: "2. Follow a consistent process",
+          content: "Customize pipeline stages to reflect your real process, then follow that process consistently for all deals. This produces reliable data and predictable processes.",
+        },
+        {
+          title: "3. Qualify before over-prospecting",
+          content: "Quality > Quantity. It is better to have 20 highly qualified deals than 200 cold leads. Use frameworks like BANT or MEDDIC to qualify before investing time.",
+          tips: [
+            "Ask about Budget, Authority, Need, and Timeline early",
+            "Disqualify fast — don't waste time on bad leads",
+            "Focus energy on deals with the highest probability of closing",
+          ],
+        },
+        {
+          title: "4. Use automations strategically",
+          content: "Automate basic follow-ups, but keep the human touch for critical interactions. Proposal confirmation email? Automate. Final negotiation? Personal call.",
+        },
+        {
+          title: "5. Analyze metrics weekly",
+          content: "Reserve 1 hour every Monday to review:",
+          steps: [
+            "Conversion rate by stage — where is the bottleneck?",
+            "Average time in each stage — any stage getting stuck?",
+            "Total pipeline value — enough to hit target?",
+            "Stalled deals — which ones need urgent action?",
+            "Individual performance (if manager) — who needs coaching?",
+          ],
+        },
+        {
+          title: "6. Collaborate as a team",
+          content: "CRM is not just for tracking deals — it is for collaboration. Use internal comments, mention colleagues (@name), share learnings about clients.",
+        },
+        {
+          title: "7. Integrate with your other tools",
+          content: "Don't create silos. Integrate Sirius with email, calendar, WhatsApp, and automations (N8N). The more connected, the less manual work and more time selling.",
+        },
+        {
+          title: "8. Review lost deals monthly",
+          content: "Analyze the most common loss reasons. If 'Price too high' appears often, maybe your positioning needs work. If 'Ghosting' is common, improve your follow-up.",
+        },
+      ],
+    },
   },
 
   {
@@ -1355,6 +2482,8 @@ export const helpArticles: HelpArticle[] = [
     category: "Primeiros Passos",
     categorySlug: "primeiros-passos",
     description: "Soluções para os problemas mais comuns no Sirius CRM",
+    titleEn: "Troubleshooting: Common Problems and Solutions",
+    descriptionEn: "Solutions for the most common issues in Sirius CRM",
     lastUpdated: "2024-01-23",
     readTime: "4 min",
     content: {
@@ -1427,6 +2556,79 @@ export const helpArticles: HelpArticle[] = [
         {
           title: "Ainda com problemas?",
           content: "Se nenhuma solução acima resolver, entre em contato com nosso suporte: suporte@siriuscrm.com.br ou abra um chat dentro do sistema. Inclua screenshots e descrição detalhada do problema.",
+        },
+      ],
+    },
+    contentEn: {
+      sections: [
+        {
+          title: "Problem: Cannot log in",
+          content: "If you cannot access your account:",
+          steps: [
+            "Check that you are using the correct email (same one used to sign up)",
+            "Try resetting your password by clicking 'Forgot my password'",
+            "Check your spam folder — the email may have landed there",
+            "Clear browser cache (Ctrl+Shift+Delete)",
+            "Try a different browser or incognito mode",
+            "If it still does not work, contact support@siriuscrm.com.br",
+          ],
+        },
+        {
+          title: "Problem: Deals are not showing",
+          content: "If you cannot see your deals in the pipeline:",
+          steps: [
+            "Check active filters at the top — you may be filtering without realizing it",
+            "If you are a Member, you only see your own deals — ask an Admin to see all",
+            "Check that you are on the correct pipeline (use the pipeline selector)",
+            "Refresh the page (F5)",
+            "Check your internet connection",
+          ],
+        },
+        {
+          title: "Problem: Error creating a deal",
+          content: "If you get an error saving a deal:",
+          tips: [
+            "Check that all required fields are filled in (title and contact)",
+            "The value must be a valid number",
+            "If the error persists, try creating without custom fields first",
+            "Report the error to support with a screenshot",
+          ],
+        },
+        {
+          title: "Problem: Notifications not arriving",
+          content: "If you are not receiving notifications:",
+          steps: [
+            "Go to Settings > Notifications and check they are enabled",
+            "Check your email spam folder",
+            "For push notifications, confirm browser permission is granted",
+            "Test with a simple action (create a deal) and see if it notifies",
+          ],
+        },
+        {
+          title: "Problem: Integration not working",
+          content: "For issues with integrations (WhatsApp, Google Calendar, API):",
+          steps: [
+            "Revoke and reconnect the integration",
+            "Check that you granted all necessary permissions",
+            "For API issues, confirm the API key is correct and active",
+            "Check integration logs at Settings > Integrations > Logs",
+            "Contact support if the problem persists",
+          ],
+        },
+        {
+          title: "Problem: Slow performance",
+          content: "If the CRM is slow:",
+          tips: [
+            "Clear browser cache",
+            "Temporarily disable browser extensions",
+            "Check your internet connection",
+            "If you have thousands of deals, use filters to reduce loaded data",
+            "Try another browser (Chrome recommended)",
+          ],
+        },
+        {
+          title: "Still having issues?",
+          content: "If none of the above resolves the issue, contact our support at support@siriuscrm.com.br or open a chat inside the system. Include screenshots and a detailed description of the problem.",
         },
       ],
     },

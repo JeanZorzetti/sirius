@@ -78,10 +78,17 @@ export async function generateMetadata({
 export default async function ArticlePage({
   params,
 }: {
-  params: Promise<{ categoria: string; slug: string }>;
+  params: Promise<{ locale: string; categoria: string; slug: string }>;
 }) {
-  const { categoria, slug } = await params;
+  const { locale, categoria, slug } = await params;
   const article = getArticle(categoria, slug);
+  const isEn = locale === 'en';
+  const displayTitle = isEn && article?.titleEn ? article.titleEn : article?.title;
+  const displayDescription = isEn && article?.descriptionEn ? article.descriptionEn : article?.description;
+  const displayContent = isEn && article?.contentEn ? article.contentEn : article?.content;
+  const labels = isEn
+    ? { help: 'Help', backToHelp: 'Back to Help', updatedAt: 'Updated on', readTime: 'read', relatedArticles: 'Related Articles', startTrial: 'Start Free Trial', importantTips: 'Important Tips', attention: 'Note' }
+    : { help: 'Ajuda', backToHelp: 'Voltar para Ajuda', updatedAt: 'Atualizado em', readTime: 'Leitura de', relatedArticles: 'Artigos Relacionados', startTrial: 'Começar Teste Grátis', importantTips: 'Dicas Importantes', attention: 'Atenção' };
 
   if (!article) {
     notFound();
@@ -142,7 +149,7 @@ export default async function ArticlePage({
           {/* Breadcrumb */}
           <div className="flex items-center gap-2 text-sm text-muted-foreground mb-6">
             <Link href="/help" className="hover:text-foreground transition-colors">
-              Ajuda
+              {labels.help}
             </Link>
             <ChevronRight className="w-4 h-4" />
             <Link
@@ -152,7 +159,7 @@ export default async function ArticlePage({
               {article.category}
             </Link>
             <ChevronRight className="w-4 h-4" />
-            <span className="text-foreground">{article.title}</span>
+            <span className="text-foreground">{displayTitle}</span>
           </div>
 
           {/* Article Header */}
@@ -161,23 +168,23 @@ export default async function ArticlePage({
               {article.category}
             </Badge>
             <h1 className="text-3xl md:text-4xl font-bold mb-4">
-              {article.title}
+              {displayTitle}
             </h1>
             <p className="text-lg text-muted-foreground mb-6">
-              {article.description}
+              {displayDescription}
             </p>
 
             <div className="flex items-center gap-6 text-sm text-muted-foreground">
               <div className="flex items-center gap-2">
                 <Calendar className="w-4 h-4" />
                 <span>
-                  Atualizado em{" "}
-                  {new Date(article.lastUpdated).toLocaleDateString("pt-BR")}
+                  {labels.updatedAt}{" "}
+                  {new Date(article.lastUpdated).toLocaleDateString(isEn ? "en-US" : "pt-BR")}
                 </span>
               </div>
               <div className="flex items-center gap-2">
                 <Clock className="w-4 h-4" />
-                <span>Leitura de {article.readTime}</span>
+                <span>{isEn ? article.readTime : `${labels.readTime} ${article.readTime}`}</span>
               </div>
             </div>
           </div>
@@ -185,7 +192,7 @@ export default async function ArticlePage({
           {/* Article Content */}
           <div className="bg-card border border-border rounded-xl p-8 mb-8">
             <article className="prose prose-gray max-w-none dark:prose-invert">
-              {article.content.sections.map((section, index) => (
+              {displayContent!.sections.map((section, index) => (
                 <div key={index} className="mb-8 last:mb-0">
                   <h2 className="text-2xl font-semibold mb-4">
                     {section.title}
@@ -217,7 +224,7 @@ export default async function ArticlePage({
                       <div className="flex items-center gap-2 mb-3">
                         <Lightbulb className="w-5 h-5 text-blue-600 dark:text-blue-400" />
                         <h3 className="font-semibold text-blue-900 dark:text-blue-100">
-                          Dicas Importantes
+                          {labels.importantTips}
                         </h3>
                       </div>
                       <ul className="space-y-2">
@@ -241,7 +248,7 @@ export default async function ArticlePage({
                         <AlertCircle className="w-5 h-5 text-amber-600 dark:text-amber-400 flex-shrink-0 mt-0.5" />
                         <div>
                           <h3 className="font-semibold text-amber-900 dark:text-amber-100 mb-1">
-                            Atenção
+                            {labels.attention}
                           </h3>
                           <p className="text-sm text-amber-900 dark:text-amber-100">
                             {section.warning}
@@ -260,7 +267,7 @@ export default async function ArticlePage({
             <div className="bg-muted/30 rounded-xl p-6 mb-8">
               <div className="flex items-center gap-2 mb-4">
                 <BookOpen className="w-5 h-5 text-primary" />
-                <h3 className="text-lg font-semibold">Artigos Relacionados</h3>
+                <h3 className="text-lg font-semibold">{labels.relatedArticles}</h3>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                 {article.relatedArticles.map((related, index) => (
@@ -289,11 +296,11 @@ export default async function ArticlePage({
             <Link href="/help">
               <Button variant="ghost">
                 <ArrowLeft className="w-4 h-4 mr-2" />
-                Voltar para Ajuda
+                {labels.backToHelp}
               </Button>
             </Link>
             <Link href="/register">
-              <Button>Começar Teste Grátis</Button>
+              <Button>{labels.startTrial}</Button>
             </Link>
           </div>
         </div>
