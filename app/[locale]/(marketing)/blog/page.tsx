@@ -104,7 +104,7 @@ export default function BlogPage() {
                         {getAllCategories().map((cat) => (
                             <Link
                                 key={cat}
-                                href={`/blog/categoria/${slugifyCategory(cat)}`}
+                                href={`/${locale}/blog/categoria/${slugifyCategory(cat)}`}
                                 className="text-xs text-muted-foreground hover:text-primary whitespace-nowrap transition-colors"
                             >
                                 {cat}
@@ -122,7 +122,7 @@ export default function BlogPage() {
                         <div className="h-px bg-linear-to-r from-primary via-primary/50 to-transparent" />
                     </div>
 
-                    <Link href={`/blog/${featuredPost.slug}`} className="block group">
+                    <Link href={`/${locale}/blog/${featuredPost.slug}`} className="block group">
                         <div className="grid lg:grid-cols-2 gap-8 items-center">
                             {/* Image */}
                             <div className="relative aspect-video rounded-2xl overflow-hidden">
@@ -193,7 +193,7 @@ export default function BlogPage() {
                                     animationDelay: `${index * 100}ms`,
                                 }}
                             >
-                                <Link href={`/blog/${post.slug}`} className="block h-full group">
+                                <Link href={`/${locale}/blog/${post.slug}`} className="block h-full group">
                                     <Card className="h-full flex flex-col relative overflow-hidden border-border/50 bg-card hover:shadow-2xl hover:shadow-primary/10 hover:-translate-y-2 transition-all duration-500 ease-out rounded-2xl p-6">
                                         {/* Animated border gradient */}
                                         <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-linear-to-r from-blue-500/20 via-purple-500/20 to-pink-500/20 blur-xl -z-10" />
