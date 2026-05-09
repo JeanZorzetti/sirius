@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { useState, useEffect, useRef } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations, useLocale } from 'next-intl'
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
@@ -12,6 +12,8 @@ import { ArrowRight, Clock, Tag, BookOpen } from 'lucide-react'
 
 export default function BlogPage() {
     const t = useTranslations('marketing.blog')
+    const locale = useLocale()
+    const isEn = locale === 'en'
     const allCategory = t('categories.all')
     const [selectedCategory, setSelectedCategory] = useState(allCategory)
     const cardsRef = useRef<(HTMLDivElement | null)[]>([])
@@ -126,7 +128,7 @@ export default function BlogPage() {
                             <div className="relative aspect-video rounded-2xl overflow-hidden">
                                 <Image
                                     src={featuredPost.image}
-                                    alt={featuredPost.title}
+                                    alt={isEn && featuredPost.titleEn ? featuredPost.titleEn : featuredPost.title}
                                     fill
                                     className="object-cover group-hover:scale-105 transition-transform duration-700"
                                     sizes="(max-width: 1024px) 100vw, 50vw"
@@ -142,11 +144,11 @@ export default function BlogPage() {
                                 </Badge>
 
                                 <h2 className="text-3xl md:text-4xl font-bold leading-tight group-hover:text-primary transition-colors">
-                                    {featuredPost.title}
+                                    {isEn && featuredPost.titleEn ? featuredPost.titleEn : featuredPost.title}
                                 </h2>
 
                                 <p className="text-lg text-muted-foreground leading-relaxed">
-                                    {featuredPost.excerpt}
+                                    {isEn && featuredPost.excerptEn ? featuredPost.excerptEn : featuredPost.excerpt}
                                 </p>
 
                                 <div className="flex items-center gap-4 text-sm text-muted-foreground">
@@ -200,7 +202,7 @@ export default function BlogPage() {
                                         <div className="relative aspect-video w-full rounded-xl overflow-hidden mb-4">
                                           <Image
                                             src={post.image}
-                                            alt={post.title}
+                                            alt={isEn && post.titleEn ? post.titleEn : post.title}
                                             fill
                                             className="object-cover group-hover:scale-105 transition-transform duration-700"
                                             sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
@@ -216,13 +218,13 @@ export default function BlogPage() {
                                             </div>
 
                                             <CardTitle className="text-xl font-bold leading-tight group-hover:text-primary transition-colors duration-300">
-                                                {post.title}
+                                                {isEn && post.titleEn ? post.titleEn : post.title}
                                             </CardTitle>
                                         </CardHeader>
 
                                         <CardContent className="relative z-10 flex-1 p-0 mb-4">
                                             <p className="text-muted-foreground leading-relaxed line-clamp-3">
-                                                {post.excerpt}
+                                                {isEn && post.excerptEn ? post.excerptEn : post.excerpt}
                                             </p>
                                         </CardContent>
 
