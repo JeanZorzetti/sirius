@@ -83,6 +83,7 @@ export function EditDealDialog({
     onSuccess,
     currentUserId,
 }: EditDealDialogProps) {
+    const tCommon = useTranslations('common')
     const router = useRouter()
     const [loading, setLoading] = useState(false)
     const [fullDeal, setFullDeal] = useState<any>(null)
@@ -170,8 +171,6 @@ export function EditDealDialog({
         } else {
             setFullDeal(null)
         }
-
-        const tCommon = useTranslations('common')
 
         return () => {
             cancelled = true
@@ -375,8 +374,6 @@ export function EditDealDialog({
 
     if (!initialDeal) return null
 
-    const tCommon = useTranslations('common')
-
     return (
         <>
         <ResponsiveDialog open={open} onOpenChange={onOpenChange}>
@@ -553,7 +550,6 @@ export function EditDealDialog({
                                             {(() => {
                                                 const selectedContact = localContacts.find(c => c.id === selectedContactId)
                                                 if (!selectedContact || (!selectedContact.phone && !selectedContact.email)) return null
-                                                const tCommon = useTranslations('common')
                                                 return (
                                                     <div className="mt-2 space-y-1 rounded-lg border border-border/50 bg-muted/30 px-3 py-2 text-xs">
                                                         {selectedContact.phone && (
@@ -629,8 +625,6 @@ export function EditDealDialog({
                                             : diffH < 24 ? `em ${Math.round(diffH)}h`
                                             : `em ${diffD} dia${diffD > 1 ? 's' : ''}`
                                         const formattedDate = format(due, "dd/MM 'às' HH:mm", { locale: ptBR })
-
-                                        const tCommon = useTranslations('common')
 
                                         return (
                                             <div className={`flex items-start gap-3 rounded-lg border px-3.5 py-3 text-sm transition-all ${

@@ -60,6 +60,7 @@ export function CreateDealDialog({
     open?: boolean,
     onOpenChange?: (open: boolean) => void,
 }) {
+    const tCommon = useTranslations('common')
     const [internalOpen, setInternalOpen] = useState(false)
     const open = externalOpen !== undefined ? externalOpen : internalOpen
     const setOpen = externalOnOpenChange ?? setInternalOpen
@@ -189,8 +190,6 @@ export function CreateDealDialog({
             alert("Erro ao criar negócio")
         }
     }
-
-    const tCommon = useTranslations('common')
 
     return (
         <>
