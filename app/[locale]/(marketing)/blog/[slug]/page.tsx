@@ -144,12 +144,16 @@ export function generateStaticParams() {
 }
 
 export default async function BlogPostPage({ params }: BlogPostPageProps) {
-  const { slug } = await params
+  const { slug, locale } = await params
   const post = blogPosts.find((p) => p.slug === slug)
 
   if (!post) {
     notFound()
   }
+
+  const isEnLocale = locale === 'en'
+  const displayTitle = isEnLocale && post.titleEn ? post.titleEn : post.title
+  const displayContent = isEnLocale && post.contentEn ? post.contentEn : post.content
 
   // Optional: Auto-process blog post in background (production only)
   // This ensures all posts are eventually processed without manual intervention
@@ -485,7 +489,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
             </Link>
             <ChevronRight className="h-3 w-3" />
             <span className="text-foreground font-medium truncate max-w-[200px] md:max-w-none">
-              {post.title}
+              {displayTitle}
             </span>
           </nav>
 
@@ -502,11 +506,11 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
             <Badge variant="secondary" className="text-xs sm:text-sm font-medium px-2 sm:px-3 py-1">{post.category}</Badge>
 
             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight leading-tight text-foreground">
-              {post.title}
+              {displayTitle}
             </h1>
 
             <p className="text-lg sm:text-xl text-muted-foreground leading-relaxed">
-              {post.excerpt}
+              {isEnLocale && post.excerptEn ? post.excerptEn : post.excerpt}
             </p>
 
             {/* Author & Metadata */}
@@ -559,11 +563,11 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
           <div className="grid lg:grid-cols-[1fr_320px] lg:gap-12 xl:gap-16">
             {/* Main Content Column - Card Wrapper */}
             <article className="bg-white dark:bg-zinc-900 border border-border/50 shadow-lg rounded-2xl p-4 sm:p-6 md:p-8 lg:p-12 overflow-hidden">
-              <BlogContentWrapper content={post.content} slug={slug} />
+              <BlogContentWrapper content={displayContent} slug={slug} />
             </article>
 
             {/* Sidebar Column - Table of Contents */}
-            <TableOfContents content={post.content} />
+            <TableOfContents content={displayContent} />
           </div>
 
           {/* Internal Linking Bar */}

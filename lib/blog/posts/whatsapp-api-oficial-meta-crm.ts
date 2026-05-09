@@ -444,4 +444,209 @@ export const post: BlogPost = {
   </div>
 </div>
   `,
+  titleEn: 'Official WhatsApp API: The End of Blocked Accounts and How to Use It in Your CRM in 2026',
+  excerptEn: 'Why Meta is banning unofficial integrations, how the official WhatsApp Business API works, and how to connect it to your CRM without risking your number.',
+  keywordsEn: ['official whatsapp api', 'whatsapp business api crm', 'meta cloud api', 'whatsapp crm integration', 'avoid whatsapp ban'],
+  contentEn: `
+<p>
+  In 2026, using WhatsApp to sell without the <strong>Meta Official API</strong> is like driving without a seatbelt: it works until the day it doesn't. Thousands of Brazilian companies discovered this the hard way — they woke up with their number blocked, customers without service, and months of conversation history lost.
+</p>
+
+<p>
+  Meta has stopped turning a blind eye to unauthorized integrations. Tools like Evolution API, Baileys, and Whatsmeow — which worked by connecting to WhatsApp Web in an unofficial way — are being detected and banned at an increasing scale. If your CRM uses any of these technologies, the risk is real and immediate.
+</p>
+
+<p>
+  In this article you'll understand exactly what the Official WhatsApp Business API is, why it's the only safe integration, how it works in practice, and how to connect it to your CRM to never lose a number again.
+</p>
+
+<div style="background: linear-gradient(135deg, #18181b 0%, #27272a 100%); border-radius: 1rem; padding: 1.75rem 2rem; margin: 2rem 0;">
+  <p style="font-size: 0.75rem; font-weight: 700; color: #71717a; text-transform: uppercase; letter-spacing: 0.1em; margin: 0 0 0.75rem;">TL;DR — 30 second read</p>
+  <ul style="margin: 0; padding-left: 1.25rem; space-y: 0.5rem;">
+    <li style="color: #e4e4e7; font-size: 0.9375rem; margin-bottom: 0.5rem;">Meta is actively banning accounts using unofficial APIs (Evolution API, Baileys, Whatsmeow)</li>
+    <li style="color: #e4e4e7; font-size: 0.9375rem; margin-bottom: 0.5rem;">The Official API (Meta Cloud API) is the only approved integration — no ban risk</li>
+    <li style="color: #e4e4e7; font-size: 0.9375rem; margin-bottom: 0.5rem;">Requires verified Meta Business Manager + dedicated number + app on Facebook Developers</li>
+    <li style="color: #e4e4e7; font-size: 0.9375rem;">Sirius CRM is one of the only Brazilian CRMs with native integration to the Official API</li>
+  </ul>
+</div>
+
+<div class="callout-stat">
+  <p><strong>📊 Impact data:</strong> According to WhatsApp's own Help Center, accounts that violate Terms of Use through unauthorized automations are subject to <strong>permanent ban with no appeal</strong>. In 2025, industry estimates indicate that more than 40,000 Brazilian business numbers were blocked for using unofficial APIs.</p>
+</div>
+
+<h2>What is the Official WhatsApp Business API?</h2>
+
+<p>
+  The <strong>WhatsApp Business API</strong> — also called <strong>Meta Cloud API</strong> or <strong>WABA (WhatsApp Business Account)</strong> — is the official interface developed and maintained by Meta to allow companies to integrate WhatsApp into their systems in an authorized way.
+</p>
+
+<p>
+  Unlike WhatsApp Web (which mirrors a phone) or the WhatsApp Business App (limited to one device), the Official API:
+</p>
+
+<ul>
+  <li>Runs on Meta's servers, does not depend on a connected phone</li>
+  <li>Operates 24/7 without interruptions</li>
+  <li>Allows multiple simultaneous agents on the same number</li>
+  <li>Is within WhatsApp's Terms of Service — no ban risk</li>
+  <li>Supports Meta-approved message templates for proactive communication</li>
+</ul>
+
+<div class="callout-tip">
+  <p><strong>💡 Important note:</strong> The Official API uses a dedicated phone number that <em>has never been used on WhatsApp before</em>. This means a virgin SIM — you cannot migrate a number that already has history on personal WhatsApp or the Business App.</p>
+</div>
+
+<h2>Why is Meta banning unofficial APIs?</h2>
+
+<p>
+  Understanding Meta's motivation helps explain why the problem will only get worse — not better.
+</p>
+
+<p>
+  Tools like Evolution API, Baileys, Whatsmeow, and WPPConnect work by reverse-engineering the WhatsApp Web protocol. Instead of using the official API, they simulate a browser connecting to WhatsApp's web version and capture data directly. Meta explicitly prohibits this in the Terms of Service, section 4 ("Acceptable Use").
+</p>
+
+<div style="background: #fff7ed; border: 1px solid #fed7aa; border-radius: 0.75rem; padding: 1.5rem; margin: 1.5rem 0;">
+  <p style="font-weight: 700; color: #9a3412; margin: 0 0 0.75rem;">⚠️ Why is Meta acting more forcefully now?</p>
+  <div style="display: grid; gap: 0.75rem;">
+    <div style="display: flex; gap: 0.75rem; align-items: flex-start;">
+      <span style="color: #c2410c; font-weight: 700;">1.</span>
+      <p style="margin: 0; color: #7c2d12; font-size: 0.9375rem;"><strong>Fraud and spam at scale:</strong> Unofficial APIs are the primary tool of scammers who blast mass messages pretending to be banks, postal services, and government agencies.</p>
+    </div>
+    <div style="display: flex; gap: 0.75rem; align-items: flex-start;">
+      <span style="color: #c2410c; font-weight: 700;">2.</span>
+      <p style="margin: 0; color: #7c2d12; font-size: 0.9375rem;"><strong>Revenue:</strong> Meta monetizes the Official API by conversation volume. Every company using the free unofficial version is lost revenue.</p>
+    </div>
+    <div style="display: flex; gap: 0.75rem; align-items: flex-start;">
+      <span style="color: #c2410c; font-weight: 700;">3.</span>
+      <p style="margin: 0; color: #7c2d12; font-size: 0.9375rem;"><strong>Regulation:</strong> With LGPD and European GDPR, Meta needs to control the data flow through its servers. Unofficial APIs create a compliance black hole.</p>
+    </div>
+    <div style="display: flex; gap: 0.75rem; align-items: flex-start;">
+      <span style="color: #c2410c; font-weight: 700;">4.</span>
+      <p style="margin: 0; color: #7c2d12; font-size: 0.9375rem;"><strong>Detection improved:</strong> Non-human behavior detection algorithms became much more sophisticated in 2025. Uniform typing patterns, batch sending, and server connections are easily identified.</p>
+    </div>
+  </div>
+</div>
+
+<h2>Official API vs Unofficial APIs: honest comparison</h2>
+
+<div style="overflow-x: auto; margin: 1.5rem 0;">
+  <table style="width: 100%; border-collapse: collapse; font-size: 0.9375rem;">
+    <thead>
+      <tr style="background: #f4f4f5;">
+        <th style="padding: 0.875rem 1rem; text-align: left; border-bottom: 2px solid #e4e4e7; color: #3f3f46; font-weight: 700;">Criterion</th>
+        <th style="padding: 0.875rem 1rem; text-align: center; border-bottom: 2px solid #e4e4e7; color: #16a34a; font-weight: 700;">Official Meta API</th>
+        <th style="padding: 0.875rem 1rem; text-align: center; border-bottom: 2px solid #e4e4e7; color: #dc2626; font-weight: 700;">Evolution / Baileys / Whatsmeow</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr style="border-bottom: 1px solid #f4f4f5;">
+        <td style="padding: 0.875rem 1rem; color: #52525b; font-weight: 500;">Ban risk</td>
+        <td style="padding: 0.875rem 1rem; text-align: center;">✅ Zero</td>
+        <td style="padding: 0.875rem 1rem; text-align: center;">🔴 High and growing</td>
+      </tr>
+      <tr style="background: #fafafa; border-bottom: 1px solid #f4f4f5;">
+        <td style="padding: 0.875rem 1rem; color: #52525b; font-weight: 500;">Meta Terms of Service</td>
+        <td style="padding: 0.875rem 1rem; text-align: center;">✅ Authorized</td>
+        <td style="padding: 0.875rem 1rem; text-align: center;">🔴 Explicit violation</td>
+      </tr>
+      <tr style="border-bottom: 1px solid #f4f4f5;">
+        <td style="padding: 0.875rem 1rem; color: #52525b; font-weight: 500;">Depends on connected phone</td>
+        <td style="padding: 0.875rem 1rem; text-align: center;">✅ No</td>
+        <td style="padding: 0.875rem 1rem; text-align: center;">🔴 Yes</td>
+      </tr>
+      <tr style="background: #fafafa; border-bottom: 1px solid #f4f4f5;">
+        <td style="padding: 0.875rem 1rem; color: #52525b; font-weight: 500;">Guaranteed uptime</td>
+        <td style="padding: 0.875rem 1rem; text-align: center;">✅ 99.9% (Meta SLA)</td>
+        <td style="padding: 0.875rem 1rem; text-align: center;">⚠️ Variable</td>
+      </tr>
+      <tr style="border-bottom: 1px solid #f4f4f5;">
+        <td style="padding: 0.875rem 1rem; color: #52525b; font-weight: 500;">Delivery status (delivered/read)</td>
+        <td style="padding: 0.875rem 1rem; text-align: center;">✅ Native</td>
+        <td style="padding: 0.875rem 1rem; text-align: center;">⚠️ Partial</td>
+      </tr>
+      <tr style="background: #fafafa; border-bottom: 1px solid #f4f4f5;">
+        <td style="padding: 0.875rem 1rem; color: #52525b; font-weight: 500;">Proactive message templates</td>
+        <td style="padding: 0.875rem 1rem; text-align: center;">✅ Supported</td>
+        <td style="padding: 0.875rem 1rem; text-align: center;">🔴 No (ToS violation)</td>
+      </tr>
+      <tr style="border-bottom: 1px solid #f4f4f5;">
+        <td style="padding: 0.875rem 1rem; color: #52525b; font-weight: 500;">Multi-agent on same number</td>
+        <td style="padding: 0.875rem 1rem; text-align: center;">✅ Native</td>
+        <td style="padding: 0.875rem 1rem; text-align: center;">⚠️ Via workaround</td>
+      </tr>
+      <tr style="background: #fafafa; border-bottom: 1px solid #f4f4f5;">
+        <td style="padding: 0.875rem 1rem; color: #52525b; font-weight: 500;">Cost</td>
+        <td style="padding: 0.875rem 1rem; text-align: center;">⚠️ Per conversation (first 1,000/month free)</td>
+        <td style="padding: 0.875rem 1rem; text-align: center;">✅ Free (but with risk)</td>
+      </tr>
+      <tr style="background: #fafafa;">
+        <td style="padding: 0.875rem 1rem; color: #52525b; font-weight: 500;">Data compliance</td>
+        <td style="padding: 0.875rem 1rem; text-align: center;">✅ Data processed by Meta</td>
+        <td style="padding: 0.875rem 1rem; text-align: center;">🔴 Full liability on you</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<h2>How the Official API works in practice</h2>
+
+<p>
+  The Meta Cloud API works completely differently from WhatsApp Web integrations. Instead of simulating a human user navigating WhatsApp, it communicates directly with Meta's servers via HTTP — the same protocol as any modern REST API.
+</p>
+
+<h3>Billing model</h3>
+<p>Meta charges per <strong>conversation</strong>, not per individual message. A conversation is a 24-hour window that opens when there is interaction. The first 1,000 service conversations per month are free — ideal for companies that receive inbound customer contacts.</p>
+
+<h2>How to connect the Official API to your CRM</h2>
+
+<p>
+  With the prerequisites in hand, CRM configuration involves 4 main pieces of information you obtain from the Facebook Developers panel:
+</p>
+
+<ol style="margin: 1.5rem 0; padding-left: 1.5rem; display: grid; gap: 1rem;">
+  <li style="color: #3f3f46;"><strong style="color: #18181b;">Phone Number ID</strong> — unique identifier for your number on the Meta platform.</li>
+  <li style="color: #3f3f46;"><strong style="color: #18181b;">Business Account ID (WABA ID)</strong> — ID of your WhatsApp Business account.</li>
+  <li style="color: #3f3f46;"><strong style="color: #18181b;">Permanent Access Token</strong> — generated via system user in Meta Business Manager.</li>
+  <li style="color: #3f3f46;"><strong style="color: #18181b;">Webhook Verify Token</strong> — a string you create that Meta uses to validate your webhook endpoint.</li>
+</ol>
+
+<p>
+  In <strong>Sirius CRM</strong>, just go to <strong>Settings → Integrations → Official WhatsApp</strong>, fill in these 4 fields, and activate. The system automatically configures the webhook and starts receiving messages.
+</p>
+
+<h2>The real risk of continuing with unofficial APIs</h2>
+
+<div class="callout-warning">
+  <p><strong>🔴 What happens when Meta bans your number:</strong></p>
+  <ul>
+    <li>The number is blocked without prior warning — customers try to reach you and get "invalid number"</li>
+    <li>Conversation history may be lost depending on how your CRM stored the data</li>
+    <li>The blocked number generally cannot be recovered — you lose an asset it took years to build</li>
+    <li>Customers who depended on that contact are left without service until you set up a replacement</li>
+    <li>The reputation damage ("that company just disappeared") is hard to quantify</li>
+  </ul>
+</div>
+
+<p>
+  The cost of setting up the Official API — whether in time or money — is a fraction of the cost of rebuilding a sales operation after a ban. It's not a question of <em>if</em> it will happen, but <em>when</em>.
+</p>
+
+<div style="background: linear-gradient(135deg, #18181b 0%, #27272a 100%); border-radius: 1rem; padding: 2rem; margin: 2.5rem 0; text-align: center;">
+  <p style="font-size: 1.5rem; font-weight: 800; color: #4ade80; margin: 0 0 0.75rem; line-height: 1.3;">
+    Never have your WhatsApp blocked again.
+  </p>
+  <p style="color: #a1a1aa; font-size: 0.9375rem; margin: 0 0 1.5rem; max-width: 480px; margin-left: auto; margin-right: auto;">
+    Sirius CRM has native integration with the Official WhatsApp Business API. Set it up in minutes or let our team do it for you.
+  </p>
+  <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+    <a href="/register" style="display: inline-block; background: #16a34a; color: white; padding: 0.75rem 1.75rem; border-radius: 0.5rem; text-decoration: none; font-weight: 700; font-size: 0.9375rem;">
+      Try free for 14 days
+    </a>
+    <a href="/dashboard/settings/integrations/whatsapp-official" style="display: inline-block; background: transparent; color: #4ade80; padding: 0.75rem 1.75rem; border-radius: 0.5rem; text-decoration: none; font-weight: 700; font-size: 0.9375rem; border: 1px solid #4ade80;">
+      View Official WhatsApp integration
+    </a>
+  </div>
+</div>
+  `,
 }

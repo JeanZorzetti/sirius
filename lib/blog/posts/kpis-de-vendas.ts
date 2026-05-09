@@ -316,5 +316,144 @@ export const post: BlogPost = {
       <strong>Última Atualização:</strong> 28 de Fevereiro de 2026<br/>
       <strong>Autor:</strong> Equipe Sirius CRM<br/>
       <strong>Tempo de Leitura:</strong> 9 minutos
-    `
+    `,
+  titleEn: '12 Sales KPIs for 2026: Real B2B Market Benchmarks',
+  excerptEn: 'The 12 KPIs that separate quota-hitting teams from the rest. Includes real B2B benchmarks and a free dashboard template.',
+  keywordsEn: ['sales kpis 2026', 'b2b sales metrics', 'sales kpi benchmarks', 'crm sales dashboard', 'sales performance indicators'],
+  contentEn: `
+      <p>
+        "What gets measured gets managed." Peter Drucker's quote still reflects the reality of most sales operations in 2026: managers make gut-feel decisions, reps don't know where they stand against quota, and the pipeline becomes a black box that occasionally produces results.
+      </p>
+
+      <p>
+        The solution isn't more data — it's the <strong>right 12 KPIs</strong>, measured consistently, reviewed weekly. Here's the dashboard every B2B sales team should be running in 2026.
+      </p>
+
+      <h2>The 12 Essential Sales KPIs</h2>
+
+      <h3>1. Stage-by-Stage Conversion Rate</h3>
+      <p>
+        <strong>Formula:</strong> Deals advancing to next stage ÷ Deals entering current stage × 100<br/>
+        <strong>B2B Benchmark:</strong> MQL→SQL: 20-30% | SQL→Demo: 40-60% | Demo→Close: 20-35%<br/>
+        <strong>Why it matters:</strong> Reveals exactly where in the funnel you're losing deals. A healthy overall conversion rate with one broken stage is worse than a uniformly low conversion rate — it means a specific, fixable problem.
+      </p>
+
+      <h3>2. Average Sales Cycle (Days to Close)</h3>
+      <p>
+        <strong>Formula:</strong> Sum of days from first contact to close ÷ Total closed deals<br/>
+        <strong>B2B SMB Benchmark:</strong> 30-60 days (simple deals) | 60-120 days (complex)<br/>
+        <strong>Why it matters:</strong> Increasing cycle time is an early warning signal — often caused by unqualified leads entering the pipeline or missing stakeholders discovered late.
+      </p>
+
+      <h3>3. Win Rate</h3>
+      <p>
+        <strong>Formula:</strong> Closed-won ÷ (Closed-won + Closed-lost) × 100<br/>
+        <strong>B2B Benchmark:</strong> 20-35% (overall) | Top performers: 40%+<br/>
+        <strong>Why it matters:</strong> Win rate below benchmark by 10+ points usually indicates one of three things: wrong ICP targeting, weak qualification, or insufficient follow-up cadence.
+      </p>
+
+      <h3>4. Average Deal Value (ACV)</h3>
+      <p>
+        <strong>Formula:</strong> Total closed revenue ÷ Number of deals closed<br/>
+        <strong>Why it matters:</strong> ACV trending down signals reps are discounting to close, moving upmarket is failing, or lower-value deals are being prioritized. ACV trending up with flat win rate = healthy scaling.
+      </p>
+
+      <h3>5. Pipeline Coverage Ratio</h3>
+      <p>
+        <strong>Formula:</strong> Total pipeline value ÷ Revenue target for the period<br/>
+        <strong>Benchmark:</strong> 3x-5x target<br/>
+        <strong>Why it matters:</strong> A team with a 2x pipeline will likely miss quota — not enough room to absorb normal attrition. A team with 8x pipeline likely has unqualified deals clogging the funnel and distorting forecasts.
+      </p>
+
+      <h3>6. Days in Stage (Stage Velocity)</h3>
+      <p>
+        <strong>Formula:</strong> Average days a deal spends in each pipeline stage<br/>
+        <strong>Why it matters:</strong> Deals that sit in "Proposal Sent" for 3x the average are almost certainly dead — but reps keep them open to look busy. Days in Stage alerts expose these zombie deals before they distort your forecast.
+      </p>
+
+      <h3>7. Follow-Up Cadence Compliance</h3>
+      <p>
+        <strong>Formula:</strong> Deals with next action logged ÷ Total active deals × 100<br/>
+        <strong>Target:</strong> 100% — every open deal should have a scheduled next action<br/>
+        <strong>Why it matters:</strong> Research shows 80% of sales happen between the 5th and 12th contact. If deals have no scheduled follow-up, they'll die from neglect — not from competitive loss.
+      </p>
+
+      <h3>8. Lead Response Time</h3>
+      <p>
+        <strong>Formula:</strong> Average minutes from lead creation to first rep contact<br/>
+        <strong>Benchmark:</strong> Under 5 minutes = 9x higher conversion vs 30+ minutes (MIT/Harvard study)<br/>
+        <strong>Why it matters:</strong> The fastest company to respond wins. In WhatsApp-centric Brazilian B2B sales, this means responding to inbound messages within minutes — not hours.
+      </p>
+
+      <h3>9. Cost Per Acquired Customer (CAC)</h3>
+      <p>
+        <strong>Formula:</strong> Total sales + marketing spend ÷ New customers acquired<br/>
+        <strong>B2B SMB target:</strong> CAC payback under 12 months<br/>
+        <strong>Why it matters:</strong> CAC tells you the health of your go-to-market economics. Rising CAC with flat new customers = acquisition efficiency declining. Decreasing CAC with rising customers = compounding unit economics.
+      </p>
+
+      <h3>10. Monthly Recurring Revenue (MRR) Churn</h3>
+      <p>
+        <strong>Formula:</strong> MRR lost from churned customers ÷ MRR at start of month × 100<br/>
+        <strong>SaaS Benchmark:</strong> Below 2%/month (under 22%/year)<br/>
+        <strong>Why it matters:</strong> Churn is a leading indicator of product-market fit and onboarding quality. High churn from the 0-30 day cohort means onboarding failure. High churn from 6-12 months means value delivery failure.
+      </p>
+
+      <h3>11. Activities per Rep per Day</h3>
+      <p>
+        <strong>Typical benchmarks:</strong> 40-60 activities/day (inside sales, high-velocity) | 8-15 activities/day (complex enterprise)<br/>
+        <strong>Warning:</strong> Don't optimize for activity volume alone — a rep making 80 calls/day to the wrong ICP is destructive, not productive. Pair activity KPIs with conversion KPIs.
+      </p>
+
+      <h3>12. Net Revenue Retention (NRR)</h3>
+      <p>
+        <strong>Formula:</strong> (Starting MRR + Expansion MRR - Churn MRR - Contraction MRR) ÷ Starting MRR × 100<br/>
+        <strong>Target:</strong> Above 100% = growth from existing customers alone<br/>
+        <strong>Why it matters:</strong> NRR above 100% means you could theoretically stop acquiring new customers and still grow. It's the single most important metric for SaaS long-term health.
+      </p>
+
+      <h2>How to Track These KPIs Automatically in Your CRM</h2>
+
+      <p>
+        A properly configured CRM calculates all 12 KPIs automatically. In Sirius CRM:
+      </p>
+
+      <ul>
+        <li><strong>Pipeline conversion rates</strong> are tracked per stage in real-time</li>
+        <li><strong>Days in stage alerts</strong> flag stalled deals automatically</li>
+        <li><strong>Follow-up compliance</strong> is tracked via task completion rate</li>
+        <li><strong>Lead response time</strong> is logged when the first WhatsApp/email is sent</li>
+        <li><strong>AI forecasting</strong> uses all 12 KPIs to predict end-of-month close probability with 85%+ accuracy</li>
+      </ul>
+
+      <div style="background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); border-left: 4px solid #2563eb; padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
+        <p style="font-weight: 700; color: #1e40af;">Get your KPI dashboard set up in under 30 minutes</p>
+        <p style="color: #1e40af; margin: 0.5rem 0 1rem;">Sirius CRM tracks all 12 KPIs automatically. No manual calculation, no spreadsheet exports.</p>
+        <a href="/en/register" style="background: #2563eb; color: white; padding: 0.75rem 1.5rem; border-radius: 0.5rem; font-weight: 600; text-decoration: none; display: inline-block;">Start Free for 14 Days →</a>
+      </div>
+
+      <h2>Frequently Asked Questions</h2>
+
+      <h3>Which KPI should I start tracking first?</h3>
+      <p>
+        Start with two: stage-by-stage conversion rate and days in stage. These two KPIs reveal the largest bottlenecks fastest. Once those are stable and improving, add follow-up compliance and lead response time. Build the dashboard progressively rather than trying to track all 12 from day one.
+      </p>
+
+      <h3>How often should I review sales KPIs?</h3>
+      <p>
+        Weekly for operational KPIs (stage conversion, days in stage, activities, response time). Monthly for financial KPIs (ACV, CAC, churn, NRR). Quarterly for strategic KPIs (pipeline coverage trends, win rate by segment, CAC payback evolution).
+      </p>
+
+      <h3>Are these benchmarks applicable to Brazilian SMBs?</h3>
+      <p>
+        Partially. The benchmarks above are calibrated for B2B SaaS globally. Brazilian B2B has some specific characteristics: longer decision cycles due to more relationship-dependent selling, higher WhatsApp usage as a sales channel, and higher lead response time sensitivity (Brazilian buyers expect faster responses than North American averages). Treat the benchmarks as directional targets, not absolute standards.
+      </p>
+
+      <hr style="margin: 3rem 0; border: none; border-top: 1px solid #e5e7eb;" />
+      <p style="font-size: 0.85rem; color: #64748b;">
+        <strong>Last Updated:</strong> February 28, 2026<br/>
+        <strong>Author:</strong> Sirius CRM Team<br/>
+        <strong>Reading Time:</strong> 9 minutes
+      </p>
+  `,
 }

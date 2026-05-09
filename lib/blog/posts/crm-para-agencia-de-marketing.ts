@@ -281,5 +281,76 @@ export const post: BlogPost = {
       <strong>Última Atualização:</strong> 28 de Março de 2026<br/>
       <strong>Autor:</strong> Equipe Sirius CRM<br/>
       <strong>Tempo de Leitura:</strong> 12 minutos
-    `
+    `,
+  titleEn: 'CRM for Marketing Agencies: Multi-Pipeline and Client Management in 2026',
+  excerptEn: 'Agencies manage 10-30 clients simultaneously with different processes. A CRM with multi-pipeline separates prospecting from project delivery. See how to set it up.',
+  keywordsEn: ['crm for marketing agency', 'agency crm 2026', 'multi-pipeline crm', 'crm client management agency', 'marketing agency crm'],
+  contentEn: `
+      <p>
+        Marketing agencies have a unique CRM challenge: they need to simultaneously manage new business prospecting (selling to new clients) and ongoing project delivery (managing existing clients). Most CRMs are built for one or the other. A multi-pipeline CRM solves both in one system.
+      </p>
+
+      <h2>The Two Pipelines Every Agency Needs</h2>
+
+      <h3>Pipeline 1: New Business (Sales)</h3>
+      <p>
+        Tracks potential clients from first contact to signed contract:
+      </p>
+      <ul>
+        <li>Lead → Qualified → Proposal Sent → Proposal Presented → Contract Signed</li>
+        <li>KPIs: close rate, average deal cycle, average retainer value</li>
+        <li>Automations: follow-up after proposal sent, contract reminder</li>
+      </ul>
+
+      <h3>Pipeline 2: Client Success (Delivery)</h3>
+      <p>
+        Tracks existing clients through the service relationship:
+      </p>
+      <ul>
+        <li>Onboarding → Active → Renewal Approaching → Renewed / Churned</li>
+        <li>KPIs: churn rate, NPS, expansion revenue, contract renewal rate</li>
+        <li>Automations: renewal reminder 60 days before contract end, satisfaction check-in triggers</li>
+      </ul>
+
+      <h2>Key Features for Agency CRM</h2>
+
+      <h3>Client Segmentation by Service Type</h3>
+      <p>
+        An agency serving real estate clients, e-commerce brands, and healthcare providers needs different data fields per segment. Create custom fields per client type (e.g., for real estate: monthly budget, listing platform; for e-commerce: store platform, monthly GMV).
+      </p>
+
+      <h3>Renewal Alert Automation</h3>
+      <p>
+        Contracts that renew without a check-in are at risk. Set an automatic task 60 days before each contract renewal date: "Schedule renewal conversation with [client name]." Agencies that do this consistently have 30%+ higher renewal rates.
+      </p>
+
+      <h3>WhatsApp Integration for Client Communication</h3>
+      <p>
+        Most agency-client communication happens in WhatsApp groups. Integrating WhatsApp with the CRM means every conversation is logged in the client record — no more hunting through old messages when a client asks "what did we discuss in March?"
+      </p>
+
+      <h2>How to Set Up in Sirius CRM (30-Minute Setup)</h2>
+
+      <ol>
+        <li>Create Pipeline 1 (New Business) with your standard sales stages</li>
+        <li>Create Pipeline 2 (Client Success) with your service delivery stages</li>
+        <li>Import existing clients into Pipeline 2</li>
+        <li>Set renewal date as a custom field on each client deal</li>
+        <li>Create automation: "30 days before renewal date → create task for account manager"</li>
+        <li>Connect WhatsApp number to centralize client messages</li>
+      </ol>
+
+      <div style="background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); border-left: 4px solid #2563eb; padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
+        <p style="font-weight: 700; color: #1e40af;">Set up your agency's dual pipeline in 30 minutes</p>
+        <p style="color: #1e40af; margin: 0.5rem 0 1rem;">Sirius CRM includes unlimited pipelines, WhatsApp integration, and renewal automation — all in the free plan.</p>
+        <a href="/en/register" style="background: #2563eb; color: white; padding: 0.75rem 1.5rem; border-radius: 0.5rem; font-weight: 600; text-decoration: none; display: inline-block;">Start Free →</a>
+      </div>
+
+      <hr style="margin: 3rem 0; border: none; border-top: 1px solid #e5e7eb;" />
+      <p style="font-size: 0.85rem; color: #64748b;">
+        <strong>Last Updated:</strong> March 28, 2026<br/>
+        <strong>Author:</strong> Sirius CRM Team<br/>
+        <strong>Reading Time:</strong> 12 minutes
+      </p>
+  `,
 }

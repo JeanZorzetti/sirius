@@ -205,5 +205,92 @@ export const post: BlogPost = {
       <strong>Última Atualização:</strong> 28 de Fevereiro de 2026<br/>
       <strong>Autor:</strong> Equipe Sirius CRM<br/>
       <strong>Tempo de Leitura:</strong> 8 minutos
-    `
+    `,
+  titleEn: '7 CRM Mistakes That Are Destroying Your Sales Operation (and How to Avoid Them)',
+  excerptEn: 'Adopting a CRM doesn\'t guarantee results. See the 7 most common mistakes that sabotage sales management and how to fix them before they cost you.',
+  keywordsEn: ['crm implementation mistakes', 'crm adoption failure', 'crm best practices', 'why crm fails', 'crm mistakes to avoid'],
+  contentEn: `
+      <p>
+        A poorly implemented CRM is worse than no CRM at all: it generates cost without results, frustrates the team, and gives management a false sense of control based on wrong data. Here are the 7 mistakes that sabotage most CRM implementations — and how to avoid each one.
+      </p>
+
+      <h2>Mistake 1: Too Many Custom Fields from the Start</h2>
+      <p>
+        The most common implementation error: creating 30+ custom fields on the deal card before the team is even trained. Every extra field is one more thing reps must fill to "complete" a deal record — and each unfilled field degrades the data quality of your entire pipeline.
+      </p>
+      <p>
+        <strong>Fix:</strong> Start with 5-7 essential fields only (company, contact, deal value, stage, responsible rep, next action). Add new fields only when a real, recurring business need appears.
+      </p>
+
+      <h2>Mistake 2: No Clear Stage Definitions</h2>
+      <p>
+        When "Negotiation" means different things to different reps, your pipeline is a collection of opinions, not a forecast. Every rep will advance deals based on gut feel rather than objective criteria.
+      </p>
+      <p>
+        <strong>Fix:</strong> Document the entry criterion for each stage (what must be true for a deal to enter?) and the progression criterion (what action/event moves it forward?). Post these definitions where the team can see them.
+      </p>
+
+      <h2>Mistake 3: CRM as Report Tool, Not Work Tool</h2>
+      <p>
+        When reps update the CRM at the end of the week instead of in real time, two things happen: data is incomplete, and the CRM is perceived as administrative overhead rather than sales enablement. Adoption collapses within 60-90 days.
+      </p>
+      <p>
+        <strong>Fix:</strong> Train reps to update the CRM during the work, not after. Make CRM updates the trigger for the next action: "logged the call → set next task → advance stage." The CRM is the work surface, not the report.
+      </p>
+
+      <h2>Mistake 4: No Manager Accountability for Data Quality</h2>
+      <p>
+        Reps update the CRM with accurate data when managers review and act on that data. If a manager runs the weekly pipeline review from memory instead of the CRM — reps learn that CRM data doesn't matter.
+      </p>
+      <p>
+        <strong>Fix:</strong> Managers must run every pipeline meeting from the CRM. Reference specific fields. Ask "why is this deal still in Proposal Sent after 12 days?" The CRM becomes important because management treats it as authoritative.
+      </p>
+
+      <h2>Mistake 5: No Integration with Your Main Communication Channel</h2>
+      <p>
+        In Brazil, WhatsApp is the primary B2B sales channel. A CRM that doesn't integrate with WhatsApp forces reps to manage conversations in two places — and the WhatsApp history (where most actual selling happens) never makes it into the CRM.
+      </p>
+      <p>
+        <strong>Fix:</strong> Use a CRM with native WhatsApp integration. Every conversation is logged automatically. No copy-paste, no duplicate work.
+      </p>
+
+      <h2>Mistake 6: Skipping Onboarding and Training</h2>
+      <p>
+        "We'll figure it out as we go" produces $0 in CRM ROI. Without structured training, reps use the CRM in 10 different ways, produce inconsistent data, and abandon it within 90 days.
+      </p>
+      <p>
+        <strong>Fix:</strong> Minimum 4 hours of structured onboarding per rep. Focus on: the 3 things they'll use daily, how to log a deal correctly, how to set next actions, and how to read their pipeline report. Practice with real leads, not demo data.
+      </p>
+
+      <h2>Mistake 7: Treating CRM as a One-Time Setup</h2>
+      <p>
+        Business processes evolve. A pipeline structure that worked 12 months ago may no longer reflect how deals actually progress. Most teams set up the CRM once and never revisit it — accumulating misalignment between the system and reality.
+      </p>
+      <p>
+        <strong>Fix:</strong> Quarterly CRM health review: Are stages still accurate? Are automations firing correctly? Are there fields nobody fills? Is the data quality sufficient for forecasting? Clean, adjust, and retrain as the business evolves.
+      </p>
+
+      <h2>CRM Health Checklist</h2>
+      <p>Answer yes or no for each item. 4+ "no" answers = time to fix before investing further in sales:</p>
+      <ul>
+        <li>[ ] Every open deal has a next action with a due date</li>
+        <li>[ ] Stage definitions are documented and all reps know them</li>
+        <li>[ ] Pipeline meetings are conducted using CRM data, not memory</li>
+        <li>[ ] CRM is integrated with the team's main communication channel</li>
+        <li>[ ] New reps get structured CRM training before their first real deal</li>
+        <li>[ ] No zombie deals (open for 45+ days with no recent activity)</li>
+        <li>[ ] The pipeline coverage ratio is tracked and above 3x</li>
+      </ul>
+
+      <p>
+        A well-functioning CRM is the multiplier that makes everything else more effective. A broken CRM gives management a dangerous false sense of control. The 7 mistakes above are all fixable — start with the one that resonates most with your current situation.
+      </p>
+
+      <hr style="margin: 3rem 0; border: none; border-top: 1px solid #e5e7eb;" />
+      <p style="font-size: 0.85rem; color: #64748b;">
+        <strong>Last Updated:</strong> February 28, 2026<br/>
+        <strong>Author:</strong> Sirius CRM Team<br/>
+        <strong>Reading Time:</strong> 8 minutes
+      </p>
+  `,
 }

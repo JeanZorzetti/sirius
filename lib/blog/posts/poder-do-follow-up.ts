@@ -476,4 +476,126 @@ export const post: BlogPost = {
   image: '/images/blog/follow-up.webp',
   author: 'Sirius Team',
   relatedSlugs: ['crm-automacao-vendas-guia-completo', 'spin-selling-guia-completo'],
+  titleEn: 'The Science of Follow-Up: How to Sell 80% More Without Being Annoying',
+  excerptEn: 'Statistics show 80% of sales happen after the 5th contact. Are you following up enough — and doing it with the right message at the right time?',
+  keywordsEn: ['sales follow-up tips', 'follow-up strategy b2b', 'how many follow-ups to close a deal', 'follow-up automation crm', 'sales persistence'],
+  contentEn: `
+      <div class="callout-stat">
+        <p><strong>📊 The Statistic That Changes Everything</strong></p>
+        <p style="font-size: 2.5rem; font-weight: 800; color: #2563eb; margin: 1rem 0; line-height: 1;">80%</p>
+        <p>of sales happen between the <strong>5th and 12th contact</strong> — yet 44% of sales reps give up after the first follow-up (National Sales Executive Association).</p>
+      </div>
+
+      <p>
+        The gap between closing 20% of your pipeline and closing 60% is almost entirely explained by follow-up consistency. Not talent. Not product. Not pricing. Follow-up.
+      </p>
+
+      <h2>Why Most Sales Reps Under-Follow-Up</h2>
+
+      <p>
+        Three psychological barriers stop reps from following up enough:
+      </p>
+
+      <ol>
+        <li><strong>Fear of rejection:</strong> "I don't want to bother them." But a prospect who said "send me more info" has given implicit permission for follow-up.</li>
+        <li><strong>Ambiguity:</strong> "I'm not sure if they're still interested." This uncertainty is solved by setting explicit next steps in every conversation.</li>
+        <li><strong>No system:</strong> Managing 50+ open deals manually makes consistent follow-up humanly impossible. This is solved by CRM automation.</li>
+      </ol>
+
+      <h2>The 5-Touch Follow-Up Sequence That Closes Deals</h2>
+
+      <h3>Touch 1 (Day 1 after meeting): The Immediate Recap</h3>
+      <p>
+        <strong>Purpose:</strong> Confirm next steps and keep momentum<br/>
+        <strong>Content:</strong> 3-5 bullet summary of what you discussed, what you agreed on, what the next step is and when<br/>
+        <strong>Channel:</strong> Email + WhatsApp message<br/>
+        <strong>Script:</strong> "Great to connect today. As discussed: [1-2 key points from the call]. I'll send the proposal by [date]. Does [specific next meeting time] still work for you?"
+      </p>
+
+      <h3>Touch 2 (Day 3): The Value Drop</h3>
+      <p>
+        <strong>Purpose:</strong> Stay relevant without being pushy<br/>
+        <strong>Content:</strong> A resource specifically tied to the pain they mentioned — an article, a case study, a stat<br/>
+        <strong>Script:</strong> "Saw this article about [pain point they mentioned] — thought of your situation immediately. [Link]. Quick question: is [specific concern they raised] still the main thing you're evaluating?"
+      </p>
+
+      <h3>Touch 3 (Day 7): The Checkpoint</h3>
+      <p>
+        <strong>Purpose:</strong> Check status and surface hidden objections<br/>
+        <strong>Script:</strong> "Checking in on the proposal — have you had a chance to review? Any questions I can answer to help move things forward?"<br/>
+        If no reply: "Following up — if timing has shifted or something changed on your end, just let me know. Happy to adjust."
+      </p>
+
+      <h3>Touch 4 (Day 14): The New Angle</h3>
+      <p>
+        <strong>Purpose:</strong> Reframe with new information or a different pain angle<br/>
+        <strong>Script:</strong> "I've been thinking about our conversation — one thing I didn't mention that's relevant to [their specific situation]: [new insight, customer story, or data point]. Would it be worth a 15-minute call to explore this angle?"
+      </p>
+
+      <h3>Touch 5 (Day 21): The Break-Up</h3>
+      <p>
+        <strong>Purpose:</strong> Force a decision (yes or no is better than silence)<br/>
+        <strong>Script:</strong> "I've reached out a few times and haven't heard back — I completely understand if priorities have shifted. If this is no longer relevant, just say the word and I'll stop following up. If it still is, I'm here when the timing is right."<br/>
+        <strong>Why this works:</strong> The break-up email has some of the highest response rates of the entire sequence. The prospect feels the door closing — many respond to reconnect.
+      </p>
+
+      <h2>Follow-Up by Channel: What Works Where</h2>
+
+      <table style="width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: 0.9rem;">
+        <thead>
+          <tr style="background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%); color: white;">
+            <th style="padding: 0.875rem; text-align: left;">Channel</th>
+            <th style="padding: 0.875rem; text-align: left;">Best For</th>
+            <th style="padding: 0.875rem; text-align: left;">Response Rate</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="background: #f8fafc;">
+            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;"><strong>WhatsApp</strong></td>
+            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">Quick check-ins, time-sensitive nudges</td>
+            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">30-60% open rate in 1h</td>
+          </tr>
+          <tr>
+            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;"><strong>Email</strong></td>
+            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">Proposals, documents, detailed follow-ups</td>
+            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">20-35% open rate</td>
+          </tr>
+          <tr style="background: #f8fafc;">
+            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;"><strong>LinkedIn</strong></td>
+            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">Thought leadership sharing, warm connections</td>
+            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">15-25% InMail response</td>
+          </tr>
+          <tr>
+            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;"><strong>Phone</strong></td>
+            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">Breaking long silences, complex objections</td>
+            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">Depends heavily on timing</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2>How to Automate Follow-Up Without Losing the Personal Touch</h2>
+
+      <p>
+        The key is automating the <em>timing reminder</em> while keeping the <em>message content</em> human:
+      </p>
+      <ul>
+        <li>CRM creates a task for each follow-up in the sequence automatically</li>
+        <li>Rep writes the actual message (or uses a saved template they personalize)</li>
+        <li>The automation ensures nothing falls through the cracks; the human ensures it doesn't read like a robot</li>
+      </ul>
+
+      <p>
+        Sirius CRM allows you to create follow-up sequences per deal stage, set automatic reminders, and even send WhatsApp templates directly from the deal card — while keeping the message personal and logged in the contact history.
+      </p>
+
+      <div style="background: linear-gradient(135deg, #1e3a5f 0%, #1e293b 100%); padding: 2rem; border-radius: 1rem; margin: 2rem 0; text-align: center;">
+        <h3 style="color: #ffffff; margin: 0 0 1rem;">Never Miss a Follow-Up Again</h3>
+        <p style="color: #94a3b8; margin: 0 0 1.5rem;">Sirius CRM with integrated WhatsApp, automatic tasks, smart alerts, and saved templates. Everything you need to follow up consistently.</p>
+        <a href="/en/register" style="background: #2563eb; color: white; padding: 0.875rem 2rem; border-radius: 0.5rem; font-weight: 700; text-decoration: none; display: inline-block;">Try Free for 14 Days →</a>
+      </div>
+
+      <p>
+        Now go out and persist — with class. 🎯
+      </p>
+  `,
 }

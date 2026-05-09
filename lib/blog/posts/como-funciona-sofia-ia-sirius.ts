@@ -387,4 +387,70 @@ export const post: BlogPost = {
   image: 'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=1200&h=630&fit=crop&auto=format&q=80',
   author: 'Equipe Sirius CRM',
   relatedSlugs: ['agentes-ia-autonomos-crm-2026', 'crm-ia-inteligencia-artificial-2026', 'crm-automacao-vendas-guia-completo'],
+  titleEn: 'Sofia AI: How the Autonomous Agent in Sirius CRM Operates Your Sales in 2026',
+  excerptEn: 'Meet Sofia AI, the autonomous agent in Sirius CRM that qualifies leads, sends follow-ups, and moves your pipeline without manual intervention.',
+  keywordsEn: ['sofia ai crm', 'sirius crm ai agent', 'autonomous sales ai', 'crm ai agent 2026', 'sofia ia sirius'],
+  contentEn: `
+      <p>
+        Sofia AI is the autonomous sales agent built into Sirius CRM. Unlike traditional CRM automations (which follow fixed rules), Sofia is an AI agent that perceives context, makes decisions, and adapts her actions based on what's actually happening in your pipeline — without requiring manual configuration for every scenario.
+      </p>
+
+      <h2>What Sofia AI Does</h2>
+
+      <h3>Lead Qualification</h3>
+      <p>
+        Sofia analyzes every new lead that enters the CRM and generates a BANT qualification score automatically. She reads behavioral signals (website visits, email opens, message content) and conversation history to determine: does this lead have Budget, Authority, Need, and Timeline? The rep sees the score on the deal card the moment they open it.
+      </p>
+
+      <h3>Intelligent Follow-Up</h3>
+      <p>
+        Sofia monitors the follow-up status of every open deal. When a deal hasn't had activity in X days (configurable per stage), she sends a personalized follow-up message via WhatsApp or email — at the optimal time based on the lead's historical engagement patterns. Not at 9am because that's when automations typically fire. At 2:17pm on a Tuesday because that's when this specific lead previously engaged.
+      </p>
+
+      <h3>Pipeline Movement</h3>
+      <p>
+        When a prospect replies positively to a follow-up, books a meeting, or sends a specific signal (e.g., asks about contract terms), Sofia moves the deal to the next pipeline stage and creates the appropriate next action for the rep. The rep arrives to a pre-organized pipeline, not a chaos of manual updates.
+      </p>
+
+      <h3>Meeting Prep Briefings</h3>
+      <p>
+        Before a scheduled meeting, Sofia sends the rep a 1-page briefing: who they're meeting, what was discussed previously, what the lead's BANT status is, what objections have been raised, and what the optimal ask for this meeting is. The rep walks in prepared, not improvising from scattered notes.
+      </p>
+
+      <h2>The /IA Mode vs /Dashboard Mode</h2>
+
+      <p>
+        Sirius CRM operates in two modes:
+      </p>
+      <ul>
+        <li><strong>/dashboard:</strong> Traditional CRM interface — the rep manually updates deals, stages, and tasks. Full control, standard usability.</li>
+        <li><strong>/IA:</strong> AgaaS mode — Sofia is active. She qualifies, follows up, moves deals, and surfaces the most important actions. The rep approves, adjusts, and handles the conversations that require human judgment.</li>
+      </ul>
+
+      <p>
+        Teams typically start in /dashboard to learn the pipeline structure, then activate /IA once the process is defined. The hybrid is also supported: some reps in /dashboard, others in /IA.
+      </p>
+
+      <h2>How Sofia Learns from Your Pipeline</h2>
+
+      <p>
+        Sofia improves over time by learning from your closed-won and closed-lost deals:
+      </p>
+      <ul>
+        <li>Which lead profiles actually converted → improves qualification scoring</li>
+        <li>Which follow-up messages generated replies → improves message selection</li>
+        <li>Which pipeline stages had the highest deal-death rate → improves urgency timing</li>
+        <li>Which objections correlated with lost deals → improves pre-emptive objection surfacing</li>
+      </ul>
+
+      <p>
+        After 30+ closed deals, Sofia's recommendations become significantly more accurate for your specific business context, industry, and customer type.
+      </p>
+
+      <div style="background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%); border: 1px solid #6ee7b7; padding: 1.5rem; border-radius: 0.75rem; text-align: center; margin: 2rem 0;">
+        <p style="margin: 0; font-weight: 700; font-size: 1.2rem; color: #065f46;">Try Sofia AI for Free</p>
+        <p style="margin: 0.75rem 0; color: #047857;">Create your Sirius CRM account and activate /IA mode to experience Sofia in action. Set up your pipeline, import your leads, and watch Sofia qualify, prioritize, and operate your sales funnel — no commitment.</p>
+        <a href="/en/register" style="display: inline-block; background: #059669; color: #ffffff; font-weight: 700; padding: 0.75rem 2rem; border-radius: 0.5rem; text-decoration: none; margin-top: 0.5rem;">Create Free Account and Activate Sofia</a>
+      </div>
+  `,
 }

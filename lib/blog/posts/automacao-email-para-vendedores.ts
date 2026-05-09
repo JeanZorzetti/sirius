@@ -441,5 +441,99 @@ export const post: BlogPost = {
       <strong>Última Atualização:</strong> 21 de Março de 2026<br/>
       <strong>Autor:</strong> Equipe Sirius CRM<br/>
       <strong>Tempo de Leitura:</strong> 12 minutos
-    `
+    `,
+  titleEn: 'Email Automation for Sales Reps: 4 Triggers That Increase Reply Rate by 40%',
+  excerptEn: 'Learn the 4 automatic email triggers that convert best in B2B sales: welcome, post-meeting follow-up, re-engagement, and unopened proposal alert — with templates.',
+  keywordsEn: ['email automation sales', 'sales email triggers', 'b2b email automation', 'follow-up email automation', 'sales email sequences'],
+  contentEn: `
+      <p>
+        Most sales email automation is set-and-forget: a 5-email drip sequence that fires the same messages to every lead regardless of behavior. The 4 triggers below are different — they fire based on specific events, which is why they achieve 2-3x higher reply rates than generic sequences.
+      </p>
+
+      <h2>Trigger 1: The Welcome Email (Send Within 5 Minutes of Lead Creation)</h2>
+
+      <p>
+        Research from MIT and Harvard shows leads contacted within 5 minutes of inquiry are 9x more likely to qualify than those contacted after 30 minutes. The welcome trigger fires automatically when a new lead enters the CRM.
+      </p>
+
+      <p><strong>Template:</strong></p>
+      <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1.25rem; margin: 1rem 0; font-family: monospace; font-size: 0.875rem;">
+        Subject: Your request — quick question<br/><br/>
+        Hi [Name],<br/><br/>
+        Just saw your message about [topic/product]. Before I send anything generic, can I ask: what's the specific situation that led you to reach out today?<br/><br/>
+        Takes 30 seconds to answer and helps me send exactly what's relevant.<br/><br/>
+        [Your name]
+      </div>
+
+      <h2>Trigger 2: Post-Meeting Follow-Up (Send Within 2 Hours of Meeting)</h2>
+
+      <p>
+        The post-meeting follow-up is the most underused high-impact email in B2B sales. Most reps send it "later that day" or "tomorrow" — losing the momentum of the conversation.
+      </p>
+
+      <p><strong>Template:</strong></p>
+      <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1.25rem; margin: 1rem 0; font-family: monospace; font-size: 0.875rem;">
+        Subject: Summary + next steps — [Company Name]<br/><br/>
+        Hi [Name],<br/><br/>
+        Quick recap from our call:<br/>
+        • Main challenge you mentioned: [pain]<br/>
+        • What we agreed to explore: [solution/approach]<br/>
+        • Next step: [specific action] by [date]<br/><br/>
+        Does this match what you took away from the call?<br/><br/>
+        [Your name]
+      </div>
+
+      <h2>Trigger 3: 30-Day Re-engagement (For Cold Leads)</h2>
+
+      <p>
+        Leads that went cold after initial contact are not dead — they're often in a different stage of the buying cycle. A behavioral re-engagement trigger fires when a lead has had no activity for 30 days.
+      </p>
+
+      <p><strong>Template:</strong></p>
+      <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1.25rem; margin: 1rem 0; font-family: monospace; font-size: 0.875rem;">
+        Subject: Still relevant?<br/><br/>
+        Hi [Name],<br/><br/>
+        We spoke [X weeks] ago about [topic]. Things often shift — so I wanted to check in simply: is [original problem they mentioned] still something on your radar?<br/><br/>
+        If timing has changed, no problem — just let me know and I'll follow up in Q[X].<br/><br/>
+        [Your name]
+      </div>
+
+      <h2>Trigger 4: Unopened Proposal Alert (3 Days After Sending)</h2>
+
+      <p>
+        When you send a proposal and the prospect doesn't open it in 3 days, something changed — or they forgot. The unopened proposal trigger fires a non-pushy nudge.
+      </p>
+
+      <p><strong>Template:</strong></p>
+      <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1.25rem; margin: 1rem 0; font-family: monospace; font-size: 0.875rem;">
+        Subject: Re: Proposal for [Company]<br/><br/>
+        Hi [Name],<br/><br/>
+        Sent the proposal 3 days ago and wanted to make sure it didn't land in spam or get buried. Has anything changed on your end that would affect the timing?<br/><br/>
+        Happy to adjust the scope or schedule a quick call to walk through it together.<br/><br/>
+        [Your name]
+      </div>
+
+      <h2>Setting Up These Triggers in Your CRM</h2>
+
+      <p>
+        In Sirius CRM, each trigger is configured under Automations:
+      </p>
+      <ol>
+        <li>Welcome: "When deal is created → wait 5 minutes → send email from template #1"</li>
+        <li>Post-meeting: "When activity type = call logged → wait 2 hours → send email from template #2"</li>
+        <li>Re-engagement: "When last activity date = 30+ days ago → send email from template #3"</li>
+        <li>Unopened proposal: "When stage = Proposal Sent AND email not opened for 3 days → send email from template #4"</li>
+      </ol>
+
+      <p>
+        The cumulative impact: welcome in 5 minutes increases qualification rate, post-meeting follow-up increases deal advancement, 30-day re-engagement recovers cold leads, and the unopened proposal alert saves deals that looked lost. Together, these 4 triggers can increase average reply rates by 40% — consistent with HubSpot Sales Trends 2025 benchmarks for teams using structured automation.
+      </p>
+
+      <hr style="margin: 3rem 0; border: none; border-top: 1px solid #e5e7eb;" />
+      <p style="font-size: 0.85rem; color: #64748b;">
+        <strong>Last Updated:</strong> March 21, 2026<br/>
+        <strong>Author:</strong> Sirius CRM Team<br/>
+        <strong>Reading Time:</strong> 12 minutes
+      </p>
+  `,
 }

@@ -475,4 +475,112 @@ export const post: BlogPost = {
   image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=1200&h=630&fit=crop&auto=format&q=80',
   author: 'Equipe Sirius CRM',
   relatedSlugs: ['agentes-ia-autonomos-crm-2026', 'automacao-vendas-agentes-ia', 'kpis-de-vendas'],
+  titleEn: 'ROI of AI Agents in B2B Sales: Calculator and Real Results [2026]',
+  excerptEn: 'Learn how to calculate the real ROI of AI agents in B2B sales. Includes formulas, practical simulation, comparison with SDR, and essential metrics.',
+  keywordsEn: ['roi ai agents sales', 'ai sales agent roi calculation', 'ai vs sdr comparison', 'sales ai return on investment', 'b2b ai agent results'],
+  contentEn: `
+      <p>
+        "AI agents will replace sales reps" — that's not what the data shows. What it does show: companies that deploy AI agents in their commercial processes achieve 2-4x more pipeline activity with the same headcount. The ROI isn't about replacement — it's about scale.
+      </p>
+
+      <div class="callout-stat">
+        <p><strong>📊 Average ROI from AI Agents in B2B Sales (2025 Data)</strong></p>
+        <ul style="margin: 0.5rem 0; padding-left: 1.25rem; line-height: 2;">
+          <li><strong>3.2x</strong> increase in leads touched per rep per day</li>
+          <li><strong>-67%</strong> cost per qualified meeting vs traditional SDR</li>
+          <li><strong>+41%</strong> follow-up completion rate</li>
+          <li><strong>4-6 months</strong> average payback period</li>
+        </ul>
+      </div>
+
+      <h2>The AI Agent ROI Formula</h2>
+
+      <p>
+        ROI from AI agents in sales has two components: <strong>revenue recovered</strong> (from leads that would have been lost to poor follow-up) and <strong>cost displaced</strong> (from tasks the AI handles instead of humans).
+      </p>
+
+      <h3>Revenue Recovery Formula</h3>
+      <p>
+        <code>(Monthly leads × 23% lost without follow-up × Close rate × Average deal value) × 12 = Annual revenue recovered</code>
+      </p>
+      <p>
+        <strong>Example:</strong> 100 leads/month × 23% × 25% close rate × $3,000 ACV × 12 = $207,000/year in recovered revenue
+      </p>
+
+      <h3>Cost Displacement Formula</h3>
+      <p>
+        <code>(Hours/day in admin tasks per rep × Hourly cost × Reps × Work days) × % tasks automated</code>
+      </p>
+      <p>
+        <strong>Example:</strong> 3h/day × $25/h × 5 reps × 220 days × 80% automated = $66,000/year in admin cost displaced
+      </p>
+
+      <h3>Total First-Year ROI</h3>
+      <p>
+        <strong>Total benefit:</strong> $207,000 + $66,000 = $273,000<br/>
+        <strong>AI agent cost (Sirius CRM Business):</strong> ~$4,764/year<br/>
+        <strong>ROI:</strong> 57x — or 5,636%
+      </p>
+
+      <h2>AI Agent vs. SDR: Which Delivers Better Pipeline ROI?</h2>
+
+      <table style="width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: 0.9rem;">
+        <thead>
+          <tr style="background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%); color: white;">
+            <th style="padding: 0.875rem; text-align: left;">Metric</th>
+            <th style="padding: 0.875rem; text-align: center;">Human SDR</th>
+            <th style="padding: 0.875rem; text-align: center;">AI Agent</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="background: #f8fafc;">
+            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">Leads touched per day</td>
+            <td style="padding: 0.875rem; border: 1px solid #e2e8f0; text-align: center;">60-80</td>
+            <td style="padding: 0.875rem; border: 1px solid #e2e8f0; text-align: center;">Unlimited</td>
+          </tr>
+          <tr>
+            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">Consistent follow-up cadence</td>
+            <td style="padding: 0.875rem; border: 1px solid #e2e8f0; text-align: center;">~60%</td>
+            <td style="padding: 0.875rem; border: 1px solid #e2e8f0; text-align: center;">100%</td>
+          </tr>
+          <tr style="background: #f8fafc;">
+            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">Monthly cost</td>
+            <td style="padding: 0.875rem; border: 1px solid #e2e8f0; text-align: center;">$3,500-5,000</td>
+            <td style="padding: 0.875rem; border: 1px solid #e2e8f0; text-align: center;">$100-400</td>
+          </tr>
+          <tr>
+            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">Handles complex objections</td>
+            <td style="padding: 0.875rem; border: 1px solid #e2e8f0; text-align: center;">Yes</td>
+            <td style="padding: 0.875rem; border: 1px solid #e2e8f0; text-align: center;">Escalates to human</td>
+          </tr>
+          <tr style="background: #f8fafc;">
+            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">Works 24/7</td>
+            <td style="padding: 0.875rem; border: 1px solid #e2e8f0; text-align: center;">No</td>
+            <td style="padding: 0.875rem; border: 1px solid #e2e8f0; text-align: center;">Yes</td>
+          </tr>
+          <tr>
+            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">Ramps in</td>
+            <td style="padding: 0.875rem; border: 1px solid #e2e8f0; text-align: center;">90-120 days</td>
+            <td style="padding: 0.875rem; border: 1px solid #e2e8f0; text-align: center;">1-2 days</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p>
+        The practical recommendation: use AI agents for volume prospecting and follow-up; keep human SDRs or AEs for discovery calls, complex negotiations, and relationship-heavy enterprise accounts. The hybrid model outperforms both pure-human and pure-AI approaches.
+      </p>
+
+      <div style="background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); border-left: 4px solid #2563eb; padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
+        <p style="font-weight: 700; color: #1e40af;">Calculate your ROI from Sirius CRM AI agents</p>
+        <p style="color: #1e40af; margin: 0.5rem 0 1rem;">Start a free trial and see how many leads the AI touches in your first 7 days.</p>
+        <a href="/en/register" style="background: #2563eb; color: white; padding: 0.75rem 1.5rem; border-radius: 0.5rem; font-weight: 600; text-decoration: none; display: inline-block;">Start Free →</a>
+      </div>
+
+      <hr style="margin: 3rem 0; border: none; border-top: 1px solid #e5e7eb;" />
+      <p style="font-size: 0.85rem; color: #64748b;">
+        <strong>Last Updated:</strong> March 28, 2026<br/>
+        <strong>Author:</strong> Sirius CRM Team<br/>
+        <strong>Reading Time:</strong> 12 minutes
+      </p>
+  `,
 }

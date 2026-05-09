@@ -10,4 +10,7 @@ export const post: BlogPost = {
   image: '/images/blog/planilha-controle-comissao.webp',
   author: 'Equipe Sirius CRM',
   relatedSlugs: ['custo-oculto-inacao-crm', 'como-organizar-pipeline-vendas'],
+  titleEn: 'Free Commission Spreadsheet for Real Estate Agents: Excel & Google Sheets [2026]',
+  excerptEn: 'Free spreadsheet with 4 tabs: sales tracker, dashboard, ROI calculator, and instructions. No sign-up required.',
+  keywordsEn: ['real estate commission spreadsheet', 'commission tracker excel', 'broker commission calculator', 'free real estate tools', 'sales commission template'],
 }

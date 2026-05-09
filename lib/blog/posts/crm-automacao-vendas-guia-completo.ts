@@ -146,5 +146,93 @@ export const post: BlogPost = {
       <strong>Última Atualização:</strong> 10 de Fevereiro de 2026<br/>
       <strong>Autor:</strong> Equipe Sirius CRM<br/>
       <strong>Tempo de Leitura:</strong> 9 minutos
-    `
+    `,
+  titleEn: 'CRM and Sales Automation: Complete Guide to Increase Sales in 2026',
+  excerptEn: 'Learn how to use CRM and sales automation to close more deals in less time. Practical guide with real examples, tools, and validated strategies for 2026.',
+  keywordsEn: ['crm sales automation', 'sales automation guide 2026', 'crm automation best practices', 'automate sales process', 'crm and automation'],
+  contentEn: `
+      <p>
+        Sales automation is the highest-leverage investment a sales team can make. The math is simple: a rep who spends 4 hours/day on administrative tasks (data entry, scheduling, reminder sending, proposal formatting) has only 4 hours for actual selling. Automate the administrative 4 hours and you double their selling capacity without adding headcount.
+      </p>
+
+      <div class="callout-stat">
+        <p><strong>📊 Average Impact of CRM + Sales Automation</strong></p>
+        <ul style="margin: 0.5rem 0; padding-left: 1.25rem; line-height: 2;">
+          <li><strong>+40%</strong> productivity per sales rep (Salesforce State of Sales 2025)</li>
+          <li><strong>-60%</strong> leads lost to missing follow-ups</li>
+          <li><strong>+25%</strong> conversion rate from reaching leads at optimal timing</li>
+          <li><strong>3-5x</strong> more deals actively managed per rep</li>
+        </ul>
+      </div>
+
+      <h2>What to Automate (and What to Keep Human)</h2>
+
+      <h3>Automate:</h3>
+      <ul>
+        <li>Lead data entry (from form submissions, WhatsApp, email)</li>
+        <li>Follow-up reminders and next-action creation</li>
+        <li>Deal stage updates based on rep actions (email sent, call logged)</li>
+        <li>Meeting confirmation and reminder messages</li>
+        <li>Post-meeting follow-up template triggers</li>
+        <li>Lead scoring updates based on behavioral signals</li>
+        <li>Weekly pipeline reports for managers</li>
+      </ul>
+
+      <h3>Keep Human:</h3>
+      <ul>
+        <li>Proposal writing and customization</li>
+        <li>First discovery conversation</li>
+        <li>Objection handling</li>
+        <li>Contract negotiation</li>
+        <li>Complex customer relationships</li>
+        <li>Any communication requiring empathy or judgment</li>
+      </ul>
+
+      <h2>The 4 Core Automations Every Sales Team Needs</h2>
+
+      <h3>1. Lead Capture Automation</h3>
+      <p>
+        Every lead source should flow directly into the CRM without manual entry: website forms, WhatsApp messages, email inquiries, social media DMs. Manual data entry has a ~15% error rate and takes 3-5 minutes per lead. At 20 leads/day, that's 1+ hour of daily data entry time — plus bad data.
+      </p>
+
+      <h3>2. Follow-Up Sequence Automation</h3>
+      <p>
+        Define a follow-up sequence per deal stage. When a deal moves to "Proposal Sent," the CRM automatically creates: email follow-up task for Day 3, WhatsApp check-in for Day 7, break-up message for Day 14. The rep executes; the automation ensures nothing is forgotten.
+      </p>
+
+      <h3>3. Lead Scoring Automation</h3>
+      <p>
+        Assign points based on behavioral signals: pricing page visited (+20), demo requested (+40), email opened 3x (+15), no reply for 7 days (-30). The CRM updates scores in real time, and reps see their ranked lead list every morning — highest priority first.
+      </p>
+
+      <h3>4. Reporting Automation</h3>
+      <p>
+        Weekly pipeline report emailed to manager every Monday morning. Includes: deals in each stage, stalled deals (over max days), new deals added, won/lost this week, and 30-day close forecast. Zero manual compilation.
+      </p>
+
+      <h2>Frequently Asked Questions</h2>
+
+      <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin-bottom: 2rem;">
+        <summary style="font-weight: 600; cursor: pointer; color: #1e293b; list-style: revert;">How long does it take to set up CRM automation?</summary>
+        <p style="margin: 0.75rem 0 0; color: #4b5563;">Basic automations (lead capture + follow-up reminders) can be configured in 2-4 hours. Full implementation with lead scoring and custom workflows takes 1-2 days of setup. ROI typically becomes measurable within 30 days.</p>
+      </details>
+
+      <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin-bottom: 2rem;">
+        <summary style="font-weight: 600; cursor: pointer; color: #1e293b; list-style: revert;">What's the ROI of CRM + sales automation?</summary>
+        <p style="margin: 0.75rem 0 0; color: #4b5563;">Average results: +40% rep productivity, -60% leads lost to missed follow-ups, +25% conversion rate. For a rep billing 40h/week who spends 10h on admin tasks, automation recovers approximately $500-800/week in selling time.</p>
+      </details>
+
+      <div style="background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); border-left: 4px solid #2563eb; padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
+        <p style="font-weight: 700; color: #1e40af;">Start automating your sales process today</p>
+        <p style="color: #1e40af; margin: 0.5rem 0 1rem;">Sirius CRM includes all 4 core automations out of the box — ready in under 2 hours.</p>
+        <a href="/en/register" style="background: #2563eb; color: white; padding: 0.75rem 1.5rem; border-radius: 0.5rem; font-weight: 600; text-decoration: none; display: inline-block;">Start Free for 14 Days →</a>
+      </div>
+
+      <hr style="margin: 3rem 0; border: none; border-top: 1px solid #e5e7eb;" />
+      <p style="font-size: 0.85rem; color: #64748b;">
+        <strong>Last Updated:</strong> February 10, 2026<br/>
+        <strong>Author:</strong> Sirius CRM Team<br/>
+        <strong>Reading Time:</strong> 9 minutes
+      </p>
+  `,
 }

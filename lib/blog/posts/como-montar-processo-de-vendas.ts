@@ -10,6 +10,107 @@ export const post: BlogPost = {
   image: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=1200&h=630&fit=crop&auto=format&q=80',
   author: 'Equipe Sirius CRM',
   relatedSlugs: ['funil-de-vendas-guia-completo', 'como-organizar-pipeline-vendas', 'spin-selling-guia-completo'],
+  titleEn: 'How to Build a Sales Process from Scratch: 6 Steps with Template [2026]',
+  excerptEn: 'Companies with a defined sales process convert 33% more. Build yours in 6 steps — from ICP to post-sale. Free template to use in your CRM.',
+  keywordsEn: ['how to build a sales process', 'sales process template 2026', 'b2b sales process steps', 'create sales process', 'sales process from scratch'],
+  contentEn: `
+      <p>
+        Companies with a defined, consistently executed sales process close 33% more deals than those selling by intuition (Objective Management Group 2024). The reason isn't that the process is magic — it's that it creates consistency, makes coaching possible, and eliminates the "every rep does it differently" problem that prevents scale.
+      </p>
+
+      <div class="callout-stat">
+        <p><strong>📊 The Impact of a Defined Sales Process</strong></p>
+        <ul style="margin: 0.5rem 0; padding-left: 1.25rem; line-height: 2;">
+          <li><strong>+33%</strong> deal conversion rate (Objective Management Group 2024)</li>
+          <li><strong>2x faster</strong> new rep ramp time (from 6 months to 3 months)</li>
+          <li><strong>4x more accurate</strong> revenue forecasting</li>
+          <li><strong>-40%</strong> churn rate in the first 90 days post-close</li>
+        </ul>
+      </div>
+
+      <h2>The 6-Step Sales Process Framework</h2>
+
+      <h3>Step 1: Define Your ICP (Ideal Customer Profile)</h3>
+      <p>
+        Your ICP is the foundation of the entire process. Without it, you have no objective criteria for who to pursue, how to qualify, or what problem to solve. Your ICP should define:
+      </p>
+      <ul>
+        <li>Company size (employees, revenue), industry, growth stage</li>
+        <li>Job title and role of the primary buyer</li>
+        <li>Trigger events that create urgency (new hire, expansion, funding)</li>
+        <li>Problems they commonly face that your solution solves</li>
+        <li>Deal size range and typical sales cycle</li>
+      </ul>
+      <p>
+        <strong>Quick ICP method:</strong> Interview your 5 best customers. Ask them: "What specific problem were you trying to solve when you bought?" and "What would have happened if you hadn't?" The patterns across those 5 answers are your ICP.
+      </p>
+
+      <h3>Step 2: Map Your Pipeline Stages to Real Milestones</h3>
+      <p>
+        Don't create stages based on your workflow (Contacted, Proposal Sent, Negotiating). Create them based on customer milestones — what the customer has done or agreed to:
+      </p>
+      <ul>
+        <li><strong>Qualified:</strong> Customer has confirmed need + budget range + decision authority</li>
+        <li><strong>Discovery Complete:</strong> You've identified their specific pain and documented it</li>
+        <li><strong>Proposal Presented:</strong> (Not just sent — presented, with discussion)</li>
+        <li><strong>Verbal Agreement:</strong> Customer has said yes verbally; contract pending</li>
+        <li><strong>Closed Won:</strong> Contract signed</li>
+      </ul>
+
+      <h3>Step 3: Define the Sales Activities for Each Stage</h3>
+      <p>
+        For each stage transition, specify exactly what the rep must do:
+      </p>
+      <ul>
+        <li>What questions to ask</li>
+        <li>What to send (collateral, proposals, case studies)</li>
+        <li>What the next meeting's objective is</li>
+        <li>What CRM fields to update</li>
+        <li>What automation fires</li>
+      </ul>
+
+      <h3>Step 4: Set Stage Time Limits and Escalation Rules</h3>
+      <p>
+        Every stage needs a maximum days limit. Deals that exceed it without advancing get a manager review flag. Example: Proposal Presented → 10 days max. This prevents zombie deals from distorting the pipeline.
+      </p>
+
+      <h3>Step 5: Build Your Follow-Up Cadence</h3>
+      <p>
+        For each stage, define the follow-up frequency and channel:
+      </p>
+      <ul>
+        <li>Discovery stage: follow up every 3 days via WhatsApp or email</li>
+        <li>Proposal stage: follow up on days 3 and 7; break-up message on day 14</li>
+        <li>Verbal agreement stage: follow up daily until contract is signed</li>
+      </ul>
+
+      <h3>Step 6: Define Your Post-Sale Onboarding Process</h3>
+      <p>
+        The sale doesn't end at contract signature — it ends when the customer is successfully using your product. Define:
+      </p>
+      <ul>
+        <li>Onboarding milestones (Day 1, Day 7, Day 30)</li>
+        <li>Success check-in calls (30/60/90 days)</li>
+        <li>Expansion trigger criteria (when to offer upsell)</li>
+        <li>Referral ask timing (after first successful outcome)</li>
+      </ul>
+
+      <h2>Frequently Asked Questions</h2>
+
+      <details style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1.25rem 1.5rem; margin-bottom: 1rem;">
+        <summary style="font-weight: 700; color: #1e293b; cursor: pointer; font-size: 1rem;">Does a sales process work for low-ticket products?</summary>
+        <p style="margin-top: 1rem; color: #475569; line-height: 1.75;">
+          Yes, but it needs to be adapted to the sales cycle. For low-ticket products with short cycles (days), the process is simpler and more automated: fast qualification, standard proposal, automated follow-up. The principle is the same — what changes is the complexity and degree of automation.
+        </p>
+      </details>
+
+      <details style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1.25rem 1.5rem; margin-bottom: 1rem;">
+        <summary style="font-weight: 700; color: #1e293b; cursor: pointer; font-size: 1rem;">How do I know if my sales process needs to be revised?</summary>
+        <p style="margin-top: 1rem; color: #475569; line-height: 1.75;">
+          Key signals: (1) conversion rate dropping for 2+ consecutive months without external explanation; (2) reps complaining that stages don't reflect market reality; (3) sales cycle lengthening without product or price changes; (4) new reps taking too long to reach productivity curve; (5) many deals stalling in a specific stage. If two or more of these appear simultaneously, it's time to sit with the team and revise the process.
+        </p>
+      </details>
+  `,
   content: `
 <p>
   A maioria das PMEs no Brasil vende na intuição. O vendedor mais experiente carrega as melhores práticas na cabeça, fecha negócios pelo feeling e o restante da equipe tenta imitar sem conseguir replicar os resultados. Quando esse vendedor sai da empresa, o faturamento desaba. Quando um novo vendedor entra, leva meses para produzir. Quando o mercado aperta, não há alavanca para puxar.

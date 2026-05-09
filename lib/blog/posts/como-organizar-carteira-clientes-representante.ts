@@ -255,5 +255,68 @@ export const post: BlogPost = {
       <strong>Última Atualização:</strong> 21 de Março de 2026<br/>
       <strong>Autor:</strong> Equipe Sirius CRM<br/>
       <strong>Tempo de Leitura:</strong> 10 minutos
-    `
+    `,
+  titleEn: 'How to Organize Your Customer Portfolio Without Depending on Factory Systems',
+  excerptEn: 'Learn how to turn your customer portfolio into a personal, independent asset: CSV export, ABC segmentation by potential, and full ownership of your data.',
+  keywordsEn: ['sales rep customer portfolio', 'organize client portfolio', 'abc customer segmentation sales', 'crm for sales representatives', 'customer data ownership'],
+  contentEn: `
+      <p>
+        Your customer portfolio is only your asset if it's under your control. The factory/manufacturer's system is an operational tool — not where you store your commercial heritage. When you leave a manufacturer relationship, you should take your entire customer history with you. That's only possible if your data lives in a system you control.
+      </p>
+
+      <h2>The 4 Data Points That Make a Customer Record Valuable</h2>
+
+      <ol>
+        <li><strong>Decision-maker:</strong> Name, direct phone (including WhatsApp), email, LinkedIn. Not just the company — the person who actually signs the purchase order.</li>
+        <li><strong>Purchase cycle:</strong> When does this customer typically buy? Monthly? Quarterly? Before the fiscal year end? Knowing this makes proactive outreach possible instead of reactive.</li>
+        <li><strong>Volume and mix:</strong> What do they typically buy, in what quantities, at what price points? This enables cross-sell and upsell prediction.</li>
+        <li><strong>Relationship depth:</strong> Is this a transactional relationship or a trusted partnership? How long have you worked together? Has this customer referred others?</li>
+      </ol>
+
+      <h2>ABC Segmentation: How to Prioritize Your Portfolio</h2>
+
+      <p>
+        Not all customers deserve the same attention. ABC segmentation helps allocate your time where it generates the most revenue:
+      </p>
+
+      <ul>
+        <li><strong>A customers (top 20%, 80% of revenue):</strong> Monthly personal contact. Priority for new product launches. Proactive check-ins before purchase cycle.</li>
+        <li><strong>B customers (next 30%, 15% of revenue):</strong> Quarterly contact. Monitor for growth potential. Active upsell/cross-sell.</li>
+        <li><strong>C customers (remaining 50%, 5% of revenue):</strong> Semi-annual contact. Automated nurture. Evaluate whether to invest in upgrading to B.</li>
+      </ul>
+
+      <p>
+        Review your ABC segmentation quarterly. A customers can fall to B (reduced purchasing) and C customers can grow to A (new decision-maker, new budget). Static segmentation becomes wrong within 6-12 months.
+      </p>
+
+      <h2>How to Own Your Customer Data (Not the Factory's)</h2>
+
+      <p>
+        The fundamental rule: maintain your own CRM in parallel to any manufacturer system. Your CRM is your asset. The manufacturer's system is their asset.
+      </p>
+
+      <ul>
+        <li>Log every customer interaction in your CRM (not just in the manufacturer's portal)</li>
+        <li>Store decision-maker contacts with your own data (not just company contacts from the factory list)</li>
+        <li>Export your CRM data as CSV monthly — keep a local backup</li>
+        <li>Never let a manufacturer system be your only source of customer data</li>
+      </ul>
+
+      <p>
+        Your customer portfolio is only your asset if it's in your control. The combination of the right data, rigorous ABC segmentation, and a CRM that works offline and exports everything at any moment is what transforms a client list into an asset that goes with you — regardless of which manufacturer you're representing.
+      </p>
+
+      <div style="background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); border-left: 4px solid #2563eb; padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
+        <p style="font-weight: 700; color: #1e40af;">Your portfolio, your data, your CRM</p>
+        <p style="color: #1e40af; margin: 0.5rem 0 1rem;">Sirius CRM with offline mode — works without internet in the field. Export all your data anytime, no restrictions.</p>
+        <a href="/en/register" style="background: #2563eb; color: white; padding: 0.75rem 1.5rem; border-radius: 0.5rem; font-weight: 600; text-decoration: none; display: inline-block;">Start Free →</a>
+      </div>
+
+      <hr style="margin: 3rem 0; border: none; border-top: 1px solid #e5e7eb;" />
+      <p style="font-size: 0.85rem; color: #64748b;">
+        <strong>Last Updated:</strong> March 21, 2026<br/>
+        <strong>Author:</strong> Sirius CRM Team<br/>
+        <strong>Reading Time:</strong> 10 minutes
+      </p>
+  `,
 }

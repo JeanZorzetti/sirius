@@ -245,5 +245,204 @@ export const post: BlogPost = {
       <strong>Última Atualização:</strong> 21 de Março de 2026<br/>
       <strong>Autor:</strong> Equipe Sirius CRM<br/>
       <strong>Tempo de Leitura:</strong> 13 minutos
-    `
+    `,
+  titleEn: 'LinkedIn Prospecting for B2B Sales Reps: 6-Step System That Gets Replies',
+  excerptEn: 'How to use free LinkedIn to generate 15-25 qualified meetings per month — no Sales Navigator, no automation, no TOS violations.',
+  keywordsEn: ['LinkedIn prospecting B2B', 'LinkedIn sales strategy', 'B2B lead generation LinkedIn', 'LinkedIn outreach templates', 'social selling tips'],
+  contentEn: `
+      <p>
+        LinkedIn is the only social network where a B2B seller can reach a VP of Sales, a procurement director, or a CFO with a single message — no cold calling, no paid ads, no gatekeepers. But 80% of sellers use it wrong: they blast generic connection requests, pitch immediately after connecting, and wonder why nobody replies.
+      </p>
+
+      <p>
+        This guide covers the exact 6-step system used to generate 15–25 qualified meetings per month on free LinkedIn — no Sales Navigator, no automation tools, no account bans.
+      </p>
+
+      <h2>Why LinkedIn Is the #1 B2B Prospecting Channel in 2026</h2>
+
+      <p>
+        The numbers are hard to argue with: LinkedIn has 1 billion users, 65 million of whom are decision-makers. According to LinkedIn's own data, 80% of B2B leads generated through social media come from LinkedIn. And unlike email (where open rates hover around 20%), LinkedIn messages average 50–70% open rates.
+      </p>
+
+      <p>
+        The competitive advantage comes from the signal richness. On LinkedIn, you can see a prospect's role, company size, recent activity, shared connections, and content interests before you send a single message — context that makes personalization easy and genuine.
+      </p>
+
+      <h2>Step 1: Build a Profile That Passes the Decision-Maker Test</h2>
+
+      <p>
+        Before you send one message, your profile needs to survive a 10-second scrutiny from a skeptical VP. Decision-makers who receive a connection request will do exactly one thing before accepting or ignoring: glance at your profile.
+      </p>
+
+      <p>The 5 elements that pass the test:</p>
+
+      <ul>
+        <li><strong>Headline</strong> — not your job title. What you do for clients: "I help SaaS companies reduce churn by 30% in 90 days" is 10x better than "Account Executive at Acme"</li>
+        <li><strong>Profile photo</strong> — professional, clear face, plain background. Profiles with photos get 21x more views</li>
+        <li><strong>About section</strong> — written in first person, focused on client outcomes, not your resume. Include 2-3 specific results with numbers</li>
+        <li><strong>Experience section</strong> — each role should have 3-5 bullet points focused on outcomes, not tasks</li>
+        <li><strong>Featured section</strong> — pin your best piece of content (a case study, a post that went viral, a relevant article)</li>
+      </ul>
+
+      <h2>Step 2: Define Your ICP Before Searching</h2>
+
+      <p>
+        The most common mistake in LinkedIn prospecting is searching for "decision-makers" without a clear Ideal Customer Profile. This leads to connecting with 500 people and converting none.
+      </p>
+
+      <p>Your ICP filter for LinkedIn should include:</p>
+
+      <ul>
+        <li><strong>Company size</strong> — use LinkedIn's filter (11-50, 51-200, 201-500 employees)</li>
+        <li><strong>Industry</strong> — be specific. "Technology" is too broad; "B2B SaaS" or "Manufacturing" is actionable</li>
+        <li><strong>Title/Seniority</strong> — who actually makes the buying decision? Map the buying committee (economic buyer, champion, technical evaluator)</li>
+        <li><strong>Geography</strong> — filter by city or country</li>
+        <li><strong>Growth signal</strong> — recently funded companies, new hires in your buyer's role, companies posting about problems you solve</li>
+      </ul>
+
+      <h2>Step 3: The Connection Request — Context Over Flattery</h2>
+
+      <p>
+        The connection note (300 characters) is the most important real estate in B2B LinkedIn prospecting. Most sellers waste it with "I'd like to add you to my professional network" — LinkedIn's default, which signals zero effort.
+      </p>
+
+      <p>The formula that works:</p>
+
+      <div class="callout-tip">
+        <strong>Connection Note Template:</strong><br/><br/>
+        "[Specific observation about their work/company] — I work with [relevant context]. Thought there might be a reason to connect. [Your name]"<br/><br/>
+        <em>Example: "Saw your post about scaling the outbound team at Acme — I work with RevOps leaders on exactly that. Might be useful context to have connected. — James"</em>
+      </div>
+
+      <p>
+        Key rules: never pitch in the connection note. Never ask for time in the connection note. Acceptance rates for personalized notes are 3x higher than blank requests.
+      </p>
+
+      <h2>Step 4: The 6-Step Engagement Sequence After Connection</h2>
+
+      <p>
+        Once connected, most sellers pitch immediately. This kills the relationship before it starts. The correct approach is a 6-touch sequence designed to build familiarity before asking for anything.
+      </p>
+
+      <table style="width: 100%; border-collapse: collapse; margin: 1.5rem 0;">
+        <thead>
+          <tr style="background: #f8fafc;">
+            <th style="border: 1px solid #e2e8f0; padding: 0.75rem; text-align: left;">Touch</th>
+            <th style="border: 1px solid #e2e8f0; padding: 0.75rem; text-align: left;">Action</th>
+            <th style="border: 1px solid #e2e8f0; padding: 0.75rem; text-align: left;">Timing</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">1</td>
+            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">Like or comment on their most recent post (genuine, specific comment)</td>
+            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">Day 1 after connecting</td>
+          </tr>
+          <tr>
+            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">2</td>
+            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">Send a value message: share a relevant article, insight, or resource. No ask.</td>
+            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">Day 3-5</td>
+          </tr>
+          <tr>
+            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">3</td>
+            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">Engage with another piece of their content</td>
+            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">Day 7-10</td>
+          </tr>
+          <tr>
+            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">4</td>
+            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">Second value message — a case study or result relevant to their situation</td>
+            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">Day 14</td>
+          </tr>
+          <tr>
+            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">5</td>
+            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">Soft ask: "Based on what you shared about [X], would a quick 20-min call make sense?"</td>
+            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">Day 18-21</td>
+          </tr>
+          <tr>
+            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">6</td>
+            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">Final follow-up if no reply to touch 5 — add new context (recent news, relevant trigger)</td>
+            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">Day 25-30</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2>Step 5: Message Templates That Get Replies</h2>
+
+      <p>
+        The value message (touch 2 and 4) is the hardest to write and the most important. It needs to feel personal, not canned. The framework: Observation → Relevance → Value.
+      </p>
+
+      <div class="callout-tip">
+        <strong>Touch 2 Template:</strong><br/><br/>
+        "Hey [Name] — saw your comment on [specific topic]. Made me think of [relevant insight/article/data point]. Sharing in case it adds context to what you're working on. No agenda — just thought it was relevant for someone in your position."
+      </div>
+
+      <div class="callout-tip">
+        <strong>Touch 5 Soft Ask Template:</strong><br/><br/>
+        "Hey [Name] — based on what you shared about [specific challenge they mentioned], we've been seeing [relevant trend/result] with similar teams. Would a 20-minute call make sense to see if there's any overlap? No deck, no pitch — just a conversation to see if it's worth exploring."
+      </div>
+
+      <h2>Step 6: CRM Integration — The Discipline That Scales</h2>
+
+      <p>
+        The difference between a seller with 20 active LinkedIn sequences and one with 200 is the CRM. Without systematic tracking, sequences collapse after 15 contacts — it's impossible to remember who's on touch 3 vs touch 5, or who you connected with last Tuesday.
+      </p>
+
+      <p>The minimum viable CRM workflow for LinkedIn prospecting:</p>
+
+      <ul>
+        <li><strong>New connection</strong> → create contact in CRM with LinkedIn URL, ICP fit score, and first touch date</li>
+        <li><strong>Each touch sent</strong> → log activity in CRM with touch number and message summary</li>
+        <li><strong>Reply received</strong> → update stage to "Engaged" and schedule next step</li>
+        <li><strong>Meeting booked</strong> → convert to deal and link to contact</li>
+        <li><strong>No reply after touch 6</strong> → tag as "Nurture" for quarterly re-engagement</li>
+      </ul>
+
+      <p>
+        With this workflow in <a href="/" style="color: #2563eb; text-decoration: underline;">Sirius CRM</a>, a seller can manage 200+ active LinkedIn sequences without losing track of a single follow-up — the pipeline stays full automatically.
+      </p>
+
+      <h2>Common Mistakes That Kill LinkedIn Prospecting</h2>
+
+      <ul>
+        <li><strong>Connecting and pitching in the same day</strong> — instant unfollow, never a meeting</li>
+        <li><strong>Generic messages</strong> — "I came across your profile and was impressed" is indistinguishable from spam</li>
+        <li><strong>Asking for 30 minutes</strong> — ask for 15 or 20. The lower the time commitment, the higher the acceptance rate</li>
+        <li><strong>No follow-up after connection</strong> — 60% of connections never receive a first message. The entire ROI is in the sequence</li>
+        <li><strong>Ignoring their content</strong> — every post they publish is a free gift of context. Use it in your messages</li>
+        <li><strong>Not tracking in CRM</strong> — sequences die when you can't remember where you are with each prospect</li>
+      </ul>
+
+      <h2>FAQ — LinkedIn B2B Prospecting</h2>
+
+      <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin-bottom: 2rem;">
+        <summary style="font-weight: 600; cursor: pointer; color: #1e293b; list-style: revert;">How many connection requests can I send per day without getting banned?</summary>
+        <p style="margin: 0.75rem 0 0; color: #4b5563;">LinkedIn's current limit is approximately 100 connection requests per week (roughly 15 per day). To stay safe, cap at 20-25 per day. Focus on quality over quantity — 15 highly targeted, personalized requests outperform 100 generic ones in both acceptance rate and conversion to meetings.</p>
+      </details>
+
+      <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin-bottom: 2rem;">
+        <summary style="font-weight: 600; cursor: pointer; color: #1e293b; list-style: revert;">Is Sales Navigator worth it for B2B prospecting?</summary>
+        <p style="margin: 0.75rem 0 0; color: #4b5563;">Sales Navigator is valuable when you have the budget (~$100/month) and are doing high-volume, targeted outreach. The advanced search filters and lead alerts save significant research time. But as this guide demonstrates, free LinkedIn with the right methodology can generate excellent results. Start with free, validate your ICP and messaging, then upgrade when volume demands it.</p>
+      </details>
+
+      <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin-bottom: 2rem;">
+        <summary style="font-weight: 600; cursor: pointer; color: #1e293b; list-style: revert;">What's a good reply rate for LinkedIn prospecting messages?</summary>
+        <p style="margin: 0.75rem 0 0; color: #4b5563;">With generic messaging, expect 3-7% reply rates. With the personalized approach described here (genuine connection note + value-first sequence), reply rates of 20-40% on touch 2 and 15-25% on touch 5 are achievable. Track your reply rates by message template and ICP segment to continuously improve.</p>
+      </details>
+
+      <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin-bottom: 2rem;">
+        <summary style="font-weight: 600; cursor: pointer; color: #1e293b; list-style: revert;">How do I approach a lead who viewed my profile but didn't connect?</summary>
+        <p style="margin: 0.75rem 0 0; color: #4b5563;">A profile view is a weak but real buying signal. If they match your ICP, send a connection request with a note referencing the context: "Noticed you came across my profile — I work with [their industry] and thought there might be a reason to connect." This personalizes without pressuring. Acceptance rates on these requests run 40-60% higher than cold requests with no context.</p>
+      </details>
+
+      <h2>Conclusion</h2>
+
+      <p>
+        Free LinkedIn, used correctly, is a B2B prospecting machine — no Sales Navigator, no expensive automation, no TOS violations. The secret is three pillars: a high-credibility profile that passes the decision-maker test, a personalized approach that respects the connect-engage-pitch sequence, and systematic CRM tracking that ensures no follow-up falls through the cracks.
+      </p>
+
+      <p>
+        With 15-20 new connection requests per day and the 6-step sequence described in this guide, a methodical seller can maintain 50-80 active LinkedIn conversations per month and convert 15-25% of them into qualified meetings.
+      </p>
+  `,
 }

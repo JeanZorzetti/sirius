@@ -226,5 +226,112 @@ export const post: BlogPost = {
       <strong>Última Atualização:</strong> 21 de Março de 2026<br/>
       <strong>Autor:</strong> Equipe Sirius CRM<br/>
       <strong>Tempo de Leitura:</strong> 12 minutos
-    `
+    `,
+  titleEn: 'AI for Lead Qualification: How a Virtual Assistant Applies BANT and MEDDIC Automatically',
+  excerptEn: 'Understand how AI analyzes conversations to extract BANT and MEDDIC criteria, generate qualification scores, and save your sales team hours of manual work.',
+  keywordsEn: ['ai lead qualification', 'automated lead scoring', 'bant ai automation', 'crm lead qualification ai', 'ai sales qualification'],
+  contentEn: `
+      <p>
+        Lead qualification is the most time-consuming and inconsistently executed part of most B2B sales processes. Every rep qualifies differently. Some ask all the BANT questions; others skip directly to the pitch. The result: pipeline data you can't trust and forecasts that miss by 30-40%.
+      </p>
+
+      <p>
+        AI-powered qualification solves both problems: it's consistent (asks the same questions every time), scalable (handles unlimited parallel leads), and continuously improving (learns which signals correlate with actual closes).
+      </p>
+
+      <h2>How AI Lead Qualification Works</h2>
+
+      <h3>Step 1: Signal Collection</h3>
+      <p>
+        The AI monitors all touchpoints with a lead: website behavior (pages visited, time on pricing page), email behavior (opens, link clicks, reply content), WhatsApp conversations (tone, response time, specific questions asked), and CRM data (previous interactions, deal history).
+      </p>
+
+      <h3>Step 2: NLP-Based BANT Extraction</h3>
+      <p>
+        Using Natural Language Processing, the AI reads conversation transcripts and extracts BANT signals automatically:
+      </p>
+      <ul>
+        <li><strong>Budget signals:</strong> "our budget for this quarter is around X" / "we need to keep under Y" / "the CFO approved Z"</li>
+        <li><strong>Authority signals:</strong> Job title analysis, decision-language patterns ("I'll need to run this by..."), multi-stakeholder indicators</li>
+        <li><strong>Need signals:</strong> Problem statements, frustration language, "currently we..." sentences describing the status quo</li>
+        <li><strong>Timeline signals:</strong> Explicit dates, urgency language, trigger events ("we need this before [event]")</li>
+      </ul>
+
+      <h3>Step 3: Automated Qualification Conversations</h3>
+      <p>
+        For leads who haven't provided qualification data organically, the AI agent initiates qualification conversations via WhatsApp or email — asking BANT questions conversationally, not as a form. Example:
+      </p>
+      <p style="font-style: italic; background: #f8fafc; padding: 1rem; border-radius: 0.5rem; border-left: 3px solid #2563eb;">
+        "Hi [Name], thanks for your interest in Sirius CRM. To make sure I connect you with the right information — are you looking to manage your own pipeline or set up a tool for a sales team? Approximately how many reps would be using it?"
+      </p>
+      <p>
+        This feels like a human question, not a qualification form. Response rates are 3-5x higher than traditional qualification forms.
+      </p>
+
+      <h3>Step 4: Score Generation and CRM Update</h3>
+      <p>
+        Based on collected signals, the AI generates a qualification score (0-100) and automatically updates the CRM deal card with:
+      </p>
+      <ul>
+        <li>BANT dimension scores</li>
+        <li>Extracted qualification data (budget range, number of users, decision timeline)</li>
+        <li>Overall priority ranking vs other leads in the pipeline</li>
+        <li>Suggested next action for the human rep</li>
+      </ul>
+
+      <h2>BANT Score Thresholds: What to Do with Each Range</h2>
+
+      <table style="width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: 0.9rem;">
+        <thead>
+          <tr style="background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%); color: white;">
+            <th style="padding: 0.875rem; text-align: left;">Score Range</th>
+            <th style="padding: 0.875rem; text-align: left;">Qualification Status</th>
+            <th style="padding: 0.875rem; text-align: left;">Recommended Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="background: #f0fdf4;">
+            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;"><strong>80-100</strong></td>
+            <td style="padding: 0.875rem; border: 1px solid #e2e8f0; color: #166534;">Hot — all BANT confirmed</td>
+            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">Immediate rep call; priority treatment</td>
+          </tr>
+          <tr style="background: #fefce8;">
+            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;"><strong>50-79</strong></td>
+            <td style="padding: 0.875rem; border: 1px solid #e2e8f0; color: #854d0e;">Warm — partial qualification</td>
+            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">AI continues qualifying missing dimensions; rep follows cadence</td>
+          </tr>
+          <tr style="background: #fef2f2;">
+            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;"><strong>20-49</strong></td>
+            <td style="padding: 0.875rem; border: 1px solid #e2e8f0; color: #991b1b;">Cold — low signal</td>
+            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">Nurture sequence; no rep time until score improves</td>
+          </tr>
+          <tr style="background: #f8fafc;">
+            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;"><strong>0-19</strong></td>
+            <td style="padding: 0.875rem; border: 1px solid #e2e8f0; color: #64748b;">Disqualified</td>
+            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">Close as "not qualified"; add to long-term nurture list</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p>
+        AI lead qualification is not science fiction — it's a commercial practice that B2B sales teams can implement today. With BANT and MEDDIC applied automatically to natural conversations, qualification stops depending on individual rep discipline and becomes a reliable system.
+      </p>
+
+      <p>
+        The end result isn't replacing sales reps — it's freeing them from repetitive screening work so they can focus where human judgment makes the biggest difference: in complex negotiations, handling subtle objections, and building the relationships that close high-value contracts.
+      </p>
+
+      <div style="background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); border-left: 4px solid #2563eb; padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
+        <p style="font-weight: 700; color: #1e40af;">See AI qualification scoring in your pipeline</p>
+        <p style="color: #1e40af; margin: 0.5rem 0 1rem;">Sirius CRM applies BANT scoring automatically based on conversation data. Your reps see ranked lead lists every morning.</p>
+        <a href="/en/register" style="background: #2563eb; color: white; padding: 0.75rem 1.5rem; border-radius: 0.5rem; font-weight: 600; text-decoration: none; display: inline-block;">Try Free →</a>
+      </div>
+
+      <hr style="margin: 3rem 0; border: none; border-top: 1px solid #e5e7eb;" />
+      <p style="font-size: 0.85rem; color: #64748b;">
+        <strong>Last Updated:</strong> March 21, 2026<br/>
+        <strong>Author:</strong> Sirius CRM Team<br/>
+        <strong>Reading Time:</strong> 12 minutes
+      </p>
+  `,
 }

@@ -254,5 +254,192 @@ export const post: BlogPost = {
       <strong>Última Atualização:</strong> 21 de Março de 2026<br/>
       <strong>Autor:</strong> Equipe Sirius CRM<br/>
       <strong>Tempo de Leitura:</strong> 12 minutos
-    `
+    `,
+  titleEn: 'BANT vs MEDDIC: Which Lead Qualification Framework Works Best for Complex B2B Sales?',
+  excerptEn: 'Practical comparison between BANT and MEDDIC for B2B lead qualification: when to use each framework, blind spots, and how Sirius CRM AI applies BANT automatically.',
+  keywordsEn: ['bant vs meddic', 'lead qualification framework', 'bant framework b2b', 'meddic sales', 'b2b lead scoring'],
+  contentEn: `
+      <p>
+        Poorly qualifying a lead is the biggest time waster in B2B sales. You invest hours in meetings, proposals, and follow-ups — only to discover at the end that the customer had no budget, wasn't the decision-maker, or never had real purchase intent.
+      </p>
+
+      <p>
+        BANT and MEDDIC are the two most widely used lead qualification frameworks in B2B sales worldwide. The problem is that most sales reps know the acronyms but apply them mechanically — without understanding when each is appropriate and what the blind spots of each approach are.
+      </p>
+
+      <h2>What Is BANT?</h2>
+
+      <p>
+        BANT was created by IBM in the 1950s as an internal qualification filter. The acronym stands for:
+      </p>
+
+      <ul>
+        <li><strong>B — Budget:</strong> Does the prospect have the financial resources to buy?</li>
+        <li><strong>A — Authority:</strong> Is this person the actual decision-maker?</li>
+        <li><strong>N — Need:</strong> Does the prospect have a real problem your solution solves?</li>
+        <li><strong>T — Timeline:</strong> When does the prospect intend to make the purchase?</li>
+      </ul>
+
+      <p>
+        BANT's strength is its simplicity — in 4 questions, a rep can determine if a lead deserves deep investment or should be moved to a nurture sequence. It works best for <strong>transactional and mid-complexity B2B deals</strong> with decision cycles under 60 days.
+      </p>
+
+      <h3>BANT Questions in Practice</h3>
+
+      <table style="width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: 0.9rem;">
+        <thead>
+          <tr style="background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%); color: white;">
+            <th style="padding: 0.875rem; text-align: left;">Dimension</th>
+            <th style="padding: 0.875rem; text-align: left;">Questions to Ask</th>
+            <th style="padding: 0.875rem; text-align: left;">Disqualifying Signals</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="background: #f8fafc;">
+            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;"><strong>Budget</strong></td>
+            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">"Do you have a budget approved for this?" / "What range are you working with?"</td>
+            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">No budget defined; decision delayed to next fiscal year</td>
+          </tr>
+          <tr>
+            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;"><strong>Authority</strong></td>
+            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">"Who else is involved in this decision?" / "Do you have final sign-off?"</td>
+            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">Multiple unengaged stakeholders; no executive sponsor</td>
+          </tr>
+          <tr style="background: #f8fafc;">
+            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;"><strong>Need</strong></td>
+            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">"What's the cost of NOT solving this problem?" / "What happens if you do nothing?"</td>
+            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">"Just exploring" / no stated urgency</td>
+          </tr>
+          <tr>
+            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;"><strong>Timeline</strong></td>
+            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">"When do you need this implemented?" / "What's driving the timing?"</td>
+            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">No defined timeline; "sometime next year"</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2>What Is MEDDIC?</h2>
+
+      <p>
+        MEDDIC (also spelled MEDDICC or MEDDPICC) was developed at PTC in the 1990s by Jack Napoli for enterprise software sales. The acronym stands for:
+      </p>
+
+      <ul>
+        <li><strong>M — Metrics:</strong> What's the quantified business impact? ($, time, %, units)</li>
+        <li><strong>E — Economic Buyer:</strong> Who controls the budget and has final authority?</li>
+        <li><strong>D — Decision Criteria:</strong> What factors will the prospect use to choose?</li>
+        <li><strong>D — Decision Process:</strong> How does the organization make purchasing decisions?</li>
+        <li><strong>I — Identify Pain:</strong> What's the specific, urgent pain driving this purchase?</li>
+        <li><strong>C — Champion:</strong> Is there an internal advocate who will sell for you internally?</li>
+      </ul>
+
+      <p>
+        MEDDIC is designed for <strong>complex, high-value, multi-stakeholder enterprise deals</strong> where a single disqualified assumption costs months of work. It requires more questions and deeper discovery — but produces dramatically more accurate forecasts.
+      </p>
+
+      <h2>BANT vs MEDDIC: Direct Comparison</h2>
+
+      <table style="width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: 0.9rem;">
+        <thead>
+          <tr style="background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%); color: white;">
+            <th style="padding: 0.875rem; text-align: left;">Dimension</th>
+            <th style="padding: 0.875rem; text-align: center;">BANT</th>
+            <th style="padding: 0.875rem; text-align: center;">MEDDIC</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="background: #f8fafc;">
+            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;"><strong>Ideal Deal Size</strong></td>
+            <td style="padding: 0.875rem; border: 1px solid #e2e8f0; text-align: center;">$500–$20k</td>
+            <td style="padding: 0.875rem; border: 1px solid #e2e8f0; text-align: center;">$20k–$1M+</td>
+          </tr>
+          <tr>
+            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;"><strong>Sales Cycle</strong></td>
+            <td style="padding: 0.875rem; border: 1px solid #e2e8f0; text-align: center;">7–60 days</td>
+            <td style="padding: 0.875rem; border: 1px solid #e2e8f0; text-align: center;">60–365 days</td>
+          </tr>
+          <tr style="background: #f8fafc;">
+            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;"><strong>Stakeholders</strong></td>
+            <td style="padding: 0.875rem; border: 1px solid #e2e8f0; text-align: center;">1–3</td>
+            <td style="padding: 0.875rem; border: 1px solid #e2e8f0; text-align: center;">5–15+</td>
+          </tr>
+          <tr>
+            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;"><strong>Discovery Depth</strong></td>
+            <td style="padding: 0.875rem; border: 1px solid #e2e8f0; text-align: center;">Moderate</td>
+            <td style="padding: 0.875rem; border: 1px solid #e2e8f0; text-align: center;">Deep</td>
+          </tr>
+          <tr style="background: #f8fafc;">
+            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;"><strong>Forecast Accuracy</strong></td>
+            <td style="padding: 0.875rem; border: 1px solid #e2e8f0; text-align: center;">Good</td>
+            <td style="padding: 0.875rem; border: 1px solid #e2e8f0; text-align: center;">Excellent</td>
+          </tr>
+          <tr>
+            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;"><strong>Rep Experience Required</strong></td>
+            <td style="padding: 0.875rem; border: 1px solid #e2e8f0; text-align: center;">Junior-friendly</td>
+            <td style="padding: 0.875rem; border: 1px solid #e2e8f0; text-align: center;">Senior preferred</td>
+          </tr>
+          <tr style="background: #f8fafc;">
+            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;"><strong>CRM Implementation</strong></td>
+            <td style="padding: 0.875rem; border: 1px solid #e2e8f0; text-align: center;">Easy</td>
+            <td style="padding: 0.875rem; border: 1px solid #e2e8f0; text-align: center;">Complex</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2>BANT Blind Spots (and How to Fix Them)</h2>
+
+      <ul>
+        <li><strong>Budget:</strong> Asking about budget too early signals you're price-focused, not problem-focused. Lead with pain, not price.</li>
+        <li><strong>Authority:</strong> In modern buying, decisions are rarely made by a single person. Map the full buying committee, not just your primary contact.</li>
+        <li><strong>Need:</strong> BANT checks for stated need but misses latent need — the problem the prospect doesn't know they have yet. This is where SPIN Selling fills the gap.</li>
+        <li><strong>Timeline:</strong> Timeline without a "compelling event" is wishful thinking. Ask: "What happens to your business if you don't solve this by [stated date]?"</li>
+      </ul>
+
+      <h2>How Sirius CRM Automates BANT Qualification with AI</h2>
+
+      <p>
+        Sirius CRM's AI automatically scores every lead against BANT criteria based on behavioral signals:
+      </p>
+
+      <ul>
+        <li><strong>Budget signal:</strong> Pricing page visits, plan comparison interactions, calculator usage</li>
+        <li><strong>Authority signal:</strong> Job title parsing, LinkedIn profile enrichment, multi-contact engagement patterns</li>
+        <li><strong>Need signal:</strong> Feature page depth, support article reads, trial feature activation rate</li>
+        <li><strong>Timeline signal:</strong> Demo urgency, reply speed, explicit date mentions in messages</li>
+      </ul>
+
+      <p>
+        The result: reps see a real-time BANT score (0-100) for every deal in the pipeline, with AI recommendations on which qualification gaps to address in the next interaction.
+      </p>
+
+      <div style="background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); border-left: 4px solid #2563eb; padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
+        <p style="font-weight: 700; color: #1e40af;">See AI-powered BANT scoring in action</p>
+        <p style="color: #1e40af; margin: 0.5rem 0 1rem;">Sirius CRM automatically qualifies every lead so your reps focus on deals most likely to close.</p>
+        <a href="/en/register" style="background: #2563eb; color: white; padding: 0.75rem 1.5rem; border-radius: 0.5rem; font-weight: 600; text-decoration: none; display: inline-block;">Try Free for 14 Days →</a>
+      </div>
+
+      <h2>Frequently Asked Questions</h2>
+
+      <h3>Is BANT still relevant in 2026?</h3>
+      <p>
+        Yes, with adaptations. The core logic of BANT (budget, decision authority, need, timeline) remains valid. The update: apply it conversationally rather than as a checklist interrogation, and supplement with behavioral data from your CRM to fill gaps the conversation doesn't reveal.
+      </p>
+
+      <h3>When should SMBs use MEDDIC?</h3>
+      <p>
+        When your average deal value exceeds $15,000 and involves 3+ stakeholders. Below that threshold, MEDDIC's depth creates more friction than value. For most Brazilian SMB CRM deals (R$2,000-20,000/year), BANT with a Champion identification add-on is sufficient.
+      </p>
+
+      <h3>Can I use both BANT and MEDDIC?</h3>
+      <p>
+        Yes. A common hybrid: use BANT for initial qualification (first 2 calls), then switch to MEDDIC for deep discovery on deals that pass BANT threshold. This keeps the process efficient without sacrificing rigor on high-value opportunities.
+      </p>
+
+      <hr style="margin: 3rem 0; border: none; border-top: 1px solid #e5e7eb;" />
+      <p style="font-size: 0.85rem; color: #64748b;">
+        <strong>Last Updated:</strong> March 21, 2026<br/>
+        <strong>Author:</strong> Sirius CRM Team<br/>
+        <strong>Reading Time:</strong> 12 minutes
+      </p>
+  `,
 }

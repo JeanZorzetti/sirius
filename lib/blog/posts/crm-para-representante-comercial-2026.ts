@@ -257,5 +257,68 @@ export const post: BlogPost = {
       <strong>Última Atualização:</strong> 21 de Março de 2026<br/>
       <strong>Autor:</strong> Equipe Sirius CRM<br/>
       <strong>Tempo de Leitura:</strong> 11 minutos
-    `
+    `,
+  titleEn: 'CRM for Independent Sales Representatives: Free, Offline, and AI-Powered [2026]',
+  excerptEn: 'Independent sales reps lose their customer portfolio when changing manufacturers. A personal CRM with offline mode, WhatsApp, and AI solves this — see which is free.',
+  keywordsEn: ['crm for sales representatives', 'independent sales rep crm', 'free crm field sales', 'crm offline sales rep', 'manufacturer rep crm'],
+  contentEn: `
+      <p>
+        Independent sales representatives face a problem that employed sales reps don't: when you change manufacturers or add a new product line, your customer data is at risk. If it lives only in the manufacturer's system, it's not yours to take. A personal CRM solves this permanently.
+      </p>
+
+      <h2>The 3 CRM Requirements for Independent Sales Reps</h2>
+
+      <h3>1. Offline Mode (Non-Negotiable for Field Work)</h3>
+      <p>
+        Sales reps visit factories, warehouses, rural distributors, and remote retailers — all environments where mobile connectivity is unreliable. A CRM that requires internet to function is unusable for half your workday. Require true offline mode with automatic sync when connectivity returns.
+      </p>
+
+      <h3>2. Native WhatsApp Integration</h3>
+      <p>
+        Brazilian B2B sales runs on WhatsApp. Your customer conversations — order confirmations, price negotiations, product questions — happen there. A CRM that doesn't capture WhatsApp history means half your customer relationship is invisible.
+      </p>
+
+      <h3>3. Commission Calculation</h3>
+      <p>
+        Independent reps earn by commission. A CRM that tracks deal value + stage + commission percentage allows automatic monthly commission calculation — no more manual spreadsheet work, no disputes over "what closed in which period."
+      </p>
+
+      <h2>Why Your Own CRM (Not the Manufacturer's) Matters</h2>
+
+      <ul>
+        <li><strong>Data portability:</strong> Your customer history moves with you when you change manufacturers</li>
+        <li><strong>Complete history:</strong> Conversations, visit notes, pricing discussions — all in one place</li>
+        <li><strong>Independent pipeline visibility:</strong> You see the full picture across all product lines, not just one manufacturer's view</li>
+        <li><strong>Professional image:</strong> Using a CRM in front of customers signals organization and competence</li>
+      </ul>
+
+      <h2>Sirius CRM Free Plan: What Independent Reps Get</h2>
+
+      <ul>
+        <li>Unlimited contacts (your full customer portfolio)</li>
+        <li>Visual pipeline (Kanban) for all active deals</li>
+        <li>WhatsApp integration (3 conversations/day on free plan)</li>
+        <li>Offline mode (full functionality without internet)</li>
+        <li>AI qualification (3 lead analyses/month)</li>
+        <li>Commission tracking fields</li>
+        <li>Data export at any time (CSV)</li>
+      </ul>
+
+      <p>
+        The only real cost is not having a CRM: the portfolio that disappears on the next manufacturer change, the follow-up that didn't happen, the customer who bought from a competitor because you didn't call at the right time.
+      </p>
+
+      <div style="background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); border-left: 4px solid #2563eb; padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
+        <p style="font-weight: 700; color: #1e40af;">Your portfolio, your data, your CRM — for free</p>
+        <p style="color: #1e40af; margin: 0.5rem 0 1rem;">Sirius CRM free plan. No credit card. Offline mode, WhatsApp, AI. Your data is always yours.</p>
+        <a href="/en/register" style="background: #2563eb; color: white; padding: 0.75rem 1.5rem; border-radius: 0.5rem; font-weight: 600; text-decoration: none; display: inline-block;">Create Free Account →</a>
+      </div>
+
+      <hr style="margin: 3rem 0; border: none; border-top: 1px solid #e5e7eb;" />
+      <p style="font-size: 0.85rem; color: #64748b;">
+        <strong>Last Updated:</strong> March 21, 2026<br/>
+        <strong>Author:</strong> Sirius CRM Team<br/>
+        <strong>Reading Time:</strong> 11 minutes
+      </p>
+  `,
 }

@@ -265,5 +265,58 @@ export const post: BlogPost = {
       <strong>Última Atualização:</strong> 21 de Março de 2026<br/>
       <strong>Autor:</strong> Equipe Sirius CRM<br/>
       <strong>Tempo de Leitura:</strong> 11 minutos
-    `
+    `,
+  titleEn: 'How to Use Google Maps to Prospect Companies in Your Area: Practical Guide for Sales Reps',
+  excerptEn: 'Complete guide to local B2B prospecting via Google Maps: find companies by segment, extract contacts, and import leads directly into your CRM.',
+  keywordsEn: ['google maps prospecting', 'local b2b prospecting', 'find companies google maps', 'field sales prospecting', 'google maps sales leads'],
+  contentEn: `
+      <p>
+        Google Maps is one of the most underused B2B prospecting tools available — and it's free. For field sales reps who sell locally, it's possible to build a qualified prospect list for an entire city or region in under 2 hours. Here's the step-by-step method.
+      </p>
+
+      <h2>Step-by-Step: Prospecting on Google Maps</h2>
+
+      <h3>Step 1: Define Your Search Query</h3>
+      <p>
+        Open Google Maps and search for your target industry + city. Examples: "metalworking factories São Paulo", "dental clinics Curitiba", "car dealerships Porto Alegre." Google displays all matching businesses on the map with name, address, phone, and rating.
+      </p>
+
+      <h3>Step 2: Filter by Qualification Criteria</h3>
+      <p>
+        Apply quick filters to identify established businesses: 3.5+ star rating, 20+ reviews, photos present, website listed, and business hours defined. Businesses missing most of these are likely too informal or inactive to be worth pursuing.
+      </p>
+
+      <h3>Step 3: Collect Contact Data</h3>
+      <p>For each qualified prospect, collect: business name, address, phone number (often the owner's WhatsApp in Brazilian SMBs), website URL, and Google rating.</p>
+
+      <h3>Step 4: Find the Decision-Maker</h3>
+      <p>
+        Google Maps gives you the business, not the buyer. For each prospect, search the company on LinkedIn for the owner/director, check the website's "About" page, or look up the registered representative via CNPJ on the Receita Federal website.
+      </p>
+
+      <h3>Step 5: Import to Your CRM</h3>
+      <p>
+        Build a spreadsheet with the collected data and import via CSV into your CRM. In Sirius CRM PRO, the Google Maps prospecting feature does this automatically — extract and import with one click from the map interface.
+      </p>
+
+      <h2>Best Practices</h2>
+      <ul>
+        <li>Only contact businesses genuinely relevant to your solution</li>
+        <li>Reference how you found them: "I found your business on Google Maps while looking for [industry] companies in [city]"</li>
+        <li>Don't call outside business hours</li>
+        <li>If the phone leads to WhatsApp, use a professional, personalized first message</li>
+        <li>Store only data you legitimately use and honor opt-out requests</li>
+      </ul>
+
+      <p>
+        The big advantage of Maps prospecting: updated data (owners update it themselves), geographic focus (your territory), and enough volume to feed a healthy pipeline every month — without paying for outdated lists.
+      </p>
+
+      <hr style="margin: 3rem 0; border: none; border-top: 1px solid #e5e7eb;" />
+      <p style="font-size: 0.85rem; color: #64748b;">
+        <strong>Last Updated:</strong> March 21, 2026<br/>
+        <strong>Author:</strong> Sirius CRM Team<br/>
+        <strong>Reading Time:</strong> 11 minutes
+      </p>
+  `,
 }

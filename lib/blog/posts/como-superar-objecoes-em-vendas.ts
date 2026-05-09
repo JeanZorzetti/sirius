@@ -209,5 +209,114 @@ export const post: BlogPost = {
       <strong>Última Atualização:</strong> 28 de Fevereiro de 2026<br/>
       <strong>Autor:</strong> Equipe Sirius CRM<br/>
       <strong>Tempo de Leitura:</strong> 9 minutos
-    `
+    `,
+  titleEn: 'How to Handle Sales Objections: 10 Ready-to-Use Responses to Close More Deals',
+  excerptEn: 'Objections are disguised opportunities. See the 10 most common B2B sales objections and ready-made scripts to overcome them naturally.',
+  keywordsEn: ['sales objection handling', 'overcome sales objections', 'b2b objection scripts', 'common sales objections', 'sales objection responses'],
+  contentEn: `
+      <p>
+        Every sales rep dreads hearing "it's too expensive," "I need to think about it," or "send me more information." But here's the truth: objections aren't rejection — they're engagement. A prospect who doesn't object doesn't care enough to push back. Learning to handle objections with precision is the highest-leverage sales skill you can develop.
+      </p>
+
+      <h2>The LAER Framework: The Right Way to Handle Any Objection</h2>
+
+      <p>
+        Before any specific script, every objection handling begins with the same 4-step sequence:
+      </p>
+
+      <ol>
+        <li><strong>L — Listen:</strong> Let the prospect finish completely. Don't interrupt. Don't pre-load your response while they're talking.</li>
+        <li><strong>A — Acknowledge:</strong> Validate the concern without agreeing with it. "That makes total sense, a lot of our customers had that exact concern."</li>
+        <li><strong>E — Explore:</strong> Ask a clarifying question before responding. "When you say it's too expensive, are you comparing it to a specific alternative, or is the total budget a constraint?"</li>
+        <li><strong>R — Respond:</strong> Address the specific, clarified objection — not a generic version of it.</li>
+      </ol>
+
+      <h2>The 10 Most Common B2B Sales Objections + Responses</h2>
+
+      <h3>1. "It's too expensive."</h3>
+      <p>
+        <strong>Explore first:</strong> "Compared to what? An alternative solution, or your total budget?"<br/>
+        <strong>If vs alternative:</strong> "Let's break down what's included in both. What's the cost of [specific problem] if it goes unsolved for another 6 months?" → Reframe as ROI, not price.<br/>
+        <strong>If budget constraint:</strong> "Is there a different starting scope that would fit the budget while still solving [primary pain]?"
+      </p>
+
+      <h3>2. "I need to think about it."</h3>
+      <p>
+        This usually means: "I'm not convinced yet" or "there's an objection I haven't stated."<br/>
+        <strong>Response:</strong> "Of course — this is a meaningful decision. What specific part do you want to think through? Is it the ROI case, timing, or something about the implementation?"<br/>
+        Never accept a vague objection. Get it specific.
+      </p>
+
+      <h3>3. "Send me more information."</h3>
+      <p>
+        Usually a polite exit. Counter by making the next step concrete.<br/>
+        <strong>Response:</strong> "Absolutely. To make sure I send what's most relevant — what's the specific question you're hoping to answer with the material?" If they can't answer, the objection is disengagement, not information need.
+      </p>
+
+      <h3>4. "We already use [competitor]."</h3>
+      <p>
+        <strong>Response:</strong> "How long have you been with them? What's working well — and what do you wish worked better?" → Let them surface the dissatisfaction. Don't attack the competitor. Listen for the gap.
+      </p>
+
+      <h3>5. "Now isn't a good time."</h3>
+      <p>
+        <strong>Explore:</strong> "What's driving the timing — is there something specific in the next 60-90 days?" If it's a real constraint, honor it and schedule a future checkpoint. If it's avoidance, clarify: "If timing weren't an issue, would this be the right solution?"
+      </p>
+
+      <h3>6. "I need to check with my partner/CEO/board."</h3>
+      <p>
+        <strong>Response:</strong> "Of course. To help you make that case internally — what are the 1-2 things they'll most likely want to know? I can prepare a one-page summary specifically for that conversation."<br/>
+        Never let the deal go dark. Become a resource for the internal pitch.
+      </p>
+
+      <h3>7. "We don't have budget right now."</h3>
+      <p>
+        <strong>Response:</strong> "When does your next budget cycle start? And is this problem severe enough that it might warrant a mid-cycle allocation, or is it more of a 'next year' priority?"<br/>
+        This separates "no budget" (real constraint) from "not a priority" (hidden objection).
+      </p>
+
+      <h3>8. "We tried something similar before and it didn't work."</h3>
+      <p>
+        <strong>Response:</strong> "Can you tell me what happened? I want to understand what broke down — whether it was the tool itself, the implementation, the team adoption, or something else. That context will help me tell you honestly whether we'd hit the same wall."<br/>
+        This objection is actually a great buying signal — they've already validated the problem is real.
+      </p>
+
+      <h3>9. "Your contract is too long / we don't want annual commitment."</h3>
+      <p>
+        <strong>Response:</strong> "What's driving the preference for flexibility — is it uncertainty about whether it'll work, or budget cycle alignment?" If doubt: "What would need to be true for you to feel confident in an annual commitment?" → Address the confidence gap, not the contract length.
+      </p>
+
+      <h3>10. "I don't see why we'd need this."</h3>
+      <p>
+        This is a discovery failure — the rep didn't surface enough pain. <strong>Don't try to overcome this with features.</strong><br/>
+        <strong>Response:</strong> "Fair — let me ask a different question. [Problem area] — how are you currently handling that? And how satisfied are you with those results?" → Back to diagnostic mode.
+      </p>
+
+      <h2>Using Your CRM to Track and Improve Objection Handling</h2>
+
+      <p>
+        Every objection should be logged in your CRM with:
+      </p>
+      <ul>
+        <li>The specific objection text (verbatim)</li>
+        <li>The deal stage when it occurred</li>
+        <li>The response used</li>
+        <li>Whether the deal advanced or stalled</li>
+      </ul>
+
+      <p>
+        After 30-50 tagged objections, patterns emerge: which objections kill the most deals? Which are most easily resolved? At which stage does each objection typically appear? This data transforms objection handling from individual skill to team system.
+      </p>
+
+      <p>
+        Objections are the oxygen of sales — they prove the customer is engaged. The difference between an average rep and a high performer lies in the ability to <strong>listen deeply, explore with curiosity, and respond precisely</strong>.
+      </p>
+
+      <hr style="margin: 3rem 0; border: none; border-top: 1px solid #e5e7eb;" />
+      <p style="font-size: 0.85rem; color: #64748b;">
+        <strong>Last Updated:</strong> February 28, 2026<br/>
+        <strong>Author:</strong> Sirius CRM Team<br/>
+        <strong>Reading Time:</strong> 9 minutes
+      </p>
+  `,
 }

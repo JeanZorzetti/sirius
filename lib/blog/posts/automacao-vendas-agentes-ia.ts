@@ -476,4 +476,146 @@ export const post: BlogPost = {
   image: 'https://images.unsplash.com/photo-1535378917042-10a22c95931a?w=1200&h=630&fit=crop&auto=format&q=80',
   author: 'Equipe Sirius CRM',
   relatedSlugs: ['crm-automacao-vendas-guia-completo', 'agentes-ia-autonomos-crm-2026', 'como-funciona-sofia-ia-sirius'],
+  titleEn: 'Sales Automation with AI Agents: A Practical Guide to Sell More in 2026',
+  excerptEn: 'Discover how AI agents automate prospecting, follow-up, lead qualification, and deal closing — and how to implement them in your sales process in 2026.',
+  keywordsEn: ['sales automation ai agents', 'ai sales automation 2026', 'autonomous sales agents', 'crm ai automation', 'sales process automation'],
+  contentEn: `
+      <p>
+        Sales automation is nothing new — email sequences, automatic reminders, and CRMs with workflows have existed for over a decade. What changed radically in 2026 is the arrival of <strong>artificial intelligence agents</strong> in the commercial process. Unlike traditional automations that follow rigid rules ("if the lead didn't respond in 3 days, send email B"), AI agents are autonomous entities that <em>perceive context, make decisions, and adapt their actions</em> in real time.
+      </p>
+
+      <p>
+        The practical result: a single AI agent can handle the prospecting, follow-up, and initial qualification of hundreds of leads simultaneously — with the adaptability of a skilled sales rep, but without burnout, forgetting, or inconsistency.
+      </p>
+
+      <div class="callout-stat">
+        <p><strong>📊 Market Data</strong></p>
+        <p style="font-size: 3rem; font-weight: 800; color: #2563eb; margin: 1rem 0; line-height: 1;">67%</p>
+        <p>of sales reps using AI agents report <strong>closing more deals in less time</strong> vs 12 months ago, according to Salesforce State of Sales 2025.</p>
+      </div>
+
+      <h2>What Are AI Sales Agents (vs Traditional Automation)?</h2>
+
+      <table style="width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: 0.9rem;">
+        <thead>
+          <tr style="background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%); color: white;">
+            <th style="padding: 0.875rem; text-align: left;">Traditional Automation</th>
+            <th style="padding: 0.875rem; text-align: left;">AI Agent</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="background: #f8fafc;">
+            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">Executes fixed rules ("if/then")</td>
+            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">Perceives context and adapts decisions</td>
+          </tr>
+          <tr>
+            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">Sends the same message to all leads</td>
+            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">Personalizes message based on lead behavior</td>
+          </tr>
+          <tr style="background: #f8fafc;">
+            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">Breaks when scenario falls outside rules</td>
+            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">Handles edge cases autonomously</td>
+          </tr>
+          <tr>
+            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">Requires manual reconfiguration to improve</td>
+            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">Learns from outcomes and improves over time</td>
+          </tr>
+          <tr style="background: #f8fafc;">
+            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">Informs the rep of what happened</td>
+            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">Acts and informs (or asks for approval)</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2>The 4 Areas Where AI Agents Are Replacing Manual Work in Sales</h2>
+
+      <h3>1. AI-Powered Prospecting</h3>
+      <p>
+        AI agents can search LinkedIn, websites, and public databases to identify ideal prospects based on your ICP (Ideal Customer Profile), validate contact data, and even generate the first personalized outreach message — all without rep involvement.
+      </p>
+      <p>
+        <strong>What changes for the rep:</strong> instead of spending 2 hours/day on list-building, the rep arrives to a pre-qualified prospect list ready for outreach.
+      </p>
+
+      <h3>2. Intelligent Follow-Up Automation</h3>
+      <p>
+        AI agents monitor lead behavior (email opens, link clicks, page visits, WhatsApp read receipts) and trigger the next touchpoint at the optimal moment — not on a fixed schedule. A lead who opened the proposal three times gets a follow-up in 30 minutes; a lead who hasn't opened it gets a different message after 3 days.
+      </p>
+
+      <h3>3. Automatic Lead Qualification (BANT/SPIN via Conversation)</h3>
+      <p>
+        AI agents conduct qualification conversations via WhatsApp or email, ask BANT questions naturally, and update the CRM with qualification data in real time. By the time a human rep gets involved, the lead has already been qualified and the pain articulated.
+      </p>
+
+      <h3>4. Meeting Scheduling and Reminder Automation</h3>
+      <p>
+        AI agents manage calendar coordination, send meeting confirmations, pre-meeting reminders, and post-meeting follow-ups automatically. A 20-minute administrative loop per meeting is reduced to seconds.
+      </p>
+
+      <h2>How to Implement AI Sales Agents in Your Process</h2>
+
+      <h3>Step 1: Audit Manual Work in Your Current Process</h3>
+      <p>
+        Map every step where a rep currently does something manually: sending confirmation emails, logging calls, updating deal stages, scheduling reminders. These are your automation candidates.
+      </p>
+
+      <h3>Step 2: Start with Follow-Up (Highest ROI)</h3>
+      <p>
+        Follow-up automation typically delivers the fastest measurable ROI — because the cost of missed follow-ups is immediate and quantifiable (lost deals). Automate the follow-up cadence first, measure the impact on win rate over 30 days, then expand.
+      </p>
+
+      <h3>Step 3: Add Qualification Automation</h3>
+      <p>
+        Once follow-up is running, implement lead qualification automation. Define your BANT questions, configure the AI agent's conversation flow, and set the threshold score that triggers human rep involvement.
+      </p>
+
+      <h3>Step 4: Layer Prospecting Automation</h3>
+      <p>
+        Prospecting automation is the highest-value but also highest-complexity automation to implement. Start with enrichment (AI adds company data to inbound leads) before moving to outbound prospecting AI.
+      </p>
+
+      <h2>AI Agents in Sirius CRM: What's Included</h2>
+
+      <p>
+        Sirius CRM's built-in AI agent handles:
+      </p>
+
+      <ul>
+        <li><strong>Prospecting mode:</strong> Identifies similar prospects to your best customers</li>
+        <li><strong>Follow-up cadence:</strong> Sends personalized WhatsApp messages at optimal timing based on lead engagement</li>
+        <li><strong>BANT qualification:</strong> Conducts qualification conversations and updates deal fields automatically</li>
+        <li><strong>Pipeline updates:</strong> Moves deals between stages based on conversation outcomes</li>
+        <li><strong>Meeting prep:</strong> Sends pre-meeting briefings to reps with deal history summary</li>
+      </ul>
+
+      <div style="background: linear-gradient(135deg, #1e3a5f 0%, #1e293b 100%); padding: 2rem; border-radius: 1rem; margin: 2rem 0; text-align: center;">
+        <h3 style="color: #ffffff; margin: 0 0 1rem;">See AI Agents Work in Your Pipeline</h3>
+        <p style="color: #94a3b8; margin: 0 0 1.5rem;">Start a free trial and watch the AI agent qualify your first leads automatically.</p>
+        <a href="/en/register" style="background: #2563eb; color: white; padding: 0.875rem 2rem; border-radius: 0.5rem; font-weight: 700; text-decoration: none; display: inline-block;">Try Free for 14 Days →</a>
+      </div>
+
+      <h2>Frequently Asked Questions</h2>
+
+      <h3>Will AI agents replace sales reps?</h3>
+      <p>
+        No — AI agents replace the <em>administrative and repetitive</em> parts of selling (list building, data entry, scheduling, reminder sending). The relationship-building, objection handling, and deal closing that require human judgment and emotional intelligence remain with the rep. The net effect: reps spend more time selling and less time on tasks that shouldn't require a human.
+      </p>
+
+      <h3>Do AI agents work for small sales teams (1-3 reps)?</h3>
+      <p>
+        Yes, and the impact is proportionally larger. A 3-person team using AI agents operates with the pipeline capacity of a 6-8 person team. The cost-per-rep leverage is highest at small team sizes.
+      </p>
+
+      <h3>How long does it take to see results from AI sales automation?</h3>
+      <p>
+        Follow-up automation shows measurable impact within 30 days (track win rate before/after). Qualification automation typically takes 60-90 days to calibrate — the AI improves as it processes more qualified/disqualified examples. Prospecting automation is the slowest to optimize: plan for 90-120 days to tune ICP targeting.
+      </p>
+
+      <hr style="margin: 3rem 0; border: none; border-top: 1px solid #e5e7eb;" />
+      <p style="font-size: 0.85rem; color: #64748b;">
+        <strong>Last Updated:</strong> March 28, 2026<br/>
+        <strong>Author:</strong> Sirius CRM Team<br/>
+        <strong>Reading Time:</strong> 15 minutes
+      </p>
+  `,
 }

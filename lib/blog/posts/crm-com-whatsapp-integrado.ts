@@ -262,5 +262,257 @@ export const post: BlogPost = {
       <strong>Última Atualização:</strong> 21 de Março de 2026<br/>
       <strong>Autor:</strong> Equipe Sirius CRM<br/>
       <strong>Tempo de Leitura:</strong> 11 minutos
+    `,
+  titleEn: 'CRM with Integrated WhatsApp in 2026: How to Centralize All Sales Conversations in One Place',
+  excerptEn: 'Discover how to integrate WhatsApp with your CRM to centralize conversations, automate follow-ups, and never lose customer history on personal phones again.',
+  keywordsEn: ['crm with whatsapp', 'whatsapp crm integration', 'crm whatsapp 2026', 'whatsapp business crm', 'centralize whatsapp sales'],
+  contentEn: `
+      <p>
+        The Brazilian sales rep has a unique problem in the world: they sell over WhatsApp. Not by obligation — by necessity. Brazil has <strong>147 million active WhatsApp users</strong>, the highest per-capita penetration in the world, and the Brazilian B2B buyer simply prefers to close deals on the messaging app. The problem is that this has created a silent chaos in commercial teams.
+      </p>
+
+      <p>
+        Conversations scattered on personal phones. Negotiation history inaccessible when the rep leaves. Follow-ups that never happen because the conversation got lost among 200 other messages. Managers with no visibility into what's being said to clients. And zero traceability of which message generates results.
+      </p>
+
+      <p>
+        The solution isn't to ban WhatsApp — it's to integrate it with the CRM. In this article, you'll understand how this integration works, why it's mandatory for serious commercial teams in 2026, and how <a href="/">Sirius CRM</a> solves this problem with its native Chat Center.
+      </p>
+
+      <div class="not-prose" style="background: #1e293b; padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
+        <p style="margin: 0 0 0.75rem; font-weight: 700; font-size: 1.05rem; color: #38bdf8;">⚡ TL;DR — Quick Answer</p>
+        <ul style="margin: 0; padding-left: 1.25rem; line-height: 2; color: #ffffff;">
+          <li><strong>CRM + WhatsApp</strong> centralizes all commercial conversations in one place, with history per customer</li>
+          <li>Integration is done via <strong>WhatsApp Business API</strong> (Evolution API) — not the personal app</li>
+          <li>Managers gain <strong>full visibility</strong> of conversations without touching personal phones</li>
+          <li>WhatsApp follow-up sequences increase response rates by <strong>up to 3x</strong> vs. cold email (Salesforce 2025)</li>
+          <li><strong>Sirius CRM PRO</strong> has native Chat Center with integrated WhatsApp — no third parties needed</li>
+        </ul>
+      </div>
+
+      <h2>How does a CRM with integrated WhatsApp work?</h2>
+
+      <p>
+        The integration between CRM and WhatsApp doesn't work via the common app installed on the phone — it uses the <strong>WhatsApp Business API</strong>, an official version of the platform that allows connection with external systems via protocol. In the Brazilian market, the most widely used open source solution is <strong>Evolution API</strong>, which serves as a bridge between WhatsApp Business and any system.
+      </p>
+
+      <p>
+        In practice, the flow works like this: the rep accesses the CRM and sees a native chat interface. When they type a message there, it's delivered to the customer via WhatsApp. When the customer responds on WhatsApp, the message comes back to the CRM. Everything automatically logged in the contact's history, with timestamp, read status, and linked to the deal in the pipeline.
+      </p>
+
+      <div class="callout-stat">
+        <p><strong>📊 WhatsApp in Brazilian B2B</strong></p>
+        <p style="font-size: 3rem; font-weight: 800; color: #2563eb; margin: 1rem 0; line-height: 1;">78%</p>
+        <p>of Brazilian B2B sales reps use WhatsApp as their primary communication channel with customers — but only 12% log these conversations in any system. Source: Brazil Sales Overview 2025, RD Station.</p>
+      </div>
+
+      <h3>What the integration solves in practice</h3>
+
+      <p>When WhatsApp is integrated with the CRM, these problems disappear:</p>
+
+      <ul style="line-height: 2; padding-left: 1.5rem;">
+        <li><strong>Lost history:</strong> Every conversation is linked to the contact in the CRM, accessible forever</li>
+        <li><strong>Personal phone dependency:</strong> Any team member can access conversations via browser</li>
+        <li><strong>Forgotten follow-up:</strong> The CRM automatically creates a task when there's X days without response</li>
+        <li><strong>Manager visibility gap:</strong> Dashboard shows message volume, response time, and active conversations per rep</li>
+        <li><strong>Scalability:</strong> Multiple reps can service via the same number, with intelligent queue and routing</li>
+      </ul>
+
+      <h2>Is it worth integrating WhatsApp with CRM?</h2>
+
+      <p>
+        The answer is yes — especially in Brazil. The financial argument is direct: if your team uses personal WhatsApp to sell and the rep leaves, you lose the entire history of all their customers. Depending on the size and sales cycle, that's equivalent to losing months of built relationships.
+      </p>
+
+      <p>
+        But there are reasons beyond history security. A Salesforce study (2025) shows that WhatsApp follow-up messages have an open rate of <strong>98%</strong> vs. 21% for email. When you structure automatic follow-up sequences via WhatsApp within the CRM, the impact on conversion rates is immediate and measurable.
+      </p>
+
+      <div class="callout-tip">
+        <p><strong>💡 When integration generates the most ROI</strong></p>
+        <p>CRM + WhatsApp integration generates more return when the sales cycle has <strong>3 or more touchpoints</strong> before closing, the team has <strong>2 or more reps</strong> serving the same segments, and the product or service has a <strong>high ticket</strong> where each lost customer hurts the bottom line.</p>
+      </div>
+
+      <h3>The risk of not integrating</h3>
+
+      <p>
+        Companies that don't integrate face three risks that grow over time. First, <strong>compliance risk</strong>: without conversation records, you can't prove what was promised to the customer in case of a commercial dispute. Second, <strong>silent churn risk</strong>: customers who stop responding on the rep's personal WhatsApp disappear without the manager noticing. Third, <strong>concentration risk</strong>: all commercial intelligence is locked on one person's phone.
+      </p>
+
+      <h2>Which CRM has free integrated WhatsApp in Brazil?</h2>
+
+      <table style="width: 100%; border-collapse: collapse; margin: 2rem 0;">
+        <thead>
+          <tr style="background: #f8fafc;">
+            <th style="padding: 0.75rem; border: 1px solid #e2e8f0; text-align: left;">CRM</th>
+            <th style="padding: 0.75rem; border: 1px solid #e2e8f0; text-align: left;">Native WhatsApp</th>
+            <th style="padding: 0.75rem; border: 1px solid #e2e8f0; text-align: left;">Free plan</th>
+            <th style="padding: 0.75rem; border: 1px solid #e2e8f0; text-align: left;">Note</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;"><strong>Sirius CRM PRO</strong></td>
+            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">✅ Native Chat Center</td>
+            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">✅ Free plan available</td>
+            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Evolution API integrated, multi-agent</td>
+          </tr>
+          <tr style="background: #f8fafc;">
+            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">HubSpot</td>
+            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">⚠️ Via paid integration</td>
+            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">✅ With limitations</td>
+            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Requires Twilio or similar</td>
+          </tr>
+          <tr>
+            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Pipedrive</td>
+            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">⚠️ Via Zapier</td>
+            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">❌ No free plan</td>
+            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Additional cost per automation</td>
+          </tr>
+          <tr style="background: #f8fafc;">
+            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">RD CRM</td>
+            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">⚠️ RD Station integrated</td>
+            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">❌ No free plan</td>
+            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Depends on RD Station plan</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p>
+        <a href="/">Sirius CRM</a> was built with the Brazilian market in mind — that's why the Chat Center with WhatsApp is native, not an add-on. The integration uses Evolution API to connect any WhatsApp Business number without needing to contract the official Meta API (which requires approval and has per-message costs).
+      </p>
+
+      <h2>Sirius CRM's Chat Center: how it works in practice</h2>
+
+      <p>
+        Sirius PRO's Chat Center is a complete multi-channel service module within the CRM. By connecting a WhatsApp instance via Evolution API, the number starts sending and receiving messages directly through the Sirius panel — without leaving the CRM.
+      </p>
+
+      <p>Chat Center features:</p>
+
+      <ul style="line-height: 2; padding-left: 1.5rem;">
+        <li><strong>Unified inbox:</strong> All conversations from all channels (WhatsApp, email) in a single panel</li>
+        <li><strong>Automatic assignment:</strong> New conversations are distributed among team reps with configurable rules</li>
+        <li><strong>Pipeline linking:</strong> Each conversation can be associated with an active deal in the pipeline with one click</li>
+        <li><strong>Complete history:</strong> All message history is saved and searchable, even after the rep leaves</li>
+        <li><strong>Message templates:</strong> Ready-made responses to speed up service without losing personalization</li>
+        <li><strong>Service metrics:</strong> Average response time, volume per channel, conversations per rep</li>
+      </ul>
+
+      <h2>How to structure WhatsApp follow-up sequences</h2>
+
+      <p>
+        The biggest advantage of having WhatsApp in the CRM isn't just centralizing conversations — it's automating the follow-up cadence. With the flow configured, the CRM sends messages at the right moments in the sales cycle without the rep needing to remember manually.
+      </p>
+
+      <p>Example sequence for cold leads via WhatsApp:</p>
+
+      <table style="width: 100%; border-collapse: collapse; margin: 2rem 0;">
+        <thead>
+          <tr style="background: #f8fafc;">
+            <th style="padding: 0.75rem; border: 1px solid #e2e8f0; text-align: left;">Step</th>
+            <th style="padding: 0.75rem; border: 1px solid #e2e8f0; text-align: left;">Timing</th>
+            <th style="padding: 0.75rem; border: 1px solid #e2e8f0; text-align: left;">Message</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;"><strong>1st approach</strong></td>
+            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Day 0 — lead registered</td>
+            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Personalized intro, reference to lead context</td>
+          </tr>
+          <tr style="background: #f8fafc;">
+            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;"><strong>Follow-up 1</strong></td>
+            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Day 2 — no response</td>
+            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Value content (case study, article, industry data)</td>
+          </tr>
+          <tr>
+            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;"><strong>Follow-up 2</strong></td>
+            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Day 5 — no response</td>
+            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Direct question about segment-specific pain point</td>
+          </tr>
+          <tr style="background: #f8fafc;">
+            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;"><strong>Follow-up 3</strong></td>
+            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Day 10 — no response</td>
+            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">"Closing" message: "Does it still make sense to talk?"</td>
+          </tr>
+          <tr>
+            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;"><strong>Reactivation</strong></td>
+            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Day 30 — cold lead</td>
+            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">New trigger or product/company news</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="callout-warning">
+        <p><strong>⚠️ Best practices to avoid WhatsApp spam</strong></p>
+        <ul style="line-height: 1.8; margin: 0.5rem 0 0; padding-left: 1.25rem;">
+          <li>Never send mass messages without prior consent — risk of number banning</li>
+          <li>Maintain minimum 24h intervals between messages to the same contact</li>
+          <li>Always personalize — generic messages generate blocks and complaints</li>
+          <li>Offer a clear opt-out option: "Let me know if you don't want to receive messages anymore"</li>
+          <li>Use WhatsApp Business, not personal — beyond being professional, it protects your number</li>
+        </ul>
+      </div>
+
+      <h2>Step by step to connect WhatsApp to Sirius CRM</h2>
+
+      <p>The setup is simple and takes less than 10 minutes:</p>
+
+      <ol style="line-height: 2; padding-left: 1.5rem;">
+        <li><strong>Go to Settings → Integrations → WhatsApp</strong> inside Sirius PRO</li>
+        <li><strong>Create a new instance</strong> — give it a name (e.g., "Sales SP") and save</li>
+        <li><strong>Scan the QR Code</strong> with the phone's WhatsApp Business — connection complete</li>
+        <li><strong>Configure assignment rules</strong>: which messages go to which rep</li>
+        <li><strong>Activate message templates</strong> to speed up frequent responses</li>
+        <li><strong>Test by sending a message</strong> from a test number to verify the flow</li>
+      </ol>
+
+      <p>
+        From there, every message received on that number appears in the CRM's Chat Center. Reps service via browser, history is saved, and the manager has full visibility without touching anyone's phone.
+      </p>
+
+      <div style="background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%); padding: 2rem; border-radius: 1rem; margin: 2.5rem 0; text-align: center;">
+        <p style="color: white; font-size: 1.25rem; font-weight: 700; margin: 0 0 0.5rem;">Centralize your team's WhatsApp in Sirius CRM</p>
+        <p style="color: #bfdbfe; margin: 0 0 1.25rem;">Native Chat Center with WhatsApp integrated via Evolution API. No extra cost, no complex setup.</p>
+        <a href="/pricing" style="display: inline-block; background: white; color: #2563eb; padding: 0.75rem 2rem; border-radius: 0.5rem; font-weight: 700; text-decoration: none;">View Plans →</a>
+      </div>
+
+      <h2>FAQ: CRM with WhatsApp</h2>
+
+      <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
+        <summary style="font-weight: 600; cursor: pointer; color: #1e293b; list-style: revert;">Can a single WhatsApp number be used by multiple reps?</summary>
+        <p style="margin: 0.75rem 0 0; color: #4b5563;">Yes, that's exactly what Chat Center does. With integration via WhatsApp Business API, a single number can be served by multiple agents simultaneously. Conversations are distributed by rules (round-robin, by availability, or by sector) and each rep sees only the conversations assigned to them, while the manager has access to all.</p>
+      </details>
+
+      <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
+        <summary style="font-weight: 600; cursor: pointer; color: #1e293b; list-style: revert;">Does the customer notice they're being served by a system?</summary>
+        <p style="margin: 0.75rem 0 0; color: #4b5563;">Not necessarily. When properly configured, the experience for the customer is identical to normal WhatsApp — they receive and send messages via the app they already use. The difference is on the rep's side, who services via CRM. What can reveal the system is using very generic automatic messages — that's why personalization is essential even in automatic responses.</p>
+      </details>
+
+      <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
+        <summary style="font-weight: 600; cursor: pointer; color: #1e293b; list-style: revert;">What's the difference between WhatsApp Business and the WhatsApp API?</summary>
+        <p style="margin: 0.75rem 0 0; color: #4b5563;">WhatsApp Business is Meta's free app for small businesses — it has a catalog, basic auto-replies, and a business profile, but is limited to one device at a time and doesn't integrate with external systems. The WhatsApp Business API is the version for larger companies, accessed via providers like Evolution API — it allows full CRM integration, multi-agent service, and advanced automations. Sirius CRM uses the API via Evolution to offer the best of both worlds.</p>
+      </details>
+
+      <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin-bottom: 2rem;">
+        <summary style="font-weight: 600; cursor: pointer; color: #1e293b; list-style: revert;">Can my rep continue using WhatsApp on the phone even with CRM integrated?</summary>
+        <p style="margin: 0.75rem 0 0; color: #4b5563;">Technically yes, but it's not recommended. When the number is connected to the CRM via Evolution API, it works like WhatsApp Web — the phone can continue receiving messages. The problem is that responses given via phone aren't logged in the CRM. So after integration, ideally all commercial service should be done exclusively through the CRM panel, using the phone only for emergencies.</p>
+      </details>
+
+      <h2>Conclusion</h2>
+
+      <p>
+        In 2026, selling via WhatsApp without integrated CRM is like managing an entire business on sticky notes. It works for a while, but it doesn't scale — and one day you lose everything. CRM + WhatsApp integration transforms Brazil's most-used channel into a traceable, scalable, and manageable commercial asset.
+      </p>
+
+      <p>
+        <a href="/">Sirius CRM</a> was built for the Brazilian market with this reality in mind. The native Chat Center, integrated via Evolution API without extra per-message costs, is the most practical way to centralize all commercial conversations without changing customer behavior — they stay on the WhatsApp they already use, while the team operates with enterprise-level software professionalism.
+      </p>
+
+      <hr style="margin: 3rem 0; border: none; border-top: 1px solid #e5e7eb;" />
+      <strong>Last Updated:</strong> March 21, 2026<br/>
+      <strong>Author:</strong> Sirius CRM Team<br/>
+      <strong>Read Time:</strong> 11 minutes
     `
 }

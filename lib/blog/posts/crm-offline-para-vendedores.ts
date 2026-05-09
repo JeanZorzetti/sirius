@@ -232,5 +232,66 @@ export const post: BlogPost = {
       <strong>Última Atualização:</strong> 21 de Março de 2026<br/>
       <strong>Autor:</strong> Equipe Sirius CRM<br/>
       <strong>Tempo de Leitura:</strong> 10 minutos
-    `
+    `,
+  titleEn: 'Offline CRM for Sales Reps: How to Register Orders Without Internet and Sync Later',
+  excerptEn: 'Understand how a CRM with real offline support (PWA) works for field sales reps in factories, rural areas, and low-signal zones — and why it changes productivity.',
+  keywordsEn: ['offline crm', 'crm without internet', 'field sales crm offline', 'pwa crm app', 'crm sync offline'],
+  contentEn: `
+      <p>
+        For field sales reps, connectivity isn't a given — it's an exception. Industrial plants, rural warehouses, remote facilities, and construction sites all have one thing in common: unstable or nonexistent internet. A CRM that requires connectivity to function is a CRM that doesn't work for half your workday.
+      </p>
+
+      <h2>What "Real Offline Mode" Actually Means</h2>
+
+      <p>
+        There are two levels of offline support, and the difference matters:
+      </p>
+
+      <h3>Basic Cache (Not True Offline)</h3>
+      <p>
+        The app loads cached data from your last session but you can't create new records, update deals, or log activities without a connection. When you lose internet, the app effectively freezes. This is what most "offline-capable" CRMs actually offer.
+      </p>
+
+      <h3>True PWA Offline Mode</h3>
+      <p>
+        A Progressive Web App (PWA) with proper offline support stores the full application and data locally on your device. You can create new contacts, register orders, update deal stages, log activities, and set follow-up tasks — all without any connectivity. When internet is restored (even 4 hours later), everything syncs automatically with zero data loss.
+      </p>
+
+      <h2>Why This Matters for Field Sales Reps</h2>
+
+      <ul>
+        <li><strong>No lost orders:</strong> A deal registered offline never disappears. Compare this to notes on paper (lost), voice memos (never transcribed), or screenshots of WhatsApp (not organized).</li>
+        <li><strong>Real-time field visibility for managers:</strong> When the rep reconnects at the end of the day, the manager sees all activities from that day automatically — no manual reporting, no "I'll update it tomorrow."</li>
+        <li><strong>No data entry backlog:</strong> Reps who work without offline access spend 30-60 minutes at end-of-day reconstructing what happened from memory. True offline eliminates this.</li>
+        <li><strong>Professional field presence:</strong> Registering a customer visit while still at the customer's facility (using offline) signals professionalism and creates instant follow-up tasks.</li>
+      </ul>
+
+      <h2>How Sirius CRM Offline Mode Works</h2>
+
+      <ol>
+        <li>Open the Sirius CRM app on your phone (Android/iOS)</li>
+        <li>Your pipeline, contacts, and templates are stored locally</li>
+        <li>Work normally: create contacts, update deals, log calls, schedule tasks</li>
+        <li>All changes are queued locally</li>
+        <li>When you reconnect (Wi-Fi, 4G, or any connection), the queue syncs automatically in background</li>
+        <li>The manager sees all updates in real time on the web dashboard</li>
+      </ol>
+
+      <p>
+        Offline CRM is not a niche feature — it's a basic requirement for any field sales rep working in the real Brazil: industrial warehouses, rural areas, remote zones, and dozens of other environments where signal simply doesn't exist.
+      </p>
+
+      <div style="background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); border-left: 4px solid #2563eb; padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
+        <p style="font-weight: 700; color: #1e40af;">Works without internet. Syncs when you're back.</p>
+        <p style="color: #1e40af; margin: 0.5rem 0 1rem;">Sirius CRM's offline mode works on any phone. No app store install required — it's a PWA that runs directly from your browser.</p>
+        <a href="/en/register" style="background: #2563eb; color: white; padding: 0.75rem 1.5rem; border-radius: 0.5rem; font-weight: 600; text-decoration: none; display: inline-block;">Try Free →</a>
+      </div>
+
+      <hr style="margin: 3rem 0; border: none; border-top: 1px solid #e5e7eb;" />
+      <p style="font-size: 0.85rem; color: #64748b;">
+        <strong>Last Updated:</strong> March 21, 2026<br/>
+        <strong>Author:</strong> Sirius CRM Team<br/>
+        <strong>Reading Time:</strong> 10 minutes
+      </p>
+  `,
 }

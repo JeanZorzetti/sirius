@@ -284,5 +284,103 @@ export const post: BlogPost = {
       <strong>Última Atualização:</strong> 28 de Fevereiro de 2026<br/>
       <strong>Autor:</strong> Equipe Sirius CRM<br/>
       <strong>Tempo de Leitura:</strong> 8 minutos
-    `
+    `,
+  titleEn: 'Sales Closing Techniques: 7 Ready-to-Use Scripts [2026]',
+  excerptEn: '7 closing techniques with real scripts and examples. Includes buying signals that indicate the right moment to ask for commitment.',
+  keywordsEn: ['sales closing techniques', 'how to close a sale', 'closing scripts b2b', 'sales closing methods', 'when to ask for the close'],
+  contentEn: `
+      <p>
+        Closing a sale isn't a trick you pull at the end — it's the natural conclusion of a well-conducted sales process. When the buyer understands the value, trusts the rep, and sees the solution as relevant to their pain, closing feels easy. These 7 techniques help you get there with confidence and timing.
+      </p>
+
+      <h2>Reading Buying Signals Before You Close</h2>
+
+      <p>
+        Asking for the close at the wrong moment is the most common closing mistake. Before using any closing technique, watch for these signals:
+      </p>
+
+      <ul>
+        <li>Asking about implementation details ("how long would onboarding take?")</li>
+        <li>Questions about pricing tiers or payment terms</li>
+        <li>Asking for references or case studies from similar companies</li>
+        <li>Verbal future-tense statements ("when we use this…")</li>
+        <li>Positive body language shift (leaning in, nodding, taking notes)</li>
+        <li>Questions about contract length or flexibility</li>
+      </ul>
+
+      <p>
+        When you see 2+ of these signals, it's time to close.
+      </p>
+
+      <h2>The 7 Closing Techniques</h2>
+
+      <h3>1. The Assumptive Close</h3>
+      <p>
+        Assume the deal is happening and move to logistics. Works when buying signals are strong.<br/>
+        <strong>Script:</strong> "Great — let me walk you through what the first 30 days look like on our end. We'd start with [onboarding step 1]..."<br/>
+        If they're ready, they go along. If not, the pause gives them a natural point to raise remaining concerns.
+      </p>
+
+      <h3>2. The Alternative Close</h3>
+      <p>
+        Offer a choice between two options — both of which move the deal forward.<br/>
+        <strong>Script:</strong> "Would you prefer to start with the Starter plan this month and upgrade in Q3, or go directly to the Business plan given the team size you mentioned?"<br/>
+        The buyer focuses on which option to choose, not whether to buy.
+      </p>
+
+      <h3>3. The Summary Close</h3>
+      <p>
+        Summarize all agreed-upon value before asking for commitment.<br/>
+        <strong>Script:</strong> "So to recap: we've agreed that [pain 1] and [pain 2] are the two main problems you need to solve. We've shown how [feature A] addresses [pain 1] and [feature B] addresses [pain 2]. The investment is [price] per month. Does it make sense to move forward?"
+      </p>
+
+      <h3>4. The Now-or-Never Close</h3>
+      <p>
+        Use a genuine, time-limited incentive to create urgency. Only works if the incentive is real — manufactured urgency destroys trust.<br/>
+        <strong>Script:</strong> "We have two onboarding slots available for May implementation. If we proceed this week, I can guarantee your team goes live before the end of month. After that, we'd be looking at June."
+      </p>
+
+      <h3>5. The Question Close</h3>
+      <p>
+        Ask a closing question that reveals remaining objections.<br/>
+        <strong>Script:</strong> "Based on everything we've discussed, is there anything that would prevent you from moving forward today?"<br/>
+        If they say "nothing" — ask for the commitment. If they surface an objection — great, address it now.
+      </p>
+
+      <h3>6. The Puppy Dog Close</h3>
+      <p>
+        Let them "try before they buy." Especially powerful for SaaS products.<br/>
+        <strong>Script:</strong> "Why don't we get you set up on a 14-day full access trial? I'll personally help your team get configured in the first 48h. By day 14 you'll have real data on your pipeline to make the decision — not just a demo."
+      </p>
+
+      <h3>7. Strategic Silence (The Most Powerful Close)</h3>
+      <p>
+        After asking a closing question, stop talking. Completely.<br/>
+        <strong>The instinct:</strong> fill the silence with more features, more data, more reassurance. This delays the close.<br/>
+        <strong>The discipline:</strong> ask the closing question. Go silent. Wait.<br/>
+        Research shows the person who speaks first after a closing question is in a weaker position. Let the prospect break the silence — often with a yes.
+      </p>
+
+      <h2>Using Your CRM to Time Closings Perfectly</h2>
+
+      <p>
+        Closing timing is data-driven in modern sales:
+      </p>
+      <ul>
+        <li>Prospect opened the proposal 3x in 2 hours → call them now</li>
+        <li>Deal has been in "Proposal Sent" for 5 days without engagement → send a new touchpoint before it goes cold</li>
+        <li>AI score jumped from 60 to 85 → lead engagement just spiked, time to reach out</li>
+      </ul>
+
+      <p>
+        Closing a sale is the result of a well-conducted process — not a last-minute trick. The 7 techniques above work when the ground is prepared: the customer understands the value, trusts the rep, and sees the solution as relevant to their pain. Practice one technique at a time — especially strategic silence, which is counterintuitive but the most powerful of all.
+      </p>
+
+      <hr style="margin: 3rem 0; border: none; border-top: 1px solid #e5e7eb;" />
+      <p style="font-size: 0.85rem; color: #64748b;">
+        <strong>Last Updated:</strong> February 28, 2026<br/>
+        <strong>Author:</strong> Sirius CRM Team<br/>
+        <strong>Reading Time:</strong> 8 minutes
+      </p>
+  `,
 }

@@ -414,5 +414,223 @@ export const post: BlogPost = {
       <strong>Ultima Atualizacao:</strong> 28 de Marco de 2026<br/>
       <strong>Autor:</strong> Equipe Sirius CRM<br/>
       <strong>Tempo de Leitura:</strong> 12 minutos
-    `
+    `,
+  titleEn: 'WhatsApp for B2B Sales: 7 Strategies That Actually Work in 2026',
+  excerptEn: '98% open rate, 40% reply rate, 93% market adoption. How B2B sales teams use WhatsApp systematically to close more deals — without being blocked or ignored.',
+  keywordsEn: ['WhatsApp B2B sales', 'WhatsApp business strategy', 'B2B sales messaging', 'WhatsApp CRM integration', 'WhatsApp prospecting'],
+  contentEn: `
+      <p>
+        WhatsApp is the most powerful sales channel available to Brazilian B2B sellers in 2026. The statistics are unambiguous: 98% open rate versus 20% for email, 40% average reply rate, 93% market adoption. But channel power only converts to results when there's method behind it.
+      </p>
+
+      <p>
+        This guide covers the 7 strategies that distinguish B2B sellers who use WhatsApp systematically from those who just "send messages" — and explains how to integrate each into a CRM workflow so no follow-up is ever lost.
+      </p>
+
+      <h2>Why Most B2B Sellers Use WhatsApp Wrong</h2>
+
+      <p>
+        The default mistake is treating WhatsApp like a broadcast channel: sending the same promotional message to 50 contacts at once, pitching immediately on first contact, and using no structure for follow-up. This approach achieves the worst possible outcome — blocked number, spam reputation, and zero meetings.
+      </p>
+
+      <p>
+        The 7 strategies below are built on three principles: personalization at scale, value before ask, and systematic follow-up without being annoying.
+      </p>
+
+      <h2>Strategy 1: The Consultative Opening Message</h2>
+
+      <p>
+        The first message is the most critical. It determines whether the conversation continues or ends permanently. The common mistake is pitching in the first message. The right approach is opening a conversation, not closing a sale.
+      </p>
+
+      <div class="callout-tip">
+        <strong>Template — Consultative Opening:</strong><br/><br/>
+        "Hi [Name], this is [Your Name] from [Company]. I work with [their industry] companies on [specific problem]. Noticed that [specific observation about their business — recent growth, new hire, industry challenge]. Wanted to understand how you're currently handling [relevant process]. Is this a good time for a quick chat?"
+      </div>
+
+      <p>
+        The key elements: specific observation (not generic), question-based (not pitch-based), respects their time (asks permission). This approach achieves 3-5x higher reply rates than product-led openers.
+      </p>
+
+      <h2>Strategy 2: The 7-Touch Cadence</h2>
+
+      <p>
+        The data is consistent: 80% of sales require 5 or more follow-up contacts. Most sellers give up after 2. The 7-touch WhatsApp cadence solves this without becoming annoying — each touch adds new value rather than just repeating "following up."
+      </p>
+
+      <table style="width: 100%; border-collapse: collapse; margin: 1.5rem 0;">
+        <thead>
+          <tr style="background: #f8fafc;">
+            <th style="border: 1px solid #e2e8f0; padding: 0.75rem; text-align: left;">Touch</th>
+            <th style="border: 1px solid #e2e8f0; padding: 0.75rem; text-align: left;">Content</th>
+            <th style="border: 1px solid #e2e8f0; padding: 0.75rem; text-align: left;">Timing</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">1</td>
+            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">Consultative opening message (personalized)</td>
+            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">Day 1</td>
+          </tr>
+          <tr>
+            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">2</td>
+            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">Relevant article or insight (no ask)</td>
+            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">Day 3</td>
+          </tr>
+          <tr>
+            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">3</td>
+            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">Case study from their industry</td>
+            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">Day 7</td>
+          </tr>
+          <tr>
+            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">4</td>
+            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">Direct question: "Is [problem] still a priority for Q[X]?"</td>
+            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">Day 12</td>
+          </tr>
+          <tr>
+            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">5</td>
+            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">Strategic voice note (60-90 seconds)</td>
+            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">Day 18</td>
+          </tr>
+          <tr>
+            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">6</td>
+            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">Meeting ask: "15 minutes this week or next?"</td>
+            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">Day 25</td>
+          </tr>
+          <tr>
+            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">7</td>
+            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">Final breakup message (creates urgency + leaves door open)</td>
+            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">Day 35</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2>Strategy 3: The Strategic Voice Note</h2>
+
+      <p>
+        Voice notes in B2B WhatsApp have a counterintuitive advantage: they feel personal and human in a sea of templated text messages. A 60-90 second voice note stands out precisely because it's harder to produce — the effort signals genuine interest.
+      </p>
+
+      <p>The structure that works:</p>
+      <ol>
+        <li><strong>Referencing context</strong> (5 sec): "Hi [Name], [your name] here — we connected on LinkedIn about [X]"</li>
+        <li><strong>Value observation</strong> (20 sec): "I was thinking about what you mentioned about [their challenge] — we just helped [similar company] with exactly that and got [specific result]"</li>
+        <li><strong>Soft ask</strong> (10 sec): "Wondering if it'd be worth 15 minutes to see if there's any overlap for you"</li>
+        <li><strong>Low-pressure close</strong> (5 sec): "No pressure — just thought it was relevant. Let me know."</li>
+      </ol>
+
+      <p>
+        Voice notes sent at touch 5 (day 18) achieve 2-3x higher reply rates than text-only sequences at the same point in the cadence.
+      </p>
+
+      <h2>Strategy 4: Content-Based Follow-Up</h2>
+
+      <p>
+        The hardest part of a 7-touch sequence is touches 2-4: following up without asking for anything. Content-based follow-ups solve this by providing genuine value that establishes credibility.
+      </p>
+
+      <p>Content types that work for B2B WhatsApp:</p>
+
+      <ul>
+        <li><strong>Industry articles</strong> — articles relevant to their specific role or challenge (not generic "sales tips")</li>
+        <li><strong>Case studies</strong> — anonymized results from a client in their industry ("A retail company like yours reduced...")</li>
+        <li><strong>Data points</strong> — a single striking statistic relevant to their business context</li>
+        <li><strong>Short videos</strong> — 60-120 second product demonstrations or explainers</li>
+      </ul>
+
+      <h2>Strategy 5: Reactivation Campaigns</h2>
+
+      <p>
+        Stale contacts — those who stopped responding after 1-2 touches, or who said "not now" months ago — represent underutilized pipeline. A quarterly reactivation campaign using a strong trigger can reopen 10-15% of these conversations.
+      </p>
+
+      <div class="callout-tip">
+        <strong>Reactivation trigger examples:</strong><br/>
+        - "We just launched [new feature] that solves exactly what you mentioned about [specific problem]"<br/>
+        - "Your competitor [Company X] just adopted [category] — thought it was relevant context"<br/>
+        - "Q2 starting — is [problem] still on your radar for this half?"
+      </div>
+
+      <h2>Strategy 6: The VIP Client Group</h2>
+
+      <p>
+        WhatsApp groups for 5-8 strategic clients serve a different purpose than sales groups: they're retention and expansion tools. The format that works: position it as an exclusive community for knowledge sharing, not a support channel.
+      </p>
+
+      <p>What to share in a VIP group:</p>
+      <ul>
+        <li>Industry news and analysis (2-3x per week)</li>
+        <li>Early access to product updates</li>
+        <li>Exclusive benchmarks ("clients in your segment are averaging X")</li>
+        <li>Peer introductions ("thought you two should know each other")</li>
+      </ul>
+
+      <h2>Strategy 7: WhatsApp Status as a Visibility Channel</h2>
+
+      <p>
+        WhatsApp Status is the most underused B2B sales tool on the platform. Stories from your contacts appear silently, are consumed passively, and create repeated brand exposure without generating notification fatigue.
+      </p>
+
+      <p>Content that generates inbound conversations via Status:</p>
+      <ul>
+        <li>Client results ("Just helped [industry] client go from X to Y in 60 days")</li>
+        <li>Educational quick-tips (one actionable insight per story)</li>
+        <li>Behind-the-scenes product development</li>
+        <li>Relevant industry news with your take</li>
+      </ul>
+
+      <p>
+        Sellers who post 3-5 stories per week report 1-3 inbound conversations per month from contacts who "saw your Status and thought of something they wanted to ask." At scale across 200+ WhatsApp contacts, this creates meaningful pipeline without any outbound effort.
+      </p>
+
+      <h2>CRM Integration: The System That Makes It Scale</h2>
+
+      <p>
+        The 7 strategies above work individually. They compound when integrated with a CRM. Without systematic tracking, sequences collapse after 15 contacts — it becomes impossible to know who is on touch 3 versus touch 5.
+      </p>
+
+      <p>The minimum viable CRM workflow for WhatsApp B2B:</p>
+
+      <ul>
+        <li><strong>First message sent</strong> → create contact with WhatsApp number, ICP notes, touch 1 logged</li>
+        <li><strong>Each follow-up</strong> → log activity, advance touch counter, schedule next reminder</li>
+        <li><strong>Reply received</strong> → update stage to "Engaged," schedule meeting ask or qualification call</li>
+        <li><strong>No reply after touch 7</strong> → tag "Quarterly Reactivation," set reminder for 90 days</li>
+      </ul>
+
+      <p>
+        <a href="/" style="color: #2563eb; text-decoration: underline;">Sirius CRM</a> integrates WhatsApp natively — messages can be logged directly from the app, sequences are tracked automatically, and follow-up reminders fire based on the cadence you set. The pipeline stays full without mental overhead.
+      </p>
+
+      <h2>FAQ</h2>
+
+      <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin-bottom: 2rem;">
+        <summary style="font-weight: 600; cursor: pointer; color: #1e293b; list-style: revert;">How do I avoid being blocked on WhatsApp for B2B prospecting?</summary>
+        <p style="margin: 0.75rem 0 0; color: #4b5563;">The most common blocking triggers: mass broadcast messages (use targeted 1:1 messages instead), pitching immediately on first contact, sending messages outside business hours, and not respecting opt-out requests. The personalized, value-first approach described here results in block rates under 1% — compared to 15-25% for broadcast prospecting approaches.</p>
+      </details>
+
+      <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin-bottom: 2rem;">
+        <summary style="font-weight: 600; cursor: pointer; color: #1e293b; list-style: revert;">Should I use WhatsApp Business API or regular WhatsApp Business?</summary>
+        <p style="margin: 0.75rem 0 0; color: #4b5563;">Regular WhatsApp Business (free app) is sufficient for solo sellers and small teams managing up to 200 active conversations. The API (requires a BSP provider, costs ~R$0.15-0.45 per conversation) makes sense when you need multi-agent access (team using the same number), automation workflows, or integration with your CRM at scale. For most B2B sellers, start with the free Business app and upgrade when team size demands it.</p>
+      </details>
+
+      <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin-bottom: 2rem;">
+        <summary style="font-weight: 600; cursor: pointer; color: #1e293b; list-style: revert;">What's the right time of day to send B2B WhatsApp messages?</summary>
+        <p style="margin: 0.75rem 0 0; color: #4b5563;">Opening messages perform best Tuesday-Thursday, 9-11am or 2-4pm (business hours, post-meeting, pre-end-of-day). Avoid Mondays (planning mode), Fridays after 3pm (mentally checked out), and any time outside 8am-6pm in the prospect's time zone. Reply rates drop 40-60% for messages sent outside business hours — they get buried by morning notifications.</p>
+      </details>
+
+      <h2>Conclusion</h2>
+
+      <p>
+        WhatsApp is the most powerful sales channel available to Brazilian B2B sellers in 2026. The statistics are unambiguous: 98% open rate, 40% average reply rate, 93% market adoption. But channel power only converts to results when there's method behind it.
+      </p>
+
+      <p>
+        The 7 strategies in this article — consultative opening, 7-touch cadence, strategic voice note, content-based follow-up, reactivation, VIP group, and Status as a visibility channel — aren't isolated tactics. They're components of a system that works best together, especially when integrated with a CRM that logs every conversation, automates follow-ups, and gives managers pipeline visibility.
+      </p>
+
+      <p>
+        Implement one strategy per week. Start with the consultative opening message — it changes the tone of your entire prospecting operation. Then add the 7-touch cadence. Then integrate with your CRM. In 30 days, you'll see the difference in your numbers.
+      </p>
+  `,
 }

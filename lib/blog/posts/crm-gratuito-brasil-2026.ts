@@ -245,4 +245,89 @@ export const post: BlogPost = {
         <strong>Fontes:</strong> Sites oficiais de cada CRM, analise propria da equipe ROI Labs. Precos verificados em marco de 2026.
       </div>
   `,
+  titleEn: 'Free CRM: 5 Options That Actually Work in 2026',
+  excerptEn: 'We compared 5 CRMs with a genuinely functional free plan in Brazil. No 7-day trial tricks. See which ones are worth it for SMBs and independent sales reps.',
+  keywordsEn: ['free crm 2026', 'best free crm brazil', 'free crm for small business', 'crm free plan comparison', 'free crm no credit card'],
+  contentEn: `
+      <p>
+        "Free CRM" is one of the most searched terms in the software category in Brazil — but most results hide paid walls behind "free" labels. This guide covers only CRMs with genuinely functional free plans: no 7-day trials, no credit card required, no features so limited the tool is useless.
+      </p>
+
+      <h2>What a Genuinely Useful Free CRM Must Include</h2>
+
+      <ul>
+        <li><strong>No contact limit</strong> (or at least 500+ contacts)</li>
+        <li><strong>Visual pipeline</strong> (Kanban or list view with stages)</li>
+        <li><strong>Task/activity management</strong> (next actions, reminders)</li>
+        <li><strong>Basic reporting</strong> (how many deals in each stage?)</li>
+        <li><strong>Mobile app</strong> (iOS/Android)</li>
+        <li><strong>No time limit</strong> — permanently free, not a trial</li>
+      </ul>
+
+      <h2>The 5 Best Free CRMs for Brazil in 2026</h2>
+
+      <h3>1. Sirius CRM Free — Best for Sales Reps</h3>
+      <p>
+        <strong>What's included free:</strong> Unlimited contacts, visual pipeline, WhatsApp integration (3 conversations/day), AI qualification (3 analyses/month), offline mode, mobile app<br/>
+        <strong>Limitation:</strong> WhatsApp and AI limits; no team features (single user only)<br/>
+        <strong>Best for:</strong> Independent sales reps, freelancers, solopreneurs<br/>
+        <strong>Upgrade path:</strong> R$67/month for unlimited WhatsApp + AI + team features
+      </p>
+
+      <h3>2. HubSpot CRM Free — Best for Inbound-Led Teams</h3>
+      <p>
+        <strong>What's included free:</strong> Unlimited contacts, email tracking, deal pipeline, live chat, forms, meeting scheduler<br/>
+        <strong>Limitation:</strong> HubSpot branding on everything; no WhatsApp; reporting is limited<br/>
+        <strong>Best for:</strong> Inbound-heavy teams that generate leads via website/email<br/>
+        <strong>Upgrade path:</strong> $15/user/month (USD) for Starter
+      </p>
+
+      <h3>3. RD Station CRM Free — Best for Brazilian SMBs with RD Marketing</h3>
+      <p>
+        <strong>What's included free:</strong> 1 pipeline, up to 5,000 contacts, email integration<br/>
+        <strong>Limitation:</strong> Only 1 user; very limited compared to paid; no WhatsApp on free<br/>
+        <strong>Best for:</strong> Companies already using RD Station Marketing wanting to test the CRM<br/>
+        <strong>Upgrade path:</strong> R$99/month for Basic
+      </p>
+
+      <h3>4. Zoho CRM Free — Best for 3-User Teams</h3>
+      <p>
+        <strong>What's included free:</strong> Up to 3 users, standard modules (Leads, Contacts, Accounts, Deals), basic workflow automation<br/>
+        <strong>Limitation:</strong> 3-user hard limit; complex interface for new users<br/>
+        <strong>Best for:</strong> Small teams of exactly 2-3 users needing standard CRM features<br/>
+        <strong>Upgrade path:</strong> $14/user/month (USD) for Standard
+      </p>
+
+      <h3>5. Bitrix24 Free — Most Features for Free</h3>
+      <p>
+        <strong>What's included free:</strong> Unlimited users, CRM, project management, internal chat, video calls, website builder<br/>
+        <strong>Limitation:</strong> Extremely complex interface; the free plan storage is limited; setup requires significant time investment<br/>
+        <strong>Best for:</strong> Teams that need CRM + project management + internal communication in one free tool<br/>
+        <strong>Upgrade path:</strong> From $49/month for Basic (not per user)
+      </p>
+
+      <h2>Frequently Asked Questions</h2>
+
+      <h3>Should a small business use a free CRM?</h3>
+      <p>
+        Yes, as a starting point. A free CRM that you actually use is infinitely better than a paid CRM nobody opens. Start free to build the habit of CRM-based selling, then upgrade when you hit the limitations that actually slow you down (usually WhatsApp, team features, or automation).
+      </p>
+
+      <h3>What's the #1 reason free CRM adoption fails?</h3>
+      <p>
+        The tool is too limited to provide value, so reps go back to spreadsheets within 30 days. This is why choosing a free plan with genuine core functionality matters — not just a feature-stripped preview.
+      </p>
+
+      <div style="background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%); border: 1px solid #6ee7b7; padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0; text-align: center;">
+        <p style="font-weight: 700; color: #065f46; font-size: 1.1rem; margin: 0 0 0.75rem;">Start Free with Sirius CRM</p>
+        <p style="color: #047857; margin: 0 0 1rem;">Pipeline + WhatsApp + AI. No credit card, no time limit, no catch.</p>
+        <p><strong><a href="/en/register" style="color: #059669; text-decoration: underline;">Create free account now →</a></strong></p>
+      </div>
+
+      <div style="margin: 2rem 0; padding: 1rem; background: #f8fafc; border-radius: 0.75rem; font-size: 0.85rem; color: #64748b;">
+        <strong>Author:</strong> Sirius CRM Team<br/>
+        <strong>Last Updated:</strong> March 2026<br/>
+        <strong>Sources:</strong> Official websites of each CRM, proprietary analysis by ROI Labs team. Prices verified March 2026.
+      </div>
+  `,
 }

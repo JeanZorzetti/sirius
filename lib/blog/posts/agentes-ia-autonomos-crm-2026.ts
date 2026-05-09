@@ -388,4 +388,363 @@ export const post: BlogPost = {
   image: 'https://images.unsplash.com/photo-1677442136019-21780ecad995?w=1200&h=630&fit=crop&auto=format&q=80',
   author: 'Equipe Sirius CRM',
   relatedSlugs: ['crm-ia-inteligencia-artificial-2026', 'sales-intelligence-ia-vendas-2026', 'ia-para-qualificacao-de-leads'],
+  titleEn: 'Autonomous AI Agents in CRM: How the AgaaS Revolution Is Changing Sales in 2026',
+  excerptEn: 'Discover AgaaS: autonomous AI agents that operate your CRM for you. They qualify leads, do follow-up, and schedule meetings. Learn how Sirius CRM works.',
+  keywordsEn: ['ai agents crm', 'AgaaS 2026', 'autonomous ai sales', 'crm ai agents', 'sales automation ai'],
+  contentEn: `
+      <p>
+        According to Salesforce (State of Sales, 2025), sales reps spend only <strong>35% of their time actually selling</strong>. The other 65% goes to data entry, pipeline updates, manual follow-ups, prospect research, and administrative tasks. It's a colossal waste of human talent — and it's exactly this problem that <strong>autonomous AI agents</strong> solve.
+      </p>
+
+      <p>
+        In 2026, a new software model emerged that goes beyond traditional SaaS: <strong>AgaaS (Agentic as a Service)</strong>. Instead of just providing tools for you to operate, AgaaS puts artificial intelligence agents to operate the system <em>for you</em> — qualifying leads, moving deals in the pipeline, sending follow-ups, and scheduling meetings automatically, all with human supervision. In this article, we explore how this revolution is transforming CRMs and commercial teams.
+      </p>
+
+      <div class="not-prose" style="background: #1e293b; padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
+        <p style="margin: 0 0 0.75rem; font-weight: 700; font-size: 1.05rem; color: #38bdf8;">⚡ TL;DR — Quick Answer</p>
+        <ul style="margin: 0; padding-left: 1.25rem; line-height: 2; color: #ffffff;">
+          <li><strong>AgaaS</strong> = AI agents that operate the CRM for you, they don't just suggest — they <em>act</em></li>
+          <li><strong>Sofia AI</strong> qualifies leads, does follow-up, schedules meetings, and moves deals automatically</li>
+          <li><strong>/IA mode</strong>: supervision panel where you approve actions before execution</li>
+          <li>Available from <strong style="color: #38bdf8;">R$67/month</strong> (Starter: 1 agent, 200 actions/month)</li>
+          <li>Different from chatbots: agents <strong>act proactively</strong>, they don't just answer questions</li>
+        </ul>
+      </div>
+
+      <div style="background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); border-left: 4px solid #2563eb; padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
+        <p style="margin: 0; font-weight: 700; color: #1e40af; font-size: 1.1rem;">📊 The data you need to know:</p>
+        <p style="margin: 0.5rem 0 0; color: #1e40af;">Companies that adopt AI agents report <strong>40% higher productivity</strong> in commercial teams, according to McKinsey — "The State of AI in 2025" (McKinsey Global Survey, 2025).</p>
+      </div>
+
+      <h2>What is AgaaS (Agentic as a Service)?</h2>
+
+      <p>
+        The term <strong>AgaaS — Agentic as a Service</strong> — defines a software model where <strong>AI agents operate the system on behalf of the user</strong>, rather than just providing suggestions or predefined automations. If in traditional SaaS you open the CRM, navigate the pipeline, analyze data, and take actions manually, in AgaaS artificial intelligence does all of this autonomously — and you supervise.
+      </p>
+
+      <p>
+        Think of it this way: a SaaS CRM is like a manual car — you drive. A CRM with AgaaS is like an autonomous car — it drives, but you can take the wheel at any moment and approve each important maneuver.
+      </p>
+
+      <p>
+        The fundamental difference is not just the presence of AI (many CRMs already have some level of AI), but the <strong>level of autonomy</strong>. While a CRM with AI suggests "this lead looks hot," an AgaaS CRM says "I qualified this lead as hot with a score of 87, prepared a personalized follow-up email, and am awaiting your approval to send." AI stops being advisory and becomes <strong>operational</strong>.
+      </p>
+
+      <h3>Traditional SaaS vs AgaaS — Direct Comparison</h3>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 2rem 0;">
+        <div style="background: #fef2f2; border: 1px solid #fecaca; padding: 1.25rem; border-radius: 0.75rem;">
+          <p style="font-weight: 700; color: #dc2626; margin: 0 0 0.75rem;">📋 Traditional SaaS</p>
+          <ul style="margin: 0; padding-left: 1.25rem; color: #7f1d1d; line-height: 1.8;">
+            <li>You operate the system manually</li>
+            <li>AI suggests actions, but you execute them</li>
+            <li>Rigid automations (if/then)</li>
+            <li>Productivity depends on your time</li>
+            <li>Value = tool + your data</li>
+            <li>Scale limited by number of reps</li>
+          </ul>
+        </div>
+        <div style="background: #f0fdf4; border: 1px solid #bbf7d0; padding: 1.25rem; border-radius: 0.75rem;">
+          <p style="font-weight: 700; color: #16a34a; margin: 0 0 0.75rem;">🤖 AgaaS (Agentic as a Service)</p>
+          <ul style="margin: 0; padding-left: 1.25rem; color: #14532d; line-height: 1.8;">
+            <li>AI agent operates the system for you</li>
+            <li>AI executes actions with your approval</li>
+            <li>Adaptive autonomy with context</li>
+            <li>24/7 productivity without constant supervision</li>
+            <li>Value = agent + your data + execution</li>
+            <li>Scale multiplied by AI agents</li>
+          </ul>
+        </div>
+      </div>
+
+      <p>
+        According to Gartner (Emerging Tech: The Rise of Agentic AI, 2025), by 2028, <strong>33% of enterprise software interactions will be mediated by autonomous agents</strong>, fundamentally transforming how companies operate their CRMs, ERPs, and marketing platforms.
+      </p>
+
+      <h2>How Autonomous Agents Work in Sirius CRM</h2>
+
+      <p>
+        Sirius CRM was designed from the start with a <strong>dual-mode architecture</strong>: you can use the system as a traditional SaaS via the <code>/dashboard</code> panel, or activate the intelligent agent mode via the <code>/IA</code> panel. Both modes share the same data — the difference is in <strong>who operates</strong>.
+      </p>
+
+      <h3>Dashboard Mode (/dashboard) — Traditional SaaS, You in Control</h3>
+
+      <p>
+        In Dashboard mode, you have access to the complete CRM: Kanban pipeline, contact management, deals, activities, reports, and analytics. It's the CRM you already know, with an intuitive interface and all the features a sales team needs. You register leads, drag deals between stages, schedule follow-ups, and generate reports — all manually.
+      </p>
+
+      <h3>IA Mode (/IA) — Sofia Operates Autonomously</h3>
+
+      <p>
+        In IA mode, <strong>Sofia</strong> — Sirius CRM's artificial intelligence — takes over operations. She monitors your pipeline 24 hours a day, identifies leads that need attention, prepares follow-up emails, qualifies new contacts, schedules meetings, and moves deals between funnel stages.
+      </p>
+
+      <p>
+        The <code>/IA</code> panel is a <strong>supervision</strong> interface: instead of manually operating the CRM, you see a list of actions proposed by Sofia, review each one, and approve, edit, or reject. It's like having a virtual SDR (Sales Development Representative) working for you all day — one who never forgets a follow-up.
+      </p>
+
+      <h3>The Cycle: Perceive → Plan → Act → Approve</h3>
+
+      <ol>
+        <li><strong>Perceive</strong> — The agent analyzes pipeline data, interaction history, lead behavior, and market signals to identify opportunities and risks.</li>
+        <li><strong>Plan</strong> — Based on its perception, the agent develops an action plan: which lead to approach, with what message, through which channel, at what moment.</li>
+        <li><strong>Act</strong> — The agent prepares the concrete action: drafts the email, configures the schedule, updates the lead score, moves the deal in the pipeline.</li>
+        <li><strong>Approve</strong> — Before executing critical actions (sending messages, changing status, scheduling), the agent requests human approval in the /IA panel.</li>
+      </ol>
+
+      <div style="background: linear-gradient(135deg, #f5f3ff 0%, #ede9fe 100%); border-left: 4px solid #7c3aed; padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
+        <p style="margin: 0; font-weight: 700; color: #5b21b6; font-size: 1.05rem;">🔒 Security with Human-in-the-Loop</p>
+        <p style="margin: 0.5rem 0 0; color: #5b21b6;">In Sirius CRM, agents require <strong>human approval</strong> before executing critical actions — like sending emails, moving deals, or scheduling meetings. You maintain full control, with the productivity of a 10x larger team.</p>
+      </div>
+
+      <h2>5 Tasks AI Agents Do Better Than Humans</h2>
+
+      <p>
+        It's not that AI agents are "smarter" than human reps — they are more <strong>consistent, fast, and tireless</strong> in repetitive tasks. According to a Harvard Business Review study (2024), "AI agents excel at tasks that require speed, consistency, and data processing at scale — freeing humans to focus on relationship building and strategic thinking." Here are five areas where AI agents have a clear advantage:
+      </p>
+
+      <h3>1. Lead Scoring and Automatic Qualification</h3>
+      <p>
+        A human rep evaluates a lead based on intuition and experience — which works well, but is inconsistent and limited by information-processing capacity. An AI agent analyzes <strong>dozens of variables simultaneously</strong>: job title, company size, industry, website behavior, email engagement, similar purchase history, firmographic data, and intent signals.
+      </p>
+      <p>
+        The result? Lead scoring with <strong>up to 85% accuracy</strong>, according to Forrester data (B2B Marketing Automation Platforms, 2025). In Sirius CRM, Sofia assigns a score from 0 to 100 to each lead and automatically reclassifies as new data comes in — without anyone needing to touch a spreadsheet.
+      </p>
+
+      <h3>2. Persistent Follow-up Without Forgetting</h3>
+      <p>
+        Follow-up is the activity most impacted by human failure. According to InsideSales.com (now XANT), <strong>44% of reps give up after a single contact attempt</strong>, but 80% of sales require at least five follow-ups. It's a huge gap between what works and what actually happens.
+      </p>
+      <p>
+        AI agents never forget. Sofia monitors every lead in the pipeline and, when she detects a pending follow-up, prepares the message, personalizes the content based on the last interaction context, and schedules delivery for the time with the highest open rate — all automatically.
+      </p>
+
+      <h3>3. Intelligent Meeting Scheduling</h3>
+      <p>
+        The back-and-forth of emails to schedule a meeting consumes, on average, <strong>17 minutes per meeting</strong> (Calendly Scheduling Trends Report, 2024). Multiply that by 15 weekly meetings and you lose almost <strong>4 hours per week</strong> just coordinating calendars.
+      </p>
+      <p>
+        Sirius CRM's AI agent checks your calendar, identifies available windows, cross-references the prospect's time zone, and automatically proposes three time options — all in a personalized message that looks like it was written by you. If the prospect confirms, the meeting is created in the calendar and the deal advances in the pipeline.
+      </p>
+
+      <h3>4. Pipeline Deal Movement</h3>
+      <p>
+        One of the biggest problems in sales pipelines is <strong>deal rot</strong> — deals stagnating at a stage for weeks without anyone noticing. According to CSO Insights (Sales Best Practices Study, 2024), <strong>27% of pipeline deals are technically dead</strong> but remain there, artificially inflating revenue forecasts.
+      </p>
+      <p>
+        AI agents continuously monitor every deal. When they detect stagnation signals (no interaction in X days, negative response, competitor mentioned), they act: alert the rep, suggest a new approach, or recommend moving the deal to "at risk." In parallel, deals receiving positive signals (meeting scheduled, proposal requested) are automatically advanced to the next stage.
+      </p>
+
+      <h3>5. Report and Insight Generation</h3>
+      <p>
+        How many hours does your team spend every week building sales reports? According to Salesforce (State of Sales, 2025), reps spend <strong>5.9 hours per week</strong> on data entry and report generation. AI agents eliminate this burden: they generate real-time dashboards, identify trends, calculate closing forecasts, and send weekly summaries automatically.
+      </p>
+      <p>
+        In Sirius CRM, Sofia generates insights like "your pipeline is 23% below this month's target, but if you close the 3 deals in final negotiation, you'll hit 108% — prioritize contact with [Lead X] who has a score of 92 and hasn't received a follow-up in 4 days."
+      </p>
+
+      <h2>AI Agent Plans and Limits</h2>
+
+      <p>
+        Sirius CRM offers AI agents at different levels, so you can start small and scale as results come in. All plans include the full CRM — AI agents are an additional productivity layer.
+      </p>
+
+      <table style="width: 100%; border-collapse: collapse; margin: 1.5rem 0;">
+        <thead>
+          <tr style="background: #f8fafc;">
+            <th style="border: 1px solid #e2e8f0; padding: 0.75rem; text-align: left;">Plan</th>
+            <th style="border: 1px solid #e2e8f0; padding: 0.75rem; text-align: left;">Price/month</th>
+            <th style="border: 1px solid #e2e8f0; padding: 0.75rem; text-align: left;">AI Agents</th>
+            <th style="border: 1px solid #e2e8f0; padding: 0.75rem; text-align: left;">Actions/month</th>
+            <th style="border: 1px solid #e2e8f0; padding: 0.75rem; text-align: left;">Highlight</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="border: 1px solid #e2e8f0; padding: 0.75rem; font-weight: 600;">FREE</td>
+            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">R$0</td>
+            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">0 agents</td>
+            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">—</td>
+            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">Full CRM, no AI agents</td>
+          </tr>
+          <tr style="background: #f0fdf4;">
+            <td style="border: 1px solid #e2e8f0; padding: 0.75rem; font-weight: 600;">STARTER</td>
+            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">R$67</td>
+            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">1 agent</td>
+            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">200 actions</td>
+            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">Ideal for freelancers and solo reps</td>
+          </tr>
+          <tr>
+            <td style="border: 1px solid #e2e8f0; padding: 0.75rem; font-weight: 600;">PRO</td>
+            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">R$147</td>
+            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">3 agents</td>
+            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">1,000 actions</td>
+            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">For B2B sales teams</td>
+          </tr>
+          <tr style="background: #f8fafc;">
+            <td style="border: 1px solid #e2e8f0; padding: 0.75rem; font-weight: 600;">BUSINESS</td>
+            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">R$397</td>
+            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">5 agents</td>
+            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">3,000 actions</td>
+            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">Complete commercial operation with AI</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p>
+        <strong>Annual plan savings:</strong> all paid plans offer a <strong>20% discount</strong> with annual payment. The Starter plan comes to R$53.60/month (annual), PRO to R$117.60/month, and Business to R$317.60/month.
+      </p>
+
+      <p>
+        An "action" is any operation executed by the agent: sending an email, qualifying a lead, moving a deal, generating a report, or scheduling a meeting. The Starter plan with 200 actions/month is sufficient for an individual rep managing up to 50 active leads.
+      </p>
+
+      <div style="background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%); border: 1px solid #6ee7b7; padding: 1.5rem; border-radius: 0.75rem; text-align: center; margin: 2rem 0;">
+        <p style="margin: 0 0 0.5rem; font-weight: 700; font-size: 1.1rem; color: #065f46;">🚀 Start with 1 agent for R$67/month</p>
+        <p style="margin: 0 0 1rem; color: #065f46;">Test the AgaaS revolution in Sirius CRM. Your first AI agent qualifies leads, does follow-up, and schedules meetings for you.</p>
+        <a href="/register" style="display: inline-block; background: #059669; color: #fff; padding: 0.75rem 2rem; border-radius: 0.5rem; text-decoration: none; font-weight: 600;">Create free account and activate AI agent</a>
+      </div>
+
+      <h2>AgaaS vs Chatbots: What's the Difference?</h2>
+
+      <p>
+        The confusion between chatbots and AI agents is understandable — both use artificial intelligence and natural language processing. But the similarity ends there. While chatbots are <strong>reactive</strong> (they respond when asked), AI agents are <strong>proactive</strong> (they act on their own). It's the difference between a counter attendant and an executive assistant.
+      </p>
+
+      <table style="width: 100%; border-collapse: collapse; margin: 1.5rem 0;">
+        <thead>
+          <tr style="background: #f8fafc;">
+            <th style="border: 1px solid #e2e8f0; padding: 0.75rem; text-align: left;">Criterion</th>
+            <th style="border: 1px solid #e2e8f0; padding: 0.75rem; text-align: left;">Chatbot</th>
+            <th style="border: 1px solid #e2e8f0; padding: 0.75rem; text-align: left;">AI Agent (AgaaS)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="border: 1px solid #e2e8f0; padding: 0.75rem; font-weight: 600;">Behavior</td>
+            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">Reactive — answers questions</td>
+            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">Proactive — takes actions on its own</td>
+          </tr>
+          <tr style="background: #f8fafc;">
+            <td style="border: 1px solid #e2e8f0; padding: 0.75rem; font-weight: 600;">Scope</td>
+            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">Isolated conversation, no persistent context</td>
+            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">Operates the entire CRM with full memory and context</td>
+          </tr>
+          <tr>
+            <td style="border: 1px solid #e2e8f0; padding: 0.75rem; font-weight: 600;">Autonomy</td>
+            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">Zero — needs someone to ask something</td>
+            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">High — monitors and acts 24/7 with human approval</td>
+          </tr>
+          <tr style="background: #f8fafc;">
+            <td style="border: 1px solid #e2e8f0; padding: 0.75rem; font-weight: 600;">Integration</td>
+            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">Chat widget on the website</td>
+            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">Native in CRM — accesses pipeline, contacts, deals, emails</td>
+          </tr>
+          <tr>
+            <td style="border: 1px solid #e2e8f0; padding: 0.75rem; font-weight: 600;">Result</td>
+            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">Answers customer questions</td>
+            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">Generates pipeline, qualifies leads, and books meetings</td>
+          </tr>
+          <tr style="background: #f8fafc;">
+            <td style="border: 1px solid #e2e8f0; padding: 0.75rem; font-weight: 600;">Example</td>
+            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">"What plans are available?"</td>
+            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">"I qualified lead João with score 91, prepared follow-up — approve?"</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p>
+        Deloitte, in its report "Generative AI and the Future of Work" (2025), estimates that <strong>AI agents will replace 60% of chatbot-based automations by 2027</strong>, precisely because they deliver measurable operational results, not just conversational interactions.
+      </p>
+
+      <h2>The Future of Work with AI Agents</h2>
+
+      <p>
+        The rise of AgaaS doesn't mean sales reps will lose their jobs — it means <strong>the sales rep profile will change radically</strong>. Instead of spending hours on data entry and manual follow-ups, the sales rep from 2026 onward will be a <strong>relationship strategist</strong> who supervises AI agents and focuses on what machines still don't do well: building trust, negotiating complex terms, and understanding emotional nuances.
+      </p>
+
+      <p>
+        According to the World Economic Forum (Future of Jobs Report, 2025), 69% of companies plan to <strong>redesign sales roles to incorporate AI as a co-pilot</strong> over the next three years. The sales role doesn't disappear — it evolves.
+      </p>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 2rem 0;">
+        <div style="background: #fef2f2; border: 1px solid #fecaca; padding: 1.25rem; border-radius: 0.75rem;">
+          <p style="font-weight: 700; color: #dc2626; margin: 0 0 0.75rem;">Before (without AgaaS)</p>
+          <ul style="margin: 0; padding-left: 1.25rem; color: #7f1d1d; line-height: 1.8;">
+            <li>8am: Open CRM, review pipeline, prioritize leads</li>
+            <li>9am: Send 15 follow-ups manually</li>
+            <li>10am: Research prospects on LinkedIn</li>
+            <li>11am: Update deal statuses in the pipeline</li>
+            <li>2pm: Build weekly report for manager</li>
+            <li>4pm: Finally make sales calls</li>
+          </ul>
+        </div>
+        <div style="background: #f0fdf4; border: 1px solid #bbf7d0; padding: 1.25rem; border-radius: 0.75rem;">
+          <p style="font-weight: 700; color: #16a34a; margin: 0 0 0.75rem;">After (with AgaaS)</p>
+          <ul style="margin: 0; padding-left: 1.25rem; color: #14532d; line-height: 1.8;">
+            <li>8am: Review 5 proposed actions by Sofia, approve 4</li>
+            <li>8:30am: 15 follow-ups already sent, meetings scheduled</li>
+            <li>9am: Focus on 3 strategic high-value deals</li>
+            <li>10am: In-person meeting with key client</li>
+            <li>2pm: Automatic report already in manager's inbox</li>
+            <li>3pm: Train team on new approaches</li>
+          </ul>
+        </div>
+      </div>
+
+      <p>
+        The practical result is simple: with AI agents handling repetitive tasks, reps recover between <strong>10 and 15 hours per week</strong> to invest in high-impact activities — strategic meetings, complex negotiations, and relationship building.
+      </p>
+
+      <p>
+        Companies that adopt this model early gain a disproportionate competitive advantage. According to Bain & Company ("AI-Native Sales Teams", 2025), sales teams that integrate AI agents into their daily operations <strong>close 35% more deals per rep</strong> compared to teams using CRM without agents.
+      </p>
+
+      <h2>FAQ: AI Agents and AgaaS</h2>
+
+      <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
+        <summary style="cursor: pointer; font-weight: 600; color: #1e293b;">What is AgaaS (Agentic as a Service)?</summary>
+        <p style="margin: 0.75rem 0 0; color: #475569;">AgaaS is a software model where artificial intelligence agents operate the system for you, rather than just providing suggestions. In the context of CRM, this means AI qualifies leads, sends follow-ups, schedules meetings, and moves deals in the pipeline autonomously, with human approval before critical actions. It's the evolution of SaaS, where you go from operator to supervisor.</p>
+      </details>
+
+      <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
+        <summary style="cursor: pointer; font-weight: 600; color: #1e293b;">Will AI agents replace sales reps?</summary>
+        <p style="margin: 0.75rem 0 0; color: #475569;">No. AI agents replace repetitive tasks (data entry, manual follow-up, report generation), not reps. The role evolves from operational executor to relationship strategist. According to the World Economic Forum (2025), sales functions will be redesigned to incorporate AI as a co-pilot, not a replacement. The most valued skills become negotiation, empathy, and strategic thinking.</p>
+      </details>
+
+      <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
+        <summary style="cursor: pointer; font-weight: 600; color: #1e293b;">What's the difference between a chatbot and an AI agent?</summary>
+        <p style="margin: 0.75rem 0 0; color: #475569;">Chatbots are reactive: they wait for a question and respond. AI agents are proactive: they monitor data, identify opportunities, and take actions on their own. A chatbot can answer "our plans start at R$67/month." An AI agent automatically qualifies a lead, prepares a personalized proposal, and schedules a meeting — all without you asking.</p>
+      </details>
+
+      <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
+        <summary style="cursor: pointer; font-weight: 600; color: #1e293b;">Do Sirius CRM agents send emails without my authorization?</summary>
+        <p style="margin: 0.75rem 0 0; color: #475569;">No. Sirius CRM operates with the <strong>human-in-the-loop</strong> model: every critical action (sending email, changing deal status, scheduling meeting) requires your explicit approval in the /IA panel before execution. You maintain full control. Only low-risk actions, such as lead score updates, are executed automatically.</p>
+      </details>
+
+      <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
+        <summary style="cursor: pointer; font-weight: 600; color: #1e293b;">How much does it cost to have AI agents in my CRM?</summary>
+        <p style="margin: 0.75rem 0 0; color: #475569;">Sirius CRM offers AI agents starting at R$67/month on the Starter plan (1 agent, 200 actions/month). The PRO plan costs R$147/month (3 agents, 1,000 actions) and Business R$397/month (5 agents, 3,000 actions). All paid plans have 20% discount with annual payment. The FREE plan includes the full CRM without AI agents, so you can test the platform before activating the AgaaS layer.</p>
+      </details>
+
+      <h2>Conclusion: The Era of AI-Operated CRM Has Begun</h2>
+
+      <p>
+        AgaaS is not a future trend — it's a 2026 reality. While most CRMs still offer AI as an accessory feature (a chatbot here, a suggestion there), Sirius CRM was built to operate in the agentic model from its architecture. With the <code>/IA</code> mode and Sofia as your virtual SDR, you transform your CRM from a passive tool into an <strong>autonomous pipeline generation machine</strong>.
+      </p>
+
+      <p>
+        The statistics are clear: reps lose 65% of their time on tasks that AI agents do better, faster, and error-free. Companies that adopt AI agents sell 35% more per rep. And the entry cost has never been more accessible — starting at R$67/month.
+      </p>
+
+      <p>
+        The question is not <em>if</em> you'll use AI agents in your CRM, but <em>when</em>. And companies that start first will have a competitive advantage that's hard to catch up with.
+      </p>
+
+      <div style="background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%); border: 1px solid #6ee7b7; padding: 1.5rem; border-radius: 0.75rem; text-align: center; margin: 2rem 0;">
+        <p style="margin: 0 0 0.5rem; font-weight: 700; font-size: 1.15rem; color: #065f46;">🤖 Ready to put AI to work for you?</p>
+        <p style="margin: 0 0 1rem; color: #065f46;">Create your free Sirius CRM account, explore Dashboard mode, and when ready, activate your first AI agent for R$67/month.</p>
+        <a href="/register" style="display: inline-block; background: #059669; color: #fff; padding: 0.75rem 2rem; border-radius: 0.5rem; text-decoration: none; font-weight: 600;">Create free Sirius CRM account</a>
+      </div>
+  `,
 }

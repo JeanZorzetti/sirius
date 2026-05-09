@@ -285,5 +285,143 @@ export const post: BlogPost = {
       <strong>Última Atualização:</strong> 28 de Fevereiro de 2026<br/>
       <strong>Autor:</strong> Equipe Sirius CRM<br/>
       <strong>Tempo de Leitura:</strong> 10 minutos
-    `
+    `,
+  titleEn: 'B2B Prospecting: 5 Methods That Generate Qualified Leads in 2026',
+  excerptEn: 'Cold email converts 1-3%, LinkedIn InMail up to 25%. We tested 5 B2B prospecting methods and show which generates the most qualified leads for SMBs without buying lists.',
+  keywordsEn: ['b2b prospecting 2026', 'b2b lead generation methods', 'cold email vs linkedin outreach', 'b2b outbound prospecting', 'generate b2b leads'],
+  contentEn: `
+      <p>
+        Effective B2B prospecting in 2026 is not about sending the most messages — it's about sending the right message to the right person at the right time. Cold email converts 1-3% on average. LinkedIn InMail: up to 25% when personalized. Referrals: 4-5x higher close rate than outbound. Understanding channel ROI is the first step.
+      </p>
+
+      <div class="callout-stat">
+        <p><strong>📊 Prospecting Reality Check</strong></p>
+        <p>It takes an average of <strong>8 touchpoints</strong> to book a first meeting with a cold B2B prospect in 2026 (RAIN Group). Most reps give up after 2-3. The gap between average and top-performing prospectors is almost entirely explained by follow-up persistence.
+        </p>
+      </div>
+
+      <h2>Step 0: Build Your Ideal Customer Profile (ICP) First</h2>
+
+      <p>
+        The most common prospecting mistake is starting with channels before defining who to target. Your ICP should specify:
+      </p>
+      <ul>
+        <li><strong>Company profile:</strong> Industry, size (employees + revenue), growth stage, tech stack indicators</li>
+        <li><strong>Buyer persona:</strong> Job title, department, seniority, key responsibilities</li>
+        <li><strong>Trigger events:</strong> What signals indicate this company/person is ready to buy now? (new hire, funding, expansion news, competitor departure)</li>
+        <li><strong>Deal characteristics:</strong> Average deal size, sales cycle, typical objections from this profile</li>
+      </ul>
+
+      <p>
+        <strong>Quick ICP method:</strong> Analyze your 10 best current customers. What do they have in common? Build your ICP from patterns in your best customers, not from hypothetical ideal customers.
+      </p>
+
+      <h2>The 5 B2B Prospecting Methods (Ranked by Conversion Rate)</h2>
+
+      <h3>1. Referral-Based Prospecting — Best Conversion Rate</h3>
+      <p>
+        <strong>Avg conversion:</strong> 30-50% to first meeting | Close rate: 4-5x higher than cold outbound<br/>
+        <strong>How:</strong> Systematically ask current customers for introductions to similar companies. The ask: "Do you know 2-3 other [job titles] in [industry] who face the same challenges you had before working with us?"
+      </p>
+      <p>
+        Most reps never ask. Those who do get referrals. It's that simple.
+      </p>
+
+      <h3>2. LinkedIn Personalized Outreach — Best for Decision-Makers</h3>
+      <p>
+        <strong>Avg conversion (generic InMail):</strong> 3-8%<br/>
+        <strong>Avg conversion (personalized + trigger-based):</strong> 15-25%<br/>
+        <strong>The difference:</strong> Referencing something specific (their recent post, their company's news, a shared connection's recommendation) vs generic "I wanted to connect."
+      </p>
+      <p>
+        LinkedIn prospecting sequence: Connect request (no note) → Wait 24h for acceptance → First message: 2 sentences about them + 1 question (no pitch) → Follow-up with value (article, insight) if no response → Pitch only after engagement.
+      </p>
+
+      <h3>3. Cold Email with Trigger-Based Personalization — Best for Volume</h3>
+      <p>
+        <strong>Avg conversion:</strong> 1-3% (to reply or meeting) for generic | 5-8% for trigger-personalized<br/>
+        <strong>Trigger signals to monitor:</strong> New job (LinkedIn notification), company news (Google Alerts), funding (Crunchbase), competitor switching (job postings for CRM roles), expansion (new office, new product launch)
+      </p>
+      <p>
+        <strong>Cold email formula that works:</strong> 1 sentence about them (trigger) + 1 sentence about the problem you solve for their profile + 1 sentence of proof (customer similar to them) + 1 specific question or CTA. Under 100 words total.
+      </p>
+
+      <h3>4. Content-Led Inbound (SEO + LinkedIn Thought Leadership) — Best Long-Term ROI</h3>
+      <p>
+        <strong>Avg time to see ROI:</strong> 3-6 months<br/>
+        <strong>Long-term conversion:</strong> Inbound leads convert 3-5x better than outbound because they arrive pre-educated and self-selected
+      </p>
+      <p>
+        For B2B SMBs: publish 1-2 LinkedIn articles/week on problems your ICP faces + 2-4 SEO blog posts/month targeting keywords your ICP searches. The compounding effect is real but requires patience.
+      </p>
+
+      <h3>5. Event-Based Prospecting — Best for Niche Markets</h3>
+      <p>
+        Industry trade shows, LinkedIn events, virtual summits, and even local meetups concentrate your ICP in one place. The conversion rate from an in-person conversation at a relevant event to a follow-up meeting is dramatically higher than any cold channel — but the reach is lower.
+      </p>
+      <p>
+        For maximum ROI from events: prepare a target list before the event, book 30% of your meetings before you arrive, and follow up within 24h with a specific reference to your conversation.
+      </p>
+
+      <h2>The 7-Day Multichannel Prospecting Cadence</h2>
+
+      <table style="width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: 0.9rem;">
+        <thead>
+          <tr style="background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%); color: white;">
+            <th style="padding: 0.875rem; text-align: left;">Day</th>
+            <th style="padding: 0.875rem; text-align: left;">Action</th>
+            <th style="padding: 0.875rem; text-align: left;">Channel</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="background: #f8fafc;">
+            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">Day 1</td>
+            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">LinkedIn connection request (no note)</td>
+            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">LinkedIn</td>
+          </tr>
+          <tr>
+            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">Day 2</td>
+            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">Cold email #1 — trigger + problem + proof + question</td>
+            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">Email</td>
+          </tr>
+          <tr style="background: #f8fafc;">
+            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">Day 3</td>
+            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">LinkedIn message (if connected) — personalized, no pitch</td>
+            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">LinkedIn</td>
+          </tr>
+          <tr>
+            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">Day 5</td>
+            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">Cold email #2 — value drop (article, stat) + soft CTA</td>
+            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">Email</td>
+          </tr>
+          <tr style="background: #f8fafc;">
+            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">Day 7</td>
+            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">Cold email #3 — direct question about the specific pain</td>
+            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">Email</td>
+          </tr>
+          <tr>
+            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">Day 10</td>
+            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">Break-up email — "Should I stop following up?"</td>
+            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">Email</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p>
+        Effective B2B prospecting in 2026 is about <strong>system</strong>. Clear ICP, multichannel cadence, personalized messages, and every touchpoint logged in the CRM. Teams with this process generate 3-5x more qualified meetings than those prospecting reactively.
+      </p>
+
+      <div style="background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); border-left: 4px solid #2563eb; padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
+        <p style="font-weight: 700; color: #1e40af;">Automate your prospecting cadence in Sirius CRM</p>
+        <p style="color: #1e40af; margin: 0.5rem 0 1rem;">Set up multi-touch sequences, track every touchpoint, and let AI identify the best moment to follow up.</p>
+        <a href="/en/register" style="background: #2563eb; color: white; padding: 0.75rem 1.5rem; border-radius: 0.5rem; font-weight: 600; text-decoration: none; display: inline-block;">Start Free →</a>
+      </div>
+
+      <hr style="margin: 3rem 0; border: none; border-top: 1px solid #e5e7eb;" />
+      <p style="font-size: 0.85rem; color: #64748b;">
+        <strong>Last Updated:</strong> February 28, 2026<br/>
+        <strong>Author:</strong> Sirius CRM Team<br/>
+        <strong>Reading Time:</strong> 10 minutes
+      </p>
+  `,
 }

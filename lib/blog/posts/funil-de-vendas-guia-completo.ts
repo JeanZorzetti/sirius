@@ -709,4 +709,328 @@ export const post: BlogPost = {
   image: '/images/blog/funil-vendas.webp',
   author: 'Sirius Team',
   relatedSlugs: ['como-organizar-pipeline-vendas', 'spin-selling-guia-completo'],
+  titleEn: 'Sales Funnel: What It Is, Stages, and How to Build Yours [Complete Guide 2026]',
+  excerptEn: 'Learn how to create and optimize a high-converting sales funnel. Complete guide with interactive calculator, benchmarks, and free implementation template.',
+  keywordsEn: ['sales funnel 2026', 'how to build a sales funnel', 'sales funnel stages', 'sales pipeline guide', 'crm sales funnel'],
+  contentEn: `
+      <p>
+        If you're losing potential customers without knowing exactly where or why, this guide will change that. A well-structured <strong>sales funnel</strong> is the difference between selling predictably and consistently or relying on "lucky streaks." In <strong>2026</strong>, with increasingly complex buying cycles and ultra-informed customers, mastering your funnel is no longer optional.
+      </p>
+
+      <p>
+        In this definitive guide, you'll learn what a sales funnel is, the 5 essential stages that work for 90% of businesses, how to build yours in 7 practical steps, which metrics really matter, and — most importantly — how to avoid the 7 fatal mistakes that are silently killing your conversion rates.
+      </p>
+
+      <div class="callout-success">
+        <p><strong>🎁 Free Resources in This Article</strong></p>
+        <ul style="margin: 1rem 0; padding-left: 1.5rem;">
+          <li><a href="#funnel-calculator">Interactive Conversion Calculator</a> — Find out where you're losing leads</li>
+          <li><a href="#template-download">Complete Template for Download</a> — 5-phase implementation checklist</li>
+          <li>Market benchmarks by industry</li>
+          <li>Validated scripts and frameworks</li>
+        </ul>
+      </div>
+
+      <h2>What Is a Sales Funnel (Updated 2026 Concept)</h2>
+
+      <p>
+        A <strong>sales funnel</strong> is the visual representation of the journey a customer takes from first contact with your brand through the moment of purchase — and beyond. The name "funnel" comes from the fact that you always have more people entering the top than exiting as customers at the bottom.
+      </p>
+
+      <p>
+        But here's what most people don't understand: a sales funnel is not just a theoretical concept. It's an <strong>operating system</strong> that must be implemented in your CRM, with clear stages, defined progression criteria, and real-time metrics being tracked.
+      </p>
+
+      <div class="callout-stat">
+        <p><strong>📊 Market Data</strong></p>
+        <p style="font-size: 3rem; font-weight: 800; color: #2563eb; margin: 1rem 0; line-height: 1;">68%</p>
+        <p>of companies <strong>don't have</strong> their sales funnels clearly defined and mapped, according to CSO Insights research from <strong>2025</strong>. These companies grow 48% slower than competitors with structured funnels.</p>
+      </div>
+
+      <h3>Sales Funnel vs Pipeline vs Customer Journey: What's the Difference?</h3>
+
+      <table style="width: 100%; border-collapse: collapse; margin: 2rem 0; font-size: 0.95rem;">
+        <thead>
+          <tr style="background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%); color: white;">
+            <th style="padding: 1rem; text-align: left; border: 1px solid #ddd;">Concept</th>
+            <th style="padding: 1rem; text-align: left; border: 1px solid #ddd;">Focus</th>
+            <th style="padding: 1rem; text-align: left; border: 1px solid #ddd;">When to Use</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="background: #f8fafc;">
+            <td style="padding: 1rem; border: 1px solid #e2e8f0; color: #1e293b;"><strong>Sales Funnel</strong></td>
+            <td style="padding: 1rem; border: 1px solid #e2e8f0; color: #475569;">Aggregate volume of leads at each stage</td>
+            <td style="padding: 1rem; border: 1px solid #e2e8f0; color: #475569;">Strategic analysis, bottleneck identification</td>
+          </tr>
+          <tr style="background: #ffffff;">
+            <td style="padding: 1rem; border: 1px solid #e2e8f0; color: #1e293b;"><strong>Sales Pipeline</strong></td>
+            <td style="padding: 1rem; border: 1px solid #e2e8f0; color: #475569;">Individual deals and their progress</td>
+            <td style="padding: 1rem; border: 1px solid #e2e8f0; color: #475569;">Day-to-day operational management</td>
+          </tr>
+          <tr style="background: #f8fafc;">
+            <td style="padding: 1rem; border: 1px solid #e2e8f0; color: #1e293b;"><strong>Customer Journey</strong></td>
+            <td style="padding: 1rem; border: 1px solid #e2e8f0; color: #475569;">Buyer's experience and emotions</td>
+            <td style="padding: 1rem; border: 1px solid #e2e8f0; color: #475569;">Experience design, UX/CX</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p>
+        <strong>Practical analogy:</strong> The funnel shows "how many gallons of water are on each floor of the building." The pipeline shows "where each individual bucket is." The customer journey describes "how the person feels while carrying the bucket."
+      </p>
+
+      <h2>The 5 Essential Stages of an Efficient Sales Funnel</h2>
+
+      <p>
+        There are dozens of funnel variations out there. AIDA, TOFU-MOFU-BOFU, 3-stage funnels, 12-stage funnels... The truth is that <strong>most companies overcomplicate it</strong>. An effective funnel has between 4 and 6 stages — enough for control without creating paralyzing bureaucracy.
+      </p>
+
+      <div class="callout-success">
+        <p><strong>✅ Validated Framework</strong></p>
+        <p>The 5-stage structure below works for <strong>90% of B2B and B2C businesses</strong>, validated by thousands of implementations in Sirius CRM:</p>
+      </div>
+
+      <h3>1. Attraction (Top of Funnel - ToFu)</h3>
+
+      <p>
+        <strong>Goal:</strong> Generate awareness and capture attention from potential customers who don't yet know your solution.
+      </p>
+
+      <p>
+        <strong>Typical actions:</strong>
+      </p>
+      <ul>
+        <li>Visitor accesses blog via Google</li>
+        <li>Clicks ad on Facebook/Instagram</li>
+        <li>Sees viral post on LinkedIn</li>
+        <li>Referred by current customer</li>
+        <li>Attends event/webinar</li>
+      </ul>
+
+      <p>
+        <strong>Key metric:</strong> Unique visitors, reach, impressions
+      </p>
+
+      <h3>2. Interest (Middle of Funnel - MoFu)</h3>
+
+      <p>
+        <strong>Goal:</strong> Convert anonymous visitors into identified leads by capturing contact data.
+      </p>
+
+      <p>
+        <strong>Typical actions:</strong>
+      </p>
+      <ul>
+        <li>Downloads free ebook or template</li>
+        <li>Registers for webinar</li>
+        <li>Submits contact form</li>
+        <li>Subscribes to newsletter</li>
+        <li>Starts free trial</li>
+      </ul>
+
+      <p>
+        <strong>Key metric:</strong> Lead capture rate, cost per lead (CPL)
+      </p>
+
+      <h3>3. Consideration (Mid-Bottom Funnel)</h3>
+
+      <p>
+        <strong>Goal:</strong> Educate the lead about your solution, build trust, and advance to active evaluation.
+      </p>
+
+      <p>
+        <strong>Typical actions:</strong>
+      </p>
+      <ul>
+        <li>Discovery call or demo</li>
+        <li>Product comparison against competitors</li>
+        <li>Requests case studies or references</li>
+        <li>Evaluates pricing</li>
+        <li>Meets with decision-makers</li>
+      </ul>
+
+      <p>
+        <strong>Key metric:</strong> SQL-to-opportunity conversion rate, average time in stage
+      </p>
+
+      <h3>4. Decision (Bottom of Funnel - BoFu)</h3>
+
+      <p>
+        <strong>Goal:</strong> Remove final objections and close the deal.
+      </p>
+
+      <p>
+        <strong>Typical actions:</strong>
+      </p>
+      <ul>
+        <li>Contract negotiation</li>
+        <li>Final proposal sent</li>
+        <li>Proof of concept (POC)</li>
+        <li>Approval from financial/legal department</li>
+        <li>Contract signature</li>
+      </ul>
+
+      <p>
+        <strong>Key metric:</strong> Close rate, average deal cycle time, average ticket
+      </p>
+
+      <h3>5. Retention and Expansion (Post-Sale)</h3>
+
+      <p>
+        <strong>Goal:</strong> Retain the customer, generate referrals, and expand the account.
+      </p>
+
+      <p>
+        <strong>Typical actions:</strong>
+      </p>
+      <ul>
+        <li>Structured onboarding</li>
+        <li>Success check-ins (30/60/90 days)</li>
+        <li>Upsell/cross-sell opportunities identified</li>
+        <li>NPS survey</li>
+        <li>Referral program activation</li>
+      </ul>
+
+      <p>
+        <strong>Key metric:</strong> Churn rate, NPS, expansion MRR
+      </p>
+
+      <div class="callout-stat">
+        <p><strong>💡 Why Retention Matters in the Funnel</strong></p>
+        <p>Acquiring a new customer costs <strong>5-7x more</strong> than retaining an existing one. Funnels that ignore the post-sale stage leave 40-60% of revenue potential untapped through upsell and referrals.</p>
+      </div>
+
+      <h2>How to Build Your Sales Funnel in 7 Steps</h2>
+
+      <h3>Step 1: Map Your Current Customer Journey</h3>
+      <p>
+        Before building, document: how do your current customers typically find you? What's their path from first contact to purchase? Interview your 5 best customers and look for patterns. This is your "as-is" funnel.
+      </p>
+
+      <h3>Step 2: Define Clear Stage Criteria</h3>
+      <p>
+        Each funnel stage needs a clear definition of what qualifies a lead to enter and move forward. Example: "A lead enters Consideration when they have requested a demo AND have decision-maker authority AND have budget for next quarter." Vague criteria = messy pipeline.
+      </p>
+
+      <h3>Step 3: Set Conversion Rate Benchmarks</h3>
+      <p>
+        Research industry benchmarks for your sector. For B2B SaaS: ToFu→MoFu 2-5%, MoFu→SQL 20-30%, SQL→Close 20-35%. Use these as starting targets and improve from there.
+      </p>
+
+      <h3>Step 4: Assign Actions and Tools to Each Stage</h3>
+      <p>
+        For each stage, define: what actions move leads forward? What content or touchpoints are needed? What tools (CRM, email, WhatsApp) execute the actions automatically?
+      </p>
+
+      <h3>Step 5: Implement in Your CRM</h3>
+      <p>
+        Create the funnel stages in your CRM with the exact names and criteria defined. Set up automations: when a deal moves to "Consideration," automatically send a follow-up email and create a call task for 2 days later.
+      </p>
+
+      <h3>Step 6: Train the Team on Criteria (Not Just Process)</h3>
+      <p>
+        The biggest implementation failure is when reps understand the stages but not the qualification criteria. Run a workshop where the team qualifies 10 real hypothetical leads together, discussing borderline cases until criteria are internalized.
+      </p>
+
+      <h3>Step 7: Review Weekly, Adjust Monthly</h3>
+      <p>
+        Review pipeline metrics weekly in team meetings. Look for: abnormally long stages, unusual conversion drops, deals stuck for more than 2x the average cycle. Adjust criteria and automations monthly based on data.
+      </p>
+
+      <h2>The 7 Fatal Funnel Mistakes</h2>
+
+      <h3>1. Too Many Stages</h3>
+      <p>Funnels with 10+ stages create bureaucracy that slows reps down. Keep it to 4-6 stages maximum. If you need more granularity, use custom fields within the stage rather than adding new stages.</p>
+
+      <h3>2. Stages Without Clear Criteria</h3>
+      <p>"Negotiation" means different things to different reps. Without objective criteria (e.g., "proposal sent AND verbal agreement on price"), your pipeline data becomes unreliable for forecasting.</p>
+
+      <h3>3. Measuring Volume, Not Velocity</h3>
+      <p>Most teams obsess over "how many leads are in the funnel" when the real question is "how fast are they moving through?" A clogged funnel with slow-moving deals is worse than a lean funnel with high velocity.</p>
+
+      <h3>4. No Follow-Up Automation</h3>
+      <p>Manual follow-up fails at scale. When a rep manages 50+ active deals, it's humanly impossible to remember to follow up on each at the right time. Automate the cadence; humanize the message.</p>
+
+      <h3>5. Ignoring Lost Reasons</h3>
+      <p>Every lost deal should be tagged with a reason: "price," "competitor," "no budget," "timing," "need not strong enough." Without this data, you're flying blind on product and positioning improvements.</p>
+
+      <h3>6. No Post-Sale Funnel</h3>
+      <p>Closing the deal and ignoring the customer is the most expensive mistake. Set up a separate post-sale pipeline with onboarding milestones, success check-in dates, and expansion opportunity flags.</p>
+
+      <h3>7. Reviewing Data Monthly Instead of Weekly</h3>
+      <p>A monthly cadence means you discover a bottleneck after 30 days of lost conversions. Weekly reviews catch problems early — before they compound into missed quota.</p>
+
+      <h2>Key Funnel Metrics to Track in Your CRM</h2>
+
+      <table style="width: 100%; border-collapse: collapse; margin: 2rem 0; font-size: 0.9rem;">
+        <thead>
+          <tr style="background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%); color: white;">
+            <th style="padding: 1rem; text-align: left;">Metric</th>
+            <th style="padding: 1rem; text-align: left;">Formula</th>
+            <th style="padding: 1rem; text-align: left;">Healthy Benchmark (B2B)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="background: #f8fafc;">
+            <td style="padding: 0.875rem 1rem; border: 1px solid #e2e8f0;"><strong>Lead-to-Customer Rate</strong></td>
+            <td style="padding: 0.875rem 1rem; border: 1px solid #e2e8f0;">Customers ÷ Total Leads × 100</td>
+            <td style="padding: 0.875rem 1rem; border: 1px solid #e2e8f0;">1-5%</td>
+          </tr>
+          <tr>
+            <td style="padding: 0.875rem 1rem; border: 1px solid #e2e8f0;"><strong>Average Deal Cycle</strong></td>
+            <td style="padding: 0.875rem 1rem; border: 1px solid #e2e8f0;">Days from first contact to close</td>
+            <td style="padding: 0.875rem 1rem; border: 1px solid #e2e8f0;">30-90 days (SMB B2B)</td>
+          </tr>
+          <tr style="background: #f8fafc;">
+            <td style="padding: 0.875rem 1rem; border: 1px solid #e2e8f0;"><strong>Average Deal Value</strong></td>
+            <td style="padding: 0.875rem 1rem; border: 1px solid #e2e8f0;">Total Revenue ÷ Closed Deals</td>
+            <td style="padding: 0.875rem 1rem; border: 1px solid #e2e8f0;">Varies by industry</td>
+          </tr>
+          <tr>
+            <td style="padding: 0.875rem 1rem; border: 1px solid #e2e8f0;"><strong>Win Rate</strong></td>
+            <td style="padding: 0.875rem 1rem; border: 1px solid #e2e8f0;">Won Deals ÷ Total Closed × 100</td>
+            <td style="padding: 0.875rem 1rem; border: 1px solid #e2e8f0;">20-35% (B2B SaaS)</td>
+          </tr>
+          <tr style="background: #f8fafc;">
+            <td style="padding: 0.875rem 1rem; border: 1px solid #e2e8f0;"><strong>Pipeline Coverage</strong></td>
+            <td style="padding: 0.875rem 1rem; border: 1px solid #e2e8f0;">Pipeline Value ÷ Revenue Target</td>
+            <td style="padding: 0.875rem 1rem; border: 1px solid #e2e8f0;">3-5x target</td>
+          </tr>
+          <tr>
+            <td style="padding: 0.875rem 1rem; border: 1px solid #e2e8f0;"><strong>Stage Velocity</strong></td>
+            <td style="padding: 0.875rem 1rem; border: 1px solid #e2e8f0;">Avg days to move between stages</td>
+            <td style="padding: 0.875rem 1rem; border: 1px solid #e2e8f0;">Depends on stage</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2>Frequently Asked Questions About Sales Funnels</h2>
+
+      <h3>What is the difference between sales funnel and marketing funnel?</h3>
+      <p>
+        The marketing funnel covers the full journey from brand awareness to purchase intent, including content, ads, and SEO. The sales funnel starts where marketing ends — from the first identified sales contact to the closed deal. In modern go-to-market, both funnels are managed in the same CRM with shared visibility.
+      </p>
+
+      <h3>How long should a sales funnel take?</h3>
+      <p>
+        It depends entirely on your average deal cycle. B2C e-commerce: hours to days. B2B SMB: 2-6 weeks. B2B Enterprise: 3-12 months. The goal isn't to make the funnel faster at any cost — it's to eliminate unnecessary friction and ensure every stage is genuinely necessary.
+      </p>
+
+      <h3>Can a startup use a sales funnel?</h3>
+      <p>
+        Yes, and it's especially important early on. A defined funnel forces clarity on who your customer is, what triggers purchase decisions, and where the process breaks down. Even with 10 leads, tracking them in a CRM builds the data foundation for scaling later.
+      </p>
+
+      <h3>What CRM should I use to manage my funnel?</h3>
+      <p>
+        Any CRM that lets you create custom pipeline stages and track deals visually works. For Brazilian SMBs, <a href="/en/register">Sirius CRM</a> offers a pre-built 5-stage funnel optimized for B2B sales, with WhatsApp follow-up automation and AI lead scoring built in.
+      </p>
+
+      <div style="background: linear-gradient(135deg, #1e3a5f 0%, #1e293b 100%); padding: 2rem; border-radius: 1rem; margin: 2rem 0; text-align: center;">
+        <h3 style="color: #ffffff; margin: 0 0 1rem;">Build Your Sales Funnel in Sirius CRM</h3>
+        <p style="color: #94a3b8; margin: 0 0 1.5rem;">Pre-built funnel stages, WhatsApp automation, and AI that tells you which leads to focus on — all in one platform.</p>
+        <a href="/en/register" style="background: #2563eb; color: white; padding: 0.875rem 2rem; border-radius: 0.5rem; font-weight: 700; text-decoration: none; display: inline-block;">Try Free for 14 Days →</a>
+      </div>
+  `,
 }

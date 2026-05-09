@@ -277,5 +277,105 @@ export const post: BlogPost = {
       <strong>Última Atualização:</strong> 21 de Março de 2026<br/>
       <strong>Autor:</strong> Equipe Sirius CRM<br/>
       <strong>Tempo de Leitura:</strong> 11 minutos
-    `
+    `,
+  titleEn: '5 Pipedrive Alternatives for Sales Reps in Brazil in 2026',
+  excerptEn: 'The 5 best Pipedrive alternatives for Brazilian sales reps in 2026: honest analysis of BRL pricing, WhatsApp, AI, offline mode, and usability.',
+  keywordsEn: ['pipedrive alternatives brazil', 'best crm instead of pipedrive', 'pipedrive competitor 2026', 'crm for sales reps brazil', 'pipedrive vs alternatives'],
+  contentEn: `
+      <p>
+        Pipedrive is one of the most popular CRMs in the world — but for Brazilian sales reps, it has three persistent problems: USD pricing (with BRL exposure), no native WhatsApp integration, and no offline mode. As of 2026, there are 5 alternatives that handle all three better at a fraction of the cost.
+      </p>
+
+      <h2>Why Sales Reps Are Leaving Pipedrive in Brazil</h2>
+      <ul>
+        <li><strong>Price volatility:</strong> Pipedrive prices in USD. A plan that cost R$75/user in 2022 now costs R$120-150/user in 2026 due to BRL depreciation — a 60% increase without any plan change</li>
+        <li><strong>No native WhatsApp:</strong> Requires paid third-party integration adding R$100-200/month plus setup complexity</li>
+        <li><strong>No offline mode:</strong> Field reps in areas with poor connectivity lose access completely</li>
+        <li><strong>Support in English only:</strong> 24-48h email response time in English</li>
+      </ul>
+
+      <h2>The 5 Best Pipedrive Alternatives for Brazil in 2026</h2>
+
+      <h3>1. Sirius CRM — Best for B2B Sales Reps</h3>
+      <p><strong>Why:</strong> Built specifically for the Brazilian B2B market. Native WhatsApp (all plans), offline mode, AI lead qualification, prices in BRL.<br/>
+      <strong>Starting price:</strong> Free | From R$67/month for pro features</p>
+
+      <h3>2. RD Station CRM — Best for Marketing + Sales Integration</h3>
+      <p><strong>Why:</strong> Brazilian product, native integration with RD Station Marketing, strong PT-BR support.<br/>
+      <strong>Starting price:</strong> Free (limited) | From R$99/month</p>
+
+      <h3>3. HubSpot CRM Free — Best for Inbound-Led Teams</h3>
+      <p><strong>Why:</strong> Genuinely free forever, best-in-class inbound marketing integration.<br/>
+      <strong>Starting price:</strong> Free | Paid from $15/user/month (USD)</p>
+
+      <h3>4. Zoho CRM — Best Value for Feature Volume</h3>
+      <p><strong>Why:</strong> Massive feature set, available in PT-BR, flexible customization.<br/>
+      <strong>Starting price:</strong> Free (3 users) | From $14/user/month (USD)</p>
+
+      <h3>5. Kommo (formerly amoCRM) — Best for WhatsApp-Centric Sales</h3>
+      <p><strong>Why:</strong> Built around messaging channels — WhatsApp, Instagram, Telegram all native.<br/>
+      <strong>Starting price:</strong> From $15/user/month (USD)</p>
+
+      <h2>Direct Comparison</h2>
+
+      <table style="width: 100%; border-collapse: collapse; margin: 2rem 0; font-size: 0.85rem; background: #0f172a; color: #f1f5f9; border-radius: 0.75rem; overflow: hidden;">
+        <thead>
+          <tr style="background: #1e293b;">
+            <th style="padding: 0.875rem; text-align: left; color: #94a3b8;">Feature</th>
+            <th style="padding: 0.875rem; text-align: center; background: #1e3a5f; color: #60a5fa;">Sirius</th>
+            <th style="padding: 0.875rem; text-align: center; color: #94a3b8;">Pipedrive</th>
+            <th style="padding: 0.875rem; text-align: center; color: #94a3b8;">RD Station</th>
+            <th style="padding: 0.875rem; text-align: center; color: #94a3b8;">HubSpot</th>
+            <th style="padding: 0.875rem; text-align: center; color: #94a3b8;">Kommo</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="border-top: 1px solid #334155;">
+            <td style="padding: 0.75rem;">BRL Pricing</td>
+            <td style="padding: 0.75rem; text-align: center; color: #4ade80;">✓</td>
+            <td style="padding: 0.75rem; text-align: center; color: #f87171;">✗ USD</td>
+            <td style="padding: 0.75rem; text-align: center; color: #4ade80;">✓</td>
+            <td style="padding: 0.75rem; text-align: center; color: #f87171;">✗ USD</td>
+            <td style="padding: 0.75rem; text-align: center; color: #f87171;">✗ USD</td>
+          </tr>
+          <tr style="border-top: 1px solid #334155; background: #0f172a;">
+            <td style="padding: 0.75rem;">Native WhatsApp</td>
+            <td style="padding: 0.75rem; text-align: center; color: #4ade80;">✓</td>
+            <td style="padding: 0.75rem; text-align: center; color: #fbbf24;">Add-on</td>
+            <td style="padding: 0.75rem; text-align: center; color: #fbbf24;">Paid plan</td>
+            <td style="padding: 0.75rem; text-align: center; color: #f87171;">✗</td>
+            <td style="padding: 0.75rem; text-align: center; color: #4ade80;">✓</td>
+          </tr>
+          <tr style="border-top: 1px solid #334155;">
+            <td style="padding: 0.75rem;">Offline Mode</td>
+            <td style="padding: 0.75rem; text-align: center; color: #4ade80;">✓</td>
+            <td style="padding: 0.75rem; text-align: center; color: #f87171;">✗</td>
+            <td style="padding: 0.75rem; text-align: center; color: #f87171;">✗</td>
+            <td style="padding: 0.75rem; text-align: center; color: #f87171;">✗</td>
+            <td style="padding: 0.75rem; text-align: center; color: #f87171;">✗</td>
+          </tr>
+          <tr style="border-top: 1px solid #334155; background: #0f172a;">
+            <td style="padding: 0.75rem;">Built-in AI</td>
+            <td style="padding: 0.75rem; text-align: center; color: #4ade80;">✓</td>
+            <td style="padding: 0.75rem; text-align: center; color: #fbbf24;">Add-on</td>
+            <td style="padding: 0.75rem; text-align: center; color: #f87171;">✗</td>
+            <td style="padding: 0.75rem; text-align: center; color: #fbbf24;">Limited</td>
+            <td style="padding: 0.75rem; text-align: center; color: #f87171;">✗</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div style="background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); border-left: 4px solid #2563eb; padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
+        <p style="font-weight: 700; color: #1e40af;">Ready to switch from Pipedrive?</p>
+        <p style="color: #1e40af; margin: 0.5rem 0 1rem;">Sirius CRM imports Pipedrive data in under 30 minutes. Native WhatsApp, offline mode, AI — all included.</p>
+        <a href="/en/register" style="background: #2563eb; color: white; padding: 0.75rem 1.5rem; border-radius: 0.5rem; font-weight: 600; text-decoration: none; display: inline-block;">Try Free →</a>
+      </div>
+
+      <hr style="margin: 3rem 0; border: none; border-top: 1px solid #e5e7eb;" />
+      <p style="font-size: 0.85rem; color: #64748b;">
+        <strong>Last Updated:</strong> March 21, 2026<br/>
+        <strong>Author:</strong> Sirius CRM Team<br/>
+        <strong>Reading Time:</strong> 11 minutes
+      </p>
+  `,
 }

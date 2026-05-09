@@ -393,4 +393,92 @@ export const post: BlogPost = {
       <strong>Tempo de Leitura:</strong> 10 minutos<br/>
       <strong>Palavras:</strong> 2.200+
   `,
+  titleEn: 'How to Migrate from Spreadsheet to CRM Without Losing Data [2026 Guide]',
+  excerptEn: '63% of SMBs still use spreadsheets for sales management. Migrating to a CRM takes under 1 hour — if you follow these 5 steps. Free migration checklist included.',
+  keywordsEn: ['migrate spreadsheet to crm', 'excel to crm migration', 'how to import data into crm', 'crm data migration guide', 'move from spreadsheet to crm'],
+  contentEn: `
+      <p>
+        63% of SMBs still manage their sales pipeline in spreadsheets (HubSpot 2024). The reason isn't cost — free CRMs exist. The reason is fear of migration: "I'll lose my data," "it'll take too long," "the team won't adopt it." This guide eliminates all three concerns with a 5-step process that takes under 1 hour.
+      </p>
+
+      <h2>Before You Start: Prepare Your Spreadsheet</h2>
+
+      <p>
+        A clean import takes 30 minutes. A messy import takes 3 hours. Before exporting, clean your spreadsheet:
+      </p>
+      <ol>
+        <li>Delete duplicate rows (same contact, same company)</li>
+        <li>Standardize columns: one column per data type (don't put "São Paulo/SP" in the city column — separate city and state)</li>
+        <li>Remove special characters from phone numbers (keep only digits: 11999998888)</li>
+        <li>Fill in blank company names (even "Unknown" is better than empty)</li>
+        <li>Add a "Stage" column if deals are in different pipeline stages</li>
+      </ol>
+
+      <h2>The 5-Step Migration Process</h2>
+
+      <h3>Step 1: Export Your Spreadsheet as CSV</h3>
+      <p>
+        In Google Sheets: File → Download → CSV. In Excel: File → Save As → CSV (UTF-8). Make sure the encoding is UTF-8 — this prevents accented characters from appearing as gibberish in the CRM.
+      </p>
+
+      <h3>Step 2: Map Your Columns to CRM Fields</h3>
+      <p>
+        Open the CRM's import wizard and map each spreadsheet column to the corresponding CRM field. Typical mapping:
+      </p>
+      <ul>
+        <li>Column "Name" → CRM field "Contact Name"</li>
+        <li>Column "Company" → CRM field "Company"</li>
+        <li>Column "Phone" → CRM field "WhatsApp" or "Phone"</li>
+        <li>Column "Email" → CRM field "Email"</li>
+        <li>Column "Value" → CRM field "Deal Value"</li>
+        <li>Column "Stage" → CRM field "Pipeline Stage"</li>
+      </ul>
+
+      <h3>Step 3: Test with 10 Rows First</h3>
+      <p>
+        Don't import all 500 contacts at once on the first try. Import 10 rows, verify the data looks correct in the CRM, and only then run the full import. This saves you from cleaning up a bad 500-row import.
+      </p>
+
+      <h3>Step 4: Run the Full Import</h3>
+      <p>
+        Once the test looks good, import the full dataset. Most CRMs handle imports of up to 10,000 rows in under 5 minutes.
+      </p>
+
+      <h3>Step 5: Clean Up After Import</h3>
+      <p>
+        Post-import tasks (30 minutes):
+      </p>
+      <ul>
+        <li>Assign deals to the correct sales rep</li>
+        <li>Add next actions to the top 20 priority deals</li>
+        <li>Verify 5-10 random records look correct</li>
+        <li>Archive or delete any duplicate that slipped through</li>
+        <li>Set your pipeline stages to match your process</li>
+      </ul>
+
+      <h2>Frequently Asked Questions</h2>
+
+      <h3>What happens to my old spreadsheet after migration?</h3>
+      <p>
+        Keep it as a backup for 30 days, then archive. Never delete source data immediately after migration — you want the ability to re-import if something went wrong.
+      </p>
+
+      <h3>How do I migrate WhatsApp conversation history?</h3>
+      <p>
+        WhatsApp conversation history can't be imported — it lives in the WhatsApp app. What you can do: paste key conversation notes into the CRM deal's notes field for the most important contacts. Going forward, new WhatsApp conversations are logged automatically with the CRM integration active.
+      </p>
+
+      <div style="background: linear-gradient(135deg, #1e3a5f 0%, #1e293b 100%); padding: 2rem; border-radius: 1rem; margin: 2rem 0; text-align: center;">
+        <h3 style="color: #ffffff; margin: 0 0 1rem;">Ready to Migrate? Takes Under 1 Hour.</h3>
+        <p style="color: #94a3b8; margin: 0 0 1.5rem;">Sirius CRM's import wizard walks you through every step. Free account, no credit card, unlimited contacts.</p>
+        <a href="/en/register" style="background: #2563eb; color: white; padding: 0.875rem 2rem; border-radius: 0.5rem; font-weight: 700; text-decoration: none; display: inline-block;">Start Free Migration →</a>
+      </div>
+
+      <hr style="margin: 3rem 0; border: none; border-top: 1px solid #e5e7eb;" />
+      <p style="font-size: 0.85rem; color: #64748b;">
+        <strong>Last Updated:</strong> March 28, 2026<br/>
+        <strong>Author:</strong> Sirius CRM Team<br/>
+        <strong>Reading Time:</strong> 10 minutes
+      </p>
+  `,
 }
