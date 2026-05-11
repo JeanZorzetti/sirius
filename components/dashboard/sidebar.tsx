@@ -138,7 +138,7 @@ function WhatsAppFounderButton({ open }: { open: boolean }) {
           open ? 'opacity-100' : 'opacity-0 w-0 overflow-hidden'
         )}
       >
-        Urgente? WhatsApp
+        Suporte WhatsApp
       </span>
     </a>
   )
