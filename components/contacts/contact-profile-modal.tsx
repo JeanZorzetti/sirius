@@ -27,6 +27,7 @@ import {
     Trash2,
     Loader2,
     FileText,
+    Package,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import type { EnrichedContact, ClosingEntry } from './contacts-data-table-client'
@@ -424,6 +425,11 @@ export function ContactProfileModal({ contact, open, onOpenChange, onEdit }: Con
                                                 </span>
                                             </div>
                                             <div className="mt-0.5 flex flex-wrap items-center gap-x-3 gap-y-0.5">
+                                                {cl.productName && (
+                                                    <span className="inline-flex items-center gap-1 text-[11px] font-medium text-indigo-600 dark:text-indigo-400">
+                                                        <Package className="h-3 w-3" /> {cl.productName}
+                                                    </span>
+                                                )}
                                                 {cl.dealTitle && (
                                                     <span className="inline-flex items-center gap-1 text-[11px] text-zinc-500 dark:text-zinc-400">
                                                         <Kanban className="h-3 w-3" /> {cl.dealTitle}

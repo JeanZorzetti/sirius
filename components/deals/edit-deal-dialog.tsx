@@ -119,6 +119,9 @@ export function EditDealDialog({
     const [closingValue, setClosingValue] = useState('')
     const [closingNote, setClosingNote] = useState('')
     const [savingClosing, setSavingClosing] = useState(false)
+    const [closingProductId, setClosingProductId] = useState<string>('none')
+    const [closingProductSearch, setClosingProductSearch] = useState('')
+    const [closingProductOpen, setClosingProductOpen] = useState(false)
 
     // Fetch full details when dialog opens
     useEffect(() => {
@@ -356,10 +359,18 @@ export function EditDealDialog({
         if (!closingValue || !closingDate || !initialDeal) return
         setSavingClosing(true)
         try {
-            const newClosing = await addDealClosing(initialDeal.id, closingDate, parseFloat(closingValue), closingNote || undefined)
+            const newClosing = await addDealClosing(
+                initialDeal.id,
+                closingDate,
+                parseFloat(closingValue),
+                closingNote || undefined,
+                closingProductId !== 'none' ? closingProductId : undefined,
+            )
             setClosings(prev => [newClosing, ...prev])
             setClosingValue('')
             setClosingNote('')
+            setClosingProductId('none')
+            setClosingProductSearch('')
             toast.success('Fechamento registrado!')
         } catch {
             toast.error('Erro ao registrar fechamento')
@@ -820,6 +831,67 @@ export function EditDealDialog({
                                             onKeyDown={e => e.key === 'Enter' && handleAddClosing()}
                                         />
                                     </div>
+                                    <div className="space-y-1">
+                                        <Label className="text-xs">Produto (opcional)</Label>
+                                        <Popover open={closingProductOpen} onOpenChange={setClosingProductOpen}>
+                                            <PopoverTrigger asChild>
+                                                <button
+                                                    type="button"
+                                                    className="flex h-8 w-full items-center justify-between rounded-md border border-input bg-white dark:bg-zinc-800 px-3 text-sm hover:border-zinc-400 transition-colors"
+                                                >
+                                                    <span className={cn('truncate text-left', closingProductId === 'none' && 'text-zinc-400')}>
+                                                        {closingProductId !== 'none'
+                                                            ? products.find(p => p.id === closingProductId)?.name ?? 'Produto selecionado'
+                                                            : 'Selecionar produto...'}
+                                                    </span>
+                                                    <ChevronsUpDown className="h-3.5 w-3.5 shrink-0 text-zinc-400" />
+                                                </button>
+                                            </PopoverTrigger>
+                                            <PopoverContent className="w-[280px] p-0" align="start">
+                                                <div className="flex items-center gap-2 border-b px-3 py-2">
+                                                    <Search className="h-3.5 w-3.5 shrink-0 text-zinc-400" />
+                                                    <input
+                                                        autoFocus
+                                                        placeholder="Buscar produto..."
+                                                        value={closingProductSearch}
+                                                        onChange={e => setClosingProductSearch(e.target.value)}
+                                                        className="flex-1 bg-transparent text-sm outline-none placeholder:text-zinc-400"
+                                                    />
+                                                </div>
+                                                <div className="max-h-40 overflow-y-auto py-1">
+                                                    {closingProductId !== 'none' && (
+                                                        <button
+                                                            type="button"
+                                                            onClick={() => { setClosingProductId('none'); setClosingProductSearch(''); setClosingProductOpen(false) }}
+                                                            className="flex w-full items-center px-3 py-1.5 text-xs text-zinc-400 hover:bg-zinc-50 dark:hover:bg-zinc-800"
+                                                        >
+                                                            Limpar seleção
+                                                        </button>
+                                                    )}
+                                                    {products
+                                                        .filter(p => p.name.toLowerCase().includes(closingProductSearch.toLowerCase()))
+                                                        .map(p => (
+                                                            <button
+                                                                key={p.id}
+                                                                type="button"
+                                                                onClick={() => { setClosingProductId(p.id); setClosingProductSearch(''); setClosingProductOpen(false) }}
+                                                                className={cn(
+                                                                    'flex w-full items-center justify-between px-3 py-1.5 text-sm hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors',
+                                                                    closingProductId === p.id && 'bg-emerald-50 dark:bg-emerald-950/30 text-emerald-700 dark:text-emerald-300'
+                                                                )}
+                                                            >
+                                                                <span className="truncate">{p.name}</span>
+                                                                {closingProductId === p.id && <Check className="h-3.5 w-3.5 shrink-0" />}
+                                                            </button>
+                                                        ))
+                                                    }
+                                                    {products.filter(p => p.name.toLowerCase().includes(closingProductSearch.toLowerCase())).length === 0 && (
+                                                        <p className="px-3 py-2 text-xs text-zinc-400">Nenhum produto encontrado.</p>
+                                                    )}
+                                                </div>
+                                            </PopoverContent>
+                                        </Popover>
+                                    </div>
                                     <Button
                                         onClick={handleAddClosing}
                                         disabled={!closingValue || !closingDate || savingClosing}
@@ -856,6 +928,9 @@ export function EditDealDialog({
                                                             </span>
                                                         )}
                                                     </div>
+                                                    {closing.productName && (
+                                                        <p className="text-xs text-indigo-600 dark:text-indigo-400 font-medium">📦 {closing.productName}</p>
+                                                    )}
                                                     {closing.note && (
                                                         <p className="text-xs text-zinc-500">{closing.note}</p>
                                                     )}

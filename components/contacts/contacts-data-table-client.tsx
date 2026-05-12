@@ -54,6 +54,7 @@ export type ClosingEntry = {
   date: string
   value: number
   note: string | null
+  productName: string | null
   userName: string | null
 }
 

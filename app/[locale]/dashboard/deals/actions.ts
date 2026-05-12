@@ -205,30 +205,60 @@ export async function deleteNote(noteId: string) {
     return { success: true }
 }
 
-export async function addDealClosing(dealId: string, date: string, value: number, note?: string) {
+export async function addDealClosing(dealId: string, date: string, value: number, note?: string, productId?: string) {
     const user = await checkPermission()
 
     const deal = await prisma.deal.findUnique({ where: { id: dealId } })
     if (!deal) throw new Error("Deal not found")
     if (deal.organizationId !== user.organizationId) throw new Error("Unauthorized")
 
-    const closing = await prisma.dealClosing.create({
-        data: { dealId, date: new Date(date), value, note: note || null, userId: user.id }
+    // Resolve product name to denormalize
+    let productName: string | null = null
+    let resolvedProductId: string | null = null
+    if (productId && productId !== 'none') {
+        const product = await (prisma.product as any).findUnique({
+            where: { id: productId },
+            select: { id: true, name: true },
+        })
+        if (product && product.organizationId !== undefined || product) {
+            resolvedProductId = product?.id ?? null
+            productName = product?.name ?? null
+        }
+    }
+
+    const closing = await (prisma.dealClosing as any).create({
+        data: {
+            dealId,
+            date: new Date(date),
+            value,
+            note: note || null,
+            userId: user.id,
+            productId: resolvedProductId,
+            productName,
+        }
     })
 
     const valueStr = `R$ ${value.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`
     const noteStr = note ? ` — ${note}` : ''
+    const productStr = productName ? ` | ${productName}` : ''
     await prisma.activity.create({
         data: {
             type: "CLOSING_ADDED",
-            description: `Registrou fechamento de ${valueStr}${noteStr}`,
+            description: `Registrou fechamento de ${valueStr}${productStr}${noteStr}`,
             dealId,
             userId: user.id
         }
     })
 
     revalidatePath("/dashboard")
-    return { ...closing, value: Number(closing.value), date: closing.date.toISOString(), createdAt: closing.createdAt.toISOString() }
+    return {
+        ...closing,
+        value: Number(closing.value),
+        date: closing.date.toISOString(),
+        createdAt: closing.createdAt.toISOString(),
+        productName: closing.productName ?? null,
+        productId: closing.productId ?? null,
+    }
 }
 
 export async function deleteDealClosing(closingId: string) {
@@ -263,18 +293,20 @@ export async function getDealClosings(dealId: string) {
     const deal = await prisma.deal.findUnique({ where: { id: dealId } })
     if (!deal || deal.organizationId !== user.organizationId) throw new Error("Unauthorized")
 
-    const closings = await prisma.dealClosing.findMany({
+    const closings = await (prisma.dealClosing as any).findMany({
         where: { dealId },
         orderBy: { date: 'desc' },
         include: { user: { select: { id: true, name: true, email: true } } }
     })
 
-    return closings.map(c => ({
+    return closings.map((c: any) => ({
         ...c,
         value: Number(c.value),
         date: c.date.toISOString(),
         createdAt: c.createdAt.toISOString(),
         userName: c.user?.name ?? c.user?.email ?? null,
+        productName: c.productName ?? null,
+        productId: c.productId ?? null,
     }))
 }
 

@@ -121,7 +121,7 @@ async function ContactsData({ orgId }: { orgId: string }) {
     }).catch(() => [] as any[])
 
     // DealClosings — todos os fechamentos de deals vinculados a contatos desta org
-    const allClosings = await prisma.dealClosing.findMany({
+    const allClosings = await (prisma.dealClosing as any).findMany({
         where: {
             deal: { organizationId: orgId, contactId: { not: null } }
         },
@@ -130,6 +130,7 @@ async function ContactsData({ orgId }: { orgId: string }) {
             date: true,
             value: true,
             note: true,
+            productName: true,
             dealId: true,
             deal: { select: { title: true, contactId: true } },
             user: { select: { name: true } },
@@ -197,6 +198,7 @@ async function ContactsData({ orgId }: { orgId: string }) {
             date: cl.date instanceof Date ? cl.date.toISOString() : cl.date,
             value: Number(cl.value),
             note: cl.note ?? null,
+            productName: cl.productName ?? null,
             userName: cl.user?.name ?? null,
         }))
         return {

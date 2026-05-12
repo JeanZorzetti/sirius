@@ -306,6 +306,7 @@ export async function addContactClosing(contactId: string, data: {
     date: string
     value: number
     note: string | null
+    productName?: string | null
 }) {
     try {
         const user = await getAuthenticatedUser()
@@ -359,13 +360,14 @@ export async function addContactClosing(contactId: string, data: {
             return { success: false, error: 'Deal não encontrado.' }
         }
 
-        const closing = await prisma.dealClosing.create({
+        const closing = await (prisma.dealClosing as any).create({
             data: {
                 dealId: targetDealId,
                 date: new Date(data.date),
                 value: data.value,
                 note: data.note || null,
                 userId: user.id,
+                productName: data.productName ?? null,
             },
         })
 
@@ -390,6 +392,7 @@ export async function addContactClosing(contactId: string, data: {
                 date: closing.date.toISOString(),
                 value: Number(closing.value),
                 note: closing.note ?? null,
+                productName: closing.productName ?? null,
                 userName: null,
             },
         }

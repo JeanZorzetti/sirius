@@ -506,8 +506,13 @@ model DealClosing {
   value     Decimal  @db.Decimal(10, 2)
   note      String?
 
+  productId   String?
+  productName String?
+
   dealId String
   deal   Deal   @relation(fields: [dealId], references: [id], onDelete: Cascade)
+
+  productRef Product? @relation(fields: [productId], references: [id], onDelete: SetNull)
 
   // Quem registrou o fechamento (opcional para registros antigos)
   userId String?
@@ -1898,7 +1903,8 @@ model Product {
   organizationId String
   organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
 
-  deals Deal[]
+  deals    Deal[]
+  closings DealClosing[]
 
   @@index([organizationId])
   @@index([organizationId, isActive])
