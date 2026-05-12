@@ -201,18 +201,16 @@ function DealCard({
           </div>
 
           <div className="flex items-center gap-1">
-            {deal.status !== 'WON' && (
-              <Button
-                size="icon"
-                variant="ghost"
-                className="h-7 w-7 touch-target rounded-full bg-amber-500/10 text-amber-500 hover:bg-amber-500/20 hover:text-amber-400 opacity-0 group-hover:opacity-100 transition-all"
-                onClick={handleMarkWon}
-                disabled={markingWon}
-                title="Marcar como Ganho"
-              >
-                <Trophy className="h-3.5 w-3.5" />
-              </Button>
-            )}
+            <Button
+              size="icon"
+              variant="ghost"
+              className="h-7 w-7 touch-target rounded-full bg-amber-500/10 text-amber-500 hover:bg-amber-500/20 hover:text-amber-400 opacity-0 group-hover:opacity-100 transition-all"
+              onClick={handleMarkWon}
+              disabled={markingWon}
+              title="Registrar venda (Ganho)"
+            >
+              <Trophy className="h-3.5 w-3.5" />
+            </Button>
             {deal.contact?.phone && (
               <Button
                 size="icon"

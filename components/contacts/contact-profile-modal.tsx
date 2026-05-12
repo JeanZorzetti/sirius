@@ -8,6 +8,7 @@ import {
     DialogTitle,
 } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
 import {
     Phone,
     Mail,
@@ -23,11 +24,16 @@ import {
     Tag,
     Trophy,
     Package,
+    Plus,
+    Trash2,
+    Loader2,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import type { EnrichedContact, WonDeal } from './contacts-data-table-client'
 import { CONTACT_STATUSES } from './contacts-filters'
 import { useTranslations } from 'next-intl'
+import { addWonDeal, removeWonDeal } from '@/app/[locale]/dashboard/contacts/actions'
+import { useRouter } from 'next/navigation'
 
 const STATUS_BADGE: Record<string, { bg: string; text: string; dot: string }> = {
   active:      { bg: 'bg-emerald-500/20', text: 'text-emerald-100', dot: 'bg-emerald-400' },
@@ -94,6 +100,47 @@ function SectionTitle({ children }: { children: React.ReactNode }) {
 export function ContactProfileModal({ contact, open, onOpenChange, onEdit }: ContactProfileModalProps) {
     const tCommon = useTranslations('common')
     const t = useTranslations('components.contacts')
+    const router = useRouter()
+
+    const [showAddForm, setShowAddForm] = React.useState(false)
+    const [addTitle, setAddTitle] = React.useState('')
+    const [addValue, setAddValue] = React.useState('')
+    const [addProduct, setAddProduct] = React.useState('')
+    const [addDate, setAddDate] = React.useState(new Date().toISOString().slice(0, 10))
+    const [adding, setAdding] = React.useState(false)
+    const [removingId, setRemovingId] = React.useState<string | null>(null)
+    const [addError, setAddError] = React.useState<string | null>(null)
+
+    async function handleAddWonDeal() {
+        if (!addTitle.trim()) { setAddError('Título obrigatório'); return }
+        setAdding(true)
+        setAddError(null)
+        const res = await addWonDeal(contact.id, {
+            title: addTitle.trim(),
+            value: addValue ? parseFloat(addValue.replace(',', '.')) : null,
+            productName: addProduct.trim() || null,
+            wonAt: addDate,
+        })
+        setAdding(false)
+        if (res.success) {
+            setShowAddForm(false)
+            setAddTitle('')
+            setAddValue('')
+            setAddProduct('')
+            setAddDate(new Date().toISOString().slice(0, 10))
+            router.refresh()
+        } else {
+            setAddError(res.error ?? 'Erro ao registrar venda')
+        }
+    }
+
+    async function handleRemoveWonDeal(dealId: string) {
+        setRemovingId(dealId)
+        await removeWonDeal(dealId)
+        setRemovingId(null)
+        router.refresh()
+    }
+
     const initials = contact.name
         .split(' ')
         .map(n => n[0])
@@ -271,14 +318,67 @@ export function ContactProfileModal({ contact, open, onOpenChange, onEdit }: Con
                     )}
 
                     {/* Histórico de Vendas */}
-                    {contact.wonDeals && contact.wonDeals.length > 0 && (
-                        <div>
-                            <SectionTitle>Histórico de Vendas</SectionTitle>
+                    <div>
+                        <div className="flex items-center gap-2 mb-3">
+                            <span className="text-[10px] font-bold uppercase tracking-widest text-zinc-400 dark:text-zinc-500">Histórico de Vendas</span>
+                            <div className="flex-1 h-px bg-zinc-100 dark:bg-zinc-800" />
+                            <button
+                                onClick={() => { setShowAddForm(v => !v); setAddError(null) }}
+                                className="flex h-5 w-5 items-center justify-center rounded-md bg-zinc-100 dark:bg-zinc-800 hover:bg-indigo-100 dark:hover:bg-indigo-900/40 transition-colors"
+                                title="Adicionar venda"
+                            >
+                                <Plus className="h-3 w-3 text-zinc-500 dark:text-zinc-400" />
+                            </button>
+                        </div>
+
+                        {showAddForm && (
+                            <div className="mb-3 rounded-xl border border-indigo-200/60 dark:border-indigo-800/30 bg-indigo-50/60 dark:bg-indigo-950/20 p-3 space-y-2">
+                                <Input
+                                    placeholder="Título da venda *"
+                                    value={addTitle}
+                                    onChange={e => setAddTitle(e.target.value)}
+                                    className="h-8 text-sm bg-white dark:bg-zinc-900"
+                                />
+                                <div className="grid grid-cols-2 gap-2">
+                                    <Input
+                                        placeholder="Valor (R$)"
+                                        value={addValue}
+                                        onChange={e => setAddValue(e.target.value)}
+                                        className="h-8 text-sm bg-white dark:bg-zinc-900"
+                                        inputMode="decimal"
+                                    />
+                                    <Input
+                                        type="date"
+                                        value={addDate}
+                                        onChange={e => setAddDate(e.target.value)}
+                                        className="h-8 text-sm bg-white dark:bg-zinc-900"
+                                    />
+                                </div>
+                                <Input
+                                    placeholder="Produto (opcional)"
+                                    value={addProduct}
+                                    onChange={e => setAddProduct(e.target.value)}
+                                    className="h-8 text-sm bg-white dark:bg-zinc-900"
+                                />
+                                {addError && <p className="text-xs text-red-500">{addError}</p>}
+                                <div className="flex gap-2 pt-1">
+                                    <Button size="sm" onClick={handleAddWonDeal} disabled={adding} className="h-7 text-xs gap-1">
+                                        {adding ? <Loader2 className="h-3 w-3 animate-spin" /> : <Trophy className="h-3 w-3" />}
+                                        Registrar
+                                    </Button>
+                                    <Button size="sm" variant="ghost" onClick={() => setShowAddForm(false)} className="h-7 text-xs">
+                                        Cancelar
+                                    </Button>
+                                </div>
+                            </div>
+                        )}
+
+                        {contact.wonDeals && contact.wonDeals.length > 0 ? (
                             <div className="space-y-2">
                                 {contact.wonDeals.map((d: WonDeal) => (
                                     <div
                                         key={d.id}
-                                        className="flex items-start gap-3 rounded-xl bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200/60 dark:border-emerald-800/30 px-3 py-2.5"
+                                        className="flex items-start gap-3 rounded-xl bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200/60 dark:border-emerald-800/30 px-3 py-2.5 group/deal"
                                     >
                                         <div className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-emerald-100 dark:bg-emerald-900/50">
                                             <Trophy className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
@@ -308,11 +408,26 @@ export function ContactProfileModal({ contact, open, onOpenChange, onEdit }: Con
                                                 )}
                                             </div>
                                         </div>
+                                        <button
+                                            onClick={() => handleRemoveWonDeal(d.id)}
+                                            disabled={removingId === d.id}
+                                            className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-md opacity-0 group-hover/deal:opacity-100 hover:bg-red-100 dark:hover:bg-red-900/40 transition-all"
+                                            title="Remover venda"
+                                        >
+                                            {removingId === d.id
+                                                ? <Loader2 className="h-3 w-3 text-red-500 animate-spin" />
+                                                : <Trash2 className="h-3 w-3 text-red-500" />
+                                            }
+                                        </button>
                                     </div>
                                 ))}
                             </div>
-                        </div>
-                    )}
+                        ) : (
+                            !showAddForm && (
+                                <p className="text-xs text-zinc-400 dark:text-zinc-500 italic">Nenhuma venda registrada.</p>
+                            )
+                        )}
+                    </div>
 
                     {/* Meta */}
                     <div>

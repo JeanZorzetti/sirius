@@ -300,3 +300,96 @@ export async function deleteContact(contactId: string) {
         return { success: false, error: `Falha ao excluir contato: ${error?.message || 'Erro desconhecido'}` }
     }
 }
+
+export async function addWonDeal(contactId: string, data: {
+    title: string
+    value: number | null
+    productName: string | null
+    wonAt: string
+}) {
+    try {
+        const user = await getAuthenticatedUser()
+        if (!user) return { success: false, error: 'Unauthorized' }
+
+        // Verify contact belongs to org
+        const contact = await prisma.contact.findUnique({
+            where: { id: contactId },
+            select: { organizationId: true },
+        })
+        if (!contact || contact.organizationId !== user.organizationId) {
+            return { success: false, error: 'Contato não encontrado.' }
+        }
+
+        // Get first pipeline stage as default
+        const firstStage = await prisma.pipelineStage.findFirst({
+            where: { organizationId: user.organizationId },
+            orderBy: { order: 'asc' },
+            select: { id: true, pipelineId: true },
+        })
+        if (!firstStage) return { success: false, error: 'Nenhuma etapa encontrada no pipeline.' }
+
+        // Find or create product if provided
+        let productId: string | null = null
+        if (data.productName?.trim()) {
+            const existing = await prisma.product.findFirst({
+                where: { organizationId: user.organizationId, name: data.productName.trim() },
+                select: { id: true },
+            })
+            if (existing) {
+                productId = existing.id
+            } else {
+                const created = await (prisma.product.create as any)({
+                    data: { name: data.productName.trim(), organizationId: user.organizationId },
+                    select: { id: true },
+                })
+                productId = created.id
+            }
+        }
+
+        await (prisma.deal.create as any)({
+            data: {
+                title: data.title.trim(),
+                value: data.value ?? null,
+                status: 'WON',
+                wonAt: new Date(data.wonAt),
+                contactId,
+                organizationId: user.organizationId,
+                stageId: firstStage.id,
+                pipelineId: firstStage.pipelineId,
+                userId: user.id,
+                ...(productId ? { productId } : {}),
+            },
+        })
+
+        revalidatePath('/dashboard/contacts')
+        return { success: true }
+    } catch (error: any) {
+        console.error('[ADD_WON_DEAL]', error?.message)
+        return { success: false, error: error?.message || 'Erro ao registrar venda' }
+    }
+}
+
+export async function removeWonDeal(dealId: string) {
+    try {
+        const user = await getAuthenticatedUser()
+        if (!user) return { success: false, error: 'Unauthorized' }
+
+        const deal = await prisma.deal.findUnique({
+            where: { id: dealId },
+            select: { organizationId: true, status: true },
+        })
+        if (!deal || deal.organizationId !== user.organizationId) {
+            return { success: false, error: 'Negócio não encontrado.' }
+        }
+        if (deal.status !== 'WON') {
+            return { success: false, error: 'Apenas vendas ganhas podem ser removidas do histórico aqui.' }
+        }
+
+        await prisma.deal.delete({ where: { id: dealId } })
+        revalidatePath('/dashboard/contacts')
+        return { success: true }
+    } catch (error: any) {
+        console.error('[REMOVE_WON_DEAL]', error?.message)
+        return { success: false, error: error?.message || 'Erro ao remover venda' }
+    }
+}
