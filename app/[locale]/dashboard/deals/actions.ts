@@ -235,6 +235,8 @@ export async function addDealClosing(dealId: string, date: string, value: number
             userId: user.id,
             productId: resolvedProductId,
             productName,
+            contactId: deal.contactId ?? null,
+            dealTitle: deal.title,
         }
     })
 

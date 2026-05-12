@@ -370,6 +370,8 @@ export async function addContactClosing(contactId: string, data: {
                 note: data.note || null,
                 userId: user.id,
                 productName: data.productName ?? null,
+                contactId,
+                dealTitle: deal.title,
             },
         })
 

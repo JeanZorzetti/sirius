@@ -512,8 +512,12 @@ model DealClosing {
   productId   String?
   productName String?
 
-  dealId String
-  deal   Deal   @relation(fields: [dealId], references: [id], onDelete: Cascade)
+  // Desnormalized — preserved even when deal is deleted
+  contactId String?
+  dealTitle String?
+
+  dealId String?
+  deal   Deal?   @relation(fields: [dealId], references: [id], onDelete: SetNull)
 
   productRef Product? @relation(fields: [productId], references: [id], onDelete: SetNull)
 
@@ -524,6 +528,7 @@ model DealClosing {
   createdAt DateTime @default(now())
 
   @@index([dealId])
+  @@index([contactId])
   @@index([userId])
 }
 

@@ -121,10 +121,12 @@ async function ContactsData({ orgId }: { orgId: string }) {
         orderBy: { updatedAt: 'desc' },
     }).catch(() => [] as any[])
 
-    // DealClosings — todos os fechamentos de deals vinculados a contatos desta org
+    // DealClosings — busca por contactId desnormalizado (sobrevive à exclusão do deal)
     const allClosings = await (prisma.dealClosing as any).findMany({
         where: {
-            deal: { organizationId: orgId, contactId: { not: null } }
+            contactId: {
+                in: contacts.map((c: any) => c.id),
+            },
         },
         select: {
             id: true,
@@ -133,7 +135,8 @@ async function ContactsData({ orgId }: { orgId: string }) {
             note: true,
             productName: true,
             dealId: true,
-            deal: { select: { title: true, contactId: true } },
+            contactId: true,
+            dealTitle: true,
             user: { select: { name: true } },
         },
         orderBy: { date: 'desc' },
@@ -172,10 +175,10 @@ async function ContactsData({ orgId }: { orgId: string }) {
         wonDealsByContact.set(d.contactId, [...existing, d])
     }
 
-    // Group closings by contactId
+    // Group closings by contactId (desnormalized — works even after deal deletion)
     const closingsByContact = new Map<string, any[]>()
     for (const cl of allClosings) {
-        const cid = cl.deal?.contactId
+        const cid = cl.contactId
         if (!cid) continue
         const existing = closingsByContact.get(cid) ?? []
         closingsByContact.set(cid, [...existing, cl])
@@ -194,8 +197,8 @@ async function ContactsData({ orgId }: { orgId: string }) {
         }))
         const contactClosings = (closingsByContact.get(c.id) ?? []).map((cl: any) => ({
             id: cl.id,
-            dealId: cl.dealId,
-            dealTitle: cl.deal?.title ?? '',
+            dealId: cl.dealId ?? null,
+            dealTitle: cl.dealTitle ?? '',
             date: cl.date instanceof Date ? cl.date.toISOString() : cl.date,
             value: Number(cl.value),
             note: cl.note ?? null,
