@@ -346,7 +346,7 @@ export async function updateDeal(formData: FormData) {
     return { success: false, error: 'Failed to update deal' }
   }
 }
-export async function updateDealStatus(dealId: string, status: 'ACTIVE' | 'LOST', lostReason?: string) {
+export async function updateDealStatus(dealId: string, status: 'ACTIVE' | 'LOST' | 'WON', lostReason?: string) {
   try {
     const user = await getAuthenticatedUser()
     const deal = await prisma.deal.findUnique({ where: { id: dealId } })
@@ -358,8 +358,9 @@ export async function updateDealStatus(dealId: string, status: 'ACTIVE' | 'LOST'
       data: {
         status,
         ...(status === 'LOST' && lostReason ? { lostReason } : {}),
-        ...(status === 'ACTIVE' ? { lostReason: null } : {}),
-      },
+        ...(status === 'ACTIVE' ? { lostReason: null, wonAt: null } : {}),
+        ...(status === 'WON' ? { wonAt: new Date() } : {}),
+      } as any,
     })
     revalidatePath('/dashboard')
     return { success: true }
@@ -367,6 +368,10 @@ export async function updateDealStatus(dealId: string, status: 'ACTIVE' | 'LOST'
     logger.error({ err: error }, 'Failed to update deal status')
     return { success: false, error: 'Failed to update deal status' }
   }
+}
+
+export async function markDealWon(dealId: string) {
+  return updateDealStatus(dealId, 'WON')
 }
 
 export async function moveDealToPipeline(dealId: string, newPipelineId: string, newStageId: string) {

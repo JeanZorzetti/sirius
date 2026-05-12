@@ -38,6 +38,15 @@ const EditContactDialog = dynamic(
   { ssr: false }
 )
 
+export type WonDeal = {
+  id: string
+  title: string
+  value: number | null
+  wonAt: Date | null
+  productName: string | null
+  representativeName: string | null
+}
+
 export type EnrichedContact = {
   id: string
   name: string
@@ -59,6 +68,7 @@ export type EnrichedContact = {
   assigneeName: string | null
   openDealsCount: number
   lastActivityAt: Date | null
+  wonDeals: WonDeal[]
 }
 
 interface ContactsDataTableClientProps {

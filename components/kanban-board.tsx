@@ -14,11 +14,11 @@ import {
   DraggableStateSnapshot
 } from '@hello-pangea/dnd'
 import { Card, CardContent } from '@/components/ui/card'
-import { updateDealStage, updateDealStatus } from '@/app/[locale]/dashboard/actions'
+import { updateDealStage, updateDealStatus, markDealWon } from '@/app/[locale]/dashboard/actions'
 import { updateStageOrder, deleteStage, updateStage, createStage } from '@/app/[locale]/dashboard/pipeline/actions'
 import { reorderDeals } from '@/app/[locale]/dashboard/deals/actions'
 import { EditDealDialog } from '@/components/deals/edit-deal-dialog'
-import { MessageCircle, GripVertical, MoreHorizontal, Pencil, Trash2, Plus, ChevronLeft, ChevronRight } from 'lucide-react'
+import { MessageCircle, GripVertical, MoreHorizontal, Pencil, Trash2, Plus, ChevronLeft, ChevronRight, Trophy } from 'lucide-react'
 import { SwipeableRow } from '@/components/ui/swipeable-row'
 import { isToday, isTomorrow, isThisWeek, isPast } from 'date-fns'
 import { Button } from '@/components/ui/button'
@@ -132,11 +132,22 @@ function DealCard({
 }) {
   const tCommon = useTranslations('common')
   const router = useRouter()
+  const [markingWon, setMarkingWon] = useState(false)
+
   const handleWhatsApp = (e: React.MouseEvent) => {
     e.stopPropagation()
     if (!deal.contact?.phone) return
     const phone = deal.contact.phone.replace(/\D/g, '')
     router.push(`/dashboard/chat?phone=${phone}`)
+  }
+
+  const handleMarkWon = async (e: React.MouseEvent) => {
+    e.stopPropagation()
+    if (markingWon) return
+    setMarkingWon(true)
+    await markDealWon(deal.id)
+    router.refresh()
+    setMarkingWon(false)
   }
 
   // Remove transition during drag for instant movement (no elastic/lag feeling)
@@ -189,17 +200,31 @@ function DealCard({
             </span>
           </div>
 
-          {deal.contact?.phone && (
-            <Button
-              size="icon"
-              variant="ghost"
-              className="h-7 w-7 touch-target rounded-full bg-green-500/10 text-green-500 hover:bg-green-500/20 hover:text-green-400 transition-colors"
-              onClick={handleWhatsApp}
-              title={`Conversar com ${deal.contact.name}`}
-            >
-              <MessageCircle className="h-4 w-4" />
-            </Button>
-          )}
+          <div className="flex items-center gap-1">
+            {deal.status !== 'WON' && (
+              <Button
+                size="icon"
+                variant="ghost"
+                className="h-7 w-7 touch-target rounded-full bg-amber-500/10 text-amber-500 hover:bg-amber-500/20 hover:text-amber-400 opacity-0 group-hover:opacity-100 transition-all"
+                onClick={handleMarkWon}
+                disabled={markingWon}
+                title="Marcar como Ganho"
+              >
+                <Trophy className="h-3.5 w-3.5" />
+              </Button>
+            )}
+            {deal.contact?.phone && (
+              <Button
+                size="icon"
+                variant="ghost"
+                className="h-7 w-7 touch-target rounded-full bg-green-500/10 text-green-500 hover:bg-green-500/20 hover:text-green-400 transition-colors"
+                onClick={handleWhatsApp}
+                title={`Conversar com ${deal.contact.name}`}
+              >
+                <MessageCircle className="h-4 w-4" />
+              </Button>
+            )}
+          </div>
         </div>
 
         {deal.contact && (

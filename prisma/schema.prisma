@@ -446,6 +446,7 @@ model Deal {
   // Deal Status (FASE 13 - Analytics)
   status DealStatus @default(ACTIVE)
   lostReason   String? // Motivo da perda (ex: "preço", "timing", "concorrente")
+  wonAt        DateTime? // Data em que o deal foi marcado como ganho
   observations String? // Observações rápidas sobre o deal
 
   // v2.0: Soft Archive (FREE >50 deals)

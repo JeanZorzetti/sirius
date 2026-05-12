@@ -21,9 +21,11 @@ import {
     Navigation,
     Calendar,
     Tag,
+    Trophy,
+    Package,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
-import type { EnrichedContact } from './contacts-data-table-client'
+import type { EnrichedContact, WonDeal } from './contacts-data-table-client'
 import { CONTACT_STATUSES } from './contacts-filters'
 import { useTranslations } from 'next-intl'
 
@@ -264,6 +266,50 @@ export function ContactProfileModal({ contact, open, onOpenChange, onEdit }: Con
                             <div className="space-y-3">
                                 <InfoRow icon={Kanban} label="Etapa ativa" value={contact.activeStageName} />
                                 <InfoRow icon={User} label="Responsável" value={contact.assigneeName} />
+                            </div>
+                        </div>
+                    )}
+
+                    {/* Histórico de Vendas */}
+                    {contact.wonDeals && contact.wonDeals.length > 0 && (
+                        <div>
+                            <SectionTitle>Histórico de Vendas</SectionTitle>
+                            <div className="space-y-2">
+                                {contact.wonDeals.map((d: WonDeal) => (
+                                    <div
+                                        key={d.id}
+                                        className="flex items-start gap-3 rounded-xl bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200/60 dark:border-emerald-800/30 px-3 py-2.5"
+                                    >
+                                        <div className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-emerald-100 dark:bg-emerald-900/50">
+                                            <Trophy className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
+                                        </div>
+                                        <div className="min-w-0 flex-1">
+                                            <p className="text-sm font-semibold text-zinc-800 dark:text-zinc-100 truncate">{d.title}</p>
+                                            <div className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-0.5">
+                                                {d.value != null && (
+                                                    <span className="text-xs font-mono font-bold text-emerald-700 dark:text-emerald-400">
+                                                        R$ {d.value.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                                                    </span>
+                                                )}
+                                                {d.productName && (
+                                                    <span className="inline-flex items-center gap-1 text-[11px] text-zinc-500 dark:text-zinc-400">
+                                                        <Package className="h-3 w-3" /> {d.productName}
+                                                    </span>
+                                                )}
+                                                {d.representativeName && (
+                                                    <span className="inline-flex items-center gap-1 text-[11px] text-zinc-500 dark:text-zinc-400">
+                                                        <User className="h-3 w-3" /> {d.representativeName}
+                                                    </span>
+                                                )}
+                                                {d.wonAt && (
+                                                    <span className="text-[11px] text-zinc-400 dark:text-zinc-500">
+                                                        {new Date(d.wonAt).toLocaleDateString('pt-BR', { day: '2-digit', month: 'short', year: 'numeric' })}
+                                                    </span>
+                                                )}
+                                            </div>
+                                        </div>
+                                    </div>
+                                ))}
                             </div>
                         </div>
                     )}

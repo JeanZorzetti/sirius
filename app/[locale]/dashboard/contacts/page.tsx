@@ -49,7 +49,7 @@ async function ContactsData({ orgId }: { orgId: string }) {
     timer.mark('queries-start')
 
     // Queries planas em paralelo
-    const [contacts, activeDeals, stages, orgUsers, lastActivities] = await Promise.all([
+    const [contacts, activeDeals, stages, orgUsers, lastActivities, wonDeals] = await Promise.all([
         prisma.contact.findMany({
             where: { organizationId: orgId },
             orderBy: { createdAt: 'desc' },
@@ -95,6 +95,24 @@ async function ContactsData({ orgId }: { orgId: string }) {
             where: { organizationId: orgId },
             select: { id: true, name: true },
         }),
+        // Won deals per contact for sales history
+        prisma.deal.findMany({
+            where: {
+                organizationId: orgId,
+                status: 'WON',
+                contactId: { not: null },
+            },
+            select: {
+                id: true,
+                title: true,
+                value: true,
+                wonAt: true,
+                contactId: true,
+                userId: true,
+                product: { select: { name: true } },
+            },
+            orderBy: { wonAt: 'desc' },
+        }),
         // Latest activity per contact — via most recent Activity on any deal linked to each contact
         prisma.activity.findMany({
             where: {
@@ -138,9 +156,25 @@ async function ContactsData({ orgId }: { orgId: string }) {
     const stageById = new Map(stages.map(s => [s.id, s.name]))
     const userById = new Map(orgUsers.map(u => [u.id, u.name ?? '']))
 
+    // Group won deals by contactId
+    const wonDealsByContact = new Map<string, typeof wonDeals>()
+    for (const d of wonDeals) {
+        if (!d.contactId) continue
+        const existing = wonDealsByContact.get(d.contactId) ?? []
+        wonDealsByContact.set(d.contactId, [...existing, d])
+    }
+
     const enrichedContacts = contacts.map(c => {
         const deal = dealByContact.get(c.id)
         const directAssigneeName = c.assignedToId ? (userById.get(c.assignedToId) ?? null) : null
+        const contactWonDeals = (wonDealsByContact.get(c.id) ?? []).map(d => ({
+            id: d.id,
+            title: d.title,
+            value: d.value ? Number(d.value) : null,
+            wonAt: (d as any).wonAt ?? null,
+            productName: d.product?.name ?? null,
+            representativeName: userById.get(d.userId) ?? null,
+        }))
         return {
             ...c,
             status: (c as any).status ?? null,
@@ -148,6 +182,7 @@ async function ContactsData({ orgId }: { orgId: string }) {
             assigneeName: deal ? (userById.get(deal.userId) ?? null) : (directAssigneeName ?? null),
             openDealsCount: openDealCountByContact.get(c.id) ?? 0,
             lastActivityAt: lastActivityByContact.get(c.id) ?? null,
+            wonDeals: contactWonDeals,
         }
     })
 

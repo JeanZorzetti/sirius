@@ -35,10 +35,10 @@ import {
     DialogTitle as TransferDialogTitle,
     DialogFooter as TransferDialogFooter,
 } from '@/components/ui/dialog'
-import { updateDeal, deleteDeal, moveDealToPipeline } from '@/app/[locale]/dashboard/actions'
+import { updateDeal, deleteDeal, moveDealToPipeline, markDealWon } from '@/app/[locale]/dashboard/actions'
 import { getDealDetails, addNote, deleteNote, addDealClosing, deleteDealClosing, getDealClosings } from '@/app/[locale]/dashboard/deals/actions'
 import { createContact } from '@/app/[locale]/dashboard/contacts/actions'
-import { Loader2, MessageSquare, History, Tag, Calendar, Send, Trash2, Plus, MessageCircle, DollarSign, Phone, Mail, ArrowLeftRight, Bell, BellOff, Clock, CheckCircle2, AlertCircle, ArrowRight, Sparkles } from 'lucide-react'
+import { Loader2, MessageSquare, History, Tag, Calendar, Send, Trash2, Plus, MessageCircle, DollarSign, Phone, Mail, ArrowLeftRight, Bell, BellOff, Clock, CheckCircle2, AlertCircle, ArrowRight, Sparkles, Trophy } from 'lucide-react'
 import { Textarea } from '@/components/ui/textarea'
 import { ConfirmDialog } from '@/components/ui/confirm-dialog'
 import { toast } from 'sonner'
@@ -267,6 +267,12 @@ export function EditDealDialog({
                 onSuccess()
             }
         }
+    }
+
+    async function handleMarkWon() {
+        if (!initialDeal) return
+        await markDealWon(initialDeal.id)
+        onOpenChange(false)
     }
 
     async function handleDelete() {
@@ -697,6 +703,18 @@ export function EditDealDialog({
 
                                     <div className="pt-4 flex justify-between items-center border-t border-zinc-100 dark:border-zinc-800">
                                         <div className="flex items-center gap-2">
+                                            {initialDeal?.status !== 'WON' && (
+                                                <Button
+                                                    type="button"
+                                                    variant="outline"
+                                                    size="sm"
+                                                    onClick={handleMarkWon}
+                                                    className="text-emerald-600 border-emerald-200 hover:bg-emerald-50 hover:text-emerald-700 dark:border-emerald-900/50 dark:text-emerald-400 dark:hover:bg-emerald-900/20"
+                                                >
+                                                    <Trophy className="w-3.5 h-3.5 mr-1.5" />
+                                                    Marcar como Ganho
+                                                </Button>
+                                            )}
                                             <Button type="button" variant="ghost" onClick={() => setConfirmDeleteDeal(true)} className="text-red-500 hover:text-red-600 hover:bg-red-50">
                                                 Excluir Negócio
                                             </Button>
