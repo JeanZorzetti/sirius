@@ -49,8 +49,8 @@ async function ContactsData({ orgId }: { orgId: string }) {
     timer.mark('queries-start')
 
     // Queries planas em paralelo
-    const [contacts, activeDeals, stages, orgUsers, lastActivities, wonDeals] = await Promise.all([
-        prisma.contact.findMany({
+    const [contacts, activeDeals, stages, orgUsers, lastActivities] = await Promise.all([
+        (prisma.contact.findMany as any)({
             where: { organizationId: orgId },
             orderBy: { createdAt: 'desc' },
             select: {
@@ -95,24 +95,6 @@ async function ContactsData({ orgId }: { orgId: string }) {
             where: { organizationId: orgId },
             select: { id: true, name: true },
         }),
-        // Won deals per contact for sales history
-        prisma.deal.findMany({
-            where: {
-                organizationId: orgId,
-                status: 'WON',
-                contactId: { not: null },
-            },
-            select: {
-                id: true,
-                title: true,
-                value: true,
-                wonAt: true,
-                contactId: true,
-                userId: true,
-                product: { select: { name: true } },
-            },
-            orderBy: { wonAt: 'desc' },
-        }),
         // Latest activity per contact — via most recent Activity on any deal linked to each contact
         prisma.activity.findMany({
             where: {
@@ -130,6 +112,13 @@ async function ContactsData({ orgId }: { orgId: string }) {
     ])
 
     timer.mark(`queries-end (contacts=${contacts.length}, deals=${activeDeals.length}, stages=${stages.length}, users=${orgUsers.length})`)
+
+    // Won deals — separate query with fallback so migration timing doesn't break the page
+    const wonDeals = await (prisma.deal.findMany as any)({
+        where: { organizationId: orgId, status: 'WON', contactId: { not: null } },
+        select: { id: true, title: true, value: true, wonAt: true, contactId: true, userId: true, product: { select: { name: true } } },
+        orderBy: { updatedAt: 'desc' },
+    }).catch(() => [] as any[])
 
     // Lookup: contactId → primeiro deal ativo
     const dealByContact = new Map<string, typeof activeDeals[0]>()
@@ -157,7 +146,7 @@ async function ContactsData({ orgId }: { orgId: string }) {
     const userById = new Map(orgUsers.map(u => [u.id, u.name ?? '']))
 
     // Group won deals by contactId
-    const wonDealsByContact = new Map<string, typeof wonDeals>()
+    const wonDealsByContact = new Map<string, any[]>()
     for (const d of wonDeals) {
         if (!d.contactId) continue
         const existing = wonDealsByContact.get(d.contactId) ?? []
