@@ -83,6 +83,7 @@ export type EnrichedContact = {
   lastActivityAt: Date | null
   wonDeals: WonDeal[]
   closings: ClosingEntry[]
+  notes: string | null
 }
 
 interface ContactsDataTableClientProps {

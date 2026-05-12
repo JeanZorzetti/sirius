@@ -379,6 +379,8 @@ model Contact {
   chatConversation ChatConversation? // One-to-One (Fase 3.1)
   tasks            Task[] // Task Management
 
+  notes     String?  // Observações internas sobre o contato
+
   // Mobile App (Capacitor)
   visitLogs VisitLog[]
 

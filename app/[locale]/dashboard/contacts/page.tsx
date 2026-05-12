@@ -67,6 +67,7 @@ async function ContactsData({ orgId }: { orgId: string }) {
                 complement: true,
                 status: true,
                 observations: true,
+                notes: true,
                 createdAt: true,
                 updatedAt: true,
                 organizationId: true,

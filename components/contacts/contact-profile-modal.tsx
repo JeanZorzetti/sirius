@@ -9,6 +9,7 @@ import {
 } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
+import { Textarea } from '@/components/ui/textarea'
 import {
     Phone,
     Mail,
@@ -29,12 +30,14 @@ import {
     FileText,
     Package,
     NotebookPen,
+    Check,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import type { EnrichedContact, ClosingEntry } from './contacts-data-table-client'
 import { CONTACT_STATUSES } from './contacts-filters'
 import { useTranslations } from 'next-intl'
-import { addContactClosing, removeContactClosing } from '@/app/[locale]/dashboard/contacts/actions'
+import { addContactClosing, removeContactClosing, updateContactNotes } from '@/app/[locale]/dashboard/contacts/actions'
+import { toast } from 'sonner'
 
 const STATUS_BADGE: Record<string, { bg: string; text: string; dot: string }> = {
   active:      { bg: 'bg-emerald-500/20', text: 'text-emerald-100', dot: 'bg-emerald-400' },
@@ -158,6 +161,27 @@ export function ContactProfileModal({ contact, open, onOpenChange, onEdit }: Con
     }
 
     const totalFaturado = closings.reduce((s, c) => s + c.value, 0)
+
+    // Notes state — auto-save with debounce
+    const [notes, setNotes] = React.useState(contact.notes ?? '')
+    const [notesSaving, setNotesSaving] = React.useState(false)
+    const [notesSaved, setNotesSaved] = React.useState(false)
+    const notesTimerRef = React.useRef<ReturnType<typeof setTimeout> | null>(null)
+
+    React.useEffect(() => { setNotes(contact.notes ?? '') }, [contact.id, contact.notes])
+
+    function handleNotesChange(value: string) {
+        setNotes(value)
+        setNotesSaved(false)
+        if (notesTimerRef.current) clearTimeout(notesTimerRef.current)
+        notesTimerRef.current = setTimeout(async () => {
+            setNotesSaving(true)
+            const result = await updateContactNotes(contact.id, value)
+            setNotesSaving(false)
+            if (result.success) setNotesSaved(true)
+            else toast.error(result.error ?? 'Erro ao salvar')
+        }, 800)
+    }
 
     const initials = contact.name
         .split(' ')
@@ -497,6 +521,26 @@ export function ContactProfileModal({ contact, open, onOpenChange, onEdit }: Con
                             )}
                             <InfoRow icon={Calendar} label="Cadastrado em" value={createdAt} />
                         </div>
+                    </div>
+
+                    {/* Observações */}
+                    <div>
+                        <div className="flex items-center justify-between mb-3">
+                            <div className="flex items-center gap-2">
+                                <span className="text-[10px] font-bold uppercase tracking-widest text-zinc-400 dark:text-zinc-500">Observações</span>
+                                <div className="flex-1 h-px bg-zinc-100 dark:bg-zinc-800" />
+                            </div>
+                            <div className="flex items-center gap-1 ml-3">
+                                {notesSaving && <Loader2 className="h-3 w-3 animate-spin text-zinc-400" />}
+                                {notesSaved && !notesSaving && <Check className="h-3 w-3 text-emerald-500" />}
+                            </div>
+                        </div>
+                        <Textarea
+                            value={notes}
+                            onChange={e => handleNotesChange(e.target.value)}
+                            placeholder="Adicione observações internas sobre este contato..."
+                            className="min-h-[90px] text-sm resize-none bg-zinc-50 dark:bg-zinc-900/60 border-zinc-200 dark:border-zinc-800 focus:border-indigo-400 dark:focus:border-indigo-600 transition-colors"
+                        />
                     </div>
                 </div>
 

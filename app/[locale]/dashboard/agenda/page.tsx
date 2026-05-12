@@ -29,6 +29,12 @@ export default async function AgendaPage({
     select: { googleCalendarEnabled: true, googleCalendarEmail: true },
   })
 
+  const orgMembers = await prisma.user.findMany({
+    where: { organizationId: user.organizationId },
+    select: { id: true, name: true },
+    orderBy: { name: 'asc' },
+  })
+
   const [deals, stages, contacts, tasks] = await Promise.all([
     prisma.deal.findMany({
       where: {
@@ -45,9 +51,11 @@ export default async function AgendaPage({
         dueDate: true,
         stageId: true,
         contactId: true,
+        userId: true,
         stage: { select: { id: true, name: true } },
         pipeline: { select: { id: true, name: true } },
         contact: { select: { id: true, name: true, phone: true } },
+        user: { select: { id: true, name: true } },
       },
       orderBy: { dueDate: 'asc' },
     }),
@@ -85,6 +93,7 @@ export default async function AgendaPage({
     ...d,
     value: d.value ? Number(d.value) : null,
     dueDate: d.dueDate!.toISOString(),
+    owner: d.user ?? null,
   }))
 
   const serializedTasks = tasks.map(t => ({
@@ -100,6 +109,8 @@ export default async function AgendaPage({
       tasks={serializedTasks}
       googleCalendarEnabled={org?.googleCalendarEnabled ?? false}
       googleCalendarEmail={org?.googleCalendarEmail ?? null}
+      orgMembers={orgMembers}
+      currentUserId={user.id}
     />
   )
 }

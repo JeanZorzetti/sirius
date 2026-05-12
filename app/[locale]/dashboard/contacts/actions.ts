@@ -207,6 +207,29 @@ export async function updateContact(contactId: string, formData: FormData) {
     }
 }
 
+export async function updateContactNotes(contactId: string, notes: string) {
+    try {
+        const user = await getAuthenticatedUser()
+        if (!user) return { success: false, error: 'Unauthorized' }
+
+        const existing = await prisma.contact.findFirst({
+            where: { id: contactId, organizationId: user.organizationId },
+            select: { id: true },
+        })
+        if (!existing) return { success: false, error: 'Contato não encontrado.' }
+
+        await prisma.contact.update({
+            where: { id: contactId },
+            data: { notes: notes.trim() || null } as any,
+        })
+
+        revalidatePath('/dashboard/contacts')
+        return { success: true }
+    } catch (error: any) {
+        return { success: false, error: `Falha ao salvar observações: ${error?.message || 'Erro desconhecido'}` }
+    }
+}
+
 export async function bulkDeleteContacts(contactIds: string[]) {
     try {
         const user = await getAuthenticatedUser()

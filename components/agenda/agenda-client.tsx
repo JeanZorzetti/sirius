@@ -30,6 +30,13 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip'
 import { useAppBar } from '@/components/mobile/app-bar-context'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
 
 type Deal = {
   id: string
@@ -38,9 +45,11 @@ type Deal = {
   dueDate: string
   stageId: string
   contactId: string | null
+  userId: string | null
   stage: { id: string; name: string }
   pipeline: { id: string; name: string }
   contact: { id: string; name: string; phone: string | null } | null
+  owner: { id: string; name: string | null } | null
 }
 
 type AgendaTask = {
@@ -73,6 +82,8 @@ type Props = {
   tasks: AgendaTask[]
   googleCalendarEnabled: boolean
   googleCalendarEmail: string | null
+  orgMembers: { id: string; name: string | null }[]
+  currentUserId: string
 }
 
 const PRIORITY_COLORS: Record<string, string> = {
@@ -337,21 +348,28 @@ export function AgendaClient({
   tasks,
   googleCalendarEnabled,
   googleCalendarEmail,
+  orgMembers,
+  currentUserId,
 }: Props) {
   const [selectedDeal, setSelectedDeal] = useState<Deal | null>(null)
   const [dialogOpen, setDialogOpen] = useState(false)
   const [showCalendar, setShowCalendar] = useState(false)
-  const groups = groupItems(deals, tasks)
-  const totalItems = deals.length + tasks.length
+  const [ownerFilter, setOwnerFilter] = useState<string>('all')
+
+  const filteredDeals = ownerFilter === 'all' ? deals : deals.filter(d => d.userId === ownerFilter)
+  const filteredTasks = ownerFilter === 'all' ? tasks : tasks.filter(t => t.assignee?.id === ownerFilter)
+
+  const groups = groupItems(filteredDeals, filteredTasks)
+  const totalItems = filteredDeals.length + filteredTasks.length
   const { setConfig } = useAppBar()
 
   useEffect(() => {
     const subtitle = totalItems === 0
       ? 'Nenhum item'
-      : `${deals.length > 0 ? `${deals.length} deal${deals.length > 1 ? 's' : ''}` : ''}${deals.length > 0 && tasks.length > 0 ? ' · ' : ''}${tasks.length > 0 ? `${tasks.length} tarefa${tasks.length > 1 ? 's' : ''}` : ''}`
+      : `${filteredDeals.length > 0 ? `${filteredDeals.length} deal${filteredDeals.length > 1 ? 's' : ''}` : ''}${filteredDeals.length > 0 && filteredTasks.length > 0 ? ' · ' : ''}${filteredTasks.length > 0 ? `${filteredTasks.length} tarefa${filteredTasks.length > 1 ? 's' : ''}` : ''}`
     setConfig({ title: 'Agenda', subtitle })
     return () => setConfig(null)
-  }, [totalItems, deals.length, tasks.length])
+  }, [totalItems, filteredDeals.length, filteredTasks.length])
 
   function openDeal(deal: Deal) {
     setSelectedDeal(deal)
@@ -372,12 +390,27 @@ export function AgendaClient({
             <p className="text-sm text-muted-foreground">
               {totalItems === 0
                 ? 'Nenhum item agendado'
-                : `${deals.length > 0 ? `${deals.length} deal${deals.length > 1 ? 's' : ''}` : ''}${deals.length > 0 && tasks.length > 0 ? ' · ' : ''}${tasks.length > 0 ? `${tasks.length} tarefa${tasks.length > 1 ? 's' : ''}` : ''}`}
+                : `${filteredDeals.length > 0 ? `${filteredDeals.length} deal${filteredDeals.length > 1 ? 's' : ''}` : ''}${filteredDeals.length > 0 && filteredTasks.length > 0 ? ' · ' : ''}${filteredTasks.length > 0 ? `${filteredTasks.length} tarefa${filteredTasks.length > 1 ? 's' : ''}` : ''}`}
             </p>
           </div>
         </div>
 
         <div className="flex items-center gap-2">
+          {orgMembers.length > 1 && (
+            <Select value={ownerFilter} onValueChange={setOwnerFilter}>
+              <SelectTrigger className="h-8 w-44 text-xs border-border bg-background">
+                <User className="h-3.5 w-3.5 mr-1.5 text-muted-foreground shrink-0" />
+                <SelectValue placeholder="Responsável" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">Todos</SelectItem>
+                <SelectItem value={currentUserId}>Meus itens</SelectItem>
+                {orgMembers.filter(m => m.id !== currentUserId).map(m => (
+                  <SelectItem key={m.id} value={m.id}>{m.name ?? 'Sem nome'}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          )}
           {googleCalendarEnabled ? (
             <Button
               variant={showCalendar ? 'default' : 'outline'}
@@ -400,8 +433,23 @@ export function AgendaClient({
         </div>
       </div>
 
-      {/* Mobile Google Calendar button */}
-      <div className="lg:hidden mb-4 px-1">
+      {/* Mobile controls */}
+      <div className="lg:hidden mb-4 px-1 flex flex-col gap-2">
+        {orgMembers.length > 1 && (
+          <Select value={ownerFilter} onValueChange={setOwnerFilter}>
+            <SelectTrigger className="h-8 w-full text-xs border-border bg-background">
+              <User className="h-3.5 w-3.5 mr-1.5 text-muted-foreground shrink-0" />
+              <SelectValue placeholder="Responsável" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">Todos</SelectItem>
+              <SelectItem value={currentUserId}>Meus itens</SelectItem>
+              {orgMembers.filter(m => m.id !== currentUserId).map(m => (
+                <SelectItem key={m.id} value={m.id}>{m.name ?? 'Sem nome'}</SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        )}
         {googleCalendarEnabled ? (
           <Button variant={showCalendar ? 'default' : 'outline'} size="sm"
             className="gap-2 h-8 text-xs w-full" onClick={() => setShowCalendar(v => !v)}>
