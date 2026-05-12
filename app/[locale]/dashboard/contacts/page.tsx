@@ -140,11 +140,12 @@ async function ContactsData({ orgId }: { orgId: string }) {
 
     const enrichedContacts = contacts.map(c => {
         const deal = dealByContact.get(c.id)
+        const directAssigneeName = c.assignedToId ? (userById.get(c.assignedToId) ?? null) : null
         return {
             ...c,
             status: (c as any).status ?? null,
             activeStageName: deal ? (stageById.get(deal.stageId) ?? null) : null,
-            assigneeName: deal ? (userById.get(deal.userId) ?? null) : null,
+            assigneeName: deal ? (userById.get(deal.userId) ?? null) : (directAssigneeName ?? null),
             openDealsCount: openDealCountByContact.get(c.id) ?? 0,
             lastActivityAt: lastActivityByContact.get(c.id) ?? null,
         }
@@ -176,7 +177,7 @@ async function ContactsData({ orgId }: { orgId: string }) {
                 <ContactsActionsBar />
             </div>
             <div className="h-full flex-1 flex-col space-y-8 flex">
-                <ContactsDataTableClient data={enrichedContacts} />
+                <ContactsDataTableClient data={enrichedContacts} orgUsers={orgUsers} />
             </div>
         </>
     )

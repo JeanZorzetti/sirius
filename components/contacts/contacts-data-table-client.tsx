@@ -63,9 +63,10 @@ export type EnrichedContact = {
 
 interface ContactsDataTableClientProps {
   data: EnrichedContact[]
+  orgUsers?: { id: string; name: string | null }[]
 }
 
-export function ContactsDataTableClient({ data }: ContactsDataTableClientProps) {
+export function ContactsDataTableClient({ data, orgUsers = [] }: ContactsDataTableClientProps) {
   const tCommon = useTranslations('common')
   const t = useTranslations('components.contacts')
   const router = useRouter()
@@ -162,6 +163,7 @@ export function ContactsDataTableClient({ data }: ContactsDataTableClientProps) 
       {editContact && (
         <EditContactDialog
           contact={editContact}
+          orgUsers={orgUsers}
           open={true}
           onOpenChange={(open) => { if (!open) setEditContact(null) }}
         />

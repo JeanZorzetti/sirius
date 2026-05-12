@@ -130,6 +130,7 @@ export async function updateContact(contactId: string, formData: FormData) {
         const streetNumber = formData.get('streetNumber') as string
         const complement = formData.get('complement') as string
         const status = formData.get('status') as string
+        const assignedToId = formData.get('assignedToId') as string
 
         if (!name?.trim()) {
             return { success: false, error: 'Nome é obrigatório' }
@@ -179,6 +180,7 @@ export async function updateContact(contactId: string, formData: FormData) {
                 streetNumber: streetNumber?.trim() || null,
                 complement: complement?.trim() || null,
                 status: (status?.trim() && status !== 'none') ? status.trim() : null,
+                assignedToId: (assignedToId && assignedToId !== 'none') ? assignedToId : null,
             } as any
         })
 

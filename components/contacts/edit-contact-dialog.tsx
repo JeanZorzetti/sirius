@@ -3,7 +3,7 @@
 import { useTranslations } from 'next-intl'
 
 import { useState } from 'react'
-import { Pencil, MapPin, Tag } from 'lucide-react'
+import { Pencil, MapPin, Tag, User } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import {
     Dialog,
@@ -41,15 +41,18 @@ type EditableContact = {
     streetNumber?: string | null
     complement?: string | null
     status?: string | null
+    assignedToId?: string | null
 }
 
 export function EditContactDialog({
     contact,
+    orgUsers = [],
     trigger,
     open: controlledOpen,
     onOpenChange: controlledOnOpenChange,
 }: {
     contact: EditableContact
+    orgUsers?: { id: string; name: string | null }[]
     trigger?: React.ReactNode
     open?: boolean
     onOpenChange?: (open: boolean) => void
@@ -132,6 +135,32 @@ export function EditContactDialog({
                                 <Label htmlFor="edit-company" className="text-right text-sm">Empresa</Label>
                                 <Input id="edit-company" name="company" defaultValue={contact.company ?? ''} placeholder="Empresa LTDA" className="col-span-3" />
                             </div>
+                            {orgUsers.length > 0 && (
+                                <div className="grid grid-cols-4 items-center gap-4">
+                                    <Label htmlFor="edit-assignedTo" className="text-right text-sm">Responsável</Label>
+                                    <div className="col-span-3">
+                                        <Select name="assignedToId" defaultValue={contact.assignedToId ?? 'none'}>
+                                            <SelectTrigger id="edit-assignedTo">
+                                                <SelectValue placeholder="Sem responsável" />
+                                            </SelectTrigger>
+                                            <SelectContent>
+                                                <SelectItem value="none">
+                                                    <span className="flex items-center gap-2 text-muted-foreground italic">
+                                                        <User className="h-3.5 w-3.5" /> Sem responsável
+                                                    </span>
+                                                </SelectItem>
+                                                {orgUsers.map(u => (
+                                                    <SelectItem key={u.id} value={u.id}>
+                                                        <span className="flex items-center gap-2">
+                                                            <User className="h-3.5 w-3.5 text-violet-500" /> {u.name ?? u.id}
+                                                        </span>
+                                                    </SelectItem>
+                                                ))}
+                                            </SelectContent>
+                                        </Select>
+                                    </div>
+                                </div>
+                            )}
                         </div>
 
                         {/* Status */}
