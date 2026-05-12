@@ -27,13 +27,14 @@ import {
     Plus,
     Trash2,
     Loader2,
+    Search,
+    ChevronDown,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import type { EnrichedContact, WonDeal } from './contacts-data-table-client'
 import { CONTACT_STATUSES } from './contacts-filters'
 import { useTranslations } from 'next-intl'
 import { addWonDeal, removeWonDeal } from '@/app/[locale]/dashboard/contacts/actions'
-import { useRouter } from 'next/navigation'
 
 const STATUS_BADGE: Record<string, { bg: string; text: string; dot: string }> = {
   active:      { bg: 'bg-emerald-500/20', text: 'text-emerald-100', dot: 'bg-emerald-400' },
@@ -97,38 +98,186 @@ function SectionTitle({ children }: { children: React.ReactNode }) {
     )
 }
 
+type OrgProduct = { id: string; name: string; price: number }
+
+function ProductCombobox({
+    value,
+    onChange,
+    products,
+    loading,
+}: {
+    value: string
+    onChange: (v: string) => void
+    products: OrgProduct[]
+    loading: boolean
+}) {
+    const [open, setOpen] = React.useState(false)
+    const [search, setSearch] = React.useState('')
+    const ref = React.useRef<HTMLDivElement>(null)
+
+    const filtered = products.filter(p =>
+        p.name.toLowerCase().includes(search.toLowerCase())
+    )
+
+    React.useEffect(() => {
+        function handleClick(e: MouseEvent) {
+            if (ref.current && !ref.current.contains(e.target as Node)) {
+                setOpen(false)
+            }
+        }
+        document.addEventListener('mousedown', handleClick)
+        return () => document.removeEventListener('mousedown', handleClick)
+    }, [])
+
+    const selectedName = products.find(p => p.id === value)?.name ?? value
+
+    return (
+        <div className="relative" ref={ref}>
+            <button
+                type="button"
+                onClick={() => setOpen(v => !v)}
+                className={cn(
+                    'flex h-8 w-full items-center justify-between rounded-md border border-input bg-white dark:bg-zinc-900 px-3 text-sm transition-colors hover:border-indigo-400 focus:outline-none',
+                    open && 'border-indigo-500 ring-1 ring-indigo-500/30'
+                )}
+            >
+                <span className={cn('truncate', !value && 'text-zinc-400 dark:text-zinc-500')}>
+                    {value ? selectedName : 'Produto (opcional)'}
+                </span>
+                <ChevronDown className="h-3.5 w-3.5 shrink-0 text-zinc-400" />
+            </button>
+
+            {open && (
+                <div className="absolute z-50 mt-1 w-full rounded-xl border border-border bg-white dark:bg-zinc-900 shadow-lg overflow-hidden">
+                    <div className="flex items-center gap-2 border-b border-border px-3 py-2">
+                        <Search className="h-3.5 w-3.5 shrink-0 text-zinc-400" />
+                        <input
+                            autoFocus
+                            placeholder="Buscar produto..."
+                            value={search}
+                            onChange={e => setSearch(e.target.value)}
+                            className="flex-1 bg-transparent text-sm outline-none placeholder:text-zinc-400"
+                        />
+                    </div>
+                    <div className="max-h-40 overflow-y-auto py-1">
+                        {loading && (
+                            <div className="flex items-center justify-center py-4">
+                                <Loader2 className="h-4 w-4 animate-spin text-zinc-400" />
+                            </div>
+                        )}
+                        {!loading && filtered.length === 0 && (
+                            <p className="px-3 py-2 text-xs text-zinc-400">Nenhum produto encontrado.</p>
+                        )}
+                        {!loading && value && (
+                            <button
+                                type="button"
+                                onClick={() => { onChange(''); setOpen(false); setSearch('') }}
+                                className="flex w-full items-center px-3 py-1.5 text-xs text-zinc-400 hover:bg-zinc-50 dark:hover:bg-zinc-800"
+                            >
+                                Limpar seleção
+                            </button>
+                        )}
+                        {!loading && filtered.map(p => (
+                            <button
+                                key={p.id}
+                                type="button"
+                                onClick={() => { onChange(p.id); setOpen(false); setSearch('') }}
+                                className={cn(
+                                    'flex w-full items-center justify-between px-3 py-1.5 text-sm hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors',
+                                    value === p.id && 'bg-indigo-50 dark:bg-indigo-950/30 text-indigo-700 dark:text-indigo-300'
+                                )}
+                            >
+                                <span className="truncate">{p.name}</span>
+                                {p.price > 0 && (
+                                    <span className="ml-2 shrink-0 text-xs text-zinc-400">
+                                        R$ {p.price.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                                    </span>
+                                )}
+                            </button>
+                        ))}
+                    </div>
+                </div>
+            )}
+        </div>
+    )
+}
+
 export function ContactProfileModal({ contact, open, onOpenChange, onEdit }: ContactProfileModalProps) {
     const tCommon = useTranslations('common')
-    const t = useTranslations('components.contacts')
-    const router = useRouter()
 
+    // Local won deals state — starts from prop, updated optimistically
+    const [wonDeals, setWonDeals] = React.useState<WonDeal[]>(contact.wonDeals ?? [])
+    React.useEffect(() => {
+        setWonDeals(contact.wonDeals ?? [])
+    }, [contact.wonDeals, contact.id])
+
+    // Add form state
     const [showAddForm, setShowAddForm] = React.useState(false)
     const [addTitle, setAddTitle] = React.useState('')
     const [addValue, setAddValue] = React.useState('')
-    const [addProduct, setAddProduct] = React.useState('')
+    const [addProductId, setAddProductId] = React.useState('')
     const [addDate, setAddDate] = React.useState(new Date().toISOString().slice(0, 10))
     const [adding, setAdding] = React.useState(false)
     const [removingId, setRemovingId] = React.useState<string | null>(null)
     const [addError, setAddError] = React.useState<string | null>(null)
 
+    // Products
+    const [products, setProducts] = React.useState<OrgProduct[]>([])
+    const [productsLoading, setProductsLoading] = React.useState(false)
+
+    React.useEffect(() => {
+        if (!showAddForm || products.length > 0) return
+        setProductsLoading(true)
+        fetch('/api/products')
+            .then(r => r.json())
+            .then(data => {
+                const list = Array.isArray(data) ? data : (data.products ?? [])
+                setProducts(list.map((p: any) => ({ id: p.id, name: p.name, price: Number(p.price ?? 0) })))
+            })
+            .catch(() => {})
+            .finally(() => setProductsLoading(false))
+    }, [showAddForm])
+
+    function resetForm() {
+        setAddTitle('')
+        setAddValue('')
+        setAddProductId('')
+        setAddDate(new Date().toISOString().slice(0, 10))
+        setAddError(null)
+    }
+
     async function handleAddWonDeal() {
         if (!addTitle.trim()) { setAddError('Título obrigatório'); return }
         setAdding(true)
         setAddError(null)
+
+        const selectedProduct = products.find(p => p.id === addProductId)
         const res = await addWonDeal(contact.id, {
             title: addTitle.trim(),
             value: addValue ? parseFloat(addValue.replace(',', '.')) : null,
-            productName: addProduct.trim() || null,
+            productName: selectedProduct?.name ?? null,
             wonAt: addDate,
         })
+
         setAdding(false)
-        if (res.success) {
+        if (res.success && (res as any).deal) {
+            // Optimistic update using returned deal
+            const d = (res as any).deal as WonDeal
+            setWonDeals(prev => [d, ...prev])
             setShowAddForm(false)
-            setAddTitle('')
-            setAddValue('')
-            setAddProduct('')
-            setAddDate(new Date().toISOString().slice(0, 10))
-            router.refresh()
+            resetForm()
+        } else if (res.success) {
+            // Fallback: add a placeholder entry
+            setWonDeals(prev => [{
+                id: crypto.randomUUID(),
+                title: addTitle.trim(),
+                value: addValue ? parseFloat(addValue.replace(',', '.')) : null,
+                wonAt: new Date(addDate),
+                productName: selectedProduct?.name ?? null,
+                representativeName: null,
+            }, ...prev])
+            setShowAddForm(false)
+            resetForm()
         } else {
             setAddError(res.error ?? 'Erro ao registrar venda')
         }
@@ -136,9 +285,11 @@ export function ContactProfileModal({ contact, open, onOpenChange, onEdit }: Con
 
     async function handleRemoveWonDeal(dealId: string) {
         setRemovingId(dealId)
-        await removeWonDeal(dealId)
+        const res = await removeWonDeal(dealId)
         setRemovingId(null)
-        router.refresh()
+        if (res.success) {
+            setWonDeals(prev => prev.filter(d => d.id !== dealId))
+        }
     }
 
     const initials = contact.name
@@ -179,7 +330,6 @@ export function ContactProfileModal({ contact, open, onOpenChange, onEdit }: Con
             <DialogContent className="sm:max-w-[480px] p-0 overflow-hidden gap-0">
                 {/* Hero header */}
                 <div className="relative bg-gradient-to-br from-indigo-600 via-violet-600 to-purple-700 px-6 pb-8 pt-6">
-                    {/* Subtle noise texture */}
                     <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=\'0 0 256 256\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cfilter id=\'noise\'%3E%3CfeTurbulence type=\'fractalNoise\' baseFrequency=\'0.9\' numOctaves=\'4\'/%3E%3C/filter%3E%3Crect width=\'100%25\' height=\'100%25\' filter=\'url(%23noise)\'/%3E%3C/svg%3E")' }} />
 
                     <DialogHeader className="sr-only">
@@ -187,7 +337,6 @@ export function ContactProfileModal({ contact, open, onOpenChange, onEdit }: Con
                     </DialogHeader>
 
                     <div className="relative flex items-start gap-4">
-                        {/* Avatar */}
                         <div className="h-14 w-14 shrink-0 rounded-2xl bg-white/20 backdrop-blur-sm ring-2 ring-white/30 flex items-center justify-center text-xl font-bold text-white shadow-lg">
                             {initials}
                         </div>
@@ -198,7 +347,6 @@ export function ContactProfileModal({ contact, open, onOpenChange, onEdit }: Con
                                 <p className="text-sm text-white/70 truncate">{contact.company}</p>
                             )}
 
-                            {/* Badges row */}
                             <div className="mt-2 flex flex-wrap gap-1.5">
                                 {contact.status && (() => {
                                     const style = STATUS_BADGE[contact.status]
@@ -288,11 +436,7 @@ export function ContactProfileModal({ contact, open, onOpenChange, onEdit }: Con
                                     <InfoRow
                                         icon={MapPin}
                                         label="Logradouro"
-                                        value={[
-                                            contact.street,
-                                            contact.streetNumber,
-                                            contact.complement,
-                                        ].filter(Boolean).join(', ')}
+                                        value={[contact.street, contact.streetNumber, contact.complement].filter(Boolean).join(', ')}
                                     />
                                 )}
                                 {(contact.city || contact.state) && (
@@ -354,11 +498,11 @@ export function ContactProfileModal({ contact, open, onOpenChange, onEdit }: Con
                                         className="h-8 text-sm bg-white dark:bg-zinc-900"
                                     />
                                 </div>
-                                <Input
-                                    placeholder="Produto (opcional)"
-                                    value={addProduct}
-                                    onChange={e => setAddProduct(e.target.value)}
-                                    className="h-8 text-sm bg-white dark:bg-zinc-900"
+                                <ProductCombobox
+                                    value={addProductId}
+                                    onChange={setAddProductId}
+                                    products={products}
+                                    loading={productsLoading}
                                 />
                                 {addError && <p className="text-xs text-red-500">{addError}</p>}
                                 <div className="flex gap-2 pt-1">
@@ -366,16 +510,16 @@ export function ContactProfileModal({ contact, open, onOpenChange, onEdit }: Con
                                         {adding ? <Loader2 className="h-3 w-3 animate-spin" /> : <Trophy className="h-3 w-3" />}
                                         Registrar
                                     </Button>
-                                    <Button size="sm" variant="ghost" onClick={() => setShowAddForm(false)} className="h-7 text-xs">
+                                    <Button size="sm" variant="ghost" onClick={() => { setShowAddForm(false); resetForm() }} className="h-7 text-xs">
                                         Cancelar
                                     </Button>
                                 </div>
                             </div>
                         )}
 
-                        {contact.wonDeals && contact.wonDeals.length > 0 ? (
+                        {wonDeals.length > 0 ? (
                             <div className="space-y-2">
-                                {contact.wonDeals.map((d: WonDeal) => (
+                                {wonDeals.map((d: WonDeal) => (
                                     <div
                                         key={d.id}
                                         className="flex items-start gap-3 rounded-xl bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200/60 dark:border-emerald-800/30 px-3 py-2.5 group/deal"

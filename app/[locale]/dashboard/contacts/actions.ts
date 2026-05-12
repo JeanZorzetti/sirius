@@ -346,7 +346,7 @@ export async function addWonDeal(contactId: string, data: {
             }
         }
 
-        await (prisma.deal.create as any)({
+        const created = await (prisma.deal.create as any)({
             data: {
                 title: data.title.trim(),
                 value: data.value ?? null,
@@ -359,10 +359,23 @@ export async function addWonDeal(contactId: string, data: {
                 userId: user.id,
                 ...(productId ? { productId } : {}),
             },
+            include: {
+                product: { select: { name: true } },
+            },
         })
 
         revalidatePath('/dashboard/contacts')
-        return { success: true }
+        return {
+            success: true,
+            deal: {
+                id: created.id,
+                title: created.title,
+                value: created.value ? Number(created.value) : null,
+                wonAt: created.wonAt ?? null,
+                productName: created.product?.name ?? (data.productName ?? null),
+                representativeName: null,
+            },
+        }
     } catch (error: any) {
         console.error('[ADD_WON_DEAL]', error?.message)
         return { success: false, error: error?.message || 'Erro ao registrar venda' }
