@@ -3,7 +3,7 @@
 import { useTranslations } from 'next-intl'
 
 import { useState } from 'react'
-import { Plus, MessageCircle, UserPlus } from 'lucide-react'
+import { Plus, MessageCircle, UserPlus, ChevronsUpDown, Check } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { FeatureGateModal } from '@/components/dashboard/billing/feature-gate-modal'
 import { trackDealCreated, trackContactCreated } from '@/lib/analytics'
@@ -25,6 +25,12 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/components/ui/select'
+import {
+    Popover,
+    PopoverContent,
+    PopoverTrigger,
+} from '@/components/ui/popover'
+import { cn } from '@/lib/utils'
 import { createDeal } from '@/app/[locale]/dashboard/actions'
 
 type Stage = {
@@ -67,6 +73,8 @@ export function CreateDealDialog({
     const [showUpgradeModal, setShowUpgradeModal] = useState(false)
     const [loading, setLoading] = useState(false)
     const [selectedContactId, setSelectedContactId] = useState<string>('')
+    const [contactPopoverOpen, setContactPopoverOpen] = useState(false)
+    const [contactSearch, setContactSearch] = useState('')
     const [showNewContact, setShowNewContact] = useState(false)
     const [contacts, setContacts] = useState<Contact[]>(initialContacts)
     const [newContactName, setNewContactName] = useState('')
@@ -256,20 +264,68 @@ export function CreateDealDialog({
                                     Contato
                                 </Label>
                                 <div className="col-span-3 space-y-3">
+                                    {/* hidden input so FormData picks up the selected contact */}
+                                    <input type="hidden" name="contactId" value={selectedContactId} />
                                     {!showNewContact ? (
                                         <div className="flex gap-2">
-                                            <Select name="contactId" onValueChange={setSelectedContactId} value={selectedContactId}>
-                                                <SelectTrigger>
-                                                    <SelectValue placeholder="Selecione um contato" />
-                                                </SelectTrigger>
-                                                <SelectContent>
-                                                    {contacts.map((contact) => (
-                                                        <SelectItem key={contact.id} value={contact.id}>
-                                                            {contact.name}
-                                                        </SelectItem>
-                                                    ))}
-                                                </SelectContent>
-                                            </Select>
+                                            <Popover open={contactPopoverOpen} onOpenChange={(open) => {
+                                                setContactPopoverOpen(open)
+                                                if (!open) setContactSearch('')
+                                            }}>
+                                                <PopoverTrigger asChild>
+                                                    <Button
+                                                        type="button"
+                                                        variant="outline"
+                                                        role="combobox"
+                                                        aria-expanded={contactPopoverOpen}
+                                                        className="flex-1 justify-between font-normal"
+                                                    >
+                                                        {selectedContactId
+                                                            ? contacts.find(c => c.id === selectedContactId)?.name
+                                                            : 'Selecione um contato'}
+                                                        <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                                                    </Button>
+                                                </PopoverTrigger>
+                                                <PopoverContent className="w-[280px] p-0" align="start">
+                                                    <div className="p-2 border-b">
+                                                        <Input
+                                                            placeholder="Buscar contato..."
+                                                            value={contactSearch}
+                                                            onChange={(e) => setContactSearch(e.target.value)}
+                                                            className="h-8"
+                                                            autoFocus
+                                                        />
+                                                    </div>
+                                                    <div className="max-h-52 overflow-y-auto py-1">
+                                                        {contacts
+                                                            .filter(c => c.name.toLowerCase().includes(contactSearch.toLowerCase()))
+                                                            .length === 0 ? (
+                                                            <p className="py-6 text-center text-sm text-muted-foreground">Nenhum contato encontrado.</p>
+                                                        ) : (
+                                                            contacts
+                                                                .filter(c => c.name.toLowerCase().includes(contactSearch.toLowerCase()))
+                                                                .map((contact) => (
+                                                                    <button
+                                                                        key={contact.id}
+                                                                        type="button"
+                                                                        className={cn(
+                                                                            'flex w-full items-center gap-2 px-3 py-2 text-sm hover:bg-accent hover:text-accent-foreground cursor-pointer',
+                                                                            selectedContactId === contact.id && 'bg-accent'
+                                                                        )}
+                                                                        onClick={() => {
+                                                                            setSelectedContactId(contact.id === selectedContactId ? '' : contact.id)
+                                                                            setContactPopoverOpen(false)
+                                                                            setContactSearch('')
+                                                                        }}
+                                                                    >
+                                                                        <Check className={cn('h-4 w-4 shrink-0', selectedContactId === contact.id ? 'opacity-100' : 'opacity-0')} />
+                                                                        {contact.name}
+                                                                    </button>
+                                                                ))
+                                                        )}
+                                                    </div>
+                                                </PopoverContent>
+                                            </Popover>
                                             {(() => {
                                                 const selectedContact = contacts.find(c => c.id === selectedContactId)
                                                 return selectedContact?.phone ? (
