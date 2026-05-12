@@ -3,7 +3,7 @@
 import { useTranslations } from 'next-intl'
 
 import { useState } from 'react'
-import { Pencil, MapPin, Tag, User } from 'lucide-react'
+import { Pencil, MapPin, Tag, User, NotebookPen } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import {
     Dialog,
@@ -15,6 +15,7 @@ import {
     DialogTrigger,
 } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
+import { Textarea } from '@/components/ui/textarea'
 import { Label } from '@/components/ui/label'
 import {
     Select,
@@ -42,6 +43,7 @@ type EditableContact = {
     complement?: string | null
     status?: string | null
     assignedToId?: string | null
+    observations?: string | null
 }
 
 export function EditContactDialog({
@@ -217,6 +219,23 @@ export function EditContactDialog({
                                     <Input id="edit-state" name="state" defaultValue={c.state ?? ''} placeholder="SP" maxLength={2} className="w-16 uppercase" />
                                 </div>
                             </div>
+                        </div>
+
+                        {/* Observações */}
+                        <div className="flex items-center gap-2">
+                            <NotebookPen className="h-3.5 w-3.5 text-muted-foreground shrink-0" />
+                            <span className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Observações</span>
+                            <div className="flex-1 h-px bg-border" />
+                        </div>
+                        <div className="grid grid-cols-4 items-start gap-4">
+                            <Label htmlFor="edit-observations" className="text-right text-sm pt-2">Anotações</Label>
+                            <Textarea
+                                id="edit-observations"
+                                name="observations"
+                                defaultValue={c.observations ?? ''}
+                                placeholder="Anotações internas sobre este contato..."
+                                className="col-span-3 min-h-[100px] resize-y text-sm"
+                            />
                         </div>
                     </div>
 

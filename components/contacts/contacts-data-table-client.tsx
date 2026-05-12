@@ -75,6 +75,7 @@ export type EnrichedContact = {
   updatedAt: Date
   organizationId: string
   assignedToId: string | null
+  observations: string | null
   activeStageName: string | null
   activeDealId: string | null
   assigneeName: string | null

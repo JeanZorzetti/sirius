@@ -66,6 +66,7 @@ async function ContactsData({ orgId }: { orgId: string }) {
                 streetNumber: true,
                 complement: true,
                 status: true,
+                observations: true,
                 createdAt: true,
                 updatedAt: true,
                 organizationId: true,
@@ -204,6 +205,7 @@ async function ContactsData({ orgId }: { orgId: string }) {
         return {
             ...c,
             status: (c as any).status ?? null,
+            observations: (c as any).observations ?? null,
             activeStageName: deal ? (stageById.get(deal.stageId) ?? null) : null,
             activeDealId: deal?.id ?? null,
             assigneeName: deal ? (userById.get(deal.userId) ?? null) : (directAssigneeName ?? null),

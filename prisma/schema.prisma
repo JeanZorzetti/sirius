@@ -385,6 +385,9 @@ model Contact {
   // Status / etiqueta do contato
   status         String? // "active" | "prospect" | "inactive" | "researching" | "trash"
 
+  // Observações livres
+  observations   String? @db.Text
+
   // Omie ERP integration
   omieClienteId  String?
   document       String? // CNPJ/CPF

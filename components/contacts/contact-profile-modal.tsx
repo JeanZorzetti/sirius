@@ -28,6 +28,7 @@ import {
     Loader2,
     FileText,
     Package,
+    NotebookPen,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import type { EnrichedContact, ClosingEntry } from './contacts-data-table-client'
@@ -467,6 +468,21 @@ export function ContactProfileModal({ contact, open, onOpenChange, onEdit }: Con
                             )
                         )}
                     </div>
+
+                    {/* Observações */}
+                    {contact.observations && (
+                        <div>
+                            <SectionTitle>Observações</SectionTitle>
+                            <div className="flex items-start gap-3">
+                                <div className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-zinc-100 dark:bg-zinc-800/60">
+                                    <NotebookPen className="h-3.5 w-3.5 text-zinc-500 dark:text-zinc-400" />
+                                </div>
+                                <p className="mt-0.5 text-sm text-zinc-700 dark:text-zinc-300 whitespace-pre-wrap leading-relaxed">
+                                    {contact.observations}
+                                </p>
+                            </div>
+                        </div>
+                    )}
 
                     {/* Meta */}
                     <div>
