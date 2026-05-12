@@ -143,12 +143,12 @@ export function EditContactDialog({
                         <div className="grid grid-cols-4 items-center gap-4">
                             <Label htmlFor="edit-status" className="text-right text-sm">Etiqueta</Label>
                             <div className="col-span-3">
-                                <Select name="status" defaultValue={contact.status ?? ''}>
+                                <Select name="status" defaultValue={contact.status ?? 'none'}>
                                     <SelectTrigger id="edit-status">
                                         <SelectValue placeholder="Sem status" />
                                     </SelectTrigger>
                                     <SelectContent>
-                                        <SelectItem value="">Sem status</SelectItem>
+                                        <SelectItem value="none">Sem status</SelectItem>
                                         {CONTACT_STATUSES.map(s => (
                                             <SelectItem key={s.value} value={s.value}>{s.label}</SelectItem>
                                         ))}

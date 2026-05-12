@@ -74,7 +74,7 @@ export async function createContact(formData: FormData) {
                 street: street || null,
                 streetNumber: streetNumber || null,
                 complement: complement || null,
-                status: status || null,
+                status: (status && status !== 'none') ? status : null,
                 organizationId: user.organizationId
             } as any
         })
@@ -178,7 +178,7 @@ export async function updateContact(contactId: string, formData: FormData) {
                 street: street?.trim() || null,
                 streetNumber: streetNumber?.trim() || null,
                 complement: complement?.trim() || null,
-                status: status?.trim() || null,
+                status: (status?.trim() && status !== 'none') ? status.trim() : null,
             } as any
         })
 
