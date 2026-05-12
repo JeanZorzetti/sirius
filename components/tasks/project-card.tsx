@@ -157,8 +157,8 @@ export function ProjectCard({ project, total, done, overdue, progress, canManage
           style={{ backgroundColor: project.color }}
         />
 
-        <div className="relative z-10 flex items-start justify-between gap-4 mb-5">
-          <Link href={`/dashboard/tasks/${project.id}`} className="flex items-center gap-4 flex-1 min-w-0">
+        <div className="relative z-10 flex items-start justify-between gap-2 mb-5">
+          <Link href={`/dashboard/tasks/${project.id}`} className="flex items-center gap-4 shrink-0">
             <div
               className="flex h-14 w-14 shrink-0 items-center justify-center rounded-[18px] text-white shadow-lg ring-1 ring-white/20 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3"
               style={{ backgroundColor: project.color }}
@@ -167,7 +167,7 @@ export function ProjectCard({ project, total, done, overdue, progress, canManage
             </div>
           </Link>
 
-          <div className="flex items-center gap-2 shrink-0">
+          <div className="flex items-center gap-2 shrink-0 flex-wrap justify-end">
             {(project.allowedRoles ?? []).length > 0 && (
               <span className="flex items-center gap-1 rounded-full bg-amber-500/10 px-2.5 py-1 text-[10px] font-bold text-amber-600 dark:text-amber-400 ring-1 ring-inset ring-amber-500/20 shadow-sm">
                 <Lock className="h-2.5 w-2.5" />
@@ -206,7 +206,7 @@ export function ProjectCard({ project, total, done, overdue, progress, canManage
         </div>
 
         <Link href={`/dashboard/tasks/${project.id}`} className="relative z-10 flex flex-col flex-1">
-          <h3 className="text-xl font-bold tracking-tight leading-tight text-foreground group-hover:text-primary transition-colors">
+          <h3 className="text-xl font-bold tracking-tight leading-tight text-foreground group-hover:text-primary transition-colors break-words">
             {project.name}
           </h3>
           {project.description ? (
