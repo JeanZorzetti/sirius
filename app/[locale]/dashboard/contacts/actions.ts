@@ -301,6 +301,129 @@ export async function deleteContact(contactId: string) {
     }
 }
 
+export async function addContactClosing(contactId: string, data: {
+    dealId: string | null
+    date: string
+    value: number
+    note: string | null
+}) {
+    try {
+        const user = await getAuthenticatedUser()
+        if (!user) return { success: false, error: 'Unauthorized' }
+
+        // Resolve which deal to attach closing to
+        let targetDealId = data.dealId
+
+        if (!targetDealId) {
+            // Use first active deal linked to contact
+            const activeDeal = await prisma.deal.findFirst({
+                where: { contactId, organizationId: user.organizationId, status: 'ACTIVE', archived: false },
+                orderBy: { createdAt: 'desc' },
+                select: { id: true },
+            })
+            if (activeDeal) {
+                targetDealId = activeDeal.id
+            } else {
+                // No active deal — create a placeholder deal to hold the closing
+                const firstStage = await prisma.pipelineStage.findFirst({
+                    where: { organizationId: user.organizationId },
+                    orderBy: { order: 'asc' },
+                    select: { id: true, pipelineId: true },
+                })
+                if (!firstStage) return { success: false, error: 'Nenhuma etapa encontrada no pipeline.' }
+
+                const newDeal = await (prisma.deal.create as any)({
+                    data: {
+                        title: data.note?.trim() || 'Fechamento registrado',
+                        value: data.value,
+                        status: 'WON',
+                        wonAt: new Date(data.date),
+                        contactId,
+                        organizationId: user.organizationId,
+                        stageId: firstStage.id,
+                        pipelineId: firstStage.pipelineId,
+                        userId: user.id,
+                    },
+                    select: { id: true },
+                })
+                targetDealId = newDeal.id
+            }
+        }
+
+        // Verify deal belongs to org
+        const deal = await prisma.deal.findUnique({
+            where: { id: targetDealId },
+            select: { id: true, title: true, organizationId: true },
+        })
+        if (!deal || deal.organizationId !== user.organizationId) {
+            return { success: false, error: 'Deal não encontrado.' }
+        }
+
+        const closing = await prisma.dealClosing.create({
+            data: {
+                dealId: targetDealId,
+                date: new Date(data.date),
+                value: data.value,
+                note: data.note || null,
+                userId: user.id,
+            },
+        })
+
+        await prisma.activity.create({
+            data: {
+                type: 'CLOSING_ADDED',
+                description: `Registrou fechamento de R$ ${data.value.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}${data.note ? ` — ${data.note}` : ''}`,
+                dealId: targetDealId,
+                userId: user.id,
+            },
+        })
+
+        revalidatePath('/dashboard/contacts')
+        revalidatePath('/dashboard')
+
+        return {
+            success: true,
+            closing: {
+                id: closing.id,
+                dealId: targetDealId,
+                dealTitle: deal.title,
+                date: closing.date.toISOString(),
+                value: Number(closing.value),
+                note: closing.note ?? null,
+                userName: null,
+            },
+        }
+    } catch (error: any) {
+        console.error('[ADD_CONTACT_CLOSING]', error?.message)
+        return { success: false, error: error?.message || 'Erro ao registrar fechamento' }
+    }
+}
+
+export async function removeContactClosing(closingId: string) {
+    try {
+        const user = await getAuthenticatedUser()
+        if (!user) return { success: false, error: 'Unauthorized' }
+
+        const closing = await prisma.dealClosing.findUnique({
+            where: { id: closingId },
+            include: { deal: { select: { organizationId: true, id: true } } },
+        })
+        if (!closing || closing.deal.organizationId !== user.organizationId) {
+            return { success: false, error: 'Fechamento não encontrado.' }
+        }
+
+        await prisma.dealClosing.delete({ where: { id: closingId } })
+
+        revalidatePath('/dashboard/contacts')
+        revalidatePath('/dashboard')
+
+        return { success: true }
+    } catch (error: any) {
+        console.error('[REMOVE_CONTACT_CLOSING]', error?.message)
+        return { success: false, error: error?.message || 'Erro ao remover fechamento' }
+    }
+}
+
 export async function addWonDeal(contactId: string, data: {
     title: string
     value: number | null

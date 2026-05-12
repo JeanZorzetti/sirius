@@ -22,19 +22,17 @@ import {
     Navigation,
     Calendar,
     Tag,
-    Trophy,
-    Package,
+    DollarSign,
     Plus,
     Trash2,
     Loader2,
-    Search,
-    ChevronDown,
+    FileText,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
-import type { EnrichedContact, WonDeal } from './contacts-data-table-client'
+import type { EnrichedContact, ClosingEntry } from './contacts-data-table-client'
 import { CONTACT_STATUSES } from './contacts-filters'
 import { useTranslations } from 'next-intl'
-import { addWonDeal, removeWonDeal } from '@/app/[locale]/dashboard/contacts/actions'
+import { addContactClosing, removeContactClosing } from '@/app/[locale]/dashboard/contacts/actions'
 
 const STATUS_BADGE: Record<string, { bg: string; text: string; dot: string }> = {
   active:      { bg: 'bg-emerald-500/20', text: 'text-emerald-100', dot: 'bg-emerald-400' },
@@ -98,199 +96,66 @@ function SectionTitle({ children }: { children: React.ReactNode }) {
     )
 }
 
-type OrgProduct = { id: string; name: string; price: number }
-
-function ProductCombobox({
-    value,
-    onChange,
-    products,
-    loading,
-}: {
-    value: string
-    onChange: (v: string) => void
-    products: OrgProduct[]
-    loading: boolean
-}) {
-    const [open, setOpen] = React.useState(false)
-    const [search, setSearch] = React.useState('')
-    const ref = React.useRef<HTMLDivElement>(null)
-
-    const filtered = products.filter(p =>
-        p.name.toLowerCase().includes(search.toLowerCase())
-    )
-
-    React.useEffect(() => {
-        function handleClick(e: MouseEvent) {
-            if (ref.current && !ref.current.contains(e.target as Node)) {
-                setOpen(false)
-            }
-        }
-        document.addEventListener('mousedown', handleClick)
-        return () => document.removeEventListener('mousedown', handleClick)
-    }, [])
-
-    const selectedName = products.find(p => p.id === value)?.name ?? value
-
-    return (
-        <div className="relative" ref={ref}>
-            <button
-                type="button"
-                onClick={() => setOpen(v => !v)}
-                className={cn(
-                    'flex h-8 w-full items-center justify-between rounded-md border border-input bg-white dark:bg-zinc-900 px-3 text-sm transition-colors hover:border-indigo-400 focus:outline-none',
-                    open && 'border-indigo-500 ring-1 ring-indigo-500/30'
-                )}
-            >
-                <span className={cn('truncate', !value && 'text-zinc-400 dark:text-zinc-500')}>
-                    {value ? selectedName : 'Produto (opcional)'}
-                </span>
-                <ChevronDown className="h-3.5 w-3.5 shrink-0 text-zinc-400" />
-            </button>
-
-            {open && (
-                <div className="absolute z-50 mt-1 w-full rounded-xl border border-border bg-white dark:bg-zinc-900 shadow-lg overflow-hidden">
-                    <div className="flex items-center gap-2 border-b border-border px-3 py-2">
-                        <Search className="h-3.5 w-3.5 shrink-0 text-zinc-400" />
-                        <input
-                            autoFocus
-                            placeholder="Buscar produto..."
-                            value={search}
-                            onChange={e => setSearch(e.target.value)}
-                            className="flex-1 bg-transparent text-sm outline-none placeholder:text-zinc-400"
-                        />
-                    </div>
-                    <div className="max-h-40 overflow-y-auto py-1">
-                        {loading && (
-                            <div className="flex items-center justify-center py-4">
-                                <Loader2 className="h-4 w-4 animate-spin text-zinc-400" />
-                            </div>
-                        )}
-                        {!loading && filtered.length === 0 && (
-                            <p className="px-3 py-2 text-xs text-zinc-400">Nenhum produto encontrado.</p>
-                        )}
-                        {!loading && value && (
-                            <button
-                                type="button"
-                                onClick={() => { onChange(''); setOpen(false); setSearch('') }}
-                                className="flex w-full items-center px-3 py-1.5 text-xs text-zinc-400 hover:bg-zinc-50 dark:hover:bg-zinc-800"
-                            >
-                                Limpar seleção
-                            </button>
-                        )}
-                        {!loading && filtered.map(p => (
-                            <button
-                                key={p.id}
-                                type="button"
-                                onClick={() => { onChange(p.id); setOpen(false); setSearch('') }}
-                                className={cn(
-                                    'flex w-full items-center justify-between px-3 py-1.5 text-sm hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors',
-                                    value === p.id && 'bg-indigo-50 dark:bg-indigo-950/30 text-indigo-700 dark:text-indigo-300'
-                                )}
-                            >
-                                <span className="truncate">{p.name}</span>
-                                {p.price > 0 && (
-                                    <span className="ml-2 shrink-0 text-xs text-zinc-400">
-                                        R$ {p.price.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
-                                    </span>
-                                )}
-                            </button>
-                        ))}
-                    </div>
-                </div>
-            )}
-        </div>
-    )
-}
-
 export function ContactProfileModal({ contact, open, onOpenChange, onEdit }: ContactProfileModalProps) {
     const tCommon = useTranslations('common')
 
-    // Local won deals state — starts from prop, updated optimistically
-    const [wonDeals, setWonDeals] = React.useState<WonDeal[]>(contact.wonDeals ?? [])
+    // Local closings state — starts from prop, updated optimistically
+    const [closings, setClosings] = React.useState<ClosingEntry[]>(contact.closings ?? [])
     React.useEffect(() => {
-        setWonDeals(contact.wonDeals ?? [])
-    }, [contact.wonDeals, contact.id])
+        setClosings(contact.closings ?? [])
+    }, [contact.id, contact.closings])
 
     // Add form state
     const [showAddForm, setShowAddForm] = React.useState(false)
-    const [addTitle, setAddTitle] = React.useState('')
-    const [addValue, setAddValue] = React.useState('')
-    const [addProductId, setAddProductId] = React.useState('')
     const [addDate, setAddDate] = React.useState(new Date().toISOString().slice(0, 10))
+    const [addValue, setAddValue] = React.useState('')
+    const [addNote, setAddNote] = React.useState('')
     const [adding, setAdding] = React.useState(false)
     const [removingId, setRemovingId] = React.useState<string | null>(null)
     const [addError, setAddError] = React.useState<string | null>(null)
 
-    // Products
-    const [products, setProducts] = React.useState<OrgProduct[]>([])
-    const [productsLoading, setProductsLoading] = React.useState(false)
-
-    React.useEffect(() => {
-        if (!showAddForm || products.length > 0) return
-        setProductsLoading(true)
-        fetch('/api/products')
-            .then(r => r.json())
-            .then(data => {
-                const list = Array.isArray(data) ? data : (data.products ?? [])
-                setProducts(list.map((p: any) => ({ id: p.id, name: p.name, price: Number(p.price ?? 0) })))
-            })
-            .catch(() => {})
-            .finally(() => setProductsLoading(false))
-    }, [showAddForm])
-
     function resetForm() {
-        setAddTitle('')
-        setAddValue('')
-        setAddProductId('')
         setAddDate(new Date().toISOString().slice(0, 10))
+        setAddValue('')
+        setAddNote('')
         setAddError(null)
     }
 
-    async function handleAddWonDeal() {
-        if (!addTitle.trim()) { setAddError('Título obrigatório'); return }
+    async function handleAdd() {
+        if (!addValue || parseFloat(addValue.replace(',', '.')) <= 0) {
+            setAddError('Valor obrigatório')
+            return
+        }
         setAdding(true)
         setAddError(null)
 
-        const selectedProduct = products.find(p => p.id === addProductId)
-        const res = await addWonDeal(contact.id, {
-            title: addTitle.trim(),
-            value: addValue ? parseFloat(addValue.replace(',', '.')) : null,
-            productName: selectedProduct?.name ?? null,
-            wonAt: addDate,
+        const res = await addContactClosing(contact.id, {
+            dealId: contact.activeDealId ?? null,
+            date: addDate,
+            value: parseFloat(addValue.replace(',', '.')),
+            note: addNote.trim() || null,
         })
 
         setAdding(false)
-        if (res.success && (res as any).deal) {
-            // Optimistic update using returned deal
-            const d = (res as any).deal as WonDeal
-            setWonDeals(prev => [d, ...prev])
-            setShowAddForm(false)
-            resetForm()
-        } else if (res.success) {
-            // Fallback: add a placeholder entry
-            setWonDeals(prev => [{
-                id: crypto.randomUUID(),
-                title: addTitle.trim(),
-                value: addValue ? parseFloat(addValue.replace(',', '.')) : null,
-                wonAt: new Date(addDate),
-                productName: selectedProduct?.name ?? null,
-                representativeName: null,
-            }, ...prev])
+        if (res.success && res.closing) {
+            setClosings(prev => [res.closing!, ...prev])
             setShowAddForm(false)
             resetForm()
         } else {
-            setAddError(res.error ?? 'Erro ao registrar venda')
+            setAddError((res as any).error ?? 'Erro ao registrar fechamento')
         }
     }
 
-    async function handleRemoveWonDeal(dealId: string) {
-        setRemovingId(dealId)
-        const res = await removeWonDeal(dealId)
+    async function handleRemove(closingId: string) {
+        setRemovingId(closingId)
+        const res = await removeContactClosing(closingId)
         setRemovingId(null)
         if (res.success) {
-            setWonDeals(prev => prev.filter(d => d.id !== dealId))
+            setClosings(prev => prev.filter(c => c.id !== closingId))
         }
     }
+
+    const totalFaturado = closings.reduce((s, c) => s + c.value, 0)
 
     const initials = contact.name
         .split(' ')
@@ -365,6 +230,12 @@ export function ContactProfileModal({ contact, open, onOpenChange, onEdit }: Con
                                         {contact.assigneeName && (
                                             <span className="text-white/60">· {contact.assigneeName}</span>
                                         )}
+                                    </div>
+                                )}
+                                {closings.length > 0 && (
+                                    <div className="inline-flex items-center gap-1.5 rounded-full bg-emerald-500/25 px-2.5 py-1 text-[11px] font-semibold text-emerald-100 backdrop-blur-sm">
+                                        <DollarSign className="h-3 w-3" />
+                                        R$ {totalFaturado.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
                                     </div>
                                 )}
                             </div>
@@ -461,15 +332,22 @@ export function ContactProfileModal({ contact, open, onOpenChange, onEdit }: Con
                         </div>
                     )}
 
-                    {/* Histórico de Vendas */}
+                    {/* Histórico de Faturamento */}
                     <div>
                         <div className="flex items-center gap-2 mb-3">
-                            <span className="text-[10px] font-bold uppercase tracking-widest text-zinc-400 dark:text-zinc-500">Histórico de Vendas</span>
+                            <span className="text-[10px] font-bold uppercase tracking-widest text-zinc-400 dark:text-zinc-500">
+                                Histórico de Faturamento
+                            </span>
                             <div className="flex-1 h-px bg-zinc-100 dark:bg-zinc-800" />
+                            {closings.length > 0 && (
+                                <span className="text-[10px] font-bold text-emerald-600 dark:text-emerald-400">
+                                    R$ {totalFaturado.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                                </span>
+                            )}
                             <button
                                 onClick={() => { setShowAddForm(v => !v); setAddError(null) }}
                                 className="flex h-5 w-5 items-center justify-center rounded-md bg-zinc-100 dark:bg-zinc-800 hover:bg-indigo-100 dark:hover:bg-indigo-900/40 transition-colors"
-                                title="Adicionar venda"
+                                title="Registrar fechamento"
                             >
                                 <Plus className="h-3 w-3 text-zinc-500 dark:text-zinc-400" />
                             </button>
@@ -477,37 +355,46 @@ export function ContactProfileModal({ contact, open, onOpenChange, onEdit }: Con
 
                         {showAddForm && (
                             <div className="mb-3 rounded-xl border border-indigo-200/60 dark:border-indigo-800/30 bg-indigo-50/60 dark:bg-indigo-950/20 p-3 space-y-2">
-                                <Input
-                                    placeholder="Título da venda *"
-                                    value={addTitle}
-                                    onChange={e => setAddTitle(e.target.value)}
-                                    className="h-8 text-sm bg-white dark:bg-zinc-900"
-                                />
                                 <div className="grid grid-cols-2 gap-2">
+                                    <div className="space-y-1">
+                                        <p className="text-[10px] font-semibold uppercase tracking-widest text-zinc-400">Data</p>
+                                        <Input
+                                            type="date"
+                                            value={addDate}
+                                            onChange={e => setAddDate(e.target.value)}
+                                            className="h-8 text-sm bg-white dark:bg-zinc-900"
+                                        />
+                                    </div>
+                                    <div className="space-y-1">
+                                        <p className="text-[10px] font-semibold uppercase tracking-widest text-zinc-400">Valor (R$) *</p>
+                                        <Input
+                                            placeholder="0,00"
+                                            value={addValue}
+                                            onChange={e => setAddValue(e.target.value)}
+                                            className="h-8 text-sm bg-white dark:bg-zinc-900"
+                                            inputMode="decimal"
+                                        />
+                                    </div>
+                                </div>
+                                <div className="space-y-1">
+                                    <p className="text-[10px] font-semibold uppercase tracking-widest text-zinc-400">Observação</p>
                                     <Input
-                                        placeholder="Valor (R$)"
-                                        value={addValue}
-                                        onChange={e => setAddValue(e.target.value)}
+                                        placeholder="Ex: Renovação, Produto X..."
+                                        value={addNote}
+                                        onChange={e => setAddNote(e.target.value)}
                                         className="h-8 text-sm bg-white dark:bg-zinc-900"
-                                        inputMode="decimal"
-                                    />
-                                    <Input
-                                        type="date"
-                                        value={addDate}
-                                        onChange={e => setAddDate(e.target.value)}
-                                        className="h-8 text-sm bg-white dark:bg-zinc-900"
+                                        onKeyDown={e => e.key === 'Enter' && handleAdd()}
                                     />
                                 </div>
-                                <ProductCombobox
-                                    value={addProductId}
-                                    onChange={setAddProductId}
-                                    products={products}
-                                    loading={productsLoading}
-                                />
+                                {contact.activeDealId && (
+                                    <p className="text-[10px] text-zinc-400 dark:text-zinc-500">
+                                        Será vinculado ao deal ativo: <span className="font-semibold">{contact.activeStageName}</span>
+                                    </p>
+                                )}
                                 {addError && <p className="text-xs text-red-500">{addError}</p>}
                                 <div className="flex gap-2 pt-1">
-                                    <Button size="sm" onClick={handleAddWonDeal} disabled={adding} className="h-7 text-xs gap-1">
-                                        {adding ? <Loader2 className="h-3 w-3 animate-spin" /> : <Trophy className="h-3 w-3" />}
+                                    <Button size="sm" onClick={handleAdd} disabled={adding} className="h-7 text-xs gap-1 bg-emerald-600 hover:bg-emerald-700 text-white">
+                                        {adding ? <Loader2 className="h-3 w-3 animate-spin" /> : <DollarSign className="h-3 w-3" />}
                                         Registrar
                                     </Button>
                                     <Button size="sm" variant="ghost" onClick={() => { setShowAddForm(false); resetForm() }} className="h-7 text-xs">
@@ -517,48 +404,50 @@ export function ContactProfileModal({ contact, open, onOpenChange, onEdit }: Con
                             </div>
                         )}
 
-                        {wonDeals.length > 0 ? (
+                        {closings.length > 0 ? (
                             <div className="space-y-2">
-                                {wonDeals.map((d: WonDeal) => (
+                                {closings.map((cl: ClosingEntry) => (
                                     <div
-                                        key={d.id}
-                                        className="flex items-start gap-3 rounded-xl bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200/60 dark:border-emerald-800/30 px-3 py-2.5 group/deal"
+                                        key={cl.id}
+                                        className="flex items-start gap-3 rounded-xl bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200/60 dark:border-emerald-800/30 px-3 py-2.5 group/closing"
                                     >
                                         <div className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-emerald-100 dark:bg-emerald-900/50">
-                                            <Trophy className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
+                                            <DollarSign className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
                                         </div>
                                         <div className="min-w-0 flex-1">
-                                            <p className="text-sm font-semibold text-zinc-800 dark:text-zinc-100 truncate">{d.title}</p>
-                                            <div className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-0.5">
-                                                {d.value != null && (
-                                                    <span className="text-xs font-mono font-bold text-emerald-700 dark:text-emerald-400">
-                                                        R$ {d.value.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
-                                                    </span>
-                                                )}
-                                                {d.productName && (
+                                            <div className="flex items-baseline gap-2 flex-wrap">
+                                                <span className="text-sm font-bold text-emerald-700 dark:text-emerald-400 font-mono">
+                                                    R$ {cl.value.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                                                </span>
+                                                <span className="text-[11px] text-zinc-400 dark:text-zinc-500">
+                                                    {new Date(cl.date).toLocaleDateString('pt-BR', { day: '2-digit', month: 'short', year: 'numeric' })}
+                                                </span>
+                                            </div>
+                                            <div className="mt-0.5 flex flex-wrap items-center gap-x-3 gap-y-0.5">
+                                                {cl.dealTitle && (
                                                     <span className="inline-flex items-center gap-1 text-[11px] text-zinc-500 dark:text-zinc-400">
-                                                        <Package className="h-3 w-3" /> {d.productName}
+                                                        <Kanban className="h-3 w-3" /> {cl.dealTitle}
                                                     </span>
                                                 )}
-                                                {d.representativeName && (
+                                                {cl.note && (
                                                     <span className="inline-flex items-center gap-1 text-[11px] text-zinc-500 dark:text-zinc-400">
-                                                        <User className="h-3 w-3" /> {d.representativeName}
+                                                        <FileText className="h-3 w-3" /> {cl.note}
                                                     </span>
                                                 )}
-                                                {d.wonAt && (
-                                                    <span className="text-[11px] text-zinc-400 dark:text-zinc-500">
-                                                        {new Date(d.wonAt).toLocaleDateString('pt-BR', { day: '2-digit', month: 'short', year: 'numeric' })}
+                                                {cl.userName && (
+                                                    <span className="inline-flex items-center gap-1 text-[11px] text-zinc-500 dark:text-zinc-400">
+                                                        <User className="h-3 w-3" /> {cl.userName}
                                                     </span>
                                                 )}
                                             </div>
                                         </div>
                                         <button
-                                            onClick={() => handleRemoveWonDeal(d.id)}
-                                            disabled={removingId === d.id}
-                                            className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-md opacity-0 group-hover/deal:opacity-100 hover:bg-red-100 dark:hover:bg-red-900/40 transition-all"
-                                            title="Remover venda"
+                                            onClick={() => handleRemove(cl.id)}
+                                            disabled={removingId === cl.id}
+                                            className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-md opacity-0 group-hover/closing:opacity-100 hover:bg-red-100 dark:hover:bg-red-900/40 transition-all"
+                                            title="Remover fechamento"
                                         >
-                                            {removingId === d.id
+                                            {removingId === cl.id
                                                 ? <Loader2 className="h-3 w-3 text-red-500 animate-spin" />
                                                 : <Trash2 className="h-3 w-3 text-red-500" />
                                             }
@@ -568,7 +457,7 @@ export function ContactProfileModal({ contact, open, onOpenChange, onEdit }: Con
                             </div>
                         ) : (
                             !showAddForm && (
-                                <p className="text-xs text-zinc-400 dark:text-zinc-500 italic">Nenhuma venda registrada.</p>
+                                <p className="text-xs text-zinc-400 dark:text-zinc-500 italic">Nenhum fechamento registrado.</p>
                             )
                         )}
                     </div>

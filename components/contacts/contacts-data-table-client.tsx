@@ -47,6 +47,16 @@ export type WonDeal = {
   representativeName: string | null
 }
 
+export type ClosingEntry = {
+  id: string
+  dealId: string
+  dealTitle: string
+  date: string
+  value: number
+  note: string | null
+  userName: string | null
+}
+
 export type EnrichedContact = {
   id: string
   name: string
@@ -65,10 +75,12 @@ export type EnrichedContact = {
   organizationId: string
   assignedToId: string | null
   activeStageName: string | null
+  activeDealId: string | null
   assigneeName: string | null
   openDealsCount: number
   lastActivityAt: Date | null
   wonDeals: WonDeal[]
+  closings: ClosingEntry[]
 }
 
 interface ContactsDataTableClientProps {

@@ -120,6 +120,23 @@ async function ContactsData({ orgId }: { orgId: string }) {
         orderBy: { updatedAt: 'desc' },
     }).catch(() => [] as any[])
 
+    // DealClosings — todos os fechamentos de deals vinculados a contatos desta org
+    const allClosings = await prisma.dealClosing.findMany({
+        where: {
+            deal: { organizationId: orgId, contactId: { not: null } }
+        },
+        select: {
+            id: true,
+            date: true,
+            value: true,
+            note: true,
+            dealId: true,
+            deal: { select: { title: true, contactId: true } },
+            user: { select: { name: true } },
+        },
+        orderBy: { date: 'desc' },
+    }).catch(() => [] as any[])
+
     // Lookup: contactId → primeiro deal ativo
     const dealByContact = new Map<string, typeof activeDeals[0]>()
     // Lookup: contactId → count of open deals
@@ -153,6 +170,15 @@ async function ContactsData({ orgId }: { orgId: string }) {
         wonDealsByContact.set(d.contactId, [...existing, d])
     }
 
+    // Group closings by contactId
+    const closingsByContact = new Map<string, any[]>()
+    for (const cl of allClosings) {
+        const cid = cl.deal?.contactId
+        if (!cid) continue
+        const existing = closingsByContact.get(cid) ?? []
+        closingsByContact.set(cid, [...existing, cl])
+    }
+
     const enrichedContacts = contacts.map(c => {
         const deal = dealByContact.get(c.id)
         const directAssigneeName = c.assignedToId ? (userById.get(c.assignedToId) ?? null) : null
@@ -164,14 +190,25 @@ async function ContactsData({ orgId }: { orgId: string }) {
             productName: d.product?.name ?? null,
             representativeName: userById.get(d.userId) ?? null,
         }))
+        const contactClosings = (closingsByContact.get(c.id) ?? []).map((cl: any) => ({
+            id: cl.id,
+            dealId: cl.dealId,
+            dealTitle: cl.deal?.title ?? '',
+            date: cl.date instanceof Date ? cl.date.toISOString() : cl.date,
+            value: Number(cl.value),
+            note: cl.note ?? null,
+            userName: cl.user?.name ?? null,
+        }))
         return {
             ...c,
             status: (c as any).status ?? null,
             activeStageName: deal ? (stageById.get(deal.stageId) ?? null) : null,
+            activeDealId: deal?.id ?? null,
             assigneeName: deal ? (userById.get(deal.userId) ?? null) : (directAssigneeName ?? null),
             openDealsCount: openDealCountByContact.get(c.id) ?? 0,
             lastActivityAt: lastActivityByContact.get(c.id) ?? null,
             wonDeals: contactWonDeals,
+            closings: contactClosings,
         }
     })
 
