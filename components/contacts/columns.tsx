@@ -3,10 +3,20 @@
 import { ColumnDef } from '@tanstack/react-table'
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
-import { MessageCircle, Trash2, Pencil, Kanban, User, Briefcase, Clock, ArrowUpDown } from "lucide-react"
+import { MessageCircle, Trash2, Pencil, User, Briefcase, Clock, ArrowUpDown } from "lucide-react"
 import { formatDistanceToNow } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
+import { cn } from '@/lib/utils'
 import type { EnrichedContact } from './contacts-data-table-client'
+import { CONTACT_STATUSES } from './contacts-filters'
+
+const STATUS_STYLES: Record<string, { bg: string; text: string; dot: string }> = {
+  active:      { bg: 'bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200/60 dark:border-emerald-800/40', text: 'text-emerald-700 dark:text-emerald-300', dot: 'bg-emerald-500' },
+  prospect:    { bg: 'bg-blue-50 dark:bg-blue-950/40 border border-blue-200/60 dark:border-blue-800/40',           text: 'text-blue-700 dark:text-blue-300',           dot: 'bg-blue-500' },
+  inactive:    { bg: 'bg-zinc-100 dark:bg-zinc-800/60 border border-zinc-200/60 dark:border-zinc-700/40',           text: 'text-zinc-500 dark:text-zinc-400',           dot: 'bg-zinc-400' },
+  researching: { bg: 'bg-amber-50 dark:bg-amber-950/40 border border-amber-200/60 dark:border-amber-800/40',       text: 'text-amber-700 dark:text-amber-300',         dot: 'bg-amber-500' },
+  trash:       { bg: 'bg-red-50 dark:bg-red-950/40 border border-red-200/60 dark:border-red-800/40',               text: 'text-red-600 dark:text-red-400',             dot: 'bg-red-500' },
+}
 
 interface GetColumnsOptions {
     onOpenProfile?: (contact: EnrichedContact) => void
@@ -121,17 +131,19 @@ export function getColumns({ onOpenProfile, onEdit, onDelete, t }: GetColumnsOpt
             },
         },
         {
-            id: 'activeStageName',
-            accessorKey: 'activeStageName',
+            id: 'status',
+            accessorKey: 'status',
             size: 160,
-            header: label('stage', 'Stage'),
+            header: label('status', 'Status'),
             cell: ({ row }) => {
-                const stage = row.original.activeStageName
-                if (!stage) return <span className="text-zinc-400 dark:text-zinc-600">—</span>
+                const status = row.original.status
+                if (!status) return <span className="text-zinc-400 dark:text-zinc-600">—</span>
+                const style = STATUS_STYLES[status]
+                const label2 = CONTACT_STATUSES.find(s => s.value === status)?.label ?? status
                 return (
-                    <div className="inline-flex items-center gap-1.5 px-2 py-1 rounded-full bg-indigo-50 dark:bg-indigo-950/40 border border-indigo-200/60 dark:border-indigo-800/40">
-                        <Kanban className="h-3 w-3 text-indigo-500 dark:text-indigo-400 shrink-0" />
-                        <span className="text-xs font-medium text-indigo-700 dark:text-indigo-300 whitespace-nowrap">{stage}</span>
+                    <div className={cn('inline-flex items-center gap-1.5 px-2 py-1 rounded-full', style?.bg)}>
+                        <span className={cn('h-1.5 w-1.5 rounded-full shrink-0', style?.dot)} />
+                        <span className={cn('text-xs font-medium whitespace-nowrap', style?.text)}>{label2}</span>
                     </div>
                 )
             },

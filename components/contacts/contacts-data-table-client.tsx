@@ -50,6 +50,7 @@ export type EnrichedContact = {
   street: string | null
   streetNumber: string | null
   complement: string | null
+  status: string | null
   createdAt: Date
   updatedAt: Date
   organizationId: string

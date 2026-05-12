@@ -8,22 +8,31 @@ import { Input } from '@/components/ui/input'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 import type { EnrichedContact } from './contacts-data-table-client'
 
+export const CONTACT_STATUSES = [
+  { value: 'active',      label: 'Ativo' },
+  { value: 'prospect',    label: 'Em prospecção' },
+  { value: 'inactive',    label: 'Inativo' },
+  { value: 'researching', label: 'Em pesquisa' },
+  { value: 'trash',       label: 'Lixo' },
+] as const
+
+export type ContactStatus = typeof CONTACT_STATUSES[number]['value']
+
 export type ContactFilters = {
-  assignees: string[] // names; special value '__none__' = sem responsável
+  assignees: string[]
   cities: string[]
   states: string[]
-  stages: string[] // stage names; special value '__none__' = sem deal/etapa
+  statuses: string[]
 }
 
 export const EMPTY_FILTERS: ContactFilters = {
   assignees: [],
   cities: [],
   states: [],
-  stages: [],
+  statuses: [],
 }
 
 const NO_ASSIGNEE = '__none__'
-const NO_STAGE = '__none__'
 
 interface ContactsFiltersProps {
   data: EnrichedContact[]
@@ -32,35 +41,30 @@ interface ContactsFiltersProps {
 }
 
 export function ContactsFilters({ data, value, onChange }: ContactsFiltersProps) {
-  // Build option lists from data
-  const { assigneeOptions, cityOptions, stateOptions, stageOptions } = useMemo(() => {
+  const { assigneeOptions, cityOptions, stateOptions } = useMemo(() => {
     const assigneeSet = new Set<string>()
     const citySet = new Set<string>()
     const stateSet = new Set<string>()
-    const stageSet = new Set<string>()
     let hasUnassigned = false
-    let hasNoStage = false
 
     for (const c of data) {
       if (c.assigneeName) assigneeSet.add(c.assigneeName)
       else hasUnassigned = true
       if (c.city?.trim()) citySet.add(c.city.trim())
       if (c.state?.trim()) stateSet.add(c.state.trim().toUpperCase())
-      if (c.activeStageName) stageSet.add(c.activeStageName)
-      else hasNoStage = true
     }
 
     const assignees = Array.from(assigneeSet).sort((a, b) => a.localeCompare(b, 'pt-BR'))
-    const stages = Array.from(stageSet).sort((a, b) => a.localeCompare(b, 'pt-BR'))
     return {
       assigneeOptions: hasUnassigned ? [NO_ASSIGNEE, ...assignees] : assignees,
       cityOptions: Array.from(citySet).sort((a, b) => a.localeCompare(b, 'pt-BR')),
       stateOptions: Array.from(stateSet).sort(),
-      stageOptions: hasNoStage ? [NO_STAGE, ...stages] : stages,
     }
   }, [data])
 
-  const totalActive = value.assignees.length + value.cities.length + value.states.length + value.stages.length
+  const statusOptions = CONTACT_STATUSES.map(s => s.value)
+
+  const totalActive = value.assignees.length + value.cities.length + value.states.length + value.statuses.length
 
   return (
     <div className="flex flex-wrap items-center gap-2">
@@ -84,11 +88,11 @@ export function ContactsFilters({ data, value, onChange }: ContactsFiltersProps)
         onSelectedChange={(next) => onChange({ ...value, states: next })}
       />
       <FilterPopover
-        label="Etapa"
-        options={stageOptions}
-        selected={value.stages}
-        onSelectedChange={(next) => onChange({ ...value, stages: next })}
-        renderOption={(opt) => (opt === NO_STAGE ? 'Sem etapa' : opt)}
+        label="Status"
+        options={statusOptions}
+        selected={value.statuses}
+        onSelectedChange={(next) => onChange({ ...value, statuses: next })}
+        renderOption={(opt) => CONTACT_STATUSES.find(s => s.value === opt)?.label ?? opt}
       />
       {totalActive > 0 && (
         <Button
@@ -125,8 +129,8 @@ function FilterPopover({
     if (!search.trim()) return options
     const q = search.toLowerCase()
     return options.filter((o) => {
-      const label = (renderOption?.(o) ?? o).toLowerCase()
-      return label.includes(q)
+      const l = (renderOption?.(o) ?? o).toLowerCase()
+      return l.includes(q)
     })
   }, [options, search, renderOption])
 
@@ -225,13 +229,12 @@ function FilterPopover({
   )
 }
 
-// Apply filters in-memory — same array shape as data
 export function applyContactFilters(
   data: EnrichedContact[],
   filters: ContactFilters
 ): EnrichedContact[] {
-  const { assignees, cities, states, stages } = filters
-  if (assignees.length === 0 && cities.length === 0 && states.length === 0 && stages.length === 0) {
+  const { assignees, cities, states, statuses } = filters
+  if (assignees.length === 0 && cities.length === 0 && states.length === 0 && statuses.length === 0) {
     return data
   }
 
@@ -239,8 +242,7 @@ export function applyContactFilters(
   const wantedAssignees = new Set(assignees.filter((a) => a !== NO_ASSIGNEE))
   const wantedCities = new Set(cities)
   const wantedStates = new Set(states.map((s) => s.toUpperCase()))
-  const wantsNoStage = stages.includes(NO_STAGE)
-  const wantedStages = new Set(stages.filter((s) => s !== NO_STAGE))
+  const wantedStatuses = new Set(statuses)
 
   return data.filter((c) => {
     if (assignees.length > 0) {
@@ -256,12 +258,8 @@ export function applyContactFilters(
     if (states.length > 0) {
       if (!c.state || !wantedStates.has(c.state.trim().toUpperCase())) return false
     }
-    if (stages.length > 0) {
-      if (c.activeStageName) {
-        if (!wantedStages.has(c.activeStageName)) return false
-      } else {
-        if (!wantsNoStage) return false
-      }
+    if (statuses.length > 0) {
+      if (!c.status || !wantedStatuses.has(c.status)) return false
     }
     return true
   })

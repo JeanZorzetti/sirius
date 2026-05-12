@@ -20,10 +20,20 @@ import {
     Hash,
     Navigation,
     Calendar,
+    Tag,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import type { EnrichedContact } from './contacts-data-table-client'
+import { CONTACT_STATUSES } from './contacts-filters'
 import { useTranslations } from 'next-intl'
+
+const STATUS_BADGE: Record<string, { bg: string; text: string; dot: string }> = {
+  active:      { bg: 'bg-emerald-500/20', text: 'text-emerald-100', dot: 'bg-emerald-400' },
+  prospect:    { bg: 'bg-blue-500/20',    text: 'text-blue-100',    dot: 'bg-blue-400' },
+  inactive:    { bg: 'bg-white/10',       text: 'text-white/60',    dot: 'bg-white/40' },
+  researching: { bg: 'bg-amber-500/20',   text: 'text-amber-100',   dot: 'bg-amber-400' },
+  trash:       { bg: 'bg-red-500/20',     text: 'text-red-200',     dot: 'bg-red-400' },
+}
 
 interface ContactProfileModalProps {
     contact: EnrichedContact
@@ -139,16 +149,28 @@ export function ContactProfileModal({ contact, open, onOpenChange, onEdit }: Con
                                 <p className="text-sm text-white/70 truncate">{contact.company}</p>
                             )}
 
-                            {/* Pipeline badge */}
-                            {contact.activeStageName && (
-                                <div className="mt-2 inline-flex items-center gap-1.5 rounded-full bg-white/15 px-2.5 py-1 text-[11px] font-semibold text-white/90 backdrop-blur-sm">
-                                    <Kanban className="h-3 w-3" />
-                                    {contact.activeStageName}
-                                    {contact.assigneeName && (
-                                        <span className="text-white/60">· {contact.assigneeName}</span>
-                                    )}
-                                </div>
-                            )}
+                            {/* Badges row */}
+                            <div className="mt-2 flex flex-wrap gap-1.5">
+                                {contact.status && (() => {
+                                    const style = STATUS_BADGE[contact.status]
+                                    const lbl = CONTACT_STATUSES.find(s => s.value === contact.status)?.label ?? contact.status
+                                    return (
+                                        <div className={cn('inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px] font-semibold backdrop-blur-sm', style?.bg, style?.text)}>
+                                            <span className={cn('h-1.5 w-1.5 rounded-full', style?.dot)} />
+                                            {lbl}
+                                        </div>
+                                    )
+                                })()}
+                                {contact.activeStageName && (
+                                    <div className="inline-flex items-center gap-1.5 rounded-full bg-white/15 px-2.5 py-1 text-[11px] font-semibold text-white/90 backdrop-blur-sm">
+                                        <Kanban className="h-3 w-3" />
+                                        {contact.activeStageName}
+                                        {contact.assigneeName && (
+                                            <span className="text-white/60">· {contact.assigneeName}</span>
+                                        )}
+                                    </div>
+                                )}
+                            </div>
                         </div>
                     </div>
 
@@ -249,7 +271,16 @@ export function ContactProfileModal({ contact, open, onOpenChange, onEdit }: Con
                     {/* Meta */}
                     <div>
                         <SectionTitle>Informações</SectionTitle>
-                        <InfoRow icon={Calendar} label="Cadastrado em" value={createdAt} />
+                        <div className="space-y-3">
+                            {contact.status && (
+                                <InfoRow
+                                    icon={Tag}
+                                    label="Status"
+                                    value={CONTACT_STATUSES.find(s => s.value === contact.status)?.label ?? contact.status}
+                                />
+                            )}
+                            <InfoRow icon={Calendar} label="Cadastrado em" value={createdAt} />
+                        </div>
                     </div>
                 </div>
 

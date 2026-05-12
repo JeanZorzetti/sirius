@@ -3,7 +3,7 @@
 import { useTranslations } from 'next-intl'
 
 import { useState } from 'react'
-import { Pencil, MapPin } from 'lucide-react'
+import { Pencil, MapPin, Tag } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import {
     Dialog,
@@ -16,7 +16,15 @@ import {
 } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from '@/components/ui/select'
 import { updateContact } from '@/app/[locale]/dashboard/contacts/actions'
+import { CONTACT_STATUSES } from '@/components/contacts/contacts-filters'
 import { toast } from 'sonner'
 import { useRouter } from 'next/navigation'
 
@@ -32,6 +40,7 @@ type EditableContact = {
     street?: string | null
     streetNumber?: string | null
     complement?: string | null
+    status?: string | null
 }
 
 export function EditContactDialog({
@@ -122,6 +131,29 @@ export function EditContactDialog({
                             <div className="grid grid-cols-4 items-center gap-4">
                                 <Label htmlFor="edit-company" className="text-right text-sm">Empresa</Label>
                                 <Input id="edit-company" name="company" defaultValue={contact.company ?? ''} placeholder="Empresa LTDA" className="col-span-3" />
+                            </div>
+                        </div>
+
+                        {/* Status */}
+                        <div className="flex items-center gap-2">
+                            <Tag className="h-3.5 w-3.5 text-muted-foreground shrink-0" />
+                            <span className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Status</span>
+                            <div className="flex-1 h-px bg-border" />
+                        </div>
+                        <div className="grid grid-cols-4 items-center gap-4">
+                            <Label htmlFor="edit-status" className="text-right text-sm">Etiqueta</Label>
+                            <div className="col-span-3">
+                                <Select name="status" defaultValue={contact.status ?? ''}>
+                                    <SelectTrigger id="edit-status">
+                                        <SelectValue placeholder="Sem status" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectItem value="">Sem status</SelectItem>
+                                        {CONTACT_STATUSES.map(s => (
+                                            <SelectItem key={s.value} value={s.value}>{s.label}</SelectItem>
+                                        ))}
+                                    </SelectContent>
+                                </Select>
                             </div>
                         </div>
 

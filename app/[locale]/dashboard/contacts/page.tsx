@@ -65,6 +65,7 @@ async function ContactsData({ orgId }: { orgId: string }) {
                 street: true,
                 streetNumber: true,
                 complement: true,
+                status: true,
                 createdAt: true,
                 updatedAt: true,
                 organizationId: true,
@@ -141,6 +142,7 @@ async function ContactsData({ orgId }: { orgId: string }) {
         const deal = dealByContact.get(c.id)
         return {
             ...c,
+            status: (c as any).status ?? null,
             activeStageName: deal ? (stageById.get(deal.stageId) ?? null) : null,
             assigneeName: deal ? (userById.get(deal.userId) ?? null) : null,
             openDealsCount: openDealCountByContact.get(c.id) ?? 0,

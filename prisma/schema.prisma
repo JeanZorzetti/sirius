@@ -382,6 +382,9 @@ model Contact {
   // Mobile App (Capacitor)
   visitLogs VisitLog[]
 
+  // Status / etiqueta do contato
+  status         String? // "active" | "prospect" | "inactive" | "researching" | "trash"
+
   // Omie ERP integration
   omieClienteId  String?
   document       String? // CNPJ/CPF
