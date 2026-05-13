@@ -207,26 +207,28 @@ export async function updateContact(contactId: string, formData: FormData) {
     }
 }
 
-export async function updateContactNotes(contactId: string, notes: string) {
+export async function updateContactObservations(contactId: string, observations: string) {
     try {
         const user = await getAuthenticatedUser()
         if (!user) return { success: false, error: 'Unauthorized' }
 
-        const existing = await prisma.contact.findFirst({
-            where: { id: contactId, organizationId: user.organizationId },
-            select: { id: true },
-        })
-        if (!existing) return { success: false, error: 'Contato não encontrado.' }
-
-        await prisma.contact.update({
+        const existing = await prisma.contact.findUnique({
             where: { id: contactId },
-            data: { notes: notes.trim() || null } as any,
+            select: { organizationId: true },
+        })
+        if (!existing || existing.organizationId !== user.organizationId) {
+            return { success: false, error: 'Sem permissão.' }
+        }
+
+        await (prisma.contact.update as any)({
+            where: { id: contactId },
+            data: { observations: observations.trim() || null },
         })
 
         revalidatePath('/dashboard/contacts')
         return { success: true }
     } catch (error: any) {
-        return { success: false, error: `Falha ao salvar observações: ${error?.message || 'Erro desconhecido'}` }
+        return { success: false, error: error?.message || 'Erro ao salvar observações' }
     }
 }
 

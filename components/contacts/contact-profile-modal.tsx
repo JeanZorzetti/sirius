@@ -30,14 +30,12 @@ import {
     FileText,
     Package,
     NotebookPen,
-    Check,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import type { EnrichedContact, ClosingEntry } from './contacts-data-table-client'
 import { CONTACT_STATUSES } from './contacts-filters'
 import { useTranslations } from 'next-intl'
-import { addContactClosing, removeContactClosing, updateContactNotes } from '@/app/[locale]/dashboard/contacts/actions'
-import { toast } from 'sonner'
+import { addContactClosing, removeContactClosing, updateContactObservations } from '@/app/[locale]/dashboard/contacts/actions'
 
 const STATUS_BADGE: Record<string, { bg: string; text: string; dot: string }> = {
   active:      { bg: 'bg-emerald-500/20', text: 'text-emerald-100', dot: 'bg-emerald-400' },
@@ -110,6 +108,27 @@ export function ContactProfileModal({ contact, open, onOpenChange, onEdit }: Con
         setClosings(contact.closings ?? [])
     }, [contact.id, contact.closings])
 
+    // Observations inline edit
+    const [obsText, setObsText] = React.useState(contact.observations ?? '')
+    const [obsSaving, setObsSaving] = React.useState(false)
+    const [obsSaved, setObsSaved] = React.useState(false)
+    const obsTimerRef = React.useRef<ReturnType<typeof setTimeout> | null>(null)
+    React.useEffect(() => {
+        setObsText(contact.observations ?? '')
+    }, [contact.id, contact.observations])
+
+    function handleObsChange(val: string) {
+        setObsText(val)
+        setObsSaved(false)
+        if (obsTimerRef.current) clearTimeout(obsTimerRef.current)
+        obsTimerRef.current = setTimeout(async () => {
+            setObsSaving(true)
+            await updateContactObservations(contact.id, val)
+            setObsSaving(false)
+            setObsSaved(true)
+        }, 900)
+    }
+
     // Add form state
     const [showAddForm, setShowAddForm] = React.useState(false)
     const [addDate, setAddDate] = React.useState(new Date().toISOString().slice(0, 10))
@@ -161,27 +180,6 @@ export function ContactProfileModal({ contact, open, onOpenChange, onEdit }: Con
     }
 
     const totalFaturado = closings.reduce((s, c) => s + c.value, 0)
-
-    // Notes state — auto-save with debounce
-    const [notes, setNotes] = React.useState(contact.notes ?? '')
-    const [notesSaving, setNotesSaving] = React.useState(false)
-    const [notesSaved, setNotesSaved] = React.useState(false)
-    const notesTimerRef = React.useRef<ReturnType<typeof setTimeout> | null>(null)
-
-    React.useEffect(() => { setNotes(contact.notes ?? '') }, [contact.id, contact.notes])
-
-    function handleNotesChange(value: string) {
-        setNotes(value)
-        setNotesSaved(false)
-        if (notesTimerRef.current) clearTimeout(notesTimerRef.current)
-        notesTimerRef.current = setTimeout(async () => {
-            setNotesSaving(true)
-            const result = await updateContactNotes(contact.id, value)
-            setNotesSaving(false)
-            if (result.success) setNotesSaved(true)
-            else toast.error(result.error ?? 'Erro ao salvar')
-        }, 800)
-    }
 
     const initials = contact.name
         .split(' ')
@@ -493,20 +491,22 @@ export function ContactProfileModal({ contact, open, onOpenChange, onEdit }: Con
                         )}
                     </div>
 
-                    {/* Observações */}
-                    {contact.observations && (
-                        <div>
-                            <SectionTitle>Observações</SectionTitle>
-                            <div className="flex items-start gap-3">
-                                <div className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-zinc-100 dark:bg-zinc-800/60">
-                                    <NotebookPen className="h-3.5 w-3.5 text-zinc-500 dark:text-zinc-400" />
-                                </div>
-                                <p className="mt-0.5 text-sm text-zinc-700 dark:text-zinc-300 whitespace-pre-wrap leading-relaxed">
-                                    {contact.observations}
-                                </p>
-                            </div>
+                    {/* Observações — sempre visível, editável inline */}
+                    <div>
+                        <div className="flex items-center gap-2 mb-3">
+                            <span className="text-[10px] font-bold uppercase tracking-widest text-zinc-400 dark:text-zinc-500">Observações</span>
+                            <div className="flex-1 h-px bg-zinc-100 dark:bg-zinc-800" />
+                            {obsSaving && <Loader2 className="h-3 w-3 animate-spin text-zinc-400" />}
+                            {!obsSaving && obsSaved && <span className="text-[10px] text-emerald-500">Salvo</span>}
                         </div>
-                    )}
+                        <textarea
+                            value={obsText}
+                            onChange={e => handleObsChange(e.target.value)}
+                            placeholder="Anotações internas sobre este contato..."
+                            rows={3}
+                            className="w-full resize-y rounded-xl border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800/50 px-3 py-2.5 text-sm text-zinc-700 dark:text-zinc-300 placeholder:text-zinc-400 dark:placeholder:text-zinc-500 outline-none focus:border-indigo-400 dark:focus:border-indigo-500 focus:ring-1 focus:ring-indigo-400/30 transition-colors leading-relaxed"
+                        />
+                    </div>
 
                     {/* Meta */}
                     <div>
@@ -523,25 +523,6 @@ export function ContactProfileModal({ contact, open, onOpenChange, onEdit }: Con
                         </div>
                     </div>
 
-                    {/* Observações */}
-                    <div>
-                        <div className="flex items-center justify-between mb-3">
-                            <div className="flex items-center gap-2">
-                                <span className="text-[10px] font-bold uppercase tracking-widest text-zinc-400 dark:text-zinc-500">Observações</span>
-                                <div className="flex-1 h-px bg-zinc-100 dark:bg-zinc-800" />
-                            </div>
-                            <div className="flex items-center gap-1 ml-3">
-                                {notesSaving && <Loader2 className="h-3 w-3 animate-spin text-zinc-400" />}
-                                {notesSaved && !notesSaving && <Check className="h-3 w-3 text-emerald-500" />}
-                            </div>
-                        </div>
-                        <Textarea
-                            value={notes}
-                            onChange={e => handleNotesChange(e.target.value)}
-                            placeholder="Adicione observações internas sobre este contato..."
-                            className="min-h-[90px] text-sm resize-none bg-zinc-50 dark:bg-zinc-900/60 border-zinc-200 dark:border-zinc-800 focus:border-indigo-400 dark:focus:border-indigo-600 transition-colors"
-                        />
-                    </div>
                 </div>
 
                 {/* Footer */}
