@@ -61,6 +61,8 @@ export async function createContact(formData: FormData) {
             }
         }
 
+        const assignedToId = formData.get('assignedToId') as string
+
         const contact = await prisma.contact.create({
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             data: {
@@ -75,6 +77,7 @@ export async function createContact(formData: FormData) {
                 streetNumber: streetNumber || null,
                 complement: complement || null,
                 status: (status && status !== 'none') ? status : null,
+                assignedToId: (assignedToId && assignedToId !== 'none') ? assignedToId : null,
                 organizationId: user.organizationId
             } as any
         })
@@ -436,12 +439,25 @@ export async function removeContactClosing(closingId: string) {
         const user = await getAuthenticatedUser()
         if (!user) return { success: false, error: 'Unauthorized' }
 
-        const closing = await prisma.dealClosing.findUnique({
+        const closing = await (prisma.dealClosing as any).findUnique({
             where: { id: closingId },
-            include: { deal: { select: { organizationId: true, id: true } } },
+            include: {
+                deal: { select: { organizationId: true, id: true } },
+            },
         })
-        if (!closing || closing.deal.organizationId !== user.organizationId) {
-            return { success: false, error: 'Fechamento não encontrado.' }
+        if (!closing) return { success: false, error: 'Fechamento não encontrado.' }
+
+        // Verify ownership — deal may be null (onDelete: SetNull), fall back to contactId
+        let orgId: string | null = closing.deal?.organizationId ?? null
+        if (!orgId && closing.contactId) {
+            const contact = await prisma.contact.findUnique({
+                where: { id: closing.contactId },
+                select: { organizationId: true },
+            })
+            orgId = contact?.organizationId ?? null
+        }
+        if (orgId !== user.organizationId) {
+            return { success: false, error: 'Sem permissão para remover este fechamento.' }
         }
 
         await prisma.dealClosing.delete({ where: { id: closingId } })

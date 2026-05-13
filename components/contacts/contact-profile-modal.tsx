@@ -7,6 +7,16 @@ import {
     DialogHeader,
     DialogTitle,
 } from '@/components/ui/dialog'
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+} from '@/components/ui/alert-dialog'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
@@ -35,7 +45,9 @@ import { cn } from '@/lib/utils'
 import type { EnrichedContact, ClosingEntry } from './contacts-data-table-client'
 import { CONTACT_STATUSES } from './contacts-filters'
 import { useTranslations } from 'next-intl'
-import { addContactClosing, removeContactClosing, updateContactObservations } from '@/app/[locale]/dashboard/contacts/actions'
+import { addContactClosing, removeContactClosing, updateContactObservations, deleteContact } from '@/app/[locale]/dashboard/contacts/actions'
+import { toast } from 'sonner'
+import { useRouter } from 'next/navigation'
 
 const STATUS_BADGE: Record<string, { bg: string; text: string; dot: string }> = {
   active:      { bg: 'bg-emerald-500/20', text: 'text-emerald-100', dot: 'bg-emerald-400' },
@@ -50,6 +62,7 @@ interface ContactProfileModalProps {
     open: boolean
     onOpenChange: (open: boolean) => void
     onEdit?: () => void
+    onDeleted?: () => void
 }
 
 function InfoRow({
@@ -99,8 +112,31 @@ function SectionTitle({ children }: { children: React.ReactNode }) {
     )
 }
 
-export function ContactProfileModal({ contact, open, onOpenChange, onEdit }: ContactProfileModalProps) {
+export function ContactProfileModal({ contact, open, onOpenChange, onEdit, onDeleted }: ContactProfileModalProps) {
     const tCommon = useTranslations('common')
+    const router = useRouter()
+    const [deleteDialogOpen, setDeleteDialogOpen] = React.useState(false)
+    const [deleting, setDeleting] = React.useState(false)
+
+    async function handleDelete() {
+        setDeleting(true)
+        try {
+            const result = await deleteContact(contact.id)
+            if (result.success) {
+                toast.success('Contato excluído com sucesso')
+                setDeleteDialogOpen(false)
+                onOpenChange(false)
+                onDeleted?.()
+                router.refresh()
+            } else {
+                toast.error(result.error || 'Falha ao excluir contato')
+            }
+        } catch {
+            toast.error('Erro ao excluir contato')
+        } finally {
+            setDeleting(false)
+        }
+    }
 
     // Local closings state — starts from prop, updated optimistically
     const [closings, setClosings] = React.useState<ClosingEntry[]>(contact.closings ?? [])
@@ -527,9 +563,19 @@ export function ContactProfileModal({ contact, open, onOpenChange, onEdit }: Con
 
                 {/* Footer */}
                 <div className="flex items-center justify-between border-t border-border/60 px-6 py-4">
-                    <Button variant="ghost" size="sm" onClick={() => onOpenChange(false)} className="text-muted-foreground">
-                        {tCommon('buttons.close')}
-                    </Button>
+                    <div className="flex items-center gap-2">
+                        <Button variant="ghost" size="sm" onClick={() => onOpenChange(false)} className="text-muted-foreground">
+                            {tCommon('buttons.close')}
+                        </Button>
+                        <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => setDeleteDialogOpen(true)}
+                            className="gap-1.5 text-red-500 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-950/30"
+                        >
+                            <Trash2 className="h-3.5 w-3.5" /> Excluir
+                        </Button>
+                    </div>
                     {onEdit && (
                         <Button size="sm" className="gap-1.5" onClick={() => { onOpenChange(false); onEdit() }}>
                             <Pencil className="h-3.5 w-3.5" /> {tCommon('buttons.edit')}
@@ -538,5 +584,26 @@ export function ContactProfileModal({ contact, open, onOpenChange, onEdit }: Con
                 </div>
             </DialogContent>
         </Dialog>
+
+        <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
+            <AlertDialogContent>
+                <AlertDialogHeader>
+                    <AlertDialogTitle>Excluir contato</AlertDialogTitle>
+                    <AlertDialogDescription>
+                        Tem certeza que deseja excluir <strong>{contact.name}</strong>? Esta ação não pode ser desfeita.
+                    </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                    <AlertDialogCancel disabled={deleting}>Cancelar</AlertDialogCancel>
+                    <AlertDialogAction
+                        onClick={handleDelete}
+                        disabled={deleting}
+                        className="bg-red-600 hover:bg-red-700 text-white"
+                    >
+                        {deleting ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" />Excluindo...</> : 'Excluir'}
+                    </AlertDialogAction>
+                </AlertDialogFooter>
+            </AlertDialogContent>
+        </AlertDialog>
     )
 }
