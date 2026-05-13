@@ -251,6 +251,7 @@ export function ContactProfileModal({ contact, open, onOpenChange, onEdit, onDel
         : null
 
     return (
+        <>
         <Dialog open={open} onOpenChange={onOpenChange}>
             <DialogContent className="sm:max-w-[480px] p-0 overflow-hidden gap-0">
                 {/* Hero header */}
@@ -605,5 +606,6 @@ export function ContactProfileModal({ contact, open, onOpenChange, onEdit, onDel
                 </AlertDialogFooter>
             </AlertDialogContent>
         </AlertDialog>
+        </>
     )
 }
