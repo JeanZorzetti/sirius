@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { Plus, MapPin } from 'lucide-react'
+import { Plus, MapPin, User } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import {
     ResponsiveDialog,
@@ -14,6 +14,13 @@ import {
 } from '@/components/ui/responsive-dialog'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from '@/components/ui/select'
 import { createContact } from '@/app/[locale]/dashboard/contacts/actions'
 import { analytics } from '@/lib/posthog'
 import { useTranslations } from 'next-intl'
@@ -21,13 +28,15 @@ import { useTranslations } from 'next-intl'
 interface CreateContactDialogProps {
     open?: boolean
     onOpenChange?: (open: boolean) => void
+    orgUsers?: { id: string; name: string | null }[]
 }
 
-export function CreateContactDialog({ open: externalOpen, onOpenChange: externalOnOpenChange }: CreateContactDialogProps = {}) {
+export function CreateContactDialog({ open: externalOpen, onOpenChange: externalOnOpenChange, orgUsers = [] }: CreateContactDialogProps = {}) {
     const [internalOpen, setInternalOpen] = useState(false)
     const open = externalOpen !== undefined ? externalOpen : internalOpen
     const setOpen = externalOnOpenChange ?? setInternalOpen
     const [loading, setLoading] = useState(false)
+    const [assignedToId, setAssignedToId] = useState<string>('none')
     const t = useTranslations('components.contacts')
     const tCommon = useTranslations('common')
 
@@ -37,6 +46,7 @@ export function CreateContactDialog({ open: externalOpen, onOpenChange: external
 
         try {
             const formData = new FormData(event.currentTarget)
+            formData.set('assignedToId', assignedToId)
             const result = await createContact(formData)
 
             if (result.success) {
@@ -95,6 +105,31 @@ export function CreateContactDialog({ open: externalOpen, onOpenChange: external
                                 <Input id="company" name="company" placeholder="Empresa LTDA" className="col-span-3" />
                             </div>
                         </div>
+
+                        {/* Responsável */}
+                        {orgUsers.length > 0 && (
+                            <div className="grid grid-cols-4 items-center gap-4">
+                                <Label className="text-right text-sm flex items-center justify-end gap-1.5">
+                                    <User className="h-3.5 w-3.5 text-muted-foreground" />
+                                    Responsável
+                                </Label>
+                                <div className="col-span-3">
+                                    <Select value={assignedToId} onValueChange={setAssignedToId}>
+                                        <SelectTrigger className="w-full">
+                                            <SelectValue placeholder="Sem responsável" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            <SelectItem value="none">Sem responsável</SelectItem>
+                                            {orgUsers.map(u => (
+                                                <SelectItem key={u.id} value={u.id}>
+                                                    {u.name ?? u.id}
+                                                </SelectItem>
+                                            ))}
+                                        </SelectContent>
+                                    </Select>
+                                </div>
+                            </div>
+                        )}
 
                         {/* Separador de endereço */}
                         <div className="flex items-center gap-2">

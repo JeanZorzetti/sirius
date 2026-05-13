@@ -6,9 +6,10 @@ import { CreateContactDialog } from './create-contact-dialog'
 
 interface ContactsPageClientProps {
   contactCount: number
+  orgUsers?: { id: string; name: string | null }[]
 }
 
-export function ContactsPageClient({ contactCount }: ContactsPageClientProps) {
+export function ContactsPageClient({ contactCount, orgUsers = [] }: ContactsPageClientProps) {
   const { setConfig } = useAppBar()
   const [createOpen, setCreateOpen] = useState(false)
 
@@ -31,6 +32,7 @@ export function ContactsPageClient({ contactCount }: ContactsPageClientProps) {
       <CreateContactDialog
         open={createOpen}
         onOpenChange={setCreateOpen}
+        orgUsers={orgUsers}
       />
     </div>
   )

@@ -3,7 +3,6 @@
 import dynamic from 'next/dynamic'
 import { CreateContactDialog } from '@/components/contacts/create-contact-dialog'
 
-// Lazy-load — só baixa quando o componente realmente renderiza no cliente
 const ImportContactsDialog = dynamic(
   () => import('@/components/contacts/import-contacts-dialog').then(m => ({ default: m.ImportContactsDialog })),
   { ssr: false, loading: () => null }
@@ -13,12 +12,16 @@ const ExportButtons = dynamic(
   { ssr: false, loading: () => null }
 )
 
-export function ContactsActionsBar() {
+interface ContactsActionsBarProps {
+  orgUsers?: { id: string; name: string | null }[]
+}
+
+export function ContactsActionsBar({ orgUsers = [] }: ContactsActionsBarProps) {
   return (
     <div className="flex items-center space-x-2 w-full sm:w-auto">
       <ExportButtons resourceType="contacts" />
       <ImportContactsDialog />
-      <CreateContactDialog />
+      <CreateContactDialog orgUsers={orgUsers} />
     </div>
   )
 }
