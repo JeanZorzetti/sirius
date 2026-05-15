@@ -22,6 +22,8 @@ import { UnreadBadge } from './unread-badge'
 import { ConversationFilters } from './conversation-filters'
 import { Button } from '@/components/ui/button'
 import { toast } from 'sonner'
+import { ContextMenu, type ContextMenuItem } from './context-menu'
+import { PinOff, Eye, EyeOff, Archive as ArchiveIcon, ArchiveRestore, Trash2, ExternalLink } from 'lucide-react'
 
 interface Tag {
   id: string
@@ -223,6 +225,71 @@ export function ConversationList({ contacts, selectedContact, onSelectContact, c
     }
   }
 
+  // Quiet variants for context menu (no event arg)
+  const togglePin = async (contactId: string, isPinned: boolean) => {
+    try {
+      const res = await fetch(`/api/whatsapp/conversations/${contactId}/pin`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ isPinned: !isPinned }),
+      })
+      if (!res.ok) throw new Error()
+      toast.success(isPinned ? 'Conversa desafixada' : 'Conversa fixada')
+      onConversationUpdate?.()
+    } catch {
+      toast.error('Erro ao fixar conversa')
+    }
+  }
+
+  const toggleArchive = async (contactId: string, isArchived: boolean) => {
+    try {
+      const res = await fetch(`/api/whatsapp/conversations/${contactId}/archive`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ isArchived: !isArchived }),
+      })
+      if (!res.ok) throw new Error()
+      toast.success(isArchived ? 'Conversa desarquivada' : 'Conversa arquivada')
+      onConversationUpdate?.()
+    } catch {
+      toast.error('Erro ao arquivar conversa')
+    }
+  }
+
+  const markAllAsRead = async (contactId: string) => {
+    try {
+      const res = await fetch('/api/whatsapp/messages/mark-read', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ contactId }),
+      })
+      if (!res.ok) throw new Error()
+      toast.success('Marcado como lido')
+      onConversationUpdate?.()
+    } catch {
+      toast.error('Erro ao marcar como lido')
+    }
+  }
+
+  const clearMessages = async (contactId: string, contactName: string) => {
+    if (!window.confirm(`Limpar todas as mensagens com ${contactName}? Esta ação não pode ser desfeita.`)) return
+    try {
+      const res = await fetch('/api/whatsapp/messages/clear', {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ contactId }),
+      })
+      if (!res.ok) throw new Error()
+      toast.success('Mensagens removidas')
+      onConversationUpdate?.()
+    } catch {
+      toast.error('Erro ao limpar mensagens')
+    }
+  }
+
+  // Context menu state
+  const [contextMenu, setContextMenu] = useState<{ contact: Contact; x: number; y: number } | null>(null)
+
   const filtered = contacts
     .filter(c => {
       // Filter out archived conversations by default
@@ -338,6 +405,10 @@ export function ConversationList({ contacts, selectedContact, onSelectContact, c
               >
                 <button
                   onClick={() => onSelectContact(contact)}
+                  onContextMenu={(e) => {
+                    e.preventDefault()
+                    setContextMenu({ contact, x: e.clientX, y: e.clientY })
+                  }}
                   onKeyDown={(e) => {
                     if (e.key === 'Enter' || e.key === ' ') {
                       e.preventDefault()
@@ -488,6 +559,58 @@ export function ConversationList({ contacts, selectedContact, onSelectContact, c
           })
         )}
       </div>
+
+      {contextMenu && (() => {
+        const c = contextMenu.contact
+        const isPinned = c.chatConversation?.isPinned ?? false
+        const isArchived = c.chatConversation?.isArchived ?? false
+        const hasUnread = (c._count.unreadMessages || 0) > 0
+        const cName = displayName(c)
+        const items: ContextMenuItem[] = [
+          {
+            id: 'open',
+            label: 'Abrir conversa',
+            icon: ExternalLink,
+            onSelect: () => onSelectContact(c),
+          },
+          { id: 'sep1', label: '', onSelect: () => {}, separator: true },
+          {
+            id: 'pin',
+            label: isPinned ? 'Desafixar' : 'Fixar no topo',
+            icon: isPinned ? PinOff : Pin,
+            onSelect: () => togglePin(c.id, isPinned),
+          },
+          {
+            id: 'read',
+            label: hasUnread ? 'Marcar como lido' : 'Já está lido',
+            icon: hasUnread ? Eye : EyeOff,
+            disabled: !hasUnread,
+            onSelect: () => markAllAsRead(c.id),
+          },
+          {
+            id: 'archive',
+            label: isArchived ? 'Desarquivar' : 'Arquivar',
+            icon: isArchived ? ArchiveRestore : ArchiveIcon,
+            onSelect: () => toggleArchive(c.id, isArchived),
+          },
+          { id: 'sep2', label: '', onSelect: () => {}, separator: true },
+          {
+            id: 'clear',
+            label: 'Limpar mensagens',
+            icon: Trash2,
+            variant: 'danger',
+            onSelect: () => clearMessages(c.id, cName),
+          },
+        ]
+        return (
+          <ContextMenu
+            x={contextMenu.x}
+            y={contextMenu.y}
+            items={items}
+            onClose={() => setContextMenu(null)}
+          />
+        )
+      })()}
     </div>
   )
 }

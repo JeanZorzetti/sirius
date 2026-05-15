@@ -33,7 +33,10 @@ import { AIDraftCard } from './ai-draft-card'
 import { AgentActionsBadge } from './agent-actions-badge'
 import { LocationModal } from './location-modal'
 import { ForwardModal } from './forward-modal'
-import { Sparkles, MapPin, Forward as ForwardIcon } from 'lucide-react'
+import { ButtonsComposerModal } from './buttons-composer-modal'
+import { TemplatePickerModal } from './template-picker-modal'
+import { ContextMenu, useContextMenu, type ContextMenuItem } from './context-menu'
+import { Sparkles, MapPin, Forward as ForwardIcon, ListChecks, FileText as FileTextIcon, Clock, Copy, Star, AlertTriangle } from 'lucide-react'
 
 interface Tag { id: string; name: string; color: string }
 interface Deal {
@@ -596,7 +599,13 @@ export function MessageArea({ contact, connections, organizationId, userId, user
   const [coPilotEnabled, setCoPilotEnabled] = useState(false)
   // Modals
   const [showLocationModal, setShowLocationModal] = useState(false)
+  const [showButtonsModal, setShowButtonsModal] = useState(false)
+  const [showTemplateModal, setShowTemplateModal] = useState(false)
   const [forwardingMessage, setForwardingMessage] = useState<WhatsAppMessage | null>(null)
+  // 24h window status
+  const [windowStatus, setWindowStatus] = useState<{ open: boolean; minutesRemaining: number | null } | null>(null)
+  // Context menus
+  const [msgMenu, setMsgMenu] = useState<{ msg: WhatsAppMessage; x: number; y: number } | null>(null)
   const [pendingFile, setPendingFile] = useState<File | null>(null)
   const [pendingFilePreview, setPendingFilePreview] = useState<string | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
@@ -745,6 +754,28 @@ export function MessageArea({ contact, connections, organizationId, userId, user
     lastSeenInboundIdRef.current = null
     setAiDraft(null)
   }, [contact.id])
+
+  // Fetch 24h window status — only relevant for WABA
+  useEffect(() => {
+    if (!wabaEnabled) {
+      setWindowStatus(null)
+      return
+    }
+    let cancelled = false
+    async function fetchStatus() {
+      try {
+        const res = await fetch(`/api/whatsapp/window-status?contactId=${contact.id}`)
+        if (!res.ok) return
+        const data = await res.json()
+        if (!cancelled) setWindowStatus({ open: data.open, minutesRemaining: data.minutesRemaining })
+      } catch {}
+    }
+    fetchStatus()
+    // Re-check every 2 minutes; the moment a new inbound arrives, polling
+    // of messages will reset the window anyway.
+    const interval = setInterval(fetchStatus, 120_000)
+    return () => { cancelled = true; clearInterval(interval) }
+  }, [contact.id, wabaEnabled, messages.length])
 
   // Buscar usuários da organização
   useEffect(() => {
@@ -1573,6 +1604,10 @@ export function MessageArea({ contact, connections, organizationId, userId, user
                     )}
                     onMouseEnter={() => setShowReactionBar(msg.id)}
                     onMouseLeave={() => setShowReactionBar(null)}
+                    onContextMenu={(e) => {
+                      e.preventDefault()
+                      setMsgMenu({ msg, x: e.clientX, y: e.clientY })
+                    }}
                   >
                     {/* Action buttons (shows on hover) */}
                     {!out && (
@@ -1741,6 +1776,35 @@ export function MessageArea({ contact, connections, organizationId, userId, user
         </div>
       )}
 
+      {/* 24h window closed banner — only for WABA */}
+      {wabaEnabled && windowStatus && !windowStatus.open && (
+        <div className="px-4 py-2.5 bg-amber-50 dark:bg-amber-950/30 border-t border-amber-200 dark:border-amber-900/50 flex items-center gap-3">
+          <AlertTriangle className="h-4 w-4 text-amber-600 dark:text-amber-400 flex-shrink-0" />
+          <p className="text-[12.5px] text-amber-800 dark:text-amber-300 flex-1 leading-snug">
+            Janela de 24h fechada — só é possível iniciar com um <strong>template aprovado</strong>.
+          </p>
+          <Button
+            variant="outline"
+            size="sm"
+            className="h-7 text-xs border-amber-300 dark:border-amber-800 text-amber-700 dark:text-amber-300 hover:bg-amber-100 dark:hover:bg-amber-900/40 gap-1 shrink-0"
+            onClick={() => setShowTemplateModal(true)}
+          >
+            <FileTextIcon className="h-3 w-3" />
+            Escolher template
+          </Button>
+        </div>
+      )}
+
+      {/* Window expires soon hint — under 1 hour remaining */}
+      {wabaEnabled && windowStatus?.open && windowStatus.minutesRemaining !== null && windowStatus.minutesRemaining < 60 && (
+        <div className="px-4 py-1.5 bg-amber-50/50 dark:bg-amber-950/20 border-t border-amber-200/60 dark:border-amber-900/30 flex items-center gap-2">
+          <Clock className="h-3 w-3 text-amber-600 dark:text-amber-400 flex-shrink-0" />
+          <p className="text-[11px] text-amber-700 dark:text-amber-400/90 leading-tight">
+            Janela 24h fecha em {windowStatus.minutesRemaining} min — depois disso só templates.
+          </p>
+        </div>
+      )}
+
       {/* AI Draft card */}
       {(aiDraft || aiDraftLoading) && (
         <AIDraftCard
@@ -1882,16 +1946,38 @@ export function MessageArea({ contact, connections, organizationId, userId, user
             </button>
 
             {wabaEnabled && (
-              <button
-                type="button"
-                onClick={() => setShowLocationModal(true)}
-                disabled={sending}
-                aria-label="Enviar localização"
-                title="Enviar localização"
-                className="h-[42px] w-[42px] rounded-full flex items-center justify-center flex-shrink-0 text-[#54656f] hover:text-[#3b4a54] hover:bg-black/5 transition-colors"
-              >
-                <MapPin className="h-5 w-5" />
-              </button>
+              <>
+                <button
+                  type="button"
+                  onClick={() => setShowLocationModal(true)}
+                  disabled={sending}
+                  aria-label="Enviar localização"
+                  title="Enviar localização"
+                  className="h-[42px] w-[42px] rounded-full flex items-center justify-center flex-shrink-0 text-[#54656f] hover:text-[#3b4a54] hover:bg-black/5 transition-colors"
+                >
+                  <MapPin className="h-5 w-5" />
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setShowButtonsModal(true)}
+                  disabled={sending}
+                  aria-label="Enviar mensagem com botões"
+                  title="Enviar mensagem com botões"
+                  className="h-[42px] w-[42px] rounded-full flex items-center justify-center flex-shrink-0 text-[#54656f] hover:text-[#3b4a54] hover:bg-black/5 transition-colors"
+                >
+                  <ListChecks className="h-5 w-5" />
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setShowTemplateModal(true)}
+                  disabled={sending}
+                  aria-label="Enviar template"
+                  title="Enviar template aprovado"
+                  className="h-[42px] w-[42px] rounded-full flex items-center justify-center flex-shrink-0 text-[#54656f] hover:text-[#3b4a54] hover:bg-black/5 transition-colors"
+                >
+                  <FileTextIcon className="h-5 w-5" />
+                </button>
+              </>
             )}
 
             <div className="flex-1 relative">
@@ -2014,6 +2100,70 @@ export function MessageArea({ contact, connections, organizationId, userId, user
         sourceText={forwardingMessage?.text ?? null}
         excludeContactId={contact.id}
       />
+
+      <ButtonsComposerModal
+        open={showButtonsModal}
+        onOpenChange={setShowButtonsModal}
+        contactId={contact.id}
+        onSent={(msg) => setMessages(prev => [...prev, msg])}
+      />
+
+      <TemplatePickerModal
+        open={showTemplateModal}
+        onOpenChange={setShowTemplateModal}
+        contactId={contact.id}
+        onSent={(msg) => setMessages(prev => [...prev, msg])}
+      />
+
+      {/* Message context menu */}
+      {msgMenu && (
+        <ContextMenu
+          x={msgMenu.x}
+          y={msgMenu.y}
+          onClose={() => setMsgMenu(null)}
+          items={buildMessageMenuItems(msgMenu.msg, {
+            onReply: () => setReplyingTo(msgMenu.msg),
+            onForward: () => setForwardingMessage(msgMenu.msg),
+            onCopy: () => {
+              const text = msgMenu.msg.text.replace(/^\[btn:[^\]]+\]\s*/, '')
+              navigator.clipboard.writeText(text).then(
+                () => toast.success('Copiado'),
+                () => toast.error('Não foi possível copiar')
+              )
+            },
+            onScrollToOriginal: msgMenu.msg.replyToId
+              ? () => scrollToMessage(msgMenu.msg.replyToId!)
+              : null,
+          })}
+        />
+      )}
     </div>
   )
+}
+
+function buildMessageMenuItems(
+  msg: WhatsAppMessage,
+  handlers: {
+    onReply: () => void
+    onForward: () => void
+    onCopy: () => void
+    onScrollToOriginal: (() => void) | null
+  }
+): ContextMenuItem[] {
+  const out = msg.direction === 'OUTBOUND'
+  const items: ContextMenuItem[] = [
+    { id: 'reply', label: 'Responder', icon: Reply, onSelect: handlers.onReply },
+    { id: 'forward', label: 'Encaminhar', icon: ForwardIcon, onSelect: handlers.onForward },
+    { id: 'copy', label: 'Copiar texto', icon: Copy, onSelect: handlers.onCopy },
+  ]
+  if (handlers.onScrollToOriginal) {
+    items.push({ id: 'sep1', label: '', onSelect: () => {}, separator: true })
+    items.push({
+      id: 'scroll-original',
+      label: 'Ir para mensagem original',
+      icon: Star,
+      onSelect: handlers.onScrollToOriginal,
+    })
+  }
+  return items
 }
