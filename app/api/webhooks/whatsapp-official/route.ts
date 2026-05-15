@@ -125,11 +125,25 @@ async function handleIncomingMessage(
     let text = ''
     let mediaId: string | null = null
     let mediaType: string | null = null
+    let interactiveReplyId: string | null = null
 
     if (message.type === 'text') {
       text = message.text?.body ?? ''
     } else if (message.type === 'interactive') {
-      text = message.interactive?.button_reply?.title ?? message.interactive?.list_reply?.title ?? ''
+      // Quick-reply button or list selection. We store both the title (text)
+      // and the id (machine-readable) so downstream agents/automations can
+      // route on it without re-parsing strings.
+      const buttonReply = message.interactive?.button_reply
+      const listReply = message.interactive?.list_reply
+      if (buttonReply) {
+        interactiveReplyId = buttonReply.id ?? null
+        text = buttonReply.title ?? ''
+      } else if (listReply) {
+        interactiveReplyId = listReply.id ?? null
+        text = listReply.title ?? ''
+        if (listReply.description) text = `${text}\n${listReply.description}`
+      }
+      mediaType = 'interactive_reply'
     } else if (message.type === 'image') {
       text = message.image?.caption ?? '[Imagem]'
       mediaId = message.image?.id ?? null
@@ -198,13 +212,19 @@ async function handleIncomingMessage(
       }).catch(err => logger.error({ err }, 'WABA ContactEnricher trigger failed'))
     }
 
+    // Prefix interactive replies with the button/list id so downstream
+    // consumers can route on it without needing a schema migration.
+    const persistedText = interactiveReplyId
+      ? `[btn:${interactiveReplyId}] ${text}`
+      : text
+
     // Save message to WA DB (no connectionId — WABA doesn't use WhatsAppConnection records)
     const saved = await prismaWa.whatsAppMessage.create({
       data: {
         organizationId,
         messageId,
         remoteJid: from,
-        text,
+        text: persistedText,
         direction: 'INBOUND',
         status: 'DELIVERED',
         isRead: false,
@@ -227,13 +247,13 @@ async function handleIncomingMessage(
       }).catch(err => logger.error({ err, mediaId }, 'WABA media background download failed'))
     }
 
-    // Trigger IA agents in background — only for text messages
-    if (message.type === 'text' && text.trim()) {
+    // Trigger IA agents in background — for text messages and interactive replies
+    if ((message.type === 'text' || message.type === 'interactive') && text.trim()) {
       triggerAgentsForInboundMessage({
         organizationId,
         contactId: contact.id,
         messageId: saved.id,
-        messageText: text,
+        messageText: text, // Use raw title without [btn:ID] prefix for LLM context
         contactName: contact.name || contactName,
         contactPhone: from,
       }).catch(err => logger.error({ err }, 'WABA agent trigger failed'))

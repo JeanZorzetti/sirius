@@ -22,8 +22,11 @@ interface ForwardModalProps {
   sourceMessageId: string | null
   /** The source message text (for preview only) */
   sourceText: string | null
-  /** All available contacts (typically conversation list) */
-  contacts: ContactOption[]
+  /**
+   * All available contacts (typically conversation list).
+   * If omitted, contacts are fetched from /api/whatsapp/conversations on open.
+   */
+  contacts?: ContactOption[]
   /** The contact ID where source message came from — excluded from targets */
   excludeContactId?: string
 }
@@ -39,20 +42,36 @@ export function ForwardModal({
   onOpenChange,
   sourceMessageId,
   sourceText,
-  contacts,
+  contacts: contactsProp,
   excludeContactId,
 }: ForwardModalProps) {
   const [query, setQuery] = useState('')
   const [selected, setSelected] = useState<Set<string>>(new Set())
   const [sending, setSending] = useState(false)
+  const [fetchedContacts, setFetchedContacts] = useState<ContactOption[]>([])
+  const [loadingContacts, setLoadingContacts] = useState(false)
+
+  const contacts = contactsProp ?? fetchedContacts
 
   useEffect(() => {
     if (!open) {
       setQuery('')
       setSelected(new Set())
       setSending(false)
+      return
     }
-  }, [open])
+    // Fetch contact list when no prop was provided
+    if (!contactsProp && fetchedContacts.length === 0) {
+      setLoadingContacts(true)
+      fetch('/api/whatsapp/conversations')
+        .then(r => r.ok ? r.json() : [])
+        .then((data: Array<{ id: string; name: string | null; phone: string | null }>) => {
+          setFetchedContacts(data.map(c => ({ id: c.id, name: c.name, phone: c.phone })))
+        })
+        .catch(() => {})
+        .finally(() => setLoadingContacts(false))
+    }
+  }, [open, contactsProp, fetchedContacts.length])
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase()
@@ -138,7 +157,11 @@ export function ForwardModal({
         </div>
 
         <div className="max-h-72 overflow-y-auto -mx-2 px-2 space-y-0.5">
-          {filtered.length === 0 ? (
+          {loadingContacts ? (
+            <div className="flex items-center justify-center py-8">
+              <Loader2 className="h-5 w-5 animate-spin text-zinc-400" />
+            </div>
+          ) : filtered.length === 0 ? (
             <p className="text-center text-sm text-zinc-500 py-8">Nenhum contato encontrado</p>
           ) : (
             filtered.map(c => {

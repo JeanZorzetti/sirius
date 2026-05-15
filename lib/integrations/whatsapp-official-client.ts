@@ -288,6 +288,34 @@ export class WhatsAppOfficialClient {
   }
 
   /**
+   * List message templates registered for the WhatsApp Business Account.
+   * Requires the WABA ID (different from phoneNumberId). Pass it as argument.
+   *
+   * Returns templates with name, status (APPROVED/PENDING/REJECTED), language,
+   * category, and components.
+   */
+  async getMessageTemplates(wabaId: string): Promise<{
+    data: Array<{
+      id: string
+      name: string
+      status: 'APPROVED' | 'PENDING' | 'REJECTED' | 'PAUSED' | 'DISABLED'
+      language: string
+      category: string
+      components: Array<{
+        type: 'HEADER' | 'BODY' | 'FOOTER' | 'BUTTONS'
+        text?: string
+        format?: 'TEXT' | 'IMAGE' | 'VIDEO' | 'DOCUMENT'
+        buttons?: Array<{ type: string; text: string; url?: string; phone_number?: string }>
+      }>
+    }>
+    paging?: { cursors?: { before?: string; after?: string }; next?: string }
+  }> {
+    return this.request(
+      `/${wabaId}/message_templates?fields=name,status,language,category,components&limit=100`
+    )
+  }
+
+  /**
    * Send a pre-approved template message
    *
    * Templates must be approved by Meta before use.

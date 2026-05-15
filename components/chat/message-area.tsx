@@ -32,7 +32,8 @@ import { LinkPreviewCard, extractFirstUrl } from './link-preview-card'
 import { AIDraftCard } from './ai-draft-card'
 import { AgentActionsBadge } from './agent-actions-badge'
 import { LocationModal } from './location-modal'
-import { Sparkles, MapPin } from 'lucide-react'
+import { ForwardModal } from './forward-modal'
+import { Sparkles, MapPin, Forward as ForwardIcon } from 'lucide-react'
 
 interface Tag { id: string; name: string; color: string }
 interface Deal {
@@ -595,6 +596,7 @@ export function MessageArea({ contact, connections, organizationId, userId, user
   const [coPilotEnabled, setCoPilotEnabled] = useState(false)
   // Modals
   const [showLocationModal, setShowLocationModal] = useState(false)
+  const [forwardingMessage, setForwardingMessage] = useState<WhatsAppMessage | null>(null)
   const [pendingFile, setPendingFile] = useState<File | null>(null)
   const [pendingFilePreview, setPendingFilePreview] = useState<string | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
@@ -1293,6 +1295,13 @@ export function MessageArea({ contact, connections, organizationId, userId, user
     return null // caption is handled by MediaBubble
   }
 
+  // Parse [btn:ID] prefix from interactive button replies so we can render a pill
+  const parseInteractiveReply = (text: string): { btnId: string; label: string } | null => {
+    const m = text.match(/^\[btn:([^\]]+)\]\s*([\s\S]*)$/)
+    if (!m) return null
+    return { btnId: m[1], label: m[2] }
+  }
+
   return (
     <div
       className="flex-1 flex min-w-0 overflow-hidden relative"
@@ -1565,15 +1574,24 @@ export function MessageArea({ contact, connections, organizationId, userId, user
                     onMouseEnter={() => setShowReactionBar(msg.id)}
                     onMouseLeave={() => setShowReactionBar(null)}
                   >
-                    {/* Reply button (shows on hover) */}
+                    {/* Action buttons (shows on hover) */}
                     {!out && (
-                      <button
-                        onClick={() => setReplyingTo(msg)}
-                        className="opacity-0 group-hover:opacity-100 transition-opacity mr-2 self-end mb-1 p-1.5 rounded-full hover:bg-black/5"
-                        title="Responder"
-                      >
-                        <Reply className="h-4 w-4 text-[#667781]" />
-                      </button>
+                      <div className="opacity-0 group-hover:opacity-100 transition-opacity mr-2 self-end mb-1 flex items-center gap-0.5">
+                        <button
+                          onClick={() => setReplyingTo(msg)}
+                          className="p-1.5 rounded-full hover:bg-black/5"
+                          title="Responder"
+                        >
+                          <Reply className="h-4 w-4 text-[#667781]" />
+                        </button>
+                        <button
+                          onClick={() => setForwardingMessage(msg)}
+                          className="p-1.5 rounded-full hover:bg-black/5"
+                          title="Encaminhar"
+                        >
+                          <ForwardIcon className="h-4 w-4 text-[#667781]" />
+                        </button>
+                      </div>
                     )}
 
                     <div
@@ -1624,15 +1642,24 @@ export function MessageArea({ contact, connections, organizationId, userId, user
                       })()}
 
                       {/* Text content */}
-                      {(!media || displayText) && (
-                        <div className={cn(media && 'px-[6px] pb-[4px] pt-[2px]')}>
-                          <p className="text-[14.2px] leading-[1.46] text-[#111b21] dark:text-zinc-100 whitespace-pre-wrap break-words">
-                            {media ? (displayText || '') : msg.text}
-                            {/* Invisible spacer for timestamp */}
-                            <span className="inline-block w-[70px]" />
-                          </p>
-                        </div>
-                      )}
+                      {(!media || displayText) && (() => {
+                        const rawText = media ? (displayText || '') : msg.text
+                        const reply = parseInteractiveReply(rawText)
+                        return (
+                          <div className={cn(media && 'px-[6px] pb-[4px] pt-[2px]')}>
+                            {reply && (
+                              <div className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded mb-1 bg-[#00a884]/15 text-[#00a884] text-[10px] font-mono font-medium">
+                                <span className="opacity-70">↩</span> {reply.btnId}
+                              </div>
+                            )}
+                            <p className="text-[14.2px] leading-[1.46] text-[#111b21] dark:text-zinc-100 whitespace-pre-wrap break-words">
+                              {reply ? reply.label : rawText}
+                              {/* Invisible spacer for timestamp */}
+                              <span className="inline-block w-[70px]" />
+                            </p>
+                          </div>
+                        )
+                      })()}
 
                       {/* Timestamp + status */}
                       <span className={cn(
@@ -1653,6 +1680,17 @@ export function MessageArea({ contact, connections, organizationId, userId, user
                         )}
                       </span>
                     </div>
+
+                    {/* Forward button for outbound messages */}
+                    {out && (
+                      <button
+                        onClick={() => setForwardingMessage(msg)}
+                        className="opacity-0 group-hover:opacity-100 transition-opacity ml-2 self-end mb-1 p-1.5 rounded-full hover:bg-black/5"
+                        title="Encaminhar"
+                      >
+                        <ForwardIcon className="h-4 w-4 text-[#667781]" />
+                      </button>
+                    )}
 
                     {/* Reaction bar (shows on hover) */}
                     {showReactionBar === msg.id && (
@@ -1967,6 +2005,14 @@ export function MessageArea({ contact, connections, organizationId, userId, user
         onOpenChange={setShowLocationModal}
         contactId={contact.id}
         onSent={(msg) => setMessages(prev => [...prev, msg])}
+      />
+
+      <ForwardModal
+        open={!!forwardingMessage}
+        onOpenChange={(o) => { if (!o) setForwardingMessage(null) }}
+        sourceMessageId={forwardingMessage?.id ?? null}
+        sourceText={forwardingMessage?.text ?? null}
+        excludeContactId={contact.id}
       />
     </div>
   )
