@@ -231,26 +231,12 @@ function FilterPopover({
 
 export function applyContactFilters(
   data: EnrichedContact[],
-  filters: ContactFilters,
-  search?: string
+  filters: ContactFilters
 ): EnrichedContact[] {
   const { assignees, cities, states, statuses } = filters
-  const q = search?.trim().toLowerCase()
-
-  let result = data
-
-  if (q) {
-    result = result.filter((c) => {
-      return (
-        c.name.toLowerCase().includes(q) ||
-        (c.company?.toLowerCase().includes(q) ?? false) ||
-        (c.document?.toLowerCase().replace(/\D/g, '').includes(q.replace(/\D/g, '')) ?? false)
-      )
-    })
-  }
 
   if (assignees.length === 0 && cities.length === 0 && states.length === 0 && statuses.length === 0) {
-    return result
+    return data
   }
 
   const wantsUnassigned = assignees.includes(NO_ASSIGNEE)
@@ -259,7 +245,7 @@ export function applyContactFilters(
   const wantedStates = new Set(states.map((s) => s.toUpperCase()))
   const wantedStatuses = new Set(statuses)
 
-  return result.filter((c) => {
+  return data.filter((c) => {
     if (assignees.length > 0) {
       if (c.assigneeName) {
         if (!wantedAssignees.has(c.assigneeName)) return false

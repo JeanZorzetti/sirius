@@ -82,7 +82,23 @@ export function DataTable<TData extends { id: string }, TValue>({
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     getSortedRowModel: getSortedRowModel(),
-    globalFilterFn: 'includesString',
+    globalFilterFn: (row, _columnId, filterValue: string) => {
+      const q = filterValue.toLowerCase()
+      const r = row.original as Record<string, unknown>
+      const name = (r.name as string | null)?.toLowerCase() ?? ''
+      const company = (r.company as string | null)?.toLowerCase() ?? ''
+      const email = (r.email as string | null)?.toLowerCase() ?? ''
+      const phone = (r.phone as string | null)?.toLowerCase() ?? ''
+      const document = ((r.document as string | null) ?? '').replace(/\D/g, '')
+      const qDigits = q.replace(/\D/g, '')
+      return (
+        name.includes(q) ||
+        company.includes(q) ||
+        email.includes(q) ||
+        phone.includes(q) ||
+        (qDigits.length > 0 && document.includes(qDigits))
+      )
+    },
     enableRowSelection: true,
     state: {
       globalFilter: debouncedFilter,
