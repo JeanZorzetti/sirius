@@ -27,6 +27,8 @@ import { MediaLightbox } from './media-lightbox'
 import { usePusher } from '@/hooks/use-pusher'
 import type { ChatTypingEvent, MessageNewEvent, MessageStatusEvent } from '@/hooks/use-pusher'
 import { useTranslations } from 'next-intl'
+import { useAudioPlayerForMessage } from '@/hooks/use-audio-player'
+import { LinkPreviewCard, extractFirstUrl } from './link-preview-card'
 
 interface Tag { id: string; name: string; color: string }
 interface Deal {
@@ -210,89 +212,41 @@ function fmtAudioTime(s: number): string {
 }
 
 function AudioPlayer({
-  mediaData, outbound, loading, onFetch, containerRef, knownDuration, error,
+  messageId, mediaData, outbound, loading, onFetch, containerRef, knownDuration, error,
 }: {
+  messageId: string
   mediaData: string | null
   outbound: boolean
   loading: boolean
   onFetch: () => void
-  containerRef: React.RefObject<HTMLDivElement>
+  containerRef: React.RefObject<HTMLDivElement | null>
   knownDuration?: number
   error?: boolean
 }) {
-  const audioRef = useRef<HTMLAudioElement>(null)
-  const [playing, setPlaying] = useState(false)
-  const [currentTime, setCurrentTime] = useState(0)
-  const [duration, setDuration] = useState(knownDuration ?? 0)
-  const [playbackRate, setPlaybackRate] = useState(1)
-
-  // Sync knownDuration into state when it arrives (e.g. after message reloads)
-  useEffect(() => {
-    if (knownDuration && knownDuration > 0) setDuration(knownDuration)
-  }, [knownDuration])
+  const player = useAudioPlayerForMessage(messageId)
+  const playing = player.playing
+  const currentTime = player.currentTime
+  const duration = player.isCurrent && player.duration > 0
+    ? player.duration
+    : (knownDuration ?? 0)
+  const playbackRate = player.playbackRate
 
   const progress = duration > 0 ? (currentTime / duration) * 100 : 0
 
-  useEffect(() => {
+  async function togglePlay() {
     if (!mediaData) return
-    const audio = audioRef.current
-    if (!audio) return
-
-    const trySetDuration = () => {
-      if (isFinite(audio.duration) && audio.duration > 0) {
-        setDuration(audio.duration)
-      } else if (!isFinite(audio.duration)) {
-        // Blob/stream Infinity bug — seek far to force real duration
-        audio.currentTime = 9999
-      }
-    }
-
-    const onSeeked = () => {
-      if (audio.currentTime > 0 && (!isFinite(audio.duration) || audio.duration === 0)) {
-        setDuration(audio.currentTime)
-      }
-      audio.currentTime = 0
-    }
-
-    const onTime = () => setCurrentTime(audio.currentTime)
-    const onEnded = () => { setPlaying(false); setCurrentTime(0) }
-
-    audio.addEventListener('loadedmetadata', trySetDuration)
-    audio.addEventListener('durationchange', trySetDuration)
-    audio.addEventListener('seeked', onSeeked)
-    audio.addEventListener('timeupdate', onTime)
-    audio.addEventListener('ended', onEnded)
-    audio.load()
-
-    return () => {
-      audio.removeEventListener('loadedmetadata', trySetDuration)
-      audio.removeEventListener('durationchange', trySetDuration)
-      audio.removeEventListener('seeked', onSeeked)
-      audio.removeEventListener('timeupdate', onTime)
-      audio.removeEventListener('ended', onEnded)
-    }
-  }, [mediaData])
-
-  function togglePlay() {
-    const audio = audioRef.current
-    if (!audio) return
-    if (playing) { audio.pause(); setPlaying(false) }
-    else { audio.play(); setPlaying(true) }
+    await player.toggle(mediaData)
   }
 
   function seekTo(e: React.MouseEvent<HTMLDivElement>) {
-    const audio = audioRef.current
-    if (!audio || !duration) return
+    if (!duration || !player.isCurrent) return
     const rect = e.currentTarget.getBoundingClientRect()
     const pct = (e.clientX - rect.left) / rect.width
-    audio.currentTime = pct * duration
+    player.seek(pct * duration)
   }
 
   function cycleSpeed() {
-    const rates = [1, 1.5, 2]
-    const next = rates[(rates.indexOf(playbackRate) + 1) % rates.length]
-    setPlaybackRate(next)
-    if (audioRef.current) audioRef.current.playbackRate = next
+    player.cycleRate()
   }
 
   const bg = outbound ? 'bg-[#d9fdd3] dark:bg-emerald-900/60' : 'bg-white dark:bg-zinc-800'
@@ -351,7 +305,6 @@ function AudioPlayer({
 
   return (
     <div ref={containerRef}>
-      <audio ref={audioRef} src={mediaData!} preload="metadata" />
       <div className={cn('flex items-center gap-3 rounded-2xl px-3 py-2.5 min-w-[220px] max-w-[280px]', bg)}>
         {/* Play/Pause */}
         <button
@@ -565,7 +518,7 @@ function MediaBubble({ msg, outbound, onOpenLightbox }: { msg: WhatsAppMessage; 
     // Extract duration from text like "[Áudio 0:04]" → 4 seconds
     const durMatch = msg.text?.match(/(\d+):(\d{2})/)
     const knownDuration = durMatch ? parseInt(durMatch[1]) * 60 + parseInt(durMatch[2]) : undefined
-    return <AudioPlayer mediaData={mediaData} outbound={outbound} loading={loading} onFetch={fetchMedia} containerRef={containerRef} knownDuration={knownDuration} error={error} />
+    return <AudioPlayer messageId={msg.id} mediaData={mediaData} outbound={outbound} loading={loading} onFetch={fetchMedia} containerRef={containerRef} knownDuration={knownDuration} error={error} />
   }
 
   // Document
@@ -1537,6 +1490,16 @@ export function MessageArea({ contact, connections, organizationId, userId, user
                           <MediaBubble msg={msg} outbound={out} onOpenLightbox={openLightbox} />
                         </div>
                       )}
+
+                      {/* Link preview (Open Graph) — only for text-only messages with a URL */}
+                      {!media && (() => {
+                        const url = extractFirstUrl(msg.text)
+                        return url ? (
+                          <div className="mt-0.5 mb-1">
+                            <LinkPreviewCard url={url} outbound={out} />
+                          </div>
+                        ) : null
+                      })()}
 
                       {/* Text content */}
                       {(!media || displayText) && (

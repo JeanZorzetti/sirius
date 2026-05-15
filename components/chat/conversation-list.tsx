@@ -147,6 +147,21 @@ export function ConversationList({ contacts, selectedContact, onSelectContact, c
   const [filter, setFilter] = useState<string>('all')
   const [profilePics, setProfilePics] = useState<Record<string, string>>({})
   const fetchedRef = useRef<Set<string>>(new Set())
+  const searchInputRef = useRef<HTMLInputElement>(null)
+
+  // Ctrl+K / Cmd+K focuses the search field
+  useEffect(() => {
+    function onKey(e: KeyboardEvent) {
+      const isMod = e.ctrlKey || e.metaKey
+      if (isMod && (e.key === 'k' || e.key === 'K')) {
+        e.preventDefault()
+        searchInputRef.current?.focus()
+        searchInputRef.current?.select()
+      }
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [])
 
   // Fetch profile pictures for contacts that don't have one cached
   const fetchProfilePic = useCallback(async (contactId: string) => {
@@ -213,10 +228,16 @@ export function ConversationList({ contacts, selectedContact, onSelectContact, c
       // Filter out archived conversations by default
       if (c.chatConversation?.isArchived) return false
 
-      // Search filter
-      const q = query.toLowerCase()
-      const matchesSearch = displayName(c).toLowerCase().includes(q) || (c.phone || '').includes(q)
-      if (!matchesSearch) return false
+      // Search filter — name, phone, or last message preview
+      const q = query.trim().toLowerCase()
+      if (q) {
+        const lastText = (c.whatsappMessages[0]?.text || '').toLowerCase()
+        const matchesSearch =
+          displayName(c).toLowerCase().includes(q) ||
+          (c.phone || '').toLowerCase().includes(q) ||
+          lastText.includes(q)
+        if (!matchesSearch) return false
+      }
 
       // Agent filter
       if (filter === 'all') return true
@@ -264,11 +285,16 @@ export function ConversationList({ contacts, selectedContact, onSelectContact, c
         <div className="relative">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#8696a0]" />
           <Input
-            placeholder="Buscar ou iniciar conversa"
+            ref={searchInputRef}
+            placeholder="Buscar conversa, telefone ou mensagem"
             value={query}
             onChange={e => setQuery(e.target.value)}
-            className="pl-9 h-[34px] bg-[#f0f2f5] whatsapp-input border-0 rounded-lg text-[13px] placeholder:text-[#8696a0] focus-visible:ring-1 focus-visible:ring-[#00a884] whatsapp-text-primary"
+            onKeyDown={e => { if (e.key === 'Escape') { setQuery(''); e.currentTarget.blur() } }}
+            className="pl-9 pr-12 h-[34px] bg-[#f0f2f5] whatsapp-input border-0 rounded-lg text-[13px] placeholder:text-[#8696a0] focus-visible:ring-1 focus-visible:ring-[#00a884] whatsapp-text-primary"
           />
+          <kbd className="hidden sm:inline-flex absolute right-2 top-1/2 -translate-y-1/2 items-center gap-0.5 px-1.5 h-5 rounded border border-[#d1d7db] bg-white text-[10px] font-mono text-[#8696a0] pointer-events-none">
+            <span className="text-[9px]">⌘</span>K
+          </kbd>
         </div>
       </div>
 

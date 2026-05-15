@@ -19,6 +19,8 @@ import { cn } from '@/lib/utils'
 import { usePusher } from '@/hooks/use-pusher'
 import type { MessageNewEvent, ConnectionReadyEvent } from '@/hooks/use-pusher'
 import { useAppBar } from '@/components/mobile/app-bar-context'
+import { AudioPlayerProvider } from '@/hooks/use-audio-player'
+import { KeyboardShortcutsModal } from './keyboard-shortcuts-modal'
 
 interface Connection {
   id: string
@@ -57,7 +59,15 @@ interface ChatInterfaceProps {
   wabaEnabled?: boolean
 }
 
-export function ChatInterface({
+export function ChatInterface(props: ChatInterfaceProps) {
+  return (
+    <AudioPlayerProvider>
+      <ChatInterfaceInner {...props} />
+    </AudioPlayerProvider>
+  )
+}
+
+function ChatInterfaceInner({
   connections: initialConnections,
   contacts: initialContacts,
   userId,
@@ -74,6 +84,20 @@ export function ChatInterface({
   const [isRefreshing, setIsRefreshing] = useState(false)
   // True while the initial sync is running (first load with 0 conversations)
   const [isSyncing, setIsSyncing] = useState(initialContacts.length === 0)
+  const [showShortcuts, setShowShortcuts] = useState(false)
+
+  // Global keyboard shortcuts (Ctrl+/ opens shortcuts modal)
+  useEffect(() => {
+    function onKey(e: KeyboardEvent) {
+      const isMod = e.ctrlKey || e.metaKey
+      if (isMod && e.key === '/') {
+        e.preventDefault()
+        setShowShortcuts(s => !s)
+      }
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [])
 
   const activeConnections = connections.filter(c => c.status === 'CONNECTED')
   const disconnectedConnections = connections.filter(c => c.status === 'DISCONNECTED')
@@ -468,6 +492,8 @@ export function ChatInterface({
           )}
         </>
       )}
+
+      <KeyboardShortcutsModal open={showShortcuts} onOpenChange={setShowShortcuts} />
     </div>
   )
 }
