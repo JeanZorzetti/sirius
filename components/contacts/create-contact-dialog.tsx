@@ -104,6 +104,10 @@ export function CreateContactDialog({ open: externalOpen, onOpenChange: external
                                 <Label htmlFor="company" className="text-right text-sm">{tCommon('fields.company')}</Label>
                                 <Input id="company" name="company" placeholder="Empresa LTDA" className="col-span-3" />
                             </div>
+                            <div className="grid grid-cols-4 items-center gap-4">
+                                <Label htmlFor="document" className="text-right text-sm">CNPJ</Label>
+                                <Input id="document" name="document" placeholder="00.000.000/0001-00" className="col-span-3" />
+                            </div>
                         </div>
 
                         {/* Responsável */}

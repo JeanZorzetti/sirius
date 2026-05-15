@@ -26,7 +26,8 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog'
-import { Loader2 } from 'lucide-react'
+import { Loader2, Search } from 'lucide-react'
+import { Input } from '@/components/ui/input'
 
 // Lazy-load — só carrega o modal quando o usuário abre
 const ContactProfileModal = dynamic(
@@ -84,6 +85,7 @@ export type EnrichedContact = {
   wonDeals: WonDeal[]
   closings: ClosingEntry[]
   notes: string | null
+  document: string | null
 }
 
 interface ContactsDataTableClientProps {
@@ -125,8 +127,9 @@ export function ContactsDataTableClient({ data, orgUsers = [] }: ContactsDataTab
   const [deleteTarget, setDeleteTarget] = useState<EnrichedContact | null>(null)
   const [deleting, setDeleting] = useState(false)
   const [filters, setFilters] = useState<ContactFilters>(EMPTY_FILTERS)
+  const [search, setSearch] = useState('')
 
-  const filteredData = useMemo(() => applyContactFilters(data, filters), [data, filters])
+  const filteredData = useMemo(() => applyContactFilters(data, filters, search), [data, filters, search])
 
   const handleOpenProfile = useCallback((c: EnrichedContact) => setProfileContact(c), [])
   const handleEdit = useCallback((c: EnrichedContact) => setEditContact(c), [])
@@ -160,7 +163,18 @@ export function ContactsDataTableClient({ data, orgUsers = [] }: ContactsDataTab
 
   return (
     <>
-      <ContactsFilters data={data} value={filters} onChange={setFilters} />
+      <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3">
+        <div className="relative w-full sm:max-w-sm">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
+          <Input
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            placeholder="Buscar contatos..."
+            className="pl-9 h-9"
+          />
+        </div>
+        <ContactsFilters data={data} value={filters} onChange={setFilters} />
+      </div>
       <DataTable
         columns={columns}
         data={filteredData}

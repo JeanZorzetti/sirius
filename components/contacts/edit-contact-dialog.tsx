@@ -44,6 +44,7 @@ type EditableContact = {
     status?: string | null
     assignedToId?: string | null
     observations?: string | null
+    document?: string | null
 }
 
 export function EditContactDialog({
@@ -136,6 +137,10 @@ export function EditContactDialog({
                             <div className="grid grid-cols-4 items-center gap-4">
                                 <Label htmlFor="edit-company" className="text-right text-sm">Empresa</Label>
                                 <Input id="edit-company" name="company" defaultValue={contact.company ?? ''} placeholder="Empresa LTDA" className="col-span-3" />
+                            </div>
+                            <div className="grid grid-cols-4 items-center gap-4">
+                                <Label htmlFor="edit-document" className="text-right text-sm">CNPJ</Label>
+                                <Input id="edit-document" name="document" defaultValue={contact.document ?? ''} placeholder="00.000.000/0001-00" className="col-span-3" />
                             </div>
                             {orgUsers.length > 0 && (
                                 <div className="grid grid-cols-4 items-center gap-4">
