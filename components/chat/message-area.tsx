@@ -29,6 +29,10 @@ import type { ChatTypingEvent, MessageNewEvent, MessageStatusEvent } from '@/hoo
 import { useTranslations } from 'next-intl'
 import { useAudioPlayerForMessage } from '@/hooks/use-audio-player'
 import { LinkPreviewCard, extractFirstUrl } from './link-preview-card'
+import { AIDraftCard } from './ai-draft-card'
+import { AgentActionsBadge } from './agent-actions-badge'
+import { LocationModal } from './location-modal'
+import { Sparkles, MapPin } from 'lucide-react'
 
 interface Tag { id: string; name: string; color: string }
 interface Deal {
@@ -585,6 +589,12 @@ export function MessageArea({ contact, connections, organizationId, userId, user
   const [replyingTo, setReplyingTo] = useState<WhatsAppMessage | null>(null)
   const [showSidebar, setShowSidebar] = useState(false)
   const [contactData, setContactData] = useState<Contact | null>(null)
+  // AI draft state
+  const [aiDraft, setAiDraft] = useState<{ text: string; agentName: string; usedRag: boolean } | null>(null)
+  const [aiDraftLoading, setAiDraftLoading] = useState(false)
+  const [coPilotEnabled, setCoPilotEnabled] = useState(false)
+  // Modals
+  const [showLocationModal, setShowLocationModal] = useState(false)
   const [pendingFile, setPendingFile] = useState<File | null>(null)
   const [pendingFilePreview, setPendingFilePreview] = useState<string | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
@@ -713,6 +723,26 @@ export function MessageArea({ contact, connections, organizationId, userId, user
     const i = setInterval(() => fetchMsgs(), 5000)
     return () => clearInterval(i)
   }, [fetchMsgs])
+
+  // Co-pilot: auto-generate a draft when a new INBOUND message arrives
+  const lastSeenInboundIdRef = useRef<string | null>(null)
+  useEffect(() => {
+    if (!coPilotEnabled || messages.length === 0) return
+    const last = messages[messages.length - 1]
+    if (last.direction !== 'INBOUND') return
+    if (lastSeenInboundIdRef.current === last.id) return
+    lastSeenInboundIdRef.current = last.id
+    // Skip on initial load — only react to truly new inbound messages
+    if (Date.now() - new Date(last.sentAt).getTime() > 60_000) return
+    requestAIDraft('default', '')
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [messages, coPilotEnabled])
+
+  // Reset co-pilot state when switching contacts
+  useEffect(() => {
+    lastSeenInboundIdRef.current = null
+    setAiDraft(null)
+  }, [contact.id])
 
   // Buscar usuários da organização
   useEffect(() => {
@@ -901,6 +931,81 @@ export function MessageArea({ contact, connections, organizationId, userId, user
     }
     finally { setSending(false) }
   }
+
+  // ── AI Draft helpers ────────────────────────────────────────
+  const requestAIDraft = useCallback(async (agentId: string = 'default', instruction: string = '') => {
+    setAiDraftLoading(true)
+    try {
+      const res = await fetch('/api/ia/draft', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ contactId: contact.id, agentId, instruction }),
+      })
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}))
+        throw new Error(err.error || 'Erro ao gerar rascunho')
+      }
+      const data = await res.json()
+      setAiDraft({ text: data.draft, agentName: data.agentName, usedRag: !!data.usedRag })
+    } catch (err: unknown) {
+      toast.error(err instanceof Error ? err.message : 'Erro ao gerar rascunho')
+      setAiDraft(null)
+    } finally {
+      setAiDraftLoading(false)
+    }
+  }, [contact.id])
+
+  const sendDraft = useCallback(async (finalText: string) => {
+    const messageText = finalText.trim()
+    if (!messageText) return
+    if (!wabaEnabled && !conn) return
+
+    setAiDraft(null)
+    const tempId = `temp-${Date.now()}-${Math.random().toString(36).substring(7)}`
+    const optimisticMsg: WhatsAppMessage = {
+      id: tempId,
+      text: messageText,
+      direction: 'OUTBOUND',
+      sentAt: new Date(),
+      deliveredAt: null,
+      readAt: null,
+      status: 'SENDING',
+      mediaUrl: null,
+      mediaType: null,
+      messageId: undefined,
+      replyToId: null,
+      replyToText: null,
+      reactions: [],
+    }
+    setMessages(prev => [...prev, optimisticMsg])
+    setTimeout(() => scrollToBottom(), 50)
+
+    setSending(true)
+    try {
+      const url = wabaEnabled ? '/api/whatsapp/send-waba' : '/api/whatsapp/send-message'
+      const payload: any = wabaEnabled
+        ? { contactId: contact.id, message: messageText }
+        : { connectionId: conn, contactId: contact.id, message: messageText }
+      const r = await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      })
+      if (!r.ok) {
+        const d = await r.json().catch(() => ({}))
+        throw new Error(d.error || 'Erro')
+      }
+      const confirmedMsg = await r.json()
+      setMessages(prev => prev.map(m => m.id === tempId ? confirmedMsg : m))
+      setTimeout(() => scrollToBottom(), 100)
+    } catch (err: any) {
+      setMessages(prev => prev.filter(m => m.id !== tempId))
+      toast.error(err.message || 'Erro ao enviar')
+    } finally {
+      setSending(false)
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [wabaEnabled, conn, contact.id])
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
@@ -1266,7 +1371,10 @@ export function MessageArea({ contact, connections, organizationId, userId, user
             </AvatarFallback>
           </Avatar>
           <div>
-            <p className="font-semibold text-[15px] text-[#111b21] dark:text-zinc-100 leading-tight">{name}</p>
+            <div className="flex items-center gap-2">
+              <p className="font-semibold text-[15px] text-[#111b21] dark:text-zinc-100 leading-tight">{name}</p>
+              <AgentActionsBadge contactId={contact.id} />
+            </div>
             {isTyping ? (
               <TypingIndicator variant="inline" className="mt-0.5" />
             ) : (
@@ -1275,6 +1383,20 @@ export function MessageArea({ contact, connections, organizationId, userId, user
           </div>
         </div>
         <div className="flex items-center gap-2">
+          {/* Co-pilot toggle */}
+          <button
+            onClick={() => setCoPilotEnabled(v => !v)}
+            title={coPilotEnabled ? 'Co-pilot IA ativado — clique para desativar' : 'Ativar Co-pilot IA (auto-rascunho em novas mensagens)'}
+            className={cn(
+              'inline-flex items-center gap-1.5 h-7 px-2.5 rounded-full text-[11px] font-semibold transition-all',
+              coPilotEnabled
+                ? 'bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white shadow-sm'
+                : 'border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800'
+            )}
+          >
+            <Sparkles className="h-3 w-3" />
+            Co-pilot {coPilotEnabled ? 'ON' : 'OFF'}
+          </button>
           {/* Agent Assignment (Fase 3.1) */}
           {users.length > 0 && (
             <AgentAssignment
@@ -1581,6 +1703,19 @@ export function MessageArea({ contact, connections, organizationId, userId, user
         </div>
       )}
 
+      {/* AI Draft card */}
+      {(aiDraft || aiDraftLoading) && (
+        <AIDraftCard
+          draft={aiDraft?.text ?? ''}
+          agentName={aiDraft?.agentName ?? 'SiriusAssistant'}
+          usedRag={aiDraft?.usedRag}
+          loading={aiDraftLoading}
+          onSend={sendDraft}
+          onRegenerate={() => requestAIDraft('default', '')}
+          onDismiss={() => setAiDraft(null)}
+        />
+      )}
+
       {/* Reply preview bar */}
       {replyingTo && (
         <div className="px-4 py-2 bg-white whatsapp-header border-t border-[#e9edef] dark:border-zinc-700 flex items-center gap-2">
@@ -1690,6 +1825,37 @@ export function MessageArea({ contact, connections, organizationId, userId, user
               <Paperclip className="h-5 w-5" />
             </button>
 
+            <button
+              type="button"
+              onClick={() => requestAIDraft('default', '')}
+              disabled={sending || aiDraftLoading}
+              aria-label="Pedir rascunho para IA"
+              title="Pedir rascunho para IA"
+              className={cn(
+                'h-[42px] w-[42px] rounded-full flex items-center justify-center flex-shrink-0 transition-all',
+                aiDraftLoading
+                  ? 'text-violet-600 bg-violet-100/60 animate-pulse'
+                  : 'text-violet-600 hover:text-violet-700 hover:bg-violet-100/50'
+              )}
+            >
+              {aiDraftLoading
+                ? <Loader2 className="h-5 w-5 animate-spin" />
+                : <Sparkles className="h-5 w-5" />}
+            </button>
+
+            {wabaEnabled && (
+              <button
+                type="button"
+                onClick={() => setShowLocationModal(true)}
+                disabled={sending}
+                aria-label="Enviar localização"
+                title="Enviar localização"
+                className="h-[42px] w-[42px] rounded-full flex items-center justify-center flex-shrink-0 text-[#54656f] hover:text-[#3b4a54] hover:bg-black/5 transition-colors"
+              >
+                <MapPin className="h-5 w-5" />
+              </button>
+            )}
+
             <div className="flex-1 relative">
               {showQuickReply && taRef.current && (
                 <QuickReplyPicker
@@ -1795,6 +1961,13 @@ export function MessageArea({ contact, connections, organizationId, userId, user
           onChatCleared={() => { setMessages([]); fetchContactData() }}
         />
       )}
+
+      <LocationModal
+        open={showLocationModal}
+        onOpenChange={setShowLocationModal}
+        contactId={contact.id}
+        onSent={(msg) => setMessages(prev => [...prev, msg])}
+      />
     </div>
   )
 }

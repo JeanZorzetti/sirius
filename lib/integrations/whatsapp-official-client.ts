@@ -52,6 +52,39 @@ export interface WabaSendTemplateParams {
   components?: WabaTemplateComponent[]
 }
 
+// ─── Rate limiter (token bucket) ─────────────────────────────────────────────
+// Meta Cloud API: ~80 msg/s for Tier 0; we throttle conservatively at 50 msg/s
+// to leave headroom for media uploads and template sends running in parallel.
+
+const RATE_LIMIT_PER_SECOND = 50
+const tokenState = { tokens: RATE_LIMIT_PER_SECOND, lastRefill: Date.now() }
+
+async function acquireToken(): Promise<void> {
+  // Refill once per call: tokens proportional to elapsed seconds, capped at max
+  const now = Date.now()
+  const elapsed = (now - tokenState.lastRefill) / 1000
+  tokenState.tokens = Math.min(RATE_LIMIT_PER_SECOND, tokenState.tokens + elapsed * RATE_LIMIT_PER_SECOND)
+  tokenState.lastRefill = now
+
+  if (tokenState.tokens >= 1) {
+    tokenState.tokens -= 1
+    return
+  }
+  // Not enough tokens — wait until at least one token will be available
+  const waitMs = Math.ceil(((1 - tokenState.tokens) / RATE_LIMIT_PER_SECOND) * 1000)
+  await new Promise(r => setTimeout(r, waitMs))
+  return acquireToken()
+}
+
+// Errors from Meta that are transient and worth retrying
+const RETRYABLE_STATUS = new Set([408, 429, 500, 502, 503, 504])
+
+function isRetryableError(status: number, err: any): boolean {
+  if (RETRYABLE_STATUS.has(status)) return true
+  const msg = String(err?.message || '').toLowerCase()
+  return msg.includes('timeout') || msg.includes('fetch failed') || msg.includes('econnreset')
+}
+
 // ─── Client ───────────────────────────────────────────────────────────────────
 
 export class WhatsAppOfficialClient {
@@ -65,32 +98,65 @@ export class WhatsAppOfficialClient {
 
   private async request<T>(
     endpoint: string,
-    options: RequestInit = {}
+    options: RequestInit = {},
+    retries: number = 3
   ): Promise<T> {
     const url = `${GRAPH_API_BASE}${endpoint}`
 
-    try {
-      const response = await fetch(url, {
-        ...options,
-        headers: {
-          Authorization: `Bearer ${this.accessToken}`,
-          'Content-Type': 'application/json',
-          ...options.headers
-        }
-      })
+    let lastError: any = null
+    for (let attempt = 0; attempt < retries; attempt++) {
+      // Throttle through token bucket before each attempt
+      await acquireToken()
 
-      const data = await response.json()
+      let response: Response
+      try {
+        response = await fetch(url, {
+          ...options,
+          headers: {
+            Authorization: `Bearer ${this.accessToken}`,
+            'Content-Type': 'application/json',
+            ...options.headers
+          }
+        })
+      } catch (err: any) {
+        lastError = err
+        if (attempt < retries - 1 && isRetryableError(0, err)) {
+          const backoff = Math.min(2000 * Math.pow(2, attempt), 10_000)
+          logger.warn({ url, attempt, backoff, err: err?.message }, 'WhatsApp request transient failure, retrying')
+          await new Promise(r => setTimeout(r, backoff))
+          continue
+        }
+        logger.error({ error: err, url, endpoint }, 'WhatsApp Official API request failed (network)')
+        throw err
+      }
+
+      const data = await response.json().catch(() => ({}))
 
       if (!response.ok) {
         const errMsg = data?.error?.message || `HTTP ${response.status}`
-        throw new Error(`Meta API Error: ${errMsg}`)
+        const err = new Error(`Meta API Error: ${errMsg}`)
+        ;(err as any).status = response.status
+        ;(err as any).code = data?.error?.code
+
+        if (attempt < retries - 1 && isRetryableError(response.status, err)) {
+          // Respect Retry-After if Meta sends it; else exponential backoff
+          const retryAfter = parseInt(response.headers.get('retry-after') || '0', 10)
+          const backoff = retryAfter > 0
+            ? Math.min(retryAfter * 1000, 30_000)
+            : Math.min(2000 * Math.pow(2, attempt), 10_000)
+          logger.warn({ url, status: response.status, attempt, backoff }, 'WhatsApp request rate-limited / 5xx, retrying')
+          await new Promise(r => setTimeout(r, backoff))
+          lastError = err
+          continue
+        }
+        logger.error({ error: err, url, endpoint, status: response.status }, 'WhatsApp Official API request failed')
+        throw err
       }
 
       return data as T
-    } catch (error: any) {
-      logger.error({ error, url, endpoint }, 'WhatsApp Official API request failed')
-      throw error
     }
+
+    throw lastError ?? new Error('WhatsApp request failed after retries')
   }
 
   /**
@@ -120,6 +186,103 @@ export class WhatsAppOfficialClient {
           type: 'text',
           text: { preview_url: false, body: text }
         })
+      }
+    )
+  }
+
+  /**
+   * Send an interactive message with up to 3 quick-reply buttons.
+   * Each button has an id (sent back as a webhook reply) and a title (shown to user, max 20 chars).
+   */
+  async sendInteractiveButtons(
+    to: string,
+    bodyText: string,
+    buttons: Array<{ id: string; title: string }>
+  ): Promise<WabaSendMessageResponse> {
+    if (buttons.length === 0 || buttons.length > 3) {
+      throw new Error('Interactive button messages require 1-3 buttons')
+    }
+    const truncated = buttons.map(b => ({
+      id: b.id,
+      title: b.title.length > 20 ? b.title.slice(0, 20) : b.title,
+    }))
+    return this.request<WabaSendMessageResponse>(
+      `/${this.phoneNumberId}/messages`,
+      {
+        method: 'POST',
+        body: JSON.stringify({
+          messaging_product: 'whatsapp',
+          recipient_type: 'individual',
+          to: normalizePhone(to),
+          type: 'interactive',
+          interactive: {
+            type: 'button',
+            body: { text: bodyText },
+            action: {
+              buttons: truncated.map(b => ({
+                type: 'reply',
+                reply: { id: b.id, title: b.title },
+              })),
+            },
+          },
+        }),
+      }
+    )
+  }
+
+  /**
+   * Send an interactive list message (up to 10 rows across sections).
+   * Better than buttons when you have more than 3 options.
+   */
+  async sendInteractiveList(
+    to: string,
+    bodyText: string,
+    buttonText: string,
+    sections: Array<{ title: string; rows: Array<{ id: string; title: string; description?: string }> }>
+  ): Promise<WabaSendMessageResponse> {
+    return this.request<WabaSendMessageResponse>(
+      `/${this.phoneNumberId}/messages`,
+      {
+        method: 'POST',
+        body: JSON.stringify({
+          messaging_product: 'whatsapp',
+          recipient_type: 'individual',
+          to: normalizePhone(to),
+          type: 'interactive',
+          interactive: {
+            type: 'list',
+            body: { text: bodyText },
+            action: {
+              button: buttonText.length > 20 ? buttonText.slice(0, 20) : buttonText,
+              sections,
+            },
+          },
+        }),
+      }
+    )
+  }
+
+  /**
+   * Send a location pin to a contact.
+   */
+  async sendLocationMessage(
+    to: string,
+    latitude: number,
+    longitude: number,
+    name?: string,
+    address?: string
+  ): Promise<WabaSendMessageResponse> {
+    return this.request<WabaSendMessageResponse>(
+      `/${this.phoneNumberId}/messages`,
+      {
+        method: 'POST',
+        body: JSON.stringify({
+          messaging_product: 'whatsapp',
+          recipient_type: 'individual',
+          to: normalizePhone(to),
+          type: 'location',
+          location: { latitude, longitude, name, address },
+        }),
       }
     )
   }

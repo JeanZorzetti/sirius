@@ -8,6 +8,7 @@ import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { prismaWa } from '@/lib/prisma-wa'
 import { getWhatsAppOfficialClient, normalizePhone } from '@/lib/integrations/whatsapp-official-client'
+import { isWithin24hWindow } from '@/lib/whatsapp/waba-window-check'
 import logger from '@/lib/logger'
 import { apiError } from '@/lib/api-error'
 import { ERR } from '@/lib/error-messages'
@@ -47,6 +48,20 @@ export async function POST(req: NextRequest) {
     const client = await getWhatsAppOfficialClient(user.organizationId)
     if (!client) {
       return NextResponse.json({ error: 'WABA não configurado para esta organização' }, { status: 400 })
+    }
+
+    // Enforce Meta's 24h conversation window for free-form text.
+    // Outside the window the API call would fail with code 131047 — we block
+    // it locally with a clearer message and instruct the user to use templates.
+    const withinWindow = await isWithin24hWindow(contact.id, user.organizationId)
+    if (!withinWindow) {
+      return NextResponse.json(
+        {
+          error: 'Janela de 24h expirada. Para retomar a conversa, envie um template pré-aprovado.',
+          code: 'OUTSIDE_24H_WINDOW',
+        },
+        { status: 409 }
+      )
     }
 
     const phone = normalizePhone(contact.phone)
