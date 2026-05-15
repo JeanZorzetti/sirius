@@ -13,9 +13,8 @@ import {
   RowSelectionState,
 } from '@tanstack/react-table'
 import { TableVirtuoso, VirtuosoGrid } from 'react-virtuoso'
-import { Search, Trash2, Loader2 } from 'lucide-react'
+import { Trash2, Loader2 } from 'lucide-react'
 import { cn } from '@/lib/utils'
-import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { bulkDeleteContacts } from '@/app/[locale]/dashboard/contacts/actions'
 import { toast } from 'sonner'
@@ -35,6 +34,7 @@ import { useTranslations } from 'next-intl'
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
+  search?: string
   renderMobileCard?: (row: Row<TData>) => React.ReactNode
   onRowClick?: (row: Row<TData>) => void
 }
@@ -45,12 +45,11 @@ const VIRTUALIZE_THRESHOLD = 50
 export function DataTable<TData extends { id: string }, TValue>({
   columns,
   data,
+  search = '',
   renderMobileCard,
   onRowClick,
 }: DataTableProps<TData, TValue>) {
   const tCommon = useTranslations('common')
-  const t = useTranslations('components.contacts')
-  const [globalFilter, setGlobalFilter] = useState('')
   const [debouncedFilter, setDebouncedFilter] = useState('')
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({})
   const [sorting, setSorting] = useState<SortingState>([])
@@ -58,11 +57,11 @@ export function DataTable<TData extends { id: string }, TValue>({
   const [confirmOpen, setConfirmOpen] = useState(false)
   const router = useRouter()
 
-  // Debounce filter input — typing was triggering full table re-filter on every keystroke
+  // Debounce external search prop
   useEffect(() => {
-    const t = setTimeout(() => setDebouncedFilter(globalFilter), 250)
-    return () => clearTimeout(t)
-  }, [globalFilter])
+    const id = setTimeout(() => setDebouncedFilter(search), 250)
+    return () => clearTimeout(id)
+  }, [search])
 
   const tableInitRef = useRef(performance.now())
   useEffect(() => {
@@ -105,7 +104,7 @@ export function DataTable<TData extends { id: string }, TValue>({
       rowSelection,
       sorting,
     },
-    onGlobalFilterChange: setGlobalFilter,
+    onGlobalFilterChange: () => {},
     onRowSelectionChange: setRowSelection,
     onSortingChange: setSorting,
   })
@@ -141,44 +140,32 @@ export function DataTable<TData extends { id: string }, TValue>({
 
   return (
     <div className="flex flex-col gap-4">
-      {/* Search + Bulk Toolbar */}
-      <div className="flex items-center gap-3">
-        <div className="relative flex-1 max-w-sm">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-400" />
-          <Input
-            placeholder={t('searchPlaceholder')}
-            value={globalFilter}
-            onChange={(e) => setGlobalFilter(e.target.value)}
-            className="pl-9 bg-white dark:bg-white/[0.02] border-black/10 dark:border-white/10 h-9"
-          />
+      {/* Bulk Toolbar */}
+      {selectedCount > 0 && (
+        <div className="flex items-center gap-2 animate-in fade-in slide-in-from-left-2 duration-200">
+          <span className="text-sm font-medium text-zinc-600 dark:text-zinc-400 px-3 py-1.5 rounded-lg bg-indigo-50 dark:bg-indigo-500/10 border border-indigo-200 dark:border-indigo-500/20 text-indigo-700 dark:text-indigo-300">
+            {selectedCount} selecionado{selectedCount !== 1 ? 's' : ''}
+          </span>
+          <Button
+            size="sm"
+            variant="ghost"
+            onClick={() => setConfirmOpen(true)}
+            disabled={bulkDeleting}
+            className="h-9 gap-2 text-red-600 dark:text-red-400 hover:bg-red-500/10 hover:text-red-600 dark:hover:text-red-400 border border-red-200 dark:border-red-500/20"
+          >
+            {bulkDeleting ? <Loader2 className="h-4 w-4 animate-spin" /> : <Trash2 className="h-4 w-4" />}
+            {tCommon('buttons.delete')} selecionados
+          </Button>
+          <Button
+            size="sm"
+            variant="ghost"
+            onClick={() => setRowSelection({})}
+            className="h-9 text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300"
+          >
+            {tCommon('buttons.cancel')}
+          </Button>
         </div>
-
-        {selectedCount > 0 && (
-          <div className="flex items-center gap-2 animate-in fade-in slide-in-from-left-2 duration-200">
-            <span className="text-sm font-medium text-zinc-600 dark:text-zinc-400 px-3 py-1.5 rounded-lg bg-indigo-50 dark:bg-indigo-500/10 border border-indigo-200 dark:border-indigo-500/20 text-indigo-700 dark:text-indigo-300">
-              {selectedCount} selecionado{selectedCount !== 1 ? 's' : ''}
-            </span>
-            <Button
-              size="sm"
-              variant="ghost"
-              onClick={() => setConfirmOpen(true)}
-              disabled={bulkDeleting}
-              className="h-9 gap-2 text-red-600 dark:text-red-400 hover:bg-red-500/10 hover:text-red-600 dark:hover:text-red-400 border border-red-200 dark:border-red-500/20"
-            >
-              {bulkDeleting ? <Loader2 className="h-4 w-4 animate-spin" /> : <Trash2 className="h-4 w-4" />}
-              {tCommon('buttons.delete')} selecionados
-            </Button>
-            <Button
-              size="sm"
-              variant="ghost"
-              onClick={() => setRowSelection({})}
-              className="h-9 text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300"
-            >
-              {tCommon('buttons.cancel')}
-            </Button>
-          </div>
-        )}
-      </div>
+      )}
 
       {/* Desktop Table */}
       <div
