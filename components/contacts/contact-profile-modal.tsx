@@ -481,7 +481,7 @@ export function ContactProfileModal({ contact, open, onOpenChange, onEdit, onDel
                                                     R$ {cl.value.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
                                                 </span>
                                                 <span className="text-[11px] text-zinc-400 dark:text-zinc-500">
-                                                    {new Date(cl.date).toLocaleDateString('pt-BR', { day: '2-digit', month: 'short', year: 'numeric' })}
+                                                    {(() => { const d = new Date(cl.date); return new Date(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate()).toLocaleDateString('pt-BR', { day: '2-digit', month: 'short', year: 'numeric' }) })()}
                                                 </span>
                                             </div>
                                             <div className="mt-0.5 flex flex-wrap items-center gap-x-3 gap-y-0.5">

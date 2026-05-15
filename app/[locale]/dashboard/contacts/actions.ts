@@ -372,7 +372,7 @@ export async function addContactClosing(contactId: string, data: {
                         title: data.note?.trim() || 'Fechamento registrado',
                         value: data.value,
                         status: 'WON',
-                        wonAt: new Date(data.date),
+                        wonAt: new Date(new Date(data.date).getTime() + 12 * 60 * 60 * 1000),
                         contactId,
                         organizationId: user.organizationId,
                         stageId: firstStage.id,
@@ -394,10 +394,14 @@ export async function addContactClosing(contactId: string, data: {
             return { success: false, error: 'Deal não encontrado.' }
         }
 
+        // Parse date as local noon to avoid UTC offset shifting the day
+        const [year, month, day] = data.date.split('-').map(Number)
+        const localDate = new Date(year, month - 1, day, 12, 0, 0)
+
         const closing = await (prisma.dealClosing as any).create({
             data: {
                 dealId: targetDealId,
-                date: new Date(data.date),
+                date: localDate,
                 value: data.value,
                 note: data.note || null,
                 userId: user.id,
