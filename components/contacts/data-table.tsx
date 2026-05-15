@@ -170,7 +170,7 @@ export function DataTable<TData extends { id: string }, TValue>({
       {/* Desktop Table */}
       <div
         className={cn(
-          'rounded-2xl border border-black/5 dark:border-white/5 bg-white dark:bg-white/[0.02] backdrop-blur-xl shadow-sm overflow-hidden',
+          'rounded-2xl border border-black/5 dark:border-white/5 bg-white dark:bg-white/[0.02] backdrop-blur-xl shadow-sm overflow-auto',
           renderMobileCard ? 'hidden lg:block' : '',
         )}
       >
@@ -180,7 +180,7 @@ export function DataTable<TData extends { id: string }, TValue>({
           </div>
         ) : shouldVirtualize ? (
           <TableVirtuoso
-            style={{ height: 'calc(100vh - 280px)', minHeight: '400px' }}
+            style={{ height: 'calc(100vh - 340px)', minHeight: '400px' }}
             totalCount={rows.length}
             overscan={200}
             components={{
