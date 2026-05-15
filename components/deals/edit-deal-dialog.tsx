@@ -984,73 +984,73 @@ export function EditDealDialog({
                 onClose={() => setShowScriptGenerator(false)}
                 dealId={initialDeal?.id}
             />
-        </ResponsiveDialog>
 
-        <TransferDialog open={showTransferDialog} onOpenChange={setShowTransferDialog}>
-            <TransferDialogContent className="sm:max-w-[420px]">
-                <TransferDialogHeader>
-                    <TransferDialogTitle className="flex items-center gap-2">
-                        <ArrowLeftRight className="w-4 h-4 text-indigo-500" />
-                        Transferir para outro Pipeline
-                    </TransferDialogTitle>
-                </TransferDialogHeader>
+            <TransferDialog open={showTransferDialog} onOpenChange={setShowTransferDialog}>
+                <TransferDialogContent className="sm:max-w-[420px]">
+                    <TransferDialogHeader>
+                        <TransferDialogTitle className="flex items-center gap-2">
+                            <ArrowLeftRight className="w-4 h-4 text-indigo-500" />
+                            Transferir para outro Pipeline
+                        </TransferDialogTitle>
+                    </TransferDialogHeader>
 
-                <div className="space-y-4 py-2">
-                    <div className="space-y-2">
-                        <Label>Pipeline de destino</Label>
-                        <Select
-                            value={transferPipelineId}
-                            onValueChange={(val) => {
-                                setTransferPipelineId(val)
-                                setTransferStageId('')
-                            }}
-                        >
-                            <SelectTrigger>
-                                <SelectValue placeholder="Selecione o pipeline" />
-                            </SelectTrigger>
-                            <SelectContent>
-                                {allPipelines.map(p => (
-                                    <SelectItem key={p.id} value={p.id}>{p.name}</SelectItem>
-                                ))}
-                            </SelectContent>
-                        </Select>
-                    </div>
-
-                    {transferPipelineId && (
+                    <div className="space-y-4 py-2">
                         <div className="space-y-2">
-                            <Label>Etapa de entrada</Label>
-                            <Select value={transferStageId} onValueChange={setTransferStageId}>
+                            <Label>Pipeline de destino</Label>
+                            <Select
+                                value={transferPipelineId}
+                                onValueChange={(val) => {
+                                    setTransferPipelineId(val)
+                                    setTransferStageId('')
+                                }}
+                            >
                                 <SelectTrigger>
-                                    <SelectValue placeholder="Selecione a etapa" />
+                                    <SelectValue placeholder="Selecione o pipeline" />
                                 </SelectTrigger>
                                 <SelectContent>
-                                    {allPipelines
-                                        .find(p => p.id === transferPipelineId)
-                                        ?.stages.map(s => (
-                                            <SelectItem key={s.id} value={s.id}>{s.name}</SelectItem>
-                                        ))
-                                    }
+                                    {allPipelines.map(p => (
+                                        <SelectItem key={p.id} value={p.id}>{p.name}</SelectItem>
+                                    ))}
                                 </SelectContent>
                             </Select>
                         </div>
-                    )}
-                </div>
 
-                <TransferDialogFooter>
-                    <Button variant="outline" onClick={() => setShowTransferDialog(false)}>
-                        Cancelar
-                    </Button>
-                    <Button
-                        onClick={handleTransferPipeline}
-                        disabled={!transferPipelineId || !transferStageId || transferring}
-                        className="bg-indigo-600 hover:bg-indigo-700 text-white"
-                    >
-                        {transferring ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <ArrowLeftRight className="w-4 h-4 mr-2" />}
-                        Transferir
-                    </Button>
-                </TransferDialogFooter>
-            </TransferDialogContent>
-        </TransferDialog>
+                        {transferPipelineId && (
+                            <div className="space-y-2">
+                                <Label>Etapa de entrada</Label>
+                                <Select value={transferStageId} onValueChange={setTransferStageId}>
+                                    <SelectTrigger>
+                                        <SelectValue placeholder="Selecione a etapa" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        {allPipelines
+                                            .find(p => p.id === transferPipelineId)
+                                            ?.stages.map(s => (
+                                                <SelectItem key={s.id} value={s.id}>{s.name}</SelectItem>
+                                            ))
+                                        }
+                                    </SelectContent>
+                                </Select>
+                            </div>
+                        )}
+                    </div>
+
+                    <TransferDialogFooter>
+                        <Button variant="outline" onClick={() => setShowTransferDialog(false)}>
+                            Cancelar
+                        </Button>
+                        <Button
+                            onClick={handleTransferPipeline}
+                            disabled={!transferPipelineId || !transferStageId || transferring}
+                            className="bg-indigo-600 hover:bg-indigo-700 text-white"
+                        >
+                            {transferring ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <ArrowLeftRight className="w-4 h-4 mr-2" />}
+                            Transferir
+                        </Button>
+                    </TransferDialogFooter>
+                </TransferDialogContent>
+            </TransferDialog>
+        </ResponsiveDialog>
 
         <ConfirmDialog
             open={confirmDeleteDeal}
