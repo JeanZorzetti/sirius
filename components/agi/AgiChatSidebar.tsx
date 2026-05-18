@@ -364,7 +364,7 @@ export function AgiChatSidebar({ dealId, pipelineId, context }: AgiChatSidebarPr
                     onClick={() => setIsOpen(true)}
                     className={`fixed z-50 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110 group
                         ${isMobile
-                            ? 'bottom-[calc(3.5rem+env(safe-area-inset-bottom)+0.75rem)] left-4 p-3'
+                            ? 'bottom-[calc(3.5rem+env(safe-area-inset-bottom)+0.75rem)] right-4 p-3'
                             : 'bottom-6 right-6 p-4'
                         }`}
                     aria-label="Abrir AGI Sirius"

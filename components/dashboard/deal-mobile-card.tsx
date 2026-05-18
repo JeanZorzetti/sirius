@@ -18,7 +18,7 @@ interface Deal {
 
 interface DealMobileCardProps {
   deal: Deal
-  onClick: (dealId: string) => void
+  onClick?: (dealId: string) => void
   className?: string
 }
 
@@ -51,7 +51,7 @@ export function DealMobileCard({ deal, onClick, className }: DealMobileCardProps
 
   return (
     <button
-      onClick={() => onClick(deal.id)}
+      onClick={onClick ? () => onClick(deal.id) : undefined}
       className={cn(
         'list-item-card w-full text-left',
         className,

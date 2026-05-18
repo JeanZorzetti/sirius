@@ -5,6 +5,7 @@ import dynamic from 'next/dynamic'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { CreateDealDialog } from '@/components/deals/create-deal-dialog'
+import { EditDealDialog } from '@/components/deals/edit-deal-dialog'
 import { PipelineSelector } from '@/components/pipelines/pipeline-selector'
 import { toast } from 'sonner'
 import { Layout, Loader2, Plus } from 'lucide-react'
@@ -80,6 +81,7 @@ export function DashboardTabs({
   )
 
   const [createDealOpen, setCreateDealOpen] = useState(false)
+  const [editingDeal, setEditingDeal] = useState<any | null>(null)
 
   useEffect(() => {
     const formattedValue = totalValue >= 1_000_000
@@ -107,7 +109,11 @@ export function DashboardTabs({
       <div className="lg:hidden">
         <MobilePipelineList
           stages={filteredStages as any}
+          pipelines={pipelines}
+          selectedPipelineId={selectedPipelineId}
+          onPipelineChange={handlePipelineChange}
           onCreateDeal={() => setCreateDealOpen(true)}
+          onDealClick={(deal) => setEditingDeal(deal)}
         />
       </div>
 
@@ -159,6 +165,14 @@ export function DashboardTabs({
           onSuccess={syncWithServer}
           open={createDealOpen}
           onOpenChange={setCreateDealOpen}
+        />
+        <EditDealDialog
+          deal={editingDeal}
+          open={!!editingDeal}
+          onOpenChange={(open) => { if (!open) setEditingDeal(null) }}
+          stages={filteredStages}
+          contacts={contacts}
+          onSuccess={syncWithServer}
         />
       </div>
     </>
