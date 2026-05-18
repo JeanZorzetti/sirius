@@ -261,7 +261,7 @@ export function CreateDealDialog({
                             </div>
                             <div className="grid grid-cols-4 items-start gap-4">
                                 <Label htmlFor="contactId" className="text-right pt-2">
-                                    Contato
+                                    Nome
                                 </Label>
                                 <div className="col-span-3 space-y-3">
                                     {/* hidden input so FormData picks up the selected contact */}

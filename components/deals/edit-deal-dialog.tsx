@@ -63,7 +63,7 @@ interface EditDealDialogProps {
     open: boolean
     onOpenChange: (open: boolean) => void
     stages: { id: string, name: string }[]
-    contacts: { id: string, name: string, phone?: string | null, email?: string | null }[]
+    contacts: { id: string, name: string, phone?: string | null, email?: string | null, company?: string | null }[]
     onOptimisticUpdate?: (dealId: string, updates: any) => void
     onOptimisticDelete?: (dealId: string) => void
     onRollback?: (tempId: string) => void
@@ -1089,24 +1089,33 @@ function ContactCombobox({
     value,
     onChange,
 }: {
-    contacts: { id: string; name: string; phone?: string | null; email?: string | null }[]
+    contacts: { id: string; name: string; phone?: string | null; email?: string | null; company?: string | null }[]
     value: string
     onChange: (v: string) => void
 }) {
     const [open, setOpen] = useState(false)
     const [search, setSearch] = useState('')
+    const [displayMode, setDisplayMode] = useState<'name' | 'company'>('name')
     const selected = contacts.find((c) => c.id === value)
 
     const filtered = useMemo(() => {
         if (!search.trim()) return contacts
         const q = search.toLowerCase()
-        return contacts.filter((c) => c.name.toLowerCase().includes(q))
+        return contacts.filter((c) =>
+            c.name.toLowerCase().includes(q) ||
+            (c.company ?? '').toLowerCase().includes(q)
+        )
     }, [contacts, search])
 
     function select(id: string) {
         onChange(id)
         setOpen(false)
         setSearch('')
+    }
+
+    function getLabel(c: { name: string; company?: string | null }) {
+        if (displayMode === 'company') return c.company || c.name
+        return c.name
     }
 
     const tCommon = useTranslations('common')
@@ -1123,11 +1132,33 @@ function ContactCombobox({
                         !selected && 'text-muted-foreground'
                     )}
                 >
-                    <span className="truncate">{selected ? selected.name : 'Sem contato'}</span>
+                    <span className="truncate">{selected ? getLabel(selected) : 'Sem contato'}</span>
                     <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                 </button>
             </PopoverTrigger>
             <PopoverContent className="w-[280px] p-0" align="start">
+                <div className="flex items-center gap-3 border-b border-border/60 px-3 py-2">
+                    <label className="flex items-center gap-1.5 cursor-pointer text-xs text-muted-foreground">
+                        <input
+                            type="radio"
+                            name="contact-display-mode"
+                            checked={displayMode === 'name'}
+                            onChange={() => setDisplayMode('name')}
+                            className="accent-indigo-600"
+                        />
+                        Nome
+                    </label>
+                    <label className="flex items-center gap-1.5 cursor-pointer text-xs text-muted-foreground">
+                        <input
+                            type="radio"
+                            name="contact-display-mode"
+                            checked={displayMode === 'company'}
+                            onChange={() => setDisplayMode('company')}
+                            className="accent-indigo-600"
+                        />
+                        Empresa
+                    </label>
+                </div>
                 <div className="flex items-center border-b border-border/60 px-3">
                     <Search className="mr-2 h-4 w-4 shrink-0 text-muted-foreground" />
                     <input
@@ -1164,7 +1195,7 @@ function ContactCombobox({
                                 )}
                             >
                                 <Check className={cn('h-4 w-4 shrink-0', value === c.id ? 'opacity-100 text-indigo-600' : 'opacity-0')} />
-                                <span className="truncate">{c.name}</span>
+                                <span className="truncate">{getLabel(c)}</span>
                             </button>
                         ))
                     )}

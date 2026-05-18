@@ -78,6 +78,7 @@ type Contact = {
   name: string
   phone?: string | null
   email?: string | null
+  company?: string | null
 }
 
 type KanbanBoardProps = {
