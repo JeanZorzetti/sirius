@@ -223,54 +223,35 @@ export function EditDealDialog({
         formData.append('dealId', initialDeal.id)
 
         // Override contactId with the controlled selected value
-        formData.set('contactId', selectedContactId === 'no_contact' ? '' : selectedContactId)
+        const contactIdToSave = selectedContactId === 'no_contact' ? '' : selectedContactId
+        formData.set('contactId', contactIdToSave)
         formData.set('productId', selectedProductId === 'no_product' ? '' : selectedProductId)
 
-        // Extract updates for optimistic UI
-        const updates = {
-            title: formData.get('title') as string,
-            value: formData.get('value') ? parseFloat(formData.get('value') as string) : null,
-            stageId: formData.get('stageId') as string,
-            contactId: selectedContactId === 'no_contact' ? null : selectedContactId,
-            closeDate: formData.get('closeDate') as string || null,
-            dueDate: formData.get('dueDate') as string || null,
-        }
-
-        // Apply optimistic update
-        if (onOptimisticUpdate) {
-            onOptimisticUpdate(initialDeal.id, updates)
-        }
-
-        // Close dialog immediately
-        onOpenChange(false)
-        setLoading(false)
-
-        // Submit to server in background
         try {
             const result = await updateDeal(formData)
 
             if (result.success) {
-                // Sync with server
-                if (onSuccess) {
-                    onSuccess()
+                // Apply optimistic update
+                if (onOptimisticUpdate) {
+                    onOptimisticUpdate(initialDeal.id, {
+                        title: formData.get('title') as string,
+                        value: formData.get('value') ? parseFloat(formData.get('value') as string) : null,
+                        stageId: formData.get('stageId') as string,
+                        contactId: contactIdToSave || null,
+                        closeDate: formData.get('closeDate') as string || null,
+                        dueDate: formData.get('dueDate') as string || null,
+                    })
                 }
+                onOpenChange(false)
+                if (onSuccess) onSuccess()
             } else {
-                // Rollback not really applicable for updates - just show error
-                alert("Erro ao atualizar negócio: " + (result.error || 'Erro desconhecido'))
-
-                // Sync to get correct data
-                if (onSuccess) {
-                    onSuccess()
-                }
+                toast.error("Erro ao atualizar negócio: " + (result.error || 'Erro desconhecido'))
             }
         } catch (error) {
             console.error('Error updating deal:', error)
-            alert("Erro ao atualizar negócio")
-
-            // Sync to get correct data
-            if (onSuccess) {
-                onSuccess()
-            }
+            toast.error("Erro ao atualizar negócio")
+        } finally {
+            setLoading(false)
         }
     }
 
@@ -1117,7 +1098,7 @@ function ContactCombobox({
 
     function getLabel(c: { name: string; company?: string | null }) {
         if (displayMode === 'company') return c.company || c.name
-        return c.name
+        return c.company || c.name
     }
 
     const tCommon = useTranslations('common')
@@ -1197,7 +1178,15 @@ function ContactCombobox({
                                 )}
                             >
                                 <Check className={cn('h-4 w-4 shrink-0', value === c.id ? 'opacity-100 text-indigo-600' : 'opacity-0')} />
-                                <span className="truncate">{getLabel(c)}</span>
+                                <div className="flex flex-col min-w-0">
+                                    <span className="truncate">{getLabel(c)}</span>
+                                    {displayMode === 'name' && c.company && (
+                                        <span className="truncate text-xs text-muted-foreground">{c.company}</span>
+                                    )}
+                                    {displayMode === 'company' && c.name !== (c.company || c.name) && (
+                                        <span className="truncate text-xs text-muted-foreground">{c.name}</span>
+                                    )}
+                                </div>
                             </button>
                         ))
                     )}
