@@ -186,8 +186,10 @@ export function EditDealDialog({
     }, [contacts])
 
     useEffect(() => {
-        setSelectedContactId(initialDeal?.contactId || 'no_contact')
-    }, [initialDeal?.contactId])
+        if (open) {
+            setSelectedContactId(initialDeal?.contactId || 'no_contact')
+        }
+    }, [open, initialDeal?.id])
 
     async function handleQuickAddContact(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault()
@@ -468,7 +470,7 @@ export function EditDealDialog({
                                             </Select>
                                         </div>
                                         <div className="space-y-2">
-                                            <Label>Contato</Label>
+                                            <Label>Nome</Label>
                                             <div className="flex gap-2">
                                                 <ContactCombobox
                                                     contacts={localContacts}
