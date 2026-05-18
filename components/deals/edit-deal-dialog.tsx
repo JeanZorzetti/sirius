@@ -1098,7 +1098,7 @@ function ContactCombobox({
 
     function getLabel(c: { name: string; company?: string | null }) {
         if (displayMode === 'company') return c.company || c.name
-        return c.company || c.name
+        return c.name
     }
 
     const tCommon = useTranslations('common')
@@ -1180,10 +1180,10 @@ function ContactCombobox({
                                 <Check className={cn('h-4 w-4 shrink-0', value === c.id ? 'opacity-100 text-indigo-600' : 'opacity-0')} />
                                 <div className="flex flex-col min-w-0">
                                     <span className="truncate">{getLabel(c)}</span>
-                                    {displayMode === 'name' && c.company && (
+                                    {displayMode === 'name' && c.company && c.company !== c.name && (
                                         <span className="truncate text-xs text-muted-foreground">{c.company}</span>
                                     )}
-                                    {displayMode === 'company' && c.name !== (c.company || c.name) && (
+                                    {displayMode === 'company' && c.company && c.name !== c.company && (
                                         <span className="truncate text-xs text-muted-foreground">{c.name}</span>
                                     )}
                                 </div>
