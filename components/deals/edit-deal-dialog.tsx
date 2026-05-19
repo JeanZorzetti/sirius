@@ -69,6 +69,8 @@ interface EditDealDialogProps {
     onRollback?: (tempId: string) => void
     onSuccess?: () => void
     currentUserId?: string
+    contactDisplayMode?: 'name' | 'company'
+    onContactDisplayModeChange?: (mode: 'name' | 'company') => void
 }
 
 export function EditDealDialog({
@@ -82,6 +84,8 @@ export function EditDealDialog({
     onRollback,
     onSuccess,
     currentUserId,
+    contactDisplayMode: externalDisplayMode,
+    onContactDisplayModeChange,
 }: EditDealDialogProps) {
     const tCommon = useTranslations('common')
     const router = useRouter()
@@ -457,6 +461,8 @@ export function EditDealDialog({
                                                     contacts={localContacts}
                                                     value={selectedContactId}
                                                     onChange={setSelectedContactId}
+                                                    displayMode={externalDisplayMode}
+                                                    onDisplayModeChange={onContactDisplayModeChange}
                                                 />
                                                 <Popover open={quickAddOpen} onOpenChange={setQuickAddOpen}>
                                                     <PopoverTrigger asChild>
@@ -1071,15 +1077,25 @@ function ContactCombobox({
     contacts,
     value,
     onChange,
+    displayMode: externalMode,
+    onDisplayModeChange,
 }: {
     contacts: { id: string; name: string; phone?: string | null; email?: string | null; company?: string | null }[]
     value: string
     onChange: (v: string) => void
+    displayMode?: 'name' | 'company'
+    onDisplayModeChange?: (mode: 'name' | 'company') => void
 }) {
     const [open, setOpen] = useState(false)
     const [search, setSearch] = useState('')
-    const [displayMode, setDisplayMode] = useState<'name' | 'company'>('name')
+    const [internalMode, setInternalMode] = useState<'name' | 'company'>(externalMode || 'name')
+    const displayMode = externalMode ?? internalMode
     const selected = contacts.find((c) => c.id === value)
+
+    function handleDisplayModeChange(mode: 'name' | 'company') {
+        setInternalMode(mode)
+        onDisplayModeChange?.(mode)
+    }
 
     const filtered = useMemo(() => {
         if (!search.trim()) return contacts
@@ -1126,7 +1142,7 @@ function ContactCombobox({
                             type="radio"
                             name="contact-display-mode"
                             checked={displayMode === 'name'}
-                            onChange={() => setDisplayMode('name')}
+                            onChange={() => handleDisplayModeChange('name')}
                             className="accent-indigo-600"
                         />
                         Nome
@@ -1136,7 +1152,7 @@ function ContactCombobox({
                             type="radio"
                             name="contact-display-mode"
                             checked={displayMode === 'company'}
-                            onChange={() => setDisplayMode('company')}
+                            onChange={() => handleDisplayModeChange('company')}
                             className="accent-indigo-600"
                         />
                         Empresa

@@ -49,6 +49,7 @@ type Deal = {
   contact?: {
     name: string
     phone?: string | null
+    company?: string | null
   } | null
   closeDate?: string | Date | null
   dueDate?: string | Date | null
@@ -121,6 +122,7 @@ function DealCard({
   onSwipeNext,
   canSwipePrev,
   canSwipeNext,
+  contactDisplayMode,
 }: {
   deal: Deal
   provided: DraggableProvided
@@ -130,6 +132,7 @@ function DealCard({
   onSwipeNext?: () => void
   canSwipePrev?: boolean
   canSwipeNext?: boolean
+  contactDisplayMode?: 'name' | 'company'
 }) {
   const tCommon = useTranslations('common')
   const router = useRouter()
@@ -230,7 +233,9 @@ function DealCard({
           <div className="pt-3 border-t border-border/50 flex items-center gap-2">
             <div className="w-1.5 h-1.5 rounded-full bg-zinc-400 dark:bg-zinc-700" />
             <div className="text-xs text-muted-foreground truncate max-w-[150px]">
-              {deal.contact.name}
+              {contactDisplayMode === 'company'
+                ? (deal.contact.company || deal.contact.name)
+                : deal.contact.name}
             </div>
           </div>
         )}
@@ -381,6 +386,7 @@ function KanbanColumn({
                       onClick={() => onDealClick?.(deal)}
                       canSwipePrev={hasPrevStage}
                       canSwipeNext={hasNextStage}
+                      contactDisplayMode={contactDisplayMode}
                       onSwipePrev={
                         onSwipeMoveDeal && hasPrevStage
                           ? () => onSwipeMoveDeal(deal.id, 'prev')
@@ -467,6 +473,7 @@ function LostColumn({
                       provided={provided}
                       snapshot={snapshot}
                       onClick={() => onDealClick?.(deal)}
+                      contactDisplayMode={contactDisplayMode}
                     />
                   )}
                 </Draggable>
@@ -500,6 +507,10 @@ export function KanbanBoard({
   const tComponents = useTranslations('components')
   const [stages, setStages] = useState(initialStages)
   const [editingDeal, setEditingDeal] = useState<Deal | null>(null)
+  const [contactDisplayMode, setContactDisplayMode] = useState<'name' | 'company'>(() => {
+    if (typeof window === 'undefined') return 'name'
+    return (localStorage.getItem('contact-display-mode') as 'name' | 'company') || 'name'
+  })
 
   // Lost Reason Modal
   const [pendingLostDealId, setPendingLostDealId] = useState<string | null>(null)
@@ -855,6 +866,11 @@ export function KanbanBoard({
         onOptimisticDelete={onOptimisticDelete}
         onRollback={onRollback}
         onSuccess={onSuccess}
+        contactDisplayMode={contactDisplayMode}
+        onContactDisplayModeChange={(mode) => {
+          setContactDisplayMode(mode)
+          localStorage.setItem('contact-display-mode', mode)
+        }}
       />
 
       <Dialog open={isNewStageOpen} onOpenChange={setIsNewStageOpen}>

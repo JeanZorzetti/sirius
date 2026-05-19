@@ -82,6 +82,10 @@ export function DashboardTabs({
 
   const [createDealOpen, setCreateDealOpen] = useState(false)
   const [editingDeal, setEditingDeal] = useState<any | null>(null)
+  const [contactDisplayMode, setContactDisplayMode] = useState<'name' | 'company'>(() => {
+    if (typeof window === 'undefined') return 'name'
+    return (localStorage.getItem('contact-display-mode') as 'name' | 'company') || 'name'
+  })
 
   useEffect(() => {
     const formattedValue = totalValue >= 1_000_000
@@ -173,6 +177,11 @@ export function DashboardTabs({
           stages={filteredStages}
           contacts={contacts}
           onSuccess={syncWithServer}
+          contactDisplayMode={contactDisplayMode}
+          onContactDisplayModeChange={(mode) => {
+            setContactDisplayMode(mode)
+            localStorage.setItem('contact-display-mode', mode)
+          }}
         />
       </div>
     </>
