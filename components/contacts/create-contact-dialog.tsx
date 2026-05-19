@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { Plus, MapPin, User } from 'lucide-react'
+import { Plus, MapPin, User, Tag, NotebookPen } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import {
     ResponsiveDialog,
@@ -22,6 +22,8 @@ import {
     SelectValue,
 } from '@/components/ui/select'
 import { createContact } from '@/app/[locale]/dashboard/contacts/actions'
+import { CONTACT_STATUSES } from '@/components/contacts/contacts-filters'
+import { Textarea } from '@/components/ui/textarea'
 import { analytics } from '@/lib/posthog'
 import { useTranslations } from 'next-intl'
 
@@ -76,7 +78,7 @@ export function CreateContactDialog({ open: externalOpen, onOpenChange: external
                     </Button>
                 </ResponsiveDialogTrigger>
             )}
-            <ResponsiveDialogContent className="sm:max-w-[520px]">
+            <ResponsiveDialogContent className="sm:max-w-[520px] max-h-[90vh] overflow-y-auto">
                 <ResponsiveDialogHeader>
                     <ResponsiveDialogTitle>{t('createContact')}</ResponsiveDialogTitle>
                     <ResponsiveDialogDescription>
@@ -135,6 +137,29 @@ export function CreateContactDialog({ open: externalOpen, onOpenChange: external
                             </div>
                         )}
 
+                        {/* Status */}
+                        <div className="flex items-center gap-2">
+                            <Tag className="h-3.5 w-3.5 text-muted-foreground shrink-0" />
+                            <span className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Status</span>
+                            <div className="flex-1 h-px bg-border" />
+                        </div>
+                        <div className="grid grid-cols-4 items-center gap-4">
+                            <Label htmlFor="status" className="text-right text-sm">Etiqueta</Label>
+                            <div className="col-span-3">
+                                <Select name="status" defaultValue="none">
+                                    <SelectTrigger id="status">
+                                        <SelectValue placeholder="Sem status" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectItem value="none">Sem status</SelectItem>
+                                        {CONTACT_STATUSES.map(s => (
+                                            <SelectItem key={s.value} value={s.value}>{s.label}</SelectItem>
+                                        ))}
+                                    </SelectContent>
+                                </Select>
+                            </div>
+                        </div>
+
                         {/* Separador de endereço */}
                         <div className="flex items-center gap-2">
                             <MapPin className="h-3.5 w-3.5 text-muted-foreground shrink-0" />
@@ -166,6 +191,22 @@ export function CreateContactDialog({ open: externalOpen, onOpenChange: external
                                     <Input id="state" name="state" placeholder="SP" maxLength={2} className="w-16 uppercase" />
                                 </div>
                             </div>
+                        </div>
+
+                        {/* Observações */}
+                        <div className="flex items-center gap-2">
+                            <NotebookPen className="h-3.5 w-3.5 text-muted-foreground shrink-0" />
+                            <span className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Observações</span>
+                            <div className="flex-1 h-px bg-border" />
+                        </div>
+                        <div className="grid grid-cols-4 items-start gap-4">
+                            <Label htmlFor="observations" className="text-right text-sm pt-2">Anotações</Label>
+                            <Textarea
+                                id="observations"
+                                name="observations"
+                                placeholder="Anotações internas sobre este contato..."
+                                className="col-span-3 min-h-[100px] resize-y text-sm"
+                            />
                         </div>
                     </div>
                 </form>

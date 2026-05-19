@@ -44,6 +44,7 @@ export async function createContact(formData: FormData) {
         const streetNumber = formData.get('streetNumber') as string
         const complement = formData.get('complement') as string
         const status = formData.get('status') as string
+        const observations = formData.get('observations') as string
         const document = formData.get('document') as string
 
         if (!name) {
@@ -78,6 +79,7 @@ export async function createContact(formData: FormData) {
                 streetNumber: streetNumber || null,
                 complement: complement || null,
                 status: (status && status !== 'none') ? status : null,
+                observations: observations?.trim() || null,
                 assignedToId: (assignedToId && assignedToId !== 'none') ? assignedToId : null,
                 document: document || null,
                 organizationId: user.organizationId
