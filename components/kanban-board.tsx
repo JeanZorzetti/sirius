@@ -291,6 +291,7 @@ function KanbanColumn({
   onSwipeMoveDeal,
   hasPrevStage,
   hasNextStage,
+  contactDisplayMode,
 }: {
   stage: Stage
   onDealClick?: (deal: Deal) => void
@@ -299,6 +300,7 @@ function KanbanColumn({
   onSwipeMoveDeal?: (dealId: string, direction: 'prev' | 'next') => void
   hasPrevStage?: boolean
   hasNextStage?: boolean
+  contactDisplayMode?: 'name' | 'company'
 }) {
   const totalValue = stage.deals.reduce((acc, deal) => acc + (deal.value ? Number(deal.value) : 0), 0)
 
@@ -428,9 +430,11 @@ function KanbanColumn({
 function LostColumn({
   deals,
   onDealClick,
+  contactDisplayMode,
 }: {
   deals: Deal[]
   onDealClick?: (deal: Deal) => void
+  contactDisplayMode?: 'name' | 'company'
 }) {
   const totalValue = deals.reduce((acc, d) => acc + (d.value ? Number(d.value) : 0), 0)
 
@@ -845,11 +849,13 @@ export function KanbanBoard({
               onSwipeMoveDeal={handleSwipeMove}
               hasPrevStage={idx > 0}
               hasNextStage={idx < filteredStages.length - 1}
+              contactDisplayMode={contactDisplayMode}
             />
           ))}
           <LostColumn
             deals={lostDeals}
             onDealClick={(deal) => setEditingDeal(deal)}
+            contactDisplayMode={contactDisplayMode}
           />
           <div className="w-10 shrink-0" />
         </div>
