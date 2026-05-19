@@ -2,7 +2,7 @@
 
 import { useTranslations } from 'next-intl'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Pencil, MapPin, Tag, User, NotebookPen } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import {
@@ -66,6 +66,13 @@ export function EditContactDialog({
     const open = isControlled ? controlledOpen : internalOpen
     const setOpen = isControlled ? (controlledOnOpenChange ?? (() => {})) : setInternalOpen
     const [loading, setLoading] = useState(false)
+    const [assignedToIdValue, setAssignedToIdValue] = useState(contact.assignedToId ?? 'none')
+    const [statusValue, setStatusValue] = useState(contact.status ?? 'none')
+
+    useEffect(() => {
+        setAssignedToIdValue(contact.assignedToId ?? 'none')
+        setStatusValue(contact.status ?? 'none')
+    }, [contact.assignedToId, contact.status])
 
     async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault()
@@ -146,7 +153,8 @@ export function EditContactDialog({
                                 <div className="grid grid-cols-4 items-center gap-4">
                                     <Label htmlFor="edit-assignedTo" className="text-right text-sm">Responsável</Label>
                                     <div className="col-span-3">
-                                        <Select name="assignedToId" defaultValue={contact.assignedToId ?? 'none'}>
+                                        <input type="hidden" name="assignedToId" value={assignedToIdValue} />
+                                        <Select value={assignedToIdValue} onValueChange={setAssignedToIdValue}>
                                             <SelectTrigger id="edit-assignedTo">
                                                 <SelectValue placeholder="Sem responsável" />
                                             </SelectTrigger>
@@ -179,7 +187,8 @@ export function EditContactDialog({
                         <div className="grid grid-cols-4 items-center gap-4">
                             <Label htmlFor="edit-status" className="text-right text-sm">Etiqueta</Label>
                             <div className="col-span-3">
-                                <Select name="status" defaultValue={contact.status ?? 'none'}>
+                                <input type="hidden" name="status" value={statusValue} />
+                                <Select value={statusValue} onValueChange={setStatusValue}>
                                     <SelectTrigger id="edit-status">
                                         <SelectValue placeholder="Sem status" />
                                     </SelectTrigger>

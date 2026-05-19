@@ -270,7 +270,7 @@ export function ContactProfileModal({ contact, open, onOpenChange, onEdit, onDel
                         <div className="min-w-0 flex-1 pt-1">
                             <h2 className="text-lg font-bold tracking-tight text-white truncate">{contact.name}</h2>
                             {contact.company && (
-                                <p className="text-sm text-white/70 truncate">{contact.company}</p>
+                                <p className="text-sm text-white/70 break-words leading-tight">{contact.company}</p>
                             )}
 
                             <div className="mt-2 flex flex-wrap gap-1.5">
