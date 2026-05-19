@@ -42,6 +42,7 @@ type Contact = {
     id: string
     name: string
     phone?: string | null
+    company?: string | null
 }
 
 
@@ -298,12 +299,18 @@ export function CreateDealDialog({
                                                     </div>
                                                     <div className="max-h-52 overflow-y-auto py-1">
                                                         {contacts
-                                                            .filter(c => c.name.toLowerCase().includes(contactSearch.toLowerCase()))
+                                                            .filter(c => {
+                                                                const q = contactSearch.toLowerCase()
+                                                                return c.name.toLowerCase().includes(q) || (c.company ?? '').toLowerCase().includes(q)
+                                                            })
                                                             .length === 0 ? (
                                                             <p className="py-6 text-center text-sm text-muted-foreground">Nenhum contato encontrado.</p>
                                                         ) : (
                                                             contacts
-                                                                .filter(c => c.name.toLowerCase().includes(contactSearch.toLowerCase()))
+                                                                .filter(c => {
+                                                                    const q = contactSearch.toLowerCase()
+                                                                    return c.name.toLowerCase().includes(q) || (c.company ?? '').toLowerCase().includes(q)
+                                                                })
                                                                 .map((contact) => (
                                                                     <button
                                                                         key={contact.id}
@@ -319,7 +326,12 @@ export function CreateDealDialog({
                                                                         }}
                                                                     >
                                                                         <Check className={cn('h-4 w-4 shrink-0', selectedContactId === contact.id ? 'opacity-100' : 'opacity-0')} />
-                                                                        {contact.name}
+                                                                        <span className="flex flex-col items-start">
+                                                                            <span>{contact.name}</span>
+                                                                            {contact.company && (
+                                                                                <span className="text-xs text-muted-foreground">{contact.company}</span>
+                                                                            )}
+                                                                        </span>
                                                                     </button>
                                                                 ))
                                                         )}
