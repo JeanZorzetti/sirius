@@ -108,7 +108,6 @@ export function SwipeableRow({
       axis: 'x',
       pointer: { touch: true },
       filterTaps: true,
-      preventScroll: true,
     },
   )
 
