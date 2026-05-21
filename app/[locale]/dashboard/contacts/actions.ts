@@ -63,6 +63,28 @@ export async function createContact(formData: FormData) {
             }
         }
 
+        // Check for duplicate name
+        const nameTrimmed = name.trim()
+        const duplicateName = await prisma.contact.findFirst({
+            where: { organizationId: user.organizationId, name: { equals: nameTrimmed, mode: 'insensitive' } },
+            select: { id: true },
+        })
+        if (duplicateName) {
+            return { success: false, error: 'Já existe um contato com este nome.', code: 'DUPLICATE_NAME' }
+        }
+
+        // Check for duplicate CNPJ
+        const documentTrimmed = document?.trim()
+        if (documentTrimmed) {
+            const duplicateDoc = await prisma.contact.findFirst({
+                where: { organizationId: user.organizationId, document: documentTrimmed },
+                select: { id: true },
+            })
+            if (duplicateDoc) {
+                return { success: false, error: 'Já existe um contato com este CNPJ.', code: 'DUPLICATE_DOCUMENT' }
+            }
+        }
+
         const assignedToId = formData.get('assignedToId') as string
 
         const contact = await prisma.contact.create({

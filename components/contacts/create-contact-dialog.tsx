@@ -39,11 +39,13 @@ export function CreateContactDialog({ open: externalOpen, onOpenChange: external
     const setOpen = externalOnOpenChange ?? setInternalOpen
     const [loading, setLoading] = useState(false)
     const [assignedToId, setAssignedToId] = useState<string>('none')
+    const [fieldErrors, setFieldErrors] = useState<{ name?: string; document?: string; general?: string }>({})
     const t = useTranslations('components.contacts')
     const tCommon = useTranslations('common')
 
     async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault()
+        setFieldErrors({})
         setLoading(true)
 
         try {
@@ -54,23 +56,35 @@ export function CreateContactDialog({ open: externalOpen, onOpenChange: external
             if (result.success) {
                 setOpen(false)
             } else {
-                if ('code' in result && result.code === 'PLAN_LIMIT_REACHED') {
+                const code = 'code' in result ? result.code : undefined
+                if (code === 'PLAN_LIMIT_REACHED') {
                     analytics.limitReached({
                         limit_type: 'contacts',
                         current_count: result.current || 0
                     })
+                    setFieldErrors({ general: result.error || tCommon('toasts.failedSave') })
+                } else if (code === 'DUPLICATE_NAME') {
+                    setFieldErrors({ name: result.error || 'Já existe um contato com este nome.' })
+                } else if (code === 'DUPLICATE_DOCUMENT') {
+                    setFieldErrors({ document: result.error || 'Já existe um contato com este CNPJ.' })
+                } else {
+                    setFieldErrors({ general: result.error || tCommon('toasts.failedSave') })
                 }
-                alert(result.error || tCommon('toasts.failedSave'))
             }
         } catch {
-            alert(tCommon('toasts.failed'))
+            setFieldErrors({ general: tCommon('toasts.failed') })
         } finally {
             setLoading(false)
         }
     }
 
+    function handleOpenChange(value: boolean) {
+        if (!value) setFieldErrors({})
+        setOpen(value)
+    }
+
     return (
-        <ResponsiveDialog open={open} onOpenChange={setOpen}>
+        <ResponsiveDialog open={open} onOpenChange={handleOpenChange}>
             {externalOpen === undefined && (
                 <ResponsiveDialogTrigger asChild>
                     <Button>
@@ -88,11 +102,26 @@ export function CreateContactDialog({ open: externalOpen, onOpenChange: external
 
                 <form id="create-contact-form" onSubmit={onSubmit}>
                     <div className="grid gap-5 py-2">
+                        {fieldErrors.general && (
+                            <p className="text-sm text-destructive bg-destructive/10 rounded-md px-3 py-2">{fieldErrors.general}</p>
+                        )}
                         {/* Dados básicos */}
                         <div className="grid gap-3">
                             <div className="grid grid-cols-4 items-center gap-4">
                                 <Label htmlFor="name" className="text-right text-sm">{tCommon('fields.name')} *</Label>
-                                <Input id="name" name="name" placeholder="João Silva" className="col-span-3" required />
+                                <div className="col-span-3">
+                                    <Input
+                                        id="name"
+                                        name="name"
+                                        placeholder="João Silva"
+                                        className={fieldErrors.name ? 'border-destructive focus-visible:ring-destructive' : ''}
+                                        required
+                                        onChange={() => setFieldErrors(prev => ({ ...prev, name: undefined }))}
+                                    />
+                                    {fieldErrors.name && (
+                                        <p className="mt-1 text-xs text-destructive">{fieldErrors.name}</p>
+                                    )}
+                                </div>
                             </div>
                             <div className="grid grid-cols-4 items-center gap-4">
                                 <Label htmlFor="email" className="text-right text-sm">{tCommon('fields.email')}</Label>
@@ -108,7 +137,18 @@ export function CreateContactDialog({ open: externalOpen, onOpenChange: external
                             </div>
                             <div className="grid grid-cols-4 items-center gap-4">
                                 <Label htmlFor="document" className="text-right text-sm">CNPJ</Label>
-                                <Input id="document" name="document" placeholder="00.000.000/0001-00" className="col-span-3" />
+                                <div className="col-span-3">
+                                    <Input
+                                        id="document"
+                                        name="document"
+                                        placeholder="00.000.000/0001-00"
+                                        className={fieldErrors.document ? 'border-destructive focus-visible:ring-destructive' : ''}
+                                        onChange={() => setFieldErrors(prev => ({ ...prev, document: undefined }))}
+                                    />
+                                    {fieldErrors.document && (
+                                        <p className="mt-1 text-xs text-destructive">{fieldErrors.document}</p>
+                                    )}
+                                </div>
                             </div>
                         </div>
 
