@@ -1,7 +1,7 @@
 'use client'
 
 import { useMemo, useState, useRef, useEffect } from 'react'
-import { Check, ChevronDown, Filter, Plus, X } from 'lucide-react'
+import { Check, ChevronDown, Filter, Plus, Trash2, X } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -305,6 +305,13 @@ function SegmentFilterPopover({
     toast.success(`Categoria "${trimmed}" adicionada.`)
   }
 
+  function handleDeleteCustom(e: React.MouseEvent, opt: string) {
+    e.stopPropagation()
+    setExtraSegments((prev) => prev.filter((s) => s !== opt))
+    onSelectedChange(selected.filter((s) => s !== opt))
+    toast.success(`Categoria "${opt}" removida.`)
+  }
+
   function handleAddKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
     if (e.key === 'Enter') {
       e.preventDefault()
@@ -403,9 +410,14 @@ function SegmentFilterPopover({
                   </div>
                   <span className="truncate flex-1">{opt}</span>
                   {isCustom && (
-                    <span className="shrink-0 rounded-full bg-amber-100 px-1.5 py-0.5 text-[9px] font-semibold uppercase text-amber-700 dark:bg-amber-500/10 dark:text-amber-400">
-                      novo
-                    </span>
+                    <button
+                      type="button"
+                      onClick={(e) => handleDeleteCustom(e, opt)}
+                      className="shrink-0 rounded p-0.5 text-zinc-400 hover:bg-red-50 hover:text-red-500 dark:hover:bg-red-500/10 transition-colors"
+                      title="Remover categoria"
+                    >
+                      <Trash2 className="h-3.5 w-3.5" />
+                    </button>
                   )}
                 </button>
               )

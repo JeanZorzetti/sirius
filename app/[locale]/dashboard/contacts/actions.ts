@@ -46,6 +46,7 @@ export async function createContact(formData: FormData) {
         const status = formData.get('status') as string
         const observations = formData.get('observations') as string
         const document = formData.get('document') as string
+        const segment = formData.get('segment') as string
 
         if (!name) {
             return { success: false, error: 'Nome é obrigatório' }
@@ -104,6 +105,7 @@ export async function createContact(formData: FormData) {
                 observations: observations?.trim() || null,
                 assignedToId: (assignedToId && assignedToId !== 'none') ? assignedToId : null,
                 document: document || null,
+                segment: segment?.trim() || null,
                 organizationId: user.organizationId
             } as any
         })
@@ -162,6 +164,7 @@ export async function updateContact(contactId: string, formData: FormData) {
         const assignedToId = formData.get('assignedToId') as string
         const observations = formData.get('observations') as string
         const document = formData.get('document') as string
+        const segment = formData.get('segment') as string
 
         if (!name?.trim()) {
             return { success: false, error: 'Nome é obrigatório' }
@@ -214,6 +217,7 @@ export async function updateContact(contactId: string, formData: FormData) {
                 assignedToId: (assignedToId && assignedToId !== 'none') ? assignedToId : null,
                 observations: observations?.trim() || null,
                 document: document?.trim() || null,
+                segment: segment?.trim() || null,
             } as any
         })
 

@@ -1,7 +1,7 @@
 'use client'
 
-import { useState } from 'react'
-import { Plus, MapPin, User, Tag, NotebookPen } from 'lucide-react'
+import { useState, useMemo } from 'react'
+import { Plus, MapPin, User, Tag, NotebookPen, Building2, ChevronsUpDown, Check } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import {
     ResponsiveDialog,
@@ -21,11 +21,17 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/components/ui/select'
+import {
+    Popover,
+    PopoverContent,
+    PopoverTrigger,
+} from '@/components/ui/popover'
 import { createContact } from '@/app/[locale]/dashboard/contacts/actions'
-import { CONTACT_STATUSES } from '@/components/contacts/contacts-filters'
+import { CONTACT_STATUSES, DEFAULT_SEGMENTS } from '@/components/contacts/contacts-filters'
 import { Textarea } from '@/components/ui/textarea'
 import { analytics } from '@/lib/posthog'
 import { useTranslations } from 'next-intl'
+import { cn } from '@/lib/utils'
 
 interface CreateContactDialogProps {
     open?: boolean
@@ -40,6 +46,15 @@ export function CreateContactDialog({ open: externalOpen, onOpenChange: external
     const [loading, setLoading] = useState(false)
     const [assignedToId, setAssignedToId] = useState<string>('none')
     const [fieldErrors, setFieldErrors] = useState<{ name?: string; document?: string; general?: string }>({})
+    const [segmentOpen, setSegmentOpen] = useState(false)
+    const [segmentValue, setSegmentValue] = useState('')
+    const [segmentSearch, setSegmentSearch] = useState('')
+
+    const filteredSegments = useMemo(() => {
+        if (!segmentSearch.trim()) return DEFAULT_SEGMENTS
+        const q = segmentSearch.toLowerCase()
+        return DEFAULT_SEGMENTS.filter((s) => s.toLowerCase().includes(q))
+    }, [segmentSearch])
     const t = useTranslations('components.contacts')
     const tCommon = useTranslations('common')
 
@@ -79,7 +94,11 @@ export function CreateContactDialog({ open: externalOpen, onOpenChange: external
     }
 
     function handleOpenChange(value: boolean) {
-        if (!value) setFieldErrors({})
+        if (!value) {
+            setFieldErrors({})
+            setSegmentValue('')
+            setSegmentSearch('')
+        }
         setOpen(value)
     }
 
@@ -148,6 +167,70 @@ export function CreateContactDialog({ open: externalOpen, onOpenChange: external
                                     {fieldErrors.document && (
                                         <p className="mt-1 text-xs text-destructive">{fieldErrors.document}</p>
                                     )}
+                                </div>
+                            </div>
+                            <div className="grid grid-cols-4 items-center gap-4">
+                                <Label className="text-right text-sm flex items-center justify-end gap-1.5">
+                                    <Building2 className="h-3.5 w-3.5 text-muted-foreground" />
+                                    Segmento
+                                </Label>
+                                <div className="col-span-3">
+                                    <input type="hidden" name="segment" value={segmentValue} />
+                                    <Popover open={segmentOpen} onOpenChange={(v) => { setSegmentOpen(v); if (!v) setSegmentSearch('') }}>
+                                        <PopoverTrigger asChild>
+                                            <Button
+                                                type="button"
+                                                variant="outline"
+                                                className="w-full justify-between font-normal text-left h-9"
+                                            >
+                                                <span className={cn('truncate', !segmentValue && 'text-muted-foreground')}>
+                                                    {segmentValue || 'Selecionar segmento...'}
+                                                </span>
+                                                <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                                            </Button>
+                                        </PopoverTrigger>
+                                        <PopoverContent className="w-[280px] p-0" align="start">
+                                            <div className="border-b border-border/60 p-2">
+                                                <Input
+                                                    value={segmentSearch}
+                                                    onChange={(e) => setSegmentSearch(e.target.value)}
+                                                    placeholder="Buscar segmento..."
+                                                    className="h-8 text-sm"
+                                                    autoFocus
+                                                />
+                                            </div>
+                                            <div className="max-h-56 overflow-y-auto p-1">
+                                                {segmentValue && (
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => { setSegmentValue(''); setSegmentOpen(false) }}
+                                                        className="flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-sm text-left text-muted-foreground hover:bg-zinc-100 dark:hover:bg-zinc-800 italic"
+                                                    >
+                                                        Sem segmento
+                                                    </button>
+                                                )}
+                                                {filteredSegments.length === 0 ? (
+                                                    <div className="py-4 text-center text-xs text-muted-foreground">Nenhum resultado.</div>
+                                                ) : (
+                                                    filteredSegments.map((seg) => (
+                                                        <button
+                                                            key={seg}
+                                                            type="button"
+                                                            onClick={() => { setSegmentValue(seg); setSegmentOpen(false); setSegmentSearch('') }}
+                                                            className={cn(
+                                                                'flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-sm text-left transition-colors',
+                                                                'hover:bg-zinc-100 dark:hover:bg-zinc-800',
+                                                                segmentValue === seg && 'bg-indigo-50/60 dark:bg-indigo-500/5'
+                                                            )}
+                                                        >
+                                                            <Check className={cn('h-4 w-4 shrink-0 text-indigo-600', segmentValue === seg ? 'opacity-100' : 'opacity-0')} />
+                                                            <span className="truncate">{seg}</span>
+                                                        </button>
+                                                    ))
+                                                )}
+                                            </div>
+                                        </PopoverContent>
+                                    </Popover>
                                 </div>
                             </div>
                         </div>

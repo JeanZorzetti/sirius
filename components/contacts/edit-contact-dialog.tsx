@@ -2,8 +2,8 @@
 
 import { useTranslations } from 'next-intl'
 
-import { useState, useEffect } from 'react'
-import { Pencil, MapPin, Tag, User, NotebookPen } from 'lucide-react'
+import { useState, useEffect, useMemo } from 'react'
+import { Pencil, MapPin, Tag, User, NotebookPen, Building2, ChevronsUpDown, Check } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import {
     Dialog,
@@ -24,10 +24,16 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/components/ui/select'
+import {
+    Popover,
+    PopoverContent,
+    PopoverTrigger,
+} from '@/components/ui/popover'
 import { updateContact } from '@/app/[locale]/dashboard/contacts/actions'
-import { CONTACT_STATUSES } from '@/components/contacts/contacts-filters'
+import { CONTACT_STATUSES, DEFAULT_SEGMENTS } from '@/components/contacts/contacts-filters'
 import { toast } from 'sonner'
 import { useRouter } from 'next/navigation'
+import { cn } from '@/lib/utils'
 
 type EditableContact = {
     id: string
@@ -45,6 +51,7 @@ type EditableContact = {
     assignedToId?: string | null
     observations?: string | null
     document?: string | null
+    segment?: string | null
 }
 
 export function EditContactDialog({
@@ -68,11 +75,21 @@ export function EditContactDialog({
     const [loading, setLoading] = useState(false)
     const [assignedToIdValue, setAssignedToIdValue] = useState(contact.assignedToId ?? 'none')
     const [statusValue, setStatusValue] = useState(contact.status ?? 'none')
+    const [segmentOpen, setSegmentOpen] = useState(false)
+    const [segmentValue, setSegmentValue] = useState(contact.segment ?? '')
+    const [segmentSearch, setSegmentSearch] = useState('')
+
+    const filteredSegments = useMemo(() => {
+        if (!segmentSearch.trim()) return DEFAULT_SEGMENTS
+        const q = segmentSearch.toLowerCase()
+        return DEFAULT_SEGMENTS.filter((s) => s.toLowerCase().includes(q))
+    }, [segmentSearch])
 
     useEffect(() => {
         setAssignedToIdValue(contact.assignedToId ?? 'none')
         setStatusValue(contact.status ?? 'none')
-    }, [contact.assignedToId, contact.status])
+        setSegmentValue(contact.segment ?? '')
+    }, [contact.assignedToId, contact.status, contact.segment])
 
     async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault()
@@ -148,6 +165,70 @@ export function EditContactDialog({
                             <div className="grid grid-cols-4 items-center gap-4">
                                 <Label htmlFor="edit-document" className="text-right text-sm">CNPJ</Label>
                                 <Input id="edit-document" name="document" defaultValue={contact.document ?? ''} placeholder="00.000.000/0001-00" className="col-span-3" />
+                            </div>
+                            <div className="grid grid-cols-4 items-center gap-4">
+                                <Label className="text-right text-sm flex items-center justify-end gap-1.5">
+                                    <Building2 className="h-3.5 w-3.5 text-muted-foreground" />
+                                    Segmento
+                                </Label>
+                                <div className="col-span-3">
+                                    <input type="hidden" name="segment" value={segmentValue} />
+                                    <Popover open={segmentOpen} onOpenChange={(v) => { setSegmentOpen(v); if (!v) setSegmentSearch('') }}>
+                                        <PopoverTrigger asChild>
+                                            <Button
+                                                type="button"
+                                                variant="outline"
+                                                className="w-full justify-between font-normal text-left h-9"
+                                            >
+                                                <span className={cn('truncate', !segmentValue && 'text-muted-foreground')}>
+                                                    {segmentValue || 'Selecionar segmento...'}
+                                                </span>
+                                                <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                                            </Button>
+                                        </PopoverTrigger>
+                                        <PopoverContent className="w-[280px] p-0" align="start">
+                                            <div className="border-b border-border/60 p-2">
+                                                <Input
+                                                    value={segmentSearch}
+                                                    onChange={(e) => setSegmentSearch(e.target.value)}
+                                                    placeholder="Buscar segmento..."
+                                                    className="h-8 text-sm"
+                                                    autoFocus
+                                                />
+                                            </div>
+                                            <div className="max-h-56 overflow-y-auto p-1">
+                                                {segmentValue && (
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => { setSegmentValue(''); setSegmentOpen(false) }}
+                                                        className="flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-sm text-left text-muted-foreground hover:bg-zinc-100 dark:hover:bg-zinc-800 italic"
+                                                    >
+                                                        Sem segmento
+                                                    </button>
+                                                )}
+                                                {filteredSegments.length === 0 ? (
+                                                    <div className="py-4 text-center text-xs text-muted-foreground">Nenhum resultado.</div>
+                                                ) : (
+                                                    filteredSegments.map((seg) => (
+                                                        <button
+                                                            key={seg}
+                                                            type="button"
+                                                            onClick={() => { setSegmentValue(seg); setSegmentOpen(false); setSegmentSearch('') }}
+                                                            className={cn(
+                                                                'flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-sm text-left transition-colors',
+                                                                'hover:bg-zinc-100 dark:hover:bg-zinc-800',
+                                                                segmentValue === seg && 'bg-indigo-50/60 dark:bg-indigo-500/5'
+                                                            )}
+                                                        >
+                                                            <Check className={cn('h-4 w-4 shrink-0 text-indigo-600', segmentValue === seg ? 'opacity-100' : 'opacity-0')} />
+                                                            <span className="truncate">{seg}</span>
+                                                        </button>
+                                                    ))
+                                                )}
+                                            </div>
+                                        </PopoverContent>
+                                    </Popover>
+                                </div>
                             </div>
                             {orgUsers.length > 0 && (
                                 <div className="grid grid-cols-4 items-center gap-4">
