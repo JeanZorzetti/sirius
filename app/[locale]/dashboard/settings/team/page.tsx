@@ -60,15 +60,7 @@ export default async function TeamSettingsPage() {
         prisma.pipeline.findMany({
             where: { organizationId: currentUser.organizationId },
             orderBy: [{ isDefault: 'desc' }, { name: 'asc' }],
-            select: {
-                id: true,
-                name: true,
-                isDefault: true,
-                stages: {
-                    orderBy: { order: 'asc' },
-                    select: { id: true, name: true, order: true },
-                },
-            },
+            select: { id: true, name: true, isDefault: true }
         }),
         getAllRolePermissions(currentUser.organizationId),
     ])
@@ -163,8 +155,7 @@ export default async function TeamSettingsPage() {
                                                         pipelines={pipelines}
                                                         currentRestricted={member.pipelineRestricted}
                                                         currentAllowedIds={member.allowedPipelineIds}
-                                                        currentStageRestricted={member.stageRestricted}
-                                                        currentAllowedStageIds={member.allowedStageIds}
+                                                        currentCanViewDealClosings={member.canViewDealClosings}
                                                     />
                                                 ) : (
                                                     <Badge variant="outline" className="text-xs border-zinc-300/30 text-zinc-500">

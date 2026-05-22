@@ -20,12 +20,11 @@ export async function DashboardTabsWrapper({
   vsearch,
   csearch,
 }: DashboardTabsWrapperProps) {
-  // Fetch stage restriction settings for current user
   const currentUser = await prisma.user.findUnique({
     where: { id: userId },
-    select: { stageRestricted: true, allowedStageIds: true },
+    select: { canViewDealClosings: true },
   })
-  const canViewClosings = !(currentUser?.stageRestricted ?? false)
+  const canViewClosings = currentUser?.canViewDealClosings ?? true
   // Fetch tudo em queries planas para evitar INSUFFICIENT_PATH com include aninhado
   const [rawPipelines, rawStages, rawDeals, dealContacts, contacts] = await Promise.all([
     prisma.pipeline.findMany({

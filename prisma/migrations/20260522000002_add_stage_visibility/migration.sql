@@ -1,3 +1,2 @@
--- AddColumn: stage visibility restrictions for users
-ALTER TABLE "User" ADD COLUMN "stageRestricted" BOOLEAN NOT NULL DEFAULT false;
-ALTER TABLE "User" ADD COLUMN "allowedStageIds" TEXT[] NOT NULL DEFAULT ARRAY[]::TEXT[];
+-- Replace stage visibility columns with a simple canViewDealClosings flag
+ALTER TABLE "User" ADD COLUMN IF NOT EXISTS "canViewDealClosings" BOOLEAN NOT NULL DEFAULT true;
