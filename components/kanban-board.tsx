@@ -87,6 +87,7 @@ type KanbanBoardProps = {
   contacts: Contact[]
   pipelineId?: string
   currentUserId?: string
+  canViewClosings?: boolean
   onOptimisticUpdate?: (dealId: string, updates: any) => void
   onOptimisticDelete?: (dealId: string) => void
   onRollback?: (tempId: string) => void
@@ -502,6 +503,7 @@ export function KanbanBoard({
   contacts,
   pipelineId,
   currentUserId,
+  canViewClosings = true,
   onOptimisticUpdate,
   onOptimisticDelete,
   onRollback,
@@ -868,6 +870,7 @@ export function KanbanBoard({
         stages={stages}
         contacts={contacts}
         currentUserId={currentUserId}
+        canViewClosings={canViewClosings}
         onOptimisticUpdate={onOptimisticUpdate}
         onOptimisticDelete={onOptimisticDelete}
         onRollback={onRollback}

@@ -69,6 +69,7 @@ interface EditDealDialogProps {
     onRollback?: (tempId: string) => void
     onSuccess?: () => void
     currentUserId?: string
+    canViewClosings?: boolean
     contactDisplayMode?: 'name' | 'company'
     onContactDisplayModeChange?: (mode: 'name' | 'company') => void
 }
@@ -84,6 +85,7 @@ export function EditDealDialog({
     onRollback,
     onSuccess,
     currentUserId,
+    canViewClosings = true,
     contactDisplayMode: externalDisplayMode,
     onContactDisplayModeChange,
 }: EditDealDialogProps) {
@@ -409,6 +411,7 @@ export function EditDealDialog({
                                 <History className="w-4 h-4 mr-2" />
                                 Histórico
                             </TabsTrigger>
+                            {canViewClosings && (
                             <TabsTrigger value="closings" className="data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:border-b-2 data-[state=active]:border-emerald-500 rounded-none px-0 pb-3 font-normal text-zinc-500 data-[state=active]:text-emerald-500">
                                 <DollarSign className="w-4 h-4 mr-2" />
                                 Fechamentos
@@ -418,6 +421,7 @@ export function EditDealDialog({
                                     </span>
                                 )}
                             </TabsTrigger>
+                            )}
                             <TabsTrigger value="agi" className="data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:border-b-2 data-[state=active]:border-purple-500 rounded-none px-0 pb-3 font-normal text-zinc-500 data-[state=active]:text-purple-500">
                                 <Wand2 className="w-4 h-4 mr-2" />
                                 AGI Insights
@@ -784,7 +788,7 @@ export function EditDealDialog({
                                 </div>
                             </TabsContent>
 
-                            <TabsContent value="closings" className="mt-0 space-y-4">
+                            {canViewClosings && <TabsContent value="closings" className="mt-0 space-y-4">
                                 {/* Formulário novo fechamento */}
                                 <div className="border border-zinc-200 dark:border-zinc-800 rounded-lg p-4 space-y-3 bg-zinc-50 dark:bg-zinc-900/50">
                                     <h4 className="text-sm font-medium text-zinc-700 dark:text-zinc-300">Registrar novo fechamento</h4>
@@ -942,7 +946,7 @@ export function EditDealDialog({
                                         Nenhum fechamento registrado ainda.
                                     </div>
                                 )}
-                            </TabsContent>
+                            </TabsContent>}
 
                             <TabsContent value="agi" className="mt-0 space-y-4">
                                 {/* Script Generator Button */}

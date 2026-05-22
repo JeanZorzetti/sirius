@@ -32,6 +32,7 @@ interface DashboardTabsProps {
   userId: string
   userName: string
   organizationId: string
+  canViewClosings?: boolean
 }
 
 export function DashboardTabs({
@@ -40,7 +41,8 @@ export function DashboardTabs({
   contacts,
   userId,
   userName,
-  organizationId
+  organizationId,
+  canViewClosings = true,
 }: DashboardTabsProps) {
   const router = useRouter()
   const searchParams = useSearchParams()
@@ -156,6 +158,7 @@ export function DashboardTabs({
               contacts={contacts}
               pipelineId={selectedPipelineId}
               currentUserId={userId}
+              canViewClosings={canViewClosings}
             />
           </TabsContent>
         </Tabs>
