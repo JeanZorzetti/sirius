@@ -20,11 +20,16 @@ export async function DashboardTabsWrapper({
   vsearch,
   csearch,
 }: DashboardTabsWrapperProps) {
-  const currentUser = await prisma.user.findUnique({
-    where: { id: userId },
-    select: { canViewDealClosings: true },
-  })
-  const canViewClosings = currentUser?.canViewDealClosings ?? true
+  // Use raw query to avoid crash if canViewDealClosings column hasn't been migrated yet
+  let canViewClosings = true
+  try {
+    const rows = await prisma.$queryRaw<{ canViewDealClosings: boolean }[]>`
+      SELECT "canViewDealClosings" FROM "User" WHERE id = ${userId} LIMIT 1
+    `
+    if (rows.length > 0) canViewClosings = rows[0].canViewDealClosings ?? true
+  } catch {
+    // Column doesn't exist yet — default to true (no restriction)
+  }
   // Fetch tudo em queries planas para evitar INSUFFICIENT_PATH com include aninhado
   const [rawPipelines, rawStages, rawDeals, dealContacts, contacts] = await Promise.all([
     prisma.pipeline.findMany({
