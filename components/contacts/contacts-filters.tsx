@@ -176,9 +176,11 @@ interface ContactsFiltersProps {
   data: EnrichedContact[]
   value: ContactFilters
   onChange: (next: ContactFilters) => void
+  extraSegments: string[]
+  onExtraSegmentsChange: (next: string[]) => void
 }
 
-export function ContactsFilters({ data, value, onChange }: ContactsFiltersProps) {
+export function ContactsFilters({ data, value, onChange, extraSegments, onExtraSegmentsChange }: ContactsFiltersProps) {
   const { assigneeOptions, cityOptions, stateOptions } = useMemo(() => {
     const assigneeSet = new Set<string>()
     const citySet = new Set<string>()
@@ -240,6 +242,8 @@ export function ContactsFilters({ data, value, onChange }: ContactsFiltersProps)
       <SegmentFilterPopover
         selected={value.segments}
         onSelectedChange={(next) => onChange({ ...value, segments: next })}
+        extraSegments={extraSegments}
+        onExtraSegmentsChange={onExtraSegmentsChange}
       />
       {totalActive > 0 && (
         <Button
@@ -259,15 +263,17 @@ export function ContactsFilters({ data, value, onChange }: ContactsFiltersProps)
 function SegmentFilterPopover({
   selected,
   onSelectedChange,
+  extraSegments,
+  onExtraSegmentsChange,
 }: {
   selected: string[]
   onSelectedChange: (next: string[]) => void
+  extraSegments: string[]
+  onExtraSegmentsChange: (next: string[]) => void
 }) {
   const [open, setOpen] = useState(false)
   const [search, setSearch] = useState('')
   const [addValue, setAddValue] = useState('')
-  const [extraSegments, setExtraSegments] = useState<string[]>([])
-  const addInputRef = useRef<HTMLInputElement>(null)
 
   const allSegments = useMemo(
     () => [...DEFAULT_SEGMENTS, ...extraSegments],
@@ -300,14 +306,15 @@ function SegmentFilterPopover({
       setAddValue('')
       return
     }
-    setExtraSegments((prev) => [...prev, trimmed])
+    onExtraSegmentsChange([...extraSegments, trimmed])
     setAddValue('')
     toast.success(`Categoria "${trimmed}" adicionada.`)
   }
 
   function handleDeleteCustom(e: React.MouseEvent, opt: string) {
     e.stopPropagation()
-    setExtraSegments((prev) => prev.filter((s) => s !== opt))
+    e.preventDefault()
+    onExtraSegmentsChange(extraSegments.filter((s) => s !== opt))
     onSelectedChange(selected.filter((s) => s !== opt))
     toast.success(`Categoria "${opt}" removida.`)
   }
@@ -319,7 +326,6 @@ function SegmentFilterPopover({
     }
   }
 
-  // Reset search when popover closes
   useEffect(() => {
     if (!open) setSearch('')
   }, [open])
@@ -355,26 +361,23 @@ function SegmentFilterPopover({
             className="h-8 flex-1 text-sm"
             autoFocus
           />
-          <div className="flex items-center gap-1">
-            <Input
-              ref={addInputRef}
-              value={addValue}
-              onChange={(e) => setAddValue(e.target.value)}
-              onKeyDown={handleAddKeyDown}
-              placeholder="Nova categoria"
-              className="h-8 w-32 text-sm"
-            />
-            <Button
-              type="button"
-              variant="outline"
-              size="sm"
-              onClick={handleAdd}
-              className="h-8 w-8 shrink-0 p-0"
-              title="Adicionar categoria"
-            >
-              <Plus className="h-3.5 w-3.5" />
-            </Button>
-          </div>
+          <Input
+            value={addValue}
+            onChange={(e) => setAddValue(e.target.value)}
+            onKeyDown={handleAddKeyDown}
+            placeholder="Nova categoria"
+            className="h-8 w-32 text-sm"
+          />
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            onClick={handleAdd}
+            className="h-8 w-8 shrink-0 p-0"
+            title="Adicionar categoria"
+          >
+            <Plus className="h-3.5 w-3.5" />
+          </Button>
         </div>
 
         {/* Options list */}
@@ -388,15 +391,14 @@ function SegmentFilterPopover({
               const checked = selected.includes(opt)
               const isCustom = extraSegments.includes(opt)
               return (
-                <button
+                <div
                   key={opt}
-                  type="button"
-                  onClick={() => toggle(opt)}
                   className={cn(
-                    'flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-sm text-left transition-colors',
+                    'flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-sm transition-colors cursor-pointer select-none',
                     'hover:bg-zinc-100 dark:hover:bg-zinc-800',
                     checked && 'bg-indigo-50/60 dark:bg-indigo-500/5'
                   )}
+                  onClick={() => toggle(opt)}
                 >
                   <div
                     className={cn(
@@ -408,18 +410,20 @@ function SegmentFilterPopover({
                   >
                     {checked && <Check className="h-3 w-3" />}
                   </div>
-                  <span className="truncate flex-1">{opt}</span>
+                  <span className="truncate flex-1 text-left">{opt}</span>
                   {isCustom && (
-                    <button
-                      type="button"
+                    <span
+                      role="button"
+                      tabIndex={0}
                       onClick={(e) => handleDeleteCustom(e, opt)}
+                      onKeyDown={(e) => e.key === 'Enter' && handleDeleteCustom(e as any, opt)}
                       className="shrink-0 rounded p-0.5 text-zinc-400 hover:bg-red-50 hover:text-red-500 dark:hover:bg-red-500/10 transition-colors"
                       title="Remover categoria"
                     >
                       <Trash2 className="h-3.5 w-3.5" />
-                    </button>
+                    </span>
                   )}
-                </button>
+                </div>
               )
             })
           )}

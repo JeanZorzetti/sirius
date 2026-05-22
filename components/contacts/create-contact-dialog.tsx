@@ -176,7 +176,7 @@ export function CreateContactDialog({ open: externalOpen, onOpenChange: external
                                 </Label>
                                 <div className="col-span-3">
                                     <input type="hidden" name="segment" value={segmentValue} />
-                                    <Popover open={segmentOpen} onOpenChange={(v) => { setSegmentOpen(v); if (!v) setSegmentSearch('') }}>
+                                    <Popover modal={false} open={segmentOpen} onOpenChange={(v) => { setSegmentOpen(v); if (!v) setSegmentSearch('') }}>
                                         <PopoverTrigger asChild>
                                             <Button
                                                 type="button"
@@ -189,7 +189,7 @@ export function CreateContactDialog({ open: externalOpen, onOpenChange: external
                                                 <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                                             </Button>
                                         </PopoverTrigger>
-                                        <PopoverContent className="w-[280px] p-0" align="start">
+                                        <PopoverContent className="w-[280px] p-0 z-[200]" align="start">
                                             <div className="border-b border-border/60 p-2">
                                                 <Input
                                                     value={segmentSearch}
