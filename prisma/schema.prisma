@@ -263,6 +263,10 @@ model User {
   pipelineRestricted Boolean  @default(false) // false = no restriction (all visible)
   allowedPipelineIds String[] // IDs of pipelines this user can see (only used when pipelineRestricted = true)
 
+  // Stage visibility within allowed pipelines
+  stageRestricted   Boolean  @default(false) // false = no restriction (all stages visible)
+  allowedStageIds   String[] // IDs of stages this user can see (only used when stageRestricted = true)
+
   // Programa de Indicação
   referralCode     String?   @unique // Código único para indicações
   referralsMade    Referral[] @relation("ReferrerUser")

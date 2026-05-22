@@ -172,7 +172,9 @@ export async function revokeInvite(inviteId: string) {
 export async function updateUserPipelineVisibility(
     targetUserId: string,
     restricted: boolean,
-    allowedPipelineIds: string[]
+    allowedPipelineIds: string[],
+    stageRestricted: boolean = false,
+    allowedStageIds: string[] = [],
 ) {
     const actor = await getActor()
 
@@ -193,6 +195,8 @@ export async function updateUserPipelineVisibility(
         data: {
             pipelineRestricted: restricted,
             allowedPipelineIds: restricted ? allowedPipelineIds : [],
+            stageRestricted,
+            allowedStageIds: stageRestricted ? allowedStageIds : [],
         }
     })
 
