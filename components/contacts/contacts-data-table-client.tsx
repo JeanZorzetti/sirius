@@ -86,6 +86,7 @@ export type EnrichedContact = {
   closings: ClosingEntry[]
   notes: string | null
   document: string | null
+  segment: string | null
 }
 
 interface ContactsDataTableClientProps {

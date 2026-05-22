@@ -387,6 +387,9 @@ model Contact {
   // Status / etiqueta do contato
   status         String? // "active" | "prospect" | "inactive" | "researching" | "trash"
 
+  // Segmento / nicho da empresa do contato
+  segment        String?
+
   // Observações livres
   observations   String? @db.Text
 
