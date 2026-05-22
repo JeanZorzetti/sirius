@@ -22,7 +22,11 @@ export default async function SettingsPage({
 
     const user = await prisma.user.findUnique({
         where: { email: session.user.email },
-        include: { organization: true }
+        select: {
+            name: true,
+            email: true,
+            organization: { select: { name: true, tier: true } },
+        }
     })
 
     if (!user) return <div>{t('errors.notFound')}</div>

@@ -48,10 +48,19 @@ export default async function TeamSettingsPage() {
     const isOwner = normalizeRole(currentUser.orgRole) === "OWNER"
     const actorRole = currentUser.orgRole
 
-    const [members, invites, pipelines, allRolePerms] = await Promise.all([
+    const [rawMembers, invites, pipelines, allRolePerms] = await Promise.all([
         prisma.user.findMany({
             where: { organizationId: currentUser.organizationId },
-            orderBy: { createdAt: 'asc' }
+            orderBy: { createdAt: 'asc' },
+            select: {
+                id: true,
+                name: true,
+                email: true,
+                orgRole: true,
+                createdAt: true,
+                pipelineRestricted: true,
+                allowedPipelineIds: true,
+            }
         }),
         prisma.invite.findMany({
             where: { organizationId: currentUser.organizationId },
@@ -64,6 +73,23 @@ export default async function TeamSettingsPage() {
         }),
         getAllRolePermissions(currentUser.organizationId),
     ])
+
+    // Fetch canViewDealClosings safely — column may not exist yet in DB
+    let closingsMap: Record<string, boolean> = {}
+    try {
+        const rows = await prisma.$queryRaw<{ id: string; canViewDealClosings: boolean }[]>`
+            SELECT id, "canViewDealClosings" FROM "User"
+            WHERE "organizationId" = ${currentUser.organizationId}
+        `
+        for (const r of rows) closingsMap[r.id] = r.canViewDealClosings ?? true
+    } catch {
+        // Column doesn't exist yet — default everyone to true
+    }
+
+    const members = rawMembers.map(m => ({
+        ...m,
+        canViewDealClosings: closingsMap[m.id] ?? true,
+    }))
 
     const roleTemplate: RoleTemplateRow[] = CONFIGURABLE_ROLES.map((role) => ({
         role,
