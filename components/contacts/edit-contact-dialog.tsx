@@ -79,11 +79,21 @@ export function EditContactDialog({
     const [segmentValue, setSegmentValue] = useState(contact.segment ?? '')
     const [segmentSearch, setSegmentSearch] = useState('')
 
+    const allSegments = useMemo(() => {
+        try {
+            const stored = localStorage.getItem('sirius:extra-segments')
+            const extras: string[] = stored ? JSON.parse(stored) : []
+            return [...DEFAULT_SEGMENTS, ...extras]
+        } catch {
+            return DEFAULT_SEGMENTS
+        }
+    }, [segmentOpen])
+
     const filteredSegments = useMemo(() => {
-        if (!segmentSearch.trim()) return DEFAULT_SEGMENTS
+        if (!segmentSearch.trim()) return allSegments
         const q = segmentSearch.toLowerCase()
-        return DEFAULT_SEGMENTS.filter((s) => s.toLowerCase().includes(q))
-    }, [segmentSearch])
+        return allSegments.filter((s) => s.toLowerCase().includes(q))
+    }, [segmentSearch, allSegments])
 
     useEffect(() => {
         setAssignedToIdValue(contact.assignedToId ?? 'none')

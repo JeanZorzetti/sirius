@@ -129,7 +129,20 @@ export function ContactsDataTableClient({ data, orgUsers = [] }: ContactsDataTab
   const [deleting, setDeleting] = useState(false)
   const [filters, setFilters] = useState<ContactFilters>(EMPTY_FILTERS)
   const [search, setSearch] = useState('')
-  const [extraSegments, setExtraSegments] = useState<string[]>([])
+  const [extraSegments, setExtraSegments] = useState<string[]>(() => {
+    if (typeof window === 'undefined') return []
+    try {
+      const stored = localStorage.getItem('sirius:extra-segments')
+      return stored ? JSON.parse(stored) : []
+    } catch {
+      return []
+    }
+  })
+
+  function handleExtraSegmentsChange(next: string[]) {
+    setExtraSegments(next)
+    try { localStorage.setItem('sirius:extra-segments', JSON.stringify(next)) } catch {}
+  }
 
   const filteredData = useMemo(() => applyContactFilters(data, filters), [data, filters])
 
@@ -175,7 +188,7 @@ export function ContactsDataTableClient({ data, orgUsers = [] }: ContactsDataTab
             className="pl-9 h-9 bg-white dark:bg-white/[0.02] border-black/10 dark:border-white/10"
           />
         </div>
-        <ContactsFilters data={data} value={filters} onChange={setFilters} extraSegments={extraSegments} onExtraSegmentsChange={setExtraSegments} />
+        <ContactsFilters data={data} value={filters} onChange={setFilters} extraSegments={extraSegments} onExtraSegmentsChange={handleExtraSegmentsChange} />
       </div>
       <DataTable
         columns={columns}
