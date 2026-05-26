@@ -49,7 +49,7 @@ async function ContactsData({ orgId }: { orgId: string }) {
     timer.mark('queries-start')
 
     // Queries planas em paralelo
-    const [contacts, activeDeals, stages, orgUsers, lastActivities] = await Promise.all([
+    const [contacts, activeDeals, stages, orgUsers, lastActivities, customSegments] = await Promise.all([
         (prisma.contact.findMany as any)({
             where: { organizationId: orgId },
             orderBy: { createdAt: 'desc' },
@@ -112,6 +112,11 @@ async function ContactsData({ orgId }: { orgId: string }) {
                 deal: { select: { contactId: true } },
             },
             orderBy: { createdAt: 'desc' },
+        }),
+        (prisma.customSegment as any).findMany({
+            where: { organizationId: orgId },
+            select: { id: true, name: true },
+            orderBy: { name: 'asc' },
         }),
     ])
 
@@ -248,7 +253,7 @@ async function ContactsData({ orgId }: { orgId: string }) {
                 <ContactsActionsBar orgUsers={orgUsers} />
             </div>
             <div className="h-full flex-1 flex-col space-y-8 flex">
-                <ContactsDataTableClient data={enrichedContacts} orgUsers={orgUsers} />
+                <ContactsDataTableClient data={enrichedContacts} orgUsers={orgUsers} customSegments={customSegments} />
             </div>
         </>
     )

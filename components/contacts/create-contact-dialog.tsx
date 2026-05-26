@@ -27,7 +27,7 @@ import {
     PopoverTrigger,
 } from '@/components/ui/popover'
 import { createContact } from '@/app/[locale]/dashboard/contacts/actions'
-import { CONTACT_STATUSES, DEFAULT_SEGMENTS } from '@/components/contacts/contacts-filters'
+import { CONTACT_STATUSES } from '@/components/contacts/contacts-filters'
 import { Textarea } from '@/components/ui/textarea'
 import { analytics } from '@/lib/posthog'
 import { useTranslations } from 'next-intl'
@@ -37,9 +37,10 @@ interface CreateContactDialogProps {
     open?: boolean
     onOpenChange?: (open: boolean) => void
     orgUsers?: { id: string; name: string | null }[]
+    customSegments?: { id: string; name: string }[]
 }
 
-export function CreateContactDialog({ open: externalOpen, onOpenChange: externalOnOpenChange, orgUsers = [] }: CreateContactDialogProps = {}) {
+export function CreateContactDialog({ open: externalOpen, onOpenChange: externalOnOpenChange, orgUsers = [], customSegments = [] }: CreateContactDialogProps = {}) {
     const [internalOpen, setInternalOpen] = useState(false)
     const open = externalOpen !== undefined ? externalOpen : internalOpen
     const setOpen = externalOnOpenChange ?? setInternalOpen
@@ -50,21 +51,11 @@ export function CreateContactDialog({ open: externalOpen, onOpenChange: external
     const [segmentValue, setSegmentValue] = useState('')
     const [segmentSearch, setSegmentSearch] = useState('')
 
-    const allSegments = useMemo(() => {
-        try {
-            const stored = localStorage.getItem('sirius:extra-segments')
-            const extras: string[] = stored ? JSON.parse(stored) : []
-            return [...DEFAULT_SEGMENTS, ...extras]
-        } catch {
-            return DEFAULT_SEGMENTS
-        }
-    }, [segmentOpen])
-
     const filteredSegments = useMemo(() => {
-        if (!segmentSearch.trim()) return allSegments
+        if (!segmentSearch.trim()) return customSegments
         const q = segmentSearch.toLowerCase()
-        return allSegments.filter((s) => s.toLowerCase().includes(q))
-    }, [segmentSearch, allSegments])
+        return customSegments.filter((s) => s.name.toLowerCase().includes(q))
+    }, [segmentSearch, customSegments])
     const t = useTranslations('components.contacts')
     const tCommon = useTranslations('common')
 
@@ -220,21 +211,23 @@ export function CreateContactDialog({ open: externalOpen, onOpenChange: external
                                                     </button>
                                                 )}
                                                 {filteredSegments.length === 0 ? (
-                                                    <div className="py-4 text-center text-xs text-muted-foreground">Nenhum resultado.</div>
+                                                    <div className="py-4 text-center text-xs text-muted-foreground">
+                                                        {customSegments.length === 0 ? 'Nenhum segmento cadastrado.' : 'Nenhum resultado.'}
+                                                    </div>
                                                 ) : (
                                                     filteredSegments.map((seg) => (
                                                         <button
-                                                            key={seg}
+                                                            key={seg.id}
                                                             type="button"
-                                                            onClick={() => { setSegmentValue(seg); setSegmentOpen(false); setSegmentSearch('') }}
+                                                            onClick={() => { setSegmentValue(seg.name); setSegmentOpen(false); setSegmentSearch('') }}
                                                             className={cn(
                                                                 'flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-sm text-left transition-colors',
                                                                 'hover:bg-zinc-100 dark:hover:bg-zinc-800',
-                                                                segmentValue === seg && 'bg-indigo-50/60 dark:bg-indigo-500/5'
+                                                                segmentValue === seg.name && 'bg-indigo-50/60 dark:bg-indigo-500/5'
                                                             )}
                                                         >
-                                                            <Check className={cn('h-4 w-4 shrink-0 text-indigo-600', segmentValue === seg ? 'opacity-100' : 'opacity-0')} />
-                                                            <span className="truncate">{seg}</span>
+                                                            <Check className={cn('h-4 w-4 shrink-0 text-indigo-600', segmentValue === seg.name ? 'opacity-100' : 'opacity-0')} />
+                                                            <span className="truncate">{seg.name}</span>
                                                         </button>
                                                     ))
                                                 )}

@@ -19,141 +19,6 @@ export const CONTACT_STATUSES = [
 
 export type ContactStatus = typeof CONTACT_STATUSES[number]['value']
 
-export const DEFAULT_SEGMENTS = [
-  // Agronegócio
-  'Cooperativa Agrícola',
-  'Distribuidor de Insumos e Defensivos',
-  'Fazenda / Produtor Rural',
-  'Irrigação e Equipamentos Agrícolas',
-  'Pecuária e Frigoríficos',
-  // Agências e Marketing
-  'Agência de Performance (Tráfego Pago / SEO)',
-  'Agência de Branding e Design',
-  'Assessoria de Imprensa e PR',
-  'Produtora de Conteúdo e Vídeo',
-  'Influencer Marketing',
-  // Alimentação e Bebidas
-  'Atacadista / Distribuidor Alimentar',
-  'Bar e Restaurante',
-  'Confeitaria / Doceria / Padaria',
-  'Franquia de Alimentação',
-  'Indústria de Alimentos e Bebidas',
-  'Laticínios e Frigoríficos',
-  // Construção e Engenharia
-  'Construtora / Incorporadora',
-  'Engenharia Elétrica e Automação',
-  'Fornecedor de Materiais de Construção',
-  'Instalações Hidráulicas e Elétricas',
-  'Projetos Arquitetônicos',
-  // e-Commerce e Varejo
-  'e-Commerce / Loja Virtual',
-  'Loja de Artigos Esportivos',
-  'Loja de Moda e Vestuário',
-  'Loja de Móveis e Decoração',
-  'Loja de Produtos Naturais e Orgânicos',
-  'Marketplace / Plataforma de Vendas',
-  'Pet Shop e Produtos Animais',
-  'Supermercado / Minimercado',
-  // Educação
-  'Colégio / Escola Particular',
-  'Cursos Livres e Treinamentos',
-  'EdTech / Plataforma EAD',
-  'Escola de Idiomas',
-  'Faculdade / IES',
-  'Franquia Educacional',
-  // Energia e Sustentabilidade
-  'Distribuidora de Energia Elétrica',
-  'Reciclagem e Gestão de Resíduos',
-  'Solar Fotovoltaica / Integradora',
-  // Eventos
-  'Buffet e Cerimonial',
-  'DJ / Entretenimento',
-  'Espaço de Eventos',
-  'Produtora de Eventos Corporativos',
-  // Financeiro e Seguros
-  'Assessoria de Investimentos / Corretora',
-  'Correspondente Bancário / Fintech',
-  'Corretora de Seguros',
-  'Factoring / Antecipação de Recebíveis',
-  'Planejamento Financeiro Pessoal',
-  // Hardware, Indústria e Manufatura
-  'Distribuidora de Eletrônicos',
-  'Indústria Geral / Manufatura',
-  'Metalúrgica e Siderurgia',
-  'Mineração',
-  'Química e Petroquímica',
-  // Imobiliário
-  'Administradora de Condomínios',
-  'Construtora Residencial',
-  'Corretor Autônomo',
-  'Imobiliária',
-  'Loteadora / Incorporadora',
-  // Jurídico
-  'Advocacia Empresarial',
-  'Advocacia Trabalhista',
-  'Cartório',
-  'Contabilidade e Assessoria Fiscal',
-  'Despachante e Regularização',
-  // Logística e Transporte
-  'Delivery / Last-Mile',
-  'Operador Logístico / Fulfillment',
-  'Transportadora / Frete',
-  'Transitário / Importação e Exportação',
-  // Mídia e Comunicação
-  'Emissora de Rádio / TV',
-  'Jornal / Portal de Notícias',
-  'Out-of-Home (OOH) / Mídia Exterior',
-  'Streaming e Podcasting',
-  // ONGs e Setor Público
-  'Associação Comercial / Sindicato',
-  'Fundação / Instituto',
-  'Governo Municipal / Estadual / Federal',
-  'ONG / Entidade Sem Fins Lucrativos',
-  // RH, Coaching e Consultoria
-  'BPO e Terceirização',
-  'Consultoria de Gestão e Estratégia',
-  'Consultoria de RH e Recrutamento',
-  'Coaching Executivo e Life Coaching',
-  'Treinamento Corporativo',
-  // Saúde
-  'Clínica de Estética e Beleza',
-  'Clínica Médica / Policlínica',
-  'Clínica Odontológica',
-  'Clínica Veterinária',
-  'Farmácia / Drogaria',
-  'Fitness / Academia / Crossfit',
-  'Home Care e Cuidador',
-  'Hospital / UPA',
-  'Laboratório de Análises',
-  'Plano de Saúde / Operadora',
-  'Psicologia e Saúde Mental',
-  'Salão de Beleza / Barbearia',
-  // Software e Tecnologia
-  'Agência de Desenvolvimento',
-  'Consultoria em TI / Infraestrutura',
-  'Integrações e APIs (iPaaS)',
-  'SaaS B2B',
-  'SaaS B2C / App Mobile',
-  'Segurança da Informação',
-  // Telecomunicações e Internet
-  'ISP / Provedor de Internet',
-  'Operadora de Telefonia',
-  'Revenda de Telecom',
-  // Turismo e Lazer
-  'Agência de Turismo / Operadora',
-  'Hotel / Pousada / Hostel',
-  'Parque e Atração Turística',
-  'Transporte Turístico (Van / Transfer)',
-  // Serviços ao Consumidor
-  'Assistência Técnica (Eletrônicos)',
-  'Dedetização / Controle de Pragas',
-  'Lavanderia / Tinturaria',
-  'Limpeza e Conservação',
-  'Manutenção Predial',
-  'Oficina Mecânica / Auto Center',
-  'Serviços Domésticos (Reforma, Pintura)',
-]
-
 export type ContactFilters = {
   assignees: string[]
   cities: string[]
@@ -176,11 +41,12 @@ interface ContactsFiltersProps {
   data: EnrichedContact[]
   value: ContactFilters
   onChange: (next: ContactFilters) => void
-  extraSegments: string[]
-  onExtraSegmentsChange: (next: string[]) => void
+  customSegments: { id: string; name: string }[]
+  onAddSegment: (name: string) => Promise<void>
+  onDeleteSegment: (id: string, name: string) => Promise<void>
 }
 
-export function ContactsFilters({ data, value, onChange, extraSegments, onExtraSegmentsChange }: ContactsFiltersProps) {
+export function ContactsFilters({ data, value, onChange, customSegments, onAddSegment, onDeleteSegment }: ContactsFiltersProps) {
   const { assigneeOptions, cityOptions, stateOptions } = useMemo(() => {
     const assigneeSet = new Set<string>()
     const citySet = new Set<string>()
@@ -242,8 +108,9 @@ export function ContactsFilters({ data, value, onChange, extraSegments, onExtraS
       <SegmentFilterPopover
         selected={value.segments}
         onSelectedChange={(next) => onChange({ ...value, segments: next })}
-        extraSegments={extraSegments}
-        onExtraSegmentsChange={onExtraSegmentsChange}
+        customSegments={customSegments}
+        onAddSegment={onAddSegment}
+        onDeleteSegment={onDeleteSegment}
       />
       {totalActive > 0 && (
         <Button
@@ -263,60 +130,54 @@ export function ContactsFilters({ data, value, onChange, extraSegments, onExtraS
 function SegmentFilterPopover({
   selected,
   onSelectedChange,
-  extraSegments,
-  onExtraSegmentsChange,
+  customSegments,
+  onAddSegment,
+  onDeleteSegment,
 }: {
   selected: string[]
   onSelectedChange: (next: string[]) => void
-  extraSegments: string[]
-  onExtraSegmentsChange: (next: string[]) => void
+  customSegments: { id: string; name: string }[]
+  onAddSegment: (name: string) => Promise<void>
+  onDeleteSegment: (id: string, name: string) => Promise<void>
 }) {
   const [open, setOpen] = useState(false)
   const [search, setSearch] = useState('')
   const [addValue, setAddValue] = useState('')
-
-  const allSegments = useMemo(
-    () => [...DEFAULT_SEGMENTS, ...extraSegments],
-    [extraSegments]
-  )
+  const [adding, setAdding] = useState(false)
 
   const filtered = useMemo(() => {
-    if (!search.trim()) return allSegments
+    if (!search.trim()) return customSegments
     const q = search.toLowerCase()
-    return allSegments.filter((s) => s.toLowerCase().includes(q))
-  }, [allSegments, search])
+    return customSegments.filter((s) => s.name.toLowerCase().includes(q))
+  }, [customSegments, search])
 
   const isActive = selected.length > 0
 
-  function toggle(opt: string) {
-    if (selected.includes(opt)) {
-      onSelectedChange(selected.filter((s) => s !== opt))
+  function toggle(name: string) {
+    if (selected.includes(name)) {
+      onSelectedChange(selected.filter((s) => s !== name))
     } else {
-      onSelectedChange([...selected, opt])
+      onSelectedChange([...selected, name])
     }
   }
 
-  function handleAdd() {
+  async function handleAdd() {
     const trimmed = addValue.trim()
-    if (!trimmed) return
-    const normalized = trimmed.toLowerCase()
-    const exists = allSegments.find((s) => s.toLowerCase() === normalized)
-    if (exists) {
-      toast.info(`"${exists}" já existe na lista.`)
+    if (!trimmed || adding) return
+    setAdding(true)
+    try {
+      await onAddSegment(trimmed)
       setAddValue('')
-      return
+    } finally {
+      setAdding(false)
     }
-    onExtraSegmentsChange([...extraSegments, trimmed])
-    setAddValue('')
-    toast.success(`Categoria "${trimmed}" adicionada.`)
   }
 
-  function handleDeleteCustom(e: React.MouseEvent, opt: string) {
+  async function handleDeleteCustom(e: React.MouseEvent, id: string, name: string) {
     e.stopPropagation()
     e.preventDefault()
-    onExtraSegmentsChange(extraSegments.filter((s) => s !== opt))
-    onSelectedChange(selected.filter((s) => s !== opt))
-    toast.success(`Categoria "${opt}" removida.`)
+    onSelectedChange(selected.filter((s) => s !== name))
+    await onDeleteSegment(id, name)
   }
 
   function handleAddKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
@@ -373,6 +234,7 @@ function SegmentFilterPopover({
             variant="outline"
             size="sm"
             onClick={handleAdd}
+            disabled={adding}
             className="h-8 w-8 shrink-0 p-0"
             title="Adicionar categoria"
           >
@@ -384,21 +246,20 @@ function SegmentFilterPopover({
         <div className="max-h-64 overflow-y-auto p-1">
           {filtered.length === 0 ? (
             <div className="py-6 text-center text-xs text-muted-foreground">
-              Nenhum resultado.
+              {customSegments.length === 0 ? 'Nenhum segmento cadastrado. Adicione um acima.' : 'Nenhum resultado.'}
             </div>
           ) : (
-            filtered.map((opt) => {
-              const checked = selected.includes(opt)
-              const isCustom = extraSegments.includes(opt)
+            filtered.map((seg) => {
+              const checked = selected.includes(seg.name)
               return (
                 <div
-                  key={opt}
+                  key={seg.id}
                   className={cn(
                     'flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-sm transition-colors cursor-pointer select-none',
                     'hover:bg-zinc-100 dark:hover:bg-zinc-800',
                     checked && 'bg-indigo-50/60 dark:bg-indigo-500/5'
                   )}
-                  onClick={() => toggle(opt)}
+                  onClick={() => toggle(seg.name)}
                 >
                   <div
                     className={cn(
@@ -410,19 +271,17 @@ function SegmentFilterPopover({
                   >
                     {checked && <Check className="h-3 w-3" />}
                   </div>
-                  <span className="truncate flex-1 text-left">{opt}</span>
-                  {isCustom && (
-                    <span
-                      role="button"
-                      tabIndex={0}
-                      onClick={(e) => handleDeleteCustom(e, opt)}
-                      onKeyDown={(e) => e.key === 'Enter' && handleDeleteCustom(e as any, opt)}
-                      className="shrink-0 rounded p-0.5 text-zinc-400 hover:bg-red-50 hover:text-red-500 dark:hover:bg-red-500/10 transition-colors"
-                      title="Remover categoria"
-                    >
-                      <Trash2 className="h-3.5 w-3.5" />
-                    </span>
-                  )}
+                  <span className="truncate flex-1 text-left">{seg.name}</span>
+                  <span
+                    role="button"
+                    tabIndex={0}
+                    onClick={(e) => handleDeleteCustom(e, seg.id, seg.name)}
+                    onKeyDown={(e) => e.key === 'Enter' && handleDeleteCustom(e as any, seg.id, seg.name)}
+                    className="shrink-0 rounded p-0.5 text-zinc-400 hover:bg-red-50 hover:text-red-500 dark:hover:bg-red-500/10 transition-colors"
+                    title="Remover categoria"
+                  >
+                    <Trash2 className="h-3.5 w-3.5" />
+                  </span>
                 </div>
               )
             })

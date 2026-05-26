@@ -9,6 +9,7 @@ import dynamic from 'next/dynamic'
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
 import { deleteContact } from '@/app/[locale]/dashboard/contacts/actions'
+import { createCustomSegment, deleteCustomSegment } from '@/app/[locale]/dashboard/contacts/segment-actions'
 import { useTranslations } from 'next-intl'
 import {
   ContactsFilters,
@@ -92,9 +93,10 @@ export type EnrichedContact = {
 interface ContactsDataTableClientProps {
   data: EnrichedContact[]
   orgUsers?: { id: string; name: string | null }[]
+  customSegments?: { id: string; name: string }[]
 }
 
-export function ContactsDataTableClient({ data, orgUsers = [] }: ContactsDataTableClientProps) {
+export function ContactsDataTableClient({ data, orgUsers = [], customSegments: initialCustomSegments = [] }: ContactsDataTableClientProps) {
   const tCommon = useTranslations('common')
   const t = useTranslations('components.contacts')
   const router = useRouter()
@@ -129,19 +131,36 @@ export function ContactsDataTableClient({ data, orgUsers = [] }: ContactsDataTab
   const [deleting, setDeleting] = useState(false)
   const [filters, setFilters] = useState<ContactFilters>(EMPTY_FILTERS)
   const [search, setSearch] = useState('')
-  const [extraSegments, setExtraSegments] = useState<string[]>(() => {
-    if (typeof window === 'undefined') return []
-    try {
-      const stored = localStorage.getItem('sirius:extra-segments')
-      return stored ? JSON.parse(stored) : []
-    } catch {
-      return []
-    }
-  })
+  const [customSegments, setCustomSegments] = useState<{ id: string; name: string }[]>(initialCustomSegments)
 
-  function handleExtraSegmentsChange(next: string[]) {
-    setExtraSegments(next)
-    try { localStorage.setItem('sirius:extra-segments', JSON.stringify(next)) } catch {}
+  useEffect(() => {
+    try { localStorage.removeItem('sirius:extra-segments') } catch {}
+  }, [])
+
+  async function handleAddSegment(name: string) {
+    const result = await createCustomSegment(name)
+    if (!result.success) {
+      if (result.code === 'DUPLICATE') {
+        toast.info(result.error)
+      } else {
+        toast.error(result.error || 'Erro ao adicionar segmento')
+      }
+      return
+    }
+    setCustomSegments((prev) => [...prev, result.segment].sort((a, b) => a.name.localeCompare(b.name, 'pt-BR')))
+    toast.success(`Segmento "${result.segment.name}" adicionado.`)
+    router.refresh()
+  }
+
+  async function handleDeleteSegment(id: string, name: string) {
+    const result = await deleteCustomSegment(id)
+    if (!result.success) {
+      toast.error(result.error || 'Erro ao remover segmento')
+      return
+    }
+    setCustomSegments((prev) => prev.filter((s) => s.id !== id))
+    toast.success(`Segmento "${name}" removido.`)
+    router.refresh()
   }
 
   const filteredData = useMemo(() => applyContactFilters(data, filters), [data, filters])
@@ -188,7 +207,7 @@ export function ContactsDataTableClient({ data, orgUsers = [] }: ContactsDataTab
             className="pl-9 h-9 bg-white dark:bg-white/[0.02] border-black/10 dark:border-white/10"
           />
         </div>
-        <ContactsFilters data={data} value={filters} onChange={setFilters} extraSegments={extraSegments} onExtraSegmentsChange={handleExtraSegmentsChange} />
+        <ContactsFilters data={data} value={filters} onChange={setFilters} customSegments={customSegments} onAddSegment={handleAddSegment} onDeleteSegment={handleDeleteSegment} />
       </div>
       <DataTable
         columns={columns}
