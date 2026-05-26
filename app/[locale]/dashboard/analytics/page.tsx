@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { OverviewChart } from '@/components/analytics/overview-chart';
 import { MonthlyChart } from '@/components/analytics/monthly-chart';
 import { ClientChart } from '@/components/analytics/client-chart';
+import { EstimatedValueChart } from '@/components/analytics/estimated-value-chart';
 import { LazyOnVisible } from '@/components/ui/lazy-on-visible';
 import { Skeleton } from '@/components/ui/skeleton';
 import { TrendingUp, Target, CalendarClock, Banknote, Activity } from 'lucide-react';
@@ -248,6 +249,43 @@ export default async function AnalyticsPage({
 
   const chartData = Object.values(stageData);
 
+  // Estimated value chart — active deals grouped by contact
+  const estimatedDeals = await prisma.deal.findMany({
+    where: {
+      organizationId: user.organizationId,
+      archived: false,
+      status: 'ACTIVE',
+      ...pipelineFilter,
+      ...valueSearchFilter,
+      ...contactSearchFilter,
+      contactId: { not: null },
+      ...(isFiltered ? { closeDate: closeDateFilter } : {}),
+    },
+    select: {
+      contactId: true,
+      value: true,
+      contact: { select: { name: true, company: true } },
+    },
+  });
+
+  const estimatedMap: Record<string, { name: string; value: number; count: number; company?: string }> = {};
+  for (const deal of estimatedDeals) {
+    const id = deal.contactId!;
+    if (!estimatedMap[id]) {
+      estimatedMap[id] = {
+        name: deal.contact?.name ?? 'Sem nome',
+        value: 0,
+        count: 0,
+        company: deal.contact?.company ?? undefined,
+      };
+    }
+    estimatedMap[id].value += Number(deal.value || 0);
+    estimatedMap[id].count += 1;
+  }
+  const estimatedData = Object.values(estimatedMap)
+    .sort((a, b) => b.value - a.value)
+    .slice(0, 15);
+
   // Client chart — grouped by contactId to avoid merging contacts with same name
   const clientDeals = await prisma.deal.findMany({
     where: {
@@ -429,6 +467,23 @@ export default async function AnalyticsPage({
           </CardContent>
         </Card>
       </div>
+
+      {/* Estimated value per client chart */}
+      <Card className="bg-white/50 dark:bg-zinc-900/50 border-zinc-200 dark:border-white/5 backdrop-blur-sm">
+        <CardHeader>
+          <div>
+            <CardTitle className="text-lg font-semibold text-zinc-900 dark:text-white">Valor Estimado por Cliente</CardTitle>
+            <p className="text-xs text-zinc-500 mt-1">
+              Top {estimatedData.length} clientes com negócios ativos — potencial de receita em aberto
+            </p>
+          </div>
+        </CardHeader>
+        <CardContent className="pl-0">
+          <LazyOnVisible fallback={<Skeleton className="h-[360px] w-full rounded-md" />}>
+            <EstimatedValueChart data={estimatedData} />
+          </LazyOnVisible>
+        </CardContent>
+      </Card>
 
       {/* Stage chart */}
       <Card className="bg-white/50 dark:bg-zinc-900/50 border-zinc-200 dark:border-white/5 backdrop-blur-sm">
