@@ -244,13 +244,13 @@ async function ContactsData({ orgId }: { orgId: string }) {
     return (
         <>
             <PerfMonitor pageLabel="Contacts Page" rowCount={enrichedContacts.length} />
-            <ContactsPageClient contactCount={enrichedContacts.length} orgUsers={orgUsers} />
+            <ContactsPageClient contactCount={enrichedContacts.length} orgUsers={orgUsers} customSegments={customSegments} />
             <div className="hidden lg:flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                 <div className="flex flex-col gap-1">
                     <h2 className="text-2xl font-bold tracking-tight text-zinc-900 dark:text-white">Contatos</h2>
                     <p className="text-sm text-zinc-500">Gerencie sua base de clientes e leads.</p>
                 </div>
-                <ContactsActionsBar orgUsers={orgUsers} />
+                <ContactsActionsBar orgUsers={orgUsers} customSegments={customSegments} />
             </div>
             <div className="h-full flex-1 flex-col space-y-8 flex">
                 <ContactsDataTableClient data={enrichedContacts} orgUsers={orgUsers} customSegments={customSegments} />

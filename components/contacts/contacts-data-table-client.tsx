@@ -238,6 +238,7 @@ export function ContactsDataTableClient({ data, orgUsers = [], customSegments: i
         <EditContactDialog
           contact={editContact}
           orgUsers={orgUsers}
+          customSegments={customSegments}
           open={true}
           onOpenChange={(open) => { if (!open) setEditContact(null) }}
         />

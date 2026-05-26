@@ -14,14 +14,15 @@ const ExportButtons = dynamic(
 
 interface ContactsActionsBarProps {
   orgUsers?: { id: string; name: string | null }[]
+  customSegments?: { id: string; name: string }[]
 }
 
-export function ContactsActionsBar({ orgUsers = [] }: ContactsActionsBarProps) {
+export function ContactsActionsBar({ orgUsers = [], customSegments = [] }: ContactsActionsBarProps) {
   return (
     <div className="flex items-center space-x-2 w-full sm:w-auto">
       <ExportButtons resourceType="contacts" />
       <ImportContactsDialog />
-      <CreateContactDialog orgUsers={orgUsers} />
+      <CreateContactDialog orgUsers={orgUsers} customSegments={customSegments} />
     </div>
   )
 }

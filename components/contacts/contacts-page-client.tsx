@@ -7,9 +7,10 @@ import { CreateContactDialog } from './create-contact-dialog'
 interface ContactsPageClientProps {
   contactCount: number
   orgUsers?: { id: string; name: string | null }[]
+  customSegments?: { id: string; name: string }[]
 }
 
-export function ContactsPageClient({ contactCount, orgUsers = [] }: ContactsPageClientProps) {
+export function ContactsPageClient({ contactCount, orgUsers = [], customSegments = [] }: ContactsPageClientProps) {
   const { setConfig } = useAppBar()
   const [createOpen, setCreateOpen] = useState(false)
 
@@ -33,6 +34,7 @@ export function ContactsPageClient({ contactCount, orgUsers = [] }: ContactsPage
         open={createOpen}
         onOpenChange={setCreateOpen}
         orgUsers={orgUsers}
+        customSegments={customSegments}
       />
     </div>
   )
