@@ -238,7 +238,7 @@ export function CreateDealDialog({
                             </div>
                             <div className="grid grid-cols-4 items-center gap-4">
                                 <Label htmlFor="value" className="text-right">
-                                    Valor
+                                    R$ Valor Estimado
                                 </Label>
                                 <Input
                                     id="value"

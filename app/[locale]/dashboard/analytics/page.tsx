@@ -283,6 +283,7 @@ export default async function AnalyticsPage({
     estimatedMap[id].count += 1;
   }
   const estimatedData = Object.values(estimatedMap)
+    .filter(c => c.value > 0)
     .sort((a, b) => b.value - a.value)
     .slice(0, 15);
 

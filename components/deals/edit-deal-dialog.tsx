@@ -439,7 +439,7 @@ export function EditDealDialog({
                                             <Input name="title" defaultValue={initialDeal.title} required className="bg-zinc-50 dark:bg-zinc-900/50" />
                                         </div>
                                         <div className="space-y-2">
-                                            <Label>Valor (R$)</Label>
+                                            <Label>R$ Valor Estimado</Label>
                                             <Input name="value" type="number" step="0.01" defaultValue={Number(initialDeal.value)} className="bg-zinc-50 dark:bg-zinc-900/50" />
                                         </div>
                                     </div>
