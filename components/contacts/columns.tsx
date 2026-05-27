@@ -42,13 +42,14 @@ export function getColumns({ onOpenProfile, onEdit, onDelete, t }: GetColumnsOpt
                 </div>
             ),
             cell: ({ row }) => (
-                <Checkbox
-                    checked={row.getIsSelected()}
-                    onCheckedChange={(value) => row.toggleSelected(!!value)}
-                    aria-label={label('selectRow', 'Select row')}
-                    className="border-zinc-300 dark:border-zinc-600"
-                    onClick={(e) => e.stopPropagation()}
-                />
+                <div onClick={(e) => e.stopPropagation()}>
+                    <Checkbox
+                        checked={row.getIsSelected()}
+                        onCheckedChange={(value) => row.toggleSelected(!!value)}
+                        aria-label={label('selectRow', 'Select row')}
+                        className="border-zinc-300 dark:border-zinc-600"
+                    />
+                </div>
             ),
             enableSorting: false,
             enableHiding: false,

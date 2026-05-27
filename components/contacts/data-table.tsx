@@ -241,6 +241,7 @@ export function DataTable<TData extends { id: string }, TValue>({
                   key={cell.id}
                   style={{ width: `${cell.column.getSize()}px`, maxWidth: `${cell.column.getSize()}px` }}
                   className="py-3 px-4 text-zinc-700 dark:text-zinc-300 align-middle overflow-hidden"
+                  onClick={cell.column.id === 'select' ? (e) => e.stopPropagation() : undefined}
                 >
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
                 </td>
@@ -276,7 +277,11 @@ export function DataTable<TData extends { id: string }, TValue>({
                   )}
                 >
                   {row.getVisibleCells().map((cell) => (
-                    <td key={cell.id} className="py-3 px-4 text-zinc-700 dark:text-zinc-300">
+                    <td
+                      key={cell.id}
+                      className="py-3 px-4 text-zinc-700 dark:text-zinc-300"
+                      onClick={cell.column.id === 'select' ? (e) => e.stopPropagation() : undefined}
+                    >
                       {flexRender(cell.column.columnDef.cell, cell.getContext())}
                     </td>
                   ))}
