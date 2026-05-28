@@ -1,6 +1,5 @@
 'use client'
 
-import { useEffect, useState } from 'react'
 import { Check, ChevronDown, Plus } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import {
@@ -26,36 +25,18 @@ type Pipeline = {
 
 type PipelineSelectorProps = {
   pipelines: Pipeline[]
+  selectedPipelineId?: string
   onPipelineChange?: (pipelineId: string) => void
 }
 
-export function PipelineSelector({ pipelines, onPipelineChange }: PipelineSelectorProps) {
+export function PipelineSelector({ pipelines, selectedPipelineId: controlledId, onPipelineChange }: PipelineSelectorProps) {
   const router = useRouter()
-  const [selectedPipelineId, setSelectedPipelineId] = useState<string>('')
 
-  // Initialize selected pipeline from localStorage or use default
-  useEffect(() => {
-    const storedPipelineId = localStorage.getItem('selectedPipelineId')
-
-    if (storedPipelineId && pipelines.find(p => p.id === storedPipelineId)) {
-      setSelectedPipelineId(storedPipelineId)
-    } else {
-      // Use default pipeline
-      const defaultPipeline = pipelines.find(p => p.isDefault)
-      if (defaultPipeline) {
-        setSelectedPipelineId(defaultPipeline.id)
-      } else if (pipelines.length > 0) {
-        setSelectedPipelineId(pipelines[0].id)
-      }
-    }
-  }, [pipelines])
+  const selectedPipelineId = controlledId ?? pipelines.find(p => p.isDefault)?.id ?? pipelines[0]?.id ?? ''
 
   const selectedPipeline = pipelines.find(p => p.id === selectedPipelineId)
 
   const handlePipelineSelect = (pipelineId: string) => {
-    setSelectedPipelineId(pipelineId)
-    localStorage.setItem('selectedPipelineId', pipelineId)
-
     if (onPipelineChange) {
       onPipelineChange(pipelineId)
     }

@@ -141,6 +141,7 @@ export function DashboardTabs({
               <div className="flex items-center gap-2">
                 <PipelineSelector
                   pipelines={pipelines}
+                  selectedPipelineId={selectedPipelineId}
                   onPipelineChange={handlePipelineChange}
                 />
                 <CreateDealDialog
