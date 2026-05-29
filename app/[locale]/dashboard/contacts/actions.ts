@@ -375,10 +375,10 @@ export async function addContactClosing(contactId: string, data: {
         if (!user) return { success: false, error: 'Unauthorized' }
 
         // Resolve which deal to attach closing to
-        let targetDealId = data.dealId
+        let targetDealId = data.dealId ?? null
 
         if (!targetDealId) {
-            // Use first active deal linked to contact
+            // Use first active deal linked to contact, if any
             const activeDeal = await prisma.deal.findFirst({
                 where: { contactId, organizationId: user.organizationId, status: 'ACTIVE', archived: false },
                 orderBy: { createdAt: 'desc' },
@@ -386,40 +386,21 @@ export async function addContactClosing(contactId: string, data: {
             })
             if (activeDeal) {
                 targetDealId = activeDeal.id
-            } else {
-                // No active deal — create a placeholder deal to hold the closing
-                const firstStage = await prisma.pipelineStage.findFirst({
-                    where: { organizationId: user.organizationId },
-                    orderBy: { order: 'asc' },
-                    select: { id: true, pipelineId: true },
-                })
-                if (!firstStage) return { success: false, error: 'Nenhuma etapa encontrada no pipeline.' }
-
-                const newDeal = await (prisma.deal.create as any)({
-                    data: {
-                        title: data.note?.trim() || 'Fechamento registrado',
-                        value: data.value,
-                        status: 'WON',
-                        wonAt: new Date(new Date(data.date).getTime() + 12 * 60 * 60 * 1000),
-                        contactId,
-                        organizationId: user.organizationId,
-                        stageId: firstStage.id,
-                        pipelineId: firstStage.pipelineId,
-                        userId: user.id,
-                    },
-                    select: { id: true },
-                })
-                targetDealId = newDeal.id
             }
+            // No active deal — save closing without a deal (dealId stays null)
         }
 
-        // Verify deal belongs to org
-        const deal = await prisma.deal.findUnique({
-            where: { id: targetDealId },
-            select: { id: true, title: true, organizationId: true },
-        })
-        if (!deal || deal.organizationId !== user.organizationId) {
-            return { success: false, error: 'Deal não encontrado.' }
+        // If a dealId was resolved, verify it belongs to the org
+        let dealTitle: string | null = null
+        if (targetDealId) {
+            const deal = await prisma.deal.findUnique({
+                where: { id: targetDealId },
+                select: { id: true, title: true, organizationId: true },
+            })
+            if (!deal || deal.organizationId !== user.organizationId) {
+                return { success: false, error: 'Deal não encontrado.' }
+            }
+            dealTitle = deal.title
         }
 
         // Parse date as local noon to avoid UTC offset shifting the day
@@ -435,18 +416,20 @@ export async function addContactClosing(contactId: string, data: {
                 userId: user.id,
                 productName: data.productName ?? null,
                 contactId,
-                dealTitle: deal.title,
+                dealTitle,
             },
         })
 
-        await prisma.activity.create({
-            data: {
-                type: 'CLOSING_ADDED',
-                description: `Registrou fechamento de R$ ${data.value.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}${data.note ? ` — ${data.note}` : ''}`,
-                dealId: targetDealId,
-                userId: user.id,
-            },
-        })
+        if (targetDealId) {
+            await prisma.activity.create({
+                data: {
+                    type: 'CLOSING_ADDED',
+                    description: `Registrou fechamento de R$ ${data.value.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}${data.note ? ` — ${data.note}` : ''}`,
+                    dealId: targetDealId,
+                    userId: user.id,
+                },
+            })
+        }
 
         revalidatePath('/dashboard/contacts')
         revalidatePath('/dashboard')
@@ -456,7 +439,7 @@ export async function addContactClosing(contactId: string, data: {
             closing: {
                 id: closing.id,
                 dealId: targetDealId,
-                dealTitle: deal.title,
+                dealTitle,
                 date: closing.date.toISOString(),
                 value: Number(closing.value),
                 note: closing.note ?? null,
