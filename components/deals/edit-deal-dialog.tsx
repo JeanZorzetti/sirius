@@ -113,6 +113,8 @@ export function EditDealDialog({
     const [transferPipelineId, setTransferPipelineId] = useState('')
     const [transferStageId, setTransferStageId] = useState('')
     const [transferring, setTransferring] = useState(false)
+    const formRef = useRef<HTMLFormElement>(null)
+    const completingFollowUpRef = useRef(false)
 
     // Products state
     const [products, setProducts] = useState<{ id: string; name: string; price: any }[]>([])
@@ -248,8 +250,14 @@ export function EditDealDialog({
                         dueDate: formData.get('dueDate') as string || null,
                     })
                 }
-                onOpenChange(false)
-                if (onSuccess) onSuccess()
+                if (completingFollowUpRef.current) {
+                    completingFollowUpRef.current = false
+                    toast.success('Follow-up concluído')
+                    if (onSuccess) onSuccess()
+                } else {
+                    onOpenChange(false)
+                    if (onSuccess) onSuccess()
+                }
             } else {
                 toast.error("Erro ao atualizar negócio: " + (result.error || 'Erro desconhecido'))
             }
@@ -432,7 +440,7 @@ export function EditDealDialog({
                     <ScrollArea className="flex-1">
                         <div className="p-6">
                             <TabsContent value="details" className="mt-0">
-                                <form onSubmit={onSubmit} className="space-y-6">
+                                <form ref={formRef} onSubmit={onSubmit} className="space-y-6">
                                     <div className="grid grid-cols-2 gap-4">
                                         <div className="space-y-2">
                                             <Label>Título</Label>
@@ -668,8 +676,13 @@ export function EditDealDialog({
                                                 <button
                                                     type="button"
                                                     title="Marcar como concluído"
-                                                    onClick={() => { setDueDateValue(''); setDueDateNote('') }}
-                                                    className="shrink-0 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300 transition-colors"
+                                                    onClick={() => {
+                                                        setDueDateValue('')
+                                                        setDueDateNote('')
+                                                        completingFollowUpRef.current = true
+                                                        setTimeout(() => formRef.current?.requestSubmit(), 0)
+                                                    }}
+                                                    className="shrink-0 text-zinc-400 hover:text-green-600 dark:hover:text-green-400 transition-colors"
                                                 >
                                                     <CheckCircle2 className="w-4 h-4" />
                                                 </button>
