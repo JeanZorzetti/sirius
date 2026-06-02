@@ -60,8 +60,12 @@ export async function GET() {
 
     const contactIds = rows.map(r => r.contact_id)
 
-    // 6. Fetch contacts from CRM DB
-    const contacts = contactIds.length > 0
+    // 6. Fetch contacts from CRM DB.
+    // chatConversation.include{assignedUser} is fetched as a FLAT query and joined
+    // in memory: the nested include (tags M2M + chatConversation 1-1 + assignedUser)
+    // makes Prisma 5.x throw INSUFFICIENT_PATH (same root cause as the distinct/groupBy
+    // cases already replaced with raw SQL in this route).
+    const contactsRaw = contactIds.length > 0
       ? await prisma.contact.findMany({
           where: {
             id: { in: contactIds },
@@ -69,23 +73,29 @@ export async function GET() {
           },
           include: {
             tags: true,
-            chatConversation: {
-              include: {
-                assignedUser: {
-                  select: {
-                    id: true,
-                    name: true,
-                    email: true,
-                  }
-                }
-              }
-            },
           },
           orderBy: {
             updatedAt: 'desc'
           }
         })
       : []
+
+    const conversations = contactIds.length > 0
+      ? await prisma.chatConversation.findMany({
+          where: { contactId: { in: contactIds } },
+          include: {
+            assignedUser: {
+              select: { id: true, name: true, email: true }
+            }
+          }
+        })
+      : []
+    const conversationByContact = new Map(conversations.map(c => [c.contactId, c]))
+
+    const contacts = contactsRaw.map(c => ({
+      ...c,
+      chatConversation: conversationByContact.get(c.id) ?? null,
+    }))
 
     // 7. Fetch last message per contact from WA DB
     const lastMessagesRaw = contactIds.length > 0
