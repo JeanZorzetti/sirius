@@ -109,6 +109,17 @@ export function formatContactsForExport(contacts: any[]) {
     Email: contact.email || "-",
     Telefone: contact.phone || "-",
     Empresa: contact.company || "-",
+    "CNPJ/CPF": contact.document || "-",
+    Status: contact.status || "-",
+    Segmento: contact.segment || "-",
+    Rua: contact.street || "-",
+    Número: contact.streetNumber || "-",
+    Complemento: contact.complement || "-",
+    Cidade: contact.city || "-",
+    Estado: contact.state || "-",
+    CEP: contact.zipCode || "-",
+    Origem: contact.source || "-",
+    Observações: contact.observations || contact.notes || "-",
     "Data de Criação": contact.createdAt
       ? new Date(contact.createdAt).toLocaleDateString("pt-BR")
       : "-",
