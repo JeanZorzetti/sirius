@@ -287,7 +287,7 @@ export default async function AnalyticsPage({
     .sort((a, b) => b.value - a.value)
     .slice(0, 15);
 
-  // Client chart — grouped by contactId to avoid merging contacts with same name
+  // Client chart — grouped by contactId, value = real received (DealClosing), count = WON deals
   const clientDeals = await prisma.deal.findMany({
     where: {
       organizationId: user.organizationId,
@@ -300,9 +300,10 @@ export default async function AnalyticsPage({
       ...(isFiltered ? { closeDate: closeDateFilter } : {}),
     },
     select: {
+      id: true,
       contactId: true,
-      value: true,
       contact: { select: { name: true, company: true } },
+      closings: { select: { value: true } },
     },
   });
 
@@ -312,7 +313,8 @@ export default async function AnalyticsPage({
     if (!clientMap[id]) {
       clientMap[id] = { id, name: deal.contact?.name ?? 'Sem nome', value: 0, count: 0, company: deal.contact?.company ?? undefined };
     }
-    clientMap[id].value += Number(deal.value || 0);
+    const realized = deal.closings.reduce((s, c) => s + Number(c.value), 0);
+    clientMap[id].value += realized;
     clientMap[id].count += 1;
   }
   const clientSortKey = csort === 'count' ? 'count' : 'value'
