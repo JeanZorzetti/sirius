@@ -226,10 +226,15 @@ export async function addDealClosing(dealId: string, date: string, value: number
         }
     }
 
+    // Parse "YYYY-MM-DD" from <input type="date"> as a local date (noon) to avoid
+    // UTC-midnight shifting it to the previous day in negative-offset timezones (e.g. BRT, UTC-3).
+    const [cy, cm, cd] = date.split('-').map(Number)
+    const closingDate = (cy && cm && cd) ? new Date(cy, cm - 1, cd, 12, 0, 0) : new Date(date)
+
     const closing = await (prisma.dealClosing as any).create({
         data: {
             dealId,
-            date: new Date(date),
+            date: closingDate,
             value,
             note: note || null,
             userId: user.id,
