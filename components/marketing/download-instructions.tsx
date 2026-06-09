@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Download, Share, MoreVertical, Smartphone, Monitor, Check } from 'lucide-react'
 import Image from 'next/image'
-import Link from 'next/link'
+import { Link } from '@/i18n/routing'
 import { QRCodeSVG } from 'qrcode.react'
 
 export function DownloadInstructions() {

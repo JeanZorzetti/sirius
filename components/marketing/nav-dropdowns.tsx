@@ -1,6 +1,6 @@
 'use client'
 
-import Link from 'next/link'
+import { Link } from '@/i18n/routing'
 import { useState, useRef, useEffect, useCallback } from 'react'
 import { ChevronDown, Building2, Sun, Megaphone, Briefcase, Users, Calculator } from 'lucide-react'
 import { NICHES } from '@/config/niche-data'
