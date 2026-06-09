@@ -59,7 +59,7 @@ export async function POST(request: NextRequest) {
 
     // Send email
     if (process.env.RESEND_API_KEY) {
-      await resend.emails.send({
+      const { data, error: resendError } = await resend.emails.send({
         from: process.env.EMAIL_FROM || 'Sirius CRM <noreply@siriuscrm.com.br>',
         to: normalizedEmail,
         subject: 'Redefinir sua senha - Sirius CRM',
@@ -107,12 +107,19 @@ export async function POST(request: NextRequest) {
         `,
       })
 
-      logger.info({ email: normalizedEmail }, 'Password reset email sent')
+      if (resendError) {
+        logger.error(
+          { email: normalizedEmail, resendError },
+          'Resend failed to send password reset email'
+        )
+        return NextResponse.json({ error: 'Falha ao enviar email. Tente novamente.' }, { status: 500 })
+      }
+
+      logger.info({ email: normalizedEmail, messageId: data?.id }, 'Password reset email sent')
     } else {
       logger.warn('RESEND_API_KEY not configured, email not sent')
-      // In development, log the reset URL
       if (process.env.NODE_ENV === 'development') {
-        logger.info({ resetUrl }, 'Reset URL')
+        logger.info({ resetUrl }, 'Reset URL (dev)')
       }
     }
 
