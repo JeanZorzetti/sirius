@@ -1,11 +1,10 @@
-﻿import { NextRequest, NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
+import { Resend } from 'resend'
 import crypto from 'crypto'
-import logger from '@/lib/logger'
 import { authRateLimit } from '@/lib/ratelimit'
 import { apiError } from '@/lib/api-error'
 import { ERR } from '@/lib/error-messages'
-import { sendHtmlEmail } from '@/lib/email'
 
 export async function POST(request: NextRequest) {
   try {
@@ -23,43 +22,39 @@ export async function POST(request: NextRequest) {
 
     const normalizedEmail = email.toLowerCase().trim()
 
-    // Check if user exists (but don't reveal this to the client)
     const user = await prisma.user.findUnique({
       where: { email: normalizedEmail },
     })
 
-    // Always return success to prevent email enumeration attacks
     if (!user) {
-      logger.info({ email: normalizedEmail }, 'Password reset requested for non-existent email')
       return NextResponse.json({ success: true })
     }
 
-    // Delete any existing tokens for this email
     await prisma.passwordResetToken.deleteMany({
       where: { email: normalizedEmail },
     })
 
-    // Generate a secure token
     const token = crypto.randomBytes(32).toString('hex')
-    const expiresAt = new Date(Date.now() + 60 * 60 * 1000) // 1 hour
+    const expiresAt = new Date(Date.now() + 60 * 60 * 1000)
 
-    // Save the token
     await prisma.passwordResetToken.create({
-      data: {
-        token,
-        email: normalizedEmail,
-        expiresAt,
-      },
+      data: { token, email: normalizedEmail, expiresAt },
     })
 
-    // Build reset URL
-    const baseUrl = process.env.NEXTAUTH_URL || process.env.NEXT_PUBLIC_APP_URL || 'https://siriuscrm.com.br'
+    const baseUrl = process.env.NEXTAUTH_URL || 'https://siriuscrm.com.br'
     const resetUrl = `${baseUrl}/reset-password?token=${token}`
 
-    // Send email
-    logger.info({ email: normalizedEmail, resendKeySet: !!process.env.RESEND_API_KEY }, 'Attempting to send password reset email')
+    const apiKey = process.env.RESEND_API_KEY
+    console.log('[forgot-password] RESEND_API_KEY set:', !!apiKey, '| key prefix:', apiKey?.slice(0, 8))
 
-    const emailResult = await sendHtmlEmail({
+    if (!apiKey) {
+      console.error('[forgot-password] RESEND_API_KEY is not set — email not sent')
+      return NextResponse.json({ error: 'Configuracao de email ausente.' }, { status: 500 })
+    }
+
+    const resend = new Resend(apiKey)
+    const { data, error: resendError } = await resend.emails.send({
+      from: 'Sirius CRM <noreply@siriuscrm.com.br>',
       to: normalizedEmail,
       subject: 'Redefinir sua senha - Sirius CRM',
       html: `
@@ -73,30 +68,21 @@ export async function POST(request: NextRequest) {
           <div style="text-align: center; margin-bottom: 30px;">
             <h1 style="color: #6366f1; margin: 0;">Sirius CRM</h1>
           </div>
-
           <div style="background: #f9fafb; border-radius: 8px; padding: 30px; margin-bottom: 20px;">
             <h2 style="margin-top: 0; color: #111827;">Redefinir sua senha</h2>
             <p>Ola${user.name ? `, ${user.name}` : ''}!</p>
             <p>Recebemos uma solicitacao para redefinir a senha da sua conta no Sirius CRM.</p>
             <p>Clique no botao abaixo para criar uma nova senha:</p>
-
             <div style="text-align: center; margin: 30px 0;">
-              <a href="${resetUrl}"
-                 style="display: inline-block; background: #6366f1; color: white; text-decoration: none; padding: 12px 30px; border-radius: 6px; font-weight: 600;">
+              <a href="${resetUrl}" style="display: inline-block; background: #6366f1; color: white; text-decoration: none; padding: 12px 30px; border-radius: 6px; font-weight: 600;">
                 Redefinir Senha
               </a>
             </div>
-
-            <p style="font-size: 14px; color: #6b7280;">
-              Este link expira em <strong>1 hora</strong>.
-            </p>
-            <p style="font-size: 14px; color: #6b7280;">
-              Se voce nao solicitou esta alteracao, ignore este email. Sua senha permanecera a mesma.
-            </p>
+            <p style="font-size: 14px; color: #6b7280;">Este link expira em <strong>1 hora</strong>.</p>
+            <p style="font-size: 14px; color: #6b7280;">Se voce nao solicitou esta alteracao, ignore este email.</p>
           </div>
-
           <div style="text-align: center; font-size: 12px; color: #9ca3af;">
-            <p>Se o botao nao funcionar, copie e cole este link no seu navegador:</p>
+            <p>Se o botao nao funcionar, copie e cole este link:</p>
             <p style="word-break: break-all; color: #6366f1;">${resetUrl}</p>
             <hr style="border: none; border-top: 1px solid #e5e7eb; margin: 20px 0;">
             <p>&copy; ${new Date().getFullYear()} Sirius CRM - ROI Labs</p>
@@ -106,19 +92,15 @@ export async function POST(request: NextRequest) {
       `,
     })
 
-    if (!emailResult.success) {
-      logger.error(
-        { email: normalizedEmail, emailError: emailResult.error },
-        'Failed to send password reset email'
-      )
-      return NextResponse.json({ error: 'Falha ao enviar email. Verifique sua caixa de entrada ou tente novamente.' }, { status: 500 })
+    if (resendError) {
+      console.error('[forgot-password] Resend error:', JSON.stringify(resendError))
+      return NextResponse.json({ error: 'Falha ao enviar email. Tente novamente.' }, { status: 500 })
     }
 
-    logger.info({ email: normalizedEmail, messageId: (emailResult.data as any)?.id }, 'Password reset email sent successfully')
-
+    console.log('[forgot-password] Email sent successfully. messageId:', data?.id)
     return NextResponse.json({ success: true })
   } catch (error) {
-    logger.error({ error }, 'Error in forgot-password')
+    console.error('[forgot-password] Unexpected error:', error)
     return await apiError(ERR.FORGOT_PASSWORD, 500)
   }
 }
