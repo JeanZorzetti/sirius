@@ -2,7 +2,7 @@
 import { useEffect, useRef, useState, useTransition } from 'react'
 import { useRouter } from 'next/navigation'
 import { Search, X, User, Briefcase, MessageCircle, CheckSquare, Loader2 } from 'lucide-react'
-import { Drawer, DrawerContent } from '@/components/ui/drawer'
+import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog'
 
 interface SearchResult {
   contacts: Array<{ id: string; name: string; company?: string }>
@@ -58,9 +58,13 @@ export function GlobalSearch({ open, onClose }: GlobalSearchProps) {
     : 0
 
   return (
-    <Drawer open={open} onOpenChange={(v) => !v && onClose()}>
-      <DrawerContent className="max-h-[90vh]">
-      <div className="flex h-[85vh] flex-col">
+    <Dialog open={open} onOpenChange={(v) => !v && onClose()}>
+      <DialogContent
+        showCloseButton={false}
+        className="top-[20%] translate-y-0 gap-0 overflow-hidden rounded-2xl p-0"
+      >
+        <DialogTitle className="sr-only">Busca global</DialogTitle>
+      <div className="flex max-h-[60vh] flex-col">
         {/* Search input */}
         <div className="flex items-center gap-3 border-b border-border/50 px-4 py-3">
           {isPending ? (
@@ -195,7 +199,7 @@ export function GlobalSearch({ open, onClose }: GlobalSearchProps) {
           <div className="h-8" />
         </div>
       </div>
-      </DrawerContent>
-    </Drawer>
+      </DialogContent>
+    </Dialog>
   )
 }
