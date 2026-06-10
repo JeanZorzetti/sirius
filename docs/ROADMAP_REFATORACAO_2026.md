@@ -34,7 +34,7 @@
 
 ## Sprints (ordem de execução)
 
-### Sprint R1 — Religar o gate de tipos ⭐ FUNDAÇÃO
+### Sprint R1 — Religar o gate de tipos ⭐ FUNDAÇÃO ✅ FEITO (commit `921331d`, 2026-06-10)
 O motivo de bugs chegarem em prod sem aviso. Tudo que vier depois depende disso.
 1. Configurar types do vitest (`vitest/globals` no `tsconfig` ou `exclude: ["__tests__"]` do build-check)
 2. Corrigir os erros de tipo restantes em código de aplicação (poucos — ex.: `canUse` faltando em quota-display)
@@ -43,10 +43,8 @@ O motivo de bugs chegarem em prod sem aviso. Tudo que vier depois depende disso.
 
 **Critério de pronto:** `next build` typecheca e passa.
 
-### Sprint R1.5 — Suíte de testes verde (descoberto durante R1)
-Com o typecheck religado, a suíte vitest roda mas tem **~41 falhas pré-existentes** de drift (testes escritos contra valores/APIs antigos): `entitlements.test` espera valores de plano desatualizados (ex. FREE max_deals=50), `quota-display`/`feature-gate` esperam textos/aria-labels que mudaram, `forgot-password`/`deals` runtime. São testes que NUNCA rodaram verdes (nem typechecavam). Atualizar asserções à realidade do produto ou deletar testes de features mortas.
-
-**Critério de pronto:** `npx vitest run` 100% verde.
+### Sprint R1.5 — Suíte de testes verde ✅ FEITO (commit `3cb00fa`, 2026-06-10)
+Eram 98 falhas em 21 arquivos (drift: testes escritos contra planos/APIs antigos + falhas de infra de teste). Resultado: **35/35 arquivos, 656 testes verdes**. Bugs reais corrigidos no caminho: ALTER TABLE como side effect do `lib/prisma.ts`, DealFormGenerator travando submit com NaN sem erro visível, regexes de intent sem tolerar artigos, `minLeadScore` que não agia como mínimo, vitest coletando testes do zod de `mcp-server/node_modules`.
 
 ### Sprint R2 — Higiene de código
 1. Remover/condicionar os 30 `console.log` (instrumentação PERF atrás de `process.env.NODE_ENV === 'development'` ou flag)
