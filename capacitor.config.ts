@@ -1,4 +1,5 @@
 import type { CapacitorConfig } from '@capacitor/cli'
+import { KeyboardResize, KeyboardStyle } from '@capacitor/keyboard'
 
 const config: CapacitorConfig = {
   appId: 'com.roilabs.sirius',
@@ -11,7 +12,7 @@ const config: CapacitorConfig = {
     iosScheme: 'https',
     allowNavigation: ['siriuscrm.com.br', '*.siriuscrm.com.br'],
     // Always open at login — auth middleware redirects to /dashboard if session is valid
-    startPath: '/login',
+    appStartPath: '/login',
   },
   ios: {
     contentInset: 'always',
@@ -44,8 +45,8 @@ const config: CapacitorConfig = {
       presentationOptions: ['badge', 'sound', 'alert'],
     },
     Keyboard: {
-      resize: 'native',
-      style: 'dark',
+      resize: KeyboardResize.Native,
+      style: KeyboardStyle.Dark,
       resizeOnFullScreen: true,
     },
     LocalNotifications: {

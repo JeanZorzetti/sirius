@@ -51,8 +51,8 @@ export type WonDeal = {
 
 export type ClosingEntry = {
   id: string
-  dealId: string
-  dealTitle: string
+  dealId: string | null
+  dealTitle: string | null
   date: string
   value: number
   note: string | null

@@ -124,6 +124,7 @@ describe('ScrapingCreditsDisplay Component', () => {
       balance: 0,
       monthlyQuota: 0,
       used: 0,
+      canUse: false,
     })
 
     render(<ScrapingCreditsDisplay />)
@@ -138,6 +139,7 @@ describe('ScrapingCreditsDisplay Component', () => {
       balance: 35,
       monthlyQuota: 50,
       used: 15,
+      canUse: true,
     })
 
     render(<ScrapingCreditsDisplay />)
@@ -154,6 +156,7 @@ describe('ScrapingCreditsDisplay Component', () => {
       balance: 5,
       monthlyQuota: 0,
       used: 0,
+      canUse: true,
     })
 
     render(<ScrapingCreditsDisplay />)
@@ -168,6 +171,7 @@ describe('ScrapingCreditsDisplay Component', () => {
       balance: 5,
       monthlyQuota: 50,
       used: 45,
+      canUse: true,
     })
 
     render(<ScrapingCreditsDisplay />)
@@ -182,6 +186,7 @@ describe('ScrapingCreditsDisplay Component', () => {
       balance: 0,
       monthlyQuota: 50,
       used: 50,
+      canUse: false,
     })
 
     render(<ScrapingCreditsDisplay />)
@@ -196,6 +201,7 @@ describe('ScrapingCreditsDisplay Component', () => {
       balance: 0,
       monthlyQuota: 50,
       used: 50,
+      canUse: false,
     })
 
     render(<ScrapingCreditsDisplay />)
@@ -226,6 +232,7 @@ describe('QuotaDashboard Component', () => {
       balance: 25,
       monthlyQuota: 50,
       used: 25,
+      canUse: true,
     })
 
     render(<QuotaDashboard />)
@@ -255,6 +262,7 @@ describe('QuotaDashboard Component', () => {
       balance: 5,
       monthlyQuota: 0,
       used: 0,
+      canUse: true,
     })
 
     render(<QuotaDashboard />)
@@ -279,6 +287,7 @@ describe('QuotaDashboard Component', () => {
       balance: 40,
       monthlyQuota: 50,
       used: 10,
+      canUse: true,
     })
 
     render(<QuotaDashboard />)
@@ -303,6 +312,7 @@ describe('QuotaDashboard Component', () => {
       balance: 0,
       monthlyQuota: 0,
       used: 0,
+      canUse: false,
     })
 
     render(<QuotaDashboard />)
@@ -335,6 +345,7 @@ describe('Quota Display Accessibility', () => {
       balance: 25,
       monthlyQuota: 50,
       used: 25,
+      canUse: true,
     })
 
     render(<ScrapingCreditsDisplay />)

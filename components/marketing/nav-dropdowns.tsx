@@ -1,7 +1,7 @@
 'use client'
 
 import { Link } from '@/i18n/routing'
-import { useState, useRef, useEffect, useCallback } from 'react'
+import { useState, useRef, useEffect, useCallback, type ComponentProps } from 'react'
 import { ChevronDown, Building2, Sun, Megaphone, Briefcase, Users, Calculator } from 'lucide-react'
 import { NICHES } from '@/config/niche-data'
 
@@ -28,7 +28,7 @@ const FERRAMENTAS_KEYS = [
   { href: '/ferramentas/calculadora-roi-agencias', tKey: 'roi_agencies' },
   { href: '/ferramentas/calculadora-roi-consultores', tKey: 'roi_consultants' },
   { href: '/ferramentas/calculadora-roi-representantes', tKey: 'roi_reps' },
-]
+] as const
 
 function DropdownMenu({ label, children }: { label: string; children: React.ReactNode }) {
   const [open, setOpen] = useState(false)
@@ -101,7 +101,7 @@ function DropdownMenu({ label, children }: { label: string; children: React.Reac
 }
 
 function DropdownItem({ href, icon: Icon, label, onClick }: {
-  href: string
+  href: ComponentProps<typeof Link>['href']
   icon?: typeof Building2
   label: string
   onClick?: () => void
@@ -132,7 +132,7 @@ export function NavDropdowns() {
           return (
             <DropdownItem
               key={niche.slug}
-              href={`/solucoes/${niche.slug}`}
+              href={{ pathname: '/solucoes/[slug]', params: { slug: niche.slug } }}
               icon={Icon}
               label={tNiches(niche.slug as any)}
             />

@@ -43,6 +43,11 @@ O motivo de bugs chegarem em prod sem aviso. Tudo que vier depois depende disso.
 
 **Critério de pronto:** `next build` typecheca e passa.
 
+### Sprint R1.5 — Suíte de testes verde (descoberto durante R1)
+Com o typecheck religado, a suíte vitest roda mas tem **~41 falhas pré-existentes** de drift (testes escritos contra valores/APIs antigos): `entitlements.test` espera valores de plano desatualizados (ex. FREE max_deals=50), `quota-display`/`feature-gate` esperam textos/aria-labels que mudaram, `forgot-password`/`deals` runtime. São testes que NUNCA rodaram verdes (nem typechecavam). Atualizar asserções à realidade do produto ou deletar testes de features mortas.
+
+**Critério de pronto:** `npx vitest run` 100% verde.
+
 ### Sprint R2 — Higiene de código
 1. Remover/condicionar os 30 `console.log` (instrumentação PERF atrás de `process.env.NODE_ENV === 'development'` ou flag)
 2. Migrar `middleware.ts` → convenção `proxy` (Next 16)
@@ -58,12 +63,12 @@ Criar `lib/types/pipeline.ts` com `Pipeline`, `PipelineStage`, `Deal`, `DealCont
 
 **Critério de pronto:** zero `any` nos props desses 5 componentes; typecheck verde.
 
-### Sprint R4 — Tipagem das rotas críticas de dinheiro/mensageria
+### Sprint R4 — Tipagem das rotas críticas + remoção do whatsmeow
+- **whatsmeow está MORTO** (foi só um teste, confirmado 2026-06-10): em vez de tipar, REMOVER `app/api/webhooks/whatsmeow/`, `lib/integrations/whatsmeow-client.ts` e desacoplar `chat/page.tsx` (que ainda importa o client e o `prismaWa`). Mapear dependências antes de deletar.
 - `app/api/webhooks/mercadopago/route.ts` (14 anys, 848 linhas — tipar payloads MP)
-- `app/api/webhooks/whatsmeow/route.ts` (23 anys — tipar eventos do gateway)
 - `app/[locale]/dashboard/contacts/actions.ts` (16 anys)
 
-**Critério de pronto:** ≤2 `any` justificados por arquivo (payload externo na borda, validado com zod).
+**Critério de pronto:** código whatsmeow removido sem quebrar o chat; ≤2 `any` justificados por arquivo restante (payload externo na borda, validado com zod).
 
 ### Sprint R5 — Decompor `message-area.tsx` (2.169 linhas)
 Extrair em `components/chat/message-area/`: header, lista de mensagens, bolha de mensagem, composer/input, painel de anexos, modais (já há padrão de decomposição no projeto — V2 Sprint).

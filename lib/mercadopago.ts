@@ -335,10 +335,11 @@ export async function createSubscription(
           currency_id: 'BRL',
         },
         back_url: `${baseUrl}/checkout/sucesso`,
+        // notification_url is accepted by the MP API but missing from the SDK's PreApprovalRequest type
         notification_url: `${baseUrl}/api/webhooks/mercadopago`,
         external_reference: `${organizationId}_${plan}`,
         status: 'pending',
-      },
+      } as Parameters<ReturnType<typeof getPreApprovalClient>['create']>[0]['body'] & { notification_url: string },
     })
 
     logger.info({ organizationId, subscriptionId: subscription.id, plan }, 'MP subscription created')

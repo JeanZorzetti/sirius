@@ -78,7 +78,7 @@ interface Contact {
   chatConversation?: ChatConversation | null
   _count?: { whatsappMessages: number }
 }
-interface Connection { id: string; instanceName: string; phoneNumber: string | null }
+interface Connection { id: string; instanceName: string; displayName?: string | null; phoneNumber: string | null }
 interface Reaction {
   emoji: string
   count: number

@@ -14,6 +14,7 @@ import { cn } from '@/lib/utils'
 interface Connection {
   id: string
   instanceName: string
+  displayName: string | null
   status: string
   phoneNumber: string | null
   connectedAt: Date | null

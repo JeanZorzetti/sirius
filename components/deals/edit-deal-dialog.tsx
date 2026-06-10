@@ -53,6 +53,7 @@ type SimpleDeal = {
     title: string
     value: any
     stageId: string
+    status?: string | null
     contactId?: string | null
     closeDate?: string | Date | null
     dueDate?: string | Date | null

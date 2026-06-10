@@ -11,13 +11,13 @@ export async function isBiometricAvailable(): Promise<{ available: boolean; type
 
   try {
     const { BiometricAuth } = await import('@aparajita/capacitor-biometric-auth')
-    const { isAvailable, strongBiometricAvailable } = await BiometricAuth.checkBiometry()
+    const { isAvailable, strongBiometryIsAvailable } = await BiometricAuth.checkBiometry()
     if (!isAvailable) return { available: false, type: 'none' }
 
     // Detect type from platform
     const platform = Capacitor.getPlatform()
     const type: BiometricType = platform === 'ios'
-      ? strongBiometricAvailable ? 'faceId' : 'touchId'
+      ? strongBiometryIsAvailable ? 'faceId' : 'touchId'
       : 'fingerprint'
 
     return { available: true, type }

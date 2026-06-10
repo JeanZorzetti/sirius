@@ -111,7 +111,7 @@ import type { Mock } from 'vitest'
 
 function createRequest(url: string, method: string = 'GET', body?: any): NextRequest {
   const fullUrl = `http://localhost:3000${url}`
-  const options: RequestInit = { method }
+  const options: ConstructorParameters<typeof NextRequest>[1] = { method }
 
   if (body) {
     options.body = JSON.stringify(body)

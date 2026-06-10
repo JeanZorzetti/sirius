@@ -62,7 +62,7 @@ export async function PATCH(request: NextRequest) {
     const session = await getSession()
 
     if (!session?.user?.id) {
-      return await apiError(ERR.UNAUTHORIZED, 401, { req })
+      return await apiError(ERR.UNAUTHORIZED, 401, { req: request })
     }
 
     const body = await request.json()

@@ -10,10 +10,8 @@ import {
   checkUserLimit,
   checkPipelineLimit,
   consumeAgiQuota,
-  consumeScrapingCredit,
+  checkAndConsumeScrapingCredits,
   LimitReachedError,
-  QuotaExceededError,
-  InsufficientCreditsError,
 } from '../feature-gates'
 
 // Mock do Prisma
@@ -240,20 +238,8 @@ describe('Feature Gates', () => {
       await expect(consumeAgiQuota('org_1')).resolves.not.toThrow()
     })
 
-    it('should throw when FREE tier exceeds quota', async () => {
-      mockPrisma.agiQuota.findUnique.mockResolvedValue({
-        id: 'quota_1',
-        organizationId: 'org_1',
-        monthlyLimit: 3,
-        usedThisMonth: 3, // Já usou tudo
-        lastReset: new Date(),
-      })
-
-      await expect(consumeAgiQuota('org_1')).rejects.toThrow(QuotaExceededError)
-      await expect(consumeAgiQuota('org_1')).rejects.toThrow(
-        'AGI quota exceeded: 3/3 used this month'
-      )
-    })
+    // NOTE: teste de "throw quando excede quota" removido — consumeAgiQuota
+    // real apenas incrementa; o enforcement é feito antes, via checkAgiQuota.
 
     it('should allow unlimited consumption for PRO tier', async () => {
       mockPrisma.agiQuota.findUnique.mockResolvedValue({
@@ -275,16 +261,15 @@ describe('Feature Gates', () => {
       await expect(consumeAgiQuota('org_1')).resolves.not.toThrow()
     })
 
-    it('should throw if quota record not found', async () => {
+    it('should throw if organization not found when initializing quota', async () => {
       mockPrisma.agiQuota.findUnique.mockResolvedValue(null)
+      mockPrisma.organization.findUnique.mockResolvedValue(null)
 
-      await expect(consumeAgiQuota('org_1')).rejects.toThrow(
-        'AGI quota not initialized'
-      )
+      await expect(consumeAgiQuota('org_1')).rejects.toThrow('Organization not found')
     })
   })
 
-  describe('consumeScrapingCredit', () => {
+  describe('checkAndConsumeScrapingCredits', () => {
     it('should consume 1 credit when available', async () => {
       mockPrisma.scrapingCredit.findUnique.mockResolvedValue({
         id: 'credit_1',
@@ -304,7 +289,7 @@ describe('Feature Gates', () => {
         lastRefill: new Date(),
       })
 
-      await expect(consumeScrapingCredit('org_1', 1)).resolves.not.toThrow()
+      await expect(checkAndConsumeScrapingCredits('org_1', 1)).resolves.not.toThrow()
     })
 
     it('should consume multiple credits', async () => {
@@ -326,7 +311,7 @@ describe('Feature Gates', () => {
         lastRefill: new Date(),
       })
 
-      await expect(consumeScrapingCredit('org_1', 10)).resolves.not.toThrow()
+      await expect(checkAndConsumeScrapingCredits('org_1', 10)).resolves.not.toThrow()
     })
 
     it('should throw when insufficient credits', async () => {
@@ -339,11 +324,8 @@ describe('Feature Gates', () => {
         lastRefill: new Date(),
       })
 
-      await expect(consumeScrapingCredit('org_1', 10)).rejects.toThrow(
-        InsufficientCreditsError
-      )
-      await expect(consumeScrapingCredit('org_1', 10)).rejects.toThrow(
-        'Insufficient scraping credits: need 10, have 5'
+      await expect(checkAndConsumeScrapingCredits('org_1', 10)).rejects.toThrow(
+        LimitReachedError
       )
     })
 
@@ -357,16 +339,16 @@ describe('Feature Gates', () => {
         lastRefill: new Date(),
       })
 
-      await expect(consumeScrapingCredit('org_1', 1)).rejects.toThrow(
-        InsufficientCreditsError
+      await expect(checkAndConsumeScrapingCredits('org_1', 1)).rejects.toThrow(
+        LimitReachedError
       )
     })
 
     it('should throw if credit record not found', async () => {
       mockPrisma.scrapingCredit.findUnique.mockResolvedValue(null)
 
-      await expect(consumeScrapingCredit('org_1', 1)).rejects.toThrow(
-        'Scraping credits not initialized'
+      await expect(checkAndConsumeScrapingCredits('org_1', 1)).rejects.toThrow(
+        'Scraping credits not found'
       )
     })
   })
@@ -375,27 +357,10 @@ describe('Feature Gates', () => {
     it('should create LimitReachedError correctly', () => {
       const error = new LimitReachedError('deals', 50, 50)
       expect(error.name).toBe('LimitReachedError')
-      expect(error.message).toBe('Deal limit reached: 50/50 active deals')
+      expect(error.message).toBe('deals limit reached: 50/50')
       expect(error.resource).toBe('deals')
       expect(error.limit).toBe(50)
       expect(error.current).toBe(50)
-    })
-
-    it('should create QuotaExceededError correctly', () => {
-      const error = new QuotaExceededError('agi', 3, 3)
-      expect(error.name).toBe('QuotaExceededError')
-      expect(error.message).toBe('AGI quota exceeded: 3/3 used this month')
-      expect(error.quota).toBe('agi')
-      expect(error.limit).toBe(3)
-      expect(error.used).toBe(3)
-    })
-
-    it('should create InsufficientCreditsError correctly', () => {
-      const error = new InsufficientCreditsError(10, 5)
-      expect(error.name).toBe('InsufficientCreditsError')
-      expect(error.message).toBe('Insufficient scraping credits: need 10, have 5')
-      expect(error.needed).toBe(10)
-      expect(error.available).toBe(5)
     })
   })
 })

@@ -45,8 +45,8 @@ export function PullToRefresh({ children, onRefresh, threshold = THRESHOLD }: Pu
     if (pullY.get() >= threshold && !isRefreshing) {
       setIsRefreshing(true)
       try {
-        const { triggerHaptic } = await import('@/lib/mobile/haptics')
-        triggerHaptic('success')
+        const { hapticSuccess } = await import('@/lib/mobile/haptics')
+        hapticSuccess()
       } catch {}
       try {
         await onRefresh()

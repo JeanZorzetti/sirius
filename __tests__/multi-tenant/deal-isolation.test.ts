@@ -75,7 +75,7 @@ describe('Deal Data Isolation', () => {
 
   describe('getDealDetails - Cross-Organization Access Prevention', () => {
     it('should prevent user from accessing deals from another organization', async () => {
-      const { getDealDetails } = await import('@/app/dashboard/deals/actions')
+      const { getDealDetails } = await import('@/app/[locale]/dashboard/deals/actions')
 
       // Create a deal in org2
       const org2Deal = createMockDeal({
@@ -94,7 +94,7 @@ describe('Deal Data Isolation', () => {
     })
 
     it('should allow user to access deals from their own organization', async () => {
-      const { getDealDetails } = await import('@/app/dashboard/deals/actions')
+      const { getDealDetails } = await import('@/app/[locale]/dashboard/deals/actions')
 
       // Create a deal in org1 with all required nested objects
       const org1Deal = createMockDeal({
@@ -133,7 +133,7 @@ describe('Deal Data Isolation', () => {
 
   describe('createDeal - Organization Enforcement', () => {
     it.skip('should automatically set organizationId from authenticated user', async () => {
-      const { createDeal } = await import('@/app/dashboard/actions')
+      const { createDeal } = await import('@/app/[locale]/dashboard/actions')
 
       const stageId = generateTestUUID()
       const contactId = generateTestUUID()
@@ -193,7 +193,7 @@ describe('Deal Data Isolation', () => {
 
   describe('updateDeal - Cross-Organization Modification Prevention', () => {
     it('should prevent updating deals from another organization', async () => {
-      const { updateDeal } = await import('@/app/dashboard/actions')
+      const { updateDeal } = await import('@/app/[locale]/dashboard/actions')
 
       // Create a deal in org2
       const org2Deal = createMockDeal({
@@ -219,7 +219,7 @@ describe('Deal Data Isolation', () => {
 
   describe('deleteDeal - Cross-Organization Deletion Prevention', () => {
     it('should prevent deleting deals from another organization', async () => {
-      const { deleteDeal } = await import('@/app/dashboard/actions')
+      const { deleteDeal } = await import('@/app/[locale]/dashboard/actions')
 
       // Create a deal in org2
       const org2Deal = createMockDeal({
@@ -241,7 +241,7 @@ describe('Deal Data Isolation', () => {
 
   describe('IDOR Attack Prevention', () => {
     it('should prevent IDOR attack via deal ID guessing', async () => {
-      const { getDealDetails } = await import('@/app/dashboard/deals/actions')
+      const { getDealDetails } = await import('@/app/[locale]/dashboard/deals/actions')
 
       // Simulated attack scenario:
       // Attacker (user1 from org1) tries to access victim's deal (org2) by guessing/enumerating IDs
@@ -268,7 +268,7 @@ describe('Deal Data Isolation', () => {
 
   describe('Authorization Checks', () => {
     it('should reject unauthenticated requests', async () => {
-      const { getDealDetails } = await import('@/app/dashboard/deals/actions')
+      const { getDealDetails } = await import('@/app/[locale]/dashboard/deals/actions')
 
       // No session
       mockSession.user = null
@@ -277,7 +277,7 @@ describe('Deal Data Isolation', () => {
     })
 
     it('should reject requests with invalid user', async () => {
-      const { getDealDetails } = await import('@/app/dashboard/deals/actions')
+      const { getDealDetails } = await import('@/app/[locale]/dashboard/deals/actions')
 
       // Invalid user in session
       mockSession.user = { email: 'invalid@example.com' }

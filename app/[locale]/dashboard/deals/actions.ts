@@ -276,19 +276,22 @@ export async function deleteDealClosing(closingId: string) {
         include: { deal: true }
     })
     if (!closing) throw new Error("Closing not found")
-    if (closing.deal.organizationId !== user.organizationId) throw new Error("Unauthorized")
+    if (!closing.deal || closing.deal.organizationId !== user.organizationId) throw new Error("Unauthorized")
 
     await prisma.dealClosing.delete({ where: { id: closingId } })
 
-    const valueStr = `R$ ${Number(closing.value).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`
-    await prisma.activity.create({
-        data: {
-            type: "CLOSING_REMOVED",
-            description: `Removeu fechamento de ${valueStr}`,
-            dealId: closing.dealId,
-            userId: user.id
-        }
-    })
+    // Activity requires a deal — skip logging for closings whose deal was deleted
+    if (closing.dealId) {
+        const valueStr = `R$ ${Number(closing.value).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`
+        await prisma.activity.create({
+            data: {
+                type: "CLOSING_REMOVED",
+                description: `Removeu fechamento de ${valueStr}`,
+                dealId: closing.dealId,
+                userId: user.id
+            }
+        })
+    }
 
     revalidatePath("/dashboard")
     return { success: true }

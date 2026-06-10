@@ -21,7 +21,7 @@ export async function GET() {
 export async function POST() {
   const session = await getSession()
   if (!session?.user?.email) {
-    return await apiError(ERR.UNAUTHORIZED, 401, { req })
+    return await apiError(ERR.UNAUTHORIZED, 401)
   }
 
   const user = await prisma.user.findUnique({

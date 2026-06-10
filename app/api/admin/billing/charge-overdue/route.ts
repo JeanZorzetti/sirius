@@ -12,7 +12,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { createCheckoutPreference, CheckoutPlan } from '@/lib/mercadopago'
-import { sendEmail } from '@/lib/email'
+import { sendHtmlEmail } from '@/lib/email'
 import logger from '@/lib/logger'
 import { apiError } from '@/lib/api-error'
 import { ERR } from '@/lib/error-messages'
@@ -81,7 +81,7 @@ export async function POST(request: NextRequest) {
     const planPrices: Record<string, number> = { STARTER: 67, PRO: 147, BUSINESS: 397 }
     const price = planPrices[plan] ?? 0
 
-    await sendEmail({
+    await sendHtmlEmail({
       to: owner.email,
       subject: `💳 Cobrança pendente – Sirius CRM (${org.name})`,
       html: `

@@ -38,7 +38,9 @@ import {
   Sparkles
 } from 'lucide-react'
 
-interface DemoSchedulerComponentProps extends DemoSchedulerProps {
+interface DemoSchedulerComponentProps extends Omit<DemoSchedulerProps, 'autoTriggerCRM'> {
+  // Optional at the component boundary — runtime default below mirrors the zod .default(true)
+  autoTriggerCRM?: boolean
   onInteraction?: (action: string, component: string, data: Record<string, unknown>) => void
 }
 

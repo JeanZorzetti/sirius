@@ -55,13 +55,13 @@ export async function middleware(request: NextRequest) {
     //    Fix: we apply the refreshed cookie onto the FINAL response (was previously lost
     //    because updateSession returned its own NextResponse that got discarded).
     const refreshResult = await maybeRefreshSession(request)
-    if ('invalid' in refreshResult && refreshResult.invalid) {
+    if ('invalid' in refreshResult) {
         const loginUrl = new URL('/login', request.url)
         const redirect = NextResponse.redirect(loginUrl)
         redirect.cookies.set('session', '', { expires: new Date(0), path: '/' })
         return redirect
     }
-    if (refreshResult.refreshed) {
+    if ('cookieValue' in refreshResult) {
         res.cookies.set({
             name: 'session',
             value: refreshResult.cookieValue,

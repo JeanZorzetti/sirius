@@ -192,7 +192,7 @@ async function ContactsData({ orgId }: { orgId: string }) {
         closingsByContact.set(cid, [...existing, cl])
     }
 
-    const enrichedContacts = contacts.map(c => {
+    const enrichedContacts = contacts.map((c: any) => {
         const deal = dealByContact.get(c.id)
         const directAssigneeName = c.assignedToId ? (userById.get(c.assignedToId) ?? null) : null
         const contactWonDeals = (wonDealsByContact.get(c.id) ?? []).map(d => ({

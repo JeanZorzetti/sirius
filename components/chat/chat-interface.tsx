@@ -25,6 +25,7 @@ import { KeyboardShortcutsModal } from './keyboard-shortcuts-modal'
 interface Connection {
   id: string
   instanceName: string
+  displayName: string | null
   status: string
   phoneNumber: string | null
   connectedAt: Date | null

@@ -11,7 +11,7 @@
  * Priority: ALTA (segurança + UX crítica)
  */
 
-import { vi } from 'vitest'
+import { vi, type Mock } from 'vitest'
 
 // Mock do Resend (deve ser antes do import da rota)
 vi.mock('resend', () => {
@@ -77,13 +77,13 @@ describe('POST /api/auth/forgot-password', () => {
 
   describe('Security - User Enumeration', () => {
     it('should return same response for valid email', async () => {
-      ;(prisma.user.findUnique as vi.Mock).mockResolvedValue({
+      ;(prisma.user.findUnique as Mock).mockResolvedValue({
         id: '123',
         email: 'exists@example.com',
         name: 'Test User',
       })
-      ;(prisma.passwordResetToken.deleteMany as vi.Mock).mockResolvedValue({ count: 0 })
-      ;(prisma.passwordResetToken.create as vi.Mock).mockResolvedValue({
+      ;(prisma.passwordResetToken.deleteMany as Mock).mockResolvedValue({ count: 0 })
+      ;(prisma.passwordResetToken.create as Mock).mockResolvedValue({
         token: 'reset-token-123',
       })
 
@@ -96,7 +96,7 @@ describe('POST /api/auth/forgot-password', () => {
     })
 
     it('should return same response for non-existent email (prevent enumeration)', async () => {
-      ;(prisma.user.findUnique as vi.Mock).mockResolvedValue(null)
+      ;(prisma.user.findUnique as Mock).mockResolvedValue(null)
 
       const request = createRequest('notexists@example.com')
       const response = await POST(request)
@@ -108,7 +108,7 @@ describe('POST /api/auth/forgot-password', () => {
     })
 
     it('should NOT send email for non-existent user', async () => {
-      ;(prisma.user.findUnique as vi.Mock).mockResolvedValue(null)
+      ;(prisma.user.findUnique as Mock).mockResolvedValue(null)
 
       const request = createRequest('notexists@example.com')
       await POST(request)
@@ -118,13 +118,13 @@ describe('POST /api/auth/forgot-password', () => {
     })
 
     it('should send email for valid user', async () => {
-      ;(prisma.user.findUnique as vi.Mock).mockResolvedValue({
+      ;(prisma.user.findUnique as Mock).mockResolvedValue({
         id: '123',
         email: 'exists@example.com',
         name: 'Test User',
       })
-      ;(prisma.passwordResetToken.deleteMany as vi.Mock).mockResolvedValue({ count: 1 })
-      ;(prisma.passwordResetToken.create as vi.Mock).mockResolvedValue({
+      ;(prisma.passwordResetToken.deleteMany as Mock).mockResolvedValue({ count: 1 })
+      ;(prisma.passwordResetToken.create as Mock).mockResolvedValue({
         token: 'reset-token-123',
         email: 'exists@example.com',
         expiresAt: new Date(Date.now() + 60 * 60 * 1000),
@@ -146,7 +146,7 @@ describe('POST /api/auth/forgot-password', () => {
 
   describe('Rate Limiting', () => {
     it('should return 429 when rate limit exceeded', async () => {
-      ;(authRateLimit as vi.Mock).mockResolvedValueOnce(
+      ;(authRateLimit as Mock).mockResolvedValueOnce(
         NextResponse.json({ error: 'Muitas tentativas. Tente novamente em 15 minutos.' }, { status: 429 })
       )
 
@@ -160,13 +160,13 @@ describe('POST /api/auth/forgot-password', () => {
     })
 
     it('should allow request when under rate limit', async () => {
-      ;(authRateLimit as vi.Mock).mockResolvedValueOnce(null) // null = não bloqueado
-      ;(prisma.user.findUnique as vi.Mock).mockResolvedValue({
+      ;(authRateLimit as Mock).mockResolvedValueOnce(null) // null = não bloqueado
+      ;(prisma.user.findUnique as Mock).mockResolvedValue({
         id: '123',
         email: 'test@example.com',
       })
-      ;(prisma.passwordResetToken.deleteMany as vi.Mock).mockResolvedValue({ count: 0 })
-      ;(prisma.passwordResetToken.create as vi.Mock).mockResolvedValue({
+      ;(prisma.passwordResetToken.deleteMany as Mock).mockResolvedValue({ count: 0 })
+      ;(prisma.passwordResetToken.create as Mock).mockResolvedValue({
         token: 'reset-token',
       })
 
@@ -177,13 +177,13 @@ describe('POST /api/auth/forgot-password', () => {
     })
 
     it('should use IP address for rate limiting', async () => {
-      ;(authRateLimit as vi.Mock).mockResolvedValueOnce(null)
-      ;(prisma.user.findUnique as vi.Mock).mockResolvedValue({
+      ;(authRateLimit as Mock).mockResolvedValueOnce(null)
+      ;(prisma.user.findUnique as Mock).mockResolvedValue({
         id: '123',
         email: 'test@example.com',
       })
-      ;(prisma.passwordResetToken.deleteMany as vi.Mock).mockResolvedValue({ count: 0 })
-      ;(prisma.passwordResetToken.create as vi.Mock).mockResolvedValue({
+      ;(prisma.passwordResetToken.deleteMany as Mock).mockResolvedValue({ count: 0 })
+      ;(prisma.passwordResetToken.create as Mock).mockResolvedValue({
         token: 'token',
       })
 
@@ -211,7 +211,7 @@ describe('POST /api/auth/forgot-password', () => {
     })
 
     it('should accept valid email format', async () => {
-      ;(prisma.user.findUnique as vi.Mock).mockResolvedValue(null)
+      ;(prisma.user.findUnique as Mock).mockResolvedValue(null)
 
       const validEmails = [
         'test@example.com',
@@ -230,12 +230,12 @@ describe('POST /api/auth/forgot-password', () => {
 
   describe('Token Generation', () => {
     it('should create reset token in database', async () => {
-      ;(prisma.user.findUnique as vi.Mock).mockResolvedValue({
+      ;(prisma.user.findUnique as Mock).mockResolvedValue({
         id: '123',
         email: 'test@example.com',
       })
-      ;(prisma.passwordResetToken.deleteMany as vi.Mock).mockResolvedValue({ count: 0 })
-      ;(prisma.passwordResetToken.create as vi.Mock).mockResolvedValue({
+      ;(prisma.passwordResetToken.deleteMany as Mock).mockResolvedValue({ count: 0 })
+      ;(prisma.passwordResetToken.create as Mock).mockResolvedValue({
         token: 'reset-token-123',
         expiresAt: new Date(Date.now() + 60 * 60 * 1000),
       })
@@ -253,19 +253,19 @@ describe('POST /api/auth/forgot-password', () => {
     })
 
     it('should generate unique token', async () => {
-      ;(prisma.user.findUnique as vi.Mock).mockResolvedValue({
+      ;(prisma.user.findUnique as Mock).mockResolvedValue({
         id: '123',
         email: 'test@example.com',
       })
-      ;(prisma.passwordResetToken.deleteMany as vi.Mock).mockResolvedValue({ count: 0 })
-      ;(prisma.passwordResetToken.create as vi.Mock).mockResolvedValue({
+      ;(prisma.passwordResetToken.deleteMany as Mock).mockResolvedValue({ count: 0 })
+      ;(prisma.passwordResetToken.create as Mock).mockResolvedValue({
         token: 'unique-token',
       })
 
       const request = createRequest('test@example.com')
       await POST(request)
 
-      const createCall = (prisma.passwordResetToken.create as vi.Mock).mock.calls[0][0]
+      const createCall = (prisma.passwordResetToken.create as Mock).mock.calls[0][0]
       const token = createCall.data.token
 
       expect(token).toBeDefined()
@@ -273,12 +273,12 @@ describe('POST /api/auth/forgot-password', () => {
     })
 
     it('should set token expiration to 1 hour', async () => {
-      ;(prisma.user.findUnique as vi.Mock).mockResolvedValue({
+      ;(prisma.user.findUnique as Mock).mockResolvedValue({
         id: '123',
         email: 'test@example.com',
       })
-      ;(prisma.passwordResetToken.deleteMany as vi.Mock).mockResolvedValue({ count: 0 })
-      ;(prisma.passwordResetToken.create as vi.Mock).mockResolvedValue({
+      ;(prisma.passwordResetToken.deleteMany as Mock).mockResolvedValue({ count: 0 })
+      ;(prisma.passwordResetToken.create as Mock).mockResolvedValue({
         token: 'token',
       })
 
@@ -287,7 +287,7 @@ describe('POST /api/auth/forgot-password', () => {
       await POST(request)
       const after = Date.now()
 
-      const createCall = (prisma.passwordResetToken.create as vi.Mock).mock.calls[0][0]
+      const createCall = (prisma.passwordResetToken.create as Mock).mock.calls[0][0]
       const expiresAt = createCall.data.expiresAt.getTime()
 
       // Expiração deve ser ~1h no futuro
@@ -299,7 +299,7 @@ describe('POST /api/auth/forgot-password', () => {
 
   describe('Error Handling', () => {
     it('should return 500 on database error', async () => {
-      ;(prisma.user.findUnique as vi.Mock).mockRejectedValue(new Error('DB Error'))
+      ;(prisma.user.findUnique as Mock).mockRejectedValue(new Error('DB Error'))
 
       const request = createRequest('test@example.com')
       const response = await POST(request)

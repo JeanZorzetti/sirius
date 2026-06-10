@@ -1,12 +1,12 @@
 ﻿import logger from '@/lib/logger'
-import { NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { prismaWa } from '@/lib/prisma-wa'
 import { getSession } from '@/lib/auth'
 import { apiError } from '@/lib/api-error'
 import { ERR } from '@/lib/error-messages'
 
-export async function PUT(req: Request) {
+export async function PUT(req: NextRequest) {
   try {
     const session = await getSession()
     if (!session?.user?.id) {

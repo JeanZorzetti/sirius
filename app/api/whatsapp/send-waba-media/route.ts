@@ -87,7 +87,7 @@ export async function POST(req: NextRequest) {
 
     const rawMime = file.type || 'application/octet-stream'
     const inputMime = rawMime.split(';')[0].trim()
-    let fileBuffer = Buffer.from(await file.arrayBuffer())
+    let fileBuffer: Buffer = Buffer.from(await file.arrayBuffer())
     let mimeType = inputMime
     let filename = file.name || 'file'
 
@@ -105,7 +105,7 @@ export async function POST(req: NextRequest) {
     }
 
     const mediaCategory = getMediaCategory(mimeType)
-    const blob = new Blob([fileBuffer], { type: mimeType })
+    const blob = new Blob([new Uint8Array(fileBuffer)], { type: mimeType })
 
     const now = new Date()
     const msgId = `waba_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`

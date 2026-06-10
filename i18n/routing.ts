@@ -109,6 +109,7 @@ export const routing = defineRouting({
 
     // Referral
     '/r/[code]': '/r/[code]',
+    '/indique': '/indique',
 
     // Dashboard (slugs universais)
     '/dashboard': '/dashboard',

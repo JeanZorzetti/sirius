@@ -39,16 +39,16 @@ export function SwipeableRow({
     if (info.offset.x < -SWIPE_THRESHOLD && onDelete) {
       triggered.current = true
       try {
-        const { triggerHaptic } = await import('@/lib/mobile/haptics')
-        triggerHaptic('warning')
+        const { hapticWarning } = await import('@/lib/mobile/haptics')
+        hapticWarning()
       } catch {}
       onDelete()
       triggered.current = false
     } else if (info.offset.x > SWIPE_THRESHOLD && onArchive) {
       triggered.current = true
       try {
-        const { triggerHaptic } = await import('@/lib/mobile/haptics')
-        triggerHaptic('success')
+        const { hapticSuccess } = await import('@/lib/mobile/haptics')
+        hapticSuccess()
       } catch {}
       onArchive()
       triggered.current = false

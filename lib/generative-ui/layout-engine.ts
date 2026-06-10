@@ -46,6 +46,12 @@ export const MultiComponentLayoutSchema = z.object({
 
 export type MultiComponentLayout = z.infer<typeof MultiComponentLayoutSchema>
 
+/**
+ * Pre-parse shape: gap/responsive optional (schema defaults not yet applied).
+ * All engine functions accept this and apply fallbacks internally.
+ */
+export type MultiComponentLayoutInput = z.input<typeof MultiComponentLayoutSchema>
+
 // ============================================================================
 // Layout Engine
 // ============================================================================
@@ -53,7 +59,7 @@ export type MultiComponentLayout = z.infer<typeof MultiComponentLayoutSchema>
 /**
  * Validate and normalize layout configuration
  */
-export function validateLayout(layout: MultiComponentLayout): {
+export function validateLayout(layout: MultiComponentLayoutInput): {
     valid: boolean
     errors?: string[]
     normalized?: MultiComponentLayout
@@ -115,7 +121,7 @@ export function validateLayout(layout: MultiComponentLayout): {
 /**
  * Calculate responsive grid classes based on component count and spans
  */
-export function generateGridClasses(layout: MultiComponentLayout): {
+export function generateGridClasses(layout: MultiComponentLayoutInput): {
     containerClass: string
     itemClasses: string[]
 } {
@@ -146,7 +152,7 @@ export function generateGridClasses(layout: MultiComponentLayout): {
 /**
  * Calculate flex layout classes
  */
-export function generateFlexClasses(layout: MultiComponentLayout): {
+export function generateFlexClasses(layout: MultiComponentLayoutInput): {
     containerClass: string
     itemClasses: string[]
 } {
@@ -237,7 +243,7 @@ export function autoGenerateLayout(
 /**
  * Optimize layout for mobile devices
  */
-export function optimizeForMobile(layout: MultiComponentLayout): MultiComponentLayout {
+export function optimizeForMobile<T extends MultiComponentLayoutInput>(layout: T): T {
     return {
         ...layout,
         responsive: true,
@@ -254,7 +260,7 @@ export function optimizeForMobile(layout: MultiComponentLayout): MultiComponentL
 /**
  * Get layout metadata for rendering
  */
-export function getLayoutMetadata(layout: MultiComponentLayout) {
+export function getLayoutMetadata(layout: MultiComponentLayoutInput) {
     const validation = validateLayout(layout)
 
     if (!validation.valid) {

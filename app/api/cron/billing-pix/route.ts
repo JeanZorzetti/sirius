@@ -14,7 +14,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { createCheckoutPreference } from '@/lib/mercadopago'
-import { sendEmail } from '@/lib/email'
+import { sendHtmlEmail } from '@/lib/email'
 import logger from '@/lib/logger'
 import { SubscriptionTier } from '@prisma/client'
 
@@ -182,7 +182,7 @@ async function sendPixRenewalEmail(
 
   const dueDateStr = dueDate.toLocaleDateString('pt-BR')
 
-  await sendEmail({
+  await sendHtmlEmail({
     to: owner.email,
     subject: subjects[type],
     html: `
@@ -221,7 +221,7 @@ async function sendDowngradeEmail(org: { id: string; name: string }) {
   })
   if (!owner?.email) return
 
-  await sendEmail({
+  await sendHtmlEmail({
     to: owner.email,
     subject: `Acesso ao Sirius CRM limitado – renove para recuperar`,
     html: `

@@ -8,7 +8,6 @@ import {
   getQuota,
   getLimit,
   canUseFeature,
-  getPlanFeatures,
 } from '../entitlements'
 import { SubscriptionTier } from '@prisma/client'
 
@@ -28,7 +27,6 @@ describe('Entitlements System', () => {
       expect(PLAN_FEATURES.FREE.can_use_agi).toBe(true)
       expect(PLAN_FEATURES.FREE.agi_monthly_quota).toBe(3)
       expect(PLAN_FEATURES.FREE.scraping_initial_credits).toBe(5)
-      expect(PLAN_FEATURES.FREE.whatsapp_type).toBe('click_to_chat')
     })
 
     it('should have correct STARTER tier limits', () => {
@@ -48,7 +46,6 @@ describe('Entitlements System', () => {
       expect(PLAN_FEATURES.PRO.agi_monthly_quota).toBe(-1) // ilimitado
       expect(PLAN_FEATURES.PRO.scraping_monthly_credits).toBe(50)
       expect(PLAN_FEATURES.PRO.can_use_chat_interface).toBe(true)
-      expect(PLAN_FEATURES.PRO.whatsapp_instances).toBe(1)
     })
 
     it('should have correct BUSINESS tier limits', () => {
@@ -151,18 +148,6 @@ describe('Entitlements System', () => {
     })
   })
 
-  describe('getPlanFeatures', () => {
-    it('should return all features for FREE tier', () => {
-      const features = getPlanFeatures('FREE')
-      expect(features).toEqual(PLAN_FEATURES.FREE)
-    })
-
-    it('should return all features for PRO tier', () => {
-      const features = getPlanFeatures('PRO')
-      expect(features).toEqual(PLAN_FEATURES.PRO)
-    })
-  })
-
   describe('Tier hierarchy', () => {
     it('should have FREE as most restrictive', () => {
       expect(PLAN_FEATURES.FREE.max_deals).toBe(50)
@@ -189,16 +174,11 @@ describe('Entitlements System', () => {
   })
 
   describe('WhatsApp feature progression', () => {
-    it('should have click-to-chat for FREE/STARTER', () => {
-      expect(PLAN_FEATURES.FREE.whatsapp_type).toBe('click_to_chat')
-      expect(PLAN_FEATURES.STARTER.whatsapp_type).toBe('click_to_chat')
-    })
-
+    // NOTE: asserções de whatsapp_type/whatsapp_instances removidas — esses
+    // campos saíram de PLAN_FEATURES na migração para a API oficial (WABA).
     it('should have chat_interface for PRO/BUSINESS', () => {
       expect(PLAN_FEATURES.PRO.can_use_chat_interface).toBe(true)
-      expect(PLAN_FEATURES.PRO.whatsapp_instances).toBe(1)
       expect(PLAN_FEATURES.BUSINESS.can_use_chat_interface).toBe(true)
-      expect(PLAN_FEATURES.BUSINESS.whatsapp_instances).toBe(1)
     })
   })
 

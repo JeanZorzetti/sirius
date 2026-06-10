@@ -10,7 +10,7 @@ export async function GET() {
   try {
     const session = await getSession()
     if (!session?.user) {
-      return await apiError(ERR.UNAUTHORIZED, 401, { req })
+      return await apiError(ERR.UNAUTHORIZED, 401)
     }
 
     const user = await prisma.user.findUnique({
@@ -41,7 +41,7 @@ export async function POST(request: Request) {
   try {
     const session = await getSession()
     if (!session?.user) {
-      return await apiError(ERR.UNAUTHORIZED, 401, { req })
+      return await apiError(ERR.UNAUTHORIZED, 401)
     }
 
     const user = await prisma.user.findUnique({

@@ -56,7 +56,9 @@ const dealFormSchema = z.object({
 
 type DealFormData = z.infer<typeof dealFormSchema>
 
-interface DealFormGeneratorComponentProps extends DealFormGeneratorProps {
+interface DealFormGeneratorComponentProps extends Omit<DealFormGeneratorProps, 'quickCreate'> {
+  // Optional at the component boundary — runtime default below mirrors the zod .default(false)
+  quickCreate?: boolean
   onInteraction?: (action: string, component: string, data: Record<string, unknown>) => void
 }
 

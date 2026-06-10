@@ -7,14 +7,14 @@ import {
     autoGenerateLayout,
     optimizeForMobile,
     getLayoutMetadata,
-    type MultiComponentLayout,
+    type MultiComponentLayoutInput,
     type LayoutComponent,
 } from '../layout-engine'
 
 describe('Layout Engine', () => {
     describe('validateLayout', () => {
         it('should validate a valid grid layout', () => {
-            const layout: MultiComponentLayout = {
+            const layout: MultiComponentLayoutInput = {
                 type: 'grid',
                 components: [
                     { name: 'ROICalculator', props: {}, span: 6 },
@@ -30,7 +30,7 @@ describe('Layout Engine', () => {
         })
 
         it('should reject layout with no components', () => {
-            const layout: MultiComponentLayout = {
+            const layout: MultiComponentLayoutInput = {
                 type: 'grid',
                 components: [],
             }
@@ -41,7 +41,7 @@ describe('Layout Engine', () => {
         })
 
         it('should reject layout with too many components', () => {
-            const layout: MultiComponentLayout = {
+            const layout: MultiComponentLayoutInput = {
                 type: 'grid',
                 components: Array(7).fill({ name: 'Test', props: {} }),
             }
@@ -52,7 +52,7 @@ describe('Layout Engine', () => {
         })
 
         it('should reject tabs layout without labels', () => {
-            const layout: MultiComponentLayout = {
+            const layout: MultiComponentLayoutInput = {
                 type: 'tabs',
                 components: [
                     { name: 'Component1', props: {} }, // Missing label
@@ -66,7 +66,7 @@ describe('Layout Engine', () => {
         })
 
         it('should normalize layout with defaults', () => {
-            const layout: MultiComponentLayout = {
+            const layout: MultiComponentLayoutInput = {
                 type: 'grid',
                 components: [
                     { name: 'Test', props: {} },
@@ -84,7 +84,7 @@ describe('Layout Engine', () => {
 
     describe('generateGridClasses', () => {
         it('should generate grid classes for 2-column layout', () => {
-            const layout: MultiComponentLayout = {
+            const layout: MultiComponentLayoutInput = {
                 type: 'grid',
                 components: [
                     { name: 'A', props: {}, span: 6 },
@@ -105,7 +105,7 @@ describe('Layout Engine', () => {
         })
 
         it('should generate non-responsive grid classes', () => {
-            const layout: MultiComponentLayout = {
+            const layout: MultiComponentLayoutInput = {
                 type: 'grid',
                 components: [{ name: 'A', props: {} }],
                 columns: 3,
@@ -119,7 +119,7 @@ describe('Layout Engine', () => {
         })
 
         it('should calculate column spans correctly', () => {
-            const layout: MultiComponentLayout = {
+            const layout: MultiComponentLayoutInput = {
                 type: 'grid',
                 components: [
                     { name: 'A', props: {}, span: 12 }, // Full width
@@ -139,7 +139,7 @@ describe('Layout Engine', () => {
 
     describe('generateFlexClasses', () => {
         it('should generate row flex classes for 2 components', () => {
-            const layout: MultiComponentLayout = {
+            const layout: MultiComponentLayoutInput = {
                 type: 'flex',
                 components: [
                     { name: 'A', props: {} },
@@ -158,7 +158,7 @@ describe('Layout Engine', () => {
         })
 
         it('should generate column flex classes for 4+ components', () => {
-            const layout: MultiComponentLayout = {
+            const layout: MultiComponentLayoutInput = {
                 type: 'flex',
                 components: Array(4).fill({ name: 'Test', props: {} }),
                 responsive: true,
@@ -258,7 +258,7 @@ describe('Layout Engine', () => {
 
     describe('optimizeForMobile', () => {
         it('should force full width spans for grid on mobile', () => {
-            const layout: MultiComponentLayout = {
+            const layout: MultiComponentLayoutInput = {
                 type: 'grid',
                 components: [
                     { name: 'A', props: {}, span: 4 },
@@ -275,7 +275,7 @@ describe('Layout Engine', () => {
         })
 
         it('should not modify non-grid layouts', () => {
-            const layout: MultiComponentLayout = {
+            const layout: MultiComponentLayoutInput = {
                 type: 'flex',
                 components: [
                     { name: 'A', props: {} },
@@ -291,7 +291,7 @@ describe('Layout Engine', () => {
 
     describe('getLayoutMetadata', () => {
         it('should return metadata for valid grid layout', () => {
-            const layout: MultiComponentLayout = {
+            const layout: MultiComponentLayoutInput = {
                 type: 'grid',
                 components: [
                     { name: 'A', props: {} },
@@ -309,7 +309,7 @@ describe('Layout Engine', () => {
         })
 
         it('should throw for invalid layout', () => {
-            const layout: MultiComponentLayout = {
+            const layout: MultiComponentLayoutInput = {
                 type: 'grid',
                 components: [],
             }
@@ -318,7 +318,7 @@ describe('Layout Engine', () => {
         })
 
         it('should return null classes for tabs/accordion', () => {
-            const layout: MultiComponentLayout = {
+            const layout: MultiComponentLayoutInput = {
                 type: 'tabs',
                 components: [
                     { name: 'A', props: {}, label: 'Tab A' },

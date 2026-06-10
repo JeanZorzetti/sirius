@@ -16,7 +16,7 @@ const GRAPH_BASE = 'https://graph.facebook.com/v21.0'
 export async function GET() {
   const session = await getSession()
   if (!session?.user?.email) {
-    return await apiError(ERR.UNAUTHORIZED, 401, { req })
+    return await apiError(ERR.UNAUTHORIZED, 401)
   }
 
   const user = await prisma.user.findUnique({
@@ -44,7 +44,7 @@ export async function GET() {
 export async function POST(request: NextRequest) {
   const session = await getSession()
   if (!session?.user?.email) {
-    return await apiError(ERR.UNAUTHORIZED, 401, { req })
+    return await apiError(ERR.UNAUTHORIZED, 401, { req: request })
   }
 
   const { pageId } = await request.json()

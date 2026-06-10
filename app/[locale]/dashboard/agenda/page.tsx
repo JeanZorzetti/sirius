@@ -99,6 +99,7 @@ export default async function AgendaPage({
   const serializedTasks = tasks.map(t => ({
     ...t,
     dueDate: t.dueDate!.toISOString(),
+    assignee: t.assignee ? { id: t.assignee.id, name: t.assignee.name ?? '' } : null,
   }))
 
   return (
