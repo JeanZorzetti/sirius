@@ -40,18 +40,18 @@ describe('Feature Gates', () => {
       await expect(checkDealLimit('org_1')).resolves.not.toThrow()
     })
 
-    it('should throw when FREE tier exceeds 50 deals', async () => {
+    it('should throw when FREE tier reaches 100 deals', async () => {
       mockPrisma.organization.findUnique.mockResolvedValue({
         id: 'org_1',
         tier: 'FREE',
         grandfatheredDealLimit: null,
       })
 
-      mockPrisma.deal.count.mockResolvedValue(50) // No limite
+      mockPrisma.deal.count.mockResolvedValue(100) // No limite
 
       await expect(checkDealLimit('org_1')).rejects.toThrow(LimitReachedError)
       await expect(checkDealLimit('org_1')).rejects.toThrow(
-        'Deal limit reached: 50/50 active deals'
+        'deals limit reached: 100/100'
       )
     })
 
@@ -79,26 +79,38 @@ describe('Feature Gates', () => {
       await expect(checkDealLimit('org_1')).rejects.toThrow(LimitReachedError)
     })
 
-    it('should allow unlimited deals for STARTER tier', async () => {
+    it('should allow deals under the STARTER limit (500)', async () => {
       mockPrisma.organization.findUnique.mockResolvedValue({
         id: 'org_1',
         tier: 'STARTER',
         grandfatheredDealLimit: null,
       })
 
-      mockPrisma.deal.count.mockResolvedValue(10000) // Muito acima
+      mockPrisma.deal.count.mockResolvedValue(400)
 
       await expect(checkDealLimit('org_1')).resolves.not.toThrow()
     })
 
-    it('should allow unlimited deals for PRO tier', async () => {
+    it('should throw when STARTER tier reaches 500 deals', async () => {
+      mockPrisma.organization.findUnique.mockResolvedValue({
+        id: 'org_1',
+        tier: 'STARTER',
+        grandfatheredDealLimit: null,
+      })
+
+      mockPrisma.deal.count.mockResolvedValue(500)
+
+      await expect(checkDealLimit('org_1')).rejects.toThrow(LimitReachedError)
+    })
+
+    it('should allow deals under the PRO limit (2500)', async () => {
       mockPrisma.organization.findUnique.mockResolvedValue({
         id: 'org_1',
         tier: 'PRO',
         grandfatheredDealLimit: null,
       })
 
-      mockPrisma.deal.count.mockResolvedValue(5000)
+      mockPrisma.deal.count.mockResolvedValue(2000)
 
       await expect(checkDealLimit('org_1')).resolves.not.toThrow()
     })
@@ -125,16 +137,16 @@ describe('Feature Gates', () => {
   })
 
   describe('checkUserLimit', () => {
-    it('should allow 1 user for FREE tier', async () => {
+    it('should throw when FREE tier reaches 2 users', async () => {
       mockPrisma.organization.findUnique.mockResolvedValue({
         id: 'org_1',
         tier: 'FREE',
       })
 
-      mockPrisma.user.count.mockResolvedValue(1) // Exatamente 1
+      mockPrisma.user.count.mockResolvedValue(2) // No limite
 
       await expect(checkUserLimit('org_1')).rejects.toThrow(LimitReachedError)
-      await expect(checkUserLimit('org_1')).rejects.toThrow('User limit reached')
+      await expect(checkUserLimit('org_1')).rejects.toThrow('users limit reached')
     })
 
     it('should allow adding first user to FREE tier', async () => {
@@ -148,35 +160,35 @@ describe('Feature Gates', () => {
       await expect(checkUserLimit('org_1')).resolves.not.toThrow()
     })
 
-    it('should allow 1 user for STARTER tier', async () => {
+    it('should throw when STARTER tier reaches 5 users', async () => {
       mockPrisma.organization.findUnique.mockResolvedValue({
         id: 'org_1',
         tier: 'STARTER',
       })
 
-      mockPrisma.user.count.mockResolvedValue(1)
+      mockPrisma.user.count.mockResolvedValue(5)
 
       await expect(checkUserLimit('org_1')).rejects.toThrow(LimitReachedError)
     })
 
-    it('should allow unlimited users for PRO tier', async () => {
+    it('should allow users under the PRO limit (15)', async () => {
       mockPrisma.organization.findUnique.mockResolvedValue({
         id: 'org_1',
         tier: 'PRO',
       })
 
-      mockPrisma.user.count.mockResolvedValue(100)
+      mockPrisma.user.count.mockResolvedValue(10)
 
       await expect(checkUserLimit('org_1')).resolves.not.toThrow()
     })
 
-    it('should allow unlimited users for BUSINESS tier', async () => {
+    it('should allow users under the BUSINESS limit (50)', async () => {
       mockPrisma.organization.findUnique.mockResolvedValue({
         id: 'org_1',
         tier: 'BUSINESS',
       })
 
-      mockPrisma.user.count.mockResolvedValue(500)
+      mockPrisma.user.count.mockResolvedValue(40)
 
       await expect(checkUserLimit('org_1')).resolves.not.toThrow()
     })
@@ -205,13 +217,13 @@ describe('Feature Gates', () => {
       await expect(checkPipelineLimit('org_1')).resolves.not.toThrow()
     })
 
-    it('should allow unlimited pipelines for PRO tier', async () => {
+    it('should allow pipelines under the PRO limit (15)', async () => {
       mockPrisma.organization.findUnique.mockResolvedValue({
         id: 'org_1',
         tier: 'PRO',
       })
 
-      mockPrisma.pipeline.count.mockResolvedValue(50)
+      mockPrisma.pipeline.count.mockResolvedValue(10)
 
       await expect(checkPipelineLimit('org_1')).resolves.not.toThrow()
     })

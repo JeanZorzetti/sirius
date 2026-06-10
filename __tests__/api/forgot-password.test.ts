@@ -52,6 +52,15 @@ vi.mock('@/lib/ratelimit', () => ({
   authRateLimit: vi.fn().mockResolvedValue(null), // null = não bloqueado
 }))
 
+// Mock do i18n-server — apiError sem req chama cookies() (indisponivel fora de request scope)
+vi.mock('@/lib/i18n-server', () => ({
+  resolveRequestLocale: vi.fn(async () => 'pt-BR'),
+  t: vi.fn(async (_locale: unknown, _ns: unknown, key: string) => key),
+}))
+
+// A rota exige RESEND_API_KEY para enviar o email de reset
+process.env.RESEND_API_KEY = 're_test_1234567890'
+
 import { POST } from '@/app/api/auth/forgot-password/route'
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'

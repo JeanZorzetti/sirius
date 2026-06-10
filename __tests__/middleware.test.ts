@@ -9,6 +9,22 @@
  * Priority: ALTA (segurança)
  */
 
+// next-intl/middleware (ESM) nao resolve 'next/server' dentro do vitest —
+// mockar na borda; o middleware faz fallback para NextResponse.next()
+vi.mock('next-intl/middleware', () => ({
+  default: () => () => undefined,
+}))
+
+// i18n/routing tambem puxa next-intl/navigation (mesmo problema de resolucao ESM)
+vi.mock('next-intl/navigation', () => ({
+  createNavigation: () => ({
+    Link: () => null,
+    redirect: () => {},
+    usePathname: () => '/',
+    useRouter: () => ({}),
+  }),
+}))
+
 import { NextRequest, NextResponse } from 'next/server'
 import { middleware } from '@/middleware'
 import { encrypt } from '@/lib/auth'

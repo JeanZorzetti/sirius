@@ -88,7 +88,7 @@ describe('GET /api/v1/api-keys', () => {
     })
     ;(prisma.user.findUnique as Mock).mockResolvedValue({
       organizationId: 'org-123',
-      organization: { plan: 'PRO' }
+      organization: { tier: 'PRO' }
     })
     ;(listApiKeys as Mock).mockResolvedValue([mockApiKey])
 
@@ -116,7 +116,7 @@ describe('GET /api/v1/api-keys', () => {
     })
     ;(prisma.user.findUnique as Mock).mockResolvedValue({
       organizationId: 'org-123',
-      organization: { plan: 'FREE' }
+      organization: { tier: 'FREE' }
     })
 
     const request = createRequest()
@@ -133,7 +133,7 @@ describe('GET /api/v1/api-keys', () => {
     })
     ;(prisma.user.findUnique as Mock).mockResolvedValue({
       organizationId: 'org-123',
-      organization: { plan: 'BUSINESS' }
+      organization: { tier: 'BUSINESS' }
     })
     ;(listApiKeys as Mock).mockResolvedValue([])
 
@@ -167,7 +167,7 @@ describe('POST /api/v1/api-keys', () => {
     })
     ;(prisma.user.findUnique as Mock).mockResolvedValue({
       organizationId: 'org-123',
-      organization: { plan: 'PRO' }
+      organization: { tier: 'PRO' }
     })
     ;(prisma.apiKey.findFirst as Mock).mockResolvedValue(null) // No existing key
     ;(generateApiKey as Mock).mockResolvedValue(mockApiKey)
@@ -188,7 +188,7 @@ describe('POST /api/v1/api-keys', () => {
     })
     ;(prisma.user.findUnique as Mock).mockResolvedValue({
       organizationId: 'org-123',
-      organization: { plan: 'FREE' }
+      organization: { tier: 'FREE' }
     })
 
     const request = createRequest({ name: 'Test Key' })
@@ -204,7 +204,7 @@ describe('POST /api/v1/api-keys', () => {
     })
     ;(prisma.user.findUnique as Mock).mockResolvedValue({
       organizationId: 'org-123',
-      organization: { plan: 'PRO' }
+      organization: { tier: 'PRO' }
     })
 
     const request = createRequest({})
@@ -221,7 +221,7 @@ describe('POST /api/v1/api-keys', () => {
     })
     ;(prisma.user.findUnique as Mock).mockResolvedValue({
       organizationId: 'org-123',
-      organization: { plan: 'PRO' }
+      organization: { tier: 'PRO' }
     })
     ;(prisma.apiKey.findFirst as Mock).mockResolvedValue(mockApiKey)
 
@@ -305,7 +305,7 @@ describe('DELETE /api/v1/api-keys/[id]', () => {
     const data = await response.json()
 
     expect(response.status).toBe(403)
-    expect(data.error).toContain('permissão')
+    expect(data.error).toContain('negado')
     expect(revokeApiKey).not.toHaveBeenCalled()
   })
 
@@ -333,7 +333,7 @@ describe('Security - API Key Management', () => {
     })
     ;(prisma.user.findUnique as Mock).mockResolvedValue({
       organizationId: 'org-123',
-      organization: { plan: 'PRO' }
+      organization: { tier: 'PRO' }
     })
     ;(prisma.apiKey.findFirst as Mock).mockResolvedValue(null)
     ;(generateApiKey as Mock).mockResolvedValue(mockApiKey)
@@ -353,7 +353,7 @@ describe('Security - API Key Management', () => {
     })
     ;(prisma.user.findUnique as Mock).mockResolvedValue({
       organizationId: 'org-123',
-      organization: { plan: 'PRO' }
+      organization: { tier: 'PRO' }
     })
     ;(prisma.apiKey.findFirst as Mock).mockResolvedValue(mockApiKey)
 

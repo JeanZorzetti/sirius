@@ -98,8 +98,8 @@ describe('PricingComparison', () => {
                 />
             )
 
-            const contactsRow = screen.getByText('Contatos').closest('div')
-            const agiRow = screen.getByText('AGI Sirius').closest('div')
+            const contactsRow = screen.getByText('Contatos').closest('.grid')
+            const agiRow = screen.getByText('AGI Sirius').closest('.grid')
 
             expect(contactsRow).toHaveClass('bg-yellow-50')
             expect(agiRow).toHaveClass('bg-yellow-50')
@@ -168,8 +168,9 @@ describe('PricingComparison', () => {
             render(<PricingComparison {...defaultProps} />)
 
             // Check text values
-            expect(screen.getByText('100')).toBeInTheDocument() // FREE contacts
-            expect(screen.getByText('Ilimitados')).toBeInTheDocument() // PRO contacts
+            expect(screen.getByText('250')).toBeInTheDocument() // FREE contacts
+            // 'Ilimitados' aparece em contatos, pipelines e negócios do PRO
+            expect(screen.getAllByText('Ilimitados').length).toBeGreaterThan(0)
             expect(screen.getByText('Email')).toBeInTheDocument() // FREE support
             expect(screen.getByText('Prioritário')).toBeInTheDocument() // PRO support
         })
@@ -178,14 +179,11 @@ describe('PricingComparison', () => {
             const { container } = render(<PricingComparison {...defaultProps} />)
 
             // API Access: FREE = false (X icon), PRO = true (Check icon)
-            const apiRow = screen.getByText('Acesso à API').closest('div')?.parentElement
+            const apiRow = screen.getByText('Acesso à API').closest('.grid') as HTMLElement
 
-            if (apiRow) {
-                const cells = within(apiRow).getAllByRole('cell', { hidden: true })
-                // Should have X icon for FREE and Check icon for PRO
-                expect(apiRow.querySelector('.lucide-x')).toBeInTheDocument()
-                expect(apiRow.querySelector('.lucide-check')).toBeInTheDocument()
-            }
+            // X para FREE e Check para PRO (linhas sao divs, sem role=cell)
+            expect(apiRow.querySelector('.lucide-x')).toBeInTheDocument()
+            expect(apiRow.querySelector('.lucide-check')).toBeInTheDocument()
         })
     })
 

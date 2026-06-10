@@ -223,23 +223,23 @@ describe('Mercado Pago Products', () => {
 
   describe('formatPrice', () => {
     it('should format price in BRL', () => {
-      expect(formatPrice(67)).toBe('R$ 67,00')
-      expect(formatPrice(147)).toBe('R$ 147,00')
-      expect(formatPrice(397)).toBe('R$ 397,00')
+      expect(formatPrice(67).replace(/ /g, ' ')).toBe('R$ 67,00')
+      expect(formatPrice(147).replace(/ /g, ' ')).toBe('R$ 147,00')
+      expect(formatPrice(397).replace(/ /g, ' ')).toBe('R$ 397,00')
     })
 
     it('should format decimals correctly', () => {
-      expect(formatPrice(29.9)).toBe('R$ 29,90')
-      expect(formatPrice(99.9)).toBe('R$ 99,90')
+      expect(formatPrice(29.9).replace(/ /g, ' ')).toBe('R$ 29,90')
+      expect(formatPrice(99.9).replace(/ /g, ' ')).toBe('R$ 99,90')
     })
 
     it('should format zero', () => {
-      expect(formatPrice(0)).toBe('R$ 0,00')
+      expect(formatPrice(0).replace(/ /g, ' ')).toBe('R$ 0,00')
     })
 
     it('should format large numbers', () => {
-      expect(formatPrice(1000)).toBe('R$ 1.000,00')
-      expect(formatPrice(12345.67)).toBe('R$ 12.345,67')
+      expect(formatPrice(1000).replace(/ /g, ' ')).toBe('R$ 1.000,00')
+      expect(formatPrice(12345.67).replace(/ /g, ' ')).toBe('R$ 12.345,67')
     })
   })
 

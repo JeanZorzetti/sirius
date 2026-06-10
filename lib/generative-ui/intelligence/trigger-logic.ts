@@ -342,10 +342,11 @@ function evaluateRule(rule: TriggerRule, context: TriggerContext): ComponentTrig
   }
 
   // Check lead score
-  if (context.leadScore >= rule.minLeadScore) {
+  const belowMinLeadScore = context.leadScore < rule.minLeadScore
+  if (!belowMinLeadScore) {
     score += 5
   } else {
-    score -= 20
+    score -= 25
     reasons.push(`Lead score below minimum: ${context.leadScore} < ${rule.minLeadScore}`)
   }
 
@@ -362,11 +363,14 @@ function evaluateRule(rule: TriggerRule, context: TriggerContext): ComponentTrig
     }
   }
 
-  // Apply bonuses
-  for (const bonus of rule.bonuses) {
-    if (bonus.condition(context)) {
-      score += bonus.points
-      reasons.push(bonus.description)
+  // Apply bonuses — a lead below the rule's minimum score shouldn't earn them,
+  // otherwise minLeadScore stops acting as a minimum at all
+  if (!belowMinLeadScore) {
+    for (const bonus of rule.bonuses) {
+      if (bonus.condition(context)) {
+        score += bonus.points
+        reasons.push(bonus.description)
+      }
     }
   }
 

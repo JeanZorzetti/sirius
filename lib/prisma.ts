@@ -2,7 +2,6 @@ import { PrismaClient } from '@prisma/client'
 
 const globalForPrisma = globalThis as unknown as {
     prisma: PrismaClient | undefined
-    _migrated: boolean
 }
 
 export const prisma = globalForPrisma.prisma ?? new PrismaClient({
@@ -11,10 +10,5 @@ export const prisma = globalForPrisma.prisma ?? new PrismaClient({
 
 globalForPrisma.prisma = prisma
 
-// Auto-apply pending column additions on first load
-if (!globalForPrisma._migrated) {
-    globalForPrisma._migrated = true
-    prisma.$executeRawUnsafe(
-        `ALTER TABLE "User" ADD COLUMN IF NOT EXISTS "canViewDealClosings" BOOLEAN NOT NULL DEFAULT true`
-    ).catch(() => {})
-}
+// Schema changes belong in prisma/migrations (applied via `prisma migrate deploy`
+// in the build script) — never as runtime side effects here.

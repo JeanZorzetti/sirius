@@ -12,7 +12,7 @@
  */
 
 import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { render, screen, waitFor } from '@testing-library/react'
+import { render, screen, waitFor, fireEvent } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { DemoScheduler } from '@/components/generative-ui/DemoScheduler'
 import type { DemoSchedulerProps } from '@/lib/generative-ui/schemas'
@@ -78,17 +78,21 @@ describe('DemoScheduler', () => {
         })
 
         it('should allow changing event type', async () => {
-            const user = userEvent.setup()
+            // Radix Select + happy-dom: precisa de stubs de pointer capture e abertura via teclado
+            window.HTMLElement.prototype.hasPointerCapture = vi.fn()
+            window.HTMLElement.prototype.releasePointerCapture = vi.fn()
+            window.HTMLElement.prototype.scrollIntoView = vi.fn()
+
             render(<DemoScheduler eventType="demo_30min" />)
 
             const trigger = screen.getByRole('combobox')
-            await user.click(trigger)
+            trigger.focus()
+            fireEvent.keyDown(trigger, { key: 'Enter' })
 
-            // Select different event type
-            const option = await screen.findByText('Demo Completa')
-            await user.click(option)
+            const option = await screen.findByRole('option', { name: /Demo Completa/i })
+            fireEvent.keyDown(option, { key: 'Enter' })
 
-            expect(trigger).toHaveTextContent('Demo Completa')
+            await waitFor(() => expect(trigger).toHaveTextContent('Demo Completa'))
         })
     })
 
@@ -198,8 +202,7 @@ describe('DemoScheduler', () => {
         })
 
         it('should show success state after submission', async () => {
-            vi.useFakeTimers()
-            const user = userEvent.setup({ delay: null })
+            const user = userEvent.setup()
             const prefill = {
                 name: 'John',
                 email: 'john@example.com',
@@ -210,15 +213,11 @@ describe('DemoScheduler', () => {
             const submitButton = screen.getByRole('button', { name: /Solicitar Agendamento/i })
             await user.click(submitButton)
 
-            // Fast-forward timer for simulation delay
-            vi.advanceTimersByTime(1500)
-
+            // Componente simula 1.5s de agendamento — esperar com timers reais
             await waitFor(() => {
                 expect(screen.getByTestId('demo-scheduler-success')).toBeInTheDocument()
                 expect(screen.getByText('Demo Agendada!')).toBeInTheDocument()
-            })
-
-            vi.useRealTimers()
+            }, { timeout: 4000 })
         })
     })
 
@@ -295,16 +294,11 @@ describe('DemoScheduler', () => {
 
     describe('Auto CRM Trigger', () => {
         beforeEach(() => {
-            vi.useFakeTimers()
             delete process.env.NEXT_PUBLIC_CALENDLY_URL
         })
 
-        afterEach(() => {
-            vi.useRealTimers()
-        })
-
         it('should create deal when autoTriggerCRM is true', async () => {
-            const user = userEvent.setup({ delay: null })
+            const user = userEvent.setup()
             const prefill = {
                 name: 'John',
                 email: 'john@example.com',
@@ -316,8 +310,6 @@ describe('DemoScheduler', () => {
             const submitButton = screen.getByRole('button', { name: /Solicitar Agendamento/i })
             await user.click(submitButton)
 
-            vi.advanceTimersByTime(1500)
-
             await waitFor(() => {
                 expect(global.fetch).toHaveBeenCalledWith(
                     '/api/v1/deals',
@@ -326,11 +318,11 @@ describe('DemoScheduler', () => {
                         body: expect.stringContaining('Demo - ACME'),
                     })
                 )
-            })
+            }, { timeout: 4000 })
         })
 
         it('should not create deal when autoTriggerCRM is false', async () => {
-            const user = userEvent.setup({ delay: null })
+            const user = userEvent.setup()
             const prefill = {
                 name: 'John',
                 email: 'john@example.com',
@@ -341,17 +333,15 @@ describe('DemoScheduler', () => {
             const submitButton = screen.getByRole('button', { name: /Solicitar Agendamento/i })
             await user.click(submitButton)
 
-            vi.advanceTimersByTime(1500)
-
             await waitFor(() => {
                 expect(screen.getByTestId('demo-scheduler-success')).toBeInTheDocument()
-            })
+            }, { timeout: 4000 })
 
             expect(global.fetch).not.toHaveBeenCalled()
         })
 
         it('should show auto-CRM confirmation in success state', async () => {
-            const user = userEvent.setup({ delay: null })
+            const user = userEvent.setup()
             const prefill = {
                 name: 'John',
                 email: 'john@example.com',
@@ -362,26 +352,19 @@ describe('DemoScheduler', () => {
             const submitButton = screen.getByRole('button', { name: /Solicitar Agendamento/i })
             await user.click(submitButton)
 
-            vi.advanceTimersByTime(1500)
-
             await waitFor(() => {
                 expect(screen.getByText('Deal criado automaticamente no CRM')).toBeInTheDocument()
-            })
+            }, { timeout: 4000 })
         })
     })
 
     describe('Interaction Callbacks', () => {
         beforeEach(() => {
-            vi.useFakeTimers()
             delete process.env.NEXT_PUBLIC_CALENDLY_URL
         })
 
-        afterEach(() => {
-            vi.useRealTimers()
-        })
-
         it('should call onInteraction when demo scheduled', async () => {
-            const user = userEvent.setup({ delay: null })
+            const user = userEvent.setup()
             const mockOnInteraction = vi.fn()
             const prefill = {
                 name: 'John',
@@ -400,8 +383,6 @@ describe('DemoScheduler', () => {
             const submitButton = screen.getByRole('button', { name: /Solicitar Agendamento/i })
             await user.click(submitButton)
 
-            vi.advanceTimersByTime(1500)
-
             await waitFor(() => {
                 expect(mockOnInteraction).toHaveBeenCalledWith(
                     'demo_scheduled',
@@ -413,7 +394,7 @@ describe('DemoScheduler', () => {
                         company: 'ACME',
                     })
                 )
-            })
+            }, { timeout: 4000 })
         })
     })
 

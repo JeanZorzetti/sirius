@@ -10,9 +10,19 @@ const mockPrisma = {
   },
   organization: {
     create: vi.fn(),
+    findUnique: vi.fn(),
+  },
+  pipeline: {
+    create: vi.fn(),
   },
   pipelineStage: {
     createMany: vi.fn(),
+  },
+  emailAutomationSetting: {
+    createMany: vi.fn(),
+  },
+  referral: {
+    create: vi.fn(),
   },
   invite: {
     findUnique: vi.fn(),
@@ -29,11 +39,26 @@ vi.mock('@prisma/client', () => {
     PrismaClient: class {
       user = mockPrisma.user
       organization = mockPrisma.organization
+      pipeline = mockPrisma.pipeline
       pipelineStage = mockPrisma.pipelineStage
+      emailAutomationSetting = mockPrisma.emailAutomationSetting
+      referral = mockPrisma.referral
       invite = mockPrisma.invite
     },
   }
 })
+
+vi.mock('@/lib/email-automations', () => ({
+  sendWelcomeEmail: vi.fn().mockResolvedValue({ success: true }),
+  sendEmailAsync: vi.fn(),
+}))
+
+vi.mock('next/headers', () => ({
+  cookies: vi.fn(async () => ({
+    get: () => undefined,
+    delete: () => {},
+  })),
+}))
 
 vi.mock('@/lib/auth', () => ({
   login: mockLogin,
@@ -102,9 +127,12 @@ describe('Authentication Actions', () => {
         orgRole: 'OWNER'
       })
 
-      mockPrisma.user.findUnique.mockResolvedValue(null) // No existing user
+      mockPrisma.user.findUnique.mockResolvedValue(null) // No existing user + referral code free
       mockPrisma.organization.create.mockResolvedValue(newOrg)
+      mockPrisma.organization.findUnique.mockResolvedValue(newOrg)
+      mockPrisma.pipeline.create.mockResolvedValue({ id: generateTestUUID(), name: 'Pipeline Principal' })
       mockPrisma.pipelineStage.createMany.mockResolvedValue({ count: 5 })
+      mockPrisma.emailAutomationSetting.createMany.mockResolvedValue({ count: 4 })
       mockPrisma.user.create.mockResolvedValue(newUser)
 
       const formData = new FormData()
@@ -113,13 +141,9 @@ describe('Authentication Actions', () => {
       formData.append('password', 'password123')
       formData.append('company', 'Test Company')
 
-      try {
-        await registerAction(null, formData)
-        expect(true).toBe(false) // Should not reach here
-      } catch (error: any) {
-        // Expect redirect to dashboard with new_user flag
-        expect(error.message).toContain('NEXT_REDIRECT:/dashboard?new_user=true')
-      }
+      // Success: action returns null (client handles the redirect)
+      const result = await registerAction(null, formData)
+      expect(result).toBeNull()
 
       // Verify organization creation
       expect(mockPrisma.organization.create).toHaveBeenCalled()
@@ -299,13 +323,9 @@ describe('Authentication Actions', () => {
       formData.append('email', 'user@example.com')
       formData.append('password', password)
 
-      try {
-        await loginAction(null, formData)
-        expect(true).toBe(false) // Should not reach here
-      } catch (error: any) {
-        // Expect redirect to dashboard with login flag
-        expect(error.message).toContain('NEXT_REDIRECT:/dashboard?login=true')
-      }
+      // Success: action returns null (client handles the redirect)
+      const result = await loginAction(null, formData)
+      expect(result).toBeNull()
 
       // Verify login was called
       expect(mockLogin).toHaveBeenCalledWith({

@@ -291,11 +291,13 @@ describe('Layout Engine', () => {
 
     describe('getLayoutMetadata', () => {
         it('should return metadata for valid grid layout', () => {
+            // span default é 12 (full width) — 2 componentes sem span estouram a
+            // validação de colunas do grid, então declarar meia largura cada
             const layout: MultiComponentLayoutInput = {
                 type: 'grid',
                 components: [
-                    { name: 'A', props: {} },
-                    { name: 'B', props: {} },
+                    { name: 'A', props: {}, span: 6 },
+                    { name: 'B', props: {}, span: 6 },
                 ],
             }
 

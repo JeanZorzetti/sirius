@@ -122,7 +122,7 @@ describe('GET /api/v1/webhooks', () => {
     })
     ;(prisma.user.findUnique as Mock).mockResolvedValue({
       organizationId: 'org-123',
-      organization: { plan: 'PRO' }
+      organization: { tier: 'PRO' }
     })
     ;(prisma.webhook.findMany as Mock).mockResolvedValue([mockWebhook])
 
@@ -151,7 +151,7 @@ describe('GET /api/v1/webhooks', () => {
     })
     ;(prisma.user.findUnique as Mock).mockResolvedValue({
       organizationId: 'org-123',
-      organization: { plan: 'FREE' }
+      organization: { tier: 'FREE' }
     })
 
     const request = createRequest()
@@ -168,7 +168,7 @@ describe('GET /api/v1/webhooks', () => {
     })
     ;(prisma.user.findUnique as Mock).mockResolvedValue({
       organizationId: 'org-123',
-      organization: { plan: 'BUSINESS' }
+      organization: { tier: 'BUSINESS' }
     })
     ;(prisma.webhook.findMany as Mock).mockResolvedValue([])
 
@@ -184,7 +184,7 @@ describe('GET /api/v1/webhooks', () => {
     })
     ;(prisma.user.findUnique as Mock).mockResolvedValue({
       organizationId: 'org-123',
-      organization: { plan: 'PRO' }
+      organization: { tier: 'PRO' }
     })
     ;(prisma.webhook.findMany as Mock).mockResolvedValue([])
 
@@ -222,7 +222,7 @@ describe('POST /api/v1/webhooks', () => {
     })
     ;(prisma.user.findUnique as Mock).mockResolvedValue({
       organizationId: 'org-123',
-      organization: { plan: 'PRO', name: 'Test Org' }
+      organization: { tier: 'PRO', name: 'Test Org' }
     })
     ;(createSvixEndpoint as Mock).mockResolvedValue({
       svixAppId: 'app_123',
@@ -256,7 +256,7 @@ describe('POST /api/v1/webhooks', () => {
     })
     ;(prisma.user.findUnique as Mock).mockResolvedValue({
       organizationId: 'org-123',
-      organization: { plan: 'FREE', name: 'Test Org' }
+      organization: { tier: 'FREE', name: 'Test Org' }
     })
 
     const request = createRequest({
@@ -276,7 +276,7 @@ describe('POST /api/v1/webhooks', () => {
     })
     ;(prisma.user.findUnique as Mock).mockResolvedValue({
       organizationId: 'org-123',
-      organization: { plan: 'PRO', name: 'Test Org' }
+      organization: { tier: 'PRO', name: 'Test Org' }
     })
 
     const request = createRequest({
@@ -298,7 +298,7 @@ describe('POST /api/v1/webhooks', () => {
     })
     ;(prisma.user.findUnique as Mock).mockResolvedValue({
       organizationId: 'org-123',
-      organization: { plan: 'PRO', name: 'Test Org' }
+      organization: { tier: 'PRO', name: 'Test Org' }
     })
     ;(createSvixEndpoint as Mock).mockResolvedValue(null)
 
@@ -540,7 +540,7 @@ describe('Security - Cross-Organization Access (IDOR)', () => {
     })
     ;(prisma.user.findUnique as Mock).mockResolvedValue({
       organizationId: 'org-123',
-      organization: { plan: 'PRO' }
+      organization: { tier: 'PRO' }
     })
     ;(prisma.webhook.findMany as Mock).mockResolvedValue([])
 

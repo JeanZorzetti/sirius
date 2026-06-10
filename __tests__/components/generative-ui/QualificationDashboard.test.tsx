@@ -156,7 +156,8 @@ describe('QualificationDashboard', () => {
                 />
             )
 
-            const checkIcons = container.querySelectorAll('.lucide-check-circle')
+            // lucide renomeou CheckCircle -> circle-check na classe CSS
+            const checkIcons = container.querySelectorAll('.lucide-circle-check-big')
             expect(checkIcons.length).toBe(3)
         })
     })

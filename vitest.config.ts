@@ -25,7 +25,9 @@ export default defineConfig({
       ],
     },
     include: ['**/__tests__/**/*.test.{ts,tsx}', '**/*.test.{ts,tsx}'],
-    exclude: ['node_modules', '.next', 'dist'],
+    // Globs — uma lista simples substitui os defaults e deixaria passar
+    // node_modules aninhados (ex.: mcp-server/node_modules)
+    exclude: ['**/node_modules/**', '**/.next/**', '**/dist/**', 'mcp-server/**', 'e2e/**'],
   },
   resolve: {
     alias: {

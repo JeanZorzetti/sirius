@@ -16,6 +16,8 @@ vi.mock('@/lib/hooks/use-entitlements', () => ({
 describe('FeatureGate Component', () => {
   beforeEach(() => {
     vi.clearAllMocks()
+    // UpgradePrompt (renderizado quando bloqueado) destructura tier de useEntitlements()
+    vi.mocked(hooks.useEntitlements).mockReturnValue({ tier: 'FREE', loading: false } as any)
   })
 
   it('should render children when feature is available', () => {

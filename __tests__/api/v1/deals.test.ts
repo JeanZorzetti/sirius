@@ -53,6 +53,16 @@ vi.mock('@/lib/push-notifications', () => ({
   sendDealWonNotification: vi.fn().mockResolvedValue(undefined),
 }))
 
+// Mock do plan-limits (a rota checa limite do plano antes de criar)
+vi.mock('@/lib/plan-limits', () => ({
+  canCreateDeal: vi.fn().mockResolvedValue({ allowed: true }),
+}))
+
+// Mock do engine de automações (fire-and-forget no create)
+vi.mock('@/lib/automations/engine', () => ({
+  executeDealAutomations: vi.fn().mockResolvedValue(undefined),
+}))
+
 // Mock do API middleware - simula autenticação
 vi.mock('@/lib/api-middleware', () => ({
   withApiMiddleware: vi.fn((request, handler) => {
@@ -219,7 +229,8 @@ describe('Deals API - CRUD', () => {
       const mockCreatedDeal = {
         id: 'deal-new',
         title: 'Novo Deal',
-        value: 5000,
+        // Prisma Decimal-like: a rota chama value.toNumber()
+        value: { toNumber: () => 5000, toString: () => '5000' },
         stageId: 'stage-1',
         pipelineId: 'pipe-1',
         contactId: null,
@@ -289,6 +300,10 @@ describe('Deals API - CRUD', () => {
         pipeline: { id: 'pipe-1' },
       }
 
+      ;(validateRequest as Mock).mockResolvedValueOnce({
+        success: true,
+        data: requestBody
+      })
       ;(prisma.pipelineStage.findFirst as Mock).mockResolvedValue(mockStage)
       ;(prisma.contact.findFirst as Mock).mockResolvedValue(null) // Contact not found or wrong org
 
@@ -380,16 +395,19 @@ describe('Deals API - CRUD', () => {
       const mockDeal = {
         id: 'deal-123',
         title: 'Deal Original',
-        value: 1000,
+        value: { toNumber: () => 1000, toString: () => '1000' },
         organizationId: 'org-123',
         stageId: 'stage-1',
         pipelineId: 'pipe-1',
+        status: 'ACTIVE',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       }
 
       const mockUpdatedDeal = {
         ...mockDeal,
         title: 'Deal Atualizado',
-        value: 2000,
+        value: { toNumber: () => 2000, toString: () => '2000' },
         updatedAt: new Date(),
       }
 
