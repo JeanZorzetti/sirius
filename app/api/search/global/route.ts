@@ -62,7 +62,7 @@ export async function GET(request: NextRequest) {
         },
         select: {
           id: true,
-          contact: { select: { name: true } },
+          contact: { select: { name: true, phone: true } },
         },
         take: 5,
       }),
@@ -89,6 +89,7 @@ export async function GET(request: NextRequest) {
       conversations: conversations.map((c) => ({
         id: c.id,
         contactName: c.contact.name,
+        contactPhone: c.contact.phone ?? undefined,
       })),
       tasks,
     })

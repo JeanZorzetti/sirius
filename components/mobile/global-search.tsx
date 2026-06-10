@@ -7,7 +7,7 @@ import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog'
 interface SearchResult {
   contacts: Array<{ id: string; name: string; company?: string }>
   deals: Array<{ id: string; title: string; value?: number; stageName?: string }>
-  conversations: Array<{ id: string; contactName: string; lastMessage?: string }>
+  conversations: Array<{ id: string; contactName: string; contactPhone?: string; lastMessage?: string }>
   tasks: Array<{ id: string; title: string; dueDate?: string }>
 }
 
@@ -109,7 +109,7 @@ export function GlobalSearch({ open, onClose }: GlobalSearchProps) {
               {results.contacts.map((c) => (
                 <button
                   key={c.id}
-                  onClick={() => navigate(`/dashboard/contacts/${c.id}`)}
+                  onClick={() => navigate(`/dashboard/contacts?contact=${c.id}`)}
                   className="list-item-card w-full text-left"
                 >
                   <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-indigo-500/10">
@@ -132,7 +132,7 @@ export function GlobalSearch({ open, onClose }: GlobalSearchProps) {
               {results.deals.map((d) => (
                 <button
                   key={d.id}
-                  onClick={() => navigate(`/dashboard/deals/${d.id}`)}
+                  onClick={() => navigate(`/dashboard?deal=${d.id}`)}
                   className="list-item-card w-full text-left"
                 >
                   <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-emerald-500/10">
@@ -158,7 +158,7 @@ export function GlobalSearch({ open, onClose }: GlobalSearchProps) {
               {results.conversations.map((c) => (
                 <button
                   key={c.id}
-                  onClick={() => navigate(`/dashboard/chat?conv=${c.id}`)}
+                  onClick={() => navigate(c.contactPhone ? `/dashboard/chat?phone=${encodeURIComponent(c.contactPhone)}` : '/dashboard/chat')}
                   className="list-item-card w-full text-left"
                 >
                   <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-green-500/10">

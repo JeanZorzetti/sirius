@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback, useMemo } from 'react'
 import dynamic from 'next/dynamic'
-import { useRouter, useSearchParams } from 'next/navigation'
+import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { CreateDealDialog } from '@/components/deals/create-deal-dialog'
 import { EditDealDialog } from '@/components/deals/edit-deal-dialog'
@@ -46,6 +46,7 @@ export function DashboardTabs({
 }: DashboardTabsProps) {
   const router = useRouter()
   const searchParams = useSearchParams()
+  const pathname = usePathname()
   const [activeTab, setActiveTab] = useState('pipeline')
 
   // Pipeline selector state — persist via URL ?pipeline=ID
@@ -84,6 +85,25 @@ export function DashboardTabs({
 
   const [createDealOpen, setCreateDealOpen] = useState(false)
   const [editingDeal, setEditingDeal] = useState<any | null>(null)
+
+  // Deep link da busca global: /dashboard?deal=<id> abre o modal do deal
+  useEffect(() => {
+    const dealId = searchParams.get('deal')
+    if (!dealId) return
+    for (const stage of stages) {
+      const deal = (stage.deals ?? []).find((d: any) => d.id === dealId)
+      if (deal) {
+        if (stage.pipelineId && stage.pipelineId !== selectedPipelineId) {
+          setSelectedPipelineId(stage.pipelineId)
+        }
+        setEditingDeal(deal)
+        break
+      }
+    }
+    const params = new URLSearchParams(searchParams.toString())
+    params.delete('deal')
+    router.replace(params.toString() ? `${pathname}?${params}` : pathname, { scroll: false })
+  }, [searchParams, stages, selectedPipelineId, pathname, router])
   const [contactDisplayMode, setContactDisplayMode] = useState<'name' | 'company'>(() => {
     if (typeof window === 'undefined') return 'name'
     return (localStorage.getItem('contact-display-mode') as 'name' | 'company') || 'name'

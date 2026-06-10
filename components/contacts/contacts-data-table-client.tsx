@@ -6,7 +6,7 @@ import { getColumns } from '@/components/contacts/columns'
 import { ContactMobileCard } from '@/components/contacts/contact-mobile-card'
 import { useState, useCallback, useMemo, useEffect, useRef } from 'react'
 import dynamic from 'next/dynamic'
-import { useRouter } from 'next/navigation'
+import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import { toast } from 'sonner'
 import { deleteContact } from '@/app/[locale]/dashboard/contacts/actions'
 import { createCustomSegment, deleteCustomSegment } from '@/app/[locale]/dashboard/contacts/segment-actions'
@@ -125,6 +125,9 @@ export function ContactsDataTableClient({ data, orgUsers = [], customSegments: i
     }
   })
 
+  const searchParams = useSearchParams()
+  const pathname = usePathname()
+
   const [profileContact, setProfileContact] = useState<EnrichedContact | null>(null)
   const [editContact, setEditContact] = useState<EnrichedContact | null>(null)
   const [deleteTarget, setDeleteTarget] = useState<EnrichedContact | null>(null)
@@ -136,6 +139,17 @@ export function ContactsDataTableClient({ data, orgUsers = [], customSegments: i
   useEffect(() => {
     try { localStorage.removeItem('sirius:extra-segments') } catch {}
   }, [])
+
+  // Deep link da busca global: /dashboard/contacts?contact=<id> abre o modal de perfil
+  useEffect(() => {
+    const contactId = searchParams.get('contact')
+    if (!contactId) return
+    const target = data.find((c) => c.id === contactId)
+    if (target) setProfileContact(target)
+    const params = new URLSearchParams(searchParams.toString())
+    params.delete('contact')
+    router.replace(params.toString() ? `${pathname}?${params}` : pathname, { scroll: false })
+  }, [searchParams, data, pathname, router])
 
   async function handleAddSegment(name: string) {
     const result = await createCustomSegment(name)
