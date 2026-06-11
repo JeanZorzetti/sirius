@@ -6,6 +6,9 @@ const withNextIntl = createNextIntlPlugin('./i18n/request.ts');
 
 const nextConfig: NextConfig = {
   output: 'standalone',
+  // Build typecheck covers app code only (tests are excluded) — keeps the Docker
+  // builder's memory footprint down. Full check incl. tests: `npm run typecheck`.
+  typescript: { tsconfigPath: 'tsconfig.build.json' },
   experimental: {
     optimizePackageImports: ['lucide-react', 'framer-motion', 'date-fns', 'recharts'],
     staleTimes: { dynamic: 30, static: 180 },

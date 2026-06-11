@@ -1,0 +1,14 @@
+{
+  "extends": "./tsconfig.json",
+  "exclude": [
+    "node_modules",
+    "scripts",
+    "e2e",
+    "mcp-server",
+    "**/__tests__/**",
+    "**/*.test.ts",
+    "**/*.test.tsx",
+    "setup-tests.ts",
+    "vitest.config.ts"
+  ]
+}
