@@ -10,7 +10,6 @@
 
 import { prisma } from '@/lib/prisma'
 import { prismaWa } from '@/lib/prisma-wa'
-import { whatsmeowClient } from '@/lib/integrations/whatsmeow-client'
 import { normalizePhoneNumber } from '@/lib/whatsapp-sync'
 import logger from '@/lib/logger'
 
@@ -55,41 +54,20 @@ export async function sendWhatsAppMessage(params: SendWhatsAppMessageParams): Pr
             }
         }
 
-        // Normalizar número e enviar
-        const phoneNumber = normalizePhoneNumber(deal.contact.phone)
-        const remoteJid = `${phoneNumber}@s.whatsapp.net`
+        // O envio via gateway QR (whatsmeow) foi descontinuado. Automação de
+        // WhatsApp voltará quando o caminho WABA for implementado aqui.
+        void connection
+        return {
+            success: false,
+            error: 'Envio automático via conexão QR foi descontinuado. Use a API Oficial Meta (WABA).'
+        }
 
-        const response = await whatsmeowClient.sendText(connection.instanceName, phoneNumber, message)
-
-        // Salvar mensagem no banco
-        await prismaWa.whatsAppMessage.create({
-            data: {
-                organizationId,
-                dealId,
-                contactId: deal.contactId!,
-                remoteJid,
-                messageId: response.messageId,
-                text: message,
-                direction: 'OUTBOUND',
-                status: 'SENT',
-                connectionId: connection.id,
-            }
-        })
-
-        logger.info({
-            organizationId,
-            dealId,
-            messageId: response.messageId
-        }, 'WhatsApp message sent successfully')
-
-        return { success: true }
-
-    } catch (error: any) {
+    } catch (error) {
         logger.error({ error, organizationId, dealId }, 'Error sending WhatsApp message')
 
         return {
             success: false,
-            error: error.message || 'Erro ao enviar mensagem'
+            error: error instanceof Error ? error.message : 'Erro ao enviar mensagem'
         }
     }
 }

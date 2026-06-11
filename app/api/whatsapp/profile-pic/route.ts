@@ -14,8 +14,6 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { prismaWa } from '@/lib/prisma-wa'
-import { whatsmeowClient } from '@/lib/integrations/whatsmeow-client'
-import { isWhatsmeow } from '@/lib/whatsapp-provider'
 import logger from '@/lib/logger'
 import { apiError } from '@/lib/api-error'
 import { ERR } from '@/lib/error-messages'
@@ -79,15 +77,9 @@ export async function GET(req: NextRequest) {
 
     const jid = `${phone.replace(/\D/g, '')}@s.whatsapp.net`
 
-    let picUrl: string | null = null
-    try {
-      if (isWhatsmeow(connection)) {
-        const result = await whatsmeowClient.getProfilePic(connection.instanceName, jid)
-        picUrl = result.url || null
-      }
-    } catch (err: any) {
-      logger.debug({ error: err.message, contactId }, 'Profile pic fetch failed')
-    }
+    // Profile pics vinham do gateway QR (whatsmeow), descontinuado — a API
+    // oficial Meta não expõe foto de perfil de contatos.
+    const picUrl: string | null = null
 
     if (!picUrl) {
       return isProxy

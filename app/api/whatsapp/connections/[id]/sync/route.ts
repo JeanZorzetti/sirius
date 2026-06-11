@@ -10,7 +10,6 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { prismaWa } from '@/lib/prisma-wa'
-import { whatsmeowClient } from '@/lib/integrations/whatsmeow-client'
 import logger from '@/lib/logger'
 import { apiError } from '@/lib/api-error'
 import { ERR } from '@/lib/error-messages'
@@ -50,22 +49,11 @@ export async function POST(
       return NextResponse.json({ error: 'Connection is not active' }, { status: 400 })
     }
 
-    // Whatsmeow: history sync is automatic on connect via webhook events.
-    // This endpoint triggers an on-demand sync (best-effort).
-    try {
-      // Request 500 messages to cover at least 24h of history for active numbers.
-      await whatsmeowClient.requestSync(connection.instanceName, 500)
-      logger.info({ connectionId: id, instanceName: connection.instanceName }, 'Whatsmeow: on-demand sync requested')
-    } catch (err: any) {
-      // Best-effort — history sync already happens automatically
-      logger.debug({ error: err.message }, 'Whatsmeow on-demand sync skipped (not critical)')
-    }
-
-    return NextResponse.json({
-      success: true,
-      provider: 'whatsmeow',
-      message: 'History sync is automatic for whatsmeow connections.',
-    })
+    // O gateway QR (whatsmeow) foi descontinuado — não há sync sob demanda.
+    return NextResponse.json(
+      { error: 'Sincronização via conexão QR foi descontinuada.' },
+      { status: 410 }
+    )
   } catch (error: any) {
     logger.error({ error: error.message, stack: error.stack }, 'Error syncing WhatsApp chats')
     return NextResponse.json({ error: 'Failed to sync chats' }, { status: 500 })

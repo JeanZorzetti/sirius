@@ -55,12 +55,11 @@ Eram 98 falhas em 21 arquivos (drift: testes escritos contra planos/APIs antigos
 ### Sprint R3 — Tipos de domínio do Pipeline ✅ FEITO (2026-06-11)
 Criado `lib/types/pipeline.ts` (`PipelineDeal`, `PipelineStageWithDeals`, `PipelineSummary`, `PipelineContact`, `OptimisticDeal` — enums ancorados no Prisma; shape espelha a serialização do `DashboardTabsWrapper`: Decimal→number, Date→ISO). Adotado em 6 componentes: `dashboard-tabs` (props `any[]` eliminados, estado `editingDeal` tipado), `mobile-pipeline-list`, `kanban-board` (`Deal.value: any`→`number|null`, callback otimista `Partial<PipelineDeal>`), `edit-deal-dialog` (`SimpleDeal.value` idem), `create-deal-dialog` (`onOptimisticAdd: OptimisticDeal` + fix de `undefined` em contact), `dashboard-with-pipeline-selector`. Zero `any` nos props de todos; restam anys internos do edit-deal-dialog (`fullDeal`, notes/activities) → tratar na decomposição do R6.
 
-### Sprint R4 — Tipagem das rotas críticas + remoção do whatsmeow
-- **whatsmeow está MORTO** (foi só um teste, confirmado 2026-06-10): em vez de tipar, REMOVER `app/api/webhooks/whatsmeow/`, `lib/integrations/whatsmeow-client.ts` e desacoplar `chat/page.tsx` (que ainda importa o client e o `prismaWa`). Mapear dependências antes de deletar.
-- `app/api/webhooks/mercadopago/route.ts` (14 anys, 848 linhas — tipar payloads MP)
-- `app/[locale]/dashboard/contacts/actions.ts` (16 anys)
-
-**Critério de pronto:** código whatsmeow removido sem quebrar o chat; ≤2 `any` justificados por arquivo restante (payload externo na borda, validado com zod).
+### Sprint R4 — Tipagem das rotas críticas + remoção do whatsmeow ✅ FEITO (2026-06-11)
+- **whatsmeow removido** (26 arquivos afetados): deletados o client, o webhook do gateway, as 4 rotas `connections/whatsmeow/*`, o `whatsmeow-connect-card` e o `whatsapp-provider`. Rotas de envio QR (`send-message`, `send-media`, `v1/whatsapp/send`, `admin/sync-contacts`) viraram **410 Gone** com mensagem de migração para WABA; `media`/`profile-pic`/`connections/[id]/*` perderam só o branch do gateway (MinIO/WABA intactos); `chat/page.tsx` desacoplado; página de settings legada redireciona para `whatsapp-official`. Automations/retry de WhatsApp QR retornam erro claro (reimplementar via WABA é feature futura).
+- **mercadopago webhook tipado**: `MpPayment` derivado do próprio SDK (`Awaited<ReturnType<Payment['get']>>` + `preapproval_id`), `AddonType` do Prisma em vez de string solta, zero anys.
+- **contacts/actions tipado**: casts `(prisma.X as any)` removidos (client atualizado), helpers `errMessage`/`errStack` p/ narrowing de catch, zero anys. **Bug latente corrigido**: auto-criação de Product sem `price` (obrigatório) crashava em runtime — o cast escondia.
+- Gotcha: `.next/types` stale mascarava 13 erros de tipo — limpar ao deletar rotas.
 
 ### Sprint R5 — Decompor `message-area.tsx` (2.169 linhas)
 Extrair em `components/chat/message-area/`: header, lista de mensagens, bolha de mensagem, composer/input, painel de anexos, modais (já há padrão de decomposição no projeto — V2 Sprint).

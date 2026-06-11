@@ -8,7 +8,15 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { MercadoPagoConfig, Payment } from 'mercadopago'
-import { SubscriptionTier } from '@prisma/client'
+import { AddonType, SubscriptionTier } from '@prisma/client'
+
+/**
+ * Payment shape as returned by the MP SDK. `preapproval_id` is present in
+ * recurring-payment payloads but missing from the SDK's type.
+ */
+type MpPayment = Awaited<ReturnType<InstanceType<typeof Payment>['get']>> & {
+  preapproval_id?: string | null
+}
 import logger from '@/lib/logger'
 import { sendEmail } from '@/lib/email'
 import { PaymentConfirmationEmail } from '@/emails/templates/payment-confirmation'
@@ -154,13 +162,14 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({ received: true })
 
-  } catch (error: any) {
-    logger.error({ error: error.message }, 'MercadoPago webhook error')
-    return NextResponse.json({ error: error.message }, { status: 500 })
+  } catch (error) {
+    const message = error instanceof Error ? error.message : String(error)
+    logger.error({ error: message }, 'MercadoPago webhook error')
+    return NextResponse.json({ error: message }, { status: 500 })
   }
 }
 
-async function processApprovedPayment(payment: any) {
+async function processApprovedPayment(payment: MpPayment) {
   const externalReference = payment.external_reference
   
   if (!externalReference) {
@@ -272,7 +281,7 @@ async function processReferralReward(referredOrgId: string) {
 async function upgradePlan(
   organizationId: string,
   tier: SubscriptionTier,
-  payment: any,
+  payment: MpPayment,
   isAnnual: boolean = false
 ) {
   logger.info({ organizationId, tier, isAnnual }, 'Upgrading plan')
@@ -305,13 +314,13 @@ async function upgradePlan(
     data: {
       organizationId,
       type: 'PLAN_UPGRADE',
-      amount: payment.transaction_amount,
-      feeAmount: payment.fee_details?.reduce((acc: number, f: any) => acc + (f.amount || 0), 0) || null,
+      amount: payment.transaction_amount ?? 0,
+      feeAmount: payment.fee_details?.reduce((acc, f) => acc + (f.amount || 0), 0) || null,
       netAmount: payment.transaction_details?.net_received_amount || null,
       currency: payment.currency_id,
       status: 'COMPLETED',
       provider: 'MERCADO_PAGO',
-      providerPaymentId: payment.id,
+      providerPaymentId: payment.id?.toString() ?? null,
       metadata: {
         tier,
         paymentMethod: payment.payment_method_id,
@@ -361,7 +370,7 @@ const FOUNDER_TIER_MAP: Record<string, { tier: SubscriptionTier; price: number; 
   FOUNDER_BUSINESS:{ tier: SubscriptionTier.BUSINESS, price: 234.00, scrapingQuota: 1500 },
 }
 
-async function upgradeToFounder(organizationId: string, founderPlan: string, payment: any) {
+async function upgradeToFounder(organizationId: string, founderPlan: string, payment: MpPayment) {
   logger.info({ organizationId, founderPlan }, '[MP:FOUNDER] Processing founder upgrade')
 
   const config = FOUNDER_TIER_MAP[founderPlan]
@@ -397,7 +406,7 @@ async function upgradeToFounder(organizationId: string, founderPlan: string, pay
       organizationId,
       type: 'PLAN_UPGRADE',
       amount: payment.transaction_amount ?? 29,
-      feeAmount: payment.fee_details?.reduce((acc: number, f: any) => acc + (f.amount || 0), 0) || null,
+      feeAmount: payment.fee_details?.reduce((acc, f) => acc + (f.amount || 0), 0) || null,
       netAmount: payment.transaction_details?.net_received_amount || null,
       currency: payment.currency_id ?? 'BRL',
       status: 'COMPLETED',
@@ -459,26 +468,26 @@ async function upgradeToFounder(organizationId: string, founderPlan: string, pay
 async function processAddonPurchase(
   organizationId: string,
   addonType: string,
-  payment: any
+  payment: MpPayment
 ) {
   logger.info({ organizationId, addonType }, 'Processing addon purchase')
 
   let quantity = 0
-  let addonEnum = ''
+  let addonEnum: AddonType | null = null
 
   // Determinar quantidade e tipo
   if (addonType === 'SCRAPING_100') {
     quantity = 100
-    addonEnum = 'SCRAPING_100'
+    addonEnum = AddonType.SCRAPING_100
   } else if (addonType === 'SCRAPING_500') {
     quantity = 500
-    addonEnum = 'SCRAPING_500'
+    addonEnum = AddonType.SCRAPING_500
   } else if (addonType === 'WHATSAPP_EXTRA') {
     quantity = 1
-    addonEnum = 'WHATSAPP_EXTRA_INSTANCE'
+    addonEnum = AddonType.WHATSAPP_EXTRA_INSTANCE
   }
 
-  if (!quantity) {
+  if (!quantity || !addonEnum) {
     logger.warn({ addonType }, 'Unknown addon type')
     return
   }
@@ -487,10 +496,10 @@ async function processAddonPurchase(
   await prisma.addon.create({
     data: {
       organizationId,
-      type: addonEnum as any,
+      type: addonEnum,
       name: getAddonName(addonEnum),
       quantity,
-      price: payment.transaction_amount,
+      price: payment.transaction_amount ?? 0,
       status: 'ACTIVE',
     },
   })
@@ -520,13 +529,13 @@ async function processAddonPurchase(
     data: {
       organizationId,
       type: 'ADDON_PURCHASE',
-      amount: payment.transaction_amount,
-      feeAmount: payment.fee_details?.reduce((acc: number, f: any) => acc + (f.amount || 0), 0) || null,
+      amount: payment.transaction_amount ?? 0,
+      feeAmount: payment.fee_details?.reduce((acc, f) => acc + (f.amount || 0), 0) || null,
       netAmount: payment.transaction_details?.net_received_amount || null,
       currency: payment.currency_id,
       status: 'COMPLETED',
       provider: 'MERCADO_PAGO',
-      providerPaymentId: payment.id,
+      providerPaymentId: payment.id?.toString() ?? null,
       metadata: {
         addonType: addonEnum,
         quantity,
@@ -638,7 +647,7 @@ async function processRecurringPayment(paymentId: string) {
     const renewalAgaasData = getAgaasDataForTier(subscriptionTier)
 
     // Garantir que o subscriptionId está salvo (pode ter chegado nulo no primeiro ciclo)
-    const subscriptionIdFromPayment = (payment as any).preapproval_id || null
+    const subscriptionIdFromPayment = (payment as MpPayment).preapproval_id || null
 
     const org = await prisma.organization.update({
       where: { id: organizationId },
@@ -681,7 +690,7 @@ async function processRecurringPayment(paymentId: string) {
         organizationId,
         type: 'PLAN_UPGRADE',
         amount: payment.transaction_amount ?? 0,
-        feeAmount: payment.fee_details?.reduce((acc: number, f: any) => acc + (f.amount || 0), 0) || null,
+        feeAmount: payment.fee_details?.reduce((acc, f) => acc + (f.amount || 0), 0) || null,
         netAmount: payment.transaction_details?.net_received_amount || null,
         currency: payment.currency_id ?? 'BRL',
         status: 'COMPLETED',
@@ -730,7 +739,7 @@ async function processRecurringPayment(paymentId: string) {
  * Trata falha de pagamento recorrente com retry logic.
  * Após MAX_PAYMENT_ATTEMPTS falhas consecutivas, faz downgrade para FREE.
  */
-async function handleFailedRecurringPayment(organizationId: string, payment: any) {
+async function handleFailedRecurringPayment(organizationId: string, payment: MpPayment) {
   logger.info({ organizationId, paymentStatus: payment.status }, '[MP:RECURRING] Handling failed payment')
 
   const org = await prisma.organization.findUnique({
@@ -817,7 +826,7 @@ async function handleFailedRecurringPayment(organizationId: string, payment: any
   }
 }
 
-async function processWhatsAppSetupPurchase(organizationId: string, payment: any) {
+async function processWhatsAppSetupPurchase(organizationId: string, payment: MpPayment) {
   logger.info({ organizationId }, '[MP:WHATSAPP_SETUP] Processing WhatsApp setup purchase')
 
   await prisma.transaction.create({
@@ -825,7 +834,7 @@ async function processWhatsAppSetupPurchase(organizationId: string, payment: any
       organizationId,
       type: 'ADDON_PURCHASE',
       amount: payment.transaction_amount ?? 297,
-      feeAmount: payment.fee_details?.reduce((acc: number, f: any) => acc + (f.amount || 0), 0) || null,
+      feeAmount: payment.fee_details?.reduce((acc, f) => acc + (f.amount || 0), 0) || null,
       netAmount: payment.transaction_details?.net_received_amount || null,
       currency: payment.currency_id ?? 'BRL',
       status: 'COMPLETED',

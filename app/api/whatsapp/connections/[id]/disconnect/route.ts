@@ -8,7 +8,6 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { prismaWa } from '@/lib/prisma-wa'
-import { whatsmeowClient } from '@/lib/integrations/whatsmeow-client'
 import logger from '@/lib/logger'
 import { apiError } from '@/lib/api-error'
 import { ERR } from '@/lib/error-messages'
@@ -48,21 +47,8 @@ export async function POST(
       return await apiError(ERR.CONNECTION_NOT_FOUND, 404, { req })
     }
 
-    // 4. Restart instance on gateway so the session key is preserved.
-    // deleteInstance would wipe the session entirely, forcing a full re-auth
-    // and losing all message history association. restartInstance keeps the
-    // gateway instance alive (session intact) but drops the connection so the
-    // user can re-scan QR and resume receiving messages normally.
-    try {
-      await whatsmeowClient.restartInstance(connection.instanceName)
-    } catch (err: any) {
-      logger.warn(
-        { error: err?.message, instanceName: connection.instanceName },
-        'Whatsmeow restart failed, forcing DB disconnect only'
-      )
-    }
-
-    // 5. Update status in database
+    // 4. Update status in database (the QR gateway was discontinued; there is
+    // no remote instance to restart)
     await prismaWa.whatsAppConnection.update({
       where: { id: connection.id },
       data: {

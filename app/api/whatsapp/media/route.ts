@@ -13,7 +13,6 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { prismaWa } from '@/lib/prisma-wa'
-import { whatsmeowClient } from '@/lib/integrations/whatsmeow-client'
 import { uploadBase64, getMediaUrl, isMinioKey } from '@/lib/storage'
 import logger from '@/lib/logger'
 import { apiError } from '@/lib/api-error'
@@ -87,57 +86,10 @@ export async function GET(req: NextRequest) {
       return NextResponse.json({ error: 'Mídia ainda sendo processada. Tente novamente em instantes.' }, { status: 404 })
     }
 
-    // 3. Not cached — download from gateway, upload to MinIO
-    const connection = await prismaWa.whatsAppConnection.findFirst({
-      where: { organizationId: user.organizationId, status: 'CONNECTED' },
-    })
-
-    if (!connection) {
-      return NextResponse.json({ error: 'No active connection' }, { status: 400 })
-    }
-
-    try {
-      const result = await whatsmeowClient.downloadMedia(
-        connection.instanceName,
-        messageId,
-        message.remoteJid || '',
-      )
-
-      const mimeType = result.mimetype || 'application/octet-stream'
-      const base64Data = result.base64.startsWith('data:')
-        ? result.base64
-        : `data:${mimeType};base64,${result.base64}`
-
-      // Try to upload to MinIO
-      try {
-        const key = await uploadBase64({
-          orgId: user.organizationId,
-          contactId: message.contactId,
-          messageId: message.messageId || message.id,
-          base64Data,
-        })
-        await prismaWa.whatsAppMessage.updateMany({
-          where: { messageId, organizationId: user.organizationId },
-          data: { mediaUrl: key },
-        })
-        const url = await getMediaUrl(key)
-        return NextResponse.json({ url, mimetype: mimeType })
-      } catch (uploadErr) {
-        // Fallback: cache as base64 in DB (old behavior)
-        logger.warn({ err: uploadErr, messageId }, 'MinIO upload failed, caching as base64')
-        await prismaWa.whatsAppMessage.updateMany({
-          where: { messageId, organizationId: user.organizationId },
-          data: { mediaUrl: base64Data },
-        })
-        return NextResponse.json({ base64: base64Data, mimetype: mimeType })
-      }
-    } catch (err: any) {
-      logger.error({ error: err.message, messageId }, 'Whatsmeow media download failed')
-      return NextResponse.json(
-        { error: 'Mídia não disponível', details: err.message },
-        { status: 404 }
-      )
-    }
+    // 3. Not cached — the QR gateway (whatsmeow) that served uncached media was
+    // discontinued; WABA media is cached by the webhook, so missing here = gone.
+    logger.warn({ messageId }, 'Media not cached and QR gateway is discontinued')
+    return NextResponse.json({ error: 'Mídia não disponível' }, { status: 404 })
   } catch (error: any) {
     logger.error({ error: error.message }, 'Error fetching media')
     return NextResponse.json(

@@ -8,7 +8,6 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { prismaWa } from '@/lib/prisma-wa'
-import { whatsmeowClient } from '@/lib/integrations/whatsmeow-client'
 import logger from '@/lib/logger'
 import { apiError } from '@/lib/api-error'
 import { ERR } from '@/lib/error-messages'
@@ -48,18 +47,8 @@ export async function GET(
       return await apiError(ERR.CONNECTION_NOT_FOUND, 404, { req })
     }
 
-    // 4. Get status from whatsmeow gateway (non-blocking — fallback to DB status)
-    let status = connection.status
-    try {
-      const gatewayStatus = await whatsmeowClient.getStatus(connection.instanceName)
-      if (gatewayStatus?.connected === true) {
-        status = 'CONNECTED'
-      } else if (gatewayStatus?.connected === false) {
-        status = 'DISCONNECTED'
-      }
-    } catch (err: any) {
-      logger.warn({ instanceName: connection.instanceName, error: err.message }, 'Gateway status check failed — using DB status')
-    }
+    // 4. O gateway QR (whatsmeow) foi descontinuado — o status reportado é o do DB.
+    const status = connection.status
 
     // 6. Update status in database if changed
     if (status !== connection.status) {

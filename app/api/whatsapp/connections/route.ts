@@ -49,11 +49,11 @@ export async function GET() {
 
 /**
  * POST /api/whatsapp/connections
- * Use /api/whatsapp/connections/whatsmeow to create connections.
+ * 410 — conexões QR foram descontinuadas; o caminho suportado é a API Oficial Meta.
  */
 export async function POST() {
   return NextResponse.json(
-    { error: 'Use a rota /api/whatsapp/connections/whatsmeow para criar conexões' },
-    { status: 400 }
+    { error: 'Conexões QR foram descontinuadas. Configure a API Oficial Meta em Configurações → Integrações → WhatsApp Oficial.' },
+    { status: 410 }
   )
 }

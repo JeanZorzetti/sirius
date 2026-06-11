@@ -8,6 +8,14 @@ import { dispatchWebhookAsync } from '@/lib/webhooks/dispatcher'
 import { WEBHOOK_EVENTS } from '@/lib/webhooks/events'
 import { canCreateContact } from '@/lib/plan-limits'
 
+function errMessage(error: unknown): string {
+    return error instanceof Error ? error.message : String(error)
+}
+
+function errStack(error: unknown): string | undefined {
+    return error instanceof Error ? error.stack : undefined
+}
+
 async function getAuthenticatedUser() {
     const session = await getSession()
     if (!session || !session.user || !session.user.email) {
@@ -107,7 +115,7 @@ export async function createContact(formData: FormData) {
                 document: document || null,
                 segment: segment?.trim() || null,
                 organizationId: user.organizationId
-            } as any
+            }
         })
 
         // Dispatch webhook (async, non-blocking)
@@ -136,10 +144,10 @@ export async function createContact(formData: FormData) {
                 updatedAt: contact.updatedAt.toISOString()
             }
         }
-    } catch (error: any) {
-        console.error('[CREATE_CONTACT] Error:', error?.message, error?.stack)
+    } catch (error) {
+        console.error('[CREATE_CONTACT] Error:', errMessage(error), errStack(error))
         logger.error({ err: error }, 'Failed to create contact')
-        return { success: false, error: `Failed to create contact: ${error?.message || 'Unknown error'}` }
+        return { success: false, error: `Failed to create contact: ${errMessage(error)}` }
     }
 }
 
@@ -218,7 +226,7 @@ export async function updateContact(contactId: string, formData: FormData) {
                 observations: observations?.trim() || null,
                 document: document?.trim() || null,
                 segment: segment?.trim() || null,
-            } as any
+            }
         })
 
         dispatchWebhookAsync(user.organizationId, WEBHOOK_EVENTS.CONTACT_UPDATED, {
@@ -235,10 +243,10 @@ export async function updateContact(contactId: string, formData: FormData) {
         revalidatePath('/dashboard')
 
         return { success: true }
-    } catch (error: any) {
-        console.error('[UPDATE_CONTACT] Error:', error?.message, error?.stack)
+    } catch (error) {
+        console.error('[UPDATE_CONTACT] Error:', errMessage(error), errStack(error))
         logger.error({ err: error }, 'Failed to update contact')
-        return { success: false, error: `Falha ao atualizar contato: ${error?.message || 'Erro desconhecido'}` }
+        return { success: false, error: `Falha ao atualizar contato: ${errMessage(error)}` }
     }
 }
 
@@ -255,15 +263,15 @@ export async function updateContactObservations(contactId: string, observations:
             return { success: false, error: 'Sem permissão.' }
         }
 
-        await (prisma.contact.update as any)({
+        await prisma.contact.update({
             where: { id: contactId },
             data: { observations: observations.trim() || null },
         })
 
         revalidatePath('/dashboard/contacts')
         return { success: true }
-    } catch (error: any) {
-        return { success: false, error: error?.message || 'Erro ao salvar observações' }
+    } catch (error) {
+        return { success: false, error: errMessage(error) }
     }
 }
 
@@ -301,9 +309,9 @@ export async function bulkDeleteContacts(contactIds: string[]) {
         revalidatePath('/dashboard')
 
         return { success: true, deleted: contacts.length }
-    } catch (error: any) {
-        console.error('[BULK_DELETE_CONTACTS] Error:', error?.message)
-        return { success: false, error: `Falha ao excluir contatos: ${error?.message || 'Erro desconhecido'}` }
+    } catch (error) {
+        console.error('[BULK_DELETE_CONTACTS] Error:', errMessage(error))
+        return { success: false, error: `Falha ao excluir contatos: ${errMessage(error)}` }
     }
 }
 
@@ -356,10 +364,10 @@ export async function deleteContact(contactId: string) {
         revalidatePath('/dashboard')
 
         return { success: true }
-    } catch (error: any) {
-        console.error('[DELETE_CONTACT] Error:', error?.message, error?.stack)
+    } catch (error) {
+        console.error('[DELETE_CONTACT] Error:', errMessage(error), errStack(error))
         logger.error({ err: error }, 'Failed to delete contact')
-        return { success: false, error: `Falha ao excluir contato: ${error?.message || 'Erro desconhecido'}` }
+        return { success: false, error: `Falha ao excluir contato: ${errMessage(error)}` }
     }
 }
 
@@ -407,7 +415,7 @@ export async function addContactClosing(contactId: string, data: {
         const [year, month, day] = data.date.split('-').map(Number)
         const localDate = new Date(year, month - 1, day, 12, 0, 0)
 
-        const closing = await (prisma.dealClosing as any).create({
+        const closing = await prisma.dealClosing.create({
             data: {
                 dealId: targetDealId,
                 date: localDate,
@@ -447,9 +455,9 @@ export async function addContactClosing(contactId: string, data: {
                 userName: null,
             },
         }
-    } catch (error: any) {
-        console.error('[ADD_CONTACT_CLOSING]', error?.message)
-        return { success: false, error: error?.message || 'Erro ao registrar fechamento' }
+    } catch (error) {
+        console.error('[ADD_CONTACT_CLOSING]', errMessage(error))
+        return { success: false, error: errMessage(error) }
     }
 }
 
@@ -458,7 +466,7 @@ export async function removeContactClosing(closingId: string) {
         const user = await getAuthenticatedUser()
         if (!user) return { success: false, error: 'Unauthorized' }
 
-        const closing = await (prisma.dealClosing as any).findUnique({
+        const closing = await prisma.dealClosing.findUnique({
             where: { id: closingId },
             include: {
                 deal: { select: { organizationId: true, id: true } },
@@ -485,9 +493,9 @@ export async function removeContactClosing(closingId: string) {
         revalidatePath('/dashboard')
 
         return { success: true }
-    } catch (error: any) {
-        console.error('[REMOVE_CONTACT_CLOSING]', error?.message)
-        return { success: false, error: error?.message || 'Erro ao remover fechamento' }
+    } catch (error) {
+        console.error('[REMOVE_CONTACT_CLOSING]', errMessage(error))
+        return { success: false, error: errMessage(error) }
     }
 }
 
@@ -528,15 +536,17 @@ export async function addWonDeal(contactId: string, data: {
             if (existing) {
                 productId = existing.id
             } else {
-                const created = await (prisma.product.create as any)({
-                    data: { name: data.productName.trim(), organizationId: user.organizationId },
+                const created = await prisma.product.create({
+                    // price é obrigatório no schema; produto auto-criado a partir de
+                    // um fechamento não tem preço de catálogo definido
+                    data: { name: data.productName.trim(), organizationId: user.organizationId, price: 0 },
                     select: { id: true },
                 })
                 productId = created.id
             }
         }
 
-        const created = await (prisma.deal.create as any)({
+        const created = await prisma.deal.create({
             data: {
                 title: data.title.trim(),
                 value: data.value ?? null,
@@ -566,9 +576,9 @@ export async function addWonDeal(contactId: string, data: {
                 representativeName: null,
             },
         }
-    } catch (error: any) {
-        console.error('[ADD_WON_DEAL]', error?.message)
-        return { success: false, error: error?.message || 'Erro ao registrar venda' }
+    } catch (error) {
+        console.error('[ADD_WON_DEAL]', errMessage(error))
+        return { success: false, error: errMessage(error) }
     }
 }
 
@@ -591,8 +601,8 @@ export async function removeWonDeal(dealId: string) {
         await prisma.deal.delete({ where: { id: dealId } })
         revalidatePath('/dashboard/contacts')
         return { success: true }
-    } catch (error: any) {
-        console.error('[REMOVE_WON_DEAL]', error?.message)
-        return { success: false, error: error?.message || 'Erro ao remover venda' }
+    } catch (error) {
+        console.error('[REMOVE_WON_DEAL]', errMessage(error))
+        return { success: false, error: errMessage(error) }
     }
 }

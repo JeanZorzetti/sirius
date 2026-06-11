@@ -254,36 +254,10 @@ async function retryN8N(log: any): Promise<{ success: boolean; response?: any; e
 /**
  * Retry WhatsApp message via Whatsmeow Gateway
  */
-async function retryWhatsApp(log: any): Promise<{ success: boolean; response?: any; error?: string }> {
-  try {
-    const { whatsmeowClient } = await import('./whatsmeow-client')
-    const { prismaWa } = await import('@/lib/prisma-wa')
-
-    // Find active connection for the organization
-    const connection = await prismaWa.whatsAppConnection.findFirst({
-      where: { organizationId: log.organizationId, status: 'CONNECTED' }
-    })
-
-    if (!connection) {
-      return { success: false, error: 'No active WhatsApp connection' }
-    }
-
-    // Extract message data from request
-    const { remoteJid, text } = log.request || {}
-
-    if (!remoteJid || !text) {
-      return { success: false, error: 'Invalid message data in log' }
-    }
-
-    // Normalize phone (strip @s.whatsapp.net if present)
-    const phone = remoteJid.replace('@s.whatsapp.net', '').replace(/\D/g, '')
-
-    await whatsmeowClient.sendText(connection.instanceName, phone, text)
-
-    return { success: true }
-  } catch (error: any) {
-    return { success: false, error: error.message }
-  }
+async function retryWhatsApp(_log: any): Promise<{ success: boolean; response?: any; error?: string }> {
+  // O gateway QR (whatsmeow) foi descontinuado — retries desse provider não
+  // são mais possíveis. Mensagens WABA têm fluxo próprio de retry na Meta.
+  return { success: false, error: 'QR-gateway WhatsApp retries were discontinued (whatsmeow removed)' }
 }
 
 /**
