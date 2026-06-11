@@ -1,0 +1,22 @@
+{
+  "name": "sirius-crm-mcp",
+  "version": "1.0.0",
+  "description": "MCP server for Sirius CRM project — full access to files, DB and shell",
+  "type": "module",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "start": "node dist/index.js"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.10.2",
+    "pg": "^8.13.0",
+    "zod": "^3.22.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "@types/pg": "^8.11.0",
+    "typescript": "^5.7.0"
+  }
+}

@@ -61,10 +61,13 @@ Criado `lib/types/pipeline.ts` (`PipelineDeal`, `PipelineStageWithDeals`, `Pipel
 - **contacts/actions tipado**: casts `(prisma.X as any)` removidos (client atualizado), helpers `errMessage`/`errStack` p/ narrowing de catch, zero anys. **Bug latente corrigido**: auto-criação de Product sem `price` (obrigatório) crashava em runtime — o cast escondia.
 - Gotcha: `.next/types` stale mascarava 13 erros de tipo — limpar ao deletar rotas.
 
-### Sprint R5 — Decompor `message-area.tsx` (2.169 linhas)
-Extrair em `components/chat/message-area/`: header, lista de mensagens, bolha de mensagem, composer/input, painel de anexos, modais (já há padrão de decomposição no projeto — V2 Sprint).
+### Sprint R5 — Decompor `message-area.tsx` (2.169 linhas) ✅ FEITO (2026-06-11)
+- **`message-area.tsx` (2.169) → diretório `components/chat/message-area/`** com 14 arquivos, todos <400 linhas. O `index.tsx` preserva o import path (`./message-area` resolve no diretório): `types.ts` (contratos), `utils.ts` (formatação/bubble/mídia), `audio-player.tsx`, `media-bubble.tsx`, `message-bubble.tsx` (+ `buildMessageMenuItems`), `message-list.tsx` (Virtuoso+skeleton+FAB), `chat-header.tsx` (desktop+mobile), `composer.tsx` (reply/file bars + input + gravação), `window-banners.tsx`, `chat-modals.tsx`, e hooks `use-chat-messages` (fetch+polling+Pusher+scroll), `use-send-message` (pipeline otimista único p/ texto/mídia/áudio — dedupe de 4 cópias), `use-audio-recording`, `use-ai-draft` (co-pilot).
+- **Bônus pelo critério "nenhum arquivo do chat >400":** `conversation-list.tsx` (573→231) extraiu `conversation-item.tsx` + `use-conversation-actions.ts` (pin/archive/read/clear — dedupe de handlers duplicados); `chat-interface.tsx` (472→387) extraiu `chat-empty-states.tsx` (WABA waiting, skeleton de sync, placeholders).
+- **Código morto removido:** `components/chat/message-bubble.tsx` antigo (248 linhas, zero importadores — tentativa de extração abandonada).
+- **Lint dos novos arquivos zerado:** `Math.random()` em render (waveform → jitter determinístico), ref lido em render (QuickReplyPicker posiciona via estado `taHeight`), detecção de quick-reply derivada no render em vez de setState em effect.
 
-**Critério de pronto:** nenhum arquivo do chat >400 linhas; comportamento idêntico (smoke test no chat).
+**Critério verificado:** nenhum arquivo do chat >400 linhas (maior: index 399); tsc 0 erros; 656 testes verdes.
 
 ### Sprint R6 — Decompor `edit-deal-dialog.tsx` (1.412) + `kanban-board.tsx` (968)
 - Edit-deal: abas/seções viram subcomponentes; lógica de submit vira hook `useDealForm`
