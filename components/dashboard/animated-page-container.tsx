@@ -1,17 +1,14 @@
-'use client'
-
-import { motion } from 'framer-motion'
 import { ReactNode } from 'react'
 
+/**
+ * Page-mount reveal via CSS (.animate-page-enter in globals.css).
+ * Was a framer-motion <motion.div> — the simple fade/slide didn't justify
+ * shipping the library in the main dashboard page chunk.
+ */
 export function AnimatedPageContainer({ children }: { children: ReactNode }) {
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 15 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1.0] }}
-      className="h-full flex flex-col w-full"
-    >
+    <div className="h-full flex flex-col w-full animate-page-enter">
       {children}
-    </motion.div>
+    </div>
   )
 }

@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import type { Contact } from '@prisma/client'
-import type { WhatsAppMessage } from '.prisma/client-wa'
+import type { ChatLastMessage } from '@/lib/chat/queries'
 
 const { prismaMock, prismaWaMock } = vi.hoisted(() => ({
   prismaMock: {
@@ -33,8 +33,8 @@ function makeContact(id: string, name = `Contact ${id}`): Contact {
   return { id, name } as unknown as Contact
 }
 
-function makeMessage(contactId: string, sentAt: Date, id = `msg-${contactId}-${sentAt.getTime()}`): WhatsAppMessage {
-  return { id, contactId, sentAt } as unknown as WhatsAppMessage
+function makeMessage(contactId: string, sentAt: Date, id = `msg-${contactId}-${sentAt.getTime()}`): ChatLastMessage {
+  return { id, contactId, sentAt } as unknown as ChatLastMessage
 }
 
 describe('hasAnyChannel', () => {
@@ -155,9 +155,9 @@ describe('getChatConversations', () => {
       .mockResolvedValueOnce([makeContact('c1')])          // full contacts
     prismaWaMock.$queryRaw
       .mockResolvedValueOnce([{ contact_id: 'c1' }])                 // distinct contacts with messages
+      .mockResolvedValueOnce([makeMessage('c1', sentAt)])            // last message per contact (DISTINCT ON)
       .mockResolvedValueOnce([{ contact_id: 'c1', cnt: BigInt(3) }]) // unread
       .mockResolvedValueOnce([{ contact_id: 'c1', cnt: BigInt(7) }]) // total inbound
-    prismaWaMock.whatsAppMessage.findMany.mockResolvedValueOnce([makeMessage('c1', sentAt)])
 
     const result = await getChatConversations('org-1', both)
 
@@ -166,13 +166,9 @@ describe('getChatConversations', () => {
     expect(result[0].whatsappMessages[0].sentAt).toEqual(sentAt)
     expect(result[0]._count).toEqual({ whatsappMessages: 7, unreadMessages: 3 })
 
-    // last-message lookup uses the same matrix as the raw queries
-    expect(prismaWaMock.whatsAppMessage.findMany).toHaveBeenCalledWith(
-      expect.objectContaining({
-        where: expect.objectContaining({
-          OR: [{ connectionId: { in: ['conn-1'] } }, { connectionId: null }],
-        }),
-      })
-    )
+    // 4 raw queries: distinct ids, last messages, unread, total — no
+    // unbounded findMany over the whole message history anymore
+    expect(prismaWaMock.$queryRaw).toHaveBeenCalledTimes(4)
+    expect(prismaWaMock.whatsAppMessage.findMany).not.toHaveBeenCalled()
   })
 })

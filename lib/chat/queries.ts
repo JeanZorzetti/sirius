@@ -19,8 +19,14 @@ export type ConnectionScope = {
   wabaEnabled: boolean
 }
 
+/** Subset of WhatsAppMessage the conversation list actually renders. */
+export type ChatLastMessage = Pick<
+  WhatsAppMessage,
+  'id' | 'contactId' | 'text' | 'direction' | 'status' | 'sentAt' | 'mediaType'
+>
+
 export type ChatConversation = Contact & {
-  whatsappMessages: WhatsAppMessage[]
+  whatsappMessages: ChatLastMessage[]
   _count: {
     whatsappMessages: number
     unreadMessages: number
@@ -56,7 +62,7 @@ export function connectionScopeWhere(scope: ConnectionScope): Prisma.WhatsAppMes
 }
 
 /** Contacts of the org that have at least one message in the scope. */
-async function getContactIdsWithMessages(
+export async function getContactIdsWithMessages(
   organizationId: string,
   orgContactIds: string[],
   scope: ConnectionScope,
@@ -73,7 +79,7 @@ async function getContactIdsWithMessages(
 }
 
 /** INBOUND message counts per contact; `onlyUnread` narrows to isRead=false. */
-async function getInboundCounts(
+export async function getInboundCounts(
   organizationId: string,
   contactIds: string[],
   scope: ConnectionScope,
@@ -92,15 +98,37 @@ async function getInboundCounts(
   return new Map(rows.map(r => [r.contact_id, Number(r.cnt)]))
 }
 
+/**
+ * Latest message per contact via DISTINCT ON — replaces the old pattern of
+ * fetching EVERY message in scope (unbounded, grew with org history) just to
+ * keep the first per contact in memory.
+ */
+export async function getLastMessagesPerContact(
+  organizationId: string,
+  contactIds: string[],
+  scope: ConnectionScope,
+): Promise<ChatLastMessage[]> {
+  if (contactIds.length === 0) return []
+  return prismaWa.$queryRaw<ChatLastMessage[]>`
+    SELECT DISTINCT ON ("contactId")
+      "contactId", id, text, direction, status, "sentAt", "mediaType"
+    FROM "WhatsAppMessage"
+    WHERE "organizationId" = ${organizationId}
+      AND "contactId" = ANY(${contactIds}::text[])
+      AND ${connectionScopeSql(scope)}
+    ORDER BY "contactId", "sentAt" DESC
+  `
+}
+
 /** Pure merge of CRM contacts with WA data, sorted by latest message (exported for unit tests). */
 export function mergeContactsWithWaData(
   rawContacts: Contact[],
-  lastMessages: WhatsAppMessage[],
+  lastMessages: ChatLastMessage[],
   totalCounts: Map<string, number>,
   unreadCounts: Map<string, number>,
 ): ChatConversation[] {
   // Messages come ordered by sentAt desc — first hit per contact is the latest
-  const lastMessageMap = new Map<string, WhatsAppMessage>()
+  const lastMessageMap = new Map<string, ChatLastMessage>()
   for (const msg of lastMessages) {
     if (msg.contactId && !lastMessageMap.has(msg.contactId)) {
       lastMessageMap.set(msg.contactId, msg)
@@ -158,14 +186,7 @@ export async function getChatConversations(
       where: { id: { in: contactIds }, organizationId },
       orderBy: { updatedAt: 'desc' },
     }),
-    prismaWa.whatsAppMessage.findMany({
-      where: {
-        organizationId,
-        contactId: { in: contactIds },
-        ...connectionScopeWhere(scope),
-      },
-      orderBy: { sentAt: 'desc' },
-    }),
+    getLastMessagesPerContact(organizationId, contactIds, scope),
     getInboundCounts(organizationId, contactIds, scope, true),
     getInboundCounts(organizationId, contactIds, scope, false),
   ])

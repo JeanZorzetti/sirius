@@ -99,20 +99,17 @@ async function ContactsData({ orgId }: { orgId: string }) {
             where: { organizationId: orgId },
             select: { id: true, name: true },
         }),
-        // Latest activity per contact — via most recent Activity on any deal linked to each contact
-        prisma.activity.findMany({
-            where: {
-                deal: {
-                    organizationId: orgId,
-                    contactId: { not: null },
-                },
-            },
-            select: {
-                createdAt: true,
-                deal: { select: { contactId: true } },
-            },
-            orderBy: { createdAt: 'desc' },
-        }),
+        // Latest activity per contact — aggregated in the DB. The previous
+        // findMany pulled EVERY activity of the org (unbounded, grows forever)
+        // just to keep the most recent per contact in memory.
+        prisma.$queryRaw<{ contact_id: string; last_at: Date }[]>`
+            SELECT d."contactId" AS contact_id, MAX(a."createdAt") AS last_at
+            FROM "Activity" a
+            JOIN "Deal" d ON d.id = a."dealId"
+            WHERE d."organizationId" = ${orgId}
+              AND d."contactId" IS NOT NULL
+            GROUP BY d."contactId"
+        `,
         (prisma.customSegment as any).findMany({
             where: { organizationId: orgId },
             select: { id: true, name: true },
@@ -163,14 +160,9 @@ async function ContactsData({ orgId }: { orgId: string }) {
     }
 
     // Lookup: contactId → most recent activity date
-    const lastActivityByContact = new Map<string, Date>()
-    for (const a of lastActivities) {
-        const cid = a.deal.contactId
-        if (!cid) continue
-        if (!lastActivityByContact.has(cid)) {
-            lastActivityByContact.set(cid, a.createdAt)
-        }
-    }
+    const lastActivityByContact = new Map<string, Date>(
+        lastActivities.map(r => [r.contact_id, r.last_at])
+    )
 
     const stageById = new Map(stages.map(s => [s.id, s.name]))
     const userById = new Map(orgUsers.map(u => [u.id, u.name ?? '']))

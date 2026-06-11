@@ -55,3 +55,6 @@ next-env.d.ts
 nul
 scripts/instagram-bot/queue.json
 scripts/instagram-bot/.tmp/
+
+# lint output dumps
+lint*.log

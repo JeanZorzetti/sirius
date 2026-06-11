@@ -300,6 +300,23 @@
     opacity: 0;
   }
 
+  /* Page-mount reveal — CSS replacement for the old framer-motion
+     AnimatedPageContainer (initial y:15/opacity:0 → settled) */
+  @keyframes page-enter {
+    from {
+      opacity: 0;
+      transform: translateY(15px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .animate-page-enter {
+    animation: page-enter 0.4s cubic-bezier(0.25, 0.1, 0.25, 1) both;
+  }
+
   @keyframes slide-up {
     from {
       opacity: 0;

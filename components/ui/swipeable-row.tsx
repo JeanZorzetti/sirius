@@ -2,7 +2,6 @@
 
 import * as React from 'react'
 import { useDrag } from '@use-gesture/react'
-import { motion, useMotionValue, useTransform, animate } from 'framer-motion'
 import { cn } from '@/lib/utils'
 import { hapticImpact } from '@/lib/mobile/haptics'
 import { useMediaQuery } from '@/hooks/use-media-query'
@@ -31,14 +30,20 @@ interface SwipeableRowProps {
   children: React.ReactNode
 }
 
+const clamp01 = (v: number) => Math.min(Math.max(v, 0), 1)
+
 /**
  * SwipeableRow — envolve qualquer card/linha e adiciona swipe horizontal
  * para revelar ações à esquerda e/ou direita.
  *
  * - Feedback tátil ao cruzar o threshold (haptic Light Impact)
- * - Snap de volta com spring ao soltar antes do threshold
+ * - Snap de volta com easing ao soltar antes do threshold
  * - Acessibilidade: usuário pode ignorar gestos; ações também devem
  *   estar disponíveis via botões tradicionais no card.
+ *
+ * O movimento é aplicado direto no DOM (transform/opacity por ref) com
+ * transição CSS no snap-back — framer-motion fazia o mesmo e custava a
+ * lib inteira no chunk do dashboard (o kanban usa este componente).
  */
 export function SwipeableRow({
   leftAction,
@@ -53,14 +58,32 @@ export function SwipeableRow({
   const isDesktop = useMediaQuery('(min-width: 1024px)')
   const effectiveDisabled = disabled || isDesktop
 
-  const x = useMotionValue(0)
-  const [triggered, setTriggered] = React.useState<'left' | 'right' | null>(null)
+  const contentRef = React.useRef<HTMLDivElement>(null)
+  const leftBgRef = React.useRef<HTMLDivElement>(null)
+  const rightBgRef = React.useRef<HTMLDivElement>(null)
+  // Só lógica de haptic — não participa do render, então ref e não state
+  const triggeredRef = React.useRef<'left' | 'right' | null>(null)
   const hasLeft = !!leftAction
   const hasRight = !!rightAction
 
-  // Background fading in/out conforme o drag
-  const leftOpacity = useTransform(x, [0, threshold], [0, 1])
-  const rightOpacity = useTransform(x, [-threshold, 0], [1, 0])
+  // Move o conteúdo e ajusta a opacidade dos fundos conforme o drag;
+  // `animated` liga a transição CSS (snap-back ao soltar)
+  const setX = React.useCallback((mx: number, animated: boolean) => {
+    const transition = animated ? 'transform 0.3s cubic-bezier(0.25, 1, 0.5, 1)' : 'none'
+    const opacityTransition = animated ? 'opacity 0.3s ease' : 'none'
+    if (contentRef.current) {
+      contentRef.current.style.transition = transition
+      contentRef.current.style.transform = `translateX(${mx}px)`
+    }
+    if (leftBgRef.current) {
+      leftBgRef.current.style.transition = opacityTransition
+      leftBgRef.current.style.opacity = String(clamp01(mx / threshold))
+    }
+    if (rightBgRef.current) {
+      rightBgRef.current.style.transition = opacityTransition
+      rightBgRef.current.style.opacity = String(clamp01(-mx / threshold))
+    }
+  }, [threshold])
 
   const bind = useDrag(
     ({ down, movement: [mx], velocity: [vx], cancel }) => {
@@ -80,16 +103,16 @@ export function SwipeableRow({
       }
 
       if (down) {
-        x.set(mx)
+        setX(mx, false)
         // Haptic ao cruzar o threshold pela primeira vez
-        if (mx > threshold && triggered !== 'left') {
-          setTriggered('left')
+        if (mx > threshold && triggeredRef.current !== 'left') {
+          triggeredRef.current = 'left'
           hapticImpact('light')
-        } else if (mx < -threshold && triggered !== 'right') {
-          setTriggered('right')
+        } else if (mx < -threshold && triggeredRef.current !== 'right') {
+          triggeredRef.current = 'right'
           hapticImpact('light')
-        } else if (Math.abs(mx) < threshold && triggered) {
-          setTriggered(null)
+        } else if (Math.abs(mx) < threshold && triggeredRef.current) {
+          triggeredRef.current = null
         }
       } else {
         // Soltou — decide ação ou snap back
@@ -100,8 +123,8 @@ export function SwipeableRow({
         } else if (mx < 0 && hasRight && (farEnough || fastEnough)) {
           rightAction?.onAction()
         }
-        animate(x, 0, { type: 'spring', stiffness: 400, damping: 35 })
-        setTriggered(null)
+        setX(0, true)
+        triggeredRef.current = null
       }
     },
     {
@@ -111,12 +134,15 @@ export function SwipeableRow({
     },
   )
 
+  const dragHandlers = effectiveDisabled ? {} : bind()
+
   return (
     <div className={cn('relative overflow-hidden rounded-2xl', className)}>
       {/* Left action background */}
       {hasLeft && (
-        <motion.div
-          style={{ opacity: leftOpacity }}
+        <div
+          ref={leftBgRef}
+          style={{ opacity: 0 }}
           className={cn(
             'absolute inset-y-0 left-0 flex items-center justify-start pl-6 text-white',
             leftAction!.background,
@@ -130,13 +156,14 @@ export function SwipeableRow({
               </span>
             )}
           </div>
-        </motion.div>
+        </div>
       )}
 
       {/* Right action background */}
       {hasRight && (
-        <motion.div
-          style={{ opacity: rightOpacity }}
+        <div
+          ref={rightBgRef}
+          style={{ opacity: 0 }}
           className={cn(
             'absolute inset-y-0 right-0 flex items-center justify-end pr-6 text-white',
             rightAction!.background,
@@ -150,41 +177,18 @@ export function SwipeableRow({
               </span>
             )}
           </div>
-        </motion.div>
+        </div>
       )}
 
       {/* Content — o elemento que efetivamente move */}
-      <SwipeableContent
-        bind={bind}
-        x={x}
-        disabled={effectiveDisabled}
+      <div
+        ref={contentRef}
+        {...(dragHandlers as Record<string, unknown>)}
+        style={{ touchAction: effectiveDisabled ? 'auto' : 'pan-y' }}
+        className="relative will-change-transform"
       >
         {children}
-      </SwipeableContent>
+      </div>
     </div>
-  )
-}
-
-// Subcomponente isolado para tipar corretamente o spread do useDrag
-function SwipeableContent({
-  bind,
-  x,
-  disabled,
-  children,
-}: {
-  bind: ReturnType<typeof useDrag>
-  x: ReturnType<typeof useMotionValue<number>>
-  disabled: boolean
-  children: React.ReactNode
-}) {
-  const dragHandlers = disabled ? {} : bind()
-  return (
-    <motion.div
-      {...(dragHandlers as Record<string, unknown>)}
-      style={{ x, touchAction: disabled ? 'auto' : 'pan-y' }}
-      className="relative will-change-transform"
-    >
-      {children}
-    </motion.div>
   )
 }

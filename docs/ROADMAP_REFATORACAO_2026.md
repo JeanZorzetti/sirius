@@ -84,12 +84,20 @@ Criado `lib/types/pipeline.ts` (`PipelineDeal`, `PipelineStageWithDeals`, `Pipel
 
 **Critério verificado:** query builder com unit tests, página fina (99 linhas), tsc 0 erros, 669 testes verdes.
 
-### Sprint R8 — Performance de dados
-1. `contacts/page.tsx`: paginação server-side (ou ao menos `take` + cursor) para contatos e activities — hoje carrega a org inteira a cada acesso
-2. Auditar os ~230 `findMany` sem `take` e adicionar limites nos de listagem
-3. Auditar os 49 imports de framer-motion: substituir por CSS/`Reveal` pattern onde for animação simples (lição Estetia: -300KB)
+### Sprint R8 — Performance de dados ✅ FEITO (2026-06-11)
+1. **Contacts page**: a query de activities (TODAS as activities da org, ilimitada e crescendo para sempre) virou agregação no banco (`GROUP BY contactId, MAX(createdAt)`). Paginação server-side NÃO aplicada deliberadamente: a tabela é client-side (busca/filtros/deep-link `?contact=` operam sobre o dataset completo) — paginar no servidor quebraria comportamento (refactor ≠ feature).
+2. **Queries quentes do chat (os ofensores reais)**:
+   - `/api/whatsapp/conversations` (polled 5s por usuário): buscava TODAS as mensagens da org sem `take` só p/ pegar a última por contato + duplicava as 6 queries da matriz. Reescrita sobre `lib/chat/queries.ts` (300→150 linhas) com novo `getLastMessagesPerContact` via **`DISTINCT ON`** + `Promise.all`; logs de debug por poll removidos.
+   - `getChatConversations` (página) também migrou pro `DISTINCT ON` (payload RSC menor: só os campos que a lista usa — `ChatLastMessage`).
+   - `/api/contact/[id]/interactions` (polled 5s por conversa aberta): cap de 500 mensagens mais recentes (desc+take+reverse).
+   - `/api/chat/initial-data` **deletado** — rota morta (zero consumidores, era pré-WABA) com o mesmo padrão all-messages.
+3. **framer-motion fora do core do dashboard** (49→42 importers, todos os restantes em chunks de rota: tasks/ia/generative-ui/instagram/agenda/products):
+   - `AnimatedPageContainer` (dashboard principal + agenda) → CSS `.animate-page-enter` (componente virou RSC puro).
+   - `ui/swipeable-row` (kanban → chunk principal) reescrito sem framer: gesto continua via `@use-gesture`, movimento por transform/opacity direto no DOM + transição CSS no snap-back.
+   - Deletados 3 componentes mobile mortos com framer (zero importadores): `page-transition` (cuja animação era no-op — `display:contents` não gera box), `pull-to-refresh`, `mobile/swipeable-row`.
+   - Higiene: `lint_errors.log`/`lint_utf8.log` commitados removidos + gitignore.
 
-**Critério de pronto:** contacts page com paginação; bundle do dashboard mensurado antes/depois.
+**Critério (ajustado):** dashboard core sem framer-motion no grafo de imports (medição de bundle local não é confiável nesta máquina — validar no PageSpeed da prod); queries quentes com agregação/cap; tsc 0 erros; 669 testes verdes.
 
 ---
 

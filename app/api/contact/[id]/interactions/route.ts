@@ -56,7 +56,10 @@ export async function GET(
     })
     const orgConnectionIds = orgConnections.map(c => c.id)
 
-    // 5. Buscar mensagens WhatsApp do contato com reações (Fase 4.2)
+    // 5. Buscar mensagens WhatsApp do contato com reações (Fase 4.2).
+    // Polled a cada 5s pelo chat aberto — cap nas N mais recentes (busca
+    // desc + reverse para manter a ordem asc que o cliente espera).
+    const MESSAGE_HISTORY_LIMIT = 500
     const messages = await prismaWa.whatsAppMessage.findMany({
       where: {
         contactId: id,
@@ -66,8 +69,9 @@ export async function GET(
           : {}),
       },
       orderBy: {
-        sentAt: 'asc',
+        sentAt: 'desc',
       },
+      take: MESSAGE_HISTORY_LIMIT,
       select: {
         id: true,
         messageId: true,
@@ -84,6 +88,9 @@ export async function GET(
         reactions: true
       },
     })
+
+    // Back to chronological order (the query is desc to apply the take cap)
+    messages.reverse()
 
     // Transform reactions to grouped format
     const messagesWithReactions = messages.map(msg => ({
@@ -107,7 +114,7 @@ export async function GET(
     }))
 
     return NextResponse.json(messagesWithReactions)
-  } catch (error: any) {
+  } catch (error) {
     logger.error({ error }, 'Error fetching interactions')
     return await apiError(ERR.INTERNAL_ERROR, 500, { req })
   }
