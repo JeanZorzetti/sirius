@@ -69,11 +69,12 @@ Criado `lib/types/pipeline.ts` (`PipelineDeal`, `PipelineStageWithDeals`, `Pipel
 
 **Critério verificado:** nenhum arquivo do chat >400 linhas (maior: index 399); tsc 0 erros; 656 testes verdes.
 
-### Sprint R6 — Decompor `edit-deal-dialog.tsx` (1.412) + `kanban-board.tsx` (968)
-- Edit-deal: abas/seções viram subcomponentes; lógica de submit vira hook `useDealForm`
-- Kanban: coluna, card e DnD handlers em arquivos próprios
+### Sprint R6 — Decompor `edit-deal-dialog.tsx` (1.412) + `kanban-board.tsx` (968) ✅ FEITO (2026-06-11)
+- **`edit-deal-dialog.tsx` (1.412) → diretório `components/deals/edit-deal-dialog/`** (11 arquivos, maior = index 371): `types.ts` (⭐ `FullDeal = Awaited<ReturnType<typeof getDealDetails>>` — tipo derivado do server action matou os anys de fullDeal/notes/activities; `DealClosing` declarado explícito pois a action passa por `prisma as any`), `details-tab.tsx` (form controlado por props do pai — estado fica no index p/ sobreviver troca de aba), `closings-tab.tsx`, `notes-tab.tsx`, `contact-combobox.tsx`, `product-combobox.tsx`, `timeline-items.tsx`, `follow-up-banner.tsx`, `quick-add-contact-popover.tsx`, `transfer-pipeline-dialog.tsx`. Casts `(data as any).dueDateNote/productId` eram resquício de client desatualizado — campos existem no schema.
+- **`kanban-board.tsx` (968) → diretório `components/kanban-board/`** (7 arquivos, maior = index 222): `deal-card.tsx`, `kanban-column.tsx` (+LostColumn), `lost-reason-dialog.tsx`, `use-kanban-drag.ts` (toda a lógica de drag/swipe/perdido), `use-grab-scroll.ts`, `types.ts`. **Bug latente corrigido:** `initialStages.sort()` mutava o array do pai in-place — agora ordena cópia via render-adjust pattern (sem setState em effect).
+- Import paths preservados (`index.tsx` em cada diretório); zero `any` nos dois módulos; lint zero erros (falso-positivo do `provided.innerRef` do @hello-pangea/dnd suprimido com justificativa).
 
-**Critério de pronto:** arquivos <400 linhas; pipeline funcional (drag, edição, criação).
+**Critério verificado:** todos os arquivos <400 linhas; tsc 0 erros; 656 testes verdes; pipeline (drag/edição/criação) inalterado em código — smoke test em prod recomendado.
 
 ### Sprint R7 — Camada de dados do Chat (dedupe SQL)
 `chat/page.tsx`: extrair para `lib/chat/queries.ts` uma única função parametrizada para a matriz (evolution / waba / ambos) — hoje são 6 queries raw quase idênticas. Reduz a página de 345 → ~80 linhas.
