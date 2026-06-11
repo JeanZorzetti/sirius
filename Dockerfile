@@ -23,8 +23,10 @@ RUN node_modules/.bin/prisma generate && \
     node_modules/.bin/prisma generate --schema prisma/whatsapp.prisma
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV NODE_ENV=production
-# 3072: the re-enabled TypeScript build check OOMs at 2048 on this project size
-RUN NODE_OPTIONS="--max-old-space-size=3072" node_modules/.bin/next build --webpack
+# Type gate as a dedicated step: inside `next build` tsc shares the worker heap
+# with webpack caches and OOMs even at 3072MB. Standalone it fits comfortably.
+RUN NODE_OPTIONS="--max-old-space-size=3072" node_modules/.bin/tsc --noEmit -p tsconfig.build.json
+RUN NODE_OPTIONS="--max-old-space-size=2048" node_modules/.bin/next build --webpack
 
 # ===== Runner =====
 FROM node:20-alpine AS runner

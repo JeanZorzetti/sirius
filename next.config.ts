@@ -6,9 +6,10 @@ const withNextIntl = createNextIntlPlugin('./i18n/request.ts');
 
 const nextConfig: NextConfig = {
   output: 'standalone',
-  // Build typecheck covers app code only (tests are excluded) — keeps the Docker
-  // builder's memory footprint down. Full check incl. tests: `npm run typecheck`.
-  typescript: { tsconfigPath: 'tsconfig.build.json' },
+  // Type checking runs OUTSIDE next build: as a dedicated Dockerfile step
+  // (tsc -p tsconfig.build.json) and locally via `npm run typecheck`. Inside the
+  // build it shares the worker heap with webpack and OOMs the EasyPanel builder.
+  typescript: { ignoreBuildErrors: true },
   experimental: {
     optimizePackageImports: ['lucide-react', 'framer-motion', 'date-fns', 'recharts'],
     staleTimes: { dynamic: 30, static: 180 },
