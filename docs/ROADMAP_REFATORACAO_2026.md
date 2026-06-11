@@ -46,13 +46,11 @@ O motivo de bugs chegarem em prod sem aviso. Tudo que vier depois depende disso.
 ### Sprint R1.5 — Suíte de testes verde ✅ FEITO (commit `3cb00fa`, 2026-06-10)
 Eram 98 falhas em 21 arquivos (drift: testes escritos contra planos/APIs antigos + falhas de infra de teste). Resultado: **35/35 arquivos, 656 testes verdes**. Bugs reais corrigidos no caminho: ALTER TABLE como side effect do `lib/prisma.ts`, DealFormGenerator travando submit com NaN sem erro visível, regexes de intent sem tolerar artigos, `minLeadScore` que não agia como mínimo, vitest coletando testes do zod de `mcp-server/node_modules`.
 
-### Sprint R2 — Higiene de código
-1. Remover/condicionar os 30 `console.log` (instrumentação PERF atrás de `process.env.NODE_ENV === 'development'` ou flag)
-2. Migrar `middleware.ts` → convenção `proxy` (Next 16)
-3. Remover lockfile órfão `C:\Users\jeanz\package-lock.json` (warning de workspace root) ou setar `turbopack.root`
-4. Varredura de imports não usados / código morto (eslint `--fix` + revisão)
-
-**Critério de pronto:** zero console.log incondicional em prod; build sem warnings novos.
+### Sprint R2 — Higiene de código ✅ FEITO (2026-06-11)
+1. ✅ Zero `console.log` incondicional em prod: instrumentação PERF atrás de dev-gate/`NEXT_PUBLIC_PERF_DEBUG`, rotas server migradas para `logger` (pino). **Bônus de segurança:** removido log que vazava prefixo da `RESEND_API_KEY` no forgot-password.
+2. ⚠️ Migração `middleware.ts` → `proxy` **ADIADA**: Next 16.1.1 valida a convenção mas o build Turbopack DESCARTA silenciosamente o proxy.ts (middleware-manifest vazio = `/dashboard` desprotegido — provado A/B local). Reavaliar no próximo upgrade do Next. Warning de deprecação é cosmético.
+3. ✅ `turbopack.root` fixado no next.config (lockfile órfão do HOME não é mais inferido como root; não deletado pois `C:\Users\jeanz\package.json` tem deps possivelmente em uso).
+4. ✅ eslint `--fix` aplicado (10 fixes); zero `no-unused-vars`. Restam 1.272 `no-explicit-any` → escopo R3/R4.
 
 ### Sprint R3 — Tipos de domínio do Pipeline
 Criar `lib/types/pipeline.ts` com `Pipeline`, `PipelineStage`, `Deal`, `DealContact` (derivados do Prisma via `Prisma.DealGetPayload<>`) e adotar em:

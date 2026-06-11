@@ -101,7 +101,7 @@ export async function POST(req: NextRequest) {
 
         // 5. Build prompt based on script type & context
         let prompt = '';
-        let additionalData: any = {};
+        const additionalData: any = {};
 
         switch (type) {
             case 'cold_call':

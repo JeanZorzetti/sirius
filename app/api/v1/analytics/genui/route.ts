@@ -176,7 +176,7 @@ export async function GET(request: NextRequest) {
         const start = startDate ? new Date(startDate) : undefined
         const end = endDate ? new Date(endDate) : undefined
 
-        let analytics = await getRealAnalytics(user.organizationId, start, end)
+        const analytics = await getRealAnalytics(user.organizationId, start, end)
 
         // Filter by component if specified
         if (component) {

@@ -6,6 +6,9 @@ import { maybeRefreshSession } from '@/lib/auth'
 
 const intlMiddleware = createMiddleware(routing)
 
+// NOTE: keep the `middleware` convention for now. Next 16.1.1 deprecates it in
+// favor of `proxy`, but its Turbopack build silently DROPS a proxy.ts entry
+// (empty middleware-manifest = unprotected routes). Revisit on the next Next upgrade.
 export async function middleware(request: NextRequest) {
     const pathname = request.nextUrl.pathname
 

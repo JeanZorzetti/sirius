@@ -105,6 +105,7 @@ export function ContactsDataTableClient({ data, orgUsers = [], customSegments: i
   renderCountRef.current++
 
   useEffect(() => {
+    if (process.env.NODE_ENV !== 'development') return
     const elapsed = performance.now() - firstRenderTimeRef.current
     console.log(
       `%c[PERF-CLIENT] ContactsDataTableClient hydrated`,
@@ -116,6 +117,7 @@ export function ContactsDataTableClient({ data, orgUsers = [], customSegments: i
   }, [])
 
   useEffect(() => {
+    if (process.env.NODE_ENV !== 'development') return
     if (renderCountRef.current > 1) {
       console.log(
         `%c[PERF-CLIENT] ContactsDataTableClient re-rendered`,
@@ -184,10 +186,7 @@ export function ContactsDataTableClient({ data, orgUsers = [], customSegments: i
   const handleDelete = useCallback((c: EnrichedContact) => setDeleteTarget(c), [])
 
   const columns = useMemo(() => {
-    const t0 = performance.now()
-    const cols = getColumns({ onOpenProfile: handleOpenProfile, onEdit: handleEdit, onDelete: handleDelete, t: (key: string) => t(key as Parameters<typeof t>[0]) })
-    console.log(`%c[PERF-CLIENT] getColumns()`, 'color: #6366f1', `${(performance.now() - t0).toFixed(1)}ms`)
-    return cols
+    return getColumns({ onOpenProfile: handleOpenProfile, onEdit: handleEdit, onDelete: handleDelete, t: (key: string) => t(key as Parameters<typeof t>[0]) })
   }, [handleOpenProfile, handleEdit, handleDelete])
 
   async function confirmDelete() {

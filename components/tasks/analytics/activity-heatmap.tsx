@@ -47,7 +47,7 @@ export function ActivityHeatmap({ data }: Props) {
     startDate.setDate(startDate.getDate() - 52 * 7 - today.getDay())
 
     const weeks: Array<Array<{ date: string; count: number; isFuture: boolean }>> = []
-    let monthLabels: Array<{ label: string; col: number }> = []
+    const monthLabels: Array<{ label: string; col: number }> = []
     let lastMonth = -1
 
     for (let w = 0; w < 53; w++) {

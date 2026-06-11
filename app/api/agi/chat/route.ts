@@ -106,7 +106,7 @@ export async function POST(req: NextRequest) {
         }
 
         // 5. Load context data if provided
-        let enhancedContext: Record<string, any> = {};
+        const enhancedContext: Record<string, any> = {};
 
         if (context?.dealId) {
             const deal = await prisma.deal.findFirst({

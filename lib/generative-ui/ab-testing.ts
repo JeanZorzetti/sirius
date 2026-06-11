@@ -61,8 +61,8 @@ function murmur3(key: string, seed = 0): number {
     const remainder = key.length & 3 // key.length % 4
     const bytes = key.length - remainder
     let h1 = seed
-    let c1 = 0xcc9e2d51
-    let c2 = 0x1b873593
+    const c1 = 0xcc9e2d51
+    const c2 = 0x1b873593
     let i = 0
 
     while (i < bytes) {

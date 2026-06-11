@@ -17,11 +17,16 @@ interface PerfMonitorProps {
  * Open DevTools → Console to see [PERF-CLIENT] entries.
  * Run window.__perfReport() in console for a summary.
  */
+// Instrumentation is dev-only; NEXT_PUBLIC_PERF_DEBUG=1 re-enables it in prod
+const PERF_ENABLED =
+  process.env.NODE_ENV === 'development' || process.env.NEXT_PUBLIC_PERF_DEBUG === '1'
+
 export function PerfMonitor({ pageLabel, rowCount }: PerfMonitorProps) {
   const mountStartRef = useRef<number>(performance.now())
   const longTasksRef = useRef<Array<{ duration: number; startTime: number; name: string }>>([])
 
   useEffect(() => {
+    if (!PERF_ENABLED) return
     const mountedAt = performance.now()
     const mountDuration = mountedAt - mountStartRef.current
 

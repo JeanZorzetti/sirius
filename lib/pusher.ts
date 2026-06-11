@@ -1,4 +1,5 @@
 import Pusher from 'pusher'
+import logger from '@/lib/logger'
 
 let _pusher: Pusher | null = null
 
@@ -31,17 +32,15 @@ export async function triggerEvent(
   const channel = orgChannel(organizationId)
   const hasConfig = !!(process.env.PUSHER_APP_ID && process.env.PUSHER_KEY && process.env.PUSHER_SECRET)
 
-  console.log(`[PUSHER] Triggering ${event} on ${channel} (configured: ${hasConfig})`)
-
   if (!hasConfig) {
-    console.warn('[PUSHER] Missing env vars — skipping trigger')
+    logger.warn({ event, channel }, '[PUSHER] Missing env vars - skipping trigger')
     return
   }
 
   try {
     await getPusher().trigger(channel, event, data)
-    console.log(`[PUSHER] ✅ Event ${event} triggered successfully`)
+    logger.debug({ event, channel }, '[PUSHER] Event triggered')
   } catch (error) {
-    console.error('[PUSHER] ❌ Failed to trigger event:', event, error)
+    logger.error({ event, channel, error }, '[PUSHER] Failed to trigger event')
   }
 }

@@ -65,6 +65,7 @@ export function DataTable<TData extends { id: string }, TValue>({
 
   const tableInitRef = useRef(performance.now())
   useEffect(() => {
+    if (process.env.NODE_ENV !== 'development') return
     console.log(
       `%c[PERF-CLIENT] DataTable mounted`,
       'color: #4f46e5; font-weight: bold',

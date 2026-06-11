@@ -11,8 +11,8 @@ export function PWARegister() {
     ) {
       navigator.serviceWorker
         .register('/sw.js')
-        .then((registration) => {
-          console.log('[PWA] Service Worker registered:', registration)
+        .then(() => {
+          // registered — silencioso em prod
         })
         .catch((error) => {
           console.error('[PWA] Service Worker registration failed:', error)

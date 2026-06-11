@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import logger from '@/lib/logger'
 import { prisma } from '@/lib/prisma'
 import { Resend } from 'resend'
 import crypto from 'crypto'
@@ -45,10 +46,9 @@ export async function POST(request: NextRequest) {
     const resetUrl = `${baseUrl}/reset-password?token=${token}`
 
     const apiKey = process.env.RESEND_API_KEY
-    console.log('[forgot-password] RESEND_API_KEY set:', !!apiKey, '| key prefix:', apiKey?.slice(0, 8))
 
     if (!apiKey) {
-      console.error('[forgot-password] RESEND_API_KEY is not set — email not sent')
+      logger.error('[forgot-password] RESEND_API_KEY is not set - email not sent')
       return NextResponse.json({ error: 'Configuracao de email ausente.' }, { status: 500 })
     }
 
@@ -93,14 +93,14 @@ export async function POST(request: NextRequest) {
     })
 
     if (resendError) {
-      console.error('[forgot-password] Resend error:', JSON.stringify(resendError))
+      logger.error({ resendError }, '[forgot-password] Resend error')
       return NextResponse.json({ error: 'Falha ao enviar email. Tente novamente.' }, { status: 500 })
     }
 
-    console.log('[forgot-password] Email sent successfully. messageId:', data?.id)
+    logger.info({ messageId: data?.id }, '[forgot-password] Email sent')
     return NextResponse.json({ success: true })
   } catch (error) {
-    console.error('[forgot-password] Unexpected error:', error)
+    logger.error({ error }, '[forgot-password] Unexpected error')
     return await apiError(ERR.FORGOT_PASSWORD, 500)
   }
 }

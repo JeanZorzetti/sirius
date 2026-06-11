@@ -264,7 +264,7 @@ async function syncAction(action: QueuedAction): Promise<{ success: boolean; err
   try {
     let endpoint: string
     let method = 'POST'
-    let body = action.data
+    const body = action.data
 
     switch (action.type) {
       case 'CREATE_DEAL':

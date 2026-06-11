@@ -10,6 +10,11 @@
 
 const isServer = typeof window === 'undefined'
 
+// Instrumentation is dev-only by default; set NEXT_PUBLIC_PERF_DEBUG=1 to
+// re-enable in production when investigating a perf regression.
+const PERF_ENABLED =
+  process.env.NODE_ENV === 'development' || process.env.NEXT_PUBLIC_PERF_DEBUG === '1'
+
 declare global {
   interface Window {
     __perfMarks?: Array<{ label: string; duration: number; timestamp: number }>
@@ -34,6 +39,8 @@ export class PerfTimer {
   end(): number {
     const total = performance.now() - this.start
     this.mark('end')
+
+    if (!PERF_ENABLED) return total
 
     const prefix = isServer ? '[PERF-SSR]' : '[PERF]'
     const rows = this.marks.map((m, i) => ({

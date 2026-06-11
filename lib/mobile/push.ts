@@ -219,7 +219,9 @@ export async function registerPushNotifications(): Promise<void> {
 
       PushNotifications.addListener('pushNotificationReceived', (notification) => {
         // Foreground delivery — poderia exibir um toast in-app aqui
-        console.log('[push] received in foreground:', notification.title)
+        if (process.env.NODE_ENV === 'development') {
+          console.log('[push] received in foreground:', notification.title)
+        }
       })
 
       PushNotifications.addListener('pushNotificationActionPerformed', (action) => {

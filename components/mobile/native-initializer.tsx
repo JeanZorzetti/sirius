@@ -77,7 +77,7 @@ export function NativeInitializer() {
         try {
           const { syncOfflineQueue } = await import('@/lib/mobile/offline')
           const { synced, failed } = await syncOfflineQueue()
-          if (synced > 0) {
+          if (synced > 0 && process.env.NODE_ENV === 'development') {
             console.log(`[Offline sync] ${synced} synced${failed > 0 ? `, ${failed} failed` : ''}`)
           }
         } catch {}

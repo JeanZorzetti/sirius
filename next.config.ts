@@ -6,6 +6,9 @@ const withNextIntl = createNextIntlPlugin('./i18n/request.ts');
 
 const nextConfig: NextConfig = {
   output: 'standalone',
+  // Pin the workspace root — a stray package-lock.json in the user home dir
+  // makes Next infer the wrong root (build warning)
+  turbopack: { root: __dirname },
   // Type checking runs OUTSIDE next build: as a dedicated Dockerfile step
   // (tsc -p tsconfig.build.json) and locally via `npm run typecheck`. Inside the
   // build it shares the worker heap with webpack and OOMs the EasyPanel builder.

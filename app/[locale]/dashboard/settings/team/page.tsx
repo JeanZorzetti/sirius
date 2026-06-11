@@ -75,7 +75,7 @@ export default async function TeamSettingsPage() {
     ])
 
     // Fetch canViewDealClosings safely — column may not exist yet in DB
-    let closingsMap: Record<string, boolean> = {}
+    const closingsMap: Record<string, boolean> = {}
     try {
         const rows = await prisma.$queryRaw<{ id: string; canViewDealClosings: boolean }[]>`
             SELECT id, "canViewDealClosings" FROM "User"

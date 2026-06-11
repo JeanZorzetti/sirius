@@ -151,7 +151,6 @@ export function useNotifications(): UseNotificationsReturn {
     eventSourceRef.current = eventSource;
 
     eventSource.onopen = () => {
-      console.log("SSE connection established");
       setIsConnected(true);
     };
 
@@ -160,7 +159,7 @@ export function useNotifications(): UseNotificationsReturn {
         const data = JSON.parse(event.data);
 
         if (data.type === "connected") {
-          console.log("Connected to notification stream");
+          // handshake — nada a fazer
         } else if (data.type === "notifications" && data.data) {
           // Merge new notifications with existing ones
           setNotifications((prev) => {

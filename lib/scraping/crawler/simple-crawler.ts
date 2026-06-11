@@ -112,7 +112,7 @@ export async function searchGoogle(params: CrawlParams): Promise<ScrapedLead[]> 
       const $el = $(elem)
       
       // Tentar múltiplas formas de extrair título
-      let title = $el.find('h3').first().text().trim() ||
+      const title = $el.find('h3').first().text().trim() ||
                   $el.find('a h3').first().text().trim() ||
                   $el.find('[role="heading"]').first().text().trim()
       

@@ -8,6 +8,7 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server'
+import logger from '@/lib/logger'
 import { getToken } from 'next-auth/jwt'
 import { prisma } from '@/lib/prisma'
 import { encrypt } from '@/lib/auth'
@@ -25,7 +26,7 @@ function getBaseUrl(req: NextRequest): string {
 
 export async function GET(req: NextRequest) {
   const baseUrl = getBaseUrl(req)
-  console.log('[google-session] Bridge route hit, baseUrl:', baseUrl)
+  logger.info({ baseUrl }, '[google-session] Bridge route hit')
 
   try {
     const token = await getToken({
@@ -33,7 +34,7 @@ export async function GET(req: NextRequest) {
       secret: process.env.NEXTAUTH_SECRET || 'supersecret',
     })
 
-    console.log('[google-session] Token:', token ? { email: token.email, name: token.name } : null)
+    logger.info({ email: token?.email ?? null }, '[google-session] Token resolved')
 
     if (!token?.email) {
       return NextResponse.redirect(new URL('/login?error=oauth', baseUrl))
@@ -128,7 +129,7 @@ export async function GET(req: NextRequest) {
           }
         }
       } catch (e) {
-        console.error('[google-session] enrollAsLead error:', e)
+        logger.error({ error: e }, '[google-session] enrollAsLead error')
       }
     }
 
@@ -147,7 +148,7 @@ export async function GET(req: NextRequest) {
     const needsCompletion = isNewUser || !user.phone || !user.jobTitle
 
     const redirectPath = needsCompletion ? '/complete-profile' : '/dashboard'
-    console.log('[google-session] OK — user:', user.email, '→', redirectPath)
+    logger.info({ email: user.email, redirectPath }, '[google-session] OK')
 
     const response = NextResponse.redirect(new URL(redirectPath, baseUrl))
     response.cookies.set('session', sessionToken, {
@@ -159,7 +160,7 @@ export async function GET(req: NextRequest) {
 
     return response
   } catch (error) {
-    console.error('[google-session] Error:', error)
+    logger.error({ error }, '[google-session] Error')
     return NextResponse.redirect(new URL('/login?error=session', baseUrl))
   }
 }
