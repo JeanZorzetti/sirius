@@ -11,34 +11,15 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { cn } from '@/lib/utils'
-
-interface Stage {
-  id: string
-  name: string
-  color?: string | null
-  deals: Array<{
-    id: string
-    title: string
-    value?: number | null
-    closeDate?: string | null
-    dueDate?: string | null
-    contact?: { name: string; company?: string | null } | null
-  }>
-}
-
-interface Pipeline {
-  id: string
-  name: string
-  isDefault: boolean
-}
+import type { PipelineDeal, PipelineStageWithDeals } from '@/lib/types/pipeline'
 
 interface MobilePipelineListProps {
-  stages: Stage[]
-  pipelines?: Pipeline[]
+  stages: PipelineStageWithDeals[]
+  pipelines?: Array<{ id: string; name: string; isDefault: boolean }>
   selectedPipelineId?: string
   onPipelineChange?: (id: string) => void
   onCreateDeal?: () => void
-  onDealClick?: (deal: Stage['deals'][number]) => void
+  onDealClick?: (deal: PipelineDeal) => void
 }
 
 export function MobilePipelineList({

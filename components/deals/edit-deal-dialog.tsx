@@ -1,6 +1,7 @@
 ﻿'use client'
 
 import { useTranslations } from 'next-intl'
+import type { PipelineDeal } from '@/lib/types/pipeline'
 
 import { useState, useEffect, useTransition, useRef, useMemo } from 'react'
 import { useRouter } from 'next/navigation'
@@ -51,7 +52,7 @@ import { Wand2 } from 'lucide-react'
 type SimpleDeal = {
     id: string
     title: string
-    value: any
+    value: number | null
     stageId: string
     status?: string | null
     contactId?: string | null
@@ -65,7 +66,7 @@ interface EditDealDialogProps {
     onOpenChange: (open: boolean) => void
     stages: { id: string, name: string }[]
     contacts: { id: string, name: string, phone?: string | null, email?: string | null, company?: string | null }[]
-    onOptimisticUpdate?: (dealId: string, updates: any) => void
+    onOptimisticUpdate?: (dealId: string, updates: Partial<PipelineDeal>) => void
     onOptimisticDelete?: (dealId: string) => void
     onRollback?: (tempId: string) => void
     onSuccess?: () => void

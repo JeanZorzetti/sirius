@@ -11,6 +11,12 @@ import { toast } from 'sonner'
 import { Layout, Loader2, Plus } from 'lucide-react'
 import { MobilePipelineList } from './mobile-pipeline-list'
 import { useAppBar } from '@/components/mobile/app-bar-context'
+import type {
+  PipelineContact,
+  PipelineDeal,
+  PipelineStageWithDeals,
+  PipelineSummary,
+} from '@/lib/types/pipeline'
 
 // Dynamic import do KanbanBoard (carrega apenas quando necessário)
 const KanbanBoard = dynamic(
@@ -26,9 +32,9 @@ const KanbanBoard = dynamic(
 )
 
 interface DashboardTabsProps {
-  pipelines: any[]
-  stages: any[]
-  contacts: any[]
+  pipelines: PipelineSummary[]
+  stages: PipelineStageWithDeals[]
+  contacts: PipelineContact[]
   userId: string
   userName: string
   organizationId: string
@@ -52,8 +58,8 @@ export function DashboardTabs({
   // Pipeline selector state — persist via URL ?pipeline=ID
   const [selectedPipelineId, setSelectedPipelineId] = useState<string>(() => {
     const fromUrl = searchParams.get('pipeline')
-    if (fromUrl && pipelines.some((p: any) => p.id === fromUrl)) return fromUrl
-    const defaultPipeline = pipelines.find((p: any) => p.isDefault)
+    if (fromUrl && pipelines.some((p) => p.id === fromUrl)) return fromUrl
+    const defaultPipeline = pipelines.find((p) => p.isDefault)
     return defaultPipeline ? defaultPipeline.id : (pipelines[0]?.id || '')
   })
 
@@ -68,7 +74,7 @@ export function DashboardTabs({
   // Filter stages by selected pipeline
   const filteredStages = useMemo(() => {
     if (!selectedPipelineId) return stages
-    return stages.filter((stage: any) => stage.pipelineId === selectedPipelineId)
+    return stages.filter((stage) => stage.pipelineId === selectedPipelineId)
   }, [stages, selectedPipelineId])
 
   const syncWithServer = useCallback(() => {
@@ -77,21 +83,21 @@ export function DashboardTabs({
 
   const { setConfig } = useAppBar()
 
-  const totalDeals = filteredStages.reduce((sum: number, s: any) => sum + (s.deals?.length ?? 0), 0)
+  const totalDeals = filteredStages.reduce((sum, s) => sum + (s.deals?.length ?? 0), 0)
   const totalValue = filteredStages.reduce(
-    (sum: number, s: any) => sum + (s.deals ?? []).reduce((sv: number, d: any) => sv + (d.value ?? 0), 0),
+    (sum, s) => sum + (s.deals ?? []).reduce((sv, d) => sv + (d.value ?? 0), 0),
     0
   )
 
   const [createDealOpen, setCreateDealOpen] = useState(false)
-  const [editingDeal, setEditingDeal] = useState<any | null>(null)
+  const [editingDeal, setEditingDeal] = useState<PipelineDeal | null>(null)
 
   // Deep link da busca global: /dashboard?deal=<id> abre o modal do deal
   useEffect(() => {
     const dealId = searchParams.get('deal')
     if (!dealId) return
     for (const stage of stages) {
-      const deal = (stage.deals ?? []).find((d: any) => d.id === dealId)
+      const deal = (stage.deals ?? []).find((d) => d.id === dealId)
       if (deal) {
         if (stage.pipelineId && stage.pipelineId !== selectedPipelineId) {
           setSelectedPipelineId(stage.pipelineId)
@@ -134,7 +140,7 @@ export function DashboardTabs({
       {/* Mobile layout: stage stories + vertical list */}
       <div className="lg:hidden">
         <MobilePipelineList
-          stages={filteredStages as any}
+          stages={filteredStages}
           pipelines={pipelines}
           selectedPipelineId={selectedPipelineId}
           onPipelineChange={handlePipelineChange}
@@ -175,7 +181,7 @@ export function DashboardTabs({
 
           <TabsContent value="pipeline" className="flex-1 m-0 data-[state=inactive]:hidden">
             <KanbanBoard
-              stages={filteredStages as any}
+              stages={filteredStages}
               contacts={contacts}
               pipelineId={selectedPipelineId}
               currentUserId={userId}

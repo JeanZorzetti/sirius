@@ -52,12 +52,8 @@ Eram 98 falhas em 21 arquivos (drift: testes escritos contra planos/APIs antigos
 3. ✅ `turbopack.root` fixado no next.config (lockfile órfão do HOME não é mais inferido como root; não deletado pois `C:\Users\jeanz\package.json` tem deps possivelmente em uso).
 4. ✅ eslint `--fix` aplicado (10 fixes); zero `no-unused-vars`. Restam 1.272 `no-explicit-any` → escopo R3/R4.
 
-### Sprint R3 — Tipos de domínio do Pipeline
-Criar `lib/types/pipeline.ts` com `Pipeline`, `PipelineStage`, `Deal`, `DealContact` (derivados do Prisma via `Prisma.DealGetPayload<>`) e adotar em:
-- `dashboard-tabs.tsx` (props deixam de ser `any[]`)
-- `kanban-board.tsx`, `mobile-pipeline-list.tsx`, `edit-deal-dialog.tsx`, `create-deal-dialog.tsx`
-
-**Critério de pronto:** zero `any` nos props desses 5 componentes; typecheck verde.
+### Sprint R3 — Tipos de domínio do Pipeline ✅ FEITO (2026-06-11)
+Criado `lib/types/pipeline.ts` (`PipelineDeal`, `PipelineStageWithDeals`, `PipelineSummary`, `PipelineContact`, `OptimisticDeal` — enums ancorados no Prisma; shape espelha a serialização do `DashboardTabsWrapper`: Decimal→number, Date→ISO). Adotado em 6 componentes: `dashboard-tabs` (props `any[]` eliminados, estado `editingDeal` tipado), `mobile-pipeline-list`, `kanban-board` (`Deal.value: any`→`number|null`, callback otimista `Partial<PipelineDeal>`), `edit-deal-dialog` (`SimpleDeal.value` idem), `create-deal-dialog` (`onOptimisticAdd: OptimisticDeal` + fix de `undefined` em contact), `dashboard-with-pipeline-selector`. Zero `any` nos props de todos; restam anys internos do edit-deal-dialog (`fullDeal`, notes/activities) → tratar na decomposição do R6.
 
 ### Sprint R4 — Tipagem das rotas críticas + remoção do whatsmeow
 - **whatsmeow está MORTO** (foi só um teste, confirmado 2026-06-10): em vez de tipar, REMOVER `app/api/webhooks/whatsmeow/`, `lib/integrations/whatsmeow-client.ts` e desacoplar `chat/page.tsx` (que ainda importa o client e o `prismaWa`). Mapear dependências antes de deletar.

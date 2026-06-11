@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useMemo, useCallback } from 'react'
+import type { OptimisticDeal, PipelineDeal } from '@/lib/types/pipeline'
 import { useRouter } from 'next/navigation'
 import { KanbanBoard } from '@/components/kanban-board'
 import { PipelineSelector } from '@/components/pipelines/pipeline-selector'
@@ -25,7 +26,7 @@ type Stage = {
   name: string
   order: number
   pipelineId: string
-  deals: any[]
+  deals: Array<PipelineDeal | OptimisticDeal>
   createdAt: string
   updatedAt: string
 }
@@ -111,7 +112,7 @@ export function DashboardWithPipelineSelector({
   }
 
   // Optimistic UI callbacks
-  const addDealOptimistic = useCallback((tempDeal: any) => {
+  const addDealOptimistic = useCallback((tempDeal: OptimisticDeal) => {
     setLocalStages(prevStages =>
       prevStages.map(stage =>
         stage.id === tempDeal.stageId
@@ -121,7 +122,7 @@ export function DashboardWithPipelineSelector({
     )
   }, [])
 
-  const updateDealOptimistic = useCallback((dealId: string, updates: any) => {
+  const updateDealOptimistic = useCallback((dealId: string, updates: Partial<PipelineDeal>) => {
     setLocalStages(prevStages =>
       prevStages.map(stage => ({
         ...stage,

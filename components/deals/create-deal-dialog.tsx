@@ -1,6 +1,7 @@
 ﻿'use client'
 
 import { useTranslations } from 'next-intl'
+import type { OptimisticDeal } from '@/lib/types/pipeline'
 
 import { useState } from 'react'
 import { Plus, MessageCircle, UserPlus, ChevronsUpDown, Check } from 'lucide-react'
@@ -61,7 +62,7 @@ export function CreateDealDialog({
     contacts: Contact[],
     dealCount?: number,
     isPro?: boolean,
-    onOptimisticAdd?: (deal: any) => void,
+    onOptimisticAdd?: (deal: OptimisticDeal) => void,
     onRollback?: (tempId: string) => void,
     onSuccess?: () => void,
     open?: boolean,
@@ -143,10 +144,10 @@ export function CreateDealDialog({
             value: value ? parseFloat(value) : null,
             stageId,
             contactId: contactId || null,
-            contact: contactId ? contacts.find(c => c.id === contactId) : null,
+            contact: contactId ? (contacts.find(c => c.id === contactId) ?? null) : null,
             createdAt: new Date().toISOString(),
             updatedAt: new Date().toISOString(),
-            isOptimistic: true // Flag to identify temporary deals
+            isOptimistic: true as const, // Flag to identify temporary deals
         }
 
         // Add deal optimistically

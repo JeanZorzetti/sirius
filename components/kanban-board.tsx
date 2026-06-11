@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect, useRef, useMemo } from 'react'
+import type { PipelineDeal } from '@/lib/types/pipeline'
 import { useRouter } from 'next/navigation'
 import { useTranslations } from 'next-intl'
 import { createPortal } from 'react-dom'
@@ -43,7 +44,7 @@ import { ConfirmDialog } from "@/components/ui/confirm-dialog"
 type Deal = {
   id: string
   title: string
-  value: any
+  value: number | null
   stageId: string
   status?: string
   contact?: {
@@ -88,7 +89,7 @@ type KanbanBoardProps = {
   pipelineId?: string
   currentUserId?: string
   canViewClosings?: boolean
-  onOptimisticUpdate?: (dealId: string, updates: any) => void
+  onOptimisticUpdate?: (dealId: string, updates: Partial<PipelineDeal>) => void
   onOptimisticDelete?: (dealId: string) => void
   onRollback?: (tempId: string) => void
   onSuccess?: () => void
