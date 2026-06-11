@@ -32,6 +32,9 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './'),
+      // Generated WA Prisma client — vite doesn't resolve the bare
+      // '.prisma/client-wa' specifier that Node/webpack handle natively
+      '.prisma/client-wa': path.resolve(__dirname, 'node_modules/.prisma/client-wa'),
     },
   },
 })

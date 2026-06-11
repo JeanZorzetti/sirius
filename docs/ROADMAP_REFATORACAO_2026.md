@@ -76,10 +76,13 @@ Criado `lib/types/pipeline.ts` (`PipelineDeal`, `PipelineStageWithDeals`, `Pipel
 
 **Critério verificado:** todos os arquivos <400 linhas; tsc 0 erros; 656 testes verdes; pipeline (drag/edição/criação) inalterado em código — smoke test em prod recomendado.
 
-### Sprint R7 — Camada de dados do Chat (dedupe SQL)
-`chat/page.tsx`: extrair para `lib/chat/queries.ts` uma única função parametrizada para a matriz (evolution / waba / ambos) — hoje são 6 queries raw quase idênticas. Reduz a página de 345 → ~80 linhas.
+### Sprint R7 — Camada de dados do Chat (dedupe SQL) ✅ FEITO (2026-06-11)
+- **`lib/chat/queries.ts` (160 linhas)**: a matriz evolution×waba virou UM fragmento parametrizado — `connectionScopeSql` (`Prisma.sql` composto dentro de `$queryRaw`) + `connectionScopeWhere` (equivalente p/ `findMany`). As 6 queries raw viraram 2 funções (`getContactIdsWithMessages` + `getInboundCounts(onlyUnread)`); pipeline completo em `getChatConversations` (contatos CRM ∩ mensagens WA + última msg + counts, agora em `Promise.all`). Merge puro exportado (`mergeContactsWithWaData`) p/ teste.
+- **`chat/page.tsx`: 345 → 99 linhas**, zero `any` (era 6 anys), tipos fluem do client WA. CTA de upgrade extraído p/ `components/chat/chat-upgrade-cta.tsx`.
+- **13 testes unitários** em `lib/chat/__tests__/queries.test.ts` (matriz SQL ×3, where ×3, merge/sort, pipeline com prisma mockado). Suíte total: 669.
+- **Gotcha vitest:** vite não resolve o specifier `.prisma/client-wa` (client gerado com output custom) — alias em `vitest.config.ts` → `node_modules/.prisma/client-wa`. ⚠️ NÃO importar `Prisma.sql` do `@prisma/client` principal p/ usar com `prismaWa`: o client WA embute runtime próprio e o `instanceof Sql` falharia (fragmento viraria parâmetro).
 
-**Critério de pronto:** 1 query builder testado (unit), página fina, chat funcional.
+**Critério verificado:** query builder com unit tests, página fina (99 linhas), tsc 0 erros, 669 testes verdes.
 
 ### Sprint R8 — Performance de dados
 1. `contacts/page.tsx`: paginação server-side (ou ao menos `take` + cursor) para contatos e activities — hoje carrega a org inteira a cada acesso
