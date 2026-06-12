@@ -129,8 +129,6 @@ export default async function AnalyticsPage({
 
   // Ticket Médio: média dos valores reais recebidos (DealClosing) — calculado após kpiClosings
 
-  const dealCount = deals.length;
-
   // Monthly analysis — dynamic range.
   // When a date filter is active, propagate from/to as default for the chart range.
   const defaultMFrom = from ? from.slice(0, 7) : '2025-01'
@@ -373,7 +371,7 @@ export default async function AnalyticsPage({
             {to ? ` até ${new Date(to).toLocaleDateString('pt-BR')}` : ''}
             {' — '}
           </>}
-          <strong>{dealCount}</strong> negócio(s) não arquivado(s).
+          <strong>{kpiClosings.length}</strong> negócio(s) fechado(s){isFiltered ? ' no período' : ''}.
         </p>
       )}
 
