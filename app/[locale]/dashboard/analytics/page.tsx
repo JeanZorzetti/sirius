@@ -288,6 +288,9 @@ export default async function AnalyticsPage({
     .slice(0, 15);
 
   // Client chart — grouped by contactId, value = real received (DealClosing), count = WON deals
+  // Filter/sum by the closing date (DealClosing.date), NOT Deal.closeDate — the closeDate field
+  // is almost always null since users register revenue via "Fechamentos" (closings) instead.
+  // This keeps this chart consistent with the "Receita Realizada" KPI and the monthly green bar.
   const clientDeals = await prisma.deal.findMany({
     where: {
       organizationId: user.organizationId,
@@ -297,13 +300,13 @@ export default async function AnalyticsPage({
       ...valueSearchFilter,
       ...contactSearchFilter,
       contactId: { not: null },
-      ...(isFiltered ? { closeDate: closeDateFilter } : {}),
+      ...(isFiltered ? { closings: { some: { date: closeDateFilter } } } : {}),
     },
     select: {
       id: true,
       contactId: true,
       contact: { select: { name: true, company: true } },
-      closings: { select: { value: true } },
+      closings: { select: { value: true, date: true } },
     },
   });
 
@@ -313,7 +316,16 @@ export default async function AnalyticsPage({
     if (!clientMap[id]) {
       clientMap[id] = { id, name: deal.contact?.name ?? 'Sem nome', value: 0, count: 0, company: deal.contact?.company ?? undefined };
     }
-    const realized = deal.closings.reduce((s, c) => s + Number(c.value), 0);
+    // When a date filter is active, only sum closings within the period — a deal may have
+    // closings in multiple months and only the in-range ones should count.
+    const realized = deal.closings.reduce((s, c) => {
+      if (isFiltered) {
+        const d = new Date(c.date)
+        if (closeDateFilter.gte && d < closeDateFilter.gte) return s
+        if (closeDateFilter.lte && d > closeDateFilter.lte) return s
+      }
+      return s + Number(c.value)
+    }, 0);
     clientMap[id].value += realized;
     clientMap[id].count += 1;
   }
