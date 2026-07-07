@@ -23,6 +23,10 @@ model Organization {
   mercadoPagoCustomerId     String? // Customer ID no Mercado Pago
   mercadoPagoSubscriptionId String? // Subscription ID (assinatura)
   mercadoPagoPreferenceId   String? // Preference ID para checkout
+
+  // Stripe (provedor atual — MP mantido só para assinaturas legadas)
+  stripeCustomerId          String? // Customer ID na Stripe
+  stripeSubscriptionId      String? // Subscription ID na Stripe
   tier                      SubscriptionTier @default(FREE) // FREE, STARTER, PRO, BUSINESS
   plan                      String           @default("FREE") // Deprecated: use tier instead
 

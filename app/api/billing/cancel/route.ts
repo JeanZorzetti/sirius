@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { cancelSubscription } from '@/lib/mercadopago'
+import { cancelStripeSubscription } from '@/lib/stripe'
 import { SubscriptionTier } from '@prisma/client'
 import logger from '@/lib/logger'
 import { apiError } from '@/lib/api-error'
@@ -22,6 +23,7 @@ export async function POST(req: NextRequest) {
           tier: true,
           isFounder: true,
           mercadoPagoSubscriptionId: true,
+          stripeSubscriptionId: true,
           billingPeriod: true,
         },
       }},
@@ -50,7 +52,15 @@ export async function POST(req: NextRequest) {
 
     const previousTier = org.tier
 
-    // Cancelar no Mercado Pago se houver assinatura recorrente
+    // Cancelar no provedor se houver assinatura recorrente (Stripe atual, MP legado)
+    if (org.stripeSubscriptionId) {
+      try {
+        await cancelStripeSubscription(org.stripeSubscriptionId)
+      } catch (err) {
+        // Logar mas não bloquear — webhook também processa o cancelamento
+        logger.error({ err, orgId: org.id }, 'Failed to cancel Stripe subscription — proceeding with local downgrade')
+      }
+    }
     if (org.mercadoPagoSubscriptionId) {
       try {
         await cancelSubscription(org.mercadoPagoSubscriptionId)
@@ -69,6 +79,7 @@ export async function POST(req: NextRequest) {
         plan: 'FREE',
         billingPeriod: 'MONTHLY',
         mercadoPagoSubscriptionId: null,
+        stripeSubscriptionId: null,
         agaasEnabled: false,
         agaasAgentLimit: 0,
         agaasMonthlyQuota: 0,
@@ -84,7 +95,7 @@ export async function POST(req: NextRequest) {
         netAmount: 0,
         currency: 'BRL',
         status: 'COMPLETED',
-        provider: 'MERCADO_PAGO',
+        provider: org.stripeSubscriptionId ? 'STRIPE' : 'MERCADO_PAGO',
         metadata: {
           reason: 'user_cancelled',
           previousTier,

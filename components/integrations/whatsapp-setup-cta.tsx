@@ -16,7 +16,7 @@ export function WhatsAppSetupCta({ variant, whatsappUrl, setupPaid }: WhatsAppSe
   async function handleCheckout() {
     setLoading(true)
     try {
-      const res = await fetch('/api/mercadopago/checkout', {
+      const res = await fetch('/api/stripe/checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ plan: 'WHATSAPP_SETUP' }),

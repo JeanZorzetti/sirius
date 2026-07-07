@@ -13,8 +13,8 @@ export function EmbeddedCheckoutModal() {
         try {
             setIsLoading(true)
 
-            // Criar preferência de checkout no Mercado Pago
-            const response = await fetch("/api/mercadopago/checkout", {
+            // Criar Checkout Session na Stripe
+            const response = await fetch("/api/stripe/checkout", {
                 method: "POST",
             })
 

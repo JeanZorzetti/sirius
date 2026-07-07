@@ -69,7 +69,7 @@ export default function PlansPage() {
     setProcessing(tier)
 
     try {
-      const res = await fetch('/api/mercadopago/checkout', {
+      const res = await fetch('/api/stripe/checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ plan: tier, billingPeriod: isAnnual ? 'ANNUAL' : 'MONTHLY' }),

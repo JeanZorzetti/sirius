@@ -1,14 +1,29 @@
 /**
- * Webhook: Mercado Pago
- * 
- * Recebe notificações de pagamento e atualiza assinaturas
+ * Webhook: Mercado Pago (LEGADO — novos checkouts vão via Stripe)
+ *
+ * Recebe notificações de pagamento e atualiza assinaturas de clientes antigos.
+ * A lógica de negócio (upgrade, fundadores, créditos, referral, churn) vive em
+ * lib/billing-effects.ts, compartilhada com o webhook da Stripe.
  * Documentação: https://www.mercadopago.com.br/developers/pt/docs/your-integrations/notifications/webhooks
  */
 
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { MercadoPagoConfig, Payment } from 'mercadopago'
-import { AddonType, SubscriptionTier } from '@prisma/client'
+import { SubscriptionTier } from '@prisma/client'
+import logger from '@/lib/logger'
+import { webhookRateLimit } from '@/lib/ratelimit'
+import { createHmac } from 'crypto'
+import {
+  PaymentInfo,
+  upgradePlan,
+  upgradeToFounder,
+  processAddonPurchase,
+  renewSubscription,
+  downgradeToFree,
+  handleFailedRecurringPayment,
+  recordWhatsAppSetupPurchase,
+} from '@/lib/billing-effects'
 
 /**
  * Payment shape as returned by the MP SDK. `preapproval_id` is present in
@@ -16,41 +31,6 @@ import { AddonType, SubscriptionTier } from '@prisma/client'
  */
 type MpPayment = Awaited<ReturnType<InstanceType<typeof Payment>['get']>> & {
   preapproval_id?: string | null
-}
-import logger from '@/lib/logger'
-import { sendEmail } from '@/lib/email'
-import { PaymentConfirmationEmail } from '@/emails/templates/payment-confirmation'
-import { PaymentFailureEmail } from '@/emails/templates/payment-failure'
-import { webhookRateLimit } from '@/lib/ratelimit'
-import { createHmac } from 'crypto'
-
-const MAX_PAYMENT_ATTEMPTS = 3
-
-/**
- * AgaaS limits per tier — mirrors lib/agaas-quota.ts TIER_LIMITS
- */
-const AGAAS_TIER_LIMITS: Record<string, { enabled: boolean; agents: number; quota: number }> = {
-  FREE:     { enabled: false, agents: 0,  quota: 0 },
-  STARTER:  { enabled: true,  agents: 1,  quota: 200 },
-  PRO:      { enabled: true,  agents: 3,  quota: 1000 },
-  BUSINESS: { enabled: true,  agents: 5,  quota: 3000 },
-}
-
-function getAgaasDataForTier(tier: string) {
-  const limits = AGAAS_TIER_LIMITS[tier] || AGAAS_TIER_LIMITS.FREE
-  return {
-    agaasEnabled: limits.enabled,
-    agaasAgentLimit: limits.agents,
-    agaasMonthlyQuota: limits.quota,
-  }
-}
-
-function nextMonthDate(): Date {
-  const d = new Date()
-  d.setMonth(d.getMonth() + 1)
-  d.setDate(1)
-  d.setHours(0, 0, 0, 0)
-  return d
 }
 
 let _mp: MercadoPagoConfig | null = null
@@ -60,6 +40,20 @@ function getMp() {
 }
 
 export const dynamic = 'force-dynamic'
+
+/** Normaliza o payment do MP para o formato provider-neutral da lib de billing. */
+function mpPaymentInfo(payment: MpPayment): PaymentInfo {
+  return {
+    provider: 'MERCADO_PAGO',
+    providerPaymentId: payment.id != null ? String(payment.id) : null,
+    amount: payment.transaction_amount ?? 0,
+    feeAmount: payment.fee_details?.reduce((acc, f) => acc + (f.amount || 0), 0) || null,
+    netAmount: payment.transaction_details?.net_received_amount || null,
+    currency: payment.currency_id ?? 'BRL',
+    paymentMethod: payment.payment_method_id ?? null,
+    installments: payment.installments ?? null,
+  }
+}
 
 /**
  * Valida a assinatura do webhook do Mercado Pago.
@@ -122,18 +116,18 @@ export async function POST(req: NextRequest) {
     if (!validateWebhookSignature(req, rawBody)) {
       return NextResponse.json({ error: 'Invalid signature' }, { status: 401 })
     }
-    
+
     logger.info({ type: body.type, data: body.data }, 'MercadoPago webhook received')
 
     // Processar apenas pagamentos aprovados
     if (body.type === 'payment') {
       const paymentId = body.data.id
-      
+
       // Buscar detalhes do pagamento
       const payment = await new Payment(getMp()).get({ id: paymentId })
-      
-      logger.info({ 
-        paymentId, 
+
+      logger.info({
+        paymentId,
         status: payment.status,
         externalReference: payment.external_reference,
       }, 'Payment details')
@@ -144,7 +138,7 @@ export async function POST(req: NextRequest) {
       }
     }
 
-    // ✅ FASE 16: Processar assinaturas (recorrência)
+    // Processar assinaturas (recorrência)
     if (body.type === 'subscription_preapproval' || body.type === 'preapproval') {
       const preapprovalId = body.data?.id
       if (preapprovalId) {
@@ -171,7 +165,7 @@ export async function POST(req: NextRequest) {
 
 async function processApprovedPayment(payment: MpPayment) {
   const externalReference = payment.external_reference
-  
+
   if (!externalReference) {
     logger.warn({ paymentId: payment.id }, 'No external reference')
     return
@@ -195,359 +189,38 @@ async function processApprovedPayment(payment: MpPayment) {
     tierOrAddon = tierOrAddon.replace('_ANNUAL', '')
   }
 
+  const pay = mpPaymentInfo(payment)
+
   // Programa de Fundadores (FOUNDER_STARTER | FOUNDER_PRO | FOUNDER_BUSINESS)
   if (tierOrAddon.startsWith('FOUNDER_')) {
-    await upgradeToFounder(organizationId, tierOrAddon, payment)
+    await upgradeToFounder(organizationId, tierOrAddon, pay)
     return
   }
 
   // Verificar se é upgrade de plano
   if (Object.values(SubscriptionTier).includes(tierOrAddon as SubscriptionTier)) {
-    await upgradePlan(organizationId, tierOrAddon as SubscriptionTier, payment, isAnnual)
+    // Salvar subscriptionId se vier no pagamento (primeiro ciclo de assinatura recorrente)
+    const subscriptionIdToSave = payment.metadata?.preapproval_id
+      || payment.preapproval_id
+      || null
+
+    await upgradePlan(
+      organizationId,
+      tierOrAddon as SubscriptionTier,
+      pay,
+      isAnnual,
+      subscriptionIdToSave ? { mercadoPagoSubscriptionId: subscriptionIdToSave } : {}
+    )
   } else if (tierOrAddon === 'WHATSAPP_SETUP') {
-    await processWhatsAppSetupPurchase(organizationId, payment)
+    await recordWhatsAppSetupPurchase(organizationId, pay)
   } else {
     // É um add-on
-    await processAddonPurchase(organizationId, tierOrAddon, payment)
+    await processAddonPurchase(organizationId, tierOrAddon, pay)
   }
 }
 
 /**
- * Quando uma org paga pela primeira vez, verificar se veio via indicação.
- * - Indicado: ganha 20% de desconto nos próximos 3 meses (customPricing + customPricingExpiresAt)
- * - Indicador: acumula +15% de desconto recorrente (referralDiscount, cap 100)
- */
-async function processReferralReward(referredOrgId: string) {
-  try {
-    const referral = await prisma.referral.findFirst({
-      where: { referredOrgId, status: { in: ['PENDING', 'ACTIVE'] }, rewardGiven: false },
-      include: {
-        referrer: { include: { organization: true } },
-        referredOrg: true,
-      },
-    })
-
-    if (!referral || !referral.referredOrg) return
-
-    // Aplicar 20% de desconto ao indicado (3 meses via customPricing)
-    const basePrice = referral.referredOrg.customPricing ?? null
-    if (!basePrice) {
-      // Buscar o tier atual para calcular base price
-      const org = await prisma.organization.findUnique({
-        where: { id: referredOrgId },
-        select: { tier: true },
-      })
-      if (org && org.tier !== 'FREE') {
-        const prices: Record<string, number> = { STARTER: 67, PRO: 147, BUSINESS: 397 }
-        const discountedPrice = (prices[org.tier] || 67) * 0.80
-        await prisma.organization.update({
-          where: { id: referredOrgId },
-          data: {
-            customPricing: discountedPrice,
-            customPricingExpiresAt: new Date(Date.now() + 90 * 24 * 60 * 60 * 1000),
-          },
-        })
-      }
-    }
-
-    // Aplicar +15% ao indicador (acumulável, cap 100)
-    const referrerOrg = referral.referrer.organization
-    const newDiscount = Math.min(100, (referrerOrg.referralDiscount || 0) + 15)
-    await prisma.organization.update({
-      where: { id: referrerOrg.id },
-      data: { referralDiscount: newDiscount },
-    })
-
-    // Marcar referral como recompensado
-    await prisma.referral.update({
-      where: { id: referral.id },
-      data: {
-        status: 'REWARDED',
-        rewardGiven: true,
-        rewardedAt: new Date(),
-        discountAppliedAt: new Date(),
-      },
-    })
-
-    logger.info(
-      { referredOrgId, referrerOrgId: referrerOrg.id, newDiscount },
-      '[REFERRAL] Reward applied'
-    )
-  } catch (err) {
-    logger.error({ err, referredOrgId }, '[REFERRAL] Failed to process reward')
-  }
-}
-
-async function upgradePlan(
-  organizationId: string,
-  tier: SubscriptionTier,
-  payment: MpPayment,
-  isAnnual: boolean = false
-) {
-  logger.info({ organizationId, tier, isAnnual }, 'Upgrading plan')
-
-  // Atualizar organização (sync tier + plan + agaas + billing period)
-  const agaasData = getAgaasDataForTier(tier)
-
-  // Salvar subscriptionId se vier no pagamento (primeiro ciclo de assinatura recorrente)
-  const subscriptionIdToSave = payment.metadata?.preapproval_id
-    || payment.preapproval_id
-    || null
-
-  await prisma.organization.update({
-    where: { id: organizationId },
-    data: {
-      tier,
-      plan: tier,
-      ...agaasData,
-      agaasActionsUsed: 0,
-      agaasQuotaResetAt: nextMonthDate(),
-      billingPeriod: isAnnual ? 'ANNUAL' : 'MONTHLY',
-      billingStartDate: new Date(),
-      updatedAt: new Date(),
-      ...(subscriptionIdToSave ? { mercadoPagoSubscriptionId: subscriptionIdToSave } : {}),
-    },
-  })
-
-  // Criar registro de transação
-  await prisma.transaction.create({
-    data: {
-      organizationId,
-      type: 'PLAN_UPGRADE',
-      amount: payment.transaction_amount ?? 0,
-      feeAmount: payment.fee_details?.reduce((acc, f) => acc + (f.amount || 0), 0) || null,
-      netAmount: payment.transaction_details?.net_received_amount || null,
-      currency: payment.currency_id,
-      status: 'COMPLETED',
-      provider: 'MERCADO_PAGO',
-      providerPaymentId: payment.id?.toString() ?? null,
-      metadata: {
-        tier,
-        paymentMethod: payment.payment_method_id,
-        installments: payment.installments,
-      },
-    },
-  })
-
-  // Se for plano pago, criar/resetar créditos de scraping
-  if (tier !== SubscriptionTier.FREE) {
-    const monthlyCredits = tier === SubscriptionTier.STARTER ? 75 :
-                          tier === SubscriptionTier.PRO ? 300 : 1500
-
-    await prisma.scrapingCredit.upsert({
-      where: { organizationId },
-      create: {
-        organizationId,
-        balance: monthlyCredits,
-        monthlyQuota: monthlyCredits,
-        usedThisMonth: 0,
-        lastRefill: new Date(),
-      },
-      update: {
-        balance: monthlyCredits,
-        monthlyQuota: monthlyCredits,
-        usedThisMonth: 0,
-        lastRefill: new Date(),
-      },
-    })
-  }
-
-  // Marcar trial como CONVERTED (se estava em trial)
-  await prisma.organization.update({
-    where: { id: organizationId },
-    data: { trialStatus: 'CONVERTED' },
-  }).catch(() => {})
-
-  // Programa de indicação: recompensar o indicador com +15% de desconto acumulável
-  await processReferralReward(organizationId)
-
-  logger.info({ organizationId, tier }, 'Plan upgraded successfully')
-}
-
-const FOUNDER_TIER_MAP: Record<string, { tier: SubscriptionTier; price: number; scrapingQuota: number }> = {
-  FOUNDER_STARTER: { tier: SubscriptionTier.STARTER, price: 39.00, scrapingQuota: 75 },
-  FOUNDER_PRO:     { tier: SubscriptionTier.PRO,     price: 87.00, scrapingQuota: 300 },
-  FOUNDER_BUSINESS:{ tier: SubscriptionTier.BUSINESS, price: 234.00, scrapingQuota: 1500 },
-}
-
-async function upgradeToFounder(organizationId: string, founderPlan: string, payment: MpPayment) {
-  logger.info({ organizationId, founderPlan }, '[MP:FOUNDER] Processing founder upgrade')
-
-  const config = FOUNDER_TIER_MAP[founderPlan]
-  if (!config) {
-    logger.error({ founderPlan }, '[MP:FOUNDER] Unknown founder plan')
-    return
-  }
-
-  // Contar fundadores globais para número sequencial
-  const foundersCount = await prisma.organization.count({ where: { isFounder: true } })
-  const founderNumber = foundersCount + 1
-
-  const founderAgaasData = getAgaasDataForTier(config.tier)
-  await prisma.organization.update({
-    where: { id: organizationId },
-    data: {
-      tier: config.tier,
-      plan: config.tier,
-      isFounder: true,
-      founderNumber,
-      founderSince: new Date(),
-      customPricing: config.price,
-      failedPaymentAttempts: 0,
-      ...founderAgaasData,
-      agaasActionsUsed: 0,
-      agaasQuotaResetAt: nextMonthDate(),
-    },
-  })
-
-  // Criar registro de transação
-  await prisma.transaction.create({
-    data: {
-      organizationId,
-      type: 'PLAN_UPGRADE',
-      amount: payment.transaction_amount ?? 29,
-      feeAmount: payment.fee_details?.reduce((acc, f) => acc + (f.amount || 0), 0) || null,
-      netAmount: payment.transaction_details?.net_received_amount || null,
-      currency: payment.currency_id ?? 'BRL',
-      status: 'COMPLETED',
-      provider: 'MERCADO_PAGO',
-      providerPaymentId: String(payment.id),
-      metadata: {
-        tier: 'FOUNDER',
-        founderNumber,
-        paymentMethod: payment.payment_method_id,
-      },
-    },
-  })
-
-  // Inicializar créditos de scraping conforme o tier do fundador
-  const sq = config.scrapingQuota
-  await prisma.scrapingCredit.upsert({
-    where: { organizationId },
-    create: { organizationId, balance: sq, monthlyQuota: sq, usedThisMonth: 0, lastRefill: new Date() },
-    update: { balance: sq, monthlyQuota: sq, usedThisMonth: 0, lastRefill: new Date() },
-  })
-
-  // Enviar email de boas-vindas ao fundador
-  const owner = await prisma.user.findFirst({
-    where: { organizationId },
-    select: { email: true, name: true },
-    orderBy: { createdAt: 'asc' },
-  })
-
-  if (owner?.email) {
-    const org = await prisma.organization.findUnique({
-      where: { id: organizationId },
-      select: { name: true },
-    })
-
-    const tierLabel = config.tier === SubscriptionTier.STARTER ? 'Starter'
-      : config.tier === SubscriptionTier.PRO ? 'Pro' : 'Business'
-
-    await sendEmail({
-      to: owner.email,
-      subject: `🌟 Bem-vindo ao Programa de Fundadores! Você é o Fundador #${founderNumber} (${tierLabel})`,
-      react: PaymentConfirmationEmail({
-        userName: owner.name || 'Fundador',
-        organizationName: org?.name || '',
-        paymentId: String(payment.id),
-        paymentType: payment.payment_method_id || 'credit_card',
-        amount: config.price,
-        nextBillingDate: (() => {
-          const d = new Date()
-          d.setMonth(d.getMonth() + 1)
-          return d.toLocaleDateString('pt-BR')
-        })(),
-      }),
-    }).catch(err => logger.error({ err }, '[MP:FOUNDER] Failed to send welcome email'))
-  }
-
-  logger.info({ organizationId, founderNumber, founderPlan, tier: config.tier }, '[MP:FOUNDER] Organization upgraded to founder successfully')
-}
-
-async function processAddonPurchase(
-  organizationId: string,
-  addonType: string,
-  payment: MpPayment
-) {
-  logger.info({ organizationId, addonType }, 'Processing addon purchase')
-
-  let quantity = 0
-  let addonEnum: AddonType | null = null
-
-  // Determinar quantidade e tipo
-  if (addonType === 'SCRAPING_100') {
-    quantity = 100
-    addonEnum = AddonType.SCRAPING_100
-  } else if (addonType === 'SCRAPING_500') {
-    quantity = 500
-    addonEnum = AddonType.SCRAPING_500
-  } else if (addonType === 'WHATSAPP_EXTRA') {
-    quantity = 1
-    addonEnum = AddonType.WHATSAPP_EXTRA_INSTANCE
-  }
-
-  if (!quantity || !addonEnum) {
-    logger.warn({ addonType }, 'Unknown addon type')
-    return
-  }
-
-  // Criar add-on
-  await prisma.addon.create({
-    data: {
-      organizationId,
-      type: addonEnum,
-      name: getAddonName(addonEnum),
-      quantity,
-      price: payment.transaction_amount ?? 0,
-      status: 'ACTIVE',
-    },
-  })
-
-  // Se for scraping, adicionar créditos
-  if (addonEnum.includes('SCRAPING')) {
-    await prisma.scrapingCredit.update({
-      where: { organizationId },
-      data: {
-        balance: { increment: quantity },
-      },
-    })
-  }
-
-  // Se for WhatsApp, incrementar instâncias
-  if (addonEnum.includes('WHATSAPP')) {
-    await prisma.organization.update({
-      where: { id: organizationId },
-      data: {
-        whatsappInstances: { increment: 1 },
-      },
-    })
-  }
-
-  // Criar transação
-  await prisma.transaction.create({
-    data: {
-      organizationId,
-      type: 'ADDON_PURCHASE',
-      amount: payment.transaction_amount ?? 0,
-      feeAmount: payment.fee_details?.reduce((acc, f) => acc + (f.amount || 0), 0) || null,
-      netAmount: payment.transaction_details?.net_received_amount || null,
-      currency: payment.currency_id,
-      status: 'COMPLETED',
-      provider: 'MERCADO_PAGO',
-      providerPaymentId: payment.id?.toString() ?? null,
-      metadata: {
-        addonType: addonEnum,
-        quantity,
-      },
-    },
-  })
-
-  logger.info({ organizationId, addonEnum, quantity }, 'Addon purchased successfully')
-}
-
-/**
- * ✅ FASE 16: Processa eventos de assinatura (aprovação, cancelamento, pausa)
+ * Processa eventos de assinatura (aprovação, cancelamento, pausa)
  */
 async function processSubscriptionEvent(preapprovalId: string, action: string) {
   logger.info({ preapprovalId, action }, '[MP:SUBSCRIPTION] Processing subscription event')
@@ -565,37 +238,11 @@ async function processSubscriptionEvent(preapprovalId: string, action: string) {
     }
 
     if (action === 'subscription_preapproval.cancelled' || action === 'cancelled') {
-      // Downgrade para FREE ao cancelar (sync tier + plan + agaas + billing)
-      await prisma.organization.update({
-        where: { id: org.id },
-        data: {
-          tier: SubscriptionTier.FREE,
-          plan: 'FREE',
-          billingPeriod: 'MONTHLY',
-          ...getAgaasDataForTier('FREE'),
-        },
+      await downgradeToFree(org.id, {
+        previousTier: org.tier,
+        reason: 'subscription_cancelled',
+        provider: 'MERCADO_PAGO',
       })
-
-      // Registrar downgrade como churn
-      await prisma.transaction.create({
-        data: {
-          organizationId: org.id,
-          type: 'PLAN_DOWNGRADE',
-          amount: 0,
-          feeAmount: 0,
-          netAmount: 0,
-          currency: 'BRL',
-          status: 'COMPLETED',
-          provider: 'MERCADO_PAGO',
-          metadata: {
-            reason: 'subscription_cancelled',
-            previousTier: org.tier,
-            newTier: 'FREE',
-          },
-        },
-      })
-
-      logger.info({ organizationId: org.id }, '[MP:SUBSCRIPTION] Plan downgraded to FREE (cancelled)')
     }
 
     if (action === 'subscription_preapproval.paused' || action === 'paused') {
@@ -608,7 +255,7 @@ async function processSubscriptionEvent(preapprovalId: string, action: string) {
 }
 
 /**
- * ✅ FASE 16: Processa pagamento recorrente (renovação mensal)
+ * Processa pagamento recorrente (renovação mensal)
  * - Aprovado: renova tier + reseta créditos + envia email de confirmação
  * - Rejeitado: incrementa tentativas (máx 3) → cancela e faz downgrade
  */
@@ -632,7 +279,7 @@ async function processRecurringPayment(paymentId: string) {
 
     // Pagamento rejeitado → retry logic
     if (payment.status === 'rejected' || payment.status === 'cancelled') {
-      await handleFailedRecurringPayment(organizationId, payment)
+      await handleFailedRecurringPayment(organizationId, 'MERCADO_PAGO')
       return
     }
 
@@ -643,215 +290,16 @@ async function processRecurringPayment(paymentId: string) {
 
     const subscriptionTier = (tier || 'PRO') as SubscriptionTier
 
-    // Renovação aprovada: resetar contador de falhas + agaas usage (sync tier + plan)
-    const renewalAgaasData = getAgaasDataForTier(subscriptionTier)
-
     // Garantir que o subscriptionId está salvo (pode ter chegado nulo no primeiro ciclo)
     const subscriptionIdFromPayment = (payment as MpPayment).preapproval_id || null
 
-    const org = await prisma.organization.update({
-      where: { id: organizationId },
-      data: {
-        tier: subscriptionTier,
-        plan: subscriptionTier,
-        failedPaymentAttempts: 0,
-        ...renewalAgaasData,
-        agaasActionsUsed: 0,
-        agaasQuotaResetAt: nextMonthDate(),
-        ...(subscriptionIdFromPayment ? { mercadoPagoSubscriptionId: subscriptionIdFromPayment } : {}),
-      },
-      select: { id: true, name: true },
-    })
-
-    // Resetar créditos mensais de scraping
-    const monthlyCredits = subscriptionTier === SubscriptionTier.STARTER ? 75
-      : subscriptionTier === SubscriptionTier.PRO ? 300 : 1500
-
-    await prisma.scrapingCredit.upsert({
-      where: { organizationId },
-      create: {
-        organizationId,
-        balance: monthlyCredits,
-        monthlyQuota: monthlyCredits,
-        usedThisMonth: 0,
-        lastRefill: new Date(),
-      },
-      update: {
-        balance: { increment: monthlyCredits },
-        monthlyQuota: monthlyCredits,
-        usedThisMonth: 0,
-        lastRefill: new Date(),
-      },
-    })
-
-    // Registrar renovação
-    await prisma.transaction.create({
-      data: {
-        organizationId,
-        type: 'PLAN_UPGRADE',
-        amount: payment.transaction_amount ?? 0,
-        feeAmount: payment.fee_details?.reduce((acc, f) => acc + (f.amount || 0), 0) || null,
-        netAmount: payment.transaction_details?.net_received_amount || null,
-        currency: payment.currency_id ?? 'BRL',
-        status: 'COMPLETED',
-        provider: 'MERCADO_PAGO',
-        providerPaymentId: String(payment.id),
-        metadata: {
-          tier: subscriptionTier,
-          type: 'renewal',
-          paymentMethod: payment.payment_method_id,
-        },
-      },
-    })
-
-    // Enviar email de confirmação de renovação
-    const owner = await prisma.user.findFirst({
-      where: { organizationId },
-      select: { email: true, name: true },
-      orderBy: { createdAt: 'asc' },
-    })
-
-    if (owner?.email) {
-      const nextBilling = new Date()
-      nextBilling.setMonth(nextBilling.getMonth() + 1)
-
-      await sendEmail({
-        to: owner.email,
-        subject: '✅ Renovação confirmada – Sirius CRM',
-        react: PaymentConfirmationEmail({
-          userName: owner.name || 'Cliente',
-          organizationName: org.name,
-          paymentId: String(payment.id),
-          paymentType: payment.payment_method_id || 'credit_card',
-          amount: parseFloat(String(payment.transaction_amount ?? 0)),
-          nextBillingDate: nextBilling.toLocaleDateString('pt-BR'),
-        }),
-      }).catch(err => logger.error({ err }, '[MP:RECURRING] Failed to send renewal email'))
-    }
-
-    logger.info({ organizationId, tier: subscriptionTier }, '[MP:RECURRING] Subscription renewed successfully')
+    await renewSubscription(
+      organizationId,
+      subscriptionTier,
+      mpPaymentInfo(payment),
+      subscriptionIdFromPayment ? { mercadoPagoSubscriptionId: subscriptionIdFromPayment } : {}
+    )
   } catch (err) {
     logger.error({ err, paymentId }, '[MP:RECURRING] Error processing recurring payment')
   }
-}
-
-/**
- * Trata falha de pagamento recorrente com retry logic.
- * Após MAX_PAYMENT_ATTEMPTS falhas consecutivas, faz downgrade para FREE.
- */
-async function handleFailedRecurringPayment(organizationId: string, payment: MpPayment) {
-  logger.info({ organizationId, paymentStatus: payment.status }, '[MP:RECURRING] Handling failed payment')
-
-  const org = await prisma.organization.findUnique({
-    where: { id: organizationId },
-    select: { id: true, name: true, tier: true, failedPaymentAttempts: true },
-  })
-
-  if (!org) return
-
-  const tierNames: Record<string, string> = {
-    STARTER: 'Starter',
-    PRO: 'Pro',
-    BUSINESS: 'Business',
-  }
-  const planName = tierNames[org.tier] || org.tier
-  const newAttempts = (org.failedPaymentAttempts || 0) + 1
-  const isFinal = newAttempts >= MAX_PAYMENT_ATTEMPTS
-
-  const billingUrl = `${process.env.NEXTAUTH_URL || process.env.NEXT_PUBLIC_APP_URL}/dashboard/settings/billing`
-
-  if (isFinal) {
-    // Downgrade para FREE após atingir o limite (sync tier + plan + agaas + billing)
-    await prisma.organization.update({
-      where: { id: org.id },
-      data: {
-        tier: SubscriptionTier.FREE,
-        plan: 'FREE',
-        failedPaymentAttempts: 0,
-        billingPeriod: 'MONTHLY',
-        ...getAgaasDataForTier('FREE'),
-      },
-    })
-
-    await prisma.transaction.create({
-      data: {
-        organizationId: org.id,
-        type: 'PLAN_DOWNGRADE',
-        amount: 0,
-        feeAmount: 0,
-        netAmount: 0,
-        currency: 'BRL',
-        status: 'COMPLETED',
-        provider: 'MERCADO_PAGO',
-        metadata: {
-          reason: 'max_payment_failures',
-          previousTier: org.tier,
-          newTier: 'FREE',
-          attempts: newAttempts,
-        },
-      },
-    })
-
-    logger.warn({ organizationId: org.id, attempts: newAttempts }, '[MP:RECURRING] Downgraded to FREE after max failures')
-  } else {
-    await prisma.organization.update({
-      where: { id: org.id },
-      data: { failedPaymentAttempts: newAttempts },
-    })
-  }
-
-  // Enviar email de falha
-  const owner = await prisma.user.findFirst({
-    where: { organizationId: org.id },
-    select: { email: true, name: true },
-    orderBy: { createdAt: 'asc' },
-  })
-
-  if (owner?.email) {
-    await sendEmail({
-      to: owner.email,
-      subject: isFinal
-        ? `⚠️ Assinatura Sirius cancelada por falta de pagamento`
-        : `❌ Falha no pagamento (${newAttempts}/${MAX_PAYMENT_ATTEMPTS}) – Sirius CRM`,
-      react: PaymentFailureEmail({
-        userName: owner.name || 'Cliente',
-        organizationName: org.name,
-        planName,
-        attemptNumber: newAttempts,
-        maxAttempts: MAX_PAYMENT_ATTEMPTS,
-        updateCardUrl: billingUrl,
-        isFinal,
-      }),
-    }).catch(err => logger.error({ err }, '[MP:RECURRING] Failed to send failure email'))
-  }
-}
-
-async function processWhatsAppSetupPurchase(organizationId: string, payment: MpPayment) {
-  logger.info({ organizationId }, '[MP:WHATSAPP_SETUP] Processing WhatsApp setup purchase')
-
-  await prisma.transaction.create({
-    data: {
-      organizationId,
-      type: 'ADDON_PURCHASE',
-      amount: payment.transaction_amount ?? 297,
-      feeAmount: payment.fee_details?.reduce((acc, f) => acc + (f.amount || 0), 0) || null,
-      netAmount: payment.transaction_details?.net_received_amount || null,
-      currency: payment.currency_id ?? 'BRL',
-      status: 'COMPLETED',
-      provider: 'MERCADO_PAGO',
-      providerPaymentId: String(payment.id),
-      metadata: { service: 'WHATSAPP_SETUP' },
-    },
-  })
-
-  logger.info({ organizationId }, '[MP:WHATSAPP_SETUP] Transaction recorded')
-}
-
-function getAddonName(type: string): string {
-  const names: Record<string, string> = {
-    'SCRAPING_100': 'Pacote 100 Leads',
-    'SCRAPING_500': 'Pacote 500 Leads',
-    'WHATSAPP_EXTRA_INSTANCE': 'WhatsApp Extra',
-  }
-  return names[type] || 'Add-on'
 }
