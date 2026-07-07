@@ -27,6 +27,19 @@ Todas as tasks **de código** foram implementadas e passam no `npm run typecheck
 - ✅ `sitemap.xml` → `200` + mesmo cache; `<lastmod>` = `2026-04-27` (era `2026-03-20`, agora deriva do conteúdo).
 - ✅ `/ano`, `/mês` → **308** → `/pricing`. **308 é o correto**: `redirects()` do Next emite 308 p/ `permanent:true`, e o GSC conta como "301 permanente" (os outros redirects do arquivo já aparecem assim no baseline). Não trocar por `statusCode:301` — quebraria a consistência com os 15 redirects irmãos por uma distinção que o Google apaga.
 
+## Monitor externo — T012 (ativo 2026-07-07)
+
+UptimeRobot free, 2 monitores tipo **Keyword** (pega não-200 **e** corpo errado), alerta por e-mail:
+
+| Monitor | URL | Keyword (alerta se sumir) | Intervalo | Timeout |
+|---|---|---|---|---|
+| Sirius robots.txt | `/robots.txt` | `Sitemap:` | 5 min | 8 s |
+| Sirius health | `/api/health` | `"status":"ok"` | 5 min | 5 s |
+
+**Truque do timeout baixo** = alarme de latência de graça: como o free não alerta por response-time, o timeout curto transforma "lento/saturado" em "down". O `/api/health` bate no DB, então timeout 5 s dispara quando o pool satura (a assinatura da causa-raiz R0/maio). **Limitação**: degradação "lenta mas < timeout" (ex.: 3 s sustentado) não é pega — pra isso, Better Stack free (alerta de latência) ou UptimeRobot Pro.
+
+Ambos **Up** na criação. Falta o **teste de fogo (T014)**: mudar a Keyword do `health` p/ um valor inexistente, cronometrar o e-mail (deve chegar ≤ 15 min, SC-009), e reverter.
+
 ## Próximos passos (deploy)
 
 1. Commit + push do diff de código (auto-deploy EasyPanel).
@@ -43,7 +56,8 @@ Todas as tasks **de código** foram implementadas e passam no `npm run typecheck
 | T008 | Provisionar **Cloudflare** free na frente da origem |
 | T010 | Reproduzir causa-raiz em **staging** |
 | T011 | Mitigação — **depende de T010** (não aplicar pool/middleware/entrypoint/recursos às cegas) |
-| T012, T013, T014 | **UptimeRobot** + Sentry Performance + teste de fogo do alerta |
+| ~~T012~~ ✅ | UptimeRobot ativo 2026-07-07 (ver seção Monitor acima) |
+| T013, T014 | Sentry Performance + **teste de fogo do alerta (T014 pronto p/ rodar)** |
 | T015 | Runbook da causa-raiz — depende de T010 |
 | T017, T018 | Lista real de 404 do **GSC** + correção por URL |
 | T023 | `npm run indexnow` — pós-deploy |

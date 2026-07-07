@@ -65,7 +65,7 @@ description: "Task list for Crawl Health — siriuscrm.com.br"
 
 - [ ] T010 [US2] Reproduzir a causa-raiz em staging (`quickstart.md` §4): carga contra rota pública SSR + query do padrão introduzido em 18–22/05, medindo latência com pool Prisma default vs ajustado (valida a hipótese R0)
 - [ ] T011 [US2] Aplicar a mitigação da causa confirmada: ajustar pool de conexões em `lib/prisma.ts` e/ou reduzir o custo de `await maybeRefreshSession` em rotas públicas em `middleware.ts` e/ou revisar `node .../prisma migrate deploy` no boot em `docker/entrypoint.sh` e/ou aumentar recursos do container na EasyPanel (depende de T010). **Ao executar: quebrar esta task no único vetor que T010 confirmar — não aplicar todos os "e/ou" às cegas**
-- [ ] T012 [P] [US2] Configurar monitor externo (UptimeRobot): checks a cada 1–5 min em `/robots.txt` (200 + keyword `Sitemap:`) e `/api/health` (200 + `"status":"ok"`), alerta de uptime/latência (C6, FR-005); documentar em `Docs/Obsidian/80-dev/`
+- [X] T012 [P] [US2] Configurar monitor externo (UptimeRobot): checks a cada 1–5 min em `/robots.txt` (200 + keyword `Sitemap:`) e `/api/health` (200 + `"status":"ok"`), alerta de uptime/latência (C6, FR-005); documentar em `Docs/Obsidian/80-dev/`
 - [ ] T013 [P] [US2] Habilitar Sentry Performance/tracing (via `SENTRY_ORG`) em `next.config.ts`/config Sentry e logar `latency_ms` do `/api/health` na saída do container para retenção de observabilidade (FR-004)
 - [ ] T014 [US2] Teste de fogo do alerta (`quickstart.md` §6): degradar o alvo em staging (ou baixar o limiar) e cronometrar o alerta → deve chegar em ≤ 15 min (SC-009)
 - [ ] T015 [US2] Documentar o runbook da causa-raiz (evidência de correlação deploy/git + resultado da reprodução) em `Docs/Obsidian/80-dev/` (FR-004)
