@@ -30,17 +30,16 @@ export default function sitemap(): MetadataRoute.Sitemap {
     // - Ferramentas/Conversão (0.9): Ativos de engajamento e conversão
     // - Demais páginas (0.8): Conteúdo de suporte
     // Helper to build alternates for a PT-BR path and its EN equivalent
-    const withAlternates = (ptPath: string, enPath?: string) => {
+    // includeEn=false para tipos cuja rota /en/* ainda não renderiza (dá 404):
+    // anunciar hreflang de página inexistente queima crawl budget (spec 001 T018).
+    const withAlternates = (ptPath: string, enPath?: string, includeEn = true) => {
         const enRoute = enPath ?? ptPath // same path if no EN equivalent
-        return {
-            alternates: {
-                languages: {
-                    'pt-BR': `${baseUrl}${ptPath}`,
-                    'en': `${baseUrl}/en${enRoute}`,
-                    'x-default': `${baseUrl}${ptPath}`,
-                },
-            },
+        const languages: Record<string, string> = {
+            'pt-BR': `${baseUrl}${ptPath}`,
+            'x-default': `${baseUrl}${ptPath}`,
         }
+        if (includeEn) languages['en'] = `${baseUrl}/en${enRoute}`
+        return { alternates: { languages } }
     }
 
     const STATIC_ROUTES: { pt: string; en?: string; priority?: number }[] = [
@@ -90,10 +89,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
         lastModified: new Date(article.lastUpdated),
         changeFrequency: 'monthly' as const,
         priority: 0.7,
-        ...withAlternates(
-            `/help/${article.categorySlug}/${article.slug}`,
-            `/help/${article.categorySlug}/${article.slug}`
-        ),
+        // /en/help/[category]/[slug] ainda dá 404 → sem alternate EN (T018)
+        ...withAlternates(`/help/${article.categorySlug}/${article.slug}`, undefined, false),
     }))
 
     // Calculadoras — mapeamento PT→EN conforme i18n/routing.ts
@@ -105,12 +102,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
         '/ferramentas/calculadora-roi-consultores': '/tools/roi-calculator-consultants',
         '/ferramentas/calculadora-roi-representantes': '/tools/roi-calculator-representatives',
     }
-    const calculatorPages = Object.entries(calculatorMap).map(([ptRoute, enRoute]) => ({
+    const calculatorPages = Object.entries(calculatorMap).map(([ptRoute]) => ({
         url: `${baseUrl}${ptRoute}`,
         lastModified: new Date(CALCULATOR_LAST_MODIFIED),
         changeFrequency: 'monthly' as const,
         priority: 0.9,
-        ...withAlternates(ptRoute, enRoute),
+        // /en/tools/[calc] ainda dá 404 → sem alternate EN (T018)
+        ...withAlternates(ptRoute, undefined, false),
     }))
 
     // Páginas de soluções por nicho (geradas dinamicamente do niche-data.ts)

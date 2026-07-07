@@ -57,11 +57,19 @@ Fonte: `docs/SEO/siriuscrm.com.br-Coverage-Drilldown-2026-07-07/` (15 URLs 404, 
 
 **404 intencional (3)**: `/en/help/[category]/{deals-perdidos,permissoes-equipe,troubleshooting}` — leak do segmento dinâmico `[category]` de um sitemap ANTIGO. O sitemap atual já usa `article.categorySlug` real → são stale, saem do GSC no próximo re-crawl. 404 é a resposta correta (C5).
 
-**⚠️ DECISÃO PENDENTE — rotas EN dinâmicas 404 (6+)**: `/en/help/*` e `/en/tools/roi-calculator-*` retornam **404**, mas o `sitemap.ts` as anuncia via alternate `hreflang`. Confirmado por curl: PT `200`, EN `404`. Os dados EN **existem** (`help-articles.ts` tem `titleEn`/`contentEn`) → é **bug de rota**, não "não construído". Dois caminhos:
-- **(A) Construir** as rotas `/en/help/[category]/[slug]` e `/en/tools/[calc]` (usa o conteúdo EN que já existe) — feature real, fora do escopo de crawl-health.
-- **(B) Parar de anunciar** os alternates EN no `sitemap.ts` até (A) existir — mata os 404 agora (cidades já fazem isso: só pt-BR+x-default).
+**Rotas EN dinâmicas 404 (6) — RESOLVIDO via (B) 2026-07-07**: `/en/help/*` e `/en/tools/roi-calculator-*` davam 404 enquanto o `sitemap.ts` os anunciava via `hreflang`. Jean escolheu **(B) tirar os alternates EN**: `withAlternates(..., includeEn=false)` em `helpArticlePages` e `calculatorPages`. Escopo confirmado por curl — só help+tools EN dão 404; `/en/blog`, `/en/solutions`, `/en/about`, `/en/pricing` são `200` (mantidos).
+**Feature separada agendável (A)**: construir as rotas `/en/help/[category]/[slug]` e `/en/tools/[calc]` (o conteúdo EN já existe em `help-articles.ts`: `titleEn`/`contentEn`). Fora do escopo de crawl-health.
 
-Recomendo **(B) já** (para o crawl budget) e agendar **(A)** como feature separada. **Aguardando decisão do Jean.**
+## Runbook causa-raiz — T010/T011/T015 (investigação code-first, 2026-07-07)
+
+Decisão do Jean: atacar a causa por código+medição em prod em vez de montar staging. Resultado da investigação **derrubou a hipótese** e concluiu que **não há regressão viva**:
+
+- **`maybeRefreshSession` NÃO é o custo do crawler.** 1ª linha: `if (!session) return` — requisição sem cookie de sessão (Googlebot, monitor, curl) retorna imediatamente. Nenhum decrypt/encrypt. Editar o middleware não reduziria latência de crawl → **nenhuma mudança feita** (evita fix confiante-porém-errado).
+- **TTFB atual é saudável.** Medido em prod: `/`, `/pricing` e `/api/health` (um `SELECT 1`) têm **TTFB ~0,55 s idêntico** → o servidor renderiza a página no mesmo tempo de um health trivial. O `~1,2 s` de total é **download do HTML grande + latência geográfica** (curl dos EUA → server BR), não compute/saturação. Googlebot (infra do Google, conexão mais quente/próxima) vê menos.
+- **Conclusão**: a saturação de 18/05–08/06 foi **transitória** (bate com `research.md`: surto de features DB-pesadas 18–22/05), já **mitigada pelos fixes de query de 02–09/06** — o tempo de resposta voltou a ~90–135 ms nos períodos saudáveis do baseline. Não há código novo a aplicar hoje.
+- **Proteção contra recorrência = o monitor (T012)** com timeout curto no `/api/health`: se o pool voltar a saturar, o alerta dispara em minutos (provado no teste de fogo, ~5 min).
+
+> Se a saturação **voltar** (alerta do UptimeRobot): 1) olhar `latency_ms` do `/api/health`; 2) correlacionar com deploy/feature recente (git log); 3) suspeitos = pool Prisma (`lib/prisma.ts`) e queries pesadas em rota pública; 4) alavancas = ajustar pool, cache de query, ou recursos EasyPanel. Aí sim vale reproduzir em staging (T004/T010 originais).
 
 ## Decisões de infra (2026-07-07)
 
@@ -77,20 +85,16 @@ Recomendo **(B) já** (para o crawl budget) e agendar **(A)** como feature separ
 
 ## Pendências — precisam de acesso/infra/tempo (NÃO feitas)
 
-**Feitas 2026-07-07** (✅): T001, T006, T007, T012, T014, T016, T017, T019, T020, T021, T022, T024 + T002 (recursos ok) + 6 redirects de T018.
+**Feitas 2026-07-07** (✅ 20/26): T001, T002, T006, T007, T010, T011, T012, T014, T015, T016, T017, T018, T019, T020, T021, T022, T024. T013 descartado; T025 N/A (repo sem vault).
 
-| Task | Bloqueio / status |
+| Task | Status |
 |---|---|
-| T003, T004 | Ferramenta de load test + **ambiente de staging** |
-| T005, T009 | Carga concorrente (50 req) contra prod — precisa de `hey`/`k6` |
+| T003, T004 | Load test + staging — **moot** (sem regressão viva; só se o monitor apitar) |
+| T005 | Inventário prod — coberto pelos curls das verificações |
 | T008 | **Cloudflare opcional** (Hostinger não tem CDN p/ VPS) — reforço, não bloqueante |
-| T010 | Reproduzir causa-raiz — **ou** ataque code-first no `maybeRefreshSession` (pista dos ~1,2 s), medindo por curl em prod, sem staging |
-| T011 | Mitigação — depende de T010 |
-| T013 | ~~Sentry~~ **descartado** por decisão do Jean |
-| T015 | Runbook da causa-raiz — depende de T010 |
-| T018 (parcial) | 6 redirects feitos; 3 `[category]` = 404 intencional; **6 rotas EN 404 = decisão (A) construir vs (B) tirar alternates** |
-| T023 | `npm run indexnow` — pós-deploy |
-| T026 | Reextração GSC **após ≥ 14 dias** |
+| T009 | Carga concorrente (50 req) — precisa de `hey`/`k6`; opcional |
+| T023 | `npm run indexnow` — pós-deploy, opcional |
+| T026 | Reextração GSC **após ≥ 14 dias** — única pendência temporal real |
 | T017, T018 | Lista real de 404 do **GSC** + correção por URL |
 | T023 | `npm run indexnow` — pós-deploy |
 | T026 | Reextração GSC **após ≥ 14 dias** |
