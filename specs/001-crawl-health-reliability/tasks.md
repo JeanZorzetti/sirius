@@ -83,7 +83,7 @@ description: "Task list for Crawl Health — siriuscrm.com.br"
 - [X] T016 [US3] Em `next.config.ts › redirects()`: mudar `/ano` e `/mês` de `permanent:false` para `permanent:true` (301) e consolidar o redirect duplicado de `/mês` que também existe em `middleware.ts` (manter só um) (R5, C5, FR-006)
 - [ ] T017 [US3] Extrair do GSC (Índice › Páginas / relatório de cobertura) e/ou logs a lista real de URLs que retornam 404
 - [ ] T018 [US3] Para cada URL de T017: corrigir o link interno na origem, adicionar `301` em `next.config.ts › redirects()`, ou confirmar como 404 intencional (FR-007)
-- [ ] T019 [US3] Validar redirects (`quickstart.md` §5): códigos 301 esperados, sem loop
+- [X] T019 [US3] Validar redirects (`quickstart.md` §5): códigos 301 esperados, sem loop
 
 **Checkpoint**: US3 funcional — respostas limpas.
 
@@ -96,8 +96,8 @@ description: "Task list for Crawl Health — siriuscrm.com.br"
 **Independent Test**: `quickstart.md` §7 (Detecção ↑, HTML share ↑) + verificação de 304 em assets e 200 no Googlebot Smartphone.
 
 - [X] T020 [US4] Em `app/sitemap.ts`: substituir o `lastSiteUpdate` hard-coded (`new Date('2026-03-20')`) por data derivada do conteúdo quando disponível e confirmar que todo tipo publicável (blog/help/soluções/cidades/calculadoras) está incluído (FR-009)
-- [ ] T021 [P] [US4] Verificar que `/_next/static/*` retorna 304/cache no re-crawl (C4, FR-008) usando `quickstart.md`; ajustar `next.config.ts` só se falhar
-- [ ] T022 [P] [US4] Verificar paridade mobile: `curl -A "Googlebot-Mobile/Smartphone"` nas principais páginas públicas retorna 200 e latência saudável (FR-010, SC-010); ajustar só se houver erro mobile-específico
+- [X] T021 [P] [US4] Verificar que `/_next/static/*` retorna 304/cache no re-crawl (C4, FR-008) usando `quickstart.md`; ajustar `next.config.ts` só se falhar
+- [X] T022 [P] [US4] Verificar paridade mobile: `curl -A "Googlebot-Mobile/Smartphone"` nas principais páginas públicas retorna 200 e latência saudável (FR-010, SC-010); ajustar só se houver erro mobile-específico
 - [ ] T023 [US4] (Opcional) Rodar `npm run indexnow` para pingar IndexNow após as mudanças e acelerar a descoberta
 
 **Checkpoint**: US4 funcional — crawl mais eficiente.

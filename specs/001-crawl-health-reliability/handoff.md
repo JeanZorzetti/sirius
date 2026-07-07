@@ -40,6 +40,15 @@ UptimeRobot free, 2 monitores tipo **Keyword** (pega não-200 **e** corpo errado
 
 Ambos **Up** na criação. **Teste de fogo (T014) feito 2026-07-07**: Keyword do `health` trocada p/ valor inexistente → e-mail chegou em **~5 min** (SC-009 exige ≤ 15 min ✅). Revertido, monitor voltou a *Up*.
 
+## Verificações operacionais por curl — feitas 2026-07-07
+
+- ✅ **T019** redirects: `/cadastro`,`/contato`,`/agradecimento`,`/calculadora-roi-spin`,`/ano` → **308** permanente → destino canônico → final `200`, sem loop.
+- ✅ **T021** assets: `/_next/static/*.css` → `public, max-age=31536000, immutable` + ETag/Last-Modified; re-request condicional (If-None-Match e If-Modified-Since) → **304**. Re-crawl não re-baixa (C4/SC-007).
+- ✅ **T022** paridade mobile: `/`, `/pricing`, `/solucoes/corretores-de-imoveis`, `/solucoes/energia-solar`, `/ferramentas/calculadora-roi`, `/blog` → **200** no desktop e no Googlebot-Smartphone. Sem regressão mobile (SC-010).
+  - Slugs reais de nicho: `corretores-de-imoveis`, `energia-solar`, `agencias-de-marketing`, `consultores-empresariais`, `representantes-comerciais` (NÃO existe `/solucoes/imobiliarias` — 404 em ambos, é slug inválido, não bug mobile).
+
+> ⚠️ **Dado p/ T010/T011**: páginas públicas SSR respondem em **~1,1–1,3 s** (bem acima do alvo de 300 ms do SC-001). Não é o incidente (4.745 ms), mas é elevado — candidato à causa-raiz: `maybeRefreshSession` roda no `middleware` p/ TODA rota (inclusive pública) + pool Prisma. Medir isso é o T010.
+
 ## Próximos passos (deploy)
 
 1. Commit + push do diff de código (auto-deploy EasyPanel).
