@@ -38,7 +38,7 @@ UptimeRobot free, 2 monitores tipo **Keyword** (pega não-200 **e** corpo errado
 
 **Truque do timeout baixo** = alarme de latência de graça: como o free não alerta por response-time, o timeout curto transforma "lento/saturado" em "down". O `/api/health` bate no DB, então timeout 5 s dispara quando o pool satura (a assinatura da causa-raiz R0/maio). **Limitação**: degradação "lenta mas < timeout" (ex.: 3 s sustentado) não é pega — pra isso, Better Stack free (alerta de latência) ou UptimeRobot Pro.
 
-Ambos **Up** na criação. Falta o **teste de fogo (T014)**: mudar a Keyword do `health` p/ um valor inexistente, cronometrar o e-mail (deve chegar ≤ 15 min, SC-009), e reverter.
+Ambos **Up** na criação. **Teste de fogo (T014) feito 2026-07-07**: Keyword do `health` trocada p/ valor inexistente → e-mail chegou em **~5 min** (SC-009 exige ≤ 15 min ✅). Revertido, monitor voltou a *Up*.
 
 ## Próximos passos (deploy)
 
@@ -57,7 +57,8 @@ Ambos **Up** na criação. Falta o **teste de fogo (T014)**: mudar a Keyword do 
 | T010 | Reproduzir causa-raiz em **staging** |
 | T011 | Mitigação — **depende de T010** (não aplicar pool/middleware/entrypoint/recursos às cegas) |
 | ~~T012~~ ✅ | UptimeRobot ativo 2026-07-07 (ver seção Monitor acima) |
-| T013, T014 | Sentry Performance + **teste de fogo do alerta (T014 pronto p/ rodar)** |
+| ~~T014~~ ✅ | Teste de fogo OK 2026-07-07 — alerta em ~5 min (SC-009) |
+| T013 | Sentry Performance/tracing (via `SENTRY_ORG`) — opcional, observabilidade fina |
 | T015 | Runbook da causa-raiz — depende de T010 |
 | T017, T018 | Lista real de 404 do **GSC** + correção por URL |
 | T023 | `npm run indexnow` — pós-deploy |
