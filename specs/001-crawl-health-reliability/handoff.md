@@ -49,6 +49,26 @@ Ambos **Up** na criação. **Teste de fogo (T014) feito 2026-07-07**: Keyword do
 
 > ⚠️ **Dado p/ T010/T011**: páginas públicas SSR respondem em **~1,1–1,3 s** (bem acima do alvo de 300 ms do SC-001). Não é o incidente (4.745 ms), mas é elevado — candidato à causa-raiz: `maybeRefreshSession` roda no `middleware` p/ TODA rota (inclusive pública) + pool Prisma. Medir isso é o T010.
 
+## 404 hygiene — T017/T018 (2026-07-07)
+
+Fonte: `docs/SEO/siriuscrm.com.br-Coverage-Drilldown-2026-07-07/` (15 URLs 404, todas descobertas via sitemap).
+
+**Aplicado (6 redirects 301 em `next.config.ts`)**: `/ajuda`→`/help`, `/en/automated-sales`→`/en/automatic-sales`, `/year`+`/mo`→`/pricing`, `/features/anamnese-digital`→`/features`, `/blog/follow-up-vendas-guia-completo`→`/blog/poder-do-follow-up`.
+
+**404 intencional (3)**: `/en/help/[category]/{deals-perdidos,permissoes-equipe,troubleshooting}` — leak do segmento dinâmico `[category]` de um sitemap ANTIGO. O sitemap atual já usa `article.categorySlug` real → são stale, saem do GSC no próximo re-crawl. 404 é a resposta correta (C5).
+
+**⚠️ DECISÃO PENDENTE — rotas EN dinâmicas 404 (6+)**: `/en/help/*` e `/en/tools/roi-calculator-*` retornam **404**, mas o `sitemap.ts` as anuncia via alternate `hreflang`. Confirmado por curl: PT `200`, EN `404`. Os dados EN **existem** (`help-articles.ts` tem `titleEn`/`contentEn`) → é **bug de rota**, não "não construído". Dois caminhos:
+- **(A) Construir** as rotas `/en/help/[category]/[slug]` e `/en/tools/[calc]` (usa o conteúdo EN que já existe) — feature real, fora do escopo de crawl-health.
+- **(B) Parar de anunciar** os alternates EN no `sitemap.ts` até (A) existir — mata os 404 agora (cidades já fazem isso: só pt-BR+x-default).
+
+Recomendo **(B) já** (para o crawl budget) e agendar **(A)** como feature separada. **Aguardando decisão do Jean.**
+
+## Decisões de infra (2026-07-07)
+
+- **T002 recursos EasyPanel**: Jean confirmou CPU/RAM **adequados** → **descarta falta de recurso** como causa-raiz de maio. Reforça a hipótese de código/query (`maybeRefreshSession` + pool) — casa com os ~1,2 s de SSR medidos.
+- **T008 CDN**: Hostinger **não** oferece CDN para VPS (só para hospedagem gerenciada) — precisa de Cloudflare ou outro 3º. Como o header de cache no origin já entrega o MVP e a causa-raiz vai no código, **Cloudflare é reforço opcional**, não bloqueante.
+- **T013 Sentry**: **descartado** por decisão do Jean — não usar.
+
 ## Próximos passos (deploy)
 
 1. Commit + push do diff de código (auto-deploy EasyPanel).
@@ -57,18 +77,20 @@ Ambos **Up** na criação. **Teste de fogo (T014) feito 2026-07-07**: Keyword do
 
 ## Pendências — precisam de acesso/infra/tempo (NÃO feitas)
 
-| Task | Bloqueio |
+**Feitas 2026-07-07** (✅): T001, T006, T007, T012, T014, T016, T017, T019, T020, T021, T022, T024 + T002 (recursos ok) + 6 redirects de T018.
+
+| Task | Bloqueio / status |
 |---|---|
-| T002 | Limite CPU/RAM do container — **painel EasyPanel** |
 | T003, T004 | Ferramenta de load test + **ambiente de staging** |
-| T005, T009, T019, T021, T022 | Curl/carga contra **prod já deployada** (verificação operacional) |
-| T008 | Provisionar **Cloudflare** free na frente da origem |
-| T010 | Reproduzir causa-raiz em **staging** |
-| T011 | Mitigação — **depende de T010** (não aplicar pool/middleware/entrypoint/recursos às cegas) |
-| ~~T012~~ ✅ | UptimeRobot ativo 2026-07-07 (ver seção Monitor acima) |
-| ~~T014~~ ✅ | Teste de fogo OK 2026-07-07 — alerta em ~5 min (SC-009) |
-| T013 | Sentry Performance/tracing (via `SENTRY_ORG`) — opcional, observabilidade fina |
+| T005, T009 | Carga concorrente (50 req) contra prod — precisa de `hey`/`k6` |
+| T008 | **Cloudflare opcional** (Hostinger não tem CDN p/ VPS) — reforço, não bloqueante |
+| T010 | Reproduzir causa-raiz — **ou** ataque code-first no `maybeRefreshSession` (pista dos ~1,2 s), medindo por curl em prod, sem staging |
+| T011 | Mitigação — depende de T010 |
+| T013 | ~~Sentry~~ **descartado** por decisão do Jean |
 | T015 | Runbook da causa-raiz — depende de T010 |
+| T018 (parcial) | 6 redirects feitos; 3 `[category]` = 404 intencional; **6 rotas EN 404 = decisão (A) construir vs (B) tirar alternates** |
+| T023 | `npm run indexnow` — pós-deploy |
+| T026 | Reextração GSC **após ≥ 14 dias** |
 | T017, T018 | Lista real de 404 do **GSC** + correção por URL |
 | T023 | `npm run indexnow` — pós-deploy |
 | T026 | Reextração GSC **após ≥ 14 dias** |

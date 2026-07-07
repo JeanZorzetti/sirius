@@ -24,7 +24,7 @@ description: "Task list for Crawl Health — siriuscrm.com.br"
 **Purpose**: Baseline e ferramentas de medição.
 
 - [X] T001 Registrar snapshot do baseline de Crawl Stats (números de resposta/404/302/robots-indisponível) a partir de `docs/SEO/siriuscrm.com.br-Crawl-stats-2026-07-07/` no topo de `specs/001-crawl-health-reliability/quickstart.md` §7 como referência de comparação
-- [ ] T002 [P] Confirmar o limite atual de CPU/RAM do container na EasyPanel e anotar em `specs/001-crawl-health-reliability/research.md` (seção "Unknowns restantes") — input para a causa-raiz R0/R2
+- [X] T002 [P] Confirmar o limite atual de CPU/RAM do container na EasyPanel e anotar em `specs/001-crawl-health-reliability/research.md` (seção "Unknowns restantes") — input para a causa-raiz R0/R2
 - [ ] T003 [P] Instalar/escolher ferramenta de load test (`hey`/`k6`/`ab`) na máquina de teste para executar `quickstart.md` §2 e §4
 
 ---
@@ -81,7 +81,7 @@ description: "Task list for Crawl Health — siriuscrm.com.br"
 **Independent Test**: `quickstart.md` §5 — `/ano` e `/mês` retornam 301; lista de 404 zerada ou justificada.
 
 - [X] T016 [US3] Em `next.config.ts › redirects()`: mudar `/ano` e `/mês` de `permanent:false` para `permanent:true` (301) e consolidar o redirect duplicado de `/mês` que também existe em `middleware.ts` (manter só um) (R5, C5, FR-006)
-- [ ] T017 [US3] Extrair do GSC (Índice › Páginas / relatório de cobertura) e/ou logs a lista real de URLs que retornam 404
+- [X] T017 [US3] Extrair do GSC (Índice › Páginas / relatório de cobertura) e/ou logs a lista real de URLs que retornam 404
 - [ ] T018 [US3] Para cada URL de T017: corrigir o link interno na origem, adicionar `301` em `next.config.ts › redirects()`, ou confirmar como 404 intencional (FR-007)
 - [X] T019 [US3] Validar redirects (`quickstart.md` §5): códigos 301 esperados, sem loop
 

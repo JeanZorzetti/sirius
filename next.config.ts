@@ -134,6 +134,41 @@ const nextConfig: NextConfig = {
         destination: '/pricing',
         permanent: true,
       },
+      // EN billing fragments crawled as paths (same family as /ano, /mês)
+      {
+        source: '/year',
+        destination: '/pricing',
+        permanent: true,
+      },
+      {
+        source: '/mo',
+        destination: '/pricing',
+        permanent: true,
+      },
+      // 404s found in GSC Coverage drilldown 2026-07-07 (spec 001 T018)
+      // PT/EN aliases and typos pointing at real pages
+      {
+        source: '/ajuda',
+        destination: '/help',
+        permanent: true,
+      },
+      {
+        source: '/en/automated-sales',
+        destination: '/en/automatic-sales',
+        permanent: true,
+      },
+      // Dead feature page → features hub (matches /features/* pattern above)
+      {
+        source: '/features/anamnese-digital',
+        destination: '/features',
+        permanent: true,
+      },
+      // Renamed blog post → current slug
+      {
+        source: '/blog/follow-up-vendas-guia-completo',
+        destination: '/blog/poder-do-follow-up',
+        permanent: true,
+      },
       // Malformed URLs crawled by Google
       {
         source: '/&',
