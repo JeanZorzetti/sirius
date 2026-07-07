@@ -58,7 +58,7 @@ for u in /ano /mês /cadastro /contato; do
 done
 ```
 
-**Esperado**: `/ano` e `/mês` retornam `301` para `/pricing` (não `302`); demais permanentes `301`.
+**Esperado**: `/ano` e `/mês` retornam `301/308` para `/pricing` (não `302`/`307`); demais permanentes idem. Nota: o `redirects()` do Next emite **308** para `permanent:true` — o GSC bucketiza como "Movido permanentemente (301)", então conta como 301 na verificação.
 
 ## 6. Monitor externo (C6, FR-005/SC-009)
 

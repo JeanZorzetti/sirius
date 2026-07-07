@@ -21,6 +21,12 @@ Todas as tasks **de código** foram implementadas e passam no `npm run typecheck
 - **`/mês` → `/pricing`** (não home): o contrato C5/FR-006 pede consolidação de link para o destino canônico.
 - **T025 (vault Obsidian) não se aplica a este repo**: o Sirius CRM usa `docs/` flat, não `Docs/Obsidian/80-dev/` (essa regra é do monorepo roilabs). Este handoff cobre o changelog da entrega. O **runbook de incidente** depende da reprodução da causa-raiz (T010) — ainda não há.
 
+## Verificado em prod (2026-07-07, pós-deploy)
+
+- ✅ `robots.txt` → `200` + `Cache-Control: public, max-age=300, s-maxage=3600, stale-while-revalidate=86400`.
+- ✅ `sitemap.xml` → `200` + mesmo cache; `<lastmod>` = `2026-04-27` (era `2026-03-20`, agora deriva do conteúdo).
+- ✅ `/ano`, `/mês` → **308** → `/pricing`. **308 é o correto**: `redirects()` do Next emite 308 p/ `permanent:true`, e o GSC conta como "301 permanente" (os outros redirects do arquivo já aparecem assim no baseline). Não trocar por `statusCode:301` — quebraria a consistência com os 15 redirects irmãos por uma distinção que o Google apaga.
+
 ## Próximos passos (deploy)
 
 1. Commit + push do diff de código (auto-deploy EasyPanel).
