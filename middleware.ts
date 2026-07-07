@@ -13,7 +13,9 @@ export async function middleware(request: NextRequest) {
     const pathname = request.nextUrl.pathname
 
     // 1. Redirect malformed URLs (SEO fix)
-    const malformedPatterns = ['/mês', '/mes', '/month']
+    // /mês is handled by next.config redirects() (→ /pricing, 301) — kept out of
+    // here to avoid a duplicate redirect to a different destination. See spec 001 C5.
+    const malformedPatterns = ['/mes', '/month']
     if (malformedPatterns.some(pattern => pathname.includes(pattern))) {
         return NextResponse.redirect(new URL('/', request.url))
     }

@@ -121,16 +121,18 @@ const nextConfig: NextConfig = {
         destination: '/blog/spin-selling-guia-completo',
         permanent: true,
       },
-      // Pricing billing fragments crawled as paths
+      // Pricing billing fragments crawled as paths — permanent (301) to
+      // consolidate link signal. /mês was also caught by middleware (→ home);
+      // this is now the single source of truth (→ /pricing). See spec 001 C5/FR-006.
       {
         source: '/ano',
         destination: '/pricing',
-        permanent: false,
+        permanent: true,
       },
       {
         source: '/m%C3%AAs',
         destination: '/pricing',
-        permanent: false,
+        permanent: true,
       },
       // Malformed URLs crawled by Google
       {
@@ -165,6 +167,28 @@ const nextConfig: NextConfig = {
           {
             key: 'Cache-Control',
             value: 'public, max-age=31536000, immutable',
+          },
+        ],
+      },
+      // Serve robots/sitemap from cache so Googlebot still gets a fast 200 even
+      // when the Node origin is saturated (root cause of the 18/05–08/06 crawl
+      // throttle). Default for these metadata routes was max-age=0. See spec 001
+      // C1/C2/FR-013. Value is the tuning knob — widen s-maxage once a CDN is in front.
+      {
+        source: '/robots.txt',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=300, s-maxage=3600, stale-while-revalidate=86400',
+          },
+        ],
+      },
+      {
+        source: '/sitemap.xml',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=300, s-maxage=3600, stale-while-revalidate=86400',
           },
         ],
       },

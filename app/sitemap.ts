@@ -12,9 +12,17 @@ export default function sitemap(): MetadataRoute.Sitemap {
         ? rawUrl
         : 'https://siriuscrm.com.br'
 
-    // Data da última atualização significativa do site
-    // Atualizar manualmente quando houver mudanças reais nas páginas estáticas
-    const lastSiteUpdate = new Date('2026-03-20')
+    // Data da última atualização significativa do site — derivada do conteúdo
+    // mais recente publicado (blog/help/calculadoras), com clamp em "agora" para
+    // nunca emitir <lastmod> no futuro. Substitui a data fixa que envelhecia sozinha (FR-009).
+    const contentTimes = [
+        ...blogPosts.map((p) => new Date(p.lastModified || p.date).getTime()),
+        ...helpArticles.map((a) => new Date(a.lastUpdated).getTime()),
+        new Date(CALCULATOR_LAST_MODIFIED).getTime(),
+    ].filter((t) => Number.isFinite(t))
+    const lastSiteUpdate = contentTimes.length
+        ? new Date(Math.min(Date.now(), Math.max(...contentTimes)))
+        : new Date()
 
     // Static routes
     // Priorização Hierárquica (Seção 7.2):
