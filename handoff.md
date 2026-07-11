@@ -1,3 +1,28 @@
+# Handoff — Brand entity SEO "sirius crm" (2026-07-11)
+
+## Contexto
+Investigação via roihub /insights + GSC: o trend "cliques declining" era 100% o query branded `sirius crm` (21→7 cliques entre janelas 28d; posição própria caiu de 2,0 → ~4,4-5,4; CTR 17%→6%). Nome homônimo disputado (Hitachi, ERP Sirius UK, Sirius Jewels, Dana Grupo). Descoberta grave: **todos os `sameAs` do site apontavam pra perfis mortos ou de terceiros** — `linkedin.com/company/roilabs` (deletada), `linkedin.com/company/roi-labs` (consultoria americana homônima), `twitter.com/roilabs` e `github.com/roilabs` (contas de estranhos). Isso ativamente atrapalha a desambiguação da entidade.
+
+## Feito (commit `ef1f16b`)
+- **`lib/geo/entity.ts`** (novo) — fonte única dos perfis VERIFICADOS em 11/07: `ORG_SAME_AS` (linkedin `roi-labs-curadoria` [confirmado owned via admin view] + instagram `roilabs.curadoria` [declarado no schema de roilabs.com.br]) e `FOUNDER`/`FOUNDER_SAME_AS` (Jean: linkedin `in/jean-zorzetti-772742239` + github `JeanZorzetti`). Comentário no arquivo lista os URLs proibidos e por quê.
+- **`app/[locale]/layout.tsx`** — @graph central: Organization com `sameAs` verificados + `founder` (Person Jean, cujo About no LinkedIn cita "Sirius CRM" — link bidirecional de entidade); WebSite ganhou `alternateName: 'Sirius'`; SoftwareApplication ganhou `@id`; removido `twitter.creator: '@roilabs'` (handle não é nosso).
+- **home, community, blog/[slug], lib/geo/schema-generator.ts** — todos os sameAs inline (10 ocorrências) trocados pelo import de `ORG_SAME_AS`.
+- **`components/marketing/footer.tsx`** — links visíveis corrigidos: LinkedIn→curadoria, Twitter→Instagram curadoria, GitHub→JeanZorzetti.
+- **`docs/BLOG_POST_TEMPLATE.md`** + mds do spin-selling — referências corrigidas pra não perpetuar URLs errados.
+- Typecheck verde (`npm run typecheck`).
+
+## Próximos
+1. Validar em prod (Rich Results Test / view-source em siriuscrm.com.br procurando `roi-labs-curadoria`).
+2. **Google Ads branded "sirius crm"** — protege o nome dos homônimos e reativa a demanda branded que secou (era o próximo passo do plano de growth; as 3 vendas vieram de branded).
+3. Medir posição branded no GSC ~28/07 (D+17 da mudança).
+
+## Pendências / gotchas
+- `aggregateRating 5.0/12` no SoftwareApplication do layout: sem reviews visíveis na página, é risco de spam de structured data (pode virar manual action). Avaliar remover ou linkar reviews reais.
+- Página LinkedIn `roi-labs-curadoria` está parada (0 posts em 90d) — schema aponta pra ela, mas entidade forte pede página viva.
+- `contactOption: 'TollFree'` no layout é incorreto (número é celular) — cosmético.
+
+---
+
 # Handoff — Migração de pagamento para Stripe (2026-07-07)
 
 ## Contexto
