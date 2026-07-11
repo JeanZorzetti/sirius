@@ -11,6 +11,7 @@ import { TableOfContents } from '@/components/blog/table-of-contents'
 import { BlogContentWrapper } from '@/components/blog/blog-content-wrapper'
 import { generateFAQSchema, spinSellingFAQs, crmIaFAQs, automacaoVendasFAQs, melhorCrm2026FAQs, prospeccaoB2bFAQs, fechamentoVendasFAQs, objecoesVendasFAQs, kpisVendasFAQs, errosCrmFAQs, planilhaComissaoFAQs, comoEscolherCrmFAQs, crmGratuitoFAQs, migrarPlanilhaFAQs, crmVarejoFAQs, whatsappVendasFAQs, processoVendasFAQs, crmAgenciaFAQs, FAQItem } from '@/lib/faq-schema'
 import { generateArticleSchema, COMMON_WIKIDATA_ENTITIES, createGeoConfig } from '@/lib/geo/schema-generator'
+import { ORG_SAME_AS } from '@/lib/geo/entity'
 import { getHowToSchema } from '@/lib/howto-schemas'
 import { JsonLd } from '@/components/seo/json-ld'
 import { Metadata } from 'next'
@@ -183,10 +184,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
       ],
       author: {
         name: post.author || 'ROI Labs',
-        sameAs: [
-          'https://www.linkedin.com/company/roi-labs',
-          'https://twitter.com/roilabs',
-        ],
+        sameAs: ORG_SAME_AS,
         jobTitle: 'Software Development',
         worksFor: {
           name: 'ROI Labs',
@@ -207,10 +205,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
       ],
       author: {
         name: post.author || 'ROI Labs',
-        sameAs: [
-          'https://www.linkedin.com/company/roi-labs',
-          'https://twitter.com/roilabs',
-        ],
+        sameAs: ORG_SAME_AS,
         worksFor: {
           name: 'ROI Labs',
           url: 'https://roilabs.com.br',
@@ -221,10 +216,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
     geoConfig = createGeoConfig.sales({
       author: {
         name: post.author || 'ROI Labs',
-        sameAs: [
-          'https://www.linkedin.com/company/roi-labs',
-          'https://twitter.com/roilabs',
-        ],
+        sameAs: ORG_SAME_AS,
         worksFor: {
           name: 'ROI Labs',
           url: 'https://roilabs.com.br',
@@ -252,11 +244,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
       ],
       author: {
         name: post.author || 'ROI Labs',
-        sameAs: [
-          'https://www.linkedin.com/company/roi-labs',
-          'https://twitter.com/roilabs',
-          'https://github.com/roilabs',
-        ],
+        sameAs: ORG_SAME_AS,
         jobTitle: 'Sales Engineering & ROI Analysis',
         worksFor: {
           name: 'ROI Labs',
@@ -284,7 +272,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
       ],
       author: {
         name: post.author || 'ROI Labs',
-        sameAs: ['https://www.linkedin.com/company/roi-labs', 'https://twitter.com/roilabs'],
+        sameAs: ORG_SAME_AS,
         worksFor: { name: 'ROI Labs', url: 'https://roilabs.com.br' },
       },
     }
@@ -306,7 +294,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
       ],
       author: {
         name: post.author || 'ROI Labs',
-        sameAs: ['https://www.linkedin.com/company/roi-labs', 'https://twitter.com/roilabs'],
+        sameAs: ORG_SAME_AS,
         worksFor: { name: 'ROI Labs', url: 'https://roilabs.com.br' },
       },
     }
@@ -327,7 +315,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
       ],
       author: {
         name: post.author || 'ROI Labs',
-        sameAs: ['https://www.linkedin.com/company/roi-labs', 'https://twitter.com/roilabs'],
+        sameAs: ORG_SAME_AS,
         worksFor: { name: 'ROI Labs', url: 'https://roilabs.com.br' },
       },
     }
@@ -353,7 +341,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
       ],
       author: {
         name: post.author || 'ROI Labs',
-        sameAs: ['https://www.linkedin.com/company/roi-labs', 'https://twitter.com/roilabs'],
+        sameAs: ORG_SAME_AS,
         worksFor: { name: 'ROI Labs', url: 'https://roilabs.com.br' },
       },
     }
@@ -377,7 +365,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
       ],
       author: {
         name: post.author || 'ROI Labs',
-        sameAs: ['https://www.linkedin.com/company/roi-labs', 'https://twitter.com/roilabs'],
+        sameAs: ORG_SAME_AS,
         worksFor: { name: 'ROI Labs', url: 'https://roilabs.com.br' },
       },
     }

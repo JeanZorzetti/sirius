@@ -5,6 +5,7 @@ import { getMessages, getTranslations } from 'next-intl/server'
 import { notFound } from 'next/navigation'
 import { routing } from '@/i18n/routing'
 import type { Locale } from '@/i18n/config'
+import { ORG_SAME_AS, FOUNDER } from '@/lib/geo/entity'
 import '../globals.css'
 
 const geistSans = Geist({
@@ -123,7 +124,6 @@ export async function generateMetadata({
       card: 'summary_large_image',
       title: 'Sirius CRM',
       description: 'Turn leads into recurring revenue.',
-      creator: '@roilabs',
       images: ['/logo.png'],
     },
   }
@@ -149,6 +149,7 @@ function buildSchemaOrg(locale: Locale) {
         '@id': `${baseUrl}/#website`,
         url: isPtBR ? baseUrl : `${baseUrl}/en`,
         name: 'Sirius CRM',
+        alternateName: 'Sirius',
         description: isPtBR
           ? 'CRM intuitivo para gestão de vendas com pipeline visual, contatos inteligentes e métricas em tempo real.'
           : 'Intuitive CRM for sales management with visual pipeline, smart contacts and real-time metrics.',
@@ -173,10 +174,12 @@ function buildSchemaOrg(locale: Locale) {
           areaServed: isPtBR ? 'BR' : ['BR', 'US', 'GB', 'AU', 'CA'],
           availableLanguage: ['Portuguese', 'English'],
         },
-        sameAs: ['https://twitter.com/roilabs'],
+        sameAs: ORG_SAME_AS,
+        founder: FOUNDER,
       },
       {
         '@type': 'SoftwareApplication',
+        '@id': `${baseUrl}/#software`,
         name: 'Sirius CRM',
         applicationCategory: 'BusinessApplication',
         operatingSystem: 'Web',

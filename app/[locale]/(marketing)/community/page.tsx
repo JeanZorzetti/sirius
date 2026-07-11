@@ -5,6 +5,7 @@ import { Users, MessageCircle, BookOpen, Github, Lightbulb, Trophy, Heart } from
 import type { Metadata } from 'next'
 import { getTranslations } from 'next-intl/server'
 import { buildLocaleAlternates } from '@/lib/seo/canonical'
+import { ORG_SAME_AS } from '@/lib/geo/entity'
 
 export async function generateMetadata({
   params,
@@ -127,10 +128,7 @@ export default function CommunityPage() {
       "contactType": "customer support",
       "availableLanguage": "Portuguese"
     },
-    "sameAs": [
-      "https://www.linkedin.com/company/roilabs",
-      "https://twitter.com/roilabs"
-    ]
+    "sameAs": ORG_SAME_AS
   }
 
   return (

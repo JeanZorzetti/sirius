@@ -1641,7 +1641,7 @@ Nossa equipe de especialistas em vendas consultivas pode ajudar com:
 
 - **WhatsApp:** [+55 11 99999-9999](https://wa.me/5511999999999?text=Olá!%20Quero%20saber%20mais%20sobre%20SPIN%20Selling)
 - **Email:** vendas@siriuscrm.com.br
-- **LinkedIn:** [Sirius CRM](https://linkedin.com/company/sirius-crm)
+- **LinkedIn:** [Sirius CRM](https://www.linkedin.com/company/roi-labs-curadoria/)
 - **Comunidade:** [Grupo SPIN Selling Brasil (Telegram)](link-telegram)
 
 ---

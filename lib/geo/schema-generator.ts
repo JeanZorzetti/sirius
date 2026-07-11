@@ -1,5 +1,6 @@
 ﻿import { WithContext, BlogPosting, Person, Organization } from 'schema-dts'
 import { BlogPost } from '@/lib/blog-types'
+import { ORG_SAME_AS } from '@/lib/geo/entity'
 
 /**
  * Configuração de autor com perfis sociais para desambiguação GEO
@@ -56,10 +57,8 @@ export interface GeoArticleConfig {
  *   ],
  *   author: {
  *     name: 'Jean Zorzetti',
- *     sameAs: [
- *       'https://www.linkedin.com/in/jeanzorzetti',
- *       'https://twitter.com/jeanzorzetti',
- *     ],
+ *     sameAs: FOUNDER_SAME_AS, // perfis verificados em lib/geo/entity.ts
+
  *     jobTitle: 'Founder & CEO',
  *     worksFor: {
  *       name: 'ROI Labs',
@@ -102,7 +101,7 @@ export function generateArticleSchema(
         '@type': 'Person',
         name: post.author || 'ROI Labs',
         url: 'https://siriuscrm.com.br',
-        sameAs: ['https://www.linkedin.com/company/roi-labs'],
+        sameAs: ORG_SAME_AS,
       }
 
   // ISO 8601 completo com timezone Brasil (UTC-3) — requerido pelo Google Rich Results

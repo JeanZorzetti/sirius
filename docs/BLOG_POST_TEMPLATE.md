@@ -58,10 +58,7 @@ const geoConfig = createGeoConfig.realEstate({
   ],
   author: {
     name: 'Jean Zorzetti',
-    sameAs: [
-      'https://www.linkedin.com/in/jeanzorzetti',
-      'https://twitter.com/roilabs',
-    ],
+    sameAs: FOUNDER_SAME_AS, // import de '@/lib/geo/entity' — NUNCA hard-codar perfis
     jobTitle: 'Founder & CEO',
     worksFor: {
       name: 'ROI Labs',
@@ -89,7 +86,7 @@ const geoConfig = createGeoConfig.sales({
   ],
   author: {
     name: 'Equipe Sirius',
-    sameAs: ['https://www.linkedin.com/company/roi-labs'],
+    sameAs: ORG_SAME_AS, // import de '@/lib/geo/entity' — NUNCA hard-codar perfis
     worksFor: {
       name: 'ROI Labs',
       url: 'https://roilabs.com.br',

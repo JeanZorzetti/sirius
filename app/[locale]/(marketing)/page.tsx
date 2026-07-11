@@ -17,6 +17,7 @@ import { useTranslations, useLocale } from "next-intl"
 import { getTranslations } from "next-intl/server"
 import { Link } from "@/i18n/routing"
 import { buildLocaleAlternates } from "@/lib/seo/canonical"
+import { ORG_SAME_AS } from "@/lib/geo/entity"
 
 export async function generateMetadata({
   params,
@@ -211,10 +212,7 @@ export default function LandingPage() {
       "availableLanguage": "Portuguese",
       "areaServed": "BR"
     },
-    "sameAs": [
-      "https://www.linkedin.com/company/roilabs",
-      "https://twitter.com/roilabs"
-    ],
+    "sameAs": ORG_SAME_AS,
     "priceRange": "R$ 0 - R$ 397/mês"
   };
 
