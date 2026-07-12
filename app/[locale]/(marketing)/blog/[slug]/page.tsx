@@ -9,7 +9,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { ShareButtons } from '@/components/blog/share-buttons'
 import { TableOfContents } from '@/components/blog/table-of-contents'
 import { BlogContentWrapper } from '@/components/blog/blog-content-wrapper'
-import { generateFAQSchema, spinSellingFAQs, crmIaFAQs, automacaoVendasFAQs, melhorCrm2026FAQs, prospeccaoB2bFAQs, fechamentoVendasFAQs, objecoesVendasFAQs, kpisVendasFAQs, errosCrmFAQs, planilhaComissaoFAQs, comoEscolherCrmFAQs, crmGratuitoFAQs, migrarPlanilhaFAQs, crmVarejoFAQs, whatsappVendasFAQs, processoVendasFAQs, crmAgenciaFAQs, FAQItem } from '@/lib/faq-schema'
+import { generateFAQSchema, spinSellingFAQs, crmIaFAQs, automacaoVendasFAQs, melhorCrm2026FAQs, prospeccaoB2bFAQs, fechamentoVendasFAQs, objecoesVendasFAQs, kpisVendasFAQs, errosCrmFAQs, planilhaComissaoFAQs, comoEscolherCrmFAQs, crmGratuitoFAQs, migrarPlanilhaFAQs, crmVarejoFAQs, whatsappVendasFAQs, processoVendasFAQs, crmAgenciaFAQs, roiCrmFAQs, FAQItem } from '@/lib/faq-schema'
 import { generateArticleSchema, COMMON_WIKIDATA_ENTITIES, createGeoConfig } from '@/lib/geo/schema-generator'
 import { ORG_SAME_AS } from '@/lib/geo/entity'
 import { getHowToSchema } from '@/lib/howto-schemas'
@@ -90,6 +90,8 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
     aiOptimizedDescription = 'Empresas com processo de vendas definido convertem 33% mais. 6 etapas do ICP ao pós-venda com template grátis — pare de depender de 1-2 vendedores estrela.'
   } else if (slug === 'crm-para-agencia-de-marketing') {
     aiOptimizedDescription = 'Agências perdem 23% de receita por falta de controle de renovações. Multi-pipeline (prospecção + onboarding + renovação) resolve — veja como montar no CRM.'
+  } else if (slug === 'roi-de-crm') {
+    aiOptimizedDescription = 'ROI de CRM = (ganho anual − custo anual) ÷ custo anual × 100. Segundo a Nucleus Research, cada R$1 investido em CRM retorna R$8,71 (ROI de 771%). O ganho vem de mais conversão, produtividade, forecast e retenção de carteira. Payback típico: menos de 1 mês para times pequenos. Adoção baixa zera o ROI (Gartner: ~70% das implementações não entregam o retorno esperado).'
   }
 
   const isEnLocale = locale === 'en'
@@ -369,6 +371,36 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
         worksFor: { name: 'ROI Labs', url: 'https://roilabs.com.br' },
       },
     }
+  } else if (slug === 'roi-de-crm') {
+    // GEO Configuration for CRM ROI article
+    geoConfig = {
+      mentions: [
+        COMMON_WIKIDATA_ENTITIES.CRM,
+        COMMON_WIKIDATA_ENTITIES.SOFTWARE_AS_A_SERVICE,
+        COMMON_WIKIDATA_ENTITIES.SALES,
+        COMMON_WIKIDATA_ENTITIES.CUSTOMER_RELATIONSHIP_MANAGEMENT,
+      ],
+      about: [
+        'https://www.wikidata.org/wiki/Q193234', // Return on Investment
+        COMMON_WIKIDATA_ENTITIES.CRM,
+        'https://www.wikidata.org/wiki/Q192536', // Cost–benefit analysis
+      ],
+      citations: [
+        'https://nucleusresearch.com/research/single/crm-pays-back-8-71-for-every-dollar-spent/',
+        'https://www.salesforce.com/resources/research-reports/state-of-sales/',
+        'https://www.gartner.com/en/information-technology/insights/crm-customer-engagement-center',
+        'https://hbr.org/2024/03/the-short-life-of-online-sales-leads',
+      ],
+      author: {
+        name: post.author || 'ROI Labs',
+        sameAs: ORG_SAME_AS,
+        jobTitle: 'Sales Engineering & ROI Analysis',
+        worksFor: {
+          name: 'ROI Labs',
+          url: 'https://roilabs.com.br',
+        },
+      },
+    }
   }
 
   const articleSchema = generateArticleSchema(post, {
@@ -407,6 +439,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
     'whatsapp-vendas-b2b-estrategias': whatsappVendasFAQs,
     'como-montar-processo-de-vendas': processoVendasFAQs,
     'crm-para-agencia-de-marketing': crmAgenciaFAQs,
+    'roi-de-crm': roiCrmFAQs,
   }
   const faqSchema = faqDataMap[slug] ? generateFAQSchema(faqDataMap[slug], url) : null
 

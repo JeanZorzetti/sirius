@@ -44,6 +44,32 @@ export function generateFAQSchema(faqs: FAQItem[], url: string) {
 }
 
 /**
+ * FAQ data for ROI de CRM blog post
+ */
+export const roiCrmFAQs: FAQItem[] = [
+  {
+    question: 'CRM vale a pena?',
+    answer:
+      'Para qualquer time que dependa de follow-up e histórico de cliente, sim. O custo é baixo perto do valor de um negócio, e a média de mercado (Nucleus Research) é de R$ 8,71 de retorno por real investido. A ressalva é a adoção: sem uso, o ROI vai a zero.',
+  },
+  {
+    question: 'Qual o ROI médio de um CRM?',
+    answer:
+      'A referência mais citada é 771% (R$ 8,71 por R$ 1 investido), da Nucleus Research. Na prática varia de perto de zero, quando há baixa adoção, a mais de 2.000% em times que usam o sistema com disciplina.',
+  },
+  {
+    question: 'Como calcular o ROI de um CRM?',
+    answer:
+      'ROI (%) = (ganho anual − custo anual) ÷ custo anual × 100. O ganho vem de mais conversão, mais produtividade, melhor forecast e retenção de carteira; o custo soma licença, implementação e treinamento amortizados no primeiro ano.',
+  },
+  {
+    question: 'Em quanto tempo o CRM se paga?',
+    answer:
+      'Para times pequenos e médios, normalmente em menos de um mês — muitas vezes com um único negócio recuperado. Times maiores costumam ver payback entre 1 e 3 meses.',
+  },
+]
+
+/**
  * FAQ data for SPIN Selling blog post
  */
 export const spinSellingFAQs: FAQItem[] = [
