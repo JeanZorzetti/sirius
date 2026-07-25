@@ -58,7 +58,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
         { pt: '/followup' },
         { pt: '/proposta', en: '/proposal' },
         { pt: '/vendas-automaticas', en: '/automatic-sales', priority: 0.9 },
-        { pt: '/fundadores', en: '/founders', priority: 0.9 },
         { pt: '/ferramentas', en: '/tools', priority: 0.9 },
         { pt: '/anuario', en: '/yearbook' },
     ]

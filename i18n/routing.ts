@@ -27,10 +27,8 @@ export const routing = defineRouting({
     '/debug': '/debug',
 
     // Slug único PT → traduzido em EN
-    '/fundadores': {
-      'pt-BR': '/fundadores',
-      en: '/founders',
-    },
+    // '/fundadores' removido: a página nunca foi construída e o sitemap a anunciava
+    // com priority 0.9 → 404 auto-infligido. Reativar junto com app/[locale]/(marketing)/fundadores/.
     '/proposta': {
       'pt-BR': '/proposta',
       en: '/proposal',
