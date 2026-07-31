@@ -412,10 +412,16 @@ export const post: BlogPost = {
       <strong>Autor:</strong> Equipe Sirius CRM<br/>
       <strong>Tempo de Leitura:</strong> 12 minutos
     `,
-  titleEn: 'AgaaS vs Traditional SaaS: Why AI Agents Are the Future of CRM in 2026',
-  excerptEn: 'Compare AgaaS (Agentic as a Service) with traditional SaaS and understand why autonomous AI agents are redefining CRMs in 2026.',
-  keywordsEn: ['AgaaS vs SaaS', 'agentic software 2026', 'ai agents crm', 'autonomous crm software', 'future of crm ai'],
+  // EN title/excerpt written for the query that actually converts abroad ("agaas",
+  // "agaas meaning") — page already ranks p.1 there, so this is CTR work, not position work.
+  titleEn: 'AgaaS Meaning: Agentic-as-a-Service vs Traditional SaaS',
+  excerptEn: 'AgaaS (Agentic-as-a-Service) is software where AI agents operate the system for you instead of you operating it. The 5 differences vs traditional SaaS.',
+  keywordsEn: ['agaas meaning', 'what is agaas', 'agentic as a service', 'AgaaS vs SaaS', 'ai agents crm', 'autonomous crm software'],
   contentEn: `
+      <p>
+        <strong>AgaaS (Agentic-as-a-Service) is software delivered as autonomous AI agents that operate the system for you</strong> — perceiving data, planning actions, executing them and learning from the results — instead of a tool a human has to operate. It is the step after SaaS, and in CRM it already ships today.
+      </p>
+
       <p>
         The SaaS (Software as a Service) model revolutionized enterprise technology in the 2000s. Companies stopped buying expensive licenses and installing software on local servers to access everything in the cloud, via monthly subscription. It was a profound change — but with a fundamental limitation that persists to this day: <strong>the software needs humans to operate it</strong>.
       </p>

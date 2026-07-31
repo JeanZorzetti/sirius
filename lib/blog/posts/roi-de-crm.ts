@@ -69,6 +69,11 @@ export const post: BlogPost = {
         <p>Não some os quatro ganhos de forma otimista. Para uma defesa sólida diante do financeiro, calcule apenas o componente 1 (conversão) e trate os outros três como "margem de segurança". Se o CRM já se paga só com a recuperação de leads, o resto é bônus.</p>
       </div>
 
+      <div class="callout-tip">
+        <p><strong>🧮 Quer o número sem fazer conta</strong></p>
+        <p>A <a href="/ferramentas/calculadora-roi">calculadora de ROI</a> aplica esta mesma fórmula com três cenários (pessimista, realista e otimista). Há versões por segmento para <a href="/ferramentas/calculadora-roi-agencias">agências de marketing</a>, <a href="/ferramentas/calculadora-roi-consultores">consultores</a> e <a href="/ferramentas/calculadora-roi-representantes">representantes comerciais</a>.</p>
+      </div>
+
       <h2>Exemplo prático: calculando passo a passo</h2>
 
       <p>

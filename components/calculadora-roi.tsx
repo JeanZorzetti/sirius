@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useMemo } from 'react'
+import { usePathname } from 'next/navigation'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -70,6 +71,9 @@ export function CalculadoraROI({
   ctaText = "Pare de perder esse dinheiro agora",
   ctaHref = "/register"
 }: CalculadoraROIProps) {
+  // usePathname devolve null quando a calculadora é montada em root avulso
+  // (createRoot dentro de blog-content-wrapper), fora do contexto do router.
+  const isEn = usePathname()?.startsWith('/en') ?? false
   const [numVendedores, setNumVendedores] = useState<number>(5)
   const [leadsPerMonth, setLeadsPerMonth] = useState<number>(80)
   const [ticketMedio, setTicketMedio] = useState<number>(8500)
@@ -488,6 +492,19 @@ export function CalculadoraROI({
               <li><strong>Melhorias:</strong> Baseadas em análise de 847 empresas B2B (Gartner + Salesforce, 2024-2025)</li>
             </ul>
           </div>
+
+          {/* Dono da query genérica "crm roi": o post. Sem este link, as 5 calculadoras
+              disputavam a mesma SERP entre si (GSC 07/2026: 71 impressões em 4 URLs).
+              ponytail: só pt-BR — o post não tem versão EN (a /en sai noindex). */}
+          {!isEn && (
+            <p className="text-xs text-muted-foreground text-center">
+              Quer a fórmula por trás desses números?{' '}
+              <a href="/blog/roi-de-crm" className="underline underline-offset-2 hover:text-foreground">
+                Como calcular o ROI de CRM
+              </a>{' '}
+              — passo a passo, com exemplo em reais.
+            </p>
+          )}
 
           {/* CTA */}
           <div className="pt-4">
