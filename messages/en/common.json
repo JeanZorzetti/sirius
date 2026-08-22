@@ -179,6 +179,7 @@
     "language": "Language"
   },
   "language": {
+    "label": "Language",
     "portuguese": "Português",
     "english": "English",
     "switchTo": "Switch to"

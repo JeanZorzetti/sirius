@@ -1,7 +1,6 @@
 ﻿'use client'
 
 import Link from 'next/link'
-import Script from 'next/script'
 import { Check, Building2, Zap } from 'lucide-react'
 import { PricingToggle } from './pricing-toggle'
 import { useTranslations } from 'next-intl'
@@ -99,35 +98,31 @@ export default function PricingPage() {
     return (
         <>
             <PricingPageTracker />
-            <Script
-                id="breadcrumb-schema"
+            <script
                 type="application/ld+json"
                 dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
             />
-            <Script
-                id="faq-schema"
+            <script
                 type="application/ld+json"
                 dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
             />
-            <Script
-                id="offers-schema"
+            <script
                 type="application/ld+json"
                 dangerouslySetInnerHTML={{ __html: JSON.stringify(offersSchema) }}
             />
-            <Script
-                id="software-app-schema"
+            <script
                 type="application/ld+json"
                 dangerouslySetInnerHTML={{ __html: JSON.stringify(softwareAppSchema) }}
             />
             <div className="relative isolate bg-background px-6 py-24 sm:py-32 lg:px-8">
             <div className="mx-auto max-w-4xl text-center">
-                <div className="inline-flex items-center gap-2 rounded-full border border-green-500/30 bg-green-500/10 px-3 py-1 text-sm text-green-600 dark:text-green-400 mb-6">
+                <div className="inline-flex items-center gap-2 rounded-full border border-green-500/30 bg-green-500/10 px-3 py-1 text-sm text-green-700 dark:text-green-400 mb-6">
                     <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 20 20">
                         <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                     </svg>
                     <span className="font-medium">{t('badge')}</span>
                 </div>
-                <h2 className="text-base font-semibold leading-7 text-primary">{t('tagline')}</h2>
+                <p className="text-base font-semibold leading-7 text-primary">{t('tagline')}</p>
                 <h1 className="mt-2 text-4xl font-bold tracking-tight sm:text-5xl">
                     {t('title')}
                 </h1>
@@ -142,7 +137,7 @@ export default function PricingPage() {
                     <div className="flex items-center gap-3">
                         <Zap className="w-6 h-6 text-primary shrink-0" />
                         <div>
-                            <p className="font-semibold">7 dias grátis com acesso PRO completo</p>
+                            <p className="font-semibold">Plano gratuito para sempre — e 7 dias de PRO completo para testar tudo.</p>
                             <p className="text-sm text-muted-foreground">
                                 Sem cartão de crédito. Indique amigos e ganhe até 100% de desconto recorrente.
                             </p>
@@ -156,6 +151,7 @@ export default function PricingPage() {
                 </div>
             </div>
 
+            <h2 className="sr-only">{t('plansHeading')}</h2>
             <PricingToggle labelMonthly={t('labelMonthly')} labelAnnual={t('labelAnnual')}>
                 {(isAnnual) => (
                     <div className="mx-auto mt-10 grid max-w-6xl grid-cols-1 gap-y-6 sm:gap-y-0 lg:grid-cols-4 lg:gap-x-6">
@@ -176,7 +172,7 @@ export default function PricingPage() {
                                     )}
                                     <CardHeader>
                                         <CardTitle id={`tier-${tier.id}`} className="text-2xl font-bold">{tier.name}</CardTitle>
-                                        <CardDescription>{tier.description}</CardDescription>
+                                        <CardDescription className="min-h-12">{tier.description}</CardDescription>
                                     </CardHeader>
                                     <CardContent>
                                         <div className="mt-4 flex items-baseline gap-x-2">
@@ -204,7 +200,7 @@ export default function PricingPage() {
                                             </Link>
                                         </Button>
                                         {tier.featured && (
-                                            <div className="flex items-center justify-center gap-2 text-xs text-green-600 dark:text-green-400">
+                                            <div className="flex items-center justify-center gap-2 text-xs text-green-700 dark:text-green-400">
                                                 <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 20 20">
                                                     <path fillRule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                                                 </svg>
@@ -229,7 +225,7 @@ export default function PricingPage() {
                                     </div>
                                 </div>
                                 <Button asChild variant="outline" className="shrink-0">
-                                    <a href="https://wa.me/5562998015884" target="_blank" rel="noopener noreferrer">
+                                    <a href="https://wa.me/5562983443919" target="_blank" rel="noopener noreferrer">
                                         {t('enterprise.cta')}
                                     </a>
                                 </Button>
@@ -252,7 +248,7 @@ export default function PricingPage() {
                             <div className="text-sm text-muted-foreground">{t('roi.stat1Label')}</div>
                         </div>
                         <div className="text-center p-6 rounded-xl bg-green-500/5">
-                            <div className="text-3xl font-bold text-green-600 dark:text-green-400 mb-2">{t('roi.stat2Value')}</div>
+                            <div className="text-3xl font-bold text-green-700 dark:text-green-400 mb-2">{t('roi.stat2Value')}</div>
                             <div className="text-sm text-muted-foreground">{t('roi.stat2Label')}</div>
                         </div>
                         <div className="text-center p-6 rounded-xl bg-purple-500/5">
@@ -327,7 +323,7 @@ export default function PricingPage() {
                             {t('finalCta.btnPrimary')}
                         </TrackedSignupButton>
                         <Button asChild size="lg" variant="outline">
-                            <a href="https://wa.me/5562998015884" target="_blank" rel="noopener noreferrer">
+                            <a href="https://wa.me/5562983443919" target="_blank" rel="noopener noreferrer">
                                 {t('finalCta.btnSecondary')}
                             </a>
                         </Button>

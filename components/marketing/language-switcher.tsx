@@ -43,7 +43,7 @@ export function LanguageSwitcher() {
           size="sm"
           className="gap-1.5 text-sm font-medium"
           disabled={isPending}
-          aria-label={t('language')}
+          aria-label={t('language.label')}
         >
           <Globe className="h-4 w-4" />
           <span>{current.flag}</span>

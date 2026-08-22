@@ -3,7 +3,6 @@ import { Hero } from "@/components/marketing/hero"
 import { BentoGrid } from "@/components/marketing/bento-grid"
 import { Logos } from "@/components/marketing/logos"
 import dynamic from "next/dynamic"
-import Script from "next/script"
 
 const AgiPreview = dynamic(() => import("@/components/agi/AgiPreview").then(m => ({ default: m.AgiPreview })), {
   loading: () => <div className="h-96 rounded-2xl border border-white/10 bg-white/[0.02] animate-pulse" />,
@@ -253,23 +252,19 @@ export default function LandingPage() {
 
   return (
     <>
-      <Script
-        id="software-schema"
+      <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(softwareSchema) }}
       />
-      <Script
-        id="product-schema"
+      <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }}
       />
-      <Script
-        id="faq-schema"
+      <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
       />
-      <Script
-        id="local-business-schema"
+      <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessSchema) }}
       />
@@ -341,7 +336,7 @@ export default function LandingPage() {
                     </div>
                     <div>
                       <div className="font-semibold text-white">{t('testimonials.t1.author')}</div>
-                      <div className="text-sm text-zinc-500">{t('testimonials.t1.role')}</div>
+                      <div className="text-sm text-zinc-400">{t('testimonials.t1.role')}</div>
                     </div>
                   </div>
                   <p className="text-zinc-300 text-sm leading-relaxed mb-4">
@@ -364,7 +359,7 @@ export default function LandingPage() {
                     </div>
                     <div>
                       <div className="font-semibold text-white">{t('testimonials.t2.author')}</div>
-                      <div className="text-sm text-zinc-500">{t('testimonials.t2.role')}</div>
+                      <div className="text-sm text-zinc-400">{t('testimonials.t2.role')}</div>
                     </div>
                   </div>
                   <p className="text-zinc-300 text-sm leading-relaxed mb-4">
@@ -387,7 +382,7 @@ export default function LandingPage() {
                     </div>
                     <div>
                       <div className="font-semibold text-white">{t('testimonials.t3.author')}</div>
-                      <div className="text-sm text-zinc-500">{t('testimonials.t3.role')}</div>
+                      <div className="text-sm text-zinc-400">{t('testimonials.t3.role')}</div>
                     </div>
                   </div>
                   <p className="text-zinc-300 text-sm leading-relaxed mb-4">
@@ -455,11 +450,11 @@ export default function LandingPage() {
                     )}
                     <div className="mb-4">
                       <h3 className="text-lg font-bold text-white">{plan.name}</h3>
-                      <p className="text-sm text-zinc-500">{plan.description}</p>
+                      <p className="text-sm text-zinc-400">{plan.description}</p>
                     </div>
                     <div className="flex items-baseline gap-1 mb-6">
                       <span className="text-3xl font-bold text-white">{plan.price}</span>
-                      {plan.period && <span className="text-sm text-zinc-500">{plan.period}</span>}
+                      {plan.period && <span className="text-sm text-zinc-400">{plan.period}</span>}
                     </div>
                     <ul className="space-y-2 mb-6 flex-1">
                       {plan.features.map((feature) => (
@@ -571,7 +566,7 @@ export default function LandingPage() {
                   </Link>
                 </div>
 
-                <div className="flex items-center justify-center gap-6 text-sm text-zinc-500">
+                <div className="flex items-center justify-center gap-6 text-sm text-zinc-400">
                   <div className="flex items-center gap-1">
                     <svg className="h-4 w-4 text-green-500" fill="currentColor" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />

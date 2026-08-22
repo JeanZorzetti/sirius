@@ -823,8 +823,9 @@
     }
   },
   "pricing": {
-    "badge": "Free trial — unlimited time",
+    "badge": "Free forever",
     "tagline": "Transparent Pricing",
+    "plansHeading": "Plans",
     "title": "Pay only when you scale",
     "subtitle": "Start free today and upgrade when your team grows. No surprises, no hidden fees.",
     "tiers": {

@@ -823,8 +823,9 @@
     }
   },
   "pricing": {
-    "badge": "Teste grátis por tempo ilimitado",
+    "badge": "Grátis para sempre",
     "tagline": "Preços Transparentes",
+    "plansHeading": "Planos",
     "title": "Pague apenas quando escalar",
     "subtitle": "Comece grátis hoje e faça upgrade quando seu time crescer. Sem surpresas, sem taxas escondidas.",
     "tiers": {

@@ -87,7 +87,7 @@ export function AgiPreview() {
                         <h4 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
                             {t('trySirius')}
                         </h4>
-                        <p className="text-gray-600 dark:text-gray-400 mb-6 max-w-md mx-auto">
+                        <p className="text-gray-600 dark:text-gray-300 mb-6 max-w-md mx-auto">
                             {t('subtitle')}
                         </p>
 
@@ -169,7 +169,7 @@ export function AgiPreview() {
                         )}
                     </button>
                 </div>
-                <p className="text-xs text-gray-500 dark:text-gray-400 mt-2 text-center">
+                <p className="text-xs text-gray-500 dark:text-gray-300 mt-2 text-center">
                     {t('hint')}
                 </p>
             </div>
