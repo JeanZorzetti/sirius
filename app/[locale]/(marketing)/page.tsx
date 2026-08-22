@@ -67,13 +67,6 @@ export default function LandingPage() {
       "offerCount": "4",
       "availability": "https://schema.org/InStock"
     },
-    "aggregateRating": {
-      "@type": "AggregateRating",
-      "ratingValue": 4.8,
-      "reviewCount": 127,
-      "bestRating": 5,
-      "worstRating": 1
-    },
     "featureList": [
       "Pipeline Kanban visual com drag-and-drop",
       "WhatsApp integrado via Evolution API",
@@ -112,27 +105,6 @@ export default function LandingPage() {
       "availability": "https://schema.org/InStock",
       "url": "https://siriuscrm.com.br/pricing"
     },
-    "aggregateRating": {
-      "@type": "AggregateRating",
-      "ratingValue": 4.8,
-      "reviewCount": 127,
-      "bestRating": 5,
-      "worstRating": 1
-    },
-    "review": [
-      {
-        "@type": "Review",
-        "author": { "@type": "Person", "name": "Carlos Silva" },
-        "reviewRating": { "@type": "Rating", "ratingValue": "5", "bestRating": "5" },
-        "reviewBody": "Finalmente um CRM que não complica. Em 10 minutos já estava usando e fechando negócios mais rápido."
-      },
-      {
-        "@type": "Review",
-        "author": { "@type": "Person", "name": "Mariana Souza" },
-        "reviewRating": { "@type": "Rating", "ratingValue": "5", "bestRating": "5" },
-        "reviewBody": "O WhatsApp integrado economiza horas por semana. Meu time adora a simplicidade!"
-      }
-    ],
     "image": "https://siriuscrm.com.br/og-image.png",
     "url": "https://siriuscrm.com.br"
   };

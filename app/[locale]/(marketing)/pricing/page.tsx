@@ -87,11 +87,6 @@ export default function PricingPage() {
             "lowPrice": "0",
             "highPrice": "397",
             "offerCount": "4"
-        },
-        "aggregateRating": {
-            "@type": "AggregateRating",
-            "ratingValue": "4.8",
-            "ratingCount": "12"
         }
     };
 
@@ -114,7 +109,7 @@ export default function PricingPage() {
                 type="application/ld+json"
                 dangerouslySetInnerHTML={{ __html: JSON.stringify(softwareAppSchema) }}
             />
-            <div className="relative isolate bg-background px-6 py-24 sm:py-32 lg:px-8">
+            <div className="dark relative isolate bg-zinc-950 text-white px-6 py-24 sm:py-32 lg:px-8">
             <div className="mx-auto max-w-4xl text-center">
                 <div className="inline-flex items-center gap-2 rounded-full border border-green-500/30 bg-green-500/10 px-3 py-1 text-sm text-green-700 dark:text-green-400 mb-6">
                     <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 20 20">

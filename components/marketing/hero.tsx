@@ -2,6 +2,7 @@ import { Link } from "@/i18n/routing"
 import { Button } from "@/components/ui/button"
 import { ArrowRight, Sparkles } from "lucide-react"
 import { useTranslations, useLocale } from "next-intl"
+import { KanbanPreview } from "./kanban-preview"
 
 export function Hero() {
     const t = useTranslations("marketing.home.hero")
@@ -77,7 +78,7 @@ export function Hero() {
                                     <div className="h-8 w-8 rounded-full bg-gradient-to-br from-purple-400 to-pink-500 border-2 border-zinc-950" />
                                     <div className="h-8 w-8 rounded-full bg-gradient-to-br from-pink-400 to-red-500 border-2 border-zinc-950" />
                                     <div className="h-8 w-8 rounded-full bg-gradient-to-br from-indigo-500 to-blue-500 border-2 border-zinc-950 flex items-center justify-center text-xs font-bold">
-                                        +120
+                                        +100
                                     </div>
                                 </div>
                                 <span className="text-zinc-300">
@@ -88,6 +89,11 @@ export function Hero() {
                             </div>
                         </div>
                     )}
+                </div>
+
+                {/* Product Preview */}
+                <div className="mt-16 px-4 animate-fade-in [animation-delay:900ms] opacity-0 fill-mode-forwards">
+                    <KanbanPreview />
                 </div>
             </div>
         </section>

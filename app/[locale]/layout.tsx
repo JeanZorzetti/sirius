@@ -189,13 +189,6 @@ function buildSchemaOrg(locale: Locale) {
           priceCurrency: isPtBR ? 'BRL' : 'USD',
           availability: 'https://schema.org/InStock',
         },
-        aggregateRating: {
-          '@type': 'AggregateRating',
-          ratingValue: '5.0',
-          ratingCount: '12',
-          bestRating: '5',
-          worstRating: '1',
-        },
         provider: { '@id': `${baseUrl}/#organization` },
         description: isPtBR
           ? 'CRM intuitivo para gestão de vendas brasileiras. Pipeline Kanban visual, gestão de contatos, WhatsApp integrado e métricas em tempo real.'

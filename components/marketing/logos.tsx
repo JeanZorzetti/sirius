@@ -1,7 +1,7 @@
 export function Logos() {
     const stats = [
-        { value: '120+', label: 'Empresas ativas' },
-        { value: '40%', label: 'Aumento em conversão' },
+        { value: '100+', label: 'Empresas ativas' },
+        { value: '950+', label: 'Negócios gerenciados' },
         { value: '3h/sem', label: 'Economizadas por vendedor' },
         { value: '5 min', label: 'Para configurar' },
     ]

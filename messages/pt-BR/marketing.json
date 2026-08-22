@@ -10,7 +10,7 @@
       "risk1": "Sem cartão de crédito",
       "risk2": "Configure em 5 minutos",
       "risk3": "Cancele quando quiser",
-      "socialProof": "<white>120+</white> times vendendo agora"
+      "socialProof": "<white>100+</white> empresas vendendo agora"
     },
     "nav": {
       "features": "Funcionalidades",
@@ -82,7 +82,7 @@
     },
     "about": {
       "title": "O que é o Sirius CRM?",
-      "description": "O Sirius CRM é uma plataforma de vendas projetada para o mercado brasileiro, utilizada por mais de 1.200 usuários. Oferece quatro planos de assinatura: um plano Gratuito, Starter por R$67, Pro por R$147 e Business por R$397, ajudando equipes a alcançar um aumento médio de 35% na conversão de leads. Seus diferenciais incluem a integração nativa com WhatsApp via API Oficial Meta (plano Business), prospecção de leads B2B pelo Google Maps e a assistente de vendas com IA, AGI Sirius."
+      "description": "O Sirius CRM é uma plataforma de vendas projetada para o mercado brasileiro, utilizada por mais de 100 empresas e 110 usuários, com mais de 950 negócios já gerenciados na plataforma. Oferece quatro planos de assinatura: um plano Gratuito, Starter por R$67, Pro por R$147 e Business por R$397. Seus diferenciais incluem a integração nativa com WhatsApp via API Oficial Meta (plano Business), prospecção de leads B2B pelo Google Maps e a assistente de vendas com IA, AGI Sirius."
     },
     "testimonials": {
       "title": "Times de alta performance confiam no Sirius",
