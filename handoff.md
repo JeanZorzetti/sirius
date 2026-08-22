@@ -1,3 +1,31 @@
+# Handoff — Auditoria de over-engineering (2026-08-22)
+
+## Contexto
+Pedido: "refatore o projeto". Repo tem ~200k linhas de TS/TSX — refatorar às cegas é como o risco entra. Rodada uma auditoria de código morto antes de tocar em qualquer coisa. Nada foi apagado.
+
+## Feito
+- **`docs/AUDITORIA_OVER_ENGINEERING_2026-08-22.md`** (novo) — 17 achados ranqueados, plano de execução em 6 fases por risco crescente, e dois anexos com as listas completas.
+- **`scripts/audit-dead-code.js`** (novo) — reproduz os números: arquivos sem importador + rotas de API sem chamador. Resolve import estático, `import()` dinâmico e `require()`.
+
+## Achado principal
+**~24.400 linhas (12% do TS/TSX) não são alcançáveis por nenhum caminho de execução.** Dois terços disso (16.057 linhas) ficaram órfãos de uma vez só, no commit `2d29773` de 27/04/2026 ("clean up obsolete admin pages"): 10 páginas de admin foram apagadas e o backend inteiro delas ficou — subsistema Generative UI (14.666 linhas, com testes), cluster AGI/graph (1.391), A/B testing.
+
+Nada quebrou porque código não alcançado compila, passa no lint e passa nos próprios testes. É por isso que o `audit-dead-code.js` existe agora.
+
+## Próximos
+1. **Decisão de produto sobre o Generative UI** — é 60% do corte total. `docs/GENERATIVE_UI_SUMMARY.md` diz "Fase 1 de 6 COMPLETA" (31/01/2026); último commit de feature foi 03/02/2026. Se for retomar, falta *uma página* que renderize `MessageRenderer`. Se não, são 14,6k linhas type-checadas e testadas a cada CI por nada.
+2. Fases 1–3 do plano (~8.700 linhas, risco baixo/nenhum) podem ir sem decisão de produto.
+3. Fase 4+ é mudança não-trivial → fluxo Spec Kit, o projeto tem `.specify/`.
+
+## Pendências / gotchas
+- **Não confundir os dois Mercado Pago.** `lib/mercadopago.ts` (10 importadores) e `/api/webhooks/mercadopago` continuam vivos por causa das assinaturas legadas — ver handoff de 07/07. O órfão é `lib/mercado-pago/checkout.ts` (diretório com hífen) + `/api/mercadopago/checkout`.
+- Falsos positivos já verificados nos anexos: `/api/sync/process` (chamado por `public/sw-push.js`), `/api/mobile/sync` (app Capacitor), `/api/mercadopago/checkout` (redirect de 7 linhas).
+- `sirius-crm-483316-a2e815438069.json` — service account do Google na raiz do repo. Fora do escopo desta auditoria; pede um `/security-review`.
+- `npm run build` roda `prisma migrate deploy` contra o banco. Para verificar as fases, usar `npm run typecheck && npm run test`.
+- 5 docs `GENERATIVE_UI_*.md` descrevem o subsistema como se estivesse em produção. Vão junto se o item 1 for apagado.
+
+---
+
 # Handoff — Brand entity SEO "sirius crm" (2026-07-11)
 
 ## Contexto
