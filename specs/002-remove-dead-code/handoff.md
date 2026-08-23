@@ -1,12 +1,21 @@
 # Handoff — Remoção de código morto (Sirius CRM)
 
-**Feature**: `002-remove-dead-code` | **Escrito em**: 2026-08-23 | **Para**: próxima sessão que continuar via `/speckit-implement`
+**Feature**: `002-remove-dead-code` | **Escrito em**: 2026-08-23 (atualizado após US1) | **Para**: próxima sessão que continuar via `/speckit-implement`
 
 ## Onde parou
 
-**US0 (Fase 1 + Fase 2) concluída e mergeada em `main`** — commit `521cc65` (squash de PR #1). T001–T013 todos `[X]` em [tasks.md](./tasks.md).
+**US0 (Fase 1+2) e US1 (Fase 3) concluídas e mergeadas em `main`** — commits `521cc65` (PR #1) e `75fcf11` (PR #2). T001–T019 todos `[X]` em [tasks.md](./tasks.md).
 
-Próximo passo: **Fase 3 — US1 (T014–T019)**, "Varredura sem risco": apagar 2 `.bak`, 4 barrels sem importador, 3 componentes shadcn órfãos, 12 dependências nunca importadas. Ninguém começou essa fase ainda.
+Próximo passo: **Fase 4 — US2 (T020–T026)**, "Duplicatas e infraestrutura órfã": renomear `lib/rate-limit.ts`→`lib/plan-quota.ts`, apagar `middleware/plan-limits.ts` e 5 providers de scraping órfãos, ligar `lib/env.ts` no boot sem derrubar o processo. Ninguém começou essa fase ainda. US1, US2, US3, US4, US6 são independentes entre si — podem vir em qualquer ordem — mas **US4 antes de US5** e **US7 depois de US3 e US6** (regras duras, ver tasks.md).
+
+## US1 — o que saiu diferente do planejado (duas divergências reais, achadas na verificação)
+
+1. **`openai` não podia sair.** A lista das 12 dependências a remover (T017) incluía `openai`, mas `lib/rag/embeddings.ts` ainda o importa e é usado por `app/api/ia/knowledge/route.ts` — rota que nem `research.md` nem `baseline.md` cobrem. `npx tsc --noEmit` acusou na hora. Restaurado; **saíram 11 dependências, não 12**.
+2. **`@testing-library/dom` só aparecia na CI (Linux), não localmente.** Depois de restaurar o `openai` e rodar a tríade local (tudo verde), o PR reprovou no `TypeScript Type Check` da CI com `TS2305` em 8 arquivos de teste (`screen`/`waitFor`/etc "no exported member" de `@testing-library/react`). Não reproduzia local por causa de `tsconfig.tsbuildinfo` desatualizado (`incremental: true` mascarava o erro). Raiz real: `@testing-library/dom` é peer dependency de `@testing-library/react`, nunca foi declarada em `package.json` — chegava na árvore só como transitiva de um dos pacotes removidos (`--legacy-peer-deps` não instala peers sozinho). Corrigido declarando `"@testing-library/dom": "^10.4.1"` em `devDependencies`.
+
+**Lição para as próximas fases de remoção de dependência**: depois de editar `package.json`, sempre `rm -rf node_modules tsconfig*.tsbuildinfo && npm ci --legacy-peer-deps` antes de confiar no `tsc --noEmit` local — um `npm install <pkg>` incremental ou um `.tsbuildinfo` velho escondem exatamente esse tipo de regressão, e só a CI (que sempre roda limpa) pega. Comparar o `package-lock.json` do branch contra o de `main` (`git diff main -- package-lock.json`) é como se achou a causa raiz das duas vezes.
+
+O E2E do PR #2 falhou (`continue-on-error`, como esperado) — mesmo problema pré-existente da US0, Postgres não provisionado na CI. Verificação manual: `npx next dev` local, `GET /` → `200`.
 
 ## Regra de execução acordada com o usuário nesta sessão
 
