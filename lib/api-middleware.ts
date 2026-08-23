@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { validateApiKey } from './api-keys'
 import logger, { generateCorrelationId } from './logger'
 import { prisma } from './prisma'
-import { checkRateLimit } from './rate-limit'
+import { checkPlanQuota } from './plan-quota'
 
 export interface ApiContext {
   organizationId: string
@@ -166,7 +166,7 @@ export async function withRateLimit(
 ): Promise<Response> {
   try {
     // Check rate limit
-    const rateLimit = await checkRateLimit(context.organizationId, context.plan)
+    const rateLimit = await checkPlanQuota(context.organizationId, context.plan)
 
     // Add rate limit headers to response
     const rateLimitHeaders = {

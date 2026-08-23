@@ -30,7 +30,7 @@ const providers: ScrapingProvider[] = [
  * Busca com fallback automático
  * Se o primeiro falhar, tenta o próximo
  */
-export async function searchLeadsWithFallback(params: ScrapingSearchParams): Promise<ScrapingSearchResult> {
+async function searchLeadsWithFallback(params: ScrapingSearchParams): Promise<ScrapingSearchResult> {
   const errors: string[] = []
   
   for (const provider of providers) {
@@ -50,19 +50,6 @@ export async function searchLeadsWithFallback(params: ScrapingSearchParams): Pro
   
   // Nenhum funcionou
   throw new Error(`Todos os providers falharam: ${errors.join('; ')}`)
-}
-
-export function getAvailableProvider(): ScrapingProvider | null {
-  for (const provider of providers) {
-    if (provider.isConfigured()) {
-      return provider
-    }
-  }
-  return null
-}
-
-export function getConfiguredProviders(): ScrapingProvider[] {
-  return providers.filter(p => p.isConfigured())
 }
 
 export function isAnyProviderConfigured(): boolean {
