@@ -53,7 +53,7 @@ jobs:
         run: npm ci --legacy-peer-deps
 
       - name: Generate Prisma Client
-        run: npx prisma generate
+        run: npx prisma generate && npx prisma generate --schema prisma/whatsapp.prisma
 
       - name: Run TypeScript type check
         run: npx tsc --noEmit
@@ -78,10 +78,10 @@ jobs:
         run: npm ci --legacy-peer-deps
 
       - name: Generate Prisma Client
-        run: npx prisma generate
+        run: npx prisma generate && npx prisma generate --schema prisma/whatsapp.prisma
 
       - name: Build Next.js app
-        run: npm run build
+        run: npx prisma generate && npx prisma generate --schema prisma/whatsapp.prisma && npx next build
         env:
           # Use build-time env vars if needed
           SKIP_ENV_VALIDATION: true
@@ -113,10 +113,10 @@ jobs:
         run: npm ci --legacy-peer-deps
 
       - name: Generate Prisma Client
-        run: npx prisma generate
+        run: npx prisma generate && npx prisma generate --schema prisma/whatsapp.prisma
 
       - name: Run Vitest unit tests
-        run: npm run test:unit --if-present
+        run: npm run test:unit
         env:
           CI: true
 
@@ -151,7 +151,7 @@ jobs:
         run: npx playwright install --with-deps chromium
 
       - name: Generate Prisma Client
-        run: npx prisma generate
+        run: npx prisma generate && npx prisma generate --schema prisma/whatsapp.prisma
 
       - name: Run Playwright tests
         run: npm run test:e2e --if-present
@@ -165,6 +165,19 @@ jobs:
           name: playwright-report
           path: playwright-report/
           retention-days: 30
+
+  # Código morto — sem `needs`: não depende de Prisma nem de build (FR-023, FR-024)
+  dead-code:
+    name: Dead Code Scan
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run dead-code scanner (modo relatório)
+        run: node scripts/audit-dead-code.js
 
   # Database migration check
   db-migration-check:
@@ -186,10 +199,13 @@ jobs:
         run: npm ci --legacy-peer-deps
 
       - name: Generate Prisma Client
-        run: npx prisma generate
+        run: npx prisma generate && npx prisma generate --schema prisma/whatsapp.prisma
 
       - name: Validate Prisma schema
         run: npx prisma validate
+        env:
+          # prisma validate só precisa da URL resolver (não conecta) — sem isso, o job falha com P1012
+          DATABASE_URL: 'postgresql://user:password@localhost:5432/db'
 
       - name: Check for migration drift
         run: npx prisma migrate diff --from-schema-datamodel prisma/schema.prisma --to-schema-datamodel prisma/schema.prisma --script
@@ -236,7 +252,7 @@ jobs:
   all-checks-passed:
     name: All Checks Passed ✓
     runs-on: ubuntu-latest
-    needs: [lint, typecheck, build, test-unit, test-e2e, db-migration-check, security]
+    needs: [lint, typecheck, build, test-unit, test-e2e, dead-code, db-migration-check, security]
     if: always()
 
     steps:

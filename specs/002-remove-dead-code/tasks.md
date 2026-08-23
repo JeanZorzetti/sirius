@@ -1,0 +1,279 @@
+# Tasks: Remoção de código morto — Sirius CRM
+
+**Input**: Design documents from `/specs/002-remove-dead-code/`
+
+**Prerequisites**: [plan.md](./plan.md) · [spec.md](./spec.md) · [research.md](./research.md) · [data-model.md](./data-model.md) · [contracts/](./contracts/) · [quickstart.md](./quickstart.md)
+
+**Tests**: A spec **não** pede suíte nova. As únicas duas tarefas de teste abaixo existem porque um requisito as exige nominalmente: o `--check` do scanner (FR-023/SC-006, gate que reprova PR) e os casos de borda dos formatadores (FR-020, muda comportamento observável). Nada além disso.
+
+**Organização**: uma fase por história, e **cada fase é um PR** (FR-001). Não misturar histórias no mesmo merge.
+
+## Format: `[ID] [P?] [Story] Description`
+
+- **[P]**: pode rodar em paralelo (arquivos diferentes, sem dependência)
+- **[Story]**: US0–US7
+- Caminhos são relativos a `CRM/crm-project/`
+
+## A tríade de verificação
+
+Toda história fecha com os mesmos três comandos ([quickstart.md](./quickstart.md)):
+
+```bash
+npx tsc --noEmit
+npx vitest run
+node scripts/audit-dead-code.js     # o número tem que cair (FR-004)
+```
+
+Build de verificação: `npx prisma generate && npx prisma generate --schema prisma/whatsapp.prisma && npx next build`.
+**Nunca `npm run build`** — aplica `prisma migrate deploy` contra o banco (FR-003).
+
+Antes de apagar qualquer arquivo: `git log --diff-filter=D --name-only -- "*<nome>*"` (FR-005). Cada fase de deleção tem a sua tarefa própria de consulta — T014g (US1), T020g (US2), T027 (US3), T045 (US5), T055g (US6) — porque a evidência vai no PR daquela fase.
+
+**Depois do merge de cada história**: acompanhar 404 e 500 novos no Sentry por 72 horas (SC-004). Vale para toda história que vai a produção, não só a US5 — a US5 tem tarefa própria (T054) por ser a de maior risco, e o T078 consolida o resultado de todas no `handoff.md`.
+
+---
+
+## Phase 1: Setup — medir o ponto de partida
+
+**Purpose**: congelar o número contra o qual todas as histórias serão comparadas. Sem isso, "o número caiu" não é verificável.
+
+- [X] T001 Gerar o baseline em `specs/002-remove-dead-code/baseline.md`: rodar `npx prisma generate`, `npx prisma generate --schema prisma/whatsapp.prisma` e `node scripts/audit-dead-code.js`, colando a saída completa. **Registrar também a duração de `npx vitest run`** (número de testes e tempo total) — sem esse número, o "tempo de execução não aumentou" da SC-007 não tem contra o que ser comparado no T073. Se os números divergirem de 59 arquivos / 32 rotas / 24.411 linhas, **os anexos da auditoria são regerados e esta tasks.md é ajustada** — a fonte de verdade é a saída do script, nunca a lista congelada (Assumptions da spec).
+
+---
+
+## Phase 2: Foundational — US0: Baseline de verificação restaurado (P0) 🚧 BLOQUEIA TUDO
+
+**Goal**: CI verde em `main`, testes realmente executando, e o scanner com código de saída — antes de qualquer deleção.
+
+**Independent Test**: `gh run list --limit 1 --json conclusion --jq '.[0].conclusion'` retorna `success`, e o log do job de teste mostra contagem de testes executados.
+
+**⚠️ CRÍTICO**: nenhuma história de deleção começa antes desta fase fechar. Toda verificação desta feature é por ausência de regressão, e isso não se observa a partir de vermelho (research [R1](./research.md#r1--o-baseline-de-verificação-está-vermelho-bloqueia-fr-002-fr-004-fr-023-sc-007)).
+
+### Consertar a CI
+
+- [X] T002 [US0] Adicionar `npx prisma generate --schema prisma/whatsapp.prisma` ao passo "Generate Prisma Client" dos jobs `typecheck`, `build`, `test-unit`, `e2e` e `db-migration-check` em `.github/workflows/ci.yml`. Corrige o `TS2307: Cannot find module '.prisma/client-wa'` e a cascata de ~20 `TS7006` — **sem tocar em código de aplicação** (Acceptance US0-1).
+- [X] T003 [US0] Adicionar `"test:unit": "vitest run"` aos `scripts` de `package.json` (research [R2](./research.md#r2--o-job-de-teste-unitário-nunca-rodou)). `vitest` sem `run` entra em watch.
+- [X] T004 [US0] Em `.github/workflows/ci.yml`, job `test-unit`: trocar `npm run test:unit --if-present` por `npm run test:unit`. Com `--if-present` o job saía 0 sem executar nada (Acceptance US0-2).
+- [X] T005 [US0] Em `.github/workflows/ci.yml`, job `build`: trocar `npm run build` por `npx prisma generate && npx prisma generate --schema prisma/whatsapp.prisma && npx next build` (FR-003, research [R3](./research.md#r3--o-build-da-ci-aplica-migrations); Acceptance US0-3).
+- [X] T006 [US0] Diagnosticar a falha do job `db-migration-check` (`npx prisma validate`). Se for env var faltando no job, corrigir aqui; **se for schema quebrado de verdade, vira história própria** e as deleções seguem com typecheck+test (Riscos residuais da research).
+- [X] T007 [US0] Rodar `npm run lint` localmente e zerar as falhas que hoje reprovam o job `lint` em `main`. Correção mecânica apenas — regra desligada ou código reformatado, nada de refatoração de comportamento.
+
+### O gate que impede a repetição (FR-023, FR-024)
+
+- [X] T008 [P] [US0] Criar `scripts/dead-code-allowlist.json` no formato de [data-model.md](./data-model.md#scriptsdead-code-allowlistjson-novo-us0): as 3 rotas com chamador externo confirmado (`/api/sync/process`, `/api/mobile/sync`, `/api/mercadopago/checkout`), cada uma com `reason` escrito; `files` **vazio**.
+- [X] T009 [US0] Em `scripts/audit-dead-code.js`: ler a allowlist, marcar os itens ignorados na saída, adicionar a flag `--check` que sai com código `1` quando houver item fora da allowlist, e falhar com erro de formato quando uma entrada não tiver `reason`. Sem flag, a saída e o código `0` ficam **idênticos** aos de hoje — a comparação antes/depois da FR-004 depende disso ([contrato](./contracts/audit-dead-code-cli.md)).
+- [X] T010 [US0] Teste do scanner em `scripts/__tests__/audit-dead-code.test.ts`: `--check` sai 1 com item fora da allowlist, sai 0 com o mesmo item allowlistado, e falha com entrada sem `reason`. É a única lógica nova desta história e é ela que decide se um PR passa (Acceptance US0-4).
+- [X] T011 [US0] Job novo `dead-code` em `.github/workflows/ci.yml`, **sem `needs`** (roda em paralelo; não depende de Prisma nem de build), executando `node scripts/audit-dead-code.js` em **modo relatório**. O `--check` só entra ao fim da US3 (T037) — ligar antes deixa a CI vermelha por design durante quatro PRs.
+
+### Fechamento
+
+- [ ] T012 [US0] Merge em `main` e confirmar: a execução mais recente da CI conclui com `success` **e** o log do job de teste mostra contagem de testes executados.
+- [ ] T013 [US0] Registrar em `specs/002-remove-dead-code/baseline.md` a saída do scanner na CI verde — este, e não o do T001, é o número oficial de partida se houver divergência.
+
+**Checkpoint**: baseline verde. As histórias de deleção podem começar.
+
+---
+
+## Phase 3: US1 — Varredura sem risco (P1)
+
+**Goal**: apagar o que nada pode quebrar: 2 `.bak`, 4 barrels, 3 componentes shadcn, 12 dependências.
+
+**Independent Test**: `npm ci --legacy-peer-deps` + `npx tsc --noEmit` + `npx vitest run` verdes; o app sobe.
+
+- [ ] T014g [US1] Rodar `git log --diff-filter=D --name-only -- "*<nome>*"` para os 9 arquivos desta fase (2 `.bak`, 4 barrels, 3 shadcn) e registrar no PR quando e por que o consumidor sumiu (FR-005).
+- [ ] T014 [US1] **Ler o conteúdo** de `lib/email-automations.ts.bak` e `__tests__/components/generative-ui/DynamicUIComponent.test.tsx.bak` antes de apagar. Qualquer credencial encontrada entra na lista de rotação e é registrada no PR (FR-006). Só então deletar os dois.
+- [ ] T015 [P] [US1] Apagar os 4 barrels sem importador: `components/generative-ui/index.ts`, `lib/generative-ui/index.ts`, `components/onboarding/index.ts`, `lib/scraping/crawler/index.ts`. O código já importa direto da origem.
+- [ ] T016 [P] [US1] Apagar `components/ui/sidebar.tsx`, `components/ui/responsive-sheet.tsx`, `components/ui/mode-toggle.tsx`. Os outros 35 de `components/ui/` estão em uso.
+- [ ] T017 [US1] Remover de `package.json` as 12 dependências nunca importadas: `@anthropic-ai/sdk`, `d3`, `@types/d3`, `node-cron`, `qrcode`, `@types/qrcode`, `@vercel/og`, `@vercel/analytics`, `@vercel/speed-insights`, `openai`, `form-data`, `react-email`. **`@vercel/analytics` e `@vercel/speed-insights` saem por não estarem montados em lugar nenhum** (FR-014). `qrcode.react` é outro pacote e fica.
+- [ ] T018 [US1] Confirmar que `pino-pretty`, `@tailwindcss/typography` e `tw-animate-css` **permanecem** em `package.json` (FR-010): `grep -rn "pino-pretty" lib/logger.ts` e a referência em `app/globals.css` têm de continuar existindo. São usados por string e por CSS, não por `import` (Acceptance US1-3).
+- [ ] T019 [US1] Verificação: apagar `node_modules`, `npm ci --legacy-peer-deps`, tríade + build. Anotar no PR o antes/depois do scanner.
+
+**Checkpoint**: `package.json` com 12 dependências a menos e instalação limpa funcionando (SC-003).
+
+---
+
+## Phase 4: US2 — Duplicatas e infraestrutura órfã (P2)
+
+**Goal**: eliminar as ambiguidades que fazem alguém editar o arquivo errado, e ligar `lib/env.ts` sem derrubar o boot.
+
+**Independent Test**: buscar por `plan-limits` retorna um único arquivo; o boot reporta env var ausente **e continua de pé**.
+
+- [ ] T020g [US2] Rodar `git log --diff-filter=D --name-only -- "*<nome>*"` para `middleware/plan-limits.ts` e os 5 providers de scraping, e registrar no PR (FR-005). O renome de `lib/rate-limit.ts` não é deleção e não precisa da consulta.
+- [ ] T020 [US2] **Renomear** (não apagar) `lib/rate-limit.ts` → `lib/plan-quota.ts`, com `checkRateLimit`→`checkPlanQuota`, `getRateLimitInfo`→`getPlanQuotaInfo`, `resetRateLimit`→`resetPlanQuota`, `RATE_LIMITS`→`PLAN_QUOTAS`, `RateLimitResult`→`PlanQuotaResult` ([data-model.md](./data-model.md#libplan-quotats-renome-de-librate-limitts-us2)). É cota por plano, não duplicata de `lib/ratelimit.ts` — fundir removeria cobrança (research [R4](./research.md#r4--os-dois-rate-limiters-não-são-o-mesmo-conceito-emenda-à-fr-015)).
+- [ ] T021 [US2] Atualizar o único importador, `lib/api-middleware.ts`, para `checkPlanQuota`. Os headers HTTP `X-RateLimit-*` **não** são renomeados — são contrato externo. `lib/ratelimit.ts` e seus 29 importadores ficam intocados (FR-015).
+- [ ] T022 [P] [US2] Apagar `middleware/plan-limits.ts` (174 linhas, zero importadores). `lib/plan-limits.ts` é outro arquivo, está vivo e **fica** (é fundido só na US7). Confirmar depois: `grep -rn "plan-limits" --include=*.ts --include=*.tsx . | grep -v node_modules` retorna só `lib/plan-limits.ts`.
+- [ ] T023 [P] [US2] Apagar os 5 providers de scraping nunca registrados na factory: `lib/scraping/providers/firecrawl-provider.ts`, `lib/scraping/providers/google-search.ts`, `lib/scraping/providers/openstreetmap.ts`, `lib/scraping/providers/crawler-provider.ts`, `lib/scraping/outscraper-client.ts`. A lista de `lib/scraping/providers/index.ts` tem 5 **outros**.
+- [ ] T024 [US2] Em `lib/scraping/providers/index.ts`: remover `getAvailableProvider` e `getConfiguredProviders` (nenhum uso) e deixar de exportar `searchLeadsWithFallback`, que passa a ser interno (FR-016). **`searchLeads()` permanece exportado e não é colapsado** — `app/api/scraping/search/route.ts:81` é chamador vivo, e é ele a entrada pública da factory. O outro importador, `lib/scraping/outscraper-client.ts`, é apagado no T023.
+- [ ] T025 [US2] Em `instrumentation.ts`: bloco `try/catch` com `import()` dinâmico de `lib/env.ts`, logando a mensagem do erro no `catch`. **Não alterar `lib/env.ts`** — a exceção já traz a lista formatada de variáveis faltantes (research [R7](./research.md#r7--ligar-libenvts-sem-alterá-lo)). Quatro linhas. O boot não pode ser interrompido (FR-021).
+- [ ] T026 [US2] Verificação: subir o app **sem** uma env var obrigatória e confirmar as duas coisas ao mesmo tempo — o log nomeia a variável **e o processo continua de pé** (Acceptance US2-4). Exercitar uma busca de leads pelos providers registrados (Acceptance US2-3). Tríade + build.
+
+**Checkpoint**: nome ambíguo eliminado, cota por plano preservada, env vars reportadas no boot.
+
+---
+
+## Phase 5: US3 — Arquivos sem nenhum importador (P3)
+
+**Goal**: zerar a lista de arquivos sem importador — o Anexo A menos o que pertence a US1, US2, US5 e US6.
+
+**Independent Test**: `node scripts/audit-dead-code.js` mostra `ARQUIVOS SEM IMPORTADOR: 0`; app web e build mobile funcionam.
+
+- [ ] T027 [US3] Rodar `git log --diff-filter=D --name-only -- "*<nome>*"` para **cada** um dos ~40 arquivos desta fase e registrar no PR quando e por que o consumidor sumiu (FR-005, Acceptance US3-1). Esperado: a maioria aponta para `2d29773` (27/04/2026). É a fase com mais arquivos — as outras têm T014g, T020g, T045 e T055g.
+- [ ] T028 [P] [US3] Apagar os 6 módulos de `lib/mobile/`: `offline-cache.ts`, `local-notifications.ts`, `filesystem.ts`, `share.ts`, `network.ts`, `browser.ts`.
+- [ ] T029 [P] [US3] Apagar os 6 de `components/mobile/`: `voice-dictation-button.tsx`, `filter-chips.tsx`, `filters-sheet.tsx`, `list-item.tsx`, `scan-card-button.tsx`, `empty-state.tsx`. **Não tocar** em `native-initializer`, `keyboard`, `status-bar`, `deep-links`, `badge` nem nos 15 plugins Capacitor (FR-012).
+- [ ] T030 [US3] Exercitar em runtime a tela de tasks e confirmar que **nenhuma** action de `app/[locale]/dashboard/tasks/actions.ts` é invocada (Acceptance US3-3) — os outros diretórios de dashboard importam o seu próprio `'./actions'`, este não é importado por ninguém. Só então apagar.
+- [ ] T031 [P] [US3] Apagar os órfãos de tasks: `components/tasks/deal-tasks-widget.tsx`, `task-table-skeleton.tsx`, `task-list-skeleton.tsx`, `task-kanban-skeleton.tsx`, `task-calendar-skeleton.tsx`, `task-status-badge.tsx`, e `components/skeletons/mobile-list-skeleton.tsx`.
+- [ ] T031a [P] [US3] Apagar os 2 hooks órfãos do Anexo A: `hooks/use-task-pusher.ts` (170 linhas) e `hooks/useDragScroll.ts` (92). **Sem estes dois a US3 não fecha em zero** e o `useDragScroll` sobrevive fora da convenção `use-x.ts`, quebrando a premissa da US7 (research [R8](./research.md#r8--o-que-sobra-em-hooks-depois-das-deleções-simplifica-a-us7), que conta com os dois removidos aqui).
+- [ ] T032 [P] [US3] Apagar os órfãos de chat e dashboard: `components/chat/resizable-drawer.tsx`, `components/chat/chat-drawer.tsx`, `components/dashboard-with-pipeline-selector.tsx`, `components/dashboard/mobile-nav.tsx`, `components/dashboard/user-nav.tsx`, `components/dashboard/billing/embedded-checkout-modal.tsx`, `components/upgrade/limit-badge.tsx`, `components/notification-center.tsx`, `components/admin/force-refresh-button.tsx`, `components/submit-button.tsx`.
+- [ ] T033 [P] [US3] Apagar os órfãos de marketing/captação: `components/calculadora-roi-with-lead-capture.tsx`, `components/lead-capture-modal.tsx`, `components/marketing/hero-scroll.tsx`.
+- [ ] T034 [P] [US3] Apagar as libs órfãs: `lib/integrations/google-calendar-automations.ts`, `lib/integrations/whatsapp-automations.ts`, `lib/nlp/entity-disambiguation.ts`, `lib/email-i18n.ts`.
+- [ ] T035 [US3] `components/microsoft-clarity.tsx`: confirmar por busca que **não há nenhuma referência a Clarity fora do próprio componente** — o snippet nunca migrou para o `<head>` do layout. Apagar remove o rastreamento por completo, e **essa consequência é escrita no PR** (Acceptance US3-2).
+- [ ] T036 [US3] Verificação: tríade + build mobile **sem migrate** — `npx prisma generate && npx prisma generate --schema prisma/whatsapp.prisma && npx next build && npx cap sync`. **Não usar `npm run build:mobile`**: ele é `npm run build && npx cap sync`, e `npm run build` começa com `prisma migrate deploy` (FR-003). Abrir o app Capacitor e passar por navegação, `bottom-nav`, teclado, status bar e deep link (Acceptance US3-4). Confirmar `ARQUIVOS SEM IMPORTADOR: 0` e `files: []` ainda vazio na allowlist.
+- [ ] T037 [US3] **Ligar o bloqueio**: em `.github/workflows/ci.yml`, job `dead-code`, trocar `node scripts/audit-dead-code.js` por `node scripts/audit-dead-code.js --check`. Só agora, com a lista em zero — um gate que reprova por design ensina o time a ignorá-lo.
+
+**Checkpoint**: zero arquivos sem importador; o gate da FR-023 passa a barrar PR.
+
+---
+
+## Phase 6: US4 — Exportar deals e contatos pela tela (P4) 👤 única história de usuário final
+
+**Goal**: ligar as 4 rotas `/api/export/*` que já existem e nenhuma tela oferece.
+
+**Independent Test**: abrir a listagem de deals, clicar em exportar, receber o arquivo. Idem contatos.
+
+**⚠️ ORDEM DURA**: esta fase vem **antes da US5**, senão a US5 apaga as rotas que ela ia ligar (FR-011).
+
+**Backend não muda.** Se qualquer linha do [contrato](./contracts/export-endpoints.md) precisar mudar, deixou de ser história de UI e volta para a spec.
+
+- [ ] T038 [US4] Localizar a superfície de listagem de deals: `app/[locale]/dashboard/deals/` só tem `actions.ts` — o board vive em `app/[locale]/dashboard/page.tsx` / `app/[locale]/dashboard/pipelines/`. Registrar no PR qual tela recebe o controle. Contatos já tem o lugar óbvio: `components/contacts/contacts-actions-bar.tsx`.
+- [ ] T039 [US4] Invocar as skills `ux-writing` e `accessibility` **antes** de escrever o componente (regra 5 do CLAUDE.md global): é string voltada ao usuário e é controle interativo novo.
+- [ ] T040 [US4] Criar `components/export-menu.tsx`: um menu com dois links comuns (`<a href="/api/export/{recurso}/{formato}">`). As rotas respondem `Content-Disposition: attachment` — **não precisa de `fetch` nem de blob**. Props: `resource: 'deals' | 'contacts'` e `disabled`.
+- [ ] T041 [US4] Rótulo **"Exportar tudo"**, não "Exportar". As rotas não leem query param nenhum; numa tela com filtro aplicado, "Exportar" promete o que a rota não faz (research [R5](./research.md#r5--as-rotas-de-export-não-aceitam-filtro-emenda-ao-cenário-us4-1)).
+- [ ] T042 [US4] Estado desabilitado **com explicação** quando a listagem está vazia — o clique não chega a acontecer. É como o cenário US4-4 é atendido sem tocar no backend, que hoje devolveria `200` com arquivo vazio.
+- [ ] T043 [US4] Montar o `ExportMenu` em `components/contacts/contacts-actions-bar.tsx` e na superfície de deals definida em T038.
+- [ ] T044 [US4] Verificação manual: baixar e **abrir** os 4 arquivos (deals xlsx/pdf, contacts xlsx/pdf). Confirmar com usuário de outra organização que só vêm os dados da própria org (Acceptance US4-3). Confirmar que as 4 rotas saíram da lista de rotas sem chamador **sem entrada na allowlist**. Máximo 3 cliques a partir da listagem (SC-005).
+
+**Checkpoint**: exportação ligada; as rotas de export não são mais candidatas a deleção.
+
+---
+
+## Phase 7: US5 — Rotas órfãs, libs AGI e migrações one-shot (P5)
+
+**Goal**: apagar as rotas sem chamador (Anexo B menos 3 allowlist e menos 4 export), as libs AGI que caem junto, e converter as 6 rotas de migração one-shot em scripts.
+
+**Independent Test**: `ROTAS SEM CHAMADOR: no máximo 3`, todas na allowlist. Zero 404/500 novos em produção nas 72h seguintes.
+
+**Depende de**: US4 (T044).
+
+- [ ] T045 [US5] Antes de cada deleção de rota: procurar o caminho no **repositório do app móvel** e em `public/` (o scanner ignora `public/`), **e** rodar `git log --diff-filter=D --name-only` para as rotas e libs desta fase (FR-005). Registrar as duas buscas no PR — foi assim que as 3 externas foram identificadas.
+- [ ] T046 [US5] Confirmar as preservações uma a uma e **não tocar**: `/api/sync/process`, `/api/mobile/sync`, `/api/mercadopago/checkout` (FR-007, seguem na allowlist), `lib/mercadopago.ts` e `/api/webhooks/mercadopago` (FR-008), `lib/nlp/graph-rag.ts` e `lib/nlp/graph-queries.ts` (FR-009).
+- [ ] T047 [P] [US5] Apagar as 7 rotas AGI/NLP órfãs — vítimas diretas de `2d29773`: `app/api/agi/query/`, `app/api/agi/enrich/`, `app/api/agi/diagnose/`, `app/api/agi/recommend/`, `app/api/agi/learning-path/`, `app/api/agi/explain-relationship/`, `app/api/nlp/extract/`. Mais `app/api/agi/test/` e `app/api/agi/diagnostic/`.
+- [ ] T048 [US5] Apagar as libs AGI que só essas rotas alcançavam: `lib/agi/graph-skills.ts` (511 linhas) e `lib/nlp/auto-citation.ts` (384). Confirmar antes que `lib/nlp/graph-rag.ts` e `graph-queries.ts` **não** dependem delas; depois abrir `admin/knowledge-graph` e confirmar que a tela responde (Acceptance US5-3).
+- [ ] T049 [P] [US5] Apagar as demais rotas órfãs: `app/api/integrations/whatsapp/settings/`, `app/api/whatsapp/diagnostic/`, `app/api/admin/billing/charge-overdue/`, `app/api/admin/organizations/`, `app/api/admin/organizations/[id]/tier/`, `app/api/admin/support/stats/`, `app/api/scraping/jobs/cleanup/`, `app/api/debug/pusher-test/`, `app/api/agenda/calendar-status/`.
+- [ ] T050 [US5] `app/api/billing/upgrade/` (141 linhas): é rota de **cobrança** sem chamador. Confirmar no banco/Stripe que nenhum fluxo ativo a atinge antes de apagar, e registrar a confirmação no PR. Se houver dúvida, ela fica e entra na allowlist com motivo — deletar rota de receita por contagem de importador é exatamente o erro que esta feature existe para não repetir.
+- [ ] T051 [US5] Confirmar **no banco** que nenhuma organização ativa depende do fluxo de checkout novo. Só então apagar **um único arquivo**: `lib/mercado-pago/checkout.ts` (260 linhas, diretório com hífen). A rota `app/api/mercadopago/checkout/` (7 linhas) **permanece** — está na allowlist por chamador externo (FR-007, T046), e não confundir nenhum dos dois com `lib/mercadopago.ts`, vivo com 10 importadores (FR-008). Acceptance US5-2.
+- [ ] T052 [US5] Converter em `scripts/` executáveis com `tsx` as 6 operações one-shot, uma por script, e **apagar as rotas**: `app/api/admin/migrate-deals-pipeline/`, `fix-unread/`, `fix-waba-id/`, `add-closings-permission/`, `reset-wa-db/`, `sync-contacts/` (FR-017, Acceptance US5-4). Operação que não precise ser repetível vira script mesmo assim — o histórico do git guarda o que ela fazia.
+- [ ] T053 [US5] Verificação: tríade + build. `node scripts/audit-dead-code.js --check` verde com no máximo 3 rotas, todas na allowlist.
+- [ ] T054 [US5] Após o deploy: acompanhar 404 e 500 novos no Sentry por **72 horas** (SC-004). Registrar o resultado no PR ou no `handoff.md`.
+
+**Checkpoint**: ≤3 rotas sem chamador, todas justificadas por escrito.
+
+---
+
+## Phase 8: US6 — Generative UI removido (P6)
+
+**Goal**: apagar as 14.666 linhas do subsistema inteiro — 60% do corte total — e os 5 documentos que o descrevem como se estivesse em produção.
+
+**Independent Test**: o chat do site responde normalmente; a suíte encolhe em 5 arquivos de teste e continua verde.
+
+Decisão de produto tomada em 22/08: **abandonado, apagar** (Clarifications da spec). Retomar seria feature nova, com spec própria.
+
+- [ ] T055g [US6] Rodar `git log --diff-filter=D --name-only -- "*ChatWithUIExample*"` e confirmar no PR o que a auditoria afirma: o único cliente de `/api/agi/chat-with-ui` era renderizado pela página de admin apagada em `2d29773` (27/04/2026). É a evidência da FR-005 para a fase inteira — 14.666 linhas saem por causa de um único commit.
+- [ ] T055 [P] [US6] Apagar `components/generative-ui/` inteiro (10 componentes, 4 layouts, 2 workflows, ~5.100 linhas).
+- [ ] T056 [P] [US6] Apagar `lib/generative-ui/` inteiro, incluindo `intelligence/` (registry, schemas, workflow-engine, layout-engine, ab-testing, cache-store, optimistic-updates, props-auto-fill, context-extractor, trigger-logic — ~5.858 linhas).
+- [ ] T057 [P] [US6] Apagar os 5 hooks: `hooks/useABTest.ts`, `hooks/useWorkflow.ts`, `hooks/useOptimisticUpdate.ts`, `hooks/useComponentCache.ts`, `hooks/useComponentAnalytics.ts`.
+- [ ] T058 [P] [US6] Apagar os testes do subsistema **por diretório, não por contagem**: `__tests__/components/generative-ui/` (5 arquivos) e `__tests__/lib/generative-ui/component-registry.test.ts` — são 6, não 5. Mais `examples/optimistic-updates-example.tsx`. O `.bak` do mesmo diretório já saiu no T014.
+- [ ] T059 [P] [US6] Apagar as rotas `app/api/agi/chat-with-ui/` e as 3 de `app/api/ab-testing/[experimentId]/` (`assign`, `events`, `results`), mais a página `app/[locale]/admin/cache-stats/page.tsx` — **sem** o segmento `(admin)`, que não existe no repositório.
+- [ ] T060 [US6] Apagar os resíduos em `lib/agi/`: `lib/agi/tools/render-ui-tool.ts` e `lib/agi/prompts/generative-ui-prompt.ts`, removendo as referências a eles no registro de tools/prompts do AGI (Acceptance US6-2).
+- [ ] T061 [US6] Confirmar que o chat em produção continua respondendo: `AgiChatSidebar` e `AgiPreview` usam `/api/agi/chat`, que **não** é tocado (Acceptance US6-1). Depois, `grep -rn "MessageRenderer\|DynamicUIComponent\|chat-with-ui\|useABTest\|useWorkflow\|useComponentCache" --include=*.ts --include=*.tsx . | grep -v node_modules` tem de vir vazio.
+- [ ] T062 [P] [US6] Apagar os 5 documentos: `docs/GENERATIVE_UI_ARCHITECTURE.md`, `GENERATIVE_UI_CHECKLIST.md`, `GENERATIVE_UI_NEXT_STEPS.md`, `GENERATIVE_UI_SUMMARY.md`, `GENERATIVE_UI_USAGE_GUIDE.md`. `ls docs/GENERATIVE_UI_*.md` tem de não retornar nada.
+- [ ] T063 [US6] Registrar em `CHANGELOG.md` a remoção com o motivo **e o commit de origem do órfão (`2d29773`)**, para que a decisão seja recuperável por quem chegar depois (FR-019, Acceptance US6-3).
+
+**Checkpoint**: ~14.700 linhas a menos; nenhum documento descreve como em produção um subsistema que não existe (SC-008).
+
+---
+
+## Phase 9: US7 — Consolidação de conceitos duplicados (P7)
+
+**Goal**: uma implementação por conceito — formatadores, limites de plano, hooks.
+
+**Independent Test**: a renderização de valores, datas e telefones nas telas principais é idêntica antes e depois.
+
+**Depende de**: US3 (T036) e US6 (T063) — senão consolida arquivos que vão ser apagados.
+
+**⚠️ Única história que refatora código vivo**, com comportamento potencialmente observável.
+
+- [ ] T064 [US7] Antes de escrever `lib/format.ts`: catalogar num rascunho as 25 implementações (10× `formatCurrency`, 10× `formatDate`, 3× `formatPhone`, 2× `timeAgo`) e **as divergências de comportamento entre elas** — valor nulo, data inválida, telefone com e sem DDI. É o catálogo que define o alvo, não a primeira implementação encontrada.
+- [ ] T065 [US7] Criar `lib/format.ts` conforme [data-model.md](./data-model.md#libformatts-novo-us7): `formatCurrency` sobre `Intl.NumberFormat('pt-BR', …BRL)`, `formatDate` sobre `date-fns` (já é dependência, usada em 21 arquivos), `formatPhone` em string pura, `timeAgo` sobre `Intl.RelativeTimeFormat('pt-BR')`. Sem estado, sem configuração, sem classe.
+- [ ] T066 [US7] Teste em `lib/__tests__/format.test.ts` cobrindo os casos de borda catalogados no T064. É a única mudança desta feature que altera saída renderizada; divergência encontrada é decidida a favor do que hoje aparece nas telas principais e **registrada no PR** (FR-020).
+- [ ] T067 [US7] Migrar os 25 call sites para `lib/format.ts` e apagar as definições locais. Confirmar: `grep -rn "function formatCurrency\|const formatCurrency" --include=*.ts --include=*.tsx . | grep -v node_modules | grep -v lib/format.ts` vem vazio.
+- [ ] T068 [US7] Fundir `lib/feature-gates.ts` (623 linhas) e `lib/plan-limits.ts` (209) em `lib/entitlements.ts`, deixando uma fonte única de limites de plano ([data-model.md](./data-model.md#libentitlementsts-fusão-us7)). `plan-limits.ts` hoje só relê `PLAN_LIMITS` de `entitlements.ts`.
+- [ ] T069 [US7] Repontar os 3 importadores de `lib/plan-limits.ts` e todos os gates de feature para `lib/entitlements.ts`; apagar os dois arquivos absorvidos (Acceptance US7-2).
+- [ ] T070 [P] [US7] Renomear `hooks/useNotifications.ts` → `hooks/use-notifications.ts` e atualizar os importadores. Após US3 e US6, é o único arquivo fora da convenção `use-x.ts` (research [R8](./research.md#r8--o-que-sobra-em-hooks-depois-das-deleções-simplifica-a-us7)).
+- [ ] T071 [P] [US7] Mover `lib/hooks/use-entitlements.ts` e `lib/hooks/__tests__/` para `hooks/`, atualizar os importadores e apagar `lib/hooks/` (FR-022).
+- [ ] T072 [US7] Verificação visual antes/depois: valor monetário, data e telefone na listagem de deals, na ficha de contato e no dashboard. **Nenhuma diferença visível** — nem separador, nem casa decimal, nem formato de data (Acceptance US7-1).
+- [ ] T073 [US7] Tríade + build. Confirmar SC-007: a suíte continua verde e o tempo total de execução **não aumentou**.
+
+**Checkpoint**: um nome por conceito.
+
+---
+
+## Phase 10: Polish & fechamento da feature
+
+- [ ] T074 Provar o gate (SC-006): num PR **descartável**, apagar uma página que seja a única consumidora de uma rota de API e abrir o PR. Esperado: a CI **reprova**, nomeando a rota órfã. É a reprodução exata de `2d29773`. Enquanto este teste não reprovar, a FR-023 não está entregue — mesmo com o job existindo e verde. Descartar o PR depois.
+- [ ] T075 Medir o resultado final contra `baseline.md`: arquivos sem importador `0`, rotas sem chamador `≤3` todas com motivo escrito, `≥24.000` linhas removidas, 12 dependências a menos, CI verde em `main` com testes executando (SC-001, SC-002, SC-003).
+- [ ] T076 [P] Varrer `docs/` por qualquer outro documento que descreva como em produção algo removido nas fases 5–8, e corrigir ou apagar (SC-008).
+- [ ] T077 [P] Fechar o `CHANGELOG.md` com as remoções grandes de US3, US5 e US7 que ainda não estejam registradas, cada uma com motivo e commit de origem (FR-019).
+- [ ] T078 Escrever `handoff.md` co-localizado com o resultado das 72h de Sentry de cada deploy (SC-004) e o que ficou de fora: o service account `sirius-crm-483316-a2e815438069.json` na raiz **continua lá** — é achado de segurança fora do escopo desta feature, pede `/security-review` e rotação em passagem própria.
+
+---
+
+## Dependencies & Execution Order
+
+### Ordem das fases
+
+```
+Setup (T001)
+   └─> US0 (T002-T013)  🚧 BLOQUEIA TODAS AS DEMAIS
+          ├─> US1 (T014-T019)
+          ├─> US2 (T020-T026)
+          ├─> US3 (T027-T037) ──┐
+          ├─> US4 (T038-T044)   │
+          │      └─> US5 (T045-T054)
+          ├─> US6 (T055-T063) ──┤
+          │                     └─> US7 (T064-T073)
+          └────────────────────────> Polish (T074-T078)
+```
+
+### As duas dependências duras
+
+| Dependência | Por quê |
+|---|---|
+| **US4 antes de US5** | Senão a US5 apaga as 4 rotas `/api/export/*` que a US4 ia ligar (FR-011) |
+| **US7 depois de US3 e US6** | Senão consolida formatadores e hooks de arquivos que vão ser apagados |
+
+US1, US2, US3, US4 e US6 são independentes entre si e podem ser feitas em qualquer ordem depois da US0 — mas cada uma é seu próprio PR (FR-001).
+
+### Dentro de cada fase
+
+- Tarefas `[P]` tocam arquivos diferentes e podem rodar juntas.
+- A tarefa de `git log` (T027) e as de confirmação (T030, T035, T046, T050, T051, T061) vêm **antes** das deleções que elas autorizam.
+- A verificação fecha a fase, sempre.
+
+---
+
+## Notes
+
+- **Deleção não é perda**: tudo volta do git. Nenhuma história precisa de branch de arquivamento.
+- **Não somar linhas por história**: as somas do Anexo A se sobrepõem com os itens 1, 9, 11 e 15 da auditoria. O único total não sobreposto é 24.411, e o progresso se mede pela saída do `audit-dead-code.js`.
+- **Código morto não quebra teste — a ausência dele é que pode.** Por isso a verificação é rodar os comandos, não ler o diff.
+- O Constitution Check do plano é **vacuoso**, não aprovado: `.specify/memory/constitution.md` está com o template não preenchido. Se for escrita antes da US7, o gate é reavaliado.
