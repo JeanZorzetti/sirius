@@ -39,9 +39,26 @@ O que esta feature entrega, portanto, não é só a deleção: é o **gate que i
 
 ## User Scenarios & Testing *(mandatory)*
 
-Cada história é um PR próprio, na ordem de risco crescente. Todas as histórias de deleção são independentemente testáveis pela mesma tríade: a suíte continua verde e o número do `audit-dead-code.js` cai.
+Cada história é um PR próprio, na ordem de risco crescente. Todas as histórias de deleção são independentemente testáveis pela mesma tríade: a suíte continua verde e o número do `audit-dead-code.js` cai. **US0 vem antes de todas** — é ela que torna "continua verde" uma afirmação verificável.
 
-O ator principal de US1–US3 e US5–US7 é **quem mantém o repositório** (time e agentes): o valor entregue é código que não precisa ser lido, type-checado nem testado. US4 é a única história voltada ao usuário final do CRM.
+O ator principal de US0–US3 e US5–US7 é **quem mantém o repositório** (time e agentes): o valor entregue é código que não precisa ser lido, type-checado nem testado. US4 é a única história voltada ao usuário final do CRM.
+
+### User Story 0 - Baseline de verificação restaurado (Priority: P0)
+
+*Adicionada em 22/08 pela Fase 0 do plano.* Deixar a CI verde em `main` e fazer os testes realmente executarem, antes de qualquer deleção.
+
+**Why this priority**: Toda história desta feature se verifica por **ausência de regressão** — e isso não é observável a partir de vermelho. A CI de `main` falha em todas as execuções desde pelo menos 12/07/2026: `lint`, `typecheck` e `db-migration-check` reprovam, e `build`, `test` e `e2e` sequer chegam a rodar. Além disso o job de teste unitário chama um script que não existe (`test:unit`), saindo verde sem executar nada. Adicionar o gate da FR-023 a uma CI que já não barra nada produziria aparência de proteção, não proteção.
+
+**Independent Test**: A execução mais recente da CI em `main` conclui com sucesso, e o log do job de teste mostra contagem de testes executados.
+
+**Acceptance Scenarios**:
+
+1. **Given** a CI type-checando sem gerar o cliente Prisma do schema WhatsApp, **When** o passo faltante é adicionado, **Then** os erros `TS2307` e a cascata de `TS7006` desaparecem sem nenhuma alteração em código de aplicação.
+2. **Given** o job de teste unitário chamando um script inexistente com `--if-present`, **When** a história é concluída, **Then** o job executa a suíte e reprova se algum teste falhar.
+3. **Given** o job de build executando `npm run build`, que aplica migrations, **When** a história é concluída, **Then** o build de CI gera os clientes Prisma e compila **sem** tocar em banco.
+4. **Given** o scanner de código morto saindo sempre com código 0, **When** a história é concluída, **Then** existe um modo de verificação que reprova com código 1, e uma allowlist versionada com o motivo escrito de cada exceção.
+
+---
 
 ### User Story 1 - Varredura sem risco (Priority: P1)
 
@@ -103,7 +120,7 @@ Como usuário do CRM, quero baixar minha lista de deals e de contatos em PDF ou 
 
 **Acceptance Scenarios**:
 
-1. **Given** um usuário na listagem de deals com registros visíveis, **When** aciona exportar e escolhe PDF ou XLSX, **Then** o arquivo baixa contendo os mesmos registros que a tela mostra, respeitando os filtros aplicados.
+1. **Given** um usuário na listagem de deals com registros visíveis, **When** aciona exportar e escolhe PDF ou XLSX, **Then** o arquivo baixa contendo os registros que o usuário tem permissão de ver, e o rótulo do controle deixa claro que a exportação é do conjunto inteiro. *(Emendado em 22/08 pela Fase 0: as rotas não leem query param nenhum — respeitar o filtro da tela exigiria backend novo, fora do escopo de uma história de UI. Ver [research.md R5](./research.md).)*
 2. **Given** um usuário na listagem de contatos, **When** aciona exportar, **Then** vale o mesmo comportamento.
 3. **Given** um usuário de outra organização, **When** tenta exportar, **Then** recebe apenas os dados da própria organização — a exportação respeita o mesmo isolamento das telas.
 4. **Given** uma listagem vazia, **When** o usuário aciona exportar, **Then** recebe uma mensagem clara em vez de um arquivo vazio sem explicação.
@@ -196,7 +213,7 @@ Unificar o que existe em três lugares com nomes diferentes: formatadores reescr
 
 - **FR-013**: O sistema MUST NOT conter arquivos `.bak` versionados, barrels de re-export sem importador, nem componentes de UI instalados e nunca usados.
 - **FR-014**: `package.json` MUST NOT declarar dependência que nenhum código importa. As duas de telemetria (`@vercel/analytics`, `@vercel/speed-insights`) MUST ser removidas por não estarem montadas em lugar nenhum.
-- **FR-015**: O sistema MUST expor um único módulo de rate limit e um único módulo de limites de plano.
+- **FR-015**: Cota de plano e limite de rota MUST ser módulos distintos, com nomes que não se confundam — o módulo de cota por organização/plano (usado por `lib/api-middleware.ts`) MUST ser **renomeado**, não fundido com o de limite por rota/IP. Limites de plano MUST ter uma fonte única. *(Emendado em 22/08 pela Fase 0: os dois "rate limiters" não são duplicata; fundir removeria a cota por plano. Ver [research.md R4](./research.md).)*
 - **FR-016**: O sistema MUST NOT conter provider de scraping que não esteja registrado na factory, nem export de factory sem nenhum uso.
 - **FR-017**: O sistema MUST NOT expor endpoint permanente para operação executada uma única vez; essas operações MUST viver em `scripts/`.
 - **FR-018**: O subsistema Generative UI MUST ser removido por inteiro — componentes, layouts, workflows, libs, intelligence, hooks, testes, rotas `/api/agi/chat-with-ui` e `/api/ab-testing/*`, página `admin/cache-stats`, tool e prompt em `lib/agi/`, e os 5 documentos `GENERATIVE_UI_*.md`.
