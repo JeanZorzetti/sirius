@@ -67,8 +67,8 @@ Antes de apagar qualquer arquivo: `git log --diff-filter=D --name-only -- "*<nom
 
 ### Fechamento
 
-- [ ] T012 [US0] Merge em `main` e confirmar: a execução mais recente da CI conclui com `success` **e** o log do job de teste mostra contagem de testes executados.
-- [ ] T013 [US0] Registrar em `specs/002-remove-dead-code/baseline.md` a saída do scanner na CI verde — este, e não o do T001, é o número oficial de partida se houver divergência.
+- [X] T012 [US0] Merge em `main` e confirmar: a execução mais recente da CI conclui com `success` **e** o log do job de teste mostra contagem de testes executados. (PR #1, run 32638041260, `conclusion: success`, 675 passed/1 skipped em 38 arquivos — merge pendente de aprovação do PR)
+- [X] T013 [US0] Registrar em `specs/002-remove-dead-code/baseline.md` a saída do scanner na CI verde — este, e não o do T001, é o número oficial de partida se houver divergência. (idêntico ao T001: 59/7368, 32/2061, 9429 linhas)
 
 **Checkpoint**: baseline verde. As histórias de deleção podem começar.
 

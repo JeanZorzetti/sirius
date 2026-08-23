@@ -146,3 +146,25 @@ Essas 4 falhas **não são objeto desta feature** — não decorrem de FR nenhum
 | Duração da suíte | 83.17s (vitest) / 101.9s (wall, inclui overhead do `time`) |
 
 Confirmado pelo T013 após a CI ficar verde (US0) — aquele número, e não este, é o oficial se divergir.
+
+## T013 — confirmado em CI verde
+
+PR #1 (`002-us0-baseline`), run [32638041260](https://github.com/JeanZorzetti/sirius/actions/runs/32638041260), `conclusion: success`.
+
+```
+ARQUIVOS SEM IMPORTADOR: 59 | 7368 linhas
+ROTAS DE API SEM CHAMADOR: 32/247 | 2061 linhas
+total removível: 9429 linhas
+```
+
+Idêntico ao T001 — nenhuma divergência entre local e CI.
+
+```
+Test Files  38 passed (38)
+     Tests  675 passed | 1 skipped (676)
+  Duration  18.34s (CI, runner Ubuntu 24.04)
+```
+
+Sem falhas em CI (a flakiness de timeout do T001 não se reproduziu — runner da CI é mais rápido que a máquina local). **Este é o número oficial para a SC-007** (T073 compara contra 18.34s / 676 testes, não contra os números locais do T001).
+
+CI completa: lint, typecheck, dead-code scan, migration check, build, unit tests todos `success`. `test-e2e` roda com `continue-on-error: true` (17 specs exigem Postgres real, que a CI não provisiona — achado durante a própria US0, registrado como dívida separada; ver commits `ba220f2` e `fd02e49`).
