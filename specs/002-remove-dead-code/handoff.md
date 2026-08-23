@@ -1,12 +1,21 @@
 # Handoff — Remoção de código morto (Sirius CRM)
 
-**Feature**: `002-remove-dead-code` | **Escrito em**: 2026-08-23 (atualizado após US1) | **Para**: próxima sessão que continuar via `/speckit-implement`
+**Feature**: `002-remove-dead-code` | **Escrito em**: 2026-08-23 (atualizado após US2) | **Para**: próxima sessão que continuar via `/speckit-implement`
 
 ## Onde parou
 
-**US0 (Fase 1+2) e US1 (Fase 3) concluídas e mergeadas em `main`** — commits `521cc65` (PR #1) e `75fcf11` (PR #2). T001–T019 todos `[X]` em [tasks.md](./tasks.md).
+**US0 (Fase 1+2), US1 (Fase 3) e US2 (Fase 4) concluídas e mergeadas em `main`** — commits `521cc65` (PR #1), `75fcf11` (PR #2, US1) e `6543fc8` (PR #3, US2). T001–T026 todos `[X]` em [tasks.md](./tasks.md).
 
-Próximo passo: **Fase 4 — US2 (T020–T026)**, "Duplicatas e infraestrutura órfã": renomear `lib/rate-limit.ts`→`lib/plan-quota.ts`, apagar `middleware/plan-limits.ts` e 5 providers de scraping órfãos, ligar `lib/env.ts` no boot sem derrubar o processo. Ninguém começou essa fase ainda. US1, US2, US3, US4, US6 são independentes entre si — podem vir em qualquer ordem — mas **US4 antes de US5** e **US7 depois de US3 e US6** (regras duras, ver tasks.md).
+Próximo passo: **qualquer uma de US3, US4 ou US6** (T027 em diante) — são independentes entre si e podem vir em qualquer ordem. Ninguém começou nenhuma delas ainda. **US4 antes de US5** e **US7 depois de US3 e US6** continuam sendo as duas regras duras (ver tasks.md).
+
+## US2 — o que saiu diferente do planejado
+
+Nada divergiu do planejado desta vez — a única fase das quatro já executadas sem surpresa de verificação. Duas decisões deliberadas de escopo, registradas no PR:
+
+1. **Prefixos de chave Redis não renomeados.** `lib/plan-quota.ts` manteve os prefixos `ratelimit:api:free`/`ratelimit:api:pro` como estavam — mudar o prefixo resetaria contadores de cota já em produção, e não estava no escopo da tarefa (que listava 5 identificadores de código a renomear, não chaves de armazenamento).
+2. **T026 (busca de leads pelos providers) verificado estruturalmente, não ao vivo.** `HYBRID_CRAWLER` (prioridade 4 na factory, sempre "configurado") faz scraping ao vivo do Google quando `searchLeads()` é chamado de verdade. Em vez de disparar isso numa verificação automatizada, confirmei que a factory expõe exatamente os 5 providers esperados (nenhum dos 5 apagados) e que `searchLeads()` continua sendo a entrada pública — evidência suficiente de que a remoção não quebrou o call graph, sem gerar tráfego real contra terceiros.
+
+CI do PR #3: verde em todos os checks obrigatórios (`Dead Code Scan`, `TypeScript Type Check`, `Lint & Format Check`, `Unit Tests (Vitest)`, `Build Application`, `Security Audit`, `Database Migration Check`). `E2E Tests (Playwright)` reprovou — mesmo problema pré-existente de Postgres não provisionado na CI (`continue-on-error: true`), já catalogado desde a US0, não é regressão desta fase.
 
 ## US1 — o que saiu diferente do planejado (duas divergências reais, achadas na verificação)
 
@@ -51,6 +60,6 @@ Existe também um `stash@{1}` ("WIP on main: 0633e39...") — esse é anterior a
 ## Como retomar
 
 1. `git status` — confirmar main limpa (deve mostrar só os untracked acima).
-2. Rodar `/speckit-implement` de novo (ou seguir manualmente `tasks.md` a partir da Fase 3).
-3. Criar branch nova a partir de `main` atualizada (ex.: `002-us1-varredura-sem-risco`), executar T014–T019, tríade local, PR, CI, merge — mesmo fluxo da US0.
-4. Ordem das fases (não muda): US1/US2/US3/US4/US6 são independentes entre si e podem vir em qualquer ordem; **US4 tem que vir antes da US5** (senão a US5 apaga as rotas de export que a US4 ia ligar); **US7 vem depois de US3 e US6**.
+2. Rodar `/speckit-implement` de novo (ou seguir manualmente `tasks.md` a partir da Fase 5, US3).
+3. Criar branch nova a partir de `main` atualizada (ex.: `002-us3-arquivos-sem-importador`, ou escolher US4/US6 primeiro — são independentes), executar as tarefas da fase, tríade local, PR, CI, merge — mesmo fluxo de US0/US1/US2.
+4. Ordem das fases (não muda): US3/US4/US6 são independentes entre si e podem vir em qualquer ordem; **US4 tem que vir antes da US5** (senão a US5 apaga as rotas de export que a US4 ia ligar); **US7 vem depois de US3 e US6**.
