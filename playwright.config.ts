@@ -23,6 +23,11 @@ export default defineConfig({
   reporter: 'html',
   /* Test timeout */
   timeout: 60 * 1000, // 60 seconds per test
+  /* ponytail: boa parte da suíte precisa de Postgres que a CI não provisiona
+   * (ver .github/workflows/ci.yml, job test-e2e) — sem isso o runner batia
+   * no timeout-minutes do job e virava "cancelled" em vez de terminar
+   * normalmente. Sobe quando a CI ganhar um banco de teste real. */
+  globalTimeout: process.env.CI ? 8 * 60 * 1000 : 0,
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Base URL to use in actions like `await page.goto('/')`. */
