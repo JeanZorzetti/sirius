@@ -3,7 +3,7 @@ import { Redis } from '@upstash/redis'
 import logger from './logger'
 
 // Rate limit configuration
-export const RATE_LIMITS = {
+export const PLAN_QUOTAS = {
   FREE: {
     requestsPerMinute: 60,
     requestsPerHour: 1000,
@@ -37,7 +37,7 @@ function initializeRedis() {
     freeLimiter = new Ratelimit({
       redis,
       limiter: Ratelimit.slidingWindow(
-        RATE_LIMITS.FREE.requestsPerMinute,
+        PLAN_QUOTAS.FREE.requestsPerMinute,
         '1 m'
       ),
       analytics: true,
@@ -47,7 +47,7 @@ function initializeRedis() {
     proLimiter = new Ratelimit({
       redis,
       limiter: Ratelimit.slidingWindow(
-        RATE_LIMITS.PRO.requestsPerMinute,
+        PLAN_QUOTAS.PRO.requestsPerMinute,
         '1 m'
       ),
       analytics: true,
@@ -65,7 +65,7 @@ function initializeRedis() {
 // Initialize on module load
 const isInitialized = initializeRedis()
 
-export interface RateLimitResult {
+export interface PlanQuotaResult {
   success: boolean
   limit: number
   remaining: number
@@ -76,10 +76,10 @@ export interface RateLimitResult {
  * Check rate limit for an organization
  * Returns rate limit status and headers
  */
-export async function checkRateLimit(
+export async function checkPlanQuota(
   organizationId: string,
   plan: 'FREE' | 'PRO'
-): Promise<RateLimitResult> {
+): Promise<PlanQuotaResult> {
   // If Redis not configured, allow all requests (for development)
   if (!isInitialized || !freeLimiter || !proLimiter) {
     logger.warn({ organizationId }, 'Rate limiting bypassed - Redis not configured')
@@ -131,14 +131,14 @@ export async function checkRateLimit(
 /**
  * Get rate limit info for display purposes
  */
-export function getRateLimitInfo(plan: 'FREE' | 'PRO') {
-  return RATE_LIMITS[plan]
+export function getPlanQuotaInfo(plan: 'FREE' | 'PRO') {
+  return PLAN_QUOTAS[plan]
 }
 
 /**
  * Reset rate limit for an organization (admin function)
  */
-export async function resetRateLimit(organizationId: string, plan: 'FREE' | 'PRO') {
+export async function resetPlanQuota(organizationId: string, plan: 'FREE' | 'PRO') {
   if (!redis) {
     throw new Error('Redis not configured')
   }
