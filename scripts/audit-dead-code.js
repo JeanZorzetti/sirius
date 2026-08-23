@@ -1,11 +1,15 @@
 /**
  * Audit de código morto — arquivos sem importador e rotas de API sem chamador.
  *
- *   node scripts/audit-dead-code.js
+ *   node scripts/audit-dead-code.js            # relatório, sai sempre 0
+ *   node scripts/audit-dead-code.js --check     # sai 1 se houver item fora da allowlist
  *
  * Reproduz os números de docs/AUDITORIA_OVER_ENGINEERING_2026-08-22.md.
  * Resolve import estático, `import()` dinâmico e `require()`. Não resolve
  * caminho montado em runtime (template string) — ver "Limites" no doc.
+ *
+ * Exceções nominais (chamador externo ao repositório) vivem em
+ * scripts/dead-code-allowlist.json — ver contracts/audit-dead-code-cli.md.
  */
 const fs = require('fs');
 const path = require('path');
@@ -82,13 +86,49 @@ const deadRoutes = routes
   .map(f => [lines(f), '/' + rel(f).replace(/^app\//, '').replace(/\/route\.ts$/, '')])
   .sort((a, b) => b[0] - a[0]);
 
+// -------------------------------------------------------------- allowlist
+const ALLOWLIST_PATH = path.join(root, 'scripts/dead-code-allowlist.json');
+function loadAllowlist() {
+  if (!fs.existsSync(ALLOWLIST_PATH)) return { routes: new Map(), files: new Map() };
+  const raw = JSON.parse(fs.readFileSync(ALLOWLIST_PATH, 'utf8'));
+  const toMap = (key) => {
+    const map = new Map();
+    for (const entry of raw[key] || []) {
+      if (!entry.reason || !entry.reason.trim()) {
+        console.error(`scripts/dead-code-allowlist.json: entrada sem "reason" em "${key}" (path: ${entry.path})`);
+        process.exit(1);
+      }
+      map.set(entry.path, entry.reason);
+    }
+    return map;
+  };
+  return { routes: toMap('routes'), files: toMap('files') };
+}
+const allowlist = loadAllowlist();
+
 // ----------------------------------------------------------------- output
 const sum = rows => rows.reduce((acc, [n]) => acc + n, 0);
-const report = (title, rows, total) => {
+const report = (title, rows, allowMap, total) => {
   console.log(`\n${title}: ${rows.length}${total ? '/' + total : ''} | ${sum(rows)} linhas`);
-  for (const [n, name] of rows) console.log(String(n).padStart(6), name);
+  for (const [n, name] of rows) {
+    console.log(String(n).padStart(6), name);
+    if (allowMap.has(name)) console.log(`         ↳ allowlist: ${allowMap.get(name)}`);
+  }
 };
 
-report('ARQUIVOS SEM IMPORTADOR', deadFiles);
-report('ROTAS DE API SEM CHAMADOR', deadRoutes, routes.length);
+report('ARQUIVOS SEM IMPORTADOR', deadFiles, allowlist.files);
+report('ROTAS DE API SEM CHAMADOR', deadRoutes, allowlist.routes, routes.length);
 console.log(`\ntotal removível: ${sum(deadFiles) + sum(deadRoutes)} linhas`);
+
+if (process.argv.includes('--check')) {
+  const offenders = [
+    ...deadFiles.filter(([, name]) => !allowlist.files.has(name)),
+    ...deadRoutes.filter(([, name]) => !allowlist.routes.has(name)),
+  ];
+  if (offenders.length > 0) {
+    console.log(`\n--check: ${offenders.length} item(ns) fora da allowlist:`);
+    for (const [, name] of offenders) console.log('  -', name);
+    console.log('\nApague o código morto acima ou justifique a exceção em scripts/dead-code-allowlist.json (com "reason").');
+    process.exit(1);
+  }
+}

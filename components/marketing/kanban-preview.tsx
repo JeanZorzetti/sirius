@@ -2,6 +2,7 @@ const COLUMNS = [
     {
         name: 'Prospecção',
         total: 'R$ 12.400',
+        accent: false,
         cards: [
             { company: 'Alfa Distribuidora', value: 'R$ 4.200', owner: 'AC' },
             { company: 'Beta Comércio', value: 'R$ 3.100', owner: 'RM' },
@@ -10,6 +11,7 @@ const COLUMNS = [
     {
         name: 'Orçamento',
         total: 'R$ 28.900',
+        accent: false,
         cards: [
             { company: 'Gama Serviços', value: 'R$ 9.800', owner: 'JS' },
             { company: 'Delta Materiais', value: 'R$ 6.500', owner: 'AC' },
@@ -18,6 +20,7 @@ const COLUMNS = [
     {
         name: 'Fechamento',
         total: 'R$ 15.200',
+        accent: false,
         cards: [
             { company: 'Épsilon Log', value: 'R$ 15.200', owner: 'RM' },
         ],

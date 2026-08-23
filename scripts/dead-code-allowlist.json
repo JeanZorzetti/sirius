@@ -1,0 +1,8 @@
+{
+  "routes": [
+    { "path": "/api/sync/process", "reason": "chamado por public/sw-push.js (public/ é ignorado pelo scanner)" },
+    { "path": "/api/mobile/sync", "reason": "chamado pelo app Capacitor, fora deste repositório" },
+    { "path": "/api/mercadopago/checkout", "reason": "redirect de 7 linhas mantido para o app mobile antigo" }
+  ],
+  "files": []
+}
