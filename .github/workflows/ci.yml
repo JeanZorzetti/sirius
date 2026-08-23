@@ -148,7 +148,7 @@ jobs:
         run: npm ci --legacy-peer-deps
 
       - name: Install Playwright browsers
-        run: npx playwright install --with-deps chromium
+        run: npx playwright install --with-deps
 
       - name: Generate Prisma Client
         run: npx prisma generate && npx prisma generate --schema prisma/whatsapp.prisma
@@ -157,6 +157,8 @@ jobs:
         run: npm run test:e2e --if-present
         env:
           CI: true
+          # o webServer builda e sobe um Next.js real — só precisa resolver, não conectar
+          DATABASE_URL: 'postgresql://user:password@localhost:5432/db'
 
       - name: Upload Playwright report
         uses: actions/upload-artifact@v4
