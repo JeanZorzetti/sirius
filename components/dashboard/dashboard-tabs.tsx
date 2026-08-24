@@ -7,6 +7,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { CreateDealDialog } from '@/components/deals/create-deal-dialog'
 import { EditDealDialog } from '@/components/deals/edit-deal-dialog'
 import { PipelineSelector } from '@/components/pipelines/pipeline-selector'
+import { ExportButtons } from '@/components/ui/export-buttons'
 import { toast } from 'sonner'
 import { Layout, Loader2, Plus } from 'lucide-react'
 import { MobilePipelineList } from './mobile-pipeline-list'
@@ -84,6 +85,8 @@ export function DashboardTabs({
   const { setConfig } = useAppBar()
 
   const totalDeals = filteredStages.reduce((sum, s) => sum + (s.deals?.length ?? 0), 0)
+  // Exportação baixa TODOS os deals do usuário (ignora filtro de pipeline) — o "vazio" que desabilita o botão também ignora o filtro.
+  const hasAnyDeals = stages.some((s) => (s.deals?.length ?? 0) > 0)
   const totalValue = filteredStages.reduce(
     (sum, s) => sum + (s.deals ?? []).reduce((sv, d) => sv + (d.value ?? 0), 0),
     0
@@ -170,6 +173,7 @@ export function DashboardTabs({
                   selectedPipelineId={selectedPipelineId}
                   onPipelineChange={handlePipelineChange}
                 />
+                <ExportButtons resourceType="deals" disabled={!hasAnyDeals} />
                 <CreateDealDialog
                   stages={filteredStages}
                   contacts={contacts}

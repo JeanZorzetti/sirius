@@ -12,19 +12,42 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Download, FileSpreadsheet, FileText, Loader2 } from "lucide-react";
 import { toast } from "sonner";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+
+const EMPTY_MESSAGE: Record<ExportButtonsProps["resourceType"], string> = {
+  deals: "Nenhum deal para exportar ainda",
+  contacts: "Nenhum contato para exportar ainda",
+  companies: "Nenhuma empresa para exportar ainda",
+};
+
+// Caminhos literais (não template string): scripts/audit-dead-code.js resolve
+// chamador de rota por busca textual de "/api/...", não em runtime.
+const EXPORT_ROUTES: Record<ExportButtonsProps["resourceType"], Record<"xlsx" | "pdf", string>> = {
+  deals: { xlsx: "/api/export/deals/xlsx", pdf: "/api/export/deals/pdf" },
+  contacts: { xlsx: "/api/export/contacts/xlsx", pdf: "/api/export/contacts/pdf" },
+  companies: { xlsx: "/api/export/companies/xlsx", pdf: "/api/export/companies/pdf" },
+};
 
 interface ExportButtonsProps {
   resourceType: "contacts" | "companies" | "deals";
   label?: string;
   variant?: "default" | "outline" | "ghost";
   size?: "default" | "sm" | "lg" | "icon";
+  /** Desabilita o controle quando a listagem em tela está vazia — o clique nunca chega a acontecer. */
+  disabled?: boolean;
 }
 
 export function ExportButtons({
   resourceType,
-  label = "Exportar",
+  label = "Exportar tudo",
   variant = "outline",
   size = "default",
+  disabled = false,
 }: ExportButtonsProps) {
   const [isExporting, setIsExporting] = useState<"xlsx" | "pdf" | null>(null);
 
@@ -32,7 +55,7 @@ export function ExportButtons({
     try {
       setIsExporting(format);
 
-      const response = await fetch(`/api/export/${resourceType}/${format}`, {
+      const response = await fetch(EXPORT_ROUTES[resourceType][format], {
         method: "GET",
       });
 
@@ -75,6 +98,29 @@ export function ExportButtons({
   };
 
   const isLoading = isExporting !== null;
+
+  if (disabled) {
+    return (
+      <TooltipProvider>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <span tabIndex={0} className="inline-block">
+              <Button
+                variant={variant}
+                size={size}
+                aria-disabled="true"
+                className="pointer-events-none opacity-50"
+              >
+                <Download className="w-4 h-4 mr-2" />
+                {label}
+              </Button>
+            </span>
+          </TooltipTrigger>
+          <TooltipContent>{EMPTY_MESSAGE[resourceType]}</TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
+    );
+  }
 
   return (
     <DropdownMenu>
