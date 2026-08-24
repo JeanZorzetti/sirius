@@ -182,8 +182,8 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Run dead-code scanner (modo relatório)
-        run: node scripts/audit-dead-code.js
+      - name: Run dead-code scanner (--check)
+        run: node scripts/audit-dead-code.js --check
 
   # Database migration check
   db-migration-check:
