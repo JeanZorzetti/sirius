@@ -70,3 +70,19 @@ docker-compose*.yml
 roadmaps
 docs
 blog
+
+# Nested deps — the bare `node_modules` above only matches the repo root,
+# so mcp-server/node_modules (69MB) was shipped in the context every build
+**/node_modules
+
+# Not part of the web build: mobile shells, sibling services, spec docs
+android
+ios
+mcp-server
+ml-api
+scraping-server
+specs
+.specify
+relatorios
+examples
+.claude

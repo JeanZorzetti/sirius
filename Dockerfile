@@ -23,9 +23,11 @@ RUN node_modules/.bin/prisma generate && \
     node_modules/.bin/prisma generate --schema prisma/whatsapp.prisma
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV NODE_ENV=production
-# Type gate as a dedicated step: inside `next build` tsc shares the worker heap
-# with webpack caches and OOMs even at 3072MB. Standalone it fits comfortably.
-RUN NODE_OPTIONS="--max-old-space-size=3072" node_modules/.bin/tsc --noEmit -p tsconfig.build.json
+# ponytail: sem type gate aqui. O job `typecheck` do ci.yml roda `tsc --noEmit`
+# sobre um conjunto maior de arquivos (tsconfig.json, sem os excludes do
+# tsconfig.build.json) a cada push. Rodar de novo aqui custava ~1-2min serial no
+# caminho critico do deploy. Ressalva: o CI roda EM PARALELO com o deploy do
+# EasyPanel — o gate so bloqueia de verdade com branch protection na `main`.
 RUN NODE_OPTIONS="--max-old-space-size=2048" node_modules/.bin/next build --webpack
 
 # ===== Runner =====
