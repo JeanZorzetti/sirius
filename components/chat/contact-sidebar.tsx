@@ -10,6 +10,7 @@ import {
 } from 'lucide-react'
 import { toast } from 'sonner'
 import { cn } from '@/lib/utils'
+import { formatCurrency, formatDate, formatPhone } from '@/lib/format'
 import Link from 'next/link'
 import { useTranslations } from 'next-intl'
 
@@ -69,36 +70,9 @@ function colorHash(n: string) {
   return COLORS[Math.abs(h)%COLORS.length]
 }
 
-function formatPhone(p: string | null): string {
-  if (!p || p.includes('@')) return ''
-  const d = p.replace(/\D/g, '')
-  if (d.startsWith('55') && d.length === 13)
-    return `+55 (${d.slice(2,4)}) ${d.slice(4,9)}-${d.slice(9)}`
-  if (d.startsWith('55') && d.length === 12)
-    return `+55 (${d.slice(2,4)}) ${d.slice(4,8)}-${d.slice(8)}`
-  if (d.length === 11) return `(${d.slice(0,2)}) ${d.slice(2,7)}-${d.slice(7)}`
-  return p
-}
-
 function getName(c: ContactData): string {
   if (c.name && !c.name.includes('@g.us') && !c.name.includes('@s.whatsapp.net')) return c.name
   return formatPhone(c.phone) || c.phone?.replace(/@.+/,'') || 'Sem nome'
-}
-
-function formatDate(d: Date): string {
-  return new Date(d).toLocaleDateString('pt-BR', {
-    day: '2-digit',
-    month: 'short',
-    year: 'numeric'
-  })
-}
-
-function formatCurrency(value: number | null): string {
-  if (!value) return 'R$ 0,00'
-  return new Intl.NumberFormat('pt-BR', {
-    style: 'currency',
-    currency: 'BRL',
-  }).format(value)
 }
 
 export function ContactSidebar({ contact, onClose, onChatCleared }: ContactSidebarProps) {
@@ -247,7 +221,7 @@ export function ContactSidebar({ contact, onClose, onChatCleared }: ContactSideb
                         {deal.stage.name}
                       </span>
                       <span className="text-[10px] text-[#667781]">
-                        {formatDate(deal.updatedAt)}
+                        {formatDate(deal.updatedAt, 'long')}
                       </span>
                     </div>
                   </Link>
@@ -332,7 +306,7 @@ export function ContactSidebar({ contact, onClose, onChatCleared }: ContactSideb
                     </p>
                     <div className="flex items-center justify-between text-[10px] text-[#667781]">
                       <span>{note.user.name || 'Usuário'}</span>
-                      <span>{formatDate(note.createdAt)}</span>
+                      <span>{formatDate(note.createdAt, 'long')}</span>
                     </div>
                   </div>
                 ))

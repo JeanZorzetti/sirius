@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { getSession } from '@/lib/auth'
-import { checkTaskLimit } from '@/lib/feature-gates'
+import { checkTaskLimit } from '@/lib/entitlements'
 import { notifyTaskAssigned } from '@/lib/task-notifications'
 import { triggerTaskEvent } from '@/lib/tasks/realtime'
 import { executeTaskAutomations } from '@/lib/automations/task-engine'

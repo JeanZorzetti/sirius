@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
 import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
-import { requireFeature, FeatureBlockedError } from '@/lib/feature-gates'
+import { requireFeature, FeatureBlockedError } from '@/lib/entitlements'
 import logger from '@/lib/logger'
 import { apiError } from '@/lib/api-error'
 import { ERR } from '@/lib/error-messages'

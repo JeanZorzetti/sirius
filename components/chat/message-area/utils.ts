@@ -1,17 +1,7 @@
 import type { BubblePos, Contact, WhatsAppMessage } from './types'
+import { formatPhone } from '@/lib/format'
 
 // ── Contact display helpers ──────────────────────────────────
-
-export function formatPhone(p: string | null): string {
-  if (!p || p.includes('@')) return ''
-  const d = p.replace(/\D/g, '')
-  if (d.startsWith('55') && d.length === 13)
-    return `+55 (${d.slice(2,4)}) ${d.slice(4,9)}-${d.slice(9)}`
-  if (d.startsWith('55') && d.length === 12)
-    return `+55 (${d.slice(2,4)}) ${d.slice(4,8)}-${d.slice(8)}`
-  if (d.length === 11) return `(${d.slice(0,2)}) ${d.slice(2,7)}-${d.slice(7)}`
-  return p
-}
 
 export function getName(c: Contact): string {
   if (c.name && !c.name.includes('@g.us') && !c.name.includes('@s.whatsapp.net')) return c.name

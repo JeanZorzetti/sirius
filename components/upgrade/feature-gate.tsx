@@ -8,7 +8,7 @@
 'use client'
 
 import { ReactNode } from 'react'
-import { useFeatureAccess } from '@/lib/hooks/use-entitlements'
+import { useFeatureAccess } from '@/hooks/use-entitlements'
 import { UpgradePrompt } from './upgrade-prompt'
 import { SubscriptionTier } from '@prisma/client'
 

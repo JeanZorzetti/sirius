@@ -13,6 +13,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog'
+import { timeAgo } from '@/lib/format'
 import { cn } from '@/lib/utils'
 import { toast } from 'sonner'
 
@@ -55,14 +56,6 @@ const ALL_AGENTS: AgentOption[] = [
 
 function typeInfo(value: string) {
   return CONTENT_TYPES.find(t => t.value === value) ?? CONTENT_TYPES[4]
-}
-
-function timeAgo(dateStr: string): string {
-  const diff = Date.now() - new Date(dateStr).getTime()
-  const days = Math.floor(diff / 86400000)
-  if (days === 0) return 'hoje'
-  if (days === 1) return 'ontem'
-  return `${days}d atrás`
 }
 
 function wordCount(text: string) {

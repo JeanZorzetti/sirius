@@ -6,7 +6,7 @@ import { revalidatePath } from 'next/cache'
 import { getSession } from '@/lib/auth'
 import { dispatchWebhookAsync } from '@/lib/webhooks/dispatcher'
 import { WEBHOOK_EVENTS } from '@/lib/webhooks/events'
-import { canCreateContact } from '@/lib/plan-limits'
+import { canCreateContact } from '@/lib/entitlements'
 
 function errMessage(error: unknown): string {
     return error instanceof Error ? error.message : String(error)

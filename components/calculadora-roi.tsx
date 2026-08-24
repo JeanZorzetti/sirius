@@ -11,6 +11,7 @@ import { Badge } from '@/components/ui/badge'
 import { TrendingDown, TrendingUp, AlertTriangle, DollarSign, Clock, Users, Target, ArrowRight } from 'lucide-react'
 import { analytics } from '@/lib/posthog'
 import { sendCriticalEvent } from '@/lib/analytics/beacon'
+import { formatCurrency as formatCurrencyBRL } from '@/lib/format'
 
 interface CalculadoraROIProps {
   onCTAClick?: () => void
@@ -177,15 +178,6 @@ export function CalculadoraROI({
       otimista: calcularCenario(SCENARIOS.otimista),
     }
   }, [numVendedores, leadsPerMonth, ticketMedio, taxaConversaoAtual, tempoMedioRespostaHoras])
-
-  const formatCurrency = (value: number) => {
-    return new Intl.NumberFormat('pt-BR', {
-      style: 'currency',
-      currency: 'BRL',
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0,
-    }).format(value)
-  }
 
   const handleCTAClick = () => {
     const resultado = resultados[selectedScenario as keyof typeof resultados]
@@ -375,19 +367,19 @@ export function CalculadoraROI({
                         <div>
                           <p className="text-sm opacity-90 mb-1">Por Mês</p>
                           <p className="text-4xl font-black font-mono">
-                            {formatCurrency(result.ganhoMensal)}
+                            {formatCurrencyBRL(result.ganhoMensal, { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
                           </p>
                         </div>
                         <div>
                           <p className="text-sm opacity-90 mb-1">Em 60 Dias</p>
                           <p className="text-4xl font-black font-mono">
-                            {formatCurrency(result.ganho60Dias)}
+                            {formatCurrencyBRL(result.ganho60Dias, { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
                           </p>
                         </div>
                         <div>
                           <p className="text-sm opacity-90 mb-1">Por Ano</p>
                           <p className="text-4xl font-black font-mono">
-                            {formatCurrency(result.ganhoAnual)}
+                            {formatCurrencyBRL(result.ganhoAnual, { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
                           </p>
                         </div>
                       </div>
@@ -404,7 +396,7 @@ export function CalculadoraROI({
                         </span>
                       </div>
                       <p className="text-2xl font-bold text-amber-900 dark:text-amber-100">
-                        {formatCurrency(result.leadDecayCost)}
+                        {formatCurrencyBRL(result.leadDecayCost, { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
                       </p>
                       <p className="text-xs text-amber-700 dark:text-amber-400 mt-1">
                         {result.leadsRecuperados.toFixed(0)} leads recuperados
@@ -419,7 +411,7 @@ export function CalculadoraROI({
                         </span>
                       </div>
                       <p className="text-2xl font-bold text-blue-900 dark:text-blue-100">
-                        {formatCurrency(result.ganhoConversao)}
+                        {formatCurrencyBRL(result.ganhoConversao, { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
                       </p>
                       <p className="text-xs text-blue-700 dark:text-blue-400 mt-1">
                         {taxaConversaoAtual}% → {result.taxaConversaoNova.toFixed(1)}%
@@ -434,7 +426,7 @@ export function CalculadoraROI({
                         </span>
                       </div>
                       <p className="text-2xl font-bold text-purple-900 dark:text-purple-100">
-                        {formatCurrency(result.ganhoTempo)}
+                        {formatCurrencyBRL(result.ganhoTempo, { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
                       </p>
                       <p className="text-xs text-purple-700 dark:text-purple-400 mt-1">
                         {result.horasEconomizadasMes.toFixed(1)}h produtivas/mês
@@ -448,7 +440,7 @@ export function CalculadoraROI({
                       <div>
                         <p className="text-xs text-muted-foreground mb-1">Investimento Sirius</p>
                         <p className="text-xl font-bold text-green-700 dark:text-green-400">
-                          {formatCurrency(result.custoSiriusMensal)}/mês
+                          {formatCurrencyBRL(result.custoSiriusMensal, { minimumFractionDigits: 0, maximumFractionDigits: 0 })}/mês
                         </p>
                         <p className="text-xs text-muted-foreground mt-1">
                           R$ {CUSTO_SIRIUS_MENSAL} × {numVendedores} users
@@ -469,7 +461,7 @@ export function CalculadoraROI({
                       <div>
                         <p className="text-xs text-muted-foreground mb-1">Lucro Líquido (Ano 1)</p>
                         <p className="text-xl font-bold text-green-700 dark:text-green-400">
-                          {formatCurrency(result.ganhoAnual - (result.custoSiriusMensal * 12))}
+                          {formatCurrencyBRL(result.ganhoAnual - (result.custoSiriusMensal * 12), { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
                         </p>
                       </div>
                     </div>
