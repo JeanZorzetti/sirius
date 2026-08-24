@@ -1,12 +1,29 @@
 # Handoff — Remoção de código morto (Sirius CRM)
 
-**Feature**: `002-remove-dead-code` | **Escrito em**: 2026-08-24 (atualizado após US6) | **Para**: próxima sessão que continuar via `/speckit-implement`
+**Feature**: `002-remove-dead-code` | **Escrito em**: 2026-08-24 (atualizado após US3) | **Para**: próxima sessão que continuar via `/speckit-implement`
 
 ## Onde parou
 
-**US0 (Fase 1+2), US1 (Fase 3), US2 (Fase 4) e US6 (Fase 8) concluídas e mergeadas em `main`** — commits `521cc65` (PR #1), `75fcf11` (PR #2, US1), `6543fc8` (PR #3, US2) e `f70086a` (PR #4, US6). T001–T026 e T055–T063 todos `[X]` em [tasks.md](./tasks.md).
+**US0 (Fase 1+2), US1 (Fase 3), US2 (Fase 4), US6 (Fase 8) e US3 (Fase 5) concluídas e mergeadas em `main`** — commits `521cc65` (PR #1), `75fcf11` (PR #2, US1), `6543fc8` (PR #3, US2), `f70086a` (PR #4, US6) e `c1c5d3d` (PR #5, US3, squash). T001–T037 e T055–T063 todos `[X]` em [tasks.md](./tasks.md).
 
-Próximo passo: **US3 ou US4** (T027 em diante / T038 em diante) — continuam independentes entre si. **US4 antes de US5** e **US7 depois de US3 e US6** continuam sendo as duas regras duras (ver tasks.md); com US6 fechada, só falta US3 fechar para US7 poder começar.
+Próximo passo: **US4** (T038 em diante) — é a única que falta antes da US5 poder começar (`⚠️ ORDEM DURA`: US4 tem que fechar primeiro, senão a US5 apaga as rotas `/api/export/*` que a US4 ia ligar). **US7 já está desbloqueada** (dependia de US3+US6, as duas fechadas agora), mas não tem urgência de ir antes da US4/US5 — é independente delas.
+
+**⚠️ Contexto que não pode ser perdido antes de mexer em `.github/workflows/ci.yml` ou no job `dead-code`**: o gate `--check` do scanner foi ligado no PR #5 (T037) **de propósito, sabendo que ia ficar vermelho**. `--check` valida arquivos **e** rotas juntos, e rotas sem chamador estão em 38 (só 3 na allowlist) — só caem para ≤3 quando a **US5** fechar. Isso foi perguntado ao usuário nesta sessão e a resposta foi "ligar agora, aceitar vermelho até a US5". **Se o job `Dead Code Scan` aparecer vermelho na CI de qualquer PR entre agora e o merge da US5, isso é esperado — não é regressão, não precisa de correção, não precisa perguntar de novo.** Não há branch protection em `main` (confirmado via `gh api repos/.../branches/main/protection` → 404), então isso não bloqueia merge.
+
+## US3 — o que saiu diferente do planejado
+
+Duas divergências reais, as duas achadas só depois de rodar o scanner de novo — nenhuma das duas estava na tasks.md:
+
+1. **Cascata de 2ª ordem em arquivos.** Os ~40 arquivos listados na tasks.md para esta fase eram o Anexo A congelado antes da US1/US2/US6 rodarem. Depois de apagar esses 40, rodei `node scripts/audit-dead-code.js` de novo (hábito herdado da US6, T055g) e apareceram **7 órfãos novos**: cada um só tinha, como único importador, um dos 40 arquivos que acabei de apagar. Exemplos: `hooks/useNotifications.ts` só era usado por `components/notification-center.tsx` (que saiu no T032); `lib/mobile/ocr.ts` só era usado por `components/mobile/scan-card-button.tsx` (T029). Confirmado via `git diff --cached` que cada um dos 7 tinha exatamente um importador, e esse importador era um arquivo já deletado nesta mesma leva. Apaguei os 7 também — **sem isso a US3 não fecha em zero**, e a tasks.md nem sabia que eles existiam (T031a já tinha esse mesmo padrão previsto para 2 hooks; aqui apareceu de novo, maior, e sem aviso prévio). `ARQUIVOS SEM IMPORTADOR`: 41 → 1 (o `1` que sobra, `lib/mercado-pago/checkout.ts`, é da US5, não desta fase — T051 já reserva ele).
+2. **A mesma cascata orfanou rotas de API, que não são desta fase.** `hooks/useNotifications.ts` e `components/calculadora-roi-with-lead-capture.tsx` eram os únicos chamadores de 6 rotas (`/api/notifications`, `/api/notifications/stream`, `/api/notifications/[id]`, `/api/notifications/mark-all-read`, `/api/pusher/auth`, `/api/leads/capture-calculator`). `ROTAS SEM CHAMADOR` subiu de 32 para 38. **Não toquei nelas** — US3 é sobre arquivos (Anexo A), rotas são Anexo B, escopo da US5. Ficam registradas aqui para a próxima sessão não redescobrir do zero: quando for fazer a US5, rodar o scanner de novo primeiro, porque provavelmente vai ter mais 6 rotas na lista do que a tasks.md original previa.
+
+**T027 também saiu diferente do esperado**: a tasks.md previa que "a maioria aponta para `2d29773`" (o commit que matou o Generative UI e derrubou o consumo cruzado de 6 páginas admin, mesma causa da US6). Não foi isso — `git show --stat 2d29773 | grep` não bate com nenhum caminho dos 47 arquivos desta fase. Nenhum dos 47 tem histórico de deleção de si mesmo (`git log --diff-filter=D` vazio para todos). A causa real ficou sem explicação individual — provavelmente componentes/libs que nunca chegaram a ser conectados (código morto de nascença, não órfão por refactor).
+
+**T037 (ligar o gate `--check`) teve decisão do usuário no meio da sessão** — ver o aviso no topo deste handoff. Resumindo: liguei, sabendo que fica vermelho até a US5, porque foi isso que o usuário escolheu quando perguntei.
+
+CI do PR #5: verde em todos os checks que importam (`Lint & Format Check`, `TypeScript Type Check`, `Security Audit`, `Database Migration Check`, `Unit Tests (Vitest)`, `Build Application`). `Dead Code Scan` reprovou **por design** (T037, ver aviso). `E2E Tests (Playwright)` reprovou pelo mesmo Postgres-não-provisionado pré-existente, catalogado desde a US0. Mergeado por squash pelo próprio usuário (`c1c5d3d`), branch remota apagada por mim depois.
+
+**Verificação não feita**: Acceptance US3-4 pedia passar pelo app Capacitor num device/emulador real (navegação, bottom-nav, teclado, status bar, deep link). Não tinha device disponível nesta sessão — fiz só a verificação estrutural (`npx cap sync` limpo, 16 plugins intactos, os 5 módulos nativos que não podiam ser tocados — `native-initializer`, `keyboard.ts`, `status-bar.ts`, `deep-links.ts`, `badge.ts` — confirmados presentes). Se a próxima sessão tiver acesso a um device, vale fechar esse buraco antes de considerar a US3 100% verificada.
 
 ## US6 — o que saiu diferente do planejado
 
@@ -72,7 +89,9 @@ Existe também um `stash@{1}` ("WIP on main: 0633e39...") — esse é anterior a
 
 ## Como retomar
 
-1. `git status` — confirmar main limpa (deve mostrar só os untracked acima).
-2. Rodar `/speckit-implement` de novo (ou seguir manualmente `tasks.md` a partir da Fase 5, US3, ou da Fase 6, US4).
-3. Criar branch nova a partir de `main` atualizada (ex.: `002-us3-arquivos-sem-importador`, ou `002-us4-exportar-deals-contatos` — são independentes), executar as tarefas da fase, tríade local, PR, CI, merge — mesmo fluxo de US0/US1/US2/US6.
-4. Ordem das fases (não muda): US3 e US4 são independentes entre si e podem vir em qualquer ordem; **US4 tem que vir antes da US5** (senão a US5 apaga as rotas de export que a US4 ia ligar); **US7 vem depois de US3 e US6** — US6 já fechou, então só falta US3 para US7 poder começar.
+1. `git status` — confirmar main limpa (deve mostrar só os untracked de sempre, ver seção acima).
+2. Rodar `/speckit-implement` de novo (ou seguir manualmente `tasks.md` a partir da Fase 6, US4 — é a única fase de deleção que falta antes da US5).
+3. Criar branch nova a partir de `main` atualizada (ex.: `002-us4-exportar-deals-contatos`), executar T038-T044, tríade local, PR, CI, esperar o usuário mergear (ele tem mergeado direto pelo GitHub, não é preciso `gh pr merge`) — mesmo fluxo de US0/US1/US2/US3/US6.
+4. **Antes de apagar qualquer arquivo em qualquer fase futura**: rodar `node scripts/audit-dead-code.js` de novo primeiro, mesmo que a tasks.md já tenha uma lista congelada — a US3 mostrou que cascatas de 2ª ordem (um arquivo que só existia por causa de outro já apagado) não aparecem na lista congelada e só o scanner ao vivo pega. Isso vale principalmente para a **US5**: com a cascata da US3, `ROTAS SEM CHAMADOR` já está em 38 (a tasks.md original previa 32) — rodar o scanner de novo antes de montar a lista de rotas a apagar.
+5. Ordem das fases (não muda): **US4 tem que vir antes da US5** (senão a US5 apaga as rotas de export que a US4 ia ligar); **US7 já está desbloqueada** (dependia de US3 e US6, as duas fechadas) mas não tem ordem obrigatória em relação a US4/US5.
+6. **Não desligar nem "consertar" o vermelho do job `Dead Code Scan`** até a US5 fechar as rotas — é esperado, ver aviso no topo deste handoff.
