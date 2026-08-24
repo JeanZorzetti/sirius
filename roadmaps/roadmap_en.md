@@ -377,20 +377,14 @@ These files contain **all text content** for dynamically-generated SEO pages and
 | Route | Description |
 |---|---|
 | `/admin` | Admin dashboard |
-| `/admin/ab-testing` | A/B testing |
 | `/admin/analytics` | Platform analytics |
-| `/admin/auto-citation` | Auto citation |
 | `/admin/funnel` | Funnel management |
-| `/admin/generative-ui` | Generative UI |
-| `/admin/graph-rag` | Graph RAG |
 | `/admin/graph-viz` | Graph visualization |
 | `/admin/knowledge-graph` | Knowledge graph |
 | `/admin/organizations` | Organization management |
 | `/admin/pwa-metrics` | PWA metrics |
 | `/admin/seo` | SEO management |
-| `/admin/spin-chat` | SPIN chat |
 | `/admin/users` | User management |
-| `/admin/cache-stats` | Cache statistics |
 
 ### Checkout Flow:
 
@@ -459,23 +453,7 @@ These files contain **all text content** for dynamically-generated SEO pages and
 - `components/agi/AgiChatSidebar.tsx` — 14.4KB
 - `components/agi/AgiPreview.tsx` — 10KB
 
-**Generative UI (17 components):**
-- `components/generative-ui/DemoScheduler.tsx` — 12.6KB
-- `components/generative-ui/DealFormGenerator.tsx` — 13.2KB
-- `components/generative-ui/EmailPreview.tsx` — 11.5KB
-- `components/generative-ui/ROICalculator.tsx` — 11KB
-- `components/generative-ui/ComponentSkeleton.tsx` — 14.5KB
-- `components/generative-ui/CompetitorMatrix.tsx` — 8.4KB
-- `components/generative-ui/OnboardingTimeline.tsx` — 8.4KB
-- `components/generative-ui/ScriptPreview.tsx` — 7.9KB
-- `components/generative-ui/QualificationDashboard.tsx` — 8KB
-- `components/generative-ui/PricingComparison.tsx` — 7.9KB
-- `components/generative-ui/GenUIErrorBoundary.tsx` — 7.4KB
-- `components/generative-ui/AnimatedComponent.tsx` — 7.2KB
-- `components/generative-ui/MessageRenderer.tsx` — 6.3KB
-- `components/generative-ui/DynamicUIComponent.tsx` — 6.4KB
-- `components/generative-ui/InsightCard.tsx` — 5.3KB
-- `components/generative-ui/ThinkingIndicator.tsx` — 2.6KB
+**Generative UI:** removed entirely in `002-remove-dead-code` (US6, commit `f70086a`, 2026-08-24) — abandoned subsystem, zero production consumers. Out of scope for this i18n roadmap; the 17 components listed in earlier drafts of this document no longer exist.
 
 **Admin (23 components!):**
 - `components/admin/*` — SEO dashboard, period comparator, anomaly alerts, etc.
@@ -912,7 +890,7 @@ Phase 0 ──→ Phase 7 (SEO) ──→ Phase 1 (Marketing) ──→ Phase 2 
 11. **2 massive deal dialogs** — `edit-deal-dialog.tsx` at 47KB was the **largest file** in the project, not previously flagged
 12. **23 admin analytics components** — `components/admin/*` was missing entirely
 13. **13 IA/AGI components** — `components/ia/*` + `components/agi/*` missing
-14. **17 generative-ui components** — `components/generative-ui/*` missing
+14. ~~17 generative-ui components~~ — subsystem removed in `002-remove-dead-code` (US6), no longer applicable
 15. **4 integration setting components** — WhatsApp, N8N, Google Calendar
 16. **4 email automation components** — template editor, history table, etc.
 17. **5 upgrade/plan components** — quota display, upgrade prompts, feature gates
