@@ -28,7 +28,21 @@ ENV NODE_ENV=production
 # tsconfig.build.json) a cada push. Rodar de novo aqui custava ~1-2min serial no
 # caminho critico do deploy. Ressalva: o CI roda EM PARALELO com o deploy do
 # EasyPanel — o gate so bloqueia de verdade com branch protection na `main`.
-RUN NODE_OPTIONS="--max-old-space-size=2048" node_modules/.bin/next build --webpack
+# Turbopack (padrao do Next 16). O `--webpack` entrou em ec9104a por OOM no
+# builder, mas junto com dois confundidores que ja sairam: os plugins do Sentry
+# (f4a7a93, agora so carregam com SENTRY_ORG setado) e o tsc dentro do next
+# build. Sobrou o bundler sozinho, que cabe.
+# ROLLBACK: se voltar a estourar, o sintoma diz qual e o teto.
+#   "JavaScript heap out of memory" -> heap V8, sobe o --max-old-space-size
+#   exit 137 / "Killed"             -> RAM do container; o Turbopack aloca do
+#                                      lado Rust, NODE_OPTIONS nao segura isso.
+#                                      Nesse caso volte o `--webpack` aqui.
+RUN NODE_OPTIONS="--max-old-space-size=2048" node_modules/.bin/next build
+# ponytail: o runner sobe com `node server.js`. Se o bundler parar de emitir
+# esse arquivo (no Windows ja nao emite: chunk `node:inspector` tem `:` no nome
+# e o copyfile da EINVAL), o container entra em crash-loop em producao. Falhar
+# o BUILD e mais barato que descobrir isso no healthcheck.
+RUN test -f .next/standalone/server.js
 
 # ===== Runner =====
 FROM node:20-alpine AS runner
