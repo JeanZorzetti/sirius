@@ -1,12 +1,25 @@
 # Handoff — Remoção de código morto (Sirius CRM)
 
-**Feature**: `002-remove-dead-code` | **Escrito em**: 2026-08-23 (atualizado após US2) | **Para**: próxima sessão que continuar via `/speckit-implement`
+**Feature**: `002-remove-dead-code` | **Escrito em**: 2026-08-24 (atualizado após US6) | **Para**: próxima sessão que continuar via `/speckit-implement`
 
 ## Onde parou
 
-**US0 (Fase 1+2), US1 (Fase 3) e US2 (Fase 4) concluídas e mergeadas em `main`** — commits `521cc65` (PR #1), `75fcf11` (PR #2, US1) e `6543fc8` (PR #3, US2). T001–T026 todos `[X]` em [tasks.md](./tasks.md).
+**US0 (Fase 1+2), US1 (Fase 3), US2 (Fase 4) e US6 (Fase 8) concluídas e mergeadas em `main`** — commits `521cc65` (PR #1), `75fcf11` (PR #2, US1), `6543fc8` (PR #3, US2) e `f70086a` (PR #4, US6). T001–T026 e T055–T063 todos `[X]` em [tasks.md](./tasks.md).
 
-Próximo passo: **qualquer uma de US3, US4 ou US6** (T027 em diante) — são independentes entre si e podem vir em qualquer ordem. Ninguém começou nenhuma delas ainda. **US4 antes de US5** e **US7 depois de US3 e US6** continuam sendo as duas regras duras (ver tasks.md).
+Próximo passo: **US3 ou US4** (T027 em diante / T038 em diante) — continuam independentes entre si. **US4 antes de US5** e **US7 depois de US3 e US6** continuam sendo as duas regras duras (ver tasks.md); com US6 fechada, só falta US3 fechar para US7 poder começar.
+
+## US6 — o que saiu diferente do planejado
+
+Nada divergiu de fato (nenhuma correção de bug), mas duas coisas do planejamento pediram ajuste de leitura na hora de executar, ambas registradas no PR:
+
+1. **T055g não achou histórico de deleção do arquivo em si.** `git log --diff-filter=D --name-only -- "*ChatWithUIExample*"` voltou vazio — o arquivo nunca foi apagado antes (é a própria fase que o apaga). A evidência da FR-005 veio indireta: `git show --stat 2d29773` confirma que esse commit apagou as 6 páginas de admin (`admin/generative-ui`, `admin/ab-testing` ×2, `admin/auto-citation` ×2, `admin/graph-rag` ×2, `admin/spin-chat` ×3) que eram os únicos consumidores do subsistema inteiro, não só do `ChatWithUIExample`.
+2. **T060 não tinha "registro" nenhum para repontar.** `lib/agi/tools/` e `lib/agi/prompts/` só continham os dois arquivos da própria tarefa — não existe um índice/registry central de tools do AGI. A cadeia de import era só `chat-with-ui/route.ts` → `generative-ui-prompt.ts` → `render-ui-tool.ts`, e a rota já saiu no T059. Nada a atualizar em outro lugar.
+
+Achado fora de escopo, deixado como está e registrado no PR (T062): `docs/QUICK_START_GENUI.md`, `scripts/test-genui-endpoint.js`, `scripts/COMO_TESTAR.md`, `docs/AUDITORIA_OVER_ENGINEERING_2026-08-22.md` e `roadmaps/roadmap_en.md` ainda mencionam o subsistema removido, mas não estavam na lista de 5 docs do T062 — vão para o T076 (Polish).
+
+**Números**: 73 arquivos apagados, 21.638 linhas (`git diff --stat`) — bem acima da estimativa de ~14.700 do tasks.md (a estimativa somava só components+lib; testes, hooks, rotas e docs entram por fora). O scanner (`ARQUIVOS SEM IMPORTADOR`) só caiu 46→41, **não** ~14.700 linhas — o subsistema inteiro era alcançável só por imports cruzados internos e não pintava como órfão antes de ser apagado, exatamente como a nota da tasks.md já previa. `npx tsc --noEmit` só ficou limpo depois de `rm -rf .next/` — a primeira rodada acusava `TS2307` em manifestos de rotas stale (`validator.ts`) de um build anterior que ainda referenciava as rotas apagadas; não é regressão de código.
+
+CI do PR #4: verde em todos os checks obrigatórios (`Dead Code Scan`, `TypeScript Type Check`, `Lint & Format Check`, `Unit Tests (Vitest)`, `Build Application`, `Security Audit`, `Database Migration Check`). `E2E Tests (Playwright)` reprovou — mesmo Postgres não provisionado na CI, catalogado desde US0, `continue-on-error: true`, não é regressão.
 
 ## US2 — o que saiu diferente do planejado
 
@@ -60,6 +73,6 @@ Existe também um `stash@{1}` ("WIP on main: 0633e39...") — esse é anterior a
 ## Como retomar
 
 1. `git status` — confirmar main limpa (deve mostrar só os untracked acima).
-2. Rodar `/speckit-implement` de novo (ou seguir manualmente `tasks.md` a partir da Fase 5, US3).
-3. Criar branch nova a partir de `main` atualizada (ex.: `002-us3-arquivos-sem-importador`, ou escolher US4/US6 primeiro — são independentes), executar as tarefas da fase, tríade local, PR, CI, merge — mesmo fluxo de US0/US1/US2.
-4. Ordem das fases (não muda): US3/US4/US6 são independentes entre si e podem vir em qualquer ordem; **US4 tem que vir antes da US5** (senão a US5 apaga as rotas de export que a US4 ia ligar); **US7 vem depois de US3 e US6**.
+2. Rodar `/speckit-implement` de novo (ou seguir manualmente `tasks.md` a partir da Fase 5, US3, ou da Fase 6, US4).
+3. Criar branch nova a partir de `main` atualizada (ex.: `002-us3-arquivos-sem-importador`, ou `002-us4-exportar-deals-contatos` — são independentes), executar as tarefas da fase, tríade local, PR, CI, merge — mesmo fluxo de US0/US1/US2/US6.
+4. Ordem das fases (não muda): US3 e US4 são independentes entre si e podem vir em qualquer ordem; **US4 tem que vir antes da US5** (senão a US5 apaga as rotas de export que a US4 ia ligar); **US7 vem depois de US3 e US6** — US6 já fechou, então só falta US3 para US7 poder começar.
