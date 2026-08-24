@@ -1,6 +1,7 @@
 'use client'
 
 import { cn } from '@/lib/utils'
+import { formatPhone } from '@/lib/format'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import {
@@ -50,23 +51,6 @@ export interface ConversationContact {
     whatsappMessages: number
     unreadMessages?: number
   }
-}
-
-// ── Helpers ──────────────────────────────────────────────────
-
-function formatPhone(phone: string | null): string {
-  if (!phone) return ''
-  if (phone.includes('@')) return ''
-  const d = phone.replace(/\D/g, '')
-  if (d.startsWith('55') && d.length === 13)
-    return `(${d.slice(2, 4)}) ${d.slice(4, 9)}-${d.slice(9)}`
-  if (d.startsWith('55') && d.length === 12)
-    return `(${d.slice(2, 4)}) ${d.slice(4, 8)}-${d.slice(8)}`
-  if (d.length === 11)
-    return `(${d.slice(0, 2)}) ${d.slice(2, 7)}-${d.slice(7)}`
-  if (d.length === 10)
-    return `(${d.slice(0, 2)}) ${d.slice(2, 6)}-${d.slice(6)}`
-  return phone
 }
 
 export function displayName(c: ConversationContact): string {

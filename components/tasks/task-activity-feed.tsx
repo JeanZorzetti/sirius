@@ -3,7 +3,8 @@
 import { useState, useEffect } from 'react'
 import { useTranslations } from 'next-intl'
 import { Activity, UserCheck, Flag, Calendar, CheckCircle2, Pencil } from 'lucide-react'
-import { cn, formatDateBR } from '@/lib/utils'
+import { cn } from '@/lib/utils'
+import { timeAgo } from '@/lib/format'
 
 interface TaskActivityItem {
   id: string
@@ -38,18 +39,6 @@ const ACTIVITY_COLORS: Record<string, string> = {
   CREATED: 'text-zinc-500 bg-zinc-500/10',
   UPDATED: 'text-zinc-500 bg-zinc-500/10',
   COMMENTED: 'text-sky-500 bg-sky-500/10',
-}
-
-function relativeTime(iso: string): string {
-  const diff = Date.now() - new Date(iso).getTime()
-  const mins = Math.floor(diff / 60000)
-  if (mins < 1) return 'agora'
-  if (mins < 60) return `${mins}min atrás`
-  const hrs = Math.floor(mins / 60)
-  if (hrs < 24) return `${hrs}h atrás`
-  const days = Math.floor(hrs / 24)
-  if (days < 7) return `${days}d atrás`
-  return formatDateBR(iso)
 }
 
 export function TaskActivityFeed({ taskId }: TaskActivityFeedProps) {
@@ -104,7 +93,7 @@ export function TaskActivityFeed({ taskId }: TaskActivityFeedProps) {
                     <span className="text-muted-foreground">{a.description}</span>
                   </p>
                   <span className="text-[10px] text-muted-foreground">
-                    {relativeTime(a.createdAt)}
+                    {timeAgo(a.createdAt)}
                   </span>
                 </div>
               </li>

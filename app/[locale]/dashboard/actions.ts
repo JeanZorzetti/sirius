@@ -7,7 +7,7 @@ import { getSession } from "@/lib/auth"
 import { sendDealCreatedEmail, sendDealStageChangedEmail, sendUpgradeNudgeEmail, sendEmailAsync, shouldSendUpgradeNudge } from '@/lib/email-automations'
 import { dispatchWebhookAsync } from '@/lib/webhooks/dispatcher'
 import { WEBHOOK_EVENTS } from '@/lib/webhooks/events'
-import { canCreateDeal } from '@/lib/plan-limits'
+import { canCreateDeal } from '@/lib/entitlements'
 import { ERR } from '@/lib/error-messages'
 
 async function getAuthenticatedUser() {

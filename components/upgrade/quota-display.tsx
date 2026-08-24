@@ -20,7 +20,7 @@ import {
 import {
   useAgiQuotaStatus,
   useScrapingCreditsStatus,
-} from '@/lib/hooks/use-entitlements'
+} from '@/hooks/use-entitlements'
 import Link from 'next/link'
 
 /**

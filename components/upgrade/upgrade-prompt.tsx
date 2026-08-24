@@ -16,7 +16,7 @@ import {
   PLAN_PRICING,
   PLAN_DESCRIPTIONS,
 } from '@/lib/entitlements'
-import { useEntitlements } from '@/lib/hooks/use-entitlements'
+import { useEntitlements } from '@/hooks/use-entitlements'
 import Link from 'next/link'
 
 interface UpgradePromptProps {

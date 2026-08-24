@@ -53,8 +53,8 @@ vi.mock('@/lib/push-notifications', () => ({
   sendDealWonNotification: vi.fn().mockResolvedValue(undefined),
 }))
 
-// Mock do plan-limits (a rota checa limite do plano antes de criar)
-vi.mock('@/lib/plan-limits', () => ({
+// Mock do entitlements (a rota checa limite do plano antes de criar)
+vi.mock('@/lib/entitlements', () => ({
   canCreateDeal: vi.fn().mockResolvedValue({ allowed: true }),
 }))
 

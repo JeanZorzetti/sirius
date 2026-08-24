@@ -10,6 +10,7 @@
  */
 
 import { mean, standardDeviation, zScore } from 'simple-statistics'
+import { formatDate } from '@/lib/format'
 
 export type PeriodRange = '7d' | '14d' | '28d' | '90d'
 
@@ -147,12 +148,12 @@ export function calculatePeriodRanges(
     base: {
       start: baseStart,
       end: baseEnd,
-      label: `${formatDate(baseStart)} - ${formatDate(baseEnd)}`,
+      label: `${formatDate(baseStart, 'day-month')} - ${formatDate(baseEnd, 'day-month')}`,
     },
     comparison: {
       start: comparisonStart,
       end: comparisonEnd,
-      label: `${formatDate(comparisonStart)} - ${formatDate(comparisonEnd)}`,
+      label: `${formatDate(comparisonStart, 'day-month')} - ${formatDate(comparisonEnd, 'day-month')}`,
     },
   }
 }
@@ -385,10 +386,6 @@ export function generateRecommendation(result: PeriodComparisonResult): string {
 }
 
 // Helper functions
-function formatDate(date: Date): string {
-  return date.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' })
-}
-
 function approximatePValue(tStat: number): number {
   // Simplified approximation of p-value from t-statistic
   // Using normal approximation for larger samples

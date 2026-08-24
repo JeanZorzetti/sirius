@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { getSession } from '@/lib/auth'
-import { requireFeature } from '@/lib/feature-gates'
+import { requireFeature } from '@/lib/entitlements'
 import logger from '@/lib/logger'
 
 // GET /api/tasks/[taskId]/recurrence

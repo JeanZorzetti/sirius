@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { cn } from '@/lib/utils'
+import { formatCurrency } from '@/lib/format'
 import { Bot, User, ChevronDown } from 'lucide-react'
 
 interface Deal {
@@ -39,10 +40,6 @@ interface IAPipelineProps {
   pipelines: Pipeline[]
 }
 
-function formatCurrency(value: number): string {
-  return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL', maximumFractionDigits: 0 }).format(value)
-}
-
 function DealCard({ deal }: { deal: Deal }) {
   const [showReasoning, setShowReasoning] = useState(false)
   const hasAgent = !!deal.agentAction
@@ -70,7 +67,7 @@ function DealCard({ deal }: { deal: Deal }) {
         </div>
         {deal.value && (
           <span className="text-xs font-mono font-medium text-zinc-400 shrink-0">
-            {formatCurrency(deal.value)}
+            {formatCurrency(deal.value, { maximumFractionDigits: 0 })}
           </span>
         )}
       </div>
@@ -143,7 +140,7 @@ export function IAPipeline({ pipelines }: IAPipelineProps) {
         <div>
           <h1 className="text-2xl font-bold tracking-tight text-zinc-100">Pipeline</h1>
           <p className="text-sm text-zinc-500 mt-1">
-            {totalDeals} deals · {formatCurrency(totalValue)} · {agentDeals} tocados por agentes
+            {totalDeals} deals · {formatCurrency(totalValue, { maximumFractionDigits: 0 })} · {agentDeals} tocados por agentes
           </p>
         </div>
 
@@ -197,7 +194,7 @@ export function IAPipeline({ pipelines }: IAPipelineProps) {
               {/* Stage value bar */}
               {stageValue > 0 && (
                 <div className="mb-2 px-1">
-                  <span className="text-[11px] text-zinc-600 font-mono">{formatCurrency(stageValue)}</span>
+                  <span className="text-[11px] text-zinc-600 font-mono">{formatCurrency(stageValue, { maximumFractionDigits: 0 })}</span>
                 </div>
               )}
 

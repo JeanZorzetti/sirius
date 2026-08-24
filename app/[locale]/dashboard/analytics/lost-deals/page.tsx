@@ -16,13 +16,10 @@ import { LostDealsCharts } from '@/components/analytics/lost-deals-charts'
 import { TrendingDown, DollarSign, AlertTriangle, Percent } from 'lucide-react'
 import { formatDistanceToNow } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
+import { formatCurrency } from '@/lib/format'
 
 export const dynamic = 'force-dynamic'
 export const metadata = { title: 'Negócios Perdidos – Analytics | Sirius CRM' }
-
-function formatCurrency(value: number) {
-  return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value)
-}
 
 export default async function LostDealsPage() {
   const session = await getSession()

@@ -10,6 +10,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { toast } from 'sonner'
 import { ConfirmDialog } from '@/components/ui/confirm-dialog'
+import { formatDate } from '@/lib/format'
 
 interface ApiKey {
   id: string
@@ -109,11 +110,6 @@ export default function ApiManagementPage() {
     setTimeout(() => setCopied(false), 2000)
   }
 
-  function formatDate(date: string | null) {
-    if (!date) return 'Nunca'
-    return new Date(date).toLocaleString('pt-BR')
-  }
-
   return (
     <div className="flex-1 space-y-4 p-8 pt-6">
       <div className="flex items-center gap-4">
@@ -173,9 +169,9 @@ export default function ApiManagementPage() {
                           {key.keyPrefix}••••••••••••••••
                         </div>
                         <div className="flex gap-4 mt-2 text-xs text-zinc-500">
-                          <span>Último uso: {formatDate(key.lastUsed)}</span>
+                          <span>Último uso: {key.lastUsed ? formatDate(key.lastUsed, 'datetime') : 'Nunca'}</span>
                           <span>Requests: {key.requestCount.toLocaleString()}</span>
-                          <span>Criado: {formatDate(key.createdAt)}</span>
+                          <span>Criado: {formatDate(key.createdAt, 'datetime')}</span>
                         </div>
                       </div>
                       <Button

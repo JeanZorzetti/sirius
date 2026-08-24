@@ -19,13 +19,10 @@ import { ManualAdEntryForm } from '@/components/marketing/manual-ad-entry-form'
 import { DollarSign, Target, TrendingDown, BarChart3, Settings, PlusCircle } from 'lucide-react'
 import Link from 'next/link'
 import { Decimal } from '@prisma/client/runtime/library'
+import { formatCurrency } from '@/lib/format'
 
 export const dynamic = 'force-dynamic'
 export const metadata = { title: 'Campanhas & CAC | Sirius CRM' }
-
-function formatCurrency(value: number) {
-  return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value)
-}
 
 function decimalToNumber(d: Decimal | null | undefined): number {
   if (d === null || d === undefined) return 0

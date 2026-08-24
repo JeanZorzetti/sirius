@@ -8,7 +8,7 @@ import logger from '@/lib/logger'
 import { NextResponse } from 'next/server'
 import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
-import { getOrganizationEntitlements } from '@/lib/feature-gates'
+import { getOrganizationEntitlements } from '@/lib/entitlements'
 import { apiError } from '@/lib/api-error'
 import { ERR } from '@/lib/error-messages'
 

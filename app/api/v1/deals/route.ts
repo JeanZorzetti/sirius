@@ -6,7 +6,7 @@ import { validateRequest, createDealSchema } from '@/lib/api-validators'
 import logger from '@/lib/logger'
 import { sendNewDealNotification } from '@/lib/push-notifications'
 import { executeDealAutomations } from '@/lib/automations/engine'
-import { canCreateDeal } from '@/lib/plan-limits'
+import { canCreateDeal } from '@/lib/entitlements'
 
 /**
  * GET /api/v1/deals

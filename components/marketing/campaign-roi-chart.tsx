@@ -9,6 +9,7 @@ import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend,
   LineChart, Line,
 } from 'recharts'
+import { formatCurrency } from '@/lib/format'
 
 interface DailySpend {
   date: string
@@ -31,10 +32,6 @@ interface CampaignSummary {
 interface CampaignROIChartProps {
   dailyData: DailySpend[]
   campaignSummary: CampaignSummary[]
-}
-
-function formatCurrency(value: number) {
-  return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL', maximumFractionDigits: 0 }).format(value)
 }
 
 const SOURCE_COLORS: Record<string, string> = {
@@ -62,7 +59,7 @@ export function CampaignROIChart({ dailyData, campaignSummary }: CampaignROIChar
                   <YAxis yAxisId="right" orientation="right" tick={{ fontSize: 11 }} />
                   <Tooltip
                     formatter={(value, name) => [
-                      name === 'spend' ? formatCurrency(Number(value ?? 0)) : value,
+                      name === 'spend' ? formatCurrency(Number(value ?? 0), { maximumFractionDigits: 0 }) : value,
                       name === 'spend' ? 'Gasto' : 'Conversões',
                     ]}
                   />
@@ -96,7 +93,7 @@ export function CampaignROIChart({ dailyData, campaignSummary }: CampaignROIChar
                   />
                   <Tooltip
                     formatter={(value) => [
-                      formatCurrency(Number(value ?? 0)),
+                      formatCurrency(Number(value ?? 0), { maximumFractionDigits: 0 }),
                       'Gasto',
                     ]}
                   />

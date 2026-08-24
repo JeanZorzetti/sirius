@@ -27,17 +27,12 @@ interface Props {
   rangeDays: number
 }
 
-function formatDate(iso: string): string {
-  const d = new Date(iso)
-  return formatDateBR(iso, { day: '2-digit', month: '2-digit' })
-}
-
 const CustomTooltip = ({ active, payload, label }: any) => {
   if (active && payload && payload.length) {
     return (
       <div className="rounded-xl border border-border/60 bg-card/90 px-3 py-2.5 shadow-xl backdrop-blur-md min-w-[160px]">
         <p className="mb-2 text-[11px] font-medium text-muted-foreground">
-          {formatDate(label)}
+          {formatDateBR(label, { day: '2-digit', month: '2-digit' })}
         </p>
         {payload.map((entry: any) => {
           const labels: Record<string, string> = {
@@ -132,7 +127,7 @@ export function CompletionTrendChart({ data, prevTrend, rangeDays }: Props) {
               fontSize={10}
               tickLine={false}
               axisLine={false}
-              tickFormatter={formatDate}
+              tickFormatter={(iso: string) => formatDateBR(iso, { day: '2-digit', month: '2-digit' })}
               interval="preserveStartEnd"
             />
 

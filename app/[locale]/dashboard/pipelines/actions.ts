@@ -4,7 +4,7 @@ import logger from '@/lib/logger'
 import { getSession } from "@/lib/auth"
 import { prisma } from "@/lib/prisma"
 import { revalidatePath } from "next/cache"
-import { canCreatePipeline } from "@/lib/plan-limits"
+import { canCreatePipeline } from "@/lib/entitlements"
 
 async function checkPermission() {
     const session = await getSession()

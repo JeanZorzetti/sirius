@@ -12,7 +12,7 @@ import {
   consumeAgiQuota,
   checkAndConsumeScrapingCredits,
   LimitReachedError,
-} from '../feature-gates'
+} from '../entitlements'
 
 // Mock do Prisma
 vi.mock('../prisma', () => ({

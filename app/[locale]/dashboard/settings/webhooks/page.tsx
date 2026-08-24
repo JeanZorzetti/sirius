@@ -13,6 +13,7 @@ import { Switch } from '@/components/ui/switch'
 import { Badge } from '@/components/ui/badge'
 import { toast } from 'sonner'
 import { ConfirmDialog } from '@/components/ui/confirm-dialog'
+import { formatDate } from '@/lib/format'
 
 interface WebhookType {
   id: string
@@ -218,10 +219,6 @@ export default function WebhooksManagementPage() {
     setTimeout(() => setCopied(false), 2000)
   }
 
-  function formatDate(date: string) {
-    return new Date(date).toLocaleString('pt-BR')
-  }
-
   return (
     <div className="flex-1 space-y-4 p-8 pt-6">
       <div className="flex items-center gap-4">
@@ -301,7 +298,7 @@ export default function WebhooksManagementPage() {
                           ))}
                         </div>
                         <div className="flex gap-4 mt-2 text-xs text-zinc-500">
-                          <span>Criado: {formatDate(webhook.createdAt)}</span>
+                          <span>Criado: {formatDate(webhook.createdAt, 'datetime')}</span>
                           <span>Logs: {webhook._count.logs}</span>
                         </div>
                       </div>

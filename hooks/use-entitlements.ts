@@ -8,7 +8,7 @@
 
 import { useEffect, useState } from 'react'
 import { SubscriptionTier } from '@prisma/client'
-import { OrganizationEntitlements } from '../feature-gates'
+import { OrganizationEntitlements } from '@/lib/entitlements'
 
 /**
  * Hook para obter os entitlements da organização

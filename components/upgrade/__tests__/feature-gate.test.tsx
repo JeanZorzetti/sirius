@@ -5,10 +5,10 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { render, screen } from '@testing-library/react'
 import { FeatureGate } from '../feature-gate'
-import * as hooks from '@/lib/hooks/use-entitlements'
+import * as hooks from '@/hooks/use-entitlements'
 
 // Mock dos hooks
-vi.mock('@/lib/hooks/use-entitlements', () => ({
+vi.mock('@/hooks/use-entitlements', () => ({
   useFeatureAccess: vi.fn(),
   useEntitlements: vi.fn(),
 }))

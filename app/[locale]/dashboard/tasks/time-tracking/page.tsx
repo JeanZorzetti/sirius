@@ -3,7 +3,7 @@ import Link from 'next/link'
 import { ChevronLeft, Clock, TrendingUp, DollarSign, Calendar as CalendarIcon } from 'lucide-react'
 import { prisma } from '@/lib/prisma'
 import { getSession } from '@/lib/auth'
-import { getOrganizationEntitlements } from '@/lib/feature-gates'
+import { getOrganizationEntitlements } from '@/lib/entitlements'
 
 export const metadata: Metadata = {
   title: 'Time Tracking - CRM',

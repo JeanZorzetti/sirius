@@ -9,10 +9,10 @@ import {
   ScrapingCreditsDisplay,
   QuotaDashboard,
 } from '../quota-display'
-import * as hooks from '@/lib/hooks/use-entitlements'
+import * as hooks from '@/hooks/use-entitlements'
 
 // Mock dos hooks
-vi.mock('@/lib/hooks/use-entitlements', () => ({
+vi.mock('@/hooks/use-entitlements', () => ({
   useAgiQuotaStatus: vi.fn(),
   useScrapingCreditsStatus: vi.fn(),
 }))

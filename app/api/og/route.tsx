@@ -1,5 +1,6 @@
 import { ImageResponse } from 'next/og'
 import { NextRequest } from 'next/server'
+import { formatCurrency } from '@/lib/format'
 
 export const runtime = 'edge'
 
@@ -20,18 +21,7 @@ export async function GET(request: NextRequest) {
     const title = searchParams.get('title') || 'O Custo Oculto da Inação no CRM'
     const scenario = searchParams.get('scenario') || 'realista'
 
-    // Formatação monetária
-    const formatCurrency = (value: string) => {
-      const num = parseFloat(value)
-      return new Intl.NumberFormat('pt-BR', {
-        style: 'currency',
-        currency: 'BRL',
-        minimumFractionDigits: 0,
-        maximumFractionDigits: 0,
-      }).format(num)
-    }
-
-    const roiFormatted = formatCurrency(roi)
+    const roiFormatted = formatCurrency(parseFloat(roi), { minimumFractionDigits: 0, maximumFractionDigits: 0 })
 
     // Cores por cenário
     const scenarioColors: Record<string, { bg: string; accent: string; label: string }> = {

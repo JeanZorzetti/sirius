@@ -11,6 +11,7 @@ import {
 } from '@/components/ui/table'
 import { Badge } from '@/components/ui/badge'
 import { Mail, CheckCircle, Eye, MousePointer, XCircle, Clock } from 'lucide-react'
+import { formatDate } from '@/lib/format'
 
 interface EmailLog {
   id: string
@@ -75,15 +76,6 @@ const typeLabels = {
 }
 
 export function EmailHistoryTable({ logs, isPro }: EmailHistoryTableProps) {
-  const formatDate = (date: Date) => {
-    return new Intl.DateTimeFormat('pt-BR', {
-      day: '2-digit',
-      month: 'short',
-      hour: '2-digit',
-      minute: '2-digit'
-    }).format(new Date(date))
-  }
-
   if (logs.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center py-12 text-center">
@@ -137,7 +129,7 @@ export function EmailHistoryTable({ logs, isPro }: EmailHistoryTableProps) {
                   </Badge>
                 </TableCell>
                 <TableCell className="text-sm text-muted-foreground">
-                  {formatDate(log.sentAt)}
+                  {formatDate(log.sentAt, 'datetime-short')}
                 </TableCell>
                 {isPro && (
                   <TableCell>
