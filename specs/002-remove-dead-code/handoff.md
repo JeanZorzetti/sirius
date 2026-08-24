@@ -31,7 +31,7 @@ Depois dessas duas cascatas, `node scripts/audit-dead-code.js` foi de `ARQUIVOS 
 
 **Não verificado nesta sessão**: `admin/knowledge-graph` estruturalmente confirmado independente das libs AGI apagadas (imports diferentes — `lib/nlp/blog-processor` e `lib/nlp/pipeline`, não `graph-skills.ts`/`auto-citation.ts`), mas não aberto de fato num navegador (sem servidor/banco disponível nesta sessão). Se a próxima sessão tiver acesso, vale confirmar visualmente (Acceptance US5-3).
 
-PR ainda não aberto no momento em que este handoff foi escrito — ver "Como retomar" para o estado exato do branch.
+PR [#7](https://github.com/JeanZorzetti/sirius/pull/7) aberto, CI verde nos checks obrigatórios (`Dead Code Scan` incluso), mergeado por squash pelo usuário (`cbc3f32`), branch local e remota já apagadas.
 
 ## US4 — o que saiu diferente do planejado
 
