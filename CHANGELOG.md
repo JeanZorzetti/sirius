@@ -7,6 +7,9 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/lang/pt-BR/).
 
 ## [Unreleased]
 
+### Removed
+- **Generative UI** — subsistema inteiro removido (~14.700 linhas): `components/generative-ui/`, `lib/generative-ui/`, os 5 hooks `useABTest`/`useWorkflow`/`useOptimisticUpdate`/`useComponentCache`/`useComponentAnalytics`, as rotas `/api/agi/chat-with-ui` e `/api/ab-testing/[experimentId]/*`, a página `/admin/cache-stats`, os resíduos `lib/agi/tools/render-ui-tool.ts` e `lib/agi/prompts/generative-ui-prompt.ts`, e a documentação `docs/GENERATIVE_UI_*.md`. Órfão desde o commit `2d29773` (27/04/2026), que já havia removido a única página de admin que renderizava o subsistema. Decisão de produto: abandonado, não será retomado — uma retomada futura seria feature nova com spec própria. O chat de produção (`AgiChatSidebar`, `AgiPreview`) usa `/api/agi/chat`, não tocado.
+
 ### Em Desenvolvimento
 - Changelog & Release Notes templates
 - Smoke tests completos
