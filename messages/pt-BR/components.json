@@ -283,6 +283,25 @@
       "contact": "Adicione seu primeiro contato",
       "deal": "Crie seu primeiro negócio",
       "team": "Convide sua equipe"
+    },
+    "whatsappIntent": {
+      "title": "Como você usa o WhatsApp?",
+      "subtitle": "Isso ajuda a preparar sua conta certa desde já.",
+      "waba": {
+        "label": "Tenho API oficial",
+        "description": "Exige credenciais da Meta Business Manager.",
+        "button": "Conectar agora"
+      },
+      "qr": {
+        "label": "Uso QR code",
+        "description": "Em liberação, sem prazo definido — registramos seu interesse.",
+        "button": "Quero ser avisado"
+      },
+      "later": {
+        "label": "Ainda não sei",
+        "description": "Sem problema, você decide quando quiser.",
+        "button": "Decidir depois"
+      }
     }
   },
   "shared": {

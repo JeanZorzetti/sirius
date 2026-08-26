@@ -15,6 +15,7 @@ export async function POST(request: NextRequest) {
 
     const body = await request.json().catch(() => ({}))
     const status = body.status === 'SKIPPED' ? 'SKIPPED' : 'COMPLETED'
+    const intent = ['waba', 'qr', 'later'].includes(body.intent) ? body.intent : undefined
 
     const user = await prisma.user.findUnique({
       where: { email: session.user.email },
@@ -31,6 +32,10 @@ export async function POST(request: NextRequest) {
       )
     }
 
+    const stepData = intent
+      ? { whatsapp: { intent, declaredAt: new Date().toISOString() } }
+      : undefined
+
     // Mark onboarding as completed/skipped
     await prisma.onboardingProgress.upsert({
       where: { userId: user.id },
@@ -38,6 +43,7 @@ export async function POST(request: NextRequest) {
         status,
         completedAt: status === 'COMPLETED' ? new Date() : undefined,
         skippedAt: status === 'SKIPPED' ? new Date() : undefined,
+        ...(stepData ? { stepData } : {}),
       },
       create: {
         userId: user.id,
@@ -45,6 +51,7 @@ export async function POST(request: NextRequest) {
         status,
         completedAt: status === 'COMPLETED' ? new Date() : undefined,
         skippedAt: status === 'SKIPPED' ? new Date() : undefined,
+        ...(stepData ? { stepData } : {}),
       },
     })
 

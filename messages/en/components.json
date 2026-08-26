@@ -285,6 +285,25 @@
       "contact": "Add your first contact",
       "deal": "Create your first deal",
       "team": "Invite your team"
+    },
+    "whatsappIntent": {
+      "title": "How do you use WhatsApp?",
+      "subtitle": "This helps us set up the right account from the start.",
+      "waba": {
+        "label": "I have the official API",
+        "description": "Requires Meta Business Manager credentials.",
+        "button": "Connect now"
+      },
+      "qr": {
+        "label": "I use QR code",
+        "description": "Rolling out, no set date — we'll note your interest.",
+        "button": "Notify me"
+      },
+      "later": {
+        "label": "Not sure yet",
+        "description": "No problem, decide whenever you're ready.",
+        "button": "Decide later"
+      }
     }
   },
   "shared": {

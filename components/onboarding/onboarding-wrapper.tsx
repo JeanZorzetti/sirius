@@ -9,13 +9,15 @@ interface OnboardingWrapperProps {
   userId: string
   userName?: string
   shouldShowOnboarding: boolean
+  hasWhatsApp: boolean
 }
 
 export function OnboardingWrapper({
   children,
   userId,
   userName,
-  shouldShowOnboarding
+  shouldShowOnboarding,
+  hasWhatsApp
 }: OnboardingWrapperProps) {
   const [showWelcome, setShowWelcome] = useState(false)
 
@@ -45,6 +47,7 @@ export function OnboardingWrapper({
         open={showWelcome}
         onClose={handleClose}
         userName={userName}
+        hasWhatsApp={hasWhatsApp}
       />
       {children}
     </TourProvider>

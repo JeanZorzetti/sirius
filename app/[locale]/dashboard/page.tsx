@@ -60,6 +60,8 @@ export default async function DashboardPage({
             select: {
               plan: true,
               segment: true,
+              wabaEnabled: true,
+              evolutionEnabled: true,
             },
           },
           onboarding: {
@@ -87,12 +89,14 @@ export default async function DashboardPage({
 
     const shouldShowOnboarding =
       !user.onboarding || user.onboarding.status === "IN_PROGRESS"
+    const hasWhatsApp = Boolean(user.organization?.wabaEnabled || user.organization?.evolutionEnabled)
 
     return (
       <OnboardingWrapper
         userId={user.id}
         userName={user.name || undefined}
         shouldShowOnboarding={shouldShowOnboarding}
+        hasWhatsApp={hasWhatsApp}
       >
         <AnimatedPageContainer>
           {/* Desktop header — hidden on mobile (handled by MobileAppBar) */}

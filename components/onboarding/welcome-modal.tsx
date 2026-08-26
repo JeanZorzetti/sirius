@@ -10,22 +10,27 @@ import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
 import { analytics } from '@/lib/posthog'
 import { ImportContactsModal } from '@/components/onboarding/import-contacts-modal'
+import { WhatsAppIntentStep, type WhatsAppIntent } from '@/components/onboarding/whatsapp-intent-step'
 
 interface WelcomeModalProps {
   open: boolean
   onClose: () => void
   userName?: string
+  hasWhatsApp: boolean
 }
 
 type OnboardingChoice = 'demo' | 'import' | 'scratch' | null
 
-export function WelcomeModal({ open, onClose, userName }: WelcomeModalProps) {
+export function WelcomeModal({ open, onClose, userName, hasWhatsApp }: WelcomeModalProps) {
   const tCommon = useTranslations('common')
   const t = useTranslations('components.onboarding')
+  const tIntent = useTranslations('components.onboarding.whatsappIntent')
   const router = useRouter()
   const [isLoading, setIsLoading] = useState(false)
   const [selectedChoice, setSelectedChoice] = useState<OnboardingChoice>(null)
   const [showImportModal, setShowImportModal] = useState(false)
+  const [step, setStep] = useState<'choice' | 'intent'>('choice')
+  const [pendingDestination, setPendingDestination] = useState('/dashboard')
 
   // Rastrear início do onboarding quando modal abre
   useEffect(() => {
@@ -61,9 +66,15 @@ export function WelcomeModal({ open, onClose, userName }: WelcomeModalProps) {
         // Rastrear conclusão do onboarding
         analytics.onboardingCompleted({ demo_mode: true })
 
-        // Close modal and force full page reload to get fresh data
-        onClose()
-        window.location.href = '/dashboard?tour=true'
+        // Force full page reload to get fresh data.
+        // Não chamar onClose(): dispara POST /complete {SKIPPED} que
+        // corre com o POST {COMPLETED} do seed-demo acima e pode sobrescrevê-lo.
+        if (hasWhatsApp) {
+          window.location.href = '/dashboard?tour=true'
+        } else {
+          setPendingDestination('/dashboard?tour=true')
+          setStep('intent')
+        }
       } else if (choice === 'import') {
         // ✅ FASE 15: Abrir modal de import real
         analytics.onboardingCompleted({ demo_mode: false })
@@ -80,9 +91,13 @@ export function WelcomeModal({ open, onClose, userName }: WelcomeModalProps) {
         // Rastrear conclusão do onboarding
         analytics.onboardingCompleted({ demo_mode: false })
 
-        // Start from scratch
-        onClose()
-        window.location.href = '/dashboard'
+        // Start from scratch (onClose() omitido pelo mesmo motivo do ramo demo)
+        if (hasWhatsApp) {
+          window.location.href = '/dashboard'
+        } else {
+          setPendingDestination('/dashboard')
+          setStep('intent')
+        }
       }
     } catch (error) {
       console.error('Error handling choice:', error)
@@ -94,19 +109,51 @@ export function WelcomeModal({ open, onClose, userName }: WelcomeModalProps) {
     }
   }
 
+  const handleChooseIntent = (intent: WhatsAppIntent) => {
+    setIsLoading(true)
+
+    // Fire-and-forget: falha de rede não pode travar o onboarding (FR-012).
+    fetch('/api/onboarding/complete', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ status: 'COMPLETED', intent })
+    }).catch(() => {})
+
+    if (intent === 'waba') {
+      router.push('/dashboard/settings/integrations/whatsapp-official')
+      return
+    }
+
+    window.location.href = pendingDestination
+  }
+
   return (
     <>
     <Dialog open={open} onOpenChange={(open) => !open && !isLoading && onClose()}>
       <DialogContent className="w-[55vw] sm:max-w-[55vw] max-w-[55vw]!" onPointerDownOutside={(e) => isLoading && e.preventDefault()}>
-        <DialogHeader>
-          <DialogTitle className="text-2xl sm:text-3xl font-bold text-center">
-            {t('welcome')}{userName ? `, ${userName}` : ''}
-          </DialogTitle>
-          <DialogDescription className="text-center text-base pt-2">
-            {t('subtitle')}
-          </DialogDescription>
-        </DialogHeader>
+        {step === 'intent' ? (
+          <DialogHeader>
+            <DialogTitle className="text-2xl sm:text-3xl font-bold text-center">
+              {tIntent('title')}
+            </DialogTitle>
+            <DialogDescription className="text-center text-base pt-2">
+              {tIntent('subtitle')}
+            </DialogDescription>
+          </DialogHeader>
+        ) : (
+          <DialogHeader>
+            <DialogTitle className="text-2xl sm:text-3xl font-bold text-center">
+              {t('welcome')}{userName ? `, ${userName}` : ''}
+            </DialogTitle>
+            <DialogDescription className="text-center text-base pt-2">
+              {t('subtitle')}
+            </DialogDescription>
+          </DialogHeader>
+        )}
 
+        {step === 'intent' ? (
+          <WhatsAppIntentStep onChoose={handleChooseIntent} isLoading={isLoading} />
+        ) : (
         <div className="grid gap-4 py-6 sm:grid-cols-3">
           {/* Option 1: Demo Data (Magic!) */}
           <Card
@@ -271,10 +318,13 @@ export function WelcomeModal({ open, onClose, userName }: WelcomeModalProps) {
             </div>
           </Card>
         </div>
+        )}
 
-        <div className="text-center text-xs text-muted-foreground pt-2 border-t">
-          <p>💡 Dica: Escolha a demonstração para ver o poder do Sirius em ação!</p>
-        </div>
+        {step === 'choice' && (
+          <div className="text-center text-xs text-muted-foreground pt-2 border-t">
+            <p>💡 Dica: Escolha a demonstração para ver o poder do Sirius em ação!</p>
+          </div>
+        )}
       </DialogContent>
     </Dialog>
 
@@ -283,8 +333,14 @@ export function WelcomeModal({ open, onClose, userName }: WelcomeModalProps) {
       open={showImportModal}
       onClose={() => { setShowImportModal(false); setIsLoading(false) }}
       onSuccess={(count) => {
-        onClose()
-        window.location.href = '/dashboard'
+        if (hasWhatsApp) {
+          onClose()
+          window.location.href = '/dashboard'
+        } else {
+          setShowImportModal(false)
+          setPendingDestination('/dashboard')
+          setStep('intent')
+        }
       }}
     />
     </>
