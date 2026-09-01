@@ -5,6 +5,7 @@ import logger from "@/lib/logger";
 import { contactRateLimit } from "@/lib/ratelimit";
 import { apiError } from "@/lib/api-error";
 import { ERR } from "@/lib/error-messages";
+import { sendLeadToRoihub } from "@/lib/roihub-crm";
 
 const contactSchema = z.object({
   name: z.string().min(2, "Nome deve ter pelo menos 2 caracteres"),
@@ -182,6 +183,16 @@ export async function POST(request: NextRequest) {
       html: confirmationHtml,
     }).catch((err) => {
       logger.warn({ email, error: err }, "Failed to send confirmation email to user");
+    });
+
+    // O lead vai para o CRM do roihub tambem — ate aqui ele so existia no e-mail do suporte,
+    // e caixa de entrada nao e denominador. Best-effort: nao lanca e nao segura a resposta.
+    sendLeadToRoihub({
+      nome: name,
+      email,
+      telefone: phone,
+      origem: "sirius:contato",
+      metadata: { assunto: subject, empresa: company ?? null },
     });
 
     logger.info({ email, subject }, "Contact form submitted successfully");
