@@ -228,6 +228,10 @@ export async function logN8NActivity(
  * @returns Rate limit info or null if exceeded
  */
 export async function checkN8NRateLimit(organizationId: string) {
+  if (!n8nRateLimit) {
+    return { remaining: Infinity, reset: 0, limit: Infinity }
+  }
+
   const result = await n8nRateLimit.limit(organizationId)
 
   if (!result.success) {

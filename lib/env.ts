@@ -17,8 +17,7 @@ interface EnvConfig {
   NEXTAUTH_SECRET: string
   NEXTAUTH_URL: string
 
-  // Stripe
-  NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: string
+  // Stripe (server-side only — no client reads a publishable key)
   STRIPE_SECRET_KEY: string
   STRIPE_WEBHOOK_SECRET: string
 
@@ -44,7 +43,6 @@ const REQUIRED_ENV_VARS = [
   'SESSION_SECRET',
   'NEXTAUTH_SECRET',
   'NEXTAUTH_URL',
-  'NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY',
   'STRIPE_SECRET_KEY',
   'STRIPE_WEBHOOK_SECRET',
   'NEXT_PUBLIC_APP_URL',
