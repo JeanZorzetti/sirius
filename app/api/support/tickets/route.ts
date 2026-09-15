@@ -3,6 +3,7 @@ import { prisma } from '@/lib/prisma'
 import { getSupportUser } from '@/lib/support-auth'
 import { publishTicketEvent } from '@/lib/support-events'
 import { sendEmail } from '@/lib/email'
+import { avisarTicketNoRoihub } from '@/lib/roihub-crm'
 import NewTicketStaffEmail from '@/lib/email-templates/support/new-ticket-staff'
 
 const RATE_LIMIT_MAP = new Map<string, { count: number; resetAt: number }>()
@@ -111,6 +112,15 @@ export async function POST(request: NextRequest) {
   })
 
   publishTicketEvent('ticket:new', { ticket }, { orgId: ctx.organizationId, ticketId: ticket.id })
+
+  avisarTicketNoRoihub({
+    tipo: 'novo',
+    ticketId: ticket.id,
+    assunto: ticket.subject,
+    organizacao: ticket.organization.name,
+    categoria: ticket.category,
+    prioridade: ticket.priority,
+  })
 
   sendEmail({
     to: 'suporte@roilabs.com.br',

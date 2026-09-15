@@ -71,3 +71,49 @@ export function sendLeadToRoihub(input: RoihubLeadInput): void {
     }
   })
 }
+
+type RoihubAvisoTicket = {
+  tipo: 'novo' | 'resposta'
+  ticketId: string
+  assunto: string
+  organizacao: string
+  categoria?: string
+  prioridade?: string
+}
+
+/**
+ * Avisa o dono no Telegram, pelo roihub (POST /api/avisos/ticket, spec 026 de la), de ticket novo
+ * ou de resposta do cliente. Mesmo segredo e mesmas regras do lead: roda em `after()` e NUNCA
+ * lanca — o ticket ja esta gravado e o e-mail ao suporte sai com ou sem o hub. A descricao e o
+ * texto da resposta nao vao: sao do cliente final e o Telegram e servico de terceiro.
+ */
+export function avisarTicketNoRoihub(input: RoihubAvisoTicket): void {
+  after(async () => {
+    try {
+      const baseUrl = process.env.ROIHUB_CRM_URL
+      const secret = process.env.ROIHUB_CRM_SECRET
+      if (!baseUrl || !secret) {
+        console.error('[roihub-crm] ROIHUB_CRM_URL/ROIHUB_CRM_SECRET ausente')
+        return
+      }
+
+      const res = await fetch(`${baseUrl}/api/avisos/ticket`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${secret}` },
+        body: JSON.stringify({
+          produto: 'sirius',
+          tipo: input.tipo,
+          ticket_id: input.ticketId,
+          assunto: input.assunto,
+          organizacao: input.organizacao,
+          categoria: input.categoria,
+          prioridade: input.prioridade,
+        }),
+      })
+
+      if (!res.ok) console.error(`[roihub-crm] aviso de ticket: roihub retornou ${res.status}`)
+    } catch (err) {
+      console.error('[roihub-crm] falha ao avisar ticket:', err)
+    }
+  })
+}

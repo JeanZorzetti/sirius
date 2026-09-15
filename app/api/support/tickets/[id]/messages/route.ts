@@ -3,6 +3,7 @@ import { prisma } from '@/lib/prisma'
 import { getSupportUser } from '@/lib/support-auth'
 import { publishTicketEvent } from '@/lib/support-events'
 import { sendEmail } from '@/lib/email'
+import { avisarTicketNoRoihub } from '@/lib/roihub-crm'
 import NewMessageUserEmail from '@/lib/email-templates/support/new-message-user'
 import NewMessageStaffEmail from '@/lib/email-templates/support/new-message-staff'
 
@@ -102,6 +103,17 @@ export async function POST(
     { ticketId: id, message },
     { orgId: ticket.organizationId, ticketId: id }
   )
+
+  // Only the client's reply pings the owner's Telegram (roihub spec 026): staff replies and
+  // internal notes are ours, and the email debounce below does not apply to this notice.
+  if (!ctx.isRoiLabsStaff) {
+    avisarTicketNoRoihub({
+      tipo: 'resposta',
+      ticketId: id,
+      assunto: ticket.subject,
+      organizacao: ticket.organization.name,
+    })
+  }
 
   // Email debounce: only send if no email sent in last 5 min
   const shouldEmail =
