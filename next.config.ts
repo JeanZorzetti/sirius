@@ -29,7 +29,8 @@ const nextConfig: NextConfig = {
         hostname: '*.easypanel.host',
       },
     ],
-    formats: ['image/webp', 'image/avif'], // Modern formats for better compression
+    // No AVIF: sharp's libheif had an unauthenticated RCE (GHSA-2xp9-vwfh-vxw4)
+    formats: ['image/webp'],
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840], // Responsive breakpoints
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384], // Icon sizes
     minimumCacheTTL: 60 * 60 * 24 * 365, // Cache for 1 year (3600 * 24 * 365)
