@@ -1,11 +1,12 @@
 /**
  * Unit tests for resolveRequestLocale()
  *
- * Priority order tested:
+ * O locale EN foi aposentado (spec 004), então os degraus 2 e 3 da antiga cadeia
+ * de prioridade — prefixo /en na URL e Accept-Language — saíram da função. O que
+ * estes testes provam agora é o inverso: nenhum sinal de entrada produz outro idioma.
+ *
  *   1. Authenticated user's saved locale (requires DB — mocked out here)
- *   2. URL path prefix (/en or /en/...)
- *   3. Accept-Language header contains "en"
- *   4. Default locale (pt-BR)
+ *   2. Default locale (pt-BR) para todo o resto
  */
 
 import { vi } from 'vitest'
@@ -44,41 +45,41 @@ describe('resolveRequestLocale()', () => {
     })
   })
 
-  describe('URL prefix detection', () => {
-    it('returns "en" for path /en', async () => {
+  describe('URL prefix is no longer a locale signal', () => {
+    it('returns pt-BR for a legacy /en path', async () => {
       const req = new NextRequest(new URL('/en', 'http://localhost:3000'))
       const locale = await resolveRequestLocale(req)
-      expect(locale).toBe('en')
+      expect(locale).toBe('pt-BR')
     })
 
-    it('returns "en" for path /en/dashboard', async () => {
+    it('returns pt-BR for a legacy /en/dashboard path', async () => {
       const req = new NextRequest(new URL('/en/dashboard', 'http://localhost:3000'))
       const locale = await resolveRequestLocale(req)
-      expect(locale).toBe('en')
+      expect(locale).toBe('pt-BR')
     })
 
-    it('returns default locale (pt-BR) for path /dashboard (no /en prefix)', async () => {
+    it('returns default locale (pt-BR) for path /dashboard', async () => {
       const req = new NextRequest(new URL('/dashboard', 'http://localhost:3000'))
       const locale = await resolveRequestLocale(req)
       expect(locale).toBe('pt-BR')
     })
   })
 
-  describe('Accept-Language header detection', () => {
-    it('returns "en" when Accept-Language: en-US is set', async () => {
+  describe('Accept-Language is no longer a locale signal', () => {
+    it('returns pt-BR when Accept-Language: en-US is set', async () => {
       const req = new NextRequest(new URL('/dashboard', 'http://localhost:3000'), {
         headers: { 'accept-language': 'en-US,en;q=0.9' },
       })
       const locale = await resolveRequestLocale(req)
-      expect(locale).toBe('en')
+      expect(locale).toBe('pt-BR')
     })
 
-    it('returns "en" when Accept-Language: en is set', async () => {
+    it('returns pt-BR when Accept-Language: en is set', async () => {
       const req = new NextRequest(new URL('/dashboard', 'http://localhost:3000'), {
         headers: { 'accept-language': 'en' },
       })
       const locale = await resolveRequestLocale(req)
-      expect(locale).toBe('en')
+      expect(locale).toBe('pt-BR')
     })
 
     it('returns default locale (pt-BR) when Accept-Language: pt-BR is set', async () => {
@@ -90,11 +91,11 @@ describe('resolveRequestLocale()', () => {
     })
   })
 
-  describe('URL prefix takes precedence over Accept-Language', () => {
-    it('returns "en" for /en path even without Accept-Language header', async () => {
+  describe('nenhuma combinação de sinais produz outro idioma', () => {
+    it('returns pt-BR for a legacy /en path with no Accept-Language header', async () => {
       const req = new NextRequest(new URL('/en/pricing', 'http://localhost:3000'))
       const locale = await resolveRequestLocale(req)
-      expect(locale).toBe('en')
+      expect(locale).toBe('pt-BR')
     })
   })
 })

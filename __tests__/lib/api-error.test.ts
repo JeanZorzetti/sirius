@@ -58,31 +58,19 @@ describe('apiError()', () => {
     })
   })
 
-  describe('explicit locale: en', () => {
-    it('returns English error message when locale is "en"', async () => {
-      const response = await apiError('unauthorized', 401, { locale: 'en' })
-      const body = await response.json()
-
-      expect(body.error).toBe('Unauthorized')
-    })
-
+  // Locale EN aposentado (spec 004): o bloco que afirmava mensagem em inglês saiu.
+  // O que sobrevive dele — status 403 e 404 — continua coberto abaixo, em pt-BR.
+  describe('status codes', () => {
     it('returns 403 status for forbidden', async () => {
-      const response = await apiError('forbidden', 403, { locale: 'en' })
+      const response = await apiError('forbidden', 403, { locale: 'pt-BR' })
       expect(response.status).toBe(403)
     })
 
-    it('returns English message for forbidden', async () => {
-      const response = await apiError('forbidden', 403, { locale: 'en' })
+    it('returns 404 status and message for notFound', async () => {
+      const response = await apiError('notFound', 404, { locale: 'pt-BR' })
       const body = await response.json()
 
-      expect(body.error).toBe('Access denied')
-    })
-
-    it('returns English message for notFound', async () => {
-      const response = await apiError('notFound', 404, { locale: 'en' })
-      const body = await response.json()
-
-      expect(body.error).toBe('Not found')
+      expect(body.error).toBe('Não encontrado')
       expect(response.status).toBe(404)
     })
   })
@@ -98,16 +86,16 @@ describe('apiError()', () => {
 
   describe('response shape', () => {
     it('returns JSON with "error" key', async () => {
-      const response = await apiError('badRequest', 400, { locale: 'en' })
+      const response = await apiError('badRequest', 400, { locale: 'pt-BR' })
       const body = await response.json()
 
       expect(body).toHaveProperty('error')
       expect(typeof body.error).toBe('string')
-      expect(body.error).toBe('Bad request')
+      expect(body.error).toBe('Requisição inválida')
     })
 
     it('uses the provided status code', async () => {
-      const response = await apiError('internalError', 500, { locale: 'en' })
+      const response = await apiError('internalError', 500, { locale: 'pt-BR' })
       expect(response.status).toBe(500)
     })
   })

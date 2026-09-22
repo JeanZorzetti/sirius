@@ -1,9 +1,9 @@
 import { Text, Heading, Button, Section, Hr } from '@react-email/components'
 import { BaseLayout } from '../layouts/base'
-import emailsEn from '@/messages/en/emails.json'
 import emailsPtBr from '@/messages/pt-BR/emails.json'
 
-type Locale = 'pt-BR' | 'en'
+// Locale EN aposentado (spec 004): o prop fica para não mexer nos chamadores.
+type Locale = 'pt-BR'
 
 interface PaymentConfirmationEmailProps {
   userName: string
@@ -26,7 +26,7 @@ export function PaymentConfirmationEmail({
   dashboardUrl = 'https://siriuscrm.com.br/dashboard',
   locale = 'pt-BR',
 }: PaymentConfirmationEmailProps) {
-  const s = locale === 'en' ? emailsEn.emails.paymentConfirmation : emailsPtBr.emails.paymentConfirmation
+  const s = emailsPtBr.emails.paymentConfirmation
 
   const formatPaymentType = (type: string) => {
     const types: Record<string, string> = {
@@ -39,15 +39,13 @@ export function PaymentConfirmationEmail({
   }
 
   const intro = s.intro.replace('{organizationName}', organizationName)
-  const formattedAmount = locale === 'en'
-    ? `$${amount.toFixed(2)}`
-    : `R$ ${amount.toFixed(2).replace('.', ',')}`
+  const formattedAmount = `R$ ${amount.toFixed(2).replace('.', ',')}`
 
   return (
     <BaseLayout preview={s.preview} locale={locale}>
       <Heading style={styles.heading}>{s.title} 🎉</Heading>
 
-      <Text style={styles.text}>{locale === 'en' ? `Hi ${userName},` : `Olá ${userName},`}</Text>
+      <Text style={styles.text}>{`Olá ${userName},`}</Text>
 
       <Text style={styles.text}>
         {intro.split(organizationName).map((part, i, arr) =>
@@ -109,7 +107,7 @@ export function PaymentConfirmationEmail({
       </Section>
 
       <Text style={styles.tip}>
-        💡 <strong>{locale === 'en' ? 'Tip:' : 'Dica:'}</strong> {s.tip}
+        💡 <strong>{'Dica:'}</strong> {s.tip}
       </Text>
 
       <Hr style={styles.divider} />

@@ -29,20 +29,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
     // - Homepage (1.0): Ponto central da marca
     // - Ferramentas/Conversão (0.9): Ativos de engajamento e conversão
     // - Demais páginas (0.8): Conteúdo de suporte
-    // Helper to build alternates for a PT-BR path and its EN equivalent
-    // includeEn=false para tipos cuja rota /en/* ainda não renderiza (dá 404):
-    // anunciar hreflang de página inexistente queima crawl budget (spec 001 T018).
-    const withAlternates = (ptPath: string, enPath?: string, includeEn = true) => {
-        const enRoute = enPath ?? ptPath // same path if no EN equivalent
-        const languages: Record<string, string> = {
-            'pt-BR': `${baseUrl}${ptPath}`,
-            'x-default': `${baseUrl}${ptPath}`,
-        }
-        if (includeEn) languages['en'] = `${baseUrl}/en${enRoute}`
-        return { alternates: { languages } }
-    }
-
-    const STATIC_ROUTES: { pt: string; en?: string; priority?: number }[] = [
+    // O locale EN foi aposentado (spec 004). Com um idioma só não existe hreflang:
+    // um mapa `languages` que só aponta para si mesmo é byte morto em ~200 entradas.
+    // Nenhuma entrada deste sitemap tem `alternates`.
+    const STATIC_ROUTES: { pt: string; priority?: number }[] = [
         { pt: '' },
         { pt: '/features', priority: 0.9 },
         { pt: '/pricing', priority: 0.9 },
@@ -56,18 +46,17 @@ export default function sitemap(): MetadataRoute.Sitemap {
         { pt: '/contact' },
         { pt: '/download' },
         { pt: '/followup' },
-        { pt: '/proposta', en: '/proposal' },
-        { pt: '/vendas-automaticas', en: '/automatic-sales', priority: 0.9 },
-        { pt: '/ferramentas', en: '/tools', priority: 0.9 },
-        { pt: '/anuario', en: '/yearbook' },
+        { pt: '/proposta' },
+        { pt: '/vendas-automaticas', priority: 0.9 },
+        { pt: '/ferramentas', priority: 0.9 },
+        { pt: '/anuario' },
     ]
 
-    const routes = STATIC_ROUTES.map(({ pt, en, priority }) => ({
+    const routes = STATIC_ROUTES.map(({ pt, priority }) => ({
         url: `${baseUrl}${pt}`,
         lastModified: lastSiteUpdate,
         changeFrequency: 'monthly' as const,
         priority: priority ?? (pt === '' ? 1 : 0.8),
-        ...withAlternates(pt, en),
     }))
 
     // Dynamic blog posts
@@ -79,35 +68,28 @@ export default function sitemap(): MetadataRoute.Sitemap {
         lastModified: new Date(post.lastModified || post.date),
         changeFrequency: 'weekly' as const,
         priority: 0.8,
-        ...withAlternates(`/blog/${post.slug}`),
     }))
 
-    // Help articles — com alternates EN (/en/help/[category]/[slug])
     const helpArticlePages = helpArticles.map((article) => ({
         url: `${baseUrl}/help/${article.categorySlug}/${article.slug}`,
         lastModified: new Date(article.lastUpdated),
         changeFrequency: 'monthly' as const,
         priority: 0.7,
-        // /en/help/[category]/[slug] ainda dá 404 → sem alternate EN (T018)
-        ...withAlternates(`/help/${article.categorySlug}/${article.slug}`, undefined, false),
     }))
 
-    // Calculadoras — mapeamento PT→EN conforme i18n/routing.ts
-    const calculatorMap: Record<string, string> = {
-        '/ferramentas/calculadora-roi': '/tools/roi-calculator',
-        '/ferramentas/calculadora-roi-corretores': '/tools/roi-calculator-brokers',
-        '/ferramentas/calculadora-roi-energia-solar': '/tools/roi-calculator-solar',
-        '/ferramentas/calculadora-roi-agencias': '/tools/roi-calculator-agencies',
-        '/ferramentas/calculadora-roi-consultores': '/tools/roi-calculator-consultants',
-        '/ferramentas/calculadora-roi-representantes': '/tools/roi-calculator-representatives',
-    }
-    const calculatorPages = Object.entries(calculatorMap).map(([ptRoute]) => ({
+    const CALCULATOR_ROUTES = [
+        '/ferramentas/calculadora-roi',
+        '/ferramentas/calculadora-roi-corretores',
+        '/ferramentas/calculadora-roi-energia-solar',
+        '/ferramentas/calculadora-roi-agencias',
+        '/ferramentas/calculadora-roi-consultores',
+        '/ferramentas/calculadora-roi-representantes',
+    ]
+    const calculatorPages = CALCULATOR_ROUTES.map((ptRoute) => ({
         url: `${baseUrl}${ptRoute}`,
         lastModified: new Date(CALCULATOR_LAST_MODIFIED),
         changeFrequency: 'monthly' as const,
         priority: 0.9,
-        // /en/tools/[calc] ainda dá 404 → sem alternate EN (T018)
-        ...withAlternates(ptRoute, undefined, false),
     }))
 
     // Páginas de soluções por nicho (geradas dinamicamente do niche-data.ts)
@@ -116,24 +98,15 @@ export default function sitemap(): MetadataRoute.Sitemap {
         lastModified: lastSiteUpdate,
         changeFrequency: 'weekly' as const,
         priority: 0.9,
-        ...withAlternates(`/solucoes/${niche.slug}`, `/solutions/${niche.slug}`),
     }))
 
-    // City pages are Brazilian-only — no EN alternate in sitemap
     const citySolutionPages = CITIES.map((city) => ({
         url: `${baseUrl}/solucoes/cidade/${city.slug}`,
         lastModified: lastSiteUpdate,
         changeFrequency: 'weekly' as const,
         priority: 0.85,
-        alternates: {
-            languages: {
-                'pt-BR': `${baseUrl}/solucoes/cidade/${city.slug}`,
-                'x-default': `${baseUrl}/solucoes/cidade/${city.slug}`,
-            },
-        },
     }))
 
-    // Blog category pages — com alternates EN (/en/blog/category/[slug])
     const blogCategoryPages = getAllCategories().map((category) => {
         const slug = slugifyCategory(category)
         return {
@@ -141,7 +114,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
             lastModified: lastSiteUpdate,
             changeFrequency: 'weekly' as const,
             priority: 0.8,
-            ...withAlternates(`/blog/categoria/${slug}`, `/blog/category/${slug}`),
         }
     })
 

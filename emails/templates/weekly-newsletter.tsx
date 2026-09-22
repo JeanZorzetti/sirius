@@ -1,9 +1,9 @@
 import { Text, Heading, Button, Section, Hr } from '@react-email/components'
 import { BaseLayout } from '../layouts/base'
-import emailsEn from '@/messages/en/emails.json'
 import emailsPtBr from '@/messages/pt-BR/emails.json'
 
-type Locale = 'pt-BR' | 'en'
+// Locale EN aposentado (spec 004): o prop fica para não mexer nos chamadores.
+type Locale = 'pt-BR'
 
 interface WeeklyNewsletterProps {
   userName: string
@@ -31,7 +31,7 @@ export function WeeklyNewsletter({
   dashboardUrl = 'https://siriuscrm.com.br/dashboard',
   locale = 'pt-BR',
 }: WeeklyNewsletterProps) {
-  const s = locale === 'en' ? emailsEn.emails.weeklyNewsletter : emailsPtBr.emails.weeklyNewsletter
+  const s = emailsPtBr.emails.weeklyNewsletter
 
   const preview = s.preview.replace('{weekLabel}', weekLabel)
   const intro = s.intro.replace('{weekLabel}', weekLabel)
@@ -41,7 +41,7 @@ export function WeeklyNewsletter({
     <BaseLayout preview={`📊 ${preview}`} locale={locale}>
       <Heading style={styles.heading}>📊 {s.title}</Heading>
 
-      <Text style={styles.text}>{locale === 'en' ? `Hi ${userName},` : `Olá ${userName},`}</Text>
+      <Text style={styles.text}>{`Olá ${userName},`}</Text>
 
       <Text style={styles.text}>
         {intro.split(weekLabel).map((part, i, arr) =>

@@ -43,19 +43,21 @@ describe('resolveRequestLocale', () => {
     mockGetSession.mockResolvedValue(null)
   })
 
-  it('returns en for /en URL prefix', async () => {
+  // Locale EN aposentado (spec 004): nenhum sinal de entrada pode mais produzir
+  // outro idioma. Estes três testes afirmavam o contrário e foram invertidos.
+  it('ignores a legacy /en URL prefix', async () => {
     const locale = await resolveRequestLocale(makeRequest({ pathname: '/en/pricing' }))
-    expect(locale).toBe('en')
+    expect(locale).toBe('pt-BR')
   })
 
-  it('returns en for bare /en pathname', async () => {
+  it('ignores a bare /en pathname', async () => {
     const locale = await resolveRequestLocale(makeRequest({ pathname: '/en' }))
-    expect(locale).toBe('en')
+    expect(locale).toBe('pt-BR')
   })
 
-  it('returns en when Accept-Language: en', async () => {
+  it('ignores Accept-Language: en', async () => {
     const locale = await resolveRequestLocale(makeRequest({ acceptLanguage: 'en-US,en;q=0.9' }))
-    expect(locale).toBe('en')
+    expect(locale).toBe('pt-BR')
   })
 
   it('returns pt-BR (default) for Accept-Language: pt-BR', async () => {
@@ -63,7 +65,7 @@ describe('resolveRequestLocale', () => {
     expect(locale).toBe('pt-BR')
   })
 
-  it('returns pt-BR (default) when no Accept-Language and no /en prefix', async () => {
+  it('returns pt-BR (default) when no Accept-Language and no prefix', async () => {
     const locale = await resolveRequestLocale(makeRequest())
     expect(locale).toBe('pt-BR')
   })
@@ -73,7 +75,7 @@ describe('resolveRequestLocale', () => {
     expect(locale).toBe('pt-BR')
   })
 
-  it('authenticated user locale takes priority over URL prefix', async () => {
+  it('authenticated user locale is what decides', async () => {
     mockGetSession.mockResolvedValue({ user: { id: 'user-1', email: 'a@b.com' } } as never)
     mockFindUnique.mockResolvedValue({ locale: 'pt-BR' } as never)
     // Even though URL says /en, user's saved locale wins
@@ -81,11 +83,11 @@ describe('resolveRequestLocale', () => {
     expect(locale).toBe('pt-BR')
   })
 
-  it('falls through to URL prefix when session user locale lookup fails', async () => {
+  it('falls back to pt-BR when the session user locale lookup fails', async () => {
     mockGetSession.mockResolvedValue({ user: { id: 'user-2', email: 'a@b.com' } } as never)
     mockFindUnique.mockRejectedValue(new Error('DB down'))
     const locale = await resolveRequestLocale(makeRequest({ pathname: '/en/pricing' }))
-    expect(locale).toBe('en')
+    expect(locale).toBe('pt-BR')
   })
 })
 
@@ -96,17 +98,27 @@ describe('resolveUserLocale cache', () => {
   })
 
   it('returns locale from DB on first call', async () => {
-    mockFindUnique.mockResolvedValue({ locale: 'en' } as never)
+    mockFindUnique.mockResolvedValue({ locale: 'pt-BR' } as never)
     const locale = await resolveUserLocale('user-cache-test')
-    expect(locale).toBe('en')
+    expect(locale).toBe('pt-BR')
     expect(mockFindUnique).toHaveBeenCalledTimes(1)
   })
 
   it('returns cached locale on second call without hitting DB again', async () => {
-    mockFindUnique.mockResolvedValue({ locale: 'en' } as never)
+    mockFindUnique.mockResolvedValue({ locale: 'pt-BR' } as never)
     await resolveUserLocale('user-cache-test')
     await resolveUserLocale('user-cache-test')
     expect(mockFindUnique).toHaveBeenCalledTimes(1)
+  })
+
+  // FR-008: a coluna User.locale ainda guarda 'en' de antes da aposentadoria.
+  // Sem a validação, esse valor seria casteado e só falharia depois, no import()
+  // de messages/en/*.json — que não existe mais.
+  it('falls back to pt-BR for a stale en value stored in the DB', async () => {
+    mockFindUnique.mockResolvedValue({ locale: 'en' } as never)
+    invalidateLocaleCache('user-stale-en')
+    const locale = await resolveUserLocale('user-stale-en')
+    expect(locale).toBe('pt-BR')
   })
 
   it('defaults to pt-BR when user not found', async () => {

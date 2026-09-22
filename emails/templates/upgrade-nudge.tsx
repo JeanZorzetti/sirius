@@ -1,9 +1,9 @@
 import { Text, Heading, Button, Section } from '@react-email/components'
 import { BaseLayout } from '../layouts/base'
-import emailsEn from '@/messages/en/emails.json'
 import emailsPtBr from '@/messages/pt-BR/emails.json'
 
-type Locale = 'pt-BR' | 'en'
+// Locale EN aposentado (spec 004): o prop fica para não mexer nos chamadores.
+type Locale = 'pt-BR'
 
 interface UpgradeNudgeEmailProps {
   userName: string
@@ -20,7 +20,7 @@ export function UpgradeNudgeEmail({
   upgradeUrl = 'https://siriuscrm.com.br/dashboard/billing',
   locale = 'pt-BR',
 }: UpgradeNudgeEmailProps) {
-  const s = locale === 'en' ? emailsEn.emails.upgradeNudge : emailsPtBr.emails.upgradeNudge
+  const s = emailsPtBr.emails.upgradeNudge
 
   const percentUsed = Math.round((currentDeals / maxDeals) * 100)
   const remaining = maxDeals - currentDeals
@@ -37,7 +37,7 @@ export function UpgradeNudgeEmail({
     <BaseLayout preview={s.preview} locale={locale}>
       <Heading style={styles.heading}>{s.title} 🚀</Heading>
 
-      <Text style={styles.text}>{locale === 'en' ? `Hi ${userName},` : `Olá ${userName},`}</Text>
+      <Text style={styles.text}>{`Olá ${userName},`}</Text>
 
       <Text style={styles.text}>{intro}</Text>
 
@@ -68,8 +68,8 @@ export function UpgradeNudgeEmail({
 
       <Section style={styles.pricingCard}>
         <Text style={styles.pricingText}>
-          <span style={styles.price}>{locale === 'en' ? '$67' : 'R$ 67'}</span>
-          <span style={styles.period}>{locale === 'en' ? '/mo' : '/mês'}</span>
+          <span style={styles.price}>{'R$ 67'}</span>
+          <span style={styles.period}>{'/mês'}</span>
         </Text>
         <Text style={styles.pricingSubtext}>{s.pricingSubtext}</Text>
       </Section>

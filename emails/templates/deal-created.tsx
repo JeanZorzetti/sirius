@@ -1,9 +1,9 @@
 import { Text, Heading, Button, Section } from '@react-email/components'
 import { BaseLayout } from '../layouts/base'
-import emailsEn from '@/messages/en/emails.json'
 import emailsPtBr from '@/messages/pt-BR/emails.json'
 
-type Locale = 'pt-BR' | 'en'
+// Locale EN aposentado (spec 004): o prop fica para não mexer nos chamadores.
+type Locale = 'pt-BR'
 
 interface DealCreatedEmailProps {
   userName: string
@@ -24,11 +24,11 @@ export function DealCreatedEmail({
   dealUrl,
   locale = 'pt-BR',
 }: DealCreatedEmailProps) {
-  const s = locale === 'en' ? emailsEn.emails.dealCreated : emailsPtBr.emails.dealCreated
+  const s = emailsPtBr.emails.dealCreated
 
-  const formattedValue = new Intl.NumberFormat(locale === 'en' ? 'en-US' : 'pt-BR', {
+  const formattedValue = new Intl.NumberFormat('pt-BR', {
     style: 'currency',
-    currency: locale === 'en' ? 'USD' : 'BRL',
+    currency: 'BRL',
   }).format(dealValue)
 
   const preview = s.preview.replace('{dealTitle}', dealTitle)
@@ -37,7 +37,7 @@ export function DealCreatedEmail({
     <BaseLayout preview={preview} locale={locale}>
       <Heading style={styles.heading}>{s.title}</Heading>
 
-      <Text style={styles.text}>{locale === 'en' ? `Hi ${userName},` : `Olá ${userName},`}</Text>
+      <Text style={styles.text}>{`Olá ${userName},`}</Text>
 
       <Text style={styles.text}>{s.intro}</Text>
 

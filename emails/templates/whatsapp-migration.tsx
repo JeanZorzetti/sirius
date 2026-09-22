@@ -1,9 +1,9 @@
 import { Text, Heading, Button, Section, Link } from '@react-email/components'
 import { BaseLayout } from '../layouts/base'
-import emailsEn from '@/messages/en/emails.json'
 import emailsPtBr from '@/messages/pt-BR/emails.json'
 
-type Locale = 'pt-BR' | 'en'
+// Locale EN aposentado (spec 004): o prop fica para não mexer nos chamadores.
+type Locale = 'pt-BR'
 
 interface WhatsAppMigrationEmailProps {
   userName: string
@@ -18,7 +18,7 @@ export function WhatsAppMigrationEmail({
   upgradeUrl = 'https://siriuscrm.com.br/dashboard/billing/plans',
   locale = 'pt-BR',
 }: WhatsAppMigrationEmailProps) {
-  const s = locale === 'en' ? emailsEn.emails.whatsappMigration : emailsPtBr.emails.whatsappMigration
+  const s = emailsPtBr.emails.whatsappMigration
 
   const intro = s.intro.replace('{organizationName}', organizationName)
 
@@ -29,7 +29,7 @@ export function WhatsAppMigrationEmail({
         <Text style={styles.warningTitle}>{s.warningBannerTitle}</Text>
       </Section>
 
-      <Text style={styles.greeting}>{locale === 'en' ? `Hi ${userName},` : `Olá ${userName},`}</Text>
+      <Text style={styles.greeting}>{`Olá ${userName},`}</Text>
 
       <Text style={styles.text}>
         {intro.split(organizationName).map((part, i, arr) =>

@@ -18,7 +18,11 @@ export async function resolveUserLocale(userId: string): Promise<Locale> {
     select: { locale: true },
   })
 
-  const locale = (user?.locale as Locale) ?? defaultLocale
+  // Valida contra `locales` em vez de castear direto: a coluna User.locale ainda
+  // aceita 'en' de antes da aposentadoria do locale (spec 004), e um valor fora da
+  // lista só falharia mais tarde, no import() de um JSON que não existe mais.
+  const stored = user?.locale
+  const locale = locales.includes(stored as Locale) ? (stored as Locale) : defaultLocale
   localeCache.set(userId, { locale, expiresAt: now + 60_000 })
   return locale
 }
@@ -27,8 +31,12 @@ export function invalidateLocaleCache(userId: string) {
   localeCache.delete(userId)
 }
 
-export async function resolveRequestLocale(req?: NextRequest): Promise<Locale> {
-  // 1. Authenticated user's saved locale
+/**
+ * Com um idioma só (spec 004), os ramos de detecção por prefixo de URL e por
+ * Accept-Language não têm para onde apontar e saíram. `req` fica na assinatura
+ * porque os 3 chamadores passam o request.
+ */
+export async function resolveRequestLocale(_req?: NextRequest): Promise<Locale> {
   const session = await getSession()
   if (session?.user?.id) {
     try {
@@ -36,16 +44,6 @@ export async function resolveRequestLocale(req?: NextRequest): Promise<Locale> {
     } catch {
       // fall through
     }
-  }
-
-  if (req) {
-    // 2. URL prefix
-    const pathname = req.nextUrl?.pathname ?? ''
-    if (pathname.startsWith('/en') || pathname.startsWith('/en/')) return 'en'
-
-    // 3. Accept-Language header
-    const acceptLang = req.headers.get('accept-language') ?? ''
-    if (acceptLang.toLowerCase().includes('en')) return 'en'
   }
 
   return defaultLocale
@@ -81,7 +79,7 @@ export async function t(
   try {
     return translator(key as never, params as never)
   } catch {
-    // Fallback to pt-BR if key missing in en
+    // Fallback para o locale padrão quando a chave falta
     if (locale !== defaultLocale) {
       const fallbackMessages = await loadMessages(defaultLocale, namespace)
       const fallbackTranslator = createTranslator({

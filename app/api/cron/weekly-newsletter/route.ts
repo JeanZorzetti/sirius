@@ -131,15 +131,13 @@ export async function GET(request: NextRequest) {
         const totalForRate = newDeals + wonDeals + lostDeals
         const conversionRate = totalForRate > 0 ? (wonDeals / totalForRate) * 100 : 0
 
-        const locale = (owner.locale as 'pt-BR' | 'en') ?? 'pt-BR'
-        const subject = locale === 'en'
-          ? `📊 Weekly Summary (${weekLabel}) – Sirius CRM`
-          : `📊 Resumo da semana (${weekLabel}) – Sirius CRM`
+        const locale = 'pt-BR' as const
+        const subject = `📊 Resumo da semana (${weekLabel}) – Sirius CRM`
         await sendEmail({
           to: owner.email,
           subject,
           react: WeeklyNewsletter({
-            userName: owner.name || (locale === 'en' ? 'Hi' : 'Olá'),
+            userName: owner.name || 'Olá',
             weekLabel,
             stats: { newDeals, wonDeals, lostDeals, newContacts, conversionRate },
             tip,

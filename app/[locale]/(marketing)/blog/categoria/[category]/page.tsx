@@ -43,20 +43,14 @@ export async function generateMetadata({
     .map((p) => p.title)
     .join(', ')}. Dicas e estratégias para vendedores e times comerciais.`
 
-  const ptUrl = `https://siriuscrm.com.br/blog/categoria/${categorySlug}`
-  const enUrl = `https://siriuscrm.com.br/en/blog/categoria/${categorySlug}`
-  const canonicalUrl = locale === 'en' ? enUrl : ptUrl
+  const canonicalUrl = `https://siriuscrm.com.br/blog/categoria/${categorySlug}`
 
   return {
     title,
     description,
+    // EN retirado (spec 004): sem segundo idioma não há hreflang a emitir.
     alternates: {
       canonical: canonicalUrl,
-      languages: {
-        'pt-BR': ptUrl,
-        'en': enUrl,
-        'x-default': ptUrl,
-      },
     },
     openGraph: {
       title,

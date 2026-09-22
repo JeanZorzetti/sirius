@@ -153,9 +153,73 @@ const nextConfig: NextConfig = {
         destination: '/help',
         permanent: true,
       },
+      // ── Aposentadoria do locale EN (spec 004) ───────────────────────────────
+      // O /en saiu do ar. Estas regras herdam a autoridade das URLs já indexadas
+      // apontando cada uma para o equivalente em PT — redirect em massa para a
+      // home é lido como soft-404 e a autoridade evapora em vez de ser herdada.
+      // ORDEM IMPORTA: os slugs traduzidos vêm antes do fallback /en/:path*,
+      // senão o fallback come todos.
+      // ponytail: tabela com prazo de validade — pode sair quando o GSC parar de
+      // reportar impressão em /en (meses).
       {
+        source: '/en/proposal',
+        destination: '/proposta',
+        permanent: true,
+      },
+      {
+        source: '/en/yearbook',
+        destination: '/anuario',
+        permanent: true,
+      },
+      {
+        source: '/en/automatic-sales',
+        destination: '/vendas-automaticas',
+        permanent: true,
+      },
+      {
+        // Era /en/automated-sales → /en/automatic-sales (404 do GSC, spec 001 T018).
+        // Aponta direto para o destino final para não virar cadeia de 2 saltos.
         source: '/en/automated-sales',
-        destination: '/en/automatic-sales',
+        destination: '/vendas-automaticas',
+        permanent: true,
+      },
+      {
+        source: '/en/checkout/success',
+        destination: '/checkout/sucesso',
+        permanent: true,
+      },
+      {
+        source: '/en/blog/category/:slug',
+        destination: '/blog/categoria/:slug',
+        permanent: true,
+      },
+      {
+        // Os slugs internos das 6 calculadoras NÃO são traduzidos aqui
+        // (/en/tools/roi-calculator → /ferramentas/roi-calculator, que é 404).
+        // São 6 URLs de baixo tráfego; viram regra própria se o GSC mostrar
+        // impressão nelas. Ver plan.md D2.
+        source: '/en/tools/:path*',
+        destination: '/ferramentas/:path*',
+        permanent: true,
+      },
+      {
+        source: '/en/solutions/:path*',
+        destination: '/solucoes/:path*',
+        permanent: true,
+      },
+      {
+        // ANTES do fallback: `/en/:path*` também casa o `/en` puro, com :path* vazio,
+        // e aí monta um Location em branco — 308 para lugar nenhum. Verificado.
+        source: '/en',
+        destination: '/',
+        permanent: true,
+      },
+      {
+        // Fallback: todo o resto do /en tem o mesmo slug nos dois idiomas
+        // (/pricing, /blog/:slug, /features, /login...). Só tira o prefixo.
+        // PRECISA ser a última regra /en da lista.
+        source: '/en/:path*',
+        destination: '/:path*',
         permanent: true,
       },
       // Dead feature page → features hub (matches /features/* pattern above)

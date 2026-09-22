@@ -82,12 +82,10 @@ export async function createInvite(email: string, role: OrgRole = 'VENDEDOR') {
     })
 
     const inviteUrl = `${process.env.NEXTAUTH_URL || process.env.NEXT_PUBLIC_APP_URL || 'https://siriuscrm.com.br'}/register?invite=${token}`
-    const locale = (actor.locale as 'pt-BR' | 'en') ?? defaultLocale
-    const inviterName = actor.name ?? (locale === 'en' ? 'A colleague' : 'Um colega')
+    const locale = defaultLocale
+    const inviterName = actor.name ?? 'Um colega'
     const orgName = organization?.name ?? 'Sirius CRM'
-    const subject = locale === 'en'
-        ? `${inviterName} invited you to ${orgName}`
-        : `${inviterName} convidou você para o ${orgName}`
+    const subject = `${inviterName} convidou você para o ${orgName}`
     await sendEmail({
         to: email,
         subject,
@@ -129,12 +127,10 @@ export async function resendInvite(inviteId: string) {
     })
 
     const inviteUrl = `${process.env.NEXTAUTH_URL || process.env.NEXT_PUBLIC_APP_URL || 'https://siriuscrm.com.br'}/register?invite=${token}`
-    const locale = (actor.locale as 'pt-BR' | 'en') ?? defaultLocale
-    const inviterName = actor.name ?? (locale === 'en' ? 'A colleague' : 'Um colega')
+    const locale = defaultLocale
+    const inviterName = actor.name ?? 'Um colega'
     const orgName = organization?.name ?? 'Sirius CRM'
-    const resendSubject = locale === 'en'
-        ? `${inviterName} invited you to ${orgName}`
-        : `${inviterName} convidou você para o ${orgName}`
+    const resendSubject = `${inviterName} convidou você para o ${orgName}`
     await sendEmail({
         to: invite.email,
         subject: resendSubject,

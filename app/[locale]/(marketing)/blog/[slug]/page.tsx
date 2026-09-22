@@ -33,8 +33,7 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
   if (!post) return { title: 'Post não encontrado' }
 
   const ptUrl = `https://siriuscrm.com.br/blog/${slug}`
-  const enUrl = `https://siriuscrm.com.br/en/blog/${slug}`
-  const url = locale === 'en' ? enUrl : ptUrl
+  const url = ptUrl
 
   // OG Image dinâmica para todos os posts (branded com título + categoria)
   const ogParams = new URLSearchParams({ title: post.title, category: post.category })
@@ -105,12 +104,9 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
     keywords: isEnLocale ? (post.keywordsEn ?? [post.category]) : post.category,
     // Noindex for EN pages without translated content — avoids wrong-language SEO penalty
     ...(isEnLocale && !hasEnContent ? { robots: { index: false, follow: false } } : {}),
+    // EN retirado (spec 004): sem segundo idioma não há hreflang a emitir.
     alternates: {
       canonical: url,
-      languages: {
-        'pt-BR': ptUrl,
-        ...(hasEnContent ? { 'en': enUrl, 'x-default': ptUrl } : {}),
-      },
     },
     openGraph: {
       title: displayTitle,

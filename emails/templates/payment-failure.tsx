@@ -1,9 +1,9 @@
 import { Text, Heading, Button, Section, Hr } from '@react-email/components'
 import { BaseLayout } from '../layouts/base'
-import emailsEn from '@/messages/en/emails.json'
 import emailsPtBr from '@/messages/pt-BR/emails.json'
 
-type Locale = 'pt-BR' | 'en'
+// Locale EN aposentado (spec 004): o prop fica para não mexer nos chamadores.
+type Locale = 'pt-BR'
 
 interface PaymentFailureEmailProps {
   userName: string
@@ -26,7 +26,7 @@ export function PaymentFailureEmail({
   isFinal = false,
   locale = 'pt-BR',
 }: PaymentFailureEmailProps) {
-  const s = locale === 'en' ? emailsEn.emails.paymentFailure : emailsPtBr.emails.paymentFailure
+  const s = emailsPtBr.emails.paymentFailure
 
   const attemptsRemaining = maxAttempts - attemptNumber
 
@@ -63,7 +63,7 @@ export function PaymentFailureEmail({
         {isFinal ? `⚠️ ${s.titleFinal}` : `❌ ${s.titleRetry}`}
       </Heading>
 
-      <Text style={styles.text}>{locale === 'en' ? `Hi ${userName},` : `Olá ${userName},`}</Text>
+      <Text style={styles.text}>{`Olá ${userName},`}</Text>
 
       {isFinal ? (
         <>

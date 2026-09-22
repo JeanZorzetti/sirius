@@ -1,8 +1,8 @@
 import * as React from 'react'
-import emailsEn from '@/messages/en/emails.json'
 import emailsPtBr from '@/messages/pt-BR/emails.json'
 
-type Locale = 'pt-BR' | 'en'
+// Locale EN aposentado (spec 004): o prop fica para não mexer nos chamadores.
+type Locale = 'pt-BR'
 
 interface Props {
   ticket: { id: string; subject: string }
@@ -11,7 +11,7 @@ interface Props {
 }
 
 export default function NewMessageStaffEmail({ ticket, message, locale = 'pt-BR' }: Props) {
-  const s = locale === 'en' ? emailsEn.emails.support.newMessageStaff : emailsPtBr.emails.support.newMessageStaff
+  const s = emailsPtBr.emails.support.newMessageStaff
   const ticketUrl = `https://siriuscrm.com.br/admin/support/${ticket.id}`
 
   const intro = s.intro

@@ -1,27 +1,24 @@
 const BASE_URL = 'https://siriuscrm.com.br'
 
 /**
- * Build locale-aware canonical + hreflang alternates for static pages.
+ * Build the canonical URL for a static marketing page.
  *
- * Both `ptPath` and `enPath` should start with a leading slash (or be empty for root).
- * When the page is rendered under /en, the EN URL becomes the canonical.
- * Always emits pt-BR, en, and x-default hreflang entries.
+ * `ptPath` should start with a leading slash (or be empty for root).
+ *
+ * The EN locale was retired (spec 004): there is no second language version, so
+ * there is no hreflang to emit — a self-referencing `languages` map is dead bytes
+ * in every `<head>`. This returns `{ canonical }` only.
+ *
+ * ponytail: `locale` and `enPath` stay in the signature on purpose. 25+ pages call
+ * this; keeping the shape means this single edit fixes all of them without opening
+ * 25 files. Drop the params when someone is already touching those call sites.
  */
 export function buildLocaleAlternates(
-  locale: string,
+  _locale: string,
   ptPath: string,
-  enPath: string = ptPath
+  _enPath: string = ptPath
 ) {
-  const ptUrl = `${BASE_URL}${ptPath}`
-  const enUrl = `${BASE_URL}/en${enPath}`
-  const canonical = locale === 'en' ? enUrl : ptUrl
-
   return {
-    canonical,
-    languages: {
-      'pt-BR': ptUrl,
-      en: enUrl,
-      'x-default': ptUrl,
-    },
+    canonical: `${BASE_URL}${ptPath}`,
   }
 }

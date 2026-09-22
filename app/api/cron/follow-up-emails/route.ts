@@ -92,16 +92,14 @@ export async function GET(request: NextRequest) {
         try {
           const dealUrl = `${process.env.NEXT_PUBLIC_APP_URL}/dashboard?deal=${deal.id}`
 
-          const locale = (deal.user.locale as 'pt-BR' | 'en') ?? 'pt-BR'
+          const locale = 'pt-BR' as const
           const emoji = days >= 14 ? '🚨' : days >= 7 ? '⚠️' : '📌'
-          const subject = locale === 'en'
-            ? `${emoji} Follow-up: "${deal.title}" stalled for ${days} days`
-            : `${emoji} Follow-up: "${deal.title}" parado há ${days} dias`
+          const subject = `${emoji} Follow-up: "${deal.title}" parado há ${days} dias`
           await sendEmail({
             to: deal.user.email,
             subject,
             react: FollowUpEmail({
-              userName: deal.user.name || (locale === 'en' ? 'Hi' : 'Olá'),
+              userName: deal.user.name || 'Olá',
               dealTitle: deal.title,
               dealValue: deal.value ? parseFloat(deal.value.toString()) : undefined,
               contactName: deal.contact?.name,

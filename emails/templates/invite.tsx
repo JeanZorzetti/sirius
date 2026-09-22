@@ -1,9 +1,9 @@
 import { Text, Heading, Button, Section } from '@react-email/components'
 import { BaseLayout } from '../layouts/base'
-import emailsEn from '@/messages/en/emails.json'
 import emailsPtBr from '@/messages/pt-BR/emails.json'
 
-type Locale = 'pt-BR' | 'en'
+// Locale EN aposentado (spec 004): o prop fica para não mexer nos chamadores.
+type Locale = 'pt-BR'
 
 interface InviteEmailProps {
   inviterName: string
@@ -18,7 +18,7 @@ export function InviteEmail({
   inviteUrl,
   locale = 'pt-BR',
 }: InviteEmailProps) {
-  const s = locale === 'en' ? emailsEn.emails.invite : emailsPtBr.emails.invite
+  const s = emailsPtBr.emails.invite
 
   const preview = s.preview
     .replace('{inviterName}', inviterName)
@@ -32,7 +32,7 @@ export function InviteEmail({
     <BaseLayout preview={preview} locale={locale}>
       <Heading style={styles.heading}>{s.title}</Heading>
 
-      <Text style={styles.text}>{locale === 'en' ? 'Hi,' : 'Olá,'}</Text>
+      <Text style={styles.text}>{'Olá,'}</Text>
 
       <Text style={styles.text}>{intro}</Text>
 

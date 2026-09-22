@@ -1,12 +1,15 @@
 import { defineRouting } from 'next-intl/routing';
 
 export const routing = defineRouting({
-  locales: ['pt-BR', 'en'],
+  locales: ['pt-BR'],
   defaultLocale: 'pt-BR',
-  localePrefix: 'as-needed', // pt-BR sem prefixo, en com /en
+  localePrefix: 'as-needed', // idioma único: nenhuma rota leva prefixo
   localeDetection: false, // Não redirecionar baseado no Accept-Language do browser
 
-  // Pathnames localizados: segmentos em PT-BR → EN
+  // Locale EN aposentado (spec 004). O mapa virou identidade — fica de pé porque
+  // é ele que dá tipagem às rotas em createNavigation(). As URLs /en indexadas são
+  // tratadas por 301 em next.config.ts, não aqui.
+  // Pathnames
   pathnames: {
     '/': '/',
     '/features': '/features',
@@ -26,84 +29,35 @@ export const routing = defineRouting({
     '/design-system': '/design-system',
     '/debug': '/debug',
 
-    // Slug único PT → traduzido em EN
     // '/fundadores' removido: a página nunca foi construída e o sitemap a anunciava
     // com priority 0.9 → 404 auto-infligido. Reativar junto com app/[locale]/(marketing)/fundadores/.
-    '/proposta': {
-      'pt-BR': '/proposta',
-      en: '/proposal',
-    },
-    '/anuario': {
-      'pt-BR': '/anuario',
-      en: '/yearbook',
-    },
-    '/followup': {
-      'pt-BR': '/followup',
-      en: '/followup', // palavra universal
-    },
-    '/vendas-automaticas': {
-      'pt-BR': '/vendas-automaticas',
-      en: '/automatic-sales',
-    },
+    '/proposta': '/proposta',
+    '/anuario': '/anuario',
+    '/followup': '/followup',
+    '/vendas-automaticas': '/vendas-automaticas',
 
-    // Ferramentas / Tools
-    '/ferramentas': {
-      'pt-BR': '/ferramentas',
-      en: '/tools',
-    },
-    '/ferramentas/calculadora-roi': {
-      'pt-BR': '/ferramentas/calculadora-roi',
-      en: '/tools/roi-calculator',
-    },
-    '/ferramentas/calculadora-roi-agencias': {
-      'pt-BR': '/ferramentas/calculadora-roi-agencias',
-      en: '/tools/roi-calculator-agencies',
-    },
-    '/ferramentas/calculadora-roi-consultores': {
-      'pt-BR': '/ferramentas/calculadora-roi-consultores',
-      en: '/tools/roi-calculator-consultants',
-    },
-    '/ferramentas/calculadora-roi-corretores': {
-      'pt-BR': '/ferramentas/calculadora-roi-corretores',
-      en: '/tools/roi-calculator-brokers',
-    },
-    '/ferramentas/calculadora-roi-energia-solar': {
-      'pt-BR': '/ferramentas/calculadora-roi-energia-solar',
-      en: '/tools/roi-calculator-solar',
-    },
-    '/ferramentas/calculadora-roi-representantes': {
-      'pt-BR': '/ferramentas/calculadora-roi-representantes',
-      en: '/tools/roi-calculator-reps',
-    },
+    // Ferramentas
+    '/ferramentas': '/ferramentas',
+    '/ferramentas/calculadora-roi': '/ferramentas/calculadora-roi',
+    '/ferramentas/calculadora-roi-agencias': '/ferramentas/calculadora-roi-agencias',
+    '/ferramentas/calculadora-roi-consultores': '/ferramentas/calculadora-roi-consultores',
+    '/ferramentas/calculadora-roi-corretores': '/ferramentas/calculadora-roi-corretores',
+    '/ferramentas/calculadora-roi-energia-solar': '/ferramentas/calculadora-roi-energia-solar',
+    '/ferramentas/calculadora-roi-representantes': '/ferramentas/calculadora-roi-representantes',
 
-    // Soluções / Solutions (nichos)
-    '/solucoes': {
-      'pt-BR': '/solucoes',
-      en: '/solutions',
-    },
-    '/solucoes/[slug]': {
-      'pt-BR': '/solucoes/[slug]',
-      en: '/solutions/[slug]',
-    },
-    '/solucoes/cidade/[slug]': {
-      'pt-BR': '/solucoes/cidade/[slug]',
-      en: '/solutions/city/[slug]',
-    },
+    // Soluções (nichos)
+    '/solucoes': '/solucoes',
+    '/solucoes/[slug]': '/solucoes/[slug]',
+    '/solucoes/cidade/[slug]': '/solucoes/cidade/[slug]',
 
     // Blog
     '/blog': '/blog',
     '/blog/[slug]': '/blog/[slug]',
-    '/blog/categoria/[category]': {
-      'pt-BR': '/blog/categoria/[category]',
-      en: '/blog/category/[category]',
-    },
+    '/blog/categoria/[category]': '/blog/categoria/[category]',
 
     // Help
     '/help': '/help',
-    '/help/[categoria]/[slug]': {
-      'pt-BR': '/help/[categoria]/[slug]',
-      en: '/help/[category]/[slug]',
-    },
+    '/help/[categoria]/[slug]': '/help/[categoria]/[slug]',
 
     // Referral
     '/r/[code]': '/r/[code]',
@@ -130,10 +84,7 @@ export const routing = defineRouting({
     '/dashboard/support/[id]': '/dashboard/support/[id]',
 
     // Checkout
-    '/checkout/sucesso': {
-      'pt-BR': '/checkout/sucesso',
-      en: '/checkout/success',
-    },
+    '/checkout/sucesso': '/checkout/sucesso',
 
     // IA
     '/IA': '/IA',

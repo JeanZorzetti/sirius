@@ -1,9 +1,9 @@
 import { Text, Heading, Button, Section } from '@react-email/components'
 import { BaseLayout } from '../layouts/base'
-import emailsEn from '@/messages/en/emails.json'
 import emailsPtBr from '@/messages/pt-BR/emails.json'
 
-type Locale = 'pt-BR' | 'en'
+// Locale EN aposentado (spec 004): o prop fica para não mexer nos chamadores.
+type Locale = 'pt-BR'
 
 interface FollowUpEmailProps {
   userName: string
@@ -26,12 +26,12 @@ export function FollowUpEmail({
   dealUrl,
   locale = 'pt-BR',
 }: FollowUpEmailProps) {
-  const s = locale === 'en' ? emailsEn.emails.followUp : emailsPtBr.emails.followUp
+  const s = emailsPtBr.emails.followUp
 
   const formattedValue = dealValue
-    ? new Intl.NumberFormat(locale === 'en' ? 'en-US' : 'pt-BR', {
+    ? new Intl.NumberFormat('pt-BR', {
         style: 'currency',
-        currency: locale === 'en' ? 'USD' : 'BRL',
+        currency: 'BRL',
       }).format(dealValue)
     : null
 
@@ -49,7 +49,7 @@ export function FollowUpEmail({
     .replace('{stageName}', stageName)
 
   const labelNoUpdate = s.labelNoUpdate.replace('{daysSinceUpdate}', String(daysSinceUpdate))
-  const action1 = s.action1.replace('{contactName}', contactName || (locale === 'en' ? 'the contact' : 'o contato'))
+  const action1 = s.action1.replace('{contactName}', contactName || ('o contato'))
 
   return (
     <BaseLayout preview={`${urgencyEmoji} ${preview}`} locale={locale}>
@@ -57,7 +57,7 @@ export function FollowUpEmail({
         {urgencyEmoji} {s.title}
       </Heading>
 
-      <Text style={styles.text}>{locale === 'en' ? `Hi ${userName},` : `Olá ${userName},`}</Text>
+      <Text style={styles.text}>{`Olá ${userName},`}</Text>
 
       <Text style={styles.text}>
         {intro.split(dealTitle).map((part, i, arr) =>

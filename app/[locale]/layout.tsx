@@ -55,11 +55,6 @@ export async function generateMetadata({
       metadataBase: new URL(baseUrl),
       alternates: {
         canonical: baseUrl,
-        languages: {
-          'pt-BR': baseUrl,
-          en: enUrl,
-          'x-default': baseUrl,
-        },
       },
       openGraph: {
         title: 'Sirius CRM | Brilhe nas Vendas',
@@ -96,12 +91,7 @@ export async function generateMetadata({
     keywords: ['CRM', 'Sales', 'Pipeline', 'Customer Management', 'SaaS', 'Sirius', 'ROI Labs'],
     metadataBase: new URL(baseUrl),
     alternates: {
-      canonical: enUrl,
-      languages: {
-        'pt-BR': baseUrl,
-        en: enUrl,
-        'x-default': baseUrl,
-      },
+      canonical: baseUrl,
     },
     openGraph: {
       title: 'Sirius CRM | Shine in Sales',

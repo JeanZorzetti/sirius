@@ -110,9 +110,7 @@ export async function sendWelcomeEmail({
   }
 
   const locale = await getUserLocale(userId)
-  const defaultSubject = locale === 'en'
-    ? `Welcome to Sirius CRM, ${userName}!`
-    : `Bem-vindo ao Sirius CRM, ${userName}!`
+  const defaultSubject = `Bem-vindo ao Sirius CRM, ${userName}!`
   const subject = settings.customSubject
     ? replaceVariables(settings.customSubject, { userName, organizationName })
     : defaultSubject
@@ -191,14 +189,12 @@ export async function sendDealCreatedEmail({
   }
 
   const locale = await getUserLocale(userId)
-  const formattedValue = new Intl.NumberFormat(locale === 'en' ? 'en-US' : 'pt-BR', {
+  const formattedValue = new Intl.NumberFormat('pt-BR', {
     style: 'currency',
-    currency: locale === 'en' ? 'USD' : 'BRL'
+    currency: 'BRL'
   }).format(dealValue)
 
-  const defaultSubject = locale === 'en'
-    ? `New deal created: ${dealTitle}`
-    : `Novo negócio criado: ${dealTitle}`
+  const defaultSubject = `Novo negócio criado: ${dealTitle}`
   const subject = settings.customSubject
     ? replaceVariables(settings.customSubject, {
         userName,
@@ -285,14 +281,12 @@ export async function sendDealStageChangedEmail({
   }
 
   const locale = await getUserLocale(userId)
-  const formattedValue = new Intl.NumberFormat(locale === 'en' ? 'en-US' : 'pt-BR', {
+  const formattedValue = new Intl.NumberFormat('pt-BR', {
     style: 'currency',
-    currency: locale === 'en' ? 'USD' : 'BRL'
+    currency: 'BRL'
   }).format(dealValue)
 
-  const defaultSubject = locale === 'en'
-    ? `Deal updated: ${dealTitle}`
-    : `${dealTitle} mudou para ${newStage}`
+  const defaultSubject = `${dealTitle} mudou para ${newStage}`
   const subject = settings.customSubject
     ? replaceVariables(settings.customSubject, {
         assigneeName,
@@ -373,9 +367,7 @@ export async function sendUpgradeNudgeEmail({
   }
 
   const locale = await getUserLocale(userId)
-  const defaultSubject = locale === 'en'
-    ? `You're growing! 📊`
-    : `Você está perto do limite de negócios! 📊`
+  const defaultSubject = `Você está perto do limite de negócios! 📊`
   const subject = settings.customSubject
     ? replaceVariables(settings.customSubject, {
         userName,

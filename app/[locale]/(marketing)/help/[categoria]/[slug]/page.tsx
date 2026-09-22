@@ -41,9 +41,7 @@ export async function generateMetadata({
     };
   }
 
-  const ptUrl = `https://siriuscrm.com.br/help/${categoria}/${slug}`;
-  const enUrl = `https://siriuscrm.com.br/en/help/${categoria}/${slug}`;
-  const canonicalUrl = locale === 'en' ? enUrl : ptUrl;
+  const canonicalUrl = `https://siriuscrm.com.br/help/${categoria}/${slug}`;
   const isEn = locale === 'en'
   const hasEnContent = !!(article.titleEn && article.descriptionEn)
   const displayTitle = isEn && article.titleEn ? article.titleEn : article.title
@@ -55,12 +53,9 @@ export async function generateMetadata({
     description: displayDescription,
     keywords: [article.category, isEn ? 'help' : 'ajuda', 'tutorial', 'CRM', 'Sirius'],
     ...(isEn && !hasEnContent ? { robots: { index: false, follow: false } } : {}),
+    // EN retirado (spec 004): sem segundo idioma não há hreflang a emitir.
     alternates: {
       canonical: canonicalUrl,
-      languages: {
-        'pt-BR': ptUrl,
-        ...(hasEnContent ? { 'en': enUrl, 'x-default': ptUrl } : {}),
-      },
     },
     openGraph: {
       title: `${displayTitle} - ${helpLabel} | Sirius CRM`,

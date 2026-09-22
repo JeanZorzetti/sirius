@@ -1,9 +1,9 @@
 import { Text, Heading, Button, Section } from '@react-email/components'
 import { BaseLayout } from '../layouts/base'
-import emailsEn from '@/messages/en/emails.json'
 import emailsPtBr from '@/messages/pt-BR/emails.json'
 
-type Locale = 'pt-BR' | 'en'
+// Locale EN aposentado (spec 004): o prop fica para não mexer nos chamadores.
+type Locale = 'pt-BR'
 
 interface WelcomeEmailProps {
   userName: string
@@ -18,7 +18,7 @@ export function WelcomeEmail({
   dashboardUrl = 'https://siriuscrm.com.br/dashboard',
   locale = 'pt-BR',
 }: WelcomeEmailProps) {
-  const s = locale === 'en' ? emailsEn.emails.welcome : emailsPtBr.emails.welcome
+  const s = emailsPtBr.emails.welcome
 
   const preview = s.preview.replace('{userName}', userName)
   const intro = s.intro.replace('{organizationName}', organizationName)
@@ -27,7 +27,7 @@ export function WelcomeEmail({
     <BaseLayout preview={preview} locale={locale}>
       <Heading style={styles.heading}>{s.title}</Heading>
 
-      <Text style={styles.text}>{locale === 'en' ? `Hi ${userName},` : `Olá ${userName},`}</Text>
+      <Text style={styles.text}>{`Olá ${userName},`}</Text>
 
       <Text style={styles.text}>
         {intro.split(organizationName).map((part, i, arr) =>
@@ -71,7 +71,7 @@ export function WelcomeEmail({
       </Section>
 
       <Text style={styles.tip}>
-        <strong>{locale === 'en' ? 'Tip:' : 'Dica:'}</strong> {s.tip}
+        <strong>{'Dica:'}</strong> {s.tip}
       </Text>
 
       <Text style={styles.text}>{s.helpText}</Text>

@@ -4,7 +4,6 @@ import { MobileNav } from '@/components/marketing/mobile-nav'
 import { NavDropdowns } from '@/components/marketing/nav-dropdowns'
 import { FeaturesDropdown } from '@/components/marketing/features-dropdown'
 import { Footer } from '@/components/marketing/footer'
-import { LanguageSwitcher } from '@/components/marketing/language-switcher'
 import { Link } from '@/i18n/routing'
 import { useTranslations } from 'next-intl'
 
@@ -57,7 +56,6 @@ export default function MarketingLayout({
             </div>
           </div>
           <div className="flex items-center gap-2">
-            <LanguageSwitcher />
             <MobileNav />
             <Button variant="ghost" asChild className="hidden md:inline-flex">
               <Link href="/login">{t('login')}</Link>

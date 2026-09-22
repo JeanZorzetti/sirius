@@ -43,25 +43,16 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   const hasEnContent = !!(niche.seoEn && niche.titleEn)
   const seo = isEn && niche.seoEn ? niche.seoEn : niche.seo
 
-  const ptUrl = `https://siriuscrm.com.br/solucoes/${niche.slug}`
-  const enUrl = `https://siriuscrm.com.br/en/solutions/${niche.slug}`
-  const canonicalUrl = isEn ? enUrl : ptUrl
+  const canonicalUrl = `https://siriuscrm.com.br/solucoes/${niche.slug}`
 
   return {
     title: seo.title,
     description: seo.description,
     keywords: seo.keywords.join(', '),
     ...(isEn && !hasEnContent && { robots: { index: false, follow: false } }),
+    // EN retirado (spec 004): sem segundo idioma não há hreflang a emitir.
     alternates: {
       canonical: canonicalUrl,
-      languages: hasEnContent || !isEn ? {
-        'pt-BR': ptUrl,
-        'en': enUrl,
-        'x-default': ptUrl,
-      } : {
-        'pt-BR': ptUrl,
-        'x-default': ptUrl,
-      },
     },
     openGraph: {
       title: seo.title,

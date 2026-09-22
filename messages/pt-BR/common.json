@@ -178,12 +178,6 @@
     "logout": "Sair",
     "language": "Idioma"
   },
-  "language": {
-    "label": "Idioma",
-    "portuguese": "Português",
-    "english": "English",
-    "switchTo": "Mudar para"
-  },
   "pwa": {
     "installTitle": "Instalar Sirius CRM",
     "installDesc": "Adicione à tela inicial para acesso rápido",

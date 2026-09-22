@@ -27,7 +27,6 @@ describe('apiError', () => {
     mockT.mockImplementation(async (_locale, _ns, key) => {
       const dict: Record<string, Record<string, string>> = {
         'pt-BR': { unauthorized: 'Não autorizado', notFound: 'Não encontrado' },
-        'en': { unauthorized: 'Unauthorized', notFound: 'Not found' },
       }
       return dict[_locale]?.[key] ?? key
     })
@@ -40,20 +39,21 @@ describe('apiError', () => {
     expect(res.body.error).toBe('Não autorizado')
   })
 
-  it('returns English error when locale override is en', async () => {
-    const res = await apiError('unauthorized', 401, { locale: 'en' }) as unknown as { body: { error: string }; status: number }
+  // Locale EN aposentado (spec 004). Estes dois testes provavam "sai em inglês";
+  // o que sobrou deles é o contrato de resolução, que continua valendo.
+  it('does not call resolveRequestLocale when locale is passed explicitly', async () => {
+    const res = await apiError('unauthorized', 401, { locale: 'pt-BR' }) as unknown as { body: { error: string }; status: number }
     expect(res.status).toBe(401)
-    expect(res.body.error).toBe('Unauthorized')
-    // resolveRequestLocale should NOT be called since locale was explicitly provided
+    expect(res.body.error).toBe('Não autorizado')
     expect(mockResolveLocale).not.toHaveBeenCalled()
   })
 
-  it('returns English error when req has Accept-Language: en', async () => {
-    mockResolveLocale.mockResolvedValue('en')
+  it('resolves the locale from the request when none is passed', async () => {
+    mockResolveLocale.mockResolvedValue('pt-BR')
     const fakeReq = {} as import('next/server').NextRequest
     const res = await apiError('unauthorized', 401, { req: fakeReq }) as unknown as { body: { error: string }; status: number }
     expect(res.status).toBe(401)
-    expect(res.body.error).toBe('Unauthorized')
+    expect(res.body.error).toBe('Não autorizado')
     expect(mockResolveLocale).toHaveBeenCalledWith(fakeReq)
   })
 
@@ -63,12 +63,12 @@ describe('apiError', () => {
   })
 
   it('uses namespace "api" when calling t()', async () => {
-    await apiError('unauthorized', 401, { locale: 'en' })
-    expect(mockT).toHaveBeenCalledWith('en', 'api', 'unauthorized', undefined)
+    await apiError('unauthorized', 401, { locale: 'pt-BR' })
+    expect(mockT).toHaveBeenCalledWith('pt-BR', 'api', 'unauthorized', undefined)
   })
 
   it('forwards interpolation params to t()', async () => {
-    await apiError('unauthorized', 401, { locale: 'en', params: { field: 'email' } })
-    expect(mockT).toHaveBeenCalledWith('en', 'api', 'unauthorized', { field: 'email' })
+    await apiError('unauthorized', 401, { locale: 'pt-BR', params: { field: 'email' } })
+    expect(mockT).toHaveBeenCalledWith('pt-BR', 'api', 'unauthorized', { field: 'email' })
   })
 })
