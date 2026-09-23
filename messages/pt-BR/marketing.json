@@ -142,11 +142,13 @@
         "followup": "Follow-up Automático",
         "autoSales": "Vendas Automáticas",
         "proposal": "Solicitar Proposta",
-        "changelog": "Atualizações"
+        "changelog": "Atualizações",
+        "download": "App para celular"
       },
       "nichesTitle": "Soluções por Segmento",
       "toolsTitle": "Ferramentas Grátis",
       "tools": {
+        "all": "Todas as ferramentas",
         "roi": "Calculadora ROI",
         "realtors": "Calc. para Corretores",
         "solar": "Calc. para Energia Solar",

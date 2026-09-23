@@ -63,6 +63,11 @@ export function Footer() {
                   {t('product.changelog')}
                 </Link>
               </li>
+              <li>
+                <Link href="/download" className="text-muted-foreground hover:text-foreground transition-colors">
+                  {t('product.download')}
+                </Link>
+              </li>
             </ul>
           </div>
 
@@ -87,6 +92,11 @@ export function Footer() {
           <div>
             <h3 className="font-bold text-sm mb-4">{t('toolsTitle')}</h3>
             <ul className="space-y-3 text-sm">
+              <li>
+                <Link href="/ferramentas" className="text-muted-foreground hover:text-foreground transition-colors">
+                  {t('tools.all')}
+                </Link>
+              </li>
               <li>
                 <Link
                   href="/ferramentas/calculadora-roi"
@@ -199,9 +209,9 @@ export function Footer() {
             <Link href="/terms" className="hover:text-foreground transition-colors">
               {t('legal.terms')}
             </Link>
-            <a href="mailto:contato@roilabs.com.br" className="hover:text-foreground transition-colors">
+            <Link href="/contact" className="hover:text-foreground transition-colors">
               {t('legal.contact')}
-            </a>
+            </Link>
           </div>
 
           <div className="flex gap-4">
