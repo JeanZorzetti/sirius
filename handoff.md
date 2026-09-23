@@ -1,95 +1,147 @@
-# Handoff — Auditoria de over-engineering (2026-08-22)
+# Handoff: home "Carta de Bayer" + marca nova do Sirius (2026-09-23)
+
+## Estado em uma linha
+A home nova e a marca de pingos estão **no ar** (commit `4e915dc`, verificado em produção no desktop e no celular em
+23/09, console limpo, fontes e CSS carregando). Falta espalhar a marca pelo resto do site e baixar o LCP, que é
+problema do app inteiro e não da home.
 
 ## Contexto
-Pedido: "refatore o projeto". Repo tem ~200k linhas de TS/TSX — refatorar às cegas é como o risco entra. Rodada uma auditoria de código morto antes de tocar em qualquer coisa. Nada foi apagado.
+Pedido: `/art-direction` na home. A cara anterior (indigo→roxo→rosa, Geist, glass, badge pílula, avatares em
+degradê) era **herdada do gerador**: o Jean confirmou que podia matar. Ele também pediu `logo-design` **antes**
+da direção e referências do próprio setor além das de fora. Nesta ordem: marca → pesquisa → 3 direções → escolha →
+construção → gates → prova → deploy.
 
 ## Feito
-- **`docs/AUDITORIA_OVER_ENGINEERING_2026-08-22.md`** (novo) — 17 achados ranqueados, plano de execução em 6 fases por risco crescente, e dois anexos com as listas completas.
-- **`scripts/audit-dead-code.js`** (novo) — reproduz os números: arquivos sem importador + rotas de API sem chamador. Resolve import estático, `import()` dinâmico e `require()`.
 
-## Achado principal
-**~24.400 linhas (12% do TS/TSX) não são alcançáveis por nenhum caminho de execução.** Dois terços disso (16.057 linhas) ficaram órfãos de uma vez só, no commit `2d29773` de 27/04/2026 ("clean up obsolete admin pages"): 10 páginas de admin foram apagadas e o backend inteiro delas ficou — subsistema Generative UI (14.666 linhas, com testes), cluster AGI/graph (1.391), A/B testing.
+### 1. Marca (aprovada)
+- **Wordmark "sirius"** em [components/brand/wordmark.tsx](components/brand/wordmark.tsx): Bricolage Grotesque
+  (OFL), wght 800, opsz 96, wdth 92, desenhada como path. Os pingos dos dois "i" são **Sirius A e Sirius B**, a
+  estrela binária:
+  - pingo A = 1,5× o pingo da fonte;
+  - pingo B = A ÷ √(2,063/1,018) = A ÷ 1,42 (razão de massa real).
+  Três leituras: "pôr os pingos nos is", estrela binária, e a relação entre dois corpos (o "R" de CRM).
+- **Símbolo** = os dois pingos soltos, em [components/brand/pingos.tsx](components/brand/pingos.tsx). É para
+  favicon, ícone do app e avatar.
+- O pingo A é um path próprio com `fill="var(--marca-pingo, currentColor)"`. A direção pinta de vermelhão; fora
+  dela, a marca é de uma cor só.
+- [public/icon.svg](public/icon.svg): favicon com cor fixa e dark mode interno. **Ainda não está ligado.**
+- A receita de regeração está no comentário de cada componente. O script gerador era descartável e não existe mais.
+- Descartadas:
+  - estrela de 5 raios, um por etapa (lia como distintivo de xerife);
+  - cometa de 5 cartas (lia como queda);
+  - "i" com o pingo A (a 16px vira ícone de "informação").
 
-Nada quebrou porque código não alcançado compila, passa no lint e passa nos próprios testes. É por isso que o `audit-dead-code.js` existe agora.
+### 2. Direção "Carta de Bayer" (aprovada e publicada)
+- `custom:derivada-uranometria`, eixos **pigmento · scroll · clara**. Registro em [.art/log.json](.art/log.json).
+- Recusadas na trinca: *Planisfério* (disco de lata que gira) e *O Pingo* (o pingo atravessa a página).
+- Referências abertas:
+  - 6 CRMs (Pipedrive, Attio, RD, Kommo, HubSpot, folk), só como lista do que evitar. Lugar-comum do setor: print
+    da UI flutuando, banda pastel, ✨ de IA;
+  - a *Uranometria* de Bayer (1603, prancha do Cão Maior);
+  - o Philips' Planisphere.
+- **Raio**: a home saiu de `(marketing)` para um grupo próprio, [app/[locale]/(carta)/](app/[locale]/(carta)/), com
+  `layout.tsx` (fontes com escopo, nav que é só a marca e a entrada) e `carta.css` (tudo sob
+  `[data-art="carta"]`). **As outras páginas públicas não mudaram.** O `<Footer />` do site foi re-tintado só
+  nesta rota, via tokens com escopo.
+- **Prancha I**: os negócios de exemplo desenhados como prancha de atlas.
+  - x = etapa, y = prazo em dias, com uma linha do "hoje" e hachura no passado;
+  - área da estrela = valor, e a letra grega vai do maior (α) para o menor;
+  - quadro de magnitude, como nas pranchas de Bayer;
+  - hover, foco ou toque na estrela abre a ficha com a nota real do negócio.
+- **Seções**: Prancha II (catálogo α→ζ), Prancha III (O que é o Sirius + 8 instrumentos), Prancha IV (planos),
+  Leituras (3 posts do blog) e Colofão com o CTA. Metadata e os 4 JSON-LD foram mantidos iguais.
+- **Coreografia** com um verbo só, "gravar": a retícula é desenhada, as estrelas são carimbadas, as letras são
+  cortadas a buril no scroll e a régua de cada folha é gravada na transição. `prefers-reduced-motion` mostra o
+  estado final.
+- **Tokens (OKLCH com fallback hex)**:
 
-## Próximos
-1. **Decisão de produto sobre o Generative UI** — é 60% do corte total. `docs/GENERATIVE_UI_SUMMARY.md` diz "Fase 1 de 6 COMPLETA" (31/01/2026); último commit de feature foi 03/02/2026. Se for retomar, falta *uma página* que renderize `MessageRenderer`. Se não, são 14,6k linhas type-checadas e testadas a cada CI por nada.
-2. Fases 1–3 do plano (~8.700 linhas, risco baixo/nenhum) podem ir sem decisão de produto.
-3. Fase 4+ é mudança não-trivial → fluxo Spec Kit, o projeto tem `.specify/`.
+  | Token | Uso | Contraste |
+  |---|---|---|
+  | `--papel` | fundo | — |
+  | `--mesa` | fundo da página | — |
+  | `--tinta` | texto | 14,9:1 |
+  | `--tinta-suave` | texto secundário | 6,6:1 |
+  | `--vermelhao` | α, pingo A, texto grande | 4,46:1 |
+  | `--vermelhao-tinta` | botão e texto pequeno | 5,7:1 |
+  | `--vermelhao-fundo` | hover do botão | 7,4:1 |
+  | `--aguada` | só a coreografia | — |
 
-## Pendências / gotchas
-- **Não confundir os dois Mercado Pago.** `lib/mercadopago.ts` (10 importadores) e `/api/webhooks/mercadopago` continuam vivos por causa das assinaturas legadas — ver handoff de 07/07. O órfão é `lib/mercado-pago/checkout.ts` (diretório com hífen) + `/api/mercadopago/checkout`.
-- Falsos positivos já verificados nos anexos: `/api/sync/process` (chamado por `public/sw-push.js`), `/api/mobile/sync` (app Capacitor), `/api/mercadopago/checkout` (redirect de 7 linhas).
-- `sirius-crm-483316-a2e815438069.json` — service account do Google na raiz do repo. Fora do escopo desta auditoria; pede um `/security-review`.
-- `npm run build` roda `prisma migrate deploy` contra o banco. Para verificar as fases, usar `npm run typecheck && npm run test`.
-- 5 docs `GENERATIVE_UI_*.md` descrevem o subsistema como se estivesse em produção. Vão junto se o item 1 for apagado.
+### 3. Fonte única do pipeline padrão
+[lib/pipeline-defaults.ts](lib/pipeline-defaults.ts) exporta `DEFAULT_STAGES` (Lead, Prospecção, Qualificação,
+Proposta, Fechamento) e `DEMO_DEALS` (os 6 negócios de exemplo). Quem lê:
+- [app/auth/actions.ts](app/auth/actions.ts) (cadastro);
+- [lib/seed-demo-data.ts](lib/seed-demo-data.ts) (seed);
+- [components/carta/](components/carta/) (a prancha).
 
----
+Se o seed mudar, a home muda junto. **A prancha não pode mentir.**
 
-# Handoff — Brand entity SEO "sirius crm" (2026-07-11)
+### 4. Removido da home
+- Os 3 depoimentos (Carlos Silva/TechFlow, Mariana Souza/GrowHub, Rafael Alves/ScaleUp), que pareciam inventados.
+- O "+100 empresas" com avatares em degradê.
 
-## Contexto
-Investigação via roihub /insights + GSC: o trend "cliques declining" era 100% o query branded `sirius crm` (21→7 cliques entre janelas 28d; posição própria caiu de 2,0 → ~4,4-5,4; CTR 17%→6%). Nome homônimo disputado (Hitachi, ERP Sirius UK, Sirius Jewels, Dana Grupo). Descoberta grave: **todos os `sameAs` do site apontavam pra perfis mortos ou de terceiros** — `linkedin.com/company/roilabs` (deletada), `linkedin.com/company/roi-labs` (consultoria americana homônima), `twitter.com/roilabs` e `github.com/roilabs` (contas de estranhos). Isso ativamente atrapalha a desambiguação da entidade.
+## Medido (build de produção local, Playwright + CDP, 4G lento 150ms/1,6 Mbps, CPU 4×, mediana de 3)
+| | Home nova | Home antiga (mesmo perfil) |
+|---|---|---|
+| JS transferido | 122 kb (o design novo soma **3,2 kb** gz) | 297 kb |
+| CSS da direção | 5,6 kb gz | n/a |
+| LCP | **4,9s** (alvo 2,5s) | 3,2 a 5,2s |
+| CLS | 0 | 0 |
 
-## Feito (commit `ef1f16b`)
-- **`lib/geo/entity.ts`** (novo) — fonte única dos perfis VERIFICADOS em 11/07: `ORG_SAME_AS` (linkedin `roi-labs-curadoria` [confirmado owned via admin view] + instagram `roilabs.curadoria` [declarado no schema de roilabs.com.br]) e `FOUNDER`/`FOUNDER_SAME_AS` (Jean: linkedin `in/jean-zorzetti-772742239` + github `JeanZorzetti`). Comentário no arquivo lista os URLs proibidos e por quê.
-- **`app/[locale]/layout.tsx`** — @graph central: Organization com `sameAs` verificados + `founder` (Person Jean, cujo About no LinkedIn cita "Sirius CRM" — link bidirecional de entidade); WebSite ganhou `alternateName: 'Sirius'`; SoftwareApplication ganhou `@id`; removido `twitter.creator: '@roilabs'` (handle não é nosso).
-- **home, community, blog/[slug], lib/geo/schema-generator.ts** — todos os sameAs inline (10 ocorrências) trocados pelo import de `ORG_SAME_AS`.
-- **`components/marketing/footer.tsx`** — links visíveis corrigidos: LinkedIn→curadoria, Twitter→Instagram curadoria, GitHub→JeanZorzetti.
-- **`docs/BLOG_POST_TEMPLATE.md`** + mds do spin-selling — referências corrigidas pra não perpetuar URLs errados.
-- Typecheck verde (`npm run typecheck`).
+- INP não medido.
+- Gates da art-direction: **34/35**. O **G29 (LCP) segue aberto**, e a causa está fora da direção (ver passo 1).
 
-## Próximos
-1. Validar em prod (Rich Results Test / view-source em siriuscrm.com.br procurando `roi-labs-curadoria`).
-2. **Google Ads branded "sirius crm"** — protege o nome dos homônimos e reativa a demanda branded que secou (era o próximo passo do plano de growth; as 3 vendas vieram de branded).
-3. Medir posição branded no GSC ~28/07 (D+17 da mudança).
+## Próximos passos (em ordem)
+1. **LCP, com `web-performance`.** [app/[locale]/layout.tsx](app/[locale]/layout.tsx) passa **todas** as
+   mensagens do `next-intl` (`getMessages()`, ~133 kb de JSON, com e-mails e dashboard) ao `NextIntlClientProvider`.
+   Elas vão serializadas em toda página: o HTML da home tem 246 kb cru / 65 kb gz. Some a isso **54 kb gz de CSS
+   global** bloqueando a renderização.
+   - Passar ao client só os namespaces que componentes client usam.
+   - Afeta todas as rotas: é mudança não-trivial, então vai pelo **Spec Kit** (o repo tem `.specify/`).
+   - Remedir com o mesmo método da tabela acima.
+2. **Espalhar a marca** (a direção vem depois, se o Jean quiser):
+   - header das outras páginas: [app/[locale]/(marketing)/layout.tsx:23-33](app/[locale]/(marketing)/layout.tsx#L23-L33)
+     ainda usa `/logo.png` e `<span className="font-bold tracking-tight">Sirius CRM</span>`. Trocar por
+     `<Wordmark />`;
+   - favicon: `app/icon.png`, `app/apple-icon.png` e `favicon.ico` ainda são a estrela antiga. Trocar por
+     `icon.svg` e gerar o `apple-icon` 180×180 com fundo sólido `--papel` e ~12% de margem;
+   - OG: o root layout usa `/logo.png`, e a home aponta para `/og-image.png`, que **não existe** em `public/`.
+     Gerar um OG de 1200×630 com a marca ocupando ≥25% da altura;
+   - PWA e app: ícones em `public/logos/*.png`, `public/manifest.json` e o ícone Android em `android/`;
+   - outros usos de `logo.png` (verificados em 23/09):
+     - `components/dashboard/sidebar.tsx`;
+     - `components/marketing/download-instructions.tsx`;
+     - o campo `logo` dos JSON-LD em `app/[locale]/layout.tsx`, `lib/geo/schema-generator.ts`,
+       `(carta)/page.tsx`, about, community, `blog/[slug]` e `help/[categoria]/[slug]`. O schema pede PNG
+       quadrado; gerar a partir de `pingos.tsx`.
+3. **Texto, com `conversion-copy` / `ux-writing`.**
+   - O h1 e o subtítulo da primeira dobra ainda são os antigos ("Transforme Leads em Receita Recorrente").
+   - Os textos novos da home (INSTRUMENTOS, Prancha II, colofão) estão escritos direto em
+     [app/[locale]/(carta)/page.tsx](app/[locale]/(carta)/page.tsx). Mover para `messages/pt-BR/marketing.json`,
+     se for manter o padrão de i18n.
+4. **Prova social real.** Pedir depoimentos aos 6 pagantes: Cartopel, 3A3, Wordseg, VOE, London Finance e Boxer.
+5. **Verificar os números de `marketing.home.about.description`** ("100 empresas, 110 usuários, 950 negócios")
+   contra o banco. A leitura de 22/09 deu 108 contas.
+6. **Código morto.** A home antiga deixou sem importador `components/marketing/hero.tsx`, `bento-grid.tsx`,
+   `logos.tsx`, `kanban-preview.tsx`, `sticky-cta.tsx` e, possivelmente, `components/agi/AgiPreview.tsx`.
+   Confirmar com `node scripts/audit-dead-code.js` antes de apagar.
 
-## Pendências / gotchas
-- `aggregateRating 5.0/12` no SoftwareApplication do layout: sem reviews visíveis na página, é risco de spam de structured data (pode virar manual action). Avaliar remover ou linkar reviews reais.
-- Página LinkedIn `roi-labs-curadoria` está parada (0 posts em 90d) — schema aponta pra ela, mas entidade forte pede página viva.
-- `contactOption: 'TollFree'` no layout é incorreto (número é celular) — cosmético.
+## Pendências / decisões em aberto
+- Levar a direção (papel, tinta, vermelhão) para as outras páginas de marketing? **Só se o Jean pedir.** Nesse
+  caso, promover os tokens de `(carta)/carta.css` para o global, e `design-systems` formaliza.
+- Ainda existe `/pt-BR` → 308 (commit `8c6dff1`, de outra sessão). Não mexi.
 
----
-
-# Handoff — Migração de pagamento para Stripe (2026-07-07)
-
-## Contexto
-O checkout via Mercado Pago não estava funcionando. Migrado o meio de pagamento para **Stripe**, mantendo o Mercado Pago apenas para honrar assinaturas de clientes legados.
-
-## Feito
-- **`lib/stripe.ts`** — SDK Stripe (singleton lazy), catálogo `STRIPE_PLANS` (preços em centavos), `createStripeCheckout()` (Checkout Session hospedada) e `cancelStripeSubscription()`.
-- **`lib/billing-effects.ts`** — regras de negócio de assinatura extraídas do webhook do MP, agora **provider-neutral** e compartilhadas entre Stripe e MP: `upgradePlan`, `upgradeToFounder`, `processAddonPurchase`, `renewSubscription`, `downgradeToFree`, `handleFailedRecurringPayment`, `sendPaymentFailureEmail`, `recordWhatsAppSetupPurchase`.
-- **`app/api/stripe/checkout/route.ts`** — nova rota de checkout. Mesmo contrato da antiga (`{ plan, billingPeriod }` → `{ checkoutUrl }`), incl. guarda de tier, desconto de indicação e `customPricing`.
-- **`app/api/webhooks/stripe/route.ts`** — trata `checkout.session.completed`, `invoice.paid` (renovação), `invoice.payment_failed` (email) e `customer.subscription.deleted` (churn → FREE). Valida assinatura via `STRIPE_WEBHOOK_SECRET`.
-- **`app/api/webhooks/mercadopago/route.ts`** — refatorado para usar `lib/billing-effects.ts` (mesma lógica, sem duplicação). Continua funcionando para clientes legados.
-- **`app/api/mercadopago/checkout/route.ts`** — agora só re-exporta a rota da Stripe (compat com app mobile Capacitor que ainda chama a URL antiga).
-- **Frontend** (3 call sites) apontando para `/api/stripe/checkout`: `dashboard/billing/plans/page.tsx`, `components/dashboard/billing/embedded-checkout-modal.tsx`, `components/integrations/whatsapp-setup-cta.tsx`.
-- **`app/api/billing/cancel/route.ts`** — cancela na Stripe (e no MP se legado).
-- **Schema + migration** `20260707000000_add_stripe_billing_fields`: colunas `stripeCustomerId` e `stripeSubscriptionId` na `Organization`.
-- **Teste** `lib/__tests__/stripe.test.ts` — guardrail de preços (STRIPE_PLANS × PLAN_PRICES) e mode/interval. ✅ 3/3.
-
-## Verificado
-- `npx tsc --noEmit` → **0 erros**.
-- `npx vitest run lib/__tests__/stripe.test.ts` → **3/3 passou**.
-- `prisma generate` OK com os novos campos.
-
-## Decisões
-- **Checkout hospedado** (redirect), não embedded — menor superfície, mesma UX do fluxo MP atual (que já redirecionava).
-- **Preços via `price_data` inline**, sem catálogo de Prices no dashboard. Permite `customPricing` (referral/grandfathering/founder) sem criar um Price por cliente.
-- **NÃO passar `payment_method_types`** — a Stripe seleciona métodos dinamicamente pelo dashboard (best practice; habilita PIX/cartão conforme conta).
-- **Dunning é da Stripe**, não retry manual. Configurar no dashboard para cancelar a assinatura após as tentativas → dispara `customer.subscription.deleted` → downgrade FREE.
-
-## Pendências (bloqueiam produção — precisam do Jean)
-1. **Criar conta/pegar chaves Stripe** e preencher em produção (EasyPanel): `STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET`. Idem `.env` local (chaves `sk_test_`/`whsec_` de teste).
-2. **Cadastrar o webhook** no dashboard Stripe → `https://siriuscrm.com.br/api/webhooks/stripe` com os eventos: `checkout.session.completed`, `invoice.paid`, `invoice.payment_failed`, `customer.subscription.deleted`. Copiar o signing secret para `STRIPE_WEBHOOK_SECRET`.
-3. **Habilitar métodos de pagamento** (cartão, PIX) em Settings → Payment methods.
-4. **Configurar dunning** (Settings → Billing → Retries) para cancelar após as tentativas.
-5. **Verificar moeda BRL** habilitada na conta.
-6. **Teste E2E em prod**: assinar um plano de teste, confirmar upgrade de tier no banco + email de confirmação; cancelar e confirmar downgrade.
-
-## Gotchas
-- Diretório de trabalho do agente ≠ raiz do projeto: rodar prisma sempre com `--schema prisma/schema.prisma`.
-- `.env` e `.env.easypanel` são gitignored (segredos reais). Só `.env.example` versionado.
-- Migration usa `ADD COLUMN IF NOT EXISTS` (idempotente). A coluna Stripe já existiu antes (removida na migration de migração p/ MP em jan/2026).
-- `customPricing` só é honrado para **PRO mensal** (comportamento herdado do fluxo MP) — revisar se quiser estender.
-- MP continua no código de propósito (assinaturas legadas). Não remover `lib/mercadopago.ts` nem o webhook enquanto houver `mercadoPagoSubscriptionId` ativo em alguma org.
+## Gotchas do ambiente
+- **`[locale]` num pathspec do git é glob** e o `git add` falha com "did not match any files". Usar
+  `git --literal-pathspecs add -A "<caminhos>"` e conferir `git diff --cached --stat`.
+- **`npm run build` roda `prisma migrate deploy` contra o banco.** Para testar build local, usar `npx next build`.
+  O build fecha em ~80s neste Windows.
+- **`next dev` 16.3 acrescenta ao `CLAUDE.md` um bloco `<!-- BEGIN:nextjs-agent-rules -->`** a cada execução. Está
+  não-commitado no working tree; decidir se commita ou ignora.
+- Matar o `next dev` pode deixar `.next/dev/types` corrompido, e aí o `tsc -p tsconfig.build.json` falha em
+  `validator.ts`. Resolver com `rm -rf .next/dev/types`. É o mesmo gate que o Docker do EasyPanel roda.
+- O servidor local avisa de `STRIPE_SECRET_KEY` / `STRIPE_WEBHOOK_SECRET` ausentes, mas serve as páginas.
+- **Push em `main` = deploy.** Desta vez o HTML novo apareceu em ~120s. Conferir a TELA, não só o HTTP 200.
+- **O working tree tem mudanças de outras pessoas/sessões** (specs em `e2e/`, arquivos novos em `.specify/`,
+  `docs/whatsapp/`, `scripts/reset-onboarding.ts`, o bloco do CLAUDE.md). Nunca usar `git add -A` sem pathspec.
+- Os scripts de prova e medição (Playwright com throttling, gerador da marca) viviam no scratchpad da sessão e não
+  foram versionados. O método está descrito acima para reproduzir.
