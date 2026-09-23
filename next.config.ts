@@ -222,6 +222,20 @@ const nextConfig: NextConfig = {
         destination: '/:path*',
         permanent: true,
       },
+      // O prefixo do locale padrão. Sem esta regra o middleware do next-intl tira o
+      // /pt-BR com 307 (temporário), e o Google mantém a URL prefixada como canônica:
+      // em 23/09/2026, 12 posts estavam no índice como /pt-BR/blog/x e o /blog/x
+      // aparecia "rastreada, não indexada". Mesmo par de regras do /en acima.
+      {
+        source: '/pt-BR',
+        destination: '/',
+        permanent: true,
+      },
+      {
+        source: '/pt-BR/:path*',
+        destination: '/:path*',
+        permanent: true,
+      },
       // Dead feature page → features hub (matches /features/* pattern above)
       {
         source: '/features/anamnese-digital',
