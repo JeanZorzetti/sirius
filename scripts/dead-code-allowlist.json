@@ -1,8 +1,22 @@
 {
   "routes": [
-    { "path": "/api/sync/process", "reason": "chamado por public/sw-push.js (public/ é ignorado pelo scanner)" },
-    { "path": "/api/mobile/sync", "reason": "chamado pelo app Capacitor, fora deste repositório" },
-    { "path": "/api/mercadopago/checkout", "reason": "redirect de 7 linhas mantido para o app mobile antigo" }
+    {
+      "path": "/api/sync/process",
+      "reason": "chamado por public/sw-push.js (public/ é ignorado pelo scanner)"
+    },
+    {
+      "path": "/api/mobile/sync",
+      "reason": "chamado pelo app Capacitor, fora deste repositório"
+    },
+    {
+      "path": "/api/mercadopago/checkout",
+      "reason": "redirect de 7 linhas mantido para o app mobile antigo"
+    }
   ],
-  "files": []
+  "files": [
+    {
+      "path": "components/brand/pingos.tsx",
+      "reason": "símbolo da marca (Sirius A/B), reservado para favicon, ícone do app e OG — passo 2 do handoff de 23/09; carrega a receita de regeração"
+    }
+  ]
 }

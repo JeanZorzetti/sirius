@@ -135,9 +135,12 @@ Se o seed mudar, a home muda junto. **A prancha não pode mentir.**
 4. **Prova social real.** Pedir depoimentos aos 6 pagantes: Cartopel, 3A3, Wordseg, VOE, London Finance e Boxer.
 5. **Verificar os números de `marketing.home.about.description`** ("100 empresas, 110 usuários, 950 negócios")
    contra o banco. A leitura de 22/09 deu 108 contas.
-6. **Código morto.** A home antiga deixou sem importador `components/marketing/hero.tsx`, `bento-grid.tsx`,
-   `logos.tsx`, `kanban-preview.tsx`, `sticky-cta.tsx` e, possivelmente, `components/agi/AgiPreview.tsx`.
-   Confirmar com `node scripts/audit-dead-code.js` antes de apagar.
+6. ✅ **Código morto: FEITO em 23/09.** `hero.tsx`, `bento-grid.tsx`, `logos.tsx`, `sticky-cta.tsx` e
+   `kanban-preview.tsx` foram apagados (o `kanban-preview` ficou órfão quando o `hero` saiu).
+   `AgiPreview.tsx` **fica**: o barrel `components/agi` é importado pelo `edit-deal-dialog`.
+   `components/brand/pingos.tsx` entrou na allowlist com motivo (é o símbolo reservado para o passo 2).
+   `node scripts/audit-dead-code.js --check` volta a passar. Quando o passo 2 ligar o `pingos.tsx`, tirar a
+   entrada da allowlist.
 
 ## Pendências / decisões em aberto
 - Levar a direção (papel, tinta, vermelhão) para as outras páginas de marketing? **Só se o Jean pedir.** Nesse

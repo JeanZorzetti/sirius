@@ -29,7 +29,7 @@
       `emails` ausente do HTML (US1-1). LCP depois × antes (SC-003).
 - [X] **T008** Tela local: menu de features no desktop e no mobile, e uma página do dashboard ou do
       login sem chave crua (US2-4).
-- [ ] **T009** Commit + push (deploy) e conferência da TELA em produção (SC-006). Os números vão para
+- [X] **T009** Commit + push (deploy) e conferência da TELA em produção (SC-006). Os números vão para
       o `handoff.md`.
 
 ## Achados durante a implementação (não previstos no plano)
@@ -46,6 +46,15 @@
 - **Suíte vitest**: 352 ok, 1 skip, 3 falhas em `__tests__/multi-tenant/deal-isolation.test.ts`. Rodado
   isolado, o arquivo passa (7 ok, 1 skip). É flake de carga: import dinâmico de actions pesadas enquanto
   o `tsc` rodava em paralelo. Não importa nada deste diff.
+
+## Produção (T009, `f6dd889`, deploy em ~100s)
+
+- HTML da home em `siriuscrm.com.br`: 160.768 bytes cru / 41.107 bytes gz (era ~247 kb / 65 kb). A frase de
+  `emails` sumiu.
+- Na tela: `/`, `/pricing`, `/contact`, `/blog`, `/login` e `/features` em 1366 px e 390 px, zero chave crua
+  e zero `MISSING_MESSAGE`. O menu de features no desktop e no mobile mostra 4/4 nomes do CRM Core.
+- **Não conferido na tela: o dashboard**, porque precisa de sessão. Ele usa `common` e `components.*`,
+  que viajam inteiros, e o teste cobre os imports.
 
 ## Resultado (build de produção local, mesmo script antes/depois)
 
