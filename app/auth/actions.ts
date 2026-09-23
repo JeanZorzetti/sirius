@@ -7,6 +7,7 @@ import { redirect } from 'next/navigation'
 import { cookies } from 'next/headers'
 import logger, { generateCorrelationId } from '@/lib/logger'
 import { sendWelcomeEmail, sendEmailAsync } from '@/lib/email-automations'
+import { DEFAULT_STAGES } from '@/lib/pipeline-defaults'
 
 function generateReferralCode(): string {
   return Math.random().toString(36).substring(2, 6) + Math.random().toString(36).substring(2, 6)
@@ -166,16 +167,8 @@ export async function registerAction(prevState: any, formData: FormData) {
             })
 
             // Create default pipeline stages
-            const defaultStages = [
-                { name: 'Lead', order: 0 },
-                { name: 'Prospecção', order: 1 },
-                { name: 'Qualificação', order: 2 },
-                { name: 'Proposta', order: 3 },
-                { name: 'Fechamento', order: 4 }
-            ]
-
             await prisma.pipelineStage.createMany({
-                data: defaultStages.map(stage => ({
+                data: DEFAULT_STAGES.map(stage => ({
                     ...stage,
                     organizationId: org.id,
                     pipelineId: defaultPipeline.id

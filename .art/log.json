@@ -1,0 +1,39 @@
+[
+  {
+    "data": "2026-09-23",
+    "alvo": "landing / (app/[locale]/(carta))",
+    "direcao": "custom:derivada-uranometria",
+    "nome": "Carta de Bayer",
+    "eixos": {
+      "materia": "pigmento",
+      "motor": "scroll",
+      "banda": "clara"
+    },
+    "estrutura": "documento (pranchas numeradas I–IV + leituras + colofão), nav só marca + entrada",
+    "marca": "wordmark 'sirius' Bricolage 800 wdth92, pingos dos dois i = Sirius A e B (raio A/B = sqrt(2.063/1.018)); símbolo = os dois pingos",
+    "orcamento": {
+      "faixa": "marca",
+      "js_kb": 3.2,
+      "css_kb": 5.6,
+      "lcp_alvo": 2.5,
+      "lcp_medido": 4.9,
+      "cls_medido": 0,
+      "metodo": "playwright CDP 4G lento (150ms, 1.6Mbps) + CPU 4x, mediana de 3, build de produção local",
+      "baseline_home_antiga": {
+        "lcp": "3.2-5.2",
+        "js_kb": 297
+      },
+      "causa_lcp": "casca: 133kb de mensagens next-intl serializadas + 54kb gz de CSS global"
+    },
+    "deps": [],
+    "recusadas": [
+      "custom:derivada-planisferio",
+      "custom:costura-mutado (O Pingo)"
+    ],
+    "logo_descartados": [
+      "estrela de 5 raios por etapa",
+      "cometa de 5 cartas",
+      "i com pingo A (favicon)"
+    ]
+  }
+]

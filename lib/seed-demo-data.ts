@@ -1,5 +1,6 @@
 import { prisma } from '@/lib/prisma'
-import { addDays, subDays } from 'date-fns'
+import { addDays } from 'date-fns'
+import { DEMO_DEALS } from '@/lib/pipeline-defaults'
 
 /**
  * Seeds demo data for a new user to showcase CRM functionality
@@ -93,81 +94,17 @@ export async function seedDemoData(userId: string, organizationId: string) {
       )
     )
 
-    // Demo deals data
-    const demoDeals = [
-      {
-        title: 'Implementação CRM - Tech Solutions',
-        value: 15000,
-        contactId: contacts[0].id,
-        stageIndex: 0, // Novo Lead
-        dueDate: addDays(new Date(), 2),
-        notes: [
-          'Cliente veio por indicação do LinkedIn',
-          'Empresa tem 25 funcionários e está crescendo rápido',
-          'Budget aprovado para Q1 2026'
-        ]
-      },
-      {
-        title: 'Sistema de Gestão - Energia Solar',
-        value: 8500,
-        contactId: contacts[1].id,
-        stageIndex: 3, // Negociação
-        dueDate: addDays(new Date(), 5),
-        notes: [
-          'Já testaram 2 concorrentes mas não gostaram',
-          'Prioridade: integração com sistema de estoque',
-          'Decisor: Carlos (CEO) - super engajado'
-        ]
-      },
-      {
-        title: 'Automação de Marketing - Marketing Pro',
-        value: 12000,
-        contactId: contacts[2].id,
-        stageIndex: 2, // Proposta
-        dueDate: addDays(new Date(), 7),
-        notes: [
-          'Proposta enviada na segunda-feira',
-          'Aguardando aprovação da diretoria',
-          'Concorrente: RD Station (mas acham caro)'
-        ]
-      },
-      {
-        title: 'CRM para Construtora',
-        value: 22000,
-        contactId: contacts[3].id,
-        stageIndex: 1, // Qualificação
-        dueDate: addDays(new Date(), 10),
-        notes: [
-          'Empresa tradicional, primeira vez usando CRM',
-          'Precisam de muito treinamento',
-          'Orçamento depende de financiamento aprovado'
-        ]
-      },
-      {
-        title: 'Consultoria + CRM',
-        value: 5500,
-        contactId: contacts[4].id,
-        stageIndex: 4, // Fechado (WON)
-        closeDate: subDays(new Date(), 2),
-        notes: [
-          'Deal fechado! 🎉',
-          'Pagamento via boleto em 3x',
-          'Onboarding agendado para próxima semana'
-        ]
-      },
-      {
-        title: 'Expansão - Tech Solutions (Upsell)',
-        value: 8000,
-        contactId: contacts[0].id,
-        stageIndex: 0, // Novo Lead
-        dueDate: subDays(new Date(), 1), // OVERDUE (tarefa atrasada)
-        notes: [
-          '⚠️ Follow-up URGENTE - cliente pediu proposta há 3 dias',
-          'Upsell do plano atual',
-          'Precisa ligar HOJE!'
-        ]
-      }
-    ]
+    // Demo deals data — shared with the home plate, see lib/pipeline-defaults.ts
+    const now = new Date()
+    const demoDeals = DEMO_DEALS.map((d) => ({
+      title: d.title,
+      value: d.value,
+      contactId: contacts[d.contactIndex].id,
+      stageIndex: d.stageIndex,
+      dueDate: d.won ? undefined : addDays(now, d.dueInDays),
+      closeDate: d.won ? addDays(now, d.dueInDays) : undefined,
+      notes: d.notes,
+    }))
 
     // Create deals with notes and activities
     const deals = await Promise.all(
