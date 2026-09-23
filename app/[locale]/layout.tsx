@@ -5,6 +5,7 @@ import { getMessages, getTranslations } from 'next-intl/server'
 import { notFound } from 'next/navigation'
 import { routing } from '@/i18n/routing'
 import type { Locale } from '@/i18n/config'
+import { CLIENT_MESSAGE_PATHS, pickMessages } from '@/i18n/client-messages'
 import { ORG_SAME_AS, FOUNDER } from '@/lib/geo/entity'
 import '../globals.css'
 
@@ -237,8 +238,8 @@ export default async function LocaleLayout({
     notFound()
   }
 
-  // Carrega as mensagens para o locale atual (passadas ao client via NextIntlClientProvider)
-  const messages = await getMessages()
+  // Only the paths client components read go to the browser; the rest stays server-side (spec 005)
+  const messages = pickMessages(await getMessages(), CLIENT_MESSAGE_PATHS)
 
   const schemaOrg = buildSchemaOrg(locale as Locale)
 

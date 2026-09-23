@@ -1,5 +1,8 @@
 # Handoff: home "Carta de Bayer" + marca nova do Sirius (2026-09-23)
 
+> **Atualização 23/09 (noite):** passo 1 parcialmente feito. A spec 005 cortou as mensagens do client
+> (HTML −37% em toda rota), mas o LCP é das fontes e da hidratação. Ver passo 1.
+
 ## Estado em uma linha
 A home nova e a marca de pingos estão **no ar** (commit `4e915dc`, verificado em produção no desktop e no celular em
 23/09, console limpo, fontes e CSS carregando). Falta espalhar a marca pelo resto do site e baixar o LCP, que é
@@ -91,13 +94,24 @@ Se o seed mudar, a home muda junto. **A prancha não pode mentir.**
 - Gates da art-direction: **34/35**. O **G29 (LCP) segue aberto**, e a causa está fora da direção (ver passo 1).
 
 ## Próximos passos (em ordem)
-1. **LCP, com `web-performance`.** [app/[locale]/layout.tsx](app/[locale]/layout.tsx) passa **todas** as
-   mensagens do `next-intl` (`getMessages()`, ~133 kb de JSON, com e-mails e dashboard) ao `NextIntlClientProvider`.
-   Elas vão serializadas em toda página: o HTML da home tem 246 kb cru / 65 kb gz. Some a isso **54 kb gz de CSS
-   global** bloqueando a renderização.
-   - Passar ao client só os namespaces que componentes client usam.
-   - Afeta todas as rotas: é mudança não-trivial, então vai pelo **Spec Kit** (o repo tem `.specify/`).
-   - Remedir com o mesmo método da tabela acima.
+1. **LCP, com `web-performance`.**
+   - ✅ **Mensagens: FEITO na spec 005** ([specs/005-trim-client-messages/](specs/005-trim-client-messages/)).
+     O provider recebe só `CLIENT_MESSAGE_PATHS` ([i18n/client-messages.ts](i18n/client-messages.ts)), e
+     [\_\_tests\_\_/i18n/client-messages.test.ts](__tests__/i18n/client-messages.test.ts) segue o grafo de imports
+     dos `'use client'` e falha se um namespace de client ficar fora da lista. Resultado: mensagens de 104 kb
+     para 25 kb, e HTML da home de 65,4 para **41,1 kb gz** (−37%, vale para toda rota).
+     **Componente client novo com namespace novo = acrescentar o caminho na lista**, senão o teste quebra.
+   - ❌ **O LCP não mudou** (mediana de 7: 3,9s antes, 4,5s depois, com ruído de 2,6 a 6,4s). As mensagens
+     **não** eram o gargalo. O diagnóstico está na tabela de resultado do `tasks.md` da 005. FCP = LCP, e a
+     primeira pintura espera por:
+     1. **Fontes x CSS.** Seis woff2 pré-carregados (~287 kb: Bricolage `opsz`+`wdth` = 128 kb, EB Garamond
+        latin+greek × normal+italic, e Geist do root layout, que a home talvez nem use) roubam banda do CSS
+        global bloqueante (53 kb), que termina aos 1,8s em vez de ~0,6s. **Mexe na tipografia aprovada:
+        decidir com o Jean** (tirar o preload do que está abaixo da dobra, subset, cortar eixo).
+     2. **Tarefa longa de ~2,5s** (hidratação, CPU 4×): PostHog, Theme, PWA×3, Toaster, AiTrafficMonitor e
+        GTM hidratam em toda página. Quando a tarefa cai antes da pintura, o LCP vai a ~5s.
+   - Scripts de medição: `measure.cjs` (mediana de N) e `diag.cjs` (recursos × tarefas longas), no scratchpad
+     da sessão de 23/09. Não versionados. O método está na 005.
 2. **Espalhar a marca** (a direção vem depois, se o Jean quiser):
    - header das outras páginas: [app/[locale]/(marketing)/layout.tsx:23-33](app/[locale]/(marketing)/layout.tsx#L23-L33)
      ainda usa `/logo.png` e `<span className="font-bold tracking-tight">Sirius CRM</span>`. Trocar por
