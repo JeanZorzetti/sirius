@@ -9,8 +9,8 @@ import { analytics } from '@/lib/posthog'
  */
 export function PricingPageTracker() {
   useEffect(() => {
-    trackViewPricingPage() // Google Analytics
-    analytics.viewPricing({ source: 'pricing_page' }) // PostHog
+    trackViewPricingPage()
+    analytics.viewPricing({ source: 'pricing_page' })
   }, [])
 
   return null // This component doesn't render anything

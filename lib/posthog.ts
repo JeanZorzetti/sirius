@@ -4,11 +4,31 @@ import type { AiEngine } from './analytics/ai-tracker'
  * Helper para obter instância do PostHog via window.posthog
  * Inicializado pelo PostHogProvider via lazy import
  */
-function getPostHog() {
+export function getPostHog() {
   if (typeof window !== 'undefined' && (window as any).posthog) {
     return (window as any).posthog
   }
-  return { capture: () => {}, identify: () => {}, reset: () => {} }
+  // The SDK loads lazily, after mount, so calls made on mount (landing $pageview, sign_up, identify)
+  // wait in window.__phQueue and PostHogProvider replays them once the SDK is up.
+  const enqueue = (method: string) => (...args: unknown[]) => {
+    if (typeof window === 'undefined') return
+    const w = window as any
+    ;(w.__phQueue ||= []).push([method, args])
+  }
+  return {
+    capture: enqueue('capture'),
+    identify: enqueue('identify'),
+    reset: enqueue('reset'),
+    register: enqueue('register'),
+  }
+}
+
+// Replays calls queued by getPostHog() before the SDK was up
+export function flushQueue(ph: any) {
+  const w = window as any
+  const queue: [string, unknown[]][] = w.__phQueue || []
+  delete w.__phQueue
+  for (const [method, args] of queue) ph[method]?.(...args)
 }
 
 // Helper para capturar eventos do PostHog de forma type-safe

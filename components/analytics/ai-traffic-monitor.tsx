@@ -6,6 +6,7 @@ import {
   detectAndStoreAiReferrer,
   extractAiQueryParams,
 } from '@/lib/analytics/ai-tracker'
+import { getPostHog } from '@/lib/posthog'
 
 /**
  * AI Traffic Monitor Component
@@ -26,9 +27,7 @@ export function AiTrafficMonitor() {
     const aiData = detectAndStoreAiReferrer()
     if (!aiData) return
 
-    const ph = (window as any).posthog
-    if (!ph?.capture) return
-
+    const ph = getPostHog()
     const queryParams = extractAiQueryParams(aiData.referrerUrl)
 
     const eventData = {

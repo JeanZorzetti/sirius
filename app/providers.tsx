@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, Suspense } from 'react'
 import { usePathname, useSearchParams } from 'next/navigation'
+import { getPostHog, flushQueue } from '@/lib/posthog'
 
 // Hook para rastrear mudanças de rota
 function PostHogPageView() {
@@ -10,14 +11,11 @@ function PostHogPageView() {
 
   useEffect(() => {
     if (pathname && process.env.NODE_ENV === 'production') {
-      const ph = (window as any).posthog
-      if (ph?.capture) {
-        let url = window.origin + pathname
-        if (searchParams && searchParams.toString()) {
-          url = url + `?${searchParams.toString()}`
-        }
-        ph.capture('$pageview', { $current_url: url })
+      let url = window.origin + pathname
+      if (searchParams && searchParams.toString()) {
+        url = url + `?${searchParams.toString()}`
       }
+      getPostHog().capture('$pageview', { $current_url: url })
     }
   }, [pathname, searchParams])
 
@@ -42,6 +40,7 @@ export function PostHogProvider({ children }: { children: React.ReactNode }) {
             api_host: posthogHost,
             loaded: (ph) => {
               ;(window as any).posthog = ph
+              flushQueue(ph)
             },
             capture_pageview: false,
             capture_pageleave: true,
@@ -56,6 +55,7 @@ export function PostHogProvider({ children }: { children: React.ReactNode }) {
           })
         } else {
           ;(window as any).posthog = posthog
+          flushQueue(posthog)
         }
       })
     } else {

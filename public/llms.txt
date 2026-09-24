@@ -110,7 +110,7 @@
 - Framework: Next.js 16.1.6 (App Router)
 - Database: PostgreSQL + Prisma ORM
 - Auth: NextAuth.js v5
-- Analytics: PostHog, Google Analytics 4, Microsoft Clarity
+- Analytics: PostHog
 - Mobile: Capacitor (iOS/Android)
 - AI: Custom LLM integration (Groq, GPT-4)
 

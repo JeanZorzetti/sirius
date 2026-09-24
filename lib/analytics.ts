@@ -1,14 +1,9 @@
 /**
  * Analytics Helper
- * Centralized tracking functions for Google Tag Manager / Google Analytics
+ * Conversion events, sent to PostHog (GA4/GTM removed: it cost ~1s of main thread on every page)
  */
 
-// Declare global dataLayer type
-declare global {
-  interface Window {
-    dataLayer: any[]
-  }
-}
+import { getPostHog } from '@/lib/posthog'
 
 /**
  * Track a custom event
@@ -16,18 +11,8 @@ declare global {
  * @param eventParams - Additional parameters for the event
  */
 export function trackEvent(eventName: string, eventParams?: Record<string, any>) {
-  if (typeof window === 'undefined') return // Server-side, skip
-
-  // Initialize dataLayer if not exists
-  window.dataLayer = window.dataLayer || []
-
-  // Push event to dataLayer
-  window.dataLayer.push({
-    event: eventName,
-    ...eventParams,
-  })
-
-
+  if (process.env.NODE_ENV !== 'production') return
+  getPostHog().capture(eventName, eventParams)
 }
 
 /**
