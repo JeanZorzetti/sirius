@@ -2,7 +2,8 @@
 
 import { useState, useRef, useCallback, memo } from 'react'
 import Link from 'next/link'
-import Image from 'next/image'
+import { Wordmark } from '@/components/brand/wordmark'
+import { Pingos } from '@/components/brand/pingos'
 import { usePathname } from 'next/navigation'
 import { cn } from '@/lib/utils'
 import {
@@ -249,21 +250,9 @@ function SidebarInner({ pathname, user, open, setOpen }: { pathname: string; use
 
       {/* Header / Logo */}
       <div className="flex h-16 items-center px-3 border-b border-white/5 flex-shrink-0">
-        <Link href="/dashboard" className="flex items-center gap-3 group">
-          <div className="relative w-8 h-8 flex-shrink-0 group-hover:scale-105 transition-transform duration-300">
-            <Image src="/logo.png" alt="Sirius Logo" fill className="object-contain" priority sizes="32px" />
-          </div>
-          <div
-            className={cn(
-              'flex flex-col whitespace-pre transition-opacity duration-150',
-              open ? 'opacity-100' : 'opacity-0 w-0 overflow-hidden'
-            )}
-          >
-            <span className="text-sm font-bold bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-white dark:to-zinc-400 bg-clip-text text-transparent">
-              SIRIUS
-            </span>
-            <span className="text-[10px] text-muted-foreground tracking-wider">CRM</span>
-          </div>
+        {/* Closed rail: the two dots alone. Open: the wordmark, which already carries them (no lockup). */}
+        <Link href="/dashboard" className="flex items-center text-foreground" aria-label="Sirius CRM, painel">
+          {open ? <Wordmark className="h-6 w-auto" /> : <Pingos className="h-7 w-8" />}
         </Link>
       </div>
 

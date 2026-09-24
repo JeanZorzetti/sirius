@@ -1,5 +1,5 @@
 ﻿import type { Metadata, Viewport } from 'next'
-import { Geist, Geist_Mono } from 'next/font/google'
+import { Geist_Mono } from 'next/font/google'
 import { NextIntlClientProvider } from 'next-intl'
 import { getMessages, getTranslations } from 'next-intl/server'
 import { notFound } from 'next/navigation'
@@ -9,15 +9,8 @@ import { CLIENT_MESSAGE_PATHS, pickMessages } from '@/i18n/client-messages'
 import { ORG_SAME_AS, FOUNDER } from '@/lib/geo/entity'
 import '../public.css'
 
-// No preload: only the (ia) area and explicit font-sans elements draw with it. The var sits on <body> and the
-// Tailwind font rule on <html>, so every other page renders in the system stack (spec 007, research R5).
-const geistSans = Geist({
-  variable: '--font-geist-sans',
-  subsets: ['latin'],
-  display: 'swap',
-  preload: false,
-})
-
+// Text renders in the system stack (Tailwind's default font-sans): Geist was removed on purpose, it never drew
+// outside the (ia) area (spec 007, research R5). Mono stays: font-mono figures in the dashboard draw with it.
 const geistMono = Geist_Mono({
   variable: '--font-geist-mono',
   subsets: ['latin'],
@@ -67,7 +60,7 @@ export async function generateMetadata({
         type: 'website',
         images: [
           {
-            url: '/logo.png',
+            url: '/og-image.png',
             width: 1200,
             height: 630,
             alt: 'Sirius CRM - O CRM inteligente para times de alta performance',
@@ -79,7 +72,7 @@ export async function generateMetadata({
         title: 'Sirius CRM',
         description: 'Transforme leads em receita recorrente.',
         creator: '@roilabs',
-        images: ['/logo.png'],
+        images: ['/og-image.png'],
       },
     }
   }
@@ -104,7 +97,7 @@ export async function generateMetadata({
       type: 'website',
       images: [
         {
-          url: '/logo.png',
+          url: '/og-image.png',
           width: 1200,
           height: 630,
           alt: 'Sirius CRM - The intelligent CRM for high-performance teams',
@@ -115,7 +108,7 @@ export async function generateMetadata({
       card: 'summary_large_image',
       title: 'Sirius CRM',
       description: 'Turn leads into recurring revenue.',
-      images: ['/logo.png'],
+      images: ['/og-image.png'],
     },
   }
 }
@@ -258,7 +251,7 @@ export default async function LocaleLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaOrg) }}
         />
       </head>
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+      <body className={`${geistMono.variable} antialiased`}>
         {/* Google Tag Manager (noscript) */}
         {analyticsConfig.gtm.enabled && (
           <GoogleTagManagerNoScript gtmId={analyticsConfig.gtm.id} />

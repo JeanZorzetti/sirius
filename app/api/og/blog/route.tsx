@@ -1,5 +1,8 @@
 ﻿import { ImageResponse } from 'next/og'
 import { NextRequest } from 'next/server'
+import { WORDMARK_VIEWBOX, WORDMARK_LETRAS, WORDMARK_PINGO } from '@/components/brand/wordmark'
+
+const PINGO = '#d02d23' // --marca-pingo; next/og has no CSS variables
 
 export const runtime = 'edge'
 
@@ -27,7 +30,7 @@ export async function GET(request: NextRequest) {
             overflow: 'hidden',
           }}
         >
-          {/* Background gradient indigo → purple */}
+          {/* Brand ink (grafite), same as /og-image.png */}
           <div
             style={{
               position: 'absolute',
@@ -35,7 +38,7 @@ export async function GET(request: NextRequest) {
               left: 0,
               right: 0,
               bottom: 0,
-              background: 'linear-gradient(135deg, #312e81 0%, #4c1d95 50%, #581c87 100%)',
+              background: '#141b24',
             }}
           />
 
@@ -50,30 +53,6 @@ export async function GET(request: NextRequest) {
               opacity: 0.08,
               backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)',
               backgroundSize: '40px 40px',
-            }}
-          />
-
-          {/* Glow effects */}
-          <div
-            style={{
-              position: 'absolute',
-              top: '-120px',
-              right: '-80px',
-              width: '400px',
-              height: '400px',
-              background: 'radial-gradient(circle, rgba(139,92,246,0.3) 0%, transparent 70%)',
-              borderRadius: '50%',
-            }}
-          />
-          <div
-            style={{
-              position: 'absolute',
-              bottom: '-100px',
-              left: '-60px',
-              width: '350px',
-              height: '350px',
-              background: 'radial-gradient(circle, rgba(99,102,241,0.25) 0%, transparent 70%)',
-              borderRadius: '50%',
             }}
           />
 
@@ -97,58 +76,10 @@ export async function GET(request: NextRequest) {
                 justifyContent: 'space-between',
               }}
             >
-              {/* Logo area */}
-              <div
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '14px',
-                }}
-              >
-                {/* Logo circle placeholder */}
-                <div
-                  style={{
-                    width: '48px',
-                    height: '48px',
-                    borderRadius: '12px',
-                    background: 'rgba(255,255,255,0.15)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    fontSize: '24px',
-                    fontWeight: 'bold',
-                    color: 'white',
-                  }}
-                >
-                  S
-                </div>
-                <div
-                  style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                  }}
-                >
-                  <span
-                    style={{
-                      fontSize: '22px',
-                      fontWeight: 'bold',
-                      color: 'white',
-                      letterSpacing: '0.05em',
-                    }}
-                  >
-                    SIRIUS
-                  </span>
-                  <span
-                    style={{
-                      fontSize: '12px',
-                      color: 'rgba(255,255,255,0.6)',
-                      letterSpacing: '0.15em',
-                    }}
-                  >
-                    CRM
-                  </span>
-                </div>
-              </div>
+              <svg width={148} height={60} viewBox={WORDMARK_VIEWBOX}>
+                <path d={WORDMARK_LETRAS} fill="#f5f7f9" />
+                <path d={WORDMARK_PINGO} fill={PINGO} />
+              </svg>
 
               {/* Category badge */}
               <div
@@ -194,7 +125,7 @@ export async function GET(request: NextRequest) {
                   width: '80px',
                   height: '4px',
                   borderRadius: '2px',
-                  background: 'linear-gradient(90deg, #818cf8, #c084fc)',
+                  background: PINGO,
                 }}
               />
             </div>

@@ -1,6 +1,7 @@
 :root {
   /* PREMIUM ROBUST LIGHT MODE (Linear/Raycast Style) */
   --radius: 0.625rem;
+  --marca-pingo: #d02d23; /* pingo A of the wordmark/pingos outside the home (the home maps it to --pulso) */
 
   /* HSL fallbacks for browsers without OKLCH support */
   --background: hsl(240, 5%, 96%); /* #f4f4f5 */

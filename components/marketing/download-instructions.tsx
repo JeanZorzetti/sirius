@@ -51,7 +51,7 @@ export function DownloadInstructions() {
       {/* Header */}
       <div className="text-center mb-12">
         <div className="flex justify-center mb-6">
-          <div className="relative w-20 h-20 rounded-2xl bg-gradient-to-br from-indigo-500 to-purple-600 p-4 shadow-2xl">
+          <div className="relative w-20 h-20 rounded-2xl bg-[#f5f7f9] p-4 shadow-2xl">
             <Image src="/logo.png" alt="Sirius Logo" fill className="object-contain p-2" />
           </div>
         </div>

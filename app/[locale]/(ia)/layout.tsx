@@ -54,7 +54,7 @@ export default async function IALayout({
   const enabledAgentCount = Object.values(enabledAgents).filter(Boolean).length
 
   return (
-    <div className="dark min-h-screen bg-zinc-950 text-zinc-100 font-[family-name:var(--font-geist-sans)]">
+    <div className="dark min-h-screen bg-zinc-950 text-zinc-100">
       {/* Ambient glow effect */}
       <div className="fixed inset-0 pointer-events-none">
         <div className="absolute top-0 left-1/4 w-96 h-96 bg-cyan-500/5 rounded-full blur-[128px]" />

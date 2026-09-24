@@ -1,4 +1,4 @@
-import Image from 'next/image'
+import { Wordmark } from '@/components/brand/wordmark'
 import { Button } from '@/components/ui/button'
 import { MobileNav } from '@/components/marketing/mobile-nav'
 import { NavDropdowns } from '@/components/marketing/nav-dropdowns'
@@ -20,17 +20,8 @@ export default function MarketingLayout({
       <nav className="fixed top-0 z-50 w-full border-b bg-background/80 backdrop-blur-sm">
         <div className="container mx-auto flex h-16 items-center justify-between px-4">
           <div className="flex items-center gap-4 md:gap-8">
-            <Link href="/" className="text-xl font-bold flex items-center gap-2">
-              <Image
-                src="/logo.png"
-                alt="Sirius Logo"
-                width={32}
-                height={32}
-                className="object-contain"
-                priority
-                unoptimized
-              />
-              <span className="font-bold tracking-tight">Sirius CRM</span>
+            <Link href="/" className="flex items-center" aria-label="Sirius CRM, página inicial">
+              <Wordmark className="h-7 w-auto" />
             </Link>
             <div className="hidden md:flex items-center gap-4 lg:gap-6">
               <FeaturesDropdown />
