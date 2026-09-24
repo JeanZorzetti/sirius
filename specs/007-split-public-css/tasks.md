@@ -36,9 +36,9 @@
 - [x] T015 Retratos depois (público e app) comparados com T002/T003 (SC-005)
 - [x] T016 Ida e volta na mesma aba: dashboard → `/pricing` → voltar, e `/pricing` → dashboard (FR-004)
 - [x] T017 LCP e fontes depois, contra T004 (SC-002, SC-003)
-- [ ] T018 Commit com `--literal-pathspecs`, push (deploy) e conferência na tela em produção: `/`, `/pricing`,
+- [x] T018 Commit com `--literal-pathspecs`, push (deploy) e conferência na tela em produção: `/`, `/pricing`,
   `/blog` em 1366 e 390 px
-- [ ] T019 Handoff com os números
+- [x] T019 Handoff com os números
 
 ## Resultados (24/09, build local, perfil 4G lento + CPU 4×, 390×844)
 
