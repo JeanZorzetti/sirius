@@ -143,7 +143,7 @@ export function WelcomeModal({ open, onClose, userName, hasWhatsApp }: WelcomeMo
         ) : (
           <DialogHeader>
             <DialogTitle className="text-2xl sm:text-3xl font-bold text-center">
-              {t('welcome')}{userName ? `, ${userName}` : ''}
+              {t('welcome')}{userName ? `, ${userName}` : ''}!
             </DialogTitle>
             <DialogDescription className="text-center text-base pt-2">
               {t('subtitle')}

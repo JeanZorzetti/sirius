@@ -3,6 +3,9 @@ import Link from 'next/link'
 import { CheckCircle2, Sparkles, ArrowRight } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
+import { PurchaseTracker } from '@/components/analytics/purchase-tracker'
+import { getStripe, purchaseFromSession } from '@/lib/stripe'
+import logger from '@/lib/logger'
 import '@/app/globals.css' // app stylesheet on top of public.css (spec 007)
 
 export const metadata: Metadata = {
@@ -11,9 +14,20 @@ export const metadata: Metadata = {
   robots: 'noindex, nofollow', // Não indexar página de sucesso
 }
 
-export default function CheckoutSuccessPage() {
+export default async function CheckoutSuccessPage({ searchParams }: { searchParams: Promise<{ session_id?: string }> }) {
+  const { session_id } = await searchParams
+  let purchase: ReturnType<typeof purchaseFromSession> = null
+  if (session_id?.startsWith('cs_')) {
+    try {
+      purchase = purchaseFromSession(await getStripe().checkout.sessions.retrieve(session_id))
+    } catch (error) {
+      logger.warn({ error, session_id }, 'Checkout success: could not read Stripe session')
+    }
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-white to-purple-50 dark:from-zinc-950 dark:via-zinc-900 dark:to-purple-950/20 flex items-center justify-center p-4">
+      {purchase && <PurchaseTracker {...purchase} />}
       <div className="w-full max-w-2xl">
         {/* Success Icon */}
         <div className="flex justify-center mb-8 animate-in zoom-in duration-500">

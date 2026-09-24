@@ -11,7 +11,6 @@ import {
   Gift, Clock, AlertTriangle, CheckCircle2, TrendingDown, ExternalLink,
 } from "lucide-react"
 import { BillingPageTracker } from "@/components/analytics/billing-page-tracker"
-import { PurchaseTracker } from "@/components/analytics/purchase-tracker"
 import { CopyReferralButton } from "./copy-referral-button"
 import { CancelSubscriptionButton } from "./cancel-subscription-button"
 import { PLAN_NAMES, PLAN_PRICING, PLAN_DESCRIPTIONS } from "@/lib/entitlements"
@@ -126,7 +125,6 @@ export default async function BillingPage() {
   return (
     <div className="flex-1 space-y-6 p-4 md:p-8 pt-6 max-w-3xl mx-auto">
       <BillingPageTracker />
-      <PurchaseTracker />
 
       {/* Header */}
       <div className="flex items-center justify-between">

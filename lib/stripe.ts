@@ -98,6 +98,18 @@ export async function createStripeCheckout(params: {
   }
 }
 
+/**
+ * O que a página de sucesso manda ao GA4 como `purchase`. A conta Stripe é compartilhada com outros
+ * produtos e "paid" pode valer zero, então só conta sessão deste produto (tem organization_id) com dinheiro.
+ * ponytail: boleto/async chega `unpaid` no redirect e não vira purchase; mandar pelo webhook se isso importar.
+ */
+export function purchaseFromSession(
+  session: Pick<Stripe.Checkout.Session, 'id' | 'payment_status' | 'amount_total' | 'metadata'>,
+) {
+  if (session.payment_status !== 'paid' || !session.metadata?.organization_id || !session.amount_total) return null
+  return { value: session.amount_total / 100, transactionId: session.id }
+}
+
 /** Cancela uma assinatura ativa na Stripe (imediato). */
 export async function cancelStripeSubscription(subscriptionId: string) {
   await getStripe().subscriptions.cancel(subscriptionId)

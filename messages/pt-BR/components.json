@@ -273,7 +273,7 @@
   "onboarding": {
     "title": "Primeiros Passos",
     "subtitle": "Configure seu espaço de trabalho em poucos passos",
-    "welcome": "Bem-vindo ao Sirius CRM!",
+    "welcome": "Bem-vindo ao Sirius CRM",
     "step": "Passo {current} de {total}",
     "skip": "Pular",
     "completeSetup": "Concluir Configuração",
