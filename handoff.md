@@ -38,11 +38,8 @@ O `purchase` com sessão paga de verdade **não foi exercitado** (a chave local 
 GA4 DebugView na próxima compra real.
 
 ## Próximos passos (em ordem)
-1. **Capa de `whatsapp-api-oficial-meta-crm`**: seis fotos gratuitas do Unsplash (filtro `license=free`, nenhuma
-   `premium_photo`) no quadro `capas.png` do scratchpad desta sessão. Com a letra do Jean, trocar o `image` do post
-   (`lib/blog/posts/whatsapp-api-oficial-meta-crm.ts`) pela URL `https://images.unsplash.com/<id>?w=1200&h=630&fit=crop`:
-   A `photo-1587310285959-d768493970b6` · B `photo-1704383110020-86b408af4ac2` · C `photo-1657256031858-148906b82ab4` ·
-   D `photo-1758598304346-1b01479f681a` · E `photo-1719204718581-5c95889c8ec9` · F `photo-1632435499152-18838be77960`.
+1. ~~Capa de `whatsapp-api-oficial-meta-crm`~~ **feita** (`9312574`, no ar 11:56): o Jean delegou, escolhi a A
+   (`photo-1587310285959-d768493970b6`, mão com o celular e o logo; não repete a foto dos artigos relacionados).
 2. **PostHog**: nenhuma chave em nenhum `.env` (`.env.easypanel` tem `""`). O roteiro está em `git show 9797615:handoff.md`, item 1.
 3. **Próxima alavanca de CSS** (spec nova, Spec Kit): o CSS próprio do `base.css` (animações de chat, kanban) ainda vai
    na folha pública.
