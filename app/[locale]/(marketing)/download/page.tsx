@@ -79,8 +79,6 @@ export default function DownloadPage() {
     <div className="min-h-screen">
       {/* Background Effects */}
       <div className="fixed inset-0 z-0 pointer-events-none">
-        <div className="absolute top-0 left-1/4 w-96 h-96 bg-muted blur-[120px] rounded-full" />
-        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-muted blur-[120px] rounded-full" />
       </div>
 
       <div className="relative z-10">

@@ -86,8 +86,6 @@ export function IndiqueClient() {
       {/* Hero */}
       <section className="relative py-32 px-6 overflow-hidden">
         {/* Background Gradients */}
-        <div className="absolute top-0 left-1/2 w-full max-w-4xl -translate-x-1/2 h-[500px] bg-primary/20 blur-[120px] rounded-full pointer-events-none opacity-50" />
-        <div className="absolute top-40 right-0 w-[400px] h-[400px] bg-muted blur-[100px] rounded-full pointer-events-none" />
         
         <div className="relative mx-auto max-w-5xl text-center z-10">
           <motion.div 
@@ -414,7 +412,6 @@ export function IndiqueClient() {
       {/* CTA */}
       <section className="py-32 px-6 relative overflow-hidden">
         <div className="absolute inset-0 bg-primary/5 pointer-events-none" />
-        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-primary/20 blur-[150px] rounded-full pointer-events-none" />
         
         <div className="relative mx-auto max-w-3xl text-center z-10">
           <motion.div

@@ -193,7 +193,6 @@ export default async function FeatureDetailPage({
            ════════════════════════════════════════════════════════════ */}
         <div className="relative overflow-hidden">
           <div className={`absolute inset-0  ${theme.gradient} pointer-events-none`} />
-          <div className="absolute top-0 right-0 w-[600px] h-[600px] rounded-full blur-[120px] opacity-30 pointer-events-none bg-primary/10" />
 
           <div className="relative py-24 sm:py-32">
             <div className="mx-auto max-w-5xl px-6 lg:px-8">
@@ -503,8 +502,6 @@ export default async function FeatureDetailPage({
         <div className="py-24 border-t bg-muted/20">
           <div className="mx-auto max-w-3xl px-6 lg:px-8">
             <div className="relative overflow-hidden rounded-3xl border bg-background p-10 sm:p-14 text-center shadow-xl shadow-primary/5">
-              <div className="absolute top-0 right-0 w-80 h-80 rounded-full blur-[100px] opacity-20 pointer-events-none bg-primary" />
-              <div className="absolute bottom-0 left-0 w-60 h-60 rounded-full blur-[80px] opacity-10 pointer-events-none bg-primary" />
 
               <div className="relative z-10">
                 <div className="inline-flex items-center gap-2 rounded border border-border bg-muted px-3 py-1 text-sm text-foreground mb-6">

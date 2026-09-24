@@ -100,7 +100,7 @@ describe('app/globals.css reaches every app page', () => {
 const HUES = 'red|orange|amber|yellow|lime|green|emerald|teal|cyan|sky|blue|indigo|violet|purple|fuchsia|pink|rose'
 const OFF_PALETTE = new RegExp(
   String.raw`\b(?:bg|text|border|from|via|to|ring|fill|stroke|outline|decoration|divide|placeholder|shadow|accent|caret)-(?:${HUES})-\d{2,3}\b` +
-  String.raw`|\bbg-(?:gradient|linear|radial)-|\bbg-\[(?:linear|radial|conic)-gradient|\bblur-(?:2xl|3xl)\b`)
+  String.raw`|\bbg-(?:gradient|linear|radial)-|\bbg-\[(?:linear|radial|conic)-gradient|\bblur-(?:2xl|3xl|\[\d+px\])`)
 
 describe('public pages paint only the home palette', () => {
   const entries = [
