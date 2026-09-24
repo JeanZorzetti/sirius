@@ -2,6 +2,7 @@ import { Metadata } from 'next'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Home, BookOpen, DollarSign, Mail } from 'lucide-react'
+import '@/app/public.css' // outside app/[locale]/layout.tsx, so it loads its own sheet (spec 007)
 
 export const metadata: Metadata = {
   title: 'Página não encontrada | Sirius CRM',

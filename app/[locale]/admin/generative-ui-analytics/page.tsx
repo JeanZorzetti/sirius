@@ -8,6 +8,7 @@ import { Metadata } from 'next'
 import { GenUIAnalyticsDashboard } from '@/components/admin/GenUIAnalyticsDashboard'
 import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { BarChart3 } from 'lucide-react'
+import '@/app/globals.css' // app stylesheet on top of public.css (spec 007)
 
 export const metadata: Metadata = {
     title: 'Generative UI Analytics | Sirius CRM',

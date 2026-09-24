@@ -1,0 +1,29 @@
+/* Public stylesheet (spec 007): Tailwind over the folders the public routes import, all inside the lowest
+   cascade layer. Loaded by app/[locale]/layout.tsx on every route; __tests__/styles/public-css-guard.test.ts
+   fails if a public route imports a file outside these @source folders. */
+@layer properties, public;
+@import "tailwindcss" layer(public) source(none);
+@source "./[locale]/(marketing)";
+@source "./[locale]/(fluxo)";
+@source "./[locale]/layout.tsx";
+@source "./[locale]/not-found.tsx";
+@source "./error.tsx";
+@source "./not-found.tsx";
+@source "../components/ui";
+@source "../components/marketing";
+@source "../components/blog";
+@source "../components/brand";
+@source "../components/fluxo";
+@source "../components/seo";
+@source "../components/analytics";
+@source "../components/calculadora-roi.tsx";
+@source "../components/theme-provider.tsx";
+@source "../components/pwa-register.tsx";
+@source "../lib";
+@source "../config";
+/* Tailwind rejects @utility, @custom-variant and @theme inside a layer: these stay top-level. They emit only
+   @keyframes and @property, identical in both sheets. */
+@import "tw-animate-css";
+@plugin "@tailwindcss/typography";
+@import "./theme.css";
+@import "./base.css" layer(public);

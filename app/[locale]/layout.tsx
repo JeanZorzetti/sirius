@@ -7,12 +7,15 @@ import { routing } from '@/i18n/routing'
 import type { Locale } from '@/i18n/config'
 import { CLIENT_MESSAGE_PATHS, pickMessages } from '@/i18n/client-messages'
 import { ORG_SAME_AS, FOUNDER } from '@/lib/geo/entity'
-import '../globals.css'
+import '../public.css'
 
+// No preload: only the (ia) area and explicit font-sans elements draw with it. The var sits on <body> and the
+// Tailwind font rule on <html>, so every other page renders in the system stack (spec 007, research R5).
 const geistSans = Geist({
   variable: '--font-geist-sans',
   subsets: ['latin'],
   display: 'swap',
+  preload: false,
 })
 
 const geistMono = Geist_Mono({

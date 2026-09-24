@@ -1,4 +1,5 @@
 import { ThemeProvider } from "@/components/theme-provider"
+import '@/app/globals.css' // app stylesheet on top of public.css (spec 007)
 
 export default function AdminGroupLayout({
   children,

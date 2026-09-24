@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { CheckCircle2, Sparkles, ArrowRight } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
+import '@/app/globals.css' // app stylesheet on top of public.css (spec 007)
 
 export const metadata: Metadata = {
   title: 'Pagamento Confirmado - Sirius CRM',

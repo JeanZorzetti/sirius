@@ -4,6 +4,7 @@ import { useEffect } from 'react'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { AlertTriangle, Home, RotateCcw } from 'lucide-react'
+import '@/app/public.css' // outside app/[locale]/layout.tsx, so it loads its own sheet (spec 007)
 
 export default function Error({
   error,

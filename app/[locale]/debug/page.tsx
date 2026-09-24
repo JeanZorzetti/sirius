@@ -1,6 +1,7 @@
 import { prisma } from "@/lib/prisma"
 import { prismaWa } from "@/lib/prisma-wa"
 import { getSession } from "@/lib/auth"
+import '@/app/globals.css' // app stylesheet on top of public.css (spec 007)
 
 export const dynamic = 'force-dynamic'
 

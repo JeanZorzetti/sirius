@@ -8,6 +8,7 @@ import { TrialBanner } from '@/components/plan/trial-banner'
 import { getSession } from '@/lib/auth'
 import { getDashboardUser } from '@/lib/dashboard-user'
 import { redirect } from 'next/navigation'
+import '@/app/globals.css' // app stylesheet on top of public.css (spec 007)
 
 export default async function DashboardLayout({
   children,

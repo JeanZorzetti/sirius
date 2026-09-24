@@ -4,6 +4,7 @@ import { redirect } from 'next/navigation'
 import { headers } from 'next/headers'
 import { IANavbar } from '@/components/ia/ia-navbar'
 import { Toaster } from '@/components/ui/sonner'
+import '@/app/globals.css' // app stylesheet on top of public.css (spec 007)
 
 export const metadata = {
   title: 'Sirius IA | Modo Agêntico',
