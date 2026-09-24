@@ -24,10 +24,7 @@ const geistMono = Geist_Mono({
 
 import { Suspense } from 'react'
 import { ThemeProvider } from '@/components/theme-provider'
-import { PWAInstallPrompt } from '@/components/pwa-install-prompt'
 import { PWARegister } from '@/components/pwa-register'
-import { PushNotificationManager } from '@/components/push-notification-manager'
-import { OfflineStatus } from '@/components/offline-status'
 import { GoogleTagManager, GoogleTagManagerNoScript } from '@/components/google-tag-manager'
 import { analyticsConfig } from '@/lib/analytics-config'
 import { Toaster } from '@/components/ui/sonner'
@@ -279,10 +276,8 @@ export default async function LocaleLayout({
               disableTransitionOnChange
             >
               {children}
+              {/* Install and push prompts are logged-in UI: DashboardShellClient mounts them (spec 006) */}
               <PWARegister />
-              <PWAInstallPrompt />
-              <PushNotificationManager />
-              <OfflineStatus />
               <Toaster />
             </ThemeProvider>
           </PostHogProvider>

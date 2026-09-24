@@ -18,7 +18,7 @@ import { NextRequest, NextResponse } from 'next/server'
 export async function POST(request: NextRequest) {
   try {
     // This endpoint is just a placeholder to trigger client-side sync
-    // The actual syncing happens in the client using the offline-queue.ts functions
+    // The actual syncing happens in the client (lib/mobile/offline, driven by NetworkStatusBanner)
 
     return NextResponse.json({
       success: 0,

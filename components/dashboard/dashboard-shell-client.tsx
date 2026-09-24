@@ -20,6 +20,10 @@ const PWAInstallPrompt = dynamic(
   () => import('@/components/pwa-install-prompt').then(m => ({ default: m.PWAInstallPrompt })),
   { ssr: false, loading: () => null }
 )
+const PushNotificationManager = dynamic(
+  () => import('@/components/push-notification-manager').then(m => ({ default: m.PushNotificationManager })),
+  { ssr: false, loading: () => null }
+)
 const SignUpTracker = dynamic(
   () => import('@/components/analytics/signup-tracker').then(m => ({ default: m.SignUpTracker })),
   { ssr: false, loading: () => null }
@@ -40,6 +44,7 @@ export function DashboardShellClient() {
       <NativeInitializer />
       <NetworkStatusBanner />
       <PWAInstallPrompt />
+      <PushNotificationManager />
       <SignUpTracker />
       <LoginTracker />
       <AccessTracker />
