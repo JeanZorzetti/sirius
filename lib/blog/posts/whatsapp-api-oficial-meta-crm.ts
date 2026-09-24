@@ -7,7 +7,7 @@ export const post: BlogPost = {
   date: '2026-04-27',
   lastModified: '2026-04-27',
   category: 'Ferramentas',
-  image: '/images/blog/whatsapp-api-oficial-meta-crm.webp',
+  image: 'https://images.unsplash.com/photo-1587310285959-d768493970b6?w=1200&h=630&fit=crop&auto=format&q=80',
   author: 'Equipe Sirius CRM',
   relatedSlugs: [
     'crm-com-whatsapp-integrado',
