@@ -2,11 +2,12 @@
 
 import Link from 'next/link'
 import Image from 'next/image'
-import { useState, useEffect, useRef } from 'react'
+import { useState } from 'react'
 import { useTranslations, useLocale } from 'next-intl'
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { Badge } from '@/components/ui/badge'
+import { Badge, badgeVariants } from '@/components/ui/badge'
+import { cn } from '@/lib/utils'
 import type { BlogPost } from '@/lib/blog-types'
 import { ArrowRight, Clock, Tag, BookOpen } from 'lucide-react'
 
@@ -25,30 +26,6 @@ export function BlogIndex({
     const isEn = locale === 'en'
     const allCategory = t('categories.all')
     const [selectedCategory, setSelectedCategory] = useState(allCategory)
-    const cardsRef = useRef<(HTMLDivElement | null)[]>([])
-
-    useEffect(() => {
-        const observer = new IntersectionObserver(
-            (entries) => {
-                entries.forEach((entry) => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('animate-fade-in-up')
-                        observer.unobserve(entry.target)
-                    }
-                })
-            },
-            {
-                threshold: 0.1,
-                rootMargin: '50px',
-            }
-        )
-
-        cardsRef.current.forEach((card) => {
-            if (card) observer.observe(card)
-        })
-
-        return () => observer.disconnect()
-    }, [])
 
     // Extract unique categories
     const categories = [allCategory, ...Array.from(new Set(posts.map(post => post.category)))]
@@ -72,13 +49,15 @@ export function BlogIndex({
     return (
         <div className="min-h-screen">
             {/* Hero Section */}
-            <section className="container mx-auto px-4 pt-24 sm:pt-32 pb-16">
+            {/* overflow-x-clip: the 600px blur scrolled the page sideways below 600px; clip (not hidden) keeps the sticky filter working */}
+            <section className="container mx-auto px-4 pt-24 sm:pt-32 pb-16 overflow-x-clip">
                 <div className="mx-auto max-w-4xl text-center">
                     <div className="relative">
                         {/* Decorative gradient blur */}
                         <div className="absolute -top-20 left-1/2 -translate-x-1/2 w-150 h-150 bg-linear-to-r from-blue-500/20 via-purple-500/20 to-pink-500/20 rounded-full blur-3xl -z-10" />
 
-                        <h1 className="text-5xl sm:text-6xl font-bold tracking-tight bg-linear-to-br from-foreground via-foreground/90 to-foreground/70 bg-clip-text text-transparent mb-6">
+                        {/* pb-2 + mb-4 (was mb-6): bg-clip-text only paints inside the box, and leading 1 cut the "g" */}
+                        <h1 className="text-5xl sm:text-6xl font-bold tracking-tight bg-linear-to-br from-foreground via-foreground/90 to-foreground/70 bg-clip-text text-transparent pb-2 mb-4">
                             {t('hero.title')}
                         </h1>
                         <p className="text-xl leading-8 text-muted-foreground max-w-2xl mx-auto">
@@ -93,18 +72,21 @@ export function BlogIndex({
                 <div className="container mx-auto px-4 py-4">
                     <div className="flex gap-2 overflow-x-auto scrollbar-hide">
                         {categories.map((category) => (
-                            <Badge
+                            <button
                                 key={category}
-                                variant={selectedCategory === category ? 'default' : 'outline'}
-                                className={`cursor-pointer whitespace-nowrap transition-all duration-300 ${
+                                type="button"
+                                aria-pressed={selectedCategory === category}
+                                className={cn(
+                                    badgeVariants({ variant: selectedCategory === category ? 'default' : 'outline' }),
+                                    'cursor-pointer whitespace-nowrap transition-colors',
                                     selectedCategory === category
                                         ? 'bg-primary text-primary-foreground'
                                         : 'hover:bg-primary/10'
-                                }`}
+                                )}
                                 onClick={() => setSelectedCategory(category)}
                             >
                                 {category}
-                            </Badge>
+                            </button>
                         ))}
                     </div>
 
@@ -191,17 +173,9 @@ export function BlogIndex({
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        {recentPosts.map((post, index) => (
-                            <div
-                                key={post.slug}
-                                ref={(el) => {
-                                    cardsRef.current[index] = el
-                                }}
-                                className="opacity-0"
-                                style={{
-                                    animationDelay: `${index * 100}ms`,
-                                }}
-                            >
+                        {/* No entrance fade: it hid every card until hydration and delayed the 45th by 4.4s */}
+                        {recentPosts.map((post) => (
+                            <div key={post.slug}>
                                 <Link href={`/blog/${post.slug}`} className="block h-full group">
                                     <Card className="h-full flex flex-col relative overflow-hidden border-border/50 bg-card hover:shadow-2xl hover:shadow-primary/10 hover:-translate-y-2 transition-all duration-500 ease-out rounded-2xl p-6">
                                         {/* Animated border gradient */}
