@@ -34,7 +34,7 @@ export function PricingToggle({ children, labelMonthly = 'Mensal', labelAnnual =
           {labelAnnual}
         </span>
         {isAnnual && (
-          <span className="text-xs font-semibold text-green-600 bg-green-50 dark:bg-green-950/30 px-2 py-0.5 rounded-full">
+          <span className="text-xs font-semibold text-foreground bg-muted px-2 py-0.5 rounded">
             20% OFF
           </span>
         )}

@@ -141,17 +141,17 @@ export default async function NicheSolutionPage({ params }: { params: Promise<{ 
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
-    <div className="min-h-screen bg-gradient-to-b from-zinc-50 to-white dark:from-zinc-950 dark:to-zinc-900">
+    <div className="min-h-screen">
       {/* Hero Section */}
       <section className="container mx-auto px-4 py-12 md:py-20">
         <div className="max-w-4xl mx-auto text-center mb-12">
-          <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full bg-${niche.color.primary}-100 dark:bg-${niche.color.primary}-950 text-${niche.color.primary}-700 dark:text-${niche.color.primary}-300 text-sm font-medium mb-6`}>
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded bg-muted text-foreground text-sm font-medium mb-6">
             <Icon className="h-4 w-4" />
             Solução para {niche.slug.replace(/-/g, ' ')}
           </div>
 
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
-            <span className={`bg-gradient-to-r ${niche.color.gradient} bg-clip-text text-transparent`}>
+            <span>
               {title}
             </span>
           </h1>
@@ -161,10 +161,10 @@ export default async function NicheSolutionPage({ params }: { params: Promise<{ 
           </p>
 
           <div className="space-y-3 mb-8">
-            <p className="text-xl text-red-600 dark:text-red-400 font-medium">
+            <p className="text-xl text-destaque font-medium">
               ❌ {painPoint}
             </p>
-            <p className="text-xl text-red-600 dark:text-red-400 font-medium">
+            <p className="text-xl text-destaque font-medium">
               ❌ {painPointSecondary}
             </p>
           </div>
@@ -172,18 +172,18 @@ export default async function NicheSolutionPage({ params }: { params: Promise<{ 
           {/* Social Proof */}
           <div className="flex items-center justify-center gap-8 text-sm text-muted-foreground mb-8">
             <div className="flex items-center gap-2">
-              <Users className={`h-4 w-4 text-${niche.color.primary}-600`} />
+              <Users className="h-4 w-4 text-foreground" />
               <span>{niche.socialProof.users} usando</span>
             </div>
             <div className="flex items-center gap-2">
-              <TrendingUp className="h-4 w-4 text-green-600" />
+              <TrendingUp className="h-4 w-4 text-foreground" />
               <span>{niche.socialProof.improvement}</span>
             </div>
           </div>
 
-          <div className="flex gap-4 justify-center">
+          <div className="flex flex-wrap gap-4 justify-center">
             <a href="/register">
-              <Button size="lg" className={`bg-gradient-to-r ${niche.color.gradient} hover:opacity-90 text-lg px-8`}>
+              <Button size="lg" className="hover:opacity-90 text-lg px-8">
                 Começar Grátis
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
@@ -202,7 +202,7 @@ export default async function NicheSolutionPage({ params }: { params: Promise<{ 
       </section>
 
       {/* Benefícios Específicos */}
-      <section className={`bg-gradient-to-b from-${niche.color.primary}-50 to-white dark:from-${niche.color.primary}-950/20 dark:to-zinc-900 py-20`}>
+      <section className="bg-muted py-20">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
             <h2 className="text-3xl md:text-4xl font-bold text-center mb-4">
@@ -214,8 +214,8 @@ export default async function NicheSolutionPage({ params }: { params: Promise<{ 
 
             <div className="grid md:grid-cols-2 gap-6">
               {benefits.map((benefit, index) => (
-                <div key={index} className="bg-white dark:bg-zinc-900 p-6 rounded-xl border">
-                  <CheckCircle2 className="h-8 w-8 text-green-600 mb-4" />
+                <div key={index} className="bg-white p-6 rounded-xl border">
+                  <CheckCircle2 className="h-8 w-8 text-foreground mb-4" />
                   <h3 className="text-xl font-bold mb-2">{benefit.title}</h3>
                   <p className="text-muted-foreground">{benefit.description}</p>
                 </div>
@@ -243,12 +243,12 @@ export default async function NicheSolutionPage({ params }: { params: Promise<{ 
       </section>
 
       {/* Depoimento */}
-      <section className={`bg-gradient-to-r from-${niche.color.primary}-50 to-${niche.color.secondary}-50 dark:from-${niche.color.primary}-950/20 dark:to-${niche.color.secondary}-950/20 py-20`}>
+      <section className="bg-muted py-20">
         <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto">
-            <div className="bg-white dark:bg-zinc-900 p-8 md:p-12 rounded-2xl border shadow-lg">
+            <div className="bg-white p-8 md:p-12 rounded-2xl border shadow-lg">
               <div className="flex items-start gap-4 mb-6">
-                <div className={`bg-${niche.color.primary}-600 text-white p-3 rounded-lg`}>
+                <div className="bg-primary text-primary-foreground p-3 rounded-lg">
                   <Icon className="h-6 w-6" />
                 </div>
                 <div className="flex-1">
@@ -269,7 +269,7 @@ export default async function NicheSolutionPage({ params }: { params: Promise<{ 
 
       {/* Recursos Gratuitos - only for corretores */}
       {slug === 'corretores-de-imoveis' && (
-        <section className="container mx-auto px-4 py-20 bg-linear-to-br from-blue-50/50 to-indigo-50/50 dark:from-blue-950/20 dark:to-indigo-950/20">
+        <section className="container mx-auto px-4 py-20">
           <div className="max-w-4xl mx-auto">
             <div className="text-center mb-12">
               <h2 className="text-3xl md:text-4xl font-bold mb-4">
@@ -309,8 +309,8 @@ export default async function NicheSolutionPage({ params }: { params: Promise<{ 
                 className="group block p-6 bg-card rounded-2xl border border-border hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
               >
                 <div className="flex items-start gap-4">
-                  <div className="p-3 rounded-xl bg-emerald-500/10 group-hover:bg-emerald-500/20 transition-colors">
-                    <CheckCircle2 className="h-6 w-6 text-emerald-600 dark:text-emerald-400" />
+                  <div className="p-3 rounded-xl bg-muted group-hover:bg-muted transition-colors">
+                    <CheckCircle2 className="h-6 w-6 text-foreground" />
                   </div>
                   <div className="flex-1">
                     <h3 className="text-xl font-bold mb-2 group-hover:text-primary transition-colors">
@@ -363,7 +363,7 @@ export default async function NicheSolutionPage({ params }: { params: Promise<{ 
             Comece grátis hoje. Sem cartão de crédito, sem limite de tempo.
           </p>
           <a href="/register">
-            <Button size="lg" className={`bg-gradient-to-r ${niche.color.gradient} hover:opacity-90 text-lg px-12 py-6`}>
+            <Button size="lg" className="hover:opacity-90 text-lg px-12 py-6">
               Começar Grátis Agora
               <ArrowRight className="ml-2 h-5 w-5" />
             </Button>

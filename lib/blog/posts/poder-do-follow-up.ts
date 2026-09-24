@@ -8,19 +8,19 @@ export const post: BlogPost = {
       <div class="callout-data">
         <p><strong>📊 A Estatística que Muda Tudo</strong></p>
         <div style="display: grid; grid-template-columns: 1fr auto 1fr; gap: 2rem; align-items: center; margin: 2rem 0;">
-          <div style="text-align: center; background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%); padding: 2rem; border-radius: 1rem; border: 2px solid #3b82f6;">
-            <p style="font-size: 0.875rem; font-weight: 700; color: #1e40af; text-transform: uppercase; margin-bottom: 0.5rem;">Quando as Vendas Acontecem</p>
-            <p style="font-size: 3.5rem; font-weight: 900; color: #3b82f6; margin: 0.5rem 0; line-height: 1;">80%</p>
-            <p style="margin: 0; color: #047857; font-weight: 600;">das vendas acontecem entre o <strong>5º e 12º contato</strong></p>
+          <div style="text-align: center; background: var(--muted); padding: 2rem; border-radius: 1rem; border: 2px solid var(--fio-forte);">
+            <p style="font-size: 0.875rem; font-weight: 700; color: var(--foreground); text-transform: uppercase; margin-bottom: 0.5rem;">Quando as Vendas Acontecem</p>
+            <p style="font-size: 3.5rem; font-weight: 900; color: var(--foreground); margin: 0.5rem 0; line-height: 1;">80%</p>
+            <p style="margin: 0; color: var(--foreground); font-weight: 600;">das vendas acontecem entre o <strong>5º e 12º contato</strong></p>
           </div>
-          <div style="font-size: 2rem; font-weight: 800; color: #2563eb;">VS</div>
-          <div style="text-align: center; background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%); padding: 2rem; border-radius: 1rem; border: 2px solid #2563eb;">
-            <p style="font-size: 0.875rem; font-weight: 700; color: #1e3a8a; text-transform: uppercase; margin-bottom: 0.5rem;">Quando Vendedores Desistem</p>
-            <p style="font-size: 3.5rem; font-weight: 900; color: #2563eb; margin: 0.5rem 0; line-height: 1;">44%</p>
-            <p style="margin: 0; color: #1e40af; font-weight: 600;">desistem após o <strong>1º "não"</strong> ou silêncio</p>
+          <div style="font-size: 2rem; font-weight: 800; color: var(--foreground);">VS</div>
+          <div style="text-align: center; background: var(--muted); padding: 2rem; border-radius: 1rem; border: 2px solid var(--fio-forte);">
+            <p style="font-size: 0.875rem; font-weight: 700; color: var(--foreground); text-transform: uppercase; margin-bottom: 0.5rem;">Quando Vendedores Desistem</p>
+            <p style="font-size: 3.5rem; font-weight: 900; color: var(--foreground); margin: 0.5rem 0; line-height: 1;">44%</p>
+            <p style="margin: 0; color: var(--foreground); font-weight: 600;">desistem após o <strong>1º "não"</strong> ou silêncio</p>
           </div>
         </div>
-        <p style="text-align: center; font-size: 1.5rem; font-weight: 700; color: #2563eb; margin-top: 2rem; padding: 1.5rem; background: rgba(37, 99, 235, 0.05); border-radius: 0.75rem;">
+        <p style="text-align: center; font-size: 1.5rem; font-weight: 700; color: var(--foreground); margin-top: 2rem; padding: 1.5rem; background: var(--primary); border-radius: 0.75rem;">
           A maioria dos vendedores desiste exatamente quando o jogo está começando.
         </p>
       </div>
@@ -28,12 +28,12 @@ export const post: BlogPost = {
       <div class="callout-warning">
         <p><strong>⚠️ O Dilema do Follow-up</strong></p>
         <p>Mas tem um porém: <strong>ninguém gosta de vendedor chato</strong>. Aquele que:</p>
-        <ul style="margin: 1rem 0; padding-left: 1.5rem; color: #1e40af;">
+        <ul style="margin: 1rem 0; padding-left: 1.5rem; color: var(--foreground);">
           <li style="margin-bottom: 0.5rem;">Liga 5 vezes no mesmo dia</li>
           <li style="margin-bottom: 0.5rem;">Manda "Bom dia! Viu meu email?" todo santo dia</li>
           <li style="margin-bottom: 0.5rem;">Usa o clássico "só passando aqui pra dar um alô"</li>
         </ul>
-        <p style="margin-top: 1.5rem; padding-top: 1.5rem; border-top: 2px solid #60a5fa; font-weight: 600; color: #1e3a8a;">
+        <p style="margin-top: 1.5rem; padding-top: 1.5rem; border-top: 2px solid var(--fio-forte); font-weight: 600; color: var(--foreground);">
           Este artigo é sobre como fazer <strong>follow-up estruturado, científico e respeitoso</strong> que aumenta conversão sem queimar sua reputação.
         </p>
       </div>
@@ -367,61 +367,61 @@ export const post: BlogPost = {
 
       <div class="callout-insight">
         <p><strong>💡 Você não melhora o que não mede</strong></p>
-        <p style="margin-top: 1rem; color: #1e3a8a;">Acompanhe essas 5 métricas essenciais de follow-up:</p>
+        <p style="margin-top: 1rem; color: var(--foreground);">Acompanhe essas 5 métricas essenciais de follow-up:</p>
       </div>
 
       <div class="callout-data">
         <p><strong>📊 Dashboard de Métricas de Follow-up</strong></p>
         <div style="display: grid; gap: 1.5rem; margin: 2rem 0;">
 
-          <div style="background: white; border-left: 6px solid #3b82f6; padding: 1.5rem; border-radius: 0.75rem; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
-            <p style="font-size: 0.875rem; font-weight: 700; color: #3b82f6; text-transform: uppercase; margin-bottom: 0.75rem;">1. Response Rate por Canal</p>
-            <p style="margin: 0.5rem 0; color: #64748b; font-size: 0.95rem;"><strong>Como Calcular:</strong> (Respostas ÷ Mensagens Enviadas) × 100</p>
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1rem; padding-top: 1rem; border-top: 1px solid #e2e8f0;">
-              <div style="text-align: center; background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%); padding: 1rem; border-radius: 0.5rem;">
-                <p style="font-size: 0.75rem; color: #1e40af; margin-bottom: 0.25rem;">WhatsApp</p>
-                <p style="font-size: 1.75rem; font-weight: 800; color: #3b82f6; margin: 0;">60-70%</p>
+          <div style="background: white; border-left: 6px solid var(--fio-forte); padding: 1.5rem; border-radius: 0.75rem; box-shadow: none;">
+            <p style="font-size: 0.875rem; font-weight: 700; color: var(--foreground); text-transform: uppercase; margin-bottom: 0.75rem;">1. Response Rate por Canal</p>
+            <p style="margin: 0.5rem 0; color: var(--foreground); font-size: 0.95rem;"><strong>Como Calcular:</strong> (Respostas ÷ Mensagens Enviadas) × 100</p>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--border);">
+              <div style="text-align: center; background: var(--muted); padding: 1rem; border-radius: 0.5rem;">
+                <p style="font-size: 0.75rem; color: var(--foreground); margin-bottom: 0.25rem;">WhatsApp</p>
+                <p style="font-size: 1.75rem; font-weight: 800; color: var(--foreground); margin: 0;">60-70%</p>
               </div>
-              <div style="text-align: center; background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%); padding: 1rem; border-radius: 0.5rem;">
-                <p style="font-size: 0.75rem; color: #1e3a8a; margin-bottom: 0.25rem;">Email</p>
-                <p style="font-size: 1.75rem; font-weight: 800; color: #2563eb; margin: 0;">25-35%</p>
+              <div style="text-align: center; background: var(--muted); padding: 1rem; border-radius: 0.5rem;">
+                <p style="font-size: 0.75rem; color: var(--foreground); margin-bottom: 0.25rem;">Email</p>
+                <p style="font-size: 1.75rem; font-weight: 800; color: var(--foreground); margin: 0;">25-35%</p>
               </div>
             </div>
           </div>
 
-          <div style="background: white; border-left: 6px solid #3b82f6; padding: 1.5rem; border-radius: 0.75rem; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
-            <p style="font-size: 0.875rem; font-weight: 700; color: #2563eb; text-transform: uppercase; margin-bottom: 0.75rem;">2. Tempo Médio para Resposta</p>
-            <p style="margin: 0.5rem 0; color: #64748b; font-size: 0.95rem;"><strong>Como Calcular:</strong> Média de horas entre follow-up e reply</p>
-            <div style="text-align: center; background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%); padding: 1.5rem; border-radius: 0.5rem; margin-top: 1rem;">
-              <p style="font-size: 2.5rem; font-weight: 800; color: #2563eb; margin: 0;">&lt; 24h</p>
-              <p style="font-size: 0.875rem; color: #1e40af; margin-top: 0.5rem;">Meta Ideal</p>
+          <div style="background: white; border-left: 6px solid var(--fio-forte); padding: 1.5rem; border-radius: 0.75rem; box-shadow: none;">
+            <p style="font-size: 0.875rem; font-weight: 700; color: var(--foreground); text-transform: uppercase; margin-bottom: 0.75rem;">2. Tempo Médio para Resposta</p>
+            <p style="margin: 0.5rem 0; color: var(--foreground); font-size: 0.95rem;"><strong>Como Calcular:</strong> Média de horas entre follow-up e reply</p>
+            <div style="text-align: center; background: var(--muted); padding: 1.5rem; border-radius: 0.5rem; margin-top: 1rem;">
+              <p style="font-size: 2.5rem; font-weight: 800; color: var(--foreground); margin: 0;">&lt; 24h</p>
+              <p style="font-size: 0.875rem; color: var(--foreground); margin-top: 0.5rem;">Meta Ideal</p>
             </div>
           </div>
 
-          <div style="background: white; border-left: 6px solid #3b82f6; padding: 1.5rem; border-radius: 0.75rem; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
-            <p style="font-size: 0.875rem; font-weight: 700; color: #2563eb; text-transform: uppercase; margin-bottom: 0.75rem;">3. Follow-ups Até Conversão</p>
-            <p style="margin: 0.5rem 0; color: #64748b; font-size: 0.95rem;"><strong>Como Calcular:</strong> Número médio de toques até fechar</p>
-            <div style="text-align: center; background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%); padding: 1.5rem; border-radius: 0.5rem; margin-top: 1rem;">
-              <p style="font-size: 2.5rem; font-weight: 800; color: #2563eb; margin: 0;">5-8 toques</p>
-              <p style="font-size: 0.875rem; color: #1e40af; margin-top: 0.5rem;">Meta Ideal</p>
+          <div style="background: white; border-left: 6px solid var(--fio-forte); padding: 1.5rem; border-radius: 0.75rem; box-shadow: none;">
+            <p style="font-size: 0.875rem; font-weight: 700; color: var(--foreground); text-transform: uppercase; margin-bottom: 0.75rem;">3. Follow-ups Até Conversão</p>
+            <p style="margin: 0.5rem 0; color: var(--foreground); font-size: 0.95rem;"><strong>Como Calcular:</strong> Número médio de toques até fechar</p>
+            <div style="text-align: center; background: var(--muted); padding: 1.5rem; border-radius: 0.5rem; margin-top: 1rem;">
+              <p style="font-size: 2.5rem; font-weight: 800; color: var(--foreground); margin: 0;">5-8 toques</p>
+              <p style="font-size: 0.875rem; color: var(--foreground); margin-top: 0.5rem;">Meta Ideal</p>
             </div>
           </div>
 
-          <div style="background: white; border-left: 6px solid #3b82f6; padding: 1.5rem; border-radius: 0.75rem; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
-            <p style="font-size: 0.875rem; font-weight: 700; color: #2563eb; text-transform: uppercase; margin-bottom: 0.75rem;">4. Taxa de Breakup Email</p>
-            <p style="margin: 0.5rem 0; color: #64748b; font-size: 0.95rem;"><strong>Como Calcular:</strong> (Respostas ao breakup ÷ Breakups enviados) × 100</p>
-            <div style="text-align: center; background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%); padding: 1.5rem; border-radius: 0.5rem; margin-top: 1rem;">
-              <p style="font-size: 2.5rem; font-weight: 800; color: #2563eb; margin: 0;">40-50%</p>
-              <p style="font-size: 0.875rem; color: #1e40af; margin-top: 0.5rem;">Meta Ideal</p>
+          <div style="background: white; border-left: 6px solid var(--fio-forte); padding: 1.5rem; border-radius: 0.75rem; box-shadow: none;">
+            <p style="font-size: 0.875rem; font-weight: 700; color: var(--foreground); text-transform: uppercase; margin-bottom: 0.75rem;">4. Taxa de Breakup Email</p>
+            <p style="margin: 0.5rem 0; color: var(--foreground); font-size: 0.95rem;"><strong>Como Calcular:</strong> (Respostas ao breakup ÷ Breakups enviados) × 100</p>
+            <div style="text-align: center; background: var(--muted); padding: 1.5rem; border-radius: 0.5rem; margin-top: 1rem;">
+              <p style="font-size: 2.5rem; font-weight: 800; color: var(--foreground); margin: 0;">40-50%</p>
+              <p style="font-size: 0.875rem; color: var(--foreground); margin-top: 0.5rem;">Meta Ideal</p>
             </div>
           </div>
 
-          <div style="background: white; border-left: 6px solid #2563eb; padding: 1.5rem; border-radius: 0.75rem; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
-            <p style="font-size: 0.875rem; font-weight: 700; color: #2563eb; text-transform: uppercase; margin-bottom: 0.75rem;">5. Deals Perdidos por Falta de Follow-up</p>
-            <p style="margin: 0.5rem 0; color: #64748b; font-size: 0.95rem;"><strong>Como Calcular:</strong> Deals que esfriaram sem nenhum toque por 30+ dias</p>
-            <div style="text-align: center; background: linear-gradient(135deg, #bfdbfe 0%, #93c5fd 100%); padding: 1.5rem; border-radius: 0.5rem; margin-top: 1rem;">
-              <p style="font-size: 2.5rem; font-weight: 800; color: #2563eb; margin: 0;">0%</p>
-              <p style="font-size: 0.875rem; color: #1e40af; margin-top: 0.5rem; font-weight: 700;">INEXCUSÁVEL</p>
+          <div style="background: white; border-left: 6px solid var(--fio-forte); padding: 1.5rem; border-radius: 0.75rem; box-shadow: none;">
+            <p style="font-size: 0.875rem; font-weight: 700; color: var(--foreground); text-transform: uppercase; margin-bottom: 0.75rem;">5. Deals Perdidos por Falta de Follow-up</p>
+            <p style="margin: 0.5rem 0; color: var(--foreground); font-size: 0.95rem;"><strong>Como Calcular:</strong> Deals que esfriaram sem nenhum toque por 30+ dias</p>
+            <div style="text-align: center; background: var(--muted); padding: 1.5rem; border-radius: 0.5rem; margin-top: 1rem;">
+              <p style="font-size: 2.5rem; font-weight: 800; color: var(--foreground); margin: 0;">0%</p>
+              <p style="font-size: 0.875rem; color: var(--foreground); margin-top: 0.5rem; font-weight: 700;">INEXCUSÁVEL</p>
             </div>
           </div>
 
@@ -482,7 +482,7 @@ export const post: BlogPost = {
   contentEn: `
       <div class="callout-stat">
         <p><strong>📊 The Statistic That Changes Everything</strong></p>
-        <p style="font-size: 2.5rem; font-weight: 800; color: #2563eb; margin: 1rem 0; line-height: 1;">80%</p>
+        <p style="font-size: 2.5rem; font-weight: 800; color: var(--foreground); margin: 1rem 0; line-height: 1;">80%</p>
         <p>of sales happen between the <strong>5th and 12th contact</strong> — yet 44% of sales reps give up after the first follow-up (National Sales Executive Association).</p>
       </div>
 
@@ -543,32 +543,32 @@ export const post: BlogPost = {
 
       <table style="width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: 0.9rem;">
         <thead>
-          <tr style="background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%); color: white;">
+          <tr style="background: var(--primary); color: white;">
             <th style="padding: 0.875rem; text-align: left;">Channel</th>
             <th style="padding: 0.875rem; text-align: left;">Best For</th>
             <th style="padding: 0.875rem; text-align: left;">Response Rate</th>
           </tr>
         </thead>
         <tbody>
-          <tr style="background: #f8fafc;">
-            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;"><strong>WhatsApp</strong></td>
-            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">Quick check-ins, time-sensitive nudges</td>
-            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">30-60% open rate in 1h</td>
+          <tr style="background: var(--muted);">
+            <td style="padding: 0.875rem; border: 1px solid var(--border);"><strong>WhatsApp</strong></td>
+            <td style="padding: 0.875rem; border: 1px solid var(--border);">Quick check-ins, time-sensitive nudges</td>
+            <td style="padding: 0.875rem; border: 1px solid var(--border);">30-60% open rate in 1h</td>
           </tr>
           <tr>
-            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;"><strong>Email</strong></td>
-            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">Proposals, documents, detailed follow-ups</td>
-            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">20-35% open rate</td>
+            <td style="padding: 0.875rem; border: 1px solid var(--border);"><strong>Email</strong></td>
+            <td style="padding: 0.875rem; border: 1px solid var(--border);">Proposals, documents, detailed follow-ups</td>
+            <td style="padding: 0.875rem; border: 1px solid var(--border);">20-35% open rate</td>
           </tr>
-          <tr style="background: #f8fafc;">
-            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;"><strong>LinkedIn</strong></td>
-            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">Thought leadership sharing, warm connections</td>
-            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">15-25% InMail response</td>
+          <tr style="background: var(--muted);">
+            <td style="padding: 0.875rem; border: 1px solid var(--border);"><strong>LinkedIn</strong></td>
+            <td style="padding: 0.875rem; border: 1px solid var(--border);">Thought leadership sharing, warm connections</td>
+            <td style="padding: 0.875rem; border: 1px solid var(--border);">15-25% InMail response</td>
           </tr>
           <tr>
-            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;"><strong>Phone</strong></td>
-            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">Breaking long silences, complex objections</td>
-            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">Depends heavily on timing</td>
+            <td style="padding: 0.875rem; border: 1px solid var(--border);"><strong>Phone</strong></td>
+            <td style="padding: 0.875rem; border: 1px solid var(--border);">Breaking long silences, complex objections</td>
+            <td style="padding: 0.875rem; border: 1px solid var(--border);">Depends heavily on timing</td>
           </tr>
         </tbody>
       </table>
@@ -588,10 +588,10 @@ export const post: BlogPost = {
         Sirius CRM allows you to create follow-up sequences per deal stage, set automatic reminders, and even send WhatsApp templates directly from the deal card — while keeping the message personal and logged in the contact history.
       </p>
 
-      <div style="background: linear-gradient(135deg, #1e3a5f 0%, #1e293b 100%); padding: 2rem; border-radius: 1rem; margin: 2rem 0; text-align: center;">
+      <div style="background: var(--primary); padding: 2rem; border-radius: 1rem; margin: 2rem 0; text-align: center;">
         <h3 style="color: #ffffff; margin: 0 0 1rem;">Never Miss a Follow-Up Again</h3>
-        <p style="color: #94a3b8; margin: 0 0 1.5rem;">Sirius CRM with integrated WhatsApp, automatic tasks, smart alerts, and saved templates. Everything you need to follow up consistently.</p>
-        <a href="/en/register" style="background: #2563eb; color: white; padding: 0.875rem 2rem; border-radius: 0.5rem; font-weight: 700; text-decoration: none; display: inline-block;">Try Free for 14 Days →</a>
+        <p style="color: var(--primary-foreground); margin: 0 0 1.5rem;">Sirius CRM with integrated WhatsApp, automatic tasks, smart alerts, and saved templates. Everything you need to follow up consistently.</p>
+        <a href="/en/register" style="background: var(--primary); color: white; padding: 0.875rem 2rem; border-radius: 0.5rem; font-weight: 700; text-decoration: none; display: inline-block;">Try Free for 14 Days →</a>
       </div>
 
       <p>

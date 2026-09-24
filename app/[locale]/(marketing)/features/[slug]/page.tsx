@@ -75,15 +75,15 @@ function tryT(t: any, key: string): string | null {
 
 // Color themes per section
 const SECTION_THEMES: Record<string, { accent: string; accentBg: string; accentBorder: string; gradient: string }> = {
-  crm: { accent: 'text-indigo-600', accentBg: 'bg-indigo-500/10', accentBorder: 'border-indigo-500/20', gradient: 'from-indigo-500/5 via-purple-500/5 to-transparent' },
-  comunicacao: { accent: 'text-green-600', accentBg: 'bg-green-500/10', accentBorder: 'border-green-500/20', gradient: 'from-green-500/5 via-emerald-500/5 to-transparent' },
-  ia: { accent: 'text-purple-600', accentBg: 'bg-purple-500/10', accentBorder: 'border-purple-500/20', gradient: 'from-purple-500/5 via-pink-500/5 to-transparent' },
-  prospeccao: { accent: 'text-blue-600', accentBg: 'bg-blue-500/10', accentBorder: 'border-blue-500/20', gradient: 'from-blue-500/5 via-cyan-500/5 to-transparent' },
-  analytics: { accent: 'text-amber-600', accentBg: 'bg-amber-500/10', accentBorder: 'border-amber-500/20', gradient: 'from-amber-500/5 via-orange-500/5 to-transparent' },
-  integracoes: { accent: 'text-cyan-600', accentBg: 'bg-cyan-500/10', accentBorder: 'border-cyan-500/20', gradient: 'from-cyan-500/5 via-blue-500/5 to-transparent' },
-  equipe: { accent: 'text-rose-600', accentBg: 'bg-rose-500/10', accentBorder: 'border-rose-500/20', gradient: 'from-rose-500/5 via-pink-500/5 to-transparent' },
-  mobile: { accent: 'text-teal-600', accentBg: 'bg-teal-500/10', accentBorder: 'border-teal-500/20', gradient: 'from-teal-500/5 via-emerald-500/5 to-transparent' },
-  seguranca: { accent: 'text-slate-600', accentBg: 'bg-slate-500/10', accentBorder: 'border-slate-500/20', gradient: 'from-slate-500/5 via-zinc-500/5 to-transparent' },
+  crm: { accent: 'text-foreground', accentBg: 'bg-muted', accentBorder: 'border-border', gradient: 'to-transparent' },
+  comunicacao: { accent: 'text-foreground', accentBg: 'bg-muted', accentBorder: 'border-border', gradient: 'to-transparent' },
+  ia: { accent: 'text-foreground', accentBg: 'bg-muted', accentBorder: 'border-border', gradient: 'to-transparent' },
+  prospeccao: { accent: 'text-foreground', accentBg: 'bg-muted', accentBorder: 'border-border', gradient: 'to-transparent' },
+  analytics: { accent: 'text-foreground', accentBg: 'bg-muted', accentBorder: 'border-border', gradient: 'to-transparent' },
+  integracoes: { accent: 'text-foreground', accentBg: 'bg-muted', accentBorder: 'border-border', gradient: 'to-transparent' },
+  equipe: { accent: 'text-destaque', accentBg: 'bg-muted', accentBorder: 'border-border', gradient: 'to-transparent' },
+  mobile: { accent: 'text-foreground', accentBg: 'bg-muted', accentBorder: 'border-border', gradient: 'to-transparent' },
+  seguranca: { accent: 'text-muted-foreground', accentBg: 'bg-muted', accentBorder: 'border-border', gradient: ' via-zinc-500/5 to-transparent' },
 }
 
 const PERSONA_ICONS = [User, Briefcase, Building2]
@@ -192,7 +192,7 @@ export default async function FeatureDetailPage({
             HERO — gradient background, large icon, headline
            ════════════════════════════════════════════════════════════ */}
         <div className="relative overflow-hidden">
-          <div className={`absolute inset-0 bg-gradient-to-br ${theme.gradient} pointer-events-none`} />
+          <div className={`absolute inset-0  ${theme.gradient} pointer-events-none`} />
           <div className="absolute top-0 right-0 w-[600px] h-[600px] rounded-full blur-[120px] opacity-30 pointer-events-none bg-primary/10" />
 
           <div className="relative py-24 sm:py-32">
@@ -202,11 +202,11 @@ export default async function FeatureDetailPage({
                 <Link href="/features" className="hover:text-foreground transition-colors">
                   Funcionalidades
                 </Link>
-                <span className="text-muted-foreground/50">/</span>
+                <span className="text-muted-foreground">/</span>
                 <Link href={`/features#${feature.sectionKey}`} className="hover:text-foreground transition-colors">
                   {sectionTitle}
                 </Link>
-                <span className="text-muted-foreground/50">/</span>
+                <span className="text-muted-foreground">/</span>
                 <span className="text-foreground font-medium">{name}</span>
               </nav>
 
@@ -366,7 +366,7 @@ export default async function FeatureDetailPage({
           <div className="py-12 border-t">
             <div className="mx-auto max-w-5xl px-6 lg:px-8">
               <div className={`relative overflow-hidden rounded-2xl border ${theme.accentBorder} p-6 sm:p-8`}>
-                <div className={`absolute inset-0 bg-gradient-to-r ${theme.gradient} opacity-50`} />
+                <div className={`absolute inset-0  ${theme.gradient} opacity-50`} />
                 <div className="relative flex flex-col sm:flex-row items-start sm:items-center gap-4">
                   <div className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-xl ${theme.accentBg}`}>
                     <Info className={`h-6 w-6 ${theme.accent}`} />
@@ -473,7 +473,7 @@ export default async function FeatureDetailPage({
               >
                 <ArrowLeft className="h-4 w-4 group-hover:-translate-x-1 transition-transform" />
                 <div className="text-left">
-                  <span className="text-xs text-muted-foreground/60 block">Anterior</span>
+                  <span className="text-xs text-muted-foreground block">Anterior</span>
                   <span className="font-medium">{tS(`${prev.sectionKey}.${prev.featureKey}.name` as any)}</span>
                 </div>
               </Link>
@@ -486,7 +486,7 @@ export default async function FeatureDetailPage({
                 className="group flex items-center gap-3 text-sm text-muted-foreground hover:text-foreground transition-colors"
               >
                 <div className="text-right">
-                  <span className="text-xs text-muted-foreground/60 block">Proxima</span>
+                  <span className="text-xs text-muted-foreground block">Proxima</span>
                   <span className="font-medium">{tS(`${next.sectionKey}.${next.featureKey}.name` as any)}</span>
                 </div>
                 <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
@@ -507,8 +507,8 @@ export default async function FeatureDetailPage({
               <div className="absolute bottom-0 left-0 w-60 h-60 rounded-full blur-[80px] opacity-10 pointer-events-none bg-primary" />
 
               <div className="relative z-10">
-                <div className="inline-flex items-center gap-2 rounded-full border border-green-500/30 bg-green-500/10 px-3 py-1 text-sm text-green-600 dark:text-green-400 mb-6">
-                  <div className="h-2 w-2 rounded-full bg-green-500 animate-pulse" />
+                <div className="inline-flex items-center gap-2 rounded border border-border bg-muted px-3 py-1 text-sm text-foreground mb-6">
+                  <div className="h-2 w-2 rounded-full bg-primary animate-pulse" />
                   <span className="font-medium">Gratuito para sempre</span>
                 </div>
 
@@ -531,11 +531,11 @@ export default async function FeatureDetailPage({
 
                 <div className="mt-6 flex items-center justify-center gap-6 text-sm text-muted-foreground">
                   <span className="flex items-center gap-1.5">
-                    <Check className="h-4 w-4 text-green-500" />
+                    <Check className="h-4 w-4 text-foreground" />
                     Sem cartao de credito
                   </span>
                   <span className="flex items-center gap-1.5">
-                    <Check className="h-4 w-4 text-green-500" />
+                    <Check className="h-4 w-4 text-foreground" />
                     5 min para configurar
                   </span>
                 </div>

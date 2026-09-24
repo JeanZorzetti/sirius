@@ -8,6 +8,7 @@ import { useTranslations } from 'next-intl'
 import { Link } from '@/i18n/routing'
 import { NICHES } from '@/config/niche-data'
 import { FEATURE_CATEGORIES } from '@/config/features-data'
+import { texto, mono } from '@/components/fluxo/fontes'
 
 const NICHE_ICONS: Record<string, typeof Building2> = {
     'corretores-de-imoveis': Building2,
@@ -82,7 +83,8 @@ export function MobileNav() {
                 </Button>
             </SheetTrigger>
             <SheetContent side="left">
-                <nav className="flex flex-col gap-4 mt-8">
+                {/* The Sheet portals into <body>, outside the layout's data-art: the type comes in here (spec 008) */}
+                <nav data-art="fluxo" className={`${texto.variable} ${mono.variable} flex flex-col gap-4 mt-8`}>
                     <CollapsibleSection title={tNav('features')}>
                         {FEATURE_CATEGORIES.map((cat) => (
                             <div key={cat.menuKey} className="mb-2">

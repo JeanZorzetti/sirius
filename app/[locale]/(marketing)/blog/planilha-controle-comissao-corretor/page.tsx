@@ -135,7 +135,7 @@ export default function PlanilhaControleComissaoPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(softwareSchema) }}
       />
 
-      <article className="min-h-screen bg-gradient-to-b from-slate-50 to-white dark:from-slate-950 dark:to-slate-900">
+      <article className="min-h-screen">
         <div className="container mx-auto max-w-4xl px-6 py-12">
           {/* Header */}
           <header className="mb-12">
@@ -160,11 +160,11 @@ export default function PlanilhaControleComissaoPage() {
             {/* Seção 1: O Problema (Answer-First) */}
             <section className="mb-16">
               <h2 className="text-3xl font-bold mb-6 flex items-center gap-3">
-                <AlertTriangle className="h-8 w-8 text-orange-500" />
+                <AlertTriangle className="h-8 w-8 text-foreground" />
                 Por que usar planilha manual atrapalha o Corretor?
               </h2>
 
-              <div className="bg-red-50 dark:bg-red-950/30 border-l-4 border-red-500 p-6 rounded-lg mb-6">
+              <div className="bg-muted border-l-4 border-border p-6 rounded-lg mb-6">
                 <p className="text-lg font-semibold mb-2">Resposta direta:</p>
                 <p className="text-base">
                   <strong>Planilhas manuais causam perda de dinheiro porque dependem da memória humana para follow-ups.</strong> Você anota "ligar para o João na próxima semana", esquece, o João compra com outro corretor, e você perde R$ 15 mil de comissão.
@@ -218,7 +218,7 @@ export default function PlanilhaControleComissaoPage() {
             {/* Seção 2: Download da Planilha */}
             <section className="mb-16">
               <h2 className="text-3xl font-bold mb-6 flex items-center gap-3">
-                <Download className="h-8 w-8 text-blue-500" />
+                <Download className="h-8 w-8 text-foreground" />
                 O que deve ter na sua planilha ideal?
               </h2>
 
@@ -226,37 +226,37 @@ export default function PlanilhaControleComissaoPage() {
                 Se você ainda prefere planilha (não recomendamos, mas respeitamos), ela DEVE ter estas colunas obrigatórias:
               </p>
 
-              <div className="bg-slate-100 dark:bg-slate-800 rounded-lg p-6 mb-6">
+              <div className="bg-muted rounded-lg p-6 mb-6">
                 <h3 className="text-xl font-semibold mb-4">Colunas Essenciais</h3>
                 <ul className="space-y-2">
                   <li className="flex items-start gap-2">
-                    <CheckCircle2 className="h-5 w-5 text-green-500 mt-0.5" />
+                    <CheckCircle2 className="h-5 w-5 text-foreground mt-0.5" />
                     <span><strong>Nome do Cliente</strong> + Telefone + Email</span>
                   </li>
                   <li className="flex items-start gap-2">
-                    <CheckCircle2 className="h-5 w-5 text-green-500 mt-0.5" />
+                    <CheckCircle2 className="h-5 w-5 text-foreground mt-0.5" />
                     <span><strong>Origem do Lead</strong> (Portal, Indicação, Instagram)</span>
                   </li>
                   <li className="flex items-start gap-2">
-                    <CheckCircle2 className="h-5 w-5 text-green-500 mt-0.5" />
+                    <CheckCircle2 className="h-5 w-5 text-foreground mt-0.5" />
                     <span><strong>Status da Negociação</strong> (Primeiro Contato, Visita Agendada, Proposta Enviada, Fechado)</span>
                   </li>
                   <li className="flex items-start gap-2">
-                    <CheckCircle2 className="h-5 w-5 text-green-500 mt-0.5" />
+                    <CheckCircle2 className="h-5 w-5 text-foreground mt-0.5" />
                     <span><strong>Data de Próximo Follow-up</strong> (CRÍTICO!)</span>
                   </li>
                   <li className="flex items-start gap-2">
-                    <CheckCircle2 className="h-5 w-5 text-green-500 mt-0.5" />
+                    <CheckCircle2 className="h-5 w-5 text-foreground mt-0.5" />
                     <span><strong>Valor do Imóvel</strong> + % de Comissão Estimada</span>
                   </li>
                   <li className="flex items-start gap-2">
-                    <CheckCircle2 className="h-5 w-5 text-green-500 mt-0.5" />
+                    <CheckCircle2 className="h-5 w-5 text-foreground mt-0.5" />
                     <span><strong>Observações</strong> (Preferências do cliente, objeções)</span>
                   </li>
                 </ul>
               </div>
 
-              <Card className="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-950/30 dark:to-indigo-950/30 border-blue-200 dark:border-blue-800 shadow-xl">
+              <Card className="border-border shadow-xl">
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2 text-2xl">
                     <Download className="h-6 w-6" />
@@ -267,9 +267,9 @@ export default function PlanilhaControleComissaoPage() {
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                  <div className="bg-white dark:bg-slate-900 rounded-lg p-4 border border-blue-200 dark:border-blue-800">
+                  <div className="bg-white rounded-lg p-4 border border-border">
                     <h4 className="font-semibold mb-2 flex items-center gap-2">
-                      <CheckCircle2 className="h-4 w-4 text-green-500" />
+                      <CheckCircle2 className="h-4 w-4 text-foreground" />
                       O que você vai receber:
                     </h4>
                     <ul className="text-sm space-y-1.5 text-muted-foreground">
@@ -293,7 +293,7 @@ export default function PlanilhaControleComissaoPage() {
                   </Button>
 
                   <div className="flex items-center gap-2 text-xs text-muted-foreground justify-center">
-                    <CheckCircle2 className="h-3 w-3 text-green-500" />
+                    <CheckCircle2 className="h-3 w-3 text-foreground" />
                     <span>Arquivo .xlsx pronto para usar | Sem cadastro necessário</span>
                   </div>
                 </CardContent>
@@ -303,11 +303,11 @@ export default function PlanilhaControleComissaoPage() {
             {/* Seção 3: Calculadora (O Pulo do Gato) */}
             <section className="mb-16">
               <h2 className="text-3xl font-bold mb-6 flex items-center gap-3">
-                <Calculator className="h-8 w-8 text-green-500" />
+                <Calculator className="h-8 w-8 text-foreground" />
                 Calculadora Automática de Comissões Perdidas
               </h2>
 
-              <div className="bg-amber-50 dark:bg-amber-950/30 border-l-4 border-amber-500 p-6 rounded-lg mb-8">
+              <div className="bg-muted border-l-4 border-border p-6 rounded-lg mb-8">
                 <p className="text-lg font-semibold mb-2">💡 Melhor que baixar planilha:</p>
                 <p className="text-base">
                   Em vez de preencher manualmente, <strong>simule agora quanto dinheiro você está perdendo</strong> por não ter um sistema que avisa sobre follow-ups:
@@ -315,10 +315,10 @@ export default function PlanilhaControleComissaoPage() {
               </div>
 
               {/* Calculadora ROI Integrada */}
-              <div className="my-8 bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-800 overflow-hidden">
-                <div className="bg-gradient-to-r from-blue-600 to-indigo-600 p-6 text-white">
+              <div className="my-8 bg-white rounded-2xl shadow-2xl border border-border overflow-hidden">
+                <div className="p-6 bg-primary text-primary-foreground">
                   <h3 className="text-2xl font-bold mb-2">Calcule suas Comissões Perdidas</h3>
-                  <p className="text-blue-100">
+                  <p className="text-primary-foreground">
                     Veja quanto você deixa na mesa por mês sem controle adequado
                   </p>
                 </div>
@@ -327,7 +327,7 @@ export default function PlanilhaControleComissaoPage() {
                 </div>
               </div>
 
-              <div className="bg-green-50 dark:bg-green-950/30 border border-green-200 dark:border-green-800 rounded-lg p-6 mt-8">
+              <div className="bg-muted border border-border rounded-lg p-6 mt-8">
                 <p className="font-semibold mb-2">🎯 Por que essa calculadora funciona:</p>
                 <p className="text-sm">
                   Ela usa dados de <strong>+2.500 corretores</strong> que migraram de planilhas para CRM. A taxa média de recuperação é de <strong>34% das comissões perdidas</strong> quando você passa a ter lembretes automáticos de follow-up.
@@ -338,7 +338,7 @@ export default function PlanilhaControleComissaoPage() {
             {/* Seção 4: Planilha vs CRM */}
             <section className="mb-16">
               <h2 className="text-3xl font-bold mb-6 flex items-center gap-3">
-                <TrendingUp className="h-8 w-8 text-purple-500" />
+                <TrendingUp className="h-8 w-8 text-foreground" />
                 Excel vs CRM: Comparação Real
               </h2>
 
@@ -348,7 +348,7 @@ export default function PlanilhaControleComissaoPage() {
                     <tr className="border-b-2">
                       <th className="text-left p-4 font-semibold">Funcionalidade</th>
                       <th className="text-center p-4 font-semibold">Excel / Planilha</th>
-                      <th className="text-center p-4 font-semibold bg-blue-50 dark:bg-blue-950/30">
+                      <th className="text-center p-4 font-semibold bg-muted">
                         CRM (Sirius)
                       </th>
                     </tr>
@@ -357,33 +357,33 @@ export default function PlanilhaControleComissaoPage() {
                     <tr className="border-b">
                       <td className="p-4">Lembretes de Follow-up</td>
                       <td className="text-center p-4">❌ Manual</td>
-                      <td className="text-center p-4 bg-blue-50 dark:bg-blue-950/30">✅ Automático</td>
+                      <td className="text-center p-4 bg-muted">✅ Automático</td>
                     </tr>
                     <tr className="border-b">
                       <td className="p-4">Integração WhatsApp</td>
                       <td className="text-center p-4">❌ Não</td>
-                      <td className="text-center p-4 bg-blue-50 dark:bg-blue-950/30">✅ Sim</td>
+                      <td className="text-center p-4 bg-muted">✅ Sim</td>
                     </tr>
                     <tr className="border-b">
                       <td className="p-4">Visão de Funil Visual</td>
                       <td className="text-center p-4">❌ Não</td>
-                      <td className="text-center p-4 bg-blue-50 dark:bg-blue-950/30">✅ Kanban</td>
+                      <td className="text-center p-4 bg-muted">✅ Kanban</td>
                     </tr>
                     <tr className="border-b">
                       <td className="p-4">Projeção de Comissões</td>
                       <td className="text-center p-4">❌ Manual</td>
-                      <td className="text-center p-4 bg-blue-50 dark:bg-blue-950/30">✅ Automático</td>
+                      <td className="text-center p-4 bg-muted">✅ Automático</td>
                     </tr>
                     <tr className="border-b">
                       <td className="p-4">Acesso Mobile</td>
                       <td className="text-center p-4">⚠️ Limitado</td>
-                      <td className="text-center p-4 bg-blue-50 dark:bg-blue-950/30">✅ App PWA</td>
+                      <td className="text-center p-4 bg-muted">✅ App PWA</td>
                     </tr>
                     <tr>
                       <td className="p-4 font-semibold">Preço</td>
                       <td className="text-center p-4">Grátis</td>
-                      <td className="text-center p-4 bg-blue-50 dark:bg-blue-950/30">
-                        <Link href="/pricing" className="text-blue-600 hover:underline">
+                      <td className="text-center p-4 bg-muted">
+                        <Link href="/pricing" className="text-foreground hover:underline">
                           A partir de R$ 67/mês
                         </Link>
                       </td>
@@ -393,7 +393,7 @@ export default function PlanilhaControleComissaoPage() {
               </div>
 
               <div className="mt-8">
-                <Card className="bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-950/30 dark:to-pink-950/30 border-purple-200 dark:border-purple-800">
+                <Card className="border-border">
                   <CardHeader>
                     <CardTitle>💡 ROI Comprovado</CardTitle>
                     <CardDescription>
@@ -403,15 +403,15 @@ export default function PlanilhaControleComissaoPage() {
                   <CardContent>
                     <div className="grid md:grid-cols-3 gap-4">
                       <div className="text-center">
-                        <p className="text-4xl font-bold text-purple-600">+34%</p>
+                        <p className="text-4xl font-bold text-foreground">+34%</p>
                         <p className="text-sm text-muted-foreground">Mais vendas fechadas</p>
                       </div>
                       <div className="text-center">
-                        <p className="text-4xl font-bold text-purple-600">-60%</p>
+                        <p className="text-4xl font-bold text-foreground">-60%</p>
                         <p className="text-sm text-muted-foreground">Tempo em planilhas</p>
                       </div>
                       <div className="text-center">
-                        <p className="text-4xl font-bold text-purple-600">R$ 2,8k</p>
+                        <p className="text-4xl font-bold text-foreground">R$ 2,8k</p>
                         <p className="text-sm text-muted-foreground">Comissão extra/mês</p>
                       </div>
                     </div>
@@ -437,7 +437,7 @@ export default function PlanilhaControleComissaoPage() {
                       <li><strong>Corretor captador</strong> (trouxe o lead): 50-70%</li>
                       <li><strong>Corretor vendedor</strong> (fechou a venda): 30-50%</li>
                     </ul>
-                    <div className="bg-slate-100 dark:bg-slate-800 p-4 rounded-lg">
+                    <div className="bg-muted p-4 rounded-lg">
                       <p className="font-semibold mb-2">Exemplo prático:</p>
                       <p className="text-sm">
                         Venda de R$ 500 mil com comissão de 6% = R$ 30 mil total<br />
@@ -454,7 +454,7 @@ export default function PlanilhaControleComissaoPage() {
                   </CardHeader>
                   <CardContent>
                     <p className="mb-4">
-                      <strong>Resposta direta:</strong> O <Link href="/" className="text-blue-600 hover:underline font-semibold">Sirius CRM</Link> é considerado o melhor para corretores autônomos em 2026 por 3 motivos:
+                      <strong>Resposta direta:</strong> O <Link href="/" className="text-foreground hover:underline font-semibold">Sirius CRM</Link> é considerado o melhor para corretores autônomos em 2026 por 3 motivos:
                     </p>
                     <ol className="list-decimal list-inside space-y-2">
                       <li><strong>Integração WhatsApp</strong> (90% dos clientes estão lá)</li>
@@ -478,8 +478,8 @@ export default function PlanilhaControleComissaoPage() {
                       <strong>Resposta direta:</strong> <strong>CRM é superior para gestão ativa</strong>, mas Excel serve para anotações simples.
                     </p>
                     <div className="grid md:grid-cols-2 gap-4 mb-4">
-                      <div className="bg-red-50 dark:bg-red-950/30 p-4 rounded-lg">
-                        <p className="font-semibold mb-2 text-red-700 dark:text-red-400">❌ Excel NÃO faz:</p>
+                      <div className="bg-muted p-4 rounded-lg">
+                        <p className="font-semibold mb-2 text-destaque">❌ Excel NÃO faz:</p>
                         <ul className="text-sm space-y-1">
                           <li>• Avisar sobre follow-ups</li>
                           <li>• Integrar com WhatsApp</li>
@@ -487,8 +487,8 @@ export default function PlanilhaControleComissaoPage() {
                           <li>• Projetar comissões futuras</li>
                         </ul>
                       </div>
-                      <div className="bg-green-50 dark:bg-green-950/30 p-4 rounded-lg">
-                        <p className="font-semibold mb-2 text-green-700 dark:text-green-400">✅ CRM faz:</p>
+                      <div className="bg-muted p-4 rounded-lg">
+                        <p className="font-semibold mb-2 text-foreground">✅ CRM faz:</p>
                         <ul className="text-sm space-y-1">
                           <li>• Lembretes automáticos</li>
                           <li>• WhatsApp integrado</li>
@@ -507,12 +507,12 @@ export default function PlanilhaControleComissaoPage() {
 
             {/* CTA Final */}
             <section className="mb-16">
-              <Card className="bg-gradient-to-br from-blue-600 to-indigo-600 text-white border-0">
+              <Card className="bg-primary text-primary-foreground border-0">
                 <CardHeader>
                   <CardTitle className="text-2xl md:text-3xl">
                     Pronto para parar de perder comissões?
                   </CardTitle>
-                  <CardDescription className="text-blue-100 text-lg">
+                  <CardDescription className="text-primary-foreground text-lg">
                     Teste o Sirius CRM grátis por 14 dias. Sem cartão de crédito.
                   </CardDescription>
                 </CardHeader>

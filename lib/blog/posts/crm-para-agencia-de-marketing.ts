@@ -23,8 +23,8 @@ export const post: BlogPost = {
         A solução está em adotar um CRM com suporte a <strong>múltiplos pipelines</strong>, configurado para separar claramente prospecção de novos clientes, onboarding de contratos fechados e ciclo de renovação de clientes ativos. Neste artigo, você vai entender exatamente como montar essa estrutura e quais funcionalidades do CRM fazem diferença real para agências.
       </p>
 
-      <div class="not-prose" style="background: #1e293b; padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
-        <p style="margin: 0 0 0.75rem; font-weight: 700; font-size: 1.05rem; color: #38bdf8;">TL;DR — Resposta Rápida</p>
+      <div class="not-prose" style="background: var(--primary); padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
+        <p style="margin: 0 0 0.75rem; font-weight: 700; font-size: 1.05rem; color: var(--primary-foreground);">TL;DR — Resposta Rápida</p>
         <ul style="margin: 0; padding-left: 1.25rem; line-height: 2; color: #ffffff;">
           <li><strong>Agências precisam de 3 pipelines</strong>: Prospecção, Onboarding e Renovação — não apenas um funil genérico</li>
           <li>Trello e Asana gerenciam <strong>tarefas</strong>; CRM gerencia <strong>receita</strong> — são ferramentas diferentes para fins diferentes</li>
@@ -47,7 +47,7 @@ export const post: BlogPost = {
 
       <div class="callout-stat">
         <p><strong>Impacto da gestão comercial em agências</strong></p>
-        <p style="font-size: 3rem; font-weight: 800; color: #2563eb; margin: 1rem 0; line-height: 1;">40%</p>
+        <p style="font-size: 3rem; font-weight: 800; color: var(--foreground); margin: 1rem 0; line-height: 1;">40%</p>
         <p>de aumento na taxa de renovação de contratos em agências que implementam CRM com pipeline de renovação dedicado, comparado a agências que gerenciam renovações por planilha ou memória. Fonte: Forrester Research, The State of CRM Adoption in SMBs, 2025.</p>
       </div>
 
@@ -56,7 +56,7 @@ export const post: BlogPost = {
       </p>
 
       <p>
-        Outro ponto: a prospecção de novos clientes. Quantas propostas sua agência tem abertas neste momento? Qual foi a última interação com cada prospect? Quantos dias se passaram desde o envio da proposta sem resposta? Se você precisou pensar por mais de 10 segundos, o CRM é exatamente o que está faltando. Para aprofundar como estruturar esse funil de vendas, veja nosso guia sobre <a href="/blog/como-organizar-pipeline-vendas" style="color: #2563eb;">como organizar pipeline de vendas</a>.
+        Outro ponto: a prospecção de novos clientes. Quantas propostas sua agência tem abertas neste momento? Qual foi a última interação com cada prospect? Quantos dias se passaram desde o envio da proposta sem resposta? Se você precisou pensar por mais de 10 segundos, o CRM é exatamente o que está faltando. Para aprofundar como estruturar esse funil de vendas, veja nosso guia sobre <a href="/blog/como-organizar-pipeline-vendas" style="color: var(--foreground);">como organizar pipeline de vendas</a>.
       </p>
 
       <h2>Multi-Pipeline: O Recurso que Agências Mais Precisam</h2>
@@ -71,31 +71,31 @@ export const post: BlogPost = {
 
       <table style="width: 100%; border-collapse: collapse; margin: 2rem 0;">
         <thead>
-          <tr style="background: #f8fafc;">
-            <th style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: left; font-weight: 700;">Pipeline</th>
-            <th style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: left; font-weight: 700;">Etapas</th>
-            <th style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: left; font-weight: 700;">Responsável típico</th>
-            <th style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: left; font-weight: 700;">Métrica-chave</th>
+          <tr style="background: var(--muted);">
+            <th style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: left; font-weight: 700;">Pipeline</th>
+            <th style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: left; font-weight: 700;">Etapas</th>
+            <th style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: left; font-weight: 700;">Responsável típico</th>
+            <th style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: left; font-weight: 700;">Métrica-chave</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0;"><strong>1. Prospecção</strong></td>
-            <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0;">Lead → Briefing → Proposta → Negociação → Fechamento</td>
-            <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0;">Sócio / Comercial</td>
-            <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0;">Ciclo médio de venda</td>
+            <td style="padding: 0.75rem 1rem; border: 1px solid var(--border);"><strong>1. Prospecção</strong></td>
+            <td style="padding: 0.75rem 1rem; border: 1px solid var(--border);">Lead → Briefing → Proposta → Negociação → Fechamento</td>
+            <td style="padding: 0.75rem 1rem; border: 1px solid var(--border);">Sócio / Comercial</td>
+            <td style="padding: 0.75rem 1rem; border: 1px solid var(--border);">Ciclo médio de venda</td>
           </tr>
-          <tr style="background: #f8fafc;">
-            <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0;"><strong>2. Onboarding</strong></td>
-            <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0;">Contrato → Setup → Kickoff → Execução</td>
-            <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0;">CS / Atendimento</td>
-            <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0;">Tempo até primeira entrega</td>
+          <tr style="background: var(--muted);">
+            <td style="padding: 0.75rem 1rem; border: 1px solid var(--border);"><strong>2. Onboarding</strong></td>
+            <td style="padding: 0.75rem 1rem; border: 1px solid var(--border);">Contrato → Setup → Kickoff → Execução</td>
+            <td style="padding: 0.75rem 1rem; border: 1px solid var(--border);">CS / Atendimento</td>
+            <td style="padding: 0.75rem 1rem; border: 1px solid var(--border);">Tempo até primeira entrega</td>
           </tr>
           <tr>
-            <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0;"><strong>3. Renovação</strong></td>
-            <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0;">Cliente Ativo → Review Trimestral → Proposta Renovação → Renovado</td>
-            <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0;">Gestor de Conta / Sócio</td>
-            <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0;">Taxa de renovação e upsell</td>
+            <td style="padding: 0.75rem 1rem; border: 1px solid var(--border);"><strong>3. Renovação</strong></td>
+            <td style="padding: 0.75rem 1rem; border: 1px solid var(--border);">Cliente Ativo → Review Trimestral → Proposta Renovação → Renovado</td>
+            <td style="padding: 0.75rem 1rem; border: 1px solid var(--border);">Gestor de Conta / Sócio</td>
+            <td style="padding: 0.75rem 1rem; border: 1px solid var(--border);">Taxa de renovação e upsell</td>
           </tr>
         </tbody>
       </table>
@@ -107,7 +107,7 @@ export const post: BlogPost = {
       </p>
 
       <p>
-        O que muda quando esse pipeline está no CRM: você consegue ver que tem 12 prospects em "Proposta" e nenhum se moveu em 15 dias. Isso dispara o alerta de follow-up automático. Sem CRM, esses 12 prospects simplesmente somem da memória do time. Para entender como configurar automações de follow-up que realmente funcionam, veja o guia de <a href="/blog/crm-automacao-vendas-guia-completo" style="color: #2563eb;">automação de vendas com CRM</a>.
+        O que muda quando esse pipeline está no CRM: você consegue ver que tem 12 prospects em "Proposta" e nenhum se moveu em 15 dias. Isso dispara o alerta de follow-up automático. Sem CRM, esses 12 prospects simplesmente somem da memória do time. Para entender como configurar automações de follow-up que realmente funcionam, veja o guia de <a href="/blog/crm-automacao-vendas-guia-completo" style="color: var(--foreground);">automação de vendas com CRM</a>.
       </p>
 
       <h3>Pipeline 2: Onboarding</h3>
@@ -154,7 +154,7 @@ export const post: BlogPost = {
       </p>
 
       <p>
-        A automação pode ir além: se após 7 dias o deal ainda está em "Proposta Enviada" sem nenhuma atividade registrada, o CRM envia uma notificação para o responsável e, em alguns sistemas, dispara um email de follow-up automático. Cada proposta sem follow-up é potencialmente uma venda perdida sem motivo. Para aprofundar as estratégias de automação de emails nesse contexto, veja o guia sobre <a href="/blog/crm-automacao-vendas-guia-completo" style="color: #2563eb;">automação de vendas passo a passo</a>.
+        A automação pode ir além: se após 7 dias o deal ainda está em "Proposta Enviada" sem nenhuma atividade registrada, o CRM envia uma notificação para o responsável e, em alguns sistemas, dispara um email de follow-up automático. Cada proposta sem follow-up é potencialmente uma venda perdida sem motivo. Para aprofundar as estratégias de automação de emails nesse contexto, veja o guia sobre <a href="/blog/crm-automacao-vendas-guia-completo" style="color: var(--foreground);">automação de vendas passo a passo</a>.
       </p>
 
       <h3>3. Dashboard de MRR por Cliente</h3>
@@ -174,7 +174,7 @@ export const post: BlogPost = {
       </p>
 
       <p>
-        Quando o WhatsApp está integrado ao CRM, cada conversa fica vinculada ao contato ou deal correspondente. Se o responsável comercial sai da empresa, o histórico de negociação com cada prospect permanece acessível. Se o cliente envia feedback negativo por WhatsApp, o gestor de conta pode marcar esse contato como risco de churn imediatamente. Isso é especialmente relevante no contexto brasileiro — para entender a fundo como estruturar essa integração, veja o artigo sobre <a href="/blog/crm-com-whatsapp-integrado" style="color: #2563eb;">CRM com WhatsApp integrado</a>.
+        Quando o WhatsApp está integrado ao CRM, cada conversa fica vinculada ao contato ou deal correspondente. Se o responsável comercial sai da empresa, o histórico de negociação com cada prospect permanece acessível. Se o cliente envia feedback negativo por WhatsApp, o gestor de conta pode marcar esse contato como risco de churn imediatamente. Isso é especialmente relevante no contexto brasileiro — para entender a fundo como estruturar essa integração, veja o artigo sobre <a href="/blog/crm-com-whatsapp-integrado" style="color: var(--foreground);">CRM com WhatsApp integrado</a>.
       </p>
 
       <h3>5. Alertas de Churn para Clientes sem Interação</h3>
@@ -201,7 +201,7 @@ export const post: BlogPost = {
       <h2>KPIs que Toda Agência Deve Acompanhar no CRM</h2>
 
       <p>
-        Um CRM sem métricas claras é um arquivo caro. Os indicadores abaixo são os mais relevantes para agências de marketing e os que o Sirius CRM permite acompanhar em tempo real. Para uma visão completa de métricas de vendas, veja o guia de <a href="/blog/kpis-de-vendas" style="color: #2563eb;">KPIs de vendas para times comerciais</a>.
+        Um CRM sem métricas claras é um arquivo caro. Os indicadores abaixo são os mais relevantes para agências de marketing e os que o Sirius CRM permite acompanhar em tempo real. Para uma visão completa de métricas de vendas, veja o guia de <a href="/blog/kpis-de-vendas" style="color: var(--foreground);">KPIs de vendas para times comerciais</a>.
       </p>
 
       <h3>MRR e Churn Rate</h3>
@@ -235,7 +235,7 @@ export const post: BlogPost = {
       </p>
 
       <p>
-        A boa notícia é que é possível começar com um CRM robusto sem nenhum custo. Planos gratuitos com funcionalidades suficientes para agências de até 5 pessoas existem no mercado brasileiro. O critério de escolha não deve ser apenas o preço, mas a capacidade de suportar múltiplos pipelines (imprescindível, como discutido acima) e campos customizados. Para uma comparação detalhada das opções gratuitas disponíveis no Brasil, veja o guia de <a href="/blog/crm-gratuito-brasil-2026" style="color: #2563eb;">melhores CRMs gratuitos no Brasil em 2026</a>.
+        A boa notícia é que é possível começar com um CRM robusto sem nenhum custo. Planos gratuitos com funcionalidades suficientes para agências de até 5 pessoas existem no mercado brasileiro. O critério de escolha não deve ser apenas o preço, mas a capacidade de suportar múltiplos pipelines (imprescindível, como discutido acima) e campos customizados. Para uma comparação detalhada das opções gratuitas disponíveis no Brasil, veja o guia de <a href="/blog/crm-gratuito-brasil-2026" style="color: var(--foreground);">melhores CRMs gratuitos no Brasil em 2026</a>.
       </p>
 
       <p>
@@ -246,38 +246,38 @@ export const post: BlogPost = {
         Configure o CRM em uma tarde: importe os contatos existentes, crie os deals abertos no pipeline de Prospecção com os valores e etapas corretas, e coloque todos os clientes ativos no pipeline de Renovação com suas datas de vencimento. Isso já vai revelar oportunidades e riscos que eram invisíveis antes.
       </p>
 
-      <div style="background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%); padding: 2rem; border-radius: 1rem; margin: 2.5rem 0; text-align: center;">
+      <div style="background: var(--primary); padding: 2rem; border-radius: 1rem; margin: 2.5rem 0; text-align: center;">
         <p style="color: white; font-size: 1.25rem; font-weight: 700; margin: 0 0 0.5rem;">Estruture os pipelines da sua agência no Sirius CRM</p>
-        <p style="color: #bfdbfe; margin: 0 0 1.25rem;">Multi-pipeline, campos customizados e alertas de churn. Plano gratuito disponível, sem limite de tempo.</p>
+        <p style="color: var(--foreground); margin: 0 0 1.25rem;">Multi-pipeline, campos customizados e alertas de churn. Plano gratuito disponível, sem limite de tempo.</p>
         <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
-          <a href="/register" style="display: inline-block; background: white; color: #2563eb; padding: 0.75rem 2rem; border-radius: 0.5rem; font-weight: 700; text-decoration: none;">Criar Conta Grátis</a>
+          <a href="/register" style="display: inline-block; background: white; color: var(--foreground); padding: 0.75rem 2rem; border-radius: 0.5rem; font-weight: 700; text-decoration: none;">Criar Conta Grátis</a>
           <a href="/solucoes/agencias-de-marketing" style="display: inline-block; background: transparent; color: white; border: 2px solid white; padding: 0.75rem 2rem; border-radius: 0.5rem; font-weight: 700; text-decoration: none;">Ver Solução para Agências</a>
         </div>
       </div>
 
       <h2>Perguntas Frequentes: CRM para Agências</h2>
 
-      <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
-        <summary style="font-weight: 600; cursor: pointer; color: #1e293b; list-style: revert;">Um CRM substitui o Trello ou Asana na gestão de projetos?</summary>
-        <p style="margin: 0.75rem 0 0; color: #4b5563;">Não — e não deveria. CRM e ferramentas de gestão de projetos são complementares, não substitutos. O CRM gerencia o relacionamento comercial: prospecção, propostas, contratos, renovações e métricas de receita. O Trello ou Asana gerencia a entrega: tarefas, prazos, responsáveis e progresso de projeto. A integração ideal é que, ao fechar um deal no CRM, as informações básicas do projeto sejam automaticamente criadas na ferramenta de gestão, eliminando retrabalho de cadastro. A maioria dos CRMs modernos oferece integração nativa ou via Zapier com ferramentas de projeto.</p>
+      <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
+        <summary style="font-weight: 600; cursor: pointer; color: var(--foreground); list-style: revert;">Um CRM substitui o Trello ou Asana na gestão de projetos?</summary>
+        <p style="margin: 0.75rem 0 0; color: var(--foreground);">Não — e não deveria. CRM e ferramentas de gestão de projetos são complementares, não substitutos. O CRM gerencia o relacionamento comercial: prospecção, propostas, contratos, renovações e métricas de receita. O Trello ou Asana gerencia a entrega: tarefas, prazos, responsáveis e progresso de projeto. A integração ideal é que, ao fechar um deal no CRM, as informações básicas do projeto sejam automaticamente criadas na ferramenta de gestão, eliminando retrabalho de cadastro. A maioria dos CRMs modernos oferece integração nativa ou via Zapier com ferramentas de projeto.</p>
       </details>
 
-      <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
-        <summary style="font-weight: 600; cursor: pointer; color: #1e293b; list-style: revert;">Quantos pipelines uma agência de marketing realmente precisa?</summary>
-        <p style="margin: 0.75rem 0 0; color: #4b5563;">Para a maioria das agências, três pipelines são suficientes: Prospecção (novos clientes), Onboarding (clientes recém-fechados) e Renovação (clientes ativos). Agências que oferecem projetos pontuais além de contratos recorrentes podem adicionar um quarto pipeline de Projetos. Evite criar pipelines demais no início — a complexidade dificulta a adoção pelo time. Comece com dois (Prospecção e Renovação) e adicione o de Onboarding quando a carteira passar de 10 clientes ativos.</p>
+      <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
+        <summary style="font-weight: 600; cursor: pointer; color: var(--foreground); list-style: revert;">Quantos pipelines uma agência de marketing realmente precisa?</summary>
+        <p style="margin: 0.75rem 0 0; color: var(--foreground);">Para a maioria das agências, três pipelines são suficientes: Prospecção (novos clientes), Onboarding (clientes recém-fechados) e Renovação (clientes ativos). Agências que oferecem projetos pontuais além de contratos recorrentes podem adicionar um quarto pipeline de Projetos. Evite criar pipelines demais no início — a complexidade dificulta a adoção pelo time. Comece com dois (Prospecção e Renovação) e adicione o de Onboarding quando a carteira passar de 10 clientes ativos.</p>
       </details>
 
-      <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
-        <summary style="font-weight: 600; cursor: pointer; color: #1e293b; list-style: revert;">Como convencer o time a registrar tudo no CRM e não deixar em aberto?</summary>
-        <p style="margin: 0.75rem 0 0; color: #4b5563;">Essa é a maior dificuldade de implementação. A estratégia mais eficaz é começar pela liderança: o gestor deve ser o primeiro a registrar todas as interações e cobrar os dados do CRM em reuniões, não de planilhas separadas. Quando a reunião semanal de pipeline é conduzida 100% a partir do CRM — e quem não registrou atividades não tem dados para apresentar — o comportamento muda rapidamente. Outra prática: vincular variável de comissão ao registro de atividades no CRM, não apenas ao fechamento de negócios.</p>
+      <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
+        <summary style="font-weight: 600; cursor: pointer; color: var(--foreground); list-style: revert;">Como convencer o time a registrar tudo no CRM e não deixar em aberto?</summary>
+        <p style="margin: 0.75rem 0 0; color: var(--foreground);">Essa é a maior dificuldade de implementação. A estratégia mais eficaz é começar pela liderança: o gestor deve ser o primeiro a registrar todas as interações e cobrar os dados do CRM em reuniões, não de planilhas separadas. Quando a reunião semanal de pipeline é conduzida 100% a partir do CRM — e quem não registrou atividades não tem dados para apresentar — o comportamento muda rapidamente. Outra prática: vincular variável de comissão ao registro de atividades no CRM, não apenas ao fechamento de negócios.</p>
       </details>
 
-      <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin-bottom: 2rem;">
-        <summary style="font-weight: 600; cursor: pointer; color: #1e293b; list-style: revert;">O CRM do Sirius funciona para agências com clientes de nichos diferentes (ex: imobiliárias, e-commerces, clínicas)?</summary>
-        <p style="margin: 0.75rem 0 0; color: #4b5563;">Sim. O Sirius CRM permite criar campos customizados por pipeline e até segmentar a carteira por setor de atuação do cliente. Uma agência que atende imobiliárias, e-commerces e clínicas pode criar campos específicos para cada segmento (ex: para imobiliárias: número de lançamentos por mês, plataformas de portais; para e-commerces: plataforma de loja, volume de pedidos mensais) e filtrar a carteira por setor para gerar relatórios segmentados. Essa granularidade melhora tanto o pitch de prospecção quanto as reuniões de renovação, porque os argumentos são contextualizados para o negócio específico do cliente.</p>
+      <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 2rem;">
+        <summary style="font-weight: 600; cursor: pointer; color: var(--foreground); list-style: revert;">O CRM do Sirius funciona para agências com clientes de nichos diferentes (ex: imobiliárias, e-commerces, clínicas)?</summary>
+        <p style="margin: 0.75rem 0 0; color: var(--foreground);">Sim. O Sirius CRM permite criar campos customizados por pipeline e até segmentar a carteira por setor de atuação do cliente. Uma agência que atende imobiliárias, e-commerces e clínicas pode criar campos específicos para cada segmento (ex: para imobiliárias: número de lançamentos por mês, plataformas de portais; para e-commerces: plataforma de loja, volume de pedidos mensais) e filtrar a carteira por setor para gerar relatórios segmentados. Essa granularidade melhora tanto o pitch de prospecção quanto as reuniões de renovação, porque os argumentos são contextualizados para o negócio específico do cliente.</p>
       </details>
 
-      <hr style="margin: 3rem 0; border: none; border-top: 1px solid #e5e7eb;" />
+      <hr style="margin: 3rem 0; border: none; border-top: 1px solid var(--border);" />
       <strong>Última Atualização:</strong> 28 de Março de 2026<br/>
       <strong>Autor:</strong> Equipe Sirius CRM<br/>
       <strong>Tempo de Leitura:</strong> 12 minutos
@@ -340,14 +340,14 @@ export const post: BlogPost = {
         <li>Connect WhatsApp number to centralize client messages</li>
       </ol>
 
-      <div style="background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); border-left: 4px solid #2563eb; padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
-        <p style="font-weight: 700; color: #1e40af;">Set up your agency's dual pipeline in 30 minutes</p>
-        <p style="color: #1e40af; margin: 0.5rem 0 1rem;">Sirius CRM includes unlimited pipelines, WhatsApp integration, and renewal automation — all in the free plan.</p>
-        <a href="/en/register" style="background: #2563eb; color: white; padding: 0.75rem 1.5rem; border-radius: 0.5rem; font-weight: 600; text-decoration: none; display: inline-block;">Start Free →</a>
+      <div style="background: var(--muted); border-left: 4px solid var(--fio-forte); padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
+        <p style="font-weight: 700; color: var(--foreground);">Set up your agency's dual pipeline in 30 minutes</p>
+        <p style="color: var(--foreground); margin: 0.5rem 0 1rem;">Sirius CRM includes unlimited pipelines, WhatsApp integration, and renewal automation — all in the free plan.</p>
+        <a href="/en/register" style="background: var(--primary); color: white; padding: 0.75rem 1.5rem; border-radius: 0.5rem; font-weight: 600; text-decoration: none; display: inline-block;">Start Free →</a>
       </div>
 
-      <hr style="margin: 3rem 0; border: none; border-top: 1px solid #e5e7eb;" />
-      <p style="font-size: 0.85rem; color: #64748b;">
+      <hr style="margin: 3rem 0; border: none; border-top: 1px solid var(--border);" />
+      <p style="font-size: 0.85rem; color: var(--foreground);">
         <strong>Last Updated:</strong> March 28, 2026<br/>
         <strong>Author:</strong> Sirius CRM Team<br/>
         <strong>Reading Time:</strong> 12 minutes

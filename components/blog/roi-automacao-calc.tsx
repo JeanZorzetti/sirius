@@ -28,9 +28,9 @@ export function ROIAutomacaoCalc() {
             max={30}
             value={horas}
             onChange={(e) => setHoras(Number(e.target.value))}
-            className="w-full accent-orange-500"
+            className="w-full accent-primary"
           />
-          <p className="text-center font-bold text-orange-600 dark:text-orange-400 mt-1">
+          <p className="text-center font-bold text-foreground mt-1">
             {horas} horas/semana
           </p>
         </div>
@@ -46,33 +46,33 @@ export function ROIAutomacaoCalc() {
             step={1000}
             value={salario}
             onChange={(e) => setSalario(Number(e.target.value))}
-            className="w-full accent-orange-500"
+            className="w-full accent-primary"
           />
-          <p className="text-center font-bold text-orange-600 dark:text-orange-400 mt-1">
+          <p className="text-center font-bold text-foreground mt-1">
             R$ {salario.toLocaleString('pt-BR')}/mês
           </p>
         </div>
       </div>
 
-      <div className="bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-950/20 dark:to-emerald-950/20 border border-green-200 dark:border-green-800 rounded-xl p-5 text-center">
+      <div className="border border-border rounded-xl p-5 text-center">
         <div className="grid grid-cols-2 gap-4 mb-4">
           <div>
-            <p className="text-3xl font-bold text-green-700 dark:text-green-400">{horasRecuperadasAno}</p>
-            <p className="text-sm text-green-700 dark:text-green-500">horas recuperadas/ano</p>
+            <p className="text-3xl font-bold text-foreground">{horasRecuperadasAno}</p>
+            <p className="text-sm text-foreground">horas recuperadas/ano</p>
           </div>
           <div>
-            <p className="text-3xl font-bold text-green-700 dark:text-green-400">
+            <p className="text-3xl font-bold text-foreground">
               R$ {valorRecuperado.toLocaleString('pt-BR')}
             </p>
-            <p className="text-sm text-green-700 dark:text-green-500">em tempo recuperado/ano</p>
+            <p className="text-sm text-foreground">em tempo recuperado/ano</p>
           </div>
         </div>
-        <p className="text-xs text-green-700/70 dark:text-green-500/70 mb-4">
+        <p className="text-xs text-foreground mb-4">
           Baseado em 60% de automação do tempo administrativo
         </p>
         <a
           href="/register"
-          className="inline-block bg-green-700 text-white px-6 py-2.5 rounded-lg font-semibold text-sm no-underline hover:bg-green-800 transition-colors"
+          className="inline-block bg-primary text-white px-6 py-2.5 rounded-lg font-semibold text-sm no-underline hover:bg-destaque transition-colors"
         >
           Começar a economizar agora →
         </a>

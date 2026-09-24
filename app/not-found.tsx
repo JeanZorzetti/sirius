@@ -2,6 +2,7 @@ import { Metadata } from 'next'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Home, BookOpen, DollarSign, Mail } from 'lucide-react'
+import { texto, mono } from '@/components/fluxo/fontes' // the home's skin (spec 008)
 import '@/app/public.css' // outside app/[locale]/layout.tsx, so it loads its own sheet (spec 007)
 
 export const metadata: Metadata = {
@@ -12,7 +13,7 @@ export const metadata: Metadata = {
 
 export default function NotFound() {
   return (
-    <div className="min-h-screen bg-background flex items-center justify-center px-4">
+    <div data-art="fluxo" className={`${texto.variable} ${mono.variable} min-h-screen bg-background flex items-center justify-center px-4`}>
       <div className="max-w-2xl mx-auto text-center">
         <div className="mb-8">
           <h1 className="text-8xl font-bold text-primary mb-2">404</h1>

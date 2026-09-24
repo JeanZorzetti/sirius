@@ -17,20 +17,20 @@ export const post: BlogPost = {
         Neste guia, você vai entender exatamente <strong>o que agentes IA automatizam no processo de vendas</strong>, como se comparam a automações baseadas em regras, quanto custam, e como implementar passo a passo no seu time comercial usando o <a href="/">Sirius CRM</a>.
       </p>
 
-      <div class="not-prose" style="background: #1e293b; padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
-        <p style="margin: 0 0 0.75rem; font-weight: 700; font-size: 1.05rem; color: #38bdf8;">⚡ TL;DR — Resposta Rápida</p>
+      <div class="not-prose" style="background: var(--primary); padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
+        <p style="margin: 0 0 0.75rem; font-weight: 700; font-size: 1.05rem; color: var(--primary-foreground);">⚡ TL;DR — Resposta Rápida</p>
         <ul style="margin: 0; padding-left: 1.25rem; line-height: 2; color: #ffffff;">
-          <li>Agentes IA são diferentes de automações com regras: eles <strong style="color: #38bdf8;">percebem contexto e adaptam ações</strong> em vez de seguir scripts fixos</li>
-          <li>6 processos que agentes automatizam: prospecção, qualificação, follow-up, pipeline, agendamento e relatórios — economizando <strong style="color: #38bdf8;">2-3h por dia</strong> por vendedor</li>
-          <li>Tempo de resposta a leads cai de <strong style="color: #38bdf8;">horas para segundos</strong>, e taxa de follow-up sobe de ~30% para 100%</li>
-          <li>Custo de um agente IA (R$ 67-397/mês) é <strong style="color: #38bdf8;">10-50x menor</strong> que contratar um SDR júnior (R$ 3.000-5.000/mês)</li>
-          <li>Implementação ideal: comece com <strong style="color: #38bdf8;">1 agente em 1 processo</strong> (ex.: follow-up), valide resultados e expanda gradualmente</li>
+          <li>Agentes IA são diferentes de automações com regras: eles <strong style="color: var(--primary-foreground);">percebem contexto e adaptam ações</strong> em vez de seguir scripts fixos</li>
+          <li>6 processos que agentes automatizam: prospecção, qualificação, follow-up, pipeline, agendamento e relatórios — economizando <strong style="color: var(--primary-foreground);">2-3h por dia</strong> por vendedor</li>
+          <li>Tempo de resposta a leads cai de <strong style="color: var(--primary-foreground);">horas para segundos</strong>, e taxa de follow-up sobe de ~30% para 100%</li>
+          <li>Custo de um agente IA (R$ 67-397/mês) é <strong style="color: var(--primary-foreground);">10-50x menor</strong> que contratar um SDR júnior (R$ 3.000-5.000/mês)</li>
+          <li>Implementação ideal: comece com <strong style="color: var(--primary-foreground);">1 agente em 1 processo</strong> (ex.: follow-up), valide resultados e expanda gradualmente</li>
         </ul>
       </div>
 
       <div class="callout-stat">
         <p><strong>📊 O impacto da automação inteligente em vendas</strong></p>
-        <p style="font-size: 2.5rem; font-weight: 800; color: #2563eb; margin: 1rem 0; line-height: 1;">14,5% mais receita</p>
+        <p style="font-size: 2.5rem; font-weight: 800; color: var(--foreground); margin: 1rem 0; line-height: 1;">14,5% mais receita</p>
         <p>Automação de vendas inteligente aumenta receita em 14,5% e reduz custos operacionais em 12,2%, segundo pesquisa da McKinsey sobre impacto de IA em operações comerciais (2025).</p>
       </div>
 
@@ -60,9 +60,9 @@ export const post: BlogPost = {
         Agentes IA são a primeira automação de vendas que <strong>improvisa</strong>. Em vez de seguir um fluxograma, eles recebem um objetivo ("qualificar este lead usando BANT") e decidem como atingi-lo. Se o lead não responde por e-mail, o agente tenta WhatsApp. Se o lead mencionou pressa, o agente acelera a cadência. Se o deal é grande, o agente alerta o gestor antes de tomar ação. Segundo a Gartner (2025), até 2028, 60% dos processos de vendas B2B terão pelo menos um agente IA atuando de forma autônoma.
       </p>
 
-      <div style="background: linear-gradient(135deg, #fff7ed 0%, #ffedd5 100%); border-left: 4px solid #ea580c; padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
-        <p style="margin: 0; font-weight: 700; color: #9a3412; font-size: 1.1rem;">💡 Insight-chave</p>
-        <p style="margin: 0.5rem 0 0; color: #7c2d12;">Automações com regras respondem à pergunta "o que fazer quando X acontece?". Agentes IA respondem à pergunta <strong>"qual a melhor ação dado tudo que sei sobre este lead, este deal e este momento?"</strong>. É a diferença entre um script de telemarketing e um vendedor sênior.</p>
+      <div style="background: var(--muted); border-left: 4px solid var(--pulso); padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
+        <p style="margin: 0; font-weight: 700; color: var(--foreground); font-size: 1.1rem;">💡 Insight-chave</p>
+        <p style="margin: 0.5rem 0 0; color: var(--foreground);">Automações com regras respondem à pergunta "o que fazer quando X acontece?". Agentes IA respondem à pergunta <strong>"qual a melhor ação dado tudo que sei sobre este lead, este deal e este momento?"</strong>. É a diferença entre um script de telemarketing e um vendedor sênior.</p>
       </div>
 
       <h2>6 Processos de Vendas que Agentes IA Automatizam</h2>
@@ -151,52 +151,52 @@ export const post: BlogPost = {
 
       <table style="width: 100%; border-collapse: collapse; margin: 2rem 0;">
         <thead>
-          <tr style="background: #f8fafc;">
-            <th style="padding: 0.75rem; border: 1px solid #e2e8f0; text-align: left;">Dimensão</th>
-            <th style="padding: 0.75rem; border: 1px solid #e2e8f0; text-align: left;">Automação com Regras</th>
-            <th style="padding: 0.75rem; border: 1px solid #e2e8f0; text-align: left;">Automação com Agentes IA</th>
+          <tr style="background: var(--muted);">
+            <th style="padding: 0.75rem; border: 1px solid var(--border); text-align: left;">Dimensão</th>
+            <th style="padding: 0.75rem; border: 1px solid var(--border); text-align: left;">Automação com Regras</th>
+            <th style="padding: 0.75rem; border: 1px solid var(--border); text-align: left;">Automação com Agentes IA</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;"><strong>Lógica</strong></td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Se X acontecer, faça Y</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Dado o contexto completo, qual a melhor ação?</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);"><strong>Lógica</strong></td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Se X acontecer, faça Y</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Dado o contexto completo, qual a melhor ação?</td>
           </tr>
-          <tr style="background: #f8fafc;">
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;"><strong>Personalização</strong></td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Mesma ação para todos os leads na mesma condição</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Ação personalizada por lead, deal e momento</td>
-          </tr>
-          <tr>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;"><strong>Cenários imprevistos</strong></td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Falha ou ignora — não sabe o que fazer</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Adapta — escolhe a melhor opção disponível</td>
-          </tr>
-          <tr style="background: #f8fafc;">
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;"><strong>Manutenção</strong></td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Cada novo cenário = nova regra manual</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Aprende com dados — melhora sozinho</td>
+          <tr style="background: var(--muted);">
+            <td style="padding: 0.75rem; border: 1px solid var(--border);"><strong>Personalização</strong></td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Mesma ação para todos os leads na mesma condição</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Ação personalizada por lead, deal e momento</td>
           </tr>
           <tr>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;"><strong>Exemplo: follow-up</strong></td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Enviar e-mail padrão em 3 dias para todos</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Deal de R$ 5k: e-mail em 2 dias. Deal de R$ 100k: alerta o vendedor para ligar em 24h</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);"><strong>Cenários imprevistos</strong></td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Falha ou ignora — não sabe o que fazer</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Adapta — escolhe a melhor opção disponível</td>
           </tr>
-          <tr style="background: #f8fafc;">
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;"><strong>Timing</strong></td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Fixo (X dias/horas após evento)</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Variável (baseado em engajamento, tamanho do deal, histórico)</td>
+          <tr style="background: var(--muted);">
+            <td style="padding: 0.75rem; border: 1px solid var(--border);"><strong>Manutenção</strong></td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Cada novo cenário = nova regra manual</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Aprende com dados — melhora sozinho</td>
           </tr>
           <tr>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;"><strong>Escala</strong></td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Escala processos simples bem</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Escala processos complexos com qualidade</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);"><strong>Exemplo: follow-up</strong></td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Enviar e-mail padrão em 3 dias para todos</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Deal de R$ 5k: e-mail em 2 dias. Deal de R$ 100k: alerta o vendedor para ligar em 24h</td>
           </tr>
-          <tr style="background: #f8fafc;">
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;"><strong>Setup</strong></td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Rápido — conectar gatilho a ação</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Moderado — definir objetivo, limites e supervisão</td>
+          <tr style="background: var(--muted);">
+            <td style="padding: 0.75rem; border: 1px solid var(--border);"><strong>Timing</strong></td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Fixo (X dias/horas após evento)</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Variável (baseado em engajamento, tamanho do deal, histórico)</td>
+          </tr>
+          <tr>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);"><strong>Escala</strong></td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Escala processos simples bem</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Escala processos complexos com qualidade</td>
+          </tr>
+          <tr style="background: var(--muted);">
+            <td style="padding: 0.75rem; border: 1px solid var(--border);"><strong>Setup</strong></td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Rápido — conectar gatilho a ação</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Moderado — definir objetivo, limites e supervisão</td>
           </tr>
         </tbody>
       </table>
@@ -244,9 +244,9 @@ export const post: BlogPost = {
         Com o primeiro agente validado, adicione o segundo — geralmente qualificação ou prospecção. Repita o ciclo: piloto com 1-2 vendedores, modo sugestão, validação, autonomia. Em 3-6 meses, a maioria dos times consegue ter 3-4 agentes atuando simultaneamente, cobrindo 60-70% das tarefas repetitivas do processo comercial.
       </p>
 
-      <div style="background: linear-gradient(135deg, #f5f3ff 0%, #ede9fe 100%); border-left: 4px solid #7c3aed; padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
-        <p style="margin: 0; font-weight: 700; color: #5b21b6; font-size: 1.1rem;">🚀 Onboarding guiado no Sirius CRM</p>
-        <p style="margin: 0.5rem 0 0; color: #6d28d9;">O <a href="/" style="color: #7c3aed; text-decoration: underline;">Sirius CRM</a> inclui onboarding guiado para configurar seus primeiros agentes IA. O AGI Sirius já vem pré-configurado para follow-up, qualificação e prospecção — você só precisa ajustar os parâmetros para o seu processo. Em menos de 30 minutos, seu primeiro agente está operando.</p>
+      <div style="background: var(--muted); border-left: 4px solid var(--fio-forte); padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
+        <p style="margin: 0; font-weight: 700; color: var(--foreground); font-size: 1.1rem;">🚀 Onboarding guiado no Sirius CRM</p>
+        <p style="margin: 0.5rem 0 0; color: var(--foreground);">O <a href="/" style="color: var(--foreground); text-decoration: underline;">Sirius CRM</a> inclui onboarding guiado para configurar seus primeiros agentes IA. O AGI Sirius já vem pré-configurado para follow-up, qualificação e prospecção — você só precisa ajustar os parâmetros para o seu processo. Em menos de 30 minutos, seu primeiro agente está operando.</p>
       </div>
 
       <h2>Resultados Reais: O Que Esperar</h2>
@@ -257,42 +257,42 @@ export const post: BlogPost = {
 
       <table style="width: 100%; border-collapse: collapse; margin: 2rem 0;">
         <thead>
-          <tr style="background: #f8fafc;">
-            <th style="padding: 0.75rem; border: 1px solid #e2e8f0; text-align: left;">Métrica</th>
-            <th style="padding: 0.75rem; border: 1px solid #e2e8f0; text-align: left;">Antes (sem agente IA)</th>
-            <th style="padding: 0.75rem; border: 1px solid #e2e8f0; text-align: left;">Depois (com agente IA)</th>
+          <tr style="background: var(--muted);">
+            <th style="padding: 0.75rem; border: 1px solid var(--border); text-align: left;">Métrica</th>
+            <th style="padding: 0.75rem; border: 1px solid var(--border); text-align: left;">Antes (sem agente IA)</th>
+            <th style="padding: 0.75rem; border: 1px solid var(--border); text-align: left;">Depois (com agente IA)</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;"><strong>Tempo em tarefas administrativas</strong></td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">66% do dia (Salesforce 2025)</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">30-40% do dia</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);"><strong>Tempo em tarefas administrativas</strong></td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">66% do dia (Salesforce 2025)</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">30-40% do dia</td>
           </tr>
-          <tr style="background: #f8fafc;">
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;"><strong>Tempo de resposta ao lead</strong></td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">5-24 horas em média</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Segundos (resposta automática)</td>
-          </tr>
-          <tr>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;"><strong>Taxa de follow-up completado</strong></td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">~30% (InsideSales.com 2024)</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">100% (agente nunca esquece)</td>
-          </tr>
-          <tr style="background: #f8fafc;">
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;"><strong>Precisão do forecast</strong></td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">±40% de variação</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">±15% de variação (melhoria de 25p.p.)</td>
+          <tr style="background: var(--muted);">
+            <td style="padding: 0.75rem; border: 1px solid var(--border);"><strong>Tempo de resposta ao lead</strong></td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">5-24 horas em média</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Segundos (resposta automática)</td>
           </tr>
           <tr>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;"><strong>Leads perdidos por inatividade</strong></td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">20-30% do pipeline</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Menos de 5%</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);"><strong>Taxa de follow-up completado</strong></td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">~30% (InsideSales.com 2024)</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">100% (agente nunca esquece)</td>
           </tr>
-          <tr style="background: #f8fafc;">
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;"><strong>Horas economizadas por vendedor</strong></td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">—</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">2-3 horas por dia (Forrester 2025)</td>
+          <tr style="background: var(--muted);">
+            <td style="padding: 0.75rem; border: 1px solid var(--border);"><strong>Precisão do forecast</strong></td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">±40% de variação</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">±15% de variação (melhoria de 25p.p.)</td>
+          </tr>
+          <tr>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);"><strong>Leads perdidos por inatividade</strong></td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">20-30% do pipeline</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Menos de 5%</td>
+          </tr>
+          <tr style="background: var(--muted);">
+            <td style="padding: 0.75rem; border: 1px solid var(--border);"><strong>Horas economizadas por vendedor</strong></td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">—</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">2-3 horas por dia (Forrester 2025)</td>
           </tr>
         </tbody>
       </table>
@@ -301,9 +301,9 @@ export const post: BlogPost = {
         Esses resultados não aparecem da noite para o dia. O período típico de ramp-up é de 4-8 semanas: nas primeiras 2 semanas, o agente está aprendendo o processo e o time está aprendendo a confiar nele. Entre a semana 3 e 6, os ganhos começam a aparecer. A partir da semana 8, o processo atinge maturidade e os números se estabilizam nos patamares acima.
       </p>
 
-      <div style="background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%); border-left: 4px solid #16a34a; padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
-        <p style="margin: 0; font-weight: 700; color: #14532d; font-size: 1.1rem;">✅ Case: impacto em time de 5 vendedores</p>
-        <p style="margin: 0.5rem 0 0; color: #166534;">Um time de 5 vendedores que economiza 2,5h/dia por pessoa recupera <strong>12,5 horas/dia</strong> de capacidade produtiva. Considerando 22 dias úteis por mês, são <strong>275 horas/mês</strong> — equivalente a contratar quase 2 vendedores adicionais sem nenhum custo extra de salário, benefícios ou gestão.</p>
+      <div style="background: var(--muted); border-left: 4px solid var(--fio-forte); padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
+        <p style="margin: 0; font-weight: 700; color: var(--foreground); font-size: 1.1rem;">✅ Case: impacto em time de 5 vendedores</p>
+        <p style="margin: 0.5rem 0 0; color: var(--foreground);">Um time de 5 vendedores que economiza 2,5h/dia por pessoa recupera <strong>12,5 horas/dia</strong> de capacidade produtiva. Considerando 22 dias úteis por mês, são <strong>275 horas/mês</strong> — equivalente a contratar quase 2 vendedores adicionais sem nenhum custo extra de salário, benefícios ou gestão.</p>
       </div>
 
       <h2>Quanto Custa Automatizar com Agentes IA?</h2>
@@ -316,61 +316,61 @@ export const post: BlogPost = {
 
       <table style="width: 100%; border-collapse: collapse; margin: 2rem 0;">
         <thead>
-          <tr style="background: #f8fafc;">
-            <th style="padding: 0.75rem; border: 1px solid #e2e8f0; text-align: left;">Recurso</th>
-            <th style="padding: 0.75rem; border: 1px solid #e2e8f0; text-align: center;">Free (R$ 0)</th>
-            <th style="padding: 0.75rem; border: 1px solid #e2e8f0; text-align: center;">PRO (R$ 67/mês)</th>
-            <th style="padding: 0.75rem; border: 1px solid #e2e8f0; text-align: center;">Business (R$ 397/mês)</th>
+          <tr style="background: var(--muted);">
+            <th style="padding: 0.75rem; border: 1px solid var(--border); text-align: left;">Recurso</th>
+            <th style="padding: 0.75rem; border: 1px solid var(--border); text-align: center;">Free (R$ 0)</th>
+            <th style="padding: 0.75rem; border: 1px solid var(--border); text-align: center;">PRO (R$ 67/mês)</th>
+            <th style="padding: 0.75rem; border: 1px solid var(--border); text-align: center;">Business (R$ 397/mês)</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Pipeline visual (Kanban)</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0; text-align: center;">✅</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0; text-align: center;">✅</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0; text-align: center;">✅</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Pipeline visual (Kanban)</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border); text-align: center;">✅</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border); text-align: center;">✅</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border); text-align: center;">✅</td>
           </tr>
-          <tr style="background: #f8fafc;">
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">AGI Sirius (agente IA)</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0; text-align: center;">Básico</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0; text-align: center;">✅ Completo</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0; text-align: center;">✅ Avançado</td>
-          </tr>
-          <tr>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Qualificação automática (BANT)</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0; text-align: center;">—</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0; text-align: center;">✅</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0; text-align: center;">✅</td>
-          </tr>
-          <tr style="background: #f8fafc;">
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Follow-up inteligente</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0; text-align: center;">—</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0; text-align: center;">✅</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0; text-align: center;">✅</td>
+          <tr style="background: var(--muted);">
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">AGI Sirius (agente IA)</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border); text-align: center;">Básico</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border); text-align: center;">✅ Completo</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border); text-align: center;">✅ Avançado</td>
           </tr>
           <tr>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Enriquecimento de CNPJ</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0; text-align: center;">—</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0; text-align: center;">✅</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0; text-align: center;">✅</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Qualificação automática (BANT)</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border); text-align: center;">—</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border); text-align: center;">✅</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border); text-align: center;">✅</td>
           </tr>
-          <tr style="background: #f8fafc;">
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Scoring preditivo</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0; text-align: center;">—</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0; text-align: center;">✅</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0; text-align: center;">✅</td>
+          <tr style="background: var(--muted);">
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Follow-up inteligente</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border); text-align: center;">—</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border); text-align: center;">✅</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border); text-align: center;">✅</td>
           </tr>
           <tr>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Agentes múltiplos (prospecção + coaching)</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0; text-align: center;">—</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0; text-align: center;">—</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0; text-align: center;">✅</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Enriquecimento de CNPJ</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border); text-align: center;">—</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border); text-align: center;">✅</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border); text-align: center;">✅</td>
           </tr>
-          <tr style="background: #f8fafc;">
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Relatórios com IA e coaching</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0; text-align: center;">—</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0; text-align: center;">Parcial</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0; text-align: center;">✅ Completo</td>
+          <tr style="background: var(--muted);">
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Scoring preditivo</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border); text-align: center;">—</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border); text-align: center;">✅</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border); text-align: center;">✅</td>
+          </tr>
+          <tr>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Agentes múltiplos (prospecção + coaching)</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border); text-align: center;">—</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border); text-align: center;">—</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border); text-align: center;">✅</td>
+          </tr>
+          <tr style="background: var(--muted);">
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Relatórios com IA e coaching</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border); text-align: center;">—</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border); text-align: center;">Parcial</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border); text-align: center;">✅ Completo</td>
           </tr>
         </tbody>
       </table>
@@ -383,47 +383,47 @@ export const post: BlogPost = {
 
       <table style="width: 100%; border-collapse: collapse; margin: 2rem 0;">
         <thead>
-          <tr style="background: #f8fafc;">
-            <th style="padding: 0.75rem; border: 1px solid #e2e8f0; text-align: left;">Item</th>
-            <th style="padding: 0.75rem; border: 1px solid #e2e8f0; text-align: center;">SDR Júnior</th>
-            <th style="padding: 0.75rem; border: 1px solid #e2e8f0; text-align: center;">Agente IA (Sirius PRO)</th>
+          <tr style="background: var(--muted);">
+            <th style="padding: 0.75rem; border: 1px solid var(--border); text-align: left;">Item</th>
+            <th style="padding: 0.75rem; border: 1px solid var(--border); text-align: center;">SDR Júnior</th>
+            <th style="padding: 0.75rem; border: 1px solid var(--border); text-align: center;">Agente IA (Sirius PRO)</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Custo mensal</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0; text-align: center;">R$ 3.000 - 5.000 (CLT)</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0; text-align: center;">R$ 67 - 397</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Custo mensal</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border); text-align: center;">R$ 3.000 - 5.000 (CLT)</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border); text-align: center;">R$ 67 - 397</td>
           </tr>
-          <tr style="background: #f8fafc;">
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Custo anual (com encargos)</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0; text-align: center;">R$ 60.000 - 100.000</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0; text-align: center;">R$ 804 - 4.764</td>
-          </tr>
-          <tr>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Disponibilidade</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0; text-align: center;">8h/dia, 5 dias/semana</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0; text-align: center;">24h/dia, 7 dias/semana</td>
-          </tr>
-          <tr style="background: #f8fafc;">
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Tempo de ramp-up</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0; text-align: center;">2-3 meses</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0; text-align: center;">1-2 semanas</td>
+          <tr style="background: var(--muted);">
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Custo anual (com encargos)</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border); text-align: center;">R$ 60.000 - 100.000</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border); text-align: center;">R$ 804 - 4.764</td>
           </tr>
           <tr>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Consistência</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0; text-align: center;">Variável (humor, motivação, cansaço)</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0; text-align: center;">100% consistente</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Disponibilidade</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border); text-align: center;">8h/dia, 5 dias/semana</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border); text-align: center;">24h/dia, 7 dias/semana</td>
           </tr>
-          <tr style="background: #f8fafc;">
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Escala</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0; text-align: center;">Limitado a ~50 leads/dia</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0; text-align: center;">Ilimitado</td>
+          <tr style="background: var(--muted);">
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Tempo de ramp-up</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border); text-align: center;">2-3 meses</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border); text-align: center;">1-2 semanas</td>
           </tr>
           <tr>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;"><strong>Economia anual</strong></td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0; text-align: center;">—</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0; text-align: center;"><strong>R$ 55.000 - 95.000</strong></td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Consistência</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border); text-align: center;">Variável (humor, motivação, cansaço)</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border); text-align: center;">100% consistente</td>
+          </tr>
+          <tr style="background: var(--muted);">
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Escala</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border); text-align: center;">Limitado a ~50 leads/dia</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border); text-align: center;">Ilimitado</td>
+          </tr>
+          <tr>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);"><strong>Economia anual</strong></td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border); text-align: center;">—</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border); text-align: center;"><strong>R$ 55.000 - 95.000</strong></td>
           </tr>
         </tbody>
       </table>
@@ -434,38 +434,38 @@ export const post: BlogPost = {
 
       <h2>Perguntas Frequentes sobre Automação de Vendas com Agentes IA</h2>
 
-      <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
-        <summary style="font-weight: 600; cursor: pointer; color: #1e293b; list-style: revert;">Agentes IA vão substituir vendedores?</summary>
-        <p style="margin: 0.75rem 0 0; color: #4b5563;">Não. Agentes IA substituem <strong>tarefas</strong>, não pessoas. Eles automatizam o trabalho repetitivo e de baixo valor (follow-up, registro de dados, classificação de leads) para que o vendedor foque no que humanos fazem melhor: construir relacionamentos, negociar, entender nuances emocionais e fechar deals complexos. A Gartner (2025) projeta que a IA vai eliminar 20% das tarefas de vendas, mas criar demanda por vendedores mais qualificados focados em atividades estratégicas.</p>
+      <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
+        <summary style="font-weight: 600; cursor: pointer; color: var(--foreground); list-style: revert;">Agentes IA vão substituir vendedores?</summary>
+        <p style="margin: 0.75rem 0 0; color: var(--foreground);">Não. Agentes IA substituem <strong>tarefas</strong>, não pessoas. Eles automatizam o trabalho repetitivo e de baixo valor (follow-up, registro de dados, classificação de leads) para que o vendedor foque no que humanos fazem melhor: construir relacionamentos, negociar, entender nuances emocionais e fechar deals complexos. A Gartner (2025) projeta que a IA vai eliminar 20% das tarefas de vendas, mas criar demanda por vendedores mais qualificados focados em atividades estratégicas.</p>
       </details>
 
-      <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
-        <summary style="font-weight: 600; cursor: pointer; color: #1e293b; list-style: revert;">Preciso de conhecimento técnico para configurar agentes IA?</summary>
-        <p style="margin: 0.75rem 0 0; color: #4b5563;">Com plataformas modernas como o Sirius CRM, não. O AGI Sirius vem pré-configurado para os principais casos de uso de vendas (follow-up, qualificação, prospecção). A configuração é feita por interface visual — definir objetivo, selecionar o processo, ajustar parâmetros como frequência e tom de mensagem. Nenhuma linha de código ou conhecimento de IA é necessária. O onboarding guiado leva menos de 30 minutos.</p>
+      <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
+        <summary style="font-weight: 600; cursor: pointer; color: var(--foreground); list-style: revert;">Preciso de conhecimento técnico para configurar agentes IA?</summary>
+        <p style="margin: 0.75rem 0 0; color: var(--foreground);">Com plataformas modernas como o Sirius CRM, não. O AGI Sirius vem pré-configurado para os principais casos de uso de vendas (follow-up, qualificação, prospecção). A configuração é feita por interface visual — definir objetivo, selecionar o processo, ajustar parâmetros como frequência e tom de mensagem. Nenhuma linha de código ou conhecimento de IA é necessária. O onboarding guiado leva menos de 30 minutos.</p>
       </details>
 
-      <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
-        <summary style="font-weight: 600; cursor: pointer; color: #1e293b; list-style: revert;">E se o agente IA cometer um erro com um cliente importante?</summary>
-        <p style="margin: 0.75rem 0 0; color: #4b5563;">Por isso a implementação deve ser gradual. Nas primeiras semanas, configure o agente no modo "sugestão" — ele propõe ações, mas você aprova antes da execução. Para deals de alto valor, defina regras de escalação: o agente nunca age sozinho em deals acima de um valor X, sempre envia a sugestão para o vendedor. À medida que a confiança cresce e a taxa de erro cai abaixo de 5%, aumente gradualmente a autonomia.</p>
+      <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
+        <summary style="font-weight: 600; cursor: pointer; color: var(--foreground); list-style: revert;">E se o agente IA cometer um erro com um cliente importante?</summary>
+        <p style="margin: 0.75rem 0 0; color: var(--foreground);">Por isso a implementação deve ser gradual. Nas primeiras semanas, configure o agente no modo "sugestão" — ele propõe ações, mas você aprova antes da execução. Para deals de alto valor, defina regras de escalação: o agente nunca age sozinho em deals acima de um valor X, sempre envia a sugestão para o vendedor. À medida que a confiança cresce e a taxa de erro cai abaixo de 5%, aumente gradualmente a autonomia.</p>
       </details>
 
-      <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
-        <summary style="font-weight: 600; cursor: pointer; color: #1e293b; list-style: revert;">Quanto tempo leva para ver resultados com agentes IA em vendas?</summary>
-        <p style="margin: 0.75rem 0 0; color: #4b5563;">Resultados iniciais aparecem em 2-4 semanas: redução imediata no tempo de resposta a leads, aumento na taxa de follow-up completado, e liberação de 1-2 horas/dia do vendedor. Resultados de conversão e receita levam 6-12 semanas para se estabilizar, já que dependem do ciclo de venda. A curva típica: semanas 1-2 (adaptação), semanas 3-6 (ganhos crescentes), semana 8+ (estabilização nos números-alvo).</p>
+      <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
+        <summary style="font-weight: 600; cursor: pointer; color: var(--foreground); list-style: revert;">Quanto tempo leva para ver resultados com agentes IA em vendas?</summary>
+        <p style="margin: 0.75rem 0 0; color: var(--foreground);">Resultados iniciais aparecem em 2-4 semanas: redução imediata no tempo de resposta a leads, aumento na taxa de follow-up completado, e liberação de 1-2 horas/dia do vendedor. Resultados de conversão e receita levam 6-12 semanas para se estabilizar, já que dependem do ciclo de venda. A curva típica: semanas 1-2 (adaptação), semanas 3-6 (ganhos crescentes), semana 8+ (estabilização nos números-alvo).</p>
       </details>
 
-      <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin-bottom: 2rem;">
-        <summary style="font-weight: 600; cursor: pointer; color: #1e293b; list-style: revert;">Meus dados ficam seguros com agentes IA?</summary>
-        <p style="margin: 0.75rem 0 0; color: #4b5563;">Depende da plataforma. No Sirius CRM, os dados são armazenados em servidores seguros com criptografia em trânsito e em repouso. O AGI Sirius não compartilha dados entre contas — cada empresa tem isolamento completo. Além disso, o agente opera apenas dentro dos limites que você define: ele acessa apenas os dados do CRM que são relevantes para a tarefa configurada. Todos os dados são processados em conformidade com a LGPD.</p>
+      <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 2rem;">
+        <summary style="font-weight: 600; cursor: pointer; color: var(--foreground); list-style: revert;">Meus dados ficam seguros com agentes IA?</summary>
+        <p style="margin: 0.75rem 0 0; color: var(--foreground);">Depende da plataforma. No Sirius CRM, os dados são armazenados em servidores seguros com criptografia em trânsito e em repouso. O AGI Sirius não compartilha dados entre contas — cada empresa tem isolamento completo. Além disso, o agente opera apenas dentro dos limites que você define: ele acessa apenas os dados do CRM que são relevantes para a tarefa configurada. Todos os dados são processados em conformidade com a LGPD.</p>
       </details>
 
-      <div style="background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%); border: 1px solid #6ee7b7; padding: 2rem; border-radius: 0.75rem; margin: 2rem 0; text-align: center;">
-        <p style="font-weight: 700; color: #065f46; font-size: 1.25rem; margin: 0 0 0.75rem;">Automatize suas vendas com agentes IA — comece grátis</p>
-        <p style="color: #047857; margin: 0 0 1rem;">Sirius CRM com AGI integrado: follow-up inteligente, qualificação automática, prospecção com IA. Configure em 30 minutos, sem cartão de crédito.</p>
-        <p style="margin: 0;"><strong><a href="/register" style="display: inline-block; background: #059669; color: white; padding: 0.75rem 2rem; border-radius: 0.5rem; font-weight: 700; text-decoration: none;">Criar Conta Gratuita →</a></strong></p>
+      <div style="background: var(--muted); border: 1px solid var(--border); padding: 2rem; border-radius: 0.75rem; margin: 2rem 0; text-align: center;">
+        <p style="font-weight: 700; color: var(--foreground); font-size: 1.25rem; margin: 0 0 0.75rem;">Automatize suas vendas com agentes IA — comece grátis</p>
+        <p style="color: var(--foreground); margin: 0 0 1rem;">Sirius CRM com AGI integrado: follow-up inteligente, qualificação automática, prospecção com IA. Configure em 30 minutos, sem cartão de crédito.</p>
+        <p style="margin: 0;"><strong><a href="/register" style="display: inline-block; background: var(--primary); color: white; padding: 0.75rem 2rem; border-radius: 0.5rem; font-weight: 700; text-decoration: none;">Criar Conta Gratuita →</a></strong></p>
       </div>
 
-      <hr style="margin: 3rem 0; border: none; border-top: 1px solid #e5e7eb;" />
+      <hr style="margin: 3rem 0; border: none; border-top: 1px solid var(--border);" />
       <strong>Última Atualização:</strong> 28 de Março de 2026<br/>
       <strong>Autor:</strong> Equipe Sirius CRM<br/>
       <strong>Tempo de Leitura:</strong> 15 minutos
@@ -490,7 +490,7 @@ export const post: BlogPost = {
 
       <div class="callout-stat">
         <p><strong>📊 Market Data</strong></p>
-        <p style="font-size: 3rem; font-weight: 800; color: #2563eb; margin: 1rem 0; line-height: 1;">67%</p>
+        <p style="font-size: 3rem; font-weight: 800; color: var(--foreground); margin: 1rem 0; line-height: 1;">67%</p>
         <p>of sales reps using AI agents report <strong>closing more deals in less time</strong> vs 12 months ago, according to Salesforce State of Sales 2025.</p>
       </div>
 
@@ -498,31 +498,31 @@ export const post: BlogPost = {
 
       <table style="width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: 0.9rem;">
         <thead>
-          <tr style="background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%); color: white;">
+          <tr style="background: var(--primary); color: white;">
             <th style="padding: 0.875rem; text-align: left;">Traditional Automation</th>
             <th style="padding: 0.875rem; text-align: left;">AI Agent</th>
           </tr>
         </thead>
         <tbody>
-          <tr style="background: #f8fafc;">
-            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">Executes fixed rules ("if/then")</td>
-            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">Perceives context and adapts decisions</td>
+          <tr style="background: var(--muted);">
+            <td style="padding: 0.875rem; border: 1px solid var(--border);">Executes fixed rules ("if/then")</td>
+            <td style="padding: 0.875rem; border: 1px solid var(--border);">Perceives context and adapts decisions</td>
           </tr>
           <tr>
-            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">Sends the same message to all leads</td>
-            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">Personalizes message based on lead behavior</td>
+            <td style="padding: 0.875rem; border: 1px solid var(--border);">Sends the same message to all leads</td>
+            <td style="padding: 0.875rem; border: 1px solid var(--border);">Personalizes message based on lead behavior</td>
           </tr>
-          <tr style="background: #f8fafc;">
-            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">Breaks when scenario falls outside rules</td>
-            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">Handles edge cases autonomously</td>
+          <tr style="background: var(--muted);">
+            <td style="padding: 0.875rem; border: 1px solid var(--border);">Breaks when scenario falls outside rules</td>
+            <td style="padding: 0.875rem; border: 1px solid var(--border);">Handles edge cases autonomously</td>
           </tr>
           <tr>
-            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">Requires manual reconfiguration to improve</td>
-            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">Learns from outcomes and improves over time</td>
+            <td style="padding: 0.875rem; border: 1px solid var(--border);">Requires manual reconfiguration to improve</td>
+            <td style="padding: 0.875rem; border: 1px solid var(--border);">Learns from outcomes and improves over time</td>
           </tr>
-          <tr style="background: #f8fafc;">
-            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">Informs the rep of what happened</td>
-            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">Acts and informs (or asks for approval)</td>
+          <tr style="background: var(--muted);">
+            <td style="padding: 0.875rem; border: 1px solid var(--border);">Informs the rep of what happened</td>
+            <td style="padding: 0.875rem; border: 1px solid var(--border);">Acts and informs (or asks for approval)</td>
           </tr>
         </tbody>
       </table>
@@ -588,10 +588,10 @@ export const post: BlogPost = {
         <li><strong>Meeting prep:</strong> Sends pre-meeting briefings to reps with deal history summary</li>
       </ul>
 
-      <div style="background: linear-gradient(135deg, #1e3a5f 0%, #1e293b 100%); padding: 2rem; border-radius: 1rem; margin: 2rem 0; text-align: center;">
+      <div style="background: var(--primary); padding: 2rem; border-radius: 1rem; margin: 2rem 0; text-align: center;">
         <h3 style="color: #ffffff; margin: 0 0 1rem;">See AI Agents Work in Your Pipeline</h3>
-        <p style="color: #94a3b8; margin: 0 0 1.5rem;">Start a free trial and watch the AI agent qualify your first leads automatically.</p>
-        <a href="/en/register" style="background: #2563eb; color: white; padding: 0.875rem 2rem; border-radius: 0.5rem; font-weight: 700; text-decoration: none; display: inline-block;">Try Free for 14 Days →</a>
+        <p style="color: var(--primary-foreground); margin: 0 0 1.5rem;">Start a free trial and watch the AI agent qualify your first leads automatically.</p>
+        <a href="/en/register" style="background: var(--primary); color: white; padding: 0.875rem 2rem; border-radius: 0.5rem; font-weight: 700; text-decoration: none; display: inline-block;">Try Free for 14 Days →</a>
       </div>
 
       <h2>Frequently Asked Questions</h2>
@@ -611,8 +611,8 @@ export const post: BlogPost = {
         Follow-up automation shows measurable impact within 30 days (track win rate before/after). Qualification automation typically takes 60-90 days to calibrate — the AI improves as it processes more qualified/disqualified examples. Prospecting automation is the slowest to optimize: plan for 90-120 days to tune ICP targeting.
       </p>
 
-      <hr style="margin: 3rem 0; border: none; border-top: 1px solid #e5e7eb;" />
-      <p style="font-size: 0.85rem; color: #64748b;">
+      <hr style="margin: 3rem 0; border: none; border-top: 1px solid var(--border);" />
+      <p style="font-size: 0.85rem; color: var(--foreground);">
         <strong>Last Updated:</strong> March 28, 2026<br/>
         <strong>Author:</strong> Sirius CRM Team<br/>
         <strong>Reading Time:</strong> 15 minutes

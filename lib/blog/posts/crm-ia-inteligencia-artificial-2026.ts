@@ -19,19 +19,19 @@ export const post: BlogPost = {
         Neste guia completo, você vai entender exatamente o que um <strong>CRM com IA</strong> faz, como ele difere de um CRM comum, quais recursos de IA realmente impactam resultados, e como o Sirius CRM usa inteligência artificial para multiplicar as vendas dos seus usuários.
       </p>
 
-      <div class="not-prose" style="background: #1e293b; padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
-        <p style="margin: 0 0 0.75rem; font-weight: 700; font-size: 1.05rem; color: #38bdf8;">⚡ TL;DR — Resposta Rápida</p>
+      <div class="not-prose" style="background: var(--primary); padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
+        <p style="margin: 0 0 0.75rem; font-weight: 700; font-size: 1.05rem; color: var(--primary-foreground);">⚡ TL;DR — Resposta Rápida</p>
         <ul style="margin: 0; padding-left: 1.25rem; line-height: 2; color: #ffffff;">
           <li><strong>CRM com IA</strong> usa machine learning para automatizar follow-up, prever fechamentos e priorizar leads automaticamente</li>
-          <li>Empresas com CRM + IA vendem <strong style="color: #38bdf8;">41% mais</strong> por vendedor vs. CRM tradicional (Salesforce State of Sales 2025)</li>
+          <li>Empresas com CRM + IA vendem <strong style="color: var(--primary-foreground);">41% mais</strong> por vendedor vs. CRM tradicional (Salesforce State of Sales 2025)</li>
           <li>5 recursos essenciais: Lead Scoring, Previsão de Fechamento, Follow-up Contextual, Análise de Sentimento, Assistente Conversacional</li>
           <li>O Sirius CRM oferece IA nativa no plano gratuito — alertas de recompra, análise de churn e assistente SPIN</li>
         </ul>
       </div>
 
-      <div style="background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); border-left: 4px solid #2563eb; padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
-        <p style="margin: 0; font-weight: 700; color: #1e40af; font-size: 1.1rem;">📊 Dado que você precisa saber:</p>
-        <p style="margin: 0.5rem 0 0; color: #1e40af;">Empresas que adotaram CRM com IA reportam <strong>+41% de receita por vendedor</strong> e <strong>-27% no ciclo de vendas</strong>, segundo o Salesforce State of Sales 2025.</p>
+      <div style="background: var(--muted); border-left: 4px solid var(--fio-forte); padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
+        <p style="margin: 0; font-weight: 700; color: var(--foreground); font-size: 1.1rem;">📊 Dado que você precisa saber:</p>
+        <p style="margin: 0.5rem 0 0; color: var(--foreground);">Empresas que adotaram CRM com IA reportam <strong>+41% de receita por vendedor</strong> e <strong>-27% no ciclo de vendas</strong>, segundo o Salesforce State of Sales 2025.</p>
       </div>
 
       <h2>O que é um CRM com IA?</h2>
@@ -45,9 +45,9 @@ export const post: BlogPost = {
       </p>
 
       <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 2rem 0;">
-        <div style="background: #fef2f2; border: 1px solid #fecaca; padding: 1.25rem; border-radius: 0.75rem;">
-          <p style="font-weight: 700; color: #dc2626; margin: 0 0 0.75rem;">❌ CRM Tradicional</p>
-          <ul style="margin: 0; padding-left: 1.25rem; color: #7f1d1d; line-height: 1.8;">
+        <div style="background: var(--muted); border: 1px solid var(--border); padding: 1.25rem; border-radius: 0.75rem;">
+          <p style="font-weight: 700; color: var(--pulso-escuro); margin: 0 0 0.75rem;">❌ CRM Tradicional</p>
+          <ul style="margin: 0; padding-left: 1.25rem; color: var(--foreground); line-height: 1.8;">
             <li>Registra contatos manualmente</li>
             <li>Você decide quando fazer follow-up</li>
             <li>Relatórios do passado</li>
@@ -55,9 +55,9 @@ export const post: BlogPost = {
             <li>Busca manual por oportunidades</li>
           </ul>
         </div>
-        <div style="background: #f0fdf4; border: 1px solid #bbf7d0; padding: 1.25rem; border-radius: 0.75rem;">
-          <p style="font-weight: 700; color: #16a34a; margin: 0 0 0.75rem;">✅ CRM com IA</p>
-          <ul style="margin: 0; padding-left: 1.25rem; color: #14532d; line-height: 1.8;">
+        <div style="background: var(--muted); border: 1px solid var(--border); padding: 1.25rem; border-radius: 0.75rem;">
+          <p style="font-weight: 700; color: var(--foreground); margin: 0 0 0.75rem;">✅ CRM com IA</p>
+          <ul style="margin: 0; padding-left: 1.25rem; color: var(--foreground); line-height: 1.8;">
             <li>Captura dados automaticamente</li>
             <li>IA sugere o momento ideal de contato</li>
             <li>Previsões de fechamento em tempo real</li>
@@ -94,9 +94,9 @@ export const post: BlogPost = {
         Imagine ter um assistente que responde suas perguntas sobre seu pipeline em linguagem natural: "Quais deals têm mais de 30 dias sem contato?", "Qual meu forecast para esse mês?", "Quais clientes tenho que visitar esta semana?" — tudo em segundos, sem relatórios complexos.
       </p>
 
-      <div style="background: linear-gradient(135deg, #f5f3ff 0%, #ede9fe 100%); border-left: 4px solid #7c3aed; padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
-        <p style="margin: 0; font-weight: 700; color: #5b21b6; font-size: 1.1rem;">🤖 Como o Sirius CRM usa IA</p>
-        <p style="margin: 0.75rem 0 0; color: #4c1d95;">O Sirius CRM integra IA em três camadas: <strong>(1)</strong> Alertas automáticos de follow-up baseados em padrões de recompra; <strong>(2)</strong> Análise de carteira para identificar clientes em risco de churn; <strong>(3)</strong> Assistente SPIN para qualificação de leads com metodologia de vendas consultiva.</p>
+      <div style="background: var(--muted); border-left: 4px solid var(--fio-forte); padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
+        <p style="margin: 0; font-weight: 700; color: var(--foreground); font-size: 1.1rem;">🤖 Como o Sirius CRM usa IA</p>
+        <p style="margin: 0.75rem 0 0; color: var(--foreground);">O Sirius CRM integra IA em três camadas: <strong>(1)</strong> Alertas automáticos de follow-up baseados em padrões de recompra; <strong>(2)</strong> Análise de carteira para identificar clientes em risco de churn; <strong>(3)</strong> Assistente SPIN para qualificação de leads com metodologia de vendas consultiva.</p>
       </div>
 
       <h2>Como Escolher um CRM com IA para seu Negócio</h2>
@@ -134,40 +134,40 @@ export const post: BlogPost = {
         Se você ainda usa um CRM sem IA, ou pior, ainda usa planilhas, este é o momento de mudar. O mercado não vai esperar.
       </p>
 
-      <div style="background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%); border: 1px solid #6ee7b7; padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0; text-align: center;">
-        <p style="font-weight: 700; color: #065f46; font-size: 1.1rem; margin: 0 0 0.75rem;">Experimente o Sirius CRM com IA — Grátis</p>
-        <p style="color: #047857; margin: 0 0 1rem;">Pipeline visual + alertas de IA + assistente SPIN. Sem cartão de crédito.</p>
-        <p><strong><a href="/register" style="color: #059669; text-decoration: underline;">Criar Conta Gratuita →</a></strong></p>
+      <div style="background: var(--muted); border: 1px solid var(--border); padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0; text-align: center;">
+        <p style="font-weight: 700; color: var(--foreground); font-size: 1.1rem; margin: 0 0 0.75rem;">Experimente o Sirius CRM com IA — Grátis</p>
+        <p style="color: var(--foreground); margin: 0 0 1rem;">Pipeline visual + alertas de IA + assistente SPIN. Sem cartão de crédito.</p>
+        <p><strong><a href="/register" style="color: var(--foreground); text-decoration: underline;">Criar Conta Gratuita →</a></strong></p>
       </div>
 
       <h2>Perguntas Frequentes sobre CRM com IA</h2>
 
-      <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
-        <summary style="font-weight: 600; cursor: pointer; color: #1e293b; list-style: revert;">O que é CRM com Inteligência Artificial?</summary>
-        <p style="margin: 0.75rem 0 0; color: #4b5563;">CRM com Inteligência Artificial é um sistema de gestão de clientes que usa machine learning para automatizar tarefas, prever fechamentos e priorizar leads. Diferente de CRMs tradicionais (que apenas registram), um CRM com IA antecipa o que vai acontecer e recomenda o que fazer agora.</p>
+      <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
+        <summary style="font-weight: 600; cursor: pointer; color: var(--foreground); list-style: revert;">O que é CRM com Inteligência Artificial?</summary>
+        <p style="margin: 0.75rem 0 0; color: var(--foreground);">CRM com Inteligência Artificial é um sistema de gestão de clientes que usa machine learning para automatizar tarefas, prever fechamentos e priorizar leads. Diferente de CRMs tradicionais (que apenas registram), um CRM com IA antecipa o que vai acontecer e recomenda o que fazer agora.</p>
       </details>
 
-      <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
-        <summary style="font-weight: 600; cursor: pointer; color: #1e293b; list-style: revert;">CRM com IA é caro? Vale a pena para PMEs?</summary>
-        <p style="margin: 0.75rem 0 0; color: #4b5563;">Não. Em 2026, CRMs com IA como o Sirius CRM oferecem planos gratuitos com recursos de IA incluídos. O ROI é imediato: vendedores que usam lead scoring com IA fecham 3x mais deals em menos tempo, sem contratar mais vendedores.</p>
+      <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
+        <summary style="font-weight: 600; cursor: pointer; color: var(--foreground); list-style: revert;">CRM com IA é caro? Vale a pena para PMEs?</summary>
+        <p style="margin: 0.75rem 0 0; color: var(--foreground);">Não. Em 2026, CRMs com IA como o Sirius CRM oferecem planos gratuitos com recursos de IA incluídos. O ROI é imediato: vendedores que usam lead scoring com IA fecham 3x mais deals em menos tempo, sem contratar mais vendedores.</p>
       </details>
 
-      <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
-        <summary style="font-weight: 600; cursor: pointer; color: #1e293b; list-style: revert;">Qual a diferença entre CRM tradicional e CRM com IA?</summary>
-        <p style="margin: 0.75rem 0 0; color: #4b5563;">CRM tradicional: registra o que aconteceu, depende do vendedor para decidir tudo, gera relatórios do passado. CRM com IA: prevê o que vai acontecer, sugere a próxima ação ideal, prioriza automaticamente os melhores leads e detecta deals em risco antes que esfriem.</p>
+      <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
+        <summary style="font-weight: 600; cursor: pointer; color: var(--foreground); list-style: revert;">Qual a diferença entre CRM tradicional e CRM com IA?</summary>
+        <p style="margin: 0.75rem 0 0; color: var(--foreground);">CRM tradicional: registra o que aconteceu, depende do vendedor para decidir tudo, gera relatórios do passado. CRM com IA: prevê o que vai acontecer, sugere a próxima ação ideal, prioriza automaticamente os melhores leads e detecta deals em risco antes que esfriem.</p>
       </details>
 
-      <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
-        <summary style="font-weight: 600; cursor: pointer; color: #1e293b; list-style: revert;">Como o Sirius CRM usa IA?</summary>
-        <p style="margin: 0.75rem 0 0; color: #4b5563;">O Sirius CRM usa IA em 3 camadas: (1) Alertas automáticos de follow-up baseados em padrões de comportamento de compra; (2) Análise de carteira para identificar clientes em risco de churn; (3) Assistente SPIN para qualificação de leads com metodologia de vendas consultiva em linguagem natural.</p>
+      <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
+        <summary style="font-weight: 600; cursor: pointer; color: var(--foreground); list-style: revert;">Como o Sirius CRM usa IA?</summary>
+        <p style="margin: 0.75rem 0 0; color: var(--foreground);">O Sirius CRM usa IA em 3 camadas: (1) Alertas automáticos de follow-up baseados em padrões de comportamento de compra; (2) Análise de carteira para identificar clientes em risco de churn; (3) Assistente SPIN para qualificação de leads com metodologia de vendas consultiva em linguagem natural.</p>
       </details>
 
-      <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin-bottom: 2rem;">
-        <summary style="font-weight: 600; cursor: pointer; color: #1e293b; list-style: revert;">Preciso de conhecimento técnico para usar IA no CRM?</summary>
-        <p style="margin: 0.75rem 0 0; color: #4b5563;">Não. Os melhores CRMs com IA são desenhados para vendedores, não para engenheiros. A IA funciona em segundo plano — você recebe alertas, sugestões e previsões de forma clara e acionável. Não é necessário configurar modelos ou entender algoritmos.</p>
+      <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 2rem;">
+        <summary style="font-weight: 600; cursor: pointer; color: var(--foreground); list-style: revert;">Preciso de conhecimento técnico para usar IA no CRM?</summary>
+        <p style="margin: 0.75rem 0 0; color: var(--foreground);">Não. Os melhores CRMs com IA são desenhados para vendedores, não para engenheiros. A IA funciona em segundo plano — você recebe alertas, sugestões e previsões de forma clara e acionável. Não é necessário configurar modelos ou entender algoritmos.</p>
       </details>
 
-      <hr style="margin: 3rem 0; border: none; border-top: 1px solid #e5e7eb;" />
+      <hr style="margin: 3rem 0; border: none; border-top: 1px solid var(--border);" />
       <strong>Última Atualização:</strong> 10 de Fevereiro de 2026<br/>
       <strong>Autor:</strong> Equipe Sirius CRM<br/>
       <strong>Tempo de Leitura:</strong> 8 minutos
@@ -184,19 +184,19 @@ export const post: BlogPost = {
         In this complete guide, you'll understand exactly what an <strong>AI CRM</strong> does, how it differs from a regular CRM, which AI features actually impact results, and how Sirius CRM uses artificial intelligence to multiply sales for its users.
       </p>
 
-      <div class="not-prose" style="background: #1e293b; padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
-        <p style="margin: 0 0 0.75rem; font-weight: 700; font-size: 1.05rem; color: #38bdf8;">⚡ TL;DR — Quick Answer</p>
+      <div class="not-prose" style="background: var(--primary); padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
+        <p style="margin: 0 0 0.75rem; font-weight: 700; font-size: 1.05rem; color: var(--primary-foreground);">⚡ TL;DR — Quick Answer</p>
         <ul style="margin: 0; padding-left: 1.25rem; line-height: 2; color: #ffffff;">
           <li><strong>AI CRM</strong> uses machine learning to automate follow-up, predict deal closings, and prioritize leads automatically</li>
-          <li>Companies with CRM + AI sell <strong style="color: #38bdf8;">41% more</strong> per rep vs. traditional CRM (Salesforce State of Sales 2025)</li>
+          <li>Companies with CRM + AI sell <strong style="color: var(--primary-foreground);">41% more</strong> per rep vs. traditional CRM (Salesforce State of Sales 2025)</li>
           <li>5 essential features: Lead Scoring, Deal Intelligence, Contextual Follow-up, Sentiment Analysis, Conversational Assistant</li>
           <li>Sirius CRM offers native AI on the free plan — reorder alerts, churn analysis, and SPIN assistant</li>
         </ul>
       </div>
 
-      <div style="background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); border-left: 4px solid #2563eb; padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
-        <p style="margin: 0; font-weight: 700; color: #1e40af; font-size: 1.1rem;">📊 The data you need to know:</p>
-        <p style="margin: 0.5rem 0 0; color: #1e40af;">Companies that adopted AI CRM report <strong>+41% revenue per rep</strong> and <strong>-27% in sales cycle length</strong>, according to Salesforce State of Sales 2025.</p>
+      <div style="background: var(--muted); border-left: 4px solid var(--fio-forte); padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
+        <p style="margin: 0; font-weight: 700; color: var(--foreground); font-size: 1.1rem;">📊 The data you need to know:</p>
+        <p style="margin: 0.5rem 0 0; color: var(--foreground);">Companies that adopted AI CRM report <strong>+41% revenue per rep</strong> and <strong>-27% in sales cycle length</strong>, according to Salesforce State of Sales 2025.</p>
       </div>
 
       <h2>What is an AI CRM?</h2>
@@ -210,9 +210,9 @@ export const post: BlogPost = {
       </p>
 
       <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 2rem 0;">
-        <div style="background: #fef2f2; border: 1px solid #fecaca; padding: 1.25rem; border-radius: 0.75rem;">
-          <p style="font-weight: 700; color: #dc2626; margin: 0 0 0.75rem;">❌ Traditional CRM</p>
-          <ul style="margin: 0; padding-left: 1.25rem; color: #7f1d1d; line-height: 1.8;">
+        <div style="background: var(--muted); border: 1px solid var(--border); padding: 1.25rem; border-radius: 0.75rem;">
+          <p style="font-weight: 700; color: var(--pulso-escuro); margin: 0 0 0.75rem;">❌ Traditional CRM</p>
+          <ul style="margin: 0; padding-left: 1.25rem; color: var(--foreground); line-height: 1.8;">
             <li>Manual contact registration</li>
             <li>You decide when to follow up</li>
             <li>Historical reports</li>
@@ -220,9 +220,9 @@ export const post: BlogPost = {
             <li>Manual search for opportunities</li>
           </ul>
         </div>
-        <div style="background: #f0fdf4; border: 1px solid #bbf7d0; padding: 1.25rem; border-radius: 0.75rem;">
-          <p style="font-weight: 700; color: #16a34a; margin: 0 0 0.75rem;">✅ AI CRM</p>
-          <ul style="margin: 0; padding-left: 1.25rem; color: #14532d; line-height: 1.8;">
+        <div style="background: var(--muted); border: 1px solid var(--border); padding: 1.25rem; border-radius: 0.75rem;">
+          <p style="font-weight: 700; color: var(--foreground); margin: 0 0 0.75rem;">✅ AI CRM</p>
+          <ul style="margin: 0; padding-left: 1.25rem; color: var(--foreground); line-height: 1.8;">
             <li>Automatic data capture</li>
             <li>AI suggests the ideal contact moment</li>
             <li>Real-time closing forecasts</li>
@@ -259,9 +259,9 @@ export const post: BlogPost = {
         Imagine having an assistant that answers your questions about your pipeline in natural language: "Which deals haven't been contacted in 30+ days?", "What's my forecast for this month?", "Which clients should I visit this week?" — all in seconds, without complex reports.
       </p>
 
-      <div style="background: linear-gradient(135deg, #f5f3ff 0%, #ede9fe 100%); border-left: 4px solid #7c3aed; padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
-        <p style="margin: 0; font-weight: 700; color: #5b21b6; font-size: 1.1rem;">🤖 How Sirius CRM uses AI</p>
-        <p style="margin: 0.75rem 0 0; color: #4c1d95;">Sirius CRM integrates AI in three layers: <strong>(1)</strong> Automatic follow-up alerts based on repurchase behavior patterns; <strong>(2)</strong> Portfolio analysis to identify customers at churn risk; <strong>(3)</strong> SPIN assistant for lead qualification using consultative selling methodology in natural language.</p>
+      <div style="background: var(--muted); border-left: 4px solid var(--fio-forte); padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
+        <p style="margin: 0; font-weight: 700; color: var(--foreground); font-size: 1.1rem;">🤖 How Sirius CRM uses AI</p>
+        <p style="margin: 0.75rem 0 0; color: var(--foreground);">Sirius CRM integrates AI in three layers: <strong>(1)</strong> Automatic follow-up alerts based on repurchase behavior patterns; <strong>(2)</strong> Portfolio analysis to identify customers at churn risk; <strong>(3)</strong> SPIN assistant for lead qualification using consultative selling methodology in natural language.</p>
       </div>
 
       <h2>How to Choose an AI CRM for Your Business</h2>
@@ -297,40 +297,40 @@ export const post: BlogPost = {
         If you're still using a CRM without AI, or worse, still using spreadsheets, now is the time to change. The market won't wait.
       </p>
 
-      <div style="background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%); border: 1px solid #6ee7b7; padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0; text-align: center;">
-        <p style="font-weight: 700; color: #065f46; font-size: 1.1rem; margin: 0 0 0.75rem;">Try Sirius CRM with AI — Free</p>
-        <p style="color: #047857; margin: 0 0 1rem;">Visual pipeline + AI alerts + SPIN assistant. No credit card required.</p>
-        <p><strong><a href="/register" style="color: #059669; text-decoration: underline;">Create Free Account →</a></strong></p>
+      <div style="background: var(--muted); border: 1px solid var(--border); padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0; text-align: center;">
+        <p style="font-weight: 700; color: var(--foreground); font-size: 1.1rem; margin: 0 0 0.75rem;">Try Sirius CRM with AI — Free</p>
+        <p style="color: var(--foreground); margin: 0 0 1rem;">Visual pipeline + AI alerts + SPIN assistant. No credit card required.</p>
+        <p><strong><a href="/register" style="color: var(--foreground); text-decoration: underline;">Create Free Account →</a></strong></p>
       </div>
 
       <h2>FAQ: AI CRM</h2>
 
-      <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
-        <summary style="font-weight: 600; cursor: pointer; color: #1e293b; list-style: revert;">What is a CRM with Artificial Intelligence?</summary>
-        <p style="margin: 0.75rem 0 0; color: #4b5563;">A CRM with Artificial Intelligence is a customer management system that uses machine learning to automate tasks, predict closings, and prioritize leads. Unlike traditional CRMs (which only record), an AI CRM anticipates what will happen and recommends what to do now.</p>
+      <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
+        <summary style="font-weight: 600; cursor: pointer; color: var(--foreground); list-style: revert;">What is a CRM with Artificial Intelligence?</summary>
+        <p style="margin: 0.75rem 0 0; color: var(--foreground);">A CRM with Artificial Intelligence is a customer management system that uses machine learning to automate tasks, predict closings, and prioritize leads. Unlike traditional CRMs (which only record), an AI CRM anticipates what will happen and recommends what to do now.</p>
       </details>
 
-      <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
-        <summary style="font-weight: 600; cursor: pointer; color: #1e293b; list-style: revert;">Is an AI CRM expensive? Is it worth it for SMBs?</summary>
-        <p style="margin: 0.75rem 0 0; color: #4b5563;">No. In 2026, AI CRMs like Sirius CRM offer free plans with AI features included. The ROI is immediate: sales reps who use AI lead scoring close 3x more deals in less time, without hiring more reps.</p>
+      <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
+        <summary style="font-weight: 600; cursor: pointer; color: var(--foreground); list-style: revert;">Is an AI CRM expensive? Is it worth it for SMBs?</summary>
+        <p style="margin: 0.75rem 0 0; color: var(--foreground);">No. In 2026, AI CRMs like Sirius CRM offer free plans with AI features included. The ROI is immediate: sales reps who use AI lead scoring close 3x more deals in less time, without hiring more reps.</p>
       </details>
 
-      <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
-        <summary style="font-weight: 600; cursor: pointer; color: #1e293b; list-style: revert;">What's the difference between a traditional CRM and an AI CRM?</summary>
-        <p style="margin: 0.75rem 0 0; color: #4b5563;">Traditional CRM: records what happened, depends on the rep to decide everything, generates historical reports. AI CRM: predicts what will happen, suggests the ideal next action, automatically prioritizes the best leads, and detects deals at risk before they go cold.</p>
+      <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
+        <summary style="font-weight: 600; cursor: pointer; color: var(--foreground); list-style: revert;">What's the difference between a traditional CRM and an AI CRM?</summary>
+        <p style="margin: 0.75rem 0 0; color: var(--foreground);">Traditional CRM: records what happened, depends on the rep to decide everything, generates historical reports. AI CRM: predicts what will happen, suggests the ideal next action, automatically prioritizes the best leads, and detects deals at risk before they go cold.</p>
       </details>
 
-      <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
-        <summary style="font-weight: 600; cursor: pointer; color: #1e293b; list-style: revert;">How does Sirius CRM use AI?</summary>
-        <p style="margin: 0.75rem 0 0; color: #4b5563;">Sirius CRM uses AI in 3 layers: (1) Automatic follow-up alerts based on purchase behavior patterns; (2) Portfolio analysis to identify customers at churn risk; (3) SPIN assistant for lead qualification using consultative sales methodology in natural language.</p>
+      <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
+        <summary style="font-weight: 600; cursor: pointer; color: var(--foreground); list-style: revert;">How does Sirius CRM use AI?</summary>
+        <p style="margin: 0.75rem 0 0; color: var(--foreground);">Sirius CRM uses AI in 3 layers: (1) Automatic follow-up alerts based on purchase behavior patterns; (2) Portfolio analysis to identify customers at churn risk; (3) SPIN assistant for lead qualification using consultative sales methodology in natural language.</p>
       </details>
 
-      <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin-bottom: 2rem;">
-        <summary style="font-weight: 600; cursor: pointer; color: #1e293b; list-style: revert;">Do I need technical knowledge to use AI in a CRM?</summary>
-        <p style="margin: 0.75rem 0 0; color: #4b5563;">No. The best AI CRMs are designed for sales reps, not engineers. The AI works in the background — you receive alerts, suggestions, and forecasts in a clear and actionable way. No need to configure models or understand algorithms.</p>
+      <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 2rem;">
+        <summary style="font-weight: 600; cursor: pointer; color: var(--foreground); list-style: revert;">Do I need technical knowledge to use AI in a CRM?</summary>
+        <p style="margin: 0.75rem 0 0; color: var(--foreground);">No. The best AI CRMs are designed for sales reps, not engineers. The AI works in the background — you receive alerts, suggestions, and forecasts in a clear and actionable way. No need to configure models or understand algorithms.</p>
       </details>
 
-      <hr style="margin: 3rem 0; border: none; border-top: 1px solid #e5e7eb;" />
+      <hr style="margin: 3rem 0; border: none; border-top: 1px solid var(--border);" />
       <strong>Last Updated:</strong> February 10, 2026<br/>
       <strong>Author:</strong> Sirius CRM Team<br/>
       <strong>Read Time:</strong> 8 minutes

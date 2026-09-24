@@ -102,7 +102,7 @@ export default async function AboutPage({ params }: { params: Promise<{ locale: 
                 </p>
               </div>
               <div className="flex items-center justify-center">
-                <div className="relative w-full h-64 bg-gradient-to-br from-primary/20 to-primary/5 rounded-2xl flex items-center justify-center">
+                <div className="relative w-full h-64 rounded-2xl flex items-center justify-center">
                   <Target className="h-32 w-32 text-primary" />
                 </div>
               </div>

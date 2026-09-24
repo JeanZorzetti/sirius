@@ -152,15 +152,13 @@ export default async function BlogCategoryPage({
             </Link>
 
             <div className="relative text-center">
-              {/* Decorative gradient blur */}
-              <div className="absolute -top-20 left-1/2 -translate-x-1/2 w-150 h-150 bg-linear-to-r from-blue-500/20 via-purple-500/20 to-pink-500/20 rounded-full blur-3xl -z-10" />
 
               <Badge className="mb-4 bg-primary/10 text-primary hover:bg-primary/20">
                 <Tag className="w-3 h-3 mr-1.5" />
                 {categoryName}
               </Badge>
 
-              <h1 className="text-4xl sm:text-5xl font-bold tracking-tight bg-linear-to-br from-foreground via-foreground/90 to-foreground/70 bg-clip-text text-transparent mb-4">
+              <h1 className="text-4xl sm:text-5xl font-bold tracking-tight mb-4">
                 {categoryName}
               </h1>
               <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
@@ -220,8 +218,6 @@ export default async function BlogCategoryPage({
               {posts.map((post) => (
                 <Link key={post.slug} href={`/blog/${post.slug}`} className="block h-full group">
                   <Card className="h-full flex flex-col relative overflow-hidden border-border/50 bg-card hover:shadow-2xl hover:shadow-primary/10 hover:-translate-y-2 transition-all duration-500 ease-out rounded-2xl p-6">
-                    {/* Animated border gradient */}
-                    <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-linear-to-r from-blue-500/20 via-purple-500/20 to-pink-500/20 blur-xl -z-10" />
 
                     {/* Thumbnail */}
                     <div className="relative aspect-video w-full rounded-xl overflow-hidden mb-4">

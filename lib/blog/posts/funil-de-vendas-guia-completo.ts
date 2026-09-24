@@ -35,7 +35,7 @@ export const post: BlogPost = {
 
       <div class="callout-stat">
         <p><strong>📊 Dado de Mercado</strong></p>
-        <p style="font-size: 3rem; font-weight: 800; color: #2563eb; margin: 1rem 0; line-height: 1;">68%</p>
+        <p style="font-size: 3rem; font-weight: 800; color: var(--foreground); margin: 1rem 0; line-height: 1;">68%</p>
         <p>das empresas <strong>não têm</strong> seus funis de venda claramente definidos e mapeados, segundo pesquisa da CSO Insights de <strong>2025</strong>. Essas empresas crescem 48% mais devagar que concorrentes com funis estruturados.</p>
       </div>
 
@@ -43,27 +43,27 @@ export const post: BlogPost = {
 
       <table style="width: 100%; border-collapse: collapse; margin: 2rem 0; font-size: 0.95rem;">
         <thead>
-          <tr style="background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%); color: white;">
-            <th style="padding: 1rem; text-align: left; border: 1px solid #ddd;">Conceito</th>
-            <th style="padding: 1rem; text-align: left; border: 1px solid #ddd;">Foco</th>
-            <th style="padding: 1rem; text-align: left; border: 1px solid #ddd;">Quando Usar</th>
+          <tr style="background: var(--primary); color: white;">
+            <th style="padding: 1rem; text-align: left; border: 1px solid var(--border);">Conceito</th>
+            <th style="padding: 1rem; text-align: left; border: 1px solid var(--border);">Foco</th>
+            <th style="padding: 1rem; text-align: left; border: 1px solid var(--border);">Quando Usar</th>
           </tr>
         </thead>
         <tbody>
-          <tr style="background: #f8fafc;">
-            <td style="padding: 1rem; border: 1px solid #e2e8f0; color: #1e293b;"><strong>Funil de Vendas</strong></td>
-            <td style="padding: 1rem; border: 1px solid #e2e8f0; color: #475569;">Volume agregado de leads em cada etapa</td>
-            <td style="padding: 1rem; border: 1px solid #e2e8f0; color: #475569;">Análise estratégica, identificação de gargalos</td>
+          <tr style="background: var(--muted);">
+            <td style="padding: 1rem; border: 1px solid var(--border); color: var(--foreground);"><strong>Funil de Vendas</strong></td>
+            <td style="padding: 1rem; border: 1px solid var(--border); color: var(--foreground);">Volume agregado de leads em cada etapa</td>
+            <td style="padding: 1rem; border: 1px solid var(--border); color: var(--foreground);">Análise estratégica, identificação de gargalos</td>
           </tr>
           <tr style="background: #ffffff;">
-            <td style="padding: 1rem; border: 1px solid #e2e8f0; color: #1e293b;"><strong>Pipeline de Vendas</strong></td>
-            <td style="padding: 1rem; border: 1px solid #e2e8f0; color: #475569;">Deals individuais e seu progresso</td>
-            <td style="padding: 1rem; border: 1px solid #e2e8f0; color: #475569;">Gestão operacional dia a dia</td>
+            <td style="padding: 1rem; border: 1px solid var(--border); color: var(--foreground);"><strong>Pipeline de Vendas</strong></td>
+            <td style="padding: 1rem; border: 1px solid var(--border); color: var(--foreground);">Deals individuais e seu progresso</td>
+            <td style="padding: 1rem; border: 1px solid var(--border); color: var(--foreground);">Gestão operacional dia a dia</td>
           </tr>
-          <tr style="background: #f8fafc;">
-            <td style="padding: 1rem; border: 1px solid #e2e8f0; color: #1e293b;"><strong>Jornada do Cliente</strong></td>
-            <td style="padding: 1rem; border: 1px solid #e2e8f0; color: #475569;">Experiência e emoções do comprador</td>
-            <td style="padding: 1rem; border: 1px solid #e2e8f0; color: #475569;">Design de experiência, UX/CX</td>
+          <tr style="background: var(--muted);">
+            <td style="padding: 1rem; border: 1px solid var(--border); color: var(--foreground);"><strong>Jornada do Cliente</strong></td>
+            <td style="padding: 1rem; border: 1px solid var(--border); color: var(--foreground);">Experiência e emoções do comprador</td>
+            <td style="padding: 1rem; border: 1px solid var(--border); color: var(--foreground);">Design de experiência, UX/CX</td>
           </tr>
         </tbody>
       </table>
@@ -184,7 +184,7 @@ export const post: BlogPost = {
 
       <div class="callout-key">
         <p><strong>🎯 As 5 Objeções Que Você Vai Enfrentar (e Como Desarmar)</strong></p>
-        <ol style="margin: 1rem 0; padding-left: 1.5rem; color: #475569;">
+        <ol style="margin: 1rem 0; padding-left: 1.5rem; color: var(--foreground);">
           <li><strong>"Está caro"</strong> → Não é preço, é percepção de valor. Mostre ROI calculado com dados reais.</li>
           <li><strong>"Preciso pensar"</strong> → Tradução: "Não vi urgência". Mostre custo de não agir (status quo).</li>
           <li><strong>"Vou conversar com sócio/esposa"</strong> → Você não qualificou autoridade. Volte 2 casas.</li>
@@ -215,14 +215,14 @@ export const post: BlogPost = {
 
       <div class="callout-stat">
         <p><strong>📊 Benchmarks de Conversão por Etapa (Média B2B SaaS 2026)</strong></p>
-        <ul style="margin: 1rem 0; padding-left: 1.5rem; color: #475569;">
+        <ul style="margin: 1rem 0; padding-left: 1.5rem; color: var(--foreground);">
           <li><strong>Visitante → Lead:</strong> 2-5%</li>
           <li><strong>Lead → Qualificado (SQL):</strong> 20-30%</li>
           <li><strong>SQL → Proposta:</strong> 40-60%</li>
           <li><strong>Proposta → Fechamento:</strong> 25-35%</li>
           <li><strong>CONVERSÃO GERAL:</strong> 0,5-2% de visitante para cliente</li>
         </ul>
-        <p style="font-size: 0.875rem; color: #64748b; margin-top: 1rem;">Fonte: HubSpot State of Inbound 2025</p>
+        <p style="font-size: 0.875rem; color: var(--foreground); margin-top: 1rem;">Fonte: HubSpot State of Inbound 2025</p>
       </div>
 
       <div id="calculadora-funil" style="margin: 3rem 0;">
@@ -246,7 +246,7 @@ export const post: BlogPost = {
 
       <div class="callout-tip">
         <p><strong>💡 Template de Perguntas para Entrevista de Cliente</strong></p>
-        <ol style="margin: 1rem 0; padding-left: 1.5rem; color: #475569;">
+        <ol style="margin: 1rem 0; padding-left: 1.5rem; color: var(--foreground);">
           <li>Como você nos descobriu pela primeira vez?</li>
           <li>O que te motivou a procurar uma solução como a nossa?</li>
           <li>Que outras empresas você considerou?</li>
@@ -295,16 +295,16 @@ export const post: BlogPost = {
         Essa é a técnica dos top performers. Ao invés de pensar "quantos leads preciso gerar?", pense ao contrário:
       </p>
 
-      <div style="background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); padding: 2rem; border-radius: 1rem; border-left: 6px solid #2563eb; margin: 2rem 0;">
-        <p style="font-size: 1.125rem; font-weight: 700; color: #1e40af; margin-bottom: 1rem;">Exemplo de Cálculo Inverso</p>
-        <ol style="margin: 0; padding-left: 1.5rem; color: #1e40af; line-height: 1.8;">
+      <div style="background: var(--muted); padding: 2rem; border-radius: 1rem; border-left: 6px solid var(--fio-forte); margin: 2rem 0;">
+        <p style="font-size: 1.125rem; font-weight: 700; color: var(--foreground); margin-bottom: 1rem;">Exemplo de Cálculo Inverso</p>
+        <ol style="margin: 0; padding-left: 1.5rem; color: var(--foreground); line-height: 1.8;">
           <li><strong>Meta:</strong> Fechar 10 novos clientes/mês</li>
           <li><strong>Taxa de fechamento:</strong> 30% das propostas → Preciso de 34 propostas</li>
           <li><strong>Taxa de proposta:</strong> 50% dos qualificados → Preciso de 68 SQLs</li>
           <li><strong>Taxa de qualificação:</strong> 25% dos leads → Preciso de 272 leads</li>
           <li><strong>Taxa de conversão visitante:</strong> 3% → Preciso de 9.067 visitantes</li>
         </ol>
-        <p style="margin-top: 1.5rem; padding: 1rem; background: white; border-radius: 0.5rem; font-weight: 700; color: #2563eb;">
+        <p style="margin-top: 1.5rem; padding: 1rem; background: white; border-radius: 0.5rem; font-weight: 700; color: var(--foreground);">
           ✅ Conclusão: Para bater meta de 10 clientes/mês, preciso de ~9k visitantes no topo do funil
         </p>
       </div>
@@ -317,32 +317,32 @@ export const post: BlogPost = {
 
       <table style="width: 100%; border-collapse: collapse; margin: 2rem 0; font-size: 0.95rem;">
         <thead>
-          <tr style="background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%); color: white;">
-            <th style="padding: 1rem; text-align: left; border: 1px solid #ddd;">Se Sua Conversão Mais Baixa É...</th>
-            <th style="padding: 1rem; text-align: left; border: 1px solid #ddd;">O Gargalo É...</th>
-            <th style="padding: 1rem; text-align: left; border: 1px solid #ddd;">Ação Prioritária</th>
+          <tr style="background: var(--primary); color: white;">
+            <th style="padding: 1rem; text-align: left; border: 1px solid var(--border);">Se Sua Conversão Mais Baixa É...</th>
+            <th style="padding: 1rem; text-align: left; border: 1px solid var(--border);">O Gargalo É...</th>
+            <th style="padding: 1rem; text-align: left; border: 1px solid var(--border);">Ação Prioritária</th>
           </tr>
         </thead>
         <tbody>
-          <tr style="background: #f8fafc;">
-            <td style="padding: 1rem; border: 1px solid #e2e8f0; color: #475569;">Visitante → Lead (&lt;2%)</td>
-            <td style="padding: 1rem; border: 1px solid #e2e8f0; color: #1e293b;"><strong>Oferta fraca</strong></td>
-            <td style="padding: 1rem; border: 1px solid #e2e8f0; color: #475569;">Crie lead magnet irresistível (calculadora, auditoria gratuita)</td>
+          <tr style="background: var(--muted);">
+            <td style="padding: 1rem; border: 1px solid var(--border); color: var(--foreground);">Visitante → Lead (&lt;2%)</td>
+            <td style="padding: 1rem; border: 1px solid var(--border); color: var(--foreground);"><strong>Oferta fraca</strong></td>
+            <td style="padding: 1rem; border: 1px solid var(--border); color: var(--foreground);">Crie lead magnet irresistível (calculadora, auditoria gratuita)</td>
           </tr>
           <tr style="background: #ffffff;">
-            <td style="padding: 1rem; border: 1px solid #e2e8f0; color: #475569;">Lead → SQL (&lt;20%)</td>
-            <td style="padding: 1rem; border: 1px solid #e2e8f0; color: #1e293b;"><strong>Qualificação ruim</strong></td>
-            <td style="padding: 1rem; border: 1px solid #e2e8f0; color: #475569;">Melhore ICP targeting, adicione campo "empresa" no form</td>
+            <td style="padding: 1rem; border: 1px solid var(--border); color: var(--foreground);">Lead → SQL (&lt;20%)</td>
+            <td style="padding: 1rem; border: 1px solid var(--border); color: var(--foreground);"><strong>Qualificação ruim</strong></td>
+            <td style="padding: 1rem; border: 1px solid var(--border); color: var(--foreground);">Melhore ICP targeting, adicione campo "empresa" no form</td>
           </tr>
-          <tr style="background: #f8fafc;">
-            <td style="padding: 1rem; border: 1px solid #e2e8f0; color: #475569;">SQL → Proposta (&lt;40%)</td>
-            <td style="padding: 1rem; border: 1px solid #e2e8f0; color: #1e293b;"><strong>Discovery fraco</strong></td>
-            <td style="padding: 1rem; border: 1px solid #e2e8f0; color: #475569;">Treine time em SPIN Selling, melhore qualificação</td>
+          <tr style="background: var(--muted);">
+            <td style="padding: 1rem; border: 1px solid var(--border); color: var(--foreground);">SQL → Proposta (&lt;40%)</td>
+            <td style="padding: 1rem; border: 1px solid var(--border); color: var(--foreground);"><strong>Discovery fraco</strong></td>
+            <td style="padding: 1rem; border: 1px solid var(--border); color: var(--foreground);">Treine time em SPIN Selling, melhore qualificação</td>
           </tr>
           <tr style="background: #ffffff;">
-            <td style="padding: 1rem; border: 1px solid #e2e8f0; color: #475569;">Proposta → Fechamento (&lt;25%)</td>
-            <td style="padding: 1rem; border: 1px solid #e2e8f0; color: #1e293b;"><strong>Proposta/preço/objeções</strong></td>
-            <td style="padding: 1rem; border: 1px solid #e2e8f0; color: #475569;">Revise estrutura de proposta, adicione social proof, teste garantias</td>
+            <td style="padding: 1rem; border: 1px solid var(--border); color: var(--foreground);">Proposta → Fechamento (&lt;25%)</td>
+            <td style="padding: 1rem; border: 1px solid var(--border); color: var(--foreground);"><strong>Proposta/preço/objeções</strong></td>
+            <td style="padding: 1rem; border: 1px solid var(--border); color: var(--foreground);">Revise estrutura de proposta, adicione social proof, teste garantias</td>
           </tr>
         </tbody>
       </table>
@@ -353,7 +353,7 @@ export const post: BlogPost = {
         O que não é medido não é gerenciado. Configure no mínimo estes 8 KPIs no seu <a href="/dashboard/analytics">dashboard de analytics</a>:
       </p>
 
-      <ol style="margin: 1rem 0; padding-left: 1.5rem; color: #475569; line-height: 1.8;">
+      <ol style="margin: 1rem 0; padding-left: 1.5rem; color: var(--foreground); line-height: 1.8;">
         <li><strong>Volume por etapa</strong> — Quantos deals em cada stage</li>
         <li><strong>Taxa de conversão entre etapas</strong> — % que avança de uma stage para próxima</li>
         <li><strong>Tempo médio por etapa</strong> — Quantos dias deals ficam parados</li>
@@ -370,7 +370,7 @@ export const post: BlogPost = {
         Funil sem governança apodrece. Crie ritual semanal de 30min com a equipe comercial (sexta 16h funciona bem) para revisar:
       </p>
 
-      <ul style="margin: 1rem 0; padding-left: 1.5rem; color: #475569; line-height: 1.8;">
+      <ul style="margin: 1rem 0; padding-left: 1.5rem; color: var(--foreground); line-height: 1.8;">
         <li>Deals que avançaram e por quê</li>
         <li>Deals que travaram e o que fazer</li>
         <li>Deals para marcar como "Perdido" e aprendizados</li>
@@ -422,7 +422,7 @@ export const post: BlogPost = {
         Nem todo lead vale igual. Analise a taxa de conversão separada por origem:
       </p>
 
-      <ul style="margin: 1rem 0; padding-left: 1.5rem; color: #475569;">
+      <ul style="margin: 1rem 0; padding-left: 1.5rem; color: var(--foreground);">
         <li><strong>Indicações:</strong> 40-60% (mais alta sempre)</li>
         <li><strong>Inbound (conteúdo):</strong> 15-30%</li>
         <li><strong>Outbound cold:</strong> 5-15%</li>
@@ -527,7 +527,7 @@ export const post: BlogPost = {
 
       <h3>Funil B2B SaaS (Ciclo Médio: 30-90 dias)</h3>
 
-      <ol style="margin: 1rem 0; padding-left: 1.5rem; color: #475569; line-height: 1.8;">
+      <ol style="margin: 1rem 0; padding-left: 1.5rem; color: var(--foreground); line-height: 1.8;">
         <li><strong>Trial/Demo Request:</strong> Baixou trial ou pediu demo</li>
         <li><strong>Trial Ativo:</strong> Criou conta e logou pelo menos 2x</li>
         <li><strong>Oportunidade Qualificada:</strong> Teve reunião com AE (Account Executive)</li>
@@ -537,7 +537,7 @@ export const post: BlogPost = {
 
       <h3>Funil E-commerce (Ciclo: 0-7 dias)</h3>
 
-      <ol style="margin: 1rem 0; padding-left: 1.5rem; color: #475569; line-height: 1.8;">
+      <ol style="margin: 1rem 0; padding-left: 1.5rem; color: var(--foreground); line-height: 1.8;">
         <li><strong>Visitante:</strong> Acessou produto</li>
         <li><strong>Engajado:</strong> Adicionou ao carrinho</li>
         <li><strong>Iniciou Checkout:</strong> Preencheu dados</li>
@@ -546,7 +546,7 @@ export const post: BlogPost = {
 
       <h3>Funil Consultoria/Serviços (Ciclo: 15-60 dias)</h3>
 
-      <ol style="margin: 1rem 0; padding-left: 1.5rem; color: #475569; line-height: 1.8;">
+      <ol style="margin: 1rem 0; padding-left: 1.5rem; color: var(--foreground); line-height: 1.8;">
         <li><strong>Consulta:</strong> Preencheu formulário de orçamento</li>
         <li><strong>Reunião Agendada:</strong> Confirmou diagnóstico gratuito</li>
         <li><strong>Proposta Enviada:</strong> Recebeu proposta técnica + comercial</li>
@@ -556,7 +556,7 @@ export const post: BlogPost = {
 
       <h3>Funil Imobiliário (Ciclo: 90-180 dias)</h3>
 
-      <ol style="margin: 1rem 0; padding-left: 1.5rem; color: #475569; line-height: 1.8;">
+      <ol style="margin: 1rem 0; padding-left: 1.5rem; color: var(--foreground); line-height: 1.8;">
         <li><strong>Lead Captado:</strong> Deixou contato (site, stand, anúncio)</li>
         <li><strong>Visita Agendada:</strong> Confirmou visita ao imóvel</li>
         <li><strong>Proposta Apresentada:</strong> Recebeu simulação de financiamento</li>
@@ -572,34 +572,34 @@ export const post: BlogPost = {
       </p>
 
       <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin: 2rem 0;">
-        <div style="background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); padding: 1.5rem; border-radius: 1rem; border-left: 6px solid #2563eb;">
-          <p style="font-weight: 700; color: #1e40af; margin-bottom: 0.5rem;">📊 Funil Visual Kanban</p>
-          <p style="color: #475569; font-size: 0.95rem; margin: 0;">Arraste e solte deals entre etapas, veja volume e valor total por stage em tempo real.</p>
+        <div style="background: var(--muted); padding: 1.5rem; border-radius: 1rem; border-left: 6px solid var(--fio-forte);">
+          <p style="font-weight: 700; color: var(--foreground); margin-bottom: 0.5rem;">📊 Funil Visual Kanban</p>
+          <p style="color: var(--foreground); font-size: 0.95rem; margin: 0;">Arraste e solte deals entre etapas, veja volume e valor total por stage em tempo real.</p>
         </div>
 
-        <div style="background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); padding: 1.5rem; border-radius: 1rem; border-left: 6px solid #2563eb;">
-          <p style="font-weight: 700; color: #1e40af; margin-bottom: 0.5rem;">🚨 Alertas Inteligentes</p>
-          <p style="color: #475569; font-size: 0.95rem; margin: 0;">Notificações push quando deal fica 5+ dias sem interação — nunca mais perca oportunidade por esquecimento.</p>
+        <div style="background: var(--muted); padding: 1.5rem; border-radius: 1rem; border-left: 6px solid var(--fio-forte);">
+          <p style="font-weight: 700; color: var(--foreground); margin-bottom: 0.5rem;">🚨 Alertas Inteligentes</p>
+          <p style="color: var(--foreground); font-size: 0.95rem; margin: 0;">Notificações push quando deal fica 5+ dias sem interação — nunca mais perca oportunidade por esquecimento.</p>
         </div>
 
-        <div style="background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); padding: 1.5rem; border-radius: 1rem; border-left: 6px solid #2563eb;">
-          <p style="font-weight: 700; color: #1e40af; margin-bottom: 0.5rem;">📈 Analytics Automático</p>
-          <p style="color: #475569; font-size: 0.95rem; margin: 0;">Taxa de conversão, tempo médio por etapa, velocity — tudo calculado e atualizado em tempo real.</p>
+        <div style="background: var(--muted); padding: 1.5rem; border-radius: 1rem; border-left: 6px solid var(--fio-forte);">
+          <p style="font-weight: 700; color: var(--foreground); margin-bottom: 0.5rem;">📈 Analytics Automático</p>
+          <p style="color: var(--foreground); font-size: 0.95rem; margin: 0;">Taxa de conversão, tempo médio por etapa, velocity — tudo calculado e atualizado em tempo real.</p>
         </div>
 
-        <div style="background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); padding: 1.5rem; border-radius: 1rem; border-left: 6px solid #2563eb;">
-          <p style="font-weight: 700; color: #1e40af; margin-bottom: 0.5rem;">💬 WhatsApp Integrado</p>
-          <p style="color: #475569; font-size: 0.95rem; margin: 0;">Clique para enviar mensagem direto do deal. Histórico completo de conversas salvo automaticamente.</p>
+        <div style="background: var(--muted); padding: 1.5rem; border-radius: 1rem; border-left: 6px solid var(--fio-forte);">
+          <p style="font-weight: 700; color: var(--foreground); margin-bottom: 0.5rem;">💬 WhatsApp Integrado</p>
+          <p style="color: var(--foreground); font-size: 0.95rem; margin: 0;">Clique para enviar mensagem direto do deal. Histórico completo de conversas salvo automaticamente.</p>
         </div>
 
-        <div style="background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); padding: 1.5rem; border-radius: 1rem; border-left: 6px solid #2563eb;">
-          <p style="font-weight: 700; color: #1e40af; margin-bottom: 0.5rem;">🔄 Pipelines Múltiplos</p>
-          <p style="color: #475569; font-size: 0.95rem; margin: 0;">Crie funis separados para produtos diferentes ou equipes diferentes. Usuários PRO têm pipelines ilimitados.</p>
+        <div style="background: var(--muted); padding: 1.5rem; border-radius: 1rem; border-left: 6px solid var(--fio-forte);">
+          <p style="font-weight: 700; color: var(--foreground); margin-bottom: 0.5rem;">🔄 Pipelines Múltiplos</p>
+          <p style="color: var(--foreground); font-size: 0.95rem; margin: 0;">Crie funis separados para produtos diferentes ou equipes diferentes. Usuários PRO têm pipelines ilimitados.</p>
         </div>
 
-        <div style="background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); padding: 1.5rem; border-radius: 1rem; border-left: 6px solid #2563eb;">
-          <p style="font-weight: 700; color: #1e40af; margin-bottom: 0.5rem;">📧 Automações de Email</p>
-          <p style="color: #475569; font-size: 0.95rem; margin: 0;">Configure emails automáticos ao criar deal, mudar de stage, ou depois de X dias sem resposta.</p>
+        <div style="background: var(--muted); padding: 1.5rem; border-radius: 1rem; border-left: 6px solid var(--fio-forte);">
+          <p style="font-weight: 700; color: var(--foreground); margin-bottom: 0.5rem;">📧 Automações de Email</p>
+          <p style="color: var(--foreground); font-size: 0.95rem; margin: 0;">Configure emails automáticos ao criar deal, mudar de stage, ou depois de X dias sem resposta.</p>
         </div>
       </div>
 
@@ -620,7 +620,7 @@ export const post: BlogPost = {
 
       <div class="callout-key">
         <p><strong>🎯 Seus Próximos Passos (Comece Hoje)</strong></p>
-        <ol style="margin: 1rem 0; padding-left: 1.5rem; color: #475569; line-height: 1.8;">
+        <ol style="margin: 1rem 0; padding-left: 1.5rem; color: var(--foreground); line-height: 1.8;">
           <li><a href="#calculadora-funil">Use a calculadora acima</a> para diagnosticar onde está seu gargalo</li>
           <li><a href="#template-download">Baixe o template de implementação</a> e comece a preencher</li>
           <li>Agende 1h na agenda esta semana para mapear sua jornada real do cliente</li>
@@ -637,30 +637,30 @@ export const post: BlogPost = {
         Bora construir seu funil de alta conversão. 🚀
       </p>
 
-      <hr style="margin: 3rem 0; border: 0; border-top: 2px solid #e2e8f0;" />
+      <hr style="margin: 3rem 0; border: 0; border-top: 2px solid var(--border);" />
 
       <div style="margin-top: 3rem;">
-        <h2 style="font-size: 1.875rem; font-weight: 800; color: #1e293b; margin-bottom: 0.5rem; text-align: center;">
+        <h2 style="font-size: 1.875rem; font-weight: 800; color: var(--foreground); margin-bottom: 0.5rem; text-align: center;">
           📚 Continue Aprendendo
         </h2>
-        <p style="text-align: center; color: #64748b; margin-bottom: 2rem; font-size: 1.125rem;">
+        <p style="text-align: center; color: var(--foreground); margin-bottom: 2rem; font-size: 1.125rem;">
           Apronfunde seus conhecimentos com nossos guias completos
         </p>
 
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem;">
           <!-- Card 1 -->
           <a href="/blog/como-organizar-pipeline-vendas" style="text-decoration: none;">
-            <div style="background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); border: 2px solid #93c5fd; border-radius: 1rem; padding: 1.5rem; transition: transform 0.2s, box-shadow 0.2s; height: 100%;">
-              <div style="background: #2563eb; width: 3rem; height: 3rem; border-radius: 0.75rem; display: flex; align-items: center; justify-content: center; margin-bottom: 1rem; font-size: 1.5rem;">
+            <div style="background: var(--muted); border: 2px solid var(--border); border-radius: 1rem; padding: 1.5rem; transition: transform 0.2s, box-shadow 0.2s; height: 100%;">
+              <div style="background: var(--primary); width: 3rem; height: 3rem; border-radius: 0.75rem; display: flex; align-items: center; justify-content: center; margin-bottom: 1rem; font-size: 1.5rem;">
                 📊
               </div>
-              <h3 style="font-size: 1.125rem; font-weight: 700; color: #1e40af; margin-bottom: 0.75rem; line-height: 1.4;">
+              <h3 style="font-size: 1.125rem; font-weight: 700; color: var(--foreground); margin-bottom: 0.75rem; line-height: 1.4;">
                 Como Organizar Seu Pipeline de Vendas
               </h3>
-              <p style="color: #475569; font-size: 0.9375rem; margin: 0; line-height: 1.6;">
+              <p style="color: var(--foreground); font-size: 0.9375rem; margin: 0; line-height: 1.6;">
                 O guia definitivo para manter seu funil sempre fluindo e fechar mais negócios consistentemente.
               </p>
-              <div style="margin-top: 1rem; color: #2563eb; font-weight: 600; font-size: 0.875rem;">
+              <div style="margin-top: 1rem; color: var(--foreground); font-weight: 600; font-size: 0.875rem;">
                 Ler artigo →
               </div>
             </div>
@@ -668,17 +668,17 @@ export const post: BlogPost = {
 
           <!-- Card 2 -->
           <a href="/blog/como-escolher-crm-b2b-2026" style="text-decoration: none;">
-            <div style="background: linear-gradient(135deg, #f0f9ff 0%, #dbeafe 100%); border: 2px solid #93c5fd; border-radius: 1rem; padding: 1.5rem; transition: transform 0.2s, box-shadow 0.2s; height: 100%;">
-              <div style="background: #3b82f6; width: 3rem; height: 3rem; border-radius: 0.75rem; display: flex; align-items: center; justify-content: center; margin-bottom: 1rem; font-size: 1.5rem;">
+            <div style="background: var(--muted); border: 2px solid var(--border); border-radius: 1rem; padding: 1.5rem; transition: transform 0.2s, box-shadow 0.2s; height: 100%;">
+              <div style="background: var(--primary); width: 3rem; height: 3rem; border-radius: 0.75rem; display: flex; align-items: center; justify-content: center; margin-bottom: 1rem; font-size: 1.5rem;">
                 🎯
               </div>
-              <h3 style="font-size: 1.125rem; font-weight: 700; color: #1e40af; margin-bottom: 0.75rem; line-height: 1.4;">
+              <h3 style="font-size: 1.125rem; font-weight: 700; color: var(--foreground); margin-bottom: 0.75rem; line-height: 1.4;">
                 CRM para Iniciantes: Guia Completo
               </h3>
-              <p style="color: #475569; font-size: 0.9375rem; margin: 0; line-height: 1.6;">
+              <p style="color: var(--foreground); font-size: 0.9375rem; margin: 0; line-height: 1.6;">
                 Tudo que você precisa saber para escolher e implementar um CRM que realmente funciona.
               </p>
-              <div style="margin-top: 1rem; color: #2563eb; font-weight: 600; font-size: 0.875rem;">
+              <div style="margin-top: 1rem; color: var(--foreground); font-weight: 600; font-size: 0.875rem;">
                 Ler artigo →
               </div>
             </div>
@@ -686,17 +686,17 @@ export const post: BlogPost = {
 
           <!-- Card 3 -->
           <a href="/blog/follow-up-vendas-guia-completo" style="text-decoration: none;">
-            <div style="background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%); border: 2px solid #93c5fd; border-radius: 1rem; padding: 1.5rem; transition: transform 0.2s, box-shadow 0.2s; height: 100%;">
-              <div style="background: #3b82f6; width: 3rem; height: 3rem; border-radius: 0.75rem; display: flex; align-items: center; justify-content: center; margin-bottom: 1rem; font-size: 1.5rem;">
+            <div style="background: var(--muted); border: 2px solid var(--border); border-radius: 1rem; padding: 1.5rem; transition: transform 0.2s, box-shadow 0.2s; height: 100%;">
+              <div style="background: var(--primary); width: 3rem; height: 3rem; border-radius: 0.75rem; display: flex; align-items: center; justify-content: center; margin-bottom: 1rem; font-size: 1.5rem;">
                 💬
               </div>
-              <h3 style="font-size: 1.125rem; font-weight: 700; color: #1e40af; margin-bottom: 0.75rem; line-height: 1.4;">
+              <h3 style="font-size: 1.125rem; font-weight: 700; color: var(--foreground); margin-bottom: 0.75rem; line-height: 1.4;">
                 Follow-up de Vendas: Guia Definitivo
               </h3>
-              <p style="color: #475569; font-size: 0.9375rem; margin: 0; line-height: 1.6;">
+              <p style="color: var(--foreground); font-size: 0.9375rem; margin: 0; line-height: 1.6;">
                 As estratégias e frameworks para nunca mais perder um lead por falta de acompanhamento.
               </p>
-              <div style="margin-top: 1rem; color: #2563eb; font-weight: 600; font-size: 0.875rem;">
+              <div style="margin-top: 1rem; color: var(--foreground); font-weight: 600; font-size: 0.875rem;">
                 Ler artigo →
               </div>
             </div>
@@ -743,7 +743,7 @@ export const post: BlogPost = {
 
       <div class="callout-stat">
         <p><strong>📊 Market Data</strong></p>
-        <p style="font-size: 3rem; font-weight: 800; color: #2563eb; margin: 1rem 0; line-height: 1;">68%</p>
+        <p style="font-size: 3rem; font-weight: 800; color: var(--foreground); margin: 1rem 0; line-height: 1;">68%</p>
         <p>of companies <strong>don't have</strong> their sales funnels clearly defined and mapped, according to CSO Insights research from <strong>2025</strong>. These companies grow 48% slower than competitors with structured funnels.</p>
       </div>
 
@@ -751,27 +751,27 @@ export const post: BlogPost = {
 
       <table style="width: 100%; border-collapse: collapse; margin: 2rem 0; font-size: 0.95rem;">
         <thead>
-          <tr style="background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%); color: white;">
-            <th style="padding: 1rem; text-align: left; border: 1px solid #ddd;">Concept</th>
-            <th style="padding: 1rem; text-align: left; border: 1px solid #ddd;">Focus</th>
-            <th style="padding: 1rem; text-align: left; border: 1px solid #ddd;">When to Use</th>
+          <tr style="background: var(--primary); color: white;">
+            <th style="padding: 1rem; text-align: left; border: 1px solid var(--border);">Concept</th>
+            <th style="padding: 1rem; text-align: left; border: 1px solid var(--border);">Focus</th>
+            <th style="padding: 1rem; text-align: left; border: 1px solid var(--border);">When to Use</th>
           </tr>
         </thead>
         <tbody>
-          <tr style="background: #f8fafc;">
-            <td style="padding: 1rem; border: 1px solid #e2e8f0; color: #1e293b;"><strong>Sales Funnel</strong></td>
-            <td style="padding: 1rem; border: 1px solid #e2e8f0; color: #475569;">Aggregate volume of leads at each stage</td>
-            <td style="padding: 1rem; border: 1px solid #e2e8f0; color: #475569;">Strategic analysis, bottleneck identification</td>
+          <tr style="background: var(--muted);">
+            <td style="padding: 1rem; border: 1px solid var(--border); color: var(--foreground);"><strong>Sales Funnel</strong></td>
+            <td style="padding: 1rem; border: 1px solid var(--border); color: var(--foreground);">Aggregate volume of leads at each stage</td>
+            <td style="padding: 1rem; border: 1px solid var(--border); color: var(--foreground);">Strategic analysis, bottleneck identification</td>
           </tr>
           <tr style="background: #ffffff;">
-            <td style="padding: 1rem; border: 1px solid #e2e8f0; color: #1e293b;"><strong>Sales Pipeline</strong></td>
-            <td style="padding: 1rem; border: 1px solid #e2e8f0; color: #475569;">Individual deals and their progress</td>
-            <td style="padding: 1rem; border: 1px solid #e2e8f0; color: #475569;">Day-to-day operational management</td>
+            <td style="padding: 1rem; border: 1px solid var(--border); color: var(--foreground);"><strong>Sales Pipeline</strong></td>
+            <td style="padding: 1rem; border: 1px solid var(--border); color: var(--foreground);">Individual deals and their progress</td>
+            <td style="padding: 1rem; border: 1px solid var(--border); color: var(--foreground);">Day-to-day operational management</td>
           </tr>
-          <tr style="background: #f8fafc;">
-            <td style="padding: 1rem; border: 1px solid #e2e8f0; color: #1e293b;"><strong>Customer Journey</strong></td>
-            <td style="padding: 1rem; border: 1px solid #e2e8f0; color: #475569;">Buyer's experience and emotions</td>
-            <td style="padding: 1rem; border: 1px solid #e2e8f0; color: #475569;">Experience design, UX/CX</td>
+          <tr style="background: var(--muted);">
+            <td style="padding: 1rem; border: 1px solid var(--border); color: var(--foreground);"><strong>Customer Journey</strong></td>
+            <td style="padding: 1rem; border: 1px solid var(--border); color: var(--foreground);">Buyer's experience and emotions</td>
+            <td style="padding: 1rem; border: 1px solid var(--border); color: var(--foreground);">Experience design, UX/CX</td>
           </tr>
         </tbody>
       </table>
@@ -965,42 +965,42 @@ export const post: BlogPost = {
 
       <table style="width: 100%; border-collapse: collapse; margin: 2rem 0; font-size: 0.9rem;">
         <thead>
-          <tr style="background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%); color: white;">
+          <tr style="background: var(--primary); color: white;">
             <th style="padding: 1rem; text-align: left;">Metric</th>
             <th style="padding: 1rem; text-align: left;">Formula</th>
             <th style="padding: 1rem; text-align: left;">Healthy Benchmark (B2B)</th>
           </tr>
         </thead>
         <tbody>
-          <tr style="background: #f8fafc;">
-            <td style="padding: 0.875rem 1rem; border: 1px solid #e2e8f0;"><strong>Lead-to-Customer Rate</strong></td>
-            <td style="padding: 0.875rem 1rem; border: 1px solid #e2e8f0;">Customers ÷ Total Leads × 100</td>
-            <td style="padding: 0.875rem 1rem; border: 1px solid #e2e8f0;">1-5%</td>
+          <tr style="background: var(--muted);">
+            <td style="padding: 0.875rem 1rem; border: 1px solid var(--border);"><strong>Lead-to-Customer Rate</strong></td>
+            <td style="padding: 0.875rem 1rem; border: 1px solid var(--border);">Customers ÷ Total Leads × 100</td>
+            <td style="padding: 0.875rem 1rem; border: 1px solid var(--border);">1-5%</td>
           </tr>
           <tr>
-            <td style="padding: 0.875rem 1rem; border: 1px solid #e2e8f0;"><strong>Average Deal Cycle</strong></td>
-            <td style="padding: 0.875rem 1rem; border: 1px solid #e2e8f0;">Days from first contact to close</td>
-            <td style="padding: 0.875rem 1rem; border: 1px solid #e2e8f0;">30-90 days (SMB B2B)</td>
+            <td style="padding: 0.875rem 1rem; border: 1px solid var(--border);"><strong>Average Deal Cycle</strong></td>
+            <td style="padding: 0.875rem 1rem; border: 1px solid var(--border);">Days from first contact to close</td>
+            <td style="padding: 0.875rem 1rem; border: 1px solid var(--border);">30-90 days (SMB B2B)</td>
           </tr>
-          <tr style="background: #f8fafc;">
-            <td style="padding: 0.875rem 1rem; border: 1px solid #e2e8f0;"><strong>Average Deal Value</strong></td>
-            <td style="padding: 0.875rem 1rem; border: 1px solid #e2e8f0;">Total Revenue ÷ Closed Deals</td>
-            <td style="padding: 0.875rem 1rem; border: 1px solid #e2e8f0;">Varies by industry</td>
-          </tr>
-          <tr>
-            <td style="padding: 0.875rem 1rem; border: 1px solid #e2e8f0;"><strong>Win Rate</strong></td>
-            <td style="padding: 0.875rem 1rem; border: 1px solid #e2e8f0;">Won Deals ÷ Total Closed × 100</td>
-            <td style="padding: 0.875rem 1rem; border: 1px solid #e2e8f0;">20-35% (B2B SaaS)</td>
-          </tr>
-          <tr style="background: #f8fafc;">
-            <td style="padding: 0.875rem 1rem; border: 1px solid #e2e8f0;"><strong>Pipeline Coverage</strong></td>
-            <td style="padding: 0.875rem 1rem; border: 1px solid #e2e8f0;">Pipeline Value ÷ Revenue Target</td>
-            <td style="padding: 0.875rem 1rem; border: 1px solid #e2e8f0;">3-5x target</td>
+          <tr style="background: var(--muted);">
+            <td style="padding: 0.875rem 1rem; border: 1px solid var(--border);"><strong>Average Deal Value</strong></td>
+            <td style="padding: 0.875rem 1rem; border: 1px solid var(--border);">Total Revenue ÷ Closed Deals</td>
+            <td style="padding: 0.875rem 1rem; border: 1px solid var(--border);">Varies by industry</td>
           </tr>
           <tr>
-            <td style="padding: 0.875rem 1rem; border: 1px solid #e2e8f0;"><strong>Stage Velocity</strong></td>
-            <td style="padding: 0.875rem 1rem; border: 1px solid #e2e8f0;">Avg days to move between stages</td>
-            <td style="padding: 0.875rem 1rem; border: 1px solid #e2e8f0;">Depends on stage</td>
+            <td style="padding: 0.875rem 1rem; border: 1px solid var(--border);"><strong>Win Rate</strong></td>
+            <td style="padding: 0.875rem 1rem; border: 1px solid var(--border);">Won Deals ÷ Total Closed × 100</td>
+            <td style="padding: 0.875rem 1rem; border: 1px solid var(--border);">20-35% (B2B SaaS)</td>
+          </tr>
+          <tr style="background: var(--muted);">
+            <td style="padding: 0.875rem 1rem; border: 1px solid var(--border);"><strong>Pipeline Coverage</strong></td>
+            <td style="padding: 0.875rem 1rem; border: 1px solid var(--border);">Pipeline Value ÷ Revenue Target</td>
+            <td style="padding: 0.875rem 1rem; border: 1px solid var(--border);">3-5x target</td>
+          </tr>
+          <tr>
+            <td style="padding: 0.875rem 1rem; border: 1px solid var(--border);"><strong>Stage Velocity</strong></td>
+            <td style="padding: 0.875rem 1rem; border: 1px solid var(--border);">Avg days to move between stages</td>
+            <td style="padding: 0.875rem 1rem; border: 1px solid var(--border);">Depends on stage</td>
           </tr>
         </tbody>
       </table>
@@ -1027,10 +1027,10 @@ export const post: BlogPost = {
         Any CRM that lets you create custom pipeline stages and track deals visually works. For Brazilian SMBs, <a href="/en/register">Sirius CRM</a> offers a pre-built 5-stage funnel optimized for B2B sales, with WhatsApp follow-up automation and AI lead scoring built in.
       </p>
 
-      <div style="background: linear-gradient(135deg, #1e3a5f 0%, #1e293b 100%); padding: 2rem; border-radius: 1rem; margin: 2rem 0; text-align: center;">
+      <div style="background: var(--primary); padding: 2rem; border-radius: 1rem; margin: 2rem 0; text-align: center;">
         <h3 style="color: #ffffff; margin: 0 0 1rem;">Build Your Sales Funnel in Sirius CRM</h3>
-        <p style="color: #94a3b8; margin: 0 0 1.5rem;">Pre-built funnel stages, WhatsApp automation, and AI that tells you which leads to focus on — all in one platform.</p>
-        <a href="/en/register" style="background: #2563eb; color: white; padding: 0.875rem 2rem; border-radius: 0.5rem; font-weight: 700; text-decoration: none; display: inline-block;">Try Free for 14 Days →</a>
+        <p style="color: var(--primary-foreground); margin: 0 0 1.5rem;">Pre-built funnel stages, WhatsApp automation, and AI that tells you which leads to focus on — all in one platform.</p>
+        <a href="/en/register" style="background: var(--primary); color: white; padding: 0.875rem 2rem; border-radius: 0.5rem; font-weight: 700; text-decoration: none; display: inline-block;">Try Free for 14 Days →</a>
       </div>
   `,
 }

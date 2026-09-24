@@ -19,8 +19,8 @@ export const post: BlogPost = {
         Neste artigo, você vai reconhecer os <strong>7 erros mais comuns que sabotam o uso do CRM</strong>, os sinais de alerta para identificá-los, e o que fazer para corrigir antes que o problema se torne irreversível.
       </p>
 
-      <div class="not-prose" style="background: #1e293b; padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
-        <p style="margin: 0 0 0.75rem; font-weight: 700; font-size: 1.05rem; color: #38bdf8;">⚡ TL;DR — Resposta Rápida</p>
+      <div class="not-prose" style="background: var(--primary); padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
+        <p style="margin: 0 0 0.75rem; font-weight: 700; font-size: 1.05rem; color: var(--primary-foreground);">⚡ TL;DR — Resposta Rápida</p>
         <ul style="margin: 0; padding-left: 1.25rem; line-height: 2; color: #ffffff;">
           <li>70% das implementações de CRM falham — o problema quase sempre é <strong>comportamento, não ferramenta</strong></li>
           <li>Os 7 erros: falta de treinamento, cadastrar sem usar para decidir, pipeline mal estruturado, dados desatualizados, usar como planilha, sem integração WhatsApp/email, gestor que não usa</li>
@@ -32,7 +32,7 @@ export const post: BlogPost = {
 
       <div class="callout-stat">
         <p><strong>📊 O custo de um CRM mal implementado</strong></p>
-        <p style="font-size: 3rem; font-weight: 800; color: #2563eb; margin: 1rem 0; line-height: 1;">R$ 84k</p>
+        <p style="font-size: 3rem; font-weight: 800; color: var(--foreground); margin: 1rem 0; line-height: 1;">R$ 84k</p>
         <p>Custo médio anual de uma implementação de CRM que não gera resultado, considerando licença + tempo de implementação + horas de treinamento + oportunidades perdidas por dados inconsistentes — estimativa para PMEs com time de 5 vendedores.</p>
       </div>
 
@@ -168,27 +168,27 @@ export const post: BlogPost = {
         <li><strong>Dashboard do gestor:</strong> Visão consolidada do pipeline, KPIs e alertas — projetado para ser a primeira tela aberta toda manhã</li>
       </ul>
 
-      <div style="background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%); padding: 2rem; border-radius: 1rem; margin: 2.5rem 0; text-align: center;">
+      <div style="background: var(--primary); padding: 2rem; border-radius: 1rem; margin: 2.5rem 0; text-align: center;">
         <p style="color: white; font-size: 1.25rem; font-weight: 700; margin: 0 0 0.5rem;">CRM simples de usar, poderoso para gerenciar</p>
-        <p style="color: #bfdbfe; margin: 0 0 1.25rem;">O Sirius foi desenhado para ter alta adesão do time — não para impressionar em demo e ser abandonado em 30 dias.</p>
-        <a href="/register" style="display: inline-block; background: white; color: #2563eb; padding: 0.75rem 2rem; border-radius: 0.5rem; font-weight: 700; text-decoration: none;">Começar Grátis →</a>
+        <p style="color: var(--foreground); margin: 0 0 1.25rem;">O Sirius foi desenhado para ter alta adesão do time — não para impressionar em demo e ser abandonado em 30 dias.</p>
+        <a href="/register" style="display: inline-block; background: white; color: var(--foreground); padding: 0.75rem 2rem; border-radius: 0.5rem; font-weight: 700; text-decoration: none;">Começar Grátis →</a>
       </div>
 
       <h2>Perguntas Frequentes sobre Erros de CRM</h2>
 
-      <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
-        <summary style="font-weight: 600; cursor: pointer; color: #1e293b; list-style: revert;">Por que meu time resiste ao uso do CRM?</summary>
-        <p style="margin: 0.75rem 0 0; color: #4b5563;">A resistência ao CRM quase sempre tem uma das três causas: (1) O sistema é percebido como controle, não como ajuda — o vendedor sente que está sendo vigiado, não apoiado. (2) O CRM cria trabalho extra sem entregar valor perceptível para quem usa — registrar tudo e nunca ver benefício. (3) Falta de treinamento — o vendedor simplesmente não sabe usar bem. A solução é mostrar como o CRM ajuda o próprio vendedor: menos follow-ups perdidos, mais comissão. O CRM deve ser visto como aliado do vendedor, não do gestor.</p>
+      <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
+        <summary style="font-weight: 600; cursor: pointer; color: var(--foreground); list-style: revert;">Por que meu time resiste ao uso do CRM?</summary>
+        <p style="margin: 0.75rem 0 0; color: var(--foreground);">A resistência ao CRM quase sempre tem uma das três causas: (1) O sistema é percebido como controle, não como ajuda — o vendedor sente que está sendo vigiado, não apoiado. (2) O CRM cria trabalho extra sem entregar valor perceptível para quem usa — registrar tudo e nunca ver benefício. (3) Falta de treinamento — o vendedor simplesmente não sabe usar bem. A solução é mostrar como o CRM ajuda o próprio vendedor: menos follow-ups perdidos, mais comissão. O CRM deve ser visto como aliado do vendedor, não do gestor.</p>
       </details>
 
-      <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
-        <summary style="font-weight: 600; cursor: pointer; color: #1e293b; list-style: revert;">Quanto tempo leva para um CRM gerar resultado?</summary>
-        <p style="margin: 0.75rem 0 0; color: #4b5563;">Com implementação correta (treinamento, pipeline bem estruturado, automações básicas ativas), os primeiros resultados aparecem em 30-60 dias: menos leads perdidos por falta de follow-up, pipeline mais previsível, gestão com mais tempo livre de tarefas operacionais. Resultados financeiros mensuráveis (aumento de taxa de conversão, redução de ciclo de vendas) aparecem em 90-120 dias de uso consistente.</p>
+      <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
+        <summary style="font-weight: 600; cursor: pointer; color: var(--foreground); list-style: revert;">Quanto tempo leva para um CRM gerar resultado?</summary>
+        <p style="margin: 0.75rem 0 0; color: var(--foreground);">Com implementação correta (treinamento, pipeline bem estruturado, automações básicas ativas), os primeiros resultados aparecem em 30-60 dias: menos leads perdidos por falta de follow-up, pipeline mais previsível, gestão com mais tempo livre de tarefas operacionais. Resultados financeiros mensuráveis (aumento de taxa de conversão, redução de ciclo de vendas) aparecem em 90-120 dias de uso consistente.</p>
       </details>
 
-      <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin-bottom: 2rem;">
-        <summary style="font-weight: 600; cursor: pointer; color: #1e293b; list-style: revert;">O que fazer quando o CRM atual está completamente bagunçado?</summary>
-        <p style="margin: 0.75rem 0 0; color: #4b5563;">Se o CRM está com dados inconsistentes, etapas embaralhadas e time sem adesão, a melhor abordagem é um "reset" controlado: (1) Exporte os contatos e deals ativos; (2) Archive tudo que tem mais de 90 dias sem movimentação; (3) Reconfigure o pipeline do zero com as etapas corretas; (4) Faça um treinamento de reimplantação com o time; (5) Recomece com disciplina de atualização diária. É mais eficaz do que tentar "arrumar" um sistema em caos — a bagunça contamina a percepção do time.</p>
+      <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 2rem;">
+        <summary style="font-weight: 600; cursor: pointer; color: var(--foreground); list-style: revert;">O que fazer quando o CRM atual está completamente bagunçado?</summary>
+        <p style="margin: 0.75rem 0 0; color: var(--foreground);">Se o CRM está com dados inconsistentes, etapas embaralhadas e time sem adesão, a melhor abordagem é um "reset" controlado: (1) Exporte os contatos e deals ativos; (2) Archive tudo que tem mais de 90 dias sem movimentação; (3) Reconfigure o pipeline do zero com as etapas corretas; (4) Faça um treinamento de reimplantação com o time; (5) Recomece com disciplina de atualização diária. É mais eficaz do que tentar "arrumar" um sistema em caos — a bagunça contamina a percepção do time.</p>
       </details>
 
       <h2>Conclusão</h2>
@@ -201,7 +201,7 @@ export const post: BlogPost = {
         A boa notícia: todos os 7 erros são evitáveis e corrigíveis. O ponto de partida é o checklist de saúde — se você identificou 4 ou mais "não", priorize as correções antes de qualquer outra iniciativa de vendas. Um CRM funcionando bem é o multiplicador que torna tudo mais eficaz.
       </p>
 
-      <hr style="margin: 3rem 0; border: none; border-top: 1px solid #e5e7eb;" />
+      <hr style="margin: 3rem 0; border: none; border-top: 1px solid var(--border);" />
       <strong>Última Atualização:</strong> 28 de Fevereiro de 2026<br/>
       <strong>Autor:</strong> Equipe Sirius CRM<br/>
       <strong>Tempo de Leitura:</strong> 8 minutos
@@ -286,8 +286,8 @@ export const post: BlogPost = {
         A well-functioning CRM is the multiplier that makes everything else more effective. A broken CRM gives management a dangerous false sense of control. The 7 mistakes above are all fixable — start with the one that resonates most with your current situation.
       </p>
 
-      <hr style="margin: 3rem 0; border: none; border-top: 1px solid #e5e7eb;" />
-      <p style="font-size: 0.85rem; color: #64748b;">
+      <hr style="margin: 3rem 0; border: none; border-top: 1px solid var(--border);" />
+      <p style="font-size: 0.85rem; color: var(--foreground);">
         <strong>Last Updated:</strong> February 28, 2026<br/>
         <strong>Author:</strong> Sirius CRM Team<br/>
         <strong>Reading Time:</strong> 8 minutes

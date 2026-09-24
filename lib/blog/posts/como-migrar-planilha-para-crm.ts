@@ -15,13 +15,13 @@ export const post: BlogPost = {
         Você abriu a planilha de vendas hoje cedo, tentou encontrar o follow-up de um cliente de duas semanas atrás e simplesmente não achou. Ou pior: encontrou três linhas diferentes com o mesmo nome, mas telefones diferentes. Esse é o dia a dia de <strong>63% das PMEs brasileiras</strong> que ainda gerenciam o pipeline comercial em Excel ou Google Sheets — e o custo invisível disso é alto. Dados duplicados, oportunidades sem follow-up, histórico que some quando um vendedor sai da empresa. A boa notícia é que a migração para um CRM não precisa ser um projeto de meses nem exige um consultor. Com o método certo, você faz em menos de uma tarde.
       </p>
 
-      <div class="not-prose" style="background: #1e293b; padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
-        <p style="margin: 0 0 0.75rem; font-weight: 700; font-size: 1.05rem; color: #38bdf8;">TL;DR — O que voce vai aprender</p>
+      <div class="not-prose" style="background: var(--primary); padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
+        <p style="margin: 0 0 0.75rem; font-weight: 700; font-size: 1.05rem; color: var(--primary-foreground);">TL;DR — O que voce vai aprender</p>
         <ul style="margin: 0; padding-left: 1.25rem; line-height: 2; color: #ffffff;">
-          <li><strong style="color: #38bdf8;">5 passos</strong> para migrar sem perder um único contato: auditar, escolher, mapear campos, importar e treinar.</li>
+          <li><strong style="color: var(--primary-foreground);">5 passos</strong> para migrar sem perder um único contato: auditar, escolher, mapear campos, importar e treinar.</li>
           <li>A etapa mais ignorada (e a que mais causa perda de dados): limpeza antes da importação.</li>
           <li>Tabela de mapeamento de campos prontos para copiar: o que vai de cada coluna da planilha para o CRM.</li>
-          <li>Migração para times de 1 a 3 vendedores leva <strong style="color: #38bdf8;">menos de 1 hora</strong>. Para times maiores, veja a tabela de estimativas.</li>
+          <li>Migração para times de 1 a 3 vendedores leva <strong style="color: var(--primary-foreground);">menos de 1 hora</strong>. Para times maiores, veja a tabela de estimativas.</li>
           <li>Checklist completo de o que não esquecer antes, durante e depois da migração.</li>
         </ul>
       </div>
@@ -44,7 +44,7 @@ export const post: BlogPost = {
 
       <h3>3. Visibilidade Zero do Pipeline</h3>
       <p>
-        Qual o valor total em negociação agora? Quantos deals vão fechar esse mês? Onde está o gargalo — na prospecção, na proposta ou no fechamento? Em uma planilha, responder qualquer uma dessas perguntas exige montar uma fórmula manualmente. No CRM, é o dashboard padrão. Gestores sem visibilidade real do pipeline tomam decisões de contratação, comissão e meta baseadas em estimativa, não em dado. Para entender o custo disso em detalhe, veja nosso artigo sobre <a href="/blog/custo-oculto-inacao-crm" style="color: #2563eb;">o custo oculto da inação no CRM</a>.
+        Qual o valor total em negociação agora? Quantos deals vão fechar esse mês? Onde está o gargalo — na prospecção, na proposta ou no fechamento? Em uma planilha, responder qualquer uma dessas perguntas exige montar uma fórmula manualmente. No CRM, é o dashboard padrão. Gestores sem visibilidade real do pipeline tomam decisões de contratação, comissão e meta baseadas em estimativa, não em dado. Para entender o custo disso em detalhe, veja nosso artigo sobre <a href="/blog/custo-oculto-inacao-crm" style="color: var(--foreground);">o custo oculto da inação no CRM</a>.
       </p>
 
       <h3>4. Nenhuma Integração com Canais de Vendas</h3>
@@ -87,11 +87,11 @@ export const post: BlogPost = {
       </p>
 
       <p>
-        Para PMEs brasileiras em 2026, os critérios que mais importam na escolha são: facilidade de uso (o time vai usar sem treinamento extenso?), integração com WhatsApp (canal primário de vendas no Brasil), suporte em português e custo por usuário. Para uma análise completa de como decidir, leia nosso guia <a href="/blog/como-escolher-crm-b2b-2026" style="color: #2563eb;">como escolher um CRM B2B em 2026</a>.
+        Para PMEs brasileiras em 2026, os critérios que mais importam na escolha são: facilidade de uso (o time vai usar sem treinamento extenso?), integração com WhatsApp (canal primário de vendas no Brasil), suporte em português e custo por usuário. Para uma análise completa de como decidir, leia nosso guia <a href="/blog/como-escolher-crm-b2b-2026" style="color: var(--foreground);">como escolher um CRM B2B em 2026</a>.
       </p>
 
       <p>
-        Se sua equipe tem até 3 vendedores e o orçamento é limitado, comece por uma opção gratuita ou freemium. Veja nossa seleção de <a href="/blog/crm-gratuito-brasil-2026" style="color: #2563eb;">CRMs gratuitos para o Brasil em 2026</a> — todos com suporte em português e integração com WhatsApp.
+        Se sua equipe tem até 3 vendedores e o orçamento é limitado, comece por uma opção gratuita ou freemium. Veja nossa seleção de <a href="/blog/crm-gratuito-brasil-2026" style="color: var(--foreground);">CRMs gratuitos para o Brasil em 2026</a> — todos com suporte em português e integração com WhatsApp.
       </p>
 
       <div class="callout-tip">
@@ -110,59 +110,59 @@ export const post: BlogPost = {
       <div style="overflow-x: auto; margin: 2rem 0;">
         <table style="width: 100%; border-collapse: collapse; font-size: 0.9rem;">
           <thead>
-            <tr style="background: #1e293b; color: #ffffff;">
+            <tr style="background: var(--primary); color: #ffffff;">
               <th style="padding: 0.75rem 1rem; text-align: left; font-weight: 600;">Coluna na Planilha</th>
               <th style="padding: 0.75rem 1rem; text-align: left; font-weight: 600;">Campo no CRM</th>
               <th style="padding: 0.75rem 1rem; text-align: left; font-weight: 600;">Observação</th>
             </tr>
           </thead>
           <tbody>
-            <tr style="border-bottom: 1px solid #e5e7eb;">
+            <tr style="border-bottom: 1px solid var(--border);">
               <td style="padding: 0.75rem 1rem;">Nome / Nome Completo</td>
               <td style="padding: 0.75rem 1rem;">Nome do Contato</td>
               <td style="padding: 0.75rem 1rem;">Se tiver nome e sobrenome separados, concatene antes</td>
             </tr>
-            <tr style="background: #f8fafc; border-bottom: 1px solid #e5e7eb;">
+            <tr style="background: var(--muted); border-bottom: 1px solid var(--border);">
               <td style="padding: 0.75rem 1rem;">Empresa / Razão Social</td>
               <td style="padding: 0.75rem 1rem;">Empresa</td>
               <td style="padding: 0.75rem 1rem;">Crie empresa separada se o CRM suportar (B2B)</td>
             </tr>
-            <tr style="border-bottom: 1px solid #e5e7eb;">
+            <tr style="border-bottom: 1px solid var(--border);">
               <td style="padding: 0.75rem 1rem;">Telefone / Celular / WhatsApp</td>
               <td style="padding: 0.75rem 1rem;">Telefone Principal</td>
               <td style="padding: 0.75rem 1rem;">Padronize formato antes: (11) 99999-9999</td>
             </tr>
-            <tr style="background: #f8fafc; border-bottom: 1px solid #e5e7eb;">
+            <tr style="background: var(--muted); border-bottom: 1px solid var(--border);">
               <td style="padding: 0.75rem 1rem;">E-mail</td>
               <td style="padding: 0.75rem 1rem;">E-mail</td>
               <td style="padding: 0.75rem 1rem;">Valide formatos inválidos antes de importar</td>
             </tr>
-            <tr style="border-bottom: 1px solid #e5e7eb;">
+            <tr style="border-bottom: 1px solid var(--border);">
               <td style="padding: 0.75rem 1rem;">Status / Situação / Fase</td>
               <td style="padding: 0.75rem 1rem;">Etapa do Pipeline</td>
               <td style="padding: 0.75rem 1rem;">Mapeie cada status da planilha para uma etapa do seu funil</td>
             </tr>
-            <tr style="background: #f8fafc; border-bottom: 1px solid #e5e7eb;">
+            <tr style="background: var(--muted); border-bottom: 1px solid var(--border);">
               <td style="padding: 0.75rem 1rem;">Valor / Ticket / Proposta</td>
               <td style="padding: 0.75rem 1rem;">Valor do Deal</td>
               <td style="padding: 0.75rem 1rem;">Remova R$, pontos e vírgulas — deixe só números</td>
             </tr>
-            <tr style="border-bottom: 1px solid #e5e7eb;">
+            <tr style="border-bottom: 1px solid var(--border);">
               <td style="padding: 0.75rem 1rem;">Responsável / Vendedor</td>
               <td style="padding: 0.75rem 1rem;">Proprietário do Deal</td>
               <td style="padding: 0.75rem 1rem;">O nome deve coincidir com o usuário no CRM</td>
             </tr>
-            <tr style="background: #f8fafc; border-bottom: 1px solid #e5e7eb;">
+            <tr style="background: var(--muted); border-bottom: 1px solid var(--border);">
               <td style="padding: 0.75rem 1rem;">Data de Contato / Criação</td>
               <td style="padding: 0.75rem 1rem;">Data de Criação</td>
               <td style="padding: 0.75rem 1rem;">Formato ISO: AAAA-MM-DD. Converta se necessário</td>
             </tr>
-            <tr style="border-bottom: 1px solid #e5e7eb;">
+            <tr style="border-bottom: 1px solid var(--border);">
               <td style="padding: 0.75rem 1rem;">Proximo Contato / Follow-up</td>
               <td style="padding: 0.75rem 1rem;">Data do Proximo Follow-up</td>
               <td style="padding: 0.75rem 1rem;">Datas passadas: crie tarefa de retomada imediata</td>
             </tr>
-            <tr style="background: #f8fafc; border-bottom: 1px solid #e5e7eb;">
+            <tr style="background: var(--muted); border-bottom: 1px solid var(--border);">
               <td style="padding: 0.75rem 1rem;">Observacoes / Notas / Historico</td>
               <td style="padding: 0.75rem 1rem;">Nota no Deal / Atividade</td>
               <td style="padding: 0.75rem 1rem;">Importe como nota. Limite a 500 chars por entrada</td>
@@ -177,7 +177,7 @@ export const post: BlogPost = {
       </div>
 
       <p>
-        Campos que não têm equivalente direto no CRM podem virar <strong>campos customizados</strong>. A maioria dos CRMs permite criá-los livremente. Evite descartar informação — se está na planilha, provavelmente tem valor. Para entender como organizar seu pipeline depois da migração, leia nosso guia de <a href="/blog/como-organizar-pipeline-vendas" style="color: #2563eb;">como organizar o pipeline de vendas</a>.
+        Campos que não têm equivalente direto no CRM podem virar <strong>campos customizados</strong>. A maioria dos CRMs permite criá-los livremente. Evite descartar informação — se está na planilha, provavelmente tem valor. Para entender como organizar seu pipeline depois da migração, leia nosso guia de <a href="/blog/como-organizar-pipeline-vendas" style="color: var(--foreground);">como organizar o pipeline de vendas</a>.
       </p>
 
       <h3>Passo 4: Importar os Dados</h3>
@@ -223,7 +223,7 @@ export const post: BlogPost = {
       </ul>
 
       <p>
-        Os erros mais comuns na adocao pos-migracao — usar o CRM so para ver, nunca para atualizar; criar deals duplicados; nao registrar o resultado das ligacoes — estao documentados no nosso artigo sobre <a href="/blog/erros-crm-comuns" style="color: #2563eb;">erros comuns de CRM e como evitar</a>. Vale compartilhar com a equipe antes do treinamento.
+        Os erros mais comuns na adocao pos-migracao — usar o CRM so para ver, nunca para atualizar; criar deals duplicados; nao registrar o resultado das ligacoes — estao documentados no nosso artigo sobre <a href="/blog/erros-crm-comuns" style="color: var(--foreground);">erros comuns de CRM e como evitar</a>. Vale compartilhar com a equipe antes do treinamento.
       </p>
 
       <h2>Checklist de Migracao: O que Nao Esquecer</h2>
@@ -270,7 +270,7 @@ export const post: BlogPost = {
       <div style="overflow-x: auto; margin: 2rem 0;">
         <table style="width: 100%; border-collapse: collapse; font-size: 0.9rem;">
           <thead>
-            <tr style="background: #1e293b; color: #ffffff;">
+            <tr style="background: var(--primary); color: #ffffff;">
               <th style="padding: 0.75rem 1rem; text-align: left; font-weight: 600;">Tamanho do Time</th>
               <th style="padding: 0.75rem 1rem; text-align: left; font-weight: 600;">Registros Tipicos</th>
               <th style="padding: 0.75rem 1rem; text-align: left; font-weight: 600;">Tempo de Limpeza</th>
@@ -279,33 +279,33 @@ export const post: BlogPost = {
             </tr>
           </thead>
           <tbody>
-            <tr style="border-bottom: 1px solid #e5e7eb;">
+            <tr style="border-bottom: 1px solid var(--border);">
               <td style="padding: 0.75rem 1rem;"><strong>1–3 vendedores</strong></td>
               <td style="padding: 0.75rem 1rem;">50–300 registros</td>
               <td style="padding: 0.75rem 1rem;">15–30 min</td>
               <td style="padding: 0.75rem 1rem;">15–20 min</td>
-              <td style="padding: 0.75rem 1rem; color: #16a34a; font-weight: 700;">45 min – 1 hora</td>
+              <td style="padding: 0.75rem 1rem; color: var(--foreground); font-weight: 700;">45 min – 1 hora</td>
             </tr>
-            <tr style="background: #f8fafc; border-bottom: 1px solid #e5e7eb;">
+            <tr style="background: var(--muted); border-bottom: 1px solid var(--border);">
               <td style="padding: 0.75rem 1rem;"><strong>4–10 vendedores</strong></td>
               <td style="padding: 0.75rem 1rem;">300–1.500 registros</td>
               <td style="padding: 0.75rem 1rem;">1–2 horas</td>
               <td style="padding: 0.75rem 1rem;">30–60 min</td>
-              <td style="padding: 0.75rem 1rem; color: #d97706; font-weight: 700;">2–3 horas</td>
+              <td style="padding: 0.75rem 1rem; color: var(--foreground); font-weight: 700;">2–3 horas</td>
             </tr>
-            <tr style="border-bottom: 1px solid #e5e7eb;">
+            <tr style="border-bottom: 1px solid var(--border);">
               <td style="padding: 0.75rem 1rem;"><strong>11–25 vendedores</strong></td>
               <td style="padding: 0.75rem 1rem;">1.500–5.000 registros</td>
               <td style="padding: 0.75rem 1rem;">2–4 horas</td>
               <td style="padding: 0.75rem 1rem;">1–2 horas</td>
-              <td style="padding: 0.75rem 1rem; color: #d97706; font-weight: 700;">4–6 horas</td>
+              <td style="padding: 0.75rem 1rem; color: var(--foreground); font-weight: 700;">4–6 horas</td>
             </tr>
-            <tr style="background: #f8fafc;">
+            <tr style="background: var(--muted);">
               <td style="padding: 0.75rem 1rem;"><strong>25+ vendedores</strong></td>
               <td style="padding: 0.75rem 1rem;">5.000+ registros</td>
               <td style="padding: 0.75rem 1rem;">1–2 dias</td>
               <td style="padding: 0.75rem 1rem;">2–4 horas</td>
-              <td style="padding: 0.75rem 1rem; color: #dc2626; font-weight: 700;">1–3 dias</td>
+              <td style="padding: 0.75rem 1rem; color: var(--pulso-escuro); font-weight: 700;">1–3 dias</td>
             </tr>
           </tbody>
         </table>
@@ -322,7 +322,7 @@ export const post: BlogPost = {
       </p>
 
       <p>
-        Para PMEs com 5 vendedores e ticket medio de R$ 8.500, nossa analise estima que o custo da inacao supera <strong>R$ 47.000 por ano</strong> em oportunidades perdidas, tempo desperdicado e decisoes subotimas. Quer ver o calculo detalhado? Leia o artigo completo sobre <a href="/blog/custo-oculto-inacao-crm" style="color: #2563eb;">o custo oculto da inacao no CRM</a>.
+        Para PMEs com 5 vendedores e ticket medio de R$ 8.500, nossa analise estima que o custo da inacao supera <strong>R$ 47.000 por ano</strong> em oportunidades perdidas, tempo desperdicado e decisoes subotimas. Quer ver o calculo detalhado? Leia o artigo completo sobre <a href="/blog/custo-oculto-inacao-crm" style="color: var(--foreground);">o custo oculto da inacao no CRM</a>.
       </p>
 
       <div class="callout-stat">
@@ -335,58 +335,58 @@ export const post: BlogPost = {
         <p>
           O Sirius CRM tem importacao CSV com mapeamento visual, suporte em portugues e assistente de onboarding que guia a migracao passo a passo. O plano gratuito suporta ate 20 deals ativos — suficiente para times pequenos comecar sem pagar nada.
         </p>
-        <p><strong><a href="/register" style="color: #2563eb; text-decoration: underline;">Criar Conta Gratis e Comecar a Migracao →</a></strong></p>
+        <p><strong><a href="/register" style="color: var(--foreground); text-decoration: underline;">Criar Conta Gratis e Comecar a Migracao →</a></strong></p>
       </div>
 
       <h2>Perguntas Frequentes</h2>
 
-      <details style="border: 1px solid #e5e7eb; border-radius: 0.5rem; padding: 1rem; margin-bottom: 1rem;">
-        <summary style="font-weight: 600; cursor: pointer; color: #111827;">Posso perder dados durante a migracao para o CRM?</summary>
-        <div style="margin-top: 1rem; color: #374151; line-height: 1.7;">
+      <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 1rem;">
+        <summary style="font-weight: 600; cursor: pointer; color: var(--foreground);">Posso perder dados durante a migracao para o CRM?</summary>
+        <div style="margin-top: 1rem; color: var(--foreground); line-height: 1.7;">
           <p>
             Nao, desde que voce siga o protocolo correto. O risco de perda de dado e quase zero se voce: (1) manter o backup da planilha original, (2) exportar em CSV UTF-8, (3) fazer um teste com 10 linhas antes da importacao completa, e (4) verificar registros manualmente apos a importacao. O erro mais comum nao e perda de dado — e dado corrompido por problema de encoding (acentos que viram caracteres estranhos), prevenido pela exportacao em UTF-8.
           </p>
         </div>
       </details>
 
-      <details style="border: 1px solid #e5e7eb; border-radius: 0.5rem; padding: 1rem; margin-bottom: 1rem;">
-        <summary style="font-weight: 600; cursor: pointer; color: #111827;">O que fazer com os dados antigos da planilha depois da migracao?</summary>
-        <div style="margin-top: 1rem; color: #374151; line-height: 1.7;">
+      <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 1rem;">
+        <summary style="font-weight: 600; cursor: pointer; color: var(--foreground);">O que fazer com os dados antigos da planilha depois da migracao?</summary>
+        <div style="margin-top: 1rem; color: var(--foreground); line-height: 1.7;">
           <p>
             Arquive a planilha original por pelo menos 30 dias antes de descartar. Durante esse periodo, se perceber que algo nao importou corretamente, voce tem o backup para referenciar. Apos confirmar que tudo esta no CRM, voce pode deletar a planilha de trabalho — mas manter um arquivo historico no Google Drive por 12 meses e uma boa pratica. Nao continue atualizando a planilha em paralelo ao CRM: isso cria dois sistemas de registro que vao divergir rapidamente.
           </p>
         </div>
       </details>
 
-      <details style="border: 1px solid #e5e7eb; border-radius: 0.5rem; padding: 1rem; margin-bottom: 1rem;">
-        <summary style="font-weight: 600; cursor: pointer; color: #111827;">E se minha planilha tiver colunas personalizadas que o CRM nao tem?</summary>
-        <div style="margin-top: 1rem; color: #374151; line-height: 1.7;">
+      <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 1rem;">
+        <summary style="font-weight: 600; cursor: pointer; color: var(--foreground);">E se minha planilha tiver colunas personalizadas que o CRM nao tem?</summary>
+        <div style="margin-top: 1rem; color: var(--foreground); line-height: 1.7;">
           <p>
             Crie campos customizados no CRM antes de importar. A maioria dos CRMs modernos permite adicionar quantos campos customizados precisar — texto, numero, data, lista suspensa, checkbox. Acesse as configuracoes de campos do CRM e crie um campo correspondente para cada coluna especifica da sua planilha. Depois, o assistente de importacao vai permitir mapear aquela coluna para o novo campo customizado.
           </p>
         </div>
       </details>
 
-      <details style="border: 1px solid #e5e7eb; border-radius: 0.5rem; padding: 1rem; margin-bottom: 1rem;">
-        <summary style="font-weight: 600; cursor: pointer; color: #111827;">Preciso parar de vender durante a migracao?</summary>
-        <div style="margin-top: 1rem; color: #374151; line-height: 1.7;">
+      <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 1rem;">
+        <summary style="font-weight: 600; cursor: pointer; color: var(--foreground);">Preciso parar de vender durante a migracao?</summary>
+        <div style="margin-top: 1rem; color: var(--foreground); line-height: 1.7;">
           <p>
             Nao. A migracao pode ser feita em paralelo com o trabalho normal. O processo mais seguro e: tarde de sexta ou inicio de semana com menor volume de deals, a equipe migra a base existente para o CRM e, a partir daquele momento, toda negociacao nova entra direto no CRM — nunca mais na planilha. A base antiga migrada fica disponivel no CRM imediatamente. Nao ha janela de inatividade nem necessidade de parar operacoes comerciais.
           </p>
         </div>
       </details>
 
-      <hr style="margin: 3rem 0; border: none; border-top: 1px solid #e5e7eb;" />
+      <hr style="margin: 3rem 0; border: none; border-top: 1px solid var(--border);" />
 
       <strong>Fontes:</strong>
-      <ul style="font-size: 0.875rem; color: #6b7280; line-height: 1.6;">
+      <ul style="font-size: 0.875rem; color: var(--muted-foreground); line-height: 1.6;">
         <li>Salesforce State of Sales Report, 6th Edition (2025)</li>
         <li>HubSpot State of CRM Report (2024)</li>
         <li>Gartner CRM Impact Report (2024)</li>
         <li>Meta Business Report — WhatsApp no Brasil (2025)</li>
       </ul>
 
-      <hr style="margin: 3rem 0; border: none; border-top: 1px solid #e5e7eb;" />
+      <hr style="margin: 3rem 0; border: none; border-top: 1px solid var(--border);" />
 
       <strong>Ultima Atualizacao:</strong> 28 de Marco de 2026<br/>
       <strong>Autor:</strong> Equipe Sirius CRM<br/>
@@ -468,14 +468,14 @@ export const post: BlogPost = {
         WhatsApp conversation history can't be imported — it lives in the WhatsApp app. What you can do: paste key conversation notes into the CRM deal's notes field for the most important contacts. Going forward, new WhatsApp conversations are logged automatically with the CRM integration active.
       </p>
 
-      <div style="background: linear-gradient(135deg, #1e3a5f 0%, #1e293b 100%); padding: 2rem; border-radius: 1rem; margin: 2rem 0; text-align: center;">
+      <div style="background: var(--primary); padding: 2rem; border-radius: 1rem; margin: 2rem 0; text-align: center;">
         <h3 style="color: #ffffff; margin: 0 0 1rem;">Ready to Migrate? Takes Under 1 Hour.</h3>
-        <p style="color: #94a3b8; margin: 0 0 1.5rem;">Sirius CRM's import wizard walks you through every step. Free account, no credit card, unlimited contacts.</p>
-        <a href="/en/register" style="background: #2563eb; color: white; padding: 0.875rem 2rem; border-radius: 0.5rem; font-weight: 700; text-decoration: none; display: inline-block;">Start Free Migration →</a>
+        <p style="color: var(--primary-foreground); margin: 0 0 1.5rem;">Sirius CRM's import wizard walks you through every step. Free account, no credit card, unlimited contacts.</p>
+        <a href="/en/register" style="background: var(--primary); color: white; padding: 0.875rem 2rem; border-radius: 0.5rem; font-weight: 700; text-decoration: none; display: inline-block;">Start Free Migration →</a>
       </div>
 
-      <hr style="margin: 3rem 0; border: none; border-top: 1px solid #e5e7eb;" />
-      <p style="font-size: 0.85rem; color: #64748b;">
+      <hr style="margin: 3rem 0; border: none; border-top: 1px solid var(--border);" />
+      <p style="font-size: 0.85rem; color: var(--foreground);">
         <strong>Last Updated:</strong> March 28, 2026<br/>
         <strong>Author:</strong> Sirius CRM Team<br/>
         <strong>Reading Time:</strong> 10 minutes

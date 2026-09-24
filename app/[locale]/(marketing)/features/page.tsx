@@ -153,7 +153,7 @@ function PlanRow({
 }
 
 function CellValue({ value }: { value: string | boolean }) {
-  if (value === true) return <Check className="h-4 w-4 text-green-500 mx-auto" />
+  if (value === true) return <Check className="h-4 w-4 text-foreground mx-auto" />
   if (value === false) return <span className="text-muted-foreground">—</span>
   return <span className="text-muted-foreground">{value}</span>
 }

@@ -19,8 +19,8 @@ export const post: BlogPost = {
         Organizar sua carteira de forma independente não é um trabalho de uma tarde — é um ativo que você constrói ao longo do tempo. Neste guia, você vai aprender como estruturar esse ativo de forma profissional: quais dados guardar, como segmentar, como exportar e como manter tudo atualizado sem depender de nenhum sistema de terceiros.
       </p>
 
-      <div class="not-prose" style="background: #1e293b; padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
-        <p style="margin: 0 0 0.75rem; font-weight: 700; font-size: 1.05rem; color: #38bdf8;">⚡ TL;DR — Resposta Rápida</p>
+      <div class="not-prose" style="background: var(--primary); padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
+        <p style="margin: 0 0 0.75rem; font-weight: 700; font-size: 1.05rem; color: var(--primary-foreground);">⚡ TL;DR — Resposta Rápida</p>
         <ul style="margin: 0; padding-left: 1.25rem; line-height: 2; color: #ffffff;">
           <li><strong>Sua carteira é seu ativo pessoal</strong> — deve estar em um sistema que só você controla</li>
           <li>Os dados que realmente importam: contato decisor, ciclo de compra, volume médio, histórico de relacionamento</li>
@@ -56,57 +56,57 @@ export const post: BlogPost = {
 
       <table style="width: 100%; border-collapse: collapse; margin: 2rem 0;">
         <thead>
-          <tr style="background: #f8fafc;">
-            <th style="padding: 0.75rem; border: 1px solid #e2e8f0; text-align: left;">Prioridade</th>
-            <th style="padding: 0.75rem; border: 1px solid #e2e8f0; text-align: left;">Campo</th>
-            <th style="padding: 0.75rem; border: 1px solid #e2e8f0; text-align: left;">Por que importa</th>
+          <tr style="background: var(--muted);">
+            <th style="padding: 0.75rem; border: 1px solid var(--border); text-align: left;">Prioridade</th>
+            <th style="padding: 0.75rem; border: 1px solid var(--border); text-align: left;">Campo</th>
+            <th style="padding: 0.75rem; border: 1px solid var(--border); text-align: left;">Por que importa</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;"><strong>P1</strong></td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Nome e cargo do decisor</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Quem aprova a compra — sem isso, você fala com a pessoa errada</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);"><strong>P1</strong></td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Nome e cargo do decisor</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Quem aprova a compra — sem isso, você fala com a pessoa errada</td>
           </tr>
-          <tr style="background: #f8fafc;">
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;"><strong>P1</strong></td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">WhatsApp e email direto</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Canal de acesso rápido — não depender de recepcionista</td>
-          </tr>
-          <tr>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;"><strong>P1</strong></td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Ciclo de compra típico</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Saber quando ligar — antes do momento de compra, não depois</td>
-          </tr>
-          <tr style="background: #f8fafc;">
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;"><strong>P1</strong></td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Ticket médio / volume típico</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Priorização — quem merece mais atenção no mês</td>
+          <tr style="background: var(--muted);">
+            <td style="padding: 0.75rem; border: 1px solid var(--border);"><strong>P1</strong></td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">WhatsApp e email direto</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Canal de acesso rápido — não depender de recepcionista</td>
           </tr>
           <tr>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;"><strong>P2</strong></td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Produtos que mais compra</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Abordagem personalizada — sem oferecer produto irrelevante</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);"><strong>P1</strong></td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Ciclo de compra típico</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Saber quando ligar — antes do momento de compra, não depois</td>
           </tr>
-          <tr style="background: #f8fafc;">
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;"><strong>P2</strong></td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Condição de pagamento preferida</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Proposta que fecha — elimina objeção financeira antes de surgir</td>
-          </tr>
-          <tr>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;"><strong>P2</strong></td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Observações de relacionamento</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Personalização — família, esporte, aniversário, interesses</td>
-          </tr>
-          <tr style="background: #f8fafc;">
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;"><strong>P3</strong></td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Histórico de objeções</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Preparação — saber o que vai surgir antes de chegar lá</td>
+          <tr style="background: var(--muted);">
+            <td style="padding: 0.75rem; border: 1px solid var(--border);"><strong>P1</strong></td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Ticket médio / volume típico</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Priorização — quem merece mais atenção no mês</td>
           </tr>
           <tr>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;"><strong>P3</strong></td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Concorrentes que o cliente usa</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Posicionamento — onde você compete e onde não</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);"><strong>P2</strong></td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Produtos que mais compra</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Abordagem personalizada — sem oferecer produto irrelevante</td>
+          </tr>
+          <tr style="background: var(--muted);">
+            <td style="padding: 0.75rem; border: 1px solid var(--border);"><strong>P2</strong></td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Condição de pagamento preferida</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Proposta que fecha — elimina objeção financeira antes de surgir</td>
+          </tr>
+          <tr>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);"><strong>P2</strong></td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Observações de relacionamento</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Personalização — família, esporte, aniversário, interesses</td>
+          </tr>
+          <tr style="background: var(--muted);">
+            <td style="padding: 0.75rem; border: 1px solid var(--border);"><strong>P3</strong></td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Histórico de objeções</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Preparação — saber o que vai surgir antes de chegar lá</td>
+          </tr>
+          <tr>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);"><strong>P3</strong></td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Concorrentes que o cliente usa</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Posicionamento — onde você compete e onde não</td>
           </tr>
         </tbody>
       </table>
@@ -119,7 +119,7 @@ export const post: BlogPost = {
 
       <div class="callout-stat">
         <p><strong>📊 Impacto da segmentação ABC na produtividade comercial</strong></p>
-        <p style="font-size: 3rem; font-weight: 800; color: #2563eb; margin: 1rem 0; line-height: 1;">3,2x</p>
+        <p style="font-size: 3rem; font-weight: 800; color: var(--foreground); margin: 1rem 0; line-height: 1;">3,2x</p>
         <p>Representantes que usam segmentação ABC formalizada geram em média 3,2x mais receita por hora de trabalho do que os que tratam toda a carteira igualmente, segundo estudo da CSO Insights (2025).</p>
       </div>
 
@@ -177,47 +177,47 @@ export const post: BlogPost = {
 
       <table style="width: 100%; border-collapse: collapse; margin: 2rem 0;">
         <thead>
-          <tr style="background: #f8fafc;">
-            <th style="padding: 0.75rem; border: 1px solid #e2e8f0; text-align: left;">Função</th>
-            <th style="padding: 0.75rem; border: 1px solid #e2e8f0; text-align: left;">Planilha Excel</th>
-            <th style="padding: 0.75rem; border: 1px solid #e2e8f0; text-align: left;">CRM (Sirius)</th>
+          <tr style="background: var(--muted);">
+            <th style="padding: 0.75rem; border: 1px solid var(--border); text-align: left;">Função</th>
+            <th style="padding: 0.75rem; border: 1px solid var(--border); text-align: left;">Planilha Excel</th>
+            <th style="padding: 0.75rem; border: 1px solid var(--border); text-align: left;">CRM (Sirius)</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Acesso mobile em campo</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0; color: #dc2626;">❌ Desconfortável</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0; color: #16a34a;">✅ App nativo</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Acesso mobile em campo</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border); color: var(--pulso-escuro);">❌ Desconfortável</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border); color: var(--foreground);">✅ App nativo</td>
           </tr>
-          <tr style="background: #f8fafc;">
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Alertas de follow-up</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0; color: #dc2626;">❌ Não existe</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0; color: #16a34a;">✅ Automático</td>
-          </tr>
-          <tr>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Histórico de interações</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0; color: #dc2626;">❌ Manual e limitado</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0; color: #16a34a;">✅ Timeline completa</td>
-          </tr>
-          <tr style="background: #f8fafc;">
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Pipeline visual</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0; color: #dc2626;">❌ Não existe</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0; color: #16a34a;">✅ Kanban integrado</td>
+          <tr style="background: var(--muted);">
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Alertas de follow-up</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border); color: var(--pulso-escuro);">❌ Não existe</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border); color: var(--foreground);">✅ Automático</td>
           </tr>
           <tr>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Exportação CSV</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0; color: #16a34a;">✅ Nativo</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0; color: #16a34a;">✅ Nativo</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Histórico de interações</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border); color: var(--pulso-escuro);">❌ Manual e limitado</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border); color: var(--foreground);">✅ Timeline completa</td>
           </tr>
-          <tr style="background: #f8fafc;">
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Uso offline</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0; color: #f59e0b;">⚠️ Apenas local</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0; color: #16a34a;">✅ PWA com sync</td>
+          <tr style="background: var(--muted);">
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Pipeline visual</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border); color: var(--pulso-escuro);">❌ Não existe</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border); color: var(--foreground);">✅ Kanban integrado</td>
           </tr>
           <tr>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Segmentação ABC automática</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0; color: #dc2626;">❌ Manual</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0; color: #16a34a;">✅ Por volume/frequência</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Exportação CSV</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border); color: var(--foreground);">✅ Nativo</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border); color: var(--foreground);">✅ Nativo</td>
+          </tr>
+          <tr style="background: var(--muted);">
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Uso offline</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border); color: var(--foreground);">⚠️ Apenas local</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border); color: var(--foreground);">✅ PWA com sync</td>
+          </tr>
+          <tr>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Segmentação ABC automática</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border); color: var(--pulso-escuro);">❌ Manual</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border); color: var(--foreground);">✅ Por volume/frequência</td>
           </tr>
         </tbody>
       </table>
@@ -235,10 +235,10 @@ export const post: BlogPost = {
 
       <p>A regra de ouro: <strong>nunca sair de uma visita sem pelo menos 3 campos preenchidos</strong> — resultado da visita, próximo passo e data do próximo contato. Isso leva 90 segundos e mantém a carteira viva.</p>
 
-      <div style="background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%); padding: 2rem; border-radius: 1rem; margin: 2.5rem 0; text-align: center;">
+      <div style="background: var(--primary); padding: 2rem; border-radius: 1rem; margin: 2.5rem 0; text-align: center;">
         <p style="color: white; font-size: 1.25rem; font-weight: 700; margin: 0 0 0.5rem;">Organize sua carteira agora no Sirius CRM</p>
-        <p style="color: #bfdbfe; margin: 0 0 1.25rem;">Importe seus clientes via CSV, segmente por curva ABC e mantenha tudo independente do sistema de qualquer fábrica.</p>
-        <a href="/" style="display: inline-block; background: white; color: #2563eb; padding: 0.75rem 2rem; border-radius: 0.5rem; font-weight: 700; text-decoration: none;">Ver como funciona →</a>
+        <p style="color: var(--foreground); margin: 0 0 1.25rem;">Importe seus clientes via CSV, segmente por curva ABC e mantenha tudo independente do sistema de qualquer fábrica.</p>
+        <a href="/" style="display: inline-block; background: white; color: var(--foreground); padding: 0.75rem 2rem; border-radius: 0.5rem; font-weight: 700; text-decoration: none;">Ver como funciona →</a>
       </div>
 
       <h2>Conclusão</h2>
@@ -251,7 +251,7 @@ export const post: BlogPost = {
         A combinação de dados certos (decisor, ciclo de compra, volume, relacionamento), segmentação ABC rigorosa, e um CRM que funciona offline e exporta tudo a qualquer momento é o que transforma uma lista de clientes em um ativo que vai com você — independentemente de qual representada você estiver representando.
       </p>
 
-      <hr style="margin: 3rem 0; border: none; border-top: 1px solid #e5e7eb;" />
+      <hr style="margin: 3rem 0; border: none; border-top: 1px solid var(--border);" />
       <strong>Última Atualização:</strong> 21 de Março de 2026<br/>
       <strong>Autor:</strong> Equipe Sirius CRM<br/>
       <strong>Tempo de Leitura:</strong> 10 minutos
@@ -306,14 +306,14 @@ export const post: BlogPost = {
         Your customer portfolio is only your asset if it's in your control. The combination of the right data, rigorous ABC segmentation, and a CRM that works offline and exports everything at any moment is what transforms a client list into an asset that goes with you — regardless of which manufacturer you're representing.
       </p>
 
-      <div style="background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); border-left: 4px solid #2563eb; padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
-        <p style="font-weight: 700; color: #1e40af;">Your portfolio, your data, your CRM</p>
-        <p style="color: #1e40af; margin: 0.5rem 0 1rem;">Sirius CRM with offline mode — works without internet in the field. Export all your data anytime, no restrictions.</p>
-        <a href="/en/register" style="background: #2563eb; color: white; padding: 0.75rem 1.5rem; border-radius: 0.5rem; font-weight: 600; text-decoration: none; display: inline-block;">Start Free →</a>
+      <div style="background: var(--muted); border-left: 4px solid var(--fio-forte); padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
+        <p style="font-weight: 700; color: var(--foreground);">Your portfolio, your data, your CRM</p>
+        <p style="color: var(--foreground); margin: 0.5rem 0 1rem;">Sirius CRM with offline mode — works without internet in the field. Export all your data anytime, no restrictions.</p>
+        <a href="/en/register" style="background: var(--primary); color: white; padding: 0.75rem 1.5rem; border-radius: 0.5rem; font-weight: 600; text-decoration: none; display: inline-block;">Start Free →</a>
       </div>
 
-      <hr style="margin: 3rem 0; border: none; border-top: 1px solid #e5e7eb;" />
-      <p style="font-size: 0.85rem; color: #64748b;">
+      <hr style="margin: 3rem 0; border: none; border-top: 1px solid var(--border);" />
+      <p style="font-size: 0.85rem; color: var(--foreground);">
         <strong>Last Updated:</strong> March 21, 2026<br/>
         <strong>Author:</strong> Sirius CRM Team<br/>
         <strong>Reading Time:</strong> 10 minutes

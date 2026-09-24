@@ -117,7 +117,7 @@ export default async function TermsPage(
                   <li>{t('s4.li4')}</li>
                 </ul>
                 <p className="font-semibold text-foreground">
-                  <AlertTriangle className="inline h-5 w-5 text-yellow-600 mr-2" />
+                  <AlertTriangle className="inline h-5 w-5 text-foreground mr-2" />
                   {t('s4.responsible')}
                 </p>
               </div>
@@ -126,7 +126,7 @@ export default async function TermsPage(
             {/* 5 */}
             <div className="mb-8">
               <div className="flex items-center gap-3 mb-4">
-                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-red-500/10"><AlertTriangle className="h-5 w-5 text-red-600" /></div>
+                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-muted"><AlertTriangle className="h-5 w-5 text-destaque" /></div>
                 <h2 className="text-2xl font-bold m-0">{t('s5.title')}</h2>
               </div>
               <div className="space-y-4 ml-13">
@@ -140,7 +140,7 @@ export default async function TermsPage(
                   <li>{t('s5.li6')}</li>
                   <li>{t('s5.li7')}</li>
                 </ul>
-                <p className="font-semibold text-red-600 dark:text-red-400">{t('s5.warning')}</p>
+                <p className="font-semibold text-destaque">{t('s5.warning')}</p>
               </div>
             </div>
 
@@ -160,7 +160,7 @@ export default async function TermsPage(
             {/* 7 */}
             <div className="mb-8">
               <div className="flex items-center gap-3 mb-4">
-                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-yellow-500/10"><Shield className="h-5 w-5 text-yellow-600" /></div>
+                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-muted"><Shield className="h-5 w-5 text-foreground" /></div>
                 <h2 className="text-2xl font-bold m-0">{t('s7.title')}</h2>
               </div>
               <div className="space-y-4 ml-13">

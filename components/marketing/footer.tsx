@@ -10,7 +10,7 @@ export function Footer() {
   const locale = useLocale()
 
   return (
-    <footer className="border-t bg-zinc-50 dark:bg-zinc-950">
+    <footer className="border-t bg-background">
       <div className="container mx-auto px-4 py-12 md:py-16">
         <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-8">
           {/* Coluna 1: Sobre */}

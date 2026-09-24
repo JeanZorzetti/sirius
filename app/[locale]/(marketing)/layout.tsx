@@ -6,6 +6,7 @@ import { FeaturesDropdown } from '@/components/marketing/features-dropdown'
 import { Footer } from '@/components/marketing/footer'
 import { Link } from '@/i18n/routing'
 import { useTranslations } from 'next-intl'
+import { texto, mono } from '@/components/fluxo/fontes'
 
 export default function MarketingLayout({
   children,
@@ -15,9 +16,10 @@ export default function MarketingLayout({
   const t = useTranslations('marketing.home.nav')
 
   return (
-    <div className="flex min-h-screen flex-col">
+    // The home's skin (app/fluxo-pele.css, spec 008): palette, type, corners. The gesture stays on the home.
+    <div data-art="fluxo" className={`${texto.variable} ${mono.variable} flex min-h-screen flex-col`}>
       {/* Navbar */}
-      <nav className="fixed top-0 z-50 w-full border-b bg-background/80 backdrop-blur-sm">
+      <nav className="fixed top-0 z-50 w-full border-b bg-background">
         <div className="container mx-auto flex h-16 items-center justify-between px-4">
           <div className="flex items-center gap-4 md:gap-8">
             <Link href="/" className="flex items-center" aria-label="Sirius CRM, página inicial">

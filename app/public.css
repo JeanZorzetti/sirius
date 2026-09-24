@@ -27,3 +27,4 @@
 @plugin "@tailwindcss/typography";
 @import "./theme.css";
 @import "./base.css" layer(public);
+@import "./fluxo-pele.css" layer(public); /* spec 008: the Fluxo skin, home + (marketing) */

@@ -97,11 +97,11 @@ export default function DesignSystemPage() {
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
-      <div className="border-b bg-gradient-to-r from-indigo-500/10 to-purple-500/10">
+      <div className="border-b">
         <div className="container mx-auto px-4 py-12">
           <div className="max-w-3xl">
             <div className="flex items-center gap-3 mb-4">
-              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600">
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl">
                 <Palette className="h-6 w-6 text-white" />
               </div>
               <div>
@@ -163,7 +163,7 @@ export default function DesignSystemPage() {
                   { name: "Secondary", class: "bg-secondary text-secondary-foreground" },
                   { name: "Accent", class: "bg-accent text-accent-foreground" },
                   { name: "Muted", class: "bg-muted text-muted-foreground" },
-                  { name: "Destructive", class: "bg-destructive text-destructive-foreground" },
+                  { name: "Destructive", class: "bg-destructive text-primary-foreground" },
                   { name: "Background", class: "bg-background text-foreground border" },
                   { name: "Card", class: "bg-card text-card-foreground border" },
                   { name: "Popover", class: "bg-popover text-popover-foreground border" },
@@ -189,10 +189,10 @@ export default function DesignSystemPage() {
               </CardHeader>
               <CardContent className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 {[
-                  { name: "Success", class: "bg-green-500 text-white" },
-                  { name: "Warning", class: "bg-yellow-500 text-white" },
-                  { name: "Error", class: "bg-red-500 text-white" },
-                  { name: "Info", class: "bg-blue-500 text-white" },
+                  { name: "Success", class: "bg-primary text-white" },
+                  { name: "Warning", class: "bg-primary text-white" },
+                  { name: "Error", class: "bg-primary text-white" },
+                  { name: "Info", class: "bg-primary text-white" },
                 ].map((color) => (
                   <div key={color.name} className="space-y-2">
                     <div
@@ -666,8 +666,8 @@ export default function DesignSystemPage() {
               <CardContent className="space-y-3">
                 <div className="flex items-center justify-between p-3 border rounded-lg">
                   <div className="flex items-center gap-3">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-green-500/10">
-                      <Check className="h-5 w-5 text-green-500" />
+                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-muted">
+                      <Check className="h-5 w-5 text-foreground" />
                     </div>
                     <div>
                       <p className="font-medium">Success State</p>
@@ -676,13 +676,13 @@ export default function DesignSystemPage() {
                       </p>
                     </div>
                   </div>
-                  <Badge className="bg-green-500">Active</Badge>
+                  <Badge className="bg-primary">Active</Badge>
                 </div>
 
                 <div className="flex items-center justify-between p-3 border rounded-lg">
                   <div className="flex items-center gap-3">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-yellow-500/10">
-                      <Bell className="h-5 w-5 text-yellow-500" />
+                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-muted">
+                      <Bell className="h-5 w-5 text-foreground" />
                     </div>
                     <div>
                       <p className="font-medium">Warning State</p>
@@ -691,13 +691,13 @@ export default function DesignSystemPage() {
                       </p>
                     </div>
                   </div>
-                  <Badge className="bg-yellow-500">Pending</Badge>
+                  <Badge className="bg-primary">Pending</Badge>
                 </div>
 
                 <div className="flex items-center justify-between p-3 border rounded-lg">
                   <div className="flex items-center gap-3">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-red-500/10">
-                      <X className="h-5 w-5 text-red-500" />
+                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-muted">
+                      <X className="h-5 w-5 text-destaque" />
                     </div>
                     <div>
                       <p className="font-medium">Error State</p>

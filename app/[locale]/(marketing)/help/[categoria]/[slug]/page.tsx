@@ -217,10 +217,10 @@ export default async function ArticlePage({
 
                   {/* Tips */}
                   {section.tips && section.tips.length > 0 && (
-                    <div className="bg-blue-50 dark:bg-blue-950/30 border border-blue-200 dark:border-blue-800 rounded-lg p-4 mb-4">
+                    <div className="bg-muted border border-border rounded-lg p-4 mb-4">
                       <div className="flex items-center gap-2 mb-3">
-                        <Lightbulb className="w-5 h-5 text-blue-600 dark:text-blue-400" />
-                        <h3 className="font-semibold text-blue-900 dark:text-blue-100">
+                        <Lightbulb className="w-5 h-5 text-foreground" />
+                        <h3 className="font-semibold text-foreground">
                           {labels.importantTips}
                         </h3>
                       </div>
@@ -228,9 +228,9 @@ export default async function ArticlePage({
                         {section.tips.map((tip, tipIndex) => (
                           <li
                             key={tipIndex}
-                            className="flex items-start gap-2 text-sm text-blue-900 dark:text-blue-100"
+                            className="flex items-start gap-2 text-sm text-foreground"
                           >
-                            <CheckCircle2 className="w-4 h-4 mt-0.5 flex-shrink-0 text-blue-600 dark:text-blue-400" />
+                            <CheckCircle2 className="w-4 h-4 mt-0.5 flex-shrink-0 text-foreground" />
                             <span>{tip}</span>
                           </li>
                         ))}
@@ -240,14 +240,14 @@ export default async function ArticlePage({
 
                   {/* Warning */}
                   {section.warning && (
-                    <div className="bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800 rounded-lg p-4 mb-4">
+                    <div className="bg-muted border border-border rounded-lg p-4 mb-4">
                       <div className="flex items-start gap-3">
-                        <AlertCircle className="w-5 h-5 text-amber-600 dark:text-amber-400 flex-shrink-0 mt-0.5" />
+                        <AlertCircle className="w-5 h-5 text-foreground flex-shrink-0 mt-0.5" />
                         <div>
-                          <h3 className="font-semibold text-amber-900 dark:text-amber-100 mb-1">
+                          <h3 className="font-semibold text-foreground mb-1">
                             {labels.attention}
                           </h3>
-                          <p className="text-sm text-amber-900 dark:text-amber-100">
+                          <p className="text-sm text-foreground">
                             {section.warning}
                           </p>
                         </div>

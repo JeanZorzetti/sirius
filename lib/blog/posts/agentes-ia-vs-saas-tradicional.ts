@@ -17,20 +17,20 @@ export const post: BlogPost = {
         Neste artigo, vamos comparar em profundidade os dois modelos, entender por que o AgaaS representa a próxima grande evolução do software empresarial, e mostrar como o <strong>Sirius CRM</strong> já implementa essa visão com seu modo dual SaaS + AgaaS.
       </p>
 
-      <div class="not-prose" style="background: #1e293b; padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
-        <p style="margin: 0 0 0.75rem; font-weight: 700; font-size: 1.05rem; color: #818cf8;">⚡ TL;DR — 5 Diferenças-Chave entre SaaS e AgaaS</p>
+      <div class="not-prose" style="background: var(--primary); padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
+        <p style="margin: 0 0 0.75rem; font-weight: 700; font-size: 1.05rem; color: var(--primary-foreground);">⚡ TL;DR — 5 Diferenças-Chave entre SaaS e AgaaS</p>
         <ul style="margin: 0; padding-left: 1.25rem; line-height: 2; color: #ffffff;">
-          <li><strong style="color: #818cf8;">Quem opera:</strong> No SaaS, o humano usa o software. No AgaaS, o agente IA opera o software pelo humano.</li>
-          <li><strong style="color: #818cf8;">Entrada de dados:</strong> SaaS depende de digitação manual. AgaaS captura e organiza dados automaticamente.</li>
-          <li><strong style="color: #818cf8;">Follow-up:</strong> SaaS exige que alguém lembre e execute. AgaaS executa follow-ups de forma autônoma, no timing ideal.</li>
-          <li><strong style="color: #818cf8;">Curva de aprendizado:</strong> SaaS requer treinamento do usuário. AgaaS requer apenas supervisão — o agente já sabe operar.</li>
-          <li><strong style="color: #818cf8;">ROI:</strong> SaaS depende da disciplina do time. AgaaS entrega valor desde o primeiro dia, sem depender de adoção humana.</li>
+          <li><strong style="color: var(--primary-foreground);">Quem opera:</strong> No SaaS, o humano usa o software. No AgaaS, o agente IA opera o software pelo humano.</li>
+          <li><strong style="color: var(--primary-foreground);">Entrada de dados:</strong> SaaS depende de digitação manual. AgaaS captura e organiza dados automaticamente.</li>
+          <li><strong style="color: var(--primary-foreground);">Follow-up:</strong> SaaS exige que alguém lembre e execute. AgaaS executa follow-ups de forma autônoma, no timing ideal.</li>
+          <li><strong style="color: var(--primary-foreground);">Curva de aprendizado:</strong> SaaS requer treinamento do usuário. AgaaS requer apenas supervisão — o agente já sabe operar.</li>
+          <li><strong style="color: var(--primary-foreground);">ROI:</strong> SaaS depende da disciplina do time. AgaaS entrega valor desde o primeiro dia, sem depender de adoção humana.</li>
         </ul>
       </div>
 
-      <div style="background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); border-left: 4px solid #2563eb; padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
-        <p style="margin: 0; font-weight: 700; color: #1e40af;">📊 Dado de impacto:</p>
-        <p style="margin: 0.5rem 0 0; color: #1e40af;">Gartner prevê que até 2028, <strong>33% das aplicações empresariais terão agentes IA embutidos</strong> — hoje menos de 1% têm essa capacidade. Empresas que adotarem agentes antes da concorrência terão vantagem competitiva decisiva (Gartner, 2024).</p>
+      <div style="background: var(--muted); border-left: 4px solid var(--fio-forte); padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
+        <p style="margin: 0; font-weight: 700; color: var(--foreground);">📊 Dado de impacto:</p>
+        <p style="margin: 0.5rem 0 0; color: var(--foreground);">Gartner prevê que até 2028, <strong>33% das aplicações empresariais terão agentes IA embutidos</strong> — hoje menos de 1% têm essa capacidade. Empresas que adotarem agentes antes da concorrência terão vantagem competitiva decisiva (Gartner, 2024).</p>
       </div>
 
       <h2>A Evolução do Software: De On-Premise ao AgaaS</h2>
@@ -65,7 +65,7 @@ export const post: BlogPost = {
       </p>
 
       <h3>O que funciona no SaaS</h3>
-      <ul style="line-height: 2; padding-left: 1.5rem; color: #374151;">
+      <ul style="line-height: 2; padding-left: 1.5rem; color: var(--foreground);">
         <li><strong>Acesso universal:</strong> qualquer navegador, qualquer dispositivo, qualquer lugar com internet.</li>
         <li><strong>Modelo de assinatura:</strong> custo previsível, sem investimento inicial pesado em infraestrutura.</li>
         <li><strong>Atualizações contínuas:</strong> novas funcionalidades entregues automaticamente, sem intervenção de TI.</li>
@@ -78,16 +78,16 @@ export const post: BlogPost = {
         As limitações do SaaS não são bugs — são características inerentes ao modelo. O software SaaS é uma <strong>ferramenta passiva</strong>: ele faz o que você manda, quando você manda, e da forma que você configura. Isso cria três gargalos fundamentais:
       </p>
 
-      <ul style="line-height: 2; padding-left: 1.5rem; color: #374151;">
+      <ul style="line-height: 2; padding-left: 1.5rem; color: var(--foreground);">
         <li><strong>Entrada manual de dados:</strong> todo CRM SaaS depende de humanos digitando informações. Se o vendedor não registra a interação, o dado não existe. E vendedores odeiam preencher CRM — segundo a Salesforce (State of Sales, 2023), representantes gastam apenas 28% do tempo vendendo; o resto vai para tarefas administrativas como preencher CRM.</li>
         <li><strong>Gargalos humanos:</strong> follow-ups dependem de alguém lembrar de fazê-los. Qualificação de leads depende de alguém analisar cada caso. Relatórios dependem de alguém configurar dashboards. O software está pronto — o humano é o gargalo.</li>
         <li><strong>Curva de aprendizado:</strong> cada novo CRM exige treinamento. E quando o time muda, o treinamento recomeça. O CRM mais poderoso do mundo é inútil se a equipe não sabe (ou não quer) usar.</li>
         <li><strong>Taxa de falha altíssima:</strong> segundo pesquisa da CSO Insights e Forrester (2023), <strong>até 70% dos projetos de CRM falham por baixa adoção</strong> — não por problema no software, mas porque as pessoas não usam. O SaaS não resolve o problema humano.</li>
       </ul>
 
-      <div style="background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); border-left: 4px solid #2563eb; padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
-        <p style="margin: 0; font-weight: 700; color: #1e40af;">💡 A raiz do problema:</p>
-        <p style="margin: 0.5rem 0 0; color: #1e40af;">O SaaS democratizou o <em>acesso</em> ao software, mas não democratizou a <em>capacidade de operar</em> software. Uma PME com 3 vendedores tem o mesmo HubSpot que uma empresa com 300, mas não tem os mesmos recursos humanos para alimentar, configurar e extrair valor do sistema.</p>
+      <div style="background: var(--muted); border-left: 4px solid var(--fio-forte); padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
+        <p style="margin: 0; font-weight: 700; color: var(--foreground);">💡 A raiz do problema:</p>
+        <p style="margin: 0.5rem 0 0; color: var(--foreground);">O SaaS democratizou o <em>acesso</em> ao software, mas não democratizou a <em>capacidade de operar</em> software. Uma PME com 3 vendedores tem o mesmo HubSpot que uma empresa com 300, mas não tem os mesmos recursos humanos para alimentar, configurar e extrair valor do sistema.</p>
       </div>
 
       <h2>AgaaS — Software que Opera Sozinho</h2>
@@ -107,25 +107,25 @@ export const post: BlogPost = {
       </p>
 
       <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; margin: 2rem 0;">
-        <div style="background: #f8fafc; border: 1px solid #e2e8f0; padding: 1.25rem; border-radius: 0.75rem; text-align: center;">
+        <div style="background: var(--muted); border: 1px solid var(--border); padding: 1.25rem; border-radius: 0.75rem; text-align: center;">
           <p style="font-weight: 700; margin: 0 0 0.5rem; font-size: 1.5rem;">👁️</p>
           <p style="font-weight: 700; margin: 0 0 0.5rem;">1. Perceber</p>
-          <p style="color: #64748b; margin: 0; font-size: 0.9rem;">O agente monitora dados em tempo real: novas mensagens no WhatsApp, mudanças no pipeline, comportamento de leads, sinais de compra ou abandono.</p>
+          <p style="color: var(--foreground); margin: 0; font-size: 0.9rem;">O agente monitora dados em tempo real: novas mensagens no WhatsApp, mudanças no pipeline, comportamento de leads, sinais de compra ou abandono.</p>
         </div>
-        <div style="background: #f8fafc; border: 1px solid #e2e8f0; padding: 1.25rem; border-radius: 0.75rem; text-align: center;">
+        <div style="background: var(--muted); border: 1px solid var(--border); padding: 1.25rem; border-radius: 0.75rem; text-align: center;">
           <p style="font-weight: 700; margin: 0 0 0.5rem; font-size: 1.5rem;">🧠</p>
           <p style="font-weight: 700; margin: 0 0 0.5rem;">2. Planejar</p>
-          <p style="color: #64748b; margin: 0; font-size: 0.9rem;">Com base nos dados percebidos, o agente decide a melhor ação: enviar follow-up, qualificar lead, atualizar status, gerar relatório ou alertar o vendedor.</p>
+          <p style="color: var(--foreground); margin: 0; font-size: 0.9rem;">Com base nos dados percebidos, o agente decide a melhor ação: enviar follow-up, qualificar lead, atualizar status, gerar relatório ou alertar o vendedor.</p>
         </div>
-        <div style="background: #f8fafc; border: 1px solid #e2e8f0; padding: 1.25rem; border-radius: 0.75rem; text-align: center;">
+        <div style="background: var(--muted); border: 1px solid var(--border); padding: 1.25rem; border-radius: 0.75rem; text-align: center;">
           <p style="font-weight: 700; margin: 0 0 0.5rem; font-size: 1.5rem;">⚡</p>
           <p style="font-weight: 700; margin: 0 0 0.5rem;">3. Agir</p>
-          <p style="color: #64748b; margin: 0; font-size: 0.9rem;">O agente executa a ação planejada: envia a mensagem, move o deal no pipeline, cria a tarefa, dispara o alerta — tudo sem intervenção humana.</p>
+          <p style="color: var(--foreground); margin: 0; font-size: 0.9rem;">O agente executa a ação planejada: envia a mensagem, move o deal no pipeline, cria a tarefa, dispara o alerta — tudo sem intervenção humana.</p>
         </div>
-        <div style="background: #f8fafc; border: 1px solid #e2e8f0; padding: 1.25rem; border-radius: 0.75rem; text-align: center;">
+        <div style="background: var(--muted); border: 1px solid var(--border); padding: 1.25rem; border-radius: 0.75rem; text-align: center;">
           <p style="font-weight: 700; margin: 0 0 0.5rem; font-size: 1.5rem;">📈</p>
           <p style="font-weight: 700; margin: 0 0 0.5rem;">4. Aprender</p>
-          <p style="color: #64748b; margin: 0; font-size: 0.9rem;">O agente analisa os resultados de cada ação e ajusta seus modelos: o que gerou resposta, o que foi ignorado, qual timing funciona melhor.</p>
+          <p style="color: var(--foreground); margin: 0; font-size: 0.9rem;">O agente analisa os resultados de cada ação e ajusta seus modelos: o que gerou resposta, o que foi ignorado, qual timing funciona melhor.</p>
         </div>
       </div>
 
@@ -147,72 +147,72 @@ export const post: BlogPost = {
       <div style="overflow-x: auto; margin: 2rem 0;">
         <table style="width: 100%; border-collapse: collapse; font-size: 0.9rem;">
           <thead>
-            <tr style="background: #1e293b; color: #ffffff;">
-              <th style="padding: 0.75rem 1rem; text-align: left; border: 1px solid #334155; min-width: 160px;">Dimensão</th>
-              <th style="padding: 0.75rem 1rem; text-align: center; border: 1px solid #334155; min-width: 200px;">SaaS Tradicional</th>
-              <th style="padding: 0.75rem 1rem; text-align: center; border: 1px solid #334155; min-width: 200px;">AgaaS (Agentic as a Service)</th>
+            <tr style="background: var(--primary); color: #ffffff;">
+              <th style="padding: 0.75rem 1rem; text-align: left; border: 1px solid var(--fio-forte); min-width: 160px;">Dimensão</th>
+              <th style="padding: 0.75rem 1rem; text-align: center; border: 1px solid var(--fio-forte); min-width: 200px;">SaaS Tradicional</th>
+              <th style="padding: 0.75rem 1rem; text-align: center; border: 1px solid var(--fio-forte); min-width: 200px;">AgaaS (Agentic as a Service)</th>
             </tr>
           </thead>
           <tbody>
-            <tr style="background: #f8fafc;">
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; font-weight: 600;">Quem opera o sistema</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center;">O usuário humano</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center; color: #059669; font-weight: 600;">O agente IA (supervisionado)</td>
+            <tr style="background: var(--muted);">
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); font-weight: 600;">Quem opera o sistema</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center;">O usuário humano</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--foreground); font-weight: 600;">O agente IA (supervisionado)</td>
             </tr>
             <tr>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; font-weight: 600;">Entrada de dados</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center;">Manual — digitação pelo vendedor</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center; color: #059669; font-weight: 600;">Automática — captura de conversas, e-mails, interações</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); font-weight: 600;">Entrada de dados</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center;">Manual — digitação pelo vendedor</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--foreground); font-weight: 600;">Automática — captura de conversas, e-mails, interações</td>
             </tr>
-            <tr style="background: #f8fafc;">
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; font-weight: 600;">Follow-up</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center;">Lembretes que o humano precisa executar</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center; color: #059669; font-weight: 600;">Execução autônoma no timing ideal</td>
-            </tr>
-            <tr>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; font-weight: 600;">Qualificação de leads</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center;">Análise humana — subjetiva e lenta</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center; color: #059669; font-weight: 600;">BANT/MEDDIC automático — consistente e em tempo real</td>
-            </tr>
-            <tr style="background: #f8fafc;">
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; font-weight: 600;">Relatórios</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center;">Configuração manual de dashboards</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center; color: #059669; font-weight: 600;">Gerados automaticamente com insights acionáveis</td>
+            <tr style="background: var(--muted);">
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); font-weight: 600;">Follow-up</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center;">Lembretes que o humano precisa executar</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--foreground); font-weight: 600;">Execução autônoma no timing ideal</td>
             </tr>
             <tr>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; font-weight: 600;">Curva de aprendizado</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center;">Semanas de treinamento por usuário</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center; color: #059669; font-weight: 600;">Minutos — o agente já sabe operar o sistema</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); font-weight: 600;">Qualificação de leads</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center;">Análise humana — subjetiva e lenta</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--foreground); font-weight: 600;">BANT/MEDDIC automático — consistente e em tempo real</td>
             </tr>
-            <tr style="background: #f8fafc;">
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; font-weight: 600;">ROI (tempo para retorno)</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center;">3–6 meses (depende da adoção do time)</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center; color: #059669; font-weight: 600;">Imediato — valor desde o dia 1</td>
-            </tr>
-            <tr>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; font-weight: 600;">Modelo de preço</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center;">Por usuário/mês</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center;">Por agente ou por capacidade/mês</td>
-            </tr>
-            <tr style="background: #f8fafc;">
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; font-weight: 600;">Escalabilidade</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center;">Linear — mais vendedores = mais licenças</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center; color: #059669; font-weight: 600;">Exponencial — 1 agente atende múltiplos pipelines</td>
+            <tr style="background: var(--muted);">
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); font-weight: 600;">Relatórios</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center;">Configuração manual de dashboards</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--foreground); font-weight: 600;">Gerados automaticamente com insights acionáveis</td>
             </tr>
             <tr>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; font-weight: 600;">Personalização</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center;">Configuração manual por administrador</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center; color: #059669; font-weight: 600;">Adaptação automática ao comportamento do time</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); font-weight: 600;">Curva de aprendizado</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center;">Semanas de treinamento por usuário</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--foreground); font-weight: 600;">Minutos — o agente já sabe operar o sistema</td>
             </tr>
-            <tr style="background: #f8fafc;">
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; font-weight: 600;">Disponibilidade</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center;">Quando o usuário acessa o sistema</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center; color: #059669; font-weight: 600;">24/7 — agente trabalha mesmo quando ninguém acessa</td>
+            <tr style="background: var(--muted);">
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); font-weight: 600;">ROI (tempo para retorno)</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center;">3–6 meses (depende da adoção do time)</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--foreground); font-weight: 600;">Imediato — valor desde o dia 1</td>
             </tr>
             <tr>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; font-weight: 600;">Risco de falha</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center;">70% de falha por baixa adoção (Forrester, 2023)</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center; color: #059669; font-weight: 600;">Baixo — o agente não "esquece" de usar o sistema</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); font-weight: 600;">Modelo de preço</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center;">Por usuário/mês</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center;">Por agente ou por capacidade/mês</td>
+            </tr>
+            <tr style="background: var(--muted);">
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); font-weight: 600;">Escalabilidade</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center;">Linear — mais vendedores = mais licenças</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--foreground); font-weight: 600;">Exponencial — 1 agente atende múltiplos pipelines</td>
+            </tr>
+            <tr>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); font-weight: 600;">Personalização</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center;">Configuração manual por administrador</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--foreground); font-weight: 600;">Adaptação automática ao comportamento do time</td>
+            </tr>
+            <tr style="background: var(--muted);">
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); font-weight: 600;">Disponibilidade</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center;">Quando o usuário acessa o sistema</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--foreground); font-weight: 600;">24/7 — agente trabalha mesmo quando ninguém acessa</td>
+            </tr>
+            <tr>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); font-weight: 600;">Risco de falha</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center;">70% de falha por baixa adoção (Forrester, 2023)</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--foreground); font-weight: 600;">Baixo — o agente não "esquece" de usar o sistema</td>
             </tr>
           </tbody>
         </table>
@@ -246,9 +246,9 @@ export const post: BlogPost = {
         No modo AgaaS, a Sofia pode: qualificar leads automaticamente com BANT e MEDDIC, gerar e enviar follow-ups personalizados, alertar sobre deals que estão esfriando, sugerir próximos passos baseados em dados históricos, e produzir relatórios de performance sem que ninguém precise configurar um dashboard.
       </p>
 
-      <div style="background: linear-gradient(135deg, #f5f3ff 0%, #ede9fe 100%); border-left: 4px solid #7c3aed; padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
-        <p style="margin: 0; font-weight: 700; color: #5b21b6;">🟣 Primeiro CRM dual do Brasil:</p>
-        <p style="margin: 0.5rem 0 0; color: #5b21b6;">O Sirius CRM é o primeiro CRM brasileiro com modo dual SaaS + AgaaS na mesma plataforma. Use o /dashboard quando quiser controle manual. Ative o /IA quando quiser que a Sofia opere por você. Alterne entre os modos a qualquer momento — seus dados são os mesmos.</p>
+      <div style="background: var(--muted); border-left: 4px solid var(--fio-forte); padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
+        <p style="margin: 0; font-weight: 700; color: var(--foreground);">🟣 Primeiro CRM dual do Brasil:</p>
+        <p style="margin: 0.5rem 0 0; color: var(--foreground);">O Sirius CRM é o primeiro CRM brasileiro com modo dual SaaS + AgaaS na mesma plataforma. Use o /dashboard quando quiser controle manual. Ative o /IA quando quiser que a Sofia opere por você. Alterne entre os modos a qualquer momento — seus dados são os mesmos.</p>
       </div>
 
       <h3>Por que o modelo dual é superior</h3>
@@ -285,7 +285,7 @@ export const post: BlogPost = {
         Para esses três perfis, o AgaaS não é um luxo tecnológico — é uma necessidade competitiva. A empresa que adota agentes IA em 2026 está se posicionando para dominar o mercado enquanto concorrentes ainda dependem de planilhas e CRMs manuais.
       </p>
 
-      <a href="/register" style="color: #2563eb; font-weight: 600; text-decoration: underline;">→ Teste o modo AgaaS do Sirius CRM gratuitamente</a>
+      <a href="/register" style="color: var(--foreground); font-weight: 600; text-decoration: underline;">→ Teste o modo AgaaS do Sirius CRM gratuitamente</a>
 
       <h2>Quanto Custa Ter um Agente IA no CRM?</h2>
 
@@ -296,61 +296,61 @@ export const post: BlogPost = {
       <div style="overflow-x: auto; margin: 2rem 0;">
         <table style="width: 100%; border-collapse: collapse; font-size: 0.9rem;">
           <thead>
-            <tr style="background: #1e293b; color: #ffffff;">
-              <th style="padding: 0.75rem 1rem; text-align: left; border: 1px solid #334155;">Recurso</th>
-              <th style="padding: 0.75rem 1rem; text-align: center; border: 1px solid #334155;">STARTER — R$67/mês</th>
-              <th style="padding: 0.75rem 1rem; text-align: center; border: 1px solid #334155;">PRO — R$147/mês</th>
-              <th style="padding: 0.75rem 1rem; text-align: center; border: 1px solid #334155;">BUSINESS — R$397/mês</th>
+            <tr style="background: var(--primary); color: #ffffff;">
+              <th style="padding: 0.75rem 1rem; text-align: left; border: 1px solid var(--fio-forte);">Recurso</th>
+              <th style="padding: 0.75rem 1rem; text-align: center; border: 1px solid var(--fio-forte);">STARTER — R$67/mês</th>
+              <th style="padding: 0.75rem 1rem; text-align: center; border: 1px solid var(--fio-forte);">PRO — R$147/mês</th>
+              <th style="padding: 0.75rem 1rem; text-align: center; border: 1px solid var(--fio-forte);">BUSINESS — R$397/mês</th>
             </tr>
           </thead>
           <tbody>
-            <tr style="background: #f8fafc;">
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; font-weight: 600;">Modo /dashboard (SaaS)</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center; color: #059669;">✓ Completo</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center; color: #059669;">✓ Completo</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center; color: #059669;">✓ Completo</td>
+            <tr style="background: var(--muted);">
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); font-weight: 600;">Modo /dashboard (SaaS)</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--foreground);">✓ Completo</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--foreground);">✓ Completo</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--foreground);">✓ Completo</td>
             </tr>
             <tr>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; font-weight: 600;">Modo /IA (AgaaS)</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center; color: #f59e0b;">Básico</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center; color: #059669;">✓ Completo</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center; color: #059669;">✓ Avançado</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); font-weight: 600;">Modo /IA (AgaaS)</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--foreground);">Básico</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--foreground);">✓ Completo</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--foreground);">✓ Avançado</td>
             </tr>
-            <tr style="background: #f8fafc;">
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; font-weight: 600;">Qualificação IA (BANT/MEDDIC)</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center; color: #059669;">✓ Sim</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center; color: #059669;">✓ Sim</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center; color: #059669;">✓ Sim</td>
-            </tr>
-            <tr>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; font-weight: 600;">Follow-up autônomo</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center; color: #dc2626;">✗ Manual</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center; color: #059669;">✓ Autônomo</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center; color: #059669;">✓ Autônomo + Multi-canal</td>
-            </tr>
-            <tr style="background: #f8fafc;">
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; font-weight: 600;">WhatsApp integrado</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center; color: #059669;">✓ Sim</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center; color: #059669;">✓ Sim</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center; color: #059669;">✓ Sim</td>
+            <tr style="background: var(--muted);">
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); font-weight: 600;">Qualificação IA (BANT/MEDDIC)</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--foreground);">✓ Sim</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--foreground);">✓ Sim</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--foreground);">✓ Sim</td>
             </tr>
             <tr>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; font-weight: 600;">Relatórios automáticos por IA</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center; color: #dc2626;">✗ Não</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center; color: #059669;">✓ Sim</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center; color: #059669;">✓ Sim + Preditivos</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); font-weight: 600;">Follow-up autônomo</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--pulso-escuro);">✗ Manual</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--foreground);">✓ Autônomo</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--foreground);">✓ Autônomo + Multi-canal</td>
             </tr>
-            <tr style="background: #f8fafc;">
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; font-weight: 600;">Suporte</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center;">E-mail</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center;">E-mail + Chat prioritário</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center;">Dedicado + Onboarding</td>
+            <tr style="background: var(--muted);">
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); font-weight: 600;">WhatsApp integrado</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--foreground);">✓ Sim</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--foreground);">✓ Sim</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--foreground);">✓ Sim</td>
             </tr>
             <tr>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; font-weight: 600;">Desconto anual</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center; color: #059669;">20% off</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center; color: #059669;">20% off</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center; color: #059669;">20% off</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); font-weight: 600;">Relatórios automáticos por IA</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--pulso-escuro);">✗ Não</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--foreground);">✓ Sim</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--foreground);">✓ Sim + Preditivos</td>
+            </tr>
+            <tr style="background: var(--muted);">
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); font-weight: 600;">Suporte</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center;">E-mail</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center;">E-mail + Chat prioritário</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center;">Dedicado + Onboarding</td>
+            </tr>
+            <tr>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); font-weight: 600;">Desconto anual</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--foreground);">20% off</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--foreground);">20% off</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--foreground);">20% off</td>
             </tr>
           </tbody>
         </table>
@@ -369,45 +369,45 @@ export const post: BlogPost = {
         Mas o impacto real vai além do tempo: o follow-up consistente do agente IA aumenta a taxa de conversão. Segundo dados da Velocify (2021), empresas que respondem a leads em menos de 5 minutos têm <strong>21x mais chance de qualificá-los</strong>. O agente responde instantaneamente — o humano, em média, leva 42 horas (InsideSales.com, 2021).
       </p>
 
-      <div style="background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); border-left: 4px solid #2563eb; padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
-        <p style="margin: 0; font-weight: 700; color: #1e40af;">💰 Economia com plano anual:</p>
-        <p style="margin: 0.5rem 0 0; color: #1e40af;">Todos os planos do Sirius CRM oferecem <strong>20% de desconto no pagamento anual</strong>. O plano PRO anual sai por R$ 117,60/mês (R$ 1.411,20/ano). Para o retorno de R$ 1.320/mês em tempo recuperado, o investimento se paga em menos de 1 mês.</p>
+      <div style="background: var(--muted); border-left: 4px solid var(--fio-forte); padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
+        <p style="margin: 0; font-weight: 700; color: var(--foreground);">💰 Economia com plano anual:</p>
+        <p style="margin: 0.5rem 0 0; color: var(--foreground);">Todos os planos do Sirius CRM oferecem <strong>20% de desconto no pagamento anual</strong>. O plano PRO anual sai por R$ 117,60/mês (R$ 1.411,20/ano). Para o retorno de R$ 1.320/mês em tempo recuperado, o investimento se paga em menos de 1 mês.</p>
       </div>
 
       <h2>Perguntas Frequentes: AgaaS vs SaaS</h2>
 
-      <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
-        <summary style="font-weight: 600; cursor: pointer; color: #1e293b; list-style: revert;">O AgaaS vai substituir o SaaS?</summary>
-        <p style="margin: 0.75rem 0 0; color: #4b5563;">Não completamente — pelo menos não em 2026. O AgaaS é uma evolução do SaaS, assim como o SaaS foi uma evolução do on-premise. Os dois modelos vão coexistir por anos. O que vai acontecer é que CRMs puramente SaaS, sem capacidade agentic, vão perder competitividade gradualmente. A previsão do Gartner (2024) é que 33% dos aplicativos empresariais terão agentes IA até 2028 — ou seja, a transição é gradual, mas inevitável.</p>
+      <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
+        <summary style="font-weight: 600; cursor: pointer; color: var(--foreground); list-style: revert;">O AgaaS vai substituir o SaaS?</summary>
+        <p style="margin: 0.75rem 0 0; color: var(--foreground);">Não completamente — pelo menos não em 2026. O AgaaS é uma evolução do SaaS, assim como o SaaS foi uma evolução do on-premise. Os dois modelos vão coexistir por anos. O que vai acontecer é que CRMs puramente SaaS, sem capacidade agentic, vão perder competitividade gradualmente. A previsão do Gartner (2024) é que 33% dos aplicativos empresariais terão agentes IA até 2028 — ou seja, a transição é gradual, mas inevitável.</p>
       </details>
 
-      <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
-        <summary style="font-weight: 600; cursor: pointer; color: #1e293b; list-style: revert;">O agente IA pode cometer erros no meu pipeline?</summary>
-        <p style="margin: 0.75rem 0 0; color: #4b5563;">Sim, agentes IA podem cometer erros — assim como humanos cometem. A diferença é que o agente erra de forma consistente e previsível, o que facilita a correção. No Sirius CRM, o modo AgaaS tem níveis de autonomia configuráveis: você pode permitir que a Sofia execute ações automaticamente (ex.: enviar follow-up) ou exigir aprovação humana para ações críticas (ex.: mover deal para fechamento). O humano supervisiona, o agente opera.</p>
+      <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
+        <summary style="font-weight: 600; cursor: pointer; color: var(--foreground); list-style: revert;">O agente IA pode cometer erros no meu pipeline?</summary>
+        <p style="margin: 0.75rem 0 0; color: var(--foreground);">Sim, agentes IA podem cometer erros — assim como humanos cometem. A diferença é que o agente erra de forma consistente e previsível, o que facilita a correção. No Sirius CRM, o modo AgaaS tem níveis de autonomia configuráveis: você pode permitir que a Sofia execute ações automaticamente (ex.: enviar follow-up) ou exigir aprovação humana para ações críticas (ex.: mover deal para fechamento). O humano supervisiona, o agente opera.</p>
       </details>
 
-      <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
-        <summary style="font-weight: 600; cursor: pointer; color: #1e293b; list-style: revert;">Preciso de conhecimento técnico para usar o modo AgaaS?</summary>
-        <p style="margin: 0.75rem 0 0; color: #4b5563;">Não. O modo /IA do Sirius CRM foi projetado para ser usado por vendedores sem nenhum conhecimento técnico. A interface é conversacional: você fala com a Sofia em português natural ("Sofia, como está meu pipeline esta semana?" ou "Sofia, faz follow-up no lead João da empresa X"). Não há código, configuração técnica ou treinamento especializado necessário.</p>
+      <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
+        <summary style="font-weight: 600; cursor: pointer; color: var(--foreground); list-style: revert;">Preciso de conhecimento técnico para usar o modo AgaaS?</summary>
+        <p style="margin: 0.75rem 0 0; color: var(--foreground);">Não. O modo /IA do Sirius CRM foi projetado para ser usado por vendedores sem nenhum conhecimento técnico. A interface é conversacional: você fala com a Sofia em português natural ("Sofia, como está meu pipeline esta semana?" ou "Sofia, faz follow-up no lead João da empresa X"). Não há código, configuração técnica ou treinamento especializado necessário.</p>
       </details>
 
-      <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
-        <summary style="font-weight: 600; cursor: pointer; color: #1e293b; list-style: revert;">Qual a diferença entre AgaaS e automação tradicional (workflows)?</summary>
-        <p style="margin: 0.75rem 0 0; color: #4b5563;">Automação tradicional segue regras fixas: "se lead não responder em 3 dias, enviar e-mail X". É rígida, previsível e limitada. O AgaaS usa agentes que entendem contexto: a Sofia analisa o histórico do lead, o tom das conversas anteriores, o estágio no pipeline e o comportamento de leads similares para decidir o melhor timing, canal e conteúdo do follow-up. É a diferença entre um semáforo (regra fixa) e um motorista experiente (decisão contextual).</p>
+      <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
+        <summary style="font-weight: 600; cursor: pointer; color: var(--foreground); list-style: revert;">Qual a diferença entre AgaaS e automação tradicional (workflows)?</summary>
+        <p style="margin: 0.75rem 0 0; color: var(--foreground);">Automação tradicional segue regras fixas: "se lead não responder em 3 dias, enviar e-mail X". É rígida, previsível e limitada. O AgaaS usa agentes que entendem contexto: a Sofia analisa o histórico do lead, o tom das conversas anteriores, o estágio no pipeline e o comportamento de leads similares para decidir o melhor timing, canal e conteúdo do follow-up. É a diferença entre um semáforo (regra fixa) e um motorista experiente (decisão contextual).</p>
       </details>
 
-      <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin-bottom: 2rem;">
-        <summary style="font-weight: 600; cursor: pointer; color: #1e293b; list-style: revert;">O Sirius CRM funciona apenas no modo AgaaS?</summary>
-        <p style="margin: 0.75rem 0 0; color: #4b5563;">Não. O Sirius CRM tem modo dual: /dashboard (SaaS completo) e /IA (AgaaS). Você pode usar apenas o modo SaaS se preferir controle manual total, apenas o modo AgaaS se quiser que a Sofia opere, ou alternar entre os dois conforme a situação. Seus dados são compartilhados entre os modos — uma ação da Sofia no /IA aparece imediatamente no /dashboard.</p>
+      <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 2rem;">
+        <summary style="font-weight: 600; cursor: pointer; color: var(--foreground); list-style: revert;">O Sirius CRM funciona apenas no modo AgaaS?</summary>
+        <p style="margin: 0.75rem 0 0; color: var(--foreground);">Não. O Sirius CRM tem modo dual: /dashboard (SaaS completo) e /IA (AgaaS). Você pode usar apenas o modo SaaS se preferir controle manual total, apenas o modo AgaaS se quiser que a Sofia opere, ou alternar entre os dois conforme a situação. Seus dados são compartilhados entre os modos — uma ação da Sofia no /IA aparece imediatamente no /dashboard.</p>
       </details>
 
-      <div style="background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%); border: 1px solid #6ee7b7; padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0; text-align: center;">
-        <p style="font-weight: 700; color: #065f46; font-size: 1.1rem; margin: 0 0 0.75rem;">Experimente o modo AgaaS do Sirius CRM</p>
-        <p style="color: #047857; margin: 0 0 1rem;">Modo dual SaaS + AgaaS. Sofia IA qualificando leads, executando follow-ups e organizando seu pipeline — 24/7. Planos a partir de R$ 67/mês com 20% off no anual.</p>
-        <p><strong><a href="/register" style="color: #059669; text-decoration: underline;">Começar Agora →</a></strong></p>
+      <div style="background: var(--muted); border: 1px solid var(--border); padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0; text-align: center;">
+        <p style="font-weight: 700; color: var(--foreground); font-size: 1.1rem; margin: 0 0 0.75rem;">Experimente o modo AgaaS do Sirius CRM</p>
+        <p style="color: var(--foreground); margin: 0 0 1rem;">Modo dual SaaS + AgaaS. Sofia IA qualificando leads, executando follow-ups e organizando seu pipeline — 24/7. Planos a partir de R$ 67/mês com 20% off no anual.</p>
+        <p><strong><a href="/register" style="color: var(--foreground); text-decoration: underline;">Começar Agora →</a></strong></p>
       </div>
 
-      <hr style="margin: 3rem 0; border: none; border-top: 1px solid #e5e7eb;" />
+      <hr style="margin: 3rem 0; border: none; border-top: 1px solid var(--border);" />
       <strong>Última Atualização:</strong> 28 de Março de 2026<br/>
       <strong>Autor:</strong> Equipe Sirius CRM<br/>
       <strong>Tempo de Leitura:</strong> 12 minutos
@@ -434,20 +434,20 @@ export const post: BlogPost = {
         In this article, we'll compare the two models in depth, understand why AgaaS represents the next major evolution of enterprise software, and show how <strong>Sirius CRM</strong> already implements this vision with its dual SaaS + AgaaS mode.
       </p>
 
-      <div class="not-prose" style="background: #1e293b; padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
-        <p style="margin: 0 0 0.75rem; font-weight: 700; font-size: 1.05rem; color: #818cf8;">⚡ TL;DR — 5 Key Differences Between SaaS and AgaaS</p>
+      <div class="not-prose" style="background: var(--primary); padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
+        <p style="margin: 0 0 0.75rem; font-weight: 700; font-size: 1.05rem; color: var(--primary-foreground);">⚡ TL;DR — 5 Key Differences Between SaaS and AgaaS</p>
         <ul style="margin: 0; padding-left: 1.25rem; line-height: 2; color: #ffffff;">
-          <li><strong style="color: #818cf8;">Who operates:</strong> In SaaS, the human uses the software. In AgaaS, the AI agent operates the software for the human.</li>
-          <li><strong style="color: #818cf8;">Data entry:</strong> SaaS depends on manual typing. AgaaS captures and organizes data automatically.</li>
-          <li><strong style="color: #818cf8;">Follow-up:</strong> SaaS requires someone to remember and execute. AgaaS executes follow-ups autonomously at the ideal timing.</li>
-          <li><strong style="color: #818cf8;">Learning curve:</strong> SaaS requires user training. AgaaS requires only supervision — the agent already knows how to operate.</li>
-          <li><strong style="color: #818cf8;">ROI:</strong> SaaS depends on team discipline. AgaaS delivers value from day one, without depending on human adoption.</li>
+          <li><strong style="color: var(--primary-foreground);">Who operates:</strong> In SaaS, the human uses the software. In AgaaS, the AI agent operates the software for the human.</li>
+          <li><strong style="color: var(--primary-foreground);">Data entry:</strong> SaaS depends on manual typing. AgaaS captures and organizes data automatically.</li>
+          <li><strong style="color: var(--primary-foreground);">Follow-up:</strong> SaaS requires someone to remember and execute. AgaaS executes follow-ups autonomously at the ideal timing.</li>
+          <li><strong style="color: var(--primary-foreground);">Learning curve:</strong> SaaS requires user training. AgaaS requires only supervision — the agent already knows how to operate.</li>
+          <li><strong style="color: var(--primary-foreground);">ROI:</strong> SaaS depends on team discipline. AgaaS delivers value from day one, without depending on human adoption.</li>
         </ul>
       </div>
 
-      <div style="background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); border-left: 4px solid #2563eb; padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
-        <p style="margin: 0; font-weight: 700; color: #1e40af;">📊 Impact data:</p>
-        <p style="margin: 0.5rem 0 0; color: #1e40af;">Gartner predicts that by 2028, <strong>33% of enterprise applications will have embedded AI agents</strong> — today less than 1% have this capability. Companies that adopt agents before competitors will have a decisive competitive advantage (Gartner, 2024).</p>
+      <div style="background: var(--muted); border-left: 4px solid var(--fio-forte); padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
+        <p style="margin: 0; font-weight: 700; color: var(--foreground);">📊 Impact data:</p>
+        <p style="margin: 0.5rem 0 0; color: var(--foreground);">Gartner predicts that by 2028, <strong>33% of enterprise applications will have embedded AI agents</strong> — today less than 1% have this capability. Companies that adopt agents before competitors will have a decisive competitive advantage (Gartner, 2024).</p>
       </div>
 
       <h2>The Evolution of Software: From On-Premise to AgaaS</h2>
@@ -470,7 +470,7 @@ export const post: BlogPost = {
       <h2>Traditional SaaS — What Works and Where It Fails</h2>
 
       <h3>What works in SaaS</h3>
-      <ul style="line-height: 2; padding-left: 1.5rem; color: #374151;">
+      <ul style="line-height: 2; padding-left: 1.5rem; color: var(--foreground);">
         <li><strong>Universal access:</strong> any browser, any device, any place with internet.</li>
         <li><strong>Subscription model:</strong> predictable cost, no heavy initial infrastructure investment.</li>
         <li><strong>Continuous updates:</strong> new features delivered automatically, without IT intervention.</li>
@@ -482,16 +482,16 @@ export const post: BlogPost = {
       <p>
         SaaS limitations aren't bugs — they're inherent characteristics of the model. SaaS software is a <strong>passive tool</strong>: it does what you tell it, when you tell it, and in the way you configure it. This creates three fundamental bottlenecks:
       </p>
-      <ul style="line-height: 2; padding-left: 1.5rem; color: #374151;">
+      <ul style="line-height: 2; padding-left: 1.5rem; color: var(--foreground);">
         <li><strong>Manual data entry:</strong> every SaaS CRM depends on humans typing information. If the rep doesn't log the interaction, the data doesn't exist.</li>
         <li><strong>Human bottlenecks:</strong> follow-ups depend on someone remembering to do them. Lead qualification depends on someone analyzing each case.</li>
         <li><strong>Learning curve:</strong> every new CRM requires training. And when the team changes, training starts over.</li>
         <li><strong>Very high failure rate:</strong> according to CSO Insights and Forrester research (2023), <strong>up to 70% of CRM projects fail due to low adoption</strong> — not software issues, but because people don't use it.</li>
       </ul>
 
-      <div style="background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); border-left: 4px solid #2563eb; padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
-        <p style="margin: 0; font-weight: 700; color: #1e40af;">💡 The root of the problem:</p>
-        <p style="margin: 0.5rem 0 0; color: #1e40af;">SaaS democratized <em>access</em> to software, but didn't democratize the <em>ability to operate</em> software. An SMB with 3 reps has the same HubSpot as a company with 300, but doesn't have the same human resources to feed, configure, and extract value from the system.</p>
+      <div style="background: var(--muted); border-left: 4px solid var(--fio-forte); padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
+        <p style="margin: 0; font-weight: 700; color: var(--foreground);">💡 The root of the problem:</p>
+        <p style="margin: 0.5rem 0 0; color: var(--foreground);">SaaS democratized <em>access</em> to software, but didn't democratize the <em>ability to operate</em> software. An SMB with 3 reps has the same HubSpot as a company with 300, but doesn't have the same human resources to feed, configure, and extract value from the system.</p>
       </div>
 
       <h2>AgaaS — Software That Operates Itself</h2>
@@ -502,25 +502,25 @@ export const post: BlogPost = {
 
       <h3>How an AI agent works in the CRM</h3>
       <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; margin: 2rem 0;">
-        <div style="background: #f8fafc; border: 1px solid #e2e8f0; padding: 1.25rem; border-radius: 0.75rem; text-align: center;">
+        <div style="background: var(--muted); border: 1px solid var(--border); padding: 1.25rem; border-radius: 0.75rem; text-align: center;">
           <p style="font-weight: 700; margin: 0 0 0.5rem; font-size: 1.5rem;">👁️</p>
           <p style="font-weight: 700; margin: 0 0 0.5rem;">1. Perceive</p>
-          <p style="color: #64748b; margin: 0; font-size: 0.9rem;">The agent monitors real-time data: new WhatsApp messages, pipeline changes, lead behavior, purchase or abandonment signals.</p>
+          <p style="color: var(--foreground); margin: 0; font-size: 0.9rem;">The agent monitors real-time data: new WhatsApp messages, pipeline changes, lead behavior, purchase or abandonment signals.</p>
         </div>
-        <div style="background: #f8fafc; border: 1px solid #e2e8f0; padding: 1.25rem; border-radius: 0.75rem; text-align: center;">
+        <div style="background: var(--muted); border: 1px solid var(--border); padding: 1.25rem; border-radius: 0.75rem; text-align: center;">
           <p style="font-weight: 700; margin: 0 0 0.5rem; font-size: 1.5rem;">🧠</p>
           <p style="font-weight: 700; margin: 0 0 0.5rem;">2. Plan</p>
-          <p style="color: #64748b; margin: 0; font-size: 0.9rem;">Based on perceived data, the agent decides the best action: send follow-up, qualify lead, update status, generate report, or alert the rep.</p>
+          <p style="color: var(--foreground); margin: 0; font-size: 0.9rem;">Based on perceived data, the agent decides the best action: send follow-up, qualify lead, update status, generate report, or alert the rep.</p>
         </div>
-        <div style="background: #f8fafc; border: 1px solid #e2e8f0; padding: 1.25rem; border-radius: 0.75rem; text-align: center;">
+        <div style="background: var(--muted); border: 1px solid var(--border); padding: 1.25rem; border-radius: 0.75rem; text-align: center;">
           <p style="font-weight: 700; margin: 0 0 0.5rem; font-size: 1.5rem;">⚡</p>
           <p style="font-weight: 700; margin: 0 0 0.5rem;">3. Act</p>
-          <p style="color: #64748b; margin: 0; font-size: 0.9rem;">The agent executes the planned action: sends the message, moves the deal in the pipeline, creates the task, triggers the alert — all without human intervention.</p>
+          <p style="color: var(--foreground); margin: 0; font-size: 0.9rem;">The agent executes the planned action: sends the message, moves the deal in the pipeline, creates the task, triggers the alert — all without human intervention.</p>
         </div>
-        <div style="background: #f8fafc; border: 1px solid #e2e8f0; padding: 1.25rem; border-radius: 0.75rem; text-align: center;">
+        <div style="background: var(--muted); border: 1px solid var(--border); padding: 1.25rem; border-radius: 0.75rem; text-align: center;">
           <p style="font-weight: 700; margin: 0 0 0.5rem; font-size: 1.5rem;">📈</p>
           <p style="font-weight: 700; margin: 0 0 0.5rem;">4. Learn</p>
-          <p style="color: #64748b; margin: 0; font-size: 0.9rem;">The agent analyzes the results of each action and adjusts its models: what generated response, what was ignored, what timing works best.</p>
+          <p style="color: var(--foreground); margin: 0; font-size: 0.9rem;">The agent analyzes the results of each action and adjusts its models: what generated response, what was ignored, what timing works best.</p>
         </div>
       </div>
 
@@ -529,67 +529,67 @@ export const post: BlogPost = {
       <div style="overflow-x: auto; margin: 2rem 0;">
         <table style="width: 100%; border-collapse: collapse; font-size: 0.9rem;">
           <thead>
-            <tr style="background: #1e293b; color: #ffffff;">
-              <th style="padding: 0.75rem 1rem; text-align: left; border: 1px solid #334155; min-width: 160px;">Dimension</th>
-              <th style="padding: 0.75rem 1rem; text-align: center; border: 1px solid #334155; min-width: 200px;">Traditional SaaS</th>
-              <th style="padding: 0.75rem 1rem; text-align: center; border: 1px solid #334155; min-width: 200px;">AgaaS (Agentic as a Service)</th>
+            <tr style="background: var(--primary); color: #ffffff;">
+              <th style="padding: 0.75rem 1rem; text-align: left; border: 1px solid var(--fio-forte); min-width: 160px;">Dimension</th>
+              <th style="padding: 0.75rem 1rem; text-align: center; border: 1px solid var(--fio-forte); min-width: 200px;">Traditional SaaS</th>
+              <th style="padding: 0.75rem 1rem; text-align: center; border: 1px solid var(--fio-forte); min-width: 200px;">AgaaS (Agentic as a Service)</th>
             </tr>
           </thead>
           <tbody>
-            <tr style="background: #f8fafc;">
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; font-weight: 600;">Who operates the system</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center;">The human user</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center; color: #059669; font-weight: 600;">The AI agent (supervised)</td>
+            <tr style="background: var(--muted);">
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); font-weight: 600;">Who operates the system</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center;">The human user</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--foreground); font-weight: 600;">The AI agent (supervised)</td>
             </tr>
             <tr>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; font-weight: 600;">Data entry</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center;">Manual — rep types it in</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center; color: #059669; font-weight: 600;">Automatic — captures conversations, emails, interactions</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); font-weight: 600;">Data entry</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center;">Manual — rep types it in</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--foreground); font-weight: 600;">Automatic — captures conversations, emails, interactions</td>
             </tr>
-            <tr style="background: #f8fafc;">
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; font-weight: 600;">Follow-up</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center;">Reminders the human must execute</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center; color: #059669; font-weight: 600;">Autonomous execution at ideal timing</td>
-            </tr>
-            <tr>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; font-weight: 600;">Lead qualification</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center;">Human analysis — subjective and slow</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center; color: #059669; font-weight: 600;">Automatic BANT/MEDDIC — consistent and real-time</td>
-            </tr>
-            <tr style="background: #f8fafc;">
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; font-weight: 600;">Reports</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center;">Manual dashboard configuration</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center; color: #059669; font-weight: 600;">Generated automatically with actionable insights</td>
+            <tr style="background: var(--muted);">
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); font-weight: 600;">Follow-up</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center;">Reminders the human must execute</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--foreground); font-weight: 600;">Autonomous execution at ideal timing</td>
             </tr>
             <tr>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; font-weight: 600;">Learning curve</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center;">Weeks of training per user</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center; color: #059669; font-weight: 600;">Minutes — the agent already knows how to operate</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); font-weight: 600;">Lead qualification</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center;">Human analysis — subjective and slow</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--foreground); font-weight: 600;">Automatic BANT/MEDDIC — consistent and real-time</td>
             </tr>
-            <tr style="background: #f8fafc;">
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; font-weight: 600;">ROI (time to return)</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center;">3–6 months (depends on team adoption)</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center; color: #059669; font-weight: 600;">Immediate — value from day 1</td>
-            </tr>
-            <tr>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; font-weight: 600;">Price model</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center;">Per user/month</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center;">Per agent or per capacity/month</td>
-            </tr>
-            <tr style="background: #f8fafc;">
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; font-weight: 600;">Scalability</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center;">Linear — more reps = more licenses</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center; color: #059669; font-weight: 600;">Exponential — 1 agent handles multiple pipelines</td>
+            <tr style="background: var(--muted);">
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); font-weight: 600;">Reports</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center;">Manual dashboard configuration</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--foreground); font-weight: 600;">Generated automatically with actionable insights</td>
             </tr>
             <tr>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; font-weight: 600;">Availability</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center;">When the user accesses the system</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center; color: #059669; font-weight: 600;">24/7 — agent works even when no one is logged in</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); font-weight: 600;">Learning curve</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center;">Weeks of training per user</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--foreground); font-weight: 600;">Minutes — the agent already knows how to operate</td>
             </tr>
-            <tr style="background: #f8fafc;">
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; font-weight: 600;">Failure risk</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center;">70% failure from low adoption (Forrester, 2023)</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center; color: #059669; font-weight: 600;">Low — the agent doesn't "forget" to use the system</td>
+            <tr style="background: var(--muted);">
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); font-weight: 600;">ROI (time to return)</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center;">3–6 months (depends on team adoption)</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--foreground); font-weight: 600;">Immediate — value from day 1</td>
+            </tr>
+            <tr>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); font-weight: 600;">Price model</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center;">Per user/month</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center;">Per agent or per capacity/month</td>
+            </tr>
+            <tr style="background: var(--muted);">
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); font-weight: 600;">Scalability</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center;">Linear — more reps = more licenses</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--foreground); font-weight: 600;">Exponential — 1 agent handles multiple pipelines</td>
+            </tr>
+            <tr>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); font-weight: 600;">Availability</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center;">When the user accesses the system</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--foreground); font-weight: 600;">24/7 — agent works even when no one is logged in</td>
+            </tr>
+            <tr style="background: var(--muted);">
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); font-weight: 600;">Failure risk</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center;">70% failure from low adoption (Forrester, 2023)</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--foreground); font-weight: 600;">Low — the agent doesn't "forget" to use the system</td>
             </tr>
           </tbody>
         </table>
@@ -611,9 +611,9 @@ export const post: BlogPost = {
         The <code>/IA</code> mode activates <strong>Sofia AI</strong>, Sirius CRM's artificial intelligence, as an autonomous agent. In this mode, Sofia acts as an orchestration brain that monitors the entire pipeline, identifies opportunities and risks, executes actions, and learns from results.
       </p>
 
-      <div style="background: linear-gradient(135deg, #f5f3ff 0%, #ede9fe 100%); border-left: 4px solid #7c3aed; padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
-        <p style="margin: 0; font-weight: 700; color: #5b21b6;">🟣 Brazil's first dual CRM:</p>
-        <p style="margin: 0.5rem 0 0; color: #5b21b6;">Sirius CRM is the first Brazilian CRM with dual SaaS + AgaaS mode on the same platform. Use /dashboard when you want manual control. Activate /IA when you want Sofia to operate for you. Switch between modes at any time — your data is the same.</p>
+      <div style="background: var(--muted); border-left: 4px solid var(--fio-forte); padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
+        <p style="margin: 0; font-weight: 700; color: var(--foreground);">🟣 Brazil's first dual CRM:</p>
+        <p style="margin: 0.5rem 0 0; color: var(--foreground);">Sirius CRM is the first Brazilian CRM with dual SaaS + AgaaS mode on the same platform. Use /dashboard when you want manual control. Activate /IA when you want Sofia to operate for you. Switch between modes at any time — your data is the same.</p>
       </div>
 
       <h2>Who Is AgaaS For?</h2>
@@ -635,38 +635,38 @@ export const post: BlogPost = {
 
       <h2>FAQ: AgaaS vs SaaS</h2>
 
-      <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
-        <summary style="font-weight: 600; cursor: pointer; color: #1e293b; list-style: revert;">Will AgaaS replace SaaS?</summary>
-        <p style="margin: 0.75rem 0 0; color: #4b5563;">Not completely — at least not in 2026. AgaaS is an evolution of SaaS, just as SaaS was an evolution of on-premise. Both models will coexist for years. What will happen is that purely SaaS CRMs without agentic capability will gradually lose competitiveness. Gartner's forecast (2024) is that 33% of enterprise applications will have AI agents by 2028 — meaning the transition is gradual, but inevitable.</p>
+      <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
+        <summary style="font-weight: 600; cursor: pointer; color: var(--foreground); list-style: revert;">Will AgaaS replace SaaS?</summary>
+        <p style="margin: 0.75rem 0 0; color: var(--foreground);">Not completely — at least not in 2026. AgaaS is an evolution of SaaS, just as SaaS was an evolution of on-premise. Both models will coexist for years. What will happen is that purely SaaS CRMs without agentic capability will gradually lose competitiveness. Gartner's forecast (2024) is that 33% of enterprise applications will have AI agents by 2028 — meaning the transition is gradual, but inevitable.</p>
       </details>
 
-      <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
-        <summary style="font-weight: 600; cursor: pointer; color: #1e293b; list-style: revert;">Can the AI agent make mistakes in my pipeline?</summary>
-        <p style="margin: 0.75rem 0 0; color: #4b5563;">Yes, AI agents can make mistakes — just like humans do. The difference is that the agent makes mistakes in a consistent and predictable way, making them easier to correct. In Sirius CRM, AgaaS mode has configurable autonomy levels: you can allow Sofia to execute actions automatically (e.g., send follow-up) or require human approval for critical actions (e.g., move deal to closing).</p>
+      <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
+        <summary style="font-weight: 600; cursor: pointer; color: var(--foreground); list-style: revert;">Can the AI agent make mistakes in my pipeline?</summary>
+        <p style="margin: 0.75rem 0 0; color: var(--foreground);">Yes, AI agents can make mistakes — just like humans do. The difference is that the agent makes mistakes in a consistent and predictable way, making them easier to correct. In Sirius CRM, AgaaS mode has configurable autonomy levels: you can allow Sofia to execute actions automatically (e.g., send follow-up) or require human approval for critical actions (e.g., move deal to closing).</p>
       </details>
 
-      <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
-        <summary style="font-weight: 600; cursor: pointer; color: #1e293b; list-style: revert;">Do I need technical knowledge to use AgaaS mode?</summary>
-        <p style="margin: 0.75rem 0 0; color: #4b5563;">No. Sirius CRM's /IA mode was designed for sales reps with no technical knowledge. The interface is conversational: you talk to Sofia in natural language ("Sofia, how's my pipeline this week?" or "Sofia, follow up with lead João from company X"). No code, technical configuration, or specialized training required.</p>
+      <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
+        <summary style="font-weight: 600; cursor: pointer; color: var(--foreground); list-style: revert;">Do I need technical knowledge to use AgaaS mode?</summary>
+        <p style="margin: 0.75rem 0 0; color: var(--foreground);">No. Sirius CRM's /IA mode was designed for sales reps with no technical knowledge. The interface is conversational: you talk to Sofia in natural language ("Sofia, how's my pipeline this week?" or "Sofia, follow up with lead João from company X"). No code, technical configuration, or specialized training required.</p>
       </details>
 
-      <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
-        <summary style="font-weight: 600; cursor: pointer; color: #1e293b; list-style: revert;">What's the difference between AgaaS and traditional automation (workflows)?</summary>
-        <p style="margin: 0.75rem 0 0; color: #4b5563;">Traditional automation follows fixed rules: "if lead doesn't respond in 3 days, send email X." It's rigid, predictable, and limited. AgaaS uses agents that understand context: Sofia analyzes the lead's history, tone of previous conversations, pipeline stage, and similar lead behavior to decide the best timing, channel, and follow-up content. It's the difference between a traffic light (fixed rule) and an experienced driver (contextual decision).</p>
+      <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
+        <summary style="font-weight: 600; cursor: pointer; color: var(--foreground); list-style: revert;">What's the difference between AgaaS and traditional automation (workflows)?</summary>
+        <p style="margin: 0.75rem 0 0; color: var(--foreground);">Traditional automation follows fixed rules: "if lead doesn't respond in 3 days, send email X." It's rigid, predictable, and limited. AgaaS uses agents that understand context: Sofia analyzes the lead's history, tone of previous conversations, pipeline stage, and similar lead behavior to decide the best timing, channel, and follow-up content. It's the difference between a traffic light (fixed rule) and an experienced driver (contextual decision).</p>
       </details>
 
-      <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin-bottom: 2rem;">
-        <summary style="font-weight: 600; cursor: pointer; color: #1e293b; list-style: revert;">Does Sirius CRM work only in AgaaS mode?</summary>
-        <p style="margin: 0.75rem 0 0; color: #4b5563;">No. Sirius CRM has dual mode: /dashboard (full SaaS) and /IA (AgaaS). You can use only SaaS mode if you prefer full manual control, only AgaaS mode if you want Sofia to operate, or switch between the two as the situation demands. Your data is shared between modes — an action by Sofia in /IA appears immediately in /dashboard.</p>
+      <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 2rem;">
+        <summary style="font-weight: 600; cursor: pointer; color: var(--foreground); list-style: revert;">Does Sirius CRM work only in AgaaS mode?</summary>
+        <p style="margin: 0.75rem 0 0; color: var(--foreground);">No. Sirius CRM has dual mode: /dashboard (full SaaS) and /IA (AgaaS). You can use only SaaS mode if you prefer full manual control, only AgaaS mode if you want Sofia to operate, or switch between the two as the situation demands. Your data is shared between modes — an action by Sofia in /IA appears immediately in /dashboard.</p>
       </details>
 
-      <div style="background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%); border: 1px solid #6ee7b7; padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0; text-align: center;">
-        <p style="font-weight: 700; color: #065f46; font-size: 1.1rem; margin: 0 0 0.75rem;">Try Sirius CRM's AgaaS mode</p>
-        <p style="color: #047857; margin: 0 0 1rem;">Dual SaaS + AgaaS mode. Sofia AI qualifying leads, executing follow-ups, and organizing your pipeline — 24/7. Plans from R$ 67/month with 20% off annual.</p>
-        <p><strong><a href="/register" style="color: #059669; text-decoration: underline;">Start Now →</a></strong></p>
+      <div style="background: var(--muted); border: 1px solid var(--border); padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0; text-align: center;">
+        <p style="font-weight: 700; color: var(--foreground); font-size: 1.1rem; margin: 0 0 0.75rem;">Try Sirius CRM's AgaaS mode</p>
+        <p style="color: var(--foreground); margin: 0 0 1rem;">Dual SaaS + AgaaS mode. Sofia AI qualifying leads, executing follow-ups, and organizing your pipeline — 24/7. Plans from R$ 67/month with 20% off annual.</p>
+        <p><strong><a href="/register" style="color: var(--foreground); text-decoration: underline;">Start Now →</a></strong></p>
       </div>
 
-      <hr style="margin: 3rem 0; border: none; border-top: 1px solid #e5e7eb;" />
+      <hr style="margin: 3rem 0; border: none; border-top: 1px solid var(--border);" />
       <strong>Last Updated:</strong> March 28, 2026<br/>
       <strong>Author:</strong> Sirius CRM Team<br/>
       <strong>Read Time:</strong> 12 minutes

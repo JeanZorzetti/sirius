@@ -26,30 +26,30 @@ export const post: BlogPost = {
       <div class="callout-questions">
         <p><strong>🔍 6 Perguntas que Todo Gestor Comercial Precisa Responder</strong></p>
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem; margin: 1.5rem 0;">
-          <div style="background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); border-left: 4px solid #2563eb; padding: 1.25rem; border-radius: 0.75rem; box-shadow: 0 2px 8px rgba(37, 99, 235, 0.1);">
-            <p style="margin: 0; font-weight: 600; color: #1e40af;">💼 Quantos negócios estão em negociação neste momento?</p>
+          <div style="background: var(--muted); border-left: 4px solid var(--fio-forte); padding: 1.25rem; border-radius: 0.75rem; box-shadow: none;">
+            <p style="margin: 0; font-weight: 600; color: var(--foreground);">💼 Quantos negócios estão em negociação neste momento?</p>
           </div>
-          <div style="background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); border-left: 4px solid #2563eb; padding: 1.25rem; border-radius: 0.75rem; box-shadow: 0 2px 8px rgba(37, 99, 235, 0.1);">
-            <p style="margin: 0; font-weight: 600; color: #1e40af;">💰 Qual é o valor total que pode fechar este mês?</p>
+          <div style="background: var(--muted); border-left: 4px solid var(--fio-forte); padding: 1.25rem; border-radius: 0.75rem; box-shadow: none;">
+            <p style="margin: 0; font-weight: 600; color: var(--foreground);">💰 Qual é o valor total que pode fechar este mês?</p>
           </div>
-          <div style="background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); border-left: 4px solid #2563eb; padding: 1.25rem; border-radius: 0.75rem; box-shadow: 0 2px 8px rgba(37, 99, 235, 0.1);">
-            <p style="margin: 0; font-weight: 600; color: #1e40af;">🚧 Onde estão os gargalos?</p>
+          <div style="background: var(--muted); border-left: 4px solid var(--fio-forte); padding: 1.25rem; border-radius: 0.75rem; box-shadow: none;">
+            <p style="margin: 0; font-weight: 600; color: var(--foreground);">🚧 Onde estão os gargalos?</p>
           </div>
-          <div style="background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); border-left: 4px solid #2563eb; padding: 1.25rem; border-radius: 0.75rem; box-shadow: 0 2px 8px rgba(37, 99, 235, 0.1);">
-            <p style="margin: 0; font-weight: 600; color: #1e40af;">🎯 Qual vendedor está mais próximo da meta?</p>
+          <div style="background: var(--muted); border-left: 4px solid var(--fio-forte); padding: 1.25rem; border-radius: 0.75rem; box-shadow: none;">
+            <p style="margin: 0; font-weight: 600; color: var(--foreground);">🎯 Qual vendedor está mais próximo da meta?</p>
           </div>
-          <div style="background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); border-left: 4px solid #2563eb; padding: 1.25rem; border-radius: 0.75rem; box-shadow: 0 2px 8px rgba(37, 99, 235, 0.1);">
-            <p style="margin: 0; font-weight: 600; color: #1e40af;">⏰ Existem oportunidades esquecidas há semanas?</p>
+          <div style="background: var(--muted); border-left: 4px solid var(--fio-forte); padding: 1.25rem; border-radius: 0.75rem; box-shadow: none;">
+            <p style="margin: 0; font-weight: 600; color: var(--foreground);">⏰ Existem oportunidades esquecidas há semanas?</p>
           </div>
-          <div style="background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); border-left: 4px solid #2563eb; padding: 1.25rem; border-radius: 0.75rem; box-shadow: 0 2px 8px rgba(37, 99, 235, 0.1);">
-            <p style="margin: 0; font-weight: 600; color: #1e40af;">❌ Por que perdemos deals na proposta?</p>
+          <div style="background: var(--muted); border-left: 4px solid var(--fio-forte); padding: 1.25rem; border-radius: 0.75rem; box-shadow: none;">
+            <p style="margin: 0; font-weight: 600; color: var(--foreground);">❌ Por que perdemos deals na proposta?</p>
           </div>
         </div>
       </div>
 
       <div class="callout-stat">
         <p><strong>📊 Impacto Comprovado</strong></p>
-        <p style="font-size: 3rem; font-weight: 800; color: #2563eb; margin: 1rem 0; line-height: 1;">+28%</p>
+        <p style="font-size: 3rem; font-weight: 800; color: var(--foreground); margin: 1rem 0; line-height: 1;">+28%</p>
         <p>Empresas com pipelines bem gerenciados vendem <strong>28% a mais</strong> do que aquelas que trabalham "no feeling", segundo pesquisa da Harvard Business Review de <strong>2024</strong>.</p>
       </div>
 
@@ -99,19 +99,19 @@ export const post: BlogPost = {
         </p>
         <div style="display: flex; flex-direction: column; gap: 0.75rem; margin: 1.5rem 0;">
           <div style="display: flex; align-items: flex-start;">
-            <strong style="color: #16a34a; font-size: 1.125rem; min-width: 1.5rem; margin-right: 0.5rem;">B</strong>
+            <strong style="color: var(--foreground); font-size: 1.125rem; min-width: 1.5rem; margin-right: 0.5rem;">B</strong>
             <span style="flex: 1;">udget: "Você já reservou orçamento para isso?"</span>
           </div>
           <div style="display: flex; align-items: flex-start;">
-            <strong style="color: #16a34a; font-size: 1.125rem; min-width: 1.5rem; margin-right: 0.5rem;">A</strong>
+            <strong style="color: var(--foreground); font-size: 1.125rem; min-width: 1.5rem; margin-right: 0.5rem;">A</strong>
             <span style="flex: 1;">uthority: "Quem mais precisa aprovar esta decisão?"</span>
           </div>
           <div style="display: flex; align-items: flex-start;">
-            <strong style="color: #16a34a; font-size: 1.125rem; min-width: 1.5rem; margin-right: 0.5rem;">N</strong>
+            <strong style="color: var(--foreground); font-size: 1.125rem; min-width: 1.5rem; margin-right: 0.5rem;">N</strong>
             <span style="flex: 1;">eed: "O que acontece se você não resolver isso nos próximos 90 dias?"</span>
           </div>
           <div style="display: flex; align-items: flex-start;">
-            <strong style="color: #16a34a; font-size: 1.125rem; min-width: 1.5rem; margin-right: 0.5rem;">T</strong>
+            <strong style="color: var(--foreground); font-size: 1.125rem; min-width: 1.5rem; margin-right: 0.5rem;">T</strong>
             <span style="flex: 1;">imeline: "Quando você precisa ter isso implementado?"</span>
           </div>
         </div>
@@ -184,21 +184,21 @@ export const post: BlogPost = {
       <div class="callout-problems">
         <p><strong>❌ 4 Problemas Fatais de Ter Muitas Etapas</strong></p>
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1rem; margin: 1.5rem 0;">
-          <div style="background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%); border-left: 4px solid #3b82f6; padding: 1.25rem; border-radius: 0.75rem;">
-            <p style="margin: 0; font-weight: 700; color: #2563eb; font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.05em;">⏱️ Paralisia de Decisão</p>
-            <p style="margin: 0.5rem 0 0 0; color: #1e3a8a; font-size: 0.95rem;">Vendedores perdem <strong>15-20 min/dia</strong> decidindo "em qual etapa esse deal se encaixa?"</p>
+          <div style="background: var(--muted); border-left: 4px solid var(--fio-forte); padding: 1.25rem; border-radius: 0.75rem;">
+            <p style="margin: 0; font-weight: 700; color: var(--foreground); font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.05em;">⏱️ Paralisia de Decisão</p>
+            <p style="margin: 0.5rem 0 0 0; color: var(--foreground); font-size: 0.95rem;">Vendedores perdem <strong>15-20 min/dia</strong> decidindo "em qual etapa esse deal se encaixa?"</p>
           </div>
-          <div style="background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%); border-left: 4px solid #3b82f6; padding: 1.25rem; border-radius: 0.75rem;">
-            <p style="margin: 0; font-weight: 700; color: #2563eb; font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.05em;">🎭 Falsa Sensação de Progresso</p>
-            <p style="margin: 0.5rem 0 0 0; color: #1e3a8a; font-size: 0.95rem;">Mover de "Etapa 3" para "Etapa 4" parece produtivo, mas não aproxima do fechamento</p>
+          <div style="background: var(--muted); border-left: 4px solid var(--fio-forte); padding: 1.25rem; border-radius: 0.75rem;">
+            <p style="margin: 0; font-weight: 700; color: var(--foreground); font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.05em;">🎭 Falsa Sensação de Progresso</p>
+            <p style="margin: 0.5rem 0 0 0; color: var(--foreground); font-size: 0.95rem;">Mover de "Etapa 3" para "Etapa 4" parece produtivo, mas não aproxima do fechamento</p>
           </div>
-          <div style="background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%); border-left: 4px solid #3b82f6; padding: 1.25rem; border-radius: 0.75rem;">
-            <p style="margin: 0; font-weight: 700; color: #2563eb; font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.05em;">📊 Análise Impossível</p>
-            <p style="margin: 0.5rem 0 0 0; color: #1e3a8a; font-size: 0.95rem;">Com <strong>12 etapas</strong>, você não identifica os reais gargalos. Muito ruído, pouco sinal.</p>
+          <div style="background: var(--muted); border-left: 4px solid var(--fio-forte); padding: 1.25rem; border-radius: 0.75rem;">
+            <p style="margin: 0; font-weight: 700; color: var(--foreground); font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.05em;">📊 Análise Impossível</p>
+            <p style="margin: 0.5rem 0 0 0; color: var(--foreground); font-size: 0.95rem;">Com <strong>12 etapas</strong>, você não identifica os reais gargalos. Muito ruído, pouco sinal.</p>
           </div>
-          <div style="background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%); border-left: 4px solid #3b82f6; padding: 1.25rem; border-radius: 0.75rem;">
-            <p style="margin: 0; font-weight: 700; color: #2563eb; font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.05em;">🔀 Inconsistência Total</p>
-            <p style="margin: 0.5rem 0 0 0; color: #1e3a8a; font-size: 0.95rem;">Cada vendedor interpreta as micro-etapas diferente, tornando os dados inúteis</p>
+          <div style="background: var(--muted); border-left: 4px solid var(--fio-forte); padding: 1.25rem; border-radius: 0.75rem;">
+            <p style="margin: 0; font-weight: 700; color: var(--foreground); font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.05em;">🔀 Inconsistência Total</p>
+            <p style="margin: 0.5rem 0 0 0; color: var(--foreground); font-size: 0.95rem;">Cada vendedor interpreta as micro-etapas diferente, tornando os dados inúteis</p>
           </div>
         </div>
       </div>
@@ -217,7 +217,7 @@ export const post: BlogPost = {
 
       <div class="callout-brain">
         <p><strong>🧠 Ciência Cerebral</strong></p>
-        <p style="font-size: 2.5rem; font-weight: 800; color: #2563eb; margin: 1rem 0; line-height: 1;">60.000x</p>
+        <p style="font-size: 2.5rem; font-weight: 800; color: var(--foreground); margin: 1rem 0; line-height: 1;">60.000x</p>
         <p>Nosso cérebro processa informações visuais <strong>60.000x mais rápido</strong> do que texto. Quando você olha para um quadro Kanban, você <strong>vê instantaneamente</strong>:</p>
       </div>
 
@@ -306,85 +306,85 @@ export const post: BlogPost = {
 
       <div style="display: grid; gap: 1.5rem; margin: 2rem 0;">
         <!-- Card 1: Prospecção -->
-        <div style="background: linear-gradient(135deg, #f0f9ff 0%, #dbeafe 100%); border: 2px solid #93c5fd; border-radius: 1rem; padding: 1.5rem; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.1);">
+        <div style="background: var(--muted); border: 2px solid var(--border); border-radius: 1rem; padding: 1.5rem; box-shadow: none;">
           <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.25rem; align-items: start;">
             <div>
-              <p style="margin: 0; font-weight: 800; color: #1e40af; font-size: 1.125rem; text-transform: uppercase; letter-spacing: 0.05em;">🔍 Prospecção</p>
+              <p style="margin: 0; font-weight: 800; color: var(--foreground); font-size: 1.125rem; text-transform: uppercase; letter-spacing: 0.05em;">🔍 Prospecção</p>
             </div>
             <div>
-              <p style="margin: 0; font-size: 0.875rem; color: #1e40af; text-transform: uppercase; font-weight: 600; margin-bottom: 0.25rem;">✅ Tempo Saudável</p>
-              <p style="margin: 0; font-weight: 700; color: #0c4a6e; font-size: 1.125rem;">1-3 dias</p>
+              <p style="margin: 0; font-size: 0.875rem; color: var(--foreground); text-transform: uppercase; font-weight: 600; margin-bottom: 0.25rem;">✅ Tempo Saudável</p>
+              <p style="margin: 0; font-weight: 700; color: var(--foreground); font-size: 1.125rem;">1-3 dias</p>
             </div>
             <div>
-              <p style="margin: 0; font-size: 0.875rem; color: #1e40af; text-transform: uppercase; font-weight: 600; margin-bottom: 0.25rem;">⚠️ Zona de Perigo</p>
-              <p style="margin: 0; font-weight: 700; color: #1e40af; font-size: 1.125rem;">&gt;7 dias</p>
+              <p style="margin: 0; font-size: 0.875rem; color: var(--foreground); text-transform: uppercase; font-weight: 600; margin-bottom: 0.25rem;">⚠️ Zona de Perigo</p>
+              <p style="margin: 0; font-weight: 700; color: var(--foreground); font-size: 1.125rem;">&gt;7 dias</p>
             </div>
             <div>
-              <p style="margin: 0; font-size: 0.875rem; color: #1e40af; text-transform: uppercase; font-weight: 600; margin-bottom: 0.25rem;">🎯 Ação Necessária</p>
-              <p style="margin: 0; color: #0c4a6e; font-weight: 500;">Archive ou mova para Nurturing</p>
+              <p style="margin: 0; font-size: 0.875rem; color: var(--foreground); text-transform: uppercase; font-weight: 600; margin-bottom: 0.25rem;">🎯 Ação Necessária</p>
+              <p style="margin: 0; color: var(--foreground); font-weight: 500;">Archive ou mova para Nurturing</p>
             </div>
           </div>
         </div>
 
         <!-- Card 2: Qualificação -->
-        <div style="background: linear-gradient(135deg, #f0f9ff 0%, #dbeafe 100%); border: 2px solid #bfdbfe; border-radius: 1rem; padding: 1.5rem; box-shadow: 0 4px 12px rgba(34, 197, 94, 0.1);">
+        <div style="background: var(--muted); border: 2px solid var(--border); border-radius: 1rem; padding: 1.5rem; box-shadow: none;">
           <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.25rem; align-items: start;">
             <div>
-              <p style="margin: 0; font-weight: 800; color: #1e40af; font-size: 1.125rem; text-transform: uppercase; letter-spacing: 0.05em;">✅ Qualificação</p>
+              <p style="margin: 0; font-weight: 800; color: var(--foreground); font-size: 1.125rem; text-transform: uppercase; letter-spacing: 0.05em;">✅ Qualificação</p>
             </div>
             <div>
-              <p style="margin: 0; font-size: 0.875rem; color: #1e40af; text-transform: uppercase; font-weight: 600; margin-bottom: 0.25rem;">✅ Tempo Saudável</p>
-              <p style="margin: 0; font-weight: 700; color: #1e40af; font-size: 1.125rem;">3-7 dias</p>
+              <p style="margin: 0; font-size: 0.875rem; color: var(--foreground); text-transform: uppercase; font-weight: 600; margin-bottom: 0.25rem;">✅ Tempo Saudável</p>
+              <p style="margin: 0; font-weight: 700; color: var(--foreground); font-size: 1.125rem;">3-7 dias</p>
             </div>
             <div>
-              <p style="margin: 0; font-size: 0.875rem; color: #1e40af; text-transform: uppercase; font-weight: 600; margin-bottom: 0.25rem;">⚠️ Zona de Perigo</p>
-              <p style="margin: 0; font-weight: 700; color: #1e40af; font-size: 1.125rem;">&gt;14 dias</p>
+              <p style="margin: 0; font-size: 0.875rem; color: var(--foreground); text-transform: uppercase; font-weight: 600; margin-bottom: 0.25rem;">⚠️ Zona de Perigo</p>
+              <p style="margin: 0; font-weight: 700; color: var(--foreground); font-size: 1.125rem;">&gt;14 dias</p>
             </div>
             <div>
-              <p style="margin: 0; font-size: 0.875rem; color: #1e40af; text-transform: uppercase; font-weight: 600; margin-bottom: 0.25rem;">🎯 Ação Necessária</p>
-              <p style="margin: 0; color: #1e40af; font-weight: 500;">Reunião de requalificação ou archive</p>
+              <p style="margin: 0; font-size: 0.875rem; color: var(--foreground); text-transform: uppercase; font-weight: 600; margin-bottom: 0.25rem;">🎯 Ação Necessária</p>
+              <p style="margin: 0; color: var(--foreground); font-weight: 500;">Reunião de requalificação ou archive</p>
             </div>
           </div>
         </div>
 
         <!-- Card 3: Proposta -->
-        <div style="background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); border: 2px solid #bfdbfe; border-radius: 1rem; padding: 1.5rem; box-shadow: 0 4px 12px rgba(124, 58, 237, 0.1);">
+        <div style="background: var(--muted); border: 2px solid var(--border); border-radius: 1rem; padding: 1.5rem; box-shadow: none;">
           <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.25rem; align-items: start;">
             <div>
-              <p style="margin: 0; font-weight: 800; color: #1e40af; font-size: 1.125rem; text-transform: uppercase; letter-spacing: 0.05em;">📄 Proposta</p>
+              <p style="margin: 0; font-weight: 800; color: var(--foreground); font-size: 1.125rem; text-transform: uppercase; letter-spacing: 0.05em;">📄 Proposta</p>
             </div>
             <div>
-              <p style="margin: 0; font-size: 0.875rem; color: #1e40af; text-transform: uppercase; font-weight: 600; margin-bottom: 0.25rem;">✅ Tempo Saudável</p>
-              <p style="margin: 0; font-weight: 700; color: #4c1d95; font-size: 1.125rem;">5-10 dias</p>
+              <p style="margin: 0; font-size: 0.875rem; color: var(--foreground); text-transform: uppercase; font-weight: 600; margin-bottom: 0.25rem;">✅ Tempo Saudável</p>
+              <p style="margin: 0; font-weight: 700; color: var(--foreground); font-size: 1.125rem;">5-10 dias</p>
             </div>
             <div>
-              <p style="margin: 0; font-size: 0.875rem; color: #1e40af; text-transform: uppercase; font-weight: 600; margin-bottom: 0.25rem;">⚠️ Zona de Perigo</p>
-              <p style="margin: 0; font-weight: 700; color: #1e40af; font-size: 1.125rem;">&gt;21 dias</p>
+              <p style="margin: 0; font-size: 0.875rem; color: var(--foreground); text-transform: uppercase; font-weight: 600; margin-bottom: 0.25rem;">⚠️ Zona de Perigo</p>
+              <p style="margin: 0; font-weight: 700; color: var(--foreground); font-size: 1.125rem;">&gt;21 dias</p>
             </div>
             <div>
-              <p style="margin: 0; font-size: 0.875rem; color: #1e40af; text-transform: uppercase; font-weight: 600; margin-bottom: 0.25rem;">🎯 Ação Necessária</p>
-              <p style="margin: 0; color: #4c1d95; font-weight: 500;">Follow-up estruturado ou renegocie termos</p>
+              <p style="margin: 0; font-size: 0.875rem; color: var(--foreground); text-transform: uppercase; font-weight: 600; margin-bottom: 0.25rem;">🎯 Ação Necessária</p>
+              <p style="margin: 0; color: var(--foreground); font-weight: 500;">Follow-up estruturado ou renegocie termos</p>
             </div>
           </div>
         </div>
 
         <!-- Card 4: Negociação -->
-        <div style="background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); border: 2px solid #bfdbfe; border-radius: 1rem; padding: 1.5rem; box-shadow: 0 4px 12px rgba(245, 158, 11, 0.1);">
+        <div style="background: var(--muted); border: 2px solid var(--border); border-radius: 1rem; padding: 1.5rem; box-shadow: none;">
           <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.25rem; align-items: start;">
             <div>
-              <p style="margin: 0; font-weight: 800; color: #b45309; font-size: 1.125rem; text-transform: uppercase; letter-spacing: 0.05em;">💼 Negociação</p>
+              <p style="margin: 0; font-weight: 800; color: var(--foreground); font-size: 1.125rem; text-transform: uppercase; letter-spacing: 0.05em;">💼 Negociação</p>
             </div>
             <div>
-              <p style="margin: 0; font-size: 0.875rem; color: #1e40af; text-transform: uppercase; font-weight: 600; margin-bottom: 0.25rem;">✅ Tempo Saudável</p>
-              <p style="margin: 0; font-weight: 700; color: #1e3a8a; font-size: 1.125rem;">7-14 dias</p>
+              <p style="margin: 0; font-size: 0.875rem; color: var(--foreground); text-transform: uppercase; font-weight: 600; margin-bottom: 0.25rem;">✅ Tempo Saudável</p>
+              <p style="margin: 0; font-weight: 700; color: var(--foreground); font-size: 1.125rem;">7-14 dias</p>
             </div>
             <div>
-              <p style="margin: 0; font-size: 0.875rem; color: #1e40af; text-transform: uppercase; font-weight: 600; margin-bottom: 0.25rem;">⚠️ Zona de Perigo</p>
-              <p style="margin: 0; font-weight: 700; color: #1e40af; font-size: 1.125rem;">&gt;30 dias</p>
+              <p style="margin: 0; font-size: 0.875rem; color: var(--foreground); text-transform: uppercase; font-weight: 600; margin-bottom: 0.25rem;">⚠️ Zona de Perigo</p>
+              <p style="margin: 0; font-weight: 700; color: var(--foreground); font-size: 1.125rem;">&gt;30 dias</p>
             </div>
             <div>
-              <p style="margin: 0; font-size: 0.875rem; color: #1e40af; text-transform: uppercase; font-weight: 600; margin-bottom: 0.25rem;">🎯 Ação Necessária</p>
-              <p style="margin: 0; color: #1e3a8a; font-weight: 500;">Escale para gerente ou revise fit do produto</p>
+              <p style="margin: 0; font-size: 0.875rem; color: var(--foreground); text-transform: uppercase; font-weight: 600; margin-bottom: 0.25rem;">🎯 Ação Necessária</p>
+              <p style="margin: 0; color: var(--foreground); font-weight: 500;">Escale para gerente ou revise fit do produto</p>
             </div>
           </div>
         </div>
@@ -455,29 +455,29 @@ export const post: BlogPost = {
       <div class="callout-problems">
         <p><strong>❌ 6 Problemas Fatais das Planilhas para Vendas</strong></p>
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem; margin: 1.5rem 0;">
-          <div style="background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%); border-left: 4px solid #3b82f6; padding: 1.25rem; border-radius: 0.75rem;">
-            <p style="margin: 0; font-weight: 700; color: #2563eb; font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.05em;">⏱️ Perda de Tempo</p>
-            <p style="margin: 0.5rem 0 0 0; color: #1e3a8a; font-size: 0.95rem;">Você perde <strong>2-3 horas por semana</strong> atualizando células manualmente</p>
+          <div style="background: var(--muted); border-left: 4px solid var(--fio-forte); padding: 1.25rem; border-radius: 0.75rem;">
+            <p style="margin: 0; font-weight: 700; color: var(--foreground); font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.05em;">⏱️ Perda de Tempo</p>
+            <p style="margin: 0.5rem 0 0 0; color: var(--foreground); font-size: 0.95rem;">Você perde <strong>2-3 horas por semana</strong> atualizando células manualmente</p>
           </div>
-          <div style="background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%); border-left: 4px solid #3b82f6; padding: 1.25rem; border-radius: 0.75rem;">
-            <p style="margin: 0; font-weight: 700; color: #2563eb; font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.05em;">👁️ Zero Visibilidade</p>
-            <p style="margin: 0.5rem 0 0 0; color: #1e3a8a; font-size: 0.95rem;">Não tem visão Kanban (só linhas e colunas infinitas)</p>
+          <div style="background: var(--muted); border-left: 4px solid var(--fio-forte); padding: 1.25rem; border-radius: 0.75rem;">
+            <p style="margin: 0; font-weight: 700; color: var(--foreground); font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.05em;">👁️ Zero Visibilidade</p>
+            <p style="margin: 0.5rem 0 0 0; color: var(--foreground); font-size: 0.95rem;">Não tem visão Kanban (só linhas e colunas infinitas)</p>
           </div>
-          <div style="background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%); border-left: 4px solid #3b82f6; padding: 1.25rem; border-radius: 0.75rem;">
-            <p style="margin: 0; font-weight: 700; color: #2563eb; font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.05em;">🔔 Sem Alertas</p>
-            <p style="margin: 0.5rem 0 0 0; color: #1e3a8a; font-size: 0.95rem;">Não tem alertas automáticos de deals apodrecendo</p>
+          <div style="background: var(--muted); border-left: 4px solid var(--fio-forte); padding: 1.25rem; border-radius: 0.75rem;">
+            <p style="margin: 0; font-weight: 700; color: var(--foreground); font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.05em;">🔔 Sem Alertas</p>
+            <p style="margin: 0.5rem 0 0 0; color: var(--foreground); font-size: 0.95rem;">Não tem alertas automáticos de deals apodrecendo</p>
           </div>
-          <div style="background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%); border-left: 4px solid #3b82f6; padding: 1.25rem; border-radius: 0.75rem;">
-            <p style="margin: 0; font-weight: 700; color: #2563eb; font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.05em;">🔌 Zero Integração</p>
-            <p style="margin: 0.5rem 0 0 0; color: #1e3a8a; font-size: 0.95rem;">Não integra com WhatsApp ou email</p>
+          <div style="background: var(--muted); border-left: 4px solid var(--fio-forte); padding: 1.25rem; border-radius: 0.75rem;">
+            <p style="margin: 0; font-weight: 700; color: var(--foreground); font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.05em;">🔌 Zero Integração</p>
+            <p style="margin: 0.5rem 0 0 0; color: var(--foreground); font-size: 0.95rem;">Não integra com WhatsApp ou email</p>
           </div>
-          <div style="background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%); border-left: 4px solid #3b82f6; padding: 1.25rem; border-radius: 0.75rem;">
-            <p style="margin: 0; font-weight: 700; color: #2563eb; font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.05em;">🔀 Dados Caóticos</p>
-            <p style="margin: 0.5rem 0 0 0; color: #1e3a8a; font-size: 0.95rem;">Cada vendedor tem "sua versão" da planilha (dados inconsistentes)</p>
+          <div style="background: var(--muted); border-left: 4px solid var(--fio-forte); padding: 1.25rem; border-radius: 0.75rem;">
+            <p style="margin: 0; font-weight: 700; color: var(--foreground); font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.05em;">🔀 Dados Caóticos</p>
+            <p style="margin: 0.5rem 0 0 0; color: var(--foreground); font-size: 0.95rem;">Cada vendedor tem "sua versão" da planilha (dados inconsistentes)</p>
           </div>
-          <div style="background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%); border-left: 4px solid #3b82f6; padding: 1.25rem; border-radius: 0.75rem;">
-            <p style="margin: 0; font-weight: 700; color: #2563eb; font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.05em;">📱 Mobile Horrível</p>
-            <p style="margin: 0.5rem 0 0 0; color: #1e3a8a; font-size: 0.95rem;">Não funciona bem no celular (e <strong>60%</strong> das decisões acontecem fora do escritório)</p>
+          <div style="background: var(--muted); border-left: 4px solid var(--fio-forte); padding: 1.25rem; border-radius: 0.75rem;">
+            <p style="margin: 0; font-weight: 700; color: var(--foreground); font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.05em;">📱 Mobile Horrível</p>
+            <p style="margin: 0.5rem 0 0 0; color: var(--foreground); font-size: 0.95rem;">Não funciona bem no celular (e <strong>60%</strong> das decisões acontecem fora do escritório)</p>
           </div>
         </div>
       </div>
@@ -511,7 +511,7 @@ export const post: BlogPost = {
 
       <div class="callout-stat">
         <p><strong>🚀 Pronto para Começar?</strong></p>
-        <p style="font-size: 2rem; font-weight: 800; color: #2563eb; margin: 1rem 0; line-height: 1;">5 minutos</p>
+        <p style="font-size: 2rem; font-weight: 800; color: var(--foreground); margin: 1rem 0; line-height: 1;">5 minutos</p>
         <p>É tudo que você precisa para ter seu pipeline funcionando no Sirius. <a href="/register">Crie sua conta gratuita</a> agora: Kanban nativo, WhatsApp integrado, zero burocracia.</p>
       </div>
 
@@ -596,37 +596,37 @@ export const post: BlogPost = {
 
       <table style="width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: 0.9rem;">
         <thead>
-          <tr style="background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%); color: white;">
+          <tr style="background: var(--primary); color: white;">
             <th style="padding: 0.875rem; text-align: left;">Metric</th>
             <th style="padding: 0.875rem; text-align: left;">Purpose</th>
             <th style="padding: 0.875rem; text-align: left;">Alert Threshold</th>
           </tr>
         </thead>
         <tbody>
-          <tr style="background: #f8fafc;">
-            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;"><strong>Deals without next action</strong></td>
-            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">Follow-up compliance</td>
-            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">0 acceptable</td>
+          <tr style="background: var(--muted);">
+            <td style="padding: 0.875rem; border: 1px solid var(--border);"><strong>Deals without next action</strong></td>
+            <td style="padding: 0.875rem; border: 1px solid var(--border);">Follow-up compliance</td>
+            <td style="padding: 0.875rem; border: 1px solid var(--border);">0 acceptable</td>
           </tr>
           <tr>
-            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;"><strong>Deals past max stage time</strong></td>
-            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">Stall detection</td>
-            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">Immediate review</td>
+            <td style="padding: 0.875rem; border: 1px solid var(--border);"><strong>Deals past max stage time</strong></td>
+            <td style="padding: 0.875rem; border: 1px solid var(--border);">Stall detection</td>
+            <td style="padding: 0.875rem; border: 1px solid var(--border);">Immediate review</td>
           </tr>
-          <tr style="background: #f8fafc;">
-            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;"><strong>Pipeline coverage ratio</strong></td>
-            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">Forecast health</td>
-            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">Below 3x = danger</td>
+          <tr style="background: var(--muted);">
+            <td style="padding: 0.875rem; border: 1px solid var(--border);"><strong>Pipeline coverage ratio</strong></td>
+            <td style="padding: 0.875rem; border: 1px solid var(--border);">Forecast health</td>
+            <td style="padding: 0.875rem; border: 1px solid var(--border);">Below 3x = danger</td>
           </tr>
           <tr>
-            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;"><strong>Stage conversion rate</strong></td>
-            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">Bottleneck identification</td>
-            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">Drop >20% from baseline</td>
+            <td style="padding: 0.875rem; border: 1px solid var(--border);"><strong>Stage conversion rate</strong></td>
+            <td style="padding: 0.875rem; border: 1px solid var(--border);">Bottleneck identification</td>
+            <td style="padding: 0.875rem; border: 1px solid var(--border);">Drop >20% from baseline</td>
           </tr>
-          <tr style="background: #f8fafc;">
-            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;"><strong>New deals added</strong></td>
-            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">Pipeline health / prospecting</td>
-            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">Below weekly target</td>
+          <tr style="background: var(--muted);">
+            <td style="padding: 0.875rem; border: 1px solid var(--border);"><strong>New deals added</strong></td>
+            <td style="padding: 0.875rem; border: 1px solid var(--border);">Pipeline health / prospecting</td>
+            <td style="padding: 0.875rem; border: 1px solid var(--border);">Below weekly target</td>
           </tr>
         </tbody>
       </table>
@@ -648,10 +648,10 @@ export const post: BlogPost = {
         Sirius CRM includes all of these out of the box, with AI that predicts which deals are most likely to close this month and which are at risk of going cold.
       </p>
 
-      <div style="background: linear-gradient(135deg, #1e3a5f 0%, #1e293b 100%); padding: 2rem; border-radius: 1rem; margin: 2rem 0; text-align: center;">
+      <div style="background: var(--primary); padding: 2rem; border-radius: 1rem; margin: 2rem 0; text-align: center;">
         <h3 style="color: #ffffff; margin: 0 0 1rem;">Organize Your Pipeline in Under 30 Minutes</h3>
-        <p style="color: #94a3b8; margin: 0 0 1.5rem;">Set up your customized pipeline, import existing deals, and activate AI follow-up alerts — all in one free trial.</p>
-        <a href="/en/register" style="background: #2563eb; color: white; padding: 0.875rem 2rem; border-radius: 0.5rem; font-weight: 700; text-decoration: none; display: inline-block;">Start Free →</a>
+        <p style="color: var(--primary-foreground); margin: 0 0 1.5rem;">Set up your customized pipeline, import existing deals, and activate AI follow-up alerts — all in one free trial.</p>
+        <a href="/en/register" style="background: var(--primary); color: white; padding: 0.875rem 2rem; border-radius: 0.5rem; font-weight: 700; text-decoration: none; display: inline-block;">Start Free →</a>
       </div>
 
       <p style="text-align: center; font-size: 1.25rem; font-weight: 600; margin-top: 3rem;">

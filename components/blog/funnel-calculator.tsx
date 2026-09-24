@@ -39,15 +39,15 @@ export function FunnelCalculator() {
   const renderHealthIcon = (rate: number, stage: string) => {
     const status = getHealthStatus(rate, stage)
     return status === 'healthy' ? (
-      <TrendingUp className="h-4 w-4 text-green-500" />
+      <TrendingUp className="h-4 w-4 text-foreground" />
     ) : (
-      <TrendingDown className="h-4 w-4 text-amber-500" />
+      <TrendingDown className="h-4 w-4 text-foreground" />
     )
   }
 
   return (
     <Card className="my-8 border-2 border-primary/20 shadow-xl">
-      <CardHeader className="bg-gradient-to-r from-primary/5 to-primary/10">
+      <CardHeader className="  ">
         <div className="flex items-center gap-3">
           <div className="p-2 bg-primary/10 rounded-lg">
             <Calculator className="h-6 w-6 text-primary" />
@@ -132,7 +132,7 @@ export function FunnelCalculator() {
 
           {/* Results */}
           <div className="space-y-4">
-            <div className="bg-gradient-to-br from-primary/10 to-primary/5 p-6 rounded-xl border-2 border-primary/30">
+            <div className="p-6 rounded-xl border-2 border-primary/30">
               <h3 className="text-sm font-semibold text-muted-foreground mb-2">
                 TAXA DE CONVERSÃO GERAL
               </h3>

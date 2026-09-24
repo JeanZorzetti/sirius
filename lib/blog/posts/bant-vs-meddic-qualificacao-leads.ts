@@ -23,8 +23,8 @@ export const post: BlogPost = {
         Neste artigo, você vai ver uma comparação prática com exemplos reais: quando BANT é suficiente, quando MEDDIC é necessário, e como a IA do Sirius CRM aplica qualificação automática baseada em comportamento do lead — sem o vendedor precisar preencher checklist nenhum.
       </p>
 
-      <div class="not-prose" style="background: #1e293b; padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
-        <p style="margin: 0 0 0.75rem; font-weight: 700; font-size: 1.05rem; color: #38bdf8;">⚡ TL;DR — Resposta Rápida</p>
+      <div class="not-prose" style="background: var(--primary); padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
+        <p style="margin: 0 0 0.75rem; font-weight: 700; font-size: 1.05rem; color: var(--primary-foreground);">⚡ TL;DR — Resposta Rápida</p>
         <ul style="margin: 0; padding-left: 1.25rem; line-height: 2; color: #ffffff;">
           <li><strong>BANT</strong> (Budget, Authority, Need, Timeline) — rápido, para ciclo curto e ticket médio-baixo</li>
           <li><strong>MEDDIC</strong> (Metrics, Economic Buyer, Decision Criteria, Decision Process, Identify Pain, Champion) — profundo, para enterprise e ciclo longo</li>
@@ -108,7 +108,7 @@ export const post: BlogPost = {
 
       <div class="callout-stat">
         <p><strong>📊 MEDDIC em números</strong></p>
-        <p style="font-size: 3rem; font-weight: 800; color: #2563eb; margin: 1rem 0; line-height: 1;">+32%</p>
+        <p style="font-size: 3rem; font-weight: 800; color: var(--foreground); margin: 1rem 0; line-height: 1;">+32%</p>
         <p>de aumento na taxa de fechamento em negociações enterprise reportado por equipes que implementaram MEDDIC formalmente, segundo estudo da Miller Heiman Group (2025). A chave está em eliminar negociações sem champion e sem processo de decisão mapeado.</p>
       </div>
 
@@ -126,52 +126,52 @@ export const post: BlogPost = {
 
       <table style="width: 100%; border-collapse: collapse; margin: 2rem 0;">
         <thead>
-          <tr style="background: #f8fafc;">
-            <th style="padding: 0.75rem; border: 1px solid #e2e8f0; text-align: left;">Critério</th>
-            <th style="padding: 0.75rem; border: 1px solid #e2e8f0; text-align: left;">BANT</th>
-            <th style="padding: 0.75rem; border: 1px solid #e2e8f0; text-align: left;">MEDDIC</th>
+          <tr style="background: var(--muted);">
+            <th style="padding: 0.75rem; border: 1px solid var(--border); text-align: left;">Critério</th>
+            <th style="padding: 0.75rem; border: 1px solid var(--border); text-align: left;">BANT</th>
+            <th style="padding: 0.75rem; border: 1px solid var(--border); text-align: left;">MEDDIC</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;"><strong>Profundidade</strong></td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Superficial — 4 perguntas diretas</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Profundo — requer pesquisa e múltiplas conversas</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);"><strong>Profundidade</strong></td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Superficial — 4 perguntas diretas</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Profundo — requer pesquisa e múltiplas conversas</td>
           </tr>
-          <tr style="background: #f8fafc;">
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;"><strong>Tempo para aplicar</strong></td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">15-30 minutos (discovery call)</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">2-6 semanas (múltiplos stakeholders)</td>
-          </tr>
-          <tr>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;"><strong>Mapeamento de stakeholders</strong></td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0; color: #dc2626;">❌ Identifica apenas decisor único</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0; color: #16a34a;">✅ Mapeia todo o comitê de decisão</td>
-          </tr>
-          <tr style="background: #f8fafc;">
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;"><strong>Quantificação da dor</strong></td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0; color: #f59e0b;">⚠️ Confirma existência, não quantifica</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0; color: #16a34a;">✅ Exige número (ROI, perda mensal)</td>
+          <tr style="background: var(--muted);">
+            <td style="padding: 0.75rem; border: 1px solid var(--border);"><strong>Tempo para aplicar</strong></td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">15-30 minutos (discovery call)</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">2-6 semanas (múltiplos stakeholders)</td>
           </tr>
           <tr>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;"><strong>Champion interno</strong></td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0; color: #dc2626;">❌ Não contempla</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0; color: #16a34a;">✅ Critério central</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);"><strong>Mapeamento de stakeholders</strong></td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border); color: var(--pulso-escuro);">❌ Identifica apenas decisor único</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border); color: var(--foreground);">✅ Mapeia todo o comitê de decisão</td>
           </tr>
-          <tr style="background: #f8fafc;">
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;"><strong>Processo de decisão</strong></td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0; color: #dc2626;">❌ Não mapeia etapas formais</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0; color: #16a34a;">✅ Mapeia cada aprovação necessária</td>
+          <tr style="background: var(--muted);">
+            <td style="padding: 0.75rem; border: 1px solid var(--border);"><strong>Quantificação da dor</strong></td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border); color: var(--foreground);">⚠️ Confirma existência, não quantifica</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border); color: var(--foreground);">✅ Exige número (ROI, perda mensal)</td>
           </tr>
           <tr>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;"><strong>Facilidade de adoção</strong></td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0; color: #16a34a;">✅ Alta — qualquer vendedor aplica</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0; color: #f59e0b;">⚠️ Média — requer treinamento específico</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);"><strong>Champion interno</strong></td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border); color: var(--pulso-escuro);">❌ Não contempla</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border); color: var(--foreground);">✅ Critério central</td>
           </tr>
-          <tr style="background: #f8fafc;">
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;"><strong>Melhor para</strong></td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">SMB, ciclo curto, decisor único</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Enterprise, ciclo longo, comitê</td>
+          <tr style="background: var(--muted);">
+            <td style="padding: 0.75rem; border: 1px solid var(--border);"><strong>Processo de decisão</strong></td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border); color: var(--pulso-escuro);">❌ Não mapeia etapas formais</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border); color: var(--foreground);">✅ Mapeia cada aprovação necessária</td>
+          </tr>
+          <tr>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);"><strong>Facilidade de adoção</strong></td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border); color: var(--foreground);">✅ Alta — qualquer vendedor aplica</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border); color: var(--foreground);">⚠️ Média — requer treinamento específico</td>
+          </tr>
+          <tr style="background: var(--muted);">
+            <td style="padding: 0.75rem; border: 1px solid var(--border);"><strong>Melhor para</strong></td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">SMB, ciclo curto, decisor único</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Enterprise, ciclo longo, comitê</td>
           </tr>
         </tbody>
       </table>
@@ -212,32 +212,32 @@ export const post: BlogPost = {
         O resultado é um <strong>score BANT automático</strong> no card de cada lead — sem que o vendedor precise preencher nada além do normal. O CRM faz a qualificação, o vendedor vende.
       </p>
 
-      <div style="background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%); padding: 2rem; border-radius: 1rem; margin: 2.5rem 0; text-align: center;">
+      <div style="background: var(--primary); padding: 2rem; border-radius: 1rem; margin: 2.5rem 0; text-align: center;">
         <p style="color: white; font-size: 1.25rem; font-weight: 700; margin: 0 0 0.5rem;">Qualificação automática com IA no Sirius CRM</p>
-        <p style="color: #bfdbfe; margin: 0 0 1.25rem;">Score BANT automático, detecção de champion e mapeamento de stakeholders — tudo gerado pela IA com base nos dados do lead, sem checklist manual.</p>
-        <a href="/pricing" style="display: inline-block; background: white; color: #2563eb; padding: 0.75rem 2rem; border-radius: 0.5rem; font-weight: 700; text-decoration: none;">Ver planos com IA →</a>
+        <p style="color: var(--foreground); margin: 0 0 1.25rem;">Score BANT automático, detecção de champion e mapeamento de stakeholders — tudo gerado pela IA com base nos dados do lead, sem checklist manual.</p>
+        <a href="/pricing" style="display: inline-block; background: white; color: var(--foreground); padding: 0.75rem 2rem; border-radius: 0.5rem; font-weight: 700; text-decoration: none;">Ver planos com IA →</a>
       </div>
 
       <h2>Perguntas Frequentes sobre BANT e MEDDIC</h2>
 
-      <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
-        <summary style="font-weight: 600; cursor: pointer; color: #1e293b; list-style: revert;">Posso usar BANT e MEDDIC no mesmo processo de vendas?</summary>
-        <p style="margin: 0.75rem 0 0; color: #4b5563;">Sim — e é uma abordagem inteligente. Use BANT na triagem inicial (primeiro contato, SDR qualificando volume de leads) para eliminar rapidamente os que não têm fit. Quando o lead passa pelo BANT e entra no pipeline como oportunidade qualificada, especialmente em negociações acima de R$ 50.000, aplique MEDDIC para aprofundar o mapeamento. Isso equilibra velocidade na ponta e rigor nas oportunidades que merecem investimento maior de tempo.</p>
+      <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
+        <summary style="font-weight: 600; cursor: pointer; color: var(--foreground); list-style: revert;">Posso usar BANT e MEDDIC no mesmo processo de vendas?</summary>
+        <p style="margin: 0.75rem 0 0; color: var(--foreground);">Sim — e é uma abordagem inteligente. Use BANT na triagem inicial (primeiro contato, SDR qualificando volume de leads) para eliminar rapidamente os que não têm fit. Quando o lead passa pelo BANT e entra no pipeline como oportunidade qualificada, especialmente em negociações acima de R$ 50.000, aplique MEDDIC para aprofundar o mapeamento. Isso equilibra velocidade na ponta e rigor nas oportunidades que merecem investimento maior de tempo.</p>
       </details>
 
-      <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
-        <summary style="font-weight: 600; cursor: pointer; color: #1e293b; list-style: revert;">BANT ainda é relevante em 2026 ou está ultrapassado?</summary>
-        <p style="margin: 0.75rem 0 0; color: #4b5563;">BANT continua relevante para qualificação rápida em SMB e ciclos curtos. O que mudou é que não funciona mais de forma mecânica — perguntas diretas como "você tem orçamento?" geram respostas defensivas. O BANT moderno é aplicado dentro de conversas consultivas, de forma não-linear. A IA ajuda aplicando BANT de forma invisível: o vendedor tem uma conversa natural enquanto o sistema pontua os critérios em background.</p>
+      <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
+        <summary style="font-weight: 600; cursor: pointer; color: var(--foreground); list-style: revert;">BANT ainda é relevante em 2026 ou está ultrapassado?</summary>
+        <p style="margin: 0.75rem 0 0; color: var(--foreground);">BANT continua relevante para qualificação rápida em SMB e ciclos curtos. O que mudou é que não funciona mais de forma mecânica — perguntas diretas como "você tem orçamento?" geram respostas defensivas. O BANT moderno é aplicado dentro de conversas consultivas, de forma não-linear. A IA ajuda aplicando BANT de forma invisível: o vendedor tem uma conversa natural enquanto o sistema pontua os critérios em background.</p>
       </details>
 
-      <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
-        <summary style="font-weight: 600; cursor: pointer; color: #1e293b; list-style: revert;">Como treinar meu time para aplicar MEDDIC?</summary>
-        <p style="margin: 0.75rem 0 0; color: #4b5563;">O maior erro é treinar MEDDIC como teoria antes de praticar em deals reais. O método mais eficaz: escolha 3-5 oportunidades ativas no pipeline e aplique MEDDIC retroativamente — o que você já sabe sobre cada critério? O que está em branco? O que está em branco é o que precisa ser descoberto nas próximas conversas. Revisão semanal de pipeline usando MEDDIC como lente é mais eficaz que qualquer treinamento em sala de aula.</p>
+      <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
+        <summary style="font-weight: 600; cursor: pointer; color: var(--foreground); list-style: revert;">Como treinar meu time para aplicar MEDDIC?</summary>
+        <p style="margin: 0.75rem 0 0; color: var(--foreground);">O maior erro é treinar MEDDIC como teoria antes de praticar em deals reais. O método mais eficaz: escolha 3-5 oportunidades ativas no pipeline e aplique MEDDIC retroativamente — o que você já sabe sobre cada critério? O que está em branco? O que está em branco é o que precisa ser descoberto nas próximas conversas. Revisão semanal de pipeline usando MEDDIC como lente é mais eficaz que qualquer treinamento em sala de aula.</p>
       </details>
 
-      <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin-bottom: 2rem;">
-        <summary style="font-weight: 600; cursor: pointer; color: #1e293b; list-style: revert;">Como saber se um lead que "passou no BANT" realmente vai fechar?</summary>
-        <p style="margin: 0.75rem 0 0; color: #4b5563;">Passar no BANT é condição necessária mas não suficiente. Os sinais mais confiáveis de que o lead vai fechar: velocidade de resposta aumentando (não diminuindo), envolvimento de stakeholders adicionais de forma proativa (não porque você pediu), perguntas sobre implementação e onboarding (já estão pensando em como usar, não se vão usar), e urgência com data definida. Um lead que passa no BANT mas não exibe nenhum desses comportamentos tem qualificação frágil.</p>
+      <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 2rem;">
+        <summary style="font-weight: 600; cursor: pointer; color: var(--foreground); list-style: revert;">Como saber se um lead que "passou no BANT" realmente vai fechar?</summary>
+        <p style="margin: 0.75rem 0 0; color: var(--foreground);">Passar no BANT é condição necessária mas não suficiente. Os sinais mais confiáveis de que o lead vai fechar: velocidade de resposta aumentando (não diminuindo), envolvimento de stakeholders adicionais de forma proativa (não porque você pediu), perguntas sobre implementação e onboarding (já estão pensando em como usar, não se vão usar), e urgência com data definida. Um lead que passa no BANT mas não exibe nenhum desses comportamentos tem qualificação frágil.</p>
       </details>
 
       <h2>Conclusão</h2>
@@ -250,7 +250,7 @@ export const post: BlogPost = {
         O verdadeiro ganho não está em escolher o framework certo — está em aplicar qualquer framework com consistência. E é aí que a IA transforma o jogo: qualificação automática, sem depender de disciplina manual do vendedor, com score atualizado em tempo real baseado em comportamento real do lead.
       </p>
 
-      <hr style="margin: 3rem 0; border: none; border-top: 1px solid #e5e7eb;" />
+      <hr style="margin: 3rem 0; border: none; border-top: 1px solid var(--border);" />
       <strong>Última Atualização:</strong> 21 de Março de 2026<br/>
       <strong>Autor:</strong> Equipe Sirius CRM<br/>
       <strong>Tempo de Leitura:</strong> 12 minutos
@@ -288,32 +288,32 @@ export const post: BlogPost = {
 
       <table style="width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: 0.9rem;">
         <thead>
-          <tr style="background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%); color: white;">
+          <tr style="background: var(--primary); color: white;">
             <th style="padding: 0.875rem; text-align: left;">Dimension</th>
             <th style="padding: 0.875rem; text-align: left;">Questions to Ask</th>
             <th style="padding: 0.875rem; text-align: left;">Disqualifying Signals</th>
           </tr>
         </thead>
         <tbody>
-          <tr style="background: #f8fafc;">
-            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;"><strong>Budget</strong></td>
-            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">"Do you have a budget approved for this?" / "What range are you working with?"</td>
-            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">No budget defined; decision delayed to next fiscal year</td>
+          <tr style="background: var(--muted);">
+            <td style="padding: 0.875rem; border: 1px solid var(--border);"><strong>Budget</strong></td>
+            <td style="padding: 0.875rem; border: 1px solid var(--border);">"Do you have a budget approved for this?" / "What range are you working with?"</td>
+            <td style="padding: 0.875rem; border: 1px solid var(--border);">No budget defined; decision delayed to next fiscal year</td>
           </tr>
           <tr>
-            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;"><strong>Authority</strong></td>
-            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">"Who else is involved in this decision?" / "Do you have final sign-off?"</td>
-            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">Multiple unengaged stakeholders; no executive sponsor</td>
+            <td style="padding: 0.875rem; border: 1px solid var(--border);"><strong>Authority</strong></td>
+            <td style="padding: 0.875rem; border: 1px solid var(--border);">"Who else is involved in this decision?" / "Do you have final sign-off?"</td>
+            <td style="padding: 0.875rem; border: 1px solid var(--border);">Multiple unengaged stakeholders; no executive sponsor</td>
           </tr>
-          <tr style="background: #f8fafc;">
-            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;"><strong>Need</strong></td>
-            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">"What's the cost of NOT solving this problem?" / "What happens if you do nothing?"</td>
-            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">"Just exploring" / no stated urgency</td>
+          <tr style="background: var(--muted);">
+            <td style="padding: 0.875rem; border: 1px solid var(--border);"><strong>Need</strong></td>
+            <td style="padding: 0.875rem; border: 1px solid var(--border);">"What's the cost of NOT solving this problem?" / "What happens if you do nothing?"</td>
+            <td style="padding: 0.875rem; border: 1px solid var(--border);">"Just exploring" / no stated urgency</td>
           </tr>
           <tr>
-            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;"><strong>Timeline</strong></td>
-            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">"When do you need this implemented?" / "What's driving the timing?"</td>
-            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">No defined timeline; "sometime next year"</td>
+            <td style="padding: 0.875rem; border: 1px solid var(--border);"><strong>Timeline</strong></td>
+            <td style="padding: 0.875rem; border: 1px solid var(--border);">"When do you need this implemented?" / "What's driving the timing?"</td>
+            <td style="padding: 0.875rem; border: 1px solid var(--border);">No defined timeline; "sometime next year"</td>
           </tr>
         </tbody>
       </table>
@@ -341,47 +341,47 @@ export const post: BlogPost = {
 
       <table style="width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: 0.9rem;">
         <thead>
-          <tr style="background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%); color: white;">
+          <tr style="background: var(--primary); color: white;">
             <th style="padding: 0.875rem; text-align: left;">Dimension</th>
             <th style="padding: 0.875rem; text-align: center;">BANT</th>
             <th style="padding: 0.875rem; text-align: center;">MEDDIC</th>
           </tr>
         </thead>
         <tbody>
-          <tr style="background: #f8fafc;">
-            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;"><strong>Ideal Deal Size</strong></td>
-            <td style="padding: 0.875rem; border: 1px solid #e2e8f0; text-align: center;">$500–$20k</td>
-            <td style="padding: 0.875rem; border: 1px solid #e2e8f0; text-align: center;">$20k–$1M+</td>
+          <tr style="background: var(--muted);">
+            <td style="padding: 0.875rem; border: 1px solid var(--border);"><strong>Ideal Deal Size</strong></td>
+            <td style="padding: 0.875rem; border: 1px solid var(--border); text-align: center;">$500–$20k</td>
+            <td style="padding: 0.875rem; border: 1px solid var(--border); text-align: center;">$20k–$1M+</td>
           </tr>
           <tr>
-            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;"><strong>Sales Cycle</strong></td>
-            <td style="padding: 0.875rem; border: 1px solid #e2e8f0; text-align: center;">7–60 days</td>
-            <td style="padding: 0.875rem; border: 1px solid #e2e8f0; text-align: center;">60–365 days</td>
+            <td style="padding: 0.875rem; border: 1px solid var(--border);"><strong>Sales Cycle</strong></td>
+            <td style="padding: 0.875rem; border: 1px solid var(--border); text-align: center;">7–60 days</td>
+            <td style="padding: 0.875rem; border: 1px solid var(--border); text-align: center;">60–365 days</td>
           </tr>
-          <tr style="background: #f8fafc;">
-            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;"><strong>Stakeholders</strong></td>
-            <td style="padding: 0.875rem; border: 1px solid #e2e8f0; text-align: center;">1–3</td>
-            <td style="padding: 0.875rem; border: 1px solid #e2e8f0; text-align: center;">5–15+</td>
-          </tr>
-          <tr>
-            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;"><strong>Discovery Depth</strong></td>
-            <td style="padding: 0.875rem; border: 1px solid #e2e8f0; text-align: center;">Moderate</td>
-            <td style="padding: 0.875rem; border: 1px solid #e2e8f0; text-align: center;">Deep</td>
-          </tr>
-          <tr style="background: #f8fafc;">
-            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;"><strong>Forecast Accuracy</strong></td>
-            <td style="padding: 0.875rem; border: 1px solid #e2e8f0; text-align: center;">Good</td>
-            <td style="padding: 0.875rem; border: 1px solid #e2e8f0; text-align: center;">Excellent</td>
+          <tr style="background: var(--muted);">
+            <td style="padding: 0.875rem; border: 1px solid var(--border);"><strong>Stakeholders</strong></td>
+            <td style="padding: 0.875rem; border: 1px solid var(--border); text-align: center;">1–3</td>
+            <td style="padding: 0.875rem; border: 1px solid var(--border); text-align: center;">5–15+</td>
           </tr>
           <tr>
-            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;"><strong>Rep Experience Required</strong></td>
-            <td style="padding: 0.875rem; border: 1px solid #e2e8f0; text-align: center;">Junior-friendly</td>
-            <td style="padding: 0.875rem; border: 1px solid #e2e8f0; text-align: center;">Senior preferred</td>
+            <td style="padding: 0.875rem; border: 1px solid var(--border);"><strong>Discovery Depth</strong></td>
+            <td style="padding: 0.875rem; border: 1px solid var(--border); text-align: center;">Moderate</td>
+            <td style="padding: 0.875rem; border: 1px solid var(--border); text-align: center;">Deep</td>
           </tr>
-          <tr style="background: #f8fafc;">
-            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;"><strong>CRM Implementation</strong></td>
-            <td style="padding: 0.875rem; border: 1px solid #e2e8f0; text-align: center;">Easy</td>
-            <td style="padding: 0.875rem; border: 1px solid #e2e8f0; text-align: center;">Complex</td>
+          <tr style="background: var(--muted);">
+            <td style="padding: 0.875rem; border: 1px solid var(--border);"><strong>Forecast Accuracy</strong></td>
+            <td style="padding: 0.875rem; border: 1px solid var(--border); text-align: center;">Good</td>
+            <td style="padding: 0.875rem; border: 1px solid var(--border); text-align: center;">Excellent</td>
+          </tr>
+          <tr>
+            <td style="padding: 0.875rem; border: 1px solid var(--border);"><strong>Rep Experience Required</strong></td>
+            <td style="padding: 0.875rem; border: 1px solid var(--border); text-align: center;">Junior-friendly</td>
+            <td style="padding: 0.875rem; border: 1px solid var(--border); text-align: center;">Senior preferred</td>
+          </tr>
+          <tr style="background: var(--muted);">
+            <td style="padding: 0.875rem; border: 1px solid var(--border);"><strong>CRM Implementation</strong></td>
+            <td style="padding: 0.875rem; border: 1px solid var(--border); text-align: center;">Easy</td>
+            <td style="padding: 0.875rem; border: 1px solid var(--border); text-align: center;">Complex</td>
           </tr>
         </tbody>
       </table>
@@ -412,10 +412,10 @@ export const post: BlogPost = {
         The result: reps see a real-time BANT score (0-100) for every deal in the pipeline, with AI recommendations on which qualification gaps to address in the next interaction.
       </p>
 
-      <div style="background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); border-left: 4px solid #2563eb; padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
-        <p style="font-weight: 700; color: #1e40af;">See AI-powered BANT scoring in action</p>
-        <p style="color: #1e40af; margin: 0.5rem 0 1rem;">Sirius CRM automatically qualifies every lead so your reps focus on deals most likely to close.</p>
-        <a href="/en/register" style="background: #2563eb; color: white; padding: 0.75rem 1.5rem; border-radius: 0.5rem; font-weight: 600; text-decoration: none; display: inline-block;">Try Free for 14 Days →</a>
+      <div style="background: var(--muted); border-left: 4px solid var(--fio-forte); padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
+        <p style="font-weight: 700; color: var(--foreground);">See AI-powered BANT scoring in action</p>
+        <p style="color: var(--foreground); margin: 0.5rem 0 1rem;">Sirius CRM automatically qualifies every lead so your reps focus on deals most likely to close.</p>
+        <a href="/en/register" style="background: var(--primary); color: white; padding: 0.75rem 1.5rem; border-radius: 0.5rem; font-weight: 600; text-decoration: none; display: inline-block;">Try Free for 14 Days →</a>
       </div>
 
       <h2>Frequently Asked Questions</h2>
@@ -435,8 +435,8 @@ export const post: BlogPost = {
         Yes. A common hybrid: use BANT for initial qualification (first 2 calls), then switch to MEDDIC for deep discovery on deals that pass BANT threshold. This keeps the process efficient without sacrificing rigor on high-value opportunities.
       </p>
 
-      <hr style="margin: 3rem 0; border: none; border-top: 1px solid #e5e7eb;" />
-      <p style="font-size: 0.85rem; color: #64748b;">
+      <hr style="margin: 3rem 0; border: none; border-top: 1px solid var(--border);" />
+      <p style="font-size: 0.85rem; color: var(--foreground);">
         <strong>Last Updated:</strong> March 21, 2026<br/>
         <strong>Author:</strong> Sirius CRM Team<br/>
         <strong>Reading Time:</strong> 12 minutes

@@ -19,8 +19,8 @@ export const post: BlogPost = {
         Neste guia, você vai aprender as <strong>7 técnicas de fechamento de vendas</strong> mais eficazes em 2026, quando usar cada uma, com exemplos de script reais, e como o CRM ajuda a identificar o momento certo para avançar.
       </p>
 
-      <div class="not-prose" style="background: #1e293b; padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
-        <p style="margin: 0 0 0.75rem; font-weight: 700; font-size: 1.05rem; color: #38bdf8;">⚡ TL;DR — Resposta Rápida</p>
+      <div class="not-prose" style="background: var(--primary); padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
+        <p style="margin: 0 0 0.75rem; font-weight: 700; font-size: 1.05rem; color: var(--primary-foreground);">⚡ TL;DR — Resposta Rápida</p>
         <ul style="margin: 0; padding-left: 1.25rem; line-height: 2; color: #ffffff;">
           <li>Fechar é uma <strong>habilidade que se aprende</strong> — não um talento inato. Toda técnica tem hora certa de usar</li>
           <li>Os <strong>sinais de compra</strong> do cliente avisam quando o momento chegou — aprenda a lê-los antes de pedir o fechamento</li>
@@ -37,7 +37,7 @@ export const post: BlogPost = {
       </p>
 
       <p>
-        O fechamento eficaz começa muito antes: na qualificação, no discovery, no entendimento das dores e na construção de valor. As técnicas abaixo funcionam quando o terreno está preparado — não como atalhos para pular etapas. Antes delas, domine como <a href="/blog/como-superar-objecoes-em-vendas" style="color: #2563eb;">superar objeções</a>.
+        O fechamento eficaz começa muito antes: na qualificação, no discovery, no entendimento das dores e na construção de valor. As técnicas abaixo funcionam quando o terreno está preparado — não como atalhos para pular etapas. Antes delas, domine como <a href="/blog/como-superar-objecoes-em-vendas" style="color: var(--foreground);">superar objeções</a>.
       </p>
 
       <h2>Os Sinais de Compra que Indicam que o Momento Chegou</h2>
@@ -74,7 +74,7 @@ export const post: BlogPost = {
         <strong>Script:</strong>
       </p>
 
-      <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 0.75rem; padding: 1.25rem; margin: 1rem 0; font-style: italic; color: #374151; line-height: 1.8;">
+      <div style="background: var(--muted); border: 1px solid var(--border); border-radius: 0.75rem; padding: 1.25rem; margin: 1rem 0; font-style: italic; color: var(--foreground); line-height: 1.8;">
         "Ótimo. Então vamos definir a data de início: você prefere começar na segunda-feira da semana que vem ou na semana seguinte, para dar tempo de envolver a equipe?"
       </div>
 
@@ -96,7 +96,7 @@ export const post: BlogPost = {
         <strong>Script:</strong>
       </p>
 
-      <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 0.75rem; padding: 1.25rem; margin: 1rem 0; font-style: italic; color: #374151; line-height: 1.8;">
+      <div style="background: var(--muted); border: 1px solid var(--border); border-radius: 0.75rem; padding: 1.25rem; margin: 1rem 0; font-style: italic; color: var(--foreground); line-height: 1.8;">
         "Considerando o que conversamos, você prefere o Plano Pro com onboarding dedicado, ou o Plano Business com os usuários adicionais? Os dois resolvem o que você precisa — é mais uma questão de escala atual."
       </div>
 
@@ -118,7 +118,7 @@ export const post: BlogPost = {
         <strong>Script:</strong>
       </p>
 
-      <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 0.75rem; padding: 1.25rem; margin: 1rem 0; font-style: italic; color: #374151; line-height: 1.8;">
+      <div style="background: var(--muted); border: 1px solid var(--border); border-radius: 0.75rem; padding: 1.25rem; margin: 1rem 0; font-style: italic; color: var(--foreground); line-height: 1.8;">
         "Quero ser transparente: o próximo onboarding em grupo é dia 10. Se você entrar até sexta, você vai junto com mais 4 empresas do seu setor e o processo fica mais rico. Semana que vem, o próximo grupo começa dia 24. Faz sentido a gente fechar até sexta?"
       </div>
 
@@ -140,7 +140,7 @@ export const post: BlogPost = {
         <strong>Script:</strong>
       </p>
 
-      <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 0.75rem; padding: 1.25rem; margin: 1rem 0; font-style: italic; color: #374151; line-height: 1.8;">
+      <div style="background: var(--muted); border: 1px solid var(--border); border-radius: 0.75rem; padding: 1.25rem; margin: 1rem 0; font-style: italic; color: var(--foreground); line-height: 1.8;">
         "Deixa eu resumir o que alinhamos: vocês precisam de um CRM com pipeline visual, integração WhatsApp e relatórios semanais automáticos. O Sirius atende os três, o onboarding é em 5 dias úteis, e o preço que fechamos é R$ X por mês com contrato anual. Está tudo correto? Posso gerar o contrato?"
       </div>
 
@@ -148,7 +148,7 @@ export const post: BlogPost = {
         <strong>Por que funciona:</strong> O resumo cria sensação de conclusão natural. Se tudo está correto, o próximo passo lógico é assinar.
       </p>
 
-      <h3>5. Pergunta de Comprometimento (Método <a href="/blog/spin-selling-guia-completo" style="color: #2563eb;">SPIN</a>)</h3>
+      <h3>5. Pergunta de Comprometimento (Método <a href="/blog/spin-selling-guia-completo" style="color: var(--foreground);">SPIN</a>)</h3>
 
       <p>
         <strong>O que é:</strong> Perguntar ao cliente se ele mesmo descreve o valor que viu — criando comprometimento interno antes do fechamento.
@@ -162,7 +162,7 @@ export const post: BlogPost = {
         <strong>Script:</strong>
       </p>
 
-      <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 0.75rem; padding: 1.25rem; margin: 1rem 0; font-style: italic; color: #374151; line-height: 1.8;">
+      <div style="background: var(--muted); border: 1px solid var(--border); border-radius: 0.75rem; padding: 1.25rem; margin: 1rem 0; font-style: italic; color: var(--foreground); line-height: 1.8;">
         "Se você conseguisse eliminar o problema de follow-ups perdidos e ter visibilidade do pipeline em tempo real, como isso impactaria os resultados da equipe daqui a 3 meses?"
         <br/><br/>
         [Cliente descreve o impacto]
@@ -188,7 +188,7 @@ export const post: BlogPost = {
         <strong>Script:</strong>
       </p>
 
-      <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 0.75rem; padding: 1.25rem; margin: 1rem 0; font-style: italic; color: #374151; line-height: 1.8;">
+      <div style="background: var(--muted); border: 1px solid var(--border); border-radius: 0.75rem; padding: 1.25rem; margin: 1rem 0; font-style: italic; color: var(--foreground); line-height: 1.8;">
         "Tudo bem, entendo. Antes de encerrar — só por curiosidade — qual é a principal razão que te deixa hesitante? Quero entender para aprender."
       </div>
 
@@ -210,7 +210,7 @@ export const post: BlogPost = {
         <strong>Script:</strong>
       </p>
 
-      <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 0.75rem; padding: 1.25rem; margin: 1rem 0; font-style: italic; color: #374151; line-height: 1.8;">
+      <div style="background: var(--muted); border: 1px solid var(--border); border-radius: 0.75rem; padding: 1.25rem; margin: 1rem 0; font-style: italic; color: var(--foreground); line-height: 1.8;">
         "Com base em tudo que conversamos, faz sentido começarmos?"
         <br/><br/>
         [Silêncio — não fale até o cliente responder, mesmo que demore 30 segundos]
@@ -247,27 +247,27 @@ export const post: BlogPost = {
         <li><strong>Alertas de follow-up:</strong> O CRM avisa quando o deal está esfriando — antes que o cliente suma</li>
       </ul>
 
-      <div style="background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%); padding: 2rem; border-radius: 1rem; margin: 2.5rem 0; text-align: center;">
+      <div style="background: var(--primary); padding: 2rem; border-radius: 1rem; margin: 2.5rem 0; text-align: center;">
         <p style="color: white; font-size: 1.25rem; font-weight: 700; margin: 0 0 0.5rem;">Saiba quando cada deal está pronto para fechar</p>
-        <p style="color: #bfdbfe; margin: 0 0 1.25rem;">O Sirius CRM mostra o histórico completo de cada negociação e alerta no momento certo de agir.</p>
-        <a href="/register" style="display: inline-block; background: white; color: #2563eb; padding: 0.75rem 2rem; border-radius: 0.5rem; font-weight: 700; text-decoration: none;">Começar Grátis →</a>
+        <p style="color: var(--foreground); margin: 0 0 1.25rem;">O Sirius CRM mostra o histórico completo de cada negociação e alerta no momento certo de agir.</p>
+        <a href="/register" style="display: inline-block; background: white; color: var(--foreground); padding: 0.75rem 2rem; border-radius: 0.5rem; font-weight: 700; text-decoration: none;">Começar Grátis →</a>
       </div>
 
       <h2>Perguntas Frequentes sobre Fechamento de Vendas</h2>
 
-      <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
-        <summary style="font-weight: 600; cursor: pointer; color: #1e293b; list-style: revert;">Qual a melhor técnica de fechamento para vendas B2B?</summary>
-        <p style="margin: 0.75rem 0 0; color: #4b5563;">Não existe uma única "melhor técnica" — depende do momento e do perfil do cliente. Para vendas B2B complexas, o Fechamento por Resumo e a Pergunta de Comprometimento (SPIN) tendem a funcionar melhor porque respeitam o processo de decisão mais longo. Para deals que já estão maduros e o cliente demonstrou sinais claros, o Fechamento Assumido acelera sem forçar.</p>
+      <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
+        <summary style="font-weight: 600; cursor: pointer; color: var(--foreground); list-style: revert;">Qual a melhor técnica de fechamento para vendas B2B?</summary>
+        <p style="margin: 0.75rem 0 0; color: var(--foreground);">Não existe uma única "melhor técnica" — depende do momento e do perfil do cliente. Para vendas B2B complexas, o Fechamento por Resumo e a Pergunta de Comprometimento (SPIN) tendem a funcionar melhor porque respeitam o processo de decisão mais longo. Para deals que já estão maduros e o cliente demonstrou sinais claros, o Fechamento Assumido acelera sem forçar.</p>
       </details>
 
-      <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
-        <summary style="font-weight: 600; cursor: pointer; color: #1e293b; list-style: revert;">O que fazer quando o cliente diz "preciso pensar"?</summary>
-        <p style="margin: 0.75rem 0 0; color: #4b5563;">"Preciso pensar" é sempre uma objeção disfarçada — raramente significa que o cliente precisa apenas de tempo. A resposta certa é usar o Fechamento Columbo: "Claro, entendo. Antes de você ir — só para eu entender melhor — o que especificamente você ainda precisa avaliar?" Com a objeção real na mesa (preço, timing, aprovação interna), você pode endereçá-la diretamente em vez de esperar o cliente nunca voltar.</p>
+      <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
+        <summary style="font-weight: 600; cursor: pointer; color: var(--foreground); list-style: revert;">O que fazer quando o cliente diz "preciso pensar"?</summary>
+        <p style="margin: 0.75rem 0 0; color: var(--foreground);">"Preciso pensar" é sempre uma objeção disfarçada — raramente significa que o cliente precisa apenas de tempo. A resposta certa é usar o Fechamento Columbo: "Claro, entendo. Antes de você ir — só para eu entender melhor — o que especificamente você ainda precisa avaliar?" Com a objeção real na mesa (preço, timing, aprovação interna), você pode endereçá-la diretamente em vez de esperar o cliente nunca voltar.</p>
       </details>
 
-      <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
-        <summary style="font-weight: 600; cursor: pointer; color: #1e293b; list-style: revert;">Quantas tentativas de fechamento fazer em uma reunião?</summary>
-        <p style="margin: 0.75rem 0 0; color: #4b5563;">Em vendas consultivas B2B, tente fechar uma ou duas vezes por reunião — não mais. Múltiplas tentativas na mesma conversa sinalizam desespero e pressionam o cliente negativamente. Se a primeira tentativa gerou hesitação, explore a objeção, trate-a e tente uma vez mais. Se ainda assim não houver avanço, estabeleça o próximo passo claro (próxima reunião com data e pauta definidos) antes de encerrar.</p>
+      <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
+        <summary style="font-weight: 600; cursor: pointer; color: var(--foreground); list-style: revert;">Quantas tentativas de fechamento fazer em uma reunião?</summary>
+        <p style="margin: 0.75rem 0 0; color: var(--foreground);">Em vendas consultivas B2B, tente fechar uma ou duas vezes por reunião — não mais. Múltiplas tentativas na mesma conversa sinalizam desespero e pressionam o cliente negativamente. Se a primeira tentativa gerou hesitação, explore a objeção, trate-a e tente uma vez mais. Se ainda assim não houver avanço, estabeleça o próximo passo claro (próxima reunião com data e pauta definidos) antes de encerrar.</p>
       </details>
 
       <h2>Conclusão</h2>
@@ -280,7 +280,7 @@ export const post: BlogPost = {
         Comece aprendendo a ler os sinais de compra. Depois pratique uma técnica por vez — especialmente o silêncio estratégico, que é contraintuitivo mas é o mais poderoso de todos. E use o CRM para nunca mais perder o timing certo por falta de informação sobre onde cada deal está.
       </p>
 
-      <hr style="margin: 3rem 0; border: none; border-top: 1px solid #e5e7eb;" />
+      <hr style="margin: 3rem 0; border: none; border-top: 1px solid var(--border);" />
       <strong>Última Atualização:</strong> 28 de Fevereiro de 2026<br/>
       <strong>Autor:</strong> Equipe Sirius CRM<br/>
       <strong>Tempo de Leitura:</strong> 8 minutos
@@ -376,8 +376,8 @@ export const post: BlogPost = {
         Closing a sale is the result of a well-conducted process — not a last-minute trick. The 7 techniques above work when the ground is prepared: the customer understands the value, trusts the rep, and sees the solution as relevant to their pain. Practice one technique at a time — especially strategic silence, which is counterintuitive but the most powerful of all.
       </p>
 
-      <hr style="margin: 3rem 0; border: none; border-top: 1px solid #e5e7eb;" />
-      <p style="font-size: 0.85rem; color: #64748b;">
+      <hr style="margin: 3rem 0; border: none; border-top: 1px solid var(--border);" />
+      <p style="font-size: 0.85rem; color: var(--foreground);">
         <strong>Last Updated:</strong> February 28, 2026<br/>
         <strong>Author:</strong> Sirius CRM Team<br/>
         <strong>Reading Time:</strong> 8 minutes

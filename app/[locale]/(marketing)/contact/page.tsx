@@ -111,8 +111,8 @@ export default function ContactPage() {
         <Script id="breadcrumb-schema" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
         <div className="bg-background min-h-[80vh] flex items-center justify-center">
           <div className="mx-auto max-w-md text-center px-6">
-            <div className="mx-auto w-16 h-16 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mb-6">
-              <CheckCircle2 className="h-8 w-8 text-green-600 dark:text-green-400" />
+            <div className="mx-auto w-16 h-16 bg-muted rounded-full flex items-center justify-center mb-6">
+              <CheckCircle2 className="h-8 w-8 text-foreground" />
             </div>
             <h1 className="text-3xl font-bold text-foreground mb-4">{t("success.title")}</h1>
             <p className="text-muted-foreground mb-8">{t("success.description")}</p>

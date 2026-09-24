@@ -110,8 +110,8 @@ function ResetPasswordForm() {
             <div className="flex min-h-screen items-center justify-center px-4 py-12 sm:px-6 lg:px-8 bg-muted/30">
                 <Card className="w-full max-w-md">
                     <CardHeader className="space-y-1 text-center">
-                        <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-red-100 dark:bg-red-900/20">
-                            <XCircle className="h-6 w-6 text-red-600 dark:text-red-400" />
+                        <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-muted">
+                            <XCircle className="h-6 w-6 text-destaque" />
                         </div>
                         <CardTitle className="text-2xl font-bold">Link invalido</CardTitle>
                         <CardDescription>
@@ -142,8 +142,8 @@ function ResetPasswordForm() {
             <div className="flex min-h-screen items-center justify-center px-4 py-12 sm:px-6 lg:px-8 bg-muted/30">
                 <Card className="w-full max-w-md">
                     <CardHeader className="space-y-1 text-center">
-                        <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-green-100 dark:bg-green-900/20">
-                            <CheckCircle className="h-6 w-6 text-green-600 dark:text-green-400" />
+                        <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-muted">
+                            <CheckCircle className="h-6 w-6 text-foreground" />
                         </div>
                         <CardTitle className="text-2xl font-bold">Senha alterada!</CardTitle>
                         <CardDescription>
@@ -241,7 +241,7 @@ function ResetPasswordForm() {
                         </div>
 
                         {error && (
-                            <div className="text-sm text-red-500 font-medium">{error}</div>
+                            <div className="text-sm text-destaque font-medium">{error}</div>
                         )}
                     </CardContent>
                     <CardFooter className="flex flex-col gap-4">

@@ -67,7 +67,7 @@ function LoginForm() {
                             </div>
                         </div>
                         {error && (
-                            <div className="text-sm text-red-500 font-medium">{error}</div>
+                            <div className="text-sm text-destaque font-medium">{error}</div>
                         )}
                     </CardContent>
                     <CardFooter className="flex flex-col gap-4">

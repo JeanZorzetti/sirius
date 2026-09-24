@@ -231,7 +231,7 @@ export default function HelpPage() {
 
       <div className="min-h-screen bg-background">
         {/* Hero Section */}
-        <section className="pt-32 pb-16 px-4 bg-gradient-to-b from-primary/5 to-transparent">
+        <section className="pt-32 pb-16 px-4">
           <div className="container mx-auto max-w-4xl text-center">
             <Badge variant="secondary" className="mb-4">
               <HelpCircle className="w-3 h-3 mr-1" />
@@ -239,7 +239,7 @@ export default function HelpPage() {
             </Badge>
             <h1 className="text-4xl md:text-5xl font-bold mb-4">
               Como podemos{" "}
-              <span className="bg-gradient-to-r from-primary to-purple-600 text-transparent bg-clip-text">
+              <span className="    ">
                 ajudar?
               </span>
             </h1>
@@ -266,8 +266,8 @@ export default function HelpPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-2xl mx-auto">
               <Link href="#faq">
                 <div className="flex items-center gap-4 p-4 bg-card border border-border rounded-xl hover:border-primary/50 transition-colors">
-                  <div className="w-12 h-12 rounded-lg bg-green-500/10 flex items-center justify-center">
-                    <MessageCircle className="w-6 h-6 text-green-500" />
+                  <div className="w-12 h-12 rounded-lg bg-muted flex items-center justify-center">
+                    <MessageCircle className="w-6 h-6 text-foreground" />
                   </div>
                   <div>
                     <h3 className="font-semibold">Perguntas Frequentes</h3>
@@ -278,8 +278,8 @@ export default function HelpPage() {
 
               <Link href="/dashboard/support">
                 <div className="flex items-center gap-4 p-4 bg-card border border-border rounded-xl hover:border-primary/50 transition-colors">
-                  <div className="w-12 h-12 rounded-lg bg-purple-500/10 flex items-center justify-center">
-                    <LifeBuoy className="w-6 h-6 text-purple-500" />
+                  <div className="w-12 h-12 rounded-lg bg-muted flex items-center justify-center">
+                    <LifeBuoy className="w-6 h-6 text-foreground" />
                   </div>
                   <div>
                     <h3 className="font-semibold">Abrir Ticket de Suporte</h3>

@@ -86,8 +86,8 @@ export function IndiqueClient() {
       {/* Hero */}
       <section className="relative py-32 px-6 overflow-hidden">
         {/* Background Gradients */}
-        <div className="absolute top-0 left-1/2 w-full max-w-4xl -translate-x-1/2 h-[500px] bg-primary/20 blur-[120px] rounded-full pointer-events-none opacity-50 dark:opacity-30" />
-        <div className="absolute top-40 right-0 w-[400px] h-[400px] bg-blue-500/10 blur-[100px] rounded-full pointer-events-none" />
+        <div className="absolute top-0 left-1/2 w-full max-w-4xl -translate-x-1/2 h-[500px] bg-primary/20 blur-[120px] rounded-full pointer-events-none opacity-50" />
+        <div className="absolute top-40 right-0 w-[400px] h-[400px] bg-muted blur-[100px] rounded-full pointer-events-none" />
         
         <div className="relative mx-auto max-w-5xl text-center z-10">
           <motion.div 
@@ -96,7 +96,7 @@ export function IndiqueClient() {
             transition={{ duration: 0.5 }}
             className="flex justify-center mb-8"
           >
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-primary/30 bg-primary/10 text-primary font-medium text-sm backdrop-blur-md shadow-[0_0_20px_rgba(var(--primary),0.2)]">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded border border-primary/30 bg-primary/10 text-primary font-medium text-sm backdrop-blur-md shadow-[0_0_20px_rgba(var(--primary),0.2)]">
               <Sparkles className="w-4 h-4" />
               <span>Programa de Indicação Sirius</span>
             </div>
@@ -109,7 +109,7 @@ export function IndiqueClient() {
             className="text-5xl font-extrabold tracking-tight sm:text-7xl lg:text-[5rem] leading-[1.1]"
           >
             Indique. Ganhe.<br className="hidden sm:block" />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-blue-500 to-purple-600">
+            <span className="     ">
               {' '}Zere a mensalidade.
             </span>
           </motion.h1>
@@ -130,13 +130,13 @@ export function IndiqueClient() {
             transition={{ duration: 0.5, delay: 0.3 }}
             className="mt-12 flex flex-col sm:flex-row gap-4 justify-center items-center"
           >
-            <Button asChild size="lg" className="h-14 px-8 rounded-full text-base font-semibold shadow-xl shadow-primary/25 transition-transform hover:-translate-y-1">
+            <Button asChild size="lg" className="h-14 px-8 rounded text-base font-semibold shadow-xl shadow-primary/25 transition-transform hover:-translate-y-1">
               <Link href="/dashboard/billing">
                 Acessar meu link de indicação
                 <ArrowRight className="w-5 h-5 ml-2" />
               </Link>
             </Button>
-            <Button asChild size="lg" variant="outline" className="h-14 px-8 rounded-full text-base font-semibold border-border/50 bg-background/50 backdrop-blur-md hover:bg-muted transition-transform hover:-translate-y-1">
+            <Button asChild size="lg" variant="outline" className="h-14 px-8 rounded text-base font-semibold border-border/50 bg-background/50 backdrop-blur-md hover:bg-muted transition-transform hover:-translate-y-1">
               <Link href="/register">
                 Criar conta grátis
               </Link>
@@ -162,7 +162,7 @@ export function IndiqueClient() {
             ].map((stat, i) => (
               <motion.div key={i} variants={itemVariants}>
                 <Card className="bg-background/60 backdrop-blur-xl border-border/50 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 overflow-hidden relative group">
-                  <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                  <div className="absolute top-0 left-0 w-full h-1 opacity-0 group-hover:opacity-100 transition-opacity" />
                   <CardContent className="p-8 text-center flex flex-col items-center justify-center">
                     <div className="w-12 h-12 rounded-2xl bg-primary/10 text-primary flex items-center justify-center mb-4">
                       <stat.icon className="w-6 h-6" />
@@ -187,7 +187,7 @@ export function IndiqueClient() {
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 relative">
             {/* Connection Line (Desktop only) */}
-            <div className="hidden lg:block absolute top-[44px] left-[10%] right-[10%] h-[2px] bg-gradient-to-r from-transparent via-border to-transparent z-0" />
+            <div className="hidden lg:block absolute top-[44px] left-[10%] right-[10%] h-[2px] via-border z-0" />
             
             {steps.map((step, idx) => (
               <motion.div 
@@ -200,8 +200,8 @@ export function IndiqueClient() {
               >
                 <div className="flex flex-col items-center text-center group">
                   <div className="w-24 h-24 rounded-3xl bg-background border border-border shadow-sm flex items-center justify-center mb-6 relative overflow-hidden transition-transform duration-300 group-hover:scale-110 group-hover:shadow-primary/20 group-hover:shadow-xl group-hover:border-primary/30">
-                    <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                    <span className="text-3xl font-black text-transparent bg-clip-text bg-gradient-to-br from-foreground to-muted-foreground">{step.number}</span>
+                    <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                    <span className="text-3xl font-black to-muted-foreground">{step.number}</span>
                   </div>
                   <h3 className="text-xl font-bold mb-3">{step.title}</h3>
                   <p className="text-muted-foreground leading-relaxed">{step.description}</p>
@@ -296,7 +296,7 @@ export function IndiqueClient() {
             </div>
           </motion.div>
           <p className="mt-6 text-sm text-muted-foreground text-center flex items-center justify-center gap-2">
-            <Check className="w-4 h-4 text-green-500" />
+            <Check className="w-4 h-4 text-foreground" />
             O desconto permanece ativo enquanto a indicação mantiver a assinatura paga.
           </p>
         </div>
@@ -324,8 +324,8 @@ export function IndiqueClient() {
                   { plan: 'Business', price: 'R$397', discounted: 'R$317,60/mês' },
                 ].map((item) => (
                   <div key={item.plan} className="flex items-center gap-4 p-4 rounded-2xl border border-border/50 bg-muted/20 hover:bg-muted/40 transition-colors">
-                    <div className="w-10 h-10 rounded-full bg-green-500/10 flex items-center justify-center shrink-0">
-                      <Check className="w-5 h-5 text-green-500" />
+                    <div className="w-10 h-10 rounded-full bg-muted flex items-center justify-center shrink-0">
+                      <Check className="w-5 h-5 text-foreground" />
                     </div>
                     <div>
                       <div className="font-semibold">{item.plan}</div>
@@ -344,7 +344,7 @@ export function IndiqueClient() {
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.2 }}
             >
-              <Card className="border-primary/30 bg-gradient-to-br from-primary/10 to-background shadow-2xl relative overflow-hidden rounded-3xl">
+              <Card className="border-primary/30 shadow-2xl relative overflow-hidden rounded-3xl">
                 <div className="absolute top-0 right-0 p-4 opacity-10">
                   <TrendingDown className="w-32 h-32" />
                 </div>
@@ -362,12 +362,12 @@ export function IndiqueClient() {
                       <span className="text-muted-foreground font-medium">Suas Indicações Ativas</span>
                       <span className="font-bold text-lg">3 parceiros</span>
                     </div>
-                    <div className="h-px w-full bg-gradient-to-r from-transparent via-border to-transparent mb-6" />
+                    <div className="h-px w-full via-border mb-6" />
                     <div className="flex justify-between items-center">
                       <span className="font-semibold text-lg">Nova Mensalidade</span>
                       <div className="text-right">
                         <div className="text-3xl font-black text-primary">R$80,85</div>
-                        <div className="text-sm text-green-500 font-medium mt-1">−45% de desconto eterno*</div>
+                        <div className="text-sm text-foreground font-medium mt-1">−45% de desconto eterno*</div>
                       </div>
                     </div>
                   </div>
@@ -422,7 +422,7 @@ export function IndiqueClient() {
             whileInView={{ scale: 1, opacity: 1 }}
             viewport={{ once: true }}
             transition={{ type: "spring", stiffness: 200, damping: 20 }}
-            className="w-20 h-20 rounded-3xl bg-gradient-to-br from-primary to-blue-600 flex items-center justify-center mx-auto mb-8 shadow-2xl shadow-primary/30"
+            className="w-20 h-20 rounded-3xl flex items-center justify-center mx-auto mb-8 shadow-2xl shadow-primary/30"
           >
             <Star className="w-10 h-10 text-white fill-white/20" />
           </motion.div>
@@ -431,13 +431,13 @@ export function IndiqueClient() {
             Faça login para copiar seu link exclusivo e começar a acumular descontos hoje mesmo.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button asChild size="lg" className="h-14 px-8 rounded-full text-base font-semibold shadow-xl shadow-primary/25 transition-transform hover:-translate-y-1">
+            <Button asChild size="lg" className="h-14 px-8 rounded text-base font-semibold shadow-xl shadow-primary/25 transition-transform hover:-translate-y-1">
               <Link href="/dashboard/billing">
                 Pegar meu link agora
                 <ArrowRight className="w-5 h-5 ml-2" />
               </Link>
             </Button>
-            <Button asChild size="lg" variant="outline" className="h-14 px-8 rounded-full text-base font-semibold border-border/50 bg-background/50 backdrop-blur-md hover:bg-muted transition-transform hover:-translate-y-1">
+            <Button asChild size="lg" variant="outline" className="h-14 px-8 rounded text-base font-semibold border-border/50 bg-background/50 backdrop-blur-md hover:bg-muted transition-transform hover:-translate-y-1">
               <Link href="/register">
                 Criar conta grátis
               </Link>

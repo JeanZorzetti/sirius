@@ -97,16 +97,16 @@ export const post: BlogPost = {
 
       <h2>Frequently Asked Questions</h2>
 
-      <details style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1.25rem 1.5rem; margin-bottom: 1rem;">
-        <summary style="font-weight: 700; color: #1e293b; cursor: pointer; font-size: 1rem;">Does a sales process work for low-ticket products?</summary>
-        <p style="margin-top: 1rem; color: #475569; line-height: 1.75;">
+      <details style="background: var(--muted); border: 1px solid var(--border); border-radius: 0.5rem; padding: 1.25rem 1.5rem; margin-bottom: 1rem;">
+        <summary style="font-weight: 700; color: var(--foreground); cursor: pointer; font-size: 1rem;">Does a sales process work for low-ticket products?</summary>
+        <p style="margin-top: 1rem; color: var(--foreground); line-height: 1.75;">
           Yes, but it needs to be adapted to the sales cycle. For low-ticket products with short cycles (days), the process is simpler and more automated: fast qualification, standard proposal, automated follow-up. The principle is the same — what changes is the complexity and degree of automation.
         </p>
       </details>
 
-      <details style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1.25rem 1.5rem; margin-bottom: 1rem;">
-        <summary style="font-weight: 700; color: #1e293b; cursor: pointer; font-size: 1rem;">How do I know if my sales process needs to be revised?</summary>
-        <p style="margin-top: 1rem; color: #475569; line-height: 1.75;">
+      <details style="background: var(--muted); border: 1px solid var(--border); border-radius: 0.5rem; padding: 1.25rem 1.5rem; margin-bottom: 1rem;">
+        <summary style="font-weight: 700; color: var(--foreground); cursor: pointer; font-size: 1rem;">How do I know if my sales process needs to be revised?</summary>
+        <p style="margin-top: 1rem; color: var(--foreground); line-height: 1.75;">
           Key signals: (1) conversion rate dropping for 2+ consecutive months without external explanation; (2) reps complaining that stages don't reflect market reality; (3) sales cycle lengthening without product or price changes; (4) new reps taking too long to reach productivity curve; (5) many deals stalling in a specific stage. If two or more of these appear simultaneously, it's time to sit with the team and revise the process.
         </p>
       </details>
@@ -124,13 +124,13 @@ export const post: BlogPost = {
   Um processo de vendas bem montado muda esse quadro. Ele transforma vendas de arte em engenharia: algo que pode ser ensinado, medido e melhorado de forma contínua. Neste guia, você vai aprender como montar o seu do zero em 6 etapas, com o template que a equipe do Sirius CRM usa com centenas de clientes.
 </p>
 
-<div style="background: #1e293b; border-radius: 0.75rem; padding: 1.75rem 2rem; margin: 2rem 0; color: #e2e8f0;">
-  <p style="font-size: 1rem; font-weight: 700; color: #38bdf8; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 1rem;">TL;DR — Resumo em 60 Segundos</p>
+<div style="background: var(--primary); border-radius: 0.75rem; padding: 1.75rem 2rem; margin: 2rem 0; color: var(--primary-foreground);">
+  <p style="font-size: 1rem; font-weight: 700; color: var(--primary-foreground); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 1rem;">TL;DR — Resumo em 60 Segundos</p>
   <ul style="margin: 0; padding-left: 1.5rem; line-height: 1.9;">
-    <li>Empresas com processo documentado convertem <strong style="color: #38bdf8;">33% mais</strong> do que as que vendem por intuição</li>
-    <li>Processo de vendas = sequência <strong style="color: #38bdf8;">repetível, mensurável e ensinável</strong> de etapas que levam um lead ao fechamento</li>
-    <li>As 6 etapas essenciais: <strong style="color: #38bdf8;">ICP → Prospecção → Qualificação → Proposta → Negociação → Pós-venda</strong></li>
-    <li>Documentar não basta: o processo precisa viver dentro do <strong style="color: #38bdf8;">CRM</strong> para ser seguido e monitorado</li>
+    <li>Empresas com processo documentado convertem <strong style="color: var(--primary-foreground);">33% mais</strong> do que as que vendem por intuição</li>
+    <li>Processo de vendas = sequência <strong style="color: var(--primary-foreground);">repetível, mensurável e ensinável</strong> de etapas que levam um lead ao fechamento</li>
+    <li>As 6 etapas essenciais: <strong style="color: var(--primary-foreground);">ICP → Prospecção → Qualificação → Proposta → Negociação → Pós-venda</strong></li>
+    <li>Documentar não basta: o processo precisa viver dentro do <strong style="color: var(--primary-foreground);">CRM</strong> para ser seguido e monitorado</li>
     <li>Os 5 erros mais comuns: processo complexo demais, sem CRM, sem treinamento, sem métricas e sem revisão periódica</li>
   </ul>
 </div>
@@ -145,7 +145,7 @@ export const post: BlogPost = {
   O que <strong>não é</strong> um processo de vendas:
 </p>
 
-<ul style="margin: 1rem 0 1.5rem; padding-left: 1.5rem; line-height: 1.9; color: #374151;">
+<ul style="margin: 1rem 0 1.5rem; padding-left: 1.5rem; line-height: 1.9; color: var(--foreground);">
   <li><strong>Um script de vendas.</strong> Script é uma ferramenta dentro do processo, não o processo em si.</li>
   <li><strong>Um funil no papel.</strong> Funil desenhado em PowerPoint que ninguém segue não é processo — é decoração.</li>
   <li><strong>O jeito que o melhor vendedor trabalha.</strong> Se está só na cabeça de uma pessoa, não é processo.</li>
@@ -154,7 +154,7 @@ export const post: BlogPost = {
 
 <div class="callout-stat">
   <p><strong>Dado de Mercado</strong></p>
-  <p style="font-size: 2.75rem; font-weight: 800; color: #2563eb; margin: 1rem 0; line-height: 1;">33%</p>
+  <p style="font-size: 2.75rem; font-weight: 800; color: var(--foreground); margin: 1rem 0; line-height: 1;">33%</p>
   <p>de aumento na taxa de conversão é o resultado médio que empresas obtêm ao implementar um processo de vendas formal, segundo o estudo <em>Sales Management Association (2025)</em>. Empresas com processos altamente eficazes também reportam crescimento de receita <strong>18% maior</strong> ano a ano.</p>
 </div>
 
@@ -164,27 +164,27 @@ export const post: BlogPost = {
 
 <table style="width: 100%; border-collapse: collapse; margin: 2rem 0; font-size: 0.95rem;">
   <thead>
-    <tr style="background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%); color: white;">
-      <th style="padding: 0.875rem 1rem; text-align: left; border: 1px solid #ddd;">Atributo</th>
-      <th style="padding: 0.875rem 1rem; text-align: left; border: 1px solid #ddd;">Venda na Intuição</th>
-      <th style="padding: 0.875rem 1rem; text-align: left; border: 1px solid #ddd;">Processo de Vendas</th>
+    <tr style="background: var(--primary); color: white;">
+      <th style="padding: 0.875rem 1rem; text-align: left; border: 1px solid var(--border);">Atributo</th>
+      <th style="padding: 0.875rem 1rem; text-align: left; border: 1px solid var(--border);">Venda na Intuição</th>
+      <th style="padding: 0.875rem 1rem; text-align: left; border: 1px solid var(--border);">Processo de Vendas</th>
     </tr>
   </thead>
   <tbody>
-    <tr style="background: #f8fafc;">
-      <td style="padding: 0.875rem 1rem; border: 1px solid #e2e8f0; color: #1e293b;"><strong>Repetivel</strong></td>
-      <td style="padding: 0.875rem 1rem; border: 1px solid #e2e8f0; color: #ef4444;">Depende do vendedor</td>
-      <td style="padding: 0.875rem 1rem; border: 1px solid #e2e8f0; color: #16a34a;">Qualquer vendedor treinado replica</td>
+    <tr style="background: var(--muted);">
+      <td style="padding: 0.875rem 1rem; border: 1px solid var(--border); color: var(--foreground);"><strong>Repetivel</strong></td>
+      <td style="padding: 0.875rem 1rem; border: 1px solid var(--border); color: var(--pulso-escuro);">Depende do vendedor</td>
+      <td style="padding: 0.875rem 1rem; border: 1px solid var(--border); color: var(--foreground);">Qualquer vendedor treinado replica</td>
     </tr>
     <tr style="background: #ffffff;">
-      <td style="padding: 0.875rem 1rem; border: 1px solid #e2e8f0; color: #1e293b;"><strong>Mensuravel</strong></td>
-      <td style="padding: 0.875rem 1rem; border: 1px solid #e2e8f0; color: #ef4444;">Só sabe o resultado final</td>
-      <td style="padding: 0.875rem 1rem; border: 1px solid #e2e8f0; color: #16a34a;">Metricas em cada etapa do funil</td>
+      <td style="padding: 0.875rem 1rem; border: 1px solid var(--border); color: var(--foreground);"><strong>Mensuravel</strong></td>
+      <td style="padding: 0.875rem 1rem; border: 1px solid var(--border); color: var(--pulso-escuro);">Só sabe o resultado final</td>
+      <td style="padding: 0.875rem 1rem; border: 1px solid var(--border); color: var(--foreground);">Metricas em cada etapa do funil</td>
     </tr>
-    <tr style="background: #f8fafc;">
-      <td style="padding: 0.875rem 1rem; border: 1px solid #e2e8f0; color: #1e293b;"><strong>Ensinavel</strong></td>
-      <td style="padding: 0.875rem 1rem; border: 1px solid #e2e8f0; color: #ef4444;">Onboarding dura 6+ meses</td>
-      <td style="padding: 0.875rem 1rem; border: 1px solid #e2e8f0; color: #16a34a;">Vendedor produtivo em 4–6 semanas</td>
+    <tr style="background: var(--muted);">
+      <td style="padding: 0.875rem 1rem; border: 1px solid var(--border); color: var(--foreground);"><strong>Ensinavel</strong></td>
+      <td style="padding: 0.875rem 1rem; border: 1px solid var(--border); color: var(--pulso-escuro);">Onboarding dura 6+ meses</td>
+      <td style="padding: 0.875rem 1rem; border: 1px solid var(--border); color: var(--foreground);">Vendedor produtivo em 4–6 semanas</td>
     </tr>
   </tbody>
 </table>
@@ -205,7 +205,7 @@ export const post: BlogPost = {
   Para montar seu ICP, analise sua base atual e responda:
 </p>
 
-<ul style="margin: 1rem 0 1.5rem; padding-left: 1.5rem; line-height: 1.9; color: #374151;">
+<ul style="margin: 1rem 0 1.5rem; padding-left: 1.5rem; line-height: 1.9; color: var(--foreground);">
   <li><strong>Segmento/setor:</strong> Em quais industrias seus melhores clientes atuam?</li>
   <li><strong>Porte:</strong> Quantos funcionarios? Qual faturamento anual aproximado?</li>
   <li><strong>Maturidade:</strong> Ja usam alguma solucao ou estao começando do zero?</li>
@@ -233,7 +233,7 @@ export const post: BlogPost = {
   As principais fontes de prospecção B2B em 2026:
 </p>
 
-<ul style="margin: 1rem 0 1.5rem; padding-left: 1.5rem; line-height: 1.9; color: #374151;">
+<ul style="margin: 1rem 0 1.5rem; padding-left: 1.5rem; line-height: 1.9; color: var(--foreground);">
   <li><strong>Outbound ativo:</strong> cold email, cold call, LinkedIn outreach — escala rapidamente quando bem segmentado</li>
   <li><strong>Inbound/conteudo:</strong> SEO, blog, materiais ricos — leads mais aquecidos, menor custo no longo prazo</li>
   <li><strong>Indicacoes:</strong> programa de referral estruturado — maior taxa de fechamento e menor CAC</li>
@@ -242,7 +242,7 @@ export const post: BlogPost = {
 </ul>
 
 <p>
-  Para aprofundar as taticas de prospecção, leia nosso guia completo: <a href="/blog/prospeccao-de-clientes-b2b" style="color: #2563eb;">Prospecção de Clientes B2B: 7 Estrategias que Funcionam em 2026</a>.
+  Para aprofundar as taticas de prospecção, leia nosso guia completo: <a href="/blog/prospeccao-de-clientes-b2b" style="color: var(--foreground);">Prospecção de Clientes B2B: 7 Estrategias que Funcionam em 2026</a>.
 </p>
 
 <div class="callout-warning">
@@ -257,36 +257,36 @@ export const post: BlogPost = {
 </p>
 
 <p>
-  <strong>BANT</strong> (Budget, Authority, Need, Timeline) e o framework mais classico. Voce qualifica verificando se o lead tem orcamento, e o decisor, tem necessidade real e um prazo para decidir. E rapido e direto, funciona bem em ciclos curtos. Saiba mais no guia <a href="/blog/bant-vs-meddic-qualificacao-leads" style="color: #2563eb;">BANT vs MEDDIC: Qual Framework de Qualificacao Usar</a>.
+  <strong>BANT</strong> (Budget, Authority, Need, Timeline) e o framework mais classico. Voce qualifica verificando se o lead tem orcamento, e o decisor, tem necessidade real e um prazo para decidir. E rapido e direto, funciona bem em ciclos curtos. Saiba mais no guia <a href="/blog/bant-vs-meddic-qualificacao-leads" style="color: var(--foreground);">BANT vs MEDDIC: Qual Framework de Qualificacao Usar</a>.
 </p>
 
 <p>
-  <strong>SPIN Selling</strong> (Situacao, Problema, Implicacao, Necessidade de Solucao) e mais sofisticado e indicado para vendas complexas com multiplos stakeholders. Em vez de interrogar o lead sobre orcamento logo de inicio, voce usa perguntas estrategicas para que ele mesmo articule o tamanho do problema e a urgencia de resolve-lo. Veja o guia completo: <a href="/blog/spin-selling-guia-completo" style="color: #2563eb;">SPIN Selling: Como Aplicar as 4 Perguntas que Fecham Vendas Complexas</a>.
+  <strong>SPIN Selling</strong> (Situacao, Problema, Implicacao, Necessidade de Solucao) e mais sofisticado e indicado para vendas complexas com multiplos stakeholders. Em vez de interrogar o lead sobre orcamento logo de inicio, voce usa perguntas estrategicas para que ele mesmo articule o tamanho do problema e a urgencia de resolve-lo. Veja o guia completo: <a href="/blog/spin-selling-guia-completo" style="color: var(--foreground);">SPIN Selling: Como Aplicar as 4 Perguntas que Fecham Vendas Complexas</a>.
 </p>
 
 <table style="width: 100%; border-collapse: collapse; margin: 2rem 0; font-size: 0.9rem;">
   <thead>
-    <tr style="background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%); color: white;">
-      <th style="padding: 0.875rem 1rem; text-align: left; border: 1px solid #ddd;">Criterio</th>
-      <th style="padding: 0.875rem 1rem; text-align: left; border: 1px solid #ddd;">BANT</th>
-      <th style="padding: 0.875rem 1rem; text-align: left; border: 1px solid #ddd;">SPIN</th>
+    <tr style="background: var(--primary); color: white;">
+      <th style="padding: 0.875rem 1rem; text-align: left; border: 1px solid var(--border);">Criterio</th>
+      <th style="padding: 0.875rem 1rem; text-align: left; border: 1px solid var(--border);">BANT</th>
+      <th style="padding: 0.875rem 1rem; text-align: left; border: 1px solid var(--border);">SPIN</th>
     </tr>
   </thead>
   <tbody>
-    <tr style="background: #f8fafc;">
-      <td style="padding: 0.875rem 1rem; border: 1px solid #e2e8f0; color: #1e293b;"><strong>Ideal para</strong></td>
-      <td style="padding: 0.875rem 1rem; border: 1px solid #e2e8f0; color: #475569;">Ciclos curtos, tickets medios</td>
-      <td style="padding: 0.875rem 1rem; border: 1px solid #e2e8f0; color: #475569;">Ciclos longos, alto valor, enterprise</td>
+    <tr style="background: var(--muted);">
+      <td style="padding: 0.875rem 1rem; border: 1px solid var(--border); color: var(--foreground);"><strong>Ideal para</strong></td>
+      <td style="padding: 0.875rem 1rem; border: 1px solid var(--border); color: var(--foreground);">Ciclos curtos, tickets medios</td>
+      <td style="padding: 0.875rem 1rem; border: 1px solid var(--border); color: var(--foreground);">Ciclos longos, alto valor, enterprise</td>
     </tr>
     <tr style="background: #ffffff;">
-      <td style="padding: 0.875rem 1rem; border: 1px solid #e2e8f0; color: #1e293b;"><strong>Abordagem</strong></td>
-      <td style="padding: 0.875rem 1rem; border: 1px solid #e2e8f0; color: #475569;">Perguntas diretas de qualificacao</td>
-      <td style="padding: 0.875rem 1rem; border: 1px solid #e2e8f0; color: #475569;">Perguntas consultivas que criam urgencia</td>
+      <td style="padding: 0.875rem 1rem; border: 1px solid var(--border); color: var(--foreground);"><strong>Abordagem</strong></td>
+      <td style="padding: 0.875rem 1rem; border: 1px solid var(--border); color: var(--foreground);">Perguntas diretas de qualificacao</td>
+      <td style="padding: 0.875rem 1rem; border: 1px solid var(--border); color: var(--foreground);">Perguntas consultivas que criam urgencia</td>
     </tr>
-    <tr style="background: #f8fafc;">
-      <td style="padding: 0.875rem 1rem; border: 1px solid #e2e8f0; color: #1e293b;"><strong>Resultado</strong></td>
-      <td style="padding: 0.875rem 1rem; border: 1px solid #e2e8f0; color: #475569;">Go/No-go rapido</td>
-      <td style="padding: 0.875rem 1rem; border: 1px solid #e2e8f0; color: #475569;">Lead chega ao pitch ja convencido</td>
+    <tr style="background: var(--muted);">
+      <td style="padding: 0.875rem 1rem; border: 1px solid var(--border); color: var(--foreground);"><strong>Resultado</strong></td>
+      <td style="padding: 0.875rem 1rem; border: 1px solid var(--border); color: var(--foreground);">Go/No-go rapido</td>
+      <td style="padding: 0.875rem 1rem; border: 1px solid var(--border); color: var(--foreground);">Lead chega ao pitch ja convencido</td>
     </tr>
   </tbody>
 </table>
@@ -305,7 +305,7 @@ export const post: BlogPost = {
   Estrutura recomendada para a reuniao de apresentacao:
 </p>
 
-<ol style="margin: 1rem 0 1.5rem; padding-left: 1.5rem; line-height: 2; color: #374151;">
+<ol style="margin: 1rem 0 1.5rem; padding-left: 1.5rem; line-height: 2; color: var(--foreground);">
   <li><strong>Abertura (5 min):</strong> alinhe agenda e confirme o tempo disponivel</li>
   <li><strong>Discovery (15–20 min):</strong> perguntas sobre situacao atual, dores, impacto dos problemas, tentativas anteriores de solucao</li>
   <li><strong>Apresentacao personalizada (15 min):</strong> mostre apenas o que e relevante para as dores ouvidas</li>
@@ -328,7 +328,7 @@ export const post: BlogPost = {
   Principios fundamentais para negociar sem ceder valor desnecessariamente:
 </p>
 
-<ul style="margin: 1rem 0 1.5rem; padding-left: 1.5rem; line-height: 1.9; color: #374151;">
+<ul style="margin: 1rem 0 1.5rem; padding-left: 1.5rem; line-height: 1.9; color: var(--foreground);">
   <li><strong>Entenda o que esta sendo pedido vs. o que esta sendo necessitado.</strong> O cliente pede desconto, mas o que ele necessita pode ser prazo de pagamento, implementacao inclusa ou uma garantia de resultado.</li>
   <li><strong>Troque, nao ceda.</strong> Se voce reduz o preco, reduza tambem o escopo. Desconto sem contrapartida desvaloriza seu produto.</li>
   <li><strong>Crie urgencia legitima.</strong> Prazo de validade da proposta, lote limitado, condicao de lancamento — desde que sejam reais.</li>
@@ -336,7 +336,7 @@ export const post: BlogPost = {
 </ul>
 
 <p>
-  Para um guia completo com os 9 tecnicas de fechamento mais eficazes para o mercado brasileiro, acesse: <a href="/blog/tecnicas-de-fechamento-de-vendas" style="color: #2563eb;">Tecnicas de Fechamento de Vendas: Como Fechar Mais sem Pressionar o Cliente</a>.
+  Para um guia completo com os 9 tecnicas de fechamento mais eficazes para o mercado brasileiro, acesse: <a href="/blog/tecnicas-de-fechamento-de-vendas" style="color: var(--foreground);">Tecnicas de Fechamento de Vendas: Como Fechar Mais sem Pressionar o Cliente</a>.
 </p>
 
 <h3>Etapa 6: Pos-venda e Recompra</h3>
@@ -349,7 +349,7 @@ export const post: BlogPost = {
   Um pos-venda eficaz tem tres objetivos:
 </p>
 
-<ol style="margin: 1rem 0 1.5rem; padding-left: 1.5rem; line-height: 2; color: #374151;">
+<ol style="margin: 1rem 0 1.5rem; padding-left: 1.5rem; line-height: 2; color: var(--foreground);">
   <li><strong>Retencao:</strong> garantir que o cliente obtenha o valor prometido durante a venda (onboarding, acompanhamento, suporte proativo)</li>
   <li><strong>Expansao:</strong> identificar oportunidades de upsell e cross-sell conforme o cliente amadurece o uso do produto</li>
   <li><strong>Indicacao:</strong> transformar clientes satisfeitos em canal de aquisicao via NPS, programa de referral e depoimentos</li>
@@ -378,7 +378,7 @@ export const post: BlogPost = {
   Estrutura recomendada para um playbook de vendas:
 </p>
 
-<ol style="margin: 1rem 0 1.5rem; padding-left: 1.5rem; line-height: 2.1; color: #374151;">
+<ol style="margin: 1rem 0 1.5rem; padding-left: 1.5rem; line-height: 2.1; color: var(--foreground);">
   <li><strong>Proposta de valor e posicionamento:</strong> o que voce vende, para quem, por que e melhor que as alternativas</li>
   <li><strong>ICP e personas:</strong> descricao detalhada do cliente ideal, anti-personas e sinais de alerta</li>
   <li><strong>Etapas do processo:</strong> cada fase com objetivo, atividades, ferramentas e criterio de avanco</li>
@@ -404,7 +404,7 @@ export const post: BlogPost = {
   As funcionalidades de CRM mais importantes para suportar um processo de vendas:
 </p>
 
-<ul style="margin: 1rem 0 1.5rem; padding-left: 1.5rem; line-height: 1.9; color: #374151;">
+<ul style="margin: 1rem 0 1.5rem; padding-left: 1.5rem; line-height: 1.9; color: var(--foreground);">
   <li><strong>Pipeline visual por etapa:</strong> cada deal em seu estagio, com valor e data de fechamento prevista</li>
   <li><strong>Tarefas e atividades automaticas:</strong> ao mover um deal para uma etapa, o CRM cria automaticamente a proxima tarefa</li>
   <li><strong>Sequencias de email:</strong> follow-ups automatizados para leads que nao responderam</li>
@@ -413,11 +413,11 @@ export const post: BlogPost = {
 </ul>
 
 <p>
-  Para entender como configurar seu pipeline no CRM de forma que reflita cada etapa do seu processo, leia: <a href="/blog/como-organizar-pipeline-vendas" style="color: #2563eb;">Como Organizar seu Pipeline de Vendas no CRM: Guia Passo a Passo</a>.
+  Para entender como configurar seu pipeline no CRM de forma que reflita cada etapa do seu processo, leia: <a href="/blog/como-organizar-pipeline-vendas" style="color: var(--foreground);">Como Organizar seu Pipeline de Vendas no CRM: Guia Passo a Passo</a>.
 </p>
 
 <p>
-  E para aprofundar no tema de automacao de vendas com CRM — desde tarefas automaticas ate integracao com WhatsApp e email — veja o guia completo: <a href="/blog/crm-automacao-vendas-guia-completo" style="color: #2563eb;">CRM e Automacao de Vendas: Como Automatizar sem Perder o Toque Humano</a>.
+  E para aprofundar no tema de automacao de vendas com CRM — desde tarefas automaticas ate integracao com WhatsApp e email — veja o guia completo: <a href="/blog/crm-automacao-vendas-guia-completo" style="color: var(--foreground);">CRM e Automacao de Vendas: Como Automatizar sem Perder o Toque Humano</a>.
 </p>
 
 <div class="callout-success">
@@ -433,38 +433,38 @@ export const post: BlogPost = {
 
 <table style="width: 100%; border-collapse: collapse; margin: 2rem 0; font-size: 0.95rem;">
   <thead>
-    <tr style="background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%); color: white;">
-      <th style="padding: 0.875rem 1rem; text-align: left; border: 1px solid #ddd;">Aspecto</th>
-      <th style="padding: 0.875rem 1rem; text-align: left; border: 1px solid #ddd;">Processo de Vendas</th>
-      <th style="padding: 0.875rem 1rem; text-align: left; border: 1px solid #ddd;">Funil de Vendas</th>
+    <tr style="background: var(--primary); color: white;">
+      <th style="padding: 0.875rem 1rem; text-align: left; border: 1px solid var(--border);">Aspecto</th>
+      <th style="padding: 0.875rem 1rem; text-align: left; border: 1px solid var(--border);">Processo de Vendas</th>
+      <th style="padding: 0.875rem 1rem; text-align: left; border: 1px solid var(--border);">Funil de Vendas</th>
     </tr>
   </thead>
   <tbody>
-    <tr style="background: #f8fafc;">
-      <td style="padding: 0.875rem 1rem; border: 1px solid #e2e8f0; color: #1e293b;"><strong>Perspectiva</strong></td>
-      <td style="padding: 0.875rem 1rem; border: 1px solid #e2e8f0; color: #475569;">Do vendedor (o que fazer)</td>
-      <td style="padding: 0.875rem 1rem; border: 1px solid #e2e8f0; color: #475569;">Da empresa (volume e conversao)</td>
+    <tr style="background: var(--muted);">
+      <td style="padding: 0.875rem 1rem; border: 1px solid var(--border); color: var(--foreground);"><strong>Perspectiva</strong></td>
+      <td style="padding: 0.875rem 1rem; border: 1px solid var(--border); color: var(--foreground);">Do vendedor (o que fazer)</td>
+      <td style="padding: 0.875rem 1rem; border: 1px solid var(--border); color: var(--foreground);">Da empresa (volume e conversao)</td>
     </tr>
     <tr style="background: #ffffff;">
-      <td style="padding: 0.875rem 1rem; border: 1px solid #e2e8f0; color: #1e293b;"><strong>Foco</strong></td>
-      <td style="padding: 0.875rem 1rem; border: 1px solid #e2e8f0; color: #475569;">Acoes e criterios de avanco</td>
-      <td style="padding: 0.875rem 1rem; border: 1px solid #e2e8f0; color: #475569;">Volume agregado e taxas de conversao</td>
+      <td style="padding: 0.875rem 1rem; border: 1px solid var(--border); color: var(--foreground);"><strong>Foco</strong></td>
+      <td style="padding: 0.875rem 1rem; border: 1px solid var(--border); color: var(--foreground);">Acoes e criterios de avanco</td>
+      <td style="padding: 0.875rem 1rem; border: 1px solid var(--border); color: var(--foreground);">Volume agregado e taxas de conversao</td>
     </tr>
-    <tr style="background: #f8fafc;">
-      <td style="padding: 0.875rem 1rem; border: 1px solid #e2e8f0; color: #1e293b;"><strong>Uso principal</strong></td>
-      <td style="padding: 0.875rem 1rem; border: 1px solid #e2e8f0; color: #475569;">Treinamento, execucao diaria</td>
-      <td style="padding: 0.875rem 1rem; border: 1px solid #e2e8f0; color: #475569;">Analise estrategica, planejamento</td>
+    <tr style="background: var(--muted);">
+      <td style="padding: 0.875rem 1rem; border: 1px solid var(--border); color: var(--foreground);"><strong>Uso principal</strong></td>
+      <td style="padding: 0.875rem 1rem; border: 1px solid var(--border); color: var(--foreground);">Treinamento, execucao diaria</td>
+      <td style="padding: 0.875rem 1rem; border: 1px solid var(--border); color: var(--foreground);">Analise estrategica, planejamento</td>
     </tr>
     <tr style="background: #ffffff;">
-      <td style="padding: 0.875rem 1rem; border: 1px solid #e2e8f0; color: #1e293b;"><strong>Atualiza quando</strong></td>
-      <td style="padding: 0.875rem 1rem; border: 1px solid #e2e8f0; color: #475569;">Comportamento do mercado muda</td>
-      <td style="padding: 0.875rem 1rem; border: 1px solid #e2e8f0; color: #475569;">Estrategia de crescimento muda</td>
+      <td style="padding: 0.875rem 1rem; border: 1px solid var(--border); color: var(--foreground);"><strong>Atualiza quando</strong></td>
+      <td style="padding: 0.875rem 1rem; border: 1px solid var(--border); color: var(--foreground);">Comportamento do mercado muda</td>
+      <td style="padding: 0.875rem 1rem; border: 1px solid var(--border); color: var(--foreground);">Estrategia de crescimento muda</td>
     </tr>
   </tbody>
 </table>
 
 <p>
-  Na pratica: o <strong>funil mostra onde estao os gargalos</strong> (ex: muitos leads entram mas poucos avancem da qualificacao para a proposta). O <strong>processo mostra o que fazer</strong> para corrigir esses gargalos (ex: melhorar as perguntas de qualificacao ou treinar o vendedor no SPIN). Para um mergulho fundo no funil, leia: <a href="/blog/funil-de-vendas-guia-completo" style="color: #2563eb;">Funil de Vendas: O Que E, Etapas e Como Criar o Seu</a>.
+  Na pratica: o <strong>funil mostra onde estao os gargalos</strong> (ex: muitos leads entram mas poucos avancem da qualificacao para a proposta). O <strong>processo mostra o que fazer</strong> para corrigir esses gargalos (ex: melhorar as perguntas de qualificacao ou treinar o vendedor no SPIN). Para um mergulho fundo no funil, leia: <a href="/blog/funil-de-vendas-guia-completo" style="color: var(--foreground);">Funil de Vendas: O Que E, Etapas e Como Criar o Seu</a>.
 </p>
 
 <h2>Erros Comuns ao Montar o Primeiro Processo</h2>
@@ -475,66 +475,66 @@ export const post: BlogPost = {
 
 <div style="display: flex; flex-direction: column; gap: 1.25rem; margin: 2rem 0;">
 
-  <div style="background: #fef2f2; border-left: 4px solid #ef4444; padding: 1.25rem 1.5rem; border-radius: 0.5rem;">
-    <p style="font-weight: 700; color: #991b1b; margin-bottom: 0.5rem;">Erro 1: Processo complexo demais</p>
-    <p style="color: #374151; margin: 0;">Gestores com boa intencao criam processos com 12 etapas, 30 campos obrigatorios no CRM e checklist de 5 paginas. O time abandona em 2 semanas. Comece simples: 5 a 7 etapas, campos essenciais, 1 pagina de guia. Voce pode refinar com o tempo.</p>
+  <div style="background: var(--muted); border-left: 4px solid var(--pulso); padding: 1.25rem 1.5rem; border-radius: 0.5rem;">
+    <p style="font-weight: 700; color: var(--foreground); margin-bottom: 0.5rem;">Erro 1: Processo complexo demais</p>
+    <p style="color: var(--foreground); margin: 0;">Gestores com boa intencao criam processos com 12 etapas, 30 campos obrigatorios no CRM e checklist de 5 paginas. O time abandona em 2 semanas. Comece simples: 5 a 7 etapas, campos essenciais, 1 pagina de guia. Voce pode refinar com o tempo.</p>
   </div>
 
-  <div style="background: #fef2f2; border-left: 4px solid #ef4444; padding: 1.25rem 1.5rem; border-radius: 0.5rem;">
-    <p style="font-weight: 700; color: #991b1b; margin-bottom: 0.5rem;">Erro 2: Nao usar CRM para suportar o processo</p>
-    <p style="color: #374151; margin: 0;">Processo em planilha, caderno ou em apresentacao nao escala. Sem CRM, nao ha visibilidade, nao ha cobranca sistematica, nao ha metricas confiaveis. O CRM e a infraestrutura do processo, nao um acessorio.</p>
+  <div style="background: var(--muted); border-left: 4px solid var(--pulso); padding: 1.25rem 1.5rem; border-radius: 0.5rem;">
+    <p style="font-weight: 700; color: var(--foreground); margin-bottom: 0.5rem;">Erro 2: Nao usar CRM para suportar o processo</p>
+    <p style="color: var(--foreground); margin: 0;">Processo em planilha, caderno ou em apresentacao nao escala. Sem CRM, nao ha visibilidade, nao ha cobranca sistematica, nao ha metricas confiaveis. O CRM e a infraestrutura do processo, nao um acessorio.</p>
   </div>
 
-  <div style="background: #fef2f2; border-left: 4px solid #ef4444; padding: 1.25rem 1.5rem; border-radius: 0.5rem;">
-    <p style="font-weight: 700; color: #991b1b; margin-bottom: 0.5rem;">Erro 3: Criar o processo sem envolver o time de vendas</p>
-    <p style="color: #374151; margin: 0;">Processo criado pelo gestor na sala e imposto ao time tem resistencia garantida. Envolva os vendedores na construcao: eles conhecem as objecoes reais, os gargalos verdadeiros e o que funciona na pratica. Processo co-criado e adotado muito mais facilmente.</p>
+  <div style="background: var(--muted); border-left: 4px solid var(--pulso); padding: 1.25rem 1.5rem; border-radius: 0.5rem;">
+    <p style="font-weight: 700; color: var(--foreground); margin-bottom: 0.5rem;">Erro 3: Criar o processo sem envolver o time de vendas</p>
+    <p style="color: var(--foreground); margin: 0;">Processo criado pelo gestor na sala e imposto ao time tem resistencia garantida. Envolva os vendedores na construcao: eles conhecem as objecoes reais, os gargalos verdadeiros e o que funciona na pratica. Processo co-criado e adotado muito mais facilmente.</p>
   </div>
 
-  <div style="background: #fef2f2; border-left: 4px solid #ef4444; padding: 1.25rem 1.5rem; border-radius: 0.5rem;">
-    <p style="font-weight: 700; color: #991b1b; margin-bottom: 0.5rem;">Erro 4: Nao medir metricas por etapa</p>
-    <p style="color: #374151; margin: 0;">Se voce so acompanha o numero de vendas fechadas no final do mes, nao tem como saber onde o processo esta falhando. Defina KPIs por etapa: taxa de conversao de leads para qualificados, de qualificados para propostas, de propostas para fechamento. Saiba mais em: <a href="/blog/kpis-de-vendas" style="color: #2563eb;">KPIs de Vendas: Os 12 Indicadores que Todo Gestor Deve Acompanhar</a>.</p>
+  <div style="background: var(--muted); border-left: 4px solid var(--pulso); padding: 1.25rem 1.5rem; border-radius: 0.5rem;">
+    <p style="font-weight: 700; color: var(--foreground); margin-bottom: 0.5rem;">Erro 4: Nao medir metricas por etapa</p>
+    <p style="color: var(--foreground); margin: 0;">Se voce so acompanha o numero de vendas fechadas no final do mes, nao tem como saber onde o processo esta falhando. Defina KPIs por etapa: taxa de conversao de leads para qualificados, de qualificados para propostas, de propostas para fechamento. Saiba mais em: <a href="/blog/kpis-de-vendas" style="color: var(--foreground);">KPIs de Vendas: Os 12 Indicadores que Todo Gestor Deve Acompanhar</a>.</p>
   </div>
 
-  <div style="background: #fef2f2; border-left: 4px solid #ef4444; padding: 1.25rem 1.5rem; border-radius: 0.5rem;">
-    <p style="font-weight: 700; color: #991b1b; margin-bottom: 0.5rem;">Erro 5: Montar o processo e nunca mais revisar</p>
-    <p style="color: #374151; margin: 0;">O mercado muda, o produto evolui, o ICP se refina. Um processo criado em 2023 pode estar desatualizado em 2026. Agende revisoes trimestrais do processo com o time, analise as metricas e ajuste o que nao esta funcionando. Processo que nao evolui vira obstaculo.</p>
+  <div style="background: var(--muted); border-left: 4px solid var(--pulso); padding: 1.25rem 1.5rem; border-radius: 0.5rem;">
+    <p style="font-weight: 700; color: var(--foreground); margin-bottom: 0.5rem;">Erro 5: Montar o processo e nunca mais revisar</p>
+    <p style="color: var(--foreground); margin: 0;">O mercado muda, o produto evolui, o ICP se refina. Um processo criado em 2023 pode estar desatualizado em 2026. Agende revisoes trimestrais do processo com o time, analise as metricas e ajuste o que nao esta funcionando. Processo que nao evolui vira obstaculo.</p>
   </div>
 
 </div>
 
-<div style="background: linear-gradient(135deg, #1e40af 0%, #2563eb 100%); border-radius: 0.75rem; padding: 2rem; margin: 2.5rem 0; text-align: center; color: white;">
+<div style="background: var(--primary); border-radius: 0.75rem; padding: 2rem; margin: 2.5rem 0; text-align: center; color: white;">
   <p style="font-size: 1.25rem; font-weight: 700; margin-bottom: 0.75rem;">Pronto para colocar seu processo em pratica?</p>
-  <p style="color: #bfdbfe; margin-bottom: 1.5rem; font-size: 0.95rem;">O Sirius CRM foi desenhado para times B2B que querem um processo de vendas real — com pipeline visual, automacoes, follow-ups e relatorios em tempo real. Configure em menos de 10 minutos.</p>
-  <a href="/register" style="display: inline-block; background: white; color: #1e40af; font-weight: 700; padding: 0.875rem 2rem; border-radius: 0.5rem; text-decoration: none; font-size: 1rem;">Comecar Gratuitamente</a>
-  <p style="color: #93c5fd; font-size: 0.8rem; margin-top: 0.75rem;">Sem cartao de credito. Primeiros 14 dias gratuitos.</p>
+  <p style="color: var(--primary-foreground); margin-bottom: 1.5rem; font-size: 0.95rem;">O Sirius CRM foi desenhado para times B2B que querem um processo de vendas real — com pipeline visual, automacoes, follow-ups e relatorios em tempo real. Configure em menos de 10 minutos.</p>
+  <a href="/register" style="display: inline-block; background: white; color: var(--foreground); font-weight: 700; padding: 0.875rem 2rem; border-radius: 0.5rem; text-decoration: none; font-size: 1rem;">Comecar Gratuitamente</a>
+  <p style="color: var(--primary-foreground); font-size: 0.8rem; margin-top: 0.75rem;">Sem cartao de credito. Primeiros 14 dias gratuitos.</p>
 </div>
 
 <h2>Perguntas Frequentes</h2>
 
-<details style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1.25rem 1.5rem; margin-bottom: 1rem;">
-  <summary style="font-weight: 700; color: #1e293b; cursor: pointer; font-size: 1rem;">Qual e o tamanho minimo de time para valer a pena ter um processo de vendas?</summary>
-  <p style="margin-top: 1rem; color: #475569; line-height: 1.75;">
+<details style="background: var(--muted); border: 1px solid var(--border); border-radius: 0.5rem; padding: 1.25rem 1.5rem; margin-bottom: 1rem;">
+  <summary style="font-weight: 700; color: var(--foreground); cursor: pointer; font-size: 1rem;">Qual e o tamanho minimo de time para valer a pena ter um processo de vendas?</summary>
+  <p style="margin-top: 1rem; color: var(--foreground); line-height: 1.75;">
     A partir de 1 vendedor ja vale a pena documentar o processo. O objetivo nao e apenas gerenciar um time — e criar um ativo de conhecimento que permite escalar. Um solo founder com processo documentado consegue contratar o primeiro vendedor e te-lo produtivo em semanas, nao meses. Alem disso, ter o processo documentado revela insights valiosos sobre onde voce mesmo esta perdendo negócios.
   </p>
 </details>
 
-<details style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1.25rem 1.5rem; margin-bottom: 1rem;">
-  <summary style="font-weight: 700; color: #1e293b; cursor: pointer; font-size: 1rem;">Quanto tempo leva para implementar um processo de vendas do zero?</summary>
-  <p style="margin-top: 1rem; color: #475569; line-height: 1.75;">
+<details style="background: var(--muted); border: 1px solid var(--border); border-radius: 0.5rem; padding: 1.25rem 1.5rem; margin-bottom: 1rem;">
+  <summary style="font-weight: 700; color: var(--foreground); cursor: pointer; font-size: 1rem;">Quanto tempo leva para implementar um processo de vendas do zero?</summary>
+  <p style="margin-top: 1rem; color: var(--foreground); line-height: 1.75;">
     Para uma PME com time de ate 10 vendedores, um processo basico pode ser estruturado em 2 a 3 semanas: 1 semana para definir ICP, etapas e criterios de avanco; 1 semana para configurar o CRM e criar os templates; 1 semana de onboarding do time. A maturidade vem com o tempo — espere 60 a 90 dias para o processo estar rodando de forma fluida e os dados comecarem a revelar onde otimizar.
   </p>
 </details>
 
-<details style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1.25rem 1.5rem; margin-bottom: 1rem;">
-  <summary style="font-weight: 700; color: #1e293b; cursor: pointer; font-size: 1rem;">Processo de vendas funciona para produtos de baixo ticket?</summary>
-  <p style="margin-top: 1rem; color: #475569; line-height: 1.75;">
+<details style="background: var(--muted); border: 1px solid var(--border); border-radius: 0.5rem; padding: 1.25rem 1.5rem; margin-bottom: 1rem;">
+  <summary style="font-weight: 700; color: var(--foreground); cursor: pointer; font-size: 1rem;">Processo de vendas funciona para produtos de baixo ticket?</summary>
+  <p style="margin-top: 1rem; color: var(--foreground); line-height: 1.75;">
     Sim, mas o processo precisa ser adequado ao ciclo de venda. Para produtos de baixo ticket com ciclo curto (dias), o processo e mais simples e automatizado: foco em qualificacao rapida, proposta padrao e follow-up automatico. Para tickets altos com ciclo longo (semanas ou meses), o processo e mais consultivo, com mais etapas, mais stakeholders e mais pontos de contato. O principio e o mesmo — o que muda e a complexidade e o grau de automacao.
   </p>
 </details>
 
-<details style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1.25rem 1.5rem; margin-bottom: 1rem;">
-  <summary style="font-weight: 700; color: #1e293b; cursor: pointer; font-size: 1rem;">Como saber se meu processo de vendas precisa ser revisado?</summary>
-  <p style="margin-top: 1rem; color: #475569; line-height: 1.75;">
+<details style="background: var(--muted); border: 1px solid var(--border); border-radius: 0.5rem; padding: 1.25rem 1.5rem; margin-bottom: 1rem;">
+  <summary style="font-weight: 700; color: var(--foreground); cursor: pointer; font-size: 1rem;">Como saber se meu processo de vendas precisa ser revisado?</summary>
+  <p style="margin-top: 1rem; color: var(--foreground); line-height: 1.75;">
     Os principais sinais de que o processo precisa de revisao: (1) taxa de conversao caindo por mais de 2 meses seguidos sem explicacao externa; (2) vendedores reclamando que as etapas nao refletem a realidade do mercado; (3) ciclo de venda aumentando sem justificativa de mudanca no produto ou preco; (4) novos vendedores demorando muito para atingir a curva de producao; (5) muitos deals ficando parados sem avanco em determinada etapa. Se dois ou mais desses sinais aparecem ao mesmo tempo, e hora de sentar com o time e revisar o processo.
   </p>
 </details>

@@ -19,11 +19,11 @@ export const post: BlogPost = {
         A resposta curta: <strong>depende do que você precisa</strong>. A resposta detalhada está abaixo — com prós, contras e os limites que cada um não anuncia no banner "grátis".
       </p>
 
-      <div class="not-prose" style="background: #1e293b; padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
-        <p style="margin: 0 0 0.75rem; font-weight: 700; font-size: 1.05rem; color: #818cf8;">⚡ TL;DR — Resposta Rápida</p>
+      <div class="not-prose" style="background: var(--primary); padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
+        <p style="margin: 0 0 0.75rem; font-weight: 700; font-size: 1.05rem; color: var(--primary-foreground);">⚡ TL;DR — Resposta Rápida</p>
         <ul style="margin: 0; padding-left: 1.25rem; line-height: 2; color: #ffffff;">
-          <li><strong style="color: #818cf8;">HubSpot Free</strong>: usuários e contatos ilimitados, mas sem WhatsApp nativo, sem IA, sem pipeline personalizável, suporte apenas em inglês</li>
-          <li><strong style="color: #818cf8;">Sirius CRM FREE</strong>: até 100 deals, mas com IA nativa (3 gen/mês), WhatsApp integrado, modo offline, suporte em português</li>
+          <li><strong style="color: var(--primary-foreground);">HubSpot Free</strong>: usuários e contatos ilimitados, mas sem WhatsApp nativo, sem IA, sem pipeline personalizável, suporte apenas em inglês</li>
+          <li><strong style="color: var(--primary-foreground);">Sirius CRM FREE</strong>: até 100 deals, mas com IA nativa (3 gen/mês), WhatsApp integrado, modo offline, suporte em português</li>
           <li>Para representantes B2B brasileiros: <strong>Sirius CRM FREE é mais funcional</strong> no dia a dia</li>
           <li>Para times grandes que não precisam de WhatsApp ou IA: HubSpot Free escala melhor</li>
         </ul>
@@ -34,62 +34,62 @@ export const post: BlogPost = {
       <div style="overflow-x: auto; margin: 2rem 0;">
         <table style="width: 100%; border-collapse: collapse; font-size: 0.9rem;">
           <thead>
-            <tr style="background: #1e293b; color: #ffffff;">
-              <th style="padding: 0.75rem 1rem; text-align: left; border: 1px solid #334155;">Critério</th>
-              <th style="padding: 0.75rem 1rem; text-align: center; border: 1px solid #334155;">Sirius CRM FREE</th>
-              <th style="padding: 0.75rem 1rem; text-align: center; border: 1px solid #334155;">HubSpot CRM Free</th>
+            <tr style="background: var(--primary); color: #ffffff;">
+              <th style="padding: 0.75rem 1rem; text-align: left; border: 1px solid var(--fio-forte);">Critério</th>
+              <th style="padding: 0.75rem 1rem; text-align: center; border: 1px solid var(--fio-forte);">Sirius CRM FREE</th>
+              <th style="padding: 0.75rem 1rem; text-align: center; border: 1px solid var(--fio-forte);">HubSpot CRM Free</th>
             </tr>
           </thead>
           <tbody>
-            <tr style="background: #f8fafc;">
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; font-weight: 600;">Preço</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center; color: #059669; font-weight: 700;">Grátis para sempre</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center; color: #059669; font-weight: 700;">Grátis para sempre</td>
+            <tr style="background: var(--muted);">
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); font-weight: 600;">Preço</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--foreground); font-weight: 700;">Grátis para sempre</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--foreground); font-weight: 700;">Grátis para sempre</td>
             </tr>
             <tr>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; font-weight: 600;">Usuários</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center;">Ilimitados</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center;">Ilimitados</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); font-weight: 600;">Usuários</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center;">Ilimitados</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center;">Ilimitados</td>
             </tr>
-            <tr style="background: #f8fafc;">
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; font-weight: 600;">Deals/Contatos</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center;">Até 100 deals ativos</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center;">Ilimitados</td>
-            </tr>
-            <tr>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; font-weight: 600;">WhatsApp Nativo</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center; color: #059669;">✓ Integrado</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center; color: #dc2626;">✗ Não nativo</td>
-            </tr>
-            <tr style="background: #f8fafc;">
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; font-weight: 600;">IA Nativa</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center; color: #059669;">✓ 3 gerações/mês</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center; color: #dc2626;">✗ Apenas planos pagos</td>
+            <tr style="background: var(--muted);">
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); font-weight: 600;">Deals/Contatos</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center;">Até 100 deals ativos</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center;">Ilimitados</td>
             </tr>
             <tr>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; font-weight: 600;">Modo Offline</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center; color: #059669;">✓ Sim</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center; color: #dc2626;">✗ Não</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); font-weight: 600;">WhatsApp Nativo</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--foreground);">✓ Integrado</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--pulso-escuro);">✗ Não nativo</td>
             </tr>
-            <tr style="background: #f8fafc;">
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; font-weight: 600;">Pipeline Personalizável</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center; color: #059669;">✓ Sim</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center; color: #f59e0b;">Limitado (1 pipeline)</td>
-            </tr>
-            <tr>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; font-weight: 600;">Suporte em PT-BR</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center; color: #059669;">✓ Nativo</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center; color: #dc2626;">✗ Só inglês/espanhol</td>
-            </tr>
-            <tr style="background: #f8fafc;">
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; font-weight: 600;">Interface em Português</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center; color: #059669;">✓ 100% PT-BR</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center; color: #f59e0b;">Parcialmente traduzida</td>
+            <tr style="background: var(--muted);">
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); font-weight: 600;">IA Nativa</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--foreground);">✓ 3 gerações/mês</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--pulso-escuro);">✗ Apenas planos pagos</td>
             </tr>
             <tr>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; font-weight: 600;">Automação no Plano Gratuito</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center; color: #f59e0b;">Básica</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center; color: #dc2626;">✗ Apenas planos pagos</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); font-weight: 600;">Modo Offline</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--foreground);">✓ Sim</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--pulso-escuro);">✗ Não</td>
+            </tr>
+            <tr style="background: var(--muted);">
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); font-weight: 600;">Pipeline Personalizável</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--foreground);">✓ Sim</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--foreground);">Limitado (1 pipeline)</td>
+            </tr>
+            <tr>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); font-weight: 600;">Suporte em PT-BR</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--foreground);">✓ Nativo</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--pulso-escuro);">✗ Só inglês/espanhol</td>
+            </tr>
+            <tr style="background: var(--muted);">
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); font-weight: 600;">Interface em Português</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--foreground);">✓ 100% PT-BR</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--foreground);">Parcialmente traduzida</td>
+            </tr>
+            <tr>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); font-weight: 600;">Automação no Plano Gratuito</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--foreground);">Básica</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--pulso-escuro);">✗ Apenas planos pagos</td>
             </tr>
           </tbody>
         </table>
@@ -128,7 +128,7 @@ export const post: BlogPost = {
       <h2>Prós e Contras Honestos</h2>
 
       <h3>Sirius CRM FREE — Pontos Fortes</h3>
-      <ul style="line-height: 2; padding-left: 1.5rem; color: #374151;">
+      <ul style="line-height: 2; padding-left: 1.5rem; color: var(--foreground);">
         <li>WhatsApp nativo incluso no plano gratuito</li>
         <li>IA de qualificação (3 gerações/mês) inclusa no plano gratuito</li>
         <li>Modo offline para uso em campo sem internet</li>
@@ -138,14 +138,14 @@ export const post: BlogPost = {
       </ul>
 
       <h3>Sirius CRM FREE — Pontos Fracos</h3>
-      <ul style="line-height: 2; padding-left: 1.5rem; color: #374151;">
+      <ul style="line-height: 2; padding-left: 1.5rem; color: var(--foreground);">
         <li>Limite de 100 deals ativos — pode ser insuficiente para times maiores ou operações com alto volume</li>
         <li>Sem automações avançadas de email no plano gratuito</li>
         <li>Integrações limitadas comparado ao HubSpot Marketplace</li>
       </ul>
 
       <h3>HubSpot CRM Free — Pontos Fortes</h3>
-      <ul style="line-height: 2; padding-left: 1.5rem; color: #374151;">
+      <ul style="line-height: 2; padding-left: 1.5rem; color: var(--foreground);">
         <li>Contatos e usuários verdadeiramente ilimitados — escala sem custo adicional</li>
         <li>Ecossistema global com centenas de integrações no Marketplace</li>
         <li>Excelente para times que combinam marketing e vendas (Hubs separados)</li>
@@ -154,7 +154,7 @@ export const post: BlogPost = {
       </ul>
 
       <h3>HubSpot CRM Free — Pontos Fracos</h3>
-      <ul style="line-height: 2; padding-left: 1.5rem; color: #374151;">
+      <ul style="line-height: 2; padding-left: 1.5rem; color: var(--foreground);">
         <li>Sem WhatsApp nativo — canal dominante no Brasil</li>
         <li>Sem IA nativa de qualificação de leads no plano gratuito</li>
         <li>Sem modo offline</li>
@@ -167,7 +167,7 @@ export const post: BlogPost = {
       <h2>Quando escolher o HubSpot Free?</h2>
 
       <p>O HubSpot Free faz sentido se você:</p>
-      <ul style="line-height: 2; padding-left: 1.5rem; color: #374151;">
+      <ul style="line-height: 2; padding-left: 1.5rem; color: var(--foreground);">
         <li>Tem um time grande (20+ vendedores) e precisa de escalabilidade sem custo imediato</li>
         <li>Opera em mercado internacional e precisa de interface em inglês ou espanhol</li>
         <li>Planeja usar o ecossistema HubSpot completo (Marketing Hub, Service Hub)</li>
@@ -178,7 +178,7 @@ export const post: BlogPost = {
       <h2>Quando escolher o Sirius CRM FREE?</h2>
 
       <p>O Sirius CRM FREE é a escolha certa se você:</p>
-      <ul style="line-height: 2; padding-left: 1.5rem; color: #374151;">
+      <ul style="line-height: 2; padding-left: 1.5rem; color: var(--foreground);">
         <li>É representante comercial, vendedor externo ou profissional autônomo de vendas B2B</li>
         <li>Usa WhatsApp como principal canal de comunicação com clientes</li>
         <li>Quer IA de qualificação sem pagar por ela</li>
@@ -187,35 +187,35 @@ export const post: BlogPost = {
         <li>Tem até 100 deals ativos simultâneos</li>
       </ul>
 
-      <div style="background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%); border: 1px solid #6ee7b7; padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0; text-align: center;">
-        <p style="font-weight: 700; color: #065f46; font-size: 1.1rem; margin: 0 0 0.75rem;">Sirius CRM FREE — Comece em 5 minutos</p>
-        <p style="color: #047857; margin: 0 0 1rem;">WhatsApp + IA + Offline. Sem limite de usuários. Sem cartão de crédito.</p>
-        <p><strong><a href="/register" style="color: #059669; text-decoration: underline;">Criar Conta Grátis →</a></strong></p>
+      <div style="background: var(--muted); border: 1px solid var(--border); padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0; text-align: center;">
+        <p style="font-weight: 700; color: var(--foreground); font-size: 1.1rem; margin: 0 0 0.75rem;">Sirius CRM FREE — Comece em 5 minutos</p>
+        <p style="color: var(--foreground); margin: 0 0 1rem;">WhatsApp + IA + Offline. Sem limite de usuários. Sem cartão de crédito.</p>
+        <p><strong><a href="/register" style="color: var(--foreground); text-decoration: underline;">Criar Conta Grátis →</a></strong></p>
       </div>
 
       <h2>Perguntas Frequentes: Sirius CRM vs HubSpot Grátis</h2>
 
-      <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
-        <summary style="font-weight: 600; cursor: pointer; color: #1e293b; list-style: revert;">HubSpot Free tem limite de contatos?</summary>
-        <p style="margin: 0.75rem 0 0; color: #4b5563;">Não. O HubSpot CRM Free permite contatos e usuários ilimitados — essa é uma das principais vantagens do plano gratuito. A limitação está nas funcionalidades: sem automações, sem relatórios avançados, sem sequências de email, sem IA. Para ter esses recursos, é necessário upgrade para os planos pagos (Starter, Professional, Enterprise), que são cobrados em dólar.</p>
+      <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
+        <summary style="font-weight: 600; cursor: pointer; color: var(--foreground); list-style: revert;">HubSpot Free tem limite de contatos?</summary>
+        <p style="margin: 0.75rem 0 0; color: var(--foreground);">Não. O HubSpot CRM Free permite contatos e usuários ilimitados — essa é uma das principais vantagens do plano gratuito. A limitação está nas funcionalidades: sem automações, sem relatórios avançados, sem sequências de email, sem IA. Para ter esses recursos, é necessário upgrade para os planos pagos (Starter, Professional, Enterprise), que são cobrados em dólar.</p>
       </details>
 
-      <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
-        <summary style="font-weight: 600; cursor: pointer; color: #1e293b; list-style: revert;">O Sirius CRM FREE tem alguma limitação oculta?</summary>
-        <p style="margin: 0.75rem 0 0; color: #4b5563;">A principal limitação é o máximo de 100 deals ativos simultâneos. Deals ganhos ou perdidos não contam para o limite. Além disso, a IA é limitada a 3 gerações por mês no plano gratuito (ilimitada no PRO) e as integrações com ferramentas externas são mais limitadas. Não há cobrança surpresa nem cartão de crédito exigido.</p>
+      <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
+        <summary style="font-weight: 600; cursor: pointer; color: var(--foreground); list-style: revert;">O Sirius CRM FREE tem alguma limitação oculta?</summary>
+        <p style="margin: 0.75rem 0 0; color: var(--foreground);">A principal limitação é o máximo de 100 deals ativos simultâneos. Deals ganhos ou perdidos não contam para o limite. Além disso, a IA é limitada a 3 gerações por mês no plano gratuito (ilimitada no PRO) e as integrações com ferramentas externas são mais limitadas. Não há cobrança surpresa nem cartão de crédito exigido.</p>
       </details>
 
-      <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
-        <summary style="font-weight: 600; cursor: pointer; color: #1e293b; list-style: revert;">Qual CRM gratuito é mais fácil de usar para quem nunca usou CRM antes?</summary>
-        <p style="margin: 0.75rem 0 0; color: #4b5563;">Para alguém sem experiência anterior com CRM, o Sirius CRM tem curva de aprendizado menor. Foi construído com foco em simplicidade para o vendedor de campo brasileiro — não para um time de operações de receita de uma empresa global. O HubSpot tem muito mais funcionalidades disponíveis mesmo no plano gratuito, o que pode ser confuso no início.</p>
+      <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
+        <summary style="font-weight: 600; cursor: pointer; color: var(--foreground); list-style: revert;">Qual CRM gratuito é mais fácil de usar para quem nunca usou CRM antes?</summary>
+        <p style="margin: 0.75rem 0 0; color: var(--foreground);">Para alguém sem experiência anterior com CRM, o Sirius CRM tem curva de aprendizado menor. Foi construído com foco em simplicidade para o vendedor de campo brasileiro — não para um time de operações de receita de uma empresa global. O HubSpot tem muito mais funcionalidades disponíveis mesmo no plano gratuito, o que pode ser confuso no início.</p>
       </details>
 
-      <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin-bottom: 2rem;">
-        <summary style="font-weight: 600; cursor: pointer; color: #1e293b; list-style: revert;">Posso usar HubSpot e Sirius CRM ao mesmo tempo?</summary>
-        <p style="margin: 0.75rem 0 0; color: #4b5563;">Tecnicamente sim, mas na prática é ineficiente manter dois CRMs simultâneos — os dados ficam fragmentados e a equipe perde tempo com dupla entrada. O mais comum é usar um CRM principal. Se você testa os dois e prefere o Sirius, é possível exportar contatos do HubSpot e importar no Sirius via CSV.</p>
+      <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 2rem;">
+        <summary style="font-weight: 600; cursor: pointer; color: var(--foreground); list-style: revert;">Posso usar HubSpot e Sirius CRM ao mesmo tempo?</summary>
+        <p style="margin: 0.75rem 0 0; color: var(--foreground);">Tecnicamente sim, mas na prática é ineficiente manter dois CRMs simultâneos — os dados ficam fragmentados e a equipe perde tempo com dupla entrada. O mais comum é usar um CRM principal. Se você testa os dois e prefere o Sirius, é possível exportar contatos do HubSpot e importar no Sirius via CSV.</p>
       </details>
 
-      <hr style="margin: 3rem 0; border: none; border-top: 1px solid #e5e7eb;" />
+      <hr style="margin: 3rem 0; border: none; border-top: 1px solid var(--border);" />
       <strong>Last Updated:</strong> March 21, 2026<br/>
       <strong>Author:</strong> Sirius CRM Team<br/>
       <strong>Reading Time:</strong> 10 minutes
@@ -232,11 +232,11 @@ export const post: BlogPost = {
         The short answer: <strong>it depends on what you need</strong>. The detailed answer is below — with honest pros, cons, and the limits neither platform advertises on their "free" banner.
       </p>
 
-      <div class="not-prose" style="background: #1e293b; padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
-        <p style="margin: 0 0 0.75rem; font-weight: 700; font-size: 1.05rem; color: #818cf8;">⚡ TL;DR — Quick Answer</p>
+      <div class="not-prose" style="background: var(--primary); padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
+        <p style="margin: 0 0 0.75rem; font-weight: 700; font-size: 1.05rem; color: var(--primary-foreground);">⚡ TL;DR — Quick Answer</p>
         <ul style="margin: 0; padding-left: 1.25rem; line-height: 2; color: #ffffff;">
-          <li><strong style="color: #818cf8;">HubSpot Free</strong>: unlimited users and contacts, but no native WhatsApp, no AI, no customizable pipeline, support in English only</li>
-          <li><strong style="color: #818cf8;">Sirius CRM FREE</strong>: up to 100 active deals, but with native AI (3 generations/month), WhatsApp integration, offline mode, and Portuguese support</li>
+          <li><strong style="color: var(--primary-foreground);">HubSpot Free</strong>: unlimited users and contacts, but no native WhatsApp, no AI, no customizable pipeline, support in English only</li>
+          <li><strong style="color: var(--primary-foreground);">Sirius CRM FREE</strong>: up to 100 active deals, but with native AI (3 generations/month), WhatsApp integration, offline mode, and Portuguese support</li>
           <li>For B2B sales reps who rely on WhatsApp: <strong>Sirius CRM FREE is more functional</strong> day to day</li>
           <li>For larger teams that don't need WhatsApp or AI: HubSpot Free scales better</li>
         </ul>
@@ -247,47 +247,47 @@ export const post: BlogPost = {
       <div style="overflow-x: auto; margin: 2rem 0;">
         <table style="width: 100%; border-collapse: collapse; font-size: 0.9rem;">
           <thead>
-            <tr style="background: #1e293b; color: #ffffff;">
-              <th style="padding: 0.75rem 1rem; text-align: left; border: 1px solid #334155;">Criterion</th>
-              <th style="padding: 0.75rem 1rem; text-align: center; border: 1px solid #334155;">Sirius CRM FREE</th>
-              <th style="padding: 0.75rem 1rem; text-align: center; border: 1px solid #334155;">HubSpot CRM Free</th>
+            <tr style="background: var(--primary); color: #ffffff;">
+              <th style="padding: 0.75rem 1rem; text-align: left; border: 1px solid var(--fio-forte);">Criterion</th>
+              <th style="padding: 0.75rem 1rem; text-align: center; border: 1px solid var(--fio-forte);">Sirius CRM FREE</th>
+              <th style="padding: 0.75rem 1rem; text-align: center; border: 1px solid var(--fio-forte);">HubSpot CRM Free</th>
             </tr>
           </thead>
           <tbody>
-            <tr style="background: #f8fafc;">
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; font-weight: 600;">Price</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center; color: #059669; font-weight: 700;">Free forever</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center; color: #059669; font-weight: 700;">Free forever</td>
+            <tr style="background: var(--muted);">
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); font-weight: 600;">Price</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--foreground); font-weight: 700;">Free forever</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--foreground); font-weight: 700;">Free forever</td>
             </tr>
             <tr>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; font-weight: 600;">Users</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center;">Unlimited</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center;">Unlimited</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); font-weight: 600;">Users</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center;">Unlimited</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center;">Unlimited</td>
             </tr>
-            <tr style="background: #f8fafc;">
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; font-weight: 600;">Deals/Contacts</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center;">Up to 100 active deals</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center;">Unlimited</td>
-            </tr>
-            <tr>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; font-weight: 600;">Native WhatsApp</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center; color: #059669;">✓ Integrated</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center; color: #dc2626;">✗ Not native</td>
-            </tr>
-            <tr style="background: #f8fafc;">
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; font-weight: 600;">Native AI</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center; color: #059669;">✓ 3 generations/month</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center; color: #dc2626;">✗ Paid plans only</td>
+            <tr style="background: var(--muted);">
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); font-weight: 600;">Deals/Contacts</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center;">Up to 100 active deals</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center;">Unlimited</td>
             </tr>
             <tr>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; font-weight: 600;">Offline Mode</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center; color: #059669;">✓ Yes</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center; color: #dc2626;">✗ No</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); font-weight: 600;">Native WhatsApp</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--foreground);">✓ Integrated</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--pulso-escuro);">✗ Not native</td>
             </tr>
-            <tr style="background: #f8fafc;">
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; font-weight: 600;">Customizable Pipeline</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center; color: #059669;">✓ Yes</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center; color: #f59e0b;">Limited (1 pipeline)</td>
+            <tr style="background: var(--muted);">
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); font-weight: 600;">Native AI</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--foreground);">✓ 3 generations/month</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--pulso-escuro);">✗ Paid plans only</td>
+            </tr>
+            <tr>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); font-weight: 600;">Offline Mode</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--foreground);">✓ Yes</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--pulso-escuro);">✗ No</td>
+            </tr>
+            <tr style="background: var(--muted);">
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); font-weight: 600;">Customizable Pipeline</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--foreground);">✓ Yes</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--foreground);">Limited (1 pipeline)</td>
             </tr>
           </tbody>
         </table>
@@ -311,7 +311,7 @@ export const post: BlogPost = {
 
       <h2>When to Choose HubSpot Free?</h2>
       <p>HubSpot Free makes sense if you:</p>
-      <ul style="line-height: 2; padding-left: 1.5rem; color: #374151;">
+      <ul style="line-height: 2; padding-left: 1.5rem; color: var(--foreground);">
         <li>Have a large team (20+ salespeople) and need scalability at no extra cost</li>
         <li>Operate in an international market and need the interface in English or Spanish</li>
         <li>Plan to use the full HubSpot ecosystem (Marketing Hub, Service Hub)</li>
@@ -321,7 +321,7 @@ export const post: BlogPost = {
 
       <h2>When to Choose Sirius CRM FREE?</h2>
       <p>Sirius CRM FREE is the right choice if you:</p>
-      <ul style="line-height: 2; padding-left: 1.5rem; color: #374151;">
+      <ul style="line-height: 2; padding-left: 1.5rem; color: var(--foreground);">
         <li>Are a B2B sales rep, field salesperson, or freelance sales professional</li>
         <li>Use WhatsApp as your main client communication channel</li>
         <li>Want AI lead qualification without paying for it</li>
@@ -330,30 +330,30 @@ export const post: BlogPost = {
         <li>Have up to 100 simultaneous active deals</li>
       </ul>
 
-      <div style="background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%); border: 1px solid #6ee7b7; padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0; text-align: center;">
-        <p style="font-weight: 700; color: #065f46; font-size: 1.1rem; margin: 0 0 0.75rem;">Sirius CRM FREE — Start in 5 Minutes</p>
-        <p style="color: #047857; margin: 0 0 1rem;">WhatsApp + AI + Offline. No user limit. No credit card required.</p>
-        <p><strong><a href="/register" style="color: #059669; text-decoration: underline;">Create Free Account →</a></strong></p>
+      <div style="background: var(--muted); border: 1px solid var(--border); padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0; text-align: center;">
+        <p style="font-weight: 700; color: var(--foreground); font-size: 1.1rem; margin: 0 0 0.75rem;">Sirius CRM FREE — Start in 5 Minutes</p>
+        <p style="color: var(--foreground); margin: 0 0 1rem;">WhatsApp + AI + Offline. No user limit. No credit card required.</p>
+        <p><strong><a href="/register" style="color: var(--foreground); text-decoration: underline;">Create Free Account →</a></strong></p>
       </div>
 
       <h2>FAQ: Sirius CRM vs HubSpot Free</h2>
 
-      <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
-        <summary style="font-weight: 600; cursor: pointer; color: #1e293b; list-style: revert;">Does HubSpot Free have a contact limit?</summary>
-        <p style="margin: 0.75rem 0 0; color: #4b5563;">No. HubSpot CRM Free allows unlimited contacts and users — that is one of its main free-plan advantages. The limitations are in features: no automations, no advanced reports, no email sequences, no AI. To access those features you need to upgrade to paid plans (Starter, Professional, Enterprise), which are priced in USD.</p>
+      <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
+        <summary style="font-weight: 600; cursor: pointer; color: var(--foreground); list-style: revert;">Does HubSpot Free have a contact limit?</summary>
+        <p style="margin: 0.75rem 0 0; color: var(--foreground);">No. HubSpot CRM Free allows unlimited contacts and users — that is one of its main free-plan advantages. The limitations are in features: no automations, no advanced reports, no email sequences, no AI. To access those features you need to upgrade to paid plans (Starter, Professional, Enterprise), which are priced in USD.</p>
       </details>
 
-      <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
-        <summary style="font-weight: 600; cursor: pointer; color: #1e293b; list-style: revert;">Does Sirius CRM FREE have any hidden limitations?</summary>
-        <p style="margin: 0.75rem 0 0; color: #4b5563;">The main limitation is the maximum of 100 simultaneous active deals. Won or lost deals do not count toward the limit. In addition, AI is limited to 3 generations per month on the free plan (unlimited on PRO) and integrations with external tools are more limited. There are no surprise charges or credit card requirements.</p>
+      <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
+        <summary style="font-weight: 600; cursor: pointer; color: var(--foreground); list-style: revert;">Does Sirius CRM FREE have any hidden limitations?</summary>
+        <p style="margin: 0.75rem 0 0; color: var(--foreground);">The main limitation is the maximum of 100 simultaneous active deals. Won or lost deals do not count toward the limit. In addition, AI is limited to 3 generations per month on the free plan (unlimited on PRO) and integrations with external tools are more limited. There are no surprise charges or credit card requirements.</p>
       </details>
 
-      <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin-bottom: 2rem;">
-        <summary style="font-weight: 600; cursor: pointer; color: #1e293b; list-style: revert;">Which free CRM is easier to use for someone who has never used a CRM before?</summary>
-        <p style="margin: 0.75rem 0 0; color: #4b5563;">For someone with no prior CRM experience, Sirius CRM has a lower learning curve. It was built for simplicity — for the field salesperson, not a revenue operations team at a global enterprise. HubSpot has many more features even on the free plan, which can be confusing at first.</p>
+      <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 2rem;">
+        <summary style="font-weight: 600; cursor: pointer; color: var(--foreground); list-style: revert;">Which free CRM is easier to use for someone who has never used a CRM before?</summary>
+        <p style="margin: 0.75rem 0 0; color: var(--foreground);">For someone with no prior CRM experience, Sirius CRM has a lower learning curve. It was built for simplicity — for the field salesperson, not a revenue operations team at a global enterprise. HubSpot has many more features even on the free plan, which can be confusing at first.</p>
       </details>
 
-      <hr style="margin: 3rem 0; border: none; border-top: 1px solid #e5e7eb;" />
+      <hr style="margin: 3rem 0; border: none; border-top: 1px solid var(--border);" />
       <strong>Last Updated:</strong> March 21, 2026<br/>
       <strong>Author:</strong> Sirius CRM Team<br/>
       <strong>Reading Time:</strong> 10 minutes

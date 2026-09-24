@@ -109,9 +109,9 @@ export default function PricingPage() {
                 type="application/ld+json"
                 dangerouslySetInnerHTML={{ __html: JSON.stringify(softwareAppSchema) }}
             />
-            <div className="dark relative isolate bg-zinc-950 text-white px-6 py-24 sm:py-32 lg:px-8">
+            <div className="relative isolate px-6 py-24 sm:py-32 lg:px-8">
             <div className="mx-auto max-w-4xl text-center">
-                <div className="inline-flex items-center gap-2 rounded-full border border-green-500/30 bg-green-500/10 px-3 py-1 text-sm text-green-700 dark:text-green-400 mb-6">
+                <div className="inline-flex items-center gap-2 rounded border border-border bg-muted px-3 py-1 text-sm text-foreground mb-6">
                     <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 20 20">
                         <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                     </svg>
@@ -156,11 +156,11 @@ export default function PricingPage() {
                             return (
                                 <Card
                                     key={tier.id}
-                                    className={`flex flex-col justify-between relative ${tier.featured ? 'border-primary shadow-lg scale-105 z-10 ring-2 ring-primary/20' : ''}`}
+                                    className={`flex flex-col justify-between relative ${tier.featured ? 'border-foreground border-t-4 border-t-destaque scale-105 z-10' : ''}`}
                                 >
                                     {tier.featured && (
                                         <div className="absolute -top-4 left-1/2 -translate-x-1/2 z-20">
-                                            <div className="rounded-full bg-gradient-to-r from-indigo-600 to-purple-600 px-4 py-1 text-xs font-semibold text-white shadow-lg">
+                                            <div className="whitespace-nowrap rounded bg-background px-3 py-1 font-mono text-xs font-medium uppercase tracking-widest text-destaque">
                                                 {t('mostPopular')}
                                             </div>
                                         </div>
@@ -195,7 +195,7 @@ export default function PricingPage() {
                                             </Link>
                                         </Button>
                                         {tier.featured && (
-                                            <div className="flex items-center justify-center gap-2 text-xs text-green-700 dark:text-green-400">
+                                            <div className="flex items-center justify-center gap-2 text-xs text-foreground">
                                                 <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 20 20">
                                                     <path fillRule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                                                 </svg>
@@ -242,12 +242,12 @@ export default function PricingPage() {
                             <div className="text-3xl font-bold text-primary mb-2">{t('roi.stat1Value')}</div>
                             <div className="text-sm text-muted-foreground">{t('roi.stat1Label')}</div>
                         </div>
-                        <div className="text-center p-6 rounded-xl bg-green-500/5">
-                            <div className="text-3xl font-bold text-green-700 dark:text-green-400 mb-2">{t('roi.stat2Value')}</div>
+                        <div className="text-center p-6 rounded-xl bg-muted">
+                            <div className="text-3xl font-bold text-foreground mb-2">{t('roi.stat2Value')}</div>
                             <div className="text-sm text-muted-foreground">{t('roi.stat2Label')}</div>
                         </div>
-                        <div className="text-center p-6 rounded-xl bg-purple-500/5">
-                            <div className="text-3xl font-bold text-purple-600 dark:text-purple-400 mb-2">{t('roi.stat3Value')}</div>
+                        <div className="text-center p-6 rounded-xl bg-muted">
+                            <div className="text-3xl font-bold text-foreground mb-2">{t('roi.stat3Value')}</div>
                             <div className="text-sm text-muted-foreground">{t('roi.stat3Label')}</div>
                         </div>
                     </div>
@@ -302,7 +302,7 @@ export default function PricingPage() {
 
             {/* Final CTA */}
             <div className="mx-auto mt-24 max-w-2xl text-center">
-                <div className="rounded-2xl border bg-gradient-to-br from-primary/5 to-purple-500/5 p-8">
+                <div className="rounded-2xl border p-8">
                     <h3 className="text-2xl font-bold mb-3">{t('finalCta.title')}</h3>
                     <p className="text-muted-foreground mb-6">
                         {t('finalCta.subtitle')}

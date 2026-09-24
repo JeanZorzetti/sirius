@@ -89,7 +89,7 @@ export default function PropostaPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }}
       />
-    <div className="min-h-screen bg-gradient-to-b from-background to-muted/20">
+    <div className="min-h-screen">
       <div className="container mx-auto max-w-5xl py-12 px-6">
         {/* Back Button */}
         <Link href="/">

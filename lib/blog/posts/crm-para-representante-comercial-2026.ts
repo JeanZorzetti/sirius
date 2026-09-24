@@ -19,8 +19,8 @@ export const post: BlogPost = {
         Esse é o cenário mais temido por representantes comerciais experientes. E ele acontece todo dia no Brasil. A solução é simples, mas poucos adotam antes de precisar: um <strong>CRM próprio, independente do sistema de qualquer fábrica</strong>, que funcione como o cofre pessoal do vendedor externo.
       </p>
 
-      <div class="not-prose" style="background: #1e293b; padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
-        <p style="margin: 0 0 0.75rem; font-weight: 700; font-size: 1.05rem; color: #38bdf8;">⚡ TL;DR — Resposta Rápida</p>
+      <div class="not-prose" style="background: var(--primary); padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
+        <p style="margin: 0 0 0.75rem; font-weight: 700; font-size: 1.05rem; color: var(--primary-foreground);">⚡ TL;DR — Resposta Rápida</p>
         <ul style="margin: 0; padding-left: 1.25rem; line-height: 2; color: #ffffff;">
           <li><strong>Sua carteira é seu ativo mais valioso</strong> — ela precisa estar no SEU sistema, não no da fábrica</li>
           <li>CRM para representante deve funcionar <strong>offline</strong> — campo sem sinal é realidade no Brasil</li>
@@ -42,7 +42,7 @@ export const post: BlogPost = {
 
       <div class="callout-stat">
         <p><strong>📊 O custo real de perder a carteira</strong></p>
-        <p style="font-size: 3rem; font-weight: 800; color: #2563eb; margin: 1rem 0; line-height: 1;">67%</p>
+        <p style="font-size: 3rem; font-weight: 800; color: var(--foreground); margin: 1rem 0; line-height: 1;">67%</p>
         <p>dos representantes perdem acesso ao histórico de clientes ao trocar de representada, segundo ABMN (2025). Um cliente que levou 2 anos para construir relacionamento some do radar em um dia.</p>
       </div>
 
@@ -90,32 +90,32 @@ export const post: BlogPost = {
 
       <table style="width: 100%; border-collapse: collapse; margin: 2rem 0;">
         <thead>
-          <tr style="background: #f8fafc;">
-            <th style="padding: 0.75rem; border: 1px solid #e2e8f0; text-align: left;">Situação em Campo</th>
-            <th style="padding: 0.75rem; border: 1px solid #e2e8f0; text-align: left;">CRM sem Offline</th>
-            <th style="padding: 0.75rem; border: 1px solid #e2e8f0; text-align: left;">CRM com Offline (PWA)</th>
+          <tr style="background: var(--muted);">
+            <th style="padding: 0.75rem; border: 1px solid var(--border); text-align: left;">Situação em Campo</th>
+            <th style="padding: 0.75rem; border: 1px solid var(--border); text-align: left;">CRM sem Offline</th>
+            <th style="padding: 0.75rem; border: 1px solid var(--border); text-align: left;">CRM com Offline (PWA)</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Visita em indústria sem sinal</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0; color: #dc2626;">❌ App não abre ou trava</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0; color: #16a34a;">✅ Registra normalmente</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Visita em indústria sem sinal</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border); color: var(--pulso-escuro);">❌ App não abre ou trava</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border); color: var(--foreground);">✅ Registra normalmente</td>
           </tr>
-          <tr style="background: #f8fafc;">
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Pedido registrado offline</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0; color: #dc2626;">❌ Perdido ou no papel</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0; color: #16a34a;">✅ Sincroniza quando conectar</td>
+          <tr style="background: var(--muted);">
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Pedido registrado offline</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border); color: var(--pulso-escuro);">❌ Perdido ou no papel</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border); color: var(--foreground);">✅ Sincroniza quando conectar</td>
           </tr>
           <tr>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Histórico do cliente em campo</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0; color: #dc2626;">❌ Inacessível sem internet</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0; color: #16a34a;">✅ Disponível em cache local</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Histórico do cliente em campo</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border); color: var(--pulso-escuro);">❌ Inacessível sem internet</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border); color: var(--foreground);">✅ Disponível em cache local</td>
           </tr>
-          <tr style="background: #f8fafc;">
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Rota de visitas do dia</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0; color: #dc2626;">❌ Depende de sinal</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0; color: #16a34a;">✅ Carregada no início do dia</td>
+          <tr style="background: var(--muted);">
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Rota de visitas do dia</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border); color: var(--pulso-escuro);">❌ Depende de sinal</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border); color: var(--foreground);">✅ Carregada no início do dia</td>
           </tr>
         </tbody>
       </table>
@@ -211,32 +211,32 @@ export const post: BlogPost = {
         <li>Atualização do pipeline com os pedidos confirmados e prospects quentes</li>
       </ul>
 
-      <div style="background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%); padding: 2rem; border-radius: 1rem; margin: 2.5rem 0; text-align: center;">
+      <div style="background: var(--primary); padding: 2rem; border-radius: 1rem; margin: 2.5rem 0; text-align: center;">
         <p style="color: white; font-size: 1.25rem; font-weight: 700; margin: 0 0 0.5rem;">Proteja sua carteira com o Sirius CRM</p>
-        <p style="color: #bfdbfe; margin: 0 0 1.25rem;">Plano FREE, sem cartão de crédito. Importe sua carteira hoje e nunca mais perca dados ao trocar de representada.</p>
-        <a href="/register" style="display: inline-block; background: white; color: #2563eb; padding: 0.75rem 2rem; border-radius: 0.5rem; font-weight: 700; text-decoration: none;">Começar Grátis — Sem Cartão →</a>
+        <p style="color: var(--foreground); margin: 0 0 1.25rem;">Plano FREE, sem cartão de crédito. Importe sua carteira hoje e nunca mais perca dados ao trocar de representada.</p>
+        <a href="/register" style="display: inline-block; background: white; color: var(--foreground); padding: 0.75rem 2rem; border-radius: 0.5rem; font-weight: 700; text-decoration: none;">Começar Grátis — Sem Cartão →</a>
       </div>
 
       <h2>Perguntas Frequentes sobre CRM para Representante Comercial</h2>
 
-      <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
-        <summary style="font-weight: 600; cursor: pointer; color: #1e293b; list-style: revert;">O CRM substitui o sistema de pedidos da fábrica?</summary>
-        <p style="margin: 0.75rem 0 0; color: #4b5563;">Não — e não precisa. O CRM do representante é complementar ao ERP da fábrica. O ERP da fábrica processa pedidos, faturamento e logística. O CRM do representante guarda o relacionamento: histórico de visitas, preferências do cliente, ciclos de compra, observações de campo. São camadas diferentes. Você usa os dois: ERP da fábrica para transmitir pedidos, CRM próprio para gerir sua carteira.</p>
+      <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
+        <summary style="font-weight: 600; cursor: pointer; color: var(--foreground); list-style: revert;">O CRM substitui o sistema de pedidos da fábrica?</summary>
+        <p style="margin: 0.75rem 0 0; color: var(--foreground);">Não — e não precisa. O CRM do representante é complementar ao ERP da fábrica. O ERP da fábrica processa pedidos, faturamento e logística. O CRM do representante guarda o relacionamento: histórico de visitas, preferências do cliente, ciclos de compra, observações de campo. São camadas diferentes. Você usa os dois: ERP da fábrica para transmitir pedidos, CRM próprio para gerir sua carteira.</p>
       </details>
 
-      <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
-        <summary style="font-weight: 600; cursor: pointer; color: #1e293b; list-style: revert;">Quantos clientes posso ter no plano gratuito do Sirius CRM?</summary>
-        <p style="margin: 0.75rem 0 0; color: #4b5563;">O plano FREE do Sirius CRM não limita o número de contatos — você pode importar e gerenciar toda a sua carteira desde o primeiro dia. Os limites do plano FREE são em funcionalidades avançadas (como IA e automações), não em volume de dados. Para um representante que quer proteger sua carteira sem custo inicial, o plano FREE é suficiente para o uso principal.</p>
+      <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
+        <summary style="font-weight: 600; cursor: pointer; color: var(--foreground); list-style: revert;">Quantos clientes posso ter no plano gratuito do Sirius CRM?</summary>
+        <p style="margin: 0.75rem 0 0; color: var(--foreground);">O plano FREE do Sirius CRM não limita o número de contatos — você pode importar e gerenciar toda a sua carteira desde o primeiro dia. Os limites do plano FREE são em funcionalidades avançadas (como IA e automações), não em volume de dados. Para um representante que quer proteger sua carteira sem custo inicial, o plano FREE é suficiente para o uso principal.</p>
       </details>
 
-      <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
-        <summary style="font-weight: 600; cursor: pointer; color: #1e293b; list-style: revert;">Como o CRM ajuda na gestão de múltiplas representadas?</summary>
-        <p style="margin: 0.75rem 0 0; color: #4b5563;">Um representante que trabalha com 3-5 representadas precisa segmentar: quais clientes compram de qual representada, qual produto pertence a qual linha, como calcular comissão separada. O Sirius CRM permite criar tags e categorias por representada, filtrar pipeline por linha de produto e calcular comissão separada por conta. A visão consolidada de toda a carteira fica num painel único.</p>
+      <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
+        <summary style="font-weight: 600; cursor: pointer; color: var(--foreground); list-style: revert;">Como o CRM ajuda na gestão de múltiplas representadas?</summary>
+        <p style="margin: 0.75rem 0 0; color: var(--foreground);">Um representante que trabalha com 3-5 representadas precisa segmentar: quais clientes compram de qual representada, qual produto pertence a qual linha, como calcular comissão separada. O Sirius CRM permite criar tags e categorias por representada, filtrar pipeline por linha de produto e calcular comissão separada por conta. A visão consolidada de toda a carteira fica num painel único.</p>
       </details>
 
-      <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin-bottom: 2rem;">
-        <summary style="font-weight: 600; cursor: pointer; color: #1e293b; list-style: revert;">Vale a pena usar CRM sendo representante autônomo (MEI)?</summary>
-        <p style="margin: 0.75rem 0 0; color: #4b5563;">Sim — especialmente sendo autônomo, porque você é o único guardião dos seus dados. Uma empresa tem TI para fazer backup; o representante MEI tem apenas o que guardou no próprio celular. Além disso, representantes com carteira organizada em CRM conseguem demonstrar valor para novas representadas com dados concretos: volume de clientes ativos, frequência de pedidos, cobertura geográfica. A carteira documentada vira ativo tangível na negociação.</p>
+      <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 2rem;">
+        <summary style="font-weight: 600; cursor: pointer; color: var(--foreground); list-style: revert;">Vale a pena usar CRM sendo representante autônomo (MEI)?</summary>
+        <p style="margin: 0.75rem 0 0; color: var(--foreground);">Sim — especialmente sendo autônomo, porque você é o único guardião dos seus dados. Uma empresa tem TI para fazer backup; o representante MEI tem apenas o que guardou no próprio celular. Além disso, representantes com carteira organizada em CRM conseguem demonstrar valor para novas representadas com dados concretos: volume de clientes ativos, frequência de pedidos, cobertura geográfica. A carteira documentada vira ativo tangível na negociação.</p>
       </details>
 
       <h2>Conclusão</h2>
@@ -253,7 +253,7 @@ export const post: BlogPost = {
         O único custo real é não ter CRM: a carteira que some na próxima troca de representada, o follow-up que não aconteceu, o cliente que comprou do concorrente porque você não ligou na hora certa.
       </p>
 
-      <hr style="margin: 3rem 0; border: none; border-top: 1px solid #e5e7eb;" />
+      <hr style="margin: 3rem 0; border: none; border-top: 1px solid var(--border);" />
       <strong>Última Atualização:</strong> 21 de Março de 2026<br/>
       <strong>Autor:</strong> Equipe Sirius CRM<br/>
       <strong>Tempo de Leitura:</strong> 11 minutos
@@ -308,14 +308,14 @@ export const post: BlogPost = {
         The only real cost is not having a CRM: the portfolio that disappears on the next manufacturer change, the follow-up that didn't happen, the customer who bought from a competitor because you didn't call at the right time.
       </p>
 
-      <div style="background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); border-left: 4px solid #2563eb; padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
-        <p style="font-weight: 700; color: #1e40af;">Your portfolio, your data, your CRM — for free</p>
-        <p style="color: #1e40af; margin: 0.5rem 0 1rem;">Sirius CRM free plan. No credit card. Offline mode, WhatsApp, AI. Your data is always yours.</p>
-        <a href="/en/register" style="background: #2563eb; color: white; padding: 0.75rem 1.5rem; border-radius: 0.5rem; font-weight: 600; text-decoration: none; display: inline-block;">Create Free Account →</a>
+      <div style="background: var(--muted); border-left: 4px solid var(--fio-forte); padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
+        <p style="font-weight: 700; color: var(--foreground);">Your portfolio, your data, your CRM — for free</p>
+        <p style="color: var(--foreground); margin: 0.5rem 0 1rem;">Sirius CRM free plan. No credit card. Offline mode, WhatsApp, AI. Your data is always yours.</p>
+        <a href="/en/register" style="background: var(--primary); color: white; padding: 0.75rem 1.5rem; border-radius: 0.5rem; font-weight: 600; text-decoration: none; display: inline-block;">Create Free Account →</a>
       </div>
 
-      <hr style="margin: 3rem 0; border: none; border-top: 1px solid #e5e7eb;" />
-      <p style="font-size: 0.85rem; color: #64748b;">
+      <hr style="margin: 3rem 0; border: none; border-top: 1px solid var(--border);" />
+      <p style="font-size: 0.85rem; color: var(--foreground);">
         <strong>Last Updated:</strong> March 21, 2026<br/>
         <strong>Author:</strong> Sirius CRM Team<br/>
         <strong>Reading Time:</strong> 11 minutes

@@ -23,8 +23,8 @@ export const post: BlogPost = {
         Neste artigo, você vai entender como a IA qualifica leads na prática, quais frameworks ela usa, como o <a href="/">Sirius CRM</a> implementa isso no AGI Sirius, e como montar um processo de qualificação automatizada que funciona para times B2B brasileiros.
       </p>
 
-      <div class="not-prose" style="background: #1e293b; padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
-        <p style="margin: 0 0 0.75rem; font-weight: 700; font-size: 1.05rem; color: #38bdf8;">⚡ TL;DR — Resposta Rápida</p>
+      <div class="not-prose" style="background: var(--primary); padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
+        <p style="margin: 0 0 0.75rem; font-weight: 700; font-size: 1.05rem; color: var(--primary-foreground);">⚡ TL;DR — Resposta Rápida</p>
         <ul style="margin: 0; padding-left: 1.25rem; line-height: 2; color: #ffffff;">
           <li>A IA extrai critérios BANT de <strong>conversas em linguagem natural</strong> — sem formulários rígidos</li>
           <li>Modelos treinados em dados de vendas identificam sinais de compra com <strong>até 85% de precisão</strong> (McKinsey 2025)</li>
@@ -50,7 +50,7 @@ export const post: BlogPost = {
 
       <div class="callout-stat">
         <p><strong>📊 IA na qualificação de leads</strong></p>
-        <p style="font-size: 3rem; font-weight: 800; color: #2563eb; margin: 1rem 0; line-height: 1;">67%</p>
+        <p style="font-size: 3rem; font-weight: 800; color: var(--foreground); margin: 1rem 0; line-height: 1;">67%</p>
         <p>dos times de vendas que adotaram qualificação por IA reportaram redução no tempo de ciclo de venda em 2025. Fonte: State of Sales Report, Salesforce 2025.</p>
       </div>
 
@@ -73,20 +73,20 @@ export const post: BlogPost = {
 
       <h3>Como a IA extrai BANT de uma conversa natural</h3>
 
-      <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 0.75rem; padding: 1.5rem; margin: 1.5rem 0; font-family: monospace; font-size: 0.9rem; line-height: 1.8;">
-        <p style="margin: 0; color: #64748b;"><strong>Conversa via WhatsApp (atendida pelo AGI Sirius):</strong></p>
+      <div style="background: var(--muted); border: 1px solid var(--border); border-radius: 0.75rem; padding: 1.5rem; margin: 1.5rem 0; font-family: monospace; font-size: 0.9rem; line-height: 1.8;">
+        <p style="margin: 0; color: var(--foreground);"><strong>Conversa via WhatsApp (atendida pelo AGI Sirius):</strong></p>
         <br/>
-        <p style="margin: 0; color: #1d4ed8;"><strong>Lead:</strong> Oi, vi sobre o CRM de vocês. Tenho uma equipe de 8 vendedores que tá no caos total.</p>
+        <p style="margin: 0; color: var(--foreground);"><strong>Lead:</strong> Oi, vi sobre o CRM de vocês. Tenho uma equipe de 8 vendedores que tá no caos total.</p>
         <br/>
-        <p style="margin: 0; color: #15803d;"><strong>AGI:</strong> Entendo! Equipe grande assim tem bastante volume para controlar. Você é o responsável pela operação comercial lá?</p>
+        <p style="margin: 0; color: var(--foreground);"><strong>AGI:</strong> Entendo! Equipe grande assim tem bastante volume para controlar. Você é o responsável pela operação comercial lá?</p>
         <br/>
-        <p style="margin: 0; color: #1d4ed8;"><strong>Lead:</strong> Sou o diretor comercial, sim. Meu sócio cuida do financeiro mas eu que decido ferramenta.</p>
+        <p style="margin: 0; color: var(--foreground);"><strong>Lead:</strong> Sou o diretor comercial, sim. Meu sócio cuida do financeiro mas eu que decido ferramenta.</p>
         <br/>
-        <p style="margin: 0; color: #15803d;"><strong>AGI:</strong> Perfeito. E vocês já usam alguma ferramenta hoje ou ainda tá tudo em planilha?</p>
+        <p style="margin: 0; color: var(--foreground);"><strong>AGI:</strong> Perfeito. E vocês já usam alguma ferramenta hoje ou ainda tá tudo em planilha?</p>
         <br/>
-        <p style="margin: 0; color: #1d4ed8;"><strong>Lead:</strong> Tamos no Excel mas tá insustentável. Precisamos resolver isso antes do Q2 que é nosso pico de vendas.</p>
+        <p style="margin: 0; color: var(--foreground);"><strong>Lead:</strong> Tamos no Excel mas tá insustentável. Precisamos resolver isso antes do Q2 que é nosso pico de vendas.</p>
         <br/>
-        <p style="margin: 0; color: #64748b;"><em>← BANT extraído: Authority ✅ (diretor comercial + decisor), Need ✅ (dor clara), Timeline ✅ (urgência Q2), Budget ⚠️ (não mencionado — próxima pergunta)</em></p>
+        <p style="margin: 0; color: var(--foreground);"><em>← BANT extraído: Authority ✅ (diretor comercial + decisor), Need ✅ (dor clara), Timeline ✅ (urgência Q2), Budget ⚠️ (não mencionado — próxima pergunta)</em></p>
       </div>
 
       <p>
@@ -101,42 +101,42 @@ export const post: BlogPost = {
 
       <table style="width: 100%; border-collapse: collapse; margin: 2rem 0;">
         <thead>
-          <tr style="background: #f8fafc;">
-            <th style="padding: 0.75rem; border: 1px solid #e2e8f0; text-align: left;">Letra</th>
-            <th style="padding: 0.75rem; border: 1px solid #e2e8f0; text-align: left;">Significado</th>
-            <th style="padding: 0.75rem; border: 1px solid #e2e8f0; text-align: left;">O que a IA busca na conversa</th>
+          <tr style="background: var(--muted);">
+            <th style="padding: 0.75rem; border: 1px solid var(--border); text-align: left;">Letra</th>
+            <th style="padding: 0.75rem; border: 1px solid var(--border); text-align: left;">Significado</th>
+            <th style="padding: 0.75rem; border: 1px solid var(--border); text-align: left;">O que a IA busca na conversa</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;"><strong>M</strong></td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Metrics</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Números que o cliente usa para medir sucesso</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);"><strong>M</strong></td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Metrics</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Números que o cliente usa para medir sucesso</td>
           </tr>
-          <tr style="background: #f8fafc;">
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;"><strong>E</strong></td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Economic Buyer</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Quem controla o orçamento e aprova a compra</td>
-          </tr>
-          <tr>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;"><strong>D</strong></td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Decision Criteria</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Critérios técnicos e comerciais de avaliação</td>
-          </tr>
-          <tr style="background: #f8fafc;">
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;"><strong>D</strong></td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Decision Process</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Etapas internas para aprovação da compra</td>
+          <tr style="background: var(--muted);">
+            <td style="padding: 0.75rem; border: 1px solid var(--border);"><strong>E</strong></td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Economic Buyer</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Quem controla o orçamento e aprova a compra</td>
           </tr>
           <tr>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;"><strong>I</strong></td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Identify Pain</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Dor específica, urgência e impacto financeiro</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);"><strong>D</strong></td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Decision Criteria</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Critérios técnicos e comerciais de avaliação</td>
           </tr>
-          <tr style="background: #f8fafc;">
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;"><strong>C</strong></td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Champion</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Quem vai defender a solução internamente</td>
+          <tr style="background: var(--muted);">
+            <td style="padding: 0.75rem; border: 1px solid var(--border);"><strong>D</strong></td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Decision Process</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Etapas internas para aprovação da compra</td>
+          </tr>
+          <tr>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);"><strong>I</strong></td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Identify Pain</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Dor específica, urgência e impacto financeiro</td>
+          </tr>
+          <tr style="background: var(--muted);">
+            <td style="padding: 0.75rem; border: 1px solid var(--border);"><strong>C</strong></td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Champion</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Quem vai defender a solução internamente</td>
           </tr>
         </tbody>
       </table>
@@ -184,32 +184,32 @@ export const post: BlogPost = {
         <li><strong>Revise semanalmente:</strong> Analise os leads descartados pelo AGI para calibrar o modelo</li>
       </ol>
 
-      <div style="background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%); padding: 2rem; border-radius: 1rem; margin: 2.5rem 0; text-align: center;">
+      <div style="background: var(--primary); padding: 2rem; border-radius: 1rem; margin: 2.5rem 0; text-align: center;">
         <p style="color: white; font-size: 1.25rem; font-weight: 700; margin: 0 0 0.5rem;">Qualifique leads automaticamente com o AGI Sirius</p>
-        <p style="color: #bfdbfe; margin: 0 0 1.25rem;">BANT, MEDDIC e score automático integrados ao pipeline. Seu time foca só em leads quentes.</p>
-        <a href="/pricing" style="display: inline-block; background: white; color: #2563eb; padding: 0.75rem 2rem; border-radius: 0.5rem; font-weight: 700; text-decoration: none;">Ver Planos →</a>
+        <p style="color: var(--foreground); margin: 0 0 1.25rem;">BANT, MEDDIC e score automático integrados ao pipeline. Seu time foca só em leads quentes.</p>
+        <a href="/pricing" style="display: inline-block; background: white; color: var(--foreground); padding: 0.75rem 2rem; border-radius: 0.5rem; font-weight: 700; text-decoration: none;">Ver Planos →</a>
       </div>
 
       <h2>Perguntas Frequentes sobre IA para Qualificação de Leads</h2>
 
-      <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
-        <summary style="font-weight: 600; cursor: pointer; color: #1e293b; list-style: revert;">A IA pode qualificar leads em tempo real durante uma conversa de WhatsApp?</summary>
-        <p style="margin: 0.75rem 0 0; color: #4b5563;">Sim. O AGI Sirius opera no Chat Center integrado ao WhatsApp e analisa cada mensagem em tempo real. À medida que o lead responde, o score é atualizado automaticamente. Quando o lead atinge um threshold de qualificação configurado, o vendedor recebe uma notificação para assumir a conversa — com todo o contexto já preenchido.</p>
+      <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
+        <summary style="font-weight: 600; cursor: pointer; color: var(--foreground); list-style: revert;">A IA pode qualificar leads em tempo real durante uma conversa de WhatsApp?</summary>
+        <p style="margin: 0.75rem 0 0; color: var(--foreground);">Sim. O AGI Sirius opera no Chat Center integrado ao WhatsApp e analisa cada mensagem em tempo real. À medida que o lead responde, o score é atualizado automaticamente. Quando o lead atinge um threshold de qualificação configurado, o vendedor recebe uma notificação para assumir a conversa — com todo o contexto já preenchido.</p>
       </details>
 
-      <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
-        <summary style="font-weight: 600; cursor: pointer; color: #1e293b; list-style: revert;">O que acontece quando a IA não consegue extrair um critério BANT?</summary>
-        <p style="margin: 0.75rem 0 0; color: #4b5563;">Critérios não identificados ficam marcados como "não confirmado" no card do lead. O score penaliza levemente a ausência, mas não descarta o lead automaticamente — a IA pode tentar perguntas diferentes na próxima interação. O vendedor também pode ver quais critérios estão faltando e decidir coletá-los manualmente na próxima conversa.</p>
+      <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
+        <summary style="font-weight: 600; cursor: pointer; color: var(--foreground); list-style: revert;">O que acontece quando a IA não consegue extrair um critério BANT?</summary>
+        <p style="margin: 0.75rem 0 0; color: var(--foreground);">Critérios não identificados ficam marcados como "não confirmado" no card do lead. O score penaliza levemente a ausência, mas não descarta o lead automaticamente — a IA pode tentar perguntas diferentes na próxima interação. O vendedor também pode ver quais critérios estão faltando e decidir coletá-los manualmente na próxima conversa.</p>
       </details>
 
-      <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
-        <summary style="font-weight: 600; cursor: pointer; color: #1e293b; list-style: revert;">BANT ou MEDDIC: qual framework a IA usa por padrão?</summary>
-        <p style="margin: 0.75rem 0 0; color: #4b5563;">Depende da configuração do CRM. Para ciclos curtos e tickets menores, BANT é suficiente e mais ágil — menos campos para preencher. Para vendas enterprise com múltiplos stakeholders e ciclos de 60-90 dias, MEDDIC captura nuances importantes que o BANT ignora. O Sirius permite configurar qual framework usar por tipo de pipeline — você pode ter BANT para SMBs e MEDDIC para enterprise no mesmo CRM.</p>
+      <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
+        <summary style="font-weight: 600; cursor: pointer; color: var(--foreground); list-style: revert;">BANT ou MEDDIC: qual framework a IA usa por padrão?</summary>
+        <p style="margin: 0.75rem 0 0; color: var(--foreground);">Depende da configuração do CRM. Para ciclos curtos e tickets menores, BANT é suficiente e mais ágil — menos campos para preencher. Para vendas enterprise com múltiplos stakeholders e ciclos de 60-90 dias, MEDDIC captura nuances importantes que o BANT ignora. O Sirius permite configurar qual framework usar por tipo de pipeline — você pode ter BANT para SMBs e MEDDIC para enterprise no mesmo CRM.</p>
       </details>
 
-      <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin-bottom: 2rem;">
-        <summary style="font-weight: 600; cursor: pointer; color: #1e293b; list-style: revert;">A qualificação por IA é confiável o suficiente para substituir o SDR humano?</summary>
-        <p style="margin: 0.75rem 0 0; color: #4b5563;">Para triagem inicial e leads inbound, sim — a IA filtra com precisão comparável a um SDR júnior. Para leads estratégicos de alto valor ou situações ambíguas, o julgamento humano ainda é superior. A recomendação para times B2B é usar IA para a triagem (eliminar leads claramente fora do ICP) e ter o SDR revisar os leads na faixa média antes de passar para o closer.</p>
+      <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 2rem;">
+        <summary style="font-weight: 600; cursor: pointer; color: var(--foreground); list-style: revert;">A qualificação por IA é confiável o suficiente para substituir o SDR humano?</summary>
+        <p style="margin: 0.75rem 0 0; color: var(--foreground);">Para triagem inicial e leads inbound, sim — a IA filtra com precisão comparável a um SDR júnior. Para leads estratégicos de alto valor ou situações ambíguas, o julgamento humano ainda é superior. A recomendação para times B2B é usar IA para a triagem (eliminar leads claramente fora do ICP) e ter o SDR revisar os leads na faixa média antes de passar para o closer.</p>
       </details>
 
       <h2>Conclusão</h2>
@@ -222,7 +222,7 @@ export const post: BlogPost = {
         O resultado final não é substituir vendedores — é libertá-los do trabalho repetitivo de triagem para que foquem onde seu julgamento humano faz a maior diferença: nas negociações complexas, nas objeções sutis e no relacionamento que fecha contratos de alto valor.
       </p>
 
-      <hr style="margin: 3rem 0; border: none; border-top: 1px solid #e5e7eb;" />
+      <hr style="margin: 3rem 0; border: none; border-top: 1px solid var(--border);" />
       <strong>Última Atualização:</strong> 21 de Março de 2026<br/>
       <strong>Autor:</strong> Equipe Sirius CRM<br/>
       <strong>Tempo de Leitura:</strong> 12 minutos
@@ -261,7 +261,7 @@ export const post: BlogPost = {
       <p>
         For leads who haven't provided qualification data organically, the AI agent initiates qualification conversations via WhatsApp or email — asking BANT questions conversationally, not as a form. Example:
       </p>
-      <p style="font-style: italic; background: #f8fafc; padding: 1rem; border-radius: 0.5rem; border-left: 3px solid #2563eb;">
+      <p style="font-style: italic; background: var(--muted); padding: 1rem; border-radius: 0.5rem; border-left: 3px solid var(--fio-forte);">
         "Hi [Name], thanks for your interest in Sirius CRM. To make sure I connect you with the right information — are you looking to manage your own pipeline or set up a tool for a sales team? Approximately how many reps would be using it?"
       </p>
       <p>
@@ -283,32 +283,32 @@ export const post: BlogPost = {
 
       <table style="width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: 0.9rem;">
         <thead>
-          <tr style="background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%); color: white;">
+          <tr style="background: var(--primary); color: white;">
             <th style="padding: 0.875rem; text-align: left;">Score Range</th>
             <th style="padding: 0.875rem; text-align: left;">Qualification Status</th>
             <th style="padding: 0.875rem; text-align: left;">Recommended Action</th>
           </tr>
         </thead>
         <tbody>
-          <tr style="background: #f0fdf4;">
-            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;"><strong>80-100</strong></td>
-            <td style="padding: 0.875rem; border: 1px solid #e2e8f0; color: #166534;">Hot — all BANT confirmed</td>
-            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">Immediate rep call; priority treatment</td>
+          <tr style="background: var(--muted);">
+            <td style="padding: 0.875rem; border: 1px solid var(--border);"><strong>80-100</strong></td>
+            <td style="padding: 0.875rem; border: 1px solid var(--border); color: var(--foreground);">Hot — all BANT confirmed</td>
+            <td style="padding: 0.875rem; border: 1px solid var(--border);">Immediate rep call; priority treatment</td>
           </tr>
-          <tr style="background: #fefce8;">
-            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;"><strong>50-79</strong></td>
-            <td style="padding: 0.875rem; border: 1px solid #e2e8f0; color: #854d0e;">Warm — partial qualification</td>
-            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">AI continues qualifying missing dimensions; rep follows cadence</td>
+          <tr style="background: var(--muted);">
+            <td style="padding: 0.875rem; border: 1px solid var(--border);"><strong>50-79</strong></td>
+            <td style="padding: 0.875rem; border: 1px solid var(--border); color: var(--foreground);">Warm — partial qualification</td>
+            <td style="padding: 0.875rem; border: 1px solid var(--border);">AI continues qualifying missing dimensions; rep follows cadence</td>
           </tr>
-          <tr style="background: #fef2f2;">
-            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;"><strong>20-49</strong></td>
-            <td style="padding: 0.875rem; border: 1px solid #e2e8f0; color: #991b1b;">Cold — low signal</td>
-            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">Nurture sequence; no rep time until score improves</td>
+          <tr style="background: var(--muted);">
+            <td style="padding: 0.875rem; border: 1px solid var(--border);"><strong>20-49</strong></td>
+            <td style="padding: 0.875rem; border: 1px solid var(--border); color: var(--foreground);">Cold — low signal</td>
+            <td style="padding: 0.875rem; border: 1px solid var(--border);">Nurture sequence; no rep time until score improves</td>
           </tr>
-          <tr style="background: #f8fafc;">
-            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;"><strong>0-19</strong></td>
-            <td style="padding: 0.875rem; border: 1px solid #e2e8f0; color: #64748b;">Disqualified</td>
-            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">Close as "not qualified"; add to long-term nurture list</td>
+          <tr style="background: var(--muted);">
+            <td style="padding: 0.875rem; border: 1px solid var(--border);"><strong>0-19</strong></td>
+            <td style="padding: 0.875rem; border: 1px solid var(--border); color: var(--foreground);">Disqualified</td>
+            <td style="padding: 0.875rem; border: 1px solid var(--border);">Close as "not qualified"; add to long-term nurture list</td>
           </tr>
         </tbody>
       </table>
@@ -321,14 +321,14 @@ export const post: BlogPost = {
         The end result isn't replacing sales reps — it's freeing them from repetitive screening work so they can focus where human judgment makes the biggest difference: in complex negotiations, handling subtle objections, and building the relationships that close high-value contracts.
       </p>
 
-      <div style="background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); border-left: 4px solid #2563eb; padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
-        <p style="font-weight: 700; color: #1e40af;">See AI qualification scoring in your pipeline</p>
-        <p style="color: #1e40af; margin: 0.5rem 0 1rem;">Sirius CRM applies BANT scoring automatically based on conversation data. Your reps see ranked lead lists every morning.</p>
-        <a href="/en/register" style="background: #2563eb; color: white; padding: 0.75rem 1.5rem; border-radius: 0.5rem; font-weight: 600; text-decoration: none; display: inline-block;">Try Free →</a>
+      <div style="background: var(--muted); border-left: 4px solid var(--fio-forte); padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
+        <p style="font-weight: 700; color: var(--foreground);">See AI qualification scoring in your pipeline</p>
+        <p style="color: var(--foreground); margin: 0.5rem 0 1rem;">Sirius CRM applies BANT scoring automatically based on conversation data. Your reps see ranked lead lists every morning.</p>
+        <a href="/en/register" style="background: var(--primary); color: white; padding: 0.75rem 1.5rem; border-radius: 0.5rem; font-weight: 600; text-decoration: none; display: inline-block;">Try Free →</a>
       </div>
 
-      <hr style="margin: 3rem 0; border: none; border-top: 1px solid #e5e7eb;" />
-      <p style="font-size: 0.85rem; color: #64748b;">
+      <hr style="margin: 3rem 0; border: none; border-top: 1px solid var(--border);" />
+      <p style="font-size: 0.85rem; color: var(--foreground);">
         <strong>Last Updated:</strong> March 21, 2026<br/>
         <strong>Author:</strong> Sirius CRM Team<br/>
         <strong>Reading Time:</strong> 12 minutes

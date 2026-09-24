@@ -28,7 +28,7 @@ export const post: BlogPost = {
 
       <div class="callout-formula">
         <p><strong>💰 Fórmula</strong></p>
-        <code style="display: block; background: #f3f4f6; padding: 1rem; border-radius: 0.5rem; margin: 1rem 0; font-family: monospace; overflow-x: auto;">
+        <code style="display: block; background: var(--muted); padding: 1rem; border-radius: 0.5rem; margin: 1rem 0; font-family: monospace; overflow-x: auto;">
           ROI (%) = (Ganho anual − Custo anual) ÷ Custo anual × 100
         </code>
         <p>Onde <strong>Ganho anual</strong> = receita incremental + economia de custo, e <strong>Custo anual</strong> = licença + implementação + treinamento (amortizados no primeiro ano).</p>
@@ -98,7 +98,7 @@ export const post: BlogPost = {
 
       <div class="callout-formula">
         <p><strong>💰 Resultado</strong></p>
-        <code style="display: block; background: #f3f4f6; padding: 1rem; border-radius: 0.5rem; margin: 1rem 0; font-family: monospace; overflow-x: auto;">
+        <code style="display: block; background: var(--muted); padding: 1rem; border-radius: 0.5rem; margin: 1rem 0; font-family: monospace; overflow-x: auto;">
           ROI = (244.800 − 5.600) ÷ 5.600 × 100 = 4.271%
         </code>
         <p><strong>Payback:</strong> com ganho de R$ 20.400/mês contra um custo médio de ~R$ 470/mês, o sistema se paga em <strong>menos de um mês</strong>.</p>
@@ -117,27 +117,27 @@ export const post: BlogPost = {
 
       <table style="width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: 0.9rem;">
         <thead>
-          <tr style="background: #1e40af; color: white;">
-            <th style="padding: 0.75rem; text-align: left; border: 1px solid #e2e8f0;">Porte do time</th>
-            <th style="padding: 0.75rem; text-align: left; border: 1px solid #e2e8f0;">Custo típico/mês</th>
-            <th style="padding: 0.75rem; text-align: left; border: 1px solid #e2e8f0;">Payback típico</th>
+          <tr style="background: var(--primary); color: white;">
+            <th style="padding: 0.75rem; text-align: left; border: 1px solid var(--border);">Porte do time</th>
+            <th style="padding: 0.75rem; text-align: left; border: 1px solid var(--border);">Custo típico/mês</th>
+            <th style="padding: 0.75rem; text-align: left; border: 1px solid var(--border);">Payback típico</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">1–2 vendedores (autônomo/PME)</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">R$ 0–120</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">1 negócio recuperado</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">1–2 vendedores (autônomo/PME)</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">R$ 0–120</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">1 negócio recuperado</td>
           </tr>
-          <tr style="background: #f8fafc;">
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">3–10 vendedores</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">R$ 150–600</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Menos de 1 mês</td>
+          <tr style="background: var(--muted);">
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">3–10 vendedores</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">R$ 150–600</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Menos de 1 mês</td>
           </tr>
           <tr>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">10+ vendedores</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">R$ 600+</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">1–3 meses</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">10+ vendedores</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">R$ 600+</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">1–3 meses</td>
           </tr>
         </tbody>
       </table>
@@ -147,7 +147,7 @@ export const post: BlogPost = {
         <p>
           O Sirius CRM tem plano gratuito (sem cartão) com pipeline visual, WhatsApp integrado e notificação de novos leads — as features que puxam o componente 1 do ganho. Importe seus leads e veja a conversão subir antes de pagar qualquer coisa.
         </p>
-        <p><strong><a href="/register" style="color: #2563eb; text-decoration: underline;">Criar conta grátis →</a></strong></p>
+        <p><strong><a href="/register" style="color: var(--foreground); text-decoration: underline;">Criar conta grátis →</a></strong></p>
       </div>
 
       <h2>Como justificar o CRM para a diretoria</h2>
@@ -199,17 +199,17 @@ export const post: BlogPost = {
         <p>ROI de CRM = (ganho − custo) ÷ custo × 100. Média de mercado: R$ 8,71 por R$ 1 (Nucleus Research). O ganho vem de conversão, produtividade, forecast e retenção. Calcule com conversão conservadora, some o custo total (não só a licença) e priorize a adoção — é ela que transforma o número no papel em resultado no caixa.</p>
       </div>
 
-      <hr style="margin: 3rem 0; border: none; border-top: 1px solid #e5e7eb;" />
+      <hr style="margin: 3rem 0; border: none; border-top: 1px solid var(--border);" />
 
       <strong>Fontes:</strong>
-      <ul style="font-size: 0.875rem; color: #6b7280; line-height: 1.6;">
+      <ul style="font-size: 0.875rem; color: var(--muted-foreground); line-height: 1.6;">
         <li>Nucleus Research — CRM Pays Back $8.71 for Every Dollar Spent</li>
         <li>Salesforce — State of Sales Report</li>
         <li>Gartner — CRM Customer Engagement Center Insights</li>
         <li>Harvard Business Review — The Short Life of Online Sales Leads (2024)</li>
       </ul>
 
-      <hr style="margin: 3rem 0; border: none; border-top: 1px solid #e5e7eb;" />
+      <hr style="margin: 3rem 0; border: none; border-top: 1px solid var(--border);" />
 
       <strong>Última Atualização:</strong> 12 de Julho de 2026<br/>
       <strong>Autor:</strong> Equipe Sirius CRM<br/>

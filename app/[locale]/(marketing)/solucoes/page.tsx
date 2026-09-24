@@ -40,14 +40,6 @@ const ICON_MAP = {
   TrendingUp,
 }
 
-const GRADIENT_TEXT: Record<string, string> = {
-  'from-indigo-600 to-purple-600': 'from-indigo-600 to-purple-600',
-  'from-yellow-500 to-orange-500': 'from-yellow-500 to-orange-500',
-  'from-pink-600 to-rose-600': 'from-pink-600 to-rose-600',
-  'from-blue-600 to-cyan-600': 'from-blue-600 to-cyan-600',
-  'from-green-600 to-emerald-600': 'from-green-600 to-emerald-600',
-}
-
 export default function SolucoesPage() {
   const slugs = getAllNicheSlugs()
   const niches = slugs.map(slug => getNicheBySlug(slug)).filter(Boolean)
@@ -65,15 +57,15 @@ export default function SolucoesPage() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
 
-      <div className="min-h-screen bg-gradient-to-b from-zinc-50 to-white dark:from-zinc-950 dark:to-zinc-900">
+      <div className="min-h-screen">
         {/* Hero */}
         <section className="container mx-auto px-4 py-16 md:py-24 text-center">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 text-primary text-sm font-medium mb-6">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded bg-primary/10 text-primary text-sm font-medium mb-6">
             Soluções por Segmento
           </div>
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 tracking-tight">
             Um CRM feito para{' '}
-            <span className="bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent">
+            <span className="    ">
               o seu mercado
             </span>
           </h1>
@@ -108,7 +100,7 @@ export default function SolucoesPage() {
                   href={`/solucoes/${niche.slug}`}
                   className="group flex flex-col bg-card border rounded-2xl p-6 hover:shadow-lg hover:-translate-y-1 transition-all duration-300"
                 >
-                  <div className={`inline-flex items-center justify-center w-12 h-12 rounded-xl bg-gradient-to-br ${niche.color.gradient} mb-4`}>
+                  <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-primary mb-4">
                     <Icon className="h-6 w-6 text-white" />
                   </div>
 
@@ -123,7 +115,7 @@ export default function SolucoesPage() {
                   <div className="space-y-1.5 mb-5">
                     {niche.benefits.slice(0, 3).map((b, i) => (
                       <div key={i} className="flex items-center gap-2 text-sm">
-                        <CheckCircle2 className="h-4 w-4 text-green-500 shrink-0" />
+                        <CheckCircle2 className="h-4 w-4 text-foreground shrink-0" />
                         <span className="text-foreground/80">{b.title}</span>
                       </div>
                     ))}
@@ -140,7 +132,7 @@ export default function SolucoesPage() {
         </section>
 
         {/* CTA Final */}
-        <section className="bg-gradient-to-r from-primary/10 to-purple-500/10 py-20">
+        <section className="py-20">
           <div className="container mx-auto px-4 text-center max-w-3xl">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">
               Não encontrou seu segmento?

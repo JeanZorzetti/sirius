@@ -211,11 +211,11 @@ export function CalculadoraROI({
 
   return (
     <div className="w-full max-w-5xl mx-auto my-12">
-      <Card className="border-2 border-zinc-200 dark:border-zinc-800 shadow-2xl">
+      <Card className="border-2 border-zinc-200 shadow-2xl">
         <CardHeader className="space-y-3 pb-6 border-b">
           <div className="flex items-start gap-4">
-            <div className="p-3 rounded-xl bg-red-500/10 ring-1 ring-red-500/20">
-              <DollarSign className="w-7 h-7 text-red-500" />
+            <div className="p-3 rounded-xl bg-muted ring-1 ring-ring">
+              <DollarSign className="w-7 h-7 text-destaque" />
             </div>
             <div className="flex-1">
               <CardTitle className="text-2xl sm:text-3xl font-bold">
@@ -342,7 +342,7 @@ export function CalculadoraROI({
               return (
                 <TabsContent key={key} value={key} className="space-y-6 mt-6">
                   {/* PERDA MENSAL - DESTAQUE */}
-                  <div className={`relative overflow-hidden p-8 rounded-2xl bg-gradient-to-br from-red-600 to-red-700 text-white shadow-2xl`}>
+                  <div className={`relative overflow-hidden p-8 rounded-2xl bg-destaque text-primary-foreground`}>
                     <div className="absolute inset-0 opacity-10">
                       <div className="absolute inset-0" style={{
                         backgroundImage: `radial-gradient(circle at 2px 2px, white 1px, transparent 0)`,
@@ -388,58 +388,58 @@ export function CalculadoraROI({
 
                   {/* BREAKDOWN DAS PERDAS */}
                   <div className="grid gap-4 sm:grid-cols-3">
-                    <div className="p-4 rounded-xl border-2 border-amber-200 dark:border-amber-900 bg-amber-50 dark:bg-amber-950/20">
+                    <div className="p-4 rounded-xl border-2 border-border bg-muted">
                       <div className="flex items-center gap-2 mb-2">
-                        <AlertTriangle className="w-4 h-4 text-amber-600" />
-                        <span className="text-xs font-bold uppercase text-amber-700 dark:text-amber-400">
+                        <AlertTriangle className="w-4 h-4 text-foreground" />
+                        <span className="text-xs font-bold uppercase text-foreground">
                           Lead Decay
                         </span>
                       </div>
-                      <p className="text-2xl font-bold text-amber-900 dark:text-amber-100">
+                      <p className="text-2xl font-bold text-foreground">
                         {formatCurrencyBRL(result.leadDecayCost, { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
                       </p>
-                      <p className="text-xs text-amber-700 dark:text-amber-400 mt-1">
+                      <p className="text-xs text-foreground mt-1">
                         {result.leadsRecuperados.toFixed(0)} leads recuperados
                       </p>
                     </div>
 
-                    <div className="p-4 rounded-xl border-2 border-blue-200 dark:border-blue-900 bg-blue-50 dark:bg-blue-950/20">
+                    <div className="p-4 rounded-xl border-2 border-border bg-muted">
                       <div className="flex items-center gap-2 mb-2">
-                        <TrendingUp className="w-4 h-4 text-blue-600" />
-                        <span className="text-xs font-bold uppercase text-blue-700 dark:text-blue-400">
+                        <TrendingUp className="w-4 h-4 text-foreground" />
+                        <span className="text-xs font-bold uppercase text-foreground">
                           Conversão
                         </span>
                       </div>
-                      <p className="text-2xl font-bold text-blue-900 dark:text-blue-100">
+                      <p className="text-2xl font-bold text-foreground">
                         {formatCurrencyBRL(result.ganhoConversao, { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
                       </p>
-                      <p className="text-xs text-blue-700 dark:text-blue-400 mt-1">
+                      <p className="text-xs text-foreground mt-1">
                         {taxaConversaoAtual}% → {result.taxaConversaoNova.toFixed(1)}%
                       </p>
                     </div>
 
-                    <div className="p-4 rounded-xl border-2 border-purple-200 dark:border-purple-900 bg-purple-50 dark:bg-purple-950/20">
+                    <div className="p-4 rounded-xl border-2 border-border bg-muted">
                       <div className="flex items-center gap-2 mb-2">
-                        <Clock className="w-4 h-4 text-purple-600" />
-                        <span className="text-xs font-bold uppercase text-purple-700 dark:text-purple-400">
+                        <Clock className="w-4 h-4 text-foreground" />
+                        <span className="text-xs font-bold uppercase text-foreground">
                           Tempo Economizado
                         </span>
                       </div>
-                      <p className="text-2xl font-bold text-purple-900 dark:text-purple-100">
+                      <p className="text-2xl font-bold text-foreground">
                         {formatCurrencyBRL(result.ganhoTempo, { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
                       </p>
-                      <p className="text-xs text-purple-700 dark:text-purple-400 mt-1">
+                      <p className="text-xs text-foreground mt-1">
                         {result.horasEconomizadasMes.toFixed(1)}h produtivas/mês
                       </p>
                     </div>
                   </div>
 
                   {/* ROI DO SIRIUS */}
-                  <div className="p-6 rounded-xl bg-gradient-to-br from-green-500/10 to-emerald-500/5 border-2 border-green-500/20">
+                  <div className="p-6 rounded-xl border-2 border-border">
                     <div className="grid gap-6 sm:grid-cols-4">
                       <div>
                         <p className="text-xs text-muted-foreground mb-1">Investimento Sirius</p>
-                        <p className="text-xl font-bold text-green-700 dark:text-green-400">
+                        <p className="text-xl font-bold text-foreground">
                           {formatCurrencyBRL(result.custoSiriusMensal, { minimumFractionDigits: 0, maximumFractionDigits: 0 })}/mês
                         </p>
                         <p className="text-xs text-muted-foreground mt-1">
@@ -448,19 +448,19 @@ export function CalculadoraROI({
                       </div>
                       <div>
                         <p className="text-xs text-muted-foreground mb-1">ROI em 60 Dias</p>
-                        <p className="text-3xl font-black text-green-700 dark:text-green-400">
+                        <p className="text-3xl font-black text-foreground">
                           {result.roi60Dias.toFixed(0)}%
                         </p>
                       </div>
                       <div>
                         <p className="text-xs text-muted-foreground mb-1">Payback</p>
-                        <p className="text-xl font-bold text-green-700 dark:text-green-400">
+                        <p className="text-xl font-bold text-foreground">
                           {result.paybackDias.toFixed(0)} dias
                         </p>
                       </div>
                       <div>
                         <p className="text-xs text-muted-foreground mb-1">Lucro Líquido (Ano 1)</p>
-                        <p className="text-xl font-bold text-green-700 dark:text-green-400">
+                        <p className="text-xl font-bold text-foreground">
                           {formatCurrencyBRL(result.ganhoAnual - (result.custoSiriusMensal * 12), { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
                         </p>
                       </div>
@@ -503,7 +503,7 @@ export function CalculadoraROI({
             <Button
               onClick={handleCTAClick}
               size="lg"
-              className="w-full h-14 text-lg font-bold bg-gradient-to-r from-indigo-600 to-indigo-700 hover:from-indigo-700 hover:to-indigo-800 shadow-xl shadow-indigo-500/30 transition-all hover:scale-[1.02] active:scale-[0.98]"
+              className="w-full h-14 text-lg font-bold shadow-xl transition-all hover:scale-[1.02] active:scale-[0.98]"
             >
               {ctaText}
               <ArrowRight className="ml-2 w-5 h-5" />

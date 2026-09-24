@@ -4,6 +4,7 @@ import { useEffect } from 'react'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { AlertTriangle, Home, RotateCcw } from 'lucide-react'
+import { texto, mono } from '@/components/fluxo/fontes' // the home's skin (spec 008)
 import '@/app/public.css' // outside app/[locale]/layout.tsx, so it loads its own sheet (spec 007)
 
 export default function Error({
@@ -18,7 +19,7 @@ export default function Error({
   }, [error])
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 bg-background">
+    <div data-art="fluxo" className={`${texto.variable} ${mono.variable} min-h-screen flex items-center justify-center px-4 bg-background`}>
       <div className="max-w-md mx-auto text-center">
         <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-destructive/10 mb-6">
           <AlertTriangle className="h-8 w-8 text-destructive" />

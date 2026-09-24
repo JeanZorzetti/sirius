@@ -492,7 +492,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
 
       <article className="relative">
         {/* Premium Header Background */}
-        <div className="absolute top-0 left-0 right-0 h-96 bg-gradient-to-b from-primary/5 via-primary/3 to-transparent -z-10" />
+        <div className="absolute top-0 left-0 right-0 h-96 -z-10" />
 
         <div className="container mx-auto max-w-7xl py-8 lg:py-16 px-6">
           {/* Breadcrumb Navigation */}
@@ -547,11 +547,11 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
               </div>
 
               <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                <div className="flex items-center gap-2 bg-muted/50 px-3 py-1.5 rounded-full">
+                <div className="flex items-center gap-2 bg-muted/50 px-3 py-1.5 rounded">
                   <Calendar className="h-4 w-4" />
                   <span>{new Date(post.date).toLocaleDateString('pt-BR', { day: '2-digit', month: 'short', year: 'numeric' })}</span>
                 </div>
-                <div className="flex items-center gap-2 bg-muted/50 px-3 py-1.5 rounded-full">
+                <div className="flex items-center gap-2 bg-muted/50 px-3 py-1.5 rounded">
                   <Clock className="h-4 w-4" />
                   <span>10 min</span>
                 </div>
@@ -579,7 +579,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
           {/* Article Content - 2 Column Layout */}
           <div className="grid lg:grid-cols-[1fr_320px] lg:gap-12 xl:gap-16">
             {/* Main Content Column - Card Wrapper */}
-            <article className="bg-white dark:bg-zinc-900 border border-border/50 shadow-lg rounded-2xl p-4 sm:p-6 md:p-8 lg:p-12 overflow-hidden">
+            <article className="bg-white border border-border/50 shadow-lg rounded-2xl p-4 sm:p-6 md:p-8 lg:p-12 overflow-hidden">
               <BlogContentWrapper content={displayContent} slug={slug} />
             </article>
 

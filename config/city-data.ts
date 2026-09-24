@@ -86,11 +86,6 @@ export const CITIES: NicheData[] = [
         'crm para startups sp'
       ]
     },
-    color: {
-      primary: 'blue',
-      secondary: 'indigo',
-      gradient: 'from-blue-600 to-indigo-600'
-    },
     icon: 'TrendingUp'
   },
   {
@@ -168,11 +163,6 @@ export const CITIES: NicheData[] = [
         'crm offline curitiba',
         'crm para industria curitiba'
       ]
-    },
-    color: {
-      primary: 'green',
-      secondary: 'emerald',
-      gradient: 'from-green-600 to-emerald-600'
     },
     icon: 'Briefcase'
   },
@@ -252,11 +242,6 @@ export const CITIES: NicheData[] = [
         'crm b2b minas gerais'
       ]
     },
-    color: {
-      primary: 'amber',
-      secondary: 'orange',
-      gradient: 'from-amber-500 to-orange-600'
-    },
     icon: 'Building2'
   },
   {
@@ -334,11 +319,6 @@ export const CITIES: NicheData[] = [
         'crm distribuidores rio grande do sul',
         'crm agronegocio rs'
       ]
-    },
-    color: {
-      primary: 'red',
-      secondary: 'rose',
-      gradient: 'from-red-600 to-rose-600'
     },
     icon: 'TrendingUp'
   },
@@ -418,11 +398,6 @@ export const CITIES: NicheData[] = [
         'crm consultoria rio de janeiro'
       ]
     },
-    color: {
-      primary: 'purple',
-      secondary: 'pink',
-      gradient: 'from-purple-600 to-pink-600'
-    },
     icon: 'Sparkles'
   },
   {
@@ -500,11 +475,6 @@ export const CITIES: NicheData[] = [
         'crm prestadores servico df',
         'crm b2b brasilia'
       ]
-    },
-    color: {
-      primary: 'indigo',
-      secondary: 'violet',
-      gradient: 'from-indigo-600 to-violet-600'
     },
     icon: 'Briefcase'
   }

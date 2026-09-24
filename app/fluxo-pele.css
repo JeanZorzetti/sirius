@@ -1,0 +1,130 @@
+/* art-direction · fluxo (pele) · spec 008 · 2026-09-24
+   The Fluxo skin for every public page: the home and the (marketing) layout both carry data-art="fluxo".
+   The home adds its gesture on top ((fluxo)/fluxo.css); the other pages wear only this.
+   Imported by app/public.css in layer(public): rules here sit above Tailwind's own sublayers (public.utilities)
+   without !important. The app never carries data-art, so nothing here reaches it.
+   Colours and the scoped rules also go on :root while a public page is mounted (:has), because Radix portals
+   (mobile menu Sheet, Select, Dialog) render in <body>, outside the wrapper. Browsers without :has still get
+   everything inside the wrapper. The type stays on the wrapper: the next/font variables only exist there. */
+
+/* ── Primitives (the home's values, 2026-09-23) ──────────────────────────
+   Hex first for browsers without OKLCH, OKLCH inside @supports is the source of truth. */
+:is(:root:has([data-art="fluxo"]), [data-art="fluxo"]) {
+  --gelo: #f5f7f9;
+  --gelo-escuro: #eef1f4;     /* one step below the ice: hover, panel, badge (shadcn muted/secondary/accent) */
+  --grafite: #141b24;
+  --grafite-suave: #4e5661;
+  --fio: rgba(20, 27, 36, .12);
+  --fio-forte: rgba(20, 27, 36, .3);
+  --pulso: #d02d23;           /* the accent: large text and lines (4.79:1) */
+  --pulso-escuro: #b71b14;    /* the same accent for small text and the pointer state (6.16:1) */
+  --raio: 4px;
+}
+
+@supports (color: oklch(0 0 0)) {
+  :is(:root:has([data-art="fluxo"]), [data-art="fluxo"]) {
+    --gelo: oklch(0.975 0.004 250);
+    --gelo-escuro: oklch(0.955 0.006 250);
+    --grafite: oklch(0.22 0.02 255);
+    --grafite-suave: oklch(0.45 0.02 255);
+    --fio: oklch(0.22 0.02 255 / .12);
+    --fio-forte: oklch(0.22 0.02 255 / .3);
+    --pulso: oklch(0.56 0.2 29);
+    --pulso-escuro: oklch(0.5 0.19 29);
+  }
+}
+
+/* ── Semantic: the shadcn variables every component already reads ────────
+   (the home used to map these for its footer only; now the whole page) */
+:is(:root:has([data-art="fluxo"]), [data-art="fluxo"]) {
+  --background: var(--gelo);
+  --foreground: var(--grafite);
+  --card: var(--gelo);
+  --card-foreground: var(--grafite);
+  --popover: var(--gelo);
+  --popover-foreground: var(--grafite);
+  --primary: var(--grafite);
+  --primary-foreground: var(--gelo);
+  --secondary: var(--gelo-escuro);
+  --secondary-foreground: var(--grafite);
+  --muted: var(--gelo-escuro);
+  --muted-foreground: var(--grafite-suave);
+  --accent: var(--gelo-escuro);
+  --accent-foreground: var(--grafite);
+  --destructive: var(--pulso-escuro);
+  --destructive-foreground: var(--gelo);
+  --border: var(--fio);
+  --input: var(--fio-forte);
+  --ring: var(--pulso-escuro);
+  --radius: var(--raio);
+  --marca-pingo: var(--pulso);
+
+  /* always the light band: the dark variant skips public pages too (theme.css) */
+  color-scheme: light;
+  background: var(--gelo);
+  color: var(--grafite);
+}
+
+[data-art="fluxo"] {
+  --fonte-texto: var(--fonte-texto-base), ui-sans-serif, system-ui, sans-serif;
+  --fonte-mono: var(--fonte-mono-base), ui-monospace, monospace;
+  font-family: var(--fonte-texto);
+  -webkit-font-smoothing: antialiased;
+}
+
+:is(:root:has([data-art="fluxo"]), [data-art="fluxo"]) ::selection { background: var(--pulso-escuro); color: var(--gelo); }
+[data-art="fluxo"] :is(a, [tabindex]):focus-visible { outline: 2px solid var(--pulso-escuro); outline-offset: 3px; border-radius: 2px; }
+/* base.css draws every keyboard focus in the WhatsApp green (#00a884): on public pages it is the accent */
+:is(:root:has([data-art="fluxo"]), [data-art="fluxo"]) :focus-visible { outline-color: var(--pulso-escuro); }
+
+/* ── What a token alone can't reach (components shared with the app) ─────
+   No elevation: Tailwind v4 keeps the whole shadow in --tw-shadow on the element itself. Zeroing it drops the
+   shadow and keeps the keyboard focus ring, which is --tw-ring-shadow. */
+:is(:root:has([data-art="fluxo"]), [data-art="fluxo"]) [class*="shadow"] { --tw-shadow: 0 0 #0000; }
+
+/* The 4px corner: theme.css derives md/xl/2xl/3xl from --radius with calc(), so they'd land on 2/8/12/16px. */
+:is(:root:has([data-art="fluxo"]), [data-art="fluxo"]) :is(.rounded-md, .rounded-lg, .rounded-xl, .rounded-2xl, .rounded-3xl) { border-radius: var(--raio); }
+
+[data-art="fluxo"] footer { border-top-color: var(--fio-forte); }
+
+/* @tailwindcss/typography paints .prose in its bluish gray-700/900 (chroma .034): the skin's greys instead */
+[data-art="fluxo"] .prose {
+  --tw-prose-body: var(--grafite-suave);
+  --tw-prose-headings: var(--grafite);
+  --tw-prose-lead: var(--grafite-suave);
+  --tw-prose-links: var(--grafite);
+  --tw-prose-bold: var(--grafite);
+  --tw-prose-counters: var(--grafite-suave);
+  --tw-prose-bullets: var(--fio-forte);
+  --tw-prose-hr: var(--fio);
+  --tw-prose-quotes: var(--grafite);
+  --tw-prose-quote-borders: var(--fio-forte);
+  --tw-prose-captions: var(--grafite-suave);
+  --tw-prose-kbd: var(--grafite);
+  --tw-prose-code: var(--grafite);
+  --tw-prose-pre-code: var(--gelo-escuro);
+  --tw-prose-pre-bg: var(--grafite);
+  --tw-prose-th-borders: var(--fio-forte);
+  --tw-prose-td-borders: var(--fio);
+}
+
+/* ── The blog's prose (base.css, shared with the app, paints it blue/green/purple with !important) ──
+   Same boxes, re-inked: one surface, hairline border, the accent only where the post marks a problem.
+   Inside @layer utilities on purpose: base.css keeps these rules there, and for !important the cascade reverses
+   layer order, so an override outside that sublayer would lose. Same sublayer → the higher specificity wins. */
+@layer utilities {
+  [data-art="fluxo"] .prose h3 { color: var(--foreground) !important; }
+  /* …except inside a filled box of the post (bg-primary / bg-destaque), where the heading takes the box's text colour */
+  [data-art="fluxo"] .prose :is(.bg-primary, .bg-destaque) h3 { color: inherit !important; }
+  [data-art="fluxo"] .prose ol > li::marker { color: var(--foreground) !important; }
+  [data-art="fluxo"] .prose :is(.callout-questions, .callout-stat, .callout-success, .callout-problems, .callout-brain,
+    .callout-insight, .callout-data, .callout-strategies) {
+    background: var(--muted) !important;
+    border-color: var(--fio-forte) !important;
+    border-radius: var(--raio) !important;
+    box-shadow: none !important;
+  }
+  [data-art="fluxo"] .prose :is(.callout-stat, .callout-success, .callout-brain, .callout-insight) { border-left-color: var(--foreground) !important; }
+  [data-art="fluxo"] .prose .callout-problems { border-color: var(--pulso) !important; }
+  [data-art="fluxo"] .prose :is(.callout-success, .callout-insight) strong { color: var(--foreground) !important; }
+}

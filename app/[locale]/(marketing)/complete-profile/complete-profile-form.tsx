@@ -121,7 +121,7 @@ export function CompleteProfileForm({ userId, userName, organizationId, currentO
       <div className="w-full max-w-md">
         {/* Header */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-50 text-indigo-600 text-xs font-medium mb-4">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded bg-muted text-foreground text-xs font-medium mb-4">
             Falta pouco!
           </div>
           <h1 className="text-2xl font-bold text-gray-900">
@@ -140,8 +140,8 @@ export function CompleteProfileForm({ userId, userName, organizationId, currentO
             <div key={s} className="flex items-center gap-3">
               <div className={cn(
                 'flex items-center justify-center h-9 w-9 rounded-full text-sm font-semibold transition-all',
-                s < step && 'bg-indigo-600 text-white',
-                s === step && 'bg-indigo-600 text-white ring-2 ring-indigo-200',
+                s < step && 'bg-primary text-white',
+                s === step && 'bg-primary text-white ring-2 ring-ring',
                 s > step && 'bg-gray-100 text-gray-400'
               )}>
                 {s < step ? (
@@ -157,7 +157,7 @@ export function CompleteProfileForm({ userId, userName, organizationId, currentO
               {s < 2 && (
                 <div className={cn(
                   'h-0.5 w-12 rounded-full transition-all',
-                  s < step ? 'bg-indigo-600' : 'bg-gray-200'
+                  s < step ? 'bg-primary' : 'bg-gray-200'
                 )} />
               )}
             </div>
@@ -167,7 +167,7 @@ export function CompleteProfileForm({ userId, userName, organizationId, currentO
         {/* Form */}
         <form onSubmit={handleSubmit} className="space-y-5">
           {error && (
-            <div className="p-3 text-sm text-red-600 bg-red-50 border border-red-200 rounded-lg">
+            <div className="p-3 text-sm text-destaque bg-muted border border-border rounded-lg">
               {error}
             </div>
           )}
@@ -177,7 +177,7 @@ export function CompleteProfileForm({ userId, userName, organizationId, currentO
             <>
               <div className="space-y-2">
                 <Label htmlFor="phone" className="text-gray-700">
-                  Telefone Principal <span className="text-red-500">*</span>
+                  Telefone Principal <span className="text-destaque">*</span>
                 </Label>
                 <Input
                   id="phone"
@@ -192,12 +192,12 @@ export function CompleteProfileForm({ userId, userName, organizationId, currentO
                   required
                   autoFocus
                   className={cn(
-                    "bg-white border-gray-300 text-gray-900 placeholder:text-gray-400 focus:border-indigo-500 focus:ring-indigo-500",
-                    phone && !phoneValid && "border-red-400 focus:border-red-500 focus:ring-red-500"
+                    "bg-white border-gray-300 text-gray-900 placeholder:text-gray-400 focus:border-foreground focus:ring-ring",
+                    phone && !phoneValid && "border-border focus:border-foreground focus:ring-ring"
                   )}
                 />
                 {phone && !phoneValid ? (
-                  <p className="text-xs text-red-500">Informe um número válido com pelo menos 10 dígitos.</p>
+                  <p className="text-xs text-destaque">Informe um número válido com pelo menos 10 dígitos.</p>
                 ) : (
                   <p className="text-xs text-gray-400">Somente números. Seu contato principal.</p>
                 )}
@@ -211,7 +211,7 @@ export function CompleteProfileForm({ userId, userName, organizationId, currentO
                     value={jobTitle}
                     onChange={e => setJobTitle(e.target.value)}
                     required
-                    className="w-full h-10 rounded-md bg-white border border-gray-300 text-gray-900 px-3 pr-8 text-sm appearance-none cursor-pointer focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                    className="w-full h-10 rounded-md bg-white border border-gray-300 text-gray-900 px-3 pr-8 text-sm appearance-none cursor-pointer focus:outline-none focus:ring-2 focus:ring-ring focus:border-foreground"
                   >
                     <option value="" disabled>Selecionar</option>
                     {JOB_TITLES.map(j => (
@@ -226,7 +226,7 @@ export function CompleteProfileForm({ userId, userName, organizationId, currentO
                     onChange={e => setCustomJobTitle(e.target.value)}
                     placeholder="Digite seu cargo"
                     required
-                    className="mt-2 bg-white border-gray-300 text-gray-900 placeholder:text-gray-400 focus:border-indigo-500 focus:ring-indigo-500"
+                    className="mt-2 bg-white border-gray-300 text-gray-900 placeholder:text-gray-400 focus:border-foreground focus:ring-ring"
                   />
                 )}
               </div>
@@ -245,7 +245,7 @@ export function CompleteProfileForm({ userId, userName, organizationId, currentO
                   placeholder="Minha Empresa Ltda"
                   required
                   autoFocus
-                  className="bg-white border-gray-300 text-gray-900 placeholder:text-gray-400 focus:border-indigo-500 focus:ring-indigo-500"
+                  className="bg-white border-gray-300 text-gray-900 placeholder:text-gray-400 focus:border-foreground focus:ring-ring"
                 />
               </div>
 
@@ -257,7 +257,7 @@ export function CompleteProfileForm({ userId, userName, organizationId, currentO
                   onChange={e => setCompanyDescription(e.target.value)}
                   placeholder="Ex: Vendemos consórcios para pessoa física e jurídica..."
                   rows={3}
-                  className="bg-white border-gray-300 text-gray-900 placeholder:text-gray-400 resize-none focus:border-indigo-500 focus:ring-indigo-500"
+                  className="bg-white border-gray-300 text-gray-900 placeholder:text-gray-400 resize-none focus:border-foreground focus:ring-ring"
                 />
                 <p className="text-xs text-gray-400">Opcional. Nos ajuda a personalizar sua experiência.</p>
               </div>
@@ -270,7 +270,7 @@ export function CompleteProfileForm({ userId, userName, organizationId, currentO
                     value={segment}
                     onChange={e => { setSegment(e.target.value); if (e.target.value !== 'Outro') setCustomSegment('') }}
                     required
-                    className="w-full h-10 rounded-md bg-white border border-gray-300 text-gray-900 px-3 pr-8 text-sm appearance-none cursor-pointer focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                    className="w-full h-10 rounded-md bg-white border border-gray-300 text-gray-900 px-3 pr-8 text-sm appearance-none cursor-pointer focus:outline-none focus:ring-2 focus:ring-ring focus:border-foreground"
                   >
                     <option value="" disabled>Selecionar</option>
                     {SEGMENTS.map(s => (
@@ -285,7 +285,7 @@ export function CompleteProfileForm({ userId, userName, organizationId, currentO
                     onChange={e => setCustomSegment(e.target.value)}
                     placeholder="Qual é o segmento?"
                     required
-                    className="bg-white border-gray-300 text-gray-900 placeholder:text-gray-400 focus:border-indigo-500 focus:ring-indigo-500"
+                    className="bg-white border-gray-300 text-gray-900 placeholder:text-gray-400 focus:border-foreground focus:ring-ring"
                   />
                 )}
               </div>
@@ -310,7 +310,7 @@ export function CompleteProfileForm({ userId, userName, organizationId, currentO
               <Button
                 type="submit"
                 disabled={!canAdvance()}
-                className="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white"
+                className="flex-1 bg-primary hover:bg-destaque text-white"
               >
                 Avançar
                 <ArrowRight className="h-4 w-4 ml-1" />
@@ -319,7 +319,7 @@ export function CompleteProfileForm({ userId, userName, organizationId, currentO
               <Button
                 type="submit"
                 disabled={isPending || !canAdvance()}
-                className="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white"
+                className="flex-1 bg-primary hover:bg-destaque text-white"
               >
                 {isPending ? (
                   <>
@@ -337,14 +337,14 @@ export function CompleteProfileForm({ userId, userName, organizationId, currentO
         {/* Footer */}
         <div className="flex items-center justify-center gap-4 text-xs text-gray-400 mt-8 pt-6 border-t border-gray-100">
           <div className="flex items-center gap-1">
-            <svg className="h-3 w-3 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+            <svg className="h-3 w-3 text-foreground" fill="currentColor" viewBox="0 0 20 20">
               <path fillRule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clipRule="evenodd" />
             </svg>
             SSL Seguro
           </div>
           <span>-</span>
           <div className="flex items-center gap-1">
-            <svg className="h-3 w-3 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+            <svg className="h-3 w-3 text-foreground" fill="currentColor" viewBox="0 0 20 20">
               <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
             </svg>
             LGPD

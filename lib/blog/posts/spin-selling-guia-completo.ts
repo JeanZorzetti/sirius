@@ -5,38 +5,38 @@ export const post: BlogPost = {
   title: 'SPIN Selling: A Metodologia de Vendas que Aumenta Conversão em 53% [Guia Completo 2026]',
   excerpt: `Descubra como SPIN Selling aumenta conversão em vendas complexas B2B. Guia completo com 100+ perguntas práticas, matriz de objeções e casos reais. Template gratuito para download.`,
   content: `
-<div style="background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%); border-left: 4px solid #0284c7; padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
-    <p style="font-size: 1.125rem; font-weight: 600; color: #0c4a6e; margin-bottom: 0.5rem;">🎧 Ouvir este artigo (15 min) | Ideal para ouvir no trânsito</p>
+<div style="background: var(--muted); border-left: 4px solid var(--fio-forte); padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
+    <p style="font-size: 1.125rem; font-weight: 600; color: var(--foreground); margin-bottom: 0.5rem;">🎧 Ouvir este artigo (15 min) | Ideal para ouvir no trânsito</p>
     <audio controls style="width: 100%; margin-top: 0.75rem;">
       <source src="/audio/spin-selling-guia-completo.mp3" type="audio/mpeg">
       Seu navegador não suporta o elemento de áudio.
     </audio>
   </div>
 
-<hr style="margin: 3rem 0; border: none; border-top: 1px solid #e5e7eb;" />
+<hr style="margin: 3rem 0; border: none; border-top: 1px solid var(--border);" />
 
 <h2>🎯 Recursos Gratuitos Neste Artigo</h2>
 
 <p>Baixe agora e aplique imediatamente na sua equipe:</p>
 
 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin: 2rem 0;">
-  <div style="background: white; border: 1px solid #e5e7eb; padding: 1.5rem; border-radius: 0.75rem; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+  <div style="background: white; border: 1px solid var(--border); padding: 1.5rem; border-radius: 0.75rem; box-shadow: none;">
     <div style="font-size: 2rem; margin-bottom: 1rem;">📋</div>
-    <h3 style="font-size: 1.125rem; font-weight: 700; color: #1e293b; margin-bottom: 0.5rem;">Checklist SPIN com 100+ Perguntas</h3>
-    <p style="color: #64748b; font-size: 0.875rem; margin-bottom: 1rem;">Categorizado por etapa e setor (PDF + Excel editável)</p>
-    <a href="/downloads/spin-selling/checklist-spin-100-perguntas.csv" style="display: inline-block; background: #2563eb; color: white; padding: 0.5rem 1rem; border-radius: 0.375rem; text-decoration: none; font-weight: 600;">Baixar Checklist</a>
+    <h3 style="font-size: 1.125rem; font-weight: 700; color: var(--foreground); margin-bottom: 0.5rem;">Checklist SPIN com 100+ Perguntas</h3>
+    <p style="color: var(--foreground); font-size: 0.875rem; margin-bottom: 1rem;">Categorizado por etapa e setor (PDF + Excel editável)</p>
+    <a href="/downloads/spin-selling/checklist-spin-100-perguntas.csv" style="display: inline-block; background: var(--primary); color: white; padding: 0.5rem 1rem; border-radius: 0.375rem; text-decoration: none; font-weight: 600;">Baixar Checklist</a>
   </div>
-  <div style="background: white; border: 1px solid #e5e7eb; padding: 1.5rem; border-radius: 0.75rem; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+  <div style="background: white; border: 1px solid var(--border); padding: 1.5rem; border-radius: 0.75rem; box-shadow: none;">
     <div style="font-size: 2rem; margin-bottom: 1rem;">🎯</div>
-    <h3 style="font-size: 1.125rem; font-weight: 700; color: #1e293b; margin-bottom: 0.5rem;">Matriz de Objeções vs Argumentos</h3>
-    <p style="color: #64748b; font-size: 0.875rem; margin-bottom: 1rem;">Formato A4 para imprimir e colar na parede da equipe</p>
-    <a href="/downloads/spin-selling/matriz-objecoes-argumentos.html" style="display: inline-block; background: #2563eb; color: white; padding: 0.5rem 1rem; border-radius: 0.375rem; text-decoration: none; font-weight: 600;">Baixar Matriz</a>
+    <h3 style="font-size: 1.125rem; font-weight: 700; color: var(--foreground); margin-bottom: 0.5rem;">Matriz de Objeções vs Argumentos</h3>
+    <p style="color: var(--foreground); font-size: 0.875rem; margin-bottom: 1rem;">Formato A4 para imprimir e colar na parede da equipe</p>
+    <a href="/downloads/spin-selling/matriz-objecoes-argumentos.html" style="display: inline-block; background: var(--primary); color: white; padding: 0.5rem 1rem; border-radius: 0.375rem; text-decoration: none; font-weight: 600;">Baixar Matriz</a>
   </div>
-  <div style="background: white; border: 1px solid #e5e7eb; padding: 1.5rem; border-radius: 0.75rem; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+  <div style="background: white; border: 1px solid var(--border); padding: 1.5rem; border-radius: 0.75rem; box-shadow: none;">
     <div style="font-size: 2rem; margin-bottom: 1rem;">📝</div>
-    <h3 style="font-size: 1.125rem; font-weight: 700; color: #1e293b; margin-bottom: 0.5rem;">Template Discovery Meeting</h3>
-    <p style="color: #64748b; font-size: 0.875rem; margin-bottom: 1rem;">Roteiro completo de 45 minutos para reuniões de qualificação</p>
-    <a href="/downloads/spin-selling/template-discovery-meeting-45min.html" style="display: inline-block; background: #2563eb; color: white; padding: 0.5rem 1rem; border-radius: 0.375rem; text-decoration: none; font-weight: 600;">Baixar Template</a>
+    <h3 style="font-size: 1.125rem; font-weight: 700; color: var(--foreground); margin-bottom: 0.5rem;">Template Discovery Meeting</h3>
+    <p style="color: var(--foreground); font-size: 0.875rem; margin-bottom: 1rem;">Roteiro completo de 45 minutos para reuniões de qualificação</p>
+    <a href="/downloads/spin-selling/template-discovery-meeting-45min.html" style="display: inline-block; background: var(--primary); color: white; padding: 0.5rem 1rem; border-radius: 0.375rem; text-decoration: none; font-weight: 600;">Baixar Template</a>
   </div>
   <Resource
     icon="🧮"
@@ -54,7 +54,7 @@ export const post: BlogPost = {
   triggerScroll={50}
 />
 
-<hr style="margin: 3rem 0; border: none; border-top: 1px solid #e5e7eb;" />
+<hr style="margin: 3rem 0; border: none; border-top: 1px solid var(--border);" />
 
 <h2>Por que Você Precisa do SPIN Selling Agora (Dados de 2026)</h2>
 
@@ -70,55 +70,55 @@ export const post: BlogPost = {
 
 <strong>O custo de não resolver isso?</strong>
 
-<p>Segundo pesquisa da <a href="https://millerheimangroup.com.br/desbloqueie-o-segredo-do-spin-selling-para-fechar-negocios-em-vendas-b2b/" target="_blank" rel="noopener" style="color: #2563eb; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 2px; transition: all 0.2s;" onmouseover="this.style.color='#1e40af'; this.style.textDecorationThickness='2px'" onmouseout="this.style.color='#2563eb'; this.style.textDecorationThickness='1px'">Miller Heiman Group Brasil</a>, empresas com discovery fraco deixam de <strong>fechar 20% das oportunidades viáveis</strong>. Se sua empresa gera 100 SQLs/mês com ticket médio de R$ 5.000, isso representa <strong>R$ 1,2 milhão/ano</strong> em receita perdida.</p>
+<p>Segundo pesquisa da <a href="https://millerheimangroup.com.br/desbloqueie-o-segredo-do-spin-selling-para-fechar-negocios-em-vendas-b2b/" target="_blank" rel="noopener" style="color: var(--foreground); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 2px; transition: all 0.2s;" onmouseover="this.style.color='var(--pulso-escuro)'; this.style.textDecorationThickness='2px'" onmouseout="this.style.color='var(--foreground)'; this.style.textDecorationThickness='1px'">Miller Heiman Group Brasil</a>, empresas com discovery fraco deixam de <strong>fechar 20% das oportunidades viáveis</strong>. Se sua empresa gera 100 SQLs/mês com ticket médio de R$ 5.000, isso representa <strong>R$ 1,2 milhão/ano</strong> em receita perdida.</p>
 
-<img src="/images/blog/spin-selling/spin-selling-custo-discovery-fraco.svg" alt="Calculadora mostrando R$ 1,2 milhão de receita perdida por ano devido a discovery fraco" style="max-width: 100%; height: auto; margin: 2rem 0; border-radius: 0.5rem; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);" />
+<img src="/images/blog/spin-selling/spin-selling-custo-discovery-fraco.svg" alt="Calculadora mostrando R$ 1,2 milhão de receita perdida por ano devido a discovery fraco" style="max-width: 100%; height: auto; margin: 2rem 0; border-radius: 0.5rem; box-shadow: none;" />
 
 <strong>A boa notícia?</strong> SPIN Selling pode reverter isso.
 
-<hr style="margin: 3rem 0; border: none; border-top: 1px solid #e5e7eb;" />
+<hr style="margin: 3rem 0; border: none; border-top: 1px solid var(--border);" />
 
 <h2>📊 O Que Dizem os Dados (Estatísticas Comprovadas)</h2>
 
-<p>A metodologia SPIN Selling foi validada em <strong>35.000 ligações de vendas</strong> em <strong>20 países</strong> ao longo de <strong>12 anos de pesquisa</strong> pela <a href="https://escolaexchange.com.br/vendas/spin-selling-e-neil-rackham-sobre-o-que-e-a-tecnica-de-vendas/" target="_blank" rel="noopener" style="color: #2563eb; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 2px; transition: all 0.2s;" onmouseover="this.style.color='#1e40af'; this.style.textDecorationThickness='2px'" onmouseout="this.style.color='#2563eb'; this.style.textDecorationThickness='1px'">Huthwaite Research Group</a>.</p>
+<p>A metodologia SPIN Selling foi validada em <strong>35.000 ligações de vendas</strong> em <strong>20 países</strong> ao longo de <strong>12 anos de pesquisa</strong> pela <a href="https://escolaexchange.com.br/vendas/spin-selling-e-neil-rackham-sobre-o-que-e-a-tecnica-de-vendas/" target="_blank" rel="noopener" style="color: var(--foreground); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 2px; transition: all 0.2s;" onmouseover="this.style.color='var(--pulso-escuro)'; this.style.textDecorationThickness='2px'" onmouseout="this.style.color='var(--foreground)'; this.style.textDecorationThickness='1px'">Huthwaite Research Group</a>.</p>
 
-<img src="/images/blog/spin-selling/spin-selling-estatisticas.svg" alt="Infográfico com estatísticas SPIN Selling: 35.000 calls analisadas, 20 países, 12 anos de pesquisa" style="max-width: 100%; height: auto; margin: 2rem 0; border-radius: 0.5rem; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);" />
+<img src="/images/blog/spin-selling/spin-selling-estatisticas.svg" alt="Infográfico com estatísticas SPIN Selling: 35.000 calls analisadas, 20 países, 12 anos de pesquisa" style="max-width: 100%; height: auto; margin: 2rem 0; border-radius: 0.5rem; box-shadow: none;" />
 
 <h3>Resultados Mensuráveis:</h3>
-<div style="overflow-x: auto; margin: 2rem 0; border-radius: 0.75rem; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);">
+<div style="overflow-x: auto; margin: 2rem 0; border-radius: 0.75rem; box-shadow: none;">
   <table style="width: 100%; border-collapse: collapse; background: white; font-size: 0.9375rem;">
     <thead>
-      <tr style="background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);">
-        <th style="padding: 1rem; text-align: left; color: white; font-weight: 600; border-bottom: 2px solid #1e40af;">Métrica</th>
-        <th style="padding: 1rem; text-align: left; color: white; font-weight: 600; border-bottom: 2px solid #1e40af;">Antes do SPIN</th>
-        <th style="padding: 1rem; text-align: left; color: white; font-weight: 600; border-bottom: 2px solid #1e40af;">Depois do SPIN</th>
-        <th style="padding: 1rem; text-align: left; color: white; font-weight: 600; border-bottom: 2px solid #1e40af;">Fonte</th>
+      <tr style="background: var(--primary);">
+        <th style="padding: 1rem; text-align: left; color: white; font-weight: 600; border-bottom: 2px solid var(--fio-forte);">Métrica</th>
+        <th style="padding: 1rem; text-align: left; color: white; font-weight: 600; border-bottom: 2px solid var(--fio-forte);">Antes do SPIN</th>
+        <th style="padding: 1rem; text-align: left; color: white; font-weight: 600; border-bottom: 2px solid var(--fio-forte);">Depois do SPIN</th>
+        <th style="padding: 1rem; text-align: left; color: white; font-weight: 600; border-bottom: 2px solid var(--fio-forte);">Fonte</th>
       </tr>
     </thead>
     <tbody>
-      <tr style="background: #f8fafc;">
-        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;"><strong>Taxa de Fechamento</strong></td>
-        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;">Baseline</td>
-        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;"><strong>+17%</strong></td>
-        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;">Huthwaite Research</td>
+      <tr style="background: var(--muted);">
+        <td style="padding: 1rem; border-bottom: 1px solid var(--border); color: var(--foreground);"><strong>Taxa de Fechamento</strong></td>
+        <td style="padding: 1rem; border-bottom: 1px solid var(--border); color: var(--foreground);">Baseline</td>
+        <td style="padding: 1rem; border-bottom: 1px solid var(--border); color: var(--foreground);"><strong>+17%</strong></td>
+        <td style="padding: 1rem; border-bottom: 1px solid var(--border); color: var(--foreground);">Huthwaite Research</td>
       </tr>
       <tr style="background: #ffffff;">
-        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;"><strong>Chances de Fechar Vendas Complexas</strong></td>
-        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;">Baseline</td>
-        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;"><strong>+53%</strong></td>
-        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;"><a href="https://www.millerheimangroup.com.br/aumente-a-taxa-de-conversao-em-vendas-b2b-com-o-metodo-spin-selling/" target="_blank" rel="noopener" style="color: #2563eb;">Miller Heiman Group</a></td>
+        <td style="padding: 1rem; border-bottom: 1px solid var(--border); color: var(--foreground);"><strong>Chances de Fechar Vendas Complexas</strong></td>
+        <td style="padding: 1rem; border-bottom: 1px solid var(--border); color: var(--foreground);">Baseline</td>
+        <td style="padding: 1rem; border-bottom: 1px solid var(--border); color: var(--foreground);"><strong>+53%</strong></td>
+        <td style="padding: 1rem; border-bottom: 1px solid var(--border); color: var(--foreground);"><a href="https://www.millerheimangroup.com.br/aumente-a-taxa-de-conversao-em-vendas-b2b-com-o-metodo-spin-selling/" target="_blank" rel="noopener" style="color: var(--foreground);">Miller Heiman Group</a></td>
       </tr>
-      <tr style="background: #f8fafc;">
-        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;"><strong>Taxa de Conversão Geral</strong></td>
-        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;">Baseline</td>
-        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;"><strong>+20%</strong></td>
-        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;"><a href="https://www.crmthink.com.br/o-que-e-spin-selling/" target="_blank" rel="noopener" style="color: #2563eb;">CRM Think</a></td>
+      <tr style="background: var(--muted);">
+        <td style="padding: 1rem; border-bottom: 1px solid var(--border); color: var(--foreground);"><strong>Taxa de Conversão Geral</strong></td>
+        <td style="padding: 1rem; border-bottom: 1px solid var(--border); color: var(--foreground);">Baseline</td>
+        <td style="padding: 1rem; border-bottom: 1px solid var(--border); color: var(--foreground);"><strong>+20%</strong></td>
+        <td style="padding: 1rem; border-bottom: 1px solid var(--border); color: var(--foreground);"><a href="https://www.crmthink.com.br/o-que-e-spin-selling/" target="_blank" rel="noopener" style="color: var(--foreground);">CRM Think</a></td>
       </tr>
       <tr style="background: #ffffff;">
-        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;"><strong>Duração do Ciclo de Vendas</strong></td>
-        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;">60-90 dias</td>
-        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;"><strong>45-60 dias</strong></td>
-        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155;"><a href="https://receitaprevisivel.com/blog/perguntas-spin-selling/" target="_blank" rel="noopener" style="color: #2563eb;">Receita Previsível</a></td>
+        <td style="padding: 1rem; border-bottom: 1px solid var(--border); color: var(--foreground);"><strong>Duração do Ciclo de Vendas</strong></td>
+        <td style="padding: 1rem; border-bottom: 1px solid var(--border); color: var(--foreground);">60-90 dias</td>
+        <td style="padding: 1rem; border-bottom: 1px solid var(--border); color: var(--foreground);"><strong>45-60 dias</strong></td>
+        <td style="padding: 1rem; border-bottom: 1px solid var(--border); color: var(--foreground);"><a href="https://receitaprevisivel.com/blog/perguntas-spin-selling/" target="_blank" rel="noopener" style="color: var(--foreground);">Receita Previsível</a></td>
       </tr>
     </tbody>
   </table>
@@ -129,26 +129,26 @@ export const post: BlogPost = {
 <li>Xerox</li>
 <li>Kodak</li>
 <li>Honeywell</li>
-<li><a href="https://meetime.com.br/blog/vendas/livro-spin-selling/" target="_blank" rel="noopener" style="color: #2563eb;">+500 empresas no Brasil</a></li>
+<li><a href="https://meetime.com.br/blog/vendas/livro-spin-selling/" target="_blank" rel="noopener" style="color: var(--foreground);">+500 empresas no Brasil</a></li>
 
-<blockquote style="background: #f8fafc; border-left: 4px solid #2563eb; padding: 1.5rem; margin: 2rem 0; border-radius: 0.5rem;">
-    <p style="font-style: italic; color: #334155; font-size: 1.125rem; line-height: 1.7;">
+<blockquote style="background: var(--muted); border-left: 4px solid var(--fio-forte); padding: 1.5rem; margin: 2rem 0; border-radius: 0.5rem;">
+    <p style="font-style: italic; color: var(--foreground); font-size: 1.125rem; line-height: 1.7;">
   O SPIN Selling transformou nossa abordagem. Antes fazíamos 'show and tell'. Agora fazemos consultoria. Nossa conversão de SQL → Proposta subiu de 32% para 51% em 4 meses.
 </p>
-    <footer style="margin-top: 1rem; font-weight: 600; color: #1e293b;">— Thiago Reis, <span style="font-weight: 400; color: #64748b;">CEO Growth Machine</span></footer>
+    <footer style="margin-top: 1rem; font-weight: 600; color: var(--foreground);">— Thiago Reis, <span style="font-weight: 400; color: var(--foreground);">CEO Growth Machine</span></footer>
   </blockquote>
 
-<hr style="margin: 3rem 0; border: none; border-top: 1px solid #e5e7eb;" />
+<hr style="margin: 3rem 0; border: none; border-top: 1px solid var(--border);" />
 
 <h2>🧠 O Que É SPIN Selling? (Conceito Atualizado para 2026)</h2>
 
 <strong>SPIN Selling</strong> é uma metodologia de vendas consultivas criada por <strong>Neil Rackham</strong> em 1988, baseada na análise de milhares de interações de vendas complexas.
 
-<img src="/images/blog/spin-selling/spin-selling-conceito-diagrama.svg" alt="Diagrama explicando SPIN Selling: 4 quadrantes com Situação, Problema, Implicação, Necessidade de Solução" style="max-width: 100%; height: auto; margin: 2rem 0; border-radius: 0.5rem; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);" />
+<img src="/images/blog/spin-selling/spin-selling-conceito-diagrama.svg" alt="Diagrama explicando SPIN Selling: 4 quadrantes com Situação, Problema, Implicação, Necessidade de Solução" style="max-width: 100%; height: auto; margin: 2rem 0; border-radius: 0.5rem; box-shadow: none;" />
 
 <h3>Definição Técnica:</h3>
 
-<div style="background: #e0e7ff; border-left: 4px solid #6366f1; padding: 1.5rem; border-radius: 0.5rem; margin: 2rem 0; color: #312e81;">
+<div style="background: var(--muted); border-left: 4px solid var(--fio-forte); padding: 1.5rem; border-radius: 0.5rem; margin: 2rem 0; color: var(--foreground);">
   SPIN Selling é uma abordagem estruturada de <strong>4 tipos de perguntas</strong> (Situação, Problema, Implicação e Necessidade de Solução) que <strong>transforma o vendedor em consultor</strong>, fazendo o cliente <strong>perceber suas próprias necessidades</strong> ao invés de receber um pitch de produto.
 </div>
 
@@ -166,17 +166,17 @@ export const post: BlogPost = {
 ✅ Uma forma de <strong>criar valor percebido</strong> antes da apresentação
 ✅ Um método para <strong>reduzir objeções</strong> antecipando implicações</p>
 
-<hr style="margin: 3rem 0; border: none; border-top: 1px solid #e5e7eb;" />
+<hr style="margin: 3rem 0; border: none; border-top: 1px solid var(--border);" />
 
 <h2>🔄 SPIN Selling vs Outras Metodologias (Comparação 2026)</h2>
 
 <p>Antes de mergulhar no SPIN, entenda onde ele se encaixa no ecossistema de vendas:</p>
 
-<img src="/images/blog/spin-selling/spin-vs-bant-gpct-challenger.svg" alt="Tabela comparativa SPIN vs BANT vs GPCT vs Challenger - quando usar cada metodologia de vendas" style="max-width: 100%; height: auto; margin: 2rem 0; border-radius: 0.5rem; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);" />
+<img src="/images/blog/spin-selling/spin-vs-bant-gpct-challenger.svg" alt="Tabela comparativa SPIN vs BANT vs GPCT vs Challenger - quando usar cada metodologia de vendas" style="max-width: 100%; height: auto; margin: 2rem 0; border-radius: 0.5rem; box-shadow: none;" />
 
 <h3>Quando NÃO Usar SPIN Selling:</h3>
 
-<div style="background: #fef3c7; border-left: 4px solid #f59e0b; padding: 1.5rem; border-radius: 0.5rem; margin: 2rem 0; color: #78350f;">
+<div style="background: var(--muted); border-left: 4px solid var(--fio-forte); padding: 1.5rem; border-radius: 0.5rem; margin: 2rem 0; color: var(--foreground);">
   1. <strong>Vendas Transacionais</strong> (ticket &lt; R$ 1.000, decisão instantânea)
   2. <strong>E-commerce B2C</strong> (compra impulsiva)
   3. <strong>Vendas Inside sem discovery</strong> (SDR fazendo apenas agendamento)
@@ -185,7 +185,7 @@ export const post: BlogPost = {
 
 <h3>Quando USAR SPIN Selling:</h3>
 
-<div style="background: #d1fae5; border-left: 4px solid #10b981; padding: 1.5rem; border-radius: 0.5rem; margin: 2rem 0; color: #064e3b;">
+<div style="background: var(--muted); border-left: 4px solid var(--fio-forte); padding: 1.5rem; border-radius: 0.5rem; margin: 2rem 0; color: var(--foreground);">
   ✅ <strong>Ciclo de vendas &gt; 30 dias</strong>
   ✅ <strong>Ticket médio &gt; R$ 5.000</strong>
   ✅ <strong>Múltiplos decisores</strong> envolvidos
@@ -193,21 +193,21 @@ export const post: BlogPost = {
   ✅ <strong>Necessidade de ROI justificado</strong> para aprovação
 </div>
 
-<hr style="margin: 3rem 0; border: none; border-top: 1px solid #e5e7eb;" />
+<hr style="margin: 3rem 0; border: none; border-top: 1px solid var(--border);" />
 
 <h2>🎯 As 4 Etapas do SPIN Selling (Com Exemplos Práticos de CRM)</h2>
 
 <p>Vamos mergulhar na metodologia usando exemplos reais de venda de CRM (como a Sirius):</p>
 
-<img src="/images/blog/spin-selling/spin-4-etapas-fluxograma.svg" alt="Fluxograma interativo das 4 etapas SPIN Selling com tempo sugerido para cada fase" style="max-width: 100%; height: auto; margin: 2rem 0; border-radius: 0.5rem; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);" />
+<img src="/images/blog/spin-selling/spin-4-etapas-fluxograma.svg" alt="Fluxograma interativo das 4 etapas SPIN Selling com tempo sugerido para cada fase" style="max-width: 100%; height: auto; margin: 2rem 0; border-radius: 0.5rem; box-shadow: none;" />
 
-<hr style="margin: 3rem 0; border: none; border-top: 1px solid #e5e7eb;" />
+<hr style="margin: 3rem 0; border: none; border-top: 1px solid var(--border);" />
 
 <h3><strong>1. Perguntas de SITUAÇÃO (S)</strong></h3>
 
 <strong>Objetivo:</strong> Coletar fatos e entender o contexto atual do cliente.
 
-<img src="/images/blog/spin-selling/spin-perguntas-situacao-exemplo.svg" alt="Exemplo de perguntas de Situação SPIN Selling aplicadas em discovery de CRM" style="max-width: 100%; height: auto; margin: 2rem 0; border-radius: 0.5rem; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);" />
+<img src="/images/blog/spin-selling/spin-perguntas-situacao-exemplo.svg" alt="Exemplo de perguntas de Situação SPIN Selling aplicadas em discovery de CRM" style="max-width: 100%; height: auto; margin: 2rem 0; border-radius: 0.5rem; box-shadow: none;" />
 
 <p>#### ⚠️ Cuidado:
 <strong>NÃO abuse</strong> dessas perguntas. Clientes experientes se irritam com interrogatórios desnecessários. Use no máximo <strong>3-5 perguntas de situação</strong> e complemente com pesquisa prévia (LinkedIn, site da empresa).</p>
@@ -229,15 +229,15 @@ export const post: BlogPost = {
 <li>"Qual é o fluxo de aprovação de proposta hoje?"</li>
 <li>"Com que frequência o time atualiza informações dos deals?"</li>
 
-<strong>Link Relacionado:</strong> Quer entender melhor as etapas do funil? Leia nosso <a href="https://siriuscrm.com.br/blog/funil-de-vendas-guia-completo" target="_blank" rel="noopener" style="color: #2563eb;">Guia Completo do Funil de Vendas</a>.
+<strong>Link Relacionado:</strong> Quer entender melhor as etapas do funil? Leia nosso <a href="https://siriuscrm.com.br/blog/funil-de-vendas-guia-completo" target="_blank" rel="noopener" style="color: var(--foreground);">Guia Completo do Funil de Vendas</a>.
 
-<hr style="margin: 3rem 0; border: none; border-top: 1px solid #e5e7eb;" />
+<hr style="margin: 3rem 0; border: none; border-top: 1px solid var(--border);" />
 
 <h3><strong>2. Perguntas de PROBLEMA (P)</strong></h3>
 
 <strong>Objetivo:</strong> Identificar dificuldades, frustrações e insatisfações específicas.
 
-<img src="/images/blog/spin-selling/spin-problem-chain-tecnica.svg" alt="Diagrama Problem Chain - técnica de exploração profunda de problemas em 3 camadas" style="max-width: 100%; height: auto; margin: 2rem 0; border-radius: 0.5rem; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);" />
+<img src="/images/blog/spin-selling/spin-problem-chain-tecnica.svg" alt="Diagrama Problem Chain - técnica de exploração profunda de problemas em 3 camadas" style="max-width: 100%; height: auto; margin: 2rem 0; border-radius: 0.5rem; box-shadow: none;" />
 
 <strong>Descobrindo Problemas Operacionais:</strong>
 <li>"Quais os principais problemas você encontra no processo de vendas atual?"</li>
@@ -281,13 +281,13 @@ export const post: BlogPost = {
 
 <strong>💰 Valor Descoberto:</strong> 5h/semana × R$ 500/h (custo executivo) = <strong>R$ 2.500/semana</strong> = <strong>R$ 10.000/mês</strong> desperdiçados.
 
-<hr style="margin: 3rem 0; border: none; border-top: 1px solid #e5e7eb;" />
+<hr style="margin: 3rem 0; border: none; border-top: 1px solid var(--border);" />
 
 <h3><strong>3. Perguntas de IMPLICAÇÃO (I)</strong></h3>
 
 <strong>Objetivo:</strong> Amplificar o custo do problema e criar urgência para mudança.
 
-<img src="/images/blog/spin-selling/spin-calculo-implicacao-formula.svg" alt="Template de cálculo de implicação: Frequência x Impacto x Tempo = Custo Total do Problema" style="max-width: 100%; height: auto; margin: 2rem 0; border-radius: 0.5rem; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);" />
+<img src="/images/blog/spin-selling/spin-calculo-implicacao-formula.svg" alt="Template de cálculo de implicação: Frequência x Impacto x Tempo = Custo Total do Problema" style="max-width: 100%; height: auto; margin: 2rem 0; border-radius: 0.5rem; box-shadow: none;" />
 
 <strong>Implicações Financeiras:</strong>
 <li>"Se esse problema continuar, qual será o impacto na receita nos próximos 6 meses?"</li>
@@ -303,20 +303,20 @@ export const post: BlogPost = {
   <strong>Custo do Problema = Frequência × Impacto × Tempo</strong>
 </FormulaBox>
 
-<blockquote style="background: #f8fafc; border-left: 4px solid #2563eb; padding: 1.5rem; margin: 2rem 0; border-radius: 0.5rem;">
-    <p style="font-style: italic; color: #334155; font-size: 1.125rem; line-height: 1.7;">
+<blockquote style="background: var(--muted); border-left: 4px solid var(--fio-forte); padding: 1.5rem; margin: 2rem 0; border-radius: 0.5rem;">
+    <p style="font-style: italic; color: var(--foreground); font-size: 1.125rem; line-height: 1.7;">
   A pergunta de implicação mais poderosa que uso: 'E se nada mudar nos próximos 12 meses?' — isso força o cliente a visualizar o custo total da inércia.
 </p>
-    <footer style="margin-top: 1rem; font-weight: 600; color: #1e293b;">— Thiago Concer, <span style="font-weight: 400; color: #64748b;">Especialista em Vendas B2B</span></footer>
+    <footer style="margin-top: 1rem; font-weight: 600; color: var(--foreground);">— Thiago Concer, <span style="font-weight: 400; color: var(--foreground);">Especialista em Vendas B2B</span></footer>
   </blockquote>
 
-<hr style="margin: 3rem 0; border: none; border-top: 1px solid #e5e7eb;" />
+<hr style="margin: 3rem 0; border: none; border-top: 1px solid var(--border);" />
 
 <h3><strong>4. Perguntas de NECESSIDADE DE SOLUÇÃO (N)</strong></h3>
 
 <strong>Objetivo:</strong> Fazer o cliente articular a solução que ELE precisa (não você empurrar).
 
-<img src="/images/blog/spin-selling/spin-vision-building-tecnica.svg" alt="Técnica Vision Building - fazer cliente co-criar solução ideal SPIN Selling" style="max-width: 100%; height: auto; margin: 2rem 0; border-radius: 0.5rem; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);" />
+<img src="/images/blog/spin-selling/spin-vision-building-tecnica.svg" alt="Técnica Vision Building - fazer cliente co-criar solução ideal SPIN Selling" style="max-width: 100%; height: auto; margin: 2rem 0; border-radius: 0.5rem; box-shadow: none;" />
 
 <strong>Explorando Benefícios:</strong>
 <li>"Se vocês tivessem total visibilidade do pipeline em tempo real, como isso mudaria sua rotina?"</li>
@@ -351,11 +351,11 @@ export const post: BlogPost = {
 
 <strong>💎 Valor Criado:</strong> O cliente acabou de <strong>quantificar o valor da solução</strong> em R$ 1,2 milhão/ano — sem você precisar "vender".
 
-<hr style="margin: 3rem 0; border: none; border-top: 1px solid #e5e7eb;" />
+<hr style="margin: 3rem 0; border: none; border-top: 1px solid var(--border);" />
 
 <h2>🗺️ Como Aplicar SPIN Selling no Discovery (Passo a Passo)</h2>
 
-<img src="/images/blog/spin-selling/spin-discovery-timeline-45min.svg" alt="Timeline discovery meeting 45 minutos com SPIN Selling - alocação de tempo por etapa" style="max-width: 100%; height: auto; margin: 2rem 0; border-radius: 0.5rem; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);" />
+<img src="/images/blog/spin-selling/spin-discovery-timeline-45min.svg" alt="Timeline discovery meeting 45 minutos com SPIN Selling - alocação de tempo por etapa" style="max-width: 100%; height: auto; margin: 2rem 0; border-radius: 0.5rem; box-shadow: none;" />
 
 <h3><strong>📅 Estrutura de Discovery Meeting (45 minutos)</strong></h3>
 
@@ -395,7 +395,7 @@ a Sirius resolve especificamente [Problema 1], [Problema 2] e [Problema 3]..."
 
 <h3><strong>📊 Checklist de Discovery Perfeito</strong></h3>
 
-<div style="background: #d1fae5; border-left: 4px solid #10b981; padding: 1.5rem; border-radius: 0.5rem; margin: 2rem 0; color: #064e3b;">
+<div style="background: var(--muted); border-left: 4px solid var(--fio-forte); padding: 1.5rem; border-radius: 0.5rem; margin: 2rem 0; color: var(--foreground);">
   - [ ] Fiz pelo menos <strong>2 perguntas de cada tipo</strong> (S, P, I, N)?
   - [ ] Quantifiquei o <strong>custo do problema</strong> em R$?
   - [ ] Identifiquei <strong>pelo menos 3 dores</strong> específicas?
@@ -405,11 +405,11 @@ a Sirius resolve especificamente [Problema 1], [Problema 2] e [Problema 3]..."
   - [ ] Defini <strong>próximos passos</strong> claros e com data?
 </div>
 
-<hr style="margin: 3rem 0; border: none; border-top: 1px solid #e5e7eb;" />
+<hr style="margin: 3rem 0; border: none; border-top: 1px solid var(--border);" />
 
 <h2>🎓 100+ Perguntas SPIN Prontas (Por Setor)</h2>
 
-<img src="/images/blog/spin-selling/spin-100-perguntas-por-setor.svg" alt="Banco de perguntas SPIN Selling categorizado por setor: B2B SaaS, E-commerce, Consultoria, Imobiliário" style="max-width: 100%; height: auto; margin: 2rem 0; border-radius: 0.5rem; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);" />
+<img src="/images/blog/spin-selling/spin-100-perguntas-por-setor.svg" alt="Banco de perguntas SPIN Selling categorizado por setor: B2B SaaS, E-commerce, Consultoria, Imobiliário" style="max-width: 100%; height: auto; margin: 2rem 0; border-radius: 0.5rem; box-shadow: none;" />
 
 <h3><strong>🏢 B2B SaaS / CRM</strong></h3>
 
@@ -465,7 +465,7 @@ a Sirius resolve especificamente [Problema 1], [Problema 2] e [Problema 3]..."
   40. Que tipo de insights você gostaria de ter que não tem hoje?<br/>
 </AccordionSection>
 
-<hr style="margin: 3rem 0; border: none; border-top: 1px solid #e5e7eb;" />
+<hr style="margin: 3rem 0; border: none; border-top: 1px solid var(--border);" />
 
 <h3><strong>🏡 Imobiliário</strong></h3>
 
@@ -507,11 +507,11 @@ a Sirius resolve especificamente [Problema 1], [Problema 2] e [Problema 3]..."
   highlight="primary"
 />
 
-<hr style="margin: 3rem 0; border: none; border-top: 1px solid #e5e7eb;" />
+<hr style="margin: 3rem 0; border: none; border-top: 1px solid var(--border);" />
 
 <h2>🛡️ Matriz de Objeções vs Argumentos</h2>
 
-<img src="/images/blog/spin-selling/spin-matriz-objecoes-completa.svg" alt="Matriz completa Objeções vs Argumentos SPIN Selling - 10 objeções comuns com diagnóstico e resposta" style="max-width: 100%; height: auto; margin: 2rem 0; border-radius: 0.5rem; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);" />
+<img src="/images/blog/spin-selling/spin-matriz-objecoes-completa.svg" alt="Matriz completa Objeções vs Argumentos SPIN Selling - 10 objeções comuns com diagnóstico e resposta" style="max-width: 100%; height: auto; margin: 2rem 0; border-radius: 0.5rem; box-shadow: none;" />
 
 <ConversationExample>
   <Message speaker="Cliente" type="objection">
@@ -525,76 +525,76 @@ a Sirius resolve especificamente [Problema 1], [Problema 2] e [Problema 3]..."
   </Message>
 </ConversationExample>
 
-<hr style="margin: 3rem 0; border: none; border-top: 1px solid #e5e7eb;" />
+<hr style="margin: 3rem 0; border: none; border-top: 1px solid var(--border);" />
 
 <h2>💡 7 Erros Fatais ao Aplicar SPIN Selling (Evite!)</h2>
 
-<img src="/images/blog/spin-selling/spin-7-erros-fatais-infografico.svg" alt="Infográfico 7 erros fatais ao aplicar SPIN Selling - o que NÃO fazer em discovery" style="max-width: 100%; height: auto; margin: 2rem 0; border-radius: 0.5rem; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);" />
+<img src="/images/blog/spin-selling/spin-7-erros-fatais-infografico.svg" alt="Infográfico 7 erros fatais ao aplicar SPIN Selling - o que NÃO fazer em discovery" style="max-width: 100%; height: auto; margin: 2rem 0; border-radius: 0.5rem; box-shadow: none;" />
 
-<div style="background: #fef2f2; border-left: 4px solid #ef4444; padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
-    <h4 style="font-size: 1.125rem; font-weight: 700; color: #991b1b; margin: 0 0 1rem;">❌ Erro #1: Interrogatório sem Rapport</h4>
-    <div style="color: #7f1d1d;">
+<div style="background: var(--muted); border-left: 4px solid var(--pulso); padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
+    <h4 style="font-size: 1.125rem; font-weight: 700; color: var(--foreground); margin: 0 0 1rem;">❌ Erro #1: Interrogatório sem Rapport</h4>
+    <div style="color: var(--foreground);">
   <strong>O Problema:</strong> Começar com perguntas agressivas sem criar conexão humana.<br/>
   <strong>💊 Solução:</strong> Sempre comece com <strong>contextualização + elogio genuíno</strong> antes das perguntas.
 </div>
   </div>
 
-<div style="background: #fef2f2; border-left: 4px solid #ef4444; padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
-    <h4 style="font-size: 1.125rem; font-weight: 700; color: #991b1b; margin: 0 0 1rem;">❌ Erro #2: Excesso de Perguntas de Situação</h4>
-    <div style="color: #7f1d1d;">
+<div style="background: var(--muted); border-left: 4px solid var(--pulso); padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
+    <h4 style="font-size: 1.125rem; font-weight: 700; color: var(--foreground); margin: 0 0 1rem;">❌ Erro #2: Excesso de Perguntas de Situação</h4>
+    <div style="color: var(--foreground);">
   <strong>O Problema:</strong> Passar 30 minutos coletando dados que você poderia ter pesquisado no LinkedIn.<br/>
   <strong>Regra de Ouro:</strong> Use no máximo <strong>3-5 perguntas de situação</strong>. O resto você pesquisa antes.<br/>
   <strong>💊 Solução:</strong> Faça a lição de casa. Use situação apenas para confirmar/atualizar dados.
 </div>
   </div>
 
-<div style="background: #fef2f2; border-left: 4px solid #ef4444; padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
-    <h4 style="font-size: 1.125rem; font-weight: 700; color: #991b1b; margin: 0 0 1rem;">❌ Erro #3: Parar no Primeiro Problema</h4>
-    <div style="color: #7f1d1d;">
+<div style="background: var(--muted); border-left: 4px solid var(--pulso); padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
+    <h4 style="font-size: 1.125rem; font-weight: 700; color: var(--foreground); margin: 0 0 1rem;">❌ Erro #3: Parar no Primeiro Problema</h4>
+    <div style="color: var(--foreground);">
   <strong>O Problema:</strong> Identificar um problema superficial e partir para apresentação.<br/>
   <strong>💊 Solução:</strong> Sempre faça <strong>pelo menos 3 camadas</strong> de perguntas sobre cada problema.
 </div>
   </div>
 
-<div style="background: #fef2f2; border-left: 4px solid #ef4444; padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
-    <h4 style="font-size: 1.125rem; font-weight: 700; color: #991b1b; margin: 0 0 1rem;">❌ Erro #4: Não Quantificar o Problema</h4>
-    <div style="color: #7f1d1d;">
+<div style="background: var(--muted); border-left: 4px solid var(--pulso); padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
+    <h4 style="font-size: 1.125rem; font-weight: 700; color: var(--foreground); margin: 0 0 1rem;">❌ Erro #4: Não Quantificar o Problema</h4>
+    <div style="color: var(--foreground);">
   <strong>O Problema:</strong> Deixar o problema no nível abstrato ("é ruim", "é chato").<br/>
   <strong>💊 Solução:</strong> <strong>Sempre quantifique</strong> usando frequência × impacto × tempo.
 </div>
   </div>
 
-<div style="background: #fef2f2; border-left: 4px solid #ef4444; padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
-    <h4 style="font-size: 1.125rem; font-weight: 700; color: #991b1b; margin: 0 0 1rem;">❌ Erro #5: Fazer SPIN como Checklist</h4>
-    <div style="color: #7f1d1d;">
+<div style="background: var(--muted); border-left: 4px solid var(--pulso); padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
+    <h4 style="font-size: 1.125rem; font-weight: 700; color: var(--foreground); margin: 0 0 1rem;">❌ Erro #5: Fazer SPIN como Checklist</h4>
+    <div style="color: var(--foreground);">
   <strong>O Problema:</strong> Seguir rigidamente S→P→I→N sem adaptar ao fluxo da conversa.<br/>
   <strong>Como Deve Ser:</strong> SPIN é um <strong>framework, não script</strong>. A conversa deve fluir naturalmente.<br/>
   <strong>💊 Solução:</strong> Use SPIN como <strong>mapa mental</strong>, não roteiro rígido.
 </div>
   </div>
 
-<div style="background: #fef2f2; border-left: 4px solid #ef4444; padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
-    <h4 style="font-size: 1.125rem; font-weight: 700; color: #991b1b; margin: 0 0 1rem;">❌ Erro #6: Timing Errado de Implicação</h4>
-    <div style="color: #7f1d1d;">
+<div style="background: var(--muted); border-left: 4px solid var(--pulso); padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
+    <h4 style="font-size: 1.125rem; font-weight: 700; color: var(--foreground); margin: 0 0 1rem;">❌ Erro #6: Timing Errado de Implicação</h4>
+    <div style="color: var(--foreground);">
   <strong>O Problema:</strong> Ir direto para implicações antes de entender o problema.<br/>
   <strong>💊 Solução:</strong> Explore <strong>pelo menos 2 problemas concretos</strong> antes de ir para implicação.
 </div>
   </div>
 
-<div style="background: #fef2f2; border-left: 4px solid #ef4444; padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
-    <h4 style="font-size: 1.125rem; font-weight: 700; color: #991b1b; margin: 0 0 1rem;">❌ Erro #7: Pular Perguntas de Necessidade</h4>
-    <div style="color: #7f1d1d;">
+<div style="background: var(--muted); border-left: 4px solid var(--pulso); padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
+    <h4 style="font-size: 1.125rem; font-weight: 700; color: var(--foreground); margin: 0 0 1rem;">❌ Erro #7: Pular Perguntas de Necessidade</h4>
+    <div style="color: var(--foreground);">
   <strong>O Problema:</strong> Pular para demo/pitch sem fazer perguntas de Necessidade.<br/>
   <strong>Consequência:</strong> Você "empurra" solução. Cliente resiste.<br/>
   <strong>💊 Solução:</strong> <strong>Sempre</strong> faça 3-5 perguntas de Necessidade antes de apresentar.
 </div>
   </div>
 
-<hr style="margin: 3rem 0; border: none; border-top: 1px solid #e5e7eb;" />
+<hr style="margin: 3rem 0; border: none; border-top: 1px solid var(--border);" />
 
 <h2>🧩 Cases de Sucesso: SPIN Selling na Prática</h2>
 
-<img src="/images/blog/spin-selling/spin-cases-sucesso-overview.svg" alt="3 casos de sucesso SPIN Selling: Growth Machine, IBM, Cliente Sirius CRM - resultados mensuráveis" style="max-width: 100%; height: auto; margin: 2rem 0; border-radius: 0.5rem; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);" />
+<img src="/images/blog/spin-selling/spin-cases-sucesso-overview.svg" alt="3 casos de sucesso SPIN Selling: Growth Machine, IBM, Cliente Sirius CRM - resultados mensuráveis" style="max-width: 100%; height: auto; margin: 2rem 0; border-radius: 0.5rem; box-shadow: none;" />
 
 <CaseStudy
   company="Growth Machine"
@@ -624,7 +624,7 @@ a Sirius resolve especificamente [Problema 1], [Problema 2] e [Problema 3]..."
   - ✅ Receita adicional: <strong>R$ 340k/trimestre</strong><br/>
 </CaseStudy>
 
-<hr style="margin: 3rem 0; border: none; border-top: 1px solid #e5e7eb;" />
+<hr style="margin: 3rem 0; border: none; border-top: 1px solid var(--border);" />
 
 <h2>💬 Perguntas Frequentes (FAQ)</h2>
 
@@ -653,7 +653,7 @@ a Sirius resolve especificamente [Problema 1], [Problema 2] e [Problema 3]..."
   </FAQ>
 </FAQAccordion>
 
-<hr style="margin: 3rem 0; border: none; border-top: 1px solid #e5e7eb;" />
+<hr style="margin: 3rem 0; border: none; border-top: 1px solid var(--border);" />
 
 <h2>📖 Resumo Executivo (TL;DR)</h2>
 
@@ -667,10 +667,10 @@ a Sirius resolve especificamente [Problema 1], [Problema 2] e [Problema 3]..."
   - Cliente articula suas próprias necessidades (menos resistência)<br/>
 
 <strong>Próximo Passo:</strong>
-  <a href="/downloads/spin-selling/kit-spin-completo.html" target="_blank" rel="noopener" style="color: #2563eb; text-decoration: underline;">Baixe o Kit SPIN Completo</a> e aplique na próxima discovery.
+  <a href="/downloads/spin-selling/kit-spin-completo.html" target="_blank" rel="noopener" style="color: var(--foreground); text-decoration: underline;">Baixe o Kit SPIN Completo</a> e aplique na próxima discovery.
 </SummaryBox>
 
-<hr style="margin: 3rem 0; border: none; border-top: 1px solid #e5e7eb;" />
+<hr style="margin: 3rem 0; border: none; border-top: 1px solid var(--border);" />
 
 <h2>🏆 Conclusão: SPIN Selling é Seu Diferencial Competitivo</h2>
 
@@ -683,14 +683,14 @@ a Sirius resolve especificamente [Problema 1], [Problema 2] e [Problema 3]..."
 </BenefitsList>
 
 <FinalCTASteps>
-  1. <strong><a href="/downloads/spin-selling/kit-spin-completo.html" target="_blank" rel="noopener" style="color: #2563eb; text-decoration: underline;">Baixe o Kit SPIN Completo</a></strong> (5 min)<br/>
+  1. <strong><a href="/downloads/spin-selling/kit-spin-completo.html" target="_blank" rel="noopener" style="color: var(--foreground); text-decoration: underline;">Baixe o Kit SPIN Completo</a></strong> (5 min)<br/>
   2. <strong>Crie seu banco de 40 perguntas</strong> (30 min)<br/>
   3. <strong>Faça 1 role-play</strong> com colega (30 min)<br/>
   4. <strong>Aplique na próxima discovery</strong> (essa semana)<br/>
-  5. <strong><a href="https://siriuscrm.com.br/register?trial=spin-selling" target="_blank" rel="noopener" style="color: #2563eb; text-decoration: underline;">Teste Sirius CRM 14 dias grátis</a></strong> (opcional)<br/>
+  5. <strong><a href="https://siriuscrm.com.br/register?trial=spin-selling" target="_blank" rel="noopener" style="color: var(--foreground); text-decoration: underline;">Teste Sirius CRM 14 dias grátis</a></strong> (opcional)<br/>
 </FinalCTASteps>
 
-<hr style="margin: 3rem 0; border: none; border-top: 1px solid #e5e7eb;" />
+<hr style="margin: 3rem 0; border: none; border-top: 1px solid var(--border);" />
 
 <strong>Última Atualização:</strong> 10 de Janeiro de 2026
 <strong>Autor:</strong> Equipe Sirius CRM
@@ -709,8 +709,8 @@ a Sirius resolve especificamente [Problema 1], [Problema 2] e [Problema 3]..."
   excerptEn: 'Learn how SPIN Selling increases conversion in complex B2B sales. Complete guide with 100+ practical questions, objection matrix, and real case studies.',
   keywordsEn: ['spin selling', 'spin selling guide 2026', 'b2b consultative selling', 'spin selling questions', 'complex sales methodology'],
   contentEn: `
-<div style="background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%); border-left: 4px solid #0284c7; padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
-    <p style="font-size: 1.125rem; font-weight: 600; color: #0c4a6e; margin-bottom: 0.5rem;">🎧 Listen to this article (15 min) | Great for commuting</p>
+<div style="background: var(--muted); border-left: 4px solid var(--fio-forte); padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
+    <p style="font-size: 1.125rem; font-weight: 600; color: var(--foreground); margin-bottom: 0.5rem;">🎧 Listen to this article (15 min) | Great for commuting</p>
     <audio controls style="width: 100%; margin-top: 0.75rem;">
       <source src="/audio/spin-selling-guia-completo.mp3" type="audio/mpeg">
       Your browser does not support the audio element.
@@ -723,7 +723,7 @@ a Sirius resolve especificamente [Problema 1], [Problema 2] e [Problema 3]..."
 
   <div class="callout-stat">
     <p><strong>📊 Research Data</strong></p>
-    <p style="font-size: 3rem; font-weight: 800; color: #2563eb; margin: 1rem 0; line-height: 1;">53%</p>
+    <p style="font-size: 3rem; font-weight: 800; color: var(--foreground); margin: 1rem 0; line-height: 1;">53%</p>
     <p>increase in conversion for sales reps trained in SPIN Selling vs untrained reps, according to <strong>Huthwaite International research (2024)</strong>.</p>
   </div>
 
@@ -838,17 +838,17 @@ a Sirius resolve especificamente [Problema 1], [Problema 2] e [Problema 3]..."
     <li><strong>Need-Payoff tracking:</strong> Capture the customer's stated value verbatim — this becomes the personalized proposal opening</li>
   </ul>
 
-  <div style="background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); border-left: 4px solid #2563eb; padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
-    <p style="font-weight: 700; color: #1e40af;">Want to implement SPIN Selling in your CRM?</p>
-    <p style="color: #1e40af; margin: 0.5rem 0 1rem;">Sirius CRM includes SPIN question templates, deal stage automations, and AI coaching built in.</p>
-    <a href="/en/register" style="background: #2563eb; color: white; padding: 0.75rem 1.5rem; border-radius: 0.5rem; font-weight: 600; text-decoration: none; display: inline-block;">Try Free for 14 Days →</a>
+  <div style="background: var(--muted); border-left: 4px solid var(--fio-forte); padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
+    <p style="font-weight: 700; color: var(--foreground);">Want to implement SPIN Selling in your CRM?</p>
+    <p style="color: var(--foreground); margin: 0.5rem 0 1rem;">Sirius CRM includes SPIN question templates, deal stage automations, and AI coaching built in.</p>
+    <a href="/en/register" style="background: var(--primary); color: white; padding: 0.75rem 1.5rem; border-radius: 0.5rem; font-weight: 600; text-decoration: none; display: inline-block;">Try Free for 14 Days →</a>
   </div>
 
   <h2>SPIN Selling vs BANT vs Challenger: Which Framework Wins?</h2>
 
   <table style="width: 100%; border-collapse: collapse; margin: 2rem 0; font-size: 0.9rem;">
     <thead>
-      <tr style="background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%); color: white;">
+      <tr style="background: var(--primary); color: white;">
         <th style="padding: 1rem; text-align: left;">Framework</th>
         <th style="padding: 1rem; text-align: left;">Best For</th>
         <th style="padding: 1rem; text-align: left;">Core Mechanism</th>
@@ -856,29 +856,29 @@ a Sirius resolve especificamente [Problema 1], [Problema 2] e [Problema 3]..."
       </tr>
     </thead>
     <tbody>
-      <tr style="background: #f8fafc;">
-        <td style="padding: 0.875rem; border: 1px solid #e2e8f0;"><strong>SPIN Selling</strong></td>
-        <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">Complex B2B, long cycle</td>
-        <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">Diagnostic questioning</td>
-        <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">Slow for transactional deals</td>
+      <tr style="background: var(--muted);">
+        <td style="padding: 0.875rem; border: 1px solid var(--border);"><strong>SPIN Selling</strong></td>
+        <td style="padding: 0.875rem; border: 1px solid var(--border);">Complex B2B, long cycle</td>
+        <td style="padding: 0.875rem; border: 1px solid var(--border);">Diagnostic questioning</td>
+        <td style="padding: 0.875rem; border: 1px solid var(--border);">Slow for transactional deals</td>
       </tr>
       <tr>
-        <td style="padding: 0.875rem; border: 1px solid #e2e8f0;"><strong>BANT</strong></td>
-        <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">Lead qualification</td>
-        <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">Budget/Authority/Need/Timeline scoring</td>
-        <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">Doesn't develop latent needs</td>
+        <td style="padding: 0.875rem; border: 1px solid var(--border);"><strong>BANT</strong></td>
+        <td style="padding: 0.875rem; border: 1px solid var(--border);">Lead qualification</td>
+        <td style="padding: 0.875rem; border: 1px solid var(--border);">Budget/Authority/Need/Timeline scoring</td>
+        <td style="padding: 0.875rem; border: 1px solid var(--border);">Doesn't develop latent needs</td>
       </tr>
-      <tr style="background: #f8fafc;">
-        <td style="padding: 0.875rem; border: 1px solid #e2e8f0;"><strong>Challenger Sale</strong></td>
-        <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">Enterprise, status-quo disruption</td>
-        <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">Teach-Tailor-Take Control</td>
-        <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">Requires senior reps</td>
+      <tr style="background: var(--muted);">
+        <td style="padding: 0.875rem; border: 1px solid var(--border);"><strong>Challenger Sale</strong></td>
+        <td style="padding: 0.875rem; border: 1px solid var(--border);">Enterprise, status-quo disruption</td>
+        <td style="padding: 0.875rem; border: 1px solid var(--border);">Teach-Tailor-Take Control</td>
+        <td style="padding: 0.875rem; border: 1px solid var(--border);">Requires senior reps</td>
       </tr>
       <tr>
-        <td style="padding: 0.875rem; border: 1px solid #e2e8f0;"><strong>Sandler</strong></td>
-        <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">High-pressure environments</td>
-        <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">Pain-focused, equal business stature</td>
-        <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">Culture-dependent</td>
+        <td style="padding: 0.875rem; border: 1px solid var(--border);"><strong>Sandler</strong></td>
+        <td style="padding: 0.875rem; border: 1px solid var(--border);">High-pressure environments</td>
+        <td style="padding: 0.875rem; border: 1px solid var(--border);">Pain-focused, equal business stature</td>
+        <td style="padding: 0.875rem; border: 1px solid var(--border);">Culture-dependent</td>
       </tr>
     </tbody>
   </table>
@@ -909,12 +909,12 @@ a Sirius resolve especificamente [Problema 1], [Problema 2] e [Problema 3]..."
     Create a custom field or note template in your CRM with S/P/I/N sections. After each call, log the key responses in the appropriate category. This creates a "SPIN profile" for each deal that informs your proposal, handles objections predictively, and gives managers visibility into coaching opportunities.
   </p>
 
-  <hr style="margin: 2rem 0; border: none; border-top: 1px solid #e2e8f0;" />
-  <p style="font-size: 0.85rem; color: #64748b;">
+  <hr style="margin: 2rem 0; border: none; border-top: 1px solid var(--border);" />
+  <p style="font-size: 0.85rem; color: var(--foreground);">
     <strong>Last Updated:</strong> January 10, 2026<br/>
     <strong>Author:</strong> Sirius CRM Team<br/>
     <strong>Reading Time:</strong> 25 minutes
   </p>
-  <p style="font-size: 0.85rem; color: #64748b;"><strong>#SPINSelling #B2BSales #ConsultativeSales #CRM #SiriusCRM</strong></p>
+  <p style="font-size: 0.85rem; color: var(--foreground);"><strong>#SPINSelling #B2BSales #ConsultativeSales #CRM #SiriusCRM</strong></p>
   `,
 }

@@ -53,11 +53,9 @@ export function BlogIndex({
             <section className="container mx-auto px-4 pt-24 sm:pt-32 pb-16 overflow-x-clip">
                 <div className="mx-auto max-w-4xl text-center">
                     <div className="relative">
-                        {/* Decorative gradient blur */}
-                        <div className="absolute -top-20 left-1/2 -translate-x-1/2 w-150 h-150 bg-linear-to-r from-blue-500/20 via-purple-500/20 to-pink-500/20 rounded-full blur-3xl -z-10" />
 
                         {/* pb-2 + mb-4 (was mb-6): bg-clip-text only paints inside the box, and leading 1 cut the "g" */}
-                        <h1 className="text-5xl sm:text-6xl font-bold tracking-tight bg-linear-to-br from-foreground via-foreground/90 to-foreground/70 bg-clip-text text-transparent pb-2 mb-4">
+                        <h1 className="text-5xl sm:text-6xl font-bold tracking-tight pb-2 mb-4">
                             {t('hero.title')}
                         </h1>
                         <p className="text-xl leading-8 text-muted-foreground max-w-2xl mx-auto">
@@ -110,7 +108,7 @@ export function BlogIndex({
                 <section className="container mx-auto px-4 py-16">
                     <div className="mb-8">
                         <h2 className="text-2xl font-semibold mb-2">{t('featured.label')}</h2>
-                        <div className="h-px bg-linear-to-r from-primary via-primary/50 to-transparent" />
+                        <div className="h-px" />
                     </div>
 
                     <Link href={`/blog/${featuredPost.slug}`} className="block group">
@@ -169,7 +167,7 @@ export function BlogIndex({
                 <section className="container mx-auto px-4 py-16">
                     <div className="mb-12">
                         <h2 className="text-2xl font-semibold mb-2">{t('recent.label')}</h2>
-                        <div className="h-px bg-linear-to-r from-primary via-primary/50 to-transparent" />
+                        <div className="h-px" />
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -178,8 +176,6 @@ export function BlogIndex({
                             <div key={post.slug}>
                                 <Link href={`/blog/${post.slug}`} className="block h-full group">
                                     <Card className="h-full flex flex-col relative overflow-hidden border-border/50 bg-card hover:shadow-2xl hover:shadow-primary/10 hover:-translate-y-2 transition-all duration-500 ease-out rounded-2xl p-6">
-                                        {/* Animated border gradient */}
-                                        <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-linear-to-r from-blue-500/20 via-purple-500/20 to-pink-500/20 blur-xl -z-10" />
 
                                         {/* Thumbnail */}
                                         <div className="relative aspect-video w-full rounded-xl overflow-hidden mb-4">

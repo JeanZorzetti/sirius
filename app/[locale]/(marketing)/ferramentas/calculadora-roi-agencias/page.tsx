@@ -32,18 +32,18 @@ export async function generateMetadata({
 
 export default function CalculadoraAgenciasPage() {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-zinc-50 to-white dark:from-zinc-950 dark:to-zinc-900">
+    <div className="min-h-screen">
       {/* Header com Logo */}
-      <header className="border-b bg-white/80 dark:bg-zinc-950/80 backdrop-blur-sm sticky top-0 z-40">
+      <header className="border-b bg-white/80 backdrop-blur-sm sticky top-0 z-40">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <Sparkles className="h-8 w-8 text-purple-600" />
+              <Sparkles className="h-8 w-8 text-foreground" />
               <span className="text-xl font-bold">Sirius CRM</span>
             </div>
             <a
               href="/vendas-automaticas"
-              className="text-sm font-medium text-purple-600 hover:text-purple-700"
+              className="text-sm font-medium text-foreground hover:text-destaque"
             >
               Conheça o Sirius →
             </a>
@@ -54,12 +54,12 @@ export default function CalculadoraAgenciasPage() {
       {/* Hero Section */}
       <section className="container mx-auto px-4 py-12 md:py-20">
         <div className="max-w-4xl mx-auto text-center mb-12">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-purple-100 dark:bg-purple-950 text-purple-700 dark:text-purple-300 text-sm font-medium mb-6">
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded bg-muted text-foreground text-sm font-medium mb-6">
             <Sparkles className="h-4 w-4" />
             Ferramentas Gratuitas para Agências
           </div>
 
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
             Quanto Faturamento Sua Agência Perde por Desorganização?
           </h1>
 
@@ -71,11 +71,11 @@ export default function CalculadoraAgenciasPage() {
           {/* Social Proof */}
           <div className="flex items-center justify-center gap-8 text-sm text-muted-foreground">
             <div className="flex items-center gap-2">
-              <Users className="h-4 w-4 text-purple-600" />
+              <Users className="h-4 w-4 text-foreground" />
               <span>+380 agências usando</span>
             </div>
             <div className="flex items-center gap-2">
-              <TrendingUp className="h-4 w-4 text-green-600" />
+              <TrendingUp className="h-4 w-4 text-foreground" />
               <span>47% mais propostas fechadas</span>
             </div>
           </div>
@@ -89,7 +89,7 @@ export default function CalculadoraAgenciasPage() {
       </section>
 
       {/* Benefícios Específicos para Agências */}
-      <section className="bg-gradient-to-b from-purple-50 to-white dark:from-purple-950/20 dark:to-zinc-900 py-20">
+      <section className="py-20">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
             <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">
@@ -97,32 +97,32 @@ export default function CalculadoraAgenciasPage() {
             </h2>
 
             <div className="grid md:grid-cols-2 gap-6">
-              <div className="bg-white dark:bg-zinc-900 p-6 rounded-xl border">
-                <CheckCircle2 className="h-8 w-8 text-green-600 mb-4" />
+              <div className="bg-white p-6 rounded-xl border">
+                <CheckCircle2 className="h-8 w-8 text-foreground mb-4" />
                 <h3 className="text-xl font-bold mb-2">Pipeline de Propostas</h3>
                 <p className="text-muted-foreground">
                   Gerencie todas as propostas comerciais em um único lugar. Da descoberta ao fechamento, sem perder nenhum lead.
                 </p>
               </div>
 
-              <div className="bg-white dark:bg-zinc-900 p-6 rounded-xl border">
-                <CheckCircle2 className="h-8 w-8 text-green-600 mb-4" />
+              <div className="bg-white p-6 rounded-xl border">
+                <CheckCircle2 className="h-8 w-8 text-foreground mb-4" />
                 <h3 className="text-xl font-bold mb-2">Qualificação de Leads</h3>
                 <p className="text-muted-foreground">
                   Identifique rapidamente quais leads têm fit com sua agência. Foque energia nos prospects certos.
                 </p>
               </div>
 
-              <div className="bg-white dark:bg-zinc-900 p-6 rounded-xl border">
-                <CheckCircle2 className="h-8 w-8 text-green-600 mb-4" />
+              <div className="bg-white p-6 rounded-xl border">
+                <CheckCircle2 className="h-8 w-8 text-foreground mb-4" />
                 <h3 className="text-xl font-bold mb-2">Histórico de Interações</h3>
                 <p className="text-muted-foreground">
                   Todas as reuniões, apresentações e negociações registradas. Nunca mais perca contexto numa conversa.
                 </p>
               </div>
 
-              <div className="bg-white dark:bg-zinc-900 p-6 rounded-xl border">
-                <CheckCircle2 className="h-8 w-8 text-green-600 mb-4" />
+              <div className="bg-white p-6 rounded-xl border">
+                <CheckCircle2 className="h-8 w-8 text-foreground mb-4" />
                 <h3 className="text-xl font-bold mb-2">Métricas Comerciais</h3>
                 <p className="text-muted-foreground">
                   Ticket médio, ciclo de venda, taxa de conversão por origem. Dados reais para tomar decisões melhores.
@@ -135,9 +135,9 @@ export default function CalculadoraAgenciasPage() {
 
       {/* Caso de Uso Real */}
       <section className="container mx-auto px-4 py-20">
-        <div className="max-w-3xl mx-auto bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-950/20 dark:to-pink-950/20 p-8 md:p-12 rounded-2xl border">
+        <div className="max-w-3xl mx-auto p-8 md:p-12 rounded-2xl border">
           <div className="flex items-start gap-4 mb-6">
-            <div className="bg-purple-600 text-white p-3 rounded-lg">
+            <div className="bg-primary text-white p-3 rounded-lg">
               <Sparkles className="h-6 w-6" />
             </div>
             <div>
@@ -163,7 +163,7 @@ export default function CalculadoraAgenciasPage() {
           </h2>
 
           <div className="space-y-6">
-            <div className="bg-white dark:bg-zinc-900 p-6 rounded-xl border-l-4 border-red-500">
+            <div className="bg-white p-6 rounded-xl border-l-4 border-border">
               <h3 className="text-xl font-bold mb-2">1. Propostas esquecidas</h3>
               <p className="text-muted-foreground">
                 Cliente pediu proposta, você enviou, mas não fez follow-up. Uma semana depois ele fechou com o concorrente.
@@ -171,7 +171,7 @@ export default function CalculadoraAgenciasPage() {
               </p>
             </div>
 
-            <div className="bg-white dark:bg-zinc-900 p-6 rounded-xl border-l-4 border-orange-500">
+            <div className="bg-white p-6 rounded-xl border-l-4 border-border">
               <h3 className="text-xl font-bold mb-2">2. Leads mal qualificados</h3>
               <p className="text-muted-foreground">
                 Time comercial gasta tempo com leads que não têm fit ou budget. Enquanto isso, oportunidades reais ficam esperando.
@@ -179,7 +179,7 @@ export default function CalculadoraAgenciasPage() {
               </p>
             </div>
 
-            <div className="bg-white dark:bg-zinc-900 p-6 rounded-xl border-l-4 border-yellow-500">
+            <div className="bg-white p-6 rounded-xl border-l-4 border-border">
               <h3 className="text-xl font-bold mb-2">3. Processo não escalável</h3>
               <p className="text-muted-foreground">
                 Cada vendedor tem seu próprio método. Impossível replicar o que funciona ou identificar gargalos.
@@ -201,7 +201,7 @@ export default function CalculadoraAgenciasPage() {
           </p>
           <a
             href="/vendas-automaticas?origem=calc-agencias"
-            className="inline-flex items-center justify-center px-8 py-4 text-lg font-medium rounded-xl bg-gradient-to-r from-purple-600 to-pink-600 text-white hover:from-purple-700 hover:to-pink-700 transition-all shadow-lg hover:shadow-xl"
+            className="inline-flex items-center justify-center px-8 py-4 text-lg font-medium rounded-xl bg-primary text-primary-foreground hover:bg-destaque transition-all hover:shadow-xl"
           >
             Começar Grátis Agora
           </a>

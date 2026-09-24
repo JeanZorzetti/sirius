@@ -19,8 +19,8 @@ export const post: BlogPost = {
         A realidade é que o LinkedIn gratuito, combinado com estratégia correta, entrega resultados sólidos para vendedores B2B. Neste guia completo, você vai aprender os filtros avançados que poucos vendedores conhecem, como usar o Social Selling Index como guia, a estrutura exata da mensagem de conexão que converte, a sequência de follow-up que não parece spam e como integrar os leads do LinkedIn diretamente no <a href="/">Sirius CRM</a>.
       </p>
 
-      <div class="not-prose" style="background: #1e293b; padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
-        <p style="margin: 0 0 0.75rem; font-weight: 700; font-size: 1.05rem; color: #38bdf8;">⚡ TL;DR — Resposta Rápida</p>
+      <div class="not-prose" style="background: var(--primary); padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
+        <p style="margin: 0 0 0.75rem; font-weight: 700; font-size: 1.05rem; color: var(--primary-foreground);">⚡ TL;DR — Resposta Rápida</p>
         <ul style="margin: 0; padding-left: 1.25rem; line-height: 2; color: #ffffff;">
           <li>LinkedIn gratuito tem filtros de busca suficientes para prospecção B2B eficaz <strong>sem pagar pelo Sales Navigator</strong></li>
           <li>O <strong>Social Selling Index (SSI)</strong> acima de 70 aumenta o alcance orgânico e a taxa de resposta</li>
@@ -81,22 +81,22 @@ export const post: BlogPost = {
 
       <h3>Estrutura da mensagem de conexão que funciona</h3>
 
-      <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 0.75rem; padding: 1.5rem; margin: 1.5rem 0; font-family: monospace; font-size: 0.9rem; line-height: 1.8;">
-        <p style="margin: 0; color: #64748b;"><strong>Fórmula:</strong> [Gatilho de personalização] + [Conexão de relevância] + [Pedido simples]</p>
+      <div style="background: var(--muted); border: 1px solid var(--border); border-radius: 0.75rem; padding: 1.5rem; margin: 1.5rem 0; font-family: monospace; font-size: 0.9rem; line-height: 1.8;">
+        <p style="margin: 0; color: var(--foreground);"><strong>Fórmula:</strong> [Gatilho de personalização] + [Conexão de relevância] + [Pedido simples]</p>
         <br/>
-        <p style="margin: 0; color: #1e293b;"><strong>Exemplo 1 — Baseada em post:</strong></p>
-        <p style="margin: 0; color: #1e293b;">"[Nome], vi seu post sobre gestão de times de vendas remotos — o ponto sobre cadência de rituais semanais foi exatamente o que a gente implementou aqui. Conexão?"</p>
+        <p style="margin: 0; color: var(--foreground);"><strong>Exemplo 1 — Baseada em post:</strong></p>
+        <p style="margin: 0; color: var(--foreground);">"[Nome], vi seu post sobre gestão de times de vendas remotos — o ponto sobre cadência de rituais semanais foi exatamente o que a gente implementou aqui. Conexão?"</p>
         <br/>
-        <p style="margin: 0; color: #1e293b;"><strong>Exemplo 2 — Baseada em empresa:</strong></p>
-        <p style="margin: 0; color: #1e293b;">"[Nome], acompanho o crescimento da [Empresa] no segmento de distribuição. Trabalho com empresas do setor e queria entender melhor os desafios que vocês estão navigando. Faz sentido conectar?"</p>
+        <p style="margin: 0; color: var(--foreground);"><strong>Exemplo 2 — Baseada em empresa:</strong></p>
+        <p style="margin: 0; color: var(--foreground);">"[Nome], acompanho o crescimento da [Empresa] no segmento de distribuição. Trabalho com empresas do setor e queria entender melhor os desafios que vocês estão navigando. Faz sentido conectar?"</p>
         <br/>
-        <p style="margin: 0; color: #1e293b;"><strong>Exemplo 3 — Baseada em contato mútuo:</strong></p>
-        <p style="margin: 0; color: #1e293b;">"[Nome], somos conexão em comum com o [Fulano] da [Empresa X]. Atuo com [setor] e acho que podemos trocar experiências úteis para os dois lados. Aceita a conexão?"</p>
+        <p style="margin: 0; color: var(--foreground);"><strong>Exemplo 3 — Baseada em contato mútuo:</strong></p>
+        <p style="margin: 0; color: var(--foreground);">"[Nome], somos conexão em comum com o [Fulano] da [Empresa X]. Atuo com [setor] e acho que podemos trocar experiências úteis para os dois lados. Aceita a conexão?"</p>
       </div>
 
       <div class="callout-stat">
         <p><strong>📊 Taxa de aceite por tipo de mensagem</strong></p>
-        <p style="font-size: 3rem; font-weight: 800; color: #2563eb; margin: 1rem 0; line-height: 1;">3x</p>
+        <p style="font-size: 3rem; font-weight: 800; color: var(--foreground); margin: 1rem 0; line-height: 1;">3x</p>
         <p>Mensagens personalizadas com referência específica ao destinatário têm taxa de aceite 3x maior que mensagens genéricas ou pedidos sem nota. Fonte: LinkedIn Marketing Solutions Benchmark 2025.</p>
       </div>
 
@@ -108,52 +108,52 @@ export const post: BlogPost = {
 
       <table style="width: 100%; border-collapse: collapse; margin: 2rem 0;">
         <thead>
-          <tr style="background: #f8fafc;">
-            <th style="padding: 0.75rem; border: 1px solid #e2e8f0; text-align: left;">Dia</th>
-            <th style="padding: 0.75rem; border: 1px solid #e2e8f0; text-align: left;">Ação</th>
-            <th style="padding: 0.75rem; border: 1px solid #e2e8f0; text-align: left;">Objetivo</th>
+          <tr style="background: var(--muted);">
+            <th style="padding: 0.75rem; border: 1px solid var(--border); text-align: left;">Dia</th>
+            <th style="padding: 0.75rem; border: 1px solid var(--border); text-align: left;">Ação</th>
+            <th style="padding: 0.75rem; border: 1px solid var(--border); text-align: left;">Objetivo</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;"><strong>Dia 0</strong></td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Conexão aceita — sem mensagem imediata</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Não parecer robô/spam</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);"><strong>Dia 0</strong></td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Conexão aceita — sem mensagem imediata</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Não parecer robô/spam</td>
           </tr>
-          <tr style="background: #f8fafc;">
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;"><strong>Dia 1-2</strong></td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Curtir ou comentar post recente do lead</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Aparecer no radar de forma natural</td>
-          </tr>
-          <tr>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;"><strong>Dia 3</strong></td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Mensagem DM com referência ao post + contexto da empresa + pergunta aberta</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Iniciar conversa genuína</td>
-          </tr>
-          <tr style="background: #f8fafc;">
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;"><strong>Dia 7</strong></td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Follow-up com conteúdo de valor (artigo, dado, case)</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Entregar antes de pedir</td>
+          <tr style="background: var(--muted);">
+            <td style="padding: 0.75rem; border: 1px solid var(--border);"><strong>Dia 1-2</strong></td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Curtir ou comentar post recente do lead</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Aparecer no radar de forma natural</td>
           </tr>
           <tr>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;"><strong>Dia 12</strong></td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Mensagem com proposta de conversa específica e de baixo atrito</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Converter em reunião ou call</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);"><strong>Dia 3</strong></td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Mensagem DM com referência ao post + contexto da empresa + pergunta aberta</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Iniciar conversa genuína</td>
           </tr>
-          <tr style="background: #f8fafc;">
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;"><strong>Dia 20</strong></td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Mensagem de "break-up" — fecha o ciclo com porta aberta</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Última tentativa sem pressão</td>
+          <tr style="background: var(--muted);">
+            <td style="padding: 0.75rem; border: 1px solid var(--border);"><strong>Dia 7</strong></td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Follow-up com conteúdo de valor (artigo, dado, case)</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Entregar antes de pedir</td>
+          </tr>
+          <tr>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);"><strong>Dia 12</strong></td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Mensagem com proposta de conversa específica e de baixo atrito</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Converter em reunião ou call</td>
+          </tr>
+          <tr style="background: var(--muted);">
+            <td style="padding: 0.75rem; border: 1px solid var(--border);"><strong>Dia 20</strong></td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Mensagem de "break-up" — fecha o ciclo com porta aberta</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Última tentativa sem pressão</td>
           </tr>
         </tbody>
       </table>
 
-      <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 0.75rem; padding: 1.5rem; margin: 1.5rem 0; font-family: monospace; font-size: 0.9rem; line-height: 1.8;">
-        <p style="margin: 0; color: #64748b;"><strong>Mensagem DM (Dia 3 — após comentar no post):</strong></p>
+      <div style="background: var(--muted); border: 1px solid var(--border); border-radius: 0.75rem; padding: 1.5rem; margin: 1.5rem 0; font-family: monospace; font-size: 0.9rem; line-height: 1.8;">
+        <p style="margin: 0; color: var(--foreground);"><strong>Mensagem DM (Dia 3 — após comentar no post):</strong></p>
         <br/>
-        <p style="margin: 0; color: #1e293b;">[Nome], seu comentário sobre a dificuldade de escalar o time de vendas sem perder qualidade de atendimento me fez pensar bastante.</p>
+        <p style="margin: 0; color: var(--foreground);">[Nome], seu comentário sobre a dificuldade de escalar o time de vendas sem perder qualidade de atendimento me fez pensar bastante.</p>
         <br/>
-        <p style="margin: 0; color: #1e293b;">Trabalho com empresas de serviços B2B nesse exato gargalo — quando o crescimento vem mas o processo não acompanha. O que vocês estão tentando resolver agora: o processo de onboarding do time novo ou a rastreabilidade do que está acontecendo em campo?</p>
+        <p style="margin: 0; color: var(--foreground);">Trabalho com empresas de serviços B2B nesse exato gargalo — quando o crescimento vem mas o processo não acompanha. O que vocês estão tentando resolver agora: o processo de onboarding do time novo ou a rastreabilidade do que está acontecendo em campo?</p>
       </div>
 
       <h2>Como exportar leads do LinkedIn para o CRM?</h2>
@@ -208,27 +208,27 @@ export const post: BlogPost = {
         Para quem está começando ou tem volume menor, o LinkedIn gratuito com estratégia correta entrega resultados sólidos sem custo. Comece pelo gratuito, valide o processo, e só então avalie o upgrade.
       </p>
 
-      <div style="background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%); padding: 2rem; border-radius: 1rem; margin: 2.5rem 0; text-align: center;">
+      <div style="background: var(--primary); padding: 2rem; border-radius: 1rem; margin: 2.5rem 0; text-align: center;">
         <p style="color: white; font-size: 1.25rem; font-weight: 700; margin: 0 0 0.5rem;">Organize seus leads do LinkedIn no Sirius CRM</p>
-        <p style="color: #bfdbfe; margin: 0 0 1.25rem;">Pipeline visual, cadência de follow-up e registro de cada touchpoint — tudo para não perder leads prospectados no LinkedIn.</p>
-        <a href="/pricing" style="display: inline-block; background: white; color: #2563eb; padding: 0.75rem 2rem; border-radius: 0.5rem; font-weight: 700; text-decoration: none;">Ver Planos →</a>
+        <p style="color: var(--foreground); margin: 0 0 1.25rem;">Pipeline visual, cadência de follow-up e registro de cada touchpoint — tudo para não perder leads prospectados no LinkedIn.</p>
+        <a href="/pricing" style="display: inline-block; background: white; color: var(--foreground); padding: 0.75rem 2rem; border-radius: 0.5rem; font-weight: 700; text-decoration: none;">Ver Planos →</a>
       </div>
 
       <h2>Perguntas Frequentes sobre Prospecção no LinkedIn</h2>
 
-      <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
-        <summary style="font-weight: 600; cursor: pointer; color: #1e293b; list-style: revert;">Quantas conexões posso enviar por dia sem risco de bloqueio?</summary>
-        <p style="margin: 0.75rem 0 0; color: #4b5563;">O limite seguro é 15-20 pedidos de conexão por dia para contas com perfil completo e histórico de atividade. LinkedIn não divulga o limite exato, mas relatos da comunidade indicam que ultrapassar 100 pedidos por semana consistentemente aumenta o risco de restrição temporária. Contas novas ou com poucos seguidores devem começar com 5-10 por dia e aumentar gradualmente.</p>
+      <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
+        <summary style="font-weight: 600; cursor: pointer; color: var(--foreground); list-style: revert;">Quantas conexões posso enviar por dia sem risco de bloqueio?</summary>
+        <p style="margin: 0.75rem 0 0; color: var(--foreground);">O limite seguro é 15-20 pedidos de conexão por dia para contas com perfil completo e histórico de atividade. LinkedIn não divulga o limite exato, mas relatos da comunidade indicam que ultrapassar 100 pedidos por semana consistentemente aumenta o risco de restrição temporária. Contas novas ou com poucos seguidores devem começar com 5-10 por dia e aumentar gradualmente.</p>
       </details>
 
-      <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
-        <summary style="font-weight: 600; cursor: pointer; color: #1e293b; list-style: revert;">Vale a pena criar conteúdo no LinkedIn para prospectar melhor?</summary>
-        <p style="margin: 0.75rem 0 0; color: #4b5563;">Definitivamente sim, mas com expectativas realistas. Postar conteúdo aumenta o SSI, melhora a visibilidade do perfil e cria pontos de personalização para abordagem — você menciona um post próprio ou referencia algo do decisor. O lead generation direto via conteúdo é mais lento (meses) que prospecção ativa, mas cria um fluxo inbound que complementa o outbound. A estratégia ideal combina os dois: postar consistentemente E prospectar ativamente.</p>
+      <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
+        <summary style="font-weight: 600; cursor: pointer; color: var(--foreground); list-style: revert;">Vale a pena criar conteúdo no LinkedIn para prospectar melhor?</summary>
+        <p style="margin: 0.75rem 0 0; color: var(--foreground);">Definitivamente sim, mas com expectativas realistas. Postar conteúdo aumenta o SSI, melhora a visibilidade do perfil e cria pontos de personalização para abordagem — você menciona um post próprio ou referencia algo do decisor. O lead generation direto via conteúdo é mais lento (meses) que prospecção ativa, mas cria um fluxo inbound que complementa o outbound. A estratégia ideal combina os dois: postar consistentemente E prospectar ativamente.</p>
       </details>
 
-      <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin-bottom: 2rem;">
-        <summary style="font-weight: 600; cursor: pointer; color: #1e293b; list-style: revert;">Como abordar um lead que viu meu perfil mas não conectou?</summary>
-        <p style="margin: 0.75rem 0 0; color: #4b5563;">Quem visitou seu perfil demonstrou interesse — é um sinal de compra fraco mas real. Se for um decisor do seu ICP, envie pedido de conexão com nota referenciando a visita: "Vi que você passou pelo meu perfil — trabalho com [setor dele] e pode ser que tenhamos contextos em comum. Conexão?" Isso personaliza sem pressionar. Taxa de aceite nessa abordagem costuma ser 40-60% mais alta que pedido frio sem contexto.</p>
+      <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 2rem;">
+        <summary style="font-weight: 600; cursor: pointer; color: var(--foreground); list-style: revert;">Como abordar um lead que viu meu perfil mas não conectou?</summary>
+        <p style="margin: 0.75rem 0 0; color: var(--foreground);">Quem visitou seu perfil demonstrou interesse — é um sinal de compra fraco mas real. Se for um decisor do seu ICP, envie pedido de conexão com nota referenciando a visita: "Vi que você passou pelo meu perfil — trabalho com [setor dele] e pode ser que tenhamos contextos em comum. Conexão?" Isso personaliza sem pressionar. Taxa de aceite nessa abordagem costuma ser 40-60% mais alta que pedido frio sem contexto.</p>
       </details>
 
       <h2>Conclusão</h2>
@@ -241,7 +241,7 @@ export const post: BlogPost = {
         Com 15-20 novos pedidos de conexão por dia e a sequência de 6 passos descrita neste guia, um vendedor com método consegue ter 50-80 conversas ativas por mês no LinkedIn — e converter 15-25% delas em reuniões qualificadas.
       </p>
 
-      <hr style="margin: 3rem 0; border: none; border-top: 1px solid #e5e7eb;" />
+      <hr style="margin: 3rem 0; border: none; border-top: 1px solid var(--border);" />
       <strong>Última Atualização:</strong> 21 de Março de 2026<br/>
       <strong>Autor:</strong> Equipe Sirius CRM<br/>
       <strong>Tempo de Leitura:</strong> 13 minutos
@@ -326,42 +326,42 @@ export const post: BlogPost = {
 
       <table style="width: 100%; border-collapse: collapse; margin: 1.5rem 0;">
         <thead>
-          <tr style="background: #f8fafc;">
-            <th style="border: 1px solid #e2e8f0; padding: 0.75rem; text-align: left;">Touch</th>
-            <th style="border: 1px solid #e2e8f0; padding: 0.75rem; text-align: left;">Action</th>
-            <th style="border: 1px solid #e2e8f0; padding: 0.75rem; text-align: left;">Timing</th>
+          <tr style="background: var(--muted);">
+            <th style="border: 1px solid var(--border); padding: 0.75rem; text-align: left;">Touch</th>
+            <th style="border: 1px solid var(--border); padding: 0.75rem; text-align: left;">Action</th>
+            <th style="border: 1px solid var(--border); padding: 0.75rem; text-align: left;">Timing</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">1</td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">Like or comment on their most recent post (genuine, specific comment)</td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">Day 1 after connecting</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">1</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">Like or comment on their most recent post (genuine, specific comment)</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">Day 1 after connecting</td>
           </tr>
           <tr>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">2</td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">Send a value message: share a relevant article, insight, or resource. No ask.</td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">Day 3-5</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">2</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">Send a value message: share a relevant article, insight, or resource. No ask.</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">Day 3-5</td>
           </tr>
           <tr>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">3</td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">Engage with another piece of their content</td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">Day 7-10</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">3</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">Engage with another piece of their content</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">Day 7-10</td>
           </tr>
           <tr>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">4</td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">Second value message — a case study or result relevant to their situation</td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">Day 14</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">4</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">Second value message — a case study or result relevant to their situation</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">Day 14</td>
           </tr>
           <tr>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">5</td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">Soft ask: "Based on what you shared about [X], would a quick 20-min call make sense?"</td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">Day 18-21</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">5</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">Soft ask: "Based on what you shared about [X], would a quick 20-min call make sense?"</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">Day 18-21</td>
           </tr>
           <tr>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">6</td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">Final follow-up if no reply to touch 5 — add new context (recent news, relevant trigger)</td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">Day 25-30</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">6</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">Final follow-up if no reply to touch 5 — add new context (recent news, relevant trigger)</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">Day 25-30</td>
           </tr>
         </tbody>
       </table>
@@ -399,7 +399,7 @@ export const post: BlogPost = {
       </ul>
 
       <p>
-        With this workflow in <a href="/" style="color: #2563eb; text-decoration: underline;">Sirius CRM</a>, a seller can manage 200+ active LinkedIn sequences without losing track of a single follow-up — the pipeline stays full automatically.
+        With this workflow in <a href="/" style="color: var(--foreground); text-decoration: underline;">Sirius CRM</a>, a seller can manage 200+ active LinkedIn sequences without losing track of a single follow-up — the pipeline stays full automatically.
       </p>
 
       <h2>Common Mistakes That Kill LinkedIn Prospecting</h2>
@@ -415,24 +415,24 @@ export const post: BlogPost = {
 
       <h2>FAQ — LinkedIn B2B Prospecting</h2>
 
-      <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin-bottom: 2rem;">
-        <summary style="font-weight: 600; cursor: pointer; color: #1e293b; list-style: revert;">How many connection requests can I send per day without getting banned?</summary>
-        <p style="margin: 0.75rem 0 0; color: #4b5563;">LinkedIn's current limit is approximately 100 connection requests per week (roughly 15 per day). To stay safe, cap at 20-25 per day. Focus on quality over quantity — 15 highly targeted, personalized requests outperform 100 generic ones in both acceptance rate and conversion to meetings.</p>
+      <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 2rem;">
+        <summary style="font-weight: 600; cursor: pointer; color: var(--foreground); list-style: revert;">How many connection requests can I send per day without getting banned?</summary>
+        <p style="margin: 0.75rem 0 0; color: var(--foreground);">LinkedIn's current limit is approximately 100 connection requests per week (roughly 15 per day). To stay safe, cap at 20-25 per day. Focus on quality over quantity — 15 highly targeted, personalized requests outperform 100 generic ones in both acceptance rate and conversion to meetings.</p>
       </details>
 
-      <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin-bottom: 2rem;">
-        <summary style="font-weight: 600; cursor: pointer; color: #1e293b; list-style: revert;">Is Sales Navigator worth it for B2B prospecting?</summary>
-        <p style="margin: 0.75rem 0 0; color: #4b5563;">Sales Navigator is valuable when you have the budget (~$100/month) and are doing high-volume, targeted outreach. The advanced search filters and lead alerts save significant research time. But as this guide demonstrates, free LinkedIn with the right methodology can generate excellent results. Start with free, validate your ICP and messaging, then upgrade when volume demands it.</p>
+      <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 2rem;">
+        <summary style="font-weight: 600; cursor: pointer; color: var(--foreground); list-style: revert;">Is Sales Navigator worth it for B2B prospecting?</summary>
+        <p style="margin: 0.75rem 0 0; color: var(--foreground);">Sales Navigator is valuable when you have the budget (~$100/month) and are doing high-volume, targeted outreach. The advanced search filters and lead alerts save significant research time. But as this guide demonstrates, free LinkedIn with the right methodology can generate excellent results. Start with free, validate your ICP and messaging, then upgrade when volume demands it.</p>
       </details>
 
-      <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin-bottom: 2rem;">
-        <summary style="font-weight: 600; cursor: pointer; color: #1e293b; list-style: revert;">What's a good reply rate for LinkedIn prospecting messages?</summary>
-        <p style="margin: 0.75rem 0 0; color: #4b5563;">With generic messaging, expect 3-7% reply rates. With the personalized approach described here (genuine connection note + value-first sequence), reply rates of 20-40% on touch 2 and 15-25% on touch 5 are achievable. Track your reply rates by message template and ICP segment to continuously improve.</p>
+      <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 2rem;">
+        <summary style="font-weight: 600; cursor: pointer; color: var(--foreground); list-style: revert;">What's a good reply rate for LinkedIn prospecting messages?</summary>
+        <p style="margin: 0.75rem 0 0; color: var(--foreground);">With generic messaging, expect 3-7% reply rates. With the personalized approach described here (genuine connection note + value-first sequence), reply rates of 20-40% on touch 2 and 15-25% on touch 5 are achievable. Track your reply rates by message template and ICP segment to continuously improve.</p>
       </details>
 
-      <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin-bottom: 2rem;">
-        <summary style="font-weight: 600; cursor: pointer; color: #1e293b; list-style: revert;">How do I approach a lead who viewed my profile but didn't connect?</summary>
-        <p style="margin: 0.75rem 0 0; color: #4b5563;">A profile view is a weak but real buying signal. If they match your ICP, send a connection request with a note referencing the context: "Noticed you came across my profile — I work with [their industry] and thought there might be a reason to connect." This personalizes without pressuring. Acceptance rates on these requests run 40-60% higher than cold requests with no context.</p>
+      <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 2rem;">
+        <summary style="font-weight: 600; cursor: pointer; color: var(--foreground); list-style: revert;">How do I approach a lead who viewed my profile but didn't connect?</summary>
+        <p style="margin: 0.75rem 0 0; color: var(--foreground);">A profile view is a weak but real buying signal. If they match your ICP, send a connection request with a note referencing the context: "Noticed you came across my profile — I work with [their industry] and thought there might be a reason to connect." This personalizes without pressuring. Acceptance rates on these requests run 40-60% higher than cold requests with no context.</p>
       </details>
 
       <h2>Conclusion</h2>

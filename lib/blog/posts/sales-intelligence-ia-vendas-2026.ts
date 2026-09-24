@@ -23,8 +23,8 @@ export const post: BlogPost = {
         Neste artigo, você vai entender o que é Sales Intelligence na prática, como a IA processa dados firmográficos e comportamentais para gerar sinais de compra, quais ferramentas existem (incluindo como o <a href="/">Sirius CRM</a> entrega Sales Intelligence para PMEs brasileiras), e como implementar sem o budget de uma empresa enterprise.
       </p>
 
-      <div class="not-prose" style="background: #1e293b; padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
-        <p style="margin: 0 0 0.75rem; font-weight: 700; font-size: 1.05rem; color: #38bdf8;">⚡ TL;DR — Resposta Rápida</p>
+      <div class="not-prose" style="background: var(--primary); padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
+        <p style="margin: 0 0 0.75rem; font-weight: 700; font-size: 1.05rem; color: var(--primary-foreground);">⚡ TL;DR — Resposta Rápida</p>
         <ul style="margin: 0; padding-left: 1.25rem; line-height: 2; color: #ffffff;">
           <li><strong>Sales Intelligence</strong> = dados + IA que identificam quem vai comprar antes do primeiro contato</li>
           <li>Combina <strong>dados firmográficos</strong> (empresa) com <strong>dados comportamentais</strong> (sinais de intenção) para priorizar leads</li>
@@ -52,7 +52,7 @@ export const post: BlogPost = {
 
       <div class="callout-stat">
         <p><strong>📊 O impacto real do Sales Intelligence</strong></p>
-        <p style="font-size: 3rem; font-weight: 800; color: #2563eb; margin: 1rem 0; line-height: 1;">35%</p>
+        <p style="font-size: 3rem; font-weight: 800; color: var(--foreground); margin: 1rem 0; line-height: 1;">35%</p>
         <p>mais oportunidades geradas com o mesmo número de vendedores em times que usam Sales Intelligence com IA para priorização de leads. Fonte: McKinsey B2B Sales Survey 2025.</p>
       </div>
 
@@ -103,37 +103,37 @@ export const post: BlogPost = {
 
       <table style="width: 100%; border-collapse: collapse; margin: 2rem 0;">
         <thead>
-          <tr style="background: #f8fafc;">
-            <th style="padding: 0.75rem; border: 1px solid #e2e8f0; text-align: left;">Dimensão</th>
-            <th style="padding: 0.75rem; border: 1px solid #e2e8f0; text-align: left;">CRM Tradicional</th>
-            <th style="padding: 0.75rem; border: 1px solid #e2e8f0; text-align: left;">Sales Intelligence</th>
+          <tr style="background: var(--muted);">
+            <th style="padding: 0.75rem; border: 1px solid var(--border); text-align: left;">Dimensão</th>
+            <th style="padding: 0.75rem; border: 1px solid var(--border); text-align: left;">CRM Tradicional</th>
+            <th style="padding: 0.75rem; border: 1px solid var(--border); text-align: left;">Sales Intelligence</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;"><strong>Função principal</strong></td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Registrar o que aconteceu</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Prever o que vai acontecer</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);"><strong>Função principal</strong></td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Registrar o que aconteceu</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Prever o que vai acontecer</td>
           </tr>
-          <tr style="background: #f8fafc;">
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;"><strong>Fonte de dados</strong></td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Dados inseridos pelo vendedor</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Dados externos + comportamento + IA</td>
-          </tr>
-          <tr>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;"><strong>Orientação</strong></td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Retrospectiva (o que foi feito)</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Prospectiva (o que fazer agora)</td>
-          </tr>
-          <tr style="background: #f8fafc;">
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;"><strong>Output principal</strong></td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Histórico de interações</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Score de prioridade e sinais de compra</td>
+          <tr style="background: var(--muted);">
+            <td style="padding: 0.75rem; border: 1px solid var(--border);"><strong>Fonte de dados</strong></td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Dados inseridos pelo vendedor</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Dados externos + comportamento + IA</td>
           </tr>
           <tr>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;"><strong>Quem atualiza</strong></td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Vendedor manualmente</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">IA automaticamente</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);"><strong>Orientação</strong></td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Retrospectiva (o que foi feito)</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Prospectiva (o que fazer agora)</td>
+          </tr>
+          <tr style="background: var(--muted);">
+            <td style="padding: 0.75rem; border: 1px solid var(--border);"><strong>Output principal</strong></td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Histórico de interações</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Score de prioridade e sinais de compra</td>
+          </tr>
+          <tr>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);"><strong>Quem atualiza</strong></td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Vendedor manualmente</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">IA automaticamente</td>
           </tr>
         </tbody>
       </table>
@@ -213,32 +213,32 @@ export const post: BlogPost = {
         A regra prática: use Sales Intelligence para identificar <strong>empresas</strong> que se encaixam no seu ICP, e aborde os <strong>decisores</strong> pelos canais profissionais (LinkedIn, email corporativo do site) de forma personalizada e respeitosa.
       </p>
 
-      <div style="background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%); padding: 2rem; border-radius: 1rem; margin: 2.5rem 0; text-align: center;">
+      <div style="background: var(--primary); padding: 2rem; border-radius: 1rem; margin: 2.5rem 0; text-align: center;">
         <p style="color: white; font-size: 1.25rem; font-weight: 700; margin: 0 0 0.5rem;">Sales Intelligence acessível para PMEs brasileiras</p>
-        <p style="color: #bfdbfe; margin: 0 0 1.25rem;">Qualificação por IA, enriquecimento de CNPJ e scoring preditivo — tudo no Sirius CRM, sem custo de enterprise.</p>
-        <a href="/pricing" style="display: inline-block; background: white; color: #2563eb; padding: 0.75rem 2rem; border-radius: 0.5rem; font-weight: 700; text-decoration: none;">Ver Planos →</a>
+        <p style="color: var(--foreground); margin: 0 0 1.25rem;">Qualificação por IA, enriquecimento de CNPJ e scoring preditivo — tudo no Sirius CRM, sem custo de enterprise.</p>
+        <a href="/pricing" style="display: inline-block; background: white; color: var(--foreground); padding: 0.75rem 2rem; border-radius: 0.5rem; font-weight: 700; text-decoration: none;">Ver Planos →</a>
       </div>
 
       <h2>Perguntas Frequentes sobre Sales Intelligence</h2>
 
-      <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
-        <summary style="font-weight: 600; cursor: pointer; color: #1e293b; list-style: revert;">Sales Intelligence funciona para empresas que vendem para pessoa física (B2C)?</summary>
-        <p style="margin: 0.75rem 0 0; color: #4b5563;">Sales Intelligence é mais poderoso e mais aplicável em contextos B2B, onde os dados de empresa são públicos e os sinais de compra (contratações, funding, mudanças de liderança) são mais visíveis. Para B2C, o equivalente é o Customer Data Platform (CDP) que agrega dados comportamentais do consumidor. Alguns princípios se aplicam aos dois — como scoring de propensão à compra baseado em comportamento — mas as fontes de dados e a abordagem são diferentes.</p>
+      <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
+        <summary style="font-weight: 600; cursor: pointer; color: var(--foreground); list-style: revert;">Sales Intelligence funciona para empresas que vendem para pessoa física (B2C)?</summary>
+        <p style="margin: 0.75rem 0 0; color: var(--foreground);">Sales Intelligence é mais poderoso e mais aplicável em contextos B2B, onde os dados de empresa são públicos e os sinais de compra (contratações, funding, mudanças de liderança) são mais visíveis. Para B2C, o equivalente é o Customer Data Platform (CDP) que agrega dados comportamentais do consumidor. Alguns princípios se aplicam aos dois — como scoring de propensão à compra baseado em comportamento — mas as fontes de dados e a abordagem são diferentes.</p>
       </details>
 
-      <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
-        <summary style="font-weight: 600; cursor: pointer; color: #1e293b; list-style: revert;">Como saber se um lead está "in-market" (pronto para comprar) agora?</summary>
-        <p style="margin: 0.75rem 0 0; color: #4b5563;">Os sinais mais confiáveis de que um lead está em janela de compra ativa são: visitas repetidas a páginas de pricing ou produto no seu site (3+ visitas em 7 dias), abertura de 3+ emails em sequência rápida, pesquisa por sua categoria no G2 ou Capterra (dados de intent), mudança recente de liderança na área compradora, levantamento de funding, e abertura de vagas na área que usaria sua solução. Quando 2+ sinais se acumulam, a probabilidade de compra sobe dramaticamente.</p>
+      <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
+        <summary style="font-weight: 600; cursor: pointer; color: var(--foreground); list-style: revert;">Como saber se um lead está "in-market" (pronto para comprar) agora?</summary>
+        <p style="margin: 0.75rem 0 0; color: var(--foreground);">Os sinais mais confiáveis de que um lead está em janela de compra ativa são: visitas repetidas a páginas de pricing ou produto no seu site (3+ visitas em 7 dias), abertura de 3+ emails em sequência rápida, pesquisa por sua categoria no G2 ou Capterra (dados de intent), mudança recente de liderança na área compradora, levantamento de funding, e abertura de vagas na área que usaria sua solução. Quando 2+ sinais se acumulam, a probabilidade de compra sobe dramaticamente.</p>
       </details>
 
-      <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
-        <summary style="font-weight: 600; cursor: pointer; color: #1e293b; list-style: revert;">Qual o ROI esperado de investir em Sales Intelligence?</summary>
-        <p style="margin: 0.75rem 0 0; color: #4b5563;">O ROI do Sales Intelligence varia conforme o ticket médio e o ciclo de venda. Para empresas com ticket médio acima de R$ 5.000 e ciclo de 30+ dias, o retorno é tipicamente alto: redução de 30-40% no tempo de qualificação, aumento de 20-35% na taxa de conversão de oportunidades, e redução de 15-25% no churn (clientes mais qualificados têm fit melhor e ficam mais). Para tickets menores e ciclos curtos, o impacto é menor mas ainda positivo — especialmente na eficiência do time.</p>
+      <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
+        <summary style="font-weight: 600; cursor: pointer; color: var(--foreground); list-style: revert;">Qual o ROI esperado de investir em Sales Intelligence?</summary>
+        <p style="margin: 0.75rem 0 0; color: var(--foreground);">O ROI do Sales Intelligence varia conforme o ticket médio e o ciclo de venda. Para empresas com ticket médio acima de R$ 5.000 e ciclo de 30+ dias, o retorno é tipicamente alto: redução de 30-40% no tempo de qualificação, aumento de 20-35% na taxa de conversão de oportunidades, e redução de 15-25% no churn (clientes mais qualificados têm fit melhor e ficam mais). Para tickets menores e ciclos curtos, o impacto é menor mas ainda positivo — especialmente na eficiência do time.</p>
       </details>
 
-      <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin-bottom: 2rem;">
-        <summary style="font-weight: 600; cursor: pointer; color: #1e293b; list-style: revert;">Preciso de time de dados ou analista para usar Sales Intelligence?</summary>
-        <p style="margin: 0.75rem 0 0; color: #4b5563;">Com as ferramentas modernas de 2026, não. Plataformas como o Sirius CRM com AGI integrado ou Apollo.io entregam Sales Intelligence pronta para uso — sem necessidade de cientista de dados ou analista dedicado. O vendedor ou gestor configura as regras de qualificação via interface visual, e a IA processa e prioriza automaticamente. Times de dados são necessários para customizações muito avançadas ou empresas com volumes muito grandes (10.000+ leads/mês).</p>
+      <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 2rem;">
+        <summary style="font-weight: 600; cursor: pointer; color: var(--foreground); list-style: revert;">Preciso de time de dados ou analista para usar Sales Intelligence?</summary>
+        <p style="margin: 0.75rem 0 0; color: var(--foreground);">Com as ferramentas modernas de 2026, não. Plataformas como o Sirius CRM com AGI integrado ou Apollo.io entregam Sales Intelligence pronta para uso — sem necessidade de cientista de dados ou analista dedicado. O vendedor ou gestor configura as regras de qualificação via interface visual, e a IA processa e prioriza automaticamente. Times de dados são necessários para customizações muito avançadas ou empresas com volumes muito grandes (10.000+ leads/mês).</p>
       </details>
 
       <h2>Conclusão</h2>
@@ -251,7 +251,7 @@ export const post: BlogPost = {
         A vantagem competitiva hoje não está em ter a ferramenta mais cara — está em adotar Sales Intelligence antes dos concorrentes do seu segmento. No Brasil, com 77% dos times de vendas ainda sem essas práticas, a janela de vantagem está aberta. Quem implementar primeiro vai extrair os melhores leads do mercado enquanto os outros ainda prospectam no escuro.
       </p>
 
-      <hr style="margin: 3rem 0; border: none; border-top: 1px solid #e5e7eb;" />
+      <hr style="margin: 3rem 0; border: none; border-top: 1px solid var(--border);" />
       <strong>Última Atualização:</strong> 21 de Março de 2026<br/>
       <strong>Autor:</strong> Equipe Sirius CRM<br/>
       <strong>Tempo de Leitura:</strong> 14 minutos
@@ -298,37 +298,37 @@ export const post: BlogPost = {
 
       <table style="width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: 0.9rem;">
         <thead>
-          <tr style="background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%); color: white;">
+          <tr style="background: var(--primary); color: white;">
             <th style="padding: 0.875rem; text-align: left;">Signal Type</th>
             <th style="padding: 0.875rem; text-align: left;">Free/Low-Cost Source</th>
             <th style="padding: 0.875rem; text-align: left;">What It Indicates</th>
           </tr>
         </thead>
         <tbody>
-          <tr style="background: #f8fafc;">
-            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">Company registration data</td>
-            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">Receita Federal (CNPJ lookup)</td>
-            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">Company size, age, legal status, activity code</td>
+          <tr style="background: var(--muted);">
+            <td style="padding: 0.875rem; border: 1px solid var(--border);">Company registration data</td>
+            <td style="padding: 0.875rem; border: 1px solid var(--border);">Receita Federal (CNPJ lookup)</td>
+            <td style="padding: 0.875rem; border: 1px solid var(--border);">Company size, age, legal status, activity code</td>
           </tr>
           <tr>
-            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">Job postings</td>
-            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">LinkedIn Jobs, Gupy, Indeed</td>
-            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">Budget approved for new hires = growth + spending capacity</td>
+            <td style="padding: 0.875rem; border: 1px solid var(--border);">Job postings</td>
+            <td style="padding: 0.875rem; border: 1px solid var(--border);">LinkedIn Jobs, Gupy, Indeed</td>
+            <td style="padding: 0.875rem; border: 1px solid var(--border);">Budget approved for new hires = growth + spending capacity</td>
           </tr>
-          <tr style="background: #f8fafc;">
-            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">LinkedIn activity</td>
-            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">LinkedIn free + Sales Navigator (paid)</td>
-            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">Role changes, company news, content engagement</td>
+          <tr style="background: var(--muted);">
+            <td style="padding: 0.875rem; border: 1px solid var(--border);">LinkedIn activity</td>
+            <td style="padding: 0.875rem; border: 1px solid var(--border);">LinkedIn free + Sales Navigator (paid)</td>
+            <td style="padding: 0.875rem; border: 1px solid var(--border);">Role changes, company news, content engagement</td>
           </tr>
           <tr>
-            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">Website behavior</td>
-            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">Sirius CRM tracking pixel</td>
-            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">Pricing page visits, feature research, return visits</td>
+            <td style="padding: 0.875rem; border: 1px solid var(--border);">Website behavior</td>
+            <td style="padding: 0.875rem; border: 1px solid var(--border);">Sirius CRM tracking pixel</td>
+            <td style="padding: 0.875rem; border: 1px solid var(--border);">Pricing page visits, feature research, return visits</td>
           </tr>
-          <tr style="background: #f8fafc;">
-            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">Email engagement</td>
-            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">CRM built-in tracking</td>
-            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">Open rates, link clicks, reply patterns</td>
+          <tr style="background: var(--muted);">
+            <td style="padding: 0.875rem; border: 1px solid var(--border);">Email engagement</td>
+            <td style="padding: 0.875rem; border: 1px solid var(--border);">CRM built-in tracking</td>
+            <td style="padding: 0.875rem; border: 1px solid var(--border);">Open rates, link clicks, reply patterns</td>
           </tr>
         </tbody>
       </table>
@@ -341,8 +341,8 @@ export const post: BlogPost = {
         The competitive advantage isn't the most expensive tool — it's adopting Sales Intelligence before competitors in your segment. In Brazil, with 77% of sales teams still not using these practices, the window of advantage is open. Those who implement first will extract the best leads from the market while competitors still prospect in the dark.
       </p>
 
-      <hr style="margin: 3rem 0; border: none; border-top: 1px solid #e5e7eb;" />
-      <p style="font-size: 0.85rem; color: #64748b;">
+      <hr style="margin: 3rem 0; border: none; border-top: 1px solid var(--border);" />
+      <p style="font-size: 0.85rem; color: var(--foreground);">
         <strong>Last Updated:</strong> March 21, 2026<br/>
         <strong>Author:</strong> Sirius CRM Team<br/>
         <strong>Reading Time:</strong> 14 minutes

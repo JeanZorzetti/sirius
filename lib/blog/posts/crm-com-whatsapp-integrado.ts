@@ -23,8 +23,8 @@ export const post: BlogPost = {
         A solução não é proibir o WhatsApp — é integrá-lo ao CRM. Neste artigo, você vai entender como funciona essa integração, por que ela é obrigatória para times comerciais sérios em 2026, e como o <a href="/">Sirius CRM</a> resolve esse problema com o Chat Center nativo.
       </p>
 
-      <div class="not-prose" style="background: #1e293b; padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
-        <p style="margin: 0 0 0.75rem; font-weight: 700; font-size: 1.05rem; color: #38bdf8;">⚡ TL;DR — Resposta Rápida</p>
+      <div class="not-prose" style="background: var(--primary); padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
+        <p style="margin: 0 0 0.75rem; font-weight: 700; font-size: 1.05rem; color: var(--primary-foreground);">⚡ TL;DR — Resposta Rápida</p>
         <ul style="margin: 0; padding-left: 1.25rem; line-height: 2; color: #ffffff;">
           <li><strong>CRM + WhatsApp</strong> centraliza todas as conversas comerciais em um único lugar, com histórico por cliente</li>
           <li>A integração é feita via <strong>WhatsApp Business API</strong> (Evolution API) — não o app pessoal</li>
@@ -46,7 +46,7 @@ export const post: BlogPost = {
 
       <div class="callout-stat">
         <p><strong>📊 WhatsApp no B2B brasileiro</strong></p>
-        <p style="font-size: 3rem; font-weight: 800; color: #2563eb; margin: 1rem 0; line-height: 1;">78%</p>
+        <p style="font-size: 3rem; font-weight: 800; color: var(--foreground); margin: 1rem 0; line-height: 1;">78%</p>
         <p>dos vendedores B2B brasileiros usam WhatsApp como principal canal de comunicação com clientes — mas apenas 12% registram essas conversas em algum sistema. Fonte: Panorama de Vendas Brasil 2025, RD Station.</p>
       </div>
 
@@ -91,37 +91,37 @@ export const post: BlogPost = {
 
       <table style="width: 100%; border-collapse: collapse; margin: 2rem 0;">
         <thead>
-          <tr style="background: #f8fafc;">
-            <th style="padding: 0.75rem; border: 1px solid #e2e8f0; text-align: left;">CRM</th>
-            <th style="padding: 0.75rem; border: 1px solid #e2e8f0; text-align: left;">WhatsApp nativo</th>
-            <th style="padding: 0.75rem; border: 1px solid #e2e8f0; text-align: left;">Plano gratuito</th>
-            <th style="padding: 0.75rem; border: 1px solid #e2e8f0; text-align: left;">Observação</th>
+          <tr style="background: var(--muted);">
+            <th style="padding: 0.75rem; border: 1px solid var(--border); text-align: left;">CRM</th>
+            <th style="padding: 0.75rem; border: 1px solid var(--border); text-align: left;">WhatsApp nativo</th>
+            <th style="padding: 0.75rem; border: 1px solid var(--border); text-align: left;">Plano gratuito</th>
+            <th style="padding: 0.75rem; border: 1px solid var(--border); text-align: left;">Observação</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;"><strong>Sirius CRM PRO</strong></td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">✅ Chat Center nativo</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">✅ Plano Free disponível</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Evolution API integrada, multiagente</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);"><strong>Sirius CRM PRO</strong></td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">✅ Chat Center nativo</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">✅ Plano Free disponível</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Evolution API integrada, multiagente</td>
           </tr>
-          <tr style="background: #f8fafc;">
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">HubSpot</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">⚠️ Via integração paga</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">✅ Com limitações</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Requer Twilio ou similar</td>
+          <tr style="background: var(--muted);">
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">HubSpot</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">⚠️ Via integração paga</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">✅ Com limitações</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Requer Twilio ou similar</td>
           </tr>
           <tr>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Pipedrive</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">⚠️ Via Zapier</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">❌ Sem plano free</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Custo adicional por automação</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Pipedrive</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">⚠️ Via Zapier</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">❌ Sem plano free</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Custo adicional por automação</td>
           </tr>
-          <tr style="background: #f8fafc;">
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">RD CRM</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">⚠️ RD Station integrado</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">❌ Sem plano free</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Depende do plano RD Station</td>
+          <tr style="background: var(--muted);">
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">RD CRM</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">⚠️ RD Station integrado</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">❌ Sem plano free</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Depende do plano RD Station</td>
           </tr>
         </tbody>
       </table>
@@ -157,37 +157,37 @@ export const post: BlogPost = {
 
       <table style="width: 100%; border-collapse: collapse; margin: 2rem 0;">
         <thead>
-          <tr style="background: #f8fafc;">
-            <th style="padding: 0.75rem; border: 1px solid #e2e8f0; text-align: left;">Etapa</th>
-            <th style="padding: 0.75rem; border: 1px solid #e2e8f0; text-align: left;">Momento</th>
-            <th style="padding: 0.75rem; border: 1px solid #e2e8f0; text-align: left;">Mensagem</th>
+          <tr style="background: var(--muted);">
+            <th style="padding: 0.75rem; border: 1px solid var(--border); text-align: left;">Etapa</th>
+            <th style="padding: 0.75rem; border: 1px solid var(--border); text-align: left;">Momento</th>
+            <th style="padding: 0.75rem; border: 1px solid var(--border); text-align: left;">Mensagem</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;"><strong>1ª abordagem</strong></td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Dia 0 — lead cadastrado</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Apresentação personalizada, referência ao contexto do lead</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);"><strong>1ª abordagem</strong></td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Dia 0 — lead cadastrado</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Apresentação personalizada, referência ao contexto do lead</td>
           </tr>
-          <tr style="background: #f8fafc;">
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;"><strong>Follow-up 1</strong></td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Dia 2 — sem resposta</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Conteúdo de valor (case, artigo, dado do setor)</td>
-          </tr>
-          <tr>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;"><strong>Follow-up 2</strong></td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Dia 5 — sem resposta</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Pergunta direta sobre dor específica do segmento</td>
-          </tr>
-          <tr style="background: #f8fafc;">
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;"><strong>Follow-up 3</strong></td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Dia 10 — sem resposta</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Mensagem de "fechamento": "Ainda faz sentido conversar?"</td>
+          <tr style="background: var(--muted);">
+            <td style="padding: 0.75rem; border: 1px solid var(--border);"><strong>Follow-up 1</strong></td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Dia 2 — sem resposta</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Conteúdo de valor (case, artigo, dado do setor)</td>
           </tr>
           <tr>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;"><strong>Reativação</strong></td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Dia 30 — lead frio</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Novo gatilho ou novidade do produto/empresa</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);"><strong>Follow-up 2</strong></td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Dia 5 — sem resposta</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Pergunta direta sobre dor específica do segmento</td>
+          </tr>
+          <tr style="background: var(--muted);">
+            <td style="padding: 0.75rem; border: 1px solid var(--border);"><strong>Follow-up 3</strong></td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Dia 10 — sem resposta</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Mensagem de "fechamento": "Ainda faz sentido conversar?"</td>
+          </tr>
+          <tr>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);"><strong>Reativação</strong></td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Dia 30 — lead frio</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Novo gatilho ou novidade do produto/empresa</td>
           </tr>
         </tbody>
       </table>
@@ -220,32 +220,32 @@ export const post: BlogPost = {
         A partir daí, toda mensagem recebida naquele número aparece no Chat Center do CRM. Vendedores atendem pelo navegador, o histórico fica salvo e o gestor tem visibilidade total sem tocar no celular de ninguém.
       </p>
 
-      <div style="background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%); padding: 2rem; border-radius: 1rem; margin: 2.5rem 0; text-align: center;">
+      <div style="background: var(--primary); padding: 2rem; border-radius: 1rem; margin: 2.5rem 0; text-align: center;">
         <p style="color: white; font-size: 1.25rem; font-weight: 700; margin: 0 0 0.5rem;">Centralize o WhatsApp do seu time no Sirius CRM</p>
-        <p style="color: #bfdbfe; margin: 0 0 1.25rem;">Chat Center nativo com WhatsApp integrado via Evolution API. Sem custo extra, sem configuração complexa.</p>
-        <a href="/pricing" style="display: inline-block; background: white; color: #2563eb; padding: 0.75rem 2rem; border-radius: 0.5rem; font-weight: 700; text-decoration: none;">Ver Planos →</a>
+        <p style="color: var(--foreground); margin: 0 0 1.25rem;">Chat Center nativo com WhatsApp integrado via Evolution API. Sem custo extra, sem configuração complexa.</p>
+        <a href="/pricing" style="display: inline-block; background: white; color: var(--foreground); padding: 0.75rem 2rem; border-radius: 0.5rem; font-weight: 700; text-decoration: none;">Ver Planos →</a>
       </div>
 
       <h2>Perguntas Frequentes sobre CRM com WhatsApp</h2>
 
-      <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
-        <summary style="font-weight: 600; cursor: pointer; color: #1e293b; list-style: revert;">É possível usar um único número de WhatsApp para vários vendedores?</summary>
-        <p style="margin: 0.75rem 0 0; color: #4b5563;">Sim, essa é exatamente a proposta do Chat Center. Com a integração via WhatsApp Business API, um único número pode ser atendido por múltiplos agentes simultaneamente. As conversas são distribuídas por regras (round-robin, por disponibilidade ou por setor) e cada vendedor vê apenas as conversas atribuídas a ele, enquanto o gestor tem acesso a todas.</p>
+      <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
+        <summary style="font-weight: 600; cursor: pointer; color: var(--foreground); list-style: revert;">É possível usar um único número de WhatsApp para vários vendedores?</summary>
+        <p style="margin: 0.75rem 0 0; color: var(--foreground);">Sim, essa é exatamente a proposta do Chat Center. Com a integração via WhatsApp Business API, um único número pode ser atendido por múltiplos agentes simultaneamente. As conversas são distribuídas por regras (round-robin, por disponibilidade ou por setor) e cada vendedor vê apenas as conversas atribuídas a ele, enquanto o gestor tem acesso a todas.</p>
       </details>
 
-      <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
-        <summary style="font-weight: 600; cursor: pointer; color: #1e293b; list-style: revert;">O cliente percebe que está sendo atendido por um sistema?</summary>
-        <p style="margin: 0.75rem 0 0; color: #4b5563;">Não necessariamente. Quando bem configurado, a experiência para o cliente é idêntica ao WhatsApp normal — ele recebe e envia mensagens pelo app que já usa. A diferença está no lado do vendedor, que atende pelo CRM. O que pode revelar o sistema é o uso de mensagens automáticas muito genéricas — por isso a personalização é essencial mesmo em respostas automáticas.</p>
+      <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
+        <summary style="font-weight: 600; cursor: pointer; color: var(--foreground); list-style: revert;">O cliente percebe que está sendo atendido por um sistema?</summary>
+        <p style="margin: 0.75rem 0 0; color: var(--foreground);">Não necessariamente. Quando bem configurado, a experiência para o cliente é idêntica ao WhatsApp normal — ele recebe e envia mensagens pelo app que já usa. A diferença está no lado do vendedor, que atende pelo CRM. O que pode revelar o sistema é o uso de mensagens automáticas muito genéricas — por isso a personalização é essencial mesmo em respostas automáticas.</p>
       </details>
 
-      <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
-        <summary style="font-weight: 600; cursor: pointer; color: #1e293b; list-style: revert;">Qual a diferença entre WhatsApp Business e a API do WhatsApp?</summary>
-        <p style="margin: 0.75rem 0 0; color: #4b5563;">O WhatsApp Business é o app gratuito da Meta para pequenas empresas — tem catálogo, respostas automáticas básicas e perfil comercial, mas é limitado a um dispositivo por vez e não se integra a sistemas externos. A WhatsApp Business API é a versão para empresas maiores, acessada via provedores como a Evolution API — permite integração total com CRMs, atendimento multiagente e automações avançadas. O Sirius CRM usa a API via Evolution para oferecer o melhor dos dois mundos.</p>
+      <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
+        <summary style="font-weight: 600; cursor: pointer; color: var(--foreground); list-style: revert;">Qual a diferença entre WhatsApp Business e a API do WhatsApp?</summary>
+        <p style="margin: 0.75rem 0 0; color: var(--foreground);">O WhatsApp Business é o app gratuito da Meta para pequenas empresas — tem catálogo, respostas automáticas básicas e perfil comercial, mas é limitado a um dispositivo por vez e não se integra a sistemas externos. A WhatsApp Business API é a versão para empresas maiores, acessada via provedores como a Evolution API — permite integração total com CRMs, atendimento multiagente e automações avançadas. O Sirius CRM usa a API via Evolution para oferecer o melhor dos dois mundos.</p>
       </details>
 
-      <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin-bottom: 2rem;">
-        <summary style="font-weight: 600; cursor: pointer; color: #1e293b; list-style: revert;">Meu vendedor pode continuar usando o WhatsApp no celular mesmo com o CRM integrado?</summary>
-        <p style="margin: 0.75rem 0 0; color: #4b5563;">Tecnicamente sim, mas não é recomendado. Quando o número está conectado ao CRM via Evolution API, ele funciona como o WhatsApp Web — o celular pode continuar recebendo as mensagens. O problema é que respostas dadas pelo celular não ficam registradas no CRM. Por isso, após a integração, o ideal é que o atendimento comercial seja feito exclusivamente pelo painel do CRM, usando o celular apenas para emergências.</p>
+      <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 2rem;">
+        <summary style="font-weight: 600; cursor: pointer; color: var(--foreground); list-style: revert;">Meu vendedor pode continuar usando o WhatsApp no celular mesmo com o CRM integrado?</summary>
+        <p style="margin: 0.75rem 0 0; color: var(--foreground);">Tecnicamente sim, mas não é recomendado. Quando o número está conectado ao CRM via Evolution API, ele funciona como o WhatsApp Web — o celular pode continuar recebendo as mensagens. O problema é que respostas dadas pelo celular não ficam registradas no CRM. Por isso, após a integração, o ideal é que o atendimento comercial seja feito exclusivamente pelo painel do CRM, usando o celular apenas para emergências.</p>
       </details>
 
       <h2>Conclusão</h2>
@@ -258,7 +258,7 @@ export const post: BlogPost = {
         O <a href="/">Sirius CRM</a> foi construído para o mercado brasileiro com essa realidade em mente. O Chat Center nativo, integrado via Evolution API sem custos extras por mensagem, é a forma mais prática de centralizar todas as conversas comerciais sem mudar o comportamento dos clientes — eles continuam no WhatsApp que já usam, enquanto o time opera com profissionalismo de software enterprise.
       </p>
 
-      <hr style="margin: 3rem 0; border: none; border-top: 1px solid #e5e7eb;" />
+      <hr style="margin: 3rem 0; border: none; border-top: 1px solid var(--border);" />
       <strong>Última Atualização:</strong> 21 de Março de 2026<br/>
       <strong>Autor:</strong> Equipe Sirius CRM<br/>
       <strong>Tempo de Leitura:</strong> 11 minutos
@@ -279,8 +279,8 @@ export const post: BlogPost = {
         The solution isn't to ban WhatsApp — it's to integrate it with the CRM. In this article, you'll understand how this integration works, why it's mandatory for serious commercial teams in 2026, and how <a href="/">Sirius CRM</a> solves this problem with its native Chat Center.
       </p>
 
-      <div class="not-prose" style="background: #1e293b; padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
-        <p style="margin: 0 0 0.75rem; font-weight: 700; font-size: 1.05rem; color: #38bdf8;">⚡ TL;DR — Quick Answer</p>
+      <div class="not-prose" style="background: var(--primary); padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
+        <p style="margin: 0 0 0.75rem; font-weight: 700; font-size: 1.05rem; color: var(--primary-foreground);">⚡ TL;DR — Quick Answer</p>
         <ul style="margin: 0; padding-left: 1.25rem; line-height: 2; color: #ffffff;">
           <li><strong>CRM + WhatsApp</strong> centralizes all commercial conversations in one place, with history per customer</li>
           <li>Integration is done via <strong>WhatsApp Business API</strong> (Evolution API) — not the personal app</li>
@@ -302,7 +302,7 @@ export const post: BlogPost = {
 
       <div class="callout-stat">
         <p><strong>📊 WhatsApp in Brazilian B2B</strong></p>
-        <p style="font-size: 3rem; font-weight: 800; color: #2563eb; margin: 1rem 0; line-height: 1;">78%</p>
+        <p style="font-size: 3rem; font-weight: 800; color: var(--foreground); margin: 1rem 0; line-height: 1;">78%</p>
         <p>of Brazilian B2B sales reps use WhatsApp as their primary communication channel with customers — but only 12% log these conversations in any system. Source: Brazil Sales Overview 2025, RD Station.</p>
       </div>
 
@@ -343,37 +343,37 @@ export const post: BlogPost = {
 
       <table style="width: 100%; border-collapse: collapse; margin: 2rem 0;">
         <thead>
-          <tr style="background: #f8fafc;">
-            <th style="padding: 0.75rem; border: 1px solid #e2e8f0; text-align: left;">CRM</th>
-            <th style="padding: 0.75rem; border: 1px solid #e2e8f0; text-align: left;">Native WhatsApp</th>
-            <th style="padding: 0.75rem; border: 1px solid #e2e8f0; text-align: left;">Free plan</th>
-            <th style="padding: 0.75rem; border: 1px solid #e2e8f0; text-align: left;">Note</th>
+          <tr style="background: var(--muted);">
+            <th style="padding: 0.75rem; border: 1px solid var(--border); text-align: left;">CRM</th>
+            <th style="padding: 0.75rem; border: 1px solid var(--border); text-align: left;">Native WhatsApp</th>
+            <th style="padding: 0.75rem; border: 1px solid var(--border); text-align: left;">Free plan</th>
+            <th style="padding: 0.75rem; border: 1px solid var(--border); text-align: left;">Note</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;"><strong>Sirius CRM PRO</strong></td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">✅ Native Chat Center</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">✅ Free plan available</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Evolution API integrated, multi-agent</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);"><strong>Sirius CRM PRO</strong></td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">✅ Native Chat Center</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">✅ Free plan available</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Evolution API integrated, multi-agent</td>
           </tr>
-          <tr style="background: #f8fafc;">
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">HubSpot</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">⚠️ Via paid integration</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">✅ With limitations</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Requires Twilio or similar</td>
+          <tr style="background: var(--muted);">
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">HubSpot</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">⚠️ Via paid integration</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">✅ With limitations</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Requires Twilio or similar</td>
           </tr>
           <tr>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Pipedrive</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">⚠️ Via Zapier</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">❌ No free plan</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Additional cost per automation</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Pipedrive</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">⚠️ Via Zapier</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">❌ No free plan</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Additional cost per automation</td>
           </tr>
-          <tr style="background: #f8fafc;">
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">RD CRM</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">⚠️ RD Station integrated</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">❌ No free plan</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Depends on RD Station plan</td>
+          <tr style="background: var(--muted);">
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">RD CRM</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">⚠️ RD Station integrated</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">❌ No free plan</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Depends on RD Station plan</td>
           </tr>
         </tbody>
       </table>
@@ -409,37 +409,37 @@ export const post: BlogPost = {
 
       <table style="width: 100%; border-collapse: collapse; margin: 2rem 0;">
         <thead>
-          <tr style="background: #f8fafc;">
-            <th style="padding: 0.75rem; border: 1px solid #e2e8f0; text-align: left;">Step</th>
-            <th style="padding: 0.75rem; border: 1px solid #e2e8f0; text-align: left;">Timing</th>
-            <th style="padding: 0.75rem; border: 1px solid #e2e8f0; text-align: left;">Message</th>
+          <tr style="background: var(--muted);">
+            <th style="padding: 0.75rem; border: 1px solid var(--border); text-align: left;">Step</th>
+            <th style="padding: 0.75rem; border: 1px solid var(--border); text-align: left;">Timing</th>
+            <th style="padding: 0.75rem; border: 1px solid var(--border); text-align: left;">Message</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;"><strong>1st approach</strong></td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Day 0 — lead registered</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Personalized intro, reference to lead context</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);"><strong>1st approach</strong></td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Day 0 — lead registered</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Personalized intro, reference to lead context</td>
           </tr>
-          <tr style="background: #f8fafc;">
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;"><strong>Follow-up 1</strong></td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Day 2 — no response</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Value content (case study, article, industry data)</td>
-          </tr>
-          <tr>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;"><strong>Follow-up 2</strong></td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Day 5 — no response</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Direct question about segment-specific pain point</td>
-          </tr>
-          <tr style="background: #f8fafc;">
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;"><strong>Follow-up 3</strong></td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Day 10 — no response</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">"Closing" message: "Does it still make sense to talk?"</td>
+          <tr style="background: var(--muted);">
+            <td style="padding: 0.75rem; border: 1px solid var(--border);"><strong>Follow-up 1</strong></td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Day 2 — no response</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Value content (case study, article, industry data)</td>
           </tr>
           <tr>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;"><strong>Reactivation</strong></td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Day 30 — cold lead</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">New trigger or product/company news</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);"><strong>Follow-up 2</strong></td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Day 5 — no response</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Direct question about segment-specific pain point</td>
+          </tr>
+          <tr style="background: var(--muted);">
+            <td style="padding: 0.75rem; border: 1px solid var(--border);"><strong>Follow-up 3</strong></td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Day 10 — no response</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">"Closing" message: "Does it still make sense to talk?"</td>
+          </tr>
+          <tr>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);"><strong>Reactivation</strong></td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Day 30 — cold lead</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">New trigger or product/company news</td>
           </tr>
         </tbody>
       </table>
@@ -472,32 +472,32 @@ export const post: BlogPost = {
         From there, every message received on that number appears in the CRM's Chat Center. Reps service via browser, history is saved, and the manager has full visibility without touching anyone's phone.
       </p>
 
-      <div style="background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%); padding: 2rem; border-radius: 1rem; margin: 2.5rem 0; text-align: center;">
+      <div style="background: var(--primary); padding: 2rem; border-radius: 1rem; margin: 2.5rem 0; text-align: center;">
         <p style="color: white; font-size: 1.25rem; font-weight: 700; margin: 0 0 0.5rem;">Centralize your team's WhatsApp in Sirius CRM</p>
-        <p style="color: #bfdbfe; margin: 0 0 1.25rem;">Native Chat Center with WhatsApp integrated via Evolution API. No extra cost, no complex setup.</p>
-        <a href="/pricing" style="display: inline-block; background: white; color: #2563eb; padding: 0.75rem 2rem; border-radius: 0.5rem; font-weight: 700; text-decoration: none;">View Plans →</a>
+        <p style="color: var(--foreground); margin: 0 0 1.25rem;">Native Chat Center with WhatsApp integrated via Evolution API. No extra cost, no complex setup.</p>
+        <a href="/pricing" style="display: inline-block; background: white; color: var(--foreground); padding: 0.75rem 2rem; border-radius: 0.5rem; font-weight: 700; text-decoration: none;">View Plans →</a>
       </div>
 
       <h2>FAQ: CRM with WhatsApp</h2>
 
-      <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
-        <summary style="font-weight: 600; cursor: pointer; color: #1e293b; list-style: revert;">Can a single WhatsApp number be used by multiple reps?</summary>
-        <p style="margin: 0.75rem 0 0; color: #4b5563;">Yes, that's exactly what Chat Center does. With integration via WhatsApp Business API, a single number can be served by multiple agents simultaneously. Conversations are distributed by rules (round-robin, by availability, or by sector) and each rep sees only the conversations assigned to them, while the manager has access to all.</p>
+      <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
+        <summary style="font-weight: 600; cursor: pointer; color: var(--foreground); list-style: revert;">Can a single WhatsApp number be used by multiple reps?</summary>
+        <p style="margin: 0.75rem 0 0; color: var(--foreground);">Yes, that's exactly what Chat Center does. With integration via WhatsApp Business API, a single number can be served by multiple agents simultaneously. Conversations are distributed by rules (round-robin, by availability, or by sector) and each rep sees only the conversations assigned to them, while the manager has access to all.</p>
       </details>
 
-      <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
-        <summary style="font-weight: 600; cursor: pointer; color: #1e293b; list-style: revert;">Does the customer notice they're being served by a system?</summary>
-        <p style="margin: 0.75rem 0 0; color: #4b5563;">Not necessarily. When properly configured, the experience for the customer is identical to normal WhatsApp — they receive and send messages via the app they already use. The difference is on the rep's side, who services via CRM. What can reveal the system is using very generic automatic messages — that's why personalization is essential even in automatic responses.</p>
+      <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
+        <summary style="font-weight: 600; cursor: pointer; color: var(--foreground); list-style: revert;">Does the customer notice they're being served by a system?</summary>
+        <p style="margin: 0.75rem 0 0; color: var(--foreground);">Not necessarily. When properly configured, the experience for the customer is identical to normal WhatsApp — they receive and send messages via the app they already use. The difference is on the rep's side, who services via CRM. What can reveal the system is using very generic automatic messages — that's why personalization is essential even in automatic responses.</p>
       </details>
 
-      <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
-        <summary style="font-weight: 600; cursor: pointer; color: #1e293b; list-style: revert;">What's the difference between WhatsApp Business and the WhatsApp API?</summary>
-        <p style="margin: 0.75rem 0 0; color: #4b5563;">WhatsApp Business is Meta's free app for small businesses — it has a catalog, basic auto-replies, and a business profile, but is limited to one device at a time and doesn't integrate with external systems. The WhatsApp Business API is the version for larger companies, accessed via providers like Evolution API — it allows full CRM integration, multi-agent service, and advanced automations. Sirius CRM uses the API via Evolution to offer the best of both worlds.</p>
+      <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
+        <summary style="font-weight: 600; cursor: pointer; color: var(--foreground); list-style: revert;">What's the difference between WhatsApp Business and the WhatsApp API?</summary>
+        <p style="margin: 0.75rem 0 0; color: var(--foreground);">WhatsApp Business is Meta's free app for small businesses — it has a catalog, basic auto-replies, and a business profile, but is limited to one device at a time and doesn't integrate with external systems. The WhatsApp Business API is the version for larger companies, accessed via providers like Evolution API — it allows full CRM integration, multi-agent service, and advanced automations. Sirius CRM uses the API via Evolution to offer the best of both worlds.</p>
       </details>
 
-      <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin-bottom: 2rem;">
-        <summary style="font-weight: 600; cursor: pointer; color: #1e293b; list-style: revert;">Can my rep continue using WhatsApp on the phone even with CRM integrated?</summary>
-        <p style="margin: 0.75rem 0 0; color: #4b5563;">Technically yes, but it's not recommended. When the number is connected to the CRM via Evolution API, it works like WhatsApp Web — the phone can continue receiving messages. The problem is that responses given via phone aren't logged in the CRM. So after integration, ideally all commercial service should be done exclusively through the CRM panel, using the phone only for emergencies.</p>
+      <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 2rem;">
+        <summary style="font-weight: 600; cursor: pointer; color: var(--foreground); list-style: revert;">Can my rep continue using WhatsApp on the phone even with CRM integrated?</summary>
+        <p style="margin: 0.75rem 0 0; color: var(--foreground);">Technically yes, but it's not recommended. When the number is connected to the CRM via Evolution API, it works like WhatsApp Web — the phone can continue receiving messages. The problem is that responses given via phone aren't logged in the CRM. So after integration, ideally all commercial service should be done exclusively through the CRM panel, using the phone only for emergencies.</p>
       </details>
 
       <h2>Conclusion</h2>
@@ -510,7 +510,7 @@ export const post: BlogPost = {
         <a href="/">Sirius CRM</a> was built for the Brazilian market with this reality in mind. The native Chat Center, integrated via Evolution API without extra per-message costs, is the most practical way to centralize all commercial conversations without changing customer behavior — they stay on the WhatsApp they already use, while the team operates with enterprise-level software professionalism.
       </p>
 
-      <hr style="margin: 3rem 0; border: none; border-top: 1px solid #e5e7eb;" />
+      <hr style="margin: 3rem 0; border: none; border-top: 1px solid var(--border);" />
       <strong>Last Updated:</strong> March 21, 2026<br/>
       <strong>Author:</strong> Sirius CRM Team<br/>
       <strong>Read Time:</strong> 11 minutes

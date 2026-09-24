@@ -19,15 +19,15 @@ export const post: BlogPost = {
         A boa notícia é que o ecossistema de ferramentas para esse profissional evoluiu muito. As 5 ferramentas certas eliminam a dependência de planilhas confusas, reduzem o tempo administrativo em até 60% e aumentam diretamente as vendas ao garantir que nenhum follow-up caia no esquecimento.
       </p>
 
-      <div class="not-prose" style="background: #1e293b; padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
-        <p style="margin: 0 0 0.75rem; font-weight: 700; font-size: 1.05rem; color: #38bdf8;">⚡ TL;DR — Resposta Rápida</p>
+      <div class="not-prose" style="background: var(--primary); padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
+        <p style="margin: 0 0 0.75rem; font-weight: 700; font-size: 1.05rem; color: var(--primary-foreground);">⚡ TL;DR — Resposta Rápida</p>
         <ul style="margin: 0; padding-left: 1.25rem; line-height: 2; color: #ffffff;">
           <li><strong>CRM próprio offline</strong> é a ferramenta número 1 — use o seu, não o sistema da fábrica que você não controla</li>
           <li><strong>WhatsApp Business</strong> com catálogo é o canal mais eficaz para representantes no Brasil em 2026</li>
           <li><strong>Módulo de comissões</strong> no CRM substitui planilhas e calcula automaticamente o que você vai receber</li>
           <li><strong>Google Maps + listas</strong> para prospecção local economiza horas de pesquisa por semana</li>
           <li><strong>Assinatura digital</strong> (ClickSign ou DocuSign) fecha pedidos na hora, no cliente, sem papel</li>
-          <li>O <a href="/" style="color: #38bdf8;">Sirius CRM</a> substitui 3 das 5 ferramentas nesta lista</li>
+          <li>O <a href="/" style="color: var(--primary-foreground);">Sirius CRM</a> substitui 3 das 5 ferramentas nesta lista</li>
         </ul>
       </div>
 
@@ -43,7 +43,7 @@ export const post: BlogPost = {
 
       <div class="callout-stat">
         <p><strong>📊 O custo da desorganização para representantes</strong></p>
-        <p style="font-size: 3rem; font-weight: 800; color: #2563eb; margin: 1rem 0; line-height: 1;">42%</p>
+        <p style="font-size: 3rem; font-weight: 800; color: var(--foreground); margin: 1rem 0; line-height: 1;">42%</p>
         <p>dos representantes comerciais autônomos relatam perder pelo menos 1 pedido por mês por falta de registro organizado, segundo pesquisa da Abevd (Associação Brasileira de Empresas de Vendas Diretas, 2024). Em um portfólio médio de R$ 15.000/mês, são R$ 6.300 perdidos por ano.</p>
       </div>
 
@@ -66,7 +66,7 @@ export const post: BlogPost = {
       </p>
 
       <p>
-        No <a href="/" style="color: #2563eb; text-decoration: underline;">Sirius CRM</a>, o representante cadastra cada cliente uma vez, registra cada visita ou ligação, e o sistema avisa automaticamente quando está na hora de contato. A visão de pipeline mostra quais pedidos estão em aberto, quais precisam de follow-up e quais clientes estão inativos há mais de X dias.
+        No <a href="/" style="color: var(--foreground); text-decoration: underline;">Sirius CRM</a>, o representante cadastra cada cliente uma vez, registra cada visita ou ligação, e o sistema avisa automaticamente quando está na hora de contato. A visão de pipeline mostra quais pedidos estão em aberto, quais precisam de follow-up e quais clientes estão inativos há mais de X dias.
       </p>
 
       <h3>Custo</h3>
@@ -126,7 +126,7 @@ export const post: BlogPost = {
       </ol>
 
       <p>
-        O <a href="/" style="color: #2563eb; text-decoration: underline;">Sirius CRM</a> suporta esse fluxo com cache local no aplicativo móvel. Nenhum dado é perdido mesmo em áreas sem cobertura.
+        O <a href="/" style="color: var(--foreground); text-decoration: underline;">Sirius CRM</a> suporta esse fluxo com cache local no aplicativo móvel. Nenhum dado é perdido mesmo em áreas sem cobertura.
       </p>
 
       <h2>Ferramenta 3: Planilha de Comissões (ou CRM com Módulo de Comissões)</h2>
@@ -151,9 +151,9 @@ export const post: BlogPost = {
         Para quem ainda não tem CRM com esse módulo, a planilha mínima precisa de: número do pedido, data, cliente, representada, valor bruto, percentual de comissão, valor da comissão, data prevista de recebimento, status (aguardando / recebido / contestado).
       </p>
 
-      <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 0.75rem; padding: 1.5rem; margin: 1.5rem 0;">
-        <p style="margin: 0 0 0.75rem; font-weight: 700; color: #1e293b;">Exemplo de cálculo de comissão complexo</p>
-        <p style="margin: 0; color: #475569; line-height: 1.8;">Representada A: 4% sobre produtos linha Premium, 2,5% sobre linha Standard<br/>
+      <div style="background: var(--muted); border: 1px solid var(--border); border-radius: 0.75rem; padding: 1.5rem; margin: 1.5rem 0;">
+        <p style="margin: 0 0 0.75rem; font-weight: 700; color: var(--foreground);">Exemplo de cálculo de comissão complexo</p>
+        <p style="margin: 0; color: var(--foreground); line-height: 1.8;">Representada A: 4% sobre produtos linha Premium, 2,5% sobre linha Standard<br/>
         Representada B: 3% flat sobre qualquer produto, mas 0% sobre devoluções acima de 10% do pedido<br/>
         Com CRM, você cadastra essas regras uma vez e o cálculo é automático para cada pedido.</p>
       </div>
@@ -187,7 +187,7 @@ export const post: BlogPost = {
       </p>
 
       <p>
-        Para prospecção mais avançada, integre com o <a href="/" style="color: #2563eb; text-decoration: underline;">Sirius CRM</a>: importe os prospects encontrados, defina cadência de contato e rastreie cada tentativa de abordagem.
+        Para prospecção mais avançada, integre com o <a href="/" style="color: var(--foreground); text-decoration: underline;">Sirius CRM</a>: importe os prospects encontrados, defina cadência de contato e rastreie cada tentativa de abordagem.
       </p>
 
       <h3>Custo</h3>
@@ -203,48 +203,48 @@ export const post: BlogPost = {
       </p>
 
       <p>
-        O <a href="/pricing" style="color: #2563eb; text-decoration: underline;">plano gratuito do Sirius CRM</a> inclui: até 200 contatos, pipeline de vendas, registros de interação, alertas de follow-up e acesso mobile. Para um representante iniciante ou com carteira pequena, é o suficiente para operar profissionalmente sem custo.
+        O <a href="/pricing" style="color: var(--foreground); text-decoration: underline;">plano gratuito do Sirius CRM</a> inclui: até 200 contatos, pipeline de vendas, registros de interação, alertas de follow-up e acesso mobile. Para um representante iniciante ou com carteira pequena, é o suficiente para operar profissionalmente sem custo.
       </p>
 
       <table style="width: 100%; border-collapse: collapse; margin: 2rem 0;">
         <thead>
-          <tr style="background: #f8fafc;">
-            <th style="padding: 0.75rem; border: 1px solid #e2e8f0; text-align: left;">App</th>
-            <th style="padding: 0.75rem; border: 1px solid #e2e8f0; text-align: left;">Função</th>
-            <th style="padding: 0.75rem; border: 1px solid #e2e8f0; text-align: left;">Plano Grátis</th>
-            <th style="padding: 0.75rem; border: 1px solid #e2e8f0; text-align: left;">Pago a partir de</th>
+          <tr style="background: var(--muted);">
+            <th style="padding: 0.75rem; border: 1px solid var(--border); text-align: left;">App</th>
+            <th style="padding: 0.75rem; border: 1px solid var(--border); text-align: left;">Função</th>
+            <th style="padding: 0.75rem; border: 1px solid var(--border); text-align: left;">Plano Grátis</th>
+            <th style="padding: 0.75rem; border: 1px solid var(--border); text-align: left;">Pago a partir de</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;"><strong>Sirius CRM</strong></td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">CRM + comissões + prospecção</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Sim — até 200 contatos</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">R$ 67/mês</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);"><strong>Sirius CRM</strong></td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">CRM + comissões + prospecção</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Sim — até 200 contatos</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">R$ 67/mês</td>
           </tr>
-          <tr style="background: #f8fafc;">
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;"><strong>WhatsApp Business</strong></td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Comunicação + catálogo</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Sim — uso pessoal completo</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">R$ 99/mês (API)</td>
-          </tr>
-          <tr>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;"><strong>Google Maps</strong></td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Prospecção local + rotas</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Sim — uso manual completo</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">API paga</td>
-          </tr>
-          <tr style="background: #f8fafc;">
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;"><strong>ClickSign</strong></td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Assinatura digital</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Sim — 3 docs/mês</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">R$ 69/mês</td>
+          <tr style="background: var(--muted);">
+            <td style="padding: 0.75rem; border: 1px solid var(--border);"><strong>WhatsApp Business</strong></td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Comunicação + catálogo</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Sim — uso pessoal completo</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">R$ 99/mês (API)</td>
           </tr>
           <tr>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;"><strong>Google Sheets</strong></td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Planilha de comissões</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Sim — completo</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Gratuito</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);"><strong>Google Maps</strong></td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Prospecção local + rotas</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Sim — uso manual completo</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">API paga</td>
+          </tr>
+          <tr style="background: var(--muted);">
+            <td style="padding: 0.75rem; border: 1px solid var(--border);"><strong>ClickSign</strong></td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Assinatura digital</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Sim — 3 docs/mês</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">R$ 69/mês</td>
+          </tr>
+          <tr>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);"><strong>Google Sheets</strong></td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Planilha de comissões</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Sim — completo</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Gratuito</td>
           </tr>
         </tbody>
       </table>
@@ -290,7 +290,7 @@ export const post: BlogPost = {
       <h2>Como o Sirius Substitui 3 das 5 Ferramentas</h2>
 
       <p>
-        Para representantes que querem simplificar o stack sem perder funcionalidade, o <a href="/" style="color: #2563eb; text-decoration: underline;">Sirius CRM</a> foi desenvolvido com foco específico no representante autônomo brasileiro. Ele substitui nativamente:
+        Para representantes que querem simplificar o stack sem perder funcionalidade, o <a href="/" style="color: var(--foreground); text-decoration: underline;">Sirius CRM</a> foi desenvolvido com foco específico no representante autônomo brasileiro. Ele substitui nativamente:
       </p>
 
       <ul style="line-height: 2; padding-left: 1.5rem;">
@@ -303,10 +303,10 @@ export const post: BlogPost = {
         Isso significa que com uma única ferramenta — e um único login — o representante resolve o núcleo da sua operação. WhatsApp Business e ClickSign continuam separados porque têm ecossistemas próprios consolidados, mas se integram ao Sirius via notificações e histórico.
       </p>
 
-      <div style="background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%); padding: 2rem; border-radius: 1rem; margin: 2.5rem 0; text-align: center;">
+      <div style="background: var(--primary); padding: 2rem; border-radius: 1rem; margin: 2.5rem 0; text-align: center;">
         <p style="color: white; font-size: 1.25rem; font-weight: 700; margin: 0 0 0.5rem;">Comece a usar o Sirius CRM hoje</p>
-        <p style="color: #bfdbfe; margin: 0 0 1.25rem;">CRM + comissões + prospecção em um lugar. Plano gratuito disponível, sem cartão de crédito.</p>
-        <a href="/pricing" style="display: inline-block; background: white; color: #2563eb; padding: 0.75rem 2rem; border-radius: 0.5rem; font-weight: 700; text-decoration: none;">Ver Planos e Começar Grátis →</a>
+        <p style="color: var(--foreground); margin: 0 0 1.25rem;">CRM + comissões + prospecção em um lugar. Plano gratuito disponível, sem cartão de crédito.</p>
+        <a href="/pricing" style="display: inline-block; background: white; color: var(--foreground); padding: 0.75rem 2rem; border-radius: 0.5rem; font-weight: 700; text-decoration: none;">Ver Planos e Começar Grátis →</a>
       </div>
 
       <h2>Qual a ordem certa para adotar as ferramentas?</h2>
@@ -327,24 +327,24 @@ export const post: BlogPost = {
 
       <h2>Perguntas Frequentes sobre Ferramentas para Representantes</h2>
 
-      <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
-        <summary style="font-weight: 600; cursor: pointer; color: #1e293b; list-style: revert;">O sistema da representada é suficiente ou preciso de CRM próprio?</summary>
-        <p style="margin: 0.75rem 0 0; color: #4b5563;">O sistema da representada é complementar, não substituto. Ele gerencia os pedidos e o relacionamento com a fábrica. Mas não tem os dados dos seus outros clientes e representadas, não faz alertas de follow-up personalizados e — o ponto crítico — se você perder a representação, perde todos os dados. CRM próprio é soberania: os dados são seus, independente de qual linha você representa.</p>
+      <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
+        <summary style="font-weight: 600; cursor: pointer; color: var(--foreground); list-style: revert;">O sistema da representada é suficiente ou preciso de CRM próprio?</summary>
+        <p style="margin: 0.75rem 0 0; color: var(--foreground);">O sistema da representada é complementar, não substituto. Ele gerencia os pedidos e o relacionamento com a fábrica. Mas não tem os dados dos seus outros clientes e representadas, não faz alertas de follow-up personalizados e — o ponto crítico — se você perder a representação, perde todos os dados. CRM próprio é soberania: os dados são seus, independente de qual linha você representa.</p>
       </details>
 
-      <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
-        <summary style="font-weight: 600; cursor: pointer; color: #1e293b; list-style: revert;">Representante autônomo precisa de CNPJ para usar as ferramentas?</summary>
-        <p style="margin: 0.75rem 0 0; color: #4b5563;">Não para a maioria das ferramentas listadas. WhatsApp Business, Google Maps e CRM funcionam com CPF. ClickSign aceita CPF para assinatura. Para emissão de nota fiscal e formalização da representação, CNPJ (MEI como Agente Comercial e Representante Comercial) é necessário — mas isso é questão fiscal, não de ferramenta.</p>
+      <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
+        <summary style="font-weight: 600; cursor: pointer; color: var(--foreground); list-style: revert;">Representante autônomo precisa de CNPJ para usar as ferramentas?</summary>
+        <p style="margin: 0.75rem 0 0; color: var(--foreground);">Não para a maioria das ferramentas listadas. WhatsApp Business, Google Maps e CRM funcionam com CPF. ClickSign aceita CPF para assinatura. Para emissão de nota fiscal e formalização da representação, CNPJ (MEI como Agente Comercial e Representante Comercial) é necessário — mas isso é questão fiscal, não de ferramenta.</p>
       </details>
 
-      <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
-        <summary style="font-weight: 600; cursor: pointer; color: #1e293b; list-style: revert;">Vale a pena pagar por CRM sendo representante autônomo pequeno?</summary>
-        <p style="margin: 0.75rem 0 0; color: #4b5563;">Depende do volume. Para portfólio abaixo de R$ 10.000/mês com menos de 50 clientes ativos, o plano gratuito do Sirius CRM é suficiente. Para portfólios maiores, o custo de R$ 67-99/mês de um CRM pago é recuperado na primeira semana ao evitar um único pedido perdido por falta de follow-up. A conta é simples: se o CRM te ajuda a não perder 1 pedido por mês e sua comissão média por pedido é R$ 300, o ROI é 3-6x no primeiro mês.</p>
+      <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
+        <summary style="font-weight: 600; cursor: pointer; color: var(--foreground); list-style: revert;">Vale a pena pagar por CRM sendo representante autônomo pequeno?</summary>
+        <p style="margin: 0.75rem 0 0; color: var(--foreground);">Depende do volume. Para portfólio abaixo de R$ 10.000/mês com menos de 50 clientes ativos, o plano gratuito do Sirius CRM é suficiente. Para portfólios maiores, o custo de R$ 67-99/mês de um CRM pago é recuperado na primeira semana ao evitar um único pedido perdido por falta de follow-up. A conta é simples: se o CRM te ajuda a não perder 1 pedido por mês e sua comissão média por pedido é R$ 300, o ROI é 3-6x no primeiro mês.</p>
       </details>
 
-      <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin-bottom: 2rem;">
-        <summary style="font-weight: 600; cursor: pointer; color: #1e293b; list-style: revert;">Como proteger os dados dos clientes se o celular for roubado ou perdido?</summary>
-        <p style="margin: 0.75rem 0 0; color: #4b5563;">A resposta está na nuvem. CRM com backup automático na nuvem (como o Sirius) garante que você acessa todos os dados em qualquer dispositivo com login. Nunca armazene dados críticos apenas no celular sem sincronização. Configure também bloqueio biométrico e senha no app. Para WhatsApp Business, ative backup automático para Google Drive ou iCloud — se perder o número, o histórico de conversas é recuperável.</p>
+      <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 2rem;">
+        <summary style="font-weight: 600; cursor: pointer; color: var(--foreground); list-style: revert;">Como proteger os dados dos clientes se o celular for roubado ou perdido?</summary>
+        <p style="margin: 0.75rem 0 0; color: var(--foreground);">A resposta está na nuvem. CRM com backup automático na nuvem (como o Sirius) garante que você acessa todos os dados em qualquer dispositivo com login. Nunca armazene dados críticos apenas no celular sem sincronização. Configure também bloqueio biométrico e senha no app. Para WhatsApp Business, ative backup automático para Google Drive ou iCloud — se perder o número, o histórico de conversas é recuperável.</p>
       </details>
 
       <h2>Conclusão</h2>
@@ -354,10 +354,10 @@ export const post: BlogPost = {
       </p>
 
       <p>
-        O ponto de partida é o CRM. Com a carteira de clientes organizada, tudo o mais flui: você sabe quem visitar, quando ligar, o que oferecer e quanto vai receber. O <a href="/" style="color: #2563eb; text-decoration: underline;">Sirius CRM</a> foi construído pensando no representante brasileiro — comece pelo plano gratuito e evolua conforme sua carteira cresce.
+        O ponto de partida é o CRM. Com a carteira de clientes organizada, tudo o mais flui: você sabe quem visitar, quando ligar, o que oferecer e quanto vai receber. O <a href="/" style="color: var(--foreground); text-decoration: underline;">Sirius CRM</a> foi construído pensando no representante brasileiro — comece pelo plano gratuito e evolua conforme sua carteira cresce.
       </p>
 
-      <hr style="margin: 3rem 0; border: none; border-top: 1px solid #e5e7eb;" />
+      <hr style="margin: 3rem 0; border: none; border-top: 1px solid var(--border);" />
       <strong>Última Atualização:</strong> 21 de Março de 2026<br/>
       <strong>Autor:</strong> Equipe Sirius CRM<br/>
       <strong>Tempo de Leitura:</strong> 11 minutos
@@ -401,7 +401,7 @@ export const post: BlogPost = {
       </ul>
 
       <p>
-        <a href="/" style="color: #2563eb; text-decoration: underline;">Sirius CRM</a> was built specifically for this profile: Brazilian sales reps who work in the field, manage multiple manufacturers, and need a tool that fits the way they actually work — WhatsApp integration, offline mode, commission calculator, and a mobile app designed for field use.
+        <a href="/" style="color: var(--foreground); text-decoration: underline;">Sirius CRM</a> was built specifically for this profile: Brazilian sales reps who work in the field, manage multiple manufacturers, and need a tool that fits the way they actually work — WhatsApp integration, offline mode, commission calculator, and a mobile app designed for field use.
       </p>
 
       <h2>Tool 2: Commission Spreadsheet / Calculator</h2>
@@ -443,37 +443,37 @@ export const post: BlogPost = {
 
       <table style="width: 100%; border-collapse: collapse; margin: 1.5rem 0;">
         <thead>
-          <tr style="background: #f8fafc;">
-            <th style="border: 1px solid #e2e8f0; padding: 0.75rem; text-align: left;">Feature</th>
-            <th style="border: 1px solid #e2e8f0; padding: 0.75rem; text-align: left;">Regular</th>
-            <th style="border: 1px solid #e2e8f0; padding: 0.75rem; text-align: left;">Business</th>
+          <tr style="background: var(--muted);">
+            <th style="border: 1px solid var(--border); padding: 0.75rem; text-align: left;">Feature</th>
+            <th style="border: 1px solid var(--border); padding: 0.75rem; text-align: left;">Regular</th>
+            <th style="border: 1px solid var(--border); padding: 0.75rem; text-align: left;">Business</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">Business profile with catalog</td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">No</td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">Yes</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">Business profile with catalog</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">No</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">Yes</td>
           </tr>
           <tr>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">Quick reply templates</td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">No</td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">Yes</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">Quick reply templates</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">No</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">Yes</td>
           </tr>
           <tr>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">Contact labels/organization</td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">No</td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">Yes</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">Contact labels/organization</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">No</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">Yes</td>
           </tr>
           <tr>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">Away/greeting messages</td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">No</td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">Yes</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">Away/greeting messages</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">No</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">Yes</td>
           </tr>
           <tr>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">CRM integration</td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">Limited</td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">Via API</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">CRM integration</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">Limited</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">Via API</td>
           </tr>
         </tbody>
       </table>
@@ -508,24 +508,24 @@ export const post: BlogPost = {
       </ol>
 
       <p>
-        This end-to-end workflow, fully implemented in <a href="/" style="color: #2563eb; text-decoration: underline;">Sirius CRM</a>, means an independent rep can manage a 200-client portfolio without a single spreadsheet, sticky note, or WhatsApp message falling through the cracks.
+        This end-to-end workflow, fully implemented in <a href="/" style="color: var(--foreground); text-decoration: underline;">Sirius CRM</a>, means an independent rep can manage a 200-client portfolio without a single spreadsheet, sticky note, or WhatsApp message falling through the cracks.
       </p>
 
       <h2>FAQ — Tools for Independent Sales Reps</h2>
 
-      <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin-bottom: 2rem;">
-        <summary style="font-weight: 600; cursor: pointer; color: #1e293b; list-style: revert;">What's the minimum tool budget for an independent sales rep?</summary>
-        <p style="margin: 0.75rem 0 0; color: #4b5563;">You can get started with R$0/month: Sirius CRM free plan, free CNPJ lookup tools, LinkedIn free, WhatsApp Business free, and DocuSign's free tier for up to 3 documents/month. As volume grows, the first paid upgrade that delivers the most ROI is typically the CRM paid plan with offline mode and WhatsApp integration — typically R$79-149/month.</p>
+      <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 2rem;">
+        <summary style="font-weight: 600; cursor: pointer; color: var(--foreground); list-style: revert;">What's the minimum tool budget for an independent sales rep?</summary>
+        <p style="margin: 0.75rem 0 0; color: var(--foreground);">You can get started with R$0/month: Sirius CRM free plan, free CNPJ lookup tools, LinkedIn free, WhatsApp Business free, and DocuSign's free tier for up to 3 documents/month. As volume grows, the first paid upgrade that delivers the most ROI is typically the CRM paid plan with offline mode and WhatsApp integration — typically R$79-149/month.</p>
       </details>
 
-      <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin-bottom: 2rem;">
-        <summary style="font-weight: 600; cursor: pointer; color: #1e293b; list-style: revert;">Do I need a separate app for each tool or can I use one platform?</summary>
-        <p style="margin: 0.75rem 0 0; color: #4b5563;">A good CRM should consolidate most of the stack: contact management, pipeline, follow-up reminders, WhatsApp logging, commission calculation, and ideally e-signature integration. The goal is to minimize context switching — every time you leave the CRM to check a spreadsheet or log something manually, you create friction that compounds into missed follow-ups.</p>
+      <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 2rem;">
+        <summary style="font-weight: 600; cursor: pointer; color: var(--foreground); list-style: revert;">Do I need a separate app for each tool or can I use one platform?</summary>
+        <p style="margin: 0.75rem 0 0; color: var(--foreground);">A good CRM should consolidate most of the stack: contact management, pipeline, follow-up reminders, WhatsApp logging, commission calculation, and ideally e-signature integration. The goal is to minimize context switching — every time you leave the CRM to check a spreadsheet or log something manually, you create friction that compounds into missed follow-ups.</p>
       </details>
 
-      <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin-bottom: 2rem;">
-        <summary style="font-weight: 600; cursor: pointer; color: #1e293b; list-style: revert;">How do I protect client data if my phone is stolen or lost?</summary>
-        <p style="margin: 0.75rem 0 0; color: #4b5563;">The answer is cloud backup. A CRM with automatic cloud sync (like Sirius) ensures you can access all data from any device with a login — no data lives only on the device. Configure biometric lock and app PIN as additional layers. For WhatsApp Business, enable automatic backup to Google Drive or iCloud — if you lose the number, conversation history is recoverable.</p>
+      <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 2rem;">
+        <summary style="font-weight: 600; cursor: pointer; color: var(--foreground); list-style: revert;">How do I protect client data if my phone is stolen or lost?</summary>
+        <p style="margin: 0.75rem 0 0; color: var(--foreground);">The answer is cloud backup. A CRM with automatic cloud sync (like Sirius) ensures you can access all data from any device with a login — no data lives only on the device. Configure biometric lock and app PIN as additional layers. For WhatsApp Business, enable automatic backup to Google Drive or iCloud — if you lose the number, conversation history is recoverable.</p>
       </details>
 
       <h2>Conclusion</h2>
@@ -535,7 +535,7 @@ export const post: BlogPost = {
       </p>
 
       <p>
-        The starting point is the CRM. With the client portfolio organized, everything else flows: you know who to visit, when to call, what to offer, and what you'll earn. <a href="/" style="color: #2563eb; text-decoration: underline;">Sirius CRM</a> was built with the Brazilian sales rep in mind — start with the free plan and upgrade as your portfolio grows.
+        The starting point is the CRM. With the client portfolio organized, everything else flows: you know who to visit, when to call, what to offer, and what you'll earn. <a href="/" style="color: var(--foreground); text-decoration: underline;">Sirius CRM</a> was built with the Brazilian sales rep in mind — start with the free plan and upgrade as your portfolio grows.
       </p>
   `,
 }

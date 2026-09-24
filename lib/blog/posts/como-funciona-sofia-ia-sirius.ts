@@ -17,20 +17,20 @@ export const post: BlogPost = {
         Neste artigo, você vai entender em detalhes como a Sofia funciona, quais são seus 7 superpoderes, como o painel <code>/IA</code> garante supervisão humana, e por que ela é diferente de qualquer outra IA de CRM disponível no mercado brasileiro em 2026.
       </p>
 
-      <div class="not-prose" style="background: #1e293b; padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
-        <p style="margin: 0 0 0.75rem; font-weight: 700; font-size: 1.05rem; color: #38bdf8;">⚡ TL;DR — Resposta Rápida</p>
+      <div class="not-prose" style="background: var(--primary); padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
+        <p style="margin: 0 0 0.75rem; font-weight: 700; font-size: 1.05rem; color: var(--primary-foreground);">⚡ TL;DR — Resposta Rápida</p>
         <ul style="margin: 0; padding-left: 1.25rem; line-height: 2; color: #ffffff;">
-          <li><strong>Sofia IA</strong> é o agente autônomo do Sirius CRM — ela <strong style="color: #38bdf8;">opera</strong> o CRM por você, não apenas sugere ações</li>
+          <li><strong>Sofia IA</strong> é o agente autônomo do Sirius CRM — ela <strong style="color: var(--primary-foreground);">opera</strong> o CRM por você, não apenas sugere ações</li>
           <li>Funciona em dois modos: assistente no <code>/dashboard</code> e operadora autônoma no <code>/IA</code></li>
           <li>7 superpoderes: qualificação, follow-up, pipeline, agendamento, relatórios, prospecção e análise de sentimento</li>
-          <li>Toda ação crítica passa por <strong style="color: #38bdf8;">aprovação humana</strong> antes de ser executada</li>
+          <li>Toda ação crítica passa por <strong style="color: var(--primary-foreground);">aprovação humana</strong> antes de ser executada</li>
           <li>Disponível a partir de <strong>R$67/mês</strong> no plano Starter com 200 ações autônomas</li>
         </ul>
       </div>
 
-      <div style="background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); border-left: 4px solid #2563eb; padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
-        <p style="margin: 0; font-weight: 700; color: #1e40af; font-size: 1.1rem;">📊 Dado que você precisa saber:</p>
-        <p style="margin: 0.5rem 0 0; color: #1e40af;">Vendedores gastam apenas <strong>28% do tempo efetivamente vendendo</strong> — o restante é consumido por tarefas administrativas como atualização de CRM, e-mails internos e entrada de dados. Sofia elimina <strong>80% dessas tarefas</strong> repetitivas, devolvendo o tempo ao que importa: fechar negócios. Fonte: Salesforce State of Sales (2024).</p>
+      <div style="background: var(--muted); border-left: 4px solid var(--fio-forte); padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
+        <p style="margin: 0; font-weight: 700; color: var(--foreground); font-size: 1.1rem;">📊 Dado que você precisa saber:</p>
+        <p style="margin: 0.5rem 0 0; color: var(--foreground);">Vendedores gastam apenas <strong>28% do tempo efetivamente vendendo</strong> — o restante é consumido por tarefas administrativas como atualização de CRM, e-mails internos e entrada de dados. Sofia elimina <strong>80% dessas tarefas</strong> repetitivas, devolvendo o tempo ao que importa: fechar negócios. Fonte: Salesforce State of Sales (2024).</p>
       </div>
 
       <h2>Quem é Sofia IA?</h2>
@@ -160,9 +160,9 @@ export const post: BlogPost = {
         <li><strong>Executada:</strong> A ação foi concluída com sucesso. Fica registrada no histórico com timestamp, detalhes e resultado, criando uma trilha de auditoria completa.</li>
       </ol>
 
-      <div style="background: linear-gradient(135deg, #f5f3ff 0%, #ede9fe 100%); border-left: 4px solid #7c3aed; padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
-        <p style="margin: 0; font-weight: 700; color: #5b21b6; font-size: 1.1rem;">🛡️ Princípio de segurança</p>
-        <p style="margin: 0.75rem 0 0; color: #4c1d95;">Sofia <strong>nunca</strong> executa ações críticas sem aprovação humana. Movimentações de pipeline, envio de mensagens para clientes, alterações de dados de contato e agendamentos passam obrigatoriamente pelo fluxo de aprovação. Ações informativas (relatórios, análises, sugestões) são geradas e entregues automaticamente.</p>
+      <div style="background: var(--muted); border-left: 4px solid var(--fio-forte); padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
+        <p style="margin: 0; font-weight: 700; color: var(--foreground); font-size: 1.1rem;">🛡️ Princípio de segurança</p>
+        <p style="margin: 0.75rem 0 0; color: var(--foreground);">Sofia <strong>nunca</strong> executa ações críticas sem aprovação humana. Movimentações de pipeline, envio de mensagens para clientes, alterações de dados de contato e agendamentos passam obrigatoriamente pelo fluxo de aprovação. Ações informativas (relatórios, análises, sugestões) são geradas e entregues automaticamente.</p>
       </div>
 
       <p>
@@ -204,61 +204,61 @@ export const post: BlogPost = {
 
       <table style="width: 100%; border-collapse: collapse; margin: 1.5rem 0;">
         <thead>
-          <tr style="background: #f8fafc;">
-            <th style="border: 1px solid #e2e8f0; padding: 0.75rem; text-align: left;">Recurso</th>
-            <th style="border: 1px solid #e2e8f0; padding: 0.75rem; text-align: left;">STARTER — R$67/mês</th>
-            <th style="border: 1px solid #e2e8f0; padding: 0.75rem; text-align: left;">PRO — R$147/mês</th>
-            <th style="border: 1px solid #e2e8f0; padding: 0.75rem; text-align: left;">BUSINESS — R$397/mês</th>
+          <tr style="background: var(--muted);">
+            <th style="border: 1px solid var(--border); padding: 0.75rem; text-align: left;">Recurso</th>
+            <th style="border: 1px solid var(--border); padding: 0.75rem; text-align: left;">STARTER — R$67/mês</th>
+            <th style="border: 1px solid var(--border); padding: 0.75rem; text-align: left;">PRO — R$147/mês</th>
+            <th style="border: 1px solid var(--border); padding: 0.75rem; text-align: left;">BUSINESS — R$397/mês</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;"><strong>Agentes Sofia</strong></td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">1 agente</td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">3 agentes</td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">5 agentes</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;"><strong>Agentes Sofia</strong></td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">1 agente</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">3 agentes</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">5 agentes</td>
           </tr>
           <tr>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;"><strong>Ações autônomas/mês</strong></td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">200 ações</td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">1.000 ações</td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">3.000 ações</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;"><strong>Ações autônomas/mês</strong></td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">200 ações</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">1.000 ações</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">3.000 ações</td>
           </tr>
           <tr>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;"><strong>Qualificação automática</strong></td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">Sim</td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">Sim</td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">Sim</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;"><strong>Qualificação automática</strong></td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">Sim</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">Sim</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">Sim</td>
           </tr>
           <tr>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;"><strong>Follow-up inteligente</strong></td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">Sim</td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">Sim</td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">Sim</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;"><strong>Follow-up inteligente</strong></td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">Sim</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">Sim</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">Sim</td>
           </tr>
           <tr>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;"><strong>Análise de sentimento</strong></td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">Básica</td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">Avançada</td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">Avançada + preditiva</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;"><strong>Análise de sentimento</strong></td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">Básica</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">Avançada</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">Avançada + preditiva</td>
           </tr>
           <tr>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;"><strong>Prospecção assistida</strong></td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">50 créditos</td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">300 créditos</td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">1.000 créditos</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;"><strong>Prospecção assistida</strong></td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">50 créditos</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">300 créditos</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">1.000 créditos</td>
           </tr>
           <tr>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;"><strong>Relatórios automáticos</strong></td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">Semanal</td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">Diário + semanal</td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">Diário + semanal + ad hoc</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;"><strong>Relatórios automáticos</strong></td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">Semanal</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">Diário + semanal</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">Diário + semanal + ad hoc</td>
           </tr>
           <tr>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;"><strong>Painel /IA</strong></td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">Sim</td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">Sim</td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">Sim + API</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;"><strong>Painel /IA</strong></td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">Sim</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">Sim</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">Sim + API</td>
           </tr>
         </tbody>
       </table>
@@ -279,63 +279,63 @@ export const post: BlogPost = {
 
       <table style="width: 100%; border-collapse: collapse; margin: 1.5rem 0;">
         <thead>
-          <tr style="background: #f8fafc;">
-            <th style="border: 1px solid #e2e8f0; padding: 0.75rem; text-align: left;">Critério</th>
-            <th style="border: 1px solid #e2e8f0; padding: 0.75rem; text-align: left;">Sofia IA (Sirius)</th>
-            <th style="border: 1px solid #e2e8f0; padding: 0.75rem; text-align: left;">HubSpot AI</th>
-            <th style="border: 1px solid #e2e8f0; padding: 0.75rem; text-align: left;">Salesforce Einstein</th>
-            <th style="border: 1px solid #e2e8f0; padding: 0.75rem; text-align: left;">RD Station</th>
+          <tr style="background: var(--muted);">
+            <th style="border: 1px solid var(--border); padding: 0.75rem; text-align: left;">Critério</th>
+            <th style="border: 1px solid var(--border); padding: 0.75rem; text-align: left;">Sofia IA (Sirius)</th>
+            <th style="border: 1px solid var(--border); padding: 0.75rem; text-align: left;">HubSpot AI</th>
+            <th style="border: 1px solid var(--border); padding: 0.75rem; text-align: left;">Salesforce Einstein</th>
+            <th style="border: 1px solid var(--border); padding: 0.75rem; text-align: left;">RD Station</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;"><strong>Tipo de IA</strong></td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">Agente autônomo</td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">Assistente + copilot</td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">Preditiva + copilot</td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">Automação básica</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;"><strong>Tipo de IA</strong></td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">Agente autônomo</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">Assistente + copilot</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">Preditiva + copilot</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">Automação básica</td>
           </tr>
           <tr>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;"><strong>Executa ações?</strong></td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">Sim (com aprovação)</td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">Parcial (e-mails)</td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">Parcial (workflows)</td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">Não (apenas automação)</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;"><strong>Executa ações?</strong></td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">Sim (com aprovação)</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">Parcial (e-mails)</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">Parcial (workflows)</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">Não (apenas automação)</td>
           </tr>
           <tr>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;"><strong>Qualificação autônoma</strong></td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">Sim (BANT + MEDDIC)</td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">Scoring básico</td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">Einstein Lead Scoring</td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">Lead Scoring por regras</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;"><strong>Qualificação autônoma</strong></td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">Sim (BANT + MEDDIC)</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">Scoring básico</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">Einstein Lead Scoring</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">Lead Scoring por regras</td>
           </tr>
           <tr>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;"><strong>Suporte a português BR</strong></td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">Nativo</td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">Tradução</td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">Tradução</td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">Nativo</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;"><strong>Suporte a português BR</strong></td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">Nativo</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">Tradução</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">Tradução</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">Nativo</td>
           </tr>
           <tr>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;"><strong>Análise de sentimento</strong></td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">Sim (contextual)</td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">Básica</td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">Sim (Einstein Tone)</td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">Não</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;"><strong>Análise de sentimento</strong></td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">Sim (contextual)</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">Básica</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">Sim (Einstein Tone)</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">Não</td>
           </tr>
           <tr>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;"><strong>Preço inicial com IA</strong></td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">R$67/mês</td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">US$450/mês</td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">US$500/mês</td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">R$349/mês</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;"><strong>Preço inicial com IA</strong></td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">R$67/mês</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">US$450/mês</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">US$500/mês</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">R$349/mês</td>
           </tr>
           <tr>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;"><strong>Painel de supervisão</strong></td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">Sim (painel /IA)</td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">Não dedicado</td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">Não dedicado</td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">Não</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;"><strong>Painel de supervisão</strong></td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">Sim (painel /IA)</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">Não dedicado</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">Não dedicado</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">Não</td>
           </tr>
         </tbody>
       </table>
@@ -350,35 +350,35 @@ export const post: BlogPost = {
 
       <h2>Perguntas Frequentes sobre Sofia IA</h2>
 
-      <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin: 0.75rem 0;">
-        <summary style="font-weight: 600; cursor: pointer; color: #1e293b;">Sofia IA pode enviar mensagens para meus clientes sem minha permissão?</summary>
-        <p style="margin: 0.75rem 0 0; color: #475569;">Não. Toda ação que envolve comunicação direta com clientes (e-mails, WhatsApp, convites de reunião) passa pelo sistema de aprovação do painel /IA. Você pode configurar exceções para templates pré-aprovados de baixo risco, mas ações críticas sempre exigem seu clique de confirmação. Sofia foi projetada com o princípio de "human-in-the-loop" — ela amplifica sua capacidade, não substitui seu julgamento.</p>
+      <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin: 0.75rem 0;">
+        <summary style="font-weight: 600; cursor: pointer; color: var(--foreground);">Sofia IA pode enviar mensagens para meus clientes sem minha permissão?</summary>
+        <p style="margin: 0.75rem 0 0; color: var(--foreground);">Não. Toda ação que envolve comunicação direta com clientes (e-mails, WhatsApp, convites de reunião) passa pelo sistema de aprovação do painel /IA. Você pode configurar exceções para templates pré-aprovados de baixo risco, mas ações críticas sempre exigem seu clique de confirmação. Sofia foi projetada com o princípio de "human-in-the-loop" — ela amplifica sua capacidade, não substitui seu julgamento.</p>
       </details>
 
-      <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin: 0.75rem 0;">
-        <summary style="font-weight: 600; cursor: pointer; color: #1e293b;">Preciso de conhecimento técnico para configurar a Sofia?</summary>
-        <p style="margin: 0.75rem 0 0; color: #475569;">Não. Sofia funciona imediatamente após a ativação do painel /IA — não há código para escrever, APIs para integrar ou fluxos complexos para montar. A configuração é feita por meio de toggles simples: quais ações ela pode executar automaticamente, quais precisam de aprovação, e quais são os limites (frequência de follow-up, score mínimo para qualificação, etc.). Se você sabe usar um CRM, sabe configurar a Sofia.</p>
+      <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin: 0.75rem 0;">
+        <summary style="font-weight: 600; cursor: pointer; color: var(--foreground);">Preciso de conhecimento técnico para configurar a Sofia?</summary>
+        <p style="margin: 0.75rem 0 0; color: var(--foreground);">Não. Sofia funciona imediatamente após a ativação do painel /IA — não há código para escrever, APIs para integrar ou fluxos complexos para montar. A configuração é feita por meio de toggles simples: quais ações ela pode executar automaticamente, quais precisam de aprovação, e quais são os limites (frequência de follow-up, score mínimo para qualificação, etc.). Se você sabe usar um CRM, sabe configurar a Sofia.</p>
       </details>
 
-      <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin: 0.75rem 0;">
-        <summary style="font-weight: 600; cursor: pointer; color: #1e293b;">Quantas ações autônomas eu realmente preciso por mês?</summary>
-        <p style="margin: 0.75rem 0 0; color: #475569;">Depende do volume da sua operação. Uma regra prática: multiplique o número de leads ativos no mês por 5 (cada lead gera em média 5 ações: qualificação, 2-3 follow-ups, movimentação de pipeline). Uma empresa com 40 leads novos por mês precisa de aproximadamente 200 ações — o plano Starter é suficiente. Operações maiores com 200+ leads mensais devem considerar o PRO (1.000 ações) ou Business (3.000 ações).</p>
+      <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin: 0.75rem 0;">
+        <summary style="font-weight: 600; cursor: pointer; color: var(--foreground);">Quantas ações autônomas eu realmente preciso por mês?</summary>
+        <p style="margin: 0.75rem 0 0; color: var(--foreground);">Depende do volume da sua operação. Uma regra prática: multiplique o número de leads ativos no mês por 5 (cada lead gera em média 5 ações: qualificação, 2-3 follow-ups, movimentação de pipeline). Uma empresa com 40 leads novos por mês precisa de aproximadamente 200 ações — o plano Starter é suficiente. Operações maiores com 200+ leads mensais devem considerar o PRO (1.000 ações) ou Business (3.000 ações).</p>
       </details>
 
-      <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin: 0.75rem 0;">
-        <summary style="font-weight: 600; cursor: pointer; color: #1e293b;">Sofia funciona com WhatsApp?</summary>
-        <p style="margin: 0.75rem 0 0; color: #475569;">Sim. O Sirius CRM possui integração nativa com WhatsApp via Evolution API. Sofia pode enviar e receber mensagens pelo WhatsApp, analisar conversas para extração de dados (BANT, sentimento) e propor follow-ups diretamente pelo canal que seu cliente já usa. A integração com WhatsApp está disponível em todos os planos.</p>
+      <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin: 0.75rem 0;">
+        <summary style="font-weight: 600; cursor: pointer; color: var(--foreground);">Sofia funciona com WhatsApp?</summary>
+        <p style="margin: 0.75rem 0 0; color: var(--foreground);">Sim. O Sirius CRM possui integração nativa com WhatsApp via Evolution API. Sofia pode enviar e receber mensagens pelo WhatsApp, analisar conversas para extração de dados (BANT, sentimento) e propor follow-ups diretamente pelo canal que seu cliente já usa. A integração com WhatsApp está disponível em todos os planos.</p>
       </details>
 
-      <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin: 0.75rem 0;">
-        <summary style="font-weight: 600; cursor: pointer; color: #1e293b;">A Sofia substitui meu time de vendas?</summary>
-        <p style="margin: 0.75rem 0 0; color: #475569;">Não — e esse nunca foi o objetivo. Sofia substitui as tarefas <em>administrativas</em> que impedem vendedores de vender: atualizar CRM, pesquisar prospects, lembrar de follow-ups, montar relatórios. O tempo que o vendedor economiza com essas tarefas é reinvestido no que humanos fazem melhor: construir relacionamentos, negociar, entender necessidades complexas e fechar. Sofia é uma multiplicadora de produtividade, não uma substituta de pessoas.</p>
+      <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin: 0.75rem 0;">
+        <summary style="font-weight: 600; cursor: pointer; color: var(--foreground);">A Sofia substitui meu time de vendas?</summary>
+        <p style="margin: 0.75rem 0 0; color: var(--foreground);">Não — e esse nunca foi o objetivo. Sofia substitui as tarefas <em>administrativas</em> que impedem vendedores de vender: atualizar CRM, pesquisar prospects, lembrar de follow-ups, montar relatórios. O tempo que o vendedor economiza com essas tarefas é reinvestido no que humanos fazem melhor: construir relacionamentos, negociar, entender necessidades complexas e fechar. Sofia é uma multiplicadora de produtividade, não uma substituta de pessoas.</p>
       </details>
 
-      <div style="background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%); border: 1px solid #6ee7b7; padding: 1.5rem; border-radius: 0.75rem; text-align: center; margin: 2rem 0;">
-        <p style="margin: 0; font-weight: 700; font-size: 1.2rem; color: #065f46;">Teste Sofia IA gratuitamente</p>
-        <p style="margin: 0.75rem 0; color: #047857;">Crie sua conta no Sirius CRM e ative o modo <code>/IA</code> para experimentar a Sofia em ação. Configure seu pipeline, importe seus leads e veja Sofia qualificar, priorizar e operar seu funil de vendas — sem compromisso.</p>
-        <a href="/register" style="display: inline-block; background: #059669; color: #ffffff; font-weight: 700; padding: 0.75rem 2rem; border-radius: 0.5rem; text-decoration: none; margin-top: 0.5rem;">Criar conta grátis e ativar Sofia</a>
+      <div style="background: var(--muted); border: 1px solid var(--border); padding: 1.5rem; border-radius: 0.75rem; text-align: center; margin: 2rem 0;">
+        <p style="margin: 0; font-weight: 700; font-size: 1.2rem; color: var(--foreground);">Teste Sofia IA gratuitamente</p>
+        <p style="margin: 0.75rem 0; color: var(--foreground);">Crie sua conta no Sirius CRM e ative o modo <code>/IA</code> para experimentar a Sofia em ação. Configure seu pipeline, importe seus leads e veja Sofia qualificar, priorizar e operar seu funil de vendas — sem compromisso.</p>
+        <a href="/register" style="display: inline-block; background: var(--primary); color: #ffffff; font-weight: 700; padding: 0.75rem 2rem; border-radius: 0.5rem; text-decoration: none; margin-top: 0.5rem;">Criar conta grátis e ativar Sofia</a>
       </div>
   `,
   date: '2026-03-28',
@@ -447,10 +447,10 @@ export const post: BlogPost = {
         After 30+ closed deals, Sofia's recommendations become significantly more accurate for your specific business context, industry, and customer type.
       </p>
 
-      <div style="background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%); border: 1px solid #6ee7b7; padding: 1.5rem; border-radius: 0.75rem; text-align: center; margin: 2rem 0;">
-        <p style="margin: 0; font-weight: 700; font-size: 1.2rem; color: #065f46;">Try Sofia AI for Free</p>
-        <p style="margin: 0.75rem 0; color: #047857;">Create your Sirius CRM account and activate /IA mode to experience Sofia in action. Set up your pipeline, import your leads, and watch Sofia qualify, prioritize, and operate your sales funnel — no commitment.</p>
-        <a href="/en/register" style="display: inline-block; background: #059669; color: #ffffff; font-weight: 700; padding: 0.75rem 2rem; border-radius: 0.5rem; text-decoration: none; margin-top: 0.5rem;">Create Free Account and Activate Sofia</a>
+      <div style="background: var(--muted); border: 1px solid var(--border); padding: 1.5rem; border-radius: 0.75rem; text-align: center; margin: 2rem 0;">
+        <p style="margin: 0; font-weight: 700; font-size: 1.2rem; color: var(--foreground);">Try Sofia AI for Free</p>
+        <p style="margin: 0.75rem 0; color: var(--foreground);">Create your Sirius CRM account and activate /IA mode to experience Sofia in action. Set up your pipeline, import your leads, and watch Sofia qualify, prioritize, and operate your sales funnel — no commitment.</p>
+        <a href="/en/register" style="display: inline-block; background: var(--primary); color: #ffffff; font-weight: 700; padding: 0.75rem 2rem; border-radius: 0.5rem; text-decoration: none; margin-top: 0.5rem;">Create Free Account and Activate Sofia</a>
       </div>
   `,
 }

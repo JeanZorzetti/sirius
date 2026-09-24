@@ -19,13 +19,13 @@ export const post: BlogPost = {
         Este artigo vai além do "use linguagem profissional" e do "não mande mensagem fora de hora". Aqui você encontra <strong>7 estratégias táticas com templates prontos para copiar</strong>, uma cadência de 7 toques estruturada e a explicação de por que o WhatsApp sem CRM é uma bomba-relógio no seu processo comercial.
       </p>
 
-      <div class="not-prose" style="background: #1e293b; padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
-        <p style="margin: 0 0 0.75rem; font-weight: 700; font-size: 1.05rem; color: #38bdf8;">TL;DR — Resposta Rápida</p>
+      <div class="not-prose" style="background: var(--primary); padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
+        <p style="margin: 0 0 0.75rem; font-weight: 700; font-size: 1.05rem; color: var(--primary-foreground);">TL;DR — Resposta Rápida</p>
         <ul style="margin: 0; padding-left: 1.25rem; line-height: 2; color: #ffffff;">
-          <li><strong style="color: #38bdf8;">98% de abertura</strong> e 40% de resposta: WhatsApp domina qualquer canal B2B no Brasil</li>
-          <li>Os 3 erros fatais: <strong style="color: #38bdf8;">spam no primeiro contato, zero CRM e follow-up irregular</strong></li>
+          <li><strong style="color: var(--primary-foreground);">98% de abertura</strong> e 40% de resposta: WhatsApp domina qualquer canal B2B no Brasil</li>
+          <li>Os 3 erros fatais: <strong style="color: var(--primary-foreground);">spam no primeiro contato, zero CRM e follow-up irregular</strong></li>
           <li>7 estratégias: mensagem consultiva, gatilho de follow-up, áudio estratégico, conteúdo relevante, reativação, grupo VIP e Status como vitrine</li>
-          <li><strong style="color: #38bdf8;">WhatsApp sem CRM</strong> = histórico perdido, gestão cega e risco de perder tudo quando o vendedor sai</li>
+          <li><strong style="color: var(--primary-foreground);">WhatsApp sem CRM</strong> = histórico perdido, gestão cega e risco de perder tudo quando o vendedor sai</li>
           <li>Cadência de 7 toques (Dia 1 a Dia 21) com canal e objetivo definidos para cada toque</li>
         </ul>
       </div>
@@ -33,26 +33,26 @@ export const post: BlogPost = {
       <h2>Por que WhatsApp Domina as Vendas B2B no Brasil</h2>
 
       <p>
-        Enquanto vendedores europeus e americanos debatem se devem usar LinkedIn ou email frio na <a href="/blog/prospeccao-de-clientes-b2b" style="color: #2563eb;">prospecção B2B</a>, o Brasil resolveu esse debate à força. O comprador brasileiro simplesmente não responde email frio com a mesma velocidade, não atende ligação de número desconhecido e não entra no LinkedIn todo dia. Mas ele está no WhatsApp. Sempre.
+        Enquanto vendedores europeus e americanos debatem se devem usar LinkedIn ou email frio na <a href="/blog/prospeccao-de-clientes-b2b" style="color: var(--foreground);">prospecção B2B</a>, o Brasil resolveu esse debate à força. O comprador brasileiro simplesmente não responde email frio com a mesma velocidade, não atende ligação de número desconhecido e não entra no LinkedIn todo dia. Mas ele está no WhatsApp. Sempre.
       </p>
 
       <div class="callout-stat">
         <p><strong>Os Numeros que Justificam Tudo</strong></p>
         <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1.5rem; margin: 1.5rem 0;">
-          <div style="text-align: center; background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%); padding: 1.5rem; border-radius: 0.75rem; border: 2px solid #3b82f6;">
-            <p style="font-size: 3rem; font-weight: 900; color: #2563eb; margin: 0.5rem 0; line-height: 1;">98%</p>
-            <p style="margin: 0; color: #1e40af; font-weight: 600; font-size: 0.875rem;">taxa de abertura das mensagens</p>
+          <div style="text-align: center; background: var(--muted); padding: 1.5rem; border-radius: 0.75rem; border: 2px solid var(--fio-forte);">
+            <p style="font-size: 3rem; font-weight: 900; color: var(--foreground); margin: 0.5rem 0; line-height: 1;">98%</p>
+            <p style="margin: 0; color: var(--foreground); font-weight: 600; font-size: 0.875rem;">taxa de abertura das mensagens</p>
           </div>
-          <div style="text-align: center; background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%); padding: 1.5rem; border-radius: 0.75rem; border: 2px solid #3b82f6;">
-            <p style="font-size: 3rem; font-weight: 900; color: #2563eb; margin: 0.5rem 0; line-height: 1;">40%</p>
-            <p style="margin: 0; color: #1e40af; font-weight: 600; font-size: 0.875rem;">taxa de resposta media em vendas B2B</p>
+          <div style="text-align: center; background: var(--muted); padding: 1.5rem; border-radius: 0.75rem; border: 2px solid var(--fio-forte);">
+            <p style="font-size: 3rem; font-weight: 900; color: var(--foreground); margin: 0.5rem 0; line-height: 1;">40%</p>
+            <p style="margin: 0; color: var(--foreground); font-weight: 600; font-size: 0.875rem;">taxa de resposta media em vendas B2B</p>
           </div>
-          <div style="text-align: center; background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%); padding: 1.5rem; border-radius: 0.75rem; border: 2px solid #3b82f6;">
-            <p style="font-size: 3rem; font-weight: 900; color: #2563eb; margin: 0.5rem 0; line-height: 1;">93%</p>
-            <p style="margin: 0; color: #1e40af; font-weight: 600; font-size: 0.875rem;">dos vendedores B2B brasileiros usam WhatsApp</p>
+          <div style="text-align: center; background: var(--muted); padding: 1.5rem; border-radius: 0.75rem; border: 2px solid var(--fio-forte);">
+            <p style="font-size: 3rem; font-weight: 900; color: var(--foreground); margin: 0.5rem 0; line-height: 1;">93%</p>
+            <p style="margin: 0; color: var(--foreground); font-weight: 600; font-size: 0.875rem;">dos vendedores B2B brasileiros usam WhatsApp</p>
           </div>
         </div>
-        <p style="margin: 0; font-size: 0.875rem; color: #64748b;">Fontes: Salesforce State of Sales 2025, Panorama de Vendas Brasil RD Station 2025</p>
+        <p style="margin: 0; font-size: 0.875rem; color: var(--foreground);">Fontes: Salesforce State of Sales 2025, Panorama de Vendas Brasil RD Station 2025</p>
       </div>
 
       <p>
@@ -98,7 +98,7 @@ export const post: BlogPost = {
       </p>
 
       <p>
-        Sem registro no CRM, o WhatsApp é um canal de vendas cego. Você até vende, mas não aprende, não escala e não se protege. A solução está em <a href="/blog/crm-com-whatsapp-integrado" style="color: #2563eb;">integrar o WhatsApp ao CRM</a> — cada conversa registrada automaticamente no histórico do contato.
+        Sem registro no CRM, o WhatsApp é um canal de vendas cego. Você até vende, mas não aprende, não escala e não se protege. A solução está em <a href="/blog/crm-com-whatsapp-integrado" style="color: var(--foreground);">integrar o WhatsApp ao CRM</a> — cada conversa registrada automaticamente no histórico do contato.
       </p>
 
       <h3>Erro 3: Follow-up Irregular (Rajada + Silencio)</h3>
@@ -112,7 +112,7 @@ export const post: BlogPost = {
       </p>
 
       <p>
-        Follow-up eficaz é <strong>sistemático, espaçado e com valor em cada toque</strong>. Veja a cadência completa no final deste artigo — e leia mais sobre os princípios de <a href="/blog/poder-do-follow-up" style="color: #2563eb;">follow-up estruturado em vendas B2B</a>.
+        Follow-up eficaz é <strong>sistemático, espaçado e com valor em cada toque</strong>. Veja a cadência completa no final deste artigo — e leia mais sobre os princípios de <a href="/blog/poder-do-follow-up" style="color: var(--foreground);">follow-up estruturado em vendas B2B</a>.
       </p>
 
       <h2>7 Estrategias de WhatsApp B2B que Funcionam</h2>
@@ -131,9 +131,9 @@ export const post: BlogPost = {
         A estrutura de uma mensagem de apresentação consultiva tem quatro elementos: <strong>gatilho de personalização</strong> (por que você está falando com essa pessoa específica agora), <strong>credibilidade rápida</strong> (quem você é e por que é relevante), <strong>problema ou insight</strong> (algo que ele reconhece como real) e <strong>chamada de ação leve</strong> (uma pergunta, não uma proposta).
       </p>
 
-      <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-left: 4px solid #2563eb; padding: 1.5rem; border-radius: 0.5rem; margin: 1.5rem 0;">
-        <p style="font-weight: 700; color: #1e293b; margin: 0 0 1rem;">Template — Mensagem de Apresentacao Consultiva</p>
-        <p style="margin: 0; color: #374151; line-height: 1.8; font-family: monospace; font-size: 0.9rem;">
+      <div style="background: var(--muted); border: 1px solid var(--border); border-left: 4px solid var(--fio-forte); padding: 1.5rem; border-radius: 0.5rem; margin: 1.5rem 0;">
+        <p style="font-weight: 700; color: var(--foreground); margin: 0 0 1rem;">Template — Mensagem de Apresentacao Consultiva</p>
+        <p style="margin: 0; color: var(--foreground); line-height: 1.8; font-family: monospace; font-size: 0.9rem;">
           Oi [Nome], tudo certo?<br><br>
           Me chamo [Seu Nome], sou [cargo] na [Empresa]. Vi que [gatilho de personalização — ex: vocês acabaram de contratar um gerente de vendas / expandiram para o RJ / lançaram o produto X].<br><br>
           Trabalhei com [2-3 empresas do mesmo segmento] quando estavam no mesmo momento e a principal dificuldade que enfrentaram foi [dor específica e concreta].<br><br>
@@ -159,16 +159,16 @@ export const post: BlogPost = {
         Os gatilhos mais eficazes para follow-up B2B via WhatsApp: abertura da proposta (rastreável com ferramentas como Proposify ou DocSend), visita à página de preços do seu site, publicação de vaga relacionada ao que você vende, notícia sobre a empresa do prospect, evento do setor que ambos frequentam e renovação de contrato com fornecedor concorrente.
       </p>
 
-      <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-left: 4px solid #2563eb; padding: 1.5rem; border-radius: 0.5rem; margin: 1.5rem 0;">
-        <p style="font-weight: 700; color: #1e293b; margin: 0 0 1rem;">Template — Follow-up por Gatilho</p>
-        <p style="color: #64748b; font-size: 0.875rem; margin: 0 0 0.75rem; font-style: italic;">Gatilho: prospect abriu a proposta</p>
-        <p style="margin: 0; color: #374151; line-height: 1.8; font-family: monospace; font-size: 0.9rem;">
+      <div style="background: var(--muted); border: 1px solid var(--border); border-left: 4px solid var(--fio-forte); padding: 1.5rem; border-radius: 0.5rem; margin: 1.5rem 0;">
+        <p style="font-weight: 700; color: var(--foreground); margin: 0 0 1rem;">Template — Follow-up por Gatilho</p>
+        <p style="color: var(--foreground); font-size: 0.875rem; margin: 0 0 0.75rem; font-style: italic;">Gatilho: prospect abriu a proposta</p>
+        <p style="margin: 0; color: var(--foreground); line-height: 1.8; font-family: monospace; font-size: 0.9rem;">
           [Nome], vi que você deu uma olhada na proposta agora pouco.<br><br>
           Geralmente quando alguém revisita o documento surgem dúvidas sobre [ponto mais questionado — ex: integração com o sistema atual / prazo de implementação / estrutura de suporte].<br><br>
           Tem algo que posso esclarecer? Posso responder aqui mesmo ou marcamos 10 minutos rápidos.
         </p>
-        <p style="color: #64748b; font-size: 0.875rem; margin: 1rem 0 0.75rem; font-style: italic;">Gatilho: novidade na empresa do prospect</p>
-        <p style="margin: 0; color: #374151; line-height: 1.8; font-family: monospace; font-size: 0.9rem;">
+        <p style="color: var(--foreground); font-size: 0.875rem; margin: 1rem 0 0.75rem; font-style: italic;">Gatilho: novidade na empresa do prospect</p>
+        <p style="margin: 0; color: var(--foreground); line-height: 1.8; font-family: monospace; font-size: 0.9rem;">
           [Nome], vi a notícia sobre [novidade da empresa — ex: rodada de investimento, nova unidade, fusão].<br><br>
           Com esse movimento, imagino que [desafio específico que o produto resolve] vai aparecer com mais força no radar de vocês.<br><br>
           Vale uma conversa rápida sobre como outros estão lidando com isso nesse momento de crescimento?
@@ -200,7 +200,7 @@ export const post: BlogPost = {
       </p>
 
       <p>
-        Quando você usa <a href="/blog/crm-automacao-vendas-guia-completo" style="color: #2563eb;">automação no CRM</a>, é possível preparar uma biblioteca de conteúdos por segmento e dor, e o vendedor seleciona em segundos o artigo certo para o prospect certo. Sem precisar lembrar de cabeça ou procurar no Google toda vez.
+        Quando você usa <a href="/blog/crm-automacao-vendas-guia-completo" style="color: var(--foreground);">automação no CRM</a>, é possível preparar uma biblioteca de conteúdos por segmento e dor, e o vendedor seleciona em segundos o artigo certo para o prospect certo. Sem precisar lembrar de cabeça ou procurar no Google toda vez.
       </p>
 
       <h3>Estrategia 5: Mensagem de Reativacao para Clientes Inativos</h3>
@@ -213,17 +213,17 @@ export const post: BlogPost = {
         A chave é usar um gatilho novo como justificativa para o contato. Não "sumiu, né? Ainda tem interesse?" — isso só funciona para quem não tem outras opções. Use algo concreto: uma atualização do produto, um case novo do segmento do prospect, uma mudança de mercado relevante para ele.
       </p>
 
-      <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-left: 4px solid #2563eb; padding: 1.5rem; border-radius: 0.5rem; margin: 1.5rem 0;">
-        <p style="font-weight: 700; color: #1e293b; margin: 0 0 1rem;">Template — Mensagem de Reativacao</p>
-        <p style="color: #64748b; font-size: 0.875rem; margin: 0 0 0.75rem; font-style: italic;">Para leads que sumiram depois da proposta</p>
-        <p style="margin: 0; color: #374151; line-height: 1.8; font-family: monospace; font-size: 0.9rem;">
+      <div style="background: var(--muted); border: 1px solid var(--border); border-left: 4px solid var(--fio-forte); padding: 1.5rem; border-radius: 0.5rem; margin: 1.5rem 0;">
+        <p style="font-weight: 700; color: var(--foreground); margin: 0 0 1rem;">Template — Mensagem de Reativacao</p>
+        <p style="color: var(--foreground); font-size: 0.875rem; margin: 0 0 0.75rem; font-style: italic;">Para leads que sumiram depois da proposta</p>
+        <p style="margin: 0; color: var(--foreground); line-height: 1.8; font-family: monospace; font-size: 0.9rem;">
           [Nome], tudo bem?<br><br>
           Não quero te pressionar — imagino que o timing da nossa conversa lá atrás não estava ideal.<br><br>
           Desde então lançamos [nova funcionalidade / novo plano / nova integração] que resolve exatamente [problema específico que ele mencionou].<br><br>
           Acho que vale uma conversa de 15 minutos só para te atualizar. Você toparia essa semana?
         </p>
-        <p style="color: #64748b; font-size: 0.875rem; margin: 1rem 0 0.75rem; font-style: italic;">Para clientes inativos (sem compra ha 90+ dias)</p>
-        <p style="margin: 0; color: #374151; line-height: 1.8; font-family: monospace; font-size: 0.9rem;">
+        <p style="color: var(--foreground); font-size: 0.875rem; margin: 1rem 0 0.75rem; font-style: italic;">Para clientes inativos (sem compra ha 90+ dias)</p>
+        <p style="margin: 0; color: var(--foreground); line-height: 1.8; font-family: monospace; font-size: 0.9rem;">
           [Nome], faz um tempo que não conversamos!<br><br>
           Vi que [cliente do mesmo segmento] acabou de [resultado relevante] usando [funcionalidade que o prospect não usa ainda].<br><br>
           Fica me perguntando se vocês já exploraram isso. Se não, posso mostrar como implementar em menos de 1 semana. Vale uma olhada?
@@ -273,7 +273,7 @@ export const post: BlogPost = {
       </p>
 
       <p>
-        Há também o risco de dependência do celular pessoal. Quando o vendedor usa o WhatsApp pessoal para todas as negociações, a empresa perde o histórico se ele sair, o gestor não tem visibilidade do que está sendo dito ao cliente e não há como provar o que foi acordado em caso de disputa. Entenda melhor como funciona um <a href="/blog/crm-com-whatsapp-integrado" style="color: #2563eb;">CRM com WhatsApp integrado</a> e por que isso é crítico para times que escalam.
+        Há também o risco de dependência do celular pessoal. Quando o vendedor usa o WhatsApp pessoal para todas as negociações, a empresa perde o histórico se ele sair, o gestor não tem visibilidade do que está sendo dito ao cliente e não há como provar o que foi acordado em caso de disputa. Entenda melhor como funciona um <a href="/blog/crm-com-whatsapp-integrado" style="color: var(--foreground);">CRM com WhatsApp integrado</a> e por que isso é crítico para times que escalam.
       </p>
 
       <p>
@@ -294,66 +294,66 @@ export const post: BlogPost = {
       <h2>Cadencia de WhatsApp B2B: Template de 7 Toques</h2>
 
       <p>
-        Uma cadência eficaz de WhatsApp B2B não é uma lista de mensagens para mandar — é um sistema de <strong>7 toques estratégicos</strong> distribuídos ao longo de 21 dias, com canal e objetivo específicos para cada etapa. O princípio é o mesmo do <a href="/blog/poder-do-follow-up" style="color: #2563eb;">follow-up estruturado</a>: cada toque tem uma razão para existir.
+        Uma cadência eficaz de WhatsApp B2B não é uma lista de mensagens para mandar — é um sistema de <strong>7 toques estratégicos</strong> distribuídos ao longo de 21 dias, com canal e objetivo específicos para cada etapa. O princípio é o mesmo do <a href="/blog/poder-do-follow-up" style="color: var(--foreground);">follow-up estruturado</a>: cada toque tem uma razão para existir.
       </p>
 
       <table style="width: 100%; border-collapse: collapse; margin: 2rem 0;">
         <thead>
-          <tr style="background: #1e293b;">
-            <th style="padding: 0.875rem 1rem; border: 1px solid #334155; text-align: left; color: #38bdf8; font-size: 0.875rem;">Etapa</th>
-            <th style="padding: 0.875rem 1rem; border: 1px solid #334155; text-align: left; color: #38bdf8; font-size: 0.875rem;">Canal</th>
-            <th style="padding: 0.875rem 1rem; border: 1px solid #334155; text-align: left; color: #38bdf8; font-size: 0.875rem;">Objetivo</th>
-            <th style="padding: 0.875rem 1rem; border: 1px solid #334155; text-align: left; color: #38bdf8; font-size: 0.875rem;">Conteudo do Toque</th>
+          <tr style="background: var(--primary);">
+            <th style="padding: 0.875rem 1rem; border: 1px solid var(--fio-forte); text-align: left; color: var(--primary-foreground); font-size: 0.875rem;">Etapa</th>
+            <th style="padding: 0.875rem 1rem; border: 1px solid var(--fio-forte); text-align: left; color: var(--primary-foreground); font-size: 0.875rem;">Canal</th>
+            <th style="padding: 0.875rem 1rem; border: 1px solid var(--fio-forte); text-align: left; color: var(--primary-foreground); font-size: 0.875rem;">Objetivo</th>
+            <th style="padding: 0.875rem 1rem; border: 1px solid var(--fio-forte); text-align: left; color: var(--primary-foreground); font-size: 0.875rem;">Conteudo do Toque</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td style="padding: 0.875rem 1rem; border: 1px solid #e2e8f0; font-weight: 700; white-space: nowrap;">Dia 1</td>
-            <td style="padding: 0.875rem 1rem; border: 1px solid #e2e8f0;">WhatsApp</td>
-            <td style="padding: 0.875rem 1rem; border: 1px solid #e2e8f0;">Abrir conversa</td>
-            <td style="padding: 0.875rem 1rem; border: 1px solid #e2e8f0;">Mensagem de apresentacao consultiva (Estrategia 1) com gatilho de personalizacao</td>
+            <td style="padding: 0.875rem 1rem; border: 1px solid var(--border); font-weight: 700; white-space: nowrap;">Dia 1</td>
+            <td style="padding: 0.875rem 1rem; border: 1px solid var(--border);">WhatsApp</td>
+            <td style="padding: 0.875rem 1rem; border: 1px solid var(--border);">Abrir conversa</td>
+            <td style="padding: 0.875rem 1rem; border: 1px solid var(--border);">Mensagem de apresentacao consultiva (Estrategia 1) com gatilho de personalizacao</td>
           </tr>
-          <tr style="background: #f8fafc;">
-            <td style="padding: 0.875rem 1rem; border: 1px solid #e2e8f0; font-weight: 700; white-space: nowrap;">Dia 3</td>
-            <td style="padding: 0.875rem 1rem; border: 1px solid #e2e8f0;">WhatsApp</td>
-            <td style="padding: 0.875rem 1rem; border: 1px solid #e2e8f0;">Entregar valor</td>
-            <td style="padding: 0.875rem 1rem; border: 1px solid #e2e8f0;">Link para case ou artigo relevante ao segmento do prospect (sem mencionar produto)</td>
-          </tr>
-          <tr>
-            <td style="padding: 0.875rem 1rem; border: 1px solid #e2e8f0; font-weight: 700; white-space: nowrap;">Dia 5</td>
-            <td style="padding: 0.875rem 1rem; border: 1px solid #e2e8f0;">WhatsApp</td>
-            <td style="padding: 0.875rem 1rem; border: 1px solid #e2e8f0;">Criar conexao humana</td>
-            <td style="padding: 0.875rem 1rem; border: 1px solid #e2e8f0;">Audio curto de 30s com insight especifico sobre o segmento do prospect</td>
-          </tr>
-          <tr style="background: #f8fafc;">
-            <td style="padding: 0.875rem 1rem; border: 1px solid #e2e8f0; font-weight: 700; white-space: nowrap;">Dia 7</td>
-            <td style="padding: 0.875rem 1rem; border: 1px solid #e2e8f0;">Email + WhatsApp</td>
-            <td style="padding: 0.875rem 1rem; border: 1px solid #e2e8f0;">Propor reuniao</td>
-            <td style="padding: 0.875rem 1rem; border: 1px solid #e2e8f0;">Email com proposta de agenda de 20 min + WhatsApp avisando que mandou o email</td>
+          <tr style="background: var(--muted);">
+            <td style="padding: 0.875rem 1rem; border: 1px solid var(--border); font-weight: 700; white-space: nowrap;">Dia 3</td>
+            <td style="padding: 0.875rem 1rem; border: 1px solid var(--border);">WhatsApp</td>
+            <td style="padding: 0.875rem 1rem; border: 1px solid var(--border);">Entregar valor</td>
+            <td style="padding: 0.875rem 1rem; border: 1px solid var(--border);">Link para case ou artigo relevante ao segmento do prospect (sem mencionar produto)</td>
           </tr>
           <tr>
-            <td style="padding: 0.875rem 1rem; border: 1px solid #e2e8f0; font-weight: 700; white-space: nowrap;">Dia 10</td>
-            <td style="padding: 0.875rem 1rem; border: 1px solid #e2e8f0;">WhatsApp</td>
-            <td style="padding: 0.875rem 1rem; border: 1px solid #e2e8f0;">Follow-up por gatilho</td>
-            <td style="padding: 0.875rem 1rem; border: 1px solid #e2e8f0;">Mensagem usando gatilho identificado (abertura do email, novidade da empresa, dado do mercado)</td>
+            <td style="padding: 0.875rem 1rem; border: 1px solid var(--border); font-weight: 700; white-space: nowrap;">Dia 5</td>
+            <td style="padding: 0.875rem 1rem; border: 1px solid var(--border);">WhatsApp</td>
+            <td style="padding: 0.875rem 1rem; border: 1px solid var(--border);">Criar conexao humana</td>
+            <td style="padding: 0.875rem 1rem; border: 1px solid var(--border);">Audio curto de 30s com insight especifico sobre o segmento do prospect</td>
           </tr>
-          <tr style="background: #f8fafc;">
-            <td style="padding: 0.875rem 1rem; border: 1px solid #e2e8f0; font-weight: 700; white-space: nowrap;">Dia 14</td>
-            <td style="padding: 0.875rem 1rem; border: 1px solid #e2e8f0;">WhatsApp</td>
-            <td style="padding: 0.875rem 1rem; border: 1px solid #e2e8f0;">Social proof</td>
-            <td style="padding: 0.875rem 1rem; border: 1px solid #e2e8f0;">Resultado recente de cliente do mesmo segmento com metrica concreta (ex: "reduziram 40% do ciclo")</td>
+          <tr style="background: var(--muted);">
+            <td style="padding: 0.875rem 1rem; border: 1px solid var(--border); font-weight: 700; white-space: nowrap;">Dia 7</td>
+            <td style="padding: 0.875rem 1rem; border: 1px solid var(--border);">Email + WhatsApp</td>
+            <td style="padding: 0.875rem 1rem; border: 1px solid var(--border);">Propor reuniao</td>
+            <td style="padding: 0.875rem 1rem; border: 1px solid var(--border);">Email com proposta de agenda de 20 min + WhatsApp avisando que mandou o email</td>
           </tr>
           <tr>
-            <td style="padding: 0.875rem 1rem; border: 1px solid #e2e8f0; font-weight: 700; white-space: nowrap;">Dia 21</td>
-            <td style="padding: 0.875rem 1rem; border: 1px solid #e2e8f0;">WhatsApp</td>
-            <td style="padding: 0.875rem 1rem; border: 1px solid #e2e8f0;">Breakup ou reativar</td>
-            <td style="padding: 0.875rem 1rem; border: 1px solid #e2e8f0;">"Ultima tentativa — se o timing nao esta bom, posso retomar em 60 dias sem problema"</td>
+            <td style="padding: 0.875rem 1rem; border: 1px solid var(--border); font-weight: 700; white-space: nowrap;">Dia 10</td>
+            <td style="padding: 0.875rem 1rem; border: 1px solid var(--border);">WhatsApp</td>
+            <td style="padding: 0.875rem 1rem; border: 1px solid var(--border);">Follow-up por gatilho</td>
+            <td style="padding: 0.875rem 1rem; border: 1px solid var(--border);">Mensagem usando gatilho identificado (abertura do email, novidade da empresa, dado do mercado)</td>
+          </tr>
+          <tr style="background: var(--muted);">
+            <td style="padding: 0.875rem 1rem; border: 1px solid var(--border); font-weight: 700; white-space: nowrap;">Dia 14</td>
+            <td style="padding: 0.875rem 1rem; border: 1px solid var(--border);">WhatsApp</td>
+            <td style="padding: 0.875rem 1rem; border: 1px solid var(--border);">Social proof</td>
+            <td style="padding: 0.875rem 1rem; border: 1px solid var(--border);">Resultado recente de cliente do mesmo segmento com metrica concreta (ex: "reduziram 40% do ciclo")</td>
+          </tr>
+          <tr>
+            <td style="padding: 0.875rem 1rem; border: 1px solid var(--border); font-weight: 700; white-space: nowrap;">Dia 21</td>
+            <td style="padding: 0.875rem 1rem; border: 1px solid var(--border);">WhatsApp</td>
+            <td style="padding: 0.875rem 1rem; border: 1px solid var(--border);">Breakup ou reativar</td>
+            <td style="padding: 0.875rem 1rem; border: 1px solid var(--border);">"Ultima tentativa — se o timing nao esta bom, posso retomar em 60 dias sem problema"</td>
           </tr>
         </tbody>
       </table>
 
       <p>
-        Após o Dia 21 sem resposta, mova o lead para nurturing: lista de conteúdo mensal com artigos e cases do segmento. Não descarte — apenas mude a frequência. A decisão de compra pode acontecer 6 meses depois, quando o timing interno deles mudar. Para entender como estruturar esse processo de <a href="/blog/prospeccao-de-clientes-b2b" style="color: #2563eb;">prospecção B2B com múltiplos canais</a>, veja o guia completo.
+        Após o Dia 21 sem resposta, mova o lead para nurturing: lista de conteúdo mensal com artigos e cases do segmento. Não descarte — apenas mude a frequência. A decisão de compra pode acontecer 6 meses depois, quando o timing interno deles mudar. Para entender como estruturar esse processo de <a href="/blog/prospeccao-de-clientes-b2b" style="color: var(--foreground);">prospecção B2B com múltiplos canais</a>, veja o guia completo.
       </p>
 
       <div class="callout-warning">
@@ -368,32 +368,32 @@ export const post: BlogPost = {
         </ul>
       </div>
 
-      <div style="background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%); padding: 2rem; border-radius: 1rem; margin: 2.5rem 0; text-align: center;">
+      <div style="background: var(--primary); padding: 2rem; border-radius: 1rem; margin: 2.5rem 0; text-align: center;">
         <p style="color: white; font-size: 1.25rem; font-weight: 700; margin: 0 0 0.5rem;">Centralice o WhatsApp do seu time no Sirius CRM</p>
-        <p style="color: #bfdbfe; margin: 0 0 1.5rem;">WhatsApp integrado ao CRM com historico automatico, templates de mensagem e cadencia de follow-up. Teste gratuitamente.</p>
-        <a href="/register" style="display: inline-block; background: white; color: #2563eb; padding: 0.75rem 2rem; border-radius: 0.5rem; font-weight: 700; text-decoration: none;">Criar Conta Gratis</a>
+        <p style="color: var(--foreground); margin: 0 0 1.5rem;">WhatsApp integrado ao CRM com historico automatico, templates de mensagem e cadencia de follow-up. Teste gratuitamente.</p>
+        <a href="/register" style="display: inline-block; background: white; color: var(--foreground); padding: 0.75rem 2rem; border-radius: 0.5rem; font-weight: 700; text-decoration: none;">Criar Conta Gratis</a>
       </div>
 
       <h2>Perguntas Frequentes: WhatsApp para Vendas B2B</h2>
 
-      <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
-        <summary style="font-weight: 600; cursor: pointer; color: #1e293b; list-style: revert;">Posso usar o WhatsApp pessoal para vendas B2B ou preciso do Business?</summary>
-        <p style="margin: 0.75rem 0 0; color: #4b5563;">Para uso profissional, o WhatsApp Business e altamente recomendado — e para times, obrigatorio. O app Business oferece perfil comercial (nome da empresa, descricao, horario de atendimento, link do site), catalogo de produtos, etiquetas para organizar conversas e respostas automaticas. Mais importante: so o WhatsApp Business pode ser integrado ao CRM via API. O numero pessoal nao tem essa capacidade. Alem disso, usar o pessoal mistura vida profissional e pessoal, dificulta a separacao quando o funcionario sai e impede visibilidade do gestor.</p>
+      <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
+        <summary style="font-weight: 600; cursor: pointer; color: var(--foreground); list-style: revert;">Posso usar o WhatsApp pessoal para vendas B2B ou preciso do Business?</summary>
+        <p style="margin: 0.75rem 0 0; color: var(--foreground);">Para uso profissional, o WhatsApp Business e altamente recomendado — e para times, obrigatorio. O app Business oferece perfil comercial (nome da empresa, descricao, horario de atendimento, link do site), catalogo de produtos, etiquetas para organizar conversas e respostas automaticas. Mais importante: so o WhatsApp Business pode ser integrado ao CRM via API. O numero pessoal nao tem essa capacidade. Alem disso, usar o pessoal mistura vida profissional e pessoal, dificulta a separacao quando o funcionario sai e impede visibilidade do gestor.</p>
       </details>
 
-      <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
-        <summary style="font-weight: 600; cursor: pointer; color: #1e293b; list-style: revert;">Qual o melhor horario para mandar mensagem B2B pelo WhatsApp?</summary>
-        <p style="margin: 0.75rem 0 0; color: #4b5563;">Segundo dados de plataformas como Zenvia e Blip (2025), os horarios com maior taxa de resposta em B2B sao: manha entre 9h e 11h (decisores acabaram de chegar, ainda nao estao soterrados de tarefas), inicio da tarde entre 14h e 15h (retorno do almoco, abertura de comunicacoes) e final do dia entre 17h e 18h (fechamento do expediente, revisao de pendencias). Evite antes das 8h, depois das 19h, fins de semana (exceto se o prospect mesmo iniciou contato nesse horario) e periodos de almoco (12h-13h30). Em B2B, o horario ideal varia por segmento — teste com sua base e meeca qual horario gera mais respostas rapidas.</p>
+      <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
+        <summary style="font-weight: 600; cursor: pointer; color: var(--foreground); list-style: revert;">Qual o melhor horario para mandar mensagem B2B pelo WhatsApp?</summary>
+        <p style="margin: 0.75rem 0 0; color: var(--foreground);">Segundo dados de plataformas como Zenvia e Blip (2025), os horarios com maior taxa de resposta em B2B sao: manha entre 9h e 11h (decisores acabaram de chegar, ainda nao estao soterrados de tarefas), inicio da tarde entre 14h e 15h (retorno do almoco, abertura de comunicacoes) e final do dia entre 17h e 18h (fechamento do expediente, revisao de pendencias). Evite antes das 8h, depois das 19h, fins de semana (exceto se o prospect mesmo iniciou contato nesse horario) e periodos de almoco (12h-13h30). Em B2B, o horario ideal varia por segmento — teste com sua base e meeca qual horario gera mais respostas rapidas.</p>
       </details>
 
-      <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
-        <summary style="font-weight: 600; cursor: pointer; color: #1e293b; list-style: revert;">E possivel fechar contratos de alto ticket pelo WhatsApp?</summary>
-        <p style="margin: 0.75rem 0 0; color: #4b5563;">Sim, e cada vez mais comum no B2B brasileiro. A logica e a seguinte: o WhatsApp funciona melhor como canal de relacionamento e aceleracao do que como canal de fechamento isolado. Para tickets altos, o WhatsApp e excelente para agendar reunioes, responder duvidas rapidas, enviar materiais de suporte, manter a warmth entre reunioes formais e fazer o follow-up final antes da assinatura. O fechamento em si geralmente acontece em chamada de video ou reuniao presencial, mas o WhatsApp e o fio que mantem a conversa viva entre esses momentos. Veja tecnicas especificas de <a href="/blog/tecnicas-de-fechamento-de-vendas" style="color: #2563eb;">fechamento para negociacoes B2B complexas</a> que funcionam em conjunto com o WhatsApp.</p>
+      <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
+        <summary style="font-weight: 600; cursor: pointer; color: var(--foreground); list-style: revert;">E possivel fechar contratos de alto ticket pelo WhatsApp?</summary>
+        <p style="margin: 0.75rem 0 0; color: var(--foreground);">Sim, e cada vez mais comum no B2B brasileiro. A logica e a seguinte: o WhatsApp funciona melhor como canal de relacionamento e aceleracao do que como canal de fechamento isolado. Para tickets altos, o WhatsApp e excelente para agendar reunioes, responder duvidas rapidas, enviar materiais de suporte, manter a warmth entre reunioes formais e fazer o follow-up final antes da assinatura. O fechamento em si geralmente acontece em chamada de video ou reuniao presencial, mas o WhatsApp e o fio que mantem a conversa viva entre esses momentos. Veja tecnicas especificas de <a href="/blog/tecnicas-de-fechamento-de-vendas" style="color: var(--foreground);">fechamento para negociacoes B2B complexas</a> que funcionam em conjunto com o WhatsApp.</p>
       </details>
 
-      <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin-bottom: 2rem;">
-        <summary style="font-weight: 600; cursor: pointer; color: #1e293b; list-style: revert;">Como medir os resultados das minhas acoes de vendas pelo WhatsApp?</summary>
-        <p style="margin: 0.75rem 0 0; color: #4b5563;">As metricas principais para avaliar desempenho de WhatsApp em vendas B2B sao: taxa de resposta na primeira mensagem (benchmark saudavel: 25-40%), tempo medio ate a primeira resposta, taxa de conversao de lead para reuniao agendada via WhatsApp, numero de deals fechados com WhatsApp como canal principal e taxa de resposta nos follow-ups (por etapa da cadencia). Para medir com precisao, e necessario ter o WhatsApp integrado ao CRM — com o canal registrado em cada interacao, voce consegue filtrar deals por canal de origem e calcular as taxas de conversao por etapa. Sem CRM, voce depende de planilhas manuais que ficam desatualizadas em dias.</p>
+      <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 2rem;">
+        <summary style="font-weight: 600; cursor: pointer; color: var(--foreground); list-style: revert;">Como medir os resultados das minhas acoes de vendas pelo WhatsApp?</summary>
+        <p style="margin: 0.75rem 0 0; color: var(--foreground);">As metricas principais para avaliar desempenho de WhatsApp em vendas B2B sao: taxa de resposta na primeira mensagem (benchmark saudavel: 25-40%), tempo medio ate a primeira resposta, taxa de conversao de lead para reuniao agendada via WhatsApp, numero de deals fechados com WhatsApp como canal principal e taxa de resposta nos follow-ups (por etapa da cadencia). Para medir com precisao, e necessario ter o WhatsApp integrado ao CRM — com o canal registrado em cada interacao, voce consegue filtrar deals por canal de origem e calcular as taxas de conversao por etapa. Sem CRM, voce depende de planilhas manuais que ficam desatualizadas em dias.</p>
       </details>
 
       <h2>Conclusao</h2>
@@ -410,7 +410,7 @@ export const post: BlogPost = {
         Implemente uma estrategia por semana. Comece pela mensagem de apresentacao consultiva — e a que muda o tom de toda a prospeccao. Depois adicione a cadencia de 7 toques. Depois integre ao CRM. Em 30 dias, voce vai ver a diferenca nos numeros.
       </p>
 
-      <hr style="margin: 3rem 0; border: none; border-top: 1px solid #e5e7eb;" />
+      <hr style="margin: 3rem 0; border: none; border-top: 1px solid var(--border);" />
       <strong>Ultima Atualizacao:</strong> 28 de Marco de 2026<br/>
       <strong>Autor:</strong> Equipe Sirius CRM<br/>
       <strong>Tempo de Leitura:</strong> 12 minutos
@@ -460,47 +460,47 @@ export const post: BlogPost = {
 
       <table style="width: 100%; border-collapse: collapse; margin: 1.5rem 0;">
         <thead>
-          <tr style="background: #f8fafc;">
-            <th style="border: 1px solid #e2e8f0; padding: 0.75rem; text-align: left;">Touch</th>
-            <th style="border: 1px solid #e2e8f0; padding: 0.75rem; text-align: left;">Content</th>
-            <th style="border: 1px solid #e2e8f0; padding: 0.75rem; text-align: left;">Timing</th>
+          <tr style="background: var(--muted);">
+            <th style="border: 1px solid var(--border); padding: 0.75rem; text-align: left;">Touch</th>
+            <th style="border: 1px solid var(--border); padding: 0.75rem; text-align: left;">Content</th>
+            <th style="border: 1px solid var(--border); padding: 0.75rem; text-align: left;">Timing</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">1</td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">Consultative opening message (personalized)</td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">Day 1</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">1</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">Consultative opening message (personalized)</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">Day 1</td>
           </tr>
           <tr>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">2</td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">Relevant article or insight (no ask)</td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">Day 3</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">2</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">Relevant article or insight (no ask)</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">Day 3</td>
           </tr>
           <tr>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">3</td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">Case study from their industry</td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">Day 7</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">3</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">Case study from their industry</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">Day 7</td>
           </tr>
           <tr>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">4</td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">Direct question: "Is [problem] still a priority for Q[X]?"</td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">Day 12</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">4</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">Direct question: "Is [problem] still a priority for Q[X]?"</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">Day 12</td>
           </tr>
           <tr>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">5</td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">Strategic voice note (60-90 seconds)</td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">Day 18</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">5</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">Strategic voice note (60-90 seconds)</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">Day 18</td>
           </tr>
           <tr>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">6</td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">Meeting ask: "15 minutes this week or next?"</td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">Day 25</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">6</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">Meeting ask: "15 minutes this week or next?"</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">Day 25</td>
           </tr>
           <tr>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">7</td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">Final breakup message (creates urgency + leaves door open)</td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">Day 35</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">7</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">Final breakup message (creates urgency + leaves door open)</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">Day 35</td>
           </tr>
         </tbody>
       </table>
@@ -599,24 +599,24 @@ export const post: BlogPost = {
       </ul>
 
       <p>
-        <a href="/" style="color: #2563eb; text-decoration: underline;">Sirius CRM</a> integrates WhatsApp natively — messages can be logged directly from the app, sequences are tracked automatically, and follow-up reminders fire based on the cadence you set. The pipeline stays full without mental overhead.
+        <a href="/" style="color: var(--foreground); text-decoration: underline;">Sirius CRM</a> integrates WhatsApp natively — messages can be logged directly from the app, sequences are tracked automatically, and follow-up reminders fire based on the cadence you set. The pipeline stays full without mental overhead.
       </p>
 
       <h2>FAQ</h2>
 
-      <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin-bottom: 2rem;">
-        <summary style="font-weight: 600; cursor: pointer; color: #1e293b; list-style: revert;">How do I avoid being blocked on WhatsApp for B2B prospecting?</summary>
-        <p style="margin: 0.75rem 0 0; color: #4b5563;">The most common blocking triggers: mass broadcast messages (use targeted 1:1 messages instead), pitching immediately on first contact, sending messages outside business hours, and not respecting opt-out requests. The personalized, value-first approach described here results in block rates under 1% — compared to 15-25% for broadcast prospecting approaches.</p>
+      <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 2rem;">
+        <summary style="font-weight: 600; cursor: pointer; color: var(--foreground); list-style: revert;">How do I avoid being blocked on WhatsApp for B2B prospecting?</summary>
+        <p style="margin: 0.75rem 0 0; color: var(--foreground);">The most common blocking triggers: mass broadcast messages (use targeted 1:1 messages instead), pitching immediately on first contact, sending messages outside business hours, and not respecting opt-out requests. The personalized, value-first approach described here results in block rates under 1% — compared to 15-25% for broadcast prospecting approaches.</p>
       </details>
 
-      <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin-bottom: 2rem;">
-        <summary style="font-weight: 600; cursor: pointer; color: #1e293b; list-style: revert;">Should I use WhatsApp Business API or regular WhatsApp Business?</summary>
-        <p style="margin: 0.75rem 0 0; color: #4b5563;">Regular WhatsApp Business (free app) is sufficient for solo sellers and small teams managing up to 200 active conversations. The API (requires a BSP provider, costs ~R$0.15-0.45 per conversation) makes sense when you need multi-agent access (team using the same number), automation workflows, or integration with your CRM at scale. For most B2B sellers, start with the free Business app and upgrade when team size demands it.</p>
+      <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 2rem;">
+        <summary style="font-weight: 600; cursor: pointer; color: var(--foreground); list-style: revert;">Should I use WhatsApp Business API or regular WhatsApp Business?</summary>
+        <p style="margin: 0.75rem 0 0; color: var(--foreground);">Regular WhatsApp Business (free app) is sufficient for solo sellers and small teams managing up to 200 active conversations. The API (requires a BSP provider, costs ~R$0.15-0.45 per conversation) makes sense when you need multi-agent access (team using the same number), automation workflows, or integration with your CRM at scale. For most B2B sellers, start with the free Business app and upgrade when team size demands it.</p>
       </details>
 
-      <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin-bottom: 2rem;">
-        <summary style="font-weight: 600; cursor: pointer; color: #1e293b; list-style: revert;">What's the right time of day to send B2B WhatsApp messages?</summary>
-        <p style="margin: 0.75rem 0 0; color: #4b5563;">Opening messages perform best Tuesday-Thursday, 9-11am or 2-4pm (business hours, post-meeting, pre-end-of-day). Avoid Mondays (planning mode), Fridays after 3pm (mentally checked out), and any time outside 8am-6pm in the prospect's time zone. Reply rates drop 40-60% for messages sent outside business hours — they get buried by morning notifications.</p>
+      <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 2rem;">
+        <summary style="font-weight: 600; cursor: pointer; color: var(--foreground); list-style: revert;">What's the right time of day to send B2B WhatsApp messages?</summary>
+        <p style="margin: 0.75rem 0 0; color: var(--foreground);">Opening messages perform best Tuesday-Thursday, 9-11am or 2-4pm (business hours, post-meeting, pre-end-of-day). Avoid Mondays (planning mode), Fridays after 3pm (mentally checked out), and any time outside 8am-6pm in the prospect's time zone. Reply rates drop 40-60% for messages sent outside business hours — they get buried by morning notifications.</p>
       </details>
 
       <h2>Conclusion</h2>

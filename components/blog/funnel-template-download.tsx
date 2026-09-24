@@ -275,19 +275,19 @@ export function FunnelTemplateDownload() {
 
   if (downloadComplete) {
     return (
-      <Card className="my-8 border-2 border-green-500/30 bg-green-50 dark:bg-green-950/20">
+      <Card className="my-8 border-2 border-border bg-muted">
         <CardContent className="pt-8 text-center">
-          <CheckCircle2 className="h-16 w-16 text-green-500 mx-auto mb-4" />
-          <h3 className="text-2xl font-bold text-green-700 dark:text-green-400 mb-2">
+          <CheckCircle2 className="h-16 w-16 text-foreground mx-auto mb-4" />
+          <h3 className="text-2xl font-bold text-foreground mb-2">
             Template Baixado com Sucesso!
           </h3>
-          <p className="text-green-600 dark:text-green-500 mb-4">
+          <p className="text-foreground mb-4">
             O PDF foi baixado automaticamente. Verifique sua pasta de downloads!
           </p>
           <Button
             variant="outline"
             onClick={() => setDownloadComplete(false)}
-            className="border-green-500 text-green-700 hover:bg-green-100"
+            className="border-border text-foreground hover:bg-muted"
           >
             Baixar Novamente
           </Button>
@@ -297,7 +297,7 @@ export function FunnelTemplateDownload() {
   }
 
   return (
-    <Card className="my-8 border-2 border-primary shadow-2xl bg-gradient-to-br from-primary/5 via-white to-primary/10 dark:from-primary/10 dark:via-zinc-900 dark:to-primary/5">
+    <Card className="my-8 border-2 border-primary shadow-2xl">
       <CardHeader>
         <div className="flex items-start gap-4">
           <div className="p-3 bg-primary rounded-xl shadow-lg">
@@ -314,31 +314,31 @@ export function FunnelTemplateDownload() {
         </div>
       </CardHeader>
       <CardContent>
-        <div className="bg-white dark:bg-zinc-900 p-6 rounded-xl border-2 border-dashed border-primary/30 mb-6">
+        <div className="bg-white p-6 rounded-xl border-2 border-dashed border-primary/30 mb-6">
           <h4 className="font-bold text-lg mb-3">📦 O que você vai receber:</h4>
           <ul className="space-y-2 text-sm">
             <li className="flex items-start gap-2">
-              <CheckCircle2 className="h-5 w-5 text-green-500 mt-0.5 flex-shrink-0" />
+              <CheckCircle2 className="h-5 w-5 text-foreground mt-0.5 flex-shrink-0" />
               <span>✅ Checklist com 5 fases de implementação</span>
             </li>
             <li className="flex items-start gap-2">
-              <CheckCircle2 className="h-5 w-5 text-green-500 mt-0.5 flex-shrink-0" />
+              <CheckCircle2 className="h-5 w-5 text-foreground mt-0.5 flex-shrink-0" />
               <span>🎯 Critérios de passagem entre etapas</span>
             </li>
             <li className="flex items-start gap-2">
-              <CheckCircle2 className="h-5 w-5 text-green-500 mt-0.5 flex-shrink-0" />
+              <CheckCircle2 className="h-5 w-5 text-foreground mt-0.5 flex-shrink-0" />
               <span>📊 Benchmarks de conversão por etapa</span>
             </li>
             <li className="flex items-start gap-2">
-              <CheckCircle2 className="h-5 w-5 text-green-500 mt-0.5 flex-shrink-0" />
+              <CheckCircle2 className="h-5 w-5 text-foreground mt-0.5 flex-shrink-0" />
               <span>🤖 Ideias de automações para economizar tempo</span>
             </li>
             <li className="flex items-start gap-2">
-              <CheckCircle2 className="h-5 w-5 text-green-500 mt-0.5 flex-shrink-0" />
+              <CheckCircle2 className="h-5 w-5 text-foreground mt-0.5 flex-shrink-0" />
               <span>❌ 7 erros fatais a evitar</span>
             </li>
             <li className="flex items-start gap-2">
-              <CheckCircle2 className="h-5 w-5 text-green-500 mt-0.5 flex-shrink-0" />
+              <CheckCircle2 className="h-5 w-5 text-foreground mt-0.5 flex-shrink-0" />
               <span>📋 Checklist de manutenção diária</span>
             </li>
           </ul>

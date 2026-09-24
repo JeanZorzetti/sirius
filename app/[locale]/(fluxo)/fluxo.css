@@ -1,23 +1,15 @@
 /* art-direction · fluxo (custom:recombinacao-campo) · eixos: campo/scroll/clara · orçamento: 3kb · 2026-09-23 */
 
-/* ── Tokens ─────────────────────────────────────────────────────────────
-   Hex first for browsers without OKLCH (browserslist goes back to Chrome 90), OKLCH inside
-   @supports is the source of truth. The canvas reads --campo-linha / --campo-pulso, kept as
-   plain rgba on purpose: canvas colour parsing lags CSS in some engines. */
+/* The home's gesture only. The skin (palette, type, shadcn mapping, focus, corners) lives in app/fluxo-pele.css
+   since spec 008, shared with every (marketing) page. */
+
+/* ── Tokens of the gesture ──────────────────────────────────────────────
+   The canvas reads --campo-linha / --campo-pulso, kept as plain rgba on purpose: canvas colour parsing lags CSS
+   in some engines. */
 [data-art="fluxo"] {
-  --gelo: #f5f7f9;
-  --grafite: #141b24;
-  --grafite-suave: #4e5661;
-  --fio: rgba(20, 27, 36, .12);
-  --fio-forte: rgba(20, 27, 36, .3);
-  --pulso: #d02d23;           /* acento: o h1, o pulso, a faixa sob o ponteiro (4.79:1, só texto grande) */
-  --pulso-escuro: #b71b14;    /* o mesmo acento para texto pequeno e botão sob o ponteiro (6.16:1) */
   --campo-cinza: #303b4a;        /* as linhas do poster SVG */
   --campo-linha: rgba(48, 59, 74, .2);
   --campo-pulso: rgba(208, 45, 35, .34);
-
-  --fonte-texto: var(--fonte-texto-base), ui-sans-serif, system-ui, sans-serif;
-  --fonte-mono: var(--fonte-mono-base), ui-monospace, monospace;
 
   --t-h1: clamp(2.9rem, 1.55rem + 5.4vw, 5.4rem);
   --t-h2: clamp(2rem, 1.3rem + 2.4vw, 3.3rem);
@@ -25,7 +17,6 @@
   --t-mono: .78rem;
 
   --folga: clamp(1.25rem, 4.4vw, 4rem);
-  --raio: 4px;
 
   --dur-rapida: 160ms;
   --dur-cena: 600ms;
@@ -34,32 +25,16 @@
 }
 
 @supports (color: oklch(0 0 0)) {
-  [data-art="fluxo"] {
-    --gelo: oklch(0.975 0.004 250);
-    --grafite: oklch(0.22 0.02 255);
-    --grafite-suave: oklch(0.45 0.02 255);
-    --fio: oklch(0.22 0.02 255 / .12);
-    --fio-forte: oklch(0.22 0.02 255 / .3);
-    --pulso: oklch(0.56 0.2 29);
-    --pulso-escuro: oklch(0.5 0.19 29);
-    --campo-cinza: oklch(0.35 0.03 255);
-  }
+  [data-art="fluxo"] { --campo-cinza: oklch(0.35 0.03 255); }
 }
 
 /* ── Page ────────────────────────────────────────────────────────────── */
 [data-art="fluxo"] {
-  --marca-pingo: var(--pulso);
   position: relative;
   min-height: 100vh;
-  background: var(--gelo);
-  color: var(--grafite);
-  font-family: var(--fonte-texto);
   font-size: 1rem;
   line-height: 1.55;
-  -webkit-font-smoothing: antialiased;
 }
-[data-art="fluxo"] ::selection { background: var(--pulso-escuro); color: var(--gelo); }
-[data-art="fluxo"] :is(a, [tabindex]):focus-visible { outline: 2px solid var(--pulso-escuro); outline-offset: 3px; border-radius: 2px; }
 
 [data-art="fluxo"] .fluxo-pular {
   position: absolute; left: 1rem; top: -4rem; z-index: 60;
@@ -228,16 +203,6 @@
 [data-art="fluxo"] .fecho__pulso path { fill: none; stroke: var(--pulso); stroke-width: 2; stroke-linejoin: round; stroke-dasharray: 1; stroke-dashoffset: 0; }
 [data-art="fluxo"] .fecho__texto .lide { margin-top: 1rem; }
 [data-art="fluxo"] .fecho__assinatura { margin: 0; font-family: var(--fonte-mono); font-size: var(--t-mono); color: var(--grafite-suave); }
-
-/* ── Site footer, re-inked for this route only ───────────────────────── */
-[data-art="fluxo"] .fluxo-rodape {
-  --background: var(--gelo);
-  --foreground: var(--grafite);
-  --muted-foreground: var(--grafite-suave);
-  --border: var(--fio);
-  --primary: var(--pulso-escuro);
-}
-[data-art="fluxo"] .fluxo-rodape footer { background: var(--gelo); color: var(--grafite); border-top: 1px solid var(--fio-forte); }
 
 /* ── Choreography: one verb, "comb" ──────────────────────────────────── */
 /* Entrada — the field arrives from the left, poster and canvas together. The h1 (LCP) never animates. */

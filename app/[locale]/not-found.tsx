@@ -1,10 +1,11 @@
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Home, Mail } from 'lucide-react'
+import { texto, mono } from '@/components/fluxo/fontes' // the home's skin (spec 008)
 
 export default function NotFound() {
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center bg-background px-4 text-center">
+    <div data-art="fluxo" className={`${texto.variable} ${mono.variable} flex min-h-screen flex-col items-center justify-center bg-background px-4 text-center`}>
       <div className="max-w-lg">
         <p className="text-sm font-semibold uppercase tracking-widest text-primary">404</p>
         <h1 className="mt-4 text-4xl font-bold tracking-tight text-foreground sm:text-5xl">

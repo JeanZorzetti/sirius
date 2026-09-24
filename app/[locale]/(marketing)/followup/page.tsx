@@ -80,7 +80,7 @@ export default function FollowupPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }}
       />
-    <div className="min-h-screen bg-gradient-to-b from-background to-muted/20">
+    <div className="min-h-screen">
       <div className="container mx-auto max-w-6xl py-12 px-6">
         {/* Back Button */}
         <Link href="/">
@@ -116,16 +116,16 @@ export default function FollowupPage() {
 
         {/* Problema */}
         <div className="mb-16">
-          <Card className="border-red-200 dark:border-red-900 bg-red-50/50 dark:bg-red-950/20">
+          <Card className="border-border bg-muted">
             <CardHeader>
-              <CardTitle className="text-2xl text-red-600 dark:text-red-400">
+              <CardTitle className="text-2xl text-destaque">
                 📉 O Custo do Esquecimento
               </CardTitle>
             </CardHeader>
             <CardContent>
               <p className="text-lg mb-4">
                 <strong>67% dos leads são perdidos</strong> por falta de follow-up adequado.
-                Vendedores deixam de ganhar em média <strong className="text-red-600 dark:text-red-400">R$ 28.000 por mês</strong> por esquecerem de retornar contatos.
+                Vendedores deixam de ganhar em média <strong className="text-destaque">R$ 28.000 por mês</strong> por esquecerem de retornar contatos.
               </p>
               <p className="text-muted-foreground">
                 A maioria dos vendedores depende da memória ou anotações em papel.
@@ -154,15 +154,15 @@ export default function FollowupPage() {
               <CardContent>
                 <ul className="space-y-2 text-sm">
                   <li className="flex items-start gap-2">
-                    <CheckCircle2 className="h-4 w-4 text-green-500 mt-0.5 shrink-0" />
+                    <CheckCircle2 className="h-4 w-4 text-foreground mt-0.5 shrink-0" />
                     <span>Notificações push no momento certo</span>
                   </li>
                   <li className="flex items-start gap-2">
-                    <CheckCircle2 className="h-4 w-4 text-green-500 mt-0.5 shrink-0" />
+                    <CheckCircle2 className="h-4 w-4 text-foreground mt-0.5 shrink-0" />
                     <span>Priorização inteligente por probabilidade</span>
                   </li>
                   <li className="flex items-start gap-2">
-                    <CheckCircle2 className="h-4 w-4 text-green-500 mt-0.5 shrink-0" />
+                    <CheckCircle2 className="h-4 w-4 text-foreground mt-0.5 shrink-0" />
                     <span>Histórico completo de interações</span>
                   </li>
                 </ul>
@@ -182,15 +182,15 @@ export default function FollowupPage() {
               <CardContent>
                 <ul className="space-y-2 text-sm">
                   <li className="flex items-start gap-2">
-                    <CheckCircle2 className="h-4 w-4 text-green-500 mt-0.5 shrink-0" />
+                    <CheckCircle2 className="h-4 w-4 text-foreground mt-0.5 shrink-0" />
                     <span>Identifica padrões de sucesso</span>
                   </li>
                   <li className="flex items-start gap-2">
-                    <CheckCircle2 className="h-4 w-4 text-green-500 mt-0.5 shrink-0" />
+                    <CheckCircle2 className="h-4 w-4 text-foreground mt-0.5 shrink-0" />
                     <span>Sugere melhor momento para contato</span>
                   </li>
                   <li className="flex items-start gap-2">
-                    <CheckCircle2 className="h-4 w-4 text-green-500 mt-0.5 shrink-0" />
+                    <CheckCircle2 className="h-4 w-4 text-foreground mt-0.5 shrink-0" />
                     <span>Alerta leads em risco de perda</span>
                   </li>
                 </ul>
@@ -210,15 +210,15 @@ export default function FollowupPage() {
               <CardContent>
                 <ul className="space-y-2 text-sm">
                   <li className="flex items-start gap-2">
-                    <CheckCircle2 className="h-4 w-4 text-green-500 mt-0.5 shrink-0" />
+                    <CheckCircle2 className="h-4 w-4 text-foreground mt-0.5 shrink-0" />
                     <span>WhatsApp integrado</span>
                   </li>
                   <li className="flex items-start gap-2">
-                    <CheckCircle2 className="h-4 w-4 text-green-500 mt-0.5 shrink-0" />
+                    <CheckCircle2 className="h-4 w-4 text-foreground mt-0.5 shrink-0" />
                     <span>Templates de mensagem personalizáveis</span>
                   </li>
                   <li className="flex items-start gap-2">
-                    <CheckCircle2 className="h-4 w-4 text-green-500 mt-0.5 shrink-0" />
+                    <CheckCircle2 className="h-4 w-4 text-foreground mt-0.5 shrink-0" />
                     <span>Registro automático de tentativas</span>
                   </li>
                 </ul>
@@ -235,8 +235,8 @@ export default function FollowupPage() {
           <div className="grid gap-6 md:grid-cols-4">
             <Card>
               <CardContent className="pt-6 text-center">
-                <TrendingUp className="h-12 w-12 mx-auto mb-4 text-green-500" />
-                <div className="text-4xl font-bold text-green-500 mb-2">+34%</div>
+                <TrendingUp className="h-12 w-12 mx-auto mb-4 text-foreground" />
+                <div className="text-4xl font-bold text-foreground mb-2">+34%</div>
                 <p className="text-sm text-muted-foreground">
                   Aumento na taxa de conversão
                 </p>
@@ -245,8 +245,8 @@ export default function FollowupPage() {
 
             <Card>
               <CardContent className="pt-6 text-center">
-                <Clock className="h-12 w-12 mx-auto mb-4 text-blue-500" />
-                <div className="text-4xl font-bold text-blue-500 mb-2">2.5h</div>
+                <Clock className="h-12 w-12 mx-auto mb-4 text-foreground" />
+                <div className="text-4xl font-bold text-foreground mb-2">2.5h</div>
                 <p className="text-sm text-muted-foreground">
                   Economizadas por dia
                 </p>
@@ -255,8 +255,8 @@ export default function FollowupPage() {
 
             <Card>
               <CardContent className="pt-6 text-center">
-                <Target className="h-12 w-12 mx-auto mb-4 text-purple-500" />
-                <div className="text-4xl font-bold text-purple-500 mb-2">0%</div>
+                <Target className="h-12 w-12 mx-auto mb-4 text-foreground" />
+                <div className="text-4xl font-bold text-foreground mb-2">0%</div>
                 <p className="text-sm text-muted-foreground">
                   Leads esquecidos
                 </p>
@@ -265,8 +265,8 @@ export default function FollowupPage() {
 
             <Card>
               <CardContent className="pt-6 text-center">
-                <CheckCircle2 className="h-12 w-12 mx-auto mb-4 text-green-500" />
-                <div className="text-4xl font-bold text-green-500 mb-2">87%</div>
+                <CheckCircle2 className="h-12 w-12 mx-auto mb-4 text-foreground" />
+                <div className="text-4xl font-bold text-foreground mb-2">87%</div>
                 <p className="text-sm text-muted-foreground">
                   Follow-ups realizados no prazo
                 </p>
@@ -276,7 +276,7 @@ export default function FollowupPage() {
         </div>
 
         {/* CTA Final */}
-        <Card className="bg-gradient-to-r from-primary to-primary/80 text-primary-foreground">
+        <Card className="bg-primary text-primary-foreground border-0">
           <CardContent className="py-12 text-center">
             <h2 className="text-3xl font-bold mb-4">
               Pronto para Parar de Perder Vendas?

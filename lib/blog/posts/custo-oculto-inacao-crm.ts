@@ -45,7 +45,7 @@ export const post: BlogPost = {
 
       <div class="callout-formula">
         <p><strong>💰 Fórmula: Custo do Lead Decay</strong></p>
-        <code style="display: block; background: #f3f4f6; padding: 1rem; border-radius: 0.5rem; margin: 1rem 0; font-family: monospace; overflow-x: auto;">
+        <code style="display: block; background: var(--muted); padding: 1rem; border-radius: 0.5rem; margin: 1rem 0; font-family: monospace; overflow-x: auto;">
           Leads/Mês × Taxa_Decay (23%) × Taxa_Conversão_Perdida (15%) × Ticket_Médio
         </code>
         <p><strong>Exemplo:</strong> 80 leads/mês × 23% × 15% × R$ 8.500 = <strong>R$ 2.346/mês em leads apodrecidos</strong></p>
@@ -65,7 +65,7 @@ export const post: BlogPost = {
 
       <div class="callout-formula">
         <p><strong>💰 Fórmula: Context Switching Waste</strong></p>
-        <code style="display: block; background: #f3f4f6; padding: 1rem; border-radius: 0.5rem; margin: 1rem 0; font-family: monospace; overflow-x: auto;">
+        <code style="display: block; background: var(--muted); padding: 1rem; border-radius: 0.5rem; margin: 1rem 0; font-family: monospace; overflow-x: auto;">
           Vendedores × 2.3h/Semana × 4.3 Semanas × Custo_Hora_Vendedor
         </code>
         <p><strong>Exemplo:</strong> 5 vendedores × 2.3h × 4.3 × R$ 85/h = <strong>R$ 4.205/mês em tempo perdido</strong></p>
@@ -102,7 +102,7 @@ export const post: BlogPost = {
           <strong>Antes do CRM:</strong> Conversão 8%, receita média R$ 115k/mês.<br/>
           <strong>Depois (90 dias):</strong> Conversão 11.2%, receita média R$ 161k/mês.<br/>
           <strong>Delta:</strong> +R$ 46k/mês. Custo do CRM: R$ 890/mês (plano PRO).<br/>
-          <strong>ROI:</strong> <span style="color: #16a34a; font-weight: 700;">5.177%</span>
+          <strong>ROI:</strong> <span style="color: var(--foreground); font-weight: 700;">5.177%</span>
         </p>
       </div>
 
@@ -165,20 +165,20 @@ export const post: BlogPost = {
         <p>
           Sirius CRM: pipeline visual, WhatsApp integrado, notificações push, analytics em tempo real. <strong>Free para sempre</strong> até 20 deals. Upgrade quando crescer.
         </p>
-        <p><strong><a href="/register" style="color: #2563eb; text-decoration: underline;">Criar Conta Grátis →</a></strong></p>
+        <p><strong><a href="/register" style="color: var(--foreground); text-decoration: underline;">Criar Conta Grátis →</a></strong></p>
       </div>
 
-      <hr style="margin: 3rem 0; border: none; border-top: 1px solid #e5e7eb;" />
+      <hr style="margin: 3rem 0; border: none; border-top: 1px solid var(--border);" />
 
       <strong>Fontes & Metodologia:</strong>
-      <ul style="font-size: 0.875rem; color: #6b7280; line-height: 1.6;">
+      <ul style="font-size: 0.875rem; color: var(--muted-foreground); line-height: 1.6;">
         <li>Gartner Magic Quadrant for CRM Customer Engagement Centers (2024)</li>
         <li>Salesforce State of Sales Report, 6th Edition (2025)</li>
         <li>Harvard Business Review: "The Short Life of Online Sales Leads" (2024)</li>
         <li>Gloria Mark, UC Irvine: "The Cost of Interrupted Work: More Speed and Stress" (2023)</li>
       </ul>
 
-      <hr style="margin: 3rem 0; border: none; border-top: 1px solid #e5e7eb;" />
+      <hr style="margin: 3rem 0; border: none; border-top: 1px solid var(--border);" />
 
       <strong>Última Atualização:</strong> 30 de Janeiro de 2026<br/>
       <strong>Autor:</strong> Equipe Sirius CRM<br/>
@@ -201,7 +201,7 @@ export const post: BlogPost = {
 
       <div class="callout-stat">
         <p><strong>📊 The Calculation Nobody Makes</strong></p>
-        <p style="font-size: 2.5rem; font-weight: 800; color: #2563eb; margin: 1rem 0; line-height: 1;">23%</p>
+        <p style="font-size: 2.5rem; font-weight: 800; color: var(--foreground); margin: 1rem 0; line-height: 1;">23%</p>
         <p>Average percentage of leads lost due to lack of follow-up in sales teams without a CRM system (Sirius CRM internal data, 847 companies, 2025).</p>
       </div>
 
@@ -242,42 +242,42 @@ export const post: BlogPost = {
 
       <table style="width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: 0.9rem;">
         <thead>
-          <tr style="background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%); color: white;">
+          <tr style="background: var(--primary); color: white;">
             <th style="padding: 0.875rem; text-align: left;">Variable</th>
             <th style="padding: 0.875rem; text-align: left;">Example (5-rep team)</th>
             <th style="padding: 0.875rem; text-align: left;">Your Number</th>
           </tr>
         </thead>
         <tbody>
-          <tr style="background: #f8fafc;">
-            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">Monthly leads generated</td>
-            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">100</td>
-            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">___</td>
+          <tr style="background: var(--muted);">
+            <td style="padding: 0.875rem; border: 1px solid var(--border);">Monthly leads generated</td>
+            <td style="padding: 0.875rem; border: 1px solid var(--border);">100</td>
+            <td style="padding: 0.875rem; border: 1px solid var(--border);">___</td>
           </tr>
           <tr>
-            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">Average deal value ($)</td>
-            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">$3,000</td>
-            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">$___</td>
+            <td style="padding: 0.875rem; border: 1px solid var(--border);">Average deal value ($)</td>
+            <td style="padding: 0.875rem; border: 1px solid var(--border);">$3,000</td>
+            <td style="padding: 0.875rem; border: 1px solid var(--border);">$___</td>
           </tr>
-          <tr style="background: #f8fafc;">
-            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">Current close rate (%)</td>
-            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">20%</td>
-            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">___%</td>
-          </tr>
-          <tr>
-            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">Leads lost to no follow-up (23%)</td>
-            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">23 leads/mo</td>
-            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">___</td>
-          </tr>
-          <tr style="background: #f8fafc;">
-            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">Revenue lost (annual)</td>
-            <td style="padding: 0.875rem; border: 1px solid #e2e8f0; font-weight: 700; color: #dc2626;">$165,600</td>
-            <td style="padding: 0.875rem; border: 1px solid #e2e8f0; font-weight: 700; color: #dc2626;">$___</td>
+          <tr style="background: var(--muted);">
+            <td style="padding: 0.875rem; border: 1px solid var(--border);">Current close rate (%)</td>
+            <td style="padding: 0.875rem; border: 1px solid var(--border);">20%</td>
+            <td style="padding: 0.875rem; border: 1px solid var(--border);">___%</td>
           </tr>
           <tr>
-            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">CRM annual cost</td>
-            <td style="padding: 0.875rem; border: 1px solid #e2e8f0; color: #166534;">$2,400-4,764</td>
-            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">$___</td>
+            <td style="padding: 0.875rem; border: 1px solid var(--border);">Leads lost to no follow-up (23%)</td>
+            <td style="padding: 0.875rem; border: 1px solid var(--border);">23 leads/mo</td>
+            <td style="padding: 0.875rem; border: 1px solid var(--border);">___</td>
+          </tr>
+          <tr style="background: var(--muted);">
+            <td style="padding: 0.875rem; border: 1px solid var(--border);">Revenue lost (annual)</td>
+            <td style="padding: 0.875rem; border: 1px solid var(--border); font-weight: 700; color: var(--pulso-escuro);">$165,600</td>
+            <td style="padding: 0.875rem; border: 1px solid var(--border); font-weight: 700; color: var(--pulso-escuro);">$___</td>
+          </tr>
+          <tr>
+            <td style="padding: 0.875rem; border: 1px solid var(--border);">CRM annual cost</td>
+            <td style="padding: 0.875rem; border: 1px solid var(--border); color: var(--foreground);">$2,400-4,764</td>
+            <td style="padding: 0.875rem; border: 1px solid var(--border);">$___</td>
           </tr>
         </tbody>
       </table>
@@ -290,14 +290,14 @@ export const post: BlogPost = {
         The question isn't whether a CRM is worth it — it's how much you're losing every month you delay.
       </p>
 
-      <div style="background: linear-gradient(135deg, #1e3a5f 0%, #1e293b 100%); padding: 2rem; border-radius: 1rem; margin: 2rem 0; text-align: center;">
+      <div style="background: var(--primary); padding: 2rem; border-radius: 1rem; margin: 2rem 0; text-align: center;">
         <h3 style="color: #ffffff; margin: 0 0 1rem;">Stop Losing Revenue to Invisible Leaks</h3>
-        <p style="color: #94a3b8; margin: 0 0 1.5rem;">Sirius CRM free plan — no credit card. Import your leads in under 30 minutes and see your pipeline clearly for the first time.</p>
-        <a href="/en/register" style="background: #2563eb; color: white; padding: 0.875rem 2rem; border-radius: 0.5rem; font-weight: 700; text-decoration: none; display: inline-block;">Start Free →</a>
+        <p style="color: var(--primary-foreground); margin: 0 0 1.5rem;">Sirius CRM free plan — no credit card. Import your leads in under 30 minutes and see your pipeline clearly for the first time.</p>
+        <a href="/en/register" style="background: var(--primary); color: white; padding: 0.875rem 2rem; border-radius: 0.5rem; font-weight: 700; text-decoration: none; display: inline-block;">Start Free →</a>
       </div>
 
-      <hr style="margin: 3rem 0; border: none; border-top: 1px solid #e5e7eb;" />
-      <p style="font-size: 0.85rem; color: #64748b;">
+      <hr style="margin: 3rem 0; border: none; border-top: 1px solid var(--border);" />
+      <p style="font-size: 0.85rem; color: var(--foreground);">
         <strong>Last Updated:</strong> January 30, 2026<br/>
         <strong>Author:</strong> Sirius CRM Team<br/>
         <strong>Reading Time:</strong> 12 minutes

@@ -23,12 +23,12 @@ export const post: BlogPost = {
         Um CRM bem aplicado ao varejo muda essa equação. Não é sobre burocracia ou tecnologia por tecnologia — é sobre transformar cada interação com o cliente em informação que gera a próxima venda. Neste guia, você vai ver como isso funciona na prática, tanto para loja física quanto para e-commerce.
       </p>
 
-      <div class="not-prose" style="background: #1e293b; padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
-        <p style="margin: 0 0 0.75rem; font-weight: 700; font-size: 1.05rem; color: #38bdf8;">⚡ TL;DR — Resposta Rápida</p>
+      <div class="not-prose" style="background: var(--primary); padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
+        <p style="margin: 0 0 0.75rem; font-weight: 700; font-size: 1.05rem; color: var(--primary-foreground);">⚡ TL;DR — Resposta Rápida</p>
         <ul style="margin: 0; padding-left: 1.25rem; line-height: 2; color: #ffffff;">
-          <li>Lojas com CRM vendem <strong style="color: #38bdf8;">29% mais por cliente</strong> e têm taxa de retenção até 27% maior (Salesforce State of Commerce, 2025)</li>
-          <li>Para loja física, as funcionalidades que mais impactam são: <strong style="color: #38bdf8;">cadastro rápido no balcão, alerta de recompra e follow-up pós-venda via WhatsApp</strong></li>
-          <li>Para e-commerce, a maior alavanca é o <strong style="color: #38bdf8;">carrinho abandonado convertido em pipeline automático</strong> com cadência de recuperação</li>
+          <li>Lojas com CRM vendem <strong style="color: var(--primary-foreground);">29% mais por cliente</strong> e têm taxa de retenção até 27% maior (Salesforce State of Commerce, 2025)</li>
+          <li>Para loja física, as funcionalidades que mais impactam são: <strong style="color: var(--primary-foreground);">cadastro rápido no balcão, alerta de recompra e follow-up pós-venda via WhatsApp</strong></li>
+          <li>Para e-commerce, a maior alavanca é o <strong style="color: var(--primary-foreground);">carrinho abandonado convertido em pipeline automático</strong> com cadência de recuperação</li>
           <li>O pipeline de varejo tem 6 etapas: Prospect → Primeiro Contato → Orçamento → Negociação → Venda → Pós-venda</li>
           <li>Um case real de loja de materiais aumentou 40% em vendas recorrentes em 4 meses com CRM — os detalhes estão neste artigo</li>
         </ul>
@@ -46,7 +46,7 @@ export const post: BlogPost = {
 
       <div class="callout-stat">
         <p><strong>📊 O impacto real da retenção no varejo</strong></p>
-        <p style="font-size: 3rem; font-weight: 800; color: #2563eb; margin: 1rem 0; line-height: 1;">29%</p>
+        <p style="font-size: 3rem; font-weight: 800; color: var(--foreground); margin: 1rem 0; line-height: 1;">29%</p>
         <p>a mais em receita por cliente é o resultado médio observado em varejistas que implementam CRM com foco em relacionamento e recompra. Fonte: Salesforce State of Commerce, 2025.</p>
       </div>
 
@@ -55,7 +55,7 @@ export const post: BlogPost = {
       </p>
 
       <p>
-        Um <a href="/blog/crm-com-whatsapp-integrado" style="color: #2563eb;">CRM com WhatsApp integrado</a> transforma esse canal de caos em canal estruturado — com histórico centralizado, métricas de resposta e automações de follow-up que funcionam mesmo quando o vendedor está ocupado no balcão.
+        Um <a href="/blog/crm-com-whatsapp-integrado" style="color: var(--foreground);">CRM com WhatsApp integrado</a> transforma esse canal de caos em canal estruturado — com histórico centralizado, métricas de resposta e automações de follow-up que funcionam mesmo quando o vendedor está ocupado no balcão.
       </p>
 
       <p>
@@ -104,7 +104,7 @@ export const post: BlogPost = {
       </p>
 
       <p>
-        Para saber mais sobre como estruturar cadências que convertem, veja o guia sobre <a href="/blog/poder-do-follow-up" style="color: #2563eb;">o poder do follow-up em vendas</a>.
+        Para saber mais sobre como estruturar cadências que convertem, veja o guia sobre <a href="/blog/poder-do-follow-up" style="color: var(--foreground);">o poder do follow-up em vendas</a>.
       </p>
 
       <h3>4. Controle de Estoque por Interesse</h3>
@@ -159,7 +159,7 @@ export const post: BlogPost = {
       </p>
 
       <p>
-        Para entender como montar esse tipo de cadência de recuperação no pipeline, o guia de <a href="/blog/como-organizar-pipeline-vendas" style="color: #2563eb;">como organizar o pipeline de vendas</a> detalha cada etapa.
+        Para entender como montar esse tipo de cadência de recuperação no pipeline, o guia de <a href="/blog/como-organizar-pipeline-vendas" style="color: var(--foreground);">como organizar o pipeline de vendas</a> detalha cada etapa.
       </p>
 
       <h3>Segmentação por Comportamento de Compra</h3>
@@ -192,49 +192,49 @@ export const post: BlogPost = {
       <div class="not-prose" style="overflow-x: auto; margin: 2rem 0;">
         <table style="width: 100%; border-collapse: collapse; font-size: 0.95rem;">
           <thead>
-            <tr style="background: #1e293b; color: #ffffff;">
-              <th style="padding: 0.75rem 1rem; text-align: left; border: 1px solid #334155;">Etapa</th>
-              <th style="padding: 0.75rem 1rem; text-align: left; border: 1px solid #334155;">O que significa</th>
-              <th style="padding: 0.75rem 1rem; text-align: left; border: 1px solid #334155;">Ação do CRM</th>
-              <th style="padding: 0.75rem 1rem; text-align: left; border: 1px solid #334155;">Tempo médio</th>
+            <tr style="background: var(--primary); color: #ffffff;">
+              <th style="padding: 0.75rem 1rem; text-align: left; border: 1px solid var(--fio-forte);">Etapa</th>
+              <th style="padding: 0.75rem 1rem; text-align: left; border: 1px solid var(--fio-forte);">O que significa</th>
+              <th style="padding: 0.75rem 1rem; text-align: left; border: 1px solid var(--fio-forte);">Ação do CRM</th>
+              <th style="padding: 0.75rem 1rem; text-align: left; border: 1px solid var(--fio-forte);">Tempo médio</th>
             </tr>
           </thead>
           <tbody>
-            <tr style="background: #f8fafc;">
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; font-weight: 600; color: #2563eb;">Prospect</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0;">Pessoa que demonstrou interesse (visitou a loja, perguntou pelo WhatsApp, abandonou carrinho)</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0;">Cadastro automático ou manual; início de cadência de primeiro contato</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0;">0–24h</td>
+            <tr style="background: var(--muted);">
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); font-weight: 600; color: var(--foreground);">Prospect</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border);">Pessoa que demonstrou interesse (visitou a loja, perguntou pelo WhatsApp, abandonou carrinho)</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border);">Cadastro automático ou manual; início de cadência de primeiro contato</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border);">0–24h</td>
             </tr>
             <tr>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; font-weight: 600; color: #2563eb;">Primeiro Contato</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0;">Atendimento realizado — na loja, por telefone ou WhatsApp; necessidade identificada</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0;">Registro de interesse, produto consultado, histórico da conversa</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0;">1–3 dias</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); font-weight: 600; color: var(--foreground);">Primeiro Contato</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border);">Atendimento realizado — na loja, por telefone ou WhatsApp; necessidade identificada</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border);">Registro de interesse, produto consultado, histórico da conversa</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border);">1–3 dias</td>
             </tr>
-            <tr style="background: #f8fafc;">
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; font-weight: 600; color: #2563eb;">Orçamento</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0;">Proposta ou cotação enviada; cliente está comparando opções</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0;">Alerta de follow-up automático se não houver resposta em 48h</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0;">2–5 dias</td>
-            </tr>
-            <tr>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; font-weight: 600; color: #2563eb;">Negociação</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0;">Cliente voltou com contraoferta, pedido de desconto ou condição especial</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0;">Registro de objeções e condições negociadas; visibilidade para o gestor</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0;">1–3 dias</td>
-            </tr>
-            <tr style="background: #f8fafc;">
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; font-weight: 600; color: #2563eb;">Venda</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0;">Compra concluída — na loja, no e-commerce ou via WhatsApp</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0;">Registro automático da venda; início do fluxo de pós-venda</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0;">—</td>
+            <tr style="background: var(--muted);">
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); font-weight: 600; color: var(--foreground);">Orçamento</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border);">Proposta ou cotação enviada; cliente está comparando opções</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border);">Alerta de follow-up automático se não houver resposta em 48h</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border);">2–5 dias</td>
             </tr>
             <tr>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; font-weight: 600; color: #2563eb;">Pós-venda</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0;">Relacionamento ativo com o cliente para garantir satisfação e preparar a recompra</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0;">Cadência automática de follow-up; alerta de recompra no prazo estimado</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0;">30–90 dias</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); font-weight: 600; color: var(--foreground);">Negociação</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border);">Cliente voltou com contraoferta, pedido de desconto ou condição especial</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border);">Registro de objeções e condições negociadas; visibilidade para o gestor</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border);">1–3 dias</td>
+            </tr>
+            <tr style="background: var(--muted);">
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); font-weight: 600; color: var(--foreground);">Venda</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border);">Compra concluída — na loja, no e-commerce ou via WhatsApp</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border);">Registro automático da venda; início do fluxo de pós-venda</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border);">—</td>
+            </tr>
+            <tr>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); font-weight: 600; color: var(--foreground);">Pós-venda</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border);">Relacionamento ativo com o cliente para garantir satisfação e preparar a recompra</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border);">Cadência automática de follow-up; alerta de recompra no prazo estimado</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border);">30–90 dias</td>
             </tr>
           </tbody>
         </table>
@@ -245,7 +245,7 @@ export const post: BlogPost = {
       </p>
 
       <p>
-        Para aprofundar a configuração do pipeline, o guia completo de <a href="/blog/como-organizar-pipeline-vendas" style="color: #2563eb;">como organizar o pipeline de vendas</a> detalha cada decisão de configuração.
+        Para aprofundar a configuração do pipeline, o guia completo de <a href="/blog/como-organizar-pipeline-vendas" style="color: var(--foreground);">como organizar o pipeline de vendas</a> detalha cada decisão de configuração.
       </p>
 
       <h2>KPIs de Varejo que o CRM Deve Medir</h2>
@@ -266,7 +266,7 @@ export const post: BlogPost = {
       </ul>
 
       <p>
-        Para um detalhamento completo de como calcular, acompanhar e agir sobre cada KPI, o artigo sobre <a href="/blog/kpis-de-vendas" style="color: #2563eb;">KPIs de vendas em 2026</a> tem benchmarks por segmento e templates de dashboard.
+        Para um detalhamento completo de como calcular, acompanhar e agir sobre cada KPI, o artigo sobre <a href="/blog/kpis-de-vendas" style="color: var(--foreground);">KPIs de vendas em 2026</a> tem benchmarks por segmento e templates de dashboard.
       </p>
 
       <h2>Caso Real: Loja de Materiais que Aumentou 40% com CRM</h2>
@@ -296,32 +296,32 @@ export const post: BlogPost = {
         O investimento total foi o custo de um CRM básico — menos de R$ 200 por mês. O retorno, apenas com o aumento das vendas recorrentes, foi de mais de R$ 15 mil no período. ROI de mais de 7.000% em 4 meses.
       </p>
 
-      <div class="not-prose" style="background: linear-gradient(135deg, #1e3a5f 0%, #1e293b 100%); padding: 2rem; border-radius: 0.75rem; margin: 2.5rem 0; text-align: center;">
+      <div class="not-prose" style="background: var(--primary); padding: 2rem; border-radius: 0.75rem; margin: 2.5rem 0; text-align: center;">
         <p style="margin: 0 0 0.5rem; font-size: 1.25rem; font-weight: 700; color: #ffffff;">Sua loja também pode aumentar vendas com CRM</p>
-        <p style="margin: 0 0 1.5rem; color: #94a3b8; font-size: 0.95rem;">Comece grátis com o Sirius CRM — cadastro em 2 minutos, sem cartão de crédito</p>
-        <a href="/register" style="display: inline-block; background: #2563eb; color: #ffffff; padding: 0.75rem 2rem; border-radius: 0.5rem; font-weight: 700; text-decoration: none; font-size: 1rem;">Criar conta gratuita</a>
+        <p style="margin: 0 0 1.5rem; color: var(--primary-foreground); font-size: 0.95rem;">Comece grátis com o Sirius CRM — cadastro em 2 minutos, sem cartão de crédito</p>
+        <a href="/register" style="display: inline-block; background: var(--primary); color: #ffffff; padding: 0.75rem 2rem; border-radius: 0.5rem; font-weight: 700; text-decoration: none; font-size: 1rem;">Criar conta gratuita</a>
       </div>
 
       <h2>Perguntas Frequentes: CRM para Varejo</h2>
 
-      <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem 1.25rem; margin-bottom: 0.75rem;">
-        <summary style="font-weight: 600; cursor: pointer; color: #1e293b; font-size: 1rem;">CRM vale a pena para lojas pequenas com menos de 5 funcionários?</summary>
-        <p style="margin-top: 0.75rem; color: #475569; line-height: 1.7;">Sim — e especialmente para lojas pequenas, onde cada cliente tem mais peso no resultado. Lojas com equipes pequenas ganham ainda mais com o CRM porque ele elimina a dependência de uma única pessoa ter a memória dos clientes. Se o único vendedor que conhece o histórico de compras dos melhores clientes estiver ausente, a operação trava. Com CRM, qualquer pessoa da equipe tem acesso ao mesmo contexto. O retorno do investimento tende a ser proporcional ao ticket médio dos clientes — para lojas com ticket acima de R$ 150, o CRM já se paga com a primeira recompra recuperada.</p>
+      <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem 1.25rem; margin-bottom: 0.75rem;">
+        <summary style="font-weight: 600; cursor: pointer; color: var(--foreground); font-size: 1rem;">CRM vale a pena para lojas pequenas com menos de 5 funcionários?</summary>
+        <p style="margin-top: 0.75rem; color: var(--foreground); line-height: 1.7;">Sim — e especialmente para lojas pequenas, onde cada cliente tem mais peso no resultado. Lojas com equipes pequenas ganham ainda mais com o CRM porque ele elimina a dependência de uma única pessoa ter a memória dos clientes. Se o único vendedor que conhece o histórico de compras dos melhores clientes estiver ausente, a operação trava. Com CRM, qualquer pessoa da equipe tem acesso ao mesmo contexto. O retorno do investimento tende a ser proporcional ao ticket médio dos clientes — para lojas com ticket acima de R$ 150, o CRM já se paga com a primeira recompra recuperada.</p>
       </details>
 
-      <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem 1.25rem; margin-bottom: 0.75rem;">
-        <summary style="font-weight: 600; cursor: pointer; color: #1e293b; font-size: 1rem;">É possível usar CRM sem integração técnica com o sistema de caixa ou PDV?</summary>
-        <p style="margin-top: 0.75rem; color: #475569; line-height: 1.7;">Sim. A integração com PDV é ideal, mas não é pré-requisito para começar. Muitas lojas físicas iniciam com o CRM de forma manual — o vendedor registra a venda no CRM na mesma hora que registra no caixa. Em 5 a 10 minutos por dia de trabalho extra, a equipe mantém o CRM atualizado. Com o tempo, quando a operação estiver madura, a integração via API ou exportação de planilha do PDV pode ser configurada para eliminar a duplicidade. O erro é esperar a integração perfeita antes de começar — perder mais 6 meses sem histórico de clientes tem custo real.</p>
+      <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem 1.25rem; margin-bottom: 0.75rem;">
+        <summary style="font-weight: 600; cursor: pointer; color: var(--foreground); font-size: 1rem;">É possível usar CRM sem integração técnica com o sistema de caixa ou PDV?</summary>
+        <p style="margin-top: 0.75rem; color: var(--foreground); line-height: 1.7;">Sim. A integração com PDV é ideal, mas não é pré-requisito para começar. Muitas lojas físicas iniciam com o CRM de forma manual — o vendedor registra a venda no CRM na mesma hora que registra no caixa. Em 5 a 10 minutos por dia de trabalho extra, a equipe mantém o CRM atualizado. Com o tempo, quando a operação estiver madura, a integração via API ou exportação de planilha do PDV pode ser configurada para eliminar a duplicidade. O erro é esperar a integração perfeita antes de começar — perder mais 6 meses sem histórico de clientes tem custo real.</p>
       </details>
 
-      <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem 1.25rem; margin-bottom: 0.75rem;">
-        <summary style="font-weight: 600; cursor: pointer; color: #1e293b; font-size: 1rem;">Como usar CRM no WhatsApp sem criar atrito com os clientes?</summary>
-        <p style="margin-top: 0.75rem; color: #475569; line-height: 1.7;">O segredo está na frequência e na relevância. Mensagens automáticas enviadas com alta frequência para qualquer cliente são spam — e destroem o relacionamento. A abordagem correta é usar o CRM para enviar mensagens apenas quando há contexto relevante: uma recompra próxima, um produto em falta que chegou ao estoque, um aniversário, ou uma promoção relacionada ao que o cliente já comprou. Clientes que recebem mensagens relevantes têm taxa de resposta 3 a 5 vezes maior do que os que recebem mensagens genéricas. O CRM permite esse nível de personalização — a loja decide o que é relevante para cada segmento.</p>
+      <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem 1.25rem; margin-bottom: 0.75rem;">
+        <summary style="font-weight: 600; cursor: pointer; color: var(--foreground); font-size: 1rem;">Como usar CRM no WhatsApp sem criar atrito com os clientes?</summary>
+        <p style="margin-top: 0.75rem; color: var(--foreground); line-height: 1.7;">O segredo está na frequência e na relevância. Mensagens automáticas enviadas com alta frequência para qualquer cliente são spam — e destroem o relacionamento. A abordagem correta é usar o CRM para enviar mensagens apenas quando há contexto relevante: uma recompra próxima, um produto em falta que chegou ao estoque, um aniversário, ou uma promoção relacionada ao que o cliente já comprou. Clientes que recebem mensagens relevantes têm taxa de resposta 3 a 5 vezes maior do que os que recebem mensagens genéricas. O CRM permite esse nível de personalização — a loja decide o que é relevante para cada segmento.</p>
       </details>
 
-      <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem 1.25rem; margin-bottom: 0.75rem;">
-        <summary style="font-weight: 600; cursor: pointer; color: #1e293b; font-size: 1rem;">Qual é o maior erro na implementação de CRM no varejo?</summary>
-        <p style="margin-top: 0.75rem; color: #475569; line-height: 1.7;">O maior erro é tentar implementar tudo de uma vez. Muitas lojas configuram o CRM com dezenas de campos obrigatórios, pipelines complexos e automações elaboradas antes de ter qualquer dado. O resultado é que a equipe abandona o sistema em semanas porque parece mais trabalho do que vale. A implementação que funciona começa com o mínimo viável: um campo (WhatsApp), um pipeline com 3 etapas e um fluxo de follow-up. Quando a equipe pega o hábito e começa a ver resultados, a adesão cresce naturalmente e é possível adicionar complexidade. Para comparar opções de CRM com curva de aprendizado menor, veja o <a href="/blog/melhor-crm-2026-comparativo" style="color: #2563eb;">comparativo dos melhores CRMs em 2026</a>.</p>
+      <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem 1.25rem; margin-bottom: 0.75rem;">
+        <summary style="font-weight: 600; cursor: pointer; color: var(--foreground); font-size: 1rem;">Qual é o maior erro na implementação de CRM no varejo?</summary>
+        <p style="margin-top: 0.75rem; color: var(--foreground); line-height: 1.7;">O maior erro é tentar implementar tudo de uma vez. Muitas lojas configuram o CRM com dezenas de campos obrigatórios, pipelines complexos e automações elaboradas antes de ter qualquer dado. O resultado é que a equipe abandona o sistema em semanas porque parece mais trabalho do que vale. A implementação que funciona começa com o mínimo viável: um campo (WhatsApp), um pipeline com 3 etapas e um fluxo de follow-up. Quando a equipe pega o hábito e começa a ver resultados, a adesão cresce naturalmente e é possível adicionar complexidade. Para comparar opções de CRM com curva de aprendizado menor, veja o <a href="/blog/melhor-crm-2026-comparativo" style="color: var(--foreground);">comparativo dos melhores CRMs em 2026</a>.</p>
       </details>
   `,
   titleEn: 'CRM for Retail: How to Increase Sales In-Store and Online in 2026',
@@ -358,32 +358,32 @@ export const post: BlogPost = {
 
       <table style="width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: 0.9rem;">
         <thead>
-          <tr style="background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%); color: white;">
+          <tr style="background: var(--primary); color: white;">
             <th style="padding: 0.875rem; text-align: left;">Use Case</th>
             <th style="padding: 0.875rem; text-align: center;">Physical Store</th>
             <th style="padding: 0.875rem; text-align: center;">E-Commerce</th>
           </tr>
         </thead>
         <tbody>
-          <tr style="background: #f8fafc;">
-            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">Lead capture</td>
-            <td style="padding: 0.875rem; border: 1px solid #e2e8f0; text-align: center;">WhatsApp in-store</td>
-            <td style="padding: 0.875rem; border: 1px solid #e2e8f0; text-align: center;">Cart abandonment</td>
+          <tr style="background: var(--muted);">
+            <td style="padding: 0.875rem; border: 1px solid var(--border);">Lead capture</td>
+            <td style="padding: 0.875rem; border: 1px solid var(--border); text-align: center;">WhatsApp in-store</td>
+            <td style="padding: 0.875rem; border: 1px solid var(--border); text-align: center;">Cart abandonment</td>
           </tr>
           <tr>
-            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">Post-purchase</td>
-            <td style="padding: 0.875rem; border: 1px solid #e2e8f0; text-align: center;">WhatsApp message</td>
-            <td style="padding: 0.875rem; border: 1px solid #e2e8f0; text-align: center;">Email + WhatsApp</td>
+            <td style="padding: 0.875rem; border: 1px solid var(--border);">Post-purchase</td>
+            <td style="padding: 0.875rem; border: 1px solid var(--border); text-align: center;">WhatsApp message</td>
+            <td style="padding: 0.875rem; border: 1px solid var(--border); text-align: center;">Email + WhatsApp</td>
           </tr>
-          <tr style="background: #f8fafc;">
-            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">Re-purchase</td>
-            <td style="padding: 0.875rem; border: 1px solid #e2e8f0; text-align: center;">WhatsApp + loyalty card</td>
-            <td style="padding: 0.875rem; border: 1px solid #e2e8f0; text-align: center;">Email + retargeting</td>
+          <tr style="background: var(--muted);">
+            <td style="padding: 0.875rem; border: 1px solid var(--border);">Re-purchase</td>
+            <td style="padding: 0.875rem; border: 1px solid var(--border); text-align: center;">WhatsApp + loyalty card</td>
+            <td style="padding: 0.875rem; border: 1px solid var(--border); text-align: center;">Email + retargeting</td>
           </tr>
           <tr>
-            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">Abandoned quote</td>
-            <td style="padding: 0.875rem; border: 1px solid #e2e8f0; text-align: center;">Phone + WhatsApp</td>
-            <td style="padding: 0.875rem; border: 1px solid #e2e8f0; text-align: center;">Email sequence</td>
+            <td style="padding: 0.875rem; border: 1px solid var(--border);">Abandoned quote</td>
+            <td style="padding: 0.875rem; border: 1px solid var(--border); text-align: center;">Phone + WhatsApp</td>
+            <td style="padding: 0.875rem; border: 1px solid var(--border); text-align: center;">Email sequence</td>
           </tr>
         </tbody>
       </table>
@@ -403,14 +403,14 @@ export const post: BlogPost = {
         When the team builds the habit (usually 30-45 days), add re-purchase reminders. After 60-90 days of data, add segmentation. Build complexity on top of working habits — not before them.
       </p>
 
-      <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem 1.25rem; margin-bottom: 0.75rem;">
-        <summary style="font-weight: 600; cursor: pointer; color: #1e293b; font-size: 1rem;">Can retail CRM work without POS integration?</summary>
-        <p style="margin-top: 0.75rem; color: #475569; line-height: 1.7;">Yes. Many stores start by having sales staff manually register purchases in the CRM alongside the POS. 5-10 minutes of extra work per day keeps the CRM accurate. Once the operation matures, POS integration can be added to eliminate duplication. The mistake is waiting for perfect integration before starting — losing another 6 months without customer history has a real cost.</p>
+      <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem 1.25rem; margin-bottom: 0.75rem;">
+        <summary style="font-weight: 600; cursor: pointer; color: var(--foreground); font-size: 1rem;">Can retail CRM work without POS integration?</summary>
+        <p style="margin-top: 0.75rem; color: var(--foreground); line-height: 1.7;">Yes. Many stores start by having sales staff manually register purchases in the CRM alongside the POS. 5-10 minutes of extra work per day keeps the CRM accurate. Once the operation matures, POS integration can be added to eliminate duplication. The mistake is waiting for perfect integration before starting — losing another 6 months without customer history has a real cost.</p>
       </details>
 
-      <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem 1.25rem; margin-bottom: 0.75rem;">
-        <summary style="font-weight: 600; cursor: pointer; color: #1e293b; font-size: 1rem;">How to use CRM on WhatsApp without creating friction with customers?</summary>
-        <p style="margin-top: 0.75rem; color: #475569; line-height: 1.7;">The key is frequency and relevance. Automated messages sent frequently to all customers are spam. The right approach: use the CRM to send messages only when there's relevant context — a re-purchase approaching, an out-of-stock item that arrived, a birthday, or a promotion related to what the customer already bought. Customers who receive relevant messages have 3-5x higher response rates than those receiving generic messages.</p>
+      <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem 1.25rem; margin-bottom: 0.75rem;">
+        <summary style="font-weight: 600; cursor: pointer; color: var(--foreground); font-size: 1rem;">How to use CRM on WhatsApp without creating friction with customers?</summary>
+        <p style="margin-top: 0.75rem; color: var(--foreground); line-height: 1.7;">The key is frequency and relevance. Automated messages sent frequently to all customers are spam. The right approach: use the CRM to send messages only when there's relevant context — a re-purchase approaching, an out-of-stock item that arrived, a birthday, or a promotion related to what the customer already bought. Customers who receive relevant messages have 3-5x higher response rates than those receiving generic messages.</p>
       </details>
   `,
 }

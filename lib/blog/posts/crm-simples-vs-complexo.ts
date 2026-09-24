@@ -88,7 +88,7 @@ export const post: BlogPost = {
 
       <div class="callout-stat">
         <p><strong>💸 Custo de Oportunidade</strong></p>
-        <p style="font-size: 3rem; font-weight: 800; color: #2563eb; margin: 1rem 0; line-height: 1;">R$ 178 mil</p>
+        <p style="font-size: 3rem; font-weight: 800; color: var(--foreground); margin: 1rem 0; line-height: 1;">R$ 178 mil</p>
         <p>Desperdiçados no primeiro ano. E isso sem contar o custo de oportunidade dos deals que você perdeu porque seu vendedor estava preenchendo 47 campos obrigatórios em vez de ligar para o cliente.</p>
       </div>
 
@@ -111,30 +111,30 @@ export const post: BlogPost = {
       <div class="callout-problems">
         <p><strong>☁️ Menu Infinito do CRM Enterprise</strong></p>
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem; margin: 1.5rem 0;">
-          <div style="background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%); border-left: 4px solid #3b82f6; padding: 1.25rem; border-radius: 0.75rem;">
-            <p style="margin: 0; font-weight: 700; color: #2563eb; font-size: 1rem;">Sales Cloud</p>
+          <div style="background: var(--muted); border-left: 4px solid var(--fio-forte); padding: 1.25rem; border-radius: 0.75rem;">
+            <p style="margin: 0; font-weight: 700; color: var(--foreground); font-size: 1rem;">Sales Cloud</p>
           </div>
-          <div style="background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%); border-left: 4px solid #3b82f6; padding: 1.25rem; border-radius: 0.75rem;">
-            <p style="margin: 0; font-weight: 700; color: #2563eb; font-size: 1rem;">Service Cloud</p>
+          <div style="background: var(--muted); border-left: 4px solid var(--fio-forte); padding: 1.25rem; border-radius: 0.75rem;">
+            <p style="margin: 0; font-weight: 700; color: var(--foreground); font-size: 1rem;">Service Cloud</p>
           </div>
-          <div style="background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%); border-left: 4px solid #3b82f6; padding: 1.25rem; border-radius: 0.75rem;">
-            <p style="margin: 0; font-weight: 700; color: #2563eb; font-size: 1rem;">Marketing Cloud</p>
+          <div style="background: var(--muted); border-left: 4px solid var(--fio-forte); padding: 1.25rem; border-radius: 0.75rem;">
+            <p style="margin: 0; font-weight: 700; color: var(--foreground); font-size: 1rem;">Marketing Cloud</p>
           </div>
-          <div style="background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%); border-left: 4px solid #3b82f6; padding: 1.25rem; border-radius: 0.75rem;">
-            <p style="margin: 0; font-weight: 700; color: #2563eb; font-size: 1rem;">Commerce Cloud</p>
+          <div style="background: var(--muted); border-left: 4px solid var(--fio-forte); padding: 1.25rem; border-radius: 0.75rem;">
+            <p style="margin: 0; font-weight: 700; color: var(--foreground); font-size: 1rem;">Commerce Cloud</p>
           </div>
-          <div style="background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%); border-left: 4px solid #3b82f6; padding: 1.25rem; border-radius: 0.75rem;">
-            <p style="margin: 0; font-weight: 700; color: #2563eb; font-size: 1rem;">Experience Cloud</p>
+          <div style="background: var(--muted); border-left: 4px solid var(--fio-forte); padding: 1.25rem; border-radius: 0.75rem;">
+            <p style="margin: 0; font-weight: 700; color: var(--foreground); font-size: 1rem;">Experience Cloud</p>
           </div>
-          <div style="background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%); border-left: 4px solid #3b82f6; padding: 1.25rem; border-radius: 0.75rem;">
-            <p style="margin: 0; font-weight: 700; color: #2563eb; font-size: 1rem;">Analytics Cloud</p>
+          <div style="background: var(--muted); border-left: 4px solid var(--fio-forte); padding: 1.25rem; border-radius: 0.75rem;">
+            <p style="margin: 0; font-weight: 700; color: var(--foreground); font-size: 1rem;">Analytics Cloud</p>
           </div>
-          <div style="background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%); border-left: 4px solid #3b82f6; padding: 1.25rem; border-radius: 0.75rem;">
-            <p style="margin: 0; font-weight: 700; color: #2563eb; font-size: 1rem;">Integration Cloud</p>
+          <div style="background: var(--muted); border-left: 4px solid var(--fio-forte); padding: 1.25rem; border-radius: 0.75rem;">
+            <p style="margin: 0; font-weight: 700; color: var(--foreground); font-size: 1rem;">Integration Cloud</p>
           </div>
-          <div style="background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%); border-left: 4px solid #3b82f6; padding: 1.25rem; border-radius: 0.75rem;">
-            <p style="margin: 0; font-weight: 700; color: #2563eb; font-size: 1rem;">AppExchange: 7.000+ apps</p>
-            <p style="margin: 0.5rem 0 0 0; color: #1e3a8a; font-size: 0.875rem;">(na verdade mais 7000 coisas para dar errado)</p>
+          <div style="background: var(--muted); border-left: 4px solid var(--fio-forte); padding: 1.25rem; border-radius: 0.75rem;">
+            <p style="margin: 0; font-weight: 700; color: var(--foreground); font-size: 1rem;">AppExchange: 7.000+ apps</p>
+            <p style="margin: 0.5rem 0 0 0; color: var(--foreground); font-size: 0.875rem;">(na verdade mais 7000 coisas para dar errado)</p>
           </div>
         </div>
       </div>
@@ -217,8 +217,8 @@ export const post: BlogPost = {
         <p><strong>🤯 Fricção que Mata Vendas</strong></p>
         <div style="display: grid; grid-template-columns: 1fr auto 1fr; gap: 2rem; align-items: center; margin: 2rem 0;">
           <div>
-            <p style="font-size: 0.875rem; font-weight: 700; color: #2563eb; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 1rem;">CRM Traditional</p>
-            <ol style="margin: 0; padding-left: 1.5rem; color: #1e40af;">
+            <p style="font-size: 0.875rem; font-weight: 700; color: var(--foreground); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 1rem;">CRM Traditional</p>
+            <ol style="margin: 0; padding-left: 1.5rem; color: var(--foreground);">
               <li style="margin-bottom: 0.5rem;">Abre o CRM</li>
               <li style="margin-bottom: 0.5rem;">Procura o contato</li>
               <li style="margin-bottom: 0.5rem;">Copia o telefone</li>
@@ -229,19 +229,19 @@ export const post: BlogPost = {
               <li style="margin-bottom: 0.5rem;">Envia a mensagem</li>
               <li style="margin-bottom: 0.5rem;">Volta pro CRM pra registrar</li>
             </ol>
-            <p style="font-size: 2rem; font-weight: 800; color: #2563eb; margin-top: 1rem;">9 passos</p>
+            <p style="font-size: 2rem; font-weight: 800; color: var(--foreground); margin-top: 1rem;">9 passos</p>
           </div>
-          <div style="font-size: 3rem; font-weight: 800; color: #a78bfa;">VS</div>
+          <div style="font-size: 3rem; font-weight: 800; color: var(--foreground);">VS</div>
           <div>
-            <p style="font-size: 0.875rem; font-weight: 700; color: #3b82f6; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 1rem;">Sirius (WhatsApp Nativo)</p>
-            <div style="background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%); border-left: 6px solid #3b82f6; padding: 2rem; border-radius: 1rem; text-align: center;">
-              <p style="font-size: 1.25rem; font-weight: 700; color: #1e40af; margin: 0;">Clica no botão verde no card do deal</p>
-              <p style="font-size: 0.875rem; color: #047857; margin-top: 0.5rem;">Pronto! WhatsApp abre automaticamente</p>
+            <p style="font-size: 0.875rem; font-weight: 700; color: var(--foreground); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 1rem;">Sirius (WhatsApp Nativo)</p>
+            <div style="background: var(--muted); border-left: 6px solid var(--fio-forte); padding: 2rem; border-radius: 1rem; text-align: center;">
+              <p style="font-size: 1.25rem; font-weight: 700; color: var(--foreground); margin: 0;">Clica no botão verde no card do deal</p>
+              <p style="font-size: 0.875rem; color: var(--foreground); margin-top: 0.5rem;">Pronto! WhatsApp abre automaticamente</p>
             </div>
-            <p style="font-size: 2rem; font-weight: 800; color: #3b82f6; margin-top: 1rem;">1 clique</p>
+            <p style="font-size: 2rem; font-weight: 800; color: var(--foreground); margin-top: 1rem;">1 clique</p>
           </div>
         </div>
-        <p style="text-align: center; font-size: 1.25rem; font-weight: 700; color: #2563eb; margin-top: 1.5rem;">Friction mata vendas. Simplicidade fecha deals.</p>
+        <p style="text-align: center; font-size: 1.25rem; font-weight: 700; color: var(--foreground); margin-top: 1.5rem;">Friction mata vendas. Simplicidade fecha deals.</p>
       </div>
 
       <h2>Case Real: Migração que Economizou R$ 51k/ano</h2>
@@ -333,8 +333,8 @@ export const post: BlogPost = {
         <p><strong>⚠️ Modelo Tradicional vs Modelo Moderno</strong></p>
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin: 2rem 0;">
           <div>
-            <p style="font-size: 0.875rem; font-weight: 700; color: #2563eb; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">🐌 CRMs Tradicionais (Anos 2000)</p>
-            <ol style="margin: 0; padding-left: 1.5rem; color: #1e40af;">
+            <p style="font-size: 0.875rem; font-weight: 700; color: var(--foreground); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">🐌 CRMs Tradicionais (Anos 2000)</p>
+            <ol style="margin: 0; padding-left: 1.5rem; color: var(--foreground);">
               <li style="margin-bottom: 0.75rem;">Você compra o software</li>
               <li style="margin-bottom: 0.75rem;"><strong>Contrata consultoria de implementação</strong> (que custa 2-3x o valor do software)</li>
               <li style="margin-bottom: 0.75rem;">Passa <strong>3-6 meses "configurando"</strong></li>
@@ -342,18 +342,18 @@ export const post: BlogPost = {
               <li style="margin-bottom: 0.75rem;">Finalmente começa a usar</li>
               <li style="margin-bottom: 0.75rem;">Qualquer mudança precisa de <strong>mais consultoria</strong></li>
             </ol>
-            <p style="font-size: 1.5rem; font-weight: 800; color: #2563eb; margin-top: 1.5rem; text-align: center;">6+ meses 😰</p>
+            <p style="font-size: 1.5rem; font-weight: 800; color: var(--foreground); margin-top: 1.5rem; text-align: center;">6+ meses 😰</p>
           </div>
           <div>
-            <p style="font-size: 0.875rem; font-weight: 700; color: #3b82f6; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">⚡ CRMs Modernos (SaaS Real)</p>
-            <div style="background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%); border: 2px solid #3b82f6; padding: 2rem; border-radius: 1rem; min-height: 200px; display: flex; flex-direction: column; justify-content: center;">
-              <ol style="margin: 0; padding-left: 1.5rem; color: #1e40af; font-size: 1.125rem; font-weight: 600;">
+            <p style="font-size: 0.875rem; font-weight: 700; color: var(--foreground); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">⚡ CRMs Modernos (SaaS Real)</p>
+            <div style="background: var(--muted); border: 2px solid var(--fio-forte); padding: 2rem; border-radius: 1rem; min-height: 200px; display: flex; flex-direction: column; justify-content: center;">
+              <ol style="margin: 0; padding-left: 1.5rem; color: var(--foreground); font-size: 1.125rem; font-weight: 600;">
                 <li style="margin-bottom: 1rem;">Você se cadastra</li>
                 <li style="margin-bottom: 1rem;">Começa a usar em 5 minutos</li>
               </ol>
-              <p style="margin: 1rem 0 0 0; font-size: 0.875rem; color: #047857; text-align: center; font-style: italic;">Pronto. É literalmente isso.</p>
+              <p style="margin: 1rem 0 0 0; font-size: 0.875rem; color: var(--foreground); text-align: center; font-style: italic;">Pronto. É literalmente isso.</p>
             </div>
-            <p style="font-size: 1.5rem; font-weight: 800; color: #3b82f6; margin-top: 1.5rem; text-align: center;">5 minutos ⚡</p>
+            <p style="font-size: 1.5rem; font-weight: 800; color: var(--foreground); margin-top: 1.5rem; text-align: center;">5 minutos ⚡</p>
           </div>
         </div>
       </div>
@@ -485,10 +485,10 @@ export const post: BlogPost = {
         For everyone else — especially Brazilian SMBs with 1-50 reps — a simple, focused CRM with native WhatsApp and strong automation delivers more ROI than a complex enterprise platform that nobody uses to its potential.
       </p>
 
-      <div style="background: linear-gradient(135deg, #1e3a5f 0%, #1e293b 100%); padding: 2rem; border-radius: 1rem; margin: 2rem 0; text-align: center;">
+      <div style="background: var(--primary); padding: 2rem; border-radius: 1rem; margin: 2rem 0; text-align: center;">
         <h3 style="color: #ffffff; margin: 0 0 1rem;">Simple. Powerful. Built for Brazilian Sales.</h3>
-        <p style="color: #94a3b8; margin: 0 0 1.5rem;">Sirius CRM — 5 core features your team will actually use, every day.</p>
-        <a href="/en/register" style="background: #2563eb; color: white; padding: 0.875rem 2rem; border-radius: 0.5rem; font-weight: 700; text-decoration: none; display: inline-block;">Try Free for 14 Days →</a>
+        <p style="color: var(--primary-foreground); margin: 0 0 1.5rem;">Sirius CRM — 5 core features your team will actually use, every day.</p>
+        <a href="/en/register" style="background: var(--primary); color: white; padding: 0.875rem 2rem; border-radius: 0.5rem; font-weight: 700; text-decoration: none; display: inline-block;">Try Free for 14 Days →</a>
       </div>
 
       <p>

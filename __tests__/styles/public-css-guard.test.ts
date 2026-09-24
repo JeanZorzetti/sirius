@@ -93,3 +93,41 @@ describe('app/globals.css reaches every app page', () => {
     expect(bare.map(rel), 'import @/app/globals.css in these pages or in their group layout').toEqual([])
   })
 })
+
+// Spec 008: public pages wear the home's skin (app/fluxo-pele.css). The palette is semantic (text-foreground,
+// bg-muted, bg-primary, text-destaque...); a fixed Tailwind hue, a gradient or a blurred blob brings back the look
+// the skin replaced. components/ui is shared with the app and keeps its own classes.
+const HUES = 'red|orange|amber|yellow|lime|green|emerald|teal|cyan|sky|blue|indigo|violet|purple|fuchsia|pink|rose'
+const OFF_PALETTE = new RegExp(
+  String.raw`\b(?:bg|text|border|from|via|to|ring|fill|stroke|outline|decoration|divide|placeholder|shadow|accent|caret)-(?:${HUES})-\d{2,3}\b` +
+  String.raw`|\bbg-(?:gradient|linear|radial)-|\bbg-\[(?:linear|radial|conic)-gradient|\bblur-(?:2xl|3xl)\b`)
+
+describe('public pages paint only the home palette', () => {
+  const entries = [
+    ...files(path.join(ROOT, 'app/[locale]/(marketing)')),
+    ...files(path.join(ROOT, 'app/[locale]/(fluxo)')),
+    ...['app/[locale]/layout.tsx', 'app/[locale]/not-found.tsx', 'app/error.tsx', 'app/not-found.tsx'].map(f => path.join(ROOT, f)),
+  ]
+
+  it('no fixed hue, gradient or blob in a file a public route reaches', () => {
+    const offenders = importGraph(entries)
+      .map(rel)
+      .filter(f => !f.startsWith('components/ui/'))
+      .flatMap(f => {
+        const m = fs.readFileSync(path.join(ROOT, f), 'utf8').match(OFF_PALETTE)
+        return m ? [`${f}: ${m[0]}`] : []
+      })
+    expect(offenders, 'use the semantic classes (research.md R3 of spec 008)').toEqual([])
+  })
+
+  it('blog posts style their HTML with the skin variables, not hex colours', () => {
+    const dir = path.join(ROOT, 'lib/blog/posts')
+    const offenders = fs.readdirSync(dir).flatMap(n => {
+      const hex = [...fs.readFileSync(path.join(dir, n), 'utf8').matchAll(/(?<![&\w])#([0-9a-fA-F]{6}|[0-9a-fA-F]{3})\b/g)]
+        .map(m => m[1].toLowerCase())
+        .filter(h => !/^(fff|ffffff|fafafa)$/.test(h))     // white stays white
+      return hex.length ? [`${n}: #${hex[0]}`] : []
+    })
+    expect(offenders, 'var(--foreground), var(--muted), var(--border), var(--primary), var(--pulso-escuro)').toEqual([])
+  })
+})

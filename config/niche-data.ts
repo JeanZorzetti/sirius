@@ -50,11 +50,6 @@ export interface NicheData {
     description: string
     keywords: string[]
   }
-  color: {
-    primary: string
-    secondary: string
-    gradient: string
-  }
   icon: 'Building2' | 'Sun' | 'Sparkles' | 'Briefcase' | 'TrendingUp'
   // EN variants (optional — noindex served when absent)
   titleEn?: string
@@ -164,11 +159,6 @@ export const NICHES: NicheData[] = [
         'aumentar comissões',
         'software corretor imoveis'
       ]
-    },
-    color: {
-      primary: 'indigo',
-      secondary: 'purple',
-      gradient: 'from-indigo-600 to-purple-600'
     },
     icon: 'Building2',
     titleEn: 'The CRM That Organizes Your Real Estate Sales',
@@ -309,11 +299,6 @@ export const NICHES: NicheData[] = [
         'crm integradora'
       ]
     },
-    color: {
-      primary: 'amber',
-      secondary: 'orange',
-      gradient: 'from-amber-500 to-orange-600'
-    },
     icon: 'Sun',
     titleEn: 'The CRM That Closes More Solar Energy Proposals',
     subtitleEn: 'Stop losing installations due to poor follow-up',
@@ -453,11 +438,6 @@ export const NICHES: NicheData[] = [
         'sistema agencia marketing'
       ]
     },
-    color: {
-      primary: 'purple',
-      secondary: 'pink',
-      gradient: 'from-purple-600 to-pink-600'
-    },
     icon: 'Sparkles',
     titleEn: 'The CRM That Structures Your Agency\'s Sales Process',
     subtitleEn: 'Stop losing clients to a chaotic sales pipeline',
@@ -596,11 +576,6 @@ export const NICHES: NicheData[] = [
         'sistema consultor',
         'crm consultor empresarial'
       ]
-    },
-    color: {
-      primary: 'blue',
-      secondary: 'cyan',
-      gradient: 'from-blue-600 to-cyan-600'
     },
     icon: 'Briefcase',
     titleEn: 'The CRM That Organizes Your Consulting Practice',
@@ -745,11 +720,6 @@ export const NICHES: NicheData[] = [
         'crm automação representante',
         'crm ia representante comercial'
       ]
-    },
-    color: {
-      primary: 'green',
-      secondary: 'emerald',
-      gradient: 'from-green-600 to-emerald-600'
     },
     icon: 'TrendingUp',
     titleEn: 'The CRM That Multiplies Your Sales as a Sales Rep',

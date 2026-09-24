@@ -19,8 +19,8 @@ export const post: BlogPost = {
         Neste guia, você vai aprender os <strong>12 KPIs de vendas essenciais</strong> — como calculá-los, quais benchmarks esperar por mercado, o que fazer quando cada um está ruim, e como automatizar o acompanhamento via CRM para que os números trabalhem para você, não o contrário.
       </p>
 
-      <div class="not-prose" style="background: #1e293b; padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
-        <p style="margin: 0 0 0.75rem; font-weight: 700; font-size: 1.05rem; color: #38bdf8;">⚡ TL;DR — Resposta Rápida</p>
+      <div class="not-prose" style="background: var(--primary); padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
+        <p style="margin: 0 0 0.75rem; font-weight: 700; font-size: 1.05rem; color: var(--primary-foreground);">⚡ TL;DR — Resposta Rápida</p>
         <ul style="margin: 0; padding-left: 1.25rem; line-height: 2; color: #ffffff;">
           <li>Os 12 KPIs estão em 3 grupos: <strong>Pipeline</strong> (o que está entrando), <strong>Performance</strong> (o que está convertendo) e <strong>Financeiro</strong> (o que está gerando)</li>
           <li>KPIs de pipeline são <strong>preditivos</strong> — olham para o futuro. KPIs financeiros são <strong>lagging</strong> — confirmam o passado</li>
@@ -42,12 +42,12 @@ export const post: BlogPost = {
 
       <h2>Grupo 1 — KPIs de Pipeline (Olhar para o Futuro)</h2>
 
-      <p>KPIs de pipeline são preditivos — eles avisam com semanas de antecedência se o mês vai ser bom ou ruim. A base está em <a href="/blog/como-organizar-pipeline-vendas" style="color: #2563eb;">organizar o pipeline corretamente</a> desde o início.</p>
+      <p>KPIs de pipeline são preditivos — eles avisam com semanas de antecedência se o mês vai ser bom ou ruim. A base está em <a href="/blog/como-organizar-pipeline-vendas" style="color: var(--foreground);">organizar o pipeline corretamente</a> desde o início.</p>
 
       <h3>KPI 1: Taxa de Conversão por Etapa</h3>
 
       <p>
-        <strong>O que mede:</strong> Percentual de deals que avançam de uma etapa para a próxima no <a href="/blog/funil-de-vendas-guia-completo" style="color: #2563eb;">funil de vendas</a>.
+        <strong>O que mede:</strong> Percentual de deals que avançam de uma etapa para a próxima no <a href="/blog/funil-de-vendas-guia-completo" style="color: var(--foreground);">funil de vendas</a>.
       </p>
 
       <p>
@@ -263,7 +263,7 @@ export const post: BlogPost = {
       </p>
 
       <p>
-        O Sirius CRM <a href="/blog/crm-automacao-vendas-guia-completo" style="color: #2563eb;">automatiza o cálculo</a> e exibe todos esses KPIs em tempo real no dashboard de gestão:
+        O Sirius CRM <a href="/blog/crm-automacao-vendas-guia-completo" style="color: var(--foreground);">automatiza o cálculo</a> e exibe todos esses KPIs em tempo real no dashboard de gestão:
       </p>
 
       <ul style="line-height: 2; padding-left: 1.5rem;">
@@ -274,32 +274,32 @@ export const post: BlogPost = {
         <li>CAC e LTV calculados automaticamente quando conectado à plataforma financeira</li>
       </ul>
 
-      <div style="background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%); padding: 2rem; border-radius: 1rem; margin: 2.5rem 0; text-align: center;">
+      <div style="background: var(--primary); padding: 2rem; border-radius: 1rem; margin: 2.5rem 0; text-align: center;">
         <p style="color: white; font-size: 1.25rem; font-weight: 700; margin: 0 0 0.5rem;">Todos os seus KPIs em um único dashboard</p>
-        <p style="color: #bfdbfe; margin: 0 0 1.25rem;">Pare de construir relatórios manualmente. O Sirius CRM entrega seus KPIs em tempo real, gratuitamente.</p>
-        <a href="/register" style="display: inline-block; background: white; color: #2563eb; padding: 0.75rem 2rem; border-radius: 0.5rem; font-weight: 700; text-decoration: none;">Começar Grátis →</a>
+        <p style="color: var(--foreground); margin: 0 0 1.25rem;">Pare de construir relatórios manualmente. O Sirius CRM entrega seus KPIs em tempo real, gratuitamente.</p>
+        <a href="/register" style="display: inline-block; background: white; color: var(--foreground); padding: 0.75rem 2rem; border-radius: 0.5rem; font-weight: 700; text-decoration: none;">Começar Grátis →</a>
       </div>
 
       <h2>Perguntas Frequentes sobre KPIs de Vendas</h2>
 
-      <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
-        <summary style="font-weight: 600; cursor: pointer; color: #1e293b; list-style: revert;">Qual é o KPI de vendas mais importante?</summary>
-        <p style="margin: 0.75rem 0 0; color: #4b5563;">Não existe um único KPI mais importante — depende do estágio do negócio. Para empresas em fase de crescimento acelerado, o New MRR e o CAC são críticos. Para negócios maduros focados em eficiência, win rate e ciclo de vendas. Para gestão do time, Revenue per Rep e conversão por etapa. O segredo é acompanhar KPIs dos 3 grupos (pipeline, performance, financeiro) para ter visão completa — e não se apegar a apenas um número.</p>
+      <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
+        <summary style="font-weight: 600; cursor: pointer; color: var(--foreground); list-style: revert;">Qual é o KPI de vendas mais importante?</summary>
+        <p style="margin: 0.75rem 0 0; color: var(--foreground);">Não existe um único KPI mais importante — depende do estágio do negócio. Para empresas em fase de crescimento acelerado, o New MRR e o CAC são críticos. Para negócios maduros focados em eficiência, win rate e ciclo de vendas. Para gestão do time, Revenue per Rep e conversão por etapa. O segredo é acompanhar KPIs dos 3 grupos (pipeline, performance, financeiro) para ter visão completa — e não se apegar a apenas um número.</p>
       </details>
 
-      <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
-        <summary style="font-weight: 600; cursor: pointer; color: #1e293b; list-style: revert;">Com que frequência revisar os KPIs de vendas?</summary>
-        <p style="margin: 0.75rem 0 0; color: #4b5563;">KPIs de pipeline (deals ativos, days in stage, alertas) devem ser revistos diariamente — idealmente o gestor olha o dashboard toda manhã. KPIs de performance (taxa de conversão, win rate, ciclo) devem ser analisados semanalmente na reunião de vendas. KPIs financeiros (CAC, LTV, MRR) são revisados mensalmente e trimestralmente para decisões estratégicas.</p>
+      <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
+        <summary style="font-weight: 600; cursor: pointer; color: var(--foreground); list-style: revert;">Com que frequência revisar os KPIs de vendas?</summary>
+        <p style="margin: 0.75rem 0 0; color: var(--foreground);">KPIs de pipeline (deals ativos, days in stage, alertas) devem ser revistos diariamente — idealmente o gestor olha o dashboard toda manhã. KPIs de performance (taxa de conversão, win rate, ciclo) devem ser analisados semanalmente na reunião de vendas. KPIs financeiros (CAC, LTV, MRR) são revisados mensalmente e trimestralmente para decisões estratégicas.</p>
       </details>
 
-      <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
-        <summary style="font-weight: 600; cursor: pointer; color: #1e293b; list-style: revert;">Como definir benchmarks de KPIs para minha empresa?</summary>
-        <p style="margin: 0.75rem 0 0; color: #4b5563;">Os benchmarks de mercado (como os apresentados neste artigo) são um ponto de partida, mas o benchmark mais relevante é o seu histórico interno. Calcule os seus KPIs dos últimos 6-12 meses e use-os como linha de base. Benchmarks externos variam muito por setor, ticket médio e modelo de vendas — uma agência de marketing tem ciclo de vendas e win rate muito diferentes de um fabricante industrial.</p>
+      <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
+        <summary style="font-weight: 600; cursor: pointer; color: var(--foreground); list-style: revert;">Como definir benchmarks de KPIs para minha empresa?</summary>
+        <p style="margin: 0.75rem 0 0; color: var(--foreground);">Os benchmarks de mercado (como os apresentados neste artigo) são um ponto de partida, mas o benchmark mais relevante é o seu histórico interno. Calcule os seus KPIs dos últimos 6-12 meses e use-os como linha de base. Benchmarks externos variam muito por setor, ticket médio e modelo de vendas — uma agência de marketing tem ciclo de vendas e win rate muito diferentes de um fabricante industrial.</p>
       </details>
 
-      <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin-bottom: 2rem;">
-        <summary style="font-weight: 600; cursor: pointer; color: #1e293b; list-style: revert;">O que fazer quando os KPIs mostram resultado ruim?</summary>
-        <p style="margin: 0.75rem 0 0; color: #4b5563;">KPI ruim é informação valiosa — ele aponta onde agir. O processo é: (1) Identificar qual KPI está fora do padrão; (2) Analisar a etapa ou comportamento que explica o desvio; (3) Formular hipótese de causa (ex: win rate caiu porque aumentou a concorrência, ou porque o time não está trabalhando objeções?); (4) Testar uma ação corretiva específica; (5) Medir resultado após 2-4 semanas. Nunca tome decisões drásticas com base em uma semana de dados ruim — analise tendências.</p>
+      <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 2rem;">
+        <summary style="font-weight: 600; cursor: pointer; color: var(--foreground); list-style: revert;">O que fazer quando os KPIs mostram resultado ruim?</summary>
+        <p style="margin: 0.75rem 0 0; color: var(--foreground);">KPI ruim é informação valiosa — ele aponta onde agir. O processo é: (1) Identificar qual KPI está fora do padrão; (2) Analisar a etapa ou comportamento que explica o desvio; (3) Formular hipótese de causa (ex: win rate caiu porque aumentou a concorrência, ou porque o time não está trabalhando objeções?); (4) Testar uma ação corretiva específica; (5) Medir resultado após 2-4 semanas. Nunca tome decisões drásticas com base em uma semana de dados ruim — analise tendências.</p>
       </details>
 
       <h2>Conclusão</h2>
@@ -312,7 +312,7 @@ export const post: BlogPost = {
         Comece pelo básico: taxa de conversão por etapa e days in stage. São os dois KPIs que mais rapidamente revelam onde está o gargalo da sua operação. Com esses dois dominados, avance para os demais gradualmente.
       </p>
 
-      <hr style="margin: 3rem 0; border: none; border-top: 1px solid #e5e7eb;" />
+      <hr style="margin: 3rem 0; border: none; border-top: 1px solid var(--border);" />
       <strong>Última Atualização:</strong> 28 de Fevereiro de 2026<br/>
       <strong>Autor:</strong> Equipe Sirius CRM<br/>
       <strong>Tempo de Leitura:</strong> 9 minutos
@@ -426,10 +426,10 @@ export const post: BlogPost = {
         <li><strong>AI forecasting</strong> uses all 12 KPIs to predict end-of-month close probability with 85%+ accuracy</li>
       </ul>
 
-      <div style="background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); border-left: 4px solid #2563eb; padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
-        <p style="font-weight: 700; color: #1e40af;">Get your KPI dashboard set up in under 30 minutes</p>
-        <p style="color: #1e40af; margin: 0.5rem 0 1rem;">Sirius CRM tracks all 12 KPIs automatically. No manual calculation, no spreadsheet exports.</p>
-        <a href="/en/register" style="background: #2563eb; color: white; padding: 0.75rem 1.5rem; border-radius: 0.5rem; font-weight: 600; text-decoration: none; display: inline-block;">Start Free for 14 Days →</a>
+      <div style="background: var(--muted); border-left: 4px solid var(--fio-forte); padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
+        <p style="font-weight: 700; color: var(--foreground);">Get your KPI dashboard set up in under 30 minutes</p>
+        <p style="color: var(--foreground); margin: 0.5rem 0 1rem;">Sirius CRM tracks all 12 KPIs automatically. No manual calculation, no spreadsheet exports.</p>
+        <a href="/en/register" style="background: var(--primary); color: white; padding: 0.75rem 1.5rem; border-radius: 0.5rem; font-weight: 600; text-decoration: none; display: inline-block;">Start Free for 14 Days →</a>
       </div>
 
       <h2>Frequently Asked Questions</h2>
@@ -449,8 +449,8 @@ export const post: BlogPost = {
         Partially. The benchmarks above are calibrated for B2B SaaS globally. Brazilian B2B has some specific characteristics: longer decision cycles due to more relationship-dependent selling, higher WhatsApp usage as a sales channel, and higher lead response time sensitivity (Brazilian buyers expect faster responses than North American averages). Treat the benchmarks as directional targets, not absolute standards.
       </p>
 
-      <hr style="margin: 3rem 0; border: none; border-top: 1px solid #e5e7eb;" />
-      <p style="font-size: 0.85rem; color: #64748b;">
+      <hr style="margin: 3rem 0; border: none; border-top: 1px solid var(--border);" />
+      <p style="font-size: 0.85rem; color: var(--foreground);">
         <strong>Last Updated:</strong> February 28, 2026<br/>
         <strong>Author:</strong> Sirius CRM Team<br/>
         <strong>Reading Time:</strong> 9 minutes

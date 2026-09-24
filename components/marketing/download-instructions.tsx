@@ -55,10 +55,10 @@ export function DownloadInstructions() {
             <Image src="/logo.png" alt="Sirius Logo" fill className="object-contain p-2" />
           </div>
         </div>
-        <h1 className="text-4xl sm:text-5xl font-bold mb-4 bg-gradient-to-r from-white to-zinc-400 bg-clip-text text-transparent">
+        <h1 className="text-4xl sm:text-5xl font-bold mb-4">
           Sirius CRM
         </h1>
-        <p className="text-xl text-zinc-400 mb-6">
+        <p className="text-xl text-muted-foreground mb-6">
           Instale o app no seu {deviceType === 'ios' ? 'iPhone' : deviceType === 'android' ? 'Android' : 'dispositivo'}
         </p>
 
@@ -67,7 +67,7 @@ export function DownloadInstructions() {
           <Button
             onClick={shareApp}
             size="lg"
-            className="bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white gap-2"
+            className="gap-2"
           >
             <Share className="h-5 w-5" />
             Compartilhar
@@ -80,7 +80,7 @@ export function DownloadInstructions() {
           >
             {showCopied ? (
               <>
-                <Check className="h-5 w-5 text-green-500" />
+                <Check className="h-5 w-5 text-foreground" />
                 Copiado!
               </>
             ) : (
@@ -96,10 +96,10 @@ export function DownloadInstructions() {
       {/* Installation Instructions */}
       <Card className="bg-white/5 border-white/10 backdrop-blur-xl p-8">
         <div className="flex items-center gap-3 mb-6">
-          {deviceType === 'ios' && <Smartphone className="h-6 w-6 text-indigo-400" />}
-          {deviceType === 'android' && <Smartphone className="h-6 w-6 text-indigo-400" />}
-          {deviceType === 'desktop' && <Monitor className="h-6 w-6 text-indigo-400" />}
-          <h2 className="text-2xl font-bold text-white">
+          {deviceType === 'ios' && <Smartphone className="h-6 w-6 text-muted-foreground" />}
+          {deviceType === 'android' && <Smartphone className="h-6 w-6 text-muted-foreground" />}
+          {deviceType === 'desktop' && <Monitor className="h-6 w-6 text-muted-foreground" />}
+          <h2 className="text-2xl font-bold text-foreground">
             Como instalar
           </h2>
         </div>
@@ -107,54 +107,54 @@ export function DownloadInstructions() {
         {deviceType === 'ios' && (
           <div className="space-y-4">
             <div className="flex gap-4 items-start">
-              <div className="flex-shrink-0 w-8 h-8 rounded-full bg-indigo-500/20 flex items-center justify-center text-indigo-400 font-bold">
+              <div className="flex-shrink-0 w-8 h-8 rounded-full bg-muted flex items-center justify-center text-muted-foreground font-bold">
                 1
               </div>
               <div>
-                <p className="text-zinc-300 mb-2">
-                  Abra <strong className="text-white">siriuscrm.com.br</strong> no Safari
+                <p className="text-muted-foreground mb-2">
+                  Abra <strong className="text-foreground">siriuscrm.com.br</strong> no Safari
                 </p>
-                <div className="bg-zinc-900/50 rounded-lg p-3 border border-zinc-700">
-                  <code className="text-sm text-indigo-400">https://siriuscrm.com.br</code>
+                <div className="bg-muted rounded-lg p-3 border border-border">
+                  <code className="text-sm text-muted-foreground">https://siriuscrm.com.br</code>
                 </div>
               </div>
             </div>
 
             <div className="flex gap-4 items-start">
-              <div className="flex-shrink-0 w-8 h-8 rounded-full bg-indigo-500/20 flex items-center justify-center text-indigo-400 font-bold">
+              <div className="flex-shrink-0 w-8 h-8 rounded-full bg-muted flex items-center justify-center text-muted-foreground font-bold">
                 2
               </div>
               <div>
-                <p className="text-zinc-300">
-                  Toque no botão <Share className="inline h-4 w-4 mx-1" /> <strong className="text-white">Compartilhar</strong> na barra inferior
+                <p className="text-muted-foreground">
+                  Toque no botão <Share className="inline h-4 w-4 mx-1" /> <strong className="text-foreground">Compartilhar</strong> na barra inferior
                 </p>
               </div>
             </div>
 
             <div className="flex gap-4 items-start">
-              <div className="flex-shrink-0 w-8 h-8 rounded-full bg-indigo-500/20 flex items-center justify-center text-indigo-400 font-bold">
+              <div className="flex-shrink-0 w-8 h-8 rounded-full bg-muted flex items-center justify-center text-muted-foreground font-bold">
                 3
               </div>
               <div>
-                <p className="text-zinc-300">
-                  Role para baixo e toque em <strong className="text-white">"Adicionar à Tela de Início"</strong>
+                <p className="text-muted-foreground">
+                  Role para baixo e toque em <strong className="text-foreground">"Adicionar à Tela de Início"</strong>
                 </p>
               </div>
             </div>
 
             <div className="flex gap-4 items-start">
-              <div className="flex-shrink-0 w-8 h-8 rounded-full bg-indigo-500/20 flex items-center justify-center text-indigo-400 font-bold">
+              <div className="flex-shrink-0 w-8 h-8 rounded-full bg-muted flex items-center justify-center text-muted-foreground font-bold">
                 4
               </div>
               <div>
-                <p className="text-zinc-300">
-                  Toque em <strong className="text-white">"Adicionar"</strong> no canto superior direito
+                <p className="text-muted-foreground">
+                  Toque em <strong className="text-foreground">"Adicionar"</strong> no canto superior direito
                 </p>
               </div>
             </div>
 
-            <div className="mt-6 p-4 bg-green-500/10 border border-green-500/20 rounded-lg">
-              <p className="text-green-400 text-sm flex items-center gap-2">
+            <div className="mt-6 p-4 bg-muted border border-border rounded-lg">
+              <p className="text-muted-foreground text-sm flex items-center gap-2">
                 <Check className="h-4 w-4" />
                 Pronto! O ícone do Sirius aparecerá na sua tela inicial
               </p>
@@ -165,46 +165,46 @@ export function DownloadInstructions() {
         {deviceType === 'android' && (
           <div className="space-y-4">
             <div className="flex gap-4 items-start">
-              <div className="flex-shrink-0 w-8 h-8 rounded-full bg-indigo-500/20 flex items-center justify-center text-indigo-400 font-bold">
+              <div className="flex-shrink-0 w-8 h-8 rounded-full bg-muted flex items-center justify-center text-muted-foreground font-bold">
                 1
               </div>
               <div>
-                <p className="text-zinc-300 mb-2">
-                  Abra <strong className="text-white">siriuscrm.com.br</strong> no Chrome
+                <p className="text-muted-foreground mb-2">
+                  Abra <strong className="text-foreground">siriuscrm.com.br</strong> no Chrome
                 </p>
-                <div className="bg-zinc-900/50 rounded-lg p-3 border border-zinc-700">
-                  <code className="text-sm text-indigo-400">https://siriuscrm.com.br</code>
+                <div className="bg-muted rounded-lg p-3 border border-border">
+                  <code className="text-sm text-muted-foreground">https://siriuscrm.com.br</code>
                 </div>
               </div>
             </div>
 
             <div className="flex gap-4 items-start">
-              <div className="flex-shrink-0 w-8 h-8 rounded-full bg-indigo-500/20 flex items-center justify-center text-indigo-400 font-bold">
+              <div className="flex-shrink-0 w-8 h-8 rounded-full bg-muted flex items-center justify-center text-muted-foreground font-bold">
                 2
               </div>
               <div>
-                <p className="text-zinc-300">
-                  Um banner aparecerá automaticamente pedindo para <strong className="text-white">"Instalar app"</strong>
+                <p className="text-muted-foreground">
+                  Um banner aparecerá automaticamente pedindo para <strong className="text-foreground">"Instalar app"</strong>
                 </p>
-                <p className="text-sm text-zinc-500 mt-2">
+                <p className="text-sm text-muted-foreground mt-2">
                   Caso não apareça, toque em <MoreVertical className="inline h-4 w-4 mx-1" /> no canto superior
                 </p>
               </div>
             </div>
 
             <div className="flex gap-4 items-start">
-              <div className="flex-shrink-0 w-8 h-8 rounded-full bg-indigo-500/20 flex items-center justify-center text-indigo-400 font-bold">
+              <div className="flex-shrink-0 w-8 h-8 rounded-full bg-muted flex items-center justify-center text-muted-foreground font-bold">
                 3
               </div>
               <div>
-                <p className="text-zinc-300">
-                  Toque em <strong className="text-white">"Instalar"</strong> ou <strong className="text-white">"Adicionar à tela inicial"</strong>
+                <p className="text-muted-foreground">
+                  Toque em <strong className="text-foreground">"Instalar"</strong> ou <strong className="text-foreground">"Adicionar à tela inicial"</strong>
                 </p>
               </div>
             </div>
 
-            <div className="mt-6 p-4 bg-green-500/10 border border-green-500/20 rounded-lg">
-              <p className="text-green-400 text-sm flex items-center gap-2">
+            <div className="mt-6 p-4 bg-muted border border-border rounded-lg">
+              <p className="text-muted-foreground text-sm flex items-center gap-2">
                 <Check className="h-4 w-4" />
                 Pronto! O Sirius CRM está instalado como app nativo
               </p>
@@ -216,16 +216,16 @@ export function DownloadInstructions() {
           <div className="space-y-4">
             <div className="text-center py-8">
               <Smartphone className="h-16 w-16 mx-auto mb-4 text-zinc-600" />
-              <p className="text-zinc-400 mb-4">
+              <p className="text-muted-foreground mb-4">
                 Para a melhor experiência, acesse este link no seu celular
               </p>
-              <div className="bg-zinc-900/50 rounded-lg p-4 border border-zinc-700 max-w-md mx-auto">
-                <code className="text-sm text-indigo-400 break-all">https://siriuscrm.com.br/download</code>
+              <div className="bg-muted rounded-lg p-4 border border-border max-w-md mx-auto">
+                <code className="text-sm text-muted-foreground break-all">https://siriuscrm.com.br/download</code>
               </div>
             </div>
 
             <div className="border-t border-white/10 pt-6 mt-6">
-              <p className="text-zinc-400 text-sm text-center mb-4">
+              <p className="text-muted-foreground text-sm text-center mb-4">
                 Ou escaneie o QR Code com seu celular
               </p>
               <div className="flex justify-center">
@@ -244,7 +244,7 @@ export function DownloadInstructions() {
                   />
                 </div>
               </div>
-              <p className="text-zinc-500 text-xs text-center mt-3">
+              <p className="text-muted-foreground text-xs text-center mt-3">
                 Aponte a câmera do celular para o QR Code
               </p>
             </div>
@@ -255,31 +255,31 @@ export function DownloadInstructions() {
       {/* Features */}
       <div className="mt-12 grid grid-cols-1 sm:grid-cols-3 gap-4">
         <Card className="bg-white/5 border-white/10 backdrop-blur-xl p-6 text-center">
-          <div className="w-12 h-12 rounded-full bg-indigo-500/20 flex items-center justify-center mx-auto mb-3">
-            <Download className="h-6 w-6 text-indigo-400" />
+          <div className="w-12 h-12 rounded-full bg-muted flex items-center justify-center mx-auto mb-3">
+            <Download className="h-6 w-6 text-muted-foreground" />
           </div>
-          <h3 className="font-semibold text-white mb-2">Acesso Offline</h3>
-          <p className="text-sm text-zinc-400">
+          <h3 className="font-semibold text-foreground mb-2">Acesso Offline</h3>
+          <p className="text-sm text-muted-foreground">
             Use mesmo sem internet
           </p>
         </Card>
 
         <Card className="bg-white/5 border-white/10 backdrop-blur-xl p-6 text-center">
-          <div className="w-12 h-12 rounded-full bg-purple-500/20 flex items-center justify-center mx-auto mb-3">
-            <Smartphone className="h-6 w-6 text-purple-400" />
+          <div className="w-12 h-12 rounded-full bg-muted flex items-center justify-center mx-auto mb-3">
+            <Smartphone className="h-6 w-6 text-muted-foreground" />
           </div>
-          <h3 className="font-semibold text-white mb-2">App Nativo</h3>
-          <p className="text-sm text-zinc-400">
+          <h3 className="font-semibold text-foreground mb-2">App Nativo</h3>
+          <p className="text-sm text-muted-foreground">
             Ícone na tela inicial
           </p>
         </Card>
 
         <Card className="bg-white/5 border-white/10 backdrop-blur-xl p-6 text-center">
-          <div className="w-12 h-12 rounded-full bg-green-500/20 flex items-center justify-center mx-auto mb-3">
-            <Check className="h-6 w-6 text-green-400" />
+          <div className="w-12 h-12 rounded-full bg-muted flex items-center justify-center mx-auto mb-3">
+            <Check className="h-6 w-6 text-muted-foreground" />
           </div>
-          <h3 className="font-semibold text-white mb-2">Sempre Atualizado</h3>
-          <p className="text-sm text-zinc-400">
+          <h3 className="font-semibold text-foreground mb-2">Sempre Atualizado</h3>
+          <p className="text-sm text-muted-foreground">
             Updates automáticos
           </p>
         </Card>
@@ -288,12 +288,12 @@ export function DownloadInstructions() {
       {/* CTA */}
       <div className="mt-12 text-center">
         <Link href="/register">
-          <Button size="lg" className="bg-white text-indigo-600 hover:bg-zinc-100 font-semibold">
+          <Button size="lg" className="bg-white text-foreground hover:bg-zinc-100 font-semibold">
             Criar Conta Grátis
           </Button>
         </Link>
-        <p className="text-sm text-zinc-500 mt-4">
-          Já tem conta? <Link href="/login" className="text-indigo-400 hover:underline">Fazer login</Link>
+        <p className="text-sm text-muted-foreground mt-4">
+          Já tem conta? <Link href="/login" className="text-muted-foreground hover:underline">Fazer login</Link>
         </p>
       </div>
     </div>

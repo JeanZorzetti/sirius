@@ -23,8 +23,8 @@ export const post: BlogPost = {
         A solução existe e tem nome: <strong>CRM com suporte offline real via PWA</strong>. Mas a maioria das ferramentas do mercado anuncia "offline" quando na prática significa apenas "você consegue abrir a tela inicial". Este guia explica como funciona o offline de verdade — e por que isso é decisivo para o vendedor externo.
       </p>
 
-      <div class="not-prose" style="background: #1e293b; padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
-        <p style="margin: 0 0 0.75rem; font-weight: 700; font-size: 1.05rem; color: #38bdf8;">⚡ TL;DR — Resposta Rápida</p>
+      <div class="not-prose" style="background: var(--primary); padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
+        <p style="margin: 0 0 0.75rem; font-weight: 700; font-size: 1.05rem; color: var(--primary-foreground);">⚡ TL;DR — Resposta Rápida</p>
         <ul style="margin: 0; padding-left: 1.25rem; line-height: 2; color: #ffffff;">
           <li>CRM offline real usa <strong>PWA (Progressive Web App)</strong> — armazena dados localmente no dispositivo</li>
           <li>Você registra visitas, pedidos e anotações <strong>sem internet</strong> — sincroniza quando tiver sinal</li>
@@ -46,7 +46,7 @@ export const post: BlogPost = {
 
       <div class="callout-stat">
         <p><strong>📊 O custo das anotações em papel</strong></p>
-        <p style="font-size: 3rem; font-weight: 800; color: #2563eb; margin: 1rem 0; line-height: 1;">43%</p>
+        <p style="font-size: 3rem; font-weight: 800; color: var(--foreground); margin: 1rem 0; line-height: 1;">43%</p>
         <p>das informações registradas em papel por vendedores externos nunca chegam ao CRM, segundo pesquisa da Salesforce Field Sales Report (2025). Quase metade das visitas se perde antes de virar dado acionável.</p>
       </div>
 
@@ -82,43 +82,43 @@ export const post: BlogPost = {
 
       <table style="width: 100%; border-collapse: collapse; margin: 2rem 0;">
         <thead>
-          <tr style="background: #f8fafc;">
-            <th style="padding: 0.75rem; border: 1px solid #e2e8f0; text-align: left;">Ambiente</th>
-            <th style="padding: 0.75rem; border: 1px solid #e2e8f0; text-align: left;">Problema de Sinal</th>
-            <th style="padding: 0.75rem; border: 1px solid #e2e8f0; text-align: left;">CRM sem Offline</th>
-            <th style="padding: 0.75rem; border: 1px solid #e2e8f0; text-align: left;">CRM com PWA</th>
+          <tr style="background: var(--muted);">
+            <th style="padding: 0.75rem; border: 1px solid var(--border); text-align: left;">Ambiente</th>
+            <th style="padding: 0.75rem; border: 1px solid var(--border); text-align: left;">Problema de Sinal</th>
+            <th style="padding: 0.75rem; border: 1px solid var(--border); text-align: left;">CRM sem Offline</th>
+            <th style="padding: 0.75rem; border: 1px solid var(--border); text-align: left;">CRM com PWA</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Galpão industrial / fábrica</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Estrutura metálica bloqueia sinal</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0; color: #dc2626;">❌ App não responde</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0; color: #16a34a;">✅ Funciona normalmente</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Galpão industrial / fábrica</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Estrutura metálica bloqueia sinal</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border); color: var(--pulso-escuro);">❌ App não responde</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border); color: var(--foreground);">✅ Funciona normalmente</td>
           </tr>
-          <tr style="background: #f8fafc;">
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Armazém frigorífico / câmara fria</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Isolamento térmico elimina sinal</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0; color: #dc2626;">❌ Tela de erro</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0; color: #16a34a;">✅ Registra e sincroniza depois</td>
-          </tr>
-          <tr>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Área rural / interior</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Cobertura 3G/4G inexistente</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0; color: #dc2626;">❌ Dados perdidos</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0; color: #16a34a;">✅ Dia inteiro offline</td>
-          </tr>
-          <tr style="background: #f8fafc;">
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Subsolo comercial / shopping</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Sinal fraco ou instável</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0; color: #f59e0b;">⚠️ Intermitente</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0; color: #16a34a;">✅ Sem interrupções</td>
+          <tr style="background: var(--muted);">
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Armazém frigorífico / câmara fria</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Isolamento térmico elimina sinal</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border); color: var(--pulso-escuro);">❌ Tela de erro</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border); color: var(--foreground);">✅ Registra e sincroniza depois</td>
           </tr>
           <tr>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Estrada / rodovia</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Zonas de sombra frequentes</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0; color: #dc2626;">❌ Perde dados ao sair da zona</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0; color: #16a34a;">✅ Continua gravando local</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Área rural / interior</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Cobertura 3G/4G inexistente</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border); color: var(--pulso-escuro);">❌ Dados perdidos</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border); color: var(--foreground);">✅ Dia inteiro offline</td>
+          </tr>
+          <tr style="background: var(--muted);">
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Subsolo comercial / shopping</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Sinal fraco ou instável</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border); color: var(--foreground);">⚠️ Intermitente</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border); color: var(--foreground);">✅ Sem interrupções</td>
+          </tr>
+          <tr>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Estrada / rodovia</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Zonas de sombra frequentes</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border); color: var(--pulso-escuro);">❌ Perde dados ao sair da zona</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border); color: var(--foreground);">✅ Continua gravando local</td>
           </tr>
         </tbody>
       </table>
@@ -190,32 +190,32 @@ export const post: BlogPost = {
         <li><strong>Dados perdidos por visita:</strong> Redução de 43% para menos de 5%. Detalhes que o vendedor lembrava no momento da visita mas esquecia ao digitar no final do dia passam a ser registrados com precisão.</li>
       </ul>
 
-      <div style="background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%); padding: 2rem; border-radius: 1rem; margin: 2.5rem 0; text-align: center;">
+      <div style="background: var(--primary); padding: 2rem; border-radius: 1rem; margin: 2.5rem 0; text-align: center;">
         <p style="color: white; font-size: 1.25rem; font-weight: 700; margin: 0 0 0.5rem;">Registre suas visitas em campo com o Sirius CRM</p>
-        <p style="color: #bfdbfe; margin: 0 0 1.25rem;">PWA offline nativo — funciona em galpão, câmara fria, área rural e qualquer lugar sem sinal. Sincroniza automaticamente ao voltar para cobertura.</p>
-        <a href="/register" style="display: inline-block; background: white; color: #2563eb; padding: 0.75rem 2rem; border-radius: 0.5rem; font-weight: 700; text-decoration: none;">Testar Grátis →</a>
+        <p style="color: var(--foreground); margin: 0 0 1.25rem;">PWA offline nativo — funciona em galpão, câmara fria, área rural e qualquer lugar sem sinal. Sincroniza automaticamente ao voltar para cobertura.</p>
+        <a href="/register" style="display: inline-block; background: white; color: var(--foreground); padding: 0.75rem 2rem; border-radius: 0.5rem; font-weight: 700; text-decoration: none;">Testar Grátis →</a>
       </div>
 
       <h2>Perguntas Frequentes sobre CRM Offline para Vendedores</h2>
 
-      <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
-        <summary style="font-weight: 600; cursor: pointer; color: #1e293b; list-style: revert;">E se houver conflito de dados entre o offline e o que outro usuário editou online?</summary>
-        <p style="margin: 0.75rem 0 0; color: #4b5563;">O Sirius CRM usa resolução de conflitos por timestamp — a edição mais recente prevalece, e o histórico de ambas as versões fica registrado. Em casos de conflito real (dois usuários editam o mesmo campo ao mesmo tempo), o sistema marca o registro para revisão manual e notifica o gestor. Na prática, isso raramente acontece em equipes de vendas externas porque cada vendedor atende uma carteira diferente.</p>
+      <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
+        <summary style="font-weight: 600; cursor: pointer; color: var(--foreground); list-style: revert;">E se houver conflito de dados entre o offline e o que outro usuário editou online?</summary>
+        <p style="margin: 0.75rem 0 0; color: var(--foreground);">O Sirius CRM usa resolução de conflitos por timestamp — a edição mais recente prevalece, e o histórico de ambas as versões fica registrado. Em casos de conflito real (dois usuários editam o mesmo campo ao mesmo tempo), o sistema marca o registro para revisão manual e notifica o gestor. Na prática, isso raramente acontece em equipes de vendas externas porque cada vendedor atende uma carteira diferente.</p>
       </details>
 
-      <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
-        <summary style="font-weight: 600; cursor: pointer; color: #1e293b; list-style: revert;">Preciso instalar algum aplicativo para usar o modo offline?</summary>
-        <p style="margin: 0.75rem 0 0; color: #4b5563;">Não. O Sirius CRM usa PWA — você acessa pelo navegador do celular (Chrome ou Safari), clica em "Adicionar à tela inicial" e pronto. Funciona exatamente como um app nativo, com ícone na tela inicial e suporte offline completo. Nenhuma instalação via Play Store ou App Store é necessária. A vantagem é que a versão está sempre atualizada automaticamente, sem precisar atualizar manualmente.</p>
+      <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
+        <summary style="font-weight: 600; cursor: pointer; color: var(--foreground); list-style: revert;">Preciso instalar algum aplicativo para usar o modo offline?</summary>
+        <p style="margin: 0.75rem 0 0; color: var(--foreground);">Não. O Sirius CRM usa PWA — você acessa pelo navegador do celular (Chrome ou Safari), clica em "Adicionar à tela inicial" e pronto. Funciona exatamente como um app nativo, com ícone na tela inicial e suporte offline completo. Nenhuma instalação via Play Store ou App Store é necessária. A vantagem é que a versão está sempre atualizada automaticamente, sem precisar atualizar manualmente.</p>
       </details>
 
-      <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
-        <summary style="font-weight: 600; cursor: pointer; color: #1e293b; list-style: revert;">Quanto espaço no celular o CRM offline ocupa?</summary>
-        <p style="margin: 0.75rem 0 0; color: #4b5563;">Para uma carteira típica de 200 clientes com histórico de 12 meses, o cache local do Sirius CRM ocupa entre 50 e 150 MB — o equivalente a 2-3 fotos de alta resolução. O app sincroniza apenas os dados ativos (não todo o histórico), então o espaço é sempre administrável mesmo em celulares com armazenamento limitado.</p>
+      <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
+        <summary style="font-weight: 600; cursor: pointer; color: var(--foreground); list-style: revert;">Quanto espaço no celular o CRM offline ocupa?</summary>
+        <p style="margin: 0.75rem 0 0; color: var(--foreground);">Para uma carteira típica de 200 clientes com histórico de 12 meses, o cache local do Sirius CRM ocupa entre 50 e 150 MB — o equivalente a 2-3 fotos de alta resolução. O app sincroniza apenas os dados ativos (não todo o histórico), então o espaço é sempre administrável mesmo em celulares com armazenamento limitado.</p>
       </details>
 
-      <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin-bottom: 2rem;">
-        <summary style="font-weight: 600; cursor: pointer; color: #1e293b; list-style: revert;">O que acontece se o celular descarregar antes de sincronizar?</summary>
-        <p style="margin: 0.75rem 0 0; color: #4b5563;">Os dados registrados offline ficam salvos no armazenamento local do dispositivo — não na memória RAM. Mesmo se o celular desligar ou o app fechar inesperadamente, os dados permanecem no dispositivo. Quando o app for aberto novamente com sinal, a sincronização acontece normalmente. A única situação de perda seria se o celular fosse formatado antes de sincronizar — motivo para sempre sincronizar ao chegar em área com Wi-Fi.</p>
+      <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 2rem;">
+        <summary style="font-weight: 600; cursor: pointer; color: var(--foreground); list-style: revert;">O que acontece se o celular descarregar antes de sincronizar?</summary>
+        <p style="margin: 0.75rem 0 0; color: var(--foreground);">Os dados registrados offline ficam salvos no armazenamento local do dispositivo — não na memória RAM. Mesmo se o celular desligar ou o app fechar inesperadamente, os dados permanecem no dispositivo. Quando o app for aberto novamente com sinal, a sincronização acontece normalmente. A única situação de perda seria se o celular fosse formatado antes de sincronizar — motivo para sempre sincronizar ao chegar em área com Wi-Fi.</p>
       </details>
 
       <h2>Conclusão</h2>
@@ -228,7 +228,7 @@ export const post: BlogPost = {
         A diferença entre um CRM com cache básico e um CRM com PWA offline real é a diferença entre dados no papel (que somem) e dados no sistema (que ficam para sempre). Para o gestor, é visibilidade real do campo. Para o vendedor, é menos burocracia e mais tempo vendendo.
       </p>
 
-      <hr style="margin: 3rem 0; border: none; border-top: 1px solid #e5e7eb;" />
+      <hr style="margin: 3rem 0; border: none; border-top: 1px solid var(--border);" />
       <strong>Última Atualização:</strong> 21 de Março de 2026<br/>
       <strong>Autor:</strong> Equipe Sirius CRM<br/>
       <strong>Tempo de Leitura:</strong> 10 minutos
@@ -281,14 +281,14 @@ export const post: BlogPost = {
         Offline CRM is not a niche feature — it's a basic requirement for any field sales rep working in the real Brazil: industrial warehouses, rural areas, remote zones, and dozens of other environments where signal simply doesn't exist.
       </p>
 
-      <div style="background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); border-left: 4px solid #2563eb; padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
-        <p style="font-weight: 700; color: #1e40af;">Works without internet. Syncs when you're back.</p>
-        <p style="color: #1e40af; margin: 0.5rem 0 1rem;">Sirius CRM's offline mode works on any phone. No app store install required — it's a PWA that runs directly from your browser.</p>
-        <a href="/en/register" style="background: #2563eb; color: white; padding: 0.75rem 1.5rem; border-radius: 0.5rem; font-weight: 600; text-decoration: none; display: inline-block;">Try Free →</a>
+      <div style="background: var(--muted); border-left: 4px solid var(--fio-forte); padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
+        <p style="font-weight: 700; color: var(--foreground);">Works without internet. Syncs when you're back.</p>
+        <p style="color: var(--foreground); margin: 0.5rem 0 1rem;">Sirius CRM's offline mode works on any phone. No app store install required — it's a PWA that runs directly from your browser.</p>
+        <a href="/en/register" style="background: var(--primary); color: white; padding: 0.75rem 1.5rem; border-radius: 0.5rem; font-weight: 600; text-decoration: none; display: inline-block;">Try Free →</a>
       </div>
 
-      <hr style="margin: 3rem 0; border: none; border-top: 1px solid #e5e7eb;" />
-      <p style="font-size: 0.85rem; color: #64748b;">
+      <hr style="margin: 3rem 0; border: none; border-top: 1px solid var(--border);" />
+      <p style="font-size: 0.85rem; color: var(--foreground);">
         <strong>Last Updated:</strong> March 21, 2026<br/>
         <strong>Author:</strong> Sirius CRM Team<br/>
         <strong>Reading Time:</strong> 10 minutes

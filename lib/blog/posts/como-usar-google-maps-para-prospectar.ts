@@ -19,8 +19,8 @@ export const post: BlogPost = {
         O problema: a maioria dos vendedores usa o Google Maps para <em>chegar</em> nos clientes, não para <em>encontrar</em> novos. Neste guia, você vai aprender a usar o Google Maps como ferramenta de prospecção B2B sistemática — manual (gratuito) e automatizado (com o Sirius CRM PRO), com todos os detalhes de como funciona na prática.
       </p>
 
-      <div class="not-prose" style="background: #1e293b; padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
-        <p style="margin: 0 0 0.75rem; font-weight: 700; font-size: 1.05rem; color: #38bdf8;">⚡ TL;DR — Resposta Rápida</p>
+      <div class="not-prose" style="background: var(--primary); padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
+        <p style="margin: 0 0 0.75rem; font-weight: 700; font-size: 1.05rem; color: var(--primary-foreground);">⚡ TL;DR — Resposta Rápida</p>
         <ul style="margin: 0; padding-left: 1.25rem; line-height: 2; color: #ffffff;">
           <li><strong>Google Maps tem milhares de empresas</strong> na sua região catalogadas por segmento, com telefone, site e horário</li>
           <li>Método manual: busca por categoria + filtragem por avaliação + coleta de contato = lista de prospects qualificados</li>
@@ -38,43 +38,43 @@ export const post: BlogPost = {
 
       <table style="width: 100%; border-collapse: collapse; margin: 2rem 0;">
         <thead>
-          <tr style="background: #f8fafc;">
-            <th style="padding: 0.75rem; border: 1px solid #e2e8f0; text-align: left;">Fonte de Leads</th>
-            <th style="padding: 0.75rem; border: 1px solid #e2e8f0; text-align: left;">Custo</th>
-            <th style="padding: 0.75rem; border: 1px solid #e2e8f0; text-align: left;">Dados Disponíveis</th>
-            <th style="padding: 0.75rem; border: 1px solid #e2e8f0; text-align: left;">Atualização</th>
+          <tr style="background: var(--muted);">
+            <th style="padding: 0.75rem; border: 1px solid var(--border); text-align: left;">Fonte de Leads</th>
+            <th style="padding: 0.75rem; border: 1px solid var(--border); text-align: left;">Custo</th>
+            <th style="padding: 0.75rem; border: 1px solid var(--border); text-align: left;">Dados Disponíveis</th>
+            <th style="padding: 0.75rem; border: 1px solid var(--border); text-align: left;">Atualização</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;"><strong>Google Maps</strong></td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0; color: #16a34a;">Grátis</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Nome, endereço, tel, site, horário, avaliação, fotos</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0; color: #16a34a;">Contínua (pelos próprios donos)</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);"><strong>Google Maps</strong></td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border); color: var(--foreground);">Grátis</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Nome, endereço, tel, site, horário, avaliação, fotos</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border); color: var(--foreground);">Contínua (pelos próprios donos)</td>
           </tr>
-          <tr style="background: #f8fafc;">
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Listas compradas</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0; color: #dc2626;">R$ 500-5.000</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">CNPJ, nome, endereço, segmento</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0; color: #dc2626;">Anual (dados desatualizados)</td>
-          </tr>
-          <tr>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">LinkedIn Sales Nav.</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0; color: #f59e0b;">R$ 300-500/mês</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Empresa, cargo, conexões, conteúdo</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0; color: #16a34a;">Contínua</td>
-          </tr>
-          <tr style="background: #f8fafc;">
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Indicações</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0; color: #16a34a;">Grátis</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Variável (depende de quem indicou)</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0; color: #f59e0b;">Aleatória</td>
+          <tr style="background: var(--muted);">
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Listas compradas</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border); color: var(--pulso-escuro);">R$ 500-5.000</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">CNPJ, nome, endereço, segmento</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border); color: var(--pulso-escuro);">Anual (dados desatualizados)</td>
           </tr>
           <tr>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Receita Federal (CNPJ)</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0; color: #16a34a;">Grátis</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">CNPJ, sócios, atividade, endereço fiscal</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0; color: #f59e0b;">Desatualizado (dados Receita)</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">LinkedIn Sales Nav.</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border); color: var(--foreground);">R$ 300-500/mês</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Empresa, cargo, conexões, conteúdo</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border); color: var(--foreground);">Contínua</td>
+          </tr>
+          <tr style="background: var(--muted);">
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Indicações</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border); color: var(--foreground);">Grátis</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Variável (depende de quem indicou)</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border); color: var(--foreground);">Aleatória</td>
+          </tr>
+          <tr>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Receita Federal (CNPJ)</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border); color: var(--foreground);">Grátis</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">CNPJ, sócios, atividade, endereço fiscal</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border); color: var(--foreground);">Desatualizado (dados Receita)</td>
           </tr>
         </tbody>
       </table>
@@ -159,7 +159,7 @@ export const post: BlogPost = {
 
       <div class="callout-stat">
         <p><strong>📊 Tempo economizado com prospecção automática</strong></p>
-        <p style="font-size: 3rem; font-weight: 800; color: #2563eb; margin: 1rem 0; line-height: 1;">4h → 8min</p>
+        <p style="font-size: 3rem; font-weight: 800; color: var(--foreground); margin: 1rem 0; line-height: 1;">4h → 8min</p>
         <p>Prospectar 50 empresas manualmente no Google Maps e registrar no CRM leva em média 4 horas. Com o recurso automático do Sirius PRO, o mesmo volume fica pronto em 8 minutos — com dados mais completos e sem erros de digitação.</p>
       </div>
 
@@ -219,32 +219,32 @@ export const post: BlogPost = {
         <li><strong>Avanço no pipeline:</strong> Qualificado → Contato feito → Proposta → Fechamento</li>
       </ol>
 
-      <div style="background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%); padding: 2rem; border-radius: 1rem; margin: 2.5rem 0; text-align: center;">
+      <div style="background: var(--primary); padding: 2rem; border-radius: 1rem; margin: 2.5rem 0; text-align: center;">
         <p style="color: white; font-size: 1.25rem; font-weight: 700; margin: 0 0 0.5rem;">Prospecte 500 empresas/mês com o Sirius CRM PRO</p>
-        <p style="color: #bfdbfe; margin: 0 0 1.25rem;">50 créditos de prospecção via Google Maps incluídos — extraia leads por região e segmento e importe direto no seu pipeline.</p>
-        <a href="/pricing" style="display: inline-block; background: white; color: #2563eb; padding: 0.75rem 2rem; border-radius: 0.5rem; font-weight: 700; text-decoration: none;">Ver plano PRO →</a>
+        <p style="color: var(--foreground); margin: 0 0 1.25rem;">50 créditos de prospecção via Google Maps incluídos — extraia leads por região e segmento e importe direto no seu pipeline.</p>
+        <a href="/pricing" style="display: inline-block; background: white; color: var(--foreground); padding: 0.75rem 2rem; border-radius: 0.5rem; font-weight: 700; text-decoration: none;">Ver plano PRO →</a>
       </div>
 
       <h2>Perguntas Frequentes sobre Prospecção via Google Maps</h2>
 
-      <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
-        <summary style="font-weight: 600; cursor: pointer; color: #1e293b; list-style: revert;">Quais segmentos funcionam melhor para prospecção via Google Maps?</summary>
-        <p style="margin: 0.75rem 0 0; color: #4b5563;">Google Maps funciona melhor para empresas com presença física local: varejo, serviços, saúde, alimentação, construção, educação, hotelaria. Funciona menos bem para empresas 100% digitais (startups SaaS, agências digitais), que muitas vezes não têm estabelecimento físico cadastrado ou têm informações incompletas. Para esses segmentos, LinkedIn e bases de dados como a Receita Federal são fontes mais completas.</p>
+      <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
+        <summary style="font-weight: 600; cursor: pointer; color: var(--foreground); list-style: revert;">Quais segmentos funcionam melhor para prospecção via Google Maps?</summary>
+        <p style="margin: 0.75rem 0 0; color: var(--foreground);">Google Maps funciona melhor para empresas com presença física local: varejo, serviços, saúde, alimentação, construção, educação, hotelaria. Funciona menos bem para empresas 100% digitais (startups SaaS, agências digitais), que muitas vezes não têm estabelecimento físico cadastrado ou têm informações incompletas. Para esses segmentos, LinkedIn e bases de dados como a Receita Federal são fontes mais completas.</p>
       </details>
 
-      <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
-        <summary style="font-weight: 600; cursor: pointer; color: #1e293b; list-style: revert;">Como saber o porte da empresa pelo Google Maps?</summary>
-        <p style="margin: 0.75rem 0 0; color: #4b5563;">O Google Maps não exibe CNPJ nem faturamento, mas você pode estimar porte por: número de fotos (mais fotos = mais estrutura), quantidade de avaliações (proxy de volume de clientes), variedade de horários (estabelecimentos com turno noturno ou fins de semana tendem a ter mais funcionários), e presença de múltiplos endereços da mesma marca (indica rede ou franquia). Para confirmar porte, use o CNPJ encontrado no site para consultar na Receita Federal ou nas bases de dados abertas.</p>
+      <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
+        <summary style="font-weight: 600; cursor: pointer; color: var(--foreground); list-style: revert;">Como saber o porte da empresa pelo Google Maps?</summary>
+        <p style="margin: 0.75rem 0 0; color: var(--foreground);">O Google Maps não exibe CNPJ nem faturamento, mas você pode estimar porte por: número de fotos (mais fotos = mais estrutura), quantidade de avaliações (proxy de volume de clientes), variedade de horários (estabelecimentos com turno noturno ou fins de semana tendem a ter mais funcionários), e presença de múltiplos endereços da mesma marca (indica rede ou franquia). Para confirmar porte, use o CNPJ encontrado no site para consultar na Receita Federal ou nas bases de dados abertas.</p>
       </details>
 
-      <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
-        <summary style="font-weight: 600; cursor: pointer; color: #1e293b; list-style: revert;">O número de telefone do Maps é sempre o direto para o decisor?</summary>
-        <p style="margin: 0.75rem 0 0; color: #4b5563;">Na maioria dos casos, não — especialmente em empresas maiores. O telefone do Maps costuma ser o número da recepção ou atendimento ao cliente. Para chegar ao decisor, use o telefone para identificar o nome do responsável pela área relevante, depois busque o WhatsApp ou email direto. Em PMEs com 2-10 funcionários, o telefone do Maps muitas vezes é o celular direto do dono — nesse caso, é gold.</p>
+      <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
+        <summary style="font-weight: 600; cursor: pointer; color: var(--foreground); list-style: revert;">O número de telefone do Maps é sempre o direto para o decisor?</summary>
+        <p style="margin: 0.75rem 0 0; color: var(--foreground);">Na maioria dos casos, não — especialmente em empresas maiores. O telefone do Maps costuma ser o número da recepção ou atendimento ao cliente. Para chegar ao decisor, use o telefone para identificar o nome do responsável pela área relevante, depois busque o WhatsApp ou email direto. Em PMEs com 2-10 funcionários, o telefone do Maps muitas vezes é o celular direto do dono — nesse caso, é gold.</p>
       </details>
 
-      <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin-bottom: 2rem;">
-        <summary style="font-weight: 600; cursor: pointer; color: #1e293b; list-style: revert;">Posso usar a prospecção do Sirius em cidades onde não moro?</summary>
-        <p style="margin: 0.75rem 0 0; color: #4b5563;">Sim — o recurso de prospecção do Sirius CRM PRO não tem restrição geográfica. Você pode prospectar empresas em qualquer cidade do Brasil definindo a região na busca. Isso é útil para representantes que cobrem múltiplos estados ou que estão expandindo para novas regiões — você mapeia o território antes de ir, chegando com lista pronta em vez de gastar tempo em campo fazendo reconhecimento.</p>
+      <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 2rem;">
+        <summary style="font-weight: 600; cursor: pointer; color: var(--foreground); list-style: revert;">Posso usar a prospecção do Sirius em cidades onde não moro?</summary>
+        <p style="margin: 0.75rem 0 0; color: var(--foreground);">Sim — o recurso de prospecção do Sirius CRM PRO não tem restrição geográfica. Você pode prospectar empresas em qualquer cidade do Brasil definindo a região na busca. Isso é útil para representantes que cobrem múltiplos estados ou que estão expandindo para novas regiões — você mapeia o território antes de ir, chegando com lista pronta em vez de gastar tempo em campo fazendo reconhecimento.</p>
       </details>
 
       <h2>Conclusão</h2>
@@ -261,7 +261,7 @@ export const post: BlogPost = {
         Para o representante comercial que trabalha por região, é a ferramenta de prospecção mais eficiente disponível hoje.
       </p>
 
-      <hr style="margin: 3rem 0; border: none; border-top: 1px solid #e5e7eb;" />
+      <hr style="margin: 3rem 0; border: none; border-top: 1px solid var(--border);" />
       <strong>Última Atualização:</strong> 21 de Março de 2026<br/>
       <strong>Autor:</strong> Equipe Sirius CRM<br/>
       <strong>Tempo de Leitura:</strong> 11 minutos
@@ -312,8 +312,8 @@ export const post: BlogPost = {
         The big advantage of Maps prospecting: updated data (owners update it themselves), geographic focus (your territory), and enough volume to feed a healthy pipeline every month — without paying for outdated lists.
       </p>
 
-      <hr style="margin: 3rem 0; border: none; border-top: 1px solid #e5e7eb;" />
-      <p style="font-size: 0.85rem; color: #64748b;">
+      <hr style="margin: 3rem 0; border: none; border-top: 1px solid var(--border);" />
+      <p style="font-size: 0.85rem; color: var(--foreground);">
         <strong>Last Updated:</strong> March 21, 2026<br/>
         <strong>Author:</strong> Sirius CRM Team<br/>
         <strong>Reading Time:</strong> 11 minutes

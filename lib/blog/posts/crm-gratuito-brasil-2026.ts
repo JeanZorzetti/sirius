@@ -19,8 +19,8 @@ export const post: BlogPost = {
         Neste guia, analisamos <strong>5 CRMs com plano gratuito funcional</strong> disponíveis no Brasil em 2026. O critério: o plano free precisa permitir que um vendedor ou PME <strong>realmente trabalhe</strong> sem pagar nada por pelo menos 90 dias — sem surpresas.
       </p>
 
-      <div class="not-prose" style="background: #1e293b; padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
-        <p style="margin: 0 0 0.75rem; font-weight: 700; font-size: 1.05rem; color: #38bdf8;">⚡ TL;DR — Resposta Rápida</p>
+      <div class="not-prose" style="background: var(--primary); padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
+        <p style="margin: 0 0 0.75rem; font-weight: 700; font-size: 1.05rem; color: var(--primary-foreground);">⚡ TL;DR — Resposta Rápida</p>
         <ul style="margin: 0; padding-left: 1.25rem; line-height: 2; color: #ffffff;">
           <li><strong>Melhor gratuito geral:</strong> Sirius CRM — pipeline ilimitado, WhatsApp integrado, IA (3 usos/mês), até 50 contatos</li>
           <li><strong>Melhor gratuito para marketing:</strong> HubSpot Free — formulários, email marketing básico, mas sem WhatsApp</li>
@@ -35,7 +35,7 @@ export const post: BlogPost = {
         Antes de comparar ferramentas, vamos definir o mínimo aceitável de um plano free para o mercado brasileiro:
       </p>
 
-      <ul style="line-height: 2; padding-left: 1.5rem; color: #374151;">
+      <ul style="line-height: 2; padding-left: 1.5rem; color: var(--foreground);">
         <li><strong>Pipeline visual (Kanban)</strong> — sem isso, é só uma agenda de contatos</li>
         <li><strong>Pelo menos 50 contatos</strong> — 10 contatos é inútil para qualquer operação real</li>
         <li><strong>App mobile funcional</strong> — vendedor externo precisa acessar no campo</li>
@@ -48,55 +48,55 @@ export const post: BlogPost = {
       <div style="overflow-x: auto; margin: 2rem 0;">
         <table style="width: 100%; border-collapse: collapse; font-size: 0.9rem;">
           <thead>
-            <tr style="background: #f1f5f9;">
-              <th style="padding: 0.75rem; text-align: left; border-bottom: 2px solid #e2e8f0;">CRM</th>
-              <th style="padding: 0.75rem; text-align: center; border-bottom: 2px solid #e2e8f0;">Contatos</th>
-              <th style="padding: 0.75rem; text-align: center; border-bottom: 2px solid #e2e8f0;">Usuarios</th>
-              <th style="padding: 0.75rem; text-align: center; border-bottom: 2px solid #e2e8f0;">WhatsApp</th>
-              <th style="padding: 0.75rem; text-align: center; border-bottom: 2px solid #e2e8f0;">IA</th>
-              <th style="padding: 0.75rem; text-align: center; border-bottom: 2px solid #e2e8f0;">Preco pago</th>
+            <tr style="background: var(--muted);">
+              <th style="padding: 0.75rem; text-align: left; border-bottom: 2px solid var(--border);">CRM</th>
+              <th style="padding: 0.75rem; text-align: center; border-bottom: 2px solid var(--border);">Contatos</th>
+              <th style="padding: 0.75rem; text-align: center; border-bottom: 2px solid var(--border);">Usuarios</th>
+              <th style="padding: 0.75rem; text-align: center; border-bottom: 2px solid var(--border);">WhatsApp</th>
+              <th style="padding: 0.75rem; text-align: center; border-bottom: 2px solid var(--border);">IA</th>
+              <th style="padding: 0.75rem; text-align: center; border-bottom: 2px solid var(--border);">Preco pago</th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0; font-weight: 600;">Sirius CRM</td>
-              <td style="padding: 0.75rem; text-align: center; border-bottom: 1px solid #e2e8f0;">50</td>
-              <td style="padding: 0.75rem; text-align: center; border-bottom: 1px solid #e2e8f0;">2</td>
-              <td style="padding: 0.75rem; text-align: center; border-bottom: 1px solid #e2e8f0;">✅ Nativo</td>
-              <td style="padding: 0.75rem; text-align: center; border-bottom: 1px solid #e2e8f0;">✅ 3/mes</td>
-              <td style="padding: 0.75rem; text-align: center; border-bottom: 1px solid #e2e8f0;">R$67/mes</td>
+              <td style="padding: 0.75rem; border-bottom: 1px solid var(--border); font-weight: 600;">Sirius CRM</td>
+              <td style="padding: 0.75rem; text-align: center; border-bottom: 1px solid var(--border);">50</td>
+              <td style="padding: 0.75rem; text-align: center; border-bottom: 1px solid var(--border);">2</td>
+              <td style="padding: 0.75rem; text-align: center; border-bottom: 1px solid var(--border);">✅ Nativo</td>
+              <td style="padding: 0.75rem; text-align: center; border-bottom: 1px solid var(--border);">✅ 3/mes</td>
+              <td style="padding: 0.75rem; text-align: center; border-bottom: 1px solid var(--border);">R$67/mes</td>
             </tr>
             <tr style="background: #fafafa;">
-              <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0; font-weight: 600;">HubSpot Free</td>
-              <td style="padding: 0.75rem; text-align: center; border-bottom: 1px solid #e2e8f0;">1.000.000</td>
-              <td style="padding: 0.75rem; text-align: center; border-bottom: 1px solid #e2e8f0;">5</td>
-              <td style="padding: 0.75rem; text-align: center; border-bottom: 1px solid #e2e8f0;">❌</td>
-              <td style="padding: 0.75rem; text-align: center; border-bottom: 1px solid #e2e8f0;">❌</td>
-              <td style="padding: 0.75rem; text-align: center; border-bottom: 1px solid #e2e8f0;">US$20/mes</td>
+              <td style="padding: 0.75rem; border-bottom: 1px solid var(--border); font-weight: 600;">HubSpot Free</td>
+              <td style="padding: 0.75rem; text-align: center; border-bottom: 1px solid var(--border);">1.000.000</td>
+              <td style="padding: 0.75rem; text-align: center; border-bottom: 1px solid var(--border);">5</td>
+              <td style="padding: 0.75rem; text-align: center; border-bottom: 1px solid var(--border);">❌</td>
+              <td style="padding: 0.75rem; text-align: center; border-bottom: 1px solid var(--border);">❌</td>
+              <td style="padding: 0.75rem; text-align: center; border-bottom: 1px solid var(--border);">US$20/mes</td>
             </tr>
             <tr>
-              <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0; font-weight: 600;">Agendor</td>
-              <td style="padding: 0.75rem; text-align: center; border-bottom: 1px solid #e2e8f0;">50</td>
-              <td style="padding: 0.75rem; text-align: center; border-bottom: 1px solid #e2e8f0;">2</td>
-              <td style="padding: 0.75rem; text-align: center; border-bottom: 1px solid #e2e8f0;">❌</td>
-              <td style="padding: 0.75rem; text-align: center; border-bottom: 1px solid #e2e8f0;">❌</td>
-              <td style="padding: 0.75rem; text-align: center; border-bottom: 1px solid #e2e8f0;">R$53/mes</td>
+              <td style="padding: 0.75rem; border-bottom: 1px solid var(--border); font-weight: 600;">Agendor</td>
+              <td style="padding: 0.75rem; text-align: center; border-bottom: 1px solid var(--border);">50</td>
+              <td style="padding: 0.75rem; text-align: center; border-bottom: 1px solid var(--border);">2</td>
+              <td style="padding: 0.75rem; text-align: center; border-bottom: 1px solid var(--border);">❌</td>
+              <td style="padding: 0.75rem; text-align: center; border-bottom: 1px solid var(--border);">❌</td>
+              <td style="padding: 0.75rem; text-align: center; border-bottom: 1px solid var(--border);">R$53/mes</td>
             </tr>
             <tr style="background: #fafafa;">
-              <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0; font-weight: 600;">Bitrix24</td>
-              <td style="padding: 0.75rem; text-align: center; border-bottom: 1px solid #e2e8f0;">Ilimitado</td>
-              <td style="padding: 0.75rem; text-align: center; border-bottom: 1px solid #e2e8f0;">Ilimitado</td>
-              <td style="padding: 0.75rem; text-align: center; border-bottom: 1px solid #e2e8f0;">❌</td>
-              <td style="padding: 0.75rem; text-align: center; border-bottom: 1px solid #e2e8f0;">❌</td>
-              <td style="padding: 0.75rem; text-align: center; border-bottom: 1px solid #e2e8f0;">R$249/mes</td>
+              <td style="padding: 0.75rem; border-bottom: 1px solid var(--border); font-weight: 600;">Bitrix24</td>
+              <td style="padding: 0.75rem; text-align: center; border-bottom: 1px solid var(--border);">Ilimitado</td>
+              <td style="padding: 0.75rem; text-align: center; border-bottom: 1px solid var(--border);">Ilimitado</td>
+              <td style="padding: 0.75rem; text-align: center; border-bottom: 1px solid var(--border);">❌</td>
+              <td style="padding: 0.75rem; text-align: center; border-bottom: 1px solid var(--border);">❌</td>
+              <td style="padding: 0.75rem; text-align: center; border-bottom: 1px solid var(--border);">R$249/mes</td>
             </tr>
             <tr>
-              <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0; font-weight: 600;">RD Station CRM</td>
-              <td style="padding: 0.75rem; text-align: center; border-bottom: 1px solid #e2e8f0;">Ilimitado</td>
-              <td style="padding: 0.75rem; text-align: center; border-bottom: 1px solid #e2e8f0;">4</td>
-              <td style="padding: 0.75rem; text-align: center; border-bottom: 1px solid #e2e8f0;">❌</td>
-              <td style="padding: 0.75rem; text-align: center; border-bottom: 1px solid #e2e8f0;">❌</td>
-              <td style="padding: 0.75rem; text-align: center; border-bottom: 1px solid #e2e8f0;">R$58/mes</td>
+              <td style="padding: 0.75rem; border-bottom: 1px solid var(--border); font-weight: 600;">RD Station CRM</td>
+              <td style="padding: 0.75rem; text-align: center; border-bottom: 1px solid var(--border);">Ilimitado</td>
+              <td style="padding: 0.75rem; text-align: center; border-bottom: 1px solid var(--border);">4</td>
+              <td style="padding: 0.75rem; text-align: center; border-bottom: 1px solid var(--border);">❌</td>
+              <td style="padding: 0.75rem; text-align: center; border-bottom: 1px solid var(--border);">❌</td>
+              <td style="padding: 0.75rem; text-align: center; border-bottom: 1px solid var(--border);">R$58/mes</td>
             </tr>
           </tbody>
         </table>
@@ -109,7 +109,7 @@ export const post: BlogPost = {
       </p>
 
       <p><strong>O que o plano gratuito inclui:</strong></p>
-      <ul style="line-height: 2; padding-left: 1.5rem; color: #374151;">
+      <ul style="line-height: 2; padding-left: 1.5rem; color: var(--foreground);">
         <li>Pipeline Kanban com drag-and-drop (ilimitado em deals)</li>
         <li>Ate 50 contatos com campos personalizados</li>
         <li>WhatsApp integrado (Chat Center) — conversas registradas automaticamente</li>
@@ -122,10 +122,10 @@ export const post: BlogPost = {
 
       <p><strong>Para quem serve:</strong> vendedores autonomos, representantes comerciais, corretores e MEIs que precisam sair da planilha sem investir.</p>
 
-      <div style="background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%); border: 1px solid #6ee7b7; padding: 1.5rem; border-radius: 0.75rem; margin: 1.5rem 0; text-align: center;">
-        <p style="font-weight: 700; color: #065f46; margin: 0 0 0.5rem;">Testar Sirius CRM Gratis</p>
-        <p style="color: #047857; margin: 0 0 0.75rem;">Sem cartao de credito. Sem limite de tempo. Pipeline + WhatsApp + IA.</p>
-        <p><strong><a href="/register" style="color: #059669; text-decoration: underline;">Criar conta gratuita →</a></strong></p>
+      <div style="background: var(--muted); border: 1px solid var(--border); padding: 1.5rem; border-radius: 0.75rem; margin: 1.5rem 0; text-align: center;">
+        <p style="font-weight: 700; color: var(--foreground); margin: 0 0 0.5rem;">Testar Sirius CRM Gratis</p>
+        <p style="color: var(--foreground); margin: 0 0 0.75rem;">Sem cartao de credito. Sem limite de tempo. Pipeline + WhatsApp + IA.</p>
+        <p><strong><a href="/register" style="color: var(--foreground); text-decoration: underline;">Criar conta gratuita →</a></strong></p>
       </div>
 
       <h2>2. HubSpot Free — Melhor para Quem Quer CRM + Marketing</h2>
@@ -180,7 +180,7 @@ export const post: BlogPost = {
 
       <p>O plano gratuito resolve enquanto voce tem:</p>
 
-      <ul style="line-height: 2; padding-left: 1.5rem; color: #374151;">
+      <ul style="line-height: 2; padding-left: 1.5rem; color: var(--foreground);">
         <li>Ate 50 contatos ativos (leads + clientes em negociacao)</li>
         <li>1-2 vendedores</li>
         <li>Processo de vendas simples (1 pipeline, 4-5 etapas)</li>
@@ -189,43 +189,43 @@ export const post: BlogPost = {
 
       <p><strong>Sinais de que e hora de pagar:</strong></p>
 
-      <ul style="line-height: 2; padding-left: 1.5rem; color: #374151;">
+      <ul style="line-height: 2; padding-left: 1.5rem; color: var(--foreground);">
         <li>Voce esta perdendo leads por falta de follow-up automatico</li>
         <li>Precisa de mais de 1 pipeline (ex: vendas + pos-venda)</li>
         <li>Quer relatorios de conversao por etapa e previsao de receita</li>
         <li>O time cresceu para 3+ vendedores e precisa de visibilidade do gestor</li>
       </ul>
 
-      <div style="background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); border-left: 4px solid #2563eb; padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
-        <p style="margin: 0; font-weight: 700; color: #1e40af;">Dica pratica:</p>
-        <p style="margin: 0.5rem 0 0; color: #1e40af;">Comece no plano gratuito e use por 30 dias. Se voce sentir que esta "lutando" contra as limitacoes, e hora de fazer upgrade. Se o free atende, fique nele sem culpa — o objetivo e vender mais, nao gastar mais.</p>
+      <div style="background: var(--muted); border-left: 4px solid var(--fio-forte); padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
+        <p style="margin: 0; font-weight: 700; color: var(--foreground);">Dica pratica:</p>
+        <p style="margin: 0.5rem 0 0; color: var(--foreground);">Comece no plano gratuito e use por 30 dias. Se voce sentir que esta "lutando" contra as limitacoes, e hora de fazer upgrade. Se o free atende, fique nele sem culpa — o objetivo e vender mais, nao gastar mais.</p>
       </div>
 
       <h2>Perguntas Frequentes: CRM Gratuito</h2>
 
-      <details style="margin: 1rem 0; border: 1px solid #e2e8f0; border-radius: 0.75rem; overflow: hidden;">
-        <summary style="font-weight: 600; cursor: pointer; padding: 1rem; color: #1e293b; background: #f8fafc;">CRM gratuito e realmente de graca?</summary>
-        <p style="padding: 1rem; margin: 0; color: #4b5563;">Sim, os 5 CRMs listados neste artigo tem planos genuinamente gratuitos sem limite de tempo. A diferenca para um trial e que o plano free nao expira — voce pode usar por meses ou anos sem pagar. As limitacoes sao em volume (contatos, usuarios) ou funcionalidades (automacoes, relatorios avancados).</p>
+      <details style="margin: 1rem 0; border: 1px solid var(--border); border-radius: 0.75rem; overflow: hidden;">
+        <summary style="font-weight: 600; cursor: pointer; padding: 1rem; color: var(--foreground); background: var(--muted);">CRM gratuito e realmente de graca?</summary>
+        <p style="padding: 1rem; margin: 0; color: var(--foreground);">Sim, os 5 CRMs listados neste artigo tem planos genuinamente gratuitos sem limite de tempo. A diferenca para um trial e que o plano free nao expira — voce pode usar por meses ou anos sem pagar. As limitacoes sao em volume (contatos, usuarios) ou funcionalidades (automacoes, relatorios avancados).</p>
       </details>
 
-      <details style="margin: 1rem 0; border: 1px solid #e2e8f0; border-radius: 0.75rem; overflow: hidden;">
-        <summary style="font-weight: 600; cursor: pointer; padding: 1rem; color: #1e293b; background: #f8fafc;">Qual CRM gratuito tem WhatsApp integrado?</summary>
-        <p style="padding: 1rem; margin: 0; color: #4b5563;">Entre os 5 analisados, apenas o Sirius CRM oferece integracao WhatsApp nativa no plano gratuito. HubSpot, Agendor, Bitrix24 e RD Station CRM nao integram WhatsApp nativamente — exigem ferramentas de terceiros ou planos pagos.</p>
+      <details style="margin: 1rem 0; border: 1px solid var(--border); border-radius: 0.75rem; overflow: hidden;">
+        <summary style="font-weight: 600; cursor: pointer; padding: 1rem; color: var(--foreground); background: var(--muted);">Qual CRM gratuito tem WhatsApp integrado?</summary>
+        <p style="padding: 1rem; margin: 0; color: var(--foreground);">Entre os 5 analisados, apenas o Sirius CRM oferece integracao WhatsApp nativa no plano gratuito. HubSpot, Agendor, Bitrix24 e RD Station CRM nao integram WhatsApp nativamente — exigem ferramentas de terceiros ou planos pagos.</p>
       </details>
 
-      <details style="margin: 1rem 0; border: 1px solid #e2e8f0; border-radius: 0.75rem; overflow: hidden;">
-        <summary style="font-weight: 600; cursor: pointer; padding: 1rem; color: #1e293b; background: #f8fafc;">Posso migrar de um CRM gratuito para outro?</summary>
-        <p style="padding: 1rem; margin: 0; color: #4b5563;">Sim. A maioria dos CRMs permite exportar dados em CSV. O processo: exporte contatos e deals do CRM atual, importe no novo. Dica: faca a migracao quando tiver menos de 200 contatos — acima disso, o mapeamento de campos fica mais complexo.</p>
+      <details style="margin: 1rem 0; border: 1px solid var(--border); border-radius: 0.75rem; overflow: hidden;">
+        <summary style="font-weight: 600; cursor: pointer; padding: 1rem; color: var(--foreground); background: var(--muted);">Posso migrar de um CRM gratuito para outro?</summary>
+        <p style="padding: 1rem; margin: 0; color: var(--foreground);">Sim. A maioria dos CRMs permite exportar dados em CSV. O processo: exporte contatos e deals do CRM atual, importe no novo. Dica: faca a migracao quando tiver menos de 200 contatos — acima disso, o mapeamento de campos fica mais complexo.</p>
       </details>
 
-      <details style="margin: 1rem 0; border: 1px solid #e2e8f0; border-radius: 0.75rem; overflow: hidden;">
-        <summary style="font-weight: 600; cursor: pointer; padding: 1rem; color: #1e293b; background: #f8fafc;">CRM gratuito funciona para equipes?</summary>
-        <p style="padding: 1rem; margin: 0; color: #4b5563;">Depende do tamanho. Bitrix24 e o unico com usuarios ilimitados no free. RD Station CRM permite 4, HubSpot 5, Agendor 2, Sirius 2. Para equipes de 3+, avalie se o plano free do CRM escolhido suporta todos os vendedores — senao, o plano pago mais barato pode sair mais em conta do que usar um CRM inferior so porque e gratis.</p>
+      <details style="margin: 1rem 0; border: 1px solid var(--border); border-radius: 0.75rem; overflow: hidden;">
+        <summary style="font-weight: 600; cursor: pointer; padding: 1rem; color: var(--foreground); background: var(--muted);">CRM gratuito funciona para equipes?</summary>
+        <p style="padding: 1rem; margin: 0; color: var(--foreground);">Depende do tamanho. Bitrix24 e o unico com usuarios ilimitados no free. RD Station CRM permite 4, HubSpot 5, Agendor 2, Sirius 2. Para equipes de 3+, avalie se o plano free do CRM escolhido suporta todos os vendedores — senao, o plano pago mais barato pode sair mais em conta do que usar um CRM inferior so porque e gratis.</p>
       </details>
 
       <h2>Conclusao: Qual CRM Gratuito Escolher?</h2>
 
-      <ul style="line-height: 2; padding-left: 1.5rem; color: #374151;">
+      <ul style="line-height: 2; padding-left: 1.5rem; color: var(--foreground);">
         <li><strong>Se voce vende pelo WhatsApp</strong> → Sirius CRM (unico com WhatsApp nativo gratis)</li>
         <li><strong>Se voce faz inbound marketing</strong> → HubSpot Free (CRM + marketing integrado)</li>
         <li><strong>Se voce quer simplicidade</strong> → Agendor (interface mais limpa)</li>
@@ -233,13 +233,13 @@ export const post: BlogPost = {
         <li><strong>Se voce ja usa RD Station</strong> → RD Station CRM (integracao nativa)</li>
       </ul>
 
-      <div style="background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%); border: 1px solid #6ee7b7; padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0; text-align: center;">
-        <p style="font-weight: 700; color: #065f46; font-size: 1.1rem; margin: 0 0 0.75rem;">Comece Gratis com o Sirius CRM</p>
-        <p style="color: #047857; margin: 0 0 1rem;">Pipeline + WhatsApp + IA. Sem cartao, sem prazo, sem pegadinha.</p>
-        <p><strong><a href="/register" style="color: #059669; text-decoration: underline;">Criar conta gratuita agora →</a></strong></p>
+      <div style="background: var(--muted); border: 1px solid var(--border); padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0; text-align: center;">
+        <p style="font-weight: 700; color: var(--foreground); font-size: 1.1rem; margin: 0 0 0.75rem;">Comece Gratis com o Sirius CRM</p>
+        <p style="color: var(--foreground); margin: 0 0 1rem;">Pipeline + WhatsApp + IA. Sem cartao, sem prazo, sem pegadinha.</p>
+        <p><strong><a href="/register" style="color: var(--foreground); text-decoration: underline;">Criar conta gratuita agora →</a></strong></p>
       </div>
 
-      <div style="margin: 2rem 0; padding: 1rem; background: #f8fafc; border-radius: 0.75rem; font-size: 0.85rem; color: #64748b;">
+      <div style="margin: 2rem 0; padding: 1rem; background: var(--muted); border-radius: 0.75rem; font-size: 0.85rem; color: var(--foreground);">
         <strong>Autor:</strong> Equipe Sirius CRM<br/>
         <strong>Ultima atualizacao:</strong> Março 2026<br/>
         <strong>Fontes:</strong> Sites oficiais de cada CRM, analise propria da equipe ROI Labs. Precos verificados em marco de 2026.
@@ -318,13 +318,13 @@ export const post: BlogPost = {
         The tool is too limited to provide value, so reps go back to spreadsheets within 30 days. This is why choosing a free plan with genuine core functionality matters — not just a feature-stripped preview.
       </p>
 
-      <div style="background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%); border: 1px solid #6ee7b7; padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0; text-align: center;">
-        <p style="font-weight: 700; color: #065f46; font-size: 1.1rem; margin: 0 0 0.75rem;">Start Free with Sirius CRM</p>
-        <p style="color: #047857; margin: 0 0 1rem;">Pipeline + WhatsApp + AI. No credit card, no time limit, no catch.</p>
-        <p><strong><a href="/en/register" style="color: #059669; text-decoration: underline;">Create free account now →</a></strong></p>
+      <div style="background: var(--muted); border: 1px solid var(--border); padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0; text-align: center;">
+        <p style="font-weight: 700; color: var(--foreground); font-size: 1.1rem; margin: 0 0 0.75rem;">Start Free with Sirius CRM</p>
+        <p style="color: var(--foreground); margin: 0 0 1rem;">Pipeline + WhatsApp + AI. No credit card, no time limit, no catch.</p>
+        <p><strong><a href="/en/register" style="color: var(--foreground); text-decoration: underline;">Create free account now →</a></strong></p>
       </div>
 
-      <div style="margin: 2rem 0; padding: 1rem; background: #f8fafc; border-radius: 0.75rem; font-size: 0.85rem; color: #64748b;">
+      <div style="margin: 2rem 0; padding: 1rem; background: var(--muted); border-radius: 0.75rem; font-size: 0.85rem; color: var(--foreground);">
         <strong>Author:</strong> Sirius CRM Team<br/>
         <strong>Last Updated:</strong> March 2026<br/>
         <strong>Sources:</strong> Official websites of each CRM, proprietary analysis by ROI Labs team. Prices verified March 2026.

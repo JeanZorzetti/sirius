@@ -13,20 +13,20 @@ export const post: BlogPost = {
         Em 2026, surgiu um novo modelo de software que vai além do SaaS tradicional: o <strong>AgaaS (Agentic as a Service)</strong>. Em vez de apenas fornecer ferramentas para você operar, o AgaaS coloca agentes de inteligência artificial para operar o sistema <em>por você</em> — qualificando leads, movendo deals no pipeline, enviando follow-ups e agendando reuniões automaticamente, tudo com supervisão humana. Neste artigo, vamos explorar como essa revolução está transformando CRMs e equipes comerciais no Brasil.
       </p>
 
-      <div class="not-prose" style="background: #1e293b; padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
-        <p style="margin: 0 0 0.75rem; font-weight: 700; font-size: 1.05rem; color: #38bdf8;">⚡ TL;DR — Resposta Rápida</p>
+      <div class="not-prose" style="background: var(--primary); padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
+        <p style="margin: 0 0 0.75rem; font-weight: 700; font-size: 1.05rem; color: var(--primary-foreground);">⚡ TL;DR — Resposta Rápida</p>
         <ul style="margin: 0; padding-left: 1.25rem; line-height: 2; color: #ffffff;">
           <li><strong>AgaaS</strong> = agentes IA que operam o CRM por você, não só sugerem — eles <em>agem</em></li>
           <li><strong>Sofia IA</strong> qualifica leads, faz follow-up, agenda reuniões e move deals automaticamente</li>
           <li><strong>Modo /IA</strong>: painel de supervisão onde você aprova ações antes da execução</li>
-          <li>Disponível a partir de <strong style="color: #38bdf8;">R$67/mês</strong> (Starter: 1 agente, 200 ações/mês)</li>
+          <li>Disponível a partir de <strong style="color: var(--primary-foreground);">R$67/mês</strong> (Starter: 1 agente, 200 ações/mês)</li>
           <li>Diferente de chatbots: agentes <strong>agem proativamente</strong>, não apenas respondem perguntas</li>
         </ul>
       </div>
 
-      <div style="background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); border-left: 4px solid #2563eb; padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
-        <p style="margin: 0; font-weight: 700; color: #1e40af; font-size: 1.1rem;">📊 Dado que você precisa saber:</p>
-        <p style="margin: 0.5rem 0 0; color: #1e40af;">Empresas que adotam AI agents reportam <strong>40% mais produtividade</strong> em equipes comerciais, segundo McKinsey — "The State of AI in 2025" (McKinsey Global Survey, 2025).</p>
+      <div style="background: var(--muted); border-left: 4px solid var(--fio-forte); padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
+        <p style="margin: 0; font-weight: 700; color: var(--foreground); font-size: 1.1rem;">📊 Dado que você precisa saber:</p>
+        <p style="margin: 0.5rem 0 0; color: var(--foreground);">Empresas que adotam AI agents reportam <strong>40% mais produtividade</strong> em equipes comerciais, segundo McKinsey — "The State of AI in 2025" (McKinsey Global Survey, 2025).</p>
       </div>
 
       <h2>O que é AgaaS (Agentic as a Service)?</h2>
@@ -46,9 +46,9 @@ export const post: BlogPost = {
       <h3>SaaS Tradicional vs AgaaS — Comparação Direta</h3>
 
       <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 2rem 0;">
-        <div style="background: #fef2f2; border: 1px solid #fecaca; padding: 1.25rem; border-radius: 0.75rem;">
-          <p style="font-weight: 700; color: #dc2626; margin: 0 0 0.75rem;">📋 SaaS Tradicional</p>
-          <ul style="margin: 0; padding-left: 1.25rem; color: #7f1d1d; line-height: 1.8;">
+        <div style="background: var(--muted); border: 1px solid var(--border); padding: 1.25rem; border-radius: 0.75rem;">
+          <p style="font-weight: 700; color: var(--pulso-escuro); margin: 0 0 0.75rem;">📋 SaaS Tradicional</p>
+          <ul style="margin: 0; padding-left: 1.25rem; color: var(--foreground); line-height: 1.8;">
             <li>Você opera o sistema manualmente</li>
             <li>IA sugere ações, mas você executa</li>
             <li>Automações rígidas (if/then)</li>
@@ -57,9 +57,9 @@ export const post: BlogPost = {
             <li>Escala limitada pelo número de vendedores</li>
           </ul>
         </div>
-        <div style="background: #f0fdf4; border: 1px solid #bbf7d0; padding: 1.25rem; border-radius: 0.75rem;">
-          <p style="font-weight: 700; color: #16a34a; margin: 0 0 0.75rem;">🤖 AgaaS (Agentic as a Service)</p>
-          <ul style="margin: 0; padding-left: 1.25rem; color: #14532d; line-height: 1.8;">
+        <div style="background: var(--muted); border: 1px solid var(--border); padding: 1.25rem; border-radius: 0.75rem;">
+          <p style="font-weight: 700; color: var(--foreground); margin: 0 0 0.75rem;">🤖 AgaaS (Agentic as a Service)</p>
+          <ul style="margin: 0; padding-left: 1.25rem; color: var(--foreground); line-height: 1.8;">
             <li>Agente IA opera o sistema por você</li>
             <li>IA executa ações com sua aprovação</li>
             <li>Autonomia adaptativa com contexto</li>
@@ -113,9 +113,9 @@ export const post: BlogPost = {
         <li><strong>Aprovar</strong> — Antes de executar ações críticas (envio de mensagens, mudança de status, agendamento), o agente solicita aprovação humana no painel /IA.</li>
       </ol>
 
-      <div style="background: linear-gradient(135deg, #f5f3ff 0%, #ede9fe 100%); border-left: 4px solid #7c3aed; padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
-        <p style="margin: 0; font-weight: 700; color: #5b21b6; font-size: 1.05rem;">🔒 Segurança com Human-in-the-Loop</p>
-        <p style="margin: 0.5rem 0 0; color: #5b21b6;">No Sirius CRM, agentes precisam de <strong>aprovação humana</strong> antes de executar ações críticas — como enviar e-mails, mover deals ou agendar reuniões. Você mantém o controle total, com a produtividade de uma equipe 10x maior.</p>
+      <div style="background: var(--muted); border-left: 4px solid var(--fio-forte); padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
+        <p style="margin: 0; font-weight: 700; color: var(--foreground); font-size: 1.05rem;">🔒 Segurança com Human-in-the-Loop</p>
+        <p style="margin: 0.5rem 0 0; color: var(--foreground);">No Sirius CRM, agentes precisam de <strong>aprovação humana</strong> antes de executar ações críticas — como enviar e-mails, mover deals ou agendar reuniões. Você mantém o controle total, com a produtividade de uma equipe 10x maior.</p>
       </div>
 
       <h2>5 Tarefas que Agentes IA Fazem Melhor que Humanos</h2>
@@ -182,42 +182,42 @@ export const post: BlogPost = {
 
       <table style="width: 100%; border-collapse: collapse; margin: 1.5rem 0;">
         <thead>
-          <tr style="background: #f8fafc;">
-            <th style="border: 1px solid #e2e8f0; padding: 0.75rem; text-align: left;">Plano</th>
-            <th style="border: 1px solid #e2e8f0; padding: 0.75rem; text-align: left;">Preço/mês</th>
-            <th style="border: 1px solid #e2e8f0; padding: 0.75rem; text-align: left;">Agentes IA</th>
-            <th style="border: 1px solid #e2e8f0; padding: 0.75rem; text-align: left;">Ações/mês</th>
-            <th style="border: 1px solid #e2e8f0; padding: 0.75rem; text-align: left;">Destaque</th>
+          <tr style="background: var(--muted);">
+            <th style="border: 1px solid var(--border); padding: 0.75rem; text-align: left;">Plano</th>
+            <th style="border: 1px solid var(--border); padding: 0.75rem; text-align: left;">Preço/mês</th>
+            <th style="border: 1px solid var(--border); padding: 0.75rem; text-align: left;">Agentes IA</th>
+            <th style="border: 1px solid var(--border); padding: 0.75rem; text-align: left;">Ações/mês</th>
+            <th style="border: 1px solid var(--border); padding: 0.75rem; text-align: left;">Destaque</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem; font-weight: 600;">FREE</td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">R$0</td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">0 agentes</td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">—</td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">CRM completo, sem agentes IA</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem; font-weight: 600;">FREE</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">R$0</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">0 agentes</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">—</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">CRM completo, sem agentes IA</td>
           </tr>
-          <tr style="background: #f0fdf4;">
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem; font-weight: 600;">STARTER</td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">R$67</td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">1 agente</td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">200 ações</td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">Ideal para freelancers e autônomos</td>
+          <tr style="background: var(--muted);">
+            <td style="border: 1px solid var(--border); padding: 0.75rem; font-weight: 600;">STARTER</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">R$67</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">1 agente</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">200 ações</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">Ideal para freelancers e autônomos</td>
           </tr>
           <tr>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem; font-weight: 600;">PRO</td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">R$147</td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">3 agentes</td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">1.000 ações</td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">Para equipes de vendas B2B</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem; font-weight: 600;">PRO</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">R$147</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">3 agentes</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">1.000 ações</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">Para equipes de vendas B2B</td>
           </tr>
-          <tr style="background: #f8fafc;">
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem; font-weight: 600;">BUSINESS</td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">R$397</td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">5 agentes</td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">3.000 ações</td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">Operação comercial completa com IA</td>
+          <tr style="background: var(--muted);">
+            <td style="border: 1px solid var(--border); padding: 0.75rem; font-weight: 600;">BUSINESS</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">R$397</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">5 agentes</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">3.000 ações</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">Operação comercial completa com IA</td>
           </tr>
         </tbody>
       </table>
@@ -230,10 +230,10 @@ export const post: BlogPost = {
         Uma "ação" é qualquer operação executada pelo agente: enviar um e-mail, qualificar um lead, mover um deal, gerar um relatório ou agendar uma reunião. O plano Starter com 200 ações/mês é suficiente para um vendedor individual que gerencia até 50 leads ativos.
       </p>
 
-      <div style="background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%); border: 1px solid #6ee7b7; padding: 1.5rem; border-radius: 0.75rem; text-align: center; margin: 2rem 0;">
-        <p style="margin: 0 0 0.5rem; font-weight: 700; font-size: 1.1rem; color: #065f46;">🚀 Comece com 1 agente por R$67/mês</p>
-        <p style="margin: 0 0 1rem; color: #065f46;">Teste a revolução AgaaS no Sirius CRM. Seu primeiro agente IA qualifica leads, faz follow-up e agenda reuniões por você.</p>
-        <a href="/register" style="display: inline-block; background: #059669; color: #fff; padding: 0.75rem 2rem; border-radius: 0.5rem; text-decoration: none; font-weight: 600;">Criar conta grátis e ativar agente IA</a>
+      <div style="background: var(--muted); border: 1px solid var(--border); padding: 1.5rem; border-radius: 0.75rem; text-align: center; margin: 2rem 0;">
+        <p style="margin: 0 0 0.5rem; font-weight: 700; font-size: 1.1rem; color: var(--foreground);">🚀 Comece com 1 agente por R$67/mês</p>
+        <p style="margin: 0 0 1rem; color: var(--foreground);">Teste a revolução AgaaS no Sirius CRM. Seu primeiro agente IA qualifica leads, faz follow-up e agenda reuniões por você.</p>
+        <a href="/register" style="display: inline-block; background: var(--primary); color: #fff; padding: 0.75rem 2rem; border-radius: 0.5rem; text-decoration: none; font-weight: 600;">Criar conta grátis e ativar agente IA</a>
       </div>
 
       <h2>AgaaS vs Chatbots: Qual a Diferença?</h2>
@@ -244,42 +244,42 @@ export const post: BlogPost = {
 
       <table style="width: 100%; border-collapse: collapse; margin: 1.5rem 0;">
         <thead>
-          <tr style="background: #f8fafc;">
-            <th style="border: 1px solid #e2e8f0; padding: 0.75rem; text-align: left;">Critério</th>
-            <th style="border: 1px solid #e2e8f0; padding: 0.75rem; text-align: left;">Chatbot</th>
-            <th style="border: 1px solid #e2e8f0; padding: 0.75rem; text-align: left;">Agente IA (AgaaS)</th>
+          <tr style="background: var(--muted);">
+            <th style="border: 1px solid var(--border); padding: 0.75rem; text-align: left;">Critério</th>
+            <th style="border: 1px solid var(--border); padding: 0.75rem; text-align: left;">Chatbot</th>
+            <th style="border: 1px solid var(--border); padding: 0.75rem; text-align: left;">Agente IA (AgaaS)</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem; font-weight: 600;">Comportamento</td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">Reativo — responde perguntas</td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">Proativo — toma ações por conta própria</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem; font-weight: 600;">Comportamento</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">Reativo — responde perguntas</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">Proativo — toma ações por conta própria</td>
           </tr>
-          <tr style="background: #f8fafc;">
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem; font-weight: 600;">Escopo</td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">Conversa isolada, sem contexto persistente</td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">Opera todo o CRM com memória e contexto completo</td>
-          </tr>
-          <tr>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem; font-weight: 600;">Autonomia</td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">Zero — precisa que alguém pergunte algo</td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">Alta — monitora e age 24/7 com aprovação humana</td>
-          </tr>
-          <tr style="background: #f8fafc;">
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem; font-weight: 600;">Integração</td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">Widget de chat no site</td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">Nativo no CRM — acessa pipeline, contatos, deals, e-mails</td>
+          <tr style="background: var(--muted);">
+            <td style="border: 1px solid var(--border); padding: 0.75rem; font-weight: 600;">Escopo</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">Conversa isolada, sem contexto persistente</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">Opera todo o CRM com memória e contexto completo</td>
           </tr>
           <tr>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem; font-weight: 600;">Resultado</td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">Responde dúvidas de clientes</td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">Gera pipeline, qualifica leads e fecha reuniões</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem; font-weight: 600;">Autonomia</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">Zero — precisa que alguém pergunte algo</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">Alta — monitora e age 24/7 com aprovação humana</td>
           </tr>
-          <tr style="background: #f8fafc;">
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem; font-weight: 600;">Exemplo</td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">"Quais são os planos disponíveis?"</td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">"Qualifiquei o lead João com score 91, preparei follow-up — aprovar?"</td>
+          <tr style="background: var(--muted);">
+            <td style="border: 1px solid var(--border); padding: 0.75rem; font-weight: 600;">Integração</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">Widget de chat no site</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">Nativo no CRM — acessa pipeline, contatos, deals, e-mails</td>
+          </tr>
+          <tr>
+            <td style="border: 1px solid var(--border); padding: 0.75rem; font-weight: 600;">Resultado</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">Responde dúvidas de clientes</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">Gera pipeline, qualifica leads e fecha reuniões</td>
+          </tr>
+          <tr style="background: var(--muted);">
+            <td style="border: 1px solid var(--border); padding: 0.75rem; font-weight: 600;">Exemplo</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">"Quais são os planos disponíveis?"</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">"Qualifiquei o lead João com score 91, preparei follow-up — aprovar?"</td>
           </tr>
         </tbody>
       </table>
@@ -303,9 +303,9 @@ export const post: BlogPost = {
       </p>
 
       <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 2rem 0;">
-        <div style="background: #fef2f2; border: 1px solid #fecaca; padding: 1.25rem; border-radius: 0.75rem;">
-          <p style="font-weight: 700; color: #dc2626; margin: 0 0 0.75rem;">Antes (sem AgaaS)</p>
-          <ul style="margin: 0; padding-left: 1.25rem; color: #7f1d1d; line-height: 1.8;">
+        <div style="background: var(--muted); border: 1px solid var(--border); padding: 1.25rem; border-radius: 0.75rem;">
+          <p style="font-weight: 700; color: var(--pulso-escuro); margin: 0 0 0.75rem;">Antes (sem AgaaS)</p>
+          <ul style="margin: 0; padding-left: 1.25rem; color: var(--foreground); line-height: 1.8;">
             <li>8h: Abrir CRM, revisar pipeline, priorizar leads</li>
             <li>9h: Enviar 15 follow-ups manualmente</li>
             <li>10h: Pesquisar prospects no LinkedIn</li>
@@ -314,9 +314,9 @@ export const post: BlogPost = {
             <li>16h: Finalmente fazer ligações de vendas</li>
           </ul>
         </div>
-        <div style="background: #f0fdf4; border: 1px solid #bbf7d0; padding: 1.25rem; border-radius: 0.75rem;">
-          <p style="font-weight: 700; color: #16a34a; margin: 0 0 0.75rem;">Depois (com AgaaS)</p>
-          <ul style="margin: 0; padding-left: 1.25rem; color: #14532d; line-height: 1.8;">
+        <div style="background: var(--muted); border: 1px solid var(--border); padding: 1.25rem; border-radius: 0.75rem;">
+          <p style="font-weight: 700; color: var(--foreground); margin: 0 0 0.75rem;">Depois (com AgaaS)</p>
+          <ul style="margin: 0; padding-left: 1.25rem; color: var(--foreground); line-height: 1.8;">
             <li>8h: Revisar 5 ações propostas pela Sofia, aprovar 4</li>
             <li>8h30: 15 follow-ups já enviados, reuniões agendadas</li>
             <li>9h: Focar em 3 deals estratégicos de alto valor</li>
@@ -337,29 +337,29 @@ export const post: BlogPost = {
 
       <h2>Perguntas Frequentes sobre Agentes IA e AgaaS</h2>
 
-      <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
-        <summary style="cursor: pointer; font-weight: 600; color: #1e293b;">O que é AgaaS (Agentic as a Service)?</summary>
-        <p style="margin: 0.75rem 0 0; color: #475569;">AgaaS é um modelo de software onde agentes de inteligência artificial operam o sistema por você, e não apenas fornecem sugestões. No contexto de CRM, isso significa que a IA qualifica leads, envia follow-ups, agenda reuniões e move deals no pipeline de forma autônoma, com aprovação humana antes de ações críticas. É a evolução do SaaS, onde você passa de operador a supervisor.</p>
+      <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
+        <summary style="cursor: pointer; font-weight: 600; color: var(--foreground);">O que é AgaaS (Agentic as a Service)?</summary>
+        <p style="margin: 0.75rem 0 0; color: var(--foreground);">AgaaS é um modelo de software onde agentes de inteligência artificial operam o sistema por você, e não apenas fornecem sugestões. No contexto de CRM, isso significa que a IA qualifica leads, envia follow-ups, agenda reuniões e move deals no pipeline de forma autônoma, com aprovação humana antes de ações críticas. É a evolução do SaaS, onde você passa de operador a supervisor.</p>
       </details>
 
-      <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
-        <summary style="cursor: pointer; font-weight: 600; color: #1e293b;">Agentes IA vão substituir vendedores?</summary>
-        <p style="margin: 0.75rem 0 0; color: #475569;">Não. Agentes IA substituem tarefas repetitivas (data entry, follow-up manual, geração de relatórios), não vendedores. O papel do vendedor evolui de executor operacional para estrategista de relacionamento. Segundo o World Economic Forum (2025), funções de vendas serão redesenhadas para incorporar IA como co-piloto, e não como substituto. As habilidades mais valorizadas passam a ser negociação, empatia e pensamento estratégico.</p>
+      <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
+        <summary style="cursor: pointer; font-weight: 600; color: var(--foreground);">Agentes IA vão substituir vendedores?</summary>
+        <p style="margin: 0.75rem 0 0; color: var(--foreground);">Não. Agentes IA substituem tarefas repetitivas (data entry, follow-up manual, geração de relatórios), não vendedores. O papel do vendedor evolui de executor operacional para estrategista de relacionamento. Segundo o World Economic Forum (2025), funções de vendas serão redesenhadas para incorporar IA como co-piloto, e não como substituto. As habilidades mais valorizadas passam a ser negociação, empatia e pensamento estratégico.</p>
       </details>
 
-      <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
-        <summary style="cursor: pointer; font-weight: 600; color: #1e293b;">Qual a diferença entre um chatbot e um agente IA?</summary>
-        <p style="margin: 0.75rem 0 0; color: #475569;">Chatbots são reativos: eles esperam uma pergunta e respondem. Agentes IA são proativos: eles monitoram dados, identificam oportunidades e tomam ações por conta própria. Um chatbot pode responder "nossos planos começam em R$67/mês". Um agente IA qualifica um lead automaticamente, prepara uma proposta personalizada e agenda uma reunião — tudo sem que você precise pedir.</p>
+      <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
+        <summary style="cursor: pointer; font-weight: 600; color: var(--foreground);">Qual a diferença entre um chatbot e um agente IA?</summary>
+        <p style="margin: 0.75rem 0 0; color: var(--foreground);">Chatbots são reativos: eles esperam uma pergunta e respondem. Agentes IA são proativos: eles monitoram dados, identificam oportunidades e tomam ações por conta própria. Um chatbot pode responder "nossos planos começam em R$67/mês". Um agente IA qualifica um lead automaticamente, prepara uma proposta personalizada e agenda uma reunião — tudo sem que você precise pedir.</p>
       </details>
 
-      <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
-        <summary style="cursor: pointer; font-weight: 600; color: #1e293b;">Os agentes IA do Sirius CRM enviam e-mails sem minha autorização?</summary>
-        <p style="margin: 0.75rem 0 0; color: #475569;">Não. O Sirius CRM opera com o modelo <strong>human-in-the-loop</strong>: toda ação crítica (envio de e-mail, mudança de status de deal, agendamento de reunião) requer sua aprovação explícita no painel /IA antes da execução. Você mantém controle total. Apenas ações de baixo risco, como atualização de lead score, são executadas automaticamente.</p>
+      <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
+        <summary style="cursor: pointer; font-weight: 600; color: var(--foreground);">Os agentes IA do Sirius CRM enviam e-mails sem minha autorização?</summary>
+        <p style="margin: 0.75rem 0 0; color: var(--foreground);">Não. O Sirius CRM opera com o modelo <strong>human-in-the-loop</strong>: toda ação crítica (envio de e-mail, mudança de status de deal, agendamento de reunião) requer sua aprovação explícita no painel /IA antes da execução. Você mantém controle total. Apenas ações de baixo risco, como atualização de lead score, são executadas automaticamente.</p>
       </details>
 
-      <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
-        <summary style="cursor: pointer; font-weight: 600; color: #1e293b;">Quanto custa para ter agentes IA no meu CRM?</summary>
-        <p style="margin: 0.75rem 0 0; color: #475569;">O Sirius CRM oferece agentes IA a partir de R$67/mês no plano Starter (1 agente, 200 ações/mês). O plano PRO custa R$147/mês (3 agentes, 1.000 ações) e o Business R$397/mês (5 agentes, 3.000 ações). Todos os planos pagos têm 20% de desconto no pagamento anual. O plano FREE inclui o CRM completo sem agentes IA, para que você possa testar a plataforma antes de ativar a camada AgaaS.</p>
+      <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
+        <summary style="cursor: pointer; font-weight: 600; color: var(--foreground);">Quanto custa para ter agentes IA no meu CRM?</summary>
+        <p style="margin: 0.75rem 0 0; color: var(--foreground);">O Sirius CRM oferece agentes IA a partir de R$67/mês no plano Starter (1 agente, 200 ações/mês). O plano PRO custa R$147/mês (3 agentes, 1.000 ações) e o Business R$397/mês (5 agentes, 3.000 ações). Todos os planos pagos têm 20% de desconto no pagamento anual. O plano FREE inclui o CRM completo sem agentes IA, para que você possa testar a plataforma antes de ativar a camada AgaaS.</p>
       </details>
 
       <h2>Conclusão: A Era do CRM Operado por IA Começou</h2>
@@ -376,10 +376,10 @@ export const post: BlogPost = {
         A pergunta não é <em>se</em> você vai usar agentes IA no seu CRM, mas <em>quando</em>. E as empresas que começarem primeiro terão uma vantagem competitiva difícil de alcançar.
       </p>
 
-      <div style="background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%); border: 1px solid #6ee7b7; padding: 1.5rem; border-radius: 0.75rem; text-align: center; margin: 2rem 0;">
-        <p style="margin: 0 0 0.5rem; font-weight: 700; font-size: 1.15rem; color: #065f46;">🤖 Pronto para colocar a IA para trabalhar por você?</p>
-        <p style="margin: 0 0 1rem; color: #065f46;">Crie sua conta grátis no Sirius CRM, explore o modo Dashboard e, quando estiver pronto, ative seu primeiro agente IA por R$67/mês.</p>
-        <a href="/register" style="display: inline-block; background: #059669; color: #fff; padding: 0.75rem 2rem; border-radius: 0.5rem; text-decoration: none; font-weight: 600;">Criar conta grátis no Sirius CRM</a>
+      <div style="background: var(--muted); border: 1px solid var(--border); padding: 1.5rem; border-radius: 0.75rem; text-align: center; margin: 2rem 0;">
+        <p style="margin: 0 0 0.5rem; font-weight: 700; font-size: 1.15rem; color: var(--foreground);">🤖 Pronto para colocar a IA para trabalhar por você?</p>
+        <p style="margin: 0 0 1rem; color: var(--foreground);">Crie sua conta grátis no Sirius CRM, explore o modo Dashboard e, quando estiver pronto, ative seu primeiro agente IA por R$67/mês.</p>
+        <a href="/register" style="display: inline-block; background: var(--primary); color: #fff; padding: 0.75rem 2rem; border-radius: 0.5rem; text-decoration: none; font-weight: 600;">Criar conta grátis no Sirius CRM</a>
       </div>
   `,
   date: '2026-03-28',
@@ -400,20 +400,20 @@ export const post: BlogPost = {
         In 2026, a new software model emerged that goes beyond traditional SaaS: <strong>AgaaS (Agentic as a Service)</strong>. Instead of just providing tools for you to operate, AgaaS puts artificial intelligence agents to operate the system <em>for you</em> — qualifying leads, moving deals in the pipeline, sending follow-ups, and scheduling meetings automatically, all with human supervision. In this article, we explore how this revolution is transforming CRMs and commercial teams.
       </p>
 
-      <div class="not-prose" style="background: #1e293b; padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
-        <p style="margin: 0 0 0.75rem; font-weight: 700; font-size: 1.05rem; color: #38bdf8;">⚡ TL;DR — Quick Answer</p>
+      <div class="not-prose" style="background: var(--primary); padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
+        <p style="margin: 0 0 0.75rem; font-weight: 700; font-size: 1.05rem; color: var(--primary-foreground);">⚡ TL;DR — Quick Answer</p>
         <ul style="margin: 0; padding-left: 1.25rem; line-height: 2; color: #ffffff;">
           <li><strong>AgaaS</strong> = AI agents that operate the CRM for you, they don't just suggest — they <em>act</em></li>
           <li><strong>Sofia AI</strong> qualifies leads, does follow-up, schedules meetings, and moves deals automatically</li>
           <li><strong>/IA mode</strong>: supervision panel where you approve actions before execution</li>
-          <li>Available from <strong style="color: #38bdf8;">R$67/month</strong> (Starter: 1 agent, 200 actions/month)</li>
+          <li>Available from <strong style="color: var(--primary-foreground);">R$67/month</strong> (Starter: 1 agent, 200 actions/month)</li>
           <li>Different from chatbots: agents <strong>act proactively</strong>, they don't just answer questions</li>
         </ul>
       </div>
 
-      <div style="background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); border-left: 4px solid #2563eb; padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
-        <p style="margin: 0; font-weight: 700; color: #1e40af; font-size: 1.1rem;">📊 The data you need to know:</p>
-        <p style="margin: 0.5rem 0 0; color: #1e40af;">Companies that adopt AI agents report <strong>40% higher productivity</strong> in commercial teams, according to McKinsey — "The State of AI in 2025" (McKinsey Global Survey, 2025).</p>
+      <div style="background: var(--muted); border-left: 4px solid var(--fio-forte); padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
+        <p style="margin: 0; font-weight: 700; color: var(--foreground); font-size: 1.1rem;">📊 The data you need to know:</p>
+        <p style="margin: 0.5rem 0 0; color: var(--foreground);">Companies that adopt AI agents report <strong>40% higher productivity</strong> in commercial teams, according to McKinsey — "The State of AI in 2025" (McKinsey Global Survey, 2025).</p>
       </div>
 
       <h2>What is AgaaS (Agentic as a Service)?</h2>
@@ -433,9 +433,9 @@ export const post: BlogPost = {
       <h3>Traditional SaaS vs AgaaS — Direct Comparison</h3>
 
       <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 2rem 0;">
-        <div style="background: #fef2f2; border: 1px solid #fecaca; padding: 1.25rem; border-radius: 0.75rem;">
-          <p style="font-weight: 700; color: #dc2626; margin: 0 0 0.75rem;">📋 Traditional SaaS</p>
-          <ul style="margin: 0; padding-left: 1.25rem; color: #7f1d1d; line-height: 1.8;">
+        <div style="background: var(--muted); border: 1px solid var(--border); padding: 1.25rem; border-radius: 0.75rem;">
+          <p style="font-weight: 700; color: var(--pulso-escuro); margin: 0 0 0.75rem;">📋 Traditional SaaS</p>
+          <ul style="margin: 0; padding-left: 1.25rem; color: var(--foreground); line-height: 1.8;">
             <li>You operate the system manually</li>
             <li>AI suggests actions, but you execute them</li>
             <li>Rigid automations (if/then)</li>
@@ -444,9 +444,9 @@ export const post: BlogPost = {
             <li>Scale limited by number of reps</li>
           </ul>
         </div>
-        <div style="background: #f0fdf4; border: 1px solid #bbf7d0; padding: 1.25rem; border-radius: 0.75rem;">
-          <p style="font-weight: 700; color: #16a34a; margin: 0 0 0.75rem;">🤖 AgaaS (Agentic as a Service)</p>
-          <ul style="margin: 0; padding-left: 1.25rem; color: #14532d; line-height: 1.8;">
+        <div style="background: var(--muted); border: 1px solid var(--border); padding: 1.25rem; border-radius: 0.75rem;">
+          <p style="font-weight: 700; color: var(--foreground); margin: 0 0 0.75rem;">🤖 AgaaS (Agentic as a Service)</p>
+          <ul style="margin: 0; padding-left: 1.25rem; color: var(--foreground); line-height: 1.8;">
             <li>AI agent operates the system for you</li>
             <li>AI executes actions with your approval</li>
             <li>Adaptive autonomy with context</li>
@@ -492,9 +492,9 @@ export const post: BlogPost = {
         <li><strong>Approve</strong> — Before executing critical actions (sending messages, changing status, scheduling), the agent requests human approval in the /IA panel.</li>
       </ol>
 
-      <div style="background: linear-gradient(135deg, #f5f3ff 0%, #ede9fe 100%); border-left: 4px solid #7c3aed; padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
-        <p style="margin: 0; font-weight: 700; color: #5b21b6; font-size: 1.05rem;">🔒 Security with Human-in-the-Loop</p>
-        <p style="margin: 0.5rem 0 0; color: #5b21b6;">In Sirius CRM, agents require <strong>human approval</strong> before executing critical actions — like sending emails, moving deals, or scheduling meetings. You maintain full control, with the productivity of a 10x larger team.</p>
+      <div style="background: var(--muted); border-left: 4px solid var(--fio-forte); padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
+        <p style="margin: 0; font-weight: 700; color: var(--foreground); font-size: 1.05rem;">🔒 Security with Human-in-the-Loop</p>
+        <p style="margin: 0.5rem 0 0; color: var(--foreground);">In Sirius CRM, agents require <strong>human approval</strong> before executing critical actions — like sending emails, moving deals, or scheduling meetings. You maintain full control, with the productivity of a 10x larger team.</p>
       </div>
 
       <h2>5 Tasks AI Agents Do Better Than Humans</h2>
@@ -551,42 +551,42 @@ export const post: BlogPost = {
 
       <table style="width: 100%; border-collapse: collapse; margin: 1.5rem 0;">
         <thead>
-          <tr style="background: #f8fafc;">
-            <th style="border: 1px solid #e2e8f0; padding: 0.75rem; text-align: left;">Plan</th>
-            <th style="border: 1px solid #e2e8f0; padding: 0.75rem; text-align: left;">Price/month</th>
-            <th style="border: 1px solid #e2e8f0; padding: 0.75rem; text-align: left;">AI Agents</th>
-            <th style="border: 1px solid #e2e8f0; padding: 0.75rem; text-align: left;">Actions/month</th>
-            <th style="border: 1px solid #e2e8f0; padding: 0.75rem; text-align: left;">Highlight</th>
+          <tr style="background: var(--muted);">
+            <th style="border: 1px solid var(--border); padding: 0.75rem; text-align: left;">Plan</th>
+            <th style="border: 1px solid var(--border); padding: 0.75rem; text-align: left;">Price/month</th>
+            <th style="border: 1px solid var(--border); padding: 0.75rem; text-align: left;">AI Agents</th>
+            <th style="border: 1px solid var(--border); padding: 0.75rem; text-align: left;">Actions/month</th>
+            <th style="border: 1px solid var(--border); padding: 0.75rem; text-align: left;">Highlight</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem; font-weight: 600;">FREE</td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">R$0</td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">0 agents</td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">—</td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">Full CRM, no AI agents</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem; font-weight: 600;">FREE</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">R$0</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">0 agents</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">—</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">Full CRM, no AI agents</td>
           </tr>
-          <tr style="background: #f0fdf4;">
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem; font-weight: 600;">STARTER</td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">R$67</td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">1 agent</td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">200 actions</td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">Ideal for freelancers and solo reps</td>
+          <tr style="background: var(--muted);">
+            <td style="border: 1px solid var(--border); padding: 0.75rem; font-weight: 600;">STARTER</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">R$67</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">1 agent</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">200 actions</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">Ideal for freelancers and solo reps</td>
           </tr>
           <tr>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem; font-weight: 600;">PRO</td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">R$147</td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">3 agents</td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">1,000 actions</td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">For B2B sales teams</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem; font-weight: 600;">PRO</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">R$147</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">3 agents</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">1,000 actions</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">For B2B sales teams</td>
           </tr>
-          <tr style="background: #f8fafc;">
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem; font-weight: 600;">BUSINESS</td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">R$397</td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">5 agents</td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">3,000 actions</td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">Complete commercial operation with AI</td>
+          <tr style="background: var(--muted);">
+            <td style="border: 1px solid var(--border); padding: 0.75rem; font-weight: 600;">BUSINESS</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">R$397</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">5 agents</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">3,000 actions</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">Complete commercial operation with AI</td>
           </tr>
         </tbody>
       </table>
@@ -599,10 +599,10 @@ export const post: BlogPost = {
         An "action" is any operation executed by the agent: sending an email, qualifying a lead, moving a deal, generating a report, or scheduling a meeting. The Starter plan with 200 actions/month is sufficient for an individual rep managing up to 50 active leads.
       </p>
 
-      <div style="background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%); border: 1px solid #6ee7b7; padding: 1.5rem; border-radius: 0.75rem; text-align: center; margin: 2rem 0;">
-        <p style="margin: 0 0 0.5rem; font-weight: 700; font-size: 1.1rem; color: #065f46;">🚀 Start with 1 agent for R$67/month</p>
-        <p style="margin: 0 0 1rem; color: #065f46;">Test the AgaaS revolution in Sirius CRM. Your first AI agent qualifies leads, does follow-up, and schedules meetings for you.</p>
-        <a href="/register" style="display: inline-block; background: #059669; color: #fff; padding: 0.75rem 2rem; border-radius: 0.5rem; text-decoration: none; font-weight: 600;">Create free account and activate AI agent</a>
+      <div style="background: var(--muted); border: 1px solid var(--border); padding: 1.5rem; border-radius: 0.75rem; text-align: center; margin: 2rem 0;">
+        <p style="margin: 0 0 0.5rem; font-weight: 700; font-size: 1.1rem; color: var(--foreground);">🚀 Start with 1 agent for R$67/month</p>
+        <p style="margin: 0 0 1rem; color: var(--foreground);">Test the AgaaS revolution in Sirius CRM. Your first AI agent qualifies leads, does follow-up, and schedules meetings for you.</p>
+        <a href="/register" style="display: inline-block; background: var(--primary); color: #fff; padding: 0.75rem 2rem; border-radius: 0.5rem; text-decoration: none; font-weight: 600;">Create free account and activate AI agent</a>
       </div>
 
       <h2>AgaaS vs Chatbots: What's the Difference?</h2>
@@ -613,42 +613,42 @@ export const post: BlogPost = {
 
       <table style="width: 100%; border-collapse: collapse; margin: 1.5rem 0;">
         <thead>
-          <tr style="background: #f8fafc;">
-            <th style="border: 1px solid #e2e8f0; padding: 0.75rem; text-align: left;">Criterion</th>
-            <th style="border: 1px solid #e2e8f0; padding: 0.75rem; text-align: left;">Chatbot</th>
-            <th style="border: 1px solid #e2e8f0; padding: 0.75rem; text-align: left;">AI Agent (AgaaS)</th>
+          <tr style="background: var(--muted);">
+            <th style="border: 1px solid var(--border); padding: 0.75rem; text-align: left;">Criterion</th>
+            <th style="border: 1px solid var(--border); padding: 0.75rem; text-align: left;">Chatbot</th>
+            <th style="border: 1px solid var(--border); padding: 0.75rem; text-align: left;">AI Agent (AgaaS)</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem; font-weight: 600;">Behavior</td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">Reactive — answers questions</td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">Proactive — takes actions on its own</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem; font-weight: 600;">Behavior</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">Reactive — answers questions</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">Proactive — takes actions on its own</td>
           </tr>
-          <tr style="background: #f8fafc;">
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem; font-weight: 600;">Scope</td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">Isolated conversation, no persistent context</td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">Operates the entire CRM with full memory and context</td>
-          </tr>
-          <tr>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem; font-weight: 600;">Autonomy</td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">Zero — needs someone to ask something</td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">High — monitors and acts 24/7 with human approval</td>
-          </tr>
-          <tr style="background: #f8fafc;">
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem; font-weight: 600;">Integration</td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">Chat widget on the website</td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">Native in CRM — accesses pipeline, contacts, deals, emails</td>
+          <tr style="background: var(--muted);">
+            <td style="border: 1px solid var(--border); padding: 0.75rem; font-weight: 600;">Scope</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">Isolated conversation, no persistent context</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">Operates the entire CRM with full memory and context</td>
           </tr>
           <tr>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem; font-weight: 600;">Result</td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">Answers customer questions</td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">Generates pipeline, qualifies leads, and books meetings</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem; font-weight: 600;">Autonomy</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">Zero — needs someone to ask something</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">High — monitors and acts 24/7 with human approval</td>
           </tr>
-          <tr style="background: #f8fafc;">
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem; font-weight: 600;">Example</td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">"What plans are available?"</td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">"I qualified lead João with score 91, prepared follow-up — approve?"</td>
+          <tr style="background: var(--muted);">
+            <td style="border: 1px solid var(--border); padding: 0.75rem; font-weight: 600;">Integration</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">Chat widget on the website</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">Native in CRM — accesses pipeline, contacts, deals, emails</td>
+          </tr>
+          <tr>
+            <td style="border: 1px solid var(--border); padding: 0.75rem; font-weight: 600;">Result</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">Answers customer questions</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">Generates pipeline, qualifies leads, and books meetings</td>
+          </tr>
+          <tr style="background: var(--muted);">
+            <td style="border: 1px solid var(--border); padding: 0.75rem; font-weight: 600;">Example</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">"What plans are available?"</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">"I qualified lead João with score 91, prepared follow-up — approve?"</td>
           </tr>
         </tbody>
       </table>
@@ -668,9 +668,9 @@ export const post: BlogPost = {
       </p>
 
       <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 2rem 0;">
-        <div style="background: #fef2f2; border: 1px solid #fecaca; padding: 1.25rem; border-radius: 0.75rem;">
-          <p style="font-weight: 700; color: #dc2626; margin: 0 0 0.75rem;">Before (without AgaaS)</p>
-          <ul style="margin: 0; padding-left: 1.25rem; color: #7f1d1d; line-height: 1.8;">
+        <div style="background: var(--muted); border: 1px solid var(--border); padding: 1.25rem; border-radius: 0.75rem;">
+          <p style="font-weight: 700; color: var(--pulso-escuro); margin: 0 0 0.75rem;">Before (without AgaaS)</p>
+          <ul style="margin: 0; padding-left: 1.25rem; color: var(--foreground); line-height: 1.8;">
             <li>8am: Open CRM, review pipeline, prioritize leads</li>
             <li>9am: Send 15 follow-ups manually</li>
             <li>10am: Research prospects on LinkedIn</li>
@@ -679,9 +679,9 @@ export const post: BlogPost = {
             <li>4pm: Finally make sales calls</li>
           </ul>
         </div>
-        <div style="background: #f0fdf4; border: 1px solid #bbf7d0; padding: 1.25rem; border-radius: 0.75rem;">
-          <p style="font-weight: 700; color: #16a34a; margin: 0 0 0.75rem;">After (with AgaaS)</p>
-          <ul style="margin: 0; padding-left: 1.25rem; color: #14532d; line-height: 1.8;">
+        <div style="background: var(--muted); border: 1px solid var(--border); padding: 1.25rem; border-radius: 0.75rem;">
+          <p style="font-weight: 700; color: var(--foreground); margin: 0 0 0.75rem;">After (with AgaaS)</p>
+          <ul style="margin: 0; padding-left: 1.25rem; color: var(--foreground); line-height: 1.8;">
             <li>8am: Review 5 proposed actions by Sofia, approve 4</li>
             <li>8:30am: 15 follow-ups already sent, meetings scheduled</li>
             <li>9am: Focus on 3 strategic high-value deals</li>
@@ -702,29 +702,29 @@ export const post: BlogPost = {
 
       <h2>FAQ: AI Agents and AgaaS</h2>
 
-      <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
-        <summary style="cursor: pointer; font-weight: 600; color: #1e293b;">What is AgaaS (Agentic as a Service)?</summary>
-        <p style="margin: 0.75rem 0 0; color: #475569;">AgaaS is a software model where artificial intelligence agents operate the system for you, rather than just providing suggestions. In the context of CRM, this means AI qualifies leads, sends follow-ups, schedules meetings, and moves deals in the pipeline autonomously, with human approval before critical actions. It's the evolution of SaaS, where you go from operator to supervisor.</p>
+      <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
+        <summary style="cursor: pointer; font-weight: 600; color: var(--foreground);">What is AgaaS (Agentic as a Service)?</summary>
+        <p style="margin: 0.75rem 0 0; color: var(--foreground);">AgaaS is a software model where artificial intelligence agents operate the system for you, rather than just providing suggestions. In the context of CRM, this means AI qualifies leads, sends follow-ups, schedules meetings, and moves deals in the pipeline autonomously, with human approval before critical actions. It's the evolution of SaaS, where you go from operator to supervisor.</p>
       </details>
 
-      <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
-        <summary style="cursor: pointer; font-weight: 600; color: #1e293b;">Will AI agents replace sales reps?</summary>
-        <p style="margin: 0.75rem 0 0; color: #475569;">No. AI agents replace repetitive tasks (data entry, manual follow-up, report generation), not reps. The role evolves from operational executor to relationship strategist. According to the World Economic Forum (2025), sales functions will be redesigned to incorporate AI as a co-pilot, not a replacement. The most valued skills become negotiation, empathy, and strategic thinking.</p>
+      <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
+        <summary style="cursor: pointer; font-weight: 600; color: var(--foreground);">Will AI agents replace sales reps?</summary>
+        <p style="margin: 0.75rem 0 0; color: var(--foreground);">No. AI agents replace repetitive tasks (data entry, manual follow-up, report generation), not reps. The role evolves from operational executor to relationship strategist. According to the World Economic Forum (2025), sales functions will be redesigned to incorporate AI as a co-pilot, not a replacement. The most valued skills become negotiation, empathy, and strategic thinking.</p>
       </details>
 
-      <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
-        <summary style="cursor: pointer; font-weight: 600; color: #1e293b;">What's the difference between a chatbot and an AI agent?</summary>
-        <p style="margin: 0.75rem 0 0; color: #475569;">Chatbots are reactive: they wait for a question and respond. AI agents are proactive: they monitor data, identify opportunities, and take actions on their own. A chatbot can answer "our plans start at R$67/month." An AI agent automatically qualifies a lead, prepares a personalized proposal, and schedules a meeting — all without you asking.</p>
+      <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
+        <summary style="cursor: pointer; font-weight: 600; color: var(--foreground);">What's the difference between a chatbot and an AI agent?</summary>
+        <p style="margin: 0.75rem 0 0; color: var(--foreground);">Chatbots are reactive: they wait for a question and respond. AI agents are proactive: they monitor data, identify opportunities, and take actions on their own. A chatbot can answer "our plans start at R$67/month." An AI agent automatically qualifies a lead, prepares a personalized proposal, and schedules a meeting — all without you asking.</p>
       </details>
 
-      <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
-        <summary style="cursor: pointer; font-weight: 600; color: #1e293b;">Do Sirius CRM agents send emails without my authorization?</summary>
-        <p style="margin: 0.75rem 0 0; color: #475569;">No. Sirius CRM operates with the <strong>human-in-the-loop</strong> model: every critical action (sending email, changing deal status, scheduling meeting) requires your explicit approval in the /IA panel before execution. You maintain full control. Only low-risk actions, such as lead score updates, are executed automatically.</p>
+      <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
+        <summary style="cursor: pointer; font-weight: 600; color: var(--foreground);">Do Sirius CRM agents send emails without my authorization?</summary>
+        <p style="margin: 0.75rem 0 0; color: var(--foreground);">No. Sirius CRM operates with the <strong>human-in-the-loop</strong> model: every critical action (sending email, changing deal status, scheduling meeting) requires your explicit approval in the /IA panel before execution. You maintain full control. Only low-risk actions, such as lead score updates, are executed automatically.</p>
       </details>
 
-      <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
-        <summary style="cursor: pointer; font-weight: 600; color: #1e293b;">How much does it cost to have AI agents in my CRM?</summary>
-        <p style="margin: 0.75rem 0 0; color: #475569;">Sirius CRM offers AI agents starting at R$67/month on the Starter plan (1 agent, 200 actions/month). The PRO plan costs R$147/month (3 agents, 1,000 actions) and Business R$397/month (5 agents, 3,000 actions). All paid plans have 20% discount with annual payment. The FREE plan includes the full CRM without AI agents, so you can test the platform before activating the AgaaS layer.</p>
+      <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
+        <summary style="cursor: pointer; font-weight: 600; color: var(--foreground);">How much does it cost to have AI agents in my CRM?</summary>
+        <p style="margin: 0.75rem 0 0; color: var(--foreground);">Sirius CRM offers AI agents starting at R$67/month on the Starter plan (1 agent, 200 actions/month). The PRO plan costs R$147/month (3 agents, 1,000 actions) and Business R$397/month (5 agents, 3,000 actions). All paid plans have 20% discount with annual payment. The FREE plan includes the full CRM without AI agents, so you can test the platform before activating the AgaaS layer.</p>
       </details>
 
       <h2>Conclusion: The Era of AI-Operated CRM Has Begun</h2>
@@ -741,10 +741,10 @@ export const post: BlogPost = {
         The question is not <em>if</em> you'll use AI agents in your CRM, but <em>when</em>. And companies that start first will have a competitive advantage that's hard to catch up with.
       </p>
 
-      <div style="background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%); border: 1px solid #6ee7b7; padding: 1.5rem; border-radius: 0.75rem; text-align: center; margin: 2rem 0;">
-        <p style="margin: 0 0 0.5rem; font-weight: 700; font-size: 1.15rem; color: #065f46;">🤖 Ready to put AI to work for you?</p>
-        <p style="margin: 0 0 1rem; color: #065f46;">Create your free Sirius CRM account, explore Dashboard mode, and when ready, activate your first AI agent for R$67/month.</p>
-        <a href="/register" style="display: inline-block; background: #059669; color: #fff; padding: 0.75rem 2rem; border-radius: 0.5rem; text-decoration: none; font-weight: 600;">Create free Sirius CRM account</a>
+      <div style="background: var(--muted); border: 1px solid var(--border); padding: 1.5rem; border-radius: 0.75rem; text-align: center; margin: 2rem 0;">
+        <p style="margin: 0 0 0.5rem; font-weight: 700; font-size: 1.15rem; color: var(--foreground);">🤖 Ready to put AI to work for you?</p>
+        <p style="margin: 0 0 1rem; color: var(--foreground);">Create your free Sirius CRM account, explore Dashboard mode, and when ready, activate your first AI agent for R$67/month.</p>
+        <a href="/register" style="display: inline-block; background: var(--primary); color: #fff; padding: 0.75rem 2rem; border-radius: 0.5rem; text-decoration: none; font-weight: 600;">Create free Sirius CRM account</a>
       </div>
   `,
 }

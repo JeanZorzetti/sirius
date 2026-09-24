@@ -19,13 +19,13 @@ export const post: BlogPost = {
         Neste guia, você vai aprender os métodos que realmente funcionam para prospecção B2B em 2026: como definir seu cliente ideal, os 5 canais mais eficazes, como estruturar um cold email que abre portas, uma cadência semanal completa e como o CRM transforma tudo isso em sistema escalável.
       </p>
 
-      <div class="not-prose" style="background: #1e293b; padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
-        <p style="margin: 0 0 0.75rem; font-weight: 700; font-size: 1.05rem; color: #38bdf8;">⚡ TL;DR — Resposta Rápida</p>
+      <div class="not-prose" style="background: var(--primary); padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
+        <p style="margin: 0 0 0.75rem; font-weight: 700; font-size: 1.05rem; color: var(--primary-foreground);">⚡ TL;DR — Resposta Rápida</p>
         <ul style="margin: 0; padding-left: 1.25rem; line-height: 2; color: #ffffff;">
           <li><strong>ICP bem definido</strong> é o primeiro passo — prospectar sem ICP é desperdiçar esforço em 80% dos leads errados</li>
           <li>Os 5 canais mais eficazes em 2026: <strong>LinkedIn, Cold Email personalizado, Indicações, Comunidades/Eventos, Outbound com IA</strong></li>
           <li>Cold email funciona quando segue a fórmula: <strong>assunto específico + problema relevante + CTA de baixo atrito</strong></li>
-          <li>Cadência multicanal (email + LinkedIn + ligação) gera <strong>3x mais respostas</strong> que canal único (HubSpot Sales Trends 2025) — e prepara o terreno para as <a href="/blog/tecnicas-de-fechamento-de-vendas" style="color: #2563eb;">técnicas de fechamento</a></li>
+          <li>Cadência multicanal (email + LinkedIn + ligação) gera <strong>3x mais respostas</strong> que canal único (HubSpot Sales Trends 2025) — e prepara o terreno para as <a href="/blog/tecnicas-de-fechamento-de-vendas" style="color: var(--primary-foreground);">técnicas de fechamento</a></li>
           <li>Um CRM organiza a prospecção e elimina o maior problema: o follow-up que não acontece</li>
         </ul>
       </div>
@@ -42,7 +42,7 @@ export const post: BlogPost = {
 
       <div class="callout-stat">
         <p><strong>📊 O impacto do ICP nas vendas</strong></p>
-        <p style="font-size: 3rem; font-weight: 800; color: #2563eb; margin: 1rem 0; line-height: 1;">68%</p>
+        <p style="font-size: 3rem; font-weight: 800; color: var(--foreground); margin: 1rem 0; line-height: 1;">68%</p>
         <p>das empresas com ICP bem documentado atingem ou superam suas metas de receita, comparado a 38% das que não têm — Estudo Salesforce State of Sales 2025.</p>
       </div>
 
@@ -60,7 +60,7 @@ export const post: BlogPost = {
       </ol>
 
       <p>
-        Os gatilhos de compra são ouro para a prospecção B2B. Exemplos comuns: contratou um novo diretor comercial, levantou rodada de investimento, perdeu market share, está expandindo para nova cidade. Com esse padrão identificado, você sabe exatamente quem prospectar e quando — e a metodologia <a href="/blog/spin-selling-guia-completo" style="color: #2563eb;">SPIN Selling</a> ajuda a explorar essas dores na conversa.
+        Os gatilhos de compra são ouro para a prospecção B2B. Exemplos comuns: contratou um novo diretor comercial, levantou rodada de investimento, perdeu market share, está expandindo para nova cidade. Com esse padrão identificado, você sabe exatamente quem prospectar e quando — e a metodologia <a href="/blog/spin-selling-guia-completo" style="color: var(--foreground);">SPIN Selling</a> ajuda a explorar essas dores na conversa.
       </p>
 
       <h2>Os 5 Melhores Canais de Prospecção B2B em 2026</h2>
@@ -113,20 +113,20 @@ export const post: BlogPost = {
 
       <h3>Exemplo de cold email que funciona</h3>
 
-      <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 0.75rem; padding: 1.5rem; margin: 1.5rem 0; font-family: monospace; font-size: 0.9rem; line-height: 1.8;">
-        <p style="margin: 0; color: #64748b;"><strong>Assunto:</strong> Distribuidoras de São Paulo — perda de follow-up</p>
+      <div style="background: var(--muted); border: 1px solid var(--border); border-radius: 0.75rem; padding: 1.5rem; margin: 1.5rem 0; font-family: monospace; font-size: 0.9rem; line-height: 1.8;">
+        <p style="margin: 0; color: var(--foreground);"><strong>Assunto:</strong> Distribuidoras de São Paulo — perda de follow-up</p>
         <br/>
-        <p style="margin: 0; color: #1e293b;">Olá, [Nome],</p>
+        <p style="margin: 0; color: var(--foreground);">Olá, [Nome],</p>
         <br/>
-        <p style="margin: 0; color: #1e293b;">Vi que a [Empresa] expandiu para o interior de SP no último trimestre — parabéns pela movimentação.</p>
+        <p style="margin: 0; color: var(--foreground);">Vi que a [Empresa] expandiu para o interior de SP no último trimestre — parabéns pela movimentação.</p>
         <br/>
-        <p style="margin: 0; color: #1e293b;">Trabalhamos com distribuidoras B2B que estão crescendo e encontramos um padrão: quando o time de vendas expande para novos territórios, a taxa de follow-up cai em média 40% — leads quentes esfriam porque não tem processo para acompanhar tudo.</p>
+        <p style="margin: 0; color: var(--foreground);">Trabalhamos com distribuidoras B2B que estão crescendo e encontramos um padrão: quando o time de vendas expande para novos territórios, a taxa de follow-up cai em média 40% — leads quentes esfriam porque não tem processo para acompanhar tudo.</p>
         <br/>
-        <p style="margin: 0; color: #1e293b;">Resolvemos isso para a [Empresa Referência do Setor] — reduzimos 0 follow-ups perdidos em 60 dias.</p>
+        <p style="margin: 0; color: var(--foreground);">Resolvemos isso para a [Empresa Referência do Setor] — reduzimos 0 follow-ups perdidos em 60 dias.</p>
         <br/>
-        <p style="margin: 0; color: #1e293b;">Faz sentido conversar 15 minutos para ver se faz sentido para vocês também?</p>
+        <p style="margin: 0; color: var(--foreground);">Faz sentido conversar 15 minutos para ver se faz sentido para vocês também?</p>
         <br/>
-        <p style="margin: 0; color: #1e293b;">[Seu Nome]</p>
+        <p style="margin: 0; color: var(--foreground);">[Seu Nome]</p>
       </div>
 
       <h2>LinkedIn: Abordagem que Não Parece Spam</h2>
@@ -143,14 +143,14 @@ export const post: BlogPost = {
         <li><strong>Dia 5:</strong> Mensagem direta — referência ao post + situação específica da empresa + pergunta de baixo atrito</li>
       </ol>
 
-      <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 0.75rem; padding: 1.5rem; margin: 1.5rem 0; font-family: monospace; font-size: 0.9rem; line-height: 1.8;">
-        <p style="margin: 0; color: #64748b;"><strong>Mensagem LinkedIn (Dia 5):</strong></p>
+      <div style="background: var(--muted); border: 1px solid var(--border); border-radius: 0.75rem; padding: 1.5rem; margin: 1.5rem 0; font-family: monospace; font-size: 0.9rem; line-height: 1.8;">
+        <p style="margin: 0; color: var(--foreground);"><strong>Mensagem LinkedIn (Dia 5):</strong></p>
         <br/>
-        <p style="margin: 0; color: #1e293b;">[Nome], vi seu post sobre gestão de equipe comercial na semana passada — ponto muito válido sobre a dificuldade de manter processo quando o time cresce.</p>
+        <p style="margin: 0; color: var(--foreground);">[Nome], vi seu post sobre gestão de equipe comercial na semana passada — ponto muito válido sobre a dificuldade de manter processo quando o time cresce.</p>
         <br/>
-        <p style="margin: 0; color: #1e293b;">Trabalho com agências de marketing em crescimento exatamente nesse desafio: criar processo de vendas que escala sem depender de planilha ou memória do vendedor.</p>
+        <p style="margin: 0; color: var(--foreground);">Trabalho com agências de marketing em crescimento exatamente nesse desafio: criar processo de vendas que escala sem depender de planilha ou memória do vendedor.</p>
         <br/>
-        <p style="margin: 0; color: #1e293b;">Posso te mandar um resumo de como resolvemos isso para a [Empresa do Setor]? Levaria 2 minutos para ler.</p>
+        <p style="margin: 0; color: var(--foreground);">Posso te mandar um resumo de como resolvemos isso para a [Empresa do Setor]? Levaria 2 minutos para ler.</p>
       </div>
 
       <h2>Cadência de Prospecção: Como Combinar Canais</h2>
@@ -161,55 +161,55 @@ export const post: BlogPost = {
 
       <table style="width: 100%; border-collapse: collapse; margin: 2rem 0;">
         <thead>
-          <tr style="background: #f8fafc;">
-            <th style="padding: 0.75rem; border: 1px solid #e2e8f0; text-align: left;">Dia</th>
-            <th style="padding: 0.75rem; border: 1px solid #e2e8f0; text-align: left;">Canal</th>
-            <th style="padding: 0.75rem; border: 1px solid #e2e8f0; text-align: left;">Ação</th>
-            <th style="padding: 0.75rem; border: 1px solid #e2e8f0; text-align: left;">Objetivo</th>
+          <tr style="background: var(--muted);">
+            <th style="padding: 0.75rem; border: 1px solid var(--border); text-align: left;">Dia</th>
+            <th style="padding: 0.75rem; border: 1px solid var(--border); text-align: left;">Canal</th>
+            <th style="padding: 0.75rem; border: 1px solid var(--border); text-align: left;">Ação</th>
+            <th style="padding: 0.75rem; border: 1px solid var(--border); text-align: left;">Objetivo</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;"><strong>Dia 1</strong></td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">LinkedIn</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Pedido de conexão</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Visibilidade inicial</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);"><strong>Dia 1</strong></td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">LinkedIn</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Pedido de conexão</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Visibilidade inicial</td>
           </tr>
-          <tr style="background: #f8fafc;">
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;"><strong>Dia 2</strong></td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Email</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Cold email personalizado (Email 1)</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Primeiro contato direto</td>
-          </tr>
-          <tr>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;"><strong>Dia 4</strong></td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">LinkedIn</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Comentar em post do lead</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Warm-up e visibilidade</td>
-          </tr>
-          <tr style="background: #f8fafc;">
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;"><strong>Dia 6</strong></td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Email</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Follow-up do Email 1 (ângulo diferente)</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Segunda chance de abertura</td>
+          <tr style="background: var(--muted);">
+            <td style="padding: 0.75rem; border: 1px solid var(--border);"><strong>Dia 2</strong></td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Email</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Cold email personalizado (Email 1)</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Primeiro contato direto</td>
           </tr>
           <tr>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;"><strong>Dia 8</strong></td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">LinkedIn DM</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Mensagem direta personalizada</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Conversa no canal preferido</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);"><strong>Dia 4</strong></td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">LinkedIn</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Comentar em post do lead</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Warm-up e visibilidade</td>
           </tr>
-          <tr style="background: #f8fafc;">
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;"><strong>Dia 10</strong></td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Ligação</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Ligação curta (referencia email)</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Contato humano direto</td>
+          <tr style="background: var(--muted);">
+            <td style="padding: 0.75rem; border: 1px solid var(--border);"><strong>Dia 6</strong></td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Email</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Follow-up do Email 1 (ângulo diferente)</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Segunda chance de abertura</td>
           </tr>
           <tr>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;"><strong>Dia 14</strong></td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Email</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Email de "break-up" (fechamento do ciclo)</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Última tentativa + deixa porta aberta</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);"><strong>Dia 8</strong></td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">LinkedIn DM</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Mensagem direta personalizada</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Conversa no canal preferido</td>
+          </tr>
+          <tr style="background: var(--muted);">
+            <td style="padding: 0.75rem; border: 1px solid var(--border);"><strong>Dia 10</strong></td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Ligação</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Ligação curta (referencia email)</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Contato humano direto</td>
+          </tr>
+          <tr>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);"><strong>Dia 14</strong></td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Email</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Email de "break-up" (fechamento do ciclo)</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Última tentativa + deixa porta aberta</td>
           </tr>
         </tbody>
       </table>
@@ -220,7 +220,7 @@ export const post: BlogPost = {
         A maior causa de falha em prospecção B2B não é a qualidade da mensagem — é a falta de sistema. Vendedores perdem leads porque esquecem de fazer o 3º follow-up, não registram o motivo da recusa, e não têm visibilidade de onde cada lead está na cadência.
       </p>
 
-      <p>Um <a href="/blog/como-organizar-pipeline-vendas" style="color: #2563eb;">CRM com pipeline bem organizado</a> resolve os 4 gargalos mais comuns:</p>
+      <p>Um <a href="/blog/como-organizar-pipeline-vendas" style="color: var(--foreground);">CRM com pipeline bem organizado</a> resolve os 4 gargalos mais comuns:</p>
 
       <ul style="line-height: 2; padding-left: 1.5rem;">
         <li><strong>Registro automático:</strong> Cada touchpoint fica registrado — email enviado, ligação feita, mensagem respondida</li>
@@ -229,10 +229,10 @@ export const post: BlogPost = {
         <li><strong>Métricas de cadência:</strong> Você vê qual canal e qual mensagem gera mais respostas — e otimiza em tempo real</li>
       </ul>
 
-      <div style="background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%); padding: 2rem; border-radius: 1rem; margin: 2.5rem 0; text-align: center;">
+      <div style="background: var(--primary); padding: 2rem; border-radius: 1rem; margin: 2.5rem 0; text-align: center;">
         <p style="color: white; font-size: 1.25rem; font-weight: 700; margin: 0 0 0.5rem;">Organize sua prospecção com o Sirius CRM</p>
-        <p style="color: #bfdbfe; margin: 0 0 1.25rem;">Pipeline visual, alertas de follow-up e registro de cadência — tudo grátis para começar.</p>
-        <a href="/register" style="display: inline-block; background: white; color: #2563eb; padding: 0.75rem 2rem; border-radius: 0.5rem; font-weight: 700; text-decoration: none;">Começar Grátis →</a>
+        <p style="color: var(--foreground); margin: 0 0 1.25rem;">Pipeline visual, alertas de follow-up e registro de cadência — tudo grátis para começar.</p>
+        <a href="/register" style="display: inline-block; background: white; color: var(--foreground); padding: 0.75rem 2rem; border-radius: 0.5rem; font-weight: 700; text-decoration: none;">Começar Grátis →</a>
       </div>
 
       <h2>Erros Mais Comuns na Prospecção B2B</h2>
@@ -251,24 +251,24 @@ export const post: BlogPost = {
 
       <h2>Perguntas Frequentes sobre Prospecção B2B</h2>
 
-      <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
-        <summary style="font-weight: 600; cursor: pointer; color: #1e293b; list-style: revert;">Quantos contatos fazer por dia na prospecção B2B?</summary>
-        <p style="margin: 0.75rem 0 0; color: #4b5563;">Para um SDR dedicado, o benchmark é 50-80 touchpoints por dia (entre emails, mensagens LinkedIn e ligações). Para um vendedor que também fecha, o ideal é 20-30 touchpoints por dia para manter uma cadência saudável sem comprometer o fechamento dos deals ativos. Qualidade é mais importante que volume: 20 emails bem personalizados superam 100 genéricos.</p>
+      <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
+        <summary style="font-weight: 600; cursor: pointer; color: var(--foreground); list-style: revert;">Quantos contatos fazer por dia na prospecção B2B?</summary>
+        <p style="margin: 0.75rem 0 0; color: var(--foreground);">Para um SDR dedicado, o benchmark é 50-80 touchpoints por dia (entre emails, mensagens LinkedIn e ligações). Para um vendedor que também fecha, o ideal é 20-30 touchpoints por dia para manter uma cadência saudável sem comprometer o fechamento dos deals ativos. Qualidade é mais importante que volume: 20 emails bem personalizados superam 100 genéricos.</p>
       </details>
 
-      <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
-        <summary style="font-weight: 600; cursor: pointer; color: #1e293b; list-style: revert;">Cold email ou LinkedIn: qual tem mais resultado em B2B?</summary>
-        <p style="margin: 0.75rem 0 0; color: #4b5563;">Depende do seu ICP. LinkedIn funciona melhor para cargos C-level e diretores — quem tem presença ativa na plataforma. Cold email funciona melhor para volume e para perfis que não são tão ativos no LinkedIn (financeiro, operacional). A melhor estratégia combina os dois em cadência multicanal — o mesmo lead recebe abordagem por ambos os canais, o que aumenta o reconhecimento e a taxa de resposta.</p>
+      <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
+        <summary style="font-weight: 600; cursor: pointer; color: var(--foreground); list-style: revert;">Cold email ou LinkedIn: qual tem mais resultado em B2B?</summary>
+        <p style="margin: 0.75rem 0 0; color: var(--foreground);">Depende do seu ICP. LinkedIn funciona melhor para cargos C-level e diretores — quem tem presença ativa na plataforma. Cold email funciona melhor para volume e para perfis que não são tão ativos no LinkedIn (financeiro, operacional). A melhor estratégia combina os dois em cadência multicanal — o mesmo lead recebe abordagem por ambos os canais, o que aumenta o reconhecimento e a taxa de resposta.</p>
       </details>
 
-      <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
-        <summary style="font-weight: 600; cursor: pointer; color: #1e293b; list-style: revert;">Como qualificar um lead na prospecção antes de gastar tempo?</summary>
-        <p style="margin: 0.75rem 0 0; color: #4b5563;">Use o framework BANT rápido: Budget (tem orçamento ou pode ter?), Authority (é o decisor ou tem acesso a ele?), Need (tem o problema que você resolve?), Timeline (existe urgência ou gatilho de compra?). Você consegue responder 3 das 4 perguntas com pesquisa antes do primeiro contato — LinkedIn, site da empresa, notícias recentes. Se não passa no BANT, não entre na cadência — é desperdício de tempo.</p>
+      <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
+        <summary style="font-weight: 600; cursor: pointer; color: var(--foreground); list-style: revert;">Como qualificar um lead na prospecção antes de gastar tempo?</summary>
+        <p style="margin: 0.75rem 0 0; color: var(--foreground);">Use o framework BANT rápido: Budget (tem orçamento ou pode ter?), Authority (é o decisor ou tem acesso a ele?), Need (tem o problema que você resolve?), Timeline (existe urgência ou gatilho de compra?). Você consegue responder 3 das 4 perguntas com pesquisa antes do primeiro contato — LinkedIn, site da empresa, notícias recentes. Se não passa no BANT, não entre na cadência — é desperdício de tempo.</p>
       </details>
 
-      <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin-bottom: 2rem;">
-        <summary style="font-weight: 600; cursor: pointer; color: #1e293b; list-style: revert;">Quantos follow-ups fazer antes de desistir de um lead?</summary>
-        <p style="margin: 0.75rem 0 0; color: #4b5563;">O número ideal é 6-8 touchpoints distribuídos em 2-3 semanas antes do email de break-up. Dados do Rainmaker Institute mostram que 80% das vendas complexas B2B acontecem entre o 5º e o 12º contato. Desistir no 2º ou 3º follow-up (o que a maioria faz) significa abandonar a maioria dos leads que poderiam converter. O segredo é variar o canal e o ângulo da mensagem a cada touchpoint — não mandar o mesmo email 8 vezes.</p>
+      <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 2rem;">
+        <summary style="font-weight: 600; cursor: pointer; color: var(--foreground); list-style: revert;">Quantos follow-ups fazer antes de desistir de um lead?</summary>
+        <p style="margin: 0.75rem 0 0; color: var(--foreground);">O número ideal é 6-8 touchpoints distribuídos em 2-3 semanas antes do email de break-up. Dados do Rainmaker Institute mostram que 80% das vendas complexas B2B acontecem entre o 5º e o 12º contato. Desistir no 2º ou 3º follow-up (o que a maioria faz) significa abandonar a maioria dos leads que poderiam converter. O segredo é variar o canal e o ângulo da mensagem a cada touchpoint — não mandar o mesmo email 8 vezes.</p>
       </details>
 
       <h2>Conclusão</h2>
@@ -281,7 +281,7 @@ export const post: BlogPost = {
         O próximo passo é começar pelo ICP: analise seus 10 melhores clientes hoje, identifique os padrões e construa sua lista de prospecção a partir daí. Com o CRM rastreando cada ação, você vai saber em semanas o que funciona — e o que não funciona — para o seu negócio específico.
       </p>
 
-      <hr style="margin: 3rem 0; border: none; border-top: 1px solid #e5e7eb;" />
+      <hr style="margin: 3rem 0; border: none; border-top: 1px solid var(--border);" />
       <strong>Última Atualização:</strong> 28 de Fevereiro de 2026<br/>
       <strong>Autor:</strong> Equipe Sirius CRM<br/>
       <strong>Tempo de Leitura:</strong> 10 minutos
@@ -367,42 +367,42 @@ export const post: BlogPost = {
 
       <table style="width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: 0.9rem;">
         <thead>
-          <tr style="background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%); color: white;">
+          <tr style="background: var(--primary); color: white;">
             <th style="padding: 0.875rem; text-align: left;">Day</th>
             <th style="padding: 0.875rem; text-align: left;">Action</th>
             <th style="padding: 0.875rem; text-align: left;">Channel</th>
           </tr>
         </thead>
         <tbody>
-          <tr style="background: #f8fafc;">
-            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">Day 1</td>
-            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">LinkedIn connection request (no note)</td>
-            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">LinkedIn</td>
+          <tr style="background: var(--muted);">
+            <td style="padding: 0.875rem; border: 1px solid var(--border);">Day 1</td>
+            <td style="padding: 0.875rem; border: 1px solid var(--border);">LinkedIn connection request (no note)</td>
+            <td style="padding: 0.875rem; border: 1px solid var(--border);">LinkedIn</td>
           </tr>
           <tr>
-            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">Day 2</td>
-            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">Cold email #1 — trigger + problem + proof + question</td>
-            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">Email</td>
+            <td style="padding: 0.875rem; border: 1px solid var(--border);">Day 2</td>
+            <td style="padding: 0.875rem; border: 1px solid var(--border);">Cold email #1 — trigger + problem + proof + question</td>
+            <td style="padding: 0.875rem; border: 1px solid var(--border);">Email</td>
           </tr>
-          <tr style="background: #f8fafc;">
-            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">Day 3</td>
-            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">LinkedIn message (if connected) — personalized, no pitch</td>
-            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">LinkedIn</td>
-          </tr>
-          <tr>
-            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">Day 5</td>
-            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">Cold email #2 — value drop (article, stat) + soft CTA</td>
-            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">Email</td>
-          </tr>
-          <tr style="background: #f8fafc;">
-            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">Day 7</td>
-            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">Cold email #3 — direct question about the specific pain</td>
-            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">Email</td>
+          <tr style="background: var(--muted);">
+            <td style="padding: 0.875rem; border: 1px solid var(--border);">Day 3</td>
+            <td style="padding: 0.875rem; border: 1px solid var(--border);">LinkedIn message (if connected) — personalized, no pitch</td>
+            <td style="padding: 0.875rem; border: 1px solid var(--border);">LinkedIn</td>
           </tr>
           <tr>
-            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">Day 10</td>
-            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">Break-up email — "Should I stop following up?"</td>
-            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">Email</td>
+            <td style="padding: 0.875rem; border: 1px solid var(--border);">Day 5</td>
+            <td style="padding: 0.875rem; border: 1px solid var(--border);">Cold email #2 — value drop (article, stat) + soft CTA</td>
+            <td style="padding: 0.875rem; border: 1px solid var(--border);">Email</td>
+          </tr>
+          <tr style="background: var(--muted);">
+            <td style="padding: 0.875rem; border: 1px solid var(--border);">Day 7</td>
+            <td style="padding: 0.875rem; border: 1px solid var(--border);">Cold email #3 — direct question about the specific pain</td>
+            <td style="padding: 0.875rem; border: 1px solid var(--border);">Email</td>
+          </tr>
+          <tr>
+            <td style="padding: 0.875rem; border: 1px solid var(--border);">Day 10</td>
+            <td style="padding: 0.875rem; border: 1px solid var(--border);">Break-up email — "Should I stop following up?"</td>
+            <td style="padding: 0.875rem; border: 1px solid var(--border);">Email</td>
           </tr>
         </tbody>
       </table>
@@ -411,14 +411,14 @@ export const post: BlogPost = {
         Effective B2B prospecting in 2026 is about <strong>system</strong>. Clear ICP, multichannel cadence, personalized messages, and every touchpoint logged in the CRM. Teams with this process generate 3-5x more qualified meetings than those prospecting reactively.
       </p>
 
-      <div style="background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); border-left: 4px solid #2563eb; padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
-        <p style="font-weight: 700; color: #1e40af;">Automate your prospecting cadence in Sirius CRM</p>
-        <p style="color: #1e40af; margin: 0.5rem 0 1rem;">Set up multi-touch sequences, track every touchpoint, and let AI identify the best moment to follow up.</p>
-        <a href="/en/register" style="background: #2563eb; color: white; padding: 0.75rem 1.5rem; border-radius: 0.5rem; font-weight: 600; text-decoration: none; display: inline-block;">Start Free →</a>
+      <div style="background: var(--muted); border-left: 4px solid var(--fio-forte); padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
+        <p style="font-weight: 700; color: var(--foreground);">Automate your prospecting cadence in Sirius CRM</p>
+        <p style="color: var(--foreground); margin: 0.5rem 0 1rem;">Set up multi-touch sequences, track every touchpoint, and let AI identify the best moment to follow up.</p>
+        <a href="/en/register" style="background: var(--primary); color: white; padding: 0.75rem 1.5rem; border-radius: 0.5rem; font-weight: 600; text-decoration: none; display: inline-block;">Start Free →</a>
       </div>
 
-      <hr style="margin: 3rem 0; border: none; border-top: 1px solid #e5e7eb;" />
-      <p style="font-size: 0.85rem; color: #64748b;">
+      <hr style="margin: 3rem 0; border: none; border-top: 1px solid var(--border);" />
+      <p style="font-size: 0.85rem; color: var(--foreground);">
         <strong>Last Updated:</strong> February 28, 2026<br/>
         <strong>Author:</strong> Sirius CRM Team<br/>
         <strong>Reading Time:</strong> 10 minutes

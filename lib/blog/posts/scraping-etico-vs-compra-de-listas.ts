@@ -23,8 +23,8 @@ export const post: BlogPost = {
         Neste artigo, vamos comparar as duas estratégias em profundidade: custo por lead, taxa de qualificação, risco regulatório, e como ferramentas modernas de prospecção como o <a href="/">Sirius CRM</a> ajudam a fazer scraping ético dentro da lei.
       </p>
 
-      <div class="not-prose" style="background: #1e293b; padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
-        <p style="margin: 0 0 0.75rem; font-weight: 700; font-size: 1.05rem; color: #38bdf8;">⚡ TL;DR — Resposta Rápida</p>
+      <div class="not-prose" style="background: var(--primary); padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
+        <p style="margin: 0 0 0.75rem; font-weight: 700; font-size: 1.05rem; color: var(--primary-foreground);">⚡ TL;DR — Resposta Rápida</p>
         <ul style="margin: 0; padding-left: 1.25rem; line-height: 2; color: #ffffff;">
           <li>Comprar listas pode ser <strong>ilegal no Brasil</strong> dependendo da origem dos dados e ausência de consentimento (LGPD Art. 7)</li>
           <li>Listas compradas têm taxa de qualificação média de <strong>2-8%</strong>; scraping ético chega a <strong>25-40%</strong> com ICP bem definido</li>
@@ -67,49 +67,49 @@ export const post: BlogPost = {
 
       <table style="width: 100%; border-collapse: collapse; margin: 2rem 0;">
         <thead>
-          <tr style="background: #f8fafc;">
-            <th style="padding: 0.75rem; border: 1px solid #e2e8f0; text-align: left;">Dimensão</th>
-            <th style="padding: 0.75rem; border: 1px solid #e2e8f0; text-align: left;">Compra de Listas</th>
-            <th style="padding: 0.75rem; border: 1px solid #e2e8f0; text-align: left;">Scraping Ético</th>
+          <tr style="background: var(--muted);">
+            <th style="padding: 0.75rem; border: 1px solid var(--border); text-align: left;">Dimensão</th>
+            <th style="padding: 0.75rem; border: 1px solid var(--border); text-align: left;">Compra de Listas</th>
+            <th style="padding: 0.75rem; border: 1px solid var(--border); text-align: left;">Scraping Ético</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;"><strong>Origem dos dados</strong></td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Frequentemente desconhecida ou opaca</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Fontes públicas documentadas</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);"><strong>Origem dos dados</strong></td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Frequentemente desconhecida ou opaca</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Fontes públicas documentadas</td>
           </tr>
-          <tr style="background: #f8fafc;">
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;"><strong>Consentimento</strong></td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Geralmente ausente ou duvidoso</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Dados publicamente disponibilizados</td>
-          </tr>
-          <tr>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;"><strong>Atualização</strong></td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Stale — geralmente 6-24 meses desatualizada</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Em tempo real, dados frescos</td>
-          </tr>
-          <tr style="background: #f8fafc;">
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;"><strong>Relevância</strong></td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Segmentação limitada e genérica</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Segmentação precisa por setor/região/porte</td>
+          <tr style="background: var(--muted);">
+            <td style="padding: 0.75rem; border: 1px solid var(--border);"><strong>Consentimento</strong></td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Geralmente ausente ou duvidoso</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Dados publicamente disponibilizados</td>
           </tr>
           <tr>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;"><strong>Custo</strong></td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">R$ 0,10-2,00 por lead + risco regulatório</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Custo de ferramenta + tempo de configuração</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);"><strong>Atualização</strong></td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Stale — geralmente 6-24 meses desatualizada</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Em tempo real, dados frescos</td>
           </tr>
-          <tr style="background: #f8fafc;">
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;"><strong>Taxa de bounce email</strong></td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">20-40% (dados desatualizados)</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">5-15% (dados recentes)</td>
+          <tr style="background: var(--muted);">
+            <td style="padding: 0.75rem; border: 1px solid var(--border);"><strong>Relevância</strong></td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Segmentação limitada e genérica</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Segmentação precisa por setor/região/porte</td>
+          </tr>
+          <tr>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);"><strong>Custo</strong></td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">R$ 0,10-2,00 por lead + risco regulatório</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Custo de ferramenta + tempo de configuração</td>
+          </tr>
+          <tr style="background: var(--muted);">
+            <td style="padding: 0.75rem; border: 1px solid var(--border);"><strong>Taxa de bounce email</strong></td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">20-40% (dados desatualizados)</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">5-15% (dados recentes)</td>
           </tr>
         </tbody>
       </table>
 
       <div class="callout-stat">
         <p><strong>📊 Qualidade real das listas compradas</strong></p>
-        <p style="font-size: 3rem; font-weight: 800; color: #2563eb; margin: 1rem 0; line-height: 1;">31%</p>
+        <p style="font-size: 3rem; font-weight: 800; color: var(--foreground); margin: 1rem 0; line-height: 1;">31%</p>
         <p>dos dados em listas B2B compradas estão desatualizados no momento da compra. Após 12 meses, esse número sobe para 70%. Fonte: ZoomInfo Data Quality Report 2025.</p>
       </div>
 
@@ -149,42 +149,42 @@ export const post: BlogPost = {
 
       <table style="width: 100%; border-collapse: collapse; margin: 2rem 0;">
         <thead>
-          <tr style="background: #f8fafc;">
-            <th style="padding: 0.75rem; border: 1px solid #e2e8f0; text-align: left;">Ação</th>
-            <th style="padding: 0.75rem; border: 1px solid #e2e8f0; text-align: left;">Status</th>
-            <th style="padding: 0.75rem; border: 1px solid #e2e8f0; text-align: left;">Observação</th>
+          <tr style="background: var(--muted);">
+            <th style="padding: 0.75rem; border: 1px solid var(--border); text-align: left;">Ação</th>
+            <th style="padding: 0.75rem; border: 1px solid var(--border); text-align: left;">Status</th>
+            <th style="padding: 0.75rem; border: 1px solid var(--border); text-align: left;">Observação</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Consultar CNPJ na API da Receita</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0; color: #16a34a;"><strong>✅ Permitido</strong></td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Dados públicos, API oficial</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Consultar CNPJ na API da Receita</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border); color: var(--foreground);"><strong>✅ Permitido</strong></td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Dados públicos, API oficial</td>
           </tr>
-          <tr style="background: #f8fafc;">
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Coletar dados de empresas no Google Maps</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0; color: #16a34a;"><strong>✅ Permitido</strong></td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Via API Google Places ou ferramentas que respeitam os termos</td>
-          </tr>
-          <tr>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Coletar emails pessoais do LinkedIn em massa</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0; color: #dc2626;"><strong>❌ Proibido</strong></td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Viola ToS do LinkedIn e LGPD</td>
-          </tr>
-          <tr style="background: #f8fafc;">
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Usar dados públicos de perfil LinkedIn para abordagem manual</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0; color: #d97706;"><strong>⚠️ Zona cinza</strong></td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Manual é aceito; automação em massa não é</td>
+          <tr style="background: var(--muted);">
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Coletar dados de empresas no Google Maps</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border); color: var(--foreground);"><strong>✅ Permitido</strong></td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Via API Google Places ou ferramentas que respeitam os termos</td>
           </tr>
           <tr>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Consultar dados de licitações públicas</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0; color: #16a34a;"><strong>✅ Permitido</strong></td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Dados governamentais públicos por lei</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Coletar emails pessoais do LinkedIn em massa</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border); color: var(--pulso-escuro);"><strong>❌ Proibido</strong></td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Viola ToS do LinkedIn e LGPD</td>
           </tr>
-          <tr style="background: #f8fafc;">
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Revender base de dados coletada</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0; color: #dc2626;"><strong>❌ Proibido</strong></td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Viola LGPD e termos de uso das fontes</td>
+          <tr style="background: var(--muted);">
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Usar dados públicos de perfil LinkedIn para abordagem manual</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border); color: var(--foreground);"><strong>⚠️ Zona cinza</strong></td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Manual é aceito; automação em massa não é</td>
+          </tr>
+          <tr>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Consultar dados de licitações públicas</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border); color: var(--foreground);"><strong>✅ Permitido</strong></td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Dados governamentais públicos por lei</td>
+          </tr>
+          <tr style="background: var(--muted);">
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Revender base de dados coletada</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border); color: var(--pulso-escuro);"><strong>❌ Proibido</strong></td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Viola LGPD e termos de uso das fontes</td>
           </tr>
         </tbody>
       </table>
@@ -197,42 +197,42 @@ export const post: BlogPost = {
 
       <table style="width: 100%; border-collapse: collapse; margin: 2rem 0;">
         <thead>
-          <tr style="background: #f8fafc;">
-            <th style="padding: 0.75rem; border: 1px solid #e2e8f0; text-align: left;">Item de Custo</th>
-            <th style="padding: 0.75rem; border: 1px solid #e2e8f0; text-align: left;">Lista Comprada</th>
-            <th style="padding: 0.75rem; border: 1px solid #e2e8f0; text-align: left;">Scraping Ético</th>
+          <tr style="background: var(--muted);">
+            <th style="padding: 0.75rem; border: 1px solid var(--border); text-align: left;">Item de Custo</th>
+            <th style="padding: 0.75rem; border: 1px solid var(--border); text-align: left;">Lista Comprada</th>
+            <th style="padding: 0.75rem; border: 1px solid var(--border); text-align: left;">Scraping Ético</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Custo de aquisição (1.000 leads)</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">R$ 500-2.000</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">R$ 0-200 (ferramenta)</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Custo de aquisição (1.000 leads)</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">R$ 500-2.000</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">R$ 0-200 (ferramenta)</td>
           </tr>
-          <tr style="background: #f8fafc;">
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Tempo de triagem (30% dados ruins)</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">6-10h de vendedor</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">1-2h (dados mais frescos)</td>
-          </tr>
-          <tr>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Taxa de leads qualificados</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">2-8%</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">25-40%</td>
-          </tr>
-          <tr style="background: #f8fafc;">
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Risco de reputação de domínio</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Alto (bounce elevado)</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Baixo</td>
+          <tr style="background: var(--muted);">
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Tempo de triagem (30% dados ruins)</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">6-10h de vendedor</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">1-2h (dados mais frescos)</td>
           </tr>
           <tr>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Risco regulatório LGPD</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Médio-alto</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Baixo (se feito corretamente)</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Taxa de leads qualificados</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">2-8%</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">25-40%</td>
           </tr>
-          <tr style="background: #f8fafc;">
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Custo por lead qualificado (estimado)</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;"><strong>R$ 25-100</strong></td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;"><strong>R$ 1-8</strong></td>
+          <tr style="background: var(--muted);">
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Risco de reputação de domínio</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Alto (bounce elevado)</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Baixo</td>
+          </tr>
+          <tr>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Risco regulatório LGPD</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Médio-alto</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Baixo (se feito corretamente)</td>
+          </tr>
+          <tr style="background: var(--muted);">
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Custo por lead qualificado (estimado)</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);"><strong>R$ 25-100</strong></td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);"><strong>R$ 1-8</strong></td>
           </tr>
         </tbody>
       </table>
@@ -247,27 +247,27 @@ export const post: BlogPost = {
         Isso elimina a necessidade de planilhas intermediárias e garante que os dados têm origem documentada — importante para compliance LGPD. Cada lead importado registra automaticamente a fonte de dados (CNPJ.ws, Google Maps API) junto ao timestamp da importação.
       </p>
 
-      <div style="background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%); padding: 2rem; border-radius: 1rem; margin: 2.5rem 0; text-align: center;">
+      <div style="background: var(--primary); padding: 2rem; border-radius: 1rem; margin: 2.5rem 0; text-align: center;">
         <p style="color: white; font-size: 1.25rem; font-weight: 700; margin: 0 0 0.5rem;">Prospecte leads de forma ética e eficiente</p>
-        <p style="color: #bfdbfe; margin: 0 0 1.25rem;">Busca por CNPJ e Google Maps integrada ao pipeline do Sirius CRM. Dados frescos, origem documentada.</p>
-        <a href="/pricing" style="display: inline-block; background: white; color: #2563eb; padding: 0.75rem 2rem; border-radius: 0.5rem; font-weight: 700; text-decoration: none;">Ver Planos →</a>
+        <p style="color: var(--foreground); margin: 0 0 1.25rem;">Busca por CNPJ e Google Maps integrada ao pipeline do Sirius CRM. Dados frescos, origem documentada.</p>
+        <a href="/pricing" style="display: inline-block; background: white; color: var(--foreground); padding: 0.75rem 2rem; border-radius: 0.5rem; font-weight: 700; text-decoration: none;">Ver Planos →</a>
       </div>
 
       <h2>Perguntas Frequentes sobre Listas e Scraping</h2>
 
-      <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
-        <summary style="font-weight: 600; cursor: pointer; color: #1e293b; list-style: revert;">Posso usar lista comprada se o fornecedor garantir que os dados são LGPD compliant?</summary>
-        <p style="margin: 0.75rem 0 0; color: #4b5563;">Você pode usar, mas precisa verificar rigorosamente as garantias. O fornecedor deve conseguir documentar: qual a base legal usada (consentimento, legítimo interesse, contrato), quando o dado foi coletado, se o titular foi informado e tem direito de opt-out. Na prática, a maioria dos fornecedores de listas no Brasil não consegue provar isso adequadamente. Recomendamos exigir contrato com cláusula de responsabilidade solidária e consultar um advogado especialista em LGPD antes de usar dados de terceiros em campanhas em massa.</p>
+      <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
+        <summary style="font-weight: 600; cursor: pointer; color: var(--foreground); list-style: revert;">Posso usar lista comprada se o fornecedor garantir que os dados são LGPD compliant?</summary>
+        <p style="margin: 0.75rem 0 0; color: var(--foreground);">Você pode usar, mas precisa verificar rigorosamente as garantias. O fornecedor deve conseguir documentar: qual a base legal usada (consentimento, legítimo interesse, contrato), quando o dado foi coletado, se o titular foi informado e tem direito de opt-out. Na prática, a maioria dos fornecedores de listas no Brasil não consegue provar isso adequadamente. Recomendamos exigir contrato com cláusula de responsabilidade solidária e consultar um advogado especialista em LGPD antes de usar dados de terceiros em campanhas em massa.</p>
       </details>
 
-      <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
-        <summary style="font-weight: 600; cursor: pointer; color: #1e293b; list-style: revert;">Qual ferramenta gratuita posso usar para fazer scraping ético de CNPJs?</summary>
-        <p style="margin: 0.75rem 0 0; color: #4b5563;">A API pública do ReceitaWS (receitaws.com.br) e o CNPJ.ws oferecem consulta gratuita de dados de empresas. Para buscas em volume, existe o repositório de dados abertos do Portal de Dados do Governo Federal, que disponibiliza dumps completos da base de CNPJs para download. O Sirius CRM PRO integra essas fontes nativamente — você faz a busca direto no CRM sem precisar de ferramentas externas.</p>
+      <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
+        <summary style="font-weight: 600; cursor: pointer; color: var(--foreground); list-style: revert;">Qual ferramenta gratuita posso usar para fazer scraping ético de CNPJs?</summary>
+        <p style="margin: 0.75rem 0 0; color: var(--foreground);">A API pública do ReceitaWS (receitaws.com.br) e o CNPJ.ws oferecem consulta gratuita de dados de empresas. Para buscas em volume, existe o repositório de dados abertos do Portal de Dados do Governo Federal, que disponibiliza dumps completos da base de CNPJs para download. O Sirius CRM PRO integra essas fontes nativamente — você faz a busca direto no CRM sem precisar de ferramentas externas.</p>
       </details>
 
-      <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin-bottom: 2rem;">
-        <summary style="font-weight: 600; cursor: pointer; color: #1e293b; list-style: revert;">Como o scraping ético se compara ao LinkedIn Sales Navigator?</summary>
-        <p style="margin: 0.75rem 0 0; color: #4b5563;">São fontes complementares. O Sales Navigator entrega dados de profissionais (cargo, empresa, histórico) com permissão do próprio LinkedIn — ótimo para mapeamento de decisores. Scraping ético de CNPJ/Google Maps entrega dados de empresas (segmento, localização, porte, contato comercial público) — ótimo para construir a lista de empresas-alvo. A combinação ideal: usar CNPJ para identificar as empresas do ICP, depois usar LinkedIn para identificar os decisores dentro dessas empresas.</p>
+      <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 2rem;">
+        <summary style="font-weight: 600; cursor: pointer; color: var(--foreground); list-style: revert;">Como o scraping ético se compara ao LinkedIn Sales Navigator?</summary>
+        <p style="margin: 0.75rem 0 0; color: var(--foreground);">São fontes complementares. O Sales Navigator entrega dados de profissionais (cargo, empresa, histórico) com permissão do próprio LinkedIn — ótimo para mapeamento de decisores. Scraping ético de CNPJ/Google Maps entrega dados de empresas (segmento, localização, porte, contato comercial público) — ótimo para construir a lista de empresas-alvo. A combinação ideal: usar CNPJ para identificar as empresas do ICP, depois usar LinkedIn para identificar os decisores dentro dessas empresas.</p>
       </details>
 
       <h2>Conclusão</h2>
@@ -280,7 +280,7 @@ export const post: BlogPost = {
         Em 2026, com a LGPD consolidada e ferramentas de scraping ético cada vez mais acessíveis, a conta ficou ainda mais favorável à prospecção baseada em fontes públicas. O investimento inicial em configurar um processo de scraping ético se paga rapidamente na forma de leads mais qualificados, dados mais frescos e zero risco de autuação regulatória.
       </p>
 
-      <hr style="margin: 3rem 0; border: none; border-top: 1px solid #e5e7eb;" />
+      <hr style="margin: 3rem 0; border: none; border-top: 1px solid var(--border);" />
       <strong>Última Atualização:</strong> 21 de Março de 2026<br/>
       <strong>Autor:</strong> Equipe Sirius CRM<br/>
       <strong>Tempo de Leitura:</strong> 11 minutos
@@ -340,47 +340,47 @@ export const post: BlogPost = {
 
       <table style="width: 100%; border-collapse: collapse; margin: 1.5rem 0;">
         <thead>
-          <tr style="background: #f8fafc;">
-            <th style="border: 1px solid #e2e8f0; padding: 0.75rem; text-align: left;">Metric</th>
-            <th style="border: 1px solid #e2e8f0; padding: 0.75rem; text-align: left;">Purchased List</th>
-            <th style="border: 1px solid #e2e8f0; padding: 0.75rem; text-align: left;">Ethical Scraping</th>
+          <tr style="background: var(--muted);">
+            <th style="border: 1px solid var(--border); padding: 0.75rem; text-align: left;">Metric</th>
+            <th style="border: 1px solid var(--border); padding: 0.75rem; text-align: left;">Purchased List</th>
+            <th style="border: 1px solid var(--border); padding: 0.75rem; text-align: left;">Ethical Scraping</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">Upfront cost</td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">R$500–5,000 per list</td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">R$0–300/month (tools)</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">Upfront cost</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">R$500–5,000 per list</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">R$0–300/month (tools)</td>
           </tr>
           <tr>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">Data freshness</td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">Quarterly/annual refresh</td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">Real-time (on-demand)</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">Data freshness</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">Quarterly/annual refresh</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">Real-time (on-demand)</td>
           </tr>
           <tr>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">Valid email rate</td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">60–75%</td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">85–95%</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">Valid email rate</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">60–75%</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">85–95%</td>
           </tr>
           <tr>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">ICP fit (your criteria)</td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">30–50%</td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">80–95% (you define filters)</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">ICP fit (your criteria)</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">30–50%</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">80–95% (you define filters)</td>
           </tr>
           <tr>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">Regulatory risk (LGPD)</td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">Medium-High (unknown origin)</td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">Low (public data basis)</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">Regulatory risk (LGPD)</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">Medium-High (unknown origin)</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">Low (public data basis)</td>
           </tr>
           <tr>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">Email deliverability impact</td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">High bounce → domain damage</td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">Lower bounce rate</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">Email deliverability impact</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">High bounce → domain damage</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">Lower bounce rate</td>
           </tr>
           <tr>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">Competition for same contacts</td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">High (resold to many buyers)</td>
-            <td style="border: 1px solid #e2e8f0; padding: 0.75rem;">Low (your proprietary list)</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">Competition for same contacts</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">High (resold to many buyers)</td>
+            <td style="border: 1px solid var(--border); padding: 0.75rem;">Low (your proprietary list)</td>
           </tr>
         </tbody>
       </table>
@@ -411,7 +411,7 @@ export const post: BlogPost = {
       </ol>
 
       <p>
-        The companies that win in B2B prospecting in 2026 are those that treat their prospect list as a proprietary asset — built systematically, enriched continuously, and managed in a CRM like <a href="/" style="color: #2563eb; text-decoration: underline;">Sirius</a> where every touch is logged and every follow-up is tracked.
+        The companies that win in B2B prospecting in 2026 are those that treat their prospect list as a proprietary asset — built systematically, enriched continuously, and managed in a CRM like <a href="/" style="color: var(--foreground); text-decoration: underline;">Sirius</a> where every touch is logged and every follow-up is tracked.
       </p>
 
       <h2>LGPD Compliance Checklist for B2B Outreach</h2>
@@ -427,19 +427,19 @@ export const post: BlogPost = {
 
       <h2>FAQ</h2>
 
-      <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin-bottom: 2rem;">
-        <summary style="font-weight: 600; cursor: pointer; color: #1e293b; list-style: revert;">Is CNPJ data scraping legal under LGPD?</summary>
-        <p style="margin: 0.75rem 0 0; color: #4b5563;">Yes, when used correctly. CNPJ data is a public registry that companies are legally required to register. LGPD's legitimate interest basis (Art. 10) and the public data exception (Art. 7, VII) both support using this data for B2B outreach. The key requirements: only use for the purpose it was collected (business contact), honor opt-outs promptly, and don't use personal data of individuals beyond their professional role.</p>
+      <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 2rem;">
+        <summary style="font-weight: 600; cursor: pointer; color: var(--foreground); list-style: revert;">Is CNPJ data scraping legal under LGPD?</summary>
+        <p style="margin: 0.75rem 0 0; color: var(--foreground);">Yes, when used correctly. CNPJ data is a public registry that companies are legally required to register. LGPD's legitimate interest basis (Art. 10) and the public data exception (Art. 7, VII) both support using this data for B2B outreach. The key requirements: only use for the purpose it was collected (business contact), honor opt-outs promptly, and don't use personal data of individuals beyond their professional role.</p>
       </details>
 
-      <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin-bottom: 2rem;">
-        <summary style="font-weight: 600; cursor: pointer; color: #1e293b; list-style: revert;">What's the realistic ROI difference between scraping and purchased lists?</summary>
-        <p style="margin: 0.75rem 0 0; color: #4b5563;">Based on typical conversion benchmarks: ethical scraping generates 2-3x more qualified meetings per 1,000 contacts reached versus purchased lists, primarily due to higher ICP fit and lower competition for the same contacts. The setup time investment (typically 2-4 hours to configure tools and filters) pays back within the first 20 meetings booked.</p>
+      <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 2rem;">
+        <summary style="font-weight: 600; cursor: pointer; color: var(--foreground); list-style: revert;">What's the realistic ROI difference between scraping and purchased lists?</summary>
+        <p style="margin: 0.75rem 0 0; color: var(--foreground);">Based on typical conversion benchmarks: ethical scraping generates 2-3x more qualified meetings per 1,000 contacts reached versus purchased lists, primarily due to higher ICP fit and lower competition for the same contacts. The setup time investment (typically 2-4 hours to configure tools and filters) pays back within the first 20 meetings booked.</p>
       </details>
 
-      <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin-bottom: 2rem;">
-        <summary style="font-weight: 600; cursor: pointer; color: #1e293b; list-style: revert;">How does ethical scraping compare to LinkedIn Sales Navigator?</summary>
-        <p style="margin: 0.75rem 0 0; color: #4b5563;">They're complementary, not competing. Sales Navigator excels at mapping decision-makers within companies (role, seniority, job history, activity signals). Ethical CNPJ/Google Maps scraping excels at building the universe of target companies (industry, size, geography, registration status). The ideal stack: use CNPJ data to identify your ICP companies, then use LinkedIn to find the right person within each company.</p>
+      <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 2rem;">
+        <summary style="font-weight: 600; cursor: pointer; color: var(--foreground); list-style: revert;">How does ethical scraping compare to LinkedIn Sales Navigator?</summary>
+        <p style="margin: 0.75rem 0 0; color: var(--foreground);">They're complementary, not competing. Sales Navigator excels at mapping decision-makers within companies (role, seniority, job history, activity signals). Ethical CNPJ/Google Maps scraping excels at building the universe of target companies (industry, size, geography, registration status). The ideal stack: use CNPJ data to identify your ICP companies, then use LinkedIn to find the right person within each company.</p>
       </details>
 
       <h2>Conclusion</h2>

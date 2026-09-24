@@ -9,10 +9,10 @@ const options = [
     title: 'Sirius CRM para Representantes Comerciais',
     desc: 'Alerta de ciclo de recompra, gestão de carteira, roteiro de visitas otimizado e app mobile completo.',
     url: '/solucoes/representantes-comerciais',
-    btnColor: 'bg-blue-600 hover:bg-blue-700 text-white',
+    btnColor: 'bg-primary hover:bg-destaque text-white',
     borderColor: 'border-l-blue-500',
-    bg: 'bg-blue-50 dark:bg-blue-950/20',
-    titleColor: 'text-blue-700 dark:text-blue-400',
+    bg: 'bg-muted',
+    titleColor: 'text-foreground',
   },
   {
     id: 'agencia',
@@ -20,10 +20,10 @@ const options = [
     title: 'Sirius CRM para Agências de Marketing',
     desc: 'Multi-pipeline por linha de serviço, colaboração em equipe, métricas de conversão por origem e proposta automatizada.',
     url: '/solucoes/agencias-de-marketing',
-    btnColor: 'bg-violet-600 hover:bg-violet-700 text-white',
+    btnColor: 'bg-primary hover:bg-destaque text-white',
     borderColor: 'border-l-violet-500',
-    bg: 'bg-violet-50 dark:bg-violet-950/20',
-    titleColor: 'text-violet-700 dark:text-violet-400',
+    bg: 'bg-muted',
+    titleColor: 'text-foreground',
   },
   {
     id: 'imoveis',
@@ -31,10 +31,10 @@ const options = [
     title: 'Sirius CRM para Corretores de Imóveis',
     desc: 'Acompanhamento de interessados, histórico de visitas, projeção de comissões e follow-up no timing do ciclo imobiliário.',
     url: '/solucoes/corretores-de-imoveis',
-    btnColor: 'bg-emerald-600 hover:bg-emerald-700 text-white',
+    btnColor: 'bg-primary hover:bg-destaque text-white',
     borderColor: 'border-l-emerald-500',
-    bg: 'bg-emerald-50 dark:bg-emerald-950/20',
-    titleColor: 'text-emerald-700 dark:text-emerald-400',
+    bg: 'bg-muted',
+    titleColor: 'text-foreground',
   },
   {
     id: 'solar',
@@ -42,10 +42,10 @@ const options = [
     title: 'Sirius CRM para Energia Solar',
     desc: 'Follow-up automático de propostas, pipeline visual, alertas de deals esfriando e integração WhatsApp.',
     url: '/solucoes/empresas-de-energia-solar',
-    btnColor: 'bg-amber-500 hover:bg-amber-600 text-white',
+    btnColor: 'bg-primary hover:bg-destaque text-white',
     borderColor: 'border-l-amber-400',
-    bg: 'bg-amber-50 dark:bg-amber-950/20',
-    titleColor: 'text-amber-700 dark:text-amber-400',
+    bg: 'bg-muted',
+    titleColor: 'text-foreground',
   },
   {
     id: 'consultor',
@@ -53,10 +53,10 @@ const options = [
     title: 'Sirius CRM para Consultores',
     desc: 'Gestão de projetos e honorários, pipeline de propostas, histórico de diagnósticos e receita recorrente previsível.',
     url: '/solucoes/consultores-empresariais',
-    btnColor: 'bg-red-600 hover:bg-red-700 text-white',
+    btnColor: 'bg-primary hover:bg-destaque text-white',
     borderColor: 'border-l-red-500',
-    bg: 'bg-red-50 dark:bg-red-950/20',
-    titleColor: 'text-red-700 dark:text-red-400',
+    bg: 'bg-muted',
+    titleColor: 'text-destaque',
   },
 ]
 
@@ -88,7 +88,7 @@ export function CRMFinder() {
           <p className={`font-bold text-lg mb-2 ${result.titleColor}`}>
             ✅ Recomendação: {result.title}
           </p>
-          <p className="text-zinc-700 dark:text-zinc-300 mb-4">{result.desc}</p>
+          <p className="text-zinc-700 mb-4">{result.desc}</p>
           <div className="flex gap-3 flex-wrap items-center">
             <a
               href={result.url}

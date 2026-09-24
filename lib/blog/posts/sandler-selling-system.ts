@@ -23,8 +23,8 @@ export const post: BlogPost = {
         Em 2026, com compradores B2B mais informados, mais céticos e mais protegidos contra técnicas de pressão, o Sandler nunca foi tão relevante. Neste guia, você vai entender os 7 compartimentos do sistema, as ferramentas táticas mais poderosas (Up-Front Contract e pain funnel), e como integrar o Sandler ao seu processo de CRM para resultados mensuráveis.
       </p>
 
-      <div class="not-prose" style="background: #1e293b; padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
-        <p style="margin: 0 0 0.75rem; font-weight: 700; font-size: 1.05rem; color: #38bdf8;">⚡ TL;DR — Resposta Rápida</p>
+      <div class="not-prose" style="background: var(--primary); padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
+        <p style="margin: 0 0 0.75rem; font-weight: 700; font-size: 1.05rem; color: var(--primary-foreground);">⚡ TL;DR — Resposta Rápida</p>
         <ul style="margin: 0; padding-left: 1.25rem; line-height: 2; color: #ffffff;">
           <li>Sandler inverte o papel tradicional: <strong>o comprador vende para si mesmo</strong> — o vendedor apenas facilita</li>
           <li>O <strong>Up-Front Contract</strong> (UFC) elimina o "vou pensar" e as objeções fantasmas no final</li>
@@ -46,7 +46,7 @@ export const post: BlogPost = {
 
       <div class="callout-stat">
         <p><strong>📊 Impacto do método Sandler nas taxas de conversão</strong></p>
-        <p style="font-size: 3rem; font-weight: 800; color: #2563eb; margin: 1rem 0; line-height: 1;">87%</p>
+        <p style="font-size: 3rem; font-weight: 800; color: var(--foreground); margin: 1rem 0; line-height: 1;">87%</p>
         <p>dos vendedores treinados no Sandler Selling System reportaram melhora nas taxas de fechamento após 6 meses de prática. Fonte: Sandler Training Research 2024.</p>
       </div>
 
@@ -75,10 +75,10 @@ export const post: BlogPost = {
         <li>O que acontece ao final (decisão, próximo passo, ou como será dito "não")</li>
       </ul>
 
-      <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 0.75rem; padding: 1.5rem; margin: 1.5rem 0; font-family: monospace; font-size: 0.9rem; line-height: 1.8;">
-        <p style="margin: 0; color: #64748b;"><strong>Exemplo de Up-Front Contract:</strong></p>
+      <div style="background: var(--muted); border: 1px solid var(--border); border-radius: 0.75rem; padding: 1.5rem; margin: 1.5rem 0; font-family: monospace; font-size: 0.9rem; line-height: 1.8;">
+        <p style="margin: 0; color: var(--foreground);"><strong>Exemplo de Up-Front Contract:</strong></p>
         <br/>
-        <p style="margin: 0; color: #1e293b;">"[Nome], temos 45 minutos hoje. Minha proposta é que eu faça algumas perguntas sobre o que vocês estão enfrentando comercialmente, você me conte o contexto com honestidade — inclusive o que não está funcionando — e ao final da conversa, a gente chega em um dos três resultados: ou o que eu faço faz sentido para vocês e agendamos uma próxima etapa; ou não faz sentido e eu fico com o aprendizado; ou você precisa de mais tempo para pensar, o que também é válido. Funciona assim?"</p>
+        <p style="margin: 0; color: var(--foreground);">"[Nome], temos 45 minutos hoje. Minha proposta é que eu faça algumas perguntas sobre o que vocês estão enfrentando comercialmente, você me conte o contexto com honestidade — inclusive o que não está funcionando — e ao final da conversa, a gente chega em um dos três resultados: ou o que eu faço faz sentido para vocês e agendamos uma próxima etapa; ou não faz sentido e eu fico com o aprendizado; ou você precisa de mais tempo para pensar, o que também é válido. Funciona assim?"</p>
       </div>
 
       <p>
@@ -141,42 +141,42 @@ export const post: BlogPost = {
 
       <table style="width: 100%; border-collapse: collapse; margin: 2rem 0;">
         <thead>
-          <tr style="background: #f8fafc;">
-            <th style="padding: 0.75rem; border: 1px solid #e2e8f0; text-align: left;">Dimensão</th>
-            <th style="padding: 0.75rem; border: 1px solid #e2e8f0; text-align: left;">SPIN Selling</th>
-            <th style="padding: 0.75rem; border: 1px solid #e2e8f0; text-align: left;">Sandler Selling</th>
+          <tr style="background: var(--muted);">
+            <th style="padding: 0.75rem; border: 1px solid var(--border); text-align: left;">Dimensão</th>
+            <th style="padding: 0.75rem; border: 1px solid var(--border); text-align: left;">SPIN Selling</th>
+            <th style="padding: 0.75rem; border: 1px solid var(--border); text-align: left;">Sandler Selling</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;"><strong>Foco central</strong></td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Perguntas para revelar necessidades</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Processo completo de qualificação e psicologia da venda</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);"><strong>Foco central</strong></td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Perguntas para revelar necessidades</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Processo completo de qualificação e psicologia da venda</td>
           </tr>
-          <tr style="background: #f8fafc;">
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;"><strong>Quem conduz</strong></td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Vendedor conduz para solução</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Comprador se convence sozinho</td>
-          </tr>
-          <tr>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;"><strong>Gestão de objeções</strong></td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Perguntas de implicação para relativizar</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">UFC previne objeções antes que apareçam</td>
-          </tr>
-          <tr style="background: #f8fafc;">
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;"><strong>Apresentação</strong></td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Acontece após perguntas de necessidade</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Acontece apenas no 6º compartimento</td>
+          <tr style="background: var(--muted);">
+            <td style="padding: 0.75rem; border: 1px solid var(--border);"><strong>Quem conduz</strong></td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Vendedor conduz para solução</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Comprador se convence sozinho</td>
           </tr>
           <tr>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;"><strong>Melhor para</strong></td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Vendas de descoberta de necessidade</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Vendas com compradores céticos/experientes</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);"><strong>Gestão de objeções</strong></td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Perguntas de implicação para relativizar</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">UFC previne objeções antes que apareçam</td>
           </tr>
-          <tr style="background: #f8fafc;">
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;"><strong>Ciclo de adoção</strong></td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Mais rápido para aprender</td>
-            <td style="padding: 0.75rem; border: 1px solid #e2e8f0;">Mais longo — exige mudança de mindset</td>
+          <tr style="background: var(--muted);">
+            <td style="padding: 0.75rem; border: 1px solid var(--border);"><strong>Apresentação</strong></td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Acontece após perguntas de necessidade</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Acontece apenas no 6º compartimento</td>
+          </tr>
+          <tr>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);"><strong>Melhor para</strong></td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Vendas de descoberta de necessidade</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Vendas com compradores céticos/experientes</td>
+          </tr>
+          <tr style="background: var(--muted);">
+            <td style="padding: 0.75rem; border: 1px solid var(--border);"><strong>Ciclo de adoção</strong></td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Mais rápido para aprender</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Mais longo — exige mudança de mindset</td>
           </tr>
         </tbody>
       </table>
@@ -217,27 +217,27 @@ export const post: BlogPost = {
         <li><strong>Configure alertas de follow-up:</strong> Se um lead ficou em Pain por mais de 7 dias sem avanço, alerta automático para revisitar</li>
       </ol>
 
-      <div style="background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%); padding: 2rem; border-radius: 1rem; margin: 2.5rem 0; text-align: center;">
+      <div style="background: var(--primary); padding: 2rem; border-radius: 1rem; margin: 2.5rem 0; text-align: center;">
         <p style="color: white; font-size: 1.25rem; font-weight: 700; margin: 0 0 0.5rem;">Implemente o Sandler no seu processo com o Sirius CRM</p>
-        <p style="color: #bfdbfe; margin: 0 0 1.25rem;">Pipelines customizáveis, checklists por etapa e campos de qualificação — tudo para transformar método em processo.</p>
-        <a href="/pricing" style="display: inline-block; background: white; color: #2563eb; padding: 0.75rem 2rem; border-radius: 0.5rem; font-weight: 700; text-decoration: none;">Ver Planos →</a>
+        <p style="color: var(--foreground); margin: 0 0 1.25rem;">Pipelines customizáveis, checklists por etapa e campos de qualificação — tudo para transformar método em processo.</p>
+        <a href="/pricing" style="display: inline-block; background: white; color: var(--foreground); padding: 0.75rem 2rem; border-radius: 0.5rem; font-weight: 700; text-decoration: none;">Ver Planos →</a>
       </div>
 
       <h2>Perguntas Frequentes sobre o Sandler Selling System</h2>
 
-      <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
-        <summary style="font-weight: 600; cursor: pointer; color: #1e293b; list-style: revert;">O Sandler funciona para vendas de ciclo curto ou apenas para enterprise?</summary>
-        <p style="margin: 0.75rem 0 0; color: #4b5563;">O Sandler foi originalmente desenvolvido para vendas complexas com múltiplas reuniões. Para ciclos muito curtos (venda em uma reunião), o sistema completo com todos os 7 compartimentos é impraticável. Mas as ferramentas táticas — especialmente o Up-Front Contract e o pain funnel — funcionam em qualquer ciclo. Para vendas rápidas, use o UFC no início da conversa e o pain funnel para qualificação inicial: já elimina objeções fantasmas e melhora a taxa de fechamento mesmo em vendas de menor complexidade.</p>
+      <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
+        <summary style="font-weight: 600; cursor: pointer; color: var(--foreground); list-style: revert;">O Sandler funciona para vendas de ciclo curto ou apenas para enterprise?</summary>
+        <p style="margin: 0.75rem 0 0; color: var(--foreground);">O Sandler foi originalmente desenvolvido para vendas complexas com múltiplas reuniões. Para ciclos muito curtos (venda em uma reunião), o sistema completo com todos os 7 compartimentos é impraticável. Mas as ferramentas táticas — especialmente o Up-Front Contract e o pain funnel — funcionam em qualquer ciclo. Para vendas rápidas, use o UFC no início da conversa e o pain funnel para qualificação inicial: já elimina objeções fantasmas e melhora a taxa de fechamento mesmo em vendas de menor complexidade.</p>
       </details>
 
-      <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
-        <summary style="font-weight: 600; cursor: pointer; color: #1e293b; list-style: revert;">Como lidar com o comprador que não quer revelar a dor no pain funnel?</summary>
-        <p style="margin: 0.75rem 0 0; color: #4b5563;">Compradores resistentes ao pain funnel geralmente estão em modo de defesa — foram abordados com pressão antes e criaram escudo. O Sandler resolve isso com o "negative reverse selling": em vez de continuar perguntando sobre a dor, o vendedor age como se talvez não exista problema suficiente para uma conversa. "Talvez o que vocês têm hoje esteja funcionando bem o suficiente — o que você acha?" Essa inversão reduz a resistência porque remove a pressão percebida, e o comprador frequentemente abre a guarda e começa a descrever os problemas voluntariamente.</p>
+      <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
+        <summary style="font-weight: 600; cursor: pointer; color: var(--foreground); list-style: revert;">Como lidar com o comprador que não quer revelar a dor no pain funnel?</summary>
+        <p style="margin: 0.75rem 0 0; color: var(--foreground);">Compradores resistentes ao pain funnel geralmente estão em modo de defesa — foram abordados com pressão antes e criaram escudo. O Sandler resolve isso com o "negative reverse selling": em vez de continuar perguntando sobre a dor, o vendedor age como se talvez não exista problema suficiente para uma conversa. "Talvez o que vocês têm hoje esteja funcionando bem o suficiente — o que você acha?" Essa inversão reduz a resistência porque remove a pressão percebida, e o comprador frequentemente abre a guarda e começa a descrever os problemas voluntariamente.</p>
       </details>
 
-      <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin-bottom: 2rem;">
-        <summary style="font-weight: 600; cursor: pointer; color: #1e293b; list-style: revert;">Quanto tempo leva para um vendedor dominar o método Sandler?</summary>
-        <p style="margin: 0.75rem 0 0; color: #4b5563;">O Sandler Training recomenda 12-18 meses de treinamento contínuo para internalização completa — porque o método exige mudança de mindset, não apenas adoção de técnicas. Para resultados iniciais, o Up-Front Contract pode ser adotado em 1-2 semanas e já muda a dinâmica das reuniões. O pain funnel leva 4-8 semanas para fluir naturalmente em conversas. Os 7 compartimentos como processo completo levam 3-6 meses de prática deliberada para se tornarem instintivos.</p>
+      <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 2rem;">
+        <summary style="font-weight: 600; cursor: pointer; color: var(--foreground); list-style: revert;">Quanto tempo leva para um vendedor dominar o método Sandler?</summary>
+        <p style="margin: 0.75rem 0 0; color: var(--foreground);">O Sandler Training recomenda 12-18 meses de treinamento contínuo para internalização completa — porque o método exige mudança de mindset, não apenas adoção de técnicas. Para resultados iniciais, o Up-Front Contract pode ser adotado em 1-2 semanas e já muda a dinâmica das reuniões. O pain funnel leva 4-8 semanas para fluir naturalmente em conversas. Os 7 compartimentos como processo completo levam 3-6 meses de prática deliberada para se tornarem instintivos.</p>
       </details>
 
       <h2>Conclusão</h2>
@@ -250,7 +250,7 @@ export const post: BlogPost = {
         A maior barreira de adoção não é técnica — é psicológica. Para o vendedor acostumado a controlar a conversa e apresentar soluções, ceder o controle ao comprador parece estranho no início. Mas depois das primeiras conversas Sandler bem executadas, a diferença em como o comprador responde é imediata e convincente.
       </p>
 
-      <hr style="margin: 3rem 0; border: none; border-top: 1px solid #e5e7eb;" />
+      <hr style="margin: 3rem 0; border: none; border-top: 1px solid var(--border);" />
       <strong>Última Atualização:</strong> 21 de Março de 2026<br/>
       <strong>Autor:</strong> Equipe Sirius CRM<br/>
       <strong>Tempo de Leitura:</strong> 13 minutos
@@ -342,31 +342,31 @@ export const post: BlogPost = {
 
       <table style="width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: 0.9rem;">
         <thead>
-          <tr style="background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%); color: white;">
+          <tr style="background: var(--primary); color: white;">
             <th style="padding: 0.875rem; text-align: left;">Traditional Sales</th>
             <th style="padding: 0.875rem; text-align: left;">Sandler Selling System</th>
           </tr>
         </thead>
         <tbody>
-          <tr style="background: #f8fafc;">
-            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">Present as much value as possible</td>
-            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">Present only what's relevant to stated pain</td>
+          <tr style="background: var(--muted);">
+            <td style="padding: 0.875rem; border: 1px solid var(--border);">Present as much value as possible</td>
+            <td style="padding: 0.875rem; border: 1px solid var(--border);">Present only what's relevant to stated pain</td>
           </tr>
           <tr>
-            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">Overcome objections at close</td>
-            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">Surface and eliminate objections early</td>
+            <td style="padding: 0.875rem; border: 1px solid var(--border);">Overcome objections at close</td>
+            <td style="padding: 0.875rem; border: 1px solid var(--border);">Surface and eliminate objections early</td>
           </tr>
-          <tr style="background: #f8fafc;">
-            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">Control the conversation to direct outcome</td>
-            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">Guide questions; let buyer reach conclusions</td>
+          <tr style="background: var(--muted);">
+            <td style="padding: 0.875rem; border: 1px solid var(--border);">Control the conversation to direct outcome</td>
+            <td style="padding: 0.875rem; border: 1px solid var(--border);">Guide questions; let buyer reach conclusions</td>
           </tr>
           <tr>
-            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">Follow up persistently until yes/no</td>
-            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">Up-Front Contract makes follow-up unnecessary</td>
+            <td style="padding: 0.875rem; border: 1px solid var(--border);">Follow up persistently until yes/no</td>
+            <td style="padding: 0.875rem; border: 1px solid var(--border);">Up-Front Contract makes follow-up unnecessary</td>
           </tr>
-          <tr style="background: #f8fafc;">
-            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">Fear rejection → avoid "no" outcome</td>
-            <td style="padding: 0.875rem; border: 1px solid #e2e8f0;">"No" is a valid, welcome outcome → saves time</td>
+          <tr style="background: var(--muted);">
+            <td style="padding: 0.875rem; border: 1px solid var(--border);">Fear rejection → avoid "no" outcome</td>
+            <td style="padding: 0.875rem; border: 1px solid var(--border);">"No" is a valid, welcome outcome → saves time</td>
           </tr>
         </tbody>
       </table>
@@ -405,8 +405,8 @@ export const post: BlogPost = {
         The concepts are learnable in 1-2 days of training. Conversational fluency — especially with the pain funnel and Up-Front Contract — takes 3-6 months of consistent practice. Record your calls and review them against the 7 compartments. Most reps find they skip Compartment 2 (Up-Front Contract) most often.
       </p>
 
-      <hr style="margin: 3rem 0; border: none; border-top: 1px solid #e5e7eb;" />
-      <p style="font-size: 0.85rem; color: #64748b;">
+      <hr style="margin: 3rem 0; border: none; border-top: 1px solid var(--border);" />
+      <p style="font-size: 0.85rem; color: var(--foreground);">
         <strong>Last Updated:</strong> March 21, 2026<br/>
         <strong>Author:</strong> Sirius CRM Team<br/>
         <strong>Reading Time:</strong> 13 minutes

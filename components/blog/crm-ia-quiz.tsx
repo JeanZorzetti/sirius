@@ -14,27 +14,27 @@ const results = [
   {
     range: [0, 1],
     level: 'Iniciante em IA',
-    borderColor: 'border-red-500',
-    bg: 'bg-red-50 dark:bg-red-950/20',
-    titleColor: 'text-red-700 dark:text-red-400',
+    borderColor: 'border-border',
+    bg: 'bg-muted',
+    titleColor: 'text-destaque',
     advice:
       'Seu processo ainda depende muito de memória e controle manual. Você está perdendo entre 30% e 50% das oportunidades por falta de automação. O Sirius CRM pode mudar isso gratuitamente.',
   },
   {
     range: [2, 3],
     level: 'Intermediário — crescendo',
-    borderColor: 'border-amber-500',
-    bg: 'bg-amber-50 dark:bg-amber-950/20',
-    titleColor: 'text-amber-700 dark:text-amber-400',
+    borderColor: 'border-border',
+    bg: 'bg-muted',
+    titleColor: 'text-foreground',
     advice:
       'Você usa algumas funcionalidades modernas, mas ainda há gaps importantes. Com um CRM com IA completo, você pode dobrar a eficiência do seu time em 90 dias.',
   },
   {
     range: [4, 5],
     level: 'Avançado — parabéns!',
-    borderColor: 'border-green-500',
-    bg: 'bg-green-50 dark:bg-green-950/20',
-    titleColor: 'text-green-700 dark:text-green-400',
+    borderColor: 'border-border',
+    bg: 'bg-muted',
+    titleColor: 'text-foreground',
     advice:
       'Seu time já usa IA de forma madura. O próximo passo é otimizar: qual funcionalidade de IA está gerando mais ROI? Concentre esforços aí.',
   },
@@ -99,7 +99,7 @@ export function CRMIAQuiz() {
           <p className={`font-bold text-lg mb-2 ${result?.titleColor}`}>
             Resultado: {result?.level} ({score}/5)
           </p>
-          <p className="text-zinc-700 dark:text-zinc-300 mb-4">{result?.advice}</p>
+          <p className="text-zinc-700 mb-4">{result?.advice}</p>
           <div className="flex gap-3 flex-wrap items-center">
             <a
               href="/register"

@@ -1,12 +1,13 @@
-import { DM_Mono, Schibsted_Grotesk } from 'next/font/google'
 import { useTranslations } from 'next-intl'
 import { Link } from '@/i18n/routing'
 import { Footer } from '@/components/marketing/footer'
 import { Wordmark } from '@/components/brand/wordmark'
+import { DM_Mono, Schibsted_Grotesk } from 'next/font/google'
 import './fluxo.css'
 
-// Home-only layout: the Fluxo direction stays scoped to this route group until it is approved;
-// every other marketing page keeps app/[locale]/(marketing)/layout.tsx.
+// The home's own instances, preloaded: its h1 is the LCP and is drawn in Schibsted. They live here and not in
+// components/fluxo/fontes.ts because next/font preloads every font of an imported module, and the other public pages
+// must not preload (spec 008).
 const texto = Schibsted_Grotesk({
   subsets: ['latin'],
   variable: '--fonte-texto-base',
@@ -21,6 +22,9 @@ const mono = DM_Mono({
   display: 'swap',
   preload: false,
 })
+
+// The home: the Fluxo skin (app/fluxo-pele.css, shared with (marketing) since spec 008) plus the gesture
+// (fluxo.css: the combed field, lanes, plans, closing pulse), which stays on this page only.
 
 export default function FluxoLayout({ children }: { children: React.ReactNode }) {
   const t = useTranslations('marketing.home.nav')
@@ -41,9 +45,7 @@ export default function FluxoLayout({ children }: { children: React.ReactNode })
         </nav>
       </header>
       <main id="conteudo">{children}</main>
-      <div className="fluxo-rodape">
-        <Footer />
-      </div>
+      <Footer />
     </div>
   )
 }

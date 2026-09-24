@@ -19,14 +19,14 @@ export const post: BlogPost = {
         Avaliamos 5 alternativas ao Pipedrive com foco específico no contexto do vendedor B2B brasileiro: processo de vendas presencial, WhatsApp como canal primário, regiões com sinal instável e orçamento em reais.
       </p>
 
-      <div class="not-prose" style="background: #1e293b; padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
-        <p style="margin: 0 0 0.75rem; font-weight: 700; font-size: 1.05rem; color: #818cf8;">⚡ TL;DR — As 5 Alternativas</p>
+      <div class="not-prose" style="background: var(--primary); padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
+        <p style="margin: 0 0 0.75rem; font-weight: 700; font-size: 1.05rem; color: var(--primary-foreground);">⚡ TL;DR — As 5 Alternativas</p>
         <ol style="margin: 0; padding-left: 1.25rem; line-height: 2.2; color: #ffffff;">
-          <li><strong style="color: #818cf8;">Sirius CRM</strong> — Melhor para representantes comerciais (IA + WhatsApp + offline, gratuito)</li>
-          <li><strong style="color: #818cf8;">RD Station CRM</strong> — Melhor para quem usa RD Station Marketing</li>
-          <li><strong style="color: #818cf8;">HubSpot Free</strong> — Melhor para times grandes que não dependem de WhatsApp</li>
-          <li><strong style="color: #818cf8;">Agendor</strong> — CRM brasileiro focado em vendas com boa usabilidade</li>
-          <li><strong style="color: #818cf8;">Moskit CRM</strong> — CRM brasileiro com foco B2B e automação</li>
+          <li><strong style="color: var(--primary-foreground);">Sirius CRM</strong> — Melhor para representantes comerciais (IA + WhatsApp + offline, gratuito)</li>
+          <li><strong style="color: var(--primary-foreground);">RD Station CRM</strong> — Melhor para quem usa RD Station Marketing</li>
+          <li><strong style="color: var(--primary-foreground);">HubSpot Free</strong> — Melhor para times grandes que não dependem de WhatsApp</li>
+          <li><strong style="color: var(--primary-foreground);">Agendor</strong> — CRM brasileiro focado em vendas com boa usabilidade</li>
+          <li><strong style="color: var(--primary-foreground);">Moskit CRM</strong> — CRM brasileiro com foco B2B e automação</li>
         </ol>
       </div>
 
@@ -36,7 +36,7 @@ export const post: BlogPost = {
         O Pipedrive tem qualidades reais: interface visual intuitiva, pipeline Kanban bem construído, bom ecossistema de integrações. Mas para o representante comercial brasileiro, os obstáculos práticos são frequentemente maiores que os benefícios:
       </p>
 
-      <ul style="line-height: 2; padding-left: 1.5rem; color: #374151;">
+      <ul style="line-height: 2; padding-left: 1.5rem; color: var(--foreground);">
         <li><strong>Preço em dólar</strong>: o custo em BRL oscila com o câmbio — em março 2026, o Essential está ~R$ 89/mês, mas pode subir</li>
         <li><strong>Sem plano gratuito</strong>: apenas trial de 14 dias, depois é obrigatório pagar</li>
         <li><strong>Sem WhatsApp nativo</strong>: canal principal de vendas no Brasil exige integração paga</li>
@@ -50,9 +50,9 @@ export const post: BlogPost = {
         O Sirius CRM foi construído especificamente para o processo de vendas do representante comercial brasileiro. Não é uma adaptação de um produto global — é uma ferramenta que nasceu do entendimento das dores de quem vende em campo no Brasil.
       </p>
 
-      <div style="background: #f0fdf4; border: 1px solid #86efac; padding: 1.25rem; border-radius: 0.75rem; margin: 1rem 0;">
-        <p style="font-weight: 700; color: #15803d; margin: 0 0 0.5rem;">Diferenciais vs Pipedrive:</p>
-        <ul style="margin: 0; padding-left: 1.25rem; line-height: 2; color: #166534;">
+      <div style="background: var(--muted); border: 1px solid var(--border); padding: 1.25rem; border-radius: 0.75rem; margin: 1rem 0;">
+        <p style="font-weight: 700; color: var(--foreground); margin: 0 0 0.5rem;">Diferenciais vs Pipedrive:</p>
+        <ul style="margin: 0; padding-left: 1.25rem; line-height: 2; color: var(--foreground);">
           <li>Plano FREE gratuito para sempre (até 50 deals) — sem cartão de crédito</li>
           <li>WhatsApp integrado nativamente em todos os planos</li>
           <li>IA BANT/MEDDIC para qualificação automática de leads</li>
@@ -70,7 +70,7 @@ export const post: BlogPost = {
         <strong>Limitação honesta:</strong> Base de usuários menor que o Pipedrive, menos integrações com ferramentas globais, sem marketing automation.
       </p>
 
-      <p><a href="/register" style="color: #2563eb; font-weight: 600;">→ Começar gratuitamente no Sirius CRM</a></p>
+      <p><a href="/register" style="color: var(--foreground); font-weight: 600;">→ Começar gratuitamente no Sirius CRM</a></p>
 
       <h2>2. RD Station CRM — Melhor para o Ecossistema RD</h2>
 
@@ -78,9 +78,9 @@ export const post: BlogPost = {
         Se você já usa ou planeja usar o RD Station Marketing, o RD Station CRM é a alternativa mais natural ao Pipedrive para PMEs brasileiras. A integração nativa entre os dois produtos cria um funil completo: marketing capta e qualifica leads, CRM gerencia o pipeline de vendas.
       </p>
 
-      <div style="background: #eff6ff; border: 1px solid #93c5fd; padding: 1.25rem; border-radius: 0.75rem; margin: 1rem 0;">
-        <p style="font-weight: 700; color: #1d4ed8; margin: 0 0 0.5rem;">Pontos Fortes:</p>
-        <ul style="margin: 0; padding-left: 1.25rem; line-height: 2; color: #1e40af;">
+      <div style="background: var(--muted); border: 1px solid var(--border); padding: 1.25rem; border-radius: 0.75rem; margin: 1rem 0;">
+        <p style="font-weight: 700; color: var(--foreground); margin: 0 0 0.5rem;">Pontos Fortes:</p>
+        <ul style="margin: 0; padding-left: 1.25rem; line-height: 2; color: var(--foreground);">
           <li>Integração nativa com RD Station Marketing</li>
           <li>Lead scoring baseado em comportamento digital</li>
           <li>Plano gratuito básico disponível</li>
@@ -103,9 +103,9 @@ export const post: BlogPost = {
         Para equipes que precisam escalar sem custo de CRM, o HubSpot Free oferece usuários e contatos ilimitados — uma vantagem real para times de 20+ pessoas. O ecossistema global do HubSpot é um dos mais completos do mercado.
       </p>
 
-      <div style="background: #fff7ed; border: 1px solid #fdba74; padding: 1.25rem; border-radius: 0.75rem; margin: 1rem 0;">
-        <p style="font-weight: 700; color: #c2410c; margin: 0 0 0.5rem;">Pontos Fortes:</p>
-        <ul style="margin: 0; padding-left: 1.25rem; line-height: 2; color: #9a3412;">
+      <div style="background: var(--muted); border: 1px solid var(--border); padding: 1.25rem; border-radius: 0.75rem; margin: 1rem 0;">
+        <p style="font-weight: 700; color: var(--pulso-escuro); margin: 0 0 0.5rem;">Pontos Fortes:</p>
+        <ul style="margin: 0; padding-left: 1.25rem; line-height: 2; color: var(--foreground);">
           <li>Usuários e contatos ilimitados no plano gratuito</li>
           <li>Ecossistema de integrações extenso (400+ apps)</li>
           <li>Rastreamento de emails (abertura, cliques)</li>
@@ -127,9 +127,9 @@ export const post: BlogPost = {
         O Agendor é um CRM 100% brasileiro, com mais de 10 anos de mercado e foco exclusivo em vendas B2B. Tem boa reputação entre PMEs brasileiras por usabilidade e suporte em português.
       </p>
 
-      <div style="background: #fdf4ff; border: 1px solid #e879f9; padding: 1.25rem; border-radius: 0.75rem; margin: 1rem 0;">
-        <p style="font-weight: 700; color: #7e22ce; margin: 0 0 0.5rem;">Pontos Fortes:</p>
-        <ul style="margin: 0; padding-left: 1.25rem; line-height: 2; color: #6b21a8;">
+      <div style="background: var(--muted); border: 1px solid var(--fio-forte); padding: 1.25rem; border-radius: 0.75rem; margin: 1rem 0;">
+        <p style="font-weight: 700; color: var(--foreground); margin: 0 0 0.5rem;">Pontos Fortes:</p>
+        <ul style="margin: 0; padding-left: 1.25rem; line-height: 2; color: var(--foreground);">
           <li>100% brasileiro, interface em português nativo</li>
           <li>Experiência de mais de 10 anos no mercado nacional</li>
           <li>App mobile com boa usabilidade para campo</li>
@@ -152,9 +152,9 @@ export const post: BlogPost = {
         O Moskit é outro CRM brasileiro que atende principalmente o mercado B2B nacional. Tem features específicas para o processo de vendas brasileiro como registro de ligações, controle de propostas e histórico de negociações.
       </p>
 
-      <div style="background: #f0f9ff; border: 1px solid #7dd3fc; padding: 1.25rem; border-radius: 0.75rem; margin: 1rem 0;">
-        <p style="font-weight: 700; color: #0369a1; margin: 0 0 0.5rem;">Pontos Fortes:</p>
-        <ul style="margin: 0; padding-left: 1.25rem; line-height: 2; color: #075985;">
+      <div style="background: var(--muted); border: 1px solid var(--border); padding: 1.25rem; border-radius: 0.75rem; margin: 1rem 0;">
+        <p style="font-weight: 700; color: var(--foreground); margin: 0 0 0.5rem;">Pontos Fortes:</p>
+        <ul style="margin: 0; padding-left: 1.25rem; line-height: 2; color: var(--foreground);">
           <li>Foco específico em vendas B2B brasileiras</li>
           <li>Integração com WhatsApp (via configuração)</li>
           <li>Registro de ligações e histórico de negociações</li>
@@ -176,104 +176,104 @@ export const post: BlogPost = {
       <div style="overflow-x: auto; margin: 2rem 0;">
         <table style="width: 100%; border-collapse: collapse; font-size: 0.85rem;">
           <thead>
-            <tr style="background: #1e293b; color: #ffffff;">
-              <th style="padding: 0.75rem 1rem; text-align: left; border: 1px solid #334155;">CRM</th>
-              <th style="padding: 0.75rem 1rem; text-align: center; border: 1px solid #334155;">Preço</th>
-              <th style="padding: 0.75rem 1rem; text-align: center; border: 1px solid #334155;">WhatsApp</th>
-              <th style="padding: 0.75rem 1rem; text-align: center; border: 1px solid #334155;">IA Nativa</th>
-              <th style="padding: 0.75rem 1rem; text-align: center; border: 1px solid #334155;">Offline</th>
-              <th style="padding: 0.75rem 1rem; text-align: center; border: 1px solid #334155;">PT-BR</th>
-              <th style="padding: 0.75rem 1rem; text-align: center; border: 1px solid #334155;">Grátis Real</th>
+            <tr style="background: var(--primary); color: #ffffff;">
+              <th style="padding: 0.75rem 1rem; text-align: left; border: 1px solid var(--fio-forte);">CRM</th>
+              <th style="padding: 0.75rem 1rem; text-align: center; border: 1px solid var(--fio-forte);">Preço</th>
+              <th style="padding: 0.75rem 1rem; text-align: center; border: 1px solid var(--fio-forte);">WhatsApp</th>
+              <th style="padding: 0.75rem 1rem; text-align: center; border: 1px solid var(--fio-forte);">IA Nativa</th>
+              <th style="padding: 0.75rem 1rem; text-align: center; border: 1px solid var(--fio-forte);">Offline</th>
+              <th style="padding: 0.75rem 1rem; text-align: center; border: 1px solid var(--fio-forte);">PT-BR</th>
+              <th style="padding: 0.75rem 1rem; text-align: center; border: 1px solid var(--fio-forte);">Grátis Real</th>
             </tr>
           </thead>
           <tbody>
-            <tr style="background: #ecfdf5;">
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; font-weight: 700; color: #065f46;">Sirius CRM</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center; font-weight: 600;">R$ 0 / R$ 397</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center; color: #059669;">✓</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center; color: #059669;">✓</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center; color: #059669;">✓</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center; color: #059669;">✓</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center; color: #059669;">✓</td>
+            <tr style="background: var(--muted);">
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); font-weight: 700; color: var(--foreground);">Sirius CRM</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; font-weight: 600;">R$ 0 / R$ 397</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--foreground);">✓</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--foreground);">✓</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--foreground);">✓</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--foreground);">✓</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--foreground);">✓</td>
             </tr>
             <tr>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; font-weight: 600;">RD Station CRM</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center;">Planos variados BRL</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center; color: #dc2626;">✗</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center; color: #dc2626;">✗</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center; color: #dc2626;">✗</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center; color: #059669;">✓</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center; color: #f59e0b;">Básico</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); font-weight: 600;">RD Station CRM</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center;">Planos variados BRL</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--pulso-escuro);">✗</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--pulso-escuro);">✗</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--pulso-escuro);">✗</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--foreground);">✓</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--foreground);">Básico</td>
             </tr>
-            <tr style="background: #f8fafc;">
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; font-weight: 600;">HubSpot Free</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center;">R$ 0 (pago em USD)</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center; color: #dc2626;">✗</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center; color: #dc2626;">✗</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center; color: #dc2626;">✗</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center; color: #f59e0b;">Parcial</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center; color: #059669;">✓</td>
-            </tr>
-            <tr>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; font-weight: 600;">Agendor</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center;">BRL (consultar)</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center; color: #f59e0b;">Parcial</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center; color: #dc2626;">✗</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center; color: #dc2626;">✗</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center; color: #059669;">✓</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center; color: #dc2626;">✗</td>
-            </tr>
-            <tr style="background: #f8fafc;">
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; font-weight: 600;">Moskit CRM</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center;">BRL (consultar)</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center; color: #f59e0b;">Via config.</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center; color: #dc2626;">✗</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center; color: #dc2626;">✗</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center; color: #059669;">✓</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center; color: #dc2626;">✗</td>
+            <tr style="background: var(--muted);">
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); font-weight: 600;">HubSpot Free</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center;">R$ 0 (pago em USD)</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--pulso-escuro);">✗</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--pulso-escuro);">✗</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--pulso-escuro);">✗</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--foreground);">Parcial</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--foreground);">✓</td>
             </tr>
             <tr>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; font-weight: 600; color: #64748b;">Pipedrive (ref.)</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center; color: #64748b;">~R$ 89/mês (USD)</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center; color: #dc2626;">✗</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center; color: #dc2626;">✗</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center; color: #dc2626;">✗</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center; color: #f59e0b;">Parcial</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: center; color: #dc2626;">✗</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); font-weight: 600;">Agendor</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center;">BRL (consultar)</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--foreground);">Parcial</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--pulso-escuro);">✗</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--pulso-escuro);">✗</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--foreground);">✓</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--pulso-escuro);">✗</td>
+            </tr>
+            <tr style="background: var(--muted);">
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); font-weight: 600;">Moskit CRM</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center;">BRL (consultar)</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--foreground);">Via config.</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--pulso-escuro);">✗</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--pulso-escuro);">✗</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--foreground);">✓</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--pulso-escuro);">✗</td>
+            </tr>
+            <tr>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); font-weight: 600; color: var(--foreground);">Pipedrive (ref.)</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--foreground);">~R$ 89/mês (USD)</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--pulso-escuro);">✗</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--pulso-escuro);">✗</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--pulso-escuro);">✗</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--foreground);">Parcial</td>
+              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--pulso-escuro);">✗</td>
             </tr>
           </tbody>
         </table>
       </div>
 
-      <div style="background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%); border: 1px solid #6ee7b7; padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0; text-align: center;">
-        <p style="font-weight: 700; color: #065f46; font-size: 1.1rem; margin: 0 0 0.75rem;">Teste o Sirius CRM — A Melhor Alternativa ao Pipedrive para o Brasil</p>
-        <p style="color: #047857; margin: 0 0 1rem;">Plano gratuito real + WhatsApp + IA + offline. Migração simples via CSV.</p>
-        <p><strong><a href="/register" style="color: #059669; text-decoration: underline;">Começar Grátis Agora →</a></strong></p>
+      <div style="background: var(--muted); border: 1px solid var(--border); padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0; text-align: center;">
+        <p style="font-weight: 700; color: var(--foreground); font-size: 1.1rem; margin: 0 0 0.75rem;">Teste o Sirius CRM — A Melhor Alternativa ao Pipedrive para o Brasil</p>
+        <p style="color: var(--foreground); margin: 0 0 1rem;">Plano gratuito real + WhatsApp + IA + offline. Migração simples via CSV.</p>
+        <p><strong><a href="/register" style="color: var(--foreground); text-decoration: underline;">Começar Grátis Agora →</a></strong></p>
       </div>
 
       <h2>Perguntas Frequentes: Alternativas ao Pipedrive no Brasil</h2>
 
-      <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
-        <summary style="font-weight: 600; cursor: pointer; color: #1e293b; list-style: revert;">Qual a alternativa gratuita ao Pipedrive no Brasil?</summary>
-        <p style="margin: 0.75rem 0 0; color: #4b5563;">A melhor alternativa gratuita ao Pipedrive no Brasil em 2026 é o Sirius CRM FREE. Ao contrário do Pipedrive (sem plano gratuito — apenas trial de 14 dias), o Sirius oferece plano gratuito permanente com até 50 deals ativos, WhatsApp integrado, IA de qualificação (3 gerações/mês) e modo offline — funcionalidades que o Pipedrive não inclui nem em planos pagos. O HubSpot Free também é uma opção para quem não depende de WhatsApp.</p>
+      <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
+        <summary style="font-weight: 600; cursor: pointer; color: var(--foreground); list-style: revert;">Qual a alternativa gratuita ao Pipedrive no Brasil?</summary>
+        <p style="margin: 0.75rem 0 0; color: var(--foreground);">A melhor alternativa gratuita ao Pipedrive no Brasil em 2026 é o Sirius CRM FREE. Ao contrário do Pipedrive (sem plano gratuito — apenas trial de 14 dias), o Sirius oferece plano gratuito permanente com até 50 deals ativos, WhatsApp integrado, IA de qualificação (3 gerações/mês) e modo offline — funcionalidades que o Pipedrive não inclui nem em planos pagos. O HubSpot Free também é uma opção para quem não depende de WhatsApp.</p>
       </details>
 
-      <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
-        <summary style="font-weight: 600; cursor: pointer; color: #1e293b; list-style: revert;">Como migrar do Pipedrive para outro CRM?</summary>
-        <p style="margin: 0.75rem 0 0; color: #4b5563;">O processo padrão é: 1) Exportar contatos, deals e atividades do Pipedrive em CSV (Configurações → Exportar dados); 2) Limpar e organizar os dados (remover duplicatas, padronizar campos); 3) Importar no novo CRM usando a ferramenta de importação. Para o Sirius CRM, o processo leva de 1 a 3 horas para bases de até 5.000 registros. O suporte em português do Sirius pode auxiliar na migração.</p>
+      <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
+        <summary style="font-weight: 600; cursor: pointer; color: var(--foreground); list-style: revert;">Como migrar do Pipedrive para outro CRM?</summary>
+        <p style="margin: 0.75rem 0 0; color: var(--foreground);">O processo padrão é: 1) Exportar contatos, deals e atividades do Pipedrive em CSV (Configurações → Exportar dados); 2) Limpar e organizar os dados (remover duplicatas, padronizar campos); 3) Importar no novo CRM usando a ferramenta de importação. Para o Sirius CRM, o processo leva de 1 a 3 horas para bases de até 5.000 registros. O suporte em português do Sirius pode auxiliar na migração.</p>
       </details>
 
-      <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
-        <summary style="font-weight: 600; cursor: pointer; color: #1e293b; list-style: revert;">Existe CRM brasileiro com IA para representantes comerciais?</summary>
-        <p style="margin: 0.75rem 0 0; color: #4b5563;">Sim — o Sirius CRM é o único CRM brasileiro com IA nativa de qualificação em 2026, usando os frameworks BANT (Budget, Authority, Need, Timeline) e MEDDIC. A IA analisa os dados do deal para gerar score de qualificação, sugestão de próxima ação e alerta de risco. Está incluso em todos os planos, incluindo o gratuito (3 gerações/mês) e ilimitado no PRO.</p>
+      <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
+        <summary style="font-weight: 600; cursor: pointer; color: var(--foreground); list-style: revert;">Existe CRM brasileiro com IA para representantes comerciais?</summary>
+        <p style="margin: 0.75rem 0 0; color: var(--foreground);">Sim — o Sirius CRM é o único CRM brasileiro com IA nativa de qualificação em 2026, usando os frameworks BANT (Budget, Authority, Need, Timeline) e MEDDIC. A IA analisa os dados do deal para gerar score de qualificação, sugestão de próxima ação e alerta de risco. Está incluso em todos os planos, incluindo o gratuito (3 gerações/mês) e ilimitado no PRO.</p>
       </details>
 
-      <details style="border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin-bottom: 2rem;">
-        <summary style="font-weight: 600; cursor: pointer; color: #1e293b; list-style: revert;">CRM com WhatsApp integrado no Brasil: quais opções existem?</summary>
-        <p style="margin: 0.75rem 0 0; color: #4b5563;">Em 2026, as principais opções de CRM com WhatsApp integrado no Brasil são: Sirius CRM (nativo, em todos os planos incluindo gratuito), Moskit CRM (via configuração, nos planos pagos) e Agendor (integração parcial). Pipedrive, HubSpot Free e RD Station CRM não têm WhatsApp nativo — exigem integrações de terceiros. Para vendedores que dependem do WhatsApp como canal principal, o Sirius CRM tem a integração mais completa e simples de configurar.</p>
+      <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 2rem;">
+        <summary style="font-weight: 600; cursor: pointer; color: var(--foreground); list-style: revert;">CRM com WhatsApp integrado no Brasil: quais opções existem?</summary>
+        <p style="margin: 0.75rem 0 0; color: var(--foreground);">Em 2026, as principais opções de CRM com WhatsApp integrado no Brasil são: Sirius CRM (nativo, em todos os planos incluindo gratuito), Moskit CRM (via configuração, nos planos pagos) e Agendor (integração parcial). Pipedrive, HubSpot Free e RD Station CRM não têm WhatsApp nativo — exigem integrações de terceiros. Para vendedores que dependem do WhatsApp como canal principal, o Sirius CRM tem a integração mais completa e simples de configurar.</p>
       </details>
 
-      <hr style="margin: 3rem 0; border: none; border-top: 1px solid #e5e7eb;" />
+      <hr style="margin: 3rem 0; border: none; border-top: 1px solid var(--border);" />
       <strong>Última Atualização:</strong> 21 de Março de 2026<br/>
       <strong>Autor:</strong> Equipe Sirius CRM<br/>
       <strong>Tempo de Leitura:</strong> 11 minutos
@@ -318,61 +318,61 @@ export const post: BlogPost = {
 
       <h2>Direct Comparison</h2>
 
-      <table style="width: 100%; border-collapse: collapse; margin: 2rem 0; font-size: 0.85rem; background: #0f172a; color: #f1f5f9; border-radius: 0.75rem; overflow: hidden;">
+      <table style="width: 100%; border-collapse: collapse; margin: 2rem 0; font-size: 0.85rem; background: var(--primary); color: var(--primary-foreground); border-radius: 0.75rem; overflow: hidden;">
         <thead>
-          <tr style="background: #1e293b;">
-            <th style="padding: 0.875rem; text-align: left; color: #94a3b8;">Feature</th>
-            <th style="padding: 0.875rem; text-align: center; background: #1e3a5f; color: #60a5fa;">Sirius</th>
-            <th style="padding: 0.875rem; text-align: center; color: #94a3b8;">Pipedrive</th>
-            <th style="padding: 0.875rem; text-align: center; color: #94a3b8;">RD Station</th>
-            <th style="padding: 0.875rem; text-align: center; color: #94a3b8;">HubSpot</th>
-            <th style="padding: 0.875rem; text-align: center; color: #94a3b8;">Kommo</th>
+          <tr style="background: var(--primary);">
+            <th style="padding: 0.875rem; text-align: left; color: var(--primary-foreground);">Feature</th>
+            <th style="padding: 0.875rem; text-align: center; background: var(--primary); color: var(--primary-foreground);">Sirius</th>
+            <th style="padding: 0.875rem; text-align: center; color: var(--primary-foreground);">Pipedrive</th>
+            <th style="padding: 0.875rem; text-align: center; color: var(--primary-foreground);">RD Station</th>
+            <th style="padding: 0.875rem; text-align: center; color: var(--primary-foreground);">HubSpot</th>
+            <th style="padding: 0.875rem; text-align: center; color: var(--primary-foreground);">Kommo</th>
           </tr>
         </thead>
         <tbody>
-          <tr style="border-top: 1px solid #334155;">
+          <tr style="border-top: 1px solid var(--fio-forte);">
             <td style="padding: 0.75rem;">BRL Pricing</td>
-            <td style="padding: 0.75rem; text-align: center; color: #4ade80;">✓</td>
-            <td style="padding: 0.75rem; text-align: center; color: #f87171;">✗ USD</td>
-            <td style="padding: 0.75rem; text-align: center; color: #4ade80;">✓</td>
-            <td style="padding: 0.75rem; text-align: center; color: #f87171;">✗ USD</td>
-            <td style="padding: 0.75rem; text-align: center; color: #f87171;">✗ USD</td>
+            <td style="padding: 0.75rem; text-align: center; color: var(--primary-foreground);">✓</td>
+            <td style="padding: 0.75rem; text-align: center; color: var(--pulso);">✗ USD</td>
+            <td style="padding: 0.75rem; text-align: center; color: var(--primary-foreground);">✓</td>
+            <td style="padding: 0.75rem; text-align: center; color: var(--pulso);">✗ USD</td>
+            <td style="padding: 0.75rem; text-align: center; color: var(--pulso);">✗ USD</td>
           </tr>
-          <tr style="border-top: 1px solid #334155; background: #0f172a;">
+          <tr style="border-top: 1px solid var(--fio-forte); background: var(--primary);">
             <td style="padding: 0.75rem;">Native WhatsApp</td>
-            <td style="padding: 0.75rem; text-align: center; color: #4ade80;">✓</td>
-            <td style="padding: 0.75rem; text-align: center; color: #fbbf24;">Add-on</td>
-            <td style="padding: 0.75rem; text-align: center; color: #fbbf24;">Paid plan</td>
-            <td style="padding: 0.75rem; text-align: center; color: #f87171;">✗</td>
-            <td style="padding: 0.75rem; text-align: center; color: #4ade80;">✓</td>
+            <td style="padding: 0.75rem; text-align: center; color: var(--primary-foreground);">✓</td>
+            <td style="padding: 0.75rem; text-align: center; color: var(--primary-foreground);">Add-on</td>
+            <td style="padding: 0.75rem; text-align: center; color: var(--primary-foreground);">Paid plan</td>
+            <td style="padding: 0.75rem; text-align: center; color: var(--pulso);">✗</td>
+            <td style="padding: 0.75rem; text-align: center; color: var(--primary-foreground);">✓</td>
           </tr>
-          <tr style="border-top: 1px solid #334155;">
+          <tr style="border-top: 1px solid var(--fio-forte);">
             <td style="padding: 0.75rem;">Offline Mode</td>
-            <td style="padding: 0.75rem; text-align: center; color: #4ade80;">✓</td>
-            <td style="padding: 0.75rem; text-align: center; color: #f87171;">✗</td>
-            <td style="padding: 0.75rem; text-align: center; color: #f87171;">✗</td>
-            <td style="padding: 0.75rem; text-align: center; color: #f87171;">✗</td>
-            <td style="padding: 0.75rem; text-align: center; color: #f87171;">✗</td>
+            <td style="padding: 0.75rem; text-align: center; color: var(--primary-foreground);">✓</td>
+            <td style="padding: 0.75rem; text-align: center; color: var(--pulso);">✗</td>
+            <td style="padding: 0.75rem; text-align: center; color: var(--pulso);">✗</td>
+            <td style="padding: 0.75rem; text-align: center; color: var(--pulso);">✗</td>
+            <td style="padding: 0.75rem; text-align: center; color: var(--pulso);">✗</td>
           </tr>
-          <tr style="border-top: 1px solid #334155; background: #0f172a;">
+          <tr style="border-top: 1px solid var(--fio-forte); background: var(--primary);">
             <td style="padding: 0.75rem;">Built-in AI</td>
-            <td style="padding: 0.75rem; text-align: center; color: #4ade80;">✓</td>
-            <td style="padding: 0.75rem; text-align: center; color: #fbbf24;">Add-on</td>
-            <td style="padding: 0.75rem; text-align: center; color: #f87171;">✗</td>
-            <td style="padding: 0.75rem; text-align: center; color: #fbbf24;">Limited</td>
-            <td style="padding: 0.75rem; text-align: center; color: #f87171;">✗</td>
+            <td style="padding: 0.75rem; text-align: center; color: var(--primary-foreground);">✓</td>
+            <td style="padding: 0.75rem; text-align: center; color: var(--primary-foreground);">Add-on</td>
+            <td style="padding: 0.75rem; text-align: center; color: var(--pulso);">✗</td>
+            <td style="padding: 0.75rem; text-align: center; color: var(--primary-foreground);">Limited</td>
+            <td style="padding: 0.75rem; text-align: center; color: var(--pulso);">✗</td>
           </tr>
         </tbody>
       </table>
 
-      <div style="background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); border-left: 4px solid #2563eb; padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
-        <p style="font-weight: 700; color: #1e40af;">Ready to switch from Pipedrive?</p>
-        <p style="color: #1e40af; margin: 0.5rem 0 1rem;">Sirius CRM imports Pipedrive data in under 30 minutes. Native WhatsApp, offline mode, AI — all included.</p>
-        <a href="/en/register" style="background: #2563eb; color: white; padding: 0.75rem 1.5rem; border-radius: 0.5rem; font-weight: 600; text-decoration: none; display: inline-block;">Try Free →</a>
+      <div style="background: var(--muted); border-left: 4px solid var(--fio-forte); padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
+        <p style="font-weight: 700; color: var(--foreground);">Ready to switch from Pipedrive?</p>
+        <p style="color: var(--foreground); margin: 0.5rem 0 1rem;">Sirius CRM imports Pipedrive data in under 30 minutes. Native WhatsApp, offline mode, AI — all included.</p>
+        <a href="/en/register" style="background: var(--primary); color: white; padding: 0.75rem 1.5rem; border-radius: 0.5rem; font-weight: 600; text-decoration: none; display: inline-block;">Try Free →</a>
       </div>
 
-      <hr style="margin: 3rem 0; border: none; border-top: 1px solid #e5e7eb;" />
-      <p style="font-size: 0.85rem; color: #64748b;">
+      <hr style="margin: 3rem 0; border: none; border-top: 1px solid var(--border);" />
+      <p style="font-size: 0.85rem; color: var(--foreground);">
         <strong>Last Updated:</strong> March 21, 2026<br/>
         <strong>Author:</strong> Sirius CRM Team<br/>
         <strong>Reading Time:</strong> 11 minutes

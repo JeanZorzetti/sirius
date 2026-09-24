@@ -248,7 +248,7 @@ export default function CommunityPage() {
             </h2>
             <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
               <div className="border rounded-lg overflow-hidden bg-card hover:shadow-lg transition-shadow">
-                <div className="h-48 bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center">
+                <div className="h-48 flex items-center justify-center">
                   <BookOpen className="h-16 w-16 text-primary" />
                 </div>
                 <div className="p-6">
@@ -263,8 +263,8 @@ export default function CommunityPage() {
               </div>
 
               <div className="border rounded-lg overflow-hidden bg-card hover:shadow-lg transition-shadow">
-                <div className="h-48 bg-gradient-to-br from-blue-500/20 to-blue-500/5 flex items-center justify-center">
-                  <Trophy className="h-16 w-16 text-blue-600" />
+                <div className="h-48 flex items-center justify-center">
+                  <Trophy className="h-16 w-16 text-foreground" />
                 </div>
                 <div className="p-6">
                   <h3 className="font-semibold text-lg mb-2">Casos de Sucesso</h3>
@@ -278,8 +278,8 @@ export default function CommunityPage() {
               </div>
 
               <div className="border rounded-lg overflow-hidden bg-card hover:shadow-lg transition-shadow">
-                <div className="h-48 bg-gradient-to-br from-green-500/20 to-green-500/5 flex items-center justify-center">
-                  <Lightbulb className="h-16 w-16 text-green-600" />
+                <div className="h-48 flex items-center justify-center">
+                  <Lightbulb className="h-16 w-16 text-foreground" />
                 </div>
                 <div className="p-6">
                   <h3 className="font-semibold text-lg mb-2">Dicas de Vendas</h3>
