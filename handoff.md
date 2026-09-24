@@ -78,14 +78,15 @@ verdadeiro hoje.
    - **Geist pré-carregada na home** (29 kb, ~145 ms): a home não usa. Tirar custa FOUT nas outras páginas, ou
      reestruturar os root layouts.
    - **O "950 negócios" do rodapé** (tabela acima).
-2. **Defeitos do `/blog` que já existiam** (confirmados em produção, fora da 006 porque ela não podia mudar o
-   visível):
-   - estouro horizontal de 105–120 px a 360/390 px, causado pelo blur do hero (`w-150` = 600 px);
-   - a capa de `whatsapp-api-oficial-meta-crm` (`/images/blog/whatsapp-api-oficial-meta-crm.webp`) não
-     existe, e dá 400 no `/_next/image`;
-   - os chips do filtro são `div` com `onClick`, fora do alcance do Tab;
-   - a animação dos cartões atrasa `índice × 100 ms`, e o 45º espera 4,4s;
-   - o "g" do h1 "Blog" sai cortado (`bg-clip-text`).
+2. **A capa de `whatsapp-api-oficial-meta-crm` não existe** (`/images/blog/whatsapp-api-oficial-meta-crm.webp`):
+   o cartão do `/blog` mostra imagem quebrada e o `/_next/image` responde 400. Falta o arquivo, que é
+   conteúdo. É o único dos cinco defeitos antigos do `/blog` que ficou aberto. Os outros quatro foram
+   corrigidos em `4e14dfb`:
+   - o estouro de 120 px a 360: `overflow-x-clip` no hero, e o filtro continua `sticky`;
+   - os chips fora do Tab: viraram `button` com `aria-pressed`, com o mesmo visual e o anel de foco imediato;
+   - os cartões escondidos até a hidratação, com o 45º a 4,4s: a animação de entrada saiu. A `motion-design`
+     classifica fade-in por item de lista como anti-padrão, e sem JS a grade agora aparece;
+   - o "g" cortado no h1: `pb-2` + `mb-4`.
 3. **Espalhar a marca** (continua do handoff anterior; histórico em `3a9c6ed`):
    - o header de [app/[locale]/(marketing)/layout.tsx](app/[locale]/(marketing)/layout.tsx) ainda usa
      `/logo.png`;
