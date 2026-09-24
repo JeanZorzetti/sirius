@@ -1,6 +1,5 @@
 // Single source for the pipeline every new account starts with.
-// Read by signup (app/auth/actions.ts), the demo seed (lib/seed-demo-data.ts)
-// and the home plate (components/carta/prancha.tsx) — the home draws this data, so it must stay real.
+// Read by signup (app/auth/actions.ts) and the demo seed (lib/seed-demo-data.ts).
 
 export const DEFAULT_STAGES = [
   { name: 'Lead', order: 0 },

@@ -1,6 +1,51 @@
 [
   {
     "data": "2026-09-23",
+    "alvo": "landing / (app/[locale]/(fluxo))",
+    "direcao": "custom:recombinacao-campo",
+    "nome": "Fluxo",
+    "origem": "recombinação livre campo·scroll·clara + campo de fluxo (Tyler Hobbs, mecanismo)",
+    "eixos": {
+      "materia": "campo",
+      "motor": "scroll",
+      "banda": "clara"
+    },
+    "estrutura": "percurso (caos no hero → faixas penteadas → planos → leituras → pulso no fecho); nav e rodapé mantidos por navegação e links internos",
+    "gesto": "cada lead é uma linha que entra embolada e sai penteada num pulso vermelho periódico; o scroll avança o pente (60vh)",
+    "camadas": {
+      "entrada": "o campo chega da esquerda (clip-path 1100ms)",
+      "scroll": "canvas penteia; faixas traçadas por view(); pulso do fecho desenhado",
+      "ponteiro": "faixa e botão sob o ponteiro viram vermelho; o canvas não responde ao ponteiro (redesenho a 60fps custaria INP)",
+      "transicao": "ausente: página única"
+    },
+    "fontes": [
+      "Schibsted Grotesk (texto e display)",
+      "DM Mono (rótulos)"
+    ],
+    "orcamento": {
+      "faixa": "marca",
+      "js_direcao_kb_gz": 1.9,
+      "css_direcao_kb_gz": 3.4,
+      "html_kb_gz": 43.6,
+      "fontes_kb": 99,
+      "lcp_alvo": 2.5,
+      "lcp_medido": 2.5,
+      "cls_medido": 0,
+      "metodo": "playwright CDP 4G lento (150ms, 1.6Mbps) + CPU 4x, 390x844, mediana de 3, build de produção local"
+    },
+    "fallback": "SVG do campo em repouso no HTML (24 linhas + pulso), mesma geometria do canvas",
+    "deps": [],
+    "recusadas": [
+      "custom:derivada-trilho (A)",
+      "custom:derivada-quadro-da-sala (B)",
+      "custom:derivada-conversa (C)",
+      "custom:derivada-contador (D)",
+      "custom:derivada-letreiro (E)"
+    ],
+    "processo": "escolha por imagem: duas folhas de contato com quadro estático do hero (A-C, depois D-F); o dono pediu mais 3 antes de escolher"
+  },
+  {
+    "data": "2026-09-23",
     "alvo": "landing / (app/[locale]/(carta))",
     "direcao": "custom:derivada-uranometria",
     "nome": "Carta de Bayer",

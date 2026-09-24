@@ -2,11 +2,12 @@
   "home": {
     "hero": {
       "badge": "O CRM da Nova Geração",
-      "title_prefix": "Transforme Leads em",
-      "title_highlight": "Receita Recorrente",
+      "title_prefix": "Transforme leads em",
+      "title_highlight": "receita recorrente.",
       "subtitle": "Sirius é a plataforma de vendas desenhada para times de alta performance. Sem planilhas, sem complexidade. Apenas foco em fechar negócios.",
-      "cta1": "Começar Grátis Agora",
+      "cta1": "Começar grátis agora",
       "cta2": "Já tenho conta",
+      "ctaNav": "Começar grátis",
       "risk1": "Sem cartão de crédito",
       "risk2": "Configure em 5 minutos",
       "risk3": "Cancele quando quiser",
@@ -113,7 +114,7 @@
       "subtitle": "Comece grátis e escale conforme seu time cresce. Sem surpresas.",
       "mostPopular": "Mais Popular",
       "seeDetails": "Ver detalhes",
-      "startFree": "Começar Grátis",
+      "startFree": "Começar grátis",
       "compareLink": "Ver comparação completa entre planos"
     },
     "blog": {
@@ -125,8 +126,8 @@
       "badge": "Junte-se a empresas que já organizam suas vendas com o Sirius",
       "title": "Comece a vender mais hoje",
       "subtitle": "Configure em 5 minutos. Sem cartão de crédito. Sem compromisso. Cancele quando quiser.",
-      "btnPrimary": "Criar Conta Grátis",
-      "btnSecondary": "Ver Planos",
+      "btnPrimary": "Criar conta grátis",
+      "btnSecondary": "Ver planos",
       "freeForever": "Grátis para sempre",
       "supportPt": "Suporte em português"
     },

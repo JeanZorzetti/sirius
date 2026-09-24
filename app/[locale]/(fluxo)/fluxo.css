@@ -1,0 +1,277 @@
+/* art-direction · fluxo (custom:recombinacao-campo) · eixos: campo/scroll/clara · orçamento: 3kb · 2026-09-23 */
+
+/* ── Tokens ─────────────────────────────────────────────────────────────
+   Hex first for browsers without OKLCH (browserslist goes back to Chrome 90), OKLCH inside
+   @supports is the source of truth. The canvas reads --campo-linha / --campo-pulso, kept as
+   plain rgba on purpose: canvas colour parsing lags CSS in some engines. */
+[data-art="fluxo"] {
+  --gelo: #f5f7f9;
+  --grafite: #141b24;
+  --grafite-suave: #4e5661;
+  --fio: rgba(20, 27, 36, .12);
+  --fio-forte: rgba(20, 27, 36, .3);
+  --pulso: #d02d23;           /* acento: o h1, o pulso, a faixa sob o ponteiro (4.79:1, só texto grande) */
+  --pulso-escuro: #b71b14;    /* o mesmo acento para texto pequeno e botão sob o ponteiro (6.16:1) */
+  --campo-cinza: #303b4a;        /* as linhas do poster SVG */
+  --campo-linha: rgba(48, 59, 74, .2);
+  --campo-pulso: rgba(208, 45, 35, .34);
+
+  --fonte-texto: var(--fonte-texto-base), ui-sans-serif, system-ui, sans-serif;
+  --fonte-mono: var(--fonte-mono-base), ui-monospace, monospace;
+
+  --t-h1: clamp(2.9rem, 1.55rem + 5.4vw, 5.4rem);
+  --t-h2: clamp(2rem, 1.3rem + 2.4vw, 3.3rem);
+  --t-lide: clamp(1.03rem, .98rem + .25vw, 1.15rem);
+  --t-mono: .78rem;
+
+  --folga: clamp(1.25rem, 4.4vw, 4rem);
+  --raio: 4px;
+
+  --dur-rapida: 160ms;
+  --dur-cena: 600ms;
+  --ease-saida: cubic-bezier(0, 0, .2, 1);
+  --ease-cena: cubic-bezier(.16, 1, .3, 1);
+}
+
+@supports (color: oklch(0 0 0)) {
+  [data-art="fluxo"] {
+    --gelo: oklch(0.975 0.004 250);
+    --grafite: oklch(0.22 0.02 255);
+    --grafite-suave: oklch(0.45 0.02 255);
+    --fio: oklch(0.22 0.02 255 / .12);
+    --fio-forte: oklch(0.22 0.02 255 / .3);
+    --pulso: oklch(0.56 0.2 29);
+    --pulso-escuro: oklch(0.5 0.19 29);
+    --campo-cinza: oklch(0.35 0.03 255);
+  }
+}
+
+/* ── Page ────────────────────────────────────────────────────────────── */
+[data-art="fluxo"] {
+  --marca-pingo: var(--pulso);
+  position: relative;
+  min-height: 100vh;
+  background: var(--gelo);
+  color: var(--grafite);
+  font-family: var(--fonte-texto);
+  font-size: 1rem;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+[data-art="fluxo"] ::selection { background: var(--pulso-escuro); color: var(--gelo); }
+[data-art="fluxo"] :is(a, [tabindex]):focus-visible { outline: 2px solid var(--pulso-escuro); outline-offset: 3px; border-radius: 2px; }
+
+[data-art="fluxo"] .fluxo-pular {
+  position: absolute; left: 1rem; top: -4rem; z-index: 60;
+  padding: .6rem 1rem; background: var(--grafite); color: var(--gelo); border-radius: var(--raio);
+}
+[data-art="fluxo"] .fluxo-pular:focus { top: 1rem; }
+
+/* ── Nav ─────────────────────────────────────────────────────────────── */
+[data-art="fluxo"] .fluxo-nav {
+  position: sticky; top: 0; z-index: 50;
+  display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+  padding: .9rem var(--folga);
+  background: var(--gelo);
+}
+[data-art="fluxo"] .fluxo-nav__marca { display: inline-flex; color: var(--grafite); border-radius: 2px; }
+[data-art="fluxo"] .fluxo-nav__wordmark { height: 1.9rem; width: auto; }
+[data-art="fluxo"] .fluxo-nav__links { display: flex; align-items: center; gap: clamp(.9rem, 2vw, 2rem); }
+[data-art="fluxo"] .fluxo-nav__link {
+  font-size: .95rem; font-weight: 500; color: var(--grafite);
+  text-decoration: underline; text-decoration-color: transparent; text-underline-offset: 5px;
+  transition: text-decoration-color var(--dur-rapida) var(--ease-saida);
+}
+[data-art="fluxo"] .fluxo-nav__link:hover { text-decoration-color: var(--pulso); }
+
+/* ── Actions ─────────────────────────────────────────────────────────── */
+[data-art="fluxo"] .fluxo-botao {
+  display: inline-flex; align-items: center; justify-content: center; min-height: 48px;
+  padding: .75rem 1.35rem;
+  font-weight: 600; font-size: 1rem; line-height: 1.1;
+  color: var(--gelo); background: var(--grafite);
+  border-radius: var(--raio);
+  transition: background-color var(--dur-rapida) var(--ease-saida);
+}
+/* under the pointer the button takes the colour everything is combed into */
+[data-art="fluxo"] .fluxo-botao:hover { background: var(--pulso-escuro); }
+[data-art="fluxo"] .fluxo-botao--nav { min-height: 42px; padding: .55rem 1rem; font-size: .92rem; }
+
+[data-art="fluxo"] .fluxo-link {
+  display: inline-flex; align-items: center; min-height: 44px;
+  font-weight: 600; color: var(--grafite);
+  text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 6px; text-decoration-color: var(--fio-forte);
+  transition: color var(--dur-rapida) var(--ease-saida), text-decoration-color var(--dur-rapida) var(--ease-saida);
+}
+[data-art="fluxo"] .fluxo-link:hover { color: var(--pulso-escuro); text-decoration-color: currentColor; }
+
+[data-art="fluxo"] .lide { margin: 0; max-width: 40rem; font-size: var(--t-lide); line-height: 1.55; color: var(--grafite-suave); text-wrap: pretty; }
+[data-art="fluxo"] .acoes { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem 1.6rem; margin-top: 1.5rem; }
+[data-art="fluxo"] .garantias { margin: 1rem 0 0; font-family: var(--fonte-mono); font-size: var(--t-mono); line-height: 1.5; color: var(--grafite-suave); }
+
+/* ── Abertura: the tangle ────────────────────────────────────────────── */
+[data-art="fluxo"] .abertura { padding-top: clamp(1.25rem, 4vw, 2.75rem); }
+[data-art="fluxo"] .abertura__topo { display: grid; gap: 1.5rem 4rem; grid-template-columns: minmax(0, 1fr); padding-inline: var(--folga); }
+@media (min-width: 1024px) {
+  [data-art="fluxo"] .abertura__topo { grid-template-columns: minmax(0, 7fr) minmax(0, 4fr); align-items: end; }
+}
+[data-art="fluxo"] .abertura__titulo {
+  margin: 0;
+  font-size: var(--t-h1); font-weight: 560; line-height: .98; letter-spacing: -.038em;
+  text-wrap: balance;
+}
+[data-art="fluxo"] .abertura__titulo em { font-style: normal; color: var(--pulso); }
+
+[data-art="fluxo"] .campo {
+  position: relative;
+  height: clamp(22rem, 100vh - 24rem, 36rem);
+  height: clamp(22rem, 100svh - 24rem, 36rem);
+  margin-top: clamp(.75rem, 2vw, 1.25rem);
+  overflow: hidden;
+}
+[data-art="fluxo"] :is(.campo__poster, .campo__vivo) { position: absolute; inset: 0; display: block; width: 100%; height: 100%; }
+[data-art="fluxo"] .campo__poster-linha { fill: none; stroke: url(#campo-tinta); stroke-width: 1; stroke-opacity: .32; }
+[data-art="fluxo"] .campo__poster-onda { fill: none; stroke: var(--pulso); stroke-width: 1.5; stroke-opacity: .85; }
+[data-art="fluxo"] .campo__vivo { opacity: 0; transition: opacity var(--dur-cena) var(--ease-saida); }
+[data-art="fluxo"] .campo[data-estado="vivo"] .campo__vivo { opacity: 1; }
+[data-art="fluxo"] .campo[data-estado="vivo"] .campo__poster { opacity: 0; transition: opacity var(--dur-cena) var(--ease-saida); }
+[data-art="fluxo"] .campo__fontes { list-style: none; margin: 0; padding: 0; }
+[data-art="fluxo"] .campo__fontes li {
+  position: absolute; left: var(--folga);
+  padding: 3px 6px; background: var(--gelo);
+  font-family: var(--fonte-mono); font-size: .75rem; line-height: 1; color: var(--grafite-suave);
+}
+[data-art="fluxo"] .campo__destino {
+  position: absolute; top: 4%; right: var(--folga); margin: 0;
+  font-family: var(--fonte-mono); font-size: .75rem; font-weight: 500; letter-spacing: .08em; text-transform: uppercase;
+  color: var(--pulso-escuro);
+}
+
+/* ── Sections ────────────────────────────────────────────────────────── */
+[data-art="fluxo"] .secao {
+  display: grid; gap: 1.75rem 4rem; grid-template-columns: minmax(0, 1fr);
+  padding: clamp(4rem, 9vw, 7.5rem) var(--folga) 0;
+}
+@media (min-width: 1024px) {
+  [data-art="fluxo"] .secao { grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); }
+  [data-art="fluxo"] .secao__cabeca { position: sticky; top: 6rem; align-self: start; }
+  [data-art="fluxo"] .secao--planos { grid-template-columns: minmax(0, 1fr); }
+  [data-art="fluxo"] .secao--planos .secao__cabeca { position: static; max-width: 46rem; }
+}
+[data-art="fluxo"] .secao__titulo { margin: 0; font-size: var(--t-h2); font-weight: 560; line-height: 1.02; letter-spacing: -.032em; text-wrap: balance; }
+[data-art="fluxo"] .secao__cabeca .lide { margin-top: 1.1rem; }
+[data-art="fluxo"] .secao__rodape { margin-top: 1.25rem; }
+
+/* the comb: one lane per instrument, each one a line that was part of the tangle */
+[data-art="fluxo"] .faixas { list-style: none; margin: 0; padding: 0; }
+[data-art="fluxo"] .faixa { position: relative; display: grid; gap: .3rem 1.5rem; grid-template-columns: 2.5rem minmax(0, 1fr); padding: 1.3rem 0 1.4rem; }
+@media (min-width: 720px) {
+  [data-art="fluxo"] .faixa { grid-template-columns: 2.5rem minmax(0, 5fr) minmax(0, 7fr); align-items: baseline; }
+}
+[data-art="fluxo"] .faixa::before {
+  content: ""; position: absolute; left: 0; right: 0; top: 0; height: 1px;
+  background: var(--fio-forte); transform-origin: left center;
+  transition: background-color var(--dur-rapida) var(--ease-saida), box-shadow var(--dur-rapida) var(--ease-saida);
+}
+[data-art="fluxo"] .faixa__numero { font-family: var(--fonte-mono); font-size: var(--t-mono); line-height: 1.9; color: var(--grafite-suave); transition: color var(--dur-rapida) var(--ease-saida); }
+[data-art="fluxo"] .faixa__nome { margin: 0; font-size: 1.15rem; font-weight: 600; line-height: 1.3; letter-spacing: -.01em; }
+[data-art="fluxo"] .faixa__nome--link {
+  color: var(--grafite);
+  text-decoration: underline; text-decoration-color: transparent; text-underline-offset: 5px;
+  transition: color var(--dur-rapida) var(--ease-saida), text-decoration-color var(--dur-rapida) var(--ease-saida);
+}
+[data-art="fluxo"] .faixa__nome--link:hover { color: var(--pulso-escuro); text-decoration-color: currentColor; }
+[data-art="fluxo"] .faixa__texto { grid-column: 2; margin: 0; font-size: .98rem; color: var(--grafite-suave); }
+@media (min-width: 720px) { [data-art="fluxo"] .faixa__texto { grid-column: auto; } }
+@media (hover: hover) {
+  [data-art="fluxo"] .faixa:hover::before { background: var(--pulso); box-shadow: 0 1px 0 var(--pulso); }
+  [data-art="fluxo"] .faixa:hover .faixa__numero { color: var(--pulso-escuro); }
+}
+
+/* ── Planos ──────────────────────────────────────────────────────────── */
+[data-art="fluxo"] .planos { display: grid; grid-template-columns: minmax(0, 1fr); border-top: 1px solid var(--fio-forte); }
+@media (min-width: 640px) { [data-art="fluxo"] .planos { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 1100px) { [data-art="fluxo"] .planos { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+[data-art="fluxo"] .plano {
+  position: relative; display: flex; flex-direction: column; gap: .35rem;
+  padding: 1.6rem 1.25rem 1.6rem 0; border-bottom: 1px solid var(--fio);
+}
+@media (min-width: 1100px) {
+  [data-art="fluxo"] .plano { padding-inline: 1.5rem; border-bottom: 0; border-left: 1px solid var(--fio); }
+  [data-art="fluxo"] .plano:first-child { padding-left: 0; border-left: 0; }
+}
+[data-art="fluxo"] .plano[data-destaque]::before { content: ""; position: absolute; left: 0; right: 0; top: -2px; height: 3px; background: var(--pulso); }
+[data-art="fluxo"] .plano p { margin: 0; }
+[data-art="fluxo"] .plano__nome { margin: 0; font-size: 1.2rem; font-weight: 600; }
+[data-art="fluxo"] .plano__selo { font-family: var(--fonte-mono); font-size: var(--t-mono); font-weight: 500; letter-spacing: .08em; text-transform: uppercase; color: var(--pulso-escuro); }
+[data-art="fluxo"] .plano__preco {
+  margin-top: .5rem !important;
+  font-size: clamp(2rem, 1.6rem + 1.2vw, 2.7rem); font-weight: 600; line-height: 1; letter-spacing: -.03em;
+  font-variant-numeric: tabular-nums;
+}
+[data-art="fluxo"] .plano__periodo { margin-left: .2rem; font-size: 1rem; font-weight: 500; letter-spacing: 0; color: var(--grafite-suave); }
+[data-art="fluxo"] .plano__descricao { color: var(--grafite-suave); }
+[data-art="fluxo"] .plano__lista { flex: 1; list-style: none; margin: .7rem 0 1.1rem; padding: 0; font-size: .95rem; }
+[data-art="fluxo"] .plano__lista li { padding: .35rem 0; border-top: 1px solid var(--fio); }
+[data-art="fluxo"] .plano__acao { align-self: flex-start; }
+
+/* ── Fecho: the pulse every line ends up in ──────────────────────────── */
+[data-art="fluxo"] .fecho {
+  display: grid; gap: 1.5rem 3rem; grid-template-columns: minmax(0, 1fr);
+  padding: clamp(4.5rem, 10vw, 8rem) var(--folga) clamp(3rem, 6vw, 5rem);
+}
+@media (min-width: 1024px) {
+  [data-art="fluxo"] .fecho { grid-template-columns: minmax(0, 8fr) minmax(0, 4fr); align-items: end; }
+  [data-art="fluxo"] .fecho__pulso { grid-column: 1 / -1; }
+}
+[data-art="fluxo"] .fecho__pulso { display: block; width: 100%; height: clamp(4.5rem, 9vw, 7rem); overflow: visible; }
+[data-art="fluxo"] .fecho__pulso path { fill: none; stroke: var(--pulso); stroke-width: 2; stroke-linejoin: round; stroke-dasharray: 1; stroke-dashoffset: 0; }
+[data-art="fluxo"] .fecho__texto .lide { margin-top: 1rem; }
+[data-art="fluxo"] .fecho__assinatura { margin: 0; font-family: var(--fonte-mono); font-size: var(--t-mono); color: var(--grafite-suave); }
+
+/* ── Site footer, re-inked for this route only ───────────────────────── */
+[data-art="fluxo"] .fluxo-rodape {
+  --background: var(--gelo);
+  --foreground: var(--grafite);
+  --muted-foreground: var(--grafite-suave);
+  --border: var(--fio);
+  --primary: var(--pulso-escuro);
+}
+[data-art="fluxo"] .fluxo-rodape footer { background: var(--gelo); color: var(--grafite); border-top: 1px solid var(--fio-forte); }
+
+/* ── Choreography: one verb, "comb" ──────────────────────────────────── */
+/* Entrada — the field arrives from the left, poster and canvas together. The h1 (LCP) never animates. */
+[data-art="fluxo"] .campo { animation: fluxo-chega 1100ms var(--ease-cena) 120ms both; }
+@keyframes fluxo-chega { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0 0 0 0); } }
+
+@supports (animation-timeline: view()) {
+  /* Scroll — each lane is combed straight, left to right, as it comes up; the closing pulse is drawn last.
+     (The hero comb itself is the canvas: components/fluxo/campo-vivo.tsx.) */
+  [data-art="fluxo"] .faixa::before {
+    animation: fluxo-pente linear both;
+    animation-timeline: view();
+    animation-range: entry 10% cover 40%;
+  }
+  [data-art="fluxo"] .fecho__pulso path {
+    animation: fluxo-pulso linear both;
+    animation-timeline: view();
+    animation-range: entry 0% cover 45%;
+  }
+}
+@keyframes fluxo-pente { from { transform: scaleX(0); } }
+@keyframes fluxo-pulso { from { stroke-dashoffset: 1; } }
+
+@media (prefers-reduced-motion: reduce) {
+  [data-art="fluxo"] *,
+  [data-art="fluxo"] *::before,
+  [data-art="fluxo"] *::after {
+    animation: none !important;
+    transition-duration: 0ms !important;
+  }
+}
+
+/* ── Small screens: the nav keeps only the way in ────────────────────── */
+@media (max-width: 640px) {
+  [data-art="fluxo"] .fluxo-nav__link:not([href$="login"]) { display: none; }
+  [data-art="fluxo"] .fluxo-nav__wordmark { height: 1.6rem; }
+}

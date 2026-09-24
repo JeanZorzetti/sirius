@@ -5,11 +5,11 @@ import { Link } from "@/i18n/routing"
 import { buildLocaleAlternates } from "@/lib/seo/canonical"
 import { ORG_SAME_AS } from "@/lib/geo/entity"
 import { blogPosts } from "@/lib/blog-data"
-import { Prancha } from "@/components/carta/prancha"
-import { CATALOGO, brl, estrela, prazo, raio } from "@/components/carta/estrelas"
+import { Campo } from "@/components/fluxo/campo"
+import { linhaDePulso } from "@/components/fluxo/geometria"
 
-// Pipeline stages and demo deals the plate draws come from lib/pipeline-defaults.ts.
-const INSTRUMENTOS = [
+// The eight lanes the tangle is combed into.
+const FAIXAS = [
   ["Pipeline Kanban", "Arraste o negócio de etapa em etapa e veja o funil inteiro numa tela."],
   ["WhatsApp integrado", "Converse com o cliente sem sair do CRM, com inbox único, tags e respostas rápidas."],
   ["AGI Sirius", "A IA comercial qualifica cada lead por BANT e MEDDIC e recomenda a próxima ação."],
@@ -20,8 +20,7 @@ const INSTRUMENTOS = [
   ["API pública e webhooks", "Ligue o Sirius ao resto da operação."],
 ] as const
 
-const R_MAX = raio(CATALOGO[0].value) // largest star sets the shared catalogue viewBox
-const ROMANO = ["I", "II", "III", "IV", "V", "VI", "VII", "VIII"]
+const PULSO = linhaDePulso()
 
 export async function generateMetadata({
   params,
@@ -248,87 +247,51 @@ export default function LandingPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessSchema) }}
       />
 
-      {/* Prancha I — the sky of the pipeline */}
-      <section className="folha folha--abertura" aria-labelledby="titulo-abertura">
-        <div className="abertura__texto">
-          <p className="rotulo">Prancha I · o céu do pipeline</p>
+      {/* Tangle → pulse: the field combs itself as the page scrolls */}
+      <section className="abertura" aria-labelledby="titulo-abertura">
+        <div className="abertura__topo">
           <h1 id="titulo-abertura" className="abertura__titulo">
             {h("title_prefix")} <em>{h("title_highlight")}</em>
           </h1>
-          <p className="abertura__lide">{h("subtitle")}</p>
-          <div className="abertura__acoes">
-            <Link href="/register" className="carta-botao">{h("cta1")}</Link>
-            <Link href="/login" className="carta-link">{h("cta2")}</Link>
+          <div className="abertura__apoio">
+            <p className="lide">{h("subtitle")}</p>
+            <div className="acoes">
+              <Link href="/register" className="fluxo-botao">{h("cta1")}</Link>
+              <Link href="/login" className="fluxo-link">{h("cta2")}</Link>
+            </div>
+            <p className="garantias">{h("risk1")} · {h("risk2")} · {h("risk3")}</p>
           </div>
-          <p className="abertura__garantias">{h("risk1")} · {h("risk2")} · {h("risk3")}</p>
         </div>
-        <Prancha />
+        <Campo />
       </section>
 
-      {/* Prancha II — the order of brightness */}
-      <section className="folha folha--catalogo" aria-labelledby="titulo-catalogo">
-        <header className="folha__cabeca">
-          <p className="rotulo">Prancha II · a ordem do brilho</p>
-          <h2 id="titulo-catalogo" className="folha__titulo">Quem brilha mais, você liga primeiro.</h2>
-          <p className="folha__lide">
-            Em 1603, Johann Bayer batizou as estrelas de cada constelação com letras gregas, da mais brilhante para a mais fraca.
-            O Sirius faz o mesmo com o seu pipeline. Nesta prancha o brilho é só o valor. Na sua conta, a AGI Sirius qualifica
-            cada lead por BANT e MEDDIC e recomenda a próxima ação.
-          </p>
+      {/* The comb: what came in tangled, one lane each */}
+      <section className="secao" aria-labelledby="titulo-faixas">
+        <header className="secao__cabeca">
+          <h2 id="titulo-faixas" className="secao__titulo">{t("about.title")}</h2>
+          <p className="lide">{t("about.description")}</p>
         </header>
-        <ol className="catalogo">
-          {CATALOGO.map((e, i) => {
-            return (
-              <li key={e.title} className="catalogo__linha" data-alfa={i === 0 || undefined}>
-                <span className="catalogo__letra" aria-hidden="true">{e.letra}</span>
-                <svg className="catalogo__estrela" viewBox={`${-R_MAX - 1} ${-R_MAX - 1} ${2 * R_MAX + 2} ${2 * R_MAX + 2}`} aria-hidden="true">
-                  <path d={estrela(0, 0, raio(e.value))} />
-                </svg>
-                <span className="catalogo__titulo">{e.title}</span>
-                <span className="catalogo__dados">
-                  <span>{e.etapa}</span>
-                  <span className="catalogo__valor">{brl(e.value)}</span>
-                  <span>{prazo(e)}</span>
-                </span>
-                <span className="catalogo__nota">{e.notes[e.notes.length - 1]}</span>
-              </li>
-            )
-          })}
-        </ol>
-      </section>
-
-      {/* Prancha III — instruments */}
-      <section className="folha folha--instrumentos" aria-labelledby="titulo-instrumentos">
-        <header className="folha__cabeca">
-          <p className="rotulo">Prancha III · instrumentos</p>
-          <h2 id="titulo-instrumentos" className="folha__titulo">{t("about.title")}</h2>
-          <p className="folha__lide">{t("about.description")}</p>
-        </header>
-        <ol className="instrumentos">
-          {INSTRUMENTOS.map(([nome, texto], i) => (
-            <li key={nome} className="instrumentos__item">
-              <span className="instrumentos__numero" aria-hidden="true">{ROMANO[i]}</span>
-              <h3 className="instrumentos__nome">{nome}</h3>
-              <p className="instrumentos__texto">{texto}</p>
+        <ol className="faixas">
+          {FAIXAS.map(([nome, texto], i) => (
+            <li key={nome} className="faixa">
+              <span className="faixa__numero" aria-hidden="true">{String(i + 1).padStart(2, "0")}</span>
+              <h3 className="faixa__nome">{nome}</h3>
+              <p className="faixa__texto">{texto}</p>
             </li>
           ))}
         </ol>
       </section>
 
-      {/* Prancha IV — plans */}
-      <section className="folha folha--planos" aria-labelledby="titulo-planos">
-        <header className="folha__cabeca">
-          <p className="rotulo">Prancha IV · planos</p>
-          <h2 id="titulo-planos" className="folha__titulo">{t("plans.title")}</h2>
-          <p className="folha__lide">{t("plans.subtitle")} 7 dias grátis com acesso PRO completo, sem cartão de crédito.</p>
+      {/* Plans */}
+      <section className="secao secao--planos" aria-labelledby="titulo-planos">
+        <header className="secao__cabeca">
+          <h2 id="titulo-planos" className="secao__titulo">{t("plans.title")}</h2>
+          <p className="lide">{t("plans.subtitle")} 7 dias grátis com acesso PRO completo, sem cartão de crédito.</p>
         </header>
         <div className="planos">
           {plans.map((plan) => (
-            <article key={plan.name} className="plano" data-alfa={plan.highlighted || undefined}>
-              <h3 className="plano__nome">
-                {plan.highlighted && <span className="plano__marca" aria-hidden="true">α</span>}
-                {plan.name}
-              </h3>
+            <article key={plan.name} className="plano" data-destaque={plan.highlighted || undefined}>
+              <h3 className="plano__nome">{plan.name}</h3>
               {plan.highlighted && <p className="plano__selo">{t("plans.mostPopular")}</p>}
               <p className="plano__preco">
                 {plan.price}
@@ -340,51 +303,52 @@ export default function LandingPage() {
               </ul>
               <Link
                 href={plan.highlighted ? "/register" : "/pricing"}
-                className={plan.highlighted ? "carta-botao plano__acao" : "carta-link plano__acao"}
+                className={plan.highlighted ? "fluxo-botao plano__acao" : "fluxo-link plano__acao"}
               >
                 {plan.price === "R$ 0" ? t("plans.startFree") : t("plans.seeDetails")}
               </Link>
             </article>
           ))}
         </div>
-        <Link href="/pricing" className="carta-link folha__rodape">{t("plans.compareLink")}</Link>
+        <Link href="/pricing" className="fluxo-link secao__rodape">{t("plans.compareLink")}</Link>
       </section>
 
       {/* Readings — blog */}
-      <section className="folha folha--leituras" aria-labelledby="titulo-leituras">
-        <header className="folha__cabeca">
-          <p className="rotulo">Leituras</p>
-          <h2 id="titulo-leituras" className="folha__titulo">{t("blog.title")}</h2>
-          <p className="folha__lide">{t("blog.subtitle")}</p>
+      <section className="secao" aria-labelledby="titulo-leituras">
+        <header className="secao__cabeca">
+          <h2 id="titulo-leituras" className="secao__titulo">{t("blog.title")}</h2>
+          <p className="lide">{t("blog.subtitle")}</p>
         </header>
-        <ol className="leituras">
-          {blogPosts.slice(0, 3).map((post) => (
-            <li key={post.slug} className="leituras__item">
-              <Link href={{ pathname: "/blog/[slug]", params: { slug: post.slug } }} className="leituras__titulo">
-                {post.title}
-              </Link>
-              <p className="leituras__resumo">{post.excerpt}</p>
-            </li>
-          ))}
-        </ol>
-        <Link href="/blog" className="carta-link folha__rodape">{t("blog.viewAll")}</Link>
+        <div>
+          <ol className="faixas">
+            {blogPosts.slice(0, 3).map((post, i) => (
+              <li key={post.slug} className="faixa">
+                <span className="faixa__numero" aria-hidden="true">{String(i + 1).padStart(2, "0")}</span>
+                <Link href={{ pathname: "/blog/[slug]", params: { slug: post.slug } }} className="faixa__nome faixa__nome--link">
+                  {post.title}
+                </Link>
+                <p className="faixa__texto">{post.excerpt}</p>
+              </li>
+            ))}
+          </ol>
+          <Link href="/blog" className="fluxo-link secao__rodape">{t("blog.viewAll")}</Link>
+        </div>
       </section>
 
-      {/* Colophon + closing call */}
-      <section className="folha folha--colofao" aria-labelledby="titulo-colofao">
-        <div className="colofao__chamada">
-          <h2 id="titulo-colofao" className="folha__titulo">{t("cta.title")}</h2>
-          <p className="folha__lide">{t("cta.subtitle")}</p>
-          <div className="abertura__acoes">
-            <Link href="/register" className="carta-botao">{t("cta.btnPrimary")}</Link>
-            <Link href="/pricing" className="carta-link">{t("cta.btnSecondary")}</Link>
+      {/* The pulse: where every line ends up */}
+      <section className="fecho" aria-labelledby="titulo-fecho">
+        <svg className="fecho__pulso" viewBox="0 0 1000 100" preserveAspectRatio="xMinYMid slice" aria-hidden="true">
+          <path d={PULSO} pathLength={1} />
+        </svg>
+        <div className="fecho__texto">
+          <h2 id="titulo-fecho" className="secao__titulo">{t("cta.title")}</h2>
+          <p className="lide">{t("cta.subtitle")}</p>
+          <div className="acoes">
+            <Link href="/register" className="fluxo-botao">{t("cta.btnPrimary")}</Link>
+            <Link href="/pricing" className="fluxo-link">{t("cta.btnSecondary")}</Link>
           </div>
         </div>
-        <p className="colofao__texto">
-          Sirius CRM é feito pela ROI Labs, em Goiás. Pranchas compostas em Bricolage Grotesque e EB Garamond.
-          Os negócios desenhados são o pipeline de exemplo de toda conta nova, e as letras seguem a ordem do brilho,
-          como na <i>Uranometria</i> de Johann Bayer.
-        </p>
+        <p className="fecho__assinatura">Sirius CRM é feito pela ROI Labs, em Goiás.</p>
       </section>
     </>
   )
