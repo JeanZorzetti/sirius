@@ -25,6 +25,8 @@ const geistMono = Geist_Mono({
 import { Suspense } from 'react'
 import { ThemeProvider } from '@/components/theme-provider'
 import { PWARegister } from '@/components/pwa-register'
+import { GoogleTagManager, GoogleTagManagerNoScript } from '@/components/google-tag-manager'
+import { analyticsConfig } from '@/lib/analytics-config'
 import { Toaster } from '@/components/ui/sonner'
 import { PostHogProvider } from '../providers'
 import { AiTrafficMonitor } from '@/components/analytics/ai-traffic-monitor'
@@ -242,6 +244,8 @@ export default async function LocaleLayout({
     <html lang={locale} suppressHydrationWarning>
       <head>
         {/* Preconnect to critical third-party origins */}
+        <link rel="preconnect" href="https://www.googletagmanager.com" />
+        <link rel="preconnect" href="https://www.google-analytics.com" />
         <link rel="preconnect" href="https://js.sentry-cdn.com" />
         <link rel="preconnect" href="https://us.i.posthog.com" />
         <link rel="preconnect" href="https://us-assets.i.posthog.com" crossOrigin="anonymous" />
@@ -252,6 +256,13 @@ export default async function LocaleLayout({
         />
       </head>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+        {/* Google Tag Manager (noscript) */}
+        {analyticsConfig.gtm.enabled && (
+          <GoogleTagManagerNoScript gtmId={analyticsConfig.gtm.id} />
+        )}
+        {/* Google Tag Manager */}
+        {analyticsConfig.gtm.enabled && <GoogleTagManager gtmId={analyticsConfig.gtm.id} />}
+
         {/* Provedor de i18n — passa mensagens ao client */}
         <NextIntlClientProvider messages={messages}>
           <PostHogProvider>

@@ -1382,8 +1382,8 @@
       "title": "5. Cookies e Rastreamento",
       "essential": "Cookies Essenciais:",
       "essentialText": "Necessários para autenticação e funcionamento do sistema.",
-      "analytics": "PostHog:",
-      "analyticsText": "Medimos o uso das páginas e do produto com o PostHog. Quando você está logado, os eventos ficam associados à sua conta.",
+      "analytics": "Google Analytics:",
+      "analyticsText": "Usamos GA4 para análise agregada de uso (anonimizada).",
       "optOut": "Você pode desabilitar cookies não essenciais nas configurações do seu navegador."
     },
     "s6": {
