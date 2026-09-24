@@ -15,6 +15,7 @@ import { getArticle, helpArticles } from "@/lib/help-articles";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { JsonLd } from "@/components/seo/json-ld";
+import { DEFAULT_OG_IMAGES } from '@/lib/seo/canonical'
 
 // Gera páginas estáticas para todos os artigos no build
 export async function generateStaticParams() {
@@ -58,6 +59,7 @@ export async function generateMetadata({
       canonical: canonicalUrl,
     },
     openGraph: {
+      images: DEFAULT_OG_IMAGES,
       title: `${displayTitle} - ${helpLabel} | Sirius CRM`,
       description: displayDescription,
       url: canonicalUrl,

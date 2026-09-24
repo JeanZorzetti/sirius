@@ -4,6 +4,7 @@ import { getNicheBySlug, getAllNicheSlugs } from '@/config/niche-data'
 import { CalculadoraROI } from '@/components/calculadora-roi'
 import { Building2, Sun, Sparkles, Briefcase, TrendingUp, CheckCircle2, Users, ArrowRight } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { DEFAULT_OG_IMAGES } from '@/lib/seo/canonical'
 import {
   Accordion,
   AccordionContent,
@@ -55,6 +56,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
       canonical: canonicalUrl,
     },
     openGraph: {
+      images: DEFAULT_OG_IMAGES,
       title: seo.title,
       description: seo.description,
       url: canonicalUrl,

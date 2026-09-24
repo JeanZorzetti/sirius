@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button'
 import { Users, MessageCircle, BookOpen, Github, Lightbulb, Trophy, Heart } from 'lucide-react'
 import type { Metadata } from 'next'
 import { getTranslations } from 'next-intl/server'
-import { buildLocaleAlternates } from '@/lib/seo/canonical'
+import { buildLocaleAlternates, DEFAULT_OG_IMAGES } from '@/lib/seo/canonical'
 import { ORG_SAME_AS } from '@/lib/geo/entity'
 
 export async function generateMetadata({
@@ -20,6 +20,7 @@ export async function generateMetadata({
     description: t('description'),
     alternates,
     openGraph: {
+      images: DEFAULT_OG_IMAGES,
       title: t('ogTitle'),
       description: t('ogDescription'),
       url: alternates.canonical,

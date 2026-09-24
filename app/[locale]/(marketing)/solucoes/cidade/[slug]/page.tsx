@@ -26,6 +26,7 @@ import {
   AccordionTrigger,
 } from '@/components/ui/accordion'
 import Link from 'next/link'
+import { DEFAULT_OG_IMAGES } from '@/lib/seo/canonical'
 
 // Mapear ícones (mesmo conjunto de niche-data)
 const ICON_MAP = {
@@ -76,6 +77,7 @@ export async function generateMetadata({
       },
     },
     openGraph: {
+      images: DEFAULT_OG_IMAGES,
       title: city.seo.title,
       description: city.seo.description,
       url: `https://siriuscrm.com.br/solucoes/cidade/${city.slug}`,

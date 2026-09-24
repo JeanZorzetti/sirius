@@ -20,7 +20,7 @@ import {
   DollarSign
 } from 'lucide-react'
 import { getTranslations } from 'next-intl/server'
-import { buildLocaleAlternates } from '@/lib/seo/canonical'
+import { buildLocaleAlternates, DEFAULT_OG_IMAGES } from '@/lib/seo/canonical'
 
 export async function generateMetadata({
   params,
@@ -35,6 +35,7 @@ export async function generateMetadata({
     description: t('description'),
     alternates,
     openGraph: {
+      images: DEFAULT_OG_IMAGES,
       title: t('ogTitle'),
       description: t('ogDescription'),
       url: alternates.canonical,

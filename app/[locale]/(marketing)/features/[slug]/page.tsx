@@ -1,7 +1,7 @@
 ﻿import { getTranslations } from 'next-intl/server'
 import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
-import { buildLocaleAlternates } from '@/lib/seo/canonical'
+import { buildLocaleAlternates, DEFAULT_OG_IMAGES } from '@/lib/seo/canonical'
 import Link from 'next/link'
 import Script from 'next/script'
 import { Button } from '@/components/ui/button'
@@ -45,6 +45,7 @@ export async function generateMetadata({
     description,
     alternates,
     openGraph: {
+      images: DEFAULT_OG_IMAGES,
       title: `${name} — Sirius CRM`,
       description,
       url: alternates.canonical,

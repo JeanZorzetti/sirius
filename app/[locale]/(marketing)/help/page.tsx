@@ -22,7 +22,7 @@ import {
 import type { Metadata } from 'next'
 import { getTranslations } from 'next-intl/server'
 import { getAllCategories } from '@/lib/help-articles'
-import { buildLocaleAlternates } from '@/lib/seo/canonical'
+import { buildLocaleAlternates, DEFAULT_OG_IMAGES } from '@/lib/seo/canonical'
 
 export async function generateMetadata({
   params,
@@ -37,6 +37,7 @@ export async function generateMetadata({
     description: t('description'),
     alternates,
     openGraph: {
+      images: DEFAULT_OG_IMAGES,
       title: t('ogTitle'),
       description: t('ogDescription'),
       url: alternates.canonical,

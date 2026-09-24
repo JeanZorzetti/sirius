@@ -14,6 +14,7 @@ import {
   getCategoryFromSlug,
 } from '@/lib/blog-data'
 import { ArrowLeft, ArrowRight, Clock, Tag, BookOpen } from 'lucide-react'
+import { DEFAULT_OG_IMAGES } from '@/lib/seo/canonical'
 
 // Generate static params for all existing categories
 export function generateStaticParams() {
@@ -53,6 +54,7 @@ export async function generateMetadata({
       canonical: canonicalUrl,
     },
     openGraph: {
+      images: DEFAULT_OG_IMAGES,
       title,
       description,
       url: canonicalUrl,

@@ -4,7 +4,7 @@ import Script from 'next/script'
 import { Button } from '@/components/ui/button'
 import { ArrowLeft, FileText, Scale, Shield, AlertTriangle, Mail } from 'lucide-react'
 import { getTranslations } from 'next-intl/server'
-import { buildLocaleAlternates } from '@/lib/seo/canonical'
+import { buildLocaleAlternates, DEFAULT_OG_IMAGES } from '@/lib/seo/canonical'
 
 export async function generateMetadata(
   { params }: { params: Promise<{ locale: string }> }
@@ -16,7 +16,7 @@ export async function generateMetadata(
     title: t('title'),
     description: t('description'),
     alternates,
-    openGraph: { title: t('ogTitle'), description: t('ogDescription'), url: alternates.canonical },
+    openGraph: { images: DEFAULT_OG_IMAGES, title: t('ogTitle'), description: t('ogDescription'), url: alternates.canonical },
   }
 }
 

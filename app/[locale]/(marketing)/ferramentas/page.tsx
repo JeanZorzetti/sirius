@@ -3,7 +3,7 @@ import Link from 'next/link'
 import { Calculator, Building2, Sun, Users, Briefcase, BarChart3 } from 'lucide-react'
 import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { getTranslations } from 'next-intl/server'
-import { buildLocaleAlternates } from '@/lib/seo/canonical'
+import { buildLocaleAlternates, DEFAULT_OG_IMAGES } from '@/lib/seo/canonical'
 
 export async function generateMetadata({
   params,
@@ -18,6 +18,7 @@ export async function generateMetadata({
     description: t('description'),
     alternates,
     openGraph: {
+      images: DEFAULT_OG_IMAGES,
       title: t('ogTitle'),
       description: t('ogDescription'),
       url: alternates.canonical,
