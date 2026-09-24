@@ -1,71 +1,62 @@
-# Handoff: marca aplicada e Geist removida (2026-09-24, manhã, 2ª sessão)
+# Handoff: og:image, purchase e pendências do passo 5 (2026-09-24, manhã, 3ª sessão)
 
 ## Estado em uma linha
-Dois itens do handoff anterior foram decididos por imagem e estão no ar (`49e7466`, conferido em produção). A
-marca "sirius" com o pingo vermelho está no header, na sidebar, no favicon, nos ícones e no OG, e a Geist saiu do
-código. O PostHog continua sem chave, e a capa do artigo da API do WhatsApp continua faltando.
+O passo 5 do handoff anterior está no ar (`bab2e95`, `5f26d33`, conferido em produção às 11:42), menos a marca da
+área de IA. O PostHog continua sem chave. A capa do artigo do WhatsApp está esperando o Jean escolher uma letra.
 
 ## Feito
 
-### 1. Marca em todo o site (`49e7466`)
-- O Jean escolheu, por imagem, o **pingo A no vermelho da home** (`#d02d23`) entre três cores. A skill `logo-design`
-  veta a estrela de 4 pontas (o `logo.png` antigo), então a pergunta foi só a cor.
-- **Header do marketing**: wordmark no lugar de estrela + "Sirius CRM" em texto. **Sidebar do app**: fechada mostra
-  os dois pingos; aberta mostra o wordmark, que já tem os pingos, então não há lockup.
-- **Ícones** gerados de `components/brand` (script descartável): `app/icon.svg` (cores fixas + modo escuro no
-  próprio SVG), `app/favicon.ico` (16 e 32), `app/apple-icon.png` (opaco, sobre o gelo `#f5f7f9`), os 12 PNGs de
-  `public/icons/` (maskable: marca dentro de 56%) e `public/logo.png` (logo da Organization no JSON-LD, centro do
-  QR, página `/download`).
-- **`/og-image.png` criado.** Home, `/pricing`, `/features`, `/about`, `/changelog` e o JSON-LD apontavam para ele,
-  e ele dava 404. O root layout usava o `logo.png` quadrado como OG 1200×630 e agora usa o `og-image.png`.
-- **OG do blog** (`app/api/og/blog`): saiu o "S" num quadrado roxo, entrou o wordmark sobre o grafite.
-- Token `--marca-pingo` em `app/base.css`, que a home sobrescreve com `--pulso`. A geometria do wordmark agora é
-  exportada (`WORDMARK_*`) para o `next/og`, que não tem CSS.
+### 1. og:image em 26 páginas públicas (`bab2e95`)
+- O defeito não era só o `/blog`. O Next mescla metadata por chave de 1º nível, então **toda página que define
+  `openGraph` sem `images` troca o objeto do root layout e sai sem `og:image`**. Eram 26: `/blog`, `/solucoes` (+
+  `[slug]` e cidade), `/ferramentas` e as 6 calculadoras, `/help`, `/terms`, `/privacy`, `/download`, `/anuario` e outras.
+- O `opengraph-image` por arquivo não resolve: vale só no segmento onde está (conferido em
+  `next/dist/lib/metadata/resolve-metadata.js`). Por isso é uma constante `DEFAULT_OG_IMAGES` em `lib/seo/canonical.ts`.
+- **Guarda**: `__tests__/seo/og-image-guard.test.ts` falha e dá o nome de qualquer `openGraph` em `app/` sem `images`.
 
-### 2. Geist removida (`49e7466`)
-- O Jean perguntou o que era. Resposta: é a fonte padrão do Next.js, e nunca desenhou o site. Escolheu apagar.
-- Saíram o import, o `--font-sans: var(--font-geist-sans)` do `theme.css` e a classe da área de IA. O texto continua
-  na pilha do sistema, que é a mesma que já desenhava. **A Geist Mono ficou**, porque os números do dashboard
-  (`Total: R$ 0,00`) desenham com ela.
+### 2. `purchase` passa a disparar (`5f26d33`)
+- O `PurchaseTracker` estava em `/dashboard/billing`, mas o Stripe volta para `/checkout/sucesso?session_id=…`. Agora a
+  página de sucesso lê a Checkout Session no servidor e manda o **valor pago de verdade** (antes era R$ 49 fixo).
+- `purchaseFromSession` (`lib/stripe.ts`) só conta sessão `paid`, com `organization_id` e valor > 0, porque a conta
+  Stripe é compartilhada. Teste: `__tests__/lib/stripe-purchase.test.ts`. Sessão inválida vira `logger.warn` e a página
+  segue 200.
+- Limite conhecido: boleto e outros métodos assíncronos chegam `unpaid` no redirect e não viram `purchase`.
 
-| Conferido | Local (build) | Produção |
+### 3. Pequenos
+- Modal de boas-vindas: "Bem-vindo ao Sirius CRM, Kimi!" (era "CRM!, Kimi").
+- `manifest.json` `theme_color` `#2563eb` → `#ffffff`, igual à meta `theme-color` clara da página. A barra do app
+  instalado já ficava branca depois de carregar; o azul só aparecia na abertura.
+
+| Conferido | Local (`next build` + `start`) | Produção |
 |---|---|---|
-| `html` em `ui-sans-serif, system-ui` e nenhuma Geist baixada no público | sim | sim |
-| `<head>`: `favicon.ico`, `icon.svg`, `apple-icon.png`; `og:image` = `/og-image.png` | sim | sim |
-| Header 1366/390, sidebar aberta e fechada, claro e escuro, `/download`, `/IA` | retratos | retratos |
-| `tsc` / vitest / auditoria | 0 / 359 + 1 skip / exit 0 | |
+| `og:image` em `/blog`, `/solucoes`, `/ferramentas`, `/privacy`, `/help`, categoria, home, `/pricing` | sim | 4 rotas |
+| `/checkout/sucesso` sem id, com id falso e com lixo: 200, sem tracker, `warn` no log | sim | 200 |
+| `manifest.json` branco | sim | sim |
+| `tsc` / vitest / auditoria | 0 / 363 + 1 skip / exit 0 | |
 
-## Achados
-- **Outra sessão fez commit no meio desta.** O `9797615` (handoff anterior) levou a remoção do `app/icon.png` e o
-  `git mv` do `icon.svg`, que eu tinha deixado no índice. Produção ficou alguns minutos com o favicon SVG nas cores
-  antigas. Lição: `git add` só na hora do commit.
-- **`/blog` não tem `og:image`**: a página define `openGraph` sem `images` e anula o do root layout.
-- **A área de IA (`/IA`) tem marca própria**: um quadrado com gradiente no canto e "Sirius IA". Não foi trocada.
-- **`manifest.json` segue com `theme_color: #2563eb`** (azul): a barra do app instalado não usa a cor da marca.
-- O modal de boas-vindas diz "Bem-vindo ao Sirius CRM!, Kimi" (ponto de exclamação antes da vírgula).
-- Herdados e ainda abertos: o `purchase` nunca dispara (`PurchaseTracker` em `/dashboard/billing`, o Stripe volta
-  para `/checkout/sucesso`, valor fixo R$ 49); GA4 manda `en=All Pages` no hit a frio; "+127 empresas" no anuário
-  não conferido.
+O `purchase` com sessão paga de verdade **não foi exercitado** (a chave local é live; não criei sessão). Conferir no
+GA4 DebugView na próxima compra real.
 
 ## Próximos passos (em ordem)
-1. **PostHog**: nenhuma chave em nenhum `.env` da máquina. O Jean precisa criar o projeto e mandar a chave. O roteiro
-   para concluir a troca está no handoff anterior (`git show 9797615:handoff.md`, item 1).
-2. **Capa de `whatsapp-api-oficial-meta-crm`** (`/images/blog/…webp`, 404). Os outros artigos usam foto gratuita do
-   Unsplash, mas a única de WhatsApp já em uso (`photo-1611746872915-…`) está nos dois artigos relacionados. A busca
-   do Unsplash exige chave. Escolher a foto por imagem.
-3. **Próxima alavanca de CSS** (spec nova, Spec Kit): a folha pública ainda leva o CSS próprio do `base.css`
-   (animações de chat, kanban etc.).
-4. **Dashboard não foi medido em desempenho** (baixa também a folha pública).
-5. `purchase` quebrado (ver achados), OG do `/blog`, marca da área de IA e `theme_color`.
-6. Herdados: textos das 8 faixas → `marketing.json` só se o i18n valer a pena; depoimentos dos 6 pagantes.
+1. **Capa de `whatsapp-api-oficial-meta-crm`**: seis fotos gratuitas do Unsplash (filtro `license=free`, nenhuma
+   `premium_photo`) no quadro `capas.png` do scratchpad desta sessão. Com a letra do Jean, trocar o `image` do post
+   (`lib/blog/posts/whatsapp-api-oficial-meta-crm.ts`) pela URL `https://images.unsplash.com/<id>?w=1200&h=630&fit=crop`:
+   A `photo-1587310285959-d768493970b6` · B `photo-1704383110020-86b408af4ac2` · C `photo-1657256031858-148906b82ab4` ·
+   D `photo-1758598304346-1b01479f681a` · E `photo-1719204718581-5c95889c8ec9` · F `photo-1632435499152-18838be77960`.
+2. **PostHog**: nenhuma chave em nenhum `.env` (`.env.easypanel` tem `""`). O roteiro está em `git show 9797615:handoff.md`, item 1.
+3. **Próxima alavanca de CSS** (spec nova, Spec Kit): o CSS próprio do `base.css` (animações de chat, kanban) ainda vai
+   na folha pública.
+4. **Dashboard não foi medido em desempenho** (também baixa a folha pública).
+5. **Marca da área de IA** (`/IA`: quadrado com gradiente + "Sirius IA"). É decisão visual: mostrar quadro e pedir letra.
+6. Herdados: GA4 manda `en=All Pages` no hit a frio; "+127 empresas" no anuário não conferido; a página de sucesso diz
+   "Sirius Pro" para qualquer plano (a sessão tem `metadata.plan`); textos das 8 faixas → `marketing.json` só se o i18n
+   valer a pena; depoimentos dos 6 pagantes.
 
 ## Gotchas do ambiente
-- **Sessão da conta de teste em produção funciona**: `sessao.mjs` assina com o `SESSION_SECRET` do `.env` e o
-  cookie `session` abre `/dashboard` em `siriuscrm.com.br`. Bloquear `/api/access/*` e `/api/push/*`.
-- **`MSYS_NO_PATHCONV=1` quebra caminho `/c/...`** do script: passar o scratchpad como `C:/...`.
-- O `sharp` não lê `.ico` (erro esperado). O `favicon.ico` é montado à mão: cabeçalho ICO + PNGs 16/32.
-- Herdados: Git Bash converte `/rota` em caminho do Windows; `[locale]` em pathspec é glob (`--literal-pathspecs`);
-  `npm run build` roda migrate (usar `npx next build`); push em `main` = deploy (~2 min, desta vez 105 s); o working
-  tree tem mudanças de outras sessões (`e2e/`, `.specify/`, `docs/`, `CLAUDE.md`, `scripts/reset-onboarding.ts`).
-- Scripts no scratchpad desta sessão: `fontes.cjs` (mesma tela nas duas fontes), `marca.cjs` (quadro de marca
-  injetado nas telas reais), `icones.cjs` (todos os ícones + OG), `confere.cjs` (fontes, `<head>`, retratos).
+- **Unsplash bloqueia `curl`** (desafio anti-bot em `/napi`). `playwright-core` do projeto + Chrome headless busca normal:
+  script `unsplash.mjs` (busca) e `folha.mjs` (quadro com letras) no scratchpad desta sessão.
+- Commit com `GIT_LITERAL_PATHSPECS=1` e caminhos explícitos; `xargs` + heredoc na mesma linha brigam pelo stdin (usar `-F arquivo`).
+- O 1º push deu 500 no GitHub; o 2º passou.
+- Herdados: `sessao.mjs` abre `/dashboard` em produção (bloquear `/api/access/*` e `/api/push/*`); `MSYS_NO_PATHCONV=1`
+  quebra `/c/...`; `npm run build` roda migrate (usar `npx next build`); push em `main` = deploy (~2 min); o working tree
+  tem mudanças de outras sessões (`e2e/`, `.specify/`, `docs/`, `CLAUDE.md`, `scripts/reset-onboarding.ts`).
