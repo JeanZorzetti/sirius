@@ -2,7 +2,7 @@
 
 ## Estado em uma linha
 O passo 5 do handoff anterior está no ar (`bab2e95`, `5f26d33`, conferido em produção às 11:42), menos a marca da
-área de IA. O PostHog continua sem chave. A capa do artigo do WhatsApp está esperando o Jean escolher uma letra.
+área de IA. A capa do artigo do WhatsApp também está no ar (`9312574`). O PostHog continua sem chave.
 
 ## Feito
 
