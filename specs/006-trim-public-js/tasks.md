@@ -34,7 +34,7 @@
       não contêm os três textos da US2 (US1-1, SC-003). Medição com o mesmo script: SC-001, SC-002, SC-004.
 - [X] **T009** Tela local de `/blog` (retrato em 1366, capturas em 360, 768 e 1440): 46 posts, filtro por categoria com a mesma contagem de antes,
       links de categoria iguais (US1-2, US1-3).
-- [ ] **T010** Commit + push (deploy) e conferência da TELA em produção (SC-006). Os números vão para o
+- [X] **T010** Commit + push (deploy) e conferência da TELA em produção (SC-006). Os números vão para o
       `handoff.md`.
 
 ## Achados durante a implementação (não previstos no plano)
@@ -57,6 +57,7 @@
      abaixo são alcançáveis e levam às páginas de categoria.
   4. O atraso da animação dos cartões é `índice × 100 ms`, contado da página inteira: o 45º cartão espera
      4,4s para aparecer, mesmo se já estiver na tela.
+  5. O "g" do h1 "Blog" sai cortado embaixo (`bg-clip-text text-transparent` recorta o descendente).
 
 ## Resultado (build de produção local, mesmo script antes/depois)
 
@@ -80,6 +81,17 @@ Perfil: 4G lento (150 ms, 1,6 Mbps / 750 kbps), CPU 4×, 390×844, contexto frio
 | `tsc -p tsconfig.build.json` | 0 erros | 0 erros | SC-005 ✅ |
 | vitest | 352 ok, 1 skip, 3 flakes de carga (registro da spec 005) | 355 ok, 1 skip | SC-005 ✅ |
 | `audit-dead-code.js --check` | exit 0 | exit 0 | SC-005 ✅ |
+
+## Produção (T010, `289cc88`, deploy em ~2,7 min)
+
+- A tela de `/blog` em `siriuscrm.com.br` bateu com o retrato do build anterior: 46 posts, ordem, 10 filtros
+  com as mesmas contagens, 9 links de categoria e zero chave crua.
+- Os scripts servidos em `/` (15) e `/blog` (19) não têm corpo de artigo nem os textos da US2.
+- Nas seis combinações (`/`, `/pricing` e `/blog` × 1366 e 390 px): zero chave crua, um h1 e nenhum erro novo. O
+  único erro é o 400 da capa, que já existia.
+- JS transferido em produção, sem limite de rede e com o GTM: home 480 kb, `/pricing` 522 kb, `/blog` 521 kb.
+- **Não conferido na tela: o dashboard**, porque exige sessão. A mudança nele é de ponto de montagem
+  (`DashboardShellClient`), e o build e os tipos cobrem.
 
 ## Fora de escopo (decidido, não esquecido)
 
