@@ -42,5 +42,5 @@
 - [x] T015 `tsc`, lint dos arquivos tocados, vitest.
 - [x] T016 Retratos "depois" locais (`next dev`) da amostra nos dois temas; olhar cada PNG; cor computada e contraste (R9).
 - [x] T017 Páginas públicas (`/`, `/pricing`, `/blog`) abertas direto: iguais ao "antes".
-- [ ] T018 Commit (caminhos explícitos), push, verificação em produção: retratos, cor computada, LCP "depois".
-- [ ] T019 Registro: `.art/log.json`, handoff, memória do projeto.
+- [x] T018 Commit (caminhos explícitos), push, verificação em produção: retratos, cor computada, LCP "depois".
+- [x] T019 Registro: `.art/log.json`, handoff, memória do projeto.

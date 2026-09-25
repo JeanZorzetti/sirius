@@ -4,7 +4,7 @@
 
 **Created**: 2026-09-25
 
-**Status**: Draft
+**Status**: Implemented (`f0c0361`, 25/09)
 
 **Input**: Pedido do Jean em 25/09: "aplicar a direção de arte em tudo dentro da área logada, na sidebar, modais e todas
 as features". Escolha por imagem, depois de três folhas de contato com nove opções: **A** (a pele do Pipeline em tudo,

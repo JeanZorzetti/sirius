@@ -1,5 +1,62 @@
 [
   {
+    "data": "2026-09-25",
+    "alvo": "propagação: toda a área logada (69 rotas: /dashboard/*, (admin), (ia), checkout), barra lateral, barras do celular, diálogos · spec 010",
+    "direcao": "propagação de custom:recombinacao-hoje (Hoje)",
+    "nome": "Hoje — pele",
+    "eixos": {
+      "materia": "nenhuma (só a pele)",
+      "motor": "estado",
+      "banda": "clara (escura = noite + âmbar do Pipeline)"
+    },
+    "escolha": "A: tokens do Pipeline em :root/.dark (portais incluídos), 22 matizes do Tailwind remapeadas (decorativas → rampa gelo/grafite; verde = ganho, âmbar = atenção, pulso = atraso/perda/erro), Schibsted + DM Mono, canto 4px, sombra só em camada flutuante, sem vidro, gradiente achatado; estrutura de cada tela intacta; o gesto do pulso fica no Pipeline",
+    "recusadas": [
+      "B: monocromática (grafite + pulso, sem verde/âmbar)",
+      "C: A + moldura em azul-noite com âmbar no item ativo",
+      "D: fila de quem pede ação em cada tela",
+      "E: fichário Kardex (sinal por dias na etapa, ficha pela direita)",
+      "F: mesa dividida sem barra lateral nem modal",
+      "G: noite como padrão",
+      "H: linhas da home na borda da barra lateral",
+      "I: mesa cinza-quente com papel e sombra"
+    ],
+    "processo": "três folhas de contato com telas reais em produção e CSS injetado (A-C), quadros estáticos com dado real (D-F) e CSS injetado de novo (G-I); 'Nenhuma' duas vezes; o dono pediu para rever a primeira e escolheu A",
+    "orcamento": {
+      "faixa": "pele",
+      "js_kb": 0,
+      "fontes": "as duas do Pipeline (display optional, sem preload) em toda tela do app",
+      "varredura_cor": {
+        "antes": 377,
+        "depois": 0,
+        "unidade": "elementos visíveis fora da paleta em 48 retratos (12 telas × 1440/390 × claro/escuro); os 5 restantes eram cor de projeto do usuário, marcados data-cor-do-usuario"
+      },
+      "contraste_falhas": {
+        "antes": 295,
+        "depois": 31,
+        "admin_interno": 66,
+        "metodo": "texto de leitura < 4,5:1 (3:1 grande) contra o fundo efetivo, 48 retratos da amostra em produção; o admin (4 retratos) à parte"
+      },
+      "lcp_ms_antes": {
+        "contatos": 9172,
+        "tarefas": 3780,
+        "pipeline": 6228
+      },
+      "metodo": "produção, 390x844, 4G lento (150ms, 1.6Mbps) + CPU 4x, cache off, terceiros bloqueados, mediana de 5",
+      "lcp_ms_depois": {
+        "contatos": 10032,
+        "tarefas": 3952,
+        "pipeline": [
+          7156,
+          7076,
+          6500
+        ]
+      },
+      "fora_do_limiar": "Pipeline +4% a +15% em três rodadas, mesmo elemento de LCP (a linha da fila, transmitida pelo servidor), FCP/load/JS/fontes iguais: variação de servidor documentada na 009, não provada",
+      "publicas": "home, /pricing, /blog abertas direto: 0,000% de pixels diferentes"
+    },
+    "deps": []
+  },
+  {
     "data": "2026-09-24",
     "alvo": "/dashboard (app/[locale]/dashboard, o quadro Kanban do pipeline) · spec 009",
     "direcao": "custom:recombinacao-hoje",
