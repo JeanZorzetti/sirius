@@ -62,7 +62,8 @@ interface ContactSidebarProps {
   onChatCleared?: () => void
 }
 
-const COLORS = ['bg-blue-500','bg-emerald-500','bg-violet-500','bg-amber-500','bg-rose-500','bg-cyan-500','bg-pink-500','bg-teal-500']
+// graphite tones only: green, amber and red mean gain, attention and loss in the app's skin (spec 010)
+const COLORS = ['bg-zinc-500', 'bg-zinc-600', 'bg-zinc-700']
 
 function colorHash(n: string) {
   let h=0
