@@ -11,7 +11,7 @@ import { ContactSearch } from "./analytics/contact-search"
 import { getTranslations } from "next-intl/server"
 
 import { AnimatedPageContainer } from "@/components/dashboard/animated-page-container"
-import { mono, texto } from "@/components/fluxo/fontes"
+import { mono, texto } from "./fontes-hoje"
 import "./hoje.css" // the screen's direction, scoped to [data-tela="hoje"] (spec 009)
 
 export async function generateMetadata({
