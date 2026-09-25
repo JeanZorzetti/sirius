@@ -4,7 +4,7 @@
 
 **Created**: 2026-09-24
 
-**Status**: Draft
+**Status**: Implemented (`e72be85`, `f10dde0`, `fb4ec18`)
 
 **Input**: Escolha do Jean em 24/09, por imagem, na terceira folha de contato da direção de arte do `/dashboard`:
 **I · Hoje**, "mas precisa de um tema claro que ressoe com a home, e o tema claro será padrão".

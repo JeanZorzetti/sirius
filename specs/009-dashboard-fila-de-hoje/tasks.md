@@ -40,4 +40,4 @@
 - [x] T017b Fora do plano, achados na prova: `useId` no título da fila (renderizada 2×, id duplicado); o diálogo de criação
   controlado não desenha gatilho próprio (botão duplicado no celular); `data-testid` no quadro e `e2e/page-objects`
   atualizados (selecionavam por classe de estilo)
-- [ ] T018 Registro: `.art/log.json`, `.info/log.json`, handoff; commit e push
+- [x] T018 Registro: `.art/log.json`, `.info/log.json`, handoff; commit e push

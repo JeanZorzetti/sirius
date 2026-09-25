@@ -1,6 +1,58 @@
 [
   {
     "data": "2026-09-24",
+    "alvo": "/dashboard (app/[locale]/dashboard, o quadro Kanban do pipeline) · spec 009",
+    "direcao": "custom:recombinacao-hoje",
+    "nome": "Hoje",
+    "origem": "hierarquia invertida: a fila de quem pede ação vira a resposta e o quadro vira contexto; matéria luz (âmbar sobre a fila) na banda escura da folha; tema claro padrão pedido pelo dono, na língua da home (gelo, grafite, pulso, Schibsted + DM Mono, canto 4px) com o pulso da home traçado sob o título da fila",
+    "eixos": {
+      "materia": "luz",
+      "motor": "autônomo",
+      "banda": "escura (claro é o padrão, a pedido do dono)"
+    },
+    "estrutura": "topo numa linha (funil como título) → fila de hoje (o primeiro grande, mais dois, o resto contado) → quadro com resumo honesto por etapa",
+    "camadas": {
+      "entrada": "o pulso da home se traça sob o título da fila (700ms); itens da fila sobem 6px em 60ms de defasagem",
+      "scroll": "ausente: tela de trabalho",
+      "ponteiro": "o item da fila sobe 1px",
+      "transicao": "ausente: o diálogo do negócio já existia; autônomo = a fila se reordena sozinha quando um retorno vence ou um negócio passa de 30 d"
+    },
+    "fontes": [
+      "Schibsted Grotesk",
+      "DM Mono (rótulos e números)"
+    ],
+    "orcamento": {
+      "faixa": "marca",
+      "js_kb": "sem mudança medível (397 depois, 395 antes, mediana)",
+      "fontes_kb": 63,
+      "lcp_alvo": 2.5,
+      "lcp_medido": {
+        "antes": 5.97,
+        "depois": 6.04
+      },
+      "cls": {
+        "antes": 0.069,
+        "depois": 0.069
+      },
+      "metodo": "produção, 390x844, 4G lento (150ms, 1.6Mbps) + CPU 4x, cache off, terceiros bloqueados; antes 5 amostras (20:55), depois 7 (22:20-22:40); uma janela de 9-11 s às 22:00 com a home estável = servidor, não a tela",
+      "fora_do_limiar": "sim, LCP 6 s, anterior à direção: o documento tem 714 kb (154 kb na rede) com todos os contatos da conta serializados duas vezes"
+    },
+    "fallback": "a fila e a lista do celular vêm no HTML do servidor; o quadro do desktop é client-only (como antes)",
+    "deps": [],
+    "recusadas": [
+      "custom:derivada-fita-de-voo (A Deslocado)",
+      "custom:derivada-mesa-telefonica (B Lâmpada)",
+      "custom:derivada-comanda (C Cronômetro)",
+      "custom:derivada-fluxo (D Feixe)",
+      "custom:recombinacao-estrato (E)",
+      "custom:tipo-cinetico-mutado (F Numeral)",
+      "custom:recombinacao-temperatura (G)",
+      "custom:derivada-gente (H)"
+    ],
+    "processo": "escolha por imagem: três folhas de contato (A-C, D-F, G-I); dois 'quero mais 3' sem motivo; escolhida I com o pedido de tema claro padrão"
+  },
+  {
+    "data": "2026-09-24",
     "alvo": "propagação: as 38 páginas públicas do layout app/[locale]/(marketing)",
     "direcao": "propagação de custom:recombinacao-campo (Fluxo)",
     "nome": "Fluxo — pele",

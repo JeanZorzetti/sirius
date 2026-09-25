@@ -1,80 +1,55 @@
-# Handoff: as páginas públicas vestem a pele da home (spec 008) (2026-09-24, tarde)
+# Handoff: o pipeline abre pela fila de quem pede ação hoje (spec 009) (2026-09-24, noite)
 
 ## Estado em uma linha
-As 38 páginas públicas, os 404 e a página de erro estão com a pele da home Fluxo (opção **B**, escolhida pelo Jean por
-imagem). No ar desde 16:29 (`6d833f8`), com o ajuste de pílulas e manchas em `e1a09b3`. App e home saíram idênticos
-pixel a pixel. O PostHog continua sem chave.
+O `/dashboard` veste a direção **Hoje**, escolhida pelo Jean na terceira folha de contato: no alto, a fila dos negócios que
+pedem ação (retorno vencido primeiro, depois o parado há mais de 30 dias na etapa); embaixo, o quadro com resumo honesto por
+etapa. Tema claro padrão na língua da home; escuro na versão da folha (noite azul, âmbar). No ar desde 21:27 (`e72be85`),
+com `f10dde0` (fontes com display optional) e `fb4ec18` (sem `:has()`). A spec anterior está em `git show 3a39def:handoff.md`.
 
 ## Feito nesta sessão
-
-### 1. Manhã (já no ar, detalhes em `git show c4de467:handoff.md`)
-- `og:image` em 26 páginas públicas (`bab2e95`), `purchase` do GA4 com o valor pago (`5f26d33`), capa do post do
-  WhatsApp (`9312574`), modal "CRM, Kimi!", `theme_color` branco.
-
-### 2. Spec 008: a pele da home em todo o site público (`6d833f8`, `e1a09b3`)
-- **Como a escolha foi feita**: o Jean perguntou por que as outras páginas não herdaram a direção da home. A resposta:
-  a home ficou isolada de propósito (para poder ser jogada fora, como a Carta de Bayer), e ninguém estendeu depois
-  da aprovação. Folha A/B/C sobre `/pricing` e `/blog` no ar (CSS injetado): A = como está, B = só a pele,
-  C = pele + abertura da home com as linhas. **Escolheu B.** A C (linhas em toda página) foi recusada e registrada em
-  `gosto.md` da skill art-direction.
-- **Arquitetura** (`specs/008-fluxo-skin-public-pages/`): `app/fluxo-pele.css` tem os tokens da home e mapeia as
-  variáveis do shadcn dentro de `[data-art="fluxo"]`, que agora está no layout da home **e** no `(marketing)`. Vale
-  também no `:root` enquanto uma página pública está montada (portais do Radix). A variante `dark:` não casa em
-  página pública (`theme.css`), então tudo é claro, até para quem salvou o tema escuro no app.
-- **Limpeza**: ~1.600 cores fixas do Tailwind em 44 arquivos viraram classes semânticas (codemod sobre a AST do
-  TypeScript; a versão por regex quebrou JSX e foi descartada). ~5.000 cores inline no HTML de 45 posts viraram
-  variáveis da pele. A cor por segmento de `/solucoes` saiu, junto com o campo `color` de `config/niche-data` e
-  `city-data`. As regras `.prose`/`callout-*` do `base.css` e o foco verde (`#00a884`) foram sobrescritos só no
-  escopo público.
-- **Guarda**: `__tests__/styles/public-css-guard.test.ts` falha, com o nome do arquivo, se um arquivo público tiver
-  matiz fixa, gradiente ou mancha, ou se um post tiver cor em hex.
+- **Direção de arte** (skills `information-design` → `art-direction`): perfil do dado real, três folhas de contato (A–C,
+  D–F, G–I; dois "quero mais 3"), escolha I. Recusa registrada no `gosto.md` da skill (inferência pela escolha: oito
+  vestidos do mesmo quadro perderam para a única que mudou o que a tela responde primeiro). Log em `.art/log.json` e
+  `.info/log.json`. Glossário novo em `GLOSSARIO.md`.
+- **Spec 009** (`specs/009-dashboard-fila-de-hoje/`): regra pura em `lib/pipeline/hoje.ts` (+ teste), `FilaDeHoje`,
+  quadro e celular honestos, `hoje.css` com escopo `[data-tela="hoje"]`.
 
 | Conferido | Resultado |
 |---|---|
-| Home e dashboard (claro e escuro salvo) | idênticos ao antes (17 px de ±1 RGB em cantos no dashboard 1366 = antialias) |
-| Links e texto por página, 38 rotas, contra produção antiga | iguais |
-| Cor renderizada fora da paleta, 38 rotas + 404, local e **produção** | 0 |
-| Tema escuro salvo | páginas públicas idênticas às claras (local e produção) |
-| Contraste AA / foco visível no Tab, 40 páginas | 100% / 25 de 25 |
-| LCP lado a lado (4G lento, CPU 4×, mediana de 5) | home −10%, `/pricing` +1%, `/blog` −9% |
-| `tsc` / vitest / auditoria | 0 / 365 + 1 skip / exit 0 |
+| `tsc` / lint dos arquivos / vitest | 0 / 0 erros (9 avisos antigos) / 372 de 373 + 1 skip (a falha é o flake de import sob carga, passa isolado) |
+| 6 colunas em 1440 e 1366 sem rolagem lateral | sim |
+| Estados provados | fila com itens, fila vazia (funil "teste 01"), pior caso da conta (funil "antigo", 69 negócios), sem valor, sem contato, contato sem telefone |
+| Contraste (OKLCH → sRGB) | texto ≥ 5,18 nos dois temas; marca ≥ 3 |
+| Teclado | "Conversar" e "Abrir negócio" alcançáveis com anel visível; "Abrir negócio" abre o diálogo no desktop |
+| LCP produção, 390, 4G lento + CPU 4× | 5,97 s antes (5 amostras) → 6,04 s depois (7): **+1%**; CLS 0,069 igual |
 
 ## Achados
-- **O `next/font` pré-carrega toda fonte declarada num módulo importado.** Uma instância sem preload no mesmo arquivo
-  que outra com preload não adianta. A home mantém as instâncias dela (com preload) em `(fluxo)/layout.tsx`; o resto
-  importa `components/fluxo/fontes.ts` (sem preload). Com preload em todo lugar: `/pricing` +14%, `/blog` +38%.
-- **Medir LCP no Windows + OneDrive**: um `next start` servido de dentro do OneDrive sai ~2× mais lento que o mesmo
-  build servido de `C:\Users\…`, e medições em horas diferentes variam de 1,8 a 3,7 s na home sem mudança nenhuma. O
-  que valeu: os dois builds fora do OneDrive, lado a lado (3998/3999), 5 rodadas intercaladas, terceiros bloqueados
-  (`BLOQUEIA=1` no `medir.cjs`). Ver R11 em `research.md`.
-- **Metade das "cores" dos posts era estilo inline**: o inventário por classe (398 usos) não via os ~5.000 hex no HTML.
-- `text-destructive-foreground` **não existe** no tema (o shadcn v4 tirou); onde é usado, o texto herda. Em página
-  pública foi trocado por `text-primary-foreground`; no app ficou como está.
-- `/solucoes/[slug]` no celular estourava 27 px para o lado (já estourava antes); corrigido com `flex-wrap`.
-- `app/NUL` (arquivo vazio de fevereiro, ignorado pelo `.gitignore`) atrapalha cópia e remoção de pasta no Windows.
-- O depoimento "Carlos Silva, CEO TechFlow" ainda está na `/register` (os da home foram removidos por parecerem
-  inventados).
+- **80,5% dos negócios reais não têm valor** (44,6% nulo + 35,9% zero). O zero vem de `lib/agaas-executor.ts`
+  (`suggestedDealValue || 0`); a tela trata 0 como "sem valor". O formulário de criação grava vazio como nulo.
+- **`data-art` desliga o `dark:`** (`app/theme.css`), por isso o escopo desta tela é `data-tela`.
+- **O LCP do dashboard é o servidor, não a tela**: o documento tem 714 kb (154 kb na rede) porque o wrapper serializa todos
+  os contatos da conta duas vezes (`dealContacts` e `contacts`); o LCP acompanha o `load` e varia 4–11 s conforme a hora.
+- **Medição em produção**: a home (estática) não serve de controle para o dashboard (dinâmico); uma janela de 9–11 s às 22:00
+  foi o servidor. `display: 'optional'` não mudou o LCP; tirou o CLS da troca de fonte.
+- **Instrumento**: bloquear `/posthog/` no Playwright aborta chunks do `next dev` com "posthog" no nome (o quadro não monta);
+  bloquear todo POST quebra as server actions de leitura (o diálogo não carrega). Os scripts estão no scratchpad (abaixo).
+- O `e2e/page-objects/kanban-page.ts` selecionava por classe de estilo; agora por `data-testid`.
+- 3 de 26 contas têm mais de um usuário: dono do negócio no cartão ainda não aparece.
 
 ## Próximos passos (em ordem)
-1. **Olhar o site no ar** e dizer se alguma página ficou estranha. A folha B foi aprovada sobre `/pricing` e `/blog`; as
-   outras 36 seguiram a mesma regra sem ser vistas por ele.
-2. **PostHog**: nenhuma chave em nenhum `.env`. Roteiro em `git show 9797615:handoff.md`, item 1.
-3. **Depoimento da `/register`**: confirmar se "Carlos Silva, TechFlow" é real; se não for, sai como os da home.
-4. **Próxima alavanca de CSS** (spec nova): o CSS próprio do `base.css` (chat, kanban) ainda vai na folha pública.
-5. **Dashboard não foi medido em desempenho.**
-6. **Marca da área de IA** (`/IA`): decisão visual, mostrar quadro e pedir letra.
-7. Herdados: GA4 `en=All Pages` no hit a frio; "+127 empresas" no anuário; página de sucesso diz "Sirius Pro" para
-   qualquer plano; depoimentos dos 6 pagantes.
+1. **O Jean olha a tela no ar** (claro e escuro) e diz se algo muda. A barra lateral e a barra inferior ficaram fora do raio
+   (verde do WhatsApp, índigo no item ativo); propagar a direção para elas e para as outras telas do app é trabalho próprio.
+2. **Spec de desempenho do dashboard**: tirar do HTML os contatos que não estão em negócio (o `contactById` só precisa dos
+   ligados a deals) e carregar a lista do seletor de contato sob demanda nos diálogos.
+3. Limite de "parado" por etapa (hoje 30 d para todas, provisório).
+4. Botão "Novo Deal" e "deals" do seletor: trocar por "negócio" numa passada só (`GLOSSARIO.md`).
+5. Herdados da 008: PostHog sem chave, depoimento da `/register`, CSS do `base.css` na folha pública, marca da área `/IA`.
 
 ## Gotchas do ambiente
-- **Não usar `Remove-Item -Recurse` em pasta com junção** (PowerShell 5.1 pode seguir o link e apagar o alvo). Apagar
-  cada junção com `[System.IO.Directory]::Delete(caminho, $false)` antes. O filtro de segurança do harness bloqueia
-  `rmdir /s` e junta `Remove-Item` com o `/E` do robocopy se estiverem na mesma chamada.
-- O Turbopack recusa `node_modules` como junção para fora da raiz no **build** (worktree não serve); o `next start`
-  aceita, desde que o `.next/node_modules` (links com hash dos pacotes externos) seja recriado na cópia.
-- Build no OneDrive às vezes dá `EBUSY` na cópia do `standalone`: repetir.
-- Scripts desta sessão no scratchpad (`r008/`): `retrato.cjs` (+ `TEMA=dark`), `compara.cjs`, `medir.cjs`
-  (+ `BLOQUEIA=1`), `varredura.cjs` (cor computada), `a11y.cjs` (contraste + Tab), `pele-codemod.cjs` (AST),
-  `posts-cores.cjs`, `sessao.mjs`.
-- Herdados: `MSYS_NO_PATHCONV=1` para rotas no Git Bash; `GIT_LITERAL_PATHSPECS=1` e caminhos explícitos no commit;
-  push em `main` = deploy (~2 min); working tree com mudanças de outras sessões (`CLAUDE.md`, `e2e/`).
+- Scripts desta sessão no scratchpad `3738c19b-…/scratchpad/ad/`: `sessao.mjs` (cookie da conta de teste), `perfil.mjs`
+  (perfil do dado, só leitura), `prova.cjs` (retratos; `SO=`, `SUFIXO=`), `interacao.cjs` (hover, teclado, diálogo),
+  `medir-dash.cjs` (LCP com sessão), `lcp-trace.cjs`, `rede.cjs`, `contraste*.mjs`, folhas `folha*/index.html`.
+- `next dev` contra o banco de produção esgota o pool (P2024) com várias abas; uma aba por vez.
+- Heredoc com certos trechos de SQL/JSX quebra o parse do Bash do harness: escrever arquivo pelo Write.
+- Herdados: `GIT_LITERAL_PATHSPECS=1` e caminhos explícitos no commit; push em `main` = deploy (~2 min); working tree com
+  mudanças de outras sessões (`CLAUDE.md`, `e2e/i18n-*`).
