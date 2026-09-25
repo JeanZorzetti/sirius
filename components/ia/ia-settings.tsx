@@ -26,7 +26,6 @@ const TIER_LABELS: Record<string, string> = {
 
 export function IASettings() {
   const tCommon = useTranslations('common')
-  const [confidenceThreshold, setConfidenceThreshold] = useState(70)
   const [maxActionsPerDay, setMaxActionsPerDay] = useState(100)
   const [operatingHoursStart, setOperatingHoursStart] = useState('09:00')
   const [operatingHoursEnd, setOperatingHoursEnd] = useState('18:00')
@@ -50,7 +49,6 @@ export function IASettings() {
       .then(([settingsData, quotaData]) => {
         const config = settingsData.config || {}
         existingConfigRef.current = config
-        if (config.confidenceThreshold !== undefined) setConfidenceThreshold(config.confidenceThreshold)
         if (config.maxActionsPerDay !== undefined) setMaxActionsPerDay(config.maxActionsPerDay)
         if (config.operatingHoursStart) setOperatingHoursStart(config.operatingHoursStart)
         if (config.operatingHoursEnd) setOperatingHoursEnd(config.operatingHoursEnd)
@@ -75,7 +73,6 @@ export function IASettings() {
         body: JSON.stringify({
           config: {
             ...existingConfigRef.current,
-            confidenceThreshold,
             maxActionsPerDay,
             operatingHoursStart,
             operatingHoursEnd,
@@ -89,7 +86,6 @@ export function IASettings() {
       if (!res.ok) throw new Error()
       existingConfigRef.current = {
         ...existingConfigRef.current,
-        confidenceThreshold,
         maxActionsPerDay,
         operatingHoursStart,
         operatingHoursEnd,
@@ -200,36 +196,14 @@ export function IASettings() {
           animate={{ opacity: 1, y: 0 }}
           className="rounded-xl border border-zinc-800/50 bg-zinc-900/40 p-5"
         >
-          <div className="flex items-center gap-2 mb-4">
+          <div className="flex items-center gap-2 mb-2">
             <Shield className="h-4 w-4 text-amber-400" />
-            <h3 className="text-sm font-semibold text-zinc-200">Threshold de Confiança</h3>
+            <h3 className="text-sm font-semibold text-zinc-200">Aprovação humana</h3>
           </div>
-          <p className="text-xs text-zinc-500 mb-4">
-            Ações com confiança abaixo deste valor requerem aprovação humana antes de serem executadas.
+          <p className="text-xs text-zinc-500">
+            Toda ação da IA passa pela sua aprovação. Os agentes escrevem a proposta e o rascunho; nada é enviado ao
+            cliente nem gravado no CRM antes de você aprovar no feed.
           </p>
-          <div className="flex items-center gap-4">
-            <input
-              type="range"
-              min={30}
-              max={95}
-              step={5}
-              value={confidenceThreshold}
-              onChange={e => setConfidenceThreshold(Number(e.target.value))}
-              className="flex-1 h-1.5 bg-zinc-800 rounded-full appearance-none cursor-pointer accent-amber-400"
-            />
-            <span className={cn(
-              'text-lg font-bold font-mono tabular-nums w-14 text-right',
-              confidenceThreshold >= 80 ? 'text-emerald-400' :
-              confidenceThreshold >= 60 ? 'text-amber-400' :
-              'text-red-400'
-            )}>
-              {confidenceThreshold}%
-            </span>
-          </div>
-          <div className="flex justify-between mt-2">
-            <span className="text-[10px] text-zinc-600">Mais autônomo</span>
-            <span className="text-[10px] text-zinc-600">Mais supervisão</span>
-          </div>
         </motion.div>
 
         {/* Daily limits */}

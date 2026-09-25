@@ -1,6 +1,6 @@
 import dns, { type LookupAddress } from 'dns'
 import { isIP } from 'net'
-import { Agent, fetch as fetchUndici } from 'undici'
+import type { Agent } from 'undici'
 
 /**
  * Outbound calls to an address the account typed (automation webhooks, n8n, Evolution, the prospecting crawler) may only
@@ -99,7 +99,15 @@ function lookupPublico(
   })
 }
 
-const agente = new Agent({ connect: { lookup: lookupPublico as never } })
+// undici is loaded on the first outbound call, so modules that import this file stay light
+let undici: Promise<{ agente: Agent; fetchUndici: typeof import('undici').fetch }> | null = null
+function carregarUndici() {
+  undici ??= import('undici').then(({ Agent, fetch }) => ({
+    agente: new Agent({ connect: { lookup: lookupPublico as never } }),
+    fetchUndici: fetch,
+  }))
+  return undici
+}
 
 const MAX_REDIRECIONAMENTOS = 5
 
@@ -108,6 +116,7 @@ const MAX_REDIRECIONAMENTOS = 5
  * (a literal-IP hop would skip the DNS lookup).
  */
 export async function fetchPublico(url: string, init: RequestInit = {}, opcoes: { exigirHttps?: boolean } = {}): Promise<Response> {
+  const { agente, fetchUndici } = await carregarUndici()
   let atual = url
   let pedido: RequestInit = init
   for (let salto = 0; salto <= MAX_REDIRECIONAMENTOS; salto++) {

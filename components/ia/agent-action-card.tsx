@@ -47,16 +47,40 @@ const statusConfig: Record<string, { icon: typeof CheckCircle2; color: string; l
   NEEDS_APPROVAL: { icon: AlertTriangle, color: 'text-amber-400', label: 'Aguardando aprovação' },
 }
 
-function ConfidenceBadge({ value }: { value: number }) {
-  const percent = Math.round(value * 100)
-  const color = value >= 0.8 ? 'text-emerald-400' : value >= 0.7 ? 'text-amber-400' : 'text-red-400'
-  const bgColor = value >= 0.8 ? 'bg-emerald-400/10' : value >= 0.7 ? 'bg-amber-400/10' : 'bg-red-400/10'
+/** Agents whose approval sends a WhatsApp message to the contact. */
+const ENVIAM_MENSAGEM = new Set(['FollowUpCoordinator', 'MeetingScheduler', 'PropertyMatcher', 'VisitScheduler'])
 
-  return (
-    <span className={cn('inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-mono font-medium', color, bgColor)}>
-      {percent}%
-    </span>
-  )
+/** What approving this action does, in words, from the draft written when it was proposed (spec 011). */
+function resumoDaProposta(action: AgentActionCardProps['action']): { titulo: string; texto: string } | null {
+  const r = action.output?.rascunho
+  if (!r) {
+    if (action.output?.erroRascunho) {
+      return {
+        titulo: 'Sem rascunho',
+        texto: ENVIAM_MENSAGEM.has(action.agentName)
+          ? 'O rascunho não foi escrito. Aprovar escreve a mensagem e envia na mesma hora, sem revisão.'
+          : 'O rascunho não foi escrito. Aprovar gera a proposta e aplica na mesma hora.',
+      }
+    }
+    return null
+  }
+  if (ENVIAM_MENSAGEM.has(action.agentName) && r.message) return { titulo: 'Mensagem que será enviada', texto: String(r.message) }
+  if (r.message) return { titulo: 'Rascunho (aprovar não envia)', texto: String(r.message) }
+  if (action.agentName === 'LeadQualifier') {
+    return { titulo: 'Proposta', texto: `Abrir o negócio "${r.suggestedDealTitle ?? 'sem título'}"${Number(r.suggestedDealValue) > 0 ? ` com valor sugerido de R$ ${Number(r.suggestedDealValue).toLocaleString('pt-BR')}` : ', sem valor'}.` }
+  }
+  if (action.agentName === 'DealStageAnalyzer') {
+    return r.shouldMove
+      ? { titulo: 'Proposta', texto: `Mover de "${r.previousStage ?? '?'}" para "${r.suggestedStage}".` }
+      : { titulo: 'Proposta', texto: `Manter em "${r.previousStage ?? r.suggestedStage}".` }
+  }
+  if (action.agentName === 'ContactEnricher') {
+    return { titulo: 'Sugestão (o contato não muda)', texto: [r.company && `Empresa: ${r.company}`, r.jobTitle && `Cargo: ${r.jobTitle}`, r.notes].filter(Boolean).join(' · ') || 'Nada a sugerir.' }
+  }
+  if (action.agentName === 'LeadProfiler') {
+    return { titulo: 'Sugestão (o contato não muda)', texto: `Perfil: ${r.profile}${r.profileNotes ? ` · ${r.profileNotes}` : ''}` }
+  }
+  return null
 }
 
 function formatTimeAgo(dateStr: string): string {
@@ -85,6 +109,7 @@ export function AgentActionCard({ action, onApprove, onReject, onRevert }: Agent
   const status = statusConfig[action.status] || statusConfig.PENDING
   const StatusIcon = status.icon
   const needsApproval = action.status === 'NEEDS_APPROVAL'
+  const proposta = needsApproval ? resumoDaProposta(action) : null
 
   return (
     <motion.div
@@ -125,13 +150,20 @@ export function AgentActionCard({ action, onApprove, onReject, onRevert }: Agent
 
           {/* Right side */}
           <div className="flex items-center gap-2 shrink-0">
-            <ConfidenceBadge value={action.confidence} />
-            <StatusIcon className={cn('h-4 w-4', status.color)} />
+            <StatusIcon className={cn('h-4 w-4', status.color)} aria-label={status.label} />
             <span className="text-[11px] text-zinc-600 font-mono tabular-nums">
               {formatTimeAgo(action.createdAt)}
             </span>
           </div>
         </div>
+
+        {/* What approving does: the draft the person is about to approve */}
+        {proposta && (
+          <div className="mt-3 rounded-lg border border-zinc-700/40 bg-zinc-800/30 p-3">
+            <p className="text-[11px] font-semibold uppercase tracking-wider text-zinc-500">{proposta.titulo}</p>
+            <p className="mt-1 text-xs leading-relaxed text-zinc-300 whitespace-pre-wrap">{proposta.texto}</p>
+          </div>
+        )}
 
         {/* Actions bar */}
         <div className="mt-3 flex items-center gap-2">

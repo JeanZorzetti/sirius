@@ -77,9 +77,11 @@ export function IAFeed({ actions: initialActions, stats, organizationId, enabled
       })
 
       if (res.ok) {
+        // The server says what really happened (an approved message can still fail, e.g. outside the 24h window)
+        const atualizada = await res.json()
         setActions(prev => prev.map(a =>
           a.id === actionId
-            ? { ...a, status: decision === 'APPROVED' ? 'SUCCESS' : 'FAILED' }
+            ? { ...a, status: atualizada.status, output: atualizada.output }
             : a
         ))
       }
@@ -119,7 +121,6 @@ export function IAFeed({ actions: initialActions, stats, organizationId, enabled
   if (recentActions.length > 0) groups.push({ label: 'Última hora', actions: recentActions })
   if (olderActions.length > 0) groups.push({ label: 'Anteriores', actions: olderActions })
 
-  const hasConfiguredThreshold = iaConfig.confidenceThreshold !== undefined
   const hasActions = stats.today > 0
 
   return (
@@ -142,7 +143,6 @@ export function IAFeed({ actions: initialActions, stats, organizationId, enabled
       {/* Setup progress — shown while onboarding steps are incomplete */}
       <IASetupProgress
         enabledAgentCount={enabledAgentCount}
-        hasConfiguredThreshold={hasConfiguredThreshold}
         hasActions={hasActions}
       />
 

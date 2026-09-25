@@ -10,7 +10,6 @@ import {
 } from 'lucide-react'
 import { Switch } from '@/components/ui/switch'
 import { Button } from '@/components/ui/button'
-import { Slider } from '@/components/ui/slider'
 import { cn } from '@/lib/utils'
 import { toast } from 'sonner'
 
@@ -62,10 +61,9 @@ function StepIndicator({ current, total }: { current: number; total: number }) {
 interface WizardProps {
   orgName: string
   initialEnabledAgents?: Record<string, boolean>
-  initialThreshold?: number
 }
 
-export function IAOnboardingWizard({ orgName, initialEnabledAgents, initialThreshold }: WizardProps) {
+export function IAOnboardingWizard({ orgName, initialEnabledAgents }: WizardProps) {
   const tCommon = useTranslations('common')
   const router = useRouter()
   const [step, setStep] = useState(0)
@@ -76,23 +74,16 @@ export function IAOnboardingWizard({ orgName, initialEnabledAgents, initialThres
     initialEnabledAgents ?? { 'lead-qualifier': true }
   )
 
-  // Step 2 — threshold
-  const [threshold, setThreshold] = useState(initialThreshold ?? 75)
-
   const activeCount = Object.values(enabledAgents).filter(Boolean).length
 
   function toggleAgent(id: string) {
     setEnabledAgents(prev => ({ ...prev, [id]: !prev[id] }))
   }
 
-  function applyRecommendedThreshold() {
-    setThreshold(75)
-  }
-
   async function saveAndFinish() {
     setSaving(true)
     try {
-      // Save enabled agents + threshold
+      // Save enabled agents
       const settingsRes = await fetch('/api/ia/settings')
       const settingsData = await settingsRes.json()
       const existingConfig = settingsData.config || {}
@@ -104,7 +95,6 @@ export function IAOnboardingWizard({ orgName, initialEnabledAgents, initialThres
           config: {
             ...existingConfig,
             enabledAgents,
-            confidenceThreshold: threshold,
             setupCompleted: true,
           }
         })
@@ -117,7 +107,7 @@ export function IAOnboardingWizard({ orgName, initialEnabledAgents, initialThres
     }
   }
 
-  const STEP_LABELS = ['Agentes', 'Threshold', 'Conhecimento', 'Pronto']
+  const STEP_LABELS = ['Agentes', 'Aprovação', 'Conhecimento', 'Pronto']
 
   return (
     <div className="min-h-screen bg-zinc-950 flex items-center justify-center px-4 py-12">
@@ -197,7 +187,7 @@ export function IAOnboardingWizard({ orgName, initialEnabledAgents, initialThres
               </motion.div>
             )}
 
-            {/* Step 2 — Confidence threshold */}
+            {/* Step 2 — Human approval */}
             {step === 1 && (
               <motion.div
                 key="step-1"
@@ -207,57 +197,17 @@ export function IAOnboardingWizard({ orgName, initialEnabledAgents, initialThres
                 transition={{ duration: 0.2 }}
                 className="p-6"
               >
-                <h2 className="text-lg font-semibold text-zinc-100 mb-1">Threshold de confiança</h2>
+                <h2 className="text-lg font-semibold text-zinc-100 mb-1">Você aprova, a IA executa</h2>
                 <p className="text-sm text-zinc-500 mb-6">
-                  Abaixo de <span className="text-zinc-300 font-semibold">{threshold}%</span>, o agente pedirá aprovação humana antes de agir.
+                  Os agentes leem as conversas e escrevem propostas. Nada sai para o cliente nem muda no CRM antes da sua
+                  aprovação.
                 </p>
 
-                <div className="space-y-6">
-                  <div className="px-2">
-                    <div className="flex items-center justify-between mb-3">
-                      <span className="text-xs text-zinc-500">Cautela máxima</span>
-                      <span className="text-2xl font-bold text-cyan-400 tabular-nums">{threshold}%</span>
-                      <span className="text-xs text-zinc-500">Autonomia máxima</span>
-                    </div>
-                    <Slider
-                      value={[threshold]}
-                      onValueChange={([v]) => setThreshold(v)}
-                      min={50}
-                      max={95}
-                      step={5}
-                      className="[&_[role=slider]]:bg-cyan-500 [&_[role=slider]]:border-cyan-400 [&_.relative]:bg-zinc-800"
-                    />
-                    <div className="flex justify-between mt-1.5">
-                      <span className="text-[10px] text-zinc-700">50%</span>
-                      <span className="text-[10px] text-zinc-700">95%</span>
-                    </div>
-                  </div>
-
-                  <div className="rounded-xl border border-zinc-800/60 bg-zinc-800/30 p-4 space-y-2.5">
-                    <p className="text-xs text-zinc-400 font-medium">O que significa?</p>
-                    <div className="flex items-start gap-2">
-                      <span className="text-[10px] px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-400 font-mono shrink-0 mt-0.5">≥ {threshold}%</span>
-                      <p className="text-xs text-zinc-500">Agente age automaticamente sem pedir aprovação</p>
-                    </div>
-                    <div className="flex items-start gap-2">
-                      <span className="text-[10px] px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-400 font-mono shrink-0 mt-0.5">&lt; {threshold}%</span>
-                      <p className="text-xs text-zinc-500">Agente cria rascunho para sua revisão antes de enviar</p>
-                    </div>
-                  </div>
-
-                  <button
-                    type="button"
-                    onClick={applyRecommendedThreshold}
-                    className={cn(
-                      'w-full flex items-center justify-center gap-2 py-2.5 rounded-xl border text-sm font-medium transition-all',
-                      threshold === 75
-                        ? 'border-cyan-500/30 bg-cyan-500/10 text-cyan-400 cursor-default'
-                        : 'border-zinc-700/50 bg-zinc-800/30 text-zinc-400 hover:border-zinc-600 hover:text-zinc-300'
-                    )}
-                  >
-                    {threshold === 75 && <Check className="h-3.5 w-3.5" />}
-                    Usar recomendado (75%)
-                  </button>
+                <div className="rounded-xl border border-zinc-800/60 bg-zinc-800/30 p-4 space-y-2.5">
+                  <p className="text-xs text-zinc-400 font-medium">Como funciona</p>
+                  <p className="text-xs text-zinc-500">1. Chega uma mensagem ou um negócio fica parado.</p>
+                  <p className="text-xs text-zinc-500">2. O agente escreve a proposta: a mensagem, a etapa sugerida ou o negócio a abrir.</p>
+                  <p className="text-xs text-zinc-500">3. Você lê no feed e aprova ou rejeita. Só o que você aprova acontece.</p>
                 </div>
               </motion.div>
             )}
@@ -326,18 +276,14 @@ export function IAOnboardingWizard({ orgName, initialEnabledAgents, initialThres
                 <h2 className="text-xl font-bold text-zinc-100 mb-1">Tudo pronto!</h2>
                 <p className="text-sm text-zinc-500 mb-6">Sirius IA está configurado e pronto para operar.</p>
 
-                <div className="grid grid-cols-3 gap-3 mb-6">
+                <div className="grid grid-cols-2 gap-3 mb-6">
                   <div className="rounded-xl border border-zinc-800/50 bg-zinc-800/30 p-3 text-center">
                     <p className="text-2xl font-bold text-cyan-400 tabular-nums">{activeCount}</p>
                     <p className="text-[11px] text-zinc-500 mt-0.5">agente{activeCount !== 1 ? 's' : ''} ativo{activeCount !== 1 ? 's' : ''}</p>
                   </div>
                   <div className="rounded-xl border border-zinc-800/50 bg-zinc-800/30 p-3 text-center">
-                    <p className="text-2xl font-bold text-violet-400 tabular-nums">{threshold}%</p>
-                    <p className="text-[11px] text-zinc-500 mt-0.5">threshold</p>
-                  </div>
-                  <div className="rounded-xl border border-zinc-800/50 bg-zinc-800/30 p-3 text-center">
-                    <p className="text-2xl font-bold text-emerald-400">∞</p>
-                    <p className="text-[11px] text-zinc-500 mt-0.5">autonomia</p>
+                    <p className="text-2xl font-bold text-emerald-400">Você</p>
+                    <p className="text-[11px] text-zinc-500 mt-0.5">aprova cada ação</p>
                   </div>
                 </div>
 

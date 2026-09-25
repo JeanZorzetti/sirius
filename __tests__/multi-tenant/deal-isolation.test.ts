@@ -1,6 +1,10 @@
 import { vi } from 'vitest'
 import { createMockUser, createMockOrganization, createMockDeal, generateTestUUID } from '../helpers/test-utils'
 
+// Each test cold-imports the dashboard server actions (a heavy module graph); under the parallel full run that
+// alone passes 5 s. The logic under test is fast — the default timeout was measuring the import.
+vi.setConfig({ testTimeout: 30_000 })
+
 // Mock Prisma Client
 const mockPrisma = {
   user: {

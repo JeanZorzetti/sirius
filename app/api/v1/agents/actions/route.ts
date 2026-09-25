@@ -36,6 +36,23 @@ export async function POST(request: NextRequest) {
         )
       }
 
+      // The entity must belong to the API key's organization (spec 011): anything else is "not found"
+      const entidadeDaConta =
+        entityType === 'Deal'
+          ? await prisma.deal.findFirst({ where: { id: String(entityId), organizationId: context.organizationId }, select: { id: true } })
+          : entityType === 'Contact'
+            ? await prisma.contact.findFirst({ where: { id: String(entityId), organizationId: context.organizationId }, select: { id: true } })
+            : null
+      if (!entidadeDaConta) {
+        return NextResponse.json(
+          apiResponse(context.requestId, undefined, {
+            code: 'NOT_FOUND',
+            message: 'entityType must be Deal or Contact, and entityId must belong to your organization'
+          }),
+          { status: 404 }
+        )
+      }
+
       // Check AgaaS quota before allowing the action
       const quota = await checkAgaasQuota(context.organizationId)
       if (!quota.allowed) {

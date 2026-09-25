@@ -26,13 +26,11 @@ export default async function IASetupPage() {
   }
 
   const enabledAgents = (iaConfig.enabledAgents || {}) as Record<string, boolean>
-  const threshold = typeof iaConfig.confidenceThreshold === 'number' ? iaConfig.confidenceThreshold : 75
 
   return (
     <IAOnboardingWizard
       orgName={user.organization.name}
       initialEnabledAgents={enabledAgents}
-      initialThreshold={threshold}
     />
   )
 }

@@ -8,13 +8,12 @@ import { cn } from '@/lib/utils'
 
 interface IASetupProgressProps {
   enabledAgentCount: number
-  hasConfiguredThreshold: boolean
   hasActions: boolean
 }
 
 const DISMISS_KEY = 'ia-setup-dismissed'
 
-export function IASetupProgress({ enabledAgentCount, hasConfiguredThreshold, hasActions }: IASetupProgressProps) {
+export function IASetupProgress({ enabledAgentCount, hasActions }: IASetupProgressProps) {
   const [dismissed, setDismissed] = useState(true) // start hidden, check localStorage
 
   useEffect(() => {
@@ -30,16 +29,10 @@ export function IASetupProgress({ enabledAgentCount, hasConfiguredThreshold, has
       cta: 'Ir para Agentes',
     },
     {
-      label: 'Ajuste o threshold de confiança',
-      done: hasConfiguredThreshold,
-      href: '/IA/settings',
-      cta: 'Configurar',
-    },
-    {
-      label: 'Aguarde as primeiras ações dos agentes',
+      label: 'Aprove ou rejeite as primeiras propostas dos agentes',
       done: hasActions,
       href: null,
-      cta: 'Automático',
+      cta: 'No feed abaixo',
     },
   ]
 
@@ -63,7 +56,7 @@ export function IASetupProgress({ enabledAgentCount, hasConfiguredThreshold, has
         <div className="flex items-start justify-between mb-3">
           <div className="flex items-center gap-2">
             <Sparkles className="h-4 w-4 text-cyan-400" />
-            <span className="text-sm font-semibold text-zinc-200">Configure o Sirius IA em 3 passos</span>
+            <span className="text-sm font-semibold text-zinc-200">Configure o Sirius IA em 2 passos</span>
           </div>
           <button
             onClick={handleDismiss}

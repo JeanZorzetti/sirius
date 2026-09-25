@@ -1,10 +1,17 @@
 /**
  * AgaaS Agent Executor
  *
- * Executes approved agent actions by calling the LLM and performing
- * the actual CRM operations (create deal, move stage, etc.).
+ * Two modes (spec 011):
+ * - `rascunho` (draft): calls the LLM and returns the proposal. No side effect: nothing is sent, nothing is saved.
+ *   The trigger stores it in `AgentAction.output.rascunho` so the human sees what will happen before approving.
+ * - `aplicar` (apply): runs after a human approves. Uses the stored draft (or generates one) and performs the action.
+ *
+ * Every action is bound to its organization: the entity and any contact/deal in the input are loaded by
+ * (id, organizationId) before anything else, and an id from another organization fails the action.
+ * Profile and company suggestions never overwrite what a person typed: they stay in the action output.
  */
 
+import { Prisma } from '@prisma/client'
 import { prisma } from '@/lib/prisma'
 import { prismaWa } from '@/lib/prisma-wa'
 import { callLLM } from '@/lib/agi/providers'
@@ -12,6 +19,42 @@ import { getWhatsAppOfficialClient, normalizePhone } from '@/lib/integrations/wh
 import { getGoogleCalendarClient } from '@/lib/integrations/google-calendar-client'
 import { retrieveContext } from '@/lib/rag/retrieval'
 import logger from '@/lib/logger'
+
+export type ModoExecucao = 'rascunho' | 'aplicar'
+
+interface AgentAction {
+  id: string
+  organizationId: string
+  agentName: string
+  actionType: string
+  entityType: string
+  entityId: string
+  reasoning: string
+  confidence: number
+  input: any
+  /** Who approved (apply mode); empty when the trigger is drafting */
+  userId: string
+  /** Stored output; `output.rascunho` is the draft made when the action was created */
+  output?: any
+}
+
+type Resultado = { success: boolean; output: Record<string, any> }
+
+const contatoSelect = { id: true, name: true, phone: true, email: true, company: true, assignedToId: true } as const
+type Contato = Prisma.ContactGetPayload<{ select: typeof contatoSelect }>
+const negocioInclude = { stage: true, pipeline: { include: { stages: { orderBy: { order: 'asc' as const } } } } } as const
+type Negocio = Prisma.DealGetPayload<{ include: typeof negocioInclude }>
+
+type Contexto = {
+  modo: ModoExecucao
+  rascunho: Record<string, any> | null
+  ragContext: string
+  contato: Contato | null
+  negocio: Negocio | null
+}
+
+const ok = (output: Record<string, any>): Resultado => ({ success: true, output })
+const falha = (error: string, extra: Record<string, any> = {}): Resultado => ({ success: false, output: { error, ...extra } })
 
 /**
  * Check if the contact sent a message in the last 24 hours (Meta conversation window).
@@ -31,28 +74,43 @@ async function isWithin24hWindow(contactId: string, organizationId: string): Pro
   return !!lastInbound
 }
 
-interface AgentAction {
-  id: string
-  organizationId: string
-  agentName: string
-  actionType: string
-  entityType: string
-  entityId: string
-  reasoning: string
-  confidence: number
-  input: any
-  userId: string
-}
-
 function injectRagContext(basePrompt: string, ragContext: string): string {
   if (!ragContext) return basePrompt
   return `${basePrompt}\n\nBASE DE CONHECIMENTO RELEVANTE:\n---\n${ragContext}\n---`
 }
 
-/**
- * Execute an approved agent action.
- * Returns the output object to store in the AgentAction record.
- */
+const parseJson = (texto: string) => JSON.parse(texto.replace(/```json?\s*/g, '').replace(/```/g, '').trim())
+
+/** Owner of what the AI creates: the contact's assignee, else the account's oldest owner (spec 011, FR-010). */
+async function donoDaConta(tx: Prisma.TransactionClient, organizationId: string, contato: Contato | null): Promise<string> {
+  if (contato?.assignedToId) return contato.assignedToId
+  const dono =
+    (await tx.user.findFirst({ where: { organizationId, orgRole: 'OWNER' }, orderBy: { createdAt: 'asc' }, select: { id: true } })) ??
+    (await tx.user.findFirst({ where: { organizationId }, orderBy: { createdAt: 'asc' }, select: { id: true } }))
+  if (!dono) throw new Error('Organization has no user to own the deal')
+  return dono.id
+}
+
+/** Loads the action's entity and the contact/deal it names, always inside the action's organization. */
+async function carregarAlvo(action: AgentAction): Promise<{ contato: Contato | null; negocio: Negocio | null } | { erro: string }> {
+  if (action.entityType !== 'Contact' && action.entityType !== 'Deal') return { erro: `Unsupported entity type: ${action.entityType}` }
+  const organizationId = action.organizationId
+  const contactId = action.entityType === 'Contact' ? action.entityId : action.input?.contactId
+  const dealId = action.entityType === 'Deal' ? action.entityId : action.input?.dealId
+
+  const contato = contactId
+    ? await prisma.contact.findFirst({ where: { id: String(contactId), organizationId }, select: contatoSelect })
+    : null
+  if (contactId && !contato) return { erro: 'Contact not found in this organization' }
+
+  const negocio = dealId
+    ? await prisma.deal.findFirst({ where: { id: String(dealId), organizationId }, include: negocioInclude })
+    : null
+  if (dealId && !negocio) return { erro: 'Deal not found in this organization' }
+
+  return { contato, negocio }
+}
+
 const AGENT_NAME_TO_ID: Record<string, string> = {
   LeadQualifier: 'lead-qualifier',
   DealStageAnalyzer: 'deal-stage-analyzer',
@@ -66,66 +124,118 @@ const AGENT_NAME_TO_ID: Record<string, string> = {
   NegotiationAssistant: 'negotiation-assistant',
 }
 
-export async function executeAgentAction(action: AgentAction): Promise<{ success: boolean; output: Record<string, any> }> {
-  // Retrieve RAG context scoped to this agent (+ global docs) from the knowledge base
-  const ragQuery = action.input?.messageText || action.input?.context || action.actionType
-  const agentId = AGENT_NAME_TO_ID[action.agentName]
-  const ragContext = await retrieveContext(action.organizationId, ragQuery, agentId, 3).catch(() => '')
-  const enrichedAction = { ...action, input: { ...action.input, ragContext } }
-
-  switch (enrichedAction.agentName) {
-    case 'LeadQualifier':
-      return executeLeadQualifier(enrichedAction)
-    case 'DealStageAnalyzer':
-      return executeDealStageAnalyzer(enrichedAction)
-    case 'FollowUpCoordinator':
-      return executeFollowUpCoordinator(enrichedAction)
-    case 'MeetingScheduler':
-      return executeMeetingScheduler(enrichedAction)
-    case 'ContactEnricher':
-      return executeContactEnricher(enrichedAction)
-    case 'PropertyMatcher':
-      return executePropertyMatcher(enrichedAction)
-    case 'VisitScheduler':
-      return executeVisitScheduler(enrichedAction)
-    case 'ProposalFollowUp':
-      return executeProposalFollowUp(enrichedAction)
-    case 'LeadProfiler':
-      return executeLeadProfiler(enrichedAction)
-    case 'NegotiationAssistant':
-      return executeNegotiationAssistant(enrichedAction)
-    default:
-      return { success: false, output: { error: `Unknown agent: ${enrichedAction.agentName}` } }
-  }
+const AGENTES: Record<string, (action: AgentAction, ctx: Contexto) => Promise<Resultado>> = {
+  LeadQualifier: executeLeadQualifier,
+  DealStageAnalyzer: executeDealStageAnalyzer,
+  FollowUpCoordinator: executeFollowUpCoordinator,
+  MeetingScheduler: executeMeetingScheduler,
+  ContactEnricher: executeContactEnricher,
+  PropertyMatcher: executePropertyMatcher,
+  VisitScheduler: executeVisitScheduler,
+  ProposalFollowUp: executeProposalFollowUp,
+  LeadProfiler: executeLeadProfiler,
+  NegotiationAssistant: executeNegotiationAssistant,
 }
 
 /**
- * LeadQualifier: Analyze the message, qualify the lead, and create a deal.
+ * Drafts (`rascunho`) or applies (`aplicar`, after human approval) an agent action.
  */
-async function executeLeadQualifier(action: AgentAction): Promise<{ success: boolean; output: Record<string, any> }> {
-  const { organizationId, entityId: contactId, input, userId } = action
-  const messageText = input?.messageText || ''
-  const contactName = input?.contactName || 'Lead'
+export async function executeAgentAction(action: AgentAction, modo: ModoExecucao = 'aplicar'): Promise<Resultado> {
+  const agente = AGENTES[action.agentName]
+  if (!agente) return falha(`Unknown agent: ${action.agentName}`)
 
-  // Get contact's recent messages for context
-  const recentMessages = await prismaWa.whatsAppMessage.findMany({
+  const alvo = await carregarAlvo(action)
+  if ('erro' in alvo) return falha(alvo.erro)
+
+  const rascunho = modo === 'aplicar' && action.output?.rascunho ? (action.output.rascunho as Record<string, any>) : null
+  // RAG context only matters when the LLM is going to write something
+  const ragContext = rascunho
+    ? ''
+    : await retrieveContext(
+        action.organizationId,
+        action.input?.messageText || action.input?.context || action.actionType,
+        AGENT_NAME_TO_ID[action.agentName],
+        3,
+      ).catch(() => '')
+
+  return agente(action, { modo, rascunho, ragContext, ...alvo })
+}
+
+async function historicoDaConversa(contactId: string, organizationId: string, take: number, rotulos: [string, string]) {
+  const recentes = await prismaWa.whatsAppMessage.findMany({
     where: { contactId, organizationId },
     orderBy: { sentAt: 'desc' },
-    take: 10,
-    select: { text: true, direction: true, sentAt: true },
+    take,
+    select: { text: true, direction: true },
   })
-
-  const conversationContext = recentMessages
+  return recentes
     .reverse()
-    .map(m => `[${m.direction === 'INBOUND' ? 'Lead' : 'Vendedor'}]: ${m.text}`)
+    .map((m) => `[${m.direction === 'INBOUND' ? rotulos[0] : rotulos[1]}]: ${m.text}`)
     .join('\n')
+}
 
-  // Call LLM to qualify
-  const ragContext = action.input?.ragContext || ''
-  const llmResponse = await callLLM([
-    {
-      role: 'system' as const,
-      content: injectRagContext(`Você é um analista de vendas B2B. Analise a conversa e qualifique o lead usando critérios BANT.
+/** Sends the approved text through the account's WhatsApp (Cloud API) and records it in the chat. */
+async function enviarPeloWhatsApp(organizationId: string, contato: Contato, texto: string, prefixo: string): Promise<string | null> {
+  if (!contato.phone) return 'Contact has no phone'
+  if (!(await isWithin24hWindow(contato.id, organizationId))) {
+    return 'Meta 24h window closed — contact must send a message first before free-form text can be sent'
+  }
+  const client = await getWhatsAppOfficialClient(organizationId)
+  if (!client) return 'WABA not configured'
+
+  const telefone = normalizePhone(contato.phone)
+  await client.sendTextMessage(telefone, texto)
+  await prismaWa.$executeRaw`
+    INSERT INTO "WhatsAppMessage"
+      (id, "contactId", "organizationId", "connectionId", "remoteJid",
+       "messageId", text, direction, status, "sentAt", "isRead",
+       "mediaType", "mediaUrl", "replyToId", "replyToText")
+    VALUES (
+      ${`agaas_${prefixo}_${Date.now()}`}, ${contato.id}, ${organizationId}, ${null},
+      ${telefone}, ${null},
+      ${texto}, 'OUTBOUND', 'SENT', ${new Date()}, true,
+      ${null}, ${null}, ${null}, ${null}
+    )
+    ON CONFLICT ("organizationId", "messageId") DO NOTHING
+  `
+  return null
+}
+
+/** Message agents: draft the text; on approval, send exactly the approved draft. */
+async function mensagemAprovada(
+  action: AgentAction,
+  ctx: Contexto,
+  prefixo: string,
+  gerar: (contato: Contato) => Promise<Record<string, any>>,
+): Promise<Resultado> {
+  const contato = ctx.contato
+  if (!contato?.phone) return falha('Contact not found or has no phone')
+  const rascunho = ctx.rascunho ?? (await gerar(contato))
+  if (ctx.modo === 'rascunho') return ok(rascunho)
+  if (!rascunho.message) return falha('Draft has no message', rascunho)
+
+  const erro = await enviarPeloWhatsApp(action.organizationId, contato, String(rascunho.message), prefixo)
+  if (erro) return falha(erro, rascunho)
+  logger.info({ organizationId: action.organizationId, contactId: contato.id, agent: action.agentName }, '[AgaaS] Approved message sent')
+  return ok({ ...rascunho, enviado: true })
+}
+
+/**
+ * LeadQualifier: qualifies the lead; on approval opens one deal (never a second one for a contact with an open deal).
+ */
+async function executeLeadQualifier(action: AgentAction, ctx: Contexto): Promise<Resultado> {
+  const { organizationId, input } = action
+  const contato = ctx.contato
+  if (!contato) return falha('LeadQualifier needs a contact')
+  const contactName = contato.name || input?.contactName || 'Lead'
+
+  let qualification = ctx.rascunho
+  if (!qualification) {
+    const conversationContext = await historicoDaConversa(contato.id, organizationId, 10, ['Lead', 'Vendedor'])
+    const llmResponse = await callLLM([
+      {
+        role: 'system' as const,
+        content: injectRagContext(`Você é um analista de vendas B2B. Analise a conversa e qualifique o lead usando critérios BANT.
 Responda APENAS em JSON válido com esta estrutura:
 {
   "qualification": "HOT" | "WARM" | "COLD",
@@ -134,133 +244,104 @@ Responda APENAS em JSON válido com esta estrutura:
   "suggestedDealTitle": "título sugerido para o deal",
   "suggestedDealValue": 0,
   "nextAction": "ação recomendada"
-}`, ragContext),
-    },
-    {
-      role: 'user' as const,
-      content: `Conversa com ${contactName}:\n${conversationContext}\n\nÚltima mensagem: "${messageText}"`,
-    },
-  ], 'PRO')
+}`, ctx.ragContext),
+      },
+      {
+        role: 'user' as const,
+        content: `Conversa com ${contactName}:\n${conversationContext}\n\nÚltima mensagem: "${input?.messageText || ''}"`,
+      },
+    ], 'PRO')
 
-  let qualification: any
-  try {
-    const cleaned = llmResponse.content.replace(/```json?\s*/g, '').replace(/```/g, '').trim()
-    qualification = JSON.parse(cleaned)
-  } catch {
-    qualification = {
-      qualification: 'WARM',
-      score: 50,
-      reasoning: llmResponse.content.substring(0, 200),
-      suggestedDealTitle: `Oportunidade - ${contactName}`,
-      suggestedDealValue: 0,
-      nextAction: 'Continuar conversa',
+    try {
+      qualification = parseJson(llmResponse.content)
+    } catch {
+      qualification = {
+        qualification: 'WARM',
+        score: 50,
+        reasoning: llmResponse.content.substring(0, 200),
+        suggestedDealTitle: `Oportunidade - ${contactName}`,
+        suggestedDealValue: null,
+        nextAction: 'Continuar conversa',
+      }
     }
   }
+  if (ctx.modo === 'rascunho') return ok(qualification!)
 
-  // Find default pipeline + first stage
-  const pipeline = await prisma.pipeline.findFirst({
-    where: { organizationId },
-    include: { stages: { orderBy: { order: 'asc' }, take: 1 } },
-  })
+  const q = qualification!
+  const valor = Number(q.suggestedDealValue) > 0 ? Number(q.suggestedDealValue) : null // no suggestion = no value, never 0
+  const aberto = await prisma.$transaction(async (tx) => {
+    // One AI deal per contact even if approvals race: serialize on the contact
+    await tx.$executeRaw`SELECT pg_advisory_xact_lock(hashtext(${`negocio-ia:${contato.id}`}))`
+    const existente = await tx.deal.findFirst({
+      where: { organizationId, contactId: contato.id, status: 'ACTIVE', archived: false },
+      select: { id: true },
+    })
+    if (existente) return { dealId: existente.id, jaExistia: true }
 
-  let dealId: string | null = null
+    const pipeline = await tx.pipeline.findFirst({
+      where: { organizationId },
+      orderBy: [{ isDefault: 'desc' }, { createdAt: 'asc' }],
+      include: { stages: { orderBy: { order: 'asc' }, take: 1 } },
+    })
+    if (!pipeline?.stages[0]) return { dealId: null, jaExistia: false }
 
-  if (pipeline && pipeline.stages.length > 0) {
-    const deal = await prisma.deal.create({
+    // isolamento: contact, pipeline and stage were all loaded with this organizationId above
+    const deal = await tx.deal.create({
       data: {
         organizationId,
-        userId,
-        contactId,
+        userId: await donoDaConta(tx, organizationId, contato),
+        contactId: contato.id,
         pipelineId: pipeline.id,
         stageId: pipeline.stages[0].id,
-        title: qualification.suggestedDealTitle || `Oportunidade - ${contactName}`,
-        value: qualification.suggestedDealValue || 0,
+        title: q.suggestedDealTitle || `Oportunidade - ${contactName}`,
+        value: valor,
         status: 'ACTIVE',
       },
     })
-    dealId = deal.id
+    return { dealId: deal.id, jaExistia: false }
+  })
 
-    logger.info({ dealId, contactId, qualification: qualification.qualification }, '[AgaaS:LeadQualifier] Deal created')
+  logger.info({ organizationId, contactId: contato.id, ...aberto }, '[AgaaS:LeadQualifier] Approved')
+
+  // A suggested meeting becomes another proposal for approval, never an automatic message
+  const proxima = String(q.nextAction ?? '').toLowerCase()
+  if (contato.phone && (proxima.includes('reuni') || proxima.includes('agendar'))) {
+    await prisma.agentAction.create({
+      data: {
+        organizationId,
+        agentName: 'MeetingScheduler',
+        actionType: 'SCHEDULE_MEETING',
+        entityType: 'Contact',
+        entityId: contato.id,
+        reasoning: `LeadQualifier sugeriu: "${q.nextAction}". Propor horários de reunião.`,
+        confidence: 0.7,
+        input: { contactId: contato.id, contactName: contato.name, context: q.nextAction, trigger: 'agent.delegation' },
+        status: 'NEEDS_APPROVAL',
+      },
+    }).catch(() => {})
   }
 
-  // Delegate to MeetingScheduler if next action suggests a meeting
-  if (qualification.nextAction?.toLowerCase().includes('reuni') || qualification.nextAction?.toLowerCase().includes('agendar')) {
-    const contact = await prisma.contact.findUnique({ where: { id: contactId }, select: { name: true, phone: true } })
-    if (contact?.phone) {
-      await prisma.agentAction.create({
-        data: {
-          organizationId,
-          agentName: 'MeetingScheduler',
-          actionType: 'SCHEDULE_MEETING',
-          entityType: 'Contact',
-          entityId: contactId,
-          reasoning: `LeadQualifier sugeriu: "${qualification.nextAction}". Propor horários de reunião.`,
-          confidence: 0.7,
-          input: { contactId, contactName: contact.name, contactPhone: contact.phone, context: qualification.nextAction, trigger: 'agent.delegation' },
-          status: 'NEEDS_APPROVAL',
-        },
-      }).catch(() => {})
-    }
-  }
-
-  return {
-    success: true,
-    output: {
-      qualification: qualification.qualification,
-      score: qualification.score,
-      reasoning: qualification.reasoning,
-      nextAction: qualification.nextAction,
-      dealId,
-      dealTitle: qualification.suggestedDealTitle,
-    },
-  }
+  return ok({ ...q, ...aberto, dealTitle: q.suggestedDealTitle })
 }
 
 /**
- * DealStageAnalyzer: Analyze conversation and suggest/move deal stage.
+ * DealStageAnalyzer: suggests a stage; on approval moves the deal and records the move with the approver.
  */
-async function executeDealStageAnalyzer(action: AgentAction): Promise<{ success: boolean; output: Record<string, any> }> {
-  const { organizationId, entityId: dealId, input } = action
-  const messageText = input?.messageText || ''
-  const contactId = input?.contactId
+async function executeDealStageAnalyzer(action: AgentAction, ctx: Contexto): Promise<Resultado> {
+  const { organizationId, input } = action
+  const deal = ctx.negocio
+  if (!deal) return falha('Deal not found in this organization')
 
-  // Load deal with pipeline stages
-  const deal = await prisma.deal.findUnique({
-    where: { id: dealId },
-    include: {
-      stage: true,
-      pipeline: {
-        include: { stages: { orderBy: { order: 'asc' } } },
-      },
-    },
-  })
-
-  if (!deal) {
-    return { success: false, output: { error: 'Deal not found' } }
-  }
-
-  // Get recent messages
-  const recentMessages = contactId
-    ? await prismaWa.whatsAppMessage.findMany({
-        where: { contactId, organizationId },
-        orderBy: { sentAt: 'desc' },
-        take: 10,
-        select: { text: true, direction: true },
-      })
-    : []
-
-  const conversationContext = recentMessages
-    .reverse()
-    .map(m => `[${m.direction === 'INBOUND' ? 'Lead' : 'Vendedor'}]: ${m.text}`)
-    .join('\n')
-
-  const stageNames = deal.pipeline.stages.map((s, i) => `${i + 1}. ${s.name}`).join('\n')
-  const ragContext = action.input?.ragContext || ''
-
-  const llmResponse = await callLLM([
-    {
-      role: 'system' as const,
-      content: injectRagContext(`Você é um analista de pipeline de vendas B2B. Analise a conversa e determine se o deal deve avançar de estágio.
+  let analysis = ctx.rascunho
+  if (!analysis) {
+    const conversationContext = ctx.contato
+      ? await historicoDaConversa(ctx.contato.id, organizationId, 10, ['Lead', 'Vendedor'])
+      : ''
+    const stageNames = deal.pipeline.stages.map((s, i) => `${i + 1}. ${s.name}`).join('\n')
+    const llmResponse = await callLLM([
+      {
+        role: 'system' as const,
+        content: injectRagContext(`Você é um analista de pipeline de vendas B2B. Analise a conversa e determine se o deal deve avançar de estágio.
 
 Estágios do pipeline (em ordem):
 ${stageNames}
@@ -274,280 +355,141 @@ Responda APENAS em JSON válido:
   "reasoning": "por que mover ou manter",
   "buyingSignals": ["sinal 1", "sinal 2"],
   "confidence": 0-100
-}`, ragContext),
-    },
-    {
-      role: 'user' as const,
-      content: `Deal: "${deal.title}"\nConversa recente:\n${conversationContext}\n\nÚltima mensagem: "${messageText}"`,
-    },
-  ], 'PRO')
+}`, ctx.ragContext),
+      },
+      {
+        role: 'user' as const,
+        content: `Deal: "${deal.title}"\nConversa recente:\n${conversationContext}\n\nÚltima mensagem: "${input?.messageText || ''}"`,
+      },
+    ], 'PRO')
 
-  let analysis: any
-  try {
-    const cleaned = llmResponse.content.replace(/```json?\s*/g, '').replace(/```/g, '').trim()
-    analysis = JSON.parse(cleaned)
-  } catch {
-    analysis = {
-      shouldMove: false,
-      suggestedStage: deal.stage.name,
-      reasoning: llmResponse.content.substring(0, 200),
-      buyingSignals: [],
-      confidence: 30,
+    try {
+      analysis = parseJson(llmResponse.content)
+    } catch {
+      analysis = { shouldMove: false, suggestedStage: deal.stage.name, reasoning: llmResponse.content.substring(0, 200), buyingSignals: [], confidence: 30 }
     }
   }
+  if (ctx.modo === 'rascunho') return ok({ ...analysis!, previousStage: deal.stage.name })
 
+  const a = analysis!
   let movedTo: string | null = null
+  const targetStage = a.shouldMove && a.suggestedStage
+    ? deal.pipeline.stages.find((s) => s.name.toLowerCase() === String(a.suggestedStage).toLowerCase())
+    : undefined
 
-  // Move stage if LLM suggests and confidence is reasonable
-  if (analysis.shouldMove && analysis.suggestedStage) {
-    const targetStage = deal.pipeline.stages.find(
-      s => s.name.toLowerCase() === analysis.suggestedStage.toLowerCase()
-    )
-
-    if (targetStage && targetStage.id !== deal.stageId) {
-      await prisma.deal.update({
-        where: { id: dealId },
-        data: { stageId: targetStage.id },
-      })
-      movedTo = targetStage.name
-
-      logger.info({ dealId, from: deal.stage.name, to: movedTo }, '[AgaaS:DealStageAnalyzer] Deal stage moved')
-    }
+  if (targetStage && targetStage.id !== deal.stageId) {
+    const autor = action.userId || (await donoDaConta(prisma, organizationId, ctx.contato))
+    await prisma.$transaction([
+      prisma.deal.update({ where: { id: deal.id, organizationId }, data: { stageId: targetStage.id } }),
+      prisma.activity.create({
+        data: {
+          type: 'STAGE_CHANGE',
+          description: `Moveu de "${deal.stage.name}" para "${targetStage.name}" (sugestão da IA aprovada)`,
+          dealId: deal.id,
+          userId: autor,
+        },
+      }),
+    ])
+    movedTo = targetStage.name
+    logger.info({ dealId: deal.id, from: deal.stage.name, to: movedTo }, '[AgaaS:DealStageAnalyzer] Approved move')
   }
 
-  return {
-    success: true,
-    output: {
-      shouldMove: analysis.shouldMove,
-      previousStage: deal.stage.name,
-      movedTo,
-      reasoning: analysis.reasoning,
-      buyingSignals: analysis.buyingSignals,
-      confidence: analysis.confidence,
-    },
-  }
+  return ok({ ...a, previousStage: deal.stage.name, movedTo })
 }
 
 /**
- * FollowUpCoordinator: Generate a personalized follow-up message and send via WABA.
+ * FollowUpCoordinator: drafts a follow-up; on approval sends that exact text.
  */
-async function executeFollowUpCoordinator(action: AgentAction): Promise<{ success: boolean; output: Record<string, any> }> {
+async function executeFollowUpCoordinator(action: AgentAction, ctx: Contexto): Promise<Resultado> {
   const { organizationId, input } = action
-  const { contactId, dealId, dealTitle, idleDays } = input
-
-  const contact = await prisma.contact.findUnique({
-    where: { id: contactId },
-    select: { id: true, name: true, phone: true },
-  })
-
-  if (!contact?.phone) {
-    return { success: false, output: { error: 'Contact not found or has no phone' } }
-  }
-
-  // Meta rule: free-form messages only allowed within 24h of last inbound message
-  const windowOpen = await isWithin24hWindow(contactId, organizationId)
-  if (!windowOpen) {
-    return {
-      success: false,
-      output: { error: 'Meta 24h window closed — contact must send a message first before free-form text can be sent', contactId },
-    }
-  }
-
-  const recentMessages = await prismaWa.whatsAppMessage.findMany({
-    where: { contactId, organizationId },
-    orderBy: { sentAt: 'desc' },
-    take: 10,
-    select: { text: true, direction: true, sentAt: true },
-  })
-
-  const conversationContext = recentMessages
-    .reverse()
-    .map(m => `[${m.direction === 'INBOUND' ? contact.name || 'Lead' : 'Vendedor'}]: ${m.text}`)
-    .join('\n')
-
-  const ragContext = action.input?.ragContext || ''
-  const llmResponse = await callLLM([
-    {
-      role: 'system' as const,
-      content: injectRagContext(`Você é um vendedor B2B experiente. Escreva uma mensagem de follow-up natural, curta (máx 3 linhas) e personalizada para retomar o contato com um prospect.
+  return mensagemAprovada(action, ctx, 'followup', async (contato) => {
+    const conversationContext = await historicoDaConversa(contato.id, organizationId, 10, [contato.name || 'Lead', 'Vendedor'])
+    const llmResponse = await callLLM([
+      {
+        role: 'system' as const,
+        content: injectRagContext(`Você é um vendedor B2B experiente. Escreva uma mensagem de follow-up natural, curta (máx 3 linhas) e personalizada para retomar o contato com um prospect.
 Não use templates genéricos. Baseie-se no contexto da conversa.
-Responda APENAS com o texto da mensagem, sem aspas, sem explicações.`, ragContext),
-    },
-    {
-      role: 'user' as const,
-      content: `Prospect: ${contact.name || contact.phone}
-Deal: "${dealTitle}"
-Dias sem contato: ${idleDays}
+Responda APENAS com o texto da mensagem, sem aspas, sem explicações.`, ctx.ragContext),
+      },
+      {
+        role: 'user' as const,
+        content: `Prospect: ${contato.name || contato.phone}
+Deal: "${ctx.negocio?.title ?? input?.dealTitle ?? ''}"
+Dias sem contato: ${input?.idleDays}
 Última conversa:\n${conversationContext || 'Sem histórico de conversa.'}`,
-    },
-  ], 'PRO')
-
-  const message = llmResponse.content.trim()
-
-  // Send via WABA
-  const client = await getWhatsAppOfficialClient(organizationId)
-  if (!client) {
-    return { success: false, output: { error: 'WABA not configured', message } }
-  }
-
-  await client.sendTextMessage(normalizePhone(contact.phone), message)
-
-  // Save to WA DB
-  const msgId = `agaas_followup_${Date.now()}`
-  await prismaWa.$executeRaw`
-    INSERT INTO "WhatsAppMessage"
-      (id, "contactId", "organizationId", "connectionId", "remoteJid",
-       "messageId", text, direction, status, "sentAt", "isRead",
-       "mediaType", "mediaUrl", "replyToId", "replyToText")
-    VALUES (
-      ${msgId}, ${contactId}, ${organizationId}, ${null},
-      ${normalizePhone(contact.phone)}, ${null},
-      ${message}, 'OUTBOUND', 'SENT', ${new Date()}, true,
-      ${null}, ${null}, ${null}, ${null}
-    )
-    ON CONFLICT ("organizationId", "messageId") DO NOTHING
-  `
-
-  logger.info({ organizationId, contactId, dealId }, '[AgaaS:FollowUpCoordinator] Follow-up sent')
-
-  return {
-    success: true,
-    output: { message, contactName: contact.name, dealTitle, idleDays },
-  }
+      },
+    ], 'PRO')
+    return { message: llmResponse.content.trim(), contactName: contato.name, dealTitle: ctx.negocio?.title, idleDays: input?.idleDays }
+  })
 }
 
-/**
- * MeetingScheduler: Check Google Calendar availability and propose meeting slots via WABA.
- */
-async function executeMeetingScheduler(action: AgentAction): Promise<{ success: boolean; output: Record<string, any> }> {
-  const { organizationId, input } = action
-  const { contactId, contactName, contactPhone, context } = input
-
+/** Free 1-hour slots on weekdays 9–17h over the next 7 days, from the account's Google Calendar. */
+async function horariosLivres(organizationId: string, quantos: number): Promise<string[] | null> {
   const calendarClient = await getGoogleCalendarClient(organizationId)
-  if (!calendarClient) {
-    return { success: false, output: { error: 'Google Calendar not configured for this organization' } }
-  }
-
-  // Get next 7 days of events to find free slots
+  if (!calendarClient) return null
   const now = new Date()
   const weekLater = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000)
-  const events = await calendarClient.listEvents({
-    timeMin: now.toISOString(),
-    timeMax: weekLater.toISOString(),
-    maxResults: 50,
-  })
-
-  // Build busy intervals
-  const busySlots = events.map((e: any) => ({
+  const events = await calendarClient.listEvents({ timeMin: now.toISOString(), timeMax: weekLater.toISOString(), maxResults: 50 })
+  const busy = events.map((e: any) => ({
     start: new Date(e.start?.dateTime || e.start?.date),
     end: new Date(e.end?.dateTime || e.end?.date),
   }))
-
-  // Generate candidate slots: weekdays 9-18h, 1h blocks
-  const candidates: Array<{ start: Date; end: Date; label: string }> = []
+  const livres: string[] = []
   const d = new Date(now)
   d.setMinutes(0, 0, 0)
   d.setHours(d.getHours() + 1)
-
-  while (candidates.length < 6 && d < weekLater) {
+  while (livres.length < quantos && d < weekLater) {
     const day = d.getDay()
     const hour = d.getHours()
     if (day !== 0 && day !== 6 && hour >= 9 && hour < 17) {
       const end = new Date(d.getTime() + 60 * 60 * 1000)
-      const isBusy = busySlots.some(b => d < b.end && end > b.start)
-      if (!isBusy) {
-        const label = d.toLocaleString('pt-BR', {
-          weekday: 'short', day: '2-digit', month: '2-digit',
-          hour: '2-digit', minute: '2-digit', timeZone: 'America/Sao_Paulo',
-        })
-        candidates.push({ start: new Date(d), end, label })
+      if (!busy.some((b: { start: Date; end: Date }) => d < b.end && end > b.start)) {
+        livres.push(d.toLocaleString('pt-BR', {
+          weekday: 'short', day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit', timeZone: 'America/Sao_Paulo',
+        }))
       }
     }
     d.setHours(d.getHours() + 1)
   }
-
-  if (candidates.length === 0) {
-    return { success: false, output: { error: 'No free slots found in the next 7 days' } }
-  }
-
-  const slotLines = candidates.map((s, i) => `${i + 1}. ${s.label}`).join('\n')
-
-  const ragContext = action.input?.ragContext || ''
-  const llmResponse = await callLLM([
-    {
-      role: 'system' as const,
-      content: injectRagContext(`Você é um assistente de vendas. Escreva uma mensagem curta e profissional propondo horários de reunião para um prospect. Use os horários disponíveis fornecidos. Máx 5 linhas. Responda APENAS com o texto da mensagem.`, ragContext),
-    },
-    {
-      role: 'user' as const,
-      content: `Prospect: ${contactName || contactPhone}
-Contexto: ${context || 'Agendamento de reunião de apresentação'}
-Horários disponíveis:\n${slotLines}`,
-    },
-  ], 'PRO')
-
-  const message = llmResponse.content.trim()
-
-  const phone = contactPhone || (await prisma.contact.findUnique({
-    where: { id: contactId },
-    select: { phone: true },
-  }))?.phone
-
-  if (!phone) {
-    return { success: false, output: { error: 'Contact phone not found', message, slots: candidates.map(s => s.label) } }
-  }
-
-  // Meta rule: free-form messages only allowed within 24h of last inbound message
-  const windowOpen = await isWithin24hWindow(contactId, organizationId)
-  if (!windowOpen) {
-    return {
-      success: false,
-      output: { error: 'Meta 24h window closed — contact must send a message first before meeting proposal can be sent', slots: candidates.map(s => s.label) },
-    }
-  }
-
-  const wabaClient = await getWhatsAppOfficialClient(organizationId)
-  if (!wabaClient) {
-    return { success: false, output: { error: 'WABA not configured', message, slots: candidates.map(s => s.label) } }
-  }
-
-  await wabaClient.sendTextMessage(normalizePhone(typeof phone === 'string' ? phone : ''), message)
-
-  const msgId = `agaas_meeting_${Date.now()}`
-  await prismaWa.$executeRaw`
-    INSERT INTO "WhatsAppMessage"
-      (id, "contactId", "organizationId", "connectionId", "remoteJid",
-       "messageId", text, direction, status, "sentAt", "isRead",
-       "mediaType", "mediaUrl", "replyToId", "replyToText")
-    VALUES (
-      ${msgId}, ${contactId}, ${organizationId}, ${null},
-      ${normalizePhone(typeof phone === 'string' ? phone : '')}, ${null},
-      ${message}, 'OUTBOUND', 'SENT', ${new Date()}, true,
-      ${null}, ${null}, ${null}, ${null}
-    )
-    ON CONFLICT ("organizationId", "messageId") DO NOTHING
-  `
-
-  logger.info({ organizationId, contactId, slots: candidates.length }, '[AgaaS:MeetingScheduler] Meeting proposal sent')
-
-  return {
-    success: true,
-    output: { message, slots: candidates.map(s => s.label), slotsCount: candidates.length },
-  }
+  return livres
 }
 
 /**
- * ContactEnricher: Search web for contact info and update CRM record.
+ * MeetingScheduler: drafts a message with free calendar slots; on approval sends it to the contact's own phone.
  */
-async function executeContactEnricher(action: AgentAction): Promise<{ success: boolean; output: Record<string, any> }> {
-  const { organizationId, entityId: contactId, input } = action
-  const { contactName, contactPhone, contactEmail } = input
-
-  if (!contactName || contactName.length < 3) {
-    return { success: false, output: { error: 'Contact name too short to enrich' } }
+async function executeMeetingScheduler(action: AgentAction, ctx: Contexto): Promise<Resultado> {
+  const { organizationId, input } = action
+  if (!ctx.rascunho && !(await getGoogleCalendarClient(organizationId))) {
+    return falha('Google Calendar not configured for this organization')
   }
+  return mensagemAprovada(action, ctx, 'meeting', async (contato) => {
+    const slots = (await horariosLivres(organizationId, 6)) ?? []
+    if (slots.length === 0) throw new Error('No free slots found in the next 7 days')
+    const llmResponse = await callLLM([
+      {
+        role: 'system' as const,
+        content: injectRagContext(`Você é um assistente de vendas. Escreva uma mensagem curta e profissional propondo horários de reunião para um prospect. Use os horários disponíveis fornecidos. Máx 5 linhas. Responda APENAS com o texto da mensagem.`, ctx.ragContext),
+      },
+      {
+        role: 'user' as const,
+        content: `Prospect: ${contato.name || contato.phone}
+Contexto: ${input?.context || 'Agendamento de reunião de apresentação'}
+Horários disponíveis:\n${slots.map((s, i) => `${i + 1}. ${s}`).join('\n')}`,
+      },
+    ], 'PRO')
+    return { message: llmResponse.content.trim(), slots, slotsCount: slots.length }
+  })
+}
 
-  const ragContext = action.input?.ragContext || ''
+/**
+ * ContactEnricher: suggests company and profile from name/phone/email. A suggestion only — the contact is never changed.
+ */
+async function executeContactEnricher(action: AgentAction, ctx: Contexto): Promise<Resultado> {
+  const contato = ctx.contato
+  if (!contato) return falha('ContactEnricher needs a contact')
+  if (ctx.rascunho) return ok({ ...ctx.rascunho, sugestao: true })
+  if (!contato.name || contato.name.length < 3) return falha('Contact name too short to enrich')
+
   const llmResponse = await callLLM([
     {
       role: 'system' as const,
@@ -561,300 +503,113 @@ Responda APENAS em JSON válido:
   "linkedinUrl": "url do linkedin se puder inferir ou vazio",
   "notes": "insights úteis para o vendedor (max 2 frases)",
   "confidence": 0-100
-}`, ragContext),
+}`, ctx.ragContext),
     },
     {
       role: 'user' as const,
-      content: `Nome: ${contactName}
-Telefone: ${contactPhone || 'não informado'}
-Email: ${contactEmail || 'não informado'}`,
+      content: `Nome: ${contato.name}
+Telefone: ${contato.phone || 'não informado'}
+Email: ${contato.email || 'não informado'}`,
     },
   ], 'PRO')
 
   let enriched: any
   try {
-    const cleaned = llmResponse.content.replace(/```json?\s*/g, '').replace(/```/g, '').trim()
-    enriched = JSON.parse(cleaned)
+    enriched = parseJson(llmResponse.content)
   } catch {
-    return { success: false, output: { error: 'Failed to parse LLM enrichment response' } }
+    return falha('Failed to parse LLM enrichment response')
   }
+  if (enriched.confidence < 30) return falha('Confidence too low to suggest anything', { confidence: enriched.confidence })
 
-  if (enriched.confidence < 30) {
-    return { success: false, output: { error: 'Confidence too low to update contact', confidence: enriched.confidence } }
-  }
-
-  // Build update — only set fields that exist in the Contact model
-  const updateData: Record<string, string> = {}
-  if (enriched.company) updateData.company = enriched.company
-
-  if (Object.keys(updateData).length > 0) {
-    await prisma.contact.update({
-      where: { id: contactId },
-      data: updateData,
-    })
-  }
-
-  logger.info({ organizationId, contactId, confidence: enriched.confidence }, '[AgaaS:ContactEnricher] Contact enriched')
-
-  return {
-    success: true,
-    output: {
-      jobTitle: enriched.jobTitle,
-      company: enriched.company,
-      industry: enriched.industry,
-      linkedinUrl: enriched.linkedinUrl,
-      notes: enriched.notes,
-      confidence: enriched.confidence,
-      fieldsUpdated: Object.keys(updateData),
-    },
-  }
+  // A guess from the model never replaces what a person typed: it stays here for a human to read
+  return ok({ ...enriched, empresaAtual: contato.company, sugestao: true })
 }
 
 // ─── Real Estate Vertical ─────────────────────────────────────────────────────
 
 /**
- * PropertyMatcher: Extract search criteria from conversation and suggest matching deals/properties.
+ * PropertyMatcher: drafts suggestions from the account's product catalog; on approval sends them.
+ * Only the catalog feeds the message — never other deals or other clients' data.
  */
-async function executePropertyMatcher(action: AgentAction): Promise<{ success: boolean; output: Record<string, any> }> {
-  const { organizationId, entityId: contactId, input } = action
-  const systemPromptOverride = input?.systemPromptOverride as string | undefined
-
-  const contact = await prisma.contact.findUnique({
-    where: { id: contactId },
-    select: { id: true, name: true, phone: true },
-  })
-  if (!contact?.phone) {
-    return { success: false, output: { error: 'Contact not found or has no phone' } }
-  }
-
-  const windowOpen = await isWithin24hWindow(contactId, organizationId)
-  if (!windowOpen) {
-    return { success: false, output: { error: 'Meta 24h window closed' } }
-  }
-
-  const recentMessages = await prismaWa.whatsAppMessage.findMany({
-    where: { contactId, organizationId },
-    orderBy: { sentAt: 'desc' },
-    take: 15,
-    select: { text: true, direction: true },
-  })
-
-  const conversationContext = recentMessages
-    .reverse()
-    .map(m => `[${m.direction === 'INBOUND' ? 'Cliente' : 'Corretor'}]: ${m.text}`)
-    .join('\n')
-
-  // Fetch portfolio deals to match against
-  const portfolioDeals = await prisma.deal.findMany({
-    where: { organizationId, status: 'ACTIVE' },
-    select: { id: true, title: true, value: true },
-    take: 20,
-    orderBy: { updatedAt: 'desc' },
-  })
-
-  const portfolioList = portfolioDeals.map(d => `- ${d.title} (R$ ${Number(d.value).toLocaleString('pt-BR')})`).join('\n')
-
-  const defaultPrompt = `Você é um corretor de imóveis experiente. Analise a conversa e extraia os critérios de busca do cliente (tipo de imóvel, bairro, dormitórios, faixa de preço, objetivo: compra/aluguel). Compare com o portfólio disponível e sugira os 2-3 imóveis mais compatíveis. Escreva uma mensagem natural e personalizada para o cliente. Máx 6 linhas. Responda APENAS com o texto da mensagem.`
-  const ragContext = action.input?.ragContext || ''
-
-  const llmResponse = await callLLM([
-    { role: 'system' as const, content: injectRagContext(systemPromptOverride || defaultPrompt, ragContext) },
-    {
-      role: 'user' as const,
-      content: `Conversa com ${contact.name || contact.phone}:\n${conversationContext}\n\nPortfólio disponível:\n${portfolioList || 'Nenhum imóvel cadastrado ainda.'}`,
-    },
-  ], 'PRO')
-
-  const message = llmResponse.content.trim()
-
-  const wabaClient = await getWhatsAppOfficialClient(organizationId)
-  if (!wabaClient) {
-    return { success: false, output: { error: 'WABA not configured', message } }
-  }
-
-  await wabaClient.sendTextMessage(normalizePhone(contact.phone), message)
-
-  const msgId = `agaas_propmatch_${Date.now()}`
-  await prismaWa.$executeRaw`
-    INSERT INTO "WhatsAppMessage"
-      (id, "contactId", "organizationId", "connectionId", "remoteJid",
-       "messageId", text, direction, status, "sentAt", "isRead",
-       "mediaType", "mediaUrl", "replyToId", "replyToText")
-    VALUES (
-      ${msgId}, ${contactId}, ${organizationId}, ${null},
-      ${normalizePhone(contact.phone)}, ${null},
-      ${message}, 'OUTBOUND', 'SENT', ${new Date()}, true,
-      ${null}, ${null}, ${null}, ${null}
-    )
-    ON CONFLICT ("organizationId", "messageId") DO NOTHING
-  `
-
-  logger.info({ organizationId, contactId, portfolioCount: portfolioDeals.length }, '[AgaaS:PropertyMatcher] Suggestions sent')
-
-  return { success: true, output: { message, portfolioMatched: portfolioDeals.length } }
-}
-
-/**
- * VisitScheduler: Detect visit intent and offer calendar slots via WABA.
- */
-async function executeVisitScheduler(action: AgentAction): Promise<{ success: boolean; output: Record<string, any> }> {
-  const { organizationId, entityId: contactId, input } = action
-  const systemPromptOverride = input?.systemPromptOverride as string | undefined
-
-  const contact = await prisma.contact.findUnique({
-    where: { id: contactId },
-    select: { id: true, name: true, phone: true },
-  })
-  if (!contact?.phone) {
-    return { success: false, output: { error: 'Contact not found or has no phone' } }
-  }
-
-  const windowOpen = await isWithin24hWindow(contactId, organizationId)
-  if (!windowOpen) {
-    return { success: false, output: { error: 'Meta 24h window closed' } }
-  }
-
-  // Try to get calendar slots
-  let slotLines = ''
-  try {
-    const calendarClient = await getGoogleCalendarClient(organizationId)
-    if (calendarClient) {
-      const now = new Date()
-      const weekLater = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000)
-      const events = await calendarClient.listEvents({ timeMin: now.toISOString(), timeMax: weekLater.toISOString(), maxResults: 50 })
-      const busy = events.map((e: any) => ({ start: new Date(e.start?.dateTime || e.start?.date), end: new Date(e.end?.dateTime || e.end?.date) }))
-      const candidates: string[] = []
-      const d = new Date(now)
-      d.setMinutes(0, 0, 0)
-      d.setHours(d.getHours() + 1)
-      while (candidates.length < 3 && d < weekLater) {
-        const day = d.getDay()
-        const hour = d.getHours()
-        if (day !== 0 && day !== 6 && hour >= 9 && hour < 17) {
-          const end = new Date(d.getTime() + 60 * 60 * 1000)
-          const isBusy = busy.some((b: any) => d < b.end && end > b.start)
-          if (!isBusy) {
-            candidates.push(d.toLocaleString('pt-BR', { weekday: 'short', day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit', timeZone: 'America/Sao_Paulo' }))
-          }
-        }
-        d.setHours(d.getHours() + 1)
-      }
-      slotLines = candidates.map((s, i) => `${i + 1}. ${s}`).join('\n')
-    }
-  } catch {}
-
-  const defaultPrompt = `Você é um corretor de imóveis. O cliente demonstrou interesse em visitar um imóvel. Proponha horários para visita de forma simpática e profissional. Se houver horários disponíveis, use-os. Máx 5 linhas. Responda APENAS com o texto da mensagem.`
-  const ragContext = action.input?.ragContext || ''
-
-  const llmResponse = await callLLM([
-    { role: 'system' as const, content: injectRagContext(systemPromptOverride || defaultPrompt, ragContext) },
-    {
-      role: 'user' as const,
-      content: `Cliente: ${contact.name || contact.phone}\n${slotLines ? `Horários disponíveis:\n${slotLines}` : 'Sem horários de agenda disponíveis — ofereça para combinar por mensagem.'}`,
-    },
-  ], 'PRO')
-
-  const message = llmResponse.content.trim()
-
-  const wabaClient = await getWhatsAppOfficialClient(organizationId)
-  if (!wabaClient) {
-    return { success: false, output: { error: 'WABA not configured', message } }
-  }
-
-  await wabaClient.sendTextMessage(normalizePhone(contact.phone), message)
-
-  const msgId = `agaas_visit_${Date.now()}`
-  await prismaWa.$executeRaw`
-    INSERT INTO "WhatsAppMessage"
-      (id, "contactId", "organizationId", "connectionId", "remoteJid",
-       "messageId", text, direction, status, "sentAt", "isRead",
-       "mediaType", "mediaUrl", "replyToId", "replyToText")
-    VALUES (
-      ${msgId}, ${contactId}, ${organizationId}, ${null},
-      ${normalizePhone(contact.phone)}, ${null},
-      ${message}, 'OUTBOUND', 'SENT', ${new Date()}, true,
-      ${null}, ${null}, ${null}, ${null}
-    )
-    ON CONFLICT ("organizationId", "messageId") DO NOTHING
-  `
-
-  logger.info({ organizationId, contactId }, '[AgaaS:VisitScheduler] Visit proposal sent')
-
-  return { success: true, output: { message, slotsOffered: slotLines } }
-}
-
-/**
- * ProposalFollowUp: Follow up on stalled deals in proposal stage. Always NEEDS_APPROVAL.
- */
-async function executeProposalFollowUp(action: AgentAction): Promise<{ success: boolean; output: Record<string, any> }> {
+async function executePropertyMatcher(action: AgentAction, ctx: Contexto): Promise<Resultado> {
   const { organizationId, input } = action
-  const { contactId, dealId, dealTitle, idleDays } = input
-  const systemPromptOverride = input?.systemPromptOverride as string | undefined
-
-  const contact = await prisma.contact.findUnique({
-    where: { id: contactId },
-    select: { id: true, name: true, phone: true },
+  return mensagemAprovada(action, ctx, 'propmatch', async (contato) => {
+    const conversationContext = await historicoDaConversa(contato.id, organizationId, 15, ['Cliente', 'Corretor'])
+    const catalogo = await prisma.product.findMany({
+      where: { organizationId, isActive: true },
+      select: { name: true, price: true },
+      orderBy: { updatedAt: 'desc' },
+      take: 20,
+    })
+    const portfolioList = catalogo.map((p) => `- ${p.name} (R$ ${Number(p.price).toLocaleString('pt-BR')})`).join('\n')
+    const defaultPrompt = `Você é um corretor de imóveis experiente. Analise a conversa e extraia os critérios de busca do cliente (tipo de imóvel, bairro, dormitórios, faixa de preço, objetivo: compra/aluguel). Compare com o portfólio disponível e sugira os 2-3 imóveis mais compatíveis. Escreva uma mensagem natural e personalizada para o cliente. Máx 6 linhas. Responda APENAS com o texto da mensagem.`
+    const llmResponse = await callLLM([
+      { role: 'system' as const, content: injectRagContext((input?.systemPromptOverride as string | undefined) || defaultPrompt, ctx.ragContext) },
+      {
+        role: 'user' as const,
+        content: `Conversa com ${contato.name || contato.phone}:\n${conversationContext}\n\nPortfólio disponível:\n${portfolioList || 'Nenhum imóvel cadastrado ainda.'}`,
+      },
+    ], 'PRO')
+    return { message: llmResponse.content.trim(), portfolioMatched: catalogo.length }
   })
-  if (!contact?.phone) {
-    return { success: false, output: { error: 'Contact not found or has no phone' } }
-  }
-
-  const recentMessages = await prismaWa.whatsAppMessage.findMany({
-    where: { contactId, organizationId },
-    orderBy: { sentAt: 'desc' },
-    take: 8,
-    select: { text: true, direction: true },
-  })
-
-  const conversationContext = recentMessages
-    .reverse()
-    .map(m => `[${m.direction === 'INBOUND' ? contact.name || 'Cliente' : 'Corretor'}]: ${m.text}`)
-    .join('\n')
-
-  const defaultPrompt = `Você é um corretor de imóveis. Escreva um follow-up elegante e não insistente para retomar contato com um cliente que está avaliando uma proposta. Seja natural, curto (máx 3 linhas) e personalize com base na conversa. Responda APENAS com o texto da mensagem.`
-  const ragContext = action.input?.ragContext || ''
-
-  const llmResponse = await callLLM([
-    { role: 'system' as const, content: injectRagContext(systemPromptOverride || defaultPrompt, ragContext) },
-    {
-      role: 'user' as const,
-      content: `Cliente: ${contact.name || contact.phone}\nDeal: "${dealTitle}"\nDias sem resposta: ${idleDays}\nÚltima conversa:\n${conversationContext || 'Sem histórico.'}`,
-    },
-  ], 'PRO')
-
-  const message = llmResponse.content.trim()
-
-  logger.info({ organizationId, contactId, dealId, idleDays }, '[AgaaS:ProposalFollowUp] Draft generated (NEEDS_APPROVAL)')
-
-  // Never auto-send — always returns draft for human review
-  return {
-    success: true,
-    output: { message, contactName: contact.name, dealTitle, idleDays, requiresApproval: true },
-  }
 }
 
 /**
- * LeadProfiler: Classify lead as COMPRADOR/VENDEDOR/LOCATARIO/INVESTIDOR.
+ * VisitScheduler: drafts a visit proposal (with calendar slots when available); on approval sends it.
  */
-async function executeLeadProfiler(action: AgentAction): Promise<{ success: boolean; output: Record<string, any> }> {
-  const { organizationId, entityId: contactId, input } = action
-  const systemPromptOverride = input?.systemPromptOverride as string | undefined
-
-  const recentMessages = await prismaWa.whatsAppMessage.findMany({
-    where: { contactId, organizationId },
-    orderBy: { sentAt: 'desc' },
-    take: 20,
-    select: { text: true, direction: true },
+async function executeVisitScheduler(action: AgentAction, ctx: Contexto): Promise<Resultado> {
+  const { organizationId, input } = action
+  return mensagemAprovada(action, ctx, 'visit', async (contato) => {
+    let slotLines = ''
+    try {
+      const slots = await horariosLivres(organizationId, 3)
+      if (slots) slotLines = slots.map((s, i) => `${i + 1}. ${s}`).join('\n')
+    } catch {}
+    const defaultPrompt = `Você é um corretor de imóveis. O cliente demonstrou interesse em visitar um imóvel. Proponha horários para visita de forma simpática e profissional. Se houver horários disponíveis, use-os. Máx 5 linhas. Responda APENAS com o texto da mensagem.`
+    const llmResponse = await callLLM([
+      { role: 'system' as const, content: injectRagContext((input?.systemPromptOverride as string | undefined) || defaultPrompt, ctx.ragContext) },
+      {
+        role: 'user' as const,
+        content: `Cliente: ${contato.name || contato.phone}\n${slotLines ? `Horários disponíveis:\n${slotLines}` : 'Sem horários de agenda disponíveis — ofereça para combinar por mensagem.'}`,
+      },
+    ], 'PRO')
+    return { message: llmResponse.content.trim(), slotsOffered: slotLines }
   })
+}
 
-  if (recentMessages.length === 0) {
-    return { success: false, output: { error: 'No messages to analyze' } }
-  }
+/**
+ * ProposalFollowUp: drafts a follow-up for a stalled proposal. Always a draft — approving does not send it.
+ */
+async function executeProposalFollowUp(action: AgentAction, ctx: Contexto): Promise<Resultado> {
+  const { organizationId, input } = action
+  const contato = ctx.contato
+  if (!contato?.phone) return falha('Contact not found or has no phone')
+  if (ctx.rascunho) return ok({ ...ctx.rascunho, requiresApproval: true })
 
-  const conversationContext = recentMessages
-    .reverse()
-    .map(m => `[${m.direction === 'INBOUND' ? 'Cliente' : 'Corretor'}]: ${m.text}`)
-    .join('\n')
+  const conversationContext = await historicoDaConversa(contato.id, organizationId, 8, [contato.name || 'Cliente', 'Corretor'])
+  const defaultPrompt = `Você é um corretor de imóveis. Escreva um follow-up elegante e não insistente para retomar contato com um cliente que está avaliando uma proposta. Seja natural, curto (máx 3 linhas) e personalize com base na conversa. Responda APENAS com o texto da mensagem.`
+  const llmResponse = await callLLM([
+    { role: 'system' as const, content: injectRagContext((input?.systemPromptOverride as string | undefined) || defaultPrompt, ctx.ragContext) },
+    {
+      role: 'user' as const,
+      content: `Cliente: ${contato.name || contato.phone}\nDeal: "${ctx.negocio?.title ?? input?.dealTitle ?? ''}"\nDias sem resposta: ${input?.idleDays}\nÚltima conversa:\n${conversationContext || 'Sem histórico.'}`,
+    },
+  ], 'PRO')
+
+  return ok({ message: llmResponse.content.trim(), contactName: contato.name, dealTitle: ctx.negocio?.title, idleDays: input?.idleDays, requiresApproval: true })
+}
+
+/**
+ * LeadProfiler: classifies the lead (buyer, seller, tenant, investor). A suggestion only — the contact is never changed.
+ */
+async function executeLeadProfiler(action: AgentAction, ctx: Contexto): Promise<Resultado> {
+  const { organizationId, input } = action
+  const contato = ctx.contato
+  if (!contato) return falha('LeadProfiler needs a contact')
+  if (ctx.rascunho) return ok({ ...ctx.rascunho, sugestao: true })
+
+  const conversationContext = await historicoDaConversa(contato.id, organizationId, 20, ['Cliente', 'Corretor'])
+  if (!conversationContext) return falha('No messages to analyze')
 
   const defaultPrompt = `Você é um especialista em perfil de clientes imobiliários. Analise a conversa e classifique o lead.
 Responda APENAS em JSON válido:
@@ -864,81 +619,40 @@ Responda APENAS em JSON válido:
   "reasoning": "justificativa curta",
   "profileNotes": "detalhes úteis para o corretor (max 2 frases)"
 }`
-  const ragContext = action.input?.ragContext || ''
-
   const llmResponse = await callLLM([
-    { role: 'system' as const, content: injectRagContext(systemPromptOverride || defaultPrompt, ragContext) },
+    { role: 'system' as const, content: injectRagContext((input?.systemPromptOverride as string | undefined) || defaultPrompt, ctx.ragContext) },
     { role: 'user' as const, content: `Conversa:\n${conversationContext}` },
   ], 'PRO')
 
   let result: any
   try {
-    const cleaned = llmResponse.content.replace(/```json?\s*/g, '').replace(/```/g, '').trim()
-    result = JSON.parse(cleaned)
+    result = parseJson(llmResponse.content)
   } catch {
-    return { success: false, output: { error: 'Failed to parse LLM response' } }
+    return falha('Failed to parse LLM response')
   }
+  if (result.confidence < 40) return falha('Confidence too low', { confidence: result.confidence })
 
-  if (result.confidence < 40) {
-    return { success: false, output: { error: 'Confidence too low', confidence: result.confidence } }
-  }
-
-  // Store profile in contact.company field (repurposed as type-of-lead in RE vertical)
-  await prisma.contact.update({
-    where: { id: contactId },
-    data: { company: `[${result.profile}] ${result.profileNotes || ''}`.trim() },
-  })
-
-  logger.info({ organizationId, contactId, profile: result.profile, confidence: result.confidence }, '[AgaaS:LeadProfiler] Profile saved')
-
-  return {
-    success: true,
-    output: { profile: result.profile, confidence: result.confidence, reasoning: result.reasoning, profileNotes: result.profileNotes },
-  }
+  return ok({ profile: result.profile, confidence: result.confidence, reasoning: result.reasoning, profileNotes: result.profileNotes, sugestao: true })
 }
 
 /**
- * NegotiationAssistant: Detect price objections and suggest counter-proposals. Always NEEDS_APPROVAL.
+ * NegotiationAssistant: drafts a counter-proposal. Always a draft — approving does not send it.
  */
-async function executeNegotiationAssistant(action: AgentAction): Promise<{ success: boolean; output: Record<string, any> }> {
-  const { organizationId, entityId: contactId, input } = action
-  const systemPromptOverride = input?.systemPromptOverride as string | undefined
+async function executeNegotiationAssistant(action: AgentAction, ctx: Contexto): Promise<Resultado> {
+  const { organizationId, input } = action
+  const contato = ctx.contato
+  if (!contato) return falha('NegotiationAssistant needs a contact')
+  if (ctx.rascunho) return ok({ ...ctx.rascunho, requiresApproval: true })
 
-  const contact = await prisma.contact.findUnique({
-    where: { id: contactId },
-    select: { id: true, name: true, phone: true },
-  })
-
-  const recentMessages = await prismaWa.whatsAppMessage.findMany({
-    where: { contactId, organizationId },
-    orderBy: { sentAt: 'desc' },
-    take: 10,
-    select: { text: true, direction: true },
-  })
-
-  const conversationContext = recentMessages
-    .reverse()
-    .map(m => `[${m.direction === 'INBOUND' ? 'Cliente' : 'Corretor'}]: ${m.text}`)
-    .join('\n')
-
+  const conversationContext = await historicoDaConversa(contato.id, organizationId, 10, ['Cliente', 'Corretor'])
   const defaultPrompt = `Você é um especialista em negociação imobiliária. Analise a objeção de preço/condição do cliente e sugira uma contra-proposta respeitosa e estratégica. Não faça concessões precipitadas. Escreva uma mensagem natural de resposta (máx 4 linhas). Responda APENAS com o texto da mensagem.`
-  const ragContext = action.input?.ragContext || ''
-
   const llmResponse = await callLLM([
-    { role: 'system' as const, content: injectRagContext(systemPromptOverride || defaultPrompt, ragContext) },
+    { role: 'system' as const, content: injectRagContext((input?.systemPromptOverride as string | undefined) || defaultPrompt, ctx.ragContext) },
     {
       role: 'user' as const,
-      content: `Cliente: ${contact?.name || 'Lead'}\nConversa:\n${conversationContext}\nÚltima mensagem de objeção: "${input?.messageText || ''}"`,
+      content: `Cliente: ${contato.name || 'Lead'}\nConversa:\n${conversationContext}\nÚltima mensagem de objeção: "${input?.messageText || ''}"`,
     },
   ], 'PRO')
 
-  const message = llmResponse.content.trim()
-
-  logger.info({ organizationId, contactId }, '[AgaaS:NegotiationAssistant] Counter-proposal drafted (NEEDS_APPROVAL)')
-
-  // Confidence is fixed at 0.6 — always goes to NEEDS_APPROVAL
-  return {
-    success: true,
-    output: { message, contactName: contact?.name, requiresApproval: true },
-  }
+  return ok({ message: llmResponse.content.trim(), contactName: contato.name, requiresApproval: true })
 }

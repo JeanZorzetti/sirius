@@ -7,8 +7,6 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
-import { Slider } from '@/components/ui/slider'
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 import { Loader2, RotateCcw, ChevronDown, Info } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import type { AgentOverride } from '@/lib/agaas-types'
@@ -40,17 +38,9 @@ export function AgentEditModal({
   const tCommon = useTranslations('common')
   const [displayName, setDisplayName] = useState(currentOverride?.displayName ?? agentName)
   const [systemPrompt, setSystemPrompt] = useState(currentOverride?.systemPrompt ?? defaultPrompt)
-  const [threshold, setThreshold] = useState(currentOverride?.confidenceThreshold ?? 75)
   const [saving, setSaving] = useState(false)
   const [resetting, setResetting] = useState(false)
   const [showDefaultPrompt, setShowDefaultPrompt] = useState(false)
-
-  function thresholdDescription(t: number): string {
-    if (t >= 90) return 'Muito conservador — raramente executa sem aprovação'
-    if (t >= 75) return 'Recomendado — executa automaticamente quando confiante'
-    if (t >= 60) return 'Moderado — aceita incerteza média'
-    return 'Agressivo — executa com baixa confiança'
-  }
 
   async function handleSave() {
     setSaving(true)
@@ -60,7 +50,6 @@ export function AgentEditModal({
       const trimmedPrompt = systemPrompt.trim()
       if (trimmedName && trimmedName !== agentName) override.displayName = trimmedName
       if (trimmedPrompt && trimmedPrompt !== defaultPrompt) override.systemPrompt = trimmedPrompt
-      override.confidenceThreshold = threshold
 
       const res = await fetch('/api/ia/agent-config', {
         method: 'PATCH',
@@ -93,7 +82,6 @@ export function AgentEditModal({
 
       setDisplayName(agentName)
       setSystemPrompt(defaultPrompt)
-      setThreshold(75)
       onSaved(agentId, null)
       onOpenChange(false)
       toast('Configurações restauradas ao padrão')
@@ -158,33 +146,10 @@ export function AgentEditModal({
             )}
           </div>
 
-          {/* Confidence threshold */}
-          <div className="space-y-2">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-1.5">
-                <Label className="text-xs text-zinc-400">Threshold de confiança</Label>
-                <TooltipProvider delayDuration={200}>
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <Info className="h-3 w-3 text-zinc-600 cursor-help" />
-                    </TooltipTrigger>
-                    <TooltipContent side="top" className="bg-zinc-800 border-zinc-700 text-zinc-300 text-xs max-w-xs">
-                      Ações com confiança acima deste valor são executadas automaticamente. Abaixo disso, ficam aguardando aprovação no Feed.
-                    </TooltipContent>
-                  </Tooltip>
-                </TooltipProvider>
-              </div>
-              <span className="text-sm font-mono font-semibold text-cyan-400">{threshold}%</span>
-            </div>
-            <Slider
-              value={[threshold]}
-              onValueChange={([v]) => setThreshold(v)}
-              min={0}
-              max={100}
-              step={5}
-            />
-            <p className="text-[11px] text-zinc-600">{thresholdDescription(threshold)}</p>
-          </div>
+          <p className="flex items-start gap-1.5 text-[11px] text-zinc-500">
+            <Info className="h-3 w-3 mt-0.5 shrink-0" aria-hidden="true" />
+            Toda ação deste agente passa pela sua aprovação no feed antes de sair ou de gravar no CRM.
+          </p>
         </div>
 
         <DialogFooter className="flex items-center justify-between gap-2 sm:justify-between">
