@@ -70,9 +70,11 @@
   --radius: 6px;
 }
 
-/* the content area behind the screen takes its ground (the sidebar and the bars keep theirs) */
-main:has([data-tela="hoje"]) { background: oklch(0.975 0.004 250); }
-.dark main:has([data-tela="hoje"]) { background: oklch(0.19 0.028 262); }
+/* the screen paints its own ground over main's padding (md:p-4, lg:p-6). Not main:has(): a :has() that searches a
+   subtree is re-evaluated on DOM changes, and this screen streams and hydrates hundreds of nodes on a slow phone. */
+[data-tela="hoje"] { background: var(--hoje-fundo); }
+@media (min-width: 768px) { [data-tela="hoje"] { margin: -1rem; padding: 1rem; min-height: calc(100% + 2rem); } }
+@media (min-width: 1024px) { [data-tela="hoje"] { margin: -1.5rem; padding: 1.5rem; min-height: calc(100% + 3rem); } }
 
 [data-tela="hoje"] .hoje-mono { font-family: var(--fonte-mono-base), ui-monospace, monospace; }
 
@@ -107,10 +109,11 @@ main:has([data-tela="hoje"]) { background: oklch(0.975 0.004 250); }
   [data-tela="hoje"] .hoje-fila-item { animation: none; transition: none; }
 }
 
-/* the assistant's floating button wears this screen's ink here instead of the purple→blue gradient */
-:root:has([data-tela="hoje"]) [data-assistente] {
+/* the assistant's floating button wears this screen's ink here instead of the purple→blue gradient
+   (AgiChatSidebar sets data-assistente="hoje" on this route only) */
+[data-assistente="hoje"] {
   background-image: none; background-color: oklch(0.22 0.02 255); color: oklch(0.975 0.004 250);
 }
-:root.dark:has([data-tela="hoje"]) [data-assistente] {
+.dark [data-assistente="hoje"] {
   background-color: oklch(0.88 0.09 78); color: oklch(0.2 0.03 262);
 }
