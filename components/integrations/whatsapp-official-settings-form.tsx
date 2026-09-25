@@ -18,6 +18,7 @@ interface WhatsAppOfficialSettingsFormProps {
     businessAccountId: string
     webhookVerifyToken: string
     hasAccessToken: boolean
+    hasAppSecret: boolean
   }
 }
 
@@ -38,6 +39,7 @@ export function WhatsAppOfficialSettingsForm({
   const [enabled, setEnabled] = useState(initialData.enabled)
   const [phoneNumberId, setPhoneNumberId] = useState(initialData.phoneNumberId)
   const [accessToken, setAccessToken] = useState('')
+  const [appSecret, setAppSecret] = useState('')
   const [businessAccountId, setBusinessAccountId] = useState(initialData.businessAccountId)
   const [webhookVerifyToken, setWebhookVerifyToken] = useState(initialData.webhookVerifyToken)
 
@@ -111,6 +113,7 @@ export function WhatsAppOfficialSettingsForm({
           enabled,
           phoneNumberId,
           accessToken: accessToken || undefined,
+          appSecret: appSecret || undefined,
           businessAccountId,
           webhookVerifyToken
         })
@@ -215,6 +218,39 @@ export function WhatsAppOfficialSettingsForm({
           <p className="text-xs text-zinc-500">
             Token de acesso permanente gerado no Meta Business Manager
           </p>
+        )}
+      </div>
+
+      {/* App Secret: write-only, checks that webhook notices come from Meta */}
+      <div className="space-y-2">
+        <Label htmlFor="appSecret" className="text-sm font-medium">
+          App Secret{' '}
+          {initialData.hasAppSecret && (
+            <span className="text-xs font-normal text-green-600 dark:text-green-400 ml-1">
+              ✓ Configurado
+            </span>
+          )}
+        </Label>
+        <Input
+          id="appSecret"
+          type="password"
+          autoComplete="off"
+          placeholder={initialData.hasAppSecret ? '••••••••••••••••' : 'ex.: 3f9a1c…'}
+          value={appSecret}
+          onChange={(e) => setAppSecret(e.target.value)}
+          aria-describedby="appSecret-ajuda"
+          className="bg-white dark:bg-zinc-900 font-mono text-sm"
+        />
+        <p id="appSecret-ajuda" className="text-xs text-zinc-500">
+          {initialData.hasAppSecret
+            ? 'Chave já configurada e criptografada. Deixe em branco para manter a atual.'
+            : 'No painel do seu app da Meta: Configurações do app → Básico → Chave secreta do app. Com ela, o Sirius confere que cada mensagem veio mesmo da Meta.'}
+        </p>
+        {enabled && !initialData.hasAppSecret && !appSecret && (
+          <div role="alert" className="flex items-start gap-2 rounded-lg border border-amber-200 bg-amber-50 p-3 text-xs text-amber-800 dark:border-amber-500/20 dark:bg-amber-500/10 dark:text-amber-300">
+            <XCircle className="h-4 w-4 mt-0.5 flex-shrink-0" aria-hidden="true" />
+            <p>Falta o App Secret. Sem ele, o Sirius recusa as mensagens que chegam pelo WhatsApp. Cole a chave acima e salve.</p>
+          </div>
         )}
       </div>
 

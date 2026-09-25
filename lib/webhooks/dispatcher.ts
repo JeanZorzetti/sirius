@@ -2,6 +2,7 @@ import { sendWebhookMessage } from './svix-client'
 import { WebhookEvent, createWebhookPayload } from './events'
 import { prisma } from '../prisma'
 import logger from '../logger'
+import { fetchPublico } from '../url-publica'
 import { logN8NActivity, checkN8NRateLimit } from '../integrations/n8n-client'
 
 /**
@@ -78,7 +79,7 @@ export async function dispatchWebhook<T = any>(
         const rateLimitResult = await checkN8NRateLimit(organizationId)
 
         if (rateLimitResult) {
-          const n8nResponse = await fetch(org.n8nWebhookUrl, {
+          const n8nResponse = await fetchPublico(org.n8nWebhookUrl, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(payload)

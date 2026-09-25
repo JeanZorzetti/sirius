@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import logger from '@/lib/logger'
+import { assinaturaMetaValida } from '@/lib/meta-assinatura'
 
 export const runtime = 'nodejs'
 
@@ -22,7 +23,12 @@ export async function GET(request: NextRequest) {
 // Receive Instagram webhook events
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json()
+    const corpoCru = await request.text()
+    if (!assinaturaMetaValida(corpoCru, request.headers.get('x-hub-signature-256'), process.env.INSTAGRAM_APP_SECRET)) {
+      logger.warn('[IG:WEBHOOK] notice refused: invalid or missing signature')
+      return NextResponse.json({ error: 'assinatura inválida' }, { status: 401 })
+    }
+    const body = JSON.parse(corpoCru)
     logger.info({ body }, '[IG:WEBHOOK] event received')
     // TODO: handle specific events (comments, mentions, etc.)
     return NextResponse.json({ received: true })

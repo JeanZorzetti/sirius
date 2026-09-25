@@ -123,6 +123,7 @@ model Organization {
   wabaAccessToken         String? @db.Text // Encrypted with AES-256-GCM
   wabaBusinessAccountId   String?
   wabaWebhookVerifyToken  String?
+  wabaAppSecret           String? @db.Text // Meta App Secret, encrypted — checks X-Hub-Signature-256 on the webhook
   wabaGrandfathered       Boolean @default(false) // Starter/Pro orgs that had access before Business-only gate
 
   googleCalendarEnabled      Boolean @default(false)
@@ -203,6 +204,9 @@ model Organization {
 
   // Custom Segments
   customSegments CustomSegment[]
+
+  // Audit trail (exports, staff "log in as")
+  auditLogs AuditLog[]
 }
 
 model User {
@@ -291,6 +295,9 @@ model User {
 
   // Custom Segments
   customSegmentsCreated CustomSegment[] @relation("CustomSegmentCreatedBy")
+
+  // Audit trail
+  auditLogs AuditLog[]
 }
 
 enum Role {
@@ -2529,4 +2536,27 @@ model KnowledgeChunk {
   createdAt   DateTime                      @default(now())
 
   @@index([documentId])
+}
+
+// Append-only audit trail of sensitive access in an organization (spec 011).
+// The owner reads it in settings; the app never updates or deletes rows.
+model AuditLog {
+  id             String       @id @default(uuid())
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  autorUserId String?
+  autor       User?   @relation(fields: [autorUserId], references: [id], onDelete: SetNull)
+  autorEmail  String // kept even if the user is deleted
+  autorTipo   String // "USUARIO" (member of the org) | "EQUIPE" (ROI Labs staff)
+
+  acao    String // "EXPORTACAO" | "ENTRAR_COMO"
+  alvo    String // "contatos" | "negocios" | email of the visited user
+  formato String? // "xlsx" | "pdf"
+  linhas  Int?
+  ip      String?
+
+  createdAt DateTime @default(now())
+
+  @@index([organizationId, createdAt])
 }

@@ -19,6 +19,7 @@ import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { fetchLeadData } from '@/lib/ads/facebook-lead-ads'
 import { decrypt } from '@/lib/encryption'
+import { assinaturaMetaValida } from '@/lib/meta-assinatura'
 import logger from '@/lib/logger'
 
 async function getDefaultPipelineStage(organizationId: string) {
@@ -77,9 +78,18 @@ export async function GET(request: Request) {
 
 export async function POST(request: Request) {
   try {
-    const body = await request.json()
+    // Lead Ads notices are signed with the Sirius Facebook app secret; nothing is read before the signature checks out
+    const corpoCru = await request.text()
+    if (!assinaturaMetaValida(corpoCru, request.headers.get('x-hub-signature-256'), process.env.FACEBOOK_APP_SECRET)) {
+      logger.warn(
+        { motivo: process.env.FACEBOOK_APP_SECRET ? 'assinatura inválida' : 'FACEBOOK_APP_SECRET ausente' },
+        '[FB:LEADS] Notice refused'
+      )
+      return NextResponse.json({ error: 'assinatura inválida' }, { status: 401 })
+    }
+    const body = JSON.parse(corpoCru)
 
-    logger.info({ body: JSON.stringify(body) }, '[FB:LEADS] Webhook POST received')
+    logger.info({ body: corpoCru }, '[FB:LEADS] Webhook POST received')
 
     // Meta envia object: "page" para Lead Ads
     if (body.object !== 'page') {

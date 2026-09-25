@@ -13,6 +13,7 @@
 import { prisma } from '@/lib/prisma'
 import { decrypt } from '@/lib/encryption'
 import { n8nRateLimit } from './rate-limiter'
+import { fetchPublico } from '@/lib/url-publica'
 import logger from '@/lib/logger'
 
 // N8N API Types
@@ -64,7 +65,8 @@ export class N8NClient {
     const url = `${this.baseUrl}/api/v1${endpoint}`
 
     try {
-      const response = await fetch(url, {
+      // The base URL is typed by the account: only the public internet is reachable
+      const response = await fetchPublico(url, {
         ...options,
         headers: {
           'X-N8N-API-KEY': this.apiKey,

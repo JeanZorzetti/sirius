@@ -31,6 +31,7 @@ export default async function WhatsAppOfficialPage({ searchParams }: { searchPar
                     wabaAccessToken: true,
                     wabaBusinessAccountId: true,
                     wabaWebhookVerifyToken: true,
+                    wabaAppSecret: true,
                     wabaGrandfathered: true,
                 }
             }
@@ -101,7 +102,8 @@ export default async function WhatsAppOfficialPage({ searchParams }: { searchPar
                                 phoneNumberId: user.organization.wabaPhoneNumberId || '',
                                 businessAccountId: user.organization.wabaBusinessAccountId || '',
                                 webhookVerifyToken: user.organization.wabaWebhookVerifyToken || '',
-                                hasAccessToken: !!user.organization.wabaAccessToken
+                                hasAccessToken: !!user.organization.wabaAccessToken,
+                                hasAppSecret: !!user.organization.wabaAppSecret
                             }}
                         />
                     </CardContent>

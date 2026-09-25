@@ -12,6 +12,7 @@
 import { prisma } from '@/lib/prisma'
 import logger from '@/lib/logger'
 import { sendIntegrationFailureAlert } from './alerting'
+import { fetchPublico } from '@/lib/url-publica'
 
 // Retry delays in milliseconds
 const RETRY_DELAYS = [
@@ -232,7 +233,7 @@ async function retryN8N(log: any): Promise<{ success: boolean; response?: any; e
     }
 
     // Resend webhook
-    const response = await fetch(org.n8nWebhookUrl, {
+    const response = await fetchPublico(org.n8nWebhookUrl, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(log.request)

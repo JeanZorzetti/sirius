@@ -1,5 +1,6 @@
 import logger from './logger'
 import { prisma } from './prisma'
+import { fetchPublico } from './url-publica'
 import crypto from 'crypto'
 
 /**
@@ -119,14 +120,15 @@ async function dispatchToSubscribers(
       })
 
       try {
-        const response = await fetch(webhook.url, {
+        // Registered by the account: https to the public internet only
+        const response = await fetchPublico(webhook.url, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
           },
           body,
           signal: AbortSignal.timeout(10000)
-        })
+        }, { exigirHttps: true })
 
         // Log delivery
         await prisma.webhookLog.create({

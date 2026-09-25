@@ -11,6 +11,7 @@
 
 import { prisma } from '@/lib/prisma'
 import { sendHtmlEmail } from '@/lib/email'
+import { fetchPublico } from '@/lib/url-publica'
 import logger from '@/lib/logger'
 
 export interface AutomationAction {
@@ -340,12 +341,13 @@ async function handleSendWebhook(
     context
   }
 
-  const response = await fetch(webhookUrl, {
+  // The URL is typed by the account: https to the public internet only (checked at connection time)
+  const response = await fetchPublico(webhookUrl, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(payload),
     signal: AbortSignal.timeout(10000) // 10s timeout
-  })
+  }, { exigirHttps: true })
 
   if (!response.ok) {
     throw new Error(`Webhook returned HTTP ${response.status}`)

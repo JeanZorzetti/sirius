@@ -21,6 +21,8 @@ import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { prismaWa } from '@/lib/prisma-wa'
 import { logWabaActivity, getWhatsAppOfficialClient } from '@/lib/integrations/whatsapp-official-client'
+import { decrypt } from '@/lib/encryption'
+import { assinaturaMetaValida } from '@/lib/meta-assinatura'
 import { triggerAgentsForInboundMessage, triggerAgentsForContactCreated } from '@/lib/agaas-agent-trigger'
 import { uploadMedia } from '@/lib/storage'
 import logger from '@/lib/logger'
@@ -62,26 +64,51 @@ export async function GET(request: Request) {
 
 export async function POST(request: Request) {
   try {
-    const body = await request.json()
+    // The signature covers the raw body, so read it before parsing anything
+    const corpoCru = await request.text()
+    let body: any
+    try {
+      body = JSON.parse(corpoCru)
+    } catch {
+      return NextResponse.json({ error: 'corpo inválido' }, { status: 400 })
+    }
 
     // Meta wraps all events in object with entry array
     if (body.object !== 'whatsapp_business_account') {
       return NextResponse.json({ status: 'ignored' })
     }
 
+    // Each account signs with its own Meta app secret. The entry id is untrusted until the signature checks out
+    // against the secret of the account it names, so every account in the notice is checked before anything is saved.
+    const orgPorWaba = new Map<string, { id: string }>()
     for (const entry of body.entry ?? []) {
-      const wabaId: string = entry.id
-
-      // Find the organization by business account ID
       const org = await prisma.organization.findFirst({
-        where: { wabaBusinessAccountId: wabaId, wabaEnabled: true },
-        select: { id: true }
+        where: { wabaBusinessAccountId: String(entry.id), wabaEnabled: true },
+        select: { id: true, wabaAppSecret: true }
       })
-
       if (!org) {
-        logger.warn({ wabaId }, 'WhatsApp Official webhook: no org found for WABA ID')
+        logger.warn({ wabaId: entry.id }, 'WhatsApp Official webhook: no org found for WABA ID')
         continue
       }
+      let segredo: string | null = null
+      try {
+        segredo = org.wabaAppSecret ? decrypt(org.wabaAppSecret) : null
+      } catch {
+        segredo = null
+      }
+      if (!assinaturaMetaValida(corpoCru, request.headers.get('x-hub-signature-256'), segredo)) {
+        logger.warn(
+          { organizationId: org.id, motivo: segredo ? 'assinatura inválida' : 'conta sem App Secret' },
+          'WhatsApp Official webhook: notice refused'
+        )
+        return NextResponse.json({ error: 'assinatura inválida' }, { status: 401 })
+      }
+      orgPorWaba.set(String(entry.id), { id: org.id })
+    }
+
+    for (const entry of body.entry ?? []) {
+      const org = orgPorWaba.get(String(entry.id))
+      if (!org) continue
 
       for (const change of entry.changes ?? []) {
         if (change.field !== 'messages') continue

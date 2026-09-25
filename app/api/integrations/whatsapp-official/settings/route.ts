@@ -29,7 +29,7 @@ export async function POST(request: Request) {
       )
     }
 
-    const { organizationId, enabled, phoneNumberId, accessToken, businessAccountId, webhookVerifyToken } =
+    const { organizationId, enabled, phoneNumberId, accessToken, appSecret, businessAccountId, webhookVerifyToken } =
       await request.json()
 
     if (organizationId !== user.organizationId) {
@@ -61,13 +61,13 @@ export async function POST(request: Request) {
       wabaWebhookVerifyToken: webhookVerifyToken || null
     }
 
-    if (accessToken) {
-      try {
-        updateData.wabaAccessToken = encrypt(accessToken)
-      } catch (encryptError) {
-        logger.error({ error: encryptError, organizationId }, 'Failed to encrypt WABA Access Token')
-        return await apiError(ERR.ENCRYPT_TOKEN, 500)
-      }
+    try {
+      if (accessToken) updateData.wabaAccessToken = encrypt(accessToken)
+      // Write-only: the app secret signs Meta's webhook notices and never goes back to the screen
+      if (appSecret) updateData.wabaAppSecret = encrypt(String(appSecret).trim())
+    } catch (encryptError) {
+      logger.error({ error: encryptError, organizationId }, 'Failed to encrypt WABA credentials')
+      return await apiError(ERR.ENCRYPT_TOKEN, 500)
     }
 
     await prisma.organization.update({
@@ -76,7 +76,7 @@ export async function POST(request: Request) {
     })
 
     logger.info(
-      { organizationId, enabled, phoneNumberId, tokenUpdated: !!accessToken },
+      { organizationId, enabled, phoneNumberId, tokenUpdated: !!accessToken, appSecretUpdated: !!appSecret },
       'WhatsApp Official settings updated'
     )
 
