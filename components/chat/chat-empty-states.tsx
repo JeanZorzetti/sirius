@@ -65,7 +65,7 @@ export function EmptyConversationsPanel({
         </div>
         <div className="mt-auto px-4 py-3 border-t">
           <div className="flex items-center gap-2 text-xs text-muted-foreground">
-            <RefreshCw className="h-3 w-3 animate-spin text-[#00a884]" />
+            <RefreshCw className="h-3 w-3 animate-spin text-primary" />
             <span>Sincronizando conversas...</span>
           </div>
         </div>
@@ -98,7 +98,7 @@ export function EmptyConversationsPanel({
 export function ChatBrandPlaceholder({ withHint = false }: { withHint?: boolean }) {
   if (withHint) {
     return (
-      <div className="flex-1 flex items-center justify-center bg-[#efeae2] dark:bg-zinc-900">
+      <div className="flex-1 flex items-center justify-center bg-muted dark:bg-zinc-900">
         <div className="text-center space-y-3 max-w-xs">
           <div className="w-20 h-20 rounded-full bg-white/60 dark:bg-zinc-800/60 backdrop-blur flex items-center justify-center mx-auto">
             <MessageSquare className="h-9 w-9 text-muted-foreground/50" />
@@ -115,7 +115,7 @@ export function ChatBrandPlaceholder({ withHint = false }: { withHint?: boolean 
   }
 
   return (
-    <div className="hidden lg:flex flex-1 items-center justify-center bg-[#efeae2] dark:bg-zinc-900">
+    <div className="hidden lg:flex flex-1 items-center justify-center bg-muted dark:bg-zinc-900">
       <div className="text-center space-y-2">
         <div className="w-16 h-16 rounded-full bg-white/60 dark:bg-zinc-800/60 backdrop-blur flex items-center justify-center mx-auto">
           <MessageSquare className="h-7 w-7 text-muted-foreground/40" />

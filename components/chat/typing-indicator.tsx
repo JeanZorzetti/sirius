@@ -19,7 +19,7 @@ export function TypingIndicator({ className, variant = 'bubble' }: TypingIndicat
   if (variant === 'inline') {
     return (
       <div className={cn('flex items-center gap-1.5', className)}>
-        <span className="text-[13px] text-[#00a884] font-normal italic">digitando</span>
+        <span className="text-[13px] text-primary font-normal italic">digitando</span>
         <div className="flex items-center gap-0.5">
           <div className="typing-dot" />
           <div className="typing-dot" style={{ animationDelay: '0.15s' }} />

@@ -43,7 +43,7 @@ export function ChatHeader({
   connections, conn, onConnChange, onBack,
 }: ChatHeaderProps) {
   return (
-    <div className="hidden lg:flex h-[60px] px-4 border-b items-center justify-between bg-[#f0f2f5] whatsapp-header flex-shrink-0">
+    <div className="hidden lg:flex h-[60px] px-4 border-b items-center justify-between bg-muted whatsapp-header flex-shrink-0">
       <div className="flex items-center gap-3">
         {/* Mobile back button */}
         {onBack && (
@@ -67,13 +67,13 @@ export function ChatHeader({
         </Avatar>
         <div>
           <div className="flex items-center gap-2">
-            <p className="font-semibold text-[15px] text-[#111b21] dark:text-zinc-100 leading-tight">{name}</p>
+            <p className="font-semibold text-[15px] text-foreground dark:text-zinc-100 leading-tight">{name}</p>
             <AgentActionsBadge contactId={contact.id} />
           </div>
           {isTyping ? (
             <TypingIndicator variant="inline" className="mt-0.5" />
           ) : (
-            sub && <p className="text-[12px] text-[#667781] leading-tight mt-0.5">{sub}</p>
+            sub && <p className="text-[12px] text-muted-foreground leading-tight mt-0.5">{sub}</p>
           )}
         </div>
       </div>
@@ -109,7 +109,7 @@ export function ChatHeader({
           aria-pressed={showSidebar}
           className={cn(
             'h-8 w-8 p-0',
-            showSidebar && 'bg-[#00a884]/10 text-[#00a884]'
+            showSidebar && 'bg-primary/10 text-primary'
           )}
           title="Informações do contato"
         >
@@ -133,7 +133,7 @@ export function ChatHeader({
         />
         {connections.length > 1 && (
           <Select value={conn} onValueChange={onConnChange}>
-            <SelectTrigger className="w-auto max-w-[180px] h-8 text-xs border-[#e9edef]">
+            <SelectTrigger className="w-auto max-w-[180px] h-8 text-xs border-border">
               <SelectValue placeholder="Conexão" />
             </SelectTrigger>
             <SelectContent>
@@ -170,7 +170,7 @@ export function MobileActionBar({
   users, onContactUpdate, showSidebar, onToggleSidebar, onToggleSearch,
 }: MobileActionBarProps) {
   return (
-    <div className="lg:hidden flex items-center gap-1 px-3 py-1.5 border-b bg-[#f0f2f5] dark:bg-zinc-900 flex-shrink-0">
+    <div className="lg:hidden flex items-center gap-1 px-3 py-1.5 border-b bg-muted dark:bg-zinc-900 flex-shrink-0">
       <div className="flex items-center gap-1.5 text-xs text-muted-foreground min-w-0 flex-1">
         <Avatar className="h-6 w-6 shrink-0">
           {profilePicUrl && <AvatarImage src={profilePicUrl} alt={name} />}
@@ -194,7 +194,7 @@ export function MobileActionBar({
           <Search className="h-4 w-4" />
         </Button>
         <Button variant="ghost" size="sm" onClick={onToggleSidebar}
-          className={cn('h-8 w-8 p-0', showSidebar && 'bg-[#00a884]/10 text-[#00a884]')}
+          className={cn('h-8 w-8 p-0', showSidebar && 'bg-primary/10 text-primary')}
           aria-label="Informações do contato">
           <Info className="h-4 w-4" />
         </Button>

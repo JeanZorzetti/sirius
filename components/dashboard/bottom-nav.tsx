@@ -102,7 +102,7 @@ function NavButton({
       className={cn(
         'group relative flex h-full min-w-[44px] flex-1 flex-col items-center justify-center gap-0.5 px-2 text-[10px] font-medium transition-colors',
         active
-          ? 'text-indigo-600 dark:text-indigo-400'
+          ? 'text-primary'
           : 'text-zinc-500 hover:text-zinc-900 dark:text-zinc-500 dark:hover:text-zinc-200',
       )}
     >
@@ -121,7 +121,7 @@ function NavButton({
       </div>
       <span className="truncate [@media(max-height:500px)]:hidden">{item.title}</span>
       {active && (
-        <span className="absolute top-0 left-1/2 h-0.5 w-10 -translate-x-1/2 rounded-full bg-indigo-500" />
+        <span className="absolute top-0 left-1/2 h-0.5 w-10 -translate-x-1/2 rounded-full bg-primary" />
       )}
     </Link>
   )
@@ -189,7 +189,7 @@ export function BottomNav() {
             className={cn(
               'group relative flex h-full min-w-[44px] flex-1 flex-col items-center justify-center gap-0.5 px-2 text-[10px] font-medium transition-colors',
               moreActive
-                ? 'text-indigo-600 dark:text-indigo-400'
+                ? 'text-primary'
                 : 'text-zinc-500 hover:text-zinc-900 dark:text-zinc-500 dark:hover:text-zinc-200',
             )}
             aria-label="Mais opções"
@@ -199,7 +199,7 @@ export function BottomNav() {
             />
             <span className="[@media(max-height:500px)]:hidden">Mais</span>
             {moreActive && (
-              <span className="absolute top-0 left-1/2 h-0.5 w-10 -translate-x-1/2 rounded-full bg-indigo-500" />
+              <span className="absolute top-0 left-1/2 h-0.5 w-10 -translate-x-1/2 rounded-full bg-primary" />
             )}
           </button>
         </SheetTrigger>
@@ -228,7 +228,7 @@ export function BottomNav() {
                         className={cn(
                           'flex min-h-[72px] flex-col items-center justify-center gap-1.5 rounded-xl border border-border/50 bg-muted/30 px-2 py-3 text-center text-xs font-medium transition-all active:scale-[0.97]',
                           active
-                            ? 'border-indigo-500/50 bg-indigo-500/10 text-indigo-600 dark:text-indigo-400'
+                            ? 'border-primary/50 bg-accent text-primary'
                             : 'text-foreground hover:bg-muted/60',
                         )}
                       >

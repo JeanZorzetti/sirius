@@ -107,13 +107,13 @@ export function Composer({
     <>
       {/* Reply preview bar */}
       {replyingTo && (
-        <div className="px-4 py-2 bg-white whatsapp-header border-t border-[#e9edef] dark:border-zinc-700 flex items-center gap-2">
-          <Reply className="h-4 w-4 text-[#00a884] flex-shrink-0" />
+        <div className="px-4 py-2 bg-white whatsapp-header border-t border-border dark:border-zinc-700 flex items-center gap-2">
+          <Reply className="h-4 w-4 text-primary flex-shrink-0" />
           <div className="flex-1 min-w-0">
-            <p className="text-[11px] font-semibold text-[#00a884] leading-tight">
+            <p className="text-[11px] font-semibold text-primary leading-tight">
               Respondendo a {replyingTo.direction === 'INBOUND' ? contactName : 'Você'}
             </p>
-            <p className="text-[12px] text-[#667781] truncate leading-tight">
+            <p className="text-[12px] text-muted-foreground truncate leading-tight">
               {replyingTo.text}
             </p>
           </div>
@@ -122,33 +122,33 @@ export function Composer({
             className="p-1 rounded-full hover:bg-black/5 transition-colors flex-shrink-0"
             title="Cancelar resposta"
           >
-            <X className="h-4 w-4 text-[#667781]" />
+            <X className="h-4 w-4 text-muted-foreground" />
           </button>
         </div>
       )}
 
       {/* File preview bar */}
       {pendingFile && (
-        <div className="px-3 py-2 bg-[#e2f7cb] dark:bg-emerald-900/30 border-t border-[#e9edef] dark:border-zinc-700 flex items-center gap-3">
+        <div className="px-3 py-2 bg-secondary dark:bg-emerald-900/30 border-t border-border dark:border-zinc-700 flex items-center gap-3">
           {pendingFilePreview ? (
             <img src={pendingFilePreview} alt="Preview" className="h-12 w-12 rounded object-cover" />
           ) : (
             <div className="h-12 w-12 rounded bg-white/50 dark:bg-white/10 flex items-center justify-center">
-              <FileText className="h-6 w-6 text-[#54656f]" />
+              <FileText className="h-6 w-6 text-muted-foreground" />
             </div>
           )}
           <div className="flex-1 min-w-0">
-            <p className="text-sm font-medium truncate text-[#111b21] dark:text-white">{pendingFile.name}</p>
-            <p className="text-xs text-[#667781]">{(pendingFile.size / 1024).toFixed(0)} KB</p>
+            <p className="text-sm font-medium truncate text-foreground dark:text-white">{pendingFile.name}</p>
+            <p className="text-xs text-muted-foreground">{(pendingFile.size / 1024).toFixed(0)} KB</p>
           </div>
           <button onClick={onCancelFile} className="p-1 rounded-full hover:bg-black/5" title={tCommon('buttons.cancel')}>
-            <X className="h-4 w-4 text-[#667781]" />
+            <X className="h-4 w-4 text-muted-foreground" />
           </button>
         </div>
       )}
 
       {/* Input area */}
-      <div className="px-3 py-2 bg-[#f0f2f5] whatsapp-header border-t border-[#e9edef] dark:border-zinc-700 flex items-end gap-2">
+      <div className="px-3 py-2 bg-muted whatsapp-header border-t border-border dark:border-zinc-700 flex items-end gap-2">
         {isRecording ? (
           /* Recording UI — replaces the normal input */
           <>
@@ -163,14 +163,14 @@ export function Composer({
 
             <div className="flex-1 flex items-center gap-3 bg-white dark:bg-zinc-800 rounded-lg px-4 py-2 min-h-[42px] shadow-[0_1px_1px_rgba(11,20,26,0.06)]">
               <span className="w-2.5 h-2.5 rounded-full bg-red-500 animate-pulse flex-shrink-0" />
-              <span className="text-sm font-medium text-[#111b21] dark:text-zinc-100 tabular-nums">
+              <span className="text-sm font-medium text-foreground dark:text-zinc-100 tabular-nums">
                 {fmtDuration(recordingTime)}
               </span>
               <div className="flex-1 flex items-center gap-[2px] overflow-hidden">
                 {Array.from({ length: 30 }).map((_, i) => (
                   <div
                     key={i}
-                    className="w-[3px] rounded-full bg-[#00a884]/60"
+                    className="w-[3px] rounded-full bg-primary/60"
                     style={{
                       // deterministic jitter (render must stay pure — no Math.random)
                       height: `${8 + Math.sin((recordingTime * 3 + i) * 0.5) * 8 + ((recordingTime * 7 + i * 13) % 6)}px`,
@@ -186,7 +186,7 @@ export function Composer({
               onClick={onSendRecording}
               disabled={sending}
               aria-label="Enviar áudio"
-              className="h-[42px] w-[42px] rounded-full flex items-center justify-center flex-shrink-0 bg-[#00a884] hover:bg-[#008f72] text-white transition-all duration-200 active:scale-90"
+              className="h-[42px] w-[42px] rounded-full flex items-center justify-center flex-shrink-0 bg-primary hover:bg-primary text-primary-foreground transition-all duration-200 active:scale-90"
             >
               {sending ? (
                 <Loader2 className="h-5 w-5 animate-spin" />
@@ -210,7 +210,7 @@ export function Composer({
               onClick={() => fileInputRef.current?.click()}
               disabled={sending}
               aria-label="Anexar arquivo"
-              className="h-[42px] w-[42px] rounded-full flex items-center justify-center flex-shrink-0 text-[#54656f] hover:text-[#3b4a54] hover:bg-black/5 transition-colors"
+              className="h-[42px] w-[42px] rounded-full flex items-center justify-center flex-shrink-0 text-muted-foreground hover:text-muted-foreground hover:bg-black/5 transition-colors"
             >
               <Paperclip className="h-5 w-5" />
             </button>
@@ -241,7 +241,7 @@ export function Composer({
                   disabled={sending}
                   aria-label="Enviar localização"
                   title="Enviar localização"
-                  className="h-[42px] w-[42px] rounded-full flex items-center justify-center flex-shrink-0 text-[#54656f] hover:text-[#3b4a54] hover:bg-black/5 transition-colors"
+                  className="h-[42px] w-[42px] rounded-full flex items-center justify-center flex-shrink-0 text-muted-foreground hover:text-muted-foreground hover:bg-black/5 transition-colors"
                 >
                   <MapPin className="h-5 w-5" />
                 </button>
@@ -251,7 +251,7 @@ export function Composer({
                   disabled={sending}
                   aria-label="Enviar mensagem com botões"
                   title="Enviar mensagem com botões"
-                  className="h-[42px] w-[42px] rounded-full flex items-center justify-center flex-shrink-0 text-[#54656f] hover:text-[#3b4a54] hover:bg-black/5 transition-colors"
+                  className="h-[42px] w-[42px] rounded-full flex items-center justify-center flex-shrink-0 text-muted-foreground hover:text-muted-foreground hover:bg-black/5 transition-colors"
                 >
                   <ListChecks className="h-5 w-5" />
                 </button>
@@ -261,7 +261,7 @@ export function Composer({
                   disabled={sending}
                   aria-label="Enviar template"
                   title="Enviar template aprovado"
-                  className="h-[42px] w-[42px] rounded-full flex items-center justify-center flex-shrink-0 text-[#54656f] hover:text-[#3b4a54] hover:bg-black/5 transition-colors"
+                  className="h-[42px] w-[42px] rounded-full flex items-center justify-center flex-shrink-0 text-muted-foreground hover:text-muted-foreground hover:bg-black/5 transition-colors"
                 >
                   <FileTextIcon className="h-5 w-5" />
                 </button>
@@ -295,8 +295,8 @@ export function Composer({
                 className={cn(
                   'w-full resize-none rounded-lg border-0',
                   'bg-white whatsapp-input px-3 py-[9px] text-[14px] leading-[1.46]',
-                  'placeholder:text-[#8696a0]',
-                  'focus:outline-none focus:ring-1 focus:ring-[#00a884]/40',
+                  'placeholder:text-muted-foreground',
+                  'focus:outline-none focus:ring-1 focus:ring-primary/40',
                   'disabled:opacity-50',
                   'min-h-[42px] max-h-[120px]',
                   'shadow-[0_1px_1px_rgba(11,20,26,0.06)]',
@@ -331,7 +331,7 @@ export function Composer({
                 onClick={pendingFile ? onSendMedia : onSend}
                 disabled={sending}
                 aria-label={pendingFile ? 'Enviar arquivo' : 'Enviar mensagem'}
-                className="h-[42px] w-[42px] rounded-full flex items-center justify-center flex-shrink-0 bg-[#00a884] hover:bg-[#008f72] text-white transition-all duration-200 active:scale-90 focus-visible:ring-2 focus-visible:ring-[#00a884] focus-visible:ring-offset-2"
+                className="h-[42px] w-[42px] rounded-full flex items-center justify-center flex-shrink-0 bg-primary hover:bg-primary text-primary-foreground transition-all duration-200 active:scale-90 focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
               >
                 {sending ? (
                   <Loader2 className="h-5 w-5 animate-spin" />
@@ -345,7 +345,7 @@ export function Composer({
                 onClick={onStartRecording}
                 disabled={sending}
                 aria-label="Gravar áudio"
-                className="h-[42px] w-[42px] rounded-full flex items-center justify-center flex-shrink-0 bg-[#00a884] hover:bg-[#008f72] text-white transition-all duration-200 active:scale-90 focus-visible:ring-2 focus-visible:ring-[#00a884] focus-visible:ring-offset-2"
+                className="h-[42px] w-[42px] rounded-full flex items-center justify-center flex-shrink-0 bg-primary hover:bg-primary text-primary-foreground transition-all duration-200 active:scale-90 focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
               >
                 <Mic className="h-5 w-5" />
               </button>

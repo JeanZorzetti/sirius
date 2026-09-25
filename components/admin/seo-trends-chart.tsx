@@ -26,11 +26,11 @@ interface SEOTrendsChartProps {
 }
 
 const COLORS = [
-  '#3b82f6', // blue
-  '#8b5cf6', // purple
-  '#ec4899', // pink
-  '#f59e0b', // amber
-  '#10b981', // emerald
+  'var(--chart-1)', // blue
+  'var(--chart-5)', // purple
+  'var(--chart-4)', // pink
+  'var(--color-amber-500)', // amber
+  'var(--color-green-500)', // emerald
 ]
 
 function getTrendIcon(trend: 'rising' | 'falling' | 'stable') {
@@ -186,15 +186,15 @@ export function SEOTrendsChart({ trendsData }: SEOTrendsChartProps) {
         <div className="h-[400px] w-full">
           <ResponsiveContainer width="100%" height="100%">
             <LineChart data={combinedData}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
+              <CartesianGrid strokeDasharray="3 3" stroke="var(--muted)" />
               <XAxis
                 dataKey="time"
-                stroke="#64748b"
+                stroke="var(--muted-foreground)"
                 fontSize={12}
                 tickLine={false}
               />
               <YAxis
-                stroke="#64748b"
+                stroke="var(--muted-foreground)"
                 fontSize={12}
                 tickLine={false}
                 domain={[0, 100]}
@@ -202,17 +202,17 @@ export function SEOTrendsChart({ trendsData }: SEOTrendsChartProps) {
                   value: 'Interesse (0-100)',
                   angle: -90,
                   position: 'insideLeft',
-                  style: { fontSize: 12, fill: '#64748b' }
+                  style: { fontSize: 12, fill: 'var(--muted-foreground)' }
                 }}
               />
               <Tooltip
                 contentStyle={{
                   backgroundColor: 'white',
-                  border: '1px solid #e2e8f0',
+                  border: '1px solid var(--muted)',
                   borderRadius: '8px',
                   padding: '12px',
                 }}
-                labelStyle={{ color: '#0f172a', fontWeight: 'bold', marginBottom: '8px' }}
+                labelStyle={{ color: 'var(--foreground)', fontWeight: 'bold', marginBottom: '8px' }}
               />
               <Legend
                 wrapperStyle={{ paddingTop: '20px' }}

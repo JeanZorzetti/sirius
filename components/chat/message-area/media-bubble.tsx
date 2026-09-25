@@ -81,31 +81,31 @@ export function MediaBubble({ msg, outbound, onOpenLightbox }: { msg: WhatsAppMe
         ) : loading ? (
           <div className={cn(
             'flex items-center justify-center rounded-lg w-[200px] h-[140px] animate-pulse',
-            outbound ? 'bg-[#c4edc0]' : 'bg-gray-100'
+            outbound ? 'bg-secondary' : 'bg-gray-100'
           )}>
-            <Loader2 className="h-6 w-6 animate-spin text-[#667781]" />
+            <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
           </div>
         ) : error ? (
           <button
             onClick={fetchMedia}
             className={cn(
               'flex items-center gap-2 rounded-lg px-4 py-6 w-[200px] justify-center transition-colors',
-              outbound ? 'bg-[#c4edc0] hover:bg-[#b8e6b4]' : 'bg-gray-100 hover:bg-gray-200'
+              outbound ? 'bg-secondary hover:bg-secondary' : 'bg-gray-100 hover:bg-gray-200'
             )}
           >
-            <ImageIcon className="h-5 w-5 text-[#667781]" />
-            <span className="text-xs text-[#667781]">Tentar novamente</span>
+            <ImageIcon className="h-5 w-5 text-muted-foreground" />
+            <span className="text-xs text-muted-foreground">Tentar novamente</span>
           </button>
         ) : (
           <div className={cn(
             'flex items-center justify-center rounded-lg w-[200px] h-[140px]',
-            outbound ? 'bg-[#c4edc0]' : 'bg-gray-100'
+            outbound ? 'bg-secondary' : 'bg-gray-100'
           )}>
-            <ImageIcon className="h-6 w-6 text-[#667781] opacity-50" />
+            <ImageIcon className="h-6 w-6 text-muted-foreground opacity-50" />
           </div>
         )}
         {caption && (
-          <p className="text-[14.2px] leading-[1.46] text-[#111b21] dark:text-zinc-100">{caption}</p>
+          <p className="text-[14.2px] leading-[1.46] text-foreground dark:text-zinc-100">{caption}</p>
         )}
       </div>
     )
@@ -124,7 +124,7 @@ export function MediaBubble({ msg, outbound, onOpenLightbox }: { msg: WhatsAppMe
             />
             <div className="absolute inset-0 flex items-center justify-center bg-black/20 rounded-lg group-hover:bg-black/30 transition-colors">
               <div className="w-12 h-12 rounded-full bg-white/90 flex items-center justify-center shadow-lg">
-                <Play className="h-6 w-6 text-[#111b21] ml-0.5 fill-[#111b21]" />
+                <Play className="h-6 w-6 text-foreground ml-0.5 fill-foreground" />
               </div>
             </div>
           </div>
@@ -134,21 +134,21 @@ export function MediaBubble({ msg, outbound, onOpenLightbox }: { msg: WhatsAppMe
             disabled={loading}
             className={cn(
               'flex items-center gap-2 rounded-lg px-4 py-6 w-[200px] justify-center transition-colors',
-              outbound ? 'bg-[#c4edc0] hover:bg-[#b8e6b4]' : 'bg-gray-100 hover:bg-gray-200'
+              outbound ? 'bg-secondary hover:bg-secondary' : 'bg-gray-100 hover:bg-gray-200'
             )}
           >
             {loading ? (
-              <Loader2 className="h-5 w-5 animate-spin text-[#667781]" />
+              <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
             ) : (
               <>
-                <Video className="h-5 w-5 text-[#667781]" />
-                <span className="text-xs text-[#667781]">Carregar vídeo</span>
+                <Video className="h-5 w-5 text-muted-foreground" />
+                <span className="text-xs text-muted-foreground">Carregar vídeo</span>
               </>
             )}
           </button>
         )}
         {caption && (
-          <p className="text-[14.2px] leading-[1.46] text-[#111b21] dark:text-zinc-100">{caption}</p>
+          <p className="text-[14.2px] leading-[1.46] text-foreground dark:text-zinc-100">{caption}</p>
         )}
       </div>
     )
@@ -169,16 +169,16 @@ export function MediaBubble({ msg, outbound, onOpenLightbox }: { msg: WhatsAppMe
       <div ref={containerRef} className="space-y-1">
         <div className={cn(
           'flex items-center gap-3 rounded-lg px-3 py-2.5 min-w-[200px] max-w-[280px]',
-          outbound ? 'bg-[#c4edc0]' : 'bg-gray-100'
+          outbound ? 'bg-secondary' : 'bg-gray-100'
         )}>
-          <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-[#00a884]/10 flex items-center justify-center">
-            <FileText className="h-5 w-5 text-[#00a884]" />
+          <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
+            <FileText className="h-5 w-5 text-primary" />
           </div>
           <div className="flex-1 min-w-0">
-            <p className="text-[13px] text-[#111b21] dark:text-zinc-100 font-medium truncate leading-tight">
+            <p className="text-[13px] text-foreground dark:text-zinc-100 font-medium truncate leading-tight">
               {fileName}
             </p>
-            <p className="text-[11px] text-[#667781] mt-0.5">Documento</p>
+            <p className="text-[11px] text-muted-foreground mt-0.5">Documento</p>
           </div>
           {isMediaLoaded(mediaData) ? (
             <a
@@ -186,7 +186,7 @@ export function MediaBubble({ msg, outbound, onOpenLightbox }: { msg: WhatsAppMe
               download={fileName}
               className="flex-shrink-0 p-1.5 rounded-full hover:bg-black/5 transition-colors"
             >
-              <Download className="h-4 w-4 text-[#667781]" />
+              <Download className="h-4 w-4 text-muted-foreground" />
             </a>
           ) : (
             <button
@@ -195,9 +195,9 @@ export function MediaBubble({ msg, outbound, onOpenLightbox }: { msg: WhatsAppMe
               className="flex-shrink-0 p-1.5 rounded-full hover:bg-black/5 transition-colors"
             >
               {loading ? (
-                <Loader2 className="h-4 w-4 animate-spin text-[#667781]" />
+                <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
               ) : (
-                <Download className="h-4 w-4 text-[#667781]" />
+                <Download className="h-4 w-4 text-muted-foreground" />
               )}
             </button>
           )}

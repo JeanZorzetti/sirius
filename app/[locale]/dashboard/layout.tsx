@@ -9,6 +9,7 @@ import { getSession } from '@/lib/auth'
 import { getDashboardUser } from '@/lib/dashboard-user'
 import { redirect } from 'next/navigation'
 import '@/app/globals.css' // app stylesheet on top of public.css (spec 007)
+import { FONTES_NO_ROOT } from './fontes-hoje'
 
 export default async function DashboardLayout({
   children,
@@ -34,6 +35,7 @@ export default async function DashboardLayout({
 
   return (
     <AppBarProvider>
+      <style>{FONTES_NO_ROOT}</style>
       <div className="flex h-screen overflow-hidden">
         {/* Sidebar — hidden on mobile */}
         <aside className="hidden md:block">

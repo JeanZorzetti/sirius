@@ -118,31 +118,31 @@ export function ForecastChart({ data, loading }: ForecastChartProps) {
           <AreaChart data={chartData}>
             <defs>
               <linearGradient id="colorActual" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.8}/>
-                <stop offset="95%" stopColor="#3b82f6" stopOpacity={0.1}/>
+                <stop offset="5%" stopColor="var(--chart-1)" stopOpacity={0.8}/>
+                <stop offset="95%" stopColor="var(--chart-1)" stopOpacity={0.1}/>
               </linearGradient>
               <linearGradient id="colorForecast" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="#22c55e" stopOpacity={0.8}/>
-                <stop offset="95%" stopColor="#22c55e" stopOpacity={0.1}/>
+                <stop offset="5%" stopColor="var(--color-green-500)" stopOpacity={0.8}/>
+                <stop offset="95%" stopColor="var(--color-green-500)" stopOpacity={0.1}/>
               </linearGradient>
             </defs>
             <CartesianGrid strokeDasharray="3 3" className="stroke-muted" />
             <XAxis
               dataKey="period"
               className="text-xs"
-              tick={{ fill: 'hsl(var(--muted-foreground))' }}
+              tick={{ fill: 'var(--muted-foreground)' }}
             />
             <YAxis
               className="text-xs"
-              tick={{ fill: 'hsl(var(--muted-foreground))' }}
+              tick={{ fill: 'var(--muted-foreground)' }}
               tickFormatter={(value) =>
                 `R$ ${value.toLocaleString('pt-BR', { maximumFractionDigits: 0 })}`
               }
             />
             <Tooltip
               contentStyle={{
-                backgroundColor: 'hsl(var(--background))',
-                border: '1px solid hsl(var(--border))',
+                backgroundColor: 'var(--background)',
+                border: '1px solid var(--border)',
                 borderRadius: '6px',
               }}
               formatter={(value: number | undefined) =>
@@ -159,7 +159,7 @@ export function ForecastChart({ data, loading }: ForecastChartProps) {
               type="monotone"
               dataKey="mrr"
               name="MRR Atual"
-              stroke="#3b82f6"
+              stroke="var(--chart-1)"
               strokeWidth={2}
               fillOpacity={1}
               fill="url(#colorActual)"
@@ -169,7 +169,7 @@ export function ForecastChart({ data, loading }: ForecastChartProps) {
               type="monotone"
               dataKey="forecast"
               name="Previsão"
-              stroke="#22c55e"
+              stroke="var(--color-green-500)"
               strokeWidth={2}
               strokeDasharray="5 5"
               fillOpacity={1}

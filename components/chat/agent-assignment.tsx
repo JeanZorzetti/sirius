@@ -96,7 +96,7 @@ export function AgentAssignment({
           {assignedUser ? (
             <>
               <Avatar className="h-5 w-5">
-                <AvatarFallback className="text-[9px] bg-[#00a884] text-white">
+                <AvatarFallback className="text-[9px] bg-primary text-primary-foreground">
                   {getUserInitials(assignedUser)}
                 </AvatarFallback>
               </Avatar>
@@ -113,7 +113,7 @@ export function AgentAssignment({
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-[200px]">
-        <DropdownMenuLabel className="text-xs text-[#667781]">
+        <DropdownMenuLabel className="text-xs text-muted-foreground">
           Atribuir agente
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
@@ -140,7 +140,7 @@ export function AgentAssignment({
           >
             <div className="flex items-center gap-2 flex-1">
               <Avatar className="h-6 w-6">
-                <AvatarFallback className="text-[9px] bg-[#00a884] text-white">
+                <AvatarFallback className="text-[9px] bg-primary text-primary-foreground">
                   {getUserInitials(user)}
                 </AvatarFallback>
               </Avatar>
@@ -149,13 +149,13 @@ export function AgentAssignment({
                   {user.name || user.email.split('@')[0]}
                 </p>
                 {user.name && (
-                  <p className="text-[10px] text-[#667781] truncate">
+                  <p className="text-[10px] text-muted-foreground truncate">
                     {user.email}
                   </p>
                 )}
               </div>
               {currentAssignedId === user.id && (
-                <Check className="h-3.5 w-3.5 text-[#00a884]" />
+                <Check className="h-3.5 w-3.5 text-primary" />
               )}
             </div>
           </DropdownMenuItem>

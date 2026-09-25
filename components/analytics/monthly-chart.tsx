@@ -62,52 +62,52 @@ export function MonthlyChart({ data }: MonthlyChartProps) {
       <ComposedChart data={data} margin={{ top: 20, right: 20, bottom: 0, left: 0 }}>
         <defs>
           <linearGradient id="monthlyBarGradient" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="#6366f1" stopOpacity={0.9} />
-            <stop offset="100%" stopColor="#4f46e5" stopOpacity={0.5} />
+            <stop offset="0%" stopColor="var(--chart-1)" stopOpacity={0.9} />
+            <stop offset="100%" stopColor="var(--chart-5)" stopOpacity={0.5} />
           </linearGradient>
           <linearGradient id="closingsBarGradient" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="#10b981" stopOpacity={1} />
-            <stop offset="100%" stopColor="#059669" stopOpacity={0.6} />
+            <stop offset="0%" stopColor="var(--color-green-500)" stopOpacity={1} />
+            <stop offset="100%" stopColor="var(--color-green-600)" stopOpacity={0.6} />
           </linearGradient>
         </defs>
 
-        <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(255,255,255,0.1)" />
+        <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="var(--border)" />
 
         <XAxis
           dataKey="label"
-          stroke="#71717a"
+          stroke="var(--muted-foreground)"
           fontSize={12}
           tickLine={false}
           axisLine={false}
-          tick={{ fill: '#71717a' }}
+          tick={{ fill: 'var(--muted-foreground)' }}
           dy={10}
         />
 
         <YAxis
           yAxisId="value"
           orientation="left"
-          stroke="#71717a"
+          stroke="var(--muted-foreground)"
           fontSize={12}
           tickLine={false}
           axisLine={false}
           tickFormatter={(v: number) => `R$${v >= 1000 ? `${(v / 1000).toFixed(0)}k` : v}`}
-          tick={{ fill: '#71717a' }}
+          tick={{ fill: 'var(--muted-foreground)' }}
           width={50}
         />
 
         <YAxis
           yAxisId="count"
           orientation="right"
-          stroke="#71717a"
+          stroke="var(--muted-foreground)"
           fontSize={12}
           tickLine={false}
           axisLine={false}
           allowDecimals={false}
-          tick={{ fill: '#71717a' }}
+          tick={{ fill: 'var(--muted-foreground)' }}
           width={30}
         />
 
-        <Tooltip cursor={{ fill: 'rgba(255,255,255,0.02)' }} content={<CustomTooltip />} />
+        <Tooltip cursor={{ fill: 'var(--muted)' }} content={<CustomTooltip />} />
 
         <Legend
           formatter={(value) => {
@@ -115,7 +115,7 @@ export function MonthlyChart({ data }: MonthlyChartProps) {
             if (value === 'closingsValue') return 'Receita Real (R$)'
             return 'Qtd. Negócios'
           }}
-          wrapperStyle={{ fontSize: 12, color: '#71717a', paddingTop: 12 }}
+          wrapperStyle={{ fontSize: 12, color: 'var(--muted-foreground)', paddingTop: 12 }}
         />
 
         <Bar
@@ -144,9 +144,9 @@ export function MonthlyChart({ data }: MonthlyChartProps) {
           yAxisId="count"
           type="monotone"
           dataKey="count"
-          stroke="#f59e0b"
+          stroke="var(--color-amber-500)"
           strokeWidth={2}
-          dot={{ r: 4, fill: '#f59e0b', strokeWidth: 0 }}
+          dot={{ r: 4, fill: 'var(--color-amber-500)', strokeWidth: 0 }}
           activeDot={{ r: 6 }}
           animationDuration={1200}
           name="count"

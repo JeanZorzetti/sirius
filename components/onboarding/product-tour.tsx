@@ -286,9 +286,9 @@ function TourOverlay() {
         .tour-highlight {
           position: relative;
           z-index: 1000;
-          box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.5),
-                      0 0 0 9999px rgba(0, 0, 0, 0.5);
-          border-radius: 8px;
+          box-shadow: 0 0 0 4px var(--ring),
+                      0 0 0 9999px color-mix(in oklch, var(--color-black) 50%, transparent);
+          border-radius: 4px;
           transition: all 0.3s ease;
         }
       `}</style>

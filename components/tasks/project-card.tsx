@@ -146,22 +146,17 @@ export function ProjectCard({ project, total, done, overdue, progress, canManage
   return (
     <>
       <div className="group relative flex flex-col overflow-hidden rounded-[24px] border border-border/40 bg-card/60 backdrop-blur-sm p-6 transition-all duration-300 hover:-translate-y-1.5 hover:border-transparent hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.1)] dark:hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.4)] hover:bg-card">
-        {/* Hover glow */}
-        <div
-          className="absolute -top-1/2 -left-1/2 w-[200%] h-[200%] opacity-0 group-hover:opacity-10 transition-opacity duration-700 pointer-events-none"
-          style={{ background: `radial-gradient(circle at center, ${project.color} 0%, transparent 60%)` }}
-        />
         {/* Accent top bar */}
         <div
           className="absolute inset-x-0 top-0 h-1.5 opacity-80 transition-all duration-300 scale-x-0 group-hover:scale-x-100 origin-left"
-          style={{ backgroundColor: project.color }}
+          data-cor-do-usuario style={{ backgroundColor: project.color }}
         />
 
         <div className="relative z-10 flex items-start justify-between gap-2 mb-5">
           <Link href={`/dashboard/tasks/${project.id}`} className="flex items-center gap-4 shrink-0">
             <div
               className="flex h-14 w-14 shrink-0 items-center justify-center rounded-[18px] text-white shadow-lg ring-1 ring-white/20 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3"
-              style={{ backgroundColor: project.color }}
+              data-cor-do-usuario style={{ backgroundColor: project.color }}
             >
               <FolderKanban className="h-6 w-6" strokeWidth={2.5} />
             </div>
@@ -223,12 +218,12 @@ export function ProjectCard({ project, total, done, overdue, progress, canManage
                 <CheckCircle2 className="w-4 h-4 text-emerald-500/70" />
                 {done} <span className="text-muted-foreground/50 font-normal">/ {total}</span>
               </span>
-              <span className="tabular-nums" style={{ color: project.color }}>{progress}%</span>
+              <span className="tabular-nums" data-cor-do-usuario style={{ color: project.color }}>{progress}%</span>
             </div>
             <div className="relative h-2 w-full overflow-hidden rounded-full bg-secondary/60">
               <div
                 className="absolute inset-y-0 left-0 rounded-full transition-all duration-700 ease-out shadow-inner"
-                style={{ width: `${progress}%`, backgroundColor: project.color }}
+                data-cor-do-usuario style={{ width: `${progress}%`, backgroundColor: project.color }}
               />
             </div>
           </div>

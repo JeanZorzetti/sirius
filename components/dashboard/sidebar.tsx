@@ -54,7 +54,7 @@ function SectionLabel({ children, open }: { children: React.ReactNode; open: boo
   return (
     <span
       className={cn(
-        'px-3 py-2 text-[11px] font-semibold uppercase tracking-wider text-zinc-400 dark:text-zinc-600 whitespace-pre transition-opacity duration-150',
+        'px-3 py-2 font-mono text-[11px] font-medium uppercase tracking-wider text-muted-foreground whitespace-pre transition-opacity duration-150',
         open ? 'opacity-100' : 'opacity-0 pointer-events-none select-none'
       )}
     >
@@ -84,19 +84,19 @@ const NavLink = memo(function NavLink({
         'group flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-all duration-200 relative overflow-hidden',
         !open ? 'justify-center px-2' : '',
         isActive
-          ? 'text-indigo-600 dark:text-white bg-indigo-50 dark:bg-transparent'
-          : 'text-zinc-600 dark:text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-200 hover:bg-black/5 dark:hover:bg-white/5'
+          ? 'text-sidebar-accent-foreground bg-sidebar-accent'
+          : 'text-muted-foreground hover:text-sidebar-foreground hover:bg-sidebar-accent'
       )}
     >
       {isActive && (
-        <div className="absolute inset-0 bg-indigo-500/10 border-l-2 border-indigo-500" />
+        <div className="absolute inset-y-0 left-0 w-0.5 bg-sidebar-primary" />
       )}
       <Icon
         className={cn(
           'h-4 w-4 z-10 flex-shrink-0 transition-colors',
           isActive
-            ? 'text-indigo-600 dark:text-indigo-400'
-            : 'text-zinc-500 group-hover:text-zinc-700 dark:group-hover:text-zinc-300'
+            ? 'text-sidebar-primary'
+            : 'text-muted-foreground group-hover:text-sidebar-foreground'
         )}
       />
       <span
@@ -107,9 +107,6 @@ const NavLink = memo(function NavLink({
       >
         {item.title}
       </span>
-      {isActive && open && (
-        <div className="absolute right-0 top-0 h-full w-4 bg-gradient-to-l from-indigo-500/20 to-transparent" />
-      )}
     </Link>
   )
 })
@@ -236,20 +233,15 @@ function SidebarInner({ pathname, user, open, setOpen }: { pathname: string; use
   return (
     <div
       className={cn(
-        'h-[calc(100vh-16px)] m-2 rounded-xl border border-border/40 shadow-md bg-sidebar/80 backdrop-blur-xl relative z-50 flex flex-col overflow-hidden',
+        'h-screen border-r border-sidebar-border bg-sidebar relative z-50 flex flex-col overflow-hidden',
         'transition-[width] duration-200 ease-in-out',
         open ? 'w-64' : 'w-[60px]'
       )}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
-      {/* Background glow */}
-      <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
-        <div className="absolute top-[-100px] left-[-100px] w-64 h-64 bg-indigo-500/5 blur-[100px] rounded-full" />
-      </div>
-
       {/* Header / Logo */}
-      <div className="flex h-16 items-center px-3 border-b border-white/5 flex-shrink-0">
+      <div className="flex h-16 items-center px-3 border-b border-sidebar-border flex-shrink-0">
         {/* Closed rail: the two dots alone. Open: the wordmark, which already carries them (no lockup). */}
         <Link href="/dashboard" className="flex items-center text-foreground" aria-label="Sirius CRM, painel">
           {open ? <Wordmark className="h-6 w-auto" /> : <Pingos className="h-7 w-8" />}
@@ -258,14 +250,13 @@ function SidebarInner({ pathname, user, open, setOpen }: { pathname: string; use
 
       {/* Navigation */}
       <div className="flex-1 overflow-y-auto overflow-x-hidden py-4 px-2 relative z-10">
-        <nav className="grid gap-0.5">
+        <nav className="grid grid-cols-[minmax(0,1fr)] gap-0.5">
           {user.role === 'ADMIN' && (
             <Link
               href="/IA"
               className={cn(
                 'flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-all duration-200 mb-2',
-                'bg-gradient-to-r from-cyan-500/10 to-violet-500/10 border border-cyan-500/20',
-                'text-cyan-400 hover:from-cyan-500/20 hover:to-violet-500/20 hover:text-cyan-300',
+                'border border-sidebar-border text-sidebar-foreground hover:bg-sidebar-accent',
                 !open ? 'justify-center px-2' : ''
               )}
             >
@@ -311,7 +302,7 @@ function SidebarInner({ pathname, user, open, setOpen }: { pathname: string; use
       </div>
 
       {/* Footer – Account */}
-      <div className="border-t border-border px-2 py-3 grid gap-0.5 flex-shrink-0 relative z-10">
+      <div className="border-t border-border px-2 py-3 grid grid-cols-[minmax(0,1fr)] gap-0.5 flex-shrink-0 relative z-10">
         {accountItems.map((item) => (
           <NavLink key={item.title} item={item} pathname={pathname} open={open} />
         ))}

@@ -109,7 +109,7 @@ export function ContactsDataTableClient({ data, orgUsers = [], customSegments: i
     const elapsed = performance.now() - firstRenderTimeRef.current
     console.log(
       `%c[PERF-CLIENT] ContactsDataTableClient hydrated`,
-      'color: #4f46e5; font-weight: bold',
+      'color: var(--chart-1); font-weight: bold',
       `\n  rows: ${data.length}`,
       `\n  hydration time: ${elapsed.toFixed(1)}ms`,
       `\n  render count: ${renderCountRef.current}`
@@ -121,7 +121,7 @@ export function ContactsDataTableClient({ data, orgUsers = [], customSegments: i
     if (renderCountRef.current > 1) {
       console.log(
         `%c[PERF-CLIENT] ContactsDataTableClient re-rendered`,
-        'color: #f59e0b',
+        'color: var(--color-amber-500)',
         `count: ${renderCountRef.current}`
       )
     }

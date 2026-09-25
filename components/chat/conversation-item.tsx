@@ -167,16 +167,16 @@ export function ConversationItem({
         aria-current={selected ? 'true' : 'false'}
         className={cn(
           'w-full flex items-center gap-3 px-3 py-[10px] transition-colors duration-150 relative',
-          'focus-visible:ring-2 focus-visible:ring-[#00a884] focus-visible:ring-inset focus-visible:outline-none',
-          hasUnread && !selected && 'bg-[#f0f2f5]/50 dark:bg-[#202C33]/50',
+          'focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-inset focus-visible:outline-none',
+          hasUnread && !selected && 'bg-muted/50 dark:bg-card/50',
           selected
-            ? 'bg-[#f0f2f5] whatsapp-bubble-incoming'
-            : 'hover:bg-[#f5f6f6] dark:hover:bg-[#202C33]/30'
+            ? 'bg-muted whatsapp-bubble-incoming'
+            : 'hover:bg-muted dark:hover:bg-card/30'
         )}
       >
         {/* Active bar */}
         {selected && (
-          <div className="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-10 bg-[#00a884] rounded-r-full" />
+          <div className="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-10 bg-primary rounded-r-full" />
         )}
 
         {/* Avatar */}
@@ -190,7 +190,7 @@ export function ConversationItem({
             </AvatarFallback>
           </Avatar>
           {/* WhatsApp channel badge */}
-          <div className="absolute -bottom-0.5 -right-0.5 w-[18px] h-[18px] rounded-full bg-[#25d366] border-2 border-white dark:border-zinc-950 flex items-center justify-center">
+          <div className="absolute -bottom-0.5 -right-0.5 w-[18px] h-[18px] rounded-full bg-primary border-2 border-white dark:border-zinc-950 flex items-center justify-center">
             <svg viewBox="0 0 24 24" className="w-[10px] h-[10px] text-white fill-current">
               <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
             </svg>
@@ -198,19 +198,19 @@ export function ConversationItem({
         </div>
 
         {/* Content */}
-        <div className="flex-1 min-w-0 text-left border-b border-[#f0f2f5] dark:border-zinc-800 pb-[10px]">
+        <div className="flex-1 min-w-0 text-left border-b border-border dark:border-zinc-800 pb-[10px]">
           <div className="flex items-center justify-between gap-2">
             <p className={cn(
-              'text-[15px] truncate text-[#111b21] dark:text-zinc-100',
+              'text-[15px] truncate text-foreground dark:text-zinc-100',
               hasUnread ? 'font-bold' : 'font-medium',
-              selected && 'text-[#111b21]'
+              selected && 'text-foreground'
             )}>
               {name}
             </p>
             {last && (
               <span className={cn(
                 'text-[11px] flex-shrink-0 tabular-nums',
-                hasUnread ? 'text-[#25d366] font-semibold' : 'text-[#667781]'
+                hasUnread ? 'text-primary font-semibold' : 'text-muted-foreground'
               )}>
                 {fmtTime(last.sentAt)}
               </span>
@@ -222,12 +222,12 @@ export function ConversationItem({
               {last && (
                 <>
                   {last.direction === 'OUTBOUND' && (
-                    <CheckCheck className="h-[16px] w-[16px] flex-shrink-0 text-[#53bdeb]" />
+                    <CheckCheck className="h-[16px] w-[16px] flex-shrink-0 text-foreground" />
                   )}
-                  {media && <media.icon className="h-[14px] w-[14px] flex-shrink-0 text-[#667781]" />}
+                  {media && <media.icon className="h-[14px] w-[14px] flex-shrink-0 text-muted-foreground" />}
                   <p className={cn(
                     'text-[13px] truncate leading-tight',
-                    hasUnread ? 'text-[#111b21] font-semibold' : 'text-[#667781]'
+                    hasUnread ? 'text-foreground font-semibold' : 'text-muted-foreground'
                   )}>
                     {last.direction === 'OUTBOUND' && !media && 'Você: '}
                     {preview || 'Mensagem'}
@@ -238,10 +238,10 @@ export function ConversationItem({
             <div className="flex items-center gap-1 flex-shrink-0">
               {contact.chatConversation?.assignedUser && (
                 <div
-                  className="w-5 h-5 rounded-full bg-[#00a884]/20 flex items-center justify-center"
+                  className="w-5 h-5 rounded-full bg-primary/20 flex items-center justify-center"
                   title={`Atribuído a ${contact.chatConversation.assignedUser.name || contact.chatConversation.assignedUser.email}`}
                 >
-                  <span className="text-[9px] font-semibold text-[#00a884]">
+                  <span className="text-[9px] font-semibold text-primary">
                     {contact.chatConversation.assignedUser.name?.charAt(0).toUpperCase() ||
                      contact.chatConversation.assignedUser.email.charAt(0).toUpperCase()}
                   </span>
@@ -267,7 +267,7 @@ export function ConversationItem({
                 </span>
               ))}
               {contact.tags.length > 3 && (
-                <span className="text-[10px] text-[#667781]">
+                <span className="text-[10px] text-muted-foreground">
                   +{contact.tags.length - 3}
                 </span>
               )}
@@ -283,7 +283,7 @@ export function ConversationItem({
           size="sm"
           className={cn(
             'h-7 w-7 p-0 quick-action-btn',
-            isPinned && 'text-[#00a884]'
+            isPinned && 'text-primary'
           )}
           onClick={(e) => { e.stopPropagation(); onTogglePin(contact.id, isPinned) }}
           title={isPinned ? 'Desafixar conversa' : 'Fixar conversa'}

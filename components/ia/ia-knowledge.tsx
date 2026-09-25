@@ -71,7 +71,7 @@ function AgentChip({ agent, selected, onClick }: { agent: AgentOption; selected:
       className={cn(
         'flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-medium border transition-all',
         selected
-          ? 'border-transparent text-white'
+          ? 'border-transparent bg-primary text-primary-foreground'
           : 'border-zinc-700/60 bg-zinc-800/40 text-zinc-500 hover:border-zinc-600 hover:text-zinc-300'
       )}
       style={selected ? { background: `linear-gradient(135deg, var(--tw-gradient-stops))` } : {}}
@@ -89,21 +89,8 @@ function AgentChip({ agent, selected, onClick }: { agent: AgentOption; selected:
   )
 }
 
-// Simple gradient-aware chip using inline style
 function AgentChipStyled({ agent, selected, onClick }: { agent: AgentOption; selected: boolean; onClick: () => void }) {
   const Icon = agent.icon
-  const gradientColors: Record<string, string> = {
-    'from-cyan-500 to-blue-500': 'linear-gradient(135deg, #06b6d4, #3b82f6)',
-    'from-violet-500 to-purple-500': 'linear-gradient(135deg, #8b5cf6, #a855f7)',
-    'from-amber-500 to-orange-500': 'linear-gradient(135deg, #f59e0b, #f97316)',
-    'from-emerald-500 to-green-500': 'linear-gradient(135deg, #10b981, #22c55e)',
-    'from-pink-500 to-rose-500': 'linear-gradient(135deg, #ec4899, #f43f5e)',
-    'from-indigo-500 to-blue-600': 'linear-gradient(135deg, #6366f1, #2563eb)',
-    'from-teal-500 to-cyan-600': 'linear-gradient(135deg, #14b8a6, #0891b2)',
-    'from-amber-400 to-yellow-500': 'linear-gradient(135deg, #fbbf24, #eab308)',
-    'from-violet-500 to-indigo-500': 'linear-gradient(135deg, #8b5cf6, #6366f1)',
-    'from-rose-500 to-pink-600': 'linear-gradient(135deg, #f43f5e, #db2777)',
-  }
   return (
     <button
       type="button"
@@ -111,10 +98,9 @@ function AgentChipStyled({ agent, selected, onClick }: { agent: AgentOption; sel
       className={cn(
         'flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-medium border transition-all',
         selected
-          ? 'border-transparent text-white'
+          ? 'border-transparent bg-primary text-primary-foreground'
           : 'border-zinc-700/60 bg-zinc-800/40 text-zinc-500 hover:border-zinc-600 hover:text-zinc-300'
       )}
-      style={selected ? { background: gradientColors[agent.gradient] ?? '#334155', borderColor: 'transparent' } : {}}
     >
       <Icon className="h-3 w-3" />
       {agent.name}
@@ -260,19 +246,6 @@ export function IAKnowledge() {
     }
   }
 
-  const gradientColors: Record<string, string> = {
-    'from-cyan-500 to-blue-500': 'linear-gradient(135deg, #06b6d4, #3b82f6)',
-    'from-violet-500 to-purple-500': 'linear-gradient(135deg, #8b5cf6, #a855f7)',
-    'from-amber-500 to-orange-500': 'linear-gradient(135deg, #f59e0b, #f97316)',
-    'from-emerald-500 to-green-500': 'linear-gradient(135deg, #10b981, #22c55e)',
-    'from-pink-500 to-rose-500': 'linear-gradient(135deg, #ec4899, #f43f5e)',
-    'from-indigo-500 to-blue-600': 'linear-gradient(135deg, #6366f1, #2563eb)',
-    'from-teal-500 to-cyan-600': 'linear-gradient(135deg, #14b8a6, #0891b2)',
-    'from-amber-400 to-yellow-500': 'linear-gradient(135deg, #fbbf24, #eab308)',
-    'from-violet-500 to-indigo-500': 'linear-gradient(135deg, #8b5cf6, #6366f1)',
-    'from-rose-500 to-pink-600': 'linear-gradient(135deg, #f43f5e, #db2777)',
-  }
-
   function getAgentBadges(agentIds: string[]) {
     if (!agentIds || agentIds.length === 0) return null
     return agentIds.slice(0, 3).map(id => {
@@ -282,8 +255,7 @@ export function IAKnowledge() {
       return (
         <span
           key={id}
-          className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full text-[10px] font-medium text-white"
-          style={{ background: gradientColors[ag.gradient] ?? '#334155' }}
+          className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full text-[10px] font-medium bg-primary text-primary-foreground"
         >
           <Icon className="h-2.5 w-2.5" />
           {ag.name}

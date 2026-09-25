@@ -60,34 +60,34 @@ export function OverviewChart({ data }: OverviewChartProps) {
       <BarChart data={data} margin={{ top: 20, right: 0, bottom: 0, left: 0 }}>
         <defs>
           <linearGradient id="barGradient" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="#6366f1" stopOpacity={1} />
-            <stop offset="100%" stopColor="#8b5cf6" stopOpacity={0.6} />
+            <stop offset="0%" stopColor="var(--chart-1)" stopOpacity={1} />
+            <stop offset="100%" stopColor="var(--chart-5)" stopOpacity={0.6} />
           </linearGradient>
         </defs>
 
-        <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(255,255,255,0.1)" />
+        <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="var(--border)" />
 
         <XAxis
           dataKey="name"
-          stroke="#71717a"
+          stroke="var(--muted-foreground)"
           fontSize={12}
           tickLine={false}
           axisLine={false}
-          tick={{ fill: '#71717a' }}
+          tick={{ fill: 'var(--muted-foreground)' }}
           dy={10}
         />
 
         <YAxis
-          stroke="#71717a"
+          stroke="var(--muted-foreground)"
           fontSize={12}
           tickLine={false}
           axisLine={false}
           tickFormatter={(value: any) => `R$${value / 1000}k`}
-          tick={{ fill: '#71717a' }}
+          tick={{ fill: 'var(--muted-foreground)' }}
           width={40}
         />
 
-        <Tooltip cursor={{ fill: 'rgba(255,255,255,0.02)' }} content={<CustomTooltip />} />
+        <Tooltip cursor={{ fill: 'var(--muted)' }} content={<CustomTooltip />} />
 
         <Bar
           dataKey="value"

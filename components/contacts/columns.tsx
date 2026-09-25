@@ -72,7 +72,7 @@ export function getColumns({ onOpenProfile, onEdit, onDelete, t }: GetColumnsOpt
                         className="flex items-center gap-3 cursor-pointer group/name"
                         onClick={() => onOpenProfile?.(row.original)}
                     >
-                        <div className="h-8 w-8 rounded-full bg-gradient-to-br from-indigo-500/20 to-purple-500/20 ring-1 ring-white/10 flex items-center justify-center text-xs font-bold text-indigo-300 shrink-0">
+                        <div className="h-8 w-8 rounded-full bg-muted flex items-center justify-center text-xs font-bold text-foreground shrink-0">
                             {initials}
                         </div>
                         <span className="font-medium text-zinc-900 dark:text-zinc-100 group-hover/name:text-indigo-600 dark:group-hover/name:text-indigo-400 transition-colors">
@@ -160,7 +160,7 @@ export function getColumns({ onOpenProfile, onEdit, onDelete, t }: GetColumnsOpt
                 const initials = name.split(' ').map(n => n[0]).slice(0, 2).join('').toUpperCase()
                 return (
                     <div className="flex items-center gap-2">
-                        <div className="h-6 w-6 rounded-full bg-gradient-to-br from-violet-500/20 to-pink-500/20 flex items-center justify-center text-[10px] font-bold text-violet-500 dark:text-violet-400 ring-1 ring-violet-200 dark:ring-violet-800/40 shrink-0">
+                        <div className="h-6 w-6 rounded-full bg-muted flex items-center justify-center text-[10px] font-bold text-foreground shrink-0">
                             {initials}
                         </div>
                         <span className="text-xs text-zinc-600 dark:text-zinc-400 whitespace-nowrap">{name}</span>

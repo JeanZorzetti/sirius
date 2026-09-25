@@ -78,8 +78,8 @@ export const PRIORITY_CONFIG: Record<TaskPriority, { label: string; color: strin
 }
 
 export const STATUS_TYPE_CONFIG: Record<TaskStatusType, { label: string; defaultColor: string }> = {
-  OPEN: { label: 'Aberto', defaultColor: '#94a3b8' },
-  IN_PROGRESS: { label: 'Em Progresso', defaultColor: '#3b82f6' },
-  DONE: { label: 'Concluído', defaultColor: '#22c55e' },
-  CLOSED: { label: 'Fechado', defaultColor: '#64748b' },
+  OPEN: { label: 'Aberto', defaultColor: 'var(--muted-foreground)' },
+  IN_PROGRESS: { label: 'Em Progresso', defaultColor: 'var(--chart-1)' },
+  DONE: { label: 'Concluído', defaultColor: 'var(--color-green-500)' },
+  CLOSED: { label: 'Fechado', defaultColor: 'var(--muted-foreground)' },
 }

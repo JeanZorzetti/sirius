@@ -12,9 +12,9 @@ import {
 } from 'recharts';
 
 const COLORS = [
-  '#6366f1', '#8b5cf6', '#a78bfa', '#7c3aed',
-  '#4f46e5', '#818cf8', '#c4b5fd', '#5b21b6',
-  '#3730a3', '#ddd6fe',
+  'var(--chart-1)', 'var(--chart-5)', 'var(--chart-4)', 'var(--chart-3)',
+  'var(--chart-1)', 'var(--chart-5)', 'var(--chart-4)', 'var(--foreground)',
+  'var(--foreground)', 'var(--muted)',
 ];
 
 const CustomTooltip = ({ active, payload, label }: any) => {
@@ -68,15 +68,15 @@ export function EstimatedValueChart({ data }: EstimatedValueChartProps) {
           ))}
         </defs>
 
-        <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(255,255,255,0.06)" />
+        <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="var(--border)" />
 
         <XAxis
           dataKey="name"
-          stroke="#71717a"
+          stroke="var(--muted-foreground)"
           fontSize={11}
           tickLine={false}
           axisLine={false}
-          tick={{ fill: '#71717a', textAnchor: 'end' }}
+          tick={{ fill: 'var(--muted-foreground)', textAnchor: 'end' }}
           angle={-35}
           dy={6}
           dx={-4}
@@ -85,16 +85,16 @@ export function EstimatedValueChart({ data }: EstimatedValueChartProps) {
         />
 
         <YAxis
-          stroke="#71717a"
+          stroke="var(--muted-foreground)"
           fontSize={12}
           tickLine={false}
           axisLine={false}
           tickFormatter={(v: number) => `R$${v >= 1000 ? `${(v / 1000).toFixed(0)}k` : v}`}
-          tick={{ fill: '#71717a' }}
+          tick={{ fill: 'var(--muted-foreground)' }}
           width={55}
         />
 
-        <Tooltip cursor={{ fill: 'rgba(255,255,255,0.02)' }} content={<CustomTooltip />} />
+        <Tooltip cursor={{ fill: 'var(--muted)' }} content={<CustomTooltip />} />
 
         <Bar dataKey="value" radius={[6, 6, 0, 0]} maxBarSize={52} animationDuration={1200}>
           {data.map((_, i) => (

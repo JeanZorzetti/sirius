@@ -7,3 +7,4 @@
 @plugin "@tailwindcss/typography";
 @import "./theme.css";
 @import "./base.css";
+@import "./app-pele.css"; /* spec 010: the Pipeline's skin for the whole app, unlayered */

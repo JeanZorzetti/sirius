@@ -272,7 +272,7 @@ function ChatInterfaceInner({
             <MessageCircle className="h-4 w-4" />
             Conversas
             {totalUnread > 0 && (
-              <span className="inline-flex items-center justify-center min-w-[20px] h-5 px-1.5 text-xs font-bold text-white bg-[#25d366] rounded-full tabular-nums">
+              <span className="inline-flex items-center justify-center min-w-[20px] h-5 px-1.5 text-xs font-bold text-primary-foreground bg-primary rounded-full tabular-nums">
                 {totalUnread > 99 ? '99+' : totalUnread}
               </span>
             )}

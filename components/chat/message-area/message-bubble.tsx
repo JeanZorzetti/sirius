@@ -48,7 +48,7 @@ export function MessageBubble({
       {/* Date separator - sticky */}
       {showDate && (
         <div className="sticky top-0 z-10 flex justify-center py-2 my-1">
-          <span className="bg-white/90 dark:bg-zinc-800/90 backdrop-blur text-[12.5px] text-[#54656f] px-3 py-1 rounded-lg shadow-[0_1px_1px_rgba(11,20,26,0.13)] font-medium select-none">
+          <span className="bg-white/90 dark:bg-zinc-800/90 backdrop-blur text-[12.5px] text-muted-foreground px-3 py-1 rounded-lg shadow-[0_1px_1px_rgba(11,20,26,0.13)] font-medium select-none">
             {fmtDate(msg.sentAt)}
           </span>
         </div>
@@ -76,14 +76,14 @@ export function MessageBubble({
               className="p-1.5 rounded-full hover:bg-black/5"
               title="Responder"
             >
-              <Reply className="h-4 w-4 text-[#667781]" />
+              <Reply className="h-4 w-4 text-muted-foreground" />
             </button>
             <button
               onClick={() => onForward(msg)}
               className="p-1.5 rounded-full hover:bg-black/5"
               title="Encaminhar"
             >
-              <ForwardIcon className="h-4 w-4 text-[#667781]" />
+              <ForwardIcon className="h-4 w-4 text-muted-foreground" />
             </button>
           </div>
         )}
@@ -96,9 +96,9 @@ export function MessageBubble({
             media ? 'p-[3px]' : 'px-[9px] pt-[6px] pb-[7px]',
             bubbleRadius(pos, out),
             highlighted
-              ? 'ring-2 ring-[#f59e0b] bg-[#fef3c7]'
+              ? 'ring-2 ring-amber-500 bg-amber-100'
               : out
-                ? 'bg-[#d9fdd3] whatsapp-bubble-outgoing'
+                ? 'bg-secondary whatsapp-bubble-outgoing'
                 : 'bg-white whatsapp-bubble-incoming'
           )}
         >
@@ -142,11 +142,11 @@ export function MessageBubble({
             return (
               <div className={cn(media && 'px-[6px] pb-[4px] pt-[2px]')}>
                 {reply && (
-                  <div className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded mb-1 bg-[#00a884]/15 text-[#00a884] text-[10px] font-mono font-medium">
+                  <div className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded mb-1 bg-primary/15 text-primary text-[10px] font-mono font-medium">
                     <span className="opacity-70">↩</span> {reply.btnId}
                   </div>
                 )}
-                <p className="text-[14.2px] leading-[1.46] text-[#111b21] dark:text-zinc-100 whitespace-pre-wrap break-words">
+                <p className="text-[14.2px] leading-[1.46] text-foreground dark:text-zinc-100 whitespace-pre-wrap break-words">
                   {reply ? reply.label : rawText}
                   {/* Invisible spacer for timestamp */}
                   <span className="inline-block w-[70px]" />
@@ -160,17 +160,17 @@ export function MessageBubble({
             'float-right flex items-center gap-1 ml-2 relative',
             media && !displayText ? 'px-[6px] pb-[4px] -mt-1' : '-mt-4',
           )}>
-            <span className="text-[10.5px] text-[#667781] leading-none tabular-nums">
+            <span className="text-[10.5px] text-muted-foreground leading-none tabular-nums">
               {fmtTime(msg.sentAt)}
             </span>
             {out && (
               msg.status === 'SENDING'
-                ? <Loader2 className="h-[14px] w-[14px] text-[#8696a0] animate-spin message-status-icon" />
+                ? <Loader2 className="h-[14px] w-[14px] text-muted-foreground animate-spin message-status-icon" />
                 : msg.status === 'READ'
-                  ? <CheckCheck className="h-[16px] w-[16px] text-[#53bdeb] message-status-icon" />
+                  ? <CheckCheck className="h-[16px] w-[16px] text-foreground message-status-icon" />
                   : msg.status === 'DELIVERED'
-                    ? <CheckCheck className="h-[16px] w-[16px] text-[#8696a0] message-status-icon" />
-                    : <Check className="h-[16px] w-[16px] text-[#8696a0] message-status-icon" />
+                    ? <CheckCheck className="h-[16px] w-[16px] text-muted-foreground message-status-icon" />
+                    : <Check className="h-[16px] w-[16px] text-muted-foreground message-status-icon" />
             )}
           </span>
         </div>
@@ -182,7 +182,7 @@ export function MessageBubble({
             className="opacity-0 group-hover:opacity-100 transition-opacity ml-2 self-end mb-1 p-1.5 rounded-full hover:bg-black/5"
             title="Encaminhar"
           >
-            <ForwardIcon className="h-4 w-4 text-[#667781]" />
+            <ForwardIcon className="h-4 w-4 text-muted-foreground" />
           </button>
         )}
 

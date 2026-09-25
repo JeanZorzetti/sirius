@@ -271,29 +271,29 @@ export function PeriodComparator({ historyData }: PeriodComparatorProps) {
           <CardContent>
             <ResponsiveContainer width="100%" height={250}>
               <ReBarChart data={chartData} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
+                <CartesianGrid strokeDasharray="3 3" stroke="var(--muted)" />
                 <XAxis 
                   dataKey="name" 
-                  tick={{ fill: '#64748b', fontSize: 12 }}
+                  tick={{ fill: 'var(--muted-foreground)', fontSize: 12 }}
                   tickLine={false}
                 />
                 <YAxis 
                   yAxisId="left"
-                  tick={{ fill: '#64748b', fontSize: 12 }}
+                  tick={{ fill: 'var(--muted-foreground)', fontSize: 12 }}
                   tickLine={false}
                   axisLine={false}
                 />
                 <YAxis 
                   yAxisId="right"
                   orientation="right"
-                  tick={{ fill: '#64748b', fontSize: 12 }}
+                  tick={{ fill: 'var(--muted-foreground)', fontSize: 12 }}
                   tickLine={false}
                   axisLine={false}
                 />
                 <Tooltip
                   contentStyle={{
                     backgroundColor: 'white',
-                    border: '1px solid #e2e8f0',
+                    border: '1px solid var(--muted)',
                     borderRadius: '8px',
                   }}
                   formatter={(value) => typeof value === 'number' ? value.toLocaleString('pt-BR') : value}
@@ -301,14 +301,14 @@ export function PeriodComparator({ historyData }: PeriodComparatorProps) {
                 <Bar
                   yAxisId="left"
                   dataKey="cliques"
-                  fill="#22c55e"
+                  fill="var(--color-green-500)"
                   radius={[4, 4, 0, 0]}
                   name="Cliques"
                 />
                 <Bar
                   yAxisId="right"
                   dataKey="impressoes"
-                  fill="#3b82f6"
+                  fill="var(--chart-1)"
                   radius={[4, 4, 0, 0]}
                   name="Impressoes"
                 />
@@ -336,21 +336,21 @@ export function PeriodComparator({ historyData }: PeriodComparatorProps) {
             <CardContent>
               <ResponsiveContainer width="100%" height={250}>
                 <LineChart data={forecastData} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
+                  <CartesianGrid strokeDasharray="3 3" stroke="var(--muted)" />
                   <XAxis 
                     dataKey="date"
-                    tick={{ fill: '#64748b', fontSize: 11 }}
+                    tick={{ fill: 'var(--muted-foreground)', fontSize: 11 }}
                     tickLine={false}
                   />
                   <YAxis 
-                    tick={{ fill: '#64748b', fontSize: 12 }}
+                    tick={{ fill: 'var(--muted-foreground)', fontSize: 12 }}
                     tickLine={false}
                     axisLine={false}
                   />
                   <Tooltip
                     contentStyle={{
                       backgroundColor: 'white',
-                      border: '1px solid #e2e8f0',
+                      border: '1px solid var(--muted)',
                       borderRadius: '8px',
                     }}
                     formatter={(value) => typeof value === 'number' ? value.toLocaleString('pt-BR') : value}
@@ -358,15 +358,15 @@ export function PeriodComparator({ historyData }: PeriodComparatorProps) {
                   <Line
                     type="monotone"
                     dataKey="predito"
-                    stroke="#8b5cf6"
+                    stroke="var(--chart-5)"
                     strokeWidth={2}
-                    dot={{ fill: '#8b5cf6', strokeWidth: 2 }}
+                    dot={{ fill: 'var(--chart-5)', strokeWidth: 2 }}
                     name="Predito"
                   />
                   <Line
                     type="monotone"
                     dataKey="minimo"
-                    stroke="#c4b5fd"
+                    stroke="var(--chart-4)"
                     strokeDasharray="5 5"
                     dot={false}
                     name="Minimo (95%)"
@@ -374,7 +374,7 @@ export function PeriodComparator({ historyData }: PeriodComparatorProps) {
                   <Line
                     type="monotone"
                     dataKey="maximo"
-                    stroke="#c4b5fd"
+                    stroke="var(--chart-4)"
                     strokeDasharray="5 5"
                     dot={false}
                     name="Maximo (95%)"

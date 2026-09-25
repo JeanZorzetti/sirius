@@ -87,27 +87,27 @@ export function RevenueTrendChart({ data, loading }: RevenueTrendChartProps) {
           <AreaChart data={chartData}>
             <defs>
               <linearGradient id="colorMrr" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.8}/>
-                <stop offset="95%" stopColor="#3b82f6" stopOpacity={0.1}/>
+                <stop offset="5%" stopColor="var(--chart-1)" stopOpacity={0.8}/>
+                <stop offset="95%" stopColor="var(--chart-1)" stopOpacity={0.1}/>
               </linearGradient>
             </defs>
             <CartesianGrid strokeDasharray="3 3" className="stroke-muted" />
             <XAxis
               dataKey="month"
               className="text-xs"
-              tick={{ fill: 'hsl(var(--muted-foreground))' }}
+              tick={{ fill: 'var(--muted-foreground)' }}
             />
             <YAxis
               className="text-xs"
-              tick={{ fill: 'hsl(var(--muted-foreground))' }}
+              tick={{ fill: 'var(--muted-foreground)' }}
               tickFormatter={(value) =>
                 `R$ ${value.toLocaleString('pt-BR', { maximumFractionDigits: 0 })}`
               }
             />
             <Tooltip
               contentStyle={{
-                backgroundColor: 'hsl(var(--background))',
-                border: '1px solid hsl(var(--border))',
+                backgroundColor: 'var(--background)',
+                border: '1px solid var(--border)',
                 borderRadius: '6px',
               }}
               formatter={(value: number | undefined) =>
@@ -124,7 +124,7 @@ export function RevenueTrendChart({ data, loading }: RevenueTrendChartProps) {
               type="monotone"
               dataKey="mrr"
               name="MRR"
-              stroke="#3b82f6"
+              stroke="var(--chart-1)"
               strokeWidth={2}
               fillOpacity={1}
               fill="url(#colorMrr)"
@@ -163,8 +163,8 @@ export function OrganizationDistributionChart({
   }
 
   const chartData = [
-    { name: 'FREE', value: data.freeOrganizations, color: '#94a3b8' },
-    { name: 'PRO', value: data.proOrganizations, color: '#3b82f6' },
+    { name: 'FREE', value: data.freeOrganizations, color: 'var(--muted-foreground)' },
+    { name: 'PRO', value: data.proOrganizations, color: 'var(--chart-1)' },
   ]
 
   return (
@@ -183,7 +183,7 @@ export function OrganizationDistributionChart({
               labelLine={false}
               label={(entry) => `${entry.name}: ${entry.value} (${((entry.value / (data.freeOrganizations + data.proOrganizations)) * 100).toFixed(1)}%)`}
               outerRadius={80}
-              fill="#8884d8"
+              fill="var(--chart-5)"
               dataKey="value"
             >
               {chartData.map((entry, index) => (
@@ -192,8 +192,8 @@ export function OrganizationDistributionChart({
             </Pie>
             <Tooltip
               contentStyle={{
-                backgroundColor: 'hsl(var(--background))',
-                border: '1px solid hsl(var(--border))',
+                backgroundColor: 'var(--background)',
+                border: '1px solid var(--border)',
                 borderRadius: '6px',
               }}
             />
@@ -263,20 +263,20 @@ export function NewOrganizationsChart({ data, loading }: NewOrganizationsChartPr
             <XAxis
               dataKey="month"
               className="text-xs"
-              tick={{ fill: 'hsl(var(--muted-foreground))' }}
+              tick={{ fill: 'var(--muted-foreground)' }}
             />
             <YAxis
               className="text-xs"
-              tick={{ fill: 'hsl(var(--muted-foreground))' }}
+              tick={{ fill: 'var(--muted-foreground)' }}
             />
             <Tooltip
               contentStyle={{
-                backgroundColor: 'hsl(var(--background))',
-                border: '1px solid hsl(var(--border))',
+                backgroundColor: 'var(--background)',
+                border: '1px solid var(--border)',
                 borderRadius: '6px',
               }}
             />
-            <Bar dataKey="signups" name="Novas Organizações" fill="#22c55e" />
+            <Bar dataKey="signups" name="Novas Organizações" fill="var(--color-green-500)" />
           </BarChart>
         </ResponsiveContainer>
       </CardContent>

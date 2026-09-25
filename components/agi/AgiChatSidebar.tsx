@@ -362,9 +362,7 @@ export function AgiChatSidebar({ dealId, pipelineId, context }: AgiChatSidebarPr
             {!isOpen && (
                 <button
                     onClick={() => setIsOpen(true)}
-                    // /dashboard dresses this button in its own ink (spec 009, hoje.css); a route attribute, not :root:has()
-                    data-assistente={/\/dashboard\/?$/.test(pathname ?? '') ? 'hoje' : undefined}
-                    className={`fixed z-50 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110 group
+                    className={`fixed z-50 bg-primary text-primary-foreground rounded-full transition-all duration-300 hover:scale-110 group
                         ${isMobile
                             ? 'bottom-[calc(3.5rem+env(safe-area-inset-bottom)+0.75rem)] right-4 p-3'
                             : 'bottom-6 right-6 p-4'

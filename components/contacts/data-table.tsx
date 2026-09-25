@@ -68,7 +68,7 @@ export function DataTable<TData extends { id: string }, TValue>({
     if (process.env.NODE_ENV !== 'development') return
     console.log(
       `%c[PERF-CLIENT] DataTable mounted`,
-      'color: #4f46e5; font-weight: bold',
+      'color: var(--chart-1); font-weight: bold',
       `\n  rows: ${data.length}`,
       `\n  columns: ${columns.length}`,
       `\n  init→mount: ${(performance.now() - tableInitRef.current).toFixed(1)}ms`,

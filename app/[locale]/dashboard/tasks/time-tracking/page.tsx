@@ -254,7 +254,7 @@ export default async function TimeTrackingPage() {
                 <div className="flex min-w-0 flex-1 items-center gap-2">
                   <span
                     className="h-1.5 w-1.5 shrink-0 rounded-full"
-                    style={{ backgroundColor: entry.task.project?.color || '#94a3b8' }}
+                    style={{ backgroundColor: entry.task.project?.color || 'var(--muted-foreground)' }}
                   />
                   <div className="min-w-0 flex-1">
                     <Link

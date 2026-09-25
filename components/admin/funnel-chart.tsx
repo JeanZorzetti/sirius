@@ -24,42 +24,42 @@ export function FunnelChart({ metrics }: FunnelChartProps) {
       name: 'Impressões',
       value: metrics.stages.impressions.value,
       conversionRate: null,
-      color: '#3B82F6', // blue-500
+      color: 'var(--chart-1)', // blue-500
     },
     {
       name: 'Cliques',
       value: metrics.stages.clicks.value,
       conversionRate: metrics.stages.clicks.conversionRate,
       dropOffRate: metrics.stages.clicks.dropOffRate,
-      color: '#6366F1', // indigo-500
+      color: 'var(--chart-5)', // indigo-500
     },
     {
       name: 'Cadastros',
       value: metrics.stages.signups.value,
       conversionRate: metrics.stages.signups.conversionRate,
       dropOffRate: metrics.stages.signups.dropOffRate,
-      color: '#8B5CF6', // violet-500
+      color: 'var(--chart-4)', // violet-500
     },
     {
       name: 'Ativados',
       value: metrics.stages.activated.value,
       conversionRate: metrics.stages.activated.conversionRate,
       dropOffRate: metrics.stages.activated.dropOffRate,
-      color: '#A855F7', // purple-500
+      color: 'var(--chart-3)', // purple-500
     },
     {
       name: 'Engajados',
       value: metrics.stages.hitLimit.value,
       conversionRate: metrics.stages.hitLimit.conversionRate,
       dropOffRate: metrics.stages.hitLimit.dropOffRate,
-      color: '#D946EF', // fuchsia-500
+      color: 'var(--chart-1)', // fuchsia-500
     },
     {
       name: 'Pagantes',
       value: metrics.stages.customers.value,
       conversionRate: metrics.stages.customers.conversionRate,
       dropOffRate: metrics.stages.customers.dropOffRate,
-      color: '#10B981', // green-500
+      color: 'var(--color-green-500)', // green-500
     },
   ]
 

@@ -100,7 +100,7 @@ export function TasksByStatusChart({ data }: Props) {
               wrapperStyle={{
                 fontSize: 11,
                 paddingTop: 12,
-                color: 'hsl(var(--muted-foreground))',
+                color: 'var(--muted-foreground)',
               }}
             />
           </PieChart>

@@ -59,7 +59,7 @@ export function MyTasksWorkspace({ tasks }: MyTasksWorkspaceProps) {
         existing.tasks.push(t)
       } else {
         map.set(pid, {
-          project: t.project || { id: 'unknown', name: 'Sem projeto', color: '#64748b' },
+          project: t.project || { id: 'unknown', name: 'Sem projeto', color: 'var(--muted-foreground)' },
           tasks: [t],
         })
       }

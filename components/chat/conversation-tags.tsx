@@ -37,11 +37,11 @@ const TAG_COLORS = [
 ]
 
 const DEFAULT_TAGS = [
-  { name: 'Lead Quente', color: '#ef4444' },
-  { name: 'Follow Up', color: '#f59e0b' },
-  { name: 'Suporte', color: '#3b82f6' },
-  { name: 'VIP', color: '#8b5cf6' },
-  { name: 'Spam', color: '#6b7280' },
+  { name: 'Lead Quente', color: 'var(--color-red-500)' },
+  { name: 'Follow Up', color: 'var(--color-amber-500)' },
+  { name: 'Suporte', color: 'var(--chart-1)' },
+  { name: 'VIP', color: 'var(--chart-5)' },
+  { name: 'Spam', color: 'var(--muted-foreground)' },
 ]
 
 export function ConversationTags({ contactId, contactTags, onTagsUpdate }: ConversationTagsProps) {

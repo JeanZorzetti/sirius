@@ -33,8 +33,8 @@ export function ReactionChips({ reactions, onToggle, className }: ReactionChipsP
             'inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium transition-all',
             'border hover:scale-105 active:scale-95',
             userReacted
-              ? 'bg-[#00a884]/10 border-[#00a884] text-[#00a884]'
-              : 'bg-white dark:bg-zinc-800 border-[#e9edef] dark:border-zinc-700 text-[#667781] hover:bg-[#f0f2f5] dark:hover:bg-zinc-700'
+              ? 'bg-primary/10 border-primary text-primary'
+              : 'bg-white dark:bg-zinc-800 border-border dark:border-zinc-700 text-muted-foreground hover:bg-muted dark:hover:bg-zinc-700'
           )}
           title={userReacted ? 'Remover sua reação' : 'Reagir'}
         >

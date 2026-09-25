@@ -39,18 +39,18 @@ export function QuotedMessage({ text, senderName, outbound = false, onClick }: Q
         'group w-full text-left rounded-md px-2.5 py-1.5 mb-1 border-l-4 transition-all',
         'hover:bg-black/10 active:scale-[0.99] cursor-pointer',
         outbound
-          ? 'bg-black/5 border-l-[#00a884]'
-          : 'bg-white/50 border-l-[#00a884]'
+          ? 'bg-black/5 border-l-primary'
+          : 'bg-white/50 border-l-primary'
       )}
     >
-      <p className="text-[11px] font-semibold text-[#00a884] leading-tight truncate">
+      <p className="text-[11px] font-semibold text-primary leading-tight truncate">
         {senderName}
       </p>
       <div className="flex items-start gap-1.5 mt-0.5">
         {Icon && (
-          <Icon className="h-3 w-3 text-[#667781] shrink-0 mt-[3px]" />
+          <Icon className="h-3 w-3 text-muted-foreground shrink-0 mt-[3px]" />
         )}
-        <p className="text-[12px] text-[#667781] line-clamp-2 leading-tight flex-1 min-w-0">
+        <p className="text-[12px] text-muted-foreground line-clamp-2 leading-tight flex-1 min-w-0">
           {displayText}
         </p>
       </div>

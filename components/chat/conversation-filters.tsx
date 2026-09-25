@@ -67,7 +67,7 @@ export function ConversationFilters({ currentUserId, onFilterChange }: Conversat
           size="sm"
           className={cn(
             'h-8 gap-2 text-xs',
-            hasActiveFilter && 'bg-[#00a884]/10 text-[#00a884]'
+            hasActiveFilter && 'bg-primary/10 text-primary'
           )}
         >
           <Filter className="h-3.5 w-3.5" />
@@ -75,7 +75,7 @@ export function ConversationFilters({ currentUserId, onFilterChange }: Conversat
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="start" className="w-[200px]">
-        <DropdownMenuLabel className="text-xs text-[#667781]">
+        <DropdownMenuLabel className="text-xs text-muted-foreground">
           Filtrar conversas
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
@@ -95,14 +95,14 @@ export function ConversationFilters({ currentUserId, onFilterChange }: Conversat
           {users.length > 0 && (
             <>
               <DropdownMenuSeparator />
-              <DropdownMenuLabel className="text-[10px] text-[#667781] px-2">
+              <DropdownMenuLabel className="text-[10px] text-muted-foreground px-2">
                 POR AGENTE
               </DropdownMenuLabel>
               {users.map((user) => (
                 <DropdownMenuRadioItem key={user.id} value={user.id} className="text-xs">
                   <div className="flex items-center gap-2">
-                    <div className="w-5 h-5 rounded-full bg-[#00a884]/20 flex items-center justify-center">
-                      <span className="text-[9px] font-semibold text-[#00a884]">
+                    <div className="w-5 h-5 rounded-full bg-primary/20 flex items-center justify-center">
+                      <span className="text-[9px] font-semibold text-primary">
                         {user.name?.charAt(0).toUpperCase() || user.email.charAt(0).toUpperCase()}
                       </span>
                     </div>

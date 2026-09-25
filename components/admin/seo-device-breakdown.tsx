@@ -13,7 +13,7 @@ const DEVICE_CONFIG = {
   desktop: {
     label: 'Desktop',
     icon: Monitor,
-    color: '#3b82f6', // blue-500
+    color: 'var(--chart-1)', // blue-500
     bgColor: 'bg-blue-50',
     borderColor: 'border-blue-200',
     textColor: 'text-blue-700',
@@ -21,7 +21,7 @@ const DEVICE_CONFIG = {
   mobile: {
     label: 'Mobile',
     icon: Smartphone,
-    color: '#8b5cf6', // purple-500
+    color: 'var(--chart-5)', // purple-500
     bgColor: 'bg-purple-50',
     borderColor: 'border-purple-200',
     textColor: 'text-purple-700',
@@ -29,7 +29,7 @@ const DEVICE_CONFIG = {
   tablet: {
     label: 'Tablet',
     icon: Tablet,
-    color: '#ec4899', // pink-500
+    color: 'var(--chart-4)', // pink-500
     bgColor: 'bg-pink-50',
     borderColor: 'border-pink-200',
     textColor: 'text-pink-700',
@@ -122,7 +122,7 @@ export function SEODeviceBreakdown({ devices }: SEODeviceBreakdownProps) {
                     )
                   }}
                   outerRadius={80}
-                  fill="#8884d8"
+                  fill="var(--chart-3)"
                   dataKey="value"
                 >
                   {chartData.map((entry, index) => {

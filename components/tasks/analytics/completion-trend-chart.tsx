@@ -105,25 +105,25 @@ export function CompletionTrendChart({ data, prevTrend, rangeDays }: Props) {
           <ComposedChart data={chartData} margin={{ top: 10, right: 10, bottom: 0, left: -10 }}>
             <defs>
               <linearGradient id="createdGradient" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stopColor="#6366f1" stopOpacity={0.35} />
-                <stop offset="100%" stopColor="#6366f1" stopOpacity={0} />
+                <stop offset="0%" stopColor="var(--chart-1)" stopOpacity={0.35} />
+                <stop offset="100%" stopColor="var(--chart-1)" stopOpacity={0} />
               </linearGradient>
               <linearGradient id="completedGradient" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stopColor="#10b981" stopOpacity={0.35} />
-                <stop offset="100%" stopColor="#10b981" stopOpacity={0} />
+                <stop offset="0%" stopColor="var(--color-green-500)" stopOpacity={0.35} />
+                <stop offset="100%" stopColor="var(--color-green-500)" stopOpacity={0} />
               </linearGradient>
             </defs>
 
             <CartesianGrid
               strokeDasharray="3 3"
               vertical={false}
-              stroke="hsl(var(--border))"
+              stroke="var(--border)"
               opacity={0.3}
             />
 
             <XAxis
               dataKey="date"
-              stroke="hsl(var(--muted-foreground))"
+              stroke="var(--muted-foreground)"
               fontSize={10}
               tickLine={false}
               axisLine={false}
@@ -132,7 +132,7 @@ export function CompletionTrendChart({ data, prevTrend, rangeDays }: Props) {
             />
 
             <YAxis
-              stroke="hsl(var(--muted-foreground))"
+              stroke="var(--muted-foreground)"
               fontSize={10}
               tickLine={false}
               axisLine={false}
@@ -140,7 +140,7 @@ export function CompletionTrendChart({ data, prevTrend, rangeDays }: Props) {
               width={28}
             />
 
-            <Tooltip content={<CustomTooltip />} cursor={{ stroke: 'hsl(var(--border))', strokeWidth: 1 }} />
+            <Tooltip content={<CustomTooltip />} cursor={{ stroke: 'var(--border)', strokeWidth: 1 }} />
 
             <Legend
               formatter={(value) => {
@@ -151,7 +151,7 @@ export function CompletionTrendChart({ data, prevTrend, rangeDays }: Props) {
                 }
                 return map[value] ?? value
               }}
-              wrapperStyle={{ fontSize: 11, paddingTop: 8, color: 'hsl(var(--muted-foreground))' }}
+              wrapperStyle={{ fontSize: 11, paddingTop: 8, color: 'var(--muted-foreground)' }}
               iconType="circle"
             />
 
@@ -159,24 +159,24 @@ export function CompletionTrendChart({ data, prevTrend, rangeDays }: Props) {
             <Area
               type="monotone"
               dataKey="created"
-              stroke="#6366f1"
+              stroke="var(--chart-1)"
               strokeWidth={2}
               fill="url(#createdGradient)"
               animationDuration={1000}
               dot={false}
-              activeDot={{ r: 4, fill: '#6366f1', strokeWidth: 0 }}
+              activeDot={{ r: 4, fill: 'var(--chart-1)', strokeWidth: 0 }}
             />
 
             {/* Área concluídas */}
             <Area
               type="monotone"
               dataKey="completed"
-              stroke="#10b981"
+              stroke="var(--color-green-500)"
               strokeWidth={2}
               fill="url(#completedGradient)"
               animationDuration={1000}
               dot={false}
-              activeDot={{ r: 4, fill: '#10b981', strokeWidth: 0 }}
+              activeDot={{ r: 4, fill: 'var(--color-green-500)', strokeWidth: 0 }}
             />
 
             {/* Linha período anterior (pontilhada, sem fill) */}
@@ -184,12 +184,12 @@ export function CompletionTrendChart({ data, prevTrend, rangeDays }: Props) {
               <Line
                 type="monotone"
                 dataKey="prevCompleted"
-                stroke="#10b981"
+                stroke="var(--color-green-500)"
                 strokeWidth={1.5}
                 strokeDasharray="4 3"
                 strokeOpacity={0.4}
                 dot={false}
-                activeDot={{ r: 3, fill: '#10b981', strokeWidth: 0, opacity: 0.5 }}
+                activeDot={{ r: 3, fill: 'var(--color-green-500)', strokeWidth: 0, opacity: 0.5 }}
                 animationDuration={1000}
                 legendType="plainline"
               />

@@ -65,20 +65,20 @@ export function ClientChart({ data }: ClientChartProps) {
       <ComposedChart data={data} margin={{ top: 20, right: 40, bottom: 60, left: 10 }}>
         <defs>
           <linearGradient id="clientBarGradient" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="#f59e0b" stopOpacity={1} />
-            <stop offset="100%" stopColor="#d97706" stopOpacity={0.6} />
+            <stop offset="0%" stopColor="var(--color-amber-500)" stopOpacity={1} />
+            <stop offset="100%" stopColor="var(--color-amber-600)" stopOpacity={0.6} />
           </linearGradient>
         </defs>
 
-        <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(255,255,255,0.1)" />
+        <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="var(--border)" />
 
         <XAxis
           dataKey="name"
-          stroke="#71717a"
+          stroke="var(--muted-foreground)"
           fontSize={11}
           tickLine={false}
           axisLine={false}
-          tick={{ fill: '#71717a', textAnchor: 'end' }}
+          tick={{ fill: 'var(--muted-foreground)', textAnchor: 'end' }}
           angle={-35}
           dy={6}
           dx={-4}
@@ -89,32 +89,32 @@ export function ClientChart({ data }: ClientChartProps) {
         <YAxis
           yAxisId="value"
           orientation="left"
-          stroke="#71717a"
+          stroke="var(--muted-foreground)"
           fontSize={12}
           tickLine={false}
           axisLine={false}
           tickFormatter={(v: number) => `R$${v >= 1000 ? `${(v / 1000).toFixed(0)}k` : v}`}
-          tick={{ fill: '#71717a' }}
+          tick={{ fill: 'var(--muted-foreground)' }}
           width={55}
         />
 
         <YAxis
           yAxisId="count"
           orientation="right"
-          stroke="#71717a"
+          stroke="var(--muted-foreground)"
           fontSize={12}
           tickLine={false}
           axisLine={false}
           allowDecimals={false}
-          tick={{ fill: '#71717a' }}
+          tick={{ fill: 'var(--muted-foreground)' }}
           width={30}
         />
 
-        <Tooltip cursor={{ fill: 'rgba(255,255,255,0.02)' }} content={<CustomTooltip />} />
+        <Tooltip cursor={{ fill: 'var(--muted)' }} content={<CustomTooltip />} />
 
         <Legend
           formatter={(value) => value === 'value' ? 'Valor (R$)' : 'Qtd. Negócios'}
-          wrapperStyle={{ fontSize: 12, color: '#71717a', paddingTop: 12 }}
+          wrapperStyle={{ fontSize: 12, color: 'var(--muted-foreground)', paddingTop: 12 }}
         />
 
         <Bar
@@ -131,9 +131,9 @@ export function ClientChart({ data }: ClientChartProps) {
           yAxisId="count"
           type="monotone"
           dataKey="count"
-          stroke="#6366f1"
+          stroke="var(--chart-1)"
           strokeWidth={2}
-          dot={{ r: 4, fill: '#6366f1', strokeWidth: 0 }}
+          dot={{ r: 4, fill: 'var(--chart-1)', strokeWidth: 0 }}
           activeDot={{ r: 6 }}
           animationDuration={1200}
           name="count"

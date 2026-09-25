@@ -161,7 +161,7 @@ export function QuickReplyPicker({
       {/* Header */}
       <div className="px-3 py-2 border-b border-gray-200 dark:border-zinc-700 bg-gray-50 dark:bg-zinc-800">
         <div className="flex items-center gap-2">
-          <Zap className="h-4 w-4 text-[#00a884]" />
+          <Zap className="h-4 w-4 text-primary" />
           <span className="text-xs font-semibold text-gray-700 dark:text-gray-300">
             {t('quickReply')}
           </span>
@@ -183,12 +183,12 @@ export function QuickReplyPicker({
               className={cn(
                 'w-full text-left px-3 py-2.5 transition-colors border-b border-gray-100 dark:border-zinc-800 last:border-b-0',
                 index === selectedIndex
-                  ? 'bg-[#00a884]/5 border-l-2 border-l-[#00a884]'
+                  ? 'bg-primary/5 border-l-2 border-l-primary'
                   : 'hover:bg-gray-50 dark:hover:bg-zinc-800'
               )}
             >
               <div className="flex items-center gap-2 mb-1">
-                <code className="text-xs font-mono font-semibold text-[#00a884] bg-[#00a884]/10 px-1.5 py-0.5 rounded">
+                <code className="text-xs font-mono font-semibold text-primary bg-primary/10 px-1.5 py-0.5 rounded">
                   {qr.shortcut}
                 </code>
                 {qr.category && (

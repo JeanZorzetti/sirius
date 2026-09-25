@@ -45,7 +45,7 @@
   --accent-foreground: var(--hoje-tinta);
   --border: var(--hoje-fio);
   --input: var(--hoje-fio-forte);
-  --ring: var(--hoje-acento-texto);
+  --ring: var(--hoje-tinta);                     /* graphite, as in the whole app (spec 010): a red ring reads as an error */
   --radius: 4px;
 
   color: var(--hoje-tinta);
@@ -67,6 +67,7 @@
   --hoje-fila-item: oklch(0.3 0.03 262);
   --hoje-botao: var(--hoje-acento);
   --hoje-botao-tinta: oklch(0.2 0.03 262);
+  --ring: var(--hoje-acento);
   --radius: 6px;
 }
 
@@ -107,13 +108,4 @@
 @media (prefers-reduced-motion: reduce) {
   [data-tela="hoje"] .hoje-pulso path { animation: none; stroke-dashoffset: 0; }
   [data-tela="hoje"] .hoje-fila-item { animation: none; transition: none; }
-}
-
-/* the assistant's floating button wears this screen's ink here instead of the purple→blue gradient
-   (AgiChatSidebar sets data-assistente="hoje" on this route only) */
-[data-assistente="hoje"] {
-  background-image: none; background-color: oklch(0.22 0.02 255); color: oklch(0.975 0.004 250);
-}
-.dark [data-assistente="hoje"] {
-  background-color: oklch(0.88 0.09 78); color: oklch(0.2 0.03 262);
 }

@@ -80,7 +80,7 @@ export function MessageSearch({ messages, onClose, onNavigate, containerRef }: M
   return (
     <div className="h-[56px] px-4 border-b flex items-center gap-3 bg-white dark:bg-zinc-950 flex-shrink-0 shadow-sm">
       {/* Search icon */}
-      <Search className="h-4 w-4 text-[#8696a0] flex-shrink-0" />
+      <Search className="h-4 w-4 text-muted-foreground flex-shrink-0" />
 
       {/* Input */}
       <Input
@@ -88,18 +88,18 @@ export function MessageSearch({ messages, onClose, onNavigate, containerRef }: M
         placeholder="Buscar na conversa..."
         value={query}
         onChange={(e) => setQuery(e.target.value)}
-        className="flex-1 h-9 border-0 bg-transparent focus-visible:ring-0 text-sm placeholder:text-[#8696a0]"
+        className="flex-1 h-9 border-0 bg-transparent focus-visible:ring-0 text-sm placeholder:text-muted-foreground"
       />
 
       {/* Match counter */}
       {query && (
         <div className="flex items-center gap-2 flex-shrink-0">
           {matches.length > 0 ? (
-            <span className="text-xs text-[#667781] tabular-nums whitespace-nowrap">
+            <span className="text-xs text-muted-foreground tabular-nums whitespace-nowrap">
               {currentMatchIndex + 1} de {matches.length}
             </span>
           ) : (
-            <span className="text-xs text-[#667781]">Nenhum resultado</span>
+            <span className="text-xs text-muted-foreground">Nenhum resultado</span>
           )}
 
           {/* Navigation buttons */}

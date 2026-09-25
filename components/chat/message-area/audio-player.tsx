@@ -43,9 +43,9 @@ export function AudioPlayer({
     player.cycleRate()
   }
 
-  const bg = outbound ? 'bg-[#d9fdd3] dark:bg-emerald-900/60' : 'bg-white dark:bg-zinc-800'
-  const waveColor = outbound ? '#4acd8d' : '#8696a0'
-  const progressColor = '#00a884'
+  const bg = outbound ? 'bg-secondary dark:bg-emerald-900/60' : 'bg-white dark:bg-zinc-800'
+  const waveColor = outbound ? 'var(--color-green-400)' : 'var(--muted-foreground)'
+  const progressColor = 'var(--primary)'
 
   if (!isMediaLoaded(mediaData)) {
     // Sent audio (WABA outbound) — no playback URL available, show duration badge only
@@ -53,10 +53,10 @@ export function AudioPlayer({
       return (
         <div ref={containerRef}>
           <div className={cn('flex items-center gap-2.5 rounded-2xl px-3 py-2.5', bg)}>
-            <div className="w-10 h-10 rounded-full bg-[#00a884]/20 flex items-center justify-center flex-shrink-0">
-              <Mic className="h-5 w-5 text-[#00a884]" />
+            <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center flex-shrink-0">
+              <Mic className="h-5 w-5 text-primary" />
             </div>
-            <span className="text-[13px] text-[#667781]">
+            <span className="text-[13px] text-muted-foreground">
               {knownDuration ? fmtDuration(knownDuration) : 'Áudio enviado'}
             </span>
           </div>
@@ -70,7 +70,7 @@ export function AudioPlayer({
           <button
             onClick={onFetch}
             disabled={loading}
-            className="w-10 h-10 rounded-full bg-[#00a884] flex items-center justify-center flex-shrink-0 hover:bg-[#008f72] transition-colors disabled:opacity-60"
+            className="w-10 h-10 rounded-full bg-primary flex items-center justify-center flex-shrink-0 hover:bg-primary transition-colors disabled:opacity-60"
           >
             {loading
               ? <Loader2 className="h-5 w-5 animate-spin text-white" />
@@ -90,7 +90,7 @@ export function AudioPlayer({
                 />
               ))}
             </div>
-            <span className="text-[11px] text-[#667781]">0:00</span>
+            <span className="text-[11px] text-muted-foreground">0:00</span>
           </div>
         </div>
       </div>
@@ -103,7 +103,7 @@ export function AudioPlayer({
         {/* Play/Pause */}
         <button
           onClick={togglePlay}
-          className="w-10 h-10 rounded-full bg-[#00a884] flex items-center justify-center flex-shrink-0 hover:bg-[#008f72] transition-colors"
+          className="w-10 h-10 rounded-full bg-primary flex items-center justify-center flex-shrink-0 hover:bg-primary transition-colors"
         >
           {playing
             ? <Pause className="h-5 w-5 text-white fill-white" />
@@ -138,12 +138,12 @@ export function AudioPlayer({
 
           {/* Time + speed */}
           <div className="flex items-center justify-between">
-            <span className="text-[11px] text-[#667781] tabular-nums">
+            <span className="text-[11px] text-muted-foreground tabular-nums">
               {playing || currentTime > 0 ? fmtAudioTime(currentTime) : fmtAudioTime(duration)}
             </span>
             <button
               onClick={cycleSpeed}
-              className="text-[11px] font-semibold text-[#667781] hover:text-[#00a884] transition-colors px-1"
+              className="text-[11px] font-semibold text-muted-foreground hover:text-primary transition-colors px-1"
             >
               {playbackRate}×
             </button>

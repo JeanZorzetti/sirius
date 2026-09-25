@@ -86,7 +86,7 @@ export function ContactMobileCard({
         <button
           type="button"
           onClick={onOpenProfile}
-          className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-indigo-500/20 to-purple-500/20 text-sm font-bold text-indigo-600 ring-1 ring-white/10 dark:text-indigo-300"
+          className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-muted text-sm font-bold text-foreground"
         >
           {initials}
         </button>

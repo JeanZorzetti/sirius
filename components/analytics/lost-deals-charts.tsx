@@ -17,7 +17,7 @@ interface LostDealsChartsProps {
   topReasons: TopReason[]
 }
 
-const COLORS = ['#ef4444', '#f97316', '#f59e0b', '#eab308', '#84cc16']
+const COLORS = ['var(--color-red-500)', 'var(--color-amber-500)', 'var(--color-amber-500)', 'var(--color-amber-500)', 'var(--color-green-500)']
 
 export function LostDealsCharts({ topReasons }: LostDealsChartsProps) {
   return (

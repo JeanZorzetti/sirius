@@ -125,12 +125,12 @@ export function TasksByPriorityChart({ data }: Props) {
               <BarChart data={data} margin={{ top: 0, right: 0, bottom: 0, left: 0 }}>
                 <XAxis
                   dataKey="label"
-                  stroke="hsl(var(--muted-foreground))"
+                  stroke="var(--muted-foreground)"
                   fontSize={9}
                   tickLine={false}
                   axisLine={false}
                 />
-                <Tooltip content={<CustomTooltip />} cursor={{ fill: 'hsl(var(--muted))', opacity: 0.3 }} />
+                <Tooltip content={<CustomTooltip />} cursor={{ fill: 'var(--muted)', opacity: 0.3 }} />
                 <Bar dataKey="count" radius={[4, 4, 0, 0]} animationDuration={900}>
                   {data.map((entry) => (
                     <Cell key={entry.priority} fill={entry.color} fillOpacity={0.8} />

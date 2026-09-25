@@ -20,3 +20,7 @@ export const mono = DM_Mono({
   display: 'optional',
   preload: false,
 })
+
+// The same two families for the whole app (spec 010): the app layouts render this in a <style>, so the variables sit on
+// :root and reach the portals (dialog, menu, select), which Radix mounts in <body>, outside any wrapper.
+export const FONTES_NO_ROOT = `:root{--fonte-texto-base:${texto.style.fontFamily};--fonte-mono-base:${mono.style.fontFamily}}`

@@ -47,32 +47,32 @@ export function SEOMetricsChart({ data, showForecast = false }: SEOChartProps) {
         <CartesianGrid strokeDasharray="3 3" className="stroke-slate-200" />
         <XAxis
           dataKey="formattedDate"
-          tick={{ fontSize: 11, fill: '#64748b' }}
+          tick={{ fontSize: 11, fill: 'var(--muted-foreground)' }}
           interval="preserveStartEnd"
-          tickLine={{ stroke: '#e2e8f0' }}
+          tickLine={{ stroke: 'var(--muted)' }}
         />
         <YAxis
           yAxisId="left"
-          tick={{ fontSize: 11, fill: '#64748b' }}
-          tickLine={{ stroke: '#e2e8f0' }}
+          tick={{ fontSize: 11, fill: 'var(--muted-foreground)' }}
+          tickLine={{ stroke: 'var(--muted)' }}
           label={{
             value: 'Cliques',
             angle: -90,
             position: 'insideLeft',
-            style: { textAnchor: 'middle', fill: '#22c55e', fontSize: 12 },
+            style: { textAnchor: 'middle', fill: 'var(--color-green-500)', fontSize: 12 },
           }}
         />
         {data.some((d) => d.impressions !== undefined) && (
           <YAxis
             yAxisId="right"
             orientation="right"
-            tick={{ fontSize: 11, fill: '#64748b' }}
-            tickLine={{ stroke: '#e2e8f0' }}
+            tick={{ fontSize: 11, fill: 'var(--muted-foreground)' }}
+            tickLine={{ stroke: 'var(--muted)' }}
             label={{
               value: 'Impressoes',
               angle: 90,
               position: 'insideRight',
-              style: { textAnchor: 'middle', fill: '#3b82f6', fontSize: 12 },
+              style: { textAnchor: 'middle', fill: 'var(--chart-1)', fontSize: 12 },
             }}
           />
         )}
@@ -82,12 +82,12 @@ export function SEOMetricsChart({ data, showForecast = false }: SEOChartProps) {
           <ReferenceLine
             x={data[forecastStartIndex - 1]?.formattedDate}
             yAxisId="left"
-            stroke="#94a3b8"
+            stroke="var(--muted-foreground)"
             strokeDasharray="3 3"
             label={{
               value: 'Hoje',
               position: 'top',
-              fill: '#64748b',
+              fill: 'var(--muted-foreground)',
               fontSize: 10,
             }}
           />
@@ -96,11 +96,11 @@ export function SEOMetricsChart({ data, showForecast = false }: SEOChartProps) {
         <Tooltip
           contentStyle={{
             backgroundColor: 'white',
-            borderColor: '#e2e8f0',
+            borderColor: 'var(--muted)',
             borderRadius: '8px',
-            boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)',
+            boxShadow: 'none',
           }}
-          labelStyle={{ color: '#1e293b', fontWeight: 500 }}
+          labelStyle={{ color: 'var(--foreground)', fontWeight: 500 }}
           formatter={(value, name) => {
             let label: string
             switch (name) {
@@ -151,7 +151,7 @@ export function SEOMetricsChart({ data, showForecast = false }: SEOChartProps) {
           yAxisId="left"
           type="monotone"
           dataKey="clicks"
-          stroke="#22c55e"
+          stroke="var(--color-green-500)"
           strokeWidth={2}
           dot={false}
           activeDot={{ r: 6 }}
@@ -164,7 +164,7 @@ export function SEOMetricsChart({ data, showForecast = false }: SEOChartProps) {
             yAxisId="right"
             type="monotone"
             dataKey="impressions"
-            stroke="#3b82f6"
+            stroke="var(--chart-1)"
             strokeWidth={2}
             dot={false}
             activeDot={{ r: 6 }}
@@ -179,33 +179,33 @@ export function SEOMetricsChart({ data, showForecast = false }: SEOChartProps) {
               yAxisId="left"
               type="monotone"
               dataKey="predictedClicks"
-              stroke="#94a3b8"
+              stroke="var(--muted-foreground)"
               strokeWidth={2}
               strokeDasharray="5 5"
               dot={false}
-              activeDot={{ r: 4, fill: '#94a3b8' }}
+              activeDot={{ r: 4, fill: 'var(--muted-foreground)' }}
               connectNulls={false}
             />
             <Line
               yAxisId="left"
               type="monotone"
               dataKey="predictedClicksFromEfficiency"
-              stroke="#f59e0b"
+              stroke="var(--color-amber-500)"
               strokeWidth={2}
               strokeDasharray="3 3"
               dot={false}
-              activeDot={{ r: 4, fill: '#f59e0b' }}
+              activeDot={{ r: 4, fill: 'var(--color-amber-500)' }}
               connectNulls={false}
             />
             <Line
               yAxisId="right"
               type="monotone"
               dataKey="predictedImpressions"
-              stroke="#60a5fa"
+              stroke="var(--chart-5)"
               strokeWidth={2}
               strokeDasharray="5 5"
               dot={false}
-              activeDot={{ r: 4, fill: '#60a5fa' }}
+              activeDot={{ r: 4, fill: 'var(--chart-5)' }}
               connectNulls={false}
             />
           </>

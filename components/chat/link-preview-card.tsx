@@ -122,7 +122,7 @@ export function LinkPreviewCard({ url, outbound = false }: LinkPreviewCardProps)
       )}
       <div className="p-2.5 space-y-1">
         {preview.siteName && (
-          <div className="flex items-center gap-1 text-[10px] uppercase tracking-wide text-[#667781] font-medium">
+          <div className="flex items-center gap-1 text-[10px] uppercase tracking-wide text-muted-foreground font-medium">
             <ExternalLink className="h-2.5 w-2.5" />
             <span className="truncate">{preview.siteName}</span>
           </div>
@@ -133,7 +133,7 @@ export function LinkPreviewCard({ url, outbound = false }: LinkPreviewCardProps)
           </p>
         )}
         {preview.description && (
-          <p className="text-[11px] text-[#667781] line-clamp-2 leading-snug">
+          <p className="text-[11px] text-muted-foreground line-clamp-2 leading-snug">
             {preview.description}
           </p>
         )}

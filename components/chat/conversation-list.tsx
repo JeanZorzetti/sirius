@@ -113,16 +113,16 @@ export function ConversationList({ contacts, selectedContact, onSelectContact, c
       {/* Search */}
       <div className="px-3 py-2.5">
         <div className="relative">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#8696a0]" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
           <Input
             ref={searchInputRef}
             placeholder="Buscar conversa, telefone ou mensagem"
             value={query}
             onChange={e => setQuery(e.target.value)}
             onKeyDown={e => { if (e.key === 'Escape') { setQuery(''); e.currentTarget.blur() } }}
-            className="pl-9 pr-12 h-[34px] bg-[#f0f2f5] whatsapp-input border-0 rounded-lg text-[13px] placeholder:text-[#8696a0] focus-visible:ring-1 focus-visible:ring-[#00a884] whatsapp-text-primary"
+            className="pl-9 pr-12 h-[34px] bg-muted whatsapp-input border-0 rounded-lg text-[13px] placeholder:text-muted-foreground focus-visible:ring-1 focus-visible:ring-primary whatsapp-text-primary"
           />
-          <kbd className="hidden sm:inline-flex absolute right-2 top-1/2 -translate-y-1/2 items-center gap-0.5 px-1.5 h-5 rounded border border-[#d1d7db] bg-white text-[10px] font-mono text-[#8696a0] pointer-events-none">
+          <kbd className="hidden sm:inline-flex absolute right-2 top-1/2 -translate-y-1/2 items-center gap-0.5 px-1.5 h-5 rounded border border-border bg-white text-[10px] font-mono text-muted-foreground pointer-events-none">
             <span className="text-[9px]">⌘</span>K
           </kbd>
         </div>
@@ -143,7 +143,7 @@ export function ConversationList({ contacts, selectedContact, onSelectContact, c
         aria-label="Lista de conversas"
       >
         {filtered.length === 0 ? (
-          <div className="flex flex-col items-center justify-center h-32 text-sm text-[#8696a0] gap-1">
+          <div className="flex flex-col items-center justify-center h-32 text-sm text-muted-foreground gap-1">
             <Search className="h-5 w-5 opacity-40" />
             <span>Nenhuma conversa encontrada</span>
           </div>
