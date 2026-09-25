@@ -1,0 +1,19 @@
+{
+  "telas": [
+    {
+      "data": "2026-09-24",
+      "rota": "/dashboard",
+      "spec": "009-dashboard-fila-de-hoje",
+      "pergunta": "Em que etapa está cada negócio aberto deste funil, e qual deles pede ação agora?",
+      "forma": "fila ranqueada (o primeiro grande, mais dois, o resto contado com a faixa de dias) acima do quadro Kanban com resumo honesto por etapa (contagem, soma dos preenchidos, 'valor em n de m', 'k pedem ação') e fato de tempo em texto em cada cartão",
+      "descartada": "faixas de idade atravessando as etapas (Estrato, E) — muda a posição do cartão para idade e mata a ordem manual; lista ordenada por idade — perde o 'onde entope' que só a coluna dá",
+      "fonte": "pg siriusdb · Deal (value, status, dueDate, wonAt, archived), Activity (máx createdAt com type = STAGE_CHANGE), Organization.createdAt · lido ao abrir a página",
+      "granularidade": "dia de calendário no fuso de Brasília",
+      "latencia": "tempo real (force-dynamic); 'atualizado às HH:MM' no cabeçalho da fila",
+      "estados": ["com dado", "zero real (etapa vazia, fila vazia com o critério)", "não apurado (sem valor: nulo ou 0; sem contato; contato sem telefone)", "exemplo (criado até 5 min depois da conta)", "erro na fonte (error.tsx da rota)"],
+      "pior_caso": "274 negócios numa conta, 32 numa coluna, 10 etapas, título de 58 caracteres, nome de etapa de 32; provado na conta de teste com o funil 'antigo' (69 negócios)",
+      "gates": "ver handoff da spec 009",
+      "obs": "80,5% dos negócios reais sem valor (44,6% nulo + 35,9% zero; o 0 vem do lib/agaas-executor.ts, 'suggestedDealValue || 0'), então 0 conta como sem valor; 90,5% sem prazo de retorno; dias na etapa p50 106 (26 contas, 24/09)"
+    }
+  ]
+}

@@ -14,6 +14,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { DealCard } from './deal-card'
+import { dinheiroCompacto, resumirEtapa } from '@/lib/pipeline/hoje'
 import { LOST_COLUMN_ID, type ContactDisplayMode, type Deal, type Stage } from './types'
 
 export function KanbanColumn({
@@ -35,8 +36,6 @@ export function KanbanColumn({
   hasNextStage?: boolean
   contactDisplayMode?: ContactDisplayMode
 }) {
-  const totalValue = stage.deals.reduce((acc, deal) => acc + (deal.value ? Number(deal.value) : 0), 0)
-
   const tCommon = useTranslations('common')
   const [isEditing, setIsEditing] = useState(false)
   const [newName, setNewName] = useState(stage.name)
@@ -48,10 +47,10 @@ export function KanbanColumn({
   }
 
   return (
-    <div className="w-[260px] sm:w-[300px] md:w-80 flex-none flex flex-col h-full">
-      {/* Column Header */}
-      <div className="flex flex-col gap-1 px-1 mb-4 select-none">
-        <div className="flex items-center justify-between group/header">
+    <div data-testid="kanban-column" className="flex h-full w-[260px] flex-none flex-col sm:w-[240px] lg:w-auto lg:min-w-[176px] lg:flex-1 lg:basis-0">
+      {/* Column Header (spec 009): count, the filled values' sum and how many have one, how many ask for action */}
+      <div className="mb-2 flex select-none flex-col px-1">
+        <div className="flex items-center justify-between gap-2 group/header">
           {isEditing ? (
             <form onSubmit={handleRenameSubmit} className="flex-1 mr-2">
               <Input
@@ -63,18 +62,16 @@ export function KanbanColumn({
               />
             </form>
           ) : (
-            <h3 className="text-xs font-bold uppercase tracking-widest text-zinc-600 dark:text-zinc-400 cursor-text" onDoubleClick={() => setIsEditing(true)}>
+            <h3 className="truncate text-[13px] font-semibold text-foreground cursor-text" onDoubleClick={() => setIsEditing(true)}>
               {stage.name}
             </h3>
           )}
 
-          <div className="flex items-center gap-2">
-            <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-zinc-200 dark:bg-zinc-800 px-1.5 text-[10px] font-medium text-zinc-600 dark:text-zinc-400">
-              {stage.deals.length}
-            </span>
+          <div className="flex items-center gap-1">
+            <span className="text-xl font-extrabold leading-none tabular-nums">{stage.deals.length}</span>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="icon" className="h-8 w-8 touch-target opacity-100 lg:h-6 lg:w-6 lg:opacity-0 lg:group-hover/header:opacity-100 transition-opacity">
+                <Button variant="ghost" size="icon" aria-label={`Opções da etapa ${stage.name}`} className="h-8 w-8 touch-target opacity-100 lg:h-6 lg:w-6 lg:opacity-0 lg:group-hover/header:opacity-100 focus-visible:opacity-100 transition-opacity">
                   <MoreHorizontal className="w-3 h-3" />
                 </Button>
               </DropdownMenuTrigger>
@@ -82,19 +79,14 @@ export function KanbanColumn({
                 <DropdownMenuItem onClick={() => setIsEditing(true)}>
                   <Pencil className="w-3 h-3 mr-2" /> {tCommon('buttons.edit')}
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => onDelete?.(stage.id)} className="text-red-500 focus:text-red-500">
+                <DropdownMenuItem onClick={() => onDelete?.(stage.id)} className="text-destructive focus:text-destructive">
                   <Trash2 className="w-3 h-3 mr-2" /> {tCommon('buttons.delete')}
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
         </div>
-        <div className="h-1 w-full rounded-full bg-zinc-200 dark:bg-zinc-900 overflow-hidden mt-2">
-          <div className="h-full bg-primary/40 w-full" />
-        </div>
-        <div className="mt-1 text-xs font-mono text-zinc-500">
-          Total: <span className="text-primary/80 font-semibold">R$ {totalValue.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</span>
-        </div>
+        <ResumoDaEtapa deals={stage.deals} />
       </div>
 
       {/* Column Body - Droppable Area */}
@@ -104,13 +96,12 @@ export function KanbanColumn({
             ref={provided.innerRef}
             {...provided.droppableProps}
             className={cn(
-              "flex-1 rounded-2xl p-3 border shadow-sm transition-colors",
-              "bg-muted/30 border-border/50",
-              "dark:bg-gradient-to-b dark:from-white/[0.04] dark:to-white/[0.01] dark:backdrop-blur-md dark:border-white/5 dark:shadow-[0_4px_24px_rgba(0,0,0,0.2)]",
-              snapshot.isDraggingOver && "border-primary/30 bg-primary/5 dark:bg-primary/10"
+              "flex-1 rounded-[var(--radius)] border border-border bg-muted p-1.5 transition-colors",
+              stage.deals.length === 0 && "border-dashed bg-transparent",
+              snapshot.isDraggingOver && "border-ring bg-muted"
             )}
           >
-            <div className="flex flex-col gap-3 min-h-[150px]">
+            <div className="flex flex-col gap-1.5 min-h-[150px]">
               {stage.deals.map((deal, index) => (
                 <Draggable key={deal.id} draggableId={deal.id} index={index}>
                   {(provided, snapshot) => (
@@ -138,19 +129,7 @@ export function KanbanColumn({
               ))}
               {provided.placeholder}
               {stage.deals.length === 0 && (
-                <div className="flex h-40 flex-col items-center justify-center rounded-xl border-2 border-dashed border-white/5 bg-white/[0.01] p-4 text-center gap-3 transition-colors hover:bg-white/[0.02]">
-                  <div className="rounded-full bg-zinc-900/50 p-3 ring-1 ring-white/10">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-zinc-600 opacity-50">
-                      <path d="M19 11V9C19 5.13401 15.866 2 12 2C8.13401 2 5 5.13401 5 9V11" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-                      <path d="M5 11C5 11 5 14.5455 5 16C5 19.866 8.13401 23 12 23C15.866 23 19 19.866 19 16C19 14.5455 19 11 19 11" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-                      <path d="M12 11V15" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-                    </svg>
-                  </div>
-                  <div className="flex flex-col gap-0.5">
-                    <span className="text-xs font-medium text-zinc-500">Vazio</span>
-                    <span className="text-[10px] text-zinc-600">Arraste um card para cá</span>
-                  </div>
-                </div>
+                <p className="hoje-mono px-2 py-4 text-center text-xs text-muted-foreground">Nenhum negócio nesta etapa</p>
               )}
             </div>
           </div>
@@ -169,25 +148,14 @@ export function LostColumn({
   onDealClick?: (deal: Deal) => void
   contactDisplayMode?: ContactDisplayMode
 }) {
-  const totalValue = deals.reduce((acc, d) => acc + (d.value ? Number(d.value) : 0), 0)
-
   return (
-    <div className="w-[260px] sm:w-[300px] md:w-80 flex-none flex flex-col h-full">
-      <div className="flex flex-col gap-1 px-1 mb-4 select-none">
-        <div className="flex items-center justify-between">
-          <h3 className="text-xs font-bold uppercase tracking-widest text-red-500/80">
-            Perdido
-          </h3>
-          <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-red-900/30 px-1.5 text-[10px] font-medium text-red-400">
-            {deals.length}
-          </span>
+    <div data-testid="kanban-column" className="flex h-full w-[260px] flex-none flex-col sm:w-[240px] lg:w-auto lg:min-w-[176px] lg:flex-1 lg:basis-0">
+      <div className="mb-2 flex select-none flex-col px-1">
+        <div className="flex items-center justify-between gap-2">
+          <h3 className="text-[13px] font-semibold text-muted-foreground">Perdido</h3>
+          <span className="text-xl font-extrabold leading-none tabular-nums text-muted-foreground">{deals.length}</span>
         </div>
-        <div className="h-1 w-full rounded-full bg-zinc-200 dark:bg-zinc-900 overflow-hidden mt-2">
-          <div className="h-full bg-red-400 w-full" />
-        </div>
-        <div className="mt-1 text-xs font-mono text-zinc-500">
-          Total: <span className="text-red-400/80">R$ {totalValue.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</span>
-        </div>
+        <ResumoDaEtapa deals={deals} perdidos />
       </div>
 
       <Droppable droppableId={LOST_COLUMN_ID} type="DEAL">
@@ -196,12 +164,11 @@ export function LostColumn({
             ref={provided.innerRef}
             {...provided.droppableProps}
             className={cn(
-              "flex-1 rounded-2xl p-3 border shadow-sm transition-colors bg-red-50/50 border-red-100",
-              "dark:bg-gradient-to-b dark:from-red-950/20 dark:to-red-950/5 dark:backdrop-blur-md dark:border-red-500/10 dark:shadow-[0_4px_24px_rgba(0,0,0,0.2)]",
-              snapshot.isDraggingOver && "border-red-500/30 bg-red-500/10"
+              "flex-1 rounded-[var(--radius)] border border-dashed border-border p-1.5 transition-colors",
+              snapshot.isDraggingOver && "border-ring bg-muted"
             )}
           >
-            <div className="flex flex-col gap-3 min-h-[150px]">
+            <div className="flex flex-col gap-1.5 min-h-[150px]">
               {deals.map((deal, index) => (
                 <Draggable key={deal.id} draggableId={deal.id} index={index}>
                   {(provided, snapshot) => (
@@ -217,15 +184,31 @@ export function LostColumn({
               ))}
               {provided.placeholder}
               {deals.length === 0 && (
-                <div className="flex h-40 flex-col items-center justify-center rounded-xl border-2 border-dashed border-red-500/10 p-4 text-center gap-3">
-                  <span className="text-xs font-medium text-zinc-600">Nenhum negócio perdido</span>
-                  <span className="text-[10px] text-zinc-700">Arraste um card para marcar como perdido</span>
-                </div>
+                <p className="hoje-mono px-2 py-4 text-center text-xs text-muted-foreground">
+                  Nenhum negócio perdido. Arraste um cartão para cá para marcar como perdido.
+                </p>
               )}
             </div>
           </div>
         )}
       </Droppable>
+    </div>
+  )
+}
+
+/** "R$ 16,8 mil / valor em 2 de 9 / 5 pedem ação" — never R$ 0,00 for values nobody filled (80.5% of real deals). */
+function ResumoDaEtapa({ deals, perdidos = false }: { deals: Deal[]; perdidos?: boolean }) {
+  const r = resumirEtapa(deals, new Date())
+  return (
+    <div className="hoje-mono mt-1 text-[11px] leading-snug text-muted-foreground tabular-nums">
+      {/* an empty stage says so in its body (the drop area); the header keeps its height */}
+      <p className={r.comValor ? 'font-medium text-foreground' : ''}>
+        {r.n === 0 ? ' ' : r.comValor ? dinheiroCompacto(r.soma) : 'sem valor'}
+      </p>
+      <p>{r.comValor > 0 ? `valor em ${r.comValor} de ${r.n}` : ' '}</p>
+      {!perdidos && (
+        <p>{r.pedemAcao > 0 ? `${r.pedemAcao} ${r.pedemAcao === 1 ? 'pede' : 'pedem'} ação` : ' '}</p>
+      )}
     </div>
   )
 }

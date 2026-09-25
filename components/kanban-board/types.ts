@@ -13,6 +13,12 @@ export type Deal = {
   } | null
   closeDate?: string | Date | null
   dueDate?: string | Date | null
+  archived?: boolean | null
+  lostReason?: string | null
+  createdAt?: string | Date | null
+  wonAt?: string | Date | null
+  stageEnteredAt?: string | null
+  exemplo?: boolean
 }
 
 export type Stage = {

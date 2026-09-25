@@ -4,7 +4,6 @@ import { cn } from '@/lib/utils'
 interface Stage {
   id: string
   name: string
-  color?: string | null
   deals: Array<{ value?: number | null }>
 }
 
@@ -14,58 +13,26 @@ interface StageStoriesProps {
   onSelect: (stageId: string) => void
 }
 
-const STAGE_COLORS = [
-  'bg-indigo-500',
-  'bg-violet-500',
-  'bg-blue-500',
-  'bg-cyan-500',
-  'bg-emerald-500',
-  'bg-amber-500',
-  'bg-orange-500',
-  'bg-rose-500',
-]
-
+// Stage chips: name + count. The old per-index rainbow dots coded nothing (spec 009).
 export function StageStories({ stages, activeStageId, onSelect }: StageStoriesProps) {
   return (
-    <div
-      className="flex gap-2 overflow-x-auto px-3 py-3 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden md:grid md:grid-cols-4 md:overflow-visible md:gap-3 md:px-4"
-      style={{ scrollSnapType: 'x mandatory' }}
-    >
-      {stages.map((stage, idx) => {
+    <div className="flex snap-x snap-mandatory gap-2 overflow-x-auto px-3 py-3 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+      {stages.map((stage) => {
         const isActive = stage.id === activeStageId
-        const totalValue = stage.deals.reduce((sum, d) => sum + (d.value ?? 0), 0)
-        const colorClass = STAGE_COLORS[idx % STAGE_COLORS.length]
-
         return (
           <button
             key={stage.id}
             onClick={() => onSelect(stage.id)}
-            style={{ scrollSnapAlign: 'start' }}
+            aria-pressed={isActive}
             className={cn(
-              'flex shrink-0 flex-col items-center gap-1.5 rounded-2xl px-3 py-2.5 transition-all duration-150',
-              'min-w-[76px] sm:min-w-[88px] active:scale-95 md:min-w-0 md:w-full md:px-4 md:py-3',
+              'flex min-h-[44px] shrink-0 snap-start items-center gap-2 rounded-[var(--radius)] border px-3 text-[13px] font-semibold transition-colors active:scale-[.98]',
               isActive
-                ? 'border border-indigo-500/30 bg-indigo-500/5 shadow-sm'
-                : 'border border-border/40 bg-card hover:bg-muted/30',
+                ? 'border-transparent bg-primary text-primary-foreground'
+                : 'border-input bg-card text-foreground hover:bg-muted',
             )}
           >
-            <div className={cn('h-3 w-3 rounded-full', colorClass, isActive && 'ring-2 ring-offset-1 ring-indigo-500/40')} />
-            <span className={cn(
-              'text-center text-[11px] font-semibold leading-tight',
-              isActive ? 'text-indigo-600 dark:text-indigo-400' : 'text-muted-foreground',
-            )}>
-              {stage.name}
-            </span>
-            {totalValue > 0 && (
-              <span className={cn('text-[10px] font-medium', isActive ? 'text-indigo-500' : 'text-muted-foreground/70')}>
-                {totalValue >= 1000
-                  ? `R$ ${(totalValue / 1000).toFixed(0)}k`
-                  : `R$ ${totalValue.toLocaleString('pt-BR')}`}
-              </span>
-            )}
-            <span className={cn('text-[10px]', isActive ? 'text-indigo-400' : 'text-muted-foreground/50')}>
-              ({stage.deals.length})
-            </span>
+            {stage.name}
+            <span className="hoje-mono text-[12.5px] font-medium tabular-nums opacity-80">{stage.deals.length}</span>
           </button>
         )
       })}

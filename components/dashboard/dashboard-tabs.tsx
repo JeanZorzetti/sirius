@@ -3,14 +3,15 @@
 import { useState, useEffect, useCallback, useMemo } from 'react'
 import dynamic from 'next/dynamic'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { CreateDealDialog } from '@/components/deals/create-deal-dialog'
 import { EditDealDialog } from '@/components/deals/edit-deal-dialog'
 import { PipelineSelector } from '@/components/pipelines/pipeline-selector'
 import { ExportButtons } from '@/components/ui/export-buttons'
 import { toast } from 'sonner'
-import { Layout, Loader2, Plus } from 'lucide-react'
+import { Loader2, Plus } from 'lucide-react'
 import { MobilePipelineList } from './mobile-pipeline-list'
+import { FilaDeHoje } from './fila-de-hoje'
+import { dinheiroCompacto, resumirEtapa } from '@/lib/pipeline/hoje'
 import { useAppBar } from '@/components/mobile/app-bar-context'
 import type {
   PipelineContact,
@@ -40,6 +41,8 @@ interface DashboardTabsProps {
   userName: string
   organizationId: string
   canViewClosings?: boolean
+  /** The value and contact searches, rendered by the page (server) into the top row */
+  buscas?: React.ReactNode
 }
 
 export function DashboardTabs({
@@ -50,11 +53,11 @@ export function DashboardTabs({
   userName,
   organizationId,
   canViewClosings = true,
+  buscas,
 }: DashboardTabsProps) {
   const router = useRouter()
   const searchParams = useSearchParams()
   const pathname = usePathname()
-  const [activeTab, setActiveTab] = useState('pipeline')
 
   // Pipeline selector state — persist via URL ?pipeline=ID
   const [selectedPipelineId, setSelectedPipelineId] = useState<string>(() => {
@@ -84,13 +87,14 @@ export function DashboardTabs({
 
   const { setConfig } = useAppBar()
 
-  const totalDeals = filteredStages.reduce((sum, s) => sum + (s.deals?.length ?? 0), 0)
+  // Open and won deals of the selected pipeline (lost ones live in their own column): the queue and the summaries read these
+  const emJogo = useMemo(
+    () => filteredStages.flatMap((s) => (s.deals ?? []).filter((d) => d.status !== 'LOST')),
+    [filteredStages]
+  )
   // Exportação baixa TODOS os deals do usuário (ignora filtro de pipeline) — o "vazio" que desabilita o botão também ignora o filtro.
   const hasAnyDeals = stages.some((s) => (s.deals?.length ?? 0) > 0)
-  const totalValue = filteredStages.reduce(
-    (sum, s) => sum + (s.deals ?? []).reduce((sv, d) => sv + (d.value ?? 0), 0),
-    0
-  )
+  const selectedPipeline = pipelines.find((p) => p.id === selectedPipelineId)
 
   const [createDealOpen, setCreateDealOpen] = useState(false)
   const [editingDeal, setEditingDeal] = useState<PipelineDeal | null>(null)
@@ -119,15 +123,13 @@ export function DashboardTabs({
   })
 
   useEffect(() => {
-    const formattedValue = totalValue >= 1_000_000
-      ? `R$ ${(totalValue / 1_000_000).toFixed(1)}M`
-      : totalValue >= 1000
-      ? `R$ ${(totalValue / 1000).toFixed(0)}k`
-      : `R$ ${totalValue.toLocaleString('pt-BR')}`
+    // Honest summary (spec 009): 80% of real deals carry no value, so "R$ 0" was a claim about missing data
+    const r = resumirEtapa(emJogo, new Date())
+    const valor = r.comValor > 0 ? `${dinheiroCompacto(r.soma)} em ${r.comValor} com valor` : 'sem valor'
 
     setConfig({
       title: 'Pipeline',
-      subtitle: `${totalDeals} deals · ${formattedValue}`,
+      subtitle: `${r.n} ${r.n === 1 ? 'negócio' : 'negócios'} · ${valor}`,
       showSearch: true,
       primaryAction: {
         icon: <Plus className="h-5 w-5" />,
@@ -136,12 +138,15 @@ export function DashboardTabs({
       },
     })
     return () => setConfig(null)
-  }, [totalDeals, totalValue])
+  }, [emJogo])
 
   return (
     <>
-      {/* Mobile layout: stage stories + vertical list */}
+      {/* Mobile layout: today's queue, then stage chips + vertical list */}
       <div className="lg:hidden">
+        <div className="px-3 pt-2">
+          <FilaDeHoje deals={emJogo} onAbrir={setEditingDeal} />
+        </div>
         <MobilePipelineList
           stages={filteredStages}
           pipelines={pipelines}
@@ -152,47 +157,37 @@ export function DashboardTabs({
         />
       </div>
 
-      {/* Desktop layout: kanban tabs */}
-      <div className="hidden lg:block h-full">
-        <Tabs value={activeTab} onValueChange={setActiveTab} className="h-full flex flex-col">
-          <div className="flex items-center justify-between mb-4">
-            <TabsList className="inline-flex h-11 items-center justify-center rounded-lg bg-zinc-100/80 dark:bg-zinc-800/80 p-1 text-muted-foreground backdrop-blur-sm border border-black/5 dark:border-white/5">
-              <TabsTrigger
-                value="pipeline"
-                className="inline-flex items-center justify-center whitespace-nowrap rounded-md px-4 py-2 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-white dark:data-[state=active]:bg-zinc-900 data-[state=active]:text-indigo-600 dark:data-[state=active]:text-indigo-400 data-[state=active]:shadow-sm gap-2"
-              >
-                <Layout className="h-4 w-4" />
-                Pipeline
-              </TabsTrigger>
-            </TabsList>
-
-            {activeTab === 'pipeline' && (
-              <div className="flex items-center gap-2">
-                <PipelineSelector
-                  pipelines={pipelines}
-                  selectedPipelineId={selectedPipelineId}
-                  onPipelineChange={handlePipelineChange}
-                />
-                <ExportButtons resourceType="deals" disabled={!hasAnyDeals} />
-                <CreateDealDialog
-                  stages={filteredStages}
-                  contacts={contacts}
-                  onSuccess={syncWithServer}
-                />
-              </div>
-            )}
-          </div>
-
-          <TabsContent value="pipeline" className="flex-1 m-0 data-[state=inactive]:hidden">
-            <KanbanBoard
+      {/* Desktop layout (spec 009): one top row, today's queue, then the board as context */}
+      <div className="hidden lg:flex lg:h-full lg:flex-col">
+        <h1 className="sr-only">Pipeline {selectedPipeline?.name}</h1>
+        <div className="mb-5 flex items-center justify-between gap-4">
+          <PipelineSelector
+            pipelines={pipelines}
+            selectedPipelineId={selectedPipelineId}
+            onPipelineChange={handlePipelineChange}
+          />
+          <div className="flex items-center gap-2">
+            {buscas}
+            <ExportButtons resourceType="deals" disabled={!hasAnyDeals} />
+            <CreateDealDialog
               stages={filteredStages}
               contacts={contacts}
-              pipelineId={selectedPipelineId}
-              currentUserId={userId}
-              canViewClosings={canViewClosings}
+              onSuccess={syncWithServer}
             />
-          </TabsContent>
-        </Tabs>
+          </div>
+        </div>
+
+        <FilaDeHoje deals={emJogo} onAbrir={setEditingDeal} />
+
+        <div className="min-h-[60vh] flex-1">
+          <KanbanBoard
+            stages={filteredStages}
+            contacts={contacts}
+            pipelineId={selectedPipelineId}
+            currentUserId={userId}
+            canViewClosings={canViewClosings}
+          />
+        </div>
       </div>
 
       {/* Mobile create deal dialog */}

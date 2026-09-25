@@ -11,6 +11,7 @@ interface DashboardTabsWrapperProps {
   organizationId: string
   vsearch?: string
   csearch?: string
+  buscas?: React.ReactNode
 }
 
 export async function DashboardTabsWrapper({
@@ -19,6 +20,7 @@ export async function DashboardTabsWrapper({
   organizationId,
   vsearch,
   csearch,
+  buscas,
 }: DashboardTabsWrapperProps) {
   // Use raw query to avoid crash if canViewDealClosings column hasn't been migrated yet
   let canViewClosings = true
@@ -43,7 +45,7 @@ export async function DashboardTabsWrapper({
     : { organizationId }
 
   // Fetch tudo em queries planas para evitar INSUFFICIENT_PATH com include aninhado
-  const [rawPipelines, rawStages, rawDeals, dealContacts, contacts] = await Promise.all([
+  const [rawPipelines, rawStages, rawDeals, dealContacts, contacts, stageMoves, organization] = await Promise.all([
     prisma.pipeline.findMany({
       where: pipelineFilter,
       include: {
@@ -91,6 +93,7 @@ export async function DashboardTabsWrapper({
         archived: true,
         archivedReason: true,
         archivedAt: true,
+        wonAt: true,
       },
       orderBy: [{ order: "asc" }, { createdAt: "desc" }],
     }),
@@ -117,10 +120,20 @@ export async function DashboardTabsWrapper({
       },
       orderBy: { name: "asc" },
     }),
+    // When each deal entered its current stage (spec 009): the last STAGE_CHANGE, else its creation
+    prisma.activity.groupBy({
+      by: ["dealId"],
+      where: { type: "STAGE_CHANGE", deal: { organizationId } },
+      _max: { createdAt: true },
+    }),
+    prisma.organization.findUnique({ where: { id: organizationId }, select: { createdAt: true } }),
   ])
 
   // Montar lookup de contatos por id
   const contactById = new Map(dealContacts.map((c) => [c.id, c]))
+  const lastMoveByDeal = new Map(stageMoves.map((m) => [m.dealId, m._max.createdAt]))
+  // Signup seeds every new account with example deals in the same minute (lib/pipeline-defaults.ts)
+  const seededUntil = organization ? organization.createdAt.getTime() + 5 * 60_000 : 0
 
   // Transform data to serializable format
   const pipelines = rawPipelines.map((p) => ({
@@ -139,6 +152,9 @@ export async function DashboardTabsWrapper({
     dueDate: deal.dueDate ? deal.dueDate.toISOString() : null,
     createdAt: deal.createdAt.toISOString(),
     updatedAt: deal.updatedAt.toISOString(),
+    wonAt: deal.wonAt ? deal.wonAt.toISOString() : null,
+    stageEnteredAt: (lastMoveByDeal.get(deal.id) ?? deal.createdAt).toISOString(),
+    exemplo: deal.createdAt.getTime() <= seededUntil,
     contact: deal.contactId ? (contactById.get(deal.contactId) ?? null) : null,
   }))
 
@@ -170,6 +186,7 @@ export async function DashboardTabsWrapper({
       userName={userName}
       organizationId={organizationId}
       canViewClosings={canViewClosings}
+      buscas={buscas}
     />
   )
 }

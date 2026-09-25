@@ -362,6 +362,7 @@ export function AgiChatSidebar({ dealId, pipelineId, context }: AgiChatSidebarPr
             {!isOpen && (
                 <button
                     onClick={() => setIsOpen(true)}
+                    data-assistente
                     className={`fixed z-50 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110 group
                         ${isMobile
                             ? 'bottom-[calc(3.5rem+env(safe-area-inset-bottom)+0.75rem)] right-4 p-3'

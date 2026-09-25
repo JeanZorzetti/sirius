@@ -211,11 +211,14 @@ export function CreateDealDialog({
             />
 
             <ResponsiveDialog open={open} onOpenChange={handleOpenChange}>
-                <ResponsiveDialogTrigger asChild>
-                    <Button>
-                        <Plus className="mr-2 h-4 w-4" /> Novo Deal
-                    </Button>
-                </ResponsiveDialogTrigger>
+                {/* Controlled from outside (the phone's app bar and empty state), it has no trigger of its own */}
+                {externalOpen === undefined && (
+                    <ResponsiveDialogTrigger asChild>
+                        <Button>
+                            <Plus className="mr-2 h-4 w-4" /> Novo Deal
+                        </Button>
+                    </ResponsiveDialogTrigger>
+                )}
                 <ResponsiveDialogContent className="sm:max-w-[425px]">
                     <form onSubmit={onSubmit}>
                         <ResponsiveDialogHeader>

@@ -40,6 +40,11 @@ export interface PipelineDeal {
   dueDate: string | null
   createdAt: string
   updatedAt: string
+  wonAt: string | null
+  /** When the deal entered its current stage: last STAGE_CHANGE activity, else its creation (spec 009) */
+  stageEnteredAt: string
+  /** Seeded by signup: created within 5 min of its organization (spec 009) */
+  exemplo: boolean
   contact: PipelineContact | null
 }
 

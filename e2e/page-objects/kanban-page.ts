@@ -115,37 +115,30 @@ export class KanbanPage extends BasePage {
    * Get all Kanban columns (stages)
    */
   getKanbanColumns() {
-    // Find columns by looking for stage headings (h3 with uppercase text)
-    // Then get their parent containers
-    return this.page.locator('h3.uppercase').locator('xpath=ancestor::div[contains(@class, "flex-none")]')
+    return this.page.locator('[data-testid="kanban-column"]')
   }
 
   /**
    * Get a specific Kanban column by name
    */
   getKanbanColumnByName(stageName: string) {
-    // Find the column by looking for h3 with the stage name
-    return this.page.locator(`h3:has-text("${stageName}")`).locator('../../../..')
+    return this.page.locator('[data-testid="kanban-column"]').filter({
+      has: this.page.locator(`h3:has-text("${stageName}")`)
+    }).first()
   }
 
   /**
    * Get all deal cards
    */
   getDealCards() {
-    // Deal cards have specific structure with title and value
-    return this.page.locator('div[class*="group relative flex flex-col"]').filter({
-      has: this.page.locator('span:has-text("Valor")')
-    })
+    return this.page.locator('[data-testid="deal-card"]')
   }
 
   /**
    * Get a specific deal card by title
    */
   getDealCardByTitle(title: string) {
-    // Find the card that contains the exact title text
-    return this.page.locator('div[class*="group relative flex flex-col"]').filter({
-      has: this.page.locator(`span.text-sm:has-text("${title}")`)
-    }).first()
+    return this.page.locator('[data-testid="deal-card"]').filter({ hasText: title }).first()
   }
 
   /**
@@ -254,8 +247,7 @@ export class KanbanPage extends BasePage {
    */
   async clickWhatsAppForDeal(dealTitle: string) {
     const dealCard = this.getDealCardByTitle(dealTitle)
-    // WhatsApp button has MessageCircle icon and green styling
-    const whatsappButton = dealCard.locator('button.text-green-500, button:has-text("Conversar")')
+    const whatsappButton = dealCard.locator('button[aria-label^="Conversar"]')
 
     // Wait for new page/tab to open
     const [newPage] = await Promise.all([
@@ -271,7 +263,7 @@ export class KanbanPage extends BasePage {
    */
   async isBoardVisible(): Promise<boolean> {
     // Check if we can see at least one stage heading and the "Novo Deal" button
-    const hasStages = await this.page.locator('h3.uppercase').count() > 0
+    const hasStages = await this.page.locator('[data-testid="kanban-column"]').count() > 0
     const hasButton = await this.page.locator('button:has-text("Novo Deal")').isVisible().catch(() => false)
     return hasStages && hasButton
   }

@@ -1,0 +1,116 @@
+/* art-direction · hoje · eixos: luz/autônomo/escura (claro por padrão, pedido do dono) · orçamento: marca, <5kb JS · 2026-09-24
+   information-design · quadro + fila · responde: em que etapa está cada negócio, e qual pede ação agora · fonte: Deal + Activity STAGE_CHANGE · 2026-09-24
+
+   The /dashboard's direction (spec 009). Light by default, speaking the home's language (ice, graphite, the pulse, Schibsted +
+   DM Mono, 4px corners); dark for whoever saved the dark theme, as the contact sheet showed it (night blue, amber light on the
+   queue). Scoped to [data-tela="hoje"]: not [data-art], because app/theme.css turns the `dark:` variant off on any page that
+   carries [data-art], and this screen must keep the saved dark theme. The shadcn variables are remapped inside the scope only,
+   so the sidebar, the dialogs and every other app screen stay as they are. */
+
+[data-tela="hoje"] {
+  --hoje-fundo: oklch(0.975 0.004 250);          /* the home's ice */
+  --hoje-painel: oklch(0.955 0.006 250);         /* one step below: board columns */
+  --hoje-cartao: oklch(0.995 0.002 250);
+  --hoje-tinta: oklch(0.22 0.02 255);            /* graphite */
+  --hoje-tinta-2: oklch(0.45 0.02 255);          /* 6.9:1 on the ice */
+  --hoje-fio: oklch(0.22 0.02 255 / .12);
+  --hoje-fio-forte: oklch(0.22 0.02 255 / .3);
+  --hoje-acento: oklch(0.56 0.2 29);             /* the pulse: lines and marks (4.79:1) */
+  --hoje-acento-texto: oklch(0.5 0.19 29);       /* the pulse for small text (6.2:1) */
+  --hoje-fila-fundo: var(--hoje-cartao);
+  --hoje-fila-item: var(--hoje-fundo);
+  --hoje-botao: var(--hoje-tinta);
+  --hoje-botao-tinta: var(--hoje-fundo);
+
+  --dur-rapida: 160ms;
+  --dur-base: 240ms;
+  --dur-cena: 700ms;
+  --ease-saida: cubic-bezier(0, 0, .2, 1);
+  --ease-cena: cubic-bezier(.16, 1, .3, 1);
+
+  /* the variables every shadcn component already reads, inside this screen only */
+  --background: var(--hoje-fundo);
+  --foreground: var(--hoje-tinta);
+  --card: var(--hoje-cartao);
+  --card-foreground: var(--hoje-tinta);
+  --popover: var(--hoje-cartao);
+  --popover-foreground: var(--hoje-tinta);
+  --primary: var(--hoje-botao);
+  --primary-foreground: var(--hoje-botao-tinta);
+  --secondary: var(--hoje-painel);
+  --secondary-foreground: var(--hoje-tinta);
+  --muted: var(--hoje-painel);
+  --muted-foreground: var(--hoje-tinta-2);
+  --accent: var(--hoje-painel);
+  --accent-foreground: var(--hoje-tinta);
+  --border: var(--hoje-fio);
+  --input: var(--hoje-fio-forte);
+  --ring: var(--hoje-acento-texto);
+  --radius: 4px;
+
+  color: var(--hoje-tinta);
+  font-family: var(--fonte-texto-base), ui-sans-serif, system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+.dark [data-tela="hoje"] {
+  --hoje-fundo: oklch(0.19 0.028 262);           /* night */
+  --hoje-painel: oklch(0.215 0.028 262);
+  --hoje-cartao: oklch(0.25 0.028 262);
+  --hoje-tinta: oklch(0.96 0.008 85);
+  --hoje-tinta-2: oklch(0.76 0.02 262);          /* 8.6:1 on the night */
+  --hoje-fio: oklch(0.96 0.008 85 / .1);
+  --hoje-fio-forte: oklch(0.96 0.008 85 / .22);
+  --hoje-acento: oklch(0.88 0.09 78);            /* the lamp's amber */
+  --hoje-acento-texto: oklch(0.9 0.08 80);
+  --hoje-fila-fundo: radial-gradient(900px 260px at 30% -40%, oklch(0.88 0.09 78 / .2), transparent 70%), oklch(0.235 0.03 262);
+  --hoje-fila-item: oklch(0.3 0.03 262);
+  --hoje-botao: var(--hoje-acento);
+  --hoje-botao-tinta: oklch(0.2 0.03 262);
+  --radius: 6px;
+}
+
+/* the content area behind the screen takes its ground (the sidebar and the bars keep theirs) */
+main:has([data-tela="hoje"]) { background: oklch(0.975 0.004 250); }
+.dark main:has([data-tela="hoje"]) { background: oklch(0.19 0.028 262); }
+
+[data-tela="hoje"] .hoje-mono { font-family: var(--fonte-mono-base), ui-monospace, monospace; }
+
+/* ── the queue ─────────────────────────────────────────────────────── */
+[data-tela="hoje"] .hoje-fila { background: var(--hoje-fila-fundo); }
+.dark [data-tela="hoje"] .hoje-fila { box-shadow: inset 0 1px 0 oklch(0.88 0.09 78 / .25); border-color: transparent; }
+.dark [data-tela="hoje"] .hoje-fila-item { box-shadow: 0 14px 30px -18px oklch(0.05 0.03 262), inset 0 1px 0 oklch(0.88 0.09 78 / .3); border-color: transparent; }
+
+/* the home's closing pulse, drawn once under the queue's title (entrada) */
+[data-tela="hoje"] .hoje-pulso path {
+  fill: none; stroke: var(--hoje-acento); stroke-width: 1.5; vector-effect: non-scaling-stroke;
+  stroke-dasharray: 1; stroke-dashoffset: 1;
+  animation: hoje-tracar var(--dur-cena) var(--ease-cena) 120ms forwards;
+}
+@keyframes hoje-tracar { to { stroke-dashoffset: 0; } }
+
+/* items arrive in a short stagger (entrada), nothing starts after 400ms */
+[data-tela="hoje"] .hoje-fila-item { animation: hoje-subir var(--dur-base) var(--ease-saida) both; }
+[data-tela="hoje"] .hoje-fila-item:nth-child(2) { animation-delay: 60ms; }
+[data-tela="hoje"] .hoje-fila-item:nth-child(3) { animation-delay: 120ms; }
+[data-tela="hoje"] .hoje-fila-item:nth-child(4) { animation-delay: 180ms; }
+@keyframes hoje-subir { from { opacity: 0; translate: 0 6px; } }
+
+/* ponteiro: a queue item lifts under the pointer */
+@media (hover: hover) {
+  [data-tela="hoje"] .hoje-fila-item { transition: translate var(--dur-rapida) var(--ease-saida); }
+  [data-tela="hoje"] .hoje-fila-item:hover { translate: 0 -1px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-tela="hoje"] .hoje-pulso path { animation: none; stroke-dashoffset: 0; }
+  [data-tela="hoje"] .hoje-fila-item { animation: none; transition: none; }
+}
+
+/* the assistant's floating button wears this screen's ink here instead of the purple→blue gradient */
+:root:has([data-tela="hoje"]) [data-assistente] {
+  background-image: none; background-color: oklch(0.22 0.02 255); color: oklch(0.975 0.004 250);
+}
+:root.dark:has([data-tela="hoje"]) [data-assistente] {
+  background-color: oklch(0.88 0.09 78); color: oklch(0.2 0.03 262);
+}

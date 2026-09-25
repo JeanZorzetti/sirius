@@ -58,17 +58,21 @@ export function PipelineSelector({ pipelines, selectedPipelineId: controlledId, 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline" className="w-[280px] justify-between">
-          <div className="flex items-center gap-2 overflow-hidden">
-            <div className="w-2 h-2 rounded-full bg-blue-500 flex-shrink-0" />
-            <span className="truncate">{selectedPipeline?.name || 'Selecione um pipeline'}</span>
-            {selectedPipeline?.isDefault && (
-              <Badge variant="secondary" className="ml-1 flex-shrink-0">
-                Padrão
-              </Badge>
-            )}
-          </div>
-          <ChevronDown className="h-4 w-4 opacity-50 flex-shrink-0" />
+        <Button
+          variant="ghost"
+          data-testid="pipeline-selector"
+          aria-label={`Funil: ${selectedPipeline?.name ?? 'nenhum'}. Trocar de funil`}
+          className="-ml-2 h-auto max-w-[520px] justify-start gap-2 px-2 py-1 hover:bg-muted"
+        >
+          <span className="truncate text-[26px] font-bold leading-tight tracking-tight">
+            {selectedPipeline?.name || 'Selecione um pipeline'}
+          </span>
+          {selectedPipeline?.isDefault && (
+            <Badge variant="outline" className="flex-shrink-0 font-normal text-muted-foreground">
+              Padrão
+            </Badge>
+          )}
+          <ChevronDown className="h-5 w-5 flex-shrink-0 text-muted-foreground" />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-[280px]" align="start">
@@ -83,11 +87,6 @@ export function PipelineSelector({ pipelines, selectedPipelineId: controlledId, 
             className="flex items-center justify-between cursor-pointer"
           >
             <div className="flex items-center gap-2 flex-1 overflow-hidden">
-              <div
-                className={`w-2 h-2 rounded-full flex-shrink-0 ${
-                  pipeline.id === selectedPipelineId ? 'bg-blue-500' : 'bg-gray-300'
-                }`}
-              />
               <span className="truncate">{pipeline.name}</span>
               {pipeline.isDefault && (
                 <Badge variant="secondary" className="text-xs flex-shrink-0">
@@ -100,7 +99,7 @@ export function PipelineSelector({ pipelines, selectedPipelineId: controlledId, 
                 {pipeline._count.deals} {pipeline._count.deals === 1 ? 'deal' : 'deals'}
               </span>
               {pipeline.id === selectedPipelineId && (
-                <Check className="h-4 w-4 text-blue-500 flex-shrink-0" />
+                <Check className="h-4 w-4 text-foreground flex-shrink-0" />
               )}
             </div>
           </DropdownMenuItem>

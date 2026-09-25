@@ -11,6 +11,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { cn } from '@/lib/utils'
+import { dinheiroCompacto, resumirEtapa } from '@/lib/pipeline/hoje'
 import type { PipelineDeal, PipelineStageWithDeals } from '@/lib/types/pipeline'
 
 interface MobilePipelineListProps {
@@ -43,10 +44,10 @@ export function MobilePipelineList({
     setActiveStageId(stages[0].id)
   }
 
-  function formatTotal(v: number): string {
-    if (v >= 1_000_000) return `R$ ${(v / 1_000_000).toFixed(1)}M`
-    if (v >= 1000) return `R$ ${(v / 1000).toFixed(0)}k`
-    return `R$ ${v.toLocaleString('pt-BR')}`
+  // Honest section summary (spec 009): the filled values' sum and how many have one, never "R$ 0"
+  function resumo(deals: PipelineDeal[]): string {
+    const r = resumirEtapa(deals, new Date())
+    return r.comValor ? `${dinheiroCompacto(r.soma)} em ${r.comValor} de ${r.n} com valor` : 'sem valor'
   }
 
   return (
@@ -56,12 +57,11 @@ export function MobilePipelineList({
         <div className="px-3 pt-2 pb-1">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <button className="flex w-full items-center justify-between gap-2 rounded-xl border border-border/50 bg-muted/30 px-3 py-2.5 text-sm font-medium transition-colors active:bg-muted/60">
+              <button className="flex min-h-[44px] w-full items-center justify-between gap-2 rounded-[var(--radius)] border border-input bg-card px-3 py-2.5 text-sm font-semibold transition-colors active:bg-muted">
                 <div className="flex items-center gap-2 min-w-0">
-                  <div className="h-2 w-2 shrink-0 rounded-full bg-indigo-500" />
                   <span className="truncate">{selectedPipeline?.name ?? 'Pipeline'}</span>
                   {selectedPipeline?.isDefault && (
-                    <span className="shrink-0 rounded-full bg-indigo-500/10 px-1.5 py-0.5 text-[10px] font-semibold text-indigo-600 dark:text-indigo-400">
+                    <span className="shrink-0 rounded-sm border border-border px-1.5 py-0.5 text-[10px] font-normal text-muted-foreground">
                       Padrão
                     </span>
                   )}
@@ -77,16 +77,15 @@ export function MobilePipelineList({
                   className="flex items-center justify-between gap-2"
                 >
                   <div className="flex items-center gap-2 min-w-0">
-                    <div className={cn('h-2 w-2 shrink-0 rounded-full', p.id === selectedPipelineId ? 'bg-indigo-500' : 'bg-muted-foreground/40')} />
-                    <span className="truncate">{p.name}</span>
+                    <span className={cn('truncate', p.id === selectedPipelineId && 'font-semibold')}>{p.name}</span>
                     {p.isDefault && (
-                      <span className="shrink-0 rounded-full bg-indigo-500/10 px-1.5 py-0.5 text-[10px] font-semibold text-indigo-600 dark:text-indigo-400">
+                      <span className="shrink-0 rounded-sm border border-border px-1.5 py-0.5 text-[10px] text-muted-foreground">
                         Padrão
                       </span>
                     )}
                   </div>
                   {p.id === selectedPipelineId && (
-                    <Check className="h-4 w-4 shrink-0 text-indigo-500" />
+                    <Check className="h-4 w-4 shrink-0 text-foreground" />
                   )}
                 </DropdownMenuItem>
               ))}
@@ -107,26 +106,17 @@ export function MobilePipelineList({
         <MobileListSection
           label={activeStage.name}
           count={activeStage.deals.length}
-          total={activeStage.deals.length > 0
-            ? formatTotal(activeStage.deals.reduce((sum, d) => sum + (d.value ?? 0), 0))
-            : undefined
-          }
+          total={activeStage.deals.length > 0 ? resumo(activeStage.deals) : undefined}
         >
           {activeStage.deals.length === 0 ? (
-            <div className="flex flex-col items-center gap-3 py-10 sm:py-16 text-center">
-              <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-muted/50">
-                <Plus className="h-6 w-6 text-muted-foreground/40" />
-              </div>
-              <div>
-                <p className="text-sm font-medium text-muted-foreground">Nenhum deal nesta etapa</p>
-                <p className="mt-0.5 text-xs text-muted-foreground/60">Crie um deal para começar</p>
-              </div>
+            <div className="flex flex-col items-center gap-3 py-10 text-center">
+              <p className="hoje-mono text-xs text-muted-foreground">Nenhum negócio nesta etapa</p>
               {onCreateDeal && (
                 <button
                   onClick={onCreateDeal}
-                  className="mt-1 rounded-xl bg-indigo-500 px-4 py-2.5 text-sm font-medium text-white active:scale-95 min-h-[44px]"
+                  className="flex min-h-[44px] items-center gap-2 rounded-[var(--radius)] bg-primary px-4 text-sm font-semibold text-primary-foreground active:scale-[.98]"
                 >
-                  + Novo deal
+                  <Plus className="h-4 w-4" aria-hidden="true" /> Novo deal
                 </button>
               )}
             </div>

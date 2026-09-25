@@ -11,6 +11,8 @@ import { ContactSearch } from "./analytics/contact-search"
 import { getTranslations } from "next-intl/server"
 
 import { AnimatedPageContainer } from "@/components/dashboard/animated-page-container"
+import { mono, texto } from "@/components/fluxo/fontes"
+import "./hoje.css" // the screen's direction, scoped to [data-tela="hoje"] (spec 009)
 
 export async function generateMetadata({
   params,
@@ -99,33 +101,31 @@ export default async function DashboardPage({
         hasWhatsApp={hasWhatsApp}
       >
         <AnimatedPageContainer>
-          {/* Desktop header — hidden on mobile (handled by MobileAppBar) */}
-          <div className="hidden lg:flex flex-col sm:flex-row sm:items-center justify-between mb-6 flex-wrap gap-4">
-            <div className="space-y-1">
-              <h1 className="text-2xl font-bold tracking-tight text-foreground/90">{t('pages.pipeline.title')}</h1>
-              <p className="text-sm text-muted-foreground">{t('pages.pipeline.subtitle')}</p>
-            </div>
-
-            <div className="flex items-center gap-3 bg-muted/40 p-1.5 rounded-2xl border border-border/50 backdrop-blur-md">
-              <Suspense>
-                <ValueSearch />
-              </Suspense>
-              <div className="w-px h-8 bg-border/50" />
-              <Suspense>
-                <ContactSearch />
-              </Suspense>
-            </div>
+          {/* The pipeline's name is the title and the searches join the top row (spec 009, direction "Hoje") */}
+          <div data-tela="hoje" className={`${texto.variable} ${mono.variable} h-full`}>
+            <Suspense fallback={<DashboardTabsSkeleton />}>
+              <DashboardTabsWrapper
+                userId={user.id}
+                userName={user.name || ""}
+                organizationId={user.organizationId}
+                vsearch={vsearch}
+                csearch={csearch}
+                buscas={
+                  // the inputs are borderless by design: the capsule is their field, and it shows the keyboard focus
+                  // keys: these children cross the server→client boundary as a list
+                  <div className="flex items-center rounded-[var(--radius)] border border-input bg-card focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-ring">
+                    <Suspense key="valor">
+                      <ValueSearch />
+                    </Suspense>
+                    <div key="divisor" className="h-6 w-px bg-border" />
+                    <Suspense key="contato">
+                      <ContactSearch />
+                    </Suspense>
+                  </div>
+                }
+              />
+            </Suspense>
           </div>
-
-          <Suspense fallback={<DashboardTabsSkeleton />}>
-            <DashboardTabsWrapper
-              userId={user.id}
-              userName={user.name || ""}
-              organizationId={user.organizationId}
-              vsearch={vsearch}
-              csearch={csearch}
-            />
-          </Suspense>
         </AnimatedPageContainer>
       </OnboardingWrapper>
     )

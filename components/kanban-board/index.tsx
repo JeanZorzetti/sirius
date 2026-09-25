@@ -143,15 +143,16 @@ export function KanbanBoard({
 
   return (
     <DragDropContext onDragEnd={handleDragEnd}>
-      <div className="flex flex-col h-full gap-4">
-        {/* Pipeline Header / Toolbar */}
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 px-2">
+      <div className="flex flex-col h-full gap-3">
+        {/* Board toolbar: filter the board by name, add a stage */}
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
           <div className="flex items-center gap-2">
             <Input
               placeholder="Filtrar por nome..."
+              aria-label="Filtrar negócios do quadro por nome"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="h-8 w-full sm:w-[200px] bg-white/5 border-white/10"
+              className="h-8 w-full sm:w-[220px] bg-card"
             />
           </div>
           <Button variant="outline" size="sm" onClick={() => setIsNewStageOpen(true)} className="gap-2">
@@ -163,7 +164,8 @@ export function KanbanBoard({
         <div
           ref={scrollContainerRef}
           data-tour="pipeline"
-          className="flex h-full gap-3 sm:gap-6 pb-4 px-2 overflow-x-auto snap-x snap-mandatory sm:snap-none cursor-grab active:cursor-grabbing"
+          data-testid="kanban-board"
+          className="flex h-full gap-3 pb-4 overflow-x-auto snap-x snap-mandatory sm:snap-none cursor-grab active:cursor-grabbing"
         >
           {filteredStages.map((stage, idx) => (
             <KanbanColumn
@@ -183,7 +185,6 @@ export function KanbanBoard({
             onDealClick={(deal) => setEditingDeal(deal)}
             contactDisplayMode={contactDisplayMode}
           />
-          <div className="w-10 shrink-0" />
         </div>
       </div>
 
