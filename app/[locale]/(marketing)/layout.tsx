@@ -4,6 +4,7 @@ import { MobileNav } from '@/components/marketing/mobile-nav'
 import { NavDropdowns } from '@/components/marketing/nav-dropdowns'
 import { FeaturesDropdown } from '@/components/marketing/features-dropdown'
 import { Footer } from '@/components/marketing/footer'
+import { VitaisDeCampo } from '@/components/marketing/vitais-de-campo'
 import { Link } from '@/i18n/routing'
 import { useTranslations } from 'next-intl'
 import { texto, mono } from '@/components/fluxo/fontes'
@@ -65,6 +66,7 @@ export default function MarketingLayout({
 
       {/* Footer Dinâmico */}
       <Footer />
+      <VitaisDeCampo />
     </div>
   )
 }
