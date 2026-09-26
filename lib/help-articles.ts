@@ -42,7 +42,7 @@ export const helpArticles: HelpArticle[] = [
     category: "Primeiros Passos",
     categorySlug: "primeiros-passos",
     description: "Guia completo para criar e gerenciar seu primeiro deal no Sirius CRM",
-    lastUpdated: "2024-01-23",
+    lastUpdated: "2026-01-23",
     readTime: "4 min",
     content: {
       sections: [
@@ -138,7 +138,7 @@ export const helpArticles: HelpArticle[] = [
     description: "Aprenda como funciona a visualização Kanban e como usá-la para gerenciar suas vendas",
     titleEn: "Understanding the Kanban Pipeline",
     descriptionEn: "Learn how the Kanban view works and how to use it to manage your sales",
-    lastUpdated: "2024-01-23",
+    lastUpdated: "2026-01-23",
     readTime: "5 min",
     content: {
       sections: [
@@ -244,7 +244,7 @@ export const helpArticles: HelpArticle[] = [
     description: "Aprenda a criar e organizar seus contatos no Sirius CRM",
     titleEn: "How to Add and Manage Contacts",
     descriptionEn: "Learn how to create and organize your contacts in Sirius CRM",
-    lastUpdated: "2024-01-23",
+    lastUpdated: "2026-01-23",
     readTime: "3 min",
     content: {
       sections: [
@@ -327,16 +327,16 @@ export const helpArticles: HelpArticle[] = [
     slug: "multiplos-pipelines",
     category: "Pipeline e Negócios",
     categorySlug: "pipeline-negocios",
-    description: "Como gerenciar diferentes fluxos de venda com múltiplos pipelines (recurso PRO)",
+    description: "Como gerenciar diferentes fluxos de venda com múltiplos pipelines (a partir do Starter)",
     titleEn: "Creating Multiple Pipelines",
-    descriptionEn: "How to manage different sales flows with multiple pipelines (PRO feature)",
-    lastUpdated: "2024-01-23",
+    descriptionEn: "How to manage different sales flows with multiple pipelines (from Starter)",
+    lastUpdated: "2026-01-23",
     readTime: "4 min",
     content: {
       sections: [
         {
           title: "O que são múltiplos pipelines?",
-          content: "Múltiplos pipelines permitem que você tenha diferentes fluxos de venda dentro da mesma conta. Por exemplo: um pipeline para vendas diretas, outro para parcerias, e outro para renovações. Cada pipeline pode ter suas próprias etapas customizadas. Este é um recurso exclusivo do plano PRO.",
+          content: "Múltiplos pipelines permitem que você tenha diferentes fluxos de venda dentro da mesma conta. Por exemplo: um pipeline para vendas diretas, outro para parcerias, e outro para renovações. Cada pipeline pode ter suas próprias etapas customizadas. O Gratuito tem 1 funil; o Starter, até 5; o Pro, até 15; o Business, até 50.",
         },
         {
           title: "Quando usar múltiplos pipelines?",
@@ -352,7 +352,7 @@ export const helpArticles: HelpArticle[] = [
         },
         {
           title: "Criando um novo pipeline",
-          content: "Para criar um pipeline adicional (requer plano PRO):",
+          content: "Para criar um pipeline adicional (a partir do plano Starter):",
           steps: [
             "Vá em 'Configurações' > 'Pipelines'",
             "Clique em '+ Novo Pipeline'",
@@ -371,7 +371,7 @@ export const helpArticles: HelpArticle[] = [
       sections: [
         {
           title: "What are multiple pipelines?",
-          content: "Multiple pipelines let you maintain different sales flows within the same account. For example: one pipeline for direct sales, another for partnerships, and another for renewals. Each pipeline can have its own custom stages. This is an exclusive PRO plan feature.",
+          content: "Multiple pipelines let you maintain different sales flows within the same account. For example: one pipeline for direct sales, another for partnerships, and another for renewals. Each pipeline can have its own custom stages. Free has 1 pipeline; Starter up to 5; Pro up to 15; Business up to 50.",
         },
         {
           title: "When to use multiple pipelines?",
@@ -387,7 +387,7 @@ export const helpArticles: HelpArticle[] = [
         },
         {
           title: "Creating a new pipeline",
-          content: "To create an additional pipeline (requires PRO plan):",
+          content: "To create an additional pipeline (from the Starter plan):",
           steps: [
             "Go to Settings > Pipelines",
             "Click '+ New Pipeline'",
@@ -409,16 +409,16 @@ export const helpArticles: HelpArticle[] = [
     slug: "automacoes-email",
     category: "Automações",
     categorySlug: "automacoes",
-    description: "Aprenda a criar automações inteligentes baseadas nas etapas do pipeline (PRO)",
+    description: "Aprenda a criar automações inteligentes baseadas nas etapas do pipeline (a partir do Starter)",
     titleEn: "Setting Up Email Automations",
-    descriptionEn: "Learn how to create smart automations triggered by pipeline stages (PRO)",
-    lastUpdated: "2024-01-23",
+    descriptionEn: "Learn how to create smart automations triggered by pipeline stages (from Starter)",
+    lastUpdated: "2026-01-23",
     readTime: "6 min",
     content: {
       sections: [
         {
           title: "O que são automações de email?",
-          content: "Automações de email no Sirius CRM disparam mensagens automaticamente quando um deal muda de etapa. Por exemplo: quando um deal vai para 'Proposta', você pode enviar automaticamente um email de acompanhamento ao cliente. Este é um recurso exclusivo do plano PRO.",
+          content: "Automações de email no Sirius CRM disparam mensagens automaticamente quando um deal muda de etapa. Por exemplo: quando um deal vai para 'Proposta', você pode enviar automaticamente um email de acompanhamento ao cliente. O Starter permite 5 automações de email; o Pro, 15; o Business, 50.",
         },
         {
           title: "Criando sua primeira automação",
@@ -471,7 +471,7 @@ export const helpArticles: HelpArticle[] = [
       sections: [
         {
           title: "What are email automations?",
-          content: "Email automations in Sirius CRM send messages automatically when a deal moves to a stage. For example: when a deal enters 'Proposal', you can automatically send a follow-up email to the client. This is an exclusive PRO plan feature.",
+          content: "Email automations in Sirius CRM send messages automatically when a deal moves to a stage. For example: when a deal enters 'Proposal', you can automatically send a follow-up email to the client. Starter allows 5 email automations; Pro, 15; Business, 50.",
         },
         {
           title: "Creating your first automation",
@@ -530,16 +530,16 @@ export const helpArticles: HelpArticle[] = [
     description: "Aprenda a interpretar as métricas essenciais do seu funil de vendas",
     titleEn: "Understanding Basic Analytics",
     descriptionEn: "Learn how to interpret the essential metrics of your sales funnel",
-    lastUpdated: "2024-01-23",
+    lastUpdated: "2026-01-23",
     readTime: "5 min",
     content: {
       sections: [
         {
           title: "Visão geral do Analytics",
-          content: "A página de Analytics mostra métricas em tempo real sobre seu desempenho comercial. Mesmo no plano FREE, você tem acesso a indicadores essenciais para acompanhar a saúde do seu funil.",
+          content: "A página de Analytics mostra métricas em tempo real sobre seu desempenho comercial. Em qualquer plano, você tem acesso a indicadores essenciais para acompanhar a saúde do seu funil.",
         },
         {
-          title: "Métricas principais (disponíveis no FREE)",
+          title: "Métricas principais (em todos os planos)",
           content: "Entenda cada métrica:",
           steps: [
             "Total de Deals - Quantidade de oportunidades ativas no pipeline",
@@ -561,8 +561,8 @@ export const helpArticles: HelpArticle[] = [
           ],
         },
         {
-          title: "Analytics PRO - O próximo nível",
-          content: "No plano PRO, você desbloqueia:",
+          title: "Analytics avançado (a partir do Pro)",
+          content: "A partir do plano Pro, você desbloqueia:",
           steps: [
             "Forecasting - Previsão de faturamento baseada em probabilidades",
             "Análise por vendedor - Performance individual de cada rep",
@@ -578,10 +578,10 @@ export const helpArticles: HelpArticle[] = [
       sections: [
         {
           title: "Analytics overview",
-          content: "The Analytics page shows real-time metrics about your sales performance. Even on the FREE plan, you have access to essential indicators to track the health of your funnel.",
+          content: "The Analytics page shows real-time metrics about your sales performance. On any plan, you have access to essential indicators to track the health of your funnel.",
         },
         {
-          title: "Key metrics (available on FREE)",
+          title: "Key metrics (on every plan)",
           content: "Understanding each metric:",
           steps: [
             "Total Deals — Number of active opportunities in the pipeline",
@@ -603,8 +603,8 @@ export const helpArticles: HelpArticle[] = [
           ],
         },
         {
-          title: "PRO Analytics — the next level",
-          content: "On the PRO plan, you unlock:",
+          title: "Advanced analytics (from Pro)",
+          content: "From the Pro plan, you unlock:",
           steps: [
             "Forecasting — Revenue projection based on pipeline probabilities",
             "Rep-level analysis — Individual performance for each salesperson",
@@ -626,7 +626,7 @@ export const helpArticles: HelpArticle[] = [
     description: "Como usar a integração nativa com WhatsApp para contatar seus leads",
     titleEn: "WhatsApp Integration",
     descriptionEn: "How to use the native WhatsApp integration to contact your leads",
-    lastUpdated: "2024-01-23",
+    lastUpdated: "2026-01-23",
     readTime: "3 min",
     content: {
       sections: [
@@ -694,7 +694,7 @@ export const helpArticles: HelpArticle[] = [
     description: "Conecte seu Google Calendar para sincronizar reuniões e follow-ups",
     titleEn: "Syncing with Google Calendar",
     descriptionEn: "Connect your Google Calendar to sync meetings and follow-ups",
-    lastUpdated: "2024-01-23",
+    lastUpdated: "2026-01-23",
     readTime: "4 min",
     content: {
       sections: [
@@ -763,10 +763,10 @@ export const helpArticles: HelpArticle[] = [
     slug: "permissoes-equipe",
     category: "Equipe e Configurações",
     categorySlug: "equipe",
-    description: "Como adicionar usuários e configurar níveis de acesso (PRO)",
+    description: "Como adicionar usuários e configurar níveis de acesso",
     titleEn: "Managing Team Permissions",
-    descriptionEn: "How to add users and configure access levels (PRO)",
-    lastUpdated: "2024-01-23",
+    descriptionEn: "How to add users and configure access levels",
+    lastUpdated: "2026-01-23",
     readTime: "5 min",
     content: {
       sections: [
@@ -780,7 +780,7 @@ export const helpArticles: HelpArticle[] = [
           ],
         },
         {
-          title: "Adicionando membros à equipe (PRO)",
+          title: "Adicionando membros à equipe",
           content: "Para convidar novos usuários:",
           steps: [
             "Vá em Configurações > Equipe",
@@ -793,7 +793,7 @@ export const helpArticles: HelpArticle[] = [
           tips: [
             "Comece adicionando membros como 'Member' - você pode promover depois",
             "Apenas Owners podem gerenciar a assinatura e pagamentos",
-            "Cada usuário no plano PRO tem custo adicional - veja a tabela de preços",
+            "O limite de usuários depende do plano: 2 no Gratuito, 5 no Starter, 15 no Pro e 50 no Business, sem custo por usuário",
           ],
         },
         {
@@ -830,7 +830,7 @@ export const helpArticles: HelpArticle[] = [
           ],
         },
         {
-          title: "Adding team members (PRO)",
+          title: "Adding team members",
           content: "To invite new users:",
           steps: [
             "Go to Settings > Team",
@@ -843,7 +843,7 @@ export const helpArticles: HelpArticle[] = [
           tips: [
             "Start by adding members as 'Member' — you can promote them later",
             "Only Owners can manage the subscription and payments",
-            "Each additional user on the PRO plan has an extra cost — see pricing",
+            "The user limit depends on the plan: 2 on Free, 5 on Starter, 15 on Pro and 50 on Business, with no per-user fee",
           ],
         },
         {
@@ -871,68 +871,53 @@ export const helpArticles: HelpArticle[] = [
   },
 
   {
-    title: "Diferenças entre plano FREE e PRO",
+    title: "Diferenças entre os planos do Sirius CRM",
     slug: "free-vs-pro",
     category: "Planos e Billing",
     categorySlug: "planos",
-    description: "Entenda os recursos disponíveis em cada plano e quando fazer upgrade",
-    titleEn: "FREE vs PRO Plan Differences",
-    descriptionEn: "Understand the features available in each plan and when to upgrade",
-    lastUpdated: "2024-01-23",
+    description: "Gratuito, Starter, Pro e Business: limites, recursos e quando fazer upgrade",
+    titleEn: "Sirius CRM Plan Differences",
+    descriptionEn: "Free, Starter, Pro and Business: limits, features and when to upgrade",
+    lastUpdated: "2026-09-26",
     readTime: "4 min",
     content: {
       sections: [
         {
           title: "Visão geral dos planos",
-          content: "O Sirius CRM oferece 2 planos: FREE (gratuito para sempre) e PRO (pago, com recursos avançados). Ambos incluem deals ilimitados, contatos ilimitados e o pipeline Kanban visual.",
+          content: "O Sirius CRM tem 4 planos, cobrados por conta e não por usuário: Gratuito, Starter (R$ 67/mês), Pro (R$ 147/mês) e Business (R$ 397/mês). No pagamento anual há 20% de desconto. Toda conta nova começa com 7 dias do Pro.",
         },
         {
-          title: "O que está incluído no FREE?",
-          content: "O plano gratuito é robusto e perfeito para freelancers ou pequenas equipes:",
+          title: "O que cada plano inclui",
+          content: "Os limites e recursos de cada plano:",
           steps: [
-            "Deals ilimitados",
-            "Contatos ilimitados",
-            "1 Pipeline com etapas personalizáveis",
-            "Kanban board visual",
-            "Analytics básico (métricas essenciais)",
-            "Integração com WhatsApp",
-            "1 usuário (você)",
+            "Gratuito: 2 usuários, 250 contatos, 100 negócios ativos e 1 funil",
+            "Starter (R$ 67/mês): 5 usuários, 1.000 contatos, 500 negócios, 5 funis, automações, 1 agente de IA com 200 ações/mês, 75 créditos de prospecção/mês e suporte por e-mail",
+            "Pro (R$ 147/mês): 15 usuários, 5.000 contatos, 2.500 negócios, 15 funis, 3 agentes de IA com 1.000 ações/mês, 300 créditos de prospecção/mês, analytics avançado, lead scoring, webhooks, API pública e suporte prioritário",
+            "Business (R$ 397/mês): 50 usuários, contatos e negócios ilimitados, 50 funis, WhatsApp pela API oficial da Meta, 5 agentes de IA com 3.000 ações/mês, 1.500 créditos de prospecção/mês, round-robin de leads, relatórios personalizados, SSO e log de auditoria",
           ],
         },
         {
-          title: "O que você ganha no PRO?",
-          content: "O plano PRO desbloqueia recursos para equipes e operações mais sofisticadas:",
-          steps: [
-            "Tudo do FREE +",
-            "Pipelines ilimitados (múltiplos fluxos de venda)",
-            "Usuários ilimitados (adicione sua equipe)",
-            "Email Automations (automações inteligentes)",
-            "Analytics PRO (forecasting, relatórios avançados)",
-            "Controle de permissões (Owner/Admin/Member)",
-            "Suporte prioritário",
-            "Exportação de dados (CSV/Excel)",
-          ],
+          title: "O que acontece quando o teste termina",
+          content: "Se nenhum plano pago for assinado até o fim dos 7 dias do Pro, a conta fica em modo somente leitura: você continua vendo contatos, negócios e histórico, mas não cria nem edita. Assinar um plano pago libera a conta assim que o pagamento é confirmado. Seus dados são preservados.",
         },
         {
-          title: "Quando fazer upgrade para PRO?",
-          content: "Considere o PRO quando você:",
+          title: "Quando fazer upgrade?",
+          content: "Uma regra prática por plano:",
           tips: [
-            "Tiver mais de 1 pessoa na equipe comercial",
-            "Precisar de processos de venda diferentes (múltiplos pipelines)",
-            "Quiser automatizar follow-ups e nutrir leads",
-            "Precisar de forecasting para bater metas",
-            "Quiser controle granular de permissões",
+            "Starter: o time passou de 2 pessoas ou você quer automação de follow-up e IA",
+            "Pro: de 6 a 15 pessoas, ou quando precisa de API, webhooks e lead scoring",
+            "Business: WhatsApp integrado, mais de 15 pessoas ou distribuição automática de leads",
           ],
         },
         {
           title: "Como fazer upgrade?",
-          content: "Para mudar para o plano PRO:",
+          content: "Para assinar ou trocar de plano:",
           steps: [
-            "Vá em Configurações > Assinatura",
-            "Clique em 'Fazer Upgrade para PRO'",
-            "Escolha entre pagamento mensal ou anual (desconto de 20% no anual)",
-            "Complete o pagamento via cartão de crédito",
-            "Pronto! Recursos PRO liberados imediatamente",
+            "Abra Assinatura & Faturamento",
+            "Clique em 'Fazer upgrade'",
+            "Escolha o plano e a cobrança mensal ou anual (20% de desconto no anual)",
+            "Conclua o pagamento",
+            "Os recursos do plano são liberados assim que o pagamento é confirmado",
           ],
         },
       ],
@@ -941,55 +926,40 @@ export const helpArticles: HelpArticle[] = [
       sections: [
         {
           title: "Plan overview",
-          content: "Sirius CRM offers 2 plans: FREE (free forever) and PRO (paid, with advanced features). Both include unlimited deals, unlimited contacts, and the visual Kanban pipeline.",
+          content: "Sirius CRM has 4 plans, billed per account and not per user: Free, Starter (R$ 67/month), Pro (R$ 147/month) and Business (R$ 397/month). Annual billing takes 20% off. Every new account starts with 7 days of Pro.",
         },
         {
-          title: "What's included in FREE?",
-          content: "The free plan is robust and perfect for freelancers or small teams:",
+          title: "What each plan includes",
+          content: "Limits and features of each plan:",
           steps: [
-            "Unlimited deals",
-            "Unlimited contacts",
-            "1 Pipeline with customizable stages",
-            "Visual Kanban board",
-            "Basic analytics (essential metrics)",
-            "WhatsApp integration",
-            "1 user (you)",
+            "Free: 2 users, 250 contacts, 100 active deals and 1 pipeline",
+            "Starter (R$ 67/month): 5 users, 1,000 contacts, 500 deals, 5 pipelines, automations, 1 AI agent with 200 actions/month, 75 prospecting credits/month and email support",
+            "Pro (R$ 147/month): 15 users, 5,000 contacts, 2,500 deals, 15 pipelines, 3 AI agents with 1,000 actions/month, 300 prospecting credits/month, advanced analytics, lead scoring, webhooks, public API and priority support",
+            "Business (R$ 397/month): 50 users, unlimited contacts and deals, 50 pipelines, WhatsApp through the official Meta API, 5 AI agents with 3,000 actions/month, 1,500 prospecting credits/month, lead round-robin, custom reports, SSO and audit log",
           ],
         },
         {
-          title: "What you get with PRO?",
-          content: "The PRO plan unlocks features for teams and more sophisticated operations:",
-          steps: [
-            "Everything in FREE +",
-            "Unlimited pipelines (multiple sales flows)",
-            "Unlimited users (add your team)",
-            "Email Automations (smart automations)",
-            "PRO Analytics (forecasting, advanced reports)",
-            "Permission control (Owner/Admin/Member)",
-            "Priority support",
-            "Data export (CSV/Excel)",
-          ],
+          title: "What happens when the trial ends",
+          content: "If no paid plan is purchased by the end of the 7 days of Pro, the account becomes read-only: you still see contacts, deals and history, but cannot create or edit. Purchasing a paid plan unlocks the account as soon as the payment is confirmed. Your data is preserved.",
         },
         {
-          title: "When to upgrade to PRO?",
-          content: "Consider PRO when you:",
+          title: "When to upgrade?",
+          content: "A rule of thumb per plan:",
           tips: [
-            "Have more than 1 person on the sales team",
-            "Need different sales processes (multiple pipelines)",
-            "Want to automate follow-ups and nurture leads",
-            "Need forecasting to hit your targets",
-            "Want granular permission control",
+            "Starter: the team has grown past 2 people or you want follow-up automation and AI",
+            "Pro: 6 to 15 people, or when you need the API, webhooks and lead scoring",
+            "Business: WhatsApp integration, more than 15 people or automatic lead distribution",
           ],
         },
         {
           title: "How to upgrade?",
-          content: "To switch to the PRO plan:",
+          content: "To subscribe or change plans:",
           steps: [
-            "Go to Settings > Subscription",
-            "Click 'Upgrade to PRO'",
-            "Choose between monthly or annual billing (20% discount on annual)",
-            "Complete payment by credit card",
-            "Done! PRO features are unlocked immediately",
+            "Open Subscription & Billing",
+            "Click 'Upgrade'",
+            "Choose the plan and monthly or annual billing (20% off on annual)",
+            "Complete the payment",
+            "The plan's features are unlocked as soon as the payment is confirmed",
           ],
         },
       ],
@@ -1004,7 +974,7 @@ export const helpArticles: HelpArticle[] = [
     description: "Como importar múltiplos contatos de uma vez usando planilha",
     titleEn: "Importing Contacts via CSV",
     descriptionEn: "How to import multiple contacts at once using a spreadsheet",
-    lastUpdated: "2024-01-23",
+    lastUpdated: "2026-01-23",
     readTime: "4 min",
     content: {
       sections: [
@@ -1114,7 +1084,7 @@ export const helpArticles: HelpArticle[] = [
     description: "Aprenda a filtrar deals por vendedor, período, valor e outros critérios",
     titleEn: "Using Filters and Advanced Search",
     descriptionEn: "Learn how to filter deals by rep, period, value, and other criteria",
-    lastUpdated: "2024-01-23",
+    lastUpdated: "2026-01-23",
     readTime: "3 min",
     content: {
       sections: [
@@ -1131,7 +1101,7 @@ export const helpArticles: HelpArticle[] = [
             "Filtro por período - Deals criados em um range de datas",
             "Filtro por valor - Deals acima de um valor mínimo",
             "Filtro por etapa - Focar em uma fase específica",
-            "Filtro por pipeline - Alternar entre pipelines (PRO)",
+            "Filtro por pipeline - Alternar entre pipelines (quando a conta tem mais de um funil)",
           ],
         },
         {
@@ -1165,7 +1135,7 @@ export const helpArticles: HelpArticle[] = [
             "Date range filter — Deals created within a date range",
             "Value filter — Deals above a minimum value",
             "Stage filter — Focus on a specific pipeline phase",
-            "Pipeline filter — Switch between pipelines (PRO)",
+            "Pipeline filter — Switch between pipelines (when the account has more than one)",
           ],
         },
         {
@@ -1194,7 +1164,7 @@ export const helpArticles: HelpArticle[] = [
     description: "Como e quando marcar um negócio como perdido e analisar motivos",
     titleEn: "Marking Deals as Lost",
     descriptionEn: "How and when to mark a deal as lost and analyze the reasons",
-    lastUpdated: "2024-01-23",
+    lastUpdated: "2026-01-23",
     readTime: "3 min",
     content: {
       sections: [
@@ -1312,7 +1282,7 @@ export const helpArticles: HelpArticle[] = [
     description: "Personalize quais notificações você quer receber e por qual canal",
     titleEn: "Configuring Notifications",
     descriptionEn: "Customize which notifications you want to receive and through which channel",
-    lastUpdated: "2024-01-23",
+    lastUpdated: "2026-01-23",
     readTime: "3 min",
     content: {
       sections: [
@@ -1406,7 +1376,7 @@ export const helpArticles: HelpArticle[] = [
     description: "Como gerar chaves de API e integrar o Sirius com sistemas externos",
     titleEn: "Using the Sirius CRM API",
     descriptionEn: "How to generate API keys and integrate Sirius with external systems",
-    lastUpdated: "2024-01-23",
+    lastUpdated: "2026-01-23",
     readTime: "5 min",
     content: {
       sections: [
@@ -1516,7 +1486,7 @@ export const helpArticles: HelpArticle[] = [
     description: "Como conectar o Sirius CRM com N8N para criar workflows avançados",
     titleEn: "Integrating with N8N (Low-Code Automation)",
     descriptionEn: "How to connect Sirius CRM with N8N to create advanced workflows",
-    lastUpdated: "2024-01-23",
+    lastUpdated: "2026-01-23",
     readTime: "6 min",
     content: {
       sections: [
@@ -1647,16 +1617,16 @@ export const helpArticles: HelpArticle[] = [
     slug: "exportar-dados",
     category: "Analytics e Relatórios",
     categorySlug: "analytics",
-    description: "Como exportar seus deals e contatos para Excel ou CSV (PRO)",
+    description: "Como exportar seus deals e contatos para Excel ou CSV",
     titleEn: "Exporting Data for Analysis",
-    descriptionEn: "How to export your deals and contacts to Excel or CSV (PRO)",
-    lastUpdated: "2024-01-23",
+    descriptionEn: "How to export your deals and contacts to Excel or CSV",
+    lastUpdated: "2026-01-23",
     readTime: "3 min",
     content: {
       sections: [
         {
           title: "Por que exportar dados?",
-          content: "Embora o Sirius tenha analytics integrado, às vezes você precisa fazer análises mais profundas em ferramentas especializadas como Excel, Power BI ou Google Sheets. A exportação de dados (recurso PRO) permite isso.",
+          content: "Embora o Sirius tenha analytics integrado, às vezes você precisa fazer análises mais profundas em ferramentas especializadas como Excel, Power BI ou Google Sheets. A exportação de dados permite isso.",
         },
         {
           title: "O que pode ser exportado?",
@@ -1703,7 +1673,7 @@ export const helpArticles: HelpArticle[] = [
       sections: [
         {
           title: "Why export data?",
-          content: "While Sirius has built-in analytics, sometimes you need deeper analysis in specialized tools like Excel, Power BI, or Google Sheets. Data export (PRO feature) enables exactly that.",
+          content: "While Sirius has built-in analytics, sometimes you need deeper analysis in specialized tools like Excel, Power BI, or Google Sheets. Data export enables exactly that.",
         },
         {
           title: "What can be exported?",
@@ -1756,7 +1726,7 @@ export const helpArticles: HelpArticle[] = [
     description: "Personalize suas informações de perfil e preferências do sistema",
     titleEn: "Setting Up Your Profile and Preferences",
     descriptionEn: "Customize your profile information and system preferences",
-    lastUpdated: "2024-01-23",
+    lastUpdated: "2026-01-23",
     readTime: "2 min",
     content: {
       sections: [
@@ -1823,20 +1793,20 @@ export const helpArticles: HelpArticle[] = [
   },
 
   {
-    title: "Analytics PRO: Forecasting de vendas",
+    title: "Forecasting de vendas",
     slug: "forecasting-vendas",
     category: "Analytics e Relatórios",
     categorySlug: "analytics",
-    description: "Como usar o forecasting para prever faturamento e bater metas (PRO)",
-    titleEn: "PRO Analytics: Sales Forecasting",
-    descriptionEn: "How to use forecasting to predict revenue and hit your targets (PRO)",
-    lastUpdated: "2024-01-23",
+    description: "Como usar o forecasting para prever faturamento e bater metas (a partir do Pro)",
+    titleEn: "Sales Forecasting",
+    descriptionEn: "How to use forecasting to predict revenue and hit your targets (from Pro)",
+    lastUpdated: "2026-01-23",
     readTime: "5 min",
     content: {
       sections: [
         {
           title: "O que é Forecasting?",
-          content: "Forecasting é a previsão de receita baseada nos deals atuais no pipeline. O Sirius CRM analisa seus deals, aplica probabilidades de fechamento por etapa, e calcula quanto você provavelmente vai faturar no mês/trimestre. Este é um recurso exclusivo do plano PRO.",
+          content: "Forecasting é a previsão de receita baseada nos deals atuais no pipeline. O Sirius CRM analisa seus deals, aplica probabilidades de fechamento por etapa, e calcula quanto você provavelmente vai faturar no mês/trimestre. Faz parte do analytics avançado, a partir do plano Pro.",
         },
         {
           title: "Como funciona o cálculo?",
@@ -1856,7 +1826,7 @@ export const helpArticles: HelpArticle[] = [
         },
         {
           title: "Interpretando os números",
-          content: "Na página Analytics PRO, você vê 3 cenários:",
+          content: "Na página de Analytics, você vê 3 cenários:",
           steps: [
             "Pessimista - Assume que só os deals em estágio final fecham (80% de probabilidade)",
             "Realista - Calcula baseado nas probabilidades médias de cada etapa",
@@ -1879,7 +1849,7 @@ export const helpArticles: HelpArticle[] = [
       sections: [
         {
           title: "What is Forecasting?",
-          content: "Forecasting is revenue prediction based on current pipeline deals. Sirius CRM analyzes your deals, applies closing probabilities by stage, and calculates how much you will likely bill this month or quarter. This is an exclusive PRO plan feature.",
+          content: "Forecasting is revenue prediction based on current pipeline deals. Sirius CRM analyzes your deals, applies closing probabilities by stage, and calculates how much you will likely bill this month or quarter. It is part of advanced analytics, from the Pro plan.",
         },
         {
           title: "How is the forecast calculated?",
@@ -1899,7 +1869,7 @@ export const helpArticles: HelpArticle[] = [
         },
         {
           title: "Interpreting the numbers",
-          content: "On the PRO Analytics page, you see 3 scenarios:",
+          content: "On the Analytics page, you see 3 scenarios:",
           steps: [
             "Pessimistic — Assumes only deals in late stages close (80% probability)",
             "Realistic — Calculated using average probabilities for each stage",
@@ -1928,7 +1898,7 @@ export const helpArticles: HelpArticle[] = [
     description: "Como criar, editar e reordenar etapas do seu pipeline",
     titleEn: "Customizing Pipeline Stages",
     descriptionEn: "How to create, edit, and reorder your pipeline stages",
-    lastUpdated: "2024-01-23",
+    lastUpdated: "2026-01-23",
     readTime: "4 min",
     content: {
       sections: [
@@ -2026,7 +1996,7 @@ export const helpArticles: HelpArticle[] = [
     description: "Como atualizar forma de pagamento, mudar plano e cancelar assinatura",
     titleEn: "Managing Subscription and Payments",
     descriptionEn: "How to update payment method, change plan, and cancel subscription",
-    lastUpdated: "2024-01-23",
+    lastUpdated: "2026-01-23",
     readTime: "4 min",
     content: {
       sections: [
@@ -2053,7 +2023,7 @@ export const helpArticles: HelpArticle[] = [
           content: "Para fazer upgrade ou downgrade:",
           steps: [
             "Em Configurações > Assinatura, clique em 'Mudar Plano'",
-            "Escolha o novo plano (Mensal, Anual, ou downgrade para FREE)",
+            "Escolha o novo plano (Starter, Pro ou Business) e a cobrança mensal ou anual",
             "Se upgrade: mudança é imediata, você paga proporcional até o fim do ciclo",
             "Se downgrade: mudança acontece no fim do ciclo atual (você não perde dias pagos)",
             "Confirme a mudança",
@@ -2061,16 +2031,16 @@ export const helpArticles: HelpArticle[] = [
         },
         {
           title: "Cancelando assinatura",
-          content: "Para cancelar o plano PRO e voltar ao FREE:",
+          content: "Para cancelar a assinatura:",
           steps: [
             "Vá em Configurações > Assinatura",
             "Role até o final e clique em 'Cancelar Assinatura'",
             "Informe o motivo (opcional, mas nos ajuda a melhorar)",
             "Confirme o cancelamento",
-            "Seu plano PRO continua ativo até o fim do período pago",
-            "Após o vencimento, você volta automaticamente ao FREE",
+            "Seu plano continua ativo até o fim do período pago",
+            "Após o vencimento, a conta volta ao plano Gratuito",
           ],
-          warning: "No plano FREE, você perde: múltiplos pipelines, email automations, usuários adicionais e analytics PRO. Seus dados são preservados.",
+          warning: "De volta ao Gratuito, a conta fica em modo somente leitura: você vê os dados, mas não cria nem edita. Seus dados são preservados.",
         },
         {
           title: "Histórico de faturas",
@@ -2103,7 +2073,7 @@ export const helpArticles: HelpArticle[] = [
           content: "To upgrade or downgrade:",
           steps: [
             "In Settings > Subscription, click 'Change Plan'",
-            "Choose the new plan (Monthly, Annual, or downgrade to FREE)",
+            "Choose the new plan (Starter, Pro or Business) and monthly or annual billing",
             "If upgrading: change is immediate, you pay prorated to end of cycle",
             "If downgrading: change takes effect at the end of the current cycle (no lost paid days)",
             "Confirm the change",
@@ -2111,16 +2081,16 @@ export const helpArticles: HelpArticle[] = [
         },
         {
           title: "Cancelling subscription",
-          content: "To cancel the PRO plan and return to FREE:",
+          content: "To cancel the subscription:",
           steps: [
             "Go to Settings > Subscription",
             "Scroll to the bottom and click 'Cancel Subscription'",
             "Provide a reason (optional, but it helps us improve)",
             "Confirm the cancellation",
-            "Your PRO plan remains active until the end of the paid period",
-            "After expiry, you automatically return to FREE",
+            "Your plan remains active until the end of the paid period",
+            "After expiry, the account returns to the Free plan",
           ],
-          warning: "On the FREE plan, you lose: multiple pipelines, email automations, additional users, and PRO analytics. Your data is preserved.",
+          warning: "Back on Free, the account becomes read-only: you see your data but cannot create or edit. Your data is preserved.",
         },
         {
           title: "Invoice history",
@@ -2138,7 +2108,7 @@ export const helpArticles: HelpArticle[] = [
     description: "Como usar tags e campos customizados para organizar seus deals",
     titleEn: "Adding Tags and Custom Fields",
     descriptionEn: "How to use tags and custom fields to organize your deals",
-    lastUpdated: "2024-01-23",
+    lastUpdated: "2026-01-23",
     readTime: "4 min",
     content: {
       sections: [
@@ -2250,7 +2220,7 @@ export const helpArticles: HelpArticle[] = [
     description: "Aumente sua produtividade com atalhos de teclado essenciais",
     titleEn: "Sirius CRM Keyboard Shortcuts",
     descriptionEn: "Boost your productivity with essential keyboard shortcuts",
-    lastUpdated: "2024-01-23",
+    lastUpdated: "2026-01-23",
     readTime: "2 min",
     content: {
       sections: [
@@ -2356,7 +2326,7 @@ export const helpArticles: HelpArticle[] = [
     description: "Dicas e estratégias para maximizar resultados com o Sirius CRM",
     titleEn: "Sales Management Best Practices",
     descriptionEn: "Tips and strategies to maximize results with Sirius CRM",
-    lastUpdated: "2024-01-23",
+    lastUpdated: "2026-01-23",
     readTime: "6 min",
     content: {
       sections: [
@@ -2484,7 +2454,7 @@ export const helpArticles: HelpArticle[] = [
     description: "Soluções para os problemas mais comuns no Sirius CRM",
     titleEn: "Troubleshooting: Common Problems and Solutions",
     descriptionEn: "Solutions for the most common issues in Sirius CRM",
-    lastUpdated: "2024-01-23",
+    lastUpdated: "2026-01-23",
     readTime: "4 min",
     content: {
       sections: [
