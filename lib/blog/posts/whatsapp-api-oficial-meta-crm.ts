@@ -612,6 +612,10 @@ export const post: BlogPost = {
 </ol>
 
 <p>
+  Once the number runs on the Official API, it can be operated by an AI agent as well as by a person, which is the model we call <a href="/en/blog/agentes-ia-vs-saas-tradicional">AgaaS (Agents as a Service)</a>.
+</p>
+
+<p>
   In <strong>Sirius CRM</strong>, just go to <strong>Settings → Integrations → Official WhatsApp</strong>, fill in these 4 fields, and activate. The system automatically configures the webhook and starts receiving messages.
 </p>
 

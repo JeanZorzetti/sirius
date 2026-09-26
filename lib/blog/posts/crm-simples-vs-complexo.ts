@@ -381,6 +381,10 @@ export const post: BlogPost = {
         Se você marcou 4 ou mais, você está desperdiçando dinheiro e produtividade com um CRM complexo.
       </p>
 
+      <p>
+        Simples não quer dizer genérico. Um CRM simples ainda fala a língua do seu setor: a integradora registra kWp, tipo de telhado e visita técnica no <a href="/solucoes/energia-solar">CRM para empresas de energia solar</a>, e o representante acompanha pedido e recompra por cliente no <a href="/solucoes/representantes-comerciais">CRM para representante comercial</a>. Lembrar de retornar cada cliente fica com a <a href="/followup">automação de follow-up</a>, sem projeto de consultoria.
+      </p>
+
       <h2>Conclusão: Menos é Mais (e Mais Barato)</h2>
 
       <p>

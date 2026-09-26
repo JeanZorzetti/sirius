@@ -589,6 +589,10 @@ export const post: BlogPost = {
         The 7 strategies above work individually. They compound when integrated with a CRM. Without systematic tracking, sequences collapse after 15 contacts — it becomes impossible to know who is on touch 3 versus touch 5.
       </p>
 
+      <p>
+        Before scaling any sequence, check which API runs your number: <a href="/en/blog/whatsapp-api-oficial-meta-crm">official WhatsApp Business API vs unofficial APIs like Evolution API</a> decides whether the number survives the volume.
+      </p>
+
       <p>The minimum viable CRM workflow for WhatsApp B2B:</p>
 
       <ul>

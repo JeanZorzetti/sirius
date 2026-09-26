@@ -46,7 +46,7 @@ export const post: BlogPost = {
       <p>
         Cada etapa do seu funil tem uma ação de follow-up ideal. Com automação, quando um deal entra em "Proposta Enviada", o CRM automaticamente agenda um lembrete para 3 dias depois e, se não houver resposta, envia um e-mail de acompanhamento personalizado.
       </p>
-      <p><strong>O que automatizar:</strong> Lembretes de contato por tempo de inatividade, e-mails de follow-up sequenciais, alertas de deals em risco.</p>
+      <p><strong>O que automatizar:</strong> Lembretes de contato por tempo de inatividade, e-mails de follow-up sequenciais, alertas de deals em risco. Veja como a <a href="/followup">automação de follow-up do Sirius</a> liga cada gatilho a uma tarefa.</p>
 
       <h3>3. Notificações de Recompra (para B2B)</h3>
       <p>
@@ -90,7 +90,7 @@ export const post: BlogPost = {
 
       <h3>Para Representantes Comerciais</h3>
       <p>
-        A automação mais valiosa para representantes é o <strong>alerta de ciclo de recompra</strong>. Configure o CRM para analisar o histórico de cada cliente e avisar quando está na hora de ligar. Um representante com 200 clientes na carteira não consegue lembrar manualmente quando cada um comprou pela última vez — a automação faz isso por ele.
+        A automação mais valiosa para representantes é o <strong>alerta de ciclo de recompra</strong>. Configure o CRM para analisar o histórico de cada cliente e avisar quando está na hora de ligar. Um representante com 200 clientes na carteira não consegue lembrar manualmente quando cada um comprou pela última vez — a automação faz isso por ele. É o lembrete de recompra do <a href="/solucoes/representantes-comerciais">CRM para representante comercial</a>.
       </p>
 
       <h3>Para Agências de Marketing</h3>
@@ -100,7 +100,7 @@ export const post: BlogPost = {
 
       <h3>Para Energia Solar</h3>
       <p>
-        A automação de <strong>follow-up de propostas</strong> é crítica. O ciclo de venda de energia solar pode durar semanas. Configure sequências automáticas para manter o cliente engajado durante esse período sem demandar atenção manual constante do vendedor.
+        A automação de <strong>follow-up de propostas</strong> é crítica. O ciclo de venda de energia solar pode durar semanas. Configure sequências automáticas para manter o cliente engajado durante esse período sem demandar atenção manual constante do vendedor. O <a href="/solucoes/energia-solar">CRM para energia solar</a> já traz o pipeline por etapa técnica, do orçamento à instalação.
       </p>
 
       <h2>O Erro Mais Comum na Automação de Vendas</h2>

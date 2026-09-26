@@ -150,7 +150,7 @@ export const post: BlogPost = {
       <h2>Como estruturar cadências de follow-up via WhatsApp</h2>
 
       <p>
-        A maior vantagem de ter WhatsApp no CRM não é só centralizar conversas — é automatizar a cadência de follow-up. Com o fluxo configurado, o CRM dispara mensagens nos momentos certos do ciclo de vendas sem o vendedor precisar lembrar manualmente.
+        A maior vantagem de ter WhatsApp no CRM não é só centralizar conversas — é automatizar a cadência de follow-up. Com o fluxo configurado, o CRM dispara mensagens nos momentos certos do ciclo de vendas sem o vendedor precisar lembrar manualmente. Os gatilhos ficam na <a href="/followup">automação de follow-up</a>, e as mensagens seguem as <a href="/blog/whatsapp-vendas-b2b-estrategias">estratégias de vendas B2B pelo WhatsApp</a>.
       </p>
 
       <p>Exemplo de cadência para leads frios via WhatsApp:</p>

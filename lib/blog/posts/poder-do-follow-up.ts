@@ -142,6 +142,10 @@ export const post: BlogPost = {
         </p>
       </blockquote>
 
+      <p>
+        A cadência muda com o ciclo do segmento. Numa integradora solar, a proposta depende da visita técnica e da aprovação do financiamento, então o 5-3-2 só começa depois da visita — é esse o fluxo do <a href="/solucoes/energia-solar">CRM para energia solar</a>. Já o representante comercial revisita a mesma carteira de clientes todo mês, e o follow-up acompanha o ciclo de recompra de cada um, como no <a href="/solucoes/representantes-comerciais">CRM para representante comercial</a>.
+      </p>
+
       <h2>WhatsApp vs Email: Qual Usar Quando?</h2>
 
       <p>
@@ -173,7 +177,7 @@ export const post: BlogPost = {
       </ul>
 
       <p>
-        Em geral: WhatsApp para conversas, Email para documentação. E o <a href="/dashboard">Sirius CRM</a> integra nativamente ambos — você clica no botão de WhatsApp direto do card do deal, sem precisar sair do sistema.
+        Em geral: WhatsApp para conversas, Email para documentação. E o <a href="/dashboard">Sirius CRM</a> integra nativamente ambos — você clica no botão de WhatsApp direto do card do deal, sem precisar sair do sistema. Para montar a operação comercial inteira no WhatsApp, da primeira mensagem à reativação, veja as <a href="/blog/whatsapp-vendas-b2b-estrategias">estratégias de vendas B2B pelo WhatsApp</a>.
       </p>
 
       <h2>Scripts Copy-Paste para Follow-ups Eficazes</h2>
@@ -324,7 +328,7 @@ export const post: BlogPost = {
 
         <li><strong>Use templates de follow-up:</strong> Salve os 6 scripts acima como snippets no seu CRM. Quando chega o dia do follow-up, você só personaliza 2-3 variáveis e envia.</li>
 
-        <li><strong>Configure alertas automáticos:</strong> Se um deal fica 5 dias sem interação, o CRM deve te avisar automaticamente.</li>
+        <li><strong>Configure alertas automáticos:</strong> Se um deal fica 5 dias sem interação, o CRM deve te avisar automaticamente. No Sirius, é a <a href="/followup">automação de follow-up</a>: o gatilho "negócio parado há N dias" cria a tarefa ou avisa o responsável.</li>
 
         <li><strong>Veja tudo em um lugar:</strong> No <a href="/dashboard">Sirius CRM</a>, você vê no card do deal: última interação, próxima tarefa agendada, histórico de mensagens. Tudo centralizado.</li>
 

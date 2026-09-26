@@ -290,7 +290,7 @@ export const post: BlogPost = {
       <h2>Como o Sirius Substitui 3 das 5 Ferramentas</h2>
 
       <p>
-        Para representantes que querem simplificar o stack sem perder funcionalidade, o <a href="/" style="color: var(--foreground); text-decoration: underline;">Sirius CRM</a> foi desenvolvido com foco específico no representante autônomo brasileiro. Ele substitui nativamente:
+        Para representantes que querem simplificar o stack sem perder funcionalidade, o <a href="/solucoes/representantes-comerciais" style="color: var(--foreground); text-decoration: underline;">Sirius CRM para representante comercial</a> foi desenvolvido com foco específico no representante autônomo brasileiro. Ele substitui nativamente:
       </p>
 
       <ul style="line-height: 2; padding-left: 1.5rem;">

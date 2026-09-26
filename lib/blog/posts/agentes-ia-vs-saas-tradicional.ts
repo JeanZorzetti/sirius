@@ -633,6 +633,10 @@ export const post: BlogPost = {
         Studies from Harvard Business Review and InsideSales.com show that <strong>80% of B2B sales require 5 or more follow-ups</strong>, but 44% of reps give up after the first contact. AgaaS ensures every lead receives the ideal number of follow-ups, at the right timing, with personalized content.
       </p>
 
+      <p>
+        When those follow-ups run on WhatsApp, the channel matters as much as the agent: an agent sending through an unofficial API such as Evolution API or Baileys puts the number at risk of a ban. See <a href="/en/blog/whatsapp-api-oficial-meta-crm">the official WhatsApp Business API vs Evolution API and Baileys</a> before you automate.
+      </p>
+
       <h2>FAQ: AgaaS vs SaaS</h2>
 
       <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">

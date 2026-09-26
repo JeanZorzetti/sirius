@@ -177,11 +177,15 @@ export const post: BlogPost = {
 
       <h3>Para representante de produtos alimentícios</h3>
 
-      <p>Busca no Maps: "Supermercados", "Mercearias", "Açougues", "Padarias", "Restaurantes" por bairro e cidade. Priorize estabelecimentos com 4.0+ e mais de 100 avaliações — indicativo de volume de movimento. Rota semanal: agrupe por proximidade geográfica para maximizar visitas por deslocamento.</p>
+      <p>Busca no Maps: "Supermercados", "Mercearias", "Açougues", "Padarias", "Restaurantes" por bairro e cidade. Priorize estabelecimentos com 4.0+ e mais de 100 avaliações — indicativo de volume de movimento. Rota semanal: agrupe por proximidade geográfica para maximizar visitas por deslocamento. No <a href="/solucoes/representantes-comerciais">CRM para representante comercial</a>, cada estabelecimento vira cliente da carteira com região e histórico de pedidos.</p>
 
       <h3>Para representante de produtos de limpeza/higiene</h3>
 
       <p>Busca: "Hotéis", "Pousadas", "Hospitais", "Clínicas", "Escolas", "Condomínios comerciais". Foco em CNPJ com endereço comercial — não residencial. Decisor típico: gerente de compras ou administrador.</p>
+
+      <h3>Para integradora de energia solar</h3>
+
+      <p>Busca: "Supermercados", "Indústrias", "Galpões", "Postos de combustível", "Frigoríficos", "Hotéis". Comércio e indústria com conta de luz alta são os projetos de maior ticket. Use a vista de satélite para conferir o telhado antes do contato e registre cada prospect no <a href="/solucoes/energia-solar">CRM para energia solar</a> já com a etapa de visita técnica agendada.</p>
 
       <h3>Para vendedor de soluções B2B (SaaS, serviços)</h3>
 

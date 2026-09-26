@@ -209,6 +209,10 @@ export const post: BlogPost = {
         </p>
       </blockquote>
 
+      <p>
+        O que muda de um segmento para outro é o nome das etapas, não a quantidade. Uma integradora solar troca as cinco etapas por Orçamento → Visita Técnica → Aprovação → Instalação, como no <a href="/solucoes/energia-solar">pipeline do CRM para energia solar</a>. O representante comercial chama o negócio de pedido e o funil de carteira de clientes — veja o <a href="/solucoes/representantes-comerciais">CRM para representante comercial</a>. Com as etapas no lugar, a <a href="/followup">automação de follow-up</a> cria a próxima tarefa quando um negócio muda de etapa ou fica parado.
+      </p>
+
       <h2>Kanban: A Metodologia Visual que Mudou Tudo</h2>
 
       <p>
