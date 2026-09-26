@@ -2,7 +2,7 @@ import { BlogPost } from '../../blog-types'
 
 export const post: BlogPost = {
   slug: 'ia-para-qualificacao-de-leads',
-  title: 'IA para Qualificação de Leads: Como um Assistente Virtual Aplica BANT e MEDDIC Automaticamente',
+  title: 'IA para Qualificação de Leads: Guia de Como um Assistente Aplica BANT e MEDDIC',
   excerpt: 'Entenda como a inteligência artificial analisa conversas para extrair critérios BANT e MEDDIC, gerar score de qualificação e economizar horas do time de vendas.',
   date: '2026-03-21',
   lastModified: '2026-03-21',

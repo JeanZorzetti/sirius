@@ -2,7 +2,7 @@ import { BlogPost } from '../../blog-types'
 
 export const post: BlogPost = {
   slug: 'sandler-selling-system',
-  title: 'Sandler Selling System: Como Usar a Dor do Cliente para Fechar Negócios sem Parecer Vendedor',
+  title: 'Sandler Selling System: Guia para Usar a Dor do Cliente e Fechar sem Parecer Vendedor',
   excerpt: 'Entenda os 7 compartimentos do Sandler Selling System, o Up-Front Contract e o pain funnel — e como aplicar esse método no mercado B2B brasileiro.',
   date: '2026-03-21',
   lastModified: '2026-03-21',

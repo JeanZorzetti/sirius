@@ -47,10 +47,10 @@ export async function generateMetadata({
   const hasEnContent = !!(article.titleEn && article.descriptionEn)
   const displayTitle = isEn && article.titleEn ? article.titleEn : article.title
   const displayDescription = isEn && article.descriptionEn ? article.descriptionEn : article.description
-  const helpLabel = isEn ? 'Help Center' : 'Central de Ajuda'
+  const helpLabel = isEn ? 'Sirius CRM Guide' : 'Guia Sirius CRM'
 
   return {
-    title: `${displayTitle} - ${helpLabel} | Sirius CRM`,
+    title: `${displayTitle} — ${helpLabel}`,
     description: displayDescription,
     keywords: [article.category, isEn ? 'help' : 'ajuda', 'tutorial', 'CRM', 'Sirius'],
     ...(isEn && !hasEnContent ? { robots: { index: false, follow: false } } : {}),
@@ -60,13 +60,13 @@ export async function generateMetadata({
     },
     openGraph: {
       images: DEFAULT_OG_IMAGES,
-      title: `${displayTitle} - ${helpLabel} | Sirius CRM`,
+      title: `${displayTitle} — ${helpLabel}`,
       description: displayDescription,
       url: canonicalUrl,
     },
     twitter: {
       card: 'summary',
-      title: `${displayTitle} - ${helpLabel}`,
+      title: `${displayTitle} — ${helpLabel}`,
       description: article.description,
     },
   };

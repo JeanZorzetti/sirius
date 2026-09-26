@@ -38,7 +38,7 @@ export async function generateMetadata({
   }
 
   const posts = getPostsByCategory(categoryName)
-  const title = `${categoryName} | Blog Sirius CRM`
+  const title = `${categoryName}: Guias e Artigos | Blog Sirius CRM`
   const description = `Artigos sobre ${categoryName.toLowerCase()}: ${posts
     .slice(0, 3)
     .map((p) => p.title)

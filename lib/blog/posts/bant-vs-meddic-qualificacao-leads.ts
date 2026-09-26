@@ -2,7 +2,7 @@ import { BlogPost } from '../../blog-types'
 
 export const post: BlogPost = {
   slug: 'bant-vs-meddic-qualificacao-leads',
-  title: 'BANT vs MEDDIC: Qual Framework de Qualificação de Leads Funciona Melhor para Vendas Complexas?',
+  title: 'BANT vs MEDDIC: Comparativo de Frameworks de Qualificação de Leads para Vendas Complexas',
   excerpt: 'Comparação prática entre BANT e MEDDIC para qualificação de leads B2B: quando usar cada framework, pontos cegos de cada um e como a IA do Sirius aplica BANT automaticamente.',
   date: '2026-03-21',
   lastModified: '2026-03-21',
