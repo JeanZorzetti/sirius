@@ -99,7 +99,7 @@ export default function FollowupPage() {
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto mb-8">
             Pare de perder vendas por esquecimento. O Sirius CRM te lembra automaticamente quando fazer follow-up com cada lead, no momento certo.
           </p>
-          <div className="flex gap-4 justify-center">
+          <div className="flex flex-wrap gap-4 justify-center">
             <Button size="lg" asChild>
               <Link href="/register">
                 Começar Gratuitamente
