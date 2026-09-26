@@ -339,7 +339,7 @@ export const post: BlogPost = {
 
       <div style="background: var(--primary); padding: 2rem; border-radius: 1rem; margin: 2.5rem 0; text-align: center;">
         <p style="color: white; font-size: 1.25rem; font-weight: 700; margin: 0 0 0.5rem;">Configure automações de e-mail hoje no Sirius CRM</p>
-        <p style="color: var(--foreground); margin: 0 0 1.25rem;">Os 4 gatilhos desta guia prontos para configurar. Plano gratuito inclui automações básicas.</p>
+        <p style="color: var(--foreground); margin: 0 0 1.25rem;">Os 4 gatilhos desta guia prontos para configurar. Automações a partir do plano Starter (R$ 67/mês).</p>
         <a href="/pricing" style="display: inline-block; background: white; color: var(--foreground); padding: 0.75rem 2rem; border-radius: 0.5rem; font-weight: 700; text-decoration: none;">Começar Grátis →</a>
       </div>
 

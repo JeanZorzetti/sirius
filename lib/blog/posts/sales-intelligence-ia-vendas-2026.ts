@@ -5,7 +5,7 @@ export const post: BlogPost = {
   title: 'Sales Intelligence em 2026: Como a IA está Transformando a Qualificação de Leads no Brasil',
   excerpt: 'Entenda o que é Sales Intelligence, como IAs analisam sinais de compra em dados firmográficos e comportamentais, e como PMEs brasileiras podem usar sem budget enterprise.',
   date: '2026-03-21',
-  lastModified: '2026-03-21',
+  lastModified: '2026-09-26',
   category: 'Vendas',
   image: 'https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?w=1200&h=630&fit=crop&auto=format&q=80',
   author: 'Equipe Sirius CRM',
@@ -165,7 +165,7 @@ export const post: BlogPost = {
       <h3>Sirius CRM (PMEs brasileiras)</h3>
 
       <p>
-        O <a href="/">Sirius CRM PRO</a> entrega Sales Intelligence integrada ao CRM com foco no mercado brasileiro: dados de CNPJ enriquecidos, integração com Google Maps para prospecção local, AGI Sirius para qualificação automática de leads, e scoring preditivo baseado no histórico da sua própria empresa. Custo: a partir de <strong>R$ 99/mês</strong> — sem necessidade de múltiplas ferramentas.
+        O <a href="/">Sirius CRM</a> entrega parte dessa inteligência dentro do CRM, com foco no mercado brasileiro: busca de empresas no Google Maps com dados de CNPJ e IA que qualifica o lead por BANT e MEDDIC a partir do Starter, e lead scoring a partir do Pro. Custo: <strong>R$ 67/mês</strong> no Starter, para até 5 usuários, ou R$ 147/mês no Pro, para até 15.
       </p>
 
       <div class="callout-tip">
@@ -174,8 +174,8 @@ export const post: BlogPost = {
           <li><strong>Dados de empresa:</strong> API do CNPJ.ws (gratuito) + Google Maps Places API (gratuito até certo volume)</li>
           <li><strong>Dados de decisores:</strong> LinkedIn gratuito + Sales Navigator (opcional)</li>
           <li><strong>Sinais de comportamento:</strong> Google Analytics + pixel de retargeting do seu site</li>
-          <li><strong>Qualificação e scoring:</strong> AGI Sirius no Sirius CRM PRO</li>
-          <li><strong>Custo total estimado:</strong> R$ 99-300/mês — 95% mais barato que stack enterprise equivalente</li>
+          <li><strong>Qualificação e scoring:</strong> IA do Sirius CRM, a partir do Starter; lead scoring a partir do Pro</li>
+          <li><strong>Custo total estimado:</strong> de R$ 67 a R$ 147/mês no Sirius, mais o Sales Navigator se você usar</li>
         </ul>
       </div>
 
@@ -252,7 +252,7 @@ export const post: BlogPost = {
       </p>
 
       <hr style="margin: 3rem 0; border: none; border-top: 1px solid var(--border);" />
-      <strong>Última Atualização:</strong> 21 de Março de 2026<br/>
+      <strong>Última Atualização:</strong> 26 de setembro de 2026<br/>
       <strong>Autor:</strong> Equipe Sirius CRM<br/>
       <strong>Tempo de Leitura:</strong> 14 minutos
     `,
@@ -322,7 +322,7 @@ export const post: BlogPost = {
           </tr>
           <tr>
             <td style="padding: 0.875rem; border: 1px solid var(--border);">Website behavior</td>
-            <td style="padding: 0.875rem; border: 1px solid var(--border);">Sirius CRM tracking pixel</td>
+            <td style="padding: 0.875rem; border: 1px solid var(--border);">Google Analytics or a retargeting pixel on your site</td>
             <td style="padding: 0.875rem; border: 1px solid var(--border);">Pricing page visits, feature research, return visits</td>
           </tr>
           <tr style="background: var(--muted);">
@@ -343,7 +343,7 @@ export const post: BlogPost = {
 
       <hr style="margin: 3rem 0; border: none; border-top: 1px solid var(--border);" />
       <p style="font-size: 0.85rem; color: var(--foreground);">
-        <strong>Last Updated:</strong> March 21, 2026<br/>
+        <strong>Last Updated:</strong> September 26, 2026<br/>
         <strong>Author:</strong> Sirius CRM Team<br/>
         <strong>Reading Time:</strong> 14 minutes
       </p>

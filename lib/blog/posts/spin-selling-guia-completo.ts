@@ -687,7 +687,7 @@ a Sirius resolve especificamente [Problema 1], [Problema 2] e [Problema 3]..."
   2. <strong>Crie seu banco de 40 perguntas</strong> (30 min)<br/>
   3. <strong>Faça 1 role-play</strong> com colega (30 min)<br/>
   4. <strong>Aplique na próxima discovery</strong> (essa semana)<br/>
-  5. <strong><a href="https://siriuscrm.com.br/register?trial=spin-selling" target="_blank" rel="noopener" style="color: var(--foreground); text-decoration: underline;">Teste Sirius CRM 14 dias grátis</a></strong> (opcional)<br/>
+  5. <strong><a href="https://siriuscrm.com.br/register?trial=spin-selling" target="_blank" rel="noopener" style="color: var(--foreground); text-decoration: underline;">Teste o Pro do Sirius CRM por 7 dias, grátis</a></strong> (opcional)<br/>
 </FinalCTASteps>
 
 <hr style="margin: 3rem 0; border: none; border-top: 1px solid var(--border);" />

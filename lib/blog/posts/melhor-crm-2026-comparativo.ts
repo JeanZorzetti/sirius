@@ -535,7 +535,7 @@ export const post: BlogPost = {
 
       <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
         <summary style="font-weight: 600; cursor: pointer; color: var(--foreground); list-style: revert;">What's the best CRM for small businesses in 2026?</summary>
-        <p style="margin: 0.75rem 0 0; color: var(--foreground);">For small businesses in 2026, the best CRM combines ease of use, follow-up automation, and a generous free plan. Sirius CRM offers visual pipeline, AI alerts, and WhatsApp integration for free up to 50 clients — ideal for starting without initial investment.</p>
+        <p style="margin: 0.75rem 0 0; color: var(--foreground);">For small businesses in 2026, the best CRM combines ease of use, follow-up automation, and a generous free plan. Sirius CRM offers a free plan with a visual pipeline for 2 users and 250 contacts; automation and AI start on Starter (R$ 67/month for up to 5 users) and WhatsApp integration on Business.</p>
       </details>
 
       <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">

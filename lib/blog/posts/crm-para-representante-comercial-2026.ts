@@ -310,7 +310,7 @@ export const post: BlogPost = {
 
       <div style="background: var(--muted); border-left: 4px solid var(--fio-forte); padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
         <p style="font-weight: 700; color: var(--foreground);">Your portfolio, your data, your CRM — for free</p>
-        <p style="color: var(--foreground); margin: 0.5rem 0 1rem;">Sirius CRM free plan. No credit card. Offline mode, WhatsApp, AI. Your data is always yours.</p>
+        <p style="color: var(--foreground); margin: 0.5rem 0 1rem;">Sirius CRM free plan, no credit card. Offline mode on mobile; AI from Starter; WhatsApp on Business. Your data is always yours.</p>
         <a href="/en/register" style="background: var(--primary); color: white; padding: 0.75rem 1.5rem; border-radius: 0.5rem; font-weight: 600; text-decoration: none; display: inline-block;">Create Free Account →</a>
       </div>
 

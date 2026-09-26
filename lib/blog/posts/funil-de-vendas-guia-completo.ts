@@ -605,7 +605,7 @@ export const post: BlogPost = {
 
       <div class="callout-success">
         <p><strong>🎁 Comece Grátis Hoje</strong></p>
-        <p>Plano Free inclui: 1 pipeline, 10 deals ativos, WhatsApp integrado, analytics básico. <a href="/register"><strong>Crie sua conta em 60 segundos →</strong></a></p>
+        <p>Plano Gratuito: 2 usuários, 1 funil, 100 negócios ativos e analytics básico. <a href="/register"><strong>Crie sua conta em 60 segundos →</strong></a></p>
       </div>
 
       <h2>Conclusão: Funil é Ciência, Não Sorte</h2>

@@ -5,7 +5,7 @@ export const post: BlogPost = {
   title: 'CRM com IA: Como a Inteligência Artificial Está Revolucionando as Vendas em 2026',
   excerpt: 'Descubra como o CRM com Inteligência Artificial está transformando equipes de vendas em 2026: automação de follow-up, previsão de fechamento, scoring de leads e muito mais.',
   date: '2026-02-10',
-  lastModified: '2026-02-10',
+  lastModified: '2026-09-26',
   category: 'Tecnologia e IA',
   image: '/images/blog/crm-ia-inteligencia-artificial.webp',
   author: 'Equipe Sirius CRM',
@@ -25,7 +25,7 @@ export const post: BlogPost = {
           <li><strong>CRM com IA</strong> usa machine learning para automatizar follow-up, prever fechamentos e priorizar leads automaticamente</li>
           <li>Empresas com CRM + IA vendem <strong style="color: var(--primary-foreground);">41% mais</strong> por vendedor vs. CRM tradicional (Salesforce State of Sales 2025)</li>
           <li>5 recursos essenciais: Lead Scoring, Previsão de Fechamento, Follow-up Contextual, Análise de Sentimento, Assistente Conversacional</li>
-          <li>O Sirius CRM oferece IA nativa no plano gratuito — alertas de recompra, análise de churn e assistente SPIN</li>
+          <li>No Sirius CRM, a IA começa no Starter (R$ 67/mês para até 5 usuários): qualificação BANT/MEDDIC, próximo passo sugerido e agente Sofia</li>
         </ul>
       </div>
 
@@ -149,7 +149,7 @@ export const post: BlogPost = {
 
       <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
         <summary style="font-weight: 600; cursor: pointer; color: var(--foreground); list-style: revert;">CRM com IA é caro? Vale a pena para PMEs?</summary>
-        <p style="margin: 0.75rem 0 0; color: var(--foreground);">Não. Em 2026, CRMs com IA como o Sirius CRM oferecem planos gratuitos com recursos de IA incluídos. O ROI é imediato: vendedores que usam lead scoring com IA fecham 3x mais deals em menos tempo, sem contratar mais vendedores.</p>
+        <p style="margin: 0.75rem 0 0; color: var(--foreground);">Não precisa ser. O HubSpot Free já traz um assistente de IA, e no Sirius a IA começa no Starter, a R$ 67/mês para até 5 usuários. O retorno aparece quando há mais leads do que o time consegue qualificar à mão.</p>
       </details>
 
       <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
@@ -168,7 +168,7 @@ export const post: BlogPost = {
       </details>
 
       <hr style="margin: 3rem 0; border: none; border-top: 1px solid var(--border);" />
-      <strong>Última Atualização:</strong> 10 de Fevereiro de 2026<br/>
+      <strong>Última Atualização:</strong> 26 de setembro de 2026<br/>
       <strong>Autor:</strong> Equipe Sirius CRM<br/>
       <strong>Tempo de Leitura:</strong> 8 minutos
     `,
@@ -190,7 +190,7 @@ export const post: BlogPost = {
           <li><strong>AI CRM</strong> uses machine learning to automate follow-up, predict deal closings, and prioritize leads automatically</li>
           <li>Companies with CRM + AI sell <strong style="color: var(--primary-foreground);">41% more</strong> per rep vs. traditional CRM (Salesforce State of Sales 2025)</li>
           <li>5 essential features: Lead Scoring, Deal Intelligence, Contextual Follow-up, Sentiment Analysis, Conversational Assistant</li>
-          <li>Sirius CRM offers native AI on the free plan — reorder alerts, churn analysis, and SPIN assistant</li>
+          <li>In Sirius CRM, AI starts on Starter (R$ 67/month for up to 5 users): BANT/MEDDIC qualification, suggested next step and the Sofia agent</li>
         </ul>
       </div>
 
@@ -312,7 +312,7 @@ export const post: BlogPost = {
 
       <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
         <summary style="font-weight: 600; cursor: pointer; color: var(--foreground); list-style: revert;">Is an AI CRM expensive? Is it worth it for SMBs?</summary>
-        <p style="margin: 0.75rem 0 0; color: var(--foreground);">No. In 2026, AI CRMs like Sirius CRM offer free plans with AI features included. The ROI is immediate: sales reps who use AI lead scoring close 3x more deals in less time, without hiring more reps.</p>
+        <p style="margin: 0.75rem 0 0; color: var(--foreground);">It does not have to be. HubSpot Free already includes an AI assistant, and in Sirius AI starts on Starter, at R$ 67/month for up to 5 users. The return shows up when there are more leads than the team can qualify by hand.</p>
       </details>
 
       <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
@@ -331,7 +331,7 @@ export const post: BlogPost = {
       </details>
 
       <hr style="margin: 3rem 0; border: none; border-top: 1px solid var(--border);" />
-      <strong>Last Updated:</strong> February 10, 2026<br/>
+      <strong>Last Updated:</strong> September 26, 2026<br/>
       <strong>Author:</strong> Sirius CRM Team<br/>
       <strong>Read Time:</strong> 8 minutes
     `

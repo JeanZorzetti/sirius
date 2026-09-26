@@ -333,7 +333,7 @@ export const post: BlogPost = {
       <div class="callout-cta">
         <h3 style="margin-top: 0;">Migre Agora — e de Graca</h3>
         <p>
-          O Sirius CRM tem importacao CSV com mapeamento visual, suporte em portugues e assistente de onboarding que guia a migracao passo a passo. O plano gratuito suporta ate 20 deals ativos — suficiente para times pequenos comecar sem pagar nada.
+          O Sirius CRM tem importacao CSV com mapeamento visual, suporte em portugues e assistente de onboarding que guia a migracao passo a passo. O plano gratuito aceita 2 usuarios, 250 contatos e 100 negocios ativos; a automacao e a IA comecam no Starter, a R$ 67/mes para ate 5 usuarios.
         </p>
         <p><strong><a href="/register" style="color: var(--foreground); text-decoration: underline;">Criar Conta Gratis e Comecar a Migracao →</a></strong></p>
       </div>

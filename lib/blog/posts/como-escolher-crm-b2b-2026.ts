@@ -5,7 +5,7 @@ export const post: BlogPost = {
   title: 'Como Escolher um CRM B2B em 2026: 7 Critérios Decisivos',
   excerpt: 'CRM errado custa R$12.000+/ano em produtividade perdida. Responda 5 perguntas e descubra qual sistema combina com seu negócio.',
   date: '2026-03-20',
-  lastModified: '2026-03-20',
+  lastModified: '2026-09-26',
   category: 'Comparativos',
   image: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=1200&h=630&fit=crop&auto=format&q=80',
   author: 'Equipe Sirius CRM',
@@ -112,52 +112,52 @@ export const post: BlogPost = {
           <tbody>
             <tr style="background: var(--primary);">
               <td style="padding: 0.75rem; color: var(--primary-foreground); border: 1px solid var(--fio-forte);">Plano gratuito permanente</td>
-              <td style="padding: 0.75rem; text-align: center; color: var(--primary-foreground); border: 1px solid var(--fio-forte);">✅ Sim</td>
-              <td style="padding: 0.75rem; text-align: center; color: var(--pulso); border: 1px solid var(--fio-forte);">❌ Não</td>
-              <td style="padding: 0.75rem; text-align: center; color: var(--pulso); border: 1px solid var(--fio-forte);">❌ Não</td>
-              <td style="padding: 0.75rem; text-align: center; color: var(--primary-foreground); border: 1px solid var(--fio-forte);">✅ Sim</td>
+              <td style="padding: 0.75rem; text-align: center; color: var(--primary-foreground); border: 1px solid var(--fio-forte);">✅ 2 usuários</td>
+              <td style="padding: 0.75rem; text-align: center; color: var(--primary-foreground); border: 1px solid var(--fio-forte);">❌ Teste de 14 dias</td>
+              <td style="padding: 0.75rem; text-align: center; color: var(--primary-foreground); border: 1px solid var(--fio-forte);">✅ 4 usuários</td>
+              <td style="padding: 0.75rem; text-align: center; color: var(--primary-foreground); border: 1px solid var(--fio-forte);">✅ 2 usuários</td>
             </tr>
             <tr style="background: var(--primary);">
-              <td style="padding: 0.75rem; color: var(--primary-foreground); border: 1px solid var(--fio-forte);">WhatsApp nativo (sem Zapier)</td>
-              <td style="padding: 0.75rem; text-align: center; color: var(--primary-foreground); border: 1px solid var(--fio-forte);">✅ Sim</td>
-              <td style="padding: 0.75rem; text-align: center; color: var(--primary-foreground); border: 1px solid var(--fio-forte);">⚠️ Via addon</td>
-              <td style="padding: 0.75rem; text-align: center; color: var(--primary-foreground); border: 1px solid var(--fio-forte);">✅ Sim</td>
-              <td style="padding: 0.75rem; text-align: center; color: var(--primary-foreground); border: 1px solid var(--fio-forte);">⚠️ Via addon</td>
+              <td style="padding: 0.75rem; color: var(--primary-foreground); border: 1px solid var(--fio-forte);">WhatsApp integrado</td>
+              <td style="padding: 0.75rem; text-align: center; color: var(--primary-foreground); border: 1px solid var(--fio-forte);">Plano Business, API oficial</td>
+              <td style="padding: 0.75rem; text-align: center; color: var(--primary-foreground); border: 1px solid var(--fio-forte);">Caixa de mensagens</td>
+              <td style="padding: 0.75rem; text-align: center; color: var(--primary-foreground); border: 1px solid var(--fio-forte);">✅ Desde o Free</td>
+              <td style="padding: 0.75rem; text-align: center; color: var(--primary-foreground); border: 1px solid var(--fio-forte);">Plano Professional</td>
             </tr>
             <tr style="background: var(--primary);">
-              <td style="padding: 0.75rem; color: var(--primary-foreground); border: 1px solid var(--fio-forte);">IA que qualifica leads (BANT/MEDDIC)</td>
-              <td style="padding: 0.75rem; text-align: center; color: var(--primary-foreground); border: 1px solid var(--fio-forte);">✅ Nativa</td>
-              <td style="padding: 0.75rem; text-align: center; color: var(--primary-foreground); border: 1px solid var(--fio-forte);">⚠️ Básica</td>
-              <td style="padding: 0.75rem; text-align: center; color: var(--primary-foreground); border: 1px solid var(--fio-forte);">⚠️ Básica</td>
-              <td style="padding: 0.75rem; text-align: center; color: var(--pulso); border: 1px solid var(--fio-forte);">❌ Pago</td>
+              <td style="padding: 0.75rem; color: var(--primary-foreground); border: 1px solid var(--fio-forte);">IA de vendas</td>
+              <td style="padding: 0.75rem; text-align: center; color: var(--primary-foreground); border: 1px solid var(--fio-forte);">Qualificação BANT/MEDDIC a partir do Starter</td>
+              <td style="padding: 0.75rem; text-align: center; color: var(--primary-foreground); border: 1px solid var(--fio-forte);">Relatórios com IA; e-mail com IA no Premium</td>
+              <td style="padding: 0.75rem; text-align: center; color: var(--primary-foreground); border: 1px solid var(--fio-forte);">Copiloto a partir do Básico</td>
+              <td style="padding: 0.75rem; text-align: center; color: var(--primary-foreground); border: 1px solid var(--fio-forte);">Assistente Breeze no Free</td>
             </tr>
             <tr style="background: var(--primary);">
-              <td style="padding: 0.75rem; color: var(--primary-foreground); border: 1px solid var(--fio-forte);">Offline (sem internet)</td>
-              <td style="padding: 0.75rem; text-align: center; color: var(--primary-foreground); border: 1px solid var(--fio-forte);">✅ PWA Offline</td>
-              <td style="padding: 0.75rem; text-align: center; color: var(--pulso); border: 1px solid var(--fio-forte);">❌ Não</td>
-              <td style="padding: 0.75rem; text-align: center; color: var(--pulso); border: 1px solid var(--fio-forte);">❌ Não</td>
-              <td style="padding: 0.75rem; text-align: center; color: var(--pulso); border: 1px solid var(--fio-forte);">❌ Não</td>
+              <td style="padding: 0.75rem; color: var(--primary-foreground); border: 1px solid var(--fio-forte);">Offline no celular</td>
+              <td style="padding: 0.75rem; text-align: center; color: var(--primary-foreground); border: 1px solid var(--fio-forte);">✅ Sim</td>
+              <td style="padding: 0.75rem; text-align: center; color: var(--primary-foreground); border: 1px solid var(--fio-forte);">✅ Apps iOS e Android</td>
+              <td style="padding: 0.75rem; text-align: center; color: var(--primary-foreground); border: 1px solid var(--fio-forte);">Não informado</td>
+              <td style="padding: 0.75rem; text-align: center; color: var(--primary-foreground); border: 1px solid var(--fio-forte);">Não informado</td>
             </tr>
             <tr style="background: var(--primary);">
               <td style="padding: 0.75rem; color: var(--primary-foreground); border: 1px solid var(--fio-forte);">Prospecção Google Maps</td>
-              <td style="padding: 0.75rem; text-align: center; color: var(--primary-foreground); border: 1px solid var(--fio-forte);">✅ Nativa</td>
-              <td style="padding: 0.75rem; text-align: center; color: var(--pulso); border: 1px solid var(--fio-forte);">❌ Não</td>
-              <td style="padding: 0.75rem; text-align: center; color: var(--pulso); border: 1px solid var(--fio-forte);">❌ Não</td>
-              <td style="padding: 0.75rem; text-align: center; color: var(--pulso); border: 1px solid var(--fio-forte);">❌ Não</td>
+              <td style="padding: 0.75rem; text-align: center; color: var(--primary-foreground); border: 1px solid var(--fio-forte);">✅ Créditos a partir do Starter</td>
+              <td style="padding: 0.75rem; text-align: center; color: var(--primary-foreground); border: 1px solid var(--fio-forte);">Não nativa</td>
+              <td style="padding: 0.75rem; text-align: center; color: var(--primary-foreground); border: 1px solid var(--fio-forte);">Não nativa</td>
+              <td style="padding: 0.75rem; text-align: center; color: var(--primary-foreground); border: 1px solid var(--fio-forte);">Não nativa</td>
             </tr>
             <tr style="background: var(--primary);">
-              <td style="padding: 0.75rem; color: var(--primary-foreground); border: 1px solid var(--fio-forte);">Preço inicial (BRL)</td>
-              <td style="padding: 0.75rem; text-align: center; color: var(--primary-foreground); border: 1px solid var(--fio-forte);">R$0 → R$67/mês</td>
-              <td style="padding: 0.75rem; text-align: center; color: var(--primary-foreground); border: 1px solid var(--fio-forte);">~R$75/mês</td>
-              <td style="padding: 0.75rem; text-align: center; color: var(--primary-foreground); border: 1px solid var(--fio-forte);">~R$99/mês</td>
-              <td style="padding: 0.75rem; text-align: center; color: var(--primary-foreground); border: 1px solid var(--fio-forte);">R$0 → R$800+</td>
+              <td style="padding: 0.75rem; color: var(--primary-foreground); border: 1px solid var(--fio-forte);">Preço de entrada</td>
+              <td style="padding: 0.75rem; text-align: center; color: var(--primary-foreground); border: 1px solid var(--fio-forte);">R$ 0 → R$ 67/mês para até 5 usuários</td>
+              <td style="padding: 0.75rem; text-align: center; color: var(--primary-foreground); border: 1px solid var(--fio-forte);">US$ 14/usuário/mês (anual)</td>
+              <td style="padding: 0.75rem; text-align: center; color: var(--primary-foreground); border: 1px solid var(--fio-forte);">R$ 0 → R$ 73/usuário/mês</td>
+              <td style="padding: 0.75rem; text-align: center; color: var(--primary-foreground); border: 1px solid var(--fio-forte);">R$ 0 → US$ 15/usuário/mês (anual)</td>
             </tr>
             <tr style="background: var(--primary);">
               <td style="padding: 0.75rem; color: var(--primary-foreground); border: 1px solid var(--fio-forte);">Suporte em português</td>
-              <td style="padding: 0.75rem; text-align: center; color: var(--primary-foreground); border: 1px solid var(--fio-forte);">✅ WhatsApp direto</td>
-              <td style="padding: 0.75rem; text-align: center; color: var(--primary-foreground); border: 1px solid var(--fio-forte);">⚠️ Ticket apenas</td>
+              <td style="padding: 0.75rem; text-align: center; color: var(--primary-foreground); border: 1px solid var(--fio-forte);">✅ Equipe no Brasil</td>
+              <td style="padding: 0.75rem; text-align: center; color: var(--primary-foreground); border: 1px solid var(--fio-forte);">✅ Chat 24/7</td>
               <td style="padding: 0.75rem; text-align: center; color: var(--primary-foreground); border: 1px solid var(--fio-forte);">✅ Sim</td>
-              <td style="padding: 0.75rem; text-align: center; color: var(--primary-foreground); border: 1px solid var(--fio-forte);">⚠️ Comunidade</td>
+              <td style="padding: 0.75rem; text-align: center; color: var(--primary-foreground); border: 1px solid var(--fio-forte);">Comunidade no Free</td>
             </tr>
           </tbody>
         </table>
@@ -183,8 +183,8 @@ export const post: BlogPost = {
       </p>
 
       <div style="background: var(--primary); padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0; text-align: center;">
-        <p style="margin: 0 0 0.5rem; font-weight: 700; color: #ffffff; font-size: 1.15rem;">Teste o Sirius CRM gratuitamente por 7 dias</p>
-        <p style="margin: 0 0 1rem; color: var(--muted-foreground); font-size: 0.95rem;">Sem cartão de crédito. Cancele quando quiser. Suporte em português via WhatsApp.</p>
+        <p style="margin: 0 0 0.5rem; font-weight: 700; color: #ffffff; font-size: 1.15rem;">Teste o Pro do Sirius CRM por 7 dias, grátis</p>
+        <p style="margin: 0 0 1rem; color: var(--muted-foreground); font-size: 0.95rem;">Sem cartão de crédito. Equipe de suporte no Brasil.</p>
         <a href="https://siriuscrm.com.br/register" style="display: inline-block; background: #ffffff; color: var(--foreground); font-weight: 700; padding: 0.75rem 2rem; border-radius: 0.5rem; text-decoration: none; font-size: 1rem;">Começar agora — é grátis</a>
       </div>
 
@@ -192,7 +192,7 @@ export const post: BlogPost = {
 
       <h3>Qual o melhor CRM para representante comercial em 2026?</h3>
       <p>
-        O melhor CRM para representante comercial em 2026 precisa funcionar offline, ter gestão de carteira de clientes, lembretes de recompra e histórico de pedidos por cliente. O Sirius CRM é o único com modo PWA offline nativo e plano gratuito permanente. Custo: R$0 a R$147/mês.
+        O melhor CRM para representante comercial em 2026 precisa funcionar offline, ter gestão de carteira de clientes, lembretes de recompra e histórico de pedidos por cliente. O Sirius CRM tem modo offline no celular, plano gratuito e cobra por conta: R$ 67/mês para até 5 usuários e R$ 147/mês para até 15.
       </p>
 
       <h3>Como escolher entre CRM gratuito e pago?</h3>
@@ -346,50 +346,57 @@ export const post: BlogPost = {
           </thead>
           <tbody>
             <tr style="border-top: 1px solid var(--fio-forte);">
-              <td style="padding: 0.75rem 1rem;">Offline Mode</td>
-              <td style="padding: 0.75rem 1rem; text-align: center; color: var(--primary-foreground);">✓ Native</td>
-              <td style="padding: 0.75rem 1rem; text-align: center; color: var(--pulso);">✗</td>
-              <td style="padding: 0.75rem 1rem; text-align: center; color: var(--pulso);">✗</td>
-              <td style="padding: 0.75rem 1rem; text-align: center; color: var(--pulso);">✗</td>
-            </tr>
-            <tr style="border-top: 1px solid var(--fio-forte); background: var(--primary);">
-              <td style="padding: 0.75rem 1rem;">Native WhatsApp</td>
-              <td style="padding: 0.75rem 1rem; text-align: center; color: var(--primary-foreground);">✓ Included</td>
-              <td style="padding: 0.75rem 1rem; text-align: center; color: var(--primary-foreground);">Via add-on</td>
-              <td style="padding: 0.75rem 1rem; text-align: center; color: var(--primary-foreground);">✓ Paid plan</td>
-              <td style="padding: 0.75rem 1rem; text-align: center; color: var(--pulso);">✗</td>
+              <td style="padding: 0.75rem 1rem;">Permanent free plan</td>
+              <td style="padding: 0.75rem 1rem; text-align: center; color: var(--primary-foreground);">✓ 2 users</td>
+              <td style="padding: 0.75rem 1rem; text-align: center; color: var(--pulso);">✗ 14-day trial</td>
+              <td style="padding: 0.75rem 1rem; text-align: center; color: var(--pulso);">✓ 4 users</td>
+              <td style="padding: 0.75rem 1rem; text-align: center; color: var(--pulso);">✓ 2 users</td>
             </tr>
             <tr style="border-top: 1px solid var(--fio-forte);">
-              <td style="padding: 0.75rem 1rem;">Built-in AI</td>
-              <td style="padding: 0.75rem 1rem; text-align: center; color: var(--primary-foreground);">✓ All plans</td>
-              <td style="padding: 0.75rem 1rem; text-align: center; color: var(--primary-foreground);">Add-on ($)</td>
-              <td style="padding: 0.75rem 1rem; text-align: center; color: var(--pulso);">✗</td>
-              <td style="padding: 0.75rem 1rem; text-align: center; color: var(--primary-foreground);">Limited</td>
-            </tr>
-            <tr style="border-top: 1px solid var(--fio-forte); background: var(--primary);">
-              <td style="padding: 0.75rem 1rem;">Price (BRL)</td>
-              <td style="padding: 0.75rem 1rem; text-align: center; color: var(--primary-foreground);">R$0–397/mo</td>
-              <td style="padding: 0.75rem 1rem; text-align: center; color: var(--primary-foreground);">R$75–765/mo*</td>
-              <td style="padding: 0.75rem 1rem; text-align: center; color: var(--primary-foreground);">R$99–599/mo</td>
-              <td style="padding: 0.75rem 1rem; text-align: center; color: var(--primary-foreground);">R$0</td>
+              <td style="padding: 0.75rem 1rem;">WhatsApp integration</td>
+              <td style="padding: 0.75rem 1rem; text-align: center; color: var(--primary-foreground);">Business plan, official API</td>
+              <td style="padding: 0.75rem 1rem; text-align: center; color: var(--pulso);">Messaging inbox</td>
+              <td style="padding: 0.75rem 1rem; text-align: center; color: var(--pulso);">✓ From Free</td>
+              <td style="padding: 0.75rem 1rem; text-align: center; color: var(--pulso);">Professional plan</td>
             </tr>
             <tr style="border-top: 1px solid var(--fio-forte);">
-              <td style="padding: 0.75rem 1rem;">PT-BR Support</td>
-              <td style="padding: 0.75rem 1rem; text-align: center; color: var(--primary-foreground);">✓ Live chat</td>
-              <td style="padding: 0.75rem 1rem; text-align: center; color: var(--primary-foreground);">Email only</td>
-              <td style="padding: 0.75rem 1rem; text-align: center; color: var(--primary-foreground);">✓</td>
-              <td style="padding: 0.75rem 1rem; text-align: center; color: var(--primary-foreground);">Community</td>
+              <td style="padding: 0.75rem 1rem;">Sales AI</td>
+              <td style="padding: 0.75rem 1rem; text-align: center; color: var(--primary-foreground);">BANT/MEDDIC qualification from Starter</td>
+              <td style="padding: 0.75rem 1rem; text-align: center; color: var(--pulso);">AI reports; AI email on Premium</td>
+              <td style="padding: 0.75rem 1rem; text-align: center; color: var(--pulso);">Copilot from Basic</td>
+              <td style="padding: 0.75rem 1rem; text-align: center; color: var(--pulso);">Breeze assistant on Free</td>
             </tr>
-            <tr style="border-top: 1px solid var(--fio-forte); background: var(--primary);">
-              <td style="padding: 0.75rem 1rem;">Auto Prospecting</td>
-              <td style="padding: 0.75rem 1rem; text-align: center; color: var(--primary-foreground);">✓ AI Agent</td>
-              <td style="padding: 0.75rem 1rem; text-align: center; color: var(--pulso);">✗</td>
-              <td style="padding: 0.75rem 1rem; text-align: center; color: var(--pulso);">✗</td>
-              <td style="padding: 0.75rem 1rem; text-align: center; color: var(--pulso);">✗</td>
+            <tr style="border-top: 1px solid var(--fio-forte);">
+              <td style="padding: 0.75rem 1rem;">Offline on mobile</td>
+              <td style="padding: 0.75rem 1rem; text-align: center; color: var(--primary-foreground);">✓ Yes</td>
+              <td style="padding: 0.75rem 1rem; text-align: center; color: var(--pulso);">✓ iOS and Android apps</td>
+              <td style="padding: 0.75rem 1rem; text-align: center; color: var(--pulso);">Not stated</td>
+              <td style="padding: 0.75rem 1rem; text-align: center; color: var(--pulso);">Not stated</td>
+            </tr>
+            <tr style="border-top: 1px solid var(--fio-forte);">
+              <td style="padding: 0.75rem 1rem;">Google Maps prospecting</td>
+              <td style="padding: 0.75rem 1rem; text-align: center; color: var(--primary-foreground);">✓ Credits from Starter</td>
+              <td style="padding: 0.75rem 1rem; text-align: center; color: var(--pulso);">Not native</td>
+              <td style="padding: 0.75rem 1rem; text-align: center; color: var(--pulso);">Not native</td>
+              <td style="padding: 0.75rem 1rem; text-align: center; color: var(--pulso);">Not native</td>
+            </tr>
+            <tr style="border-top: 1px solid var(--fio-forte);">
+              <td style="padding: 0.75rem 1rem;">Entry price</td>
+              <td style="padding: 0.75rem 1rem; text-align: center; color: var(--primary-foreground);">R$ 0 → R$ 67/mo for up to 5 users</td>
+              <td style="padding: 0.75rem 1rem; text-align: center; color: var(--pulso);">US$ 14/user/mo (annual)</td>
+              <td style="padding: 0.75rem 1rem; text-align: center; color: var(--pulso);">R$ 0 → R$ 73/user/mo</td>
+              <td style="padding: 0.75rem 1rem; text-align: center; color: var(--pulso);">R$ 0 → US$ 15/user/mo (annual)</td>
+            </tr>
+            <tr style="border-top: 1px solid var(--fio-forte);">
+              <td style="padding: 0.75rem 1rem;">Support in Portuguese</td>
+              <td style="padding: 0.75rem 1rem; text-align: center; color: var(--primary-foreground);">✓ Team in Brazil</td>
+              <td style="padding: 0.75rem 1rem; text-align: center; color: var(--pulso);">✓ 24/7 chat</td>
+              <td style="padding: 0.75rem 1rem; text-align: center; color: var(--pulso);">✓ Yes</td>
+              <td style="padding: 0.75rem 1rem; text-align: center; color: var(--pulso);">Community on Free</td>
             </tr>
           </tbody>
         </table>
-        <p style="font-size: 0.75rem; color: var(--muted-foreground); margin-top: 0.5rem;">*Pipedrive in USD, converted at average BRL/USD for 2026.</p>
+        <p style="font-size: 0.75rem; color: var(--muted-foreground); margin-top: 0.5rem;">Plans checked on 09/26/2026 on each vendor's official page.</p>
       </div>
 
       <h2>5 Common Mistakes When Choosing a B2B CRM</h2>
@@ -443,12 +450,12 @@ export const post: BlogPost = {
 
       <h3>How much does it cost to implement a B2B CRM?</h3>
       <p>
-        Total CRM implementation cost ranges from $0 (free CRM, self-configured) to $3,000+ (enterprise with consulting and ERP integration). For SMBs, the realistic average is $67-397/month in subscription + 8-16 hours of internal setup time. No serious CRM charges an implementation fee for SMBs.
+        Total CRM implementation cost ranges from $0 (free CRM, self-configured) to $3,000+ (enterprise with consulting and ERP integration). For SMBs, the realistic average is R$ 67-397/month in subscription + 8-16 hours of internal setup time. No serious CRM charges an implementation fee for SMBs.
       </p>
 
       <div style="background: var(--primary); padding: 2rem; border-radius: 1rem; margin: 2rem 0; text-align: center;">
         <h3 style="color: #ffffff; margin: 0 0 1rem;">Ready to Choose the Right CRM?</h3>
-        <p style="color: var(--primary-foreground); margin: 0 0 1.5rem;">Try Sirius CRM free for 14 days. No credit card required. Your data migrated in under 30 minutes.</p>
+        <p style="color: var(--primary-foreground); margin: 0 0 1.5rem;">Try Sirius Pro free for 7 days. No credit card required. Your data migrated in under 30 minutes.</p>
         <a href="/en/register" style="background: var(--primary); color: white; padding: 0.875rem 2rem; border-radius: 0.5rem; font-weight: 700; text-decoration: none; display: inline-block;">Start Free Now →</a>
       </div>
   `,

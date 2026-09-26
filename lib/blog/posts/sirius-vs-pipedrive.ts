@@ -1,452 +1,497 @@
 import { BlogPost } from '../../blog-types'
 
+const TH = 'padding: 0.75rem 1rem; text-align: center; border: 1px solid var(--fio-forte);'
+const TD = 'padding: 0.75rem 1rem; border: 1px solid var(--border);'
+const TDC = `${TD} text-align: center;`
+const TDL = `${TD} font-weight: 600;`
+
 export const post: BlogPost = {
   slug: 'sirius-vs-pipedrive',
   title: 'Sirius CRM vs Pipedrive 2026: Qual o Melhor CRM para Vendedores B2B Brasileiros?',
-  excerpt: 'Comparativo detalhado entre Sirius CRM e Pipedrive em 2026: preço em BRL, WhatsApp integrado, IA nativa, modo offline e suporte em português. Descubra qual é o melhor CRM para vendedores B2B no Brasil.',
+  excerpt: 'Sirius CRM vs Pipedrive em 2026: preço por conta em reais contra preço por usuário em dólar, plano gratuito, IA, WhatsApp, modo offline e suporte. Comparativo revisado em setembro de 2026.',
   date: '2026-03-21',
-  lastModified: '2026-03-21',
+  lastModified: '2026-09-26',
   category: 'Comparativos',
   image: 'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=1200&h=630&fit=crop&auto=format&q=80',
   author: 'Equipe Sirius CRM',
   relatedSlugs: ['melhor-crm-2026-comparativo', 'como-escolher-crm-b2b-2026', 'crm-para-representante-comercial-2026'],
   content: `
       <p>
-        Pipedrive é um dos CRMs mais conhecidos do mundo — e por boas razões. Mas em 2026, vendedores B2B brasileiros estão fazendo uma pergunta cada vez mais frequente: <strong>vale a pena pagar em dólar por um CRM estrangeiro quando existem alternativas brasileiras com IA nativa e WhatsApp integrado?</strong>
+        Pipedrive é um dos CRMs mais conhecidos do mundo, e com razão: funil visual claro, centenas de integrações, aplicativo que funciona offline e suporte em português. A pergunta que vendedores B2B brasileiros fazem não é se ele é bom, e sim <strong>quanto ele custa para o seu time, em reais, e o que você recebe por esse valor</strong>.
       </p>
 
       <p>
-        Este comparativo analisa Sirius CRM e Pipedrive em <strong>7 critérios objetivos</strong>, com dados de preço em BRL, funcionalidades reais e casos de uso específicos para o mercado brasileiro.
+        Este comparativo foi revisado em 26 de setembro de 2026 com os preços e planos publicados pelos dois fornecedores nessa data.
       </p>
 
       <div class="not-prose" style="background: var(--primary); padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
-        <p style="margin: 0 0 0.75rem; font-weight: 700; font-size: 1.05rem; color: var(--primary-foreground);">⚡ TL;DR — Resposta Rápida</p>
+        <p style="margin: 0 0 0.75rem; font-weight: 700; font-size: 1.05rem; color: var(--primary-foreground);">⚡ Resposta rápida</p>
         <ul style="margin: 0; padding-left: 1.25rem; line-height: 2; color: #ffffff;">
-          <li><strong style="color: var(--primary-foreground);">Pipedrive</strong>: melhor para times internacionais, integrações robustas, equipes de SDR estruturadas</li>
-          <li><strong style="color: var(--primary-foreground);">Sirius CRM</strong>: melhor para representantes e vendedores B2B brasileiros — WhatsApp nativo, IA BANT/MEDDIC, plano gratuito real</li>
-          <li>Pipedrive Essential custa <strong>R$ 89/mês/usuário</strong> — sem WhatsApp nativo e sem IA</li>
-          <li>Sirius CRM FREE é gratuito para sempre; Sirius PRO custa <strong>R$ 397/mês</strong></li>
+          <li><strong style="color: var(--primary-foreground);">Pipedrive</strong>: cobra por usuário, em dólar, a partir de US$ 14/usuário/mês (plano Lite, cobrança anual). Não tem plano gratuito, só teste de 14 dias.</li>
+          <li><strong style="color: var(--primary-foreground);">Sirius CRM</strong>: cobra por conta, em reais. Plano gratuito para sempre; pagos de R$ 67/mês (até 5 usuários) a R$ 397/mês (até 50 usuários).</li>
+          <li>Para um time de 5 pessoas: Sirius Starter R$ 67/mês no total; Pipedrive Lite 5 × US$ 14 = US$ 70/mês.</li>
         </ul>
       </div>
 
       <h2>Sirius CRM ou Pipedrive: qual é mais barato em 2026?</h2>
 
       <p>
-        Esta é a pergunta mais comum — e a resposta depende do plano e do câmbio. O Pipedrive cobra em dólar, o que significa que o preço em BRL flutua. O Sirius CRM cobra em reais, com preço fixo e previsível.
+        A diferença está no modelo de cobrança. O Pipedrive multiplica o preço pelo número de usuários e cobra em dólar, então o valor em reais muda com o câmbio. O Sirius cobra um valor fixo por conta, em reais, e cada plano comporta um número de usuários.
       </p>
 
       <div style="overflow-x: auto; margin: 2rem 0;">
         <table style="width: 100%; border-collapse: collapse; font-size: 0.9rem;">
           <thead>
             <tr style="background: var(--primary); color: #ffffff;">
-              <th style="padding: 0.75rem 1rem; text-align: left; border: 1px solid var(--fio-forte);">Critério</th>
-              <th style="padding: 0.75rem 1rem; text-align: center; border: 1px solid var(--fio-forte);">Sirius CRM FREE</th>
-              <th style="padding: 0.75rem 1rem; text-align: center; border: 1px solid var(--fio-forte);">Sirius CRM PRO</th>
-              <th style="padding: 0.75rem 1rem; text-align: center; border: 1px solid var(--fio-forte);">Pipedrive Essential</th>
-              <th style="padding: 0.75rem 1rem; text-align: center; border: 1px solid var(--fio-forte);">Pipedrive Advanced</th>
+              <th style="${TH} text-align: left;">Tamanho do time</th>
+              <th style="${TH}">Sirius CRM (por conta)</th>
+              <th style="${TH}">Pipedrive Lite (por usuário)</th>
             </tr>
           </thead>
           <tbody>
             <tr style="background: var(--muted);">
-              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); font-weight: 600;">Preço (BRL)</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--foreground); font-weight: 700;">Grátis</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; font-weight: 700;">R$ 397/mês</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center;">~R$ 89/mês*</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center;">~R$ 179/mês*</td>
+              <td style="${TDL}">1 a 2 pessoas</td>
+              <td style="${TDC} font-weight: 700;">Grátis (plano Gratuito)</td>
+              <td style="${TDC}">US$ 14 a US$ 28/mês</td>
             </tr>
             <tr>
-              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); font-weight: 600;">WhatsApp Integrado</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--foreground);">✓ Sim</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--foreground);">✓ Sim</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--pulso-escuro);">✗ Não nativo</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--pulso-escuro);">✗ Não nativo</td>
+              <td style="${TDL}">até 5 pessoas</td>
+              <td style="${TDC} font-weight: 700;">R$ 67/mês (Starter)</td>
+              <td style="${TDC}">até US$ 70/mês</td>
             </tr>
             <tr style="background: var(--muted);">
-              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); font-weight: 600;">IA Nativa</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--foreground);">✓ 3 gen/mês</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--foreground);">✓ Ilimitado</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--pulso-escuro);">✗ Não</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--pulso-escuro);">✗ Não</td>
+              <td style="${TDL}">até 15 pessoas</td>
+              <td style="${TDC} font-weight: 700;">R$ 147/mês (Pro)</td>
+              <td style="${TDC}">até US$ 210/mês</td>
             </tr>
             <tr>
-              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); font-weight: 600;">Modo Offline</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--foreground);">✓ Sim</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--foreground);">✓ Sim</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--pulso-escuro);">✗ Não</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--pulso-escuro);">✗ Não</td>
-            </tr>
-            <tr style="background: var(--muted);">
-              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); font-weight: 600;">Prospecção Automática</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--foreground);">Limitado</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--foreground);">✓ Sim</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--foreground);">Add-on pago</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--foreground);">Add-on pago</td>
-            </tr>
-            <tr>
-              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); font-weight: 600;">Suporte em PT-BR</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--foreground);">✓ Nativo</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--foreground);">✓ Nativo</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--foreground);">Parcial</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--foreground);">Parcial</td>
-            </tr>
-            <tr style="background: var(--muted);">
-              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); font-weight: 600;">Plano Gratuito Real</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--foreground);">✓ Grátis para sempre</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center;">—</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--pulso-escuro);">✗ Só trial 14 dias</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--pulso-escuro);">✗ Só trial 14 dias</td>
+              <td style="${TDL}">até 50 pessoas</td>
+              <td style="${TDC} font-weight: 700;">R$ 397/mês (Business)</td>
+              <td style="${TDC}">até US$ 700/mês</td>
             </tr>
           </tbody>
         </table>
-        <p style="font-size: 0.8rem; color: var(--foreground); margin-top: 0.5rem;">* Preço Pipedrive estimado com câmbio de R$ 5,10. Sujeito a variação cambial.</p>
+        <p style="font-size: 0.8rem; color: var(--foreground); margin-top: 0.5rem;">Preços conferidos em 26/09/2026 nas páginas oficiais. Pipedrive: plano Lite com cobrança anual; os planos Growth, Premium e Ultimate custam mais por usuário. Sirius: cobrança mensal; no anual há 20% de desconto.</p>
+      </div>
+
+      <p>
+        O plano de entrada do Pipedrive não é o equivalente de todos os planos do Sirius, e o inverso também vale. Por isso a tabela abaixo compara recurso por recurso.
+      </p>
+
+      <h2>O que cada um oferece</h2>
+
+      <div style="overflow-x: auto; margin: 2rem 0;">
+        <table style="width: 100%; border-collapse: collapse; font-size: 0.9rem;">
+          <thead>
+            <tr style="background: var(--primary); color: #ffffff;">
+              <th style="${TH} text-align: left;">Recurso</th>
+              <th style="${TH}">Sirius CRM</th>
+              <th style="${TH}">Pipedrive</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="background: var(--muted);">
+              <td style="${TDL}">Plano gratuito</td>
+              <td style="${TDC}">✓ Para sempre: 2 usuários, 250 contatos, 100 negócios ativos, 1 funil</td>
+              <td style="${TDC}">✗ Só teste de 14 dias</td>
+            </tr>
+            <tr>
+              <td style="${TDL}">Teste do plano pago</td>
+              <td style="${TDC}">7 dias do Pro, sem cartão</td>
+              <td style="${TDC}">14 dias</td>
+            </tr>
+            <tr style="background: var(--muted);">
+              <td style="${TDL}">Automações</td>
+              <td style="${TDC}">A partir do Starter</td>
+              <td style="${TDC}">A partir do plano Growth (o Lite não tem)</td>
+            </tr>
+            <tr>
+              <td style="${TDL}">Inteligência artificial</td>
+              <td style="${TDC}">A partir do Starter: agente Sofia e qualificação BANT/MEDDIC</td>
+              <td style="${TDC}">Relatórios com IA desde o Lite; escrever e resumir e-mails com IA no Premium</td>
+            </tr>
+            <tr style="background: var(--muted);">
+              <td style="${TDL}">WhatsApp</td>
+              <td style="${TDC}">Plano Business: API oficial da Meta, conversas no histórico do cliente</td>
+              <td style="${TDC}">Integração de WhatsApp na caixa de mensagens</td>
+            </tr>
+            <tr>
+              <td style="${TDL}">Prospecção de empresas</td>
+              <td style="${TDC}">Créditos mensais de busca no Google Maps a partir do Starter</td>
+              <td style="${TDC}">Por integrações e complementos</td>
+            </tr>
+            <tr style="background: var(--muted);">
+              <td style="${TDL}">Modo offline no celular</td>
+              <td style="${TDC}">✓ Sim</td>
+              <td style="${TDC}">✓ Sim, nos aplicativos iOS e Android</td>
+            </tr>
+            <tr>
+              <td style="${TDL}">Suporte em português</td>
+              <td style="${TDC}">✓ Equipe no Brasil</td>
+              <td style="${TDC}">✓ Chat em português 24/7</td>
+            </tr>
+            <tr style="background: var(--muted);">
+              <td style="${TDL}">Integrações</td>
+              <td style="${TDC}">Google Agenda, n8n, Zapier, webhooks e API pública (Pro)</td>
+              <td style="${TDC}">Centenas no Marketplace</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
 
       <h2>O Pipedrive tem WhatsApp integrado?</h2>
 
       <p>
-        Não de forma nativa. O Pipedrive não possui integração direta com WhatsApp. Para conectar o WhatsApp ao Pipedrive, é necessário contratar ferramentas de terceiros como Zapier (US$ 49+/mês), Make (ex-Integromat) ou plataformas específicas de automação — adicionando custo e complexidade à stack.
-      </p>
-
-      <p>
-        No Brasil, onde o WhatsApp é o principal canal de vendas B2B, essa limitação é significativa. Cada mensagem trocada fora do CRM é histórico perdido, follow-up esquecido e dado que não alimenta o pipeline.
+        Tem. Desde 2022 o Pipedrive integra o WhatsApp à caixa de mensagens: as conversas aparecem no negócio e no contato. No Sirius, o WhatsApp entra no plano Business, conectado pela API oficial da Meta, e cada mensagem fica no histórico do cliente sem cópia manual. Nos planos Gratuito, Starter e Pro do Sirius não há WhatsApp integrado.
       </p>
 
       <div style="background: var(--muted); border-left: 4px solid var(--fio-forte); padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
-        <p style="margin: 0; font-weight: 700; color: var(--foreground);">Por que o WhatsApp nativo importa:</p>
-        <p style="margin: 0.5rem 0 0; color: var(--foreground);">No Sirius CRM, cada mensagem WhatsApp é registrada automaticamente no histórico do cliente, sem cópia manual. O vendedor vê todo o contexto antes de ligar ou visitar. O Pipedrive exige integração paga de terceiros para o mesmo resultado.</p>
+        <p style="margin: 0; font-weight: 700; color: var(--foreground);">Por que a API oficial importa</p>
+        <p style="margin: 0.5rem 0 0; color: var(--foreground);">Número conectado por API não oficial corre risco de banimento pela Meta. Antes de escolher qualquer CRM com WhatsApp, confira por qual API ele conecta o seu número. Explicamos a diferença em <a href="/blog/whatsapp-api-oficial-meta-crm">API oficial do WhatsApp no CRM</a>.</p>
       </div>
 
-      <h2>Qual CRM tem IA nativa para vendas no Brasil?</h2>
+      <h2>Qual CRM tem IA para vendas?</h2>
 
       <p>
-        O Sirius CRM tem IA nativa integrada com qualificação automática usando os frameworks <strong>BANT</strong> (Budget, Authority, Need, Timeline) e <strong>MEDDIC</strong> (Metrics, Economic Buyer, Decision Criteria, Decision Process, Identify Pain, Champion). A IA analisa as conversas e dados do lead para gerar um score de qualificação, sugestão de próximo passo e alerta de risco de perda.
+        Os dois. O Pipedrive monta relatórios com IA desde o plano Lite e, no Premium, escreve, resume e responde e-mails com IA. O foco do Sirius é outro: a partir do Starter, a IA qualifica o lead pelos frameworks <strong>BANT</strong> (Budget, Authority, Need, Timeline) e <strong>MEDDIC</strong>, sugere o próximo passo e alerta risco de perda, e o agente Sofia executa ações no funil dentro de uma cota mensal (200 no Starter, 1.000 no Pro, 3.000 no Business).
       </p>
 
-      <p>
-        O Pipedrive não tem IA nativa em 2026. Oferece automações de workflow (plano Advanced+), mas sem análise inteligente de leads ou qualificação automática. Para recursos de IA com Pipedrive, a alternativa é integrar ferramentas externas — novamente com custo adicional.
-      </p>
+      <h2>Prós e contras</h2>
 
-      <h2>Prós e Contras Honestos</h2>
-
-      <h3>Sirius CRM — Pontos Fortes</h3>
+      <h3>Sirius CRM: pontos fortes</h3>
       <ul style="line-height: 2; padding-left: 1.5rem; color: var(--foreground);">
-        <li>Plano gratuito real e permanente (até 100 deals)</li>
-        <li>WhatsApp integrado nativamente — sem add-on</li>
-        <li>IA BANT/MEDDIC inclusa em todos os planos</li>
-        <li>Modo offline: funciona sem internet no campo</li>
-        <li>Interface e suporte 100% em português</li>
-        <li>Preço fixo em BRL — sem variação cambial</li>
-        <li>Feito para o processo de vendas brasileiro</li>
+        <li>Preço por conta, em reais: o time cresce sem multiplicar a mensalidade até o limite do plano</li>
+        <li>Plano gratuito permanente para até 2 usuários</li>
+        <li>IA de qualificação BANT/MEDDIC e agente Sofia a partir do Starter (R$ 67/mês)</li>
+        <li>Prospecção por Google Maps com créditos mensais</li>
+        <li>WhatsApp pela API oficial da Meta no Business</li>
+        <li>Feito para o processo de venda brasileiro, com equipe no Brasil</li>
       </ul>
 
-      <h3>Sirius CRM — Pontos Fracos</h3>
+      <h3>Sirius CRM: pontos fracos</h3>
       <ul style="line-height: 2; padding-left: 1.5rem; color: var(--foreground);">
-        <li>Base de usuários menor que o Pipedrive — menos conteúdo de comunidade</li>
-        <li>Menos integrações nativas (Zapier, Make, Salesforce ecosystem)</li>
-        <li>Sem recursos de marketing automation</li>
-        <li>Ideal para times de até ~50 vendedores — não é enterprise</li>
+        <li>Plano gratuito sem automação, sem IA e sem WhatsApp: serve para organizar o funil, não para automatizar</li>
+        <li>WhatsApp integrado só no plano Business (R$ 397/mês)</li>
+        <li>Muito menos integrações prontas que o Pipedrive</li>
+        <li>Base de usuários e comunidade menores</li>
+        <li>Pensado para times de até 50 pessoas</li>
       </ul>
 
-      <h3>Pipedrive — Pontos Fortes</h3>
+      <h3>Pipedrive: pontos fortes</h3>
       <ul style="line-height: 2; padding-left: 1.5rem; color: var(--foreground);">
-        <li>Mais de 400 integrações nativas no Marketplace</li>
-        <li>Comunidade global enorme com templates e playbooks</li>
-        <li>Relatórios avançados e personalização de dashboard</li>
-        <li>Forte em automação de email sequences (plano Advanced+)</li>
-        <li>Ideal para times de vendas estruturados com SDRs e AEs</li>
-        <li>Suporte a múltiplos pipelines e produtos</li>
+        <li>Centenas de integrações no Marketplace</li>
+        <li>Comunidade global grande, com modelos e playbooks</li>
+        <li>WhatsApp na caixa de mensagens e aplicativo com modo offline</li>
+        <li>Suporte em português 24 horas</li>
+        <li>Relatórios e painéis personalizáveis</li>
       </ul>
 
-      <h3>Pipedrive — Pontos Fracos</h3>
+      <h3>Pipedrive: pontos fracos</h3>
       <ul style="line-height: 2; padding-left: 1.5rem; color: var(--foreground);">
-        <li>Sem plano gratuito — apenas trial de 14 dias</li>
-        <li>Sem WhatsApp nativo (exige integração paga)</li>
-        <li>Sem IA nativa de qualificação de leads</li>
-        <li>Preço em dólar — custo aumenta com desvalorização do real</li>
-        <li>Sem modo offline</li>
-        <li>Suporte em português limitado (documentação parcialmente traduzida)</li>
+        <li>Sem plano gratuito, só teste de 14 dias</li>
+        <li>Preço por usuário: o custo cresce linearmente com o time</li>
+        <li>Cobrança em dólar: o valor em reais sobe quando o câmbio sobe</li>
+        <li>Sem qualificação por BANT/MEDDIC pronta</li>
       </ul>
 
       <h2>Quando usar o Sirius CRM?</h2>
 
-      <p>Escolha o Sirius CRM se você é:</p>
+      <p>Escolha o Sirius CRM se você:</p>
       <ul style="line-height: 2; padding-left: 1.5rem; color: var(--foreground);">
-        <li>Representante comercial ou vendedor externo brasileiro</li>
-        <li>PME com time de vendas de 1 a 30 pessoas</li>
-        <li>Empresa que usa WhatsApp como principal canal de vendas</li>
-        <li>Vendedor que atua em áreas com sinal ruim de internet</li>
-        <li>Negócio que quer IA de qualificação sem pagar add-on</li>
-        <li>Empresa que quer preço fixo em real, sem surpresa cambial</li>
+        <li>Tem time de 3 a 50 pessoas e quer mensalidade fixa, sem pagar por usuário</li>
+        <li>Quer começar de graça e só pagar quando precisar de automação e IA</li>
+        <li>Quer IA que qualifica o lead, e não só escreve e-mail</li>
+        <li>Prospecta empresas locais pelo Google Maps</li>
+        <li>Prefere pagar em reais, sem surpresa de câmbio</li>
       </ul>
 
       <h2>Quando usar o Pipedrive?</h2>
 
       <p>Escolha o Pipedrive se você:</p>
       <ul style="line-height: 2; padding-left: 1.5rem; color: var(--foreground);">
-        <li>Tem time de vendas maior (+30 pessoas) bem estruturado</li>
-        <li>Precisa de integrações com ferramentas internacionais (Salesforce, HubSpot Marketing, etc.)</li>
-        <li>Opera em mercados internacionais além do Brasil</li>
-        <li>Usa email como principal canal de prospecção (sequências automatizadas)</li>
-        <li>Já tem stack de tecnologia consolidado no ecossistema Pipedrive</li>
+        <li>Depende de integrações que só existem no Marketplace dele</li>
+        <li>Precisa de WhatsApp integrado sem ir para um plano de R$ 397</li>
+        <li>Opera em vários países e já fatura em dólar</li>
+        <li>Já tem o time treinado no ecossistema Pipedrive</li>
       </ul>
 
       <div style="background: var(--muted); border: 1px solid var(--border); padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0; text-align: center;">
         <p style="font-weight: 700; color: var(--foreground); font-size: 1.1rem; margin: 0 0 0.75rem;">Teste o Sirius CRM antes de decidir</p>
-        <p style="color: var(--foreground); margin: 0 0 1rem;">Plano gratuito para sempre — sem cartão de crédito. WhatsApp + IA + Offline inclusos.</p>
-        <p><strong><a href="/register" style="color: var(--foreground); text-decoration: underline;">Começar Grátis Agora →</a></strong></p>
+        <p style="color: var(--foreground); margin: 0 0 1rem;">Plano gratuito para sempre e 7 dias do Pro, sem cartão de crédito.</p>
+        <p><strong><a href="/register" style="color: var(--foreground); text-decoration: underline;">Criar conta grátis →</a></strong></p>
       </div>
 
-      <h2>Perguntas Frequentes: Sirius CRM vs Pipedrive</h2>
+      <h2>Perguntas frequentes: Sirius CRM vs Pipedrive</h2>
 
       <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
         <summary style="font-weight: 600; cursor: pointer; color: var(--foreground); list-style: revert;">Sirius CRM é mais barato que o Pipedrive em 2026?</summary>
-        <p style="margin: 0.75rem 0 0; color: var(--foreground);">Sim. O Sirius CRM tem plano gratuito para sempre (até 100 deals) e o plano PRO custa R$ 397/mês fixo em reais. O Pipedrive não oferece plano gratuito — apenas trial de 14 dias — e o plano Essential parte de aproximadamente R$ 89/mês, sujeito à variação do câmbio dólar-real. Considerando que o Sirius inclui WhatsApp e IA sem add-ons, o custo total é substancialmente menor para vendedores brasileiros.</p>
+        <p style="margin: 0.75rem 0 0; color: var(--foreground);">Para times a partir de 2 pessoas, sim. O Sirius cobra por conta: R$ 67/mês para até 5 usuários, R$ 147/mês para até 15 e R$ 397/mês para até 50, e tem plano gratuito para até 2 usuários. O Pipedrive cobra por usuário, a partir de US$ 14/usuário/mês no plano Lite com cobrança anual, e não tem plano gratuito.</p>
       </details>
 
       <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
         <summary style="font-weight: 600; cursor: pointer; color: var(--foreground); list-style: revert;">Posso migrar do Pipedrive para o Sirius CRM?</summary>
-        <p style="margin: 0.75rem 0 0; color: var(--foreground);">Sim. O Sirius CRM aceita importação de dados via CSV — o formato de exportação padrão do Pipedrive. Você exporta contatos, deals e atividades do Pipedrive e importa no Sirius. O processo leva em média 1 a 2 horas para bases de até 5.000 registros. O suporte do Sirius CRM em português pode auxiliar na migração.</p>
+        <p style="margin: 0.75rem 0 0; color: var(--foreground);">Sim. O Sirius importa planilhas CSV, que é o formato de exportação do Pipedrive. Exporte contatos, negócios e atividades do Pipedrive e importe no Sirius. Lembre dos limites do plano: o Gratuito aceita até 250 contatos e 100 negócios ativos.</p>
       </details>
 
       <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
         <summary style="font-weight: 600; cursor: pointer; color: var(--foreground); list-style: revert;">O Pipedrive funciona offline?</summary>
-        <p style="margin: 0.75rem 0 0; color: var(--foreground);">Não. O Pipedrive requer conexão com internet para funcionar. Para vendedores de campo que visitam clientes em áreas com sinal fraco (indústrias, zonas rurais, armazéns), isso é uma limitação real. O Sirius CRM tem modo offline nativo: você registra visitas, atualiza deals e adiciona contatos sem internet, e os dados sincronizam quando a conexão retorna.</p>
+        <p style="margin: 0.75rem 0 0; color: var(--foreground);">Nos aplicativos de celular, sim: você move negócios e registra atividades sem internet, e tudo sincroniza quando a conexão volta. Na versão web, precisa de internet. O Sirius também tem modo offline no celular.</p>
       </details>
 
       <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
-        <summary style="font-weight: 600; cursor: pointer; color: var(--foreground); list-style: revert;">Pipedrive tem suporte em português do Brasil?</summary>
-        <p style="margin: 0.75rem 0 0; color: var(--foreground);">Parcialmente. O Pipedrive tem interface traduzida para português, mas o suporte ao cliente é prioritariamente em inglês e espanhol. A documentação de ajuda está parcialmente traduzida. Para empresas que precisam de suporte técnico em português brasileiro com respostas ágeis, o Sirius CRM — desenvolvido no Brasil pela equipe ROI Labs — oferece suporte nativo em PT-BR.</p>
+        <summary style="font-weight: 600; cursor: pointer; color: var(--foreground); list-style: revert;">O Pipedrive tem suporte em português?</summary>
+        <p style="margin: 0.75rem 0 0; color: var(--foreground);">Tem: o Pipedrive atende por chat em português 24 horas, 7 dias por semana, e a interface é traduzida. O Sirius tem equipe no Brasil e foi desenhado para o processo de venda brasileiro.</p>
       </details>
 
       <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 2rem;">
         <summary style="font-weight: 600; cursor: pointer; color: var(--foreground); list-style: revert;">Qual CRM é melhor para representante comercial: Sirius ou Pipedrive?</summary>
-        <p style="margin: 0.75rem 0 0; color: var(--foreground);">Para representantes comerciais no Brasil, o Sirius CRM é a escolha superior em 2026. Os motivos: modo offline para visitas em campo, WhatsApp integrado (canal dominante no Brasil), IA de qualificação BANT/MEDDIC, gestão de carteira de clientes com alertas de recompra, e preço em reais. O Pipedrive é excelente para SDRs que prospectam por email, mas não foi otimizado para o processo de vendas presencial do representante brasileiro.</p>
+        <p style="margin: 0.75rem 0 0; color: var(--foreground);">Depende do tamanho da operação. O representante sozinho usa o Sirius de graça. Um escritório de representação com 5 a 15 vendedores paga menos no Sirius, porque a mensalidade é por conta, e ganha qualificação por IA e prospecção por Google Maps. Se a prioridade é WhatsApp integrado com orçamento abaixo de R$ 397/mês, ou integrações específicas do Marketplace, o Pipedrive atende melhor.</p>
       </details>
 
       <hr style="margin: 3rem 0; border: none; border-top: 1px solid var(--border);" />
-      <strong>Última Atualização:</strong> 21 de Março de 2026<br/>
+      <strong>Última atualização:</strong> 26 de setembro de 2026<br/>
       <strong>Autor:</strong> Equipe Sirius CRM<br/>
-      <strong>Tempo de Leitura:</strong> 9 minutos
+      <strong>Tempo de leitura:</strong> 7 minutos
     `,
   titleEn: 'Sirius CRM vs Pipedrive 2026: Best CRM for Brazilian B2B Sales Reps?',
-  excerptEn: 'Sirius CRM vs Pipedrive in 2026: price in BRL, native WhatsApp, AI qualification, offline mode. Which CRM wins for B2B sales reps in Brazil?',
+  excerptEn: 'Sirius CRM vs Pipedrive in 2026: per-account pricing in BRL against per-user pricing in dollars, free plan, AI, WhatsApp, offline mode and support. Reviewed in September 2026.',
   keywordsEn: ['sirius crm vs pipedrive', 'pipedrive alternative brazil', 'best crm brazil 2026', 'crm with whatsapp', 'pipedrive vs sirius'],
   contentEn: `
       <p>
-        Pipedrive is one of the world's best-known CRMs — and for good reason. But in 2026, Brazilian B2B sales reps are asking an increasingly common question: <strong>is it worth paying in dollars for a foreign CRM when Brazilian alternatives offer native AI and built-in WhatsApp?</strong>
+        Pipedrive is one of the best-known CRMs in the world, and for good reason: a clear visual pipeline, hundreds of integrations, mobile apps that work offline and support in Portuguese. The question Brazilian B2B sales reps ask is not whether it is good, but <strong>how much it costs for their team, in reais, and what they get for it</strong>.
       </p>
 
       <p>
-        This comparison evaluates Sirius CRM and Pipedrive across <strong>7 objective criteria</strong>, with real pricing data in BRL, actual feature comparisons, and use cases specific to the Brazilian market.
+        This comparison was reviewed on September 26, 2026 against the prices and plans both vendors published on that date.
       </p>
 
       <div class="not-prose" style="background: var(--primary); padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
-        <p style="margin: 0 0 0.75rem; font-weight: 700; font-size: 1.05rem; color: var(--primary-foreground);">⚡ TL;DR — Quick Answer</p>
+        <p style="margin: 0 0 0.75rem; font-weight: 700; font-size: 1.05rem; color: var(--primary-foreground);">⚡ Quick answer</p>
         <ul style="margin: 0; padding-left: 1.25rem; line-height: 2; color: #ffffff;">
-          <li><strong style="color: var(--primary-foreground);">Pipedrive</strong>: best for international teams, robust integrations, structured SDR teams</li>
-          <li><strong style="color: var(--primary-foreground);">Sirius CRM</strong>: best for Brazilian B2B reps — native WhatsApp, BANT/MEDDIC AI, real free plan</li>
-          <li>Pipedrive Essential costs <strong>~R$ 89/mo/user</strong> — no native WhatsApp, no AI</li>
-          <li>Sirius CRM FREE is free forever; Sirius PRO costs <strong>R$ 397/month</strong></li>
+          <li><strong style="color: var(--primary-foreground);">Pipedrive</strong>: charges per user, in dollars, from US$ 14/user/month (Lite plan, billed annually). No free plan, only a 14-day trial.</li>
+          <li><strong style="color: var(--primary-foreground);">Sirius CRM</strong>: charges per account, in reais. Free plan forever; paid plans from R$ 67/month (up to 5 users) to R$ 397/month (up to 50 users).</li>
+          <li>For a team of 5: Sirius Starter R$ 67/month in total; Pipedrive Lite 5 × US$ 14 = US$ 70/month.</li>
         </ul>
       </div>
 
       <h2>Sirius CRM or Pipedrive: which is cheaper in 2026?</h2>
 
       <p>
-        This is the most common question — and the answer depends on the plan and exchange rate. Pipedrive charges in dollars, meaning the BRL price fluctuates. Sirius CRM charges in reais, with a fixed and predictable price.
+        The difference is the billing model. Pipedrive multiplies the price by the number of users and charges in dollars, so the BRL amount moves with the exchange rate. Sirius charges a fixed amount per account, in reais, and each plan covers a number of users.
       </p>
 
       <div style="overflow-x: auto; margin: 2rem 0;">
         <table style="width: 100%; border-collapse: collapse; font-size: 0.9rem;">
           <thead>
             <tr style="background: var(--primary); color: #ffffff;">
-              <th style="padding: 0.75rem 1rem; text-align: left; border: 1px solid var(--fio-forte);">Criterion</th>
-              <th style="padding: 0.75rem 1rem; text-align: center; border: 1px solid var(--fio-forte);">Sirius CRM FREE</th>
-              <th style="padding: 0.75rem 1rem; text-align: center; border: 1px solid var(--fio-forte);">Sirius CRM PRO</th>
-              <th style="padding: 0.75rem 1rem; text-align: center; border: 1px solid var(--fio-forte);">Pipedrive Essential</th>
-              <th style="padding: 0.75rem 1rem; text-align: center; border: 1px solid var(--fio-forte);">Pipedrive Advanced</th>
+              <th style="${TH} text-align: left;">Team size</th>
+              <th style="${TH}">Sirius CRM (per account)</th>
+              <th style="${TH}">Pipedrive Lite (per user)</th>
             </tr>
           </thead>
           <tbody>
             <tr style="background: var(--muted);">
-              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); font-weight: 600;">Price (BRL)</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--foreground); font-weight: 700;">Free</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; font-weight: 700;">R$ 397/month</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center;">~R$ 89/mo*</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center;">~R$ 179/mo*</td>
+              <td style="${TDL}">1 to 2 people</td>
+              <td style="${TDC} font-weight: 700;">Free (Free plan)</td>
+              <td style="${TDC}">US$ 14 to US$ 28/month</td>
             </tr>
             <tr>
-              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); font-weight: 600;">Native WhatsApp</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--foreground);">✓ Yes</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--foreground);">✓ Yes</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--pulso-escuro);">✗ Not native</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--pulso-escuro);">✗ Not native</td>
+              <td style="${TDL}">up to 5 people</td>
+              <td style="${TDC} font-weight: 700;">R$ 67/month (Starter)</td>
+              <td style="${TDC}">up to US$ 70/month</td>
             </tr>
             <tr style="background: var(--muted);">
-              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); font-weight: 600;">Native AI</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--foreground);">✓ 3 gen/month</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--foreground);">✓ Unlimited</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--pulso-escuro);">✗ No</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--pulso-escuro);">✗ No</td>
+              <td style="${TDL}">up to 15 people</td>
+              <td style="${TDC} font-weight: 700;">R$ 147/month (Pro)</td>
+              <td style="${TDC}">up to US$ 210/month</td>
             </tr>
             <tr>
-              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); font-weight: 600;">Offline Mode</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--foreground);">✓ Yes</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--foreground);">✓ Yes</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--pulso-escuro);">✗ No</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--pulso-escuro);">✗ No</td>
-            </tr>
-            <tr style="background: var(--muted);">
-              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); font-weight: 600;">Auto Prospecting</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--foreground);">Limited</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--foreground);">✓ Yes</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--foreground);">Paid add-on</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--foreground);">Paid add-on</td>
-            </tr>
-            <tr>
-              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); font-weight: 600;">PT-BR Support</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--foreground);">✓ Native</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--foreground);">✓ Native</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--foreground);">Partial</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--foreground);">Partial</td>
-            </tr>
-            <tr style="background: var(--muted);">
-              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); font-weight: 600;">Real Free Plan</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--foreground);">✓ Free forever</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center;">—</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--pulso-escuro);">✗ 14-day trial only</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--pulso-escuro);">✗ 14-day trial only</td>
+              <td style="${TDL}">up to 50 people</td>
+              <td style="${TDC} font-weight: 700;">R$ 397/month (Business)</td>
+              <td style="${TDC}">up to US$ 700/month</td>
             </tr>
           </tbody>
         </table>
-        <p style="font-size: 0.8rem; color: var(--foreground); margin-top: 0.5rem;">* Pipedrive price estimated at R$ 5.10 exchange rate. Subject to currency fluctuation.</p>
+        <p style="font-size: 0.8rem; color: var(--foreground); margin-top: 0.5rem;">Prices checked on 09/26/2026 on the official pages. Pipedrive: Lite plan billed annually; Growth, Premium and Ultimate cost more per user. Sirius: monthly billing; annual billing takes 20% off.</p>
       </div>
 
-      <h2>Does Pipedrive have native WhatsApp?</h2>
-
       <p>
-        Not natively. Pipedrive has no direct WhatsApp integration. Connecting WhatsApp to Pipedrive requires third-party tools like Zapier (US$ 49+/month), Make (formerly Integromat), or dedicated automation platforms — adding cost and complexity to your stack.
+        Pipedrive's entry plan is not the equivalent of every Sirius plan, and the reverse is also true. That is why the table below compares feature by feature.
       </p>
 
+      <h2>What each one offers</h2>
+
+      <div style="overflow-x: auto; margin: 2rem 0;">
+        <table style="width: 100%; border-collapse: collapse; font-size: 0.9rem;">
+          <thead>
+            <tr style="background: var(--primary); color: #ffffff;">
+              <th style="${TH} text-align: left;">Feature</th>
+              <th style="${TH}">Sirius CRM</th>
+              <th style="${TH}">Pipedrive</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="background: var(--muted);">
+              <td style="${TDL}">Free plan</td>
+              <td style="${TDC}">✓ Forever: 2 users, 250 contacts, 100 active deals, 1 pipeline</td>
+              <td style="${TDC}">✗ 14-day trial only</td>
+            </tr>
+            <tr>
+              <td style="${TDL}">Paid plan trial</td>
+              <td style="${TDC}">7 days of Pro, no card</td>
+              <td style="${TDC}">14 days</td>
+            </tr>
+            <tr style="background: var(--muted);">
+              <td style="${TDL}">Automations</td>
+              <td style="${TDC}">From Starter</td>
+              <td style="${TDC}">From the Growth plan (Lite has none)</td>
+            </tr>
+            <tr>
+              <td style="${TDL}">Artificial intelligence</td>
+              <td style="${TDC}">From Starter: Sofia agent and BANT/MEDDIC qualification</td>
+              <td style="${TDC}">AI report creation from Lite; AI to write and summarize email on Premium</td>
+            </tr>
+            <tr style="background: var(--muted);">
+              <td style="${TDL}">WhatsApp</td>
+              <td style="${TDC}">Business plan: official Meta API, conversations in the customer history</td>
+              <td style="${TDC}">WhatsApp integration in the messaging inbox</td>
+            </tr>
+            <tr>
+              <td style="${TDL}">Company prospecting</td>
+              <td style="${TDC}">Monthly Google Maps search credits from Starter</td>
+              <td style="${TDC}">Through integrations and add-ons</td>
+            </tr>
+            <tr style="background: var(--muted);">
+              <td style="${TDL}">Offline mode on mobile</td>
+              <td style="${TDC}">✓ Yes</td>
+              <td style="${TDC}">✓ Yes, in the iOS and Android apps</td>
+            </tr>
+            <tr>
+              <td style="${TDL}">Support in Portuguese</td>
+              <td style="${TDC}">✓ Team in Brazil</td>
+              <td style="${TDC}">✓ 24/7 chat in Portuguese</td>
+            </tr>
+            <tr style="background: var(--muted);">
+              <td style="${TDL}">Integrations</td>
+              <td style="${TDC}">Google Calendar, n8n, Zapier, webhooks and public API (Pro)</td>
+              <td style="${TDC}">Hundreds in the Marketplace</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2>Does Pipedrive have WhatsApp integration?</h2>
+
       <p>
-        In Brazil, where WhatsApp is the primary B2B sales channel, this limitation is significant. Every message exchanged outside the CRM is lost history, missed follow-up, and data that never feeds the pipeline.
+        Yes. Since 2022 Pipedrive has integrated WhatsApp into its messaging inbox: conversations show up on the deal and the contact. In Sirius, WhatsApp comes with the Business plan, connected through the official Meta API, and every message lands in the customer history with no manual copying. The Sirius Free, Starter and Pro plans have no WhatsApp integration.
       </p>
 
       <div style="background: var(--muted); border-left: 4px solid var(--fio-forte); padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
-        <p style="margin: 0; font-weight: 700; color: var(--foreground);">Why native WhatsApp matters:</p>
-        <p style="margin: 0.5rem 0 0; color: var(--foreground);">In Sirius CRM, every WhatsApp message is automatically logged in the customer history — no manual copying. The rep sees full context before calling or visiting. Pipedrive requires a paid third-party integration for the same result.</p>
+        <p style="margin: 0; font-weight: 700; color: var(--foreground);">Why the official API matters</p>
+        <p style="margin: 0.5rem 0 0; color: var(--foreground);">A number connected through an unofficial API risks being banned by Meta. Before picking any CRM with WhatsApp, check which API connects your number. We explain the difference in <a href="/en/blog/whatsapp-api-oficial-meta-crm">the official WhatsApp API in your CRM</a>.</p>
       </div>
 
-      <h2>Which CRM has native AI for sales in Brazil?</h2>
+      <h2>Which CRM has AI for sales?</h2>
 
       <p>
-        Sirius CRM has native AI built in with automatic qualification using the <strong>BANT</strong> (Budget, Authority, Need, Timeline) and <strong>MEDDIC</strong> (Metrics, Economic Buyer, Decision Criteria, Decision Process, Identify Pain, Champion) frameworks. The AI analyzes conversations and lead data to generate a qualification score, suggested next step, and loss-risk alert.
+        Both. Pipedrive builds reports with AI from the Lite plan and, on Premium, writes, summarizes and replies to email with AI. Sirius focuses elsewhere: from Starter, the AI qualifies the lead with the <strong>BANT</strong> (Budget, Authority, Need, Timeline) and <strong>MEDDIC</strong> frameworks, suggests the next step and flags loss risk, and the Sofia agent runs actions in the pipeline within a monthly quota (200 on Starter, 1,000 on Pro, 3,000 on Business).
       </p>
 
-      <p>
-        Pipedrive has no native AI in 2026. It offers workflow automations (Advanced plan+), but without intelligent lead analysis or automatic qualification. For AI features with Pipedrive, you'd need to integrate external tools — again at additional cost.
-      </p>
+      <h2>Pros and cons</h2>
 
-      <h2>Honest Pros and Cons</h2>
-
-      <h3>Sirius CRM — Strengths</h3>
+      <h3>Sirius CRM: strengths</h3>
       <ul style="line-height: 2; padding-left: 1.5rem; color: var(--foreground);">
-        <li>Real and permanent free plan (up to 100 deals)</li>
-        <li>Native WhatsApp integration — no add-on needed</li>
-        <li>BANT/MEDDIC AI included in all plans</li>
-        <li>Offline mode: works without internet in the field</li>
-        <li>100% Portuguese interface and support</li>
-        <li>Fixed price in BRL — no exchange rate surprises</li>
-        <li>Built for the Brazilian sales process</li>
+        <li>Per-account pricing in reais: the team grows without multiplying the bill, up to the plan limit</li>
+        <li>Permanent free plan for up to 2 users</li>
+        <li>BANT/MEDDIC qualification AI and the Sofia agent from Starter (R$ 67/month)</li>
+        <li>Google Maps prospecting with monthly credits</li>
+        <li>WhatsApp through the official Meta API on Business</li>
+        <li>Built for the Brazilian sales process, with a team in Brazil</li>
       </ul>
 
-      <h3>Sirius CRM — Weaknesses</h3>
+      <h3>Sirius CRM: weaknesses</h3>
       <ul style="line-height: 2; padding-left: 1.5rem; color: var(--foreground);">
-        <li>Smaller user base than Pipedrive — less community content</li>
-        <li>Fewer native integrations (Zapier, Make, Salesforce ecosystem)</li>
-        <li>No marketing automation features</li>
-        <li>Best suited for teams up to ~50 reps — not enterprise-scale</li>
+        <li>Free plan without automation, AI or WhatsApp: it organizes the pipeline, it does not automate it</li>
+        <li>WhatsApp integration only on the Business plan (R$ 397/month)</li>
+        <li>Far fewer ready-made integrations than Pipedrive</li>
+        <li>Smaller user base and community</li>
+        <li>Designed for teams of up to 50 people</li>
       </ul>
 
-      <h3>Pipedrive — Strengths</h3>
+      <h3>Pipedrive: strengths</h3>
       <ul style="line-height: 2; padding-left: 1.5rem; color: var(--foreground);">
-        <li>400+ native integrations in its Marketplace</li>
-        <li>Huge global community with templates and playbooks</li>
-        <li>Advanced reporting and custom dashboards</li>
-        <li>Strong email sequence automation (Advanced plan+)</li>
-        <li>Ideal for structured sales teams with SDRs and AEs</li>
-        <li>Supports multiple pipelines and products</li>
+        <li>Hundreds of integrations in the Marketplace</li>
+        <li>Large global community with templates and playbooks</li>
+        <li>WhatsApp in the messaging inbox and mobile apps with offline mode</li>
+        <li>24/7 support in Portuguese</li>
+        <li>Customizable reports and dashboards</li>
       </ul>
 
-      <h3>Pipedrive — Weaknesses</h3>
+      <h3>Pipedrive: weaknesses</h3>
       <ul style="line-height: 2; padding-left: 1.5rem; color: var(--foreground);">
-        <li>No free plan — 14-day trial only</li>
-        <li>No native WhatsApp (requires paid integration)</li>
-        <li>No native lead qualification AI</li>
-        <li>Dollar-denominated pricing — costs rise with BRL depreciation</li>
-        <li>No offline mode</li>
-        <li>Limited Portuguese support (documentation partially translated)</li>
+        <li>No free plan, only a 14-day trial</li>
+        <li>Per-user pricing: the cost grows linearly with the team</li>
+        <li>Billed in dollars: the BRL amount rises when the exchange rate rises</li>
+        <li>No ready-made BANT/MEDDIC qualification</li>
       </ul>
 
       <h2>When to use Sirius CRM?</h2>
 
-      <p>Choose Sirius CRM if you are:</p>
+      <p>Choose Sirius CRM if you:</p>
       <ul style="line-height: 2; padding-left: 1.5rem; color: var(--foreground);">
-        <li>A Brazilian field sales rep or commercial representative</li>
-        <li>An SMB with a sales team of 1 to 30 people</li>
-        <li>A company that uses WhatsApp as its primary sales channel</li>
-        <li>A sales rep who works in areas with poor internet signal</li>
-        <li>A business that wants AI qualification without paying for add-ons</li>
-        <li>A company that wants a fixed BRL price with no exchange rate surprises</li>
+        <li>Have a team of 3 to 50 people and want a fixed monthly fee, not a per-user bill</li>
+        <li>Want to start free and pay only when you need automation and AI</li>
+        <li>Want AI that qualifies the lead, not just writes email</li>
+        <li>Prospect local companies through Google Maps</li>
+        <li>Prefer paying in reais, with no exchange rate surprises</li>
       </ul>
 
       <h2>When to use Pipedrive?</h2>
 
       <p>Choose Pipedrive if you:</p>
       <ul style="line-height: 2; padding-left: 1.5rem; color: var(--foreground);">
-        <li>Have a larger sales team (30+ reps) with a structured process</li>
-        <li>Need integrations with international tools (Salesforce, HubSpot Marketing, etc.)</li>
-        <li>Operate in international markets beyond Brazil</li>
-        <li>Use email as your primary prospecting channel (automated sequences)</li>
-        <li>Already have a consolidated tech stack in the Pipedrive ecosystem</li>
+        <li>Depend on integrations that only exist in its Marketplace</li>
+        <li>Need WhatsApp integration without moving to a R$ 397 plan</li>
+        <li>Operate in several countries and already bill in dollars</li>
+        <li>Already have your team trained in the Pipedrive ecosystem</li>
       </ul>
 
       <div style="background: var(--muted); border: 1px solid var(--border); padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0; text-align: center;">
         <p style="font-weight: 700; color: var(--foreground); font-size: 1.1rem; margin: 0 0 0.75rem;">Try Sirius CRM before you decide</p>
-        <p style="color: var(--foreground); margin: 0 0 1rem;">Free plan forever — no credit card. WhatsApp + AI + Offline included.</p>
-        <p><strong><a href="/register" style="color: var(--foreground); text-decoration: underline;">Start Free Now →</a></strong></p>
+        <p style="color: var(--foreground); margin: 0 0 1rem;">Free plan forever and 7 days of Pro, no credit card.</p>
+        <p><strong><a href="/en/register" style="color: var(--foreground); text-decoration: underline;">Create a free account →</a></strong></p>
       </div>
 
       <h2>FAQ: Sirius CRM vs Pipedrive</h2>
 
       <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
         <summary style="font-weight: 600; cursor: pointer; color: var(--foreground); list-style: revert;">Is Sirius CRM cheaper than Pipedrive in 2026?</summary>
-        <p style="margin: 0.75rem 0 0; color: var(--foreground);">Yes. Sirius CRM has a free plan forever (up to 100 deals) and the PRO plan costs a fixed R$ 397/month in BRL. Pipedrive offers no free plan — only a 14-day trial — and the Essential plan starts at approximately R$ 89/month, subject to dollar-real exchange rate fluctuations. Considering that Sirius includes WhatsApp and AI without add-ons, the total cost is substantially lower for Brazilian sales reps.</p>
+        <p style="margin: 0.75rem 0 0; color: var(--foreground);">For teams of 2 or more, yes. Sirius charges per account: R$ 67/month for up to 5 users, R$ 147/month for up to 15 and R$ 397/month for up to 50, with a free plan for up to 2 users. Pipedrive charges per user, from US$ 14/user/month on the Lite plan billed annually, and has no free plan.</p>
       </details>
 
       <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
         <summary style="font-weight: 600; cursor: pointer; color: var(--foreground); list-style: revert;">Can I migrate from Pipedrive to Sirius CRM?</summary>
-        <p style="margin: 0.75rem 0 0; color: var(--foreground);">Yes. Sirius CRM accepts data import via CSV — Pipedrive's standard export format. You export contacts, deals, and activities from Pipedrive and import them into Sirius. The process takes an average of 1 to 2 hours for databases up to 5,000 records. Sirius CRM's Portuguese support team can assist with the migration.</p>
+        <p style="margin: 0.75rem 0 0; color: var(--foreground);">Yes. Sirius imports CSV files, which is Pipedrive's export format. Export contacts, deals and activities from Pipedrive and import them into Sirius. Mind the plan limits: the Free plan takes up to 250 contacts and 100 active deals.</p>
       </details>
 
       <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
         <summary style="font-weight: 600; cursor: pointer; color: var(--foreground); list-style: revert;">Does Pipedrive work offline?</summary>
-        <p style="margin: 0.75rem 0 0; color: var(--foreground);">No. Pipedrive requires an internet connection to function. For field sales reps who visit clients in areas with weak signal (industrial zones, rural areas, warehouses), this is a real limitation. Sirius CRM has native offline mode: you can log visits, update deals, and add contacts without internet, and the data syncs when the connection returns.</p>
+        <p style="margin: 0.75rem 0 0; color: var(--foreground);">In the mobile apps, yes: you move deals and log activities without internet, and everything syncs when the connection returns. The web version needs internet. Sirius also has an offline mode on mobile.</p>
       </details>
 
       <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
-        <summary style="font-weight: 600; cursor: pointer; color: var(--foreground); list-style: revert;">Does Pipedrive have Portuguese (Brazil) support?</summary>
-        <p style="margin: 0.75rem 0 0; color: var(--foreground);">Partially. Pipedrive has a Portuguese interface, but customer support is primarily in English and Spanish. Help documentation is partially translated. For companies that need technical support in Brazilian Portuguese with fast response times, Sirius CRM — developed in Brazil by the ROI Labs team — offers native PT-BR support.</p>
+        <summary style="font-weight: 600; cursor: pointer; color: var(--foreground); list-style: revert;">Does Pipedrive have support in Portuguese?</summary>
+        <p style="margin: 0.75rem 0 0; color: var(--foreground);">Yes: Pipedrive offers chat support in Portuguese 24 hours a day, 7 days a week, and the interface is translated. Sirius has a team in Brazil and was designed around the Brazilian sales process.</p>
       </details>
 
       <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 2rem;">
         <summary style="font-weight: 600; cursor: pointer; color: var(--foreground); list-style: revert;">Which CRM is better for a sales rep: Sirius or Pipedrive?</summary>
-        <p style="margin: 0.75rem 0 0; color: var(--foreground);">For commercial reps in Brazil, Sirius CRM is the superior choice in 2026. The reasons: offline mode for field visits, native WhatsApp (Brazil's dominant channel), BANT/MEDDIC AI qualification, customer portfolio management with reorder alerts, and BRL pricing. Pipedrive excels for SDRs who prospect via email, but was not optimized for the face-to-face sales process of the Brazilian commercial rep.</p>
+        <p style="margin: 0.75rem 0 0; color: var(--foreground);">It depends on the size of the operation. A solo rep uses Sirius for free. A rep agency with 5 to 15 salespeople pays less on Sirius, because the fee is per account, and gets AI qualification and Google Maps prospecting. If the priority is WhatsApp integration on a budget below R$ 397/month, or specific Marketplace integrations, Pipedrive is the better fit.</p>
       </details>
 
       <hr style="margin: 3rem 0; border: none; border-top: 1px solid var(--border);" />
-      <strong>Last Updated:</strong> March 21, 2026<br/>
+      <strong>Last updated:</strong> September 26, 2026<br/>
       <strong>Author:</strong> Sirius CRM Team<br/>
-      <strong>Read Time:</strong> 9 minutes
+      <strong>Read time:</strong> 7 minutes
     `
 }

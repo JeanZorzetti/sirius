@@ -1,381 +1,450 @@
 import { BlogPost } from '../../blog-types'
 
+const TH = 'padding: 0.75rem 1rem; text-align: center; border: 1px solid var(--fio-forte);'
+const TD = 'padding: 0.75rem 1rem; border: 1px solid var(--border);'
+const TDC = `${TD} text-align: center;`
+const TDL = `${TD} font-weight: 600;`
+const DETAILS = 'border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;'
+const SUMMARY = 'font-weight: 600; cursor: pointer; color: var(--foreground); list-style: revert;'
+const ANSWER = 'margin: 0.75rem 0 0; color: var(--foreground);'
+const LIST = 'line-height: 2; padding-left: 1.5rem; color: var(--foreground);'
+const BOX = 'background: var(--muted); border-left: 4px solid var(--fio-forte); padding: 1.25rem 1.5rem; border-radius: 0.75rem; margin: 1.5rem 0;'
+
 export const post: BlogPost = {
   slug: 'alternativas-ao-pipedrive-brasil',
   title: '5 Alternativas ao Pipedrive para Representantes Comerciais no Brasil em 2026',
-  excerpt: 'As 5 melhores alternativas ao Pipedrive para representantes comerciais no Brasil em 2026: análise honesta de preço em BRL, WhatsApp, IA, offline e usabilidade. Qual é a melhor opção para você?',
+  excerpt: 'As 5 alternativas ao Pipedrive para representantes comerciais no Brasil, revisadas em setembro de 2026: plano gratuito, preço por usuário ou por conta, WhatsApp e IA de cada uma.',
   date: '2026-03-21',
-  lastModified: '2026-03-21',
+  lastModified: '2026-09-26',
   category: 'Comparativos',
   image: 'https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=1200&h=630&fit=crop&auto=format&q=80',
   author: 'Equipe Sirius CRM',
   relatedSlugs: ['sirius-vs-pipedrive', 'melhor-crm-2026-comparativo', 'crm-para-representante-comercial-2026'],
   content: `
       <p>
-        O Pipedrive é um dos CRMs mais populares do mundo, mas em 2026 muitos representantes comerciais brasileiros estão buscando alternativas por razões práticas: preço em dólar com variação cambial, sem WhatsApp nativo, sem modo offline e sem IA integrada. Se você está nessa situação, este guia é para você.
+        O Pipedrive é um bom CRM: funil visual claro, centenas de integrações, aplicativo com modo offline, WhatsApp na caixa de mensagens e suporte em português. O que leva representantes comerciais brasileiros a procurar alternativas é o preço: <strong>cobrança por usuário, em dólar, e nenhum plano gratuito</strong>.
       </p>
 
       <p>
-        Avaliamos 5 alternativas ao Pipedrive com foco específico no contexto do vendedor B2B brasileiro: processo de vendas presencial, WhatsApp como canal primário, regiões com sinal instável e orçamento em reais.
+        Avaliamos 5 alternativas com os planos que cada fornecedor publicava em 26 de setembro de 2026, com foco no que pesa para quem vende B2B no Brasil: plano gratuito, modelo de cobrança, WhatsApp e IA.
       </p>
 
       <div class="not-prose" style="background: var(--primary); padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
-        <p style="margin: 0 0 0.75rem; font-weight: 700; font-size: 1.05rem; color: var(--primary-foreground);">⚡ TL;DR — As 5 Alternativas</p>
-        <ol style="margin: 0; padding-left: 1.25rem; line-height: 2.2; color: #ffffff;">
-          <li><strong style="color: var(--primary-foreground);">Sirius CRM</strong> — Melhor para representantes comerciais (IA + WhatsApp + offline, gratuito)</li>
-          <li><strong style="color: var(--primary-foreground);">RD Station CRM</strong> — Melhor para quem usa RD Station Marketing</li>
-          <li><strong style="color: var(--primary-foreground);">HubSpot Free</strong> — Melhor para times grandes que não dependem de WhatsApp</li>
-          <li><strong style="color: var(--primary-foreground);">Agendor</strong> — CRM brasileiro focado em vendas com boa usabilidade</li>
-          <li><strong style="color: var(--primary-foreground);">Moskit CRM</strong> — CRM brasileiro com foco B2B e automação</li>
-        </ol>
+        <p style="margin: 0 0 0.75rem; font-weight: 700; font-size: 1.05rem; color: var(--primary-foreground);">⚡ Resposta rápida</p>
+        <ul style="margin: 0; padding-left: 1.25rem; line-height: 2; color: #ffffff;">
+          <li><strong style="color: var(--primary-foreground);">Agendor</strong>: o gratuito mais generoso da lista (3 usuários, 10 mil contatos) e extensão de WhatsApp grátis</li>
+          <li><strong style="color: var(--primary-foreground);">RD Station CRM</strong>: gratuito para 4 usuários com WhatsApp; nativo com o RD Station Marketing</li>
+          <li><strong style="color: var(--primary-foreground);">HubSpot Free</strong>: gratuito para 2 usuários com assistente de IA</li>
+          <li><strong style="color: var(--primary-foreground);">Sirius CRM</strong>: cobra por conta, não por usuário; o mais barato para times de 5 a 50 pessoas, com IA de qualificação a partir de R$ 67/mês</li>
+          <li><strong style="color: var(--primary-foreground);">Ollow (antigo Moskit)</strong>: virou plataforma de venda por WhatsApp com IA, cobrada por volume de conversas</li>
+        </ul>
       </div>
 
       <h2>Por que buscar alternativas ao Pipedrive no Brasil?</h2>
 
-      <p>
-        O Pipedrive tem qualidades reais: interface visual intuitiva, pipeline Kanban bem construído, bom ecossistema de integrações. Mas para o representante comercial brasileiro, os obstáculos práticos são frequentemente maiores que os benefícios:
-      </p>
-
-      <ul style="line-height: 2; padding-left: 1.5rem; color: var(--foreground);">
-        <li><strong>Preço em dólar</strong>: o custo em BRL oscila com o câmbio — em março 2026, o Essential está ~R$ 89/mês, mas pode subir</li>
-        <li><strong>Sem plano gratuito</strong>: apenas trial de 14 dias, depois é obrigatório pagar</li>
-        <li><strong>Sem WhatsApp nativo</strong>: canal principal de vendas no Brasil exige integração paga</li>
-        <li><strong>Sem modo offline</strong>: vendedores de campo em áreas com sinal ruim ficam sem acesso</li>
-        <li><strong>Sem IA nativa</strong>: qualificação automática de leads exige add-ons ou planos superiores</li>
+      <ul style="${LIST}">
+        <li><strong>Preço em dólar</strong>: o valor em reais sobe quando o câmbio sobe</li>
+        <li><strong>Preço por usuário</strong>: a partir de US$ 14/usuário/mês no plano Lite, com cobrança anual; o custo cresce junto com o time</li>
+        <li><strong>Sem plano gratuito</strong>: só teste de 14 dias</li>
+        <li><strong>Automações só a partir do plano Growth</strong>: o Lite não tem</li>
       </ul>
 
-      <h2>1. Sirius CRM — Melhor Alternativa para Representantes Comerciais</h2>
+      <h2>1. Sirius CRM: o mais barato para times que crescem</h2>
 
       <p>
-        O Sirius CRM foi construído especificamente para o processo de vendas do representante comercial brasileiro. Não é uma adaptação de um produto global — é uma ferramenta que nasceu do entendimento das dores de quem vende em campo no Brasil.
+        O Sirius foi construído para o processo de venda do representante comercial brasileiro: prospecção, visita em campo e retorno de cliente. A diferença mais concreta em relação ao Pipedrive é o modelo de cobrança: um valor fixo por conta, em reais.
       </p>
 
-      <div style="background: var(--muted); border: 1px solid var(--border); padding: 1.25rem; border-radius: 0.75rem; margin: 1rem 0;">
-        <p style="font-weight: 700; color: var(--foreground); margin: 0 0 0.5rem;">Diferenciais vs Pipedrive:</p>
-        <ul style="margin: 0; padding-left: 1.25rem; line-height: 2; color: var(--foreground);">
-          <li>Plano FREE gratuito para sempre (até 50 deals) — sem cartão de crédito</li>
-          <li>WhatsApp integrado nativamente em todos os planos</li>
-          <li>IA BANT/MEDDIC para qualificação automática de leads</li>
-          <li>Modo offline: funciona sem internet no campo</li>
-          <li>Preço fixo em BRL: FREE (R$ 0) ou PRO (R$ 397/mês)</li>
-          <li>Interface e suporte 100% em português brasileiro</li>
-        </ul>
+      <ul style="${LIST}">
+        <li>Plano Gratuito para sempre: 2 usuários, 250 contatos, 100 negócios ativos, sem cartão</li>
+        <li>Starter R$ 67/mês (até 5 usuários), Pro R$ 147/mês (até 15), Business R$ 397/mês (até 50)</li>
+        <li>IA que qualifica o lead por BANT e MEDDIC e agente Sofia a partir do Starter</li>
+        <li>Prospecção de empresas pelo Google Maps com créditos mensais a partir do Starter</li>
+        <li>Modo offline no celular</li>
+        <li>WhatsApp pela API oficial da Meta no plano Business</li>
+      </ul>
+
+      <div style="${BOX}">
+        <p style="margin: 0; color: var(--foreground);"><strong>Melhor para:</strong> escritórios de representação e times de vendas de 5 a 50 pessoas, que pagariam por usuário nas outras opções.</p>
+        <p style="margin: 0.5rem 0 0; color: var(--foreground);"><strong>Limitação:</strong> é o plano gratuito mais enxuto desta lista, sem IA, sem automação e sem WhatsApp. WhatsApp integrado só no Business. Menos integrações que Pipedrive e HubSpot.</p>
       </div>
 
-      <p>
-        <strong>Melhor para:</strong> Representantes comerciais, vendedores externos, pequenas equipes de vendas B2B de 1 a 30 pessoas, empresas com foco em WhatsApp e visitas de campo.
-      </p>
+      <p><a href="/register" style="color: var(--foreground); font-weight: 600;">→ Começar grátis no Sirius CRM</a></p>
+
+      <h2>2. RD Station CRM: melhor para quem usa RD Station Marketing</h2>
 
       <p>
-        <strong>Limitação honesta:</strong> Base de usuários menor que o Pipedrive, menos integrações com ferramentas globais, sem marketing automation.
+        Se você já usa ou vai usar o RD Station Marketing, o RD Station CRM é a alternativa mais natural: a integração nativa entre os dois fecha o funil de marketing e vendas no mesmo ecossistema.
       </p>
 
-      <p><a href="/register" style="color: var(--foreground); font-weight: 600;">→ Começar gratuitamente no Sirius CRM</a></p>
+      <ul style="${LIST}">
+        <li>Plano Free para até 4 usuários, com recursos de venda pelo WhatsApp</li>
+        <li>Básico R$ 73/usuário/mês e Pro R$ 131/usuário/mês (mínimo de 4 usuários) na cobrança mensal</li>
+        <li>Copiloto de IA e modelos de automação a partir do Básico</li>
+        <li>Integração nativa com o RD Station Marketing</li>
+      </ul>
 
-      <h2>2. RD Station CRM — Melhor para o Ecossistema RD</h2>
-
-      <p>
-        Se você já usa ou planeja usar o RD Station Marketing, o RD Station CRM é a alternativa mais natural ao Pipedrive para PMEs brasileiras. A integração nativa entre os dois produtos cria um funil completo: marketing capta e qualifica leads, CRM gerencia o pipeline de vendas.
-      </p>
-
-      <div style="background: var(--muted); border: 1px solid var(--border); padding: 1.25rem; border-radius: 0.75rem; margin: 1rem 0;">
-        <p style="font-weight: 700; color: var(--foreground); margin: 0 0 0.5rem;">Pontos Fortes:</p>
-        <ul style="margin: 0; padding-left: 1.25rem; line-height: 2; color: var(--foreground);">
-          <li>Integração nativa com RD Station Marketing</li>
-          <li>Lead scoring baseado em comportamento digital</li>
-          <li>Plano gratuito básico disponível</li>
-          <li>Ecossistema brasileiro consolidado com suporte em PT-BR</li>
-          <li>Automação de tarefas e notificações de vendas</li>
-        </ul>
+      <div style="${BOX}">
+        <p style="margin: 0; color: var(--foreground);"><strong>Melhor para:</strong> empresas de inbound marketing e times de até 4 pessoas que querem WhatsApp no CRM sem pagar.</p>
+        <p style="margin: 0.5rem 0 0; color: var(--foreground);"><strong>Limitação:</strong> preço por usuário; o plano Free tem 5 campos personalizados e 3 modelos de e-mail.</p>
       </div>
 
-      <p>
-        <strong>Melhor para:</strong> Empresas com estratégia de inbound marketing ativa que usam RD Station Marketing ou planejam usá-lo.
-      </p>
+      <h2>3. HubSpot CRM Free: gratuito com IA</h2>
 
       <p>
-        <strong>Limitação honesta:</strong> Sem WhatsApp nativo, sem IA de qualificação, sem modo offline. Para vendas ativas (outbound e campo), fica atrás do Sirius CRM.
+        O HubSpot Free atende até 2 usuários e já inclui o assistente de IA Breeze, que rascunha e-mails e responde perguntas sobre os dados do CRM. O limite de contatos é alto e o ecossistema de integrações é dos maiores do mercado.
       </p>
 
-      <h2>3. HubSpot CRM Free — Melhor para Times Grandes sem Custo Inicial</h2>
+      <ul style="${LIST}">
+        <li>Gratuito para até 2 usuários</li>
+        <li>Assistente de IA Breeze no plano gratuito</li>
+        <li>Starter a partir de US$ 15/usuário/mês no anual (US$ 20 no mensal)</li>
+        <li>WhatsApp nativo só no Marketing Hub ou Service Hub Professional</li>
+      </ul>
 
-      <p>
-        Para equipes que precisam escalar sem custo de CRM, o HubSpot Free oferece usuários e contatos ilimitados — uma vantagem real para times de 20+ pessoas. O ecossistema global do HubSpot é um dos mais completos do mercado.
-      </p>
-
-      <div style="background: var(--muted); border: 1px solid var(--border); padding: 1.25rem; border-radius: 0.75rem; margin: 1rem 0;">
-        <p style="font-weight: 700; color: var(--pulso-escuro); margin: 0 0 0.5rem;">Pontos Fortes:</p>
-        <ul style="margin: 0; padding-left: 1.25rem; line-height: 2; color: var(--foreground);">
-          <li>Usuários e contatos ilimitados no plano gratuito</li>
-          <li>Ecossistema de integrações extenso (400+ apps)</li>
-          <li>Rastreamento de emails (abertura, cliques)</li>
-          <li>Ideal para estratégia global com times internacionais</li>
-        </ul>
+      <div style="${BOX}">
+        <p style="margin: 0; color: var(--foreground);"><strong>Melhor para:</strong> quem prospecta por e-mail e pretende usar o ecossistema HubSpot completo.</p>
+        <p style="margin: 0.5rem 0 0; color: var(--foreground);"><strong>Limitação:</strong> planos pagos por usuário e em dólar; interface densa para uma PME.</p>
       </div>
 
-      <p>
-        <strong>Melhor para:</strong> Times grandes com estratégia global, empresas que usam email como canal principal, negócios que planejam escalar para o HubSpot pago.
-      </p>
+      <h2>4. Agendor: o gratuito mais generoso</h2>
 
       <p>
-        <strong>Limitação honesta:</strong> Sem WhatsApp nativo, sem IA no plano gratuito, sem offline, interface complexa para PMEs, suporte apenas em inglês/espanhol, automações exigem planos pagos em dólar.
+        O Agendor é um CRM brasileiro focado em vendas B2B, com mais de 10 anos de mercado. Seu plano gratuito é o mais generoso desta lista.
       </p>
 
-      <h2>4. Agendor — CRM Brasileiro com Foco em Vendas</h2>
+      <ul style="${LIST}">
+        <li>Gratuito para até 3 usuários, com até 10.000 empresas, 10.000 pessoas e 1.500 negócios</li>
+        <li>Pro R$ 59, Performance R$ 83 e Corporativo R$ 156 por usuário/mês (Corporativo com mínimo de 10)</li>
+        <li>Extensão de WhatsApp Web grátis em qualquer plano; WhatsApp Sync por R$ 49/número/mês</li>
+        <li>Sugestões inteligentes e telefone virtual com IA a partir do Performance</li>
+      </ul>
 
-      <p>
-        O Agendor é um CRM 100% brasileiro, com mais de 10 anos de mercado e foco exclusivo em vendas B2B. Tem boa reputação entre PMEs brasileiras por usabilidade e suporte em português.
-      </p>
-
-      <div style="background: var(--muted); border: 1px solid var(--fio-forte); padding: 1.25rem; border-radius: 0.75rem; margin: 1rem 0;">
-        <p style="font-weight: 700; color: var(--foreground); margin: 0 0 0.5rem;">Pontos Fortes:</p>
-        <ul style="margin: 0; padding-left: 1.25rem; line-height: 2; color: var(--foreground);">
-          <li>100% brasileiro, interface em português nativo</li>
-          <li>Experiência de mais de 10 anos no mercado nacional</li>
-          <li>App mobile com boa usabilidade para campo</li>
-          <li>Suporte em português com boa reputação</li>
-          <li>Relatórios de vendas detalhados</li>
-        </ul>
+      <div style="${BOX}">
+        <p style="margin: 0; color: var(--foreground);"><strong>Melhor para:</strong> representantes e pequenos times que querem começar de graça com bastante espaço.</p>
+        <p style="margin: 0.5rem 0 0; color: var(--foreground);"><strong>Limitação:</strong> preço por usuário; IA só a partir do Performance.</p>
       </div>
 
-      <p>
-        <strong>Melhor para:</strong> Empresas que já usam o Agendor e querem manter o ecossistema, times que valorizam a experiência de produto estabelecida.
-      </p>
+      <h2>5. Ollow (antigo Moskit CRM): venda por WhatsApp em volume</h2>
 
       <p>
-        <strong>Limitação honesta:</strong> Sem IA nativa de qualificação, sem WhatsApp integrado diretamente, plano gratuito muito limitado. Preço médio acima do Sirius PRO para funcionalidades equivalentes.
+        O Moskit CRM mudou de nome para Ollow e hoje é uma plataforma de atendimento e venda por WhatsApp com IA, cobrada por volume de conversas, a partir de R$ 1.199/mês para 500 conversas. Deixou de ser uma alternativa direta ao Pipedrive para o representante individual; faz sentido para operações com muitas conversas simultâneas no WhatsApp.
       </p>
 
-      <h2>5. Moskit CRM — CRM Brasileiro com Foco B2B</h2>
-
-      <p>
-        O Moskit é outro CRM brasileiro que atende principalmente o mercado B2B nacional. Tem features específicas para o processo de vendas brasileiro como registro de ligações, controle de propostas e histórico de negociações.
-      </p>
-
-      <div style="background: var(--muted); border: 1px solid var(--border); padding: 1.25rem; border-radius: 0.75rem; margin: 1rem 0;">
-        <p style="font-weight: 700; color: var(--foreground); margin: 0 0 0.5rem;">Pontos Fortes:</p>
-        <ul style="margin: 0; padding-left: 1.25rem; line-height: 2; color: var(--foreground);">
-          <li>Foco específico em vendas B2B brasileiras</li>
-          <li>Integração com WhatsApp (via configuração)</li>
-          <li>Registro de ligações e histórico de negociações</li>
-          <li>Suporte em português</li>
-          <li>Relatórios de performance de vendedores</li>
-        </ul>
-      </div>
-
-      <p>
-        <strong>Melhor para:</strong> Equipes de vendas B2B de médio porte que precisam de controle detalhado de atividades e histórico de negociações.
-      </p>
-
-      <p>
-        <strong>Limitação honesta:</strong> Sem IA nativa, sem modo offline nativo, interface menos moderna que concorrentes mais recentes, sem plano gratuito permanente.
-      </p>
-
-      <h2>Comparativo Geral: As 5 Alternativas ao Pipedrive</h2>
+      <h2>Comparativo geral: as 5 alternativas ao Pipedrive</h2>
 
       <div style="overflow-x: auto; margin: 2rem 0;">
         <table style="width: 100%; border-collapse: collapse; font-size: 0.85rem;">
           <thead>
             <tr style="background: var(--primary); color: #ffffff;">
-              <th style="padding: 0.75rem 1rem; text-align: left; border: 1px solid var(--fio-forte);">CRM</th>
-              <th style="padding: 0.75rem 1rem; text-align: center; border: 1px solid var(--fio-forte);">Preço</th>
-              <th style="padding: 0.75rem 1rem; text-align: center; border: 1px solid var(--fio-forte);">WhatsApp</th>
-              <th style="padding: 0.75rem 1rem; text-align: center; border: 1px solid var(--fio-forte);">IA Nativa</th>
-              <th style="padding: 0.75rem 1rem; text-align: center; border: 1px solid var(--fio-forte);">Offline</th>
-              <th style="padding: 0.75rem 1rem; text-align: center; border: 1px solid var(--fio-forte);">PT-BR</th>
-              <th style="padding: 0.75rem 1rem; text-align: center; border: 1px solid var(--fio-forte);">Grátis Real</th>
+              <th style="${TH} text-align: left;">CRM</th>
+              <th style="${TH}">Gratuito</th>
+              <th style="${TH}">Plano pago de entrada</th>
+              <th style="${TH}">Cobrança</th>
+              <th style="${TH}">WhatsApp</th>
+              <th style="${TH}">IA</th>
             </tr>
           </thead>
           <tbody>
             <tr style="background: var(--muted);">
-              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); font-weight: 700; color: var(--foreground);">Sirius CRM</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; font-weight: 600;">R$ 0 / R$ 397</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--foreground);">✓</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--foreground);">✓</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--foreground);">✓</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--foreground);">✓</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--foreground);">✓</td>
+              <td style="${TDL}">Sirius CRM</td>
+              <td style="${TDC}">2 usuários</td>
+              <td style="${TDC}">R$ 67/mês (até 5 usuários)</td>
+              <td style="${TDC}">Por conta, em reais</td>
+              <td style="${TDC}">Business (API oficial)</td>
+              <td style="${TDC}">A partir do Starter</td>
             </tr>
             <tr>
-              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); font-weight: 600;">RD Station CRM</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center;">Planos variados BRL</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--pulso-escuro);">✗</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--pulso-escuro);">✗</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--pulso-escuro);">✗</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--foreground);">✓</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--foreground);">Básico</td>
+              <td style="${TDL}">RD Station CRM</td>
+              <td style="${TDC}">4 usuários</td>
+              <td style="${TDC}">R$ 73/usuário/mês</td>
+              <td style="${TDC}">Por usuário, em reais</td>
+              <td style="${TDC}">Desde o Free</td>
+              <td style="${TDC}">A partir do Básico</td>
             </tr>
             <tr style="background: var(--muted);">
-              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); font-weight: 600;">HubSpot Free</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center;">R$ 0 (pago em USD)</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--pulso-escuro);">✗</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--pulso-escuro);">✗</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--pulso-escuro);">✗</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--foreground);">Parcial</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--foreground);">✓</td>
+              <td style="${TDL}">HubSpot</td>
+              <td style="${TDC}">2 usuários</td>
+              <td style="${TDC}">US$ 15/usuário/mês (anual)</td>
+              <td style="${TDC}">Por usuário, em dólar</td>
+              <td style="${TDC}">Professional</td>
+              <td style="${TDC}">Desde o Free</td>
             </tr>
             <tr>
-              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); font-weight: 600;">Agendor</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center;">BRL (consultar)</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--foreground);">Parcial</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--pulso-escuro);">✗</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--pulso-escuro);">✗</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--foreground);">✓</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--pulso-escuro);">✗</td>
+              <td style="${TDL}">Agendor</td>
+              <td style="${TDC}">3 usuários</td>
+              <td style="${TDC}">R$ 59/usuário/mês</td>
+              <td style="${TDC}">Por usuário, em reais</td>
+              <td style="${TDC}">Extensão grátis; Sync pago</td>
+              <td style="${TDC}">A partir do Performance</td>
             </tr>
             <tr style="background: var(--muted);">
-              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); font-weight: 600;">Moskit CRM</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center;">BRL (consultar)</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--foreground);">Via config.</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--pulso-escuro);">✗</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--pulso-escuro);">✗</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--foreground);">✓</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--pulso-escuro);">✗</td>
+              <td style="${TDL}">Ollow (ex-Moskit)</td>
+              <td style="${TDC}">Teste grátis</td>
+              <td style="${TDC}">R$ 1.199/mês (500 conversas)</td>
+              <td style="${TDC}">Por conversas</td>
+              <td style="${TDC}">Em todos os planos</td>
+              <td style="${TDC}">Em todos os planos</td>
             </tr>
             <tr>
-              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); font-weight: 600; color: var(--foreground);">Pipedrive (ref.)</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--foreground);">~R$ 89/mês (USD)</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--pulso-escuro);">✗</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--pulso-escuro);">✗</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--pulso-escuro);">✗</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--foreground);">Parcial</td>
-              <td style="padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; color: var(--pulso-escuro);">✗</td>
+              <td style="${TDL}">Pipedrive (referência)</td>
+              <td style="${TDC}">✗ Teste de 14 dias</td>
+              <td style="${TDC}">US$ 14/usuário/mês (anual)</td>
+              <td style="${TDC}">Por usuário, em dólar</td>
+              <td style="${TDC}">Caixa de mensagens</td>
+              <td style="${TDC}">Relatórios com IA desde o Lite</td>
             </tr>
           </tbody>
         </table>
+        <p style="font-size: 0.8rem; color: var(--foreground); margin-top: 0.5rem;">Planos conferidos em 26/09/2026 nas páginas oficiais de cada fornecedor. Preços em reais na cobrança mensal, salvo indicação.</p>
       </div>
 
       <div style="background: var(--muted); border: 1px solid var(--border); padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0; text-align: center;">
-        <p style="font-weight: 700; color: var(--foreground); font-size: 1.1rem; margin: 0 0 0.75rem;">Teste o Sirius CRM — A Melhor Alternativa ao Pipedrive para o Brasil</p>
-        <p style="color: var(--foreground); margin: 0 0 1rem;">Plano gratuito real + WhatsApp + IA + offline. Migração simples via CSV.</p>
-        <p><strong><a href="/register" style="color: var(--foreground); text-decoration: underline;">Começar Grátis Agora →</a></strong></p>
+        <p style="font-weight: 700; color: var(--foreground); font-size: 1.1rem; margin: 0 0 0.75rem;">Teste o Sirius CRM</p>
+        <p style="color: var(--foreground); margin: 0 0 1rem;">Plano gratuito para sempre e 7 dias do Pro, sem cartão. Migração do Pipedrive por CSV.</p>
+        <p><strong><a href="/register" style="color: var(--foreground); text-decoration: underline;">Criar conta grátis →</a></strong></p>
       </div>
 
-      <h2>Perguntas Frequentes: Alternativas ao Pipedrive no Brasil</h2>
+      <h2>Perguntas frequentes: alternativas ao Pipedrive no Brasil</h2>
 
-      <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
-        <summary style="font-weight: 600; cursor: pointer; color: var(--foreground); list-style: revert;">Qual a alternativa gratuita ao Pipedrive no Brasil?</summary>
-        <p style="margin: 0.75rem 0 0; color: var(--foreground);">A melhor alternativa gratuita ao Pipedrive no Brasil em 2026 é o Sirius CRM FREE. Ao contrário do Pipedrive (sem plano gratuito — apenas trial de 14 dias), o Sirius oferece plano gratuito permanente com até 50 deals ativos, WhatsApp integrado, IA de qualificação (3 gerações/mês) e modo offline — funcionalidades que o Pipedrive não inclui nem em planos pagos. O HubSpot Free também é uma opção para quem não depende de WhatsApp.</p>
+      <details style="${DETAILS}">
+        <summary style="${SUMMARY}">Qual a alternativa gratuita ao Pipedrive no Brasil?</summary>
+        <p style="${ANSWER}">Quatro das cinco têm plano gratuito. O mais generoso é o do Agendor (3 usuários, 10 mil contatos, 1.500 negócios); o do RD Station CRM atende 4 usuários e já traz WhatsApp; o HubSpot Free atende 2 usuários e traz assistente de IA; o Sirius Gratuito atende 2 usuários com 250 contatos. O Sirius compensa quando o time cresce, porque cobra por conta.</p>
       </details>
 
-      <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
-        <summary style="font-weight: 600; cursor: pointer; color: var(--foreground); list-style: revert;">Como migrar do Pipedrive para outro CRM?</summary>
-        <p style="margin: 0.75rem 0 0; color: var(--foreground);">O processo padrão é: 1) Exportar contatos, deals e atividades do Pipedrive em CSV (Configurações → Exportar dados); 2) Limpar e organizar os dados (remover duplicatas, padronizar campos); 3) Importar no novo CRM usando a ferramenta de importação. Para o Sirius CRM, o processo leva de 1 a 3 horas para bases de até 5.000 registros. O suporte em português do Sirius pode auxiliar na migração.</p>
+      <details style="${DETAILS}">
+        <summary style="${SUMMARY}">Como migrar do Pipedrive para outro CRM?</summary>
+        <p style="${ANSWER}">1) Exporte contatos, negócios e atividades do Pipedrive em CSV; 2) limpe os dados, tirando duplicados e padronizando campos; 3) importe no novo CRM pela ferramenta de importação. No Sirius, confira antes os limites do plano: o Gratuito aceita 250 contatos e 100 negócios ativos.</p>
       </details>
 
-      <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
-        <summary style="font-weight: 600; cursor: pointer; color: var(--foreground); list-style: revert;">Existe CRM brasileiro com IA para representantes comerciais?</summary>
-        <p style="margin: 0.75rem 0 0; color: var(--foreground);">Sim — o Sirius CRM é o único CRM brasileiro com IA nativa de qualificação em 2026, usando os frameworks BANT (Budget, Authority, Need, Timeline) e MEDDIC. A IA analisa os dados do deal para gerar score de qualificação, sugestão de próxima ação e alerta de risco. Está incluso em todos os planos, incluindo o gratuito (3 gerações/mês) e ilimitado no PRO.</p>
+      <details style="${DETAILS}">
+        <summary style="${SUMMARY}">Existe CRM brasileiro com IA para representantes comerciais?</summary>
+        <p style="${ANSWER}">Existem vários. O RD Station CRM tem Copiloto de IA a partir do Básico; o Agendor tem sugestões inteligentes a partir do Performance; o Sirius qualifica o lead por BANT e MEDDIC e tem o agente Sofia a partir do Starter (R$ 67/mês para até 5 usuários).</p>
       </details>
 
-      <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 2rem;">
-        <summary style="font-weight: 600; cursor: pointer; color: var(--foreground); list-style: revert;">CRM com WhatsApp integrado no Brasil: quais opções existem?</summary>
-        <p style="margin: 0.75rem 0 0; color: var(--foreground);">Em 2026, as principais opções de CRM com WhatsApp integrado no Brasil são: Sirius CRM (nativo, em todos os planos incluindo gratuito), Moskit CRM (via configuração, nos planos pagos) e Agendor (integração parcial). Pipedrive, HubSpot Free e RD Station CRM não têm WhatsApp nativo — exigem integrações de terceiros. Para vendedores que dependem do WhatsApp como canal principal, o Sirius CRM tem a integração mais completa e simples de configurar.</p>
+      <details style="${DETAILS} margin-bottom: 2rem;">
+        <summary style="${SUMMARY}">CRM com WhatsApp integrado no Brasil: quais opções existem?</summary>
+        <p style="${ANSWER}">RD Station CRM (desde o plano Free), Agendor (extensão de WhatsApp Web grátis e WhatsApp Sync pago), Ollow (plataforma de WhatsApp), Pipedrive (caixa de mensagens) e Sirius (plano Business, pela API oficial da Meta). No HubSpot, o WhatsApp nativo exige plano Professional. Antes de escolher, confira se a conexão usa a API oficial: número conectado por API não oficial corre risco de banimento.</p>
       </details>
 
       <hr style="margin: 3rem 0; border: none; border-top: 1px solid var(--border);" />
-      <strong>Última Atualização:</strong> 21 de Março de 2026<br/>
+      <strong>Última atualização:</strong> 26 de setembro de 2026<br/>
       <strong>Autor:</strong> Equipe Sirius CRM<br/>
-      <strong>Tempo de Leitura:</strong> 11 minutos
+      <strong>Tempo de leitura:</strong> 8 minutos
     `,
   titleEn: '5 Pipedrive Alternatives for Sales Reps in Brazil in 2026',
-  excerptEn: 'The 5 best Pipedrive alternatives for Brazilian sales reps in 2026: honest analysis of BRL pricing, WhatsApp, AI, offline mode, and usability.',
+  excerptEn: 'The 5 Pipedrive alternatives for Brazilian sales reps, reviewed in September 2026: free plan, per-user or per-account pricing, WhatsApp and AI for each one.',
   keywordsEn: ['pipedrive alternatives brazil', 'best crm instead of pipedrive', 'pipedrive competitor 2026', 'crm for sales reps brazil', 'pipedrive vs alternatives'],
   contentEn: `
       <p>
-        Pipedrive is one of the most popular CRMs in the world — but for Brazilian sales reps, it has three persistent problems: USD pricing (with BRL exposure), no native WhatsApp integration, and no offline mode. As of 2026, there are 5 alternatives that handle all three better at a fraction of the cost.
+        Pipedrive is a good CRM: clear visual pipeline, hundreds of integrations, a mobile app with offline mode, WhatsApp in the messaging inbox and support in Portuguese. What sends Brazilian sales reps looking for alternatives is the price: <strong>per-user billing, in dollars, and no free plan</strong>.
       </p>
 
-      <h2>Why Sales Reps Are Leaving Pipedrive in Brazil</h2>
-      <ul>
-        <li><strong>Price volatility:</strong> Pipedrive prices in USD. A plan that cost R$75/user in 2022 now costs R$120-150/user in 2026 due to BRL depreciation — a 60% increase without any plan change</li>
-        <li><strong>No native WhatsApp:</strong> Requires paid third-party integration adding R$100-200/month plus setup complexity</li>
-        <li><strong>No offline mode:</strong> Field reps in areas with poor connectivity lose access completely</li>
-        <li><strong>Support in English only:</strong> 24-48h email response time in English</li>
-      </ul>
+      <p>
+        We evaluated 5 alternatives using the plans each vendor published on September 26, 2026, focusing on what matters for B2B sellers in Brazil: free plan, billing model, WhatsApp and AI.
+      </p>
 
-      <h2>The 5 Best Pipedrive Alternatives for Brazil in 2026</h2>
-
-      <h3>1. Sirius CRM — Best for B2B Sales Reps</h3>
-      <p><strong>Why:</strong> Built specifically for the Brazilian B2B market. Native WhatsApp (all plans), offline mode, AI lead qualification, prices in BRL.<br/>
-      <strong>Starting price:</strong> Free | From R$67/month for pro features</p>
-
-      <h3>2. RD Station CRM — Best for Marketing + Sales Integration</h3>
-      <p><strong>Why:</strong> Brazilian product, native integration with RD Station Marketing, strong PT-BR support.<br/>
-      <strong>Starting price:</strong> Free (limited) | From R$99/month</p>
-
-      <h3>3. HubSpot CRM Free — Best for Inbound-Led Teams</h3>
-      <p><strong>Why:</strong> Genuinely free forever, best-in-class inbound marketing integration.<br/>
-      <strong>Starting price:</strong> Free | Paid from $15/user/month (USD)</p>
-
-      <h3>4. Zoho CRM — Best Value for Feature Volume</h3>
-      <p><strong>Why:</strong> Massive feature set, available in PT-BR, flexible customization.<br/>
-      <strong>Starting price:</strong> Free (3 users) | From $14/user/month (USD)</p>
-
-      <h3>5. Kommo (formerly amoCRM) — Best for WhatsApp-Centric Sales</h3>
-      <p><strong>Why:</strong> Built around messaging channels — WhatsApp, Instagram, Telegram all native.<br/>
-      <strong>Starting price:</strong> From $15/user/month (USD)</p>
-
-      <h2>Direct Comparison</h2>
-
-      <table style="width: 100%; border-collapse: collapse; margin: 2rem 0; font-size: 0.85rem; background: var(--primary); color: var(--primary-foreground); border-radius: 0.75rem; overflow: hidden;">
-        <thead>
-          <tr style="background: var(--primary);">
-            <th style="padding: 0.875rem; text-align: left; color: var(--primary-foreground);">Feature</th>
-            <th style="padding: 0.875rem; text-align: center; background: var(--primary); color: var(--primary-foreground);">Sirius</th>
-            <th style="padding: 0.875rem; text-align: center; color: var(--primary-foreground);">Pipedrive</th>
-            <th style="padding: 0.875rem; text-align: center; color: var(--primary-foreground);">RD Station</th>
-            <th style="padding: 0.875rem; text-align: center; color: var(--primary-foreground);">HubSpot</th>
-            <th style="padding: 0.875rem; text-align: center; color: var(--primary-foreground);">Kommo</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr style="border-top: 1px solid var(--fio-forte);">
-            <td style="padding: 0.75rem;">BRL Pricing</td>
-            <td style="padding: 0.75rem; text-align: center; color: var(--primary-foreground);">✓</td>
-            <td style="padding: 0.75rem; text-align: center; color: var(--pulso);">✗ USD</td>
-            <td style="padding: 0.75rem; text-align: center; color: var(--primary-foreground);">✓</td>
-            <td style="padding: 0.75rem; text-align: center; color: var(--pulso);">✗ USD</td>
-            <td style="padding: 0.75rem; text-align: center; color: var(--pulso);">✗ USD</td>
-          </tr>
-          <tr style="border-top: 1px solid var(--fio-forte); background: var(--primary);">
-            <td style="padding: 0.75rem;">Native WhatsApp</td>
-            <td style="padding: 0.75rem; text-align: center; color: var(--primary-foreground);">✓</td>
-            <td style="padding: 0.75rem; text-align: center; color: var(--primary-foreground);">Add-on</td>
-            <td style="padding: 0.75rem; text-align: center; color: var(--primary-foreground);">Paid plan</td>
-            <td style="padding: 0.75rem; text-align: center; color: var(--pulso);">✗</td>
-            <td style="padding: 0.75rem; text-align: center; color: var(--primary-foreground);">✓</td>
-          </tr>
-          <tr style="border-top: 1px solid var(--fio-forte);">
-            <td style="padding: 0.75rem;">Offline Mode</td>
-            <td style="padding: 0.75rem; text-align: center; color: var(--primary-foreground);">✓</td>
-            <td style="padding: 0.75rem; text-align: center; color: var(--pulso);">✗</td>
-            <td style="padding: 0.75rem; text-align: center; color: var(--pulso);">✗</td>
-            <td style="padding: 0.75rem; text-align: center; color: var(--pulso);">✗</td>
-            <td style="padding: 0.75rem; text-align: center; color: var(--pulso);">✗</td>
-          </tr>
-          <tr style="border-top: 1px solid var(--fio-forte); background: var(--primary);">
-            <td style="padding: 0.75rem;">Built-in AI</td>
-            <td style="padding: 0.75rem; text-align: center; color: var(--primary-foreground);">✓</td>
-            <td style="padding: 0.75rem; text-align: center; color: var(--primary-foreground);">Add-on</td>
-            <td style="padding: 0.75rem; text-align: center; color: var(--pulso);">✗</td>
-            <td style="padding: 0.75rem; text-align: center; color: var(--primary-foreground);">Limited</td>
-            <td style="padding: 0.75rem; text-align: center; color: var(--pulso);">✗</td>
-          </tr>
-        </tbody>
-      </table>
-
-      <div style="background: var(--muted); border-left: 4px solid var(--fio-forte); padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
-        <p style="font-weight: 700; color: var(--foreground);">Ready to switch from Pipedrive?</p>
-        <p style="color: var(--foreground); margin: 0.5rem 0 1rem;">Sirius CRM imports Pipedrive data in under 30 minutes. Native WhatsApp, offline mode, AI — all included.</p>
-        <a href="/en/register" style="background: var(--primary); color: white; padding: 0.75rem 1.5rem; border-radius: 0.5rem; font-weight: 600; text-decoration: none; display: inline-block;">Try Free →</a>
+      <div class="not-prose" style="background: var(--primary); padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
+        <p style="margin: 0 0 0.75rem; font-weight: 700; font-size: 1.05rem; color: var(--primary-foreground);">⚡ Quick answer</p>
+        <ul style="margin: 0; padding-left: 1.25rem; line-height: 2; color: #ffffff;">
+          <li><strong style="color: var(--primary-foreground);">Agendor</strong>: the most generous free plan on the list (3 users, 10k contacts) and a free WhatsApp extension</li>
+          <li><strong style="color: var(--primary-foreground);">RD Station CRM</strong>: free for 4 users with WhatsApp; native with RD Station Marketing</li>
+          <li><strong style="color: var(--primary-foreground);">HubSpot Free</strong>: free for 2 users with an AI assistant</li>
+          <li><strong style="color: var(--primary-foreground);">Sirius CRM</strong>: charges per account, not per user; the cheapest for teams of 5 to 50, with qualification AI from R$ 67/month</li>
+          <li><strong style="color: var(--primary-foreground);">Ollow (formerly Moskit)</strong>: became a WhatsApp sales platform with AI, priced by conversation volume</li>
+        </ul>
       </div>
 
-      <hr style="margin: 3rem 0; border: none; border-top: 1px solid var(--border);" />
-      <p style="font-size: 0.85rem; color: var(--foreground);">
-        <strong>Last Updated:</strong> March 21, 2026<br/>
-        <strong>Author:</strong> Sirius CRM Team<br/>
-        <strong>Reading Time:</strong> 11 minutes
+      <h2>Why look for Pipedrive alternatives in Brazil?</h2>
+
+      <ul style="${LIST}">
+        <li><strong>Priced in dollars</strong>: the BRL amount rises when the exchange rate rises</li>
+        <li><strong>Priced per user</strong>: from US$ 14/user/month on the Lite plan billed annually; the cost grows with the team</li>
+        <li><strong>No free plan</strong>: only a 14-day trial</li>
+        <li><strong>Automations only from the Growth plan</strong>: Lite has none</li>
+      </ul>
+
+      <h2>1. Sirius CRM: the cheapest for growing teams</h2>
+
+      <p>
+        Sirius was built for the Brazilian sales rep's process: prospecting, field visits and customer follow-up. The most concrete difference from Pipedrive is the billing model: a fixed amount per account, in reais.
       </p>
-  `,
+
+      <ul style="${LIST}">
+        <li>Free plan forever: 2 users, 250 contacts, 100 active deals, no card</li>
+        <li>Starter R$ 67/month (up to 5 users), Pro R$ 147/month (up to 15), Business R$ 397/month (up to 50)</li>
+        <li>AI that qualifies leads with BANT and MEDDIC and the Sofia agent from Starter</li>
+        <li>Company prospecting through Google Maps with monthly credits from Starter</li>
+        <li>Offline mode on mobile</li>
+        <li>WhatsApp through the official Meta API on the Business plan</li>
+      </ul>
+
+      <div style="${BOX}">
+        <p style="margin: 0; color: var(--foreground);"><strong>Best for:</strong> rep agencies and sales teams of 5 to 50 people, who would pay per user with the other options.</p>
+        <p style="margin: 0.5rem 0 0; color: var(--foreground);"><strong>Limitation:</strong> the leanest free plan on this list, with no AI, automation or WhatsApp. WhatsApp integration only on Business. Fewer integrations than Pipedrive and HubSpot.</p>
+      </div>
+
+      <p><a href="/en/register" style="color: var(--foreground); font-weight: 600;">→ Start free on Sirius CRM</a></p>
+
+      <h2>2. RD Station CRM: best for RD Station Marketing users</h2>
+
+      <p>
+        If you already use or plan to use RD Station Marketing, RD Station CRM is the most natural alternative: the native integration closes the marketing and sales funnel in one ecosystem.
+      </p>
+
+      <ul style="${LIST}">
+        <li>Free plan for up to 4 users, with WhatsApp sales features</li>
+        <li>Basic R$ 73/user/month and Pro R$ 131/user/month (minimum of 4 users) on monthly billing</li>
+        <li>AI Copilot and automation templates from Basic</li>
+        <li>Native integration with RD Station Marketing</li>
+      </ul>
+
+      <div style="${BOX}">
+        <p style="margin: 0; color: var(--foreground);"><strong>Best for:</strong> inbound marketing companies and teams of up to 4 who want WhatsApp in the CRM for free.</p>
+        <p style="margin: 0.5rem 0 0; color: var(--foreground);"><strong>Limitation:</strong> per-user pricing; the Free plan has 5 custom fields and 3 email templates.</p>
+      </div>
+
+      <h2>3. HubSpot CRM Free: free with AI</h2>
+
+      <p>
+        HubSpot Free covers up to 2 users and already includes the Breeze AI assistant, which drafts email and answers questions about CRM data. The contact limit is high and the integration ecosystem is one of the largest on the market.
+      </p>
+
+      <ul style="${LIST}">
+        <li>Free for up to 2 users</li>
+        <li>Breeze AI assistant on the free plan</li>
+        <li>Starter from US$ 15/user/month billed annually (US$ 20 monthly)</li>
+        <li>Native WhatsApp only on Marketing Hub or Service Hub Professional</li>
+      </ul>
+
+      <div style="${BOX}">
+        <p style="margin: 0; color: var(--foreground);"><strong>Best for:</strong> teams that prospect by email and plan to use the full HubSpot ecosystem.</p>
+        <p style="margin: 0.5rem 0 0; color: var(--foreground);"><strong>Limitation:</strong> paid plans per user and in dollars; a dense interface for an SMB.</p>
+      </div>
+
+      <h2>4. Agendor: the most generous free plan</h2>
+
+      <p>
+        Agendor is a Brazilian CRM focused on B2B sales, with over 10 years on the market. Its free plan is the most generous on this list.
+      </p>
+
+      <ul style="${LIST}">
+        <li>Free for up to 3 users, with up to 10,000 companies, 10,000 people and 1,500 deals</li>
+        <li>Pro R$ 59, Performance R$ 83 and Corporate R$ 156 per user/month (Corporate with a minimum of 10)</li>
+        <li>Free WhatsApp Web extension on any plan; WhatsApp Sync at R$ 49/number/month</li>
+        <li>Smart suggestions and an AI virtual phone from Performance</li>
+      </ul>
+
+      <div style="${BOX}">
+        <p style="margin: 0; color: var(--foreground);"><strong>Best for:</strong> reps and small teams who want to start free with plenty of room.</p>
+        <p style="margin: 0.5rem 0 0; color: var(--foreground);"><strong>Limitation:</strong> per-user pricing; AI only from Performance.</p>
+      </div>
+
+      <h2>5. Ollow (formerly Moskit CRM): WhatsApp selling at volume</h2>
+
+      <p>
+        Moskit CRM was renamed Ollow and is now a WhatsApp service and sales platform with AI, priced by conversation volume, from R$ 1,199/month for 500 conversations. It is no longer a direct Pipedrive alternative for the solo rep; it fits operations with many simultaneous WhatsApp conversations.
+      </p>
+
+      <h2>Overall comparison: the 5 Pipedrive alternatives</h2>
+
+      <div style="overflow-x: auto; margin: 2rem 0;">
+        <table style="width: 100%; border-collapse: collapse; font-size: 0.85rem;">
+          <thead>
+            <tr style="background: var(--primary); color: #ffffff;">
+              <th style="${TH} text-align: left;">CRM</th>
+              <th style="${TH}">Free plan</th>
+              <th style="${TH}">Entry paid plan</th>
+              <th style="${TH}">Billing</th>
+              <th style="${TH}">WhatsApp</th>
+              <th style="${TH}">AI</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="background: var(--muted);">
+              <td style="${TDL}">Sirius CRM</td>
+              <td style="${TDC}">2 users</td>
+              <td style="${TDC}">R$ 67/month (up to 5 users)</td>
+              <td style="${TDC}">Per account, in reais</td>
+              <td style="${TDC}">Business (official API)</td>
+              <td style="${TDC}">From Starter</td>
+            </tr>
+            <tr>
+              <td style="${TDL}">RD Station CRM</td>
+              <td style="${TDC}">4 users</td>
+              <td style="${TDC}">R$ 73/user/month</td>
+              <td style="${TDC}">Per user, in reais</td>
+              <td style="${TDC}">From Free</td>
+              <td style="${TDC}">From Basic</td>
+            </tr>
+            <tr style="background: var(--muted);">
+              <td style="${TDL}">HubSpot</td>
+              <td style="${TDC}">2 users</td>
+              <td style="${TDC}">US$ 15/user/month (annual)</td>
+              <td style="${TDC}">Per user, in dollars</td>
+              <td style="${TDC}">Professional</td>
+              <td style="${TDC}">From Free</td>
+            </tr>
+            <tr>
+              <td style="${TDL}">Agendor</td>
+              <td style="${TDC}">3 users</td>
+              <td style="${TDC}">R$ 59/user/month</td>
+              <td style="${TDC}">Per user, in reais</td>
+              <td style="${TDC}">Free extension; paid Sync</td>
+              <td style="${TDC}">From Performance</td>
+            </tr>
+            <tr style="background: var(--muted);">
+              <td style="${TDL}">Ollow (ex-Moskit)</td>
+              <td style="${TDC}">Free trial</td>
+              <td style="${TDC}">R$ 1,199/month (500 conversations)</td>
+              <td style="${TDC}">Per conversations</td>
+              <td style="${TDC}">On every plan</td>
+              <td style="${TDC}">On every plan</td>
+            </tr>
+            <tr>
+              <td style="${TDL}">Pipedrive (reference)</td>
+              <td style="${TDC}">✗ 14-day trial</td>
+              <td style="${TDC}">US$ 14/user/month (annual)</td>
+              <td style="${TDC}">Per user, in dollars</td>
+              <td style="${TDC}">Messaging inbox</td>
+              <td style="${TDC}">AI reports from Lite</td>
+            </tr>
+          </tbody>
+        </table>
+        <p style="font-size: 0.8rem; color: var(--foreground); margin-top: 0.5rem;">Plans checked on 09/26/2026 on each vendor's official pages. BRL prices on monthly billing unless noted.</p>
+      </div>
+
+      <div style="background: var(--muted); border: 1px solid var(--border); padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0; text-align: center;">
+        <p style="font-weight: 700; color: var(--foreground); font-size: 1.1rem; margin: 0 0 0.75rem;">Try Sirius CRM</p>
+        <p style="color: var(--foreground); margin: 0 0 1rem;">Free plan forever and 7 days of Pro, no card. Pipedrive migration via CSV.</p>
+        <p><strong><a href="/en/register" style="color: var(--foreground); text-decoration: underline;">Create a free account →</a></strong></p>
+      </div>
+
+      <h2>FAQ: Pipedrive alternatives in Brazil</h2>
+
+      <details style="${DETAILS}">
+        <summary style="${SUMMARY}">What is the free alternative to Pipedrive in Brazil?</summary>
+        <p style="${ANSWER}">Four of the five have a free plan. The most generous is Agendor's (3 users, 10k contacts, 1,500 deals); RD Station CRM Free covers 4 users and already includes WhatsApp; HubSpot Free covers 2 users and includes an AI assistant; Sirius Free covers 2 users with 250 contacts. Sirius pays off when the team grows, because it charges per account.</p>
+      </details>
+
+      <details style="${DETAILS}">
+        <summary style="${SUMMARY}">How do I migrate from Pipedrive to another CRM?</summary>
+        <p style="${ANSWER}">1) Export contacts, deals and activities from Pipedrive as CSV; 2) clean the data, removing duplicates and standardizing fields; 3) import into the new CRM with its import tool. On Sirius, check the plan limits first: the Free plan takes 250 contacts and 100 active deals.</p>
+      </details>
+
+      <details style="${DETAILS}">
+        <summary style="${SUMMARY}">Is there a Brazilian CRM with AI for sales reps?</summary>
+        <p style="${ANSWER}">Several. RD Station CRM has an AI Copilot from Basic; Agendor has smart suggestions from Performance; Sirius qualifies leads with BANT and MEDDIC and has the Sofia agent from Starter (R$ 67/month for up to 5 users).</p>
+      </details>
+
+      <details style="${DETAILS} margin-bottom: 2rem;">
+        <summary style="${SUMMARY}">CRM with WhatsApp integration in Brazil: what are the options?</summary>
+        <p style="${ANSWER}">RD Station CRM (from the Free plan), Agendor (free WhatsApp Web extension and paid WhatsApp Sync), Ollow (WhatsApp platform), Pipedrive (messaging inbox) and Sirius (Business plan, through the official Meta API). On HubSpot, native WhatsApp requires a Professional plan. Before choosing, check whether the connection uses the official API: a number connected through an unofficial API risks being banned.</p>
+      </details>
+
+      <hr style="margin: 3rem 0; border: none; border-top: 1px solid var(--border);" />
+      <strong>Last updated:</strong> September 26, 2026<br/>
+      <strong>Author:</strong> Sirius CRM Team<br/>
+      <strong>Read time:</strong> 8 minutes
+    `
 }

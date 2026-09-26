@@ -5,7 +5,7 @@ export const post: BlogPost = {
   title: 'Representante Comercial Autônomo: 5 Ferramentas Essenciais para Gestão de Vendas Externas em 2026',
   excerpt: 'Descubra as 5 ferramentas indispensáveis para o representante autônomo em 2026: CRM offline, WhatsApp Business, comissões, prospecção e assinatura digital.',
   date: '2026-03-21',
-  lastModified: '2026-03-21',
+  lastModified: '2026-09-26',
   category: 'Vendas',
   image: 'https://images.unsplash.com/photo-1556761175-4b46a572b786?w=1200&h=630&fit=crop&auto=format&q=80',
   author: 'Equipe Sirius CRM',
@@ -66,13 +66,13 @@ export const post: BlogPost = {
       </p>
 
       <p>
-        No <a href="/" style="color: var(--foreground); text-decoration: underline;">Sirius CRM</a>, o representante cadastra cada cliente uma vez, registra cada visita ou ligação, e o sistema avisa automaticamente quando está na hora de contato. A visão de pipeline mostra quais pedidos estão em aberto, quais precisam de follow-up e quais clientes estão inativos há mais de X dias.
+        No <a href="/" style="color: var(--foreground); text-decoration: underline;">Sirius CRM</a>, o representante cadastra cada cliente uma vez, registra cada visita ou ligação, e, a partir do plano Starter, a automação avisa quando está na hora de contato. A visão de pipeline mostra quais pedidos estão em aberto, quais precisam de follow-up e quais clientes estão inativos há mais de X dias.
       </p>
 
       <h3>Custo</h3>
 
       <p>
-        O Sirius CRM tem plano gratuito com até 3 usuários. Planos pagos a partir de R$ 67/mês — menos do que um almoço de negócios por semana para um representante com portfólio de R$ 30.000+/mês.
+        O Sirius CRM tem plano gratuito para até 2 usuários e 250 contatos. O Starter custa R$ 67/mês para até 5 usuários, com automação e IA: menos do que um almoço de negócios por semana para um representante com portfólio de R$ 30.000+/mês.
       </p>
 
       <div class="callout-tip">
@@ -105,7 +105,7 @@ export const post: BlogPost = {
       <h3>Custo</h3>
 
       <p>
-        WhatsApp Business é gratuito para uso pessoal. API do WhatsApp Business (para automação e integração com CRM) tem custos variáveis — a partir de R$ 99/mês em plataformas como Zapi ou Evolution API.
+        O app WhatsApp Business é gratuito. Para integrar o número ao CRM, o caminho seguro é a API oficial do WhatsApp Business: a Meta cobra pelos modelos de mensagem conforme a tabela dela, e no Sirius a integração vem no plano Business. Evite conexões por QR Code em APIs não oficiais, que arriscam o banimento do número.
       </p>
 
       <h2>Como gerenciar pedidos sem internet como representante?</h2>
@@ -132,7 +132,7 @@ export const post: BlogPost = {
       <h2>Ferramenta 3: Planilha de Comissões (ou CRM com Módulo de Comissões)</h2>
 
       <p>
-        Comissão é o salário do representante. Calcular errado — ou confiar apenas no cálculo da representada sem conferência própria — é um risco financeiro real. Representantes que não acompanham comissões próprias detectam diferenças (para baixo) em média 2,3 vezes por ano, segundo dados do sindicato de representantes comerciais (CORE-SP, 2024).
+        Comissão é o salário do representante. Calcular errado — ou confiar apenas no cálculo da representada sem conferência própria — é um risco financeiro real.
       </p>
 
       <h3>O problema que resolve</h3>
@@ -144,24 +144,24 @@ export const post: BlogPost = {
       <h3>Como usar</h3>
 
       <p>
-        A solução mais simples é o <strong>módulo de comissões do CRM</strong>. Cadastre uma vez: representada X paga Y% sobre produtos da linha Z, com prazo de 30 dias após pagamento do cliente. O sistema calcula automaticamente a cada pedido fechado.
+        Alguns CRMs têm <strong>módulo de comissões</strong>: você cadastra uma vez que a representada X paga Y% sobre a linha Z, com prazo de 30 dias após o pagamento do cliente, e o sistema calcula a cada pedido fechado. O Sirius não tem esse módulo: nele, o valor de cada pedido fica no negócio, a tag da representada separa a carteira e o cálculo da comissão fica na planilha.
       </p>
 
       <p>
-        Para quem ainda não tem CRM com esse módulo, a planilha mínima precisa de: número do pedido, data, cliente, representada, valor bruto, percentual de comissão, valor da comissão, data prevista de recebimento, status (aguardando / recebido / contestado).
+        Sem esse módulo, a planilha mínima precisa de: número do pedido, data, cliente, representada, valor bruto, percentual de comissão, valor da comissão, data prevista de recebimento, status (aguardando / recebido / contestado).
       </p>
 
       <div style="background: var(--muted); border: 1px solid var(--border); border-radius: 0.75rem; padding: 1.5rem; margin: 1.5rem 0;">
         <p style="margin: 0 0 0.75rem; font-weight: 700; color: var(--foreground);">Exemplo de cálculo de comissão complexo</p>
         <p style="margin: 0; color: var(--foreground); line-height: 1.8;">Representada A: 4% sobre produtos linha Premium, 2,5% sobre linha Standard<br/>
         Representada B: 3% flat sobre qualquer produto, mas 0% sobre devoluções acima de 10% do pedido<br/>
-        Com CRM, você cadastra essas regras uma vez e o cálculo é automático para cada pedido.</p>
+        Num CRM com módulo de comissões, essas regras são cadastradas uma vez; na planilha, cada regra vira uma fórmula por representada.</p>
       </div>
 
       <h3>Custo</h3>
 
       <p>
-        Planilha Google Sheets: gratuito. CRM com módulo de comissões como o Sirius: incluído no plano. Sistemas dedicados de comissão como Commissionly: a partir de US$ 15/mês.
+        Planilha Google Sheets: gratuito. Sistemas dedicados de comissão: cobrados à parte, em geral por usuário.
       </p>
 
       <h2>Ferramenta 4: Google Maps para Prospecção Local</h2>
@@ -203,7 +203,7 @@ export const post: BlogPost = {
       </p>
 
       <p>
-        O <a href="/pricing" style="color: var(--foreground); text-decoration: underline;">plano gratuito do Sirius CRM</a> inclui: até 200 contatos, pipeline de vendas, registros de interação, alertas de follow-up e acesso mobile. Para um representante iniciante ou com carteira pequena, é o suficiente para operar profissionalmente sem custo.
+        O <a href="/pricing" style="color: var(--foreground); text-decoration: underline;">plano gratuito do Sirius CRM</a> inclui: até 2 usuários, 250 contatos, 100 negócios ativos, funil de vendas, registro de interações, tarefas e acesso pelo celular com modo offline. Automação de follow-up e IA começam no Starter. Para um representante iniciante ou com carteira pequena, é o suficiente para operar profissionalmente sem custo.
       </p>
 
       <table style="width: 100%; border-collapse: collapse; margin: 2rem 0;">
@@ -218,15 +218,15 @@ export const post: BlogPost = {
         <tbody>
           <tr>
             <td style="padding: 0.75rem; border: 1px solid var(--border);"><strong>Sirius CRM</strong></td>
-            <td style="padding: 0.75rem; border: 1px solid var(--border);">CRM + comissões + prospecção</td>
-            <td style="padding: 0.75rem; border: 1px solid var(--border);">Sim — até 200 contatos</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">CRM + prospecção</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Sim, 2 usuários e 250 contatos</td>
             <td style="padding: 0.75rem; border: 1px solid var(--border);">R$ 67/mês</td>
           </tr>
           <tr style="background: var(--muted);">
             <td style="padding: 0.75rem; border: 1px solid var(--border);"><strong>WhatsApp Business</strong></td>
             <td style="padding: 0.75rem; border: 1px solid var(--border);">Comunicação + catálogo</td>
             <td style="padding: 0.75rem; border: 1px solid var(--border);">Sim — uso pessoal completo</td>
-            <td style="padding: 0.75rem; border: 1px solid var(--border);">R$ 99/mês (API)</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">API oficial: modelos cobrados pela Meta</td>
           </tr>
           <tr>
             <td style="padding: 0.75rem; border: 1px solid var(--border);"><strong>Google Maps</strong></td>
@@ -237,8 +237,8 @@ export const post: BlogPost = {
           <tr style="background: var(--muted);">
             <td style="padding: 0.75rem; border: 1px solid var(--border);"><strong>ClickSign</strong></td>
             <td style="padding: 0.75rem; border: 1px solid var(--border);">Assinatura digital</td>
-            <td style="padding: 0.75rem; border: 1px solid var(--border);">Sim — 3 docs/mês</td>
-            <td style="padding: 0.75rem; border: 1px solid var(--border);">R$ 69/mês</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Teste de 14 dias, até 30 documentos</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--border);">Planos por volume de documentos</td>
           </tr>
           <tr>
             <td style="padding: 0.75rem; border: 1px solid var(--border);"><strong>Google Sheets</strong></td>
@@ -274,7 +274,7 @@ export const post: BlogPost = {
       <h3>Custo</h3>
 
       <p>
-        ClickSign: plano gratuito com 3 documentos/mês (suficiente para testar), plano básico R$ 69/mês com 50 documentos. DocuSign: a partir de US$ 10/mês individual. Para representantes com volume alto de contratos, o ROI é imediato: você fecha mais rápido e com menor taxa de abandono pós-reunião.
+        Clicksign: teste grátis de 14 dias com até 30 documentos; depois, planos cobrados pelo volume de documentos por mês. DocuSign: plano individual a partir de US$ 10/mês. Para representantes com volume alto de contratos, o ROI é imediato: você fecha mais rápido e com menor taxa de abandono pós-reunião.
       </p>
 
       <div class="callout-warning">
@@ -287,25 +287,24 @@ export const post: BlogPost = {
         </ul>
       </div>
 
-      <h2>Como o Sirius Substitui 3 das 5 Ferramentas</h2>
+      <h2>Como o Sirius Substitui 2 das 5 Ferramentas</h2>
 
       <p>
         Para representantes que querem simplificar o stack sem perder funcionalidade, o <a href="/solucoes/representantes-comerciais" style="color: var(--foreground); text-decoration: underline;">Sirius CRM para representante comercial</a> foi desenvolvido com foco específico no representante autônomo brasileiro. Ele substitui nativamente:
       </p>
 
       <ul style="line-height: 2; padding-left: 1.5rem;">
-        <li><strong>CRM pessoal offline:</strong> Pipeline completo, histórico de clientes, alertas de follow-up, modo offline com sincronização automática</li>
-        <li><strong>Planilha de comissões:</strong> Módulo de comissões com regras por representada, cálculo automático por pedido, relatório mensal de comissões previstas vs. recebidas</li>
-        <li><strong>Google Maps para prospecção:</strong> Importação de prospects por região, mapa de clientes com status (ativo, inativo, prospect), roteiros de visita otimizados</li>
+        <li><strong>CRM pessoal offline:</strong> funil, histórico de clientes, modo offline com sincronização automática e, a partir do Starter, automação de follow-up</li>
+        <li><strong>Google Maps para prospecção:</strong> busca de empresas por segmento e cidade com créditos mensais (a partir do Starter), leads próximos no mapa e registro de visitas com check-in</li>
       </ul>
 
       <p>
-        Isso significa que com uma única ferramenta — e um único login — o representante resolve o núcleo da sua operação. WhatsApp Business e ClickSign continuam separados porque têm ecossistemas próprios consolidados, mas se integram ao Sirius via notificações e histórico.
+        Isso significa que com uma única ferramenta — e um único login — o representante resolve o núcleo da sua operação. A planilha de comissões e a assinatura digital continuam separadas. O WhatsApp entra no Sirius pela API oficial no plano Business.
       </p>
 
       <div style="background: var(--primary); padding: 2rem; border-radius: 1rem; margin: 2.5rem 0; text-align: center;">
         <p style="color: white; font-size: 1.25rem; font-weight: 700; margin: 0 0 0.5rem;">Comece a usar o Sirius CRM hoje</p>
-        <p style="color: var(--foreground); margin: 0 0 1.25rem;">CRM + comissões + prospecção em um lugar. Plano gratuito disponível, sem cartão de crédito.</p>
+        <p style="color: var(--foreground); margin: 0 0 1.25rem;">CRM + prospecção em um lugar. Plano gratuito disponível, sem cartão de crédito.</p>
         <a href="/pricing" style="display: inline-block; background: white; color: var(--foreground); padding: 0.75rem 2rem; border-radius: 0.5rem; font-weight: 700; text-decoration: none;">Ver Planos e Começar Grátis →</a>
       </div>
 
@@ -318,10 +317,10 @@ export const post: BlogPost = {
       <p><strong>Sequência recomendada:</strong></p>
 
       <ol style="line-height: 2.2; padding-left: 1.5rem;">
-        <li><strong>Semana 1:</strong> Configure o CRM. Importe todos os clientes existentes. Crie tags por representada. Defina as regras de comissão.</li>
+        <li><strong>Semana 1:</strong> Configure o CRM. Importe todos os clientes existentes. Crie tags por representada.</li>
         <li><strong>Semana 2:</strong> Migre para WhatsApp Business. Configure catálogo com os 20 produtos mais vendidos. Crie 5 mensagens rápidas para situações frequentes.</li>
         <li><strong>Semana 3:</strong> Use Google Maps para mapear 30 prospects na sua região. Cadastre todos no CRM como "Prospect — Sem Contato". Defina meta de 5 abordagens por semana.</li>
-        <li><strong>Semana 4:</strong> Configure planilha ou módulo de comissões. Importe os últimos 3 meses de pedidos e confira se os valores recebidos batem.</li>
+        <li><strong>Semana 4:</strong> Monte a planilha de comissões. Importe os últimos 3 meses de pedidos e confira se os valores recebidos batem.</li>
         <li><strong>Mês 2:</strong> Adote assinatura digital. Teste com os próximos 5 contratos e meça diferença no tempo de fechamento.</li>
       </ol>
 
@@ -339,7 +338,7 @@ export const post: BlogPost = {
 
       <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
         <summary style="font-weight: 600; cursor: pointer; color: var(--foreground); list-style: revert;">Vale a pena pagar por CRM sendo representante autônomo pequeno?</summary>
-        <p style="margin: 0.75rem 0 0; color: var(--foreground);">Depende do volume. Para portfólio abaixo de R$ 10.000/mês com menos de 50 clientes ativos, o plano gratuito do Sirius CRM é suficiente. Para portfólios maiores, o custo de R$ 67-99/mês de um CRM pago é recuperado na primeira semana ao evitar um único pedido perdido por falta de follow-up. A conta é simples: se o CRM te ajuda a não perder 1 pedido por mês e sua comissão média por pedido é R$ 300, o ROI é 3-6x no primeiro mês.</p>
+        <p style="margin: 0.75rem 0 0; color: var(--foreground);">Depende do volume. Para portfólio abaixo de R$ 10.000/mês com menos de 50 clientes ativos, o plano gratuito do Sirius CRM é suficiente. Para portfólios maiores, o custo de R$ 67/mês do Starter é recuperado na primeira semana ao evitar um único pedido perdido por falta de follow-up. A conta é simples: se o CRM te ajuda a não perder 1 pedido por mês e sua comissão média por pedido é R$ 300, o ROI é 3-6x no primeiro mês.</p>
       </details>
 
       <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 2rem;">
@@ -401,7 +400,7 @@ export const post: BlogPost = {
       </ul>
 
       <p>
-        <a href="/" style="color: var(--foreground); text-decoration: underline;">Sirius CRM</a> was built specifically for this profile: Brazilian sales reps who work in the field, manage multiple manufacturers, and need a tool that fits the way they actually work — WhatsApp integration, offline mode, commission calculator, and a mobile app designed for field use.
+        <a href="/" style="color: var(--foreground); text-decoration: underline;">Sirius CRM</a> was built specifically for this profile: Brazilian sales reps who work in the field, manage multiple manufacturers, and need a tool that fits the way they actually work: offline mode on mobile, Google Maps prospecting, AI qualification from the Starter plan and WhatsApp through the official API on the Business plan.
       </p>
 
       <h2>Tool 2: Commission Spreadsheet / Calculator</h2>
@@ -415,7 +414,7 @@ export const post: BlogPost = {
       </p>
 
       <p>
-        Advanced setup: use the commission module inside your CRM. When deals close in the pipeline, commission is calculated automatically based on the rules you set for each manufacturer. No manual reconciliation.
+        Advanced setup: some CRMs have a commission module that calculates commission automatically from the rules you set for each manufacturer. Sirius does not: the value of each order stays on the deal, a tag per manufacturer splits the portfolio, and the commission math lives in the spreadsheet.
       </p>
 
       <h2>Tool 3: B2B Prospecting Tool</h2>
@@ -487,8 +486,8 @@ export const post: BlogPost = {
       <p>Options by budget:</p>
 
       <ul>
-        <li><strong>Free tier</strong>: DocuSign (3 free documents/month), Adobe Sign (basic plan), ClickSign (Brazilian, LGPD compliant)</li>
-        <li><strong>Paid</strong>: ClickSign (~R$89/month) or D4Sign for higher volume with Brazilian legal compliance built in</li>
+        <li><strong>To try it free</strong>: Clicksign offers a 14-day trial with up to 30 documents (Brazilian, LGPD compliant)</li>
+        <li><strong>Paid</strong>: Clicksign plans priced by monthly document volume, D4Sign, or DocuSign from US$ 10/month on the individual plan</li>
         <li><strong>Built-in CRM</strong>: Some CRMs integrate e-signature directly into the deal flow — client receives link, signs on mobile, deal closes in the CRM automatically</li>
       </ul>
 
@@ -501,21 +500,21 @@ export const post: BlogPost = {
       <ol>
         <li>Prospect identified in Google Maps/CNPJ lookup → added to CRM as lead</li>
         <li>First contact via WhatsApp Business → logged in CRM with quick note</li>
-        <li>Follow-up scheduled automatically by CRM → reminder on mobile app</li>
-        <li>Deal created in pipeline → commission automatically calculated based on manufacturer rules</li>
+        <li>Follow-up task created by CRM automation (from the Starter plan) → reminder on mobile</li>
+        <li>Deal created in pipeline with the order value, tagged by manufacturer</li>
         <li>Proposal sent via e-signature link → client signs on mobile → deal marked Won in CRM</li>
-        <li>Commission auto-calculated and added to monthly summary dashboard</li>
+        <li>Won orders exported to the commission spreadsheet at month-end</li>
       </ol>
 
       <p>
-        This end-to-end workflow, fully implemented in <a href="/" style="color: var(--foreground); text-decoration: underline;">Sirius CRM</a>, means an independent rep can manage a 200-client portfolio without a single spreadsheet, sticky note, or WhatsApp message falling through the cracks.
+        With steps 1 to 4 in <a href="/en/solutions/representantes-comerciais" style="color: var(--foreground); text-decoration: underline;">Sirius CRM</a> and the commission math in one spreadsheet, an independent rep can manage a 200-client portfolio without a sticky note or a follow-up falling through the cracks.
       </p>
 
       <h2>FAQ — Tools for Independent Sales Reps</h2>
 
       <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 2rem;">
         <summary style="font-weight: 600; cursor: pointer; color: var(--foreground); list-style: revert;">What's the minimum tool budget for an independent sales rep?</summary>
-        <p style="margin: 0.75rem 0 0; color: var(--foreground);">You can get started with R$0/month: Sirius CRM free plan, free CNPJ lookup tools, LinkedIn free, WhatsApp Business free, and DocuSign's free tier for up to 3 documents/month. As volume grows, the first paid upgrade that delivers the most ROI is typically the CRM paid plan with offline mode and WhatsApp integration — typically R$79-149/month.</p>
+        <p style="margin: 0.75rem 0 0; color: var(--foreground);">You can get started with R$0/month: Sirius CRM free plan, free CNPJ lookup tools, LinkedIn free, WhatsApp Business free, and Clicksign's 14-day trial to test e-signature. As volume grows, the first paid upgrade that delivers the most ROI is usually the CRM: Sirius Starter costs R$ 67/month for up to 5 users and adds automation and AI; WhatsApp integration comes with Business at R$ 397/month.</p>
       </details>
 
       <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 2rem;">
