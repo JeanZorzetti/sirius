@@ -51,6 +51,8 @@ export interface NicheData {
     keywords: string[]
   }
   icon: 'Building2' | 'Sun' | 'Sparkles' | 'Briefcase' | 'TrendingUp'
+  // Only set when the page content was actually revised on that date (roihub freshness leaf)
+  lastModified?: string
   // EN variants (optional — noindex served when absent)
   titleEn?: string
   subtitleEn?: string
@@ -226,6 +228,7 @@ export const NICHES: NicheData[] = [
   },
   {
     slug: 'energia-solar',
+    lastModified: '2026-09-26',
     title: 'O CRM que Fecha Mais Propostas de Energia Solar',
     subtitle: 'Pare de perder instalações por falta de follow-up',
     painPoint: 'Propostas de energia solar esfriando na gaveta?',
@@ -284,6 +287,18 @@ export const NICHES: NicheData[] = [
       {
         question: 'Como funciona o acompanhamento pós-venda?',
         answer: 'Depois da instalação, você pode criar tarefas de follow-up para garantir satisfação do cliente e gerar indicações.'
+      },
+      {
+        question: 'Qual a diferença entre um CRM para energia solar e um CRM genérico?',
+        answer: 'No CRM genérico, todo negócio passa pelas mesmas etapas de venda. Na energia solar, a proposta só avança depois da visita técnica e da aprovação do financiamento, e o ciclo leva semanas. Por isso o funil segue as etapas técnicas (Orçamento, Visita Técnica, Aprovação, Instalação) e cada proposta guarda kWp, consumo e tipo de telhado, para o vendedor ver o que falta em cada uma.'
+      },
+      {
+        question: 'O Sirius serve para empresas de energia que não vendem solar?',
+        answer: 'Sim. As etapas do funil têm o nome que você der, então comercializadoras do mercado livre de energia, empresas de eficiência energética e distribuidoras de material elétrico montam o próprio processo, por exemplo Análise da fatura, Proposta, Migração e Contrato. Os campos personalizados guardam o consumo mensal em kWh, a demanda contratada e a distribuidora de cada cliente.'
+      },
+      {
+        question: 'Como não deixar uma proposta de energia solar esfriar?',
+        answer: 'Com a automação de follow-up: o gatilho "negócio parado há N dias" cria uma tarefa para o vendedor ou avisa o responsável, e a fila de hoje abre com os retornos vencidos. Você define o N de cada etapa, por exemplo 3 dias depois da visita técnica.'
       }
     ],
     seo: {
@@ -347,6 +362,18 @@ export const NICHES: NicheData[] = [
       {
         question: 'How does post-sale follow-up work?',
         answer: 'After installation, you can create follow-up tasks to ensure customer satisfaction and generate referrals.'
+      },
+      {
+        question: 'How is a solar energy CRM different from a generic CRM?',
+        answer: 'In a generic CRM, every deal goes through the same sales stages. In solar, a proposal only moves after the site survey and the financing approval, and the cycle takes weeks. That is why the pipeline follows the technical stages (Quote, Site Survey, Approval, Installation) and each proposal keeps kWp, consumption and roof type, so the rep sees what is missing on each one.'
+      },
+      {
+        question: 'Does Sirius work for energy companies that do not sell solar?',
+        answer: 'Yes. Pipeline stages take whatever names you give them, so free-market energy traders, energy efficiency companies and electrical supply distributors set up their own process, for example Bill Analysis, Proposal, Migration and Contract. Custom fields store the monthly consumption in kWh, the contracted demand and the utility of each customer.'
+      },
+      {
+        question: 'How do I keep a solar proposal from going cold?',
+        answer: 'With follow-up automation: the "deal idle for N days" trigger creates a task for the rep or notifies the owner, and the today queue opens with overdue follow-ups. You set N for each stage, for example 3 days after the site survey.'
       }
     ],
     seoEn: {

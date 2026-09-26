@@ -113,6 +113,7 @@ export default async function NicheSolutionPage({ params }: { params: Promise<{ 
     "applicationCategory": "BusinessApplication",
     "operatingSystem": "Web, iOS, Android",
     "url": `https://siriuscrm.com.br/solucoes/${niche.slug}`,
+    ...(niche.lastModified && { "dateModified": niche.lastModified }),
     "offers": {
       "@type": "Offer",
       "price": "0",

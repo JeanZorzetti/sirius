@@ -94,7 +94,7 @@ export default function FollowupPage() {
         <div className="text-center mb-16">
           <Bell className="h-20 w-20 mx-auto mb-6 text-primary" />
           <h1 className="text-5xl font-bold tracking-tight mb-6">
-            Follow-up Automático que <span className="text-primary">Converte</span>
+            Automação de Follow-up que <span className="text-primary">Converte</span>
           </h1>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto mb-8">
             Pare de perder vendas por esquecimento. O Sirius CRM te lembra automaticamente quando fazer follow-up com cada lead, no momento certo.
@@ -226,6 +226,68 @@ export default function FollowupPage() {
             </Card>
           </div>
         </div>
+
+        {/* Automação de follow-up: what triggers it and what it does (lib/automations) */}
+        <section className="mb-16" aria-labelledby="automacao-follow-up">
+          <h2 id="automacao-follow-up" className="text-3xl font-bold text-center mb-4">
+            Como funciona a automação de follow-up
+          </h2>
+          <p className="text-lg text-muted-foreground max-w-3xl mx-auto text-center mb-10">
+            Cada automação liga um momento do funil a uma ação. Você escolhe o gatilho, as condições e o que acontece, sem código.
+          </p>
+          <div className="grid gap-6 md:grid-cols-2">
+            <Card>
+              <CardHeader>
+                <CardTitle>Quando dispara</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <dl className="space-y-4 text-sm">
+                  <div>
+                    <dt className="font-semibold">Negócio criado</dt>
+                    <dd className="text-muted-foreground">O primeiro contato vira tarefa do dono do negócio.</dd>
+                  </div>
+                  <div>
+                    <dt className="font-semibold">Negócio mudou de etapa</dt>
+                    <dd className="text-muted-foreground">Agenda o próximo follow-up da etapa, por exemplo 3 dias depois de &quot;Proposta enviada&quot;.</dd>
+                  </div>
+                  <div>
+                    <dt className="font-semibold">Negócio parado há N dias</dt>
+                    <dd className="text-muted-foreground">Você define o N. Passou do prazo sem movimento, a automação dispara.</dd>
+                  </div>
+                  <div>
+                    <dt className="font-semibold">Negócio ganho ou perdido</dt>
+                    <dd className="text-muted-foreground">Pós-venda e pedido de indicação no ganho, tentativa de reativação no perdido.</dd>
+                  </div>
+                </dl>
+              </CardContent>
+            </Card>
+            <Card>
+              <CardHeader>
+                <CardTitle>O que acontece</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <ul className="space-y-2 text-sm">
+                  {[
+                    'Cria uma tarefa com prazo para o responsável',
+                    'Avisa o responsável dentro do Sirius',
+                    'Envia um e-mail',
+                    'Marca o negócio com uma tag',
+                    'Chama um webhook (n8n, Zapier ou o seu sistema)',
+                  ].map((acao) => (
+                    <li key={acao} className="flex items-start gap-2">
+                      <CheckCircle2 className="h-4 w-4 text-foreground mt-0.5 shrink-0" />
+                      <span>{acao}</span>
+                    </li>
+                  ))}
+                </ul>
+              </CardContent>
+            </Card>
+          </div>
+          <p className="mt-8 text-muted-foreground max-w-3xl mx-auto">
+            A mensagem no WhatsApp continua saindo do vendedor, em um clique no negócio: a automação garante que a tarefa exista na hora certa, e a fila de hoje abre com os retornos vencidos. Para a cadência, comece pelo{' '}
+            <Link href="/blog/poder-do-follow-up" className="underline">framework 5-3-2 de follow-up</Link>: 5 toques na primeira semana, 3 na segunda e 2 na terceira.
+          </p>
+        </section>
 
         {/* Resultados */}
         <div className="mb-16">
