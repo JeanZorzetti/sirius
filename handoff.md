@@ -1,5 +1,9 @@
 # Leia primeiro: integradores de WhatsApp (entram em 28/09/2026)
 
+**Status on 27/09:** spec written and pushed in `specs/012-whatsapp-integradores/` (`b20a93a`). The plan, the
+tasks and the code are still missing. The next step and the decisions are in
+`specs/012-whatsapp-integradores/handoff.md`.
+
 Os Termos (seção 6) e a Política de Privacidade já estão no ar dizendo que **a conexão por integrador só é ativada
 depois que um usuário confirma o aviso de risco, e que isso fica registrado**. A tela e a rota de conexão precisam
 cumprir isso, senão o texto publicado vira promessa falsa.
