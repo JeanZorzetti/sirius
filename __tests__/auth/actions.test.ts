@@ -54,6 +54,7 @@ vi.mock('@/lib/email-automations', () => ({
 }))
 
 vi.mock('next/headers', () => ({
+  headers: vi.fn(async () => new Headers({ 'user-agent': 'vitest', 'x-forwarded-for': '200.1.2.3' })),
   cookies: vi.fn(async () => ({
     get: () => undefined,
     delete: () => {},
@@ -106,6 +107,7 @@ describe('Authentication Actions', () => {
 
       const formData = new FormData()
       formData.append('name', 'New User')
+      formData.append('aceite', 'on') // terms box, required since the signup acceptance
       formData.append('email', 'existing@example.com')
       formData.append('password', 'password123')
       formData.append('company', 'Test Company')
@@ -137,6 +139,7 @@ describe('Authentication Actions', () => {
 
       const formData = new FormData()
       formData.append('name', 'New User')
+      formData.append('aceite', 'on') // terms box, required since the signup acceptance
       formData.append('email', 'newuser@example.com')
       formData.append('password', 'password123')
       formData.append('company', 'Test Company')
@@ -204,6 +207,7 @@ describe('Authentication Actions', () => {
 
       const formData = new FormData()
       formData.append('name', 'Invited User')
+      formData.append('aceite', 'on') // terms box, required since the signup acceptance
       formData.append('email', 'invited@example.com')
       formData.append('password', 'password123')
       formData.append('inviteToken', 'valid-invite-token')
@@ -249,6 +253,7 @@ describe('Authentication Actions', () => {
 
       const formData = new FormData()
       formData.append('name', 'Invited User')
+      formData.append('aceite', 'on') // terms box, required since the signup acceptance
       formData.append('email', 'invited@example.com')
       formData.append('password', 'password123')
       formData.append('inviteToken', 'expired-invite-token')
