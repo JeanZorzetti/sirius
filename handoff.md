@@ -1,56 +1,52 @@
-# Handoff: degrau 4 do mapa GSC (posição) executado (2026-09-26)
+# Handoff: degrau 5 do mapa GSC (snippet) executado (2026-09-26)
 
 ## Estado em uma linha
-As três alavancas do degrau "4 · Posição" do `hub.roilabs.com.br/gsc/mapa/sirius` foram executadas, publicadas e
-marcadas como feitas (Jean, reler em 10/10/2026). O handoff anterior (crm-review, 25/09) continua valendo e está em
-`git show 4105463d:handoff.md`.
+As duas alavancas do degrau "5 · Snippet" do `hub.roilabs.com.br/gsc/mapa/sirius` (título e schema) foram
+executadas, publicadas e marcadas como feitas (Jean, reler em 10/10/2026). O handoff do degrau 4 continua valendo e
+está em `git show 992f1f26:handoff.md`.
 
 ## Feito nesta sessão
-- **Links internos** (`91a1b759`): 15 links contextuais em 10 posts com tráfego, para as páginas dos termos
-  monitorados. Crawl do hub no mesmo dia: energia-solar 1 → 7 links contextuais, representantes 2 → 9,
-  `/followup` 0 → 6, estratégias de WhatsApp 3 → 6. Os dois posts EN em striking distance (agaas 7,4 e evolution api
-  8,6) passaram a se linkar.
-- **Cobertura** (`33bb2551`): `/followup` lidera com "Automação de Follow-up" (título de 510 px, com modificador) e
-  ganhou a seção com os gatilhos e ações reais de `lib/automations`. Energia-solar ganhou 3 perguntas de FAQ (PT e EN)
-  para "crm energia" e "crm para indústria energética", mais o campo opcional `lastModified` em `config/niche-data.ts`,
-  que vira `dateModified` só quando o conteúdo foi revisado.
-- **Frescor** (`05ae31c2`, `aa9f68f6`): 39 → 9 páginas vencidas.
-  - Os 4 comparativos (vs Pipedrive, vs HubSpot, vs RD Station, alternativas ao Pipedrive) e o guia de CRM com
-    WhatsApp foram reescritos com os planos que cada fornecedor publicava em 26/09/2026.
-  - Outros 7 posts tiveram os fatos de plano corrigidos.
-  - A central de ajuda tinha `2024-01-23` em vez de `2026-01-23`, a data do commit `6e25f669`. O artigo de planos
-    descrevia o modelo antigo FREE/PRO.
-  - `dateModified` só mudou onde o conteúdo mudou.
-- **Tela** (`4105463d`): os botões do hero de `/followup` estouravam 22 px em 360 px; ganharam `flex-wrap`.
+- **Título** (`e44cf62c`): 75 de 133 títulos passavam de 580 px. O crawl do hub no mesmo dia deu **0 de 133**.
+  - Os posts ganharam o campo opcional `seoTitle` em `lib/blog-types.ts`. Ele vira o `<title>`; o H1 (`title`)
+    e o título do OpenGraph continuam os mesmos.
+  - Soluções, cidades, calculadoras, home, `/features`, `/pricing`, `/indique`, `/proposta`, `/help`, 4 artigos de
+    ajuda e os 2 downloads HTML ganharam títulos mais curtos.
+  - Todo título novo mantém um modificador de intenção. O degrau 3 não regrediu: 17 sem modificador antes e depois,
+    todas utilitárias.
+  - Onde o termo principal do Search Console cabia, ele foi para os primeiros 35 caracteres: 21 → 11 URLs fora.
+- **Schema** (`e44cf62c`, `07599033`): 8 URLs indexadas sem resultado enriquecido (URL Inspection de 26/09).
+  - As 5 calculadoras e a `/help` não tinham `BreadcrumbList`; agora têm.
+  - As categorias "ferramentas" e "comparativos" tinham o breadcrumb desde março, e o Google nunca o detectou. A
+    causa: 17 páginas injetavam o JSON-LD com `next/script`, que só chega depois da hidratação e fica fora do HTML
+    do servidor. Viraram `<script>` nativo.
+  - O layout do blog emitia o `CollectionPage` do `/blog` e um segundo breadcrumb em todo post e categoria. Os dois
+    foram para `app/[locale]/(marketing)/blog/page.tsx`.
 
-## Fatos de plano usados (fonte: `lib/entitlements.ts` e `/pricing`)
-- **Gratuito**: 2 usuários, 250 contatos, 100 negócios não arquivados, 1 funil, sem automação, sem IA e sem WhatsApp.
-- **Starter** R$ 67: 5 usuários, automação e IA.
-- **Pro** R$ 147: 15 usuários.
-- **Business** R$ 397: 50 usuários e WhatsApp.
-- O teste é de 7 dias do Pro. O WhatsApp conecta só pela API oficial (WABA); a conexão por QR foi descontinuada.
-- Não existe módulo de comissões.
+## O que ficou disparando, de propósito
+- **Termo nos 35 primeiros caracteres: 11 URLs.** O termo principal delas é uma pergunta longa, uma busca de outro
+  assunto ("comunicação automatizada com candidatos") ou uma busca de marca com 1 impressão.
+  - `/help/automacoes/automacoes-email` passaria de 580 px com o sufixo "— Guia Sirius CRM" do template.
+- **CTR Gap: os 3 alvos são URLs `/en/`**, que redirecionam 308 para o português desde 22/09 (spec 004). A janela do
+  mapa, de 28/08 a 24/09, é quase toda anterior ao redirecionamento. Não há título EN para reescrever; os alvos saem
+  da janela sozinhos até ~20/10.
 
 ## Decisão aberta (do dono)
-- **Plano gratuito.** A `/pricing` diz "Grátis para sempre" com os limites acima. O código deixa a conta Free somente
-  leitura quando o teste de 7 dias acaba (`isReadOnly` em `lib/entitlements.ts`, desde `43572487`), e a tela de
-  cobrança mostra "Trial expirado — conta em modo somente leitura".
-  - Os posts seguem a `/pricing`. O artigo de ajuda de planos documenta o comportamento do produto.
-  - Decidir qual dos dois vale e alinhar o outro: `grep -rn "2 usuários, 250 contatos"` acha os textos.
+- **Plano gratuito**: continua aberta, ver `git show 992f1f26:handoff.md`. Os títulos novos da `/pricing` e dos
+  nichos mantêm o "Grátis" que já estava lá; não afirmam IA nem WhatsApp no plano gratuito.
 
 ## Próximos passos (em ordem)
-1. **10/10/2026**: reler o degrau 4 no mapa. Cobertura e penetração no Top 3 dependem de o Google reindexar.
-2. **Reescrever `lib/blog/posts/crm-gratuito-brasil-2026.ts`.** Ele elege o Sirius como "melhor gratuito" por ter
-   WhatsApp e IA no plano Free, e diz que só o Sirius tem WhatsApp grátis. Nada disso vale hoje: RD Station Free tem
-   WhatsApp para 4 usuários e o Agendor grátis aceita 3 usuários e 10 mil contatos.
-3. **9 páginas ainda vencidas**: funil, automação, KPIs, prospecção, SPIN, BANT/MEDDIC, scraping, CRM simples e
-   melhores práticas. São guias de método sem preço do Sirius. Revisá-las é atualizar estatística e exemplo, não
-   trocar a data.
-4. O crawl do hub só lê as páginas PT. Os links EN desta sessão não aparecem no mapa.
+1. **Pedir indexação** na UI do Search Console das 8 URLs sem resultado enriquecido: as 5 calculadoras, `/help`,
+   `/blog/categoria/ferramentas` e `/blog/categoria/comparativos`. A API não faz esse pedido.
+2. **10/10/2026**: reler os degraus 4 e 5 no mapa. A cobertura de schema e o CTR dependem de o Google recarregar
+   as páginas.
+3. Continuam valendo os passos 2 e 3 do handoff do degrau 4: reescrever `crm-gratuito-brasil-2026` e revisar as
+   9 páginas vencidas.
 
 ## Gotchas
-- Os posts são HTML dentro de template literal TS. A cópia de trabalho está em CRLF e o repo em LF. Edição por
-  substituição exata precisa respeitar o CRLF.
-- Os preços de concorrentes vencem. Todos os comparativos dizem "conferido em 26/09/2026"; reconferir antes de mexer.
-- O Pipedrive cobra por usuário em dólar e automação só a partir do Growth. O HubSpot Free atende 2 usuários e tem
-  a IA Breeze. O Moskit agora se chama Ollow e cobra por conversas.
+- Título novo: medir com `larguraDoTitulo`, `modificadoresDeIntencao` e `posicaoDoTermo` de `roihub/lib/pagina.mjs`
+  antes do deploy. Cada caractere pesa diferente, então contar caracteres não basta.
+- JSON-LD vai em `<script type="application/ld+json">` nativo, nunca em `next/script`.
+- Schema posto em layout aparece em toda página filha.
+- Substituição com `String.replace` em Node: um título com "R$" seguido de aspa vira o padrão `$'`. Passar uma
+  função como segundo argumento.
+- A cópia de trabalho está em CRLF; edição por substituição exata precisa respeitar isso.
