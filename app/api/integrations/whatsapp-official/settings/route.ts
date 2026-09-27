@@ -1,7 +1,10 @@
 import { NextResponse } from 'next/server'
 import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
-import { encrypt } from '@/lib/encryption'
+import { decrypt, encrypt } from '@/lib/encryption'
+import { prismaWa } from '@/lib/prisma-wa'
+import { WhatsAppOfficialClient } from '@/lib/integrations/whatsapp-official-client'
+import { chaveTelefone } from '@/lib/whatsapp/telefone'
 import logger from '@/lib/logger'
 import { apiError } from '@/lib/api-error'
 import { ERR } from '@/lib/error-messages'
@@ -59,6 +62,14 @@ export async function POST(request: Request) {
       }
     }
 
+    // One number fits in only one connection per account (FR-008): the official number may not be an integrator's
+    if (enabled && (await numeroEmConexaoPorIntegrador(user.organizationId, phoneNumberId, accessToken, user.organization.wabaAccessToken))) {
+      return NextResponse.json(
+        { error: 'Este número já está conectado por integrador. Desconecte-o na tela do chat antes de ativar a API oficial.' },
+        { status: 409 }
+      )
+    }
+
     const updateData: any = {
       wabaEnabled: enabled,
       wabaPhoneNumberId: phoneNumberId || null,
@@ -90,4 +101,28 @@ export async function POST(request: Request) {
     logger.error({ error }, 'Error updating WhatsApp Official settings')
     return await apiError(ERR.INTERNAL_ERROR, 500)
   }
+}
+
+async function numeroEmConexaoPorIntegrador(
+  organizationId: string,
+  phoneNumberId: string,
+  tokenNovo: string | undefined,
+  tokenGuardado: string | null
+): Promise<boolean> {
+  let token = tokenNovo
+  try {
+    token ||= tokenGuardado ? decrypt(tokenGuardado) : undefined
+  } catch {
+    token = undefined
+  }
+  if (!token) return false
+  // ponytail: Meta unreachable does not block saving; the integrator side checks again when it pairs
+  const info = await new WhatsAppOfficialClient(phoneNumberId, token).getPhoneNumberInfo().catch(() => null)
+  const chave = chaveTelefone(info?.display_phone_number)
+  if (!chave) return false
+  const conexoes = await prismaWa.whatsAppConnection.findMany({
+    where: { organizationId, provider: { not: null }, apiKey: { not: null }, phoneNumber: { not: null } },
+    select: { phoneNumber: true },
+  })
+  return conexoes.some((c) => chaveTelefone(c.phoneNumber) === chave)
 }

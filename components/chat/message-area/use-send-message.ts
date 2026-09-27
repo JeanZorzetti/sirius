@@ -1,17 +1,21 @@
 'use client'
 
 import { useCallback, useState, type Dispatch, type SetStateAction } from 'react'
-import { toast } from 'sonner'
 import type { WhatsAppMessage } from './types'
 import { fmtDuration } from './utils'
 
 interface UseSendMessageArgs {
   contactId: string
-  conn: string
-  wabaEnabled: boolean
+  /**
+   * Where the reply goes out (FR-018): 'oficial' for the official API, a connection id for an integrator, '' while
+   * the seller has not picked a number for a contact who never wrote.
+   */
+  rota: string
   setMessages: Dispatch<SetStateAction<WhatsAppMessage[]>>
   scrollToBottom: () => void
 }
+
+export const ROTA_OFICIAL = 'oficial'
 
 function makeOptimistic(tempId: string, text: string, overrides: Partial<WhatsAppMessage> = {}): WhatsAppMessage {
   return {
@@ -34,10 +38,11 @@ function makeOptimistic(tempId: string, text: string, overrides: Partial<WhatsAp
 
 /**
  * Optimistic send pipeline shared by text / media / audio:
- * insert temp bubble → POST → replace with the server-confirmed message,
- * or remove the temp bubble and toast on failure.
+ * insert temp bubble → POST → replace with the server-confirmed message. On failure the bubble stays as
+ * "não enviada" with the reason, so the text is never lost (spec 012, T055).
  */
-export function useSendMessage({ contactId, conn, wabaEnabled, setMessages, scrollToBottom }: UseSendMessageArgs) {
+export function useSendMessage({ contactId, rota, setMessages, scrollToBottom }: UseSendMessageArgs) {
+  const oficial = rota === ROTA_OFICIAL
   const [sending, setSending] = useState(false)
 
   const runOptimistic = useCallback(async (
@@ -54,15 +59,18 @@ export function useSendMessage({ contactId, conn, wabaEnabled, setMessages, scro
       const r = await doRequest()
       if (!r.ok) {
         const d = await r.json().catch(() => ({}))
-        throw new Error(d.error || options?.errorFallback || 'Erro')
+        const erro: string = d.error || options?.errorFallback || 'não foi possível enviar'
+        // 502: the server kept the message as FAILED and returns it; 409/413/415: nothing was saved
+        const falha: WhatsAppMessage = d.mensagem ?? { ...optimisticMsg, status: 'FAILED', erro }
+        setMessages(prev => prev.map(m => m.id === tempId ? falha : m))
+        return
       }
       const confirmedMsg: WhatsAppMessage = await r.json()
       const finalMsg = options?.transformConfirmed ? options.transformConfirmed(confirmedMsg) : confirmedMsg
       setMessages(prev => prev.map(m => m.id === tempId ? finalMsg : m))
       setTimeout(() => scrollToBottom(), 100)
-    } catch (err: unknown) {
-      setMessages(prev => prev.filter(m => m.id !== tempId))
-      toast.error(err instanceof Error && err.message ? err.message : (options?.errorFallback || 'Erro ao enviar'))
+    } catch {
+      setMessages(prev => prev.map(m => m.id === tempId ? { ...optimisticMsg, status: 'FAILED', erro: 'sem resposta do Sirius; confira sua internet' } : m))
     } finally {
       options?.onSettled?.()
       setSending(false)
@@ -70,8 +78,7 @@ export function useSendMessage({ contactId, conn, wabaEnabled, setMessages, scro
   }, [setMessages, scrollToBottom])
 
   const sendText = useCallback(async (messageText: string, replyTo?: WhatsAppMessage | null) => {
-    if (!messageText.trim()) return
-    if (!wabaEnabled && !conn) return
+    if (!messageText.trim() || !rota) return
 
     const tempId = `temp-${Date.now()}-${Math.random().toString(36).substring(7)}`
     const optimisticMsg = makeOptimistic(tempId, messageText, {
@@ -80,10 +87,10 @@ export function useSendMessage({ contactId, conn, wabaEnabled, setMessages, scro
     })
 
     await runOptimistic(optimisticMsg, () => {
-      const url = wabaEnabled ? '/api/whatsapp/send-waba' : '/api/whatsapp/send-message'
-      const payload: Record<string, string> = wabaEnabled
+      const url = oficial ? '/api/whatsapp/send-waba' : '/api/whatsapp/send-message'
+      const payload: Record<string, string> = oficial
         ? { contactId, message: messageText }
-        : { connectionId: conn, contactId, message: messageText }
+        : { connectionId: rota, contactId, message: messageText }
       if (replyTo) payload.replyToId = replyTo.id
       return fetch(url, {
         method: 'POST',
@@ -91,10 +98,10 @@ export function useSendMessage({ contactId, conn, wabaEnabled, setMessages, scro
         body: JSON.stringify(payload),
       })
     })
-  }, [wabaEnabled, conn, contactId, runOptimistic])
+  }, [oficial, rota, contactId, runOptimistic])
 
   const sendMedia = useCallback(async (file: File, caption: string, previewUrl: string | null) => {
-    if (!wabaEnabled && !conn) return
+    if (!rota) return
 
     const tempId = `temp-media-${Date.now()}`
     const mediaLabel = file.type.startsWith('image/') ? '[Imagem]'
@@ -115,15 +122,15 @@ export function useSendMessage({ contactId, conn, wabaEnabled, setMessages, scro
       formData.append('file', file)
       formData.append('contactId', contactId)
       if (caption) formData.append('caption', caption)
-      if (!wabaEnabled && conn) formData.append('connectionId', conn)
+      if (!oficial) formData.append('connectionId', rota)
 
-      const endpoint = wabaEnabled ? '/api/whatsapp/send-waba-media' : '/api/whatsapp/send-media'
+      const endpoint = oficial ? '/api/whatsapp/send-waba-media' : '/api/whatsapp/send-media'
       return fetch(endpoint, { method: 'POST', body: formData })
-    }, { errorFallback: 'Erro ao enviar mídia' })
-  }, [wabaEnabled, conn, contactId, runOptimistic])
+    }, { errorFallback: 'não foi possível enviar a mídia' })
+  }, [oficial, rota, contactId, runOptimistic])
 
   const sendAudio = useCallback(async (audioBlob: Blob, duration: number, mimeType: string) => {
-    if (!wabaEnabled && !conn) return
+    if (!rota) return
 
     const localUrl = URL.createObjectURL(audioBlob)
     const tempId = `temp-audio-${Date.now()}`
@@ -140,17 +147,17 @@ export function useSendMessage({ contactId, conn, wabaEnabled, setMessages, scro
       formData.append('contactId', contactId)
       formData.append('ptt', 'true')
       formData.append('duration', String(duration))
-      if (!wabaEnabled) formData.append('connectionId', conn)
+      if (!oficial) formData.append('connectionId', rota)
 
-      const endpoint = wabaEnabled ? '/api/whatsapp/send-waba-media' : '/api/whatsapp/send-media'
+      const endpoint = oficial ? '/api/whatsapp/send-waba-media' : '/api/whatsapp/send-media'
       return fetch(endpoint, { method: 'POST', body: formData })
     }, {
-      errorFallback: 'Erro ao enviar áudio',
+      errorFallback: 'não foi possível enviar o áudio',
       // Preserve the duration text from the optimistic message
       transformConfirmed: (msg) => ({ ...msg, text: `[Áudio ${fmtDuration(duration)}]` }),
       onSettled: () => URL.revokeObjectURL(localUrl),
     })
-  }, [wabaEnabled, conn, contactId, runOptimistic])
+  }, [oficial, rota, contactId, runOptimistic])
 
   return { sending, sendText, sendMedia, sendAudio }
 }

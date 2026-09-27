@@ -16,3 +16,9 @@ Termos e verbos da interface. Antes de nomear um botão, um rótulo ou um estado
 | Conversar | abre a conversa do contato | WhatsApp (como verbo), chamar | fila, cartão |
 | Abrir negócio | abre o diálogo do negócio | ver, detalhes | fila |
 | Aceite | "Li e aceito os Termos de Uso e a Política de Privacidade" (caixa desmarcada) | concordo, de acordo, T&C, "ao continuar você concorda" | cadastro e convite, passo 1 |
+| Integrador | "integrador" — Z-API, uazapi ou Evolution API, a conta de WhatsApp que o cliente já contrata (spec 012) | gateway, instância (na tela), API não oficial (fora do aviso de risco) | diálogo de conexão, gerenciador, preços, ajuda |
+| Conectar número | "Conectar número" / "Conectar WhatsApp" — cria a conexão por integrador | criar instância, nova conexão, adicionar | gerenciador de conexões, diálogo |
+| Reconectar | abre o QR Code de uma conexão caída que ainda tem credencial | religar, sincronizar | gerenciador, aviso no topo do inbox |
+| Desconectar número | apaga as credenciais; as conversas ficam | remover, excluir conexão | gerenciador, confirmação |
+| Precisa reconectar | estado `FAILED` de uma conexão | falhou, erro, quebrada | gerenciador, aviso no inbox |
+| Não enviada | "não enviada · <motivo>" — mensagem que o integrador recusou ou que uma trava barrou | erro ao enviar, falha | bolha da conversa |

@@ -20,16 +20,9 @@ import type { MessageNewEvent, ConnectionReadyEvent } from '@/hooks/use-pusher'
 import { useAppBar } from '@/components/mobile/app-bar-context'
 import { AudioPlayerProvider } from '@/hooks/use-audio-player'
 import { KeyboardShortcutsModal } from './keyboard-shortcuts-modal'
+import { ROTULO_ESTADO, desde, nomeDaConexao, nomeDoIntegrador, semCredencial, type ConexaoPublica } from './conexao-ui'
 
-interface Connection {
-  id: string
-  instanceName: string
-  displayName: string | null
-  status: string
-  phoneNumber: string | null
-  connectedAt: Date | null
-  createdAt: Date
-}
+type Connection = ConexaoPublica
 
 interface Contact {
   id: string
@@ -41,6 +34,7 @@ interface Contact {
     text: string
     direction: string
     sentAt: Date
+    connectionId?: string | null
   }>
   _count: {
     whatsappMessages: number
@@ -54,7 +48,9 @@ interface ChatInterfaceProps {
   userId: string
   userName: string
   organizationId: string
-  maxInstances: number
+  limite: number
+  usadas: number
+  podeGerenciar: boolean
   initialPhone?: string
   wabaEnabled?: boolean
 }
@@ -73,7 +69,9 @@ function ChatInterfaceInner({
   userId,
   userName,
   organizationId,
-  maxInstances,
+  limite: limiteInicial,
+  usadas: usadasIniciais,
+  podeGerenciar,
   initialPhone,
   wabaEnabled = false,
 }: ChatInterfaceProps) {
@@ -81,9 +79,10 @@ function ChatInterfaceInner({
   const [activeView, setActiveView] = useState<'chat' | 'connections'>('chat')
   const [contacts, setContacts] = useState<Contact[]>(initialContacts)
   const [connections, setConnections] = useState<Connection[]>(initialConnections)
+  const [plano, setPlano] = useState({ limite: limiteInicial, usadas: usadasIniciais })
   const [isRefreshing, setIsRefreshing] = useState(false)
-  // True while the initial sync is running (first load with 0 conversations)
-  const [isSyncing, setIsSyncing] = useState(initialContacts.length === 0)
+  // Integrator messages arrive by notice; there is no history sync to wait for
+  const [isSyncing, setIsSyncing] = useState(false)
   const [showShortcuts, setShowShortcuts] = useState(false)
 
   // Global keyboard shortcuts (Ctrl+/ opens shortcuts modal)
@@ -100,8 +99,8 @@ function ChatInterfaceInner({
   }, [])
 
   const activeConnections = connections.filter(c => c.status === 'CONNECTED')
-  const disconnectedConnections = connections.filter(c => c.status === 'DISCONNECTED')
-  const hasDisconnected = disconnectedConnections.length > 0 && activeConnections.length === 0
+  // Every connection out of the air, except the ones the owner disconnected on purpose (US3, T069)
+  const foraDoAr = connections.filter(c => c.status !== 'CONNECTED' && !semCredencial(c))
   const totalUnread = contacts.reduce((sum, contact) => sum + (contact._count.unreadMessages || 0), 0)
 
   // Auto-select contact when arriving from a WhatsApp button click (via ?phone=...)
@@ -142,7 +141,8 @@ function ChatInterfaceInner({
       const res = await fetch('/api/whatsapp/connections')
       if (res.ok) {
         const data = await res.json()
-        setConnections(data)
+        setConnections(data.conexoes)
+        setPlano({ limite: data.limite, usadas: data.usadas })
       }
     } catch (error) {
       console.error('[CHAT] fetchConnections error:', error)
@@ -158,35 +158,11 @@ function ChatInterfaceInner({
     onMessageSent: useCallback(() => {
       fetchConversations()
     }, [fetchConversations]),
-    onConnectionReady: useCallback(async (data: ConnectionReadyEvent & { status?: string }) => {
-      // Refresh connections first so the new status is reflected in state.
+    onConnectionReady: useCallback(async (_data: ConnectionReadyEvent) => {
       await fetchConnections()
-      // Only sync history when actually connecting (not on disconnect events).
-      if (data.status !== 'disconnected') {
-        try {
-          await fetch(`/api/whatsapp/connections/${data.connectionId}/sync`, { method: 'POST' })
-        } catch {}
-      }
       fetchConversations()
     }, [fetchConversations, fetchConnections]),
   })
-
-  // Auto-sync: ao montar, dispara sync da conexão ativa (background)
-  const hasSyncedRef = useRef(false)
-  useEffect(() => {
-    if (hasSyncedRef.current) return
-    const active = connections.find(c => c.status === 'CONNECTED')
-    if (!active) {
-      // No active connection — stop spinner immediately
-      setIsSyncing(false)
-      return
-    }
-    hasSyncedRef.current = true
-    fetch(`/api/whatsapp/connections/${active.id}/sync`, { method: 'POST' })
-      .then(res => res.ok ? res.json() : null)
-      .then(() => fetchConversations())
-      .catch(() => setIsSyncing(false))
-  }, [connections, fetchConversations])
 
   // Polling: conversas a cada 5s, conexões a cada 10s
   // Connections poll at 10s (down from 30s) to detect multi-device status changes faster.
@@ -240,8 +216,11 @@ function ChatInterfaceInner({
             description="Conecte seu WhatsApp para começar a atender seus clientes em tempo real."
             action={
               <ConnectionManager
-                connections={connections}
-                maxInstances={maxInstances}
+                conexoes={connections}
+                limite={plano.limite}
+                usadas={plano.usadas}
+                podeGerenciar={podeGerenciar}
+                onMudou={fetchConnections}
               />
             }
           />
@@ -278,7 +257,7 @@ function ChatInterfaceInner({
             )}
           </button>
 
-          {!wabaEnabled && (
+          {(podeGerenciar || connections.length > 0 || !wabaEnabled) && (
             <button
               onClick={() => setActiveView('connections')}
               className={cn(
@@ -306,39 +285,46 @@ function ChatInterfaceInner({
         </div>
       </div>
 
-      {/* Disconnected banner */}
-      {hasDisconnected && activeView === 'chat' && (
-        <div className="flex items-center gap-3 px-4 py-2.5 bg-amber-50 dark:bg-amber-950/30 border-b border-amber-200 dark:border-amber-900/50">
-          <WifiOff className="h-4 w-4 text-amber-600 dark:text-amber-400 flex-shrink-0" />
-          <p className="text-sm text-amber-800 dark:text-amber-300 flex-1">
-            {disconnectedConnections.length === 1
-              ? `WhatsApp "${disconnectedConnections[0].displayName || disconnectedConnections[0].phoneNumber || disconnectedConnections[0].instanceName}" está desconectado`
-              : `${disconnectedConnections.length} conexões desconectadas`
-            }
-            {' '}&mdash; mensagens não serão recebidas até reconectar.
-          </p>
-          <Button
-            variant="outline"
-            size="sm"
-            className="h-7 text-xs border-amber-300 dark:border-amber-800 text-amber-700 dark:text-amber-300 hover:bg-amber-100 dark:hover:bg-amber-900/40 flex-shrink-0"
-            onClick={() => setActiveView('connections')}
-          >
-            Reconectar
-          </Button>
-        </div>
+      {/* A banner per connection out of the air (US3, T069); the connections poll every 10 s keeps it current */}
+      {foraDoAr.length > 0 && activeView === 'chat' && (
+        <ul className="border-b border-amber-200 bg-amber-50 dark:border-amber-900/50 dark:bg-amber-950/30">
+          {foraDoAr.map(c => (
+            <li key={c.id} className="flex items-center gap-3 px-4 py-2">
+              <WifiOff className="h-4 w-4 flex-shrink-0 text-amber-700 dark:text-amber-400" aria-hidden="true" />
+              <p className="flex-1 text-sm text-amber-900 dark:text-amber-200">
+                WhatsApp ({nomeDoIntegrador(c)}) {nomeDaConexao(c)}: {ROTULO_ESTADO[c.status].toLowerCase()}
+                {desde(c.statusMudouEm) ? ` ${desde(c.statusMudouEm)}` : ''}
+                {c.statusMotivo ? ` · ${c.statusMotivo}` : ''}. Mensagens desse número não chegam até reconectar.
+              </p>
+              {podeGerenciar && (
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="h-7 flex-shrink-0 border-amber-300 text-xs text-amber-800 hover:bg-amber-100 dark:border-amber-800 dark:text-amber-200 dark:hover:bg-amber-900/40"
+                  onClick={() => setActiveView('connections')}
+                >
+                  Reconectar
+                </Button>
+              )}
+            </li>
+          ))}
+        </ul>
       )}
 
       {/* Content */}
       {activeView === 'connections' ? (
         <div className="flex-1 overflow-auto p-4">
           <ConnectionManager
-            connections={connections}
-            maxInstances={maxInstances}
+            conexoes={connections}
+            limite={plano.limite}
+            usadas={plano.usadas}
+            podeGerenciar={podeGerenciar}
+            onMudou={fetchConnections}
           />
         </div>
       ) : (
         <>
-          {activeConnections.length === 0 && !wabaEnabled ? (
+          {activeConnections.length === 0 && !wabaEnabled && contacts.length === 0 ? (
             <div className="flex-1 flex items-center justify-center p-8">
               <EmptyState
                 icon={WifiOff}
@@ -392,7 +378,7 @@ function ChatInterfaceInner({
                 {selectedContact ? (
                   <MessageArea
                     contact={selectedContact}
-                    connections={activeConnections}
+                    connections={connections}
                     organizationId={organizationId}
                     userId={userId}
                     userName={userName}

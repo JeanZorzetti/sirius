@@ -55,7 +55,11 @@ export async function POST(req: NextRequest) {
 
   const client = await getWhatsAppOfficialClient(user.organizationId)
   if (!client) {
-    return NextResponse.json({ error: 'WABA não configurado' }, { status: 400 })
+    // FR-020: forwarding reaches several contacts, so it never goes through an integrator
+    return NextResponse.json(
+      { error: 'Encaminhar para vários contatos é só pela API oficial da Meta, no plano Business. Pelo integrador, responda cada conversa no inbox.' },
+      { status: 409 }
+    )
   }
 
   const targetContacts = await prisma.contact.findMany({

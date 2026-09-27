@@ -1,291 +1,209 @@
 'use client'
 
 import { useState } from 'react'
+import Link from 'next/link'
+import { Plus, Power, QrCode, RefreshCw, Smartphone, Wifi, WifiOff, AlertTriangle, PauseCircle } from 'lucide-react'
+import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
-import { Plus, QrCode, Power, Trash2, RefreshCw, Wifi, WifiOff, Smartphone, Clock } from 'lucide-react'
-import { NewConnectionDialog } from './new-connection-dialog'
-import { QRCodeDialog } from './qr-code-dialog'
-import { useRouter } from 'next/navigation'
-import { toast } from 'sonner'
 import { ConfirmDialog } from '@/components/ui/confirm-dialog'
 import { cn } from '@/lib/utils'
-
-interface Connection {
-  id: string
-  instanceName: string
-  displayName: string | null
-  status: string
-  phoneNumber: string | null
-  connectedAt: Date | null
-  createdAt: Date
-}
+import { NewConnectionDialog } from './new-connection-dialog'
+import { QRCodeDialog } from './qr-code-dialog'
+import { ROTULO_ESTADO, desde, nomeDaConexao, nomeDoIntegrador, semCredencial, type ConexaoPublica } from './conexao-ui'
 
 interface ConnectionManagerProps {
-  connections: Connection[]
-  maxInstances: number
+  conexoes: ConexaoPublica[]
+  limite: number
+  usadas: number
+  podeGerenciar: boolean
+  /** Something changed: the parent reloads the connections */
+  onMudou: () => void
 }
 
-export function ConnectionManager({ connections, maxInstances }: ConnectionManagerProps) {
-  const router = useRouter()
-  const [isNewDialogOpen, setIsNewDialogOpen] = useState(false)
-  const [selectedConnectionForQR, setSelectedConnectionForQR] = useState<Connection | null>(null)
-  const [loadingId, setLoadingId] = useState<string | null>(null)
-  const [confirmAction, setConfirmAction] = useState<{ type: 'disconnect' | 'delete'; id: string } | null>(null)
+const VISUAL: Record<ConexaoPublica['status'], { icone: typeof Wifi; classe: string }> = {
+  CONNECTED: { icone: Wifi, classe: 'text-emerald-700 dark:text-emerald-400' },
+  CONNECTING: { icone: QrCode, classe: 'text-amber-700 dark:text-amber-400' },
+  DISCONNECTED: { icone: WifiOff, classe: 'text-zinc-600 dark:text-zinc-400' },
+  FAILED: { icone: AlertTriangle, classe: 'text-red-700 dark:text-red-400' },
+  SUSPENDED: { icone: PauseCircle, classe: 'text-zinc-600 dark:text-zinc-400' },
+}
 
-  const activeConnections = connections.filter(c => c.status === 'CONNECTED' || c.status === 'CONNECTING')
-  const canAddMore = activeConnections.length < maxInstances
+/** Reconnecting by QR does not fix these; the guide below says what does */
+const reconectavel = (c: ConexaoPublica) =>
+  (c.status === 'DISCONNECTED' || c.status === 'FAILED') && !semCredencial(c) && !/bloquead|já está conectado|aviso novo/i.test(c.statusMotivo ?? '')
 
-  const handleDisconnect = async (connectionId: string) => {
-    setLoadingId(connectionId)
+/** What the owner does next, from the reason (US3, T070) */
+function orientacao(c: ConexaoPublica): { texto: string; link?: { href: string; rotulo: string } } | null {
+  const motivo = c.statusMotivo ?? ''
+  if (semCredencial(c)) return { texto: 'Para usar este número de novo, conecte com as credenciais do integrador.' }
+  if (c.status === 'SUSPENDED') {
+    return { texto: 'O plano da conta não inclui WhatsApp. A conexão volta sozinha quando a conta tiver um plano pago.', link: { href: '/dashboard/billing/plans', rotulo: 'Ver planos' } }
+  }
+  if (c.status !== 'FAILED') return null
+  if (/bloquead/i.test(motivo)) {
+    return { texto: 'O WhatsApp bloqueou este número. A saída segura é a API oficial da Meta, no plano Business.', link: { href: '/dashboard/settings/integrations', rotulo: 'Ver API oficial' } }
+  }
+  if (/já está conectado|já conectado/i.test(motivo)) {
+    return { texto: 'Cada número entra em uma conexão só. Desconecte a outra antes de usar este número aqui.' }
+  }
+  if (/aviso novo/i.test(motivo)) return { texto: 'Conecte de novo e aceite o aviso atualizado para reativar.' }
+  return { texto: 'Leia o QR Code de novo com o celular do número para reconectar.' }
+}
+
+export function ConnectionManager({ conexoes, limite, usadas, podeGerenciar, onMudou }: ConnectionManagerProps) {
+  const [novaAberta, setNovaAberta] = useState(false)
+  const [qrDe, setQrDe] = useState<ConexaoPublica | null>(null)
+  const [desconectar, setDesconectar] = useState<ConexaoPublica | null>(null)
+  const [ocupada, setOcupada] = useState<string | null>(null)
+  const cabe = usadas < limite
+
+  const handleDesconectar = async (c: ConexaoPublica) => {
+    setOcupada(c.id)
     try {
-      const res = await fetch(`/api/whatsapp/connections/${connectionId}/disconnect`, {
-        method: 'POST',
-      })
+      const res = await fetch(`/api/whatsapp/connections/${c.id}`, { method: 'DELETE' })
       if (!res.ok) {
-        const data = await res.json()
-        throw new Error(data.error || 'Erro ao desconectar')
+        const data = await res.json().catch(() => ({}))
+        throw new Error(data.error || 'Não foi possível desconectar agora. Tente de novo.')
       }
-      toast.success('WhatsApp desconectado')
-      router.refresh()
-    } catch (error: any) {
-      toast.error(error.message || 'Erro ao desconectar')
+      toast.success(`${nomeDaConexao(c)} desconectado. As conversas continuam no inbox.`)
+      onMudou()
+    } catch (erro) {
+      toast.error((erro as Error).message)
     } finally {
-      setLoadingId(null)
+      setOcupada(null)
     }
   }
-
-  const handleDelete = async (connectionId: string) => {
-    setLoadingId(connectionId)
-    try {
-      const res = await fetch(`/api/whatsapp/connections/${connectionId}`, {
-        method: 'DELETE',
-      })
-      if (!res.ok) {
-        const data = await res.json()
-        throw new Error(data.error || 'Erro ao deletar')
-      }
-      toast.success('Conexão removida')
-      router.refresh()
-    } catch (error: any) {
-      toast.error(error.message || 'Erro ao remover conexão')
-    } finally {
-      setLoadingId(null)
-    }
-  }
-
-  const statusConfig = {
-    CONNECTED: {
-      dot: 'bg-emerald-500',
-      bg: 'border-emerald-200 dark:border-emerald-900/50 bg-emerald-50/50 dark:bg-emerald-950/20',
-      icon: Wifi,
-      iconClass: 'text-emerald-600 dark:text-emerald-400',
-      label: 'Conectado',
-      labelClass: 'text-emerald-700 dark:text-emerald-400',
-    },
-    CONNECTING: {
-      dot: 'bg-amber-500 animate-pulse',
-      bg: 'border-amber-200 dark:border-amber-900/50 bg-amber-50/50 dark:bg-amber-950/20',
-      icon: RefreshCw,
-      iconClass: 'text-amber-600 dark:text-amber-400 animate-spin',
-      label: 'Conectando...',
-      labelClass: 'text-amber-700 dark:text-amber-400',
-    },
-    DISCONNECTED: {
-      dot: 'bg-zinc-400',
-      bg: 'border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/50',
-      icon: WifiOff,
-      iconClass: 'text-zinc-400 dark:text-zinc-500',
-      label: 'Desconectado',
-      labelClass: 'text-zinc-500 dark:text-zinc-400',
-    },
-  }
-
-  const getConfig = (status: string) =>
-    statusConfig[status as keyof typeof statusConfig] || statusConfig.DISCONNECTED
 
   return (
     <div className="space-y-5">
-      {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
-          <h3 className="text-lg font-semibold tracking-tight">Conexões WhatsApp</h3>
-          <p className="text-sm text-muted-foreground mt-0.5">
-            {activeConnections.length} de {maxInstances} {maxInstances === 1 ? 'conexão ativa' : 'conexões ativas'}
+          <h3 className="text-lg font-semibold tracking-tight">Conexões de WhatsApp</h3>
+          <p className="mt-0.5 text-sm text-muted-foreground">
+            {usadas} de {limite} {limite === 1 ? 'conexão' : 'conexões'} do plano
           </p>
         </div>
-        <Button
-          onClick={() => setIsNewDialogOpen(true)}
-          disabled={!canAddMore}
-          size="sm"
-        >
-          <Plus className="mr-2 h-4 w-4" />
-          Nova Conexão
-        </Button>
+        {podeGerenciar && (
+          <Button onClick={() => setNovaAberta(true)} disabled={!cabe} size="sm" aria-describedby={!cabe ? 'conexoes-limite' : undefined}>
+            <Plus className="mr-2 h-4 w-4" aria-hidden="true" />
+            Conectar número
+          </Button>
+        )}
       </div>
 
-      {/* Empty */}
-      {connections.length === 0 ? (
+      {podeGerenciar && !cabe && (
+        <p id="conexoes-limite" className="text-sm text-muted-foreground">
+          {limite === 0 ? 'WhatsApp por integrador está nos planos pagos, a partir do Starter.' : `Seu plano permite ${limite} ${limite === 1 ? 'conexão' : 'conexões'}.`}{' '}
+          <Link href="/dashboard/billing" className="underline underline-offset-2">Comprar conexão extra ou mudar de plano</Link>
+        </p>
+      )}
+      {!podeGerenciar && (
+        <p className="text-sm text-muted-foreground">Só o dono e o gerente da conta conectam e desconectam números.</p>
+      )}
+
+      {conexoes.length === 0 ? (
         <Card className="border-dashed">
-          <CardContent className="flex flex-col items-center justify-center py-14">
-            <div className="w-14 h-14 rounded-full bg-muted flex items-center justify-center mb-4">
-              <Smartphone className="h-6 w-6 text-muted-foreground" />
+          <CardContent className="flex flex-col items-center justify-center gap-3 py-12 text-center">
+            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-muted">
+              <Smartphone className="h-6 w-6 text-muted-foreground" aria-hidden="true" />
             </div>
-            <p className="text-sm text-muted-foreground text-center max-w-[260px]">
-              Nenhuma conexão WhatsApp.
-              Clique em <strong>"Nova Conexão"</strong> para começar.
+            <p className="font-medium">Nenhum número conectado</p>
+            <p className="max-w-sm text-sm text-muted-foreground">
+              Conecte o WhatsApp pelo integrador que você já usa (Z-API, uazapi ou Evolution API) e as conversas aparecem aqui.
             </p>
           </CardContent>
         </Card>
       ) : (
-        <div className="grid gap-3">
-          {connections.map((connection) => {
-            const cfg = getConfig(connection.status)
-            const StatusIcon = cfg.icon
-            const isLoading = loadingId === connection.id
-
+        <ul className="grid gap-3">
+          {conexoes.map((c) => {
+            const { icone: Icone, classe } = VISUAL[c.status]
+            const guia = orientacao(c)
+            const ocupadaAgora = ocupada === c.id
             return (
-              <Card
-                key={connection.id}
-                className={cn('transition-colors duration-200', cfg.bg)}
-              >
-                <CardContent className="p-4">
-                  <div className="flex items-center gap-4">
-                    {/* Status icon */}
-                    <div className="flex-shrink-0">
-                      <div className="w-10 h-10 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 flex items-center justify-center">
-                        <StatusIcon className={cn('h-4.5 w-4.5', cfg.iconClass)} />
+              <li key={c.id}>
+                <Card>
+                  <CardContent className="p-4">
+                    <div className="flex flex-wrap items-center gap-4">
+                      <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full border bg-background">
+                        <Icone className={cn('h-4 w-4', classe)} aria-hidden="true" />
                       </div>
-                    </div>
-
-                    {/* Info */}
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-2">
-                        <span className="font-medium text-sm truncate">
-                          {connection.displayName || connection.phoneNumber || connection.instanceName}
-                        </span>
-                        <span className={cn('flex items-center gap-1.5 text-xs font-medium', cfg.labelClass)}>
-                          <span className={cn('w-1.5 h-1.5 rounded-full', cfg.dot)} />
-                          {cfg.label}
-                        </span>
+                      <div className="min-w-0 flex-1">
+                        <p className="truncate text-sm font-medium">{nomeDaConexao(c)}</p>
+                        <p className="text-xs text-muted-foreground">
+                          {nomeDoIntegrador(c)} · <span className={cn('font-medium', classe)}>{ROTULO_ESTADO[c.status]}</span>
+                          {c.statusMotivo ? ` · ${c.statusMotivo}` : ''}
+                          {desde(c.statusMudouEm) ? ` · ${desde(c.statusMudouEm)}` : ''}
+                        </p>
                       </div>
-                      <div className="flex items-center gap-3 mt-0.5">
-                        {(connection.phoneNumber || connection.displayName) && (
-                          <span className="text-xs text-muted-foreground truncate">
-                            {connection.displayName && connection.phoneNumber
-                              ? `${connection.phoneNumber}`
-                              : connection.instanceName}
-                          </span>
-                        )}
-                        {connection.connectedAt && connection.status === 'CONNECTED' && (
-                          <span className="flex items-center gap-1 text-xs text-muted-foreground">
-                            <Clock className="h-3 w-3" />
-                            Desde {new Date(connection.connectedAt).toLocaleDateString('pt-BR')}
-                          </span>
-                        )}
-                      </div>
-                    </div>
-
-                    {/* Actions */}
-                    <div className="flex items-center gap-2 flex-shrink-0">
-                      {connection.status === 'CONNECTING' && (
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => setSelectedConnectionForQR(connection)}
-                          disabled={isLoading}
-                          className="h-8"
-                        >
-                          <QrCode className="mr-1.5 h-3.5 w-3.5" />
-                          QR Code
-                        </Button>
-                      )}
-
-                      {connection.status === 'DISCONNECTED' && (
-                        <>
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={() => setSelectedConnectionForQR(connection)}
-                            disabled={isLoading}
-                            className="h-8"
-                          >
-                            <QrCode className="mr-1.5 h-3.5 w-3.5" />
-                            Reconectar
-                          </Button>
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={() => setConfirmAction({ type: 'delete', id: connection.id })}
-                            disabled={isLoading}
-                            className="h-8 text-destructive hover:text-destructive hover:bg-destructive/10"
-                          >
-                            {isLoading ? (
-                              <RefreshCw className="h-3.5 w-3.5 animate-spin" />
-                            ) : (
-                              <Trash2 className="h-3.5 w-3.5" />
-                            )}
-                          </Button>
-                        </>
-                      )}
-
-                      {connection.status === 'CONNECTED' && (
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          onClick={() => setConfirmAction({ type: 'disconnect', id: connection.id })}
-                          disabled={isLoading}
-                          className="h-8 text-muted-foreground hover:text-destructive hover:bg-destructive/10"
-                        >
-                          {isLoading ? (
-                            <RefreshCw className="mr-1.5 h-3.5 w-3.5 animate-spin" />
-                          ) : (
-                            <Power className="mr-1.5 h-3.5 w-3.5" />
+                      {podeGerenciar && (
+                        <div className="flex flex-shrink-0 items-center gap-2">
+                          {c.status === 'CONNECTING' && (
+                            <Button variant="outline" size="sm" onClick={() => setQrDe(c)}>
+                              <QrCode className="mr-1.5 h-3.5 w-3.5" aria-hidden="true" />
+                              Mostrar QR Code
+                            </Button>
                           )}
-                          Desconectar
-                        </Button>
+                          {reconectavel(c) && (
+                            <Button variant="outline" size="sm" onClick={() => setQrDe(c)}>
+                              <RefreshCw className="mr-1.5 h-3.5 w-3.5" aria-hidden="true" />
+                              Reconectar
+                            </Button>
+                          )}
+                          {!semCredencial(c) ? (
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => setDesconectar(c)}
+                              disabled={ocupadaAgora}
+                              className="text-muted-foreground hover:bg-destructive/10 hover:text-destructive"
+                            >
+                              {ocupadaAgora ? <RefreshCw className="mr-1.5 h-3.5 w-3.5 animate-spin" aria-hidden="true" /> : <Power className="mr-1.5 h-3.5 w-3.5" aria-hidden="true" />}
+                              Desconectar
+                            </Button>
+                          ) : null}
+                        </div>
                       )}
                     </div>
-                  </div>
-                </CardContent>
-              </Card>
+                    {guia && (
+                      <p className="mt-3 text-sm text-muted-foreground">
+                        {guia.texto}{' '}
+                        {guia.link && <Link href={guia.link.href} className="underline underline-offset-2">{guia.link.rotulo}</Link>}
+                      </p>
+                    )}
+                  </CardContent>
+                </Card>
+              </li>
             )
           })}
-        </div>
+        </ul>
       )}
 
       <NewConnectionDialog
-        open={isNewDialogOpen}
-        onOpenChange={setIsNewDialogOpen}
-      />
-
-      <ConfirmDialog
-        open={!!confirmAction}
-        onOpenChange={(open) => !open && setConfirmAction(null)}
-        title={confirmAction?.type === 'disconnect' ? 'Desconectar WhatsApp' : 'Remover conexão'}
-        description={confirmAction?.type === 'disconnect'
-          ? 'Tem certeza que deseja desconectar? Você precisará escanear o QR Code novamente.'
-          : 'Tem certeza que deseja remover permanentemente? Esta ação não pode ser desfeita.'
-        }
-        confirmLabel={confirmAction?.type === 'disconnect' ? 'Desconectar' : 'Remover'}
-        onConfirm={() => {
-          if (confirmAction) {
-            if (confirmAction.type === 'disconnect') {
-              handleDisconnect(confirmAction.id)
-            } else {
-              handleDelete(confirmAction.id)
-            }
-            setConfirmAction(null)
-          }
+        open={novaAberta}
+        onOpenChange={setNovaAberta}
+        onConectada={(c) => {
+          onMudou()
+          if (c.status === 'CONNECTING') setQrDe(c)
         }}
       />
 
-      {selectedConnectionForQR && (
-        <QRCodeDialog
-          connection={selectedConnectionForQR}
-          open={!!selectedConnectionForQR}
-          onOpenChange={(open) => !open && setSelectedConnectionForQR(null)}
-        />
+      <ConfirmDialog
+        open={!!desconectar}
+        onOpenChange={(aberto) => !aberto && setDesconectar(null)}
+        title="Desconectar número"
+        description={desconectar
+          ? `${nomeDaConexao(desconectar)} deixa de receber e enviar mensagens pelo Sirius. As conversas ficam no inbox. Para voltar, conecte de novo com as credenciais do integrador.`
+          : ''}
+        confirmLabel="Desconectar número"
+        onConfirm={() => {
+          if (desconectar) handleDesconectar(desconectar)
+          setDesconectar(null)
+        }}
+      />
+
+      {qrDe && (
+        <QRCodeDialog connection={qrDe} open={!!qrDe} onOpenChange={(aberto) => !aberto && setQrDe(null)} onConectado={onMudou} />
       )}
     </div>
   )

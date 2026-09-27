@@ -6,6 +6,7 @@ import { DashboardTabsWrapper } from "@/components/dashboard/dashboard-tabs-wrap
 import { DashboardTabsSkeleton } from "@/components/skeletons/dashboard-tabs-skeleton"
 import { getSession } from "@/lib/auth"
 import { prisma } from "@/lib/prisma"
+import { prismaWa } from "@/lib/prisma-wa"
 import { ValueSearch } from "./analytics/value-search"
 import { ContactSearch } from "./analytics/contact-search"
 import { getTranslations } from "next-intl/server"
@@ -91,7 +92,12 @@ export default async function DashboardPage({
 
     const shouldShowOnboarding =
       !user.onboarding || user.onboarding.status === "IN_PROGRESS"
-    const hasWhatsApp = Boolean(user.organization?.wabaEnabled || user.organization?.evolutionEnabled)
+    // The welcome modal is the only reader, so the integrator lookup (spec 012) runs only while it can show
+    const hasWhatsApp = Boolean(user.organization?.wabaEnabled || user.organization?.evolutionEnabled) ||
+      (shouldShowOnboarding && !!(await prismaWa.whatsAppConnection.findFirst({
+        where: { organizationId: user.organizationId, provider: { not: null }, apiKey: { not: null } },
+        select: { id: true },
+      }).catch(() => null)))
 
     return (
       <OnboardingWrapper

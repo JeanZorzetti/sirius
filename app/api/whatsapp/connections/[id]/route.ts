@@ -1,75 +1,69 @@
 /**
  * API Route: /api/whatsapp/connections/[id]
  *
- * DELETE: Remove conexão WhatsApp
+ * GET: one integrator connection of the account (spec 012), without credentials.
+ * DELETE: the owner or manager disconnects it. Messages stay (FR-028); credentials, secret and instance key go.
  */
 
-import { NextRequest, NextResponse } from 'next/server'
-import { getSession } from '@/lib/auth'
-import { prisma } from '@/lib/prisma'
+import { NextResponse } from 'next/server'
 import { prismaWa } from '@/lib/prisma-wa'
-import logger from '@/lib/logger'
+import { getSession } from '@/lib/auth'
 import { apiError } from '@/lib/api-error'
 import { ERR } from '@/lib/error-messages'
+import logger from '@/lib/logger'
+import { autorizarConfiguracao, carregarAcesso } from '@/lib/visibilidade'
+import { adaptador } from '@/lib/whatsapp/integradores'
+import { SELECT_PUBLICO, carregarConexao, paraPublica } from '@/lib/whatsapp/integradores/conexao'
+import { mudarEstado } from '@/lib/whatsapp/integradores/estado'
+import { MOTIVO_DESCONECTADA_POR } from '@/lib/whatsapp/integradores/tipos'
 
-/**
- * DELETE /api/whatsapp/connections/[id]
- * Deleta uma conexão WhatsApp (logout + remove do banco + deleta instância)
- */
-export async function DELETE(
-  req: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
-) {
-  try {
-    const { id } = await params
+type Contexto = { params: Promise<{ id: string }> }
 
-    // 1. Authentication
-    const session = await getSession()
-    if (!session?.user) {
-      return await apiError(ERR.UNAUTHORIZED, 401, { req })
-    }
+const naoEncontrada = () => NextResponse.json({ error: 'Conexão não encontrada.' }, { status: 404 })
 
-    // 2. Get user with organization
-    const user = await prisma.user.findUnique({
-      where: { id: session.user.id },
-      select: { organizationId: true },
-    })
+export async function GET(_req: Request, { params }: Contexto) {
+  const { id } = await params
+  const session = await getSession()
+  if (!session?.user?.email) return await apiError(ERR.UNAUTHORIZED, 401)
+  const acesso = await carregarAcesso({ email: session.user.email })
+  if (!acesso) return await apiError(ERR.USER_NOT_FOUND, 404)
 
-    if (!user?.organizationId) {
-      return await apiError(ERR.ORG_NOT_FOUND, 404, { req })
-    }
+  const linha = await prismaWa.whatsAppConnection.findFirst({
+    where: { id, organizationId: acesso.organizationId, provider: { not: null } },
+    select: SELECT_PUBLICO,
+  })
+  return linha ? NextResponse.json(paraPublica(linha)) : naoEncontrada()
+}
 
-    // 3. Get connection
-    const connection = await prismaWa.whatsAppConnection.findFirst({
-      where: {
-        id,
-        organizationId: user.organizationId,
-      },
-    })
+export async function DELETE(_req: Request, { params }: Contexto) {
+  const { id } = await params
+  const acesso = await autorizarConfiguracao()
+  if (acesso instanceof Response) return acesso
+  const { organizationId } = acesso
 
-    if (!connection) {
-      return await apiError(ERR.CONNECTION_NOT_FOUND, 404, { req })
-    }
+  const carregada = await carregarConexao(organizationId, id)
+  if (!carregada || !carregada.linha.provider) return naoEncontrada()
+  const { linha, credenciais } = carregada
 
-    // 4. Delete from database (the QR gateway was discontinued; nothing to
-    // tear down remotely)
-    await prismaWa.whatsAppConnection.delete({
-      where: { id: connection.id },
-    })
-
-    logger.info({
-      connectionId: connection.id,
-      instanceName: connection.instanceName,
-    }, 'Connection deleted')
-
-    return NextResponse.json({
-      message: 'Connection deleted successfully',
-    })
-  } catch (error: any) {
-    logger.error({ error }, 'Error deleting connection')
-    return NextResponse.json(
-      { error: 'Failed to delete connection' },
-      { status: 500 }
-    )
+  if (credenciais) {
+    await adaptador(credenciais.provider)
+      .desligarAviso(credenciais)
+      .catch((erro) => logger.warn({ connectionId: id, erro: String(erro) }, 'integrator notice not turned off on disconnect'))
   }
+
+  const apagar = { apiKey: null, webhookSegredoHash: null, instanciaChave: null }
+  const motivo = `${MOTIVO_DESCONECTADA_POR} ${acesso.nome ?? 'um gestor da conta'}`
+  // No notification: the owner did it (T067)
+  const mudou = await mudarEstado(linha, 'DISCONNECTED', motivo, { dados: apagar, notificar: false })
+  if (!mudou) {
+    // already DISCONNECTED, or changed meanwhile: the credentials go anyway
+    await prismaWa.whatsAppConnection.updateMany({
+      where: { id, organizationId },
+      data: { ...apagar, status: 'DISCONNECTED', statusMotivo: motivo, statusMudouEm: new Date() },
+    })
+  }
+
+  const atual = await prismaWa.whatsAppConnection.findFirst({ where: { id, organizationId }, select: SELECT_PUBLICO })
+  logger.info({ organizationId, connectionId: id }, 'WhatsApp integrator disconnected by the owner')
+  return NextResponse.json(paraPublica(atual ?? linha))
 }

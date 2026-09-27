@@ -1,0 +1,13 @@
+{
+  "instanceId": "REDACTED",
+  "status": "RECEIVED",
+  "ids": [
+    "3EB0SIRIUS01",
+    "3EB0SIRIUS02"
+  ],
+  "momment": 1790000004000,
+  "phoneDevice": 0,
+  "phone": "5511987654321",
+  "type": "MessageStatusCallback",
+  "isGroup": false
+}

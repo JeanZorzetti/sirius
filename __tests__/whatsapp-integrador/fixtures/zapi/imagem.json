@@ -1,0 +1,33 @@
+{
+  "isStatusReply": false,
+  "chatLid": "81896604192873@lid",
+  "connectedPhone": "5511999990000",
+  "waitingMessage": false,
+  "isEdit": false,
+  "isGroup": false,
+  "isNewsletter": false,
+  "instanceId": "REDACTED",
+  "messageId": "3EB0ZAPI0002",
+  "phone": "5511987654321",
+  "fromMe": false,
+  "momment": 1790000000000,
+  "status": "RECEIVED",
+  "chatName": "Maria",
+  "senderPhoto": null,
+  "senderName": "Maria Souza",
+  "participantPhone": null,
+  "participantLid": null,
+  "photo": null,
+  "broadcast": false,
+  "type": "ReceivedCallback",
+  "fromApi": false,
+  "image": {
+    "mimeType": "image/jpeg",
+    "imageUrl": "https://storage.z-api.io/instances/REDACTED/foto.jpeg",
+    "thumbnailUrl": "https://storage.z-api.io/t.jpeg",
+    "caption": "segue a foto",
+    "width": 600,
+    "height": 315,
+    "viewOnce": false
+  }
+}

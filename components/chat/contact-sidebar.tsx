@@ -13,6 +13,7 @@ import { cn } from '@/lib/utils'
 import { formatCurrency, formatDate, formatPhone } from '@/lib/format'
 import Link from 'next/link'
 import { useTranslations } from 'next-intl'
+import { CompletarTelefone } from '@/components/contacts/completar-telefone'
 
 interface Tag {
   id: string
@@ -154,6 +155,11 @@ export function ContactSidebar({ contact, onClose, onChatCleared }: ContactSideb
           </h2>
           {phone && (
             <p className="text-[13px] text-muted-foreground mb-2">{phone}</p>
+          )}
+          {!contact.phone && (
+            <div className="my-3">
+              <CompletarTelefone contactId={contact.id} />
+            </div>
           )}
           <p className="text-[12px] text-muted-foreground">
             {contact._count.whatsappMessages} {contact._count.whatsappMessages === 1 ? 'mensagem' : 'mensagens'}

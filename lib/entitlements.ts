@@ -171,7 +171,7 @@ export const PLAN_LIMITS: Record<SubscriptionTier, PlanLimits> = {
     maxUsers: 5,
     scrapingCreditsMonthly: 75,
     maxScrapingPerSearch: 75,
-    maxWhatsAppInstances: 0,
+    maxWhatsAppInstances: 1,
     maxEmailAutomations: 5,
     maxSequences: 5,
     allowedIntegrations: ['google-calendar', 'n8n'],
@@ -208,7 +208,7 @@ export const PLAN_LIMITS: Record<SubscriptionTier, PlanLimits> = {
     maxUsers: 15,
     scrapingCreditsMonthly: 300,
     maxScrapingPerSearch: 150,
-    maxWhatsAppInstances: 0,
+    maxWhatsAppInstances: 2,
     maxEmailAutomations: 15,
     maxSequences: 15,
     allowedIntegrations: ['google-calendar', 'n8n', 'webhook', 'zapier'],
@@ -443,7 +443,7 @@ export const PLAN_FEATURES: Record<SubscriptionTier, {
     scraping_initial_credits: 75,
     can_use_automation: true,
     can_use_agi: true,
-    can_use_chat_interface: false,
+    can_use_chat_interface: true, // spec 012: WhatsApp through the integrator
     can_use_round_robin: false,
     can_use_team_reports: false,
     can_use_task_kanban: true,
@@ -468,7 +468,7 @@ export const PLAN_FEATURES: Record<SubscriptionTier, {
     scraping_initial_credits: 300,
     can_use_automation: true,
     can_use_agi: true,
-    can_use_chat_interface: false,
+    can_use_chat_interface: true, // spec 012: WhatsApp through the integrator
     can_use_round_robin: false,
     can_use_team_reports: true,
     can_use_task_kanban: true,
@@ -1032,15 +1032,18 @@ export async function getScrapingCreditsStatus(organizationId: string) {
  * Verifica se uma organização pode criar mais instâncias WhatsApp
  */
 export async function checkWhatsAppInstanceLimit(
-  organizationId: string
-): Promise<boolean> {
+  organizationId: string,
+  /** A row being reused by a reconnection: it does not count against itself */
+  reusadaId?: string | null
+): Promise<{ limite: number; usadas: number; cabe: boolean }> {
   const { prismaWa } = await import('@/lib/prisma-wa')
 
   const org = await prisma.organization.findUnique({
     where: { id: organizationId },
     select: {
       tier: true,
-      whatsappInstances: true,
+      trialEndsAt: true,
+      trialStatus: true,
       addons: {
         where: {
           type: 'WHATSAPP_EXTRA_INSTANCE',
@@ -1055,20 +1058,23 @@ export async function checkWhatsAppInstanceLimit(
     throw new Error('Organization not found')
   }
 
-  // Calcular limite total
-  const baseLimit = org.whatsappInstances
-  const addonInstances = org.addons.reduce(
-    (sum, addon) => sum + addon.quantity,
-    0
-  )
-  const totalLimit = baseLimit + addonInstances
+  // Spec 012 (research R9): the effective plan (the 7-day trial counts as Pro) plus active add-ons. Not
+  // Organization.whatsappInstances, which already grows by one per add-on and would count it twice.
+  const limite =
+    PLAN_LIMITS[getEffectiveTier(org)].maxWhatsAppInstances +
+    org.addons.reduce((sum, addon) => sum + addon.quantity, 0)
 
-  // Contar instâncias atuais (from WA DB)
-  const currentCount = await prismaWa.whatsAppConnection.count({
-    where: { organizationId },
+  // Only integrator connections holding credentials: legacy gateway rows and owner-disconnected ones do not count
+  const usadas = await prismaWa.whatsAppConnection.count({
+    where: {
+      organizationId,
+      provider: { not: null },
+      apiKey: { not: null },
+      ...(reusadaId ? { NOT: { id: reusadaId } } : {}),
+    },
   })
 
-  return currentCount < totalLimit
+  return { limite, usadas, cabe: usadas < limite }
 }
 
 /**

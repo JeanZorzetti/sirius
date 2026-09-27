@@ -17,7 +17,9 @@ import { Composer } from './composer'
 import { MessageBubble, buildMessageMenuItems } from './message-bubble'
 import { WindowBanners, type WindowStatus } from './window-banners'
 import { useChatMessages } from './use-chat-messages'
-import { useSendMessage } from './use-send-message'
+import { ROTA_OFICIAL, useSendMessage } from './use-send-message'
+import { ROTULO_ESTADO, nomeDaConexao, nomeDoIntegrador } from '../conexao-ui'
+import { pediuParaParar } from '@/lib/whatsapp/integradores/travas'
 import { useAudioRecording } from './use-audio-recording'
 import { useAIDraft } from './use-ai-draft'
 
@@ -28,7 +30,9 @@ export { MessageBubble }
 // consumed here (it never was — kept to avoid touching the call sites)
 export function MessageArea({ contact, connections, organizationId, userName, onContactUpdate, onBack, wabaEnabled = false }: MessageAreaProps) {
   const [text, setText] = useState('')
-  const [conn, setConn] = useState(connections[0]?.id||'')
+  // The number picked for a contact who never wrote, when the account has more than one (FR-018)
+  const [escolhida, setEscolhida] = useState('')
+  useEffect(() => setEscolhida(''), [contact.id])
   const [isSearchOpen, setIsSearchOpen] = useState(false)
   const [replyingTo, setReplyingTo] = useState<WhatsAppMessage | null>(null)
   const [showSidebar, setShowSidebar] = useState(false)
@@ -56,8 +60,21 @@ export function MessageArea({ contact, connections, organizationId, userName, on
     scrollToBottom, scrollToMessage,
   } = useChatMessages({ contactId: contact.id, contactPhone: contact.phone, organizationId })
 
+  // The reply goes out through the connection the contact last wrote to (FR-018): a null connectionId is the
+  // official API. A contact who never wrote may be reached by any number of the account.
+  const ultima = contact.whatsappMessages?.[0]
+  const daConversa = ultima ? (ultima.connectionId ?? ROTA_OFICIAL) : null
+  const conectadas = connections.filter(c => c.status === 'CONNECTED')
+  const opcoes = [
+    ...(wabaEnabled ? [{ id: ROTA_OFICIAL, rotulo: 'API oficial' }] : []),
+    ...conectadas.map(c => ({ id: c.id, rotulo: `${nomeDaConexao(c)} (${nomeDoIntegrador(c)})` })),
+  ]
+  const padrao = wabaEnabled ? ROTA_OFICIAL : conectadas.length === 1 ? conectadas[0].id : ''
+  const rota = daConversa ?? (escolhida || padrao)
+  const viaOficial = rota === ROTA_OFICIAL
+
   const { sending, sendText, sendMedia, sendAudio } = useSendMessage({
-    contactId: contact.id, conn, wabaEnabled, setMessages, scrollToBottom,
+    contactId: contact.id, rota, setMessages, scrollToBottom,
   })
 
   const { isRecording, recordingTime, startRecording, cancelRecording, sendRecording } =
@@ -91,7 +108,7 @@ export function MessageArea({ contact, connections, organizationId, userName, on
 
   // Fetch 24h window status — only relevant for WABA
   useEffect(() => {
-    if (!wabaEnabled) {
+    if (!viaOficial) {
       setWindowStatus(null)
       return
     }
@@ -109,7 +126,7 @@ export function MessageArea({ contact, connections, organizationId, userName, on
     // of messages will reset the window anyway.
     const interval = setInterval(fetchStatus, 120_000)
     return () => { cancelled = true; clearInterval(interval) }
-  }, [contact.id, wabaEnabled, messages.length])
+  }, [contact.id, viaOficial, messages.length])
 
   // Buscar usuários da organização
   useEffect(() => {
@@ -161,8 +178,7 @@ export function MessageArea({ contact, connections, organizationId, userName, on
 
   // ── Send handlers ───────────────────────────────────────────
   const handleSend = async () => {
-    if (!text.trim()) return
-    if (!wabaEnabled && !conn) return
+    if (!text.trim() || !rota) return
     const messageText = text.trim()
     const replyingToMsg = replyingTo
     setText('')
@@ -195,7 +211,7 @@ export function MessageArea({ contact, connections, organizationId, userName, on
   }
 
   const handleSendMedia = async () => {
-    if (!pendingFile || (!wabaEnabled && !conn)) return
+    if (!pendingFile || !rota) return
     const caption = text.trim()
     // Kick off the send first (optimistic bubble is added synchronously
     // inside), then clear the composer — same ordering as before
@@ -206,9 +222,22 @@ export function MessageArea({ contact, connections, organizationId, userName, on
   }
 
   const handleSendRecording = async () => {
-    if (!wabaEnabled && !conn) return
+    if (!rota) return
     await sendRecording()
   }
+
+  // Why this conversation cannot send now: its connection dropped, or the contact asked to stop (FR-022)
+  const conexaoDaRota = viaOficial ? null : connections.find(c => c.id === rota)
+  const ultimaEntrada = [...messages].reverse().find(m => m.direction === 'INBOUND')
+  const bloqueio = !rota || viaOficial
+    ? null
+    : !conexaoDaRota
+      ? 'Esta conversa chegou por uma conexão antiga, que foi descontinuada. Conecte o número por um integrador para responder.'
+      : conexaoDaRota.status !== 'CONNECTED'
+        ? `Esta conversa chegou por ${nomeDaConexao(conexaoDaRota)} (${nomeDoIntegrador(conexaoDaRota)}), que está ${ROTULO_ESTADO[conexaoDaRota.status].toLowerCase()}${conexaoDaRota.statusMotivo ? `: ${conexaoDaRota.statusMotivo}` : ''}. As respostas voltam a sair quando a conexão voltar.`
+        : pediuParaParar(ultimaEntrada?.text)
+          ? 'O contato pediu para parar (mandou "SAIR"). O envio volta quando ele escrever de novo.'
+          : null
 
   const name = getName(contact)
   const sub = getSub(contact)
@@ -283,9 +312,6 @@ export function MessageArea({ contact, connections, organizationId, userName, on
           onToggleSidebar={toggleSidebar}
           isSearchOpen={isSearchOpen}
           onToggleSearch={() => setIsSearchOpen(!isSearchOpen)}
-          connections={connections}
-          conn={conn}
-          onConnChange={setConn}
           onBack={onBack}
         />
 
@@ -328,7 +354,7 @@ export function MessageArea({ contact, connections, organizationId, userName, on
         />
 
         {/* 24h WABA window banners (closed / closing soon) */}
-        {wabaEnabled && (
+        {viaOficial && (
           <WindowBanners
             windowStatus={windowStatus}
             onOpenTemplate={() => setShowTemplateModal(true)}
@@ -364,7 +390,9 @@ export function MessageArea({ contact, connections, organizationId, userName, on
           onCancelFile={cancelFile}
           onSend={handleSend}
           onSendMedia={handleSendMedia}
-          wabaEnabled={wabaEnabled}
+          wabaEnabled={viaOficial}
+          bloqueio={bloqueio}
+          escolhaNumero={!daConversa && opcoes.length > 1 ? { opcoes, valor: rota, onChange: setEscolhida } : null}
           aiDraftLoading={aiDraftLoading}
           onRequestAIDraft={() => requestAIDraft('default', '')}
           onOpenLocation={() => setShowLocationModal(true)}

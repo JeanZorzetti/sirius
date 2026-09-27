@@ -6,12 +6,23 @@
  * mudanças acidentais de pricing/limites.
  */
 
-import { describe, it, expect } from 'vitest'
+import { describe, it, expect, vi } from 'vitest'
+
+const m = vi.hoisted(() => ({
+  org: null as any,
+  prisma: { organization: { findUnique: vi.fn() } },
+  prismaWa: { whatsAppConnection: { count: vi.fn() } },
+}))
+vi.mock('@/lib/prisma', () => ({ prisma: m.prisma }))
+vi.mock('@/lib/prisma-wa', () => ({ prismaWa: m.prismaWa }))
+
 import {
   PLAN_FEATURES,
+  PLAN_LIMITS,
   getQuota,
   getLimit,
   canUseFeature,
+  checkWhatsAppInstanceLimit,
 } from '../entitlements'
 
 describe('Entitlements System', () => {
@@ -50,8 +61,8 @@ describe('Entitlements System', () => {
       expect(PLAN_FEATURES.PRO.can_use_agi).toBe(true)
       expect(PLAN_FEATURES.PRO.agi_monthly_quota).toBe(1000)
       expect(PLAN_FEATURES.PRO.scraping_monthly_credits).toBe(300)
-      // Chat WhatsApp (WABA) é exclusivo do BUSINESS
-      expect(PLAN_FEATURES.PRO.can_use_chat_interface).toBe(false)
+      // Spec 012: WhatsApp through the customer's integrator is on every paid plan
+      expect(PLAN_FEATURES.PRO.can_use_chat_interface).toBe(true)
     })
 
     it('should have correct BUSINESS tier limits', () => {
@@ -136,8 +147,8 @@ describe('Entitlements System', () => {
       expect(canUseFeature('PRO', 'can_use_automation')).toBe(true)
     })
 
-    it('should not allow PRO tier to use chat interface (BUSINESS-only)', () => {
-      expect(canUseFeature('PRO', 'can_use_chat_interface')).toBe(false)
+    it('should allow PRO tier to use chat interface (integrator, spec 012)', () => {
+      expect(canUseFeature('PRO', 'can_use_chat_interface')).toBe(true)
     })
 
     it('should not allow PRO tier to use round robin', () => {
@@ -186,12 +197,48 @@ describe('Entitlements System', () => {
   })
 
   describe('WhatsApp feature progression', () => {
-    // whatsapp_type/whatsapp_instances saíram de PLAN_FEATURES na migração WABA.
-    it('should restrict chat_interface to BUSINESS', () => {
+    // Spec 012: chat on every paid plan (integrator); the official API stays on Business.
+    it('libera o chat em todo plano pago', () => {
       expect(PLAN_FEATURES.FREE.can_use_chat_interface).toBe(false)
-      expect(PLAN_FEATURES.STARTER.can_use_chat_interface).toBe(false)
-      expect(PLAN_FEATURES.PRO.can_use_chat_interface).toBe(false)
+      expect(PLAN_FEATURES.STARTER.can_use_chat_interface).toBe(true)
+      expect(PLAN_FEATURES.PRO.can_use_chat_interface).toBe(true)
       expect(PLAN_FEATURES.BUSINESS.can_use_chat_interface).toBe(true)
+    })
+
+    it('limite de conexões por plano: 0, 1, 2 e 5', () => {
+      expect(PLAN_LIMITS.FREE.maxWhatsAppInstances).toBe(0)
+      expect(PLAN_LIMITS.STARTER.maxWhatsAppInstances).toBe(1)
+      expect(PLAN_LIMITS.PRO.maxWhatsAppInstances).toBe(2)
+      expect(PLAN_LIMITS.BUSINESS.maxWhatsAppInstances).toBe(5)
+    })
+  })
+
+  describe('checkWhatsAppInstanceLimit', () => {
+    const conta = (tier: string, extra: Record<string, unknown> = {}) => ({
+      tier, trialEndsAt: null, trialStatus: null, whatsappInstances: 3, addons: [], ...extra,
+    })
+
+    it('limite = plano efetivo + add-ons ativos, somados uma vez só (sem Organization.whatsappInstances)', async () => {
+      m.prisma.organization.findUnique.mockResolvedValue(conta('STARTER', { addons: [{ quantity: 2 }] }))
+      m.prismaWa.whatsAppConnection.count.mockResolvedValue(2)
+      expect(await checkWhatsAppInstanceLimit('org-a')).toEqual({ limite: 3, usadas: 2, cabe: true })
+    })
+
+    it('o teste de 7 dias conta como Pro, e o Free não conecta', async () => {
+      m.prismaWa.whatsAppConnection.count.mockResolvedValue(0)
+      m.prisma.organization.findUnique.mockResolvedValue(conta('FREE', { trialEndsAt: new Date(Date.now() + 86_400_000) }))
+      expect((await checkWhatsAppInstanceLimit('org-a')).limite).toBe(2)
+      m.prisma.organization.findUnique.mockResolvedValue(conta('FREE'))
+      expect(await checkWhatsAppInstanceLimit('org-a')).toEqual({ limite: 0, usadas: 0, cabe: false })
+    })
+
+    it('conta só conexões por integrador com credencial, e não conta a linha reusada', async () => {
+      m.prisma.organization.findUnique.mockResolvedValue(conta('PRO'))
+      m.prismaWa.whatsAppConnection.count.mockResolvedValue(2)
+      expect((await checkWhatsAppInstanceLimit('org-a', 'conn-1')).cabe).toBe(false)
+      expect(m.prismaWa.whatsAppConnection.count).toHaveBeenCalledWith({
+        where: { organizationId: 'org-a', provider: { not: null }, apiKey: { not: null }, NOT: { id: 'conn-1' } },
+      })
     })
   })
 

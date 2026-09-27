@@ -17,14 +17,14 @@
  *   (each org can also set their own wabaWebhookVerifyToken)
  */
 
-import { NextResponse } from 'next/server'
+import { NextResponse, after } from 'next/server'
 import { prisma } from '@/lib/prisma'
-import { prismaWa } from '@/lib/prisma-wa'
 import { logWabaActivity, getWhatsAppOfficialClient } from '@/lib/integrations/whatsapp-official-client'
 import { decrypt } from '@/lib/encryption'
 import { assinaturaMetaValida } from '@/lib/meta-assinatura'
 import { triggerAgentsForInboundMessage, triggerAgentsForContactCreated } from '@/lib/agaas-agent-trigger'
-import { uploadMedia } from '@/lib/storage'
+import { avancarStatus, registrarEntrada } from '@/lib/whatsapp/entrada'
+import type { TipoMidia } from '@/lib/whatsapp/integradores/tipos'
 import logger from '@/lib/logger'
 
 // ─── GET: Meta webhook verification challenge ─────────────────────────────────
@@ -106,26 +106,27 @@ export async function POST(request: Request) {
       orgPorWaba.set(String(entry.id), { id: org.id })
     }
 
-    for (const entry of body.entry ?? []) {
-      const org = orgPorWaba.get(String(entry.id))
-      if (!org) continue
+    // Answer first and process after the response (FR-011): Meta must not wait on media downloads or agents
+    after(async () => {
+      for (const entry of body.entry ?? []) {
+        const org = orgPorWaba.get(String(entry.id))
+        if (!org) continue
 
-      for (const change of entry.changes ?? []) {
-        if (change.field !== 'messages') continue
+        for (const change of entry.changes ?? []) {
+          if (change.field !== 'messages') continue
 
-        const value = change.value
+          const value = change.value
 
-        // Handle incoming messages
-        for (const message of value.messages ?? []) {
-          await handleIncomingMessage(org.id, message, value.contacts?.[0])
-        }
+          for (const message of value.messages ?? []) {
+            await handleIncomingMessage(org.id, message, value.contacts?.[0])
+          }
 
-        // Handle status updates
-        for (const status of value.statuses ?? []) {
-          await handleStatusUpdate(org.id, status)
+          for (const status of value.statuses ?? []) {
+            await handleStatusUpdate(org.id, status)
+          }
         }
       }
-    }
+    })
 
     // Always return 200 to prevent Meta from retrying
     return NextResponse.json({ status: 'ok' })
@@ -197,47 +198,10 @@ async function handleIncomingMessage(
       text = `[${message.type}]`
     }
 
-    const contactName: string = metaContact?.profile?.name ?? from
-
     logger.info(
-      { organizationId, from, messageId, type: message.type },
+      { organizationId, messageId, type: message.type },
       'WhatsApp Official: incoming message'
     )
-
-    // Idempotency — skip if already processed
-    const existing = await prismaWa.whatsAppMessage.findFirst({
-      where: { organizationId, messageId },
-      select: { id: true }
-    })
-    if (existing) return
-
-    // Find or create CRM contact by phone number
-    const phoneDigits = from.replace(/\D/g, '')
-    let contact = await prisma.contact.findFirst({
-      where: {
-        organizationId,
-        phone: { contains: phoneDigits.slice(-9) }, // match last 9 digits to handle format variations
-      },
-      select: { id: true, name: true }
-    })
-
-    if (!contact) {
-      contact = await prisma.contact.create({
-        data: {
-          organizationId,
-          name: contactName,
-          phone: `+${phoneDigits}`,
-        },
-        select: { id: true, name: true }
-      })
-      logger.info({ organizationId, contactId: contact.id, phone: from }, 'WhatsApp Official: created new contact')
-      triggerAgentsForContactCreated({
-        organizationId,
-        contactId: contact.id,
-        contactName: contactName,
-        contactPhone: `+${phoneDigits}`,
-      }).catch(err => logger.error({ err }, 'WABA ContactEnricher trigger failed'))
-    }
 
     // Prefix interactive replies with the button/list id so downstream
     // consumers can route on it without needing a schema migration.
@@ -245,43 +209,44 @@ async function handleIncomingMessage(
       ? `[btn:${interactiveReplyId}] ${text}`
       : text
 
-    // Save message to WA DB (no connectionId — WABA doesn't use WhatsAppConnection records)
-    const saved = await prismaWa.whatsAppMessage.create({
-      data: {
-        organizationId,
+    // The shared inbound path (spec 012): contact by phone key, dedup by create + P2002, media to our storage.
+    // connectionId null marks the official API.
+    const salva = await registrarEntrada(
+      organizationId,
+      null,
+      {
+        tipo: 'mensagem',
         messageId,
-        remoteJid: from,
-        text: persistedText,
-        direction: 'INBOUND',
-        status: 'DELIVERED',
-        isRead: false,
-        contactId: contact.id,
-        sentAt: timestamp,
-        ...(mediaType ? { mediaType } : {}),
-      }
-    })
-    logger.info({ organizationId, messageDbId: saved.id, contactId: contact.id }, 'WhatsApp Official: message saved to WA DB')
+        jid: from,
+        telefone: from,
+        nomePerfil: metaContact?.profile?.name ?? null,
+        fromMe: false,
+        enviadaEm: timestamp,
+        texto: persistedText,
+        midia: mediaId && mediaType ? { tipo: mediaType as TipoMidia | 'sticker', ref: { messageId: mediaId } } : null,
+      },
+      mediaId ? () => baixarMidiaOficial(organizationId, mediaId!) : undefined,
+      mediaType ? { mediaType } : {},
+    )
+    if (!salva) return // already processed
 
-    // Download media in background — don't await, webhook must return fast
-    if (mediaId && mediaType) {
-      downloadAndCacheWabaMedia({
+    // The AI agents fire only on the official path
+    if (salva.contatoNovo) {
+      triggerAgentsForContactCreated({
         organizationId,
-        messageDbId: saved.id,
-        messageId,
-        mediaId,
-        mediaType,
-        contactId: contact.id,
-      }).catch(err => logger.error({ err, mediaId }, 'WABA media background download failed'))
+        contactId: salva.contactId,
+        contactName: salva.contactName,
+        contactPhone: `+${from.replace(/\D/g, '')}`,
+      }).catch(err => logger.error({ err }, 'WABA ContactEnricher trigger failed'))
     }
 
-    // Trigger IA agents in background — for text messages and interactive replies
     if ((message.type === 'text' || message.type === 'interactive') && text.trim()) {
       triggerAgentsForInboundMessage({
         organizationId,
-        contactId: contact.id,
-        messageId: saved.id,
+        contactId: salva.contactId,
+        messageId: salva.mensagemId,
         messageText: text, // Use raw title without [btn:ID] prefix for LLM context
-        contactName: contact.name || contactName,
+        contactName: salva.contactName,
         contactPhone: from,
       }).catch(err => logger.error({ err }, 'WABA agent trigger failed'))
     }
@@ -299,49 +264,11 @@ async function handleIncomingMessage(
   }
 }
 
-async function downloadAndCacheWabaMedia({
-  organizationId,
-  messageDbId,
-  messageId,
-  mediaId,
-  mediaType,
-  contactId,
-}: {
-  organizationId: string
-  messageDbId: string
-  messageId: string
-  mediaId: string
-  mediaType: string
-  contactId: string
-}) {
-  try {
-    const client = await getWhatsAppOfficialClient(organizationId)
-    if (!client) {
-      logger.warn({ organizationId, messageDbId }, 'WABA media download skipped: no WABA client')
-      return
-    }
-
-    const { buffer, mimeType } = await client.downloadMedia(mediaId)
-    logger.info({ organizationId, messageDbId, mediaType, mimeType, bytes: buffer.length }, 'WABA media downloaded from Meta')
-
-    const key = await uploadMedia({
-      orgId: organizationId,
-      contactId,
-      messageId: messageDbId,
-      buffer,
-      mimetype: mimeType,
-    })
-
-    // isolamento: messageDbId is the message this webhook saved a moment ago for this organization
-    await prismaWa.whatsAppMessage.update({
-      where: { id: messageDbId },
-      data: { mediaUrl: key, mediaType },
-    })
-
-    logger.info({ organizationId, messageDbId, mediaType, mimeType, key }, 'WABA media cached to MinIO')
-  } catch (err: any) {
-    logger.error({ err: err.message, stack: err.stack, organizationId, messageDbId, mediaId }, 'WABA media download/cache failed')
-  }
+async function baixarMidiaOficial(organizationId: string, mediaId: string) {
+  const client = await getWhatsAppOfficialClient(organizationId)
+  if (!client) throw new Error('no WABA client')
+  const { buffer, mimeType } = await client.downloadMedia(mediaId)
+  return { buffer, mimetype: mimeType }
 }
 
 async function handleStatusUpdate(organizationId: string, status: any) {
@@ -360,8 +287,8 @@ async function handleStatusUpdate(organizationId: string, status: any) {
       )
     }
 
-    // Map Meta status to our enum
-    const statusMap: Record<string, string> = {
+    // Map Meta status to our enum; the state only moves forward (FR-016)
+    const statusMap: Record<string, 'SENT' | 'DELIVERED' | 'READ' | 'FAILED'> = {
       sent: 'SENT',
       delivered: 'DELIVERED',
       read: 'READ',
@@ -370,13 +297,9 @@ async function handleStatusUpdate(organizationId: string, status: any) {
     const newStatus = statusMap[deliveryStatus]
     if (!newStatus) return
 
-    const updateData: any = { status: newStatus }
-    if (deliveryStatus === 'delivered') updateData.deliveredAt = new Date(parseInt(timestamp) * 1000)
-    if (deliveryStatus === 'read') updateData.readAt = new Date(parseInt(timestamp) * 1000)
-
-    await prismaWa.whatsAppMessage.updateMany({
-      where: { organizationId, messageId },
-      data: updateData,
+    await avancarStatus(organizationId, [messageId], newStatus, {
+      em: new Date(parseInt(timestamp) * 1000),
+      erro: status.errors?.[0]?.title ?? null,
     })
 
     await logWabaActivity(

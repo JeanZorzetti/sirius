@@ -48,6 +48,7 @@ import { useTranslations } from 'next-intl'
 import { addContactClosing, removeContactClosing, updateContactObservations, deleteContact } from '@/app/[locale]/dashboard/contacts/actions'
 import { toast } from 'sonner'
 import { useRouter } from 'next/navigation'
+import { CompletarTelefone } from './completar-telefone'
 
 const STATUS_BADGE: Record<string, { bg: string; text: string; dot: string }> = {
   active:      { bg: 'bg-emerald-500/20', text: 'text-emerald-100', dot: 'bg-emerald-400' },
@@ -351,6 +352,7 @@ export function ContactProfileModal({ contact, open, onOpenChange, onEdit, onDel
                         <SectionTitle>Contato</SectionTitle>
                         <div className="space-y-3">
                             <InfoRow icon={Phone} label="Telefone" value={contact.phone} href={phone ? `tel:+${phone}` : undefined} />
+                            {!contact.phone && <CompletarTelefone contactId={contact.id} />}
                             <InfoRow icon={Mail} label="Email" value={contact.email} href={contact.email ? `mailto:${contact.email}` : undefined} />
                             <InfoRow icon={Building2} label="Empresa" value={contact.company} />
                         </div>

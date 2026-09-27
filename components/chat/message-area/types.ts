@@ -42,14 +42,12 @@ export interface Contact {
   notes?: Note[]
   chatConversation?: ChatConversation | null
   _count?: { whatsappMessages: number }
+  /** The latest message, from the conversation list: its connectionId says which connection the reply goes out by */
+  whatsappMessages?: Array<{ connectionId?: string | null }>
 }
 
-export interface Connection {
-  id: string
-  instanceName: string
-  displayName?: string | null
-  phoneNumber: string | null
-}
+import type { ConexaoPublica } from '../conexao-ui'
+export type Connection = ConexaoPublica
 
 export interface Reaction {
   emoji: string
@@ -63,6 +61,9 @@ export interface WhatsAppMessage {
   mediaUrl: string | null; mediaType: string | null; messageId?: string
   replyToId?: string | null; replyToText?: string | null
   reactions?: Reaction[]
+  /** Why sending failed; the bubble shows "não enviada · <erro>" */
+  erro?: string | null
+  connectionId?: string | null
 }
 
 export interface MessageAreaProps {

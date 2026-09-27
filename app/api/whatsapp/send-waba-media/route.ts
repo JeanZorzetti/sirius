@@ -1,14 +1,9 @@
-﻿/**
+/**
  * POST /api/whatsapp/send-waba-media
  * Send audio/image/document via WhatsApp Official API (Meta Cloud API).
  * Accepts multipart/form-data with: file, contactId, [caption], [ptt], [duration]
  */
 import { NextRequest, NextResponse } from 'next/server'
-import { exec } from 'child_process'
-import { promisify } from 'util'
-import { writeFile, readFile, unlink } from 'fs/promises'
-import { tmpdir } from 'os'
-import { join } from 'path'
 import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { prismaWa } from '@/lib/prisma-wa'
@@ -17,26 +12,7 @@ import { uploadMedia } from '@/lib/storage'
 import logger from '@/lib/logger'
 import { apiError } from '@/lib/api-error'
 import { ERR } from '@/lib/error-messages'
-
-const execAsync = promisify(exec)
-
-/**
- * Convert WebM/Opus audio to OGG/Opus using ffmpeg.
- * Meta accepts audio/ogg but not audio/webm.
- */
-async function convertWebmToOgg(inputBuffer: Buffer): Promise<Buffer> {
-  const id = `${Date.now()}_${Math.random().toString(36).slice(2, 6)}`
-  const inputPath = join(tmpdir(), `wa_in_${id}.webm`)
-  const outputPath = join(tmpdir(), `wa_out_${id}.ogg`)
-  try {
-    await writeFile(inputPath, inputBuffer)
-    await execAsync(`ffmpeg -y -i "${inputPath}" -c:a libopus -b:a 64k "${outputPath}"`)
-    return await readFile(outputPath)
-  } finally {
-    await unlink(inputPath).catch(() => {})
-    await unlink(outputPath).catch(() => {})
-  }
-}
+import { convertWebmToOgg } from '@/lib/whatsapp/audio'
 
 function getMediaCategory(mimeType: string): 'audio' | 'image' | 'document' {
   if (mimeType.startsWith('audio/')) return 'audio'

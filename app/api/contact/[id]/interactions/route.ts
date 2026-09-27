@@ -64,8 +64,9 @@ export async function GET(
       where: {
         contactId: id,
         organizationId: user.organizationId,
+        // The account's connections plus the official API (connectionId null): an account may have both (spec 012)
         ...(orgConnectionIds.length > 0
-          ? { connectionId: { in: orgConnectionIds } }
+          ? { OR: [{ connectionId: { in: orgConnectionIds } }, { connectionId: null }] }
           : {}),
       },
       orderBy: {
@@ -85,6 +86,8 @@ export async function GET(
         mediaType: true,
         replyToId: true,
         replyToText: true,
+        erro: true,
+        connectionId: true,
         reactions: true
       },
     })
