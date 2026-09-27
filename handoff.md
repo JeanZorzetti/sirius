@@ -7,12 +7,13 @@
     - a cota de IA usa `getQuotaTier`, que dá a cota do Starter durante o teste (decisão do dono).
   - `getOrganizationEntitlements().tier` continua sendo o plano que o cliente paga.
   - Bloqueio novo deve usar `getEffectiveTier`. A contagem de clientes pagantes continua lendo `tier`.
-- **O E2E roda contra um Postgres real (`ca8a3ca`).** Roda no Chromium com 2 workers, em cerca de 4 minutos, e 105
-  testes passam.
-  - Os 4 specs de i18n esperam a reescrita do locale EN. Depois que passarem, tirar o `continue-on-error` de
-    `test-e2e` em `.github/workflows/ci.yml`.
-  - O job tem 2 referências a `prisma/whatsapp.prisma`. A renomeação para `prisma/wa/schema.prisma` precisa
-    atualizar as duas.
+- **O E2E roda contra um Postgres real e bloqueia o PR (`ca8a3ca`, `c8f96f4`).** Roda no Chromium com 2 workers,
+  em cerca de 4 minutos: 120 testes passam e nenhum falha. `test-e2e` entra no "All Checks Passed".
+  - O site é só em português. Os specs `so-portugues-*` garantem duas coisas:
+    - cada URL antiga em `/en` redireciona (308) para a página em português;
+    - os erros da API saem em português.
+  - O job tem 2 referências a `prisma/whatsapp.prisma`. A branch da spec 012 já troca as duas por
+    `prisma/wa/schema.prisma`.
   - Pulados de propósito, com o motivo escrito em cada spec:
     - rate limit, que precisa do Upstash;
     - criação de webhook, que precisa do Svix;
