@@ -29,7 +29,7 @@ export const post: BlogPost = {
         <p style="margin: 0 0 0.75rem; font-weight: 700; font-size: 1.05rem; color: var(--primary-foreground);">⚡ Resposta rápida</p>
         <ul style="margin: 0; padding-left: 1.25rem; line-height: 2; color: #ffffff;">
           <li><strong style="color: var(--primary-foreground);">Pipedrive</strong>: cobra por usuário, em dólar, a partir de US$ 14/usuário/mês (plano Lite, cobrança anual). Não tem plano gratuito, só teste de 14 dias.</li>
-          <li><strong style="color: var(--primary-foreground);">Sirius CRM</strong>: cobra por conta, em reais. Plano gratuito para sempre; pagos de R$ 67/mês (até 5 usuários) a R$ 397/mês (até 50 usuários).</li>
+          <li><strong style="color: var(--primary-foreground);">Sirius CRM</strong>: cobra por conta, em reais. Teste de 14 dias do Pro sem cartão; pagos de R$ 67/mês (até 5 usuários) a R$ 397/mês (até 50 usuários).</li>
           <li>Para um time de 5 pessoas: Sirius Starter R$ 67/mês no total; Pipedrive Lite 5 × US$ 14 = US$ 70/mês.</li>
         </ul>
       </div>
@@ -93,12 +93,12 @@ export const post: BlogPost = {
           <tbody>
             <tr style="background: var(--muted);">
               <td style="${TDL}">Plano gratuito</td>
-              <td style="${TDC}">✓ Para sempre: 2 usuários, 250 contatos, 100 negócios ativos, 1 funil</td>
+              <td style="${TDC}">✗ Depois do teste, somente leitura até assinar</td>
               <td style="${TDC}">✗ Só teste de 14 dias</td>
             </tr>
             <tr>
               <td style="${TDL}">Teste do plano pago</td>
-              <td style="${TDC}">7 dias do Pro, sem cartão</td>
+              <td style="${TDC}">14 dias do Pro, sem cartão</td>
               <td style="${TDC}">14 dias</td>
             </tr>
             <tr style="background: var(--muted);">
@@ -123,7 +123,7 @@ export const post: BlogPost = {
             </tr>
             <tr style="background: var(--muted);">
               <td style="${TDL}">Modo offline no celular</td>
-              <td style="${TDC}">✓ Sim</td>
+              <td style="${TDC}">✗ Só consulta das telas já abertas</td>
               <td style="${TDC}">✓ Sim, nos aplicativos iOS e Android</td>
             </tr>
             <tr>
@@ -218,7 +218,7 @@ export const post: BlogPost = {
 
       <div style="background: var(--muted); border: 1px solid var(--border); padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0; text-align: center;">
         <p style="font-weight: 700; color: var(--foreground); font-size: 1.1rem; margin: 0 0 0.75rem;">Teste o Sirius CRM antes de decidir</p>
-        <p style="color: var(--foreground); margin: 0 0 1rem;">Plano gratuito para sempre e 7 dias do Pro, sem cartão de crédito.</p>
+        <p style="color: var(--foreground); margin: 0 0 1rem;">14 dias do Pro grátis, sem cartão de crédito.</p>
         <p><strong><a href="/register" style="color: var(--foreground); text-decoration: underline;">Criar conta grátis →</a></strong></p>
       </div>
 
@@ -270,7 +270,7 @@ export const post: BlogPost = {
         <p style="margin: 0 0 0.75rem; font-weight: 700; font-size: 1.05rem; color: var(--primary-foreground);">⚡ Quick answer</p>
         <ul style="margin: 0; padding-left: 1.25rem; line-height: 2; color: #ffffff;">
           <li><strong style="color: var(--primary-foreground);">Pipedrive</strong>: charges per user, in dollars, from US$ 14/user/month (Lite plan, billed annually). No free plan, only a 14-day trial.</li>
-          <li><strong style="color: var(--primary-foreground);">Sirius CRM</strong>: charges per account, in reais. Free plan forever; paid plans from R$ 67/month (up to 5 users) to R$ 397/month (up to 50 users).</li>
+          <li><strong style="color: var(--primary-foreground);">Sirius CRM</strong>: charges per account, in reais. 14-day Pro trial with no card; paid plans from R$ 67/month (up to 5 users) to R$ 397/month (up to 50 users).</li>
           <li>For a team of 5: Sirius Starter R$ 67/month in total; Pipedrive Lite 5 × US$ 14 = US$ 70/month.</li>
         </ul>
       </div>
@@ -334,12 +334,12 @@ export const post: BlogPost = {
           <tbody>
             <tr style="background: var(--muted);">
               <td style="${TDL}">Free plan</td>
-              <td style="${TDC}">✓ Forever: 2 users, 250 contacts, 100 active deals, 1 pipeline</td>
+              <td style="${TDC}">✗ After the trial, read-only until you subscribe</td>
               <td style="${TDC}">✗ 14-day trial only</td>
             </tr>
             <tr>
               <td style="${TDL}">Paid plan trial</td>
-              <td style="${TDC}">7 days of Pro, no card</td>
+              <td style="${TDC}">14 days of Pro, no card</td>
               <td style="${TDC}">14 days</td>
             </tr>
             <tr style="background: var(--muted);">
@@ -364,7 +364,7 @@ export const post: BlogPost = {
             </tr>
             <tr style="background: var(--muted);">
               <td style="${TDL}">Offline mode on mobile</td>
-              <td style="${TDC}">✓ Yes</td>
+              <td style="${TDC}">✗ Only viewing screens already opened</td>
               <td style="${TDC}">✓ Yes, in the iOS and Android apps</td>
             </tr>
             <tr>
@@ -459,7 +459,7 @@ export const post: BlogPost = {
 
       <div style="background: var(--muted); border: 1px solid var(--border); padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0; text-align: center;">
         <p style="font-weight: 700; color: var(--foreground); font-size: 1.1rem; margin: 0 0 0.75rem;">Try Sirius CRM before you decide</p>
-        <p style="color: var(--foreground); margin: 0 0 1rem;">Free plan forever and 7 days of Pro, no credit card.</p>
+        <p style="color: var(--foreground); margin: 0 0 1rem;">14 days of Pro free, no credit card.</p>
         <p><strong><a href="/en/register" style="color: var(--foreground); text-decoration: underline;">Create a free account →</a></strong></p>
       </div>
 

@@ -132,7 +132,7 @@ export default function PricingPage() {
                     <div className="flex items-center gap-3">
                         <Zap className="w-6 h-6 text-primary shrink-0" />
                         <div>
-                            <p className="font-semibold">Plano gratuito para sempre — e 7 dias de PRO completo para testar tudo.</p>
+                            <p className="font-semibold">14 dias do Pro para testar tudo. Depois, somente leitura até você assinar.</p>
                             <p className="text-sm text-muted-foreground">
                                 Sem cartão de crédito. Indique amigos e ganhe até 100% de desconto recorrente.
                             </p>

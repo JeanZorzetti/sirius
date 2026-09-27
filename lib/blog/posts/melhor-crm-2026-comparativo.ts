@@ -251,7 +251,7 @@ export const post: BlogPost = {
 
       <div style="background: var(--muted); border: 1px solid var(--border); padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0; text-align: center;">
         <p style="font-weight: 700; color: var(--foreground); font-size: 1.1rem; margin: 0 0 0.75rem;">Teste o Sirius CRM — O CRM Brasileiro feito para 2026</p>
-        <p style="color: var(--foreground); margin: 0 0 1rem;">Pipeline visual + automação + WhatsApp + IA. Grátis para sempre até 50 clientes.</p>
+        <p style="color: var(--foreground); margin: 0 0 1rem;">Pipeline visual + automação + WhatsApp + IA. 14 dias do Pro grátis, sem cartão.</p>
         <p><strong><a href="/register" style="color: var(--foreground); text-decoration: underline;">Começar Grátis Agora →</a></strong></p>
       </div>
 
@@ -279,7 +279,7 @@ export const post: BlogPost = {
 
       <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 2rem;">
         <summary style="font-weight: 600; cursor: pointer; color: var(--foreground); list-style: revert;">Salesforce, HubSpot ou Sirius CRM: qual escolher?</summary>
-        <p style="margin: 0.75rem 0 0; color: var(--foreground);">Depende do contexto: Salesforce é o líder global, poderoso mas complexo e caro (R$ 200-500+/usuário/mês). HubSpot tem excelente plano gratuito mas cobra caro por automações avançadas. O Sirius CRM é feito para o mercado brasileiro, com automações nativas para WhatsApp, alertas de recompra e interface em português — com plano gratuito para sempre até 50 clientes.</p>
+        <p style="margin: 0.75rem 0 0; color: var(--foreground);">Depende do contexto: Salesforce é o líder global, poderoso mas complexo e caro (R$ 200-500+/usuário/mês). HubSpot tem excelente plano gratuito mas cobra caro por automações avançadas. O Sirius CRM é feito para o mercado brasileiro, com automações nativas para WhatsApp, alertas de recompra e interface em português — com 14 dias do Pro grátis, sem cartão.</p>
       </details>
 
       <hr style="margin: 3rem 0; border: none; border-top: 1px solid var(--border);" />
@@ -528,7 +528,7 @@ export const post: BlogPost = {
 
       <div style="background: var(--muted); border: 1px solid var(--border); padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0; text-align: center;">
         <p style="font-weight: 700; color: var(--foreground); font-size: 1.1rem; margin: 0 0 0.75rem;">Try Sirius CRM — The Brazilian CRM built for 2026</p>
-        <p style="color: var(--foreground); margin: 0 0 1rem;">Visual pipeline + automation + WhatsApp + AI. Free forever up to 50 clients.</p>
+        <p style="color: var(--foreground); margin: 0 0 1rem;">Visual pipeline + automation + WhatsApp + AI. 14 days of Pro free, no card.</p>
         <p><strong><a href="/register" style="color: var(--foreground); text-decoration: underline;">Start Free Now →</a></strong></p>
       </div>
 
@@ -556,7 +556,7 @@ export const post: BlogPost = {
 
       <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 2rem;">
         <summary style="font-weight: 600; cursor: pointer; color: var(--foreground); list-style: revert;">Salesforce, HubSpot, or Sirius CRM: which to choose?</summary>
-        <p style="margin: 0.75rem 0 0; color: var(--foreground);">It depends on context: Salesforce is the global leader, powerful but complex and expensive (R$ 200-500+/user/month). HubSpot has an excellent free plan but charges heavily for advanced automations. Sirius CRM is built for the Brazilian market, with native automations for WhatsApp, reorder alerts, and a Portuguese interface — with a free plan forever up to 50 clients.</p>
+        <p style="margin: 0.75rem 0 0; color: var(--foreground);">It depends on context: Salesforce is the global leader, powerful but complex and expensive (R$ 200-500+/user/month). HubSpot has an excellent free plan but charges heavily for advanced automations. Sirius CRM is built for the Brazilian market, with native automations for WhatsApp, reorder alerts, and a Portuguese interface — with 14 days of Pro free, no card.</p>
       </details>
 
       <hr style="margin: 3rem 0; border: none; border-top: 1px solid var(--border);" />

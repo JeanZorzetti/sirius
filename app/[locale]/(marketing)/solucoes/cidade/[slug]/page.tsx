@@ -14,7 +14,6 @@ import {
   Briefcase,
   TrendingUp,
   CheckCircle2,
-  Users,
   ArrowRight,
   ChevronRight,
 } from 'lucide-react'
@@ -141,12 +140,7 @@ export default async function CitySolutionPage({
       '@type': 'Offer',
       price: '0',
       priceCurrency: 'BRL',
-      description: 'Plano gratuito disponível',
-    },
-    aggregateRating: {
-      '@type': 'AggregateRating',
-      ratingValue: '4.8',
-      reviewCount: '127',
+      description: 'Teste grátis de 14 dias',
     },
   }
 
@@ -244,18 +238,6 @@ export default async function CitySolutionPage({
               </p>
             </div>
 
-            {/* Social Proof */}
-            <div className="flex items-center justify-center gap-8 text-sm text-muted-foreground mb-8">
-              <div className="flex items-center gap-2">
-                <Users className="h-4 w-4 text-foreground" />
-                <span>{city.socialProof.users} usando</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <TrendingUp className="h-4 w-4 text-foreground" />
-                <span>{city.socialProof.improvement}</span>
-              </div>
-            </div>
-
             <div className="flex flex-wrap gap-4 justify-center">
               <a href="/register">
                 <Button
@@ -327,39 +309,6 @@ export default async function CitySolutionPage({
           />
         </section>
 
-        {/* Depoimento */}
-        <section
-          className="bg-muted py-20"
-        >
-          <div className="container mx-auto px-4">
-            <div className="max-w-3xl mx-auto">
-              <div className="bg-white p-8 md:p-12 rounded-2xl border shadow-lg">
-                <div className="flex items-start gap-4 mb-6">
-                  <div
-                    className="bg-primary text-primary-foreground p-3 rounded-lg"
-                  >
-                    <Icon className="h-6 w-6" />
-                  </div>
-                  <div className="flex-1">
-                    <p className="text-lg md:text-xl text-muted-foreground mb-6 italic">
-                      &quot;{city.testimonial.quote}&quot;
-                    </p>
-                    <div>
-                      <p className="font-bold">{city.testimonial.author}</p>
-                      <p className="text-sm text-muted-foreground">
-                        {city.testimonial.role}
-                      </p>
-                      <p className="text-sm text-muted-foreground">
-                        {city.testimonial.company}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
         {/* FAQ */}
         <section className="container mx-auto px-4 py-20">
           <div className="max-w-3xl mx-auto">
@@ -405,7 +354,7 @@ export default async function CitySolutionPage({
               </Button>
             </a>
             <p className="text-sm text-muted-foreground mt-4">
-              50 {city.jargon.lead.toLowerCase()}s grátis para sempre • Cancele
+              14 dias do Pro grátis, sem cartão • Cancele
               quando quiser
             </p>
           </div>

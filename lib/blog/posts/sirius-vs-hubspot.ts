@@ -33,7 +33,7 @@ export const post: BlogPost = {
         <p style="margin: 0 0 0.75rem; font-weight: 700; font-size: 1.05rem; color: var(--primary-foreground);">⚡ Resposta rápida</p>
         <ul style="margin: 0; padding-left: 1.25rem; line-height: 2; color: #ffffff;">
           <li><strong style="color: var(--primary-foreground);">HubSpot Free</strong>: mais ferramentas no gratuito, inclusive o assistente de IA Breeze, e limite de contatos muito maior. WhatsApp nativo só nos planos Professional de Marketing Hub ou Service Hub.</li>
-          <li><strong style="color: var(--primary-foreground);">Sirius CRM Gratuito</strong>: mais enxuto (250 contatos, 100 negócios ativos, 1 funil), sem IA, sem automação e sem WhatsApp. Feito para o vendedor brasileiro, com modo offline no celular.</li>
+          <li><strong style="color: var(--primary-foreground);">Sirius CRM</strong>: 14 dias com os recursos do Pro, sem cartão; depois, somente leitura até assinar. O Starter custa R$ 67/mês por conta, com IA, automação e WhatsApp. Feito para o vendedor brasileiro.</li>
           <li><strong style="color: var(--primary-foreground);">Quando o time cresce</strong>: Sirius Starter custa R$ 67/mês para até 5 usuários, com automação e IA; HubSpot Starter custa a partir de US$ 15 por usuário/mês no anual.</li>
         </ul>
       </div>
@@ -52,8 +52,8 @@ export const post: BlogPost = {
           <tbody>
             <tr style="background: var(--muted);">
               <td style="${TDL}">Preço</td>
-              <td style="${TDC}">Grátis para sempre</td>
-              <td style="${TDC}">Grátis para sempre</td>
+              <td style="${TDC}">14 dias do Pro grátis; depois, a partir de R$ 67/mês</td>
+              <td style="${TDC}">Plano grátis sem prazo</td>
             </tr>
             <tr>
               <td style="${TDL}">Usuários</td>
@@ -129,8 +129,7 @@ export const post: BlogPost = {
       <h3>Sirius CRM Gratuito: pontos fortes</h3>
       <ul style="${LIST}">
         <li>Interface simples, 100% em português, feita para o vendedor brasileiro</li>
-        <li>Modo offline no celular para visita em campo</li>
-        <li>Sem cartão de crédito para começar, e 7 dias do Pro para testar IA e automação</li>
+        <li>Sem cartão de crédito para começar, e 14 dias do Pro para testar IA e automação</li>
         <li>Passo seguinte barato e por conta: R$ 67/mês para até 5 usuários</li>
       </ul>
 
@@ -179,7 +178,7 @@ export const post: BlogPost = {
 
       <div style="background: var(--muted); border: 1px solid var(--border); padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0; text-align: center;">
         <p style="font-weight: 700; color: var(--foreground); font-size: 1.1rem; margin: 0 0 0.75rem;">Sirius CRM Gratuito: comece em 5 minutos</p>
-        <p style="color: var(--foreground); margin: 0 0 1rem;">Até 2 usuários, sem cartão de crédito. 7 dias do Pro para testar IA e automação.</p>
+        <p style="color: var(--foreground); margin: 0 0 1rem;">Sem cartão de crédito. 14 dias do Pro para testar IA e automação.</p>
         <p><strong><a href="/register" style="color: var(--foreground); text-decoration: underline;">Criar conta grátis →</a></strong></p>
       </div>
 
@@ -226,7 +225,7 @@ export const post: BlogPost = {
         <p style="margin: 0 0 0.75rem; font-weight: 700; font-size: 1.05rem; color: var(--primary-foreground);">⚡ Quick answer</p>
         <ul style="margin: 0; padding-left: 1.25rem; line-height: 2; color: #ffffff;">
           <li><strong style="color: var(--primary-foreground);">HubSpot Free</strong>: more tools in the free plan, including the Breeze AI assistant, and a much higher contact limit. Native WhatsApp only on Marketing Hub or Service Hub Professional.</li>
-          <li><strong style="color: var(--primary-foreground);">Sirius CRM Free</strong>: leaner (250 contacts, 100 active deals, 1 pipeline), with no AI, no automation and no WhatsApp. Built for the Brazilian rep, with an offline mode on mobile.</li>
+          <li><strong style="color: var(--primary-foreground);">Sirius CRM</strong>: 14 days of Pro features, no card; then read-only until you subscribe. Starter costs R$ 67/month per account, with AI, automation and WhatsApp. Built for the Brazilian rep.</li>
           <li><strong style="color: var(--primary-foreground);">When the team grows</strong>: Sirius Starter costs R$ 67/month for up to 5 users, with automation and AI; HubSpot Starter costs from US$ 15 per user/month billed annually.</li>
         </ul>
       </div>
@@ -245,8 +244,8 @@ export const post: BlogPost = {
           <tbody>
             <tr style="background: var(--muted);">
               <td style="${TDL}">Price</td>
-              <td style="${TDC}">Free forever</td>
-              <td style="${TDC}">Free forever</td>
+              <td style="${TDC}">14 days of Pro free; then from R$ 67/month</td>
+              <td style="${TDC}">Free plan with no time limit</td>
             </tr>
             <tr>
               <td style="${TDL}">Users</td>
@@ -322,8 +321,7 @@ export const post: BlogPost = {
       <h3>Sirius CRM Free: strengths</h3>
       <ul style="${LIST}">
         <li>Simple interface, fully in Portuguese, built for the Brazilian rep</li>
-        <li>Offline mode on mobile for field visits</li>
-        <li>No credit card to start, and 7 days of Pro to try AI and automation</li>
+        <li>No credit card to start, and 14 days of Pro to try AI and automation</li>
         <li>Cheap, per-account next step: R$ 67/month for up to 5 users</li>
       </ul>
 
@@ -372,7 +370,7 @@ export const post: BlogPost = {
 
       <div style="background: var(--muted); border: 1px solid var(--border); padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0; text-align: center;">
         <p style="font-weight: 700; color: var(--foreground); font-size: 1.1rem; margin: 0 0 0.75rem;">Sirius CRM Free: start in 5 minutes</p>
-        <p style="color: var(--foreground); margin: 0 0 1rem;">Up to 2 users, no credit card. 7 days of Pro to try AI and automation.</p>
+        <p style="color: var(--foreground); margin: 0 0 1rem;">No credit card. 14 days of Pro to try AI and automation.</p>
         <p><strong><a href="/en/register" style="color: var(--foreground); text-decoration: underline;">Create a free account →</a></strong></p>
       </div>
 

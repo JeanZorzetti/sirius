@@ -86,7 +86,7 @@ export const post: BlogPost = {
             </tr>
             <tr style="background: var(--muted);">
               <td style="${TDL}">Modo offline no celular</td>
-              <td style="${TDC}">✓ Sim</td>
+              <td style="${TDC}">✗ Só consulta das telas já abertas</td>
               <td style="${TDC}">App para celular em todos os planos</td>
             </tr>
             <tr>
@@ -150,7 +150,6 @@ export const post: BlogPost = {
         <li>Mensalidade por conta: 5 a 50 usuários sem multiplicar o preço</li>
         <li>IA de qualificação BANT/MEDDIC e agente Sofia a partir do Starter</li>
         <li>Prospecção de empresas pelo Google Maps com créditos mensais</li>
-        <li>Modo offline no celular para visita em campo</li>
         <li>WhatsApp no CRM a partir do Starter, pelo seu integrador; API oficial da Meta no Business</li>
       </ul>
 
@@ -228,7 +227,7 @@ export const post: BlogPost = {
 
       <div style="background: var(--muted); border: 1px solid var(--border); padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0; text-align: center;">
         <p style="font-weight: 700; color: var(--foreground); font-size: 1.1rem; margin: 0 0 0.75rem;">Teste o Sirius CRM</p>
-        <p style="color: var(--foreground); margin: 0 0 1rem;">Plano gratuito para sempre e 7 dias do Pro, sem cartão de crédito.</p>
+        <p style="color: var(--foreground); margin: 0 0 1rem;">14 dias do Pro grátis, sem cartão de crédito.</p>
         <p><strong><a href="/register" style="color: var(--foreground); text-decoration: underline;">Criar conta grátis →</a></strong></p>
       </div>
 
@@ -306,7 +305,7 @@ export const post: BlogPost = {
             </tr>
             <tr style="background: var(--muted);">
               <td style="${TDL}">Offline mode on mobile</td>
-              <td style="${TDC}">✓ Yes</td>
+              <td style="${TDC}">✗ Only viewing screens already opened</td>
               <td style="${TDC}">Mobile app on every plan</td>
             </tr>
             <tr>
@@ -370,7 +369,6 @@ export const post: BlogPost = {
         <li>Per-account fee: 5 to 50 users without multiplying the price</li>
         <li>BANT/MEDDIC qualification AI and the Sofia agent from Starter</li>
         <li>Company prospecting through Google Maps with monthly credits</li>
-        <li>Offline mode on mobile for field visits</li>
         <li>WhatsApp in the CRM from Starter, through your integrator; official Meta API on Business</li>
       </ul>
 
@@ -448,7 +446,7 @@ export const post: BlogPost = {
 
       <div style="background: var(--muted); border: 1px solid var(--border); padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0; text-align: center;">
         <p style="font-weight: 700; color: var(--foreground); font-size: 1.1rem; margin: 0 0 0.75rem;">Try Sirius CRM</p>
-        <p style="color: var(--foreground); margin: 0 0 1rem;">Free plan forever and 7 days of Pro, no credit card.</p>
+        <p style="color: var(--foreground); margin: 0 0 1rem;">14 days of Pro free, no credit card.</p>
         <p><strong><a href="/en/register" style="color: var(--foreground); text-decoration: underline;">Create a free account →</a></strong></p>
       </div>
 

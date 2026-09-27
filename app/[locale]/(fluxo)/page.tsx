@@ -12,11 +12,11 @@ import { linhaDePulso } from "@/components/fluxo/geometria"
 const FAIXAS = [
   ["Pipeline Kanban", "Arraste o negócio de etapa em etapa e veja o funil inteiro numa tela."],
   ["WhatsApp integrado", "Converse com o cliente sem sair do CRM, com inbox único, tags e respostas rápidas."],
-  ["AGI Sirius", "A IA comercial qualifica cada lead por BANT e MEDDIC e recomenda a próxima ação."],
+  ["AGI Sirius", "Peça à IA comercial a análise de um lead por BANT e MEDDIC e receba a próxima ação."],
   ["Prospecção no Google Maps", "Busque empresas por segmento e cidade e traga nome, telefone e site para o pipeline."],
   ["Automações de follow-up", "E-mail e WhatsApp disparados quando o negócio muda de etapa ou fica parado."],
   ["Analytics com previsão", "Receita prevista, conversão por etapa e onde o funil está perdendo negócio."],
-  ["Modo offline", "O vendedor de rua registra a visita sem sinal e o app sincroniza depois."],
+  ["Tarefas e agenda", "Tarefas com prazo e responsável, sincronizadas com o Google Calendar."],
   ["API pública e webhooks", "Ligue o Sirius ao resto da operação."],
 ] as const
 
@@ -62,7 +62,7 @@ export default function LandingPage() {
     "applicationSubCategory": "CRM",
     "operatingSystem": "Web, iOS, Android",
     "url": "https://siriuscrm.com.br",
-    "description": "O Assistente de Inteligência Artificial para Vendedores Brasileiros: pipeline Kanban, WhatsApp integrado, AGI que qualifica leads com BANT e MEDDIC, prospecção Google Maps e automação de follow-ups.",
+    "description": "O Assistente de Inteligência Artificial para Vendedores Brasileiros: pipeline Kanban, WhatsApp integrado, AGI que analisa leads com BANT e MEDDIC, prospecção Google Maps e automação de follow-ups.",
     "offers": {
       "@type": "AggregateOffer",
       "priceCurrency": "BRL",
@@ -74,11 +74,11 @@ export default function LandingPage() {
     "featureList": [
       "Pipeline Kanban visual com drag-and-drop",
       "WhatsApp pela API oficial da Meta ou pelo seu integrador",
-      "AGI Sirius — IA que qualifica leads com BANT e MEDDIC",
+      "AGI Sirius — IA que analisa leads com BANT e MEDDIC",
       "Prospecção automática pelo Google Maps",
       "Automações de follow-up por email e WhatsApp",
       "Analytics PRO com previsão de receita",
-      "Modo offline para vendedores externos",
+      "Tarefas sincronizadas com o Google Calendar",
       "API pública e webhooks"
     ],
     "screenshot": "https://siriuscrm.com.br/og-image.png",
@@ -127,10 +127,10 @@ export default function LandingPage() {
       },
       {
         "@type": "Question",
-        "name": "O Sirius CRM é gratuito?",
+        "name": "Dá para testar o Sirius CRM de graça?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Sim! O plano Gratuito inclui 250 contatos, 100 negócios e 1 pipeline sem prazo de expiração. Para mais recursos, oferecemos Starter (R$67/mês), Pro (R$147/mês) e Business (R$397/mês)."
+          "text": "Dá para testar de graça: toda conta nova tem 14 dias com os recursos do Pro, sem cartão. Depois, a conta fica somente leitura até você assinar um plano, e os dados continuam guardados. Os planos são Starter (R$67/mês), Pro (R$147/mês) e Business (R$397/mês)."
         }
       },
       {
@@ -154,7 +154,7 @@ export default function LandingPage() {
         "name": "Posso cancelar quando quiser?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Sim, sem multas ou taxas. Cancele a qualquer momento e mantenha acesso até o fim do período pago. Garantia de 7 dias em todos os planos pagos."
+          "text": "Sim, pela tela de cobrança e sem multa. O plano continua ativo até o fim do período já pago, sem nova cobrança. Se cancelar até 7 dias depois da primeira cobrança, devolvemos 100% do valor."
         }
       }
     ]
@@ -193,11 +193,13 @@ export default function LandingPage() {
 
   const plans = [
     {
-      name: isEn ? 'Free' : 'Gratuito',
+      name: isEn ? 'Free trial' : 'Teste grátis',
       price: 'R$ 0',
       period: isEn ? '' : '',
-      description: isEn ? 'To test the CRM' : 'Para testar o CRM',
-      features: isEn ? ['2 Users', '250 Contacts', '100 Deals', '1 Pipeline'] : ['2 Usuários', '250 Contatos', '100 Negócios', '1 Pipeline'],
+      description: isEn ? '14 days of Pro, no card' : '14 dias do Pro, sem cartão',
+      features: isEn
+        ? ['Pro features for 14 days', 'No credit card', 'Then read-only until you subscribe', 'Your data stays saved']
+        : ['Recursos do Pro por 14 dias', 'Sem cartão de crédito', 'Depois, somente leitura até assinar', 'Seus dados ficam guardados'],
       highlighted: false,
     },
     {
@@ -286,7 +288,7 @@ export default function LandingPage() {
       <section className="secao secao--planos" aria-labelledby="titulo-planos">
         <header className="secao__cabeca">
           <h2 id="titulo-planos" className="secao__titulo">{t("plans.title")}</h2>
-          <p className="lide">{t("plans.subtitle")} 7 dias grátis com acesso PRO completo, sem cartão de crédito.</p>
+          <p className="lide">{t("plans.subtitle")} 14 dias grátis com os recursos do Pro, sem cartão de crédito.</p>
         </header>
         <div className="planos">
           {plans.map((plan) => (

@@ -2,7 +2,7 @@
 import { notFound } from 'next/navigation'
 import { getNicheBySlug, getAllNicheSlugs } from '@/config/niche-data'
 import { CalculadoraROI } from '@/components/calculadora-roi'
-import { Building2, Sun, Sparkles, Briefcase, TrendingUp, CheckCircle2, Users, ArrowRight } from 'lucide-react'
+import { Building2, Sun, Sparkles, Briefcase, TrendingUp, CheckCircle2, ArrowRight } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { DEFAULT_OG_IMAGES } from '@/lib/seo/canonical'
 import {
@@ -86,7 +86,6 @@ export default async function NicheSolutionPage({ params }: { params: Promise<{ 
   const painPoint = isEn && niche.painPointEn ? niche.painPointEn : niche.painPoint
   const painPointSecondary = isEn && niche.painPointSecondaryEn ? niche.painPointSecondaryEn : niche.painPointSecondary
   const benefits = isEn && niche.benefitsEn ? niche.benefitsEn : niche.benefits
-  const testimonial = isEn && niche.testimonialEn ? niche.testimonialEn : niche.testimonial
   const faq = isEn && niche.faqEn ? niche.faqEn : niche.faq
   const calculatorCopy = isEn && niche.calculatorCopyEn ? niche.calculatorCopyEn : niche.calculatorCopy
 
@@ -118,12 +117,7 @@ export default async function NicheSolutionPage({ params }: { params: Promise<{ 
       "@type": "Offer",
       "price": "0",
       "priceCurrency": "BRL",
-      "description": "Plano gratuito disponível"
-    },
-    "aggregateRating": {
-      "@type": "AggregateRating",
-      "ratingValue": "4.8",
-      "reviewCount": "127"
+      "description": "Teste grátis de 14 dias"
     }
   }
 
@@ -168,18 +162,6 @@ export default async function NicheSolutionPage({ params }: { params: Promise<{ 
             <p className="text-xl text-destaque font-medium">
               ❌ {painPointSecondary}
             </p>
-          </div>
-
-          {/* Social Proof */}
-          <div className="flex items-center justify-center gap-8 text-sm text-muted-foreground mb-8">
-            <div className="flex items-center gap-2">
-              <Users className="h-4 w-4 text-foreground" />
-              <span>{niche.socialProof.users} usando</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <TrendingUp className="h-4 w-4 text-foreground" />
-              <span>{niche.socialProof.improvement}</span>
-            </div>
           </div>
 
           <div className="flex flex-wrap gap-4 justify-center">
@@ -241,31 +223,6 @@ export default async function NicheSolutionPage({ params }: { params: Promise<{ 
           ctaText={calculatorCopy.ctaText}
           ctaHref={`/register?origem=solucoes-${niche.slug}`}
         />
-      </section>
-
-      {/* Depoimento */}
-      <section className="bg-muted py-20">
-        <div className="container mx-auto px-4">
-          <div className="max-w-3xl mx-auto">
-            <div className="bg-white p-8 md:p-12 rounded-2xl border shadow-lg">
-              <div className="flex items-start gap-4 mb-6">
-                <div className="bg-primary text-primary-foreground p-3 rounded-lg">
-                  <Icon className="h-6 w-6" />
-                </div>
-                <div className="flex-1">
-                  <p className="text-lg md:text-xl text-muted-foreground mb-6 italic">
-                    "{testimonial.quote}"
-                  </p>
-                  <div>
-                    <p className="font-bold">{testimonial.author}</p>
-                    <p className="text-sm text-muted-foreground">{testimonial.role}</p>
-                    <p className="text-sm text-muted-foreground">{testimonial.company}</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
       </section>
 
       {/* Recursos Gratuitos - only for corretores */}
@@ -370,7 +327,7 @@ export default async function NicheSolutionPage({ params }: { params: Promise<{ 
             </Button>
           </a>
           <p className="text-sm text-muted-foreground mt-4">
-            50 {niche.jargon.lead.toLowerCase()}s grátis para sempre • Cancele quando quiser
+            14 dias do Pro grátis, sem cartão • Cancele quando quiser
           </p>
         </div>
       </section>

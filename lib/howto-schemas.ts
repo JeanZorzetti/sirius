@@ -78,19 +78,6 @@ export const howToSchemas: Record<string, HowToSchema> = {
     { totalTime: 'PT20M', cost: '0' }
   ),
 
-  'crm-offline-para-vendedores': buildHowTo(
-    'Como Usar um CRM Offline para Registrar Pedidos sem Internet',
-    'Passo a passo para vendedores externos registrarem visitas, pedidos e interações sem conexão e sincronizarem ao reconectar.',
-    [
-      { name: 'Instale o app como PWA no celular', text: 'Acesse siriuscrm.com.br no Chrome, toque em "Adicionar à tela inicial". O app baixa os dados dos clientes para cache local — funciona sem internet.' },
-      { name: 'Registre visitas e pedidos offline', text: 'Durante a visita, abra o card do cliente, registre o pedido com valor, produtos e observações. Os dados ficam salvos localmente.' },
-      { name: 'Fotografe documentos e assinaturas', text: 'Use a câmera do app para registrar pedidos assinados, notas fiscais ou contratos. As fotos ficam na fila de sincronização.' },
-      { name: 'Sincronize ao reconectar', text: 'Assim que o Wi-Fi ou 4G reconectar, o app sincroniza automaticamente todos os registros offline com a nuvem. Zero perda de dados.' },
-      { name: 'Revise conflitos se necessário', text: 'Se outro vendedor editou o mesmo cliente durante sua visita offline, o CRM mostra os dois registros para você escolher qual manter.' },
-    ],
-    { totalTime: 'PT15M', cost: '0' }
-  ),
-
   'melhor-crm-2026-comparativo': buildHowTo(
     'Como Escolher o Melhor CRM para sua Empresa em 2026',
     'Método em 4 passos para comparar CRMs com critérios objetivos e escolher o sistema certo sem depender de opiniões enviesadas.',

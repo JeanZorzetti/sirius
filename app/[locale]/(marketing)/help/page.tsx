@@ -202,7 +202,7 @@ const faqItems = [
   },
   {
     question: 'Meus dados estão seguros?',
-    answer: 'Sim. Usamos criptografia de ponta a ponta, isolamento multi-tenant e backups diários. Seus dados nunca são compartilhados com outras organizações.',
+    answer: 'Cada empresa só acessa os próprios dados, e a conexão com o Sirius é criptografada (HTTPS). Seus dados nunca são compartilhados com outras organizações.',
   },
 ]
 

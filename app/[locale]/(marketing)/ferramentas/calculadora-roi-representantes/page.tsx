@@ -1,6 +1,6 @@
 ﻿import { Metadata } from 'next'
 import { CalculadoraROI } from '@/components/calculadora-roi'
-import { TrendingUp, Users, CheckCircle2, Smartphone } from 'lucide-react'
+import { TrendingUp, CheckCircle2, Smartphone } from 'lucide-react'
 import { getTranslations } from 'next-intl/server'
 import { buildLocaleAlternates, DEFAULT_OG_IMAGES } from '@/lib/seo/canonical'
 
@@ -79,17 +79,6 @@ export default function CalculadoraRepresentantesPage() {
             <span className="font-semibold text-foreground"> Representantes perdem em média 38% das recompras</span> por falta de follow-up no momento certo.
           </p>
 
-          {/* Social Proof */}
-          <div className="flex items-center justify-center gap-8 text-sm text-muted-foreground">
-            <div className="flex items-center gap-2">
-              <Users className="h-4 w-4 text-foreground" />
-              <span>+920 representantes usando</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <TrendingUp className="h-4 w-4 text-foreground" />
-              <span>Média de 51% mais recompras</span>
-            </div>
-          </div>
         </div>
 
         {/* Calculadora */}
@@ -198,7 +187,7 @@ export default function CalculadoraRepresentantesPage() {
             Começar Grátis Agora
           </a>
           <p className="text-sm text-muted-foreground mt-4">
-            50 clientes grátis para sempre • Cancele quando quiser
+            14 dias do Pro grátis, sem cartão • Cancele quando quiser
           </p>
         </div>
       </section>

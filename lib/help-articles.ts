@@ -892,7 +892,7 @@ export const helpArticles: HelpArticle[] = [
       sections: [
         {
           title: "Visão geral dos planos",
-          content: "O Sirius CRM tem 4 planos, cobrados por conta e não por usuário: Gratuito, Starter (R$ 67/mês), Pro (R$ 147/mês) e Business (R$ 397/mês). No pagamento anual há 20% de desconto. Toda conta nova começa com 7 dias do Pro.",
+          content: "O Sirius CRM tem 4 planos, cobrados por conta e não por usuário: Gratuito, Starter (R$ 67/mês), Pro (R$ 147/mês) e Business (R$ 397/mês). No pagamento anual há 20% de desconto. Toda conta nova começa com 14 dias do Pro.",
         },
         {
           title: "O que cada plano inclui",
@@ -901,12 +901,12 @@ export const helpArticles: HelpArticle[] = [
             "Gratuito: 2 usuários, 250 contatos, 100 negócios ativos e 1 funil",
             "Starter (R$ 67/mês): 5 usuários, 1.000 contatos, 500 negócios, 5 funis, automações, 1 agente de IA com 200 ações/mês, 75 créditos de prospecção/mês, WhatsApp no inbox com 1 número pelo seu integrador e suporte por e-mail",
             "Pro (R$ 147/mês): 15 usuários, 5.000 contatos, 2.500 negócios, 15 funis, 3 agentes de IA com 1.000 ações/mês, 300 créditos de prospecção/mês, WhatsApp no inbox com 2 números pelo seu integrador, analytics avançado, lead scoring, webhooks, API pública e suporte prioritário",
-            "Business (R$ 397/mês): 50 usuários, contatos e negócios ilimitados, 50 funis, WhatsApp no inbox com 5 números pelo seu integrador e pela API oficial da Meta, 5 agentes de IA com 3.000 ações/mês, 1.500 créditos de prospecção/mês, round-robin de leads, relatórios personalizados, SSO e log de auditoria",
+            "Business (R$ 397/mês): 50 usuários, contatos e negócios ilimitados, 50 funis, WhatsApp no inbox com 5 números pelo seu integrador e pela API oficial da Meta, 5 agentes de IA com 3.000 ações/mês, 1.500 créditos de prospecção/mês, round-robin de leads, relatórios personalizados",
           ],
         },
         {
           title: "O que acontece quando o teste termina",
-          content: "Se nenhum plano pago for assinado até o fim dos 7 dias do Pro, a conta fica em modo somente leitura: você continua vendo contatos, negócios e histórico, mas não cria nem edita. Assinar um plano pago libera a conta assim que o pagamento é confirmado. Seus dados são preservados.",
+          content: "Se nenhum plano pago for assinado até o fim dos 14 dias do Pro, a conta fica em modo somente leitura: você continua vendo contatos, negócios e histórico, mas não cria nem edita. Assinar um plano pago libera a conta assim que o pagamento é confirmado. Seus dados são preservados.",
         },
         {
           title: "Quando fazer upgrade?",
@@ -934,7 +934,7 @@ export const helpArticles: HelpArticle[] = [
       sections: [
         {
           title: "Plan overview",
-          content: "Sirius CRM has 4 plans, billed per account and not per user: Free, Starter (R$ 67/month), Pro (R$ 147/month) and Business (R$ 397/month). Annual billing takes 20% off. Every new account starts with 7 days of Pro.",
+          content: "Sirius CRM has 4 plans, billed per account and not per user: Free, Starter (R$ 67/month), Pro (R$ 147/month) and Business (R$ 397/month). Annual billing takes 20% off. Every new account starts with 14 days of Pro.",
         },
         {
           title: "What each plan includes",
@@ -943,12 +943,12 @@ export const helpArticles: HelpArticle[] = [
             "Free: 2 users, 250 contacts, 100 active deals and 1 pipeline",
             "Starter (R$ 67/month): 5 users, 1,000 contacts, 500 deals, 5 pipelines, automations, 1 AI agent with 200 actions/month, 75 prospecting credits/month, WhatsApp in the inbox with 1 number through your integrator and email support",
             "Pro (R$ 147/month): 15 users, 5,000 contacts, 2,500 deals, 15 pipelines, 3 AI agents with 1,000 actions/month, 300 prospecting credits/month, WhatsApp in the inbox with 2 numbers through your integrator, advanced analytics, lead scoring, webhooks, public API and priority support",
-            "Business (R$ 397/month): 50 users, unlimited contacts and deals, 50 pipelines, WhatsApp in the inbox with 5 numbers through your integrator and through the official Meta API, 5 AI agents with 3,000 actions/month, 1,500 prospecting credits/month, lead round-robin, custom reports, SSO and audit log",
+            "Business (R$ 397/month): 50 users, unlimited contacts and deals, 50 pipelines, WhatsApp in the inbox with 5 numbers through your integrator and through the official Meta API, 5 AI agents with 3,000 actions/month, 1,500 prospecting credits/month, lead round-robin, custom reports",
           ],
         },
         {
           title: "What happens when the trial ends",
-          content: "If no paid plan is purchased by the end of the 7 days of Pro, the account becomes read-only: you still see contacts, deals and history, but cannot create or edit. Purchasing a paid plan unlocks the account as soon as the payment is confirmed. Your data is preserved.",
+          content: "If no paid plan is purchased by the end of the 14 days of Pro, the account becomes read-only: you still see contacts, deals and history, but cannot create or edit. Purchasing a paid plan unlocks the account as soon as the payment is confirmed. Your data is preserved.",
         },
         {
           title: "When to upgrade?",

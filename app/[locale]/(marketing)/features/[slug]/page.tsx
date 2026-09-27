@@ -19,6 +19,7 @@ import {
   Zap,
   HelpCircle,
 } from 'lucide-react'
+import { limitePorPlano } from '@/lib/plan-table'
 import { ALL_FEATURES, FEATURE_CATEGORIES, getFeatureBySlug } from '@/config/features-data'
 
 export function generateStaticParams() {
@@ -109,7 +110,8 @@ export default async function FeatureDetailPage({
 
   // Detail data
   const headline = tryT(tS, `${dp}.headline` as any)
-  const planInfo = tryT(tS, `${dp}.planInfo` as any)
+  // Spec 013: limits come from PLAN_LIMITS; the message only covers features without a numeric limit
+  const planInfo = limitePorPlano(feature.featureKey) ?? tryT(tS, `${dp}.planInfo` as any)
   const howTitle = tryT(tS, `${dp}.howItWorks.title` as any)
 
   // Benefits with title + text
@@ -505,7 +507,7 @@ export default async function FeatureDetailPage({
               <div className="relative z-10">
                 <div className="inline-flex items-center gap-2 rounded border border-border bg-muted px-3 py-1 text-sm text-foreground mb-6">
                   <div className="h-2 w-2 rounded-full bg-primary animate-pulse" />
-                  <span className="font-medium">Gratuito para sempre</span>
+                  <span className="font-medium">14 dias do Pro grátis</span>
                 </div>
 
                 <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">

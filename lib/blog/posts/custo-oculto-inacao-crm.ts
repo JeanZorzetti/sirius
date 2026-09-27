@@ -164,7 +164,7 @@ export const post: BlogPost = {
       <div class="callout-cta">
         <h3 style="margin-top: 0;">🚀 Teste Gratuitamente (Sem Cartão)</h3>
         <p>
-          Sirius CRM: pipeline visual, WhatsApp integrado, notificações push, analytics em tempo real. <strong>Free para sempre</strong> até 20 deals. Upgrade quando crescer.
+          Sirius CRM: pipeline visual, WhatsApp integrado, notificações push, analytics em tempo real. <strong>14 dias do Pro grátis</strong>, sem cartão.
         </p>
         <p><strong><a href="/register" style="color: var(--foreground); text-decoration: underline;">Criar Conta Grátis →</a></strong></p>
       </div>

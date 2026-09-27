@@ -31,16 +31,6 @@ export interface NicheData {
     title: string
     description: string
   }>
-  socialProof: {
-    users: string
-    improvement: string
-  }
-  testimonial: {
-    quote: string
-    author: string
-    role: string
-    company: string
-  }
   faq: Array<{
     question: string
     answer: string
@@ -69,12 +59,6 @@ export interface NicheData {
     title: string
     description: string
   }>
-  testimonialEn?: {
-    quote: string
-    author: string
-    role: string
-    company: string
-  }
   faqEn?: Array<{
     question: string
     answer: string
@@ -125,16 +109,6 @@ export const NICHES: NicheData[] = [
         description: 'Visualize quanto dinheiro está em cada etapa do funil. Saiba suas comissões futuras em tempo real.'
       }
     ],
-    socialProof: {
-      users: '+2.500 corretores',
-      improvement: '34% mais vendas fechadas'
-    },
-    testimonial: {
-      quote: 'Antes do Sirius, eu perdia pelo menos 3 vendas por mês porque esquecia de dar follow-up. Hoje, minha taxa de fechamento subiu de 12% para 19%. Isso significou R$ 42 mil a mais de comissão nos últimos 6 meses.',
-      author: 'Ricardo Mendes',
-      role: 'Corretor Autônomo',
-      company: 'São Paulo, SP'
-    },
     faq: [
       {
         question: 'Funciona para corretores autônomos ou só para imobiliárias?',
@@ -192,12 +166,6 @@ export const NICHES: NicheData[] = [
         description: 'See how much money sits in each pipeline stage. Know your future commissions in real time.'
       }
     ],
-    testimonialEn: {
-      quote: 'Before Sirius, I was losing at least 3 sales a month because I forgot to follow up. Now my closing rate went from 12% to 19%. That meant an extra R$ 42,000 in commissions over the last 6 months.',
-      author: 'Ricardo Mendes',
-      role: 'Independent Real Estate Agent',
-      company: 'São Paulo, SP'
-    },
     faqEn: [
       {
         question: 'Does it work for independent agents or only real estate agencies?',
@@ -265,16 +233,6 @@ export const NICHES: NicheData[] = [
         description: 'Veja sua taxa de conversão por origem, região e tipo de instalação. Otimize o que funciona.'
       }
     ],
-    socialProof: {
-      users: '+150 integradoras',
-      improvement: '58% mais propostas fechadas'
-    },
-    testimonial: {
-      quote: 'Perdíamos 40% das propostas porque não tínhamos controle de follow-up. Com o Sirius, implementamos um processo claro e nossa conversão subiu de 15% para 26%. Isso representou +R$ 340 mil em 3 meses.',
-      author: 'Rafael Costa',
-      role: 'Diretor Comercial',
-      company: 'Solar Tech RJ'
-    },
     faq: [
       {
         question: 'Consigo registrar dados técnicos da instalação?',
@@ -344,12 +302,6 @@ export const NICHES: NicheData[] = [
         description: 'See your conversion rate by lead source, region, and installation type. Double down on what works.'
       }
     ],
-    testimonialEn: {
-      quote: 'We were losing 40% of our proposals because we had no follow-up control. With Sirius, we built a clear process and our conversion rate went from 15% to 26%. That was an extra R$ 340,000 in just 3 months.',
-      author: 'Rafael Costa',
-      role: 'Commercial Director',
-      company: 'Solar Tech RJ'
-    },
     faqEn: [
       {
         question: 'Can I log technical installation data?',
@@ -428,16 +380,6 @@ export const NICHES: NicheData[] = [
         description: 'Ticket médio, ciclo de venda, taxa de conversão por origem. Dados reais para tomar decisões melhores.'
       }
     ],
-    socialProof: {
-      users: '+380 agências',
-      improvement: '47% mais propostas fechadas'
-    },
-    testimonial: {
-      quote: 'Nossa comunicação entre comercial e entrega era caótica. Perdíamos leads porque ninguém sabia quem estava falando com quem. Com o Sirius, criamos um processo previsível. Taxa de fechamento subiu de 18% para 31%.',
-      author: 'Mariana Alves',
-      role: 'Head of Growth',
-      company: 'Pixel Perfect Agency'
-    },
     faq: [
       {
         question: 'Consigo separar por tipo de serviço (SEO, Ads, Social)?',
@@ -495,12 +437,6 @@ export const NICHES: NicheData[] = [
         description: 'Average ticket, sales cycle length, conversion rate by source. Real data to make better decisions.'
       }
     ],
-    testimonialEn: {
-      quote: 'Communication between sales and delivery was chaotic. We were losing leads because nobody knew who was talking to whom. With Sirius, we built a predictable process. Closing rate went from 18% to 31%.',
-      author: 'Mariana Alves',
-      role: 'Head of Growth',
-      company: 'Pixel Perfect Agency'
-    },
     faqEn: [
       {
         question: 'Can I separate by service type (SEO, Ads, Social)?',
@@ -567,16 +503,6 @@ export const NICHES: NicheData[] = [
         description: 'Veja sua taxa de conversão, tempo médio de fechamento e ticket médio. Otimize seu processo comercial.'
       }
     ],
-    socialProof: {
-      users: '+450 consultores',
-      improvement: '42% mais projetos fechados'
-    },
-    testimonial: {
-      quote: 'Como consultor solo, eu perdia projetos porque tinha dificuldade em acompanhar todas as conversas. Com o Sirius, organizei meu processo e minha taxa de conversão subiu de 25% para 38%. Isso significou mais R$ 180 mil em projetos fechados no último ano.',
-      author: 'Dr. Paulo Henrique',
-      role: 'Consultor Empresarial',
-      company: 'Especialista em Gestão'
-    },
     faq: [
       {
         question: 'Funciona para consultores solo ou só para consultorias grandes?',
@@ -634,12 +560,6 @@ export const NICHES: NicheData[] = [
         description: 'Track your conversion rate, average closing time, and average ticket. Optimize your sales process with real data.'
       }
     ],
-    testimonialEn: {
-      quote: 'As a solo consultant, I was losing projects because I couldn\'t keep track of all conversations. With Sirius, I organized my process and my conversion rate went from 25% to 38%. That meant an extra R$ 180,000 in closed projects over the past year.',
-      author: 'Dr. Paulo Henrique',
-      role: 'Business Consultant',
-      company: 'Management Specialist'
-    },
     faqEn: [
       {
         question: 'Does it work for solo consultants or only large firms?',
@@ -706,16 +626,6 @@ export const NICHES: NicheData[] = [
         description: 'Sistema avisa quando um cliente está no timing ideal para recomprar. Nunca mais perca um pedido por esquecimento.'
       }
     ],
-    socialProof: {
-      users: '+920 representantes',
-      improvement: '51% mais recompras'
-    },
-    testimonial: {
-      quote: 'Antes do Sirius, eu tinha uma planilha gigante e perdia vendas porque esquecia de ligar para os clientes no momento certo. Agora, o sistema me avisa quando cada cliente está pronto para recomprar. Minhas vendas subiram 48% em 6 meses.',
-      author: 'Carlos Eduardo',
-      role: 'Representante Comercial',
-      company: 'Região Sul'
-    },
     faq: [
       {
         question: 'Funciona no celular? Preciso acessar na rua.',
@@ -731,8 +641,8 @@ export const NICHES: NicheData[] = [
       }
     ],
     seo: {
-      title: 'CRM Representante Comercial 2026: IA e Offline | Grátis',
-      description: 'O único CRM com IA que funciona OFFLINE para representantes. Sua carteira fica com você — mesmo trocando de representada. Gestão de pedidos, comissões e WhatsApp automático. Grátis para sempre.',
+      title: 'CRM Representante Comercial 2026: IA e Carteira | Grátis',
+      description: 'CRM com IA para representantes. Sua carteira fica com você — mesmo trocando de representada. Funil de pedidos e WhatsApp no CRM. Teste o Pro por 14 dias, sem cartão.',
       keywords: [
         'crm para representante comercial',
         'crm representante comercial',
@@ -778,12 +688,6 @@ export const NICHES: NicheData[] = [
         description: 'The system alerts you when a client is in the ideal window to reorder. Never miss an order due to forgetfulness again.'
       }
     ],
-    testimonialEn: {
-      quote: 'Before Sirius, I had a giant spreadsheet and was losing sales because I forgot to call clients at the right moment. Now the system tells me exactly when each client is ready to reorder. My sales went up 48% in 6 months.',
-      author: 'Carlos Eduardo',
-      role: 'Sales Representative',
-      company: 'Southern Brazil Region'
-    },
     faqEn: [
       {
         question: 'Does it work on mobile? I need access in the field.',
@@ -799,8 +703,8 @@ export const NICHES: NicheData[] = [
       }
     ],
     seoEn: {
-      title: 'CRM for Sales Reps 2026 [AI + Offline] — Your Client Portfolio Stays With You | Free',
-      description: 'The only AI-powered CRM built for sales representatives. Your client portfolio stays with you — even when you change manufacturers. Order management, commissions, and automatic WhatsApp. Free forever.',
+      title: 'CRM for Sales Reps 2026 [AI] — Your Client Portfolio Stays With You | Free Trial',
+      description: 'The only AI-powered CRM built for sales representatives. Your client portfolio stays with you — even when you change manufacturers. Order pipeline and WhatsApp in the CRM. 14-day Pro trial, no card.',
       keywords: [
         'crm for sales representatives',
         'sales rep crm',

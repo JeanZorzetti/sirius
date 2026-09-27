@@ -17,7 +17,6 @@ import { post as post15 } from './posts/erros-crm-comuns'
 import { post as post16 } from './posts/como-escolher-crm-b2b-2026'
 import { post as post17 } from './posts/crm-para-representante-comercial-2026'
 import { post as post18 } from './posts/como-organizar-carteira-clientes-representante'
-import { post as post19 } from './posts/crm-offline-para-vendedores'
 import { post as post20 } from './posts/bant-vs-meddic-qualificacao-leads'
 import { post as post21 } from './posts/como-usar-google-maps-para-prospectar'
 import { post as post22 } from './posts/crm-com-whatsapp-integrado'
@@ -65,7 +64,6 @@ export const blogPosts: BlogPost[] = [
   post16,
   post17,
   post18,
-  post19,
   post20,
   post21,
   post22,
