@@ -211,7 +211,7 @@ test.describe('Kanban Board Operations', () => {
 
     // Verify value is still correct
     const dealCard = kanbanPage.getDealCardByTitle(dealTitle)
-    await expect(dealCard).toContainText('7500')
+    await expect(dealCard).toContainText('R$ 7.500')
   })
 
   test('should handle clicking on deal card', async ({ page }) => {

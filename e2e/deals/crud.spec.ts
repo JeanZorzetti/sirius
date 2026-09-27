@@ -103,7 +103,7 @@ test.describe('Deal CRUD Operations', () => {
 
     // Verify new value is displayed
     const dealCard = kanbanPage.getDealCardByTitle(newTitle)
-    await expect(dealCard).toContainText('3000')
+    await expect(dealCard).toContainText('R$ 3.000')
   })
 
   test('should delete a deal', async ({ page }) => {
@@ -129,7 +129,7 @@ test.describe('Deal CRUD Operations', () => {
     await page.waitForTimeout(1000)
 
     // Verify deal is gone
-    expect(await kanbanPage.hasDeal(dealTitle)).toBeFalsy()
+    await expect(kanbanPage.getDealCardByTitle(dealTitle)).toBeHidden()
   })
 
   test('should display deal value correctly', async ({ page }) => {
@@ -150,7 +150,7 @@ test.describe('Deal CRUD Operations', () => {
     // Verify deal card shows value
     const dealCard = kanbanPage.getDealCardByTitle(dealTitle)
     await expect(dealCard).toContainText('R$')
-    await expect(dealCard).toContainText('12345')
+    await expect(dealCard).toContainText('R$ 12.346') // the card rounds to whole reais
   })
 
   test('should show empty state when no deals exist', async ({ page }) => {

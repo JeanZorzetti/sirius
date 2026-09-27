@@ -32,12 +32,10 @@ test.describe('Tasks - CRUD Operations', () => {
     await taskPage.createTask('Tarefa para completar')
 
     // Complete the task
-    await taskPage.completeTask(0)
+    await taskPage.completeTask('Tarefa para completar')
 
-    // Verify it's marked as completed (opacity-50 or strikethrough)
-    const completedTask = page.locator('text="Tarefa para completar"')
-    const classList = await completedTask.evaluate((el: Element) => el.className)
-    expect(classList).toContain('line-through')
+    // A finished task keeps its row with the title struck through
+    await expect(page.getByRole('main').getByText('Tarefa para completar', { exact: true })).toHaveClass(/line-through/)
   })
 
   test('delete a task and verify removal', async ({ page: _page }) => {
@@ -54,11 +52,10 @@ test.describe('Tasks - CRUD Operations', () => {
     expect(await taskPage.verifyTaskExists(taskTitle)).toBe(true)
 
     // Delete the task
-    await taskPage.deleteTask(0)
+    await taskPage.deleteTask(taskTitle)
 
     // Verify it's gone
-    await page.waitForTimeout(500)
-    expect(await taskPage.verifyTaskExists(taskTitle)).toBe(false)
+    await expect(taskPage.taskButton(taskTitle)).toBeHidden()
   })
 
   test('open task detail panel', async ({ page: _page }) => {
@@ -71,10 +68,9 @@ test.describe('Tasks - CRUD Operations', () => {
     await taskPage.createTask('Tarefa para detalhe')
 
     // Open detail
-    await taskPage.openTaskDetail(0)
+    await taskPage.openTaskDetail('Tarefa para detalhe')
 
-    // Verify detail panel is visible
-    const detailPanel = page.locator('[class*="Sheet"]')
-    expect(detailPanel).toBeVisible()
+    // The detail panel is a dialog with the task title
+    await expect(page.getByRole('dialog')).toContainText('Tarefa para detalhe')
   })
 })
