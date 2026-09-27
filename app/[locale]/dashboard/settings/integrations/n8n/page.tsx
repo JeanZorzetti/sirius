@@ -6,6 +6,7 @@ import { ArrowLeft, Workflow } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { N8NSettingsForm } from '@/components/integrations/n8n-settings-form'
 import { redirect } from 'next/navigation'
+import { getEffectiveTier } from '@/lib/entitlements'
 
 export const metadata = { title: "N8N | Sirius CRM" }
 
@@ -22,6 +23,8 @@ export default async function N8NIntegrationPage() {
                 select: {
                     id: true,
                     tier: true,
+                    trialEndsAt: true,
+                    trialStatus: true,
                     n8nEnabled: true,
                     n8nBaseUrl: true,
                     n8nWebhookUrl: true
@@ -36,7 +39,7 @@ export default async function N8NIntegrationPage() {
     }
 
     // Require PRO or BUSINESS plan
-    if (!['PRO', 'BUSINESS'].includes(user.organization.tier)) {
+    if (!['PRO', 'BUSINESS'].includes(getEffectiveTier(user.organization))) {
         redirect('/dashboard/settings/integrations')
     }
 

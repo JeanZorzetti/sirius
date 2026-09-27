@@ -20,6 +20,7 @@ import { prisma } from '@/lib/prisma'
 import { sendEmail } from '@/lib/email'
 import { FollowUpEmail } from '@/emails/templates/follow-up'
 import logger from '@/lib/logger'
+import { getEffectiveTier } from '@/lib/entitlements'
 
 export const runtime = 'nodejs'
 export const maxDuration = 300
@@ -72,7 +73,7 @@ export async function GET(request: NextRequest) {
           user: { select: { email: true, name: true, locale: true } },
           stage: { select: { name: true } },
           contact: { select: { name: true } },
-          organization: { select: { tier: true } },
+          organization: { select: { tier: true, trialEndsAt: true, trialStatus: true } },
         },
       })
 
@@ -80,7 +81,7 @@ export async function GET(request: NextRequest) {
 
       // Para alerta de 3 dias, só PRO/BUSINESS
       const filtered = days === 3
-        ? staleDealOwners.filter(d => ['PRO', 'BUSINESS'].includes(d.organization.tier))
+        ? staleDealOwners.filter(d => ['PRO', 'BUSINESS'].includes(getEffectiveTier(d.organization)))
         : staleDealOwners
 
       for (const deal of filtered) {

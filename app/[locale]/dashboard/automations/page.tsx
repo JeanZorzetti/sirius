@@ -9,6 +9,7 @@ import { AutomationToggleForm } from './toggle-form'
 import { DeleteAutomationButton } from './delete-button'
 import { EmptyState } from '@/components/ui/empty-state'
 import { Zap } from 'lucide-react'
+import { getEffectiveTier } from '@/lib/entitlements'
 
 export const metadata: Metadata = {
   title: 'Automações de Negócios | Sirius CRM'
@@ -50,7 +51,7 @@ export default async function AutomationsPage() {
     select: {
       organizationId: true,
       organization: {
-        select: { tier: true }
+        select: { tier: true, trialEndsAt: true, trialStatus: true }
       }
     }
   })
@@ -59,7 +60,7 @@ export default async function AutomationsPage() {
     return <div className="p-6">Organização não encontrada.</div>
   }
 
-  const isPro = user.organization?.tier !== 'FREE'
+  const isPro = !!user.organization && getEffectiveTier(user.organization) !== 'FREE'
 
   const automations = await prisma.dealAutomation.findMany({
     where: { organizationId: user.organizationId },

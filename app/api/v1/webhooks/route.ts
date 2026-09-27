@@ -7,6 +7,7 @@ import { getAllWebhookEvents } from '@/lib/webhooks/events'
 import logger from '@/lib/logger'
 import { apiError } from '@/lib/api-error'
 import { ERR } from '@/lib/error-messages'
+import { getEffectiveTier } from '@/lib/entitlements'
 
 /**
  * GET /api/v1/webhooks
@@ -24,7 +25,7 @@ export async function GET(request: NextRequest) {
       where: { email: session.user.email },
       select: {
         organizationId: true,
-        organization: { select: { tier: true } }
+        organization: { select: { tier: true, trialEndsAt: true, trialStatus: true } }
       }
     })
 
@@ -33,7 +34,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Check PRO or BUSINESS tier
-    if (!['PRO', 'BUSINESS'].includes(user.organization.tier)) {
+    if (!['PRO', 'BUSINESS'].includes(getEffectiveTier(user.organization))) {
       return NextResponse.json(
         {
           error: 'Webhooks são uma funcionalidade PRO. Faça upgrade em /dashboard/settings/billing'
@@ -82,7 +83,7 @@ export async function POST(request: NextRequest) {
       where: { email: session.user.email },
       select: {
         organizationId: true,
-        organization: { select: { tier: true, name: true } }
+        organization: { select: { tier: true, trialEndsAt: true, trialStatus: true, name: true } }
       }
     })
 
@@ -91,7 +92,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Check PRO or BUSINESS tier
-    if (!['PRO', 'BUSINESS'].includes(user.organization.tier)) {
+    if (!['PRO', 'BUSINESS'].includes(getEffectiveTier(user.organization))) {
       return NextResponse.json(
         {
           error: 'Webhooks são uma funcionalidade PRO. Faça upgrade em /dashboard/settings/billing'

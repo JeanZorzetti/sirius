@@ -4,6 +4,7 @@ import logger from '@/lib/logger'
 import { EmailAutomationType, EmailStatus, Prisma } from '@prisma/client'
 import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
+import { getEffectiveTier } from '@/lib/entitlements'
 
 async function getAuthenticatedUser() {
   const session = await getSession()
@@ -194,7 +195,7 @@ export async function getEmailHistory(limit: number = 50) {
       success: true,
       logs,
       analytics,
-      isPro: ['PRO', 'BUSINESS'].includes(user.organization.tier)
+      isPro: ['PRO', 'BUSINESS'].includes(getEffectiveTier(user.organization))
     }
   } catch (error) {
     logger.error({ err: error }, 'Failed to get email history')

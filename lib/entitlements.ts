@@ -48,6 +48,14 @@ export function getEffectiveTier(org: OrgTrialInfo): SubscriptionTier {
 }
 
 /**
+ * Tier for the metered AI quota. The 7-day Pro trial gets Starter's, so trying the AI does not spend a Pro quota on
+ * every signup that never converts (owner's decision, 27/09/2026). Features and limits use getEffectiveTier.
+ */
+export function getQuotaTier(org: OrgTrialInfo): SubscriptionTier {
+  return isTrialActive(org) ? SubscriptionTier.STARTER : org.tier
+}
+
+/**
  * Retorna true se a org está em modo read-only.
  * Condição: plano FREE + trial expirado (ou nunca iniciado).
  */
@@ -595,16 +603,17 @@ export async function requireFeature(
 ): Promise<void> {
   const org = await prisma.organization.findUnique({
     where: { id: organizationId },
-    select: { tier: true },
+    select: { tier: true, trialEndsAt: true, trialStatus: true },
   })
 
   if (!org) {
     throw new Error('Organization not found')
   }
 
-  if (!canUseFeature(org.tier, feature)) {
+  const tier = getEffectiveTier(org)
+  if (!canUseFeature(tier, feature)) {
     const requiredTier = getRequiredPlanForFeature(feature)
-    throw new FeatureBlockedError(feature, org.tier, requiredTier)
+    throw new FeatureBlockedError(feature, tier, requiredTier)
   }
 }
 
@@ -616,6 +625,8 @@ export async function checkDealLimit(organizationId: string): Promise<void> {
     where: { id: organizationId },
     select: {
       tier: true,
+      trialEndsAt: true,
+      trialStatus: true,
       grandfatheredDealLimit: true,
       grandfatheredAt: true,
     },
@@ -626,7 +637,7 @@ export async function checkDealLimit(organizationId: string): Promise<void> {
   }
 
   // Usar grandfatheredDealLimit se existir (clientes antigos)
-  const limit = org.grandfatheredDealLimit ?? getLimit(org.tier, 'max_deals')
+  const limit = org.grandfatheredDealLimit ?? getLimit(getEffectiveTier(org), 'max_deals')
 
   // -1 = ilimitado
   if (limit === -1) {
@@ -652,14 +663,14 @@ export async function checkDealLimit(organizationId: string): Promise<void> {
 export async function checkUserLimit(organizationId: string): Promise<void> {
   const org = await prisma.organization.findUnique({
     where: { id: organizationId },
-    select: { tier: true },
+    select: { tier: true, trialEndsAt: true, trialStatus: true },
   })
 
   if (!org) {
     throw new Error('Organization not found')
   }
 
-  const limit = getLimit(org.tier, 'max_users')
+  const limit = getLimit(getEffectiveTier(org), 'max_users')
 
   // -1 = ilimitado
   if (limit === -1) {
@@ -683,14 +694,14 @@ export async function checkPipelineLimit(
 ): Promise<void> {
   const org = await prisma.organization.findUnique({
     where: { id: organizationId },
-    select: { tier: true },
+    select: { tier: true, trialEndsAt: true, trialStatus: true },
   })
 
   if (!org) {
     throw new Error('Organization not found')
   }
 
-  const limit = getLimit(org.tier, 'max_pipelines')
+  const limit = getLimit(getEffectiveTier(org), 'max_pipelines')
 
   // -1 = ilimitado
   if (limit === -1) {
@@ -714,14 +725,14 @@ export async function checkTaskProjectLimit(
 ): Promise<void> {
   const org = await prisma.organization.findUnique({
     where: { id: organizationId },
-    select: { tier: true },
+    select: { tier: true, trialEndsAt: true, trialStatus: true },
   })
 
   if (!org) {
     throw new Error('Organization not found')
   }
 
-  const limit = getLimit(org.tier, 'max_task_projects')
+  const limit = getLimit(getEffectiveTier(org), 'max_task_projects')
 
   if (limit === -1) {
     return
@@ -744,14 +755,14 @@ export async function checkTaskLimit(
 ): Promise<void> {
   const org = await prisma.organization.findUnique({
     where: { id: organizationId },
-    select: { tier: true },
+    select: { tier: true, trialEndsAt: true, trialStatus: true },
   })
 
   if (!org) {
     throw new Error('Organization not found')
   }
 
-  const limit = getLimit(org.tier, 'max_tasks')
+  const limit = getLimit(getEffectiveTier(org), 'max_tasks')
 
   if (limit === -1) {
     return
@@ -777,7 +788,7 @@ export async function checkTaskStatusLimit(
     where: { id: projectId },
     select: {
       organizationId: true,
-      organization: { select: { tier: true } },
+      organization: { select: { tier: true, trialEndsAt: true, trialStatus: true } },
     },
   })
 
@@ -785,7 +796,7 @@ export async function checkTaskStatusLimit(
     throw new Error('Task project not found')
   }
 
-  const limit = getLimit(project.organization.tier, 'max_task_statuses_per_project')
+  const limit = getLimit(getEffectiveTier(project.organization), 'max_task_statuses_per_project')
 
   if (limit === -1) {
     return
@@ -809,6 +820,8 @@ export async function checkAgiQuota(organizationId: string): Promise<boolean> {
     where: { id: organizationId },
     select: {
       tier: true,
+      trialEndsAt: true,
+      trialStatus: true,
       agiQuota: true,
     },
   })
@@ -817,7 +830,7 @@ export async function checkAgiQuota(organizationId: string): Promise<boolean> {
     throw new Error('Organization not found')
   }
 
-  const monthlyLimit = getQuota(org.tier, 'agi_monthly_quota')
+  const monthlyLimit = getQuota(getQuotaTier(org), 'agi_monthly_quota')
 
   // -1 = ilimitado
   if (monthlyLimit === -1) {
@@ -877,14 +890,14 @@ export async function consumeAgiQuota(organizationId: string): Promise<void> {
     // Criar se não existir
     const org = await prisma.organization.findUnique({
       where: { id: organizationId },
-      select: { tier: true },
+      select: { tier: true, trialEndsAt: true, trialStatus: true },
     })
 
     if (!org) {
       throw new Error('Organization not found')
     }
 
-    const monthlyLimit = getQuota(org.tier, 'agi_monthly_quota')
+    const monthlyLimit = getQuota(getQuotaTier(org), 'agi_monthly_quota')
 
     await prisma.agiQuota.create({
       data: {
@@ -913,6 +926,8 @@ export async function getAgiQuotaStatus(organizationId: string) {
     where: { id: organizationId },
     select: {
       tier: true,
+      trialEndsAt: true,
+      trialStatus: true,
       agiQuota: true,
     },
   })
@@ -921,7 +936,7 @@ export async function getAgiQuotaStatus(organizationId: string) {
     throw new Error('Organization not found')
   }
 
-  const monthlyLimit = getQuota(org.tier, 'agi_monthly_quota')
+  const monthlyLimit = getQuota(getQuotaTier(org), 'agi_monthly_quota')
   const usedThisMonth = org.agiQuota?.usedThisMonth ?? 0
 
   return {
@@ -1109,6 +1124,8 @@ export async function getOrganizationEntitlements(
     where: { id: organizationId },
     select: {
       tier: true,
+      trialEndsAt: true,
+      trialStatus: true,
       customPricing: true,
       grandfatheredDealLimit: true,
       agiQuota: true,
@@ -1120,7 +1137,7 @@ export async function getOrganizationEntitlements(
     throw new Error('Organization not found')
   }
 
-  const features = PLAN_FEATURES[org.tier]
+  const features = PLAN_FEATURES[getEffectiveTier(org)]
 
   const agiQuotaStatus = await getAgiQuotaStatus(organizationId)
   const scrapingCreditsStatus = await getScrapingCreditsStatus(organizationId)

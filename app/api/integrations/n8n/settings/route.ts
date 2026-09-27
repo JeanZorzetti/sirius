@@ -6,6 +6,7 @@ import { encrypt } from '@/lib/encryption'
 import logger from '@/lib/logger'
 import { apiError } from '@/lib/api-error'
 import { ERR } from '@/lib/error-messages'
+import { getEffectiveTier } from '@/lib/entitlements'
 
 export async function POST(request: Request) {
     try {
@@ -28,7 +29,7 @@ export async function POST(request: Request) {
         }
 
         // Check PRO or BUSINESS plan requirement
-        if (!['PRO', 'BUSINESS'].includes(user.organization.tier)) {
+        if (!['PRO', 'BUSINESS'].includes(getEffectiveTier(user.organization))) {
             return NextResponse.json(
                 { error: 'Integração N8N disponível apenas no plano PRO' },
                 { status: 403 }

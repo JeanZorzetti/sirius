@@ -4,6 +4,7 @@ import { redirect } from "next/navigation"
 import { PipelineManagementClient } from "./pipeline-management-client"
 import { Badge } from "@/components/ui/badge"
 import { getTranslations } from "next-intl/server"
+import { getEffectiveTier } from '@/lib/entitlements'
 
 export const metadata = { title: "Pipelines | Sirius CRM" }
 
@@ -44,7 +45,7 @@ export default async function PipelinesPage({
     ]
   })
 
-  const isPro = ['PRO', 'BUSINESS'].includes(user.organization.tier)
+  const isPro = ['PRO', 'BUSINESS'].includes(getEffectiveTier(user.organization))
 
   return (
     <div className="p-8">
