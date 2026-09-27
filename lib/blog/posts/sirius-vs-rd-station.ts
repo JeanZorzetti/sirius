@@ -12,6 +12,7 @@ const LIST = 'line-height: 2; padding-left: 1.5rem; color: var(--foreground);'
 export const post: BlogPost = {
   slug: 'sirius-vs-rd-station',
   title: 'Sirius CRM vs RD Station CRM 2026: Comparativo Completo para PMEs Brasileiras',
+  seoTitle: 'Sirius CRM vs RD Station CRM: Comparativo 2026',
   excerpt: 'Sirius CRM ou RD Station CRM? Comparativo revisado em setembro de 2026: preço por conta contra preço por usuário, plano gratuito, IA, WhatsApp, automação e integração com marketing.',
   date: '2026-03-21',
   lastModified: '2026-09-26',

@@ -3,6 +3,7 @@ import { BlogPost } from '../../blog-types'
 export const post: BlogPost = {
   slug: 'kpis-de-vendas',
   title: '12 KPIs de Vendas 2026: Benchmarks Reais do Mercado B2B',
+  seoTitle: '12 KPIs de Vendas 2026: Benchmarks do Mercado B2B',
   excerpt: 'Os 12 KPIs que separam equipes que batem meta das que não. Inclui benchmarks B2B brasileiros reais e template de dashboard gratuito.',
   date: '2026-02-28',
   lastModified: '2026-02-28',

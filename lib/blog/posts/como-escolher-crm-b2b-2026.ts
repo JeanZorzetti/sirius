@@ -3,6 +3,7 @@
 export const post: BlogPost = {
   slug: 'como-escolher-crm-b2b-2026',
   title: 'Como Escolher um CRM B2B em 2026: 7 Critérios Decisivos',
+  seoTitle: 'Como Escolher um CRM B2B em 2026: 7 Critérios',
   excerpt: 'CRM errado custa R$12.000+/ano em produtividade perdida. Responda 5 perguntas e descubra qual sistema combina com seu negócio.',
   date: '2026-03-20',
   lastModified: '2026-09-26',

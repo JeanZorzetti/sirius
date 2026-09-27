@@ -3,6 +3,7 @@ import { BlogPost } from '../../blog-types'
 export const post: BlogPost = {
   slug: 'como-montar-processo-de-vendas',
   title: 'Como Montar um Processo de Vendas do Zero: 6 Etapas com Template [2026]',
+  seoTitle: 'Como Montar um Processo de Vendas: Passo a Passo',
   excerpt: 'Empresas com processo de vendas definido convertem 33% mais. Monte o seu em 6 etapas — do ICP ao pós-venda. Template grátis para usar no CRM.',
   date: '2026-03-28',
   lastModified: '2026-03-28',

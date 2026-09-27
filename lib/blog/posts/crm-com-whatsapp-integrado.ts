@@ -11,6 +11,7 @@ const BOX = 'background: var(--muted); border-left: 4px solid var(--fio-forte); 
 export const post: BlogPost = {
   slug: 'crm-com-whatsapp-integrado',
   title: 'CRM com WhatsApp Integrado em 2026: Como Centralizar Todas as Conversas Comerciais num Só Lugar',
+  seoTitle: 'CRM com WhatsApp Integrado: Guia para Centralizar 2026',
   excerpt: 'Como integrar o WhatsApp ao CRM pela API oficial da Meta para centralizar conversas, organizar o follow-up e nunca mais perder histórico de cliente no celular pessoal. Revisado em setembro de 2026.',
   date: '2026-03-21',
   lastModified: '2026-09-26',

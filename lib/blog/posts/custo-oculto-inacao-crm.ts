@@ -3,6 +3,7 @@ import { BlogPost } from '../../blog-types'
 export const post: BlogPost = {
   slug: 'custo-oculto-inacao-crm',
   title: 'O Custo Oculto da Inação no CRM: Guia para Quantificar Perdas Invisíveis',
+  seoTitle: 'Custo Oculto da Inação no CRM: Guia para Calcular',
   excerpt: 'Para calcular o ROI de um CRM: multiplique o número de leads perdidos por mês (média 23% em vendas sem sistema) pelo ticket médio. O custo da inação supera R$ 47.000/ano para times de 5 vendedores. Metodologia validada com 847 empresas.',
   content: `
       <p>

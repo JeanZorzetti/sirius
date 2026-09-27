@@ -3,6 +3,7 @@ import { BlogPost } from '../../blog-types'
 export const post: BlogPost = {
   slug: 'funil-de-vendas-guia-completo',
   title: 'Funil de Vendas: O Que É, Etapas e Como Criar o Seu [Guia Completo 2026]',
+  seoTitle: 'Funil de Vendas: O Que É, Etapas e Guia Completo',
   excerpt: 'Descubra como criar e otimizar um funil de vendas de alta conversão. Guia completo com calculadora interativa e template gratuito para download.',
   content: `
       <p>

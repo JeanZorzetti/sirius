@@ -3,6 +3,7 @@ import { BlogPost } from '../../blog-types'
 export const post: BlogPost = {
   slug: 'roi-de-crm',
   title: 'ROI de CRM: Como Calcular e Justificar o Investimento em 2026',
+  seoTitle: 'ROI de CRM: Como Calcular o Investimento [2026]',
   excerpt: 'ROI de CRM = (ganho − custo) ÷ custo × 100. Segundo a Nucleus Research, cada R$1 investido em CRM retorna R$8,71. Veja a fórmula, um exemplo real e como justificar a compra.',
   content: `
       <p>

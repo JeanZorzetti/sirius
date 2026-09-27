@@ -3,6 +3,7 @@ import { BlogPost } from '../../blog-types'
 export const post: BlogPost = {
   slug: 'representante-comercial-autonomo-ferramentas',
   title: 'Representante Comercial Autônomo: 5 Ferramentas Essenciais para Gestão de Vendas Externas em 2026',
+  seoTitle: 'Representante Comercial Autônomo: 5 Ferramentas [2026]',
   excerpt: 'Descubra as 5 ferramentas indispensáveis para o representante autônomo em 2026: CRM offline, WhatsApp Business, comissões, prospecção e assinatura digital.',
   date: '2026-03-21',
   lastModified: '2026-09-26',

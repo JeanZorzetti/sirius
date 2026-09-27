@@ -3,6 +3,7 @@ import { BlogPost } from '../../blog-types'
 export const post: BlogPost = {
   slug: 'como-superar-objecoes-em-vendas',
   title: 'Como Superar Objeções em Vendas: 10 Exemplos de Respostas Prontas para Fechar Mais',
+  seoTitle: 'Objeções em Vendas: 10 Exemplos de Respostas Prontas',
   excerpt: 'Objeções são oportunidades disfarçadas. Veja as 10 objeções mais comuns em vendas B2B e scripts prontos para superá-las com naturalidade.',
   date: '2026-02-28',
   lastModified: '2026-02-28',

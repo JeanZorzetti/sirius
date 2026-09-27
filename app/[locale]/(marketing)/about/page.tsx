@@ -1,7 +1,6 @@
 ﻿import { getTranslations } from 'next-intl/server'
 import Link from 'next/link'
 import Image from 'next/image'
-import Script from 'next/script'
 import { Button } from '@/components/ui/button'
 import { Users, Target, Lightbulb, TrendingUp } from 'lucide-react'
 import type { Metadata } from 'next'
@@ -61,12 +60,12 @@ export default async function AboutPage({ params }: { params: Promise<{ locale: 
 
   return (
     <>
-      <Script
+      <script
         id="organization-schema"
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
       />
-      <Script
+      <script
         id="breadcrumb-schema"
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}

@@ -12,6 +12,7 @@ const LIST = 'line-height: 2; padding-left: 1.5rem; color: var(--foreground);'
 export const post: BlogPost = {
   slug: 'sirius-vs-hubspot',
   title: 'Sirius CRM vs HubSpot Grátis 2026: Qual CRM Gratuito é Melhor para Representantes Comerciais?',
+  seoTitle: 'Sirius CRM vs HubSpot Grátis: Comparativo 2026',
   excerpt: 'HubSpot Free vs Sirius CRM Gratuito em 2026: os dois atendem até 2 usuários. Comparativo revisado em setembro de 2026 com os limites reais de cada plano gratuito, IA, WhatsApp e o preço do primeiro plano pago.',
   date: '2026-03-21',
   lastModified: '2026-09-26',

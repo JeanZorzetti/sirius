@@ -1,5 +1,4 @@
 ﻿import { Metadata } from 'next'
-import Script from 'next/script'
 import Link from 'next/link'
 import { getTranslations } from 'next-intl/server'
 import { buildLocaleAlternates, DEFAULT_OG_IMAGES } from '@/lib/seo/canonical'
@@ -73,12 +72,12 @@ const breadcrumbSchema = {
 export default function AnuarioPage() {
   return (
     <>
-      <Script
+      <script
         id="dataset-schema"
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(datasetSchema) }}
       />
-      <Script
+      <script
         id="breadcrumb-schema"
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}

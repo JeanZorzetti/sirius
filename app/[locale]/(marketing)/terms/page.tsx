@@ -1,6 +1,5 @@
 ﻿import { Metadata } from 'next'
 import Link from 'next/link'
-import Script from 'next/script'
 import { Button } from '@/components/ui/button'
 import { ArrowLeft, FileText, Scale, Shield, AlertTriangle, Mail } from 'lucide-react'
 import { getTranslations } from 'next-intl/server'
@@ -37,7 +36,7 @@ export default async function TermsPage(
 
   return (
     <>
-      <Script id="breadcrumb-schema" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+      <script id="breadcrumb-schema" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
 
       <div className="min-h-screen bg-background">
         <div className="container mx-auto max-w-4xl py-12 px-6">

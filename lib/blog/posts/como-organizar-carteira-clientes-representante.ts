@@ -3,6 +3,7 @@ import { BlogPost } from '../../blog-types'
 export const post: BlogPost = {
   slug: 'como-organizar-carteira-clientes-representante',
   title: 'Como Organizar sua Carteira de Clientes: Guia para Não Depender do Sistema da Fábrica',
+  seoTitle: 'Carteira de Clientes do Representante: Guia Prático',
   excerpt: 'Aprenda a transformar sua carteira de clientes em um ativo pessoal independente: exportação CSV, segmentação por potencial e propriedade total dos seus dados.',
   date: '2026-03-21',
   lastModified: '2026-03-21',

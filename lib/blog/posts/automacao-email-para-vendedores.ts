@@ -3,6 +3,7 @@ import { BlogPost } from '../../blog-types'
 export const post: BlogPost = {
   slug: 'automacao-email-para-vendedores',
   title: 'Automação de E-mail para Vendedores: Guia com 4 Gatilhos que Aumentam a Resposta em 40%',
+  seoTitle: 'Automação de E-mail para Vendedores: Guia com 4 Gatilhos',
   excerpt: 'Aprenda os 4 gatilhos de e-mail automático que mais convertem em vendas B2B: welcome, follow-up pós-reunião, reengajamento e proposta não aberta — com templates.',
   date: '2026-03-21',
   lastModified: '2026-03-21',

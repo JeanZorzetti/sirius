@@ -3,6 +3,7 @@ import { BlogPost } from '../../blog-types'
 export const post: BlogPost = {
   slug: 'scraping-etico-vs-compra-de-listas',
   title: 'Scraping Ético vs. Compra de Listas: Comparativo de Qual Gera Leads Mais Qualificados',
+  seoTitle: 'Scraping Ético vs Compra de Listas: Comparativo',
   excerpt: 'Compare custo, qualidade e riscos LGPD entre comprar listas de leads e fazer scraping ético do Google Maps, LinkedIn e CNPJ para prospecção B2B.',
   date: '2026-03-21',
   lastModified: '2026-03-21',

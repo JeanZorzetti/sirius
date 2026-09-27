@@ -3,6 +3,7 @@ import { BlogPost } from '../../blog-types'
 export const post: BlogPost = {
   slug: 'crm-simples-vs-complexo',
   title: 'CRM Simples vs. Complexo: Comparativo do Custo da Burocracia em Vendas',
+  seoTitle: 'CRM Simples vs Complexo: Comparativo de Custo',
   excerpt: 'A complexidade mata a produtividade. Entenda por que um CRM simples pode ser a chave para o crescimento.',
   content: `
       <p>

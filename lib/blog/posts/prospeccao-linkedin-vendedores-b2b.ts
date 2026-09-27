@@ -3,6 +3,7 @@ import { BlogPost } from '../../blog-types'
 export const post: BlogPost = {
   slug: 'prospeccao-linkedin-vendedores-b2b',
   title: 'Prospecção pelo LinkedIn para Vendedores B2B: O Passo a Passo sem Ferramentas Pagas',
+  seoTitle: 'Prospecção no LinkedIn B2B: Passo a Passo sem Custo',
   excerpt: 'Aprenda a prospectar no LinkedIn sem Sales Navigator: filtros avançados gratuitos, SSI, mensagem de conexão que converte e como salvar leads direto no CRM.',
   date: '2026-03-21',
   lastModified: '2026-03-21',

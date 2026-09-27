@@ -30,9 +30,20 @@ export async function generateMetadata({
   }
 }
 
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Início", "item": "https://siriuscrm.com.br" },
+    { "@type": "ListItem", "position": 2, "name": "Ferramentas", "item": "https://siriuscrm.com.br/ferramentas" },
+    { "@type": "ListItem", "position": 3, "name": "Calculadora de ROI para Representantes", "item": "https://siriuscrm.com.br/ferramentas/calculadora-roi-representantes" },
+  ]
+}
+
 export default function CalculadoraRepresentantesPage() {
   return (
     <div className="min-h-screen">
+      <script id="breadcrumb-schema" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       {/* Header com Logo */}
       <header className="border-b bg-white/80 backdrop-blur-sm sticky top-0 z-40">
         <div className="container mx-auto px-4 py-4">

@@ -1,5 +1,4 @@
 ﻿import Link from 'next/link'
-import Script from 'next/script'
 import { Shield, Lock, Eye, Server, UserCheck, FileText } from 'lucide-react'
 import type { Metadata } from 'next'
 import { getTranslations } from 'next-intl/server'
@@ -36,7 +35,7 @@ export default async function PrivacyPage(
 
   return (
     <>
-      <Script id="breadcrumb-schema" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+      <script id="breadcrumb-schema" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
 
       <div className="bg-background">
         {/* Hero */}

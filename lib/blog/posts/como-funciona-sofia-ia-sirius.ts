@@ -3,6 +3,7 @@ import { BlogPost } from '../../blog-types'
 export const post: BlogPost = {
   slug: 'como-funciona-sofia-ia-sirius',
   title: 'Sofia IA: Como o Agente Autônomo do Sirius CRM Opera Suas Vendas em 2026',
+  seoTitle: 'Sofia IA: Como Funciona o Agente do Sirius CRM [2026]',
   excerpt: 'Conheça a Sofia IA, o agente autônomo do Sirius CRM que qualifica leads, faz follow-up e movimenta seu pipeline sem intervenção manual.',
   content: `
       <p>

@@ -3,6 +3,7 @@ import { BlogPost } from '../../blog-types'
 export const post: BlogPost = {
   slug: 'crm-para-agencia-de-marketing',
   title: 'CRM para Agência de Marketing: Multi-Pipeline e Gestão de Clientes em 2026',
+  seoTitle: 'CRM para Agência de Marketing: Guia Multi-Pipeline',
   excerpt: 'Agências gerenciam 10-30 clientes simultâneos com processos diferentes. CRM com multi-pipeline separa prospecção de projetos. Veja como montar.',
   date: '2026-03-28',
   lastModified: '2026-03-28',

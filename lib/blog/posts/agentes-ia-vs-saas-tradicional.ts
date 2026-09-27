@@ -3,6 +3,7 @@ import { BlogPost } from '../../blog-types'
 export const post: BlogPost = {
   slug: 'agentes-ia-vs-saas-tradicional',
   title: 'AgaaS vs SaaS Tradicional: Por Que Agentes IA São o Futuro do CRM em 2026',
+  seoTitle: 'AgaaS vs SaaS Tradicional: Comparativo para CRM 2026',
   excerpt: 'Compare AgaaS (Agentic as a Service) com SaaS tradicional e entenda por que agentes IA autônomos estão redefinindo CRMs em 2026.',
   content: `
       <p>

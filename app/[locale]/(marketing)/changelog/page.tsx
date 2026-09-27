@@ -1,5 +1,4 @@
 ﻿import Link from 'next/link'
-import Script from 'next/script'
 import { Badge } from '@/components/ui/badge'
 import { GitBranch, Sparkles, Bug, Zap, Shield, Users, Smartphone, Bell } from 'lucide-react'
 import type { Metadata } from 'next'
@@ -77,8 +76,8 @@ export default async function ChangelogPage(
 
   return (
     <>
-      <Script id="breadcrumb-schema" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
-      <Script id="software-version-schema" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(softwareVersionSchema) }} />
+      <script id="breadcrumb-schema" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+      <script id="software-version-schema" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(softwareVersionSchema) }} />
 
       <div className="bg-background">
         {/* Hero */}

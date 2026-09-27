@@ -3,6 +3,7 @@ import { BlogPost } from '../../blog-types'
 export const post: BlogPost = {
   slug: 'whatsapp-api-oficial-meta-crm',
   title: 'WhatsApp API Oficial: O Fim das Contas Bloqueadas e Como Usar no CRM em 2026',
+  seoTitle: 'WhatsApp API Oficial no CRM: Guia sem Bloqueio [2026]',
   excerpt: 'Entenda por que a Meta está banindo integrações não oficiais, como a API Oficial do WhatsApp Business funciona e como conectar ao seu CRM sem risco de perder o número.',
   date: '2026-04-27',
   lastModified: '2026-04-27',

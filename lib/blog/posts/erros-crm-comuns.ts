@@ -3,6 +3,7 @@ import { BlogPost } from '../../blog-types'
 export const post: BlogPost = {
   slug: 'erros-crm-comuns',
   title: '7 Erros de CRM que Destroem sua Operação de Vendas: Guia para Evitar',
+  seoTitle: '7 Erros de CRM Comuns: Guia para Evitar na Operação',
   excerpt: 'Adotar um CRM não garante resultados. Veja os 7 erros mais comuns que sabotam a gestão comercial e como corrigi-los antes que custe caro.',
   date: '2026-02-28',
   lastModified: '2026-02-28',

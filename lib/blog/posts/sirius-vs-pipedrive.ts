@@ -8,6 +8,7 @@ const TDL = `${TD} font-weight: 600;`
 export const post: BlogPost = {
   slug: 'sirius-vs-pipedrive',
   title: 'Sirius CRM vs Pipedrive 2026: Qual o Melhor CRM para Vendedores B2B Brasileiros?',
+  seoTitle: 'Sirius CRM vs Pipedrive: Comparativo 2026 para B2B',
   excerpt: 'Sirius CRM vs Pipedrive em 2026: preço por conta em reais contra preço por usuário em dólar, plano gratuito, IA, WhatsApp, modo offline e suporte. Comparativo revisado em setembro de 2026.',
   date: '2026-03-21',
   lastModified: '2026-09-26',

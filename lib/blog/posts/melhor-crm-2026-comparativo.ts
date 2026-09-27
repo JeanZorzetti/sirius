@@ -3,6 +3,7 @@ import { BlogPost } from '../../blog-types'
 export const post: BlogPost = {
   slug: 'melhor-crm-2026-comparativo',
   title: 'Melhor CRM 2026: 7 Sistemas Comparados com Preços em R$',
+  seoTitle: 'Melhor CRM 2026: 7 Sistemas Comparados com Preço',
   excerpt: 'Comparamos 7 CRMs usados no Brasil em 2026 com preços reais em BRL. Um deles custa R$0 e superou opções 6x mais caras em WhatsApp e IA.',
   date: '2026-02-10',
   lastModified: '2026-03-28',

@@ -3,6 +3,7 @@ import { BlogPost } from '../../blog-types'
 export const post: BlogPost = {
   slug: 'crm-para-representante-comercial-2026',
   title: 'CRM para Representante Comercial Autônomo: Gratuito, Offline e com IA [2026]',
+  seoTitle: 'CRM para Representante Comercial: Grátis e Offline',
   excerpt: 'Representantes comerciais perdem a carteira ao trocar de representada. CRM próprio com offline, WhatsApp e IA resolve — veja qual é gratuito para autônomos.',
   date: '2026-03-21',
   lastModified: '2026-03-28',

@@ -3,6 +3,7 @@ import { BlogPost } from '../../blog-types'
 export const post: BlogPost = {
   slug: 'crm-gratuito-brasil-2026',
   title: 'CRM Gratuito: 5 Opções que Funcionam de Verdade em 2026',
+  seoTitle: 'CRM Gratuito: 5 Opções que Funcionam em 2026',
   excerpt: 'Comparamos 5 CRMs com plano gratuito funcional no Brasil. Sem pegadinha, sem limite de 7 dias. Veja qual vale para PMEs e vendedores autônomos.',
   date: '2026-03-27',
   lastModified: '2026-03-27',

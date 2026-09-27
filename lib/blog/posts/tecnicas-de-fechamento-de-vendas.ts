@@ -3,6 +3,7 @@ import { BlogPost } from '../../blog-types'
 export const post: BlogPost = {
   slug: 'tecnicas-de-fechamento-de-vendas',
   title: 'Técnicas de Fechamento de Vendas: 7 Scripts Prontos [2026]',
+  seoTitle: 'Técnicas de Fechamento de Vendas: 7 Scripts [2026]',
   excerpt: '7 técnicas de fechamento com scripts reais e exemplos. Inclui sinais de compra que indicam a hora certa de pedir o compromisso.',
   date: '2026-02-28',
   lastModified: '2026-03-27',

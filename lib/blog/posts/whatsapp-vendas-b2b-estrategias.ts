@@ -3,6 +3,7 @@ import { BlogPost } from '../../blog-types'
 export const post: BlogPost = {
   slug: 'whatsapp-vendas-b2b-estrategias',
   title: 'WhatsApp para Vendas B2B: 7 Estratégias que Geram Respostas em 2026',
+  seoTitle: 'WhatsApp para Vendas B2B: 7 Estratégias [2026]',
   excerpt: 'Taxa de abertura do WhatsApp: 98%. Taxa de resposta: 40%. Mas 80% dos vendedores usam errado. 7 estratégias com templates prontos para copiar.',
   date: '2026-03-28',
   lastModified: '2026-03-28',

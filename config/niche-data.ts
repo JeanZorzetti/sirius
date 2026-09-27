@@ -150,7 +150,7 @@ export const NICHES: NicheData[] = [
       }
     ],
     seo: {
-      title: 'CRM para Corretores 2026 [IA + WhatsApp] — Nunca Perca Uma Comissão | Grátis',
+      title: 'CRM para Corretores 2026: Nunca Perca Comissão | Grátis',
       description: 'Corretores que usam IA vendem 50% mais. Follow-up automático, pipeline visual e WhatsApp integrado. Pare de perder comissões por desorganização. Sem planilha. Teste grátis — sem cartão.',
       keywords: [
         'crm para corretores',
@@ -302,7 +302,7 @@ export const NICHES: NicheData[] = [
       }
     ],
     seo: {
-      title: 'CRM para Solar 2026 [IA + Propostas Automáticas] — Feche 3x Mais Projetos | Grátis',
+      title: 'CRM Energia Solar 2026: Propostas com IA | Grátis',
       description: 'Integradoras solares que usam IA qualificam leads 3x mais rápido. Pipeline visual, propostas automáticas e WhatsApp do pré-venda ao fechamento. Sem planilha. Teste grátis — sem cartão.',
       keywords: [
         'crm energia solar',
@@ -453,7 +453,7 @@ export const NICHES: NicheData[] = [
       }
     ],
     seo: {
-      title: 'CRM para Agências 2026 [IA Nativa] — Escale Clientes Sem Contratar Mais | Grátis',
+      title: 'CRM para Agências 2026: Escale sem Contratar | Grátis',
       description: 'Agências que usam IA convertem 40% mais leads. Automação de propostas, qualificação inteligente e métricas em tempo real. Cresça o faturamento sem aumentar o time. Teste grátis — sem cartão.',
       keywords: [
         'crm para agencias',
@@ -592,7 +592,7 @@ export const NICHES: NicheData[] = [
       }
     ],
     seo: {
-      title: 'CRM para Consultores 2026 [IA + Automação] — Feche Contratos Enquanto Dorme | Grátis',
+      title: 'CRM para Consultores 2026: IA e Automação | Grátis',
       description: 'Consultores que automatizam follow-ups fecham 35% mais contratos. IA qualifica leads, pipeline visual e histórico completo de projetos. Foque em entregar, deixe a IA vender. Teste grátis — sem cartão.',
       keywords: [
         'crm para consultores',
@@ -731,7 +731,7 @@ export const NICHES: NicheData[] = [
       }
     ],
     seo: {
-      title: 'CRM para Representante Comercial 2026 [IA + Offline] — Nunca Perca Dados ao Trocar de Representada',
+      title: 'CRM Representante Comercial 2026: IA e Offline | Grátis',
       description: 'O único CRM com IA que funciona OFFLINE para representantes. Sua carteira fica com você — mesmo trocando de representada. Gestão de pedidos, comissões e WhatsApp automático. Grátis para sempre.',
       keywords: [
         'crm para representante comercial',

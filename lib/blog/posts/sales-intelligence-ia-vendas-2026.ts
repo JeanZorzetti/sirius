@@ -3,6 +3,7 @@ import { BlogPost } from '../../blog-types'
 export const post: BlogPost = {
   slug: 'sales-intelligence-ia-vendas-2026',
   title: 'Sales Intelligence em 2026: Como a IA está Transformando a Qualificação de Leads no Brasil',
+  seoTitle: 'Sales Intelligence com IA: Guia de Qualificação 2026',
   excerpt: 'Entenda o que é Sales Intelligence, como IAs analisam sinais de compra em dados firmográficos e comportamentais, e como PMEs brasileiras podem usar sem budget enterprise.',
   date: '2026-03-21',
   lastModified: '2026-09-26',

@@ -1,6 +1,5 @@
 ﻿import { getTranslations } from 'next-intl/server'
 import type { Metadata } from 'next'
-import Script from 'next/script'
 import { blogPosts } from '@/lib/blog-data'
 import { buildLocaleAlternates, DEFAULT_OG_IMAGES } from '@/lib/seo/canonical'
 
@@ -61,12 +60,12 @@ export default function BlogLayout({
 
   return (
     <>
-      <Script
+      <script
         id="collection-schema"
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionSchema) }}
       />
-      <Script
+      <script
         id="breadcrumb-blog-schema"
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}

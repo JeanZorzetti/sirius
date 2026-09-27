@@ -3,6 +3,7 @@ import { BlogPost } from '../../blog-types'
 export const post: BlogPost = {
   slug: 'como-migrar-planilha-para-crm',
   title: 'Como Migrar de Planilha para CRM sem Perder Dados [Guia 2026]',
+  seoTitle: 'Como Migrar de Planilha para CRM [Guia 2026]',
   excerpt: '63% das PMEs ainda usam planilha para vendas. Migrar para CRM leva menos de 1 hora — se você seguir estes 5 passos. Inclui checklist de migração gratuito.',
   date: '2026-03-28',
   lastModified: '2026-03-28',

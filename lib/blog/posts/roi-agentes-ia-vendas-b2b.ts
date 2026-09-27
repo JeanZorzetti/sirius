@@ -3,6 +3,7 @@ import { BlogPost } from '../../blog-types'
 export const post: BlogPost = {
   slug: 'roi-agentes-ia-vendas-b2b',
   title: 'ROI de Agentes IA em Vendas B2B: Calculadora e Resultados Reais [2026]',
+  seoTitle: 'ROI de Agentes IA em Vendas B2B: Calculadora 2026',
   excerpt: 'Aprenda a calcular o ROI real de agentes IA em vendas B2B. Inclui fórmulas, simulação prática, comparativo com SDR e métricas essenciais.',
   content: `
       <p>

@@ -3,6 +3,7 @@ import { BlogPost } from '../../blog-types'
 export const post: BlogPost = {
   slug: 'agentes-ia-autonomos-crm-2026',
   title: 'Agentes IA Autônomos no CRM: Como a Revolução AgaaS Muda Vendas em 2026',
+  seoTitle: 'Agentes IA Autônomos no CRM: Guia AgaaS 2026',
   excerpt: 'Descubra o AgaaS: agentes IA autônomos que operam seu CRM por você. Qualificam leads, fazem follow-up e agendam reuniões. Conheça o Sirius CRM.',
   content: `
       <p>

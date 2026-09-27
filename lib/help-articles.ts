@@ -237,7 +237,7 @@ export const helpArticles: HelpArticle[] = [
   },
 
   {
-    title: "Como cadastrar e gerenciar contatos",
+    title: "Sistema de contatos: como cadastrar",
     slug: "cadastrar-contatos",
     category: "Contatos",
     categorySlug: "contatos",
@@ -1479,7 +1479,7 @@ export const helpArticles: HelpArticle[] = [
   },
 
   {
-    title: "Integrando com N8N (automação low-code)",
+    title: "Integrando com N8N (low-code)",
     slug: "integracao-n8n",
     category: "Integrações",
     categorySlug: "integracoes",
@@ -2319,7 +2319,7 @@ export const helpArticles: HelpArticle[] = [
   },
 
   {
-    title: "Melhores práticas de gestão de vendas",
+    title: "Melhores práticas de processos de vendas",
     slug: "melhores-praticas-vendas",
     category: "Primeiros Passos",
     categorySlug: "primeiros-passos",
@@ -2447,7 +2447,7 @@ export const helpArticles: HelpArticle[] = [
   },
 
   {
-    title: "Troubleshooting: problemas comuns e soluções",
+    title: "Problemas comuns e soluções",
     slug: "troubleshooting",
     category: "Primeiros Passos",
     categorySlug: "primeiros-passos",

@@ -3,6 +3,7 @@ import { BlogPost } from '../../blog-types'
 export const post: BlogPost = {
   slug: 'crm-ia-inteligencia-artificial-2026',
   title: 'CRM com IA: Como a Inteligência Artificial Está Revolucionando as Vendas em 2026',
+  seoTitle: 'CRM com IA: Guia de Inteligência Artificial em Vendas',
   excerpt: 'Descubra como o CRM com Inteligência Artificial está transformando equipes de vendas em 2026: automação de follow-up, previsão de fechamento, scoring de leads e muito mais.',
   date: '2026-02-10',
   lastModified: '2026-09-26',

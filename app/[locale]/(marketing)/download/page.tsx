@@ -1,5 +1,4 @@
 ﻿import { Metadata } from 'next'
-import Script from 'next/script'
 import { DownloadInstructions } from '@/components/marketing/download-instructions'
 import { getTranslations } from 'next-intl/server'
 import { buildLocaleAlternates, DEFAULT_OG_IMAGES } from '@/lib/seo/canonical'
@@ -66,12 +65,12 @@ export default function DownloadPage() {
 
   return (
     <>
-      <Script
+      <script
         id="breadcrumb-schema"
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
-      <Script
+      <script
         id="software-app-schema"
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(softwareAppSchema) }}

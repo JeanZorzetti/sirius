@@ -3,6 +3,7 @@ import { BlogPost } from '../../blog-types'
 export const post: BlogPost = {
   slug: 'automacao-vendas-agentes-ia',
   title: 'Automação de Vendas com Agentes IA: Guia Prático para Vender Mais em 2026',
+  seoTitle: 'Automação de Vendas com Agentes IA: Guia 2026',
   excerpt: 'Descubra como agentes IA automatizam prospecção, follow-up, qualificação e fechamento de vendas — e como implementar no seu processo comercial em 2026.',
   content: `
       <p>

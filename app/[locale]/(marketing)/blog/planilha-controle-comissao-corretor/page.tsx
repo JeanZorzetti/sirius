@@ -15,7 +15,7 @@ export async function generateMetadata({
   const { locale } = await params
   const alternates = buildLocaleAlternates(locale, '/blog/planilha-controle-comissao-corretor')
   return {
-    title: 'Planilha de Controle de Vendas e Comissão para Corretores 2026 | Melhor que Excel',
+    title: 'Planilha Controle de Vendas e Comissões Grátis',
     description: 'Pare de perder comissões por desorganização. Descubra quanto dinheiro você deixa na mesa todo mês + Calculadora gratuita de comissões perdidas.',
     keywords: [
       'planilha controle comissão corretor',

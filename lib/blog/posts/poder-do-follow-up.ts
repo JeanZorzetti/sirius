@@ -3,6 +3,7 @@ import { BlogPost } from '../../blog-types'
 export const post: BlogPost = {
   slug: 'poder-do-follow-up',
   title: 'A Ciência do Follow-up: Guia para Vender 80% Mais sem Ser Chato',
+  seoTitle: 'Follow-up em Vendas: Guia para Vender 80% Mais',
   excerpt: 'Estatísticas mostram que 80% das vendas acontecem após o 5º contato. Você está persistindo o suficiente?',
   content: `
       <div class="callout-data">

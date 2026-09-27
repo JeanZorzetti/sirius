@@ -1,6 +1,8 @@
 export interface BlogPost {
   slug: string
   title: string
+  // <title> tag when the H1 is too wide for the SERP (<= 580px, main term first)
+  seoTitle?: string
   excerpt: string
   content: string
   date: string

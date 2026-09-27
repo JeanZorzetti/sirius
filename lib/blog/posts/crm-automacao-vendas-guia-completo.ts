@@ -3,6 +3,7 @@ import { BlogPost } from '../../blog-types'
 export const post: BlogPost = {
   slug: 'crm-automacao-vendas-guia-completo',
   title: 'CRM e Automação de Vendas: Guia Completo para Aumentar suas Vendas em 2026',
+  seoTitle: 'CRM e Automação de Vendas: Guia Completo 2026',
   excerpt: 'Aprenda como usar CRM e automação de vendas para fechar mais negócios em menos tempo. Guia prático com exemplos reais, ferramentas e estratégias validadas para 2026.',
   date: '2026-02-10',
   lastModified: '2026-02-10',

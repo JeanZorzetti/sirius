@@ -1,5 +1,4 @@
 ﻿import { Metadata } from 'next'
-import Script from 'next/script'
 import { CalculadoraROI } from '@/components/calculadora-roi'
 import { getTranslations } from 'next-intl/server'
 import { buildLocaleAlternates, DEFAULT_OG_IMAGES } from '@/lib/seo/canonical'
@@ -43,7 +42,7 @@ const breadcrumbSchema = {
 export default function CalculadoraROIPage() {
   return (
     <div className="min-h-screen">
-      <Script id="breadcrumb-calculadora-roi" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+      <script id="breadcrumb-calculadora-roi" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <div className="container mx-auto px-4 py-12 sm:py-16 lg:py-24">
         {/* Hero Section */}
         <div className="max-w-3xl mx-auto text-center mb-12 sm:mb-16">

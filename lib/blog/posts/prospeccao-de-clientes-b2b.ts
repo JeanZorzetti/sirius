@@ -3,6 +3,7 @@ import { BlogPost } from '../../blog-types'
 export const post: BlogPost = {
   slug: 'prospeccao-de-clientes-b2b',
   title: 'Prospecção B2B: 5 Métodos que Geram Leads Qualificados em 2026',
+  seoTitle: 'Prospecção B2B: 5 Métodos que Geram Leads [2026]',
   excerpt: 'Cold email converte 1-3%, LinkedIn InMail até 25%. Testamos 5 métodos de prospecção B2B e mostramos qual gera mais leads para PMEs sem comprar listas.',
   date: '2026-02-28',
   lastModified: '2026-02-28',

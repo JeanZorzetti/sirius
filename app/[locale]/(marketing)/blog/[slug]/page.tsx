@@ -99,7 +99,7 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
   const displayDescription = isEnLocale && post.excerptEn ? post.excerptEn : aiOptimizedDescription
 
   return {
-    title: `${displayTitle} | Sirius Blog`,
+    title: !isEnLocale && post.seoTitle ? post.seoTitle : `${displayTitle} | Sirius Blog`,
     description: displayDescription,
     keywords: isEnLocale ? (post.keywordsEn ?? [post.category]) : post.category,
     // Noindex for EN pages without translated content — avoids wrong-language SEO penalty

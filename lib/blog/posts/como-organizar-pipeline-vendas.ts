@@ -3,6 +3,7 @@ import { BlogPost } from '../../blog-types'
 export const post: BlogPost = {
   slug: 'como-organizar-pipeline-vendas',
   title: 'Como organizar seu Pipeline de Vendas: O Guia Definitivo para 2025',
+  seoTitle: 'Pipeline de Vendas: Como Organizar o Seu [Guia 2026]',
   excerpt: 'Descubra as melhores práticas para manter seu funil de vendas sempre fluindo e fechar mais negócios.',
   content: `
       <p>

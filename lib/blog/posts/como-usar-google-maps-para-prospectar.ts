@@ -3,6 +3,7 @@ import { BlogPost } from '../../blog-types'
 export const post: BlogPost = {
   slug: 'como-usar-google-maps-para-prospectar',
   title: 'Como Usar o Google Maps para Prospectar Empresas na sua Região: Guia Prático para Vendedores',
+  seoTitle: 'Google Maps para Prospectar Empresas: Guia Prático',
   excerpt: 'Guia completo de prospecção local B2B via Google Maps: como encontrar empresas por segmento, extrair contatos e importar leads diretamente para o CRM com o recurso do Sirius PRO.',
   date: '2026-03-21',
   lastModified: '2026-03-21',

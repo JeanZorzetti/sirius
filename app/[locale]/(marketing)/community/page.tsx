@@ -1,5 +1,4 @@
 ﻿import Link from 'next/link'
-import Script from 'next/script'
 import { Button } from '@/components/ui/button'
 import { Users, MessageCircle, BookOpen, Github, Lightbulb, Trophy, Heart } from 'lucide-react'
 import type { Metadata } from 'next'
@@ -134,12 +133,12 @@ export default function CommunityPage() {
 
   return (
     <>
-      <Script
+      <script
         id="breadcrumb-schema"
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
-      <Script
+      <script
         id="organization-schema"
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}

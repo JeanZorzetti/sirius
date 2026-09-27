@@ -3,6 +3,7 @@ import { BlogPost } from '../../blog-types'
 export const post: BlogPost = {
   slug: 'crm-offline-para-vendedores',
   title: 'CRM Offline para Vendedores: Guia para Registrar Pedidos sem Internet e Sincronizar Depois',
+  seoTitle: 'CRM Offline para Vendedores: Guia de Pedidos sem Internet',
   excerpt: 'Entenda como um CRM com suporte offline real (PWA) funciona para vendedores externos em campo, indústrias e áreas sem sinal — e por que isso muda tudo na produtividade.',
   date: '2026-03-21',
   lastModified: '2026-03-21',

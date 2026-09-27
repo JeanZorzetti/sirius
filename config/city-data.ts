@@ -73,7 +73,7 @@ export const CITIES: NicheData[] = [
       }
     ],
     seo: {
-      title: 'CRM para Empresas em São Paulo 2026 [IA + WhatsApp] — Gestão Comercial para PMEs Paulistanas',
+      title: 'CRM para PMEs Brasileiras em São Paulo 2026: IA',
       description: 'CRM com IA para empresas em São Paulo. Follow-up automático, WhatsApp integrado e pipeline visual. Feche mais rápido que a concorrência. Teste grátis — sem cartão.',
       keywords: [
         'crm sao paulo',
@@ -151,7 +151,7 @@ export const CITIES: NicheData[] = [
       }
     ],
     seo: {
-      title: 'CRM para Empresas em Curitiba 2026 [IA + Offline] — CRM para Representantes e Distribuidoras do Sul',
+      title: 'CRM para Empresas em Curitiba 2026: IA e Offline',
       description: 'CRM com IA para empresas em Curitiba. Gestão de carteira, pedidos offline e pipeline para distribuidoras e representantes do Sul. Teste grátis — sem cartão.',
       keywords: [
         'crm curitiba',
@@ -229,7 +229,7 @@ export const CITIES: NicheData[] = [
       }
     ],
     seo: {
-      title: 'CRM para Empresas em Belo Horizonte 2026 [IA + WhatsApp] — Pipeline de Vendas para PMEs Mineiras',
+      title: 'CRM para Empresas em Belo Horizonte 2026: IA',
       description: 'CRM com IA para empresas em Belo Horizonte. Pipeline para ciclos longos, follow-up automático e WhatsApp integrado para PMEs mineiras. Teste grátis — sem cartão.',
       keywords: [
         'crm belo horizonte',
@@ -307,7 +307,7 @@ export const CITIES: NicheData[] = [
       }
     ],
     seo: {
-      title: 'CRM para Vendedores em Porto Alegre 2026 [IA + Automação] — CRM para Representantes Gaúchos',
+      title: 'CRM para Vendedores em Porto Alegre 2026: IA',
       description: 'CRM com IA para representantes e distribuidores em Porto Alegre. Gestão de carteira, offline e automação de recompras para o mercado gaúcho. Teste grátis — sem cartão.',
       keywords: [
         'crm porto alegre',
@@ -385,7 +385,7 @@ export const CITIES: NicheData[] = [
       }
     ],
     seo: {
-      title: 'CRM para Empresas no Rio de Janeiro 2026 [IA Nativa] — Pipeline e WhatsApp para Times Cariocas',
+      title: 'CRM para Empresas no Rio de Janeiro 2026: IA',
       description: 'CRM com IA nativa para empresas no Rio de Janeiro. WhatsApp integrado, pipeline de vendas e qualificação automática para times cariocas. Teste grátis — sem cartão.',
       keywords: [
         'crm rio de janeiro',
@@ -463,7 +463,7 @@ export const CITIES: NicheData[] = [
       }
     ],
     seo: {
-      title: 'CRM para Empresas em Brasília 2026 [IA + Proposta Automática] — CRM para Consultores e Prestadores do DF',
+      title: 'CRM para Empresas em Brasília 2026: Propostas com IA',
       description: 'CRM com IA para consultores e prestadores de serviço em Brasília. Proposta automática, pipeline de contratos e renovações automáticas para o mercado do DF. Teste grátis — sem cartão.',
       keywords: [
         'crm brasilia',

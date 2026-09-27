@@ -3,6 +3,7 @@ import { BlogPost } from '../../blog-types'
 export const post: BlogPost = {
   slug: 'crm-para-varejo-2026',
   title: 'CRM para Varejo: Como Aumentar Vendas na Loja Física e Online em 2026',
+  seoTitle: 'CRM para Varejo: Guia para Loja Física e Online 2026',
   excerpt: 'Lojas que usam CRM vendem 29% mais por cliente. Veja como aplicar pipeline, follow-up e WhatsApp no varejo brasileiro — com exemplos de loja física e e-commerce.',
   date: '2026-03-28',
   lastModified: '2026-03-28',

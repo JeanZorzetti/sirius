@@ -13,6 +13,7 @@ const BOX = 'background: var(--muted); border-left: 4px solid var(--fio-forte); 
 export const post: BlogPost = {
   slug: 'alternativas-ao-pipedrive-brasil',
   title: '5 Alternativas ao Pipedrive para Representantes Comerciais no Brasil em 2026',
+  seoTitle: '5 Alternativas ao Pipedrive no Brasil [2026]',
   excerpt: 'As 5 alternativas ao Pipedrive para representantes comerciais no Brasil, revisadas em setembro de 2026: plano gratuito, preço por usuário ou por conta, WhatsApp e IA de cada uma.',
   date: '2026-03-21',
   lastModified: '2026-09-26',

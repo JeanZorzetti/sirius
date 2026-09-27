@@ -3,6 +3,7 @@
 export const post: BlogPost = {
   slug: 'spin-selling-guia-completo',
   title: 'SPIN Selling: A Metodologia de Vendas que Aumenta Conversão em 53% [Guia Completo 2026]',
+  seoTitle: 'SPIN Selling: Guia Completo da Metodologia [2026]',
   excerpt: `Descubra como SPIN Selling aumenta conversão em vendas complexas B2B. Guia completo com 100+ perguntas práticas, matriz de objeções e casos reais. Template gratuito para download.`,
   content: `
 <div style="background: var(--muted); border-left: 4px solid var(--fio-forte); padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">

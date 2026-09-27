@@ -1,5 +1,4 @@
 ﻿import Link from 'next/link'
-import Script from 'next/script'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Input } from '@/components/ui/input'
@@ -105,7 +104,7 @@ const articlesByCategory = {
   "primeiros-passos": [
     { title: "Como criar seu primeiro negócio", slug: "criar-primeiro-negocio" },
     { title: "Atalhos de teclado do Sirius CRM", slug: "atalhos-teclado" },
-    { title: "Melhores práticas de gestão de vendas", slug: "melhores-praticas-vendas" },
+    { title: "Melhores práticas de processos de vendas", slug: "melhores-praticas-vendas" },
     { title: "Troubleshooting: problemas comuns", slug: "troubleshooting" },
   ],
   "pipeline-negocios": [
@@ -117,7 +116,7 @@ const articlesByCategory = {
     { title: "Adicionando tags e custom fields", slug: "tags-custom-fields" },
   ],
   "contatos": [
-    { title: "Como cadastrar e gerenciar contatos", slug: "cadastrar-contatos" },
+    { title: "Sistema de contatos: como cadastrar", slug: "cadastrar-contatos" },
     { title: "Importando contatos via CSV", slug: "importar-contatos-csv" },
   ],
   "automacoes": [
@@ -207,6 +206,15 @@ const faqItems = [
   },
 ]
 
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Início", "item": "https://siriuscrm.com.br" },
+    { "@type": "ListItem", "position": 2, "name": "Central de Ajuda", "item": "https://siriuscrm.com.br/help" },
+  ]
+}
+
 export default function HelpPage() {
   const faqSchema = {
     "@context": "https://schema.org",
@@ -223,11 +231,12 @@ export default function HelpPage() {
 
   return (
     <>
-      <Script
+      <script
         id="faq-schema"
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
       />
+      <script id="breadcrumb-schema" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
 
       <div className="min-h-screen bg-background">
         {/* Hero Section */}
