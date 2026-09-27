@@ -1,4 +1,4 @@
-import { Page } from '@playwright/test'
+import { Page, expect } from '@playwright/test'
 import { BasePage } from './base-page'
 
 /**
@@ -47,8 +47,12 @@ export class DashboardPage extends BasePage {
     // The sidebar opens on hover, and only an open sidebar expands the account block
     await this.dismissWelcome()
     const userMenu = this.getUserMenuButton()
-    await userMenu.hover()
-    await userMenu.click()
+    const sair = this.page.getByRole('button', { name: /^sair$/i })
+    await expect(async () => {
+      await userMenu.hover()
+      if (!(await sair.isVisible())) await userMenu.click()
+      await expect(sair).toBeVisible({ timeout: 2000 })
+    }).toPass({ timeout: 20000 })
   }
 
   /**

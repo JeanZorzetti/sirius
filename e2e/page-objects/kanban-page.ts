@@ -263,6 +263,7 @@ export class KanbanPage extends BasePage {
    */
   async isBoardVisible(): Promise<boolean> {
     // Check if we can see at least one stage heading and the "Novo Deal" button
+    await this.page.locator('[data-testid="kanban-column"]').first().waitFor({ timeout: 15000 }).catch(() => {})
     const hasStages = await this.page.locator('[data-testid="kanban-column"]').count() > 0
     const hasButton = await this.page.locator('button:has-text("Novo Deal")').isVisible().catch(() => false)
     return hasStages && hasButton
