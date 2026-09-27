@@ -46,9 +46,12 @@ export class TaskPage extends BasePage {
     return this.page.getByRole('button', { name: labels[view], exact: true })
   }
 
-  /** The row's checkbox marks the task done; its title then gets a strike-through */
+  /**
+   * The row's checkbox marks the task done; its title then gets a strike-through. The native input is sr-only inside
+   * a label (components/ui/checkbox.tsx), so the click goes to that label.
+   */
   async completeTask(title: string) {
-    await this.taskButton(title).locator('xpath=preceding::*[@role="checkbox"][1]').click()
+    await this.taskButton(title).locator('xpath=preceding::label[.//input[@type="checkbox"]][1]').click()
   }
 
   async openTaskDetail(title: string) {
