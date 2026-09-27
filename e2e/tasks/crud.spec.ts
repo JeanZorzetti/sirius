@@ -70,7 +70,7 @@ test.describe('Tasks - CRUD Operations', () => {
     // Open detail
     await taskPage.openTaskDetail('Tarefa para detalhe')
 
-    // The detail panel is a dialog with the task title
-    await expect(page.getByRole('dialog')).toContainText('Tarefa para detalhe')
+    // The detail panel is a dialog whose title field holds the task title
+    await expect(page.getByRole('dialog').getByPlaceholder('Título da tarefa...')).toHaveValue('Tarefa para detalhe')
   })
 })

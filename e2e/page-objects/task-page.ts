@@ -48,8 +48,7 @@ export class TaskPage extends BasePage {
 
   /** The row's checkbox marks the task done; its title then gets a strike-through */
   async completeTask(title: string) {
-    const row = this.page.getByRole('main').locator('div').filter({ has: this.taskButton(title) }).last()
-    await row.getByRole('checkbox').click()
+    await this.taskButton(title).locator('xpath=preceding::*[@role="checkbox"][1]').click()
   }
 
   async openTaskDetail(title: string) {

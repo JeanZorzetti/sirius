@@ -187,11 +187,8 @@ export class KanbanPage extends BasePage {
     const deleteButton = this.page.getByRole('button', { name: /excluir|deletar|delete/i })
     await deleteButton.click()
 
-    // Confirm deletion if there's a confirmation dialog
-    const confirmButton = this.page.getByRole('button', { name: /confirmar|sim|yes/i })
-    if (await confirmButton.isVisible({ timeout: 2000 }).catch(() => false)) {
-      await confirmButton.click()
-    }
+    // The confirmation is an alert dialog ("Excluir negócio") with its own "Excluir" button
+    await this.page.getByRole('alertdialog').getByRole('button', { name: /excluir/i }).click()
 
     // With Optimistic UI, dialog closes immediately - no need to wait
     await this.page.waitForTimeout(500)

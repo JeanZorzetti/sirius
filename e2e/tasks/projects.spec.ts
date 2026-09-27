@@ -12,7 +12,7 @@ test.describe('Tasks - Project Management', () => {
     await dialog.getByRole('textbox', { name: 'Descrição' }).fill('Descrição de teste')
     await dialog.getByRole('button', { name: 'Criar' }).click()
 
-    await expect(page.getByRole('heading', { name: 'Projeto de Teste' })).toBeVisible()
+    await expect(page.getByText('Projeto de Teste', { exact: true }).first()).toBeVisible()
   })
 
   test('navigate to project workspace', async ({ page: _page }) => {
