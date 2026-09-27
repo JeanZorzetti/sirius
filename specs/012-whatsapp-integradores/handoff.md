@@ -3,9 +3,36 @@
 ## Current state
 
 - The spec is written and pushed: `spec.md` in `b20a93a`, with a quality checklist in which every item passes.
-- There is no plan and no code yet. The next command is `speckit-plan`.
+- The plan is done: `plan.md`, `research.md`, `data-model.md`, `contracts/rotas.md`, `contracts/adaptador.md` and
+  `quickstart.md`. There is no code yet. The next command is `speckit-tasks`.
 - The project's `speckit-*` skills live in `.claude/skills/`. A session opened in the `ROI Labs` root does not list
   them, so read their `SKILL.md` and follow it by hand.
+
+## What the plan decided that the next session must not miss
+
+- **The WA database has no migration path today.** `docker/entrypoint.sh` skips it ("managed by whatsmeow Go
+  service"), and that service is gone. The plan does the following (research R1):
+  - moves the schema to `prisma/wa/schema.prisma`;
+  - adds a `0_init` baseline;
+  - adds an additive `IF NOT EXISTS` migration;
+  - makes the entrypoint run `migrate deploy`, falling back to `migrate resolve --applied 0_init` on the first boot.
+- **Gate before push A**: run the read-only `migrate diff --from-url "$DATABASE_URL_WA"` in the EasyPanel container
+  console, and check that `DATABASE_URL_WA_DIRECT` is set (quickstart §0). Nobody can reach the WA database from the
+  local machine.
+- **No new column on the CRM database.** The "SAIR" lock, "has this contact ever written", the per-minute limit and
+  "which connection does this conversation use" are all derived from `WhatsAppMessage` (research R7).
+- **The official webhook route gets fixed along the way.** It moves to the shared `lib/whatsapp/entrada.ts`:
+  - processing moves to `after()`;
+  - dedup becomes `create` plus P2002;
+  - status only moves forward.
+- **Findings**:
+  - `whatsapp.message.in` and `notifyWhatsAppMessage` are never fired today, not even for the official API (R11);
+  - `checkWhatsAppInstanceLimit` counts the add-on twice (R9);
+  - the chat page gates on the raw tier, so trial accounts are left out (R9).
+- **uazapi paths marked *(confirmar)*** in research R2 must be checked against a real test instance before push B
+  (quickstart §2). The real payloads become the test fixtures.
+- **The cron scheduler is outside the repo.** Register `/api/cron/whatsapp-integradores` every 5 minutes next to the
+  other `/api/cron/*` jobs.
 
 ## Owner's decisions (27/09)
 
