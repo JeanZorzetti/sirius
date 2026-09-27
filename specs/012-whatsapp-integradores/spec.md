@@ -364,8 +364,8 @@ WhatsApp oficial no Starter ou no Pro.
 - **Contato novo.** A mensagem de um número desconhecido cria o contato do mesmo jeito que a API oficial cria hoje. A
   unificação de "registrar contato" continua na próxima spec da revisão de 25/09 (ação 6).
 - **Conexões antigas.** As conexões antigas do gateway por QR que ainda estiverem no banco ficam como "descontinuadas" e
-  nunca enviam nem recebem. A contagem delas não foi medida, porque o banco do WhatsApp não é acessível na máquina
-  local.
+  nunca enviam nem recebem. Em 27/09/2026 o banco do WhatsApp em produção tinha 0 linhas em `WhatsAppConnection`,
+  então não há conexão antiga a descontinuar.
 - **Limite de envio.** O limite por minuto (FR-023) segue a vazão humana de uma pessoa digitando. O valor fica no plano.
 - **Mensagem de serviço.** A cobrança da Meta por mensagem de serviço a partir de 01/10/2026 não se aplica ao
   integrador, porque o cliente não paga a Meta por esse caminho.

@@ -33,7 +33,7 @@ seção 6.5 sobem no mesmo push do envio (push B), e US3 sobe no push C.
 - [X] T003 [P] Trocar o caminho do schema nos 6 jobs de `.github/workflows/ci.yml` que rodam
   `prisma generate --schema prisma/whatsapp.prisma`
 - [X] T004 [P] Atualizar o comentário de `scripts/migrate-wa-data.ts` (linha 12) para o caminho novo
-- [ ] T005 Rodar o gate do quickstart §0 no console do container do EasyPanel: `DATABASE_URL_WA_DIRECT` definida,
+- [X] T005 Rodar o gate do quickstart §0 no console do container do EasyPanel: `DATABASE_URL_WA_DIRECT` definida,
   `migrate diff --from-url "$DATABASE_URL_WA"` contra o schema de hoje e a contagem de conexões por `status`.
   Registrar o resultado em `specs/012-whatsapp-integradores/handoff.md`. Diferença em tabela ou coluna que a migration
   altera: parar e voltar ao research R1
@@ -70,7 +70,7 @@ seção 6.5 sobem no mesmo push do envio (push B), e US3 sobe no push C.
   `echo "Running WhatsApp DB migrations..."` e `migrate deploy --schema prisma/wa/schema.prisma`. Se o deploy falhar,
   rodar `migrate resolve --applied 0_init --schema prisma/wa/schema.prisma` e o deploy de novo; qualquer outra falha
   derruba a subida pelo `set -e` (research R1)
-- [ ] T010 Push A: `npx prisma generate`, `npx prisma generate --schema prisma/wa/schema.prisma`,
+- [X] T010 Push A: `npx prisma generate`, `npx prisma generate --schema prisma/wa/schema.prisma`,
   `npx tsc --noEmit -p tsconfig.json` e `npx vitest run` verdes; commit só dos caminhos das T001–T009
   (`git commit -- <caminhos>`); push; conferir no log da subida a marcação de `0_init`, a aplicação da migration e o
   `/api/health` saudável (quickstart §3.1)
@@ -447,7 +447,7 @@ WhatsApp é só do plano Business, ou que Starter e Pro têm a API oficial.
 - [X] T082 Rodar `npx tsc --noEmit -p tsconfig.json`, `npx vitest run`, o ESLint do CI e `node scripts/audit-dead-code.js`;
   conferir por `grep` que nenhum `console.*` dos arquivos novos em `lib/whatsapp/` e `app/api/webhooks/whatsapp-integrador/`
   registra corpo, credencial ou cabeçalho de autenticação
-- [ ] T083 Trocar o "não medido" das conexões antigas nas Assumptions de `specs/012-whatsapp-integradores/spec.md`
+- [X] T083 Trocar o "não medido" das conexões antigas nas Assumptions de `specs/012-whatsapp-integradores/spec.md`
   pela contagem da T005
 - [ ] T084 Depois do deploy, rodar o quickstart §3 inteiro (aviso sem segredo dá `404`, conta Starter de teste, queda,
   seção 6.5 e a consulta do SC-002 cruzada com `AuditLog`) e, depois de 7 dias, o p95 de `atrasoMs` do §3.9, que

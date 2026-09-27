@@ -1,5 +1,30 @@
 # Handoff: spec 012, WhatsApp through an integrator (2026-09-27)
 
+## In production since 27/09/2026 ~21:30 BRT
+
+PR #14 was merged as a whole (A, B+C and D in one deploy), before the gate. What happened and how it was fixed:
+
+- **The boot failed on the WA migration.** The WA database already had a `_prisma_migrations` table: 24 CRM
+  migrations recorded as applied there on 04/04/2026 and one CRM migration
+  (`20260206170213_add_pinned_archived_to_chat_conversation`) recorded as failed on 05/04. Someone ran the CRM
+  migrations against the WA database back then; the CRM tables are not there. `migrate deploy` answered P3009, the
+  fallback marked `0_init` as applied, the second deploy answered P3009 again, and every new task exited 1. The old
+  container kept serving, so the site stayed up on the previous code.
+- **Fix:** `migrate resolve --rolled-back 20260206170213_add_pinned_archived_to_chat_conversation`, run once from the
+  old container. It only flags that foreign row; the schema did not change. The next task applied
+  `20260928000000_integradores` and started. The same sequence was replayed first on a local Postgres 16 with the
+  production history (P3009, resolve, deploy applies, next boot has nothing pending): `migrate deploy` ignores the
+  foreign applied rows.
+- **Gate facts (T005):** `DATABASE_URL_WA` and `DATABASE_URL_WA_DIRECT` point to `sirius_db_wpp`; PostgreSQL 16.15;
+  the tables and enums matched the `0_init` baseline; `WhatsAppConnection` had 0 rows (T083).
+- **Checked after the deploy:** `/api/cron/whatsapp-integradores` answers 401 without the secret, the notice route
+  answers 404 without a valid secret, `/pricing` shows 1, 2 and 5 numbers, and `/api/health` is 200.
+
+Still open: **T059** (contract test with a real instance of each integrator; the uazapi paths marked
+`TODO(012 §2)` were not confirmed, so uazapi is the one most likely to fail first), **T071** (register the cron every
+5 minutes; until then a drop the integrator does not announce is not caught) and **T084** (quickstart §3 in
+production and the SC-003 p95 after 7 days).
+
 ## Current state (after `speckit-implement`, 27/09)
 
 78 of 84 tasks are done and marked `[X]` in `tasks.md`. The code sits on the branch `012-whatsapp-integradores`, not on
