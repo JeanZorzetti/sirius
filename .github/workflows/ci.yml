@@ -133,8 +133,6 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 25
     needs: [build]
-    # ponytail: stays non-blocking until the stale specs are fixed; the database is real now
-    continue-on-error: true
 
     # Throwaway test database: pgvector because the schema has a vector column
     services:
@@ -286,9 +284,8 @@ jobs:
   all-checks-passed:
     name: All Checks Passed ✓
     runs-on: ubuntu-latest
-    needs: [lint, typecheck, build, test-unit, dead-code, db-migration-check, security]
-    # test-e2e roda com continue-on-error (17 specs exigem Postgres real, ver acima) —
-    # de propósito fora daqui: não pode ser o job que decide se o PR passa
+    # test-e2e runs against a real Postgres (see its services) and gates the PR like the rest
+    needs: [lint, typecheck, build, test-unit, test-e2e, dead-code, db-migration-check, security]
     if: always()
 
     steps:
