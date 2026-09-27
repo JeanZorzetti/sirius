@@ -1,6 +1,7 @@
 import { test, expect } from '@playwright/test'
 import { RegisterPage } from '../page-objects/register-page'
 import { KanbanPage } from '../page-objects/kanban-page'
+import { DashboardPage } from '../page-objects/dashboard-page'
 
 test.describe('Deal CRUD Operations', () => {
   // Helper to create a test user and login
@@ -25,6 +26,7 @@ test.describe('Deal CRUD Operations', () => {
 
     // Wait for registration to complete
     await page.waitForURL(/\/dashboard/, { timeout: 15000 })
+    await new DashboardPage(page).dismissWelcome()
 
     return userData
   }
@@ -101,7 +103,7 @@ test.describe('Deal CRUD Operations', () => {
 
     // Verify new value is displayed
     const dealCard = kanbanPage.getDealCardByTitle(newTitle)
-    await expect(dealCard).toContainText('3000')
+    await expect(dealCard).toContainText('R$ 3.000')
   })
 
   test('should delete a deal', async ({ page }) => {
@@ -127,7 +129,7 @@ test.describe('Deal CRUD Operations', () => {
     await page.waitForTimeout(1000)
 
     // Verify deal is gone
-    expect(await kanbanPage.hasDeal(dealTitle)).toBeFalsy()
+    await expect(kanbanPage.getDealCardByTitle(dealTitle)).toBeHidden()
   })
 
   test('should display deal value correctly', async ({ page }) => {
@@ -148,7 +150,7 @@ test.describe('Deal CRUD Operations', () => {
     // Verify deal card shows value
     const dealCard = kanbanPage.getDealCardByTitle(dealTitle)
     await expect(dealCard).toContainText('R$')
-    await expect(dealCard).toContainText('12345')
+    await expect(dealCard).toContainText('R$ 12.346') // the card rounds to whole reais
   })
 
   test('should show empty state when no deals exist', async ({ page }) => {

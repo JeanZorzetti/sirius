@@ -1,4 +1,4 @@
-import { Page } from '@playwright/test'
+import { Page, expect } from '@playwright/test'
 import { BasePage } from './base-page'
 
 /**
@@ -28,16 +28,31 @@ export class DashboardPage extends BasePage {
    * Get user menu button (avatar/profile dropdown)
    */
   getUserMenuButton() {
-    // The user menu is a button with a rounded avatar inside
-    return this.page.locator('button.rounded-full, button:has(div[class*="avatar"]), [data-testid="user-menu"]').first()
+    // The account block at the bottom of the sidebar: a button with the user's avatar
+    return this.page.locator('button:has([data-slot="avatar"]):visible').first()
   }
 
   /**
-   * Click user menu to open dropdown
+   * A new account sees the welcome dialog on its first dashboard visit, over the whole screen. Closing it records
+   * "skipped" on the server, so it does not come back.
    */
+  async dismissWelcome() {
+    const welcome = this.page.getByRole('dialog', { name: /bem-vindo/i })
+    await welcome.waitFor({ timeout: 5000 }).then(() => this.page.keyboard.press('Escape'), () => {})
+    await welcome.waitFor({ state: 'hidden' })
+  }
+
+  /** Open the account block at the bottom of the sidebar */
   async openUserMenu() {
+    // The sidebar opens on hover, and only an open sidebar expands the account block
+    await this.dismissWelcome()
     const userMenu = this.getUserMenuButton()
-    await userMenu.click()
+    const sair = this.page.getByRole('button', { name: /^sair$/i })
+    await expect(async () => {
+      await userMenu.hover()
+      if (!(await sair.isVisible())) await userMenu.click()
+      await expect(sair).toBeVisible({ timeout: 2000 })
+    }).toPass({ timeout: 20000 })
   }
 
   /**
@@ -47,7 +62,7 @@ export class DashboardPage extends BasePage {
     await this.openUserMenu()
 
     // Wait for menu to open and click logout
-    const logoutButton = this.page.getByRole('menuitem', { name: /sair|logout/i })
+    const logoutButton = this.page.getByRole('button', { name: /^sair$/i })
     await logoutButton.click()
   }
 

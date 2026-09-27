@@ -1,5 +1,11 @@
 import { test, expect } from '@playwright/test'
 import { prisma } from '@/lib/prisma'
+import { hash } from 'bcryptjs'
+import { generateApiKey } from '@/lib/api-keys'
+
+
+/** Unique per worker, so the setup can run again on a retry */
+const sufixo = `${Date.now()}-${Math.random().toString(36).slice(2, 6)}`
 
 test.describe('API Keys Management', () => {
   let testOrganizationId: string
@@ -11,16 +17,17 @@ test.describe('API Keys Management', () => {
     const org = await prisma.organization.create({
       data: {
         name: 'API Test Org',
-        plan: 'PRO'
+        tier: 'PRO',
+        slug: `e2e-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`
       }
     })
     testOrganizationId = org.id
 
     const user = await prisma.user.create({
       data: {
-        email: 'apitest@example.com',
+        email: `apitest-${sufixo}@example.com`,
         name: 'API Test User',
-        password: 'hashedpassword',
+        password: await hash('Test123456!', 10),
         organizationId: testOrganizationId
       }
     })
@@ -29,11 +36,11 @@ test.describe('API Keys Management', () => {
     // Get auth cookie by logging in
     const context = await browser.newContext()
     const page = await context.newPage()
-    await page.goto('/auth/login')
-    await page.fill('input[name="email"]', 'apitest@example.com')
-    await page.fill('input[name="password"]', 'hashedpassword')
+    await page.goto('/login')
+    await page.fill('input[name="email"]', `apitest-${sufixo}@example.com`)
+    await page.fill('input[name="password"]', 'Test123456!')
     await page.click('button[type="submit"]')
-    await page.waitForURL('/dashboard')
+    await page.waitForURL(/\/dashboard/)
 
     const cookies = await context.cookies()
     const sessionCookie = cookies.find(c => c.name.includes('session'))
@@ -44,6 +51,10 @@ test.describe('API Keys Management', () => {
     await context.close()
   })
 
+  test.beforeEach(async () => {
+    await prisma.apiKey.deleteMany({ where: { organizationId: testOrganizationId } })
+  })
+
   test.afterAll(async () => {
     // Cleanup
     await prisma.user.delete({ where: { id: testUserId } })
@@ -51,7 +62,7 @@ test.describe('API Keys Management', () => {
   })
 
   test('should list API keys for authenticated user', async ({ request }) => {
-    const response = await request.get('http://localhost:3000/api/v1/api-keys', {
+    const response = await request.get('/api/v1/api-keys', {
       headers: {
         Cookie: authCookie
       }
@@ -64,7 +75,7 @@ test.describe('API Keys Management', () => {
   })
 
   test('should generate new API key', async ({ request }) => {
-    const response = await request.post('http://localhost:3000/api/v1/api-keys', {
+    const response = await request.post('/api/v1/api-keys', {
       headers: {
         Cookie: authCookie,
         'Content-Type': 'application/json'
@@ -91,7 +102,7 @@ test.describe('API Keys Management', () => {
 
   test('should validate API key', async ({ request }) => {
     // First create an API key
-    const createResponse = await request.post('http://localhost:3000/api/v1/api-keys', {
+    const createResponse = await request.post('/api/v1/api-keys', {
       headers: {
         Cookie: authCookie,
         'Content-Type': 'application/json'
@@ -105,7 +116,7 @@ test.describe('API Keys Management', () => {
     const apiKey = createData.apiKey.key
 
     // Test using the API key to access deals endpoint
-    const testResponse = await request.get('http://localhost:3000/api/v1/deals', {
+    const testResponse = await request.get('/api/v1/deals', {
       headers: {
         Authorization: `Bearer ${apiKey}`
       }
@@ -118,7 +129,7 @@ test.describe('API Keys Management', () => {
   })
 
   test('should reject invalid API key', async ({ request }) => {
-    const response = await request.get('http://localhost:3000/api/v1/deals', {
+    const response = await request.get('/api/v1/deals', {
       headers: {
         Authorization: 'Bearer sk_test_invalid_key'
       }
@@ -131,7 +142,7 @@ test.describe('API Keys Management', () => {
   })
 
   test('should reject missing Authorization header', async ({ request }) => {
-    const response = await request.get('http://localhost:3000/api/v1/deals')
+    const response = await request.get('/api/v1/deals')
 
     expect(response.status()).toBe(401)
     const data = await response.json()
@@ -141,7 +152,7 @@ test.describe('API Keys Management', () => {
 
   test('should revoke API key', async ({ request }) => {
     // Create an API key
-    const createResponse = await request.post('http://localhost:3000/api/v1/api-keys', {
+    const createResponse = await request.post('/api/v1/api-keys', {
       headers: {
         Cookie: authCookie,
         'Content-Type': 'application/json'
@@ -156,7 +167,7 @@ test.describe('API Keys Management', () => {
     const apiKey = createData.apiKey.key
 
     // Verify it works
-    const testResponse = await request.get('http://localhost:3000/api/v1/deals', {
+    const testResponse = await request.get('/api/v1/deals', {
       headers: {
         Authorization: `Bearer ${apiKey}`
       }
@@ -165,7 +176,7 @@ test.describe('API Keys Management', () => {
 
     // Revoke the key
     const revokeResponse = await request.delete(
-      `http://localhost:3000/api/v1/api-keys/${apiKeyId}`,
+      `/api/v1/api-keys/${apiKeyId}`,
       {
         headers: {
           Cookie: authCookie
@@ -175,7 +186,7 @@ test.describe('API Keys Management', () => {
     expect(revokeResponse.ok()).toBeTruthy()
 
     // Verify it no longer works
-    const reTestResponse = await request.get('http://localhost:3000/api/v1/deals', {
+    const reTestResponse = await request.get('/api/v1/deals', {
       headers: {
         Authorization: `Bearer ${apiKey}`
       }
@@ -185,7 +196,7 @@ test.describe('API Keys Management', () => {
 
   test('should update lastUsed and requestCount', async ({ request }) => {
     // Create an API key
-    const createResponse = await request.post('http://localhost:3000/api/v1/api-keys', {
+    const createResponse = await request.post('/api/v1/api-keys', {
       headers: {
         Cookie: authCookie,
         'Content-Type': 'application/json'
@@ -200,10 +211,10 @@ test.describe('API Keys Management', () => {
     const apiKey = createData.apiKey.key
 
     // Make a few API calls
-    await request.get('http://localhost:3000/api/v1/deals', {
+    await request.get('/api/v1/deals', {
       headers: { Authorization: `Bearer ${apiKey}` }
     })
-    await request.get('http://localhost:3000/api/v1/contacts', {
+    await request.get('/api/v1/contacts', {
       headers: { Authorization: `Bearer ${apiKey}` }
     })
 
@@ -211,7 +222,7 @@ test.describe('API Keys Management', () => {
     await new Promise(resolve => setTimeout(resolve, 1000))
 
     // Check usage stats
-    const listResponse = await request.get('http://localhost:3000/api/v1/api-keys', {
+    const listResponse = await request.get('/api/v1/api-keys', {
       headers: { Cookie: authCookie }
     })
 
@@ -224,15 +235,16 @@ test.describe('API Keys Management', () => {
   })
 
   test('should display masked key in list', async ({ request }) => {
-    const response = await request.get('http://localhost:3000/api/v1/api-keys', {
+    await generateApiKey(testOrganizationId, 'Masked Key')
+    const response = await request.get('/api/v1/api-keys', {
       headers: { Cookie: authCookie }
     })
 
     const data = await response.json()
     if (data.apiKeys.length > 0) {
       const firstKey = data.apiKeys[0]
-      expect(firstKey).toHaveProperty('prefix')
-      expect(firstKey.prefix).toMatch(/^sk_(live|test)_/)
+      expect(firstKey).toHaveProperty('keyPrefix')
+      expect(firstKey.keyPrefix).toMatch(/^sk_(live|test)_/)
       // Full key should NOT be returned in list
       expect(firstKey).not.toHaveProperty('keyHash')
     }

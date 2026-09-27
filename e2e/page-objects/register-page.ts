@@ -18,54 +18,50 @@ export class RegisterPage extends BasePage {
   }
 
   /**
-   * Fill name field
+   * The form has 3 steps, and its fields are found by id:
+   * 1. account (name, email, password) plus the required terms box;
+   * 2. about you (phone, job title);
+   * 3. company (name, segment), whose submit creates the account.
    */
   async fillName(name: string) {
-    await this.page.fill('input[name="name"]', name)
+    await this.page.fill('#name', name)
   }
 
-  /**
-   * Fill email field
-   */
   async fillEmail(email: string) {
-    await this.page.fill('input[name="email"]', email)
+    await this.page.fill('#email', email)
   }
 
-  /**
-   * Fill password field
-   */
   async fillPassword(password: string) {
-    await this.page.fill('input[name="password"]', password)
+    await this.page.fill('#password', password)
   }
 
-  /**
-   * Fill organization/company name field
-   */
+  async acceptTerms() {
+    await this.page.check('#aceite')
+  }
+
   async fillOrganizationName(organizationName: string) {
-    // The field is actually named "company" in the form
-    await this.page.fill('input[name="company"]', organizationName)
+    await this.page.fill('#company', organizationName)
   }
 
-  /**
-   * Click register button
-   */
+  /** Next step, or create the account on the last one */
   async clickRegisterButton() {
     await this.page.click('button[type="submit"]')
   }
 
-  /**
-   * Perform complete registration flow
-   */
-  async register(
-    name: string,
-    email: string,
-    password: string,
-    organizationName: string
-  ) {
+  /** Complete registration flow through the 3 steps */
+  async register(name: string, email: string, password: string, organizationName: string) {
     await this.fillName(name)
     await this.fillEmail(email)
     await this.fillPassword(password)
+    await this.acceptTerms()
+    await this.clickRegisterButton()
+
+    await this.page.fill('#phone', '+55 11 99999-9999')
+    await this.page.selectOption('#jobTitle', { index: 1 })
+    await this.clickRegisterButton()
+
     await this.fillOrganizationName(organizationName)
+    await this.page.selectOption('#segment', { index: 1 })
     await this.clickRegisterButton()
   }
 
@@ -122,7 +118,7 @@ export class RegisterPage extends BasePage {
    * Check if specific field has validation error
    */
   async hasFieldError(fieldName: string) {
-    const fieldError = this.page.locator(`input[name="${fieldName}"] + .text-red-500, input[name="${fieldName}"] ~ .text-red-500`)
+    const fieldError = this.page.locator(`#${fieldName} + .text-red-500, #${fieldName} ~ .text-red-500`)
     return await fieldError.count() > 0
   }
 }

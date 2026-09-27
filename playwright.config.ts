@@ -16,18 +16,15 @@ export default defineConfig({
   /* Fail the build on CI if you accidentally left test.only in the source code. */
   forbidOnly: !!process.env.CI,
   /* Retry on CI only */
-  retries: process.env.CI ? 2 : 0,
-  /* Opt out of parallel tests on CI. */
-  workers: process.env.CI ? 1 : undefined,
+  retries: process.env.CI ? 1 : 0,
+  /* Two workers on CI: every spec creates its own accounts, so they can share the test database */
+  workers: process.env.CI ? 2 : undefined,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   reporter: 'html',
   /* Test timeout */
   timeout: 60 * 1000, // 60 seconds per test
-  /* ponytail: boa parte da suíte precisa de Postgres que a CI não provisiona
-   * (ver .github/workflows/ci.yml, job test-e2e) — sem isso o runner batia
-   * no timeout-minutes do job e virava "cancelled" em vez de terminar
-   * normalmente. Sobe quando a CI ganhar um banco de teste real. */
-  globalTimeout: process.env.CI ? 8 * 60 * 1000 : 0,
+  /* The CI job has a real Postgres now: the whole Chromium run fits in 18 min, under the job's 25-minute timeout */
+  globalTimeout: process.env.CI ? 18 * 60 * 1000 : 0,
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Base URL to use in actions like `await page.goto('/')`. */

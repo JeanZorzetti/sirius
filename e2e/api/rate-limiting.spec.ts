@@ -1,7 +1,13 @@
 import { test, expect } from '@playwright/test'
 import { prisma } from '@/lib/prisma'
+import { generateApiKey } from '@/lib/api-keys'
+
+
+/** Unique per worker, so the setup can run again on a retry */
+const sufixo = `${Date.now()}-${Math.random().toString(36).slice(2, 6)}`
 
 test.describe('Rate Limiting', () => {
+  test.skip(!process.env.UPSTASH_REDIS_REST_URL, 'needs Upstash Redis: without it lib/plan-quota.ts lets every request through')
   let freeOrgId: string
   let proOrgId: string
   let freeApiKey: string
@@ -12,14 +18,15 @@ test.describe('Rate Limiting', () => {
     const freeOrg = await prisma.organization.create({
       data: {
         name: 'Rate Limit FREE Org',
-        plan: 'FREE'
+        tier: 'FREE',
+        slug: `e2e-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`
       }
     })
     freeOrgId = freeOrg.id
 
     await prisma.user.create({
       data: {
-        email: 'ratelimit-free@example.com',
+        email: `ratelimit-free-${sufixo}@example.com`,
         name: 'Rate Limit Free User',
         password: 'hashedpassword',
         organizationId: freeOrgId
@@ -30,14 +37,15 @@ test.describe('Rate Limiting', () => {
     const proOrg = await prisma.organization.create({
       data: {
         name: 'Rate Limit PRO Org',
-        plan: 'PRO'
+        tier: 'PRO',
+        slug: `e2e-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`
       }
     })
     proOrgId = proOrg.id
 
     await prisma.user.create({
       data: {
-        email: 'ratelimit-pro@example.com',
+        email: `ratelimit-pro-${sufixo}@example.com`,
         name: 'Rate Limit Pro User',
         password: 'hashedpassword',
         organizationId: proOrgId
@@ -45,7 +53,6 @@ test.describe('Rate Limiting', () => {
     })
 
     // Generate API keys
-    const { generateApiKey } = await import('@/lib/api-keys')
     const freeKeyResult = await generateApiKey(freeOrgId, 'Free Key')
     const proKeyResult = await generateApiKey(proOrgId, 'Pro Key')
 
@@ -65,7 +72,7 @@ test.describe('Rate Limiting', () => {
   })
 
   test('should include rate limit headers in response', async ({ request }) => {
-    const response = await request.get('http://localhost:3000/api/v1/deals', {
+    const response = await request.get('/api/v1/deals', {
       headers: {
         Authorization: `Bearer ${freeApiKey}`
       }
@@ -86,7 +93,7 @@ test.describe('Rate Limiting', () => {
 
   test('should have different limits for FREE and PRO', async ({ request }) => {
     // FREE request
-    const freeResponse = await request.get('http://localhost:3000/api/v1/deals', {
+    const freeResponse = await request.get('/api/v1/deals', {
       headers: {
         Authorization: `Bearer ${freeApiKey}`
       }
@@ -96,7 +103,7 @@ test.describe('Rate Limiting', () => {
     const freeLimit = parseInt(freeHeaders['x-ratelimit-limit'])
 
     // PRO request
-    const proResponse = await request.get('http://localhost:3000/api/v1/deals', {
+    const proResponse = await request.get('/api/v1/deals', {
       headers: {
         Authorization: `Bearer ${proApiKey}`
       }
@@ -113,7 +120,7 @@ test.describe('Rate Limiting', () => {
 
   test('should decrement remaining count with each request', async ({ request }) => {
     // Make first request
-    const response1 = await request.get('http://localhost:3000/api/v1/deals', {
+    const response1 = await request.get('/api/v1/deals', {
       headers: {
         Authorization: `Bearer ${freeApiKey}`
       }
@@ -122,7 +129,7 @@ test.describe('Rate Limiting', () => {
     const remaining1 = parseInt(response1.headers()['x-ratelimit-remaining'])
 
     // Make second request
-    const response2 = await request.get('http://localhost:3000/api/v1/deals', {
+    const response2 = await request.get('/api/v1/deals', {
       headers: {
         Authorization: `Bearer ${freeApiKey}`
       }
@@ -136,7 +143,7 @@ test.describe('Rate Limiting', () => {
 
   test('should reset count after time window', async ({ request }) => {
     // Make a request and note the reset time
-    const response1 = await request.get('http://localhost:3000/api/v1/deals', {
+    const response1 = await request.get('/api/v1/deals', {
       headers: {
         Authorization: `Bearer ${freeApiKey}`
       }
@@ -149,7 +156,7 @@ test.describe('Rate Limiting', () => {
     await new Promise(resolve => setTimeout(resolve, 1000))
 
     // Make another request
-    const response2 = await request.get('http://localhost:3000/api/v1/deals', {
+    const response2 = await request.get('/api/v1/deals', {
       headers: {
         Authorization: `Bearer ${freeApiKey}`
       }
@@ -174,7 +181,7 @@ test.describe('Rate Limiting', () => {
 
     // Make requests until we hit the limit (60 for FREE)
     for (let i = 0; i < 65; i++) {
-      const response = await request.get('http://localhost:3000/api/v1/deals', {
+      const response = await request.get('/api/v1/deals', {
         headers: {
           Authorization: `Bearer ${freeApiKey}`
         }
@@ -204,7 +211,7 @@ test.describe('Rate Limiting', () => {
     // We'll simulate by checking the error format without actually hitting the limit
 
     // Make a normal request first
-    const response = await request.get('http://localhost:3000/api/v1/deals', {
+    const response = await request.get('/api/v1/deals', {
       headers: {
         Authorization: `Bearer ${freeApiKey}`
       }
@@ -229,13 +236,13 @@ test.describe('Rate Limiting', () => {
 
   test('should track rate limits per organization', async ({ request }) => {
     // Make requests with FREE org
-    await request.get('http://localhost:3000/api/v1/deals', {
+    await request.get('/api/v1/deals', {
       headers: {
         Authorization: `Bearer ${freeApiKey}`
       }
     })
 
-    const freeResponse = await request.get('http://localhost:3000/api/v1/deals', {
+    const freeResponse = await request.get('/api/v1/deals', {
       headers: {
         Authorization: `Bearer ${freeApiKey}`
       }
@@ -244,7 +251,7 @@ test.describe('Rate Limiting', () => {
     const freeRemaining = parseInt(freeResponse.headers()['x-ratelimit-remaining'])
 
     // Make request with PRO org
-    const proResponse = await request.get('http://localhost:3000/api/v1/deals', {
+    const proResponse = await request.get('/api/v1/deals', {
       headers: {
         Authorization: `Bearer ${proApiKey}`
       }
@@ -260,7 +267,7 @@ test.describe('Rate Limiting', () => {
 
   test('should rate limit all API endpoints consistently', async ({ request }) => {
     // Test deals endpoint
-    const dealsResponse = await request.get('http://localhost:3000/api/v1/deals', {
+    const dealsResponse = await request.get('/api/v1/deals', {
       headers: {
         Authorization: `Bearer ${freeApiKey}`
       }
@@ -269,7 +276,7 @@ test.describe('Rate Limiting', () => {
     const dealsRemaining = parseInt(dealsResponse.headers()['x-ratelimit-remaining'])
 
     // Test contacts endpoint
-    const contactsResponse = await request.get('http://localhost:3000/api/v1/contacts', {
+    const contactsResponse = await request.get('/api/v1/contacts', {
       headers: {
         Authorization: `Bearer ${freeApiKey}`
       }
@@ -282,7 +289,7 @@ test.describe('Rate Limiting', () => {
   })
 
   test('should provide accurate reset timestamp', async ({ request }) => {
-    const response = await request.get('http://localhost:3000/api/v1/deals', {
+    const response = await request.get('/api/v1/deals', {
       headers: {
         Authorization: `Bearer ${freeApiKey}`
       }

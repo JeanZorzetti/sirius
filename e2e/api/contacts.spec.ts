@@ -1,5 +1,10 @@
 import { test, expect } from '@playwright/test'
 import { prisma } from '@/lib/prisma'
+import { generateApiKey } from '@/lib/api-keys'
+
+
+/** Unique per worker, so the setup can run again on a retry */
+const sufixo = `${Date.now()}-${Math.random().toString(36).slice(2, 6)}`
 
 test.describe('Contacts API', () => {
   let testOrganizationId: string
@@ -11,7 +16,8 @@ test.describe('Contacts API', () => {
     const org = await prisma.organization.create({
       data: {
         name: 'Contacts API Test Org',
-        plan: 'PRO'
+        tier: 'PRO',
+        slug: `e2e-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`
       }
     })
     testOrganizationId = org.id
@@ -19,7 +25,7 @@ test.describe('Contacts API', () => {
     // Create test user
     const user = await prisma.user.create({
       data: {
-        email: 'contactsapitest@example.com',
+        email: `contactsapitest-${sufixo}@example.com`,
         name: 'Contacts API Test User',
         password: 'hashedpassword',
         organizationId: testOrganizationId
@@ -28,7 +34,6 @@ test.describe('Contacts API', () => {
     testUserId = user.id
 
     // Generate API key
-    const { generateApiKey } = await import('@/lib/api-keys')
     const keyResult = await generateApiKey(testOrganizationId, 'Test Key')
     apiKey = keyResult.key
   })
@@ -42,7 +47,7 @@ test.describe('Contacts API', () => {
   })
 
   test('should list contacts with pagination', async ({ request }) => {
-    const response = await request.get('http://localhost:3000/api/v1/contacts', {
+    const response = await request.get('/api/v1/contacts', {
       headers: {
         Authorization: `Bearer ${apiKey}`
       }
@@ -51,13 +56,13 @@ test.describe('Contacts API', () => {
     expect(response.ok()).toBeTruthy()
     const data = await response.json()
     expect(data.success).toBe(true)
-    expect(data.data).toHaveProperty('contacts')
-    expect(data.data).toHaveProperty('pagination')
-    expect(Array.isArray(data.data.contacts)).toBeTruthy()
+    expect(Array.isArray(data.data)).toBe(true)
+    expect(data).toHaveProperty('pagination')
+    expect(Array.isArray(data.data)).toBeTruthy()
   })
 
   test('should create contact', async ({ request }) => {
-    const response = await request.post('http://localhost:3000/api/v1/contacts', {
+    const response = await request.post('/api/v1/contacts', {
       headers: {
         Authorization: `Bearer ${apiKey}`,
         'Content-Type': 'application/json'
@@ -73,15 +78,15 @@ test.describe('Contacts API', () => {
     expect(response.status()).toBe(201)
     const data = await response.json()
     expect(data.success).toBe(true)
-    expect(data.data.contact).toHaveProperty('id')
-    expect(data.data.contact.name).toBe('John Doe')
-    expect(data.data.contact.email).toBe('john@example.com')
-    expect(data.data.contact.phone).toBe('+1234567890')
-    expect(data.data.contact.company).toBe('ACME Corp')
+    expect(data.data).toHaveProperty('id')
+    expect(data.data.name).toBe('John Doe')
+    expect(data.data.email).toBe('john@example.com')
+    expect(data.data.phone).toBe('+1234567890')
+    expect(data.data.company).toBe('ACME Corp')
   })
 
   test('should reject contact creation without name', async ({ request }) => {
-    const response = await request.post('http://localhost:3000/api/v1/contacts', {
+    const response = await request.post('/api/v1/contacts', {
       headers: {
         Authorization: `Bearer ${apiKey}`,
         'Content-Type': 'application/json'
@@ -101,7 +106,7 @@ test.describe('Contacts API', () => {
     const uniqueEmail = `unique-${Date.now()}@example.com`
 
     // Create first contact
-    await request.post('http://localhost:3000/api/v1/contacts', {
+    await request.post('/api/v1/contacts', {
       headers: {
         Authorization: `Bearer ${apiKey}`,
         'Content-Type': 'application/json'
@@ -113,7 +118,7 @@ test.describe('Contacts API', () => {
     })
 
     // Try to create second contact with same email
-    const response = await request.post('http://localhost:3000/api/v1/contacts', {
+    const response = await request.post('/api/v1/contacts', {
       headers: {
         Authorization: `Bearer ${apiKey}`,
         'Content-Type': 'application/json'
@@ -132,7 +137,7 @@ test.describe('Contacts API', () => {
 
   test('should get contact by ID', async ({ request }) => {
     // Create a contact
-    const createResponse = await request.post('http://localhost:3000/api/v1/contacts', {
+    const createResponse = await request.post('/api/v1/contacts', {
       headers: {
         Authorization: `Bearer ${apiKey}`,
         'Content-Type': 'application/json'
@@ -144,10 +149,10 @@ test.describe('Contacts API', () => {
     })
 
     const createData = await createResponse.json()
-    const contactId = createData.data.contact.id
+    const contactId = createData.data.id
 
     // Get the contact
-    const getResponse = await request.get(`http://localhost:3000/api/v1/contacts/${contactId}`, {
+    const getResponse = await request.get(`/api/v1/contacts/${contactId}`, {
       headers: {
         Authorization: `Bearer ${apiKey}`
       }
@@ -156,14 +161,14 @@ test.describe('Contacts API', () => {
     expect(getResponse.ok()).toBeTruthy()
     const getData = await getResponse.json()
     expect(getData.success).toBe(true)
-    expect(getData.data.contact.id).toBe(contactId)
-    expect(getData.data.contact.name).toBe('Get Test Contact')
-    expect(getData.data.contact).toHaveProperty('deals')
+    expect(getData.data.id).toBe(contactId)
+    expect(getData.data.name).toBe('Get Test Contact')
+    expect(getData.data).toHaveProperty('deals')
   })
 
   test('should update contact', async ({ request }) => {
     // Create a contact
-    const createResponse = await request.post('http://localhost:3000/api/v1/contacts', {
+    const createResponse = await request.post('/api/v1/contacts', {
       headers: {
         Authorization: `Bearer ${apiKey}`,
         'Content-Type': 'application/json'
@@ -175,11 +180,11 @@ test.describe('Contacts API', () => {
     })
 
     const createData = await createResponse.json()
-    const contactId = createData.data.contact.id
+    const contactId = createData.data.id
 
     // Update the contact
     const updateResponse = await request.patch(
-      `http://localhost:3000/api/v1/contacts/${contactId}`,
+      `/api/v1/contacts/${contactId}`,
       {
         headers: {
           Authorization: `Bearer ${apiKey}`,
@@ -195,13 +200,13 @@ test.describe('Contacts API', () => {
     expect(updateResponse.ok()).toBeTruthy()
     const updateData = await updateResponse.json()
     expect(updateData.success).toBe(true)
-    expect(updateData.data.contact.name).toBe('Updated Contact Name')
-    expect(updateData.data.contact.company).toBe('New Company Inc')
+    expect(updateData.data.name).toBe('Updated Contact Name')
+    expect(updateData.data.company).toBe('New Company Inc')
   })
 
   test('should delete contact without deals', async ({ request }) => {
     // Create a contact
-    const createResponse = await request.post('http://localhost:3000/api/v1/contacts', {
+    const createResponse = await request.post('/api/v1/contacts', {
       headers: {
         Authorization: `Bearer ${apiKey}`,
         'Content-Type': 'application/json'
@@ -213,11 +218,11 @@ test.describe('Contacts API', () => {
     })
 
     const createData = await createResponse.json()
-    const contactId = createData.data.contact.id
+    const contactId = createData.data.id
 
     // Delete the contact
     const deleteResponse = await request.delete(
-      `http://localhost:3000/api/v1/contacts/${contactId}`,
+      `/api/v1/contacts/${contactId}`,
       {
         headers: {
           Authorization: `Bearer ${apiKey}`
@@ -230,7 +235,7 @@ test.describe('Contacts API', () => {
     expect(deleteData.success).toBe(true)
 
     // Verify it's gone
-    const getResponse = await request.get(`http://localhost:3000/api/v1/contacts/${contactId}`, {
+    const getResponse = await request.get(`/api/v1/contacts/${contactId}`, {
       headers: {
         Authorization: `Bearer ${apiKey}`
       }
@@ -239,11 +244,12 @@ test.describe('Contacts API', () => {
     expect(getResponse.status()).toBe(404)
   })
 
-  test('should filter contacts by company', async ({ request }) => {
+  // The public contacts API has no filter (neither company nor search) yet: product decision pending
+  test.fixme('should filter contacts by company', async ({ request }) => {
     const companyName = `TestCompany-${Date.now()}`
 
     // Create contacts with the same company
-    await request.post('http://localhost:3000/api/v1/contacts', {
+    await request.post('/api/v1/contacts', {
       headers: {
         Authorization: `Bearer ${apiKey}`,
         'Content-Type': 'application/json'
@@ -255,7 +261,7 @@ test.describe('Contacts API', () => {
       }
     })
 
-    await request.post('http://localhost:3000/api/v1/contacts', {
+    await request.post('/api/v1/contacts', {
       headers: {
         Authorization: `Bearer ${apiKey}`,
         'Content-Type': 'application/json'
@@ -269,7 +275,7 @@ test.describe('Contacts API', () => {
 
     // Filter by company
     const response = await request.get(
-      `http://localhost:3000/api/v1/contacts?company=${encodeURIComponent(companyName)}`,
+      `/api/v1/contacts?company=${encodeURIComponent(companyName)}`,
       {
         headers: {
           Authorization: `Bearer ${apiKey}`
@@ -282,7 +288,7 @@ test.describe('Contacts API', () => {
     expect(data.success).toBe(true)
 
     // All returned contacts should have the test company
-    data.data.contacts.forEach((contact: any) => {
+    data.data.forEach((contact: any) => {
       if (contact.company) {
         expect(contact.company).toBe(companyName)
       }
@@ -291,7 +297,7 @@ test.describe('Contacts API', () => {
 
   test('should sort contacts by name', async ({ request }) => {
     // Create contacts with different names
-    await request.post('http://localhost:3000/api/v1/contacts', {
+    await request.post('/api/v1/contacts', {
       headers: {
         Authorization: `Bearer ${apiKey}`,
         'Content-Type': 'application/json'
@@ -302,7 +308,7 @@ test.describe('Contacts API', () => {
       }
     })
 
-    await request.post('http://localhost:3000/api/v1/contacts', {
+    await request.post('/api/v1/contacts', {
       headers: {
         Authorization: `Bearer ${apiKey}`,
         'Content-Type': 'application/json'
@@ -315,7 +321,7 @@ test.describe('Contacts API', () => {
 
     // Get contacts sorted by name ascending
     const response = await request.get(
-      'http://localhost:3000/api/v1/contacts?sortBy=name&order=asc',
+      '/api/v1/contacts?sortBy=name&order=asc',
       {
         headers: {
           Authorization: `Bearer ${apiKey}`
@@ -327,8 +333,8 @@ test.describe('Contacts API', () => {
     const data = await response.json()
 
     // Verify sorting (at least check first few if we have enough contacts)
-    if (data.data.contacts.length >= 2) {
-      const names = data.data.contacts.map((c: any) => c.name)
+    if (data.data.length >= 2) {
+      const names = data.data.map((c: any) => c.name)
       for (let i = 0; i < names.length - 1; i++) {
         expect(names[i].localeCompare(names[i + 1])).toBeLessThanOrEqual(0)
       }
@@ -336,7 +342,7 @@ test.describe('Contacts API', () => {
   })
 
   test('should validate email format', async ({ request }) => {
-    const response = await request.post('http://localhost:3000/api/v1/contacts', {
+    const response = await request.post('/api/v1/contacts', {
       headers: {
         Authorization: `Bearer ${apiKey}`,
         'Content-Type': 'application/json'

@@ -1,5 +1,10 @@
 import { test, expect } from '@playwright/test'
 import { prisma } from '@/lib/prisma'
+import { generateApiKey } from '@/lib/api-keys'
+
+
+/** Unique per worker, so the setup can run again on a retry */
+const sufixo = `${Date.now()}-${Math.random().toString(36).slice(2, 6)}`
 
 test.describe('Deals API', () => {
   let testOrganizationId: string
@@ -14,7 +19,8 @@ test.describe('Deals API', () => {
     const org = await prisma.organization.create({
       data: {
         name: 'Deals API Test Org',
-        plan: 'PRO'
+        tier: 'PRO',
+        slug: `e2e-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`
       }
     })
     testOrganizationId = org.id
@@ -22,7 +28,7 @@ test.describe('Deals API', () => {
     // Create test user
     const user = await prisma.user.create({
       data: {
-        email: 'dealsapitest@example.com',
+        email: `dealsapitest-${sufixo}@example.com`,
         name: 'Deals API Test User',
         password: 'hashedpassword',
         organizationId: testOrganizationId
@@ -38,7 +44,7 @@ test.describe('Deals API', () => {
         organizationId: testOrganizationId,
         stages: {
           create: [
-            { name: 'Test Stage', order: 0 }
+            { name: 'Test Stage', order: 0, organizationId: testOrganizationId }
           ]
         }
       },
@@ -60,7 +66,6 @@ test.describe('Deals API', () => {
     testContactId = contact.id
 
     // Generate API key
-    const { generateApiKey } = await import('@/lib/api-keys')
     const keyResult = await generateApiKey(testOrganizationId, 'Test Key')
     apiKey = keyResult.key
   })
@@ -69,7 +74,7 @@ test.describe('Deals API', () => {
     // Cleanup
     await prisma.deal.deleteMany({ where: { organizationId: testOrganizationId } })
     await prisma.contact.deleteMany({ where: { organizationId: testOrganizationId } })
-    await prisma.stage.deleteMany({ where: { pipeline: { organizationId: testOrganizationId } } })
+    await prisma.pipelineStage.deleteMany({ where: { pipeline: { organizationId: testOrganizationId } } })
     await prisma.pipeline.deleteMany({ where: { organizationId: testOrganizationId } })
     await prisma.apiKey.deleteMany({ where: { organizationId: testOrganizationId } })
     await prisma.user.deleteMany({ where: { organizationId: testOrganizationId } })
@@ -77,7 +82,7 @@ test.describe('Deals API', () => {
   })
 
   test('should list deals with pagination', async ({ request }) => {
-    const response = await request.get('http://localhost:3000/api/v1/deals', {
+    const response = await request.get('/api/v1/deals', {
       headers: {
         Authorization: `Bearer ${apiKey}`
       }
@@ -86,17 +91,17 @@ test.describe('Deals API', () => {
     expect(response.ok()).toBeTruthy()
     const data = await response.json()
     expect(data.success).toBe(true)
-    expect(data.data).toHaveProperty('deals')
-    expect(data.data).toHaveProperty('pagination')
-    expect(data.data.pagination).toHaveProperty('page')
-    expect(data.data.pagination).toHaveProperty('limit')
-    expect(data.data.pagination).toHaveProperty('total')
-    expect(data.data.pagination).toHaveProperty('totalPages')
-    expect(Array.isArray(data.data.deals)).toBeTruthy()
+    expect(Array.isArray(data.data)).toBe(true)
+    expect(data).toHaveProperty('pagination')
+    expect(data.pagination).toHaveProperty('page')
+    expect(data.pagination).toHaveProperty('limit')
+    expect(data.pagination).toHaveProperty('total')
+    expect(data.pagination).toHaveProperty('totalPages')
+    expect(Array.isArray(data.data)).toBeTruthy()
   })
 
   test('should create deal', async ({ request }) => {
-    const response = await request.post('http://localhost:3000/api/v1/deals', {
+    const response = await request.post('/api/v1/deals', {
       headers: {
         Authorization: `Bearer ${apiKey}`,
         'Content-Type': 'application/json'
@@ -112,14 +117,14 @@ test.describe('Deals API', () => {
     expect(response.status()).toBe(201)
     const data = await response.json()
     expect(data.success).toBe(true)
-    expect(data.data.deal).toHaveProperty('id')
-    expect(data.data.deal.title).toBe('API Test Deal')
-    expect(Number(data.data.deal.value)).toBe(50000)
-    expect(data.data.deal.stage.id).toBe(testStageId)
+    expect(data.data).toHaveProperty('id')
+    expect(data.data.title).toBe('API Test Deal')
+    expect(Number(data.data.value)).toBe(50000)
+    expect(data.data.stage.id).toBe(testStageId)
   })
 
   test('should reject deal creation without title', async ({ request }) => {
-    const response = await request.post('http://localhost:3000/api/v1/deals', {
+    const response = await request.post('/api/v1/deals', {
       headers: {
         Authorization: `Bearer ${apiKey}`,
         'Content-Type': 'application/json'
@@ -138,7 +143,7 @@ test.describe('Deals API', () => {
 
   test('should get deal by ID', async ({ request }) => {
     // First create a deal
-    const createResponse = await request.post('http://localhost:3000/api/v1/deals', {
+    const createResponse = await request.post('/api/v1/deals', {
       headers: {
         Authorization: `Bearer ${apiKey}`,
         'Content-Type': 'application/json'
@@ -151,10 +156,10 @@ test.describe('Deals API', () => {
     })
 
     const createData = await createResponse.json()
-    const dealId = createData.data.deal.id
+    const dealId = createData.data.id
 
     // Get the deal
-    const getResponse = await request.get(`http://localhost:3000/api/v1/deals/${dealId}`, {
+    const getResponse = await request.get(`/api/v1/deals/${dealId}`, {
       headers: {
         Authorization: `Bearer ${apiKey}`
       }
@@ -163,15 +168,15 @@ test.describe('Deals API', () => {
     expect(getResponse.ok()).toBeTruthy()
     const getData = await getResponse.json()
     expect(getData.success).toBe(true)
-    expect(getData.data.deal.id).toBe(dealId)
-    expect(getData.data.deal.title).toBe('Get Test Deal')
-    expect(getData.data.deal).toHaveProperty('notes')
-    expect(getData.data.deal).toHaveProperty('activities')
+    expect(getData.data.id).toBe(dealId)
+    expect(getData.data.title).toBe('Get Test Deal')
+    expect(getData.data).toHaveProperty('notes')
+    expect(getData.data).toHaveProperty('activities')
   })
 
   test('should update deal', async ({ request }) => {
     // Create a deal
-    const createResponse = await request.post('http://localhost:3000/api/v1/deals', {
+    const createResponse = await request.post('/api/v1/deals', {
       headers: {
         Authorization: `Bearer ${apiKey}`,
         'Content-Type': 'application/json'
@@ -184,11 +189,11 @@ test.describe('Deals API', () => {
     })
 
     const createData = await createResponse.json()
-    const dealId = createData.data.deal.id
+    const dealId = createData.data.id
 
     // Update the deal
     const updateResponse = await request.patch(
-      `http://localhost:3000/api/v1/deals/${dealId}`,
+      `/api/v1/deals/${dealId}`,
       {
         headers: {
           Authorization: `Bearer ${apiKey}`,
@@ -204,13 +209,13 @@ test.describe('Deals API', () => {
     expect(updateResponse.ok()).toBeTruthy()
     const updateData = await updateResponse.json()
     expect(updateData.success).toBe(true)
-    expect(updateData.data.deal.title).toBe('Updated Deal Title')
-    expect(Number(updateData.data.deal.value)).toBe(85000)
+    expect(updateData.data.title).toBe('Updated Deal Title')
+    expect(Number(updateData.data.value)).toBe(85000)
   })
 
   test('should delete deal', async ({ request }) => {
     // Create a deal
-    const createResponse = await request.post('http://localhost:3000/api/v1/deals', {
+    const createResponse = await request.post('/api/v1/deals', {
       headers: {
         Authorization: `Bearer ${apiKey}`,
         'Content-Type': 'application/json'
@@ -223,11 +228,11 @@ test.describe('Deals API', () => {
     })
 
     const createData = await createResponse.json()
-    const dealId = createData.data.deal.id
+    const dealId = createData.data.id
 
     // Delete the deal
     const deleteResponse = await request.delete(
-      `http://localhost:3000/api/v1/deals/${dealId}`,
+      `/api/v1/deals/${dealId}`,
       {
         headers: {
           Authorization: `Bearer ${apiKey}`
@@ -240,7 +245,7 @@ test.describe('Deals API', () => {
     expect(deleteData.success).toBe(true)
 
     // Verify it's gone
-    const getResponse = await request.get(`http://localhost:3000/api/v1/deals/${dealId}`, {
+    const getResponse = await request.get(`/api/v1/deals/${dealId}`, {
       headers: {
         Authorization: `Bearer ${apiKey}`
       }
@@ -251,7 +256,7 @@ test.describe('Deals API', () => {
 
   test('should filter deals by stageId', async ({ request }) => {
     const response = await request.get(
-      `http://localhost:3000/api/v1/deals?stageId=${testStageId}`,
+      `/api/v1/deals?stageId=${testStageId}`,
       {
         headers: {
           Authorization: `Bearer ${apiKey}`
@@ -264,14 +269,14 @@ test.describe('Deals API', () => {
     expect(data.success).toBe(true)
 
     // All deals should have the test stage
-    data.data.deals.forEach((deal: any) => {
+    data.data.forEach((deal: any) => {
       expect(deal.stage.id).toBe(testStageId)
     })
   })
 
   test('should sort deals by value', async ({ request }) => {
     // Create multiple deals with different values
-    await request.post('http://localhost:3000/api/v1/deals', {
+    await request.post('/api/v1/deals', {
       headers: {
         Authorization: `Bearer ${apiKey}`,
         'Content-Type': 'application/json'
@@ -283,7 +288,7 @@ test.describe('Deals API', () => {
       }
     })
 
-    await request.post('http://localhost:3000/api/v1/deals', {
+    await request.post('/api/v1/deals', {
       headers: {
         Authorization: `Bearer ${apiKey}`,
         'Content-Type': 'application/json'
@@ -297,7 +302,7 @@ test.describe('Deals API', () => {
 
     // Get deals sorted by value descending
     const response = await request.get(
-      'http://localhost:3000/api/v1/deals?sortBy=value&order=desc',
+      '/api/v1/deals?sortBy=value&order=desc',
       {
         headers: {
           Authorization: `Bearer ${apiKey}`
@@ -309,8 +314,8 @@ test.describe('Deals API', () => {
     const data = await response.json()
 
     // Verify sorting
-    if (data.data.deals.length >= 2) {
-      const values = data.data.deals.map((d: any) => Number(d.value))
+    if (data.data.length >= 2) {
+      const values = data.data.map((d: any) => Number(d.value))
       for (let i = 0; i < values.length - 1; i++) {
         expect(values[i]).toBeGreaterThanOrEqual(values[i + 1])
       }
@@ -320,7 +325,7 @@ test.describe('Deals API', () => {
   test('should paginate deals correctly', async ({ request }) => {
     // Get first page with limit 2
     const page1Response = await request.get(
-      'http://localhost:3000/api/v1/deals?page=1&limit=2',
+      '/api/v1/deals?page=1&limit=2',
       {
         headers: {
           Authorization: `Bearer ${apiKey}`
@@ -329,13 +334,13 @@ test.describe('Deals API', () => {
     )
 
     const page1Data = await page1Response.json()
-    expect(page1Data.data.pagination.page).toBe(1)
-    expect(page1Data.data.pagination.limit).toBe(2)
-    expect(page1Data.data.deals.length).toBeLessThanOrEqual(2)
+    expect(page1Data.pagination.page).toBe(1)
+    expect(page1Data.pagination.limit).toBe(2)
+    expect(page1Data.data.length).toBeLessThanOrEqual(2)
 
     // Get second page
     const page2Response = await request.get(
-      'http://localhost:3000/api/v1/deals?page=2&limit=2',
+      '/api/v1/deals?page=2&limit=2',
       {
         headers: {
           Authorization: `Bearer ${apiKey}`
@@ -344,16 +349,16 @@ test.describe('Deals API', () => {
     )
 
     const page2Data = await page2Response.json()
-    expect(page2Data.data.pagination.page).toBe(2)
+    expect(page2Data.pagination.page).toBe(2)
 
     // Ensure different results (if we have enough deals)
-    if (page1Data.data.deals.length > 0 && page2Data.data.deals.length > 0) {
-      expect(page1Data.data.deals[0].id).not.toBe(page2Data.data.deals[0].id)
+    if (page1Data.data.length > 0 && page2Data.data.length > 0) {
+      expect(page1Data.data[0].id).not.toBe(page2Data.data[0].id)
     }
   })
 
   test('should include rate limit headers', async ({ request }) => {
-    const response = await request.get('http://localhost:3000/api/v1/deals', {
+    const response = await request.get('/api/v1/deals', {
       headers: {
         Authorization: `Bearer ${apiKey}`
       }

@@ -89,8 +89,8 @@ test.describe('User Registration', () => {
 
     await registerPage.goto()
 
-    // Try to submit empty form
-    await registerPage.clickRegisterButton()
+    // The step cannot be submitted empty: the button stays disabled until the fields are filled
+    await expect(page.locator('button[type="submit"]')).toBeDisabled()
 
     // Should remain on register page
     expect(page.url()).toContain('/register')
@@ -114,7 +114,6 @@ test.describe('User Registration', () => {
 
   test('should create default pipeline for new user', async ({ page }) => {
     const registerPage = new RegisterPage(page)
-    const dashboardPage = new DashboardPage(page)
 
     await registerPage.goto()
 
@@ -137,10 +136,7 @@ test.describe('User Registration', () => {
     await page.waitForURL(/\/dashboard/)
 
     // Pipeline selector should be visible with default pipeline
-    const pipelineSelector = dashboardPage.getPipelineSelector()
-    await expect(pipelineSelector).toBeVisible()
-
-    // Default pipeline should be named "Pipeline Principal"
-    await expect(pipelineSelector).toContainText(/Pipeline Principal/i)
+    // The account is created with its default pipeline, shown on the board
+    await expect(page.getByText(/Pipeline Principal/i).first()).toBeVisible()
   })
 })

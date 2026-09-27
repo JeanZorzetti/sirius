@@ -1,6 +1,7 @@
 import { test, expect } from '@playwright/test'
 import { RegisterPage } from '../page-objects/register-page'
 import { KanbanPage } from '../page-objects/kanban-page'
+import { DashboardPage } from '../page-objects/dashboard-page'
 
 test.describe('Kanban Board Operations', () => {
   // Helper to create a test user and login with a deal
@@ -25,6 +26,7 @@ test.describe('Kanban Board Operations', () => {
 
     // Wait for registration to complete
     await page.waitForURL(/\/dashboard/, { timeout: 15000 })
+    await new DashboardPage(page).dismissWelcome()
 
     return userData
   }
@@ -209,7 +211,7 @@ test.describe('Kanban Board Operations', () => {
 
     // Verify value is still correct
     const dealCard = kanbanPage.getDealCardByTitle(dealTitle)
-    await expect(dealCard).toContainText('7500')
+    await expect(dealCard).toContainText('R$ 7.500')
   })
 
   test('should handle clicking on deal card', async ({ page }) => {
