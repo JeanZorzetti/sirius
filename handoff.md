@@ -1,8 +1,30 @@
+# Leia primeiro também: teste do Pro e E2E real (27/09/2026)
+
+- **O teste de 7 dias do Pro agora recebe recursos e limites do Pro (`74c23fe`).** Antes, todo bloqueio lia o plano
+  gravado (FREE). A conta em teste via "Trial PRO" e recebia os recursos e limites do Gratuito.
+  - Regra em `lib/entitlements.ts`:
+    - recursos e limites usam `getEffectiveTier`;
+    - a cota de IA usa `getQuotaTier`, que dá a cota do Starter durante o teste (decisão do dono).
+  - `getOrganizationEntitlements().tier` continua sendo o plano que o cliente paga.
+  - Bloqueio novo deve usar `getEffectiveTier`. A contagem de clientes pagantes continua lendo `tier`.
+- **O E2E roda contra um Postgres real (`ca8a3ca`).** Roda no Chromium com 2 workers, em cerca de 4 minutos, e 105
+  testes passam.
+  - Os 4 specs de i18n esperam a reescrita do locale EN. Depois que passarem, tirar o `continue-on-error` de
+    `test-e2e` em `.github/workflows/ci.yml`.
+  - O job tem 2 referências a `prisma/whatsapp.prisma`. A renomeação para `prisma/wa/schema.prisma` precisa
+    atualizar as duas.
+  - Pulados de propósito, com o motivo escrito em cada spec:
+    - rate limit, que precisa do Upstash;
+    - criação de webhook, que precisa do Svix;
+    - filtro de contatos da v1, marcado `fixme`, porque a API pública não tem filtro.
+- **Decisões de produto em aberto:**
+  - Os créditos de prospecção são 50 fixos para toda conta (`app/api/scraping/credits`), sem olhar o plano.
+  - Os agentes de IA só rodam com `agaasEnabled`, que só o pagamento liga. Quem está no teste nunca vê agentes.
+
 # Leia primeiro: integradores de WhatsApp (entram em 28/09/2026)
 
-**Status on 27/09:** spec written and pushed in `specs/012-whatsapp-integradores/` (`b20a93a`). The plan, the
-tasks and the code are still missing. The next step and the decisions are in
-`specs/012-whatsapp-integradores/handoff.md`.
+**Status on 27/09:** spec, plan and tasks are written (`b20a93a`, `a59c895`, `ca3ee1c`, `ef1860f`); the implementation
+is in progress. Decisions are in `specs/012-whatsapp-integradores/handoff.md`.
 
 Os Termos (seção 6) e a Política de Privacidade já estão no ar dizendo que **a conexão por integrador só é ativada
 depois que um usuário confirma o aviso de risco, e que isso fica registrado**. A tela e a rota de conexão precisam
