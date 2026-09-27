@@ -1,17 +1,23 @@
 import { test, expect } from '@playwright/test'
 import { prisma } from '@/lib/prisma'
+import { cookieDeSessao } from '../fixtures/session'
+
+
+/** Unique per worker, so the setup can run again on a retry */
+const sufixo = `${Date.now()}-${Math.random().toString(36).slice(2, 6)}`
 
 test.describe('Webhooks API', () => {
   let testOrganizationId: string
   let testUserId: string
-  let apiKey: string
+  let authCookie: string
 
   test.beforeAll(async () => {
     // Create PRO organization (webhooks are PRO only)
     const org = await prisma.organization.create({
       data: {
         name: 'Webhooks API Test Org',
-        plan: 'PRO'
+        tier: 'PRO',
+        slug: `e2e-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`
       }
     })
     testOrganizationId = org.id
@@ -19,7 +25,7 @@ test.describe('Webhooks API', () => {
     // Create test user
     const user = await prisma.user.create({
       data: {
-        email: 'webhooksapitest@example.com',
+        email: `webhooksapitest-${sufixo}@example.com`,
         name: 'Webhooks API Test User',
         password: 'hashedpassword',
         organizationId: testOrganizationId
@@ -28,9 +34,7 @@ test.describe('Webhooks API', () => {
     testUserId = user.id
 
     // Generate API key
-    const { generateApiKey } = await import('@/lib/api-keys')
-    const keyResult = await generateApiKey(testOrganizationId, 'Test Key')
-    apiKey = keyResult.key
+    authCookie = await cookieDeSessao(user)
   })
 
   test.afterAll(async () => {
@@ -43,9 +47,9 @@ test.describe('Webhooks API', () => {
   })
 
   test('should list webhooks', async ({ request }) => {
-    const response = await request.get('http://localhost:3000/api/v1/webhooks', {
+    const response = await request.get('/api/v1/webhooks', {
       headers: {
-        Authorization: `Bearer ${apiKey}`
+        Cookie: authCookie
       }
     })
 
@@ -60,13 +64,14 @@ test.describe('Webhooks API', () => {
     const freeOrg = await prisma.organization.create({
       data: {
         name: 'Free Org',
-        plan: 'FREE'
+        tier: 'FREE',
+        slug: `e2e-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`
       }
     })
 
     const freeUser = await prisma.user.create({
       data: {
-        email: 'freeuser@example.com',
+        email: `freeuser-${sufixo}@example.com`,
         name: 'Free User',
         password: 'hashedpassword',
         organizationId: freeOrg.id
@@ -74,12 +79,11 @@ test.describe('Webhooks API', () => {
     })
 
     // Generate API key for FREE org
-    const { generateApiKey } = await import('@/lib/api-keys')
-    const freeKeyResult = await generateApiKey(freeOrg.id, 'Free Key')
+    const freeCookie = await cookieDeSessao(freeUser)
 
-    const response = await request.get('http://localhost:3000/api/v1/webhooks', {
+    const response = await request.get('/api/v1/webhooks', {
       headers: {
-        Authorization: `Bearer ${freeKeyResult.key}`
+        Cookie: freeCookie
       }
     })
 
@@ -94,9 +98,10 @@ test.describe('Webhooks API', () => {
   })
 
   test('should create webhook with valid URL and events', async ({ request }) => {
-    const response = await request.post('http://localhost:3000/api/v1/webhooks', {
+    test.skip(!process.env.SVIX_API_KEY, 'creating a webhook needs Svix (SVIX_API_KEY)')
+    const response = await request.post('/api/v1/webhooks', {
       headers: {
-        Authorization: `Bearer ${apiKey}`,
+        Cookie: authCookie,
         'Content-Type': 'application/json'
       },
       data: {
@@ -116,9 +121,10 @@ test.describe('Webhooks API', () => {
   })
 
   test('should reject webhook with non-HTTPS URL', async ({ request }) => {
-    const response = await request.post('http://localhost:3000/api/v1/webhooks', {
+    test.skip(!process.env.SVIX_API_KEY, 'creating a webhook needs Svix (SVIX_API_KEY)')
+    const response = await request.post('/api/v1/webhooks', {
       headers: {
-        Authorization: `Bearer ${apiKey}`,
+        Cookie: authCookie,
         'Content-Type': 'application/json'
       },
       data: {
@@ -133,9 +139,9 @@ test.describe('Webhooks API', () => {
   })
 
   test('should reject webhook without events', async ({ request }) => {
-    const response = await request.post('http://localhost:3000/api/v1/webhooks', {
+    const response = await request.post('/api/v1/webhooks', {
       headers: {
-        Authorization: `Bearer ${apiKey}`,
+        Cookie: authCookie,
         'Content-Type': 'application/json'
       },
       data: {
@@ -150,9 +156,9 @@ test.describe('Webhooks API', () => {
   })
 
   test('should reject webhook with invalid event types', async ({ request }) => {
-    const response = await request.post('http://localhost:3000/api/v1/webhooks', {
+    const response = await request.post('/api/v1/webhooks', {
       headers: {
-        Authorization: `Bearer ${apiKey}`,
+        Cookie: authCookie,
         'Content-Type': 'application/json'
       },
       data: {
@@ -167,10 +173,11 @@ test.describe('Webhooks API', () => {
   })
 
   test('should get webhook by ID with secret', async ({ request }) => {
+    test.skip(!process.env.SVIX_API_KEY, 'creating a webhook needs Svix (SVIX_API_KEY)')
     // Create a webhook
-    const createResponse = await request.post('http://localhost:3000/api/v1/webhooks', {
+    const createResponse = await request.post('/api/v1/webhooks', {
       headers: {
-        Authorization: `Bearer ${apiKey}`,
+        Cookie: authCookie,
         'Content-Type': 'application/json'
       },
       data: {
@@ -183,9 +190,9 @@ test.describe('Webhooks API', () => {
     const webhookId = createData.webhook.id
 
     // Get webhook details
-    const getResponse = await request.get(`http://localhost:3000/api/v1/webhooks/${webhookId}`, {
+    const getResponse = await request.get(`/api/v1/webhooks/${webhookId}`, {
       headers: {
-        Authorization: `Bearer ${apiKey}`
+        Cookie: authCookie
       }
     })
 
@@ -197,10 +204,11 @@ test.describe('Webhooks API', () => {
   })
 
   test('should update webhook', async ({ request }) => {
+    test.skip(!process.env.SVIX_API_KEY, 'creating a webhook needs Svix (SVIX_API_KEY)')
     // Create a webhook
-    const createResponse = await request.post('http://localhost:3000/api/v1/webhooks', {
+    const createResponse = await request.post('/api/v1/webhooks', {
       headers: {
-        Authorization: `Bearer ${apiKey}`,
+        Cookie: authCookie,
         'Content-Type': 'application/json'
       },
       data: {
@@ -214,10 +222,10 @@ test.describe('Webhooks API', () => {
 
     // Update webhook
     const updateResponse = await request.patch(
-      `http://localhost:3000/api/v1/webhooks/${webhookId}`,
+      `/api/v1/webhooks/${webhookId}`,
       {
         headers: {
-          Authorization: `Bearer ${apiKey}`,
+          Cookie: authCookie,
           'Content-Type': 'application/json'
         },
         data: {
@@ -236,10 +244,11 @@ test.describe('Webhooks API', () => {
   })
 
   test('should delete webhook', async ({ request }) => {
+    test.skip(!process.env.SVIX_API_KEY, 'creating a webhook needs Svix (SVIX_API_KEY)')
     // Create a webhook
-    const createResponse = await request.post('http://localhost:3000/api/v1/webhooks', {
+    const createResponse = await request.post('/api/v1/webhooks', {
       headers: {
-        Authorization: `Bearer ${apiKey}`,
+        Cookie: authCookie,
         'Content-Type': 'application/json'
       },
       data: {
@@ -253,10 +262,10 @@ test.describe('Webhooks API', () => {
 
     // Delete webhook
     const deleteResponse = await request.delete(
-      `http://localhost:3000/api/v1/webhooks/${webhookId}`,
+      `/api/v1/webhooks/${webhookId}`,
       {
         headers: {
-          Authorization: `Bearer ${apiKey}`
+          Cookie: authCookie
         }
       }
     )
@@ -266,9 +275,9 @@ test.describe('Webhooks API', () => {
     expect(deleteData.success).toBe(true)
 
     // Verify it's gone
-    const getResponse = await request.get(`http://localhost:3000/api/v1/webhooks/${webhookId}`, {
+    const getResponse = await request.get(`/api/v1/webhooks/${webhookId}`, {
       headers: {
-        Authorization: `Bearer ${apiKey}`
+        Cookie: authCookie
       }
     })
 
@@ -276,10 +285,11 @@ test.describe('Webhooks API', () => {
   })
 
   test('should get webhook logs with pagination', async ({ request }) => {
+    test.skip(!process.env.SVIX_API_KEY, 'creating a webhook needs Svix (SVIX_API_KEY)')
     // Create a webhook
-    const createResponse = await request.post('http://localhost:3000/api/v1/webhooks', {
+    const createResponse = await request.post('/api/v1/webhooks', {
       headers: {
-        Authorization: `Bearer ${apiKey}`,
+        Cookie: authCookie,
         'Content-Type': 'application/json'
       },
       data: {
@@ -293,10 +303,10 @@ test.describe('Webhooks API', () => {
 
     // Get logs
     const logsResponse = await request.get(
-      `http://localhost:3000/api/v1/webhooks/${webhookId}/logs?page=1&limit=20`,
+      `/api/v1/webhooks/${webhookId}/logs?page=1&limit=20`,
       {
         headers: {
-          Authorization: `Bearer ${apiKey}`
+          Cookie: authCookie
         }
       }
     )
@@ -313,13 +323,14 @@ test.describe('Webhooks API', () => {
     const otherOrg = await prisma.organization.create({
       data: {
         name: 'Other Org',
-        plan: 'PRO'
+        tier: 'PRO',
+        slug: `e2e-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`
       }
     })
 
     const otherUser = await prisma.user.create({
       data: {
-        email: 'otheruser@example.com',
+        email: `otheruser-${sufixo}@example.com`,
         name: 'Other User',
         password: 'hashedpassword',
         organizationId: otherOrg.id
@@ -327,13 +338,12 @@ test.describe('Webhooks API', () => {
     })
 
     // Generate API key for other org
-    const { generateApiKey } = await import('@/lib/api-keys')
-    const otherKeyResult = await generateApiKey(otherOrg.id, 'Other Key')
+    const otherCookie = await cookieDeSessao(otherUser)
 
     // Create webhook for other org
-    await request.post('http://localhost:3000/api/v1/webhooks', {
+    await request.post('/api/v1/webhooks', {
       headers: {
-        Authorization: `Bearer ${otherKeyResult.key}`,
+        Cookie: otherCookie,
         'Content-Type': 'application/json'
       },
       data: {
@@ -343,9 +353,9 @@ test.describe('Webhooks API', () => {
     })
 
     // List webhooks with test org's key
-    const testResponse = await request.get('http://localhost:3000/api/v1/webhooks', {
+    const testResponse = await request.get('/api/v1/webhooks', {
       headers: {
-        Authorization: `Bearer ${apiKey}`
+        Cookie: authCookie
       }
     })
 

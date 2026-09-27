@@ -77,7 +77,7 @@ test.describe('Tasks - View Switching', () => {
 
     // Try to click table view button
     const tableButton = page.locator('button:has-text("Tabela")')
-    const isDisabled = await tableButton.evaluate((el) => el.hasAttribute('disabled'))
+    const isDisabled = await tableButton.evaluate((el: Element) => el.hasAttribute('disabled'))
 
     // For free users it should be disabled and have lock icon or opacity-50
     if (isDisabled) {

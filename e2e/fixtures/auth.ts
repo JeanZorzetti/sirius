@@ -1,6 +1,7 @@
 import { test as base, expect } from '@playwright/test'
 import { Page } from '@playwright/test'
 import { RegisterPage } from '../page-objects/register-page'
+import { DashboardPage } from '../page-objects/dashboard-page'
 
 type AuthFixtures = {
   authenticatedPage: Page
@@ -26,6 +27,19 @@ async function register(page: Page, email: string, password: string, name: strin
   await page.goto('/register')
   await new RegisterPage(page).register(name, email, password, organizationName)
   await page.waitForURL(/\/dashboard/)
+  await new DashboardPage(page).dismissWelcome()
+}
+
+/**
+ * For the task specs: a fresh user plus a task project created through the app's own API
+ */
+export async function authenticatedPage(page: Page): Promise<{ page: Page; projectId: string }> {
+  const ts = Date.now()
+  await register(page, `tasks-${ts}@example.com`, 'Test123456!', `Tasks User ${ts}`, `Tasks Org ${ts}`)
+  const res = await page.request.post('/api/task-projects', { data: { name: `Projeto ${ts}` } })
+  expect(res.status()).toBe(201)
+  const project = await res.json()
+  return { page, projectId: project.id }
 }
 
 /**

@@ -36,7 +36,7 @@ test.describe('Tasks - CRUD Operations', () => {
 
     // Verify it's marked as completed (opacity-50 or strikethrough)
     const completedTask = page.locator('text="Tarefa para completar"')
-    const classList = await completedTask.evaluate((el) => el.className)
+    const classList = await completedTask.evaluate((el: Element) => el.className)
     expect(classList).toContain('line-through')
   })
 

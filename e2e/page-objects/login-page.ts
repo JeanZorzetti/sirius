@@ -98,7 +98,7 @@ export class LoginPage extends BasePage {
    * Get "Criar conta" link
    */
   getCreateAccountLink() {
-    return this.page.getByRole('link', { name: /criar conta|registrar|sign up/i })
+    return this.page.getByRole('link', { name: /cadastre-se|criar conta|registrar|sign up/i })
   }
 
   /**
