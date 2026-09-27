@@ -17,6 +17,10 @@
     {
       "path": "components/brand/pingos.tsx",
       "reason": "símbolo da marca (Sirius A/B), reservado para favicon, ícone do app e OG — passo 2 do handoff de 23/09; carrega a receita de regeração"
+    },
+    {
+      "path": "components/chat/aceite-integrador.tsx",
+      "reason": "aviso de risco do integrador de WhatsApp (Termos 6.2), usado pela tela de conexão da spec 012 — ainda não implementada"
     }
   ]
 }

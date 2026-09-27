@@ -35,6 +35,8 @@ function enviar(metrica: { name: string; value: number }) {
 }
 
 export function VitaisDeCampo() {
+  // Captured once per page load, at the first render, on purpose: it must survive remounts, so it cannot be state or a ref
+  // eslint-disable-next-line react-hooks/globals
   if (montadoEm === null && typeof window !== 'undefined') montadoEm = window.location.pathname
   useReportWebVitals(enviar)
   return null
